@@ -3,6 +3,7 @@ import "dart:async";
 import "package:app/localizations.dart";
 import "package:app/ui_utils/common_update_logic.dart";
 import "package:app/ui_utils/snack_bar.dart";
+import "package:app/utils/api.dart";
 import "package:app/utils/result.dart";
 import "package:app/utils/time.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
@@ -22,6 +23,14 @@ class ToggleLikes extends NotificationSettingsEvent {}
 class ToggleMediaContentModerationCompleted extends NotificationSettingsEvent {}
 class ToggleProfileTextModerationCompleted extends NotificationSettingsEvent {}
 class ToggleNews extends NotificationSettingsEvent {}
+class ToggleAutomaticProfileSearch extends NotificationSettingsEvent {}
+class ToggleSearchDistance extends NotificationSettingsEvent {}
+class ToggleSearchFilters extends NotificationSettingsEvent {}
+class ToggleSearchNewProfiles extends NotificationSettingsEvent {}
+class UpdateSearchWeekday extends NotificationSettingsEvent {
+  final int value;
+  UpdateSearchWeekday(this.value);
+}
 class NewValueMessages extends NotificationSettingsEvent {
   final bool value;
   NewValueMessages(this.value);
@@ -34,13 +43,13 @@ class NewValueMediaContentModerationCompleted extends NotificationSettingsEvent 
   final bool value;
   NewValueMediaContentModerationCompleted(this.value);
 }
-class NewValueProfileTextModerationCompleted extends NotificationSettingsEvent {
-  final bool value;
-  NewValueProfileTextModerationCompleted(this.value);
-}
 class NewValueNews extends NotificationSettingsEvent {
   final bool value;
   NewValueNews(this.value);
+}
+class NewValueProfileSettings extends NotificationSettingsEvent {
+  final ProfileAppNotificationSettings value;
+  NewValueProfileSettings(this.value);
 }
 
 class NotificationSettingsBloc extends Bloc<NotificationSettingsEvent, NotificationSettingsData> {
@@ -51,19 +60,25 @@ class NotificationSettingsBloc extends Bloc<NotificationSettingsEvent, Notificat
   StreamSubscription<bool?>? _messagesSubscription;
   StreamSubscription<bool?>? _likesSubscription;
   StreamSubscription<bool?>? _mediaContentModerationCompletedSubscription;
-  StreamSubscription<bool?>? _profileTextModerationCompletedSubscription;
   StreamSubscription<bool?>? _newsSubscription;
+  StreamSubscription<ProfileAppNotificationSettings?>? _profileSettingsSubscription;
 
-  NotificationSettingsBloc() : super(NotificationSettingsData()) {
+  NotificationSettingsBloc() : super(NotificationSettingsData(
+    categories: NotificationCategoryData(),
+    systemCategories: NotificationCategoryData(),
+  )) {
     on<ReloadNotificationsEnabledStatus>((data, emit) async {
       final disabledChannelIds = await notifications.disabledNotificationChannelsIdsOnAndroid();
       emit(state.copyWith(
         areNotificationsEnabled: await notifications.areNotificationsEnabled(),
-        categorySystemEnabledLikes: !disabledChannelIds.contains(const NotificationCategoryLikes().id),
-        categorySystemEnabledMessages: !disabledChannelIds.contains(const NotificationCategoryMessages().id),
-        categorySystemEnabledMediaContentModerationCompleted: !disabledChannelIds.contains(const NotificationCategoryMediaContentModerationCompleted().id),
-        categorySystemEnabledProfileTextModerationCompleted: !disabledChannelIds.contains(const NotificationCategoryProfileTextModerationCompleted().id),
-        categorySystemEnabledNews: !disabledChannelIds.contains(const NotificationCategoryNewsItemAvailable().id),
+        systemCategories: NotificationCategoryData(
+          likes: !disabledChannelIds.contains(const NotificationCategoryLikes().id),
+          messages: !disabledChannelIds.contains(const NotificationCategoryMessages().id),
+          mediaContentModerationCompleted: !disabledChannelIds.contains(const NotificationCategoryMediaContentModerationCompleted().id),
+          profileTextModerationCompleted: !disabledChannelIds.contains(const NotificationCategoryProfileTextModerationCompleted().id),
+          news: !disabledChannelIds.contains(const NotificationCategoryNewsItemAvailable().id),
+          automaticProfileSearch: !disabledChannelIds.contains(const NotificationCategoryAutomaticProfileSearch().id),
+        ),
       ));
     });
     on<ResetEditedValues>((data, emit) async {
@@ -95,12 +110,12 @@ class NotificationSettingsBloc extends Bloc<NotificationSettingsEvent, Notificat
 
       {
         final settings = ProfileAppNotificationSettings(
-          automaticProfileSearch: true,
-          automaticProfileSearchDistance: false,
-          automaticProfileSearchNewProfiles: false,
-          automaticProfileSearchFilters: false,
-          automaticProfileSearchWeekdays: 0x7F,
           profileTextModeration: currentState.valueProfileText(),
+          automaticProfileSearch: currentState.valueAutomaticProfileSearch(),
+          automaticProfileSearchDistance: currentState.valueSearchDistance(),
+          automaticProfileSearchNewProfiles: currentState.valueSearchNewProfiles(),
+          automaticProfileSearchFilters: currentState.valueSearchFilters(),
+          automaticProfileSearchWeekdays: currentState.valueSearchWeekdays(),
         );
         final r = await api.profileAction((api) => api.postProfileAppNotificationSettings(settings))
           .andThen((_) => db.accountAction((db) => db.daoAppNotificationSettingsTable.updateProfileNotificationSettings(settings)));
@@ -145,7 +160,7 @@ class NotificationSettingsBloc extends Bloc<NotificationSettingsEvent, Notificat
     on<ToggleMessages>((data, emit) async {
       if (state.editedMessages == null) {
         emit(state.copyWith(
-          editedMessages: !state.categoryEnabledMessages,
+          editedMessages: !state.categories.messages,
         ));
       } else {
         emit(state.copyWith(
@@ -156,7 +171,7 @@ class NotificationSettingsBloc extends Bloc<NotificationSettingsEvent, Notificat
     on<ToggleLikes>((data, emit) async {
       if (state.editedLikes == null) {
         emit(state.copyWith(
-          editedLikes: !state.categoryEnabledLikes,
+          editedLikes: !state.categories.likes,
         ));
       } else {
         emit(state.copyWith(
@@ -167,7 +182,7 @@ class NotificationSettingsBloc extends Bloc<NotificationSettingsEvent, Notificat
     on<ToggleMediaContentModerationCompleted>((data, emit) async {
       if (state.editedMediaContent == null) {
         emit(state.copyWith(
-          editedMediaContent: !state.categoryEnabledMediaContentModerationCompleted,
+          editedMediaContent: !state.categories.mediaContentModerationCompleted,
         ));
       } else {
         emit(state.copyWith(
@@ -178,7 +193,7 @@ class NotificationSettingsBloc extends Bloc<NotificationSettingsEvent, Notificat
     on<ToggleProfileTextModerationCompleted>((data, emit) async {
       if (state.editedProfileText == null) {
         emit(state.copyWith(
-          editedProfileText: !state.categoryEnabledProfileTextModerationCompleted,
+          editedProfileText: !state.categories.profileTextModerationCompleted,
         ));
       } else {
         emit(state.copyWith(
@@ -189,7 +204,7 @@ class NotificationSettingsBloc extends Bloc<NotificationSettingsEvent, Notificat
     on<ToggleNews>((data, emit) async {
       if (state.editedNews == null) {
         emit(state.copyWith(
-          editedNews: !state.categoryEnabledNews,
+          editedNews: !state.categories.news,
         ));
       } else {
         emit(state.copyWith(
@@ -197,21 +212,83 @@ class NotificationSettingsBloc extends Bloc<NotificationSettingsEvent, Notificat
         ));
       }
     });
+    on<ToggleAutomaticProfileSearch>((data, emit) async {
+      if (state.editedAutomaticProfileSearch == null) {
+        emit(state.copyWith(
+          editedAutomaticProfileSearch: !state.categories.automaticProfileSearch,
+        ));
+      } else {
+        emit(state.copyWith(
+          editedAutomaticProfileSearch: null,
+        ));
+      }
+    });
+    on<ToggleSearchDistance>((data, emit) async {
+      if (state.editedSearchDistance == null) {
+        emit(state.copyWith(
+          editedSearchDistance: !state.searchDistance,
+        ));
+      } else {
+        emit(state.copyWith(
+          editedSearchDistance: null,
+        ));
+      }
+    });
+    on<ToggleSearchFilters>((data, emit) async {
+      if (state.editedSearchFilters == null) {
+        emit(state.copyWith(
+          editedSearchFilters: !state.searchFilters,
+        ));
+      } else {
+        emit(state.copyWith(
+          editedSearchFilters: null,
+        ));
+      }
+    });
+    on<ToggleSearchNewProfiles>((data, emit) async {
+      if (state.editedSearchNewProfiles == null) {
+        emit(state.copyWith(
+          editedSearchNewProfiles: !state.searchNewProfiles,
+        ));
+      } else {
+        emit(state.copyWith(
+          editedSearchNewProfiles: null,
+        ));
+      }
+    });
+    on<UpdateSearchWeekday>((data, emit) async {
+      if (data.value == state.searchWeekdays) {
+        emit(state.copyWith(
+          editedSearchWeekdays: null,
+        ));
+      } else {
+        emit(state.copyWith(
+          editedSearchWeekdays: data.value,
+        ));
+      }
+    });
     on<NewValueLikes>((data, emit) =>
-      emit(state.copyWith(categoryEnabledLikes: data.value))
+      emit(state.copyWith(categories: state.categories.copyWith(likes: data.value)))
     );
     on<NewValueMessages>((data, emit) =>
-      emit(state.copyWith(categoryEnabledMessages: data.value))
+      emit(state.copyWith(categories: state.categories.copyWith(messages: data.value)))
     );
     on<NewValueMediaContentModerationCompleted>((data, emit) =>
-      emit(state.copyWith(categoryEnabledMediaContentModerationCompleted: data.value))
-    );
-    on<NewValueProfileTextModerationCompleted>((data, emit) =>
-      emit(state.copyWith(categoryEnabledProfileTextModerationCompleted: data.value))
+      emit(state.copyWith(categories: state.categories.copyWith(mediaContentModerationCompleted: data.value)))
     );
     on<NewValueNews>((data, emit) =>
-      emit(state.copyWith(categoryEnabledNews: data.value))
+      emit(state.copyWith(categories: state.categories.copyWith(news: data.value)))
     );
+    on<NewValueProfileSettings>((data, emit) {
+      final v = data.value;
+      emit(state.copyWith(
+        categories: state.categories.copyWith(profileTextModerationCompleted: v.profileTextModeration),
+        searchDistance: v.automaticProfileSearchDistance,
+        searchFilters: v.automaticProfileSearchFilters,
+        searchNewProfiles: v.automaticProfileSearchNewProfiles,
+        searchWeekdays: v.automaticProfileSearchWeekdays,
+      ));
+    });
 
     _messagesSubscription = db
       .accountStream((db) => db.daoAppNotificationSettingsTable.watchMessages())
@@ -228,15 +305,15 @@ class NotificationSettingsBloc extends Bloc<NotificationSettingsEvent, Notificat
       .listen((state) {
         add(NewValueMediaContentModerationCompleted(state ?? NOTIFICATION_CATEGORY_ENABLED_DEFAULT));
       });
-    _profileTextModerationCompletedSubscription = db
-      .accountStream((db) => db.daoAppNotificationSettingsTable.watchProfileTextModerationCompleted())
-      .listen((state) {
-        add(NewValueProfileTextModerationCompleted(state ?? NOTIFICATION_CATEGORY_ENABLED_DEFAULT));
-      });
     _newsSubscription = db
       .accountStream((db) => db.daoAppNotificationSettingsTable.watchNews())
       .listen((state) {
         add(NewValueNews(state ?? NOTIFICATION_CATEGORY_ENABLED_DEFAULT));
+      });
+    _profileSettingsSubscription = db
+      .accountStream((db) => db.daoAppNotificationSettingsTable.watchProfileAppNotificationSettings())
+      .listen((state) {
+        add(NewValueProfileSettings(state ?? ProfileAppNotificationSettingsDefaults.defaultValue));
       });
   }
 
@@ -247,6 +324,11 @@ class NotificationSettingsBloc extends Bloc<NotificationSettingsEvent, Notificat
       editedMediaContent: null,
       editedProfileText: null,
       editedNews: null,
+      editedAutomaticProfileSearch: null,
+      editedSearchDistance: null,
+      editedSearchFilters: null,
+      editedSearchNewProfiles: null,
+      editedSearchWeekdays: null,
     ));
   }
 
@@ -255,8 +337,8 @@ class NotificationSettingsBloc extends Bloc<NotificationSettingsEvent, Notificat
     await _messagesSubscription?.cancel();
     await _likesSubscription?.cancel();
     await _mediaContentModerationCompletedSubscription?.cancel();
-    await _profileTextModerationCompletedSubscription?.cancel();
     await _newsSubscription?.cancel();
+    await _profileSettingsSubscription?.cancel();
     await super.close();
   }
 }

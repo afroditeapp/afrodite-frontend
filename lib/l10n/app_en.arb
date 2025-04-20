@@ -70,6 +70,30 @@
   "@app_slogan": {
     "description": "Slogan for the app"
   },
+  "automatic_profile_search_settings_screen_distance": "Use max distance filter",
+  "@automatic_profile_search_settings_screen_distance": {
+    "description": "Title text for distance setting"
+  },
+  "automatic_profile_search_settings_screen_filters": "Use multiple-choice question filters",
+  "@automatic_profile_search_settings_screen_filters": {
+    "description": "Title text for filters setting"
+  },
+  "automatic_profile_search_settings_screen_new_profiles": "Show only new profiles",
+  "@automatic_profile_search_settings_screen_new_profiles": {
+    "description": "Title text for new profiles setting"
+  },
+  "automatic_profile_search_settings_screen_one_weekday_must_be_selected_info": "One weekday must be selected",
+  "@automatic_profile_search_settings_screen_one_weekday_must_be_selected_info": {
+    "description": "Snackbar info text that one weekday must be selected"
+  },
+  "automatic_profile_search_settings_screen_title": "Automatic profile search settings",
+  "@automatic_profile_search_settings_screen_title": {
+    "description": "Title for automatic profile search settings screen"
+  },
+  "automatic_profile_search_settings_screen_weekdays": "Search weekdays",
+  "@automatic_profile_search_settings_screen_weekdays": {
+    "description": "Title text for weekdays setting"
+  },
   "blocked_profiles_screen_no_blocked_profiles": "No blocked profiles",
   "@blocked_profiles_screen_no_blocked_profiles": {
     "description": "Info text displayed when there is no blocked profiles"
@@ -553,6 +577,34 @@
   "@generic_try_again": {
     "description": "Generic try again text"
   },
+  "generic_weekday_fri": "Fri",
+  "@generic_weekday_fri": {
+    "description": "Generic short text for Friday"
+  },
+  "generic_weekday_mon": "Mon",
+  "@generic_weekday_mon": {
+    "description": "Generic short text for Monday"
+  },
+  "generic_weekday_sat": "Sat",
+  "@generic_weekday_sat": {
+    "description": "Generic short text for Saturday"
+  },
+  "generic_weekday_sun": "Sun",
+  "@generic_weekday_sun": {
+    "description": "Generic short text for Sunday"
+  },
+  "generic_weekday_thu": "Thu",
+  "@generic_weekday_thu": {
+    "description": "Generic short text for Thursday"
+  },
+  "generic_weekday_tue": "Tue",
+  "@generic_weekday_tue": {
+    "description": "Generic short text for Tuesday"
+  },
+  "generic_weekday_wed": "Wed",
+  "@generic_weekday_wed": {
+    "description": "Generic short text for Wednesday"
+  },
   "generic_yes": "Yes",
   "@generic_yes": {
     "description": "Generic yes text"
@@ -962,6 +1014,14 @@
   "news_list_screen_title": "News",
   "@news_list_screen_title": {
     "description": "Title for news list screen title"
+  },
+  "notification_automatic_profile_search_found_profiles": "Automatic profile search found profiles",
+  "@notification_automatic_profile_search_found_profiles": {
+    "description": "Title for automatic profile search found profiles notification"
+  },
+  "notification_category_automatic_profile_search": "Automatic profile search",
+  "@notification_category_automatic_profile_search": {
+    "description": "Title for notification category automatic profile search"
   },
   "notification_category_group_chat": "Chat",
   "@notification_category_group_chat": {

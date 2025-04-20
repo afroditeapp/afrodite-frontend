@@ -33,6 +33,7 @@ sealed class NotificationCategory {
     NotificationCategoryMediaContentModerationCompleted(),
     NotificationCategoryProfileTextModerationCompleted(),
     NotificationCategoryNewsItemAvailable(),
+    NotificationCategoryAutomaticProfileSearch(),
   ];
 }
 
@@ -89,7 +90,7 @@ class NotificationCategoryProfileTextModerationCompleted extends NotificationCat
   String get title => R.strings.notification_category_profile_text_moderation_completed;
 
   @override
-  IsEnabledGetter get _isEnabledValueLocation => (db) => db.daoAppNotificationSettingsTable.watchProfileTextModerationCompleted();
+  IsEnabledGetter get _isEnabledValueLocation => (db) => db.daoAppNotificationSettingsTable.watchProfileAppNotificationSettings().map((v) => v?.profileTextModeration);
 }
 
 class NotificationCategoryNewsItemAvailable extends NotificationCategory {
@@ -104,4 +105,18 @@ class NotificationCategoryNewsItemAvailable extends NotificationCategory {
 
   @override
   IsEnabledGetter get _isEnabledValueLocation => (db) => db.daoAppNotificationSettingsTable.watchNews();
+}
+
+class NotificationCategoryAutomaticProfileSearch extends NotificationCategory {
+  const NotificationCategoryAutomaticProfileSearch() : super(
+    id: "notification_category_automatic_profile_search",
+    group: const NotificationCategoryGroupGeneral(),
+    headsUpNotification: true,
+  );
+
+  @override
+  String get title => R.strings.notification_category_automatic_profile_search;
+
+  @override
+  IsEnabledGetter get _isEnabledValueLocation => (db) => db.daoAppNotificationSettingsTable.watchProfileAppNotificationSettings().map((v) => v?.automaticProfileSearch);
 }

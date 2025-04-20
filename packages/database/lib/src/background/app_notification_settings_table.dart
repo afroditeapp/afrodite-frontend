@@ -16,6 +16,12 @@ class AppNotificationSettingsTable extends Table {
   BoolColumn get mediaContentModerationCompleted => boolean().nullable()();
   BoolColumn get profileTextModerationCompleted => boolean().nullable()();
   BoolColumn get news => boolean().nullable()();
+
+  BoolColumn get automaticProfileSearch => boolean().nullable()();
+  BoolColumn get automaticProfileSearchDistance => boolean().nullable()();
+  BoolColumn get automaticProfileSearchFilters => boolean().nullable()();
+  BoolColumn get automaticProfileSearchNewProfiles => boolean().nullable()();
+  IntColumn get automaticProfileSearchWeekdays => integer().nullable()();
 }
 
 @DriftAccessor(tables: [AppNotificationSettingsTable])
@@ -36,6 +42,11 @@ class DaoAppNotificationSettingsTable extends DatabaseAccessor<AccountBackground
       AppNotificationSettingsTableCompanion.insert(
         id: ACCOUNT_DB_DATA_ID,
         profileTextModerationCompleted: Value(value.profileTextModeration),
+        automaticProfileSearch: Value(value.automaticProfileSearch),
+        automaticProfileSearchDistance: Value(value.automaticProfileSearchDistance),
+        automaticProfileSearchFilters: Value(value.automaticProfileSearchFilters),
+        automaticProfileSearchNewProfiles: Value(value.automaticProfileSearchNewProfiles),
+        automaticProfileSearchWeekdays: Value(value.automaticProfileSearchWeekdays),
       ),
     );
   }
@@ -65,10 +76,38 @@ class DaoAppNotificationSettingsTable extends DatabaseAccessor<AccountBackground
     _watchColumn((r) => r.likes);
   Stream<bool?> watchMediaContentModerationCompleted() =>
     _watchColumn((r) => r.mediaContentModerationCompleted);
-  Stream<bool?> watchProfileTextModerationCompleted() =>
-    _watchColumn((r) => r.profileTextModerationCompleted);
   Stream<bool?> watchNews() =>
     _watchColumn((r) => r.news);
+
+  Stream<api.ProfileAppNotificationSettings?> watchProfileAppNotificationSettings() =>
+    _watchColumn((r) {
+      final profileTextModerationCompleted = r.profileTextModerationCompleted;
+      final automaticProfileSearch = r.automaticProfileSearch;
+      final automaticProfileSearchDistance = r.automaticProfileSearchDistance;
+      final automaticProfileSearchFilters = r.automaticProfileSearchFilters;
+      final automaticProfileSearchNewProfiles = r.automaticProfileSearchNewProfiles;
+      final automaticProfileSearchWeekdays = r.automaticProfileSearchWeekdays;
+
+      if (
+        profileTextModerationCompleted == null ||
+        automaticProfileSearch == null ||
+        automaticProfileSearchDistance == null ||
+        automaticProfileSearchFilters == null ||
+        automaticProfileSearchNewProfiles == null ||
+        automaticProfileSearchWeekdays == null
+      ) {
+        return null;
+      }
+
+      return api.ProfileAppNotificationSettings(
+        profileTextModeration: profileTextModerationCompleted,
+        automaticProfileSearch: automaticProfileSearch,
+        automaticProfileSearchDistance: automaticProfileSearchDistance,
+        automaticProfileSearchFilters: automaticProfileSearchFilters,
+        automaticProfileSearchNewProfiles: automaticProfileSearchNewProfiles,
+        automaticProfileSearchWeekdays: automaticProfileSearchWeekdays,
+      );
+    });
 
   SimpleSelectStatement<$AppNotificationSettingsTableTable, AppNotificationSettingsTableData> _selectFromDataId() {
     return select(appNotificationSettingsTable)

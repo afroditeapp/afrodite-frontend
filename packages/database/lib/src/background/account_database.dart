@@ -3,6 +3,7 @@
 import 'package:async/async.dart' show StreamExtensions;
 import 'package:database/src/background/account/dao_user_interface_settings.dart';
 import 'package:database/src/background/app_notification_settings_table.dart';
+import 'package:database/src/background/automatic_profile_search_completed_notification_table.dart';
 import 'package:database/src/background/conversations_table.dart';
 import 'package:database/src/background/media_content_moderation_completed_notification_table.dart';
 import 'package:database/src/background/new_received_likes_available_table.dart';
@@ -41,6 +42,7 @@ class AccountBackground extends Table {
     News,
     MediaContentModerationCompletedNotificationTable,
     ProfileTextModerationCompletedNotificationTable,
+    AutomaticProfileSearchCompletedNotificationTable,
     AppNotificationSettingsTable,
   ],
   daos: [
@@ -60,6 +62,8 @@ class AccountBackground extends Table {
     DaoMediaContentModerationCompletedNotificationTable,
     // Related to ProfileTextModerationCompletedNotificationTable
     DaoProfileTextModerationCompletedNotificationTable,
+    // Related to AutomaticProfileSearchCompletedNotificationTable
+    DaoAutomaticProfileSearchCompletedNotificationTable,
     // Related to AppNotificationSettingsTable
     DaoAppNotificationSettingsTable,
   ],

@@ -2125,6 +2125,216 @@ class ProfileTextModerationCompletedNotificationTableCompanion
   }
 }
 
+class $AutomaticProfileSearchCompletedNotificationTableTable
+    extends AutomaticProfileSearchCompletedNotificationTable
+    with
+        TableInfo<$AutomaticProfileSearchCompletedNotificationTableTable,
+            AutomaticProfileSearchCompletedNotificationTableData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $AutomaticProfileSearchCompletedNotificationTableTable(this.attachedDatabase,
+      [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _profilesFoundViewedMeta =
+      const VerificationMeta('profilesFoundViewed');
+  @override
+  late final GeneratedColumn<int> profilesFoundViewed = GeneratedColumn<int>(
+      'profiles_found_viewed', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultValue: const Constant(0));
+  @override
+  List<GeneratedColumn> get $columns => [id, profilesFoundViewed];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name =
+      'automatic_profile_search_completed_notification_table';
+  @override
+  VerificationContext validateIntegrity(
+      Insertable<AutomaticProfileSearchCompletedNotificationTableData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('profiles_found_viewed')) {
+      context.handle(
+          _profilesFoundViewedMeta,
+          profilesFoundViewed.isAcceptableOrUnknown(
+              data['profiles_found_viewed']!, _profilesFoundViewedMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  AutomaticProfileSearchCompletedNotificationTableData map(
+      Map<String, dynamic> data,
+      {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return AutomaticProfileSearchCompletedNotificationTableData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      profilesFoundViewed: attachedDatabase.typeMapping.read(
+          DriftSqlType.int, data['${effectivePrefix}profiles_found_viewed'])!,
+    );
+  }
+
+  @override
+  $AutomaticProfileSearchCompletedNotificationTableTable createAlias(
+      String alias) {
+    return $AutomaticProfileSearchCompletedNotificationTableTable(
+        attachedDatabase, alias);
+  }
+}
+
+class AutomaticProfileSearchCompletedNotificationTableData extends DataClass
+    implements
+        Insertable<AutomaticProfileSearchCompletedNotificationTableData> {
+  final int id;
+  final int profilesFoundViewed;
+  const AutomaticProfileSearchCompletedNotificationTableData(
+      {required this.id, required this.profilesFoundViewed});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['profiles_found_viewed'] = Variable<int>(profilesFoundViewed);
+    return map;
+  }
+
+  AutomaticProfileSearchCompletedNotificationTableCompanion toCompanion(
+      bool nullToAbsent) {
+    return AutomaticProfileSearchCompletedNotificationTableCompanion(
+      id: Value(id),
+      profilesFoundViewed: Value(profilesFoundViewed),
+    );
+  }
+
+  factory AutomaticProfileSearchCompletedNotificationTableData.fromJson(
+      Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return AutomaticProfileSearchCompletedNotificationTableData(
+      id: serializer.fromJson<int>(json['id']),
+      profilesFoundViewed:
+          serializer.fromJson<int>(json['profilesFoundViewed']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'profilesFoundViewed': serializer.toJson<int>(profilesFoundViewed),
+    };
+  }
+
+  AutomaticProfileSearchCompletedNotificationTableData copyWith(
+          {int? id, int? profilesFoundViewed}) =>
+      AutomaticProfileSearchCompletedNotificationTableData(
+        id: id ?? this.id,
+        profilesFoundViewed: profilesFoundViewed ?? this.profilesFoundViewed,
+      );
+  AutomaticProfileSearchCompletedNotificationTableData copyWithCompanion(
+      AutomaticProfileSearchCompletedNotificationTableCompanion data) {
+    return AutomaticProfileSearchCompletedNotificationTableData(
+      id: data.id.present ? data.id.value : this.id,
+      profilesFoundViewed: data.profilesFoundViewed.present
+          ? data.profilesFoundViewed.value
+          : this.profilesFoundViewed,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer(
+            'AutomaticProfileSearchCompletedNotificationTableData(')
+          ..write('id: $id, ')
+          ..write('profilesFoundViewed: $profilesFoundViewed')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, profilesFoundViewed);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is AutomaticProfileSearchCompletedNotificationTableData &&
+          other.id == this.id &&
+          other.profilesFoundViewed == this.profilesFoundViewed);
+}
+
+class AutomaticProfileSearchCompletedNotificationTableCompanion
+    extends UpdateCompanion<
+        AutomaticProfileSearchCompletedNotificationTableData> {
+  final Value<int> id;
+  final Value<int> profilesFoundViewed;
+  const AutomaticProfileSearchCompletedNotificationTableCompanion({
+    this.id = const Value.absent(),
+    this.profilesFoundViewed = const Value.absent(),
+  });
+  AutomaticProfileSearchCompletedNotificationTableCompanion.insert({
+    this.id = const Value.absent(),
+    this.profilesFoundViewed = const Value.absent(),
+  });
+  static Insertable<AutomaticProfileSearchCompletedNotificationTableData>
+      custom({
+    Expression<int>? id,
+    Expression<int>? profilesFoundViewed,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (profilesFoundViewed != null)
+        'profiles_found_viewed': profilesFoundViewed,
+    });
+  }
+
+  AutomaticProfileSearchCompletedNotificationTableCompanion copyWith(
+      {Value<int>? id, Value<int>? profilesFoundViewed}) {
+    return AutomaticProfileSearchCompletedNotificationTableCompanion(
+      id: id ?? this.id,
+      profilesFoundViewed: profilesFoundViewed ?? this.profilesFoundViewed,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (profilesFoundViewed.present) {
+      map['profiles_found_viewed'] = Variable<int>(profilesFoundViewed.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer(
+            'AutomaticProfileSearchCompletedNotificationTableCompanion(')
+          ..write('id: $id, ')
+          ..write('profilesFoundViewed: $profilesFoundViewed')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $AppNotificationSettingsTableTable extends AppNotificationSettingsTable
     with
         TableInfo<$AppNotificationSettingsTableTable,
@@ -2187,6 +2397,52 @@ class $AppNotificationSettingsTableTable extends AppNotificationSettingsTable
       requiredDuringInsert: false,
       defaultConstraints:
           GeneratedColumn.constraintIsAlways('CHECK ("news" IN (0, 1))'));
+  static const VerificationMeta _automaticProfileSearchMeta =
+      const VerificationMeta('automaticProfileSearch');
+  @override
+  late final GeneratedColumn<bool> automaticProfileSearch =
+      GeneratedColumn<bool>('automatic_profile_search', aliasedName, true,
+          type: DriftSqlType.bool,
+          requiredDuringInsert: false,
+          defaultConstraints: GeneratedColumn.constraintIsAlways(
+              'CHECK ("automatic_profile_search" IN (0, 1))'));
+  static const VerificationMeta _automaticProfileSearchDistanceMeta =
+      const VerificationMeta('automaticProfileSearchDistance');
+  @override
+  late final GeneratedColumn<bool> automaticProfileSearchDistance =
+      GeneratedColumn<bool>(
+          'automatic_profile_search_distance', aliasedName, true,
+          type: DriftSqlType.bool,
+          requiredDuringInsert: false,
+          defaultConstraints: GeneratedColumn.constraintIsAlways(
+              'CHECK ("automatic_profile_search_distance" IN (0, 1))'));
+  static const VerificationMeta _automaticProfileSearchFiltersMeta =
+      const VerificationMeta('automaticProfileSearchFilters');
+  @override
+  late final GeneratedColumn<bool> automaticProfileSearchFilters =
+      GeneratedColumn<bool>(
+          'automatic_profile_search_filters', aliasedName, true,
+          type: DriftSqlType.bool,
+          requiredDuringInsert: false,
+          defaultConstraints: GeneratedColumn.constraintIsAlways(
+              'CHECK ("automatic_profile_search_filters" IN (0, 1))'));
+  static const VerificationMeta _automaticProfileSearchNewProfilesMeta =
+      const VerificationMeta('automaticProfileSearchNewProfiles');
+  @override
+  late final GeneratedColumn<bool> automaticProfileSearchNewProfiles =
+      GeneratedColumn<bool>(
+          'automatic_profile_search_new_profiles', aliasedName, true,
+          type: DriftSqlType.bool,
+          requiredDuringInsert: false,
+          defaultConstraints: GeneratedColumn.constraintIsAlways(
+              'CHECK ("automatic_profile_search_new_profiles" IN (0, 1))'));
+  static const VerificationMeta _automaticProfileSearchWeekdaysMeta =
+      const VerificationMeta('automaticProfileSearchWeekdays');
+  @override
+  late final GeneratedColumn<int> automaticProfileSearchWeekdays =
+      GeneratedColumn<int>(
+          'automatic_profile_search_weekdays', aliasedName, true,
+          type: DriftSqlType.int, requiredDuringInsert: false);
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -2194,7 +2450,12 @@ class $AppNotificationSettingsTableTable extends AppNotificationSettingsTable
         likes,
         mediaContentModerationCompleted,
         profileTextModerationCompleted,
-        news
+        news,
+        automaticProfileSearch,
+        automaticProfileSearchDistance,
+        automaticProfileSearchFilters,
+        automaticProfileSearchNewProfiles,
+        automaticProfileSearchWeekdays
       ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -2236,6 +2497,40 @@ class $AppNotificationSettingsTableTable extends AppNotificationSettingsTable
       context.handle(
           _newsMeta, news.isAcceptableOrUnknown(data['news']!, _newsMeta));
     }
+    if (data.containsKey('automatic_profile_search')) {
+      context.handle(
+          _automaticProfileSearchMeta,
+          automaticProfileSearch.isAcceptableOrUnknown(
+              data['automatic_profile_search']!, _automaticProfileSearchMeta));
+    }
+    if (data.containsKey('automatic_profile_search_distance')) {
+      context.handle(
+          _automaticProfileSearchDistanceMeta,
+          automaticProfileSearchDistance.isAcceptableOrUnknown(
+              data['automatic_profile_search_distance']!,
+              _automaticProfileSearchDistanceMeta));
+    }
+    if (data.containsKey('automatic_profile_search_filters')) {
+      context.handle(
+          _automaticProfileSearchFiltersMeta,
+          automaticProfileSearchFilters.isAcceptableOrUnknown(
+              data['automatic_profile_search_filters']!,
+              _automaticProfileSearchFiltersMeta));
+    }
+    if (data.containsKey('automatic_profile_search_new_profiles')) {
+      context.handle(
+          _automaticProfileSearchNewProfilesMeta,
+          automaticProfileSearchNewProfiles.isAcceptableOrUnknown(
+              data['automatic_profile_search_new_profiles']!,
+              _automaticProfileSearchNewProfilesMeta));
+    }
+    if (data.containsKey('automatic_profile_search_weekdays')) {
+      context.handle(
+          _automaticProfileSearchWeekdaysMeta,
+          automaticProfileSearchWeekdays.isAcceptableOrUnknown(
+              data['automatic_profile_search_weekdays']!,
+              _automaticProfileSearchWeekdaysMeta));
+    }
     return context;
   }
 
@@ -2260,6 +2555,21 @@ class $AppNotificationSettingsTableTable extends AppNotificationSettingsTable
           data['${effectivePrefix}profile_text_moderation_completed']),
       news: attachedDatabase.typeMapping
           .read(DriftSqlType.bool, data['${effectivePrefix}news']),
+      automaticProfileSearch: attachedDatabase.typeMapping.read(
+          DriftSqlType.bool,
+          data['${effectivePrefix}automatic_profile_search']),
+      automaticProfileSearchDistance: attachedDatabase.typeMapping.read(
+          DriftSqlType.bool,
+          data['${effectivePrefix}automatic_profile_search_distance']),
+      automaticProfileSearchFilters: attachedDatabase.typeMapping.read(
+          DriftSqlType.bool,
+          data['${effectivePrefix}automatic_profile_search_filters']),
+      automaticProfileSearchNewProfiles: attachedDatabase.typeMapping.read(
+          DriftSqlType.bool,
+          data['${effectivePrefix}automatic_profile_search_new_profiles']),
+      automaticProfileSearchWeekdays: attachedDatabase.typeMapping.read(
+          DriftSqlType.int,
+          data['${effectivePrefix}automatic_profile_search_weekdays']),
     );
   }
 
@@ -2277,13 +2587,23 @@ class AppNotificationSettingsTableData extends DataClass
   final bool? mediaContentModerationCompleted;
   final bool? profileTextModerationCompleted;
   final bool? news;
+  final bool? automaticProfileSearch;
+  final bool? automaticProfileSearchDistance;
+  final bool? automaticProfileSearchFilters;
+  final bool? automaticProfileSearchNewProfiles;
+  final int? automaticProfileSearchWeekdays;
   const AppNotificationSettingsTableData(
       {required this.id,
       this.messages,
       this.likes,
       this.mediaContentModerationCompleted,
       this.profileTextModerationCompleted,
-      this.news});
+      this.news,
+      this.automaticProfileSearch,
+      this.automaticProfileSearchDistance,
+      this.automaticProfileSearchFilters,
+      this.automaticProfileSearchNewProfiles,
+      this.automaticProfileSearchWeekdays});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -2305,6 +2625,25 @@ class AppNotificationSettingsTableData extends DataClass
     if (!nullToAbsent || news != null) {
       map['news'] = Variable<bool>(news);
     }
+    if (!nullToAbsent || automaticProfileSearch != null) {
+      map['automatic_profile_search'] = Variable<bool>(automaticProfileSearch);
+    }
+    if (!nullToAbsent || automaticProfileSearchDistance != null) {
+      map['automatic_profile_search_distance'] =
+          Variable<bool>(automaticProfileSearchDistance);
+    }
+    if (!nullToAbsent || automaticProfileSearchFilters != null) {
+      map['automatic_profile_search_filters'] =
+          Variable<bool>(automaticProfileSearchFilters);
+    }
+    if (!nullToAbsent || automaticProfileSearchNewProfiles != null) {
+      map['automatic_profile_search_new_profiles'] =
+          Variable<bool>(automaticProfileSearchNewProfiles);
+    }
+    if (!nullToAbsent || automaticProfileSearchWeekdays != null) {
+      map['automatic_profile_search_weekdays'] =
+          Variable<int>(automaticProfileSearchWeekdays);
+    }
     return map;
   }
 
@@ -2325,6 +2664,25 @@ class AppNotificationSettingsTableData extends DataClass
               ? const Value.absent()
               : Value(profileTextModerationCompleted),
       news: news == null && nullToAbsent ? const Value.absent() : Value(news),
+      automaticProfileSearch: automaticProfileSearch == null && nullToAbsent
+          ? const Value.absent()
+          : Value(automaticProfileSearch),
+      automaticProfileSearchDistance:
+          automaticProfileSearchDistance == null && nullToAbsent
+              ? const Value.absent()
+              : Value(automaticProfileSearchDistance),
+      automaticProfileSearchFilters:
+          automaticProfileSearchFilters == null && nullToAbsent
+              ? const Value.absent()
+              : Value(automaticProfileSearchFilters),
+      automaticProfileSearchNewProfiles:
+          automaticProfileSearchNewProfiles == null && nullToAbsent
+              ? const Value.absent()
+              : Value(automaticProfileSearchNewProfiles),
+      automaticProfileSearchWeekdays:
+          automaticProfileSearchWeekdays == null && nullToAbsent
+              ? const Value.absent()
+              : Value(automaticProfileSearchWeekdays),
     );
   }
 
@@ -2340,6 +2698,16 @@ class AppNotificationSettingsTableData extends DataClass
       profileTextModerationCompleted:
           serializer.fromJson<bool?>(json['profileTextModerationCompleted']),
       news: serializer.fromJson<bool?>(json['news']),
+      automaticProfileSearch:
+          serializer.fromJson<bool?>(json['automaticProfileSearch']),
+      automaticProfileSearchDistance:
+          serializer.fromJson<bool?>(json['automaticProfileSearchDistance']),
+      automaticProfileSearchFilters:
+          serializer.fromJson<bool?>(json['automaticProfileSearchFilters']),
+      automaticProfileSearchNewProfiles:
+          serializer.fromJson<bool?>(json['automaticProfileSearchNewProfiles']),
+      automaticProfileSearchWeekdays:
+          serializer.fromJson<int?>(json['automaticProfileSearchWeekdays']),
     );
   }
   @override
@@ -2354,6 +2722,16 @@ class AppNotificationSettingsTableData extends DataClass
       'profileTextModerationCompleted':
           serializer.toJson<bool?>(profileTextModerationCompleted),
       'news': serializer.toJson<bool?>(news),
+      'automaticProfileSearch':
+          serializer.toJson<bool?>(automaticProfileSearch),
+      'automaticProfileSearchDistance':
+          serializer.toJson<bool?>(automaticProfileSearchDistance),
+      'automaticProfileSearchFilters':
+          serializer.toJson<bool?>(automaticProfileSearchFilters),
+      'automaticProfileSearchNewProfiles':
+          serializer.toJson<bool?>(automaticProfileSearchNewProfiles),
+      'automaticProfileSearchWeekdays':
+          serializer.toJson<int?>(automaticProfileSearchWeekdays),
     };
   }
 
@@ -2363,7 +2741,12 @@ class AppNotificationSettingsTableData extends DataClass
           Value<bool?> likes = const Value.absent(),
           Value<bool?> mediaContentModerationCompleted = const Value.absent(),
           Value<bool?> profileTextModerationCompleted = const Value.absent(),
-          Value<bool?> news = const Value.absent()}) =>
+          Value<bool?> news = const Value.absent(),
+          Value<bool?> automaticProfileSearch = const Value.absent(),
+          Value<bool?> automaticProfileSearchDistance = const Value.absent(),
+          Value<bool?> automaticProfileSearchFilters = const Value.absent(),
+          Value<bool?> automaticProfileSearchNewProfiles = const Value.absent(),
+          Value<int?> automaticProfileSearchWeekdays = const Value.absent()}) =>
       AppNotificationSettingsTableData(
         id: id ?? this.id,
         messages: messages.present ? messages.value : this.messages,
@@ -2375,6 +2758,22 @@ class AppNotificationSettingsTableData extends DataClass
             ? profileTextModerationCompleted.value
             : this.profileTextModerationCompleted,
         news: news.present ? news.value : this.news,
+        automaticProfileSearch: automaticProfileSearch.present
+            ? automaticProfileSearch.value
+            : this.automaticProfileSearch,
+        automaticProfileSearchDistance: automaticProfileSearchDistance.present
+            ? automaticProfileSearchDistance.value
+            : this.automaticProfileSearchDistance,
+        automaticProfileSearchFilters: automaticProfileSearchFilters.present
+            ? automaticProfileSearchFilters.value
+            : this.automaticProfileSearchFilters,
+        automaticProfileSearchNewProfiles:
+            automaticProfileSearchNewProfiles.present
+                ? automaticProfileSearchNewProfiles.value
+                : this.automaticProfileSearchNewProfiles,
+        automaticProfileSearchWeekdays: automaticProfileSearchWeekdays.present
+            ? automaticProfileSearchWeekdays.value
+            : this.automaticProfileSearchWeekdays,
       );
   AppNotificationSettingsTableData copyWithCompanion(
       AppNotificationSettingsTableCompanion data) {
@@ -2391,6 +2790,24 @@ class AppNotificationSettingsTableData extends DataClass
               ? data.profileTextModerationCompleted.value
               : this.profileTextModerationCompleted,
       news: data.news.present ? data.news.value : this.news,
+      automaticProfileSearch: data.automaticProfileSearch.present
+          ? data.automaticProfileSearch.value
+          : this.automaticProfileSearch,
+      automaticProfileSearchDistance:
+          data.automaticProfileSearchDistance.present
+              ? data.automaticProfileSearchDistance.value
+              : this.automaticProfileSearchDistance,
+      automaticProfileSearchFilters: data.automaticProfileSearchFilters.present
+          ? data.automaticProfileSearchFilters.value
+          : this.automaticProfileSearchFilters,
+      automaticProfileSearchNewProfiles:
+          data.automaticProfileSearchNewProfiles.present
+              ? data.automaticProfileSearchNewProfiles.value
+              : this.automaticProfileSearchNewProfiles,
+      automaticProfileSearchWeekdays:
+          data.automaticProfileSearchWeekdays.present
+              ? data.automaticProfileSearchWeekdays.value
+              : this.automaticProfileSearchWeekdays,
     );
   }
 
@@ -2404,14 +2821,33 @@ class AppNotificationSettingsTableData extends DataClass
               'mediaContentModerationCompleted: $mediaContentModerationCompleted, ')
           ..write(
               'profileTextModerationCompleted: $profileTextModerationCompleted, ')
-          ..write('news: $news')
+          ..write('news: $news, ')
+          ..write('automaticProfileSearch: $automaticProfileSearch, ')
+          ..write(
+              'automaticProfileSearchDistance: $automaticProfileSearchDistance, ')
+          ..write(
+              'automaticProfileSearchFilters: $automaticProfileSearchFilters, ')
+          ..write(
+              'automaticProfileSearchNewProfiles: $automaticProfileSearchNewProfiles, ')
+          ..write(
+              'automaticProfileSearchWeekdays: $automaticProfileSearchWeekdays')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, messages, likes,
-      mediaContentModerationCompleted, profileTextModerationCompleted, news);
+  int get hashCode => Object.hash(
+      id,
+      messages,
+      likes,
+      mediaContentModerationCompleted,
+      profileTextModerationCompleted,
+      news,
+      automaticProfileSearch,
+      automaticProfileSearchDistance,
+      automaticProfileSearchFilters,
+      automaticProfileSearchNewProfiles,
+      automaticProfileSearchWeekdays);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -2423,7 +2859,16 @@ class AppNotificationSettingsTableData extends DataClass
               this.mediaContentModerationCompleted &&
           other.profileTextModerationCompleted ==
               this.profileTextModerationCompleted &&
-          other.news == this.news);
+          other.news == this.news &&
+          other.automaticProfileSearch == this.automaticProfileSearch &&
+          other.automaticProfileSearchDistance ==
+              this.automaticProfileSearchDistance &&
+          other.automaticProfileSearchFilters ==
+              this.automaticProfileSearchFilters &&
+          other.automaticProfileSearchNewProfiles ==
+              this.automaticProfileSearchNewProfiles &&
+          other.automaticProfileSearchWeekdays ==
+              this.automaticProfileSearchWeekdays);
 }
 
 class AppNotificationSettingsTableCompanion
@@ -2434,6 +2879,11 @@ class AppNotificationSettingsTableCompanion
   final Value<bool?> mediaContentModerationCompleted;
   final Value<bool?> profileTextModerationCompleted;
   final Value<bool?> news;
+  final Value<bool?> automaticProfileSearch;
+  final Value<bool?> automaticProfileSearchDistance;
+  final Value<bool?> automaticProfileSearchFilters;
+  final Value<bool?> automaticProfileSearchNewProfiles;
+  final Value<int?> automaticProfileSearchWeekdays;
   const AppNotificationSettingsTableCompanion({
     this.id = const Value.absent(),
     this.messages = const Value.absent(),
@@ -2441,6 +2891,11 @@ class AppNotificationSettingsTableCompanion
     this.mediaContentModerationCompleted = const Value.absent(),
     this.profileTextModerationCompleted = const Value.absent(),
     this.news = const Value.absent(),
+    this.automaticProfileSearch = const Value.absent(),
+    this.automaticProfileSearchDistance = const Value.absent(),
+    this.automaticProfileSearchFilters = const Value.absent(),
+    this.automaticProfileSearchNewProfiles = const Value.absent(),
+    this.automaticProfileSearchWeekdays = const Value.absent(),
   });
   AppNotificationSettingsTableCompanion.insert({
     this.id = const Value.absent(),
@@ -2449,6 +2904,11 @@ class AppNotificationSettingsTableCompanion
     this.mediaContentModerationCompleted = const Value.absent(),
     this.profileTextModerationCompleted = const Value.absent(),
     this.news = const Value.absent(),
+    this.automaticProfileSearch = const Value.absent(),
+    this.automaticProfileSearchDistance = const Value.absent(),
+    this.automaticProfileSearchFilters = const Value.absent(),
+    this.automaticProfileSearchNewProfiles = const Value.absent(),
+    this.automaticProfileSearchWeekdays = const Value.absent(),
   });
   static Insertable<AppNotificationSettingsTableData> custom({
     Expression<int>? id,
@@ -2457,6 +2917,11 @@ class AppNotificationSettingsTableCompanion
     Expression<bool>? mediaContentModerationCompleted,
     Expression<bool>? profileTextModerationCompleted,
     Expression<bool>? news,
+    Expression<bool>? automaticProfileSearch,
+    Expression<bool>? automaticProfileSearchDistance,
+    Expression<bool>? automaticProfileSearchFilters,
+    Expression<bool>? automaticProfileSearchNewProfiles,
+    Expression<int>? automaticProfileSearchWeekdays,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -2467,6 +2932,17 @@ class AppNotificationSettingsTableCompanion
       if (profileTextModerationCompleted != null)
         'profile_text_moderation_completed': profileTextModerationCompleted,
       if (news != null) 'news': news,
+      if (automaticProfileSearch != null)
+        'automatic_profile_search': automaticProfileSearch,
+      if (automaticProfileSearchDistance != null)
+        'automatic_profile_search_distance': automaticProfileSearchDistance,
+      if (automaticProfileSearchFilters != null)
+        'automatic_profile_search_filters': automaticProfileSearchFilters,
+      if (automaticProfileSearchNewProfiles != null)
+        'automatic_profile_search_new_profiles':
+            automaticProfileSearchNewProfiles,
+      if (automaticProfileSearchWeekdays != null)
+        'automatic_profile_search_weekdays': automaticProfileSearchWeekdays,
     });
   }
 
@@ -2476,7 +2952,12 @@ class AppNotificationSettingsTableCompanion
       Value<bool?>? likes,
       Value<bool?>? mediaContentModerationCompleted,
       Value<bool?>? profileTextModerationCompleted,
-      Value<bool?>? news}) {
+      Value<bool?>? news,
+      Value<bool?>? automaticProfileSearch,
+      Value<bool?>? automaticProfileSearchDistance,
+      Value<bool?>? automaticProfileSearchFilters,
+      Value<bool?>? automaticProfileSearchNewProfiles,
+      Value<int?>? automaticProfileSearchWeekdays}) {
     return AppNotificationSettingsTableCompanion(
       id: id ?? this.id,
       messages: messages ?? this.messages,
@@ -2486,6 +2967,16 @@ class AppNotificationSettingsTableCompanion
       profileTextModerationCompleted:
           profileTextModerationCompleted ?? this.profileTextModerationCompleted,
       news: news ?? this.news,
+      automaticProfileSearch:
+          automaticProfileSearch ?? this.automaticProfileSearch,
+      automaticProfileSearchDistance:
+          automaticProfileSearchDistance ?? this.automaticProfileSearchDistance,
+      automaticProfileSearchFilters:
+          automaticProfileSearchFilters ?? this.automaticProfileSearchFilters,
+      automaticProfileSearchNewProfiles: automaticProfileSearchNewProfiles ??
+          this.automaticProfileSearchNewProfiles,
+      automaticProfileSearchWeekdays:
+          automaticProfileSearchWeekdays ?? this.automaticProfileSearchWeekdays,
     );
   }
 
@@ -2512,6 +3003,26 @@ class AppNotificationSettingsTableCompanion
     if (news.present) {
       map['news'] = Variable<bool>(news.value);
     }
+    if (automaticProfileSearch.present) {
+      map['automatic_profile_search'] =
+          Variable<bool>(automaticProfileSearch.value);
+    }
+    if (automaticProfileSearchDistance.present) {
+      map['automatic_profile_search_distance'] =
+          Variable<bool>(automaticProfileSearchDistance.value);
+    }
+    if (automaticProfileSearchFilters.present) {
+      map['automatic_profile_search_filters'] =
+          Variable<bool>(automaticProfileSearchFilters.value);
+    }
+    if (automaticProfileSearchNewProfiles.present) {
+      map['automatic_profile_search_new_profiles'] =
+          Variable<bool>(automaticProfileSearchNewProfiles.value);
+    }
+    if (automaticProfileSearchWeekdays.present) {
+      map['automatic_profile_search_weekdays'] =
+          Variable<int>(automaticProfileSearchWeekdays.value);
+    }
     return map;
   }
 
@@ -2525,7 +3036,16 @@ class AppNotificationSettingsTableCompanion
               'mediaContentModerationCompleted: $mediaContentModerationCompleted, ')
           ..write(
               'profileTextModerationCompleted: $profileTextModerationCompleted, ')
-          ..write('news: $news')
+          ..write('news: $news, ')
+          ..write('automaticProfileSearch: $automaticProfileSearch, ')
+          ..write(
+              'automaticProfileSearchDistance: $automaticProfileSearchDistance, ')
+          ..write(
+              'automaticProfileSearchFilters: $automaticProfileSearchFilters, ')
+          ..write(
+              'automaticProfileSearchNewProfiles: $automaticProfileSearchNewProfiles, ')
+          ..write(
+              'automaticProfileSearchWeekdays: $automaticProfileSearchWeekdays')
           ..write(')'))
         .toString();
   }
@@ -2550,6 +3070,9 @@ abstract class _$AccountBackgroundDatabase extends GeneratedDatabase {
   late final $ProfileTextModerationCompletedNotificationTableTable
       profileTextModerationCompletedNotificationTable =
       $ProfileTextModerationCompletedNotificationTableTable(this);
+  late final $AutomaticProfileSearchCompletedNotificationTableTable
+      automaticProfileSearchCompletedNotificationTable =
+      $AutomaticProfileSearchCompletedNotificationTableTable(this);
   late final $AppNotificationSettingsTableTable appNotificationSettingsTable =
       $AppNotificationSettingsTableTable(this);
   late final DaoUserInterfaceSettings daoUserInterfaceSettings =
@@ -2571,6 +3094,10 @@ abstract class _$AccountBackgroundDatabase extends GeneratedDatabase {
       daoProfileTextModerationCompletedNotificationTable =
       DaoProfileTextModerationCompletedNotificationTable(
           this as AccountBackgroundDatabase);
+  late final DaoAutomaticProfileSearchCompletedNotificationTable
+      daoAutomaticProfileSearchCompletedNotificationTable =
+      DaoAutomaticProfileSearchCompletedNotificationTable(
+          this as AccountBackgroundDatabase);
   late final DaoAppNotificationSettingsTable daoAppNotificationSettingsTable =
       DaoAppNotificationSettingsTable(this as AccountBackgroundDatabase);
   @override
@@ -2586,6 +3113,7 @@ abstract class _$AccountBackgroundDatabase extends GeneratedDatabase {
         news,
         mediaContentModerationCompletedNotificationTable,
         profileTextModerationCompletedNotificationTable,
+        automaticProfileSearchCompletedNotificationTable,
         appNotificationSettingsTable
       ];
 }

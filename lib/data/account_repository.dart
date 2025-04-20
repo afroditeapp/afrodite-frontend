@@ -169,7 +169,9 @@ class AccountRepository extends DataRepositoryWithLifecycle {
     } else if (event.event == EventType.mediaContentModerationCompleted) {
       await media.handleMediaContentModerationCompletedEvent();
     } else if (event.event == EventType.profileTextModerationCompleted) {
-      await media.handleProfileTextModerationCompletedEvent();
+      await profile.handleProfileTextModerationCompletedEvent();
+    } else if (event.event == EventType.automaticProfileSearchCompleted) {
+      await profile.handleAutomaticProfileSearchCompletedEvent();
     } else if (event.event == EventType.mediaContentChanged) {
       await media.reloadMyMediaContent();
     } else {

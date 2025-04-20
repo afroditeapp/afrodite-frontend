@@ -14,6 +14,7 @@ enum NotificationIdStatic {
   newsItemAvailable(id: NotificationId(3)),
   profileTextModerationAccepted(id: NotificationId(4)),
   profileTextModerationRejected(id: NotificationId(5)),
+  automaticProfileSearchCompleted(id: NotificationId(6)),
   lastStaticId(id: NotificationId(1000000));
 
   final NotificationId id;

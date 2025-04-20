@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:app/data/chat_repository.dart';
+import 'package:app/data/general/notification/state/automatic_profile_search.dart';
+import 'package:app/data/general/notification/state/profile_text_moderation_completed.dart';
 import 'package:app/utils/stream.dart';
 import 'package:async/async.dart' show StreamExtensions;
 import 'package:logging/logging.dart';
@@ -603,6 +605,34 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
       .andThen((v) => accountBackgroundDb.accountAction(
         (db) => db.daoAppNotificationSettingsTable.updateProfileNotificationSettings(v),
       ));
+  }
+
+  Future<void> handleProfileTextModerationCompletedEvent() async {
+    final notification = await _api.profile((api) => api.postGetProfileTextModerationCompletedNotification()).ok();
+
+    if (notification == null) {
+      return;
+    }
+
+    await NotificationProfileTextModerationCompleted.handleProfileTextModerationCompleted(notification, accountBackgroundDb);
+
+    await _api.profileAction((api) => api.postMarkProfileTextModerationCompletedNotificationViewed(
+      ProfileTextModerationCompletedNotificationViewed(accepted: notification.accepted, rejected: notification.rejected),
+    )).ok();
+  }
+
+  Future<void> handleAutomaticProfileSearchCompletedEvent() async {
+    final notification = await _api.profile((api) => api.postGetAutomaticProfileSearchCompletedNotification()).ok();
+
+    if (notification == null) {
+      return;
+    }
+
+    await NotificationAutomaticProfileSearch.handleAutomaticProfileSearchCompleted(notification, accountBackgroundDb);
+
+    await _api.profileAction((api) => api.postMarkAutomaticProfileSearchCompletedNotificationViewed(
+      AutomaticProfileSearchCompletedNotificationViewed(profilesFound: notification.profilesFound),
+    )).ok();
   }
 }
 

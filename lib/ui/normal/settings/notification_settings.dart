@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:app/data/general/notification/utils/notification_category.dart';
 import 'package:app/logic/account/client_features_config.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
+import 'package:app/ui/normal/settings/notifications/automatic_profile_search_settings.dart';
 import 'package:app/ui_utils/common_update_logic.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:app_settings/app_settings.dart';
@@ -129,8 +130,9 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
           mediaContentModerationCompletedSlider(context, state),
           profileTextModerationCompletedSlider(context, state),
         ],
-        if (features.features.news) [
+        [
           if (features.features.news) newsSlider(context, state),
+          automaticProfileSearchSlider(context, state),
         ]
       ];
       for (final group in settings) {
@@ -173,6 +175,7 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ...settingsList,
+        actionOpenAutomaticProfileSearchSettings(context, state),
         actionOpenSystemNotificationSettings(),
       ],
     );
@@ -183,7 +186,7 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
     final widget = categorySwitch(
       title: category.title,
       isEnabled: state.valueMessages(),
-      isEnabledFromSystemSettings: state.categorySystemEnabledMessages,
+      isEnabledFromSystemSettings: state.systemCategories.messages,
       onChanged: (value) {
         context.read<NotificationSettingsBloc>().add(ToggleMessages());
       },
@@ -196,7 +199,7 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
     final widget = categorySwitch(
       title: category.title,
       isEnabled: state.valueLikes(),
-      isEnabledFromSystemSettings: state.categorySystemEnabledLikes,
+      isEnabledFromSystemSettings: state.systemCategories.likes,
       onChanged: (value) {
         context.read<NotificationSettingsBloc>().add(ToggleLikes());
       },
@@ -209,7 +212,7 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
     final widget = categorySwitch(
       title: category.title,
       isEnabled: state.valueMediaContent(),
-      isEnabledFromSystemSettings: state.categorySystemEnabledMediaContentModerationCompleted,
+      isEnabledFromSystemSettings: state.systemCategories.mediaContentModerationCompleted,
       onChanged: (value) {
         context.read<NotificationSettingsBloc>().add(ToggleMediaContentModerationCompleted());
       },
@@ -222,7 +225,7 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
     final widget = categorySwitch(
       title: category.title,
       isEnabled: state.valueProfileText(),
-      isEnabledFromSystemSettings: state.categorySystemEnabledProfileTextModerationCompleted,
+      isEnabledFromSystemSettings: state.systemCategories.profileTextModerationCompleted,
       onChanged: (value) {
         context.read<NotificationSettingsBloc>().add(ToggleProfileTextModerationCompleted());
       },
@@ -235,9 +238,22 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
     final widget = categorySwitch(
       title: category.title,
       isEnabled: state.valueNews(),
-      isEnabledFromSystemSettings: state.categorySystemEnabledNews,
+      isEnabledFromSystemSettings: state.systemCategories.news,
       onChanged: (value) {
         context.read<NotificationSettingsBloc>().add(ToggleNews());
+      },
+    );
+    return (category, widget);
+  }
+
+  (NotificationCategory, Widget) automaticProfileSearchSlider(BuildContext context, NotificationSettingsData state) {
+    const category = NotificationCategoryAutomaticProfileSearch();
+    final widget = categorySwitch(
+      title: category.title,
+      isEnabled: state.valueAutomaticProfileSearch(),
+      isEnabledFromSystemSettings: state.systemCategories.automaticProfileSearch,
+      onChanged: (value) {
+        context.read<NotificationSettingsBloc>().add(ToggleAutomaticProfileSearch());
       },
     );
     return (category, widget);
@@ -250,6 +266,15 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
         AppSettings.openAppSettings(type: AppSettingsType.notification);
       },
       leading: const Icon(Icons.settings),
+    );
+  }
+
+  Widget actionOpenAutomaticProfileSearchSettings(BuildContext context, NotificationSettingsData state) {
+    return ListTile(
+      title: Text(context.strings.automatic_profile_search_settings_screen_title),
+      enabled: state.valueAutomaticProfileSearch(),
+      onTap: () => openAutomaticProfileSearchSettings(context),
+      leading: const Icon(Icons.search),
     );
   }
 

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:app/data/general/notification/state/automatic_profile_search.dart';
 import 'package:app/data/general/notification/state/profile_text_moderation_completed.dart';
 import 'package:async/async.dart' show StreamExtensions;
 import 'package:app/data/general/notification/state/media_content_moderation_completed.dart';
@@ -221,6 +222,9 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
       if ((v.value & 0x10) == 0x10) {
         await _handlePushNotificationProfileTextModerationCompleted(v.profileTextModerationCompleted, accountBackgroundDb);
       }
+      if ((v.value & 0x20) == 0x20) {
+        await _handlePushNotificationAutomaticProfileSearchCompleted(v.automaticProfileSearchCompleted, accountBackgroundDb);
+      }
     case Err():
       log.error("Downloading pending notification failed");
   }
@@ -270,4 +274,14 @@ Future<void> _handlePushNotificationNewsChanged(UnreadNewsCountResult? r, Accoun
     return;
   }
   await NotificationNewsItemAvailable.getInstance().handleNewsCountUpdate(r, accountBackgroundDb);
+}
+
+Future<void> _handlePushNotificationAutomaticProfileSearchCompleted(
+  AutomaticProfileSearchCompletedNotification? notification,
+  AccountBackgroundDatabaseManager accountBackgroundDb,
+) async {
+  if (notification == null) {
+    return;
+  }
+  await NotificationAutomaticProfileSearch.handleAutomaticProfileSearchCompleted(notification, accountBackgroundDb);
 }
