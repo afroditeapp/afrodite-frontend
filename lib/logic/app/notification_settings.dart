@@ -87,7 +87,7 @@ class NotificationSettingsBloc extends Bloc<NotificationSettingsEvent, Notificat
       {
         final settings = AccountAppNotificationSettings(news: currentState.valueNews());
         final r = await api.accountAction((api) => api.postAccountAppNotificationSettings(settings))
-          .andThen((_) => db.accountAction((db) => db.daoLocalNotificationSettings.updateAccountNotificationSettings(settings)));
+          .andThen((_) => db.accountAction((db) => db.daoAppNotificationSettingsTable.updateAccountNotificationSettings(settings)));
         if (r.isErr()) {
           failureDetected = true;
         }
@@ -103,7 +103,7 @@ class NotificationSettingsBloc extends Bloc<NotificationSettingsEvent, Notificat
           profileTextModeration: currentState.valueProfileText(),
         );
         final r = await api.profileAction((api) => api.postProfileAppNotificationSettings(settings))
-          .andThen((_) => db.accountAction((db) => db.daoLocalNotificationSettings.updateProfileNotificationSettings(settings)));
+          .andThen((_) => db.accountAction((db) => db.daoAppNotificationSettingsTable.updateProfileNotificationSettings(settings)));
         if (r.isErr()) {
           failureDetected = true;
         }
@@ -112,7 +112,7 @@ class NotificationSettingsBloc extends Bloc<NotificationSettingsEvent, Notificat
       {
         final settings = MediaAppNotificationSettings(mediaContentModeration: currentState.valueMediaContent());
         final r = await api.mediaAction((api) => api.postMediaAppNotificationSettings(settings))
-          .andThen((_) => db.accountAction((db) => db.daoLocalNotificationSettings.updateMediaNotificationSettings(settings)));
+          .andThen((_) => db.accountAction((db) => db.daoAppNotificationSettingsTable.updateMediaNotificationSettings(settings)));
         if (r.isErr()) {
           failureDetected = true;
         }
@@ -124,7 +124,7 @@ class NotificationSettingsBloc extends Bloc<NotificationSettingsEvent, Notificat
           messages: currentState.valueMessages(),
         );
         final r = await api.chatAction((api) => api.postChatAppNotificationSettings(settings))
-          .andThen((_) => db.accountAction((db) => db.daoLocalNotificationSettings.updateChatNotificationSettings(settings)));
+          .andThen((_) => db.accountAction((db) => db.daoAppNotificationSettingsTable.updateChatNotificationSettings(settings)));
         if (r.isErr()) {
           failureDetected = true;
         }
@@ -214,27 +214,27 @@ class NotificationSettingsBloc extends Bloc<NotificationSettingsEvent, Notificat
     );
 
     _messagesSubscription = db
-      .accountStream((db) => db.daoLocalNotificationSettings.watchMessages())
+      .accountStream((db) => db.daoAppNotificationSettingsTable.watchMessages())
       .listen((state) {
         add(NewValueMessages(state ?? NOTIFICATION_CATEGORY_ENABLED_DEFAULT));
       });
     _likesSubscription = db
-      .accountStream((db) => db.daoLocalNotificationSettings.watchLikes())
+      .accountStream((db) => db.daoAppNotificationSettingsTable.watchLikes())
       .listen((state) {
         add(NewValueLikes(state ?? NOTIFICATION_CATEGORY_ENABLED_DEFAULT));
       });
     _mediaContentModerationCompletedSubscription = db
-      .accountStream((db) => db.daoLocalNotificationSettings.watchMediaContentModerationCompleted())
+      .accountStream((db) => db.daoAppNotificationSettingsTable.watchMediaContentModerationCompleted())
       .listen((state) {
         add(NewValueMediaContentModerationCompleted(state ?? NOTIFICATION_CATEGORY_ENABLED_DEFAULT));
       });
     _profileTextModerationCompletedSubscription = db
-      .accountStream((db) => db.daoLocalNotificationSettings.watchProfileTextModerationCompleted())
+      .accountStream((db) => db.daoAppNotificationSettingsTable.watchProfileTextModerationCompleted())
       .listen((state) {
         add(NewValueProfileTextModerationCompleted(state ?? NOTIFICATION_CATEGORY_ENABLED_DEFAULT));
       });
     _newsSubscription = db
-      .accountStream((db) => db.daoLocalNotificationSettings.watchNewsItemAvailable())
+      .accountStream((db) => db.daoAppNotificationSettingsTable.watchNews())
       .listen((state) {
         add(NewValueNews(state ?? NOTIFICATION_CATEGORY_ENABLED_DEFAULT));
       });

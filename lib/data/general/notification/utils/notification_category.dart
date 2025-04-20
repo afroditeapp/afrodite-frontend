@@ -47,7 +47,7 @@ class NotificationCategoryMessages extends NotificationCategory {
   String get title => R.strings.notification_category_messages;
 
   @override
-  IsEnabledGetter get _isEnabledValueLocation => (db) => db.daoLocalNotificationSettings.watchMessages();
+  IsEnabledGetter get _isEnabledValueLocation => (db) => db.daoAppNotificationSettingsTable.watchMessages();
 }
 
 class NotificationCategoryLikes extends NotificationCategory {
@@ -61,7 +61,7 @@ class NotificationCategoryLikes extends NotificationCategory {
   String get title => R.strings.notification_category_likes;
 
   @override
-  IsEnabledGetter get _isEnabledValueLocation => (db) => db.daoLocalNotificationSettings.watchLikes();
+  IsEnabledGetter get _isEnabledValueLocation => (db) => db.daoAppNotificationSettingsTable.watchLikes();
 }
 
 class NotificationCategoryMediaContentModerationCompleted extends NotificationCategory {
@@ -75,7 +75,7 @@ class NotificationCategoryMediaContentModerationCompleted extends NotificationCa
   String get title => R.strings.notification_category_media_content_moderation_completed;
 
   @override
-  IsEnabledGetter get _isEnabledValueLocation => (db) => db.daoLocalNotificationSettings.watchMediaContentModerationCompleted();
+  IsEnabledGetter get _isEnabledValueLocation => (db) => db.daoAppNotificationSettingsTable.watchMediaContentModerationCompleted();
 }
 
 class NotificationCategoryProfileTextModerationCompleted extends NotificationCategory {
@@ -89,7 +89,7 @@ class NotificationCategoryProfileTextModerationCompleted extends NotificationCat
   String get title => R.strings.notification_category_profile_text_moderation_completed;
 
   @override
-  IsEnabledGetter get _isEnabledValueLocation => (db) => db.daoLocalNotificationSettings.watchProfileTextModerationCompleted();
+  IsEnabledGetter get _isEnabledValueLocation => (db) => db.daoAppNotificationSettingsTable.watchProfileTextModerationCompleted();
 }
 
 class NotificationCategoryNewsItemAvailable extends NotificationCategory {
@@ -103,5 +103,5 @@ class NotificationCategoryNewsItemAvailable extends NotificationCategory {
   String get title => R.strings.notification_category_news_item_available;
 
   @override
-  IsEnabledGetter get _isEnabledValueLocation => (db) => db.daoLocalNotificationSettings.watchNewsItemAvailable();
+  IsEnabledGetter get _isEnabledValueLocation => (db) => db.daoAppNotificationSettingsTable.watchNews();
 }

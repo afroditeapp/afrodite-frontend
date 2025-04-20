@@ -601,7 +601,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
   Future<Result<void, void>> _reloadProfileNotificationSettings() async {
     return await _api.profile((api) => api.getProfileAppNotificationSettings())
       .andThen((v) => accountBackgroundDb.accountAction(
-        (db) => db.daoLocalNotificationSettings.updateProfileNotificationSettings(v),
+        (db) => db.daoAppNotificationSettingsTable.updateProfileNotificationSettings(v),
       ));
   }
 }

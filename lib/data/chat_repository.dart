@@ -348,7 +348,7 @@ class ChatRepository extends DataRepositoryWithLifecycle {
   Future<Result<void, void>> _reloadChatNotificationSettings() async {
     return await api.chat((api) => api.getChatAppNotificationSettings())
       .andThen((v) => accountBackgroundDb.accountAction(
-        (db) => db.daoLocalNotificationSettings.updateChatNotificationSettings(v),
+        (db) => db.daoAppNotificationSettingsTable.updateChatNotificationSettings(v),
       ));
   }
 

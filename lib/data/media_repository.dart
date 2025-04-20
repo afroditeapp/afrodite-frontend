@@ -173,7 +173,7 @@ class MediaRepository extends DataRepositoryWithLifecycle {
   Future<Result<void, void>> _reloadMediaNotificationSettings() async {
     return await api.media((api) => api.getMediaAppNotificationSettings())
       .andThen((v) => accountBackgroundDb.accountAction(
-        (db) => db.daoLocalNotificationSettings.updateMediaNotificationSettings(v),
+        (db) => db.daoAppNotificationSettingsTable.updateMediaNotificationSettings(v),
       ));
   }
 }

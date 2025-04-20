@@ -1,8 +1,8 @@
 
 
 import 'package:async/async.dart' show StreamExtensions;
-import 'package:database/src/background/account/dao_local_notification_settings.dart';
 import 'package:database/src/background/account/dao_user_interface_settings.dart';
+import 'package:database/src/background/app_notification_settings_table.dart';
 import 'package:database/src/background/conversations_table.dart';
 import 'package:database/src/background/media_content_moderation_completed_notification_table.dart';
 import 'package:database/src/background/new_received_likes_available_table.dart';
@@ -26,14 +26,6 @@ class AccountBackground extends Table {
 
   TextColumn get uuidAccountId => text().map(const NullAwareTypeConverter.wrap(AccountIdConverter())).nullable()();
 
-  // DaoLocalNotificationSettings
-
-  BoolColumn get localNotificationSettingMessages => boolean().nullable()();
-  BoolColumn get localNotificationSettingLikes => boolean().nullable()();
-  BoolColumn get localNotificationSettingMediaContentModerationCompleted => boolean().nullable()();
-  BoolColumn get localNotificationSettingProfileTextModerationCompleted => boolean().nullable()();
-  BoolColumn get localNotificationSettingNewsItemAvailable => boolean().nullable()();
-
   // DaoUserInterfaceSettings
 
   BoolColumn get userInterfaceSettingShowNonAcceptedProfileNames => boolean().nullable()();
@@ -49,10 +41,10 @@ class AccountBackground extends Table {
     News,
     MediaContentModerationCompletedNotificationTable,
     ProfileTextModerationCompletedNotificationTable,
+    AppNotificationSettingsTable,
   ],
   daos: [
     // Related to AccountBackground table
-    DaoLocalNotificationSettings,
     DaoUserInterfaceSettings,
     // Related to ProfilesBackground table
     DaoProfilesBackground,
@@ -68,6 +60,8 @@ class AccountBackground extends Table {
     DaoMediaContentModerationCompletedNotificationTable,
     // Related to ProfileTextModerationCompletedNotificationTable
     DaoProfileTextModerationCompletedNotificationTable,
+    // Related to AppNotificationSettingsTable
+    DaoAppNotificationSettingsTable,
   ],
 )
 class AccountBackgroundDatabase extends _$AccountBackgroundDatabase {

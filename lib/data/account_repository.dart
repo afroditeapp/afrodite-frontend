@@ -273,7 +273,7 @@ class AccountRepository extends DataRepositoryWithLifecycle {
   Future<Result<void, void>> _reloadAccountNotificationSettings() async {
     return await api.account((api) => api.getAccountAppNotificationSettings())
       .andThen((v) => accountBackgroundDb.accountAction(
-        (db) => db.daoLocalNotificationSettings.updateAccountNotificationSettings(v),
+        (db) => db.daoAppNotificationSettingsTable.updateAccountNotificationSettings(v),
       ));
   }
 }
