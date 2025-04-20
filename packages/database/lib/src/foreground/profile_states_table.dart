@@ -25,6 +25,7 @@ class ProfileStates extends Table {
   IntColumn get isInMatches => integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
 
   IntColumn get isInProfileGrid => integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
+  IntColumn get isInAutomaticProfileSearchGrid => integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
   IntColumn get isInReceivedLikesGrid => integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
   IntColumn get isInMatchesGrid => integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
 }
@@ -112,6 +113,23 @@ class DaoProfileStates extends DatabaseAccessor<AccountDatabase> with _$DaoProfi
       ),
       onConflict: DoUpdate((old) => ProfileStatesCompanion(
         isInProfileGrid: _toGroupValue(value),
+      ),
+        target: [profileStates.uuidAccountId]
+      ),
+    );
+  }
+
+  Future<void> setAutomaticProfileSearchGridStatus(
+    AccountId accountId,
+    bool value,
+  ) async {
+    await into(profileStates).insert(
+      ProfileStatesCompanion.insert(
+        uuidAccountId: accountId,
+        isInAutomaticProfileSearchGrid: _toGroupValue(value),
+      ),
+      onConflict: DoUpdate((old) => ProfileStatesCompanion(
+        isInAutomaticProfileSearchGrid: _toGroupValue(value),
       ),
         target: [profileStates.uuidAccountId]
       ),
@@ -216,6 +234,18 @@ class DaoProfileStates extends DatabaseAccessor<AccountDatabase> with _$DaoProfi
     });
   }
 
+  Future<void> setAutomaticProfileSearchGridStatusList(List<AccountId>? accounts, bool value, {bool clear = false}) async {
+    await transaction(() async {
+      if (clear) {
+        await update(profileStates)
+          .write(const ProfileStatesCompanion(isInAutomaticProfileSearchGrid: Value(null)));
+      }
+      for (final a in accounts ?? <AccountId>[]) {
+        await setAutomaticProfileSearchGridStatus(a, value);
+      }
+    });
+  }
+
   Future<bool> isInFavorites(AccountId accountId) =>
     _existenceCheck(accountId, (t) => t.isInFavorites.isNotNull());
 
@@ -248,6 +278,9 @@ class DaoProfileStates extends DatabaseAccessor<AccountDatabase> with _$DaoProfi
 
   Future<List<AccountId>> getProfileGridList(int startIndex, int limit) =>
     _getProfilesList(startIndex, limit, (t) => t.isInProfileGrid);
+
+  Future<List<AccountId>> getAutomaticProfileSearchGridList(int startIndex, int limit) =>
+    _getProfilesList(startIndex, limit, (t) => t.isInAutomaticProfileSearchGrid);
 
   Future<List<AccountId>> getReceivedLikesGridList(int startIndex, int limit) =>
     _getProfilesList(startIndex, limit, (t) => t.isInReceivedLikesGrid);

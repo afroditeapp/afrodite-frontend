@@ -1,4 +1,5 @@
 
+import 'package:app/ui/normal/settings/notifications/automatic_profile_search_results.dart';
 import 'package:app/ui_utils/padding.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:flutter/material.dart';
@@ -61,6 +62,7 @@ class _AutomaticProfileSearchSettingsScreenState extends State<AutomaticProfileS
         ),
       ),
       hPad(weekdaysWidget(context, state)),
+      showSearchResults(context),
     ];
 
     return Column(
@@ -120,6 +122,13 @@ class _AutomaticProfileSearchSettingsScreenState extends State<AutomaticProfileS
           },
         );
       }).toList(),
+    );
+  }
+
+  Widget showSearchResults(BuildContext context) {
+    return ListTile(
+      title: Text(context.strings.automatic_profile_search_settings_screen_show_search_results),
+      onTap: () => openAutomaticProfileSearchResultsScreen(context),
     );
   }
 }

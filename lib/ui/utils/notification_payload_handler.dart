@@ -4,6 +4,7 @@ import 'dart:async';
 
 import 'package:app/ui/normal/settings/my_profile.dart';
 import 'package:app/ui/normal/settings/news/news_list.dart';
+import 'package:app/ui/normal/settings/notifications/automatic_profile_search_results.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
@@ -170,6 +171,11 @@ Future<NewPageDetails?> handlePayload(
       final currentPageInfo = NavigationStateBlocInstance.getInstance().navigationState.pages.lastOrNull?.pageInfo;
       if (currentPageInfo is! MyProfilePageInfo) {
         return newMyProfileScreen();
+      }
+    case NavigateToAutomaticProfileSearchResults():
+      final currentPageInfo = NavigationStateBlocInstance.getInstance().navigationState.pages.lastOrNull?.pageInfo;
+      if (currentPageInfo is! AutomaticProfileSearchResultsPageInfo) {
+        return newAutomaticProfileSearchResultsScreen();
       }
   }
   return null;

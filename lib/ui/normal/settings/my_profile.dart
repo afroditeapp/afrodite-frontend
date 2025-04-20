@@ -108,7 +108,7 @@ class MyProfileScreen extends StatelessWidget {
             child: Column(
               children: [
                 const Spacer(),
-                Text(context.strings.view_profile_screen_my_profile_loading_failed),
+                Text(context.strings.generic_profile_loading_failed),
                 const Padding(padding: EdgeInsets.all(8)),
                 ElevatedButton(
                   onPressed: () => context.read<MyProfileBloc>().add(ReloadMyProfile()),

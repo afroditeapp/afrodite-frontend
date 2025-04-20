@@ -70,6 +70,14 @@
   "@app_slogan": {
     "description": "Slogan for the app"
   },
+  "automatic_profile_search_results_screen_no_profiles_found": "No profiles found",
+  "@automatic_profile_search_results_screen_no_profiles_found": {
+    "description": "Info text displayed when no profiles are found"
+  },
+  "automatic_profile_search_results_screen_title": "Search results",
+  "@automatic_profile_search_results_screen_title": {
+    "description": "Title for automatic profile search results screen"
+  },
   "automatic_profile_search_settings_screen_distance": "Use max distance filter",
   "@automatic_profile_search_settings_screen_distance": {
     "description": "Title text for distance setting"
@@ -85,6 +93,10 @@
   "automatic_profile_search_settings_screen_one_weekday_must_be_selected_info": "One weekday must be selected",
   "@automatic_profile_search_settings_screen_one_weekday_must_be_selected_info": {
     "description": "Snackbar info text that one weekday must be selected"
+  },
+  "automatic_profile_search_settings_screen_show_search_results": "Show search results",
+  "@automatic_profile_search_settings_screen_show_search_results": {
+    "description": "Title text for show search results action"
   },
   "automatic_profile_search_settings_screen_title": "Automatic profile search settings",
   "@automatic_profile_search_settings_screen_title": {
@@ -163,10 +175,6 @@
   "camera_screen_take_photo_error": "Taking photo failed",
   "@camera_screen_take_photo_error": {
     "description": "Snackbar error text displayed when taking photo fails"
-  },
-  "chat_list_screen_match_loading_failed": "Profile loading failed",
-  "@chat_list_screen_match_loading_failed": {
-    "description": "Error text displayed when match loading fails"
   },
   "chat_list_screen_no_chats_found": "No chats found",
   "@chat_list_screen_no_chats_found": {
@@ -527,6 +535,10 @@
   "generic_previous_action_in_progress": "Previous action is still in progress",
   "@generic_previous_action_in_progress": {
     "description": "Generic previous action in progress text"
+  },
+  "generic_profile_loading_failed": "Profile loading failed",
+  "@generic_profile_loading_failed": {
+    "description": "Error text displayed when profile loading fails"
   },
   "generic_refresh": "Refresh",
   "@generic_refresh": {
@@ -1288,10 +1300,6 @@
   "@profile_grid_screen_profile_is_private_info": {
     "description": "Info text which is shown when profile visibility is set to private"
   },
-  "profile_grid_screen_profile_loading_failed": "Profile loading failed",
-  "@profile_grid_screen_profile_loading_failed": {
-    "description": "Text displayed profile loading fails"
-  },
   "profile_grid_screen_security_content_does_not_exist": "Security selfie does not exist",
   "@profile_grid_screen_security_content_does_not_exist": {
     "description": "Text displayed when security selfie does not exist"
@@ -1636,10 +1644,6 @@
   "view_profile_screen_my_profile_initial_setup_not_done": "Dating profile is not created",
   "@view_profile_screen_my_profile_initial_setup_not_done": {
     "description": "Snackbar text that it is not possible to open my profile screen when initial setup is not done"
-  },
-  "view_profile_screen_my_profile_loading_failed": "Profile loading failed",
-  "@view_profile_screen_my_profile_loading_failed": {
-    "description": "Text displayed when current account's profile loading fails"
   },
   "view_profile_screen_my_profile_title": "My profile",
   "@view_profile_screen_my_profile_title": {

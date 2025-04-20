@@ -1,12 +1,12 @@
 import 'dart:async';
 
+import 'package:app/data/profile/automatic_profile_search/automatic_profile_search_iterator_manager.dart';
 import 'package:app/logic/profile/view_profiles.dart';
+import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/model/freezed/logic/profile/view_profiles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
-import 'package:app/data/chat/matches_iterator_manager.dart';
 import 'package:app/data/chat_repository.dart';
 import 'package:app/data/login_repository.dart';
 import 'package:app/data/profile_repository.dart';
@@ -14,7 +14,6 @@ import 'package:database/database.dart';
 import 'package:app/database/account_database_manager.dart';
 import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/logic/profile/my_profile.dart';
-import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/model/freezed/logic/profile/my_profile.dart';
 import 'package:app/ui/normal/profiles/profile_grid.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -24,35 +23,39 @@ import 'package:app/ui_utils/consts/padding.dart';
 import 'package:app/ui_utils/list.dart';
 import 'package:app/utils/result.dart';
 
-final log = Logger("SelectMatchScreen");
-
-Future<ProfileEntry?> openSelectMatchView(
+void openAutomaticProfileSearchResultsScreen(
   BuildContext context,
 ) {
-  final pageKey = PageKey();
-  return MyNavigator.pushWithKey(
+  MyNavigator.push(
     context,
-    MaterialPage<ProfileEntry>(child: SelectMatchScreen(pageKey: pageKey)),
-    pageKey,
+    const MaterialPage<void>(child: AutomaticProfileSearchResultsScreen()),
+    pageInfo: const AutomaticProfileSearchResultsPageInfo(),
   );
 }
 
-class SelectMatchScreen extends StatefulWidget {
-  final PageKey pageKey;
-  const SelectMatchScreen({
-    required this.pageKey,
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  State<SelectMatchScreen> createState() => SelectMatchScreenState();
+NewPageDetails newAutomaticProfileSearchResultsScreen() {
+  return NewPageDetails(
+    const MaterialPage<void>(
+      child: AutomaticProfileSearchResultsScreen(),
+    ),
+    pageInfo: const AutomaticProfileSearchResultsPageInfo(),
+  );
 }
 
-typedef MatchViewEntry = ({ProfileEntry profile, ProfileActionState? initialProfileAction});
+class AutomaticProfileSearchResultsScreen extends StatefulWidget {
+  const AutomaticProfileSearchResultsScreen({
+    super.key,
+  });
 
-class SelectMatchScreenState extends State<SelectMatchScreen> {
+  @override
+  State<AutomaticProfileSearchResultsScreen> createState() => AutomaticProfileSearchResultsScreenState();
+}
+
+typedef AutomaticProfileSearchProfileEntry = ({ProfileEntry profile, ProfileActionState? initialProfileAction});
+
+class AutomaticProfileSearchResultsScreenState extends State<AutomaticProfileSearchResultsScreen> {
   final ScrollController _scrollController = ScrollController();
-  PagingController<int, MatchViewEntry>? _pagingController =
+  PagingController<int, AutomaticProfileSearchProfileEntry>? _pagingController =
     PagingController(firstPageKey: 0);
   StreamSubscription<ProfileChange>? _profileChangesSubscription;
 
@@ -61,7 +64,7 @@ class SelectMatchScreenState extends State<SelectMatchScreen> {
 
   final AccountDatabaseManager accountDb = LoginRepository.getInstance().repositories.accountDb;
 
-  final MatchesIteratorManager _mainProfilesViewIterator = MatchesIteratorManager(
+  final AutomaticProfileSearchIteratorManager _mainProfilesViewIterator = AutomaticProfileSearchIteratorManager(
     LoginRepository.getInstance().repositories.chat,
     LoginRepository.getInstance().repositories.media,
     LoginRepository.getInstance().repositories.accountBackgroundDb,
@@ -118,7 +121,7 @@ class SelectMatchScreenState extends State<SelectMatchScreen> {
       return;
     }
 
-    final newList = List<MatchViewEntry>.empty(growable: true);
+    final newList = List<AutomaticProfileSearchProfileEntry>.empty(growable: true);
     for (final profile in profileList) {
       final initialProfileAction = await resolveProfileAction(chat, profile.uuid);
       newList.add((profile: profile, initialProfileAction: initialProfileAction));
@@ -135,7 +138,7 @@ class SelectMatchScreenState extends State<SelectMatchScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(context.strings.select_match_screen_title),
+        title: Text(context.strings.automatic_profile_search_results_screen_title),
       ),
       body: content(),
     );
@@ -166,7 +169,7 @@ class SelectMatchScreenState extends State<SelectMatchScreen> {
       scrollController: _scrollController,
       pagingController: _pagingController!,
       padding: const EdgeInsets.symmetric(horizontal: COMMON_SCREEN_EDGE_PADDING),
-      builderDelegate: PagedChildBuilderDelegate<MatchViewEntry>(
+      builderDelegate: PagedChildBuilderDelegate<AutomaticProfileSearchProfileEntry>(
         animateTransitions: true,
         itemBuilder: (context, item, index) {
           return GestureDetector(
@@ -175,9 +178,6 @@ class SelectMatchScreenState extends State<SelectMatchScreen> {
                 iHaveUnlimitedLikesEnabled,
                 item.initialProfileAction,
                 accountDb,
-                overrideOnTap: (context) {
-                  MyNavigator.removePage(context, widget.pageKey, item.profile);
-                },
             )
           );
         },
@@ -187,7 +187,7 @@ class SelectMatchScreenState extends State<SelectMatchScreen> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  context.strings.chat_list_screen_no_matches_found,
+                  context.strings.automatic_profile_search_results_screen_no_profiles_found,
                   style: Theme.of(context).textTheme.bodyLarge,
                 ),
               ],

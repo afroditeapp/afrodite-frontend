@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:app/data/profile/automatic_profile_search/automatic_profile_search_database_iterator.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:app/api/api_manager.dart';
@@ -373,5 +374,68 @@ class MatchesOnlineIteratorIo extends OnlineIteratorIo {
   Future<void> setDbVisibility(AccountId id, bool visibility) async {
     await db.accountAction((db) => db.daoProfileStates.setMatchStatus(id, true));
     await db.accountAction((db) => db.daoProfileStates.setMatchesGridStatus(id, true));
+  }
+}
+
+class AutomaticProfileSearchOnlineIteratorIo extends OnlineIteratorIo {
+  final AccountDatabaseManager db;
+  final ApiManager api;
+  IteratorType? iteratorValue;
+  ProfileIteratorSessionId? currentSessionId;
+
+  AutomaticProfileSearchOnlineIteratorIo(this.db, this.api);
+
+  @override
+  IteratorType? get databaseIterator => iteratorValue;
+
+  @override
+  void resetDatabaseIterator() {
+    iteratorValue = AutomaticProfileSearchDatabaseIterator(db: db);
+  }
+
+  @override
+  void setDatabaseIteratorToNull() {
+    iteratorValue = null;
+  }
+
+  @override
+  Future<Result<void, void>> resetServerPaging() async {
+    switch (await api.profile((api) => api.postAutomaticProfileSearchResetProfilePaging())) {
+      case Ok(:final v):
+        await db.accountAction((db) => db.daoProfileStates.setAutomaticProfileSearchGridStatusList(null, false, clear: true));
+        await db.accountAction((db) => db.updateAutomaticProfileSearchIteratorSessionId(v));
+        return const Ok(null);
+      case Err():
+        return const Err(null);
+    }
+  }
+
+  @override
+  Future<bool> loadIteratorSessionIdFromDbAndReturnTrueIfItExists() async {
+    currentSessionId = await db.accountStreamSingle((db) => db.watchAutomaticProfileSearchSessionId()).ok();
+    if (currentSessionId == null) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  @override
+  Future<Result<IteratorPage, void>> nextServerPage() async {
+    final sessionId = currentSessionId;
+    if (sessionId == null) {
+      return const Err(null);
+    }
+    return await api.profile((api) => api.postAutomaticProfileSearchGetNextProfilePage(sessionId))
+      .mapOk((value) => IteratorPage(
+        value.profiles,
+        [],
+        errorInvalidIteratorSessionId: value.errorInvalidIteratorSessionId,
+      ));
+  }
+
+  @override
+  Future<void> setDbVisibility(AccountId id, bool visibility) async {
+    await db.accountAction((db) => db.daoProfileStates.setAutomaticProfileSearchGridStatus(id, true));
   }
 }

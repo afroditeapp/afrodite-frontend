@@ -303,7 +303,7 @@ class _ProfileGridState extends State<ProfileGrid> {
           return Center(
             child: Padding(
               padding: const EdgeInsets.all(8),
-              child: Text(context.strings.profile_grid_screen_profile_loading_failed),
+              child: Text(context.strings.generic_profile_loading_failed),
             ),
           );
         },
@@ -322,7 +322,7 @@ class _ProfileGridState extends State<ProfileGrid> {
       child: Column(
         children: [
           const Spacer(),
-          Text(context.strings.profile_grid_screen_profile_loading_failed),
+          Text(context.strings.generic_profile_loading_failed),
           const Padding(padding: EdgeInsets.all(8)),
           ElevatedButton(
             onPressed: () {

@@ -78,6 +78,8 @@ sealed class NotificationPayload extends Immutable {
         return NavigateToContentManagement(sessionId: sessionId);
       case NotificationPayloadTypeString.stringNavigateToMyProfile:
         return NavigateToMyProfile(sessionId: sessionId);
+      case NotificationPayloadTypeString.stringNavigateToAutomaticProfileSearchResults:
+        return NavigateToAutomaticProfileSearchResults(sessionId: sessionId);
       default:
         log.error("Payload type is unknown");
         return null;
@@ -163,13 +165,29 @@ class NavigateToMyProfile extends NotificationPayload {
   );
 }
 
+// TODO(quality): Opening another automatic profile search result screen
+//                is possible and that breaks the first's iterator state
+//                as server supports only one iterator state.
+//                This can be fixed with creating only one profile grid
+//                and displaying it on every screen which is how
+//                received likes screen works.
+
+class NavigateToAutomaticProfileSearchResults extends NotificationPayload {
+  const NavigateToAutomaticProfileSearchResults({
+    required super.sessionId,
+  }) : super(
+    payloadType: NotificationPayloadTypeString.navigateToAutomaticProfileSearchResults,
+  );
+}
+
 enum NotificationPayloadTypeString {
   navigateToLikes(value: stringNavigateToLikes),
   navigateToNews(value: stringNavigateToNews),
   navigateToConversation(value: stringNavigateToConversation),
   navigateToConversationList(value: stringNavigateToConversationList),
   navigateToContentManagement(value: stringNavigateToContentManagement),
-  navigateToMyProfile(value: stringNavigateToMyProfile);
+  navigateToMyProfile(value: stringNavigateToMyProfile),
+  navigateToAutomaticProfileSearchResults(value: stringNavigateToAutomaticProfileSearchResults);
 
   final String value;
   const NotificationPayloadTypeString({
@@ -182,4 +200,5 @@ enum NotificationPayloadTypeString {
   static const String stringNavigateToConversationList = "navigate_to_conversation_list";
   static const String stringNavigateToContentManagement = "navigate_to_content_management";
   static const String stringNavigateToMyProfile = "navigate_to_my_profile";
+  static const String stringNavigateToAutomaticProfileSearchResults = "navigate_to_automatic_profile_search_results";
 }

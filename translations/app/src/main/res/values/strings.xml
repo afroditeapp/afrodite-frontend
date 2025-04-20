@@ -51,6 +51,7 @@
     <string name="generic_logout_failed" description="Generic logout failed text">Logout failed</string>
     <string name="generic_edit" description="Generic edit text">Edit</string>
     <string name="generic_skip" description="Generic skip text">Skip</string>
+    <string name="generic_profile_loading_failed" description="Error text displayed when profile loading fails">Profile loading failed</string>
 
     <string name="generic_weekday_mon" description="Generic short text for Monday">Mon</string>
     <string name="generic_weekday_tue" description="Generic short text for Tuesday">Tue</string>
@@ -126,6 +127,11 @@
     <string name="automatic_profile_search_settings_screen_new_profiles" description="Title text for new profiles setting">Show only new profiles</string>
     <string name="automatic_profile_search_settings_screen_weekdays" description="Title text for weekdays setting">Search weekdays</string>
     <string name="automatic_profile_search_settings_screen_one_weekday_must_be_selected_info" description="Snackbar info text that one weekday must be selected">One weekday must be selected</string>
+    <string name="automatic_profile_search_settings_screen_show_search_results" description="Title text for show search results action">Show search results</string>
+
+    <!-- Automatic profile search results screen -->
+    <string name="automatic_profile_search_results_screen_title" description="Title for automatic profile search results screen">Search results</string>
+    <string name="automatic_profile_search_results_screen_no_profiles_found" description="Info text displayed when no profiles are found">No profiles found</string>
 
     <!-- App bar actions -->
     <string name="app_bar_action_about" description="Title for app bar action which opens about dialog">About</string>
@@ -232,7 +238,6 @@
     <string name="profile_grid_screen_no_profiles_found_description_filters_enabled" description="Description displayed when there is no profiles and some filter is enabled">Change or disable filter settings</string>
     <string name="profile_grid_screen_no_profiles_found_description_filters_disabled" description="Description displayed when there is no profiles and there is no filters enabled">Spread the word about the app in social media</string>
     <string name="profile_grid_screen_profile_filter_settings_update_ongoing" description="Snackbar text that profile filter settings update is ongoing">Profile filter settings update is ongoing</string>
-    <string name="profile_grid_screen_profile_loading_failed" description="Text displayed profile loading fails">Profile loading failed</string>
     <string name="profile_grid_screen_security_content_is_not_accepted" description="Text displayed when security selfie is not accepted">Security selfie is not accepted</string>
     <string name="profile_grid_screen_security_content_does_not_exist" description="Text displayed when security selfie does not exist">Security selfie does not exist</string>
     <string name="profile_grid_screen_primary_profile_content_is_not_accepted" description="Text displayed when primary profile content is not accepted">First profile picture is not accepted</string>
@@ -242,7 +247,6 @@
     <!-- View profile screen -->
     <string name="view_profile_screen_my_profile_initial_setup_not_done" description="Snackbar text that it is not possible to open my profile screen when initial setup is not done">Dating profile is not created</string>
     <string name="view_profile_screen_my_profile_title" description="Title for view profile screen when my profile is viewed">My profile</string>
-    <string name="view_profile_screen_my_profile_loading_failed" description="Text displayed when current account's profile loading fails">Profile loading failed</string>
     <string name="view_profile_screen_my_profile_edit_action" description="Text for view profile screen edit my profile action">Edit profile</string>
     <string name="view_profile_screen_block_action" description="Text for view profile screen block action">Block</string>
     <string name="view_profile_screen_block_action_dialog_title" description="Title for view profile screen block action dialog">Block profile?</string>
@@ -358,7 +362,6 @@
 
     <!-- Select match screen -->
     <string name="select_match_screen_title" description="Title for select match screen">Accepted chat requests</string>
-    <string name="chat_list_screen_match_loading_failed" description="Error text displayed when match loading fails">Profile loading failed</string>
     <string name="chat_list_screen_no_matches_found" description="Info text displayed when no matches are found">No accepted chat requests found</string>
 
     <!-- Conversation screen -->

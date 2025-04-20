@@ -56,6 +56,8 @@ class Account extends Table {
 
   IntColumn get profileIteratorSessionId => integer()
     .map(const NullAwareTypeConverter.wrap(ProfileIteratorSessionIdConverter())).nullable()();
+  IntColumn get automatiProfileSearchIteratorSessionId => integer()
+    .map(const NullAwareTypeConverter.wrap(ProfileIteratorSessionIdConverter())).nullable()();
   IntColumn get receivedLikesIteratorSessionId => integer()
     .map(const NullAwareTypeConverter.wrap(ReceivedLikesIteratorSessionIdConverter())).nullable()();
   IntColumn get matchesIteratorSessionId => integer()
@@ -241,6 +243,15 @@ class AccountDatabase extends _$AccountDatabase {
     );
   }
 
+  Future<void> updateAutomaticProfileSearchIteratorSessionId(ProfileIteratorSessionId value) async {
+    await into(account).insertOnConflictUpdate(
+      AccountCompanion.insert(
+        id: ACCOUNT_DB_DATA_ID,
+        automatiProfileSearchIteratorSessionId: Value(value),
+      ),
+    );
+  }
+
   Future<void> updateReceivedLikesIteratorSessionId(ReceivedLikesIteratorSessionId value) async {
     await into(account).insertOnConflictUpdate(
       AccountCompanion.insert(
@@ -304,6 +315,9 @@ class AccountDatabase extends _$AccountDatabase {
 
   Stream<ProfileIteratorSessionId?> watchProfileSessionId() =>
     watchColumn((r) => r.profileIteratorSessionId);
+
+  Stream<ProfileIteratorSessionId?> watchAutomaticProfileSearchSessionId() =>
+    watchColumn((r) => r.automatiProfileSearchIteratorSessionId);
 
   Stream<ReceivedLikesIteratorSessionId?> watchReceivedLikesSessionId() =>
     watchColumn((r) => r.receivedLikesIteratorSessionId);

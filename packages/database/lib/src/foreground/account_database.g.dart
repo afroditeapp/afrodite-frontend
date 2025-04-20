@@ -60,6 +60,13 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
       .withConverter<api.ProfileIteratorSessionId?>(
           $AccountTable.$converterprofileIteratorSessionId);
   @override
+  late final GeneratedColumnWithTypeConverter<api.ProfileIteratorSessionId?,
+      int> automatiProfileSearchIteratorSessionId = GeneratedColumn<int>(
+          'automati_profile_search_iterator_session_id', aliasedName, true,
+          type: DriftSqlType.int, requiredDuringInsert: false)
+      .withConverter<api.ProfileIteratorSessionId?>(
+          $AccountTable.$converterautomatiProfileSearchIteratorSessionId);
+  @override
   late final GeneratedColumnWithTypeConverter<
       api.ReceivedLikesIteratorSessionId?,
       int> receivedLikesIteratorSessionId = GeneratedColumn<int>(
@@ -489,6 +496,7 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
         jsonProfileVisibility,
         profileFilterFavorites,
         profileIteratorSessionId,
+        automatiProfileSearchIteratorSessionId,
         receivedLikesIteratorSessionId,
         matchesIteratorSessionId,
         clientId,
@@ -830,6 +838,12 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
       profileIteratorSessionId: $AccountTable.$converterprofileIteratorSessionId
           .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.int,
               data['${effectivePrefix}profile_iterator_session_id'])),
+      automatiProfileSearchIteratorSessionId: $AccountTable
+          .$converterautomatiProfileSearchIteratorSessionId
+          .fromSql(attachedDatabase.typeMapping.read(
+              DriftSqlType.int,
+              data[
+                  '${effectivePrefix}automati_profile_search_iterator_session_id'])),
       receivedLikesIteratorSessionId: $AccountTable
           .$converterreceivedLikesIteratorSessionId
           .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.int,
@@ -1025,6 +1039,9 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
   static TypeConverter<api.ProfileIteratorSessionId?, int?>
       $converterprofileIteratorSessionId =
       const NullAwareTypeConverter.wrap(ProfileIteratorSessionIdConverter());
+  static TypeConverter<api.ProfileIteratorSessionId?, int?>
+      $converterautomatiProfileSearchIteratorSessionId =
+      const NullAwareTypeConverter.wrap(ProfileIteratorSessionIdConverter());
   static TypeConverter<api.ReceivedLikesIteratorSessionId?, int?>
       $converterreceivedLikesIteratorSessionId =
       const NullAwareTypeConverter.wrap(
@@ -1099,6 +1116,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
   /// If true show only favorite profiles
   final bool profileFilterFavorites;
   final api.ProfileIteratorSessionId? profileIteratorSessionId;
+  final api.ProfileIteratorSessionId? automatiProfileSearchIteratorSessionId;
   final api.ReceivedLikesIteratorSessionId? receivedLikesIteratorSessionId;
   final api.MatchesIteratorSessionId? matchesIteratorSessionId;
   final api.ClientId? clientId;
@@ -1168,6 +1186,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       this.jsonProfileVisibility,
       required this.profileFilterFavorites,
       this.profileIteratorSessionId,
+      this.automatiProfileSearchIteratorSessionId,
       this.receivedLikesIteratorSessionId,
       this.matchesIteratorSessionId,
       this.clientId,
@@ -1253,6 +1272,11 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       map['profile_iterator_session_id'] = Variable<int>($AccountTable
           .$converterprofileIteratorSessionId
           .toSql(profileIteratorSessionId));
+    }
+    if (!nullToAbsent || automatiProfileSearchIteratorSessionId != null) {
+      map['automati_profile_search_iterator_session_id'] = Variable<int>(
+          $AccountTable.$converterautomatiProfileSearchIteratorSessionId
+              .toSql(automatiProfileSearchIteratorSessionId));
     }
     if (!nullToAbsent || receivedLikesIteratorSessionId != null) {
       map['received_likes_iterator_session_id'] = Variable<int>($AccountTable
@@ -1498,6 +1522,10 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       profileIteratorSessionId: profileIteratorSessionId == null && nullToAbsent
           ? const Value.absent()
           : Value(profileIteratorSessionId),
+      automatiProfileSearchIteratorSessionId:
+          automatiProfileSearchIteratorSessionId == null && nullToAbsent
+              ? const Value.absent()
+              : Value(automatiProfileSearchIteratorSessionId),
       receivedLikesIteratorSessionId:
           receivedLikesIteratorSessionId == null && nullToAbsent
               ? const Value.absent()
@@ -1697,6 +1725,9 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       profileIteratorSessionId:
           serializer.fromJson<api.ProfileIteratorSessionId?>(
               json['profileIteratorSessionId']),
+      automatiProfileSearchIteratorSessionId:
+          serializer.fromJson<api.ProfileIteratorSessionId?>(
+              json['automatiProfileSearchIteratorSessionId']),
       receivedLikesIteratorSessionId:
           serializer.fromJson<api.ReceivedLikesIteratorSessionId?>(
               json['receivedLikesIteratorSessionId']),
@@ -1822,6 +1853,9 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       'profileFilterFavorites': serializer.toJson<bool>(profileFilterFavorites),
       'profileIteratorSessionId': serializer
           .toJson<api.ProfileIteratorSessionId?>(profileIteratorSessionId),
+      'automatiProfileSearchIteratorSessionId':
+          serializer.toJson<api.ProfileIteratorSessionId?>(
+              automatiProfileSearchIteratorSessionId),
       'receivedLikesIteratorSessionId':
           serializer.toJson<api.ReceivedLikesIteratorSessionId?>(
               receivedLikesIteratorSessionId),
@@ -1930,8 +1964,10 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           bool? profileFilterFavorites,
           Value<api.ProfileIteratorSessionId?> profileIteratorSessionId =
               const Value.absent(),
-          Value<api.ReceivedLikesIteratorSessionId?>
-              receivedLikesIteratorSessionId = const Value.absent(),
+          Value<api.ProfileIteratorSessionId?> automatiProfileSearchIteratorSessionId =
+              const Value.absent(),
+          Value<api.ReceivedLikesIteratorSessionId?> receivedLikesIteratorSessionId =
+              const Value.absent(),
           Value<api.MatchesIteratorSessionId?> matchesIteratorSessionId =
               const Value.absent(),
           Value<api.ClientId?> clientId = const Value.absent(),
@@ -2021,6 +2057,10 @@ class AccountData extends DataClass implements Insertable<AccountData> {
         profileIteratorSessionId: profileIteratorSessionId.present
             ? profileIteratorSessionId.value
             : this.profileIteratorSessionId,
+        automatiProfileSearchIteratorSessionId:
+            automatiProfileSearchIteratorSessionId.present
+                ? automatiProfileSearchIteratorSessionId.value
+                : this.automatiProfileSearchIteratorSessionId,
         receivedLikesIteratorSessionId: receivedLikesIteratorSessionId.present
             ? receivedLikesIteratorSessionId.value
             : this.receivedLikesIteratorSessionId,
@@ -2206,6 +2246,10 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       profileIteratorSessionId: data.profileIteratorSessionId.present
           ? data.profileIteratorSessionId.value
           : this.profileIteratorSessionId,
+      automatiProfileSearchIteratorSessionId:
+          data.automatiProfileSearchIteratorSessionId.present
+              ? data.automatiProfileSearchIteratorSessionId.value
+              : this.automatiProfileSearchIteratorSessionId,
       receivedLikesIteratorSessionId:
           data.receivedLikesIteratorSessionId.present
               ? data.receivedLikesIteratorSessionId.value
@@ -2403,6 +2447,8 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           ..write('profileFilterFavorites: $profileFilterFavorites, ')
           ..write('profileIteratorSessionId: $profileIteratorSessionId, ')
           ..write(
+              'automatiProfileSearchIteratorSessionId: $automatiProfileSearchIteratorSessionId, ')
+          ..write(
               'receivedLikesIteratorSessionId: $receivedLikesIteratorSessionId, ')
           ..write('matchesIteratorSessionId: $matchesIteratorSessionId, ')
           ..write('clientId: $clientId, ')
@@ -2489,6 +2535,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
         jsonProfileVisibility,
         profileFilterFavorites,
         profileIteratorSessionId,
+        automatiProfileSearchIteratorSessionId,
         receivedLikesIteratorSessionId,
         matchesIteratorSessionId,
         clientId,
@@ -2560,6 +2607,8 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           other.jsonProfileVisibility == this.jsonProfileVisibility &&
           other.profileFilterFavorites == this.profileFilterFavorites &&
           other.profileIteratorSessionId == this.profileIteratorSessionId &&
+          other.automatiProfileSearchIteratorSessionId ==
+              this.automatiProfileSearchIteratorSessionId &&
           other.receivedLikesIteratorSessionId ==
               this.receivedLikesIteratorSessionId &&
           other.matchesIteratorSessionId == this.matchesIteratorSessionId &&
@@ -2644,6 +2693,8 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
   final Value<EnumString?> jsonProfileVisibility;
   final Value<bool> profileFilterFavorites;
   final Value<api.ProfileIteratorSessionId?> profileIteratorSessionId;
+  final Value<api.ProfileIteratorSessionId?>
+      automatiProfileSearchIteratorSessionId;
   final Value<api.ReceivedLikesIteratorSessionId?>
       receivedLikesIteratorSessionId;
   final Value<api.MatchesIteratorSessionId?> matchesIteratorSessionId;
@@ -2714,6 +2765,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     this.jsonProfileVisibility = const Value.absent(),
     this.profileFilterFavorites = const Value.absent(),
     this.profileIteratorSessionId = const Value.absent(),
+    this.automatiProfileSearchIteratorSessionId = const Value.absent(),
     this.receivedLikesIteratorSessionId = const Value.absent(),
     this.matchesIteratorSessionId = const Value.absent(),
     this.clientId = const Value.absent(),
@@ -2782,6 +2834,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     this.jsonProfileVisibility = const Value.absent(),
     this.profileFilterFavorites = const Value.absent(),
     this.profileIteratorSessionId = const Value.absent(),
+    this.automatiProfileSearchIteratorSessionId = const Value.absent(),
     this.receivedLikesIteratorSessionId = const Value.absent(),
     this.matchesIteratorSessionId = const Value.absent(),
     this.clientId = const Value.absent(),
@@ -2850,6 +2903,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     Expression<String>? jsonProfileVisibility,
     Expression<bool>? profileFilterFavorites,
     Expression<int>? profileIteratorSessionId,
+    Expression<int>? automatiProfileSearchIteratorSessionId,
     Expression<int>? receivedLikesIteratorSessionId,
     Expression<int>? matchesIteratorSessionId,
     Expression<int>? clientId,
@@ -2921,6 +2975,9 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
         'profile_filter_favorites': profileFilterFavorites,
       if (profileIteratorSessionId != null)
         'profile_iterator_session_id': profileIteratorSessionId,
+      if (automatiProfileSearchIteratorSessionId != null)
+        'automati_profile_search_iterator_session_id':
+            automatiProfileSearchIteratorSessionId,
       if (receivedLikesIteratorSessionId != null)
         'received_likes_iterator_session_id': receivedLikesIteratorSessionId,
       if (matchesIteratorSessionId != null)
@@ -3044,6 +3101,8 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       Value<EnumString?>? jsonProfileVisibility,
       Value<bool>? profileFilterFavorites,
       Value<api.ProfileIteratorSessionId?>? profileIteratorSessionId,
+      Value<api.ProfileIteratorSessionId?>?
+          automatiProfileSearchIteratorSessionId,
       Value<api.ReceivedLikesIteratorSessionId?>?
           receivedLikesIteratorSessionId,
       Value<api.MatchesIteratorSessionId?>? matchesIteratorSessionId,
@@ -3117,6 +3176,9 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
           profileFilterFavorites ?? this.profileFilterFavorites,
       profileIteratorSessionId:
           profileIteratorSessionId ?? this.profileIteratorSessionId,
+      automatiProfileSearchIteratorSessionId:
+          automatiProfileSearchIteratorSessionId ??
+              this.automatiProfileSearchIteratorSessionId,
       receivedLikesIteratorSessionId:
           receivedLikesIteratorSessionId ?? this.receivedLikesIteratorSessionId,
       matchesIteratorSessionId:
@@ -3250,6 +3312,11 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       map['profile_iterator_session_id'] = Variable<int>($AccountTable
           .$converterprofileIteratorSessionId
           .toSql(profileIteratorSessionId.value));
+    }
+    if (automatiProfileSearchIteratorSessionId.present) {
+      map['automati_profile_search_iterator_session_id'] = Variable<int>(
+          $AccountTable.$converterautomatiProfileSearchIteratorSessionId
+              .toSql(automatiProfileSearchIteratorSessionId.value));
     }
     if (receivedLikesIteratorSessionId.present) {
       map['received_likes_iterator_session_id'] = Variable<int>($AccountTable
@@ -3503,6 +3570,8 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
           ..write('jsonProfileVisibility: $jsonProfileVisibility, ')
           ..write('profileFilterFavorites: $profileFilterFavorites, ')
           ..write('profileIteratorSessionId: $profileIteratorSessionId, ')
+          ..write(
+              'automatiProfileSearchIteratorSessionId: $automatiProfileSearchIteratorSessionId, ')
           ..write(
               'receivedLikesIteratorSessionId: $receivedLikesIteratorSessionId, ')
           ..write('matchesIteratorSessionId: $matchesIteratorSessionId, ')
@@ -5383,6 +5452,13 @@ class $ProfileStatesTable extends ProfileStates
               $ProfileStatesTable.$converterisInProfileGrid);
   @override
   late final GeneratedColumnWithTypeConverter<UtcDateTime?, int>
+      isInAutomaticProfileSearchGrid = GeneratedColumn<int>(
+              'is_in_automatic_profile_search_grid', aliasedName, true,
+              type: DriftSqlType.int, requiredDuringInsert: false)
+          .withConverter<UtcDateTime?>(
+              $ProfileStatesTable.$converterisInAutomaticProfileSearchGrid);
+  @override
+  late final GeneratedColumnWithTypeConverter<UtcDateTime?, int>
       isInReceivedLikesGrid = GeneratedColumn<int>(
               'is_in_received_likes_grid', aliasedName, true,
               type: DriftSqlType.int, requiredDuringInsert: false)
@@ -5404,6 +5480,7 @@ class $ProfileStatesTable extends ProfileStates
         isInSentLikes,
         isInMatches,
         isInProfileGrid,
+        isInAutomaticProfileSearchGrid,
         isInReceivedLikesGrid,
         isInMatchesGrid
       ];
@@ -5449,6 +5526,10 @@ class $ProfileStatesTable extends ProfileStates
       isInProfileGrid: $ProfileStatesTable.$converterisInProfileGrid.fromSql(
           attachedDatabase.typeMapping.read(
               DriftSqlType.int, data['${effectivePrefix}is_in_profile_grid'])),
+      isInAutomaticProfileSearchGrid: $ProfileStatesTable
+          .$converterisInAutomaticProfileSearchGrid
+          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.int,
+              data['${effectivePrefix}is_in_automatic_profile_search_grid'])),
       isInReceivedLikesGrid: $ProfileStatesTable.$converterisInReceivedLikesGrid
           .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.int,
               data['${effectivePrefix}is_in_received_likes_grid'])),
@@ -5475,6 +5556,9 @@ class $ProfileStatesTable extends ProfileStates
       const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
   static TypeConverter<UtcDateTime?, int?> $converterisInProfileGrid =
       const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
+  static TypeConverter<UtcDateTime?, int?>
+      $converterisInAutomaticProfileSearchGrid =
+      const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
   static TypeConverter<UtcDateTime?, int?> $converterisInReceivedLikesGrid =
       const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
   static TypeConverter<UtcDateTime?, int?> $converterisInMatchesGrid =
@@ -5489,6 +5573,7 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
   final UtcDateTime? isInSentLikes;
   final UtcDateTime? isInMatches;
   final UtcDateTime? isInProfileGrid;
+  final UtcDateTime? isInAutomaticProfileSearchGrid;
   final UtcDateTime? isInReceivedLikesGrid;
   final UtcDateTime? isInMatchesGrid;
   const ProfileState(
@@ -5499,6 +5584,7 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
       this.isInSentLikes,
       this.isInMatches,
       this.isInProfileGrid,
+      this.isInAutomaticProfileSearchGrid,
       this.isInReceivedLikesGrid,
       this.isInMatchesGrid});
   @override
@@ -5529,6 +5615,11 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
     if (!nullToAbsent || isInProfileGrid != null) {
       map['is_in_profile_grid'] = Variable<int>(
           $ProfileStatesTable.$converterisInProfileGrid.toSql(isInProfileGrid));
+    }
+    if (!nullToAbsent || isInAutomaticProfileSearchGrid != null) {
+      map['is_in_automatic_profile_search_grid'] = Variable<int>(
+          $ProfileStatesTable.$converterisInAutomaticProfileSearchGrid
+              .toSql(isInAutomaticProfileSearchGrid));
     }
     if (!nullToAbsent || isInReceivedLikesGrid != null) {
       map['is_in_received_likes_grid'] = Variable<int>($ProfileStatesTable
@@ -5561,6 +5652,10 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
       isInProfileGrid: isInProfileGrid == null && nullToAbsent
           ? const Value.absent()
           : Value(isInProfileGrid),
+      isInAutomaticProfileSearchGrid:
+          isInAutomaticProfileSearchGrid == null && nullToAbsent
+              ? const Value.absent()
+              : Value(isInAutomaticProfileSearchGrid),
       isInReceivedLikesGrid: isInReceivedLikesGrid == null && nullToAbsent
           ? const Value.absent()
           : Value(isInReceivedLikesGrid),
@@ -5583,6 +5678,8 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
       isInMatches: serializer.fromJson<UtcDateTime?>(json['isInMatches']),
       isInProfileGrid:
           serializer.fromJson<UtcDateTime?>(json['isInProfileGrid']),
+      isInAutomaticProfileSearchGrid: serializer
+          .fromJson<UtcDateTime?>(json['isInAutomaticProfileSearchGrid']),
       isInReceivedLikesGrid:
           serializer.fromJson<UtcDateTime?>(json['isInReceivedLikesGrid']),
       isInMatchesGrid:
@@ -5600,6 +5697,8 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
       'isInSentLikes': serializer.toJson<UtcDateTime?>(isInSentLikes),
       'isInMatches': serializer.toJson<UtcDateTime?>(isInMatches),
       'isInProfileGrid': serializer.toJson<UtcDateTime?>(isInProfileGrid),
+      'isInAutomaticProfileSearchGrid':
+          serializer.toJson<UtcDateTime?>(isInAutomaticProfileSearchGrid),
       'isInReceivedLikesGrid':
           serializer.toJson<UtcDateTime?>(isInReceivedLikesGrid),
       'isInMatchesGrid': serializer.toJson<UtcDateTime?>(isInMatchesGrid),
@@ -5614,6 +5713,8 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
           Value<UtcDateTime?> isInSentLikes = const Value.absent(),
           Value<UtcDateTime?> isInMatches = const Value.absent(),
           Value<UtcDateTime?> isInProfileGrid = const Value.absent(),
+          Value<UtcDateTime?> isInAutomaticProfileSearchGrid =
+              const Value.absent(),
           Value<UtcDateTime?> isInReceivedLikesGrid = const Value.absent(),
           Value<UtcDateTime?> isInMatchesGrid = const Value.absent()}) =>
       ProfileState(
@@ -5630,6 +5731,9 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
         isInProfileGrid: isInProfileGrid.present
             ? isInProfileGrid.value
             : this.isInProfileGrid,
+        isInAutomaticProfileSearchGrid: isInAutomaticProfileSearchGrid.present
+            ? isInAutomaticProfileSearchGrid.value
+            : this.isInAutomaticProfileSearchGrid,
         isInReceivedLikesGrid: isInReceivedLikesGrid.present
             ? isInReceivedLikesGrid.value
             : this.isInReceivedLikesGrid,
@@ -5657,6 +5761,10 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
       isInProfileGrid: data.isInProfileGrid.present
           ? data.isInProfileGrid.value
           : this.isInProfileGrid,
+      isInAutomaticProfileSearchGrid:
+          data.isInAutomaticProfileSearchGrid.present
+              ? data.isInAutomaticProfileSearchGrid.value
+              : this.isInAutomaticProfileSearchGrid,
       isInReceivedLikesGrid: data.isInReceivedLikesGrid.present
           ? data.isInReceivedLikesGrid.value
           : this.isInReceivedLikesGrid,
@@ -5676,6 +5784,8 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
           ..write('isInSentLikes: $isInSentLikes, ')
           ..write('isInMatches: $isInMatches, ')
           ..write('isInProfileGrid: $isInProfileGrid, ')
+          ..write(
+              'isInAutomaticProfileSearchGrid: $isInAutomaticProfileSearchGrid, ')
           ..write('isInReceivedLikesGrid: $isInReceivedLikesGrid, ')
           ..write('isInMatchesGrid: $isInMatchesGrid')
           ..write(')'))
@@ -5691,6 +5801,7 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
       isInSentLikes,
       isInMatches,
       isInProfileGrid,
+      isInAutomaticProfileSearchGrid,
       isInReceivedLikesGrid,
       isInMatchesGrid);
   @override
@@ -5704,6 +5815,8 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
           other.isInSentLikes == this.isInSentLikes &&
           other.isInMatches == this.isInMatches &&
           other.isInProfileGrid == this.isInProfileGrid &&
+          other.isInAutomaticProfileSearchGrid ==
+              this.isInAutomaticProfileSearchGrid &&
           other.isInReceivedLikesGrid == this.isInReceivedLikesGrid &&
           other.isInMatchesGrid == this.isInMatchesGrid);
 }
@@ -5716,6 +5829,7 @@ class ProfileStatesCompanion extends UpdateCompanion<ProfileState> {
   final Value<UtcDateTime?> isInSentLikes;
   final Value<UtcDateTime?> isInMatches;
   final Value<UtcDateTime?> isInProfileGrid;
+  final Value<UtcDateTime?> isInAutomaticProfileSearchGrid;
   final Value<UtcDateTime?> isInReceivedLikesGrid;
   final Value<UtcDateTime?> isInMatchesGrid;
   const ProfileStatesCompanion({
@@ -5726,6 +5840,7 @@ class ProfileStatesCompanion extends UpdateCompanion<ProfileState> {
     this.isInSentLikes = const Value.absent(),
     this.isInMatches = const Value.absent(),
     this.isInProfileGrid = const Value.absent(),
+    this.isInAutomaticProfileSearchGrid = const Value.absent(),
     this.isInReceivedLikesGrid = const Value.absent(),
     this.isInMatchesGrid = const Value.absent(),
   });
@@ -5737,6 +5852,7 @@ class ProfileStatesCompanion extends UpdateCompanion<ProfileState> {
     this.isInSentLikes = const Value.absent(),
     this.isInMatches = const Value.absent(),
     this.isInProfileGrid = const Value.absent(),
+    this.isInAutomaticProfileSearchGrid = const Value.absent(),
     this.isInReceivedLikesGrid = const Value.absent(),
     this.isInMatchesGrid = const Value.absent(),
   }) : uuidAccountId = Value(uuidAccountId);
@@ -5748,6 +5864,7 @@ class ProfileStatesCompanion extends UpdateCompanion<ProfileState> {
     Expression<int>? isInSentLikes,
     Expression<int>? isInMatches,
     Expression<int>? isInProfileGrid,
+    Expression<int>? isInAutomaticProfileSearchGrid,
     Expression<int>? isInReceivedLikesGrid,
     Expression<int>? isInMatchesGrid,
   }) {
@@ -5759,6 +5876,8 @@ class ProfileStatesCompanion extends UpdateCompanion<ProfileState> {
       if (isInSentLikes != null) 'is_in_sent_likes': isInSentLikes,
       if (isInMatches != null) 'is_in_matches': isInMatches,
       if (isInProfileGrid != null) 'is_in_profile_grid': isInProfileGrid,
+      if (isInAutomaticProfileSearchGrid != null)
+        'is_in_automatic_profile_search_grid': isInAutomaticProfileSearchGrid,
       if (isInReceivedLikesGrid != null)
         'is_in_received_likes_grid': isInReceivedLikesGrid,
       if (isInMatchesGrid != null) 'is_in_matches_grid': isInMatchesGrid,
@@ -5773,6 +5892,7 @@ class ProfileStatesCompanion extends UpdateCompanion<ProfileState> {
       Value<UtcDateTime?>? isInSentLikes,
       Value<UtcDateTime?>? isInMatches,
       Value<UtcDateTime?>? isInProfileGrid,
+      Value<UtcDateTime?>? isInAutomaticProfileSearchGrid,
       Value<UtcDateTime?>? isInReceivedLikesGrid,
       Value<UtcDateTime?>? isInMatchesGrid}) {
     return ProfileStatesCompanion(
@@ -5783,6 +5903,8 @@ class ProfileStatesCompanion extends UpdateCompanion<ProfileState> {
       isInSentLikes: isInSentLikes ?? this.isInSentLikes,
       isInMatches: isInMatches ?? this.isInMatches,
       isInProfileGrid: isInProfileGrid ?? this.isInProfileGrid,
+      isInAutomaticProfileSearchGrid:
+          isInAutomaticProfileSearchGrid ?? this.isInAutomaticProfileSearchGrid,
       isInReceivedLikesGrid:
           isInReceivedLikesGrid ?? this.isInReceivedLikesGrid,
       isInMatchesGrid: isInMatchesGrid ?? this.isInMatchesGrid,
@@ -5824,6 +5946,11 @@ class ProfileStatesCompanion extends UpdateCompanion<ProfileState> {
           .$converterisInProfileGrid
           .toSql(isInProfileGrid.value));
     }
+    if (isInAutomaticProfileSearchGrid.present) {
+      map['is_in_automatic_profile_search_grid'] = Variable<int>(
+          $ProfileStatesTable.$converterisInAutomaticProfileSearchGrid
+              .toSql(isInAutomaticProfileSearchGrid.value));
+    }
     if (isInReceivedLikesGrid.present) {
       map['is_in_received_likes_grid'] = Variable<int>($ProfileStatesTable
           .$converterisInReceivedLikesGrid
@@ -5847,6 +5974,8 @@ class ProfileStatesCompanion extends UpdateCompanion<ProfileState> {
           ..write('isInSentLikes: $isInSentLikes, ')
           ..write('isInMatches: $isInMatches, ')
           ..write('isInProfileGrid: $isInProfileGrid, ')
+          ..write(
+              'isInAutomaticProfileSearchGrid: $isInAutomaticProfileSearchGrid, ')
           ..write('isInReceivedLikesGrid: $isInReceivedLikesGrid, ')
           ..write('isInMatchesGrid: $isInMatchesGrid')
           ..write(')'))

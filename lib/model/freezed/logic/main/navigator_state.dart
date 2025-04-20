@@ -77,3 +77,6 @@ class ContentManagementPageInfo extends PageInfo {
 class MyProfilePageInfo extends PageInfo {
   const MyProfilePageInfo();
 }
+class AutomaticProfileSearchResultsPageInfo extends PageInfo {
+  const AutomaticProfileSearchResultsPageInfo();
+}
