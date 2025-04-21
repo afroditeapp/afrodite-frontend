@@ -26,7 +26,7 @@ class NotificationProfileTextModerationCompleted extends AppSingletonNoInit {
     AccountBackgroundDatabaseManager accountBackgroundDb,
   ) async {
     final showAccepted = await accountBackgroundDb.accountData(
-      (db) => db.daoProfileTextModerationCompletedNotificationTable.shouldAcceptedNotificationBeShown(notification.accepted)
+      (db) => db.daoProfileTextModerationCompletedNotificationTable.shouldAcceptedNotificationBeShown(notification.accepted, notification.acceptedViewed)
     ).ok() ?? false;
 
     if (showAccepted) {
@@ -34,7 +34,7 @@ class NotificationProfileTextModerationCompleted extends AppSingletonNoInit {
     }
 
     final showRejected = await accountBackgroundDb.accountData(
-      (db) => db.daoProfileTextModerationCompletedNotificationTable.shouldRejectedNotificationBeShown(notification.rejected)
+      (db) => db.daoProfileTextModerationCompletedNotificationTable.shouldRejectedNotificationBeShown(notification.rejected, notification.rejectedViewed)
     ).ok() ?? false;
 
     if (showRejected) {

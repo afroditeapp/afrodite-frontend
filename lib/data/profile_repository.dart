@@ -616,9 +616,11 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
 
     await NotificationProfileTextModerationCompleted.handleProfileTextModerationCompleted(notification, accountBackgroundDb);
 
-    await _api.profileAction((api) => api.postMarkProfileTextModerationCompletedNotificationViewed(
-      ProfileTextModerationCompletedNotificationViewed(accepted: notification.accepted, rejected: notification.rejected),
-    )).ok();
+    final viewed = ProfileTextModerationCompletedNotificationViewed(accepted: notification.accepted, rejected: notification.rejected);
+    await _api.profileAction((api) => api.postMarkProfileTextModerationCompletedNotificationViewed(viewed))
+      .andThen((_) => accountBackgroundDb.accountData(
+        (db) => db.daoProfileTextModerationCompletedNotificationTable.updateViewedValues(viewed)
+      ));
   }
 
   Future<void> handleAutomaticProfileSearchCompletedEvent() async {
@@ -630,9 +632,11 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
 
     await NotificationAutomaticProfileSearch.handleAutomaticProfileSearchCompleted(notification, accountBackgroundDb);
 
-    await _api.profileAction((api) => api.postMarkAutomaticProfileSearchCompletedNotificationViewed(
-      AutomaticProfileSearchCompletedNotificationViewed(profilesFound: notification.profilesFound),
-    )).ok();
+    final viewed = AutomaticProfileSearchCompletedNotificationViewed(profilesFound: notification.profilesFound);
+    await _api.profileAction((api) => api.postMarkAutomaticProfileSearchCompletedNotificationViewed(viewed))
+      .andThen((_) => accountBackgroundDb.accountData(
+        (db) => db.daoAutomaticProfileSearchCompletedNotificationTable.updateProfilesFoundViewed(viewed)
+      ));
   }
 }
 

@@ -1648,11 +1648,27 @@ class $MediaContentModerationCompletedNotificationTableTable
       requiredDuringInsert: false,
       defaultConstraints:
           GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _acceptedMeta =
+      const VerificationMeta('accepted');
+  @override
+  late final GeneratedColumn<int> accepted = GeneratedColumn<int>(
+      'accepted', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultValue: const Constant(0));
   static const VerificationMeta _acceptedViewedMeta =
       const VerificationMeta('acceptedViewed');
   @override
   late final GeneratedColumn<int> acceptedViewed = GeneratedColumn<int>(
       'accepted_viewed', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultValue: const Constant(0));
+  static const VerificationMeta _rejectedMeta =
+      const VerificationMeta('rejected');
+  @override
+  late final GeneratedColumn<int> rejected = GeneratedColumn<int>(
+      'rejected', aliasedName, false,
       type: DriftSqlType.int,
       requiredDuringInsert: false,
       defaultValue: const Constant(0));
@@ -1665,7 +1681,8 @@ class $MediaContentModerationCompletedNotificationTableTable
       requiredDuringInsert: false,
       defaultValue: const Constant(0));
   @override
-  List<GeneratedColumn> get $columns => [id, acceptedViewed, rejectedViewed];
+  List<GeneratedColumn> get $columns =>
+      [id, accepted, acceptedViewed, rejected, rejectedViewed];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -1681,11 +1698,19 @@ class $MediaContentModerationCompletedNotificationTableTable
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
     }
+    if (data.containsKey('accepted')) {
+      context.handle(_acceptedMeta,
+          accepted.isAcceptableOrUnknown(data['accepted']!, _acceptedMeta));
+    }
     if (data.containsKey('accepted_viewed')) {
       context.handle(
           _acceptedViewedMeta,
           acceptedViewed.isAcceptableOrUnknown(
               data['accepted_viewed']!, _acceptedViewedMeta));
+    }
+    if (data.containsKey('rejected')) {
+      context.handle(_rejectedMeta,
+          rejected.isAcceptableOrUnknown(data['rejected']!, _rejectedMeta));
     }
     if (data.containsKey('rejected_viewed')) {
       context.handle(
@@ -1706,8 +1731,12 @@ class $MediaContentModerationCompletedNotificationTableTable
     return MediaContentModerationCompletedNotificationTableData(
       id: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      accepted: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}accepted'])!,
       acceptedViewed: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}accepted_viewed'])!,
+      rejected: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}rejected'])!,
       rejectedViewed: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}rejected_viewed'])!,
     );
@@ -1725,17 +1754,23 @@ class MediaContentModerationCompletedNotificationTableData extends DataClass
     implements
         Insertable<MediaContentModerationCompletedNotificationTableData> {
   final int id;
+  final int accepted;
   final int acceptedViewed;
+  final int rejected;
   final int rejectedViewed;
   const MediaContentModerationCompletedNotificationTableData(
       {required this.id,
+      required this.accepted,
       required this.acceptedViewed,
+      required this.rejected,
       required this.rejectedViewed});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
+    map['accepted'] = Variable<int>(accepted);
     map['accepted_viewed'] = Variable<int>(acceptedViewed);
+    map['rejected'] = Variable<int>(rejected);
     map['rejected_viewed'] = Variable<int>(rejectedViewed);
     return map;
   }
@@ -1744,7 +1779,9 @@ class MediaContentModerationCompletedNotificationTableData extends DataClass
       bool nullToAbsent) {
     return MediaContentModerationCompletedNotificationTableCompanion(
       id: Value(id),
+      accepted: Value(accepted),
       acceptedViewed: Value(acceptedViewed),
+      rejected: Value(rejected),
       rejectedViewed: Value(rejectedViewed),
     );
   }
@@ -1755,7 +1792,9 @@ class MediaContentModerationCompletedNotificationTableData extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return MediaContentModerationCompletedNotificationTableData(
       id: serializer.fromJson<int>(json['id']),
+      accepted: serializer.fromJson<int>(json['accepted']),
       acceptedViewed: serializer.fromJson<int>(json['acceptedViewed']),
+      rejected: serializer.fromJson<int>(json['rejected']),
       rejectedViewed: serializer.fromJson<int>(json['rejectedViewed']),
     );
   }
@@ -1764,25 +1803,35 @@ class MediaContentModerationCompletedNotificationTableData extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
+      'accepted': serializer.toJson<int>(accepted),
       'acceptedViewed': serializer.toJson<int>(acceptedViewed),
+      'rejected': serializer.toJson<int>(rejected),
       'rejectedViewed': serializer.toJson<int>(rejectedViewed),
     };
   }
 
   MediaContentModerationCompletedNotificationTableData copyWith(
-          {int? id, int? acceptedViewed, int? rejectedViewed}) =>
+          {int? id,
+          int? accepted,
+          int? acceptedViewed,
+          int? rejected,
+          int? rejectedViewed}) =>
       MediaContentModerationCompletedNotificationTableData(
         id: id ?? this.id,
+        accepted: accepted ?? this.accepted,
         acceptedViewed: acceptedViewed ?? this.acceptedViewed,
+        rejected: rejected ?? this.rejected,
         rejectedViewed: rejectedViewed ?? this.rejectedViewed,
       );
   MediaContentModerationCompletedNotificationTableData copyWithCompanion(
       MediaContentModerationCompletedNotificationTableCompanion data) {
     return MediaContentModerationCompletedNotificationTableData(
       id: data.id.present ? data.id.value : this.id,
+      accepted: data.accepted.present ? data.accepted.value : this.accepted,
       acceptedViewed: data.acceptedViewed.present
           ? data.acceptedViewed.value
           : this.acceptedViewed,
+      rejected: data.rejected.present ? data.rejected.value : this.rejected,
       rejectedViewed: data.rejectedViewed.present
           ? data.rejectedViewed.value
           : this.rejectedViewed,
@@ -1794,20 +1843,25 @@ class MediaContentModerationCompletedNotificationTableData extends DataClass
     return (StringBuffer(
             'MediaContentModerationCompletedNotificationTableData(')
           ..write('id: $id, ')
+          ..write('accepted: $accepted, ')
           ..write('acceptedViewed: $acceptedViewed, ')
+          ..write('rejected: $rejected, ')
           ..write('rejectedViewed: $rejectedViewed')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, acceptedViewed, rejectedViewed);
+  int get hashCode =>
+      Object.hash(id, accepted, acceptedViewed, rejected, rejectedViewed);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is MediaContentModerationCompletedNotificationTableData &&
           other.id == this.id &&
+          other.accepted == this.accepted &&
           other.acceptedViewed == this.acceptedViewed &&
+          other.rejected == this.rejected &&
           other.rejectedViewed == this.rejectedViewed);
 }
 
@@ -1815,38 +1869,52 @@ class MediaContentModerationCompletedNotificationTableCompanion
     extends UpdateCompanion<
         MediaContentModerationCompletedNotificationTableData> {
   final Value<int> id;
+  final Value<int> accepted;
   final Value<int> acceptedViewed;
+  final Value<int> rejected;
   final Value<int> rejectedViewed;
   const MediaContentModerationCompletedNotificationTableCompanion({
     this.id = const Value.absent(),
+    this.accepted = const Value.absent(),
     this.acceptedViewed = const Value.absent(),
+    this.rejected = const Value.absent(),
     this.rejectedViewed = const Value.absent(),
   });
   MediaContentModerationCompletedNotificationTableCompanion.insert({
     this.id = const Value.absent(),
+    this.accepted = const Value.absent(),
     this.acceptedViewed = const Value.absent(),
+    this.rejected = const Value.absent(),
     this.rejectedViewed = const Value.absent(),
   });
   static Insertable<MediaContentModerationCompletedNotificationTableData>
       custom({
     Expression<int>? id,
+    Expression<int>? accepted,
     Expression<int>? acceptedViewed,
+    Expression<int>? rejected,
     Expression<int>? rejectedViewed,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
+      if (accepted != null) 'accepted': accepted,
       if (acceptedViewed != null) 'accepted_viewed': acceptedViewed,
+      if (rejected != null) 'rejected': rejected,
       if (rejectedViewed != null) 'rejected_viewed': rejectedViewed,
     });
   }
 
   MediaContentModerationCompletedNotificationTableCompanion copyWith(
       {Value<int>? id,
+      Value<int>? accepted,
       Value<int>? acceptedViewed,
+      Value<int>? rejected,
       Value<int>? rejectedViewed}) {
     return MediaContentModerationCompletedNotificationTableCompanion(
       id: id ?? this.id,
+      accepted: accepted ?? this.accepted,
       acceptedViewed: acceptedViewed ?? this.acceptedViewed,
+      rejected: rejected ?? this.rejected,
       rejectedViewed: rejectedViewed ?? this.rejectedViewed,
     );
   }
@@ -1857,8 +1925,14 @@ class MediaContentModerationCompletedNotificationTableCompanion
     if (id.present) {
       map['id'] = Variable<int>(id.value);
     }
+    if (accepted.present) {
+      map['accepted'] = Variable<int>(accepted.value);
+    }
     if (acceptedViewed.present) {
       map['accepted_viewed'] = Variable<int>(acceptedViewed.value);
+    }
+    if (rejected.present) {
+      map['rejected'] = Variable<int>(rejected.value);
     }
     if (rejectedViewed.present) {
       map['rejected_viewed'] = Variable<int>(rejectedViewed.value);
@@ -1871,7 +1945,9 @@ class MediaContentModerationCompletedNotificationTableCompanion
     return (StringBuffer(
             'MediaContentModerationCompletedNotificationTableCompanion(')
           ..write('id: $id, ')
+          ..write('accepted: $accepted, ')
           ..write('acceptedViewed: $acceptedViewed, ')
+          ..write('rejected: $rejected, ')
           ..write('rejectedViewed: $rejectedViewed')
           ..write(')'))
         .toString();
@@ -1897,11 +1973,27 @@ class $ProfileTextModerationCompletedNotificationTableTable
       requiredDuringInsert: false,
       defaultConstraints:
           GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _acceptedMeta =
+      const VerificationMeta('accepted');
+  @override
+  late final GeneratedColumn<int> accepted = GeneratedColumn<int>(
+      'accepted', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultValue: const Constant(0));
   static const VerificationMeta _acceptedViewedMeta =
       const VerificationMeta('acceptedViewed');
   @override
   late final GeneratedColumn<int> acceptedViewed = GeneratedColumn<int>(
       'accepted_viewed', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultValue: const Constant(0));
+  static const VerificationMeta _rejectedMeta =
+      const VerificationMeta('rejected');
+  @override
+  late final GeneratedColumn<int> rejected = GeneratedColumn<int>(
+      'rejected', aliasedName, false,
       type: DriftSqlType.int,
       requiredDuringInsert: false,
       defaultValue: const Constant(0));
@@ -1914,7 +2006,8 @@ class $ProfileTextModerationCompletedNotificationTableTable
       requiredDuringInsert: false,
       defaultValue: const Constant(0));
   @override
-  List<GeneratedColumn> get $columns => [id, acceptedViewed, rejectedViewed];
+  List<GeneratedColumn> get $columns =>
+      [id, accepted, acceptedViewed, rejected, rejectedViewed];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -1930,11 +2023,19 @@ class $ProfileTextModerationCompletedNotificationTableTable
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
     }
+    if (data.containsKey('accepted')) {
+      context.handle(_acceptedMeta,
+          accepted.isAcceptableOrUnknown(data['accepted']!, _acceptedMeta));
+    }
     if (data.containsKey('accepted_viewed')) {
       context.handle(
           _acceptedViewedMeta,
           acceptedViewed.isAcceptableOrUnknown(
               data['accepted_viewed']!, _acceptedViewedMeta));
+    }
+    if (data.containsKey('rejected')) {
+      context.handle(_rejectedMeta,
+          rejected.isAcceptableOrUnknown(data['rejected']!, _rejectedMeta));
     }
     if (data.containsKey('rejected_viewed')) {
       context.handle(
@@ -1955,8 +2056,12 @@ class $ProfileTextModerationCompletedNotificationTableTable
     return ProfileTextModerationCompletedNotificationTableData(
       id: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      accepted: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}accepted'])!,
       acceptedViewed: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}accepted_viewed'])!,
+      rejected: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}rejected'])!,
       rejectedViewed: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}rejected_viewed'])!,
     );
@@ -1973,17 +2078,23 @@ class $ProfileTextModerationCompletedNotificationTableTable
 class ProfileTextModerationCompletedNotificationTableData extends DataClass
     implements Insertable<ProfileTextModerationCompletedNotificationTableData> {
   final int id;
+  final int accepted;
   final int acceptedViewed;
+  final int rejected;
   final int rejectedViewed;
   const ProfileTextModerationCompletedNotificationTableData(
       {required this.id,
+      required this.accepted,
       required this.acceptedViewed,
+      required this.rejected,
       required this.rejectedViewed});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
+    map['accepted'] = Variable<int>(accepted);
     map['accepted_viewed'] = Variable<int>(acceptedViewed);
+    map['rejected'] = Variable<int>(rejected);
     map['rejected_viewed'] = Variable<int>(rejectedViewed);
     return map;
   }
@@ -1992,7 +2103,9 @@ class ProfileTextModerationCompletedNotificationTableData extends DataClass
       bool nullToAbsent) {
     return ProfileTextModerationCompletedNotificationTableCompanion(
       id: Value(id),
+      accepted: Value(accepted),
       acceptedViewed: Value(acceptedViewed),
+      rejected: Value(rejected),
       rejectedViewed: Value(rejectedViewed),
     );
   }
@@ -2003,7 +2116,9 @@ class ProfileTextModerationCompletedNotificationTableData extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return ProfileTextModerationCompletedNotificationTableData(
       id: serializer.fromJson<int>(json['id']),
+      accepted: serializer.fromJson<int>(json['accepted']),
       acceptedViewed: serializer.fromJson<int>(json['acceptedViewed']),
+      rejected: serializer.fromJson<int>(json['rejected']),
       rejectedViewed: serializer.fromJson<int>(json['rejectedViewed']),
     );
   }
@@ -2012,25 +2127,35 @@ class ProfileTextModerationCompletedNotificationTableData extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
+      'accepted': serializer.toJson<int>(accepted),
       'acceptedViewed': serializer.toJson<int>(acceptedViewed),
+      'rejected': serializer.toJson<int>(rejected),
       'rejectedViewed': serializer.toJson<int>(rejectedViewed),
     };
   }
 
   ProfileTextModerationCompletedNotificationTableData copyWith(
-          {int? id, int? acceptedViewed, int? rejectedViewed}) =>
+          {int? id,
+          int? accepted,
+          int? acceptedViewed,
+          int? rejected,
+          int? rejectedViewed}) =>
       ProfileTextModerationCompletedNotificationTableData(
         id: id ?? this.id,
+        accepted: accepted ?? this.accepted,
         acceptedViewed: acceptedViewed ?? this.acceptedViewed,
+        rejected: rejected ?? this.rejected,
         rejectedViewed: rejectedViewed ?? this.rejectedViewed,
       );
   ProfileTextModerationCompletedNotificationTableData copyWithCompanion(
       ProfileTextModerationCompletedNotificationTableCompanion data) {
     return ProfileTextModerationCompletedNotificationTableData(
       id: data.id.present ? data.id.value : this.id,
+      accepted: data.accepted.present ? data.accepted.value : this.accepted,
       acceptedViewed: data.acceptedViewed.present
           ? data.acceptedViewed.value
           : this.acceptedViewed,
+      rejected: data.rejected.present ? data.rejected.value : this.rejected,
       rejectedViewed: data.rejectedViewed.present
           ? data.rejectedViewed.value
           : this.rejectedViewed,
@@ -2041,20 +2166,25 @@ class ProfileTextModerationCompletedNotificationTableData extends DataClass
   String toString() {
     return (StringBuffer('ProfileTextModerationCompletedNotificationTableData(')
           ..write('id: $id, ')
+          ..write('accepted: $accepted, ')
           ..write('acceptedViewed: $acceptedViewed, ')
+          ..write('rejected: $rejected, ')
           ..write('rejectedViewed: $rejectedViewed')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, acceptedViewed, rejectedViewed);
+  int get hashCode =>
+      Object.hash(id, accepted, acceptedViewed, rejected, rejectedViewed);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is ProfileTextModerationCompletedNotificationTableData &&
           other.id == this.id &&
+          other.accepted == this.accepted &&
           other.acceptedViewed == this.acceptedViewed &&
+          other.rejected == this.rejected &&
           other.rejectedViewed == this.rejectedViewed);
 }
 
@@ -2062,38 +2192,52 @@ class ProfileTextModerationCompletedNotificationTableCompanion
     extends UpdateCompanion<
         ProfileTextModerationCompletedNotificationTableData> {
   final Value<int> id;
+  final Value<int> accepted;
   final Value<int> acceptedViewed;
+  final Value<int> rejected;
   final Value<int> rejectedViewed;
   const ProfileTextModerationCompletedNotificationTableCompanion({
     this.id = const Value.absent(),
+    this.accepted = const Value.absent(),
     this.acceptedViewed = const Value.absent(),
+    this.rejected = const Value.absent(),
     this.rejectedViewed = const Value.absent(),
   });
   ProfileTextModerationCompletedNotificationTableCompanion.insert({
     this.id = const Value.absent(),
+    this.accepted = const Value.absent(),
     this.acceptedViewed = const Value.absent(),
+    this.rejected = const Value.absent(),
     this.rejectedViewed = const Value.absent(),
   });
   static Insertable<ProfileTextModerationCompletedNotificationTableData>
       custom({
     Expression<int>? id,
+    Expression<int>? accepted,
     Expression<int>? acceptedViewed,
+    Expression<int>? rejected,
     Expression<int>? rejectedViewed,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
+      if (accepted != null) 'accepted': accepted,
       if (acceptedViewed != null) 'accepted_viewed': acceptedViewed,
+      if (rejected != null) 'rejected': rejected,
       if (rejectedViewed != null) 'rejected_viewed': rejectedViewed,
     });
   }
 
   ProfileTextModerationCompletedNotificationTableCompanion copyWith(
       {Value<int>? id,
+      Value<int>? accepted,
       Value<int>? acceptedViewed,
+      Value<int>? rejected,
       Value<int>? rejectedViewed}) {
     return ProfileTextModerationCompletedNotificationTableCompanion(
       id: id ?? this.id,
+      accepted: accepted ?? this.accepted,
       acceptedViewed: acceptedViewed ?? this.acceptedViewed,
+      rejected: rejected ?? this.rejected,
       rejectedViewed: rejectedViewed ?? this.rejectedViewed,
     );
   }
@@ -2104,8 +2248,14 @@ class ProfileTextModerationCompletedNotificationTableCompanion
     if (id.present) {
       map['id'] = Variable<int>(id.value);
     }
+    if (accepted.present) {
+      map['accepted'] = Variable<int>(accepted.value);
+    }
     if (acceptedViewed.present) {
       map['accepted_viewed'] = Variable<int>(acceptedViewed.value);
+    }
+    if (rejected.present) {
+      map['rejected'] = Variable<int>(rejected.value);
     }
     if (rejectedViewed.present) {
       map['rejected_viewed'] = Variable<int>(rejectedViewed.value);
@@ -2118,7 +2268,9 @@ class ProfileTextModerationCompletedNotificationTableCompanion
     return (StringBuffer(
             'ProfileTextModerationCompletedNotificationTableCompanion(')
           ..write('id: $id, ')
+          ..write('accepted: $accepted, ')
           ..write('acceptedViewed: $acceptedViewed, ')
+          ..write('rejected: $rejected, ')
           ..write('rejectedViewed: $rejectedViewed')
           ..write(')'))
         .toString();
@@ -2144,6 +2296,14 @@ class $AutomaticProfileSearchCompletedNotificationTableTable
       requiredDuringInsert: false,
       defaultConstraints:
           GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _profilesFoundMeta =
+      const VerificationMeta('profilesFound');
+  @override
+  late final GeneratedColumn<int> profilesFound = GeneratedColumn<int>(
+      'profiles_found', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultValue: const Constant(0));
   static const VerificationMeta _profilesFoundViewedMeta =
       const VerificationMeta('profilesFoundViewed');
   @override
@@ -2153,7 +2313,8 @@ class $AutomaticProfileSearchCompletedNotificationTableTable
       requiredDuringInsert: false,
       defaultValue: const Constant(0));
   @override
-  List<GeneratedColumn> get $columns => [id, profilesFoundViewed];
+  List<GeneratedColumn> get $columns =>
+      [id, profilesFound, profilesFoundViewed];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -2168,6 +2329,12 @@ class $AutomaticProfileSearchCompletedNotificationTableTable
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('profiles_found')) {
+      context.handle(
+          _profilesFoundMeta,
+          profilesFound.isAcceptableOrUnknown(
+              data['profiles_found']!, _profilesFoundMeta));
     }
     if (data.containsKey('profiles_found_viewed')) {
       context.handle(
@@ -2188,6 +2355,8 @@ class $AutomaticProfileSearchCompletedNotificationTableTable
     return AutomaticProfileSearchCompletedNotificationTableData(
       id: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      profilesFound: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}profiles_found'])!,
       profilesFoundViewed: attachedDatabase.typeMapping.read(
           DriftSqlType.int, data['${effectivePrefix}profiles_found_viewed'])!,
     );
@@ -2205,13 +2374,17 @@ class AutomaticProfileSearchCompletedNotificationTableData extends DataClass
     implements
         Insertable<AutomaticProfileSearchCompletedNotificationTableData> {
   final int id;
+  final int profilesFound;
   final int profilesFoundViewed;
   const AutomaticProfileSearchCompletedNotificationTableData(
-      {required this.id, required this.profilesFoundViewed});
+      {required this.id,
+      required this.profilesFound,
+      required this.profilesFoundViewed});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
+    map['profiles_found'] = Variable<int>(profilesFound);
     map['profiles_found_viewed'] = Variable<int>(profilesFoundViewed);
     return map;
   }
@@ -2220,6 +2393,7 @@ class AutomaticProfileSearchCompletedNotificationTableData extends DataClass
       bool nullToAbsent) {
     return AutomaticProfileSearchCompletedNotificationTableCompanion(
       id: Value(id),
+      profilesFound: Value(profilesFound),
       profilesFoundViewed: Value(profilesFoundViewed),
     );
   }
@@ -2230,6 +2404,7 @@ class AutomaticProfileSearchCompletedNotificationTableData extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return AutomaticProfileSearchCompletedNotificationTableData(
       id: serializer.fromJson<int>(json['id']),
+      profilesFound: serializer.fromJson<int>(json['profilesFound']),
       profilesFoundViewed:
           serializer.fromJson<int>(json['profilesFoundViewed']),
     );
@@ -2239,20 +2414,25 @@ class AutomaticProfileSearchCompletedNotificationTableData extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
+      'profilesFound': serializer.toJson<int>(profilesFound),
       'profilesFoundViewed': serializer.toJson<int>(profilesFoundViewed),
     };
   }
 
   AutomaticProfileSearchCompletedNotificationTableData copyWith(
-          {int? id, int? profilesFoundViewed}) =>
+          {int? id, int? profilesFound, int? profilesFoundViewed}) =>
       AutomaticProfileSearchCompletedNotificationTableData(
         id: id ?? this.id,
+        profilesFound: profilesFound ?? this.profilesFound,
         profilesFoundViewed: profilesFoundViewed ?? this.profilesFoundViewed,
       );
   AutomaticProfileSearchCompletedNotificationTableData copyWithCompanion(
       AutomaticProfileSearchCompletedNotificationTableCompanion data) {
     return AutomaticProfileSearchCompletedNotificationTableData(
       id: data.id.present ? data.id.value : this.id,
+      profilesFound: data.profilesFound.present
+          ? data.profilesFound.value
+          : this.profilesFound,
       profilesFoundViewed: data.profilesFoundViewed.present
           ? data.profilesFoundViewed.value
           : this.profilesFoundViewed,
@@ -2264,18 +2444,20 @@ class AutomaticProfileSearchCompletedNotificationTableData extends DataClass
     return (StringBuffer(
             'AutomaticProfileSearchCompletedNotificationTableData(')
           ..write('id: $id, ')
+          ..write('profilesFound: $profilesFound, ')
           ..write('profilesFoundViewed: $profilesFoundViewed')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, profilesFoundViewed);
+  int get hashCode => Object.hash(id, profilesFound, profilesFoundViewed);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is AutomaticProfileSearchCompletedNotificationTableData &&
           other.id == this.id &&
+          other.profilesFound == this.profilesFound &&
           other.profilesFoundViewed == this.profilesFoundViewed);
 }
 
@@ -2283,31 +2465,39 @@ class AutomaticProfileSearchCompletedNotificationTableCompanion
     extends UpdateCompanion<
         AutomaticProfileSearchCompletedNotificationTableData> {
   final Value<int> id;
+  final Value<int> profilesFound;
   final Value<int> profilesFoundViewed;
   const AutomaticProfileSearchCompletedNotificationTableCompanion({
     this.id = const Value.absent(),
+    this.profilesFound = const Value.absent(),
     this.profilesFoundViewed = const Value.absent(),
   });
   AutomaticProfileSearchCompletedNotificationTableCompanion.insert({
     this.id = const Value.absent(),
+    this.profilesFound = const Value.absent(),
     this.profilesFoundViewed = const Value.absent(),
   });
   static Insertable<AutomaticProfileSearchCompletedNotificationTableData>
       custom({
     Expression<int>? id,
+    Expression<int>? profilesFound,
     Expression<int>? profilesFoundViewed,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
+      if (profilesFound != null) 'profiles_found': profilesFound,
       if (profilesFoundViewed != null)
         'profiles_found_viewed': profilesFoundViewed,
     });
   }
 
   AutomaticProfileSearchCompletedNotificationTableCompanion copyWith(
-      {Value<int>? id, Value<int>? profilesFoundViewed}) {
+      {Value<int>? id,
+      Value<int>? profilesFound,
+      Value<int>? profilesFoundViewed}) {
     return AutomaticProfileSearchCompletedNotificationTableCompanion(
       id: id ?? this.id,
+      profilesFound: profilesFound ?? this.profilesFound,
       profilesFoundViewed: profilesFoundViewed ?? this.profilesFoundViewed,
     );
   }
@@ -2317,6 +2507,9 @@ class AutomaticProfileSearchCompletedNotificationTableCompanion
     final map = <String, Expression>{};
     if (id.present) {
       map['id'] = Variable<int>(id.value);
+    }
+    if (profilesFound.present) {
+      map['profiles_found'] = Variable<int>(profilesFound.value);
     }
     if (profilesFoundViewed.present) {
       map['profiles_found_viewed'] = Variable<int>(profilesFoundViewed.value);
@@ -2329,6 +2522,7 @@ class AutomaticProfileSearchCompletedNotificationTableCompanion
     return (StringBuffer(
             'AutomaticProfileSearchCompletedNotificationTableCompanion(')
           ..write('id: $id, ')
+          ..write('profilesFound: $profilesFound, ')
           ..write('profilesFoundViewed: $profilesFoundViewed')
           ..write(')'))
         .toString();

@@ -25,7 +25,7 @@ class NotificationMediaContentModerationCompleted extends AppSingletonNoInit {
     AccountBackgroundDatabaseManager accountBackgroundDb,
   ) async {
     final showAccepted = await accountBackgroundDb.accountData(
-      (db) => db.daoMediaContentModerationCompletedNotificationTable.shouldAcceptedNotificationBeShown(notification.accepted)
+      (db) => db.daoMediaContentModerationCompletedNotificationTable.shouldAcceptedNotificationBeShown(notification.accepted, notification.acceptedViewed)
     ).ok() ?? false;
 
     if (showAccepted) {
@@ -33,7 +33,7 @@ class NotificationMediaContentModerationCompleted extends AppSingletonNoInit {
     }
 
     final showRejected = await accountBackgroundDb.accountData(
-      (db) => db.daoMediaContentModerationCompletedNotificationTable.shouldRejectedNotificationBeShown(notification.rejected)
+      (db) => db.daoMediaContentModerationCompletedNotificationTable.shouldRejectedNotificationBeShown(notification.rejected, notification.rejectedViewed)
     ).ok() ?? false;
 
     if (showRejected) {

@@ -137,9 +137,11 @@ class MediaRepository extends DataRepositoryWithLifecycle {
 
     await NotificationMediaContentModerationCompleted.handleMediaContentModerationCompleted(notification, accountBackgroundDb);
 
-    await api.mediaAction((api) => api.postMarkMediaContentModerationCompletedNotificationViewed(
-      MediaContentModerationCompletedNotificationViewed(accepted: notification.accepted, rejected: notification.rejected),
-    )).ok();
+    final viewed = MediaContentModerationCompletedNotificationViewed(accepted: notification.accepted, rejected: notification.rejected);
+    await api.mediaAction((api) => api.postMarkMediaContentModerationCompletedNotificationViewed(viewed))
+      .andThen((_) => accountBackgroundDb.accountData(
+        (db) => db.daoMediaContentModerationCompletedNotificationTable.updateViewedValues(viewed)
+      ));
   }
 
   Future<Result<void, void>> setProfileContent(SetProfileContent imgInfo) =>

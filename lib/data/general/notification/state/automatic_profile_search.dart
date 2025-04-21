@@ -24,7 +24,7 @@ class NotificationAutomaticProfileSearch extends AppSingletonNoInit {
     AccountBackgroundDatabaseManager accountBackgroundDb,
   ) async {
     final show = await accountBackgroundDb.accountData(
-      (db) => db.daoAutomaticProfileSearchCompletedNotificationTable.shouldProfilesFoundNotificationBeShown(notification.profilesFound)
+      (db) => db.daoAutomaticProfileSearchCompletedNotificationTable.shouldProfilesFoundNotificationBeShown(notification.profilesFound, notification.profilesFoundViewed)
     ).ok() ?? false;
 
     if (show) {
