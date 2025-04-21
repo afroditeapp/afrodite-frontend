@@ -68,6 +68,7 @@ part 'model/attribute_value_order_mode.dart';
 part 'model/auth_pair.dart';
 part 'model/automatic_profile_search_completed_notification.dart';
 part 'model/automatic_profile_search_completed_notification_viewed.dart';
+part 'model/automatic_profile_search_iterator_session_id.dart';
 part 'model/backend_config.dart';
 part 'model/backend_version.dart';
 part 'model/boolean_setting.dart';

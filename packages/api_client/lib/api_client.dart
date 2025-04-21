@@ -238,6 +238,8 @@ class ApiClient {
           return AutomaticProfileSearchCompletedNotification.fromJson(value);
         case 'AutomaticProfileSearchCompletedNotificationViewed':
           return AutomaticProfileSearchCompletedNotificationViewed.fromJson(value);
+        case 'AutomaticProfileSearchIteratorSessionId':
+          return AutomaticProfileSearchIteratorSessionId.fromJson(value);
         case 'BackendConfig':
           return BackendConfig.fromJson(value);
         case 'BackendVersion':

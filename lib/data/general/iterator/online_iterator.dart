@@ -381,7 +381,7 @@ class AutomaticProfileSearchOnlineIteratorIo extends OnlineIteratorIo {
   final AccountDatabaseManager db;
   final ApiManager api;
   IteratorType? iteratorValue;
-  ProfileIteratorSessionId? currentSessionId;
+  AutomaticProfileSearchIteratorSessionId? currentSessionId;
 
   AutomaticProfileSearchOnlineIteratorIo(this.db, this.api);
 

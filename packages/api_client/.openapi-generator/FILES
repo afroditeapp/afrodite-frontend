@@ -50,6 +50,7 @@ lib/model/attribute_value_order_mode.dart
 lib/model/auth_pair.dart
 lib/model/automatic_profile_search_completed_notification.dart
 lib/model/automatic_profile_search_completed_notification_viewed.dart
+lib/model/automatic_profile_search_iterator_session_id.dart
 lib/model/backend_config.dart
 lib/model/backend_version.dart
 lib/model/boolean_setting.dart

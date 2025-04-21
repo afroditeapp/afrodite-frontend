@@ -60,11 +60,12 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
       .withConverter<api.ProfileIteratorSessionId?>(
           $AccountTable.$converterprofileIteratorSessionId);
   @override
-  late final GeneratedColumnWithTypeConverter<api.ProfileIteratorSessionId?,
+  late final GeneratedColumnWithTypeConverter<
+      api.AutomaticProfileSearchIteratorSessionId?,
       int> automatiProfileSearchIteratorSessionId = GeneratedColumn<int>(
           'automati_profile_search_iterator_session_id', aliasedName, true,
           type: DriftSqlType.int, requiredDuringInsert: false)
-      .withConverter<api.ProfileIteratorSessionId?>(
+      .withConverter<api.AutomaticProfileSearchIteratorSessionId?>(
           $AccountTable.$converterautomatiProfileSearchIteratorSessionId);
   @override
   late final GeneratedColumnWithTypeConverter<
@@ -1039,9 +1040,10 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
   static TypeConverter<api.ProfileIteratorSessionId?, int?>
       $converterprofileIteratorSessionId =
       const NullAwareTypeConverter.wrap(ProfileIteratorSessionIdConverter());
-  static TypeConverter<api.ProfileIteratorSessionId?, int?>
+  static TypeConverter<api.AutomaticProfileSearchIteratorSessionId?, int?>
       $converterautomatiProfileSearchIteratorSessionId =
-      const NullAwareTypeConverter.wrap(ProfileIteratorSessionIdConverter());
+      const NullAwareTypeConverter.wrap(
+          AutomaticProfileSearchIteratorSessionIdConverter());
   static TypeConverter<api.ReceivedLikesIteratorSessionId?, int?>
       $converterreceivedLikesIteratorSessionId =
       const NullAwareTypeConverter.wrap(
@@ -1116,7 +1118,8 @@ class AccountData extends DataClass implements Insertable<AccountData> {
   /// If true show only favorite profiles
   final bool profileFilterFavorites;
   final api.ProfileIteratorSessionId? profileIteratorSessionId;
-  final api.ProfileIteratorSessionId? automatiProfileSearchIteratorSessionId;
+  final api.AutomaticProfileSearchIteratorSessionId?
+      automatiProfileSearchIteratorSessionId;
   final api.ReceivedLikesIteratorSessionId? receivedLikesIteratorSessionId;
   final api.MatchesIteratorSessionId? matchesIteratorSessionId;
   final api.ClientId? clientId;
@@ -1726,7 +1729,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           serializer.fromJson<api.ProfileIteratorSessionId?>(
               json['profileIteratorSessionId']),
       automatiProfileSearchIteratorSessionId:
-          serializer.fromJson<api.ProfileIteratorSessionId?>(
+          serializer.fromJson<api.AutomaticProfileSearchIteratorSessionId?>(
               json['automatiProfileSearchIteratorSessionId']),
       receivedLikesIteratorSessionId:
           serializer.fromJson<api.ReceivedLikesIteratorSessionId?>(
@@ -1854,7 +1857,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       'profileIteratorSessionId': serializer
           .toJson<api.ProfileIteratorSessionId?>(profileIteratorSessionId),
       'automatiProfileSearchIteratorSessionId':
-          serializer.toJson<api.ProfileIteratorSessionId?>(
+          serializer.toJson<api.AutomaticProfileSearchIteratorSessionId?>(
               automatiProfileSearchIteratorSessionId),
       'receivedLikesIteratorSessionId':
           serializer.toJson<api.ReceivedLikesIteratorSessionId?>(
@@ -1964,8 +1967,8 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           bool? profileFilterFavorites,
           Value<api.ProfileIteratorSessionId?> profileIteratorSessionId =
               const Value.absent(),
-          Value<api.ProfileIteratorSessionId?> automatiProfileSearchIteratorSessionId =
-              const Value.absent(),
+          Value<api.AutomaticProfileSearchIteratorSessionId?>
+              automatiProfileSearchIteratorSessionId = const Value.absent(),
           Value<api.ReceivedLikesIteratorSessionId?> receivedLikesIteratorSessionId =
               const Value.absent(),
           Value<api.MatchesIteratorSessionId?> matchesIteratorSessionId =
@@ -2035,8 +2038,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           Value<api.CustomReportsFileHash?> customReportsFileHash =
               const Value.absent(),
           Value<JsonString?> customReportsConfig = const Value.absent(),
-          Value<api.ClientFeaturesFileHash?> clientFeaturesFileHash =
-              const Value.absent(),
+          Value<api.ClientFeaturesFileHash?> clientFeaturesFileHash = const Value.absent(),
           Value<JsonString?> clientFeaturesConfig = const Value.absent(),
           bool? initialSetupSkipped}) =>
       AccountData(
@@ -2693,7 +2695,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
   final Value<EnumString?> jsonProfileVisibility;
   final Value<bool> profileFilterFavorites;
   final Value<api.ProfileIteratorSessionId?> profileIteratorSessionId;
-  final Value<api.ProfileIteratorSessionId?>
+  final Value<api.AutomaticProfileSearchIteratorSessionId?>
       automatiProfileSearchIteratorSessionId;
   final Value<api.ReceivedLikesIteratorSessionId?>
       receivedLikesIteratorSessionId;
@@ -3101,7 +3103,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       Value<EnumString?>? jsonProfileVisibility,
       Value<bool>? profileFilterFavorites,
       Value<api.ProfileIteratorSessionId?>? profileIteratorSessionId,
-      Value<api.ProfileIteratorSessionId?>?
+      Value<api.AutomaticProfileSearchIteratorSessionId?>?
           automatiProfileSearchIteratorSessionId,
       Value<api.ReceivedLikesIteratorSessionId?>?
           receivedLikesIteratorSessionId,

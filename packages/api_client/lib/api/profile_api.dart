@@ -611,13 +611,13 @@ class ProfileApi {
   ///
   /// Parameters:
   ///
-  /// * [ProfileIteratorSessionId] profileIteratorSessionId (required):
-  Future<Response> postAutomaticProfileSearchGetNextProfilePageWithHttpInfo(ProfileIteratorSessionId profileIteratorSessionId,) async {
+  /// * [AutomaticProfileSearchIteratorSessionId] automaticProfileSearchIteratorSessionId (required):
+  Future<Response> postAutomaticProfileSearchGetNextProfilePageWithHttpInfo(AutomaticProfileSearchIteratorSessionId automaticProfileSearchIteratorSessionId,) async {
     // ignore: prefer_const_declarations
     final path = r'/profile_api/automatic_profile_search/next';
 
     // ignore: prefer_final_locals
-    Object? postBody = profileIteratorSessionId;
+    Object? postBody = automaticProfileSearchIteratorSessionId;
 
     final queryParams = <QueryParam>[];
     final headerParams = <String, String>{};
@@ -641,9 +641,9 @@ class ProfileApi {
   ///
   /// Parameters:
   ///
-  /// * [ProfileIteratorSessionId] profileIteratorSessionId (required):
-  Future<ProfilePage?> postAutomaticProfileSearchGetNextProfilePage(ProfileIteratorSessionId profileIteratorSessionId,) async {
-    final response = await postAutomaticProfileSearchGetNextProfilePageWithHttpInfo(profileIteratorSessionId,);
+  /// * [AutomaticProfileSearchIteratorSessionId] automaticProfileSearchIteratorSessionId (required):
+  Future<ProfilePage?> postAutomaticProfileSearchGetNextProfilePage(AutomaticProfileSearchIteratorSessionId automaticProfileSearchIteratorSessionId,) async {
+    final response = await postAutomaticProfileSearchGetNextProfilePageWithHttpInfo(automaticProfileSearchIteratorSessionId,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -690,7 +690,7 @@ class ProfileApi {
   /// Reset automatic profile search profile paging.
   ///
   /// After this request getting next profiles will continue from the nearest profiles.
-  Future<ProfileIteratorSessionId?> postAutomaticProfileSearchResetProfilePaging() async {
+  Future<AutomaticProfileSearchIteratorSessionId?> postAutomaticProfileSearchResetProfilePaging() async {
     final response = await postAutomaticProfileSearchResetProfilePagingWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
@@ -699,7 +699,7 @@ class ProfileApi {
     // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'ProfileIteratorSessionId',) as ProfileIteratorSessionId;
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'AutomaticProfileSearchIteratorSessionId',) as AutomaticProfileSearchIteratorSessionId;
     
     }
     return null;

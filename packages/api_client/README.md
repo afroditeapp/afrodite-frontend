@@ -256,6 +256,7 @@ Class | Method | HTTP request | Description
  - [AuthPair](doc//AuthPair.md)
  - [AutomaticProfileSearchCompletedNotification](doc//AutomaticProfileSearchCompletedNotification.md)
  - [AutomaticProfileSearchCompletedNotificationViewed](doc//AutomaticProfileSearchCompletedNotificationViewed.md)
+ - [AutomaticProfileSearchIteratorSessionId](doc//AutomaticProfileSearchIteratorSessionId.md)
  - [BackendConfig](doc//BackendConfig.md)
  - [BackendVersion](doc//BackendVersion.md)
  - [BooleanSetting](doc//BooleanSetting.md)
