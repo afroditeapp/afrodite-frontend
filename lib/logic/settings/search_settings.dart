@@ -1,5 +1,7 @@
 import "dart:async";
 
+import "package:app/api/api_manager.dart";
+import "package:app/database/account_background_database_manager.dart";
 import "package:app/model/freezed/logic/account/initial_setup.dart";
 import "package:app/utils/age.dart";
 import "package:app/utils/api.dart";
@@ -29,6 +31,10 @@ class NewSearchGroups extends SearchSettingsEvent {
   final SearchGroups value;
   NewSearchGroups(this.value);
 }
+class NewProfileAppNotificationSettings extends SearchSettingsEvent {
+  final ProfileAppNotificationSettings value;
+  NewProfileAppNotificationSettings(this.value);
+}
 class UpdateMinAge extends SearchSettingsEvent {
   final int value;
   UpdateMinAge(this.value);
@@ -45,6 +51,13 @@ class UpdateGenderSearchSettingsAll extends SearchSettingsEvent {
   final GenderSearchSettingsAll settings;
   UpdateGenderSearchSettingsAll(this.settings);
 }
+class ToggleSearchDistance extends SearchSettingsEvent {}
+class ToggleSearchFilters extends SearchSettingsEvent {}
+class ToggleSearchNewProfiles extends SearchSettingsEvent {}
+class UpdateSearchWeekday extends SearchSettingsEvent {
+  final int value;
+  UpdateSearchWeekday(this.value);
+}
 class ResetEditedValues extends SearchSettingsEvent {}
 class SaveSearchSettings extends SearchSettingsEvent {
   final SearchGroups searchGroups;
@@ -54,12 +67,17 @@ class SaveSearchSettings extends SearchSettingsEvent {
 class SearchSettingsBloc extends Bloc<SearchSettingsEvent, SearchSettingsData> with ActionRunner {
   final ProfileRepository profile = LoginRepository.getInstance().repositories.profile;
   final AccountDatabaseManager db = LoginRepository.getInstance().repositories.accountDb;
+  final AccountBackgroundDatabaseManager accountBackgroundDb = LoginRepository.getInstance().repositories.accountBackgroundDb;
+  final ApiManager api = LoginRepository.getInstance().repositories.api;
 
   StreamSubscription<int?>? _minAgeSubscription;
   StreamSubscription<int?>? _maxAgeSubscription;
   StreamSubscription<SearchGroups?>? _searchGroupsSubscription;
+  StreamSubscription<ProfileAppNotificationSettings?>? _profileSettingsSubscription;
 
-  SearchSettingsBloc() : super(SearchSettingsData()) {
+  SearchSettingsBloc() : super(SearchSettingsData(
+    profileSettings: ProfileAppNotificationSettingsDefaults.defaultValue,
+  )) {
     on<SaveSearchSettings>((data, emit) async {
       await runOnce(() async {
         final currentState = state;
@@ -82,6 +100,22 @@ class SearchSettingsBloc extends Bloc<SearchSettingsEvent, SearchSettingsData> w
 
         if (!await profile.updateSearchGroups(data.searchGroups).isOk()) {
           failureDetected = true;
+        }
+
+        {
+          final settings = ProfileAppNotificationSettings(
+            profileTextModeration: state.profileSettings.profileTextModeration,
+            automaticProfileSearch: state.profileSettings.automaticProfileSearch,
+            automaticProfileSearchDistance: state.valueSearchDistance(),
+            automaticProfileSearchNewProfiles: state.valueSearchNewProfiles(),
+            automaticProfileSearchFilters: state.valueSearchFilters(),
+            automaticProfileSearchWeekdays: state.valueSearchWeekdays(),
+          );
+          final r = await api.profileAction((api) => api.postProfileAppNotificationSettings(settings))
+            .andThen((_) => accountBackgroundDb.accountAction((db) => db.daoAppNotificationSettingsTable.updateProfileNotificationSettings(settings)));
+          if (r.isErr()) {
+            failureDetected = true;
+          }
         }
 
         await profile.resetMainProfileIterator();
@@ -114,6 +148,11 @@ class SearchSettingsBloc extends Bloc<SearchSettingsEvent, SearchSettingsData> w
         genderSearchSettingsAll: data.value.toGenderSearchSettingsAll() ?? const GenderSearchSettingsAll(),
       ));
     });
+    on<NewProfileAppNotificationSettings>((data, emit) async {
+      emit(state.copyWith(
+        profileSettings: data.value,
+      ));
+    });
     on<UpdateMinAge>((data, emit) async {
       if (data.value == state.minAge) {
         emit(state.copyWith(editedMinAge: null));
@@ -142,6 +181,38 @@ class SearchSettingsBloc extends Bloc<SearchSettingsEvent, SearchSettingsData> w
         emit(state.copyWith(editedGenderSearchSettingsAll: data.settings));
       }
     });
+    on<ToggleSearchDistance>((data, emit) async {
+      if (state.editedSearchDistance == null) {
+        emit(state.copyWith(editedSearchDistance: !state.profileSettings.automaticProfileSearchDistance));
+      } else {
+        emit(state.copyWith(editedSearchDistance: null));
+      }
+    });
+    on<ToggleSearchFilters>((data, emit) async {
+      if (state.editedSearchFilters == null) {
+        emit(state.copyWith(editedSearchFilters: !state.profileSettings.automaticProfileSearchFilters));
+      } else {
+        emit(state.copyWith(editedSearchFilters: null));
+      }
+    });
+    on<ToggleSearchNewProfiles>((data, emit) async {
+      if (state.editedSearchNewProfiles == null) {
+        emit(state.copyWith(editedSearchNewProfiles: !state.profileSettings.automaticProfileSearchNewProfiles));
+      } else {
+        emit(state.copyWith(editedSearchNewProfiles: null));
+      }
+    });
+    on<UpdateSearchWeekday>((data, emit) async {
+      if (data.value == state.profileSettings.automaticProfileSearchWeekdays) {
+        emit(state.copyWith(
+          editedSearchWeekdays: null,
+        ));
+      } else {
+        emit(state.copyWith(
+          editedSearchWeekdays: data.value,
+        ));
+      }
+    });
 
     _minAgeSubscription = db.accountStream((db) => db.daoProfileSettings.watchProfileSearchAgeRangeMin()).listen((event) {
       add(NewMinAge(event ?? MIN_AGE));
@@ -152,6 +223,11 @@ class SearchSettingsBloc extends Bloc<SearchSettingsEvent, SearchSettingsData> w
     _searchGroupsSubscription = db.accountStream((db) => db.daoProfileSettings.watchSearchGroups()).listen((event) {
       add(NewSearchGroups(event ?? SearchGroups()));
     });
+    _profileSettingsSubscription = accountBackgroundDb
+      .accountStream((db) => db.daoAppNotificationSettingsTable.watchProfileAppNotificationSettings())
+      .listen((state) {
+        add(NewProfileAppNotificationSettings(state ?? ProfileAppNotificationSettingsDefaults.defaultValue));
+      });
   }
 
   void _resetEditedValues(Emitter<SearchSettingsData> emit) {
@@ -160,6 +236,10 @@ class SearchSettingsBloc extends Bloc<SearchSettingsEvent, SearchSettingsData> w
       editedMaxAge: null,
       editedGenderSearchSettingsAll: null,
       editedGender: null,
+      editedSearchDistance: null,
+      editedSearchFilters: null,
+      editedSearchNewProfiles: null,
+      editedSearchWeekdays: null,
     ));
   }
 
@@ -168,6 +248,7 @@ class SearchSettingsBloc extends Bloc<SearchSettingsEvent, SearchSettingsData> w
     await _minAgeSubscription?.cancel();
     await _maxAgeSubscription?.cancel();
     await _searchGroupsSubscription?.cancel();
+    await _profileSettingsSubscription?.cancel();
     await super.close();
   }
 }

@@ -120,14 +120,6 @@
     <string name="notification_settings_screen_notification_category_disabled_from_system_settings_text" description="Info text that notification category is disabled from system settings">Disabled from system notification settings</string>
     <string name="notification_settings_screen_open_system_notification_settings" description="Action title for opening system notification settings">System notification settings</string>
 
-    <!-- Automatic profile search settings screen -->
-    <string name="automatic_profile_search_settings_screen_title" description="Title for automatic profile search settings screen">Automatic profile search settings</string>
-    <string name="automatic_profile_search_settings_screen_distance" description="Title text for distance setting">Use max distance filter</string>
-    <string name="automatic_profile_search_settings_screen_filters" description="Title text for filters setting">Use multiple-choice question filters</string>
-    <string name="automatic_profile_search_settings_screen_new_profiles" description="Title text for new profiles setting">Show only new profiles</string>
-    <string name="automatic_profile_search_settings_screen_weekdays" description="Title text for weekdays setting">Search weekdays</string>
-    <string name="automatic_profile_search_settings_screen_one_weekday_must_be_selected_info" description="Snackbar info text that one weekday must be selected">One weekday must be selected</string>
-
     <!-- Automatic profile search results screen -->
     <string name="automatic_profile_search_results_screen_title" description="Title for automatic profile search results screen">Automatic profile search results</string>
     <string name="automatic_profile_search_results_screen_no_profiles_found" description="Info text displayed when no profiles are found">No profiles found</string>
@@ -342,6 +334,11 @@
     <string name="search_settings_screen_gender_is_not_selected" description="Snackbar text about missing gender information">Your gender information is not set</string>
     <string name="search_settings_screen_gender_filter_is_not_selected" description="Snackbar text about missing gender filter value">Gender filter is not selected</string>
     <string name="search_settings_screen_search_settings_update_failed" description="Snackbar text about failed search settings update">Updating search settings failed</string>
+    <string name="search_settings_screen_automatic_search" description="Title for automatic profile search settings category">Automatic search</string>
+    <string name="search_settings_screen_distance" description="Title text for distance setting">Use max distance filter</string>
+    <string name="search_settings_screen_filters" description="Title text for filters setting">Use multiple-choice question filters</string>
+    <string name="search_settings_screen_new_profiles" description="Title text for new profiles setting">Show only new profiles</string>
+    <string name="search_settings_screen_weekdays" description="Title text for weekdays setting">Search weekdays</string>
 
     <!-- Edit my gender screen -->
     <string name="edit_my_gender_screen_gender_setting_title" description="Title for gender setting">My profile\'s gender</string>

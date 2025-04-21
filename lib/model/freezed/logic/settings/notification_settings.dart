@@ -20,10 +20,6 @@ class NotificationSettingsData with _$NotificationSettingsData, UpdateStateProvi
     @Default(ProfileAppNotificationSettingsDefaults.filtersDefault) bool searchFilters,
     @Default(ProfileAppNotificationSettingsDefaults.newProfilesDefault) bool searchNewProfiles,
     @Default(ProfileAppNotificationSettingsDefaults.weekdaysDefault) int searchWeekdays,
-
-    // Search results
-    @Default(false) bool savingOfSearchResultsRelatedSettingsInProgress,
-    @Default(false) bool savingOfSearchResultsRelatedSettingsCompleted,
   }) = _NotificationSettingsData;
 
   bool valueMessages() => edited.messages ?? categories.messages;
@@ -32,26 +28,13 @@ class NotificationSettingsData with _$NotificationSettingsData, UpdateStateProvi
   bool valueProfileText() => edited.profileText ?? categories.profileTextModerationCompleted;
   bool valueNews() => edited.news ?? categories.news;
   bool valueAutomaticProfileSearch() => edited.automaticProfileSearch ?? categories.automaticProfileSearch;
-  bool valueSearchDistance() => edited.searchDistance ?? searchDistance;
-  bool valueSearchFilters() => edited.searchFilters ?? searchFilters;
-  bool valueSearchNewProfiles() => edited.searchNewProfiles ?? searchNewProfiles;
-  int valueSearchWeekdays() => edited.searchWeekdays ?? searchWeekdays;
 
   bool unsavedChanges() => edited.messages != null ||
     edited.likes != null ||
     edited.mediaContent != null ||
     edited.profileText != null ||
     edited.news != null ||
-    edited.automaticProfileSearch != null ||
-    edited.searchDistance != null ||
-    edited.searchFilters != null ||
-    edited.searchNewProfiles != null ||
-    edited.searchWeekdays != null;
-
-  bool unsavedSearchResultRelatedChanges() => edited.searchDistance != null ||
-    edited.searchFilters != null ||
-    edited.searchNewProfiles != null ||
-    edited.searchWeekdays != null;
+    edited.automaticProfileSearch != null;
 }
 
 @freezed
@@ -77,9 +60,5 @@ class EditedNotificationSettingsData with _$EditedNotificationSettingsData {
     bool? profileText,
     bool? news,
     bool? automaticProfileSearch,
-    bool? searchDistance,
-    bool? searchFilters,
-    bool? searchNewProfiles,
-    int? searchWeekdays,
   }) = _EditedNotificationSettingsData;
 }

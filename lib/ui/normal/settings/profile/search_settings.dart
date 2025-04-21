@@ -40,6 +40,8 @@ class _SearchSettingsScreenState extends State<SearchSettingsScreen> {
   int initialMinAge = MIN_AGE;
   int initialMaxAge = MAX_AGE;
 
+  bool floatingActionButtonPadding = false;
+
   @override
   void initState() {
     super.initState();
@@ -85,6 +87,9 @@ class _SearchSettingsScreenState extends State<SearchSettingsScreen> {
       child: BlocBuilder<SearchSettingsBloc, SearchSettingsData>(
         builder: (context, data) {
           final settingsChanged = data.unsavedChanges();
+          if (settingsChanged) {
+            floatingActionButtonPadding = true;
+          }
 
           return PopScope(
             canPop: !settingsChanged,
@@ -98,6 +103,7 @@ class _SearchSettingsScreenState extends State<SearchSettingsScreen> {
                     validateAndSaveData(context);
                   } else if (value == false && context.mounted) {
                     MyNavigator.pop(context);
+                    widget.searchSettingsBloc.add(ResetEditedValues());
                   }
                 });
             },
@@ -113,7 +119,7 @@ class _SearchSettingsScreenState extends State<SearchSettingsScreen> {
                   ]),
                 ],
               ),
-              body: edit(context, settingsChanged),
+              body: edit(context, data),
               floatingActionButton: settingsChanged ? FloatingActionButton(
                 onPressed: () => validateAndSaveData(context),
                 child: const Icon(Icons.check),
@@ -125,7 +131,7 @@ class _SearchSettingsScreenState extends State<SearchSettingsScreen> {
     );
   }
 
-  Widget edit(BuildContext context, bool settingsChanged) {
+  Widget edit(BuildContext context, SearchSettingsData state) {
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -153,10 +159,28 @@ class _SearchSettingsScreenState extends State<SearchSettingsScreen> {
           ),
           hPad(Text(context.strings.search_settings_screen_change_gender_filter_action_tile)),
           const Padding(padding: EdgeInsets.all(4)),
-          editGenderFilter(),
+          editGenderFilter(state),
           const Padding(padding: EdgeInsets.all(4)),
           hPad(Text(context.strings.search_settings_screen_help_text)),
-          if (settingsChanged) const Padding(
+          const Padding(padding: EdgeInsets.all(8)),
+          hPad(Text(
+            context.strings.search_settings_screen_automatic_search,
+            style: Theme.of(context).textTheme.titleLarge,
+          )),
+          const Padding(padding: EdgeInsets.all(4)),
+          distanceWidget(context, state),
+          filtersWidget(context, state),
+          newProfilesWidget(context, state),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            child: Text(
+              context.strings.search_settings_screen_weekdays,
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+          ),
+          hPad(weekdaysWidget(context, state)),
+          const Padding(padding: EdgeInsets.all(4)),
+          if (floatingActionButtonPadding) const Padding(
             padding: EdgeInsets.only(top: FLOATING_ACTION_BUTTON_EMPTY_AREA),
             child: null,
           ),
@@ -165,15 +189,11 @@ class _SearchSettingsScreenState extends State<SearchSettingsScreen> {
     );
   }
 
-  Widget editGenderFilter() {
-    return BlocBuilder<SearchSettingsBloc, SearchSettingsData>(
-      builder: (context, state) {
-        return EditGenderFilter(
-          onStartEditor: () => MyNavigator.push(context, const MaterialPage<void>(child: EditGenderFilterScreen())),
-          genderSearchSetting: state.valueGenderSearchSettingsAll(),
-          gender: state.valueGender(),
-        );
-      }
+  Widget editGenderFilter(SearchSettingsData state) {
+    return EditGenderFilter(
+      onStartEditor: () => MyNavigator.push(context, const MaterialPage<void>(child: EditGenderFilterScreen())),
+      genderSearchSetting: state.valueGenderSearchSettingsAll(),
+      gender: state.valueGender(),
     );
   }
 
@@ -216,6 +236,56 @@ class _SearchSettingsScreenState extends State<SearchSettingsScreen> {
           context.read<SearchSettingsBloc>().add(UpdateMaxAge(value));
         },
       ),
+    );
+  }
+
+  Widget distanceWidget(BuildContext context, SearchSettingsData state) {
+    return CheckboxListTile(
+      title: Text(context.strings.search_settings_screen_distance),
+      value: state.valueSearchDistance(),
+      onChanged: (value) {
+        context.read<SearchSettingsBloc>().add(ToggleSearchDistance());
+      },
+    );
+  }
+
+  Widget filtersWidget(BuildContext context, SearchSettingsData state) {
+    return CheckboxListTile(
+      title: Text(context.strings.search_settings_screen_filters),
+      value: state.valueSearchFilters(),
+      onChanged: (value) {
+        context.read<SearchSettingsBloc>().add(ToggleSearchFilters());
+      },
+    );
+  }
+
+  Widget newProfilesWidget(BuildContext context, SearchSettingsData state) {
+    return CheckboxListTile(
+      title: Text(context.strings.search_settings_screen_new_profiles),
+      value: state.valueSearchNewProfiles(),
+      onChanged: (value) {
+        context.read<SearchSettingsBloc>().add(ToggleSearchNewProfiles());
+      },
+    );
+  }
+
+  Widget weekdaysWidget(BuildContext context, SearchSettingsData state) {
+    return Wrap(
+      spacing: 5,
+      children: Weekday.weekdays(context).map((day) {
+        return FilterChip(
+          label: Text(day.text),
+          selected: state.valueSearchWeekdays() & day.bitflag == day.bitflag,
+          onSelected: (value) {
+            if (value) {
+              context.read<SearchSettingsBloc>().add(UpdateSearchWeekday(state.valueSearchWeekdays() | day.bitflag));
+            } else {
+              final newValue = state.valueSearchWeekdays() & ~day.bitflag;
+              context.read<SearchSettingsBloc>().add(UpdateSearchWeekday(newValue));
+            }
+          },
+        );
+      }).toList(),
     );
   }
 }
@@ -264,5 +334,24 @@ class EditGenderFilter extends StatelessWidget {
       spacing: 8,
       children: valueWidgets,
     );
+  }
+}
+
+class Weekday {
+  final String text;
+  final int bitflag;
+  Weekday(this.text, this.bitflag);
+
+  static List<Weekday> weekdays(BuildContext context) {
+    final strings = context.strings;
+    return [
+      Weekday(strings.generic_weekday_mon, 0x01),
+      Weekday(strings.generic_weekday_tue, 0x02),
+      Weekday(strings.generic_weekday_wed, 0x04),
+      Weekday(strings.generic_weekday_thu, 0x08),
+      Weekday(strings.generic_weekday_fri, 0x10),
+      Weekday(strings.generic_weekday_sat, 0x20),
+      Weekday(strings.generic_weekday_sun, 0x40),
+    ];
   }
 }

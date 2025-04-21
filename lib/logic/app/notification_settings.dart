@@ -3,7 +3,6 @@ import "dart:async";
 import "package:app/localizations.dart";
 import "package:app/ui_utils/common_update_logic.dart";
 import "package:app/ui_utils/snack_bar.dart";
-import "package:app/utils/api.dart";
 import "package:app/utils/result.dart";
 import "package:app/utils/time.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
@@ -24,13 +23,6 @@ class ToggleMediaContentModerationCompleted extends NotificationSettingsEvent {}
 class ToggleProfileTextModerationCompleted extends NotificationSettingsEvent {}
 class ToggleNews extends NotificationSettingsEvent {}
 class ToggleAutomaticProfileSearch extends NotificationSettingsEvent {}
-class ToggleSearchDistance extends NotificationSettingsEvent {}
-class ToggleSearchFilters extends NotificationSettingsEvent {}
-class ToggleSearchNewProfiles extends NotificationSettingsEvent {}
-class UpdateSearchWeekday extends NotificationSettingsEvent {
-  final int value;
-  UpdateSearchWeekday(this.value);
-}
 class NewValueMessages extends NotificationSettingsEvent {
   final bool value;
   NewValueMessages(this.value);
@@ -51,8 +43,6 @@ class NewValueProfileSettings extends NotificationSettingsEvent {
   final ProfileAppNotificationSettings value;
   NewValueProfileSettings(this.value);
 }
-class SaveSearchResultRelatedSettings extends NotificationSettingsEvent {}
-class ResetSaveSearchResultRelatedSettingsDone extends NotificationSettingsEvent {}
 
 class NotificationSettingsBloc extends Bloc<NotificationSettingsEvent, NotificationSettingsData> {
   final api = LoginRepository.getInstance().repositories.api;
@@ -63,7 +53,6 @@ class NotificationSettingsBloc extends Bloc<NotificationSettingsEvent, Notificat
   StreamSubscription<bool?>? _likesSubscription;
   StreamSubscription<bool?>? _mediaContentModerationCompletedSubscription;
   StreamSubscription<bool?>? _newsSubscription;
-  StreamSubscription<ProfileAppNotificationSettings?>? _profileSettingsSubscription;
 
   NotificationSettingsBloc() : super(NotificationSettingsData(
     categories: NotificationCategoryData(),
@@ -88,11 +77,6 @@ class NotificationSettingsBloc extends Bloc<NotificationSettingsEvent, Notificat
       _resetEditedValues(emit);
     });
     on<SaveSettings>((data, emit) async {
-      if (state.savingOfSearchResultsRelatedSettingsInProgress) {
-        showSnackBar(R.strings.generic_previous_action_in_progress);
-        return;
-      }
-
       final currentState = state;
 
       emit(state.copyWith(
@@ -120,10 +104,10 @@ class NotificationSettingsBloc extends Bloc<NotificationSettingsEvent, Notificat
         final settings = ProfileAppNotificationSettings(
           profileTextModeration: currentState.valueProfileText(),
           automaticProfileSearch: currentState.valueAutomaticProfileSearch(),
-          automaticProfileSearchDistance: currentState.valueSearchDistance(),
-          automaticProfileSearchNewProfiles: currentState.valueSearchNewProfiles(),
-          automaticProfileSearchFilters: currentState.valueSearchFilters(),
-          automaticProfileSearchWeekdays: currentState.valueSearchWeekdays(),
+          automaticProfileSearchDistance: currentState.searchDistance,
+          automaticProfileSearchNewProfiles: currentState.searchNewProfiles,
+          automaticProfileSearchFilters: currentState.searchFilters,
+          automaticProfileSearchWeekdays: currentState.searchWeekdays,
         );
         final r = await api.profileAction((api) => api.postProfileAppNotificationSettings(settings))
           .andThen((_) => db.accountAction((db) => db.daoAppNotificationSettingsTable.updateProfileNotificationSettings(settings)));
@@ -237,57 +221,6 @@ class NotificationSettingsBloc extends Bloc<NotificationSettingsEvent, Notificat
         ),
       );
     });
-    on<ToggleSearchDistance>((data, emit) async {
-      _updateEditedValue(
-        emit,
-        () => state.edited.searchDistance == null,
-        () => state.edited.copyWith(
-          searchDistance: !state.searchDistance
-        ),
-        () => state.edited.copyWith(
-          searchDistance: null,
-        ),
-      );
-    });
-    on<ToggleSearchFilters>((data, emit) async {
-      _updateEditedValue(
-        emit,
-        () => state.edited.searchFilters == null,
-        () => state.edited.copyWith(
-          searchFilters: !state.searchFilters
-        ),
-        () => state.edited.copyWith(
-          searchFilters: null,
-        ),
-      );
-    });
-    on<ToggleSearchNewProfiles>((data, emit) async {
-      _updateEditedValue(
-        emit,
-        () => state.edited.searchNewProfiles == null,
-        () => state.edited.copyWith(
-          searchNewProfiles: !state.searchNewProfiles
-        ),
-        () => state.edited.copyWith(
-          searchNewProfiles: null,
-        ),
-      );
-    });
-    on<UpdateSearchWeekday>((data, emit) async {
-      if (data.value == state.searchWeekdays) {
-        emit(state.copyWith(
-          edited: state.edited.copyWith(
-            searchWeekdays: null,
-          ),
-        ));
-      } else {
-        emit(state.copyWith(
-          edited: state.edited.copyWith(
-            searchWeekdays: data.value,
-          ),
-        ));
-      }
-    });
     on<NewValueLikes>((data, emit) =>
       emit(state.copyWith(categories: state.categories.copyWith(likes: data.value)))
     );
@@ -303,55 +236,13 @@ class NotificationSettingsBloc extends Bloc<NotificationSettingsEvent, Notificat
     on<NewValueProfileSettings>((data, emit) {
       final v = data.value;
       emit(state.copyWith(
-        categories: state.categories.copyWith(profileTextModerationCompleted: v.profileTextModeration),
+        categories: state.categories.copyWith(
+          profileTextModerationCompleted: v.profileTextModeration
+        ),
         searchDistance: v.automaticProfileSearchDistance,
         searchFilters: v.automaticProfileSearchFilters,
         searchNewProfiles: v.automaticProfileSearchNewProfiles,
         searchWeekdays: v.automaticProfileSearchWeekdays,
-      ));
-    });
-    on<SaveSearchResultRelatedSettings>((data, emit) async {
-      if (state.savingOfSearchResultsRelatedSettingsInProgress) {
-        return;
-      }
-
-      emit(state.copyWith(
-        savingOfSearchResultsRelatedSettingsInProgress: true,
-      ));
-
-      {
-        final settings = ProfileAppNotificationSettings(
-          profileTextModeration: state.categories.profileTextModerationCompleted,
-          automaticProfileSearch: state.categories.automaticProfileSearch,
-          automaticProfileSearchDistance: state.valueSearchDistance(),
-          automaticProfileSearchNewProfiles: state.valueSearchNewProfiles(),
-          automaticProfileSearchFilters: state.valueSearchFilters(),
-          automaticProfileSearchWeekdays: state.valueSearchWeekdays(),
-        );
-        final r = await api.profileAction((api) => api.postProfileAppNotificationSettings(settings))
-          .andThen((_) => db.accountAction((db) => db.daoAppNotificationSettingsTable.updateProfileNotificationSettings(settings)));
-        if (r.isErr()) {
-          showSnackBar(R.strings.generic_error_occurred);
-        } else {
-          emit(state.copyWith(
-            edited: state.edited.copyWith(
-              searchDistance: null,
-              searchNewProfiles: null,
-              searchFilters: null,
-              searchWeekdays: null,
-            ),
-          ));
-        }
-      }
-
-      emit(state.copyWith(
-        savingOfSearchResultsRelatedSettingsInProgress: false,
-        savingOfSearchResultsRelatedSettingsCompleted: true,
-      ));
-    });
-    on<ResetSaveSearchResultRelatedSettingsDone>((data, emit) async {
-      emit(state.copyWith(
-        savingOfSearchResultsRelatedSettingsCompleted: false,
       ));
     });
 
@@ -374,11 +265,6 @@ class NotificationSettingsBloc extends Bloc<NotificationSettingsEvent, Notificat
       .accountStream((db) => db.daoAppNotificationSettingsTable.watchNews())
       .listen((state) {
         add(NewValueNews(state ?? NOTIFICATION_CATEGORY_ENABLED_DEFAULT));
-      });
-    _profileSettingsSubscription = db
-      .accountStream((db) => db.daoAppNotificationSettingsTable.watchProfileAppNotificationSettings())
-      .listen((state) {
-        add(NewValueProfileSettings(state ?? ProfileAppNotificationSettingsDefaults.defaultValue));
       });
   }
 
@@ -411,7 +297,6 @@ class NotificationSettingsBloc extends Bloc<NotificationSettingsEvent, Notificat
     await _likesSubscription?.cancel();
     await _mediaContentModerationCompletedSubscription?.cancel();
     await _newsSubscription?.cancel();
-    await _profileSettingsSubscription?.cancel();
     await super.close();
   }
 }
