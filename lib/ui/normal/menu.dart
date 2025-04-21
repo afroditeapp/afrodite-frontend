@@ -142,11 +142,8 @@ class _MenuViewState extends State<MenuView> {
       Setting.createSetting(Icons.search, context.strings.automatic_profile_search_results_screen_title, () =>
         openAutomaticProfileSearchResultsScreen(context)
       ),
-      Setting.createSetting(Icons.settings, context.strings.settings_screen_title, () {
-          MyNavigator.push(context, const MaterialPage<void>(child:
-            SettingsScreen()
-          ));
-        }
+      Setting.createSetting(Icons.settings, context.strings.settings_screen_title, () =>
+        openSettingsScreen(context)
       ),
     ];
 

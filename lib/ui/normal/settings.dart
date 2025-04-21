@@ -20,11 +20,20 @@ import 'package:app/ui/normal/settings/privacy_settings.dart';
 import 'package:app/ui/normal/settings/profile/search_settings.dart';
 import 'package:app/localizations.dart';
 
+void openSettingsScreen(BuildContext context) {
+  // Settings screen is open some seconds before user
+  // opens another screen, so this is good location
+  // to init some blocs which load data from DB.
+  context.read<SearchSettingsBloc>();
+  MyNavigator.push(context, const MaterialPage<void>(child:
+    SettingsScreen()
+  ));
+}
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<SettingsScreen> createState() => _SettingsScreenState();
