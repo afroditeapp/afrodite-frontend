@@ -1,9 +1,9 @@
+import 'package:app/logic/settings/search_settings.dart';
+import 'package:app/model/freezed/logic/settings/search_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:app/localizations.dart';
-import 'package:app/logic/settings/edit_search_settings.dart';
 import 'package:app/model/freezed/logic/account/initial_setup.dart';
-import 'package:app/model/freezed/logic/settings/edit_search_settings.dart';
 import 'package:app/ui/initial_setup/search_settings.dart';
 
 class EditGenderFilterScreen extends StatelessWidget {
@@ -31,27 +31,27 @@ class EditGenderFilterScreen extends StatelessWidget {
 }
 
 Widget askGenderSearchQuestionForSearchSettings(BuildContext context) {
-  return BlocBuilder<EditSearchSettingsBloc, EditSearchSettingsData>(
+  return BlocBuilder<SearchSettingsBloc, SearchSettingsData>(
     builder: (context, state) {
-      if (state.gender == Gender.nonBinary) {
+      if (state.valueGender() == Gender.nonBinary) {
         return searchingCheckboxesForNonBinary(
           context,
-          state.genderSearchSetting,
+          state.valueGenderSearchSettingsAll(),
           (isSelected, whatWasSelected) {
-            final newValue = state.genderSearchSetting.updateWith(isSelected, whatWasSelected);
-            context.read<EditSearchSettingsBloc>().add(UpdateGenderSearchSettingAll(newValue));
+            final newValue = state.valueGenderSearchSettingsAll().updateWith(isSelected, whatWasSelected);
+            context.read<SearchSettingsBloc>().add(UpdateGenderSearchSettingsAll(newValue));
           }
         );
       } else {
         return searchingRadioButtonsForMenAndWomen(
           context,
-          state.genderSearchSetting.toGenderSearchSetting(),
+          state.valueGenderSearchSettingsAll().toGenderSearchSetting(),
           (selected) {
             if (selected != null) {
-              context.read<EditSearchSettingsBloc>().add(UpdateGenderSearchSettingAll(selected.toGenderSearchSettingsAll()));
+              context.read<SearchSettingsBloc>().add(UpdateGenderSearchSettingsAll(selected.toGenderSearchSettingsAll()));
             }
           },
-          () => context.read<EditSearchSettingsBloc>().state.gender,
+          () => context.read<SearchSettingsBloc>().state.valueGender(),
         );
       }
     }

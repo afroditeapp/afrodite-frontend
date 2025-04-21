@@ -5,11 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:app/localizations.dart';
 import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/logic/profile/my_profile.dart';
-import 'package:app/logic/settings/edit_search_settings.dart';
 import 'package:app/logic/settings/search_settings.dart';
 import 'package:app/model/freezed/logic/account/initial_setup.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
-import 'package:app/model/freezed/logic/settings/edit_search_settings.dart';
 import 'package:app/model/freezed/logic/settings/search_settings.dart';
 import 'package:app/ui/normal/settings/profile/search_settings/edit_gender_filter.dart';
 import 'package:app/ui/normal/settings/profile/search_settings/edit_my_gender.dart';
@@ -28,13 +26,11 @@ import 'package:app/utils/api.dart';
 class SearchSettingsScreen extends StatefulWidget {
   final PageKey pageKey;
   final SearchSettingsBloc searchSettingsBloc;
-  final EditSearchSettingsBloc editSearchSettingsBloc;
   const SearchSettingsScreen({
     required this.pageKey,
     required this.searchSettingsBloc,
-    required this.editSearchSettingsBloc,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<SearchSettingsScreen> createState() => _SearchSettingsScreenState();
@@ -44,81 +40,41 @@ class _SearchSettingsScreenState extends State<SearchSettingsScreen> {
   int initialMinAge = MIN_AGE;
   int initialMaxAge = MAX_AGE;
 
-  TextEditingController minAgeController = TextEditingController();
-  TextEditingController maxAgeController = TextEditingController();
-
   @override
   void initState() {
     super.initState();
 
-    final minAge = widget.searchSettingsBloc.state.minAge;
-    final maxAge = widget.searchSettingsBloc.state.maxAge;
+    widget.searchSettingsBloc.add(ResetEditedValues());
 
-    widget.editSearchSettingsBloc.add(SetInitialValues(
-      minAge: minAge,
-      maxAge: maxAge,
-      searchGroups: widget.searchSettingsBloc.state.searchGroups,
-    ));
-
-    if (minAge != null) {
-      initialMinAge = minAge;
-    }
-    if (maxAge != null) {
-      initialMaxAge = maxAge;
-    }
+    initialMinAge = widget.searchSettingsBloc.state.minAge;
+    initialMaxAge = widget.searchSettingsBloc.state.maxAge;
   }
 
   void validateAndSaveData(BuildContext context) {
-    final s = widget.editSearchSettingsBloc.state;
+    final s = widget.searchSettingsBloc.state;
 
-    final minAge = s.minAge;
-    final maxAge = s.maxAge;
-    if (minAge == null || maxAge == null || !ageRangeIsValid(minAge, maxAge)) {
+    final minAge = s.valueMinAge();
+    final maxAge = s.valueMaxAge();
+    if (!ageRangeIsValid(minAge, maxAge)) {
       showSnackBar(context.strings.search_settings_screen_age_range_is_invalid);
       return;
     }
 
-    final gender = s.gender;
+    final gender = s.valueGender();
     if (gender == null) {
       showSnackBar(context.strings.search_settings_screen_gender_is_not_selected);
       return;
     }
 
-    final searchGroups = SearchGroupsExtensions.createFrom(gender, s.genderSearchSetting);
+    final searchGroups = SearchGroupsExtensions.createFrom(gender, s.valueGenderSearchSettingsAll());
     if (!searchGroups.somethingIsSelected()) {
       showSnackBar(context.strings.search_settings_screen_gender_filter_is_not_selected);
       return;
     }
 
-    // Check is setting saving needed
-    final currentState = widget.searchSettingsBloc.state;
-    if (minAge == currentState.minAge && maxAge == currentState.maxAge && searchGroups == currentState.searchGroups) {
-      MyNavigator.pop(context);
-      return;
-    }
-
     context.read<SearchSettingsBloc>().add(SaveSearchSettings(
-      minAge: minAge,
-      maxAge: maxAge,
-      searchGroups: searchGroups,
+      searchGroups
     ));
-  }
-
-  bool areSettingsChanged(EditSearchSettingsData editedSettings) {
-    final currentState = widget.searchSettingsBloc.state;
-    if (
-      currentState.minAge != editedSettings.minAge ||
-      currentState.maxAge != editedSettings.maxAge
-    ) {
-      return true;
-    }
-
-    final gender = editedSettings.gender;
-    if (gender == null) {
-      return true;
-    }
-    final searchGroups = SearchGroupsExtensions.createFrom(gender, editedSettings.genderSearchSetting);
-    return currentState.searchGroups != searchGroups;
   }
 
   @override
@@ -126,9 +82,9 @@ class _SearchSettingsScreenState extends State<SearchSettingsScreen> {
     return updateStateHandler<SearchSettingsBloc, SearchSettingsData>(
       context: context,
       pageKey: widget.pageKey,
-      child: BlocBuilder<EditSearchSettingsBloc, EditSearchSettingsData>(
+      child: BlocBuilder<SearchSettingsBloc, SearchSettingsData>(
         builder: (context, data) {
-          final settingsChanged = areSettingsChanged(data);
+          final settingsChanged = data.unsavedChanges();
 
           return PopScope(
             canPop: !settingsChanged,
@@ -138,9 +94,9 @@ class _SearchSettingsScreenState extends State<SearchSettingsScreen> {
               }
               showConfirmDialog(context, context.strings.generic_save_confirmation_title, yesNoActions: true)
                 .then((value) {
-                  if (value == true) {
+                  if (value == true && context.mounted) {
                     validateAndSaveData(context);
-                  } else if (value == false) {
+                  } else if (value == false && context.mounted) {
                     MyNavigator.pop(context);
                   }
                 });
@@ -210,12 +166,12 @@ class _SearchSettingsScreenState extends State<SearchSettingsScreen> {
   }
 
   Widget editGenderFilter() {
-    return BlocBuilder<EditSearchSettingsBloc, EditSearchSettingsData>(
+    return BlocBuilder<SearchSettingsBloc, SearchSettingsData>(
       builder: (context, state) {
         return EditGenderFilter(
           onStartEditor: () => MyNavigator.push(context, const MaterialPage<void>(child: EditGenderFilterScreen())),
-          genderSearchSetting: state.genderSearchSetting,
-          gender: state.gender,
+          genderSearchSetting: state.valueGenderSearchSettingsAll(),
+          gender: state.valueGender(),
         );
       }
     );
@@ -236,7 +192,7 @@ class _SearchSettingsScreenState extends State<SearchSettingsScreen> {
         },
         getInitialValue: () => initialMinAge,
         onChanged: (value) {
-          context.read<EditSearchSettingsBloc>().add(UpdateMinAge(value));
+          context.read<SearchSettingsBloc>().add(UpdateMinAge(value));
         },
       ),
     );
@@ -257,7 +213,7 @@ class _SearchSettingsScreenState extends State<SearchSettingsScreen> {
         getMaxValue: () => MAX_AGE,
         getInitialValue: () => initialMaxAge,
         onChanged: (value) {
-          context.read<EditSearchSettingsBloc>().add(UpdateMaxAge(value));
+          context.read<SearchSettingsBloc>().add(UpdateMaxAge(value));
         },
       ),
     );

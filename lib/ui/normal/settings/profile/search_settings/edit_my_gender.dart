@@ -1,8 +1,8 @@
+import 'package:app/logic/settings/search_settings.dart';
+import 'package:app/model/freezed/logic/settings/search_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:app/localizations.dart';
-import 'package:app/logic/settings/edit_search_settings.dart';
-import 'package:app/model/freezed/logic/settings/edit_search_settings.dart';
 import 'package:app/ui/initial_setup/gender.dart';
 import 'package:app/ui/normal/settings/profile/search_settings/edit_gender_filter.dart';
 import 'package:app/ui_utils/padding.dart';
@@ -10,7 +10,7 @@ import 'package:app/ui_utils/padding.dart';
 class EditMyGenderScreen extends StatelessWidget {
   const EditMyGenderScreen({super.key});
 
-    @override
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(context.strings.search_settings_screen_change_my_gender_action_title)),
@@ -37,14 +37,14 @@ class EditMyGenderScreen extends StatelessWidget {
   }
 
   Widget askGender() {
-    return BlocBuilder<EditSearchSettingsBloc, EditSearchSettingsData>(
+    return BlocBuilder<SearchSettingsBloc, SearchSettingsData>(
       builder: (context, state) {
         return genderRadioButtons(
           context,
-          state.gender,
+          state.valueGender(),
           (selected) {
             if (selected != null) {
-              context.read<EditSearchSettingsBloc>().add(UpdateGender(selected));
+              context.read<SearchSettingsBloc>().add(UpdateGender(selected));
             }
           }
         );

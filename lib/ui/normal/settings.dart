@@ -1,4 +1,3 @@
-import 'package:app/logic/media/select_content.dart';
 import 'package:app/logic/profile/profile_filtering_settings.dart';
 import 'package:app/model/freezed/logic/profile/profile_filtering_settings.dart';
 import 'package:app/ui/normal/profiles/filter_profiles.dart';
@@ -8,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:app/logic/account/account.dart';
 import 'package:app/logic/app/navigator_state.dart';
-import 'package:app/logic/settings/edit_search_settings.dart';
 import 'package:app/logic/settings/privacy_settings.dart';
 import 'package:app/logic/settings/search_settings.dart';
 import 'package:app/model/freezed/logic/account/account.dart';
@@ -55,13 +53,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
           Setting.createSetting(Icons.search, context.strings.search_settings_screen_title, () {
             final pageKey = PageKey();
             final searchSettingsBloc = context.read<SearchSettingsBloc>();
-            final editSearchSettingsBloc = context.read<EditSearchSettingsBloc>();
             MyNavigator.pushWithKey(
               context,
               MaterialPage<void>(child: SearchSettingsScreen(
                 pageKey: pageKey,
                 searchSettingsBloc: searchSettingsBloc,
-                editSearchSettingsBloc: editSearchSettingsBloc,
               )),
               pageKey,
             );

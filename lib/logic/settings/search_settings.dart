@@ -1,5 +1,8 @@
 import "dart:async";
 
+import "package:app/model/freezed/logic/account/initial_setup.dart";
+import "package:app/utils/age.dart";
+import "package:app/utils/api.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:openapi/api.dart";
 import "package:app/data/login_repository.dart";
@@ -13,29 +16,39 @@ import "package:app/utils.dart";
 import "package:app/utils/result.dart";
 import "package:app/utils/time.dart";
 
-
 sealed class SearchSettingsEvent {}
 class NewMinAge extends SearchSettingsEvent {
-  final int? value;
+  final int value;
   NewMinAge(this.value);
 }
 class NewMaxAge extends SearchSettingsEvent {
-  final int? value;
+  final int value;
   NewMaxAge(this.value);
 }
 class NewSearchGroups extends SearchSettingsEvent {
-  final SearchGroups? value;
+  final SearchGroups value;
   NewSearchGroups(this.value);
 }
+class UpdateMinAge extends SearchSettingsEvent {
+  final int value;
+  UpdateMinAge(this.value);
+}
+class UpdateMaxAge extends SearchSettingsEvent {
+  final int value;
+  UpdateMaxAge(this.value);
+}
+class UpdateGender extends SearchSettingsEvent {
+  final Gender value;
+  UpdateGender(this.value);
+}
+class UpdateGenderSearchSettingsAll extends SearchSettingsEvent {
+  final GenderSearchSettingsAll settings;
+  UpdateGenderSearchSettingsAll(this.settings);
+}
+class ResetEditedValues extends SearchSettingsEvent {}
 class SaveSearchSettings extends SearchSettingsEvent {
-  final int minAge;
-  final int maxAge;
   final SearchGroups searchGroups;
-  SaveSearchSettings({
-    required this.minAge,
-    required this.maxAge,
-    required this.searchGroups,
-  });
+  SaveSearchSettings(this.searchGroups);
 }
 
 class SearchSettingsBloc extends Bloc<SearchSettingsEvent, SearchSettingsData> with ActionRunner {
@@ -49,6 +62,8 @@ class SearchSettingsBloc extends Bloc<SearchSettingsEvent, SearchSettingsData> w
   SearchSettingsBloc() : super(SearchSettingsData()) {
     on<SaveSearchSettings>((data, emit) async {
       await runOnce(() async {
+        final currentState = state;
+
         emit(state.copyWith(
           updateState: const UpdateStarted(),
         ));
@@ -61,7 +76,7 @@ class SearchSettingsBloc extends Bloc<SearchSettingsEvent, SearchSettingsData> w
           updateState: const UpdateInProgress(),
         ));
 
-        if (!await profile.updateSearchAgeRange(data.minAge, data.maxAge).isOk()) {
+        if (!await profile.updateSearchAgeRange(currentState.valueMinAge(), currentState.valueMaxAge()).isOk()) {
           failureDetected = true;
         }
 
@@ -80,7 +95,12 @@ class SearchSettingsBloc extends Bloc<SearchSettingsEvent, SearchSettingsData> w
         emit(state.copyWith(
           updateState: const UpdateIdle(),
         ));
+
+        _resetEditedValues(emit);
       });
+    });
+    on<ResetEditedValues>((data, emit) async {
+      _resetEditedValues(emit);
     });
     on<NewMinAge>((data, emit) async {
       emit(state.copyWith(minAge: data.value));
@@ -89,18 +109,58 @@ class SearchSettingsBloc extends Bloc<SearchSettingsEvent, SearchSettingsData> w
       emit(state.copyWith(maxAge: data.value));
     });
     on<NewSearchGroups>((data, emit) async {
-      emit(state.copyWith(searchGroups: data.value));
+      emit(state.copyWith(
+        gender: data.value.toGender(),
+        genderSearchSettingsAll: data.value.toGenderSearchSettingsAll() ?? const GenderSearchSettingsAll(),
+      ));
+    });
+    on<UpdateMinAge>((data, emit) async {
+      if (data.value == state.minAge) {
+        emit(state.copyWith(editedMinAge: null));
+      } else {
+        emit(state.copyWith(editedMinAge: data.value));
+      }
+    });
+    on<UpdateMaxAge>((data, emit) async {
+      if (data.value == state.maxAge) {
+        emit(state.copyWith(editedMaxAge: null));
+      } else {
+        emit(state.copyWith(editedMaxAge: data.value));
+      }
+    });
+    on<UpdateGender>((data, emit) async {
+      if (data.value == state.gender) {
+        emit(state.copyWith(editedGender: null));
+      } else {
+        emit(state.copyWith(editedGender: data.value));
+      }
+    });
+    on<UpdateGenderSearchSettingsAll>((data, emit) async {
+      if (data.settings == state.genderSearchSettingsAll) {
+        emit(state.copyWith(editedGenderSearchSettingsAll: null));
+      } else {
+        emit(state.copyWith(editedGenderSearchSettingsAll: data.settings));
+      }
     });
 
     _minAgeSubscription = db.accountStream((db) => db.daoProfileSettings.watchProfileSearchAgeRangeMin()).listen((event) {
-      add(NewMinAge(event));
+      add(NewMinAge(event ?? MIN_AGE));
     });
     _maxAgeSubscription = db.accountStream((db) => db.daoProfileSettings.watchProfileSearchAgeRangeMax()).listen((event) {
-      add(NewMaxAge(event));
+      add(NewMaxAge(event ?? MAX_AGE));
     });
     _searchGroupsSubscription = db.accountStream((db) => db.daoProfileSettings.watchSearchGroups()).listen((event) {
-      add(NewSearchGroups(event));
+      add(NewSearchGroups(event ?? SearchGroups()));
     });
+  }
+
+  void _resetEditedValues(Emitter<SearchSettingsData> emit) {
+    emit(state.copyWith(
+      editedMinAge: null,
+      editedMaxAge: null,
+      editedGenderSearchSettingsAll: null,
+      editedGender: null,
+    ));
   }
 
   @override

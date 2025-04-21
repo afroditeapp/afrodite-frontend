@@ -22,15 +22,25 @@ final _privateConstructorErrorSearchSettingsData = UnsupportedError(
 /// @nodoc
 mixin _$SearchSettingsData {
   UpdateState get updateState => throw _privateConstructorErrorSearchSettingsData;
-  int? get minAge => throw _privateConstructorErrorSearchSettingsData;
-  int? get maxAge => throw _privateConstructorErrorSearchSettingsData;
-  SearchGroups? get searchGroups => throw _privateConstructorErrorSearchSettingsData;
+  int get minAge => throw _privateConstructorErrorSearchSettingsData;
+  int get maxAge => throw _privateConstructorErrorSearchSettingsData;
+  GenderSearchSettingsAll get genderSearchSettingsAll => throw _privateConstructorErrorSearchSettingsData;
+  Gender? get gender => throw _privateConstructorErrorSearchSettingsData;
+  int? get editedMinAge => throw _privateConstructorErrorSearchSettingsData;
+  int? get editedMaxAge => throw _privateConstructorErrorSearchSettingsData;
+  GenderSearchSettingsAll? get editedGenderSearchSettingsAll => throw _privateConstructorErrorSearchSettingsData;
+  Gender? get editedGender => throw _privateConstructorErrorSearchSettingsData;
 
   SearchSettingsData copyWith({
     UpdateState? updateState,
     int? minAge,
     int? maxAge,
-    SearchGroups? searchGroups,
+    GenderSearchSettingsAll? genderSearchSettingsAll,
+    Gender? gender,
+    int? editedMinAge,
+    int? editedMaxAge,
+    GenderSearchSettingsAll? editedGenderSearchSettingsAll,
+    Gender? editedGender,
   }) => throw _privateConstructorErrorSearchSettingsData;
 }
 
@@ -38,9 +48,14 @@ mixin _$SearchSettingsData {
 abstract class _SearchSettingsData extends SearchSettingsData {
   factory _SearchSettingsData({
     UpdateState updateState,
-    int? minAge,
-    int? maxAge,
-    SearchGroups? searchGroups,
+    int minAge,
+    int maxAge,
+    GenderSearchSettingsAll genderSearchSettingsAll,
+    Gender? gender,
+    int? editedMinAge,
+    int? editedMaxAge,
+    GenderSearchSettingsAll? editedGenderSearchSettingsAll,
+    Gender? editedGender,
   }) = _$SearchSettingsDataImpl;
   _SearchSettingsData._() : super._();
 }
@@ -48,26 +63,44 @@ abstract class _SearchSettingsData extends SearchSettingsData {
 /// @nodoc
 class _$SearchSettingsDataImpl extends _SearchSettingsData with DiagnosticableTreeMixin {
   static const UpdateState _updateStateDefaultValue = UpdateIdle();
+  static const int _minAgeDefaultValue = MIN_AGE;
+  static const int _maxAgeDefaultValue = MAX_AGE;
+  static const GenderSearchSettingsAll _genderSearchSettingsAllDefaultValue = GenderSearchSettingsAll();
   
   _$SearchSettingsDataImpl({
     this.updateState = _updateStateDefaultValue,
-    this.minAge,
-    this.maxAge,
-    this.searchGroups,
+    this.minAge = _minAgeDefaultValue,
+    this.maxAge = _maxAgeDefaultValue,
+    this.genderSearchSettingsAll = _genderSearchSettingsAllDefaultValue,
+    this.gender,
+    this.editedMinAge,
+    this.editedMaxAge,
+    this.editedGenderSearchSettingsAll,
+    this.editedGender,
   }) : super._();
 
   @override
   final UpdateState updateState;
   @override
-  final int? minAge;
+  final int minAge;
   @override
-  final int? maxAge;
+  final int maxAge;
   @override
-  final SearchGroups? searchGroups;
+  final GenderSearchSettingsAll genderSearchSettingsAll;
+  @override
+  final Gender? gender;
+  @override
+  final int? editedMinAge;
+  @override
+  final int? editedMaxAge;
+  @override
+  final GenderSearchSettingsAll? editedGenderSearchSettingsAll;
+  @override
+  final Gender? editedGender;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'SearchSettingsData(updateState: $updateState, minAge: $minAge, maxAge: $maxAge, searchGroups: $searchGroups)';
+    return 'SearchSettingsData(updateState: $updateState, minAge: $minAge, maxAge: $maxAge, genderSearchSettingsAll: $genderSearchSettingsAll, gender: $gender, editedMinAge: $editedMinAge, editedMaxAge: $editedMaxAge, editedGenderSearchSettingsAll: $editedGenderSearchSettingsAll, editedGender: $editedGender)';
   }
 
   @override
@@ -78,7 +111,12 @@ class _$SearchSettingsDataImpl extends _SearchSettingsData with DiagnosticableTr
       ..add(DiagnosticsProperty('updateState', updateState))
       ..add(DiagnosticsProperty('minAge', minAge))
       ..add(DiagnosticsProperty('maxAge', maxAge))
-      ..add(DiagnosticsProperty('searchGroups', searchGroups));
+      ..add(DiagnosticsProperty('genderSearchSettingsAll', genderSearchSettingsAll))
+      ..add(DiagnosticsProperty('gender', gender))
+      ..add(DiagnosticsProperty('editedMinAge', editedMinAge))
+      ..add(DiagnosticsProperty('editedMaxAge', editedMaxAge))
+      ..add(DiagnosticsProperty('editedGenderSearchSettingsAll', editedGenderSearchSettingsAll))
+      ..add(DiagnosticsProperty('editedGender', editedGender));
   }
 
   @override
@@ -92,8 +130,18 @@ class _$SearchSettingsDataImpl extends _SearchSettingsData with DiagnosticableTr
           other.minAge == minAge) &&
         (identical(other.maxAge, maxAge) ||
           other.maxAge == maxAge) &&
-        (identical(other.searchGroups, searchGroups) ||
-          other.searchGroups == searchGroups)
+        (identical(other.genderSearchSettingsAll, genderSearchSettingsAll) ||
+          other.genderSearchSettingsAll == genderSearchSettingsAll) &&
+        (identical(other.gender, gender) ||
+          other.gender == gender) &&
+        (identical(other.editedMinAge, editedMinAge) ||
+          other.editedMinAge == editedMinAge) &&
+        (identical(other.editedMaxAge, editedMaxAge) ||
+          other.editedMaxAge == editedMaxAge) &&
+        (identical(other.editedGenderSearchSettingsAll, editedGenderSearchSettingsAll) ||
+          other.editedGenderSearchSettingsAll == editedGenderSearchSettingsAll) &&
+        (identical(other.editedGender, editedGender) ||
+          other.editedGender == editedGender)
     );
   }
 
@@ -103,19 +151,34 @@ class _$SearchSettingsDataImpl extends _SearchSettingsData with DiagnosticableTr
     updateState,
     minAge,
     maxAge,
-    searchGroups,
+    genderSearchSettingsAll,
+    gender,
+    editedMinAge,
+    editedMaxAge,
+    editedGenderSearchSettingsAll,
+    editedGender,
   );
 
   @override
   SearchSettingsData copyWith({
     Object? updateState,
-    Object? minAge = _detectDefaultValueInCopyWith,
-    Object? maxAge = _detectDefaultValueInCopyWith,
-    Object? searchGroups = _detectDefaultValueInCopyWith,
+    Object? minAge,
+    Object? maxAge,
+    Object? genderSearchSettingsAll,
+    Object? gender = _detectDefaultValueInCopyWith,
+    Object? editedMinAge = _detectDefaultValueInCopyWith,
+    Object? editedMaxAge = _detectDefaultValueInCopyWith,
+    Object? editedGenderSearchSettingsAll = _detectDefaultValueInCopyWith,
+    Object? editedGender = _detectDefaultValueInCopyWith,
   }) => _$SearchSettingsDataImpl(
     updateState: (updateState ?? this.updateState) as UpdateState,
-    minAge: (minAge == _detectDefaultValueInCopyWith ? this.minAge : minAge) as int?,
-    maxAge: (maxAge == _detectDefaultValueInCopyWith ? this.maxAge : maxAge) as int?,
-    searchGroups: (searchGroups == _detectDefaultValueInCopyWith ? this.searchGroups : searchGroups) as SearchGroups?,
+    minAge: (minAge ?? this.minAge) as int,
+    maxAge: (maxAge ?? this.maxAge) as int,
+    genderSearchSettingsAll: (genderSearchSettingsAll ?? this.genderSearchSettingsAll) as GenderSearchSettingsAll,
+    gender: (gender == _detectDefaultValueInCopyWith ? this.gender : gender) as Gender?,
+    editedMinAge: (editedMinAge == _detectDefaultValueInCopyWith ? this.editedMinAge : editedMinAge) as int?,
+    editedMaxAge: (editedMaxAge == _detectDefaultValueInCopyWith ? this.editedMaxAge : editedMaxAge) as int?,
+    editedGenderSearchSettingsAll: (editedGenderSearchSettingsAll == _detectDefaultValueInCopyWith ? this.editedGenderSearchSettingsAll : editedGenderSearchSettingsAll) as GenderSearchSettingsAll?,
+    editedGender: (editedGender == _detectDefaultValueInCopyWith ? this.editedGender : editedGender) as Gender?,
   );
 }

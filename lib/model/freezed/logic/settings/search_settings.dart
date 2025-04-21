@@ -1,6 +1,7 @@
+import 'package:app/model/freezed/logic/account/initial_setup.dart';
+import 'package:app/utils/age.dart';
 import "package:freezed_annotation/freezed_annotation.dart";
 import 'package:flutter/foundation.dart';
-import 'package:openapi/api.dart';
 import 'package:app/ui_utils/common_update_logic.dart';
 
 part 'search_settings.freezed.dart';
@@ -10,8 +11,25 @@ class SearchSettingsData with _$SearchSettingsData, UpdateStateProvider {
   SearchSettingsData._();
   factory SearchSettingsData({
     @Default(UpdateIdle()) UpdateState updateState,
-    int? minAge,
-    int? maxAge,
-    SearchGroups? searchGroups,
+    @Default(MIN_AGE) int minAge,
+    @Default(MAX_AGE) int maxAge,
+    @Default(GenderSearchSettingsAll()) GenderSearchSettingsAll genderSearchSettingsAll,
+    Gender? gender,
+
+    int? editedMinAge,
+    int? editedMaxAge,
+    GenderSearchSettingsAll? editedGenderSearchSettingsAll,
+    Gender? editedGender,
   }) = _SearchSettingsData;
+
+  int valueMinAge() => editedMinAge ?? minAge;
+  int valueMaxAge() => editedMaxAge ?? maxAge;
+  GenderSearchSettingsAll valueGenderSearchSettingsAll() =>
+    editedGenderSearchSettingsAll ?? genderSearchSettingsAll;
+  Gender? valueGender() => editedGender ?? gender;
+
+  bool unsavedChanges() => editedMinAge != null ||
+    editedMaxAge != null ||
+    editedGenderSearchSettingsAll != null ||
+    editedGender != null;
 }
