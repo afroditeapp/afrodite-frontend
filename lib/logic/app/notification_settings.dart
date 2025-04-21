@@ -51,6 +51,8 @@ class NewValueProfileSettings extends NotificationSettingsEvent {
   final ProfileAppNotificationSettings value;
   NewValueProfileSettings(this.value);
 }
+class SaveSearchResultRelatedSettings extends NotificationSettingsEvent {}
+class ResetSaveSearchResultRelatedSettingsDone extends NotificationSettingsEvent {}
 
 class NotificationSettingsBloc extends Bloc<NotificationSettingsEvent, NotificationSettingsData> {
   final api = LoginRepository.getInstance().repositories.api;
@@ -66,6 +68,7 @@ class NotificationSettingsBloc extends Bloc<NotificationSettingsEvent, Notificat
   NotificationSettingsBloc() : super(NotificationSettingsData(
     categories: NotificationCategoryData(),
     systemCategories: NotificationCategoryData(),
+    edited: EditedNotificationSettingsData(),
   )) {
     on<ReloadNotificationsEnabledStatus>((data, emit) async {
       final disabledChannelIds = await notifications.disabledNotificationChannelsIdsOnAndroid();
@@ -85,6 +88,11 @@ class NotificationSettingsBloc extends Bloc<NotificationSettingsEvent, Notificat
       _resetEditedValues(emit);
     });
     on<SaveSettings>((data, emit) async {
+      if (state.savingOfSearchResultsRelatedSettingsInProgress) {
+        showSnackBar(R.strings.generic_previous_action_in_progress);
+        return;
+      }
+
       final currentState = state;
 
       emit(state.copyWith(
@@ -158,112 +166,125 @@ class NotificationSettingsBloc extends Bloc<NotificationSettingsEvent, Notificat
       _resetEditedValues(emit);
     });
     on<ToggleMessages>((data, emit) async {
-      if (state.editedMessages == null) {
-        emit(state.copyWith(
-          editedMessages: !state.categories.messages,
-        ));
-      } else {
-        emit(state.copyWith(
-          editedMessages: null,
-        ));
-      }
+      _updateEditedValue(
+        emit,
+        () => state.edited.messages == null,
+        () => state.edited.copyWith(
+          messages: !state.categories.messages
+        ),
+        () => state.edited.copyWith(
+          messages: null,
+        ),
+      );
     });
     on<ToggleLikes>((data, emit) async {
-      if (state.editedLikes == null) {
-        emit(state.copyWith(
-          editedLikes: !state.categories.likes,
-        ));
-      } else {
-        emit(state.copyWith(
-          editedLikes: null,
-        ));
-      }
+      _updateEditedValue(
+        emit,
+        () => state.edited.likes == null,
+        () => state.edited.copyWith(
+          likes: !state.categories.likes
+        ),
+        () => state.edited.copyWith(
+          likes: null,
+        ),
+      );
     });
     on<ToggleMediaContentModerationCompleted>((data, emit) async {
-      if (state.editedMediaContent == null) {
-        emit(state.copyWith(
-          editedMediaContent: !state.categories.mediaContentModerationCompleted,
-        ));
-      } else {
-        emit(state.copyWith(
-          editedMediaContent: null,
-        ));
-      }
+      _updateEditedValue(
+        emit,
+        () => state.edited.mediaContent == null,
+        () => state.edited.copyWith(
+          mediaContent: !state.categories.mediaContentModerationCompleted
+        ),
+        () => state.edited.copyWith(
+          mediaContent: null,
+        ),
+      );
     });
     on<ToggleProfileTextModerationCompleted>((data, emit) async {
-      if (state.editedProfileText == null) {
-        emit(state.copyWith(
-          editedProfileText: !state.categories.profileTextModerationCompleted,
-        ));
-      } else {
-        emit(state.copyWith(
-          editedProfileText: null,
-        ));
-      }
+      _updateEditedValue(
+        emit,
+        () => state.edited.profileText == null,
+        () => state.edited.copyWith(
+          profileText: !state.categories.profileTextModerationCompleted
+        ),
+        () => state.edited.copyWith(
+          profileText: null,
+        ),
+      );
     });
     on<ToggleNews>((data, emit) async {
-      if (state.editedNews == null) {
-        emit(state.copyWith(
-          editedNews: !state.categories.news,
-        ));
-      } else {
-        emit(state.copyWith(
-          editedNews: null,
-        ));
-      }
+      _updateEditedValue(
+        emit,
+        () => state.edited.news == null,
+        () => state.edited.copyWith(
+          news: !state.categories.news
+        ),
+        () => state.edited.copyWith(
+          news: null,
+        ),
+      );
     });
     on<ToggleAutomaticProfileSearch>((data, emit) async {
-      if (state.editedAutomaticProfileSearch == null) {
-        emit(state.copyWith(
-          editedAutomaticProfileSearch: !state.categories.automaticProfileSearch,
-        ));
-      } else {
-        emit(state.copyWith(
-          editedAutomaticProfileSearch: null,
-        ));
-      }
+      _updateEditedValue(
+        emit,
+        () => state.edited.automaticProfileSearch == null,
+        () => state.edited.copyWith(
+          automaticProfileSearch: !state.categories.automaticProfileSearch
+        ),
+        () => state.edited.copyWith(
+          automaticProfileSearch: null,
+        ),
+      );
     });
     on<ToggleSearchDistance>((data, emit) async {
-      if (state.editedSearchDistance == null) {
-        emit(state.copyWith(
-          editedSearchDistance: !state.searchDistance,
-        ));
-      } else {
-        emit(state.copyWith(
-          editedSearchDistance: null,
-        ));
-      }
+      _updateEditedValue(
+        emit,
+        () => state.edited.searchDistance == null,
+        () => state.edited.copyWith(
+          searchDistance: !state.searchDistance
+        ),
+        () => state.edited.copyWith(
+          searchDistance: null,
+        ),
+      );
     });
     on<ToggleSearchFilters>((data, emit) async {
-      if (state.editedSearchFilters == null) {
-        emit(state.copyWith(
-          editedSearchFilters: !state.searchFilters,
-        ));
-      } else {
-        emit(state.copyWith(
-          editedSearchFilters: null,
-        ));
-      }
+      _updateEditedValue(
+        emit,
+        () => state.edited.searchFilters == null,
+        () => state.edited.copyWith(
+          searchFilters: !state.searchFilters
+        ),
+        () => state.edited.copyWith(
+          searchFilters: null,
+        ),
+      );
     });
     on<ToggleSearchNewProfiles>((data, emit) async {
-      if (state.editedSearchNewProfiles == null) {
-        emit(state.copyWith(
-          editedSearchNewProfiles: !state.searchNewProfiles,
-        ));
-      } else {
-        emit(state.copyWith(
-          editedSearchNewProfiles: null,
-        ));
-      }
+      _updateEditedValue(
+        emit,
+        () => state.edited.searchNewProfiles == null,
+        () => state.edited.copyWith(
+          searchNewProfiles: !state.searchNewProfiles
+        ),
+        () => state.edited.copyWith(
+          searchNewProfiles: null,
+        ),
+      );
     });
     on<UpdateSearchWeekday>((data, emit) async {
       if (data.value == state.searchWeekdays) {
         emit(state.copyWith(
-          editedSearchWeekdays: null,
+          edited: state.edited.copyWith(
+            searchWeekdays: null,
+          ),
         ));
       } else {
         emit(state.copyWith(
-          editedSearchWeekdays: data.value,
+          edited: state.edited.copyWith(
+            searchWeekdays: data.value,
+          ),
         ));
       }
     });
@@ -287,6 +308,50 @@ class NotificationSettingsBloc extends Bloc<NotificationSettingsEvent, Notificat
         searchFilters: v.automaticProfileSearchFilters,
         searchNewProfiles: v.automaticProfileSearchNewProfiles,
         searchWeekdays: v.automaticProfileSearchWeekdays,
+      ));
+    });
+    on<SaveSearchResultRelatedSettings>((data, emit) async {
+      if (state.savingOfSearchResultsRelatedSettingsInProgress) {
+        return;
+      }
+
+      emit(state.copyWith(
+        savingOfSearchResultsRelatedSettingsInProgress: true,
+      ));
+
+      {
+        final settings = ProfileAppNotificationSettings(
+          profileTextModeration: state.categories.profileTextModerationCompleted,
+          automaticProfileSearch: state.categories.automaticProfileSearch,
+          automaticProfileSearchDistance: state.valueSearchDistance(),
+          automaticProfileSearchNewProfiles: state.valueSearchNewProfiles(),
+          automaticProfileSearchFilters: state.valueSearchFilters(),
+          automaticProfileSearchWeekdays: state.valueSearchWeekdays(),
+        );
+        final r = await api.profileAction((api) => api.postProfileAppNotificationSettings(settings))
+          .andThen((_) => db.accountAction((db) => db.daoAppNotificationSettingsTable.updateProfileNotificationSettings(settings)));
+        if (r.isErr()) {
+          showSnackBar(R.strings.generic_error_occurred);
+        } else {
+          emit(state.copyWith(
+            edited: state.edited.copyWith(
+              searchDistance: null,
+              searchNewProfiles: null,
+              searchFilters: null,
+              searchWeekdays: null,
+            ),
+          ));
+        }
+      }
+
+      emit(state.copyWith(
+        savingOfSearchResultsRelatedSettingsInProgress: false,
+        savingOfSearchResultsRelatedSettingsCompleted: true,
+      ));
+    });
+    on<ResetSaveSearchResultRelatedSettingsDone>((data, emit) async {
+      emit(state.copyWith(
+        savingOfSearchResultsRelatedSettingsCompleted: false,
       ));
     });
 
@@ -319,17 +384,25 @@ class NotificationSettingsBloc extends Bloc<NotificationSettingsEvent, Notificat
 
   void _resetEditedValues(Emitter<NotificationSettingsData> emit) {
     emit(state.copyWith(
-      editedMessages: null,
-      editedLikes: null,
-      editedMediaContent: null,
-      editedProfileText: null,
-      editedNews: null,
-      editedAutomaticProfileSearch: null,
-      editedSearchDistance: null,
-      editedSearchFilters: null,
-      editedSearchNewProfiles: null,
-      editedSearchWeekdays: null,
+      edited: EditedNotificationSettingsData(),
     ));
+  }
+
+  void _updateEditedValue(
+    Emitter<NotificationSettingsData> emit,
+    bool Function() shouldUpdate,
+    EditedNotificationSettingsData Function() update,
+    EditedNotificationSettingsData Function() reset,
+  ) {
+      final EditedNotificationSettingsData edited;
+      if (shouldUpdate()) {
+        edited = update();
+      } else {
+        edited = reset();
+      }
+      emit(state.copyWith(
+        edited: edited,
+      ));
   }
 
   @override

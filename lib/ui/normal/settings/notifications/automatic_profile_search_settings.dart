@@ -62,7 +62,21 @@ class _AutomaticProfileSearchSettingsScreenState extends State<AutomaticProfileS
         ),
       ),
       hPad(weekdaysWidget(context, state)),
-      showSearchResults(context),
+      showSearchResults(context, state),
+      BlocBuilder<NotificationSettingsBloc, NotificationSettingsData>(
+        buildWhen: (previous, current) => previous.savingOfSearchResultsRelatedSettingsCompleted != current.savingOfSearchResultsRelatedSettingsCompleted,
+        builder: (context, data) {
+          if (data.savingOfSearchResultsRelatedSettingsCompleted) {
+            openAutomaticProfileSearchResultsScreen(context)
+              .then((v) {
+                if (context.mounted) {
+                  context.read<NotificationSettingsBloc>().add(ResetSaveSearchResultRelatedSettingsDone());
+                }
+              });
+          }
+          return const SizedBox.shrink();
+        },
+      )
     ];
 
     return Column(
@@ -125,10 +139,24 @@ class _AutomaticProfileSearchSettingsScreenState extends State<AutomaticProfileS
     );
   }
 
-  Widget showSearchResults(BuildContext context) {
+  Widget showSearchResults(BuildContext context, NotificationSettingsData data) {
     return ListTile(
-      title: Text(context.strings.automatic_profile_search_settings_screen_show_search_results),
-      onTap: () => openAutomaticProfileSearchResultsScreen(context),
+      title: data.unsavedSearchResultRelatedChanges() ||
+        data.savingOfSearchResultsRelatedSettingsInProgress ||
+        data.savingOfSearchResultsRelatedSettingsCompleted ?
+        Text(context.strings.automatic_profile_search_settings_screen_save_settings_and_show_search_results) :
+        Text(context.strings.automatic_profile_search_settings_screen_show_search_results),
+      onTap: () {
+        if (context.read<NotificationSettingsBloc>().state.unsavedSearchResultRelatedChanges()) {
+          if (context.read<NotificationSettingsBloc>().state.savingOfSearchResultsRelatedSettingsInProgress) {
+            showSnackBar(context.strings.generic_previous_action_in_progress);
+          } else {
+            context.read<NotificationSettingsBloc>().add(SaveSearchResultRelatedSettings());
+          }
+        } else {
+          openAutomaticProfileSearchResultsScreen(context);
+        }
+      }
     );
   }
 }

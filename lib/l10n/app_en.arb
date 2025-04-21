@@ -94,6 +94,10 @@
   "@automatic_profile_search_settings_screen_one_weekday_must_be_selected_info": {
     "description": "Snackbar info text that one weekday must be selected"
   },
+  "automatic_profile_search_settings_screen_save_settings_and_show_search_results": "Save settings and show search results",
+  "@automatic_profile_search_settings_screen_save_settings_and_show_search_results": {
+    "description": "Title text for save settings and show search results action"
+  },
   "automatic_profile_search_settings_screen_show_search_results": "Show search results",
   "@automatic_profile_search_settings_screen_show_search_results": {
     "description": "Title text for show search results action"

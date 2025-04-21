@@ -25,40 +25,26 @@ mixin _$NotificationSettingsData {
   bool get areNotificationsEnabled => throw _privateConstructorErrorNotificationSettingsData;
   NotificationCategoryData get categories => throw _privateConstructorErrorNotificationSettingsData;
   NotificationCategoryData get systemCategories => throw _privateConstructorErrorNotificationSettingsData;
+  EditedNotificationSettingsData get edited => throw _privateConstructorErrorNotificationSettingsData;
   bool get searchDistance => throw _privateConstructorErrorNotificationSettingsData;
   bool get searchFilters => throw _privateConstructorErrorNotificationSettingsData;
   bool get searchNewProfiles => throw _privateConstructorErrorNotificationSettingsData;
   int get searchWeekdays => throw _privateConstructorErrorNotificationSettingsData;
-  bool? get editedMessages => throw _privateConstructorErrorNotificationSettingsData;
-  bool? get editedLikes => throw _privateConstructorErrorNotificationSettingsData;
-  bool? get editedMediaContent => throw _privateConstructorErrorNotificationSettingsData;
-  bool? get editedProfileText => throw _privateConstructorErrorNotificationSettingsData;
-  bool? get editedNews => throw _privateConstructorErrorNotificationSettingsData;
-  bool? get editedAutomaticProfileSearch => throw _privateConstructorErrorNotificationSettingsData;
-  bool? get editedSearchDistance => throw _privateConstructorErrorNotificationSettingsData;
-  bool? get editedSearchFilters => throw _privateConstructorErrorNotificationSettingsData;
-  bool? get editedSearchNewProfiles => throw _privateConstructorErrorNotificationSettingsData;
-  int? get editedSearchWeekdays => throw _privateConstructorErrorNotificationSettingsData;
+  bool get savingOfSearchResultsRelatedSettingsInProgress => throw _privateConstructorErrorNotificationSettingsData;
+  bool get savingOfSearchResultsRelatedSettingsCompleted => throw _privateConstructorErrorNotificationSettingsData;
 
   NotificationSettingsData copyWith({
     UpdateState? updateState,
     bool? areNotificationsEnabled,
     NotificationCategoryData? categories,
     NotificationCategoryData? systemCategories,
+    EditedNotificationSettingsData? edited,
     bool? searchDistance,
     bool? searchFilters,
     bool? searchNewProfiles,
     int? searchWeekdays,
-    bool? editedMessages,
-    bool? editedLikes,
-    bool? editedMediaContent,
-    bool? editedProfileText,
-    bool? editedNews,
-    bool? editedAutomaticProfileSearch,
-    bool? editedSearchDistance,
-    bool? editedSearchFilters,
-    bool? editedSearchNewProfiles,
-    int? editedSearchWeekdays,
+    bool? savingOfSearchResultsRelatedSettingsInProgress,
+    bool? savingOfSearchResultsRelatedSettingsCompleted,
   }) => throw _privateConstructorErrorNotificationSettingsData;
 }
 
@@ -69,20 +55,13 @@ abstract class _NotificationSettingsData extends NotificationSettingsData {
     bool areNotificationsEnabled,
     required NotificationCategoryData categories,
     required NotificationCategoryData systemCategories,
+    required EditedNotificationSettingsData edited,
     bool searchDistance,
     bool searchFilters,
     bool searchNewProfiles,
     int searchWeekdays,
-    bool? editedMessages,
-    bool? editedLikes,
-    bool? editedMediaContent,
-    bool? editedProfileText,
-    bool? editedNews,
-    bool? editedAutomaticProfileSearch,
-    bool? editedSearchDistance,
-    bool? editedSearchFilters,
-    bool? editedSearchNewProfiles,
-    int? editedSearchWeekdays,
+    bool savingOfSearchResultsRelatedSettingsInProgress,
+    bool savingOfSearchResultsRelatedSettingsCompleted,
   }) = _$NotificationSettingsDataImpl;
   _NotificationSettingsData._() : super._();
 }
@@ -95,26 +74,21 @@ class _$NotificationSettingsDataImpl extends _NotificationSettingsData with Diag
   static const bool _searchFiltersDefaultValue = ProfileAppNotificationSettingsDefaults.filtersDefault;
   static const bool _searchNewProfilesDefaultValue = ProfileAppNotificationSettingsDefaults.newProfilesDefault;
   static const int _searchWeekdaysDefaultValue = ProfileAppNotificationSettingsDefaults.weekdaysDefault;
+  static const bool _savingOfSearchResultsRelatedSettingsInProgressDefaultValue = false;
+  static const bool _savingOfSearchResultsRelatedSettingsCompletedDefaultValue = false;
   
   _$NotificationSettingsDataImpl({
     this.updateState = _updateStateDefaultValue,
     this.areNotificationsEnabled = _areNotificationsEnabledDefaultValue,
     required this.categories,
     required this.systemCategories,
+    required this.edited,
     this.searchDistance = _searchDistanceDefaultValue,
     this.searchFilters = _searchFiltersDefaultValue,
     this.searchNewProfiles = _searchNewProfilesDefaultValue,
     this.searchWeekdays = _searchWeekdaysDefaultValue,
-    this.editedMessages,
-    this.editedLikes,
-    this.editedMediaContent,
-    this.editedProfileText,
-    this.editedNews,
-    this.editedAutomaticProfileSearch,
-    this.editedSearchDistance,
-    this.editedSearchFilters,
-    this.editedSearchNewProfiles,
-    this.editedSearchWeekdays,
+    this.savingOfSearchResultsRelatedSettingsInProgress = _savingOfSearchResultsRelatedSettingsInProgressDefaultValue,
+    this.savingOfSearchResultsRelatedSettingsCompleted = _savingOfSearchResultsRelatedSettingsCompletedDefaultValue,
   }) : super._();
 
   @override
@@ -126,6 +100,8 @@ class _$NotificationSettingsDataImpl extends _NotificationSettingsData with Diag
   @override
   final NotificationCategoryData systemCategories;
   @override
+  final EditedNotificationSettingsData edited;
+  @override
   final bool searchDistance;
   @override
   final bool searchFilters;
@@ -134,29 +110,13 @@ class _$NotificationSettingsDataImpl extends _NotificationSettingsData with Diag
   @override
   final int searchWeekdays;
   @override
-  final bool? editedMessages;
+  final bool savingOfSearchResultsRelatedSettingsInProgress;
   @override
-  final bool? editedLikes;
-  @override
-  final bool? editedMediaContent;
-  @override
-  final bool? editedProfileText;
-  @override
-  final bool? editedNews;
-  @override
-  final bool? editedAutomaticProfileSearch;
-  @override
-  final bool? editedSearchDistance;
-  @override
-  final bool? editedSearchFilters;
-  @override
-  final bool? editedSearchNewProfiles;
-  @override
-  final int? editedSearchWeekdays;
+  final bool savingOfSearchResultsRelatedSettingsCompleted;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'NotificationSettingsData(updateState: $updateState, areNotificationsEnabled: $areNotificationsEnabled, categories: $categories, systemCategories: $systemCategories, searchDistance: $searchDistance, searchFilters: $searchFilters, searchNewProfiles: $searchNewProfiles, searchWeekdays: $searchWeekdays, editedMessages: $editedMessages, editedLikes: $editedLikes, editedMediaContent: $editedMediaContent, editedProfileText: $editedProfileText, editedNews: $editedNews, editedAutomaticProfileSearch: $editedAutomaticProfileSearch, editedSearchDistance: $editedSearchDistance, editedSearchFilters: $editedSearchFilters, editedSearchNewProfiles: $editedSearchNewProfiles, editedSearchWeekdays: $editedSearchWeekdays)';
+    return 'NotificationSettingsData(updateState: $updateState, areNotificationsEnabled: $areNotificationsEnabled, categories: $categories, systemCategories: $systemCategories, edited: $edited, searchDistance: $searchDistance, searchFilters: $searchFilters, searchNewProfiles: $searchNewProfiles, searchWeekdays: $searchWeekdays, savingOfSearchResultsRelatedSettingsInProgress: $savingOfSearchResultsRelatedSettingsInProgress, savingOfSearchResultsRelatedSettingsCompleted: $savingOfSearchResultsRelatedSettingsCompleted)';
   }
 
   @override
@@ -168,20 +128,13 @@ class _$NotificationSettingsDataImpl extends _NotificationSettingsData with Diag
       ..add(DiagnosticsProperty('areNotificationsEnabled', areNotificationsEnabled))
       ..add(DiagnosticsProperty('categories', categories))
       ..add(DiagnosticsProperty('systemCategories', systemCategories))
+      ..add(DiagnosticsProperty('edited', edited))
       ..add(DiagnosticsProperty('searchDistance', searchDistance))
       ..add(DiagnosticsProperty('searchFilters', searchFilters))
       ..add(DiagnosticsProperty('searchNewProfiles', searchNewProfiles))
       ..add(DiagnosticsProperty('searchWeekdays', searchWeekdays))
-      ..add(DiagnosticsProperty('editedMessages', editedMessages))
-      ..add(DiagnosticsProperty('editedLikes', editedLikes))
-      ..add(DiagnosticsProperty('editedMediaContent', editedMediaContent))
-      ..add(DiagnosticsProperty('editedProfileText', editedProfileText))
-      ..add(DiagnosticsProperty('editedNews', editedNews))
-      ..add(DiagnosticsProperty('editedAutomaticProfileSearch', editedAutomaticProfileSearch))
-      ..add(DiagnosticsProperty('editedSearchDistance', editedSearchDistance))
-      ..add(DiagnosticsProperty('editedSearchFilters', editedSearchFilters))
-      ..add(DiagnosticsProperty('editedSearchNewProfiles', editedSearchNewProfiles))
-      ..add(DiagnosticsProperty('editedSearchWeekdays', editedSearchWeekdays));
+      ..add(DiagnosticsProperty('savingOfSearchResultsRelatedSettingsInProgress', savingOfSearchResultsRelatedSettingsInProgress))
+      ..add(DiagnosticsProperty('savingOfSearchResultsRelatedSettingsCompleted', savingOfSearchResultsRelatedSettingsCompleted));
   }
 
   @override
@@ -197,6 +150,8 @@ class _$NotificationSettingsDataImpl extends _NotificationSettingsData with Diag
           other.categories == categories) &&
         (identical(other.systemCategories, systemCategories) ||
           other.systemCategories == systemCategories) &&
+        (identical(other.edited, edited) ||
+          other.edited == edited) &&
         (identical(other.searchDistance, searchDistance) ||
           other.searchDistance == searchDistance) &&
         (identical(other.searchFilters, searchFilters) ||
@@ -205,26 +160,10 @@ class _$NotificationSettingsDataImpl extends _NotificationSettingsData with Diag
           other.searchNewProfiles == searchNewProfiles) &&
         (identical(other.searchWeekdays, searchWeekdays) ||
           other.searchWeekdays == searchWeekdays) &&
-        (identical(other.editedMessages, editedMessages) ||
-          other.editedMessages == editedMessages) &&
-        (identical(other.editedLikes, editedLikes) ||
-          other.editedLikes == editedLikes) &&
-        (identical(other.editedMediaContent, editedMediaContent) ||
-          other.editedMediaContent == editedMediaContent) &&
-        (identical(other.editedProfileText, editedProfileText) ||
-          other.editedProfileText == editedProfileText) &&
-        (identical(other.editedNews, editedNews) ||
-          other.editedNews == editedNews) &&
-        (identical(other.editedAutomaticProfileSearch, editedAutomaticProfileSearch) ||
-          other.editedAutomaticProfileSearch == editedAutomaticProfileSearch) &&
-        (identical(other.editedSearchDistance, editedSearchDistance) ||
-          other.editedSearchDistance == editedSearchDistance) &&
-        (identical(other.editedSearchFilters, editedSearchFilters) ||
-          other.editedSearchFilters == editedSearchFilters) &&
-        (identical(other.editedSearchNewProfiles, editedSearchNewProfiles) ||
-          other.editedSearchNewProfiles == editedSearchNewProfiles) &&
-        (identical(other.editedSearchWeekdays, editedSearchWeekdays) ||
-          other.editedSearchWeekdays == editedSearchWeekdays)
+        (identical(other.savingOfSearchResultsRelatedSettingsInProgress, savingOfSearchResultsRelatedSettingsInProgress) ||
+          other.savingOfSearchResultsRelatedSettingsInProgress == savingOfSearchResultsRelatedSettingsInProgress) &&
+        (identical(other.savingOfSearchResultsRelatedSettingsCompleted, savingOfSearchResultsRelatedSettingsCompleted) ||
+          other.savingOfSearchResultsRelatedSettingsCompleted == savingOfSearchResultsRelatedSettingsCompleted)
     );
   }
 
@@ -235,20 +174,13 @@ class _$NotificationSettingsDataImpl extends _NotificationSettingsData with Diag
     areNotificationsEnabled,
     categories,
     systemCategories,
+    edited,
     searchDistance,
     searchFilters,
     searchNewProfiles,
     searchWeekdays,
-    editedMessages,
-    editedLikes,
-    editedMediaContent,
-    editedProfileText,
-    editedNews,
-    editedAutomaticProfileSearch,
-    editedSearchDistance,
-    editedSearchFilters,
-    editedSearchNewProfiles,
-    editedSearchWeekdays,
+    savingOfSearchResultsRelatedSettingsInProgress,
+    savingOfSearchResultsRelatedSettingsCompleted,
   );
 
   @override
@@ -257,39 +189,25 @@ class _$NotificationSettingsDataImpl extends _NotificationSettingsData with Diag
     Object? areNotificationsEnabled,
     Object? categories,
     Object? systemCategories,
+    Object? edited,
     Object? searchDistance,
     Object? searchFilters,
     Object? searchNewProfiles,
     Object? searchWeekdays,
-    Object? editedMessages = _detectDefaultValueInCopyWith,
-    Object? editedLikes = _detectDefaultValueInCopyWith,
-    Object? editedMediaContent = _detectDefaultValueInCopyWith,
-    Object? editedProfileText = _detectDefaultValueInCopyWith,
-    Object? editedNews = _detectDefaultValueInCopyWith,
-    Object? editedAutomaticProfileSearch = _detectDefaultValueInCopyWith,
-    Object? editedSearchDistance = _detectDefaultValueInCopyWith,
-    Object? editedSearchFilters = _detectDefaultValueInCopyWith,
-    Object? editedSearchNewProfiles = _detectDefaultValueInCopyWith,
-    Object? editedSearchWeekdays = _detectDefaultValueInCopyWith,
+    Object? savingOfSearchResultsRelatedSettingsInProgress,
+    Object? savingOfSearchResultsRelatedSettingsCompleted,
   }) => _$NotificationSettingsDataImpl(
     updateState: (updateState ?? this.updateState) as UpdateState,
     areNotificationsEnabled: (areNotificationsEnabled ?? this.areNotificationsEnabled) as bool,
     categories: (categories ?? this.categories) as NotificationCategoryData,
     systemCategories: (systemCategories ?? this.systemCategories) as NotificationCategoryData,
+    edited: (edited ?? this.edited) as EditedNotificationSettingsData,
     searchDistance: (searchDistance ?? this.searchDistance) as bool,
     searchFilters: (searchFilters ?? this.searchFilters) as bool,
     searchNewProfiles: (searchNewProfiles ?? this.searchNewProfiles) as bool,
     searchWeekdays: (searchWeekdays ?? this.searchWeekdays) as int,
-    editedMessages: (editedMessages == _detectDefaultValueInCopyWith ? this.editedMessages : editedMessages) as bool?,
-    editedLikes: (editedLikes == _detectDefaultValueInCopyWith ? this.editedLikes : editedLikes) as bool?,
-    editedMediaContent: (editedMediaContent == _detectDefaultValueInCopyWith ? this.editedMediaContent : editedMediaContent) as bool?,
-    editedProfileText: (editedProfileText == _detectDefaultValueInCopyWith ? this.editedProfileText : editedProfileText) as bool?,
-    editedNews: (editedNews == _detectDefaultValueInCopyWith ? this.editedNews : editedNews) as bool?,
-    editedAutomaticProfileSearch: (editedAutomaticProfileSearch == _detectDefaultValueInCopyWith ? this.editedAutomaticProfileSearch : editedAutomaticProfileSearch) as bool?,
-    editedSearchDistance: (editedSearchDistance == _detectDefaultValueInCopyWith ? this.editedSearchDistance : editedSearchDistance) as bool?,
-    editedSearchFilters: (editedSearchFilters == _detectDefaultValueInCopyWith ? this.editedSearchFilters : editedSearchFilters) as bool?,
-    editedSearchNewProfiles: (editedSearchNewProfiles == _detectDefaultValueInCopyWith ? this.editedSearchNewProfiles : editedSearchNewProfiles) as bool?,
-    editedSearchWeekdays: (editedSearchWeekdays == _detectDefaultValueInCopyWith ? this.editedSearchWeekdays : editedSearchWeekdays) as int?,
+    savingOfSearchResultsRelatedSettingsInProgress: (savingOfSearchResultsRelatedSettingsInProgress ?? this.savingOfSearchResultsRelatedSettingsInProgress) as bool,
+    savingOfSearchResultsRelatedSettingsCompleted: (savingOfSearchResultsRelatedSettingsCompleted ?? this.savingOfSearchResultsRelatedSettingsCompleted) as bool,
   );
 }
 
@@ -424,5 +342,180 @@ class _$NotificationCategoryDataImpl extends _NotificationCategoryData with Diag
     profileTextModerationCompleted: (profileTextModerationCompleted ?? this.profileTextModerationCompleted) as bool,
     news: (news ?? this.news) as bool,
     automaticProfileSearch: (automaticProfileSearch ?? this.automaticProfileSearch) as bool,
+  );
+}
+
+/// @nodoc
+final _privateConstructorErrorEditedNotificationSettingsData = UnsupportedError(
+    'Private constructor EditedNotificationSettingsData._() was called. Please call factory constructor instead.');
+
+/// @nodoc
+mixin _$EditedNotificationSettingsData {
+  bool? get messages => throw _privateConstructorErrorEditedNotificationSettingsData;
+  bool? get likes => throw _privateConstructorErrorEditedNotificationSettingsData;
+  bool? get mediaContent => throw _privateConstructorErrorEditedNotificationSettingsData;
+  bool? get profileText => throw _privateConstructorErrorEditedNotificationSettingsData;
+  bool? get news => throw _privateConstructorErrorEditedNotificationSettingsData;
+  bool? get automaticProfileSearch => throw _privateConstructorErrorEditedNotificationSettingsData;
+  bool? get searchDistance => throw _privateConstructorErrorEditedNotificationSettingsData;
+  bool? get searchFilters => throw _privateConstructorErrorEditedNotificationSettingsData;
+  bool? get searchNewProfiles => throw _privateConstructorErrorEditedNotificationSettingsData;
+  int? get searchWeekdays => throw _privateConstructorErrorEditedNotificationSettingsData;
+
+  EditedNotificationSettingsData copyWith({
+    bool? messages,
+    bool? likes,
+    bool? mediaContent,
+    bool? profileText,
+    bool? news,
+    bool? automaticProfileSearch,
+    bool? searchDistance,
+    bool? searchFilters,
+    bool? searchNewProfiles,
+    int? searchWeekdays,
+  }) => throw _privateConstructorErrorEditedNotificationSettingsData;
+}
+
+/// @nodoc
+abstract class _EditedNotificationSettingsData extends EditedNotificationSettingsData {
+  factory _EditedNotificationSettingsData({
+    bool? messages,
+    bool? likes,
+    bool? mediaContent,
+    bool? profileText,
+    bool? news,
+    bool? automaticProfileSearch,
+    bool? searchDistance,
+    bool? searchFilters,
+    bool? searchNewProfiles,
+    int? searchWeekdays,
+  }) = _$EditedNotificationSettingsDataImpl;
+  _EditedNotificationSettingsData._() : super._();
+}
+
+/// @nodoc
+class _$EditedNotificationSettingsDataImpl extends _EditedNotificationSettingsData with DiagnosticableTreeMixin {
+  _$EditedNotificationSettingsDataImpl({
+    this.messages,
+    this.likes,
+    this.mediaContent,
+    this.profileText,
+    this.news,
+    this.automaticProfileSearch,
+    this.searchDistance,
+    this.searchFilters,
+    this.searchNewProfiles,
+    this.searchWeekdays,
+  }) : super._();
+
+  @override
+  final bool? messages;
+  @override
+  final bool? likes;
+  @override
+  final bool? mediaContent;
+  @override
+  final bool? profileText;
+  @override
+  final bool? news;
+  @override
+  final bool? automaticProfileSearch;
+  @override
+  final bool? searchDistance;
+  @override
+  final bool? searchFilters;
+  @override
+  final bool? searchNewProfiles;
+  @override
+  final int? searchWeekdays;
+
+  @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'EditedNotificationSettingsData(messages: $messages, likes: $likes, mediaContent: $mediaContent, profileText: $profileText, news: $news, automaticProfileSearch: $automaticProfileSearch, searchDistance: $searchDistance, searchFilters: $searchFilters, searchNewProfiles: $searchNewProfiles, searchWeekdays: $searchWeekdays)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'EditedNotificationSettingsData'))
+      ..add(DiagnosticsProperty('messages', messages))
+      ..add(DiagnosticsProperty('likes', likes))
+      ..add(DiagnosticsProperty('mediaContent', mediaContent))
+      ..add(DiagnosticsProperty('profileText', profileText))
+      ..add(DiagnosticsProperty('news', news))
+      ..add(DiagnosticsProperty('automaticProfileSearch', automaticProfileSearch))
+      ..add(DiagnosticsProperty('searchDistance', searchDistance))
+      ..add(DiagnosticsProperty('searchFilters', searchFilters))
+      ..add(DiagnosticsProperty('searchNewProfiles', searchNewProfiles))
+      ..add(DiagnosticsProperty('searchWeekdays', searchWeekdays));
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+      (other.runtimeType == runtimeType &&
+        other is _$EditedNotificationSettingsDataImpl &&
+        (identical(other.messages, messages) ||
+          other.messages == messages) &&
+        (identical(other.likes, likes) ||
+          other.likes == likes) &&
+        (identical(other.mediaContent, mediaContent) ||
+          other.mediaContent == mediaContent) &&
+        (identical(other.profileText, profileText) ||
+          other.profileText == profileText) &&
+        (identical(other.news, news) ||
+          other.news == news) &&
+        (identical(other.automaticProfileSearch, automaticProfileSearch) ||
+          other.automaticProfileSearch == automaticProfileSearch) &&
+        (identical(other.searchDistance, searchDistance) ||
+          other.searchDistance == searchDistance) &&
+        (identical(other.searchFilters, searchFilters) ||
+          other.searchFilters == searchFilters) &&
+        (identical(other.searchNewProfiles, searchNewProfiles) ||
+          other.searchNewProfiles == searchNewProfiles) &&
+        (identical(other.searchWeekdays, searchWeekdays) ||
+          other.searchWeekdays == searchWeekdays)
+    );
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    runtimeType,
+    messages,
+    likes,
+    mediaContent,
+    profileText,
+    news,
+    automaticProfileSearch,
+    searchDistance,
+    searchFilters,
+    searchNewProfiles,
+    searchWeekdays,
+  );
+
+  @override
+  EditedNotificationSettingsData copyWith({
+    Object? messages = _detectDefaultValueInCopyWith,
+    Object? likes = _detectDefaultValueInCopyWith,
+    Object? mediaContent = _detectDefaultValueInCopyWith,
+    Object? profileText = _detectDefaultValueInCopyWith,
+    Object? news = _detectDefaultValueInCopyWith,
+    Object? automaticProfileSearch = _detectDefaultValueInCopyWith,
+    Object? searchDistance = _detectDefaultValueInCopyWith,
+    Object? searchFilters = _detectDefaultValueInCopyWith,
+    Object? searchNewProfiles = _detectDefaultValueInCopyWith,
+    Object? searchWeekdays = _detectDefaultValueInCopyWith,
+  }) => _$EditedNotificationSettingsDataImpl(
+    messages: (messages == _detectDefaultValueInCopyWith ? this.messages : messages) as bool?,
+    likes: (likes == _detectDefaultValueInCopyWith ? this.likes : likes) as bool?,
+    mediaContent: (mediaContent == _detectDefaultValueInCopyWith ? this.mediaContent : mediaContent) as bool?,
+    profileText: (profileText == _detectDefaultValueInCopyWith ? this.profileText : profileText) as bool?,
+    news: (news == _detectDefaultValueInCopyWith ? this.news : news) as bool?,
+    automaticProfileSearch: (automaticProfileSearch == _detectDefaultValueInCopyWith ? this.automaticProfileSearch : automaticProfileSearch) as bool?,
+    searchDistance: (searchDistance == _detectDefaultValueInCopyWith ? this.searchDistance : searchDistance) as bool?,
+    searchFilters: (searchFilters == _detectDefaultValueInCopyWith ? this.searchFilters : searchFilters) as bool?,
+    searchNewProfiles: (searchNewProfiles == _detectDefaultValueInCopyWith ? this.searchNewProfiles : searchNewProfiles) as bool?,
+    searchWeekdays: (searchWeekdays == _detectDefaultValueInCopyWith ? this.searchWeekdays : searchWeekdays) as int?,
   );
 }

@@ -23,10 +23,10 @@ import 'package:app/ui_utils/consts/padding.dart';
 import 'package:app/ui_utils/list.dart';
 import 'package:app/utils/result.dart';
 
-void openAutomaticProfileSearchResultsScreen(
+Future<void> openAutomaticProfileSearchResultsScreen(
   BuildContext context,
 ) {
-  MyNavigator.push(
+  return MyNavigator.push(
     context,
     const MaterialPage<void>(child: AutomaticProfileSearchResultsScreen()),
     pageInfo: const AutomaticProfileSearchResultsPageInfo(),
