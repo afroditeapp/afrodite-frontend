@@ -74,7 +74,7 @@
   "@automatic_profile_search_results_screen_no_profiles_found": {
     "description": "Info text displayed when no profiles are found"
   },
-  "automatic_profile_search_results_screen_title": "Search results",
+  "automatic_profile_search_results_screen_title": "Automatic profile search results",
   "@automatic_profile_search_results_screen_title": {
     "description": "Title for automatic profile search results screen"
   },
@@ -93,14 +93,6 @@
   "automatic_profile_search_settings_screen_one_weekday_must_be_selected_info": "One weekday must be selected",
   "@automatic_profile_search_settings_screen_one_weekday_must_be_selected_info": {
     "description": "Snackbar info text that one weekday must be selected"
-  },
-  "automatic_profile_search_settings_screen_save_settings_and_show_search_results": "Save settings and show search results",
-  "@automatic_profile_search_settings_screen_save_settings_and_show_search_results": {
-    "description": "Title text for save settings and show search results action"
-  },
-  "automatic_profile_search_settings_screen_show_search_results": "Show search results",
-  "@automatic_profile_search_settings_screen_show_search_results": {
-    "description": "Title text for show search results action"
   },
   "automatic_profile_search_settings_screen_title": "Automatic profile search settings",
   "@automatic_profile_search_settings_screen_title": {

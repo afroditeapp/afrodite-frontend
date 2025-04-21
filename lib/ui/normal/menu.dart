@@ -1,6 +1,7 @@
 import 'package:app/logic/account/client_features_config.dart';
 import 'package:app/logic/server/maintenance.dart';
 import 'package:app/ui/normal/settings.dart';
+import 'package:app/ui/normal/settings/notifications/automatic_profile_search_results.dart';
 import 'package:app/utils/time.dart';
 import 'package:database/database.dart';
 import 'package:flutter/material.dart';
@@ -137,6 +138,9 @@ class _MenuViewState extends State<MenuView> {
       ),
       Setting.createSetting(Icons.bar_chart, context.strings.profile_statistics_screen_title, () =>
         openProfileStatisticsScreen(context)
+      ),
+      Setting.createSetting(Icons.search, context.strings.automatic_profile_search_results_screen_title, () =>
+        openAutomaticProfileSearchResultsScreen(context)
       ),
       Setting.createSetting(Icons.settings, context.strings.settings_screen_title, () {
           MyNavigator.push(context, const MaterialPage<void>(child:

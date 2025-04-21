@@ -1,5 +1,4 @@
 
-import 'package:app/ui/normal/settings/notifications/automatic_profile_search_results.dart';
 import 'package:app/ui_utils/padding.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:flutter/material.dart';
@@ -62,21 +61,6 @@ class _AutomaticProfileSearchSettingsScreenState extends State<AutomaticProfileS
         ),
       ),
       hPad(weekdaysWidget(context, state)),
-      showSearchResults(context, state),
-      BlocBuilder<NotificationSettingsBloc, NotificationSettingsData>(
-        buildWhen: (previous, current) => previous.savingOfSearchResultsRelatedSettingsCompleted != current.savingOfSearchResultsRelatedSettingsCompleted,
-        builder: (context, data) {
-          if (data.savingOfSearchResultsRelatedSettingsCompleted) {
-            openAutomaticProfileSearchResultsScreen(context)
-              .then((v) {
-                if (context.mounted) {
-                  context.read<NotificationSettingsBloc>().add(ResetSaveSearchResultRelatedSettingsDone());
-                }
-              });
-          }
-          return const SizedBox.shrink();
-        },
-      )
     ];
 
     return Column(
@@ -136,27 +120,6 @@ class _AutomaticProfileSearchSettingsScreenState extends State<AutomaticProfileS
           },
         );
       }).toList(),
-    );
-  }
-
-  Widget showSearchResults(BuildContext context, NotificationSettingsData data) {
-    return ListTile(
-      title: data.unsavedSearchResultRelatedChanges() ||
-        data.savingOfSearchResultsRelatedSettingsInProgress ||
-        data.savingOfSearchResultsRelatedSettingsCompleted ?
-        Text(context.strings.automatic_profile_search_settings_screen_save_settings_and_show_search_results) :
-        Text(context.strings.automatic_profile_search_settings_screen_show_search_results),
-      onTap: () {
-        if (context.read<NotificationSettingsBloc>().state.unsavedSearchResultRelatedChanges()) {
-          if (context.read<NotificationSettingsBloc>().state.savingOfSearchResultsRelatedSettingsInProgress) {
-            showSnackBar(context.strings.generic_previous_action_in_progress);
-          } else {
-            context.read<NotificationSettingsBloc>().add(SaveSearchResultRelatedSettings());
-          }
-        } else {
-          openAutomaticProfileSearchResultsScreen(context);
-        }
-      }
     );
   }
 }
