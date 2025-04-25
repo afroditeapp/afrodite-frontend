@@ -16,10 +16,10 @@ pub fn decrypt_data(
 
     let m = Message::from_bytes(pgp_message)
         .map_err(|_| MessageEncryptionError::DecryptDataMessageParse)?;
-    m.verify(&sender_public_key)
-        .map_err(|_| MessageEncryptionError::DecryptDataVerify)?;
     let (m, _) = m.decrypt(String::new, &[&receiver_private_key])
         .map_err(|_| MessageEncryptionError::DecryptDataDecrypt)?;
+    m.verify(&sender_public_key)
+        .map_err(|_| MessageEncryptionError::DecryptDataVerify)?;
 
     let data = m.get_literal().ok_or(MessageEncryptionError::DecryptDataDataNotFound)?.data();
 

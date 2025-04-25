@@ -33,6 +33,8 @@ pub fn encrypt_data(
             // have possibility to limit decompressed data size.
             // If the data would be compressed, then denial of service attacks
             // would be possible.
+            .sign(OsRng, &my_private_key, String::new, HashAlgorithm::SHA2_256)
+            .map_err(|_| MessageEncryptionError::EncryptDataSign)?
             .encrypt_to_keys_seipdv2(
                 OsRng,
                 SymmetricKeyAlgorithm::AES128,
@@ -43,8 +45,6 @@ pub fn encrypt_data(
                 &[encryption_public_subkey],
             )
             .map_err(|_| MessageEncryptionError::EncryptDataEncrypt)?
-            .sign(OsRng, &my_private_key, String::new, HashAlgorithm::SHA2_256)
-            .map_err(|_| MessageEncryptionError::EncryptDataSign)?
             .to_bytes()
             .map_err(|_| MessageEncryptionError::EncryptDataToBytes)?;
 
