@@ -259,14 +259,6 @@ class MessageManager extends LifecycleMethods {
   }
 
   Future<Result<String, ReceivedMessageError>> _decryptReceivedMessage(AllKeyData allKeys, AccountId messageSender, Uint8List messageBytesFromSender) async {
-    // TODO(prod): Support only PGP messages, so remove 0 from here and where
-    //             message is sent.
-    // 0 is PGP message
-    if (messageBytesFromSender.isEmpty || messageBytesFromSender.first != 0) {
-      return const Err(ReceivedMessageError.unknownMessageType);
-    }
-    final encryptedMessageBytes = Uint8List.fromList(messageBytesFromSender.skip(1).toList());
-
     // TODO(prod): Download correct sender public key ID if needed.
 
     bool forcePublicKeyDownload = false;
@@ -279,7 +271,7 @@ class MessageManager extends LifecycleMethods {
       final (messageBytes, decryptingResult) = decryptMessage(
         publicKey.data,
         allKeys.private.data,
-        encryptedMessageBytes,
+        messageBytesFromSender,
       );
 
       if (messageBytes == null) {
@@ -430,9 +422,6 @@ class MessageManager extends LifecycleMethods {
       return;
     }
 
-    final dataIdentifierAndEncryptedMessage = [0]; // 0 is PGP message
-    dataIdentifierAndEncryptedMessage.addAll(encryptedMessage);
-
     UnixTime unixTimeFromServer;
     MessageNumber messageNumberFromServer;
     var messageSenderAcknowledgementTried = false;
@@ -443,7 +432,7 @@ class MessageManager extends LifecycleMethods {
         receiverPublicKey.id.id,
         clientId.id,
         localId.id,
-        MultipartFile.fromBytes("", dataIdentifierAndEncryptedMessage),
+        MultipartFile.fromBytes("", encryptedMessage),
       )).ok();
       if (result == null) {
         yield ErrorAfterMessageSaving(localId);
