@@ -4,6 +4,7 @@
 pub mod key;
 pub mod decrypt;
 pub mod encrypt;
+pub mod content;
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 #[repr(u8)]
@@ -37,6 +38,10 @@ pub enum MessageEncryptionError {
     DecryptDataVerify = 43,
     DecryptDataDecrypt = 44,
     DecryptDataDataNotFound = 45,
+    // Get message content
+    GetMessageContentMessageParse = 50,
+    GetMessageContentGetContent = 51,
+    GetMessageContentNoContent = 52,
 }
 
 impl From<MessageEncryptionError> for isize {

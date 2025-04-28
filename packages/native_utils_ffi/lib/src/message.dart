@@ -6,6 +6,7 @@ import 'dart:typed_data';
 import 'package:ffi/ffi.dart';
 import 'package:native_utils_common/native_utils_common.dart';
 import 'package:native_utils_ffi/src/bindings.dart';
+import 'package:native_utils_ffi/src/native_utils_ffi_bindings_generated.dart';
 
 /// If generation fails, null is returned.
 (GeneratedMessageKeys?, int) generateMessageKeys(String accountId) {
@@ -40,6 +41,7 @@ import 'package:native_utils_ffi/src/bindings.dart';
   cReceiver.asTypedList(receiverPublicKey.length).setAll(0, receiverPublicKey);
   final Pointer<Uint8> cData = malloc.allocate(data.length);
   cData.asTypedList(data.length).setAll(0, data);
+
   final encryptResult = getBindings().encrypt_message(
     cSender,
     senderPrivateKey.length,
@@ -48,22 +50,12 @@ import 'package:native_utils_ffi/src/bindings.dart';
     cData,
     data.length,
   );
+
   malloc.free(cSender);
   malloc.free(cReceiver);
   malloc.free(cData);
 
-  final result = encryptResult.result;
-  final (Uint8List?, int) returnValue;
-  if (result == 0) {
-    final Uint8List cDataView = encryptResult.data.asTypedList(encryptResult.data_len);
-    final encryptedData = Uint8List(encryptResult.data_len);
-    encryptedData.setAll(0, cDataView);
-    returnValue = (encryptedData, 0);
-  } else {
-    returnValue = (null, result);
-  }
-  getBindings().free_binary_data_result(encryptResult);
-  return returnValue;
+  return handleBinaryDataResult(encryptResult);
 }
 
 /// If decrypting fails, null is returned
@@ -78,6 +70,7 @@ import 'package:native_utils_ffi/src/bindings.dart';
   cReceiverPrivateKey.asTypedList(receiverPrivateKey.length).setAll(0, receiverPrivateKey);
   final Pointer<Uint8> cMessageData = malloc.allocate(pgpMessage.length);
   cMessageData.asTypedList(pgpMessage.length).setAll(0, pgpMessage);
+
   final decryptResult = getBindings().decrypt_message(
     cSenderPublicKey,
     senderPublicKey.length,
@@ -86,20 +79,29 @@ import 'package:native_utils_ffi/src/bindings.dart';
     cMessageData,
     pgpMessage.length
   );
+
   malloc.free(cSenderPublicKey);
   malloc.free(cReceiverPrivateKey);
   malloc.free(cMessageData);
 
-  final result = decryptResult.result;
-  final (Uint8List?, int) returnValue;
-  if (result == 0) {
-    final decryptedData = copyToList(decryptResult.data, decryptResult.data_len);
-    returnValue = (decryptedData, 0);
-  } else {
-    returnValue = (null, result);
-  }
-  getBindings().free_binary_data_result(decryptResult);
-  return returnValue;
+  return handleBinaryDataResult(decryptResult);
+}
+
+/// When getting the PGP message content fails, null is returned
+(Uint8List?, int) getMessageContent(
+  Uint8List pgpMessage,
+) {
+  final Pointer<Uint8> cMessageData = malloc.allocate(pgpMessage.length);
+  cMessageData.asTypedList(pgpMessage.length).setAll(0, pgpMessage);
+
+  final getMessageContentResult = getBindings().get_message_content(
+    cMessageData,
+    pgpMessage.length
+  );
+
+  malloc.free(cMessageData);
+
+  return handleBinaryDataResult(getMessageContentResult);
 }
 
 Uint8List copyToList(Pointer<Uint8> data, int len) {
@@ -107,4 +109,17 @@ Uint8List copyToList(Pointer<Uint8> data, int len) {
   final newData = Uint8List(len);
   newData.setAll(0, cDataView);
   return newData;
+}
+
+(Uint8List?, int) handleBinaryDataResult(BinaryDataResult r) {
+  final result = r.result;
+  final (Uint8List?, int) returnValue;
+  if (result == 0) {
+    final copiedData = copyToList(r.data, r.data_len);
+    returnValue = (copiedData, 0);
+  } else {
+    returnValue = (null, result);
+  }
+  getBindings().free_binary_data_result(r);
+  return returnValue;
 }

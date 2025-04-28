@@ -242,19 +242,23 @@ class MessageManager extends LifecycleMethods {
       if (count == null) {
         return parsedData;
       }
-      final backendSignedMessageBytes = bytesIterator.takeAndAdvance(count);
-      if (backendSignedMessageBytes == null) {
+      final signedPgpMessage = bytesIterator.takeAndAdvance(count);
+      if (signedPgpMessage == null) {
+        return null;
+      }
+      final signedPgpMessageUint8 = Uint8List.fromList(signedPgpMessage);
+
+      final (backendSignedMessage, _) = getMessageContent(signedPgpMessageUint8);
+      if (backendSignedMessage == null) {
         return null;
       }
 
-      // TODO(prod): Remove backend signing
-
-      final parsed = BackendSignedMessage.parse(backendSignedMessageBytes);
+      final parsed = BackendSignedMessage.parse(backendSignedMessage);
       if (parsed == null) {
         return null;
       }
 
-      parsedData.add(PendingMessageData(parsed, Uint8List.fromList(backendSignedMessageBytes)));
+      parsedData.add(PendingMessageData(parsed, signedPgpMessageUint8));
     }
   }
 
@@ -479,15 +483,20 @@ class MessageManager extends LifecycleMethods {
         return;
       }
 
-      final backendSignedMessageBase64 = result.d;
-      if (backendSignedMessageBase64 == null) {
+      final signedPgpMessageBase64 = result.d;
+      if (signedPgpMessageBase64 == null) {
         yield ErrorAfterMessageSaving(localId);
         return;
       }
 
-      final backendSignedMessage = base64Decode(backendSignedMessageBase64);
+      final signedPgpMessage = base64Decode(signedPgpMessageBase64);
 
-      // TODO(prod): Remove backend signing
+      final (backendSignedMessage, getMessageContentResult) = getMessageContent(signedPgpMessage);
+      if (backendSignedMessage == null) {
+        log.error("Send message error: get message content failed, error: $getMessageContentResult");
+        yield ErrorAfterMessageSaving(localId);
+        return;
+      }
 
       final data = BackendSignedMessage.parse(backendSignedMessage);
       if (data == null) {
@@ -875,7 +884,7 @@ enum RetryPublicKeyDownloadError {
 
 class PendingMessageData {
   final BackendSignedMessage parsed;
-  final Uint8List backendSignedMessageBytes;
+  final Uint8List backendPgpMessage;
 
-  PendingMessageData(this.parsed, this.backendSignedMessageBytes);
+  PendingMessageData(this.parsed, this.backendPgpMessage);
 }

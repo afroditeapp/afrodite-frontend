@@ -106,3 +106,11 @@ FFI_PLUGIN_EXPORT struct BinaryDataResult decrypt_message(
   const uint8_t* pgp_message,
   intptr_t pgp_message_len
 );
+
+// Get message content from PGP message if possible.
+//
+// The result must be freed using free_binary_data_result.
+FFI_PLUGIN_EXPORT struct BinaryDataResult get_message_content(
+  const uint8_t* pgp_message,
+  intptr_t pgp_message_len
+);

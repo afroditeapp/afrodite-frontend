@@ -1,6 +1,6 @@
 use std::{ffi::{c_char, CStr}, ptr::null};
 
-use crate::message::{decrypt, encrypt, key::{self, PrivateKeyBytes, PublicKeyBytes}, MessageEncryptionError};
+use crate::message::{content, decrypt, encrypt, key::{self, PrivateKeyBytes, PublicKeyBytes}, MessageEncryptionError};
 
 use super::API_OK;
 
@@ -229,6 +229,23 @@ pub unsafe extern "C" fn decrypt_message(
     };
 
     match decrypt::decrypt_data(sender_public_key, receiver_private_key, pgp_message) {
+        Ok(data) => BinaryDataResult::success(data),
+        Err(e) => BinaryDataResult::error(e),
+    }
+}
+
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn get_message_content(
+    pgp_message: *const u8,
+    pgp_message_len: isize,
+) -> BinaryDataResult {
+    assert!(!pgp_message.is_null());
+
+    let pgp_message = unsafe {
+        std::slice::from_raw_parts(pgp_message, pgp_message_len as usize)
+    };
+
+    match content::get_message_content(pgp_message) {
         Ok(data) => BinaryDataResult::success(data),
         Err(e) => BinaryDataResult::error(e),
     }

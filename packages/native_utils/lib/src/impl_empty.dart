@@ -32,3 +32,8 @@ import 'package:native_utils/native_utils.dart';
   Uint8List receiverPrivateKey,
   Uint8List pgpMessage,
 ) => throw UnsupportedError("Not implemented");
+
+/// When getting message content fails, null is returned
+(Uint8List?, int) getMessageContent(
+  Uint8List pgpMessage,
+) => throw UnsupportedError("Not implemented");

@@ -233,6 +233,27 @@ class NativeUtilsBindings {
           int,
           ffi.Pointer<ffi.Uint8>,
           int)>(isLeaf: true);
+
+  /// Get message content from PGP message if possible.
+  ///
+  /// The result must be freed using free_binary_data_result.
+  BinaryDataResult get_message_content(
+    ffi.Pointer<ffi.Uint8> pgp_message,
+    int pgp_message_len,
+  ) {
+    return _get_message_content(
+      pgp_message,
+      pgp_message_len,
+    );
+  }
+
+  late final _get_message_contentPtr = _lookup<
+      ffi.NativeFunction<
+          BinaryDataResult Function(
+              ffi.Pointer<ffi.Uint8>, ffi.IntPtr)>>('get_message_content');
+  late final _get_message_content = _get_message_contentPtr
+      .asFunction<BinaryDataResult Function(ffi.Pointer<ffi.Uint8>, int)>(
+          isLeaf: true);
 }
 
 /// Message encryption API
