@@ -142,10 +142,24 @@ class NativeUtilsBindings {
       _generate_message_keys_free_resultPtr
           .asFunction<void Function(GenerateMessageKeysResult)>(isLeaf: true);
 
+  void free_binary_data_result(
+    BinaryDataResult result,
+  ) {
+    return _free_binary_data_result(
+      result,
+    );
+  }
+
+  late final _free_binary_data_resultPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(BinaryDataResult)>>(
+          'free_binary_data_result');
+  late final _free_binary_data_result = _free_binary_data_resultPtr
+      .asFunction<void Function(BinaryDataResult)>(isLeaf: true);
+
   /// Encrypt message data.
   ///
-  /// Run equivalent free function for the result.
-  EncryptMessageResult encrypt_message(
+  /// The result must be freed using free_binary_data_result.
+  BinaryDataResult encrypt_message(
     ffi.Pointer<ffi.Uint8> sender_private_key,
     int sender_private_key_len,
     ffi.Pointer<ffi.Uint8> receiver_public_key,
@@ -165,7 +179,7 @@ class NativeUtilsBindings {
 
   late final _encrypt_messagePtr = _lookup<
       ffi.NativeFunction<
-          EncryptMessageResult Function(
+          BinaryDataResult Function(
               ffi.Pointer<ffi.Uint8>,
               ffi.IntPtr,
               ffi.Pointer<ffi.Uint8>,
@@ -173,7 +187,7 @@ class NativeUtilsBindings {
               ffi.Pointer<ffi.Uint8>,
               ffi.IntPtr)>>('encrypt_message');
   late final _encrypt_message = _encrypt_messagePtr.asFunction<
-      EncryptMessageResult Function(
+      BinaryDataResult Function(
           ffi.Pointer<ffi.Uint8>,
           int,
           ffi.Pointer<ffi.Uint8>,
@@ -181,24 +195,10 @@ class NativeUtilsBindings {
           ffi.Pointer<ffi.Uint8>,
           int)>(isLeaf: true);
 
-  void encrypt_message_free_result(
-    EncryptMessageResult result,
-  ) {
-    return _encrypt_message_free_result(
-      result,
-    );
-  }
-
-  late final _encrypt_message_free_resultPtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(EncryptMessageResult)>>(
-          'encrypt_message_free_result');
-  late final _encrypt_message_free_result = _encrypt_message_free_resultPtr
-      .asFunction<void Function(EncryptMessageResult)>(isLeaf: true);
-
   /// Decrypt message data.
   ///
-  /// Run equivalent free function for the result.
-  DecryptMessageResult decrypt_message(
+  /// The result must be freed using free_binary_data_result.
+  BinaryDataResult decrypt_message(
     ffi.Pointer<ffi.Uint8> sender_public_key,
     int sender_public_key_len,
     ffi.Pointer<ffi.Uint8> receiver_private_key,
@@ -218,7 +218,7 @@ class NativeUtilsBindings {
 
   late final _decrypt_messagePtr = _lookup<
       ffi.NativeFunction<
-          DecryptMessageResult Function(
+          BinaryDataResult Function(
               ffi.Pointer<ffi.Uint8>,
               ffi.IntPtr,
               ffi.Pointer<ffi.Uint8>,
@@ -226,27 +226,13 @@ class NativeUtilsBindings {
               ffi.Pointer<ffi.Uint8>,
               ffi.IntPtr)>>('decrypt_message');
   late final _decrypt_message = _decrypt_messagePtr.asFunction<
-      DecryptMessageResult Function(
+      BinaryDataResult Function(
           ffi.Pointer<ffi.Uint8>,
           int,
           ffi.Pointer<ffi.Uint8>,
           int,
           ffi.Pointer<ffi.Uint8>,
           int)>(isLeaf: true);
-
-  void decrypt_message_free_result(
-    DecryptMessageResult result,
-  ) {
-    return _decrypt_message_free_result(
-      result,
-    );
-  }
-
-  late final _decrypt_message_free_resultPtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(DecryptMessageResult)>>(
-          'decrypt_message_free_result');
-  late final _decrypt_message_free_result = _decrypt_message_free_resultPtr
-      .asFunction<void Function(DecryptMessageResult)>(isLeaf: true);
 }
 
 /// Message encryption API
@@ -273,30 +259,16 @@ final class GenerateMessageKeysResult extends ffi.Struct {
   external int private_key_capacity;
 }
 
-final class EncryptMessageResult extends ffi.Struct {
+final class BinaryDataResult extends ffi.Struct {
   @ffi.IntPtr()
   external int result;
 
   /// Null if failure
-  external ffi.Pointer<ffi.Uint8> encrypted_message;
+  external ffi.Pointer<ffi.Uint8> data;
 
   @ffi.IntPtr()
-  external int encrypted_message_len;
+  external int data_len;
 
   @ffi.IntPtr()
-  external int encrypted_message_capacity;
-}
-
-final class DecryptMessageResult extends ffi.Struct {
-  @ffi.IntPtr()
-  external int result;
-
-  /// Null if failure
-  external ffi.Pointer<ffi.Uint8> decrypted_message;
-
-  @ffi.IntPtr()
-  external int decrypted_message_len;
-
-  @ffi.IntPtr()
-  external int decrypted_message_capacity;
+  external int data_capacity;
 }

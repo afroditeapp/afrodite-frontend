@@ -71,18 +71,22 @@ FFI_PLUGIN_EXPORT void generate_message_keys_free_result(
   struct GenerateMessageKeysResult result
 );
 
-struct EncryptMessageResult {
+struct BinaryDataResult {
   intptr_t result;
   // Null if failure
-  const uint8_t* encrypted_message;
-  intptr_t encrypted_message_len;
-  intptr_t encrypted_message_capacity;
+  const uint8_t* data;
+  intptr_t data_len;
+  intptr_t data_capacity;
 };
+
+FFI_PLUGIN_EXPORT void free_binary_data_result(
+  struct BinaryDataResult result
+);
 
 // Encrypt message data.
 //
-// Run equivalent free function for the result.
-FFI_PLUGIN_EXPORT struct EncryptMessageResult encrypt_message(
+// The result must be freed using free_binary_data_result.
+FFI_PLUGIN_EXPORT struct BinaryDataResult encrypt_message(
   const uint8_t* sender_private_key,
   intptr_t sender_private_key_len,
   const uint8_t* receiver_public_key,
@@ -91,30 +95,14 @@ FFI_PLUGIN_EXPORT struct EncryptMessageResult encrypt_message(
   intptr_t data_len
 );
 
-FFI_PLUGIN_EXPORT void encrypt_message_free_result(
-  struct EncryptMessageResult result
-);
-
-struct DecryptMessageResult {
-  intptr_t result;
-  // Null if failure
-  const uint8_t* decrypted_message;
-  intptr_t decrypted_message_len;
-  intptr_t decrypted_message_capacity;
-};
-
 // Decrypt message data.
 //
-// Run equivalent free function for the result.
-FFI_PLUGIN_EXPORT struct DecryptMessageResult decrypt_message(
+// The result must be freed using free_binary_data_result.
+FFI_PLUGIN_EXPORT struct BinaryDataResult decrypt_message(
   const uint8_t* sender_public_key,
   intptr_t sender_public_key_len,
   const uint8_t* receiver_private_key,
   intptr_t receiver_private_key_len,
   const uint8_t* pgp_message,
   intptr_t pgp_message_len
-);
-
-FFI_PLUGIN_EXPORT void decrypt_message_free_result(
-  struct DecryptMessageResult result
 );

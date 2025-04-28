@@ -55,14 +55,14 @@ import 'package:native_utils_ffi/src/bindings.dart';
   final result = encryptResult.result;
   final (Uint8List?, int) returnValue;
   if (result == 0) {
-    final Uint8List cDataView = encryptResult.encrypted_message.asTypedList(encryptResult.encrypted_message_len);
-    final encryptedData = Uint8List(encryptResult.encrypted_message_len);
+    final Uint8List cDataView = encryptResult.data.asTypedList(encryptResult.data_len);
+    final encryptedData = Uint8List(encryptResult.data_len);
     encryptedData.setAll(0, cDataView);
     returnValue = (encryptedData, 0);
   } else {
     returnValue = (null, result);
   }
-  getBindings().encrypt_message_free_result(encryptResult);
+  getBindings().free_binary_data_result(encryptResult);
   return returnValue;
 }
 
@@ -93,12 +93,12 @@ import 'package:native_utils_ffi/src/bindings.dart';
   final result = decryptResult.result;
   final (Uint8List?, int) returnValue;
   if (result == 0) {
-    final decryptedData = copyToList(decryptResult.decrypted_message, decryptResult.decrypted_message_len);
+    final decryptedData = copyToList(decryptResult.data, decryptResult.data_len);
     returnValue = (decryptedData, 0);
   } else {
     returnValue = (null, result);
   }
-  getBindings().decrypt_message_free_result(decryptResult);
+  getBindings().free_binary_data_result(decryptResult);
   return returnValue;
 }
 

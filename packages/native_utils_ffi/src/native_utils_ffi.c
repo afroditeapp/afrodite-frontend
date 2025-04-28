@@ -7,8 +7,8 @@ void do_not_call() {
   decrypt_content(0, 0, 0, 0);
   struct GenerateMessageKeysResult generateMessageKeysResult = generate_message_keys(0);
   generate_message_keys_free_result(generateMessageKeysResult);
-  struct EncryptMessageResult encryptMessageResult = encrypt_message(0, 0, 0, 0, 0, 0);
-  encrypt_message_free_result(encryptMessageResult);
-  struct DecryptMessageResult decryptMessageResult = decrypt_message(0, 0, 0, 0, 0, 0);
-  decrypt_message_free_result(decryptMessageResult);
+  struct BinaryDataResult encryptMessageResult = encrypt_message(0, 0, 0, 0, 0, 0);
+  free_binary_data_result(encryptMessageResult);
+  struct BinaryDataResult decryptMessageResult = decrypt_message(0, 0, 0, 0, 0, 0);
+  free_binary_data_result(decryptMessageResult);
 }

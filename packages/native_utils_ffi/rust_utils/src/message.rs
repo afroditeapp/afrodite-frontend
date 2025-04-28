@@ -27,8 +27,9 @@ pub enum MessageEncryptionError {
     EncryptDataSign = 23,
     EncryptDataToBytes = 24,
     EncryptDataPublicSubkeyMissing = 25,
-    EncryptDataEncryptedMessageLenTooLarge = 26,
-    EncryptDataEncryptedMessageCapacityTooLarge = 27,
+    // Binary data result
+    BinaryDataResultLenTooLarge = 30,
+    BinaryDataResultCapacityTooLarge = 31,
     // Decrypt data
     DecryptDataPrivateKeyParse = 40,
     DecryptDataPublicKeyParse = 41,
@@ -36,8 +37,6 @@ pub enum MessageEncryptionError {
     DecryptDataVerify = 43,
     DecryptDataDecrypt = 44,
     DecryptDataDataNotFound = 45,
-    DecryptDataDecryptedMessageLenTooLarge = 46,
-    DecryptDataDecryptedMessageCapacityTooLarge = 47,
 }
 
 impl From<MessageEncryptionError> for isize {
