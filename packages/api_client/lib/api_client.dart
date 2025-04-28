@@ -250,6 +250,8 @@ class ApiClient {
           return BotConfig.fromJson(value);
         case 'ChatAppNotificationSettings':
           return ChatAppNotificationSettings.fromJson(value);
+        case 'ChatMessageReport':
+          return ChatMessageReport.fromJson(value);
         case 'ClientConfig':
           return ClientConfig.fromJson(value);
         case 'ClientConfigSyncVersion':
@@ -398,6 +400,8 @@ class ApiClient {
           return GetProfileTextState.fromJson(value);
         case 'GetReportList':
           return GetReportList.fromJson(value);
+        case 'GetSentMessage':
+          return GetSentMessage.fromJson(value);
         case 'GroupValues':
           return GroupValues.fromJson(value);
         case 'IpAddressInfo':
@@ -474,8 +478,6 @@ class ApiClient {
           return PageItemCountForNewLikes.fromJson(value);
         case 'PageItemCountForNewPublicNews':
           return PageItemCountForNewPublicNews.fromJson(value);
-        case 'PendingMessage':
-          return PendingMessage.fromJson(value);
         case 'PendingMessageAcknowledgementList':
           return PendingMessageAcknowledgementList.fromJson(value);
         case 'PendingMessageId':

@@ -13,31 +13,37 @@ part of openapi.api;
 class UpdateChatMessageReport {
   /// Returns a new [UpdateChatMessageReport] instance.
   UpdateChatMessageReport({
-    required this.message,
+    required this.backendSignedMessageBase64,
+    required this.decryptionKeyBase64,
     required this.target,
   });
 
-  String message;
+  String backendSignedMessageBase64;
+
+  String decryptionKeyBase64;
 
   AccountId target;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is UpdateChatMessageReport &&
-    other.message == message &&
+    other.backendSignedMessageBase64 == backendSignedMessageBase64 &&
+    other.decryptionKeyBase64 == decryptionKeyBase64 &&
     other.target == target;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (message.hashCode) +
+    (backendSignedMessageBase64.hashCode) +
+    (decryptionKeyBase64.hashCode) +
     (target.hashCode);
 
   @override
-  String toString() => 'UpdateChatMessageReport[message=$message, target=$target]';
+  String toString() => 'UpdateChatMessageReport[backendSignedMessageBase64=$backendSignedMessageBase64, decryptionKeyBase64=$decryptionKeyBase64, target=$target]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'message'] = this.message;
+      json[r'backend_signed_message_base64'] = this.backendSignedMessageBase64;
+      json[r'decryption_key_base64'] = this.decryptionKeyBase64;
       json[r'target'] = this.target;
     return json;
   }
@@ -61,7 +67,8 @@ class UpdateChatMessageReport {
       }());
 
       return UpdateChatMessageReport(
-        message: mapValueOfType<String>(json, r'message')!,
+        backendSignedMessageBase64: mapValueOfType<String>(json, r'backend_signed_message_base64')!,
+        decryptionKeyBase64: mapValueOfType<String>(json, r'decryption_key_base64')!,
         target: AccountId.fromJson(json[r'target'])!,
       );
     }
@@ -110,8 +117,8 @@ class UpdateChatMessageReport {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'message',
+    'backend_signed_message_base64',
+    'decryption_key_base64',
     'target',
   };
 }
-

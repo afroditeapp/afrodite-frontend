@@ -61,7 +61,7 @@ extension MediaManualAdditions on MediaApi {
 extension ChatManualAdditions on ChatApi {
   /// Get list of pending messages.
   ///
-  /// Get list of pending messages.  The returned bytes is list of objects with following data: - UTF-8 text length encoded as 16 bit little endian number. - UTF-8 text which is PendingMessage JSON. - Binary message data length as 16 bit little endian number. - Binary message data
+  /// The returned bytes is list of objects with following data: - Binary data length as minimal i64 - Binary data  Minimal i64 has this format: - i64 byte count (u8, values: 1, 2, 4, 8) - i64 bytes (little-endian)  Binary data is binary PGP message which contains backend signed binary data. The binary data contains: - Version (u8, values: 1) - Sender AccountId UUID big-endian bytes (16 bytes) - Receiver AccountId UUID big-endian bytes (16 bytes) - Sender public key ID (minimal i64) - Receiver public key ID (minimal i64) - Message number (minimal i64) - Unix time (minimal i64) - Message data
   Future<Uint8List?> getPendingMessagesFixed() async {
     final response = await getPendingMessagesWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {

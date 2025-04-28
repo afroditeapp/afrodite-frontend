@@ -123,7 +123,10 @@ class _ReportChatMessageScreen extends State<ReportChatMessageScreen> {
         if (context.mounted && r == true) {
           final result = await api.chat((api) => api.postChatMessageReport(UpdateChatMessageReport(
             target: widget.profileEntry.uuid,
-            message: text,
+            // TODO(prod): Get backend signed message from database
+            backendSignedMessageBase64: text,
+            // TODO(prod): Get decryption key for the backend signed message
+            decryptionKeyBase64: "",
           ))).ok();
 
           if (result == null) {

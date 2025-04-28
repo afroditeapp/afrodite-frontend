@@ -3,6 +3,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:app/data/chat/backend_signed_message.dart';
 import 'package:database/database.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart';
@@ -156,36 +157,37 @@ class MessageManager extends LifecycleMethods {
 
     final toBeDeleted = <PendingMessageId>[];
 
-    for (final (message, messageBytes) in newMessages) {
-      final isMatch = await isInMatches(message.id.sender);
+    for (final message in newMessages) {
+      final isMatch = await isInMatches(message.parsed.sender);
       if (!isMatch) {
-        await db.accountAction((db) => db.daoProfileStates.setMatchStatus(message.id.sender, true));
+        await db.accountAction((db) => db.daoProfileStates.setMatchStatus(message.parsed.sender, true));
       }
 
-      if (!await isInConversationList(message.id.sender)) {
-        await db.accountAction((db) => db.daoConversationList.setConversationListVisibility(message.id.sender, true));
+      if (!await isInConversationList(message.parsed.sender)) {
+        await db.accountAction((db) => db.daoConversationList.setConversationListVisibility(message.parsed.sender, true));
       }
 
       final alreadyExistingMessageResult = await db.accountData((db) => db.daoMessages.getMessageUsingMessageNumber(
         currentUser,
-        message.id.sender,
-        message.id.mn
+        message.parsed.sender,
+        message.parsed.messageNumber
       ));
       switch (alreadyExistingMessageResult) {
         case Err():
           return;
         case Ok(v: final alreadyExistingMessage):
           if (alreadyExistingMessage != null) {
-            toBeDeleted.add(message.id);
+            toBeDeleted.add(message.parsed.toPendingMessageId());
             continue;
           }
       }
 
       final String decryptedMessage;
       final ReceivedMessageState messageState;
-      switch (await _decryptReceivedMessage(allKeys, message.id.sender, messageBytes)) {
+      switch (await _decryptReceivedMessage(allKeys, message.parsed.sender, message.parsed.messageFromSender)) {
         case Err(:final e):
-          decryptedMessage = base64Encode(messageBytes);
+          // TODO(prod): Add database column for BackendSignedMessage
+          decryptedMessage = base64Encode(message.parsed.messageFromSender);
           switch (e) {
             case ReceivedMessageError.decryptingFailed:
               messageState = ReceivedMessageState.decryptingFailed;
@@ -201,21 +203,23 @@ class MessageManager extends LifecycleMethods {
 
       final r = await db.messageAction((db) => db.insertReceivedMessage(
         currentUser,
-        message,
+        message.parsed.sender,
+        message.parsed.messageNumber,
+        message.parsed.serverTime.toUtcDateTime(),
         decryptedMessage,
         messageState,
       ));
       if (r.isOk()) {
-        toBeDeleted.add(message.id);
+        toBeDeleted.add(message.parsed.toPendingMessageId());
       }
-      final unreadMessagesCount = await accountBackgroundDb.accountData((db) => db.daoConversationsBackground.incrementUnreadMessagesCount(message.id.sender)).ok();
+      final unreadMessagesCount = await accountBackgroundDb.accountData((db) => db.daoConversationsBackground.incrementUnreadMessagesCount(message.parsed.sender)).ok();
       if (unreadMessagesCount != null) {
-        profile.sendProfileChange(ConversationChanged(message.id.sender, ConversationChangeType.messageReceived));
-        await NotificationMessageReceived.getInstance().updateMessageReceivedCount(message.id.sender, unreadMessagesCount.count, accountBackgroundDb);
+        profile.sendProfileChange(ConversationChanged(message.parsed.sender, ConversationChangeType.messageReceived));
+        await NotificationMessageReceived.getInstance().updateMessageReceivedCount(message.parsed.sender, unreadMessagesCount.count, accountBackgroundDb);
       }
     }
 
-    for (final sender in newMessages.map((item) => item.$1.id.sender).toSet()) {
+    for (final sender in newMessages.map((item) => item.parsed.sender).toSet()) {
       await accountBackgroundDb.accountAction((db) => db.daoNewMessageNotification.setNotificationShown(sender, false));
     }
 
@@ -226,66 +230,44 @@ class MessageManager extends LifecycleMethods {
     }
   }
 
-  List<(PendingMessage, Uint8List)>? _parsePendingMessagesResponse(Uint8List bytes) {
+  List<PendingMessageData>? _parsePendingMessagesResponse(Uint8List bytes) {
     final bytesIterator = bytes.iterator;
-    final List<(PendingMessage, Uint8List)> parsedData = [];
+    final List<PendingMessageData> parsedData = [];
+    if (bytes.isEmpty) {
+      return parsedData;
+    }
+
     while (true) {
-      final jsonLen1 = bytesIterator.next();
-      final jsonLen2 = bytesIterator.next();
-      if (jsonLen1 == null) {
+      final count = parseMinimalI64(bytesIterator).ok();
+      if (count == null) {
         return parsedData;
       }
-      if (jsonLen2 == null) {
+      final backendSignedMessageBytes = bytesIterator.takeAndAdvance(count);
+      if (backendSignedMessageBytes == null) {
         return null;
       }
-      final jsonLength = ByteData.sublistView(Uint8List.fromList([jsonLen1, jsonLen2]))
-        .getUint16(0, Endian.little);
-      final List<int> utf8Text = [];
-      for (var i = 0; i < jsonLength; i++) {
-        final byteValue = bytesIterator.next();
-        if (byteValue == null) {
-          return null;
-        }
-        utf8Text.add(byteValue);
-      }
-      final PendingMessage pendingMessage;
-      try {
-        final text = utf8.decode(utf8Text);
-        final pendingMessageOrNull = PendingMessage.fromJson(jsonDecode(text));
-        if (pendingMessageOrNull == null) {
-          return null;
-        }
-        pendingMessage = pendingMessageOrNull;
-      } catch (_)  {
-        return null;
-      }
-      final dataLen1 = bytesIterator.next();
-      final dataLen2 = bytesIterator.next();
-      if (dataLen1 == null || dataLen2 == null) {
-        return null;
-      }
-      final dataLength = ByteData.sublistView(Uint8List.fromList([dataLen1, dataLen2]))
-        .getUint16(0, Endian.little);
-      final List<int> data = [];
-      for (var i = 0; i < dataLength; i++) {
-        final byteValue = bytesIterator.next();
-        if (byteValue == null) {
-          return null;
-        }
-        data.add(byteValue);
-      }
-      final dataList = Uint8List.fromList(data);
 
-      parsedData.add((pendingMessage, dataList));
+      // TODO(prod): Remove backend signing
+
+      final parsed = BackendSignedMessage.parse(backendSignedMessageBytes);
+      if (parsed == null) {
+        return null;
+      }
+
+      parsedData.add(PendingMessageData(parsed, Uint8List.fromList(backendSignedMessageBytes)));
     }
   }
 
-  Future<Result<String, ReceivedMessageError>> _decryptReceivedMessage(AllKeyData allKeys, AccountId messageSender, Uint8List messageBytesFromServer) async {
+  Future<Result<String, ReceivedMessageError>> _decryptReceivedMessage(AllKeyData allKeys, AccountId messageSender, Uint8List messageBytesFromSender) async {
+    // TODO(prod): Support only PGP messages, so remove 0 from here and where
+    //             message is sent.
     // 0 is PGP message
-    if (messageBytesFromServer.isEmpty || messageBytesFromServer.first != 0) {
+    if (messageBytesFromSender.isEmpty || messageBytesFromSender.first != 0) {
       return const Err(ReceivedMessageError.unknownMessageType);
     }
-    final encryptedMessageBytes = Uint8List.fromList(messageBytesFromServer.skip(1).toList());
+    final encryptedMessageBytes = Uint8List.fromList(messageBytesFromSender.skip(1).toList());
+
+    // TODO(prod): Download correct sender public key ID if needed.
 
     bool forcePublicKeyDownload = false;
     while (true) {
@@ -456,6 +438,7 @@ class MessageManager extends LifecycleMethods {
     var messageSenderAcknowledgementTried = false;
     while (true) {
       final result = await api.chat((api) => api.postSendMessage(
+        currentUserKeys.id.id,
         accountId.aid,
         receiverPublicKey.id.id,
         clientId.id,
@@ -507,14 +490,23 @@ class MessageManager extends LifecycleMethods {
         return;
       }
 
-      final unixTimeFromResult = result.ut;
-      final messageNumberFromResult = result.mn;
-      if (unixTimeFromResult == null || messageNumberFromResult == null) {
+      final backendSignedMessageBase64 = result.d;
+      if (backendSignedMessageBase64 == null) {
         yield ErrorAfterMessageSaving(localId);
         return;
       }
-      unixTimeFromServer = unixTimeFromResult;
-      messageNumberFromServer = messageNumberFromResult;
+
+      final backendSignedMessage = base64Decode(backendSignedMessageBase64);
+
+      // TODO(prod): Remove backend signing
+
+      final data = BackendSignedMessage.parse(backendSignedMessage);
+      if (data == null) {
+        yield ErrorAfterMessageSaving(localId);
+        return;
+      }
+      unixTimeFromServer = data.serverTime;
+      messageNumberFromServer = data.messageNumber;
       break;
     }
 
@@ -550,6 +542,9 @@ class MessageManager extends LifecycleMethods {
         continue;
       }
       final sentMessageLocalId = sentMessageId.l.toLocalMessageId();
+
+      // TODO(prod): Download backend signed message if needed.
+
       final currentMessage = await db.messageData((db) => db.getMessageUsingLocalMessageId(
         sentMessageLocalId,
       )).ok();
@@ -887,4 +882,11 @@ enum ResendFailedError {
 
 enum RetryPublicKeyDownloadError {
   unspecifiedError,
+}
+
+class PendingMessageData {
+  final BackendSignedMessage parsed;
+  final Uint8List backendSignedMessageBytes;
+
+  PendingMessageData(this.parsed, this.backendSignedMessageBytes);
 }

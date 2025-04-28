@@ -13,13 +13,15 @@ part of openapi.api;
 class SendMessageResult {
   /// Returns a new [SendMessageResult] instance.
   SendMessageResult({
+    this.d,
     this.errorReceiverBlockedSenderOrReceiverNotFound = false,
     this.errorReceiverPublicKeyOutdated = false,
     this.errorTooManyReceiverAcknowledgementsMissing = false,
     this.errorTooManySenderAcknowledgementsMissing = false,
-    this.mn,
-    this.ut,
   });
+
+  /// Base64 encoded PGP signed message containing [SignedMessageData].
+  String? d;
 
   bool errorReceiverBlockedSenderOrReceiverNotFound;
 
@@ -29,50 +31,37 @@ class SendMessageResult {
 
   bool errorTooManySenderAcknowledgementsMissing;
 
-  /// None if error happened
-  MessageNumber? mn;
-
-  /// None if error happened
-  UnixTime? ut;
-
   @override
   bool operator ==(Object other) => identical(this, other) || other is SendMessageResult &&
+    other.d == d &&
     other.errorReceiverBlockedSenderOrReceiverNotFound == errorReceiverBlockedSenderOrReceiverNotFound &&
     other.errorReceiverPublicKeyOutdated == errorReceiverPublicKeyOutdated &&
     other.errorTooManyReceiverAcknowledgementsMissing == errorTooManyReceiverAcknowledgementsMissing &&
-    other.errorTooManySenderAcknowledgementsMissing == errorTooManySenderAcknowledgementsMissing &&
-    other.mn == mn &&
-    other.ut == ut;
+    other.errorTooManySenderAcknowledgementsMissing == errorTooManySenderAcknowledgementsMissing;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
+    (d == null ? 0 : d!.hashCode) +
     (errorReceiverBlockedSenderOrReceiverNotFound.hashCode) +
     (errorReceiverPublicKeyOutdated.hashCode) +
     (errorTooManyReceiverAcknowledgementsMissing.hashCode) +
-    (errorTooManySenderAcknowledgementsMissing.hashCode) +
-    (mn == null ? 0 : mn!.hashCode) +
-    (ut == null ? 0 : ut!.hashCode);
+    (errorTooManySenderAcknowledgementsMissing.hashCode);
 
   @override
-  String toString() => 'SendMessageResult[errorReceiverBlockedSenderOrReceiverNotFound=$errorReceiverBlockedSenderOrReceiverNotFound, errorReceiverPublicKeyOutdated=$errorReceiverPublicKeyOutdated, errorTooManyReceiverAcknowledgementsMissing=$errorTooManyReceiverAcknowledgementsMissing, errorTooManySenderAcknowledgementsMissing=$errorTooManySenderAcknowledgementsMissing, mn=$mn, ut=$ut]';
+  String toString() => 'SendMessageResult[d=$d, errorReceiverBlockedSenderOrReceiverNotFound=$errorReceiverBlockedSenderOrReceiverNotFound, errorReceiverPublicKeyOutdated=$errorReceiverPublicKeyOutdated, errorTooManyReceiverAcknowledgementsMissing=$errorTooManyReceiverAcknowledgementsMissing, errorTooManySenderAcknowledgementsMissing=$errorTooManySenderAcknowledgementsMissing]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
+    if (this.d != null) {
+      json[r'd'] = this.d;
+    } else {
+      json[r'd'] = null;
+    }
       json[r'error_receiver_blocked_sender_or_receiver_not_found'] = this.errorReceiverBlockedSenderOrReceiverNotFound;
       json[r'error_receiver_public_key_outdated'] = this.errorReceiverPublicKeyOutdated;
       json[r'error_too_many_receiver_acknowledgements_missing'] = this.errorTooManyReceiverAcknowledgementsMissing;
       json[r'error_too_many_sender_acknowledgements_missing'] = this.errorTooManySenderAcknowledgementsMissing;
-    if (this.mn != null) {
-      json[r'mn'] = this.mn;
-    } else {
-      json[r'mn'] = null;
-    }
-    if (this.ut != null) {
-      json[r'ut'] = this.ut;
-    } else {
-      json[r'ut'] = null;
-    }
     return json;
   }
 
@@ -95,12 +84,11 @@ class SendMessageResult {
       }());
 
       return SendMessageResult(
+        d: mapValueOfType<String>(json, r'd'),
         errorReceiverBlockedSenderOrReceiverNotFound: mapValueOfType<bool>(json, r'error_receiver_blocked_sender_or_receiver_not_found') ?? false,
         errorReceiverPublicKeyOutdated: mapValueOfType<bool>(json, r'error_receiver_public_key_outdated') ?? false,
         errorTooManyReceiverAcknowledgementsMissing: mapValueOfType<bool>(json, r'error_too_many_receiver_acknowledgements_missing') ?? false,
         errorTooManySenderAcknowledgementsMissing: mapValueOfType<bool>(json, r'error_too_many_sender_acknowledgements_missing') ?? false,
-        mn: MessageNumber.fromJson(json[r'mn']),
-        ut: UnixTime.fromJson(json[r'ut']),
       );
     }
     return null;
@@ -150,4 +138,3 @@ class SendMessageResult {
   static const requiredKeys = <String>{
   };
 }
-

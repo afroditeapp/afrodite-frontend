@@ -20,7 +20,7 @@ class ReportContent {
     this.profileText,
   });
 
-  String? chatMessage;
+  ChatMessageReport? chatMessage;
 
   CustomReportContent? customReport;
 
@@ -99,7 +99,7 @@ class ReportContent {
       }());
 
       return ReportContent(
-        chatMessage: mapValueOfType<String>(json, r'chat_message'),
+        chatMessage: ChatMessageReport.fromJson(json[r'chat_message']),
         customReport: CustomReportContent.fromJson(json[r'custom_report']),
         profileContent: ContentId.fromJson(json[r'profile_content']),
         profileName: mapValueOfType<String>(json, r'profile_name'),
@@ -153,4 +153,3 @@ class ReportContent {
   static const requiredKeys = <String>{
   };
 }
-

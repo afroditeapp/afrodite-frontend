@@ -101,23 +101,24 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
 
   Future<void> insertReceivedMessage(
     AccountId localAccountId,
-    PendingMessage entry,
+    AccountId senderAccountId,
+    MessageNumber messageNumber,
+    UtcDateTime serverTime,
     String decryptedMessage,
     ReceivedMessageState state,
   ) async {
-    final unixTime = UtcDateTime.fromUnixEpochMilliseconds(entry.unixTime.ut * 1000);
     final message = NewMessageEntry(
       localAccountId: localAccountId,
-      remoteAccountId: entry.id.sender,
+      remoteAccountId: senderAccountId,
       localUnixTime: UtcDateTime.now(),
       messageText: decryptedMessage,
       messageState: state.toDbState(),
-      messageNumber: entry.id.mn,
-      unixTime: unixTime,
+      messageNumber: messageNumber,
+      unixTime: serverTime,
     );
     await transaction(() async {
       await _insert(message);
-      await db.daoConversationList.setCurrentTimeToConversationLastChanged(entry.id.sender);
+      await db.daoConversationList.setCurrentTimeToConversationLastChanged(senderAccountId);
     });
   }
 

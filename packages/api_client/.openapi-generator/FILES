@@ -56,6 +56,7 @@ lib/model/backend_version.dart
 lib/model/boolean_setting.dart
 lib/model/bot_config.dart
 lib/model/chat_app_notification_settings.dart
+lib/model/chat_message_report.dart
 lib/model/client_config.dart
 lib/model/client_config_sync_version.dart
 lib/model/client_features_config.dart
@@ -130,6 +131,7 @@ lib/model/get_profile_statistics_result.dart
 lib/model/get_profile_text_pending_moderation_list.dart
 lib/model/get_profile_text_state.dart
 lib/model/get_report_list.dart
+lib/model/get_sent_message.dart
 lib/model/group_values.dart
 lib/model/ip_address_info.dart
 lib/model/language.dart
@@ -168,7 +170,6 @@ lib/model/news_sync_version.dart
 lib/model/news_translation_version.dart
 lib/model/page_item_count_for_new_likes.dart
 lib/model/page_item_count_for_new_public_news.dart
-lib/model/pending_message.dart
 lib/model/pending_message_acknowledgement_list.dart
 lib/model/pending_message_id.dart
 lib/model/pending_notification_token.dart
