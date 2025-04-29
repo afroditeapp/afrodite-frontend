@@ -1,5 +1,6 @@
 import "dart:async";
 
+import "package:app/data/chat/message_manager/utils.dart";
 import 'package:bloc_concurrency/bloc_concurrency.dart' show sequential;
 
 import "package:async/async.dart" show StreamExtensions;

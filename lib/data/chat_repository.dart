@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:app/data/chat/message_manager/utils.dart';
 import 'package:async/async.dart' show StreamExtensions;
 import 'package:logging/logging.dart';
 import 'package:native_utils/native_utils.dart';
@@ -127,8 +128,8 @@ class ChatRepository extends DataRepositoryWithLifecycle {
     return const Ok(null);
   }
 
-  Future<bool> isInMatches(AccountId accountId) {
-    return messageManager.isInMatches(accountId);
+  Future<bool> isInMatches(AccountId accountId) async {
+    return await db.accountData((db) => db.daoProfileStates.isInMatches(accountId)).ok() ?? false;
   }
 
   Future<bool> isInLikedProfiles(AccountId accountId) async {
