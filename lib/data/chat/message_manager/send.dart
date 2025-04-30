@@ -215,8 +215,18 @@ class SendMessageUtils {
         }
       }
 
+      if (result.errorSenderPublicKeyOutdated) {
+        // This should not happen as client sends new public key to server
+        // if needed on login.
+
+        log.error("Send message error: sender public key outdated");
+
+        yield ErrorAfterMessageSaving(localId);
+        return;
+      }
+
       if (result.errorReceiverPublicKeyOutdated) {
-        log.error("Send message error: public key outdated");
+        log.error("Send message error: receiver public key outdated");
 
         await publicKeyUtils.getLatestPublicKeyForForeignAccount(accountId);
         // Show possible key change info to user
