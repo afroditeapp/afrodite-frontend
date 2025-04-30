@@ -274,7 +274,9 @@ class MessageManager extends LifecycleMethods {
 
     final String decryptedMessage;
     final ReceivedMessageState messageState;
-    switch (await receiveMessageUtils.decryptReceivedMessage(allKeys, toBeDecrypted.remoteAccountId, messageBytes)) {
+    // TODO(prod): Add senderPublicKeyId here once backend signed message is
+    // stored to DB.
+    switch (await receiveMessageUtils.decryptReceivedMessage(allKeys, toBeDecrypted.remoteAccountId, PublicKeyId(id: 0), messageBytes)) {
       case Err(:final e):
         decryptedMessage = toBeDecrypted.messageText;
         switch (e) {

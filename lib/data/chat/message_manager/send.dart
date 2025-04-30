@@ -114,7 +114,7 @@ class SendMessageUtils {
     }
 
     final ForeignPublicKey receiverPublicKey;
-    final receiverPublicKeyOrNull = await publicKeyUtils.getPublicKeyForForeignAccount(accountId, forceDownload: false).ok();
+    final receiverPublicKeyOrNull = await publicKeyUtils.getPublicKeyForForeignAccountFromDbOrDownloadIfNotExits(accountId).ok();
     if (receiverPublicKeyOrNull == null) {
       yield const ErrorBeforeMessageSaving();
       return;
@@ -218,7 +218,7 @@ class SendMessageUtils {
       if (result.errorReceiverPublicKeyOutdated) {
         log.error("Send message error: public key outdated");
 
-        await publicKeyUtils.getPublicKeyForForeignAccount(accountId, forceDownload: true);
+        await publicKeyUtils.getLatestPublicKeyForForeignAccount(accountId);
         // Show possible key change info to user
         if (sendUiEvent) {
           profile.sendProfileChange(ConversationChanged(accountId, ConversationChangeType.messageSent));

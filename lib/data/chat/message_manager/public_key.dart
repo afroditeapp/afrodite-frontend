@@ -15,24 +15,32 @@ class PublicKeyUtils {
 
   PublicKeyUtils(this.db, this.api, this.currentUser);
 
-  /// If ForeignPublicKey is null then PublicKey for that account does not exist.
-  Future<Result<ForeignPublicKey?, void>> getPublicKeyForForeignAccount(
+  Future<Result<ForeignPublicKey, void>> getLatestPublicKeyForForeignAccount(
     AccountId accountId,
-    {required bool forceDownload}
   ) async {
-    if (forceDownload) {
-      if (await _refreshForeignPublicKey(accountId).isErr()) {
-        return const Err(null);
-      }
+    // Download and return latest public key
+    final r = await _refreshForeignPublicKey(accountId, null);
+    if (r.isErr()) {
+      return const Err(null);
+    } else {
+      return await db.accountData((db) => db.daoConversations.getPublicKey(accountId))
+        .errorIfNull();
     }
+  }
 
+  Future<Result<ForeignPublicKey, void>> getSpecificPublicKeyForForeignAccount(
+    AccountId accountId,
+    PublicKeyId wantedPublicKeyId,
+  ) async {
     switch (await db.accountData((db) => db.daoConversations.getPublicKey(accountId))) {
       case Ok(:final v):
-        if (v == null) {
-          if (await _refreshForeignPublicKey(accountId).isErr()) {
+        if (v == null || v.id != wantedPublicKeyId) {
+          if (await _refreshForeignPublicKey(accountId, wantedPublicKeyId).isErr()) {
             return const Err(null);
+          } else {
+            return await db.accountData((db) => db.daoConversations.getPublicKey(accountId))
+              .errorIfNull();
           }
-          return await db.accountData((db) => db.daoConversations.getPublicKey(accountId));
         } else {
           return Ok(v);
         }
@@ -41,23 +49,47 @@ class PublicKeyUtils {
     }
   }
 
-  Future<Result<void, void>> _refreshForeignPublicKey(AccountId accountId) async {
-    // TODO: use public key ID from message when that is available
-    final r = await api.chat((api) => api.getLatestPublicKeyId(accountId.aid));
-    final PublicKeyId latestPublicKeyId;
-    switch (r) {
+  Future<Result<ForeignPublicKey, void>> getPublicKeyForForeignAccountFromDbOrDownloadIfNotExits(
+    AccountId accountId,
+  ) async {
+    switch (await db.accountData((db) => db.daoConversations.getPublicKey(accountId))) {
       case Ok(:final v):
-        final id = v.id;
-        if (id == null) {
-          return const Err(null);
+        if (v == null) {
+          if (await _refreshForeignPublicKey(accountId, null).isErr()) {
+            return const Err(null);
+          } else {
+            return await db.accountData((db) => db.daoConversations.getPublicKey(accountId))
+              .errorIfNull();
+          }
         } else {
-          latestPublicKeyId = id;
+          return Ok(v);
         }
       case Err():
         return const Err(null);
     }
+  }
 
-    final keyResult = await api.chat((api) => api.getPublicKeyFixed(accountId.aid, latestPublicKeyId.id));
+  Future<Result<void, void>> _refreshForeignPublicKey(AccountId accountId, PublicKeyId? wantedKey) async {
+    final PublicKeyId wantedPublicKeyId;
+    if (wantedKey == null) {
+      // Get latest key
+      final r = await api.chat((api) => api.getLatestPublicKeyId(accountId.aid));
+      switch (r) {
+        case Ok(:final v):
+          final id = v.id;
+          if (id == null) {
+            return const Err(null);
+          } else {
+            wantedPublicKeyId = id;
+          }
+        case Err():
+          return const Err(null);
+      }
+    } else {
+      wantedPublicKeyId = wantedKey;
+    }
+
+    final keyResult = await api.chat((api) => api.getPublicKeyFixed(accountId.aid, wantedPublicKeyId.id));
     final Uint8List latestPublicKeyData;
     switch (keyResult) {
       case Ok(:final v):
@@ -71,7 +103,7 @@ class PublicKeyUtils {
       case Ok(:final v):
         if (v == null) {
           infoState = InfoMessageState.infoMatchFirstPublicKeyReceived;
-        } else if (v.id != latestPublicKeyId) {
+        } else if (v.id != wantedPublicKeyId) {
           infoState = InfoMessageState.infoMatchPublicKeyChanged;
         } else {
           infoState = null;
@@ -80,7 +112,7 @@ class PublicKeyUtils {
         return const Err(null);
     }
 
-    return await db.accountAction((db) => db.daoConversations.updatePublicKeyAndAddInfoMessage(currentUser, accountId, latestPublicKeyData, latestPublicKeyId, infoState))
+    return await db.accountAction((db) => db.daoConversations.updatePublicKeyAndAddInfoMessage(currentUser, accountId, latestPublicKeyData, wantedPublicKeyId, infoState))
       .mapErr((_) => null);
   }
 }

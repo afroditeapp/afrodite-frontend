@@ -85,7 +85,7 @@ class ReceiveMessageUtils {
 
       final String decryptedMessage;
       final ReceivedMessageState messageState;
-      switch (await decryptReceivedMessage(allKeys, message.parsed.sender, message.parsed.messageFromSender)) {
+      switch (await decryptReceivedMessage(allKeys, message.parsed.sender, message.parsed.senderPublicKeyId, message.parsed.messageFromSender)) {
         case Err(:final e):
           // TODO(prod): Add database column for BackendSignedMessage
           decryptedMessage = base64Encode(message.parsed.messageFromSender);
@@ -163,35 +163,31 @@ class ReceiveMessageUtils {
     }
   }
 
-  Future<Result<String, ReceivedMessageError>> decryptReceivedMessage(AllKeyData allKeys, AccountId messageSender, Uint8List messageBytesFromSender) async {
-    // TODO(prod): Download correct sender public key ID if needed.
-
-    bool forcePublicKeyDownload = false;
-    while (true) {
-      var publicKey = await publicKeyUtils.getPublicKeyForForeignAccount(messageSender, forceDownload: forcePublicKeyDownload).ok();
-      if (publicKey == null) {
-        return const Err(ReceivedMessageError.publicKeyDonwloadingFailed);
-      }
-
-      final (messageBytes, decryptingResult) = decryptMessage(
-        publicKey.data,
-        allKeys.private.data,
-        messageBytesFromSender,
-      );
-
-      if (messageBytes == null) {
-        log.error("Received message decrypting failed, error: $decryptingResult, forcePublicKeyDownload: $forcePublicKeyDownload");
-      }
-
-      if (messageBytes == null && forcePublicKeyDownload) {
-        return const Err(ReceivedMessageError.decryptingFailed);
-      } else if (messageBytes == null) {
-        forcePublicKeyDownload = true;
-        continue;
-      }
-
-      return MessageConverter().bytesToText(messageBytes).mapErr((_) => ReceivedMessageError.unknownMessageType);
+  Future<Result<String, ReceivedMessageError>> decryptReceivedMessage(
+    AllKeyData allKeys,
+    AccountId messageSender,
+    PublicKeyId senderPublicKeyId,
+    Uint8List messageBytesFromSender,
+  ) async {
+    final publicKey = await publicKeyUtils.getSpecificPublicKeyForForeignAccount(messageSender, senderPublicKeyId).ok();
+    if (publicKey == null) {
+      return const Err(ReceivedMessageError.publicKeyDonwloadingFailed);
     }
+
+    final (messageBytes, decryptingResult) = decryptMessage(
+      publicKey.data,
+      allKeys.private.data,
+      messageBytesFromSender,
+    );
+
+    if (messageBytes == null) {
+      log.error("Received message decrypting failed, error: $decryptingResult");
+      return const Err(ReceivedMessageError.decryptingFailed);
+    }
+
+    return MessageConverter()
+      .bytesToText(messageBytes)
+      .mapErr((_) => ReceivedMessageError.unknownMessageType);
   }
 
   Future<bool> _isInMatches(AccountId accountId) async {

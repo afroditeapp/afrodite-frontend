@@ -172,3 +172,19 @@ extension ResultExtAppErrorFlatten<Success, ErrorInner extends AppError, ErrorOu
     }
   }
 }
+
+extension ResultExtAppErrorErrorIfNull<Success extends Object, ErrorInner extends AppError> on Future<Result<Success?, ErrorInner>> {
+  Future<Result<Success, AppError>> errorIfNull() async {
+    final result = await this;
+    switch (result) {
+      case Ok(:final v):
+        if (v == null) {
+          return const Err(MissingValue());
+        } else {
+          return Ok(v);
+        }
+      case Err(:final e):
+        return Err(e);
+    }
+  }
+}
