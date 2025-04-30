@@ -1,4 +1,6 @@
 
+import 'dart:convert';
+
 import 'package:app/ui/normal/chat/message_row.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/result.dart';
@@ -25,6 +27,7 @@ class ReportChatMessageScreen extends StatefulWidget {
 
 class _ReportChatMessageScreen extends State<ReportChatMessageScreen> {
   final api = LoginRepository.getInstance().repositories.api;
+  final db = LoginRepository.getInstance().repositories.accountDb;
 
   late final List<MessageEntry> messages;
 
@@ -121,12 +124,21 @@ class _ReportChatMessageScreen extends State<ReportChatMessageScreen> {
           scrollable: true,
         );
         if (context.mounted && r == true) {
+          final backendSignedMessage = await db.messageData((db) => db.getBackendSignedPgpMessage(entry.localId)).ok();
+          if (backendSignedMessage == null) {
+            showSnackBar(R.strings.report_chat_message_screen_backend_signed_message_not_found);
+            return;
+          }
+          final symmetricKey = await db.messageData((db) => db.getSymmetricMessageEncryptionKey(entry.localId)).ok();
+          if (symmetricKey == null) {
+            showSnackBar(R.strings.report_chat_message_screen_symmetric_message_encryption_key_not_found);
+            return;
+          }
+
           final result = await api.chat((api) => api.postChatMessageReport(UpdateChatMessageReport(
             target: widget.profileEntry.uuid,
-            // TODO(prod): Get backend signed message from database
-            backendSignedMessageBase64: text,
-            // TODO(prod): Get decryption key for the backend signed message
-            decryptionKeyBase64: "",
+            backendSignedMessageBase64: base64Encode(backendSignedMessage),
+            decryptionKeyBase64: base64Encode(symmetricKey),
           ))).ok();
 
           if (result == null) {

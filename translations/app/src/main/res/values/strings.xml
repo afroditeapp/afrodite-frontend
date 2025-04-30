@@ -508,6 +508,8 @@
 
     <!-- Report chat message screen -->
     <string name="report_chat_message_screen_confirm_dialog_title" description="Chat message reporting confirmation dialog title">Report chat message?</string>
+    <string name="report_chat_message_screen_backend_signed_message_not_found" description="Snackbar text for backend signed message not found error">Backend signed message not found</string>
+    <string name="report_chat_message_screen_symmetric_message_encryption_key_not_found" description="Snackbar text for symmetric message encryption key not found error">Symmetric message encryption key not found</string>
 
     <!-- Admin features -->
 

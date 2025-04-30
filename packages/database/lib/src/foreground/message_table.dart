@@ -325,4 +325,15 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
       .map((m) => m.backendSignedPgpMessage)
       .getSingleOrNull();
   }
+
+  Future<Uint8List?> getSymmetricMessageEncryptionKey(
+    LocalMessageId localId,
+  ) {
+    return (select(messages)
+      ..where((t) => t.id.equals(localId.id))
+      ..limit(1)
+    )
+      .map((m) => m.symmetricMessageEncryptionKey)
+      .getSingleOrNull();
+  }
 }
