@@ -1,6 +1,8 @@
 
 
 
+import 'dart:typed_data';
+
 import 'package:openapi/api.dart';
 import 'package:utils/utils.dart';
 
@@ -11,7 +13,7 @@ class MessageEntry {
   final AccountId localAccountId;
   final AccountId remoteAccountId;
   /// For sent messages this is normal text. For received messages this can
-  /// be normal text or when in error state base64 encoded message bytes.
+  /// be normal text or when in error state empty text.
   final String messageText;
   /// Local/client time when message entry is inserted to database.
   final UtcDateTime localUnixTime;
@@ -248,6 +250,8 @@ class NewMessageEntry {
   final MessageNumber? messageNumber;
   /// Time since Unix epoch. Server sets this falue.
   final UtcDateTime? unixTime;
+  /// Backend signed PGP message. Server sets this falue.
+  final Uint8List? backendSignedPgpMessage;
 
   NewMessageEntry(
     {
@@ -259,12 +263,13 @@ class NewMessageEntry {
       this.receivedMessageState,
       this.messageNumber,
       this.unixTime,
+      this.backendSignedPgpMessage,
     }
   );
 
   @override
   String toString() {
-    return "NewMessageEntry(localAccountId: $localAccountId, remoteAccountId: $remoteAccountId, messageText: $messageText, messageState: $messageState, receivedMessageState: $receivedMessageState, messageNumber: $messageNumber, unixTime: $unixTime)";
+    return "NewMessageEntry(localAccountId: $localAccountId, remoteAccountId: $remoteAccountId, messageText: $messageText, messageState: $messageState, receivedMessageState: $receivedMessageState, messageNumber: $messageNumber, unixTime: $unixTime, backendSignedPgpMessage: $backendSignedPgpMessage)";
   }
 }
 

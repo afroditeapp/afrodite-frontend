@@ -1,8 +1,8 @@
 
 
 import 'dart:async';
-import 'dart:convert';
 
+import 'package:app/data/chat/backend_signed_message.dart';
 import 'package:app/data/chat/message_manager/receive.dart';
 import 'package:app/data/chat/message_manager/send.dart';
 import 'package:app/data/chat/message_manager/utils.dart';
@@ -258,20 +258,25 @@ class MessageManager extends LifecycleMethods {
     final toBeDecrypted = await db.accountData((db) => db.daoMessages.getMessageUsingLocalMessageId(
       localId,
     )).ok();
-    final messageNumber = toBeDecrypted?.messageNumber;
-    if (toBeDecrypted == null || messageNumber == null || toBeDecrypted.messageState != MessageState.receivedAndPublicKeyDownloadFailed) {
+    if (toBeDecrypted == null || toBeDecrypted.messageState != MessageState.receivedAndPublicKeyDownloadFailed) {
+      return const Err(RetryPublicKeyDownloadError.unspecifiedError);
+    }
+    final backendSignedPgpMessage = await db.accountData((db) => db.daoMessages.getBackendSignedPgpMessage(
+      localId,
+    )).ok();
+    if (backendSignedPgpMessage == null) {
+      return const Err(RetryPublicKeyDownloadError.unspecifiedError);
+    }
+    final backendSignedMessage = BackendSignedMessage.parseFromSignedPgpMessage(backendSignedPgpMessage);
+    if (backendSignedMessage == null) {
       return const Err(RetryPublicKeyDownloadError.unspecifiedError);
     }
 
-    final messageBytes = base64.decode(toBeDecrypted.messageText);
-
     final String decryptedMessage;
     final ReceivedMessageState messageState;
-    // TODO(prod): Add senderPublicKeyId here once backend signed message is
-    // stored to DB.
-    switch (await receiveMessageUtils.decryptReceivedMessage(allKeys, toBeDecrypted.remoteAccountId, PublicKeyId(id: 0), messageBytes)) {
+    switch (await receiveMessageUtils.decryptReceivedMessage(allKeys, backendSignedMessage)) {
       case Err(:final e):
-        decryptedMessage = toBeDecrypted.messageText;
+        decryptedMessage = "";
         switch (e) {
           case ReceivedMessageError.decryptingFailed:
             messageState = ReceivedMessageState.decryptingFailed;
@@ -286,9 +291,7 @@ class MessageManager extends LifecycleMethods {
     }
 
     final r = await db.messageAction((db) => db.updateReceivedMessageState(
-      currentUser,
-      toBeDecrypted.remoteAccountId,
-      messageNumber,
+      localId,
       messageState,
       messageText: decryptedMessage,
     ));

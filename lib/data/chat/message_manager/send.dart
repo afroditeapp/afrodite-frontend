@@ -35,7 +35,7 @@ class SendMessageUtils {
   SendMessageUtils(this.messageKeyManager, this.clientIdManager, this.api, this.db, this.currentUser, this.profile) :
     publicKeyUtils = PublicKeyUtils(db, api, currentUser);
 
-  bool allSentMessagesAcknoledgedOnce = false;
+  bool allSentMessagesAcknowledgedOnce = false;
 
   Stream<MessageSendingEvent> sendMessageTo(
     AccountId accountId,
@@ -172,6 +172,7 @@ class SendMessageUtils {
 
     UnixTime unixTimeFromServer;
     MessageNumber messageNumberFromServer;
+    Uint8List backendSignedPgpMessage;
     var messageSenderAcknowledgementTried = false;
     while (true) {
       final result = await api.chat((api) => api.postSendMessage(
@@ -243,9 +244,9 @@ class SendMessageUtils {
         return;
       }
 
-      final signedPgpMessage = base64Decode(signedPgpMessageBase64);
+      backendSignedPgpMessage = base64Decode(signedPgpMessageBase64);
 
-      final (backendSignedMessage, getMessageContentResult) = getMessageContent(signedPgpMessage);
+      final (backendSignedMessage, getMessageContentResult) = getMessageContent(backendSignedPgpMessage);
       if (backendSignedMessage == null) {
         log.error("Send message error: get message content failed, error: $getMessageContentResult");
         yield ErrorAfterMessageSaving(localId);
@@ -267,13 +268,14 @@ class SendMessageUtils {
       sentState: SentMessageState.sent,
       unixTimeFromServer: unixTimeFromServer,
       messageNumberFromServer: messageNumberFromServer,
+      backendSignePgpMessage: backendSignedPgpMessage,
     ));
     if (updateSentState.isErr()) {
       yield ErrorAfterMessageSaving(localId);
       return;
     }
 
-    if (!allSentMessagesAcknoledgedOnce) {
+    if (!allSentMessagesAcknowledgedOnce) {
       await markSentMessagesAcknowledged(clientId);
     } else {
       await api.chatAction((api) => api.postAddSenderAcknowledgement(
@@ -294,16 +296,29 @@ class SendMessageUtils {
         continue;
       }
       final sentMessageLocalId = sentMessageId.l.toLocalMessageId();
-
-      // TODO(prod): Download backend signed message if needed.
-
       final currentMessage = await db.messageData((db) => db.getMessageUsingLocalMessageId(
         sentMessageLocalId,
       )).ok();
-      if (currentMessage?.messageState.toSentState() == SentMessageState.sendingError) {
+      final currentBackendSignedPgpMessage = await db.messageData((db) => db.getBackendSignedPgpMessage(
+        sentMessageLocalId,
+      )).ok();
+      if (currentMessage?.messageState.toSentState() == SentMessageState.sendingError || currentBackendSignedPgpMessage == null) {
+        final r = await api.chat((api) => api.postGetSentMessage(sentMessageId)).ok();
+        final base64EncodedMessage = r?.data;
+        if (base64EncodedMessage == null) {
+          return const Err(null);
+        }
+        final decoded = base64Decode(base64EncodedMessage);
+        final backendSignedMessage = BackendSignedMessage.parseFromSignedPgpMessage(decoded);
+        if (backendSignedMessage == null) {
+          return const Err(null);
+        }
         final updateSentState = await db.messageAction((db) => db.updateSentMessageState(
           sentMessageLocalId,
           sentState: SentMessageState.sent,
+          messageNumberFromServer: backendSignedMessage.messageNumber,
+          unixTimeFromServer: backendSignedMessage.serverTime,
+          backendSignePgpMessage: decoded,
         ));
         if (updateSentState.isErr()) {
           return const Err(null);
@@ -316,7 +331,7 @@ class SendMessageUtils {
       return const Err(null);
     }
 
-    allSentMessagesAcknoledgedOnce = true;
+    allSentMessagesAcknowledgedOnce = true;
     return const Ok(null);
   }
 

@@ -19,9 +19,10 @@ class Messages extends Table {
   IntColumn get localUnixTime => integer().map(const UtcDateTimeConverter())();
   IntColumn get messageState => integer()();
 
-  // Server sends valid values for the next two colums.
+  // Server sends valid values for the next colums.
   IntColumn get messageNumber => integer().map(const NullAwareTypeConverter.wrap(MessageNumberConverter())).nullable()();
   IntColumn get unixTime => integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
+  BlobColumn get backendSignedPgpMessage => blob().nullable()();
 }
 
 @DriftAccessor(tables: [Messages])
@@ -51,6 +52,7 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
       messageState: entry.messageState.number,
       messageNumber: Value(entry.messageNumber),
       unixTime: Value(entry.unixTime),
+      backendSignedPgpMessage: Value(entry.backendSignedPgpMessage),
     ));
 
     return LocalMessageId(localId);
@@ -82,6 +84,7 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
       SentMessageState? sentState,
       UnixTime? unixTimeFromServer,
       MessageNumber? messageNumberFromServer,
+      Uint8List? backendSignePgpMessage,
     }
   ) async {
     final UtcDateTime? unixTime;
@@ -96,6 +99,7 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
       messageState: Value.absentIfNull(sentState?.toDbState().number),
       unixTime: Value.absentIfNull(unixTime),
       messageNumber: Value.absentIfNull(messageNumberFromServer),
+      backendSignedPgpMessage: Value.absentIfNull(backendSignePgpMessage),
     ));
   }
 
@@ -104,6 +108,7 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
     AccountId senderAccountId,
     MessageNumber messageNumber,
     UtcDateTime serverTime,
+    Uint8List backendSignedPgpMessage,
     String decryptedMessage,
     ReceivedMessageState state,
   ) async {
@@ -115,6 +120,7 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
       messageState: state.toDbState(),
       messageNumber: messageNumber,
       unixTime: serverTime,
+      backendSignedPgpMessage: backendSignedPgpMessage,
     );
     await transaction(() async {
       await _insert(message);
@@ -141,18 +147,14 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
 
   /// Null values are not updated
   Future<void> updateReceivedMessageState(
-    AccountId localAccountId,
-    AccountId remoteAccountId,
-    MessageNumber messageNumber,
+    LocalMessageId localId,
     ReceivedMessageState receivedMessageState,
     {
       String? messageText,
     }
   ) async {
     await (update(messages)
-      ..where((t) => t.uuidLocalAccountId.equals(localAccountId.aid))
-      ..where((t) => t.uuidRemoteAccountId.equals(remoteAccountId.aid))
-      ..where((t) => t.messageNumber.equals(messageNumber.mn))
+      ..where((t) => t.id.equals(localId.id))
     ).write(MessagesCompanion(
       messageState: Value(receivedMessageState.toDbState().number),
       messageText: Value.absentIfNull(messageText),
@@ -294,5 +296,16 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
       ..where((t) => t.id.equals(localId.id))
     )
       .go();
+  }
+
+  Future<Uint8List?> getBackendSignedPgpMessage(
+    LocalMessageId localId,
+  ) {
+    return (select(messages)
+      ..where((t) => t.id.equals(localId.id))
+      ..limit(1)
+    )
+      .map((m) => m.backendSignedPgpMessage)
+      .getSingleOrNull();
   }
 }

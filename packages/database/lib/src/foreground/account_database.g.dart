@@ -6395,6 +6395,13 @@ class $MessagesTable extends Messages with TableInfo<$MessagesTable, Message> {
       GeneratedColumn<int>('unix_time', aliasedName, true,
               type: DriftSqlType.int, requiredDuringInsert: false)
           .withConverter<UtcDateTime?>($MessagesTable.$converterunixTime);
+  static const VerificationMeta _backendSignedPgpMessageMeta =
+      const VerificationMeta('backendSignedPgpMessage');
+  @override
+  late final GeneratedColumn<Uint8List> backendSignedPgpMessage =
+      GeneratedColumn<Uint8List>(
+          'backend_signed_pgp_message', aliasedName, true,
+          type: DriftSqlType.blob, requiredDuringInsert: false);
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -6404,7 +6411,8 @@ class $MessagesTable extends Messages with TableInfo<$MessagesTable, Message> {
         localUnixTime,
         messageState,
         messageNumber,
-        unixTime
+        unixTime,
+        backendSignedPgpMessage
       ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -6434,6 +6442,13 @@ class $MessagesTable extends Messages with TableInfo<$MessagesTable, Message> {
               data['message_state']!, _messageStateMeta));
     } else if (isInserting) {
       context.missing(_messageStateMeta);
+    }
+    if (data.containsKey('backend_signed_pgp_message')) {
+      context.handle(
+          _backendSignedPgpMessageMeta,
+          backendSignedPgpMessage.isAcceptableOrUnknown(
+              data['backend_signed_pgp_message']!,
+              _backendSignedPgpMessageMeta));
     }
     return context;
   }
@@ -6465,6 +6480,9 @@ class $MessagesTable extends Messages with TableInfo<$MessagesTable, Message> {
       unixTime: $MessagesTable.$converterunixTime.fromSql(attachedDatabase
           .typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}unix_time'])),
+      backendSignedPgpMessage: attachedDatabase.typeMapping.read(
+          DriftSqlType.blob,
+          data['${effectivePrefix}backend_signed_pgp_message']),
     );
   }
 
@@ -6494,6 +6512,7 @@ class Message extends DataClass implements Insertable<Message> {
   final int messageState;
   final api.MessageNumber? messageNumber;
   final UtcDateTime? unixTime;
+  final Uint8List? backendSignedPgpMessage;
   const Message(
       {required this.id,
       required this.uuidLocalAccountId,
@@ -6502,7 +6521,8 @@ class Message extends DataClass implements Insertable<Message> {
       required this.localUnixTime,
       required this.messageState,
       this.messageNumber,
-      this.unixTime});
+      this.unixTime,
+      this.backendSignedPgpMessage});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -6531,6 +6551,10 @@ class Message extends DataClass implements Insertable<Message> {
       map['unix_time'] =
           Variable<int>($MessagesTable.$converterunixTime.toSql(unixTime));
     }
+    if (!nullToAbsent || backendSignedPgpMessage != null) {
+      map['backend_signed_pgp_message'] =
+          Variable<Uint8List>(backendSignedPgpMessage);
+    }
     return map;
   }
 
@@ -6548,6 +6572,9 @@ class Message extends DataClass implements Insertable<Message> {
       unixTime: unixTime == null && nullToAbsent
           ? const Value.absent()
           : Value(unixTime),
+      backendSignedPgpMessage: backendSignedPgpMessage == null && nullToAbsent
+          ? const Value.absent()
+          : Value(backendSignedPgpMessage),
     );
   }
 
@@ -6566,6 +6593,8 @@ class Message extends DataClass implements Insertable<Message> {
       messageNumber:
           serializer.fromJson<api.MessageNumber?>(json['messageNumber']),
       unixTime: serializer.fromJson<UtcDateTime?>(json['unixTime']),
+      backendSignedPgpMessage:
+          serializer.fromJson<Uint8List?>(json['backendSignedPgpMessage']),
     );
   }
   @override
@@ -6582,6 +6611,8 @@ class Message extends DataClass implements Insertable<Message> {
       'messageState': serializer.toJson<int>(messageState),
       'messageNumber': serializer.toJson<api.MessageNumber?>(messageNumber),
       'unixTime': serializer.toJson<UtcDateTime?>(unixTime),
+      'backendSignedPgpMessage':
+          serializer.toJson<Uint8List?>(backendSignedPgpMessage),
     };
   }
 
@@ -6593,7 +6624,8 @@ class Message extends DataClass implements Insertable<Message> {
           UtcDateTime? localUnixTime,
           int? messageState,
           Value<api.MessageNumber?> messageNumber = const Value.absent(),
-          Value<UtcDateTime?> unixTime = const Value.absent()}) =>
+          Value<UtcDateTime?> unixTime = const Value.absent(),
+          Value<Uint8List?> backendSignedPgpMessage = const Value.absent()}) =>
       Message(
         id: id ?? this.id,
         uuidLocalAccountId: uuidLocalAccountId ?? this.uuidLocalAccountId,
@@ -6604,6 +6636,9 @@ class Message extends DataClass implements Insertable<Message> {
         messageNumber:
             messageNumber.present ? messageNumber.value : this.messageNumber,
         unixTime: unixTime.present ? unixTime.value : this.unixTime,
+        backendSignedPgpMessage: backendSignedPgpMessage.present
+            ? backendSignedPgpMessage.value
+            : this.backendSignedPgpMessage,
       );
   Message copyWithCompanion(MessagesCompanion data) {
     return Message(
@@ -6626,6 +6661,9 @@ class Message extends DataClass implements Insertable<Message> {
           ? data.messageNumber.value
           : this.messageNumber,
       unixTime: data.unixTime.present ? data.unixTime.value : this.unixTime,
+      backendSignedPgpMessage: data.backendSignedPgpMessage.present
+          ? data.backendSignedPgpMessage.value
+          : this.backendSignedPgpMessage,
     );
   }
 
@@ -6639,14 +6677,23 @@ class Message extends DataClass implements Insertable<Message> {
           ..write('localUnixTime: $localUnixTime, ')
           ..write('messageState: $messageState, ')
           ..write('messageNumber: $messageNumber, ')
-          ..write('unixTime: $unixTime')
+          ..write('unixTime: $unixTime, ')
+          ..write('backendSignedPgpMessage: $backendSignedPgpMessage')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, uuidLocalAccountId, uuidRemoteAccountId,
-      messageText, localUnixTime, messageState, messageNumber, unixTime);
+  int get hashCode => Object.hash(
+      id,
+      uuidLocalAccountId,
+      uuidRemoteAccountId,
+      messageText,
+      localUnixTime,
+      messageState,
+      messageNumber,
+      unixTime,
+      $driftBlobEquality.hash(backendSignedPgpMessage));
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -6658,7 +6705,9 @@ class Message extends DataClass implements Insertable<Message> {
           other.localUnixTime == this.localUnixTime &&
           other.messageState == this.messageState &&
           other.messageNumber == this.messageNumber &&
-          other.unixTime == this.unixTime);
+          other.unixTime == this.unixTime &&
+          $driftBlobEquality.equals(
+              other.backendSignedPgpMessage, this.backendSignedPgpMessage));
 }
 
 class MessagesCompanion extends UpdateCompanion<Message> {
@@ -6670,6 +6719,7 @@ class MessagesCompanion extends UpdateCompanion<Message> {
   final Value<int> messageState;
   final Value<api.MessageNumber?> messageNumber;
   final Value<UtcDateTime?> unixTime;
+  final Value<Uint8List?> backendSignedPgpMessage;
   const MessagesCompanion({
     this.id = const Value.absent(),
     this.uuidLocalAccountId = const Value.absent(),
@@ -6679,6 +6729,7 @@ class MessagesCompanion extends UpdateCompanion<Message> {
     this.messageState = const Value.absent(),
     this.messageNumber = const Value.absent(),
     this.unixTime = const Value.absent(),
+    this.backendSignedPgpMessage = const Value.absent(),
   });
   MessagesCompanion.insert({
     this.id = const Value.absent(),
@@ -6689,6 +6740,7 @@ class MessagesCompanion extends UpdateCompanion<Message> {
     required int messageState,
     this.messageNumber = const Value.absent(),
     this.unixTime = const Value.absent(),
+    this.backendSignedPgpMessage = const Value.absent(),
   })  : uuidLocalAccountId = Value(uuidLocalAccountId),
         uuidRemoteAccountId = Value(uuidRemoteAccountId),
         messageText = Value(messageText),
@@ -6703,6 +6755,7 @@ class MessagesCompanion extends UpdateCompanion<Message> {
     Expression<int>? messageState,
     Expression<int>? messageNumber,
     Expression<int>? unixTime,
+    Expression<Uint8List>? backendSignedPgpMessage,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -6715,6 +6768,8 @@ class MessagesCompanion extends UpdateCompanion<Message> {
       if (messageState != null) 'message_state': messageState,
       if (messageNumber != null) 'message_number': messageNumber,
       if (unixTime != null) 'unix_time': unixTime,
+      if (backendSignedPgpMessage != null)
+        'backend_signed_pgp_message': backendSignedPgpMessage,
     });
   }
 
@@ -6726,7 +6781,8 @@ class MessagesCompanion extends UpdateCompanion<Message> {
       Value<UtcDateTime>? localUnixTime,
       Value<int>? messageState,
       Value<api.MessageNumber?>? messageNumber,
-      Value<UtcDateTime?>? unixTime}) {
+      Value<UtcDateTime?>? unixTime,
+      Value<Uint8List?>? backendSignedPgpMessage}) {
     return MessagesCompanion(
       id: id ?? this.id,
       uuidLocalAccountId: uuidLocalAccountId ?? this.uuidLocalAccountId,
@@ -6736,6 +6792,8 @@ class MessagesCompanion extends UpdateCompanion<Message> {
       messageState: messageState ?? this.messageState,
       messageNumber: messageNumber ?? this.messageNumber,
       unixTime: unixTime ?? this.unixTime,
+      backendSignedPgpMessage:
+          backendSignedPgpMessage ?? this.backendSignedPgpMessage,
     );
   }
 
@@ -6773,6 +6831,10 @@ class MessagesCompanion extends UpdateCompanion<Message> {
       map['unix_time'] = Variable<int>(
           $MessagesTable.$converterunixTime.toSql(unixTime.value));
     }
+    if (backendSignedPgpMessage.present) {
+      map['backend_signed_pgp_message'] =
+          Variable<Uint8List>(backendSignedPgpMessage.value);
+    }
     return map;
   }
 
@@ -6786,7 +6848,8 @@ class MessagesCompanion extends UpdateCompanion<Message> {
           ..write('localUnixTime: $localUnixTime, ')
           ..write('messageState: $messageState, ')
           ..write('messageNumber: $messageNumber, ')
-          ..write('unixTime: $unixTime')
+          ..write('unixTime: $unixTime, ')
+          ..write('backendSignedPgpMessage: $backendSignedPgpMessage')
           ..write(')'))
         .toString();
   }

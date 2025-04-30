@@ -4,6 +4,7 @@ import 'dart:typed_data';
 
 import 'package:app/utils/iterator.dart';
 import 'package:app/utils/result.dart';
+import 'package:native_utils/native_utils.dart';
 import 'package:openapi/api.dart';
 
 class BackendSignedMessage {
@@ -26,6 +27,15 @@ class BackendSignedMessage {
       required this.messageFromSender,
     }
   );
+
+  static BackendSignedMessage? parseFromSignedPgpMessage(Uint8List uint8List) {
+    final (data, _) = getMessageContent(uint8List);
+    if (data == null) {
+      return null;
+    }
+
+    return BackendSignedMessage.parse(data);
+  }
 
   static BackendSignedMessage? parse(Iterable<int> data) {
     final iterator = data.iterator;

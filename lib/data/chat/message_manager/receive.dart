@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:app/data/chat/backend_signed_message.dart';
 import 'package:app/data/chat/message_manager/public_key.dart';
@@ -85,10 +84,9 @@ class ReceiveMessageUtils {
 
       final String decryptedMessage;
       final ReceivedMessageState messageState;
-      switch (await decryptReceivedMessage(allKeys, message.parsed.sender, message.parsed.senderPublicKeyId, message.parsed.messageFromSender)) {
+      switch (await decryptReceivedMessage(allKeys, message.parsed)) {
         case Err(:final e):
-          // TODO(prod): Add database column for BackendSignedMessage
-          decryptedMessage = base64Encode(message.parsed.messageFromSender);
+          decryptedMessage = "";
           switch (e) {
             case ReceivedMessageError.decryptingFailed:
               messageState = ReceivedMessageState.decryptingFailed;
@@ -107,6 +105,7 @@ class ReceiveMessageUtils {
         message.parsed.sender,
         message.parsed.messageNumber,
         message.parsed.serverTime.toUtcDateTime(),
+        message.backendPgpMessage,
         decryptedMessage,
         messageState,
       ));
@@ -149,12 +148,7 @@ class ReceiveMessageUtils {
       }
       final signedPgpMessageUint8 = Uint8List.fromList(signedPgpMessage);
 
-      final (backendSignedMessage, _) = getMessageContent(signedPgpMessageUint8);
-      if (backendSignedMessage == null) {
-        return null;
-      }
-
-      final parsed = BackendSignedMessage.parse(backendSignedMessage);
+      final parsed = BackendSignedMessage.parseFromSignedPgpMessage(signedPgpMessageUint8);
       if (parsed == null) {
         return null;
       }
@@ -165,11 +159,9 @@ class ReceiveMessageUtils {
 
   Future<Result<String, ReceivedMessageError>> decryptReceivedMessage(
     AllKeyData allKeys,
-    AccountId messageSender,
-    PublicKeyId senderPublicKeyId,
-    Uint8List messageBytesFromSender,
+    BackendSignedMessage message,
   ) async {
-    final publicKey = await publicKeyUtils.getSpecificPublicKeyForForeignAccount(messageSender, senderPublicKeyId).ok();
+    final publicKey = await publicKeyUtils.getSpecificPublicKeyForForeignAccount(message.sender, message.senderPublicKeyId).ok();
     if (publicKey == null) {
       return const Err(ReceivedMessageError.publicKeyDonwloadingFailed);
     }
@@ -177,7 +169,7 @@ class ReceiveMessageUtils {
     final (messageBytes, decryptingResult) = decryptMessage(
       publicKey.data,
       allKeys.private.data,
-      messageBytesFromSender,
+      message.messageFromSender,
     );
 
     if (messageBytes == null) {
