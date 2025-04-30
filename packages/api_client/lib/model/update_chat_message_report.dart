@@ -122,3 +122,4 @@ class UpdateChatMessageReport {
     'target',
   };
 }
+

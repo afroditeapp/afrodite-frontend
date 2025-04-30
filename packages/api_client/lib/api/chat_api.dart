@@ -67,7 +67,7 @@ class ChatApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'DeleteLikeResult',) as DeleteLikeResult;
-
+    
     }
     return null;
   }
@@ -108,7 +108,7 @@ class ChatApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'ChatAppNotificationSettings',) as ChatAppNotificationSettings;
-
+    
     }
     return null;
   }
@@ -161,7 +161,7 @@ class ChatApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetLatestPublicKeyId',) as GetLatestPublicKeyId;
-
+    
     }
     return null;
   }
@@ -205,7 +205,7 @@ class ChatApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'AllMatchesPage',) as AllMatchesPage;
-
+    
     }
     return null;
   }
@@ -257,7 +257,7 @@ class ChatApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'MessageNumber',) as MessageNumber;
-
+    
     }
     return null;
   }
@@ -305,7 +305,7 @@ class ChatApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'MultipartFile',) as MultipartFile;
-
+    
     }
     return null;
   }
@@ -362,7 +362,7 @@ class ChatApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetPrivatePublicKeyInfo',) as GetPrivatePublicKeyInfo;
-
+    
     }
     return null;
   }
@@ -421,7 +421,7 @@ class ChatApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'MultipartFile',) as MultipartFile;
-
+    
     }
     return null;
   }
@@ -465,7 +465,7 @@ class ChatApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'ReceivedBlocksPage',) as ReceivedBlocksPage;
-
+    
     }
     return null;
   }
@@ -509,7 +509,7 @@ class ChatApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'SentBlocksPage',) as SentBlocksPage;
-
+    
     }
     return null;
   }
@@ -557,7 +557,7 @@ class ChatApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'SentLikesPage',) as SentLikesPage;
-
+    
     }
     return null;
   }
@@ -598,14 +598,14 @@ class ChatApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'SentMessageIdList',) as SentMessageIdList;
-
+    
     }
     return null;
   }
 
   /// Add new public key.
   ///
-  /// Returns next public key ID number.  # Limits  Server can store limited amount of public keys. The limit is configurable from server config file and also user specific config exists. Max value between the two previous values is used to check is adding the key allowed.  Max key size is 8192 bytes.  The key must be OpenPGP public key with one signed user which ID is [model::AccountId] string.
+  /// Returns next public key ID number.  # Limits  Server can store limited amount of public keys. The limit is configurable from server config file and also user specific config exists. Max value between the two previous values is used to check is adding the key allowed.  Max key size is 8192 bytes.  The key must be OpenPGP public key with one signed user which ID is [model::AccountId] string.  
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -639,7 +639,7 @@ class ChatApi {
 
   /// Add new public key.
   ///
-  /// Returns next public key ID number.  # Limits  Server can store limited amount of public keys. The limit is configurable from server config file and also user specific config exists. Max value between the two previous values is used to check is adding the key allowed.  Max key size is 8192 bytes.  The key must be OpenPGP public key with one signed user which ID is [model::AccountId] string.
+  /// Returns next public key ID number.  # Limits  Server can store limited amount of public keys. The limit is configurable from server config file and also user specific config exists. Max value between the two previous values is used to check is adding the key allowed.  Max key size is 8192 bytes.  The key must be OpenPGP public key with one signed user which ID is [model::AccountId] string.  
   ///
   /// Parameters:
   ///
@@ -654,7 +654,7 @@ class ChatApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'AddPublicKeyResult',) as AddPublicKeyResult;
-
+    
     }
     return null;
   }
@@ -871,7 +871,7 @@ class ChatApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'UpdateReportResult',) as UpdateReportResult;
-
+    
     }
     return null;
   }
@@ -912,7 +912,7 @@ class ChatApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'NewReceivedLikesCountResult',) as NewReceivedLikesCountResult;
-
+    
     }
     return null;
   }
@@ -964,7 +964,7 @@ class ChatApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'MatchesPage',) as MatchesPage;
-
+    
     }
     return null;
   }
@@ -1020,7 +1020,7 @@ class ChatApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'ReceivedLikesPage',) as ReceivedLikesPage;
-
+    
     }
     return null;
   }
@@ -1076,7 +1076,7 @@ class ChatApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetSentMessage',) as GetSentMessage;
-
+    
     }
     return null;
   }
@@ -1161,7 +1161,7 @@ class ChatApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'ResetMatchesIteratorResult',) as ResetMatchesIteratorResult;
-
+    
     }
     return null;
   }
@@ -1202,7 +1202,7 @@ class ChatApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'ResetReceivedLikesIteratorResult',) as ResetReceivedLikesIteratorResult;
-
+    
     }
     return null;
   }
@@ -1254,14 +1254,14 @@ class ChatApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'SendLikeResult',) as SendLikeResult;
-
+    
     }
     return null;
   }
 
   /// Send message to a match.
   ///
-  /// Max pending message count is 50. Max message size is u16::MAX.  The sender message ID must be value which server expects.  Sending will fail if one or two way block exists.
+  /// Max pending message count is 50. Max message size is u16::MAX.  The sender message ID must be value which server expects.  Sending will fail if one or two way block exists.  Only the latest public key for sender and receiver can be used when sending a message.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -1313,7 +1313,7 @@ class ChatApi {
 
   /// Send message to a match.
   ///
-  /// Max pending message count is 50. Max message size is u16::MAX.  The sender message ID must be value which server expects.  Sending will fail if one or two way block exists.
+  /// Max pending message count is 50. Max message size is u16::MAX.  The sender message ID must be value which server expects.  Sending will fail if one or two way block exists.  Only the latest public key for sender and receiver can be used when sending a message.
   ///
   /// Parameters:
   ///
@@ -1340,7 +1340,7 @@ class ChatApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'SendMessageResult',) as SendMessageResult;
-
+    
     }
     return null;
   }

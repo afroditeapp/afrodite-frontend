@@ -139,3 +139,4 @@ class ChatMessageReport {
     'sender',
   };
 }
+

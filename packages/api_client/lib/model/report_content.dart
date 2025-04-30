@@ -153,3 +153,4 @@ class ReportContent {
   static const requiredKeys = <String>{
   };
 }
+
