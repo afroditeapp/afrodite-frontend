@@ -18,6 +18,7 @@ class Messages extends Table {
   TextColumn get messageText => text()();
   IntColumn get localUnixTime => integer().map(const UtcDateTimeConverter())();
   IntColumn get messageState => integer()();
+  BlobColumn get symmetricMessageEncryptionKey => blob().nullable()();
 
   // Server sends valid values for the next colums.
   IntColumn get messageNumber => integer().map(const NullAwareTypeConverter.wrap(MessageNumberConverter())).nullable()();
@@ -53,6 +54,7 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
       messageNumber: Value(entry.messageNumber),
       unixTime: Value(entry.unixTime),
       backendSignedPgpMessage: Value(entry.backendSignedPgpMessage),
+      symmetricMessageEncryptionKey: Value(entry.symmetricMessageEncryptionKey),
     ));
 
     return LocalMessageId(localId);
@@ -110,6 +112,7 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
     UtcDateTime serverTime,
     Uint8List backendSignedPgpMessage,
     String decryptedMessage,
+    Uint8List? symmetricMessageEncryptionKey,
     ReceivedMessageState state,
   ) async {
     final message = NewMessageEntry(
@@ -121,6 +124,7 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
       messageNumber: messageNumber,
       unixTime: serverTime,
       backendSignedPgpMessage: backendSignedPgpMessage,
+      symmetricMessageEncryptionKey: symmetricMessageEncryptionKey,
     );
     await transaction(() async {
       await _insert(message);
@@ -151,6 +155,7 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
     ReceivedMessageState receivedMessageState,
     {
       String? messageText,
+      Uint8List? symmetricMessageEncryptionKey,
     }
   ) async {
     await (update(messages)
@@ -158,6 +163,18 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
     ).write(MessagesCompanion(
       messageState: Value(receivedMessageState.toDbState().number),
       messageText: Value.absentIfNull(messageText),
+      symmetricMessageEncryptionKey: Value.absentIfNull(symmetricMessageEncryptionKey),
+    ));
+  }
+
+  Future<void> updateSymmetricMessageEncryptionKey(
+    LocalMessageId localId,
+    Uint8List symmetricMessageEncryptionKey,
+  ) async {
+    await (update(messages)
+      ..where((t) => t.id.equals(localId.id))
+    ).write(MessagesCompanion(
+      symmetricMessageEncryptionKey: Value(symmetricMessageEncryptionKey),
     ));
   }
 

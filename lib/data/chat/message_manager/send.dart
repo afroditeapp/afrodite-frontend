@@ -170,6 +170,13 @@ class SendMessageUtils {
       return;
     }
 
+    final updateSymmetricEncryptionKeyResult = await db.messageAction((db) => db.updateSymmetricMessageEncryptionKey(localId, encryptedMessage.sessionKey));
+    if (updateSymmetricEncryptionKeyResult.isErr()) {
+      log.error("Updating symmetric encryption key failed");
+      yield ErrorAfterMessageSaving(localId);
+      return;
+    }
+
     UnixTime unixTimeFromServer;
     MessageNumber messageNumberFromServer;
     Uint8List backendSignedPgpMessage;

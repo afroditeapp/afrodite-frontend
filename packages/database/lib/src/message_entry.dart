@@ -252,6 +252,8 @@ class NewMessageEntry {
   final UtcDateTime? unixTime;
   /// Backend signed PGP message. Server sets this falue.
   final Uint8List? backendSignedPgpMessage;
+  /// Symmetric encryption key for PGP message from sender.
+  final Uint8List? symmetricMessageEncryptionKey;
 
   NewMessageEntry(
     {
@@ -264,6 +266,7 @@ class NewMessageEntry {
       this.messageNumber,
       this.unixTime,
       this.backendSignedPgpMessage,
+      this.symmetricMessageEncryptionKey,
     }
   );
 

@@ -83,10 +83,12 @@ class ReceiveMessageUtils {
       }
 
       final String decryptedMessage;
+      final Uint8List? symmetricMessageEncryptionKey;
       final ReceivedMessageState messageState;
       switch (await decryptReceivedMessage(allKeys, message.parsed)) {
         case Err(:final e):
           decryptedMessage = "";
+          symmetricMessageEncryptionKey = null;
           switch (e) {
             case ReceivedMessageError.decryptingFailed:
               messageState = ReceivedMessageState.decryptingFailed;
@@ -95,8 +97,9 @@ class ReceiveMessageUtils {
             case ReceivedMessageError.publicKeyDonwloadingFailed:
               messageState = ReceivedMessageState.publicKeyDownloadFailed;
           }
-        case Ok(:final v):
-          decryptedMessage = v;
+        case Ok(v: (final messageText, final symmetricKey)):
+          decryptedMessage = messageText;
+          symmetricMessageEncryptionKey = symmetricKey;
           messageState = ReceivedMessageState.received;
       }
 
@@ -107,6 +110,7 @@ class ReceiveMessageUtils {
         message.parsed.serverTime.toUtcDateTime(),
         message.backendPgpMessage,
         decryptedMessage,
+        symmetricMessageEncryptionKey,
         messageState,
       ));
       if (r.isOk()) {
@@ -157,7 +161,8 @@ class ReceiveMessageUtils {
     }
   }
 
-  Future<Result<String, ReceivedMessageError>> decryptReceivedMessage(
+  /// Returns message text and symmetric message encryption key
+  Future<Result<(String, Uint8List), ReceivedMessageError>> decryptReceivedMessage(
     AllKeyData allKeys,
     BackendSignedMessage message,
   ) async {
@@ -166,19 +171,20 @@ class ReceiveMessageUtils {
       return const Err(ReceivedMessageError.publicKeyDonwloadingFailed);
     }
 
-    final (messageBytes, decryptingResult) = decryptMessage(
+    final (decryptResult, decryptingResult) = decryptMessage(
       publicKey.data,
       allKeys.private.data,
       message.messageFromSender,
     );
 
-    if (messageBytes == null) {
+    if (decryptResult == null) {
       log.error("Received message decrypting failed, error: $decryptingResult");
       return const Err(ReceivedMessageError.decryptingFailed);
     }
 
     return MessageConverter()
-      .bytesToText(messageBytes.messageData)
+      .bytesToText(decryptResult.messageData)
+      .mapOk((v) => (v, decryptResult.sessionKey))
       .mapErr((_) => ReceivedMessageError.unknownMessageType);
   }
 

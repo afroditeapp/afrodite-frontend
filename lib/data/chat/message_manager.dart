@@ -273,10 +273,12 @@ class MessageManager extends LifecycleMethods {
     }
 
     final String decryptedMessage;
+    final Uint8List? symmetricMessageEncryptionKey;
     final ReceivedMessageState messageState;
     switch (await receiveMessageUtils.decryptReceivedMessage(allKeys, backendSignedMessage)) {
       case Err(:final e):
         decryptedMessage = "";
+        symmetricMessageEncryptionKey = null;
         switch (e) {
           case ReceivedMessageError.decryptingFailed:
             messageState = ReceivedMessageState.decryptingFailed;
@@ -285,8 +287,9 @@ class MessageManager extends LifecycleMethods {
           case ReceivedMessageError.publicKeyDonwloadingFailed:
             return const Err(RetryPublicKeyDownloadError.unspecifiedError);
         }
-      case Ok(:final v):
-        decryptedMessage = v;
+      case Ok(v: (final messageText, final symmetricKey)):
+        decryptedMessage = messageText;
+        symmetricMessageEncryptionKey = symmetricKey;
         messageState = ReceivedMessageState.received;
     }
 
@@ -294,6 +297,7 @@ class MessageManager extends LifecycleMethods {
       localId,
       messageState,
       messageText: decryptedMessage,
+      symmetricMessageEncryptionKey: symmetricMessageEncryptionKey,
     ));
     if (r.isErr()) {
       return const Err(RetryPublicKeyDownloadError.unspecifiedError);
