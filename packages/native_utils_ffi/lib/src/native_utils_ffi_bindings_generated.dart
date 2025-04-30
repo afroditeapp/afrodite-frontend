@@ -108,10 +108,26 @@ class NativeUtilsBindings {
       int Function(ffi.Pointer<ffi.Uint8>, int, ffi.Pointer<ffi.Uint8>,
           int)>(isLeaf: true);
 
+  void free_binary_data_result_2(
+    BinaryDataResult2 result,
+  ) {
+    return _free_binary_data_result_2(
+      result,
+    );
+  }
+
+  late final _free_binary_data_result_2Ptr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(BinaryDataResult2)>>(
+          'free_binary_data_result_2');
+  late final _free_binary_data_result_2 = _free_binary_data_result_2Ptr
+      .asFunction<void Function(BinaryDataResult2)>(isLeaf: true);
+
   /// Generate a new message encryption keys.
   ///
   /// Run equivalent free function for the result.
-  GenerateMessageKeysResult generate_message_keys(
+  ///
+  /// First result value is public key and second is private key.
+  BinaryDataResult2 generate_message_keys(
     ffi.Pointer<ffi.Char> account_id,
   ) {
     return _generate_message_keys(
@@ -120,27 +136,12 @@ class NativeUtilsBindings {
   }
 
   late final _generate_message_keysPtr = _lookup<
-      ffi.NativeFunction<
-          GenerateMessageKeysResult Function(
-              ffi.Pointer<ffi.Char>)>>('generate_message_keys');
+          ffi
+          .NativeFunction<BinaryDataResult2 Function(ffi.Pointer<ffi.Char>)>>(
+      'generate_message_keys');
   late final _generate_message_keys = _generate_message_keysPtr
-      .asFunction<GenerateMessageKeysResult Function(ffi.Pointer<ffi.Char>)>(
+      .asFunction<BinaryDataResult2 Function(ffi.Pointer<ffi.Char>)>(
           isLeaf: true);
-
-  void generate_message_keys_free_result(
-    GenerateMessageKeysResult result,
-  ) {
-    return _generate_message_keys_free_result(
-      result,
-    );
-  }
-
-  late final _generate_message_keys_free_resultPtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(GenerateMessageKeysResult)>>(
-          'generate_message_keys_free_result');
-  late final _generate_message_keys_free_result =
-      _generate_message_keys_free_resultPtr
-          .asFunction<void Function(GenerateMessageKeysResult)>(isLeaf: true);
 
   void free_binary_data_result(
     BinaryDataResult result,
@@ -257,39 +258,30 @@ class NativeUtilsBindings {
 }
 
 /// Message encryption API
-final class GenerateMessageKeysResult extends ffi.Struct {
+final class BinaryData extends ffi.Struct {
+  /// Null if failure
+  external ffi.Pointer<ffi.Uint8> data;
+
+  @ffi.IntPtr()
+  external int len;
+
+  @ffi.IntPtr()
+  external int capacity;
+}
+
+final class BinaryDataResult2 extends ffi.Struct {
   @ffi.IntPtr()
   external int result;
 
   /// Null if failure
-  external ffi.Pointer<ffi.Uint8> public_key;
+  external BinaryData first_data;
 
-  @ffi.IntPtr()
-  external int public_key_len;
-
-  @ffi.IntPtr()
-  external int public_key_capacity;
-
-  /// Null if failure
-  external ffi.Pointer<ffi.Uint8> private_key;
-
-  @ffi.IntPtr()
-  external int private_key_len;
-
-  @ffi.IntPtr()
-  external int private_key_capacity;
+  external BinaryData second_data;
 }
 
 final class BinaryDataResult extends ffi.Struct {
   @ffi.IntPtr()
   external int result;
 
-  /// Null if failure
-  external ffi.Pointer<ffi.Uint8> data;
-
-  @ffi.IntPtr()
-  external int data_len;
-
-  @ffi.IntPtr()
-  external int data_capacity;
+  external BinaryData data;
 }

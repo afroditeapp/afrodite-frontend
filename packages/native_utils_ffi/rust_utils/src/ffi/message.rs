@@ -1,81 +1,57 @@
 use std::{ffi::{c_char, CStr}, ptr::null};
 
-use crate::message::{content, decrypt, encrypt, key::{self, PrivateKeyBytes, PublicKeyBytes}, MessageEncryptionError};
+use crate::message::{content, decrypt, encrypt, key, MessageEncryptionError};
 
 use super::API_OK;
 
 #[repr(C)]
-pub struct GenerateMessageKeysResult {
+pub struct BinaryDataResult2 {
     pub result: isize,
-    /// Null if failure
-    pub public_key: *const u8,
-    pub public_key_len: isize,
-    pub public_key_capacity: isize,
-    /// Null if failure
-    pub private_key: *const u8,
-    pub private_key_len: isize,
-    pub private_key_capacity: isize,
+    pub first_data: BinaryData,
+    pub second_data: BinaryData,
 }
 
-impl GenerateMessageKeysResult {
+impl BinaryDataResult2 {
     pub fn error(e: MessageEncryptionError) -> Self {
         Self {
             result: e.into(),
-            public_key: null(),
-            public_key_len: 0,
-            public_key_capacity: 0,
-            private_key: null(),
-            private_key_len: 0,
-            private_key_capacity: 0,
+            first_data: BinaryData::error(),
+            second_data: BinaryData::error(),
         }
     }
 
-    pub fn success(public: PublicKeyBytes, private: PrivateKeyBytes) -> Self {
-        let public = public.value;
-
-        let public_key_len: isize = match public.len().try_into() {
-            Ok(len) => len,
-            Err(_) => return Self::error(MessageEncryptionError::GenerateKeysPublicKeyLenTooLarge),
+    pub fn success(first: Vec<u8>, second: Vec<u8>) -> Self {
+        let first = match BinaryDataBuilder::new(first) {
+            Ok(v) => v,
+            Err(e) => return Self::error(e),
         };
 
-        let public_key_capacity: isize = match public.capacity().try_into() {
-            Ok(capacity) => capacity,
-            Err(_) => return Self::error(MessageEncryptionError::GenerateKeysPublicKeyCapacityTooLarge),
+        let second = match BinaryDataBuilder::new(second) {
+            Ok(v) => v,
+            Err(e) => return Self::error(e),
         };
 
-        let private = private.value;
-
-        let private_key_len: isize = match private.len().try_into() {
-            Ok(len) => len,
-            Err(_) => return Self::error(MessageEncryptionError::GenerateKeysPrivateKeyLenTooLarge),
-        };
-
-        let private_key_capacity: isize = match private.capacity().try_into() {
-            Ok(capacity) => capacity,
-            Err(_) => return Self::error(MessageEncryptionError::GenerateKeysPrivateKeyCapacityTooLarge),
-        };
-
-        let result = Self {
+        Self {
             result: API_OK,
-            public_key: public.as_ptr(),
-            public_key_len,
-            public_key_capacity,
-            private_key: private.as_ptr(),
-            private_key_len,
-            private_key_capacity,
-        };
-
-        std::mem::forget(public);
-        std::mem::forget(private);
-
-        result
+            first_data: first.build(),
+            second_data: second.build(),
+        }
     }
 }
 
 #[unsafe(no_mangle)]
+pub unsafe extern "C" fn free_binary_data_result_2(
+    result: BinaryDataResult2,
+) {
+    result.first_data.free();
+    result.second_data.free();
+}
+
+/// First result value is public key and second is private key.
+#[unsafe(no_mangle)]
 pub unsafe extern "C" fn generate_message_keys(
     account_id: *const c_char,
-) -> GenerateMessageKeysResult {
+) -> BinaryDataResult2 {
     assert!(!account_id.is_null());
 
     let account_id = unsafe {
@@ -86,73 +62,99 @@ pub unsafe extern "C" fn generate_message_keys(
 
     match key::generate_keys(account_id.to_string()) {
         Ok((public, private)) =>
-            GenerateMessageKeysResult::success(public, private),
-        Err(e) => GenerateMessageKeysResult::error(e)
+            BinaryDataResult2::success(public.value, private.value),
+        Err(e) => BinaryDataResult2::error(e)
     }
 }
 
-#[unsafe(no_mangle)]
-pub unsafe extern "C" fn generate_message_keys_free_result(
-    result: GenerateMessageKeysResult,
-) {
-    unsafe {
-        if !result.public_key.is_null() {
-            let _ = Vec::from_raw_parts(
-                result.public_key as *mut u8,
-                result.public_key_len as usize,
-                result.public_key_capacity as usize,
-            );
+#[repr(C)]
+pub struct BinaryData {
+    /// Null if failure
+    pub data: *const u8,
+    pub len: isize,
+    pub capacity: isize,
+}
+
+impl BinaryData {
+    pub fn error() -> Self {
+        Self {
+            data: null(),
+            len: 0,
+            capacity: 0,
         }
-        if !result.private_key.is_null() {
-            let _ = Vec::from_raw_parts(
-                result.private_key as *mut u8,
-                result.private_key_len as usize,
-                result.private_key_capacity as usize,
-            );
+    }
+
+    pub fn free(self) {
+        unsafe {
+            if !self.data.is_null() {
+                let _ = Vec::from_raw_parts(
+                    self.data as *mut u8,
+                    self.len as usize,
+                    self.capacity as usize,
+                );
+            }
         }
+    }
+}
+
+struct BinaryDataBuilder {
+    data: Vec<u8>,
+    len: isize,
+    capacity: isize,
+}
+
+impl BinaryDataBuilder {
+    fn new(data: Vec<u8>) -> Result<Self, MessageEncryptionError> {
+        let len: isize = data.len().try_into()
+            .map_err(|_| MessageEncryptionError::BinaryDataLenTooLarge)?;
+
+        let capacity: isize = data.capacity().try_into()
+            .map_err(|_| MessageEncryptionError::BinaryDataCapacityTooLarge)?;
+
+        Ok(Self {
+            data,
+            len,
+            capacity,
+        })
+    }
+
+    fn build(self) -> BinaryData {
+        let data = BinaryData {
+            data: self.data.as_ptr(),
+            len: self.len,
+            capacity: self.capacity,
+        };
+
+        std::mem::forget(self.data);
+
+        data
     }
 }
 
 #[repr(C)]
 pub struct BinaryDataResult {
     pub result: isize,
-    /// Null if failure
-    pub data: *const u8,
-    pub data_len: isize,
-    pub data_capacity: isize,
+    pub data: BinaryData,
 }
 
 impl BinaryDataResult {
     pub fn error(e: MessageEncryptionError) -> Self {
         Self {
             result: e.into(),
-            data: null(),
-            data_len: 0,
-            data_capacity: 0,
+            data: BinaryData::error(),
         }
     }
 
     pub fn success(data: Vec<u8>) -> Self {
-        let data_len: isize = match data.len().try_into() {
-            Ok(len) => len,
-            Err(_) => return Self::error(MessageEncryptionError::BinaryDataResultLenTooLarge),
+        let builder = match BinaryDataBuilder::new(data) {
+            Ok(v) => v,
+            Err(e) => return Self::error(e),
         };
 
-        let data_capacity: isize = match data.capacity().try_into() {
-            Ok(capacity) => capacity,
-            Err(_) => return Self::error(MessageEncryptionError::BinaryDataResultCapacityTooLarge),
-        };
-
-        let result = Self {
+        Self {
             result: API_OK,
-            data: data.as_ptr(),
-            data_len,
-            data_capacity,
-        };
-
-        std::mem::forget(data);
-
-        result
+            data: builder.build(),
+        }
     }
 }
 
@@ -160,15 +162,7 @@ impl BinaryDataResult {
 pub unsafe extern "C" fn free_binary_data_result(
     result: BinaryDataResult,
 ) {
-    unsafe {
-        if !result.data.is_null() {
-            let _ = Vec::from_raw_parts(
-                result.data as *mut u8,
-                result.data_len as usize,
-                result.data_capacity as usize,
-            );
-        }
-    }
+    result.data.free();
 }
 
 #[unsafe(no_mangle)]

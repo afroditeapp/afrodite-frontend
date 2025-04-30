@@ -48,35 +48,36 @@ FFI_PLUGIN_EXPORT intptr_t decrypt_content(
 
 // Message encryption API
 
-struct GenerateMessageKeysResult {
+struct BinaryData {
+  // Null if failure
+  const uint8_t* data;
+  intptr_t len;
+  intptr_t capacity;
+};
+
+struct BinaryDataResult2 {
   intptr_t result;
   // Null if failure
-  const uint8_t* public_key;
-  intptr_t public_key_len;
-  intptr_t public_key_capacity;
-  // Null if failure
-  const uint8_t* private_key;
-  intptr_t private_key_len;
-  intptr_t private_key_capacity;
+  struct BinaryData first_data;
+  struct BinaryData second_data;
 };
+
+FFI_PLUGIN_EXPORT void free_binary_data_result_2(
+  struct BinaryDataResult2 result
+);
 
 // Generate a new message encryption keys.
 //
 // Run equivalent free function for the result.
-FFI_PLUGIN_EXPORT struct GenerateMessageKeysResult generate_message_keys(
+//
+// First result value is public key and second is private key.
+FFI_PLUGIN_EXPORT struct BinaryDataResult2 generate_message_keys(
   const char* account_id
-);
-
-FFI_PLUGIN_EXPORT void generate_message_keys_free_result(
-  struct GenerateMessageKeysResult result
 );
 
 struct BinaryDataResult {
   intptr_t result;
-  // Null if failure
-  const uint8_t* data;
-  intptr_t data_len;
-  intptr_t data_capacity;
+  struct BinaryData data;
 };
 
 FFI_PLUGIN_EXPORT void free_binary_data_result(

@@ -14,19 +14,16 @@ import 'package:native_utils_ffi/src/native_utils_ffi_bindings_generated.dart';
   final keyGenerationResult = getBindings().generate_message_keys(cAccountId.cast());
   malloc.free(cAccountId);
 
-  final result = keyGenerationResult.result;
-  final (GeneratedMessageKeys?, int) returnValue;
-  if (result == 0) {
+  final (public, private, result) = handleBinaryDataResult2(keyGenerationResult);
+  if (public != null && private != null) {
     final keys = GeneratedMessageKeys(
-      public: copyToList(keyGenerationResult.public_key, keyGenerationResult.public_key_len),
-      private: copyToList(keyGenerationResult.private_key, keyGenerationResult.private_key_len),
+      public: public,
+      private: private,
     );
-    returnValue = (keys, 0);
+    return (keys, result);
   } else {
-    returnValue = (null, result);
+    return (null, result);
   }
-  getBindings().generate_message_keys_free_result(keyGenerationResult);
-  return returnValue;
 }
 
 /// If encrypting fails, null is returned
@@ -115,11 +112,25 @@ Uint8List copyToList(Pointer<Uint8> data, int len) {
   final result = r.result;
   final (Uint8List?, int) returnValue;
   if (result == 0) {
-    final copiedData = copyToList(r.data, r.data_len);
+    final copiedData = copyToList(r.data.data, r.data.len);
     returnValue = (copiedData, 0);
   } else {
     returnValue = (null, result);
   }
   getBindings().free_binary_data_result(r);
+  return returnValue;
+}
+
+(Uint8List?, Uint8List?, int) handleBinaryDataResult2(BinaryDataResult2 r) {
+  final result = r.result;
+  final (Uint8List?, Uint8List?, int) returnValue;
+  if (result == 0) {
+    final firstCopiedData = copyToList(r.first_data.data, r.first_data.len);
+    final secondCopiedData = copyToList(r.second_data.data, r.second_data.len);
+    returnValue = (firstCopiedData, secondCopiedData, 0);
+  } else {
+    returnValue = (null, null, result);
+  }
+  getBindings().free_binary_data_result_2(r);
   return returnValue;
 }

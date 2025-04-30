@@ -15,12 +15,8 @@ pub enum MessageEncryptionError {
     GenerateKeysPrivateKeyGenerate = 3,
     GenerateKeysPrivateKeySign = 4,
     GenerateKeysPrivateKeyToBytes = 5,
-    GenerateKeysPrivateKeyLenTooLarge = 6,
-    GenerateKeysPrivateKeyCapacityTooLarge = 7,
-    GenerateKeysPublicKeySign = 8,
-    GenerateKeysPublicKeyToBytes = 9,
-    GenerateKeysPublicKeyLenTooLarge = 10,
-    GenerateKeysPublicKeyCapacityTooLarge = 11,
+    GenerateKeysPublicKeySign = 6,
+    GenerateKeysPublicKeyToBytes = 7,
     // Encrypt data
     EncryptDataPrivateKeyParse = 20,
     EncryptDataPublicKeyParse = 21,
@@ -28,9 +24,9 @@ pub enum MessageEncryptionError {
     EncryptDataSign = 23,
     EncryptDataToBytes = 24,
     EncryptDataPublicSubkeyMissing = 25,
-    // Binary data result
-    BinaryDataResultLenTooLarge = 30,
-    BinaryDataResultCapacityTooLarge = 31,
+    // Binary data
+    BinaryDataLenTooLarge = 30,
+    BinaryDataCapacityTooLarge = 31,
     // Decrypt data
     DecryptDataPrivateKeyParse = 40,
     DecryptDataPublicKeyParse = 41,
