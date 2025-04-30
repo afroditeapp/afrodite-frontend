@@ -87,7 +87,9 @@ FFI_PLUGIN_EXPORT void free_binary_data_result(
 // Encrypt message data.
 //
 // The result must be freed using free_binary_data_result.
-FFI_PLUGIN_EXPORT struct BinaryDataResult encrypt_message(
+//
+// First result value is PGP message and second is session key.
+FFI_PLUGIN_EXPORT struct BinaryDataResult2 encrypt_message(
   const uint8_t* sender_private_key,
   intptr_t sender_private_key_len,
   const uint8_t* receiver_public_key,
@@ -99,7 +101,9 @@ FFI_PLUGIN_EXPORT struct BinaryDataResult encrypt_message(
 // Decrypt message data.
 //
 // The result must be freed using free_binary_data_result.
-FFI_PLUGIN_EXPORT struct BinaryDataResult decrypt_message(
+//
+// First result value is message data and second is session key.
+FFI_PLUGIN_EXPORT struct BinaryDataResult2 decrypt_message(
   const uint8_t* sender_public_key,
   intptr_t sender_public_key_len,
   const uint8_t* receiver_private_key,

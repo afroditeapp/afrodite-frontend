@@ -27,7 +27,7 @@ import 'package:native_utils_ffi/src/native_utils_ffi_bindings_generated.dart';
 }
 
 /// If encrypting fails, null is returned
-(Uint8List?, int) encryptMessage(
+(EncryptResult?, int) encryptMessage(
   Uint8List senderPrivateKey,
   Uint8List receiverPublicKey,
   Uint8List data,
@@ -52,11 +52,16 @@ import 'package:native_utils_ffi/src/native_utils_ffi_bindings_generated.dart';
   malloc.free(cReceiver);
   malloc.free(cData);
 
-  return handleBinaryDataResult(encryptResult);
+  final (pgpMessage, sessionKey, result) = handleBinaryDataResult2(encryptResult);
+  if (pgpMessage != null && sessionKey != null) {
+    return (EncryptResult(pgpMessage: pgpMessage, sessionKey: sessionKey), result);
+  } else {
+    return (null, result);
+  }
 }
 
 /// If decrypting fails, null is returned
-(Uint8List?, int) decryptMessage(
+(DecryptResult?, int) decryptMessage(
   Uint8List senderPublicKey,
   Uint8List receiverPrivateKey,
   Uint8List pgpMessage,
@@ -81,7 +86,12 @@ import 'package:native_utils_ffi/src/native_utils_ffi_bindings_generated.dart';
   malloc.free(cReceiverPrivateKey);
   malloc.free(cMessageData);
 
-  return handleBinaryDataResult(decryptResult);
+  final (messageData, sessionKey, result) = handleBinaryDataResult2(decryptResult);
+  if (messageData != null && sessionKey != null) {
+    return (DecryptResult(messageData: messageData, sessionKey: sessionKey), result);
+  } else {
+    return (null, result);
+  }
 }
 
 /// When getting the PGP message content fails, null is returned

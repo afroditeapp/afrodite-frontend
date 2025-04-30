@@ -165,6 +165,7 @@ pub unsafe extern "C" fn free_binary_data_result(
     result.data.free();
 }
 
+/// First result value is PGP message and second is session key.
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn encrypt_message(
     sender_private_key: *const u8,
@@ -173,7 +174,7 @@ pub unsafe extern "C" fn encrypt_message(
     receiver_public_key_len: isize,
     data: *const u8,
     data_len: isize,
-) -> BinaryDataResult {
+) -> BinaryDataResult2 {
     assert!(!sender_private_key.is_null());
     assert!(!receiver_public_key.is_null());
 
@@ -190,13 +191,14 @@ pub unsafe extern "C" fn encrypt_message(
     };
 
     match encrypt::encrypt_data(sender_private_key, receiver_public_key, data) {
-        Ok(message) => {
-            BinaryDataResult::success(message)
+        Ok((message, session_key)) => {
+            BinaryDataResult2::success(message, session_key)
         }
-        Err(e) => BinaryDataResult::error(e)
+        Err(e) => BinaryDataResult2::error(e)
     }
 }
 
+/// First result value is message data and second is session key.
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn decrypt_message(
     sender_public_key: *const u8,
@@ -205,7 +207,7 @@ pub unsafe extern "C" fn decrypt_message(
     receiver_private_key_len: isize,
     pgp_message: *const u8,
     pgp_message_len: isize,
-) -> BinaryDataResult {
+) -> BinaryDataResult2 {
     assert!(!sender_public_key.is_null());
     assert!(!receiver_private_key.is_null());
     assert!(!pgp_message.is_null());
@@ -223,8 +225,8 @@ pub unsafe extern "C" fn decrypt_message(
     };
 
     match decrypt::decrypt_data(sender_public_key, receiver_private_key, pgp_message) {
-        Ok(data) => BinaryDataResult::success(data),
-        Err(e) => BinaryDataResult::error(e),
+        Ok((data, session_key)) => BinaryDataResult2::success(data, session_key),
+        Err(e) => BinaryDataResult2::error(e),
     }
 }
 

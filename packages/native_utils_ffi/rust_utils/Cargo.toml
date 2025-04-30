@@ -17,7 +17,9 @@ panic = "abort"
 
 [dependencies]
 aes-gcm = "0.10.3"
-pgp = "0.15.0"
+# PGP 0.15.0 library with support for getting session key
+# when decrypting and encrypting.
+pgp = { git = "https://github.com/jutuon/rpgp", rev = "4a6568f78364fada6ac39a065fc887e37fa790e4"}
 smallvec = "1.13.2"
 bstr = "1.11.3"
 rand = "0.8.5"

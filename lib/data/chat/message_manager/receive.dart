@@ -178,7 +178,7 @@ class ReceiveMessageUtils {
     }
 
     return MessageConverter()
-      .bytesToText(messageBytes)
+      .bytesToText(messageBytes.messageData)
       .mapErr((_) => ReceivedMessageError.unknownMessageType);
   }
 

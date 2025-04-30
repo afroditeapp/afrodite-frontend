@@ -991,8 +991,7 @@ dependencies = [
 [[package]]
 name = "pgp"
 version = "0.15.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "30249ac8a98b356b473b04bc5358c75a260aa96a295d0743ce752fe7b173f235"
+source = "git+https://github.com/jutuon/rpgp?rev=4a6568f78364fada6ac39a065fc887e37fa790e4#4a6568f78364fada6ac39a065fc887e37fa790e4"
 dependencies = [
  "aes",
  "aes-gcm",

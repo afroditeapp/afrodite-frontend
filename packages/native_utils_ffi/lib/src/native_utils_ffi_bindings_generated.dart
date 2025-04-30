@@ -160,7 +160,9 @@ class NativeUtilsBindings {
   /// Encrypt message data.
   ///
   /// The result must be freed using free_binary_data_result.
-  BinaryDataResult encrypt_message(
+  ///
+  /// First result value is PGP message and second is session key.
+  BinaryDataResult2 encrypt_message(
     ffi.Pointer<ffi.Uint8> sender_private_key,
     int sender_private_key_len,
     ffi.Pointer<ffi.Uint8> receiver_public_key,
@@ -180,7 +182,7 @@ class NativeUtilsBindings {
 
   late final _encrypt_messagePtr = _lookup<
       ffi.NativeFunction<
-          BinaryDataResult Function(
+          BinaryDataResult2 Function(
               ffi.Pointer<ffi.Uint8>,
               ffi.IntPtr,
               ffi.Pointer<ffi.Uint8>,
@@ -188,7 +190,7 @@ class NativeUtilsBindings {
               ffi.Pointer<ffi.Uint8>,
               ffi.IntPtr)>>('encrypt_message');
   late final _encrypt_message = _encrypt_messagePtr.asFunction<
-      BinaryDataResult Function(
+      BinaryDataResult2 Function(
           ffi.Pointer<ffi.Uint8>,
           int,
           ffi.Pointer<ffi.Uint8>,
@@ -199,7 +201,9 @@ class NativeUtilsBindings {
   /// Decrypt message data.
   ///
   /// The result must be freed using free_binary_data_result.
-  BinaryDataResult decrypt_message(
+  ///
+  /// First result value is message data and second is session key.
+  BinaryDataResult2 decrypt_message(
     ffi.Pointer<ffi.Uint8> sender_public_key,
     int sender_public_key_len,
     ffi.Pointer<ffi.Uint8> receiver_private_key,
@@ -219,7 +223,7 @@ class NativeUtilsBindings {
 
   late final _decrypt_messagePtr = _lookup<
       ffi.NativeFunction<
-          BinaryDataResult Function(
+          BinaryDataResult2 Function(
               ffi.Pointer<ffi.Uint8>,
               ffi.IntPtr,
               ffi.Pointer<ffi.Uint8>,
@@ -227,7 +231,7 @@ class NativeUtilsBindings {
               ffi.Pointer<ffi.Uint8>,
               ffi.IntPtr)>>('decrypt_message');
   late final _decrypt_message = _decrypt_messagePtr.asFunction<
-      BinaryDataResult Function(
+      BinaryDataResult2 Function(
           ffi.Pointer<ffi.Uint8>,
           int,
           ffi.Pointer<ffi.Uint8>,

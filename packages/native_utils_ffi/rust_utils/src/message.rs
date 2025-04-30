@@ -34,6 +34,7 @@ pub enum MessageEncryptionError {
     DecryptDataVerify = 43,
     DecryptDataDecrypt = 44,
     DecryptDataDataNotFound = 45,
+    DecryptDataUnsupportedSessionKeyVersion = 46,
     // Get message content
     GetMessageContentMessageParse = 50,
     GetMessageContentGetContent = 51,

@@ -181,7 +181,7 @@ class SendMessageUtils {
         receiverPublicKey.id.id,
         clientId.id,
         localId.id,
-        MultipartFile.fromBytes("", encryptedMessage),
+        MultipartFile.fromBytes("", encryptedMessage.pgpMessage),
       )).ok();
       if (result == null) {
         yield ErrorAfterMessageSaving(localId);

@@ -15,7 +15,7 @@ pub fn encrypt_data(
     sender_private_key: &[u8],
     receiver_public_key: &[u8],
     data: &[u8],
-) -> Result<Vec<u8>, MessageEncryptionError> {
+) -> Result<(Vec<u8>, Vec<u8>), MessageEncryptionError> {
     let my_private_key = SignedSecretKey::from_bytes(sender_private_key)
         .map_err(|_| MessageEncryptionError::EncryptDataPrivateKeyParse)?;
     let other_person_public_key = SignedPublicKey::from_bytes(receiver_public_key)
@@ -27,7 +27,7 @@ pub fn encrypt_data(
         .first()
         .ok_or(MessageEncryptionError::EncryptDataPublicSubkeyMissing)?;
 
-    let armored_message =
+    let (message, session_key) =
         Message::new_literal_bytes(empty_file_name, data)
             // Compression is not done for now as this library does not
             // have possibility to limit decompressed data size.
@@ -35,7 +35,7 @@ pub fn encrypt_data(
             // would be possible.
             .sign(OsRng, &my_private_key, String::new, HashAlgorithm::SHA2_256)
             .map_err(|_| MessageEncryptionError::EncryptDataSign)?
-            .encrypt_to_keys_seipdv2(
+            .encrypt_to_keys_seipdv2_and_return_session_key(
                 OsRng,
                 SymmetricKeyAlgorithm::AES128,
                 AeadAlgorithm::Gcm,
@@ -44,9 +44,10 @@ pub fn encrypt_data(
                 16,
                 &[encryption_public_subkey],
             )
-            .map_err(|_| MessageEncryptionError::EncryptDataEncrypt)?
-            .to_bytes()
-            .map_err(|_| MessageEncryptionError::EncryptDataToBytes)?;
+            .map_err(|_| MessageEncryptionError::EncryptDataEncrypt)?;
+    let message_bytes = message
+        .to_bytes()
+        .map_err(|_| MessageEncryptionError::EncryptDataToBytes)?;
 
-    Ok(armored_message)
+    Ok((message_bytes, session_key.to_vec()))
 }
