@@ -367,20 +367,20 @@ class ChatRepository extends DataRepositoryWithLifecycle {
     yield* cmd.events();
   }
 
-  Future<Result<void, DeleteSendFailedError>> deleteSendFailedMessage(AccountId receiverAccountId, LocalMessageId localId) async {
-    final cmd = DeleteSendFailedMessage(receiverAccountId, localId);
+  Future<Result<void, DeleteSendFailedError>> deleteSendFailedMessage(LocalMessageId localId) async {
+    final cmd = DeleteSendFailedMessage(localId);
     messageManager.queueCmd(cmd);
     return await cmd.waitUntilReady();
   }
 
-  Future<Result<void, ResendFailedError>> resendSendFailedMessage(AccountId receiverAccountId, LocalMessageId localId) async {
-    final cmd = ResendSendFailedMessage(receiverAccountId, localId);
+  Future<Result<void, ResendFailedError>> resendSendFailedMessage(LocalMessageId localId) async {
+    final cmd = ResendSendFailedMessage(localId);
     messageManager.queueCmd(cmd);
     return await cmd.waitUntilReady();
   }
 
-  Future<Result<void, RetryPublicKeyDownloadError>> retryPublicKeyDownload(AccountId receiverAccountId, LocalMessageId localId) async {
-    final cmd = RetryPublicKeyDownload(receiverAccountId, localId);
+  Future<Result<void, RetryPublicKeyDownloadError>> retryPublicKeyDownload(LocalMessageId localId) async {
+    final cmd = RetryPublicKeyDownload(localId);
     messageManager.queueCmd(cmd);
     return await cmd.waitUntilReady();
   }

@@ -50,19 +50,16 @@ class RenderingCompleted extends ConversationEvent {
   RenderingCompleted(this.height);
 }
 class RemoveSendFailedMessage extends ConversationEvent {
-  final AccountId receiverAccountId;
   final LocalMessageId id;
-  RemoveSendFailedMessage(this.receiverAccountId, this.id);
+  RemoveSendFailedMessage(this.id);
 }
 class ResendSendFailedMessage extends ConversationEvent {
-  final AccountId receiverAccountId;
   final LocalMessageId id;
-  ResendSendFailedMessage(this.receiverAccountId, this.id);
+  ResendSendFailedMessage(this.id);
 }
 class RetryPublicKeyDownload extends ConversationEvent {
-  final AccountId receiverAccountId;
   final LocalMessageId id;
-  RetryPublicKeyDownload(this.receiverAccountId, this.id);
+  RetryPublicKeyDownload(this.id);
 }
 
 abstract class ConversationDataProvider {
@@ -77,9 +74,9 @@ abstract class ConversationDataProvider {
   /// First message is the latest new message
   Future<List<MessageEntry>> getNewMessages(AccountId senderAccountId, LocalMessageId? latestCurrentMessageLocalId);
 
-  Future<Result<void, DeleteSendFailedError>> deleteSendFailedMessage(AccountId receiverAccountId, LocalMessageId localId);
-  Future<Result<void, ResendFailedError>> resendSendFailedMessage(AccountId receiverAccountId, LocalMessageId localId);
-  Future<Result<void, RetryPublicKeyDownloadError>> retryPublicKeyDownload(AccountId receiverAccountId, LocalMessageId localId);
+  Future<Result<void, DeleteSendFailedError>> deleteSendFailedMessage(LocalMessageId localId);
+  Future<Result<void, ResendFailedError>> resendSendFailedMessage(LocalMessageId localId);
+  Future<Result<void, RetryPublicKeyDownloadError>> retryPublicKeyDownload(LocalMessageId localId);
 }
 
 class DefaultConversationDataProvider extends ConversationDataProvider {
@@ -143,18 +140,18 @@ class DefaultConversationDataProvider extends ConversationDataProvider {
   }
 
   @override
-  Future<Result<void, DeleteSendFailedError>> deleteSendFailedMessage(AccountId receiverAccountId, LocalMessageId localId) {
-    return chat.deleteSendFailedMessage(receiverAccountId, localId);
+  Future<Result<void, DeleteSendFailedError>> deleteSendFailedMessage(LocalMessageId localId) {
+    return chat.deleteSendFailedMessage(localId);
   }
 
   @override
-  Future<Result<void, ResendFailedError>> resendSendFailedMessage(AccountId receiverAccountId, LocalMessageId localId) {
-    return chat.resendSendFailedMessage(receiverAccountId, localId);
+  Future<Result<void, ResendFailedError>> resendSendFailedMessage(LocalMessageId localId) {
+    return chat.resendSendFailedMessage(localId);
   }
 
   @override
-  Future<Result<void, RetryPublicKeyDownloadError>> retryPublicKeyDownload(AccountId receiverAccountId, LocalMessageId localId) {
-    return chat.retryPublicKeyDownload(receiverAccountId, localId);
+  Future<Result<void, RetryPublicKeyDownloadError>> retryPublicKeyDownload(LocalMessageId localId) {
+    return chat.retryPublicKeyDownload(localId);
   }
 }
 
@@ -250,7 +247,7 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
         isMessageRemovingInProgress: true,
       ));
 
-      switch (await dataProvider.deleteSendFailedMessage(data.receiverAccountId, data.id)) {
+      switch (await dataProvider.deleteSendFailedMessage(data.id)) {
         case Ok():
           ();
         case Err(:final e):
@@ -273,7 +270,7 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
         isMessageResendingInProgress: true,
       ));
 
-      switch (await dataProvider.resendSendFailedMessage(data.receiverAccountId, data.id)) {
+      switch (await dataProvider.resendSendFailedMessage(data.id)) {
         case Ok():
           ();
         case Err(:final e):
@@ -302,7 +299,7 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
         isRetryPublicKeyDownloadInProgress: true,
       ));
 
-      switch (await dataProvider.retryPublicKeyDownload(data.receiverAccountId, data.id)) {
+      switch (await dataProvider.retryPublicKeyDownload(data.id)) {
         case Ok():
           ();
         case Err(:final e):

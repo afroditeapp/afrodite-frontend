@@ -258,7 +258,7 @@ void openMessageMenu(BuildContext screenContext, MessageEntry entry) {
             if (bloc.state.isActionsInProgress()) {
               showSnackBar(context.strings.generic_previous_action_in_progress);
             } else {
-              bloc.add(RemoveSendFailedMessage(entry.remoteAccountId, entry.localId));
+              bloc.add(RemoveSendFailedMessage(entry.localId));
             }
             MyNavigator.removePage(context, pageKey, null);
           },
@@ -270,7 +270,7 @@ void openMessageMenu(BuildContext screenContext, MessageEntry entry) {
             if (bloc.state.isActionsInProgress()) {
               showSnackBar(context.strings.generic_previous_action_in_progress);
             } else {
-              bloc.add(ResendSendFailedMessage(entry.remoteAccountId, entry.localId));
+              bloc.add(ResendSendFailedMessage(entry.localId));
             }
             MyNavigator.removePage(context, pageKey, null);
           },
@@ -282,7 +282,7 @@ void openMessageMenu(BuildContext screenContext, MessageEntry entry) {
             if (bloc.state.isActionsInProgress()) {
               showSnackBar(context.strings.generic_previous_action_in_progress);
             } else {
-              bloc.add(RetryPublicKeyDownload(entry.remoteAccountId, entry.localId));
+              bloc.add(RetryPublicKeyDownload(entry.localId));
             }
             MyNavigator.removePage(context, pageKey, null);
           },

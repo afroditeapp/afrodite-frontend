@@ -48,9 +48,8 @@ class SendMessage extends MessageManagerCommand {
 }
 class DeleteSendFailedMessage extends MessageManagerCommand {
   final BehaviorSubject<Result<void, DeleteSendFailedError>?> _completed = BehaviorSubject.seeded(null);
-  final AccountId receiverAccount;
   final LocalMessageId localId;
-  DeleteSendFailedMessage(this.receiverAccount, this.localId);
+  DeleteSendFailedMessage(this.localId);
 
   Future<Result<void, DeleteSendFailedError>> waitUntilReady() async  {
     return await _completed.whereNotNull().first;
@@ -58,9 +57,8 @@ class DeleteSendFailedMessage extends MessageManagerCommand {
 }
 class ResendSendFailedMessage extends MessageManagerCommand {
   final BehaviorSubject<Result<void, ResendFailedError>?> _completed = BehaviorSubject.seeded(null);
-  final AccountId receiverAccount;
   final LocalMessageId localId;
-  ResendSendFailedMessage(this.receiverAccount, this.localId);
+  ResendSendFailedMessage(this.localId);
 
   Future<Result<void, ResendFailedError>> waitUntilReady() async  {
     return await _completed.whereNotNull().first;
@@ -68,9 +66,8 @@ class ResendSendFailedMessage extends MessageManagerCommand {
 }
 class RetryPublicKeyDownload extends MessageManagerCommand {
   final BehaviorSubject<Result<void, RetryPublicKeyDownloadError>?> _completed = BehaviorSubject.seeded(null);
-  final AccountId receiverAccount;
   final LocalMessageId localId;
-  RetryPublicKeyDownload(this.receiverAccount, this.localId);
+  RetryPublicKeyDownload(this.localId);
 
   Future<Result<void, RetryPublicKeyDownloadError>> waitUntilReady() async  {
     return await _completed.whereNotNull().first;
@@ -112,12 +109,12 @@ class MessageManager extends LifecycleMethods {
               _events.add(event);
             }
             _events.add(null);
-          case DeleteSendFailedMessage(:final _completed, :final receiverAccount, :final localId):
-            _completed.add(await _deleteSendFailedMessage(receiverAccount, localId));
-          case ResendSendFailedMessage(:final _completed, :final receiverAccount, :final localId):
-            _completed.add(await _resendSendFailedMessage(receiverAccount, localId));
-          case RetryPublicKeyDownload(:final _completed, :final receiverAccount, :final localId):
-            _completed.add(await _retryPublicKeyDownload(receiverAccount, localId));
+          case DeleteSendFailedMessage(:final _completed, :final localId):
+            _completed.add(await _deleteSendFailedMessage(localId));
+          case ResendSendFailedMessage(:final _completed, :final localId):
+            _completed.add(await _resendSendFailedMessage(localId));
+          case RetryPublicKeyDownload(:final _completed, :final localId):
+            _completed.add(await _retryPublicKeyDownload(localId));
         }
       })
       .listen((_) {});
@@ -133,7 +130,6 @@ class MessageManager extends LifecycleMethods {
   }
 
   Future<Result<void, DeleteSendFailedError>> _deleteSendFailedMessage(
-    AccountId receiverAccount,
     LocalMessageId localId,
     {
       bool sendUiEvent = true,
@@ -183,7 +179,6 @@ class MessageManager extends LifecycleMethods {
   }
 
   Future<Result<void, ResendFailedError>> _resendSendFailedMessage(
-    AccountId receiverAccount,
     LocalMessageId localId,
   ) async {
     if (kIsWeb) {
@@ -212,6 +207,7 @@ class MessageManager extends LifecycleMethods {
     if (toBeResent.messageState.toSentState() != SentMessageState.sendingError) {
       return const Err(ResendFailedError.isActuallySentSuccessfully);
     }
+    final receiverAccount = toBeResent.remoteAccountId;
 
     ResendFailedError? sendingError;
     ResendFailedError? deleteError;
@@ -219,7 +215,7 @@ class MessageManager extends LifecycleMethods {
       switch (e) {
         case SavedToLocalDb():
           // actuallySentMessageCheck is false because the check is already done
-          final deleteResult = await _deleteSendFailedMessage(receiverAccount, localId, sendUiEvent: false, actuallySentMessageCheck: false);
+          final deleteResult = await _deleteSendFailedMessage(localId, sendUiEvent: false, actuallySentMessageCheck: false);
           switch (deleteResult) {
             case Err(:final e):
               deleteError = e.toResendFailedError();
@@ -247,9 +243,6 @@ class MessageManager extends LifecycleMethods {
   }
 
   Future<Result<void, RetryPublicKeyDownloadError>> _retryPublicKeyDownload(
-    // TODO(refactor): receiverAccount can be removed from every error handling
-    //                 related action as it is also in MessageEntry
-    AccountId receiverAccount,
     LocalMessageId localId,
   ) async {
     if (kIsWeb) {
