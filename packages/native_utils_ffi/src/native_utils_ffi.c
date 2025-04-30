@@ -11,4 +11,6 @@ void do_not_call() {
   free_binary_data_result(encryptMessageResult);
   struct BinaryDataResult decryptMessageResult = decrypt_message(0, 0, 0, 0, 0, 0);
   free_binary_data_result(decryptMessageResult);
+  struct BinaryDataResult getMessageContentResult = get_message_content(0, 0);
+  free_binary_data_result(getMessageContentResult);
 }
