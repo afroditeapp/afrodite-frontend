@@ -1,6 +1,7 @@
 
 import 'dart:convert';
 
+import 'package:app/api/api_manager.dart';
 import 'package:app/data/chat/message_converter.dart';
 import 'package:app/data/login_repository.dart';
 import 'package:app/localizations.dart';
@@ -12,6 +13,7 @@ import 'package:app/ui_utils/api.dart';
 import 'package:app/ui_utils/image.dart';
 import 'package:app/ui_utils/view_image_screen.dart';
 import 'package:app/utils/api.dart';
+import 'package:app/utils/app_error.dart';
 import 'package:app/utils/list.dart';
 import 'package:app/utils/result.dart';
 import 'package:app/utils/time.dart';
@@ -53,16 +55,12 @@ class ReportIo extends ContentIo<WrappedReportDetailed> {
   final api = LoginRepository.getInstance().repositories.api;
   ReportIo();
 
+  Set<ReportId> addedReports = {};
+
   @override
   Future<Result<List<WrappedReportDetailed>, void>> getNextContent() async {
     return await api.accountCommonAdmin((api) => api.getWaitingReportPage())
-      .mapOk((v) => v.values.map((v) => WrappedReportDetailed(
-        info: v.info,
-        content: v.content,
-        creatorInfo: v.creatorInfo,
-        targetInfo: v.targetInfo,
-        chatInfo: v.chatInfo,
-      )).toList());
+      .andThen((v) => handleReportList(api, addedReports, v.values, onlyNotProcessed: true));
   }
 
   @override
@@ -75,6 +73,49 @@ class ReportIo extends ContentIo<WrappedReportDetailed> {
     );
     await api.accountCommonAdminAction((api) => api.postProcessReport(info));
   }
+}
+
+Future<Result<List<WrappedReportDetailed>, ApiError>> handleReportList(
+  ApiManager api,
+  Set<ReportId> addedReports,
+  List<ReportDetailed> reportList,
+  {
+    required bool onlyNotProcessed,
+  }
+) async {
+  final detailedReports = <WrappedReportDetailed>[];
+  for (final r in reportList) {
+    if (addedReports.contains(r.info.id)) {
+      continue;
+    }
+
+    if (r.content.chatMessage != null) {
+      final apiResult = await api.accountCommonAdmin((api) => api.postGetChatMessageReports(
+        GetChatMessageReports(
+          creator: r.info.creator,
+          target: r.info.target,
+          onlyNotProcessed: onlyNotProcessed,
+        )
+      ));
+
+      switch (apiResult) {
+        case Err(:final e):
+          return Err(e);
+        case Ok(:final v):
+          for (final chatReport in v.values) {
+            if (addedReports.contains(chatReport.info.id)) {
+              continue;
+            }
+            addedReports.add(chatReport.info.id);
+            detailedReports.add(chatReport.toWrapped());
+          }
+      }
+    } else {
+      addedReports.add(r.info.id);
+      detailedReports.add(r.toWrapped());
+    }
+  }
+  return Ok(detailedReports);
 }
 
 class ReportUiBuilder extends ContentUiBuilder<WrappedReportDetailed> {

@@ -1,5 +1,6 @@
 
 
+import 'package:app/ui/normal/settings/admin/report/process_reports.dart';
 import 'package:flutter/widgets.dart';
 import 'package:openapi/api.dart';
 import 'package:app/localizations.dart';
@@ -44,5 +45,17 @@ extension CustomReportUiExtensions on CustomReport {
 extension ClientVersionUiExtensions on ClientVersion {
   String versionString() {
     return "$major.$minor.$patch_";
+  }
+}
+
+extension ReportExtensions on ReportDetailed {
+  WrappedReportDetailed toWrapped() {
+    return WrappedReportDetailed(
+      info: info,
+      content: content,
+      creatorInfo: creatorInfo,
+      targetInfo: targetInfo,
+      chatInfo: chatInfo,
+    );
   }
 }

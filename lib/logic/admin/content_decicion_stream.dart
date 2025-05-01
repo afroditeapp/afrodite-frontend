@@ -180,7 +180,7 @@ class ModerationCacher<C> {
   final HashSet<C> alreadyStoredContent = HashSet();
   final api = LoginRepository.getInstance().repositories.api;
 
-  /// Return only new ProfileTextRowState
+  /// Return only new RowState
   Future<List<RowState<C>>> getMoreModerationRequests(ContentIo<C> io) async {
     final texts = await io.getNextContent().ok();
 
