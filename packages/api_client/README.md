@@ -153,6 +153,7 @@ Class | Method | HTTP request | Description
 *CommonAdminApi* | [**postBackendConfig**](doc//CommonAdminApi.md#postbackendconfig) | **POST** /common_api/backend_config | Save dynamic backend config.
 *CommonAdminApi* | [**postEditMaintenanceNotification**](doc//CommonAdminApi.md#posteditmaintenancenotification) | **POST** /common_api/edit_maintenance_notification | Edit maintenance notification
 *CommonAdminApi* | [**postGetApiUsageData**](doc//CommonAdminApi.md#postgetapiusagedata) | **POST** /common_api/api_usage_data | Get API usage data for account
+*CommonAdminApi* | [**postGetChatMessageReports**](doc//CommonAdminApi.md#postgetchatmessagereports) | **POST** /chat_api/get_chat_message_reports | Get all chat message reports. The reports are ordered by message sending order from oldest to latest.
 *CommonAdminApi* | [**postGetIpAddressUsageData**](doc//CommonAdminApi.md#postgetipaddressusagedata) | **POST** /common_api/ip_address_usage_data | Get IP address usage data for account
 *CommonAdminApi* | [**postGetPerfData**](doc//CommonAdminApi.md#postgetperfdata) | **POST** /common_api/perf_data | Get performance data
 *CommonAdminApi* | [**postGetReportIteratorPage**](doc//CommonAdminApi.md#postgetreportiteratorpage) | **POST** /common_api/admin/report_iterator_page | Get report iterator page.
@@ -314,6 +315,7 @@ Class | Method | HTTP request | Description
  - [GetAllAdminsResult](doc//GetAllAdminsResult.md)
  - [GetApiUsageStatisticsResult](doc//GetApiUsageStatisticsResult.md)
  - [GetApiUsageStatisticsSettings](doc//GetApiUsageStatisticsSettings.md)
+ - [GetChatMessageReports](doc//GetChatMessageReports.md)
  - [GetClientFeaturesConfigResult](doc//GetClientFeaturesConfigResult.md)
  - [GetClientVersionStatisticsResult](doc//GetClientVersionStatisticsResult.md)
  - [GetClientVersionStatisticsSettings](doc//GetClientVersionStatisticsSettings.md)
@@ -446,6 +448,7 @@ Class | Method | HTTP request | Description
  - [ReportContent](doc//ReportContent.md)
  - [ReportDetailed](doc//ReportDetailed.md)
  - [ReportDetailedInfo](doc//ReportDetailedInfo.md)
+ - [ReportId](doc//ReportId.md)
  - [ReportIteratorMode](doc//ReportIteratorMode.md)
  - [ReportIteratorQuery](doc//ReportIteratorQuery.md)
  - [ReportProcessingState](doc//ReportProcessingState.md)

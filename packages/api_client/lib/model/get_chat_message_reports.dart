@@ -10,60 +10,48 @@
 
 part of openapi.api;
 
-class ReportDetailedInfo {
-  /// Returns a new [ReportDetailedInfo] instance.
-  ReportDetailedInfo({
+class GetChatMessageReports {
+  /// Returns a new [GetChatMessageReports] instance.
+  GetChatMessageReports({
     required this.creator,
-    required this.id,
-    required this.processingState,
-    required this.reportType,
+    required this.onlyNotProcessed,
     required this.target,
   });
 
   AccountId creator;
 
-  ReportId id;
-
-  ReportProcessingState processingState;
-
-  ReportTypeNumber reportType;
+  bool onlyNotProcessed;
 
   AccountId target;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is ReportDetailedInfo &&
+  bool operator ==(Object other) => identical(this, other) || other is GetChatMessageReports &&
     other.creator == creator &&
-    other.id == id &&
-    other.processingState == processingState &&
-    other.reportType == reportType &&
+    other.onlyNotProcessed == onlyNotProcessed &&
     other.target == target;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (creator.hashCode) +
-    (id.hashCode) +
-    (processingState.hashCode) +
-    (reportType.hashCode) +
+    (onlyNotProcessed.hashCode) +
     (target.hashCode);
 
   @override
-  String toString() => 'ReportDetailedInfo[creator=$creator, id=$id, processingState=$processingState, reportType=$reportType, target=$target]';
+  String toString() => 'GetChatMessageReports[creator=$creator, onlyNotProcessed=$onlyNotProcessed, target=$target]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'creator'] = this.creator;
-      json[r'id'] = this.id;
-      json[r'processing_state'] = this.processingState;
-      json[r'report_type'] = this.reportType;
+      json[r'only_not_processed'] = this.onlyNotProcessed;
       json[r'target'] = this.target;
     return json;
   }
 
-  /// Returns a new [ReportDetailedInfo] instance and imports its values from
+  /// Returns a new [GetChatMessageReports] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static ReportDetailedInfo? fromJson(dynamic value) {
+  static GetChatMessageReports? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -72,28 +60,26 @@ class ReportDetailedInfo {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "ReportDetailedInfo[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "ReportDetailedInfo[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "GetChatMessageReports[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "GetChatMessageReports[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return ReportDetailedInfo(
+      return GetChatMessageReports(
         creator: AccountId.fromJson(json[r'creator'])!,
-        id: ReportId.fromJson(json[r'id'])!,
-        processingState: ReportProcessingState.fromJson(json[r'processing_state'])!,
-        reportType: ReportTypeNumber.fromJson(json[r'report_type'])!,
+        onlyNotProcessed: mapValueOfType<bool>(json, r'only_not_processed')!,
         target: AccountId.fromJson(json[r'target'])!,
       );
     }
     return null;
   }
 
-  static List<ReportDetailedInfo> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <ReportDetailedInfo>[];
+  static List<GetChatMessageReports> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <GetChatMessageReports>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = ReportDetailedInfo.fromJson(row);
+        final value = GetChatMessageReports.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -102,12 +88,12 @@ class ReportDetailedInfo {
     return result.toList(growable: growable);
   }
 
-  static Map<String, ReportDetailedInfo> mapFromJson(dynamic json) {
-    final map = <String, ReportDetailedInfo>{};
+  static Map<String, GetChatMessageReports> mapFromJson(dynamic json) {
+    final map = <String, GetChatMessageReports>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = ReportDetailedInfo.fromJson(entry.value);
+        final value = GetChatMessageReports.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -116,14 +102,14 @@ class ReportDetailedInfo {
     return map;
   }
 
-  // maps a json object with a list of ReportDetailedInfo-objects as value to a dart map
-  static Map<String, List<ReportDetailedInfo>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<ReportDetailedInfo>>{};
+  // maps a json object with a list of GetChatMessageReports-objects as value to a dart map
+  static Map<String, List<GetChatMessageReports>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<GetChatMessageReports>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = ReportDetailedInfo.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = GetChatMessageReports.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;
@@ -132,9 +118,7 @@ class ReportDetailedInfo {
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
     'creator',
-    'id',
-    'processing_state',
-    'report_type',
+    'only_not_processed',
     'target',
   };
 }

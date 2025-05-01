@@ -352,6 +352,8 @@ class ApiClient {
           return GetApiUsageStatisticsResult.fromJson(value);
         case 'GetApiUsageStatisticsSettings':
           return GetApiUsageStatisticsSettings.fromJson(value);
+        case 'GetChatMessageReports':
+          return GetChatMessageReports.fromJson(value);
         case 'GetClientFeaturesConfigResult':
           return GetClientFeaturesConfigResult.fromJson(value);
         case 'GetClientVersionStatisticsResult':
@@ -616,6 +618,8 @@ class ApiClient {
           return ReportDetailed.fromJson(value);
         case 'ReportDetailedInfo':
           return ReportDetailedInfo.fromJson(value);
+        case 'ReportId':
+          return ReportId.fromJson(value);
         case 'ReportIteratorMode':
           return ReportIteratorModeTypeTransformer().decode(value);
         case 'ReportIteratorQuery':
