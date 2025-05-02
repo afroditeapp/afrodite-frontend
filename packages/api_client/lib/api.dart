@@ -151,6 +151,7 @@ part 'model/get_profile_text_pending_moderation_list.dart';
 part 'model/get_profile_text_state.dart';
 part 'model/get_report_list.dart';
 part 'model/get_sent_message.dart';
+part 'model/get_video_call_url_result.dart';
 part 'model/group_values.dart';
 part 'model/ip_address_info.dart';
 part 'model/language.dart';

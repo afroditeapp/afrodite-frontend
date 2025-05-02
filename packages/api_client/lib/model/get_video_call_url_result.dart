@@ -10,44 +10,36 @@
 
 part of openapi.api;
 
-class FeaturesConfig {
-  /// Returns a new [FeaturesConfig] instance.
-  FeaturesConfig({
-    required this.news,
-    required this.videoCalls,
+class GetVideoCallUrlResult {
+  /// Returns a new [GetVideoCallUrlResult] instance.
+  GetVideoCallUrlResult({
+    required this.url,
   });
 
-  /// Enable news UI
-  bool news;
-
-  /// Enable video calls
-  bool videoCalls;
+  String url;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is FeaturesConfig &&
-    other.news == news &&
-    other.videoCalls == videoCalls;
+  bool operator ==(Object other) => identical(this, other) || other is GetVideoCallUrlResult &&
+    other.url == url;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (news.hashCode) +
-    (videoCalls.hashCode);
+    (url.hashCode);
 
   @override
-  String toString() => 'FeaturesConfig[news=$news, videoCalls=$videoCalls]';
+  String toString() => 'GetVideoCallUrlResult[url=$url]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'news'] = this.news;
-      json[r'video_calls'] = this.videoCalls;
+      json[r'url'] = this.url;
     return json;
   }
 
-  /// Returns a new [FeaturesConfig] instance and imports its values from
+  /// Returns a new [GetVideoCallUrlResult] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static FeaturesConfig? fromJson(dynamic value) {
+  static GetVideoCallUrlResult? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -56,25 +48,24 @@ class FeaturesConfig {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "FeaturesConfig[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "FeaturesConfig[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "GetVideoCallUrlResult[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "GetVideoCallUrlResult[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return FeaturesConfig(
-        news: mapValueOfType<bool>(json, r'news')!,
-        videoCalls: mapValueOfType<bool>(json, r'video_calls')!,
+      return GetVideoCallUrlResult(
+        url: mapValueOfType<String>(json, r'url')!,
       );
     }
     return null;
   }
 
-  static List<FeaturesConfig> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <FeaturesConfig>[];
+  static List<GetVideoCallUrlResult> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <GetVideoCallUrlResult>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = FeaturesConfig.fromJson(row);
+        final value = GetVideoCallUrlResult.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -83,12 +74,12 @@ class FeaturesConfig {
     return result.toList(growable: growable);
   }
 
-  static Map<String, FeaturesConfig> mapFromJson(dynamic json) {
-    final map = <String, FeaturesConfig>{};
+  static Map<String, GetVideoCallUrlResult> mapFromJson(dynamic json) {
+    final map = <String, GetVideoCallUrlResult>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = FeaturesConfig.fromJson(entry.value);
+        final value = GetVideoCallUrlResult.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -97,14 +88,14 @@ class FeaturesConfig {
     return map;
   }
 
-  // maps a json object with a list of FeaturesConfig-objects as value to a dart map
-  static Map<String, List<FeaturesConfig>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<FeaturesConfig>>{};
+  // maps a json object with a list of GetVideoCallUrlResult-objects as value to a dart map
+  static Map<String, List<GetVideoCallUrlResult>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<GetVideoCallUrlResult>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = FeaturesConfig.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = GetVideoCallUrlResult.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;
@@ -112,8 +103,7 @@ class FeaturesConfig {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'news',
-    'video_calls',
+    'url',
   };
 }
 

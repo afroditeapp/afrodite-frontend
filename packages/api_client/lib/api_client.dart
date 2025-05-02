@@ -404,6 +404,8 @@ class ApiClient {
           return GetReportList.fromJson(value);
         case 'GetSentMessage':
           return GetSentMessage.fromJson(value);
+        case 'GetVideoCallUrlResult':
+          return GetVideoCallUrlResult.fromJson(value);
         case 'GroupValues':
           return GroupValues.fromJson(value);
         case 'IpAddressInfo':

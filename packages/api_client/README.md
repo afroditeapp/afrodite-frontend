@@ -120,6 +120,7 @@ Class | Method | HTTP request | Description
 *ChatApi* | [**getSentBlocks**](doc//ChatApi.md#getsentblocks) | **GET** /chat_api/sent_blocks | Get list of sent blocks
 *ChatApi* | [**getSentLikes**](doc//ChatApi.md#getsentlikes) | **GET** /chat_api/sent_likes | Get sent likes.
 *ChatApi* | [**getSentMessageIds**](doc//ChatApi.md#getsentmessageids) | **GET** /chat_api/sent_message_ids | 
+*ChatApi* | [**getVideoCallUrl**](doc//ChatApi.md#getvideocallurl) | **GET** /chat_api/get_video_call_url | Create Jitsi Meet video call URL to a meeting with an user.
 *ChatApi* | [**postAddPublicKey**](doc//ChatApi.md#postaddpublickey) | **POST** /chat_api/add_public_key | Add new public key.
 *ChatApi* | [**postAddReceiverAcknowledgement**](doc//ChatApi.md#postaddreceiveracknowledgement) | **POST** /chat_api/add_receiver_acknowledgement | 
 *ChatApi* | [**postAddSenderAcknowledgement**](doc//ChatApi.md#postaddsenderacknowledgement) | **POST** /chat_api/add_sender_acknowledgement | 
@@ -341,6 +342,7 @@ Class | Method | HTTP request | Description
  - [GetProfileTextState](doc//GetProfileTextState.md)
  - [GetReportList](doc//GetReportList.md)
  - [GetSentMessage](doc//GetSentMessage.md)
+ - [GetVideoCallUrlResult](doc//GetVideoCallUrlResult.md)
  - [GroupValues](doc//GroupValues.md)
  - [IpAddressInfo](doc//IpAddressInfo.md)
  - [Language](doc//Language.md)

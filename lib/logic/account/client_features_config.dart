@@ -33,7 +33,10 @@ class ClientFeaturesConfigBloc extends Bloc<ClientFeaturesConfigEvent, ClientFea
 
 ClientFeaturesConfig _emptyClientFeaturesConfig() {
   return ClientFeaturesConfig(
-    features: FeaturesConfig(news: false),
+    features: FeaturesConfig(
+      news: false,
+      videoCalls: false,
+    ),
     map: MapConfig(
       bounds: MapBounds(
         topLeft: MapCoordinate(lat: 90, lon: -180),
