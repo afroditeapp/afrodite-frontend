@@ -1,6 +1,8 @@
 
 
 
+import 'package:app/data/login_repository.dart';
+import 'package:app/utils/result.dart';
 import 'package:flutter/material.dart';
 import 'package:database/database.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,6 +13,8 @@ import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/time.dart';
+import 'package:openapi/api.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 const int _OPACITY_FOR_ON_SURFACE_CONTENT = 128;
 
@@ -114,6 +118,7 @@ String messageWidgetText(
 String messageToText(BuildContext context, Message message) {
   return switch (message) {
     TextMessage() => message.text,
+    VideoCallInvitation() => context.strings.conversation_screen_join_video_call_button,
     UnsupportedMessage() => context.strings.conversation_screen_message_unsupported,
   };
 }
@@ -127,32 +132,32 @@ Widget _messageWidget(
     required TextStyle parentTextStyle,
   }
 ) {
-  final String text = messageWidgetText(context, entry.message, sentMessageState, receivedMessageState);
   final showErrorColor =
     (sentMessageState?.isError() ?? false) ||
     (receivedMessageState?.isError() ?? false) ||
     (entry.message?.isError() ?? false);
-  final textColor = showErrorColor ?
-      Theme.of(context).colorScheme.onErrorContainer :
-      Theme.of(context).colorScheme.onPrimaryContainer;
-  final messageTextStyle = parentTextStyle.merge(TextStyle(
-    color: textColor,
-    fontSize: 16.0,
-  ));
-  final messageWidget = Container(
-    padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
-    decoration: BoxDecoration(
-      color: showErrorColor ?
-        Theme.of(context).colorScheme.errorContainer :
-        Theme.of(context).colorScheme.primaryContainer,
-      borderRadius: BorderRadius.circular(10.0),
-    ),
-    child: Text(text, style: messageTextStyle),
-  );
+
   final messageTimeTextStyle = parentTextStyle.merge(TextStyle(
     color: Theme.of(context).colorScheme.onSurface.withAlpha(_OPACITY_FOR_ON_SURFACE_CONTENT),
     fontSize: 12.0,
   ));
+
+  final mainContent = _messageWidgetMainContent(
+    context,
+    entry,
+    sentMessageState,
+    receivedMessageState,
+    showErrorColor,
+    parentTextStyle: parentTextStyle,
+  );
+
+  final Icon? icon;
+  if (showErrorColor) {
+    icon = Icon(Icons.error, color: Theme.of(context).colorScheme.error);
+  } else {
+    icon = null;
+  }
+
   return Padding(
     padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
     child: Column(
@@ -164,12 +169,12 @@ Widget _messageWidget(
         CrossAxisAlignment.end,
       mainAxisSize: MainAxisSize.min,
       children: [
-        showErrorIconIfNeeded(
+        showIconIfNeeded(
           context,
-          messageWidget,
+          mainContent,
           sentMessageState,
           receivedMessageState,
-          showErrorColor,
+          icon,
         ),
         Align(
           alignment: receivedMessageState != null ?
@@ -185,12 +190,56 @@ Widget _messageWidget(
   );
 }
 
-Widget showErrorIconIfNeeded(
+Widget _messageWidgetMainContent(
+  BuildContext context,
+  MessageEntry entry,
+  SentMessageState? sentMessageState,
+  ReceivedMessageState? receivedMessageState,
+  bool showErrorColor,
+  {
+    required TextStyle parentTextStyle,
+  }
+) {
+  final String text = messageWidgetText(context, entry.message, sentMessageState, receivedMessageState);
+  final textColor = showErrorColor ?
+      Theme.of(context).colorScheme.onErrorContainer :
+      Theme.of(context).colorScheme.onPrimaryContainer;
+  final messageTextStyle = parentTextStyle.merge(TextStyle(
+    color: textColor,
+    fontSize: 16.0,
+  ));
+
+  Widget messageContent;
+  if (entry.message is VideoCallInvitation) {
+    messageContent = ElevatedButton.icon(
+      onPressed: () => _joinVideoCall(context, entry.remoteAccountId),
+      label: Text(text, style: messageTextStyle),
+      icon: const Icon(Icons.videocam),
+    );
+  } else {
+    messageContent = Text(text, style: messageTextStyle);
+  }
+
+  final widget = Container(
+    padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
+    decoration: BoxDecoration(
+      color: showErrorColor ?
+        Theme.of(context).colorScheme.errorContainer :
+        Theme.of(context).colorScheme.primaryContainer,
+      borderRadius: BorderRadius.circular(10.0),
+    ),
+    child: messageContent,
+  );
+
+  return widget;
+}
+
+Widget showIconIfNeeded(
   BuildContext context,
   Widget messageWidget,
   SentMessageState? sentMessageState,
   ReceivedMessageState? receivedMessageState,
-  bool isError,
+  Icon? icon,
 ) {
   if (sentMessageState != null) {
     // Sent message
@@ -201,13 +250,13 @@ Widget showErrorIconIfNeeded(
           flex: 1,
           // Visibility is here to avoid text area size changes
           child: Visibility(
-            visible: isError,
+            visible: icon != null,
             maintainSize: true,
             maintainAnimation: true,
             maintainState: true,
             child: Padding(
               padding: const EdgeInsets.only(right: 8.0),
-              child: Icon(Icons.error, color: Theme.of(context).colorScheme.error),
+              child: icon,
             ),
           ),
         ),
@@ -222,11 +271,11 @@ Widget showErrorIconIfNeeded(
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        if (isError) Flexible(
+        if (icon != null) Flexible(
             flex: 1,
             child: Padding(
               padding: const EdgeInsets.only(right: 8.0),
-              child: Icon(Icons.error, color: Theme.of(context).colorScheme.error),
+              child: icon,
             ),
           ),
         Flexible(
@@ -342,4 +391,24 @@ ${screenContext.strings.generic_state}: $stateText""";
     infoText,
     existingPageToBeRemoved: existingPageKey,
   );
+}
+
+void _joinVideoCall(BuildContext context, AccountId callee) async {
+  final api = LoginRepository.getInstance().repositories.api;
+
+  final r = await api.chat((api) => api.getVideoCallUrl(callee.aid)).ok();
+
+  if (!context.mounted) {
+    return;
+  }
+
+  if (r == null) {
+    showSnackBar(context.strings.generic_error_occurred);
+    return;
+  }
+
+  final launchSuccessful = await launchUrlString(r.url);
+  if (!launchSuccessful && context.mounted) {
+    showSnackBar(context.strings.generic_error_occurred);
+  }
 }

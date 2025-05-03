@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:app/ui/normal/report/report.dart';
+import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/profile_thumbnail_image_or_error.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -122,6 +123,11 @@ class ConversationPageState extends State<ConversationPage> {
           }
         ),
         actions: [
+          IconButton(
+            onPressed: () => sendVideoCallInviteDialog(context),
+            icon: const Icon(Icons.videocam),
+            tooltip: context.strings.conversation_screen_send_video_call_invitation_action,
+          ),
           menuActions([
             commonActionBlockProfile(context, () {
               context.read<ConversationBloc>().add(BlockProfile(widget.profileEntry.uuid));
@@ -228,13 +234,7 @@ class ConversationPageState extends State<ConversationPage> {
                       showSnackBar(context.strings.conversation_screen_message_too_long);
                       return;
                     }
-
-                    final bloc = context.read<ConversationBloc>();
-                    if (bloc.state.isMessageSendingInProgress) {
-                      showSnackBar(context.strings.generic_previous_action_in_progress);
-                      return;
-                    }
-                    bloc.add(SendMessageTo(bloc.state.accountId, textMessage));
+                    sendMessage(context, textMessage);
                   }
                 },
               ),
@@ -243,5 +243,21 @@ class ConversationPageState extends State<ConversationPage> {
         );
       },
     );
+  }
+
+  void sendVideoCallInviteDialog(BuildContext context) async {
+    final r = await showConfirmDialog(context, context.strings.conversation_screen_send_video_call_invitation_dialog_title, yesNoActions: true);
+    if (r == true && context.mounted) {
+      sendMessage(context, VideoCallInvitation());
+    }
+  }
+
+  void sendMessage(BuildContext context, Message message) {
+    final bloc = context.read<ConversationBloc>();
+    if (bloc.state.isMessageSendingInProgress) {
+      showSnackBar(context.strings.generic_previous_action_in_progress);
+      return;
+    }
+    bloc.add(SendMessageTo(bloc.state.accountId, message));
   }
 }

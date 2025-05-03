@@ -6,7 +6,8 @@ import 'dart:typed_data';
 enum _MessagePacketType {
   /// Next data is little endian encoded 16 bit unsigned number for
   /// UTF-8 data byte count and after that is the UTF-8 data.
-  text(0);
+  text(0),
+  videoCallInvitation(1);
 
   final int number;
   const _MessagePacketType(this.number);
@@ -20,13 +21,16 @@ sealed class Message {
 
   static Message parseFromBytes(Uint8List bytes) {
     final numberList = bytes.toList();
-    if (numberList.length < 3) {
+    if (numberList.isEmpty) {
       return UnsupportedMessage(bytes);
     }
 
     final messageTypeNumber = numberList[0];
 
     if (messageTypeNumber == _MessagePacketType.text.number) {
+      if (numberList.length < 3) {
+        return UnsupportedMessage(bytes);
+      }
       final littleEndianBytes = [
         numberList[1],
         numberList[2],
@@ -43,6 +47,8 @@ sealed class Message {
       } on FormatException catch (_)  {
         return UnsupportedMessage(bytes);
       }
+    } else if (messageTypeNumber == _MessagePacketType.videoCallInvitation.number) {
+      return VideoCallInvitation();
     } else {
       return UnsupportedMessage(bytes);
     }
@@ -75,6 +81,13 @@ class TextMessage extends Message {
     ];
 
     return Uint8List.fromList(bytes);
+  }
+}
+
+class VideoCallInvitation extends Message {
+  @override
+  Uint8List toMessagePacket() {
+    return Uint8List.fromList([_MessagePacketType.videoCallInvitation.number]);
   }
 }
 

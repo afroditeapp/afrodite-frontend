@@ -207,6 +207,10 @@
   "@conversation_screen_chat_box_placeholder_text": {
     "description": "Message input text field placeholder text"
   },
+  "conversation_screen_join_video_call_button": "Join video call",
+  "@conversation_screen_join_video_call_button": {
+    "description": "Button text for joining a video call"
+  },
   "conversation_screen_make_match_instruction": "Send a message to accept the chat request!",
   "@conversation_screen_make_match_instruction": {
     "description": "Instruction text how to make a match"
@@ -270,6 +274,14 @@
   "conversation_screen_profile_blocked": "Profile was blocked",
   "@conversation_screen_profile_blocked": {
     "description": "Snackbar text displayed when profile blocking is successful"
+  },
+  "conversation_screen_send_video_call_invitation_action": "Send video call invitation",
+  "@conversation_screen_send_video_call_invitation_action": {
+    "description": "Action text for send video call invitation action"
+  },
+  "conversation_screen_send_video_call_invitation_dialog_title": "Send video call invitation?",
+  "@conversation_screen_send_video_call_invitation_dialog_title": {
+    "description": "Title text for send video call invitation dialog"
   },
   "crop_image_screen_title": "Crop image",
   "@crop_image_screen_title": {

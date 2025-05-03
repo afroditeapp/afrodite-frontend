@@ -378,6 +378,9 @@
     <string name="conversation_screen_message_error_receiver_blocked_sender_or_receiver_not_found" description="Message send or resend error that receiver blocked sender or receiver not found">Receiver action prevented message sending</string>
     <string name="conversation_screen_message_info_encryption_started" description="Info text that messages in this conversation are end-to-end encrypted">Messages are end-to-end encrypted</string>
     <string name="conversation_screen_message_info_encryption_key_changed" description="Info text that encryption key changed">Encryption key changed</string>
+    <string name="conversation_screen_send_video_call_invitation_action" description="Action text for send video call invitation action">Send video call invitation</string>
+    <string name="conversation_screen_send_video_call_invitation_dialog_title" description="Title text for send video call invitation dialog">Send video call invitation?</string>
+    <string name="conversation_screen_join_video_call_button" description="Button text for joining a video call">Join video call</string>
 
     <!-- Menu screen -->
     <string name="menu_screen_title" description="Title for menu screen">Menu</string>
