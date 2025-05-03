@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:app/logic/account/client_features_config.dart';
 import 'package:app/ui/normal/report/report.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/profile_thumbnail_image_or_error.dart';
@@ -123,7 +124,7 @@ class ConversationPageState extends State<ConversationPage> {
           }
         ),
         actions: [
-          IconButton(
+          if (context.read<ClientFeaturesConfigBloc>().state.features.videoCalls) IconButton(
             onPressed: () => sendVideoCallInviteDialog(context),
             icon: const Icon(Icons.videocam),
             tooltip: context.strings.conversation_screen_send_video_call_invitation_action,
