@@ -72,8 +72,8 @@ class LoginScreen extends StatelessWidget {
             // TODO(prod): remove
             // It is not possible to build web debug build using
             // "flutter build web" command, so profile mode is used as
-            // a workaround.
-            if (kDebugMode || (kIsWeb && kProfileMode)) MenuItemButton(
+            // a workaround. Also some devices are too slow for debug builds.
+            if (kDebugMode || kProfileMode) MenuItemButton(
               child: Text("Old login"),
               onPressed: () {
                 MyNavigator.push(context, const MaterialPage<void>(child: LoginScreenOld()));
