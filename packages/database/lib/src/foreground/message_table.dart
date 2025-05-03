@@ -7,15 +7,16 @@ import 'account_database.dart';
 
 import 'package:drift/drift.dart';
 import '../message_entry.dart';
+import '../message_converter.dart';
 import '../utils.dart';
 
 part 'message_table.g.dart';
 
-class Messages extends Table {
+class MessageTable extends Table {
   IntColumn get id => integer().autoIncrement()();
   TextColumn get uuidLocalAccountId => text().map(const AccountIdConverter())();
   TextColumn get uuidRemoteAccountId => text().map(const AccountIdConverter())();
-  TextColumn get messageText => text()();
+  BlobColumn get message => blob().map(const NullAwareTypeConverter.wrap(MessageConverter())).nullable()();
   IntColumn get localUnixTime => integer().map(const UtcDateTimeConverter())();
   IntColumn get messageState => integer()();
   BlobColumn get symmetricMessageEncryptionKey => blob().nullable()();
@@ -26,18 +27,18 @@ class Messages extends Table {
   BlobColumn get backendSignedPgpMessage => blob().nullable()();
 }
 
-@DriftAccessor(tables: [Messages])
-class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMixin {
-  DaoMessages(AccountDatabase db) : super(db);
+@DriftAccessor(tables: [MessageTable])
+class DaoMessageTable extends DatabaseAccessor<AccountDatabase> with _$DaoMessageTableMixin {
+  DaoMessageTable(AccountDatabase db) : super(db);
   /// Number of all messages in the database
   Future<int?> countMessagesInConversation(
     AccountId localAccountId,
     AccountId remoteAccountId,
   ) async {
-    final messageCount = messages.id.count();
-    final q = (selectOnly(messages)
-      ..where(messages.uuidLocalAccountId.equals(localAccountId.aid))
-      ..where(messages.uuidRemoteAccountId.equals(remoteAccountId.aid))
+    final messageCount = messageTable.id.count();
+    final q = (selectOnly(messageTable)
+      ..where(messageTable.uuidLocalAccountId.equals(localAccountId.aid))
+      ..where(messageTable.uuidRemoteAccountId.equals(remoteAccountId.aid))
       ..addColumns([messageCount])
     );
     return await q.map((r) => r.read(messageCount)).getSingleOrNull();
@@ -45,10 +46,10 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
 
   /// Returns ID of last inserted row.
   Future<LocalMessageId> _insert(NewMessageEntry entry) async {
-    final localId = await into(messages).insert(MessagesCompanion.insert(
+    final localId = await into(messageTable).insert(MessageTableCompanion.insert(
       uuidLocalAccountId: entry.localAccountId,
       uuidRemoteAccountId: entry.remoteAccountId,
-      messageText: entry.messageText,
+      message: Value(entry.message),
       localUnixTime: entry.localUnixTime,
       messageState: entry.messageState.number,
       messageNumber: Value(entry.messageNumber),
@@ -63,19 +64,19 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
   Future<LocalMessageId> insertToBeSentMessage(
     AccountId localAccountId,
     AccountId remoteAccountId,
-    String messageText,
+    Message message,
   ) async {
-    final message = NewMessageEntry(
+    final newMessageEntry = NewMessageEntry(
       localAccountId: localAccountId,
       remoteAccountId: remoteAccountId,
-      messageText: messageText,
+      message: message,
       localUnixTime: UtcDateTime.now(),
       messageState: SentMessageState.pending.toDbState(),
     );
 
     return await transaction(() async {
       await db.daoConversationList.setCurrentTimeToConversationLastChanged(remoteAccountId);
-      return await _insert(message);
+      return await _insert(newMessageEntry);
     });
   }
 
@@ -95,9 +96,9 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
     } else {
       unixTime = null;
     }
-    await (update(messages)
+    await (update(messageTable)
       ..where((t) => t.id.equals(localId.id))
-    ).write(MessagesCompanion(
+    ).write(MessageTableCompanion(
       messageState: Value.absentIfNull(sentState?.toDbState().number),
       unixTime: Value.absentIfNull(unixTime),
       messageNumber: Value.absentIfNull(messageNumberFromServer),
@@ -111,7 +112,7 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
     MessageNumber messageNumber,
     UtcDateTime serverTime,
     Uint8List backendSignedPgpMessage,
-    String decryptedMessage,
+    Message? decryptedMessage,
     Uint8List? symmetricMessageEncryptionKey,
     ReceivedMessageState state,
   ) async {
@@ -119,7 +120,7 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
       localAccountId: localAccountId,
       remoteAccountId: senderAccountId,
       localUnixTime: UtcDateTime.now(),
-      messageText: decryptedMessage,
+      message: decryptedMessage,
       messageState: state.toDbState(),
       messageNumber: messageNumber,
       unixTime: serverTime,
@@ -141,7 +142,7 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
       localAccountId: localAccountId,
       remoteAccountId: remoteAccountId,
       localUnixTime: UtcDateTime.now(),
-      messageText: "",
+      message: null,
       messageState: state.toDbState(),
     );
     await transaction(() async {
@@ -154,15 +155,15 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
     LocalMessageId localId,
     ReceivedMessageState receivedMessageState,
     {
-      String? messageText,
+      Message? message,
       Uint8List? symmetricMessageEncryptionKey,
     }
   ) async {
-    await (update(messages)
+    await (update(messageTable)
       ..where((t) => t.id.equals(localId.id))
-    ).write(MessagesCompanion(
+    ).write(MessageTableCompanion(
       messageState: Value(receivedMessageState.toDbState().number),
-      messageText: Value.absentIfNull(messageText),
+      message: Value.absentIfNull(message),
       symmetricMessageEncryptionKey: Value.absentIfNull(symmetricMessageEncryptionKey),
     ));
   }
@@ -171,9 +172,9 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
     LocalMessageId localId,
     Uint8List symmetricMessageEncryptionKey,
   ) async {
-    await (update(messages)
+    await (update(messageTable)
       ..where((t) => t.id.equals(localId.id))
-    ).write(MessagesCompanion(
+    ).write(MessageTableCompanion(
       symmetricMessageEncryptionKey: Value(symmetricMessageEncryptionKey),
     ));
   }
@@ -185,7 +186,7 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
     AccountId remoteAccountId,
     int index,
   ) async {
-    return await (select(messages)
+    return await (select(messageTable)
       ..where((t) => t.uuidLocalAccountId.equals(localAccountId.aid))
       ..where((t) => t.uuidRemoteAccountId.equals(remoteAccountId.aid))
       ..limit(1, offset: index)
@@ -201,7 +202,7 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
     AccountId localAccountId,
     AccountId remoteAccountId,
   ) {
-    return (select(messages)
+    return (select(messageTable)
       ..where((t) => t.uuidLocalAccountId.equals(localAccountId.aid))
       ..where((t) => t.uuidRemoteAccountId.equals(remoteAccountId.aid))
       ..limit(1)
@@ -220,7 +221,7 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
     LocalMessageId startId,
     int limit,
   ) async {
-    final list = await (select(messages)
+    final list = await (select(messageTable)
       ..where((t) => t.uuidLocalAccountId.equals(localAccountId.aid))
       ..where((t) => t.uuidRemoteAccountId.equals(remoteAccountId.aid))
       ..where((t) => t.id.isSmallerOrEqualValue(startId.id))
@@ -238,7 +239,7 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
   Future<MessageEntry?> getMessageUsingLocalMessageId(
     LocalMessageId localId,
   ) {
-    return (select(messages)
+    return (select(messageTable)
       ..where((t) => t.id.equals(localId.id))
       ..limit(1)
     )
@@ -249,14 +250,14 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
   Stream<MessageEntry?> getMessageUpdatesUsingLocalMessageId(
     LocalMessageId localId,
   ) {
-    return (select(messages)
+    return (select(messageTable)
       ..where((t) => t.id.equals(localId.id))
     )
       .map((m) => _fromMessage(m))
       .watchSingleOrNull();
   }
 
-  MessageEntry? _fromMessage(Message m) {
+  MessageEntry? _fromMessage(MessageTableData m) {
     final MessageState? messageState = MessageState.fromInt(m.messageState);
     if (messageState == null) {
       return null;
@@ -266,7 +267,7 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
       localId: LocalMessageId(m.id),
       localAccountId: m.uuidLocalAccountId,
       remoteAccountId: m.uuidRemoteAccountId,
-      messageText: m.messageText,
+      message: m.message,
       localUnixTime: m.localUnixTime,
       messageState: messageState,
       messageNumber: m.messageNumber,
@@ -278,7 +279,7 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
     AccountId localAccountId,
     AccountId remoteAccountId,
   ) {
-    return (select(messages)
+    return (select(messageTable)
       ..where((t) => t.uuidLocalAccountId.equals(localAccountId.aid))
       ..where((t) => t.uuidRemoteAccountId.equals(remoteAccountId.aid))
       ..where((t) => t.messageState.isBetweenValues(MessageState.MIN_VALUE_SENT_MESSAGE, MessageState.MAX_VALUE_SENT_MESSAGE))
@@ -296,7 +297,7 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
     AccountId remoteAccountId,
     MessageNumber messageNumber,
   ) {
-    return (select(messages)
+    return (select(messageTable)
       ..where((t) => t.uuidLocalAccountId.equals(localAccountId.aid))
       ..where((t) => t.uuidRemoteAccountId.equals(remoteAccountId.aid))
       ..where((t) => t.messageNumber.equals(messageNumber.mn))
@@ -309,7 +310,7 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
   Future<void> deleteMessage(
     LocalMessageId localId,
   ) async {
-    await (delete(messages)
+    await (delete(messageTable)
       ..where((t) => t.id.equals(localId.id))
     )
       .go();
@@ -318,7 +319,7 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
   Future<Uint8List?> getBackendSignedPgpMessage(
     LocalMessageId localId,
   ) {
-    return (select(messages)
+    return (select(messageTable)
       ..where((t) => t.id.equals(localId.id))
       ..limit(1)
     )
@@ -329,7 +330,7 @@ class DaoMessages extends DatabaseAccessor<AccountDatabase> with _$DaoMessagesMi
   Future<Uint8List?> getSymmetricMessageEncryptionKey(
     LocalMessageId localId,
   ) {
-    return (select(messages)
+    return (select(messageTable)
       ..where((t) => t.id.equals(localId.id))
       ..limit(1)
     )

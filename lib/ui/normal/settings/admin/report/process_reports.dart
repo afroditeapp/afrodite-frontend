@@ -2,12 +2,12 @@
 import 'dart:convert';
 
 import 'package:app/api/api_manager.dart';
-import 'package:app/data/chat/message_converter.dart';
 import 'package:app/data/login_repository.dart';
 import 'package:app/localizations.dart';
 import 'package:app/logic/account/custom_reports_config.dart';
 import 'package:app/logic/admin/content_decicion_stream.dart';
 import 'package:app/logic/app/navigator_state.dart';
+import 'package:app/ui/normal/chat/message_row.dart';
 import 'package:app/ui/normal/settings/admin/content_decicion_stream.dart';
 import 'package:app/ui_utils/api.dart';
 import 'package:app/ui_utils/image.dart';
@@ -17,6 +17,7 @@ import 'package:app/utils/app_error.dart';
 import 'package:app/utils/list.dart';
 import 'package:app/utils/result.dart';
 import 'package:app/utils/time.dart';
+import 'package:database/database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
@@ -208,15 +209,8 @@ class ReportUiBuilder extends ContentUiBuilder<WrappedReportDetailed> {
         senderReceiverInfo = "${creatorInfo?.name.toString()} -> ${targetInfo?.name.toString()}";
       }
       final time = timeString(chatMessage.messageTime.toUtcDateTime());
-      final messageResult = MessageConverter()
-        .bytesToText(base64Decode(chatMessage.messageBase64))
-        .ok();
-      final String messageText;
-      if (messageResult == null) {
-        messageText = ", Unsupported message";
-      } else {
-        messageText = "\n$messageResult";
-      }
+      final message = Message.parseFromBytes(base64Decode(chatMessage.messageBase64));
+      final String messageText = "\n${messageToText(context, message)}";
       report = Text("M: $senderReceiverInfo, ID: ${chatMessage.messageNumber.mn}, $time$messageText");
     } else if (customReportBoolean != null) {
       final config = context.read<CustomReportsConfigBloc>().state;

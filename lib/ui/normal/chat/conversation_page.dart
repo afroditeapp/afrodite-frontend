@@ -223,7 +223,8 @@ class ConversationPageState extends State<ConversationPage> {
                 onPressed: () {
                   final message = _textEditingController.text.trim();
                   if (message.isNotEmpty) {
-                    if (message.characters.length > 4000) {
+                    final textMessage = TextMessage.create(message);
+                    if (message.characters.length > 4000 || textMessage == null) {
                       showSnackBar(context.strings.conversation_screen_message_too_long);
                       return;
                     }
@@ -233,7 +234,7 @@ class ConversationPageState extends State<ConversationPage> {
                       showSnackBar(context.strings.generic_previous_action_in_progress);
                       return;
                     }
-                    bloc.add(SendMessageTo(bloc.state.accountId, message));
+                    bloc.add(SendMessageTo(bloc.state.accountId, textMessage));
                   }
                 },
               ),

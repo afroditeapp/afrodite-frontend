@@ -94,19 +94,28 @@ List<Widget> infoMessage(
 
 String messageWidgetText(
   BuildContext context,
-  String message,
+  Message? message,
   SentMessageState? sentMessageState,
   ReceivedMessageState? receivedMessageState,
 ) {
   if (receivedMessageState == ReceivedMessageState.decryptingFailed) {
     return context.strings.conversation_screen_message_state_decrypting_failed;
-  } else if (receivedMessageState == ReceivedMessageState.unknownMessageType) {
-    return context.strings.conversation_screen_message_state_unknown_message_type;
   } else if (receivedMessageState == ReceivedMessageState.publicKeyDownloadFailed) {
     return context.strings.conversation_screen_message_state_public_key_download_failed;
   } else {
-    return message;
+    if (message == null) {
+      return context.strings.generic_error;
+    } else {
+      return messageToText(context, message);
+    }
   }
+}
+
+String messageToText(BuildContext context, Message message) {
+  return switch (message) {
+    TextMessage() => message.text,
+    UnsupportedMessage() => context.strings.conversation_screen_message_unsupported,
+  };
 }
 
 Widget _messageWidget(
@@ -118,10 +127,11 @@ Widget _messageWidget(
     required TextStyle parentTextStyle,
   }
 ) {
-  final String text = messageWidgetText(context, entry.messageText, sentMessageState, receivedMessageState);
+  final String text = messageWidgetText(context, entry.message, sentMessageState, receivedMessageState);
   final showErrorColor =
     (sentMessageState?.isError() ?? false) ||
-    (receivedMessageState?.isError() ?? false);
+    (receivedMessageState?.isError() ?? false) ||
+    (entry.message?.isError() ?? false);
   final textColor = showErrorColor ?
       Theme.of(context).colorScheme.onErrorContainer :
       Theme.of(context).colorScheme.onPrimaryContainer;
@@ -159,6 +169,7 @@ Widget _messageWidget(
           messageWidget,
           sentMessageState,
           receivedMessageState,
+          showErrorColor,
         ),
         Align(
           alignment: receivedMessageState != null ?
@@ -179,6 +190,7 @@ Widget showErrorIconIfNeeded(
   Widget messageWidget,
   SentMessageState? sentMessageState,
   ReceivedMessageState? receivedMessageState,
+  bool isError,
 ) {
   if (sentMessageState != null) {
     // Sent message
@@ -189,7 +201,7 @@ Widget showErrorIconIfNeeded(
           flex: 1,
           // Visibility is here to avoid text area size changes
           child: Visibility(
-            visible: sentMessageState.isError(),
+            visible: isError,
             maintainSize: true,
             maintainAnimation: true,
             maintainState: true,
@@ -210,7 +222,7 @@ Widget showErrorIconIfNeeded(
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        if (receivedMessageState.isError()) Flexible(
+        if (isError) Flexible(
             flex: 1,
             child: Padding(
               padding: const EdgeInsets.only(right: 8.0),
@@ -310,8 +322,6 @@ void closeActionsAndOpenDetails(BuildContext screenContext, MessageEntry entry, 
     stateText = screenContext.strings.conversation_screen_message_state_received_successfully;
   } else if (receivedMessageState == ReceivedMessageState.decryptingFailed) {
     stateText = screenContext.strings.conversation_screen_message_state_decrypting_failed;
-  } else if (receivedMessageState == ReceivedMessageState.unknownMessageType) {
-    stateText = screenContext.strings.conversation_screen_message_state_unknown_message_type;
   } else if (receivedMessageState == ReceivedMessageState.publicKeyDownloadFailed) {
     stateText = screenContext.strings.conversation_screen_message_state_public_key_download_failed;
   } else {
@@ -319,9 +329,10 @@ void closeActionsAndOpenDetails(BuildContext screenContext, MessageEntry entry, 
   }
 
   final time = entry.unixTime ?? entry.localUnixTime;
+  final messageText = messageWidgetText(screenContext, entry.message, sentMessageState, receivedMessageState);
 
   final infoText = """
-${screenContext.strings.generic_message}: ${entry.messageText}
+${screenContext.strings.generic_message}: $messageText
 ${screenContext.strings.conversation_screen_message_details_message_id}: ${entry.messageNumber?.mn}
 ${screenContext.strings.generic_time}: ${time.dateTime.toIso8601String()}
 ${screenContext.strings.generic_state}: $stateText""";

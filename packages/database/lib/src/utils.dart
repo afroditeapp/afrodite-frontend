@@ -581,3 +581,17 @@ class ProfileContentModerationRejectedReasonDetailsConverter extends TypeConvert
     return value.value;
   }
 }
+
+class MessageConverter extends TypeConverter<Message, Uint8List> {
+  const MessageConverter();
+
+  @override
+  Message fromSql(fromDb) {
+    return Message.parseFromBytes(fromDb);
+  }
+
+  @override
+  Uint8List toSql(value) {
+    return value.toMessagePacket();
+  }
+}

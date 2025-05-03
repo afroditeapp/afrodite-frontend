@@ -60,14 +60,11 @@ class DebugConversationDataProvider extends ConversationDataProvider {
   Future<bool> isInSentBlocks(AccountId accountId) async => false;
 
   @override
-  Future<bool> isInReceivedBlocks(AccountId accountId) async => false;
-
-  @override
   Future<bool> sendBlockTo(AccountId accountId) async => false;
 
   @override
-  Stream<MessageSendingEvent> sendMessageTo(AccountId accountId, String message) async* {
-    sendMessageToSync(accountId, message);
+  Stream<MessageSendingEvent> sendMessageTo(AccountId accountId, Message message) async* {
+    sendMessageToSync(accountId, (message as TextMessage).text);
     yield const SavedToLocalDb();
     return;
   }
@@ -90,7 +87,7 @@ class DebugConversationDataProvider extends ConversationDataProvider {
       final e = MessageEntry(
         localAccountId: AccountId(aid: ""),
         remoteAccountId: AccountId(aid: ""),
-        messageText: text,
+        message: TextMessage.create(text),
         localUnixTime: UtcDateTime.now(),
         messageState: state,
         localId: LocalMessageId(entryId),

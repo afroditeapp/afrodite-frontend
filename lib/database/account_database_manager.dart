@@ -90,11 +90,11 @@ class AccountDatabaseManager {
   Future<Result<void, DatabaseError>> profileAction(Future<void> Function(DaoProfiles) action) =>
     accountAction((db) => action(db.daoProfiles));
 
-  Future<Result<T, DatabaseError>> messageData<T extends Object?>(Future<T> Function(DaoMessages) action) =>
-    accountData((db) => action(db.daoMessages));
+  Future<Result<T, DatabaseError>> messageData<T extends Object?>(Future<T> Function(DaoMessageTable) action) =>
+    accountData((db) => action(db.daoMessageTable));
 
-  Future<Result<void, DatabaseError>> messageAction(Future<void> Function(DaoMessages) action) =>
-    accountAction((db) => action(db.daoMessages));
+  Future<Result<void, DatabaseError>> messageAction(Future<void> Function(DaoMessageTable) action) =>
+    accountAction((db) => action(db.daoMessageTable));
 }
 
 Result<Success, DatabaseException> _handleDbException<Success>(Exception e) {

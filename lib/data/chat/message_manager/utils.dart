@@ -9,14 +9,11 @@ class SavedToLocalDb extends MessageSendingEvent {
 }
 
 enum MessageSendingErrorDetails {
-  messageTooLarge,
   tooManyPendingMessages,
   receiverBlockedSenderOrReceiverNotFound;
 
   ResendFailedError toResendFailedError() {
     switch (this) {
-      case messageTooLarge:
-        return ResendFailedError.messageTooLarge;
       case tooManyPendingMessages:
         return ResendFailedError.tooManyPendingMessages;
       case receiverBlockedSenderOrReceiverNotFound:
@@ -38,7 +35,6 @@ class ErrorAfterMessageSaving extends MessageSendingEvent {
 enum ResendFailedError {
   unspecifiedError,
   isActuallySentSuccessfully,
-  messageTooLarge,
   tooManyPendingMessages,
   receiverBlockedSenderOrReceiverNotFound,
 }

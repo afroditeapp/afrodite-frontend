@@ -397,19 +397,10 @@ Uint8List clientVersionInfoBytes() {
   final major = AppVersionManager.getInstance().major;
   final minor = AppVersionManager.getInstance().minor;
   final patch = AppVersionManager.getInstance().patch;
-  protocolBytes.addAll(u16VersionToLittleEndianBytes(major));
-  protocolBytes.addAll(u16VersionToLittleEndianBytes(minor));
-  protocolBytes.addAll(u16VersionToLittleEndianBytes(patch));
+  protocolBytes.addAll(u16ToLittleEndianBytes(major));
+  protocolBytes.addAll(u16ToLittleEndianBytes(minor));
+  protocolBytes.addAll(u16ToLittleEndianBytes(patch));
   return Uint8List.fromList(protocolBytes);
-}
-
-Uint8List u16VersionToLittleEndianBytes(int version) {
-  final buffer = ByteData(2);
-  if (version < 0 || version > 0xFFFF) {
-    throw ArgumentError("Version must be 16 bit integer");
-  }
-  buffer.setInt16(0, version, Endian.little);
-  return buffer.buffer.asUint8List();
 }
 
 const forceSync = 255;

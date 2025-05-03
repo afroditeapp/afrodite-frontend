@@ -59,7 +59,7 @@ class _ReportChatMessageScreen extends State<ReportChatMessageScreen> {
   Widget messageRow(BuildContext context, MessageEntry entry) {
     final textNoOwnerIndicator = messageWidgetText(
       context,
-      entry.messageText,
+      entry.message,
       entry.messageState.toSentState(),
       entry.messageState.toReceivedState()
     );

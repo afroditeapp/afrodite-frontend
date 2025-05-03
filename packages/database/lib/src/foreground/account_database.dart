@@ -29,6 +29,7 @@ import 'account/dao_my_profile.dart';
 import 'account/dao_profile_settings.dart';
 import 'account/dao_tokens.dart';
 import 'message_table.dart';
+import '../message_converter.dart';
 import '../profile_entry.dart';
 import '../private_key_data.dart';
 import '../utils.dart';
@@ -181,7 +182,7 @@ class Account extends Table {
     MyMediaContent,
     ProfileStates,
     ConversationList,
-    Messages,
+    MessageTable,
     Conversations,
     AvailableProfileAttributesTable,
   ],
@@ -203,7 +204,7 @@ class Account extends Table {
     DaoClientFeatures,
     DaoInitialSetup,
     // Other tables
-    DaoMessages,
+    DaoMessageTable,
     DaoConversationList,
     DaoProfiles,
     DaoPublicProfileContent,

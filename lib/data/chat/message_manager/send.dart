@@ -11,7 +11,6 @@ import 'package:native_utils/native_utils.dart';
 import 'package:openapi/api.dart';
 import 'package:app/api/api_manager.dart';
 import 'package:app/data/account/client_id_manager.dart';
-import 'package:app/data/chat/message_converter.dart';
 import 'package:app/data/chat/message_key_generator.dart';
 import 'package:app/data/profile_repository.dart';
 import 'package:app/database/account_database_manager.dart';
@@ -39,7 +38,7 @@ class SendMessageUtils {
 
   Stream<MessageSendingEvent> sendMessageTo(
     AccountId accountId,
-    String message,
+    Message message,
     {
       bool sendUiEvent = true,
     }
@@ -67,7 +66,7 @@ class SendMessageUtils {
     }
   }
 
-  Stream<MessageSendingEvent> _sendMessageToInternal(AccountId accountId, String message, {bool sendUiEvent = true}) async* {
+  Stream<MessageSendingEvent> _sendMessageToInternal(AccountId accountId, Message message, {bool sendUiEvent = true}) async* {
     final isMatch = await _isInMatches(accountId);
     if (!isMatch) {
       final resultSendLike = await api.chatAction((api) => api.postSendLike(accountId));
@@ -90,7 +89,7 @@ class SendMessageUtils {
       }
     }
 
-    final lastSentMessageResult = await db.accountData((db) => db.daoMessages.getLatestSentMessage(
+    final lastSentMessageResult = await db.messageData((db) => db.getLatestSentMessage(
       currentUser,
       accountId,
     ));
@@ -152,16 +151,10 @@ class SendMessageUtils {
       return;
     }
 
-    final messageBytes = MessageConverter().textToBytes(message).ok();
-    if (messageBytes == null) {
-      yield ErrorAfterMessageSaving(localId, MessageSendingErrorDetails.messageTooLarge);
-      return;
-    }
-
     final (encryptedMessage, encryptingResult) = encryptMessage(
       currentUserKeys.private.data,
       receiverPublicKey.data,
-      messageBytes,
+      message.toMessagePacket(),
     );
 
     if (encryptedMessage == null) {

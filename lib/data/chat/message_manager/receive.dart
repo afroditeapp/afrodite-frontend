@@ -9,7 +9,6 @@ import 'package:native_utils/native_utils.dart';
 import 'package:openapi/api.dart';
 import 'package:openapi/manual_additions.dart';
 import 'package:app/api/api_manager.dart';
-import 'package:app/data/chat/message_converter.dart';
 import 'package:app/data/chat/message_key_generator.dart';
 import 'package:app/data/general/notification/state/message_received.dart';
 import 'package:app/data/profile_repository.dart';
@@ -67,7 +66,7 @@ class ReceiveMessageUtils {
         await db.accountAction((db) => db.daoConversationList.setConversationListVisibility(message.parsed.sender, true));
       }
 
-      final alreadyExistingMessageResult = await db.accountData((db) => db.daoMessages.getMessageUsingMessageNumber(
+      final alreadyExistingMessageResult = await db.messageData((db) => db.getMessageUsingMessageNumber(
         currentUser,
         message.parsed.sender,
         message.parsed.messageNumber
@@ -82,23 +81,21 @@ class ReceiveMessageUtils {
           }
       }
 
-      final String decryptedMessage;
+      final Message? decryptedMessage;
       final Uint8List? symmetricMessageEncryptionKey;
       final ReceivedMessageState messageState;
       switch (await decryptReceivedMessage(allKeys, message.parsed)) {
         case Err(:final e):
-          decryptedMessage = "";
+          decryptedMessage = null;
           symmetricMessageEncryptionKey = null;
           switch (e) {
             case ReceivedMessageError.decryptingFailed:
               messageState = ReceivedMessageState.decryptingFailed;
-            case ReceivedMessageError.unknownMessageType:
-              messageState = ReceivedMessageState.unknownMessageType;
             case ReceivedMessageError.publicKeyDonwloadingFailed:
               messageState = ReceivedMessageState.publicKeyDownloadFailed;
           }
-        case Ok(v: (final messageText, final symmetricKey)):
-          decryptedMessage = messageText;
+        case Ok(v: (final message, final symmetricKey)):
+          decryptedMessage = message;
           symmetricMessageEncryptionKey = symmetricKey;
           messageState = ReceivedMessageState.received;
       }
@@ -161,8 +158,8 @@ class ReceiveMessageUtils {
     }
   }
 
-  /// Returns message text and symmetric message encryption key
-  Future<Result<(String, Uint8List), ReceivedMessageError>> decryptReceivedMessage(
+  /// Returns message and symmetric message encryption key
+  Future<Result<(Message, Uint8List), ReceivedMessageError>> decryptReceivedMessage(
     AllKeyData allKeys,
     BackendSignedMessage message,
   ) async {
@@ -182,10 +179,7 @@ class ReceiveMessageUtils {
       return const Err(ReceivedMessageError.decryptingFailed);
     }
 
-    return MessageConverter()
-      .bytesToText(decryptResult.messageData)
-      .mapOk((v) => (v, decryptResult.sessionKey))
-      .mapErr((_) => ReceivedMessageError.unknownMessageType);
+    return Ok((Message.parseFromBytes(decryptResult.messageData), decryptResult.sessionKey));
   }
 
   Future<bool> _isInMatches(AccountId accountId) async {
@@ -198,7 +192,6 @@ class ReceiveMessageUtils {
 }
 
 enum ReceivedMessageError {
-  unknownMessageType,
   decryptingFailed,
   publicKeyDonwloadingFailed,
 }

@@ -366,7 +366,7 @@ class _ChatViewState extends State<ChatView> {
   }
 
   List<Widget> conversationStatusText(BuildContext context, ConversationData data) {
-    final String? messageText = data.message?.messageText;
+    final Message? message = data.message?.message;
     final SentMessageState? sentMessageState = data.message?.messageState.toSentState();
     final ReceivedMessageState? receivedMessageState = data.message?.messageState.toReceivedState();
     final TextStyle? textStyle;
@@ -374,13 +374,13 @@ class _ChatViewState extends State<ChatView> {
     if (data.count.count > 0) {
       textStyle = Theme.of(context).textTheme.titleMedium;
       text = context.strings.chat_list_screen_unread_message;
-    } else if (messageText != null) {
+    } else if (message != null) {
       textStyle = Theme.of(context).textTheme.bodyMedium;
-      final message = messageWidgetText(context, messageText, sentMessageState, receivedMessageState);
+      final messageText = messageWidgetText(context, message, sentMessageState, receivedMessageState);
       if (data.message?.messageState.isSent() == true) {
-        text = context.strings.chat_list_screen_sent_message_indicator(message);
+        text = context.strings.chat_list_screen_sent_message_indicator(messageText);
       } else {
-        text = message;
+        text = messageText;
       }
     } else {
       return [];

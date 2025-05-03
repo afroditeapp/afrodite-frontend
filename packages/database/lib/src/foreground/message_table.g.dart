@@ -3,6 +3,6 @@
 part of 'message_table.dart';
 
 // ignore_for_file: type=lint
-mixin _$DaoMessagesMixin on DatabaseAccessor<AccountDatabase> {
-  $MessagesTable get messages => attachedDatabase.messages;
+mixin _$DaoMessageTableMixin on DatabaseAccessor<AccountDatabase> {
+  $MessageTableTable get messageTable => attachedDatabase.messageTable;
 }

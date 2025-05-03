@@ -370,9 +370,9 @@
     <string name="conversation_screen_message_state_sent_successfully" description="Message state text that message was sent successfully">Sent successfully</string>
     <string name="conversation_screen_message_state_sending_failed" description="Message state text that message sending failed">Sending failed</string>
     <string name="conversation_screen_message_state_decrypting_failed" description="Message state text that message decrypting failed">Decrypting failed</string>
-    <string name="conversation_screen_message_state_unknown_message_type" description="Message state text that message type is unknown">Unknown message type</string>
     <string name="conversation_screen_message_state_public_key_download_failed" description="Message state text that public key download failed">Public key download failed</string>
     <string name="conversation_screen_message_state_received_successfully" description="Message state text that message was received successfully">Received successfully</string>
+    <string name="conversation_screen_message_unsupported" description="Message text that message is unsupported">Unsupported message</string>
     <string name="conversation_screen_message_details_message_id" description="Title text for message ID value">Message ID</string>
     <string name="conversation_screen_message_error_is_actually_sent_successfully" description="Message remove or resend error that message is actually sent successfully">The message is actually sent successfully</string>
     <string name="conversation_screen_message_error_receiver_blocked_sender_or_receiver_not_found" description="Message send or resend error that receiver blocked sender or receiver not found">Receiver action prevented message sending</string>

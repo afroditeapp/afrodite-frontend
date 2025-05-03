@@ -287,12 +287,12 @@ class ChatRepository extends DataRepositoryWithLifecycle {
 
   // Local messages
   Stream<MessageEntry?> watchLatestMessage(AccountId match) {
-    return db.accountStream((db) => db.daoMessages.watchLatestMessage(currentUser, match));
+    return db.accountStream((db) => db.daoMessageTable.watchLatestMessage(currentUser, match));
   }
 
   /// Get message and updates to it.
   Stream<MessageEntry?> getMessageWithLocalId(LocalMessageId localId) {
-    return db.accountStream((db) => db.daoMessages.getMessageUpdatesUsingLocalMessageId(localId));
+    return db.accountStream((db) => db.daoMessageTable.getMessageUpdatesUsingLocalMessageId(localId));
   }
 
   /// Get message and updates to it.
@@ -361,7 +361,7 @@ class ChatRepository extends DataRepositoryWithLifecycle {
     await cmd.waitUntilReady();
   }
 
-  Stream<MessageSendingEvent> sendMessageTo(AccountId accountId, String message) async* {
+  Stream<MessageSendingEvent> sendMessageTo(AccountId accountId, Message message) async* {
     final cmd = SendMessage(accountId, message);
     messageManager.queueCmd(cmd);
     yield* cmd.events();

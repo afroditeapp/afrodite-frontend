@@ -34,7 +34,7 @@ class ReceiveNewMessages extends MessageManagerCommand {
 class SendMessage extends MessageManagerCommand {
   final ReplaySubject<MessageSendingEvent?> _events = ReplaySubject();
   final AccountId receiverAccount;
-  final String message;
+  final Message message;
   SendMessage(this.receiverAccount, this.message);
 
   Stream<MessageSendingEvent> events() async* {
@@ -155,7 +155,7 @@ class MessageManager extends LifecycleMethods {
       }
     }
 
-    final toBeRemoved = await db.accountData((db) => db.daoMessages.getMessageUsingLocalMessageId(
+    final toBeRemoved = await db.messageData((db) => db.getMessageUsingLocalMessageId(
       localId,
     )).ok();
     if (toBeRemoved == null) {
@@ -165,7 +165,7 @@ class MessageManager extends LifecycleMethods {
       return const Err(DeleteSendFailedError.isActuallySentSuccessfully);
     }
 
-    final deleteResult = await db.accountData((db) => db.daoMessages.deleteMessage(
+    final deleteResult = await db.messageData((db) => db.deleteMessage(
       localId,
     ));
     if (deleteResult.isErr()) {
@@ -198,10 +198,11 @@ class MessageManager extends LifecycleMethods {
       return const Err(ResendFailedError.unspecifiedError);
     }
 
-    final toBeResent = await db.accountData((db) => db.daoMessages.getMessageUsingLocalMessageId(
+    final toBeResent = await db.messageData((db) => db.getMessageUsingLocalMessageId(
       localId,
     )).ok();
-    if (toBeResent == null) {
+    final toBeResentMessage = toBeResent?.message;
+    if (toBeResent == null || toBeResentMessage == null) {
       return const Err(ResendFailedError.unspecifiedError);
     }
     if (toBeResent.messageState.toSentState() != SentMessageState.sendingError) {
@@ -211,7 +212,7 @@ class MessageManager extends LifecycleMethods {
 
     ResendFailedError? sendingError;
     ResendFailedError? deleteError;
-    await for (var e in sendMessageUtils.sendMessageTo(receiverAccount, toBeResent.messageText, sendUiEvent: false)) {
+    await for (var e in sendMessageUtils.sendMessageTo(receiverAccount, toBeResentMessage, sendUiEvent: false)) {
       switch (e) {
         case SavedToLocalDb():
           // actuallySentMessageCheck is false because the check is already done
@@ -255,13 +256,13 @@ class MessageManager extends LifecycleMethods {
       return const Err(RetryPublicKeyDownloadError.unspecifiedError);
     }
 
-    final toBeDecrypted = await db.accountData((db) => db.daoMessages.getMessageUsingLocalMessageId(
+    final toBeDecrypted = await db.messageData((db) => db.getMessageUsingLocalMessageId(
       localId,
     )).ok();
     if (toBeDecrypted == null || toBeDecrypted.messageState != MessageState.receivedAndPublicKeyDownloadFailed) {
       return const Err(RetryPublicKeyDownloadError.unspecifiedError);
     }
-    final backendSignedPgpMessage = await db.accountData((db) => db.daoMessages.getBackendSignedPgpMessage(
+    final backendSignedPgpMessage = await db.messageData((db) => db.getBackendSignedPgpMessage(
       localId,
     )).ok();
     if (backendSignedPgpMessage == null) {
@@ -272,23 +273,21 @@ class MessageManager extends LifecycleMethods {
       return const Err(RetryPublicKeyDownloadError.unspecifiedError);
     }
 
-    final String decryptedMessage;
+    final Message? decryptedMessage;
     final Uint8List? symmetricMessageEncryptionKey;
     final ReceivedMessageState messageState;
     switch (await receiveMessageUtils.decryptReceivedMessage(allKeys, backendSignedMessage)) {
       case Err(:final e):
-        decryptedMessage = "";
+        decryptedMessage = null;
         symmetricMessageEncryptionKey = null;
         switch (e) {
           case ReceivedMessageError.decryptingFailed:
             messageState = ReceivedMessageState.decryptingFailed;
-          case ReceivedMessageError.unknownMessageType:
-            messageState = ReceivedMessageState.unknownMessageType;
           case ReceivedMessageError.publicKeyDonwloadingFailed:
             return const Err(RetryPublicKeyDownloadError.unspecifiedError);
         }
-      case Ok(v: (final messageText, final symmetricKey)):
-        decryptedMessage = messageText;
+      case Ok(v: (final message, final symmetricKey)):
+        decryptedMessage = message;
         symmetricMessageEncryptionKey = symmetricKey;
         messageState = ReceivedMessageState.received;
     }
@@ -296,7 +295,7 @@ class MessageManager extends LifecycleMethods {
     final r = await db.messageAction((db) => db.updateReceivedMessageState(
       localId,
       messageState,
-      messageText: decryptedMessage,
+      message: decryptedMessage,
       symmetricMessageEncryptionKey: symmetricMessageEncryptionKey,
     ));
     if (r.isErr()) {

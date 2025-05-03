@@ -46,7 +46,7 @@ class DaoConversations extends DatabaseAccessor<AccountDatabase> with _$DaoConve
         ),
       );
       if (infoState != null) {
-        await db.daoMessages.insertInfoMessage(localAccountId, remoteAccountId, infoState);
+        await db.daoMessageTable.insertInfoMessage(localAccountId, remoteAccountId, infoState);
       }
     });
   }

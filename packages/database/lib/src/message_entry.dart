@@ -1,8 +1,7 @@
 
-
-
 import 'dart:typed_data';
 
+import 'package:database/src/message_converter.dart';
 import 'package:openapi/api.dart';
 import 'package:utils/utils.dart';
 
@@ -12,9 +11,9 @@ class MessageEntry {
 
   final AccountId localAccountId;
   final AccountId remoteAccountId;
-  /// For sent messages this is normal text. For received messages this can
-  /// be normal text or when in error state empty text.
-  final String messageText;
+  /// For sent messages this is Message. For received messages this can
+  /// be Message or in error state null.
+  final Message? message;
   /// Local/client time when message entry is inserted to database.
   final UtcDateTime localUnixTime;
   final MessageState messageState;
@@ -28,7 +27,7 @@ class MessageEntry {
       required this.localId,
       required this.localAccountId,
       required this.remoteAccountId,
-      required this.messageText,
+      required this.message,
       required this.localUnixTime,
       required this.messageState,
       this.messageNumber,
@@ -38,7 +37,7 @@ class MessageEntry {
 
   @override
   String toString() {
-    return "MessageEntry(localId: $localId, localAccountId: $localAccountId, remoteAccountId: $remoteAccountId, messageText: $messageText, messageState: $messageState, messageNumber: $messageNumber, unixTime: $unixTime)";
+    return "MessageEntry(localId: $localId, localAccountId: $localAccountId, remoteAccountId: $remoteAccountId, message: $message, messageState: $messageState, messageNumber: $messageNumber, unixTime: $unixTime)";
   }
 }
 
@@ -58,8 +57,6 @@ enum MessageState {
   received(_VALUE_RECEIVED),
   /// Message received, but decrypting failed.
   receivedAndDecryptingFailed(_VALUE_RECEIVED_AND_DECRYPTING_FAILED),
-  /// Message received, but message type is unknown.
-  receivedAndUnknownMessageType(_VALUE_RECEIVED_AND_UNKNOWN_MESSAGE_TYPE),
   /// Message received, but public key download failed.
   receivedAndPublicKeyDownloadFailed(_VALUE_RECEIVED_AND_PUBLIC_KEY_DOWNLOAD_FAILED),
 
@@ -75,8 +72,7 @@ enum MessageState {
 
   static const int _VALUE_RECEIVED = 20;
   static const int _VALUE_RECEIVED_AND_DECRYPTING_FAILED = 21;
-  static const int _VALUE_RECEIVED_AND_UNKNOWN_MESSAGE_TYPE = 22;
-  static const int _VALUE_RECEIVED_AND_PUBLIC_KEY_DOWNLOAD_FAILED = 23;
+  static const int _VALUE_RECEIVED_AND_PUBLIC_KEY_DOWNLOAD_FAILED = 22;
 
   static const int _VALUE_INFO_MATCH_FIRST_PUBLIC_KEY_RECEIVED = 40;
   static const int _VALUE_INFO_MATCH_PUBLIC_KEY_CHANGED = 41;
@@ -94,7 +90,6 @@ enum MessageState {
       _VALUE_SENDING_ERROR => sendingError,
       _VALUE_RECEIVED => received,
       _VALUE_RECEIVED_AND_DECRYPTING_FAILED => receivedAndDecryptingFailed,
-      _VALUE_RECEIVED_AND_UNKNOWN_MESSAGE_TYPE => receivedAndUnknownMessageType,
       _VALUE_RECEIVED_AND_PUBLIC_KEY_DOWNLOAD_FAILED => receivedAndPublicKeyDownloadFailed,
       _VALUE_INFO_MATCH_FIRST_PUBLIC_KEY_RECEIVED => infoMatchFirstPublicKeyReceived,
       _VALUE_INFO_MATCH_PUBLIC_KEY_CHANGED => infoMatchPublicKeyChanged,
@@ -116,7 +111,6 @@ enum MessageState {
         return SentMessageState.sendingError;
       case received ||
         receivedAndDecryptingFailed ||
-        receivedAndUnknownMessageType ||
         receivedAndPublicKeyDownloadFailed ||
         infoMatchFirstPublicKeyReceived ||
         infoMatchPublicKeyChanged:
@@ -134,8 +128,6 @@ enum MessageState {
         return ReceivedMessageState.received;
       case receivedAndDecryptingFailed:
         return ReceivedMessageState.decryptingFailed;
-      case receivedAndUnknownMessageType:
-        return ReceivedMessageState.unknownMessageType;
       case receivedAndPublicKeyDownloadFailed:
         return ReceivedMessageState.publicKeyDownloadFailed;
       case pendingSending ||
@@ -155,7 +147,6 @@ enum MessageState {
         return InfoMessageState.infoMatchPublicKeyChanged;
       case received ||
         receivedAndDecryptingFailed ||
-        receivedAndUnknownMessageType ||
         receivedAndPublicKeyDownloadFailed ||
         pendingSending ||
         sent ||
@@ -194,14 +185,11 @@ enum ReceivedMessageState {
   received,
   /// Received, but decrypting failed
   decryptingFailed,
-  /// Received, but message type is unknown.
-  unknownMessageType,
   /// Received, but public key download failed.
   publicKeyDownloadFailed;
 
   bool isError() {
     return this == decryptingFailed ||
-      this == unknownMessageType ||
       this == publicKeyDownloadFailed;
   }
 
@@ -213,8 +201,6 @@ enum ReceivedMessageState {
         return MessageState.received;
       case decryptingFailed:
         return MessageState.receivedAndDecryptingFailed;
-      case unknownMessageType:
-        return MessageState.receivedAndUnknownMessageType;
       case publicKeyDownloadFailed:
         return MessageState.receivedAndPublicKeyDownloadFailed;
     }
@@ -240,7 +226,7 @@ enum InfoMessageState {
 class NewMessageEntry {
   final AccountId localAccountId;
   final AccountId remoteAccountId;
-  final String messageText;
+  final Message? message;
   /// Local/client time when message entry is inserted to database.
   final UtcDateTime localUnixTime;
   final MessageState messageState;
@@ -259,7 +245,7 @@ class NewMessageEntry {
     {
       required this.localAccountId,
       required this.remoteAccountId,
-      required this.messageText,
+      required this.message,
       required this.localUnixTime,
       required this.messageState,
       this.receivedMessageState,
@@ -272,7 +258,7 @@ class NewMessageEntry {
 
   @override
   String toString() {
-    return "NewMessageEntry(localAccountId: $localAccountId, remoteAccountId: $remoteAccountId, messageText: $messageText, messageState: $messageState, receivedMessageState: $receivedMessageState, messageNumber: $messageNumber, unixTime: $unixTime, backendSignedPgpMessage: $backendSignedPgpMessage)";
+    return "NewMessageEntry(localAccountId: $localAccountId, remoteAccountId: $remoteAccountId, message: $message, messageState: $messageState, receivedMessageState: $receivedMessageState, messageNumber: $messageNumber, unixTime: $unixTime, backendSignedPgpMessage: $backendSignedPgpMessage)";
   }
 }
 

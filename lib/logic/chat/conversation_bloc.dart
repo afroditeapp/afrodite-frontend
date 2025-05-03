@@ -27,7 +27,7 @@ sealed class ConversationEvent {}
 class InitEvent extends ConversationEvent {}
 class SendMessageTo extends ConversationEvent {
   final AccountId accountId;
-  final String message;
+  final Message message;
   SendMessageTo(this.accountId, this.message);
 }
 class HandleProfileChange extends ConversationEvent {
@@ -66,7 +66,7 @@ abstract class ConversationDataProvider {
   Future<bool> isInMatches(AccountId accountId);
   Future<bool> isInSentBlocks(AccountId accountId);
   Future<bool> sendBlockTo(AccountId accountId);
-  Stream<MessageSendingEvent> sendMessageTo(AccountId accountId, String message);
+  Stream<MessageSendingEvent> sendMessageTo(AccountId accountId, Message message);
   Future<List<MessageEntry>> getAllMessages(AccountId accountId);
   Stream<(int, ConversationChanged?)> getMessageCountAndChanges(AccountId match);
   Stream<MessageEntry?> getMessageWithLocalId(LocalMessageId localId);
@@ -93,7 +93,7 @@ class DefaultConversationDataProvider extends ConversationDataProvider {
   Future<bool> sendBlockTo(AccountId accountId) => chat.sendBlockTo(accountId);
 
   @override
-  Stream<MessageSendingEvent> sendMessageTo(AccountId accountId, String message) {
+  Stream<MessageSendingEvent> sendMessageTo(AccountId accountId, Message message) {
     return chat.sendMessageTo(accountId, message);
   }
 
@@ -224,8 +224,6 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
             switch (details) {
               case null:
                 showSnackBar(R.strings.generic_error_occurred);
-              case MessageSendingErrorDetails.messageTooLarge:
-                showSnackBar(R.strings.conversation_screen_message_too_long);
               case MessageSendingErrorDetails.tooManyPendingMessages:
                 showSnackBar(R.strings.conversation_screen_message_too_many_pending_messages);
               case MessageSendingErrorDetails.receiverBlockedSenderOrReceiverNotFound:
@@ -279,8 +277,6 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
               showSnackBar(R.strings.generic_error_occurred);
             case ResendFailedError.isActuallySentSuccessfully:
               showSnackBar(R.strings.conversation_screen_message_error_is_actually_sent_successfully);
-            case ResendFailedError.messageTooLarge:
-              showSnackBar(R.strings.conversation_screen_message_too_long);
             case ResendFailedError.tooManyPendingMessages:
               showSnackBar(R.strings.conversation_screen_message_too_many_pending_messages);
             case ResendFailedError.receiverBlockedSenderOrReceiverNotFound:

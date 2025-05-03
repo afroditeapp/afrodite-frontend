@@ -6339,11 +6339,12 @@ class ConversationListCompanion extends UpdateCompanion<ConversationListData> {
   }
 }
 
-class $MessagesTable extends Messages with TableInfo<$MessagesTable, Message> {
+class $MessageTableTable extends MessageTable
+    with TableInfo<$MessageTableTable, MessageTableData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $MessagesTable(this.attachedDatabase, [this._alias]);
+  $MessageTableTable(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
@@ -6359,25 +6360,25 @@ class $MessagesTable extends Messages with TableInfo<$MessagesTable, Message> {
               'uuid_local_account_id', aliasedName, false,
               type: DriftSqlType.string, requiredDuringInsert: true)
           .withConverter<api.AccountId>(
-              $MessagesTable.$converteruuidLocalAccountId);
+              $MessageTableTable.$converteruuidLocalAccountId);
   @override
   late final GeneratedColumnWithTypeConverter<api.AccountId, String>
       uuidRemoteAccountId = GeneratedColumn<String>(
               'uuid_remote_account_id', aliasedName, false,
               type: DriftSqlType.string, requiredDuringInsert: true)
           .withConverter<api.AccountId>(
-              $MessagesTable.$converteruuidRemoteAccountId);
-  static const VerificationMeta _messageTextMeta =
-      const VerificationMeta('messageText');
+              $MessageTableTable.$converteruuidRemoteAccountId);
   @override
-  late final GeneratedColumn<String> messageText = GeneratedColumn<String>(
-      'message_text', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
+  late final GeneratedColumnWithTypeConverter<Message?, Uint8List> message =
+      GeneratedColumn<Uint8List>('message', aliasedName, true,
+              type: DriftSqlType.blob, requiredDuringInsert: false)
+          .withConverter<Message?>($MessageTableTable.$convertermessage);
   @override
   late final GeneratedColumnWithTypeConverter<UtcDateTime, int> localUnixTime =
       GeneratedColumn<int>('local_unix_time', aliasedName, false,
               type: DriftSqlType.int, requiredDuringInsert: true)
-          .withConverter<UtcDateTime>($MessagesTable.$converterlocalUnixTime);
+          .withConverter<UtcDateTime>(
+              $MessageTableTable.$converterlocalUnixTime);
   static const VerificationMeta _messageStateMeta =
       const VerificationMeta('messageState');
   @override
@@ -6396,12 +6397,12 @@ class $MessagesTable extends Messages with TableInfo<$MessagesTable, Message> {
       messageNumber = GeneratedColumn<int>('message_number', aliasedName, true,
               type: DriftSqlType.int, requiredDuringInsert: false)
           .withConverter<api.MessageNumber?>(
-              $MessagesTable.$convertermessageNumber);
+              $MessageTableTable.$convertermessageNumber);
   @override
   late final GeneratedColumnWithTypeConverter<UtcDateTime?, int> unixTime =
       GeneratedColumn<int>('unix_time', aliasedName, true,
               type: DriftSqlType.int, requiredDuringInsert: false)
-          .withConverter<UtcDateTime?>($MessagesTable.$converterunixTime);
+          .withConverter<UtcDateTime?>($MessageTableTable.$converterunixTime);
   static const VerificationMeta _backendSignedPgpMessageMeta =
       const VerificationMeta('backendSignedPgpMessage');
   @override
@@ -6414,7 +6415,7 @@ class $MessagesTable extends Messages with TableInfo<$MessagesTable, Message> {
         id,
         uuidLocalAccountId,
         uuidRemoteAccountId,
-        messageText,
+        message,
         localUnixTime,
         messageState,
         symmetricMessageEncryptionKey,
@@ -6426,22 +6427,14 @@ class $MessagesTable extends Messages with TableInfo<$MessagesTable, Message> {
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
-  static const String $name = 'messages';
+  static const String $name = 'message_table';
   @override
-  VerificationContext validateIntegrity(Insertable<Message> instance,
+  VerificationContext validateIntegrity(Insertable<MessageTableData> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
-    }
-    if (data.containsKey('message_text')) {
-      context.handle(
-          _messageTextMeta,
-          messageText.isAcceptableOrUnknown(
-              data['message_text']!, _messageTextMeta));
-    } else if (isInserting) {
-      context.missing(_messageTextMeta);
     }
     if (data.containsKey('message_state')) {
       context.handle(
@@ -6471,20 +6464,21 @@ class $MessagesTable extends Messages with TableInfo<$MessagesTable, Message> {
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  Message map(Map<String, dynamic> data, {String? tablePrefix}) {
+  MessageTableData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return Message(
+    return MessageTableData(
       id: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
-      uuidLocalAccountId: $MessagesTable.$converteruuidLocalAccountId.fromSql(
-          attachedDatabase.typeMapping.read(DriftSqlType.string,
+      uuidLocalAccountId: $MessageTableTable.$converteruuidLocalAccountId
+          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.string,
               data['${effectivePrefix}uuid_local_account_id'])!),
-      uuidRemoteAccountId: $MessagesTable.$converteruuidRemoteAccountId.fromSql(
-          attachedDatabase.typeMapping.read(DriftSqlType.string,
+      uuidRemoteAccountId: $MessageTableTable.$converteruuidRemoteAccountId
+          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.string,
               data['${effectivePrefix}uuid_remote_account_id'])!),
-      messageText: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}message_text'])!,
-      localUnixTime: $MessagesTable.$converterlocalUnixTime.fromSql(
+      message: $MessageTableTable.$convertermessage.fromSql(attachedDatabase
+          .typeMapping
+          .read(DriftSqlType.blob, data['${effectivePrefix}message'])),
+      localUnixTime: $MessageTableTable.$converterlocalUnixTime.fromSql(
           attachedDatabase.typeMapping.read(
               DriftSqlType.int, data['${effectivePrefix}local_unix_time'])!),
       messageState: attachedDatabase.typeMapping
@@ -6492,10 +6486,10 @@ class $MessagesTable extends Messages with TableInfo<$MessagesTable, Message> {
       symmetricMessageEncryptionKey: attachedDatabase.typeMapping.read(
           DriftSqlType.blob,
           data['${effectivePrefix}symmetric_message_encryption_key']),
-      messageNumber: $MessagesTable.$convertermessageNumber.fromSql(
+      messageNumber: $MessageTableTable.$convertermessageNumber.fromSql(
           attachedDatabase.typeMapping.read(
               DriftSqlType.int, data['${effectivePrefix}message_number'])),
-      unixTime: $MessagesTable.$converterunixTime.fromSql(attachedDatabase
+      unixTime: $MessageTableTable.$converterunixTime.fromSql(attachedDatabase
           .typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}unix_time'])),
       backendSignedPgpMessage: attachedDatabase.typeMapping.read(
@@ -6505,14 +6499,16 @@ class $MessagesTable extends Messages with TableInfo<$MessagesTable, Message> {
   }
 
   @override
-  $MessagesTable createAlias(String alias) {
-    return $MessagesTable(attachedDatabase, alias);
+  $MessageTableTable createAlias(String alias) {
+    return $MessageTableTable(attachedDatabase, alias);
   }
 
   static TypeConverter<api.AccountId, String> $converteruuidLocalAccountId =
       const AccountIdConverter();
   static TypeConverter<api.AccountId, String> $converteruuidRemoteAccountId =
       const AccountIdConverter();
+  static TypeConverter<Message?, Uint8List?> $convertermessage =
+      const NullAwareTypeConverter.wrap(MessageConverter());
   static TypeConverter<UtcDateTime, int> $converterlocalUnixTime =
       const UtcDateTimeConverter();
   static TypeConverter<api.MessageNumber?, int?> $convertermessageNumber =
@@ -6521,22 +6517,23 @@ class $MessagesTable extends Messages with TableInfo<$MessagesTable, Message> {
       const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
 }
 
-class Message extends DataClass implements Insertable<Message> {
+class MessageTableData extends DataClass
+    implements Insertable<MessageTableData> {
   final int id;
   final api.AccountId uuidLocalAccountId;
   final api.AccountId uuidRemoteAccountId;
-  final String messageText;
+  final Message? message;
   final UtcDateTime localUnixTime;
   final int messageState;
   final Uint8List? symmetricMessageEncryptionKey;
   final api.MessageNumber? messageNumber;
   final UtcDateTime? unixTime;
   final Uint8List? backendSignedPgpMessage;
-  const Message(
+  const MessageTableData(
       {required this.id,
       required this.uuidLocalAccountId,
       required this.uuidRemoteAccountId,
-      required this.messageText,
+      this.message,
       required this.localUnixTime,
       required this.messageState,
       this.symmetricMessageEncryptionKey,
@@ -6548,19 +6545,22 @@ class Message extends DataClass implements Insertable<Message> {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     {
-      map['uuid_local_account_id'] = Variable<String>($MessagesTable
+      map['uuid_local_account_id'] = Variable<String>($MessageTableTable
           .$converteruuidLocalAccountId
           .toSql(uuidLocalAccountId));
     }
     {
-      map['uuid_remote_account_id'] = Variable<String>($MessagesTable
+      map['uuid_remote_account_id'] = Variable<String>($MessageTableTable
           .$converteruuidRemoteAccountId
           .toSql(uuidRemoteAccountId));
     }
-    map['message_text'] = Variable<String>(messageText);
+    if (!nullToAbsent || message != null) {
+      map['message'] = Variable<Uint8List>(
+          $MessageTableTable.$convertermessage.toSql(message));
+    }
     {
       map['local_unix_time'] = Variable<int>(
-          $MessagesTable.$converterlocalUnixTime.toSql(localUnixTime));
+          $MessageTableTable.$converterlocalUnixTime.toSql(localUnixTime));
     }
     map['message_state'] = Variable<int>(messageState);
     if (!nullToAbsent || symmetricMessageEncryptionKey != null) {
@@ -6569,11 +6569,11 @@ class Message extends DataClass implements Insertable<Message> {
     }
     if (!nullToAbsent || messageNumber != null) {
       map['message_number'] = Variable<int>(
-          $MessagesTable.$convertermessageNumber.toSql(messageNumber));
+          $MessageTableTable.$convertermessageNumber.toSql(messageNumber));
     }
     if (!nullToAbsent || unixTime != null) {
       map['unix_time'] =
-          Variable<int>($MessagesTable.$converterunixTime.toSql(unixTime));
+          Variable<int>($MessageTableTable.$converterunixTime.toSql(unixTime));
     }
     if (!nullToAbsent || backendSignedPgpMessage != null) {
       map['backend_signed_pgp_message'] =
@@ -6582,12 +6582,14 @@ class Message extends DataClass implements Insertable<Message> {
     return map;
   }
 
-  MessagesCompanion toCompanion(bool nullToAbsent) {
-    return MessagesCompanion(
+  MessageTableCompanion toCompanion(bool nullToAbsent) {
+    return MessageTableCompanion(
       id: Value(id),
       uuidLocalAccountId: Value(uuidLocalAccountId),
       uuidRemoteAccountId: Value(uuidRemoteAccountId),
-      messageText: Value(messageText),
+      message: message == null && nullToAbsent
+          ? const Value.absent()
+          : Value(message),
       localUnixTime: Value(localUnixTime),
       messageState: Value(messageState),
       symmetricMessageEncryptionKey:
@@ -6606,16 +6608,16 @@ class Message extends DataClass implements Insertable<Message> {
     );
   }
 
-  factory Message.fromJson(Map<String, dynamic> json,
+  factory MessageTableData.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return Message(
+    return MessageTableData(
       id: serializer.fromJson<int>(json['id']),
       uuidLocalAccountId:
           serializer.fromJson<api.AccountId>(json['uuidLocalAccountId']),
       uuidRemoteAccountId:
           serializer.fromJson<api.AccountId>(json['uuidRemoteAccountId']),
-      messageText: serializer.fromJson<String>(json['messageText']),
+      message: serializer.fromJson<Message?>(json['message']),
       localUnixTime: serializer.fromJson<UtcDateTime>(json['localUnixTime']),
       messageState: serializer.fromJson<int>(json['messageState']),
       symmetricMessageEncryptionKey: serializer
@@ -6636,7 +6638,7 @@ class Message extends DataClass implements Insertable<Message> {
           serializer.toJson<api.AccountId>(uuidLocalAccountId),
       'uuidRemoteAccountId':
           serializer.toJson<api.AccountId>(uuidRemoteAccountId),
-      'messageText': serializer.toJson<String>(messageText),
+      'message': serializer.toJson<Message?>(message),
       'localUnixTime': serializer.toJson<UtcDateTime>(localUnixTime),
       'messageState': serializer.toJson<int>(messageState),
       'symmetricMessageEncryptionKey':
@@ -6648,11 +6650,11 @@ class Message extends DataClass implements Insertable<Message> {
     };
   }
 
-  Message copyWith(
+  MessageTableData copyWith(
           {int? id,
           api.AccountId? uuidLocalAccountId,
           api.AccountId? uuidRemoteAccountId,
-          String? messageText,
+          Value<Message?> message = const Value.absent(),
           UtcDateTime? localUnixTime,
           int? messageState,
           Value<Uint8List?> symmetricMessageEncryptionKey =
@@ -6660,11 +6662,11 @@ class Message extends DataClass implements Insertable<Message> {
           Value<api.MessageNumber?> messageNumber = const Value.absent(),
           Value<UtcDateTime?> unixTime = const Value.absent(),
           Value<Uint8List?> backendSignedPgpMessage = const Value.absent()}) =>
-      Message(
+      MessageTableData(
         id: id ?? this.id,
         uuidLocalAccountId: uuidLocalAccountId ?? this.uuidLocalAccountId,
         uuidRemoteAccountId: uuidRemoteAccountId ?? this.uuidRemoteAccountId,
-        messageText: messageText ?? this.messageText,
+        message: message.present ? message.value : this.message,
         localUnixTime: localUnixTime ?? this.localUnixTime,
         messageState: messageState ?? this.messageState,
         symmetricMessageEncryptionKey: symmetricMessageEncryptionKey.present
@@ -6677,8 +6679,8 @@ class Message extends DataClass implements Insertable<Message> {
             ? backendSignedPgpMessage.value
             : this.backendSignedPgpMessage,
       );
-  Message copyWithCompanion(MessagesCompanion data) {
-    return Message(
+  MessageTableData copyWithCompanion(MessageTableCompanion data) {
+    return MessageTableData(
       id: data.id.present ? data.id.value : this.id,
       uuidLocalAccountId: data.uuidLocalAccountId.present
           ? data.uuidLocalAccountId.value
@@ -6686,8 +6688,7 @@ class Message extends DataClass implements Insertable<Message> {
       uuidRemoteAccountId: data.uuidRemoteAccountId.present
           ? data.uuidRemoteAccountId.value
           : this.uuidRemoteAccountId,
-      messageText:
-          data.messageText.present ? data.messageText.value : this.messageText,
+      message: data.message.present ? data.message.value : this.message,
       localUnixTime: data.localUnixTime.present
           ? data.localUnixTime.value
           : this.localUnixTime,
@@ -6709,11 +6710,11 @@ class Message extends DataClass implements Insertable<Message> {
 
   @override
   String toString() {
-    return (StringBuffer('Message(')
+    return (StringBuffer('MessageTableData(')
           ..write('id: $id, ')
           ..write('uuidLocalAccountId: $uuidLocalAccountId, ')
           ..write('uuidRemoteAccountId: $uuidRemoteAccountId, ')
-          ..write('messageText: $messageText, ')
+          ..write('message: $message, ')
           ..write('localUnixTime: $localUnixTime, ')
           ..write('messageState: $messageState, ')
           ..write(
@@ -6730,7 +6731,7 @@ class Message extends DataClass implements Insertable<Message> {
       id,
       uuidLocalAccountId,
       uuidRemoteAccountId,
-      messageText,
+      message,
       localUnixTime,
       messageState,
       $driftBlobEquality.hash(symmetricMessageEncryptionKey),
@@ -6740,11 +6741,11 @@ class Message extends DataClass implements Insertable<Message> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is Message &&
+      (other is MessageTableData &&
           other.id == this.id &&
           other.uuidLocalAccountId == this.uuidLocalAccountId &&
           other.uuidRemoteAccountId == this.uuidRemoteAccountId &&
-          other.messageText == this.messageText &&
+          other.message == this.message &&
           other.localUnixTime == this.localUnixTime &&
           other.messageState == this.messageState &&
           $driftBlobEquality.equals(other.symmetricMessageEncryptionKey,
@@ -6755,22 +6756,22 @@ class Message extends DataClass implements Insertable<Message> {
               other.backendSignedPgpMessage, this.backendSignedPgpMessage));
 }
 
-class MessagesCompanion extends UpdateCompanion<Message> {
+class MessageTableCompanion extends UpdateCompanion<MessageTableData> {
   final Value<int> id;
   final Value<api.AccountId> uuidLocalAccountId;
   final Value<api.AccountId> uuidRemoteAccountId;
-  final Value<String> messageText;
+  final Value<Message?> message;
   final Value<UtcDateTime> localUnixTime;
   final Value<int> messageState;
   final Value<Uint8List?> symmetricMessageEncryptionKey;
   final Value<api.MessageNumber?> messageNumber;
   final Value<UtcDateTime?> unixTime;
   final Value<Uint8List?> backendSignedPgpMessage;
-  const MessagesCompanion({
+  const MessageTableCompanion({
     this.id = const Value.absent(),
     this.uuidLocalAccountId = const Value.absent(),
     this.uuidRemoteAccountId = const Value.absent(),
-    this.messageText = const Value.absent(),
+    this.message = const Value.absent(),
     this.localUnixTime = const Value.absent(),
     this.messageState = const Value.absent(),
     this.symmetricMessageEncryptionKey = const Value.absent(),
@@ -6778,11 +6779,11 @@ class MessagesCompanion extends UpdateCompanion<Message> {
     this.unixTime = const Value.absent(),
     this.backendSignedPgpMessage = const Value.absent(),
   });
-  MessagesCompanion.insert({
+  MessageTableCompanion.insert({
     this.id = const Value.absent(),
     required api.AccountId uuidLocalAccountId,
     required api.AccountId uuidRemoteAccountId,
-    required String messageText,
+    this.message = const Value.absent(),
     required UtcDateTime localUnixTime,
     required int messageState,
     this.symmetricMessageEncryptionKey = const Value.absent(),
@@ -6791,14 +6792,13 @@ class MessagesCompanion extends UpdateCompanion<Message> {
     this.backendSignedPgpMessage = const Value.absent(),
   })  : uuidLocalAccountId = Value(uuidLocalAccountId),
         uuidRemoteAccountId = Value(uuidRemoteAccountId),
-        messageText = Value(messageText),
         localUnixTime = Value(localUnixTime),
         messageState = Value(messageState);
-  static Insertable<Message> custom({
+  static Insertable<MessageTableData> custom({
     Expression<int>? id,
     Expression<String>? uuidLocalAccountId,
     Expression<String>? uuidRemoteAccountId,
-    Expression<String>? messageText,
+    Expression<Uint8List>? message,
     Expression<int>? localUnixTime,
     Expression<int>? messageState,
     Expression<Uint8List>? symmetricMessageEncryptionKey,
@@ -6812,7 +6812,7 @@ class MessagesCompanion extends UpdateCompanion<Message> {
         'uuid_local_account_id': uuidLocalAccountId,
       if (uuidRemoteAccountId != null)
         'uuid_remote_account_id': uuidRemoteAccountId,
-      if (messageText != null) 'message_text': messageText,
+      if (message != null) 'message': message,
       if (localUnixTime != null) 'local_unix_time': localUnixTime,
       if (messageState != null) 'message_state': messageState,
       if (symmetricMessageEncryptionKey != null)
@@ -6824,22 +6824,22 @@ class MessagesCompanion extends UpdateCompanion<Message> {
     });
   }
 
-  MessagesCompanion copyWith(
+  MessageTableCompanion copyWith(
       {Value<int>? id,
       Value<api.AccountId>? uuidLocalAccountId,
       Value<api.AccountId>? uuidRemoteAccountId,
-      Value<String>? messageText,
+      Value<Message?>? message,
       Value<UtcDateTime>? localUnixTime,
       Value<int>? messageState,
       Value<Uint8List?>? symmetricMessageEncryptionKey,
       Value<api.MessageNumber?>? messageNumber,
       Value<UtcDateTime?>? unixTime,
       Value<Uint8List?>? backendSignedPgpMessage}) {
-    return MessagesCompanion(
+    return MessageTableCompanion(
       id: id ?? this.id,
       uuidLocalAccountId: uuidLocalAccountId ?? this.uuidLocalAccountId,
       uuidRemoteAccountId: uuidRemoteAccountId ?? this.uuidRemoteAccountId,
-      messageText: messageText ?? this.messageText,
+      message: message ?? this.message,
       localUnixTime: localUnixTime ?? this.localUnixTime,
       messageState: messageState ?? this.messageState,
       symmetricMessageEncryptionKey:
@@ -6858,21 +6858,23 @@ class MessagesCompanion extends UpdateCompanion<Message> {
       map['id'] = Variable<int>(id.value);
     }
     if (uuidLocalAccountId.present) {
-      map['uuid_local_account_id'] = Variable<String>($MessagesTable
+      map['uuid_local_account_id'] = Variable<String>($MessageTableTable
           .$converteruuidLocalAccountId
           .toSql(uuidLocalAccountId.value));
     }
     if (uuidRemoteAccountId.present) {
-      map['uuid_remote_account_id'] = Variable<String>($MessagesTable
+      map['uuid_remote_account_id'] = Variable<String>($MessageTableTable
           .$converteruuidRemoteAccountId
           .toSql(uuidRemoteAccountId.value));
     }
-    if (messageText.present) {
-      map['message_text'] = Variable<String>(messageText.value);
+    if (message.present) {
+      map['message'] = Variable<Uint8List>(
+          $MessageTableTable.$convertermessage.toSql(message.value));
     }
     if (localUnixTime.present) {
-      map['local_unix_time'] = Variable<int>(
-          $MessagesTable.$converterlocalUnixTime.toSql(localUnixTime.value));
+      map['local_unix_time'] = Variable<int>($MessageTableTable
+          .$converterlocalUnixTime
+          .toSql(localUnixTime.value));
     }
     if (messageState.present) {
       map['message_state'] = Variable<int>(messageState.value);
@@ -6882,12 +6884,13 @@ class MessagesCompanion extends UpdateCompanion<Message> {
           Variable<Uint8List>(symmetricMessageEncryptionKey.value);
     }
     if (messageNumber.present) {
-      map['message_number'] = Variable<int>(
-          $MessagesTable.$convertermessageNumber.toSql(messageNumber.value));
+      map['message_number'] = Variable<int>($MessageTableTable
+          .$convertermessageNumber
+          .toSql(messageNumber.value));
     }
     if (unixTime.present) {
       map['unix_time'] = Variable<int>(
-          $MessagesTable.$converterunixTime.toSql(unixTime.value));
+          $MessageTableTable.$converterunixTime.toSql(unixTime.value));
     }
     if (backendSignedPgpMessage.present) {
       map['backend_signed_pgp_message'] =
@@ -6898,11 +6901,11 @@ class MessagesCompanion extends UpdateCompanion<Message> {
 
   @override
   String toString() {
-    return (StringBuffer('MessagesCompanion(')
+    return (StringBuffer('MessageTableCompanion(')
           ..write('id: $id, ')
           ..write('uuidLocalAccountId: $uuidLocalAccountId, ')
           ..write('uuidRemoteAccountId: $uuidRemoteAccountId, ')
-          ..write('messageText: $messageText, ')
+          ..write('message: $message, ')
           ..write('localUnixTime: $localUnixTime, ')
           ..write('messageState: $messageState, ')
           ..write(
@@ -7451,7 +7454,7 @@ abstract class _$AccountDatabase extends GeneratedDatabase {
   late final $ProfileStatesTable profileStates = $ProfileStatesTable(this);
   late final $ConversationListTable conversationList =
       $ConversationListTable(this);
-  late final $MessagesTable messages = $MessagesTable(this);
+  late final $MessageTableTable messageTable = $MessageTableTable(this);
   late final $ConversationsTable conversations = $ConversationsTable(this);
   late final $AvailableProfileAttributesTableTable
       availableProfileAttributesTable =
@@ -7484,7 +7487,8 @@ abstract class _$AccountDatabase extends GeneratedDatabase {
       DaoClientFeatures(this as AccountDatabase);
   late final DaoInitialSetup daoInitialSetup =
       DaoInitialSetup(this as AccountDatabase);
-  late final DaoMessages daoMessages = DaoMessages(this as AccountDatabase);
+  late final DaoMessageTable daoMessageTable =
+      DaoMessageTable(this as AccountDatabase);
   late final DaoConversationList daoConversationList =
       DaoConversationList(this as AccountDatabase);
   late final DaoProfiles daoProfiles = DaoProfiles(this as AccountDatabase);
@@ -7510,7 +7514,7 @@ abstract class _$AccountDatabase extends GeneratedDatabase {
         myMediaContent,
         profileStates,
         conversationList,
-        messages,
+        messageTable,
         conversations,
         availableProfileAttributesTable
       ];
