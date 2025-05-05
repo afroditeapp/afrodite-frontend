@@ -15,6 +15,7 @@ import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/time.dart';
 import 'package:openapi/api.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 const int _OPACITY_FOR_ON_SURFACE_CONTENT = 128;
 
@@ -427,8 +428,16 @@ void _joinVideoCall(BuildContext context, AccountId callee) async {
 
   // Jitsi Meet app is not installed
 
-  final launchSuccessful = await launchUrl(url);
-  if (!launchSuccessful && context.mounted) {
-    showSnackBar(context.strings.generic_error_occurred);
+  final customUrl = r.customUrl;
+  if (customUrl != null) {
+    final launchSuccessful = await launchUrlString(customUrl);
+    if (!launchSuccessful && context.mounted) {
+      showSnackBar(context.strings.generic_error_occurred);
+    }
+  } else {
+    final launchSuccessful = await launchUrl(url);
+    if (!launchSuccessful && context.mounted) {
+      showSnackBar(context.strings.generic_error_occurred);
+    }
   }
 }
