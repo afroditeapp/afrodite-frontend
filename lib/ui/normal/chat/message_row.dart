@@ -14,7 +14,7 @@ import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/time.dart';
 import 'package:openapi/api.dart';
-import 'package:url_launcher/url_launcher_string.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 const int _OPACITY_FOR_ON_SURFACE_CONTENT = 128;
 
@@ -407,7 +407,27 @@ void _joinVideoCall(BuildContext context, AccountId callee) async {
     return;
   }
 
-  final launchSuccessful = await launchUrlString(r.url);
+  final Uri url;
+  try {
+    url = Uri.parse(r.url);
+  } catch (_) {
+    showSnackBar(context.strings.generic_error_occurred);
+    return;
+  }
+
+  try {
+    final jitsMeetAppLaunchSuccessful = await launchUrl(
+      url.replace(scheme: "org.jitsi.meet"),
+      mode: LaunchMode.externalNonBrowserApplication,
+    );
+    if (jitsMeetAppLaunchSuccessful) {
+      return;
+    }
+  } catch (_) {}
+
+  // Jitsi Meet app is not installed
+
+  final launchSuccessful = await launchUrl(url);
   if (!launchSuccessful && context.mounted) {
     showSnackBar(context.strings.generic_error_occurred);
   }
