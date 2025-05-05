@@ -603,7 +603,7 @@ class ChatApi {
     return null;
   }
 
-  /// Create Jitsi Meet video call URL to a meeting with an user.
+  /// Create Jitsi Meet video call URLs to a meeting with an user.
   ///
   /// The user must be a match.
   ///
@@ -612,9 +612,9 @@ class ChatApi {
   /// Parameters:
   ///
   /// * [String] aid (required):
-  Future<Response> getVideoCallUrlWithHttpInfo(String aid,) async {
+  Future<Response> getVideoCallUrlsWithHttpInfo(String aid,) async {
     // ignore: prefer_const_declarations
-    final path = r'/chat_api/get_video_call_url';
+    final path = r'/chat_api/get_video_call_urls';
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -639,15 +639,15 @@ class ChatApi {
     );
   }
 
-  /// Create Jitsi Meet video call URL to a meeting with an user.
+  /// Create Jitsi Meet video call URLs to a meeting with an user.
   ///
   /// The user must be a match.
   ///
   /// Parameters:
   ///
   /// * [String] aid (required):
-  Future<GetVideoCallUrlResult?> getVideoCallUrl(String aid,) async {
-    final response = await getVideoCallUrlWithHttpInfo(aid,);
+  Future<GetVideoCallUrlsResult?> getVideoCallUrls(String aid,) async {
+    final response = await getVideoCallUrlsWithHttpInfo(aid,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -655,7 +655,7 @@ class ChatApi {
     // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetVideoCallUrlResult',) as GetVideoCallUrlResult;
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetVideoCallUrlsResult',) as GetVideoCallUrlsResult;
     
     }
     return null;

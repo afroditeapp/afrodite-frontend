@@ -396,7 +396,7 @@ ${screenContext.strings.generic_state}: $stateText""";
 void _joinVideoCall(BuildContext context, AccountId callee) async {
   final api = LoginRepository.getInstance().repositories.api;
 
-  final r = await api.chat((api) => api.getVideoCallUrl(callee.aid)).ok();
+  final r = await api.chat((api) => api.getVideoCallUrls(callee.aid)).ok();
 
   if (!context.mounted) {
     return;
