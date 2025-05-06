@@ -27,7 +27,7 @@ import 'package:app/ui_utils/list.dart';
 var log = Logger("ProfileView");
 
 class ProfileView extends BottomNavigationScreen {
-  const ProfileView({Key? key}) : super(key: key);
+  const ProfileView({super.key});
 
   @override
   State<ProfileView> createState() => _ProfileViewState();
@@ -51,6 +51,19 @@ class ProfileView extends BottomNavigationScreen {
 }
 
 class _ProfileViewState extends State<ProfileView> {
+  @override
+  Widget build(BuildContext context) {
+    return PublicProfileViewingBlocker(
+      child: ProfileGrid(
+        filteringSettingsBloc: context.read<ProfileFilteringSettingsBloc>(),
+      ),
+    );
+  }
+}
+
+class PublicProfileViewingBlocker extends StatelessWidget {
+  final Widget child;
+  const PublicProfileViewingBlocker({required this.child, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -71,9 +84,7 @@ class _ProfileViewState extends State<ProfileView> {
                   builder: (context, myProfileState) {
                     final primaryContent = myProfileState.profile?.myContent.getAtOrNull(0);
                     if (primaryContent?.accepted == true) {
-                      return ProfileGrid(
-                        filteringSettingsBloc: context.read<ProfileFilteringSettingsBloc>(),
-                      );
+                      return child;
                     } else {
                       return primaryProfileContentIsNotAccepted(context, primaryContent);
                     }

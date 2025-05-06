@@ -4,6 +4,7 @@ import 'package:app/data/profile/automatic_profile_search/automatic_profile_sear
 import 'package:app/logic/profile/view_profiles.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/model/freezed/logic/profile/view_profiles.dart';
+import 'package:app/ui/normal/profiles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
@@ -51,9 +52,28 @@ class AutomaticProfileSearchResultsScreen extends StatefulWidget {
   State<AutomaticProfileSearchResultsScreen> createState() => AutomaticProfileSearchResultsScreenState();
 }
 
+class AutomaticProfileSearchResultsScreenState extends State<AutomaticProfileSearchResultsScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(context.strings.automatic_profile_search_results_screen_title),
+      ),
+      body: const PublicProfileViewingBlocker(child: AutomaticProfileSearchResultsGrid()),
+    );
+  }
+}
+
 typedef AutomaticProfileSearchProfileEntry = ({ProfileEntry profile, ProfileActionState? initialProfileAction});
 
-class AutomaticProfileSearchResultsScreenState extends State<AutomaticProfileSearchResultsScreen> {
+class AutomaticProfileSearchResultsGrid extends StatefulWidget {
+  const AutomaticProfileSearchResultsGrid({super.key});
+
+  @override
+  State<AutomaticProfileSearchResultsGrid> createState() => _AutomaticProfileSearchResultsGridState();
+}
+
+class _AutomaticProfileSearchResultsGridState extends State<AutomaticProfileSearchResultsGrid> {
   final ScrollController _scrollController = ScrollController();
   PagingController<int, AutomaticProfileSearchProfileEntry>? _pagingController =
     PagingController(firstPageKey: 0);
@@ -136,12 +156,7 @@ class AutomaticProfileSearchResultsScreenState extends State<AutomaticProfileSea
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(context.strings.automatic_profile_search_results_screen_title),
-      ),
-      body: content(),
-    );
+    return content();
   }
 
   Widget content() {
