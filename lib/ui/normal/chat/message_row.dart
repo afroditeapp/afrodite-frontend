@@ -5,6 +5,7 @@ import 'package:app/data/login_repository.dart';
 import 'package:app/utils/result.dart';
 import 'package:flutter/material.dart';
 import 'package:database/database.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:app/localizations.dart';
 import 'package:app/logic/app/navigator_state.dart';
@@ -301,6 +302,8 @@ void openMessageMenu(BuildContext screenContext, MessageEntry entry) {
   }
   FocusScope.of(screenContext).unfocus();
 
+  final message = entry.message;
+
   final pageKey = PageKey();
   MyNavigator.showDialog<void>(
     context: screenContext,
@@ -309,9 +312,17 @@ void openMessageMenu(BuildContext screenContext, MessageEntry entry) {
       children: [
         ListTile(
           title: Text(context.strings.generic_details),
+          subtitle: Text(context.strings.conversation_screen_open_details_action_subtitle),
           onTap: () async {
             closeActionsAndOpenDetails(screenContext, entry, pageKey);
           },
+        ),
+        if (message is TextMessage) ListTile(
+          title: Text(context.strings.generic_copy),
+          onTap: () {
+            Clipboard.setData(ClipboardData(text: message.text));
+            MyNavigator.removePage(context, pageKey, null);
+          }
         ),
         if (entry.messageState.toSentState() == SentMessageState.sendingError) ListTile(
           title: Text(context.strings.generic_delete),

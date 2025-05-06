@@ -271,6 +271,10 @@
   "@conversation_screen_message_unsupported": {
     "description": "Message text that message is unsupported"
   },
+  "conversation_screen_open_details_action_subtitle": "Contains selectable text",
+  "@conversation_screen_open_details_action_subtitle": {
+    "description": "Action subtitle for open details action"
+  },
   "conversation_screen_profile_blocked": "Profile was blocked",
   "@conversation_screen_profile_blocked": {
     "description": "Snackbar text displayed when profile blocking is successful"
@@ -418,6 +422,10 @@
   "generic_continue": "Continue",
   "@generic_continue": {
     "description": "Generic continue text"
+  },
+  "generic_copy": "Copy",
+  "@generic_copy": {
+    "description": "Generic copy text"
   },
   "generic_data_sync_failed": "Data sync failed",
   "@generic_data_sync_failed": {

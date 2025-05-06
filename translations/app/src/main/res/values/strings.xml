@@ -49,6 +49,7 @@
     <string name="generic_delete_question" description="Generic delete question">Delete?</string>
     <string name="generic_cancel_question" description="Generic cancel question">Cancel?</string>
     <string name="generic_logout_failed" description="Generic logout failed text">Logout failed</string>
+    <string name="generic_copy" description="Generic copy text">Copy</string>
     <string name="generic_edit" description="Generic edit text">Edit</string>
     <string name="generic_skip" description="Generic skip text">Skip</string>
     <string name="generic_profile_loading_failed" description="Error text displayed when profile loading fails">Profile loading failed</string>
@@ -382,6 +383,7 @@
     <string name="conversation_screen_send_video_call_invitation_action" description="Action text for send video call invitation action">Send video call invitation</string>
     <string name="conversation_screen_send_video_call_invitation_dialog_title" description="Title text for send video call invitation dialog">Send video call invitation?</string>
     <string name="conversation_screen_join_video_call_button" description="Button text for joining a video call">Join video call</string>
+    <string name="conversation_screen_open_details_action_subtitle" description="Action subtitle for open details action">Contains selectable text</string>
 
     <!-- Menu screen -->
     <string name="menu_screen_title" description="Title for menu screen">Menu</string>
