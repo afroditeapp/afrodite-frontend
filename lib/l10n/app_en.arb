@@ -565,6 +565,10 @@
   "@generic_text_field_age_hint_text": {
     "description": "Input field hint text for age"
   },
+  "generic_this_feature_is_disabled": "This feature is disabled",
+  "@generic_this_feature_is_disabled": {
+    "description": "Generic this feature is disabled text"
+  },
   "generic_time": "Time",
   "@generic_time": {
     "description": "Generic time text"

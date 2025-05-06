@@ -136,6 +136,7 @@ lib/model/get_sent_message.dart
 lib/model/get_video_call_urls_result.dart
 lib/model/group_values.dart
 lib/model/ip_address_info.dart
+lib/model/jitsi_meet_urls.dart
 lib/model/language.dart
 lib/model/last_seen_time_filter.dart
 lib/model/latest_birthdate.dart

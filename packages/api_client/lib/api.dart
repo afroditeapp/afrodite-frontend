@@ -154,6 +154,7 @@ part 'model/get_sent_message.dart';
 part 'model/get_video_call_urls_result.dart';
 part 'model/group_values.dart';
 part 'model/ip_address_info.dart';
+part 'model/jitsi_meet_urls.dart';
 part 'model/language.dart';
 part 'model/last_seen_time_filter.dart';
 part 'model/latest_birthdate.dart';

@@ -397,20 +397,26 @@ ${screenContext.strings.generic_state}: $stateText""";
 void _joinVideoCall(BuildContext context, AccountId callee) async {
   final api = LoginRepository.getInstance().repositories.api;
 
-  final r = await api.chat((api) => api.getVideoCallUrls(callee.aid)).ok();
+  final videoCallingUrls = await api.chat((api) => api.getVideoCallUrls(callee.aid)).ok();
 
   if (!context.mounted) {
     return;
   }
 
-  if (r == null) {
+  if (videoCallingUrls == null) {
     showSnackBar(context.strings.generic_error_occurred);
+    return;
+  }
+
+  final jitsiMeetUrls = videoCallingUrls.jitsiMeet;
+  if (jitsiMeetUrls == null) {
+    showSnackBar(context.strings.generic_this_feature_is_disabled);
     return;
   }
 
   final Uri url;
   try {
-    url = Uri.parse(r.url);
+    url = Uri.parse(jitsiMeetUrls.url);
   } catch (_) {
     showSnackBar(context.strings.generic_error_occurred);
     return;
@@ -428,7 +434,7 @@ void _joinVideoCall(BuildContext context, AccountId callee) async {
 
   // Jitsi Meet app is not installed
 
-  final customUrl = r.customUrl;
+  final customUrl = jitsiMeetUrls.customUrl;
   if (customUrl != null) {
     final launchSuccessful = await launchUrlString(customUrl);
     if (!launchSuccessful && context.mounted) {

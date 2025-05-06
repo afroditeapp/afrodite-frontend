@@ -605,7 +605,7 @@ class ChatApi {
 
   /// Create Jitsi Meet video call URLs to a meeting with an user.
   ///
-  /// The user must be a match.
+  /// The user must be a match.  If result value is empty then video calling is disabled.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -641,7 +641,7 @@ class ChatApi {
 
   /// Create Jitsi Meet video call URLs to a meeting with an user.
   ///
-  /// The user must be a match.
+  /// The user must be a match.  If result value is empty then video calling is disabled.
   ///
   /// Parameters:
   ///

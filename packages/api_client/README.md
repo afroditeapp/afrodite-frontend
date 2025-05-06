@@ -345,6 +345,7 @@ Class | Method | HTTP request | Description
  - [GetVideoCallUrlsResult](doc//GetVideoCallUrlsResult.md)
  - [GroupValues](doc//GroupValues.md)
  - [IpAddressInfo](doc//IpAddressInfo.md)
+ - [JitsiMeetUrls](doc//JitsiMeetUrls.md)
  - [Language](doc//Language.md)
  - [LastSeenTimeFilter](doc//LastSeenTimeFilter.md)
  - [LatestBirthdate](doc//LatestBirthdate.md)

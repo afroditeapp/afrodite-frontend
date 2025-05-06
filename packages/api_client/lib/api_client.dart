@@ -410,6 +410,8 @@ class ApiClient {
           return GroupValues.fromJson(value);
         case 'IpAddressInfo':
           return IpAddressInfo.fromJson(value);
+        case 'JitsiMeetUrls':
+          return JitsiMeetUrls.fromJson(value);
         case 'Language':
           return Language.fromJson(value);
         case 'LastSeenTimeFilter':

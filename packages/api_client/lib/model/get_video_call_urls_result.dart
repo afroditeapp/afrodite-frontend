@@ -13,38 +13,30 @@ part of openapi.api;
 class GetVideoCallUrlsResult {
   /// Returns a new [GetVideoCallUrlsResult] instance.
   GetVideoCallUrlsResult({
-    this.customUrl,
-    required this.url,
+    this.jitsiMeet,
   });
 
-  /// Custom Jitsi Meet URL to a meeting with HTTPS schema. If exists, this should be used to open the meeting when Jitsi Meet app is not installed.
-  String? customUrl;
-
-  /// Standard Jitsi Meet URL to a meeting with HTTPS schema. Can be used to crate URL to open Jitsi Meet app.
-  String url;
+  JitsiMeetUrls? jitsiMeet;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is GetVideoCallUrlsResult &&
-    other.customUrl == customUrl &&
-    other.url == url;
+    other.jitsiMeet == jitsiMeet;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (customUrl == null ? 0 : customUrl!.hashCode) +
-    (url.hashCode);
+    (jitsiMeet == null ? 0 : jitsiMeet!.hashCode);
 
   @override
-  String toString() => 'GetVideoCallUrlsResult[customUrl=$customUrl, url=$url]';
+  String toString() => 'GetVideoCallUrlsResult[jitsiMeet=$jitsiMeet]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-    if (this.customUrl != null) {
-      json[r'custom_url'] = this.customUrl;
+    if (this.jitsiMeet != null) {
+      json[r'jitsi_meet'] = this.jitsiMeet;
     } else {
-      json[r'custom_url'] = null;
+      json[r'jitsi_meet'] = null;
     }
-      json[r'url'] = this.url;
     return json;
   }
 
@@ -67,8 +59,7 @@ class GetVideoCallUrlsResult {
       }());
 
       return GetVideoCallUrlsResult(
-        customUrl: mapValueOfType<String>(json, r'custom_url'),
-        url: mapValueOfType<String>(json, r'url')!,
+        jitsiMeet: JitsiMeetUrls.fromJson(json[r'jitsi_meet']),
       );
     }
     return null;
@@ -116,7 +107,6 @@ class GetVideoCallUrlsResult {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'url',
   };
 }
 
