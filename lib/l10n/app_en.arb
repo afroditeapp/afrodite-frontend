@@ -1252,17 +1252,9 @@
   "@profile_filtering_settings_screen_updating_filters_failed": {
     "description": "Snackbar text for notifying about failed profile filters update"
   },
-  "profile_grid_screen_initial_moderation_in_progress": "Moderation in progress.",
-  "@profile_grid_screen_initial_moderation_in_progress": {
-    "description": "Info text that initial moderation is in progress"
-  },
   "profile_grid_screen_initial_moderation_ongoing": "You can view profiles and others can see your profile after your profile images are moderated.",
   "@profile_grid_screen_initial_moderation_ongoing": {
     "description": "Info text that initial moderation is ongoing"
-  },
-  "profile_grid_screen_initial_moderation_rejected": "Moderator did not accept some profile image. Make new moderation request in settings.",
-  "@profile_grid_screen_initial_moderation_rejected": {
-    "description": "Info text that initial moderation was rejected"
   },
   "profile_grid_screen_no_profiles_found_description_filters_disabled": "Spread the word about the app in social media",
   "@profile_grid_screen_no_profiles_found_description_filters_disabled": {

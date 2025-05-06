@@ -225,8 +225,6 @@
     <string name="profile_grid_screen_start_initial_setup_button" description="Button text for start initial setup button">Start account initial setup</string>
     <string name="profile_grid_screen_profile_is_private_info" description="Info text which is shown when profile visibility is set to private">To view profiles, set your profile visibility to public from app settings.</string>
     <string name="profile_grid_screen_initial_moderation_ongoing" description="Info text that initial moderation is ongoing">You can view profiles and others can see your profile after your profile images are moderated.</string>
-    <string name="profile_grid_screen_initial_moderation_in_progress" description="Info text that initial moderation is in progress">Moderation in progress.</string>
-    <string name="profile_grid_screen_initial_moderation_rejected" description="Info text that initial moderation was rejected">Moderator did not accept some profile image. Make new moderation request in settings.</string>
     <string name="profile_grid_screen_no_profiles_found_title" description="Title that no profiles were found">No profiles found</string>
     <string name="profile_grid_screen_no_profiles_found_description_filters_enabled" description="Description displayed when there is no profiles and some filter is enabled">Change or disable filter settings</string>
     <string name="profile_grid_screen_no_profiles_found_description_filters_disabled" description="Description displayed when there is no profiles and there is no filters enabled">Spread the word about the app in social media</string>

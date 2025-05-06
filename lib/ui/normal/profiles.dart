@@ -133,8 +133,6 @@ class PublicProfileViewingBlocker extends StatelessWidget {
           const Icon(Icons.hourglass_top_rounded, size: 48),
           const Padding(padding: EdgeInsets.all(16)),
           Text(context.strings.profile_grid_screen_initial_moderation_ongoing),
-          const Padding(padding: EdgeInsets.all(16)),
-          const ShowModerationQueueProgress(),
         ],
       ),
     );
@@ -190,50 +188,5 @@ class PublicProfileViewingBlocker extends StatelessWidget {
         child: Text(context.strings.profile_grid_screen_start_initial_setup_button),
       ),
     );
-  }
-}
-
-class ShowModerationQueueProgress extends StatefulWidget {
-  const ShowModerationQueueProgress({super.key});
-
-  @override
-  State<ShowModerationQueueProgress> createState() => _ShowModerationQueueProgressState();
-}
-
-class _ShowModerationQueueProgressState extends State<ShowModerationQueueProgress> {
-
-  @override
-  Widget build(BuildContext context) {
-    return blocWidgetForProcessingState();
-  }
-
-  Widget blocWidgetForProcessingState() {
-    return BlocBuilder<ContentBloc, ContentData>(
-      builder: (context, state) {
-        // TODO(prod): List all rejected images
-        // TODO(prod): Show button to take new security selfie if needed
-        // TODO(prod): Show button to edit profile pictures if needed
-        return const Text("");
-      },
-    );
-  }
-
-  Widget widgetForAcceptedValue(BuildContext context, bool accepted) {
-    if (accepted) {
-      return Text(context.strings.profile_grid_screen_initial_moderation_in_progress);
-    } else {
-      return const SizedBox.shrink();
-    }
-
-    // TODO: Remove?
-    // } else if (request.state == ModerationRequestState.rejected) {
-    //   return Column(
-    //     children: [
-    //       Text(context.strings.profile_grid_screen_initial_moderation_rejected),
-    //       const Padding(padding: EdgeInsets.all(8)),
-    //       retryModerationRequestButton(context),
-    //     ],
-    //   );
-    // } else {
   }
 }
