@@ -156,7 +156,9 @@ class _MainStateUiLogicState extends State<MainStateUiLogic> {
               BlocProvider(create: (_) => ContentBloc()),
               BlocProvider(create: (_) => SelectContentBloc()),
               BlocProvider(create: (_) => ProfilePicturesBloc()),
-              BlocProvider(create: (_) => ClientFeaturesConfigBloc()),
+              // Disable lazy init for ClientFeaturesConfigBloc so that
+              // location selection does not use the default map settings.
+              BlocProvider(create: (_) => ClientFeaturesConfigBloc(), lazy: false),
             ],
             child: navigator,
           ),
