@@ -5,62 +5,62 @@ import "package:app/model/freezed/logic/sign_in_with.dart";
 import "package:app/ui_utils/snack_bar.dart";
 import "package:app/utils.dart";
 
-sealed class SignInWithEvent {}
-class SignInWithGoogle extends SignInWithEvent {
-  SignInWithGoogle();
-}
-class SignInWithAppleEvent extends SignInWithEvent {
-  SignInWithAppleEvent();
-}
+sealed class SignInWithBlocEvent {}
+class SignInWithGoogle extends SignInWithBlocEvent {}
+class SignInWithAppleEvent extends SignInWithBlocEvent {}
 
-class SignInWithBloc extends Bloc<SignInWithEvent, SignInWithData> with ActionRunner {
+class SignInWithBloc extends Bloc<SignInWithBlocEvent, SignInWithData> with ActionRunner {
   final LoginRepository login = LoginRepository.getInstance();
 
   SignInWithBloc() : super(SignInWithData()) {
-
     on<SignInWithGoogle>((data, emit) async {
       await runOnce(() async {
-        await for (final event in login.signInWithGoogle()) {
-          switch (event) {
-            case SignInWithGoogleEvent.getGoogleAccountTokenCompleted:
-              emit(state.copyWith(
-                showProgress: true,
-              ));
-            case SignInWithGoogleEvent.signInWithGoogleFailed:
-              ();
-            case SignInWithGoogleEvent.serverRequestFailed:
-              ();
-            case SignInWithGoogleEvent.unsupportedClient:
-              ();
-            case SignInWithGoogleEvent.otherError:
-              ();
-          }
-          showSnackBarTextsForSignInWithGoogle(event);
-        }
-
-        emit(state.copyWith(
-          showProgress: false,
-        ));
+        await _handleSignInWith(emit, login.signInWithGoogle());
       });
     });
-    // Sign in with Apple requires iOS 13.
     on<SignInWithAppleEvent>((data, emit) async {
-      await runOnce(() async => await login.signInWithApple());
+      await runOnce(() async {
+        await _handleSignInWith(emit, login.signInWithApple());
+      });
     });
+  }
+
+  Future<void> _handleSignInWith(Emitter<SignInWithData> emit, Stream<SignInWithEvent> stream) async {
+    await for (final event in stream) {
+      switch (event) {
+        case SignInWithEvent.getTokenCompleted:
+          emit(state.copyWith(
+            showProgress: true,
+          ));
+        case SignInWithEvent.getTokenFailed:
+          ();
+        case SignInWithEvent.serverRequestFailed:
+          ();
+        case SignInWithEvent.unsupportedClient:
+          ();
+        case SignInWithEvent.otherError:
+          ();
+      }
+      showSnackBarTextsForSignInWithEvent(event);
+    }
+
+    emit(state.copyWith(
+      showProgress: false,
+    ));
   }
 }
 
-void showSnackBarTextsForSignInWithGoogle(SignInWithGoogleEvent event) {
+void showSnackBarTextsForSignInWithEvent(SignInWithEvent event) {
   switch (event) {
-    case SignInWithGoogleEvent.getGoogleAccountTokenCompleted:
+    case SignInWithEvent.getTokenCompleted:
       ();
-    case SignInWithGoogleEvent.signInWithGoogleFailed:
+    case SignInWithEvent.getTokenFailed:
       showSnackBar(R.strings.login_screen_sign_in_with_error);
-    case SignInWithGoogleEvent.serverRequestFailed:
+    case SignInWithEvent.serverRequestFailed:
       showSnackBar(R.strings.generic_error_occurred);
-    case SignInWithGoogleEvent.unsupportedClient:
+    case SignInWithEvent.unsupportedClient:
       showSnackBar(R.strings.generic_error_app_version_is_unsupported);
-    case SignInWithGoogleEvent.otherError:
+    case SignInWithEvent.otherError:
       showSnackBar(R.strings.generic_error);
   }
 }

@@ -118,19 +118,37 @@ class LoginRepository extends DataRepository {
 
     _google = createSignInWithGoogle();
     if (kIsWeb) {
-      _google.onCurrentUserChanged
-      .asyncMap((signedIn) async {
-        if (signedIn == null) {
-          return;
-        }
+      _google
+        .onCurrentUserChanged
+        .asyncMap((signedIn) async {
+          if (signedIn == null) {
+            // Perhaps this can happen if page loads and there is no Google
+            // Account session or valid Google Account session invalidates?
+            // Don't do anything in these cases.
+            return;
+          }
 
-        switch (await _handleSignInWithGoogleAccountInfo(signedIn)) {
-          case Ok():
-            ();
-          case Err(:final e):
-            showSnackBarTextsForSignInWithGoogle(e);
-        }
-      }).listen((_) {});
+          final String token;
+          try {
+            final possibleToken = (await signedIn.authentication).idToken;
+            if (possibleToken == null) {
+              showSnackBarTextsForSignInWithEvent(SignInWithEvent.getTokenFailed);
+              return;
+            }
+            token = possibleToken;
+          } catch (_) {
+            showSnackBarTextsForSignInWithEvent(SignInWithEvent.getTokenFailed);
+            return;
+          }
+
+          final info = SignInWithLoginInfo(googleToken: token, clientInfo: _clientInfo());
+          switch (await _handleSignInWithLoginInfo(info)) {
+            case Ok():
+              ();
+            case Err(:final e):
+              showSnackBarTextsForSignInWithEvent(e);
+          }
+        }).listen((_) {});
     }
 
     await _apiNoConnection.init();
@@ -331,23 +349,29 @@ class LoginRepository extends DataRepository {
     return newRepositories;
   }
 
-  Stream<SignInWithGoogleEvent> signInWithGoogle() async* {
-    final GoogleSignInAccount? signedIn;
+  Stream<SignInWithEvent> signInWithGoogle() async* {
+    final String token;
     try {
-      signedIn = await _google.signIn();
-    } catch (e) { // No documentation, just catch everything
-      yield SignInWithGoogleEvent.signInWithGoogleFailed;
+      final signedIn = await _google.signIn();
+      if (signedIn == null) {
+        yield SignInWithEvent.getTokenFailed;
+        return;
+      }
+      final possibleToken = (await signedIn.authentication).idToken;
+      if (possibleToken == null) {
+        yield SignInWithEvent.getTokenFailed;
+        return;
+      }
+      token = possibleToken;
+    } catch (_) {
+      yield SignInWithEvent.getTokenFailed;
       return;
     }
 
-    if (signedIn == null) {
-      yield SignInWithGoogleEvent.signInWithGoogleFailed;
-      return;
-    }
+    yield SignInWithEvent.getTokenCompleted;
 
-    yield SignInWithGoogleEvent.getGoogleAccountTokenCompleted;
-
-    switch (await _handleSignInWithGoogleAccountInfo(signedIn)) {
+    final info = SignInWithLoginInfo(googleToken: token, clientInfo: _clientInfo());
+    switch (await _handleSignInWithLoginInfo(info)) {
       case Ok():
         ();
       case Err(:final e):
@@ -372,21 +396,19 @@ class LoginRepository extends DataRepository {
     );
   }
 
-  Future<Result<void, SignInWithGoogleEvent>> _handleSignInWithGoogleAccountInfo(GoogleSignInAccount signedIn) async {
-    final token = await signedIn.authentication;
-    final info = SignInWithLoginInfo(googleToken: token.idToken, clientInfo: _clientInfo());
+  Future<Result<void, SignInWithEvent>> _handleSignInWithLoginInfo(SignInWithLoginInfo info) async {
     final login = await _apiNoConnection.account((api) => api.postSignInWithLogin(info)).ok();
     if (login == null) {
-      return const Err(SignInWithGoogleEvent.serverRequestFailed);
+      return const Err(SignInWithEvent.serverRequestFailed);
     }
 
     return await _handleLoginResult(login)
       .mapErr((e) {
         switch (e) {
           case CommonSignInError.unsupportedClient:
-            return SignInWithGoogleEvent.unsupportedClient;
+            return SignInWithEvent.unsupportedClient;
           case CommonSignInError.otherError:
-            return SignInWithGoogleEvent.otherError;
+            return SignInWithEvent.otherError;
         }
       });
   }
@@ -479,15 +501,31 @@ class LoginRepository extends DataRepository {
     log.info("Logout completed");
   }
 
-  Future<void> signInWithApple() async {
-     AuthorizationCredentialAppleID signedIn;
+  Stream<SignInWithEvent> signInWithApple() async* {
+    AuthorizationCredentialAppleID signedIn;
     try {
       signedIn = await SignInWithApple.getAppleIDCredential(scopes: [
         AppleIDAuthorizationScopes.email,
       ]);
-      await _apiNoConnection.account((api) => api.postSignInWithLogin(SignInWithLoginInfo(appleToken: signedIn.identityToken, clientInfo: _clientInfo())));
     } on SignInWithAppleException catch (_) {
-      log.error("Sign in with Apple failed");
+      yield SignInWithEvent.getTokenFailed;
+      return;
+    }
+
+    final token = signedIn.identityToken;
+    if (token == null) {
+      yield SignInWithEvent.getTokenFailed;
+      return;
+    }
+
+    yield SignInWithEvent.getTokenCompleted;
+
+    final info = SignInWithLoginInfo(appleToken: token, clientInfo: _clientInfo());
+    switch (await _handleSignInWithLoginInfo(info)) {
+      case Ok():
+        ();
+      case Err(:final e):
+        yield e;
     }
   }
 
@@ -625,9 +663,9 @@ class SessionExpired extends SessionOrOtherError {}
 class UnsupportedClient extends SessionOrOtherError {}
 class OtherError extends SessionOrOtherError {}
 
-enum SignInWithGoogleEvent {
-  getGoogleAccountTokenCompleted,
-  signInWithGoogleFailed,
+enum SignInWithEvent {
+  getTokenCompleted,
+  getTokenFailed,
   serverRequestFailed,
   unsupportedClient,
   otherError,
