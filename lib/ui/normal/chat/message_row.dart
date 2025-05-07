@@ -1,6 +1,8 @@
 
 
 
+import 'dart:io';
+
 import 'package:app/data/login_repository.dart';
 import 'package:app/utils/result.dart';
 import 'package:flutter/material.dart';
@@ -436,7 +438,6 @@ void _joinVideoCall(BuildContext context, AccountId callee) async {
   try {
     final jitsMeetAppLaunchSuccessful = await launchUrl(
       url.replace(scheme: "org.jitsi.meet"),
-      mode: LaunchMode.externalNonBrowserApplication,
     );
     if (jitsMeetAppLaunchSuccessful) {
       return;
@@ -445,8 +446,11 @@ void _joinVideoCall(BuildContext context, AccountId callee) async {
 
   // Jitsi Meet app is not installed
 
+  // Disable custom URL on iOS as it points to a page which does automatic
+  // web page closing which seems to not work on iOS using in-app
+  // web browser screen.
   final customUrl = jitsiMeetUrls.customUrl;
-  if (customUrl != null) {
+  if (customUrl != null && !Platform.isIOS) {
     final launchSuccessful = await launchUrlString(customUrl);
     if (!launchSuccessful && context.mounted) {
       showSnackBar(context.strings.generic_error_occurred);
