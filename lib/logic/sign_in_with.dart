@@ -19,9 +19,8 @@ class SignInWithBloc extends Bloc<SignInWithBlocEvent, SignInWithData> with Acti
       });
     });
     on<SignInWithAppleEvent>((data, emit) async {
-      await runOnce(() async {
-        await _handleSignInWith(emit, login.signInWithApple());
-      });
+      // On Android this might not never complete
+      await _handleSignInWith(emit, login.signInWithApple());
     });
   }
 

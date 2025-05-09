@@ -125,6 +125,8 @@ dependencies:
 
   scrollable_positioned_list: ^0.3.8
 
+  web: ^1.1.1
+
   # Code reviewed 2024-05-04
   app_settings:
     git:

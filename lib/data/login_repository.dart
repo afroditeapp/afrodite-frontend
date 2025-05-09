@@ -3,6 +3,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:app/data/app_version.dart';
+import 'package:app/data/utils/sign_in_with_apple.dart';
 import 'package:async/async.dart' show StreamExtensions;
 import 'package:database/database.dart';
 import 'package:flutter/foundation.dart';
@@ -28,7 +29,7 @@ import 'package:app/localizations.dart';
 import 'package:app/logic/app/app_visibility_provider.dart';
 import 'package:app/logic/sign_in_with.dart';
 import 'package:app/main.dart';
-import 'package:app/sign_in_with_google_ids.dart';
+import 'package:app/service_config.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:utils/utils.dart';
 import 'package:app/utils/result.dart';
@@ -501,12 +502,29 @@ class LoginRepository extends DataRepository {
     log.info("Logout completed");
   }
 
+  /// On Android this might not never complete
   Stream<SignInWithEvent> signInWithApple() async* {
+    final Uri serverUrl;
+    try {
+      serverUrl = Uri.parse(_apiNoConnection.currentServerAddress());
+    } catch (_) {
+      yield SignInWithEvent.otherError;
+      return;
+    }
+
     AuthorizationCredentialAppleID signedIn;
     try {
-      signedIn = await SignInWithApple.getAppleIDCredential(scopes: [
-        AppleIDAuthorizationScopes.email,
-      ]);
+      // On Android this might not never complete
+      signedIn = await SignInWithApple.getAppleIDCredential(
+        scopes: [
+          AppleIDAuthorizationScopes.email,
+        ],
+        webAuthenticationOptions: WebAuthenticationOptions(
+          clientId: signInWithAppleServiceIdForAndroidAndWebLogin(),
+          redirectUri: kIsWeb ? signInWithAppleRedirectUrlForWeb() :
+            serverUrl.replace(path: "account_api/sign_in_with_apple_redirect_to_app"),
+        )
+      );
     } on SignInWithAppleException catch (_) {
       yield SignInWithEvent.getTokenFailed;
       return;

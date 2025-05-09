@@ -62,8 +62,12 @@ web/sqlite3.wasm
 android/app/google-services.json
 ios/Runner/GoogleService-Info.plist
 lib/firebase_options.dart
+# Replaced with service_config.dart
 lib/sign_in_with_google_ids.dart
 firebase.json
+
+# Service config for example for Sign in with Google
+lib/service_config.dart
 
 # iOS development team
 ios/Runner.xcodeproj

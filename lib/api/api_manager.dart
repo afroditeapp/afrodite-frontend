@@ -274,6 +274,8 @@ class ApiManager implements LifecycleMethods {
   @override
   Future<void> dispose() async {}
 
+  String currentServerAddress() => _account.serverAddress;
+
   Future<String> updateAddressFromConfigAndReturnIt() async {
     final backgroundDb = BackgroundDatabaseManager.getInstance();
 

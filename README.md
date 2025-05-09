@@ -128,11 +128,10 @@ class DefaultFirebaseOptions {
 }
 ```
 
-lib/sign_in_with_google_ids.dart
+lib/service_config.dart
 ```dart
-String signInWithGoogleBackendClientId() {
-  return "";
-}
+String signInWithGoogleBackendClientId() => "";
+String signInWithAppleServiceIdForAndroidAndWebLogin() => "";
 ```
 
 ### Add missing iOS project files
@@ -187,6 +186,29 @@ lib/firebase_options.dart
 lib/sign_in_with_google_ids.dart
 firebase.json
 ```
+
+## Add Sign in with Apple support
+
+## Android and web
+
+Login HTTP redirect URLs and related domains must be added to Service ID config.
+<https://developer.apple.com/help/account/capabilities/configure-sign-in-with-apple-for-the-web>
+
+Web redirect URL example:
+```
+https://backend.example.com
+```
+
+Android redirect URL example:
+```
+https://backend.example.com/account_api/sign_in_with_apple_redirect_to_app
+```
+
+Also modify correct Service ID to `lib/service_config.dart`.
+
+## iOS
+
+The app must have Sign in with Apple capability enabled.
 
 ## Questions and answers
 
