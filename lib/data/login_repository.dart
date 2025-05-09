@@ -1,10 +1,12 @@
 
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:app/data/app_version.dart';
 import 'package:app/data/utils/sign_in_with_apple.dart';
 import 'package:async/async.dart' show StreamExtensions;
+import 'package:crypto/crypto.dart';
 import 'package:database/database.dart';
 import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -512,6 +514,10 @@ class LoginRepository extends DataRepository {
       return;
     }
 
+    final nonce = generateNonceBytes().toList();
+    final nonceBase64Url = base64UrlEncode(nonce);
+    final hashedNonceBase64Url = base64UrlEncode(sha256.convert(nonce).bytes);
+
     AuthorizationCredentialAppleID signedIn;
     try {
       // On Android this might not never complete
@@ -523,7 +529,8 @@ class LoginRepository extends DataRepository {
           clientId: signInWithAppleServiceIdForAndroidAndWebLogin(),
           redirectUri: kIsWeb ? signInWithAppleRedirectUrlForWeb() :
             serverUrl.replace(path: "account_api/sign_in_with_apple_redirect_to_app"),
-        )
+        ),
+        nonce: hashedNonceBase64Url,
       );
     } on SignInWithAppleException catch (_) {
       yield SignInWithEvent.getTokenFailed;
@@ -538,7 +545,13 @@ class LoginRepository extends DataRepository {
 
     yield SignInWithEvent.getTokenCompleted;
 
-    final info = SignInWithLoginInfo(appleToken: token, clientInfo: _clientInfo());
+    final info = SignInWithLoginInfo(
+      apple: SignInWithAppleInfo(
+        nonce: nonceBase64Url,
+        token: token,
+      ),
+      clientInfo: _clientInfo(),
+    );
     switch (await _handleSignInWithLoginInfo(info)) {
       case Ok():
         ();

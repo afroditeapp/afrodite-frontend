@@ -13,12 +13,12 @@ part of openapi.api;
 class SignInWithLoginInfo {
   /// Returns a new [SignInWithLoginInfo] instance.
   SignInWithLoginInfo({
-    this.appleToken,
+    this.apple,
     required this.clientInfo,
     this.googleToken,
   });
 
-  String? appleToken;
+  SignInWithAppleInfo? apple;
 
   ClientInfo clientInfo;
 
@@ -26,26 +26,26 @@ class SignInWithLoginInfo {
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is SignInWithLoginInfo &&
-    other.appleToken == appleToken &&
+    other.apple == apple &&
     other.clientInfo == clientInfo &&
     other.googleToken == googleToken;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (appleToken == null ? 0 : appleToken!.hashCode) +
+    (apple == null ? 0 : apple!.hashCode) +
     (clientInfo.hashCode) +
     (googleToken == null ? 0 : googleToken!.hashCode);
 
   @override
-  String toString() => 'SignInWithLoginInfo[appleToken=$appleToken, clientInfo=$clientInfo, googleToken=$googleToken]';
+  String toString() => 'SignInWithLoginInfo[apple=$apple, clientInfo=$clientInfo, googleToken=$googleToken]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-    if (this.appleToken != null) {
-      json[r'apple_token'] = this.appleToken;
+    if (this.apple != null) {
+      json[r'apple'] = this.apple;
     } else {
-      json[r'apple_token'] = null;
+      json[r'apple'] = null;
     }
       json[r'client_info'] = this.clientInfo;
     if (this.googleToken != null) {
@@ -75,7 +75,7 @@ class SignInWithLoginInfo {
       }());
 
       return SignInWithLoginInfo(
-        appleToken: mapValueOfType<String>(json, r'apple_token'),
+        apple: SignInWithAppleInfo.fromJson(json[r'apple']),
         clientInfo: ClientInfo.fromJson(json[r'client_info'])!,
         googleToken: mapValueOfType<String>(json, r'google_token'),
       );
@@ -128,4 +128,3 @@ class SignInWithLoginInfo {
     'client_info',
   };
 }
-

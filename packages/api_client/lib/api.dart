@@ -287,6 +287,7 @@ part 'model/set_account_setup.dart';
 part 'model/set_max_public_key_count.dart';
 part 'model/set_profile_content.dart';
 part 'model/set_profile_name.dart';
+part 'model/sign_in_with_apple_info.dart';
 part 'model/sign_in_with_login_info.dart';
 part 'model/software_info.dart';
 part 'model/software_update_state.dart';

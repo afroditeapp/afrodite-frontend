@@ -269,6 +269,7 @@ lib/model/set_account_setup.dart
 lib/model/set_max_public_key_count.dart
 lib/model/set_profile_content.dart
 lib/model/set_profile_name.dart
+lib/model/sign_in_with_apple_info.dart
 lib/model/sign_in_with_login_info.dart
 lib/model/software_info.dart
 lib/model/software_update_state.dart
