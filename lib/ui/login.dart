@@ -132,8 +132,6 @@ class _ServerAddressFieldState extends State<ServerAddressField> {
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return "Is empty";
-              } else if (!(value.contains("192.168.") || value.contains("10.0.2.2") || value.contains("127.0.0.1") || value.contains("/localhost:") )) {
-                return "Public IP addresses are not supported";
               } else {
                 var uri = Uri.tryParse(value);
                 if (uri == null || uri.port > 65535 || uri.port < 0) {
