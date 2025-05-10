@@ -11,10 +11,6 @@ file contains the differences. For backend features check backend repository
 * Text (max characters 400)
 * Images (min 1, max 4)
 
-## Chat
-
-* End-to-end encryption (OpenPGP)
-
 # Possible future frontend features
 
 * Check public keys using QR code
