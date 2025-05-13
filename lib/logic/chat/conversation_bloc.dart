@@ -334,6 +334,12 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
             null,
             data.changeInfo == ConversationChangeType.messageResent,
           ),
+          // Fix issue where app is opened from push notification to
+          // conversation screen and the first message is received.
+          // The conversation screen would only displays
+          // context.strings.conversation_screen_make_match_instruction
+          // without updating isMatch.
+          isMatch: true,
         ));
         if (visibleMessages == null) {
           log.info("Initial message list update done");
