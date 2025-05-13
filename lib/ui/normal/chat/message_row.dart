@@ -1,8 +1,7 @@
 
-
-
 import 'dart:io';
 
+import 'package:android_intent_plus/android_intent.dart';
 import 'package:app/data/login_repository.dart';
 import 'package:app/utils/result.dart';
 import 'package:flutter/material.dart';
@@ -436,6 +435,8 @@ void _joinVideoCall(BuildContext context, AccountId callee) async {
   }
 
   try {
+    // TODO(web): If web chat support is implemented then
+    //            test does this return false on web.
     final jitsMeetAppLaunchSuccessful = await launchUrl(
       url.replace(scheme: "org.jitsi.meet"),
     );
@@ -446,19 +447,96 @@ void _joinVideoCall(BuildContext context, AccountId callee) async {
 
   // Jitsi Meet app is not installed
 
-  // Disable custom URL on iOS as it points to a page which does automatic
-  // web page closing which seems to not work on iOS using in-app
-  // web browser screen.
-  final customUrl = jitsiMeetUrls.customUrl;
-  if (customUrl != null && !Platform.isIOS) {
-    final launchSuccessful = await launchUrlString(customUrl);
-    if (!launchSuccessful && context.mounted) {
-      showSnackBar(context.strings.generic_error_occurred);
-    }
+  if (!context.mounted) {
+    return;
+  }
+
+  if (Platform.isAndroid || Platform.isIOS) {
+    // The web app was disabled completely because hardware
+    // volume buttons don't change meeting audio volume when
+    // the meeting is opened in Android Chrome browser and
+    // the browser is running on a Samsung Android device.
+    //
+    // https://github.com/jitsi/jitsi-meet/issues/16020
+    //
+    // If the web app is allowed at some point on other devices
+    // and customUrl opens a web page which closes itself with
+    // window.close(), disable the customUrl on iOS because iOS
+    // in-app browser screen does not close with that method.
+    openJitsiMeetAppInstallDialogOnAndroidOrIos(context);
   } else {
-    final launchSuccessful = await launchUrl(url);
-    if (!launchSuccessful && context.mounted) {
-      showSnackBar(context.strings.generic_error_occurred);
+    final customUrl = jitsiMeetUrls.customUrl;
+    if (customUrl != null) {
+      await launchUrlStringAndShowError(context, customUrl);
+    } else {
+      await launchUrlAndShowError(context, url);
     }
+  }
+}
+
+Future<bool> isJitsiMeetAppInstalled() {
+  return canLaunchUrlString("org.jitsi.meet://test");
+}
+
+/// The app offers better user experience
+void openJitsiMeetAppInstallDialogOnAndroidOrIos(
+  BuildContext context,
+) {
+  if (Platform.isAndroid) {
+    openJitsiMeetAppInstallDialog(
+      context,
+      context.strings.conversation_screen_install_jitsi_meet_dialog_description_android,
+      (context) async {
+        const intent = AndroidIntent(
+          action: "action_view",
+          data: "https://play.google.com/store/apps/details?id=org.jitsi.meet",
+          package: "com.android.vending",
+        );
+        try {
+          await intent.launch();
+        } catch (_) {
+          if (context.mounted) {
+            showSnackBar(context.strings.generic_error_occurred);
+          }
+        }
+      }
+    );
+  } else if (Platform.isIOS) {
+     openJitsiMeetAppInstallDialog(
+      context,
+      context.strings.conversation_screen_install_jitsi_meet_dialog_description_ios,
+      (context) => launchUrlStringAndShowError(context, "https://apps.apple.com/app/id1165103905"),
+    );
+  }
+}
+
+void openJitsiMeetAppInstallDialog(
+  BuildContext context,
+  String dialogText,
+  void Function(BuildContext) action,
+) async {
+  final r = await showConfirmDialog(
+    context,
+    context.strings.conversation_screen_install_jitsi_meet_dialog_title,
+    details: dialogText,
+    yesNoActions: true,
+  );
+
+  if (r == true && context.mounted) {
+    action(context);
+  }
+}
+
+Future<void> launchUrlStringAndShowError(BuildContext context, String url) async {
+  final launchSuccessful = await launchUrlString(url);
+  if (!launchSuccessful && context.mounted) {
+    showSnackBar(context.strings.generic_error_occurred);
+  }
+}
+
+Future<void> launchUrlAndShowError(BuildContext context, Uri url) async {
+  final launchSuccessful = await launchUrl(url);
+  if (!launchSuccessful && context.mounted) {
+    showSnackBar(context.strings.generic_error_occurred);
   }
 }

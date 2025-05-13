@@ -382,6 +382,9 @@
     <string name="conversation_screen_send_video_call_invitation_dialog_title" description="Title text for send video call invitation dialog">Send video call invitation?</string>
     <string name="conversation_screen_join_video_call_button" description="Button text for joining a video call">Join video call</string>
     <string name="conversation_screen_open_details_action_subtitle" description="Action subtitle for open details action">Contains selectable text</string>
+    <string name="conversation_screen_install_jitsi_meet_dialog_title" description="Title for install Jitsi Meet dialog">Install Jitsi Meet?</string>
+    <string name="conversation_screen_install_jitsi_meet_dialog_description_android" description="Description text for install Jitsi Meet dialog when app is running on Android">Video calling requires Jitsi Meet video calling app which is not installed currently. Install the app from Google Play Store?</string>
+    <string name="conversation_screen_install_jitsi_meet_dialog_description_ios" description="Description text for install Jitsi Meet dialog when app is running on iOS">Video calling requires Jitsi Meet video calling app which is not installed currently. Install the app from App Store?</string>
 
     <!-- Menu screen -->
     <string name="menu_screen_title" description="Title for menu screen">Menu</string>

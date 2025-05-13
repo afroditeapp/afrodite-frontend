@@ -56,4 +56,14 @@
             android:name="flutterEmbedding"
             android:value="2" />
     </application>
+
+    <!-- Required starting from API level 30 -->
+    <queries>
+        <!-- Allow detecting is Jitsi Meet app installed -->
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="org.jitsi.meet" />
+        </intent>
+    </queries>
+
 </manifest>

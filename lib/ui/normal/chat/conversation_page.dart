@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:app/logic/account/client_features_config.dart';
+import 'package:app/ui/normal/chat/message_row.dart';
 import 'package:app/ui/normal/report/report.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/profile_thumbnail_image_or_error.dart';
@@ -247,6 +249,17 @@ class ConversationPageState extends State<ConversationPage> {
   }
 
   void sendVideoCallInviteDialog(BuildContext context) async {
+    if ((Platform.isAndroid || Platform.isIOS) && !await isJitsiMeetAppInstalled()) {
+      if (context.mounted) {
+        openJitsiMeetAppInstallDialogOnAndroidOrIos(context);
+      }
+      return;
+    }
+
+    if (!context.mounted) {
+      return;
+    }
+
     final r = await showConfirmDialog(context, context.strings.conversation_screen_send_video_call_invitation_dialog_title, yesNoActions: true);
     if (r == true && context.mounted) {
       sendMessage(context, VideoCallInvitation());

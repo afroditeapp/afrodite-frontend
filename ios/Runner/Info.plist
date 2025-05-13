@@ -72,5 +72,12 @@
 	<!-- Firebase cloud messaging -->
 	<key>FirebaseMessagingAutoInitEnabled</key>
 	<false/>
+
+	<!-- Allow detecting is Jitsi Meet app installed -->
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+	<string>org.jitsi.meet</string>
+	</array>
+
 </dict>
 </plist>
