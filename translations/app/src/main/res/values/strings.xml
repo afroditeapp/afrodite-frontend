@@ -111,7 +111,7 @@
     <string name="notification_news_item_available" description="Title for news item available notification">News available</string>
 
     <!-- Notification automatic profile search completed -->
-    <string name="notification_automatic_profile_search_found_profiles" description="Title for automatic profile search found profiles notification">Automatic profile search found profiles</string>
+    <string name="notification_automatic_profile_search_found_profiles" description="Title for automatic profile search found profiles notification">New or updated profiles found</string>
 
     <!-- Notification -->
     <string name="notification_session_expired_error" description="Snackbar text for notifying that notification action was ignored because of expired notification session ID">Notification action ignored because of expired notification session ID</string>
