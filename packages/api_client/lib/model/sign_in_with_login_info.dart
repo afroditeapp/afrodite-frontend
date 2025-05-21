@@ -128,3 +128,4 @@ class SignInWithLoginInfo {
     'client_info',
   };
 }
+

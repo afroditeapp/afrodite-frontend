@@ -141,10 +141,7 @@ class _AskProfileAttributesState extends State<AskProfileAttributes> {
 
   List<Widget> attributeToWidget(BuildContext context, Attribute attribute, int requiredAttributeCount) {
     final List<Widget> widgetList;
-    if (attribute.mode == AttributeMode.selectSingleFilterSingle ||
-      attribute.mode == AttributeMode.selectSingleFilterMultiple) {
-      widgetList = widgetsForSelectSingleAttribute(context);
-    } else if (attribute.mode == AttributeMode.selectMultipleFilterMultiple) {
+    if (attribute.mode == AttributeMode.bitflag) {
       final valueList = attribute.values.toList();
       reorderValues(valueList, attribute.valueOrder);
       widgetList = widgetsForSelectMultipleAttribute(
@@ -155,6 +152,8 @@ class _AskProfileAttributesState extends State<AskProfileAttributes> {
         requiredAttributeCount,
       );
     } else {
+      log.error("Only bitflag attributes are supported in initial setup");
+      showSnackBar(context.strings.generic_error);
       widgetList = [];
     }
 
@@ -190,12 +189,6 @@ class _AskProfileAttributesState extends State<AskProfileAttributes> {
       padding: const EdgeInsets.all(INITIAL_SETUP_PADDING),
       child: title
     );
-  }
-
-  List<Widget> widgetsForSelectSingleAttribute(BuildContext context) {
-    log.error("Select single attributes are unsupported");
-    showSnackBar(context.strings.generic_error);
-    return [];
   }
 
   List<Widget> widgetsForSelectMultipleAttribute(

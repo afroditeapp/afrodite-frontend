@@ -8,7 +8,6 @@ import 'package:app/logic/profile/edit_profile_filtering_settings.dart';
 import 'package:app/ui/normal/profiles/filter_profiles.dart';
 import 'package:app/ui/normal/settings/profile/edit_profile_attribute.dart';
 import 'package:app/ui_utils/app_bar/search.dart';
-import 'package:app/utils/api.dart';
 
 class EditProfileAttributeFilterScreen extends StatefulWidget {
   final AttributeFilterInfo a;
@@ -28,8 +27,8 @@ class _EditProfileAttributeFilterScreenState extends State<EditProfileAttributeF
   @override
   void initState() {
     super.initState();
-    searchPossible = widget.a.attribute.mode == AttributeMode.selectSingleFilterSingle ||
-      widget.a.attribute.isNumberListAttribute();
+    searchPossible = widget.a.attribute.mode == AttributeMode.oneLevel ||
+      widget.a.attribute.mode == AttributeMode.twoLevel;
     searchController = AppBarSearchController(onChanged: () => setState(() {}));
   }
 

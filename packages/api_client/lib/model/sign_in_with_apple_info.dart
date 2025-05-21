@@ -115,3 +115,4 @@ class SignInWithAppleInfo {
     'token',
   };
 }
+

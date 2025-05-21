@@ -116,7 +116,7 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
       final ProfileAttributeFilterValueUpdate currentFilter;
       if (currentFilterOrNull == null) {
         currentFilter = ProfileAttributeFilterValueUpdate(
-          acceptMissingAttribute: null,
+          acceptMissingAttribute: false,
           filterValues: [],
           id: editedFilter.id,
         );

@@ -15,38 +15,51 @@ class ProfileAttributeFilterValue {
   ProfileAttributeFilterValue({
     required this.acceptMissingAttribute,
     this.filterValues = const [],
+    this.filterValuesNonselected = const [],
     required this.id,
+    required this.useLogicalOperatorAnd,
   });
 
   bool acceptMissingAttribute;
 
-  /// - First value is bitflags value or top level attribute value ID or first number list value. - Second value is sub level attribute value ID or second number list value. - Third and rest are number list values.  The number list values are in ascending order.
+  /// For bitflag filters the list only has one u16 value.  For one level attributes the values are u16 attribute value IDs.  For two level attributes the values are u32 values with most significant u16 containing attribute value ID and least significant u16 containing group value ID.  The values are stored in ascending order.
   List<int> filterValues;
+
+  /// Same as [Self::filter_values] but for nonselected values.  The nonselected values are checked always with AND operator.
+  List<int> filterValuesNonselected;
 
   /// Minimum value: 0
   int id;
+
+  bool useLogicalOperatorAnd;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is ProfileAttributeFilterValue &&
     other.acceptMissingAttribute == acceptMissingAttribute &&
     _deepEquality.equals(other.filterValues, filterValues) &&
-    other.id == id;
+    _deepEquality.equals(other.filterValuesNonselected, filterValuesNonselected) &&
+    other.id == id &&
+    other.useLogicalOperatorAnd == useLogicalOperatorAnd;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (acceptMissingAttribute.hashCode) +
     (filterValues.hashCode) +
-    (id.hashCode);
+    (filterValuesNonselected.hashCode) +
+    (id.hashCode) +
+    (useLogicalOperatorAnd.hashCode);
 
   @override
-  String toString() => 'ProfileAttributeFilterValue[acceptMissingAttribute=$acceptMissingAttribute, filterValues=$filterValues, id=$id]';
+  String toString() => 'ProfileAttributeFilterValue[acceptMissingAttribute=$acceptMissingAttribute, filterValues=$filterValues, filterValuesNonselected=$filterValuesNonselected, id=$id, useLogicalOperatorAnd=$useLogicalOperatorAnd]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'accept_missing_attribute'] = this.acceptMissingAttribute;
       json[r'filter_values'] = this.filterValues;
+      json[r'filter_values_nonselected'] = this.filterValuesNonselected;
       json[r'id'] = this.id;
+      json[r'use_logical_operator_and'] = this.useLogicalOperatorAnd;
     return json;
   }
 
@@ -73,7 +86,11 @@ class ProfileAttributeFilterValue {
         filterValues: json[r'filter_values'] is Iterable
             ? (json[r'filter_values'] as Iterable).cast<int>().toList(growable: false)
             : const [],
+        filterValuesNonselected: json[r'filter_values_nonselected'] is Iterable
+            ? (json[r'filter_values_nonselected'] as Iterable).cast<int>().toList(growable: false)
+            : const [],
         id: mapValueOfType<int>(json, r'id')!,
+        useLogicalOperatorAnd: mapValueOfType<bool>(json, r'use_logical_operator_and')!,
       );
     }
     return null;
@@ -123,7 +140,9 @@ class ProfileAttributeFilterValue {
   static const requiredKeys = <String>{
     'accept_missing_attribute',
     'filter_values',
+    'filter_values_nonselected',
     'id',
+    'use_logical_operator_and',
   };
 }
 

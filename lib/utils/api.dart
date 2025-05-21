@@ -22,18 +22,8 @@ extension ProfileVisibilityExtensions on ProfileVisibility {
 }
 
 extension AttributeExtensions on Attribute {
-  bool isBitflagAttributeWhenFiltering() {
-    return mode == AttributeMode.selectMultipleFilterMultiple ||
-      mode == AttributeMode.selectSingleFilterMultiple;
-  }
-
-  bool isStoredAsBitflagValue() {
-    return mode == AttributeMode.selectMultipleFilterMultiple ||
-      mode == AttributeMode.selectSingleFilterMultiple;
-  }
-
-  bool isNumberListAttribute() {
-    return mode == AttributeMode.selectMultipleFilterMultipleNumberList;
+  bool isBitflag() {
+    return mode == AttributeMode.bitflag;
   }
 }
 

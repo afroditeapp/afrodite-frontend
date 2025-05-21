@@ -574,6 +574,10 @@ class ApiClient {
           return ProfileStatisticsHistoryValueTypeTypeTransformer().decode(value);
         case 'ProfileSyncVersion':
           return ProfileSyncVersion.fromJson(value);
+        case 'ProfileTextMaxCharactersFilter':
+          return ProfileTextMaxCharactersFilter.fromJson(value);
+        case 'ProfileTextMinCharactersFilter':
+          return ProfileTextMinCharactersFilter.fromJson(value);
         case 'ProfileTextModerationCompletedNotification':
           return ProfileTextModerationCompletedNotification.fromJson(value);
         case 'ProfileTextModerationCompletedNotificationViewed':

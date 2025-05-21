@@ -23,17 +23,15 @@ class AttributeMode {
 
   String toJson() => value;
 
-  static const selectSingleFilterSingle = AttributeMode._(r'SelectSingleFilterSingle');
-  static const selectSingleFilterMultiple = AttributeMode._(r'SelectSingleFilterMultiple');
-  static const selectMultipleFilterMultiple = AttributeMode._(r'SelectMultipleFilterMultiple');
-  static const selectMultipleFilterMultipleNumberList = AttributeMode._(r'SelectMultipleFilterMultipleNumberList');
+  static const bitflag = AttributeMode._(r'Bitflag');
+  static const oneLevel = AttributeMode._(r'OneLevel');
+  static const twoLevel = AttributeMode._(r'TwoLevel');
 
   /// List of all possible values in this [enum][AttributeMode].
   static const values = <AttributeMode>[
-    selectSingleFilterSingle,
-    selectSingleFilterMultiple,
-    selectMultipleFilterMultiple,
-    selectMultipleFilterMultipleNumberList,
+    bitflag,
+    oneLevel,
+    twoLevel,
   ];
 
   static AttributeMode? fromJson(dynamic value) => AttributeModeTypeTransformer().decode(value);
@@ -72,10 +70,9 @@ class AttributeModeTypeTransformer {
   AttributeMode? decode(dynamic data, {bool allowNull = true}) {
     if (data != null) {
       switch (data) {
-        case r'SelectSingleFilterSingle': return AttributeMode.selectSingleFilterSingle;
-        case r'SelectSingleFilterMultiple': return AttributeMode.selectSingleFilterMultiple;
-        case r'SelectMultipleFilterMultiple': return AttributeMode.selectMultipleFilterMultiple;
-        case r'SelectMultipleFilterMultipleNumberList': return AttributeMode.selectMultipleFilterMultipleNumberList;
+        case r'Bitflag': return AttributeMode.bitflag;
+        case r'OneLevel': return AttributeMode.oneLevel;
+        case r'TwoLevel': return AttributeMode.twoLevel;
         default:
           if (!allowNull) {
             throw ArgumentError('Unknown enum value to decode: $data');

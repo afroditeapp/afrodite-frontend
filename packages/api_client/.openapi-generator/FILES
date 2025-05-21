@@ -218,6 +218,8 @@ lib/model/profile_search_age_range.dart
 lib/model/profile_statistics_history_value.dart
 lib/model/profile_statistics_history_value_type.dart
 lib/model/profile_sync_version.dart
+lib/model/profile_text_max_characters_filter.dart
+lib/model/profile_text_min_characters_filter.dart
 lib/model/profile_text_moderation_completed_notification.dart
 lib/model/profile_text_moderation_completed_notification_viewed.dart
 lib/model/profile_text_moderation_info.dart

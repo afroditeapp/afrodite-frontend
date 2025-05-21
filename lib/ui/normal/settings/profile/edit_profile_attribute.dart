@@ -32,8 +32,8 @@ class _EditProfileAttributeScreenState extends State<EditProfileAttributeScreen>
   @override
   void initState() {
     super.initState();
-    searchPossible = widget.a.attribute.mode == AttributeMode.selectSingleFilterSingle ||
-      widget.a.attribute.isNumberListAttribute();
+    searchPossible = widget.a.attribute.mode == AttributeMode.oneLevel ||
+      widget.a.attribute.mode == AttributeMode.twoLevel;
     searchController = AppBarSearchController(onChanged: () => setState(() {}));
   }
 
@@ -43,8 +43,8 @@ class _EditProfileAttributeScreenState extends State<EditProfileAttributeScreen>
         a.id == widget.a.attribute.id &&
         widget.a.attribute.required_ &&
         (
-          (widget.a.attribute.isStoredAsBitflagValue() && (a.bitflagValue() == null || a.bitflagValue() == 0)) ||
-          (!widget.a.attribute.isStoredAsBitflagValue() && a.v.isEmpty)
+          (widget.a.attribute.isBitflag() && (a.bitflagValue() == null || a.bitflagValue() == 0)) ||
+          (!widget.a.attribute.isBitflag() && a.v.isEmpty)
         )
       ) {
         return true;
@@ -131,7 +131,8 @@ class EditSingleAttributeAllTypes extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (a.attribute.isNumberListAttribute()) {
+    // TODO(prod): Update code to support two level attributes
+    if (a.attribute.mode == AttributeMode.oneLevel) {
       return EditSingleAttributeNumberList(
         a: a,
         valueFilter: valueFilter,
@@ -279,11 +280,8 @@ class _EditSingleAttributeState extends State<EditSingleAttribute> {
     final valueList = attribute.values.toList();
     reorderValues(valueList, attribute.valueOrder);
 
-    bool showSingleSelect = attribute.mode == AttributeMode.selectSingleFilterSingle ||
-      (!widget.a.isFilter && attribute.mode == AttributeMode.selectSingleFilterMultiple);
-
-    bool showMultipleSelect = attribute.mode == AttributeMode.selectMultipleFilterMultiple ||
-      (widget.a.isFilter && attribute.mode == AttributeMode.selectSingleFilterMultiple);
+    bool showSingleSelect = (!widget.a.isFilter && attribute.maxSelected == 1) ||
+      (widget.a.isFilter && attribute.maxFilters == 1);
 
     if (showSingleSelect) {
       return widgetsForSelectSingleAttribute(
@@ -291,14 +289,12 @@ class _EditSingleAttributeState extends State<EditSingleAttribute> {
         attribute,
         valueList,
       );
-    } else if (showMultipleSelect) {
+    } else {
       return widgetsForSelectMultipleAttribute(
         context,
         valueList,
         attribute.translations,
       );
-    } else {
-      return [];
     }
   }
 

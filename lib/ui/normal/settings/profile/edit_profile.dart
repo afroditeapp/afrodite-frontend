@@ -163,10 +163,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
       final nonNumberListAttributeChanges =
         (current.firstValue() ?? 0) != (a.firstValue() ?? 0) ||
         // Non bitflag attributes can have null values when not selected
-        ((attributeInfo?.isStoredAsBitflagValue() ?? false) == false && current.firstValue() != a.firstValue()) ||
+        ((attributeInfo?.isBitflag() ?? false) == false && current.firstValue() != a.firstValue()) ||
         current.secondValue() != a.secondValue();
-      final isNumberListAttribute =
-        attributeInfo?.isNumberListAttribute() ?? false;
+      // TODO(prod): Update code to support two level attributes
+      final isNumberListAttribute = attributeInfo?.mode == AttributeMode.oneLevel;
       if (
         (!isNumberListAttribute && nonNumberListAttributeChanges) ||
         (isNumberListAttribute && !const SetEquality<int>().equals(current.v.toSet(), a.v.toSet()))

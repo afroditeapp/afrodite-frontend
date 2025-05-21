@@ -236,6 +236,8 @@ part 'model/profile_search_age_range.dart';
 part 'model/profile_statistics_history_value.dart';
 part 'model/profile_statistics_history_value_type.dart';
 part 'model/profile_sync_version.dart';
+part 'model/profile_text_max_characters_filter.dart';
+part 'model/profile_text_min_characters_filter.dart';
 part 'model/profile_text_moderation_completed_notification.dart';
 part 'model/profile_text_moderation_completed_notification_viewed.dart';
 part 'model/profile_text_moderation_info.dart';

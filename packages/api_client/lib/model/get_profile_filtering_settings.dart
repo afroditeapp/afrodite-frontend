@@ -18,6 +18,8 @@ class GetProfileFilteringSettings {
     this.maxDistanceKmFilter,
     this.profileCreatedFilter,
     this.profileEditedFilter,
+    this.profileTextMaxCharactersFilter,
+    this.profileTextMinCharactersFilter,
     this.randomProfileOrder = false,
     this.unlimitedLikesFilter,
   });
@@ -33,6 +35,10 @@ class GetProfileFilteringSettings {
 
   ProfileEditedTimeFilter? profileEditedFilter;
 
+  ProfileTextMaxCharactersFilter? profileTextMaxCharactersFilter;
+
+  ProfileTextMinCharactersFilter? profileTextMinCharactersFilter;
+
   /// Randomize iterator starting position within the profile index area which current position and [Self::max_distance_km] defines.
   bool randomProfileOrder;
 
@@ -45,6 +51,8 @@ class GetProfileFilteringSettings {
     other.maxDistanceKmFilter == maxDistanceKmFilter &&
     other.profileCreatedFilter == profileCreatedFilter &&
     other.profileEditedFilter == profileEditedFilter &&
+    other.profileTextMaxCharactersFilter == profileTextMaxCharactersFilter &&
+    other.profileTextMinCharactersFilter == profileTextMinCharactersFilter &&
     other.randomProfileOrder == randomProfileOrder &&
     other.unlimitedLikesFilter == unlimitedLikesFilter;
 
@@ -56,11 +64,13 @@ class GetProfileFilteringSettings {
     (maxDistanceKmFilter == null ? 0 : maxDistanceKmFilter!.hashCode) +
     (profileCreatedFilter == null ? 0 : profileCreatedFilter!.hashCode) +
     (profileEditedFilter == null ? 0 : profileEditedFilter!.hashCode) +
+    (profileTextMaxCharactersFilter == null ? 0 : profileTextMaxCharactersFilter!.hashCode) +
+    (profileTextMinCharactersFilter == null ? 0 : profileTextMinCharactersFilter!.hashCode) +
     (randomProfileOrder.hashCode) +
     (unlimitedLikesFilter == null ? 0 : unlimitedLikesFilter!.hashCode);
 
   @override
-  String toString() => 'GetProfileFilteringSettings[filters=$filters, lastSeenTimeFilter=$lastSeenTimeFilter, maxDistanceKmFilter=$maxDistanceKmFilter, profileCreatedFilter=$profileCreatedFilter, profileEditedFilter=$profileEditedFilter, randomProfileOrder=$randomProfileOrder, unlimitedLikesFilter=$unlimitedLikesFilter]';
+  String toString() => 'GetProfileFilteringSettings[filters=$filters, lastSeenTimeFilter=$lastSeenTimeFilter, maxDistanceKmFilter=$maxDistanceKmFilter, profileCreatedFilter=$profileCreatedFilter, profileEditedFilter=$profileEditedFilter, profileTextMaxCharactersFilter=$profileTextMaxCharactersFilter, profileTextMinCharactersFilter=$profileTextMinCharactersFilter, randomProfileOrder=$randomProfileOrder, unlimitedLikesFilter=$unlimitedLikesFilter]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -84,6 +94,16 @@ class GetProfileFilteringSettings {
       json[r'profile_edited_filter'] = this.profileEditedFilter;
     } else {
       json[r'profile_edited_filter'] = null;
+    }
+    if (this.profileTextMaxCharactersFilter != null) {
+      json[r'profile_text_max_characters_filter'] = this.profileTextMaxCharactersFilter;
+    } else {
+      json[r'profile_text_max_characters_filter'] = null;
+    }
+    if (this.profileTextMinCharactersFilter != null) {
+      json[r'profile_text_min_characters_filter'] = this.profileTextMinCharactersFilter;
+    } else {
+      json[r'profile_text_min_characters_filter'] = null;
     }
       json[r'random_profile_order'] = this.randomProfileOrder;
     if (this.unlimitedLikesFilter != null) {
@@ -118,6 +138,8 @@ class GetProfileFilteringSettings {
         maxDistanceKmFilter: MaxDistanceKm.fromJson(json[r'max_distance_km_filter']),
         profileCreatedFilter: ProfileCreatedTimeFilter.fromJson(json[r'profile_created_filter']),
         profileEditedFilter: ProfileEditedTimeFilter.fromJson(json[r'profile_edited_filter']),
+        profileTextMaxCharactersFilter: ProfileTextMaxCharactersFilter.fromJson(json[r'profile_text_max_characters_filter']),
+        profileTextMinCharactersFilter: ProfileTextMinCharactersFilter.fromJson(json[r'profile_text_min_characters_filter']),
         randomProfileOrder: mapValueOfType<bool>(json, r'random_profile_order') ?? false,
         unlimitedLikesFilter: mapValueOfType<bool>(json, r'unlimited_likes_filter'),
       );

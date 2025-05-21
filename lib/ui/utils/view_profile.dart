@@ -627,13 +627,15 @@ class AttributeAndValue implements AttributeInfoProvider {
       return result;
     }
 
-    bool showSingleSelect = attribute.mode == AttributeMode.selectSingleFilterSingle ||
-      (!filterValues && attribute.mode == AttributeMode.selectSingleFilterMultiple);
+    // TODO(prod): Update
 
-    bool showMultipleSelect = attribute.mode == AttributeMode.selectMultipleFilterMultiple ||
-      (filterValues && attribute.mode == AttributeMode.selectSingleFilterMultiple);
+    // bool showSingleSelect = attribute.mode == AttributeMode.selectSingleFilterSingle ||
+    //   (!filterValues && attribute.mode == AttributeMode.selectSingleFilterMultiple);
 
-    if (showSingleSelect) {
+    // bool showMultipleSelect = attribute.mode == AttributeMode.selectMultipleFilterMultiple ||
+    //   (filterValues && attribute.mode == AttributeMode.selectSingleFilterMultiple);
+
+    if (attribute.mode == AttributeMode.twoLevel) {
       for (final v in attribute.values) {
         if (v.id != value.firstValue()) {
           continue;
@@ -654,13 +656,13 @@ class AttributeAndValue implements AttributeInfoProvider {
           }
         }
       }
-    } else if (showMultipleSelect) {
+    } else if (attribute.mode == AttributeMode.bitflag) {
       for (final bitflag in attribute.values) {
         if (bitflag.id & (value.firstValue() ?? 0) != 0) {
           result.add(bitflag);
         }
       }
-    } else if (attribute.mode == AttributeMode.selectMultipleFilterMultipleNumberList) {
+    } else if (attribute.mode == AttributeMode.oneLevel) {
       for (final v in attribute.values) {
         if (value.v.contains(v.id)) {
           result.add(v);

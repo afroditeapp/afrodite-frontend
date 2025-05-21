@@ -17,6 +17,8 @@ class Attribute {
     this.icon,
     required this.id,
     required this.key,
+    this.maxFilters = 1,
+    this.maxSelected = 1,
     required this.mode,
     required this.name,
     required this.orderNumber,
@@ -38,6 +40,12 @@ class Attribute {
 
   /// String unique identifier for the attribute.
   String key;
+
+  /// Minimum value: 0
+  int maxFilters;
+
+  /// Minimum value: 0
+  int maxSelected;
 
   /// Mode of the attribute.
   AttributeMode mode;
@@ -71,6 +79,8 @@ class Attribute {
     other.icon == icon &&
     other.id == id &&
     other.key == key &&
+    other.maxFilters == maxFilters &&
+    other.maxSelected == maxSelected &&
     other.mode == mode &&
     other.name == name &&
     other.orderNumber == orderNumber &&
@@ -87,6 +97,8 @@ class Attribute {
     (icon == null ? 0 : icon!.hashCode) +
     (id.hashCode) +
     (key.hashCode) +
+    (maxFilters.hashCode) +
+    (maxSelected.hashCode) +
     (mode.hashCode) +
     (name.hashCode) +
     (orderNumber.hashCode) +
@@ -97,7 +109,7 @@ class Attribute {
     (visible.hashCode);
 
   @override
-  String toString() => 'Attribute[editable=$editable, icon=$icon, id=$id, key=$key, mode=$mode, name=$name, orderNumber=$orderNumber, required_=$required_, translations=$translations, valueOrder=$valueOrder, values=$values, visible=$visible]';
+  String toString() => 'Attribute[editable=$editable, icon=$icon, id=$id, key=$key, maxFilters=$maxFilters, maxSelected=$maxSelected, mode=$mode, name=$name, orderNumber=$orderNumber, required_=$required_, translations=$translations, valueOrder=$valueOrder, values=$values, visible=$visible]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -109,6 +121,8 @@ class Attribute {
     }
       json[r'id'] = this.id;
       json[r'key'] = this.key;
+      json[r'max_filters'] = this.maxFilters;
+      json[r'max_selected'] = this.maxSelected;
       json[r'mode'] = this.mode;
       json[r'name'] = this.name;
       json[r'order_number'] = this.orderNumber;
@@ -143,6 +157,8 @@ class Attribute {
         icon: mapValueOfType<String>(json, r'icon'),
         id: mapValueOfType<int>(json, r'id')!,
         key: mapValueOfType<String>(json, r'key')!,
+        maxFilters: mapValueOfType<int>(json, r'max_filters') ?? 1,
+        maxSelected: mapValueOfType<int>(json, r'max_selected') ?? 1,
         mode: AttributeMode.fromJson(json[r'mode'])!,
         name: mapValueOfType<String>(json, r'name')!,
         orderNumber: mapValueOfType<int>(json, r'order_number')!,
