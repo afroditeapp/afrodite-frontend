@@ -21,38 +21,45 @@ final _privateConstructorErrorAttributesData = UnsupportedError(
 
 /// @nodoc
 mixin _$AttributesData {
+  String? get locale => throw _privateConstructorErrorAttributesData;
   ProfileAttributes? get attributes => throw _privateConstructorErrorAttributesData;
-  AttributeRefreshState? get refreshState => throw _privateConstructorErrorAttributesData;
+  AttributeManager? get manager => throw _privateConstructorErrorAttributesData;
 
   AttributesData copyWith({
+    String? locale,
     ProfileAttributes? attributes,
-    AttributeRefreshState? refreshState,
+    AttributeManager? manager,
   }) => throw _privateConstructorErrorAttributesData;
 }
 
 /// @nodoc
-abstract class _AttributesData implements AttributesData {
+abstract class _AttributesData extends AttributesData {
   factory _AttributesData({
+    String? locale,
     ProfileAttributes? attributes,
-    AttributeRefreshState? refreshState,
+    AttributeManager? manager,
   }) = _$AttributesDataImpl;
+  _AttributesData._() : super._();
 }
 
 /// @nodoc
-class _$AttributesDataImpl implements _AttributesData {
+class _$AttributesDataImpl extends _AttributesData {
   _$AttributesDataImpl({
+    this.locale,
     this.attributes,
-    this.refreshState,
-  });
+    this.manager,
+  }) : super._();
 
+  @override
+  final String? locale;
   @override
   final ProfileAttributes? attributes;
   @override
-  final AttributeRefreshState? refreshState;
+  final AttributeManager? manager;
 
   @override
   String toString() {
-    return 'AttributesData(attributes: $attributes, refreshState: $refreshState)';
+    return 'AttributesData(locale: $locale, attributes: $attributes, manager: $manager)';
   }
 
   @override
@@ -60,26 +67,31 @@ class _$AttributesDataImpl implements _AttributesData {
     return identical(this, other) ||
       (other.runtimeType == runtimeType &&
         other is _$AttributesDataImpl &&
+        (identical(other.locale, locale) ||
+          other.locale == locale) &&
         (identical(other.attributes, attributes) ||
           other.attributes == attributes) &&
-        (identical(other.refreshState, refreshState) ||
-          other.refreshState == refreshState)
+        (identical(other.manager, manager) ||
+          other.manager == manager)
     );
   }
 
   @override
   int get hashCode => Object.hash(
     runtimeType,
+    locale,
     attributes,
-    refreshState,
+    manager,
   );
 
   @override
   AttributesData copyWith({
+    Object? locale = _detectDefaultValueInCopyWith,
     Object? attributes = _detectDefaultValueInCopyWith,
-    Object? refreshState = _detectDefaultValueInCopyWith,
+    Object? manager = _detectDefaultValueInCopyWith,
   }) => _$AttributesDataImpl(
+    locale: (locale == _detectDefaultValueInCopyWith ? this.locale : locale) as String?,
     attributes: (attributes == _detectDefaultValueInCopyWith ? this.attributes : attributes) as ProfileAttributes?,
-    refreshState: (refreshState == _detectDefaultValueInCopyWith ? this.refreshState : refreshState) as AttributeRefreshState?,
+    manager: (manager == _detectDefaultValueInCopyWith ? this.manager : manager) as AttributeManager?,
   );
 }

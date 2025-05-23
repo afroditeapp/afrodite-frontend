@@ -191,9 +191,6 @@
     <string name="initial_setup_screen_search_settings_max_age_subtitle" description="Subtitle for max age search setting">…with max age…</string>
     <string name="initial_setup_screen_location_title" description="Title for initial setup location screen">My profile\'s location is…</string>
     <string name="initial_setup_screen_location_help_dialog_text" description="Text for initial setup location help dialog">Select a location for your profile by tapping or long pressing the map.</string>
-    <string name="initial_setup_screen_profile_attributes_missing_error_text" description="Error text displayed when profile attributes are not yet downloaded">Profile questions are not yet downloaded.</string>
-    <string name="initial_setup_screen_profile_attributes_download_button" description="Button text for downloading profile attributes">Download questions</string>
-    <string name="initial_setup_screen_profile_attributes_no_questions_text" description="Info text that all required questions are already answered">All required questions already answered.</string>
     <string name="initial_setup_screen_unlimited_likes_title" description="Title for initial setup unlimited likes question">Unlimited chat requests</string>
     <string name="initial_setup_screen_unlimited_likes_description_part_1" description="Description part 1 for initial setup unlimited likes question">Looking a date for tonight? Enable unlimited chat requests and send unlimited amount of chat requests to those with the same setting enabled.</string>
     <string name="initial_setup_screen_unlimited_likes_description_part_2" description="Description part 2 for initial setup unlimited likes question">The symbol on right will be visible on your profile only for those with the same setting enabled.</string>
@@ -287,6 +284,7 @@
     <!-- Edit attribute value screen -->
     <string name="edit_attribute_value_screen_one_value_must_be_selected" description="Snackbar text for notifying that one at least one option must be selected">At least one selection is required</string>
     <string name="edit_attribute_value_screen_search_placeholder_text" description="Attribute value search box placeholder text">Search…</string>
+    <string name="edit_attribute_value_screen_max_selected_values_error" description="Snackbar text for max selected values error">Too many selected values</string>
 
     <!-- Select content screen -->
     <string name="select_content_screen_title" description="Title for select content screen">Select image</string>

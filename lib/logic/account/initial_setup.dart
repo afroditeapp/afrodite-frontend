@@ -21,7 +21,6 @@ import "package:app/model/freezed/logic/media/image_processing.dart";
 import "package:app/model/freezed/logic/media/profile_pictures.dart";
 import "package:app/ui_utils/snack_bar.dart";
 import "package:app/utils.dart";
-import "package:app/utils/api.dart";
 import "package:app/utils/immutable_list.dart";
 
 
@@ -87,16 +86,9 @@ class SetLocation extends InitialSetupEvent {
   final LatLng location;
   SetLocation(this.location);
 }
-class SetProfileAttributesState extends InitialSetupEvent {
-  final ProfileAttributesState attributeState;
-  SetProfileAttributesState(this.attributeState);
-}
-class ModifyProfileAttributeBitflagValue extends InitialSetupEvent {
-  final int requiredAttributeCount;
-  final Attribute attribute;
-  final AttributeValue attributeValue;
-  final bool value;
-  ModifyProfileAttributeBitflagValue(this.requiredAttributeCount, this.attribute, this.attributeValue, this.value);
+class UpdateAttributeValue extends InitialSetupEvent {
+  final ProfileAttributeValueUpdate update;
+  UpdateAttributeValue(this.update);
 }
 class SetUnlimitedLikes extends InitialSetupEvent {
   final bool value;
@@ -184,14 +176,9 @@ class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData> with Ac
         profileLocation: data.location,
       ));
     });
-    on<SetProfileAttributesState>((data, emit) async {
+    on<UpdateAttributeValue>((data, emit) async {
       emit(state.copyWith(
-        profileAttributes: data.attributeState,
-      ));
-    });
-    on<ModifyProfileAttributeBitflagValue>((data, emit) async {
-      emit(state.copyWith(
-        profileAttributes: modifyAttributes(data, state.profileAttributes),
+        profileAttributes: state.profileAttributes.addOrReplace(data.update),
       ));
     });
     on<SetUnlimitedLikes>((data, emit) async {
@@ -288,42 +275,4 @@ Future<Uint8List> createImage(String fileName, void Function(img.Pixel) pixelMod
   }
 
   return img.encodeJpg(imageBuffer);
-}
-
-
-ProfileAttributesState modifyAttributes(
-  ModifyProfileAttributeBitflagValue modifyCmd,
-  ProfileAttributesState currentState
-) {
-
-  final newAnswers = currentState.answers.toList();
-
-  bool updated = false;
-  for (final value in newAnswers) {
-    if (value.id == modifyCmd.attribute.id) {
-      updated = true;
-      if (modifyCmd.value) {
-        var v = value.bitflagValue() ?? 0;
-        v |= modifyCmd.attributeValue.id;
-        value.setBitflagValue(v);
-      } else {
-        var v = value.bitflagValue() ?? 0;
-        v &= ~modifyCmd.attributeValue.id;
-        value.setBitflagValue(v);
-      }
-    }
-  }
-
-  if (!updated) {
-    newAnswers.add(ProfileAttributeValueUpdate(
-      id: modifyCmd.attribute.id,
-      v: [modifyCmd.value ? modifyCmd.attributeValue.id : 0],
-    ));
-  }
-
-  if (newAnswers.length == modifyCmd.requiredAttributeCount && newAnswers.every((v) => v.bitflagValue() != 0)) {
-    return FullyAnswered(newAnswers);
-  } else {
-    return PartiallyAnswered(newAnswers);
-  }
 }

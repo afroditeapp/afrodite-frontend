@@ -1,26 +1,31 @@
 import "package:app/logic/app/navigator_state.dart";
 import "package:app/ui/initial_setup/unlimited_likes.dart";
-import "package:database/database.dart";
+import "package:app/ui_utils/attribute/attribute.dart";
+import "package:app/ui_utils/attribute/state.dart";
+import "package:app/ui_utils/attribute/widgets/select_value.dart";
+import "package:app/ui_utils/consts/padding.dart";
+import "package:app/utils/list.dart";
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:logging/logging.dart";
 import "package:openapi/api.dart";
 import "package:app/localizations.dart";
 import "package:app/logic/account/initial_setup.dart";
-import "package:app/logic/profile/attributes.dart";
-import "package:app/model/freezed/logic/account/initial_setup.dart";
-import "package:app/model/freezed/logic/profile/attributes.dart";
-import "package:app/ui_utils/consts/padding.dart";
 import "package:app/ui_utils/initial_setup_common.dart";
-import "package:app/ui_utils/loading_dialog.dart";
-import "package:app/ui_utils/snack_bar.dart";
-import 'package:utils/utils.dart';
 import "package:app/utils/api.dart";
 
 final log = Logger("AskProfileAttributesScreen");
 
 class AskProfileAttributesScreen extends StatelessWidget {
-  const AskProfileAttributesScreen({Key? key}) : super(key: key);
+  final int attributeIndex;
+  final UiAttribute currentAttribute;
+  final List<UiAttribute> attributes;
+  const AskProfileAttributesScreen({
+    required this.attributeIndex,
+    required this.currentAttribute,
+    required this.attributes,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -28,218 +33,88 @@ class AskProfileAttributesScreen extends StatelessWidget {
       context: context,
       child: QuestionAsker(
         getContinueButtonCallback: (context, state) {
-          if (state.profileAttributes is FullyAnswered) {
+          if (state.profileAttributes.answerForRequiredAttributeExists(currentAttribute.apiAttribute().id)) {
             return () {
-              MyNavigator.push(context, const MaterialPage<void>(child: AskUnlimitedLikesScreen()));
+              final nextAttributeIndex = attributeIndex + 1;
+              final nextAttribute = attributes.getAtOrNull(nextAttributeIndex);
+              if (nextAttribute == null) {
+                MyNavigator.push(context, const MaterialPage<void>(child: AskUnlimitedLikesScreen()));
+              } else {
+                MyNavigator.push(
+                  context,
+                  MaterialPage<void>(child: AskProfileAttributesScreen(
+                    attributeIndex: nextAttributeIndex,
+                    currentAttribute: nextAttribute,
+                    attributes: attributes,
+                  )),
+                );
+              }
             };
           } else {
             return null;
           }
         },
         question: AskProfileAttributes(
-          attributesBloc: context.read<ProfileAttributesBloc>()
+          currentAttribute: currentAttribute,
         ),
+        expandQuestion: true,
       ),
     );
   }
 }
 
 class AskProfileAttributes extends StatefulWidget {
-  final ProfileAttributesBloc attributesBloc;
-  const AskProfileAttributes({required this.attributesBloc, super.key});
+  final UiAttribute currentAttribute;
+  const AskProfileAttributes({
+    required this.currentAttribute,
+    super.key,
+  });
 
   @override
   State<AskProfileAttributes> createState() => _AskProfileAttributesState();
 }
 
 class _AskProfileAttributesState extends State<AskProfileAttributes> {
-  @override
-  void initState() {
-    super.initState();
-    widget.attributesBloc.add(RefreshAttributesIfNeeded());
-  }
+  final state = AttributeStateStorage();
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        questionTitleText(context, context.strings.initial_setup_screen_profile_basic_info_title),
-        askInfo(context),
-
-        // Zero sized widgets
-        ProgressDialogOpener<ProfileAttributesBloc, AttributesData>(
-          dialogVisibilityGetter: (state) =>
-            state.refreshState is AttributeRefreshLoading,
-        ),
-      ],
-    );
+    return askInfo(context);
   }
 
   Widget askInfo(BuildContext context) {
-    return BlocBuilder<ProfileAttributesBloc, AttributesData>(
-      builder: (context, state) {
-        final attributes = state.attributes;
-        if (attributes == null) {
-          return attributesMissingUi(context);
-        } else {
-          return attributeQuestionsUi(context, attributes);
-        }
-      }
+    return SelectAttributeValue(
+      attribute: widget.currentAttribute,
+      isFilter: false,
+      firstListItem: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          questionTitleText(context, context.strings.initial_setup_screen_profile_basic_info_title),
+          attributeTitle(context),
+        ],
+      ),
+      initialStateBuilder: () => AttributeStateStorage.parseFromUpdateList(
+        widget.currentAttribute,
+        context.read<InitialSetupBloc>().state.profileAttributes.answers,
+      ),
+      onChanged: (storage) {
+        context.read<InitialSetupBloc>().add(
+          UpdateAttributeValue(storage.toAttributeValueUpdate(widget.currentAttribute)),
+        );
+      },
     );
   }
 
-  Widget attributesMissingUi(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(INITIAL_SETUP_PADDING),
-          child: Text(context.strings.initial_setup_screen_profile_attributes_missing_error_text),
-        ),
-        ElevatedButton(
-          onPressed: () {
-            context.read<ProfileAttributesBloc>().add(RefreshAttributesIfNeeded());
-          },
-          child: Text(context.strings.initial_setup_screen_profile_attributes_download_button),
-        ),
-      ],
-    );
-  }
-
-  Widget attributeQuestionsUi(BuildContext context, ProfileAttributes attributes) {
-    final requiredAttributes = attributes.attributes.where((element) => element.required_).toList();
-    if (requiredAttributes.isNotEmpty) {
-      reorderAttributes(requiredAttributes, attributes.attributeOrder);
-      return questionAnsweringUi(context, requiredAttributes);
-    }
-
-    return noQuestionsUi(context);
-  }
-
-  Widget noQuestionsUi(BuildContext context) {
-    context.read<InitialSetupBloc>().add(SetProfileAttributesState(const FullyAnswered([])));
-    return Padding(
-      padding: const EdgeInsets.all(INITIAL_SETUP_PADDING),
-      child: Text(context.strings.initial_setup_screen_profile_attributes_no_questions_text),
-    );
-  }
-
-  Widget questionAnsweringUi(BuildContext context, List<Attribute> attributes) {
-    final questionWidgets = <Widget>[];
-
-    for (final attribute in attributes) {
-      final widgetList = attributeToWidget(context, attribute, attributes.length);
-      questionWidgets.addAll(widgetList);
-    }
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: questionWidgets,
-    );
-  }
-
-  List<Widget> attributeToWidget(BuildContext context, Attribute attribute, int requiredAttributeCount) {
-    final List<Widget> widgetList;
-    if (attribute.mode == AttributeMode.bitflag) {
-      final valueList = attribute.values.toList();
-      reorderValues(valueList, attribute.valueOrder);
-      widgetList = widgetsForSelectMultipleAttribute(
-        context,
-        attribute,
-        valueList,
-        attribute.translations,
-        requiredAttributeCount,
-      );
-    } else {
-      log.error("Only bitflag attributes are supported in initial setup");
-      showSnackBar(context.strings.generic_error);
-      widgetList = [];
-    }
-
-    return [
-      questionTitle(context, attribute),
-      ...widgetList,
-    ];
-  }
-
-  Widget questionTitle(BuildContext context, Attribute attribute) {
+  Widget attributeTitle(BuildContext context) {
     final text = Text(
-      attributeName(context, attribute),
+      widget.currentAttribute.uiName(),
       style: Theme.of(context).textTheme.titleLarge,
     );
-    // Title icon is disabled
-    // final IconData? icon = iconResourceToMaterialIcon(attribute.icon);
-    const IconData? icon = null;
-
-    final Widget title;
-    if (icon != null) {
-      title = Row(
-        children: [
-          Icon(icon),
-          const Padding(padding: EdgeInsets.all(8.0)),
-          text,
-        ],
-      );
-    } else {
-      title = text;
-    }
-
     return Padding(
       padding: const EdgeInsets.all(INITIAL_SETUP_PADDING),
-      child: title
+      child: text
     );
-  }
-
-  List<Widget> widgetsForSelectMultipleAttribute(
-    BuildContext context,
-    Attribute attribute,
-    List<AttributeValue> attributeValues,
-    List<Language> translations,
-    int requiredAttributeCount,
-  ) {
-    // Group values are not supported in select multiple attributes.
-    final widgets = <Widget>[];
-    for (final value in attributeValues) {
-      final icon = iconResourceToMaterialIcon(value.icon);
-      final text = attributeValueName(context, value, translations);
-
-      final Widget title;
-      if (icon != null) {
-        title = Row(
-          children: [
-            Icon(icon),
-            const Padding(padding: EdgeInsets.all(8.0)),
-            Text(text),
-          ],
-        );
-      } else {
-        title = Text(text);
-      }
-
-      final checkbox = BlocBuilder<InitialSetupBloc, InitialSetupData>(
-        builder: (context, state) {
-          final currentValue = attributeValueStateForBitflagAttributes(state.profileAttributes.answers, attribute, value);
-          return CheckboxListTile(
-            title: title,
-            value: currentValue,
-            onChanged: (bitflagValue) {
-              context.read<InitialSetupBloc>().add(
-                ModifyProfileAttributeBitflagValue(
-                  requiredAttributeCount,
-                  attribute,
-                  value,
-                  bitflagValue == true
-                )
-              );
-            },
-          );
-        }
-      );
-
-      widgets.add(checkbox);
-    }
-    return widgets;
   }
 }
 

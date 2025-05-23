@@ -81,7 +81,7 @@ abstract class _InitialSetupData implements InitialSetupData {
 class _$InitialSetupDataImpl implements _InitialSetupData {
   static const GenderSearchSettingsAll _genderSearchSettingDefaultValue = GenderSearchSettingsAll();
   static const bool _searchAgeRangeInitDoneDefaultValue = false;
-  static const ProfileAttributesState _profileAttributesDefaultValue = PartiallyAnswered([]);
+  static const ProfileAttributesState _profileAttributesDefaultValue = ProfileAttributesState([]);
   static const bool _sendingInProgressDefaultValue = false;
   
   _$InitialSetupDataImpl({

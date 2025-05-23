@@ -1,4 +1,5 @@
 
+import "package:app/utils/list.dart";
 import "package:flutter/material.dart";
 import "package:latlong2/latlong.dart";
 import "package:openapi/api.dart";
@@ -26,7 +27,7 @@ class InitialSetupData with _$InitialSetupData {
     int? searchAgeRangeMin,
     int? searchAgeRangeMax,
     LatLng? profileLocation,
-    @Default(PartiallyAnswered([]))ProfileAttributesState profileAttributes,
+    @Default(ProfileAttributesState([])) ProfileAttributesState profileAttributes,
     bool? unlimitedLikes,
     @Default(false) bool sendingInProgress,
   }) = _InitialSetupData;
@@ -132,13 +133,36 @@ class GenderSearchSettingsAll {
   }
 }
 
-sealed class ProfileAttributesState {
+class ProfileAttributesState {
   final List<ProfileAttributeValueUpdate> answers;
   const ProfileAttributesState(this.answers);
-}
-class PartiallyAnswered extends ProfileAttributesState {
-  const PartiallyAnswered(super.answers);
-}
-class FullyAnswered extends ProfileAttributesState {
-  const FullyAnswered(super.answers);
+
+  bool answerForRequiredAttributeExists(int attributeId) {
+    for (final a in answers) {
+      if (a.id == attributeId) {
+        final answer = a.v.firstOrNull;
+        return answer != null && answer != 0;
+      }
+    }
+    return false;
+  }
+
+  ProfileAttributesState addOrReplace(ProfileAttributeValueUpdate update) {
+    final updates = <ProfileAttributeValueUpdate>[];
+    bool updated = false;
+    for (final u in answers) {
+      if (u.id == update.id) {
+        updates.add(update);
+        updated = true;
+      } else {
+        updates.add(u);
+      }
+    }
+
+    if (!updated) {
+      updates.add(update);
+    }
+
+    return ProfileAttributesState(updates);
+  }
 }

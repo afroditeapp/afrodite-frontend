@@ -1,3 +1,4 @@
+import "package:app/ui/initial_setup/unlimited_likes.dart";
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:latlong2/latlong.dart";
@@ -11,7 +12,7 @@ import "package:app/ui_utils/dialog.dart";
 import "package:app/ui_utils/initial_setup_common.dart";
 
 class AskLocationScreen extends StatelessWidget {
-  const AskLocationScreen({Key? key}) : super(key: key);
+  const AskLocationScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +25,20 @@ class AskLocationScreen extends StatelessWidget {
         getContinueButtonCallback: (context, state) {
           if (state.profileLocation != null) {
             return () {
-              MyNavigator.push(context, MaterialPage<void>(child: AskProfileAttributesScreen()));
+              final attributes = context.read<ProfileAttributesBloc>().state.manager?.requiredAttributes() ?? [];
+              final nextAttribute = attributes.firstOrNull;
+              if (nextAttribute == null) {
+                MyNavigator.push(context, const MaterialPage<void>(child: AskUnlimitedLikesScreen()));
+              } else {
+                MyNavigator.push(
+                  context,
+                  MaterialPage<void>(child: AskProfileAttributesScreen(
+                    attributeIndex: 0,
+                    currentAttribute: nextAttribute,
+                    attributes: attributes,
+                  )),
+                );
+              }
             };
           } else {
             return null;

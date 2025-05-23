@@ -45,12 +45,6 @@ class _ViewProfileEntryState extends State<ViewProfileEntry> {
   final currentUser = LoginRepository.getInstance().repositories.accountId;
 
   @override
-  void initState() {
-    super.initState();
-    context.read<ProfileAttributesBloc>().add(RefreshAttributesIfNeeded());
-  }
-
-  @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -76,11 +70,6 @@ class _ViewProfileEntryState extends State<ViewProfileEntry> {
               if (showProfileText) const Padding(padding: EdgeInsets.only(top: 16)),
               attributes(),
               const Padding(padding: EdgeInsets.only(top: FLOATING_ACTION_BUTTON_EMPTY_AREA)),
-              // Zero sized widgets
-              ProgressDialogOpener<ProfileAttributesBloc, AttributesData>(
-                dialogVisibilityGetter: (state) =>
-                  state.refreshState is AttributeRefreshLoading,
-              ),
             ]
           ),
         );

@@ -347,6 +347,10 @@
   "@edit_attribute_filter_value_screen_title": {
     "description": "Title for edit attribute filter screen"
   },
+  "edit_attribute_value_screen_max_selected_values_error": "Too many selected values",
+  "@edit_attribute_value_screen_max_selected_values_error": {
+    "description": "Snackbar text for max selected values error"
+  },
   "edit_attribute_value_screen_one_value_must_be_selected": "At least one selection is required",
   "@edit_attribute_value_screen_one_value_must_be_selected": {
     "description": "Snackbar text for notifying that one at least one option must be selected"
@@ -738,18 +742,6 @@
   "initial_setup_screen_location_title": "My profile's location is…",
   "@initial_setup_screen_location_title": {
     "description": "Title for initial setup location screen"
-  },
-  "initial_setup_screen_profile_attributes_download_button": "Download questions",
-  "@initial_setup_screen_profile_attributes_download_button": {
-    "description": "Button text for downloading profile attributes"
-  },
-  "initial_setup_screen_profile_attributes_missing_error_text": "Profile questions are not yet downloaded.",
-  "@initial_setup_screen_profile_attributes_missing_error_text": {
-    "description": "Error text displayed when profile attributes are not yet downloaded"
-  },
-  "initial_setup_screen_profile_attributes_no_questions_text": "All required questions already answered.",
-  "@initial_setup_screen_profile_attributes_no_questions_text": {
-    "description": "Info text that all required questions are already answered"
   },
   "initial_setup_screen_profile_basic_info_age_title": "Age",
   "@initial_setup_screen_profile_basic_info_age_title": {
