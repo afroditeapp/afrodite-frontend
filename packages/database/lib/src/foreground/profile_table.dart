@@ -218,7 +218,7 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
         profileTextAccepted: profileTextAccepted,
         version: profileVersion,
         age: profileAge,
-        attributes: profileAttributes,
+        attributeIdAndStateMap: profileAttributes,
         unlimitedLikes: profileUnlimitedLikes,
         contentVersion: contentVersion,
         lastSeenTimeValue: r.profileLastSeenTimeValue,

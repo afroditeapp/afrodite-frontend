@@ -62,7 +62,7 @@ class _EditProfileAttributeFilterScreenState extends State<EditProfileAttributeF
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          EditAttributeTitle(a: widget.a.attribute),
+          // EditAttributeTitle(a: widget.a.attribute),
           EditAttributeFilterEmptyValue(
             a: widget.a,
             onEmpty: (a, value) =>

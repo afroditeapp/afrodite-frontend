@@ -1,5 +1,6 @@
 
 import 'package:app/ui_utils/attribute/icon.dart';
+import 'package:app/ui_utils/attribute/state.dart';
 import 'package:app/ui_utils/attribute/translation.dart';
 import 'package:database/database.dart';
 import 'package:flutter/material.dart';
@@ -21,11 +22,24 @@ class AttributeManager {
         return a.apiAttribute().orderNumber.compareTo(b.apiAttribute().orderNumber);
       });
     }
-
     return AttributeManager._(attributesCopy);
   }
 
   List<UiAttribute> requiredAttributes() => _list.where((a) => a.apiAttribute().required_).toList();
+  List<UiAttribute> allAttributes() => _list;
+
+  List<AttributeAndState> parseStates(Map<int, ProfileAttributeValueUpdate> states, {bool includeNullAttributes = false}) {
+    final list = <AttributeAndState>[];
+    for (final a in allAttributes()) {
+      final state = states[a.apiAttribute().id];
+      if (state != null) {
+        list.add(AttributeAndState(a, AttributeStateStorage.parseFromUpdate(a, state)));
+      } else if (includeNullAttributes) {
+        list.add(AttributeAndState(a, AttributeStateStorage()));
+      }
+    }
+    return list;
+  }
 }
 
 class UiAttribute {
@@ -41,26 +55,10 @@ class UiAttribute {
   );
 
   factory UiAttribute.createFrom(Attribute attribute, String locale) {
-    void reorderValues(List<UiAttributeValue> attributeValues, AttributeValueOrderMode order) {
-      if (order == AttributeValueOrderMode.orderNumber) {
-        attributeValues.sort((a, b) {
-          return a.apiValue().orderNumber.compareTo(b.apiValue().orderNumber);
-        });
-      } else if (order == AttributeValueOrderMode.alphabethicalKey) {
-        attributeValues.sort((a, b) {
-          return a.apiValue().key.compareTo(b.apiValue().key);
-        });
-      } else if (order == AttributeValueOrderMode.alphabethicalValue) {
-        attributeValues.sort((a, b) {
-          return a.uiName().compareTo(b.uiName());
-        });
-      }
-    }
-
     final attributeValues = attribute.values.map(
       (v) => UiAttributeValue.createFrom(attribute, v, null, locale),
     ).toList();
-    reorderValues(attributeValues, attribute.valueOrder);
+    reorderAttributeValues(attributeValues, attribute.valueOrder);
 
     final valuesAndGroupValues = <UiAttributeValue>[];
     for (final levelOneValue in attributeValues) {
@@ -68,7 +66,7 @@ class UiAttribute {
       final groupValues = levelOneValue.apiValue().groupValues?.values.map(
         (v) => UiAttributeValue.createFrom(attribute, v, levelOneValue, locale),
       ).toList() ?? [];
-      reorderValues(groupValues, attribute.valueOrder);
+      reorderAttributeValues(groupValues, attribute.valueOrder);
       valuesAndGroupValues.addAll(groupValues);
     }
 
@@ -153,5 +151,26 @@ class UiAttributeValue {
     } else {
       return apiValue().id;
     }
+  }
+}
+
+abstract class AttributeValueAreaInfoProvider {
+  List<String> valueAreaExtraValues();
+  List<UiAttributeValue> valueAreaSelectedValues();
+}
+
+void reorderAttributeValues(List<UiAttributeValue> attributeValues, AttributeValueOrderMode order) {
+  if (order == AttributeValueOrderMode.orderNumber) {
+    attributeValues.sort((a, b) {
+      return a.apiValue().orderNumber.compareTo(b.apiValue().orderNumber);
+    });
+  } else if (order == AttributeValueOrderMode.alphabethicalKey) {
+    attributeValues.sort((a, b) {
+      return a.apiValue().key.compareTo(b.apiValue().key);
+    });
+  } else if (order == AttributeValueOrderMode.alphabethicalValue) {
+    attributeValues.sort((a, b) {
+      return a.uiName().compareTo(b.uiName());
+    });
   }
 }

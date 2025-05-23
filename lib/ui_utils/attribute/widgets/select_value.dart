@@ -12,13 +12,17 @@ class SelectAttributeValue extends StatefulWidget {
   final bool isFilter;
   final void Function(AttributeStateStorage) onChanged;
   final Widget? firstListItem;
+  final Widget? lastListItem;
   final AttributeStateStorage? Function() initialStateBuilder;
+  final String? filterText;
   const SelectAttributeValue({
     required this.attribute,
     required this.isFilter,
     this.onChanged = _emptyOnChanged,
     this.firstListItem,
+    this.lastListItem,
     this.initialStateBuilder = _emptyInitialStateBuilder,
+    this.filterText,
     super.key,
   });
 
@@ -29,6 +33,9 @@ class SelectAttributeValue extends StatefulWidget {
 class _SelectAttributeValueState extends State<SelectAttributeValue> {
   late final AttributeStateStorage storage;
   late int maxSelected;
+  List<UiAttributeValue> allValues = [];
+  bool showOnlySelectedFilterSetting = false;
+  bool showOnlySelected = false;
 
   @override
   void initState() {
@@ -41,18 +48,48 @@ class _SelectAttributeValueState extends State<SelectAttributeValue> {
     }
   }
 
+  List<UiAttributeValue> getVisibleAttributeValues() {
+    allValues = widget.attribute.values();
+    showOnlySelectedFilterSetting = allValues.length > 10;
+    var visible = filterVisible();
+    if (visible.isEmpty && showOnlySelected) {
+      showOnlySelected = false;
+      visible = filterVisible();
+    }
+    return visible;
+  }
+
+  List<UiAttributeValue> filterVisible() {
+    return allValues.where((a) {
+      final filter = widget.filterText;
+      final bool matchesFilter;
+      if (filter != null) {
+        matchesFilter = a.uiName().toLowerCase().contains(filter);
+      } else {
+        matchesFilter = true;
+      }
+      return matchesFilter &&
+        (
+          !showOnlySelected ||
+          storage.isSelected(a) ||
+          (a.isParentOfGroupValue() && storage.groupValueSelected(a))
+        );
+    }).toList();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final list = widget.attribute.values();
-    return ListView.builder(
-      itemCount: list.length + 1,
-      itemBuilder: (context, i) {
-        if (i == 0) {
-          return widget.firstListItem ?? const SizedBox.shrink();
-        }
-        final attributeValue = list[i - 1];
-        return selectWidget(context, attributeValue);
-      }
+    final list = getVisibleAttributeValues();
+    return CustomScrollView(
+      slivers: [
+        SliverToBoxAdapter(child: widget.firstListItem ?? const SizedBox.shrink()),
+        if (showOnlySelectedFilterSetting) SliverToBoxAdapter(child: showOnlySelectedSetting(context)),
+        SliverList.builder(
+          itemCount: list.length,
+          itemBuilder: (context, i) => selectWidget(context, list[i]),
+        ),
+        SliverToBoxAdapter(child: widget.lastListItem ?? const SizedBox.shrink()),
+      ],
     );
   }
 
@@ -100,7 +137,10 @@ class _SelectAttributeValueState extends State<SelectAttributeValue> {
                 storage.select(v);
               }
             } else if (selected == false) {
-              storage.clearAndSelect(v);
+              storage.unselect(v);
+              if (value == null) {
+                storage.unselectGroupValues(v);
+              }
             }
           }
         });
@@ -135,5 +175,17 @@ class _SelectAttributeValueState extends State<SelectAttributeValue> {
       title = Text(text);
     }
     return title;
+  }
+
+  Widget showOnlySelectedSetting(BuildContext context) {
+    return SwitchListTile(
+      title: Text(context.strings.generic_show_only_selected),
+      value: showOnlySelected,
+      onChanged: storage.isNotEmpty() ? (value) {
+        setState(() {
+          showOnlySelected = value;
+        });
+      } : null,
+    );
   }
 }

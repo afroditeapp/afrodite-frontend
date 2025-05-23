@@ -7,8 +7,6 @@ import 'package:database/database.dart';
 import 'package:app/database/database_manager.dart';
 import "package:app/model/freezed/logic/profile/edit_my_profile.dart";
 import "package:app/utils.dart";
-import "package:app/utils/immutable_list.dart";
-
 
 sealed class EditMyProfileEvent {}
 class SetInitialValues extends EditMyProfileEvent {
@@ -43,15 +41,12 @@ class EditMyProfileBloc extends Bloc<EditMyProfileEvent, EditMyProfileData> with
 
   EditMyProfileBloc() : super(EditMyProfileData()) {
     on<SetInitialValues>((data, emit) async {
-      final attributes = data.profile.attributes
-        .map((e) => ProfileAttributeValueUpdate(id: e.id, v: [...e.v]))
-        .toList();
-
+      final attributes = data.profile.attributeIdAndStateMap;
       emit(EditMyProfileData(
         age: data.profile.age,
         name: data.profile.name,
         profileText: data.profile.profileText,
-        attributes: UnmodifiableList(attributes),
+        attributeIdAndStateMap: attributes,
         unlimitedLikes: data.profile.unlimitedLikes,
       ));
     });
@@ -68,20 +63,20 @@ class EditMyProfileBloc extends Bloc<EditMyProfileEvent, EditMyProfileData> with
       emit(state.copyWith(unlimitedLikes: data.value));
     });
     on<NewAttributeValue>((data, emit) async {
-      final newAttributes = <ProfileAttributeValueUpdate>[];
+      final newAttributes = <int, ProfileAttributeValueUpdate>{};
       var found = false;
-      for (final a in state.attributes) {
+      for (final a in state.attributeIdAndStateMap.values) {
         if (a.id == data.value.id) {
-          newAttributes.add(data.value);
+          newAttributes[data.value.id] = data.value;
           found = true;
         } else {
-          newAttributes.add(a);
+          newAttributes[a.id] = a;
         }
       }
       if (!found) {
-        newAttributes.add(data.value);
+        newAttributes[data.value.id] = data.value;
       }
-      emit(state.copyWith(attributes: UnmodifiableList(newAttributes)));
+      emit(state.copyWith(attributeIdAndStateMap: newAttributes));
     });
   }
 }

@@ -37,6 +37,6 @@ class DaoMyProfile extends DatabaseAccessor<AccountDatabase> with _$DaoMyProfile
     );
   }
 
-  Stream<List<api.ProfileAttributeValue>?> watchProfileAttributes() =>
+  Stream<Map<int, api.ProfileAttributeValueUpdate>?> watchProfileAttributes() =>
     watchColumn((r) => r.jsonProfileAttributes?.toProfileAttributes());
 }

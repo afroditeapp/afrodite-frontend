@@ -2,6 +2,8 @@
 
 
 import 'package:app/ui_utils/api.dart';
+import 'package:app/ui_utils/attribute/attribute.dart';
+import 'package:app/ui_utils/attribute/state.dart';
 import 'package:app/ui_utils/moderation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -23,7 +25,6 @@ import 'package:app/ui/normal/profiles/view_profile.dart';
 import 'package:app/ui/normal/settings/profile/edit_profile.dart';
 import 'package:app/ui_utils/consts/corners.dart';
 import 'package:app/ui_utils/consts/padding.dart';
-import 'package:app/ui_utils/loading_dialog.dart';
 import 'package:app/ui_utils/profile_thumbnail_image.dart';
 import 'package:app/utils/api.dart';
 
@@ -280,11 +281,11 @@ class _ViewProfileEntryState extends State<ViewProfileEntry> {
   Widget attributes() {
     return BlocBuilder<ProfileAttributesBloc, AttributesData>(
       builder: (context, state) {
-        final info = state.attributes;
-        if (info == null) {
+        final manager = state.manager;
+        if (manager == null) {
           return const SizedBox.shrink();
         } else {
-          return AttributeList(availableAttributes: info, attributes: widget.profile.attributes);
+          return AttributeList(manager: manager, attributes: widget.profile.attributeIdAndStateMap);
         }
       }
     );
@@ -477,15 +478,15 @@ class SelectedImgIndicator extends StatelessWidget {
 }
 
 class AttributeList extends StatelessWidget {
-  final ProfileAttributes availableAttributes;
-  final List<ProfileAttributeValue> attributes;
-  const AttributeList({required this.availableAttributes, required this.attributes, super.key});
+  final AttributeManager manager;
+  final Map<int, ProfileAttributeValueUpdate> attributes;
+  const AttributeList({required this.manager, required this.attributes, super.key});
 
   @override
   Widget build(BuildContext context) {
     final List<Widget> attributeWidgets = <Widget>[];
 
-    final l = AttributeAndValue.sortedListFrom(availableAttributes, attributes);
+    final l = manager.parseStates(attributes);
     for (final a in l) {
       attributeWidgets.add(attributeWidget(context, a));
       attributeWidgets.add(const Divider());
@@ -500,9 +501,9 @@ class AttributeList extends StatelessWidget {
     );
   }
 
-  Widget attributeWidget(BuildContext context, AttributeAndValue a) {
-    final attributeText = a.title(context);
-    final icon = iconResourceToMaterialIcon(a.attribute.icon);
+  Widget attributeWidget(BuildContext context, AttributeAndState a) {
+    final attributeText = a.attribute.uiName();
+    final icon = a.attribute.uiIcon();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -511,7 +512,7 @@ class AttributeList extends StatelessWidget {
         const Padding(padding: EdgeInsets.all(4)),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: COMMON_SCREEN_EDGE_PADDING),
-          child: AttributeValuesArea(a: a),
+          child: AttributeValuesArea(a: a, isFilter: false),
         ),
       ],
     );
@@ -519,26 +520,27 @@ class AttributeList extends StatelessWidget {
 }
 
 class AttributeValuesArea extends StatelessWidget {
-  final AttributeInfoProvider a;
-  const AttributeValuesArea({required this.a, super.key});
+  final AttributeValueAreaInfoProvider a;
+  final bool isFilter;
+  const AttributeValuesArea({required this.a, required this.isFilter, super.key});
 
   @override
   Widget build(BuildContext context) {
     return attributeValuesArea(context, a);
   }
 
-  Widget attributeValuesArea(BuildContext c, AttributeInfoProvider a) {
+  Widget attributeValuesArea(BuildContext c, AttributeValueAreaInfoProvider a) {
     final List<Widget> valueWidgets = [];
-      for (final v in a.extraValues(c)) {
+      for (final v in a.valueAreaExtraValues()) {
       final w = Chip(
         label: Text(v),
       );
       valueWidgets.add(w);
     }
 
-    for (final v in a.sortedSelectedValues()) {
-      final text = attributeValueName(c, v, a.attribute.translations);
-      final iconData = iconResourceToMaterialIcon(v.icon);
+    for (final v in a.valueAreaSelectedValues()) {
+      final text = v.uiName();
+      final iconData = v.uiIcon();
       final Widget? avatar;
       if (iconData != null) {
         avatar = Icon(iconData);
@@ -553,7 +555,7 @@ class AttributeValuesArea extends StatelessWidget {
     }
 
     if (valueWidgets.isEmpty) {
-      if (a.isFilter) {
+      if (isFilter) {
         return Text(c.strings.generic_disabled);
       } else {
         return Text(c.strings.generic_empty);

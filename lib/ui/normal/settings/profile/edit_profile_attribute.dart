@@ -1,5 +1,8 @@
 
 
+import 'package:app/ui_utils/attribute/attribute.dart';
+import 'package:app/ui_utils/attribute/state.dart';
+import 'package:app/ui_utils/attribute/widgets/select_value.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
@@ -8,18 +11,17 @@ import 'package:app/logic/profile/edit_my_profile.dart';
 import 'package:app/model/freezed/logic/profile/edit_my_profile.dart';
 import 'package:app/ui/initial_setup/profile_attributes.dart';
 import 'package:app/ui/normal/settings/profile/edit_profile.dart';
-import 'package:app/ui/utils/view_profile.dart';
 import 'package:app/ui_utils/app_bar/search.dart';
 import 'package:app/ui_utils/consts/padding.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/api.dart';
 
 class EditProfileAttributeScreen extends StatefulWidget {
-  final AttributeAndValue a;
+  final AttributeAndState a;
   const EditProfileAttributeScreen({
     required this.a,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<EditProfileAttributeScreen> createState() => _EditProfileAttributeScreenState();
@@ -32,25 +34,18 @@ class _EditProfileAttributeScreenState extends State<EditProfileAttributeScreen>
   @override
   void initState() {
     super.initState();
-    searchPossible = widget.a.attribute.mode == AttributeMode.oneLevel ||
-      widget.a.attribute.mode == AttributeMode.twoLevel;
+    searchPossible = widget.a.attribute.apiAttribute().mode == AttributeMode.oneLevel ||
+      widget.a.attribute.apiAttribute().mode == AttributeMode.twoLevel;
     searchController = AppBarSearchController(onChanged: () => setState(() {}));
   }
 
   bool invalidSelection(EditMyProfileData data) {
-    for (final a in data.attributes) {
-      if (
-        a.id == widget.a.attribute.id &&
-        widget.a.attribute.required_ &&
-        (
-          (widget.a.attribute.isBitflag() && (a.bitflagValue() == null || a.bitflagValue() == 0)) ||
-          (!widget.a.attribute.isBitflag() && a.v.isEmpty)
-        )
-      ) {
-        return true;
+    for (final updateValue in data.attributeIdAndStateMap.values) {
+      if (updateValue.id == widget.a.attribute.apiAttribute().id) {
+        final answer = updateValue.v.firstOrNull;
+        return widget.a.attribute.apiAttribute().required_ && (answer == null || answer == 0);
       }
     }
-
     return false;
   }
 
@@ -95,24 +90,20 @@ class _EditProfileAttributeScreenState extends State<EditProfileAttributeScreen>
       filterValue = null;
     }
 
-    return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          EditAttributeTitle(a: widget.a.attribute),
-          EditSingleAttributeAllTypes(
-            a: widget.a,
-            valueFilter: filterValue,
-            onNewAttributeValue: (value) {
-              context.read<EditMyProfileBloc>().add(NewAttributeValue(value));
-            },
-          ),
-          if (invalidSelection) Padding(
-            padding: const EdgeInsets.all(COMMON_SCREEN_EDGE_PADDING),
-            child: Text(context.strings.edit_attribute_value_screen_one_value_must_be_selected),
-          ),
-        ],
-      ),
+    return SelectAttributeValue(
+      attribute: widget.a.attribute,
+      isFilter: false,
+      initialStateBuilder: () => widget.a.state.copy(),
+      onChanged: (state) =>
+        context.read<EditMyProfileBloc>().add(
+          NewAttributeValue(state.toAttributeValueUpdate(widget.a.attribute))
+        ),
+      firstListItem: EditAttributeTitle(a: widget.a.attribute),
+      lastListItem: invalidSelection ? Padding(
+        padding: const EdgeInsets.all(COMMON_SCREEN_EDGE_PADDING),
+        child: Text(context.strings.edit_attribute_value_screen_one_value_must_be_selected),
+      ) : null,
+      filterText: filterValue,
     );
   }
 }
@@ -452,9 +443,8 @@ class _EditSingleAttributeState extends State<EditSingleAttribute> {
   }
 }
 
-
 class EditAttributeTitle extends StatelessWidget {
-  final Attribute a;
+  final UiAttribute a;
   const EditAttributeTitle({required this.a, super.key});
 
   @override
@@ -462,31 +452,14 @@ class EditAttributeTitle extends StatelessWidget {
     return questionTitle(context, a);
   }
 
-  Widget questionTitle(BuildContext context, Attribute attribute) {
+  Widget questionTitle(BuildContext context, UiAttribute attribute) {
     final text = Text(
-      attributeName(context, attribute),
+      attribute.uiName(),
       style: Theme.of(context).textTheme.bodyLarge,
     );
-    // Title icon is disabled
-    // final IconData? icon = iconResourceToMaterialIcon(attribute.icon);
-    const IconData? icon = null;
-
-    final Widget title;
-    if (icon != null) {
-      title = Row(
-        children: [
-          const Icon(icon),
-          const Padding(padding: EdgeInsets.all(8.0)),
-          text,
-        ],
-      );
-    } else {
-      title = text;
-    }
-
     return Padding(
       padding: const EdgeInsets.all(INITIAL_SETUP_PADDING),
-      child: title
+      child: text,
     );
   }
 }

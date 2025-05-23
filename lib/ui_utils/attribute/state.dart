@@ -22,6 +22,8 @@ class AttributeStateStorage {
     select(attribute);
   }
 
+  bool isNotEmpty() => selected.isNotEmpty;
+
   int length() => selected.length;
 
   bool groupValueSelected(UiAttributeValue levelOneValue) {
@@ -50,7 +52,12 @@ class AttributeStateStorage {
     List<int> intList;
     if (attribute.apiAttribute().mode == AttributeMode.bitflag) {
       final apiValue = values.fold(0, (previous, current) => previous | current.selectedValueForApi());
-      intList = [apiValue];
+      if (apiValue == 0) {
+        // Empty list removes the attribute
+        intList = [];
+      } else {
+        intList = [apiValue];
+      }
     } else {
       intList = values.map((v) => v.selectedValueForApi()).toList();
     }
@@ -60,29 +67,63 @@ class AttributeStateStorage {
     );
   }
 
-  factory AttributeStateStorage.parseFromUpdateList(UiAttribute attribute, List<ProfileAttributeValueUpdate> state) {
+  AttributeStateStorage copy() {
     final storage = AttributeStateStorage();
+    for (final v in selected.values) {
+      storage.select(v);
+    }
+    return storage;
+  }
+
+  factory AttributeStateStorage.parseFromUpdateList(UiAttribute attribute, List<ProfileAttributeValueUpdate> state) {
     for (final u in state) {
       if (u.id != attribute.apiAttribute().id) {
         continue;
       }
-      for (final update in u.v) {
-        if (attribute.apiAttribute().mode == AttributeMode.bitflag) {
-          for (final availableValue in attribute.values()) {
-            if (availableValue.selectedValueForApi() & update == availableValue.selectedValueForApi()) {
-              storage.select(availableValue);
-            }
+      return AttributeStateStorage.parseFromUpdate(attribute, u);
+    }
+    return AttributeStateStorage();
+  }
+
+  factory AttributeStateStorage.parseFromUpdate(UiAttribute attribute, ProfileAttributeValueUpdate u) {
+    final storage = AttributeStateStorage();
+    if (u.id != attribute.apiAttribute().id) {
+      return storage;
+    }
+    for (final update in u.v) {
+      if (attribute.apiAttribute().mode == AttributeMode.bitflag) {
+        for (final availableValue in attribute.values()) {
+          if (availableValue.selectedValueForApi() & update == availableValue.selectedValueForApi()) {
+            storage.select(availableValue);
           }
-          break;
-        } else {
-          for (final availableValue in attribute.values()) {
-            if (availableValue.selectedValueForApi() == update) {
-              storage.select(availableValue);
-            }
+        }
+        break;
+      } else {
+        for (final availableValue in attribute.values()) {
+          if (availableValue.selectedValueForApi() == update) {
+            storage.select(availableValue);
           }
         }
       }
     }
     return storage;
+  }
+}
+
+class AttributeAndState extends AttributeValueAreaInfoProvider {
+  final UiAttribute attribute;
+  final AttributeStateStorage state;
+  AttributeAndState(this.attribute, this.state);
+
+  @override
+  List<String> valueAreaExtraValues() {
+    return [];
+  }
+
+  @override
+  List<UiAttributeValue> valueAreaSelectedValues() {
+    final list = state.selected.values.toList();
+    reorderAttributeValues(list, attribute.apiAttribute().valueOrder);
+    return list;
   }
 }

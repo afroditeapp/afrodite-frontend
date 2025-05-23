@@ -657,18 +657,18 @@ class EditAttributeFilters extends StatelessWidget {
     });
 
     for (final a in l) {
-      attributeWidgets.add(
-        EditAttributeRow(
-          a: a,
-          isEnabled: isEnabled,
-          onStartEditor: () {
-            MyNavigator.push(
-              context,
-              MaterialPage<void>(child: EditProfileAttributeFilterScreen(a: a)),
-            );
-          }
-        )
-      );
+      // attributeWidgets.add(
+      //   EditAttributeRow(
+      //     a: a,
+      //     isEnabled: isEnabled,
+      //     onStartEditor: () {
+      //       MyNavigator.push(
+      //         context,
+      //         MaterialPage<void>(child: EditProfileAttributeFilterScreen(a: a)),
+      //       );
+      //     }
+      //   )
+      // );
       attributeWidgets.add(const Divider());
     }
 

@@ -300,8 +300,10 @@ class JsonList {
   final List<Object?> jsonList;
   JsonList(this.jsonList);
 
-  List<ProfileAttributeValue>? toProfileAttributes() {
-    return ProfileAttributeValue.listFromJson(jsonList);
+  Map<int, ProfileAttributeValueUpdate> toProfileAttributes() {
+    final attributes = ProfileAttributeValue.listFromJson(jsonList)
+      .map((v) => ProfileAttributeValueUpdate(id: v.id, v: v.v));
+    return { for (var e in attributes) e.id : e };
   }
 
   static TypeConverter<JsonList, String> driftConverter = TypeConverter.json(

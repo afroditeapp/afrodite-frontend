@@ -22,7 +22,9 @@ class ProfileEntry implements PublicContentProvider {
   /// When 0 or greater, the value is unix timestamp when profile has been
   /// seen online previously.
   final int? lastSeenTimeValue;
-  final List<ProfileAttributeValue> attributes;
+  /// Use update type also here to avoid extra type conversions when
+  /// editing attributes.
+  final Map<int, ProfileAttributeValueUpdate> attributeIdAndStateMap;
   final ProfileVersion version;
   final ProfileContentVersion contentVersion;
   final UtcDateTime? newLikeInfoReceivedTime;
@@ -39,7 +41,7 @@ class ProfileEntry implements PublicContentProvider {
       required this.profileTextAccepted,
       required this.age,
       required this.unlimitedLikes,
-      required this.attributes,
+      required this.attributeIdAndStateMap,
       required this.version,
       required this.contentVersion,
       this.lastSeenTimeValue,
@@ -127,7 +129,7 @@ class MyProfileEntry extends ProfileEntry implements MyContentProvider {
     required super.profileTextAccepted,
     required super.age,
     required super.unlimitedLikes,
-    required super.attributes,
+    required super.attributeIdAndStateMap,
     required super.version,
     required super.contentVersion,
     super.lastSeenTimeValue,

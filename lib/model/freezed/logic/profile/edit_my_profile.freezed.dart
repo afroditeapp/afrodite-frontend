@@ -24,14 +24,14 @@ mixin _$EditMyProfileData {
   int? get age => throw _privateConstructorErrorEditMyProfileData;
   String? get name => throw _privateConstructorErrorEditMyProfileData;
   String? get profileText => throw _privateConstructorErrorEditMyProfileData;
-  UnmodifiableList<ProfileAttributeValueUpdate> get attributes => throw _privateConstructorErrorEditMyProfileData;
+  Map<int, ProfileAttributeValueUpdate> get attributeIdAndStateMap => throw _privateConstructorErrorEditMyProfileData;
   bool get unlimitedLikes => throw _privateConstructorErrorEditMyProfileData;
 
   EditMyProfileData copyWith({
     int? age,
     String? name,
     String? profileText,
-    UnmodifiableList<ProfileAttributeValueUpdate>? attributes,
+    Map<int, ProfileAttributeValueUpdate>? attributeIdAndStateMap,
     bool? unlimitedLikes,
   }) => throw _privateConstructorErrorEditMyProfileData;
 }
@@ -42,7 +42,7 @@ abstract class _EditMyProfileData extends EditMyProfileData {
     int? age,
     String? name,
     String? profileText,
-    UnmodifiableList<ProfileAttributeValueUpdate> attributes,
+    Map<int, ProfileAttributeValueUpdate> attributeIdAndStateMap,
     bool unlimitedLikes,
   }) = _$EditMyProfileDataImpl;
   const _EditMyProfileData._() : super._();
@@ -50,14 +50,14 @@ abstract class _EditMyProfileData extends EditMyProfileData {
 
 /// @nodoc
 class _$EditMyProfileDataImpl extends _EditMyProfileData with DiagnosticableTreeMixin {
-  static const UnmodifiableList<ProfileAttributeValueUpdate> _attributesDefaultValue = UnmodifiableList<ProfileAttributeValueUpdate>.empty();
+  static const Map<int, ProfileAttributeValueUpdate> _attributeIdAndStateMapDefaultValue = {};
   static const bool _unlimitedLikesDefaultValue = false;
   
   _$EditMyProfileDataImpl({
     this.age,
     this.name,
     this.profileText,
-    this.attributes = _attributesDefaultValue,
+    this.attributeIdAndStateMap = _attributeIdAndStateMapDefaultValue,
     this.unlimitedLikes = _unlimitedLikesDefaultValue,
   }) : super._();
 
@@ -68,13 +68,13 @@ class _$EditMyProfileDataImpl extends _EditMyProfileData with DiagnosticableTree
   @override
   final String? profileText;
   @override
-  final UnmodifiableList<ProfileAttributeValueUpdate> attributes;
+  final Map<int, ProfileAttributeValueUpdate> attributeIdAndStateMap;
   @override
   final bool unlimitedLikes;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'EditMyProfileData(age: $age, name: $name, profileText: $profileText, attributes: $attributes, unlimitedLikes: $unlimitedLikes)';
+    return 'EditMyProfileData(age: $age, name: $name, profileText: $profileText, attributeIdAndStateMap: $attributeIdAndStateMap, unlimitedLikes: $unlimitedLikes)';
   }
 
   @override
@@ -85,7 +85,7 @@ class _$EditMyProfileDataImpl extends _EditMyProfileData with DiagnosticableTree
       ..add(DiagnosticsProperty('age', age))
       ..add(DiagnosticsProperty('name', name))
       ..add(DiagnosticsProperty('profileText', profileText))
-      ..add(DiagnosticsProperty('attributes', attributes))
+      ..add(DiagnosticsProperty('attributeIdAndStateMap', attributeIdAndStateMap))
       ..add(DiagnosticsProperty('unlimitedLikes', unlimitedLikes));
   }
 
@@ -100,8 +100,8 @@ class _$EditMyProfileDataImpl extends _EditMyProfileData with DiagnosticableTree
           other.name == name) &&
         (identical(other.profileText, profileText) ||
           other.profileText == profileText) &&
-        (identical(other.attributes, attributes) ||
-          other.attributes == attributes) &&
+        (identical(other.attributeIdAndStateMap, attributeIdAndStateMap) ||
+          other.attributeIdAndStateMap == attributeIdAndStateMap) &&
         (identical(other.unlimitedLikes, unlimitedLikes) ||
           other.unlimitedLikes == unlimitedLikes)
     );
@@ -113,7 +113,7 @@ class _$EditMyProfileDataImpl extends _EditMyProfileData with DiagnosticableTree
     age,
     name,
     profileText,
-    attributes,
+    attributeIdAndStateMap,
     unlimitedLikes,
   );
 
@@ -122,13 +122,13 @@ class _$EditMyProfileDataImpl extends _EditMyProfileData with DiagnosticableTree
     Object? age = _detectDefaultValueInCopyWith,
     Object? name = _detectDefaultValueInCopyWith,
     Object? profileText = _detectDefaultValueInCopyWith,
-    Object? attributes,
+    Object? attributeIdAndStateMap,
     Object? unlimitedLikes,
   }) => _$EditMyProfileDataImpl(
     age: (age == _detectDefaultValueInCopyWith ? this.age : age) as int?,
     name: (name == _detectDefaultValueInCopyWith ? this.name : name) as String?,
     profileText: (profileText == _detectDefaultValueInCopyWith ? this.profileText : profileText) as String?,
-    attributes: (attributes ?? this.attributes) as UnmodifiableList<ProfileAttributeValueUpdate>,
+    attributeIdAndStateMap: (attributeIdAndStateMap ?? this.attributeIdAndStateMap) as Map<int, ProfileAttributeValueUpdate>,
     unlimitedLikes: (unlimitedLikes ?? this.unlimitedLikes) as bool,
   );
 }

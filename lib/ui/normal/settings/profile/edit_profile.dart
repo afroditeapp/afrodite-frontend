@@ -1,8 +1,11 @@
 
 
 import 'package:app/ui/normal/settings/profile/edit_profile_text.dart';
+import 'package:app/ui_utils/attribute/attribute.dart';
+import 'package:app/ui_utils/attribute/state.dart';
 import 'package:app/utils/list.dart';
 import 'package:collection/collection.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
@@ -117,7 +120,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
         age: age,
         name: name,
         ptext: profileText,
-        attributes: s.attributes.toList(),
+        attributes: s.attributeIdAndStateMap.values.toList(),
       ),
       imgUpdate,
       unlimitedLikes: s.unlimitedLikes,
@@ -151,26 +154,22 @@ class _EditProfilePageState extends State<EditProfilePage> {
       return true;
     }
 
-    final availableAttributes = widget.profileAttributesBloc.state.attributes?.attributes ?? [];
-    for (final a in editedData.attributes) {
-      final currentOrNull = currentState.attributes.where((e) => e.id == a.id).firstOrNull;
-      final current = ProfileAttributeValueUpdate(
-        id: a.id,
-        v: currentOrNull?.v ?? [],
-      );
-      final attributeInfo = availableAttributes.where((e) => e.id == a.id).firstOrNull;
-
-      final nonNumberListAttributeChanges =
-        (current.firstValue() ?? 0) != (a.firstValue() ?? 0) ||
-        // Non bitflag attributes can have null values when not selected
-        ((attributeInfo?.isBitflag() ?? false) == false && current.firstValue() != a.firstValue()) ||
-        current.secondValue() != a.secondValue();
-      // TODO(prod): Update code to support two level attributes
-      final isNumberListAttribute = attributeInfo?.mode == AttributeMode.oneLevel;
-      if (
-        (!isNumberListAttribute && nonNumberListAttributeChanges) ||
-        (isNumberListAttribute && !const SetEquality<int>().equals(current.v.toSet(), a.v.toSet()))
-      ) {
+    final originalAttributes = currentState.attributeIdAndStateMap.values.toList();
+    final modifiedAttributes = { ...editedData.attributeIdAndStateMap };
+    for (final a in originalAttributes) {
+      final removed = modifiedAttributes.remove(a.id);
+      if (removed == null) {
+        // The modified attributes should contain all attributes
+        // from original as those are needed when removing an attribute.
+        // ProfileAttributeValueUpdate with empty list removes the attribute.
+        continue;
+      }
+      if (!listEquals(a.v, removed.v)) {
+        return true;
+      }
+    }
+    for (final a in modifiedAttributes.values) {
+      if (a.v.isNotEmpty) {
         return true;
       }
     }
@@ -276,14 +275,14 @@ class EditAttributes extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ProfileAttributesBloc, AttributesData>(
       builder: (context, data) {
-        final availableAttributes = data.attributes;
-        if (availableAttributes == null) {
+        final manager = data.manager;
+        if (manager == null) {
           return const SizedBox.shrink();
         }
 
         return BlocBuilder<EditMyProfileBloc, EditMyProfileData>(builder: (context, myProfileData) {
           return Column(
-            children: attributeTiles(context, availableAttributes, myProfileData.attributes)
+            children: attributeTiles(context, manager, myProfileData.attributeIdAndStateMap)
           );
         });
       },
@@ -292,25 +291,13 @@ class EditAttributes extends StatelessWidget {
 
   List<Widget> attributeTiles(
     BuildContext context,
-    ProfileAttributes availableAttributes,
-    Iterable<ProfileAttributeValueUpdate> myAttributes,
+    AttributeManager manager,
+    Map<int, ProfileAttributeValueUpdate> myAttributes,
   ) {
     final List<Widget> attributeWidgets = <Widget>[];
-    final convertedAttributes = myAttributes.map((e) {
-      final value = e.firstValue();
-      if (value == null) {
-        return null;
-      } else {
-        return ProfileAttributeValue(
-          id: e.id,
-          v: e.v,
-        );
-      }
-    }).nonNulls;
 
-    final l = AttributeAndValue.sortedListFrom(
-      availableAttributes,
-      convertedAttributes,
+    final l = manager.parseStates(
+      myAttributes,
       includeNullAttributes: true,
     );
     for (final a in l) {
@@ -337,7 +324,7 @@ class EditAttributes extends StatelessWidget {
 }
 
 class EditAttributeRow extends StatelessWidget {
-  final AttributeInfoProvider a;
+  final AttributeAndState a;
   final void Function() onStartEditor;
   final bool isEnabled;
   const EditAttributeRow({
@@ -349,15 +336,15 @@ class EditAttributeRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final attributeText = a.title(context);
-    final icon = iconResourceToMaterialIcon(a.attribute.icon);
+    final attributeText = a.attribute.uiName();
+    final icon = a.attribute.uiIcon();
 
     final void Function()? startEditorCallback;
     final Widget valueWidget;
     final Color iconColor;
     if (isEnabled) {
       startEditorCallback = onStartEditor;
-      valueWidget = AttributeValuesArea(a: a);
+      valueWidget = AttributeValuesArea(a: a, isFilter: false);
       iconColor = getIconButtonEnabledColor(context);
     } else {
       startEditorCallback = null;

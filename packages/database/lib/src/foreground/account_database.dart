@@ -411,7 +411,7 @@ class AccountDatabase extends _$AccountDatabase {
         profileTextModerationRejectedDetails: profileTextModerationRejectedDetails,
         age: profileAge,
         unlimitedLikes: profileUnlimitedLikes,
-        attributes: profileAttributes,
+        attributeIdAndStateMap: profileAttributes,
         version: profileVersion,
         contentVersion: profileContentVersion,
       );
