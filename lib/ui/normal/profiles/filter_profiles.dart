@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:app/ui_utils/attribute/attribute.dart';
 import 'package:app/ui_utils/snack_bar.dart';
+import 'package:app/utils/list.dart';
 import 'package:app/utils/option.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -79,6 +80,8 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
       widget.profileFilteringSettingsBloc.state.filteringSettings?.maxDistanceKmFilter,
       widget.profileFilteringSettingsBloc.state.filteringSettings?.profileCreatedFilter,
       widget.profileFilteringSettingsBloc.state.filteringSettings?.profileEditedFilter,
+      widget.profileFilteringSettingsBloc.state.filteringSettings?.profileTextMinCharactersFilter,
+      widget.profileFilteringSettingsBloc.state.filteringSettings?.profileTextMaxCharactersFilter,
       widget.profileFilteringSettingsBloc.state.filteringSettings?.randomProfileOrder ?? false,
     ));
   }
@@ -92,6 +95,8 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
       widget.editProfileFilteringSettingsBloc.state.maxDistanceKmFilter,
       widget.editProfileFilteringSettingsBloc.state.profileCreatedFilter,
       widget.editProfileFilteringSettingsBloc.state.profileEditedFilter,
+      widget.editProfileFilteringSettingsBloc.state.profileTextMinCharactersFilter,
+      widget.editProfileFilteringSettingsBloc.state.profileTextMaxCharactersFilter,
       widget.editProfileFilteringSettingsBloc.state.randomProfileOrder,
     ));
   }
@@ -105,6 +110,8 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
       currentSettings.filteringSettings?.maxDistanceKmFilter != editedSettings.maxDistanceKmFilter ||
       currentSettings.filteringSettings?.profileCreatedFilter != editedSettings.profileCreatedFilter ||
       currentSettings.filteringSettings?.profileEditedFilter != editedSettings.profileEditedFilter ||
+      currentSettings.filteringSettings?.profileTextMinCharactersFilter != editedSettings.profileTextMinCharactersFilter ||
+      currentSettings.filteringSettings?.profileTextMaxCharactersFilter != editedSettings.profileTextMaxCharactersFilter ||
       currentSettings.filteringSettings?.randomProfileOrder != editedSettings.randomProfileOrder
     ) {
       return true;
@@ -207,6 +214,8 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
               }
             }
           ),
+          const Divider(),
+          profileTextFilter(context),
           const Divider(),
           unlimitedLikesSetting(context, myProfileUnlimitedLikesValue),
           const Divider(),
@@ -341,12 +350,12 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
     );
   }
 
-    Widget profileCreatedOrEditedFilter(
-      BuildContext context,
-      String title,
-      int? Function(EditProfileFilteringSettingsData) valueGetter,
-      void Function(EditProfileFilteringSettingsBloc, int?) valueSetter,
-    ) {
+  Widget profileCreatedOrEditedFilter(
+    BuildContext context,
+    String title,
+    int? Function(EditProfileFilteringSettingsData) valueGetter,
+    void Function(EditProfileFilteringSettingsBloc, int?) valueSetter,
+  ) {
     return BlocBuilder<EditProfileFilteringSettingsBloc, EditProfileFilteringSettingsData>(
       builder: (context, state) {
         /// Selection for 1-7 days, 14 days, some months
@@ -495,7 +504,7 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
         final String stateText;
         final double sliderValue;
         if (valueInt == null) {
-          stateText = context.strings.profile_filtering_settings_screen_max_distance_unlimited;
+          stateText = context.strings.generic_unlimited;
           sliderValue = VALUE_MAX;
         } else {
           stateText = context.strings.profile_filtering_settings_screen_max_distance_kilometers(valueInt.toString());
@@ -524,6 +533,92 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
                 final maxDistance = doubleToIntKilometers(value)
                   .map((v) => MaxDistanceKm(value: v));
                 context.read<EditProfileFilteringSettingsBloc>().add(SetMaxDistanceFilter(maxDistance));
+              } : null,
+            ),
+            Align(
+              alignment: Alignment.centerRight,
+              child: Padding(
+                padding: const EdgeInsets.only(right: COMMON_SCREEN_EDGE_PADDING),
+                child: Text(
+                  stateText,
+                  style: valueTextStyle,
+                ),
+              ),
+            )
+          ],
+        );
+      }
+    );
+  }
+
+  Widget profileTextFilter(BuildContext context) {
+    return BlocBuilder<EditProfileFilteringSettingsBloc, EditProfileFilteringSettingsData>(
+      builder: (context, state) {
+        const AVAILABLE_VALUES = [0, 1, 5, 10, 50, 100, 200, 300, 400];
+        const LIMIT_MIN = 0.0;
+        final limitMax = (AVAILABLE_VALUES.length - 1).toDouble();
+
+        int findNearestIndex(int value) {
+          for (final (i, v) in AVAILABLE_VALUES.indexed) {
+            if (v >= value) {
+              return i;
+            }
+          }
+          return 0;
+        }
+
+        final valueMin = state.profileTextMinCharactersFilter?.value;
+        final valueMax = state.profileTextMaxCharactersFilter?.value;
+        final String stateText;
+        final double min;
+        final double max;
+        if (valueMin != null && valueMax != null) {
+          final currentMin = valueMin.clamp(AVAILABLE_VALUES.first, AVAILABLE_VALUES.last);
+          min = findNearestIndex(currentMin).toDouble();
+          final currentMax = valueMax.clamp(AVAILABLE_VALUES.first, AVAILABLE_VALUES.last);
+          max = findNearestIndex(currentMax).toDouble();
+          stateText = context.strings.profile_filtering_settings_screen_profile_text_filter_min_and_max_value(valueMin.toString(), valueMax.toString());
+        } else if (valueMax != null) {
+          min = LIMIT_MIN;
+          final currentMax = valueMax.clamp(AVAILABLE_VALUES.first, AVAILABLE_VALUES.last);
+          max = findNearestIndex(currentMax).toDouble();
+          stateText = context.strings.profile_filtering_settings_screen_profile_text_filter_max_value(valueMax.toString());
+        } else if (valueMin != null) {
+          max = limitMax;
+          final currentMin = valueMin.clamp(AVAILABLE_VALUES.first, AVAILABLE_VALUES.last);
+          min = findNearestIndex(currentMin).toDouble();
+          stateText = context.strings.profile_filtering_settings_screen_profile_text_filter_min_value(valueMin.toString());
+        } else {
+          stateText = context.strings.generic_unlimited;
+          min = LIMIT_MIN;
+          max = limitMax;
+        }
+
+        final TextStyle? valueTextStyle;
+        if (state.showOnlyFavorites) {
+          final disabledTextColor = Theme.of(context).disabledColor;
+          valueTextStyle = Theme.of(context).textTheme.bodyMedium?.copyWith(color: disabledTextColor);
+        } else {
+          valueTextStyle = null;
+        }
+
+        return Column(
+          children: [
+            const Padding(padding: EdgeInsets.all(4)),
+            ViewAttributeTitle(context.strings.profile_filtering_settings_screen_profile_text_filter, isEnabled: !state.showOnlyFavorites),
+            const Padding(padding: EdgeInsets.all(4)),
+            RangeSlider(
+              values: RangeValues(min, max),
+              min: LIMIT_MIN,
+              max: limitMax,
+              divisions: AVAILABLE_VALUES.length - 1,
+              onChanged: !state.showOnlyFavorites ? (RangeValues values) {
+                final currentMin = AVAILABLE_VALUES.getAtOrNull(values.start.round().toInt()) ?? AVAILABLE_VALUES.first;
+                final currentMax = AVAILABLE_VALUES.getAtOrNull(values.end.round().toInt()) ?? AVAILABLE_VALUES.last;
+                context.read<EditProfileFilteringSettingsBloc>().add(SetProfileTextFilter(
+                  currentMin == AVAILABLE_VALUES.first ? null : ProfileTextMinCharactersFilter(value: currentMin),
+                  currentMax == AVAILABLE_VALUES.last ? null : ProfileTextMaxCharactersFilter(value: currentMax),
+                ));
               } : null,
             ),
             Align(

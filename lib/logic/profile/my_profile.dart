@@ -94,6 +94,8 @@ class MyProfileBloc extends Bloc<MyProfileEvent, MyProfileData> with ActionRunne
                 filters.maxDistanceKmFilter,
                 filters.profileCreatedFilter,
                 filters.profileEditedFilter,
+                filters.profileTextMinCharactersFilter,
+                filters.profileTextMaxCharactersFilter,
                 filters.randomProfileOrder,
               ).isErr()
             ) {

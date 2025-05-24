@@ -18,6 +18,8 @@ class ResetStateWith extends EditProfileFilteringSettingsEvent {
   final MaxDistanceKm? maxDistanceFilter;
   final ProfileCreatedTimeFilter? profileCreatedFilter;
   final ProfileEditedTimeFilter? profileEditedFilter;
+  final ProfileTextMinCharactersFilter? profileTextMinCharactersFilter;
+  final ProfileTextMaxCharactersFilter? profileTextMaxCharactersFilter;
   final bool randomProfileOrder;
   ResetStateWith(
     this.showOnlyFavorites,
@@ -27,6 +29,8 @@ class ResetStateWith extends EditProfileFilteringSettingsEvent {
     this.maxDistanceFilter,
     this.profileCreatedFilter,
     this.profileEditedFilter,
+    this.profileTextMinCharactersFilter,
+    this.profileTextMaxCharactersFilter,
     this.randomProfileOrder,
   );
 }
@@ -54,6 +58,11 @@ class SetProfileCreatedFilter extends EditProfileFilteringSettingsEvent {
 class SetProfileEditedFilter extends EditProfileFilteringSettingsEvent {
   final ProfileEditedTimeFilter? value;
   SetProfileEditedFilter(this.value);
+}
+class SetProfileTextFilter extends EditProfileFilteringSettingsEvent {
+  final ProfileTextMinCharactersFilter? min;
+  final ProfileTextMaxCharactersFilter? max;
+  SetProfileTextFilter(this.min, this.max);
 }
 class SetRandomProfileOrder extends EditProfileFilteringSettingsEvent {
   final bool value;
@@ -105,6 +114,12 @@ class EditProfileFilteringSettingsBloc extends Bloc<EditProfileFilteringSettings
     });
     on<SetProfileEditedFilter>((data, emit) async {
       emit(state.copyWith(profileEditedFilter: data.value));
+    });
+    on<SetProfileTextFilter>((data, emit) async {
+      emit(state.copyWith(
+        profileTextMinCharactersFilter: data.min,
+        profileTextMaxCharactersFilter: data.max,
+      ));
     });
     on<SetRandomProfileOrder>((data, emit) async {
       emit(state.copyWith(randomProfileOrder: data.value));

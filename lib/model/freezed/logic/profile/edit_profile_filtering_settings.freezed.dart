@@ -28,6 +28,8 @@ mixin _$EditProfileFilteringSettingsData {
   MaxDistanceKm? get maxDistanceKmFilter => throw _privateConstructorErrorEditProfileFilteringSettingsData;
   ProfileCreatedTimeFilter? get profileCreatedFilter => throw _privateConstructorErrorEditProfileFilteringSettingsData;
   ProfileEditedTimeFilter? get profileEditedFilter => throw _privateConstructorErrorEditProfileFilteringSettingsData;
+  ProfileTextMinCharactersFilter? get profileTextMinCharactersFilter => throw _privateConstructorErrorEditProfileFilteringSettingsData;
+  ProfileTextMaxCharactersFilter? get profileTextMaxCharactersFilter => throw _privateConstructorErrorEditProfileFilteringSettingsData;
   bool get randomProfileOrder => throw _privateConstructorErrorEditProfileFilteringSettingsData;
 
   EditProfileFilteringSettingsData copyWith({
@@ -38,6 +40,8 @@ mixin _$EditProfileFilteringSettingsData {
     MaxDistanceKm? maxDistanceKmFilter,
     ProfileCreatedTimeFilter? profileCreatedFilter,
     ProfileEditedTimeFilter? profileEditedFilter,
+    ProfileTextMinCharactersFilter? profileTextMinCharactersFilter,
+    ProfileTextMaxCharactersFilter? profileTextMaxCharactersFilter,
     bool? randomProfileOrder,
   }) => throw _privateConstructorErrorEditProfileFilteringSettingsData;
 }
@@ -52,6 +56,8 @@ abstract class _EditProfileFilteringSettingsData implements EditProfileFiltering
     MaxDistanceKm? maxDistanceKmFilter,
     ProfileCreatedTimeFilter? profileCreatedFilter,
     ProfileEditedTimeFilter? profileEditedFilter,
+    ProfileTextMinCharactersFilter? profileTextMinCharactersFilter,
+    ProfileTextMaxCharactersFilter? profileTextMaxCharactersFilter,
     bool randomProfileOrder,
   }) = _$EditProfileFilteringSettingsDataImpl;
 }
@@ -70,6 +76,8 @@ class _$EditProfileFilteringSettingsDataImpl with DiagnosticableTreeMixin implem
     this.maxDistanceKmFilter,
     this.profileCreatedFilter,
     this.profileEditedFilter,
+    this.profileTextMinCharactersFilter,
+    this.profileTextMaxCharactersFilter,
     this.randomProfileOrder = _randomProfileOrderDefaultValue,
   });
 
@@ -88,11 +96,15 @@ class _$EditProfileFilteringSettingsDataImpl with DiagnosticableTreeMixin implem
   @override
   final ProfileEditedTimeFilter? profileEditedFilter;
   @override
+  final ProfileTextMinCharactersFilter? profileTextMinCharactersFilter;
+  @override
+  final ProfileTextMaxCharactersFilter? profileTextMaxCharactersFilter;
+  @override
   final bool randomProfileOrder;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'EditProfileFilteringSettingsData(showOnlyFavorites: $showOnlyFavorites, attributeIdAndFilterValueMap: $attributeIdAndFilterValueMap, lastSeenTimeFilter: $lastSeenTimeFilter, unlimitedLikesFilter: $unlimitedLikesFilter, maxDistanceKmFilter: $maxDistanceKmFilter, profileCreatedFilter: $profileCreatedFilter, profileEditedFilter: $profileEditedFilter, randomProfileOrder: $randomProfileOrder)';
+    return 'EditProfileFilteringSettingsData(showOnlyFavorites: $showOnlyFavorites, attributeIdAndFilterValueMap: $attributeIdAndFilterValueMap, lastSeenTimeFilter: $lastSeenTimeFilter, unlimitedLikesFilter: $unlimitedLikesFilter, maxDistanceKmFilter: $maxDistanceKmFilter, profileCreatedFilter: $profileCreatedFilter, profileEditedFilter: $profileEditedFilter, profileTextMinCharactersFilter: $profileTextMinCharactersFilter, profileTextMaxCharactersFilter: $profileTextMaxCharactersFilter, randomProfileOrder: $randomProfileOrder)';
   }
 
   @override
@@ -107,6 +119,8 @@ class _$EditProfileFilteringSettingsDataImpl with DiagnosticableTreeMixin implem
       ..add(DiagnosticsProperty('maxDistanceKmFilter', maxDistanceKmFilter))
       ..add(DiagnosticsProperty('profileCreatedFilter', profileCreatedFilter))
       ..add(DiagnosticsProperty('profileEditedFilter', profileEditedFilter))
+      ..add(DiagnosticsProperty('profileTextMinCharactersFilter', profileTextMinCharactersFilter))
+      ..add(DiagnosticsProperty('profileTextMaxCharactersFilter', profileTextMaxCharactersFilter))
       ..add(DiagnosticsProperty('randomProfileOrder', randomProfileOrder));
   }
 
@@ -129,6 +143,10 @@ class _$EditProfileFilteringSettingsDataImpl with DiagnosticableTreeMixin implem
           other.profileCreatedFilter == profileCreatedFilter) &&
         (identical(other.profileEditedFilter, profileEditedFilter) ||
           other.profileEditedFilter == profileEditedFilter) &&
+        (identical(other.profileTextMinCharactersFilter, profileTextMinCharactersFilter) ||
+          other.profileTextMinCharactersFilter == profileTextMinCharactersFilter) &&
+        (identical(other.profileTextMaxCharactersFilter, profileTextMaxCharactersFilter) ||
+          other.profileTextMaxCharactersFilter == profileTextMaxCharactersFilter) &&
         (identical(other.randomProfileOrder, randomProfileOrder) ||
           other.randomProfileOrder == randomProfileOrder)
     );
@@ -144,6 +162,8 @@ class _$EditProfileFilteringSettingsDataImpl with DiagnosticableTreeMixin implem
     maxDistanceKmFilter,
     profileCreatedFilter,
     profileEditedFilter,
+    profileTextMinCharactersFilter,
+    profileTextMaxCharactersFilter,
     randomProfileOrder,
   );
 
@@ -156,6 +176,8 @@ class _$EditProfileFilteringSettingsDataImpl with DiagnosticableTreeMixin implem
     Object? maxDistanceKmFilter = _detectDefaultValueInCopyWith,
     Object? profileCreatedFilter = _detectDefaultValueInCopyWith,
     Object? profileEditedFilter = _detectDefaultValueInCopyWith,
+    Object? profileTextMinCharactersFilter = _detectDefaultValueInCopyWith,
+    Object? profileTextMaxCharactersFilter = _detectDefaultValueInCopyWith,
     Object? randomProfileOrder,
   }) => _$EditProfileFilteringSettingsDataImpl(
     showOnlyFavorites: (showOnlyFavorites ?? this.showOnlyFavorites) as bool,
@@ -165,6 +187,8 @@ class _$EditProfileFilteringSettingsDataImpl with DiagnosticableTreeMixin implem
     maxDistanceKmFilter: (maxDistanceKmFilter == _detectDefaultValueInCopyWith ? this.maxDistanceKmFilter : maxDistanceKmFilter) as MaxDistanceKm?,
     profileCreatedFilter: (profileCreatedFilter == _detectDefaultValueInCopyWith ? this.profileCreatedFilter : profileCreatedFilter) as ProfileCreatedTimeFilter?,
     profileEditedFilter: (profileEditedFilter == _detectDefaultValueInCopyWith ? this.profileEditedFilter : profileEditedFilter) as ProfileEditedTimeFilter?,
+    profileTextMinCharactersFilter: (profileTextMinCharactersFilter == _detectDefaultValueInCopyWith ? this.profileTextMinCharactersFilter : profileTextMinCharactersFilter) as ProfileTextMinCharactersFilter?,
+    profileTextMaxCharactersFilter: (profileTextMaxCharactersFilter == _detectDefaultValueInCopyWith ? this.profileTextMaxCharactersFilter : profileTextMaxCharactersFilter) as ProfileTextMaxCharactersFilter?,
     randomProfileOrder: (randomProfileOrder ?? this.randomProfileOrder) as bool,
   );
 }

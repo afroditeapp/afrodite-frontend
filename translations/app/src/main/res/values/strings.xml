@@ -54,6 +54,7 @@
     <string name="generic_skip" description="Generic skip text">Skip</string>
     <string name="generic_profile_loading_failed" description="Error text displayed when profile loading fails">Profile loading failed</string>
     <string name="generic_this_feature_is_disabled" description="Generic this feature is disabled text">This feature is disabled</string>
+    <string name="generic_unlimited" description="Generic unlimited text">Unlimited</string>
 
     <string name="generic_weekday_mon" description="Generic short text for Monday">Mon</string>
     <string name="generic_weekday_tue" description="Generic short text for Tuesday">Tue</string>
@@ -311,7 +312,10 @@
     <string name="profile_filtering_settings_screen_profile_edited_filter" description="Title for profile edited time filter">Profile edited</string>
     <string name="profile_filtering_settings_screen_max_distance" description="Title text for max distance">Max distance</string>
     <string name="profile_filtering_settings_screen_max_distance_kilometers" description="Value text for kilometers">%s km</string>
-    <string name="profile_filtering_settings_screen_max_distance_unlimited" description="Value text for unlimited">Unlimited</string>
+    <string name="profile_filtering_settings_screen_profile_text_filter" description="Value text for profile text filter">Profile text length</string>
+    <string name="profile_filtering_settings_screen_profile_text_filter_min_value" description="Value text for profile text filter when only min value is selected">Min %s characters</string>
+    <string name="profile_filtering_settings_screen_profile_text_filter_max_value" description="Value text for profile text filter when only max value is selected">Max %s characters</string>
+    <string name="profile_filtering_settings_screen_profile_text_filter_min_and_max_value" description="Value text for profile text filter when both min and max values are selected">%s-%s characters</string>
     <string name="profile_filtering_settings_screen_random_profile_order" description="Title for random profile order setting">Random profile order</string>
     <string name="profile_filtering_settings_screen_random_profile_order_description_disabled" description="Description for random profile order setting when setting is disabled">Start from your location</string>
     <string name="profile_filtering_settings_screen_random_profile_order_description_enabled" description="Description for random profile order setting when setting is enabled">Start from random location</string>

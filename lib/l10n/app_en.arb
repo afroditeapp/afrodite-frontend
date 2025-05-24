@@ -601,6 +601,10 @@
   "@generic_try_again": {
     "description": "Generic try again text"
   },
+  "generic_unlimited": "Unlimited",
+  "@generic_unlimited": {
+    "description": "Generic unlimited text"
+  },
   "generic_weekday_fri": "Fri",
   "@generic_weekday_fri": {
     "description": "Generic short text for Friday"
@@ -1186,10 +1190,6 @@
       }
     }
   },
-  "profile_filtering_settings_screen_max_distance_unlimited": "Unlimited",
-  "@profile_filtering_settings_screen_max_distance_unlimited": {
-    "description": "Value text for unlimited"
-  },
   "profile_filtering_settings_screen_profile_created_filter": "Profile created",
   "@profile_filtering_settings_screen_profile_created_filter": {
     "description": "Title for profile created time filter"
@@ -1227,6 +1227,40 @@
   "profile_filtering_settings_screen_profile_last_seen_time_filter_online": "Online",
   "@profile_filtering_settings_screen_profile_last_seen_time_filter_online": {
     "description": "Value text for profile last seen time filter when only online profiles should be shown"
+  },
+  "profile_filtering_settings_screen_profile_text_filter": "Profile text length",
+  "@profile_filtering_settings_screen_profile_text_filter": {
+    "description": "Value text for profile text filter"
+  },
+  "profile_filtering_settings_screen_profile_text_filter_max_value": "Max {p0} characters",
+  "@profile_filtering_settings_screen_profile_text_filter_max_value": {
+    "description": "Value text for profile text filter when only max value is selected",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
+  "profile_filtering_settings_screen_profile_text_filter_min_and_max_value": "{p0}-{p1} characters",
+  "@profile_filtering_settings_screen_profile_text_filter_min_and_max_value": {
+    "description": "Value text for profile text filter when both min and max values are selected",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      },
+      "p1": {
+        "type": "String"
+      }
+    }
+  },
+  "profile_filtering_settings_screen_profile_text_filter_min_value": "Min {p0} characters",
+  "@profile_filtering_settings_screen_profile_text_filter_min_value": {
+    "description": "Value text for profile text filter when only min value is selected",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
   },
   "profile_filtering_settings_screen_random_profile_order": "Random profile order",
   "@profile_filtering_settings_screen_random_profile_order": {

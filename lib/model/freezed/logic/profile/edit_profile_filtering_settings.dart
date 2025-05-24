@@ -16,6 +16,8 @@ class EditProfileFilteringSettingsData with _$EditProfileFilteringSettingsData {
     MaxDistanceKm? maxDistanceKmFilter,
     ProfileCreatedTimeFilter? profileCreatedFilter,
     ProfileEditedTimeFilter? profileEditedFilter,
+    ProfileTextMinCharactersFilter? profileTextMinCharactersFilter,
+    ProfileTextMaxCharactersFilter? profileTextMaxCharactersFilter,
     @Default(false) bool randomProfileOrder,
   }) = _EditProfileFilteringSettingsData;
 }

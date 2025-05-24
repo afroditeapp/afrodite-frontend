@@ -23,6 +23,8 @@ class SaveNewFilterSettings extends ProfileFilteringSettingsEvent {
   final MaxDistanceKm? maxDistanceFilter;
   final ProfileCreatedTimeFilter? profileCreatedFilter;
   final ProfileEditedTimeFilter? profileEditedFilter;
+  final ProfileTextMinCharactersFilter? profileTextMinCharactersFilter;
+  final ProfileTextMaxCharactersFilter? profileTextMaxCharactersFilter;
   final bool randomProfileOrder;
   SaveNewFilterSettings(
     this.showOnlyFavorites,
@@ -32,6 +34,8 @@ class SaveNewFilterSettings extends ProfileFilteringSettingsEvent {
     this.maxDistanceFilter,
     this.profileCreatedFilter,
     this.profileEditedFilter,
+    this.profileTextMinCharactersFilter,
+    this.profileTextMaxCharactersFilter,
     this.randomProfileOrder,
   );
 }
@@ -78,6 +82,8 @@ class ProfileFilteringSettingsBloc extends Bloc<ProfileFilteringSettingsEvent, P
             data.maxDistanceFilter,
             data.profileCreatedFilter,
             data.profileEditedFilter,
+            data.profileTextMinCharactersFilter,
+            data.profileTextMaxCharactersFilter,
             data.randomProfileOrder,
           ).isErr()
         ) {

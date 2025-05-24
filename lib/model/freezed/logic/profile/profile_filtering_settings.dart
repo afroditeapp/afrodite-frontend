@@ -25,7 +25,9 @@ class ProfileFilteringSettingsData with _$ProfileFilteringSettingsData, UpdateSt
       filteringSettings?.unlimitedLikesFilter != null ||
       filteringSettings?.maxDistanceKmFilter != null ||
       filteringSettings?.profileCreatedFilter != null ||
-      filteringSettings?.profileEditedFilter != null;
+      filteringSettings?.profileEditedFilter != null ||
+      filteringSettings?.profileTextMinCharactersFilter != null ||
+      filteringSettings?.profileTextMaxCharactersFilter != null;
   }
 
   IconData icon() {
