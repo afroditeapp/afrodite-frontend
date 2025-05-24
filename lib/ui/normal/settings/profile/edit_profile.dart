@@ -2,7 +2,6 @@
 
 import 'package:app/ui/normal/settings/profile/edit_profile_text.dart';
 import 'package:app/ui_utils/attribute/attribute.dart';
-import 'package:app/ui_utils/attribute/state.dart';
 import 'package:app/utils/list.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
@@ -21,7 +20,6 @@ import 'package:app/model/freezed/logic/media/profile_pictures.dart';
 import 'package:app/model/freezed/logic/profile/attributes.dart';
 import 'package:app/model/freezed/logic/profile/edit_my_profile.dart';
 import 'package:app/model/freezed/logic/profile/my_profile.dart';
-import 'package:app/ui/initial_setup/profile_attributes.dart';
 import 'package:app/ui/initial_setup/profile_basic_info.dart';
 import 'package:app/ui/initial_setup/profile_pictures.dart';
 import 'package:app/ui/normal/settings/profile/edit_profile_attribute.dart';
@@ -32,7 +30,6 @@ import 'package:app/ui_utils/consts/padding.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/icon_button.dart';
 import 'package:app/ui_utils/snack_bar.dart';
-import 'package:app/utils/api.dart';
 import 'package:app/utils/age.dart';
 import 'package:app/utils/profile_entry.dart';
 
@@ -324,7 +321,7 @@ class EditAttributes extends StatelessWidget {
 }
 
 class EditAttributeRow extends StatelessWidget {
-  final AttributeAndState a;
+  final AttributeValueAreaInfoProvider a;
   final void Function() onStartEditor;
   final bool isEnabled;
   const EditAttributeRow({
@@ -336,8 +333,8 @@ class EditAttributeRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final attributeText = a.attribute.uiName();
-    final icon = a.attribute.uiIcon();
+    final attributeText = a.attribute().uiName();
+    final icon = a.attribute().uiIcon();
 
     final void Function()? startEditorCallback;
     final Widget valueWidget;
@@ -422,18 +419,6 @@ class ViewAttributeTitle extends StatelessWidget {
       ),
     );
   }
-}
-
-abstract class AttributeInfoProvider {
-  Attribute get attribute;
-  ProfileAttributeValue? get value;
-
-  String title(BuildContext context);
-  List<AttributeValue> sortedSelectedValues();
-
-  List<String> extraValues(BuildContext context);
-
-  bool get isFilter;
 }
 
 class EditProfileBasicInfo extends StatefulWidget {

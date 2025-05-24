@@ -19,14 +19,11 @@ import 'package:app/data/image_cache.dart';
 import 'package:app/localizations.dart';
 import 'package:app/logic/profile/attributes.dart';
 import 'package:app/model/freezed/logic/profile/attributes.dart';
-import 'package:app/ui/initial_setup/profile_attributes.dart';
-
 import 'package:app/ui/normal/profiles/view_profile.dart';
 import 'package:app/ui/normal/settings/profile/edit_profile.dart';
 import 'package:app/ui_utils/consts/corners.dart';
 import 'package:app/ui_utils/consts/padding.dart';
 import 'package:app/ui_utils/profile_thumbnail_image.dart';
-import 'package:app/utils/api.dart';
 
 const double PROFILE_IMG_HEIGHT = 400;
 
@@ -502,8 +499,8 @@ class AttributeList extends StatelessWidget {
   }
 
   Widget attributeWidget(BuildContext context, AttributeAndState a) {
-    final attributeText = a.attribute.uiName();
-    final icon = a.attribute.uiIcon();
+    final attributeText = a.attribute().uiName();
+    final icon = a.attribute().uiIcon();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -567,110 +564,4 @@ class AttributeValuesArea extends StatelessWidget {
       );
     }
   }
-}
-
-class AttributeAndValue implements AttributeInfoProvider {
-  @override
-  final Attribute attribute;
-  @override
-  final ProfileAttributeValue? value;
-  const AttributeAndValue({required this.attribute, required this.value});
-
-  /// Get sorted list of attributes and values
-  static List<AttributeAndValue> sortedListFrom(
-    ProfileAttributes availableAttributes,
-    Iterable<ProfileAttributeValue> attributes,
-    {bool includeNullAttributes = false}
-  ) {
-    final List<AttributeAndValue> result = [];
-
-    for (final a in availableAttributes.attributes) {
-      final currentValue = attributes.where((attr) => attr.id == a.id).firstOrNull;
-      if (!includeNullAttributes && currentValue == null) {
-        continue;
-      }
-      result.add(AttributeAndValue(attribute: a, value: currentValue));
-    }
-
-    if (availableAttributes.attributeOrder == AttributeOrderMode.orderNumber) {
-      result.sort((a, b) {
-        return a.attribute.orderNumber.compareTo(b.attribute.orderNumber);
-      });
-    }
-
-    return result;
-  }
-
-  @override
-  String title(BuildContext context) {
-    return attributeName(context, attribute);
-  }
-
-  @override
-  List<AttributeValue> sortedSelectedValues() =>
-    sortedSelectedValuesWithSettings(filterValues: false);
-
-  List<AttributeValue> sortedSelectedValuesWithSettings({required bool filterValues}) {
-    final List<AttributeValue> result = [];
-
-    final value = this.value;
-    if (value == null) {
-      return result;
-    }
-
-    // TODO(prod): Update
-
-    // bool showSingleSelect = attribute.mode == AttributeMode.selectSingleFilterSingle ||
-    //   (!filterValues && attribute.mode == AttributeMode.selectSingleFilterMultiple);
-
-    // bool showMultipleSelect = attribute.mode == AttributeMode.selectMultipleFilterMultiple ||
-    //   (filterValues && attribute.mode == AttributeMode.selectSingleFilterMultiple);
-
-    if (attribute.mode == AttributeMode.twoLevel) {
-      for (final v in attribute.values) {
-        if (v.id != value.firstValue()) {
-          continue;
-        }
-
-        if (value.secondValue() == null) {
-          result.add(v);
-        }
-
-        // Only second level is supported
-        final secondLevelValues = v.groupValues;
-        if (secondLevelValues != null) {
-          for (final v2 in secondLevelValues.values) {
-            if (v2.id == value.secondValue()) {
-              result.add(v2);
-              break;
-            }
-          }
-        }
-      }
-    } else if (attribute.mode == AttributeMode.bitflag) {
-      for (final bitflag in attribute.values) {
-        if (bitflag.id & (value.firstValue() ?? 0) != 0) {
-          result.add(bitflag);
-        }
-      }
-    } else if (attribute.mode == AttributeMode.oneLevel) {
-      for (final v in attribute.values) {
-        if (value.v.contains(v.id)) {
-          result.add(v);
-        }
-      }
-    }
-
-    reorderValues(result, attribute.valueOrder);
-
-    return result;
-  }
-
-  @override
-  List<String> extraValues(BuildContext c) {
-    return [];
-  }
-
-  @override
-  bool get isFilter => false;
 }

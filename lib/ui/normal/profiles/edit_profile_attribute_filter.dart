@@ -1,20 +1,21 @@
 
 
+import 'package:app/ui_utils/attribute/filter.dart';
+import 'package:app/ui_utils/attribute/widgets/select_value.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 import 'package:app/localizations.dart';
 import 'package:app/logic/profile/edit_profile_filtering_settings.dart';
-import 'package:app/ui/normal/profiles/filter_profiles.dart';
 import 'package:app/ui/normal/settings/profile/edit_profile_attribute.dart';
 import 'package:app/ui_utils/app_bar/search.dart';
 
 class EditProfileAttributeFilterScreen extends StatefulWidget {
-  final AttributeFilterInfo a;
+  final AttributeAndFilterState a;
   const EditProfileAttributeFilterScreen({
     required this.a,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<EditProfileAttributeFilterScreen> createState() => _EditProfileAttributeFilterScreenState();
@@ -27,8 +28,8 @@ class _EditProfileAttributeFilterScreenState extends State<EditProfileAttributeF
   @override
   void initState() {
     super.initState();
-    searchPossible = widget.a.attribute.mode == AttributeMode.oneLevel ||
-      widget.a.attribute.mode == AttributeMode.twoLevel;
+    searchPossible = widget.a.attribute().apiAttribute().mode == AttributeMode.oneLevel ||
+      widget.a.attribute().apiAttribute().mode == AttributeMode.twoLevel;
     searchController = AppBarSearchController(onChanged: () => setState(() {}));
   }
 
@@ -58,44 +59,45 @@ class _EditProfileAttributeFilterScreenState extends State<EditProfileAttributeF
       filterValue = null;
     }
 
-    return SingleChildScrollView(
-      child: Column(
+    return SelectAttributeValue(
+      attribute: widget.a.attribute(),
+      isFilter: true,
+      initialStateBuilder: () => widget.a.selectedValues.copy(),
+      onChanged: (state) =>
+        context.read<EditProfileFilteringSettingsBloc>().add(SetAttributeFilterValueLists(widget.a.attribute(), state)),
+      firstListItem: Column(
+        mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // EditAttributeTitle(a: widget.a.attribute),
+          EditAttributeTitle(a: widget.a.attribute()),
           EditAttributeFilterEmptyValue(
             a: widget.a,
-            onEmpty: (a, value) =>
-              context.read<EditProfileFilteringSettingsBloc>().add(SetMatchWithEmpty(a, value))
-          ),
-          EditSingleAttributeAllTypes(
-            a: widget.a,
-            valueFilter: filterValue,
-            onNewAttributeValue: (value) =>
-              context.read<EditProfileFilteringSettingsBloc>().add(SetAttributeFilterValue(widget.a.attribute, value))
-          ),
+            onChanged: (settings) =>
+              context.read<EditProfileFilteringSettingsBloc>().add(SetAttributeFilterSettings(widget.a.attribute(), settings))
+          )
         ],
       ),
+      filterText: filterValue,
     );
   }
 }
 
 class EditAttributeFilterEmptyValue extends StatefulWidget {
-  final AttributeFilterInfo a;
-  final void Function(Attribute a, bool value) onEmpty;
-  const EditAttributeFilterEmptyValue({required this.a, required this.onEmpty, super.key});
+  final AttributeAndFilterState a;
+  final void Function(FilterSettingsState settings) onChanged;
+  const EditAttributeFilterEmptyValue({required this.a, required this.onChanged, super.key});
 
   @override
   State<EditAttributeFilterEmptyValue> createState() => _EditAttributeFilterEmptyValueState();
 }
 
 class _EditAttributeFilterEmptyValueState extends State<EditAttributeFilterEmptyValue> {
-  bool isSelected = false;
+  bool acceptMissingAttributeState = false;
 
   @override
   void initState() {
     super.initState();
-    isSelected = widget.a.update?.acceptMissingAttribute ?? false;
+    acceptMissingAttributeState = widget.a.settingsState.acceptMissingAttribute;
   }
 
   @override
@@ -103,11 +105,11 @@ class _EditAttributeFilterEmptyValueState extends State<EditAttributeFilterEmpty
     return CheckboxListTile(
       title: Text(context.strings.generic_empty),
       controlAffinity: ListTileControlAffinity.leading,
-      value: isSelected,
-      onChanged: (newValue) {
+      value: acceptMissingAttributeState,
+      onChanged: (_) {
         setState(() {
-          isSelected = !isSelected;
-          widget.onEmpty(widget.a.attribute, isSelected);
+          acceptMissingAttributeState = !acceptMissingAttributeState;
+          widget.onChanged(FilterSettingsState(acceptMissingAttribute: acceptMissingAttributeState));
         });
       },
     );

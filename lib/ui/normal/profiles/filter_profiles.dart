@@ -1,9 +1,9 @@
 
 import 'dart:math';
 
+import 'package:app/ui_utils/attribute/attribute.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/option.dart';
-import 'package:database/database.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,7 +21,6 @@ import 'package:app/model/freezed/logic/profile/my_profile.dart';
 import 'package:app/model/freezed/logic/profile/profile_filtering_settings.dart';
 import 'package:app/ui/normal/profiles/edit_profile_attribute_filter.dart';
 import 'package:app/ui/normal/settings/profile/edit_profile.dart';
-import 'package:app/ui/utils/view_profile.dart';
 import 'package:app/ui_utils/common_update_logic.dart';
 import 'package:app/ui_utils/consts/padding.dart';
 import 'package:app/ui_utils/dialog.dart';
@@ -64,13 +63,13 @@ class ProfileFilteringSettingsPage extends StatefulWidget {
 
 class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsPage> {
 
-  late final List<ProfileAttributeFilterValueUpdate> initialFilters;
+  late final Map<int, ProfileAttributeFilterValueUpdate> initialFilters;
 
   @override
   void initState() {
     super.initState();
 
-    initialFilters = widget.profileFilteringSettingsBloc.state.filteringSettings?.currentFiltersCopy() ?? [];
+    initialFilters = widget.profileFilteringSettingsBloc.state.filteringSettings?.currentFiltersCopy() ?? {};
 
     widget.editProfileFilteringSettingsBloc.add(ResetStateWith(
       widget.profileFilteringSettingsBloc.state.showOnlyFavorites,
@@ -87,7 +86,7 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
   void saveData(BuildContext context) {
     widget.profileFilteringSettingsBloc.add(SaveNewFilterSettings(
       widget.editProfileFilteringSettingsBloc.state.showOnlyFavorites,
-      widget.editProfileFilteringSettingsBloc.state.attributeFilters.toList(),
+      widget.editProfileFilteringSettingsBloc.state.attributeIdAndFilterValueMap,
       widget.editProfileFilteringSettingsBloc.state.lastSeenTimeFilter,
       widget.editProfileFilteringSettingsBloc.state.unlimitedLikesFilter,
       widget.editProfileFilteringSettingsBloc.state.maxDistanceKmFilter,
@@ -111,20 +110,11 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
       return true;
     }
 
-    for (final editedFilter in editedSettings.attributeFilters) {
-      final currentFilterOrNull = initialFilters.where((e) => e.id == editedFilter.id).firstOrNull;
-      final ProfileAttributeFilterValueUpdate currentFilter;
-      if (currentFilterOrNull == null) {
-        currentFilter = ProfileAttributeFilterValueUpdate(
-          acceptMissingAttribute: false,
-          filterValues: [],
-          id: editedFilter.id,
-        );
-      } else {
-        currentFilter = currentFilterOrNull;
-      }
+    for (final editedFilter in editedSettings.attributeIdAndFilterValueMap.values) {
+      final defaultValue = ProfileAttributeFilterValueUpdate(id: editedFilter.id);
+      final currentFilter = initialFilters.values.where((e) => e.id == editedFilter.id).firstOrNull ?? defaultValue;
       if (
-        (currentFilter.acceptMissingAttribute ?? false) != (editedFilter.acceptMissingAttribute ?? false) ||
+        currentFilter.acceptMissingAttribute != editedFilter.acceptMissingAttribute ||
         !listEquals(currentFilter.filterValues, editedFilter.filterValues)
       ) {
         return true;
@@ -609,8 +599,8 @@ class EditAttributeFilters extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ProfileAttributesBloc, AttributesData>(
       builder: (context, data) {
-        final availableAttributes = data.attributes;
-        if (availableAttributes == null) {
+        final manager = data.manager;
+        if (manager == null) {
           return const SizedBox.shrink();
         }
 
@@ -619,8 +609,8 @@ class EditAttributeFilters extends StatelessWidget {
             children: attributeTiles(
               context,
               !eState.showOnlyFavorites,
-              availableAttributes,
-              eState.attributeFilters,
+              manager,
+              eState.attributeIdAndFilterValueMap,
             )
           );
         });
@@ -631,44 +621,25 @@ class EditAttributeFilters extends StatelessWidget {
   List<Widget> attributeTiles(
     BuildContext context,
     bool isEnabled,
-    ProfileAttributes availableAttributes,
-    Iterable<ProfileAttributeFilterValueUpdate> myFilters,
+    AttributeManager manager,
+    Map<int, ProfileAttributeFilterValueUpdate> myFilters,
   ) {
     final List<Widget> attributeWidgets = <Widget>[];
-    final convertedAttributes = myFilters.map((e) {
-      final value = e.filterValues.firstOrNull;
-      if (value == null) {
-        return null;
-      } else {
-        return ProfileAttributeValue(
-          id: e.id,
-          v: e.filterValues,
-        );
-      }
-    }).nonNulls;
-
-    final l = AttributeAndValue.sortedListFrom(
-      availableAttributes,
-      convertedAttributes,
-      includeNullAttributes: true,
-    ).map((e) {
-      final filter = myFilters.where((element) => element.id == e.attribute.id).firstOrNull;
-      return AttributeFilterInfo(e, filter);
-    });
+    final l = manager.parseFilterStates(myFilters);
 
     for (final a in l) {
-      // attributeWidgets.add(
-      //   EditAttributeRow(
-      //     a: a,
-      //     isEnabled: isEnabled,
-      //     onStartEditor: () {
-      //       MyNavigator.push(
-      //         context,
-      //         MaterialPage<void>(child: EditProfileAttributeFilterScreen(a: a)),
-      //       );
-      //     }
-      //   )
-      // );
+      attributeWidgets.add(
+        EditAttributeRow(
+          a: a,
+          isEnabled: isEnabled,
+          onStartEditor: () {
+            MyNavigator.push(
+              context,
+              MaterialPage<void>(child: EditProfileAttributeFilterScreen(a: a)),
+            );
+          }
+        )
+      );
       attributeWidgets.add(const Divider());
     }
 
@@ -678,39 +649,4 @@ class EditAttributeFilters extends StatelessWidget {
 
     return attributeWidgets;
   }
-}
-
-class AttributeFilterInfo implements AttributeInfoProvider {
-  final AttributeAndValue attributeAndValue;
-  final ProfileAttributeFilterValueUpdate? update;
-  AttributeFilterInfo(this.attributeAndValue, this.update);
-
-  @override
-  ProfileAttributeValue? get value => attributeAndValue.value;
-
-  @override
-  Attribute get attribute => attributeAndValue.attribute;
-
-  @override
-  String title(BuildContext context) {
-    return attributeAndValue.title(context);
-  }
-
-  @override
-  List<AttributeValue> sortedSelectedValues() {
-    return attributeAndValue.sortedSelectedValuesWithSettings(filterValues: true);
-  }
-
-  @override
-  List<String> extraValues(BuildContext context) {
-    final acceptMissing = update?.acceptMissingAttribute ?? false;
-    if (acceptMissing) {
-      return [context.strings.generic_empty];
-    } else {
-      return [];
-    }
-  }
-
-  @override
-  bool get isFilter => true;
 }

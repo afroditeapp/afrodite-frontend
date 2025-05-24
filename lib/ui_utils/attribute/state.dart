@@ -108,12 +108,28 @@ class AttributeStateStorage {
     }
     return storage;
   }
+
+  factory AttributeStateStorage.parseFromFilterUpdate(
+    UiAttribute attribute,
+    ProfileAttributeFilterValueUpdate u,
+    {
+      bool nonselected = false,
+    }
+  ) {
+    return AttributeStateStorage.parseFromUpdate(
+      attribute,
+      ProfileAttributeValueUpdate(
+        id: attribute.apiAttribute().id,
+        v: nonselected ? u.filterValuesNonselected : u.filterValues,
+      ),
+    );
+  }
 }
 
 class AttributeAndState extends AttributeValueAreaInfoProvider {
-  final UiAttribute attribute;
+  final UiAttribute _attribute;
   final AttributeStateStorage state;
-  AttributeAndState(this.attribute, this.state);
+  AttributeAndState(this._attribute, this.state);
 
   @override
   List<String> valueAreaExtraValues() {
@@ -123,7 +139,10 @@ class AttributeAndState extends AttributeValueAreaInfoProvider {
   @override
   List<UiAttributeValue> valueAreaSelectedValues() {
     final list = state.selected.values.toList();
-    reorderAttributeValues(list, attribute.apiAttribute().valueOrder);
+    reorderAttributeValues(list, _attribute.apiAttribute().valueOrder);
     return list;
   }
+
+  @override
+  UiAttribute attribute() => _attribute;
 }

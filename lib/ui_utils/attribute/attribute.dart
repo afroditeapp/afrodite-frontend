@@ -1,4 +1,5 @@
 
+import 'package:app/ui_utils/attribute/filter.dart';
 import 'package:app/ui_utils/attribute/icon.dart';
 import 'package:app/ui_utils/attribute/state.dart';
 import 'package:app/ui_utils/attribute/translation.dart';
@@ -36,6 +37,23 @@ class AttributeManager {
         list.add(AttributeAndState(a, AttributeStateStorage.parseFromUpdate(a, state)));
       } else if (includeNullAttributes) {
         list.add(AttributeAndState(a, AttributeStateStorage()));
+      }
+    }
+    return list;
+  }
+
+  List<AttributeAndFilterState> parseFilterStates(Map<int, ProfileAttributeFilterValueUpdate> states) {
+    final list = <AttributeAndFilterState>[];
+    for (final a in allAttributes()) {
+      final state = states[a.apiAttribute().id];
+      if (state != null) {
+        list.add(AttributeAndFilterState(
+          a,
+          AttributeStateStorage.parseFromFilterUpdate(a, state),
+          FilterSettingsState.parseFromFilterUpdate(state),
+        ));
+      } else {
+        list.add(AttributeAndFilterState(a, AttributeStateStorage(), FilterSettingsState()));
       }
     }
     return list;
@@ -157,6 +175,7 @@ class UiAttributeValue {
 abstract class AttributeValueAreaInfoProvider {
   List<String> valueAreaExtraValues();
   List<UiAttributeValue> valueAreaSelectedValues();
+  UiAttribute attribute();
 }
 
 void reorderAttributeValues(List<UiAttributeValue> attributeValues, AttributeValueOrderMode order) {

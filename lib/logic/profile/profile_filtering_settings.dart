@@ -17,7 +17,7 @@ import "package:app/utils/time.dart";
 sealed class ProfileFilteringSettingsEvent {}
 class SaveNewFilterSettings extends ProfileFilteringSettingsEvent {
   final bool showOnlyFavorites;
-  final List<ProfileAttributeFilterValueUpdate> attributeFilters;
+  final Map<int, ProfileAttributeFilterValueUpdate> attributeIdAndFilterValueMap;
   final LastSeenTimeFilter? lastSeenTimeFilter;
   final bool? unlimitedLikesFilter;
   final MaxDistanceKm? maxDistanceFilter;
@@ -26,7 +26,7 @@ class SaveNewFilterSettings extends ProfileFilteringSettingsEvent {
   final bool randomProfileOrder;
   SaveNewFilterSettings(
     this.showOnlyFavorites,
-    this.attributeFilters,
+    this.attributeIdAndFilterValueMap,
     this.lastSeenTimeFilter,
     this.unlimitedLikesFilter,
     this.maxDistanceFilter,
@@ -72,7 +72,7 @@ class ProfileFilteringSettingsBloc extends Bloc<ProfileFilteringSettingsEvent, P
 
         if (
           await profile.updateProfileFilteringSettings(
-            data.attributeFilters,
+            data.attributeIdAndFilterValueMap,
             data.lastSeenTimeFilter,
             data.unlimitedLikesFilter,
             data.maxDistanceFilter,

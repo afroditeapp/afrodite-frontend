@@ -463,7 +463,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
   }
 
   Future<Result<void, void>> updateProfileFilteringSettings(
-    List<ProfileAttributeFilterValueUpdate> newValues,
+    Map<int, ProfileAttributeFilterValueUpdate> attributeIdAndFilterValueMap,
     LastSeenTimeFilter? lastSeenTimeFilter,
     bool? unlimitedLikesFilter,
     MaxDistanceKm? maxDistanceFilter,
@@ -472,7 +472,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
     bool randomProfileOrder,
   ) async {
     final update = ProfileFilteringSettingsUpdate(
-      filters: newValues,
+      filters: attributeIdAndFilterValueMap.values.toList(),
       lastSeenTimeFilter: lastSeenTimeFilter,
       unlimitedLikesFilter: unlimitedLikesFilter,
       maxDistanceKmFilter: maxDistanceFilter,

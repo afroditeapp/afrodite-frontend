@@ -1,17 +1,18 @@
 
+import "package:app/ui_utils/attribute/attribute.dart";
+import "package:app/ui_utils/attribute/filter.dart";
+import "package:app/ui_utils/attribute/state.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:openapi/api.dart";
 import "package:app/data/login_repository.dart";
 import "package:app/data/profile_repository.dart";
 import "package:app/model/freezed/logic/profile/edit_profile_filtering_settings.dart";
 import "package:app/utils.dart";
-import "package:app/utils/api.dart";
-import "package:app/utils/immutable_list.dart";
 
 sealed class EditProfileFilteringSettingsEvent {}
 class ResetStateWith extends EditProfileFilteringSettingsEvent {
   final bool showOnlyFavorites;
-  final List<ProfileAttributeFilterValueUpdate> attributeFilters;
+  final Map<int, ProfileAttributeFilterValueUpdate> attributeIdAndFilterValueMap;
   final LastSeenTimeFilter? lastSeenTimeFilter;
   final bool? unlimitedLikesFilter;
   final MaxDistanceKm? maxDistanceFilter;
@@ -20,7 +21,7 @@ class ResetStateWith extends EditProfileFilteringSettingsEvent {
   final bool randomProfileOrder;
   ResetStateWith(
     this.showOnlyFavorites,
-    this.attributeFilters,
+    this.attributeIdAndFilterValueMap,
     this.lastSeenTimeFilter,
     this.unlimitedLikesFilter,
     this.maxDistanceFilter,
@@ -58,15 +59,15 @@ class SetRandomProfileOrder extends EditProfileFilteringSettingsEvent {
   final bool value;
   SetRandomProfileOrder(this.value);
 }
-class SetAttributeFilterValue extends EditProfileFilteringSettingsEvent {
-  final Attribute a;
-  final ProfileAttributeValueUpdate value;
-  SetAttributeFilterValue(this.a, this.value);
+class SetAttributeFilterValueLists extends EditProfileFilteringSettingsEvent {
+  final UiAttribute attribute;
+  final AttributeStateStorage selected;
+  SetAttributeFilterValueLists(this.attribute, this.selected);
 }
-class SetMatchWithEmpty extends EditProfileFilteringSettingsEvent {
-  final Attribute a;
-  final bool value;
-  SetMatchWithEmpty(this.a, this.value);
+class SetAttributeFilterSettings extends EditProfileFilteringSettingsEvent {
+  final UiAttribute attribute;
+  final FilterSettingsState value;
+  SetAttributeFilterSettings(this.attribute, this.value);
 }
 
 class EditProfileFilteringSettingsBloc extends Bloc<EditProfileFilteringSettingsEvent, EditProfileFilteringSettingsData> with ActionRunner {
@@ -76,7 +77,7 @@ class EditProfileFilteringSettingsBloc extends Bloc<EditProfileFilteringSettings
     on<ResetStateWith>((data, emit) async {
       emit(state.copyWith(
         showOnlyFavorites: data.showOnlyFavorites,
-        attributeFilters: UnmodifiableList(data.attributeFilters),
+        attributeIdAndFilterValueMap: data.attributeIdAndFilterValueMap,
         lastSeenTimeFilter: data.lastSeenTimeFilter,
         unlimitedLikesFilter: data.unlimitedLikesFilter,
         maxDistanceKmFilter: data.maxDistanceFilter,
@@ -108,95 +109,40 @@ class EditProfileFilteringSettingsBloc extends Bloc<EditProfileFilteringSettings
     on<SetRandomProfileOrder>((data, emit) async {
       emit(state.copyWith(randomProfileOrder: data.value));
     });
-    on<SetAttributeFilterValue>((data, emit) async {
-      final newAttributes = updateAttributesFiltersList(
-        state.attributeFilters,
-        data.a,
-        data.value,
-        null,
+    on<SetAttributeFilterValueLists>((data, emit) async {
+      updateFilters(
+        emit,
+        data.attribute.apiAttribute().id,
+        (current) => AttributeFilterUpdateBuilder.copyWithValues(data.attribute, current, data.selected),
       );
-      emit(state.copyWith(attributeFilters: newAttributes));
     });
-    on<SetMatchWithEmpty>((data, emit) async {
-      final newAttributes = updateAttributesFiltersList(
-        state.attributeFilters,
-        data.a,
-        null,
-        data.value,
+    on<SetAttributeFilterSettings>((data, emit) async {
+      updateFilters(
+        emit,
+        data.attribute.apiAttribute().id,
+        (current) => AttributeFilterUpdateBuilder.copyWithSettings(data.attribute, current, data.value),
       );
-      emit(state.copyWith(attributeFilters: newAttributes));
     });
   }
 
-  UnmodifiableList<ProfileAttributeFilterValueUpdate> updateAttributesFiltersList(
-    Iterable<ProfileAttributeFilterValueUpdate> current,
-    Attribute attribute,
-    ProfileAttributeValueUpdate? newFilterValue,
-    bool? acceptMissingAttribute,
+  void updateFilters(
+    Emitter<EditProfileFilteringSettingsData> emit,
+    int attributeId,
+    ProfileAttributeFilterValueUpdate Function(ProfileAttributeFilterValueUpdate) modifyCurrentValue,
   ) {
-      final useOldFilterValue = newFilterValue == null;
-
-      final newAttributes = <ProfileAttributeFilterValueUpdate>[];
-      var found = false;
-      for (final a in state.attributeFilters) {
-        if (a.id == attribute.id) {
-          newAttributes.add(createFilterValueUpdate(
-            a: attribute,
-            acceptMissingAttribute: acceptMissingAttribute ?? a.acceptMissingAttribute,
-            filterPart1: useOldFilterValue ? a.firstValue() : newFilterValue.firstValue(),
-            filterPart2: useOldFilterValue ? a.secondValue() : newFilterValue.secondValue(),
-          ));
-          found = true;
-        } else {
-          newAttributes.add(a);
-        }
+    final newAttributes = <int, ProfileAttributeFilterValueUpdate>{};
+    var found = false;
+    for (final a in state.attributeIdAndFilterValueMap.values) {
+      if (a.id == attributeId) {
+        newAttributes[attributeId] = modifyCurrentValue(a);
+        found = true;
+      } else {
+        newAttributes[a.id] = a;
       }
-      if (!found) {
-        newAttributes.add(createFilterValueUpdate(
-            a: attribute,
-            acceptMissingAttribute: acceptMissingAttribute ?? false,
-            filterPart1: useOldFilterValue ? null : newFilterValue.firstValue(),
-            filterPart2: useOldFilterValue ? null : newFilterValue.secondValue(),
-        ));
-      }
-
-    return UnmodifiableList(newAttributes);
+    }
+    if (!found) {
+      newAttributes[attributeId] = modifyCurrentValue(ProfileAttributeFilterValueUpdate(id: attributeId));
+    }
+    emit(state.copyWith(attributeIdAndFilterValueMap: newAttributes));
   }
-}
-
-ProfileAttributeFilterValueUpdate createFilterValueUpdate({
-  required Attribute a,
-  required bool acceptMissingAttribute,
-  int? filterPart1,
-  int? filterPart2,
-}) {
-  bool updatedAcceptMissingAttribute = acceptMissingAttribute;
-  int? updatedFilterPart1 = filterPart1;
-  int? updatedFilterPart2 = filterPart2;
-
-  // Disable filter if it is empty
-  final bitflagFilterDisabled = a.isBitflag() && (filterPart1 == 0 || filterPart1 == null) && !acceptMissingAttribute;
-  final valueFilterDisabled = !a.isBitflag() && filterPart1 == null && !acceptMissingAttribute;
-  if (bitflagFilterDisabled || valueFilterDisabled) {
-    updatedAcceptMissingAttribute = false;
-    updatedFilterPart1 = null;
-    updatedFilterPart2 = null;
-  }
-
-  final List<int> updatedValues;
-  if (updatedFilterPart1 != null && updatedFilterPart2 != null) {
-    updatedValues = [updatedFilterPart1, updatedFilterPart2];
-  } else if (updatedFilterPart1 != null) {
-    updatedValues = [updatedFilterPart1];
-  } else {
-    updatedValues = [];
-  }
-
-  final value = ProfileAttributeFilterValueUpdate(
-    id: a.id,
-    filterValues: updatedValues,
-    acceptMissingAttribute: updatedAcceptMissingAttribute,
-  );
-
-  return value;
 }

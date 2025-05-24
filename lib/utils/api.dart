@@ -5,7 +5,6 @@ import 'package:database/database.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:openapi/api.dart';
 import 'package:app/model/freezed/logic/account/initial_setup.dart';
-import 'package:app/utils/list.dart';
 import 'package:utils/utils.dart';
 
 extension ProfileVisibilityExtensions on ProfileVisibility {
@@ -18,50 +17,6 @@ extension ProfileVisibilityExtensions on ProfileVisibility {
   bool isPublic() {
     return this == ProfileVisibility.public ||
       this == ProfileVisibility.pendingPublic;
-  }
-}
-
-extension AttributeExtensions on Attribute {
-  bool isBitflag() {
-    return mode == AttributeMode.bitflag;
-  }
-}
-
-extension ProfileAttributeValueUpdateExtensions on ProfileAttributeValueUpdate {
-  void setBitflagValue(int value) {
-    v = [value];
-  }
-
-  int? bitflagValue() {
-    return v.firstOrNull;
-  }
-
-  int? firstValue() {
-    return v.firstOrNull;
-  }
-
-  int? secondValue() {
-    return v.getAtOrNull(1);
-  }
-}
-
-extension ProfileAttributeValueExtensions on ProfileAttributeValue {
-  int? firstValue() {
-    return v.firstOrNull;
-  }
-
-  int? secondValue() {
-    return v.getAtOrNull(1);
-  }
-}
-
-extension ProfileAttributeFilterValueUpdateExtensions on ProfileAttributeFilterValueUpdate {
-  int? firstValue() {
-    return filterValues.firstOrNull;
-  }
-
-  int? secondValue() {
-    return filterValues.getAtOrNull(1);
   }
 }
 
@@ -169,12 +124,13 @@ extension ContentInfoDetailedExtensions on ContentInfoDetailed {
 }
 
 extension GetProfileFilteringSettingsExtension on GetProfileFilteringSettings {
-  List<ProfileAttributeFilterValueUpdate> currentFiltersCopy() {
-    return filters.map((e) => ProfileAttributeFilterValueUpdate(
+  Map<int, ProfileAttributeFilterValueUpdate> currentFiltersCopy() {
+    final values = filters.map((e) => ProfileAttributeFilterValueUpdate(
       acceptMissingAttribute: e.acceptMissingAttribute,
       filterValues: [...e.filterValues],
       id: e.id,
-    )).toList();
+    ));
+    return { for (var e in values) e.id : e };
   }
 }
 
