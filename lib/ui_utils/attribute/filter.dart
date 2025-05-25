@@ -2,6 +2,7 @@
 import 'package:app/localizations.dart';
 import 'package:app/ui_utils/attribute/attribute.dart';
 import 'package:app/ui_utils/attribute/state.dart';
+import 'package:app/utils/api.dart';
 import 'package:openapi/api.dart';
 
 class AttributeAndFilterState extends AttributeValueAreaInfoProvider {
@@ -54,7 +55,7 @@ class AttributeFilterUpdateBuilder {
       acceptMissingAttribute: current.acceptMissingAttribute,
       filterValues: selectedValues.toAttributeValueUpdate(attribute).v,
     );
-    _updateIsEnabled(update);
+    update.updateIsEnabled();
     return update;
   }
 
@@ -68,12 +69,7 @@ class AttributeFilterUpdateBuilder {
       acceptMissingAttribute: settings.acceptMissingAttribute,
       filterValues: [ ...current.filterValues ],
     );
-    _updateIsEnabled(update);
+    update.updateIsEnabled();
     return update;
   }
-}
-
-void _updateIsEnabled(ProfileAttributeFilterValueUpdate value) {
-  value.enabled = value.acceptMissingAttribute ||
-    value.filterValues.isNotEmpty;
 }

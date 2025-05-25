@@ -21,15 +21,15 @@ class ProfileFilteringSettingsData with _$ProfileFilteringSettingsData, UpdateSt
   }) = _ProfileFilteringSettingsData;
 
   bool isSomeFilterEnabled() {
-    return showOnlyFavorites ||
-      filteringSettings?.filters.isNotEmpty == true ||
-      filteringSettings?.lastSeenTimeFilter != null ||
-      filteringSettings?.unlimitedLikesFilter != null ||
-      filteringSettings?.maxDistanceKmFilter != null ||
-      filteringSettings?.profileCreatedFilter != null ||
-      filteringSettings?.profileEditedFilter != null ||
-      filteringSettings?.profileTextMinCharactersFilter != null ||
-      filteringSettings?.profileTextMaxCharactersFilter != null;
+    return valueShowOnlyFavorites() == true ||
+      valueAttributes().values.where((v) => v.enabled).firstOrNull != null ||
+      valueLastSeenTimeFilter() != null ||
+      valueUnlimitedLikesFilter() != null ||
+      valueMaxDistanceKmFilter() != null ||
+      valueProfileCreatedTime() != null ||
+      valueProfileEditedTime() != null ||
+      valueProfileTextMinCharacters() != null ||
+      valueProfileTextMaxCharacters() != null;
   }
 
   IconData icon() {

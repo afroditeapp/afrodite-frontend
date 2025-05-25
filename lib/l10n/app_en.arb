@@ -1173,6 +1173,14 @@
   "@privacy_settings_screen_title": {
     "description": "Title for privacy settings screen"
   },
+  "profile_filtering_settings_screen_disable_filters_action": "Disable filters",
+  "@profile_filtering_settings_screen_disable_filters_action": {
+    "description": "Title for disable filters action"
+  },
+  "profile_filtering_settings_screen_disable_filters_action_dialog_title": "Disable filters?",
+  "@profile_filtering_settings_screen_disable_filters_action_dialog_title": {
+    "description": "Title for disable filters action confirm dialog"
+  },
   "profile_filtering_settings_screen_favorite_profile_filter": "Favorite profile",
   "@profile_filtering_settings_screen_favorite_profile_filter": {
     "description": "Title for favorite profile filter"

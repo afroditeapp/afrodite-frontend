@@ -300,6 +300,8 @@
 
     <!-- Profile filtering settings screen -->
     <string name="profile_filtering_settings_screen_title" description="Title for profile filtering settings screen">Profile filters</string>
+    <string name="profile_filtering_settings_screen_disable_filters_action" description="Title for disable filters action">Disable filters</string>
+    <string name="profile_filtering_settings_screen_disable_filters_action_dialog_title" description="Title for disable filters action confirm dialog">Disable filters?</string>
     <string name="profile_filtering_settings_screen_favorite_profile_filter" description="Title for favorite profile filter">Favorite profile</string>
     <string name="profile_filtering_settings_screen_unlimited_likes_filter" description="Title for unlimited likes filter">Unlimited chat requests</string>
     <string name="profile_filtering_settings_screen_unlimited_likes_filter_not_available" description="Description for unlimited likes filter when unlimited likes are disabled">Enable unlimited chat requests to use this filter</string>

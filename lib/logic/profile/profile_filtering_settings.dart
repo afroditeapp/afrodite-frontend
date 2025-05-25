@@ -21,6 +21,7 @@ import "package:app/utils/time.dart";
 sealed class ProfileFilteringSettingsEvent {}
 class SaveNewFilterSettings extends ProfileFilteringSettingsEvent {}
 class ResetEditedValues extends ProfileFilteringSettingsEvent {}
+class DisableAllValues extends ProfileFilteringSettingsEvent {}
 class NewFilterFavoriteProfilesValue extends ProfileFilteringSettingsEvent {
   final bool filterFavorites;
   NewFilterFavoriteProfilesValue(this.filterFavorites);
@@ -129,19 +130,50 @@ class ProfileFilteringSettingsBloc extends Bloc<ProfileFilteringSettingsEvent, P
         resetEditedValues(emit);
       });
     });
-    on<ResetEditedValues>((data, emit) async {
+    on<ResetEditedValues>((data, emit) {
       resetEditedValues(emit);
     });
-    on<NewFilterFavoriteProfilesValue>((data, emit) async {
+    on<DisableAllValues>((data, emit) {
+      final Map<int, ProfileAttributeFilterValueUpdate> disableAttributeFilters = {};
+      for (final a in state.attributeIdAndFilterValueMap.values) {
+        disableAttributeFilters[a.id] = ProfileAttributeFilterValueUpdate(
+          id: a.id,
+          enabled: false,
+        );
+      }
+
+      if (disableAttributeFilters.isEmpty) {
+        emit(state.copyWith(
+          edited: state.edited.copyWith(
+            attributeIdAndFilterValueMap: null,
+          )
+        ));
+      } else {
+        emit(state.copyWith(
+          edited: state.edited.copyWith(
+            attributeIdAndFilterValueMap: disableAttributeFilters,
+          )
+        ));
+      }
+
+      add(SetFavoriteProfilesFilter(false));
+      add(SetLastSeenTimeFilter(null));
+      add(SetUnlimitedLikesFilter(null));
+      add(SetMaxDistanceFilter(null));
+      add(SetProfileCreatedFilter(null));
+      add(SetProfileEditedFilter(null));
+      add(SetProfileTextFilter(null, null));
+    });
+    on<NewFilterFavoriteProfilesValue>((data, emit) {
       emit(state.copyWith(showOnlyFavorites: data.filterFavorites));
     });
-    on<NewProfileFilteringSettings>((data, emit) async {
+    on<NewProfileFilteringSettings>((data, emit) {
       emit(state.copyWith(
         filteringSettings: data.value,
         attributeIdAndFilterValueMap: data.value?.currentFiltersCopy() ?? {},
       ));
     });
-    on<SetFavoriteProfilesFilter>((data, emit) async {
+    on<SetFavoriteProfilesFilter>((data, emit) {
       modifyEdited(
         emit,
         (e) => state.showOnlyFavorites == data.value ?
@@ -149,7 +181,7 @@ class ProfileFilteringSettingsBloc extends Bloc<ProfileFilteringSettingsEvent, P
           e.copyWith(showOnlyFavorites: data.value)
       );
     });
-    on<SetLastSeenTimeFilter>((data, emit) async {
+    on<SetLastSeenTimeFilter>((data, emit) {
       final newValue = data.value;
       final newLastSeenTimeFilter = newValue == null ? null : LastSeenTimeFilter(value: newValue);
       modifyEdited(
@@ -159,7 +191,7 @@ class ProfileFilteringSettingsBloc extends Bloc<ProfileFilteringSettingsEvent, P
           e.copyWith(lastSeenTimeFilter: editValue(newLastSeenTimeFilter))
       );
     });
-    on<SetUnlimitedLikesFilter>((data, emit) async {
+    on<SetUnlimitedLikesFilter>((data, emit) {
       modifyEdited(
         emit,
         (e) => state.filteringSettings?.unlimitedLikesFilter == data.value ?
@@ -167,7 +199,7 @@ class ProfileFilteringSettingsBloc extends Bloc<ProfileFilteringSettingsEvent, P
           e.copyWith(unlimitedLikesFilter: editValue(data.value))
       );
     });
-    on<SetMaxDistanceFilter>((data, emit) async {
+    on<SetMaxDistanceFilter>((data, emit) {
       modifyEdited(
         emit,
         (e) => state.filteringSettings?.maxDistanceKmFilter == data.value ?
@@ -175,7 +207,7 @@ class ProfileFilteringSettingsBloc extends Bloc<ProfileFilteringSettingsEvent, P
           e.copyWith(maxDistanceKmFilter: editValue(data.value))
       );
     });
-    on<SetProfileCreatedFilter>((data, emit) async {
+    on<SetProfileCreatedFilter>((data, emit) {
       modifyEdited(
         emit,
         (e) => state.filteringSettings?.profileCreatedFilter == data.value ?
@@ -183,7 +215,7 @@ class ProfileFilteringSettingsBloc extends Bloc<ProfileFilteringSettingsEvent, P
           e.copyWith(profileCreatedFilter: editValue(data.value))
       );
     });
-    on<SetProfileEditedFilter>((data, emit) async {
+    on<SetProfileEditedFilter>((data, emit) {
       modifyEdited(
         emit,
         (e) => state.filteringSettings?.profileEditedFilter == data.value ?
@@ -191,7 +223,7 @@ class ProfileFilteringSettingsBloc extends Bloc<ProfileFilteringSettingsEvent, P
           e.copyWith(profileEditedFilter: editValue(data.value))
       );
     });
-    on<SetProfileTextFilter>((data, emit) async {
+    on<SetProfileTextFilter>((data, emit) {
       final min = state.filteringSettings?.profileTextMinCharactersFilter == data.min ? const NoEdit<ProfileTextMinCharactersFilter>() : editValue(data.min);
       final max = state.filteringSettings?.profileTextMaxCharactersFilter == data.max ? const NoEdit<ProfileTextMaxCharactersFilter>() : editValue(data.max);
       modifyEdited(
@@ -199,7 +231,7 @@ class ProfileFilteringSettingsBloc extends Bloc<ProfileFilteringSettingsEvent, P
         (e) => e.copyWith(profileTextMinCharactersFilter: min, profileTextMaxCharactersFilter: max),
       );
     });
-    on<SetRandomProfileOrder>((data, emit) async {
+    on<SetRandomProfileOrder>((data, emit) {
       modifyEdited(
         emit,
         (e) => state.filteringSettings?.randomProfileOrder == data.value ?
@@ -207,14 +239,14 @@ class ProfileFilteringSettingsBloc extends Bloc<ProfileFilteringSettingsEvent, P
           e.copyWith(randomProfileOrder: data.value)
       );
     });
-    on<SetAttributeFilterValueLists>((data, emit) async {
+    on<SetAttributeFilterValueLists>((data, emit) {
       updateFilters(
         emit,
         data.attribute.apiAttribute().id,
         (current) => AttributeFilterUpdateBuilder.copyWithValues(data.attribute, current, data.selected),
       );
     });
-    on<SetAttributeFilterSettings>((data, emit) async {
+    on<SetAttributeFilterSettings>((data, emit) {
       updateFilters(
         emit,
         data.attribute.apiAttribute().id,

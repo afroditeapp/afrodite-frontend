@@ -20,6 +20,12 @@ extension ProfileVisibilityExtensions on ProfileVisibility {
   }
 }
 
+extension ProfileAttributeFilterValueUpdateExtensions on ProfileAttributeFilterValueUpdate {
+  void updateIsEnabled() {
+    enabled = acceptMissingAttribute || filterValues.isNotEmpty;
+  }
+}
+
 extension SearchGroupsExtensions on SearchGroups {
   Gender? toGender() {
     if (manForMan || manForWoman || manForNonBinary) {
@@ -125,11 +131,15 @@ extension ContentInfoDetailedExtensions on ContentInfoDetailed {
 
 extension GetProfileFilteringSettingsExtension on GetProfileFilteringSettings {
   Map<int, ProfileAttributeFilterValueUpdate> currentFiltersCopy() {
-    final values = filters.map((e) => ProfileAttributeFilterValueUpdate(
-      acceptMissingAttribute: e.acceptMissingAttribute,
-      filterValues: [...e.filterValues],
-      id: e.id,
-    ));
+    final values = filters.map((e) {
+      final convertedValue = ProfileAttributeFilterValueUpdate(
+        acceptMissingAttribute: e.acceptMissingAttribute,
+        filterValues: [...e.filterValues],
+        id: e.id,
+      );
+      convertedValue.updateIsEnabled();
+      return convertedValue;
+    });
     return { for (var e in values) e.id : e };
   }
 }

@@ -2,6 +2,7 @@
 import 'dart:math';
 
 import 'package:app/ui_utils/attribute/attribute.dart';
+import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/list.dart';
 import 'package:app/utils/option.dart';
@@ -75,12 +76,40 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
             }
           },
           child: Scaffold(
-            appBar: AppBar(title: Text(context.strings.profile_filtering_settings_screen_title)),
+            appBar: AppBar(
+              title: Text(context.strings.profile_filtering_settings_screen_title),
+              actions: [
+                BlocBuilder<ProfileFilteringSettingsBloc, ProfileFilteringSettingsData>(
+                  builder: (context, state) {
+                    if (state.isSomeFilterEnabled()) {
+                      return IconButton(
+                        onPressed: () => openConfirmDisableAllDialog(context),
+                        tooltip: context.strings.profile_filtering_settings_screen_disable_filters_action,
+                        icon: const Icon(Icons.filter_alt_off),
+                      );
+                    } else {
+                      return const SizedBox.shrink();
+                    }
+                  }
+                ),
+              ],
+            ),
             body: filteringSettingsWidget(context, myProfileState.profile?.unlimitedLikes ?? false),
           ),
         );
       }
     );
+  }
+
+  void openConfirmDisableAllDialog(BuildContext context) async {
+    final r = await showConfirmDialog(
+      context,
+      context.strings.profile_filtering_settings_screen_disable_filters_action_dialog_title,
+      yesNoActions: true,
+    );
+    if (r == true && context.mounted) {
+      widget.profileFilteringSettingsBloc.add(DisableAllValues());
+    }
   }
 
   Widget filteringSettingsWidget(BuildContext context, bool myProfileUnlimitedLikesValue) {
