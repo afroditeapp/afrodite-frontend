@@ -21,7 +21,6 @@ import 'package:app/ui/normal/profiles/edit_profile_attribute_filter.dart';
 import 'package:app/ui/normal/settings/profile/edit_profile.dart';
 import 'package:app/ui_utils/common_update_logic.dart';
 import 'package:app/ui_utils/consts/padding.dart';
-import 'package:app/ui_utils/dialog.dart';
 
 void openProfileFilteringSettings(BuildContext context) {
   final filteringSettingsBloc = context.read<ProfileFilteringSettingsBloc>();
@@ -61,53 +60,26 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
     widget.profileFilteringSettingsBloc.add(ResetEditedValues());
   }
 
-  void saveData(BuildContext context) {
-    widget.profileFilteringSettingsBloc.add(SaveNewFilterSettings());
-  }
-
   @override
   Widget build(BuildContext context) {
-    return BlocListener<ProfileFilteringSettingsBloc, ProfileFilteringSettingsData>(
-      listenWhen: (previous, current) => previous.updateState != current.updateState,
-      listener: (context, state) {
-        if (state.updateState is UpdateStarted) {
-          MyNavigator.pop(context);
-        }
-      },
-      child: BlocBuilder<MyProfileBloc, MyProfileData>(
-        builder: (context, myProfileState) {
-          return BlocBuilder<ProfileFilteringSettingsBloc, ProfileFilteringSettingsData>(
-            builder: (context, data) {
-              final settingsChanged = data.unsavedChanges();
-
-              return PopScope(
-                canPop: !settingsChanged,
-                onPopInvoked: (didPop) {
-                  if (didPop) {
-                    return;
-                  }
-                  showConfirmDialog(context, context.strings.generic_save_confirmation_title, yesNoActions: true)
-                    .then((value) {
-                      if (value == true && context.mounted) {
-                        saveData(context);
-                      } else if (value == false && context.mounted) {
-                        MyNavigator.pop(context);
-                      }
-                    });
-                },
-                child: Scaffold(
-                  appBar: AppBar(title: Text(context.strings.profile_filtering_settings_screen_title)),
-                  body: filteringSettingsWidget(context, myProfileState.profile?.unlimitedLikes ?? false),
-                  floatingActionButton: settingsChanged ? FloatingActionButton(
-                    onPressed: () => saveData(context),
-                    child: const Icon(Icons.check),
-                  ) : null
-                ),
-              );
+    return BlocBuilder<MyProfileBloc, MyProfileData>(
+      builder: (context, myProfileState) {
+        return PopScope(
+          canPop: true,
+          onPopInvokedWithResult: (didPop, _) {
+            if (didPop) {
+              if (widget.profileFilteringSettingsBloc.state.unsavedChanges()) {
+                widget.profileFilteringSettingsBloc.add(SaveNewFilterSettings());
+              }
+              return;
             }
-          );
-        }
-      ),
+          },
+          child: Scaffold(
+            appBar: AppBar(title: Text(context.strings.profile_filtering_settings_screen_title)),
+            body: filteringSettingsWidget(context, myProfileState.profile?.unlimitedLikes ?? false),
+          ),
+        );
+      }
     );
   }
 

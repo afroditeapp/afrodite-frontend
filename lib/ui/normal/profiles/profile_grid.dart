@@ -202,7 +202,7 @@ class _ProfileGridState extends State<ProfileGrid> {
         builder: (context, myProfileState) {
           return BlocBuilder<ProfileFilteringSettingsBloc, ProfileFilteringSettingsData>(
             builder: (context, state) {
-              if (state.updateState is UpdateIdle) {
+              if (state.updateState is UpdateIdle && !state.unsavedChanges()) {
                 return NotificationListener<ScrollMetricsNotification>(
                   onNotification: (notification) {
                     final isScrolled = notification.metrics.pixels > 0;
