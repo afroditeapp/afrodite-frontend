@@ -41,7 +41,6 @@ import 'package:app/logic/media/profile_pictures.dart';
 import 'package:app/logic/media/select_content.dart';
 import 'package:app/logic/profile/attributes.dart';
 import 'package:app/logic/profile/edit_my_profile.dart';
-import 'package:app/logic/profile/edit_profile_filtering_settings.dart';
 import 'package:app/logic/profile/location.dart';
 import 'package:app/logic/profile/my_profile.dart';
 import 'package:app/logic/profile/profile_filtering_settings.dart';
@@ -189,7 +188,6 @@ class _MainStateUiLogicState extends State<MainStateUiLogic> {
 
               // Settings
               BlocProvider(create: (_) => EditMyProfileBloc()),
-              BlocProvider(create: (_) => EditProfileFilteringSettingsBloc()),
               BlocProvider(create: (_) => SelectContentBloc()),
               BlocProvider(create: (_) => NewModerationRequestBloc()),
               BlocProvider(create: (_) => ProfilePicturesBloc()),

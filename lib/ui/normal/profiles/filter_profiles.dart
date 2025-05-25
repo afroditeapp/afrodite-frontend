@@ -5,19 +5,16 @@ import 'package:app/ui_utils/attribute/attribute.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/list.dart';
 import 'package:app/utils/option.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 import 'package:app/localizations.dart';
 import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/logic/profile/attributes.dart';
-import 'package:app/logic/profile/edit_profile_filtering_settings.dart';
 import 'package:app/logic/profile/my_profile.dart';
 import 'package:app/logic/profile/profile_filtering_settings.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/model/freezed/logic/profile/attributes.dart';
-import 'package:app/model/freezed/logic/profile/edit_profile_filtering_settings.dart';
 import 'package:app/model/freezed/logic/profile/my_profile.dart';
 import 'package:app/model/freezed/logic/profile/profile_filtering_settings.dart';
 import 'package:app/ui/normal/profiles/edit_profile_attribute_filter.dart';
@@ -25,7 +22,6 @@ import 'package:app/ui/normal/settings/profile/edit_profile.dart';
 import 'package:app/ui_utils/common_update_logic.dart';
 import 'package:app/ui_utils/consts/padding.dart';
 import 'package:app/ui_utils/dialog.dart';
-import 'package:app/utils/api.dart';
 
 void openProfileFilteringSettings(BuildContext context) {
   final filteringSettingsBloc = context.read<ProfileFilteringSettingsBloc>();
@@ -33,15 +29,12 @@ void openProfileFilteringSettings(BuildContext context) {
     showSnackBar(context.strings.profile_grid_screen_profile_filter_settings_update_ongoing);
     return;
   }
-
-  final editFilteringSettingsBloc = context.read<EditProfileFilteringSettingsBloc>();
   final pageKey = PageKey();
   MyNavigator.pushWithKey(
     context,
     MaterialPage<void>(child: ProfileFilteringSettingsPage(
       pageKey: pageKey,
       profileFilteringSettingsBloc: filteringSettingsBloc,
-      editProfileFilteringSettingsBloc: editFilteringSettingsBloc,
     )),
     pageKey,
   );
@@ -50,11 +43,9 @@ void openProfileFilteringSettings(BuildContext context) {
 class ProfileFilteringSettingsPage extends StatefulWidget {
   final PageKey pageKey;
   final ProfileFilteringSettingsBloc profileFilteringSettingsBloc;
-  final EditProfileFilteringSettingsBloc editProfileFilteringSettingsBloc;
   const ProfileFilteringSettingsPage({
     required this.pageKey,
     required this.profileFilteringSettingsBloc,
-    required this.editProfileFilteringSettingsBloc,
     super.key,
   });
 
@@ -64,71 +55,14 @@ class ProfileFilteringSettingsPage extends StatefulWidget {
 
 class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsPage> {
 
-  late final Map<int, ProfileAttributeFilterValueUpdate> initialFilters;
-
   @override
   void initState() {
     super.initState();
-
-    initialFilters = widget.profileFilteringSettingsBloc.state.filteringSettings?.currentFiltersCopy() ?? {};
-
-    widget.editProfileFilteringSettingsBloc.add(ResetStateWith(
-      widget.profileFilteringSettingsBloc.state.showOnlyFavorites,
-      initialFilters,
-      widget.profileFilteringSettingsBloc.state.filteringSettings?.lastSeenTimeFilter,
-      widget.profileFilteringSettingsBloc.state.filteringSettings?.unlimitedLikesFilter,
-      widget.profileFilteringSettingsBloc.state.filteringSettings?.maxDistanceKmFilter,
-      widget.profileFilteringSettingsBloc.state.filteringSettings?.profileCreatedFilter,
-      widget.profileFilteringSettingsBloc.state.filteringSettings?.profileEditedFilter,
-      widget.profileFilteringSettingsBloc.state.filteringSettings?.profileTextMinCharactersFilter,
-      widget.profileFilteringSettingsBloc.state.filteringSettings?.profileTextMaxCharactersFilter,
-      widget.profileFilteringSettingsBloc.state.filteringSettings?.randomProfileOrder ?? false,
-    ));
+    widget.profileFilteringSettingsBloc.add(ResetEditedValues());
   }
 
   void saveData(BuildContext context) {
-    widget.profileFilteringSettingsBloc.add(SaveNewFilterSettings(
-      widget.editProfileFilteringSettingsBloc.state.showOnlyFavorites,
-      widget.editProfileFilteringSettingsBloc.state.attributeIdAndFilterValueMap,
-      widget.editProfileFilteringSettingsBloc.state.lastSeenTimeFilter,
-      widget.editProfileFilteringSettingsBloc.state.unlimitedLikesFilter,
-      widget.editProfileFilteringSettingsBloc.state.maxDistanceKmFilter,
-      widget.editProfileFilteringSettingsBloc.state.profileCreatedFilter,
-      widget.editProfileFilteringSettingsBloc.state.profileEditedFilter,
-      widget.editProfileFilteringSettingsBloc.state.profileTextMinCharactersFilter,
-      widget.editProfileFilteringSettingsBloc.state.profileTextMaxCharactersFilter,
-      widget.editProfileFilteringSettingsBloc.state.randomProfileOrder,
-    ));
-  }
-
-  bool areSettingsChanged(EditProfileFilteringSettingsData editedSettings) {
-    final currentSettings = widget.profileFilteringSettingsBloc.state;
-    if (
-      currentSettings.showOnlyFavorites != editedSettings.showOnlyFavorites ||
-      currentSettings.filteringSettings?.lastSeenTimeFilter != editedSettings.lastSeenTimeFilter ||
-      currentSettings.filteringSettings?.unlimitedLikesFilter != editedSettings.unlimitedLikesFilter ||
-      currentSettings.filteringSettings?.maxDistanceKmFilter != editedSettings.maxDistanceKmFilter ||
-      currentSettings.filteringSettings?.profileCreatedFilter != editedSettings.profileCreatedFilter ||
-      currentSettings.filteringSettings?.profileEditedFilter != editedSettings.profileEditedFilter ||
-      currentSettings.filteringSettings?.profileTextMinCharactersFilter != editedSettings.profileTextMinCharactersFilter ||
-      currentSettings.filteringSettings?.profileTextMaxCharactersFilter != editedSettings.profileTextMaxCharactersFilter ||
-      currentSettings.filteringSettings?.randomProfileOrder != editedSettings.randomProfileOrder
-    ) {
-      return true;
-    }
-
-    for (final editedFilter in editedSettings.attributeIdAndFilterValueMap.values) {
-      final defaultValue = ProfileAttributeFilterValueUpdate(id: editedFilter.id);
-      final currentFilter = initialFilters.values.where((e) => e.id == editedFilter.id).firstOrNull ?? defaultValue;
-      if (
-        currentFilter.acceptMissingAttribute != editedFilter.acceptMissingAttribute ||
-        !listEquals(currentFilter.filterValues, editedFilter.filterValues)
-      ) {
-        return true;
-      }
-    }
-
-    return false;
+    widget.profileFilteringSettingsBloc.add(SaveNewFilterSettings());
   }
 
   @override
@@ -142,9 +76,9 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
       },
       child: BlocBuilder<MyProfileBloc, MyProfileData>(
         builder: (context, myProfileState) {
-          return BlocBuilder<EditProfileFilteringSettingsBloc, EditProfileFilteringSettingsData>(
+          return BlocBuilder<ProfileFilteringSettingsBloc, ProfileFilteringSettingsData>(
             builder: (context, data) {
-              final settingsChanged = areSettingsChanged(data);
+              final settingsChanged = data.unsavedChanges();
 
               return PopScope(
                 canPop: !settingsChanged,
@@ -154,9 +88,9 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
                   }
                   showConfirmDialog(context, context.strings.generic_save_confirmation_title, yesNoActions: true)
                     .then((value) {
-                      if (value == true) {
+                      if (value == true && context.mounted) {
                         saveData(context);
-                      } else if (value == false) {
+                      } else if (value == false && context.mounted) {
                         MyNavigator.pop(context);
                       }
                     });
@@ -192,7 +126,7 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
           profileCreatedOrEditedFilter(
             context,
             context.strings.profile_filtering_settings_screen_profile_created_filter,
-            (state) => state.profileCreatedFilter?.value,
+            (state) => state.valueProfileCreatedTime()?.value,
             (bloc, value) {
               if (value == null) {
                 bloc.add(SetProfileCreatedFilter(null));
@@ -205,7 +139,7 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
           profileCreatedOrEditedFilter(
             context,
             context.strings.profile_filtering_settings_screen_profile_edited_filter,
-            (state) => state.profileEditedFilter?.value,
+            (state) => state.valueProfileEditedTime()?.value,
             (bloc, value) {
               if (value == null) {
                 bloc.add(SetProfileEditedFilter(null));
@@ -230,21 +164,21 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
   }
 
   Widget getShowFavoritesSelection(BuildContext context) {
-    return BlocBuilder<EditProfileFilteringSettingsBloc, EditProfileFilteringSettingsData>(
+    return BlocBuilder<ProfileFilteringSettingsBloc, ProfileFilteringSettingsData>(
       builder: (context, state) {
         return SwitchListTile(
           title: Text(context.strings.profile_filtering_settings_screen_favorite_profile_filter),
           secondary: const Icon(Icons.star_rounded),
-          value: state.showOnlyFavorites,
+          value: state.valueShowOnlyFavorites(),
           onChanged: (bool value) =>
-              context.read<EditProfileFilteringSettingsBloc>().add(SetFavoriteProfilesFilter(value)),
+              context.read<ProfileFilteringSettingsBloc>().add(SetFavoriteProfilesFilter(value)),
         );
       }
     );
   }
 
   Widget lastSeenTimeFilter(BuildContext context) {
-    return BlocBuilder<EditProfileFilteringSettingsBloc, EditProfileFilteringSettingsData>(
+    return BlocBuilder<ProfileFilteringSettingsBloc, ProfileFilteringSettingsData>(
       builder: (context, state) {
         /// Selection for min, max and day counts for one week, 2 weeks
         /// and some months.
@@ -281,7 +215,7 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
           }
         }
 
-        final valueInt = state.lastSeenTimeFilter?.value;
+        final valueInt = state.valueLastSeenTimeFilter()?.value;
         final String stateText;
         final double days;
         if (valueInt == null) {
@@ -304,7 +238,7 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
         }
 
         final TextStyle? valueTextStyle;
-        if (state.showOnlyFavorites) {
+        if (state.valueShowOnlyFavorites()) {
           final disabledTextColor = Theme.of(context).disabledColor;
           valueTextStyle = Theme.of(context).textTheme.bodyMedium?.copyWith(color: disabledTextColor);
         } else {
@@ -314,14 +248,14 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
         return Column(
           children: [
             const Padding(padding: EdgeInsets.all(4)),
-            ViewAttributeTitle(context.strings.profile_filtering_settings_screen_profile_last_seen_time_filter, isEnabled: !state.showOnlyFavorites),
+            ViewAttributeTitle(context.strings.profile_filtering_settings_screen_profile_last_seen_time_filter, isEnabled: !state.valueShowOnlyFavorites()),
             const Padding(padding: EdgeInsets.all(4)),
             Slider(
               value: days,
               min: VALUE_MIN,
               max: VALUE_MAX,
               divisions: DIVISIONS,
-              onChanged: !state.showOnlyFavorites ? (double value) {
+              onChanged: !state.valueShowOnlyFavorites() ? (double value) {
                 final intDays = doubleToIntDays(value);
                 final int? seconds;
                 if (intDays == -1) {
@@ -331,7 +265,7 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
                 } else {
                   seconds = null;
                 }
-                context.read<EditProfileFilteringSettingsBloc>().add(SetLastSeenTimeFilter(seconds));
+                context.read<ProfileFilteringSettingsBloc>().add(SetLastSeenTimeFilter(seconds));
               } : null,
             ),
             Align(
@@ -353,10 +287,10 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
   Widget profileCreatedOrEditedFilter(
     BuildContext context,
     String title,
-    int? Function(EditProfileFilteringSettingsData) valueGetter,
-    void Function(EditProfileFilteringSettingsBloc, int?) valueSetter,
+    int? Function(ProfileFilteringSettingsData) valueGetter,
+    void Function(ProfileFilteringSettingsBloc, int?) valueSetter,
   ) {
-    return BlocBuilder<EditProfileFilteringSettingsBloc, EditProfileFilteringSettingsData>(
+    return BlocBuilder<ProfileFilteringSettingsBloc, ProfileFilteringSettingsData>(
       builder: (context, state) {
         /// Selection for 1-7 days, 14 days, some months
         /// and disabled value.
@@ -413,7 +347,7 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
         }
 
         final TextStyle? valueTextStyle;
-        if (state.showOnlyFavorites) {
+        if (state.valueShowOnlyFavorites()) {
           final disabledTextColor = Theme.of(context).disabledColor;
           valueTextStyle = Theme.of(context).textTheme.bodyMedium?.copyWith(color: disabledTextColor);
         } else {
@@ -423,14 +357,14 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
         return Column(
           children: [
             const Padding(padding: EdgeInsets.all(4)),
-            ViewAttributeTitle(title, isEnabled: !state.showOnlyFavorites),
+            ViewAttributeTitle(title, isEnabled: !state.valueShowOnlyFavorites()),
             const Padding(padding: EdgeInsets.all(4)),
             Slider(
               value: days,
               min: VALUE_MIN,
               max: VALUE_MAX,
               divisions: DIVISIONS,
-              onChanged: !state.showOnlyFavorites ? (double value) {
+              onChanged: !state.valueShowOnlyFavorites() ? (double value) {
                 final intDays = doubleToIntDays(value);
                 final int? seconds;
                 if (intDays != null) {
@@ -438,7 +372,7 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
                 } else {
                   seconds = null;
                 }
-                valueSetter(context.read<EditProfileFilteringSettingsBloc>(), seconds);
+                valueSetter(context.read<ProfileFilteringSettingsBloc>(), seconds);
               } : null,
             ),
             Align(
@@ -458,7 +392,7 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
   }
 
   Widget maxDistanceFilter(BuildContext context) {
-    return BlocBuilder<EditProfileFilteringSettingsBloc, EditProfileFilteringSettingsData>(
+    return BlocBuilder<ProfileFilteringSettingsBloc, ProfileFilteringSettingsData>(
       builder: (context, state) {
         /// Selection for numbers 1-9, 10-90 (where number % 10 == 0),
         /// 100-900 (where number % 100 == 0), 1000 and unlimited.
@@ -500,7 +434,7 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
           }
         }
 
-        final valueInt = state.maxDistanceKmFilter?.value;
+        final valueInt = state.valueMaxDistanceKmFilter()?.value;
         final String stateText;
         final double sliderValue;
         if (valueInt == null) {
@@ -512,7 +446,7 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
         }
 
         final TextStyle? valueTextStyle;
-        if (state.showOnlyFavorites) {
+        if (state.valueShowOnlyFavorites()) {
           final disabledTextColor = Theme.of(context).disabledColor;
           valueTextStyle = Theme.of(context).textTheme.bodyMedium?.copyWith(color: disabledTextColor);
         } else {
@@ -522,17 +456,17 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
         return Column(
           children: [
             const Padding(padding: EdgeInsets.all(4)),
-            ViewAttributeTitle(context.strings.profile_filtering_settings_screen_max_distance, isEnabled: !state.showOnlyFavorites),
+            ViewAttributeTitle(context.strings.profile_filtering_settings_screen_max_distance, isEnabled: !state.valueShowOnlyFavorites()),
             const Padding(padding: EdgeInsets.all(4)),
             Slider(
               value: sliderValue,
               min: VALUE_MIN,
               max: VALUE_MAX,
               divisions: DIVISIONS,
-              onChanged: !state.showOnlyFavorites ? (double value) {
+              onChanged: !state.valueShowOnlyFavorites() ? (double value) {
                 final maxDistance = doubleToIntKilometers(value)
                   .map((v) => MaxDistanceKm(value: v));
-                context.read<EditProfileFilteringSettingsBloc>().add(SetMaxDistanceFilter(maxDistance));
+                context.read<ProfileFilteringSettingsBloc>().add(SetMaxDistanceFilter(maxDistance));
               } : null,
             ),
             Align(
@@ -552,7 +486,7 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
   }
 
   Widget profileTextFilter(BuildContext context) {
-    return BlocBuilder<EditProfileFilteringSettingsBloc, EditProfileFilteringSettingsData>(
+    return BlocBuilder<ProfileFilteringSettingsBloc, ProfileFilteringSettingsData>(
       builder: (context, state) {
         const AVAILABLE_VALUES = [0, 1, 5, 10, 50, 100, 200, 300, 400];
         const LIMIT_MIN = 0.0;
@@ -567,8 +501,8 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
           return 0;
         }
 
-        final valueMin = state.profileTextMinCharactersFilter?.value;
-        final valueMax = state.profileTextMaxCharactersFilter?.value;
+        final valueMin = state.valueProfileTextMinCharacters()?.value;
+        final valueMax = state.valueProfileTextMaxCharacters()?.value;
         final String stateText;
         final double min;
         final double max;
@@ -595,7 +529,7 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
         }
 
         final TextStyle? valueTextStyle;
-        if (state.showOnlyFavorites) {
+        if (state.valueShowOnlyFavorites()) {
           final disabledTextColor = Theme.of(context).disabledColor;
           valueTextStyle = Theme.of(context).textTheme.bodyMedium?.copyWith(color: disabledTextColor);
         } else {
@@ -605,17 +539,17 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
         return Column(
           children: [
             const Padding(padding: EdgeInsets.all(4)),
-            ViewAttributeTitle(context.strings.profile_filtering_settings_screen_profile_text_filter, isEnabled: !state.showOnlyFavorites),
+            ViewAttributeTitle(context.strings.profile_filtering_settings_screen_profile_text_filter, isEnabled: !state.valueShowOnlyFavorites()),
             const Padding(padding: EdgeInsets.all(4)),
             RangeSlider(
               values: RangeValues(min, max),
               min: LIMIT_MIN,
               max: limitMax,
               divisions: AVAILABLE_VALUES.length - 1,
-              onChanged: !state.showOnlyFavorites ? (RangeValues values) {
+              onChanged: !state.valueShowOnlyFavorites() ? (RangeValues values) {
                 final currentMin = AVAILABLE_VALUES.getAtOrNull(values.start.round().toInt()) ?? AVAILABLE_VALUES.first;
                 final currentMax = AVAILABLE_VALUES.getAtOrNull(values.end.round().toInt()) ?? AVAILABLE_VALUES.last;
-                context.read<EditProfileFilteringSettingsBloc>().add(SetProfileTextFilter(
+                context.read<ProfileFilteringSettingsBloc>().add(SetProfileTextFilter(
                   currentMin == AVAILABLE_VALUES.first ? null : ProfileTextMinCharactersFilter(value: currentMin),
                   currentMax == AVAILABLE_VALUES.last ? null : ProfileTextMaxCharactersFilter(value: currentMax),
                 ));
@@ -638,13 +572,13 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
   }
 
   Widget unlimitedLikesSetting(BuildContext context, bool myProfileUnlimitedLikesValue) {
-    return BlocBuilder<EditProfileFilteringSettingsBloc, EditProfileFilteringSettingsData>(
+    return BlocBuilder<ProfileFilteringSettingsBloc, ProfileFilteringSettingsData>(
       builder: (context, state) {
         final bool value;
-        if (state.showOnlyFavorites) {
+        if (state.valueShowOnlyFavorites()) {
           value = false;
         } else {
-          value = state.unlimitedLikesFilter ?? false;
+          value = state.valueUnlimitedLikesFilter() ?? false;
         }
         return SwitchListTile(
           title: Text(context.strings.profile_filtering_settings_screen_unlimited_likes_filter),
@@ -653,9 +587,9 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
             null,
           secondary: const Icon(Icons.all_inclusive),
           value: value,
-          onChanged: !state.showOnlyFavorites && myProfileUnlimitedLikesValue == true ? (bool value) {
+          onChanged: !state.valueShowOnlyFavorites() && myProfileUnlimitedLikesValue == true ? (bool value) {
             final filterValue = value ? true : null;
-            context.read<EditProfileFilteringSettingsBloc>().add(SetUnlimitedLikesFilter(filterValue));
+            context.read<ProfileFilteringSettingsBloc>().add(SetUnlimitedLikesFilter(filterValue));
           } : null,
         );
       }
@@ -663,13 +597,13 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
   }
 
   Widget randomProfileOrderSetting(BuildContext context) {
-    return BlocBuilder<EditProfileFilteringSettingsBloc, EditProfileFilteringSettingsData>(
+    return BlocBuilder<ProfileFilteringSettingsBloc, ProfileFilteringSettingsData>(
       builder: (context, state) {
         final bool value;
-        if (state.showOnlyFavorites) {
+        if (state.valueShowOnlyFavorites()) {
           value = false;
         } else {
-          value = state.randomProfileOrder;
+          value = state.valueRandomProfileOrder();
         }
         return SwitchListTile(
           title: Text(context.strings.profile_filtering_settings_screen_random_profile_order),
@@ -678,8 +612,8 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
             Text(context.strings.profile_filtering_settings_screen_random_profile_order_description_disabled),
           secondary: const Icon(Icons.shuffle),
           value: value,
-          onChanged: !state.showOnlyFavorites ? (bool value) {
-            context.read<EditProfileFilteringSettingsBloc>().add(SetRandomProfileOrder(value));
+          onChanged: !state.valueShowOnlyFavorites() ? (bool value) {
+            context.read<ProfileFilteringSettingsBloc>().add(SetRandomProfileOrder(value));
           } : null,
         );
       }
@@ -699,13 +633,13 @@ class EditAttributeFilters extends StatelessWidget {
           return const SizedBox.shrink();
         }
 
-        return BlocBuilder<EditProfileFilteringSettingsBloc, EditProfileFilteringSettingsData>(builder: (context, eState) {
+        return BlocBuilder<ProfileFilteringSettingsBloc, ProfileFilteringSettingsData>(builder: (context, eState) {
           return Column(
             children: attributeTiles(
               context,
-              !eState.showOnlyFavorites,
+              !eState.valueShowOnlyFavorites(),
               manager,
-              eState.attributeIdAndFilterValueMap,
+              eState.valueAttributes(),
             )
           );
         });

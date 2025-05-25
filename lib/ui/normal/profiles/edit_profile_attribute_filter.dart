@@ -1,12 +1,12 @@
 
 
+import 'package:app/logic/profile/profile_filtering_settings.dart';
 import 'package:app/ui_utils/attribute/filter.dart';
 import 'package:app/ui_utils/attribute/widgets/select_value.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 import 'package:app/localizations.dart';
-import 'package:app/logic/profile/edit_profile_filtering_settings.dart';
 import 'package:app/ui/normal/settings/profile/edit_profile_attribute.dart';
 import 'package:app/ui_utils/app_bar/search.dart';
 
@@ -64,7 +64,7 @@ class _EditProfileAttributeFilterScreenState extends State<EditProfileAttributeF
       isFilter: true,
       initialStateBuilder: () => widget.a.selectedValues.copy(),
       onChanged: (state) =>
-        context.read<EditProfileFilteringSettingsBloc>().add(SetAttributeFilterValueLists(widget.a.attribute(), state)),
+        context.read<ProfileFilteringSettingsBloc>().add(SetAttributeFilterValueLists(widget.a.attribute(), state)),
       firstListItem: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -73,7 +73,7 @@ class _EditProfileAttributeFilterScreenState extends State<EditProfileAttributeF
           EditAttributeFilterEmptyValue(
             a: widget.a,
             onChanged: (settings) =>
-              context.read<EditProfileFilteringSettingsBloc>().add(SetAttributeFilterSettings(widget.a.attribute(), settings))
+              context.read<ProfileFilteringSettingsBloc>().add(SetAttributeFilterSettings(widget.a.attribute(), settings))
           )
         ],
       ),
