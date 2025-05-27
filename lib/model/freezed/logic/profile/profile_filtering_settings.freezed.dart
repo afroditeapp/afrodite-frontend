@@ -144,6 +144,7 @@ mixin _$EditedFilteringSettingsData {
   Map<int, ProfileAttributeFilterValueUpdate>? get attributeIdAndFilterValueMap => throw _privateConstructorErrorEditedFilteringSettingsData;
   EditValue<LastSeenTimeFilter> get lastSeenTimeFilter => throw _privateConstructorErrorEditedFilteringSettingsData;
   EditValue<bool> get unlimitedLikesFilter => throw _privateConstructorErrorEditedFilteringSettingsData;
+  EditValue<MinDistanceKm> get minDistanceKmFilter => throw _privateConstructorErrorEditedFilteringSettingsData;
   EditValue<MaxDistanceKm> get maxDistanceKmFilter => throw _privateConstructorErrorEditedFilteringSettingsData;
   EditValue<ProfileCreatedTimeFilter> get profileCreatedFilter => throw _privateConstructorErrorEditedFilteringSettingsData;
   EditValue<ProfileEditedTimeFilter> get profileEditedFilter => throw _privateConstructorErrorEditedFilteringSettingsData;
@@ -156,6 +157,7 @@ mixin _$EditedFilteringSettingsData {
     Map<int, ProfileAttributeFilterValueUpdate>? attributeIdAndFilterValueMap,
     EditValue<LastSeenTimeFilter>? lastSeenTimeFilter,
     EditValue<bool>? unlimitedLikesFilter,
+    EditValue<MinDistanceKm>? minDistanceKmFilter,
     EditValue<MaxDistanceKm>? maxDistanceKmFilter,
     EditValue<ProfileCreatedTimeFilter>? profileCreatedFilter,
     EditValue<ProfileEditedTimeFilter>? profileEditedFilter,
@@ -172,6 +174,7 @@ abstract class _EditedFilteringSettingsData implements EditedFilteringSettingsDa
     Map<int, ProfileAttributeFilterValueUpdate>? attributeIdAndFilterValueMap,
     EditValue<LastSeenTimeFilter> lastSeenTimeFilter,
     EditValue<bool> unlimitedLikesFilter,
+    EditValue<MinDistanceKm> minDistanceKmFilter,
     EditValue<MaxDistanceKm> maxDistanceKmFilter,
     EditValue<ProfileCreatedTimeFilter> profileCreatedFilter,
     EditValue<ProfileEditedTimeFilter> profileEditedFilter,
@@ -185,6 +188,7 @@ abstract class _EditedFilteringSettingsData implements EditedFilteringSettingsDa
 class _$EditedFilteringSettingsDataImpl with DiagnosticableTreeMixin implements _EditedFilteringSettingsData {
   static const EditValue<LastSeenTimeFilter> _lastSeenTimeFilterDefaultValue = NoEdit();
   static const EditValue<bool> _unlimitedLikesFilterDefaultValue = NoEdit();
+  static const EditValue<MinDistanceKm> _minDistanceKmFilterDefaultValue = NoEdit();
   static const EditValue<MaxDistanceKm> _maxDistanceKmFilterDefaultValue = NoEdit();
   static const EditValue<ProfileCreatedTimeFilter> _profileCreatedFilterDefaultValue = NoEdit();
   static const EditValue<ProfileEditedTimeFilter> _profileEditedFilterDefaultValue = NoEdit();
@@ -196,6 +200,7 @@ class _$EditedFilteringSettingsDataImpl with DiagnosticableTreeMixin implements 
     this.attributeIdAndFilterValueMap,
     this.lastSeenTimeFilter = _lastSeenTimeFilterDefaultValue,
     this.unlimitedLikesFilter = _unlimitedLikesFilterDefaultValue,
+    this.minDistanceKmFilter = _minDistanceKmFilterDefaultValue,
     this.maxDistanceKmFilter = _maxDistanceKmFilterDefaultValue,
     this.profileCreatedFilter = _profileCreatedFilterDefaultValue,
     this.profileEditedFilter = _profileEditedFilterDefaultValue,
@@ -213,6 +218,8 @@ class _$EditedFilteringSettingsDataImpl with DiagnosticableTreeMixin implements 
   @override
   final EditValue<bool> unlimitedLikesFilter;
   @override
+  final EditValue<MinDistanceKm> minDistanceKmFilter;
+  @override
   final EditValue<MaxDistanceKm> maxDistanceKmFilter;
   @override
   final EditValue<ProfileCreatedTimeFilter> profileCreatedFilter;
@@ -227,7 +234,7 @@ class _$EditedFilteringSettingsDataImpl with DiagnosticableTreeMixin implements 
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'EditedFilteringSettingsData(showOnlyFavorites: $showOnlyFavorites, attributeIdAndFilterValueMap: $attributeIdAndFilterValueMap, lastSeenTimeFilter: $lastSeenTimeFilter, unlimitedLikesFilter: $unlimitedLikesFilter, maxDistanceKmFilter: $maxDistanceKmFilter, profileCreatedFilter: $profileCreatedFilter, profileEditedFilter: $profileEditedFilter, profileTextMinCharactersFilter: $profileTextMinCharactersFilter, profileTextMaxCharactersFilter: $profileTextMaxCharactersFilter, randomProfileOrder: $randomProfileOrder)';
+    return 'EditedFilteringSettingsData(showOnlyFavorites: $showOnlyFavorites, attributeIdAndFilterValueMap: $attributeIdAndFilterValueMap, lastSeenTimeFilter: $lastSeenTimeFilter, unlimitedLikesFilter: $unlimitedLikesFilter, minDistanceKmFilter: $minDistanceKmFilter, maxDistanceKmFilter: $maxDistanceKmFilter, profileCreatedFilter: $profileCreatedFilter, profileEditedFilter: $profileEditedFilter, profileTextMinCharactersFilter: $profileTextMinCharactersFilter, profileTextMaxCharactersFilter: $profileTextMaxCharactersFilter, randomProfileOrder: $randomProfileOrder)';
   }
 
   @override
@@ -239,6 +246,7 @@ class _$EditedFilteringSettingsDataImpl with DiagnosticableTreeMixin implements 
       ..add(DiagnosticsProperty('attributeIdAndFilterValueMap', attributeIdAndFilterValueMap))
       ..add(DiagnosticsProperty('lastSeenTimeFilter', lastSeenTimeFilter))
       ..add(DiagnosticsProperty('unlimitedLikesFilter', unlimitedLikesFilter))
+      ..add(DiagnosticsProperty('minDistanceKmFilter', minDistanceKmFilter))
       ..add(DiagnosticsProperty('maxDistanceKmFilter', maxDistanceKmFilter))
       ..add(DiagnosticsProperty('profileCreatedFilter', profileCreatedFilter))
       ..add(DiagnosticsProperty('profileEditedFilter', profileEditedFilter))
@@ -260,6 +268,8 @@ class _$EditedFilteringSettingsDataImpl with DiagnosticableTreeMixin implements 
           other.lastSeenTimeFilter == lastSeenTimeFilter) &&
         (identical(other.unlimitedLikesFilter, unlimitedLikesFilter) ||
           other.unlimitedLikesFilter == unlimitedLikesFilter) &&
+        (identical(other.minDistanceKmFilter, minDistanceKmFilter) ||
+          other.minDistanceKmFilter == minDistanceKmFilter) &&
         (identical(other.maxDistanceKmFilter, maxDistanceKmFilter) ||
           other.maxDistanceKmFilter == maxDistanceKmFilter) &&
         (identical(other.profileCreatedFilter, profileCreatedFilter) ||
@@ -282,6 +292,7 @@ class _$EditedFilteringSettingsDataImpl with DiagnosticableTreeMixin implements 
     attributeIdAndFilterValueMap,
     lastSeenTimeFilter,
     unlimitedLikesFilter,
+    minDistanceKmFilter,
     maxDistanceKmFilter,
     profileCreatedFilter,
     profileEditedFilter,
@@ -296,6 +307,7 @@ class _$EditedFilteringSettingsDataImpl with DiagnosticableTreeMixin implements 
     Object? attributeIdAndFilterValueMap = _detectDefaultValueInCopyWith,
     Object? lastSeenTimeFilter,
     Object? unlimitedLikesFilter,
+    Object? minDistanceKmFilter,
     Object? maxDistanceKmFilter,
     Object? profileCreatedFilter,
     Object? profileEditedFilter,
@@ -307,6 +319,7 @@ class _$EditedFilteringSettingsDataImpl with DiagnosticableTreeMixin implements 
     attributeIdAndFilterValueMap: (attributeIdAndFilterValueMap == _detectDefaultValueInCopyWith ? this.attributeIdAndFilterValueMap : attributeIdAndFilterValueMap) as Map<int, ProfileAttributeFilterValueUpdate>?,
     lastSeenTimeFilter: (lastSeenTimeFilter ?? this.lastSeenTimeFilter) as EditValue<LastSeenTimeFilter>,
     unlimitedLikesFilter: (unlimitedLikesFilter ?? this.unlimitedLikesFilter) as EditValue<bool>,
+    minDistanceKmFilter: (minDistanceKmFilter ?? this.minDistanceKmFilter) as EditValue<MinDistanceKm>,
     maxDistanceKmFilter: (maxDistanceKmFilter ?? this.maxDistanceKmFilter) as EditValue<MaxDistanceKm>,
     profileCreatedFilter: (profileCreatedFilter ?? this.profileCreatedFilter) as EditValue<ProfileCreatedTimeFilter>,
     profileEditedFilter: (profileEditedFilter ?? this.profileEditedFilter) as EditValue<ProfileEditedTimeFilter>,

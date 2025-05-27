@@ -91,6 +91,7 @@ class MyProfileBloc extends Bloc<MyProfileEvent, MyProfileData> with ActionRunne
                 filters.currentFiltersCopy(),
                 filters.lastSeenTimeFilter,
                 null,
+                filters.minDistanceKmFilter,
                 filters.maxDistanceKmFilter,
                 filters.profileCreatedFilter,
                 filters.profileEditedFilter,

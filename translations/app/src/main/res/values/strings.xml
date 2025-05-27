@@ -312,8 +312,10 @@
     <string name="profile_filtering_settings_screen_profile_last_seen_time_filter_all" description="Value text for profile last seen time filter when all is selected">Anytime</string>
     <string name="profile_filtering_settings_screen_profile_created_filter" description="Title for profile created time filter">Profile created</string>
     <string name="profile_filtering_settings_screen_profile_edited_filter" description="Title for profile edited time filter">Profile edited</string>
-    <string name="profile_filtering_settings_screen_max_distance" description="Title text for max distance">Max distance</string>
-    <string name="profile_filtering_settings_screen_max_distance_kilometers" description="Value text for kilometers">%s km</string>
+    <string name="profile_filtering_settings_screen_distance_filter" description="Title text for distance filter">Distance</string>
+    <string name="profile_filtering_settings_screen_distance_filter_min_value" description="Value text for distance filter min value">Min %s km</string>
+    <string name="profile_filtering_settings_screen_distance_filter_max_value" description="Value text for distance filter max value">Max %s km</string>
+    <string name="profile_filtering_settings_screen_distance_filter_min_and_max_value" description="Value text for distance filter min and max value">%s-%s km</string>
     <string name="profile_filtering_settings_screen_profile_text_filter" description="Value text for profile text filter">Profile text length</string>
     <string name="profile_filtering_settings_screen_profile_text_filter_min_value" description="Value text for profile text filter when only min value is selected">Min %s characters</string>
     <string name="profile_filtering_settings_screen_profile_text_filter_max_value" description="Value text for profile text filter when only max value is selected">Max %s characters</string>

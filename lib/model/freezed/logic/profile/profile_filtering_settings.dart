@@ -25,6 +25,7 @@ class ProfileFilteringSettingsData with _$ProfileFilteringSettingsData, UpdateSt
       valueAttributes().values.where((v) => v.enabled).firstOrNull != null ||
       valueLastSeenTimeFilter() != null ||
       valueUnlimitedLikesFilter() != null ||
+      valueMinDistanceKmFilter() != null ||
       valueMaxDistanceKmFilter() != null ||
       valueProfileCreatedTime() != null ||
       valueProfileEditedTime() != null ||
@@ -44,6 +45,7 @@ class ProfileFilteringSettingsData with _$ProfileFilteringSettingsData, UpdateSt
     edited.attributeIdAndFilterValueMap != null ||
     edited.lastSeenTimeFilter.unsavedChanges() ||
     edited.unlimitedLikesFilter.unsavedChanges() ||
+    edited.minDistanceKmFilter.unsavedChanges() ||
     edited.maxDistanceKmFilter.unsavedChanges() ||
     edited.profileCreatedFilter.unsavedChanges() ||
     edited.profileEditedFilter.unsavedChanges() ||
@@ -55,6 +57,7 @@ class ProfileFilteringSettingsData with _$ProfileFilteringSettingsData, UpdateSt
   Map<int, ProfileAttributeFilterValueUpdate> valueAttributes() => edited.attributeIdAndFilterValueMap ?? attributeIdAndFilterValueMap;
   LastSeenTimeFilter? valueLastSeenTimeFilter() => edited.lastSeenTimeFilter.editedValue(filteringSettings?.lastSeenTimeFilter);
   bool? valueUnlimitedLikesFilter() => edited.unlimitedLikesFilter.editedValue(filteringSettings?.unlimitedLikesFilter);
+  MinDistanceKm? valueMinDistanceKmFilter() => edited.minDistanceKmFilter.editedValue(filteringSettings?.minDistanceKmFilter);
   MaxDistanceKm? valueMaxDistanceKmFilter() => edited.maxDistanceKmFilter.editedValue(filteringSettings?.maxDistanceKmFilter);
   ProfileCreatedTimeFilter? valueProfileCreatedTime() => edited.profileCreatedFilter.editedValue(filteringSettings?.profileCreatedFilter);
   ProfileEditedTimeFilter? valueProfileEditedTime() => edited.profileEditedFilter.editedValue(filteringSettings?.profileEditedFilter);
@@ -70,6 +73,7 @@ class EditedFilteringSettingsData with _$EditedFilteringSettingsData {
     Map<int, ProfileAttributeFilterValueUpdate>? attributeIdAndFilterValueMap,
     @Default(NoEdit()) EditValue<LastSeenTimeFilter> lastSeenTimeFilter,
     @Default(NoEdit()) EditValue<bool> unlimitedLikesFilter,
+    @Default(NoEdit()) EditValue<MinDistanceKm> minDistanceKmFilter,
     @Default(NoEdit()) EditValue<MaxDistanceKm> maxDistanceKmFilter,
     @Default(NoEdit()) EditValue<ProfileCreatedTimeFilter> profileCreatedFilter,
     @Default(NoEdit()) EditValue<ProfileEditedTimeFilter> profileEditedFilter,

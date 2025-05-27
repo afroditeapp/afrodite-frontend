@@ -42,9 +42,10 @@ class SetUnlimitedLikesFilter extends ProfileFilteringSettingsEvent {
   final bool? value;
   SetUnlimitedLikesFilter(this.value);
 }
-class SetMaxDistanceFilter extends ProfileFilteringSettingsEvent {
-  final MaxDistanceKm? value;
-  SetMaxDistanceFilter(this.value);
+class SetDistanceFilter extends ProfileFilteringSettingsEvent {
+  final MinDistanceKm? min;
+  final MaxDistanceKm? max;
+  SetDistanceFilter(this.min, this.max);
 }
 class SetProfileCreatedFilter extends ProfileFilteringSettingsEvent {
   final ProfileCreatedTimeFilter? value;
@@ -104,6 +105,7 @@ class ProfileFilteringSettingsBloc extends Bloc<ProfileFilteringSettingsEvent, P
             s.valueAttributes(),
             s.valueLastSeenTimeFilter(),
             s.valueUnlimitedLikesFilter(),
+            s.valueMinDistanceKmFilter(),
             s.valueMaxDistanceKmFilter(),
             s.valueProfileCreatedTime(),
             s.valueProfileEditedTime(),
@@ -159,7 +161,7 @@ class ProfileFilteringSettingsBloc extends Bloc<ProfileFilteringSettingsEvent, P
       add(SetFavoriteProfilesFilter(false));
       add(SetLastSeenTimeFilter(null));
       add(SetUnlimitedLikesFilter(null));
-      add(SetMaxDistanceFilter(null));
+      add(SetDistanceFilter(null, null));
       add(SetProfileCreatedFilter(null));
       add(SetProfileEditedFilter(null));
       add(SetProfileTextFilter(null, null));
@@ -199,12 +201,12 @@ class ProfileFilteringSettingsBloc extends Bloc<ProfileFilteringSettingsEvent, P
           e.copyWith(unlimitedLikesFilter: editValue(data.value))
       );
     });
-    on<SetMaxDistanceFilter>((data, emit) {
+    on<SetDistanceFilter>((data, emit) {
+      final min = state.filteringSettings?.minDistanceKmFilter == data.min ? const NoEdit<MinDistanceKm>() : editValue(data.min);
+      final max = state.filteringSettings?.maxDistanceKmFilter == data.max ? const NoEdit<MaxDistanceKm>() : editValue(data.max);
       modifyEdited(
         emit,
-        (e) => state.filteringSettings?.maxDistanceKmFilter == data.value ?
-          e.copyWith(maxDistanceKmFilter: const NoEdit()) :
-          e.copyWith(maxDistanceKmFilter: editValue(data.value))
+        (e) => e.copyWith(minDistanceKmFilter: min, maxDistanceKmFilter: max),
       );
     });
     on<SetProfileCreatedFilter>((data, emit) {

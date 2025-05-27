@@ -395,55 +395,32 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
   Widget maxDistanceFilter(BuildContext context) {
     return BlocBuilder<ProfileFilteringSettingsBloc, ProfileFilteringSettingsData>(
       builder: (context, state) {
-        /// Selection for numbers 1-9, 10-90 (where number % 10 == 0),
-        /// 100-900 (where number % 100 == 0), 1000 and unlimited.
-        const VALUE_COUNT = 9 + 9 + 9 + 2;
-        const DIVISIONS = VALUE_COUNT - 1;
+        /// Min: Unlimited, Max: 1 kilometers
+        const VALUE_MIN = 0;
+        /// Min: 1000 kilometers, Max: Unlimited
+        final valueMax = DistanceValues.availableValues.length - 1;
 
-        /// 1 kilometers
-        const VALUE_MIN = 1.0;
-        /// Unlimited
-        const VALUE_MAX = 29.0;
-
-        double intKilometersToDouble(int kilometers) {
-          if (kilometers <= 9) {
-            return max(1, kilometers.toDouble());
-          } else if (kilometers >= 10 && kilometers <= 90) {
-            final selected = kilometers ~/ 10;
-            return (9 + selected).toDouble();
-          } else if (kilometers > 90 && kilometers <= 900) {
-            final selected = kilometers ~/ 100;
-            return (9 + 9 + selected).toDouble();
-          } else {
-            return (9 + 9 + 9 + 1).toDouble();
-          }
-        }
-
-        int? doubleToIntKilometers(double value) {
-          if (value <= VALUE_MIN) {
-            return 1;
-          } else if (value >= VALUE_MAX) {
-            return null;
-          } else if (value <= 9) {
-            return value.toInt();
-          } else if (value <= 9 + 9) {
-            return (value.toInt() - 9) * 10;
-          } else if (value <= 9 + 9 + 9) {
-            return (value.toInt() - 9 - 9) * 100;
-          } else {
-            return 1000;
-          }
-        }
-
-        final valueInt = state.valueMaxDistanceKmFilter()?.value;
+        final min = state.valueMinDistanceKmFilter()?.value;
+        final max = state.valueMaxDistanceKmFilter()?.value;
         final String stateText;
-        final double sliderValue;
-        if (valueInt == null) {
-          stateText = context.strings.generic_unlimited;
-          sliderValue = VALUE_MAX;
+        final double minValue;
+        final double maxValue;
+        if (min != null && max != null) {
+          stateText = context.strings.profile_filtering_settings_screen_distance_filter_min_and_max_value(min.toString(), max.toString());
+          minValue = (DistanceValues.valueToIndex[min] ?? VALUE_MIN).toDouble();
+          maxValue = (DistanceValues.valueToIndex[max] ?? valueMax).toDouble();
+        } else if (min != null) {
+          stateText = context.strings.profile_filtering_settings_screen_distance_filter_min_value(min.toString());
+          maxValue = valueMax.toDouble();
+          minValue = (DistanceValues.valueToIndex[min] ?? VALUE_MIN).toDouble();
+        } else if (max != null) {
+          stateText = context.strings.profile_filtering_settings_screen_distance_filter_max_value(max.toString());
+          minValue = VALUE_MIN.toDouble();
+          maxValue = (DistanceValues.valueToIndex[max] ?? valueMax).toDouble();
         } else {
-          stateText = context.strings.profile_filtering_settings_screen_max_distance_kilometers(valueInt.toString());
-          sliderValue = intKilometersToDouble(valueInt);
+          stateText = context.strings.generic_unlimited;
+          minValue = VALUE_MIN.toDouble();
+          maxValue = valueMax.toDouble();
         }
 
         final TextStyle? valueTextStyle;
@@ -457,17 +434,30 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
         return Column(
           children: [
             const Padding(padding: EdgeInsets.all(4)),
-            ViewAttributeTitle(context.strings.profile_filtering_settings_screen_max_distance, isEnabled: !state.valueShowOnlyFavorites()),
+            ViewAttributeTitle(context.strings.profile_filtering_settings_screen_distance_filter, isEnabled: !state.valueShowOnlyFavorites()),
             const Padding(padding: EdgeInsets.all(4)),
-            Slider(
-              value: sliderValue,
-              min: VALUE_MIN,
-              max: VALUE_MAX,
-              divisions: DIVISIONS,
-              onChanged: !state.valueShowOnlyFavorites() ? (double value) {
-                final maxDistance = doubleToIntKilometers(value)
+            RangeSlider(
+              values: RangeValues(minValue, maxValue),
+              min: VALUE_MIN.toDouble(),
+              max: valueMax.toDouble(),
+              divisions: DistanceValues.availableValues.length - 1,
+              onChanged: !state.valueShowOnlyFavorites() ? (values) {
+                final minDistanceInt = values.start.round().toInt();
+                final minDistance = switch(minDistanceInt) {
+                  0 => null,
+                  _ => DistanceValues.availableValues.getAtOrNull(minDistanceInt),
+                }
+                  .map((v) => MinDistanceKm(value: v));
+                final maxDistanceInt = values.end.round().toInt();
+                final int? maxDistanceIntOrNull;
+                if (maxDistanceInt == valueMax) {
+                  maxDistanceIntOrNull = null;
+                } else {
+                  maxDistanceIntOrNull = DistanceValues.availableValues.getAtOrNull(maxDistanceInt);
+                }
+                final maxDistance = maxDistanceIntOrNull
                   .map((v) => MaxDistanceKm(value: v));
-                context.read<ProfileFilteringSettingsBloc>().add(SetMaxDistanceFilter(maxDistance));
+                context.read<ProfileFilteringSettingsBloc>().add(SetDistanceFilter(minDistance, maxDistance));
               } : null,
             ),
             Align(
@@ -678,5 +668,27 @@ class EditAttributeFilters extends StatelessWidget {
     }
 
     return attributeWidgets;
+  }
+}
+
+class DistanceValues {
+  static final DistanceValues _getInstance = DistanceValues._();
+  static final List<int> availableValues = _getInstance._availableValues;
+  static final Map<int, int> valueToIndex = _getInstance._valueToIndex;
+
+  final List<int> _availableValues;
+  final Map<int, int> _valueToIndex;
+  DistanceValues.__(this._availableValues, this._valueToIndex);
+  factory DistanceValues._() {
+    const AVAILABLE_VALUES = [
+      1, 2, 3, 4, 5, 6, 7, 8, 9,
+      10, 20, 30, 40, 50, 60, 70, 80, 90,
+      100, 200, 300, 400, 500, 600, 700, 900,
+      1000
+    ];
+
+    final Map<int, int> valueToIndex = { for (final (i, v) in AVAILABLE_VALUES.indexed) v: i};
+
+    return DistanceValues.__(AVAILABLE_VALUES, valueToIndex);
   }
 }

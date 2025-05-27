@@ -1181,22 +1181,43 @@
   "@profile_filtering_settings_screen_disable_filters_action_dialog_title": {
     "description": "Title for disable filters action confirm dialog"
   },
-  "profile_filtering_settings_screen_favorite_profile_filter": "Favorite profile",
-  "@profile_filtering_settings_screen_favorite_profile_filter": {
-    "description": "Title for favorite profile filter"
+  "profile_filtering_settings_screen_distance_filter": "Distance",
+  "@profile_filtering_settings_screen_distance_filter": {
+    "description": "Title text for distance filter"
   },
-  "profile_filtering_settings_screen_max_distance": "Max distance",
-  "@profile_filtering_settings_screen_max_distance": {
-    "description": "Title text for max distance"
-  },
-  "profile_filtering_settings_screen_max_distance_kilometers": "{p0} km",
-  "@profile_filtering_settings_screen_max_distance_kilometers": {
-    "description": "Value text for kilometers",
+  "profile_filtering_settings_screen_distance_filter_max_value": "Max {p0} km",
+  "@profile_filtering_settings_screen_distance_filter_max_value": {
+    "description": "Value text for distance filter max value",
     "placeholders": {
       "p0": {
         "type": "String"
       }
     }
+  },
+  "profile_filtering_settings_screen_distance_filter_min_and_max_value": "{p0}-{p1} km",
+  "@profile_filtering_settings_screen_distance_filter_min_and_max_value": {
+    "description": "Value text for distance filter min and max value",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      },
+      "p1": {
+        "type": "String"
+      }
+    }
+  },
+  "profile_filtering_settings_screen_distance_filter_min_value": "Min {p0} km",
+  "@profile_filtering_settings_screen_distance_filter_min_value": {
+    "description": "Value text for distance filter min value",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
+  "profile_filtering_settings_screen_favorite_profile_filter": "Favorite profile",
+  "@profile_filtering_settings_screen_favorite_profile_filter": {
+    "description": "Title for favorite profile filter"
   },
   "profile_filtering_settings_screen_profile_created_filter": "Profile created",
   "@profile_filtering_settings_screen_profile_created_filter": {
