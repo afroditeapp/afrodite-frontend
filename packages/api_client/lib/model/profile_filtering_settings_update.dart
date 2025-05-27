@@ -16,6 +16,7 @@ class ProfileFilteringSettingsUpdate {
     this.filters = const [],
     this.lastSeenTimeFilter,
     this.maxDistanceKmFilter,
+    this.minDistanceKmFilter,
     this.profileCreatedFilter,
     this.profileEditedFilter,
     this.profileTextMaxCharactersFilter,
@@ -29,6 +30,8 @@ class ProfileFilteringSettingsUpdate {
   LastSeenTimeFilter? lastSeenTimeFilter;
 
   MaxDistanceKm? maxDistanceKmFilter;
+
+  MinDistanceKm? minDistanceKmFilter;
 
   ProfileCreatedTimeFilter? profileCreatedFilter;
 
@@ -47,6 +50,7 @@ class ProfileFilteringSettingsUpdate {
     _deepEquality.equals(other.filters, filters) &&
     other.lastSeenTimeFilter == lastSeenTimeFilter &&
     other.maxDistanceKmFilter == maxDistanceKmFilter &&
+    other.minDistanceKmFilter == minDistanceKmFilter &&
     other.profileCreatedFilter == profileCreatedFilter &&
     other.profileEditedFilter == profileEditedFilter &&
     other.profileTextMaxCharactersFilter == profileTextMaxCharactersFilter &&
@@ -60,6 +64,7 @@ class ProfileFilteringSettingsUpdate {
     (filters.hashCode) +
     (lastSeenTimeFilter == null ? 0 : lastSeenTimeFilter!.hashCode) +
     (maxDistanceKmFilter == null ? 0 : maxDistanceKmFilter!.hashCode) +
+    (minDistanceKmFilter == null ? 0 : minDistanceKmFilter!.hashCode) +
     (profileCreatedFilter == null ? 0 : profileCreatedFilter!.hashCode) +
     (profileEditedFilter == null ? 0 : profileEditedFilter!.hashCode) +
     (profileTextMaxCharactersFilter == null ? 0 : profileTextMaxCharactersFilter!.hashCode) +
@@ -68,7 +73,7 @@ class ProfileFilteringSettingsUpdate {
     (unlimitedLikesFilter == null ? 0 : unlimitedLikesFilter!.hashCode);
 
   @override
-  String toString() => 'ProfileFilteringSettingsUpdate[filters=$filters, lastSeenTimeFilter=$lastSeenTimeFilter, maxDistanceKmFilter=$maxDistanceKmFilter, profileCreatedFilter=$profileCreatedFilter, profileEditedFilter=$profileEditedFilter, profileTextMaxCharactersFilter=$profileTextMaxCharactersFilter, profileTextMinCharactersFilter=$profileTextMinCharactersFilter, randomProfileOrder=$randomProfileOrder, unlimitedLikesFilter=$unlimitedLikesFilter]';
+  String toString() => 'ProfileFilteringSettingsUpdate[filters=$filters, lastSeenTimeFilter=$lastSeenTimeFilter, maxDistanceKmFilter=$maxDistanceKmFilter, minDistanceKmFilter=$minDistanceKmFilter, profileCreatedFilter=$profileCreatedFilter, profileEditedFilter=$profileEditedFilter, profileTextMaxCharactersFilter=$profileTextMaxCharactersFilter, profileTextMinCharactersFilter=$profileTextMinCharactersFilter, randomProfileOrder=$randomProfileOrder, unlimitedLikesFilter=$unlimitedLikesFilter]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -82,6 +87,11 @@ class ProfileFilteringSettingsUpdate {
       json[r'max_distance_km_filter'] = this.maxDistanceKmFilter;
     } else {
       json[r'max_distance_km_filter'] = null;
+    }
+    if (this.minDistanceKmFilter != null) {
+      json[r'min_distance_km_filter'] = this.minDistanceKmFilter;
+    } else {
+      json[r'min_distance_km_filter'] = null;
     }
     if (this.profileCreatedFilter != null) {
       json[r'profile_created_filter'] = this.profileCreatedFilter;
@@ -134,6 +144,7 @@ class ProfileFilteringSettingsUpdate {
         filters: ProfileAttributeFilterValueUpdate.listFromJson(json[r'filters']),
         lastSeenTimeFilter: LastSeenTimeFilter.fromJson(json[r'last_seen_time_filter']),
         maxDistanceKmFilter: MaxDistanceKm.fromJson(json[r'max_distance_km_filter']),
+        minDistanceKmFilter: MinDistanceKm.fromJson(json[r'min_distance_km_filter']),
         profileCreatedFilter: ProfileCreatedTimeFilter.fromJson(json[r'profile_created_filter']),
         profileEditedFilter: ProfileEditedTimeFilter.fromJson(json[r'profile_edited_filter']),
         profileTextMaxCharactersFilter: ProfileTextMaxCharactersFilter.fromJson(json[r'profile_text_max_characters_filter']),

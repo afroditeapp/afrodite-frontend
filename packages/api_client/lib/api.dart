@@ -178,6 +178,7 @@ part 'model/media_content_moderation_completed_notification_viewed.dart';
 part 'model/media_content_sync_version.dart';
 part 'model/media_content_type.dart';
 part 'model/message_number.dart';
+part 'model/min_distance_km.dart';
 part 'model/moderation_queue_type.dart';
 part 'model/my_profile_content.dart';
 part 'model/new_received_likes_count.dart';

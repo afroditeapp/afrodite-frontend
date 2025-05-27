@@ -458,6 +458,8 @@ class ApiClient {
           return MediaContentTypeTypeTransformer().decode(value);
         case 'MessageNumber':
           return MessageNumber.fromJson(value);
+        case 'MinDistanceKm':
+          return MinDistanceKm.fromJson(value);
         case 'ModerationQueueType':
           return ModerationQueueTypeTypeTransformer().decode(value);
         case 'MyProfileContent':
