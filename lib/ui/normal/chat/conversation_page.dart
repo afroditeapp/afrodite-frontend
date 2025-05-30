@@ -249,7 +249,7 @@ class ConversationPageState extends State<ConversationPage> {
   }
 
   void sendVideoCallInviteDialog(BuildContext context) async {
-    if ((Platform.isAndroid || Platform.isIOS) && !await isJitsiMeetAppInstalled()) {
+    if (await isInstallingJitsiMeetAppPossible() && !await isJitsiMeetAppInstalled()) {
       if (context.mounted) {
         openJitsiMeetAppInstallDialogOnAndroidOrIos(context);
       }

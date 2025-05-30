@@ -3,7 +3,10 @@ import 'dart:io';
 
 import 'package:android_intent_plus/android_intent.dart';
 import 'package:app/data/login_repository.dart';
+import 'package:app/data/notification_manager.dart';
 import 'package:app/utils/result.dart';
+import 'package:app/utils/version.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:database/database.dart';
 import 'package:flutter/services.dart';
@@ -451,7 +454,10 @@ void _joinVideoCall(BuildContext context, AccountId callee) async {
     return;
   }
 
-  if (Platform.isAndroid || Platform.isIOS) {
+  if (await isInstallingJitsiMeetAppPossible()) {
+    if (!context.mounted) {
+      return;
+    }
     // The web app was disabled completely because hardware
     // volume buttons don't change meeting audio volume when
     // the meeting is opened in Android Chrome browser and
@@ -465,12 +471,35 @@ void _joinVideoCall(BuildContext context, AccountId callee) async {
     // in-app browser screen does not close with that method.
     openJitsiMeetAppInstallDialogOnAndroidOrIos(context);
   } else {
+    if (!context.mounted) {
+      return;
+    }
     final customUrl = jitsiMeetUrls.customUrl;
     if (customUrl != null) {
       await launchUrlStringAndShowError(context, customUrl);
     } else {
       await launchUrlAndShowError(context, url);
     }
+  }
+}
+
+Future<bool> isInstallingJitsiMeetAppPossible() async {
+  if (Platform.isIOS) {
+    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+    IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
+    final version = IosVersion.parse(iosInfo);
+    if (version != null) {
+      return version.major >= 16 ||
+        (version.major == 15 && version.minor >= 1);
+    } else {
+      return false;
+    }
+  } else if (Platform.isAndroid) {
+    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+    AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+    return androidInfo.version.sdkInt >= ANDROID_8_API_LEVEL;
+  } else {
+    return false;
   }
 }
 
