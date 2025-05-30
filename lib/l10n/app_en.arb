@@ -339,9 +339,21 @@
   "@demo_account_screen_no_accounts_available": {
     "description": "Text displayed when available accounts list is empty"
   },
+  "edit_attribute_filter_value_screen_require_all_wanted_values": "Require all wanted values",
+  "@edit_attribute_filter_value_screen_require_all_wanted_values": {
+    "description": "Title for require all wanted values setting"
+  },
   "edit_attribute_filter_value_screen_search_placeholder_text": "Search…",
   "@edit_attribute_filter_value_screen_search_placeholder_text": {
     "description": "Attribute value search box placeholder text"
+  },
+  "edit_attribute_filter_value_screen_show_advanced_filters_action": "Advanced filters",
+  "@edit_attribute_filter_value_screen_show_advanced_filters_action": {
+    "description": "Show advanced filters action"
+  },
+  "edit_attribute_filter_value_screen_show_basic_filters_action": "Basic filters",
+  "@edit_attribute_filter_value_screen_show_basic_filters_action": {
+    "description": "Show basic filters action"
   },
   "edit_attribute_filter_value_screen_title": "Edit filter",
   "@edit_attribute_filter_value_screen_title": {

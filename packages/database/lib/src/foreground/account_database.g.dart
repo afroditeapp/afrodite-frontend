@@ -7444,6 +7444,192 @@ class AvailableProfileAttributesTableCompanion
   }
 }
 
+class $UiSettingsTable extends UiSettings
+    with TableInfo<$UiSettingsTable, UiSetting> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $UiSettingsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _advancedFiltersMeta =
+      const VerificationMeta('advancedFilters');
+  @override
+  late final GeneratedColumn<bool> advancedFilters = GeneratedColumn<bool>(
+      'advanced_filters', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'CHECK ("advanced_filters" IN (0, 1))'),
+      defaultValue: const Constant(false));
+  @override
+  List<GeneratedColumn> get $columns => [id, advancedFilters];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'ui_settings';
+  @override
+  VerificationContext validateIntegrity(Insertable<UiSetting> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('advanced_filters')) {
+      context.handle(
+          _advancedFiltersMeta,
+          advancedFilters.isAcceptableOrUnknown(
+              data['advanced_filters']!, _advancedFiltersMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  UiSetting map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return UiSetting(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      advancedFilters: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}advanced_filters'])!,
+    );
+  }
+
+  @override
+  $UiSettingsTable createAlias(String alias) {
+    return $UiSettingsTable(attachedDatabase, alias);
+  }
+}
+
+class UiSetting extends DataClass implements Insertable<UiSetting> {
+  final int id;
+  final bool advancedFilters;
+  const UiSetting({required this.id, required this.advancedFilters});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['advanced_filters'] = Variable<bool>(advancedFilters);
+    return map;
+  }
+
+  UiSettingsCompanion toCompanion(bool nullToAbsent) {
+    return UiSettingsCompanion(
+      id: Value(id),
+      advancedFilters: Value(advancedFilters),
+    );
+  }
+
+  factory UiSetting.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return UiSetting(
+      id: serializer.fromJson<int>(json['id']),
+      advancedFilters: serializer.fromJson<bool>(json['advancedFilters']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'advancedFilters': serializer.toJson<bool>(advancedFilters),
+    };
+  }
+
+  UiSetting copyWith({int? id, bool? advancedFilters}) => UiSetting(
+        id: id ?? this.id,
+        advancedFilters: advancedFilters ?? this.advancedFilters,
+      );
+  UiSetting copyWithCompanion(UiSettingsCompanion data) {
+    return UiSetting(
+      id: data.id.present ? data.id.value : this.id,
+      advancedFilters: data.advancedFilters.present
+          ? data.advancedFilters.value
+          : this.advancedFilters,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('UiSetting(')
+          ..write('id: $id, ')
+          ..write('advancedFilters: $advancedFilters')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, advancedFilters);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is UiSetting &&
+          other.id == this.id &&
+          other.advancedFilters == this.advancedFilters);
+}
+
+class UiSettingsCompanion extends UpdateCompanion<UiSetting> {
+  final Value<int> id;
+  final Value<bool> advancedFilters;
+  const UiSettingsCompanion({
+    this.id = const Value.absent(),
+    this.advancedFilters = const Value.absent(),
+  });
+  UiSettingsCompanion.insert({
+    this.id = const Value.absent(),
+    this.advancedFilters = const Value.absent(),
+  });
+  static Insertable<UiSetting> custom({
+    Expression<int>? id,
+    Expression<bool>? advancedFilters,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (advancedFilters != null) 'advanced_filters': advancedFilters,
+    });
+  }
+
+  UiSettingsCompanion copyWith({Value<int>? id, Value<bool>? advancedFilters}) {
+    return UiSettingsCompanion(
+      id: id ?? this.id,
+      advancedFilters: advancedFilters ?? this.advancedFilters,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (advancedFilters.present) {
+      map['advanced_filters'] = Variable<bool>(advancedFilters.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('UiSettingsCompanion(')
+          ..write('id: $id, ')
+          ..write('advancedFilters: $advancedFilters')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AccountDatabase extends GeneratedDatabase {
   _$AccountDatabase(QueryExecutor e) : super(e);
   late final $AccountTable account = $AccountTable(this);
@@ -7459,6 +7645,7 @@ abstract class _$AccountDatabase extends GeneratedDatabase {
   late final $AvailableProfileAttributesTableTable
       availableProfileAttributesTable =
       $AvailableProfileAttributesTableTable(this);
+  late final $UiSettingsTable uiSettings = $UiSettingsTable(this);
   late final DaoCurrentContent daoCurrentContent =
       DaoCurrentContent(this as AccountDatabase);
   late final DaoMyProfile daoMyProfile = DaoMyProfile(this as AccountDatabase);
@@ -7503,6 +7690,8 @@ abstract class _$AccountDatabase extends GeneratedDatabase {
   late final DaoAvailableProfileAttributesTable
       daoAvailableProfileAttributesTable =
       DaoAvailableProfileAttributesTable(this as AccountDatabase);
+  late final DaoUiSettings daoUiSettings =
+      DaoUiSettings(this as AccountDatabase);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -7516,6 +7705,7 @@ abstract class _$AccountDatabase extends GeneratedDatabase {
         conversationList,
         messageTable,
         conversations,
-        availableProfileAttributesTable
+        availableProfileAttributesTable,
+        uiSettings
       ];
 }

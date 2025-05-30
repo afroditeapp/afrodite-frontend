@@ -4,20 +4,35 @@ import 'package:app/ui_utils/attribute/state.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:flutter/material.dart';
 
-void _emptyOnChanged(AttributeStateStorage storage) => ();
-AttributeStateStorage? _emptyInitialStateBuilder() => null;
+enum FilterMode {
+  basic,
+  advanced,
+}
+
+class SelectAttributeValueStorage {
+  /// Used for saving attribute values and filter values for wanted
+  /// values.
+  final AttributeStateStorage selected;
+  /// Used for saving filter values for unwanted values.
+  final AttributeStateStorage nonselected;
+  SelectAttributeValueStorage({required this.selected, required this.nonselected});
+  SelectAttributeValueStorage.selected(this.selected) : nonselected = AttributeStateStorage();
+}
+
+void _emptyOnChanged(SelectAttributeValueStorage storage) => ();
+SelectAttributeValueStorage? _emptyInitialStateBuilder() => null;
 
 class SelectAttributeValue extends StatefulWidget {
   final UiAttribute attribute;
-  final bool isFilter;
-  final void Function(AttributeStateStorage) onChanged;
+  final FilterMode? filterMode;
+  final void Function(SelectAttributeValueStorage) onChanged;
   final Widget? firstListItem;
   final Widget? lastListItem;
-  final AttributeStateStorage? Function() initialStateBuilder;
+  final SelectAttributeValueStorage? Function() initialStateBuilder;
   final String? filterText;
   const SelectAttributeValue({
     required this.attribute,
-    required this.isFilter,
+    this.filterMode,
     this.onChanged = _emptyOnChanged,
     this.firstListItem,
     this.lastListItem,
@@ -31,7 +46,8 @@ class SelectAttributeValue extends StatefulWidget {
 }
 
 class _SelectAttributeValueState extends State<SelectAttributeValue> {
-  late final AttributeStateStorage storage;
+  late final AttributeStateStorage storageSelected;
+  late final AttributeStateStorage storageNonselected;
   late int maxSelected;
   List<UiAttributeValue> allValues = [];
   bool showOnlySelectedFilterSetting = false;
@@ -40,8 +56,10 @@ class _SelectAttributeValueState extends State<SelectAttributeValue> {
   @override
   void initState() {
     super.initState();
-    storage = widget.initialStateBuilder() ?? AttributeStateStorage();
-    if (widget.isFilter) {
+    final s = widget.initialStateBuilder();
+    storageSelected = s?.selected ?? AttributeStateStorage();
+    storageNonselected = s?.nonselected ?? AttributeStateStorage();
+    if (widget.filterMode != null) {
       maxSelected = widget.attribute.apiAttribute().maxFilters;
     } else {
       maxSelected = widget.attribute.apiAttribute().maxSelected;
@@ -71,8 +89,10 @@ class _SelectAttributeValueState extends State<SelectAttributeValue> {
       return matchesFilter &&
         (
           !showOnlySelected ||
-          storage.isSelected(a) ||
-          (a.isParentOfGroupValue() && storage.groupValueSelected(a))
+          storageSelected.isSelected(a) ||
+          (a.isParentOfGroupValue() && storageSelected.groupValueSelected(a)) ||
+          storageNonselected.isSelected(a) ||
+          (a.isParentOfGroupValue() && storageNonselected.groupValueSelected(a))
         );
     }).toList();
   }
@@ -94,57 +114,98 @@ class _SelectAttributeValueState extends State<SelectAttributeValue> {
   }
 
   Widget selectWidget(BuildContext context, UiAttributeValue v) {
-    final bool? value;
-    if (v.isParentOfGroupValue()) {
-      if (storage.isSelected(v)) {
-        value = true;
-      } else {
-        if (storage.groupValueSelected(v)) {
-          value = null;
-        } else {
-          value = false;
-        }
-      }
+    if (widget.filterMode == FilterMode.advanced ||
+      (widget.filterMode == FilterMode.basic && storageNonselected.isSelected(v))) {
+      return selectWidgetAdvanced(context, v);
     } else {
-      value = storage.isSelected(v);
+      return selectWidgetBasic(context, v);
     }
+  }
 
+  Widget selectWidgetBasic(BuildContext context, UiAttributeValue v) {
+    final bool? currentValue = getSelectedStatusBasic(storageSelected, v);
     final checkbox = CheckboxListTile(
       title: title(v),
-      tristate: value == null,
+      tristate: currentValue == null,
       controlAffinity: ListTileControlAffinity.leading,
-      value: value,
-      onChanged: (selected) {
+      value: currentValue,
+      onChanged: (newValue) {
         setState(() {
-          if (maxSelected > 1) {
-            if (selected == true) {
-              if (storage.length() < maxSelected) {
-                storage.select(v);
-              } else {
-                showSnackBar(R.strings.edit_attribute_value_screen_max_selected_values_error);
-              }
-            } else if (selected == false) {
-              storage.unselect(v);
-              if (value == null) {
-                storage.unselectGroupValues(v);
-              }
-            }
+          updateSelectedStatusBasic(storageSelected, v, currentValue, newValue);
+        });
+        widget.onChanged(SelectAttributeValueStorage(
+          selected: storageSelected,
+          nonselected: storageNonselected,
+        ));
+      },
+    );
+
+    if (v.isGroupValue()) {
+      return Padding(
+        padding: const EdgeInsets.only(left: 24),
+        child: checkbox,
+      );
+    } else {
+      return checkbox;
+    }
+  }
+
+  Widget selectWidgetAdvanced(BuildContext context, UiAttributeValue v) {
+    final bool? currentSelectedValue = getSelectedStatusBasic(storageSelected, v);
+    final bool? currentNonselectedValue = getSelectedStatusBasic(storageNonselected, v);
+    final List<bool> selected;
+    if (currentSelectedValue == true) {
+      selected = [true, false];
+    } else if (currentNonselectedValue == true) {
+      selected = [false, true];
+    } else {
+      selected = [false, false];
+    }
+    final checkbox = ListTile(
+      title: Row(
+        children: [
+          title(v),
+          const Spacer(),
+          ToggleButtons(
+            isSelected: selected,
+            onPressed: (selectedIndex) {
+              setState(() {
+                storageSelected.unselect(v);
+                storageNonselected.unselect(v);
+                if (selectedIndex == 0 && (currentSelectedValue == false || currentSelectedValue == null)) {
+                  updateSelectedStatusBasic(storageSelected, v, currentSelectedValue, true);
+                } else if (selectedIndex == 1 && (currentNonselectedValue == false || currentNonselectedValue == null)) {
+                  updateSelectedStatusBasic(storageNonselected, v, currentNonselectedValue, true);
+                }
+              });
+              widget.onChanged(SelectAttributeValueStorage(
+                selected: storageSelected,
+                nonselected: storageNonselected,
+              ));
+            },
+            children: const [
+              Icon(Icons.check),
+              Icon(Icons.close),
+            ],
+          )
+        ],
+      ),
+      onTap: () {
+        setState(() {
+          storageSelected.unselect(v);
+          storageNonselected.unselect(v);
+          if (currentSelectedValue == true) {
+            updateSelectedStatusBasic(storageNonselected, v, currentNonselectedValue, true);
+          } else if (currentNonselectedValue == true) {
+            // Unselect
           } else {
-            if (selected == true) {
-              if (storage.length() >= 1) {
-                storage.clearAndSelect(v);
-              } else {
-                storage.select(v);
-              }
-            } else if (selected == false) {
-              storage.unselect(v);
-              if (value == null) {
-                storage.unselectGroupValues(v);
-              }
-            }
+            updateSelectedStatusBasic(storageSelected, v, currentSelectedValue, true);
           }
         });
-        widget.onChanged(storage);
+        widget.onChanged(SelectAttributeValueStorage(
+          selected: storageSelected,
+          nonselected: storageNonselected,
+        ));
       },
     );
 
@@ -181,11 +242,64 @@ class _SelectAttributeValueState extends State<SelectAttributeValue> {
     return SwitchListTile(
       title: Text(context.strings.generic_show_only_selected),
       value: showOnlySelected,
-      onChanged: storage.isNotEmpty() ? (value) {
+      onChanged: storageSelected.isNotEmpty() || storageNonselected.isNotEmpty() ? (value) {
         setState(() {
           showOnlySelected = value;
         });
       } : null,
     );
+  }
+
+  /// Null is returned for level one value when related level two value
+  /// is selected.
+  bool? getSelectedStatusBasic(AttributeStateStorage storage, UiAttributeValue v) {
+    if (v.isParentOfGroupValue()) {
+      if (storage.isSelected(v)) {
+        return true;
+      } else {
+        if (storage.groupValueSelected(v)) {
+          return null;
+        } else {
+          return false;
+        }
+      }
+    } else {
+      return storage.isSelected(v);
+    }
+  }
+
+  void updateSelectedStatusBasic(
+    AttributeStateStorage storage,
+    UiAttributeValue v,
+    bool? currentValue,
+    bool? newValue,
+  ) {
+    if (maxSelected > 1) {
+      if (newValue == true) {
+        if (storage.length() < maxSelected) {
+          storage.select(v);
+        } else {
+          showSnackBar(R.strings.edit_attribute_value_screen_max_selected_values_error);
+        }
+      } else if (newValue == false) {
+        storage.unselect(v);
+        if (currentValue == null) {
+          storage.unselectGroupValues(v);
+        }
+      }
+    } else {
+      if (newValue == true) {
+        if (storage.length() >= 1) {
+          storage.clearAndSelect(v);
+        } else {
+          storage.select(v);
+        }
+      } else if (newValue == false) {
+        storage.unselect(v);
+        if (currentValue == null) {
+          storage.unselectGroupValues(v);
+        }
+      }
+    }
   }
 }

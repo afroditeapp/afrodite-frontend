@@ -547,6 +547,24 @@ class AttributeValuesArea extends StatelessWidget {
       final w = Chip(
         avatar: avatar,
         label: Text(text),
+        backgroundColor: a.valueAreaSelectedAlternativeColor() ? Theme.of(c).colorScheme.primaryContainer : null,
+      );
+      valueWidgets.add(w);
+    }
+
+    for (final v in a.valueAreaNonselectedValues()) {
+      final text = v.uiName();
+      final iconData = v.uiIcon();
+      final Widget? avatar;
+      if (iconData != null) {
+        avatar = Icon(iconData);
+      } else {
+        avatar = null;
+      }
+      final w = Chip(
+        avatar: avatar,
+        label: Text(text),
+        backgroundColor: Theme.of(c).colorScheme.errorContainer,
       );
       valueWidgets.add(w);
     }

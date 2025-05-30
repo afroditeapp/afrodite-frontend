@@ -18,6 +18,7 @@ import 'package:database/src/foreground/my_media_content_table.dart';
 import 'package:database/src/foreground/profile_states_table.dart';
 import 'package:database/src/foreground/profile_table.dart';
 import 'package:database/src/foreground/public_profile_content_table.dart';
+import 'package:database/src/foreground/ui_settings_table.dart';
 import 'package:drift/drift.dart';
 import 'package:openapi/api.dart';
 import 'package:openapi/api.dart' as api;
@@ -185,6 +186,7 @@ class Account extends Table {
     MessageTable,
     Conversations,
     AvailableProfileAttributesTable,
+    UiSettings,
   ],
   daos: [
     // Account table
@@ -212,6 +214,7 @@ class Account extends Table {
     DaoProfileStates,
     DaoConversations,
     DaoAvailableProfileAttributesTable,
+    DaoUiSettings,
   ],
 )
 class AccountDatabase extends _$AccountDatabase {

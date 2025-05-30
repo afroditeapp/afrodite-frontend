@@ -1,6 +1,8 @@
 
 
 import 'package:app/logic/profile/profile_filtering_settings.dart';
+import 'package:app/model/freezed/logic/profile/profile_filtering_settings.dart';
+import 'package:app/ui_utils/app_bar/menu_actions.dart';
 import 'package:app/ui_utils/attribute/filter.dart';
 import 'package:app/ui_utils/attribute/widgets/select_value.dart';
 import 'package:flutter/material.dart';
@@ -41,6 +43,26 @@ class _EditProfileAttributeFilterScreenState extends State<EditProfileAttributeF
         searchPossible: searchPossible,
         title: Text(context.strings.edit_attribute_filter_value_screen_title),
         searchHintText: context.strings.edit_attribute_filter_value_screen_search_placeholder_text,
+        actions: [
+          menuActions([
+            BlocBuilder<ProfileFilteringSettingsBloc, ProfileFilteringSettingsData>(
+              builder: (context, state) {
+                final bloc = context.read<ProfileFilteringSettingsBloc>();
+                if (state.showAdvancedFilters) {
+                  return MenuItemButton(
+                    child: Text(context.strings.edit_attribute_filter_value_screen_show_basic_filters_action),
+                    onPressed: () => bloc.add(SetShowAdvancedFilters(false)),
+                  );
+                } else {
+                  return MenuItemButton(
+                    child: Text(context.strings.edit_attribute_filter_value_screen_show_advanced_filters_action),
+                    onPressed: () => bloc.add(SetShowAdvancedFilters(true)),
+                  );
+                }
+              }
+            ),
+          ]),
+        ],
       ),
       body: edit(context),
     );
@@ -59,59 +81,98 @@ class _EditProfileAttributeFilterScreenState extends State<EditProfileAttributeF
       filterValue = null;
     }
 
-    return SelectAttributeValue(
-      attribute: widget.a.attribute(),
-      isFilter: true,
-      initialStateBuilder: () => widget.a.selectedValues.copy(),
-      onChanged: (state) =>
-        context.read<ProfileFilteringSettingsBloc>().add(SetAttributeFilterValueLists(widget.a.attribute(), state)),
-      firstListItem: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          EditAttributeTitle(a: widget.a.attribute()),
-          EditAttributeFilterEmptyValue(
-            a: widget.a,
-            onChanged: (settings) =>
-              context.read<ProfileFilteringSettingsBloc>().add(SetAttributeFilterSettings(widget.a.attribute(), settings))
-          )
-        ],
-      ),
-      filterText: filterValue,
+    return BlocBuilder<ProfileFilteringSettingsBloc, ProfileFilteringSettingsData>(
+      buildWhen: (previous, current) => previous.showAdvancedFilters != current.showAdvancedFilters,
+      builder: (context, state) {
+        return SelectAttributeValue(
+          attribute: widget.a.attribute(),
+          filterMode: state.showAdvancedFilters ? FilterMode.advanced : FilterMode.basic,
+          initialStateBuilder: () => SelectAttributeValueStorage(
+            selected: widget.a.selectedValues.copy(),
+            nonselected: widget.a.nonselectedValues.copy(),
+          ),
+          onChanged: (state) =>
+            context.read<ProfileFilteringSettingsBloc>().add(SetAttributeFilterValueLists(widget.a.attribute(), state.selected, state.nonselected)),
+          firstListItem: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              EditAttributeTitle(a: widget.a.attribute()),
+              EditAttributeFilterSettings(
+                a: widget.a,
+                onChanged: (settings) =>
+                  context.read<ProfileFilteringSettingsBloc>().add(SetAttributeFilterSettings(widget.a.attribute(), settings)),
+                showAdvancedFilters: state.showAdvancedFilters,
+              )
+            ],
+          ),
+          filterText: filterValue,
+        );
+      }
     );
   }
 }
 
-class EditAttributeFilterEmptyValue extends StatefulWidget {
+class EditAttributeFilterSettings extends StatefulWidget {
   final AttributeAndFilterState a;
+  final bool showAdvancedFilters;
   final void Function(FilterSettingsState settings) onChanged;
-  const EditAttributeFilterEmptyValue({required this.a, required this.onChanged, super.key});
+  const EditAttributeFilterSettings({
+    required this.a,
+    required this.onChanged,
+    required this.showAdvancedFilters,
+    super.key,
+  });
 
   @override
-  State<EditAttributeFilterEmptyValue> createState() => _EditAttributeFilterEmptyValueState();
+  State<EditAttributeFilterSettings> createState() => _EditAttributeFilterSettingsState();
 }
 
-class _EditAttributeFilterEmptyValueState extends State<EditAttributeFilterEmptyValue> {
+class _EditAttributeFilterSettingsState extends State<EditAttributeFilterSettings> {
   bool acceptMissingAttributeState = false;
+  bool requireAllWantedValuesState = false;
 
   @override
   void initState() {
     super.initState();
     acceptMissingAttributeState = widget.a.settingsState.acceptMissingAttribute;
+    requireAllWantedValuesState = widget.a.settingsState.requireAllWantedValues;
   }
 
   @override
   Widget build(BuildContext context) {
-    return CheckboxListTile(
-      title: Text(context.strings.generic_empty),
-      controlAffinity: ListTileControlAffinity.leading,
-      value: acceptMissingAttributeState,
-      onChanged: (_) {
-        setState(() {
-          acceptMissingAttributeState = !acceptMissingAttributeState;
-          widget.onChanged(FilterSettingsState(acceptMissingAttribute: acceptMissingAttributeState));
-        });
-      },
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        CheckboxListTile(
+          title: Text(context.strings.generic_empty),
+          controlAffinity: ListTileControlAffinity.leading,
+          value: acceptMissingAttributeState,
+          onChanged: (_) {
+            setState(() {
+              acceptMissingAttributeState = !acceptMissingAttributeState;
+            });
+            widget.onChanged(FilterSettingsState(
+              acceptMissingAttribute: acceptMissingAttributeState,
+              requireAllWantedValues: requireAllWantedValuesState,
+            ));
+          },
+        ),
+        if (widget.showAdvancedFilters || requireAllWantedValuesState) CheckboxListTile(
+          title: Text(context.strings.edit_attribute_filter_value_screen_require_all_wanted_values),
+          controlAffinity: ListTileControlAffinity.leading,
+          value: requireAllWantedValuesState,
+          onChanged: (_) {
+            setState(() {
+              requireAllWantedValuesState = !requireAllWantedValuesState;
+            });
+            widget.onChanged(FilterSettingsState(
+              acceptMissingAttribute: acceptMissingAttributeState,
+              requireAllWantedValues: requireAllWantedValuesState,
+            ));
+          },
+        ),
+      ],
     );
   }
 }

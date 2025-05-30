@@ -83,7 +83,6 @@ class _AskProfileAttributesState extends State<AskProfileAttributes> {
   Widget askInfo(BuildContext context) {
     return SelectAttributeValue(
       attribute: widget.currentAttribute,
-      isFilter: false,
       firstListItem: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -92,13 +91,13 @@ class _AskProfileAttributesState extends State<AskProfileAttributes> {
           attributeTitle(context),
         ],
       ),
-      initialStateBuilder: () => AttributeStateStorage.parseFromUpdateList(
+      initialStateBuilder: () => SelectAttributeValueStorage.selected(AttributeStateStorage.parseFromUpdateList(
         widget.currentAttribute,
         context.read<InitialSetupBloc>().state.profileAttributes.answers,
-      ),
+      )),
       onChanged: (storage) {
         context.read<InitialSetupBloc>().add(
-          UpdateAttributeValue(storage.toAttributeValueUpdate(widget.currentAttribute)),
+          UpdateAttributeValue(storage.selected.toAttributeValueUpdate(widget.currentAttribute)),
         );
       },
     );

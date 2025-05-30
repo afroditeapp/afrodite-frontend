@@ -15,11 +15,13 @@ class AppBarWithSearch extends StatefulWidget implements PreferredSizeWidget {
   final bool searchPossible;
   final Widget? title;
   final String? searchHintText;
+  final List<Widget>? actions;
   const AppBarWithSearch({
     required this.controller,
     this.searchPossible = false,
     this.title,
     this.searchHintText,
+    this.actions,
     super.key
   });
 
@@ -49,6 +51,7 @@ class _AppBarWithSearchState extends State<AppBarWithSearch> {
             widget.controller.onChanged?.call();
           },
         ),
+        ...?widget.actions,
       ];
       if (widget.controller.searchActive) {
         title = TextField(
@@ -65,7 +68,9 @@ class _AppBarWithSearchState extends State<AppBarWithSearch> {
         title = widget.title;
       }
     } else {
-      actions = [];
+      actions = [
+        ...?widget.actions,
+      ];
       title = widget.title;
     }
 

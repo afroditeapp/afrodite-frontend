@@ -22,6 +22,10 @@ sealed class ProfileFilteringSettingsEvent {}
 class SaveNewFilterSettings extends ProfileFilteringSettingsEvent {}
 class ResetEditedValues extends ProfileFilteringSettingsEvent {}
 class DisableAllValues extends ProfileFilteringSettingsEvent {}
+class NewShowAdvancedFiltersValue extends ProfileFilteringSettingsEvent {
+  final bool value;
+  NewShowAdvancedFiltersValue(this.value);
+}
 class NewFilterFavoriteProfilesValue extends ProfileFilteringSettingsEvent {
   final bool filterFavorites;
   NewFilterFavoriteProfilesValue(this.filterFavorites);
@@ -33,6 +37,10 @@ class NewProfileFilteringSettings extends ProfileFilteringSettingsEvent {
 class SetFavoriteProfilesFilter extends ProfileFilteringSettingsEvent {
   final bool value;
   SetFavoriteProfilesFilter(this.value);
+}
+class SetShowAdvancedFilters extends ProfileFilteringSettingsEvent {
+  final bool value;
+  SetShowAdvancedFilters(this.value);
 }
 class SetLastSeenTimeFilter extends ProfileFilteringSettingsEvent {
   final int? value;
@@ -67,7 +75,8 @@ class SetRandomProfileOrder extends ProfileFilteringSettingsEvent {
 class SetAttributeFilterValueLists extends ProfileFilteringSettingsEvent {
   final UiAttribute attribute;
   final AttributeStateStorage selected;
-  SetAttributeFilterValueLists(this.attribute, this.selected);
+  final AttributeStateStorage nonselected;
+  SetAttributeFilterValueLists(this.attribute, this.selected, this.nonselected);
 }
 class SetAttributeFilterSettings extends ProfileFilteringSettingsEvent {
   final UiAttribute attribute;
@@ -79,6 +88,7 @@ class ProfileFilteringSettingsBloc extends Bloc<ProfileFilteringSettingsEvent, P
   final ProfileRepository profile = LoginRepository.getInstance().repositories.profile;
   final AccountDatabaseManager db = LoginRepository.getInstance().repositories.accountDb;
 
+  StreamSubscription<bool?>? _showAdvancedFiltersSubscription;
   StreamSubscription<bool?>? _filterFavoritesSubscription;
   StreamSubscription<GetProfileFilteringSettings?>? _profileFilteringSettingsSubscription;
 
@@ -166,6 +176,9 @@ class ProfileFilteringSettingsBloc extends Bloc<ProfileFilteringSettingsEvent, P
       add(SetProfileEditedFilter(null));
       add(SetProfileTextFilter(null, null));
     });
+    on<NewShowAdvancedFiltersValue>((data, emit) {
+      emit(state.copyWith(showAdvancedFilters: data.value));
+    });
     on<NewFilterFavoriteProfilesValue>((data, emit) {
       emit(state.copyWith(showOnlyFavorites: data.filterFavorites));
     });
@@ -174,6 +187,9 @@ class ProfileFilteringSettingsBloc extends Bloc<ProfileFilteringSettingsEvent, P
         filteringSettings: data.value,
         attributeIdAndFilterValueMap: data.value?.currentFiltersCopy() ?? {},
       ));
+    });
+    on<SetShowAdvancedFilters>((data, emit) async {
+      await db.accountAction((db) => db.daoUiSettings.updateShowAdvancedFilters(data.value));
     });
     on<SetFavoriteProfilesFilter>((data, emit) {
       modifyEdited(
@@ -245,7 +261,7 @@ class ProfileFilteringSettingsBloc extends Bloc<ProfileFilteringSettingsEvent, P
       updateFilters(
         emit,
         data.attribute.apiAttribute().id,
-        (current) => AttributeFilterUpdateBuilder.copyWithValues(data.attribute, current, data.selected),
+        (current) => AttributeFilterUpdateBuilder.copyWithValues(data.attribute, current, data.selected, data.nonselected),
       );
     });
     on<SetAttributeFilterSettings>((data, emit) {
@@ -256,6 +272,9 @@ class ProfileFilteringSettingsBloc extends Bloc<ProfileFilteringSettingsEvent, P
       );
     });
 
+    _showAdvancedFiltersSubscription = db.accountStream((db) => db.daoUiSettings.watchShowAdvancedFilters()).listen((event) {
+      add(NewShowAdvancedFiltersValue(event ?? false));
+    });
     _filterFavoritesSubscription = db.accountStream((db) => db.watchProfileFilterFavorites()).listen((event) {
       add(NewFilterFavoriteProfilesValue(event ?? false));
     });
@@ -321,6 +340,7 @@ class ProfileFilteringSettingsBloc extends Bloc<ProfileFilteringSettingsEvent, P
 
   @override
   Future<void> close() async {
+    await _showAdvancedFiltersSubscription?.cancel();
     await _filterFavoritesSubscription?.cancel();
     await _profileFilteringSettingsSubscription?.cancel();
     await super.close();

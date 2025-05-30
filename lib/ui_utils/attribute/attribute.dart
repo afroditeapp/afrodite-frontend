@@ -50,10 +50,11 @@ class AttributeManager {
         list.add(AttributeAndFilterState(
           a,
           AttributeStateStorage.parseFromFilterUpdate(a, state),
+          AttributeStateStorage.parseFromFilterUpdate(a, state, nonselected: true),
           FilterSettingsState.parseFromFilterUpdate(state),
         ));
       } else {
-        list.add(AttributeAndFilterState(a, AttributeStateStorage(), FilterSettingsState()));
+        list.add(AttributeAndFilterState(a, AttributeStateStorage(), AttributeStateStorage(), FilterSettingsState()));
       }
     }
     return list;
@@ -175,6 +176,8 @@ class UiAttributeValue {
 abstract class AttributeValueAreaInfoProvider {
   List<String> valueAreaExtraValues();
   List<UiAttributeValue> valueAreaSelectedValues();
+  bool valueAreaSelectedAlternativeColor();
+  List<UiAttributeValue> valueAreaNonselectedValues();
   UiAttribute attribute();
 }
 

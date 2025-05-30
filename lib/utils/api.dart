@@ -22,7 +22,9 @@ extension ProfileVisibilityExtensions on ProfileVisibility {
 
 extension ProfileAttributeFilterValueUpdateExtensions on ProfileAttributeFilterValueUpdate {
   void updateIsEnabled() {
-    enabled = acceptMissingAttribute || filterValues.isNotEmpty;
+    enabled = acceptMissingAttribute ||
+      filterValues.isNotEmpty ||
+      filterValuesNonselected.isNotEmpty;
   }
 }
 
@@ -134,7 +136,9 @@ extension GetProfileFilteringSettingsExtension on GetProfileFilteringSettings {
     final values = filters.map((e) {
       final convertedValue = ProfileAttributeFilterValueUpdate(
         acceptMissingAttribute: e.acceptMissingAttribute,
+        useLogicalOperatorAnd: e.useLogicalOperatorAnd,
         filterValues: [...e.filterValues],
+        filterValuesNonselected: [...e.filterValuesNonselected],
         id: e.id,
       );
       convertedValue.updateIsEnabled();

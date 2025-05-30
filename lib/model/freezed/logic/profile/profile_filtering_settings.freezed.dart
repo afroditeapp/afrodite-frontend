@@ -22,6 +22,7 @@ final _privateConstructorErrorProfileFilteringSettingsData = UnsupportedError(
 /// @nodoc
 mixin _$ProfileFilteringSettingsData {
   UpdateState get updateState => throw _privateConstructorErrorProfileFilteringSettingsData;
+  bool get showAdvancedFilters => throw _privateConstructorErrorProfileFilteringSettingsData;
   bool get showOnlyFavorites => throw _privateConstructorErrorProfileFilteringSettingsData;
   GetProfileFilteringSettings? get filteringSettings => throw _privateConstructorErrorProfileFilteringSettingsData;
   Map<int, ProfileAttributeFilterValueUpdate> get attributeIdAndFilterValueMap => throw _privateConstructorErrorProfileFilteringSettingsData;
@@ -29,6 +30,7 @@ mixin _$ProfileFilteringSettingsData {
 
   ProfileFilteringSettingsData copyWith({
     UpdateState? updateState,
+    bool? showAdvancedFilters,
     bool? showOnlyFavorites,
     GetProfileFilteringSettings? filteringSettings,
     Map<int, ProfileAttributeFilterValueUpdate>? attributeIdAndFilterValueMap,
@@ -40,6 +42,7 @@ mixin _$ProfileFilteringSettingsData {
 abstract class _ProfileFilteringSettingsData extends ProfileFilteringSettingsData {
   factory _ProfileFilteringSettingsData({
     UpdateState updateState,
+    bool showAdvancedFilters,
     bool showOnlyFavorites,
     GetProfileFilteringSettings? filteringSettings,
     Map<int, ProfileAttributeFilterValueUpdate> attributeIdAndFilterValueMap,
@@ -51,11 +54,13 @@ abstract class _ProfileFilteringSettingsData extends ProfileFilteringSettingsDat
 /// @nodoc
 class _$ProfileFilteringSettingsDataImpl extends _ProfileFilteringSettingsData with DiagnosticableTreeMixin {
   static const UpdateState _updateStateDefaultValue = UpdateIdle();
+  static const bool _showAdvancedFiltersDefaultValue = false;
   static const bool _showOnlyFavoritesDefaultValue = false;
   static const Map<int, ProfileAttributeFilterValueUpdate> _attributeIdAndFilterValueMapDefaultValue = {};
   
   _$ProfileFilteringSettingsDataImpl({
     this.updateState = _updateStateDefaultValue,
+    this.showAdvancedFilters = _showAdvancedFiltersDefaultValue,
     this.showOnlyFavorites = _showOnlyFavoritesDefaultValue,
     this.filteringSettings,
     this.attributeIdAndFilterValueMap = _attributeIdAndFilterValueMapDefaultValue,
@@ -64,6 +69,8 @@ class _$ProfileFilteringSettingsDataImpl extends _ProfileFilteringSettingsData w
 
   @override
   final UpdateState updateState;
+  @override
+  final bool showAdvancedFilters;
   @override
   final bool showOnlyFavorites;
   @override
@@ -75,7 +82,7 @@ class _$ProfileFilteringSettingsDataImpl extends _ProfileFilteringSettingsData w
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ProfileFilteringSettingsData(updateState: $updateState, showOnlyFavorites: $showOnlyFavorites, filteringSettings: $filteringSettings, attributeIdAndFilterValueMap: $attributeIdAndFilterValueMap, edited: $edited)';
+    return 'ProfileFilteringSettingsData(updateState: $updateState, showAdvancedFilters: $showAdvancedFilters, showOnlyFavorites: $showOnlyFavorites, filteringSettings: $filteringSettings, attributeIdAndFilterValueMap: $attributeIdAndFilterValueMap, edited: $edited)';
   }
 
   @override
@@ -84,6 +91,7 @@ class _$ProfileFilteringSettingsDataImpl extends _ProfileFilteringSettingsData w
     properties
       ..add(DiagnosticsProperty('type', 'ProfileFilteringSettingsData'))
       ..add(DiagnosticsProperty('updateState', updateState))
+      ..add(DiagnosticsProperty('showAdvancedFilters', showAdvancedFilters))
       ..add(DiagnosticsProperty('showOnlyFavorites', showOnlyFavorites))
       ..add(DiagnosticsProperty('filteringSettings', filteringSettings))
       ..add(DiagnosticsProperty('attributeIdAndFilterValueMap', attributeIdAndFilterValueMap))
@@ -97,6 +105,8 @@ class _$ProfileFilteringSettingsDataImpl extends _ProfileFilteringSettingsData w
         other is _$ProfileFilteringSettingsDataImpl &&
         (identical(other.updateState, updateState) ||
           other.updateState == updateState) &&
+        (identical(other.showAdvancedFilters, showAdvancedFilters) ||
+          other.showAdvancedFilters == showAdvancedFilters) &&
         (identical(other.showOnlyFavorites, showOnlyFavorites) ||
           other.showOnlyFavorites == showOnlyFavorites) &&
         (identical(other.filteringSettings, filteringSettings) ||
@@ -112,6 +122,7 @@ class _$ProfileFilteringSettingsDataImpl extends _ProfileFilteringSettingsData w
   int get hashCode => Object.hash(
     runtimeType,
     updateState,
+    showAdvancedFilters,
     showOnlyFavorites,
     filteringSettings,
     attributeIdAndFilterValueMap,
@@ -121,12 +132,14 @@ class _$ProfileFilteringSettingsDataImpl extends _ProfileFilteringSettingsData w
   @override
   ProfileFilteringSettingsData copyWith({
     Object? updateState,
+    Object? showAdvancedFilters,
     Object? showOnlyFavorites,
     Object? filteringSettings = _detectDefaultValueInCopyWith,
     Object? attributeIdAndFilterValueMap,
     Object? edited,
   }) => _$ProfileFilteringSettingsDataImpl(
     updateState: (updateState ?? this.updateState) as UpdateState,
+    showAdvancedFilters: (showAdvancedFilters ?? this.showAdvancedFilters) as bool,
     showOnlyFavorites: (showOnlyFavorites ?? this.showOnlyFavorites) as bool,
     filteringSettings: (filteringSettings == _detectDefaultValueInCopyWith ? this.filteringSettings : filteringSettings) as GetProfileFilteringSettings?,
     attributeIdAndFilterValueMap: (attributeIdAndFilterValueMap ?? this.attributeIdAndFilterValueMap) as Map<int, ProfileAttributeFilterValueUpdate>,

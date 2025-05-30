@@ -89,11 +89,10 @@ class _EditProfileAttributeScreenState extends State<EditProfileAttributeScreen>
 
     return SelectAttributeValue(
       attribute: widget.a.attribute(),
-      isFilter: false,
-      initialStateBuilder: () => widget.a.state.copy(),
+      initialStateBuilder: () => SelectAttributeValueStorage.selected(widget.a.state.copy()),
       onChanged: (state) =>
         context.read<EditMyProfileBloc>().add(
-          NewAttributeValue(state.toAttributeValueUpdate(widget.a.attribute()))
+          NewAttributeValue(state.selected.toAttributeValueUpdate(widget.a.attribute()))
         ),
       firstListItem: EditAttributeTitle(a: widget.a.attribute()),
       lastListItem: invalidSelection ? Padding(

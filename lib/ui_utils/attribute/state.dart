@@ -144,5 +144,13 @@ class AttributeAndState extends AttributeValueAreaInfoProvider {
   }
 
   @override
+  bool valueAreaSelectedAlternativeColor() => false;
+
+  @override
+  List<UiAttributeValue> valueAreaNonselectedValues() {
+    return [];
+  }
+
+  @override
   UiAttribute attribute() => _attribute;
 }

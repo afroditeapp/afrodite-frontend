@@ -14,6 +14,7 @@ class ProfileFilteringSettingsData with _$ProfileFilteringSettingsData, UpdateSt
 
   factory ProfileFilteringSettingsData({
     @Default(UpdateIdle()) UpdateState updateState,
+    @Default(false) bool showAdvancedFilters,
     @Default(false) bool showOnlyFavorites,
     GetProfileFilteringSettings? filteringSettings,
     @Default({}) Map<int, ProfileAttributeFilterValueUpdate> attributeIdAndFilterValueMap,
