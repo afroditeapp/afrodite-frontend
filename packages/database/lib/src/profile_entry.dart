@@ -66,7 +66,6 @@ class ProfileEntry implements PublicContentProvider {
     return ProfileTitle(
       name,
       nameAccepted,
-      showNonAcceptedProfileNames,
     ).profileTitle();
   }
 
@@ -149,12 +148,10 @@ class ProfileLocalDbId {
 class ProfileTitle {
   final String name;
   final bool nameAccepted;
-  // TODO(prod): Remove showNonAcceptedProfileNames
-  final bool showNonAcceptedProfileNames;
-  const ProfileTitle(this.name, this.nameAccepted, this.showNonAcceptedProfileNames);
+  const ProfileTitle(this.name, this.nameAccepted);
 
   String profileTitle() {
-    if (showNonAcceptedProfileNames || nameAccepted) {
+    if (nameAccepted) {
       return name;
     } else {
       return hideOtherCharactersThanTheFirst(name);

@@ -25,21 +25,8 @@ class $AccountBackgroundTable extends AccountBackground
               type: DriftSqlType.string, requiredDuringInsert: false)
           .withConverter<AccountId?>(
               $AccountBackgroundTable.$converteruuidAccountId);
-  static const VerificationMeta
-      _userInterfaceSettingShowNonAcceptedProfileNamesMeta =
-      const VerificationMeta('userInterfaceSettingShowNonAcceptedProfileNames');
   @override
-  late final GeneratedColumn<
-      bool> userInterfaceSettingShowNonAcceptedProfileNames = GeneratedColumn<
-          bool>('user_interface_setting_show_non_accepted_profile_names',
-      aliasedName, true,
-      type: DriftSqlType.bool,
-      requiredDuringInsert: false,
-      defaultConstraints: GeneratedColumn.constraintIsAlways(
-          'CHECK ("user_interface_setting_show_non_accepted_profile_names" IN (0, 1))'));
-  @override
-  List<GeneratedColumn> get $columns =>
-      [id, uuidAccountId, userInterfaceSettingShowNonAcceptedProfileNames];
+  List<GeneratedColumn> get $columns => [id, uuidAccountId];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -53,14 +40,6 @@ class $AccountBackgroundTable extends AccountBackground
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
-    }
-    if (data.containsKey(
-        'user_interface_setting_show_non_accepted_profile_names')) {
-      context.handle(
-          _userInterfaceSettingShowNonAcceptedProfileNamesMeta,
-          userInterfaceSettingShowNonAcceptedProfileNames.isAcceptableOrUnknown(
-              data['user_interface_setting_show_non_accepted_profile_names']!,
-              _userInterfaceSettingShowNonAcceptedProfileNamesMeta));
     }
     return context;
   }
@@ -76,11 +55,6 @@ class $AccountBackgroundTable extends AccountBackground
       uuidAccountId: $AccountBackgroundTable.$converteruuidAccountId.fromSql(
           attachedDatabase.typeMapping.read(
               DriftSqlType.string, data['${effectivePrefix}uuid_account_id'])),
-      userInterfaceSettingShowNonAcceptedProfileNames:
-          attachedDatabase.typeMapping.read(
-              DriftSqlType.bool,
-              data[
-                  '${effectivePrefix}user_interface_setting_show_non_accepted_profile_names']),
     );
   }
 
@@ -97,11 +71,7 @@ class AccountBackgroundData extends DataClass
     implements Insertable<AccountBackgroundData> {
   final int id;
   final AccountId? uuidAccountId;
-  final bool? userInterfaceSettingShowNonAcceptedProfileNames;
-  const AccountBackgroundData(
-      {required this.id,
-      this.uuidAccountId,
-      this.userInterfaceSettingShowNonAcceptedProfileNames});
+  const AccountBackgroundData({required this.id, this.uuidAccountId});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -109,11 +79,6 @@ class AccountBackgroundData extends DataClass
     if (!nullToAbsent || uuidAccountId != null) {
       map['uuid_account_id'] = Variable<String>(
           $AccountBackgroundTable.$converteruuidAccountId.toSql(uuidAccountId));
-    }
-    if (!nullToAbsent ||
-        userInterfaceSettingShowNonAcceptedProfileNames != null) {
-      map['user_interface_setting_show_non_accepted_profile_names'] =
-          Variable<bool>(userInterfaceSettingShowNonAcceptedProfileNames);
     }
     return map;
   }
@@ -124,11 +89,6 @@ class AccountBackgroundData extends DataClass
       uuidAccountId: uuidAccountId == null && nullToAbsent
           ? const Value.absent()
           : Value(uuidAccountId),
-      userInterfaceSettingShowNonAcceptedProfileNames:
-          userInterfaceSettingShowNonAcceptedProfileNames == null &&
-                  nullToAbsent
-              ? const Value.absent()
-              : Value(userInterfaceSettingShowNonAcceptedProfileNames),
     );
   }
 
@@ -138,9 +98,6 @@ class AccountBackgroundData extends DataClass
     return AccountBackgroundData(
       id: serializer.fromJson<int>(json['id']),
       uuidAccountId: serializer.fromJson<AccountId?>(json['uuidAccountId']),
-      userInterfaceSettingShowNonAcceptedProfileNames:
-          serializer.fromJson<bool?>(
-              json['userInterfaceSettingShowNonAcceptedProfileNames']),
     );
   }
   @override
@@ -149,24 +106,15 @@ class AccountBackgroundData extends DataClass
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'uuidAccountId': serializer.toJson<AccountId?>(uuidAccountId),
-      'userInterfaceSettingShowNonAcceptedProfileNames': serializer
-          .toJson<bool?>(userInterfaceSettingShowNonAcceptedProfileNames),
     };
   }
 
   AccountBackgroundData copyWith(
-          {int? id,
-          Value<AccountId?> uuidAccountId = const Value.absent(),
-          Value<bool?> userInterfaceSettingShowNonAcceptedProfileNames =
-              const Value.absent()}) =>
+          {int? id, Value<AccountId?> uuidAccountId = const Value.absent()}) =>
       AccountBackgroundData(
         id: id ?? this.id,
         uuidAccountId:
             uuidAccountId.present ? uuidAccountId.value : this.uuidAccountId,
-        userInterfaceSettingShowNonAcceptedProfileNames:
-            userInterfaceSettingShowNonAcceptedProfileNames.present
-                ? userInterfaceSettingShowNonAcceptedProfileNames.value
-                : this.userInterfaceSettingShowNonAcceptedProfileNames,
       );
   AccountBackgroundData copyWithCompanion(AccountBackgroundCompanion data) {
     return AccountBackgroundData(
@@ -174,10 +122,6 @@ class AccountBackgroundData extends DataClass
       uuidAccountId: data.uuidAccountId.present
           ? data.uuidAccountId.value
           : this.uuidAccountId,
-      userInterfaceSettingShowNonAcceptedProfileNames:
-          data.userInterfaceSettingShowNonAcceptedProfileNames.present
-              ? data.userInterfaceSettingShowNonAcceptedProfileNames.value
-              : this.userInterfaceSettingShowNonAcceptedProfileNames,
     );
   }
 
@@ -185,65 +129,48 @@ class AccountBackgroundData extends DataClass
   String toString() {
     return (StringBuffer('AccountBackgroundData(')
           ..write('id: $id, ')
-          ..write('uuidAccountId: $uuidAccountId, ')
-          ..write(
-              'userInterfaceSettingShowNonAcceptedProfileNames: $userInterfaceSettingShowNonAcceptedProfileNames')
+          ..write('uuidAccountId: $uuidAccountId')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(
-      id, uuidAccountId, userInterfaceSettingShowNonAcceptedProfileNames);
+  int get hashCode => Object.hash(id, uuidAccountId);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is AccountBackgroundData &&
           other.id == this.id &&
-          other.uuidAccountId == this.uuidAccountId &&
-          other.userInterfaceSettingShowNonAcceptedProfileNames ==
-              this.userInterfaceSettingShowNonAcceptedProfileNames);
+          other.uuidAccountId == this.uuidAccountId);
 }
 
 class AccountBackgroundCompanion
     extends UpdateCompanion<AccountBackgroundData> {
   final Value<int> id;
   final Value<AccountId?> uuidAccountId;
-  final Value<bool?> userInterfaceSettingShowNonAcceptedProfileNames;
   const AccountBackgroundCompanion({
     this.id = const Value.absent(),
     this.uuidAccountId = const Value.absent(),
-    this.userInterfaceSettingShowNonAcceptedProfileNames = const Value.absent(),
   });
   AccountBackgroundCompanion.insert({
     this.id = const Value.absent(),
     this.uuidAccountId = const Value.absent(),
-    this.userInterfaceSettingShowNonAcceptedProfileNames = const Value.absent(),
   });
   static Insertable<AccountBackgroundData> custom({
     Expression<int>? id,
     Expression<String>? uuidAccountId,
-    Expression<bool>? userInterfaceSettingShowNonAcceptedProfileNames,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (uuidAccountId != null) 'uuid_account_id': uuidAccountId,
-      if (userInterfaceSettingShowNonAcceptedProfileNames != null)
-        'user_interface_setting_show_non_accepted_profile_names':
-            userInterfaceSettingShowNonAcceptedProfileNames,
     });
   }
 
   AccountBackgroundCompanion copyWith(
-      {Value<int>? id,
-      Value<AccountId?>? uuidAccountId,
-      Value<bool?>? userInterfaceSettingShowNonAcceptedProfileNames}) {
+      {Value<int>? id, Value<AccountId?>? uuidAccountId}) {
     return AccountBackgroundCompanion(
       id: id ?? this.id,
       uuidAccountId: uuidAccountId ?? this.uuidAccountId,
-      userInterfaceSettingShowNonAcceptedProfileNames:
-          userInterfaceSettingShowNonAcceptedProfileNames ??
-              this.userInterfaceSettingShowNonAcceptedProfileNames,
     );
   }
 
@@ -258,10 +185,6 @@ class AccountBackgroundCompanion
           .$converteruuidAccountId
           .toSql(uuidAccountId.value));
     }
-    if (userInterfaceSettingShowNonAcceptedProfileNames.present) {
-      map['user_interface_setting_show_non_accepted_profile_names'] =
-          Variable<bool>(userInterfaceSettingShowNonAcceptedProfileNames.value);
-    }
     return map;
   }
 
@@ -269,9 +192,7 @@ class AccountBackgroundCompanion
   String toString() {
     return (StringBuffer('AccountBackgroundCompanion(')
           ..write('id: $id, ')
-          ..write('uuidAccountId: $uuidAccountId, ')
-          ..write(
-              'userInterfaceSettingShowNonAcceptedProfileNames: $userInterfaceSettingShowNonAcceptedProfileNames')
+          ..write('uuidAccountId: $uuidAccountId')
           ..write(')'))
         .toString();
   }
@@ -3269,8 +3190,6 @@ abstract class _$AccountBackgroundDatabase extends GeneratedDatabase {
       $AutomaticProfileSearchCompletedNotificationTableTable(this);
   late final $AppNotificationSettingsTableTable appNotificationSettingsTable =
       $AppNotificationSettingsTableTable(this);
-  late final DaoUserInterfaceSettings daoUserInterfaceSettings =
-      DaoUserInterfaceSettings(this as AccountBackgroundDatabase);
   late final DaoProfilesBackground daoProfilesBackground =
       DaoProfilesBackground(this as AccountBackgroundDatabase);
   late final DaoConversationsBackground daoConversationsBackground =

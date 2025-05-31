@@ -118,7 +118,6 @@ class DaoProfilesBackground extends DatabaseAccessor<AccountBackgroundDatabase> 
       return null;
     }
 
-    final result = await db.daoUserInterfaceSettings.watchShowNonAcceptedProfileNames().first;
-    return ProfileTitle(name, nameAccepted, result ?? false);
+    return ProfileTitle(name, nameAccepted);
   }
 }

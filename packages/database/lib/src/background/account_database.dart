@@ -1,7 +1,6 @@
 
 
 import 'package:async/async.dart' show StreamExtensions;
-import 'package:database/src/background/account/dao_user_interface_settings.dart';
 import 'package:database/src/background/app_notification_settings_table.dart';
 import 'package:database/src/background/automatic_profile_search_completed_notification_table.dart';
 import 'package:database/src/background/conversations_table.dart';
@@ -26,10 +25,6 @@ class AccountBackground extends Table {
   IntColumn get id => integer().autoIncrement()();
 
   TextColumn get uuidAccountId => text().map(const NullAwareTypeConverter.wrap(AccountIdConverter())).nullable()();
-
-  // DaoUserInterfaceSettings
-
-  BoolColumn get userInterfaceSettingShowNonAcceptedProfileNames => boolean().nullable()();
 }
 
 @DriftDatabase(
@@ -46,8 +41,6 @@ class AccountBackground extends Table {
     AppNotificationSettingsTable,
   ],
   daos: [
-    // Related to AccountBackground table
-    DaoUserInterfaceSettings,
     // Related to ProfilesBackground table
     DaoProfilesBackground,
     // Related to ConversationsBackground table

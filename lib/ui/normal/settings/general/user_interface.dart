@@ -1,5 +1,4 @@
 
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:app/localizations.dart';
@@ -21,11 +20,10 @@ Future<void> openUserInterfaceSettingsScreen(
   );
 }
 
-
 class UserInterfaceSettingsScreen extends StatefulWidget {
   const UserInterfaceSettingsScreen({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<UserInterfaceSettingsScreen> createState() => _UserInterfaceSettingsScreenState();
@@ -48,28 +46,11 @@ class _UserInterfaceSettingsScreenState extends State<UserInterfaceSettingsScree
   Widget content(BuildContext context) {
     return BlocBuilder<UserInterfaceSettingsBloc, UserInterfaceSettingsData>(
       builder: (context, state) {
-        return Column(
+        return const Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            showNonAcceptedProfileNamesCheckbox(
-              context,
-              state.showNonAcceptedProfileNames
-            ),
-          ],
+          children: [],
         );
       }
-    );
-  }
-
-  Widget showNonAcceptedProfileNamesCheckbox(BuildContext context, bool value) {
-    return CheckboxListTile(
-      title: Text(context.strings.user_interface_settings_screen_show_non_accepted_profile_names),
-      value: value,
-      onChanged: (value) {
-        context.read<UserInterfaceSettingsBloc>().add(
-          UpdateShowNonAcceptedProfileNames(value ?? false)
-        );
-      },
     );
   }
 }
