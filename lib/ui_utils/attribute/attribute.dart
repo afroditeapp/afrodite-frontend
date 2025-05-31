@@ -179,6 +179,12 @@ abstract class AttributeValueAreaInfoProvider {
   bool valueAreaSelectedAlternativeColor();
   List<UiAttributeValue> valueAreaNonselectedValues();
   UiAttribute attribute();
+
+  bool isEmpty() {
+    return valueAreaExtraValues().isEmpty &&
+      valueAreaSelectedValues().isEmpty &&
+      valueAreaNonselectedValues().isEmpty;
+  }
 }
 
 void reorderAttributeValues(List<UiAttributeValue> attributeValues, AttributeValueOrderMode order) {

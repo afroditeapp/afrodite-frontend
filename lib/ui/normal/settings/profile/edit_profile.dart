@@ -223,16 +223,16 @@ class _EditProfilePageState extends State<EditProfilePage> {
           ProfilePictureSelection(
             profilePicturesBloc: context.read<ProfilePicturesBloc>(),
           ),
-          const Padding(padding: EdgeInsets.all(8)),
+          const Padding(padding: EdgeInsets.only(top: 16)),
           const Divider(),
-          const Padding(padding: EdgeInsets.all(8)),
+          const Padding(padding: EdgeInsets.only(top: 8)),
           EditProfileBasicInfo(
             ageInitialValue: widget.initialProfile.age,
             setterProfileAge: (value) {
               widget.editMyProfileBloc.add(NewAge(value));
             },
           ),
-          const Padding(padding: EdgeInsets.all(8)),
+          const Padding(padding: EdgeInsets.only(top: 8)),
           const Divider(),
           const EditProfileText(),
           const Divider(),
@@ -337,19 +337,19 @@ class EditAttributeRow extends StatelessWidget {
     final icon = a.attribute().uiIcon();
 
     final void Function()? startEditorCallback;
-    final Widget valueWidget;
+    final Widget? valueWidget;
     final Color iconColor;
     if (isEnabled) {
       startEditorCallback = onStartEditor;
-      valueWidget = AttributeValuesArea(a: a, isFilter: false);
+      if (a.isEmpty()) {
+        valueWidget = null;
+      } else {
+        valueWidget = AttributeValuesArea(a: a, isFilter: false);
+      }
       iconColor = getIconButtonEnabledColor(context);
     } else {
       startEditorCallback = null;
-      final disabledTextColor = Theme.of(context).disabledColor;
-      valueWidget = Text(
-        context.strings.generic_disabled,
-        style: TextStyle(color: disabledTextColor),
-      );
+      valueWidget = null;
       iconColor = getIconButtonDisabledColor(context);
     }
 
@@ -361,7 +361,7 @@ class EditAttributeRow extends StatelessWidget {
               const Padding(padding: EdgeInsets.all(4)),
               ViewAttributeTitle(attributeText, isEnabled: isEnabled, icon: icon),
               const Padding(padding: EdgeInsets.all(4)),
-              Row(
+              if (valueWidget != null) Row(
                 children: [
                   const SizedBox(height: 48),
                   const Padding(padding: EdgeInsets.only(right: 16)),
@@ -389,7 +389,8 @@ class ViewAttributeTitle extends StatelessWidget {
   final String text;
   final bool isEnabled;
   final IconData? icon;
-  const ViewAttributeTitle(this.text, {this.isEnabled = true, this.icon, super.key});
+  final Widget Function(Color? disabledColor)? iconWidgetBuilder;
+  const ViewAttributeTitle(this.text, {this.isEnabled = true, this.icon, this.iconWidgetBuilder, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -402,6 +403,7 @@ class ViewAttributeTitle extends StatelessWidget {
       disabledColor = Theme.of(context).disabledColor;
       titleStyle = Theme.of(context).textTheme.bodyLarge?.copyWith(color: disabledColor);
     }
+    final currentIconWidgetBuilder = iconWidgetBuilder;
     return Align(
       alignment: Alignment.centerLeft,
       child: Padding(
@@ -412,6 +414,10 @@ class ViewAttributeTitle extends StatelessWidget {
             if (icon != null) Padding(
               padding: const EdgeInsets.only(right: 8.0),
               child: Icon(icon, color: disabledColor),
+            ),
+            if (currentIconWidgetBuilder != null) Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: currentIconWidgetBuilder(disabledColor),
             ),
             Text(text, style: titleStyle),
           ],
@@ -543,9 +549,9 @@ class _EditProfileTextState extends State<EditProfileText> {
 
   Widget content(BuildContext context, String? currentText) {
     final currentText = context.read<EditMyProfileBloc>().state.profileText;
-    final String displayedText;
+    final String? displayedText;
     if (currentText == null || currentText.isEmpty) {
-      displayedText = context.strings.generic_empty;
+      displayedText = null;
     } else {
       displayedText = currentText;
     }
@@ -559,20 +565,25 @@ class _EditProfileTextState extends State<EditProfileText> {
               const Padding(padding: EdgeInsets.all(4)),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: COMMON_SCREEN_EDGE_PADDING),
-                child: Text(
-                  context.strings.edit_profile_screen_profile_text,
-                  style: Theme.of(context).textTheme.bodyLarge,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(Icons.notes),
+                    const Padding(padding: EdgeInsets.all(4)),
+                    Text(
+                      context.strings.edit_profile_screen_profile_text,
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
+                  ],
                 ),
               ),
-              const Padding(padding: EdgeInsets.all(4)),
-              Row(
+              if (displayedText != null) Row(
                 children: [
                   const SizedBox(height: 44),
                   const Padding(padding: EdgeInsets.only(right: 16)),
                   Expanded(child: Text(displayedText)),
                 ],
               ),
-              const Padding(padding: EdgeInsets.all(4)),
             ],
           ),
         ),

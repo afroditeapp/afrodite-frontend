@@ -2,6 +2,8 @@
 import 'dart:math';
 
 import 'package:app/ui_utils/attribute/attribute.dart';
+import 'package:app/ui_utils/consts/corners.dart';
+import 'package:app/ui_utils/consts/size.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/list.dart';
@@ -127,6 +129,7 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
           profileCreatedOrEditedFilter(
             context,
             context.strings.profile_filtering_settings_screen_profile_created_filter,
+            Icons.auto_awesome_rounded,
             (state) => state.valueProfileCreatedTime()?.value,
             (bloc, value) {
               if (value == null) {
@@ -140,6 +143,7 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
           profileCreatedOrEditedFilter(
             context,
             context.strings.profile_filtering_settings_screen_profile_edited_filter,
+            Icons.edit,
             (state) => state.valueProfileEditedTime()?.value,
             (bloc, value) {
               if (value == null) {
@@ -249,7 +253,18 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
         return Column(
           children: [
             const Padding(padding: EdgeInsets.all(4)),
-            ViewAttributeTitle(context.strings.profile_filtering_settings_screen_profile_last_seen_time_filter, isEnabled: !state.valueShowOnlyFavorites()),
+            ViewAttributeTitle(
+              context.strings.profile_filtering_settings_screen_profile_last_seen_time_filter,
+              iconWidgetBuilder: (disabledColor) => Container(
+                width: PROFILE_CURRENTLY_ONLINE_SIZE,
+                height: PROFILE_CURRENTLY_ONLINE_SIZE,
+                decoration: BoxDecoration(
+                  color: disabledColor ?? Colors.green,
+                  borderRadius: BorderRadius.circular(PROFILE_CURRENTLY_ONLINE_RADIUS),
+                ),
+              ),
+              isEnabled: !state.valueShowOnlyFavorites(),
+            ),
             const Padding(padding: EdgeInsets.all(4)),
             Slider(
               value: days,
@@ -288,6 +303,7 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
   Widget profileCreatedOrEditedFilter(
     BuildContext context,
     String title,
+    IconData? icon,
     int? Function(ProfileFilteringSettingsData) valueGetter,
     void Function(ProfileFilteringSettingsBloc, int?) valueSetter,
   ) {
@@ -358,7 +374,11 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
         return Column(
           children: [
             const Padding(padding: EdgeInsets.all(4)),
-            ViewAttributeTitle(title, isEnabled: !state.valueShowOnlyFavorites()),
+            ViewAttributeTitle(
+              title,
+              icon: icon,
+              isEnabled: !state.valueShowOnlyFavorites(),
+            ),
             const Padding(padding: EdgeInsets.all(4)),
             Slider(
               value: days,
@@ -434,7 +454,11 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
         return Column(
           children: [
             const Padding(padding: EdgeInsets.all(4)),
-            ViewAttributeTitle(context.strings.profile_filtering_settings_screen_distance_filter, isEnabled: !state.valueShowOnlyFavorites()),
+            ViewAttributeTitle(
+              context.strings.profile_filtering_settings_screen_distance_filter,
+              icon: Icons.social_distance_rounded,
+              isEnabled: !state.valueShowOnlyFavorites(),
+            ),
             const Padding(padding: EdgeInsets.all(4)),
             RangeSlider(
               values: RangeValues(minValue, maxValue),
@@ -530,7 +554,11 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
         return Column(
           children: [
             const Padding(padding: EdgeInsets.all(4)),
-            ViewAttributeTitle(context.strings.profile_filtering_settings_screen_profile_text_filter, isEnabled: !state.valueShowOnlyFavorites()),
+            ViewAttributeTitle(
+              context.strings.profile_filtering_settings_screen_profile_text_filter,
+              icon: Icons.notes,
+              isEnabled: !state.valueShowOnlyFavorites(),
+            ),
             const Padding(padding: EdgeInsets.all(4)),
             RangeSlider(
               values: RangeValues(min, max),
