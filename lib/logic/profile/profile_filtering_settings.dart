@@ -68,9 +68,9 @@ class SetProfileTextFilter extends ProfileFilteringSettingsEvent {
   final ProfileTextMaxCharactersFilter? max;
   SetProfileTextFilter(this.min, this.max);
 }
-class SetRandomProfileOrder extends ProfileFilteringSettingsEvent {
+class SetRandomProfileOrderAndSaveSettings extends ProfileFilteringSettingsEvent {
   final bool value;
-  SetRandomProfileOrder(this.value);
+  SetRandomProfileOrderAndSaveSettings(this.value);
 }
 class SetAttributeFilterValueLists extends ProfileFilteringSettingsEvent {
   final UiAttribute attribute;
@@ -249,13 +249,14 @@ class ProfileFilteringSettingsBloc extends Bloc<ProfileFilteringSettingsEvent, P
         (e) => e.copyWith(profileTextMinCharactersFilter: min, profileTextMaxCharactersFilter: max),
       );
     });
-    on<SetRandomProfileOrder>((data, emit) {
+    on<SetRandomProfileOrderAndSaveSettings>((data, emit) {
       modifyEdited(
         emit,
         (e) => state.filteringSettings?.randomProfileOrder == data.value ?
           e.copyWith(randomProfileOrder: null) :
           e.copyWith(randomProfileOrder: data.value)
       );
+      add(SaveNewFilterSettings());
     });
     on<SetAttributeFilterValueLists>((data, emit) {
       updateFilters(

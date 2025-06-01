@@ -1,6 +1,10 @@
 
+import 'package:app/logic/profile/profile_filtering_settings.dart';
+import 'package:app/model/freezed/logic/profile/profile_filtering_settings.dart';
+import 'package:app/ui_utils/common_update_logic.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/padding.dart';
+import 'package:app/ui_utils/snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:app/localizations.dart';
@@ -12,18 +16,24 @@ import 'package:app/model/freezed/logic/settings/ui_settings.dart';
 Future<void> openProfileGridSettingsScreen(
   BuildContext context,
 ) {
+  final bloc = context.read<ProfileFilteringSettingsBloc>();
+  bloc.add(ResetEditedValues());
   final pageKey = PageKey();
   return MyNavigator.pushWithKey(
     context,
-    const MaterialPage<void>(
-      child: ProfileGridSettingsScreen(),
+    MaterialPage<void>(
+      child: ProfileGridSettingsScreen(
+        initialProfileFiltersUpdateState: bloc.state.updateState,
+      ),
     ),
     pageKey,
   );
 }
 
 class ProfileGridSettingsScreen extends StatefulWidget {
+  final UpdateState initialProfileFiltersUpdateState;
   const ProfileGridSettingsScreen({
+    required this.initialProfileFiltersUpdateState,
     super.key,
   });
 
@@ -32,6 +42,14 @@ class ProfileGridSettingsScreen extends StatefulWidget {
 }
 
 class _ProfileGridSettingsScreenState extends State<ProfileGridSettingsScreen> {
+
+  UpdateState previousProfileFiltersUpdateState = const UpdateIdle();
+
+  @override
+  void initState() {
+    super.initState();
+    previousProfileFiltersUpdateState = widget.initialProfileFiltersUpdateState;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,6 +99,13 @@ class _ProfileGridSettingsScreenState extends State<ProfileGridSettingsScreen> {
               () => state.gridSettings.valueProfileThumbnailBorderRadius(),
             ),
             resetToDefaults(context),
+            const Padding(padding: EdgeInsets.only(top: 8)),
+            hPad(Text(
+              context.strings.profile_grid_settings_screen_profiles_screen,
+              style: Theme.of(context).textTheme.titleMedium,
+            )),
+            const Padding(padding: EdgeInsets.only(top: 4)),
+            randomProfileOrderSetting(context),
           ],
         );
       }
@@ -149,6 +174,39 @@ class _ProfileGridSettingsScreenState extends State<ProfileGridSettingsScreen> {
           context.read<UiSettingsBloc>().add(ResetGridSettings());
         }
       },
+    );
+  }
+
+  Widget randomProfileOrderSetting(BuildContext context) {
+    return BlocBuilder<ProfileFilteringSettingsBloc, ProfileFilteringSettingsData>(
+      builder: (context, state) {
+        if (previousProfileFiltersUpdateState is! UpdateIdle && state.updateState is UpdateIdle) {
+          showSnackBar(context.strings.generic_setting_saved);
+        }
+        previousProfileFiltersUpdateState = state.updateState;
+
+        final bool value;
+        if (state.valueShowOnlyFavorites()) {
+          value = false;
+        } else {
+          value = state.valueRandomProfileOrder();
+        }
+        return SwitchListTile(
+          title: Text(context.strings.profile_grid_settings_screen_random_profile_order),
+          subtitle: value ?
+            Text(context.strings.profile_grid_settings_screen_random_profile_order_description_enabled) :
+            Text(context.strings.profile_grid_settings_screen_random_profile_order_description_disabled),
+          secondary: const Icon(Icons.shuffle),
+          value: value,
+          onChanged: (bool value) {
+            if (state.updateState is! UpdateIdle) {
+              showSnackBar(context.strings.generic_previous_action_in_progress);
+            } else {
+              context.read<ProfileFilteringSettingsBloc>().add(SetRandomProfileOrderAndSaveSettings(value));
+            }
+          },
+        );
+      }
     );
   }
 }

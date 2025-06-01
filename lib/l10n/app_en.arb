@@ -589,6 +589,10 @@
     "description": "Generic save confirmation title text"
   },
   "generic_search_settings_looking_for_all_genders_text": "All",
+  "generic_setting_saved": "Setting saved",
+  "@generic_setting_saved": {
+    "description": "Generic setting saved text"
+  },
   "generic_show_only_selected": "Show only selected",
   "@generic_show_only_selected": {
     "description": "Generic show only selected text"
@@ -1303,18 +1307,6 @@
       }
     }
   },
-  "profile_filtering_settings_screen_random_profile_order": "Random profile order",
-  "@profile_filtering_settings_screen_random_profile_order": {
-    "description": "Title for random profile order setting"
-  },
-  "profile_filtering_settings_screen_random_profile_order_description_disabled": "Start from your location",
-  "@profile_filtering_settings_screen_random_profile_order_description_disabled": {
-    "description": "Description for random profile order setting when setting is disabled"
-  },
-  "profile_filtering_settings_screen_random_profile_order_description_enabled": "Start from random location",
-  "@profile_filtering_settings_screen_random_profile_order_description_enabled": {
-    "description": "Description for random profile order setting when setting is enabled"
-  },
   "profile_filtering_settings_screen_title": "Profile filters",
   "@profile_filtering_settings_screen_title": {
     "description": "Title for profile filtering settings screen"
@@ -1398,6 +1390,22 @@
   "profile_grid_settings_screen_profile_thumbnail_border_radius": "Profile thumbnail border radius",
   "@profile_grid_settings_screen_profile_thumbnail_border_radius": {
     "description": "Title for profile thumbnail border radius setting"
+  },
+  "profile_grid_settings_screen_profiles_screen": "Profiles screen",
+  "@profile_grid_settings_screen_profiles_screen": {
+    "description": "Title for profiles screen settings category"
+  },
+  "profile_grid_settings_screen_random_profile_order": "Random profile order",
+  "@profile_grid_settings_screen_random_profile_order": {
+    "description": "Title for random profile order setting"
+  },
+  "profile_grid_settings_screen_random_profile_order_description_disabled": "Start from your location",
+  "@profile_grid_settings_screen_random_profile_order_description_disabled": {
+    "description": "Description for random profile order setting when setting is disabled"
+  },
+  "profile_grid_settings_screen_random_profile_order_description_enabled": "Start from random location",
+  "@profile_grid_settings_screen_random_profile_order_description_enabled": {
+    "description": "Description for random profile order setting when setting is enabled"
   },
   "profile_grid_settings_screen_row_profile_count": "Row profile count",
   "@profile_grid_settings_screen_row_profile_count": {

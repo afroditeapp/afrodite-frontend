@@ -157,8 +157,6 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
           profileTextFilter(context),
           const Divider(),
           unlimitedLikesSetting(context, myProfileUnlimitedLikesValue),
-          const Divider(),
-          randomProfileOrderSetting(context),
           const Padding(
             padding: EdgeInsets.only(top: FLOATING_ACTION_BUTTON_EMPTY_AREA),
             child: null,
@@ -609,30 +607,6 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
           onChanged: !state.valueShowOnlyFavorites() && myProfileUnlimitedLikesValue == true ? (bool value) {
             final filterValue = value ? true : null;
             context.read<ProfileFilteringSettingsBloc>().add(SetUnlimitedLikesFilter(filterValue));
-          } : null,
-        );
-      }
-    );
-  }
-
-  Widget randomProfileOrderSetting(BuildContext context) {
-    return BlocBuilder<ProfileFilteringSettingsBloc, ProfileFilteringSettingsData>(
-      builder: (context, state) {
-        final bool value;
-        if (state.valueShowOnlyFavorites()) {
-          value = false;
-        } else {
-          value = state.valueRandomProfileOrder();
-        }
-        return SwitchListTile(
-          title: Text(context.strings.profile_filtering_settings_screen_random_profile_order),
-          subtitle: value ?
-            Text(context.strings.profile_filtering_settings_screen_random_profile_order_description_enabled) :
-            Text(context.strings.profile_filtering_settings_screen_random_profile_order_description_disabled),
-          secondary: const Icon(Icons.shuffle),
-          value: value,
-          onChanged: !state.valueShowOnlyFavorites() ? (bool value) {
-            context.read<ProfileFilteringSettingsBloc>().add(SetRandomProfileOrder(value));
           } : null,
         );
       }
