@@ -17,7 +17,7 @@ import 'package:app/ui/normal/settings/admin.dart';
 import 'package:app/ui/normal/settings/debug.dart';
 import 'package:app/ui/normal/settings/my_profile.dart';
 import 'package:app/ui/normal/settings/news/news_list.dart';
-import 'package:app/ui/normal/settings/profile_statistics.dart';
+import 'package:app/ui/normal/settings/statistics.dart';
 import 'package:app/ui_utils/bottom_navigation.dart';
 import 'package:app/localizations.dart';
 import 'package:app/ui_utils/app_bar/common_actions.dart';
@@ -136,8 +136,8 @@ class _MenuViewState extends State<MenuView> {
         ),
         context.strings.news_list_screen_title, () => openNewsList(context),
       ),
-      Setting.createSetting(Icons.bar_chart, context.strings.profile_statistics_screen_title, () =>
-        openProfileStatisticsScreen(context)
+      Setting.createSetting(Icons.bar_chart, context.strings.statistics_screen_title, () =>
+        openStatisticsScreen(context)
       ),
       Setting.createSetting(Icons.search, context.strings.automatic_profile_search_results_screen_title, () =>
         openAutomaticProfileSearchResultsScreen(context)

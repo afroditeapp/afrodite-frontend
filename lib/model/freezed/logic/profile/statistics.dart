@@ -4,13 +4,13 @@ import "package:freezed_annotation/freezed_annotation.dart";
 import 'package:flutter/foundation.dart';
 import 'package:openapi/api.dart';
 
-part 'profile_statistics.freezed.dart';
+part 'statistics.freezed.dart';
 
 @freezed
-class ProfileStatisticsData with _$ProfileStatisticsData {
-  factory ProfileStatisticsData({
+class StatisticsData with _$StatisticsData {
+  factory StatisticsData({
     @Default(true) bool isLoading,
     @Default(false) bool isError,
     GetProfileStatisticsResult? item,
-  }) = _ProfileStatisticsData;
+  }) = _StatisticsData;
 }

@@ -485,16 +485,16 @@
     <string name="view_news_screen_published" description="Text for news published time">Published: %s</string>
     <string name="view_news_screen_edited" description="Text for news edited time">Edited: %s</string>
 
-    <!-- Profile statistics screen -->
-    <string name="profile_statistics_screen_title" description="Title for profile statistics screen">Profile statistics</string>
-    <string name="profile_statistics_screen_time" description="Text for data generation time">Time: %s</string>
-    <string name="profile_statistics_screen_count_public_profiles" description="Text for public profiles count">Public profiles: %s</string>
-    <string name="profile_statistics_screen_count_private_profiles" description="Text for private profiles count">Private profiles: %s</string>
-    <string name="profile_statistics_screen_count_all_profiles" description="Text for all profiles count">All profiles: %s</string>
-    <string name="profile_statistics_screen_count_man" description="Text for man profiles count">Men: %s</string>
-    <string name="profile_statistics_screen_count_woman" description="Text for woman profiles count">Women: %s</string>
-    <string name="profile_statistics_screen_count_non_binary" description="Text for non-binary profiles count">Non-binaries: %s</string>
-    <string name="profile_statistics_screen_count_bar_chart_tooltip" description="Text for profile bar chart tooltip">Count: %s, Age: %s</string>
+    <!-- Statistics screen -->
+    <string name="statistics_screen_title" description="Title for statistics screen">Statistics</string>
+    <string name="statistics_screen_time" description="Text for data generation time">Time: %s</string>
+    <string name="statistics_screen_count_public_profiles" description="Text for public profiles count">Public profiles: %s</string>
+    <string name="statistics_screen_count_private_profiles" description="Text for private profiles count">Private profiles: %s</string>
+    <string name="statistics_screen_count_all_profiles" description="Text for all profiles count">All profiles: %s</string>
+    <string name="statistics_screen_count_man" description="Text for man profiles count">Men: %s</string>
+    <string name="statistics_screen_count_woman" description="Text for woman profiles count">Women: %s</string>
+    <string name="statistics_screen_count_non_binary" description="Text for non-binary profiles count">Non-binaries: %s</string>
+    <string name="statistics_screen_count_bar_chart_tooltip" description="Text for profile bar chart tooltip">Count: %s, Age: %s</string>
 
     <!-- Account deletion pending screen -->
     <string name="account_deletion_pending_screen_title" description="Title for account deletion pending screen">Account deletion pending</string>

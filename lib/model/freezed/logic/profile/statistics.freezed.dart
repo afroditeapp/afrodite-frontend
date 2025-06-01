@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'profile_statistics.dart';
+part of 'statistics.dart';
 
 // **************************************************************************
 // Generated with Icegen
@@ -16,37 +16,37 @@ class _DetectDefaultValueInCopyWith {
 const _detectDefaultValueInCopyWith = _DetectDefaultValueInCopyWith();
 
 /// @nodoc
-final _privateConstructorErrorProfileStatisticsData = UnsupportedError(
-    'Private constructor ProfileStatisticsData._() was called. Please call factory constructor instead.');
+final _privateConstructorErrorStatisticsData = UnsupportedError(
+    'Private constructor StatisticsData._() was called. Please call factory constructor instead.');
 
 /// @nodoc
-mixin _$ProfileStatisticsData {
-  bool get isLoading => throw _privateConstructorErrorProfileStatisticsData;
-  bool get isError => throw _privateConstructorErrorProfileStatisticsData;
-  GetProfileStatisticsResult? get item => throw _privateConstructorErrorProfileStatisticsData;
+mixin _$StatisticsData {
+  bool get isLoading => throw _privateConstructorErrorStatisticsData;
+  bool get isError => throw _privateConstructorErrorStatisticsData;
+  GetProfileStatisticsResult? get item => throw _privateConstructorErrorStatisticsData;
 
-  ProfileStatisticsData copyWith({
+  StatisticsData copyWith({
     bool? isLoading,
     bool? isError,
     GetProfileStatisticsResult? item,
-  }) => throw _privateConstructorErrorProfileStatisticsData;
+  }) => throw _privateConstructorErrorStatisticsData;
 }
 
 /// @nodoc
-abstract class _ProfileStatisticsData implements ProfileStatisticsData {
-  factory _ProfileStatisticsData({
+abstract class _StatisticsData implements StatisticsData {
+  factory _StatisticsData({
     bool isLoading,
     bool isError,
     GetProfileStatisticsResult? item,
-  }) = _$ProfileStatisticsDataImpl;
+  }) = _$StatisticsDataImpl;
 }
 
 /// @nodoc
-class _$ProfileStatisticsDataImpl with DiagnosticableTreeMixin implements _ProfileStatisticsData {
+class _$StatisticsDataImpl with DiagnosticableTreeMixin implements _StatisticsData {
   static const bool _isLoadingDefaultValue = true;
   static const bool _isErrorDefaultValue = false;
   
-  _$ProfileStatisticsDataImpl({
+  _$StatisticsDataImpl({
     this.isLoading = _isLoadingDefaultValue,
     this.isError = _isErrorDefaultValue,
     this.item,
@@ -61,14 +61,14 @@ class _$ProfileStatisticsDataImpl with DiagnosticableTreeMixin implements _Profi
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ProfileStatisticsData(isLoading: $isLoading, isError: $isError, item: $item)';
+    return 'StatisticsData(isLoading: $isLoading, isError: $isError, item: $item)';
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
-      ..add(DiagnosticsProperty('type', 'ProfileStatisticsData'))
+      ..add(DiagnosticsProperty('type', 'StatisticsData'))
       ..add(DiagnosticsProperty('isLoading', isLoading))
       ..add(DiagnosticsProperty('isError', isError))
       ..add(DiagnosticsProperty('item', item));
@@ -78,7 +78,7 @@ class _$ProfileStatisticsDataImpl with DiagnosticableTreeMixin implements _Profi
   bool operator ==(Object other) {
     return identical(this, other) ||
       (other.runtimeType == runtimeType &&
-        other is _$ProfileStatisticsDataImpl &&
+        other is _$StatisticsDataImpl &&
         (identical(other.isLoading, isLoading) ||
           other.isLoading == isLoading) &&
         (identical(other.isError, isError) ||
@@ -97,11 +97,11 @@ class _$ProfileStatisticsDataImpl with DiagnosticableTreeMixin implements _Profi
   );
 
   @override
-  ProfileStatisticsData copyWith({
+  StatisticsData copyWith({
     Object? isLoading,
     Object? isError,
     Object? item = _detectDefaultValueInCopyWith,
-  }) => _$ProfileStatisticsDataImpl(
+  }) => _$StatisticsDataImpl(
     isLoading: (isLoading ?? this.isLoading) as bool,
     isError: (isError ?? this.isError) as bool,
     item: (item == _detectDefaultValueInCopyWith ? this.item : item) as GetProfileStatisticsResult?,

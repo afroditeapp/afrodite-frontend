@@ -5,23 +5,23 @@ import "package:openapi/api.dart";
 import "package:app/api/api_manager.dart";
 import "package:app/data/login_repository.dart";
 import "package:app/localizations.dart";
-import "package:app/model/freezed/logic/profile/profile_statistics.dart";
+import "package:app/model/freezed/logic/profile/statistics.dart";
 import "package:app/ui_utils/snack_bar.dart";
 import "package:app/utils.dart";
 
 
-sealed class ProfileStatisticsEvent {}
-class Reload extends ProfileStatisticsEvent {
+sealed class StatisticsEvent {}
+class Reload extends StatisticsEvent {
   final bool? generateNew;
   final StatisticsProfileVisibility? visibility;
   final bool adminRefresh;
   Reload({this.generateNew, this.visibility, this.adminRefresh = false});
 }
 
-class ProfileStatisticsBloc extends Bloc<ProfileStatisticsEvent, ProfileStatisticsData> with ActionRunner {
+class StatisticsBloc extends Bloc<StatisticsEvent, StatisticsData> with ActionRunner {
   final ApiManager api = LoginRepository.getInstance().repositories.api;
 
-  ProfileStatisticsBloc() : super(ProfileStatisticsData()) {
+  StatisticsBloc() : super(StatisticsData()) {
     on<Reload>((data, emit) async {
       if (!data.adminRefresh) {
         emit(state.copyWith(

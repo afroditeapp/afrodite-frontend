@@ -9,9 +9,9 @@ import 'package:app/data/login_repository.dart';
 import 'package:app/localizations.dart';
 import 'package:app/logic/account/account.dart';
 import 'package:app/logic/app/navigator_state.dart';
-import 'package:app/logic/profile/profile_statistics.dart';
+import 'package:app/logic/profile/statistics.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
-import 'package:app/model/freezed/logic/profile/profile_statistics.dart';
+import 'package:app/model/freezed/logic/profile/statistics.dart';
 import 'package:app/ui_utils/consts/animation.dart';
 import 'package:app/ui_utils/list.dart';
 import 'package:app/utils/api.dart';
@@ -20,7 +20,7 @@ import 'package:app/utils/time.dart';
 // TODO(prod): Consider removing account count and PublicProfileCounts
 //             from profile statistics.
 
-Future<void> openProfileStatisticsScreen(
+Future<void> openStatisticsScreen(
   BuildContext context,
 ) {
   final pageKey = PageKey();
@@ -28,23 +28,23 @@ Future<void> openProfileStatisticsScreen(
     context,
     MaterialPage<void>(
       child: BlocProvider(
-        create: (_) => ProfileStatisticsBloc(),
+        create: (_) => StatisticsBloc(),
         lazy: false,
-        child: const ProfileStatisticsScreen(),
+        child: const StatisticsScreen(),
       ),
     ),
     pageKey,
   );
 }
 
-class ProfileStatisticsScreen extends StatefulWidget {
-  const ProfileStatisticsScreen({super.key});
+class StatisticsScreen extends StatefulWidget {
+  const StatisticsScreen({super.key});
 
   @override
-  State<ProfileStatisticsScreen> createState() => ProfileStatisticsScreenState();
+  State<StatisticsScreen> createState() => StatisticsScreenState();
 }
 
-class ProfileStatisticsScreenState extends State<ProfileStatisticsScreen> {
+class StatisticsScreenState extends State<StatisticsScreen> {
   final api = LoginRepository.getInstance().repositories.api;
 
   bool adminGenerateStatistics = false;
@@ -54,7 +54,7 @@ class ProfileStatisticsScreenState extends State<ProfileStatisticsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(context.strings.profile_statistics_screen_title),
+        title: Text(context.strings.statistics_screen_title),
       ),
       body: content(),
     );
@@ -63,7 +63,7 @@ class ProfileStatisticsScreenState extends State<ProfileStatisticsScreen> {
   Widget content() {
     return AnimatedSwitcher(
       duration: ANIMATED_SWITCHER_DEFAULT_DURATION,
-      child: BlocBuilder<ProfileStatisticsBloc, ProfileStatisticsData>(
+      child: BlocBuilder<StatisticsBloc, StatisticsData>(
         builder: (context, state) {
           final item = state.item;
           if (state.isLoading) {
@@ -107,11 +107,11 @@ class ProfileStatisticsScreenState extends State<ProfileStatisticsScreen> {
 
     final String currentCount;
     if (adminVisibilitySelection == 0) {
-      currentCount = context.strings.profile_statistics_screen_count_public_profiles(profileCount.toString());
+      currentCount = context.strings.statistics_screen_count_public_profiles(profileCount.toString());
     } else if (adminVisibilitySelection == 1) {
-      currentCount = context.strings.profile_statistics_screen_count_private_profiles(profileCount.toString());
+      currentCount = context.strings.statistics_screen_count_private_profiles(profileCount.toString());
     } else if (adminVisibilitySelection == 2) {
-      currentCount = context.strings.profile_statistics_screen_count_all_profiles(profileCount.toString());
+      currentCount = context.strings.statistics_screen_count_all_profiles(profileCount.toString());
     } else {
       currentCount = context.strings.generic_error;
     }
@@ -127,19 +127,19 @@ class ProfileStatisticsScreenState extends State<ProfileStatisticsScreen> {
             const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
             getChart(context, item.ageCounts.startAge, totalAgeCounts),
             const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
-            Text(context.strings.profile_statistics_screen_count_man(profileCountMan.toString())),
+            Text(context.strings.statistics_screen_count_man(profileCountMan.toString())),
             const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
             getChart(context, item.ageCounts.startAge, item.ageCounts.man),
             const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
-            Text(context.strings.profile_statistics_screen_count_woman(profileCountWoman.toString())),
+            Text(context.strings.statistics_screen_count_woman(profileCountWoman.toString())),
             const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
             getChart(context, item.ageCounts.startAge, item.ageCounts.woman),
             const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
-            Text(context.strings.profile_statistics_screen_count_non_binary(profileCountNonBinary.toString())),
+            Text(context.strings.statistics_screen_count_non_binary(profileCountNonBinary.toString())),
             const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
             getChart(context, item.ageCounts.startAge, item.ageCounts.nonBinary),
             const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
-            Text(context.strings.profile_statistics_screen_time(dataTime)),
+            Text(context.strings.statistics_screen_time(dataTime)),
             const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
           ],
         ),
@@ -170,7 +170,7 @@ class ProfileStatisticsScreenState extends State<ProfileStatisticsScreen> {
               fitInsideHorizontally: true,
               getTooltipItem: (group, groupIndex, rod, rodIndex) {
                 return BarTooltipItem(
-                  context.strings.profile_statistics_screen_count_bar_chart_tooltip(
+                  context.strings.statistics_screen_count_bar_chart_tooltip(
                     rod.toY.toInt().toString(),
                     group.x.toString()
                   ),
@@ -285,7 +285,7 @@ class ProfileStatisticsScreenState extends State<ProfileStatisticsScreen> {
   }
 
   void reload(BuildContext context) {
-    context.read<ProfileStatisticsBloc>().add(Reload(
+    context.read<StatisticsBloc>().add(Reload(
       adminRefresh: true,
       generateNew: adminGenerateStatistics,
       visibility: StatisticsProfileVisibility.values[adminVisibilitySelection],
