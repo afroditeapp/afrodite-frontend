@@ -15,10 +15,10 @@ class AutomaticProfileSearchIteratorManager extends BaseIteratorManager {
   final ServerConnectionManager connectionManager;
 
   AutomaticProfileSearchIteratorManager(ChatRepository chat, this.media, this.accountBackgroundDb, this.db, this.connectionManager, AccountId currentUser) :
-    super(chat, db, currentUser, initialIterator: AutomaticProfileSearchDatabaseIterator(db: db));
+    super(chat, currentUser, initialIterator: AutomaticProfileSearchDatabaseIterator(db: db));
 
   @override
-  OnlineIterator createOnlineIterator() {
+  OnlineIterator createClearDatabaseIterator() {
     return OnlineIterator(
       resetServerIterator: true,
       media: media,
@@ -28,4 +28,8 @@ class AutomaticProfileSearchIteratorManager extends BaseIteratorManager {
       connectionManager: connectionManager,
     );
   }
+
+  @override
+  AutomaticProfileSearchDatabaseIterator createDatabaseIterator() =>
+    AutomaticProfileSearchDatabaseIterator(db: db);
 }

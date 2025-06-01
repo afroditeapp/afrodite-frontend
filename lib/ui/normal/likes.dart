@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:app/data/general/iterator/base_iterator_manager.dart';
 import 'package:app/logic/profile/view_profiles.dart';
 import 'package:app/logic/settings/ui_settings.dart';
 import 'package:app/model/freezed/logic/profile/view_profiles.dart';
@@ -185,7 +186,7 @@ class LikeViewContentState extends State<LikeViewContent> {
 
   final AccountDatabaseManager accountDb = LoginRepository.getInstance().repositories.accountDb;
 
-  final ReceivedLikesIteratorManager _mainProfilesViewIterator = ReceivedLikesIteratorManager(
+  final UiProfileIterator _mainProfilesViewIterator = ReceivedLikesIteratorManager(
     LoginRepository.getInstance().repositories.chat,
     LoginRepository.getInstance().repositories.media,
     LoginRepository.getInstance().repositories.accountBackgroundDb,
@@ -484,7 +485,7 @@ class LikeViewContentState extends State<LikeViewContent> {
   Future<void> refreshProfileGrid() async {
     _reloadInProgress = true;
     await _mainProfilesViewIterator.loadingInProgress.firstWhere((e) => e == false);
-    _mainProfilesViewIterator.refresh();
+    _mainProfilesViewIterator.reset(true);
     // This might be disposed after resetProfileIterator completes.
     _pagingController?.refresh();
     _reloadInProgress = false;

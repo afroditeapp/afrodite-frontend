@@ -15,7 +15,8 @@ abstract class BaseDatabaseIterator extends IteratorType {
     required this.db,
     int queryCount = 10
   }) :
-    _queryCount = queryCount;
+    _queryCount = queryCount,
+    super(false);
 
   @override
   void reset() {

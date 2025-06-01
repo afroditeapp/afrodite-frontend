@@ -1,43 +1,39 @@
 import 'dart:async';
 
 import 'package:openapi/api.dart';
-import 'package:app/data/chat/matches_database_iterator.dart';
 import 'package:app/data/chat_repository.dart';
 import 'package:app/data/general/iterator/profile_iterator.dart';
-import 'package:app/data/general/iterator/online_iterator.dart';
 import 'package:database/database.dart';
-import 'package:app/database/account_database_manager.dart';
 import 'package:app/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
 
-abstract class BaseIteratorManager {
+abstract class BaseIteratorManager implements UiProfileIterator {
   final ChatRepository _chat;
-  final AccountDatabaseManager _db;
   final AccountId _currentUser;
-  BaseIteratorManager(this._chat, this._db, this._currentUser, {required IteratorType initialIterator}) :
+  BaseIteratorManager(this._chat, this._currentUser, {required IteratorType initialIterator}) :
     _currentIterator = initialIterator;
 
   IteratorType _currentIterator;
 
   final BehaviorSubject<bool> _loadingInProgress = BehaviorSubject.seeded(false);
+  @override
   Stream<bool> get loadingInProgress => _loadingInProgress;
 
-  OnlineIterator createOnlineIterator();
+  IteratorType createClearDatabaseIterator();
+  IteratorType createDatabaseIterator();
 
+  @override
   void reset(bool clearDatabase) async {
     if (clearDatabase) {
-      _currentIterator = createOnlineIterator();
+      _currentIterator = createClearDatabaseIterator();
     } else {
       _currentIterator.reset();
     }
   }
 
+  @override
   void resetToBeginning() {
     _currentIterator.reset();
-  }
-
-  void refresh() async {
-    reset(true);
   }
 
   Future<Result<List<ProfileEntry>, void>> _nextListRaw() async {
@@ -52,10 +48,8 @@ abstract class BaseIteratorManager {
       }
     }
 
-    if (nextList.isEmpty && _currentIterator is OnlineIterator) {
-      _currentIterator = MatchesDatabaseIterator(
-        db: _db,
-      );
+    if (nextList.isEmpty && _currentIterator.clearsDatabase) {
+      _currentIterator = createDatabaseIterator();
     }
     return Ok(nextList);
   }
@@ -91,6 +85,7 @@ abstract class BaseIteratorManager {
     }
   }
 
+  @override
   Future<Result<List<ProfileEntry>, void>> nextList() async {
     await _loadingInProgress.firstWhere((e) => e == false);
 
@@ -99,4 +94,11 @@ abstract class BaseIteratorManager {
     _loadingInProgress.add(false);
     return result;
   }
+}
+
+abstract class UiProfileIterator {
+  Stream<bool> get loadingInProgress;
+  void reset(bool clearDatabase);
+  void resetToBeginning();
+  Future<Result<List<ProfileEntry>, void>> nextList();
 }

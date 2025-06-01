@@ -26,7 +26,7 @@ import 'package:app/utils/result.dart';
 typedef ProfileGridProfileEntry = ({ProfileEntry profile, ProfileActionState? initialProfileAction});
 
 class GenericProfileGrid extends StatefulWidget {
-  final BaseIteratorManager Function() buildIteratorManager;
+  final UiProfileIterator Function() buildIteratorManager;
   final String noProfilesText;
   const GenericProfileGrid({
     required this.buildIteratorManager,
@@ -49,7 +49,7 @@ class _GenericProfileGridState extends State<GenericProfileGrid> {
 
   final AccountDatabaseManager accountDb = LoginRepository.getInstance().repositories.accountDb;
 
-  late final BaseIteratorManager _mainProfilesViewIterator;
+  late final UiProfileIterator _mainProfilesViewIterator;
   bool _reloadInProgress = false;
 
   @override
@@ -215,7 +215,7 @@ class _GenericProfileGridState extends State<GenericProfileGrid> {
   Future<void> refreshProfileGrid() async {
     _reloadInProgress = true;
     await _mainProfilesViewIterator.loadingInProgress.firstWhere((e) => e == false);
-    _mainProfilesViewIterator.refresh();
+    _mainProfilesViewIterator.reset(true);
     // This might be disposed after resetProfileIterator completes.
     _pagingController?.refresh();
     _reloadInProgress = false;
