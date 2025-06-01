@@ -572,6 +572,14 @@
   "@generic_resend": {
     "description": "Generic resend text"
   },
+  "generic_reset_to_defaults": "Reset to default values",
+  "@generic_reset_to_defaults": {
+    "description": "Title for reset values to defaults action"
+  },
+  "generic_reset_to_defaults_dialog_title": "Reset to default values?",
+  "@generic_reset_to_defaults_dialog_title": {
+    "description": "Dialog title for confirming reseting values to defaults"
+  },
   "generic_retry": "Retry",
   "@generic_retry": {
     "description": "Generic retry text"
@@ -718,14 +726,6 @@
   "image_quality_settings_screen_max_image_quality": "Max image quality",
   "@image_quality_settings_screen_max_image_quality": {
     "description": "Title for max image quality setting"
-  },
-  "image_quality_settings_screen_reset_to_defaults": "Reset to default values",
-  "@image_quality_settings_screen_reset_to_defaults": {
-    "description": "Title for reset image quality settings to default values action"
-  },
-  "image_quality_settings_screen_reset_to_defaults_dialog_title": "Reset to default values?",
-  "@image_quality_settings_screen_reset_to_defaults_dialog_title": {
-    "description": "Dialog title for confirming reset image quality settings to default values action"
   },
   "image_quality_settings_screen_title": "Image quality",
   "@image_quality_settings_screen_title": {
@@ -1383,6 +1383,30 @@
   "@profile_grid_screen_title": {
     "description": "Title for profile grid screen"
   },
+  "profile_grid_settings_screen_all_grids_title": "All profile grids",
+  "@profile_grid_settings_screen_all_grids_title": {
+    "description": "Title for common settings to all profile grids"
+  },
+  "profile_grid_settings_screen_horizontal_padding": "Horizontal margin",
+  "@profile_grid_settings_screen_horizontal_padding": {
+    "description": "Title for horizontal padding setting"
+  },
+  "profile_grid_settings_screen_internal_padding": "Internal margin",
+  "@profile_grid_settings_screen_internal_padding": {
+    "description": "Title for internal padding setting"
+  },
+  "profile_grid_settings_screen_profile_thumbnail_border_radius": "Profile thumbnail border radius",
+  "@profile_grid_settings_screen_profile_thumbnail_border_radius": {
+    "description": "Title for profile thumbnail border radius setting"
+  },
+  "profile_grid_settings_screen_row_profile_count": "Row profile count",
+  "@profile_grid_settings_screen_row_profile_count": {
+    "description": "Title for row profile count setting"
+  },
+  "profile_grid_settings_screen_title": "Profile grid",
+  "@profile_grid_settings_screen_title": {
+    "description": "Profile grid settings screen title"
+  },
   "profile_location_screen_title": "Location",
   "@profile_location_screen_title": {
     "description": "Title for profile location screen"
@@ -1654,10 +1678,6 @@
   },
   "url_app_privacy_policy_link": "https://example.com",
   "url_app_tos_link": "https://example.com",
-  "user_interface_settings_screen_title": "User interface",
-  "@user_interface_settings_screen_title": {
-    "description": "User interface settings screen title"
-  },
   "view_image_screen_title": "View image",
   "@view_image_screen_title": {
     "description": "Title for view image screen"

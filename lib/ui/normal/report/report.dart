@@ -5,7 +5,7 @@ import 'package:app/logic/account/custom_reports_config.dart';
 import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/ui/normal/report/report_chat_message.dart';
 import 'package:app/ui/normal/report/report_profile_image.dart';
-import 'package:app/ui_utils/api.dart';
+import 'package:app/ui_utils/extensions/api.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/result.dart';

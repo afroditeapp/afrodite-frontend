@@ -206,11 +206,11 @@ class _ImageSettingsScreenState extends State<ImageSettingsScreen> {
 
   Widget resetToDefaults() {
     return ListTile(
-      title: Text(context.strings.image_quality_settings_screen_reset_to_defaults),
+      title: Text(context.strings.generic_reset_to_defaults),
       onTap: () async {
         final accepted = await showConfirmDialog(
           context,
-          context.strings.image_quality_settings_screen_reset_to_defaults_dialog_title,
+          context.strings.generic_reset_to_defaults_dialog_title,
         );
         if (accepted == true) {
           setState(() {

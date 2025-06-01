@@ -68,6 +68,9 @@
     <string name="generic_search_settings_looking_for_all_genders_text" desctiption="Search settings radio button option for men and women who are looking all genders">All</string>
     <string name="generic_error_app_version_is_unsupported" desctiption="Snackbar text that client version is unsupported">Current app version is unsupported</string>
 
+    <string name="generic_reset_to_defaults" description="Title for reset values to defaults action">Reset to default values</string>
+    <string name="generic_reset_to_defaults_dialog_title" description="Dialog title for confirming reseting values to defaults">Reset to default values?</string>
+
     <!-- Moderation states -->
     <string name="moderation_state" description="Beginning of moderation state text">Moderation state: %s</string>
     <string name="moderation_rejected_category" description="Beginning of moderation rejected reason category text">Rejected reason category: %s</string>
@@ -452,11 +455,14 @@
     <string name="image_quality_settings_screen_image_quality_max" description="Title for image quality setting max value">Max</string>
     <string name="image_quality_settings_screen_image_quality_custom" description="Title for image quality setting custom value">Custom</string>
     <string name="image_quality_settings_screen_image_quality_pixel_value" description="Value text for current quality setting">%s pixels</string>
-    <string name="image_quality_settings_screen_reset_to_defaults" description="Title for reset image quality settings to default values action">Reset to default values</string>
-    <string name="image_quality_settings_screen_reset_to_defaults_dialog_title" description="Dialog title for confirming reset image quality settings to default values action">Reset to default values?</string>
 
-    <!-- User interface settings screen -->
-    <string name="user_interface_settings_screen_title" description="User interface settings screen title">User interface</string>
+    <!-- Profile grid settings screen -->
+    <string name="profile_grid_settings_screen_title" description="Profile grid settings screen title">Profile grid</string>
+    <string name="profile_grid_settings_screen_all_grids_title" description="Title for common settings to all profile grids">All profile grids</string>
+    <string name="profile_grid_settings_screen_horizontal_padding" description="Title for horizontal padding setting">Horizontal margin</string>
+    <string name="profile_grid_settings_screen_internal_padding" description="Title for internal padding setting">Internal margin</string>
+    <string name="profile_grid_settings_screen_profile_thumbnail_border_radius" description="Title for profile thumbnail border radius setting">Profile thumbnail border radius</string>
+    <string name="profile_grid_settings_screen_row_profile_count" description="Title for row profile count setting">Row profile count</string>
 
     <!-- View image screen
         TODO: Does this page need a title?

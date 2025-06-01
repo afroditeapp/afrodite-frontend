@@ -5,7 +5,7 @@ import 'package:app/model/freezed/logic/media/content.dart';
 import 'package:app/model/freezed/logic/profile/my_profile.dart';
 import 'package:app/ui/initial_setup.dart';
 import 'package:app/ui_utils/moderation.dart';
-import 'package:app/ui_utils/api.dart';
+import 'package:app/ui_utils/extensions/api.dart';
 import 'package:app/utils/list.dart';
 import 'package:database/database.dart';
 import 'package:flutter/material.dart';

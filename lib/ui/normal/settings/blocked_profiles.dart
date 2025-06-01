@@ -12,7 +12,7 @@ import 'package:database/database.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:app/localizations.dart';
 import 'package:app/logic/settings/blocked_profiles.dart';
-import 'package:app/logic/settings/user_interface.dart';
+import 'package:app/logic/settings/ui_settings.dart';
 import 'package:app/ui_utils/consts/padding.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/list.dart';
@@ -108,7 +108,7 @@ class _BlockedProfilesScreen extends State<BlockedProfilesScreen> {
           final Widget imageWidget;
           if (profileEntry != null) {
             name = profileEntry.profileTitle(
-              context.read<UserInterfaceSettingsBloc>().state.showNonAcceptedProfileNames,
+              context.read<UiSettingsBloc>().state.showNonAcceptedProfileNames,
             );
             imageWidget = ProfileThumbnailImageOrError.fromProfileEntry(
               entry: profileEntry,

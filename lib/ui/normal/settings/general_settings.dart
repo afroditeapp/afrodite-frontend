@@ -5,12 +5,12 @@ import 'package:app/localizations.dart';
 import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/ui/normal/settings.dart';
 import 'package:app/ui/normal/settings/general/image_settings.dart';
-import 'package:app/ui/normal/settings/general/user_interface.dart';
+import 'package:app/ui/normal/settings/general/profile_grid_settings.dart';
 
 class GeneralSettingsScreen extends StatefulWidget {
   const GeneralSettingsScreen({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<GeneralSettingsScreen> createState() => _GeneralSettingsScreenState();
@@ -36,8 +36,8 @@ class _GeneralSettingsScreenState extends State<GeneralSettingsScreen> {
             ImageSettingsScreen()
           ));
         }).toListTile(),
-        Setting.createSetting(Icons.settings_applications, context.strings.user_interface_settings_screen_title, () {
-          openUserInterfaceSettingsScreen(context);
+        Setting.createSetting(Icons.grid_view_rounded, context.strings.profile_grid_settings_screen_title, () {
+          openProfileGridSettingsScreen(context);
         }).toListTile(),
       ],
     );

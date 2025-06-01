@@ -13,7 +13,7 @@ import 'package:app/data/login_repository.dart';
 import 'package:app/data/profile_repository.dart';
 import 'package:app/logic/app/bottom_navigation_state.dart';
 import 'package:app/logic/chat/conversation_list_bloc.dart';
-import 'package:app/logic/settings/user_interface.dart';
+import 'package:app/logic/settings/ui_settings.dart';
 import 'package:app/model/freezed/logic/chat/conversation_list_bloc.dart';
 import 'package:app/model/freezed/logic/main/bottom_navigation_state.dart';
 import 'package:app/ui/normal/chat/conversation_page.dart';
@@ -352,7 +352,7 @@ class _ChatViewState extends State<ChatView> {
       children: [
         Text(
           data.entry.profileTitle(
-            context.read<UserInterfaceSettingsBloc>().state.showNonAcceptedProfileNames,
+            context.read<UiSettingsBloc>().state.showNonAcceptedProfileNames,
           ),
           style: Theme.of(context).textTheme.titleMedium,
           overflow: TextOverflow.ellipsis,

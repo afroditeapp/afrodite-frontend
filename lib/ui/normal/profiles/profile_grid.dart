@@ -2,7 +2,10 @@ import 'dart:async';
 import 'dart:ui';
 
 import 'package:app/logic/profile/view_profiles.dart';
+import 'package:app/logic/settings/ui_settings.dart';
 import 'package:app/model/freezed/logic/profile/view_profiles.dart';
+import 'package:app/model/freezed/logic/settings/ui_settings.dart';
+import 'package:app/ui_utils/extensions/other.dart';
 import 'package:app/ui_utils/profile_thumbnail_image_or_error.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,7 +28,6 @@ import 'package:app/ui/normal/profiles/view_profile.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:app/ui_utils/common_update_logic.dart';
 import 'package:app/ui_utils/consts/corners.dart';
-import 'package:app/ui_utils/consts/padding.dart';
 import 'package:app/ui_utils/consts/size.dart';
 import 'package:app/ui_utils/list.dart';
 import 'package:app/ui_utils/scroll_controller.dart';
@@ -40,7 +42,7 @@ var log = Logger("ProfileGrid");
 
 class ProfileGrid extends StatefulWidget {
   final ProfileFilteringSettingsBloc filteringSettingsBloc;
-  const ProfileGrid({required this.filteringSettingsBloc, Key? key}) : super(key: key);
+  const ProfileGrid({required this.filteringSettingsBloc, super.key});
 
   @override
   State<ProfileGrid> createState() => _ProfileGridState();
@@ -198,31 +200,20 @@ class _ProfileGridState extends State<ProfileGrid> {
           await refreshProfileGrid();
         }
       },
-      child: BlocBuilder<MyProfileBloc, MyProfileData>(
-        builder: (context, myProfileState) {
-          return BlocBuilder<ProfileFilteringSettingsBloc, ProfileFilteringSettingsData>(
-            builder: (context, state) {
-              if (state.updateState is UpdateIdle && !state.unsavedChanges()) {
-                return NotificationListener<ScrollMetricsNotification>(
-                  onNotification: (notification) {
-                    final isScrolled = notification.metrics.pixels > 0;
-                    updateIsScrolled(isScrolled);
-                    return true;
-                  },
-                  child: BlocListener<BottomNavigationStateBloc, BottomNavigationStateData>(
-                    listenWhen: (previous, current) => previous.isTappedAgainProfile != current.isTappedAgainProfile,
-                    listener: (context, state) {
-                      if (state.isTappedAgainProfile) {
-                        context.read<BottomNavigationStateBloc>().add(SetIsTappedAgainValue(BottomNavigationScreenId.profiles, false));
-                        _scrollController.bottomNavigationRelatedJumpToBeginningIfClientsConnected();
-                      }
-                    },
-                    child: grid(context, myProfileState.profile?.unlimitedLikes ?? false)
-                  ),
-                );
-              } else {
-                return Center(child: CircularProgressIndicator(key: _progressKey));
-              }
+      child: BlocBuilder<UiSettingsBloc, UiSettingsData>(
+        buildWhen: (previous, current) => previous.gridSettings != current.gridSettings,
+        builder: (context, uiSettings) {
+          return BlocBuilder<MyProfileBloc, MyProfileData>(
+            builder: (context, myProfileState) {
+              return BlocBuilder<ProfileFilteringSettingsBloc, ProfileFilteringSettingsData>(
+                builder: (context, state) {
+                  if (state.updateState is UpdateIdle && !state.unsavedChanges()) {
+                    return showGrid(context, myProfileState, uiSettings.gridSettings);
+                  } else {
+                    return Center(child: CircularProgressIndicator(key: _progressKey));
+                  }
+                }
+              );
             }
           );
         }
@@ -230,12 +221,32 @@ class _ProfileGridState extends State<ProfileGrid> {
     );
   }
 
-  Widget grid(BuildContext context, bool iHaveUnlimitedLikesEnabled) {
+  Widget showGrid(BuildContext context, MyProfileData myProfileState, GridSettings settings) {
+    return NotificationListener<ScrollMetricsNotification>(
+      onNotification: (notification) {
+        final isScrolled = notification.metrics.pixels > 0;
+        updateIsScrolled(isScrolled);
+        return true;
+      },
+      child: BlocListener<BottomNavigationStateBloc, BottomNavigationStateData>(
+        listenWhen: (previous, current) => previous.isTappedAgainProfile != current.isTappedAgainProfile,
+        listener: (context, state) {
+          if (state.isTappedAgainProfile) {
+            context.read<BottomNavigationStateBloc>().add(SetIsTappedAgainValue(BottomNavigationScreenId.profiles, false));
+            _scrollController.bottomNavigationRelatedJumpToBeginningIfClientsConnected();
+          }
+        },
+        child: grid(context, myProfileState.profile?.unlimitedLikes ?? false, settings)
+      ),
+    );
+  }
+
+  Widget grid(BuildContext context, bool iHaveUnlimitedLikesEnabled, GridSettings settings) {
     return PagedGridView(
       physics: const AlwaysScrollableScrollPhysics(),
       scrollController: _scrollController,
       pagingController: _pagingController!,
-      padding: const EdgeInsets.symmetric(horizontal: COMMON_SCREEN_EDGE_PADDING),
+      padding: EdgeInsets.symmetric(horizontal: settings.valueHorizontalPadding()),
       builderDelegate: PagedChildBuilderDelegate<ProfileViewEntry>(
         animateTransitions: true,
         itemBuilder: (context, item, index) {
@@ -253,7 +264,7 @@ class _ProfileGridState extends State<ProfileGrid> {
                   animation: animation,
                   builder: (context, child) {
                     final squareFactor = lerpDouble(1.0, 0.0, animation.value) ?? 0.0;
-                    final radius = lerpDouble(PROFILE_PICTURE_BORDER_RADIUS, 0.0, animation.value) ?? 0.0;
+                    final radius = lerpDouble(settings.valueProfileThumbnailBorderRadius(), 0.0, animation.value) ?? 0.0;
                     return ProfileThumbnailImageOrError.fromProfileEntry(
                       entry: item.profile,
                       squareFactor: squareFactor,
@@ -263,7 +274,7 @@ class _ProfileGridState extends State<ProfileGrid> {
                   }
                 );
               },
-              child: profileEntryWidgetStream(item.profile, iHaveUnlimitedLikesEnabled, item.initialProfileAction, accountDb),
+              child: profileEntryWidgetStream(item.profile, iHaveUnlimitedLikesEnabled, item.initialProfileAction, accountDb, settings),
             )
           );
         },
@@ -308,11 +319,7 @@ class _ProfileGridState extends State<ProfileGrid> {
           );
         },
       ),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        crossAxisSpacing: 8,
-        mainAxisSpacing: 8,
-      ),
+      gridDelegate: settings.toSliverGridDelegate(),
     );
   }
 
@@ -364,6 +371,7 @@ Widget profileEntryWidgetStream(
   bool iHaveUnlimitedLikesEnabled,
   ProfileActionState? initialProfileAction,
   AccountDatabaseManager db,
+  GridSettings settings,
   {
     bool showNewLikeMarker = false,
     void Function(BuildContext)? overrideOnTap,
@@ -376,6 +384,7 @@ Widget profileEntryWidgetStream(
       final newLikeInfoReceivedTime = e.newLikeInfoReceivedTime;
       return ProfileThumbnailImageOrError.fromProfileEntry(
         entry: e,
+        borderRadius: BorderRadius.circular(settings.valueProfileThumbnailBorderRadius()),
         cacheSize: ImageCacheSize.sizeForGrid(),
         child: Stack(
           children: [

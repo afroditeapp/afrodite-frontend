@@ -19,3 +19,5 @@ export 'src/server_maintenance.dart' show ServerMaintenanceInfo;
 export 'src/private_key_data.dart' show PrivateKeyData, PublicKeyData, AllKeyData, ForeignPublicKey;
 export 'src/utils.dart' show QueryExcecutorProvider;
 export 'src/db_file.dart' show DbFile, CommonDbFile, CommonBackgroundDbFile, AccountDbFile, AccountBackgroundDbFile;
+
+export 'src/model/grid_settings.dart' show GridSettings;

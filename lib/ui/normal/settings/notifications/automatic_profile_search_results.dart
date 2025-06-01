@@ -2,9 +2,12 @@ import 'dart:async';
 
 import 'package:app/data/profile/automatic_profile_search/automatic_profile_search_iterator_manager.dart';
 import 'package:app/logic/profile/view_profiles.dart';
+import 'package:app/logic/settings/ui_settings.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/model/freezed/logic/profile/view_profiles.dart';
+import 'package:app/model/freezed/logic/settings/ui_settings.dart';
 import 'package:app/ui/normal/profiles.dart';
+import 'package:app/ui_utils/extensions/other.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
@@ -168,17 +171,22 @@ class _AutomaticProfileSearchResultsGridState extends State<AutomaticProfileSear
       },
       child: Column(children: [
         Expanded(
-          child: BlocBuilder<MyProfileBloc, MyProfileData>(
-            builder: (context, myProfileState) {
-              return grid(context, myProfileState.profile?.unlimitedLikes ?? false);
-            },
+          child: BlocBuilder<UiSettingsBloc, UiSettingsData>(
+            buildWhen: (previous, current) => previous.gridSettings != current.gridSettings,
+            builder: (context, uiSettings) {
+              return BlocBuilder<MyProfileBloc, MyProfileData>(
+                builder: (context, myProfileState) {
+                  return grid(context, myProfileState.profile?.unlimitedLikes ?? false, uiSettings.gridSettings);
+                },
+              );
+            }
           ),
         ),
       ],),
     );
   }
 
-  Widget grid(BuildContext context, bool iHaveUnlimitedLikesEnabled) {
+  Widget grid(BuildContext context, bool iHaveUnlimitedLikesEnabled, GridSettings settings) {
     return PagedGridView(
       physics: const AlwaysScrollableScrollPhysics(),
       scrollController: _scrollController,
@@ -193,6 +201,7 @@ class _AutomaticProfileSearchResultsGridState extends State<AutomaticProfileSear
                 iHaveUnlimitedLikesEnabled,
                 item.initialProfileAction,
                 accountDb,
+                settings,
             )
           );
         },
@@ -221,11 +230,7 @@ class _AutomaticProfileSearchResultsGridState extends State<AutomaticProfileSear
           );
         },
       ),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        crossAxisSpacing: 8,
-        mainAxisSpacing: 8,
-      ),
+      gridDelegate: settings.toSliverGridDelegate(),
     );
   }
 

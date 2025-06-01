@@ -2,7 +2,7 @@
 
 import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/ui/utils/view_metrics.dart';
-import 'package:app/ui_utils/api.dart';
+import 'package:app/ui_utils/extensions/api.dart';
 import 'package:app/utils/api.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';

@@ -47,7 +47,7 @@ import 'package:app/logic/profile/profile_filtering_settings.dart';
 import 'package:app/logic/settings/blocked_profiles.dart';
 import 'package:app/logic/settings/privacy_settings.dart';
 import 'package:app/logic/settings/search_settings.dart';
-import 'package:app/logic/settings/user_interface.dart';
+import 'package:app/logic/settings/ui_settings.dart';
 import 'package:app/ui/account_banned.dart';
 import 'package:app/ui/demo_account.dart';
 import 'package:app/ui/initial_setup.dart';
@@ -195,7 +195,7 @@ class _MainStateUiLogicState extends State<MainStateUiLogic> {
               BlocProvider(create: (_) => BlockedProfilesBloc()),
               BlocProvider(create: (_) => SearchSettingsBloc()),
               BlocProvider(create: (_) => NotificationSettingsBloc()),
-              BlocProvider(create: (_) => UserInterfaceSettingsBloc()),
+              BlocProvider(create: (_) => UiSettingsBloc()),
 
               // News
               BlocProvider(create: (_) => NewsCountBloc()),

@@ -7469,8 +7469,40 @@ class $UiSettingsTable extends UiSettings
       defaultConstraints: GeneratedColumn.constraintIsAlways(
           'CHECK ("advanced_filters" IN (0, 1))'),
       defaultValue: const Constant(false));
+  static const VerificationMeta _gridHorizontalPaddingMeta =
+      const VerificationMeta('gridHorizontalPadding');
   @override
-  List<GeneratedColumn> get $columns => [id, advancedFilters];
+  late final GeneratedColumn<double> gridHorizontalPadding =
+      GeneratedColumn<double>('grid_horizontal_padding', aliasedName, true,
+          type: DriftSqlType.double, requiredDuringInsert: false);
+  static const VerificationMeta _gridInternalPaddingMeta =
+      const VerificationMeta('gridInternalPadding');
+  @override
+  late final GeneratedColumn<double> gridInternalPadding =
+      GeneratedColumn<double>('grid_internal_padding', aliasedName, true,
+          type: DriftSqlType.double, requiredDuringInsert: false);
+  static const VerificationMeta _gridProfileThumbnailBorderRadiusMeta =
+      const VerificationMeta('gridProfileThumbnailBorderRadius');
+  @override
+  late final GeneratedColumn<double> gridProfileThumbnailBorderRadius =
+      GeneratedColumn<double>(
+          'grid_profile_thumbnail_border_radius', aliasedName, true,
+          type: DriftSqlType.double, requiredDuringInsert: false);
+  static const VerificationMeta _gridRowProfileCountMeta =
+      const VerificationMeta('gridRowProfileCount');
+  @override
+  late final GeneratedColumn<int> gridRowProfileCount = GeneratedColumn<int>(
+      'grid_row_profile_count', aliasedName, true,
+      type: DriftSqlType.int, requiredDuringInsert: false);
+  @override
+  List<GeneratedColumn> get $columns => [
+        id,
+        advancedFilters,
+        gridHorizontalPadding,
+        gridInternalPadding,
+        gridProfileThumbnailBorderRadius,
+        gridRowProfileCount
+      ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -7490,6 +7522,31 @@ class $UiSettingsTable extends UiSettings
           advancedFilters.isAcceptableOrUnknown(
               data['advanced_filters']!, _advancedFiltersMeta));
     }
+    if (data.containsKey('grid_horizontal_padding')) {
+      context.handle(
+          _gridHorizontalPaddingMeta,
+          gridHorizontalPadding.isAcceptableOrUnknown(
+              data['grid_horizontal_padding']!, _gridHorizontalPaddingMeta));
+    }
+    if (data.containsKey('grid_internal_padding')) {
+      context.handle(
+          _gridInternalPaddingMeta,
+          gridInternalPadding.isAcceptableOrUnknown(
+              data['grid_internal_padding']!, _gridInternalPaddingMeta));
+    }
+    if (data.containsKey('grid_profile_thumbnail_border_radius')) {
+      context.handle(
+          _gridProfileThumbnailBorderRadiusMeta,
+          gridProfileThumbnailBorderRadius.isAcceptableOrUnknown(
+              data['grid_profile_thumbnail_border_radius']!,
+              _gridProfileThumbnailBorderRadiusMeta));
+    }
+    if (data.containsKey('grid_row_profile_count')) {
+      context.handle(
+          _gridRowProfileCountMeta,
+          gridRowProfileCount.isAcceptableOrUnknown(
+              data['grid_row_profile_count']!, _gridRowProfileCountMeta));
+    }
     return context;
   }
 
@@ -7503,6 +7560,16 @@ class $UiSettingsTable extends UiSettings
           .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
       advancedFilters: attachedDatabase.typeMapping
           .read(DriftSqlType.bool, data['${effectivePrefix}advanced_filters'])!,
+      gridHorizontalPadding: attachedDatabase.typeMapping.read(
+          DriftSqlType.double,
+          data['${effectivePrefix}grid_horizontal_padding']),
+      gridInternalPadding: attachedDatabase.typeMapping.read(
+          DriftSqlType.double, data['${effectivePrefix}grid_internal_padding']),
+      gridProfileThumbnailBorderRadius: attachedDatabase.typeMapping.read(
+          DriftSqlType.double,
+          data['${effectivePrefix}grid_profile_thumbnail_border_radius']),
+      gridRowProfileCount: attachedDatabase.typeMapping.read(
+          DriftSqlType.int, data['${effectivePrefix}grid_row_profile_count']),
     );
   }
 
@@ -7515,12 +7582,35 @@ class $UiSettingsTable extends UiSettings
 class UiSetting extends DataClass implements Insertable<UiSetting> {
   final int id;
   final bool advancedFilters;
-  const UiSetting({required this.id, required this.advancedFilters});
+  final double? gridHorizontalPadding;
+  final double? gridInternalPadding;
+  final double? gridProfileThumbnailBorderRadius;
+  final int? gridRowProfileCount;
+  const UiSetting(
+      {required this.id,
+      required this.advancedFilters,
+      this.gridHorizontalPadding,
+      this.gridInternalPadding,
+      this.gridProfileThumbnailBorderRadius,
+      this.gridRowProfileCount});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     map['advanced_filters'] = Variable<bool>(advancedFilters);
+    if (!nullToAbsent || gridHorizontalPadding != null) {
+      map['grid_horizontal_padding'] = Variable<double>(gridHorizontalPadding);
+    }
+    if (!nullToAbsent || gridInternalPadding != null) {
+      map['grid_internal_padding'] = Variable<double>(gridInternalPadding);
+    }
+    if (!nullToAbsent || gridProfileThumbnailBorderRadius != null) {
+      map['grid_profile_thumbnail_border_radius'] =
+          Variable<double>(gridProfileThumbnailBorderRadius);
+    }
+    if (!nullToAbsent || gridRowProfileCount != null) {
+      map['grid_row_profile_count'] = Variable<int>(gridRowProfileCount);
+    }
     return map;
   }
 
@@ -7528,6 +7618,19 @@ class UiSetting extends DataClass implements Insertable<UiSetting> {
     return UiSettingsCompanion(
       id: Value(id),
       advancedFilters: Value(advancedFilters),
+      gridHorizontalPadding: gridHorizontalPadding == null && nullToAbsent
+          ? const Value.absent()
+          : Value(gridHorizontalPadding),
+      gridInternalPadding: gridInternalPadding == null && nullToAbsent
+          ? const Value.absent()
+          : Value(gridInternalPadding),
+      gridProfileThumbnailBorderRadius:
+          gridProfileThumbnailBorderRadius == null && nullToAbsent
+              ? const Value.absent()
+              : Value(gridProfileThumbnailBorderRadius),
+      gridRowProfileCount: gridRowProfileCount == null && nullToAbsent
+          ? const Value.absent()
+          : Value(gridRowProfileCount),
     );
   }
 
@@ -7537,6 +7640,14 @@ class UiSetting extends DataClass implements Insertable<UiSetting> {
     return UiSetting(
       id: serializer.fromJson<int>(json['id']),
       advancedFilters: serializer.fromJson<bool>(json['advancedFilters']),
+      gridHorizontalPadding:
+          serializer.fromJson<double?>(json['gridHorizontalPadding']),
+      gridInternalPadding:
+          serializer.fromJson<double?>(json['gridInternalPadding']),
+      gridProfileThumbnailBorderRadius: serializer
+          .fromJson<double?>(json['gridProfileThumbnailBorderRadius']),
+      gridRowProfileCount:
+          serializer.fromJson<int?>(json['gridRowProfileCount']),
     );
   }
   @override
@@ -7545,12 +7656,39 @@ class UiSetting extends DataClass implements Insertable<UiSetting> {
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'advancedFilters': serializer.toJson<bool>(advancedFilters),
+      'gridHorizontalPadding':
+          serializer.toJson<double?>(gridHorizontalPadding),
+      'gridInternalPadding': serializer.toJson<double?>(gridInternalPadding),
+      'gridProfileThumbnailBorderRadius':
+          serializer.toJson<double?>(gridProfileThumbnailBorderRadius),
+      'gridRowProfileCount': serializer.toJson<int?>(gridRowProfileCount),
     };
   }
 
-  UiSetting copyWith({int? id, bool? advancedFilters}) => UiSetting(
+  UiSetting copyWith(
+          {int? id,
+          bool? advancedFilters,
+          Value<double?> gridHorizontalPadding = const Value.absent(),
+          Value<double?> gridInternalPadding = const Value.absent(),
+          Value<double?> gridProfileThumbnailBorderRadius =
+              const Value.absent(),
+          Value<int?> gridRowProfileCount = const Value.absent()}) =>
+      UiSetting(
         id: id ?? this.id,
         advancedFilters: advancedFilters ?? this.advancedFilters,
+        gridHorizontalPadding: gridHorizontalPadding.present
+            ? gridHorizontalPadding.value
+            : this.gridHorizontalPadding,
+        gridInternalPadding: gridInternalPadding.present
+            ? gridInternalPadding.value
+            : this.gridInternalPadding,
+        gridProfileThumbnailBorderRadius:
+            gridProfileThumbnailBorderRadius.present
+                ? gridProfileThumbnailBorderRadius.value
+                : this.gridProfileThumbnailBorderRadius,
+        gridRowProfileCount: gridRowProfileCount.present
+            ? gridRowProfileCount.value
+            : this.gridRowProfileCount,
       );
   UiSetting copyWithCompanion(UiSettingsCompanion data) {
     return UiSetting(
@@ -7558,6 +7696,19 @@ class UiSetting extends DataClass implements Insertable<UiSetting> {
       advancedFilters: data.advancedFilters.present
           ? data.advancedFilters.value
           : this.advancedFilters,
+      gridHorizontalPadding: data.gridHorizontalPadding.present
+          ? data.gridHorizontalPadding.value
+          : this.gridHorizontalPadding,
+      gridInternalPadding: data.gridInternalPadding.present
+          ? data.gridInternalPadding.value
+          : this.gridInternalPadding,
+      gridProfileThumbnailBorderRadius:
+          data.gridProfileThumbnailBorderRadius.present
+              ? data.gridProfileThumbnailBorderRadius.value
+              : this.gridProfileThumbnailBorderRadius,
+      gridRowProfileCount: data.gridRowProfileCount.present
+          ? data.gridRowProfileCount.value
+          : this.gridRowProfileCount,
     );
   }
 
@@ -7565,46 +7716,99 @@ class UiSetting extends DataClass implements Insertable<UiSetting> {
   String toString() {
     return (StringBuffer('UiSetting(')
           ..write('id: $id, ')
-          ..write('advancedFilters: $advancedFilters')
+          ..write('advancedFilters: $advancedFilters, ')
+          ..write('gridHorizontalPadding: $gridHorizontalPadding, ')
+          ..write('gridInternalPadding: $gridInternalPadding, ')
+          ..write(
+              'gridProfileThumbnailBorderRadius: $gridProfileThumbnailBorderRadius, ')
+          ..write('gridRowProfileCount: $gridRowProfileCount')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, advancedFilters);
+  int get hashCode => Object.hash(
+      id,
+      advancedFilters,
+      gridHorizontalPadding,
+      gridInternalPadding,
+      gridProfileThumbnailBorderRadius,
+      gridRowProfileCount);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is UiSetting &&
           other.id == this.id &&
-          other.advancedFilters == this.advancedFilters);
+          other.advancedFilters == this.advancedFilters &&
+          other.gridHorizontalPadding == this.gridHorizontalPadding &&
+          other.gridInternalPadding == this.gridInternalPadding &&
+          other.gridProfileThumbnailBorderRadius ==
+              this.gridProfileThumbnailBorderRadius &&
+          other.gridRowProfileCount == this.gridRowProfileCount);
 }
 
 class UiSettingsCompanion extends UpdateCompanion<UiSetting> {
   final Value<int> id;
   final Value<bool> advancedFilters;
+  final Value<double?> gridHorizontalPadding;
+  final Value<double?> gridInternalPadding;
+  final Value<double?> gridProfileThumbnailBorderRadius;
+  final Value<int?> gridRowProfileCount;
   const UiSettingsCompanion({
     this.id = const Value.absent(),
     this.advancedFilters = const Value.absent(),
+    this.gridHorizontalPadding = const Value.absent(),
+    this.gridInternalPadding = const Value.absent(),
+    this.gridProfileThumbnailBorderRadius = const Value.absent(),
+    this.gridRowProfileCount = const Value.absent(),
   });
   UiSettingsCompanion.insert({
     this.id = const Value.absent(),
     this.advancedFilters = const Value.absent(),
+    this.gridHorizontalPadding = const Value.absent(),
+    this.gridInternalPadding = const Value.absent(),
+    this.gridProfileThumbnailBorderRadius = const Value.absent(),
+    this.gridRowProfileCount = const Value.absent(),
   });
   static Insertable<UiSetting> custom({
     Expression<int>? id,
     Expression<bool>? advancedFilters,
+    Expression<double>? gridHorizontalPadding,
+    Expression<double>? gridInternalPadding,
+    Expression<double>? gridProfileThumbnailBorderRadius,
+    Expression<int>? gridRowProfileCount,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (advancedFilters != null) 'advanced_filters': advancedFilters,
+      if (gridHorizontalPadding != null)
+        'grid_horizontal_padding': gridHorizontalPadding,
+      if (gridInternalPadding != null)
+        'grid_internal_padding': gridInternalPadding,
+      if (gridProfileThumbnailBorderRadius != null)
+        'grid_profile_thumbnail_border_radius':
+            gridProfileThumbnailBorderRadius,
+      if (gridRowProfileCount != null)
+        'grid_row_profile_count': gridRowProfileCount,
     });
   }
 
-  UiSettingsCompanion copyWith({Value<int>? id, Value<bool>? advancedFilters}) {
+  UiSettingsCompanion copyWith(
+      {Value<int>? id,
+      Value<bool>? advancedFilters,
+      Value<double?>? gridHorizontalPadding,
+      Value<double?>? gridInternalPadding,
+      Value<double?>? gridProfileThumbnailBorderRadius,
+      Value<int?>? gridRowProfileCount}) {
     return UiSettingsCompanion(
       id: id ?? this.id,
       advancedFilters: advancedFilters ?? this.advancedFilters,
+      gridHorizontalPadding:
+          gridHorizontalPadding ?? this.gridHorizontalPadding,
+      gridInternalPadding: gridInternalPadding ?? this.gridInternalPadding,
+      gridProfileThumbnailBorderRadius: gridProfileThumbnailBorderRadius ??
+          this.gridProfileThumbnailBorderRadius,
+      gridRowProfileCount: gridRowProfileCount ?? this.gridRowProfileCount,
     );
   }
 
@@ -7617,6 +7821,21 @@ class UiSettingsCompanion extends UpdateCompanion<UiSetting> {
     if (advancedFilters.present) {
       map['advanced_filters'] = Variable<bool>(advancedFilters.value);
     }
+    if (gridHorizontalPadding.present) {
+      map['grid_horizontal_padding'] =
+          Variable<double>(gridHorizontalPadding.value);
+    }
+    if (gridInternalPadding.present) {
+      map['grid_internal_padding'] =
+          Variable<double>(gridInternalPadding.value);
+    }
+    if (gridProfileThumbnailBorderRadius.present) {
+      map['grid_profile_thumbnail_border_radius'] =
+          Variable<double>(gridProfileThumbnailBorderRadius.value);
+    }
+    if (gridRowProfileCount.present) {
+      map['grid_row_profile_count'] = Variable<int>(gridRowProfileCount.value);
+    }
     return map;
   }
 
@@ -7624,7 +7843,12 @@ class UiSettingsCompanion extends UpdateCompanion<UiSetting> {
   String toString() {
     return (StringBuffer('UiSettingsCompanion(')
           ..write('id: $id, ')
-          ..write('advancedFilters: $advancedFilters')
+          ..write('advancedFilters: $advancedFilters, ')
+          ..write('gridHorizontalPadding: $gridHorizontalPadding, ')
+          ..write('gridInternalPadding: $gridInternalPadding, ')
+          ..write(
+              'gridProfileThumbnailBorderRadius: $gridProfileThumbnailBorderRadius, ')
+          ..write('gridRowProfileCount: $gridRowProfileCount')
           ..write(')'))
         .toString();
   }

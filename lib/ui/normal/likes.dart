@@ -1,7 +1,10 @@
 import 'dart:async';
 
 import 'package:app/logic/profile/view_profiles.dart';
+import 'package:app/logic/settings/ui_settings.dart';
 import 'package:app/model/freezed/logic/profile/view_profiles.dart';
+import 'package:app/model/freezed/logic/settings/ui_settings.dart';
+import 'package:app/ui_utils/extensions/other.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
@@ -27,7 +30,6 @@ import 'package:app/ui_utils/bottom_navigation.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 import 'package:app/localizations.dart';
-import 'package:app/ui_utils/consts/padding.dart';
 import 'package:app/ui_utils/list.dart';
 import 'package:app/ui_utils/scroll_controller.dart';
 import 'package:app/utils/result.dart';
@@ -103,8 +105,8 @@ class LikesScreen extends StatefulWidget {
   const LikesScreen({
     required this.gridInstanceId,
     required this.bloc,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<LikesScreen> createState() => _LikesScreenState();
@@ -307,10 +309,15 @@ class LikeViewContentState extends State<LikeViewContent> {
           },
           child: Column(children: [
             Expanded(
-              child: BlocBuilder<MyProfileBloc, MyProfileData>(
-                builder: (context, myProfileState) {
-                  return grid(context, myProfileState.profile?.unlimitedLikes ?? false);
-                },
+              child: BlocBuilder<UiSettingsBloc, UiSettingsData>(
+                buildWhen: (previous, current) => previous.gridSettings != current.gridSettings,
+                builder: (context, uiSettings) {
+                  return BlocBuilder<MyProfileBloc, MyProfileData>(
+                    builder: (context, myProfileState) {
+                      return grid(context, myProfileState.profile?.unlimitedLikes ?? false, uiSettings.gridSettings);
+                    },
+                  );
+                }
               ),
             ),
             logicRefreshLikesCommandFromFloatingActionButton(),
@@ -322,12 +329,12 @@ class LikeViewContentState extends State<LikeViewContent> {
     );
   }
 
-  Widget grid(BuildContext context, bool iHaveUnlimitedLikesEnabled) {
+  Widget grid(BuildContext context, bool iHaveUnlimitedLikesEnabled, GridSettings settings) {
     return PagedGridView(
       physics: const AlwaysScrollableScrollPhysics(),
       scrollController: _scrollController,
       pagingController: _pagingController!,
-      padding: const EdgeInsets.symmetric(horizontal: COMMON_SCREEN_EDGE_PADDING),
+      padding: EdgeInsets.symmetric(horizontal: settings.valueHorizontalPadding()),
       builderDelegate: PagedChildBuilderDelegate<LikeViewEntry>(
         animateTransitions: true,
         itemBuilder: (context, item, index) {
@@ -341,6 +348,7 @@ class LikeViewContentState extends State<LikeViewContent> {
                 iHaveUnlimitedLikesEnabled,
                 item.initalProfileAction,
                 accountDb,
+                settings,
                 showNewLikeMarker: true,
               )
             )
@@ -371,11 +379,7 @@ class LikeViewContentState extends State<LikeViewContent> {
           );
         },
       ),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        crossAxisSpacing: 8,
-        mainAxisSpacing: 8,
-      ),
+      gridDelegate: settings.toSliverGridDelegate(),
     );
   }
 

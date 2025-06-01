@@ -8,7 +8,7 @@ import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/model/freezed/logic/media/content.dart';
 import 'package:app/model/freezed/logic/media/select_content.dart';
 import 'package:app/model/freezed/logic/profile/my_profile.dart';
-import 'package:app/ui_utils/api.dart';
+import 'package:app/ui_utils/extensions/api.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/image.dart';
 import 'package:app/ui_utils/moderation.dart';

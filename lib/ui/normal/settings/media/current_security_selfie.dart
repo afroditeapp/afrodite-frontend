@@ -8,7 +8,7 @@ import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/model/freezed/logic/media/profile_pictures.dart';
 import 'package:app/ui/initial_setup/security_selfie.dart';
 import 'package:app/ui/normal/settings/media/select_content.dart';
-import 'package:app/ui_utils/api.dart';
+import 'package:app/ui_utils/extensions/api.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/moderation.dart';
 import 'package:app/ui_utils/padding.dart';
