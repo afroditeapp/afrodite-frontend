@@ -279,27 +279,30 @@ class _ProfileGridState extends State<ProfileGrid> {
           );
         },
         noItemsFoundIndicatorBuilder: (context) {
-          final filterStatus = context.read<ProfileFilteringSettingsBloc>().state.isSomeFilterEnabled();
-          final Widget descriptionText;
-          if (filterStatus) {
-            descriptionText = Text(
-              context.strings.profile_grid_screen_no_profiles_found_description_filters_enabled,
-            );
+          final filterState = context.read<ProfileFilteringSettingsBloc>().state;
+          final String descriptionText;
+          if (filterState.showOnlyFavorites) {
+            descriptionText =
+              context.strings.profile_grid_screen_no_favorite_profiles_found_description;
+          } else if (filterState.isSomeFilterEnabled()) {
+            descriptionText =
+              context.strings.profile_grid_screen_no_profiles_found_description_filters_enabled;
           } else {
-            descriptionText = Text(
-              context.strings.profile_grid_screen_no_profiles_found_description_filters_disabled,
-            );
+            descriptionText =
+              context.strings.profile_grid_screen_no_profiles_found_description_filters_disabled;
           }
           return buildListReplacementMessage(
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  context.strings.profile_grid_screen_no_profiles_found_title,
+                  filterState.showOnlyFavorites ?
+                    context.strings.profile_grid_screen_no_favorite_profiles_found_title :
+                    context.strings.profile_grid_screen_no_profiles_found_title,
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
                 const Padding(padding: EdgeInsets.all(8)),
-                descriptionText,
+                Text(descriptionText),
               ],
             ),
           );

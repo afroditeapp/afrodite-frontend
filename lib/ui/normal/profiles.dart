@@ -6,6 +6,7 @@ import 'package:app/model/freezed/logic/profile/my_profile.dart';
 import 'package:app/ui/initial_setup.dart';
 import 'package:app/ui_utils/moderation.dart';
 import 'package:app/ui_utils/extensions/api.dart';
+import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/list.dart';
 import 'package:database/database.dart';
 import 'package:flutter/material.dart';
@@ -40,12 +41,36 @@ class ProfileView extends BottomNavigationScreen {
   @override
   List<Widget>? actions(BuildContext context) {
     return [
-      IconButton(
-        icon: BlocBuilder<ProfileFilteringSettingsBloc, ProfileFilteringSettingsData>(
-          builder: (_, state) => Icon(state.icon()),
-        ),
-        onPressed: () => openProfileFilteringSettings(context),
-      )
+      BlocBuilder<ProfileFilteringSettingsBloc, ProfileFilteringSettingsData>(
+        builder: (context, state) {
+          return IconButton(
+            icon: Icon(state.showOnlyFavorites ? Icons.star_rounded : Icons.star_border_rounded),
+            tooltip: state.showOnlyFavorites ?
+              context.strings.profile_grid_screen_show_all_profiles_action :
+              context.strings.profile_grid_screen_show_favorite_profiles_action,
+            onPressed: () => context.read<ProfileFilteringSettingsBloc>().add(SetFavoriteProfilesFilter(!state.showOnlyFavorites)),
+          );
+        },
+      ),
+      BlocBuilder<ProfileFilteringSettingsBloc, ProfileFilteringSettingsData>(
+        builder: (context, state) {
+          final Icon icon;
+          if (state.showOnlyFavorites) {
+            icon = Icon(
+              Icons.filter_alt_outlined,
+              color: Theme.of(context).disabledColor,
+            );
+          } else {
+            icon = Icon(state.icon());
+          }
+          return IconButton(
+            icon: icon,
+            onPressed: state.showOnlyFavorites ?
+              () => showSnackBar(context.strings.profile_grid_screen_filtering_favorite_profiles_is_not_supported) :
+              () => openProfileFilteringSettings(context),
+          );
+        },
+      ),
     ];
   }
 }

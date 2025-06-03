@@ -236,6 +236,11 @@
     <string name="profile_grid_screen_primary_profile_content_is_not_accepted" description="Text displayed when primary profile content is not accepted">First profile picture is not accepted</string>
     <string name="profile_grid_screen_primary_profile_content_face_not_detected" description="Text displayed when face is not detected from primary profile content">Face is not detected from first profile picture</string>
     <string name="profile_grid_screen_primary_profile_content_does_not_exist" description="Text displayed when primary profile content does not exist">First profile picture does not exist</string>
+    <string name="profile_grid_screen_show_favorite_profiles_action" description="Title for show favorite profiles action">Show favorite profiles</string>
+    <string name="profile_grid_screen_show_all_profiles_action" description="Title for show all profiles action">Show all profiles</string>
+    <string name="profile_grid_screen_no_favorite_profiles_found_title" description="Title that no favorite profiles were found">No favorite profiles found</string>
+    <string name="profile_grid_screen_no_favorite_profiles_found_description" description="Description that no favorite profiles were found">Mark a profile as a favorite to add it here.</string>
+    <string name="profile_grid_screen_filtering_favorite_profiles_is_not_supported" description="Snackbar text that filtering favorite profiles is not supported">Filtering favorite profiles is not supported</string>
 
     <!-- View profile screen -->
     <string name="view_profile_screen_my_profile_initial_setup_not_done" description="Snackbar text that it is not possible to open my profile screen when initial setup is not done">Dating profile is not created</string>
@@ -306,7 +311,6 @@
     <string name="profile_filtering_settings_screen_title" description="Title for profile filtering settings screen">Profile filters</string>
     <string name="profile_filtering_settings_screen_disable_filters_action" description="Title for disable filters action">Disable filters</string>
     <string name="profile_filtering_settings_screen_disable_filters_action_dialog_title" description="Title for disable filters action confirm dialog">Disable filters?</string>
-    <string name="profile_filtering_settings_screen_favorite_profile_filter" description="Title for favorite profile filter">Favorite profile</string>
     <string name="profile_filtering_settings_screen_unlimited_likes_filter" description="Title for unlimited likes filter">Unlimited chat requests</string>
     <string name="profile_filtering_settings_screen_unlimited_likes_filter_not_available" description="Description for unlimited likes filter when unlimited likes are disabled">Enable unlimited chat requests to use this filter</string>
     <string name="profile_filtering_settings_screen_profile_last_seen_time_filter" description="Title for profile last seen time filter">Last seen</string>

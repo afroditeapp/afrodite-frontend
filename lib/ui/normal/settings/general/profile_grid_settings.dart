@@ -185,19 +185,13 @@ class _ProfileGridSettingsScreenState extends State<ProfileGridSettingsScreen> {
         }
         previousProfileFiltersUpdateState = state.updateState;
 
-        final bool value;
-        if (state.valueShowOnlyFavorites()) {
-          value = false;
-        } else {
-          value = state.valueRandomProfileOrder();
-        }
         return SwitchListTile(
           title: Text(context.strings.profile_grid_settings_screen_random_profile_order),
-          subtitle: value ?
+          subtitle: state.valueRandomProfileOrder() ?
             Text(context.strings.profile_grid_settings_screen_random_profile_order_description_enabled) :
             Text(context.strings.profile_grid_settings_screen_random_profile_order_description_disabled),
           secondary: const Icon(Icons.shuffle),
-          value: value,
+          value: state.valueRandomProfileOrder(),
           onChanged: (bool value) {
             if (state.updateState is! UpdateIdle) {
               showSnackBar(context.strings.generic_previous_action_in_progress);

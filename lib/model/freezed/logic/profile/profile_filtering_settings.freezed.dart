@@ -153,7 +153,6 @@ final _privateConstructorErrorEditedFilteringSettingsData = UnsupportedError(
 
 /// @nodoc
 mixin _$EditedFilteringSettingsData {
-  bool? get showOnlyFavorites => throw _privateConstructorErrorEditedFilteringSettingsData;
   Map<int, ProfileAttributeFilterValueUpdate>? get attributeIdAndFilterValueMap => throw _privateConstructorErrorEditedFilteringSettingsData;
   EditValue<LastSeenTimeFilter> get lastSeenTimeFilter => throw _privateConstructorErrorEditedFilteringSettingsData;
   EditValue<bool> get unlimitedLikesFilter => throw _privateConstructorErrorEditedFilteringSettingsData;
@@ -166,7 +165,6 @@ mixin _$EditedFilteringSettingsData {
   bool? get randomProfileOrder => throw _privateConstructorErrorEditedFilteringSettingsData;
 
   EditedFilteringSettingsData copyWith({
-    bool? showOnlyFavorites,
     Map<int, ProfileAttributeFilterValueUpdate>? attributeIdAndFilterValueMap,
     EditValue<LastSeenTimeFilter>? lastSeenTimeFilter,
     EditValue<bool>? unlimitedLikesFilter,
@@ -183,7 +181,6 @@ mixin _$EditedFilteringSettingsData {
 /// @nodoc
 abstract class _EditedFilteringSettingsData implements EditedFilteringSettingsData {
   factory _EditedFilteringSettingsData({
-    bool? showOnlyFavorites,
     Map<int, ProfileAttributeFilterValueUpdate>? attributeIdAndFilterValueMap,
     EditValue<LastSeenTimeFilter> lastSeenTimeFilter,
     EditValue<bool> unlimitedLikesFilter,
@@ -209,7 +206,6 @@ class _$EditedFilteringSettingsDataImpl with DiagnosticableTreeMixin implements 
   static const EditValue<ProfileTextMaxCharactersFilter> _profileTextMaxCharactersFilterDefaultValue = NoEdit();
   
   _$EditedFilteringSettingsDataImpl({
-    this.showOnlyFavorites,
     this.attributeIdAndFilterValueMap,
     this.lastSeenTimeFilter = _lastSeenTimeFilterDefaultValue,
     this.unlimitedLikesFilter = _unlimitedLikesFilterDefaultValue,
@@ -222,8 +218,6 @@ class _$EditedFilteringSettingsDataImpl with DiagnosticableTreeMixin implements 
     this.randomProfileOrder,
   });
 
-  @override
-  final bool? showOnlyFavorites;
   @override
   final Map<int, ProfileAttributeFilterValueUpdate>? attributeIdAndFilterValueMap;
   @override
@@ -247,7 +241,7 @@ class _$EditedFilteringSettingsDataImpl with DiagnosticableTreeMixin implements 
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'EditedFilteringSettingsData(showOnlyFavorites: $showOnlyFavorites, attributeIdAndFilterValueMap: $attributeIdAndFilterValueMap, lastSeenTimeFilter: $lastSeenTimeFilter, unlimitedLikesFilter: $unlimitedLikesFilter, minDistanceKmFilter: $minDistanceKmFilter, maxDistanceKmFilter: $maxDistanceKmFilter, profileCreatedFilter: $profileCreatedFilter, profileEditedFilter: $profileEditedFilter, profileTextMinCharactersFilter: $profileTextMinCharactersFilter, profileTextMaxCharactersFilter: $profileTextMaxCharactersFilter, randomProfileOrder: $randomProfileOrder)';
+    return 'EditedFilteringSettingsData(attributeIdAndFilterValueMap: $attributeIdAndFilterValueMap, lastSeenTimeFilter: $lastSeenTimeFilter, unlimitedLikesFilter: $unlimitedLikesFilter, minDistanceKmFilter: $minDistanceKmFilter, maxDistanceKmFilter: $maxDistanceKmFilter, profileCreatedFilter: $profileCreatedFilter, profileEditedFilter: $profileEditedFilter, profileTextMinCharactersFilter: $profileTextMinCharactersFilter, profileTextMaxCharactersFilter: $profileTextMaxCharactersFilter, randomProfileOrder: $randomProfileOrder)';
   }
 
   @override
@@ -255,7 +249,6 @@ class _$EditedFilteringSettingsDataImpl with DiagnosticableTreeMixin implements 
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'EditedFilteringSettingsData'))
-      ..add(DiagnosticsProperty('showOnlyFavorites', showOnlyFavorites))
       ..add(DiagnosticsProperty('attributeIdAndFilterValueMap', attributeIdAndFilterValueMap))
       ..add(DiagnosticsProperty('lastSeenTimeFilter', lastSeenTimeFilter))
       ..add(DiagnosticsProperty('unlimitedLikesFilter', unlimitedLikesFilter))
@@ -273,8 +266,6 @@ class _$EditedFilteringSettingsDataImpl with DiagnosticableTreeMixin implements 
     return identical(this, other) ||
       (other.runtimeType == runtimeType &&
         other is _$EditedFilteringSettingsDataImpl &&
-        (identical(other.showOnlyFavorites, showOnlyFavorites) ||
-          other.showOnlyFavorites == showOnlyFavorites) &&
         (identical(other.attributeIdAndFilterValueMap, attributeIdAndFilterValueMap) ||
           other.attributeIdAndFilterValueMap == attributeIdAndFilterValueMap) &&
         (identical(other.lastSeenTimeFilter, lastSeenTimeFilter) ||
@@ -301,7 +292,6 @@ class _$EditedFilteringSettingsDataImpl with DiagnosticableTreeMixin implements 
   @override
   int get hashCode => Object.hash(
     runtimeType,
-    showOnlyFavorites,
     attributeIdAndFilterValueMap,
     lastSeenTimeFilter,
     unlimitedLikesFilter,
@@ -316,7 +306,6 @@ class _$EditedFilteringSettingsDataImpl with DiagnosticableTreeMixin implements 
 
   @override
   EditedFilteringSettingsData copyWith({
-    Object? showOnlyFavorites = _detectDefaultValueInCopyWith,
     Object? attributeIdAndFilterValueMap = _detectDefaultValueInCopyWith,
     Object? lastSeenTimeFilter,
     Object? unlimitedLikesFilter,
@@ -328,7 +317,6 @@ class _$EditedFilteringSettingsDataImpl with DiagnosticableTreeMixin implements 
     Object? profileTextMaxCharactersFilter,
     Object? randomProfileOrder = _detectDefaultValueInCopyWith,
   }) => _$EditedFilteringSettingsDataImpl(
-    showOnlyFavorites: (showOnlyFavorites == _detectDefaultValueInCopyWith ? this.showOnlyFavorites : showOnlyFavorites) as bool?,
     attributeIdAndFilterValueMap: (attributeIdAndFilterValueMap == _detectDefaultValueInCopyWith ? this.attributeIdAndFilterValueMap : attributeIdAndFilterValueMap) as Map<int, ProfileAttributeFilterValueUpdate>?,
     lastSeenTimeFilter: (lastSeenTimeFilter ?? this.lastSeenTimeFilter) as EditValue<LastSeenTimeFilter>,
     unlimitedLikesFilter: (unlimitedLikesFilter ?? this.unlimitedLikesFilter) as EditValue<bool>,

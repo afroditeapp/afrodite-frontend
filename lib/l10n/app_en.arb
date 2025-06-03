@@ -1231,10 +1231,6 @@
       }
     }
   },
-  "profile_filtering_settings_screen_favorite_profile_filter": "Favorite profile",
-  "@profile_filtering_settings_screen_favorite_profile_filter": {
-    "description": "Title for favorite profile filter"
-  },
   "profile_filtering_settings_screen_profile_created_filter": "Profile created",
   "@profile_filtering_settings_screen_profile_created_filter": {
     "description": "Title for profile created time filter"
@@ -1323,9 +1319,21 @@
   "@profile_filtering_settings_screen_updating_filters_failed": {
     "description": "Snackbar text for notifying about failed profile filters update"
   },
+  "profile_grid_screen_filtering_favorite_profiles_is_not_supported": "Filtering favorite profiles is not supported",
+  "@profile_grid_screen_filtering_favorite_profiles_is_not_supported": {
+    "description": "Snackbar text that filtering favorite profiles is not supported"
+  },
   "profile_grid_screen_initial_moderation_ongoing": "You can view profiles and others can see your profile after your profile images are moderated.",
   "@profile_grid_screen_initial_moderation_ongoing": {
     "description": "Info text that initial moderation is ongoing"
+  },
+  "profile_grid_screen_no_favorite_profiles_found_description": "Mark a profile as a favorite to add it here.",
+  "@profile_grid_screen_no_favorite_profiles_found_description": {
+    "description": "Description that no favorite profiles were found"
+  },
+  "profile_grid_screen_no_favorite_profiles_found_title": "No favorite profiles found",
+  "@profile_grid_screen_no_favorite_profiles_found_title": {
+    "description": "Title that no favorite profiles were found"
   },
   "profile_grid_screen_no_profiles_found_description_filters_disabled": "Spread the word about the app in social media",
   "@profile_grid_screen_no_profiles_found_description_filters_disabled": {
@@ -1366,6 +1374,14 @@
   "profile_grid_screen_security_content_is_not_accepted": "Security selfie is not accepted",
   "@profile_grid_screen_security_content_is_not_accepted": {
     "description": "Text displayed when security selfie is not accepted"
+  },
+  "profile_grid_screen_show_all_profiles_action": "Show all profiles",
+  "@profile_grid_screen_show_all_profiles_action": {
+    "description": "Title for show all profiles action"
+  },
+  "profile_grid_screen_show_favorite_profiles_action": "Show favorite profiles",
+  "@profile_grid_screen_show_favorite_profiles_action": {
+    "description": "Title for show favorite profiles action"
   },
   "profile_grid_screen_start_initial_setup_button": "Start account initial setup",
   "@profile_grid_screen_start_initial_setup_button": {

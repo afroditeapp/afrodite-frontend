@@ -22,8 +22,7 @@ class ProfileFilteringSettingsData with _$ProfileFilteringSettingsData, UpdateSt
   }) = _ProfileFilteringSettingsData;
 
   bool isSomeFilterEnabled() {
-    return valueShowOnlyFavorites() == true ||
-      valueAttributes().values.where((v) => v.enabled).firstOrNull != null ||
+    return valueAttributes().values.where((v) => v.enabled).firstOrNull != null ||
       valueLastSeenTimeFilter() != null ||
       valueUnlimitedLikesFilter() != null ||
       valueMinDistanceKmFilter() != null ||
@@ -42,8 +41,7 @@ class ProfileFilteringSettingsData with _$ProfileFilteringSettingsData, UpdateSt
     }
   }
 
-  bool unsavedChanges() => edited.showOnlyFavorites != null ||
-    edited.attributeIdAndFilterValueMap != null ||
+  bool unsavedChanges() => edited.attributeIdAndFilterValueMap != null ||
     edited.lastSeenTimeFilter.unsavedChanges() ||
     edited.unlimitedLikesFilter.unsavedChanges() ||
     edited.minDistanceKmFilter.unsavedChanges() ||
@@ -54,7 +52,6 @@ class ProfileFilteringSettingsData with _$ProfileFilteringSettingsData, UpdateSt
     edited.profileTextMaxCharactersFilter.unsavedChanges() ||
     edited.randomProfileOrder != null;
 
-  bool valueShowOnlyFavorites() => edited.showOnlyFavorites ?? showOnlyFavorites;
   Map<int, ProfileAttributeFilterValueUpdate> valueAttributes() => edited.attributeIdAndFilterValueMap ?? attributeIdAndFilterValueMap;
   LastSeenTimeFilter? valueLastSeenTimeFilter() => edited.lastSeenTimeFilter.editedValue(filteringSettings?.lastSeenTimeFilter);
   bool? valueUnlimitedLikesFilter() => edited.unlimitedLikesFilter.editedValue(filteringSettings?.unlimitedLikesFilter);
@@ -70,7 +67,6 @@ class ProfileFilteringSettingsData with _$ProfileFilteringSettingsData, UpdateSt
 @freezed
 class EditedFilteringSettingsData with _$EditedFilteringSettingsData {
   factory EditedFilteringSettingsData({
-    bool? showOnlyFavorites,
     Map<int, ProfileAttributeFilterValueUpdate>? attributeIdAndFilterValueMap,
     @Default(NoEdit()) EditValue<LastSeenTimeFilter> lastSeenTimeFilter,
     @Default(NoEdit()) EditValue<bool> unlimitedLikesFilter,

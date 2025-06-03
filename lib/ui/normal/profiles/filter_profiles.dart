@@ -110,7 +110,7 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
       yesNoActions: true,
     );
     if (r == true && context.mounted) {
-      widget.profileFilteringSettingsBloc.add(DisableAllValues());
+      widget.profileFilteringSettingsBloc.add(DisableAllFilterSettings());
     }
   }
 
@@ -118,8 +118,6 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
     return SingleChildScrollView(
       child: Column(
         children: <Widget>[
-          getShowFavoritesSelection(context),
-          const Divider(),
           const EditAttributeFilters(),
           const Divider(),
           maxDistanceFilter(context),
@@ -163,20 +161,6 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
           ),
         ],
       ),
-    );
-  }
-
-  Widget getShowFavoritesSelection(BuildContext context) {
-    return BlocBuilder<ProfileFilteringSettingsBloc, ProfileFilteringSettingsData>(
-      builder: (context, state) {
-        return SwitchListTile(
-          title: Text(context.strings.profile_filtering_settings_screen_favorite_profile_filter),
-          secondary: const Icon(Icons.star_rounded),
-          value: state.valueShowOnlyFavorites(),
-          onChanged: (bool value) =>
-              context.read<ProfileFilteringSettingsBloc>().add(SetFavoriteProfilesFilter(value)),
-        );
-      }
     );
   }
 
@@ -240,14 +224,6 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
           days = VALUE_MAX;
         }
 
-        final TextStyle? valueTextStyle;
-        if (state.valueShowOnlyFavorites()) {
-          final disabledTextColor = Theme.of(context).disabledColor;
-          valueTextStyle = Theme.of(context).textTheme.bodyMedium?.copyWith(color: disabledTextColor);
-        } else {
-          valueTextStyle = null;
-        }
-
         return Column(
           children: [
             const Padding(padding: EdgeInsets.all(4)),
@@ -261,7 +237,6 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
                   borderRadius: BorderRadius.circular(PROFILE_CURRENTLY_ONLINE_RADIUS),
                 ),
               ),
-              isEnabled: !state.valueShowOnlyFavorites(),
             ),
             const Padding(padding: EdgeInsets.all(4)),
             Slider(
@@ -269,7 +244,7 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
               min: VALUE_MIN,
               max: VALUE_MAX,
               divisions: DIVISIONS,
-              onChanged: !state.valueShowOnlyFavorites() ? (double value) {
+              onChanged: (double value) {
                 final intDays = doubleToIntDays(value);
                 final int? seconds;
                 if (intDays == -1) {
@@ -280,7 +255,7 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
                   seconds = null;
                 }
                 context.read<ProfileFilteringSettingsBloc>().add(SetLastSeenTimeFilter(seconds));
-              } : null,
+              },
             ),
             Align(
               alignment: Alignment.centerRight,
@@ -288,7 +263,6 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
                 padding: const EdgeInsets.only(right: COMMON_SCREEN_EDGE_PADDING),
                 child: Text(
                   stateText,
-                  style: valueTextStyle,
                 ),
               ),
             )
@@ -361,21 +335,12 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
           days = VALUE_MAX;
         }
 
-        final TextStyle? valueTextStyle;
-        if (state.valueShowOnlyFavorites()) {
-          final disabledTextColor = Theme.of(context).disabledColor;
-          valueTextStyle = Theme.of(context).textTheme.bodyMedium?.copyWith(color: disabledTextColor);
-        } else {
-          valueTextStyle = null;
-        }
-
         return Column(
           children: [
             const Padding(padding: EdgeInsets.all(4)),
             ViewAttributeTitle(
               title,
               icon: icon,
-              isEnabled: !state.valueShowOnlyFavorites(),
             ),
             const Padding(padding: EdgeInsets.all(4)),
             Slider(
@@ -383,7 +348,7 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
               min: VALUE_MIN,
               max: VALUE_MAX,
               divisions: DIVISIONS,
-              onChanged: !state.valueShowOnlyFavorites() ? (double value) {
+              onChanged: (double value) {
                 final intDays = doubleToIntDays(value);
                 final int? seconds;
                 if (intDays != null) {
@@ -392,7 +357,7 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
                   seconds = null;
                 }
                 valueSetter(context.read<ProfileFilteringSettingsBloc>(), seconds);
-              } : null,
+              },
             ),
             Align(
               alignment: Alignment.centerRight,
@@ -400,7 +365,6 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
                 padding: const EdgeInsets.only(right: COMMON_SCREEN_EDGE_PADDING),
                 child: Text(
                   stateText,
-                  style: valueTextStyle,
                 ),
               ),
             )
@@ -441,21 +405,12 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
           maxValue = valueMax.toDouble();
         }
 
-        final TextStyle? valueTextStyle;
-        if (state.valueShowOnlyFavorites()) {
-          final disabledTextColor = Theme.of(context).disabledColor;
-          valueTextStyle = Theme.of(context).textTheme.bodyMedium?.copyWith(color: disabledTextColor);
-        } else {
-          valueTextStyle = null;
-        }
-
         return Column(
           children: [
             const Padding(padding: EdgeInsets.all(4)),
             ViewAttributeTitle(
               context.strings.profile_filtering_settings_screen_distance_filter,
               icon: Icons.social_distance_rounded,
-              isEnabled: !state.valueShowOnlyFavorites(),
             ),
             const Padding(padding: EdgeInsets.all(4)),
             RangeSlider(
@@ -463,7 +418,7 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
               min: VALUE_MIN.toDouble(),
               max: valueMax.toDouble(),
               divisions: DistanceValues.availableValues.length - 1,
-              onChanged: !state.valueShowOnlyFavorites() ? (values) {
+              onChanged: (values) {
                 final minDistanceInt = values.start.round().toInt();
                 final minDistance = switch(minDistanceInt) {
                   0 => null,
@@ -480,7 +435,7 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
                 final maxDistance = maxDistanceIntOrNull
                   .map((v) => MaxDistanceKm(value: v));
                 context.read<ProfileFilteringSettingsBloc>().add(SetDistanceFilter(minDistance, maxDistance));
-              } : null,
+              },
             ),
             Align(
               alignment: Alignment.centerRight,
@@ -488,7 +443,6 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
                 padding: const EdgeInsets.only(right: COMMON_SCREEN_EDGE_PADDING),
                 child: Text(
                   stateText,
-                  style: valueTextStyle,
                 ),
               ),
             )
@@ -541,21 +495,12 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
           max = limitMax;
         }
 
-        final TextStyle? valueTextStyle;
-        if (state.valueShowOnlyFavorites()) {
-          final disabledTextColor = Theme.of(context).disabledColor;
-          valueTextStyle = Theme.of(context).textTheme.bodyMedium?.copyWith(color: disabledTextColor);
-        } else {
-          valueTextStyle = null;
-        }
-
         return Column(
           children: [
             const Padding(padding: EdgeInsets.all(4)),
             ViewAttributeTitle(
               context.strings.profile_filtering_settings_screen_profile_text_filter,
               icon: Icons.notes,
-              isEnabled: !state.valueShowOnlyFavorites(),
             ),
             const Padding(padding: EdgeInsets.all(4)),
             RangeSlider(
@@ -563,14 +508,14 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
               min: LIMIT_MIN,
               max: limitMax,
               divisions: AVAILABLE_VALUES.length - 1,
-              onChanged: !state.valueShowOnlyFavorites() ? (RangeValues values) {
+              onChanged: (RangeValues values) {
                 final currentMin = AVAILABLE_VALUES.getAtOrNull(values.start.round().toInt()) ?? AVAILABLE_VALUES.first;
                 final currentMax = AVAILABLE_VALUES.getAtOrNull(values.end.round().toInt()) ?? AVAILABLE_VALUES.last;
                 context.read<ProfileFilteringSettingsBloc>().add(SetProfileTextFilter(
                   currentMin == AVAILABLE_VALUES.first ? null : ProfileTextMinCharactersFilter(value: currentMin),
                   currentMax == AVAILABLE_VALUES.last ? null : ProfileTextMaxCharactersFilter(value: currentMax),
                 ));
-              } : null,
+              },
             ),
             Align(
               alignment: Alignment.centerRight,
@@ -578,7 +523,6 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
                 padding: const EdgeInsets.only(right: COMMON_SCREEN_EDGE_PADDING),
                 child: Text(
                   stateText,
-                  style: valueTextStyle,
                 ),
               ),
             )
@@ -591,20 +535,14 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
   Widget unlimitedLikesSetting(BuildContext context, bool myProfileUnlimitedLikesValue) {
     return BlocBuilder<ProfileFilteringSettingsBloc, ProfileFilteringSettingsData>(
       builder: (context, state) {
-        final bool value;
-        if (state.valueShowOnlyFavorites()) {
-          value = false;
-        } else {
-          value = state.valueUnlimitedLikesFilter() ?? false;
-        }
         return SwitchListTile(
           title: Text(context.strings.profile_filtering_settings_screen_unlimited_likes_filter),
           subtitle: !myProfileUnlimitedLikesValue ?
             Text(context.strings.profile_filtering_settings_screen_unlimited_likes_filter_not_available) :
             null,
           secondary: const Icon(Icons.all_inclusive),
-          value: value,
-          onChanged: !state.valueShowOnlyFavorites() && myProfileUnlimitedLikesValue == true ? (bool value) {
+          value: state.valueUnlimitedLikesFilter() ?? false,
+          onChanged: myProfileUnlimitedLikesValue == true ? (bool value) {
             final filterValue = value ? true : null;
             context.read<ProfileFilteringSettingsBloc>().add(SetUnlimitedLikesFilter(filterValue));
           } : null,
@@ -630,7 +568,7 @@ class EditAttributeFilters extends StatelessWidget {
           return Column(
             children: attributeTiles(
               context,
-              !eState.valueShowOnlyFavorites(),
+              true,
               manager,
               eState.valueAttributes(),
             )

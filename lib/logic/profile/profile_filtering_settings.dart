@@ -21,7 +21,7 @@ import "package:app/utils/time.dart";
 sealed class ProfileFilteringSettingsEvent {}
 class SaveNewFilterSettings extends ProfileFilteringSettingsEvent {}
 class ResetEditedValues extends ProfileFilteringSettingsEvent {}
-class DisableAllValues extends ProfileFilteringSettingsEvent {}
+class DisableAllFilterSettings extends ProfileFilteringSettingsEvent {}
 class NewShowAdvancedFiltersValue extends ProfileFilteringSettingsEvent {
   final bool value;
   NewShowAdvancedFiltersValue(this.value);
@@ -108,8 +108,6 @@ class ProfileFilteringSettingsBloc extends Bloc<ProfileFilteringSettingsEvent, P
           updateState: const UpdateInProgress(),
         ));
 
-        await profile.changeProfileFilteringSettings(s.valueShowOnlyFavorites());
-
         if (
           await profile.updateProfileFilteringSettings(
             s.valueAttributes(),
@@ -145,7 +143,7 @@ class ProfileFilteringSettingsBloc extends Bloc<ProfileFilteringSettingsEvent, P
     on<ResetEditedValues>((data, emit) {
       resetEditedValues(emit);
     });
-    on<DisableAllValues>((data, emit) {
+    on<DisableAllFilterSettings>((data, emit) {
       final Map<int, ProfileAttributeFilterValueUpdate> disableAttributeFilters = {};
       for (final a in state.attributeIdAndFilterValueMap.values) {
         disableAttributeFilters[a.id] = ProfileAttributeFilterValueUpdate(
@@ -168,7 +166,6 @@ class ProfileFilteringSettingsBloc extends Bloc<ProfileFilteringSettingsEvent, P
         ));
       }
 
-      add(SetFavoriteProfilesFilter(false));
       add(SetLastSeenTimeFilter(null));
       add(SetUnlimitedLikesFilter(null));
       add(SetDistanceFilter(null, null));
@@ -191,13 +188,11 @@ class ProfileFilteringSettingsBloc extends Bloc<ProfileFilteringSettingsEvent, P
     on<SetShowAdvancedFilters>((data, emit) async {
       await db.accountAction((db) => db.daoUiSettings.updateShowAdvancedFilters(data.value));
     });
-    on<SetFavoriteProfilesFilter>((data, emit) {
-      modifyEdited(
-        emit,
-        (e) => state.showOnlyFavorites == data.value ?
-          e.copyWith(showOnlyFavorites: null) :
-          e.copyWith(showOnlyFavorites: data.value)
-      );
+    on<SetFavoriteProfilesFilter>((data, emit) async {
+      await runOnce(() async {
+        await profile.changeProfileFilteringSettings(data.value);
+        await profile.resetMainProfileIterator();
+      });
     });
     on<SetLastSeenTimeFilter>((data, emit) {
       final newValue = data.value;
