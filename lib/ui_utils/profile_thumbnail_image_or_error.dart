@@ -7,7 +7,7 @@ import 'package:database/database.dart';
 import 'package:app/ui_utils/consts/corners.dart';
 import 'package:app/ui_utils/crop_image_screen.dart';
 
-class ProfileThumbnailImageOrError extends StatefulWidget {
+class ProfileThumbnailImageOrError extends StatelessWidget {
   final AccountId accountId;
   final ContentId? contentId;
   final CropResults cropResults;
@@ -38,31 +38,25 @@ class ProfileThumbnailImageOrError extends StatefulWidget {
     );
 
   @override
-  State<ProfileThumbnailImageOrError> createState() => _ProfileThumbnailImageOrErrorState();
-}
-
-class _ProfileThumbnailImageOrErrorState extends State<ProfileThumbnailImageOrError> {
-
-  @override
   Widget build(BuildContext context) {
-    final content = widget.contentId;
+    final content = contentId;
     if (content != null) {
       return ProfileThumbnailImage(
-        accountId: widget.accountId,
+        accountId: accountId,
         contentId: content,
-        width: widget.width,
-        height: widget.height,
-        squareFactor: widget.squareFactor,
-        borderRadius: widget.borderRadius,
-        cacheSize: widget.cacheSize,
-        child: widget.child,
+        width: width,
+        height: height,
+        squareFactor: squareFactor,
+        borderRadius: borderRadius,
+        cacheSize: cacheSize,
+        child: child,
       );
     } else {
       return Align(
         alignment: Alignment.center,
         child: SizedBox(
-          width: widget.width,
-          height: widget.height,
+          width: width,
+          height: height,
           child: const Center(
             child: Icon(Icons.warning),
           ),
