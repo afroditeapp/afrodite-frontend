@@ -51,6 +51,24 @@ class DaoProfileStates extends DatabaseAccessor<AccountDatabase> with _$DaoProfi
     );
   }
 
+  Future<void> setFavoriteStatusWithTime(
+    AccountId accountId,
+    int unixTime,
+  ) async {
+    final utcTime = UtcDateTime.fromUnixEpochMilliseconds(unixTime);
+    await into(profileStates).insert(
+      ProfileStatesCompanion.insert(
+        uuidAccountId: accountId,
+        isInFavorites: Value(utcTime),
+      ),
+      onConflict: DoUpdate((old) => ProfileStatesCompanion(
+        isInFavorites: Value(utcTime),
+      ),
+        target: [profileStates.uuidAccountId]
+      ),
+    );
+  }
+
   Future<void> setReceivedLikeStatus(
     AccountId accountId,
     bool value,
@@ -170,14 +188,13 @@ class DaoProfileStates extends DatabaseAccessor<AccountDatabase> with _$DaoProfi
     );
   }
 
-  Future<void> setFavoriteStatusList(List<AccountId>? accounts, bool value, {bool clear = false}) async {
+  Future<void> replaceFavorites(List<AccountId> accounts) async {
     await transaction(() async {
-      if (clear) {
-        await update(profileStates)
-          .write(const ProfileStatesCompanion(isInFavorites: Value(null)));
-      }
-      for (final a in accounts ?? <AccountId>[]) {
-        await setFavoriteStatus(a, value);
+      await update(profileStates)
+        .write(const ProfileStatesCompanion(isInFavorites: Value(null)));
+      for (final (i, a) in accounts.indexed) {
+        // Order the favorites so that oldest added favorite has unix time 0.
+        await setFavoriteStatusWithTime(a, i);
       }
     });
   }

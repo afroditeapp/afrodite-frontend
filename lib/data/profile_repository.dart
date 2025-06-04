@@ -440,7 +440,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
   Future<Result<void, void>> reloadFavoriteProfiles() async {
     return await _api.profile((api) => api.getFavoriteProfiles())
       .emptyErr()
-      .andThen((f) => db.accountAction((db) => db.daoProfileStates.setFavoriteStatusList(f.profiles, true, clear: true)));
+      .andThen((f) => db.accountAction((db) => db.daoProfileStates.replaceFavorites(f.profiles)));
   }
 
   Future<Result<void, void>> reloadLocation() async {
