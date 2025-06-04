@@ -4,7 +4,6 @@ import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:openapi/api.dart';
 import 'package:app/data/image_cache.dart';
-import 'package:database/database.dart';
 import 'package:app/data/login_repository.dart';
 import 'package:app/model/freezed/logic/media/profile_pictures.dart';
 import 'package:app/ui_utils/consts/corners.dart';
@@ -134,7 +133,13 @@ class _ProfileThumbnailImageState extends State<ProfileThumbnailImage> {
               ),
               clipBehavior: Clip.hardEdge,
               child: CustomPaint(
-                painter: CroppedImagePainter(img, widget.cropResults, widget.squareFactor),
+                painter: CroppedImagePainter(
+                  widget.accountId,
+                  widget.contentId,
+                  img,
+                  widget.cropResults,
+                  widget.squareFactor,
+                ),
                 child: widget.child,
               ),
             ),
@@ -155,10 +160,21 @@ class _ProfileThumbnailImageState extends State<ProfileThumbnailImage> {
 }
 
 class CroppedImagePainter extends CustomPainter {
+  // AccountId and ContentId are needed here to make sure
+  // that repaint happens when a ProfileThumbnailImage is replaced
+  // with another ProfileThumbnailImage.
+  final AccountId accountId;
+  final ContentId contentId;
   final ui.Image img;
   final CropResults cropResults;
   final double squareFactor;
-  CroppedImagePainter(this.img, this.cropResults, this.squareFactor);
+  CroppedImagePainter(
+    this.accountId,
+    this.contentId,
+    this.img,
+    this.cropResults,
+    this.squareFactor,
+  );
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -180,7 +196,10 @@ class CroppedImagePainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) {
     final old = oldDelegate as CroppedImagePainter;
-    return old.cropResults != cropResults || old.squareFactor != squareFactor;
+    return old.accountId != accountId ||
+      old.contentId != contentId ||
+      old.cropResults != cropResults ||
+      old.squareFactor != squareFactor;
   }
 }
 
