@@ -19,7 +19,6 @@ import 'package:app/data/image_cache.dart';
 import 'package:app/localizations.dart';
 import 'package:app/logic/profile/attributes.dart';
 import 'package:app/model/freezed/logic/profile/attributes.dart';
-import 'package:app/ui/normal/profiles/view_profile.dart';
 import 'package:app/ui/normal/settings/profile/edit_profile.dart';
 import 'package:app/ui_utils/consts/corners.dart';
 import 'package:app/ui_utils/consts/padding.dart';
@@ -32,8 +31,7 @@ const double PROFILE_IMG_HEIGHT = 400;
 
 class ViewProfileEntry extends StatefulWidget {
   final ProfileEntry profile;
-  final ProfileHeroTag? heroTag;
-  const ViewProfileEntry({required this.profile, this.heroTag, super.key});
+  const ViewProfileEntry({required this.profile, super.key});
 
   @override
   State<ViewProfileEntry> createState() => _ViewProfileEntryState();
@@ -55,7 +53,6 @@ class _ViewProfileEntryState extends State<ViewProfileEntry> {
                 width: constraints.maxWidth,
                 child: ViewProfileImgViewer(
                   profile: widget.profile,
-                  heroTag: widget.heroTag,
                   showNonAcceptedImages: widget.profile is MyProfileEntry,
                 ),
               ),
@@ -291,11 +288,9 @@ class _ViewProfileEntryState extends State<ViewProfileEntry> {
 
 class ViewProfileImgViewer extends StatefulWidget {
   final ProfileEntry profile;
-  final ProfileHeroTag? heroTag;
   final bool showNonAcceptedImages;
   const ViewProfileImgViewer({
     required this.profile,
-    this.heroTag,
     required this.showNonAcceptedImages,
     super.key
   });
@@ -343,10 +338,7 @@ class _ViewProfileImgViewerState extends State<ViewProfileImgViewer> {
       if (!widget.showNonAcceptedImages && !contentList[i].accepted) {
         continue;
       }
-
-      final firstImgHeroTag = 0 == i ? widget.heroTag : null;
-      final img = viewProifleImage(context, widget.profile.uuid, contentList[i].id, firstImgHeroTag);
-      imgs.add(img);
+      imgs.add(viewProifleImage(context, widget.profile.uuid, contentList[i].id));
     }
 
     if (imgs.isEmpty) {
@@ -416,26 +408,14 @@ class _ViewProfileImgViewerState extends State<ViewProfileImgViewer> {
     );
   }
 
-  Widget viewProifleImage(BuildContext context, AccountId accountId, ContentId contentId, ProfileHeroTag? heroTag) {
-    final Widget img = ProfileThumbnailImage(
+  Widget viewProifleImage(BuildContext context, AccountId accountId, ContentId contentId) {
+    return ProfileThumbnailImage(
       accountId: accountId,
       contentId: contentId,
       borderRadius: null,
       squareFactor: 0.0,
       cacheSize: ImageCacheSize.sizeForViewProfile(),
     );
-
-    final Widget heroAndImg;
-    if (heroTag != null) {
-      heroAndImg = Hero(
-        tag: heroTag.value,
-        child: img,
-      );
-    } else {
-      heroAndImg = img;
-    }
-
-    return heroAndImg;
   }
 }
 

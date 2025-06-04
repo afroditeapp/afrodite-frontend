@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:ui';
 
 import 'package:app/logic/profile/view_profiles.dart';
 import 'package:app/logic/settings/ui_settings.dart';
@@ -48,14 +47,13 @@ class ProfileGrid extends StatefulWidget {
   State<ProfileGrid> createState() => _ProfileGridState();
 }
 
-typedef ProfileViewEntry = ({ProfileEntry profile, ProfileActionState? initialProfileAction, ProfileHeroTag heroTag});
+typedef ProfileViewEntry = ({ProfileEntry profile, ProfileActionState? initialProfileAction});
 
 
 class _ProfileGridState extends State<ProfileGrid> {
   final ScrollController _scrollController = ScrollController();
   PagingController<int, ProfileViewEntry>? _pagingController =
     PagingController(firstPageKey: 0);
-  int _heroUniqueIdCounter = 0;
   StreamSubscription<ProfileChange>? _profileChangesSubscription;
 
   // Use same progress indicator state that transition between
@@ -89,7 +87,6 @@ class _ProfileGridState extends State<ProfileGrid> {
       ));
     }
 
-    _heroUniqueIdCounter = 0;
     _pagingController?.addPageRequestListener((pageKey) {
       _fetchPage(pageKey);
     });
@@ -169,20 +166,13 @@ class _ProfileGridState extends State<ProfileGrid> {
       return;
     }
 
-    // Get images here instead of FutureBuilder because there was some weird
-    // Hero tag error even if the builder index is in the tag.
-    // Not sure does this image loading change affect the issue.
-    // The PagedChildBuilderDelegate seems to run the builder twice for some
-    // reason for the initial page.
     final newList = List<ProfileViewEntry>.empty(growable: true);
     for (final profile in profileList) {
       final initialProfileAction = await resolveProfileAction(chat, profile.uuid);
       newList.add((
         profile: profile,
         initialProfileAction: initialProfileAction,
-        heroTag: ProfileHeroTag.from(profile.uuid, _heroUniqueIdCounter),
       ));
-      _heroUniqueIdCounter++;
     }
 
     if (profileList.isEmpty) {
@@ -250,33 +240,7 @@ class _ProfileGridState extends State<ProfileGrid> {
       builderDelegate: PagedChildBuilderDelegate<ProfileViewEntry>(
         animateTransitions: true,
         itemBuilder: (context, item, index) {
-          return GestureDetector(
-            // This callback should be used when Hero animation is enabled.
-            // onTap: () {
-            //   openProfileView(context, item.profile, heroTag: item.heroTag);
-            // },
-            child: Hero(
-              tag: item.heroTag.value,
-              flightShuttleBuilder: (flightContext, animation, flightDirection, fromHeroContext, toHeroContext) {
-                // The animation might have issues because the data updates with
-                // StreamBuilder.
-                return AnimatedBuilder(
-                  animation: animation,
-                  builder: (context, child) {
-                    final squareFactor = lerpDouble(1.0, 0.0, animation.value) ?? 0.0;
-                    final radius = lerpDouble(settings.valueProfileThumbnailBorderRadius(), 0.0, animation.value) ?? 0.0;
-                    return ProfileThumbnailImageOrError.fromProfileEntry(
-                      entry: item.profile,
-                      squareFactor: squareFactor,
-                      borderRadius: BorderRadius.all(Radius.circular(radius)),
-                      cacheSize: ImageCacheSize.sizeForGrid(),
-                    );
-                  }
-                );
-              },
-              child: profileEntryWidgetStream(item.profile, iHaveUnlimitedLikesEnabled, item.initialProfileAction, accountDb, settings),
-            )
-          );
+          return profileEntryWidgetStream(item.profile, iHaveUnlimitedLikesEnabled, item.initialProfileAction, accountDb, settings);
         },
         noItemsFoundIndicatorBuilder: (context) {
           final filterState = context.read<ProfileFilteringSettingsBloc>().state;
@@ -404,10 +368,7 @@ Widget profileEntryWidgetStream(
                   if (overrideOnTap != null) {
                     return overrideOnTap(context);
                   }
-                  // Hero animation is disabled currently as UI looks better
-                  // without it.
-                  // openProfileView(context, item.profile, heroTag: item.heroTag);
-                  openProfileView(context, e, initialProfileAction, ProfileRefreshPriority.low, heroTag: null);
+                  openProfileView(context, e, initialProfileAction, ProfileRefreshPriority.low);
                 },
               ),
             ),

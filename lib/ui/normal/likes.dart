@@ -26,7 +26,6 @@ import 'package:app/model/freezed/logic/main/bottom_navigation_state.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/model/freezed/logic/profile/my_profile.dart';
 import 'package:app/ui/normal/profiles/profile_grid.dart';
-import 'package:app/ui/normal/profiles/view_profile.dart';
 import 'package:app/ui_utils/bottom_navigation.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
@@ -172,13 +171,12 @@ class LikeViewContent extends StatefulWidget {
   State<LikeViewContent> createState() => LikeViewContentState();
 }
 
-typedef LikeViewEntry = ({ProfileEntry profile, ProfileActionState? initalProfileAction, ProfileHeroTag heroTag});
+typedef LikeViewEntry = ({ProfileEntry profile, ProfileActionState? initalProfileAction});
 
 class LikeViewContentState extends State<LikeViewContent> {
   final ScrollController _scrollController = ScrollController();
   PagingController<int, LikeViewEntry>? _pagingController =
     PagingController(firstPageKey: 0);
-  int _heroUniqueIdCounter = 0;
   StreamSubscription<ProfileChange>? _profileChangesSubscription;
 
   final ChatRepository chat = LoginRepository.getInstance().repositories.chat;
@@ -202,8 +200,6 @@ class LikeViewContentState extends State<LikeViewContent> {
   void initState() {
     super.initState();
     _mainProfilesViewIterator.reset(false);
-
-    _heroUniqueIdCounter = 0;
     _pagingController?.addPageRequestListener((pageKey) {
       _fetchPage(pageKey);
     });
@@ -273,9 +269,7 @@ class LikeViewContentState extends State<LikeViewContent> {
       newList.add((
         profile: profile,
         initalProfileAction: initialProfileAction,
-        heroTag: ProfileHeroTag.from(profile.uuid, _heroUniqueIdCounter),
       ));
-      _heroUniqueIdCounter++;
     }
 
     if (profileList.isEmpty) {
@@ -339,20 +333,13 @@ class LikeViewContentState extends State<LikeViewContent> {
       builderDelegate: PagedChildBuilderDelegate<LikeViewEntry>(
         animateTransitions: true,
         itemBuilder: (context, item, index) {
-          return GestureDetector(
-            // This callback should be used when Hero animation is enabled.
-            // onTap: () => openProfileView(context, item.profile, heroTag: item.heroTag),
-            child: Hero(
-              tag: item.heroTag.value,
-              child: profileEntryWidgetStream(
-                item.profile,
-                iHaveUnlimitedLikesEnabled,
-                item.initalProfileAction,
-                accountDb,
-                settings,
-                showNewLikeMarker: true,
-              )
-            )
+          return profileEntryWidgetStream(
+            item.profile,
+            iHaveUnlimitedLikesEnabled,
+            item.initalProfileAction,
+            accountDb,
+            settings,
+            showNewLikeMarker: true,
           );
         },
         noItemsFoundIndicatorBuilder: (context) {

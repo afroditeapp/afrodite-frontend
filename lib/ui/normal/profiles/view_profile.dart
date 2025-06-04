@@ -25,17 +25,6 @@ import 'package:app/ui_utils/app_bar/menu_actions.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 
-typedef ProfileHeroTagRaw = ({AccountId accountId, int uniqueCounterNumber});
-
-extension type ProfileHeroTag(ProfileHeroTagRaw value) {
-  AccountId get accountId => value.accountId;
-  int get uniqueCounterNumber => value.uniqueCounterNumber;
-
-  static ProfileHeroTag from(AccountId accountId, int uniqueCounterNumber) {
-    return ProfileHeroTag((accountId: accountId, uniqueCounterNumber: uniqueCounterNumber));
-  }
-}
-
 // TODO(refactor): Consider making ApiManager available using
 //                 context.read<ApiManager>().
 
@@ -45,7 +34,6 @@ void openProfileView(
   ProfileActionState? initialProfileAction,
   ProfileRefreshPriority priority,
   {
-    ProfileHeroTag? heroTag,
     bool noAction = false,
   }
 ) {
@@ -73,7 +61,6 @@ class ViewProfilePage extends StatelessWidget {
   final PageKey pageKey;
   final bool noAction;
   final ProfileEntry initialProfile;
-  final ProfileHeroTag? heroTag;
 
   final ApiManager api;
 
@@ -81,7 +68,6 @@ class ViewProfilePage extends StatelessWidget {
     required this.pageKey,
     required this.initialProfile,
     required this.api,
-    this.heroTag,
     this.noAction = false,
     super.key,
   });
@@ -193,7 +179,7 @@ class ViewProfilePage extends StatelessWidget {
         return AnimatedOpacity(
           duration: const Duration(milliseconds: 150),
           opacity: state.isNotAvailable ? 0.0 : 1.0,
-          child: ViewProfileEntry(profile: state.profile, heroTag: heroTag),
+          child: ViewProfileEntry(profile: state.profile),
         );
       }
     );
