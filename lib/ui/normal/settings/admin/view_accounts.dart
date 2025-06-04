@@ -24,8 +24,10 @@ class _BlockedProfilesScreen extends State<ViewAccountsScreen> {
 
   AccountIdDbValue? iteratorStartPosition;
 
+  bool isDisposed = false;
+
   void updatePagingState(PagingState<int, AccountEntry> Function(PagingState<int, AccountEntry>) action) {
-    if (!context.mounted) {
+    if (isDisposed || !context.mounted) {
       return;
     }
     setState(() {
@@ -79,6 +81,9 @@ class _BlockedProfilesScreen extends State<ViewAccountsScreen> {
   Widget grid(BuildContext context) {
     return RefreshIndicator(
       onRefresh: () async {
+        if (_pagingState.isLoading) {
+          return;
+        }
         setState(() {
           _pagingState = PagingState();
         });
@@ -100,5 +105,11 @@ class _BlockedProfilesScreen extends State<ViewAccountsScreen> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    isDisposed = true;
+    super.dispose();
   }
 }

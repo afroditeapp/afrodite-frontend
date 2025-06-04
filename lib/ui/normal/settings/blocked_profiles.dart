@@ -38,6 +38,8 @@ class _BlockedProfilesScreen extends State<BlockedProfilesScreen> {
   final chat = LoginRepository.getInstance().repositories.chat;
   final profile = LoginRepository.getInstance().repositories.profile;
 
+  bool isDisposed = false;
+
   @override
   void initState() {
     super.initState();
@@ -60,7 +62,7 @@ class _BlockedProfilesScreen extends State<BlockedProfilesScreen> {
   }
 
   void updatePagingState(PagingState<int, BlockedProfileEntry> Function(PagingState<int, BlockedProfileEntry>) action) {
-    if (!context.mounted) {
+    if (isDisposed || !context.mounted) {
       return;
     }
     setState(() {
@@ -197,6 +199,7 @@ class _BlockedProfilesScreen extends State<BlockedProfilesScreen> {
 
   @override
   void dispose() {
+    isDisposed = true;
     _profileChangesSubscription?.cancel();
     _profileChangesSubscription = null;
     super.dispose();

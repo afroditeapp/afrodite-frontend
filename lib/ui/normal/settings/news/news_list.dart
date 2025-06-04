@@ -79,6 +79,8 @@ class NewsListScreenState extends State<NewsListScreen> {
 
   NewsIteratorSessionId? _sessionId;
 
+  bool isDisposed = false;
+
   @override
   void initState() {
     super.initState();
@@ -86,7 +88,7 @@ class NewsListScreenState extends State<NewsListScreen> {
   }
 
   void updatePagingState(PagingState<int, NewsViewEntry> Function(PagingState<int, NewsViewEntry>) action) {
-    if (!context.mounted) {
+    if (isDisposed || !context.mounted) {
       return;
     }
     setState(() {
@@ -161,7 +163,7 @@ class NewsListScreenState extends State<NewsListScreen> {
                       } else {
                         showSnackBar(R.strings.generic_action_completed);
                         if (context.mounted) {
-                          await refresh();
+                          refresh();
                         }
                       }
                     }
@@ -182,7 +184,7 @@ class NewsListScreenState extends State<NewsListScreen> {
   Widget content() {
     return RefreshIndicator(
       onRefresh: () async {
-        await refresh();
+        refresh();
       },
       child: Column(children: [
         Expanded(
@@ -280,7 +282,10 @@ class NewsListScreenState extends State<NewsListScreen> {
     );
   }
 
-  Future<void> refresh() async {
+  void refresh() {
+    if (_pagingState.isLoading) {
+      return;
+    }
     setState(() {
       _pagingState = PagingState();
     });
@@ -288,6 +293,7 @@ class NewsListScreenState extends State<NewsListScreen> {
 
   @override
   void dispose() {
+    isDisposed = true;
     _scrollController.dispose();
     super.dispose();
   }

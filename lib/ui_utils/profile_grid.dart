@@ -6,6 +6,7 @@ import 'package:app/logic/settings/ui_settings.dart';
 import 'package:app/model/freezed/logic/profile/view_profiles.dart';
 import 'package:app/model/freezed/logic/settings/ui_settings.dart';
 import 'package:app/ui_utils/extensions/other.dart';
+import 'package:app/utils/command_runner.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
@@ -49,11 +50,15 @@ class _GenericProfileGridState extends State<GenericProfileGrid> {
   final AccountDatabaseManager accountDb = LoginRepository.getInstance().repositories.accountDb;
 
   late final UiProfileIterator _mainProfilesViewIterator;
-  bool _reloadInProgress = false;
+
+  final SynchronousCommandRunner _commandRunner = SynchronousCommandRunner();
+  bool isDisposed = false;
 
   @override
   void initState() {
     super.initState();
+
+    _commandRunner.init();
 
     _mainProfilesViewIterator = widget.buildIteratorManager();
     _mainProfilesViewIterator.reset(true);
@@ -77,7 +82,7 @@ class _GenericProfileGridState extends State<GenericProfileGrid> {
   }
 
   void updatePagingState(PagingState<int, ProfileGridProfileEntry> Function(PagingState<int, ProfileGridProfileEntry>) action) {
-    if (!context.mounted) {
+    if (isDisposed || !context.mounted) {
       return;
     }
     setState(() {
@@ -89,8 +94,8 @@ class _GenericProfileGridState extends State<GenericProfileGrid> {
     updatePagingState((s) => s.filterItems((item) => item.profile.entry.uuid != accountId));
   }
 
-  void _fetchPage() async {
-    if (_pagingState.isLoading) {
+  Future<void> _fetchPage() async {
+    if (!_pagingState.hasNextPage) {
       return;
     }
 
@@ -126,9 +131,7 @@ class _GenericProfileGridState extends State<GenericProfileGrid> {
   Widget content() {
     return RefreshIndicator(
       onRefresh: () async {
-        if (!_reloadInProgress) {
-          await refreshProfileGrid();
-        }
+        await refreshProfileGrid();
       },
       child: Column(children: [
         Expanded(
@@ -150,7 +153,9 @@ class _GenericProfileGridState extends State<GenericProfileGrid> {
   Widget grid(BuildContext context, bool iHaveUnlimitedLikesEnabled, GridSettings settings) {
     return PagedGridView(
       state: _pagingState,
-      fetchNextPage: _fetchPage,
+      fetchNextPage: () {
+        _commandRunner.add(Command("fetchPage", _fetchPage));
+      },
       physics: const AlwaysScrollableScrollPhysics(),
       scrollController: _scrollController,
       padding: const EdgeInsets.symmetric(horizontal: COMMON_SCREEN_EDGE_PADDING),
@@ -205,9 +210,7 @@ class _GenericProfileGridState extends State<GenericProfileGrid> {
           const Padding(padding: EdgeInsets.all(8)),
           ElevatedButton(
             onPressed: () {
-              if (!_reloadInProgress) {
-                refreshProfileGrid();
-              }
+              refreshProfileGrid();
             },
             child: Text(context.strings.generic_try_again),
           ),
@@ -218,15 +221,16 @@ class _GenericProfileGridState extends State<GenericProfileGrid> {
   }
 
   Future<void> refreshProfileGrid() async {
-    _reloadInProgress = true;
-    await _mainProfilesViewIterator.loadingInProgress.firstWhere((e) => e == false);
-    _mainProfilesViewIterator.reset(true);
-    updatePagingState((_) => PagingState());
-    _reloadInProgress = false;
+    _commandRunner.addIfNotAlreadyScheduled(Command("refresh", () {
+      _mainProfilesViewIterator.reset(true);
+      updatePagingState((_) => PagingState());
+    }));
   }
 
   @override
   void dispose() {
+    isDisposed = true;
+    _commandRunner.dispose();
     _scrollController.dispose();
     _profileChangesSubscription?.cancel();
     _profileChangesSubscription = null;

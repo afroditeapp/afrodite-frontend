@@ -6,6 +6,7 @@ import 'package:app/model/freezed/logic/profile/view_profiles.dart';
 import 'package:app/model/freezed/logic/settings/ui_settings.dart';
 import 'package:app/ui_utils/extensions/other.dart';
 import 'package:app/ui_utils/profile_thumbnail_image_or_error.dart';
+import 'package:app/utils/command_runner.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
@@ -65,14 +66,18 @@ class _ProfileGridState extends State<ProfileGrid> {
     LoginRepository.getInstance().repositories.connectionManager,
     LoginRepository.getInstance().repositories.chat.currentUser,
   );
-  bool _reloadInProgress = false;
 
   final profileRepository = LoginRepository.getInstance().repositories.profile;
   final chatRepository = LoginRepository.getInstance().repositories.chat;
 
+  final SynchronousCommandRunner _commandRunner = SynchronousCommandRunner();
+  bool isDisposed = false;
+
   @override
   void initState() {
     super.initState();
+
+    _commandRunner.init();
 
     if (widget.filteringSettingsBloc.state.showOnlyFavorites) {
       _mainProfilesViewIterator.reset(ModeFavorites());
@@ -109,7 +114,7 @@ class _ProfileGridState extends State<ProfileGrid> {
   }
 
   void updatePagingState(PagingState<int, ProfileViewEntry> Function(PagingState<int, ProfileViewEntry>) action) {
-    if (!context.mounted) {
+    if (isDisposed || !context.mounted) {
       return;
     }
     setState(() {
@@ -151,8 +156,8 @@ class _ProfileGridState extends State<ProfileGrid> {
     updatePagingState((s) => s.filterItems((item) => item.profile.entry.uuid != accountId));
   }
 
-  void _fetchPage() async {
-    if (_pagingState.isLoading) {
+  Future<void> _fetchPage() async {
+    if (!_pagingState.hasNextPage) {
       return;
     }
 
@@ -183,9 +188,7 @@ class _ProfileGridState extends State<ProfileGrid> {
   Widget build(BuildContext context) {
     return RefreshIndicator(
       onRefresh: () async {
-        if (!_reloadInProgress) {
-          await refreshProfileGrid();
-        }
+        await refreshProfileGrid();
       },
       child: BlocBuilder<UiSettingsBloc, UiSettingsData>(
         buildWhen: (previous, current) => previous.gridSettings != current.gridSettings,
@@ -241,7 +244,9 @@ class _ProfileGridState extends State<ProfileGrid> {
   ) {
     return PagedGridView(
       state: pagingState,
-      fetchNextPage: _fetchPage,
+      fetchNextPage: () {
+        _commandRunner.add(Command("fetchPage", _fetchPage));
+      },
       physics: const AlwaysScrollableScrollPhysics(),
       scrollController: _scrollController,
       padding: EdgeInsets.symmetric(horizontal: settings.valueHorizontalPadding()),
@@ -308,9 +313,7 @@ class _ProfileGridState extends State<ProfileGrid> {
           const Padding(padding: EdgeInsets.all(8)),
           ElevatedButton(
             onPressed: () {
-              if (!_reloadInProgress) {
-                refreshProfileGrid();
-              }
+              refreshProfileGrid();
             },
             child: Text(context.strings.generic_try_again),
           ),
@@ -321,15 +324,16 @@ class _ProfileGridState extends State<ProfileGrid> {
   }
 
   Future<void> refreshProfileGrid() async {
-    _reloadInProgress = true;
-    await _mainProfilesViewIterator.loadingInProgress.firstWhere((e) => e == false);
-    _mainProfilesViewIterator.refresh();
-    updatePagingState((_) => PagingState());
-    _reloadInProgress = false;
+    _commandRunner.addIfNotAlreadyScheduled(Command("refresh", () {
+      _mainProfilesViewIterator.refresh();
+      updatePagingState((_) => PagingState());
+    }));
   }
 
   @override
   void dispose() {
+    isDisposed = true;
+    _commandRunner.dispose();
     _scrollController.removeListener(scrollEventListener);
     _scrollController.dispose();
     _profileChangesSubscription?.cancel();

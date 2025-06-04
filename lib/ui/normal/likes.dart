@@ -6,6 +6,7 @@ import 'package:app/logic/settings/ui_settings.dart';
 import 'package:app/model/freezed/logic/profile/view_profiles.dart';
 import 'package:app/model/freezed/logic/settings/ui_settings.dart';
 import 'package:app/ui_utils/extensions/other.dart';
+import 'package:app/utils/command_runner.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
@@ -191,13 +192,16 @@ class LikeViewContentState extends State<LikeViewContent> {
     LoginRepository.getInstance().repositories.connectionManager,
     LoginRepository.getInstance().repositories.chat.currentUser,
   );
-  bool _reloadInProgress = false;
   bool _onLoginReloadDoneOnce = false;
   UtcDateTime? _previousAutomaticReloadTime;
+
+  final SynchronousCommandRunner _commandRunner = SynchronousCommandRunner();
+  bool isDisposed = false;
 
   @override
   void initState() {
     super.initState();
+    _commandRunner.init();
     _mainProfilesViewIterator.reset(false);
     _profileChangesSubscription?.cancel();
     _profileChangesSubscription = profileRepository.profileChanges.listen((event) {
@@ -239,7 +243,7 @@ class LikeViewContentState extends State<LikeViewContent> {
   }
 
   void updatePagingState(PagingState<int, LikeViewEntry> Function(PagingState<int, LikeViewEntry>) action) {
-    if (!context.mounted) {
+    if (isDisposed || !context.mounted) {
       return;
     }
     setState(() {
@@ -251,8 +255,8 @@ class LikeViewContentState extends State<LikeViewContent> {
     updatePagingState((s) => s.filterItems((item) => item.profile.entry.uuid != accountId));
   }
 
-  void _fetchPage() async {
-    if (_pagingState.isLoading) {
+  Future<void> _fetchPage() async {
+    if (!_pagingState.hasNextPage) {
       return;
     }
 
@@ -287,10 +291,8 @@ class LikeViewContentState extends State<LikeViewContent> {
   Widget build(BuildContext context) {
     return RefreshIndicator(
       onRefresh: () async {
-        if (!_reloadInProgress) {
-          widget.receivedLikesBloc.add(UpdateReceivedLikesCountNotViewed(0));
-          await refreshProfileGrid();
-        }
+        widget.receivedLikesBloc.add(UpdateReceivedLikesCountNotViewed(0));
+        await refreshProfileGrid();
       },
       child: NotificationListener<ScrollMetricsNotification>(
         onNotification: (notification) {
@@ -331,7 +333,9 @@ class LikeViewContentState extends State<LikeViewContent> {
   Widget grid(BuildContext context, bool iHaveUnlimitedLikesEnabled, GridSettings settings) {
     return PagedGridView(
       state: _pagingState,
-      fetchNextPage: _fetchPage,
+      fetchNextPage: () {
+        _commandRunner.add(Command("fetchPage", _fetchPage));
+      },
       physics: const AlwaysScrollableScrollPhysics(),
       scrollController: _scrollController,
       padding: EdgeInsets.symmetric(horizontal: settings.valueHorizontalPadding()),
@@ -385,10 +389,8 @@ class LikeViewContentState extends State<LikeViewContent> {
           const Padding(padding: EdgeInsets.all(8)),
           ElevatedButton(
             onPressed: () {
-              if (!_reloadInProgress) {
-                context.read<NewReceivedLikesAvailableBloc>().add(UpdateReceivedLikesCountNotViewed(0));
-                refreshProfileGrid();
-              }
+              context.read<NewReceivedLikesAvailableBloc>().add(UpdateReceivedLikesCountNotViewed(0));
+              refreshProfileGrid();
             },
             child: Text(context.strings.generic_try_again),
           ),
@@ -475,15 +477,16 @@ class LikeViewContentState extends State<LikeViewContent> {
   }
 
   Future<void> refreshProfileGrid() async {
-    _reloadInProgress = true;
-    await _mainProfilesViewIterator.loadingInProgress.firstWhere((e) => e == false);
-    _mainProfilesViewIterator.reset(true);
-    updatePagingState((_) => PagingState());
-    _reloadInProgress = false;
+    _commandRunner.addIfNotAlreadyScheduled(Command("refresh", () {
+      _mainProfilesViewIterator.reset(true);
+      updatePagingState((_) => PagingState());
+    }));
   }
 
   @override
   void dispose() {
+    isDisposed = true;
+    _commandRunner.dispose();
     _scrollController.removeListener(scrollEventListener);
     _scrollController.dispose();
     _profileChangesSubscription?.cancel();
