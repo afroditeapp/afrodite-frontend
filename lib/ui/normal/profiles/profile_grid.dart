@@ -55,10 +55,6 @@ class _ProfileGridState extends State<ProfileGrid> {
   PagingState<int, ProfileViewEntry> _pagingState = PagingState();
   StreamSubscription<ProfileChange>? _profileChangesSubscription;
 
-  // Use same progress indicator state that transition between
-  // filter settings progress and grid progress is smooth.
-  final GlobalKey _progressKey = GlobalKey();
-
   final AccountDatabaseManager accountDb = LoginRepository.getInstance().repositories.accountDb;
 
   final ProfileIteratorManager _mainProfilesViewIterator = ProfileIteratorManager(
@@ -198,9 +194,9 @@ class _ProfileGridState extends State<ProfileGrid> {
               return BlocBuilder<ProfileFilteringSettingsBloc, ProfileFilteringSettingsData>(
                 builder: (context, state) {
                   if (state.updateState is UpdateIdle && !state.unsavedChanges()) {
-                    return showGrid(context, myProfileState, uiSettings.gridSettings);
+                    return showGrid(context, myProfileState, uiSettings.gridSettings, _pagingState);
                   } else {
-                    return Center(child: CircularProgressIndicator(key: _progressKey));
+                    return showGrid(context, myProfileState, uiSettings.gridSettings, _pagingState.copyAndShowLoading());
                   }
                 }
               );
@@ -211,7 +207,12 @@ class _ProfileGridState extends State<ProfileGrid> {
     );
   }
 
-  Widget showGrid(BuildContext context, MyProfileData myProfileState, GridSettings settings) {
+  Widget showGrid(
+    BuildContext context,
+    MyProfileData myProfileState,
+    GridSettings settings,
+    PagingState<int, ProfileViewEntry> pagingState,
+  ) {
     return NotificationListener<ScrollMetricsNotification>(
       onNotification: (notification) {
         final isScrolled = notification.metrics.pixels > 0;
@@ -226,14 +227,19 @@ class _ProfileGridState extends State<ProfileGrid> {
             _scrollController.bottomNavigationRelatedJumpToBeginningIfClientsConnected();
           }
         },
-        child: grid(context, myProfileState.profile?.unlimitedLikes ?? false, settings)
+        child: grid(context, myProfileState.profile?.unlimitedLikes ?? false, settings, pagingState)
       ),
     );
   }
 
-  Widget grid(BuildContext context, bool iHaveUnlimitedLikesEnabled, GridSettings settings) {
+  Widget grid(
+    BuildContext context,
+    bool iHaveUnlimitedLikesEnabled,
+    GridSettings settings,
+    PagingState<int, ProfileViewEntry> pagingState,
+  ) {
     return PagedGridView(
-      state: _pagingState,
+      state: pagingState,
       fetchNextPage: _fetchPage,
       physics: const AlwaysScrollableScrollPhysics(),
       scrollController: _scrollController,
@@ -273,7 +279,7 @@ class _ProfileGridState extends State<ProfileGrid> {
           );
         },
         firstPageProgressIndicatorBuilder: (context) {
-          return Center(child: CircularProgressIndicator(key: _progressKey));
+          return const Center(child: CircularProgressIndicator());
         },
         firstPageErrorIndicatorBuilder: (context) {
           return errorDetectedWidgetWithRetryButton();
