@@ -267,16 +267,18 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
     final currentValue = await isInFavorites(accountId);
 
     final Result<void, ActionApiError> status;
+    final bool newValue;
     if (currentValue) {
-      status = await _api.profileAction((api) => api.postFavoriteProfile(accountId));
-    } else {
       status = await _api.profileAction((api) => api.deleteFavoriteProfile(accountId));
+      newValue = false;
+    } else {
+      status = await _api.profileAction((api) => api.postFavoriteProfile(accountId));
+      newValue = true;
     }
 
     if (status.isErr()) {
       return currentValue;
     } else {
-      final newValue = !currentValue;
       await db.accountAction((db) => db.daoProfileStates.setFavoriteStatus(accountId, newValue));
       _profileChangesRelay.add(
         ProfileFavoriteStatusChange(accountId, newValue)
