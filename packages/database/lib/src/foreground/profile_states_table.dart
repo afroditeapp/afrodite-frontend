@@ -285,7 +285,7 @@ class DaoProfileStates extends DatabaseAccessor<AccountDatabase> with _$DaoProfi
     _existenceCheck(accountId, (t) => t.isInMatchesGrid.isNotNull());
 
   Future<List<AccountId>> getFavoritesList(int startIndex, int limit) =>
-    _getProfilesList(startIndex, limit, (t) => t.isInFavorites);
+    _getProfilesList(startIndex, limit, (t) => t.isInFavorites, mode: OrderingMode.desc);
 
   Future<List<AccountId>> getReceivedLikesList(int startIndex, int limit) =>
     _getProfilesList(startIndex, limit, (t) => t.isInReceivedLikes);
@@ -305,11 +305,18 @@ class DaoProfileStates extends DatabaseAccessor<AccountDatabase> with _$DaoProfi
   Future<List<AccountId>> getMatchesGridList(int startIndex, int limit) =>
     _getProfilesList(startIndex, limit, (t) => t.isInMatchesGrid);
 
-  Future<List<AccountId>> _getProfilesList(int? startIndex, int? limit, GeneratedColumnWithTypeConverter<UtcDateTime?, int> Function($ProfileStatesTable) getter) async {
+  Future<List<AccountId>> _getProfilesList(
+    int? startIndex,
+    int? limit,
+    GeneratedColumnWithTypeConverter<UtcDateTime?, int> Function($ProfileStatesTable) getter,
+    {
+      OrderingMode mode = OrderingMode.asc,
+    }
+  ) async {
     final q = select(profileStates)
       ..where((t) => getter(t).isNotNull())
       ..orderBy([
-        (t) => OrderingTerm(expression: getter(t)),
+        (t) => OrderingTerm(expression: getter(t), mode: mode),
         // If list is added, the time values can have same value, so
         // order by id to make the order deterministic.
         (t) => OrderingTerm(expression: t.id),
