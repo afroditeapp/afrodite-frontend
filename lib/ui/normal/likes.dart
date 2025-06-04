@@ -175,8 +175,7 @@ typedef LikeViewEntry = ({ProfileEntry profile, ProfileActionState? initalProfil
 
 class LikeViewContentState extends State<LikeViewContent> {
   final ScrollController _scrollController = ScrollController();
-  PagingController<int, LikeViewEntry>? _pagingController =
-    PagingController(firstPageKey: 0);
+  PagingState<int, LikeViewEntry> _pagingState = PagingState();
   StreamSubscription<ProfileChange>? _profileChangesSubscription;
 
   final ChatRepository chat = LoginRepository.getInstance().repositories.chat;
@@ -200,9 +199,6 @@ class LikeViewContentState extends State<LikeViewContent> {
   void initState() {
     super.initState();
     _mainProfilesViewIterator.reset(false);
-    _pagingController?.addPageRequestListener((pageKey) {
-      _fetchPage(pageKey);
-    });
     _profileChangesSubscription?.cancel();
     _profileChangesSubscription = profile.profileChanges.listen((event) {
       _handleProfileChange(event);
@@ -242,24 +238,35 @@ class LikeViewContentState extends State<LikeViewContent> {
     }
   }
 
-  void _removeAccountIdFromList(AccountId accountId) {
-    final controller = _pagingController;
-    if (controller != null) {
-      setState(() {
-        controller.itemList?.removeWhere((item) => item.profile.uuid == accountId);
-      });
+  void updatePagingState(PagingState<int, LikeViewEntry> Function(PagingState<int, LikeViewEntry>) action) {
+    if (!context.mounted) {
+      return;
     }
+    setState(() {
+      _pagingState = action(_pagingState);
+    });
   }
 
-  Future<void> _fetchPage(int pageKey) async {
-    if (pageKey == 0) {
+  void _removeAccountIdFromList(AccountId accountId) {
+    updatePagingState((s) => s.filterItems((item) => item.profile.uuid != accountId));
+  }
+
+  void _fetchPage() async {
+    if (_pagingState.isLoading) {
+      return;
+    }
+
+    await Future<void>.value();
+
+    updatePagingState((s) => s.copyAndShowLoading());
+
+    if (_pagingState.isInitialPage()) {
       _mainProfilesViewIterator.resetToBeginning();
     }
 
     final profileList = await _mainProfilesViewIterator.nextList().ok();
     if (profileList == null) {
-      // Show error UI
-      _pagingController?.error = true;
+      updatePagingState((s) => s.copyAndShowError());
       return;
     }
 
@@ -272,11 +279,7 @@ class LikeViewContentState extends State<LikeViewContent> {
       ));
     }
 
-    if (profileList.isEmpty) {
-      _pagingController?.appendLastPage([]);
-    } else {
-      _pagingController?.appendPage(newList, pageKey + 1);
-    }
+    updatePagingState((s) => s.copyAndAdd(newList));
   }
 
   @override
@@ -326,9 +329,10 @@ class LikeViewContentState extends State<LikeViewContent> {
 
   Widget grid(BuildContext context, bool iHaveUnlimitedLikesEnabled, GridSettings settings) {
     return PagedGridView(
+      state: _pagingState,
+      fetchNextPage: _fetchPage,
       physics: const AlwaysScrollableScrollPhysics(),
       scrollController: _scrollController,
-      pagingController: _pagingController!,
       padding: EdgeInsets.symmetric(horizontal: settings.valueHorizontalPadding()),
       builderDelegate: PagedChildBuilderDelegate<LikeViewEntry>(
         animateTransitions: true,
@@ -473,8 +477,7 @@ class LikeViewContentState extends State<LikeViewContent> {
     _reloadInProgress = true;
     await _mainProfilesViewIterator.loadingInProgress.firstWhere((e) => e == false);
     _mainProfilesViewIterator.reset(true);
-    // This might be disposed after resetProfileIterator completes.
-    _pagingController?.refresh();
+    updatePagingState((_) => PagingState());
     _reloadInProgress = false;
   }
 
@@ -482,8 +485,6 @@ class LikeViewContentState extends State<LikeViewContent> {
   void dispose() {
     _scrollController.removeListener(scrollEventListener);
     _scrollController.dispose();
-    _pagingController?.dispose();
-    _pagingController = null;
     _profileChangesSubscription?.cancel();
     _profileChangesSubscription = null;
     super.dispose();

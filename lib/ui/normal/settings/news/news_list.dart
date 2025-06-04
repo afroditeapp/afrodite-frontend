@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:app/data/general/notification/state/news_item_available.dart';
 import 'package:app/database/account_background_database_manager.dart';
+import 'package:app/ui_utils/extensions/other.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
@@ -71,8 +72,7 @@ typedef NewsViewEntry = ({NewsItemSimple newsItem});
 
 class NewsListScreenState extends State<NewsListScreen> {
   final ScrollController _scrollController = ScrollController();
-  PagingController<int, NewsViewEntry>? _pagingController =
-    PagingController(firstPageKey: 0);
+  PagingState<int, NewsViewEntry> _pagingState = PagingState();
 
   final AccountBackgroundDatabaseManager accountBackgroundDb = LoginRepository.getInstance().repositories.accountBackgroundDb;
   final ApiManager api = LoginRepository.getInstance().repositories.api;
@@ -83,18 +83,32 @@ class NewsListScreenState extends State<NewsListScreen> {
   void initState() {
     super.initState();
     NotificationNewsItemAvailable.getInstance().hide(accountBackgroundDb);
-    _pagingController?.addPageRequestListener((pageKey) {
-      _fetchPage(pageKey);
+  }
+
+  void updatePagingState(PagingState<int, NewsViewEntry> Function(PagingState<int, NewsViewEntry>) action) {
+    if (!context.mounted) {
+      return;
+    }
+    setState(() {
+      _pagingState = action(_pagingState);
     });
   }
 
+
   void showLoadingError() {
-    // Show error UI
-    _pagingController?.error = true;
+    updatePagingState((s) => s.copyAndShowError());
   }
 
-  Future<void> _fetchPage(int pageKey) async {
-    if (pageKey == 0) {
+  void _fetchPage() async {
+    if (_pagingState.isLoading) {
+      return;
+    }
+
+    await Future<void>.value();
+
+    updatePagingState((s) => s.copyAndShowLoading());
+
+    if (_pagingState.isInitialPage()) {
       final r = await api.account((api) => api.postResetNewsPaging()).ok();
       if (r == null) {
         showLoadingError();
@@ -125,11 +139,7 @@ class NewsListScreenState extends State<NewsListScreen> {
       newList.add((newsItem: newsItem));
     }
 
-    if (news.news.isEmpty) {
-      _pagingController?.appendLastPage([]);
-    } else {
-      _pagingController?.appendPage(newList, pageKey + 1);
-    }
+    updatePagingState((s) => s.copyAndAdd(newList));
   }
 
   @override
@@ -184,9 +194,10 @@ class NewsListScreenState extends State<NewsListScreen> {
 
   Widget grid(BuildContext context) {
     return PagedListView(
+      state: _pagingState,
+      fetchNextPage: _fetchPage,
       physics: const AlwaysScrollableScrollPhysics(),
       scrollController: _scrollController,
-      pagingController: _pagingController!,
       builderDelegate: PagedChildBuilderDelegate<NewsViewEntry>(
         animateTransitions: true,
         itemBuilder: (context, item, index) {
@@ -270,14 +281,14 @@ class NewsListScreenState extends State<NewsListScreen> {
   }
 
   Future<void> refresh() async {
-    _pagingController?.refresh();
+    setState(() {
+      _pagingState = PagingState();
+    });
   }
 
   @override
   void dispose() {
     _scrollController.dispose();
-    _pagingController?.dispose();
-    _pagingController = null;
     super.dispose();
   }
 }

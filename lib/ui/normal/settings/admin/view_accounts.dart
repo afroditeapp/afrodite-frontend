@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:app/ui/normal/settings/admin/account_admin_settings.dart';
+import 'package:app/ui_utils/extensions/other.dart';
 import 'package:app/utils/result.dart';
 import 'package:flutter/material.dart';
 import 'package:openapi/api.dart';
@@ -17,51 +18,50 @@ class ViewAccountsScreen extends StatefulWidget {
 typedef AccountEntry = ProfileIteratorPageValue;
 
 class _BlockedProfilesScreen extends State<ViewAccountsScreen> {
-  PagingController<int, AccountEntry>? _pagingController =
-    PagingController(firstPageKey: 0);
+  PagingState<int, AccountEntry> _pagingState = PagingState();
 
   final api = LoginRepository.getInstance().repositories.api;
 
   AccountIdDbValue? iteratorStartPosition;
-  int iteratorPage = 0;
 
-  @override
-  void initState() {
-    super.initState();
-    _pagingController?.addPageRequestListener((pageKey) {
-      _fetchPage(pageKey);
+  void updatePagingState(PagingState<int, AccountEntry> Function(PagingState<int, AccountEntry>) action) {
+    if (!context.mounted) {
+      return;
+    }
+    setState(() {
+      _pagingState = action(_pagingState);
     });
   }
 
-  Future<void> _fetchPage(int pageKey) async {
-    if (pageKey == 0) {
+  void _fetchPage() async {
+    if (_pagingState.isLoading) {
+      return;
+    }
+
+    await Future<void>.value();
+
+    updatePagingState((s) => s.copyAndShowLoading());
+
+    if (_pagingState.isInitialPage()) {
       iteratorStartPosition = null;
-      iteratorPage = 0;
     }
 
     iteratorStartPosition ??= await api.profileAdmin((api) => api.getLatestCreatedAccountIdDb()).ok();
 
     final startPosition = iteratorStartPosition;
     if (startPosition == null) {
-      // Show error UI
-      _pagingController?.error = true;
+      updatePagingState((s) => s.copyAndShowError());
       return;
     }
 
-    final page = await api.profileAdmin((api) => api.getAdminProfileIteratorPage(startPosition.accountDbId, iteratorPage)).ok();
-    if (page == null) {
-      // Show error UI
-      _pagingController?.error = true;
+    final page = _pagingState.currentPageNumber();
+    final data = await api.profileAdmin((api) => api.getAdminProfileIteratorPage(startPosition.accountDbId, page)).ok();
+    if (data == null) {
+      updatePagingState((s) => s.copyAndShowError());
       return;
     }
 
-    iteratorPage += 1;
-
-    if (page.values.isEmpty) {
-      _pagingController?.appendLastPage([]);
-    } else {
-      _pagingController?.appendPage(page.values, pageKey + 1);
-    }
+    updatePagingState((s) => s.copyAndAdd(data.values));
   }
 
   @override
@@ -78,9 +78,14 @@ class _BlockedProfilesScreen extends State<ViewAccountsScreen> {
 
   Widget grid(BuildContext context) {
     return RefreshIndicator(
-      onRefresh: () async => _pagingController?.refresh(),
+      onRefresh: () async {
+        setState(() {
+          _pagingState = PagingState();
+        });
+      },
       child: PagedListView(
-        pagingController: _pagingController!,
+        state: _pagingState,
+        fetchNextPage: _fetchPage,
         builderDelegate: PagedChildBuilderDelegate<AccountEntry>(
           animateTransitions: true,
           itemBuilder: (context, item, index) {
@@ -95,12 +100,5 @@ class _BlockedProfilesScreen extends State<ViewAccountsScreen> {
         ),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    _pagingController?.dispose();
-    _pagingController = null;
-    super.dispose();
   }
 }

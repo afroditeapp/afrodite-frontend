@@ -40,8 +40,7 @@ class GenericProfileGrid extends StatefulWidget {
 
 class _GenericProfileGridState extends State<GenericProfileGrid> {
   final ScrollController _scrollController = ScrollController();
-  PagingController<int, ProfileGridProfileEntry>? _pagingController =
-    PagingController(firstPageKey: 0);
+  PagingState<int, ProfileGridProfileEntry> _pagingState = PagingState();
   StreamSubscription<ProfileChange>? _profileChangesSubscription;
 
   final ChatRepository chat = LoginRepository.getInstance().repositories.chat;
@@ -59,9 +58,6 @@ class _GenericProfileGridState extends State<GenericProfileGrid> {
     _mainProfilesViewIterator = widget.buildIteratorManager();
     _mainProfilesViewIterator.reset(true);
 
-    _pagingController?.addPageRequestListener((pageKey) {
-      _fetchPage(pageKey);
-    });
     _profileChangesSubscription?.cancel();
     _profileChangesSubscription = profile.profileChanges.listen((event) {
       _handleProfileChange(event);
@@ -80,24 +76,35 @@ class _GenericProfileGridState extends State<GenericProfileGrid> {
     }
   }
 
-  void _removeAccountIdFromList(AccountId accountId) {
-    final controller = _pagingController;
-    if (controller != null) {
-      setState(() {
-        controller.itemList?.removeWhere((item) => item.profile.uuid == accountId);
-      });
+  void updatePagingState(PagingState<int, ProfileGridProfileEntry> Function(PagingState<int, ProfileGridProfileEntry>) action) {
+    if (!context.mounted) {
+      return;
     }
+    setState(() {
+      _pagingState = action(_pagingState);
+    });
   }
 
-  Future<void> _fetchPage(int pageKey) async {
-    if (pageKey == 0) {
+  void _removeAccountIdFromList(AccountId accountId) {
+    updatePagingState((s) => s.filterItems((item) => item.profile.uuid != accountId));
+  }
+
+  void _fetchPage() async {
+    if (_pagingState.isLoading) {
+      return;
+    }
+
+    await Future<void>.value();
+
+    updatePagingState((s) => s.copyAndShowLoading());
+
+    if (_pagingState.isInitialPage()) {
       _mainProfilesViewIterator.resetToBeginning();
     }
 
     final profileList = await _mainProfilesViewIterator.nextList().ok();
     if (profileList == null) {
-      // Show error UI
-      _pagingController?.error = true;
+      updatePagingState((s) => s.copyAndShowError());
       return;
     }
 
@@ -107,11 +114,7 @@ class _GenericProfileGridState extends State<GenericProfileGrid> {
       newList.add((profile: profile, initialProfileAction: initialProfileAction));
     }
 
-    if (profileList.isEmpty) {
-      _pagingController?.appendLastPage([]);
-    } else {
-      _pagingController?.appendPage(newList, pageKey + 1);
-    }
+    updatePagingState((s) => s.copyAndAdd(newList));
   }
 
   @override
@@ -145,9 +148,10 @@ class _GenericProfileGridState extends State<GenericProfileGrid> {
 
   Widget grid(BuildContext context, bool iHaveUnlimitedLikesEnabled, GridSettings settings) {
     return PagedGridView(
+      state: _pagingState,
+      fetchNextPage: _fetchPage,
       physics: const AlwaysScrollableScrollPhysics(),
       scrollController: _scrollController,
-      pagingController: _pagingController!,
       padding: const EdgeInsets.symmetric(horizontal: COMMON_SCREEN_EDGE_PADDING),
       builderDelegate: PagedChildBuilderDelegate<ProfileGridProfileEntry>(
         animateTransitions: true,
@@ -216,16 +220,13 @@ class _GenericProfileGridState extends State<GenericProfileGrid> {
     _reloadInProgress = true;
     await _mainProfilesViewIterator.loadingInProgress.firstWhere((e) => e == false);
     _mainProfilesViewIterator.reset(true);
-    // This might be disposed after resetProfileIterator completes.
-    _pagingController?.refresh();
+    updatePagingState((_) => PagingState());
     _reloadInProgress = false;
   }
 
   @override
   void dispose() {
     _scrollController.dispose();
-    _pagingController?.dispose();
-    _pagingController = null;
     _profileChangesSubscription?.cancel();
     _profileChangesSubscription = null;
     super.dispose();

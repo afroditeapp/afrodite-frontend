@@ -52,8 +52,7 @@ typedef ProfileViewEntry = ({ProfileEntry profile, ProfileActionState? initialPr
 
 class _ProfileGridState extends State<ProfileGrid> {
   final ScrollController _scrollController = ScrollController();
-  PagingController<int, ProfileViewEntry>? _pagingController =
-    PagingController(firstPageKey: 0);
+  PagingState<int, ProfileViewEntry> _pagingState = PagingState();
   StreamSubscription<ProfileChange>? _profileChangesSubscription;
 
   // Use same progress indicator state that transition between
@@ -87,9 +86,6 @@ class _ProfileGridState extends State<ProfileGrid> {
       ));
     }
 
-    _pagingController?.addPageRequestListener((pageKey) {
-      _fetchPage(pageKey);
-    });
     _profileChangesSubscription?.cancel();
     _profileChangesSubscription = profile.profileChanges.listen((event) {
         handleProfileChange(event);
@@ -116,6 +112,15 @@ class _ProfileGridState extends State<ProfileGrid> {
       );
   }
 
+  void updatePagingState(PagingState<int, ProfileViewEntry> Function(PagingState<int, ProfileViewEntry>) action) {
+    if (!context.mounted) {
+      return;
+    }
+    setState(() {
+      _pagingState = action(_pagingState);
+    });
+  }
+
   void handleProfileChange(ProfileChange event) {
     switch (event) {
       case ProfileNowPrivate(): {
@@ -126,15 +131,12 @@ class _ProfileGridState extends State<ProfileGrid> {
         removeAccountIdFromList(event.profile);
       case ProfileFavoriteStatusChange(): {
         // Remove profile if favorites filter is enabled and favorite status is changed to false
-        final controller = _pagingController;
-        if (controller != null && event.isFavorite == false && widget.filteringSettingsBloc.state.showOnlyFavorites) {
-          setState(() {
-            controller.itemList?.removeWhere((item) => item.profile.uuid == event.profile);
-          });
+        if (event.isFavorite == false && widget.filteringSettingsBloc.state.showOnlyFavorites) {
+          updatePagingState((s) => s.filterItems((item) => item.profile.uuid != event.profile));
         }
       }
       case ReloadMainProfileView():
-        setState(() {
+        updatePagingState((_) {
           if (event.showOnlyFavorites) {
             _mainProfilesViewIterator.reset(ModeFavorites());
           } else {
@@ -142,7 +144,7 @@ class _ProfileGridState extends State<ProfileGrid> {
               clearDatabase: true,
             ));
           }
-          _pagingController?.refresh();
+          return PagingState();
         });
       case ProfileUnblocked() ||
         ConversationChanged(): {}
@@ -150,19 +152,21 @@ class _ProfileGridState extends State<ProfileGrid> {
   }
 
   void removeAccountIdFromList(AccountId accountId) {
-    final controller = _pagingController;
-    if (controller != null) {
-      setState(() {
-        controller.itemList?.removeWhere((item) => item.profile.uuid == accountId);
-      });
-    }
+    updatePagingState((s) => s.filterItems((item) => item.profile.uuid != accountId));
   }
 
-  Future<void> _fetchPage(int pageKey) async {
+  void _fetchPage() async {
+    if (_pagingState.isLoading) {
+      return;
+    }
+
+    await Future<void>.value();
+
+    updatePagingState((s) => s.copyAndShowLoading());
+
     final profileList = await _mainProfilesViewIterator.nextList().ok();
     if (profileList == null) {
-      // Show error UI
-      _pagingController?.error = true;
+      updatePagingState((s) => s.copyAndShowError());
       return;
     }
 
@@ -175,11 +179,7 @@ class _ProfileGridState extends State<ProfileGrid> {
       ));
     }
 
-    if (profileList.isEmpty) {
-      _pagingController?.appendLastPage([]);
-    } else {
-      _pagingController?.appendPage(newList, pageKey + 1);
-    }
+    updatePagingState((s) => s.copyAndAdd(newList));
   }
 
   @override
@@ -233,9 +233,10 @@ class _ProfileGridState extends State<ProfileGrid> {
 
   Widget grid(BuildContext context, bool iHaveUnlimitedLikesEnabled, GridSettings settings) {
     return PagedGridView(
+      state: _pagingState,
+      fetchNextPage: _fetchPage,
       physics: const AlwaysScrollableScrollPhysics(),
       scrollController: _scrollController,
-      pagingController: _pagingController!,
       padding: EdgeInsets.symmetric(horizontal: settings.valueHorizontalPadding()),
       builderDelegate: PagedChildBuilderDelegate<ProfileViewEntry>(
         animateTransitions: true,
@@ -316,8 +317,7 @@ class _ProfileGridState extends State<ProfileGrid> {
     _reloadInProgress = true;
     await _mainProfilesViewIterator.loadingInProgress.firstWhere((e) => e == false);
     _mainProfilesViewIterator.refresh();
-    // This might be disposed after resetProfileIterator completes.
-    _pagingController?.refresh();
+    updatePagingState((_) => PagingState());
     _reloadInProgress = false;
   }
 
@@ -325,8 +325,6 @@ class _ProfileGridState extends State<ProfileGrid> {
   void dispose() {
     _scrollController.removeListener(scrollEventListener);
     _scrollController.dispose();
-    _pagingController?.dispose();
-    _pagingController = null;
     _profileChangesSubscription?.cancel();
     _profileChangesSubscription = null;
     super.dispose();

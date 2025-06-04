@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:app/ui_utils/extensions/other.dart';
 import 'package:app/ui_utils/profile_thumbnail_image_or_error.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -32,8 +33,7 @@ const _IMG_SIZE = 100.0;
 
 class _BlockedProfilesScreen extends State<BlockedProfilesScreen> {
   StreamSubscription<ProfileChange>? _profileChangesSubscription;
-  PagingController<int, BlockedProfileEntry>? _pagingController =
-    PagingController(firstPageKey: 0);
+  PagingState<int, BlockedProfileEntry> _pagingState = PagingState();
 
   final chat = LoginRepository.getInstance().repositories.chat;
   final profile = LoginRepository.getInstance().repositories.profile;
@@ -41,16 +41,13 @@ class _BlockedProfilesScreen extends State<BlockedProfilesScreen> {
   @override
   void initState() {
     super.initState();
-    _pagingController?.addPageRequestListener((pageKey) {
-      _fetchPage(pageKey);
-    });
     _profileChangesSubscription?.cancel();
     _profileChangesSubscription = profile.profileChanges.listen((event) {
-        handleProfileChange(event);
+      handleProfileChange(event);
     });
   }
 
-    void handleProfileChange(ProfileChange event) {
+  void handleProfileChange(ProfileChange event) {
     switch (event) {
       case ProfileUnblocked():
         removeAccountIdFromList(event.profile);
@@ -62,27 +59,35 @@ class _BlockedProfilesScreen extends State<BlockedProfilesScreen> {
     }
   }
 
-  void removeAccountIdFromList(AccountId accountId) {
-    final controller = _pagingController;
-    if (controller != null) {
-      setState(() {
-        controller.itemList?.removeWhere((item) => item.$1.aid == accountId.aid);
-      });
+  void updatePagingState(PagingState<int, BlockedProfileEntry> Function(PagingState<int, BlockedProfileEntry>) action) {
+    if (!context.mounted) {
+      return;
     }
+    setState(() {
+      _pagingState = action(_pagingState);
+    });
   }
 
-  Future<void> _fetchPage(int pageKey) async {
-    if (pageKey == 0) {
+  void removeAccountIdFromList(AccountId accountId) {
+    updatePagingState((s) => s.filterItems((item) => item.$1.aid != accountId.aid));
+  }
+
+  void _fetchPage() async {
+     if (_pagingState.isLoading) {
+      return;
+    }
+
+    await Future<void>.value();
+
+    updatePagingState((s) => s.copyAndShowLoading());
+
+    if (_pagingState.isInitialPage()) {
       chat.sentBlocksIteratorReset();
     }
 
     final profileList = await chat.sentBlocksIteratorNext();
 
-    if (profileList.isEmpty) {
-      _pagingController?.appendLastPage([]);
-    } else {
-      _pagingController?.appendPage(profileList, pageKey + 1);
-    }
+    updatePagingState((s) => s.copyAndAdd(profileList));
   }
 
   @override
@@ -99,7 +104,8 @@ class _BlockedProfilesScreen extends State<BlockedProfilesScreen> {
 
   Widget grid(BuildContext context) {
     return PagedListView(
-      pagingController: _pagingController!,
+      state: _pagingState,
+      fetchNextPage: _fetchPage,
       builderDelegate: PagedChildBuilderDelegate<BlockedProfileEntry>(
         animateTransitions: true,
         itemBuilder: (context, item, index) {
@@ -190,19 +196,11 @@ class _BlockedProfilesScreen extends State<BlockedProfilesScreen> {
           );
         },
       ),
-
-      // gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-      //   crossAxisCount: 2,
-      //   crossAxisSpacing: 4,
-      //   mainAxisSpacing: 4,
-      // ),
     );
   }
 
   @override
   void dispose() {
-    _pagingController?.dispose();
-    _pagingController = null;
     _profileChangesSubscription?.cancel();
     _profileChangesSubscription = null;
     super.dispose();
