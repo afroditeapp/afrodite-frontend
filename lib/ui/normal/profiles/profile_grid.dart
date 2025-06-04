@@ -47,7 +47,7 @@ class ProfileGrid extends StatefulWidget {
   State<ProfileGrid> createState() => _ProfileGridState();
 }
 
-typedef ProfileViewEntry = ({ProfileEntry profile, ProfileActionState? initialProfileAction});
+typedef ProfileViewEntry = ({ProfileThumbnail profile, ProfileActionState? initialProfileAction});
 
 
 class _ProfileGridState extends State<ProfileGrid> {
@@ -67,8 +67,8 @@ class _ProfileGridState extends State<ProfileGrid> {
   );
   bool _reloadInProgress = false;
 
-  final profile = LoginRepository.getInstance().repositories.profile;
-  final chat = LoginRepository.getInstance().repositories.chat;
+  final profileRepository = LoginRepository.getInstance().repositories.profile;
+  final chatRepository = LoginRepository.getInstance().repositories.chat;
 
   @override
   void initState() {
@@ -83,7 +83,7 @@ class _ProfileGridState extends State<ProfileGrid> {
     }
 
     _profileChangesSubscription?.cancel();
-    _profileChangesSubscription = profile.profileChanges.listen((event) {
+    _profileChangesSubscription = profileRepository.profileChanges.listen((event) {
         handleProfileChange(event);
     });
     _scrollController.addListener(scrollEventListener);
@@ -128,7 +128,7 @@ class _ProfileGridState extends State<ProfileGrid> {
       case ProfileFavoriteStatusChange(): {
         // Remove profile if favorites filter is enabled and favorite status is changed to false
         if (event.isFavorite == false && widget.filteringSettingsBloc.state.showOnlyFavorites) {
-          updatePagingState((s) => s.filterItems((item) => item.profile.uuid != event.profile));
+          updatePagingState((s) => s.filterItems((item) => item.profile.entry.uuid != event.profile));
         }
       }
       case ReloadMainProfileView():
@@ -148,7 +148,7 @@ class _ProfileGridState extends State<ProfileGrid> {
   }
 
   void removeAccountIdFromList(AccountId accountId) {
-    updatePagingState((s) => s.filterItems((item) => item.profile.uuid != accountId));
+    updatePagingState((s) => s.filterItems((item) => item.profile.entry.uuid != accountId));
   }
 
   void _fetchPage() async {
@@ -168,9 +168,10 @@ class _ProfileGridState extends State<ProfileGrid> {
 
     final newList = List<ProfileViewEntry>.empty(growable: true);
     for (final profile in profileList) {
-      final initialProfileAction = await resolveProfileAction(chat, profile.uuid);
+      final initialProfileAction = await resolveProfileAction(chatRepository, profile.uuid);
+      final isFavorite = await profileRepository.isInFavorites(profile.uuid);
       newList.add((
-        profile: profile,
+        profile: ProfileThumbnail(entry: profile, isFavorite: isFavorite),
         initialProfileAction: initialProfileAction,
       ));
     }
@@ -338,7 +339,7 @@ class _ProfileGridState extends State<ProfileGrid> {
 }
 
 Widget profileEntryWidgetStream(
-  ProfileEntry entry,
+  ProfileThumbnail profile,
   bool iHaveUnlimitedLikesEnabled,
   ProfileActionState? initialProfileAction,
   AccountDatabaseManager db,
@@ -349,20 +350,22 @@ Widget profileEntryWidgetStream(
   }
 ) {
   return StreamBuilder(
-    stream: db.accountStream((db) => db.daoProfiles.watchProfileEntry(entry.uuid)).whereNotNull(),
+    stream: db.accountStream((db) => db.daoProfiles.watchProfileThumbnail(profile.entry.uuid)).whereNotNull(),
     builder: (context, data) {
-      final e = data.data ?? entry;
-      final newLikeInfoReceivedTime = e.newLikeInfoReceivedTime;
+      final e = data.data ?? profile;
       return ProfileThumbnailImageOrError.fromProfileEntry(
-        entry: e,
+        entry: e.entry,
         borderRadius: BorderRadius.circular(settings.valueProfileThumbnailBorderRadius()),
         cacheSize: ImageCacheSize.sizeForGrid(),
         child: Stack(
           children: [
-            if (showNewLikeMarker && newLikeInfoReceivedTime != null)
-              thumbnailStatusIndicatorForNewLikeMarker(newLikeInfoReceivedTime),
-            thumbnailStatusIndicators(
-              e,
+            _thumbnailStatusIndicatorsTop(
+              showNewLikeMarker,
+              e.entry.newLikeInfoReceivedTime,
+              e.isFavorite,
+            ),
+            _thumbnailStatusIndicatorsBottom(
+              e.entry,
               iHaveUnlimitedLikesEnabled,
             ),
             Material(
@@ -372,7 +375,7 @@ Widget profileEntryWidgetStream(
                   if (overrideOnTap != null) {
                     return overrideOnTap(context);
                   }
-                  openProfileView(context, e, initialProfileAction, ProfileRefreshPriority.low);
+                  openProfileView(context, e.entry, initialProfileAction, ProfileRefreshPriority.low);
                 },
               ),
             ),
@@ -383,7 +386,7 @@ Widget profileEntryWidgetStream(
   );
 }
 
-Widget thumbnailStatusIndicators(
+Widget _thumbnailStatusIndicatorsBottom(
   ProfileEntry profile,
   bool iHaveUnlimitedLikesEnabled,
 ) {
@@ -417,22 +420,35 @@ Widget thumbnailStatusIndicators(
   );
 }
 
-Widget thumbnailStatusIndicatorForNewLikeMarker(
-  UtcDateTime newLikeInfoReceivedTime,
+Widget _thumbnailStatusIndicatorsTop(
+  bool showNewLikeMarker,
+  UtcDateTime? newLikeInfoReceivedTime,
+  bool isFavorite,
 ) {
   final currentTime = UtcDateTime.now();
-  if (currentTime.difference(newLikeInfoReceivedTime).inHours < 24) {
-    return const Align(
-      alignment: Alignment.topLeft,
-      child: Padding(
-        padding: EdgeInsets.all(8.0),
-        child: Icon(
-          Icons.auto_awesome,
-          color: Colors.amber,
+  final showNewLikeIcon = showNewLikeMarker &&
+    newLikeInfoReceivedTime != null &&
+    currentTime.difference(newLikeInfoReceivedTime).inHours < 24;
+  return Align(
+    alignment: Alignment.topLeft,
+    child: Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        if (showNewLikeIcon) const Padding(
+          padding: EdgeInsets.all(8.0),
+          child: Icon(
+            Icons.auto_awesome,
+            color: Colors.amber,
+          ),
         ),
-      ),
-    );
-  } else {
-    return const SizedBox.shrink();
-  }
+        if (isFavorite) Padding(
+          padding: showNewLikeIcon ? const EdgeInsets.all(0) : const EdgeInsets.all(4.0),
+          child: const Icon(
+            Icons.star_rounded,
+            color: Colors.orange,
+          ),
+        ),
+      ],
+    ),
+  );
 }

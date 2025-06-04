@@ -171,15 +171,15 @@ class LikeViewContent extends StatefulWidget {
   State<LikeViewContent> createState() => LikeViewContentState();
 }
 
-typedef LikeViewEntry = ({ProfileEntry profile, ProfileActionState? initalProfileAction});
+typedef LikeViewEntry = ({ProfileThumbnail profile, ProfileActionState? initalProfileAction});
 
 class LikeViewContentState extends State<LikeViewContent> {
   final ScrollController _scrollController = ScrollController();
   PagingState<int, LikeViewEntry> _pagingState = PagingState();
   StreamSubscription<ProfileChange>? _profileChangesSubscription;
 
-  final ChatRepository chat = LoginRepository.getInstance().repositories.chat;
-  final ProfileRepository profile = LoginRepository.getInstance().repositories.profile;
+  final ChatRepository chatRepository = LoginRepository.getInstance().repositories.chat;
+  final ProfileRepository profileRepository = LoginRepository.getInstance().repositories.profile;
 
   final AccountDatabaseManager accountDb = LoginRepository.getInstance().repositories.accountDb;
 
@@ -200,7 +200,7 @@ class LikeViewContentState extends State<LikeViewContent> {
     super.initState();
     _mainProfilesViewIterator.reset(false);
     _profileChangesSubscription?.cancel();
-    _profileChangesSubscription = profile.profileChanges.listen((event) {
+    _profileChangesSubscription = profileRepository.profileChanges.listen((event) {
       _handleProfileChange(event);
     });
     _scrollController.addListener(scrollEventListener);
@@ -248,7 +248,7 @@ class LikeViewContentState extends State<LikeViewContent> {
   }
 
   void _removeAccountIdFromList(AccountId accountId) {
-    updatePagingState((s) => s.filterItems((item) => item.profile.uuid != accountId));
+    updatePagingState((s) => s.filterItems((item) => item.profile.entry.uuid != accountId));
   }
 
   void _fetchPage() async {
@@ -272,9 +272,10 @@ class LikeViewContentState extends State<LikeViewContent> {
 
     final newList = List<LikeViewEntry>.empty(growable: true);
     for (final profile in profileList) {
-      final initialProfileAction = await resolveProfileAction(chat, profile.uuid);
+      final initialProfileAction = await resolveProfileAction(chatRepository, profile.uuid);
+      final isFavorite = await profileRepository.isInFavorites(profile.uuid);
       newList.add((
-        profile: profile,
+        profile: ProfileThumbnail(entry: profile, isFavorite: isFavorite),
         initalProfileAction: initialProfileAction,
       ));
     }

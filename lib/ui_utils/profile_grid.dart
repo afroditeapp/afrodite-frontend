@@ -23,7 +23,7 @@ import 'package:app/ui_utils/consts/padding.dart';
 import 'package:app/ui_utils/list.dart';
 import 'package:app/utils/result.dart';
 
-typedef ProfileGridProfileEntry = ({ProfileEntry profile, ProfileActionState? initialProfileAction});
+typedef ProfileGridProfileEntry = ({ProfileThumbnail profile, ProfileActionState? initialProfileAction});
 
 class GenericProfileGrid extends StatefulWidget {
   final UiProfileIterator Function() buildIteratorManager;
@@ -43,8 +43,8 @@ class _GenericProfileGridState extends State<GenericProfileGrid> {
   PagingState<int, ProfileGridProfileEntry> _pagingState = PagingState();
   StreamSubscription<ProfileChange>? _profileChangesSubscription;
 
-  final ChatRepository chat = LoginRepository.getInstance().repositories.chat;
-  final ProfileRepository profile = LoginRepository.getInstance().repositories.profile;
+  final ChatRepository chatRepository = LoginRepository.getInstance().repositories.chat;
+  final ProfileRepository profileRepository = LoginRepository.getInstance().repositories.profile;
 
   final AccountDatabaseManager accountDb = LoginRepository.getInstance().repositories.accountDb;
 
@@ -59,7 +59,7 @@ class _GenericProfileGridState extends State<GenericProfileGrid> {
     _mainProfilesViewIterator.reset(true);
 
     _profileChangesSubscription?.cancel();
-    _profileChangesSubscription = profile.profileChanges.listen((event) {
+    _profileChangesSubscription = profileRepository.profileChanges.listen((event) {
       _handleProfileChange(event);
     });
   }
@@ -86,7 +86,7 @@ class _GenericProfileGridState extends State<GenericProfileGrid> {
   }
 
   void _removeAccountIdFromList(AccountId accountId) {
-    updatePagingState((s) => s.filterItems((item) => item.profile.uuid != accountId));
+    updatePagingState((s) => s.filterItems((item) => item.profile.entry.uuid != accountId));
   }
 
   void _fetchPage() async {
@@ -110,8 +110,9 @@ class _GenericProfileGridState extends State<GenericProfileGrid> {
 
     final newList = List<ProfileGridProfileEntry>.empty(growable: true);
     for (final profile in profileList) {
-      final initialProfileAction = await resolveProfileAction(chat, profile.uuid);
-      newList.add((profile: profile, initialProfileAction: initialProfileAction));
+      final initialProfileAction = await resolveProfileAction(chatRepository, profile.uuid);
+      final isFavorite = await profileRepository.isInFavorites(profile.uuid);
+      newList.add((profile: ProfileThumbnail(entry: profile, isFavorite: isFavorite), initialProfileAction: initialProfileAction));
     }
 
     updatePagingState((s) => s.copyAndAdd(newList));

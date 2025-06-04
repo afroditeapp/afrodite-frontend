@@ -343,4 +343,12 @@ class DaoProfileStates extends DatabaseAccessor<AccountDatabase> with _$DaoProfi
       return const Value(null);
     }
   }
+
+  Stream<bool> watchFavoriteProfileStatus(AccountId accountId) {
+    return (select(profileStates)
+      ..where((t) => t.uuidAccountId.equals(accountId.aid))
+    )
+      .watchSingleOrNull()
+      .map((r) => r?.isInFavorites != null);
+  }
 }

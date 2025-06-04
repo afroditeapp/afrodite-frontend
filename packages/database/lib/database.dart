@@ -21,3 +21,4 @@ export 'src/utils.dart' show QueryExcecutorProvider;
 export 'src/db_file.dart' show DbFile, CommonDbFile, CommonBackgroundDbFile, AccountDbFile, AccountBackgroundDbFile;
 
 export 'src/model/grid_settings.dart' show GridSettings;
+export 'src/model/profile_thumbnail.dart' show ProfileThumbnail;

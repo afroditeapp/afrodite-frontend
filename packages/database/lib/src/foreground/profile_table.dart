@@ -2,6 +2,7 @@
 
 
 import 'package:async/async.dart' show StreamExtensions;
+import 'package:database/src/model/profile_thumbnail.dart';
 import 'package:openapi/api.dart' show AccountId, ProfileContent;
 import 'package:openapi/api.dart' as api;
 import 'package:rxdart/rxdart.dart';
@@ -175,6 +176,24 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
         .watchSingleOrNull(),
       db.daoPublicProfileContent.watchAllProfileContent(accountId),
       (r, content) => _rowToProfileEntry(r, content),
+    );
+
+  Stream<ProfileThumbnail?> watchProfileThumbnail(AccountId accountId) =>
+    Rx.combineLatest3(
+      (select(profiles)
+        ..where((t) => t.uuidAccountId.equals(accountId.aid))
+      )
+        .watchSingleOrNull(),
+      db.daoPublicProfileContent.watchAllProfileContent(accountId),
+      db.daoProfileStates.watchFavoriteProfileStatus(accountId),
+      (r, content, isFavorite) {
+        final entry = _rowToProfileEntry(r, content);
+        if (entry == null) {
+          return null;
+        } else {
+          return ProfileThumbnail(entry: entry, isFavorite: isFavorite);
+        }
+      }
     );
 
   ProfileEntry? _rowToProfileEntry(Profile? r, List<ContentIdAndAccepted> content) {
