@@ -111,7 +111,7 @@ class _AccountAdminSettingsScreenState extends State<AccountAdminSettingsScreen>
                 style: Theme.of(context).textTheme.titleMedium,
               )),
               const Padding(padding: EdgeInsets.all(4.0)),
-              hPad(Text(
+              hPad(SelectableText(
                 "Account ID: ${widget.accountId.aid}",
                 style: Theme.of(context).textTheme.bodySmall,
               )),
