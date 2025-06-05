@@ -3,10 +3,10 @@ import 'dart:async';
 import 'package:app/data/general/iterator/base_iterator_manager.dart';
 import 'package:app/logic/profile/view_profiles.dart';
 import 'package:app/logic/settings/ui_settings.dart';
-import 'package:app/model/freezed/logic/profile/view_profiles.dart';
 import 'package:app/model/freezed/logic/settings/ui_settings.dart';
 import 'package:app/ui_utils/extensions/other.dart';
-import 'package:app/utils/command_runner.dart';
+import 'package:app/ui_utils/paged_grid_logic.dart';
+import 'package:app/ui_utils/profile_grid.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
@@ -172,11 +172,9 @@ class LikeViewContent extends StatefulWidget {
   State<LikeViewContent> createState() => LikeViewContentState();
 }
 
-typedef LikeViewEntry = ({ProfileThumbnail profile, ProfileActionState? initalProfileAction});
-
 class LikeViewContentState extends State<LikeViewContent> {
   final ScrollController _scrollController = ScrollController();
-  PagingState<int, LikeViewEntry> _pagingState = PagingState();
+  PagingState<int, ProfileGridProfileEntry> _pagingState = PagingState();
   StreamSubscription<ProfileChange>? _profileChangesSubscription;
 
   final ChatRepository chatRepository = LoginRepository.getInstance().repositories.chat;
@@ -195,13 +193,13 @@ class LikeViewContentState extends State<LikeViewContent> {
   bool _onLoginReloadDoneOnce = false;
   UtcDateTime? _previousAutomaticReloadTime;
 
-  final SynchronousCommandRunner _commandRunner = SynchronousCommandRunner();
+  final PagedGridLogic _gridLogic = PagedGridLogic();
   bool isDisposed = false;
 
   @override
   void initState() {
     super.initState();
-    _commandRunner.init();
+    _gridLogic.init();
     _mainProfilesViewIterator.reset(false);
     _profileChangesSubscription?.cancel();
     _profileChangesSubscription = profileRepository.profileChanges.listen((event) {
@@ -242,7 +240,7 @@ class LikeViewContentState extends State<LikeViewContent> {
     }
   }
 
-  void updatePagingState(PagingState<int, LikeViewEntry> Function(PagingState<int, LikeViewEntry>) action) {
+  void updatePagingState(PagingState<int, ProfileGridProfileEntry> Function(PagingState<int, ProfileGridProfileEntry>) action) {
     if (isDisposed || !context.mounted) {
       return;
     }
@@ -255,9 +253,9 @@ class LikeViewContentState extends State<LikeViewContent> {
     updatePagingState((s) => s.filterItems((item) => item.profile.entry.uuid != accountId));
   }
 
-  Future<void> _fetchPage() async {
+  Future<List<ProfileGridProfileEntry>?> _fetchPage() async {
     if (!_pagingState.hasNextPage) {
-      return;
+      return null;
     }
 
     await Future<void>.value();
@@ -271,20 +269,24 @@ class LikeViewContentState extends State<LikeViewContent> {
     final profileList = await _mainProfilesViewIterator.nextList().ok();
     if (profileList == null) {
       updatePagingState((s) => s.copyAndShowError());
-      return;
+      return null;
     }
 
-    final newList = List<LikeViewEntry>.empty(growable: true);
+    final newList = List<ProfileGridProfileEntry>.empty(growable: true);
     for (final profile in profileList) {
       final initialProfileAction = await resolveProfileAction(chatRepository, profile.uuid);
       final isFavorite = await profileRepository.isInFavorites(profile.uuid);
       newList.add((
         profile: ProfileThumbnail(entry: profile, isFavorite: isFavorite),
-        initalProfileAction: initialProfileAction,
+        initialProfileAction: initialProfileAction,
       ));
     }
 
-    updatePagingState((s) => s.copyAndAdd(newList));
+    return newList;
+  }
+
+  void _addPage(List<ProfileGridProfileEntry> page) {
+    updatePagingState((s) => s.copyAndAdd(page));
   }
 
   @override
@@ -334,18 +336,18 @@ class LikeViewContentState extends State<LikeViewContent> {
     return PagedGridView(
       state: _pagingState,
       fetchNextPage: () {
-        _commandRunner.add(Command("fetchPage", _fetchPage));
+        _gridLogic.fetchPage(_fetchPage, _addPage);
       },
       physics: const AlwaysScrollableScrollPhysics(),
       scrollController: _scrollController,
       padding: EdgeInsets.symmetric(horizontal: settings.valueHorizontalPadding()),
-      builderDelegate: PagedChildBuilderDelegate<LikeViewEntry>(
+      builderDelegate: PagedChildBuilderDelegate<ProfileGridProfileEntry>(
         animateTransitions: true,
         itemBuilder: (context, item, index) {
           return profileEntryWidgetStream(
             item.profile,
             iHaveUnlimitedLikesEnabled,
-            item.initalProfileAction,
+            item.initialProfileAction,
             accountDb,
             settings,
             showNewLikeMarker: true,
@@ -477,16 +479,16 @@ class LikeViewContentState extends State<LikeViewContent> {
   }
 
   Future<void> refreshProfileGrid() async {
-    _commandRunner.addIfNotAlreadyScheduled(Command("refresh", () {
+    _gridLogic.refresh(() {
       _mainProfilesViewIterator.reset(true);
       updatePagingState((_) => PagingState());
-    }));
+    }, _fetchPage, _addPage);
   }
 
   @override
   void dispose() {
     isDisposed = true;
-    _commandRunner.dispose();
+    _gridLogic.dispose();
     _scrollController.removeListener(scrollEventListener);
     _scrollController.dispose();
     _profileChangesSubscription?.cancel();

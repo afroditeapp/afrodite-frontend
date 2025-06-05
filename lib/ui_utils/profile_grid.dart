@@ -6,7 +6,7 @@ import 'package:app/logic/settings/ui_settings.dart';
 import 'package:app/model/freezed/logic/profile/view_profiles.dart';
 import 'package:app/model/freezed/logic/settings/ui_settings.dart';
 import 'package:app/ui_utils/extensions/other.dart';
-import 'package:app/utils/command_runner.dart';
+import 'package:app/ui_utils/paged_grid_logic.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
@@ -51,14 +51,14 @@ class _GenericProfileGridState extends State<GenericProfileGrid> {
 
   late final UiProfileIterator _mainProfilesViewIterator;
 
-  final SynchronousCommandRunner _commandRunner = SynchronousCommandRunner();
+  final PagedGridLogic _gridLogic = PagedGridLogic();
   bool isDisposed = false;
 
   @override
   void initState() {
     super.initState();
 
-    _commandRunner.init();
+    _gridLogic.init();
 
     _mainProfilesViewIterator = widget.buildIteratorManager();
     _mainProfilesViewIterator.reset(true);
@@ -94,9 +94,9 @@ class _GenericProfileGridState extends State<GenericProfileGrid> {
     updatePagingState((s) => s.filterItems((item) => item.profile.entry.uuid != accountId));
   }
 
-  Future<void> _fetchPage() async {
+  Future<List<ProfileGridProfileEntry>?> _fetchPage() async {
     if (!_pagingState.hasNextPage) {
-      return;
+      return null;
     }
 
     await Future<void>.value();
@@ -110,7 +110,7 @@ class _GenericProfileGridState extends State<GenericProfileGrid> {
     final profileList = await _mainProfilesViewIterator.nextList().ok();
     if (profileList == null) {
       updatePagingState((s) => s.copyAndShowError());
-      return;
+      return null;
     }
 
     final newList = List<ProfileGridProfileEntry>.empty(growable: true);
@@ -120,7 +120,11 @@ class _GenericProfileGridState extends State<GenericProfileGrid> {
       newList.add((profile: ProfileThumbnail(entry: profile, isFavorite: isFavorite), initialProfileAction: initialProfileAction));
     }
 
-    updatePagingState((s) => s.copyAndAdd(newList));
+    return newList;
+  }
+
+  void _addPage(List<ProfileGridProfileEntry> page) {
+    updatePagingState((s) => s.copyAndAdd(page));
   }
 
   @override
@@ -154,7 +158,7 @@ class _GenericProfileGridState extends State<GenericProfileGrid> {
     return PagedGridView(
       state: _pagingState,
       fetchNextPage: () {
-        _commandRunner.add(Command("fetchPage", _fetchPage));
+        _gridLogic.fetchPage(_fetchPage, _addPage);
       },
       physics: const AlwaysScrollableScrollPhysics(),
       scrollController: _scrollController,
@@ -221,16 +225,16 @@ class _GenericProfileGridState extends State<GenericProfileGrid> {
   }
 
   Future<void> refreshProfileGrid() async {
-    _commandRunner.addIfNotAlreadyScheduled(Command("refresh", () {
+    _gridLogic.refresh(() {
       _mainProfilesViewIterator.reset(true);
       updatePagingState((_) => PagingState());
-    }));
+    }, _fetchPage, _addPage);
   }
 
   @override
   void dispose() {
     isDisposed = true;
-    _commandRunner.dispose();
+    _gridLogic.dispose();
     _scrollController.dispose();
     _profileChangesSubscription?.cancel();
     _profileChangesSubscription = null;

@@ -6,8 +6,9 @@ import 'package:app/model/freezed/logic/profile/view_profiles.dart';
 import 'package:app/model/freezed/logic/settings/ui_settings.dart';
 import 'package:app/ui_utils/consts/colors.dart';
 import 'package:app/ui_utils/extensions/other.dart';
+import 'package:app/ui_utils/profile_grid.dart';
 import 'package:app/ui_utils/profile_thumbnail_image_or_error.dart';
-import 'package:app/utils/command_runner.dart';
+import 'package:app/ui_utils/paged_grid_logic.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
@@ -49,12 +50,9 @@ class ProfileGrid extends StatefulWidget {
   State<ProfileGrid> createState() => _ProfileGridState();
 }
 
-typedef ProfileViewEntry = ({ProfileThumbnail profile, ProfileActionState? initialProfileAction});
-
-
 class _ProfileGridState extends State<ProfileGrid> {
   final ScrollController _scrollController = ScrollController();
-  PagingState<int, ProfileViewEntry> _pagingState = PagingState();
+  PagingState<int, ProfileGridProfileEntry> _pagingState = PagingState();
   StreamSubscription<ProfileChange>? _profileChangesSubscription;
 
   final AccountDatabaseManager accountDb = LoginRepository.getInstance().repositories.accountDb;
@@ -71,14 +69,14 @@ class _ProfileGridState extends State<ProfileGrid> {
   final profileRepository = LoginRepository.getInstance().repositories.profile;
   final chatRepository = LoginRepository.getInstance().repositories.chat;
 
-  final SynchronousCommandRunner _commandRunner = SynchronousCommandRunner();
+  final PagedGridLogic _gridLogic = PagedGridLogic();
   bool isDisposed = false;
 
   @override
   void initState() {
     super.initState();
 
-    _commandRunner.init();
+    _gridLogic.init();
 
     if (widget.filteringSettingsBloc.state.showOnlyFavorites) {
       _mainProfilesViewIterator.reset(ModeFavorites());
@@ -114,7 +112,7 @@ class _ProfileGridState extends State<ProfileGrid> {
       );
   }
 
-  void updatePagingState(PagingState<int, ProfileViewEntry> Function(PagingState<int, ProfileViewEntry>) action) {
+  void updatePagingState(PagingState<int, ProfileGridProfileEntry> Function(PagingState<int, ProfileGridProfileEntry>) action) {
     if (isDisposed || !context.mounted) {
       return;
     }
@@ -157,9 +155,9 @@ class _ProfileGridState extends State<ProfileGrid> {
     updatePagingState((s) => s.filterItems((item) => item.profile.entry.uuid != accountId));
   }
 
-  Future<void> _fetchPage() async {
+  Future<List<ProfileGridProfileEntry>?> _fetchPage() async {
     if (!_pagingState.hasNextPage) {
-      return;
+      return null;
     }
 
     await Future<void>.value();
@@ -169,10 +167,10 @@ class _ProfileGridState extends State<ProfileGrid> {
     final profileList = await _mainProfilesViewIterator.nextList().ok();
     if (profileList == null) {
       updatePagingState((s) => s.copyAndShowError());
-      return;
+      return null;
     }
 
-    final newList = List<ProfileViewEntry>.empty(growable: true);
+    final newList = List<ProfileGridProfileEntry>.empty(growable: true);
     for (final profile in profileList) {
       final initialProfileAction = await resolveProfileAction(chatRepository, profile.uuid);
       final isFavorite = await profileRepository.isInFavorites(profile.uuid);
@@ -182,7 +180,11 @@ class _ProfileGridState extends State<ProfileGrid> {
       ));
     }
 
-    updatePagingState((s) => s.copyAndAdd(newList));
+    return newList;
+  }
+
+  void _addPage(List<ProfileGridProfileEntry> page) {
+    updatePagingState((s) => s.copyAndAdd(page));
   }
 
   @override
@@ -216,7 +218,7 @@ class _ProfileGridState extends State<ProfileGrid> {
     BuildContext context,
     MyProfileData myProfileState,
     GridSettings settings,
-    PagingState<int, ProfileViewEntry> pagingState,
+    PagingState<int, ProfileGridProfileEntry> pagingState,
   ) {
     return NotificationListener<ScrollMetricsNotification>(
       onNotification: (notification) {
@@ -241,17 +243,17 @@ class _ProfileGridState extends State<ProfileGrid> {
     BuildContext context,
     bool iHaveUnlimitedLikesEnabled,
     GridSettings settings,
-    PagingState<int, ProfileViewEntry> pagingState,
+    PagingState<int, ProfileGridProfileEntry> pagingState,
   ) {
     return PagedGridView(
       state: pagingState,
       fetchNextPage: () {
-        _commandRunner.add(Command("fetchPage", _fetchPage));
+        _gridLogic.fetchPage(_fetchPage, _addPage);
       },
       physics: const AlwaysScrollableScrollPhysics(),
       scrollController: _scrollController,
       padding: EdgeInsets.symmetric(horizontal: settings.valueHorizontalPadding()),
-      builderDelegate: PagedChildBuilderDelegate<ProfileViewEntry>(
+      builderDelegate: PagedChildBuilderDelegate<ProfileGridProfileEntry>(
         animateTransitions: true,
         itemBuilder: (context, item, index) {
           return profileEntryWidgetStream(item.profile, iHaveUnlimitedLikesEnabled, item.initialProfileAction, accountDb, settings);
@@ -325,16 +327,16 @@ class _ProfileGridState extends State<ProfileGrid> {
   }
 
   Future<void> refreshProfileGrid() async {
-    _commandRunner.addIfNotAlreadyScheduled(Command("refresh", () {
+    _gridLogic.refresh(() {
       _mainProfilesViewIterator.refresh();
       updatePagingState((_) => PagingState());
-    }));
+    }, _fetchPage, _addPage);
   }
 
   @override
   void dispose() {
     isDisposed = true;
-    _commandRunner.dispose();
+    _gridLogic.dispose();
     _scrollController.removeListener(scrollEventListener);
     _scrollController.dispose();
     _profileChangesSubscription?.cancel();
