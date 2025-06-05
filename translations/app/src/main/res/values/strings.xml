@@ -141,6 +141,11 @@
     <string name="image_processing_ui_upload_in_processing_queue_dialog_description" description="Progress dialog info text that security selfie is currently in server's processing queue">Waiting for processing. Queue number: %s</string>
     <string name="image_processing_ui_upload_processing_ongoing_description" description="Progress dialog info text that security selfie processing is ongoing">Processing ongoing</string>
 
+    <!-- Profile image errors -->
+    <string name="profile_image_error_no_image" description="Snackbar text for no profile image error">No profile image</string>
+    <string name="profile_image_error_no_primary_image" description="Snackbar text for no primary profile image error">No primary profile image</string>
+    <string name="profile_image_error_image_not_accepted" description="Snackbar text for profile image is not accepted error">Profile image is not accepted by moderators</string>
+
     <!-- Login screen -->
     <!-- TODO remove unnecessary -->
     <string name="login_screen_login_button" description="Login button text">Login</string>

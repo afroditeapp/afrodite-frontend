@@ -1435,6 +1435,18 @@
   "@profile_grid_settings_screen_title": {
     "description": "Profile grid settings screen title"
   },
+  "profile_image_error_image_not_accepted": "Profile image is not accepted by moderators",
+  "@profile_image_error_image_not_accepted": {
+    "description": "Snackbar text for profile image is not accepted error"
+  },
+  "profile_image_error_no_image": "No profile image",
+  "@profile_image_error_no_image": {
+    "description": "Snackbar text for no profile image error"
+  },
+  "profile_image_error_no_primary_image": "No primary profile image",
+  "@profile_image_error_no_primary_image": {
+    "description": "Snackbar text for no primary profile image error"
+  },
   "profile_location_screen_title": "Location",
   "@profile_location_screen_title": {
     "description": "Title for profile location screen"

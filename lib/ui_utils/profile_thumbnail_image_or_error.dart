@@ -1,15 +1,15 @@
 
+import 'package:app/localizations.dart';
 import 'package:app/ui_utils/profile_thumbnail_image.dart';
+import 'package:app/ui_utils/snack_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:openapi/api.dart';
 import 'package:app/data/image_cache.dart';
 import 'package:database/database.dart';
 import 'package:app/ui_utils/consts/corners.dart';
 import 'package:app/ui_utils/crop_image_screen.dart';
 
 class ProfileThumbnailImageOrError extends StatelessWidget {
-  final AccountId accountId;
-  final ContentId? contentId;
+  final ProfileEntry entry;
   final CropResults cropResults;
   /// 1.0 means square image, 0.0 means original aspect ratio
   final double squareFactor;
@@ -20,7 +20,7 @@ class ProfileThumbnailImageOrError extends StatelessWidget {
   final ImageCacheSize cacheSize;
 
   ProfileThumbnailImageOrError.fromProfileEntry({
-    required ProfileEntry entry,
+    required this.entry,
     this.width,
     this.height,
     this.child,
@@ -29,8 +29,6 @@ class ProfileThumbnailImageOrError extends StatelessWidget {
     this.cacheSize = ImageCacheSize.maxQuality,
     super.key,
   }) :
-    accountId = entry.uuid,
-    contentId = entry.acceptedPrimaryImg(),
     cropResults = CropResults.fromValues(
       entry.primaryContentGridCropSize,
       entry.primaryContentGridCropX,
@@ -39,11 +37,17 @@ class ProfileThumbnailImageOrError extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final content = contentId;
-    if (content != null) {
+    final img = entry.content.firstOrNull;
+    if (img == null) {
+      return error(context.strings.profile_image_error_no_image);
+    } else if (!img.primary) {
+      return error(context.strings.profile_image_error_no_primary_image);
+    } else if (!img.accepted) {
+      return error(context.strings.profile_image_error_image_not_accepted);
+    } else {
       return ProfileThumbnailImage(
-        accountId: accountId,
-        contentId: content,
+        accountId: entry.uuid,
+        contentId: img.id,
         width: width,
         height: height,
         squareFactor: squareFactor,
@@ -51,17 +55,22 @@ class ProfileThumbnailImageOrError extends StatelessWidget {
         cacheSize: cacheSize,
         child: child,
       );
-    } else {
-      return Align(
-        alignment: Alignment.center,
-        child: SizedBox(
-          width: width,
-          height: height,
-          child: const Center(
-            child: Icon(Icons.warning),
+    }
+  }
+
+  Widget error(String text) {
+    return Align(
+      alignment: Alignment.center,
+      child: SizedBox(
+        width: width,
+        height: height,
+        child: Center(
+          child: IconButton(
+            icon: const Icon(Icons.warning),
+            onPressed: () => showSnackBar(text),
           ),
         ),
-      );
-    }
+      ),
+    );
   }
 }

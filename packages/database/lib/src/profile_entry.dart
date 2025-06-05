@@ -53,15 +53,6 @@ class ProfileEntry implements PublicContentProvider {
     return content.any((v) => !v.accepted);
   }
 
-  ContentId? acceptedPrimaryImg() {
-    final img = content.firstOrNull;
-    if (img == null || !img.primary || !img.accepted) {
-      return null;
-    } else {
-      return img.id;
-    }
-  }
-
   String profileTitle(bool showNonAcceptedProfileNames) {
     return ProfileTitle(
       name,
