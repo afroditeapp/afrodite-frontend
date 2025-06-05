@@ -51,6 +51,16 @@ class $CommonTable extends Common with TableInfo<$CommonTable, CommonData> {
           defaultConstraints: GeneratedColumn.constraintIsAlways(
               'CHECK ("notification_permission_asked" IN (0, 1))'),
           defaultValue: const Constant(NOTIFICATION_PERMISSION_ASKED_DEFAULT));
+  static const VerificationMeta _chatInfoDialogShownMeta =
+      const VerificationMeta('chatInfoDialogShown');
+  @override
+  late final GeneratedColumn<bool> chatInfoDialogShown = GeneratedColumn<bool>(
+      'chat_info_dialog_shown', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'CHECK ("chat_info_dialog_shown" IN (0, 1))'),
+      defaultValue: const Constant(false));
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -58,7 +68,8 @@ class $CommonTable extends Common with TableInfo<$CommonTable, CommonData> {
         demoAccountPassword,
         demoAccountToken,
         imageEncryptionKey,
-        notificationPermissionAsked
+        notificationPermissionAsked,
+        chatInfoDialogShown
       ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -104,6 +115,12 @@ class $CommonTable extends Common with TableInfo<$CommonTable, CommonData> {
               data['notification_permission_asked']!,
               _notificationPermissionAskedMeta));
     }
+    if (data.containsKey('chat_info_dialog_shown')) {
+      context.handle(
+          _chatInfoDialogShownMeta,
+          chatInfoDialogShown.isAcceptableOrUnknown(
+              data['chat_info_dialog_shown']!, _chatInfoDialogShownMeta));
+    }
     return context;
   }
 
@@ -126,6 +143,8 @@ class $CommonTable extends Common with TableInfo<$CommonTable, CommonData> {
       notificationPermissionAsked: attachedDatabase.typeMapping.read(
           DriftSqlType.bool,
           data['${effectivePrefix}notification_permission_asked'])!,
+      chatInfoDialogShown: attachedDatabase.typeMapping.read(
+          DriftSqlType.bool, data['${effectivePrefix}chat_info_dialog_shown'])!,
     );
   }
 
@@ -145,13 +164,18 @@ class CommonData extends DataClass implements Insertable<CommonData> {
   /// If true don't show notification permission asking dialog when
   /// app main view (bottom navigation is visible) is opened.
   final bool notificationPermissionAsked;
+
+  /// If true info dialog about chat has been shown when
+  /// chat list screen (bottom navigation is visible) is opened.
+  final bool chatInfoDialogShown;
   const CommonData(
       {required this.id,
       this.demoAccountUserId,
       this.demoAccountPassword,
       this.demoAccountToken,
       this.imageEncryptionKey,
-      required this.notificationPermissionAsked});
+      required this.notificationPermissionAsked,
+      required this.chatInfoDialogShown});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -170,6 +194,7 @@ class CommonData extends DataClass implements Insertable<CommonData> {
     }
     map['notification_permission_asked'] =
         Variable<bool>(notificationPermissionAsked);
+    map['chat_info_dialog_shown'] = Variable<bool>(chatInfoDialogShown);
     return map;
   }
 
@@ -189,6 +214,7 @@ class CommonData extends DataClass implements Insertable<CommonData> {
           ? const Value.absent()
           : Value(imageEncryptionKey),
       notificationPermissionAsked: Value(notificationPermissionAsked),
+      chatInfoDialogShown: Value(chatInfoDialogShown),
     );
   }
 
@@ -206,6 +232,8 @@ class CommonData extends DataClass implements Insertable<CommonData> {
           serializer.fromJson<Uint8List?>(json['imageEncryptionKey']),
       notificationPermissionAsked:
           serializer.fromJson<bool>(json['notificationPermissionAsked']),
+      chatInfoDialogShown:
+          serializer.fromJson<bool>(json['chatInfoDialogShown']),
     );
   }
   @override
@@ -219,6 +247,7 @@ class CommonData extends DataClass implements Insertable<CommonData> {
       'imageEncryptionKey': serializer.toJson<Uint8List?>(imageEncryptionKey),
       'notificationPermissionAsked':
           serializer.toJson<bool>(notificationPermissionAsked),
+      'chatInfoDialogShown': serializer.toJson<bool>(chatInfoDialogShown),
     };
   }
 
@@ -228,7 +257,8 @@ class CommonData extends DataClass implements Insertable<CommonData> {
           Value<String?> demoAccountPassword = const Value.absent(),
           Value<String?> demoAccountToken = const Value.absent(),
           Value<Uint8List?> imageEncryptionKey = const Value.absent(),
-          bool? notificationPermissionAsked}) =>
+          bool? notificationPermissionAsked,
+          bool? chatInfoDialogShown}) =>
       CommonData(
         id: id ?? this.id,
         demoAccountUserId: demoAccountUserId.present
@@ -245,6 +275,7 @@ class CommonData extends DataClass implements Insertable<CommonData> {
             : this.imageEncryptionKey,
         notificationPermissionAsked:
             notificationPermissionAsked ?? this.notificationPermissionAsked,
+        chatInfoDialogShown: chatInfoDialogShown ?? this.chatInfoDialogShown,
       );
   CommonData copyWithCompanion(CommonCompanion data) {
     return CommonData(
@@ -264,6 +295,9 @@ class CommonData extends DataClass implements Insertable<CommonData> {
       notificationPermissionAsked: data.notificationPermissionAsked.present
           ? data.notificationPermissionAsked.value
           : this.notificationPermissionAsked,
+      chatInfoDialogShown: data.chatInfoDialogShown.present
+          ? data.chatInfoDialogShown.value
+          : this.chatInfoDialogShown,
     );
   }
 
@@ -275,7 +309,8 @@ class CommonData extends DataClass implements Insertable<CommonData> {
           ..write('demoAccountPassword: $demoAccountPassword, ')
           ..write('demoAccountToken: $demoAccountToken, ')
           ..write('imageEncryptionKey: $imageEncryptionKey, ')
-          ..write('notificationPermissionAsked: $notificationPermissionAsked')
+          ..write('notificationPermissionAsked: $notificationPermissionAsked, ')
+          ..write('chatInfoDialogShown: $chatInfoDialogShown')
           ..write(')'))
         .toString();
   }
@@ -287,7 +322,8 @@ class CommonData extends DataClass implements Insertable<CommonData> {
       demoAccountPassword,
       demoAccountToken,
       $driftBlobEquality.hash(imageEncryptionKey),
-      notificationPermissionAsked);
+      notificationPermissionAsked,
+      chatInfoDialogShown);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -299,7 +335,8 @@ class CommonData extends DataClass implements Insertable<CommonData> {
           $driftBlobEquality.equals(
               other.imageEncryptionKey, this.imageEncryptionKey) &&
           other.notificationPermissionAsked ==
-              this.notificationPermissionAsked);
+              this.notificationPermissionAsked &&
+          other.chatInfoDialogShown == this.chatInfoDialogShown);
 }
 
 class CommonCompanion extends UpdateCompanion<CommonData> {
@@ -309,6 +346,7 @@ class CommonCompanion extends UpdateCompanion<CommonData> {
   final Value<String?> demoAccountToken;
   final Value<Uint8List?> imageEncryptionKey;
   final Value<bool> notificationPermissionAsked;
+  final Value<bool> chatInfoDialogShown;
   const CommonCompanion({
     this.id = const Value.absent(),
     this.demoAccountUserId = const Value.absent(),
@@ -316,6 +354,7 @@ class CommonCompanion extends UpdateCompanion<CommonData> {
     this.demoAccountToken = const Value.absent(),
     this.imageEncryptionKey = const Value.absent(),
     this.notificationPermissionAsked = const Value.absent(),
+    this.chatInfoDialogShown = const Value.absent(),
   });
   CommonCompanion.insert({
     this.id = const Value.absent(),
@@ -324,6 +363,7 @@ class CommonCompanion extends UpdateCompanion<CommonData> {
     this.demoAccountToken = const Value.absent(),
     this.imageEncryptionKey = const Value.absent(),
     this.notificationPermissionAsked = const Value.absent(),
+    this.chatInfoDialogShown = const Value.absent(),
   });
   static Insertable<CommonData> custom({
     Expression<int>? id,
@@ -332,6 +372,7 @@ class CommonCompanion extends UpdateCompanion<CommonData> {
     Expression<String>? demoAccountToken,
     Expression<Uint8List>? imageEncryptionKey,
     Expression<bool>? notificationPermissionAsked,
+    Expression<bool>? chatInfoDialogShown,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -343,6 +384,8 @@ class CommonCompanion extends UpdateCompanion<CommonData> {
         'image_encryption_key': imageEncryptionKey,
       if (notificationPermissionAsked != null)
         'notification_permission_asked': notificationPermissionAsked,
+      if (chatInfoDialogShown != null)
+        'chat_info_dialog_shown': chatInfoDialogShown,
     });
   }
 
@@ -352,7 +395,8 @@ class CommonCompanion extends UpdateCompanion<CommonData> {
       Value<String?>? demoAccountPassword,
       Value<String?>? demoAccountToken,
       Value<Uint8List?>? imageEncryptionKey,
-      Value<bool>? notificationPermissionAsked}) {
+      Value<bool>? notificationPermissionAsked,
+      Value<bool>? chatInfoDialogShown}) {
     return CommonCompanion(
       id: id ?? this.id,
       demoAccountUserId: demoAccountUserId ?? this.demoAccountUserId,
@@ -361,6 +405,7 @@ class CommonCompanion extends UpdateCompanion<CommonData> {
       imageEncryptionKey: imageEncryptionKey ?? this.imageEncryptionKey,
       notificationPermissionAsked:
           notificationPermissionAsked ?? this.notificationPermissionAsked,
+      chatInfoDialogShown: chatInfoDialogShown ?? this.chatInfoDialogShown,
     );
   }
 
@@ -388,6 +433,9 @@ class CommonCompanion extends UpdateCompanion<CommonData> {
       map['notification_permission_asked'] =
           Variable<bool>(notificationPermissionAsked.value);
     }
+    if (chatInfoDialogShown.present) {
+      map['chat_info_dialog_shown'] = Variable<bool>(chatInfoDialogShown.value);
+    }
     return map;
   }
 
@@ -399,7 +447,8 @@ class CommonCompanion extends UpdateCompanion<CommonData> {
           ..write('demoAccountPassword: $demoAccountPassword, ')
           ..write('demoAccountToken: $demoAccountToken, ')
           ..write('imageEncryptionKey: $imageEncryptionKey, ')
-          ..write('notificationPermissionAsked: $notificationPermissionAsked')
+          ..write('notificationPermissionAsked: $notificationPermissionAsked, ')
+          ..write('chatInfoDialogShown: $chatInfoDialogShown')
           ..write(')'))
         .toString();
   }

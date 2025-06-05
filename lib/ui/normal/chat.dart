@@ -1,4 +1,6 @@
 
+import 'package:app/logic/app/info_dialog.dart';
+import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/profile_thumbnail_image_or_error.dart';
 import 'package:app/utils/time.dart';
 import 'package:flutter/foundation.dart';
@@ -147,8 +149,19 @@ class _ChatViewState extends State<ChatView> {
         ),
       );
     } else {
-      return conversationsSupported(context);
+      return conversationsSupportedWithZeroSizedWidget(context);
     }
+  }
+
+  Widget conversationsSupportedWithZeroSizedWidget(BuildContext context) {
+    return Column(
+      children: [
+        Expanded(child: conversationsSupported(context)),
+
+        // Zero sized widgets
+        const ChatInfoDialogOpener(),
+      ],
+    );
   }
 
   Widget conversationsSupported(BuildContext context) {
@@ -401,5 +414,49 @@ class _ChatViewState extends State<ChatView> {
     _scrollController.removeListener(scrollEventListener);
     _scrollController.dispose();
     super.dispose();
+  }
+}
+
+class ChatInfoDialogOpener extends StatefulWidget {
+  const ChatInfoDialogOpener({super.key});
+
+  @override
+  State<ChatInfoDialogOpener> createState() => _ChatInfoDialogOpenerState();
+}
+
+class _ChatInfoDialogOpenerState extends State<ChatInfoDialogOpener> {
+  bool askedOnce = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<InfoDialogBloc, InfoDialogData>(
+      builder: (context, state) {
+        if (state.chatInfoDialogShown) {
+          return const SizedBox.shrink();
+        }
+
+        return BlocBuilder<BottomNavigationStateBloc, BottomNavigationStateData>(
+          builder: (context, state) {
+            if (askedOnce || state.screen != BottomNavigationScreenId.chats) {
+              return const SizedBox.shrink();
+            }
+
+            askedOnce = true;
+            context.read<InfoDialogBloc>().add(MarkChatInfoDialogShown());
+            openNotificationPermissionDialog(context);
+            return const SizedBox.shrink();
+          }
+        );
+      }
+    );
+  }
+
+  void openNotificationPermissionDialog(BuildContext context) {
+    Future.delayed(Duration.zero, () {
+      if (!context.mounted) {
+        return;
+      }
+      showInfoDialog(context, context.strings.chat_list_screen_info_dialog_text);
+    });
   }
 }

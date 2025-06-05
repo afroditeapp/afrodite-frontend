@@ -20,6 +20,11 @@ class Common extends Table {
   /// app main view (bottom navigation is visible) is opened.
   BoolColumn get notificationPermissionAsked => boolean()
     .withDefault(const Constant(NOTIFICATION_PERMISSION_ASKED_DEFAULT))();
+
+  /// If true info dialog about chat has been shown when
+  /// chat list screen (bottom navigation is visible) is opened.
+  BoolColumn get chatInfoDialogShown => boolean()
+    .withDefault(const Constant(false))();
 }
 
 @DriftDatabase(tables: [Common])
@@ -75,6 +80,15 @@ class CommonDatabase extends _$CommonDatabase {
     );
   }
 
+  Future<void> updateChatInfoDialogShown(bool value) async {
+    await into(common).insertOnConflictUpdate(
+      CommonCompanion.insert(
+        id: COMMON_DB_DATA_ID,
+        chatInfoDialogShown: Value(value),
+      ),
+    );
+  }
+
   Stream<String?> watchDemoAccountUserId() =>
     watchColumn((r) => r.demoAccountUserId);
 
@@ -89,6 +103,9 @@ class CommonDatabase extends _$CommonDatabase {
 
   Stream<bool?> watchNotificationPermissionAsked() =>
     watchColumn((r) => r.notificationPermissionAsked);
+
+  Stream<bool?> watchChatInfoDialogShown() =>
+    watchColumn((r) => r.chatInfoDialogShown);
 
   SimpleSelectStatement<$CommonTable, CommonData> _selectFromDataId() {
     return select(common)
