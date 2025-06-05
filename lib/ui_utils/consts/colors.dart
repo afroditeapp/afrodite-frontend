@@ -15,3 +15,7 @@ Color getIconButtonEnabledColor(BuildContext context) {
 Color getIconButtonDisabledColor(BuildContext context) {
   return Theme.of(context).colorScheme.onSurface.withOpacity(0.38);
 }
+
+Color getUnlimitedLikesColor(BuildContext context) {
+  return Theme.of(context).colorScheme.primary;
+}

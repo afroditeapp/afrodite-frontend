@@ -1,4 +1,5 @@
 import "package:app/model/freezed/logic/account/initial_setup.dart";
+import "package:app/ui_utils/consts/colors.dart";
 import "package:app/ui_utils/loading_dialog.dart";
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
@@ -80,7 +81,10 @@ class _AskUnlimitedLikesState extends State<AskUnlimitedLikes> {
                     children: [
                       Expanded(child: Text(context.strings.initial_setup_screen_unlimited_likes_description_part_2)),
                       const Padding(padding: EdgeInsets.only(left: INITIAL_SETUP_PADDING)),
-                      const Icon(Icons.all_inclusive),
+                      Icon(
+                        Icons.all_inclusive,
+                        color: getUnlimitedLikesColor(context),
+                      ),
                     ],
                   ),
                 ],

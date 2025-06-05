@@ -1,6 +1,7 @@
 
 
 
+import 'package:app/ui_utils/consts/colors.dart';
 import 'package:app/ui_utils/extensions/api.dart';
 import 'package:app/ui_utils/attribute/attribute.dart';
 import 'package:app/ui_utils/attribute/state.dart';
@@ -100,9 +101,12 @@ class _ViewProfileEntryState extends State<ViewProfileEntry> {
             ),
           ),
           if ((myProfile?.unlimitedLikes ?? false) && widget.profile.unlimitedLikes)
-            const Padding(
-              padding: EdgeInsets.only(left: 8.0),
-              child: Icon(Icons.all_inclusive),
+            Padding(
+              padding: const EdgeInsets.only(left: 8.0),
+              child: Icon(
+                Icons.all_inclusive,
+                color: getUnlimitedLikesColor(context),
+              ),
             ),
           if (widget.profile.containsNonAcceptedContent()) profileContentNotAcceptedInfoButton(context),
         ],

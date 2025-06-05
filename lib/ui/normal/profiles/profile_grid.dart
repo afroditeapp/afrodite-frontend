@@ -4,6 +4,7 @@ import 'package:app/logic/profile/view_profiles.dart';
 import 'package:app/logic/settings/ui_settings.dart';
 import 'package:app/model/freezed/logic/profile/view_profiles.dart';
 import 'package:app/model/freezed/logic/settings/ui_settings.dart';
+import 'package:app/ui_utils/consts/colors.dart';
 import 'package:app/ui_utils/extensions/other.dart';
 import 'package:app/ui_utils/profile_thumbnail_image_or_error.dart';
 import 'package:app/utils/command_runner.dart';
@@ -369,6 +370,7 @@ Widget profileEntryWidgetStream(
               e.isFavorite,
             ),
             _thumbnailStatusIndicatorsBottom(
+              context,
               e.entry,
               iHaveUnlimitedLikesEnabled,
             ),
@@ -391,6 +393,7 @@ Widget profileEntryWidgetStream(
 }
 
 Widget _thumbnailStatusIndicatorsBottom(
+  BuildContext context,
   ProfileEntry profile,
   bool iHaveUnlimitedLikesEnabled,
 ) {
@@ -411,11 +414,11 @@ Widget _thumbnailStatusIndicatorsBottom(
         ),
         const Spacer(),
         iHaveUnlimitedLikesEnabled && profile.unlimitedLikes ?
-          const Padding(
-            padding: EdgeInsets.only(right: 8.0),
+          Padding(
+            padding: const EdgeInsets.only(right: 8.0),
             child: Icon(
               Icons.all_inclusive,
-              color: Colors.black,
+              color: getUnlimitedLikesColor(context),
             ),
           ) :
           const SizedBox.shrink(),

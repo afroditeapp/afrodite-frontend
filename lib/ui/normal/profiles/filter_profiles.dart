@@ -2,6 +2,7 @@
 import 'dart:math';
 
 import 'package:app/ui_utils/attribute/attribute.dart';
+import 'package:app/ui_utils/consts/colors.dart';
 import 'package:app/ui_utils/consts/corners.dart';
 import 'package:app/ui_utils/consts/size.dart';
 import 'package:app/ui_utils/dialog.dart';
@@ -540,7 +541,10 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
           subtitle: !myProfileUnlimitedLikesValue ?
             Text(context.strings.profile_filtering_settings_screen_unlimited_likes_filter_not_available) :
             null,
-          secondary: const Icon(Icons.all_inclusive),
+          secondary: Icon(
+            Icons.all_inclusive,
+            color: getUnlimitedLikesColor(context),
+          ),
           value: state.valueUnlimitedLikesFilter() ?? false,
           onChanged: myProfileUnlimitedLikesValue == true ? (bool value) {
             final filterValue = value ? true : null;

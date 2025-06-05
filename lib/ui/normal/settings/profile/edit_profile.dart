@@ -256,7 +256,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
           Text(context.strings.edit_profile_screen_unlimited_likes_description_enabled) :
           Text(context.strings.edit_profile_screen_unlimited_likes_description_disabled),
         isThreeLine: true,
-        secondary: const Icon(Icons.all_inclusive),
+        secondary: Icon(
+          Icons.all_inclusive,
+          color: getUnlimitedLikesColor(context),
+        ),
         value: myProfileData.unlimitedLikes,
         onChanged: (bool value) =>
             context.read<EditMyProfileBloc>().add(NewUnlimitedLikesValue(value)),
