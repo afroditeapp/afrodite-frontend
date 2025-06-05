@@ -1638,18 +1638,6 @@
       }
     }
   },
-  "statistics_screen_count_bar_chart_tooltip": "Count: {p0}, Age: {p1}",
-  "@statistics_screen_count_bar_chart_tooltip": {
-    "description": "Text for profile bar chart tooltip",
-    "placeholders": {
-      "p0": {
-        "type": "String"
-      },
-      "p1": {
-        "type": "String"
-      }
-    }
-  },
   "statistics_screen_count_man": "Men: {p0}",
   "@statistics_screen_count_man": {
     "description": "Text for man profiles count",

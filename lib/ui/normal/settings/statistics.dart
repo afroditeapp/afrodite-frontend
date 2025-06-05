@@ -89,31 +89,28 @@ class StatisticsScreenState extends State<StatisticsScreen> {
   Widget viewItem(BuildContext context, GetProfileStatisticsResult item) {
     final dataTime = fullTimeString(item.generationTime.toUtcDateTime());
     final adminSettingsAvailable = context.read<AccountBloc>().state.permissions.adminProfileStatistics;
-    int profileCountMan = 0;
-    int profileCountWoman = 0;
-    int profileCountNonBinary = 0;
-    int profileCount = 0;
-    final List<int> totalAgeCounts = [];
-    for (final (i, age) in item.ageCounts.man.indexed) {
-      profileCountMan += age;
+
+    final data = AgeGroupManager();
+    for (final (i, manCount) in item.ageCounts.man.indexed) {
+      final age = item.ageCounts.startAge + i;
+      data.addMen(age, manCount);
       final womanCount = item.ageCounts.woman.getAtOrNull(i) ?? 0;
-      profileCountWoman += womanCount;
-      final nonBinaryCount = item.ageCounts.nonBinary.getAtOrNull(i) ?? 0;
-      profileCountNonBinary += nonBinaryCount;
-      final count = age + womanCount + nonBinaryCount;
-      profileCount += count;
-      totalAgeCounts.add(count);
+      data.addWomen(age, womanCount);
+      final nonBinariesCount = item.ageCounts.nonBinary.getAtOrNull(i) ?? 0;
+      data.addNonbinaries(age, nonBinariesCount);
     }
 
-    final String currentCount;
+    final profileCount = data.total();
+
+    final String Function(String) currentCountFunction;
     if (adminVisibilitySelection == 0) {
-      currentCount = context.strings.statistics_screen_count_public_profiles(profileCount.toString());
+      currentCountFunction = context.strings.statistics_screen_count_public_profiles;
     } else if (adminVisibilitySelection == 1) {
-      currentCount = context.strings.statistics_screen_count_private_profiles(profileCount.toString());
+      currentCountFunction = context.strings.statistics_screen_count_private_profiles;
     } else if (adminVisibilitySelection == 2) {
-      currentCount = context.strings.statistics_screen_count_all_profiles(profileCount.toString());
+      currentCountFunction = context.strings.statistics_screen_count_all_profiles;
     } else {
-      currentCount = context.strings.generic_error;
+      currentCountFunction = (_) => context.strings.generic_error;
     }
     return SingleChildScrollView(
       child: Padding(
@@ -123,21 +120,75 @@ class StatisticsScreenState extends State<StatisticsScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             if (adminSettingsAvailable) adminControls(context),
-            Text(currentCount),
+            Text(currentCountFunction(profileCount.toString())),
             const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
-            getChart(context, item.ageCounts.startAge, totalAgeCounts),
+            getChart(
+              context,
+              () {
+                final groups = <BarChartGroupData>[];
+                for (final (i, g) in data.groups.indexed) {
+                  groups.add(BarChartGroupData(
+                    x: i,
+                    barRods: [
+                      BarChartRodData(
+                        color: Theme.of(context).colorScheme.primaryContainer,
+                        toY: g.total().toDouble(),
+                      ),
+                    ],
+                  ));
+                }
+                return groups;
+              },
+              (rods) => currentCountFunction(rods[0].toY.toInt().toString()),
+              (i) => data.groups[i].group().uiText(),
+            ),
             const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
-            Text(context.strings.statistics_screen_count_man(profileCountMan.toString())),
+            Text(context.strings.statistics_screen_count_man(data.totalMan().toString())),
+            Text(context.strings.statistics_screen_count_woman(data.totalWoman().toString())),
+            Text(context.strings.statistics_screen_count_non_binary(data.totalNonbinaries().toString())),
             const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
-            getChart(context, item.ageCounts.startAge, item.ageCounts.man),
-            const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
-            Text(context.strings.statistics_screen_count_woman(profileCountWoman.toString())),
-            const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
-            getChart(context, item.ageCounts.startAge, item.ageCounts.woman),
-            const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
-            Text(context.strings.statistics_screen_count_non_binary(profileCountNonBinary.toString())),
-            const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
-            getChart(context, item.ageCounts.startAge, item.ageCounts.nonBinary),
+            getChart(
+              context,
+              () {
+                final groups = <BarChartGroupData>[];
+                for (final (i, g) in data.groups.indexed) {
+                  groups.add(BarChartGroupData(
+                    x: i,
+                    barRods: [
+                      BarChartRodData(
+                        color: Colors.lightBlue,
+                        toY: g.men().toDouble(),
+                      ),
+                      BarChartRodData(
+                        color: Colors.pink,
+                        toY: g.women().toDouble(),
+                      ),
+                      BarChartRodData(
+                        color: Theme.of(context).colorScheme.primaryContainer,
+                        toY: g.nonbinaries().toDouble(),
+                      ),
+                    ],
+                  ));
+                }
+                return groups;
+              },
+              (rods) {
+                String appendToStringIfNotZero(String current, String Function(String) getText, int value) {
+                  if (value == 0) {
+                    return current;
+                  } else {
+                    final text = getText(value.toString());
+                    return "$current$text\n";
+                  }
+                }
+                var text = "";
+                text = appendToStringIfNotZero(text, context.strings.statistics_screen_count_man, rods[0].toY.toInt());
+                text = appendToStringIfNotZero(text, context.strings.statistics_screen_count_woman, rods[1].toY.toInt());
+                text = appendToStringIfNotZero(text, context.strings.statistics_screen_count_non_binary, rods[2].toY.toInt());
+                return text.trim();
+              },
+              (i) => data.groups[i].group().uiText(),
+            ),
             const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
             Text(context.strings.statistics_screen_time(dataTime)),
             const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
@@ -147,33 +198,23 @@ class StatisticsScreenState extends State<StatisticsScreen> {
     );
   }
 
-  Widget getChart(BuildContext context, int startAge, List<int> counts) {
-    final data = <BarChartGroupData>[];
-    for (final (i, c) in counts.indexed) {
-      final age = startAge + i;
-      data.add(BarChartGroupData(
-        x: age,
-        barRods: [BarChartRodData(
-          color: Theme.of(context).colorScheme.primaryContainer,
-          toY: c.toDouble(),
-        )],
-      ));
-    }
-
+  Widget getChart(
+    BuildContext context,
+    List<BarChartGroupData> Function() dataBuilder,
+    String Function(List<BarChartRodData> values) tooltipBuilder,
+    String Function(int index) groupTitleBuilder,
+  ) {
     return SizedBox(
       height: 200,
       child: BarChart(
         BarChartData(
-          barGroups: data,
+          barGroups: dataBuilder(),
           barTouchData: BarTouchData(
             touchTooltipData: BarTouchTooltipData(
               fitInsideHorizontally: true,
               getTooltipItem: (group, groupIndex, rod, rodIndex) {
                 return BarTooltipItem(
-                  context.strings.statistics_screen_count_bar_chart_tooltip(
-                    rod.toY.toInt().toString(),
-                    group.x.toString()
-                  ),
+                  tooltipBuilder(group.barRods),
                   Theme.of(context).textTheme.labelLarge!,
                 );
               },
@@ -208,19 +249,11 @@ class StatisticsScreenState extends State<StatisticsScreen> {
               sideTitles: SideTitles(
                 showTitles: true,
                 interval: 1.0,
-                minIncluded: false,
-                maxIncluded: false,
                 getTitlesWidget: (value, meta) {
-                  final minIncluded = meta.sideTitles.minIncluded && value == startAge;
-                  final maxIncluded = meta.sideTitles.maxIncluded && value == startAge + counts.length - 1;
-                  if (minIncluded || maxIncluded || value.toInt() % 10 == 0) {
-                    return Padding(
-                      padding: const EdgeInsets.only(top: 2),
-                      child: Text(value.toInt().toString()),
-                    );
-                  } else {
-                    return const SizedBox.shrink();
-                  }
+                  return Padding(
+                    padding: const EdgeInsets.only(top: 2),
+                    child: Text(groupTitleBuilder(value.toInt())),
+                  );
                 },
               ),
             ),
@@ -290,5 +323,108 @@ class StatisticsScreenState extends State<StatisticsScreen> {
       generateNew: adminGenerateStatistics,
       visibility: StatisticsProfileVisibility.values[adminVisibilitySelection],
     ));
+  }
+}
+
+class AgeGroup {
+  final int min;
+  final int max;
+  const AgeGroup(this.min, this.max);
+
+  static const visibleGroups = [
+    AgeGroup(18, 29),
+    AgeGroup(30, 39),
+    AgeGroup(40, 49),
+    AgeGroup(50, 59),
+    AgeGroup(60, 99),
+  ];
+
+  String uiText() {
+    return "$min-$max";
+  }
+
+  bool includes(int age) {
+    return age >= min && age <= max;
+  }
+}
+
+class AgeGroupAndValues {
+  final AgeGroup _group;
+  int _men = 0;
+  int _women = 0;
+  int _nonbinaries = 0;
+  AgeGroupAndValues(this._group);
+
+  void addMen(int value) {
+    _men += value;
+  }
+
+  void addWomen(int value) {
+    _women += value;
+  }
+
+  void addNonbinaries(int value) {
+    _nonbinaries += value;
+  }
+
+  bool includes(int age) {
+    return _group.includes(age);
+  }
+
+  AgeGroup group() => _group;
+  int men() => _men;
+  int women() => _women;
+  int nonbinaries() => _nonbinaries;
+  int total() => _men + _women + _nonbinaries;
+}
+
+class AgeGroupManager {
+  List<AgeGroupAndValues> groups;
+  AgeGroupManager._(this.groups);
+
+  factory AgeGroupManager() {
+    return AgeGroupManager._(
+      AgeGroup.visibleGroups.map((v) => AgeGroupAndValues(v)).toList()
+    );
+  }
+
+  void addMen(int age, int value) {
+    for (final group in groups) {
+      if (group.includes(age)) {
+        group.addMen(value);
+      }
+    }
+  }
+
+  void addWomen(int age, int value) {
+    for (final group in groups) {
+      if (group.includes(age)) {
+        group.addWomen(value);
+      }
+    }
+  }
+
+  void addNonbinaries(int age, int value) {
+    for (final group in groups) {
+      if (group.includes(age)) {
+        group.addNonbinaries(value);
+      }
+    }
+  }
+
+  int total() {
+    return groups.fold(0, (count, v) => v.total() + count);
+  }
+
+  int totalMan() {
+    return groups.fold(0, (count, v) => v.men() + count);
+  }
+
+  int totalWoman() {
+    return groups.fold(0, (count, v) => v.women() + count);
+  }
+
+  int totalNonbinaries() {
+    return groups.fold(0, (count, v) => v.nonbinaries() + count);
   }
 }
