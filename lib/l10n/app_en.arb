@@ -1633,6 +1633,15 @@
   "@settings_screen_title": {
     "description": "Title for settings screen"
   },
+  "statistics_screen_age_range": "Ages: {p0}",
+  "@statistics_screen_age_range": {
+    "description": "Text for age range",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
   "statistics_screen_count_all_profiles": "All profiles: {p0}",
   "@statistics_screen_count_all_profiles": {
     "description": "Text for all profiles count",

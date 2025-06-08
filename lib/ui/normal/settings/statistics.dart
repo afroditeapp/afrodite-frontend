@@ -260,7 +260,12 @@ class StatisticsScreenState extends State<StatisticsScreen> {
           }
           return groups;
         },
-        (_, rods) => currentCountFunction(rods[0].toY.toInt().toString()),
+        (i, rods) {
+          var text = "";
+          text = appendStringToString(text, context.strings.statistics_screen_age_range(data.groups[i].group().uiText()));
+          text = appendToStringIfNotZero(text, currentCountFunction, rods[0].toY.toInt());
+          return text.trim();
+        },
         (i) => data.groups[i].group().uiText(),
       ),
       const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
@@ -293,8 +298,9 @@ class StatisticsScreenState extends State<StatisticsScreen> {
           }
           return groups;
         },
-        (_, rods) {
+        (i, rods) {
           var text = "";
+          text = appendStringToString(text, context.strings.statistics_screen_age_range(data.groups[i].group().uiText()));
           text = appendToStringIfNotZero(text, context.strings.statistics_screen_count_man, rods[0].toY.toInt());
           text = appendToStringIfNotZero(text, context.strings.statistics_screen_count_woman, rods[1].toY.toInt());
           text = appendToStringIfNotZero(text, context.strings.statistics_screen_count_non_binary, rods[2].toY.toInt());
@@ -434,6 +440,10 @@ class StatisticsScreenState extends State<StatisticsScreen> {
       generateNew: adminGenerateStatistics,
       visibility: StatisticsProfileVisibility.values[adminVisibilitySelection],
     ));
+  }
+
+  String appendStringToString(String current, String value) {
+    return "$current$value\n";
   }
 
   String appendToString(String current, String Function(String) getText, int value) {

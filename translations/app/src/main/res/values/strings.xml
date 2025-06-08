@@ -506,6 +506,7 @@
     <string name="statistics_screen_count_public_profiles" description="Text for public profiles count">Public profiles: %s</string>
     <string name="statistics_screen_count_private_profiles" description="Text for private profiles count">Private profiles: %s</string>
     <string name="statistics_screen_count_all_profiles" description="Text for all profiles count">All profiles: %s</string>
+    <string name="statistics_screen_age_range" description="Text for age range">Ages: %s</string>
     <string name="statistics_screen_count_man" description="Text for man profiles count">Men: %s</string>
     <string name="statistics_screen_count_woman" description="Text for woman profiles count">Women: %s</string>
     <string name="statistics_screen_count_non_binary" description="Text for non-binary profiles count">Non-binaries: %s</string>
