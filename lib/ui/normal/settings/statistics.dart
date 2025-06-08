@@ -16,9 +16,7 @@ import 'package:app/ui_utils/consts/animation.dart';
 import 'package:app/ui_utils/list.dart';
 import 'package:app/utils/api.dart';
 import 'package:app/utils/time.dart';
-
-// TODO(prod): Consider removing account count and PublicProfileCounts
-//             from profile statistics.
+import 'package:utils/utils.dart';
 
 Future<void> openStatisticsScreen(
   BuildContext context,
@@ -49,6 +47,8 @@ class StatisticsScreenState extends State<StatisticsScreen> {
 
   bool adminGenerateStatistics = false;
   int adminVisibilitySelection = 0;
+
+  int startPositionForConnectionStatisticsByGender = 18;
 
   @override
   Widget build(BuildContext context) {
@@ -89,14 +89,141 @@ class StatisticsScreenState extends State<StatisticsScreen> {
   Widget viewItem(BuildContext context, GetProfileStatisticsResult item) {
     final dataTime = fullTimeString(item.generationTime.toUtcDateTime());
     final adminSettingsAvailable = context.read<AccountBloc>().state.permissions.adminProfileStatistics;
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (adminSettingsAvailable) adminControls(context),
+            const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
+            Text(context.strings.statistics_screen_count_registered_users(item.accountCountBotsExcluded.toString())),
+            const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
+            const Divider(),
+            const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
+            ...usersOnlineStatistics(context, item.connectionStatistics),
+            const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
+            const Divider(),
+            const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
+            ...publicProfileStatistics(context, item.ageCounts),
+            const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
+            const Divider(),
+            const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
+            Text(context.strings.statistics_screen_time(dataTime)),
+            const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
+          ],
+        ),
+      )
+    );
+  }
 
+  List<Widget> usersOnlineStatistics(BuildContext context, ConnectionStatistics connections) {
+    final data = ConnectionStatisticsManager.create(connections);
+
+    return [
+      Text(context.strings.statistics_screen_users_online_per_hour_statistics_title),
+      const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
+      getChart(
+        context,
+        () {
+          final groups = <BarChartGroupData>[];
+          for (final (localHour, _) in connections.all.indexed) {
+            groups.add(BarChartGroupData(
+              x: localHour,
+              barRods: [
+                BarChartRodData(
+                  color: Theme.of(context).colorScheme.primaryContainer,
+                  toY: data.all(localHour).toDouble(),
+                ),
+              ],
+            ));
+          }
+          return groups;
+        },
+        (localHour, rods) {
+          var text = "";
+          text = appendToString(text, context.strings.statistics_screen_hour_value, localHour);
+          text = appendToStringIfNotZero(text, context.strings.statistics_screen_count_online_users, data.all(localHour));
+          return text.trim();
+        },
+        (i) {
+          if (i == 23) {
+            return i.toString();
+          }
+          return (i % 3) == 0 ? i.toString() : null;
+        },
+      ),
+      const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
+      getChart(
+        context,
+        () {
+          final groups = <BarChartGroupData>[];
+          for (final (i, _) in connections.all.skip(startPositionForConnectionStatisticsByGender).take(6).indexed) {
+            final localHour = startPositionForConnectionStatisticsByGender + i;
+            groups.add(BarChartGroupData(
+              x: i,
+              barRods: [
+                BarChartRodData(
+                  color: Colors.lightBlue,
+                  toY: data.men(localHour).toDouble(),
+                ),
+                BarChartRodData(
+                  color: Colors.pink,
+                  toY: data.women(localHour).toDouble(),
+                ),
+                BarChartRodData(
+                  color: Theme.of(context).colorScheme.primaryContainer,
+                  toY: data.nonbinaries(localHour).toDouble(),
+                ),
+              ],
+            ));
+          }
+          return groups;
+        },
+        (i, rods) {
+          final localHour = startPositionForConnectionStatisticsByGender + i;
+          var text = "";
+          text = appendToString(text, context.strings.statistics_screen_hour_value, localHour);
+          text = appendToStringIfNotZero(text, context.strings.statistics_screen_count_man, data.men(localHour));
+          text = appendToStringIfNotZero(text, context.strings.statistics_screen_count_woman, data.women(localHour));
+          text = appendToStringIfNotZero(text, context.strings.statistics_screen_count_non_binary, data.nonbinaries(localHour));
+          return text.trim();
+        },
+        (i) {
+          final hour = startPositionForConnectionStatisticsByGender + i;
+          return hour.toString();
+        },
+      ),
+      const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
+      Center(
+        child: SegmentedButton<int>(
+          segments: const [
+            ButtonSegment(value: 0, label: Text("0-5")),
+            ButtonSegment(value: 6, label: Text("6-11")),
+            ButtonSegment(value: 12, label: Text("12-17")),
+            ButtonSegment(value: 18, label: Text("18-23")),
+          ],
+          selected: { startPositionForConnectionStatisticsByGender },
+          onSelectionChanged: (selected) {
+            setState(() {
+              startPositionForConnectionStatisticsByGender = selected.first;
+            });
+          },
+          showSelectedIcon: false,
+        ),
+      )
+    ];
+  }
+
+  List<Widget> publicProfileStatistics(BuildContext context, ProfileAgeCounts ageCounts) {
     final data = AgeGroupManager();
-    for (final (i, manCount) in item.ageCounts.man.indexed) {
-      final age = item.ageCounts.startAge + i;
+    for (final (i, manCount) in ageCounts.man.indexed) {
+      final age = ageCounts.startAge + i;
       data.addMen(age, manCount);
-      final womanCount = item.ageCounts.woman.getAtOrNull(i) ?? 0;
+      final womanCount = ageCounts.woman.getAtOrNull(i) ?? 0;
       data.addWomen(age, womanCount);
-      final nonBinariesCount = item.ageCounts.nonBinary.getAtOrNull(i) ?? 0;
+      final nonBinariesCount = ageCounts.nonBinary.getAtOrNull(i) ?? 0;
       data.addNonbinaries(age, nonBinariesCount);
     }
 
@@ -112,97 +239,77 @@ class StatisticsScreenState extends State<StatisticsScreen> {
     } else {
       currentCountFunction = (_) => context.strings.generic_error;
     }
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (adminSettingsAvailable) adminControls(context),
-            Text(currentCountFunction(profileCount.toString())),
-            const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
-            getChart(
-              context,
-              () {
-                final groups = <BarChartGroupData>[];
-                for (final (i, g) in data.groups.indexed) {
-                  groups.add(BarChartGroupData(
-                    x: i,
-                    barRods: [
-                      BarChartRodData(
-                        color: Theme.of(context).colorScheme.primaryContainer,
-                        toY: g.total().toDouble(),
-                      ),
-                    ],
-                  ));
-                }
-                return groups;
-              },
-              (rods) => currentCountFunction(rods[0].toY.toInt().toString()),
-              (i) => data.groups[i].group().uiText(),
-            ),
-            const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
-            Text(context.strings.statistics_screen_count_man(data.totalMan().toString())),
-            Text(context.strings.statistics_screen_count_woman(data.totalWoman().toString())),
-            Text(context.strings.statistics_screen_count_non_binary(data.totalNonbinaries().toString())),
-            const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
-            getChart(
-              context,
-              () {
-                final groups = <BarChartGroupData>[];
-                for (final (i, g) in data.groups.indexed) {
-                  groups.add(BarChartGroupData(
-                    x: i,
-                    barRods: [
-                      BarChartRodData(
-                        color: Colors.lightBlue,
-                        toY: g.men().toDouble(),
-                      ),
-                      BarChartRodData(
-                        color: Colors.pink,
-                        toY: g.women().toDouble(),
-                      ),
-                      BarChartRodData(
-                        color: Theme.of(context).colorScheme.primaryContainer,
-                        toY: g.nonbinaries().toDouble(),
-                      ),
-                    ],
-                  ));
-                }
-                return groups;
-              },
-              (rods) {
-                String appendToStringIfNotZero(String current, String Function(String) getText, int value) {
-                  if (value == 0) {
-                    return current;
-                  } else {
-                    final text = getText(value.toString());
-                    return "$current$text\n";
-                  }
-                }
-                var text = "";
-                text = appendToStringIfNotZero(text, context.strings.statistics_screen_count_man, rods[0].toY.toInt());
-                text = appendToStringIfNotZero(text, context.strings.statistics_screen_count_woman, rods[1].toY.toInt());
-                text = appendToStringIfNotZero(text, context.strings.statistics_screen_count_non_binary, rods[2].toY.toInt());
-                return text.trim();
-              },
-              (i) => data.groups[i].group().uiText(),
-            ),
-            const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
-            Text(context.strings.statistics_screen_time(dataTime)),
-            const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
-          ],
-        ),
-      )
-    );
+
+    return [
+      Text(currentCountFunction(profileCount.toString())),
+      const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
+      getChart(
+        context,
+        () {
+          final groups = <BarChartGroupData>[];
+          for (final (i, g) in data.groups.indexed) {
+            groups.add(BarChartGroupData(
+              x: i,
+              barRods: [
+                BarChartRodData(
+                  color: Theme.of(context).colorScheme.primaryContainer,
+                  toY: g.total().toDouble(),
+                ),
+              ],
+            ));
+          }
+          return groups;
+        },
+        (_, rods) => currentCountFunction(rods[0].toY.toInt().toString()),
+        (i) => data.groups[i].group().uiText(),
+      ),
+      const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
+      Text(context.strings.statistics_screen_count_man(data.totalMan().toString())),
+      Text(context.strings.statistics_screen_count_woman(data.totalWoman().toString())),
+      Text(context.strings.statistics_screen_count_non_binary(data.totalNonbinaries().toString())),
+      const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
+      getChart(
+        context,
+        () {
+          final groups = <BarChartGroupData>[];
+          for (final (i, g) in data.groups.indexed) {
+            groups.add(BarChartGroupData(
+              x: i,
+              barRods: [
+                BarChartRodData(
+                  color: Colors.lightBlue,
+                  toY: g.men().toDouble(),
+                ),
+                BarChartRodData(
+                  color: Colors.pink,
+                  toY: g.women().toDouble(),
+                ),
+                BarChartRodData(
+                  color: Theme.of(context).colorScheme.primaryContainer,
+                  toY: g.nonbinaries().toDouble(),
+                ),
+              ],
+            ));
+          }
+          return groups;
+        },
+        (_, rods) {
+          var text = "";
+          text = appendToStringIfNotZero(text, context.strings.statistics_screen_count_man, rods[0].toY.toInt());
+          text = appendToStringIfNotZero(text, context.strings.statistics_screen_count_woman, rods[1].toY.toInt());
+          text = appendToStringIfNotZero(text, context.strings.statistics_screen_count_non_binary, rods[2].toY.toInt());
+          return text.trim();
+        },
+        (i) => data.groups[i].group().uiText(),
+      ),
+    ];
   }
 
   Widget getChart(
     BuildContext context,
     List<BarChartGroupData> Function() dataBuilder,
-    String Function(List<BarChartRodData> values) tooltipBuilder,
-    String Function(int index) groupTitleBuilder,
+    String Function(int groupIndex, List<BarChartRodData> values) tooltipBuilder,
+    String? Function(int index) groupTitleBuilder,
   ) {
     return SizedBox(
       height: 200,
@@ -214,7 +321,7 @@ class StatisticsScreenState extends State<StatisticsScreen> {
               fitInsideHorizontally: true,
               getTooltipItem: (group, groupIndex, rod, rodIndex) {
                 return BarTooltipItem(
-                  tooltipBuilder(group.barRods),
+                  tooltipBuilder(groupIndex, group.barRods),
                   Theme.of(context).textTheme.labelLarge!,
                 );
               },
@@ -250,10 +357,15 @@ class StatisticsScreenState extends State<StatisticsScreen> {
                 showTitles: true,
                 interval: 1.0,
                 getTitlesWidget: (value, meta) {
-                  return Padding(
-                    padding: const EdgeInsets.only(top: 2),
-                    child: Text(groupTitleBuilder(value.toInt())),
-                  );
+                  final title = groupTitleBuilder(value.toInt());
+                  if (title != null) {
+                    return Padding(
+                      padding: const EdgeInsets.only(top: 2),
+                      child: Text(title),
+                    );
+                  } else {
+                    return const SizedBox.shrink();
+                  }
                 },
               ),
             ),
@@ -312,7 +424,6 @@ class StatisticsScreenState extends State<StatisticsScreen> {
           ),
         ),
         const Divider(),
-        const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
       ],
     );
   }
@@ -323,6 +434,20 @@ class StatisticsScreenState extends State<StatisticsScreen> {
       generateNew: adminGenerateStatistics,
       visibility: StatisticsProfileVisibility.values[adminVisibilitySelection],
     ));
+  }
+
+  String appendToString(String current, String Function(String) getText, int value) {
+    final text = getText(value.toString());
+    return "$current$text\n";
+  }
+
+  String appendToStringIfNotZero(String current, String Function(String) getText, int value) {
+    if (value == 0) {
+      return current;
+    } else {
+      final text = getText(value.toString());
+      return "$current$text\n";
+    }
   }
 }
 
@@ -427,4 +552,26 @@ class AgeGroupManager {
   int totalNonbinaries() {
     return groups.fold(0, (count, v) => v.nonbinaries() + count);
   }
+}
+
+class ConnectionStatisticsManager {
+  final ConnectionStatistics _data;
+  final int _currentUtcOffset;
+
+  ConnectionStatisticsManager._(this._data, this._currentUtcOffset);
+
+  factory ConnectionStatisticsManager.create(ConnectionStatistics data) {
+    final utcOffset = UtcDateTime.now().dateTime.toLocal().timeZoneOffset.inHours;
+    return ConnectionStatisticsManager._(data, utcOffset);
+  }
+
+  int _getUsingLocalHour(int localHour, List<int> data) {
+    final utcHour = ((localHour - _currentUtcOffset) % 24).abs();
+    return data[utcHour];
+  }
+
+  int all(int localHour) => _getUsingLocalHour(localHour, _data.all);
+  int men(int localHour) => _getUsingLocalHour(localHour, _data.men);
+  int women(int localHour) => _getUsingLocalHour(localHour, _data.women);
+  int nonbinaries(int localHour) => _getUsingLocalHour(localHour, _data.nonbinaries);
 }

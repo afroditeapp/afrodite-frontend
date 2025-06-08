@@ -1660,6 +1660,15 @@
       }
     }
   },
+  "statistics_screen_count_online_users": "Online: {p0}",
+  "@statistics_screen_count_online_users": {
+    "description": "Text for online users count",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
   "statistics_screen_count_private_profiles": "Private profiles: {p0}",
   "@statistics_screen_count_private_profiles": {
     "description": "Text for private profiles count",
@@ -1678,9 +1687,27 @@
       }
     }
   },
+  "statistics_screen_count_registered_users": "Registered users: {p0}",
+  "@statistics_screen_count_registered_users": {
+    "description": "Text for registered users count",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
   "statistics_screen_count_woman": "Women: {p0}",
   "@statistics_screen_count_woman": {
     "description": "Text for woman profiles count",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
+  "statistics_screen_hour_value": "Hour: {p0}",
+  "@statistics_screen_hour_value": {
+    "description": "Text for hour value",
     "placeholders": {
       "p0": {
         "type": "String"
@@ -1699,6 +1726,10 @@
   "statistics_screen_title": "Statistics",
   "@statistics_screen_title": {
     "description": "Title for statistics screen"
+  },
+  "statistics_screen_users_online_per_hour_statistics_title": "Users online per hour",
+  "@statistics_screen_users_online_per_hour_statistics_title": {
+    "description": "Title for users online per hour statistics"
   },
   "unsupported_client_screen_info": "Current app version is not supported. Please update the app.",
   "@unsupported_client_screen_info": {
