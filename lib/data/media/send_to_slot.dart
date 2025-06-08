@@ -27,7 +27,10 @@ class ProcessingCompleted extends SendToSlotEvent {
   final bool faceDetected;
   ProcessingCompleted(this.contentId, this.faceDetected);
 }
-class SendToSlotError extends SendToSlotEvent {}
+class SendToSlotError extends SendToSlotEvent {
+  bool nsfwDetected;
+  SendToSlotError({this.nsfwDetected = false});
+}
 
 /// Asynchronous system for sending image to a slot
 class SendImageToSlotTask {
@@ -163,6 +166,8 @@ class SendImageToSlotTask {
           return InProcessingQueue(0);
         }
       }
+      case ContentProcessingStateType.nsfwDetected:
+        return SendToSlotError(nsfwDetected: true);
       case ContentProcessingStateType.failed:
         return SendToSlotError();
       case ContentProcessingStateType.empty:

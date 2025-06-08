@@ -1,6 +1,5 @@
 import "dart:typed_data";
 
-import "package:camera/camera.dart";
 import "package:flutter/material.dart";
 import "package:openapi/api.dart";
 
@@ -34,7 +33,10 @@ class SendingInProgress extends ProcessingState {
   final ContentUploadState state;
   SendingInProgress(this.state);
 }
-class SendingFailed extends ProcessingState {}
+class SendingFailed extends ProcessingState {
+  final bool nsfwDetected;
+  SendingFailed({this.nsfwDetected = false});
+}
 
 
 /// Image which server has processed.

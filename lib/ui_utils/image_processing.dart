@@ -111,7 +111,11 @@ Widget uploadErrorDialogOpener<B extends Bloc<ImageProcessingEvent, ImageProcess
       final selfieState = state.processingState;
       if (selfieState is SendingFailed) {
         context.read<B>().add(ResetState());
-        await showInfoDialog(context, context.strings.image_processing_ui_upload_failed_dialog_title);
+        if (selfieState.nsfwDetected) {
+          await showInfoDialog(context, context.strings.image_processing_ui_nsfw_detected_dialog_title);
+        } else {
+          await showInfoDialog(context, context.strings.image_processing_ui_upload_failed_dialog_title);
+        }
       }
     },
     child: const SizedBox.shrink(),

@@ -669,6 +669,10 @@
   "@image_processing_ui_confirm_photo_dialog_title": {
     "description": "Dialog title for confirming new security selfie"
   },
+  "image_processing_ui_nsfw_detected_dialog_title": "Unallowed content detected from the uploaded photo. This might be false positive detection.",
+  "@image_processing_ui_nsfw_detected_dialog_title": {
+    "description": "Progress dialog info text that NSFW content is detected"
+  },
   "image_processing_ui_upload_failed_dialog_title": "Upload failed",
   "@image_processing_ui_upload_failed_dialog_title": {
     "description": "Progress dialog info text that security selfie upload failed"

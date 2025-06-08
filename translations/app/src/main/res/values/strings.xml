@@ -137,6 +137,7 @@
     <!-- Image processing UI -->
     <string name="image_processing_ui_confirm_photo_dialog_title" description="Dialog title for confirming new security selfie">Continue with this photo?</string>
     <string name="image_processing_ui_upload_in_progress_dialog_description" description="Progress dialog info text that security selfie upload is in progress">Uploading photo</string>
+    <string name="image_processing_ui_nsfw_detected_dialog_title" description="Progress dialog info text that NSFW content is detected">Unallowed content detected from the uploaded photo. This might be false positive detection.</string>
     <string name="image_processing_ui_upload_failed_dialog_title" description="Progress dialog info text that security selfie upload failed">Upload failed</string>
     <string name="image_processing_ui_upload_in_processing_queue_dialog_description" description="Progress dialog info text that security selfie is currently in server's processing queue">Waiting for processing. Queue number: %s</string>
     <string name="image_processing_ui_upload_processing_ongoing_description" description="Progress dialog info text that security selfie processing is ongoing">Processing ongoing</string>
