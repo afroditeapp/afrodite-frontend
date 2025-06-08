@@ -34,8 +34,8 @@ class InitialSetupUtils {
         case ContentProcessingStateType.processing || ContentProcessingStateType.inQueue: {
           await Future<void>.delayed(const Duration(seconds: 1));
         }
-        case ContentProcessingStateType.nsfwDetected: return ProcessingError("Security selfie processing failed: NSFW detected");
-        case ContentProcessingStateType.failed: return ProcessingError("Security selfie processing failed");
+        case ContentProcessingStateType.nsfwDetected: return ProcessingError("Image processing failed: NSFW detected");
+        case ContentProcessingStateType.failed: return ProcessingError("Image processing failed");
         case ContentProcessingStateType.empty: return ProcessingError("Slot is empty");
         case ContentProcessingStateType.completed: {
           final contentId = state.cid;

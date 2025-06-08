@@ -17,9 +17,9 @@ import "package:app/ui_utils/dialog.dart";
 List<Widget> imageProcessingUiWidgets<B extends Bloc<ImageProcessingEvent, ImageProcessingData>>({required void Function(BuildContext, ProcessedAccountImage) onComplete}) {
   return [
     confirmDialogOpener<B>(),
-    sendSecuritySelfieProgressDialogListener<B>(),
+    uploadImageProgressDialogListener<B>(),
     uploadErrorDialogOpener<B>(),
-    sendingCompletedListener<B>(onComplete),
+    uploadCompletedListener<B>(onComplete),
   ];
 }
 
@@ -86,13 +86,13 @@ Future<bool?> _confirmDialogForImage(BuildContext context, Uint8List imageBytes)
   );
 }
 
-Widget sendSecuritySelfieProgressDialogListener<B extends Bloc<ImageProcessingEvent, ImageProcessingData>>() {
+Widget uploadImageProgressDialogListener<B extends Bloc<ImageProcessingEvent, ImageProcessingData>>() {
   return ProgressDialogOpener<B, ImageProcessingData>(
     dialogVisibilityGetter: (state) => state.processingState is SendingInProgress,
     stateInfoBuilder: (context, state) {
-      final selfieState = state.processingState;
-      if (selfieState is SendingInProgress) {
-        final String s = switch (selfieState.state) {
+      final processingState = state.processingState;
+      if (processingState is SendingInProgress) {
+        final String s = switch (processingState.state) {
           DataUploadInProgress() => context.strings.image_processing_ui_upload_in_progress_dialog_description,
           ServerDataProcessingInProgress s => s.uiText(context),
         };
@@ -108,10 +108,10 @@ Widget uploadErrorDialogOpener<B extends Bloc<ImageProcessingEvent, ImageProcess
   return BlocListener<B, ImageProcessingData>(
     listenWhen: (previous, current) => previous.processingState != current.processingState,
     listener: (context, state) async {
-      final selfieState = state.processingState;
-      if (selfieState is SendingFailed) {
+      final processingState = state.processingState;
+      if (processingState is SendingFailed) {
         context.read<B>().add(ResetState());
-        if (selfieState.nsfwDetected) {
+        if (processingState.nsfwDetected) {
           await showInfoDialog(context, context.strings.image_processing_ui_nsfw_detected_dialog_title);
         } else {
           await showInfoDialog(context, context.strings.image_processing_ui_upload_failed_dialog_title);
@@ -122,7 +122,7 @@ Widget uploadErrorDialogOpener<B extends Bloc<ImageProcessingEvent, ImageProcess
   );
 }
 
-Widget sendingCompletedListener<B extends Bloc<ImageProcessingEvent, ImageProcessingData>>(void Function(BuildContext, ProcessedAccountImage) onComplete) {
+Widget uploadCompletedListener<B extends Bloc<ImageProcessingEvent, ImageProcessingData>>(void Function(BuildContext, ProcessedAccountImage) onComplete) {
   return BlocListener<B, ImageProcessingData>(
     listenWhen: (previous, current) => previous.processedImage != current.processedImage,
     listener: (context, state) async {

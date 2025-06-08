@@ -667,7 +667,7 @@
   },
   "image_processing_ui_confirm_photo_dialog_title": "Continue with this photo?",
   "@image_processing_ui_confirm_photo_dialog_title": {
-    "description": "Dialog title for confirming new security selfie"
+    "description": "Dialog title for confirming new image"
   },
   "image_processing_ui_nsfw_detected_dialog_title": "Unallowed content detected from the uploaded photo. This might be false positive detection.",
   "@image_processing_ui_nsfw_detected_dialog_title": {
@@ -675,11 +675,11 @@
   },
   "image_processing_ui_upload_failed_dialog_title": "Upload failed",
   "@image_processing_ui_upload_failed_dialog_title": {
-    "description": "Progress dialog info text that security selfie upload failed"
+    "description": "Progress dialog info text that image upload failed"
   },
   "image_processing_ui_upload_in_processing_queue_dialog_description": "Waiting for processing. Queue number: {p0}",
   "@image_processing_ui_upload_in_processing_queue_dialog_description": {
-    "description": "Progress dialog info text that security selfie is currently in server's processing queue",
+    "description": "Progress dialog info text that image is currently in server's processing queue",
     "placeholders": {
       "p0": {
         "type": "String"
@@ -688,11 +688,11 @@
   },
   "image_processing_ui_upload_in_progress_dialog_description": "Uploading photo",
   "@image_processing_ui_upload_in_progress_dialog_description": {
-    "description": "Progress dialog info text that security selfie upload is in progress"
+    "description": "Progress dialog info text that image upload is in progress"
   },
   "image_processing_ui_upload_processing_ongoing_description": "Processing ongoing",
   "@image_processing_ui_upload_processing_ongoing_description": {
-    "description": "Progress dialog info text that security selfie processing is ongoing"
+    "description": "Progress dialog info text that image processing is ongoing"
   },
   "image_quality_settings_screen_image_cache_max_size": "Image cache max size",
   "@image_quality_settings_screen_image_cache_max_size": {
