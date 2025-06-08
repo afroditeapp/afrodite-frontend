@@ -31,7 +31,8 @@ class InitialSetupUtils {
       }
 
       switch (state.state) {
-        case ContentProcessingStateType.processing || ContentProcessingStateType.inQueue: {
+        case ContentProcessingStateType.processing:
+        case ContentProcessingStateType.inQueue: {
           await Future<void>.delayed(const Duration(seconds: 1));
         }
         case ContentProcessingStateType.nsfwDetected: return ProcessingError("Image processing failed: NSFW detected");

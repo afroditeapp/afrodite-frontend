@@ -43,3 +43,4 @@ analyzer:
     inference_failure_on_instance_creation: error
     unrelated_type_equality_checks: error
     must_be_immutable: error
+    exhaustive_cases: error
