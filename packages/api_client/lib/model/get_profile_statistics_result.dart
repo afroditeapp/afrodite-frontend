@@ -13,31 +13,43 @@ part of openapi.api;
 class GetProfileStatisticsResult {
   /// Returns a new [GetProfileStatisticsResult] instance.
   GetProfileStatisticsResult({
+    required this.accountCountBotsExcluded,
     required this.ageCounts,
+    required this.connectionStatistics,
     required this.generationTime,
   });
 
+  int accountCountBotsExcluded;
+
   ProfileAgeCounts ageCounts;
+
+  ConnectionStatistics connectionStatistics;
 
   UnixTime generationTime;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is GetProfileStatisticsResult &&
+    other.accountCountBotsExcluded == accountCountBotsExcluded &&
     other.ageCounts == ageCounts &&
+    other.connectionStatistics == connectionStatistics &&
     other.generationTime == generationTime;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
+    (accountCountBotsExcluded.hashCode) +
     (ageCounts.hashCode) +
+    (connectionStatistics.hashCode) +
     (generationTime.hashCode);
 
   @override
-  String toString() => 'GetProfileStatisticsResult[ageCounts=$ageCounts, generationTime=$generationTime]';
+  String toString() => 'GetProfileStatisticsResult[accountCountBotsExcluded=$accountCountBotsExcluded, ageCounts=$ageCounts, connectionStatistics=$connectionStatistics, generationTime=$generationTime]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
+      json[r'account_count_bots_excluded'] = this.accountCountBotsExcluded;
       json[r'age_counts'] = this.ageCounts;
+      json[r'connection_statistics'] = this.connectionStatistics;
       json[r'generation_time'] = this.generationTime;
     return json;
   }
@@ -61,7 +73,9 @@ class GetProfileStatisticsResult {
       }());
 
       return GetProfileStatisticsResult(
+        accountCountBotsExcluded: mapValueOfType<int>(json, r'account_count_bots_excluded')!,
         ageCounts: ProfileAgeCounts.fromJson(json[r'age_counts'])!,
+        connectionStatistics: ConnectionStatistics.fromJson(json[r'connection_statistics'])!,
         generationTime: UnixTime.fromJson(json[r'generation_time'])!,
       );
     }
@@ -110,8 +124,9 @@ class GetProfileStatisticsResult {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
+    'account_count_bots_excluded',
     'age_counts',
+    'connection_statistics',
     'generation_time',
   };
 }
-

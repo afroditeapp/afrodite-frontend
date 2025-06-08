@@ -113,14 +113,14 @@ class AttributeStateStorage {
     UiAttribute attribute,
     ProfileAttributeFilterValueUpdate u,
     {
-      bool nonselected = false,
+      bool parseUnwanted = false,
     }
   ) {
     return AttributeStateStorage.parseFromUpdate(
       attribute,
       ProfileAttributeValueUpdate(
         id: attribute.apiAttribute().id,
-        v: nonselected ? u.filterValuesNonselected : u.filterValues,
+        v: parseUnwanted ? u.unwanted : u.wanted,
       ),
     );
   }
@@ -147,7 +147,7 @@ class AttributeAndState extends AttributeValueAreaInfoProvider {
   bool valueAreaSelectedAlternativeColor() => false;
 
   @override
-  List<UiAttributeValue> valueAreaNonselectedValues() {
+  List<UiAttributeValue> valueAreaUnwantedValues() {
     return [];
   }
 

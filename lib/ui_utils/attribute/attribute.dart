@@ -50,7 +50,7 @@ class AttributeManager {
         list.add(AttributeAndFilterState(
           a,
           AttributeStateStorage.parseFromFilterUpdate(a, state),
-          AttributeStateStorage.parseFromFilterUpdate(a, state, nonselected: true),
+          AttributeStateStorage.parseFromFilterUpdate(a, state, parseUnwanted: true),
           FilterSettingsState.parseFromFilterUpdate(state),
         ));
       } else {
@@ -177,13 +177,13 @@ abstract class AttributeValueAreaInfoProvider {
   List<String> valueAreaExtraValues();
   List<UiAttributeValue> valueAreaSelectedValues();
   bool valueAreaSelectedAlternativeColor();
-  List<UiAttributeValue> valueAreaNonselectedValues();
+  List<UiAttributeValue> valueAreaUnwantedValues();
   UiAttribute attribute();
 
   bool isEmpty() {
     return valueAreaExtraValues().isEmpty &&
       valueAreaSelectedValues().isEmpty &&
-      valueAreaNonselectedValues().isEmpty;
+      valueAreaUnwantedValues().isEmpty;
   }
 }
 

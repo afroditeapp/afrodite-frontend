@@ -10,13 +10,13 @@
 
 part of openapi.api;
 
-class ProfileLink {
-  /// Returns a new [ProfileLink] instance.
-  ProfileLink({
+class ChatProfileLink {
+  /// Returns a new [ChatProfileLink] instance.
+  ChatProfileLink({
     required this.a,
     this.c,
     this.l,
-    required this.p,
+    this.p,
   });
 
   AccountId a;
@@ -33,10 +33,11 @@ class ProfileLink {
   ///
   int? l;
 
-  ProfileVersion p;
+  /// This is optional because profile component owns it.
+  ProfileVersion? p;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is ProfileLink &&
+  bool operator ==(Object other) => identical(this, other) || other is ChatProfileLink &&
     other.a == a &&
     other.c == c &&
     other.l == l &&
@@ -48,10 +49,10 @@ class ProfileLink {
     (a.hashCode) +
     (c == null ? 0 : c!.hashCode) +
     (l == null ? 0 : l!.hashCode) +
-    (p.hashCode);
+    (p == null ? 0 : p!.hashCode);
 
   @override
-  String toString() => 'ProfileLink[a=$a, c=$c, l=$l, p=$p]';
+  String toString() => 'ChatProfileLink[a=$a, c=$c, l=$l, p=$p]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -66,14 +67,18 @@ class ProfileLink {
     } else {
       json[r'l'] = null;
     }
+    if (this.p != null) {
       json[r'p'] = this.p;
+    } else {
+      json[r'p'] = null;
+    }
     return json;
   }
 
-  /// Returns a new [ProfileLink] instance and imports its values from
+  /// Returns a new [ChatProfileLink] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static ProfileLink? fromJson(dynamic value) {
+  static ChatProfileLink? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -82,27 +87,27 @@ class ProfileLink {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "ProfileLink[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "ProfileLink[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "ChatProfileLink[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "ChatProfileLink[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return ProfileLink(
+      return ChatProfileLink(
         a: AccountId.fromJson(json[r'a'])!,
         c: ProfileContentVersion.fromJson(json[r'c']),
         l: mapValueOfType<int>(json, r'l'),
-        p: ProfileVersion.fromJson(json[r'p'])!,
+        p: ProfileVersion.fromJson(json[r'p']),
       );
     }
     return null;
   }
 
-  static List<ProfileLink> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <ProfileLink>[];
+  static List<ChatProfileLink> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <ChatProfileLink>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = ProfileLink.fromJson(row);
+        final value = ChatProfileLink.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -111,12 +116,12 @@ class ProfileLink {
     return result.toList(growable: growable);
   }
 
-  static Map<String, ProfileLink> mapFromJson(dynamic json) {
-    final map = <String, ProfileLink>{};
+  static Map<String, ChatProfileLink> mapFromJson(dynamic json) {
+    final map = <String, ChatProfileLink>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = ProfileLink.fromJson(entry.value);
+        final value = ChatProfileLink.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -125,14 +130,14 @@ class ProfileLink {
     return map;
   }
 
-  // maps a json object with a list of ProfileLink-objects as value to a dart map
-  static Map<String, List<ProfileLink>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<ProfileLink>>{};
+  // maps a json object with a list of ChatProfileLink-objects as value to a dart map
+  static Map<String, List<ChatProfileLink>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<ChatProfileLink>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = ProfileLink.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = ChatProfileLink.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;
@@ -141,6 +146,5 @@ class ProfileLink {
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
     'a',
-    'p',
   };
 }

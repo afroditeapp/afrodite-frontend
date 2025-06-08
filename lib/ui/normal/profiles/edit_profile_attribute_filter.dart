@@ -88,11 +88,11 @@ class _EditProfileAttributeFilterScreenState extends State<EditProfileAttributeF
           attribute: widget.a.attribute(),
           filterMode: state.showAdvancedFilters ? FilterMode.advanced : FilterMode.basic,
           initialStateBuilder: () => SelectAttributeValueStorage(
-            selected: widget.a.selectedValues.copy(),
-            nonselected: widget.a.nonselectedValues.copy(),
+            selected: widget.a.wanted.copy(),
+            unwanted: widget.a.unwanted.copy(),
           ),
           onChanged: (state) =>
-            context.read<ProfileFilteringSettingsBloc>().add(SetAttributeFilterValueLists(widget.a.attribute(), state.selected, state.nonselected)),
+            context.read<ProfileFilteringSettingsBloc>().add(SetAttributeFilterValueLists(widget.a.attribute(), state.selected, state.unwanted)),
           firstListItem: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,

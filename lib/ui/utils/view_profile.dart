@@ -536,7 +536,7 @@ class AttributeValuesArea extends StatelessWidget {
       valueWidgets.add(w);
     }
 
-    for (final v in a.valueAreaNonselectedValues()) {
+    for (final v in a.valueAreaUnwantedValues()) {
       final text = v.uiName();
       final iconData = v.uiIcon();
       final Widget? avatar;

@@ -74,9 +74,9 @@ class SetRandomProfileOrderAndSaveSettings extends ProfileFilteringSettingsEvent
 }
 class SetAttributeFilterValueLists extends ProfileFilteringSettingsEvent {
   final UiAttribute attribute;
-  final AttributeStateStorage selected;
-  final AttributeStateStorage nonselected;
-  SetAttributeFilterValueLists(this.attribute, this.selected, this.nonselected);
+  final AttributeStateStorage wanted;
+  final AttributeStateStorage unwanted;
+  SetAttributeFilterValueLists(this.attribute, this.wanted, this.unwanted);
 }
 class SetAttributeFilterSettings extends ProfileFilteringSettingsEvent {
   final UiAttribute attribute;
@@ -257,7 +257,7 @@ class ProfileFilteringSettingsBloc extends Bloc<ProfileFilteringSettingsEvent, P
       updateFilters(
         emit,
         data.attribute.apiAttribute().id,
-        (current) => AttributeFilterUpdateBuilder.copyWithValues(data.attribute, current, data.selected, data.nonselected),
+        (current) => AttributeFilterUpdateBuilder.copyWithValues(data.attribute, current, data.wanted, data.unwanted),
       );
     });
     on<SetAttributeFilterSettings>((data, emit) {
@@ -351,18 +351,18 @@ bool attributeValuesDiffer(
     a.enabled != current.enabled ||
     a.acceptMissingAttribute != current.acceptMissingAttribute ||
     a.useLogicalOperatorAnd != current.useLogicalOperatorAnd ||
-    a.filterValues.length != current.filterValues.length ||
-    a.filterValuesNonselected.length != current.filterValuesNonselected.length
+    a.wanted.length != current.wanted.length ||
+    a.unwanted.length != current.unwanted.length
   ) {
     return true;
   }
-  for (final v in a.filterValues) {
-    if (!current.filterValues.contains(v)) {
+  for (final v in a.wanted) {
+    if (!current.wanted.contains(v)) {
       return true;
     }
   }
-  for (final v in a.filterValuesNonselected) {
-    if (!current.filterValuesNonselected.contains(v)) {
+  for (final v in a.unwanted) {
+    if (!current.unwanted.contains(v)) {
       return true;
     }
   }

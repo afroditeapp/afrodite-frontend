@@ -102,21 +102,25 @@ class OnlineIterator extends IteratorType {
             return const Err(null);
           }
 
-          if (profiles.profiles.isEmpty && profiles.basicProfiles.isEmpty) {
+          if (profiles.profiles.isEmpty) {
             return const Ok([]);
           }
 
-          for (final p in profiles.profiles) {
-            var entry = await db.profileData((db) => db.getProfileEntry(p.id)).ok();
+          for (final (i, p) in profiles.profiles.indexed) {
+            if (i + 1 <= profiles.basicProfilesNewLikesCount) {
+              await db.profileData((db) => db.updateNewLikeInfoReceivedTimeToCurrentTime(p.a));
+            }
+
+            var entry = await db.profileData((db) => db.getProfileEntry(p.a)).ok();
             final currentVersion = entry?.version;
             final currentContentVersion = entry?.contentVersion;
 
-            if (currentVersion == p.version && p.contentVersion != null && currentContentVersion == p.contentVersion) {
+            if (p.p != null && currentVersion == p.p && p.c != null && currentContentVersion == p.c) {
               // No data changes, download can be skipped, but
               // update last seen time.
-              await db.profileAction((db) => db.updateProfileLastSeenTime(p.id, p.lastSeenTime));
+              await db.profileAction((db) => db.updateProfileLastSeenTime(p.a, p.l));
             } else {
-              entry = await downloader.download(p.id).ok();
+              entry = await downloader.download(p.a).ok();
             }
 
             final gridEntry = entry;
@@ -124,24 +128,7 @@ class OnlineIterator extends IteratorType {
               continue;
             }
 
-            await io.setDbVisibility(p.id, true);
-            list.add(gridEntry);
-          }
-
-          for (final (i, p) in profiles.basicProfiles.indexed) {
-            if (i + 1 <= profiles.basicProfilesNewLikesCount) {
-              await db.profileData((db) => db.updateNewLikeInfoReceivedTimeToCurrentTime(p));
-            }
-
-            var entry = await db.profileData((db) => db.getProfileEntry(p)).ok();
-            entry ??= await downloader.download(p).ok();
-
-            final gridEntry = entry;
-            if (gridEntry == null) {
-              continue;
-            }
-
-            await io.setDbVisibility(p, true);
+            await io.setDbVisibility(p.a, true);
             list.add(gridEntry);
           }
 
@@ -225,8 +212,12 @@ class ProfileListOnlineIteratorIo extends OnlineIteratorIo {
     }
     return await api.profile((api) => api.postGetNextProfilePage(sessionId))
       .mapOk((value) => IteratorPage(
-        value.profiles,
-        [],
+        value.profiles.map((v) => ChatProfileLink(
+          a: v.a,
+          p: v.p,
+          c: v.c,
+          l: v.l,
+        )),
         errorInvalidIteratorSessionId: value.errorInvalidIteratorSessionId
       ));
   }
@@ -239,11 +230,10 @@ class ProfileListOnlineIteratorIo extends OnlineIteratorIo {
 
 class IteratorPage {
   final bool errorInvalidIteratorSessionId;
-  List<ProfileLink> profiles;
-  List<AccountId> basicProfiles;
+  final Iterable<ChatProfileLink> profiles;
   final int basicProfilesNewLikesCount;
 
-  IteratorPage(this.profiles, this.basicProfiles, {this.errorInvalidIteratorSessionId = false, this.basicProfilesNewLikesCount = 0});
+  IteratorPage(this.profiles, {this.errorInvalidIteratorSessionId = false, this.basicProfilesNewLikesCount = 0});
 }
 
 class ReceivedLikesOnlineIteratorIo extends OnlineIteratorIo {
@@ -299,7 +289,6 @@ class ReceivedLikesOnlineIteratorIo extends OnlineIteratorIo {
     }
     return await api.chat((api) => api.postGetNextReceivedLikesPage(sessionId))
       .mapOk((value) => IteratorPage(
-        [],
         value.p,
         errorInvalidIteratorSessionId: value.errorInvalidIteratorSessionId,
         basicProfilesNewLikesCount: value.n.c,
@@ -365,7 +354,6 @@ class MatchesOnlineIteratorIo extends OnlineIteratorIo {
     }
     return await api.chat((api) => api.postGetNextMatchesPage(sessionId))
       .mapOk((value) => IteratorPage(
-        [],
         value.p,
         errorInvalidIteratorSessionId: value.errorInvalidIteratorSessionId,
       ));
@@ -429,8 +417,12 @@ class AutomaticProfileSearchOnlineIteratorIo extends OnlineIteratorIo {
     }
     return await api.profile((api) => api.postAutomaticProfileSearchGetNextProfilePage(sessionId))
       .mapOk((value) => IteratorPage(
-        value.profiles,
-        [],
+        value.profiles.map((v) => ChatProfileLink(
+          a: v.a,
+          p: v.p,
+          c: v.c,
+          l: v.l,
+        )),
         errorInvalidIteratorSessionId: value.errorInvalidIteratorSessionId,
       ));
   }

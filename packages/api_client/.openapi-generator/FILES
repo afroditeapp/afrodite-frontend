@@ -57,6 +57,7 @@ lib/model/boolean_setting.dart
 lib/model/bot_config.dart
 lib/model/chat_app_notification_settings.dart
 lib/model/chat_message_report.dart
+lib/model/chat_profile_link.dart
 lib/model/client_config.dart
 lib/model/client_config_sync_version.dart
 lib/model/client_features_config.dart
@@ -69,6 +70,7 @@ lib/model/client_version.dart
 lib/model/client_version_count.dart
 lib/model/client_version_statistics.dart
 lib/model/command_output.dart
+lib/model/connection_statistics.dart
 lib/model/content_id.dart
 lib/model/content_info.dart
 lib/model/content_info_detailed.dart

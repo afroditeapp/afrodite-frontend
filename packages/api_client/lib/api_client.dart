@@ -252,6 +252,8 @@ class ApiClient {
           return ChatAppNotificationSettings.fromJson(value);
         case 'ChatMessageReport':
           return ChatMessageReport.fromJson(value);
+        case 'ChatProfileLink':
+          return ChatProfileLink.fromJson(value);
         case 'ClientConfig':
           return ClientConfig.fromJson(value);
         case 'ClientConfigSyncVersion':
@@ -276,6 +278,8 @@ class ApiClient {
           return ClientVersionStatistics.fromJson(value);
         case 'CommandOutput':
           return CommandOutput.fromJson(value);
+        case 'ConnectionStatistics':
+          return ConnectionStatistics.fromJson(value);
         case 'ContentId':
           return ContentId.fromJson(value);
         case 'ContentInfo':

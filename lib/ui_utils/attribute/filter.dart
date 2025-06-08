@@ -7,10 +7,10 @@ import 'package:openapi/api.dart';
 
 class AttributeAndFilterState extends AttributeValueAreaInfoProvider {
   final UiAttribute _attribute;
-  final AttributeStateStorage selectedValues;
-  final AttributeStateStorage nonselectedValues;
+  final AttributeStateStorage wanted;
+  final AttributeStateStorage unwanted;
   final FilterSettingsState settingsState;
-  AttributeAndFilterState(this._attribute, this.selectedValues, this.nonselectedValues, this.settingsState);
+  AttributeAndFilterState(this._attribute, this.wanted, this.unwanted, this.settingsState);
 
   @override
   List<String> valueAreaExtraValues() {
@@ -23,7 +23,7 @@ class AttributeAndFilterState extends AttributeValueAreaInfoProvider {
 
   @override
   List<UiAttributeValue> valueAreaSelectedValues() {
-    final list = selectedValues.selected.values.toList();
+    final list = wanted.selected.values.toList();
     reorderAttributeValues(list, _attribute.apiAttribute().valueOrder);
     return list;
   }
@@ -32,8 +32,8 @@ class AttributeAndFilterState extends AttributeValueAreaInfoProvider {
   bool valueAreaSelectedAlternativeColor() => settingsState.requireAllWantedValues;
 
   @override
-  List<UiAttributeValue> valueAreaNonselectedValues() {
-    final list = nonselectedValues.selected.values.toList();
+  List<UiAttributeValue> valueAreaUnwantedValues() {
+    final list = unwanted.selected.values.toList();
     reorderAttributeValues(list, _attribute.apiAttribute().valueOrder);
     return list;
   }
@@ -62,15 +62,15 @@ class AttributeFilterUpdateBuilder {
   static ProfileAttributeFilterValueUpdate copyWithValues(
     UiAttribute attribute,
     ProfileAttributeFilterValueUpdate current,
-    AttributeStateStorage selectedValues,
-    AttributeStateStorage nonselectedValues,
+    AttributeStateStorage wanted,
+    AttributeStateStorage unwanted,
   ) {
     final update = ProfileAttributeFilterValueUpdate(
       id: current.id,
       acceptMissingAttribute: current.acceptMissingAttribute,
       useLogicalOperatorAnd: current.useLogicalOperatorAnd,
-      filterValues: selectedValues.toAttributeValueUpdate(attribute).v,
-      filterValuesNonselected: nonselectedValues.toAttributeValueUpdate(attribute).v,
+      wanted: wanted.toAttributeValueUpdate(attribute).v,
+      unwanted: unwanted.toAttributeValueUpdate(attribute).v,
     );
     update.updateIsEnabled();
     return update;
@@ -85,8 +85,8 @@ class AttributeFilterUpdateBuilder {
       id: attribute.apiAttribute().id,
       acceptMissingAttribute: settings.acceptMissingAttribute,
       useLogicalOperatorAnd: settings.requireAllWantedValues,
-      filterValues: [ ...current.filterValues ],
-      filterValuesNonselected: [ ...current.filterValuesNonselected ],
+      wanted: [ ...current.wanted ],
+      unwanted: [ ...current.unwanted ],
     );
     update.updateIsEnabled();
     return update;

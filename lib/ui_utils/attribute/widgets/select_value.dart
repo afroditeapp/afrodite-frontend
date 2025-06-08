@@ -14,9 +14,9 @@ class SelectAttributeValueStorage {
   /// values.
   final AttributeStateStorage selected;
   /// Used for saving filter values for unwanted values.
-  final AttributeStateStorage nonselected;
-  SelectAttributeValueStorage({required this.selected, required this.nonselected});
-  SelectAttributeValueStorage.selected(this.selected) : nonselected = AttributeStateStorage();
+  final AttributeStateStorage unwanted;
+  SelectAttributeValueStorage({required this.selected, required this.unwanted});
+  SelectAttributeValueStorage.selected(this.selected) : unwanted = AttributeStateStorage();
 }
 
 void _emptyOnChanged(SelectAttributeValueStorage storage) => ();
@@ -47,7 +47,7 @@ class SelectAttributeValue extends StatefulWidget {
 
 class _SelectAttributeValueState extends State<SelectAttributeValue> {
   late final AttributeStateStorage storageSelected;
-  late final AttributeStateStorage storageNonselected;
+  late final AttributeStateStorage storageUnwanted;
   late int maxSelected;
   List<UiAttributeValue> allValues = [];
   bool showOnlySelectedFilterSetting = false;
@@ -58,7 +58,7 @@ class _SelectAttributeValueState extends State<SelectAttributeValue> {
     super.initState();
     final s = widget.initialStateBuilder();
     storageSelected = s?.selected ?? AttributeStateStorage();
-    storageNonselected = s?.nonselected ?? AttributeStateStorage();
+    storageUnwanted = s?.unwanted ?? AttributeStateStorage();
     if (widget.filterMode != null) {
       maxSelected = widget.attribute.apiAttribute().maxFilters;
     } else {
@@ -91,8 +91,8 @@ class _SelectAttributeValueState extends State<SelectAttributeValue> {
           !showOnlySelected ||
           storageSelected.isSelected(a) ||
           (a.isParentOfGroupValue() && storageSelected.groupValueSelected(a)) ||
-          storageNonselected.isSelected(a) ||
-          (a.isParentOfGroupValue() && storageNonselected.groupValueSelected(a))
+          storageUnwanted.isSelected(a) ||
+          (a.isParentOfGroupValue() && storageUnwanted.groupValueSelected(a))
         );
     }).toList();
   }
@@ -115,7 +115,7 @@ class _SelectAttributeValueState extends State<SelectAttributeValue> {
 
   Widget selectWidget(BuildContext context, UiAttributeValue v) {
     if (widget.filterMode == FilterMode.advanced ||
-      (widget.filterMode == FilterMode.basic && storageNonselected.isSelected(v))) {
+      (widget.filterMode == FilterMode.basic && storageUnwanted.isSelected(v))) {
       return selectWidgetAdvanced(context, v);
     } else {
       return selectWidgetBasic(context, v);
@@ -135,7 +135,7 @@ class _SelectAttributeValueState extends State<SelectAttributeValue> {
         });
         widget.onChanged(SelectAttributeValueStorage(
           selected: storageSelected,
-          nonselected: storageNonselected,
+          unwanted: storageUnwanted,
         ));
       },
     );
@@ -152,11 +152,11 @@ class _SelectAttributeValueState extends State<SelectAttributeValue> {
 
   Widget selectWidgetAdvanced(BuildContext context, UiAttributeValue v) {
     final bool? currentSelectedValue = getSelectedStatusBasic(storageSelected, v);
-    final bool? currentNonselectedValue = getSelectedStatusBasic(storageNonselected, v);
+    final bool? currentUnwantedValue = getSelectedStatusBasic(storageUnwanted, v);
     final List<bool> selected;
     if (currentSelectedValue == true) {
       selected = [true, false];
-    } else if (currentNonselectedValue == true) {
+    } else if (currentUnwantedValue == true) {
       selected = [false, true];
     } else {
       selected = [false, false];
@@ -171,16 +171,16 @@ class _SelectAttributeValueState extends State<SelectAttributeValue> {
             onPressed: (selectedIndex) {
               setState(() {
                 storageSelected.unselect(v);
-                storageNonselected.unselect(v);
+                storageUnwanted.unselect(v);
                 if (selectedIndex == 0 && (currentSelectedValue == false || currentSelectedValue == null)) {
                   updateSelectedStatusBasic(storageSelected, v, currentSelectedValue, true);
-                } else if (selectedIndex == 1 && (currentNonselectedValue == false || currentNonselectedValue == null)) {
-                  updateSelectedStatusBasic(storageNonselected, v, currentNonselectedValue, true);
+                } else if (selectedIndex == 1 && (currentUnwantedValue == false || currentUnwantedValue == null)) {
+                  updateSelectedStatusBasic(storageUnwanted, v, currentUnwantedValue, true);
                 }
               });
               widget.onChanged(SelectAttributeValueStorage(
                 selected: storageSelected,
-                nonselected: storageNonselected,
+                unwanted: storageUnwanted,
               ));
             },
             children: const [
@@ -193,10 +193,10 @@ class _SelectAttributeValueState extends State<SelectAttributeValue> {
       onTap: () {
         setState(() {
           storageSelected.unselect(v);
-          storageNonselected.unselect(v);
+          storageUnwanted.unselect(v);
           if (currentSelectedValue == true) {
-            updateSelectedStatusBasic(storageNonselected, v, currentNonselectedValue, true);
-          } else if (currentNonselectedValue == true) {
+            updateSelectedStatusBasic(storageUnwanted, v, currentUnwantedValue, true);
+          } else if (currentUnwantedValue == true) {
             // Unselect
           } else {
             updateSelectedStatusBasic(storageSelected, v, currentSelectedValue, true);
@@ -204,7 +204,7 @@ class _SelectAttributeValueState extends State<SelectAttributeValue> {
         });
         widget.onChanged(SelectAttributeValueStorage(
           selected: storageSelected,
-          nonselected: storageNonselected,
+          unwanted: storageUnwanted,
         ));
       },
     );
@@ -242,7 +242,7 @@ class _SelectAttributeValueState extends State<SelectAttributeValue> {
     return SwitchListTile(
       title: Text(context.strings.generic_show_only_selected),
       value: showOnlySelected,
-      onChanged: storageSelected.isNotEmpty() || storageNonselected.isNotEmpty() ? (value) {
+      onChanged: storageSelected.isNotEmpty() || storageUnwanted.isNotEmpty() ? (value) {
         setState(() {
           showOnlySelected = value;
         });

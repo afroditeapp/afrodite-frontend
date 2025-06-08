@@ -15,10 +15,10 @@ class ProfileAttributeFilterValueUpdate {
   ProfileAttributeFilterValueUpdate({
     this.acceptMissingAttribute = false,
     this.enabled = false,
-    this.filterValues = const [],
-    this.filterValuesNonselected = const [],
     required this.id,
+    this.unwanted = const [],
     this.useLogicalOperatorAnd = false,
+    this.wanted = const [],
   });
 
   /// Defines should missing attribute be accepted.
@@ -27,48 +27,48 @@ class ProfileAttributeFilterValueUpdate {
   /// Value `false` ignores the settings in this object and removes current filter settings for this attribute.
   bool enabled;
 
-  /// For bitflag filters the list only has one u16 value.  For one level attributes the values are u16 attribute value IDs.  For two level attributes the values are u32 values with most significant u16 containing attribute value ID and least significant u16 containing group value ID.
-  List<int> filterValues;
-
-  /// Same as [Self::filter_values] but for nonselected values.  The nonselected values are checked always with AND operator.
-  List<int> filterValuesNonselected;
-
   /// Minimum value: 0
   int id;
 
+  /// Same as [Self::wanted] but for unwanted values.  The unwanted values are checked always with AND operator.
+  List<int> unwanted;
+
   /// Defines should attribute values be checked with logical operator AND.
   bool useLogicalOperatorAnd;
+
+  /// Wanted attribute values.  For bitflag filters the list only has one u16 value.  For one level attributes the values are u16 attribute value IDs.  For two level attributes the values are u32 values with most significant u16 containing attribute value ID and least significant u16 containing group value ID.
+  List<int> wanted;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is ProfileAttributeFilterValueUpdate &&
     other.acceptMissingAttribute == acceptMissingAttribute &&
     other.enabled == enabled &&
-    _deepEquality.equals(other.filterValues, filterValues) &&
-    _deepEquality.equals(other.filterValuesNonselected, filterValuesNonselected) &&
     other.id == id &&
-    other.useLogicalOperatorAnd == useLogicalOperatorAnd;
+    _deepEquality.equals(other.unwanted, unwanted) &&
+    other.useLogicalOperatorAnd == useLogicalOperatorAnd &&
+    _deepEquality.equals(other.wanted, wanted);
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (acceptMissingAttribute.hashCode) +
     (enabled.hashCode) +
-    (filterValues.hashCode) +
-    (filterValuesNonselected.hashCode) +
     (id.hashCode) +
-    (useLogicalOperatorAnd.hashCode);
+    (unwanted.hashCode) +
+    (useLogicalOperatorAnd.hashCode) +
+    (wanted.hashCode);
 
   @override
-  String toString() => 'ProfileAttributeFilterValueUpdate[acceptMissingAttribute=$acceptMissingAttribute, enabled=$enabled, filterValues=$filterValues, filterValuesNonselected=$filterValuesNonselected, id=$id, useLogicalOperatorAnd=$useLogicalOperatorAnd]';
+  String toString() => 'ProfileAttributeFilterValueUpdate[acceptMissingAttribute=$acceptMissingAttribute, enabled=$enabled, id=$id, unwanted=$unwanted, useLogicalOperatorAnd=$useLogicalOperatorAnd, wanted=$wanted]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'accept_missing_attribute'] = this.acceptMissingAttribute;
       json[r'enabled'] = this.enabled;
-      json[r'filter_values'] = this.filterValues;
-      json[r'filter_values_nonselected'] = this.filterValuesNonselected;
       json[r'id'] = this.id;
+      json[r'unwanted'] = this.unwanted;
       json[r'use_logical_operator_and'] = this.useLogicalOperatorAnd;
+      json[r'wanted'] = this.wanted;
     return json;
   }
 
@@ -93,14 +93,14 @@ class ProfileAttributeFilterValueUpdate {
       return ProfileAttributeFilterValueUpdate(
         acceptMissingAttribute: mapValueOfType<bool>(json, r'accept_missing_attribute') ?? false,
         enabled: mapValueOfType<bool>(json, r'enabled') ?? false,
-        filterValues: json[r'filter_values'] is Iterable
-            ? (json[r'filter_values'] as Iterable).cast<int>().toList(growable: false)
-            : const [],
-        filterValuesNonselected: json[r'filter_values_nonselected'] is Iterable
-            ? (json[r'filter_values_nonselected'] as Iterable).cast<int>().toList(growable: false)
-            : const [],
         id: mapValueOfType<int>(json, r'id')!,
+        unwanted: json[r'unwanted'] is Iterable
+            ? (json[r'unwanted'] as Iterable).cast<int>().toList(growable: false)
+            : const [],
         useLogicalOperatorAnd: mapValueOfType<bool>(json, r'use_logical_operator_and') ?? false,
+        wanted: json[r'wanted'] is Iterable
+            ? (json[r'wanted'] as Iterable).cast<int>().toList(growable: false)
+            : const [],
       );
     }
     return null;
@@ -151,4 +151,3 @@ class ProfileAttributeFilterValueUpdate {
     'id',
   };
 }
-

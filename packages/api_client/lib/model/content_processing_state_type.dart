@@ -28,6 +28,7 @@ class ContentProcessingStateType {
   static const processing = ContentProcessingStateType._(r'Processing');
   static const completed = ContentProcessingStateType._(r'Completed');
   static const failed = ContentProcessingStateType._(r'Failed');
+  static const nsfwDetected = ContentProcessingStateType._(r'NsfwDetected');
 
   /// List of all possible values in this [enum][ContentProcessingStateType].
   static const values = <ContentProcessingStateType>[
@@ -36,6 +37,7 @@ class ContentProcessingStateType {
     processing,
     completed,
     failed,
+    nsfwDetected,
   ];
 
   static ContentProcessingStateType? fromJson(dynamic value) => ContentProcessingStateTypeTypeTransformer().decode(value);
@@ -79,6 +81,7 @@ class ContentProcessingStateTypeTypeTransformer {
         case r'Processing': return ContentProcessingStateType.processing;
         case r'Completed': return ContentProcessingStateType.completed;
         case r'Failed': return ContentProcessingStateType.failed;
+        case r'NsfwDetected': return ContentProcessingStateType.nsfwDetected;
         default:
           if (!allowNull) {
             throw ArgumentError('Unknown enum value to decode: $data');
@@ -91,4 +94,3 @@ class ContentProcessingStateTypeTypeTransformer {
   /// Singleton [ContentProcessingStateTypeTypeTransformer] instance.
   static ContentProcessingStateTypeTypeTransformer? _instance;
 }
-
