@@ -1669,9 +1669,18 @@
       }
     }
   },
-  "statistics_screen_count_online_users": "Online: {p0}",
+  "statistics_screen_count_online_users": "Online users: {p0}",
   "@statistics_screen_count_online_users": {
     "description": "Text for online users count",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
+  "statistics_screen_count_online_users_bar_chart_tooltip": "Online: {p0}",
+  "@statistics_screen_count_online_users_bar_chart_tooltip": {
+    "description": "Text for online users count in bar chart tooltip",
     "placeholders": {
       "p0": {
         "type": "String"

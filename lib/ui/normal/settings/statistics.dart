@@ -99,6 +99,7 @@ class StatisticsScreenState extends State<StatisticsScreen> {
             if (adminSettingsAvailable) adminControls(context),
             const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
             Text(context.strings.statistics_screen_count_registered_users(item.accountCountBotsExcluded.toString())),
+            Text(context.strings.statistics_screen_count_online_users(item.onlineAccountCountBotsExcluded.toString())),
             const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
             const Divider(),
             const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
@@ -144,7 +145,7 @@ class StatisticsScreenState extends State<StatisticsScreen> {
         (localHour, rods) {
           var text = "";
           text = appendToString(text, context.strings.statistics_screen_hour_value, localHour);
-          text = appendToStringIfNotZero(text, context.strings.statistics_screen_count_online_users, data.all(localHour));
+          text = appendToStringIfNotZero(text, context.strings.statistics_screen_count_online_users_bar_chart_tooltip, data.all(localHour));
           return text.trim();
         },
         (i) {

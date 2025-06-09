@@ -502,7 +502,8 @@
     <string name="statistics_screen_users_online_per_hour_statistics_title" description="Title for users online per hour statistics">Users online per hour</string>
     <string name="statistics_screen_hour_value" description="Text for hour value">Hour: %s</string>
     <string name="statistics_screen_count_registered_users" description="Text for registered users count">Registered users: %s</string>
-    <string name="statistics_screen_count_online_users" description="Text for online users count">Online: %s</string>
+    <string name="statistics_screen_count_online_users" description="Text for online users count">Online users: %s</string>
+    <string name="statistics_screen_count_online_users_bar_chart_tooltip" description="Text for online users count in bar chart tooltip">Online: %s</string>
     <string name="statistics_screen_count_public_profiles" description="Text for public profiles count">Public profiles: %s</string>
     <string name="statistics_screen_count_private_profiles" description="Text for private profiles count">Private profiles: %s</string>
     <string name="statistics_screen_count_all_profiles" description="Text for all profiles count">All profiles: %s</string>
