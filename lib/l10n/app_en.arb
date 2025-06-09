@@ -1663,8 +1663,8 @@
       }
     }
   },
-  "statistics_screen_count_man": "Men: {p0}",
-  "@statistics_screen_count_man": {
+  "statistics_screen_count_men": "Men: {p0}",
+  "@statistics_screen_count_men": {
     "description": "Text for man profiles count",
     "placeholders": {
       "p0": {
@@ -1672,8 +1672,8 @@
       }
     }
   },
-  "statistics_screen_count_non_binary": "Non-binaries: {p0}",
-  "@statistics_screen_count_non_binary": {
+  "statistics_screen_count_nonbinaries": "Non-binaries: {p0}",
+  "@statistics_screen_count_nonbinaries": {
     "description": "Text for non-binary profiles count",
     "placeholders": {
       "p0": {
@@ -1726,8 +1726,8 @@
       }
     }
   },
-  "statistics_screen_count_woman": "Women: {p0}",
-  "@statistics_screen_count_woman": {
+  "statistics_screen_count_women": "Women: {p0}",
+  "@statistics_screen_count_women": {
     "description": "Text for woman profiles count",
     "placeholders": {
       "p0": {
@@ -1744,6 +1744,10 @@
       }
     }
   },
+  "statistics_screen_online_users_per_hour_statistics_title": "Online users per hour",
+  "@statistics_screen_online_users_per_hour_statistics_title": {
+    "description": "Title for online users per hour statistics"
+  },
   "statistics_screen_time": "Time: {p0}",
   "@statistics_screen_time": {
     "description": "Text for data generation time",
@@ -1756,10 +1760,6 @@
   "statistics_screen_title": "Statistics",
   "@statistics_screen_title": {
     "description": "Title for statistics screen"
-  },
-  "statistics_screen_users_online_per_hour_statistics_title": "Users online per hour",
-  "@statistics_screen_users_online_per_hour_statistics_title": {
-    "description": "Title for users online per hour statistics"
   },
   "unsupported_client_screen_info": "Current app version is not supported. Please update the app.",
   "@unsupported_client_screen_info": {

@@ -136,7 +136,7 @@ class StatisticsScreenState extends State<StatisticsScreen> {
     final data = ConnectionStatisticsManager.create(connections);
 
     return [
-      Text(context.strings.statistics_screen_users_online_per_hour_statistics_title),
+      Text(context.strings.statistics_screen_online_users_per_hour_statistics_title),
       const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
       Center(
         child: SegmentedButton<SelectedConnectionStatistics>(
@@ -216,9 +216,9 @@ class StatisticsScreenState extends State<StatisticsScreen> {
           final localHour = startPositionForConnectionStatisticsByGender + i;
           var text = "";
           text = appendToString(text, context.strings.statistics_screen_hour_value, localHour);
-          text = appendToStringIfNotZero(text, context.strings.statistics_screen_count_man, data.men(localHour));
-          text = appendToStringIfNotZero(text, context.strings.statistics_screen_count_woman, data.women(localHour));
-          text = appendToStringIfNotZero(text, context.strings.statistics_screen_count_non_binary, data.nonbinaries(localHour));
+          text = appendToStringIfNotZero(text, context.strings.statistics_screen_count_men, data.men(localHour));
+          text = appendToStringIfNotZero(text, context.strings.statistics_screen_count_women, data.women(localHour));
+          text = appendToStringIfNotZero(text, context.strings.statistics_screen_count_nonbinaries, data.nonbinaries(localHour));
           return text.trim();
         },
         (i) {
@@ -300,9 +300,9 @@ class StatisticsScreenState extends State<StatisticsScreen> {
         (i) => data.groups[i].group().uiText(),
       ),
       const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
-      Text(context.strings.statistics_screen_count_man(data.totalMan().toString())),
-      Text(context.strings.statistics_screen_count_woman(data.totalWoman().toString())),
-      Text(context.strings.statistics_screen_count_non_binary(data.totalNonbinaries().toString())),
+      Text(context.strings.statistics_screen_count_men(data.totalMan().toString())),
+      Text(context.strings.statistics_screen_count_women(data.totalWoman().toString())),
+      Text(context.strings.statistics_screen_count_nonbinaries(data.totalNonbinaries().toString())),
       const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
       getChart(
         context,
@@ -332,9 +332,9 @@ class StatisticsScreenState extends State<StatisticsScreen> {
         (i, rods) {
           var text = "";
           text = appendStringToString(text, context.strings.statistics_screen_age_range(data.groups[i].group().uiText()));
-          text = appendToStringIfNotZero(text, context.strings.statistics_screen_count_man, rods[0].toY.toInt());
-          text = appendToStringIfNotZero(text, context.strings.statistics_screen_count_woman, rods[1].toY.toInt());
-          text = appendToStringIfNotZero(text, context.strings.statistics_screen_count_non_binary, rods[2].toY.toInt());
+          text = appendToStringIfNotZero(text, context.strings.statistics_screen_count_men, rods[0].toY.toInt());
+          text = appendToStringIfNotZero(text, context.strings.statistics_screen_count_women, rods[1].toY.toInt());
+          text = appendToStringIfNotZero(text, context.strings.statistics_screen_count_nonbinaries, rods[2].toY.toInt());
           return text.trim();
         },
         (i) => data.groups[i].group().uiText(),
@@ -435,7 +435,7 @@ class StatisticsScreenState extends State<StatisticsScreen> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Text(
-            "Bar chart included profiles",
+            "Profile visibility for profile statistics",
             style: Theme.of(context).textTheme.bodyLarge,
           ),
         ),

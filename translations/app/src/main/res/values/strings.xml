@@ -501,19 +501,19 @@
 
     <!-- Statistics screen -->
     <string name="statistics_screen_title" description="Title for statistics screen">Statistics</string>
-    <string name="statistics_screen_time" description="Text for data generation time">Time: %s</string>
-    <string name="statistics_screen_users_online_per_hour_statistics_title" description="Title for users online per hour statistics">Users online per hour</string>
-    <string name="statistics_screen_hour_value" description="Text for hour value">Hour: %s</string>
     <string name="statistics_screen_count_registered_users" description="Text for registered users count">Registered users: %s</string>
     <string name="statistics_screen_count_online_users" description="Text for online users count">Online users: %s</string>
+    <string name="statistics_screen_online_users_per_hour_statistics_title" description="Title for online users per hour statistics">Online users per hour</string>
+    <string name="statistics_screen_hour_value" description="Text for hour value">Hour: %s</string>
     <string name="statistics_screen_count_online_users_bar_chart_tooltip" description="Text for online users count in bar chart tooltip">Online: %s</string>
     <string name="statistics_screen_count_public_profiles" description="Text for public profiles count">Public profiles: %s</string>
     <string name="statistics_screen_count_private_profiles" description="Text for private profiles count">Private profiles: %s</string>
     <string name="statistics_screen_count_all_profiles" description="Text for all profiles count">All profiles: %s</string>
     <string name="statistics_screen_age_range" description="Text for age range">Ages: %s</string>
-    <string name="statistics_screen_count_man" description="Text for man profiles count">Men: %s</string>
-    <string name="statistics_screen_count_woman" description="Text for woman profiles count">Women: %s</string>
-    <string name="statistics_screen_count_non_binary" description="Text for non-binary profiles count">Non-binaries: %s</string>
+    <string name="statistics_screen_count_men" description="Text for man profiles count">Men: %s</string>
+    <string name="statistics_screen_count_women" description="Text for woman profiles count">Women: %s</string>
+    <string name="statistics_screen_count_nonbinaries" description="Text for non-binary profiles count">Non-binaries: %s</string>
+    <string name="statistics_screen_time" description="Text for data generation time">Time: %s</string>
 
     <!-- Account deletion pending screen -->
     <string name="account_deletion_pending_screen_title" description="Title for account deletion pending screen">Account deletion pending</string>
