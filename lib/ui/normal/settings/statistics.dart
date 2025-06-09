@@ -41,6 +41,37 @@ enum SelectedConnectionStatistics {
   average,
 }
 
+enum HourGroup {
+  first(0, 5),
+  second(6, 11),
+  third(12, 17),
+  fourth(18, 23);
+
+  final int startIndex;
+  final int endIndex;
+  const HourGroup(this.startIndex, this.endIndex);
+
+  String uiText() => "$startIndex-$endIndex";
+  bool contains(int value) => value >= startIndex && value <= endIndex;
+
+  static HourGroup findLastGroupWithDataOrDefault(ConnectionStatisticsManager data) {
+    for (var i = 23; i >= 0; i--) {
+      if (data.men(i) != 0 || data.women(i) != 0 || data.nonbinaries(i) != 0) {
+        if (HourGroup.fourth.contains(i)) {
+          return HourGroup.fourth;
+        } else if (HourGroup.third.contains(i)) {
+          return HourGroup.third;
+        } else if (HourGroup.second.contains(i)) {
+          return HourGroup.second;
+        } else if (HourGroup.first.contains(i)) {
+          return HourGroup.first;
+        }
+      }
+    }
+    return HourGroup.fourth;
+  }
+}
+
 class StatisticsScreen extends StatefulWidget {
   const StatisticsScreen({super.key});
 
@@ -54,7 +85,7 @@ class StatisticsScreenState extends State<StatisticsScreen> {
   bool adminGenerateStatistics = false;
   int adminVisibilitySelection = 0;
 
-  int startPositionForConnectionStatisticsByGender = 18;
+  HourGroup? startPositionForConnectionStatisticsByGender;
   SelectedConnectionStatistics selectedConnectionStatistics =
     SelectedConnectionStatistics.average;
 
@@ -135,6 +166,9 @@ class StatisticsScreenState extends State<StatisticsScreen> {
     };
     final data = ConnectionStatisticsManager.create(connections);
 
+    final hourGroup = startPositionForConnectionStatisticsByGender ?? HourGroup.findLastGroupWithDataOrDefault(data);
+    startPositionForConnectionStatisticsByGender = hourGroup;
+
     return [
       Text(context.strings.statistics_screen_online_users_per_hour_statistics_title),
       const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
@@ -190,8 +224,8 @@ class StatisticsScreenState extends State<StatisticsScreen> {
         context,
         () {
           final groups = <BarChartGroupData>[];
-          for (final (i, _) in connections.all.skip(startPositionForConnectionStatisticsByGender).take(6).indexed) {
-            final localHour = startPositionForConnectionStatisticsByGender + i;
+          for (final (i, _) in connections.all.skip(hourGroup.startIndex).take(6).indexed) {
+            final localHour = hourGroup.startIndex + i;
             groups.add(BarChartGroupData(
               x: i,
               barRods: [
@@ -213,7 +247,7 @@ class StatisticsScreenState extends State<StatisticsScreen> {
           return groups;
         },
         (i, rods) {
-          final localHour = startPositionForConnectionStatisticsByGender + i;
+          final localHour = hourGroup.startIndex + i;
           var text = "";
           text = appendToString(text, context.strings.statistics_screen_hour_value, localHour);
           text = appendToStringIfNotZero(text, context.strings.statistics_screen_count_men, data.men(localHour));
@@ -222,20 +256,20 @@ class StatisticsScreenState extends State<StatisticsScreen> {
           return text.trim();
         },
         (i) {
-          final hour = startPositionForConnectionStatisticsByGender + i;
+          final hour = hourGroup.startIndex + i;
           return hour.toString();
         },
       ),
       const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
       Center(
-        child: SegmentedButton<int>(
-          segments: const [
-            ButtonSegment(value: 0, label: Text("0-5")),
-            ButtonSegment(value: 6, label: Text("6-11")),
-            ButtonSegment(value: 12, label: Text("12-17")),
-            ButtonSegment(value: 18, label: Text("18-23")),
+        child: SegmentedButton<HourGroup>(
+          segments: [
+            ButtonSegment(value: HourGroup.first, label: Text(HourGroup.first.uiText())),
+            ButtonSegment(value: HourGroup.second, label: Text(HourGroup.second.uiText())),
+            ButtonSegment(value: HourGroup.third, label: Text(HourGroup.third.uiText())),
+            ButtonSegment(value: HourGroup.fourth, label: Text(HourGroup.fourth.uiText())),
           ],
-          selected: { startPositionForConnectionStatisticsByGender },
+          selected: { hourGroup },
           onSelectionChanged: (selected) {
             setState(() {
               startPositionForConnectionStatisticsByGender = selected.first;
