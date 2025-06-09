@@ -56,6 +56,9 @@
     <string name="generic_profile_loading_failed" description="Error text displayed when profile loading fails">Profile loading failed</string>
     <string name="generic_this_feature_is_disabled" description="Generic this feature is disabled text">This feature is disabled</string>
     <string name="generic_unlimited" description="Generic unlimited text">Unlimited</string>
+    <string name="generic_min" description="Generic min text">Min</string>
+    <string name="generic_max" description="Generic max text">Max</string>
+    <string name="generic_average" description="Generic average text">Average</string>
 
     <string name="generic_weekday_mon" description="Generic short text for Monday">Mon</string>
     <string name="generic_weekday_tue" description="Generic short text for Tuesday">Tue</string>

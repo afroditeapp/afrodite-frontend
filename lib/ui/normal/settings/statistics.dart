@@ -35,6 +35,12 @@ Future<void> openStatisticsScreen(
   );
 }
 
+enum SelectedConnectionStatistics {
+  min,
+  max,
+  average,
+}
+
 class StatisticsScreen extends StatefulWidget {
   const StatisticsScreen({super.key});
 
@@ -49,6 +55,8 @@ class StatisticsScreenState extends State<StatisticsScreen> {
   int adminVisibilitySelection = 0;
 
   int startPositionForConnectionStatisticsByGender = 18;
+  SelectedConnectionStatistics selectedConnectionStatistics =
+    SelectedConnectionStatistics.average;
 
   @override
   Widget build(BuildContext context) {
@@ -103,7 +111,7 @@ class StatisticsScreenState extends State<StatisticsScreen> {
             const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
             const Divider(),
             const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
-            ...usersOnlineStatistics(context, item.connectionsAverage),
+            ...usersOnlineStatistics(context, item),
             const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
             const Divider(),
             const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
@@ -119,12 +127,34 @@ class StatisticsScreenState extends State<StatisticsScreen> {
     );
   }
 
-  List<Widget> usersOnlineStatistics(BuildContext context, ConnectionStatistics connections) {
+  List<Widget> usersOnlineStatistics(BuildContext context, GetProfileStatisticsResult statistics) {
+    final ConnectionStatistics connections = switch (selectedConnectionStatistics) {
+      SelectedConnectionStatistics.min => statistics.connectionsMin,
+      SelectedConnectionStatistics.max => statistics.connectionsMax,
+      SelectedConnectionStatistics.average => statistics.connectionsAverage,
+    };
     final data = ConnectionStatisticsManager.create(connections);
 
     return [
       Text(context.strings.statistics_screen_users_online_per_hour_statistics_title),
-      const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
+      const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
+      Center(
+        child: SegmentedButton<SelectedConnectionStatistics>(
+          segments: [
+            ButtonSegment(value: SelectedConnectionStatistics.min, label: Text(context.strings.generic_min)),
+            ButtonSegment(value: SelectedConnectionStatistics.average, label: Text(context.strings.generic_average)),
+            ButtonSegment(value: SelectedConnectionStatistics.max, label: Text(context.strings.generic_max)),
+          ],
+          selected: { selectedConnectionStatistics },
+          onSelectionChanged: (selected) {
+            setState(() {
+              selectedConnectionStatistics = selected.first;
+            });
+          },
+          showSelectedIcon: false,
+        ),
+      ),
+      const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
       getChart(
         context,
         () {

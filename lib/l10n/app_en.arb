@@ -439,6 +439,10 @@
   "@generic_action_completed": {
     "description": "Generic action completed text"
   },
+  "generic_average": "Average",
+  "@generic_average": {
+    "description": "Generic average text"
+  },
   "generic_cancel": "Cancel",
   "@generic_cancel": {
     "description": "Generic cancel text"
@@ -536,9 +540,17 @@
   "@generic_logout_failed": {
     "description": "Generic logout failed text"
   },
+  "generic_max": "Max",
+  "@generic_max": {
+    "description": "Generic max text"
+  },
   "generic_message": "Message",
   "@generic_message": {
     "description": "Generic message text"
+  },
+  "generic_min": "Min",
+  "@generic_min": {
+    "description": "Generic min text"
   },
   "generic_no": "No",
   "@generic_no": {
