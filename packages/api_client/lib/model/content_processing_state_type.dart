@@ -94,3 +94,4 @@ class ContentProcessingStateTypeTypeTransformer {
   /// Singleton [ContentProcessingStateTypeTypeTransformer] instance.
   static ContentProcessingStateTypeTypeTransformer? _instance;
 }
+

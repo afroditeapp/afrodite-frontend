@@ -145,3 +145,4 @@ class ProfileAttributeFilterValue {
     'wanted',
   };
 }
+

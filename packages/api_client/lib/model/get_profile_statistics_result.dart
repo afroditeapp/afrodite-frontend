@@ -15,42 +15,63 @@ class GetProfileStatisticsResult {
   GetProfileStatisticsResult({
     required this.accountCountBotsExcluded,
     required this.ageCounts,
-    required this.connectionStatistics,
+    required this.connectionsAverage,
+    required this.connectionsMax,
+    required this.connectionsMin,
     required this.generationTime,
+    required this.onlineAccountCountBotsExcluded,
   });
 
   int accountCountBotsExcluded;
 
   ProfileAgeCounts ageCounts;
 
-  ConnectionStatistics connectionStatistics;
+  /// Average WebSocket connections per hour
+  ConnectionStatistics connectionsAverage;
+
+  /// Max WebSocket connections per hour
+  ConnectionStatistics connectionsMax;
+
+  /// Min WebSocket connections per hour
+  ConnectionStatistics connectionsMin;
 
   UnixTime generationTime;
+
+  int onlineAccountCountBotsExcluded;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is GetProfileStatisticsResult &&
     other.accountCountBotsExcluded == accountCountBotsExcluded &&
     other.ageCounts == ageCounts &&
-    other.connectionStatistics == connectionStatistics &&
-    other.generationTime == generationTime;
+    other.connectionsAverage == connectionsAverage &&
+    other.connectionsMax == connectionsMax &&
+    other.connectionsMin == connectionsMin &&
+    other.generationTime == generationTime &&
+    other.onlineAccountCountBotsExcluded == onlineAccountCountBotsExcluded;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (accountCountBotsExcluded.hashCode) +
     (ageCounts.hashCode) +
-    (connectionStatistics.hashCode) +
-    (generationTime.hashCode);
+    (connectionsAverage.hashCode) +
+    (connectionsMax.hashCode) +
+    (connectionsMin.hashCode) +
+    (generationTime.hashCode) +
+    (onlineAccountCountBotsExcluded.hashCode);
 
   @override
-  String toString() => 'GetProfileStatisticsResult[accountCountBotsExcluded=$accountCountBotsExcluded, ageCounts=$ageCounts, connectionStatistics=$connectionStatistics, generationTime=$generationTime]';
+  String toString() => 'GetProfileStatisticsResult[accountCountBotsExcluded=$accountCountBotsExcluded, ageCounts=$ageCounts, connectionsAverage=$connectionsAverage, connectionsMax=$connectionsMax, connectionsMin=$connectionsMin, generationTime=$generationTime, onlineAccountCountBotsExcluded=$onlineAccountCountBotsExcluded]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'account_count_bots_excluded'] = this.accountCountBotsExcluded;
       json[r'age_counts'] = this.ageCounts;
-      json[r'connection_statistics'] = this.connectionStatistics;
+      json[r'connections_average'] = this.connectionsAverage;
+      json[r'connections_max'] = this.connectionsMax;
+      json[r'connections_min'] = this.connectionsMin;
       json[r'generation_time'] = this.generationTime;
+      json[r'online_account_count_bots_excluded'] = this.onlineAccountCountBotsExcluded;
     return json;
   }
 
@@ -75,8 +96,11 @@ class GetProfileStatisticsResult {
       return GetProfileStatisticsResult(
         accountCountBotsExcluded: mapValueOfType<int>(json, r'account_count_bots_excluded')!,
         ageCounts: ProfileAgeCounts.fromJson(json[r'age_counts'])!,
-        connectionStatistics: ConnectionStatistics.fromJson(json[r'connection_statistics'])!,
+        connectionsAverage: ConnectionStatistics.fromJson(json[r'connections_average'])!,
+        connectionsMax: ConnectionStatistics.fromJson(json[r'connections_max'])!,
+        connectionsMin: ConnectionStatistics.fromJson(json[r'connections_min'])!,
         generationTime: UnixTime.fromJson(json[r'generation_time'])!,
+        onlineAccountCountBotsExcluded: mapValueOfType<int>(json, r'online_account_count_bots_excluded')!,
       );
     }
     return null;
@@ -126,7 +150,11 @@ class GetProfileStatisticsResult {
   static const requiredKeys = <String>{
     'account_count_bots_excluded',
     'age_counts',
-    'connection_statistics',
+    'connections_average',
+    'connections_max',
+    'connections_min',
     'generation_time',
+    'online_account_count_bots_excluded',
   };
 }
+

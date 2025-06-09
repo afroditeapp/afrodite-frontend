@@ -102,7 +102,7 @@ class StatisticsScreenState extends State<StatisticsScreen> {
             const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
             const Divider(),
             const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
-            ...usersOnlineStatistics(context, item.connectionStatistics),
+            ...usersOnlineStatistics(context, item.connectionsAverage),
             const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
             const Divider(),
             const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
@@ -218,13 +218,13 @@ class StatisticsScreenState extends State<StatisticsScreen> {
 
   List<Widget> publicProfileStatistics(BuildContext context, ProfileAgeCounts ageCounts) {
     final data = AgeGroupManager();
-    for (final (i, manCount) in ageCounts.man.indexed) {
+    for (final (i, manCount) in ageCounts.men.indexed) {
       final age = ageCounts.startAge + i;
       data.addMen(age, manCount);
-      final womanCount = ageCounts.woman.getAtOrNull(i) ?? 0;
+      final womanCount = ageCounts.women.getAtOrNull(i) ?? 0;
       data.addWomen(age, womanCount);
-      final nonBinariesCount = ageCounts.nonBinary.getAtOrNull(i) ?? 0;
-      data.addNonbinaries(age, nonBinariesCount);
+      final nonbinariesCount = ageCounts.nonbinaries.getAtOrNull(i) ?? 0;
+      data.addNonbinaries(age, nonbinariesCount);
     }
 
     final profileCount = data.total();

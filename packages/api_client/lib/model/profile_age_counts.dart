@@ -13,45 +13,45 @@ part of openapi.api;
 class ProfileAgeCounts {
   /// Returns a new [ProfileAgeCounts] instance.
   ProfileAgeCounts({
-    this.man = const [],
-    this.nonBinary = const [],
+    this.men = const [],
+    this.nonbinaries = const [],
     required this.startAge,
-    this.woman = const [],
+    this.women = const [],
   });
 
-  List<int> man;
+  List<int> men;
 
-  List<int> nonBinary;
+  List<int> nonbinaries;
 
   /// Age for first count
   int startAge;
 
-  List<int> woman;
+  List<int> women;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is ProfileAgeCounts &&
-    _deepEquality.equals(other.man, man) &&
-    _deepEquality.equals(other.nonBinary, nonBinary) &&
+    _deepEquality.equals(other.men, men) &&
+    _deepEquality.equals(other.nonbinaries, nonbinaries) &&
     other.startAge == startAge &&
-    _deepEquality.equals(other.woman, woman);
+    _deepEquality.equals(other.women, women);
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (man.hashCode) +
-    (nonBinary.hashCode) +
+    (men.hashCode) +
+    (nonbinaries.hashCode) +
     (startAge.hashCode) +
-    (woman.hashCode);
+    (women.hashCode);
 
   @override
-  String toString() => 'ProfileAgeCounts[man=$man, nonBinary=$nonBinary, startAge=$startAge, woman=$woman]';
+  String toString() => 'ProfileAgeCounts[men=$men, nonbinaries=$nonbinaries, startAge=$startAge, women=$women]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'man'] = this.man;
-      json[r'non_binary'] = this.nonBinary;
+      json[r'men'] = this.men;
+      json[r'nonbinaries'] = this.nonbinaries;
       json[r'start_age'] = this.startAge;
-      json[r'woman'] = this.woman;
+      json[r'women'] = this.women;
     return json;
   }
 
@@ -74,15 +74,15 @@ class ProfileAgeCounts {
       }());
 
       return ProfileAgeCounts(
-        man: json[r'man'] is Iterable
-            ? (json[r'man'] as Iterable).cast<int>().toList(growable: false)
+        men: json[r'men'] is Iterable
+            ? (json[r'men'] as Iterable).cast<int>().toList(growable: false)
             : const [],
-        nonBinary: json[r'non_binary'] is Iterable
-            ? (json[r'non_binary'] as Iterable).cast<int>().toList(growable: false)
+        nonbinaries: json[r'nonbinaries'] is Iterable
+            ? (json[r'nonbinaries'] as Iterable).cast<int>().toList(growable: false)
             : const [],
         startAge: mapValueOfType<int>(json, r'start_age')!,
-        woman: json[r'woman'] is Iterable
-            ? (json[r'woman'] as Iterable).cast<int>().toList(growable: false)
+        women: json[r'women'] is Iterable
+            ? (json[r'women'] as Iterable).cast<int>().toList(growable: false)
             : const [],
       );
     }
@@ -131,10 +131,10 @@ class ProfileAgeCounts {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'man',
-    'non_binary',
+    'men',
+    'nonbinaries',
     'start_age',
-    'woman',
+    'women',
   };
 }
 

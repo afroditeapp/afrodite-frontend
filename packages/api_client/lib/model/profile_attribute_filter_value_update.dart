@@ -151,3 +151,4 @@ class ProfileAttributeFilterValueUpdate {
     'id',
   };
 }
+
