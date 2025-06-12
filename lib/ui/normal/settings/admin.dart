@@ -1,6 +1,7 @@
 
 
 import 'package:app/data/login_repository.dart';
+import 'package:app/ui/normal/settings/admin/edit_admin_notifications.dart';
 import 'package:app/ui/normal/settings/admin/edit_maintenance_notification.dart';
 import 'package:app/ui/normal/settings/admin/moderate_profile_texts.dart';
 import 'package:app/ui/normal/settings/admin/open_account_admin_settings.dart';
@@ -151,6 +152,11 @@ class AdminSettingsPage extends StatelessWidget {
         MyNavigator.push(context, MaterialPage<void>(child: ProcessReportsScreen()))
       ));
     }
+    if (permissions.adminSubscribeAdminNotifications) {
+      settings.add(Setting.createSetting(Icons.notifications, ADMIN_NOTIFICATIONS_TITLE, () =>
+        openAdminNotificationsScreen(context),
+      ));
+    }
     return settings;
   }
 }
@@ -172,6 +178,7 @@ class AdminSettingsPermissions {
   bool get adminServerMaintenanceEditNotification => _permissions.adminServerMaintenanceEditNotification;
   bool get adminProfileStatistics => _permissions.adminProfileStatistics;
   bool get adminFindAccountByEmail => _permissions.adminFindAccountByEmail;
+  bool get adminSubscribeAdminNotifications => _permissions.adminSubscribeAdminNotifications;
   AdminSettingsPermissions(this._permissions);
 
   bool somePermissionEnabled() {
@@ -189,6 +196,7 @@ class AdminSettingsPermissions {
       adminServerMaintenanceResetData ||
       adminServerMaintenanceEditNotification ||
       adminProfileStatistics ||
-      adminFindAccountByEmail;
+      adminFindAccountByEmail ||
+      adminSubscribeAdminNotifications;
   }
 }
