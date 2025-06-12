@@ -56,6 +56,7 @@ part 'model/account_state_container.dart';
 part 'model/account_sync_version.dart';
 part 'model/add_public_key_result.dart';
 part 'model/admin_info.dart';
+part 'model/admin_notification.dart';
 part 'model/all_matches_page.dart';
 part 'model/api_usage_count.dart';
 part 'model/api_usage_statistics.dart';

@@ -16,6 +16,54 @@ class CommonAdminApi {
 
   final ApiClient apiClient;
 
+  /// Get admin notification subscriptions.
+  ///
+  /// # Access Requires [Permissions::admin_subscribe_admin_notifications].
+  ///
+  /// Note: This method returns the HTTP [Response].
+  Future<Response> getAdminNotificationSubscriptionsWithHttpInfo() async {
+    // ignore: prefer_const_declarations
+    final path = r'/common_api/admin_notification_subscriptions';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Get admin notification subscriptions.
+  ///
+  /// # Access Requires [Permissions::admin_subscribe_admin_notifications].
+  Future<AdminNotification?> getAdminNotificationSubscriptions() async {
+    final response = await getAdminNotificationSubscriptionsWithHttpInfo();
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'AdminNotification',) as AdminNotification;
+    
+    }
+    return null;
+  }
+
   /// Get dynamic backend config.
   ///
   /// # Permissions Requires admin_server_maintenance_view_backend_settings.
@@ -416,6 +464,54 @@ class CommonAdminApi {
     return null;
   }
 
+  /// Save admin notification subscriptions.
+  ///
+  /// # Access Requires [Permissions::admin_subscribe_admin_notifications].
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [AdminNotification] adminNotification (required):
+  Future<Response> postAdminNotificationSubscriptionsWithHttpInfo(AdminNotification adminNotification,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/common_api/admin_notification_subscriptions';
+
+    // ignore: prefer_final_locals
+    Object? postBody = adminNotification;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Save admin notification subscriptions.
+  ///
+  /// # Access Requires [Permissions::admin_subscribe_admin_notifications].
+  ///
+  /// Parameters:
+  ///
+  /// * [AdminNotification] adminNotification (required):
+  Future<void> postAdminNotificationSubscriptions(AdminNotification adminNotification,) async {
+    final response = await postAdminNotificationSubscriptionsWithHttpInfo(adminNotification,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+  }
+
   /// Save dynamic backend config.
   ///
   /// # Permissions Requires admin_server_maintenance_save_backend_settings.
@@ -510,6 +606,54 @@ class CommonAdminApi {
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
+  }
+
+  /// Get admin notification data.
+  ///
+  /// Getting notification data is required when notification event is received from WebSocket. This prevents resending the notification as push notification when WebSocket connection closes.  # Access Requires [Permissions::admin_subscribe_admin_notifications].
+  ///
+  /// Note: This method returns the HTTP [Response].
+  Future<Response> postGetAdminNotificationWithHttpInfo() async {
+    // ignore: prefer_const_declarations
+    final path = r'/common_api/admin_notification';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Get admin notification data.
+  ///
+  /// Getting notification data is required when notification event is received from WebSocket. This prevents resending the notification as push notification when WebSocket connection closes.  # Access Requires [Permissions::admin_subscribe_admin_notifications].
+  Future<AdminNotification?> postGetAdminNotification() async {
+    final response = await postGetAdminNotificationWithHttpInfo();
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'AdminNotification',) as AdminNotification;
+    
+    }
+    return null;
   }
 
   /// Get API usage data for account

@@ -214,6 +214,8 @@ class ApiClient {
           return AddPublicKeyResult.fromJson(value);
         case 'AdminInfo':
           return AdminInfo.fromJson(value);
+        case 'AdminNotification':
+          return AdminNotification.fromJson(value);
         case 'AllMatchesPage':
           return AllMatchesPage.fromJson(value);
         case 'ApiUsageCount':

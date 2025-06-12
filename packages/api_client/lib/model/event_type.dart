@@ -40,6 +40,7 @@ class EventType {
   static const scheduledMaintenanceStatus = EventType._(r'ScheduledMaintenanceStatus');
   static const profileTextModerationCompleted = EventType._(r'ProfileTextModerationCompleted');
   static const automaticProfileSearchCompleted = EventType._(r'AutomaticProfileSearchCompleted');
+  static const adminNotification = EventType._(r'AdminNotification');
 
   /// List of all possible values in this [enum][EventType].
   static const values = <EventType>[
@@ -60,6 +61,7 @@ class EventType {
     scheduledMaintenanceStatus,
     profileTextModerationCompleted,
     automaticProfileSearchCompleted,
+    adminNotification,
   ];
 
   static EventType? fromJson(dynamic value) => EventTypeTypeTransformer().decode(value);
@@ -115,6 +117,7 @@ class EventTypeTypeTransformer {
         case r'ScheduledMaintenanceStatus': return EventType.scheduledMaintenanceStatus;
         case r'ProfileTextModerationCompleted': return EventType.profileTextModerationCompleted;
         case r'AutomaticProfileSearchCompleted': return EventType.automaticProfileSearchCompleted;
+        case r'AdminNotification': return EventType.adminNotification;
         default:
           if (!allowNull) {
             throw ArgumentError('Unknown enum value to decode: $data');

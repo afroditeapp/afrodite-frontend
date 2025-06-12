@@ -38,6 +38,7 @@ lib/model/account_state_container.dart
 lib/model/account_sync_version.dart
 lib/model/add_public_key_result.dart
 lib/model/admin_info.dart
+lib/model/admin_notification.dart
 lib/model/all_matches_page.dart
 lib/model/api_usage_count.dart
 lib/model/api_usage_statistics.dart

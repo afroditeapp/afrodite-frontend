@@ -36,6 +36,7 @@ class Permissions {
     this.adminServerMaintenanceUpdateSoftware = false,
     this.adminServerMaintenanceViewBackendConfig = false,
     this.adminServerMaintenanceViewInfo = false,
+    this.adminSubscribeAdminNotifications = false,
     this.adminViewAllProfiles = false,
     this.adminViewPermissions = false,
     this.adminViewPrivateInfo = false,
@@ -89,6 +90,8 @@ class Permissions {
   /// View server infrastructure related info like logs and software versions.
   bool adminServerMaintenanceViewInfo;
 
+  bool adminSubscribeAdminNotifications;
+
   /// View public and private profiles.
   bool adminViewAllProfiles;
 
@@ -123,6 +126,7 @@ class Permissions {
     other.adminServerMaintenanceUpdateSoftware == adminServerMaintenanceUpdateSoftware &&
     other.adminServerMaintenanceViewBackendConfig == adminServerMaintenanceViewBackendConfig &&
     other.adminServerMaintenanceViewInfo == adminServerMaintenanceViewInfo &&
+    other.adminSubscribeAdminNotifications == adminSubscribeAdminNotifications &&
     other.adminViewAllProfiles == adminViewAllProfiles &&
     other.adminViewPermissions == adminViewPermissions &&
     other.adminViewPrivateInfo == adminViewPrivateInfo &&
@@ -154,13 +158,14 @@ class Permissions {
     (adminServerMaintenanceUpdateSoftware.hashCode) +
     (adminServerMaintenanceViewBackendConfig.hashCode) +
     (adminServerMaintenanceViewInfo.hashCode) +
+    (adminSubscribeAdminNotifications.hashCode) +
     (adminViewAllProfiles.hashCode) +
     (adminViewPermissions.hashCode) +
     (adminViewPrivateInfo.hashCode) +
     (adminViewProfileHistory.hashCode);
 
   @override
-  String toString() => 'Permissions[adminBanAccount=$adminBanAccount, adminDeleteAccount=$adminDeleteAccount, adminDeleteMediaContent=$adminDeleteMediaContent, adminEditMaxPublicKeyCount=$adminEditMaxPublicKeyCount, adminEditMediaContentFaceDetectedValue=$adminEditMediaContentFaceDetectedValue, adminEditProfileName=$adminEditProfileName, adminFindAccountByEmail=$adminFindAccountByEmail, adminModerateMediaContent=$adminModerateMediaContent, adminModerateProfileNames=$adminModerateProfileNames, adminModerateProfileTexts=$adminModerateProfileTexts, adminModifyPermissions=$adminModifyPermissions, adminNewsCreate=$adminNewsCreate, adminNewsEditAll=$adminNewsEditAll, adminProcessReports=$adminProcessReports, adminProfileStatistics=$adminProfileStatistics, adminRequestAccountDeletion=$adminRequestAccountDeletion, adminServerMaintenanceEditNotification=$adminServerMaintenanceEditNotification, adminServerMaintenanceRebootBackend=$adminServerMaintenanceRebootBackend, adminServerMaintenanceResetData=$adminServerMaintenanceResetData, adminServerMaintenanceSaveBackendConfig=$adminServerMaintenanceSaveBackendConfig, adminServerMaintenanceUpdateSoftware=$adminServerMaintenanceUpdateSoftware, adminServerMaintenanceViewBackendConfig=$adminServerMaintenanceViewBackendConfig, adminServerMaintenanceViewInfo=$adminServerMaintenanceViewInfo, adminViewAllProfiles=$adminViewAllProfiles, adminViewPermissions=$adminViewPermissions, adminViewPrivateInfo=$adminViewPrivateInfo, adminViewProfileHistory=$adminViewProfileHistory]';
+  String toString() => 'Permissions[adminBanAccount=$adminBanAccount, adminDeleteAccount=$adminDeleteAccount, adminDeleteMediaContent=$adminDeleteMediaContent, adminEditMaxPublicKeyCount=$adminEditMaxPublicKeyCount, adminEditMediaContentFaceDetectedValue=$adminEditMediaContentFaceDetectedValue, adminEditProfileName=$adminEditProfileName, adminFindAccountByEmail=$adminFindAccountByEmail, adminModerateMediaContent=$adminModerateMediaContent, adminModerateProfileNames=$adminModerateProfileNames, adminModerateProfileTexts=$adminModerateProfileTexts, adminModifyPermissions=$adminModifyPermissions, adminNewsCreate=$adminNewsCreate, adminNewsEditAll=$adminNewsEditAll, adminProcessReports=$adminProcessReports, adminProfileStatistics=$adminProfileStatistics, adminRequestAccountDeletion=$adminRequestAccountDeletion, adminServerMaintenanceEditNotification=$adminServerMaintenanceEditNotification, adminServerMaintenanceRebootBackend=$adminServerMaintenanceRebootBackend, adminServerMaintenanceResetData=$adminServerMaintenanceResetData, adminServerMaintenanceSaveBackendConfig=$adminServerMaintenanceSaveBackendConfig, adminServerMaintenanceUpdateSoftware=$adminServerMaintenanceUpdateSoftware, adminServerMaintenanceViewBackendConfig=$adminServerMaintenanceViewBackendConfig, adminServerMaintenanceViewInfo=$adminServerMaintenanceViewInfo, adminSubscribeAdminNotifications=$adminSubscribeAdminNotifications, adminViewAllProfiles=$adminViewAllProfiles, adminViewPermissions=$adminViewPermissions, adminViewPrivateInfo=$adminViewPrivateInfo, adminViewProfileHistory=$adminViewProfileHistory]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -187,6 +192,7 @@ class Permissions {
       json[r'admin_server_maintenance_update_software'] = this.adminServerMaintenanceUpdateSoftware;
       json[r'admin_server_maintenance_view_backend_config'] = this.adminServerMaintenanceViewBackendConfig;
       json[r'admin_server_maintenance_view_info'] = this.adminServerMaintenanceViewInfo;
+      json[r'admin_subscribe_admin_notifications'] = this.adminSubscribeAdminNotifications;
       json[r'admin_view_all_profiles'] = this.adminViewAllProfiles;
       json[r'admin_view_permissions'] = this.adminViewPermissions;
       json[r'admin_view_private_info'] = this.adminViewPrivateInfo;
@@ -236,6 +242,7 @@ class Permissions {
         adminServerMaintenanceUpdateSoftware: mapValueOfType<bool>(json, r'admin_server_maintenance_update_software') ?? false,
         adminServerMaintenanceViewBackendConfig: mapValueOfType<bool>(json, r'admin_server_maintenance_view_backend_config') ?? false,
         adminServerMaintenanceViewInfo: mapValueOfType<bool>(json, r'admin_server_maintenance_view_info') ?? false,
+        adminSubscribeAdminNotifications: mapValueOfType<bool>(json, r'admin_subscribe_admin_notifications') ?? false,
         adminViewAllProfiles: mapValueOfType<bool>(json, r'admin_view_all_profiles') ?? false,
         adminViewPermissions: mapValueOfType<bool>(json, r'admin_view_permissions') ?? false,
         adminViewPrivateInfo: mapValueOfType<bool>(json, r'admin_view_private_info') ?? false,

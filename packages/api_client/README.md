@@ -143,6 +143,7 @@ Class | Method | HTTP request | Description
 *CommonApi* | [**getVersion**](doc//CommonApi.md#getversion) | **GET** /common_api/version | Get backend version.
 *CommonApi* | [**postGetPendingNotification**](doc//CommonApi.md#postgetpendingnotification) | **POST** /common_api/get_pending_notification | Get pending notification and reset pending notification.
 *CommonApi* | [**postSetDeviceToken**](doc//CommonApi.md#postsetdevicetoken) | **POST** /common_api/set_device_token | 
+*CommonAdminApi* | [**getAdminNotificationSubscriptions**](doc//CommonAdminApi.md#getadminnotificationsubscriptions) | **GET** /common_api/admin_notification_subscriptions | Get admin notification subscriptions.
 *CommonAdminApi* | [**getBackendConfig**](doc//CommonAdminApi.md#getbackendconfig) | **GET** /common_api/backend_config | Get dynamic backend config.
 *CommonAdminApi* | [**getLatestReportIteratorStartPosition**](doc//CommonAdminApi.md#getlatestreportiteratorstartposition) | **GET** /common_api/admin/latest_report_iterator_start_position | 
 *CommonAdminApi* | [**getMaintenanceNotification**](doc//CommonAdminApi.md#getmaintenancenotification) | **GET** /common_api/maintenance_notification | Get maintenance notification.
@@ -151,8 +152,10 @@ Class | Method | HTTP request | Description
 *CommonAdminApi* | [**getSoftwareUpdateStatus**](doc//CommonAdminApi.md#getsoftwareupdatestatus) | **GET** /common_api/software_info | Get software version information from manager instance.
 *CommonAdminApi* | [**getSystemInfo**](doc//CommonAdminApi.md#getsysteminfo) | **GET** /common_api/system_info | Get system information from manager instance.
 *CommonAdminApi* | [**getWaitingReportPage**](doc//CommonAdminApi.md#getwaitingreportpage) | **GET** /common_api/admin/waiting_report_page | 
+*CommonAdminApi* | [**postAdminNotificationSubscriptions**](doc//CommonAdminApi.md#postadminnotificationsubscriptions) | **POST** /common_api/admin_notification_subscriptions | Save admin notification subscriptions.
 *CommonAdminApi* | [**postBackendConfig**](doc//CommonAdminApi.md#postbackendconfig) | **POST** /common_api/backend_config | Save dynamic backend config.
 *CommonAdminApi* | [**postEditMaintenanceNotification**](doc//CommonAdminApi.md#posteditmaintenancenotification) | **POST** /common_api/edit_maintenance_notification | Edit maintenance notification
+*CommonAdminApi* | [**postGetAdminNotification**](doc//CommonAdminApi.md#postgetadminnotification) | **POST** /common_api/admin_notification | Get admin notification data.
 *CommonAdminApi* | [**postGetApiUsageData**](doc//CommonAdminApi.md#postgetapiusagedata) | **POST** /common_api/api_usage_data | Get API usage data for account
 *CommonAdminApi* | [**postGetChatMessageReports**](doc//CommonAdminApi.md#postgetchatmessagereports) | **POST** /chat_api/get_chat_message_reports | Get all chat message reports. The reports are ordered by message sending order from oldest to latest.
 *CommonAdminApi* | [**postGetIpAddressUsageData**](doc//CommonAdminApi.md#postgetipaddressusagedata) | **POST** /common_api/ip_address_usage_data | Get IP address usage data for account
@@ -247,6 +250,7 @@ Class | Method | HTTP request | Description
  - [AccountSyncVersion](doc//AccountSyncVersion.md)
  - [AddPublicKeyResult](doc//AddPublicKeyResult.md)
  - [AdminInfo](doc//AdminInfo.md)
+ - [AdminNotification](doc//AdminNotification.md)
  - [AllMatchesPage](doc//AllMatchesPage.md)
  - [ApiUsageCount](doc//ApiUsageCount.md)
  - [ApiUsageStatistics](doc//ApiUsageStatistics.md)

@@ -13,6 +13,7 @@ part of openapi.api;
 class PendingNotificationWithData {
   /// Returns a new [PendingNotificationWithData] instance.
   PendingNotificationWithData({
+    this.adminNotification,
     this.automaticProfileSearchCompleted,
     this.mediaContentModerationCompleted,
     this.newMessageReceivedFrom = const [],
@@ -21,6 +22,9 @@ class PendingNotificationWithData {
     this.receivedLikesChanged,
     required this.value,
   });
+
+  /// Data for ADMIN_NOTIFICATION notification.
+  AdminNotification? adminNotification;
 
   /// Data for AUTOMATIC_PROFILE_SEARCH_COMPLETED notification.
   AutomaticProfileSearchCompletedNotification? automaticProfileSearchCompleted;
@@ -40,11 +44,12 @@ class PendingNotificationWithData {
   /// Data for RECEIVED_LIKES_CHANGED notification.
   NewReceivedLikesCountResult? receivedLikesChanged;
 
-  /// Pending notification (or multiple notifications which each have different type) not yet received notifications which push notification requests client to download.  The integer is a bitflag.  - const NEW_MESSAGE = 0x1; - const RECEIVED_LIKES_CHANGED = 0x2; - const MEDIA_CONTENT_MODERATION_COMPLETED = 0x4; - const NEWS_CHANGED = 0x8; - const PROFILE_TEXT_MODERATION_COMPLETED = 0x10; - const AUTOMATIC_PROFILE_SEARCH_COMPLETED = 0x20; 
+  /// Pending notification (or multiple notifications which each have different type) not yet received notifications which push notification requests client to download.  The integer is a bitflag.  - const NEW_MESSAGE = 0x1; - const RECEIVED_LIKES_CHANGED = 0x2; - const MEDIA_CONTENT_MODERATION_COMPLETED = 0x4; - const NEWS_CHANGED = 0x8; - const PROFILE_TEXT_MODERATION_COMPLETED = 0x10; - const AUTOMATIC_PROFILE_SEARCH_COMPLETED = 0x20; - const ADMIN_NOTIFICATION = 0x40; 
   int value;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is PendingNotificationWithData &&
+    other.adminNotification == adminNotification &&
     other.automaticProfileSearchCompleted == automaticProfileSearchCompleted &&
     other.mediaContentModerationCompleted == mediaContentModerationCompleted &&
     _deepEquality.equals(other.newMessageReceivedFrom, newMessageReceivedFrom) &&
@@ -56,6 +61,7 @@ class PendingNotificationWithData {
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
+    (adminNotification == null ? 0 : adminNotification!.hashCode) +
     (automaticProfileSearchCompleted == null ? 0 : automaticProfileSearchCompleted!.hashCode) +
     (mediaContentModerationCompleted == null ? 0 : mediaContentModerationCompleted!.hashCode) +
     (newMessageReceivedFrom == null ? 0 : newMessageReceivedFrom!.hashCode) +
@@ -65,10 +71,15 @@ class PendingNotificationWithData {
     (value.hashCode);
 
   @override
-  String toString() => 'PendingNotificationWithData[automaticProfileSearchCompleted=$automaticProfileSearchCompleted, mediaContentModerationCompleted=$mediaContentModerationCompleted, newMessageReceivedFrom=$newMessageReceivedFrom, newsChanged=$newsChanged, profileTextModerationCompleted=$profileTextModerationCompleted, receivedLikesChanged=$receivedLikesChanged, value=$value]';
+  String toString() => 'PendingNotificationWithData[adminNotification=$adminNotification, automaticProfileSearchCompleted=$automaticProfileSearchCompleted, mediaContentModerationCompleted=$mediaContentModerationCompleted, newMessageReceivedFrom=$newMessageReceivedFrom, newsChanged=$newsChanged, profileTextModerationCompleted=$profileTextModerationCompleted, receivedLikesChanged=$receivedLikesChanged, value=$value]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
+    if (this.adminNotification != null) {
+      json[r'admin_notification'] = this.adminNotification;
+    } else {
+      json[r'admin_notification'] = null;
+    }
     if (this.automaticProfileSearchCompleted != null) {
       json[r'automatic_profile_search_completed'] = this.automaticProfileSearchCompleted;
     } else {
@@ -122,6 +133,7 @@ class PendingNotificationWithData {
       }());
 
       return PendingNotificationWithData(
+        adminNotification: AdminNotification.fromJson(json[r'admin_notification']),
         automaticProfileSearchCompleted: AutomaticProfileSearchCompletedNotification.fromJson(json[r'automatic_profile_search_completed']),
         mediaContentModerationCompleted: MediaContentModerationCompletedNotification.fromJson(json[r'media_content_moderation_completed']),
         newMessageReceivedFrom: AccountId.listFromJson(json[r'new_message_received_from']),
