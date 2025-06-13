@@ -47,26 +47,25 @@ class UiSettingsBloc extends Bloc<UiSettingsEvent, UiSettingsData> {
       ));
     });
     on<UpdateHorizontalPadding>((data, emit) {
-      emitGridSettings(emit, (s) => s.copyWith(horizontalPadding: data.value));
+      saveGridSettings((s) => s.copyWith(horizontalPadding: data.value));
     });
     on<UpdateInternalPadding>((data, emit) {
-      emitGridSettings(emit, (s) => s.copyWith(internalPadding: data.value));
+      saveGridSettings((s) => s.copyWith(internalPadding: data.value));
     });
     on<UpdateProfileThumbnailBorderRadius>((data, emit) {
-      emitGridSettings(emit, (s) => s.copyWith(profileThumbnailBorderRadius: data.value));
+      saveGridSettings((s) => s.copyWith(profileThumbnailBorderRadius: data.value));
     });
     on<UpdateRowProfileCount>((data, emit) {
-      emitGridSettings(emit, (s) => s.copyWith(rowProfileCount: data.value));
+      saveGridSettings((s) => s.copyWith(rowProfileCount: data.value));
     });
     _gridSettingsSubscription = db.accountStream((db) => db.daoUiSettings.watchGridSettings()).listen((value) {
       add(NewGridSettings(value ?? const GridSettings()));
     });
   }
 
-  void emitGridSettings(Emitter<UiSettingsData> emit, GridSettings Function(GridSettings) action) {
-    emit(state.copyWith(
-      gridSettings: action(state.gridSettings),
-    ));
+  void saveGridSettings(GridSettings Function(GridSettings) action) {
+    final newSettings = action(state.gridSettings);
+    db.accountAction((db) => db.daoUiSettings.updateGridSettings(newSettings));
   }
 
   @override
