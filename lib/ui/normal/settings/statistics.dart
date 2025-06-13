@@ -87,7 +87,7 @@ class StatisticsScreenState extends State<StatisticsScreen> {
 
   HourGroup? startPositionForConnectionStatisticsByGender;
   SelectedConnectionStatistics selectedConnectionStatistics =
-    SelectedConnectionStatistics.average;
+    SelectedConnectionStatistics.max;
 
   @override
   Widget build(BuildContext context) {
