@@ -1,6 +1,7 @@
 
 
 import 'package:async/async.dart' show StreamExtensions;
+import 'package:database/src/background/admin_notification_table.dart';
 import 'package:database/src/background/app_notification_settings_table.dart';
 import 'package:database/src/background/automatic_profile_search_completed_notification_table.dart';
 import 'package:database/src/background/conversations_table.dart';
@@ -38,6 +39,7 @@ class AccountBackground extends Table {
     MediaContentModerationCompletedNotificationTable,
     ProfileTextModerationCompletedNotificationTable,
     AutomaticProfileSearchCompletedNotificationTable,
+    AdminNotificationTable,
     AppNotificationSettingsTable,
   ],
   daos: [
@@ -57,6 +59,8 @@ class AccountBackground extends Table {
     DaoProfileTextModerationCompletedNotificationTable,
     // Related to AutomaticProfileSearchCompletedNotificationTable
     DaoAutomaticProfileSearchCompletedNotificationTable,
+    // Related to AdminNotificationTable
+    DaoAdminNotificationTable,
     // Related to AppNotificationSettingsTable
     DaoAppNotificationSettingsTable,
   ],

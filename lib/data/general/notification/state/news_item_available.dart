@@ -50,4 +50,23 @@ class NotificationNewsItemAvailable extends AppSingletonNoInit {
       accountBackgroundDb: accountBackgroundDb,
     );
   }
+
+  Future<Result<void, void>> showAdminNotification(AdminNotification notificationContent, AccountBackgroundDatabaseManager accountBackgroundDb) async {
+    Map<String, dynamic> booleanValues = notificationContent.toJson();
+    List<String> trueValues = [];
+    for (final e in booleanValues.entries) {
+      if (e.value == true) {
+        trueValues.add(e.key);
+      }
+    }
+    await notifications.sendNotification(
+      id: NotificationIdStatic.adminNotification.id,
+      title: "Admin notification",
+      body: trueValues.join("\n"),
+      category: const NotificationCategoryNewsItemAvailable(),
+      accountBackgroundDb: accountBackgroundDb,
+    );
+
+    return await accountBackgroundDb.accountAction((db) => db.daoAdminNotificationTable.updateNotification(notificationContent));
+  }
 }

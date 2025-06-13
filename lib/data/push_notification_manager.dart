@@ -225,6 +225,9 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
       if ((v.value & 0x20) == 0x20) {
         await _handlePushNotificationAutomaticProfileSearchCompleted(v.automaticProfileSearchCompleted, accountBackgroundDb);
       }
+      if ((v.value & 0x40) == 0x40) {
+        await _handlePushNotificationAdminNotification(v.adminNotification, accountBackgroundDb);
+      }
     case Err():
       log.error("Downloading pending notification failed");
   }
@@ -284,4 +287,14 @@ Future<void> _handlePushNotificationAutomaticProfileSearchCompleted(
     return;
   }
   await NotificationAutomaticProfileSearch.handleAutomaticProfileSearchCompleted(notification, accountBackgroundDb);
+}
+
+Future<void> _handlePushNotificationAdminNotification(
+  AdminNotification? notification,
+  AccountBackgroundDatabaseManager accountBackgroundDb,
+) async {
+  if (notification == null) {
+    return;
+  }
+  await NotificationNewsItemAvailable.getInstance().showAdminNotification(notification, accountBackgroundDb);
 }

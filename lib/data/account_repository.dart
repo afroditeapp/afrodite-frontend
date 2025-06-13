@@ -174,6 +174,8 @@ class AccountRepository extends DataRepositoryWithLifecycle {
       await profile.handleAutomaticProfileSearchCompletedEvent();
     } else if (event.event == EventType.mediaContentChanged) {
       await media.reloadMyMediaContent();
+    } else if (event.event == EventType.adminNotification) {
+      await receiveAdminNotification();
     } else {
       log.error("Unknown EventToClient");
     }
@@ -254,6 +256,21 @@ class AccountRepository extends DataRepositoryWithLifecycle {
     final r = await api.account((api) => api.postGetUnreadNewsCount()).ok();
     if (r != null) {
       return await NotificationNewsItemAvailable.getInstance().handleNewsCountUpdate(r, accountBackgroundDb);
+    }
+    return const Err(null);
+  }
+
+  Future<Result<void, void>> receiveAdminNotification() async {
+    final r = await api.accountCommonAdmin((api) => api.postGetAdminNotification()).ok();
+    if (r != null) {
+      final viewedNotification = await accountBackgroundDb.accountData((db) => db.daoAdminNotificationTable.getNotification()).ok();
+      if (viewedNotification != null && r == viewedNotification) {
+        // Prevent showing the same notification again when the notification
+        // is already received as push notification.
+      } else {
+        await NotificationNewsItemAvailable.getInstance().showAdminNotification(r, accountBackgroundDb);
+      }
+      return await accountBackgroundDb.accountData((db) => db.daoAdminNotificationTable.removeNotification());
     }
     return const Err(null);
   }

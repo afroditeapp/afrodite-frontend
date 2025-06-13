@@ -2450,6 +2450,212 @@ class AutomaticProfileSearchCompletedNotificationTableCompanion
   }
 }
 
+class $AdminNotificationTableTable extends AdminNotificationTable
+    with TableInfo<$AdminNotificationTableTable, AdminNotificationTableData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $AdminNotificationTableTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  @override
+  late final GeneratedColumnWithTypeConverter<JsonString?, String>
+      jsonViewedNotification = GeneratedColumn<String>(
+              'json_viewed_notification', aliasedName, true,
+              type: DriftSqlType.string, requiredDuringInsert: false)
+          .withConverter<JsonString?>(
+              $AdminNotificationTableTable.$converterjsonViewedNotification);
+  @override
+  List<GeneratedColumn> get $columns => [id, jsonViewedNotification];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'admin_notification_table';
+  @override
+  VerificationContext validateIntegrity(
+      Insertable<AdminNotificationTableData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  AdminNotificationTableData map(Map<String, dynamic> data,
+      {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return AdminNotificationTableData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      jsonViewedNotification: $AdminNotificationTableTable
+          .$converterjsonViewedNotification
+          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.string,
+              data['${effectivePrefix}json_viewed_notification'])),
+    );
+  }
+
+  @override
+  $AdminNotificationTableTable createAlias(String alias) {
+    return $AdminNotificationTableTable(attachedDatabase, alias);
+  }
+
+  static TypeConverter<JsonString?, String?> $converterjsonViewedNotification =
+      NullAwareTypeConverter.wrap(JsonString.driftConverter);
+}
+
+class AdminNotificationTableData extends DataClass
+    implements Insertable<AdminNotificationTableData> {
+  final int id;
+  final JsonString? jsonViewedNotification;
+  const AdminNotificationTableData(
+      {required this.id, this.jsonViewedNotification});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    if (!nullToAbsent || jsonViewedNotification != null) {
+      map['json_viewed_notification'] = Variable<String>(
+          $AdminNotificationTableTable.$converterjsonViewedNotification
+              .toSql(jsonViewedNotification));
+    }
+    return map;
+  }
+
+  AdminNotificationTableCompanion toCompanion(bool nullToAbsent) {
+    return AdminNotificationTableCompanion(
+      id: Value(id),
+      jsonViewedNotification: jsonViewedNotification == null && nullToAbsent
+          ? const Value.absent()
+          : Value(jsonViewedNotification),
+    );
+  }
+
+  factory AdminNotificationTableData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return AdminNotificationTableData(
+      id: serializer.fromJson<int>(json['id']),
+      jsonViewedNotification:
+          serializer.fromJson<JsonString?>(json['jsonViewedNotification']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'jsonViewedNotification':
+          serializer.toJson<JsonString?>(jsonViewedNotification),
+    };
+  }
+
+  AdminNotificationTableData copyWith(
+          {int? id,
+          Value<JsonString?> jsonViewedNotification = const Value.absent()}) =>
+      AdminNotificationTableData(
+        id: id ?? this.id,
+        jsonViewedNotification: jsonViewedNotification.present
+            ? jsonViewedNotification.value
+            : this.jsonViewedNotification,
+      );
+  AdminNotificationTableData copyWithCompanion(
+      AdminNotificationTableCompanion data) {
+    return AdminNotificationTableData(
+      id: data.id.present ? data.id.value : this.id,
+      jsonViewedNotification: data.jsonViewedNotification.present
+          ? data.jsonViewedNotification.value
+          : this.jsonViewedNotification,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('AdminNotificationTableData(')
+          ..write('id: $id, ')
+          ..write('jsonViewedNotification: $jsonViewedNotification')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, jsonViewedNotification);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is AdminNotificationTableData &&
+          other.id == this.id &&
+          other.jsonViewedNotification == this.jsonViewedNotification);
+}
+
+class AdminNotificationTableCompanion
+    extends UpdateCompanion<AdminNotificationTableData> {
+  final Value<int> id;
+  final Value<JsonString?> jsonViewedNotification;
+  const AdminNotificationTableCompanion({
+    this.id = const Value.absent(),
+    this.jsonViewedNotification = const Value.absent(),
+  });
+  AdminNotificationTableCompanion.insert({
+    this.id = const Value.absent(),
+    this.jsonViewedNotification = const Value.absent(),
+  });
+  static Insertable<AdminNotificationTableData> custom({
+    Expression<int>? id,
+    Expression<String>? jsonViewedNotification,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (jsonViewedNotification != null)
+        'json_viewed_notification': jsonViewedNotification,
+    });
+  }
+
+  AdminNotificationTableCompanion copyWith(
+      {Value<int>? id, Value<JsonString?>? jsonViewedNotification}) {
+    return AdminNotificationTableCompanion(
+      id: id ?? this.id,
+      jsonViewedNotification:
+          jsonViewedNotification ?? this.jsonViewedNotification,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (jsonViewedNotification.present) {
+      map['json_viewed_notification'] = Variable<String>(
+          $AdminNotificationTableTable.$converterjsonViewedNotification
+              .toSql(jsonViewedNotification.value));
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('AdminNotificationTableCompanion(')
+          ..write('id: $id, ')
+          ..write('jsonViewedNotification: $jsonViewedNotification')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $AppNotificationSettingsTableTable extends AppNotificationSettingsTable
     with
         TableInfo<$AppNotificationSettingsTableTable,
@@ -3188,6 +3394,8 @@ abstract class _$AccountBackgroundDatabase extends GeneratedDatabase {
   late final $AutomaticProfileSearchCompletedNotificationTableTable
       automaticProfileSearchCompletedNotificationTable =
       $AutomaticProfileSearchCompletedNotificationTableTable(this);
+  late final $AdminNotificationTableTable adminNotificationTable =
+      $AdminNotificationTableTable(this);
   late final $AppNotificationSettingsTableTable appNotificationSettingsTable =
       $AppNotificationSettingsTableTable(this);
   late final DaoProfilesBackground daoProfilesBackground =
@@ -3211,6 +3419,8 @@ abstract class _$AccountBackgroundDatabase extends GeneratedDatabase {
       daoAutomaticProfileSearchCompletedNotificationTable =
       DaoAutomaticProfileSearchCompletedNotificationTable(
           this as AccountBackgroundDatabase);
+  late final DaoAdminNotificationTable daoAdminNotificationTable =
+      DaoAdminNotificationTable(this as AccountBackgroundDatabase);
   late final DaoAppNotificationSettingsTable daoAppNotificationSettingsTable =
       DaoAppNotificationSettingsTable(this as AccountBackgroundDatabase);
   @override
@@ -3227,6 +3437,7 @@ abstract class _$AccountBackgroundDatabase extends GeneratedDatabase {
         mediaContentModerationCompletedNotificationTable,
         profileTextModerationCompletedNotificationTable,
         automaticProfileSearchCompletedNotificationTable,
+        adminNotificationTable,
         appNotificationSettingsTable
       ];
 }

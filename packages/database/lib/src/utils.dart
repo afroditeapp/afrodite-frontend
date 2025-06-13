@@ -177,6 +177,10 @@ class JsonString {
     return ClientFeaturesConfig.fromJson(jsonMap);
   }
 
+  AdminNotification? toAdminNotification() {
+    return AdminNotification.fromJson(jsonMap);
+  }
+
   static TypeConverter<JsonString, String> driftConverter = TypeConverter.json(
     fromJson: (json) => JsonString(json as Map<String, Object?>),
     toJson: (object) => object.jsonMap,
@@ -220,6 +224,12 @@ extension CustomReportsConfigJson on CustomReportsConfig {
 }
 
 extension ClientFeaturesConfigJson on ClientFeaturesConfig {
+  JsonString toJsonString() {
+    return JsonString(toJson());
+  }
+}
+
+extension AdminNotificationJson on AdminNotification {
   JsonString toJsonString() {
     return JsonString(toJson());
   }
