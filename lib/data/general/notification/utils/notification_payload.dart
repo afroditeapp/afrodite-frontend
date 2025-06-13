@@ -80,6 +80,8 @@ sealed class NotificationPayload extends Immutable {
         return NavigateToMyProfile(sessionId: sessionId);
       case NotificationPayloadTypeString.stringNavigateToAutomaticProfileSearchResults:
         return NavigateToAutomaticProfileSearchResults(sessionId: sessionId);
+      case NotificationPayloadTypeString.stringNavigateToModeratorTasks:
+        return NavigateToModeratorTasks(sessionId: sessionId);
       default:
         log.error("Payload type is unknown");
         return null;
@@ -180,6 +182,14 @@ class NavigateToAutomaticProfileSearchResults extends NotificationPayload {
   );
 }
 
+class NavigateToModeratorTasks extends NotificationPayload {
+  const NavigateToModeratorTasks({
+    required super.sessionId,
+  }) : super(
+    payloadType: NotificationPayloadTypeString.navigateToModeratorTasks,
+  );
+}
+
 enum NotificationPayloadTypeString {
   navigateToLikes(value: stringNavigateToLikes),
   navigateToNews(value: stringNavigateToNews),
@@ -187,7 +197,8 @@ enum NotificationPayloadTypeString {
   navigateToConversationList(value: stringNavigateToConversationList),
   navigateToContentManagement(value: stringNavigateToContentManagement),
   navigateToMyProfile(value: stringNavigateToMyProfile),
-  navigateToAutomaticProfileSearchResults(value: stringNavigateToAutomaticProfileSearchResults);
+  navigateToAutomaticProfileSearchResults(value: stringNavigateToAutomaticProfileSearchResults),
+  navigateToModeratorTasks(value: stringNavigateToModeratorTasks);
 
   final String value;
   const NotificationPayloadTypeString({
@@ -201,4 +212,5 @@ enum NotificationPayloadTypeString {
   static const String stringNavigateToContentManagement = "navigate_to_content_management";
   static const String stringNavigateToMyProfile = "navigate_to_my_profile";
   static const String stringNavigateToAutomaticProfileSearchResults = "navigate_to_automatic_profile_search_results";
+  static const String stringNavigateToModeratorTasks = "navigate_to_moderator_tasks";
 }

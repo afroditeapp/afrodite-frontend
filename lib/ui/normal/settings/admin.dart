@@ -1,11 +1,9 @@
 
-
 import 'package:app/data/login_repository.dart';
 import 'package:app/ui/normal/settings/admin/edit_admin_notifications.dart';
 import 'package:app/ui/normal/settings/admin/edit_maintenance_notification.dart';
-import 'package:app/ui/normal/settings/admin/moderate_profile_texts.dart';
+import 'package:app/ui/normal/settings/admin/moderator_tasks.dart';
 import 'package:app/ui/normal/settings/admin/open_account_admin_settings.dart';
-import 'package:app/ui/normal/settings/admin/report/process_reports.dart';
 import 'package:app/ui/normal/settings/admin/server_tasks.dart';
 import 'package:app/ui/normal/settings/admin/view_accounts.dart';
 import 'package:app/ui/normal/settings/admin/view_admins.dart';
@@ -19,13 +17,10 @@ import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/model/freezed/logic/account/account.dart';
 import 'package:app/ui/normal/settings.dart';
 import 'package:app/ui/normal/settings/admin/configure_backend.dart';
-import 'package:app/ui/normal/settings/admin/moderate_images.dart';
-import 'package:app/ui/normal/settings/admin/profile_name_moderation.dart';
 import 'package:app/ui/normal/settings/admin/profile_statistics_history.dart';
 import 'package:app/ui/normal/settings/admin/server_software_update.dart';
 import 'package:app/ui/normal/settings/admin/server_system_info.dart';
 import 'package:app/ui/normal/settings/admin/view_perf_data.dart';
-
 
 class AdminSettingsPage extends StatelessWidget {
   const AdminSettingsPage({super.key});
@@ -57,18 +52,17 @@ class AdminSettingsPage extends StatelessWidget {
     final api = LoginRepository.getInstance().repositories.api;
     List<Setting> settings = [];
 
-    if (permissions.adminModerateMediaContent) {
-      settings.add(Setting.createSetting(Icons.image, "Moderate images (initial moderation, bot and human)", () =>
-        MyNavigator.push(context, MaterialPage<void>(child: ModerateImagesScreen(queueType: ModerationQueueType.initialMediaModeration, showContentWhichBotsCanModerate: true)),)
+    if (
+      permissions.adminModerateMediaContent ||
+      permissions.adminModerateProfileNames ||
+      permissions.adminModerateProfileTexts ||
+      permissions.adminProcessReports
+    ) {
+      settings.add(Setting.createSetting(Icons.task, "Moderator tasks (show todo list)", () =>
+        MyNavigator.push(context, const MaterialPage<void>(child: ModeratorTasksScreen()))
       ));
-      settings.add(Setting.createSetting(Icons.image, "Moderate images (initial moderation, human)", () =>
-        MyNavigator.push(context, MaterialPage<void>(child: ModerateImagesScreen(queueType: ModerationQueueType.initialMediaModeration, showContentWhichBotsCanModerate: false)),)
-      ));
-      settings.add(Setting.createSetting(Icons.image, "Moderate images (normal, bot and human)", () =>
-        MyNavigator.push(context, MaterialPage<void>(child: ModerateImagesScreen(queueType: ModerationQueueType.mediaModeration, showContentWhichBotsCanModerate: true)),)
-      ));
-      settings.add(Setting.createSetting(Icons.image, "Moderate images (normal, human)", () =>
-        MyNavigator.push(context, MaterialPage<void>(child: ModerateImagesScreen(queueType: ModerationQueueType.mediaModeration, showContentWhichBotsCanModerate: false)),)
+      settings.add(Setting.createSetting(Icons.task, "Moderator tasks (show all)", () =>
+        MyNavigator.push(context, const MaterialPage<void>(child: ModeratorTasksScreen(showAll: true)))
       ));
     }
     if (permissions.adminServerMaintenanceSaveBackendConfig ||
@@ -119,19 +113,6 @@ class AdminSettingsPage extends StatelessWidget {
         openProfileStatisticsHistoryScreen(context),
       ));
     }
-    if (permissions.adminModerateProfileNames) {
-      settings.add(Setting.createSetting(Icons.text_fields, context.strings.moderate_profile_names_screen_title, () =>
-        openProfileNameModerationScreen(context),
-      ));
-    }
-    if (permissions.adminModerateProfileTexts) {
-      settings.add(Setting.createSetting(Icons.text_fields, "Moderate profile texts (bot and human)", () =>
-        MyNavigator.push(context, MaterialPage<void>(child: ModerateProfileTextsScreen(showTextsWhichBotsCanModerate: true)),)
-      ));
-      settings.add(Setting.createSetting(Icons.text_fields, "Moderate profile texts (human)", () =>
-        MyNavigator.push(context, MaterialPage<void>(child: ModerateProfileTextsScreen(showTextsWhichBotsCanModerate: false)),)
-      ));
-    }
     if (permissions.adminFindAccountByEmail) {
       settings.add(Setting.createSetting(Icons.account_box, "Open account admin tools", () =>
         MyNavigator.push(context, const MaterialPage<void>(child: OpenAccountAdminSettings()),)
@@ -145,11 +126,6 @@ class AdminSettingsPage extends StatelessWidget {
     if (permissions.adminViewAllProfiles) {
       settings.add(Setting.createSetting(Icons.group, "View accounts", () =>
         MyNavigator.push(context, const MaterialPage<void>(child: ViewAccountsScreen()),)
-      ));
-    }
-    if (permissions.adminProcessReports) {
-      settings.add(Setting.createSetting(Icons.report, "Process reports", () =>
-        MyNavigator.push(context, MaterialPage<void>(child: ProcessReportsScreen()))
       ));
     }
     if (permissions.adminSubscribeAdminNotifications) {

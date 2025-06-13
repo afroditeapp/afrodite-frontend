@@ -2,6 +2,7 @@
 
 import 'dart:async';
 
+import 'package:app/ui/normal/settings/admin/moderator_tasks.dart';
 import 'package:app/ui/normal/settings/my_profile.dart';
 import 'package:app/ui/normal/settings/news/news_list.dart';
 import 'package:app/ui/normal/settings/notifications/automatic_profile_search_results.dart';
@@ -177,6 +178,8 @@ Future<NewPageDetails?> handlePayload(
       if (currentPageInfo is! AutomaticProfileSearchResultsPageInfo) {
         return newAutomaticProfileSearchResultsScreen();
       }
+    case NavigateToModeratorTasks():
+      return newModeratorTasksScreen();
   }
   return null;
 }

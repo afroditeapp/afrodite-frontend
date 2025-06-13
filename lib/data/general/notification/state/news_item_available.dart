@@ -64,6 +64,9 @@ class NotificationNewsItemAvailable extends AppSingletonNoInit {
       title: "Admin notification",
       body: trueValues.join("\n"),
       category: const NotificationCategoryNewsItemAvailable(),
+      notificationPayload: NavigateToModeratorTasks(
+        sessionId: await notifications.getSessionId(),
+      ),
       accountBackgroundDb: accountBackgroundDb,
     );
 
