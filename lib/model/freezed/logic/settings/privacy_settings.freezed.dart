@@ -8,19 +8,27 @@ part of 'privacy_settings.dart';
 // **************************************************************************
 
 /// @nodoc
+class _DetectDefaultValueInCopyWith {
+  const _DetectDefaultValueInCopyWith();
+}
+
+/// @nodoc
+const _detectDefaultValueInCopyWith = _DetectDefaultValueInCopyWith();
+
+/// @nodoc
 final _privateConstructorErrorPrivacySettingsData = UnsupportedError(
     'Private constructor PrivacySettingsData._() was called. Please call factory constructor instead.');
 
 /// @nodoc
 mixin _$PrivacySettingsData {
   UpdateState get updateState => throw _privateConstructorErrorPrivacySettingsData;
-  ProfileVisibility get initialVisibility => throw _privateConstructorErrorPrivacySettingsData;
-  ProfileVisibility get currentVisibility => throw _privateConstructorErrorPrivacySettingsData;
+  ProfileVisibility get visiblity => throw _privateConstructorErrorPrivacySettingsData;
+  ProfileVisibility? get editedVisibility => throw _privateConstructorErrorPrivacySettingsData;
 
   PrivacySettingsData copyWith({
     UpdateState? updateState,
-    ProfileVisibility? initialVisibility,
-    ProfileVisibility? currentVisibility,
+    ProfileVisibility? visiblity,
+    ProfileVisibility? editedVisibility,
   }) => throw _privateConstructorErrorPrivacySettingsData;
 }
 
@@ -28,8 +36,8 @@ mixin _$PrivacySettingsData {
 abstract class _PrivacySettingsData extends PrivacySettingsData {
   factory _PrivacySettingsData({
     UpdateState updateState,
-    ProfileVisibility initialVisibility,
-    ProfileVisibility currentVisibility,
+    ProfileVisibility visiblity,
+    ProfileVisibility? editedVisibility,
   }) = _$PrivacySettingsDataImpl;
   _PrivacySettingsData._() : super._();
 }
@@ -37,25 +45,24 @@ abstract class _PrivacySettingsData extends PrivacySettingsData {
 /// @nodoc
 class _$PrivacySettingsDataImpl extends _PrivacySettingsData with DiagnosticableTreeMixin {
   static const UpdateState _updateStateDefaultValue = UpdateIdle();
-  static const ProfileVisibility _initialVisibilityDefaultValue = ProfileVisibility.pendingPrivate;
-  static const ProfileVisibility _currentVisibilityDefaultValue = ProfileVisibility.pendingPrivate;
+  static const ProfileVisibility _visiblityDefaultValue = ProfileVisibility.pendingPrivate;
   
   _$PrivacySettingsDataImpl({
     this.updateState = _updateStateDefaultValue,
-    this.initialVisibility = _initialVisibilityDefaultValue,
-    this.currentVisibility = _currentVisibilityDefaultValue,
+    this.visiblity = _visiblityDefaultValue,
+    this.editedVisibility,
   }) : super._();
 
   @override
   final UpdateState updateState;
   @override
-  final ProfileVisibility initialVisibility;
+  final ProfileVisibility visiblity;
   @override
-  final ProfileVisibility currentVisibility;
+  final ProfileVisibility? editedVisibility;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'PrivacySettingsData(updateState: $updateState, initialVisibility: $initialVisibility, currentVisibility: $currentVisibility)';
+    return 'PrivacySettingsData(updateState: $updateState, visiblity: $visiblity, editedVisibility: $editedVisibility)';
   }
 
   @override
@@ -64,8 +71,8 @@ class _$PrivacySettingsDataImpl extends _PrivacySettingsData with Diagnosticable
     properties
       ..add(DiagnosticsProperty('type', 'PrivacySettingsData'))
       ..add(DiagnosticsProperty('updateState', updateState))
-      ..add(DiagnosticsProperty('initialVisibility', initialVisibility))
-      ..add(DiagnosticsProperty('currentVisibility', currentVisibility));
+      ..add(DiagnosticsProperty('visiblity', visiblity))
+      ..add(DiagnosticsProperty('editedVisibility', editedVisibility));
   }
 
   @override
@@ -75,10 +82,10 @@ class _$PrivacySettingsDataImpl extends _PrivacySettingsData with Diagnosticable
         other is _$PrivacySettingsDataImpl &&
         (identical(other.updateState, updateState) ||
           other.updateState == updateState) &&
-        (identical(other.initialVisibility, initialVisibility) ||
-          other.initialVisibility == initialVisibility) &&
-        (identical(other.currentVisibility, currentVisibility) ||
-          other.currentVisibility == currentVisibility)
+        (identical(other.visiblity, visiblity) ||
+          other.visiblity == visiblity) &&
+        (identical(other.editedVisibility, editedVisibility) ||
+          other.editedVisibility == editedVisibility)
     );
   }
 
@@ -86,18 +93,18 @@ class _$PrivacySettingsDataImpl extends _PrivacySettingsData with Diagnosticable
   int get hashCode => Object.hash(
     runtimeType,
     updateState,
-    initialVisibility,
-    currentVisibility,
+    visiblity,
+    editedVisibility,
   );
 
   @override
   PrivacySettingsData copyWith({
     Object? updateState,
-    Object? initialVisibility,
-    Object? currentVisibility,
+    Object? visiblity,
+    Object? editedVisibility = _detectDefaultValueInCopyWith,
   }) => _$PrivacySettingsDataImpl(
     updateState: (updateState ?? this.updateState) as UpdateState,
-    initialVisibility: (initialVisibility ?? this.initialVisibility) as ProfileVisibility,
-    currentVisibility: (currentVisibility ?? this.currentVisibility) as ProfileVisibility,
+    visiblity: (visiblity ?? this.visiblity) as ProfileVisibility,
+    editedVisibility: (editedVisibility == _detectDefaultValueInCopyWith ? this.editedVisibility : editedVisibility) as ProfileVisibility?,
   );
 }

@@ -10,7 +10,9 @@ class PrivacySettingsData with _$PrivacySettingsData, UpdateStateProvider {
   PrivacySettingsData._();
   factory PrivacySettingsData({
     @Default(UpdateIdle()) UpdateState updateState,
-    @Default(ProfileVisibility.pendingPrivate) ProfileVisibility initialVisibility,
-    @Default(ProfileVisibility.pendingPrivate) ProfileVisibility currentVisibility,
+    @Default(ProfileVisibility.pendingPrivate) ProfileVisibility visiblity,
+    ProfileVisibility? editedVisibility,
   }) = _PrivacySettingsData;
+
+  ProfileVisibility valueVisibility() => editedVisibility ?? visiblity;
 }

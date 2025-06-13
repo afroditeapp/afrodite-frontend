@@ -431,10 +431,6 @@
   "@edit_profile_text_screen_text_lenght_too_long": {
     "description": "Dialog text for notifying user when profile text is too long"
   },
-  "general_settings_screen_title": "General",
-  "@general_settings_screen_title": {
-    "description": "General settings screen title"
-  },
   "generic_action_completed": "Action completed",
   "@generic_action_completed": {
     "description": "Generic action completed text"
@@ -1185,30 +1181,6 @@
   "@notification_settings_screen_title": {
     "description": "Title for notification settings screen"
   },
-  "privacy_settings_screen_profile_visiblity_pending_public_description": "Your profile will be visible in profile grid once your images are moderated as accepted",
-  "@privacy_settings_screen_profile_visiblity_pending_public_description": {
-    "description": "Description for pending public profile visibility"
-  },
-  "privacy_settings_screen_profile_visiblity_private_description": "Your profile is not visible in profile grid",
-  "@privacy_settings_screen_profile_visiblity_private_description": {
-    "description": "Description for private profile visibility"
-  },
-  "privacy_settings_screen_profile_visiblity_public_description": "Your profile is visible in profile grid",
-  "@privacy_settings_screen_profile_visiblity_public_description": {
-    "description": "Description for public profile visibility"
-  },
-  "privacy_settings_screen_profile_visiblity_setting": "Profile visibility",
-  "@privacy_settings_screen_profile_visiblity_setting": {
-    "description": "Title for profile visibility setting"
-  },
-  "privacy_settings_screen_settings_updating_failed": "Updating privacy and security settings failed",
-  "@privacy_settings_screen_settings_updating_failed": {
-    "description": "Snackbar text about failed settings update"
-  },
-  "privacy_settings_screen_title": "Privacy and security",
-  "@privacy_settings_screen_title": {
-    "description": "Title for privacy settings screen"
-  },
   "profile_filtering_settings_screen_disable_filters_action": "Disable filters",
   "@profile_filtering_settings_screen_disable_filters_action": {
     "description": "Title for disable filters action"
@@ -1640,6 +1612,38 @@
   "select_match_screen_title": "Accepted chat requests",
   "@select_match_screen_title": {
     "description": "Title for select match screen"
+  },
+  "settings_screen_data_category": "Data",
+  "@settings_screen_data_category": {
+    "description": "Title for data settings category"
+  },
+  "settings_screen_general_category": "General",
+  "@settings_screen_general_category": {
+    "description": "Title for general settings category"
+  },
+  "settings_screen_privacy_and_security_category": "Privacy and security",
+  "@settings_screen_privacy_and_security_category": {
+    "description": "Title for privacy and security settings category"
+  },
+  "settings_screen_profile_category": "Profile",
+  "@settings_screen_profile_category": {
+    "description": "Title for profile settings category"
+  },
+  "settings_screen_profile_visiblity_pending_public_description": "Your profile will be visible in profile grid once your images are moderated as accepted",
+  "@settings_screen_profile_visiblity_pending_public_description": {
+    "description": "Description for pending public profile visibility"
+  },
+  "settings_screen_profile_visiblity_private_description": "Your profile is not visible in profile grid",
+  "@settings_screen_profile_visiblity_private_description": {
+    "description": "Description for private profile visibility"
+  },
+  "settings_screen_profile_visiblity_public_description": "Your profile is visible in profile grid",
+  "@settings_screen_profile_visiblity_public_description": {
+    "description": "Description for public profile visibility"
+  },
+  "settings_screen_profile_visiblity_setting": "Profile visibility",
+  "@settings_screen_profile_visiblity_setting": {
+    "description": "Title for profile visibility setting"
   },
   "settings_screen_title": "Settings",
   "@settings_screen_title": {

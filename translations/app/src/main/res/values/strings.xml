@@ -416,14 +416,14 @@
 
     <!-- Settings -->
     <string name="settings_screen_title" description="Title for settings screen">Settings</string>
-
-    <!-- Privacy settings screen -->
-    <string name="privacy_settings_screen_title" description="Title for privacy settings screen">Privacy and security</string>
-    <string name="privacy_settings_screen_profile_visiblity_setting" description="Title for profile visibility setting">Profile visibility</string>
-    <string name="privacy_settings_screen_profile_visiblity_private_description" description="Description for private profile visibility">Your profile is not visible in profile grid</string>
-    <string name="privacy_settings_screen_profile_visiblity_pending_public_description" description="Description for pending public profile visibility">Your profile will be visible in profile grid once your images are moderated as accepted</string>
-    <string name="privacy_settings_screen_profile_visiblity_public_description" description="Description for public profile visibility">Your profile is visible in profile grid</string>
-    <string name="privacy_settings_screen_settings_updating_failed" description="Snackbar text about failed settings update">Updating privacy and security settings failed</string>
+    <string name="settings_screen_profile_category" description="Title for profile settings category">Profile</string>
+    <string name="settings_screen_privacy_and_security_category" description="Title for privacy and security settings category">Privacy and security</string>
+    <string name="settings_screen_profile_visiblity_setting" description="Title for profile visibility setting">Profile visibility</string>
+    <string name="settings_screen_profile_visiblity_private_description" description="Description for private profile visibility">Your profile is not visible in profile grid</string>
+    <string name="settings_screen_profile_visiblity_pending_public_description" description="Description for pending public profile visibility">Your profile will be visible in profile grid once your images are moderated as accepted</string>
+    <string name="settings_screen_profile_visiblity_public_description" description="Description for public profile visibility">Your profile is visible in profile grid</string>
+    <string name="settings_screen_data_category" description="Title for data settings category">Data</string>
+    <string name="settings_screen_general_category" description="Title for general settings category">General</string>
 
     <!-- Bocked profiles screen -->
     <string name="blocked_profiles_screen_title" description="Title for blocked profiles screen">Blocked profiles</string>
@@ -451,9 +451,6 @@
     <string name="account_settings_screen_delete_account_action" description="Title for delete account action">Request account deletion</string>
     <string name="account_settings_screen_delete_account_action_error" description="Snackbar text about delete account action failure">Requesting account deletion failed</string>
     <string name="account_settings_screen_delete_account_confirm_dialog_title" description="Title for delete account confirm dialog title">Request account deletion?</string>
-
-    <!-- General settings screen -->
-    <string name="general_settings_screen_title" description="General settings screen title">General</string>
 
     <!-- Image quality settings screen -->
     <string name="image_quality_settings_screen_title" description="Image quality settings screen title">Image quality</string>

@@ -1,30 +1,36 @@
 import 'package:app/logic/profile/profile_filtering_settings.dart';
 import 'package:app/model/freezed/logic/profile/profile_filtering_settings.dart';
+import 'package:app/model/freezed/logic/settings/privacy_settings.dart';
 import 'package:app/ui/normal/profiles/filter_profiles.dart';
+import 'package:app/ui/normal/settings/blocked_profiles.dart';
+import 'package:app/ui/normal/settings/general/image_settings.dart';
+import 'package:app/ui/normal/settings/general/profile_grid_settings.dart';
 import 'package:app/ui/normal/settings/location.dart';
+import 'package:app/ui/normal/settings/media/current_security_selfie.dart';
+import 'package:app/ui_utils/common_update_logic.dart';
+import 'package:app/ui_utils/snack_bar.dart';
+import 'package:app/utils/api.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:app/logic/account/account.dart';
 import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/logic/settings/privacy_settings.dart';
 import 'package:app/logic/settings/search_settings.dart';
-import 'package:app/model/freezed/logic/account/account.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui/normal/settings/account_settings.dart';
 import 'package:app/ui/normal/settings/data_settings.dart';
-import 'package:app/ui/normal/settings/general_settings.dart';
 import 'package:app/ui/normal/settings/media/content_management.dart';
 import 'package:app/ui/normal/settings/notification_settings.dart';
-import 'package:app/ui/normal/settings/privacy_settings.dart';
 import 'package:app/ui/normal/settings/profile/search_settings.dart';
 import 'package:app/localizations.dart';
+import 'package:openapi/api.dart';
 
 void openSettingsScreen(BuildContext context) {
   // Settings screen is open some seconds before user
   // opens another screen, so this is good location
   // to init some blocs which load data from DB.
   context.read<SearchSettingsBloc>();
+  context.read<PrivacySettingsBloc>().add(ResetEdited());
   MyNavigator.push(context, const MaterialPage<void>(child:
     SettingsScreen()
   ));
@@ -47,89 +53,155 @@ class _SettingsScreenState extends State<SettingsScreen> {
       appBar: AppBar(
         title: Text(context.strings.settings_screen_title),
       ),
-      body: buildList(context),
+      body: list(context),
     );
   }
 
-  Widget buildList(BuildContext context) {
-    return BlocBuilder<AccountBloc, AccountBlocData>(
-      builder: (context, state) {
-        List<Setting> settings = [
-          Setting.createSetting(Icons.person, context.strings.account_settings_screen_title, () {
-              openAccountSettings(context);
-            }
-          ),
-          Setting.createSetting(Icons.search, context.strings.search_settings_screen_title, () {
-            final pageKey = PageKey();
-            final searchSettingsBloc = context.read<SearchSettingsBloc>();
-            MyNavigator.pushWithKey(
-              context,
-              MaterialPage<void>(child: SearchSettingsScreen(
-                pageKey: pageKey,
-                searchSettingsBloc: searchSettingsBloc,
-              )),
-              pageKey,
-            );
-          }),
-          Setting.createSettingWithCustomIcon(
-            BlocBuilder<ProfileFilteringSettingsBloc, ProfileFilteringSettingsData>(
-              builder: (_, state) => Icon(state.icon()),
-            ),
-            context.strings.profile_filtering_settings_screen_title,
-            () => openProfileFilteringSettings(context),
-          ),
-          Setting.createSetting(Icons.location_on, context.strings.profile_location_screen_title, () {
-            MyNavigator.push(context, const MaterialPage<void>(child: LocationScreen()));
-          }),
-          if (!kIsWeb) Setting.createSetting(Icons.notifications, context.strings.notification_settings_screen_title, () {
-              openNotificationSettings(context);
-            }
-          ),
-          Setting.createSetting(Icons.lock_rounded, context.strings.privacy_settings_screen_title, () {
-            final pageKey = PageKey();
-            final privacySettingsBloc = context.read<PrivacySettingsBloc>();
-            final accountBloc = context.read<AccountBloc>();
-            MyNavigator.pushWithKey(
-              context,
-              MaterialPage<void>(child: PrivacySettingsScreen(
-                pageKey: pageKey,
-                privacySettingsBloc: privacySettingsBloc,
-                accountBloc: accountBloc,
-              )),
-              pageKey,
-            );
-          }),
-          Setting.createSetting(Icons.image_rounded, context.strings.content_management_screen_title, () {
-            openContentManagementScreen(context);
-          }),
-          Setting.createSetting(Icons.storage, context.strings.data_settings_screen_title, () {
-              MyNavigator.push(context, const MaterialPage<void>(child:
-                DataSettingsScreen()
-              ));
-            }
-          ),
-          Setting.createSetting(Icons.miscellaneous_services, context.strings.general_settings_screen_title, () {
-              MyNavigator.push(context, const MaterialPage<void>(child:
-                GeneralSettingsScreen()
-              ));
-            }
-          ),
-        ];
-
-        return list(settings);
-      }
-    );
-  }
-
-  Widget list(List<Setting> settings) {
+  Widget list(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ...settings.map((setting) => setting.toListTile()),
+          Setting.createSetting(Icons.person, context.strings.account_settings_screen_title, () {
+              openAccountSettings(context);
+            }
+          ).toListTile(),
+          settingsCategoryTitle(context, context.strings.settings_screen_profile_category),
+          ...profileSettings(context),
+          settingsCategoryTitle(context, context.strings.settings_screen_privacy_and_security_category),
+          ...securityAndPrivacySettings(context),
+          settingsCategoryTitle(context, context.strings.settings_screen_data_category),
+          ...dataSettings(context),
+          settingsCategoryTitle(context, context.strings.settings_screen_general_category),
+          ...generalSettings(context),
         ],
       ),
     );
+  }
+
+  Widget settingsCategoryTitle(BuildContext context, String text) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 16, top: 8, bottom: 8),
+      child: Text(
+        text,
+        style: Theme.of(context).textTheme.titleSmall,
+      ),
+    );
+  }
+
+  Widget blockedProfiles(BuildContext context) {
+    return Setting.createSetting(Icons.block, context.strings.blocked_profiles_screen_title, () =>
+      MyNavigator.push(context, const MaterialPage<void>(child: BlockedProfilesScreen()))
+    ).toListTile();
+  }
+
+  Widget securitySelfie(BuildContext context) {
+    return Setting.createSetting(Icons.image_rounded, context.strings.current_security_selfie_screen_title, () {
+      final pageKey = PageKey();
+      MyNavigator.pushWithKey(
+        context,
+        MaterialPage<void>(child: CurrentSecuritySelfie(pageKey: pageKey)),
+        pageKey,
+      );
+    }
+    ).toListTile();
+  }
+
+  List<Widget> profileSettings(BuildContext context) {
+    return [
+      Setting.createSetting(Icons.search, context.strings.search_settings_screen_title, () {
+        final pageKey = PageKey();
+        final searchSettingsBloc = context.read<SearchSettingsBloc>();
+        MyNavigator.pushWithKey(
+          context,
+          MaterialPage<void>(child: SearchSettingsScreen(
+            pageKey: pageKey,
+            searchSettingsBloc: searchSettingsBloc,
+          )),
+          pageKey,
+        );
+      }).toListTile(),
+      Setting.createSettingWithCustomIcon(
+        BlocBuilder<ProfileFilteringSettingsBloc, ProfileFilteringSettingsData>(
+          builder: (_, state) => Icon(state.icon()),
+        ),
+        context.strings.profile_filtering_settings_screen_title,
+        () => openProfileFilteringSettings(context),
+      ).toListTile(),
+      Setting.createSetting(Icons.location_on, context.strings.profile_location_screen_title, () {
+        MyNavigator.push(context, const MaterialPage<void>(child: LocationScreen()));
+      }).toListTile(),
+    ];
+  }
+
+  Widget profileVisibilitySetting(BuildContext context, PrivacySettingsData state) {
+    final ProfileVisibility visibility = state.valueVisibility();
+    final String descriptionForVisibility = switch (visibility) {
+      ProfileVisibility.pendingPrivate || ProfileVisibility.private =>
+        context.strings.settings_screen_profile_visiblity_private_description,
+      ProfileVisibility.pendingPublic =>
+        context.strings.settings_screen_profile_visiblity_pending_public_description,
+      ProfileVisibility.public =>
+        context.strings.settings_screen_profile_visiblity_public_description,
+      _ => context.strings.generic_error,
+    };
+
+    return SwitchListTile(
+      title: Text(context.strings.settings_screen_profile_visiblity_setting),
+      value: visibility.isPublic(),
+      subtitle: Text(descriptionForVisibility),
+      onChanged: (bool value) {
+        if (state.updateState is! UpdateIdle) {
+          showSnackBar(context.strings.generic_previous_action_in_progress);
+        } else {
+          context.read<PrivacySettingsBloc>().add(ToggleVisibilityAndSaveSettings());
+        }
+      },
+      secondary: const Icon(Icons.public),
+    );
+  }
+
+  List<Widget> securityAndPrivacySettings(BuildContext context) {
+    return [
+      BlocBuilder<PrivacySettingsBloc, PrivacySettingsData>(
+        builder: (context, state) {
+          return profileVisibilitySetting(context, state);
+        }
+      ),
+      blockedProfiles(context),
+      securitySelfie(context),
+    ];
+  }
+
+  List<Widget> dataSettings(BuildContext context) {
+    return [
+      Setting.createSetting(Icons.image_rounded, context.strings.content_management_screen_title, () {
+        openContentManagementScreen(context);
+      }).toListTile(),
+      Setting.createSetting(Icons.storage, context.strings.data_settings_screen_title, () {
+          MyNavigator.push(context, const MaterialPage<void>(child:
+            DataSettingsScreen()
+          ));
+        }
+      ).toListTile(),
+    ];
+  }
+
+  List<Widget> generalSettings(BuildContext context) {
+    return [
+      if (!kIsWeb) Setting.createSetting(Icons.notifications, context.strings.notification_settings_screen_title, () {
+          openNotificationSettings(context);
+        }
+      ).toListTile(),
+      Setting.createSetting(Icons.grid_view_rounded, context.strings.profile_grid_settings_screen_title, () {
+        openProfileGridSettingsScreen(context);
+      }).toListTile(),
+      Setting.createSetting(Icons.image, context.strings.image_quality_settings_screen_title, () {
+        MyNavigator.push(context, const MaterialPage<void>(child:
+          ImageSettingsScreen()
+        ));
+      }).toListTile(),
+    ];
   }
 }
 
