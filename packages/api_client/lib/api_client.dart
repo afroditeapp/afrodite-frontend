@@ -320,6 +320,10 @@ class ApiClient {
           return CustomReportsFileHash.fromJson(value);
         case 'CustomReportsOrderMode':
           return CustomReportsOrderModeTypeTransformer().decode(value);
+        case 'DailyLikesLeft':
+          return DailyLikesLeft.fromJson(value);
+        case 'DailyLikesLeftSyncVersion':
+          return DailyLikesLeftSyncVersion.fromJson(value);
         case 'DeleteLikeResult':
           return DeleteLikeResult.fromJson(value);
         case 'DemoModeConfirmLogin':
@@ -426,8 +430,14 @@ class ApiClient {
           return LatestBirthdate.fromJson(value);
         case 'LatestViewedMessageChanged':
           return LatestViewedMessageChanged.fromJson(value);
+        case 'LikeLimitsConfig':
+          return LikeLimitsConfig.fromJson(value);
+        case 'LikeSendingLimitConfig':
+          return LikeSendingLimitConfig.fromJson(value);
         case 'LimitedActionStatus':
           return LimitedActionStatusTypeTransformer().decode(value);
+        case 'LimitsConfig':
+          return LimitsConfig.fromJson(value);
         case 'Location':
           return Location.fromJson(value);
         case 'LoginResult':

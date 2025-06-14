@@ -14,30 +14,36 @@ class ClientFeaturesConfig {
   /// Returns a new [ClientFeaturesConfig] instance.
   ClientFeaturesConfig({
     required this.features,
+    required this.limits,
     required this.map,
   });
 
   FeaturesConfig features;
+
+  LimitsConfig limits;
 
   MapConfig map;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is ClientFeaturesConfig &&
     other.features == features &&
+    other.limits == limits &&
     other.map == map;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (features.hashCode) +
+    (limits.hashCode) +
     (map.hashCode);
 
   @override
-  String toString() => 'ClientFeaturesConfig[features=$features, map=$map]';
+  String toString() => 'ClientFeaturesConfig[features=$features, limits=$limits, map=$map]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'features'] = this.features;
+      json[r'limits'] = this.limits;
       json[r'map'] = this.map;
     return json;
   }
@@ -62,6 +68,7 @@ class ClientFeaturesConfig {
 
       return ClientFeaturesConfig(
         features: FeaturesConfig.fromJson(json[r'features'])!,
+        limits: LimitsConfig.fromJson(json[r'limits'])!,
         map: MapConfig.fromJson(json[r'map'])!,
       );
     }
@@ -111,6 +118,7 @@ class ClientFeaturesConfig {
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
     'features',
+    'limits',
     'map',
   };
 }

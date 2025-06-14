@@ -13,9 +13,12 @@ part of openapi.api;
 class SendLikeResult {
   /// Returns a new [SendLikeResult] instance.
   SendLikeResult({
+    this.dailyLikesLeft,
     this.errorAccountInteractionStateMismatch,
     this.status,
   });
+
+  DailyLikesLeft? dailyLikesLeft;
 
   CurrentAccountInteractionState? errorAccountInteractionStateMismatch;
 
@@ -23,20 +26,27 @@ class SendLikeResult {
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is SendLikeResult &&
+    other.dailyLikesLeft == dailyLikesLeft &&
     other.errorAccountInteractionStateMismatch == errorAccountInteractionStateMismatch &&
     other.status == status;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
+    (dailyLikesLeft == null ? 0 : dailyLikesLeft!.hashCode) +
     (errorAccountInteractionStateMismatch == null ? 0 : errorAccountInteractionStateMismatch!.hashCode) +
     (status == null ? 0 : status!.hashCode);
 
   @override
-  String toString() => 'SendLikeResult[errorAccountInteractionStateMismatch=$errorAccountInteractionStateMismatch, status=$status]';
+  String toString() => 'SendLikeResult[dailyLikesLeft=$dailyLikesLeft, errorAccountInteractionStateMismatch=$errorAccountInteractionStateMismatch, status=$status]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
+    if (this.dailyLikesLeft != null) {
+      json[r'daily_likes_left'] = this.dailyLikesLeft;
+    } else {
+      json[r'daily_likes_left'] = null;
+    }
     if (this.errorAccountInteractionStateMismatch != null) {
       json[r'error_account_interaction_state_mismatch'] = this.errorAccountInteractionStateMismatch;
     } else {
@@ -69,6 +79,7 @@ class SendLikeResult {
       }());
 
       return SendLikeResult(
+        dailyLikesLeft: DailyLikesLeft.fromJson(json[r'daily_likes_left']),
         errorAccountInteractionStateMismatch: CurrentAccountInteractionState.fromJson(json[r'error_account_interaction_state_mismatch']),
         status: LimitedActionStatus.fromJson(json[r'status']),
       );

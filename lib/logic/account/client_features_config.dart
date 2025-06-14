@@ -51,5 +51,11 @@ ClientFeaturesConfig _emptyClientFeaturesConfig() {
         min: 0,
       ),
     ),
+    limits: LimitsConfig(
+      likes: LikeLimitsConfig(
+        likeSending: null,
+        unlimitedLikesDisablingTime: null,
+      ),
+    )
   );
 }

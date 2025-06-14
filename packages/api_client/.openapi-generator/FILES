@@ -91,6 +91,8 @@ lib/model/custom_report_type.dart
 lib/model/custom_reports_config.dart
 lib/model/custom_reports_file_hash.dart
 lib/model/custom_reports_order_mode.dart
+lib/model/daily_likes_left.dart
+lib/model/daily_likes_left_sync_version.dart
 lib/model/delete_like_result.dart
 lib/model/demo_mode_confirm_login.dart
 lib/model/demo_mode_confirm_login_result.dart
@@ -144,7 +146,10 @@ lib/model/language.dart
 lib/model/last_seen_time_filter.dart
 lib/model/latest_birthdate.dart
 lib/model/latest_viewed_message_changed.dart
+lib/model/like_limits_config.dart
+lib/model/like_sending_limit_config.dart
 lib/model/limited_action_status.dart
+lib/model/limits_config.dart
 lib/model/location.dart
 lib/model/login_result.dart
 lib/model/maintenance_task.dart

@@ -110,6 +110,7 @@ Class | Method | HTTP request | Description
 *AccountBotApi* | [**postRemoteBotLogin**](doc//AccountBotApi.md#postremotebotlogin) | **POST** /account_api/remote_bot_login | Login for remote bots which are listed in server config file.
 *ChatApi* | [**deleteLike**](doc//ChatApi.md#deletelike) | **DELETE** /chat_api/delete_like | Delete sent like.
 *ChatApi* | [**getChatAppNotificationSettings**](doc//ChatApi.md#getchatappnotificationsettings) | **GET** /chat_api/get_chat_app_notification_settings | 
+*ChatApi* | [**getDailyLikesLeft**](doc//ChatApi.md#getdailylikesleft) | **GET** /chat_api/daily_likes_left | Get daily likes left value.
 *ChatApi* | [**getLatestPublicKeyId**](doc//ChatApi.md#getlatestpublickeyid) | **GET** /chat_api/latest_public_key_id/{aid} | Get latest public key ID for some account
 *ChatApi* | [**getMatches**](doc//ChatApi.md#getmatches) | **GET** /chat_api/matches | Get matches
 *ChatApi* | [**getMessageNumberOfLatestViewedMessage**](doc//ChatApi.md#getmessagenumberoflatestviewedmessage) | **GET** /chat_api/message_number_of_latest_viewed_message | Get message number of the most recent message that the recipient has viewed.
@@ -303,6 +304,8 @@ Class | Method | HTTP request | Description
  - [CustomReportsConfig](doc//CustomReportsConfig.md)
  - [CustomReportsFileHash](doc//CustomReportsFileHash.md)
  - [CustomReportsOrderMode](doc//CustomReportsOrderMode.md)
+ - [DailyLikesLeft](doc//DailyLikesLeft.md)
+ - [DailyLikesLeftSyncVersion](doc//DailyLikesLeftSyncVersion.md)
  - [DeleteLikeResult](doc//DeleteLikeResult.md)
  - [DemoModeConfirmLogin](doc//DemoModeConfirmLogin.md)
  - [DemoModeConfirmLoginResult](doc//DemoModeConfirmLoginResult.md)
@@ -356,7 +359,10 @@ Class | Method | HTTP request | Description
  - [LastSeenTimeFilter](doc//LastSeenTimeFilter.md)
  - [LatestBirthdate](doc//LatestBirthdate.md)
  - [LatestViewedMessageChanged](doc//LatestViewedMessageChanged.md)
+ - [LikeLimitsConfig](doc//LikeLimitsConfig.md)
+ - [LikeSendingLimitConfig](doc//LikeSendingLimitConfig.md)
  - [LimitedActionStatus](doc//LimitedActionStatus.md)
+ - [LimitsConfig](doc//LimitsConfig.md)
  - [Location](doc//Location.md)
  - [LoginResult](doc//LoginResult.md)
  - [MaintenanceTask](doc//MaintenanceTask.md)

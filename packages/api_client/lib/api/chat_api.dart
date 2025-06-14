@@ -113,6 +113,50 @@ class ChatApi {
     return null;
   }
 
+  /// Get daily likes left value.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  Future<Response> getDailyLikesLeftWithHttpInfo() async {
+    // ignore: prefer_const_declarations
+    final path = r'/chat_api/daily_likes_left';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Get daily likes left value.
+  Future<DailyLikesLeft?> getDailyLikesLeft() async {
+    final response = await getDailyLikesLeftWithHttpInfo();
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'DailyLikesLeft',) as DailyLikesLeft;
+    
+    }
+    return null;
+  }
+
   /// Get latest public key ID for some account
   ///
   /// Note: This method returns the HTTP [Response].
@@ -1267,6 +1311,8 @@ class ChatApi {
 
   /// Send a like to some account. If both will like each other, then the accounts will be a match.
   ///
+  /// This route might update [model_chat::DailyLikesLeft] and WebSocket event about the update is not sent because this route returns the new value.
+  ///
   /// Note: This method returns the HTTP [Response].
   ///
   /// Parameters:
@@ -1298,6 +1344,8 @@ class ChatApi {
   }
 
   /// Send a like to some account. If both will like each other, then the accounts will be a match.
+  ///
+  /// This route might update [model_chat::DailyLikesLeft] and WebSocket event about the update is not sent because this route returns the new value.
   ///
   /// Parameters:
   ///
