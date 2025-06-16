@@ -63,21 +63,29 @@ class _ImageSettingsScreenState extends State<ImageSettingsScreen> {
   }
 
   Widget content(BuildContext context) {
+    final selectedImageQualityValueInt = fullImgSize ?
+      ImageCacheSizeSetting.maxQuality.getImgSize().maxSize :
+        downscalingSize;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         maxImageQualityCheckbox(context),
         const Padding(padding: EdgeInsets.all(4)),
-        hPad(Text(
-          context.strings.image_quality_settings_screen_image_quality_setting,
-          style: fullImgSize ? TextStyle(color: Theme.of(context).disabledColor) : null,
+        hPad(TitleWithValue(
+          title: context.strings.image_quality_settings_screen_image_quality_setting,
+          isEnabled: !fullImgSize,
+          value: context.strings.image_quality_settings_screen_image_quality_pixel_value(selectedImageQualityValueInt.toString()),
         )),
         const Padding(padding: EdgeInsets.all(8)),
         downscalingSizeDropdown(context),
         const Padding(padding: EdgeInsets.all(4)),
         ...imageQualitySlider(context),
         const Padding(padding: EdgeInsets.all(8)),
-        hPad(Text(context.strings.image_quality_settings_screen_image_cache_max_size)),
+        hPad(TitleWithValue(
+          title: context.strings.image_quality_settings_screen_image_cache_max_size,
+          value: '${cacheMibibytesValue()} MiB',
+        )),
         const Padding(padding: EdgeInsets.all(4)),
         ...imageCacheMaxSizeSlider(context),
         const Padding(padding: EdgeInsets.all(4)),
@@ -171,13 +179,6 @@ class _ImageSettingsScreenState extends State<ImageSettingsScreen> {
         value: selectedValueInt.toDouble(),
         onChanged: onChanged,
       ),
-      Align(
-        alignment: Alignment.centerRight,
-        child: hPad(Text(
-          context.strings.image_quality_settings_screen_image_quality_pixel_value(selectedValueInt.toString()),
-          style: fullImgSize ? TextStyle(color: Theme.of(context).disabledColor) : null,
-        )),
-      )
     ];
   }
 
@@ -193,10 +194,6 @@ class _ImageSettingsScreenState extends State<ImageSettingsScreen> {
           });
         },
       ),
-      Align(
-        alignment: Alignment.centerRight,
-        child: hPad(Text('${cacheMibibytesValue()} MiB')),
-      )
     ];
   }
 
@@ -220,6 +217,26 @@ class _ImageSettingsScreenState extends State<ImageSettingsScreen> {
           });
         }
       },
+    );
+  }
+}
+
+class TitleWithValue extends StatelessWidget {
+  final String title;
+  final String? value;
+  final bool isEnabled;
+  const TitleWithValue({required this.title, this.value, this.isEnabled = true, super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final textStyle = isEnabled ? null : TextStyle(color: Theme.of(context).disabledColor);
+    final currentValue = value;
+    return Row(
+      children: [
+        Text(title, style: textStyle),
+        if (currentValue != null) const Spacer(),
+        if (currentValue != null) Text(currentValue, style: textStyle),
+      ],
     );
   }
 }
