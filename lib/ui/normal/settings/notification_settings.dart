@@ -123,16 +123,16 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
     if (state.areNotificationsEnabled) {
       final settings = [
         [
-          messagesSlider(context, state),
-          likesSlider(context, state),
+          messages(context, state),
+          likes(context, state),
         ],
         [
-          mediaContentModerationCompletedSlider(context, state),
-          profileTextModerationCompletedSlider(context, state),
+          mediaContentModerationCompleted(context, state),
+          profileTextModerationCompleted(context, state),
         ],
         [
-          if (features.features.news) newsSlider(context, state),
-          automaticProfileSearchSlider(context, state),
+          if (features.features.news) news(context, state),
+          automaticProfileSearch(context, state),
         ]
       ];
       for (final group in settings) {
@@ -180,7 +180,7 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
     );
   }
 
-  (NotificationCategory, Widget) messagesSlider(BuildContext context, NotificationSettingsData state) {
+  (NotificationCategory, Widget) messages(BuildContext context, NotificationSettingsData state) {
     const category = NotificationCategoryMessages();
     final widget = categorySwitch(
       title: category.title,
@@ -193,7 +193,7 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
     return (category, widget);
   }
 
-  (NotificationCategory, Widget) likesSlider(BuildContext context, NotificationSettingsData state) {
+  (NotificationCategory, Widget) likes(BuildContext context, NotificationSettingsData state) {
     const category = NotificationCategoryLikes();
     final widget = categorySwitch(
       title: category.title,
@@ -206,7 +206,7 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
     return (category, widget);
   }
 
-  (NotificationCategory, Widget) mediaContentModerationCompletedSlider(BuildContext context, NotificationSettingsData state) {
+  (NotificationCategory, Widget) mediaContentModerationCompleted(BuildContext context, NotificationSettingsData state) {
     const category = NotificationCategoryMediaContentModerationCompleted();
     final widget = categorySwitch(
       title: category.title,
@@ -219,7 +219,7 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
     return (category, widget);
   }
 
-  (NotificationCategory, Widget) profileTextModerationCompletedSlider(BuildContext context, NotificationSettingsData state) {
+  (NotificationCategory, Widget) profileTextModerationCompleted(BuildContext context, NotificationSettingsData state) {
     const category = NotificationCategoryProfileTextModerationCompleted();
     final widget = categorySwitch(
       title: category.title,
@@ -232,7 +232,7 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
     return (category, widget);
   }
 
-  (NotificationCategory, Widget) newsSlider(BuildContext context, NotificationSettingsData state) {
+  (NotificationCategory, Widget) news(BuildContext context, NotificationSettingsData state) {
     const category = NotificationCategoryNewsItemAvailable();
     final widget = categorySwitch(
       title: category.title,
@@ -245,7 +245,7 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
     return (category, widget);
   }
 
-  (NotificationCategory, Widget) automaticProfileSearchSlider(BuildContext context, NotificationSettingsData state) {
+  (NotificationCategory, Widget) automaticProfileSearch(BuildContext context, NotificationSettingsData state) {
     const category = NotificationCategoryAutomaticProfileSearch();
     final widget = categorySwitch(
       title: category.title,
