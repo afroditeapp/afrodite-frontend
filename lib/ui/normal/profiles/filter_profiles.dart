@@ -151,10 +151,6 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
           profileTextFilter(context),
           const Divider(),
           unlimitedLikesSetting(context),
-          const Padding(
-            padding: EdgeInsets.only(top: FLOATING_ACTION_BUTTON_EMPTY_AREA),
-            child: null,
-          ),
         ],
       ),
     );
