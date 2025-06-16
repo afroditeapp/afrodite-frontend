@@ -1,5 +1,4 @@
 
-import "package:app/utils/list.dart";
 import "package:flutter/material.dart";
 import "package:latlong2/latlong.dart";
 import "package:openapi/api.dart";
@@ -28,7 +27,6 @@ class InitialSetupData with _$InitialSetupData {
     int? searchAgeRangeMax,
     LatLng? profileLocation,
     @Default(ProfileAttributesState([])) ProfileAttributesState profileAttributes,
-    bool? unlimitedLikes,
     @Default(false) bool sendingInProgress,
   }) = _InitialSetupData;
 }

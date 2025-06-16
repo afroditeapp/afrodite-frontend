@@ -1,4 +1,3 @@
-import "package:app/ui/initial_setup/unlimited_likes.dart";
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:latlong2/latlong.dart";
@@ -28,7 +27,7 @@ class AskLocationScreen extends StatelessWidget {
               final attributes = context.read<ProfileAttributesBloc>().state.manager?.requiredAttributes() ?? [];
               final nextAttribute = attributes.firstOrNull;
               if (nextAttribute == null) {
-                MyNavigator.push(context, const MaterialPage<void>(child: AskUnlimitedLikesScreen()));
+                context.read<InitialSetupBloc>().add(CompleteInitialSetup());
               } else {
                 MyNavigator.push(
                   context,

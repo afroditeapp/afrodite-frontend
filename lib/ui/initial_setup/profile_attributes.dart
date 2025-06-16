@@ -1,5 +1,4 @@
 import "package:app/logic/app/navigator_state.dart";
-import "package:app/ui/initial_setup/unlimited_likes.dart";
 import "package:app/ui_utils/attribute/attribute.dart";
 import "package:app/ui_utils/attribute/state.dart";
 import "package:app/ui_utils/attribute/widgets/select_value.dart";
@@ -36,7 +35,7 @@ class AskProfileAttributesScreen extends StatelessWidget {
               final nextAttributeIndex = attributeIndex + 1;
               final nextAttribute = attributes.getAtOrNull(nextAttributeIndex);
               if (nextAttribute == null) {
-                MyNavigator.push(context, const MaterialPage<void>(child: AskUnlimitedLikesScreen()));
+                context.read<InitialSetupBloc>().add(CompleteInitialSetup());
               } else {
                 MyNavigator.push(
                   context,

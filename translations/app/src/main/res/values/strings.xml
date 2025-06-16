@@ -205,11 +205,6 @@
     <string name="initial_setup_screen_search_settings_max_age_subtitle" description="Subtitle for max age search setting">…with max age…</string>
     <string name="initial_setup_screen_location_title" description="Title for initial setup location screen">My profile\'s location is…</string>
     <string name="initial_setup_screen_location_help_dialog_text" description="Text for initial setup location help dialog">Select a location for your profile by tapping or long pressing the map.</string>
-    <string name="initial_setup_screen_unlimited_likes_title" description="Title for initial setup unlimited likes question">Unlimited chat requests</string>
-    <string name="initial_setup_screen_unlimited_likes_description_part_1" description="Description part 1 for initial setup unlimited likes question">Looking a date for tonight? Enable unlimited chat requests and send unlimited amount of chat requests to those with the same setting enabled.</string>
-    <string name="initial_setup_screen_unlimited_likes_description_part_2" description="Description part 2 for initial setup unlimited likes question">The symbol on right will be visible on your profile only for those with the same setting enabled.</string>
-    <string name="initial_setup_screen_unlimited_likes_enabled" description="Title text for initial setup unlimited likes enabled option">Yes</string>
-    <string name="initial_setup_screen_unlimited_likes_disabled" description="Title text for initial setup unlimited likes disabled option">No, maybe later (1 chat request per day)</string>
 
     <!-- Notification permission -->
     <string name="notification_permission_dialog_title" description="Title for notification permission dialog">Allow notifications?</string>

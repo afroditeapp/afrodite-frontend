@@ -859,26 +859,6 @@
   "@initial_setup_screen_skip_dialog_title": {
     "description": "Title for skip initial setup confirm dialog"
   },
-  "initial_setup_screen_unlimited_likes_description_part_1": "Looking a date for tonight? Enable unlimited chat requests and send unlimited amount of chat requests to those with the same setting enabled.",
-  "@initial_setup_screen_unlimited_likes_description_part_1": {
-    "description": "Description part 1 for initial setup unlimited likes question"
-  },
-  "initial_setup_screen_unlimited_likes_description_part_2": "The symbol on right will be visible on your profile only for those with the same setting enabled.",
-  "@initial_setup_screen_unlimited_likes_description_part_2": {
-    "description": "Description part 2 for initial setup unlimited likes question"
-  },
-  "initial_setup_screen_unlimited_likes_disabled": "No, maybe later (1 chat request per day)",
-  "@initial_setup_screen_unlimited_likes_disabled": {
-    "description": "Title text for initial setup unlimited likes disabled option"
-  },
-  "initial_setup_screen_unlimited_likes_enabled": "Yes",
-  "@initial_setup_screen_unlimited_likes_enabled": {
-    "description": "Title text for initial setup unlimited likes enabled option"
-  },
-  "initial_setup_screen_unlimited_likes_title": "Unlimited chat requests",
-  "@initial_setup_screen_unlimited_likes_title": {
-    "description": "Title for initial setup unlimited likes question"
-  },
   "likes_screen_like_loading_failed": "Chat request loading failed",
   "@likes_screen_like_loading_failed": {
     "description": "Text displayed when like loading fails"

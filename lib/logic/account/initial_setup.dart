@@ -90,10 +90,6 @@ class UpdateAttributeValue extends InitialSetupEvent {
   final ProfileAttributeValueUpdate update;
   UpdateAttributeValue(this.update);
 }
-class SetUnlimitedLikes extends InitialSetupEvent {
-  final bool value;
-  SetUnlimitedLikes(this.value);
-}
 class CompleteInitialSetup extends InitialSetupEvent {}
 class ResetState extends InitialSetupEvent {}
 class CreateDebugAdminAccount extends InitialSetupEvent {}
@@ -179,11 +175,6 @@ class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData> with Ac
     on<UpdateAttributeValue>((data, emit) async {
       emit(state.copyWith(
         profileAttributes: state.profileAttributes.addOrReplace(data.update),
-      ));
-    });
-    on<SetUnlimitedLikes>((data, emit) async {
-      emit(state.copyWith(
-        unlimitedLikes: data.value,
       ));
     });
     on<CompleteInitialSetup>((data, emit) async {

@@ -144,13 +144,6 @@ class InitialSetupUtils {
     }
 
     {
-      final unlimitedLikes = data.unlimitedLikes;
-      if (unlimitedLikes == null) return errAndLog("Unlimited likes is null");
-      final r = await _api.accountAction((api) => api.putSettingUnlimitedLikes(BooleanSetting(value: unlimitedLikes)));
-      if (r.isErr()) return errAndLog("Setting unlimited likes setting failed");
-    }
-
-    {
       final age = data.profileAge;
       if (age == null) return errAndLog("Age is null");
       final name = data.profileName;
