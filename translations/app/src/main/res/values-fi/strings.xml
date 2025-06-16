@@ -6,8 +6,8 @@
     <string name="generic_ok">OK</string>
     <string name="login_screen_login_button">Kirjaudu</string>
     <string name="login_screen_register_button">Rekisteröidy</string>
-    <string name="likes_screen_title">Tykkäykset</string>
-    <string name="chat_list_screen_title">Keskustelut</string>
+    <string name="likes_screen_title">Pyynnöt</string>
+    <string name="chat_list_screen_title">Chatit</string>
     <string name="settings_screen_title">Asetukset</string>
     <string name="view_image_screen_title">Kuva</string>
     <string name="app_slogan">Deittisovellus</string>
