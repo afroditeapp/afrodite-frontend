@@ -1,6 +1,7 @@
 
 import 'package:app/logic/profile/profile_filtering_settings.dart';
 import 'package:app/model/freezed/logic/profile/profile_filtering_settings.dart';
+import 'package:app/ui/normal/settings/general/image_settings.dart';
 import 'package:app/ui_utils/common_update_logic.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/padding.dart';
@@ -120,7 +121,7 @@ class _ProfileGridSettingsScreenState extends State<ProfileGridSettingsScreen> {
   ) {
     final value = getValue();
     return [
-      hPad(Text(title)),
+      hPad(TitleWithValue(title: title, value: value.toInt().toString())),
       Slider(
         min: 1,
         max: 4,
@@ -128,12 +129,6 @@ class _ProfileGridSettingsScreenState extends State<ProfileGridSettingsScreen> {
         value: value.toDouble(),
         onChanged: (v) => onChanged(v.toInt()),
       ),
-      Align(
-        alignment: Alignment.centerRight,
-        child: hPad(Text(
-          value.toInt().toString(),
-        )),
-      )
     ];
   }
 
@@ -145,7 +140,7 @@ class _ProfileGridSettingsScreenState extends State<ProfileGridSettingsScreen> {
   ) {
     final value = getValue();
     return [
-      hPad(Text(title)),
+      hPad(TitleWithValue(title: title, value: value.toString())),
       Slider(
         min: 0,
         max: 20,
@@ -153,12 +148,6 @@ class _ProfileGridSettingsScreenState extends State<ProfileGridSettingsScreen> {
         value: value,
         onChanged: onChanged,
       ),
-      Align(
-        alignment: Alignment.centerRight,
-        child: hPad(Text(
-          value.toString(),
-        )),
-      )
     ];
   }
 
