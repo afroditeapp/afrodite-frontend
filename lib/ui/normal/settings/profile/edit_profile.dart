@@ -2,6 +2,7 @@
 
 import 'package:app/ui/normal/settings/profile/edit_profile_text.dart';
 import 'package:app/ui_utils/attribute/attribute.dart';
+import 'package:app/ui_utils/consts/icons.dart';
 import 'package:app/utils/list.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
@@ -257,7 +258,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
           Text(context.strings.edit_profile_screen_unlimited_likes_description_disabled),
         isThreeLine: true,
         secondary: Icon(
-          Icons.all_inclusive,
+          UNLIMITED_LIKES_ICON,
           color: getUnlimitedLikesColor(context),
         ),
         value: myProfileData.unlimitedLikes,

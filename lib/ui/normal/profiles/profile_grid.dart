@@ -5,6 +5,7 @@ import 'package:app/logic/settings/ui_settings.dart';
 import 'package:app/model/freezed/logic/profile/view_profiles.dart';
 import 'package:app/model/freezed/logic/settings/ui_settings.dart';
 import 'package:app/ui_utils/consts/colors.dart';
+import 'package:app/ui_utils/consts/icons.dart';
 import 'package:app/ui_utils/extensions/other.dart';
 import 'package:app/ui_utils/profile_grid.dart';
 import 'package:app/ui_utils/profile_thumbnail_image_or_error.dart';
@@ -408,7 +409,7 @@ Widget _thumbnailStatusIndicatorsBottom(
           Padding(
             padding: const EdgeInsets.only(right: 8.0),
             child: Icon(
-              Icons.all_inclusive,
+              UNLIMITED_LIKES_ICON,
               color: getUnlimitedLikesColor(context),
             ),
           ) :

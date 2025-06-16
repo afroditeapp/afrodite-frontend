@@ -2,6 +2,7 @@
 
 
 import 'package:app/ui_utils/consts/colors.dart';
+import 'package:app/ui_utils/consts/icons.dart';
 import 'package:app/ui_utils/extensions/api.dart';
 import 'package:app/ui_utils/attribute/attribute.dart';
 import 'package:app/ui_utils/attribute/state.dart';
@@ -104,7 +105,7 @@ class _ViewProfileEntryState extends State<ViewProfileEntry> {
             Padding(
               padding: const EdgeInsets.only(left: 8.0),
               child: Icon(
-                Icons.all_inclusive,
+                UNLIMITED_LIKES_ICON,
                 color: getUnlimitedLikesColor(context),
               ),
             ),

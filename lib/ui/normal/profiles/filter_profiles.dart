@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:app/ui_utils/attribute/attribute.dart';
 import 'package:app/ui_utils/consts/colors.dart';
 import 'package:app/ui_utils/consts/corners.dart';
+import 'package:app/ui_utils/consts/icons.dart';
 import 'package:app/ui_utils/consts/size.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/snack_bar.dart';
@@ -542,7 +543,7 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
             Text(context.strings.profile_filtering_settings_screen_unlimited_likes_filter_not_available) :
             null,
           secondary: Icon(
-            Icons.all_inclusive,
+            UNLIMITED_LIKES_ICON,
             color: getUnlimitedLikesColor(context),
           ),
           value: state.valueUnlimitedLikesFilter() ?? false,
