@@ -1,6 +1,5 @@
 import "dart:async";
 
-import "package:app/utils/api.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:openapi/api.dart";
 import "package:app/data/account_repository.dart";
@@ -76,37 +75,6 @@ class MyProfileBloc extends Bloc<MyProfileEvent, MyProfileData> with ActionRunne
         emit(state.copyWith(
           updateState: const UpdateInProgress(),
         ));
-
-        // When unlimited likes is disabled, the unlimited likes
-        // filter must be also disabled.
-        final filters = await db.accountStreamSingle((db) => db.daoProfileSettings.watchProfileFilteringSettings()).ok();
-        if (filters != null) {
-          if (
-            state.profile?.unlimitedLikes == true &&
-            data.unlimitedLikes == false &&
-            filters.unlimitedLikesFilter != null
-          ) {
-            if (
-              await profile.updateProfileFilteringSettings(
-                filters.currentFiltersCopy(),
-                filters.lastSeenTimeFilter,
-                null,
-                filters.minDistanceKmFilter,
-                filters.maxDistanceKmFilter,
-                filters.profileCreatedFilter,
-                filters.profileEditedFilter,
-                filters.profileTextMinCharactersFilter,
-                filters.profileTextMaxCharactersFilter,
-                filters.randomProfileOrder,
-              ).isErr()
-            ) {
-              failureDetected = true;
-            }
-            await profile.resetMainProfileIterator();
-          }
-        } else {
-          failureDetected = true;
-        }
 
         // Do this first as updateProfile reloads the profile
         if (!await account.updateUnlimitedLikesWithoutReloadingProfile(data.unlimitedLikes)) {

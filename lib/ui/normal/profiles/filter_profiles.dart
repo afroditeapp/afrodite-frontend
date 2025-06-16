@@ -16,11 +16,9 @@ import 'package:openapi/api.dart';
 import 'package:app/localizations.dart';
 import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/logic/profile/attributes.dart';
-import 'package:app/logic/profile/my_profile.dart';
 import 'package:app/logic/profile/profile_filtering_settings.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/model/freezed/logic/profile/attributes.dart';
-import 'package:app/model/freezed/logic/profile/my_profile.dart';
 import 'package:app/model/freezed/logic/profile/profile_filtering_settings.dart';
 import 'package:app/ui/normal/profiles/edit_profile_attribute_filter.dart';
 import 'package:app/ui/normal/settings/profile/edit_profile.dart';
@@ -67,41 +65,37 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MyProfileBloc, MyProfileData>(
-      builder: (context, myProfileState) {
-        return PopScope(
-          canPop: true,
-          onPopInvokedWithResult: (didPop, _) {
-            if (didPop) {
-              if (widget.profileFilteringSettingsBloc.state.unsavedChanges()) {
-                widget.profileFilteringSettingsBloc.add(SaveNewFilterSettings());
+    return PopScope(
+      canPop: true,
+      onPopInvokedWithResult: (didPop, _) {
+        if (didPop) {
+          if (widget.profileFilteringSettingsBloc.state.unsavedChanges()) {
+            widget.profileFilteringSettingsBloc.add(SaveNewFilterSettings());
+          }
+          return;
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(context.strings.profile_filtering_settings_screen_title),
+          actions: [
+            BlocBuilder<ProfileFilteringSettingsBloc, ProfileFilteringSettingsData>(
+              builder: (context, state) {
+                if (state.isSomeFilterEnabled()) {
+                  return IconButton(
+                    onPressed: () => openConfirmDisableAllDialog(context),
+                    tooltip: context.strings.profile_filtering_settings_screen_disable_filters_action,
+                    icon: const Icon(Icons.filter_alt_off),
+                  );
+                } else {
+                  return const SizedBox.shrink();
+                }
               }
-              return;
-            }
-          },
-          child: Scaffold(
-            appBar: AppBar(
-              title: Text(context.strings.profile_filtering_settings_screen_title),
-              actions: [
-                BlocBuilder<ProfileFilteringSettingsBloc, ProfileFilteringSettingsData>(
-                  builder: (context, state) {
-                    if (state.isSomeFilterEnabled()) {
-                      return IconButton(
-                        onPressed: () => openConfirmDisableAllDialog(context),
-                        tooltip: context.strings.profile_filtering_settings_screen_disable_filters_action,
-                        icon: const Icon(Icons.filter_alt_off),
-                      );
-                    } else {
-                      return const SizedBox.shrink();
-                    }
-                  }
-                ),
-              ],
             ),
-            body: filteringSettingsWidget(context, myProfileState.profile?.unlimitedLikes ?? false),
-          ),
-        );
-      }
+          ],
+        ),
+        body: filteringSettingsWidget(context),
+      ),
     );
   }
 
@@ -116,7 +110,7 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
     }
   }
 
-  Widget filteringSettingsWidget(BuildContext context, bool myProfileUnlimitedLikesValue) {
+  Widget filteringSettingsWidget(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
         children: <Widget>[
@@ -156,7 +150,7 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
           const Divider(),
           profileTextFilter(context),
           const Divider(),
-          unlimitedLikesSetting(context, myProfileUnlimitedLikesValue),
+          unlimitedLikesSetting(context),
           const Padding(
             padding: EdgeInsets.only(top: FLOATING_ACTION_BUTTON_EMPTY_AREA),
             child: null,
@@ -534,23 +528,20 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
     );
   }
 
-  Widget unlimitedLikesSetting(BuildContext context, bool myProfileUnlimitedLikesValue) {
+  Widget unlimitedLikesSetting(BuildContext context) {
     return BlocBuilder<ProfileFilteringSettingsBloc, ProfileFilteringSettingsData>(
       builder: (context, state) {
         return SwitchListTile(
           title: Text(context.strings.profile_filtering_settings_screen_unlimited_likes_filter),
-          subtitle: !myProfileUnlimitedLikesValue ?
-            Text(context.strings.profile_filtering_settings_screen_unlimited_likes_filter_not_available) :
-            null,
           secondary: Icon(
             UNLIMITED_LIKES_ICON,
             color: getUnlimitedLikesColor(context),
           ),
           value: state.valueUnlimitedLikesFilter() ?? false,
-          onChanged: myProfileUnlimitedLikesValue == true ? (bool value) {
+          onChanged: (bool value) {
             final filterValue = value ? true : null;
             context.read<ProfileFilteringSettingsBloc>().add(SetUnlimitedLikesFilter(filterValue));
-          } : null,
+          },
         );
       }
     );
