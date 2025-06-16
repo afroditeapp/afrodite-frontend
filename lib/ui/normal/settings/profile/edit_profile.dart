@@ -409,7 +409,8 @@ class ViewAttributeTitle extends StatelessWidget {
   final bool isEnabled;
   final IconData? icon;
   final Widget Function(Color? disabledColor)? iconWidgetBuilder;
-  const ViewAttributeTitle(this.text, {this.isEnabled = true, this.icon, this.iconWidgetBuilder, super.key});
+  final String? valueText;
+  const ViewAttributeTitle(this.text, {this.isEnabled = true, this.icon, this.iconWidgetBuilder, this.valueText, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -423,12 +424,12 @@ class ViewAttributeTitle extends StatelessWidget {
       titleStyle = Theme.of(context).textTheme.bodyLarge?.copyWith(color: disabledColor);
     }
     final currentIconWidgetBuilder = iconWidgetBuilder;
+    final currentValueText = valueText;
     return Align(
       alignment: Alignment.centerLeft,
       child: Padding(
-        padding: const EdgeInsets.only(left: COMMON_SCREEN_EDGE_PADDING),
+        padding: const EdgeInsets.symmetric(horizontal: COMMON_SCREEN_EDGE_PADDING),
         child: Row(
-          mainAxisSize: MainAxisSize.min,
           children: [
             if (icon != null) Padding(
               padding: const EdgeInsets.only(right: 8.0),
@@ -439,6 +440,8 @@ class ViewAttributeTitle extends StatelessWidget {
               child: currentIconWidgetBuilder(disabledColor),
             ),
             Text(text, style: titleStyle),
+            if (currentValueText != null) const Spacer(),
+            if (currentValueText != null) Text(currentValueText),
           ],
         ),
       ),

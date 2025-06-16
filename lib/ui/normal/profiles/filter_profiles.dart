@@ -23,7 +23,6 @@ import 'package:app/model/freezed/logic/profile/profile_filtering_settings.dart'
 import 'package:app/ui/normal/profiles/edit_profile_attribute_filter.dart';
 import 'package:app/ui/normal/settings/profile/edit_profile.dart';
 import 'package:app/ui_utils/common_update_logic.dart';
-import 'package:app/ui_utils/consts/padding.dart';
 
 void openProfileFilteringSettings(BuildContext context) {
   final filteringSettingsBloc = context.read<ProfileFilteringSettingsBloc>();
@@ -229,6 +228,7 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
                   borderRadius: BorderRadius.circular(PROFILE_CURRENTLY_ONLINE_RADIUS),
                 ),
               ),
+              valueText: stateText,
             ),
             const Padding(padding: EdgeInsets.all(4)),
             Slider(
@@ -249,15 +249,6 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
                 context.read<ProfileFilteringSettingsBloc>().add(SetLastSeenTimeFilter(seconds));
               },
             ),
-            Align(
-              alignment: Alignment.centerRight,
-              child: Padding(
-                padding: const EdgeInsets.only(right: COMMON_SCREEN_EDGE_PADDING),
-                child: Text(
-                  stateText,
-                ),
-              ),
-            )
           ],
         );
       }
@@ -333,6 +324,7 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
             ViewAttributeTitle(
               title,
               icon: icon,
+              valueText: stateText,
             ),
             const Padding(padding: EdgeInsets.all(4)),
             Slider(
@@ -351,15 +343,6 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
                 valueSetter(context.read<ProfileFilteringSettingsBloc>(), seconds);
               },
             ),
-            Align(
-              alignment: Alignment.centerRight,
-              child: Padding(
-                padding: const EdgeInsets.only(right: COMMON_SCREEN_EDGE_PADDING),
-                child: Text(
-                  stateText,
-                ),
-              ),
-            )
           ],
         );
       }
@@ -403,6 +386,7 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
             ViewAttributeTitle(
               context.strings.profile_filtering_settings_screen_distance_filter,
               icon: Icons.social_distance_rounded,
+              valueText: stateText,
             ),
             const Padding(padding: EdgeInsets.all(4)),
             RangeSlider(
@@ -429,15 +413,6 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
                 context.read<ProfileFilteringSettingsBloc>().add(SetDistanceFilter(minDistance, maxDistance));
               },
             ),
-            Align(
-              alignment: Alignment.centerRight,
-              child: Padding(
-                padding: const EdgeInsets.only(right: COMMON_SCREEN_EDGE_PADDING),
-                child: Text(
-                  stateText,
-                ),
-              ),
-            )
           ],
         );
       }
@@ -493,6 +468,7 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
             ViewAttributeTitle(
               context.strings.profile_filtering_settings_screen_profile_text_filter,
               icon: Icons.notes,
+              valueText: stateText,
             ),
             const Padding(padding: EdgeInsets.all(4)),
             RangeSlider(
@@ -509,15 +485,6 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
                 ));
               },
             ),
-            Align(
-              alignment: Alignment.centerRight,
-              child: Padding(
-                padding: const EdgeInsets.only(right: COMMON_SCREEN_EDGE_PADDING),
-                child: Text(
-                  stateText,
-                ),
-              ),
-            )
           ],
         );
       }
