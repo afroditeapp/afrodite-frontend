@@ -581,32 +581,31 @@ class _EditProfileTextState extends State<EditProfileText> {
     final r = Row(
       children: [
         Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Padding(padding: EdgeInsets.all(4)),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: COMMON_SCREEN_EDGE_PADDING),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Icon(Icons.notes),
-                    const Padding(padding: EdgeInsets.all(4)),
-                    Text(
-                      context.strings.edit_profile_screen_profile_text,
-                      style: Theme.of(context).textTheme.bodyLarge,
-                    ),
-                  ],
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: COMMON_SCREEN_EDGE_PADDING),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Icon(Icons.notes),
+                      const Padding(padding: EdgeInsets.all(4)),
+                      Text(
+                        context.strings.edit_profile_screen_profile_text,
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              if (displayedText != null) Row(
-                children: [
-                  const SizedBox(height: 44),
-                  const Padding(padding: EdgeInsets.only(right: 16)),
-                  Expanded(child: Text(displayedText)),
-                ],
-              ),
-            ],
+                if (displayedText != null) Padding(
+                  padding: const EdgeInsets.only(left: 16, top: 8),
+                  child: Text(displayedText),
+                ),
+              ],
+            ),
           ),
         ),
         Padding(
