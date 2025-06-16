@@ -7854,6 +7854,252 @@ class UiSettingsCompanion extends UpdateCompanion<UiSetting> {
   }
 }
 
+class $LimitsTable extends Limits with TableInfo<$LimitsTable, Limit> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $LimitsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _dailyLikesLeftMeta =
+      const VerificationMeta('dailyLikesLeft');
+  @override
+  late final GeneratedColumn<int> dailyLikesLeft = GeneratedColumn<int>(
+      'daily_likes_left', aliasedName, true,
+      type: DriftSqlType.int, requiredDuringInsert: false);
+  static const VerificationMeta _dailyLikesLeftSyncVersionMeta =
+      const VerificationMeta('dailyLikesLeftSyncVersion');
+  @override
+  late final GeneratedColumn<int> dailyLikesLeftSyncVersion =
+      GeneratedColumn<int>('daily_likes_left_sync_version', aliasedName, true,
+          type: DriftSqlType.int, requiredDuringInsert: false);
+  @override
+  List<GeneratedColumn> get $columns =>
+      [id, dailyLikesLeft, dailyLikesLeftSyncVersion];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'limits';
+  @override
+  VerificationContext validateIntegrity(Insertable<Limit> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('daily_likes_left')) {
+      context.handle(
+          _dailyLikesLeftMeta,
+          dailyLikesLeft.isAcceptableOrUnknown(
+              data['daily_likes_left']!, _dailyLikesLeftMeta));
+    }
+    if (data.containsKey('daily_likes_left_sync_version')) {
+      context.handle(
+          _dailyLikesLeftSyncVersionMeta,
+          dailyLikesLeftSyncVersion.isAcceptableOrUnknown(
+              data['daily_likes_left_sync_version']!,
+              _dailyLikesLeftSyncVersionMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  Limit map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return Limit(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      dailyLikesLeft: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}daily_likes_left']),
+      dailyLikesLeftSyncVersion: attachedDatabase.typeMapping.read(
+          DriftSqlType.int,
+          data['${effectivePrefix}daily_likes_left_sync_version']),
+    );
+  }
+
+  @override
+  $LimitsTable createAlias(String alias) {
+    return $LimitsTable(attachedDatabase, alias);
+  }
+}
+
+class Limit extends DataClass implements Insertable<Limit> {
+  final int id;
+  final int? dailyLikesLeft;
+  final int? dailyLikesLeftSyncVersion;
+  const Limit(
+      {required this.id, this.dailyLikesLeft, this.dailyLikesLeftSyncVersion});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    if (!nullToAbsent || dailyLikesLeft != null) {
+      map['daily_likes_left'] = Variable<int>(dailyLikesLeft);
+    }
+    if (!nullToAbsent || dailyLikesLeftSyncVersion != null) {
+      map['daily_likes_left_sync_version'] =
+          Variable<int>(dailyLikesLeftSyncVersion);
+    }
+    return map;
+  }
+
+  LimitsCompanion toCompanion(bool nullToAbsent) {
+    return LimitsCompanion(
+      id: Value(id),
+      dailyLikesLeft: dailyLikesLeft == null && nullToAbsent
+          ? const Value.absent()
+          : Value(dailyLikesLeft),
+      dailyLikesLeftSyncVersion:
+          dailyLikesLeftSyncVersion == null && nullToAbsent
+              ? const Value.absent()
+              : Value(dailyLikesLeftSyncVersion),
+    );
+  }
+
+  factory Limit.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return Limit(
+      id: serializer.fromJson<int>(json['id']),
+      dailyLikesLeft: serializer.fromJson<int?>(json['dailyLikesLeft']),
+      dailyLikesLeftSyncVersion:
+          serializer.fromJson<int?>(json['dailyLikesLeftSyncVersion']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'dailyLikesLeft': serializer.toJson<int?>(dailyLikesLeft),
+      'dailyLikesLeftSyncVersion':
+          serializer.toJson<int?>(dailyLikesLeftSyncVersion),
+    };
+  }
+
+  Limit copyWith(
+          {int? id,
+          Value<int?> dailyLikesLeft = const Value.absent(),
+          Value<int?> dailyLikesLeftSyncVersion = const Value.absent()}) =>
+      Limit(
+        id: id ?? this.id,
+        dailyLikesLeft:
+            dailyLikesLeft.present ? dailyLikesLeft.value : this.dailyLikesLeft,
+        dailyLikesLeftSyncVersion: dailyLikesLeftSyncVersion.present
+            ? dailyLikesLeftSyncVersion.value
+            : this.dailyLikesLeftSyncVersion,
+      );
+  Limit copyWithCompanion(LimitsCompanion data) {
+    return Limit(
+      id: data.id.present ? data.id.value : this.id,
+      dailyLikesLeft: data.dailyLikesLeft.present
+          ? data.dailyLikesLeft.value
+          : this.dailyLikesLeft,
+      dailyLikesLeftSyncVersion: data.dailyLikesLeftSyncVersion.present
+          ? data.dailyLikesLeftSyncVersion.value
+          : this.dailyLikesLeftSyncVersion,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('Limit(')
+          ..write('id: $id, ')
+          ..write('dailyLikesLeft: $dailyLikesLeft, ')
+          ..write('dailyLikesLeftSyncVersion: $dailyLikesLeftSyncVersion')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(id, dailyLikesLeft, dailyLikesLeftSyncVersion);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is Limit &&
+          other.id == this.id &&
+          other.dailyLikesLeft == this.dailyLikesLeft &&
+          other.dailyLikesLeftSyncVersion == this.dailyLikesLeftSyncVersion);
+}
+
+class LimitsCompanion extends UpdateCompanion<Limit> {
+  final Value<int> id;
+  final Value<int?> dailyLikesLeft;
+  final Value<int?> dailyLikesLeftSyncVersion;
+  const LimitsCompanion({
+    this.id = const Value.absent(),
+    this.dailyLikesLeft = const Value.absent(),
+    this.dailyLikesLeftSyncVersion = const Value.absent(),
+  });
+  LimitsCompanion.insert({
+    this.id = const Value.absent(),
+    this.dailyLikesLeft = const Value.absent(),
+    this.dailyLikesLeftSyncVersion = const Value.absent(),
+  });
+  static Insertable<Limit> custom({
+    Expression<int>? id,
+    Expression<int>? dailyLikesLeft,
+    Expression<int>? dailyLikesLeftSyncVersion,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (dailyLikesLeft != null) 'daily_likes_left': dailyLikesLeft,
+      if (dailyLikesLeftSyncVersion != null)
+        'daily_likes_left_sync_version': dailyLikesLeftSyncVersion,
+    });
+  }
+
+  LimitsCompanion copyWith(
+      {Value<int>? id,
+      Value<int?>? dailyLikesLeft,
+      Value<int?>? dailyLikesLeftSyncVersion}) {
+    return LimitsCompanion(
+      id: id ?? this.id,
+      dailyLikesLeft: dailyLikesLeft ?? this.dailyLikesLeft,
+      dailyLikesLeftSyncVersion:
+          dailyLikesLeftSyncVersion ?? this.dailyLikesLeftSyncVersion,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (dailyLikesLeft.present) {
+      map['daily_likes_left'] = Variable<int>(dailyLikesLeft.value);
+    }
+    if (dailyLikesLeftSyncVersion.present) {
+      map['daily_likes_left_sync_version'] =
+          Variable<int>(dailyLikesLeftSyncVersion.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('LimitsCompanion(')
+          ..write('id: $id, ')
+          ..write('dailyLikesLeft: $dailyLikesLeft, ')
+          ..write('dailyLikesLeftSyncVersion: $dailyLikesLeftSyncVersion')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AccountDatabase extends GeneratedDatabase {
   _$AccountDatabase(QueryExecutor e) : super(e);
   late final $AccountTable account = $AccountTable(this);
@@ -7870,6 +8116,7 @@ abstract class _$AccountDatabase extends GeneratedDatabase {
       availableProfileAttributesTable =
       $AvailableProfileAttributesTableTable(this);
   late final $UiSettingsTable uiSettings = $UiSettingsTable(this);
+  late final $LimitsTable limits = $LimitsTable(this);
   late final DaoCurrentContent daoCurrentContent =
       DaoCurrentContent(this as AccountDatabase);
   late final DaoMyProfile daoMyProfile = DaoMyProfile(this as AccountDatabase);
@@ -7916,6 +8163,7 @@ abstract class _$AccountDatabase extends GeneratedDatabase {
       DaoAvailableProfileAttributesTable(this as AccountDatabase);
   late final DaoUiSettings daoUiSettings =
       DaoUiSettings(this as AccountDatabase);
+  late final DaoLimits daoLimits = DaoLimits(this as AccountDatabase);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -7930,6 +8178,7 @@ abstract class _$AccountDatabase extends GeneratedDatabase {
         messageTable,
         conversations,
         availableProfileAttributesTable,
-        uiSettings
+        uiSettings,
+        limits
       ];
 }

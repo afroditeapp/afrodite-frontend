@@ -143,7 +143,7 @@ class _LocationWidgetState extends State<LocationWidget> with SingleTickerProvid
 
   @override
   Widget build(BuildContext context) {
-    final config = context.read<ClientFeaturesConfigBloc>().state.map;
+    final config = context.read<ClientFeaturesConfigBloc>().state.config.map;
 
     final bounds = LatLngBounds(
       config.bounds.topLeft.toLatLng(),

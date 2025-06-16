@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:app/data/general/notification/utils/notification_category.dart';
 import 'package:app/logic/account/client_features_config.dart';
+import 'package:app/model/freezed/logic/account/client_features_config.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui_utils/common_update_logic.dart';
 import 'package:app/ui_utils/dialog.dart';
@@ -106,9 +107,9 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
   }
 
   Widget content(BuildContext context, NotificationSettingsData state) {
-    return BlocBuilder<ClientFeaturesConfigBloc, ClientFeaturesConfig>(
+    return BlocBuilder<ClientFeaturesConfigBloc, ClientFeaturesConfigData>(
       builder: (context, features) {
-        return contentWidget(context, features, state);
+        return contentWidget(context, features.config, state);
       }
     );
   }

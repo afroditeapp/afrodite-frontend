@@ -1311,6 +1311,18 @@
   "@profile_filtering_settings_screen_updating_filters_failed": {
     "description": "Snackbar text for notifying about failed profile filters update"
   },
+  "profile_grid_screen_daily_likes_dialog_text": "Daily chat requests left: {p0}. Reset time: {p1}.",
+  "@profile_grid_screen_daily_likes_dialog_text": {
+    "description": "Dialog text for daily likes info dialog",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      },
+      "p1": {
+        "type": "String"
+      }
+    }
+  },
   "profile_grid_screen_filtering_favorite_profiles_is_not_supported": "Filtering favorite profiles is not supported",
   "@profile_grid_screen_filtering_favorite_profiles_is_not_supported": {
     "description": "Snackbar text that filtering favorite profiles is not supported"

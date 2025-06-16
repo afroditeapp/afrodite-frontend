@@ -126,7 +126,7 @@ class ConversationPageState extends State<ConversationPage> {
           }
         ),
         actions: [
-          if (context.read<ClientFeaturesConfigBloc>().state.features.videoCalls) IconButton(
+          if (context.read<ClientFeaturesConfigBloc>().state.config.features.videoCalls) IconButton(
             onPressed: () => sendVideoCallInviteDialog(context),
             icon: const Icon(Icons.videocam),
             tooltip: context.strings.conversation_screen_send_video_call_invitation_action,

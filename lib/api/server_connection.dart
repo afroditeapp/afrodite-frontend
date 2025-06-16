@@ -415,6 +415,7 @@ const forceSync = 255;
     Profile = 7,
     News = 8,
     MediaContent = 9,
+    DailyLikesLeft = 10,
     /// Special value without valid [SyncVersionFromClient] informing
     /// the server that client has info that server maintenance is scheduled.
     ServerMaintenanceIsScheduled = 255,
@@ -441,6 +442,9 @@ Future<Uint8List> syncDataBytes(AccountDatabaseManager db, AccountBackgroundData
   final syncVersionMediaContent = await db.accountStreamSingle(
     (db) => db.daoSyncVersions.watchSyncVersionMediaContent()
   ).ok() ?? forceSync;
+  final syncVersionDailyLikesLeft = await db.accountStreamSingle(
+    (db) => db.daoLimits.watchDailyLikesLeftSyncVersion()
+  ).ok() ?? forceSync;
 
   final currentMaintenanceInfo = await db.accountStreamSingle(
     (db) => db.daoServerMaintenance.watchServerMaintenanceInfo()
@@ -460,6 +464,8 @@ Future<Uint8List> syncDataBytes(AccountDatabaseManager db, AccountBackgroundData
     syncVersionNews,
     9, // Media content
     syncVersionMediaContent,
+    10, // Daily likes left
+    syncVersionDailyLikesLeft,
     if (sendMaintenanceSyncVersion) 255,
     if (sendMaintenanceSyncVersion) 0,
   ];

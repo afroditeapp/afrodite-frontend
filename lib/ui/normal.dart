@@ -1,6 +1,7 @@
 import "package:app/data/login_repository.dart";
 import "package:app/logic/account/client_features_config.dart";
 import "package:app/logic/server/maintenance.dart";
+import "package:app/model/freezed/logic/account/client_features_config.dart";
 import "package:app/ui/normal/menu.dart";
 import "package:database/database.dart";
 import 'package:flutter/material.dart';
@@ -206,14 +207,14 @@ class _NormalStateContentState extends State<NormalStateContent> {
         label: VIEWS[2].title(context),
       ),
       BottomNavigationBarItem(
-        icon: BlocBuilder<ClientFeaturesConfigBloc, ClientFeaturesConfig>(
+        icon: BlocBuilder<ClientFeaturesConfigBloc, ClientFeaturesConfigData>(
           builder: (context, clientFeatures) {
             return BlocBuilder<ServerMaintenanceBloc, ServerMaintenanceInfo>(
               builder: (context, serverMaintenanceInfo) {
                 return BlocBuilder<NewsCountBloc, NewsCountData>(
                   builder: (context, state) {
                     final icon = Icon(selectedView == 3 ? Icons.menu : Icons.menu_outlined);
-                    final count = serverMaintenanceInfo.uiBadgeCount() + state.newsCountForUi(clientFeatures);
+                    final count = serverMaintenanceInfo.uiBadgeCount() + state.newsCountForUi(clientFeatures.config);
                     if (count == 0) {
                       return icon;
                     } else {

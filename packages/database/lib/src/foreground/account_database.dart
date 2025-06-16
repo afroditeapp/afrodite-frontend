@@ -14,6 +14,7 @@ import 'package:database/src/foreground/account/dao_sync_versions.dart';
 import 'package:database/src/foreground/available_profile_attributes_table.dart';
 import 'package:database/src/foreground/conversations_table.dart';
 import 'package:database/src/foreground/conversation_list_table.dart';
+import 'package:database/src/foreground/limits_table.dart';
 import 'package:database/src/foreground/my_media_content_table.dart';
 import 'package:database/src/foreground/profile_states_table.dart';
 import 'package:database/src/foreground/profile_table.dart';
@@ -187,6 +188,7 @@ class Account extends Table {
     Conversations,
     AvailableProfileAttributesTable,
     UiSettings,
+    Limits,
   ],
   daos: [
     // Account table
@@ -215,6 +217,7 @@ class Account extends Table {
     DaoConversations,
     DaoAvailableProfileAttributesTable,
     DaoUiSettings,
+    DaoLimits,
   ],
 )
 class AccountDatabase extends _$AccountDatabase {

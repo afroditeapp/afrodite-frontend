@@ -250,6 +250,7 @@
     <string name="profile_grid_screen_no_favorite_profiles_found_title" description="Title that no favorite profiles were found">No favorite profiles found</string>
     <string name="profile_grid_screen_no_favorite_profiles_found_description" description="Description that no favorite profiles were found">Mark a profile as a favorite to add it here.</string>
     <string name="profile_grid_screen_filtering_favorite_profiles_is_not_supported" description="Snackbar text that filtering favorite profiles is not supported">Filtering favorite profiles is not supported</string>
+    <string name="profile_grid_screen_daily_likes_dialog_text" description="Dialog text for daily likes info dialog">Daily chat requests left: %s. Reset time: %s.</string>
 
     <!-- View profile screen -->
     <string name="view_profile_screen_my_profile_initial_setup_not_done" description="Snackbar text that it is not possible to open my profile screen when initial setup is not done">Dating profile is not created</string>

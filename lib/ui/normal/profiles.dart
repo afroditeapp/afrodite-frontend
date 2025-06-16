@@ -1,9 +1,12 @@
 
+import 'package:app/logic/account/client_features_config.dart';
 import 'package:app/logic/media/content.dart';
 import 'package:app/logic/profile/my_profile.dart';
+import 'package:app/model/freezed/logic/account/client_features_config.dart';
 import 'package:app/model/freezed/logic/media/content.dart';
 import 'package:app/model/freezed/logic/profile/my_profile.dart';
 import 'package:app/ui/initial_setup.dart';
+import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/moderation.dart';
 import 'package:app/ui_utils/extensions/api.dart';
 import 'package:app/ui_utils/snack_bar.dart';
@@ -41,6 +44,32 @@ class ProfileView extends BottomNavigationScreen {
   @override
   List<Widget>? actions(BuildContext context) {
     return [
+      BlocBuilder<ClientFeaturesConfigBloc, ClientFeaturesConfigData>(
+        builder: (context, state) {
+          if (!state.dailyLikesLimitEnabled()) {
+            return const SizedBox.shrink();
+          }
+          return Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Padding(padding: EdgeInsets.only(left: 8)),
+              Text(
+                state.valueDailyLikesLeft().toString(),
+                style: Theme.of(context).textTheme.bodyLarge,
+              ),
+              IconButton(
+                icon: Icon(state.valueDailyLikesLeft() == 0 ? Icons.waving_hand_outlined : Icons.waving_hand),
+                onPressed: () {
+                  showInfoDialog(context, context.strings.profile_grid_screen_daily_likes_dialog_text(
+                    state.valueDailyLikesLeft().toString(),
+                    state.dailyLikesResetTime()?.uiString() ?? context.strings.generic_error,
+                  ));
+                }
+              )
+            ],
+          );
+        },
+      ),
       BlocBuilder<ProfileFilteringSettingsBloc, ProfileFilteringSettingsData>(
         builder: (context, state) {
           return IconButton(

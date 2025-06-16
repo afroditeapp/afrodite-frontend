@@ -78,6 +78,7 @@ class ChatRepository extends DataRepositoryWithLifecycle {
   @override
   Future<void> onLogin() async {
     sentBlocksIterator.reset();
+    await db.accountAction((db) => db.daoLimits.resetSyncVersion());
     await db.accountAction((db) => db.daoInitialSync.updateChatSyncDone(false));
   }
 
@@ -86,6 +87,7 @@ class ChatRepository extends DataRepositoryWithLifecycle {
     return await _sentBlocksRefresh()
       .andThen((_) => _generateMessageKeyIfNeeded())
       .andThen((_) => _reloadChatNotificationSettings())
+      .andThen((_) => reloadDailyLikesLimit())
       .andThen((_) => db.accountAction((db) => db.daoInitialSync.updateChatSyncDone(true)));
   }
 
@@ -100,6 +102,7 @@ class ChatRepository extends DataRepositoryWithLifecycle {
       await _sentBlocksRefresh()
         .andThen((_) => _generateMessageKeyIfNeeded())
         .andThen((_) => _reloadChatNotificationSettings())
+        .andThen((_) => reloadDailyLikesLimit())
         .andThen((_) => db.accountAction((db) => db.daoInitialSync.updateChatSyncDone(true)));
     });
   }
@@ -176,6 +179,10 @@ class ChatRepository extends DataRepositoryWithLifecycle {
           return const Err(SendLikeError.unspecifiedError);
         }
         if (status != LimitedActionStatus.failureLimitAlreadyReached) {
+          final dailyLikesLeft = v.dailyLikesLeft;
+          if (dailyLikesLeft != null) {
+            await db.accountAction((db) => db.daoLimits.updateDailyLikesLeft(dailyLikesLeft));
+          }
           final isReceivedLike = await isInReceivedLikes(accountId);
           if (isReceivedLike) {
             await db.accountAction((db) => db.daoProfileStates.setMatchStatus(accountId, true));
@@ -350,6 +357,13 @@ class ChatRepository extends DataRepositoryWithLifecycle {
     return await api.chat((api) => api.getChatAppNotificationSettings())
       .andThen((v) => accountBackgroundDb.accountAction(
         (db) => db.daoAppNotificationSettingsTable.updateChatNotificationSettings(v),
+      ));
+  }
+
+  Future<Result<void, void>> reloadDailyLikesLimit() async {
+    return await api.chat((api) => api.getDailyLikesLeft())
+      .andThen((v) => db.accountAction(
+        (db) => db.daoLimits.updateDailyLikesLeft(v),
       ));
   }
 

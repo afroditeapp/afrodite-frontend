@@ -1,5 +1,6 @@
 import 'package:app/logic/account/client_features_config.dart';
 import 'package:app/logic/server/maintenance.dart';
+import 'package:app/model/freezed/logic/account/client_features_config.dart';
 import 'package:app/ui/normal/settings.dart';
 import 'package:app/ui/normal/settings/notifications/automatic_profile_search_results.dart';
 import 'package:app/utils/time.dart';
@@ -79,9 +80,9 @@ class _MenuViewState extends State<MenuView> {
   Widget build(BuildContext context) {
     return BlocBuilder<AccountBloc, AccountBlocData>(
       builder: (context, state) {
-        return BlocBuilder<ClientFeaturesConfigBloc, ClientFeaturesConfig>(
+        return BlocBuilder<ClientFeaturesConfigBloc, ClientFeaturesConfigData>(
           builder: (context, clientFeatures) {
-            List<Setting> settings = menuItems(context, state.permissions, clientFeatures);
+            List<Setting> settings = menuItems(context, state.permissions, clientFeatures.config);
             return NotificationListener<ScrollMetricsNotification>(
               onNotification: (notification) {
                 final isScrolled = notification.metrics.pixels > 0;

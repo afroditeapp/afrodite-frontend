@@ -1,6 +1,7 @@
 import "dart:async";
 
 import "package:app/database/account_database_manager.dart";
+import "package:app/model/freezed/logic/account/client_features_config.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:app/data/login_repository.dart";
 import "package:openapi/api.dart";
@@ -10,23 +11,34 @@ class ConfigChanged extends ClientFeaturesConfigEvent {
   final ClientFeaturesConfig value;
   ConfigChanged(this.value);
 }
+class DailyLikesLeftChanged extends ClientFeaturesConfigEvent {
+  final int? value;
+  DailyLikesLeftChanged(this.value);
+}
 
-class ClientFeaturesConfigBloc extends Bloc<ClientFeaturesConfigEvent, ClientFeaturesConfig> {
+class ClientFeaturesConfigBloc extends Bloc<ClientFeaturesConfigEvent, ClientFeaturesConfigData> {
   final AccountDatabaseManager db = LoginRepository.getInstance().repositories.accountDb;
 
   StreamSubscription<ClientFeaturesConfig?>? _configSubscription;
+  StreamSubscription<int?>? _dailyLikesLeftSubscription;
 
-  ClientFeaturesConfigBloc() : super(_emptyClientFeaturesConfig()) {
+  ClientFeaturesConfigBloc() : super(ClientFeaturesConfigData(config: _emptyClientFeaturesConfig())) {
     on<ConfigChanged>((data, emit) async {
-      emit(data.value);
+      emit(state.copyWith(config: data.value));
+    });
+    on<DailyLikesLeftChanged>((data, emit) {
+      emit(state.copyWith(dailyLikesLeft: data.value));
     });
     _configSubscription = db.accountStream((db) => db.daoClientFeatures.watchClientFeaturesConfig())
       .listen((value) => add(ConfigChanged(value ?? _emptyClientFeaturesConfig())));
+    _dailyLikesLeftSubscription = db.accountStream((db) => db.daoLimits.watchDailyLikesLeft())
+      .listen((value) => add(DailyLikesLeftChanged(value)));
   }
 
   @override
   Future<void> close() async {
     await _configSubscription?.cancel();
+    await _dailyLikesLeftSubscription?.cancel();
     return super.close();
   }
 }
