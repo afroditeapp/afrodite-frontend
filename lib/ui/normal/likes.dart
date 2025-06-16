@@ -21,11 +21,9 @@ import 'package:app/logic/app/bottom_navigation_state.dart';
 import 'package:app/logic/app/like_grid_instance_manager.dart';
 import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/logic/chat/new_received_likes_available_bloc.dart';
-import 'package:app/logic/profile/my_profile.dart';
 import 'package:app/model/freezed/logic/chat/new_received_likes_available_bloc.dart';
 import 'package:app/model/freezed/logic/main/bottom_navigation_state.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
-import 'package:app/model/freezed/logic/profile/my_profile.dart';
 import 'package:app/ui/normal/profiles/profile_grid.dart';
 import 'package:app/ui_utils/bottom_navigation.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -315,11 +313,7 @@ class LikeViewContentState extends State<LikeViewContent> {
               child: BlocBuilder<UiSettingsBloc, UiSettingsData>(
                 buildWhen: (previous, current) => previous.gridSettings != current.gridSettings,
                 builder: (context, uiSettings) {
-                  return BlocBuilder<MyProfileBloc, MyProfileData>(
-                    builder: (context, myProfileState) {
-                      return grid(context, myProfileState.profile?.unlimitedLikes ?? false, uiSettings.gridSettings);
-                    },
-                  );
+                  return grid(context, uiSettings.gridSettings);
                 }
               ),
             ),
@@ -332,7 +326,7 @@ class LikeViewContentState extends State<LikeViewContent> {
     );
   }
 
-  Widget grid(BuildContext context, bool iHaveUnlimitedLikesEnabled, GridSettings settings) {
+  Widget grid(BuildContext context, GridSettings settings) {
     return PagedGridView(
       state: _pagingState,
       fetchNextPage: () {
@@ -346,7 +340,6 @@ class LikeViewContentState extends State<LikeViewContent> {
         itemBuilder: (context, item, index) {
           return profileEntryWidgetStream(
             item.profile,
-            iHaveUnlimitedLikesEnabled,
             item.initialProfileAction,
             accountDb,
             settings,

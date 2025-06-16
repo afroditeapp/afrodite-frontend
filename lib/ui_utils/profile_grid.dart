@@ -15,8 +15,6 @@ import 'package:app/data/login_repository.dart';
 import 'package:app/data/profile_repository.dart';
 import 'package:database/database.dart';
 import 'package:app/database/account_database_manager.dart';
-import 'package:app/logic/profile/my_profile.dart';
-import 'package:app/model/freezed/logic/profile/my_profile.dart';
 import 'package:app/ui/normal/profiles/profile_grid.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:app/localizations.dart';
@@ -142,11 +140,7 @@ class _GenericProfileGridState extends State<GenericProfileGrid> {
           child: BlocBuilder<UiSettingsBloc, UiSettingsData>(
             buildWhen: (previous, current) => previous.gridSettings != current.gridSettings,
             builder: (context, uiSettings) {
-              return BlocBuilder<MyProfileBloc, MyProfileData>(
-                builder: (context, myProfileState) {
-                  return grid(context, myProfileState.profile?.unlimitedLikes ?? false, uiSettings.gridSettings);
-                },
-              );
+              return grid(context, uiSettings.gridSettings);
             }
           ),
         ),
@@ -154,7 +148,7 @@ class _GenericProfileGridState extends State<GenericProfileGrid> {
     );
   }
 
-  Widget grid(BuildContext context, bool iHaveUnlimitedLikesEnabled, GridSettings settings) {
+  Widget grid(BuildContext context, GridSettings settings) {
     return PagedGridView(
       state: _pagingState,
       fetchNextPage: () {
@@ -169,7 +163,6 @@ class _GenericProfileGridState extends State<GenericProfileGrid> {
           return GestureDetector(
               child: profileEntryWidgetStream(
                 item.profile,
-                iHaveUnlimitedLikesEnabled,
                 item.initialProfileAction,
                 accountDb,
                 settings,

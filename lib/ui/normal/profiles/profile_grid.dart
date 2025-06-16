@@ -21,10 +21,8 @@ import 'package:database/database.dart';
 import 'package:app/database/account_database_manager.dart';
 import 'package:app/localizations.dart';
 import 'package:app/logic/app/bottom_navigation_state.dart';
-import 'package:app/logic/profile/my_profile.dart';
 import 'package:app/logic/profile/profile_filtering_settings.dart';
 import 'package:app/model/freezed/logic/main/bottom_navigation_state.dart';
-import 'package:app/model/freezed/logic/profile/my_profile.dart';
 import 'package:app/model/freezed/logic/profile/profile_filtering_settings.dart';
 import 'package:app/ui/normal/profiles/view_profile.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -196,17 +194,13 @@ class _ProfileGridState extends State<ProfileGrid> {
       child: BlocBuilder<UiSettingsBloc, UiSettingsData>(
         buildWhen: (previous, current) => previous.gridSettings != current.gridSettings,
         builder: (context, uiSettings) {
-          return BlocBuilder<MyProfileBloc, MyProfileData>(
-            builder: (context, myProfileState) {
-              return BlocBuilder<ProfileFilteringSettingsBloc, ProfileFilteringSettingsData>(
-                builder: (context, state) {
-                  if (state.updateState is UpdateIdle && !state.unsavedChanges()) {
-                    return showGrid(context, myProfileState, uiSettings.gridSettings, _pagingState);
-                  } else {
-                    return showGrid(context, myProfileState, uiSettings.gridSettings, _pagingState.copyAndShowLoading());
-                  }
-                }
-              );
+          return BlocBuilder<ProfileFilteringSettingsBloc, ProfileFilteringSettingsData>(
+            builder: (context, state) {
+              if (state.updateState is UpdateIdle && !state.unsavedChanges()) {
+                return showGrid(context, uiSettings.gridSettings, _pagingState);
+              } else {
+                return showGrid(context, uiSettings.gridSettings, _pagingState.copyAndShowLoading());
+              }
             }
           );
         }
@@ -216,7 +210,6 @@ class _ProfileGridState extends State<ProfileGrid> {
 
   Widget showGrid(
     BuildContext context,
-    MyProfileData myProfileState,
     GridSettings settings,
     PagingState<int, ProfileGridProfileEntry> pagingState,
   ) {
@@ -234,14 +227,13 @@ class _ProfileGridState extends State<ProfileGrid> {
             _scrollController.bottomNavigationRelatedJumpToBeginningIfClientsConnected();
           }
         },
-        child: grid(context, myProfileState.profile?.unlimitedLikes ?? false, settings, pagingState)
+        child: grid(context, settings, pagingState)
       ),
     );
   }
 
   Widget grid(
     BuildContext context,
-    bool iHaveUnlimitedLikesEnabled,
     GridSettings settings,
     PagingState<int, ProfileGridProfileEntry> pagingState,
   ) {
@@ -256,7 +248,7 @@ class _ProfileGridState extends State<ProfileGrid> {
       builderDelegate: PagedChildBuilderDelegate<ProfileGridProfileEntry>(
         animateTransitions: true,
         itemBuilder: (context, item, index) {
-          return profileEntryWidgetStream(item.profile, iHaveUnlimitedLikesEnabled, item.initialProfileAction, accountDb, settings);
+          return profileEntryWidgetStream(item.profile, item.initialProfileAction, accountDb, settings);
         },
         noItemsFoundIndicatorBuilder: (context) {
           final filterState = context.read<ProfileFilteringSettingsBloc>().state;
@@ -347,7 +339,6 @@ class _ProfileGridState extends State<ProfileGrid> {
 
 Widget profileEntryWidgetStream(
   ProfileThumbnail profile,
-  bool iHaveUnlimitedLikesEnabled,
   ProfileActionState? initialProfileAction,
   AccountDatabaseManager db,
   GridSettings settings,
@@ -374,7 +365,6 @@ Widget profileEntryWidgetStream(
             _thumbnailStatusIndicatorsBottom(
               context,
               e.entry,
-              iHaveUnlimitedLikesEnabled,
             ),
             Material(
               color: Colors.transparent,
@@ -397,7 +387,6 @@ Widget profileEntryWidgetStream(
 Widget _thumbnailStatusIndicatorsBottom(
   BuildContext context,
   ProfileEntry profile,
-  bool iHaveUnlimitedLikesEnabled,
 ) {
   return Align(
     alignment: Alignment.bottomCenter,
@@ -415,7 +404,7 @@ Widget _thumbnailStatusIndicatorsBottom(
           ),
         ),
         const Spacer(),
-        iHaveUnlimitedLikesEnabled && profile.unlimitedLikes ?
+        profile.unlimitedLikes ?
           Padding(
             padding: const EdgeInsets.only(right: 8.0),
             child: Icon(
