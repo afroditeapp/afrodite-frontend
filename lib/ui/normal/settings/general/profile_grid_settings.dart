@@ -1,6 +1,7 @@
 
 import 'package:app/logic/profile/profile_filtering_settings.dart';
 import 'package:app/model/freezed/logic/profile/profile_filtering_settings.dart';
+import 'package:app/ui/normal/settings.dart';
 import 'package:app/ui/normal/settings/general/image_settings.dart';
 import 'package:app/ui_utils/common_update_logic.dart';
 import 'package:app/ui_utils/dialog.dart';
@@ -70,11 +71,8 @@ class _ProfileGridSettingsScreenState extends State<ProfileGridSettingsScreen> {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            hPad(Text(
-              context.strings.profile_grid_settings_screen_all_grids_title,
-              style: Theme.of(context).textTheme.titleMedium,
-            )),
-            const Padding(padding: EdgeInsets.only(top: 16)),
+            settingsCategoryTitle(context, context.strings.profile_grid_settings_screen_all_grids_title),
+            const Padding(padding: EdgeInsets.only(top: 8)),
             ...intSlider(
               context,
               context.strings.profile_grid_settings_screen_row_profile_count,
@@ -100,12 +98,7 @@ class _ProfileGridSettingsScreenState extends State<ProfileGridSettingsScreen> {
               () => state.gridSettings.valueProfileThumbnailBorderRadius(),
             ),
             resetToDefaults(context),
-            const Padding(padding: EdgeInsets.only(top: 8)),
-            hPad(Text(
-              context.strings.profile_grid_settings_screen_profiles_screen,
-              style: Theme.of(context).textTheme.titleMedium,
-            )),
-            const Padding(padding: EdgeInsets.only(top: 4)),
+            settingsCategoryTitle(context, context.strings.profile_grid_settings_screen_profiles_screen),
             randomProfileOrderSetting(context),
           ],
         );

@@ -79,16 +79,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  Widget settingsCategoryTitle(BuildContext context, String text) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 16, top: 8, bottom: 8),
-      child: Text(
-        text,
-        style: Theme.of(context).textTheme.titleSmall,
-      ),
-    );
-  }
-
   Widget blockedProfiles(BuildContext context) {
     return Setting.createSetting(Icons.block, context.strings.blocked_profiles_screen_title, () =>
       MyNavigator.push(context, const MaterialPage<void>(child: BlockedProfilesScreen()))
@@ -236,4 +226,16 @@ class Setting {
       leading: _iconWidget,
     );
   }
+}
+
+Widget settingsCategoryTitle(BuildContext context, String text) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+    child: Text(
+      text,
+      style: Theme.of(context).textTheme.titleSmall?.copyWith(
+        color: Theme.of(context).colorScheme.primary,
+      ),
+    ),
+  );
 }

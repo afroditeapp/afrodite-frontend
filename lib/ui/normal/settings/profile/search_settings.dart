@@ -1,5 +1,6 @@
 
 
+import 'package:app/ui/normal/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:app/localizations.dart';
@@ -162,12 +163,8 @@ class _SearchSettingsScreenState extends State<SearchSettingsScreen> {
           editGenderFilter(state),
           const Padding(padding: EdgeInsets.all(4)),
           hPad(Text(context.strings.search_settings_screen_help_text)),
-          const Padding(padding: EdgeInsets.all(8)),
-          hPad(Text(
-            context.strings.search_settings_screen_automatic_search,
-            style: Theme.of(context).textTheme.titleLarge,
-          )),
           const Padding(padding: EdgeInsets.all(4)),
+          settingsCategoryTitle(context, context.strings.search_settings_screen_automatic_search),
           distanceWidget(context, state),
           filtersWidget(context, state),
           newProfilesWidget(context, state),
@@ -175,7 +172,6 @@ class _SearchSettingsScreenState extends State<SearchSettingsScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: Text(
               context.strings.search_settings_screen_weekdays,
-              style: Theme.of(context).textTheme.titleMedium,
             ),
           ),
           hPad(weekdaysWidget(context, state)),

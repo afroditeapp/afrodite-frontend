@@ -6,6 +6,7 @@ import 'package:app/data/general/notification/utils/notification_category.dart';
 import 'package:app/logic/account/client_features_config.dart';
 import 'package:app/model/freezed/logic/account/client_features_config.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
+import 'package:app/ui/normal/settings.dart';
 import 'package:app/ui_utils/common_update_logic.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:app_settings/app_settings.dart';
@@ -153,15 +154,7 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
 
       settingsList = [];
       for (final group in settings) {
-        settingsList.add(Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-          child: Text(
-            group.first.$1.group.title,
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-              color: Theme.of(context).colorScheme.primary,
-            )
-          ),
-        ));
+        settingsList.add(settingsCategoryTitle(context, group.first.$1.group.title));
         settingsList.addAll(group.map((v) => v.$2));
       }
     } else {
