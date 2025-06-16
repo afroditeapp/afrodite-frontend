@@ -1,5 +1,7 @@
 
 
+import 'package:app/logic/account/client_features_config.dart';
+import 'package:app/model/freezed/logic/account/client_features_config.dart';
 import 'package:app/ui/normal/settings/profile/edit_profile_text.dart';
 import 'package:app/ui_utils/attribute/attribute.dart';
 import 'package:app/ui_utils/consts/icons.dart';
@@ -250,22 +252,35 @@ class _EditProfilePageState extends State<EditProfilePage> {
   }
 
   Widget unlimitedLikesSetting(BuildContext context) {
-    return BlocBuilder<EditMyProfileBloc, EditMyProfileData>(builder: (context, myProfileData) {
-      return SwitchListTile(
-        title: Text(context.strings.edit_profile_screen_unlimited_likes),
-        subtitle: myProfileData.unlimitedLikes ?
-          Text(context.strings.edit_profile_screen_unlimited_likes_description_enabled) :
-          Text(context.strings.edit_profile_screen_unlimited_likes_description_disabled),
-        isThreeLine: true,
-        secondary: Icon(
-          UNLIMITED_LIKES_ICON,
-          color: getUnlimitedLikesColor(context),
-        ),
-        value: myProfileData.unlimitedLikes,
-        onChanged: (bool value) =>
-            context.read<EditMyProfileBloc>().add(NewUnlimitedLikesValue(value)),
-      );
-    });
+    return BlocBuilder<ClientFeaturesConfigBloc, ClientFeaturesConfigData>(
+      builder: (context, clientFeatures) {
+        return BlocBuilder<EditMyProfileBloc, EditMyProfileData>(builder: (context, myProfileData) {
+          final String subtitle;
+          if (myProfileData.unlimitedLikes) {
+            final resetTime = clientFeatures.unlimitedLikesResetTime();
+            if (resetTime != null) {
+              subtitle = context.strings.edit_profile_screen_unlimited_likes_description_enabled_and_automatic_disabling(resetTime.uiString());
+            } else {
+              subtitle = context.strings.edit_profile_screen_unlimited_likes_description_enabled;
+            }
+          } else {
+            subtitle = context.strings.edit_profile_screen_unlimited_likes_description_disabled;
+          }
+          return SwitchListTile(
+            title: Text(context.strings.edit_profile_screen_unlimited_likes),
+            subtitle: Text(subtitle),
+            isThreeLine: true,
+            secondary: Icon(
+              UNLIMITED_LIKES_ICON,
+              color: getUnlimitedLikesColor(context),
+            ),
+            value: myProfileData.unlimitedLikes,
+            onChanged: (bool value) =>
+              context.read<EditMyProfileBloc>().add(NewUnlimitedLikesValue(value)),
+          );
+        });
+      }
+    );
   }
 }
 

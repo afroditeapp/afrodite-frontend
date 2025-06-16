@@ -16,6 +16,20 @@ class ClientFeaturesConfigData with _$ClientFeaturesConfigData {
     int? dailyLikesLeft,
   }) = _ClientFeaturesConfigData;
 
+  Time? unlimitedLikesResetTime() {
+    final timeString = config.limits.likes.unlimitedLikesDisablingTime;
+    if (timeString == null) {
+      return null;
+    }
+
+    final resetTime = Time.fromString(timeString);
+    if (resetTime == null) {
+      return null;
+    }
+
+    return resetTime;
+  }
+
   Time? dailyLikesResetTime() {
     final limitConfig = config.limits.likes.likeSending;
     if (limitConfig == null) {

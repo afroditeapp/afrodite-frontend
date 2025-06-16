@@ -3,10 +3,12 @@ import 'package:app/logic/account/client_features_config.dart';
 import 'package:app/logic/media/content.dart';
 import 'package:app/logic/profile/my_profile.dart';
 import 'package:app/model/freezed/logic/account/client_features_config.dart';
+import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/model/freezed/logic/media/content.dart';
 import 'package:app/model/freezed/logic/profile/my_profile.dart';
 import 'package:app/ui/initial_setup.dart';
-import 'package:app/ui_utils/dialog.dart';
+import 'package:app/ui_utils/consts/colors.dart';
+import 'package:app/ui_utils/consts/icons.dart';
 import 'package:app/ui_utils/moderation.dart';
 import 'package:app/ui_utils/extensions/api.dart';
 import 'package:app/ui_utils/snack_bar.dart';
@@ -60,10 +62,7 @@ class ProfileView extends BottomNavigationScreen {
               IconButton(
                 icon: Icon(state.valueDailyLikesLeft() == 0 ? Icons.waving_hand_outlined : Icons.waving_hand),
                 onPressed: () {
-                  showInfoDialog(context, context.strings.profile_grid_screen_daily_likes_dialog_text(
-                    state.valueDailyLikesLeft().toString(),
-                    state.dailyLikesResetTime()?.uiString() ?? context.strings.generic_error,
-                  ));
+                  showLikeLimitsInfoDialog(context, state);
                 }
               )
             ],
@@ -243,4 +242,49 @@ class PublicProfileViewingBlocker extends StatelessWidget {
       ),
     );
   }
+}
+
+Future<bool?> showLikeLimitsInfoDialog(BuildContext context, ClientFeaturesConfigData state) {
+  final pageKey = PageKey();
+
+  final dailyLikesText = context.strings.profile_grid_screen_daily_likes_dialog_text(
+    state.valueDailyLikesLeft().toString(),
+    state.dailyLikesResetTime()?.uiString() ?? context.strings.generic_error,
+  );
+
+  final showUnlimitedLikesInfo = state.unlimitedLikesResetTime() != null;
+
+  dialogBuilder(BuildContext context) => AlertDialog(
+    content: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(dailyLikesText),
+        if (showUnlimitedLikesInfo) const Padding(padding: EdgeInsets.only(top: 8)),
+        if (showUnlimitedLikesInfo) Row(
+          children: [
+            Expanded(child: Text(context.strings.profile_grid_screen_daily_likes_dialog_unlimited_likes_text)),
+            const Padding(padding: EdgeInsets.only(left: 8)),
+            Icon(
+              UNLIMITED_LIKES_ICON,
+              color: getUnlimitedLikesColor(context),
+            ),
+          ],
+        ),
+      ],
+    ),
+    actions: <Widget>[
+      TextButton(
+        onPressed: () {
+          MyNavigator.removePage(context, pageKey, false);
+        },
+        child: Text(context.strings.generic_close)
+      ),
+    ],
+  );
+
+  return MyNavigator.showDialog<bool>(
+    context: context,
+    pageKey: pageKey,
+    builder: dialogBuilder,
+  );
 }
