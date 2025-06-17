@@ -339,7 +339,7 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
           // The conversation screen would only displays
           // context.strings.conversation_screen_make_match_instruction
           // without updating isMatch.
-          isMatch: true,
+          isMatch: await dataProvider.isInMatches(state.accountId),
         ));
         if (visibleMessages == null) {
           log.info("Initial message list update done");
