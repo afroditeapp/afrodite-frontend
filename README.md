@@ -184,7 +184,7 @@ Also add files
 android/app/google-services.json
 ios/Runner/GoogleService-Info.plist
 lib/firebase_options.dart
-lib/sign_in_with_google_ids.dart
+lib/service_config.dart
 firebase.json
 ```
 
