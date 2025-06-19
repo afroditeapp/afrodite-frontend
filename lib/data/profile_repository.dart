@@ -493,10 +493,11 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
       .empty();
   }
 
-  Future<void> resetMainProfileIterator() async {
+  Future<void> resetMainProfileIterator({BehaviorSubject<bool>? eventHandlingTracking}) async {
     final showOnlyFavorites = await getFilterFavoriteProfilesValue();
-    sendProfileChange(ReloadMainProfileView(
+    sendProfileChange(ReloadMainProfileView.withEventHandlingTracking(
       showOnlyFavorites: showOnlyFavorites,
+      eventHandlingTracking: eventHandlingTracking,
     ));
   }
 
@@ -686,8 +687,14 @@ class ProfileFavoriteStatusChange extends ProfileChange {
   ProfileFavoriteStatusChange(this.profile, this.isFavorite);
 }
 class ReloadMainProfileView extends ProfileChange {
+  final BehaviorSubject<bool> eventHandled;
   final bool showOnlyFavorites;
-  ReloadMainProfileView({required this.showOnlyFavorites});
+  ReloadMainProfileView({required this.showOnlyFavorites}) :
+    eventHandled = BehaviorSubject.seeded(false);
+  ReloadMainProfileView.withEventHandlingTracking({
+    required this.showOnlyFavorites,
+    BehaviorSubject<bool>? eventHandlingTracking,
+  }) : eventHandled = eventHandlingTracking ?? BehaviorSubject.seeded(false);
 }
 
 enum ConversationChangeType {

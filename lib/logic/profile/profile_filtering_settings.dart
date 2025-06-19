@@ -17,6 +17,7 @@ import "package:app/ui_utils/snack_bar.dart";
 import "package:app/utils.dart";
 import "package:app/utils/result.dart";
 import "package:app/utils/time.dart";
+import "package:rxdart/rxdart.dart";
 
 sealed class ProfileFilteringSettingsEvent {}
 class SaveNewFilterSettings extends ProfileFilteringSettingsEvent {}
@@ -191,7 +192,11 @@ class ProfileFilteringSettingsBloc extends Bloc<ProfileFilteringSettingsEvent, P
     on<SetFavoriteProfilesFilter>((data, emit) async {
       await runOnce(() async {
         await profile.changeProfileFilteringSettings(data.value);
-        await profile.resetMainProfileIterator();
+        final isHandled = BehaviorSubject.seeded(false);
+        await profile.resetMainProfileIterator(eventHandlingTracking: isHandled);
+        // Prevent showing all profiles when favorites should be shown. That
+        // can happen when toggling favorites filter fast enough.
+        await isHandled.firstWhere((v) => v == true);
       });
     });
     on<SetLastSeenTimeFilter>((data, emit) {

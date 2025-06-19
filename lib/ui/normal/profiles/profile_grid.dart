@@ -71,6 +71,8 @@ class _ProfileGridState extends State<ProfileGrid> {
   final PagedGridLogic _gridLogic = PagedGridLogic();
   bool isDisposed = false;
 
+  List<BehaviorSubject<bool>> reloadEventDoneTrackers = [];
+
   @override
   void initState() {
     super.initState();
@@ -135,6 +137,7 @@ class _ProfileGridState extends State<ProfileGrid> {
         }
       }
       case ReloadMainProfileView():
+        reloadEventDoneTrackers.add(event.eventHandled);
         updatePagingState((_) {
           if (event.showOnlyFavorites) {
             _mainProfilesViewIterator.reset(ModeFavorites());
@@ -184,6 +187,10 @@ class _ProfileGridState extends State<ProfileGrid> {
 
   void _addPage(List<ProfileGridProfileEntry> page) {
     updatePagingState((s) => s.copyAndAdd(page));
+    reloadEventDoneTrackers.removeWhere((handle) {
+      handle.add(true);
+      return true;
+    });
   }
 
   @override
