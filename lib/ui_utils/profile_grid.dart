@@ -18,7 +18,6 @@ import 'package:app/database/account_database_manager.dart';
 import 'package:app/ui/normal/profiles/profile_grid.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:app/localizations.dart';
-import 'package:app/ui_utils/consts/padding.dart';
 import 'package:app/ui_utils/list.dart';
 import 'package:app/utils/result.dart';
 
@@ -156,7 +155,7 @@ class _GenericProfileGridState extends State<GenericProfileGrid> {
       },
       physics: const AlwaysScrollableScrollPhysics(),
       scrollController: _scrollController,
-      padding: const EdgeInsets.symmetric(horizontal: COMMON_SCREEN_EDGE_PADDING),
+      padding: EdgeInsets.symmetric(horizontal: settings.valueHorizontalPadding()),
       builderDelegate: PagedChildBuilderDelegate<ProfileGridProfileEntry>(
         animateTransitions: true,
         itemBuilder: (context, item, index) {
