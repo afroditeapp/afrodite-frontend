@@ -213,22 +213,25 @@ class ReportUiBuilder extends ContentUiBuilder<WrappedReportDetailed> {
       final String messageText = "\n${messageToText(context, message)}";
       report = Text("M: $senderReceiverInfo, ID: ${chatMessage.messageNumber.mn}, $time$messageText");
     } else if (customReportBoolean != null) {
-      final config = context.read<CustomReportsConfigBloc>().state;
-      const FIRST_CUSTOM_REPORT_TYPE_NUMBER = 64;
-      final reportId = content.info.reportType.n - FIRST_CUSTOM_REPORT_TYPE_NUMBER;
-      final customReportInfo = config.report.getAtOrNull(reportId);
-      if (customReportInfo != null) {
-        final text = customReportInfo.translatedName(context);
-        final String falseValue;
-        if (customReportBoolean) {
-          falseValue = "";
-        } else {
-          falseValue = ", value: false";
-        }
-        report = Text("B: $text$falseValue");
-      } else {
-        report = Text(context.strings.generic_error);
-      }
+      report = BlocBuilder<CustomReportsConfigBloc, CustomReportsConfig>(
+        builder: (context, config) {
+          const FIRST_CUSTOM_REPORT_TYPE_NUMBER = 64;
+          final reportId = content.info.reportType.n - FIRST_CUSTOM_REPORT_TYPE_NUMBER;
+          final customReportInfo = config.report.getAtOrNull(reportId);
+          if (customReportInfo != null) {
+            final text = customReportInfo.translatedName(context);
+            final String falseValue;
+            if (customReportBoolean) {
+              falseValue = "";
+            } else {
+              falseValue = ", value: false";
+            }
+            return Text("B: $text$falseValue");
+          } else {
+            return const Text("Matching custom report type not found from config");
+          }
+        },
+      );
     } else {
       report = Text(context.strings.generic_error);
     }
