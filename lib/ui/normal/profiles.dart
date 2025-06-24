@@ -62,7 +62,7 @@ class ProfileView extends BottomNavigationScreen {
               IconButton(
                 icon: Icon(state.valueDailyLikesLeft() == 0 ? Icons.waving_hand_outlined : Icons.waving_hand),
                 onPressed: () {
-                  showLikeLimitsInfoDialog(context, state);
+                  showDailyLikesInfoDialog(context, state);
                 }
               )
             ],
@@ -244,7 +244,7 @@ class PublicProfileViewingBlocker extends StatelessWidget {
   }
 }
 
-Future<bool?> showLikeLimitsInfoDialog(BuildContext context, ClientFeaturesConfigData state) {
+Future<bool?> showDailyLikesInfoDialog(BuildContext context, ClientFeaturesConfigData state) {
   final pageKey = PageKey();
 
   final dailyLikesText = context.strings.profile_grid_screen_daily_likes_dialog_text(
@@ -257,6 +257,7 @@ Future<bool?> showLikeLimitsInfoDialog(BuildContext context, ClientFeaturesConfi
   dialogBuilder(BuildContext context) => AlertDialog(
     content: Column(
       mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(dailyLikesText),
         if (showUnlimitedLikesInfo) const Padding(padding: EdgeInsets.only(top: 8)),

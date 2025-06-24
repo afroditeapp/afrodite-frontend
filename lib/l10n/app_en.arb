@@ -1296,7 +1296,7 @@
   "@profile_filtering_settings_screen_updating_filters_failed": {
     "description": "Snackbar text for notifying about failed profile filters update"
   },
-  "profile_grid_screen_daily_likes_dialog_text": "Daily chat requests left: {p0}. Reset time: {p1}.",
+  "profile_grid_screen_daily_likes_dialog_text": "Daily chat requests left: {p0}\nReset time: {p1}",
   "@profile_grid_screen_daily_likes_dialog_text": {
     "description": "Dialog text for daily likes info dialog",
     "placeholders": {
