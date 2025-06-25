@@ -137,8 +137,8 @@ String signInWithAppleServiceIdForAndroidAndWebLogin() => "";
 
 ### Add missing iOS project files
 
-The file ios/Runner.xcodeproj is not included in the repository as it contains
-development team ID. It can be created with following commands
+The directory `ios/Runner.xcodeproj` is not included in the repository
+as it contains development team ID. It can be created with following commands
 
 ```
 cd afrodite-frontend
