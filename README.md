@@ -148,6 +148,10 @@ flutter create --platforms ios --project-name app .
 Other new files or changes which `flutter create` command creates can be
 removed.
 
+App capabilities for Sign in with Apple and App Group should be added
+to the app. That creates file `ios/Runner/Runner.entitlements`. The
+App Group is used for push notification handling.
+
 ## About Assets
 
 Sign in with Google buttons are from
