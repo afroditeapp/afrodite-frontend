@@ -97,12 +97,6 @@ class PushNotificationManager extends AppSingleton {
       _firebaseApp = app;
     }
 
-    final apnsToken = await FirebaseMessaging.instance.getAPNSToken();
-    if (Platform.isIOS && apnsToken == null) {
-      log.error("Initing push notification support failed: APNS token is null");
-      return;
-    }
-
     if (_tokenSubscription == null) {
       _tokenSubscription = FirebaseMessaging.instance.onTokenRefresh.listen((token) {
         _newFcmTokenReceived.add(token);
