@@ -59,11 +59,15 @@ sealed class NotificationPayload extends Immutable {
       return null;
     }
     final sessionIdValue = jsonObject[_notificationSessionIdKey];
-    if (sessionIdValue is! int) {
+    final NotificationSessionId sessionId;
+    if (sessionIdValue is double) {
+      sessionId = NotificationSessionId(id: sessionIdValue.toInt());
+    } else if (sessionIdValue is int) {
+      sessionId = NotificationSessionId(id: sessionIdValue);
+    } else {
       log.error("Notification session ID is not an integer");
       return null;
     }
-    final sessionId = NotificationSessionId(id: sessionIdValue);
 
     switch (payloadTypeValue) {
       case NotificationPayloadTypeString.stringNavigateToLikes:
@@ -133,13 +137,19 @@ class NavigateToConversation extends NotificationPayload {
       log.error("NavigateToConversation payload parsing error: notification ID is missing");
       return null;
     }
-    final id = jsonObject[_notificationIdKey];
-    if (id is! int) {
+    final idValue = jsonObject[_notificationIdKey];
+    final NotificationId id;
+    if (idValue is double) {
+      id = NotificationId(idValue.toInt());
+
+    } else if (idValue is int) {
+      id = NotificationId(idValue);
+    } else {
       log.error("NavigateToConversation payload parsing error: notification ID is not an integer");
       return null;
     }
     return NavigateToConversation(
-      notificationId: NotificationId(id),
+      notificationId: id,
       sessionId: sessionId,
     );
   }
