@@ -23,7 +23,7 @@ sealed class NotificationPayload extends Immutable {
     return {};
   }
 
-  static const String _payloadTypeKey = "payloadType";
+  static const String _payloadTypeKey = "t";
   static const String _receiverAccountId = "r";
 
   String toJson() {
