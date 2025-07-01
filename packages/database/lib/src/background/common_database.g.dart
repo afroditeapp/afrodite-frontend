@@ -50,13 +50,6 @@ class $CommonBackgroundTable extends CommonBackground
           .withConverter<AccountId?>(
               $CommonBackgroundTable.$converteruuidAccountId);
   @override
-  late final GeneratedColumnWithTypeConverter<NotificationSessionId?, int>
-      notificationSessionId = GeneratedColumn<int>(
-              'notification_session_id', aliasedName, true,
-              type: DriftSqlType.int, requiredDuringInsert: false)
-          .withConverter<NotificationSessionId?>(
-              $CommonBackgroundTable.$converternotificationSessionId);
-  @override
   late final GeneratedColumnWithTypeConverter<FcmDeviceToken?, String>
       fcmDeviceToken = GeneratedColumn<String>(
               'fcm_device_token', aliasedName, true,
@@ -84,7 +77,6 @@ class $CommonBackgroundTable extends CommonBackground
         serverUrlProfile,
         serverUrlChat,
         uuidAccountId,
-        notificationSessionId,
         fcmDeviceToken,
         pendingNotificationToken,
         currentLocale
@@ -155,10 +147,6 @@ class $CommonBackgroundTable extends CommonBackground
       uuidAccountId: $CommonBackgroundTable.$converteruuidAccountId.fromSql(
           attachedDatabase.typeMapping.read(
               DriftSqlType.string, data['${effectivePrefix}uuid_account_id'])),
-      notificationSessionId: $CommonBackgroundTable
-          .$converternotificationSessionId
-          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.int,
-              data['${effectivePrefix}notification_session_id'])),
       fcmDeviceToken: $CommonBackgroundTable.$converterfcmDeviceToken.fromSql(
           attachedDatabase.typeMapping.read(
               DriftSqlType.string, data['${effectivePrefix}fcm_device_token'])),
@@ -178,9 +166,6 @@ class $CommonBackgroundTable extends CommonBackground
 
   static TypeConverter<AccountId?, String?> $converteruuidAccountId =
       const NullAwareTypeConverter.wrap(AccountIdConverter());
-  static TypeConverter<NotificationSessionId?, int?>
-      $converternotificationSessionId =
-      const NullAwareTypeConverter.wrap(NotificationSessionIdConverter());
   static TypeConverter<FcmDeviceToken?, String?> $converterfcmDeviceToken =
       const NullAwareTypeConverter.wrap(FcmDeviceTokenConverter());
   static TypeConverter<PendingNotificationToken?, String?>
@@ -196,10 +181,6 @@ class CommonBackgroundData extends DataClass
   final String? serverUrlProfile;
   final String? serverUrlChat;
   final AccountId? uuidAccountId;
-
-  /// Notification session ID prevents running notification payloads related to
-  /// other accounts.
-  final NotificationSessionId? notificationSessionId;
   final FcmDeviceToken? fcmDeviceToken;
   final PendingNotificationToken? pendingNotificationToken;
   final String? currentLocale;
@@ -210,7 +191,6 @@ class CommonBackgroundData extends DataClass
       this.serverUrlProfile,
       this.serverUrlChat,
       this.uuidAccountId,
-      this.notificationSessionId,
       this.fcmDeviceToken,
       this.pendingNotificationToken,
       this.currentLocale});
@@ -233,11 +213,6 @@ class CommonBackgroundData extends DataClass
     if (!nullToAbsent || uuidAccountId != null) {
       map['uuid_account_id'] = Variable<String>(
           $CommonBackgroundTable.$converteruuidAccountId.toSql(uuidAccountId));
-    }
-    if (!nullToAbsent || notificationSessionId != null) {
-      map['notification_session_id'] = Variable<int>($CommonBackgroundTable
-          .$converternotificationSessionId
-          .toSql(notificationSessionId));
     }
     if (!nullToAbsent || fcmDeviceToken != null) {
       map['fcm_device_token'] = Variable<String>($CommonBackgroundTable
@@ -273,9 +248,6 @@ class CommonBackgroundData extends DataClass
       uuidAccountId: uuidAccountId == null && nullToAbsent
           ? const Value.absent()
           : Value(uuidAccountId),
-      notificationSessionId: notificationSessionId == null && nullToAbsent
-          ? const Value.absent()
-          : Value(notificationSessionId),
       fcmDeviceToken: fcmDeviceToken == null && nullToAbsent
           ? const Value.absent()
           : Value(fcmDeviceToken),
@@ -298,8 +270,6 @@ class CommonBackgroundData extends DataClass
       serverUrlProfile: serializer.fromJson<String?>(json['serverUrlProfile']),
       serverUrlChat: serializer.fromJson<String?>(json['serverUrlChat']),
       uuidAccountId: serializer.fromJson<AccountId?>(json['uuidAccountId']),
-      notificationSessionId: serializer
-          .fromJson<NotificationSessionId?>(json['notificationSessionId']),
       fcmDeviceToken:
           serializer.fromJson<FcmDeviceToken?>(json['fcmDeviceToken']),
       pendingNotificationToken: serializer.fromJson<PendingNotificationToken?>(
@@ -317,8 +287,6 @@ class CommonBackgroundData extends DataClass
       'serverUrlProfile': serializer.toJson<String?>(serverUrlProfile),
       'serverUrlChat': serializer.toJson<String?>(serverUrlChat),
       'uuidAccountId': serializer.toJson<AccountId?>(uuidAccountId),
-      'notificationSessionId':
-          serializer.toJson<NotificationSessionId?>(notificationSessionId),
       'fcmDeviceToken': serializer.toJson<FcmDeviceToken?>(fcmDeviceToken),
       'pendingNotificationToken': serializer
           .toJson<PendingNotificationToken?>(pendingNotificationToken),
@@ -333,8 +301,6 @@ class CommonBackgroundData extends DataClass
           Value<String?> serverUrlProfile = const Value.absent(),
           Value<String?> serverUrlChat = const Value.absent(),
           Value<AccountId?> uuidAccountId = const Value.absent(),
-          Value<NotificationSessionId?> notificationSessionId =
-              const Value.absent(),
           Value<FcmDeviceToken?> fcmDeviceToken = const Value.absent(),
           Value<PendingNotificationToken?> pendingNotificationToken =
               const Value.absent(),
@@ -353,9 +319,6 @@ class CommonBackgroundData extends DataClass
             serverUrlChat.present ? serverUrlChat.value : this.serverUrlChat,
         uuidAccountId:
             uuidAccountId.present ? uuidAccountId.value : this.uuidAccountId,
-        notificationSessionId: notificationSessionId.present
-            ? notificationSessionId.value
-            : this.notificationSessionId,
         fcmDeviceToken:
             fcmDeviceToken.present ? fcmDeviceToken.value : this.fcmDeviceToken,
         pendingNotificationToken: pendingNotificationToken.present
@@ -382,9 +345,6 @@ class CommonBackgroundData extends DataClass
       uuidAccountId: data.uuidAccountId.present
           ? data.uuidAccountId.value
           : this.uuidAccountId,
-      notificationSessionId: data.notificationSessionId.present
-          ? data.notificationSessionId.value
-          : this.notificationSessionId,
       fcmDeviceToken: data.fcmDeviceToken.present
           ? data.fcmDeviceToken.value
           : this.fcmDeviceToken,
@@ -406,7 +366,6 @@ class CommonBackgroundData extends DataClass
           ..write('serverUrlProfile: $serverUrlProfile, ')
           ..write('serverUrlChat: $serverUrlChat, ')
           ..write('uuidAccountId: $uuidAccountId, ')
-          ..write('notificationSessionId: $notificationSessionId, ')
           ..write('fcmDeviceToken: $fcmDeviceToken, ')
           ..write('pendingNotificationToken: $pendingNotificationToken, ')
           ..write('currentLocale: $currentLocale')
@@ -422,7 +381,6 @@ class CommonBackgroundData extends DataClass
       serverUrlProfile,
       serverUrlChat,
       uuidAccountId,
-      notificationSessionId,
       fcmDeviceToken,
       pendingNotificationToken,
       currentLocale);
@@ -436,7 +394,6 @@ class CommonBackgroundData extends DataClass
           other.serverUrlProfile == this.serverUrlProfile &&
           other.serverUrlChat == this.serverUrlChat &&
           other.uuidAccountId == this.uuidAccountId &&
-          other.notificationSessionId == this.notificationSessionId &&
           other.fcmDeviceToken == this.fcmDeviceToken &&
           other.pendingNotificationToken == this.pendingNotificationToken &&
           other.currentLocale == this.currentLocale);
@@ -449,7 +406,6 @@ class CommonBackgroundCompanion extends UpdateCompanion<CommonBackgroundData> {
   final Value<String?> serverUrlProfile;
   final Value<String?> serverUrlChat;
   final Value<AccountId?> uuidAccountId;
-  final Value<NotificationSessionId?> notificationSessionId;
   final Value<FcmDeviceToken?> fcmDeviceToken;
   final Value<PendingNotificationToken?> pendingNotificationToken;
   final Value<String?> currentLocale;
@@ -460,7 +416,6 @@ class CommonBackgroundCompanion extends UpdateCompanion<CommonBackgroundData> {
     this.serverUrlProfile = const Value.absent(),
     this.serverUrlChat = const Value.absent(),
     this.uuidAccountId = const Value.absent(),
-    this.notificationSessionId = const Value.absent(),
     this.fcmDeviceToken = const Value.absent(),
     this.pendingNotificationToken = const Value.absent(),
     this.currentLocale = const Value.absent(),
@@ -472,7 +427,6 @@ class CommonBackgroundCompanion extends UpdateCompanion<CommonBackgroundData> {
     this.serverUrlProfile = const Value.absent(),
     this.serverUrlChat = const Value.absent(),
     this.uuidAccountId = const Value.absent(),
-    this.notificationSessionId = const Value.absent(),
     this.fcmDeviceToken = const Value.absent(),
     this.pendingNotificationToken = const Value.absent(),
     this.currentLocale = const Value.absent(),
@@ -484,7 +438,6 @@ class CommonBackgroundCompanion extends UpdateCompanion<CommonBackgroundData> {
     Expression<String>? serverUrlProfile,
     Expression<String>? serverUrlChat,
     Expression<String>? uuidAccountId,
-    Expression<int>? notificationSessionId,
     Expression<String>? fcmDeviceToken,
     Expression<String>? pendingNotificationToken,
     Expression<String>? currentLocale,
@@ -496,8 +449,6 @@ class CommonBackgroundCompanion extends UpdateCompanion<CommonBackgroundData> {
       if (serverUrlProfile != null) 'server_url_profile': serverUrlProfile,
       if (serverUrlChat != null) 'server_url_chat': serverUrlChat,
       if (uuidAccountId != null) 'uuid_account_id': uuidAccountId,
-      if (notificationSessionId != null)
-        'notification_session_id': notificationSessionId,
       if (fcmDeviceToken != null) 'fcm_device_token': fcmDeviceToken,
       if (pendingNotificationToken != null)
         'pending_notification_token': pendingNotificationToken,
@@ -512,7 +463,6 @@ class CommonBackgroundCompanion extends UpdateCompanion<CommonBackgroundData> {
       Value<String?>? serverUrlProfile,
       Value<String?>? serverUrlChat,
       Value<AccountId?>? uuidAccountId,
-      Value<NotificationSessionId?>? notificationSessionId,
       Value<FcmDeviceToken?>? fcmDeviceToken,
       Value<PendingNotificationToken?>? pendingNotificationToken,
       Value<String?>? currentLocale}) {
@@ -523,8 +473,6 @@ class CommonBackgroundCompanion extends UpdateCompanion<CommonBackgroundData> {
       serverUrlProfile: serverUrlProfile ?? this.serverUrlProfile,
       serverUrlChat: serverUrlChat ?? this.serverUrlChat,
       uuidAccountId: uuidAccountId ?? this.uuidAccountId,
-      notificationSessionId:
-          notificationSessionId ?? this.notificationSessionId,
       fcmDeviceToken: fcmDeviceToken ?? this.fcmDeviceToken,
       pendingNotificationToken:
           pendingNotificationToken ?? this.pendingNotificationToken,
@@ -555,11 +503,6 @@ class CommonBackgroundCompanion extends UpdateCompanion<CommonBackgroundData> {
           .$converteruuidAccountId
           .toSql(uuidAccountId.value));
     }
-    if (notificationSessionId.present) {
-      map['notification_session_id'] = Variable<int>($CommonBackgroundTable
-          .$converternotificationSessionId
-          .toSql(notificationSessionId.value));
-    }
     if (fcmDeviceToken.present) {
       map['fcm_device_token'] = Variable<String>($CommonBackgroundTable
           .$converterfcmDeviceToken
@@ -585,7 +528,6 @@ class CommonBackgroundCompanion extends UpdateCompanion<CommonBackgroundData> {
           ..write('serverUrlProfile: $serverUrlProfile, ')
           ..write('serverUrlChat: $serverUrlChat, ')
           ..write('uuidAccountId: $uuidAccountId, ')
-          ..write('notificationSessionId: $notificationSessionId, ')
           ..write('fcmDeviceToken: $fcmDeviceToken, ')
           ..write('pendingNotificationToken: $pendingNotificationToken, ')
           ..write('currentLocale: $currentLocale')

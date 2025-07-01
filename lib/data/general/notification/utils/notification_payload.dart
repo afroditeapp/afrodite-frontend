@@ -2,10 +2,10 @@
 
 import 'dart:convert';
 
-import 'package:database/database.dart';
 import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
 import 'package:app/data/general/notification/utils/notification_id.dart';
+import 'package:openapi/api.dart';
 import 'package:utils/utils.dart';
 
 final log = Logger("NotificationPayload");
@@ -13,10 +13,10 @@ final log = Logger("NotificationPayload");
 @immutable
 sealed class NotificationPayload extends Immutable {
   final NotificationPayloadTypeString payloadType;
-  final NotificationSessionId sessionId;
+  final AccountId receiverAccountId;
   const NotificationPayload({
     required this.payloadType,
-    required this.sessionId,
+    required this.receiverAccountId,
   });
 
   Map<String, Object?> additionalData() {
@@ -24,13 +24,13 @@ sealed class NotificationPayload extends Immutable {
   }
 
   static const String _payloadTypeKey = "payloadType";
-  static const String _notificationSessionIdKey = "notificationSessionId";
+  static const String _receiverAccountId = "r";
 
   String toJson() {
     final Map<String, Object?> map = {};
     map.addEntries(additionalData().entries);
     map[_payloadTypeKey] = payloadType.value;
-    map[_notificationSessionIdKey] = sessionId.id;
+    map[_receiverAccountId] = receiverAccountId.aid;
     return jsonEncode(map);
   }
 
@@ -54,38 +54,35 @@ sealed class NotificationPayload extends Immutable {
       return null;
     }
 
-    if (!jsonObject.containsKey(_notificationSessionIdKey)) {
+    if (!jsonObject.containsKey(_receiverAccountId)) {
       log.error("Notification session ID is missing from the payload");
       return null;
     }
-    final sessionIdValue = jsonObject[_notificationSessionIdKey];
-    final NotificationSessionId sessionId;
-    if (sessionIdValue is double) {
-      sessionId = NotificationSessionId(id: sessionIdValue.toInt());
-    } else if (sessionIdValue is int) {
-      sessionId = NotificationSessionId(id: sessionIdValue);
-    } else {
-      log.error("Notification session ID is not an integer");
+    final receiverAccountIdString = jsonObject[_receiverAccountId];
+    if (receiverAccountIdString is! String) {
+      log.error("Receiver Account ID is not a string");
       return null;
     }
 
+    final AccountId receiverAccountId = AccountId(aid: receiverAccountIdString);
+
     switch (payloadTypeValue) {
       case NotificationPayloadTypeString.stringNavigateToLikes:
-        return NavigateToLikes(sessionId: sessionId);
+        return NavigateToLikes(receiverAccountId: receiverAccountId);
       case NotificationPayloadTypeString.stringNavigateToNews:
-        return NavigateToNews(sessionId: sessionId);
+        return NavigateToNews(receiverAccountId: receiverAccountId);
       case NotificationPayloadTypeString.stringNavigateToConversationList:
-        return NavigateToConversationList(sessionId: sessionId);
+        return NavigateToConversationList(receiverAccountId: receiverAccountId);
       case NotificationPayloadTypeString.stringNavigateToConversation:
-        return NavigateToConversation.parseFromJsonObject(jsonObject, sessionId);
+        return NavigateToConversation.parseFromJsonObject(jsonObject, receiverAccountId);
       case NotificationPayloadTypeString.stringNavigateToContentManagement:
-        return NavigateToContentManagement(sessionId: sessionId);
+        return NavigateToContentManagement(receiverAccountId: receiverAccountId);
       case NotificationPayloadTypeString.stringNavigateToMyProfile:
-        return NavigateToMyProfile(sessionId: sessionId);
+        return NavigateToMyProfile(receiverAccountId: receiverAccountId);
       case NotificationPayloadTypeString.stringNavigateToAutomaticProfileSearchResults:
-        return NavigateToAutomaticProfileSearchResults(sessionId: sessionId);
+        return NavigateToAutomaticProfileSearchResults(receiverAccountId: receiverAccountId);
       case NotificationPayloadTypeString.stringNavigateToModeratorTasks:
-        return NavigateToModeratorTasks(sessionId: sessionId);
+        return NavigateToModeratorTasks(receiverAccountId: receiverAccountId);
       default:
         log.error("Payload type is unknown");
         return null;
@@ -95,28 +92,25 @@ sealed class NotificationPayload extends Immutable {
 
 class NavigateToLikes extends NotificationPayload {
   const NavigateToLikes({
-    required NotificationSessionId sessionId
+    required super.receiverAccountId,
   }) : super(
     payloadType: NotificationPayloadTypeString.navigateToLikes,
-    sessionId: sessionId,
   );
 }
 
 class NavigateToNews extends NotificationPayload {
   const NavigateToNews({
-    required NotificationSessionId sessionId
+    required super.receiverAccountId,
   }) : super(
     payloadType: NotificationPayloadTypeString.navigateToNews,
-    sessionId: sessionId,
   );
 }
 
 class NavigateToConversationList extends NotificationPayload {
   const NavigateToConversationList({
-    required NotificationSessionId sessionId
+    required super.receiverAccountId,
   }) : super(
     payloadType: NotificationPayloadTypeString.navigateToConversationList,
-    sessionId: sessionId,
   );
 }
 
@@ -125,14 +119,13 @@ class NavigateToConversation extends NotificationPayload {
 
   const NavigateToConversation({
     required this.notificationId,
-    required NotificationSessionId sessionId,
+    required super.receiverAccountId,
   }) : super(
     payloadType: NotificationPayloadTypeString.navigateToConversation,
-    sessionId: sessionId,
   );
 
   static const String _notificationIdKey = "notificationId";
-  static NotificationPayload? parseFromJsonObject(Map<String, Object?> jsonObject, NotificationSessionId sessionId) {
+  static NotificationPayload? parseFromJsonObject(Map<String, Object?> jsonObject, AccountId receiverAccountId) {
     if (!jsonObject.containsKey(_notificationIdKey)) {
       log.error("NavigateToConversation payload parsing error: notification ID is missing");
       return null;
@@ -150,7 +143,7 @@ class NavigateToConversation extends NotificationPayload {
     }
     return NavigateToConversation(
       notificationId: id,
-      sessionId: sessionId,
+      receiverAccountId: receiverAccountId,
     );
   }
 
@@ -162,16 +155,15 @@ class NavigateToConversation extends NotificationPayload {
 
 class NavigateToContentManagement extends NotificationPayload {
   const NavigateToContentManagement({
-    required NotificationSessionId sessionId,
+    required super.receiverAccountId,
   }) : super(
     payloadType: NotificationPayloadTypeString.navigateToContentManagement,
-    sessionId: sessionId,
   );
 }
 
 class NavigateToMyProfile extends NotificationPayload {
   const NavigateToMyProfile({
-    required super.sessionId,
+    required super.receiverAccountId,
   }) : super(
     payloadType: NotificationPayloadTypeString.navigateToMyProfile,
   );
@@ -186,7 +178,7 @@ class NavigateToMyProfile extends NotificationPayload {
 
 class NavigateToAutomaticProfileSearchResults extends NotificationPayload {
   const NavigateToAutomaticProfileSearchResults({
-    required super.sessionId,
+    required super.receiverAccountId,
   }) : super(
     payloadType: NotificationPayloadTypeString.navigateToAutomaticProfileSearchResults,
   );
@@ -194,7 +186,7 @@ class NavigateToAutomaticProfileSearchResults extends NotificationPayload {
 
 class NavigateToModeratorTasks extends NotificationPayload {
   const NavigateToModeratorTasks({
-    required super.sessionId,
+    required super.receiverAccountId,
   }) : super(
     payloadType: NotificationPayloadTypeString.navigateToModeratorTasks,
   );

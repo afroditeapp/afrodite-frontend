@@ -288,7 +288,7 @@ class LoginRepository extends DataRepository {
     final accountBackgroundDb = BackgroundDatabaseManager.getInstance().getAccountBackgroundDatabaseManager(accountId);
     final accountDb = DatabaseManager.getInstance().getAccountDatabaseManager(accountId);
 
-    final connectionManager = ServerConnectionManager(accountDb, accountBackgroundDb);
+    final connectionManager = ServerConnectionManager(accountDb, accountBackgroundDb, accountId);
     final clientIdManager = ClientIdManager(accountDb, connectionManager.api);
 
     final imageCacheSettings = ImageCacheSettings(accountDb);

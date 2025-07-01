@@ -1052,6 +1052,10 @@
   "@news_list_screen_title": {
     "description": "Title for news list screen title"
   },
+  "notification_action_ignored": "Notification action ignored because it is for another account",
+  "@notification_action_ignored": {
+    "description": "Snackbar text for notifying that notification action was ignored"
+  },
   "notification_automatic_profile_search_found_profiles": "New or updated profiles found",
   "@notification_automatic_profile_search_found_profiles": {
     "description": "Title for automatic profile search found profiles notification"
@@ -1149,10 +1153,6 @@
   "notification_profile_text_rejected": "Profile text rejected",
   "@notification_profile_text_rejected": {
     "description": "Title for profile text rejected notification"
-  },
-  "notification_session_expired_error": "Notification action ignored because of expired notification session ID",
-  "@notification_session_expired_error": {
-    "description": "Snackbar text for notifying that notification action was ignored because of expired notification session ID"
   },
   "notification_settings_screen_notification_category_disabled_from_system_settings_text": "Disabled from system notification settings",
   "@notification_settings_screen_notification_category_disabled_from_system_settings_text": {

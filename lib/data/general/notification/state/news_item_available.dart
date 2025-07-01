@@ -45,7 +45,7 @@ class NotificationNewsItemAvailable extends AppSingletonNoInit {
       title: R.strings.notification_news_item_available,
       category: const NotificationCategoryNewsItemAvailable(),
       notificationPayload: NavigateToNews(
-        sessionId: await notifications.getSessionId(),
+        receiverAccountId: accountBackgroundDb.accountId(),
       ),
       accountBackgroundDb: accountBackgroundDb,
     );
@@ -65,7 +65,7 @@ class NotificationNewsItemAvailable extends AppSingletonNoInit {
       body: trueValues.join("\n"),
       category: const NotificationCategoryNewsItemAvailable(),
       notificationPayload: NavigateToModeratorTasks(
-        sessionId: await notifications.getSessionId(),
+        receiverAccountId: accountBackgroundDb.accountId(),
       ),
       accountBackgroundDb: accountBackgroundDb,
     );

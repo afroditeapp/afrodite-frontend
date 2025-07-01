@@ -122,7 +122,7 @@
     <string name="notification_automatic_profile_search_found_profiles" description="Title for automatic profile search found profiles notification">New or updated profiles found</string>
 
     <!-- Notification -->
-    <string name="notification_session_expired_error" description="Snackbar text for notifying that notification action was ignored because of expired notification session ID">Notification action ignored because of expired notification session ID</string>
+    <string name="notification_action_ignored" description="Snackbar text for notifying that notification action was ignored">Notification action ignored because it is for another account</string>
 
     <!-- Notification settings screen -->
     <string name="notification_settings_screen_title" description="Title for notification settings screen">Notifications</string>

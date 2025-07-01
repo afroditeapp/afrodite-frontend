@@ -7,13 +7,15 @@ import 'package:database/database.dart';
 import 'package:logging/logging.dart';
 import 'package:app/utils/app_error.dart';
 import 'package:app/utils/result.dart';
+import 'package:openapi/api.dart';
 import 'package:rxdart/rxdart.dart';
 
 final log = Logger("AccountBackgroundDatabaseManager");
 
 class AccountBackgroundDatabaseManager {
   final AccountBackgroundDatabase db;
-  AccountBackgroundDatabaseManager(this.db);
+  final AccountId id;
+  AccountBackgroundDatabaseManager(this.id, this.db);
 
   // Access current account database
 
@@ -89,6 +91,8 @@ class AccountBackgroundDatabaseManager {
 
   Future<Result<void, DatabaseError>> profileAction(Future<void> Function(DaoProfilesBackground) action) =>
     accountAction((db) => action(db.daoProfilesBackground));
+
+  AccountId accountId() => id;
 }
 
 Result<Success, DatabaseException> _handleDbException<Success>(Exception e) {

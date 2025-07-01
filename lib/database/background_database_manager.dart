@@ -110,7 +110,7 @@ class BackgroundDatabaseManager extends AppSingleton {
 
   AccountBackgroundDatabaseManager getAccountBackgroundDatabaseManager(AccountId accountId) {
     final db = _getAccountDatabaseUsingAccount(accountId);
-    return AccountBackgroundDatabaseManager(db);
+    return AccountBackgroundDatabaseManager(accountId, db);
   }
 
   AccountBackgroundDatabase _getAccountDatabaseUsingAccount(AccountId accountId) {

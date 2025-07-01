@@ -40,7 +40,7 @@ class NotificationAutomaticProfileSearch extends AppSingletonNoInit {
       id: id,
       title: title,
       category: const NotificationCategoryAutomaticProfileSearch(),
-      notificationPayload: NavigateToAutomaticProfileSearchResults(sessionId: await notifications.getSessionId()),
+      notificationPayload: NavigateToAutomaticProfileSearchResults(receiverAccountId: accountBackgroundDb.accountId()),
       accountBackgroundDb: accountBackgroundDb,
     );
   }

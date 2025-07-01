@@ -54,7 +54,7 @@ class NotificationMediaContentModerationCompleted extends AppSingletonNoInit {
       id: id,
       title: title,
       category: const NotificationCategoryMediaContentModerationCompleted(),
-      notificationPayload: NavigateToContentManagement(sessionId: await notifications.getSessionId()),
+      notificationPayload: NavigateToContentManagement(receiverAccountId: accountBackgroundDb.accountId()),
       accountBackgroundDb: accountBackgroundDb,
     );
   }

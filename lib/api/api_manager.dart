@@ -7,7 +7,6 @@ import 'package:app/api/api_provider.dart';
 import 'package:app/api/api_wrapper.dart';
 import 'package:app/api/server_connection.dart';
 import 'package:app/config.dart';
-import 'package:app/data/notification_manager.dart';
 import 'package:app/data/utils.dart';
 import 'package:app/database/account_background_database_manager.dart';
 import 'package:app/database/account_database_manager.dart';
@@ -55,9 +54,10 @@ class ServerConnectionManager implements LifecycleMethods, ServerConnectionInter
   final ApiManager _account = ApiManager.withDefaultAddress(rememberToInitializeConnectionLateFinalField: true);
   final AccountDatabaseManager accountDb;
   final AccountBackgroundDatabaseManager accountBackgroundDb;
+  final AccountId currentUser;
   ServerConnection accountConnection;
 
-  ServerConnectionManager(this.accountDb, this.accountBackgroundDb) :
+  ServerConnectionManager(this.accountDb, this.accountBackgroundDb, this.currentUser) :
     accountConnection =  ServerConnection(
       ServerSlot.account,
       "",
@@ -211,35 +211,19 @@ class ServerConnectionManager implements LifecycleMethods, ServerConnectionInter
 
   /// Wait until current login session connects to server.
   ///
-  /// If notification session ID changes then error is returned.
+  /// If current login session changes to different account then error is returned.
   Future<Result<void, void>> waitUntilCurrentSessionConnects() async {
-    final initialNotificationSessionId = await NotificationManager.getInstance().getSessionId();
-
     await state
         .firstWhere((element) => element == ApiManagerState.connected);
 
-    final notificationSessionIdChanged = await Future.any([
-      NotificationManager.getInstance().getSessionIdStream()
-        .firstWhere((element) => element.id != initialNotificationSessionId.id)
-        .then((value) => true),
-      state
-        .firstWhere((element) => element == ApiManagerState.connected)
-        .then((value) => false),
-    ]);
+    final accountAfterConnection = await BackgroundDatabaseManager.getInstance().commonStreamSingle((db) => db.watchAccountId());
 
-    if (notificationSessionIdChanged) {
-      log.error("Notification session ID changed when waiting connected state");
+    if (currentUser != accountAfterConnection) {
+      log.error("Account changed when waiting connected state");
       return const Err(null);
     }
 
-    final currentNotificationSessionId = await NotificationManager.getInstance().getSessionId();
-
-    if (initialNotificationSessionId.id == currentNotificationSessionId.id) {
-      return const Ok(null);
-    } else {
-      log.error("Notification session ID changed");
-      return const Err(null);
-    }
+    return const Ok(null);
   }
 }
 

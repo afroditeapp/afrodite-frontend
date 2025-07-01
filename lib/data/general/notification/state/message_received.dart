@@ -70,7 +70,7 @@ class NotificationMessageReceived extends AppSingletonNoInit {
       category: const NotificationCategoryMessages(),
       notificationPayload: NavigateToConversation(
         notificationId: id,
-        sessionId: await notifications.getSessionId(),
+        receiverAccountId: accountBackgroundDb.accountId(),
       ),
       accountBackgroundDb: accountBackgroundDb,
     );

@@ -14,7 +14,6 @@ export 'src/foreground/account_database.dart' show AccountDatabase, PROFILE_FILT
 export 'src/message_converter.dart';
 export 'src/message_entry.dart' show MessageEntry, MessageState, SentMessageState, ReceivedMessageState, InfoMessageState, LocalMessageId, UnreadMessagesCount;
 export 'src/profile_entry.dart' show MyProfileEntry, ProfileEntry, ProfileLocalDbId, NewMessageNotificationId, ProfileTitle, InitialAgeInfo, AvailableAges, AutomaticAgeChangeInfo, MyContent, ContentIdAndAccepted, AccountState, AccountStateContainerToAccountState, ProfileAttributeAndHash, ProfileAttributes;
-export 'src/notification_session_id.dart' show NotificationSessionId;
 export 'src/server_maintenance.dart' show ServerMaintenanceInfo;
 export 'src/private_key_data.dart' show PrivateKeyData, PublicKeyData, AllKeyData, ForeignPublicKey;
 export 'src/utils.dart' show QueryExcecutorProvider;

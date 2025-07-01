@@ -58,7 +58,7 @@ class NotificationLikeReceived extends AppSingletonNoInit {
       title: title,
       category: const NotificationCategoryLikes(),
       notificationPayload: NavigateToLikes(
-        sessionId: await notifications.getSessionId(),
+        receiverAccountId: accountBackgroundDb.accountId(),
       ),
       accountBackgroundDb: accountBackgroundDb,
     );

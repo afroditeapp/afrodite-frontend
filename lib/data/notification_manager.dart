@@ -252,16 +252,6 @@ class NotificationManager extends AppSingleton {
     }
   }
 
-  Future<NotificationSessionId> getSessionId() async {
-    final id = await BackgroundDatabaseManager.getInstance().commonStreamSingle((db) => db.watchNotificationSessionId());
-    return NotificationSessionId(id: id?.id ?? 0);
-  }
-
-  Stream<NotificationSessionId> getSessionIdStream() {
-    return BackgroundDatabaseManager.getInstance().commonStream((db) => db.watchNotificationSessionId())
-      .map((id) => NotificationSessionId(id: id?.id ?? 0));
-  }
-
   Future<List<String>> disabledNotificationChannelsIdsOnAndroid() async {
     if (kIsWeb) {
       return [];

@@ -62,7 +62,7 @@ class NotificationProfileTextModerationCompleted extends AppSingletonNoInit {
       id: id,
       title: title,
       category: const NotificationCategoryProfileTextModerationCompleted(),
-      notificationPayload: NavigateToMyProfile(sessionId: await notifications.getSessionId()),
+      notificationPayload: NavigateToMyProfile(receiverAccountId: accountBackgroundDb.accountId()),
       accountBackgroundDb: accountBackgroundDb,
     );
   }

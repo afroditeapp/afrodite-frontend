@@ -111,13 +111,13 @@ Future<NewPageDetails?> handlePayload(
     required bool showError,
   }
 ) async {
-  final notificationSessionId = await BackgroundDatabaseManager.getInstance().commonStreamSingle(
-    (db) => db.watchNotificationSessionId(),
+  final currentAccountId = await BackgroundDatabaseManager.getInstance().commonStreamSingle(
+    (db) => db.watchAccountId(),
   );
-  if (notificationSessionId?.id != payload.sessionId.id) {
-    log.warning("Notification payload session ID does not match current session ID");
+  if (currentAccountId == null || currentAccountId != payload.receiverAccountId) {
+    log.warning("Notification payload receiver account ID does not match current session account ID");
     if (showError) {
-      showSnackBar(R.strings.notification_session_expired_error);
+      showSnackBar(R.strings.notification_action_ignored);
     }
     return null;
   }
