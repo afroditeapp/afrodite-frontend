@@ -49,6 +49,8 @@ class PushNotificationManager extends AppSingleton {
 
   final PublishSubject<String> _newFcmTokenReceived = PublishSubject();
 
+  int initRetryWaitSeconds = 5;
+
   @override
   Future<void> init() async {
     if (_initDone) {
@@ -105,6 +107,16 @@ class PushNotificationManager extends AppSingleton {
       _tokenSubscription?.onError((_) {
         log.error("FCM onTokenRefresh error");
       });
+    }
+
+    final apnsToken = await FirebaseMessaging.instance.getAPNSToken();
+    if (Platform.isIOS && apnsToken == null) {
+      // iOS only. If apnsToken is null then getToken will throw exception.
+      // The token is not available directly after initializing FirebaseApp.
+      log.error("Initing push notification support failed: APNS token is null");
+      unawaited(Future.delayed(Duration(seconds: initRetryWaitSeconds), initPushNotifications));
+      initRetryWaitSeconds *= 2;
+      return;
     }
 
     final fcmToken = await FirebaseMessaging.instance.getToken();
