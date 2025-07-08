@@ -1,5 +1,4 @@
 
-
 import 'package:database/database.dart';
 
 class NotificationId {
@@ -17,7 +16,7 @@ enum NotificationIdStatic {
   automaticProfileSearchCompleted(id: NotificationId(6)),
   /// Category: NotificationCategoryNewsItemAvailable
   adminNotification(id: NotificationId(7)),
-  lastStaticId(id: NotificationId(1000000));
+  firstNewMessageNotificationId(id: NotificationId(1000));
 
   final NotificationId id;
   const NotificationIdStatic({
@@ -25,10 +24,10 @@ enum NotificationIdStatic {
   });
 
   static NotificationId calculateNotificationIdForNewMessageNotifications(NewMessageNotificationId idStartingFromZero) {
-    return NotificationId(lastStaticId.id.value + 1 + idStartingFromZero.id);
+    return NotificationId(firstNewMessageNotificationId.id.value + idStartingFromZero.id);
   }
 
   static NewMessageNotificationId revertNewMessageNotificationIdCalcualtion(NotificationId notificationId) {
-    return NewMessageNotificationId(notificationId.value - lastStaticId.id.value - 1);
+    return NewMessageNotificationId(notificationId.value - firstNewMessageNotificationId.id.value);
   }
 }
