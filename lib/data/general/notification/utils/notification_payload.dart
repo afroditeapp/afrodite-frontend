@@ -132,10 +132,7 @@ class NavigateToConversation extends NotificationPayload {
     }
     final idValue = jsonObject[_notificationIdKey];
     final NotificationId id;
-    if (idValue is double) {
-      id = NotificationId(idValue.toInt());
-
-    } else if (idValue is int) {
+    if (idValue is int) {
       id = NotificationId(idValue);
     } else {
       log.error("NavigateToConversation payload parsing error: notification ID is not an integer");

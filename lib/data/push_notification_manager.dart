@@ -1,10 +1,8 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:app/data/general/notification/state/automatic_profile_search.dart';
 import 'package:app/data/general/notification/state/profile_text_moderation_completed.dart';
-import 'package:app/data/general/notification/utils/notification_payload.dart';
 import 'package:async/async.dart' show StreamExtensions;
 import 'package:app/data/general/notification/state/media_content_moderation_completed.dart';
 import 'package:app/data/general/notification/state/news_item_available.dart';
@@ -44,7 +42,6 @@ class PushNotificationManager extends AppSingleton {
 
   bool _initDone = false;
   FirebaseApp? _firebaseApp;
-  StreamSubscription<RemoteMessage>? _notificationSubscription;
   StreamSubscription<String>? _tokenSubscription;
 
   final PublishSubject<String> _newFcmTokenReceived = PublishSubject();
@@ -63,13 +60,6 @@ class PushNotificationManager extends AppSingleton {
     _newFcmTokenReceived.asyncMap((fcmToken) async {
       await _refreshTokenToServer(fcmToken);
     }).listen((value) {});
-
-    final token = await BackgroundDatabaseManager.getInstance().commonStreamSingle((db) => db.watchFcmDeviceToken());
-    if (token != null) {
-      // Early init Firebase to make app launch using FCM notification
-      // work properly.
-      await _initFirebaseIfNeeded();
-    }
   }
 
   /// Initializes push notifications. Can be called multiple times.
@@ -141,23 +131,6 @@ class PushNotificationManager extends AppSingleton {
       }
       _firebaseApp = app;
     }
-
-    final initialMessage = await FirebaseMessaging.instance.getInitialMessage();
-    if (initialMessage != null) {
-      final data = jsonEncode(initialMessage.data);
-      final payload = NotificationPayload.parse(data);
-      if (payload != null) {
-        NotificationManager.getInstance().setAppLaunchNotificationPayload(payload);
-      }
-    }
-
-    _notificationSubscription ??= FirebaseMessaging.onMessageOpenedApp.listen((message) {
-      final data = jsonEncode(message.data);
-      final payload = NotificationPayload.parse(data);
-      if (payload != null) {
-        NotificationManager.getInstance().setAppLaunchNotificationPayload(payload);
-      }
-    });
   }
 
   Future<void> _refreshTokenToServer(String fcmToken) async {

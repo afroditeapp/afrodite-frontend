@@ -276,14 +276,6 @@ class NotificationManager extends AppSingleton {
       return [];
     }
   }
-
-  void setAppLaunchNotificationPayload(NotificationPayload payload) {
-    _appLaunchNotificationPayload = payload;
-  }
-
-  void addNotificationPayload(NotificationPayload payload) {
-    onReceivedPayload.add(payload);
-  }
 }
 
 // TODO(prod): iOS notifications are not working
