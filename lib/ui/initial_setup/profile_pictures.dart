@@ -59,7 +59,7 @@ class AskProfilePicturesScreen extends StatelessWidget {
             }
           );
         },
-        question: AskProfilePictures(),
+        question: const AskProfilePictures(),
       ),
       showRefreshProfilePicturesFaceDetectedValuesAction: true,
     );
@@ -281,7 +281,7 @@ class _ProfilePictureSelection extends State<ProfilePictureSelection> {
           case Add():
             return AddPicture(imgIndex: imgStateIndex);
           case Hidden():
-            return HiddenPicture();
+            return const HiddenPicture();
           case ImageSelected():
             final processedImg = getProcessedAccountImage(context, imgState);
             if (processedImg != null) {
@@ -300,8 +300,8 @@ class _ProfilePictureSelection extends State<ProfilePictureSelection> {
       builder: (context, state) {
         final imgState = state.pictures()[imgStateIndex];
         switch (imgState) {
-          case Add(): return HiddenThumbnailPicture();
-          case Hidden(): return HiddenThumbnailPicture();
+          case Add(): return const HiddenThumbnailPicture();
+          case Hidden(): return const HiddenThumbnailPicture();
           case ImageSelected(:final cropResults): {
             final processedImg = getProcessedAccountImage(context, imgState);
             if (processedImg != null) {

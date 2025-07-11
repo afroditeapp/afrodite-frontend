@@ -68,12 +68,12 @@ class AdminSettingsPage extends StatelessWidget {
     if (permissions.adminServerMaintenanceSaveBackendConfig ||
         permissions.adminServerMaintenanceViewBackendConfig) {
       settings.add(Setting.createSetting(Icons.settings, "Configure backend", () =>
-        MyNavigator.push(context, MaterialPage<void>(child: const ConfigureBackendPage()),)
+        MyNavigator.push(context, const MaterialPage<void>(child: ConfigureBackendPage()),)
       ));
     }
     if (permissions.adminServerMaintenanceViewInfo) {
       settings.add(Setting.createSetting(Icons.info_outline, "Server system info", () =>
-        MyNavigator.push(context, MaterialPage<void>(child: const ServerSystemInfoPage()),)
+        MyNavigator.push(context, const MaterialPage<void>(child: ServerSystemInfoPage()),)
       ));
     }
     if (
@@ -86,7 +86,7 @@ class AdminSettingsPage extends StatelessWidget {
     }
     if (permissions.adminServerMaintenanceUpdateSoftware) {
       settings.add(Setting.createSetting(Icons.system_update_alt, "Server software update", () =>
-        MyNavigator.push(context, MaterialPage<void>(child: const ServerSoftwareUpdatePage()),)
+        MyNavigator.push(context, const MaterialPage<void>(child: ServerSoftwareUpdatePage()),)
       ));
     }
     if (permissions.adminServerMaintenanceViewInfo) {
@@ -105,7 +105,7 @@ class AdminSettingsPage extends StatelessWidget {
     }
     if (permissions.adminServerMaintenanceEditNotification) {
       settings.add(Setting.createSetting(Icons.settings, "Edit maintenance notification", () =>
-        MyNavigator.push(context, MaterialPage<void>(child: const EditMaintenanceNotificationScreen()))
+        MyNavigator.push(context, const MaterialPage<void>(child: EditMaintenanceNotificationScreen()))
       ));
     }
     if (permissions.adminProfileStatistics) {

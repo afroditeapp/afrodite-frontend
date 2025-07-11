@@ -157,7 +157,7 @@ class _MenuViewState extends State<MenuView> {
 
     // TODO(prod): Remove/hide debug settings
     settings.add(Setting.createSetting(Icons.bug_report_rounded, "Debug", () =>
-      MyNavigator.push(context, MaterialPage<void>(child: DebugSettingsPage()))
+      MyNavigator.push(context, const MaterialPage<void>(child: DebugSettingsPage()))
     ));
 
     return settings;

@@ -20,7 +20,7 @@ class AgeConfirmationScreen extends StatelessWidget {
           final isAdult = state.isAdult;
           if (isAdult != null && isAdult) {
             return () {
-              MyNavigator.push(context, MaterialPage<void>(child: const AskSecuritySelfieScreen()));
+              MyNavigator.push(context, const MaterialPage<void>(child: AskSecuritySelfieScreen()));
             };
           } else {
             return null;

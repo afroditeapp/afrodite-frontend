@@ -16,7 +16,7 @@ import 'package:app/utils/result.dart';
 
 
 class DebugSettingsPage extends StatefulWidget {
-  DebugSettingsPage({super.key});
+  const DebugSettingsPage({super.key});
 
   @override
   State<DebugSettingsPage> createState() => _DebugSettingsPageState();

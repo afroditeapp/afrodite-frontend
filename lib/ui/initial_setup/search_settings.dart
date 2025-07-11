@@ -42,7 +42,7 @@ class AskSearchSettingsScreen extends StatelessWidget {
         getContinueButtonCallback: (context, state) {
           if (state.genderSearchSetting.notEmpty() && ageRangeIsValid(state.searchAgeRangeMin, state.searchAgeRangeMax)) {
             return () {
-              MyNavigator.push(context, MaterialPage<void>(child: AskLocationScreen()));
+              MyNavigator.push(context, const MaterialPage<void>(child: AskLocationScreen()));
             };
           } else {
             return null;

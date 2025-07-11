@@ -34,7 +34,7 @@ class AskProfileBasicInfoScreen extends StatelessWidget {
           final name = state.profileName;
           if (ageIsValid(age) && nameIsValid(name)) {
             return () {
-              MyNavigator.push(context, MaterialPage<void>(child: const AskGenderScreen()));
+              MyNavigator.push(context, const MaterialPage<void>(child: AskGenderScreen()));
             };
           } else {
             return null;

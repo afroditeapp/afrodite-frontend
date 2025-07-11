@@ -41,7 +41,7 @@ class AskSecuritySelfieScreen extends StatelessWidget {
           if (selfie != null && selfie.faceDetected) {
             return () {
               CameraManager.getInstance().sendCmd(CloseCmd());
-              MyNavigator.push(context, MaterialPage<void>(child: const AskProfilePicturesScreen()));
+              MyNavigator.push(context, const MaterialPage<void>(child: AskProfilePicturesScreen()));
             };
           } else {
             return null;

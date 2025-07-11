@@ -18,13 +18,13 @@ class AskGenderScreen extends StatelessWidget {
         getContinueButtonCallback: (context, state) {
           if (state.gender != null) {
             return () {
-              MyNavigator.push(context, MaterialPage<void>(child: AskSearchSettingsScreen()));
+              MyNavigator.push(context, const MaterialPage<void>(child: AskSearchSettingsScreen()));
             };
           } else {
             return null;
           }
         },
-        question: AskGender(),
+        question: const AskGender(),
       ),
     );
   }

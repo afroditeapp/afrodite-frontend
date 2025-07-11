@@ -186,7 +186,7 @@ class ChatViewDebuggerPageState extends State<ChatViewDebuggerPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Debug chat view'),
+        title: const Text('Debug chat view'),
         actions: [
           IconButton(
             icon: const Icon(Icons.timelapse),
@@ -226,7 +226,7 @@ class ChatViewDebuggerPageState extends State<ChatViewDebuggerPage> {
           Expanded(
             child: TextField(
               controller: _textEditingController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: 'Type a message...',
               ),
               keyboardType: TextInputType.multiline,
@@ -255,7 +255,7 @@ class ChatViewDebuggerPageState extends State<ChatViewDebuggerPage> {
             onPressed: () {
               widget.dataProvider.msgCountPerUpdate++;
             },
-            child: Text("msgPerUpdate++")
+            child: const Text("msgPerUpdate++")
           ),
           ElevatedButton(
             onPressed: () {
@@ -263,7 +263,7 @@ class ChatViewDebuggerPageState extends State<ChatViewDebuggerPage> {
                 widget.dataProvider.msgCountPerUpdate--;
               }
             },
-            child: Text("msgPerUpdate--")
+            child: const Text("msgPerUpdate--")
           ),
         ],
       ),
