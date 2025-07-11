@@ -1,9 +1,12 @@
 /// Key value storage (unencrypted)
+library;
 
 import 'dart:async';
 
 import 'package:app/storage/base.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+// TODO(prod): This seems to be unused. Remove?
 
 enum KvString implements PreferenceKeyProvider<KvString, String> {
   empty;

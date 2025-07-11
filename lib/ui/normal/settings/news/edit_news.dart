@@ -92,7 +92,7 @@ class EditNewsScreenState extends State<EditNewsScreen> {
       );
     } else {
       toggleVisibilityAction = const SizedBox.shrink();
-    };
+    }
     return Scaffold(
       appBar: AppBar(
         actions: [

@@ -221,7 +221,7 @@ class CropImageOverlay extends StatefulWidget {
   final void Function(CropState) onBuildCalled;
 
   @override
-  _CropImageOverlayState createState() => _CropImageOverlayState();
+  State<CropImageOverlay> createState() => _CropImageOverlayState();
 }
 
 class _CropImageOverlayState extends State<CropImageOverlay> {
