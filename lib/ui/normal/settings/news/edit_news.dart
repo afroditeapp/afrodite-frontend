@@ -54,7 +54,7 @@ class EditNewsScreenState extends State<EditNewsScreen> {
       builder: (context, state) {
         return PopScope(
           canPop: !state.unsavedChanges(),
-          onPopInvoked: (didPop) async{
+          onPopInvokedWithResult: (didPop, _) async {
             if (!didPop) {
               final r = await showConfirmDialog(context, "Discard changes?", yesNoActions: true);
               if (r == true && context.mounted) {

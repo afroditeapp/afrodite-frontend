@@ -79,7 +79,7 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
 
           return PopScope(
             canPop: !dataEditingDetected,
-            onPopInvoked: (didPop) {
+            onPopInvokedWithResult: (didPop, _) {
               if (didPop) {
                 return;
               }

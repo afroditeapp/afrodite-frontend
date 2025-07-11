@@ -336,7 +336,7 @@ class AppNavigator extends StatelessWidget {
     return BlocBuilder<NavigatorStateBloc, NavigatorStateData>(
       builder: (context, state) {
         return NavigatorPopHandler(
-          onPop: () {
+          onPopWithResult: (_) {
             navigatorKey.currentState?.maybePop();
           },
           child: createNavigator(context, state),
@@ -352,15 +352,9 @@ class AppNavigator extends StatelessWidget {
       key: navigatorKey,
       transitionDelegate: transitionDelegate,
       pages: state.getPages(),
-      onPopPage: (route, result) {
-        if (!route.didPop(result)) {
-          return false;
-        }
-
-        context.read<NavigatorStateBloc>().add(PopPage(null));
-
-        return true;
-      }
+      onDidRemovePage: (page) {
+        context.read<NavigatorStateBloc>().add(RemovePageUsingFlutterObject(page));
+      },
     );
   }
 }

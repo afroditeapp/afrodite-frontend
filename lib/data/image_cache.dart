@@ -138,9 +138,9 @@ Uint8List emptyMapTilePngBytes() {
   final imageBuffer = img.Image(width: 1, height: 1);
 
   for (var pixel in imageBuffer) {
-    pixel..r = MAP_BACKGROUND_COLOR.red
-        ..g = MAP_BACKGROUND_COLOR.green
-        ..b = MAP_BACKGROUND_COLOR.blue
+    pixel..r = MAP_BACKGROUND_COLOR.r
+        ..g = MAP_BACKGROUND_COLOR.g
+        ..b = MAP_BACKGROUND_COLOR.b
         ..a = 255;
   }
 

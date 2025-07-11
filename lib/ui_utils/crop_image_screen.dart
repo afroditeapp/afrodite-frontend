@@ -266,7 +266,7 @@ class _CropImageOverlayState extends State<CropImageOverlay> {
               height: _size,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(PROFILE_PICTURE_BORDER_RADIUS),
-                color: Colors.grey.withOpacity(0.7),
+                color: Colors.grey.withValues(alpha: 0.7),
               ),
               child: scalingHandles(),
             ),

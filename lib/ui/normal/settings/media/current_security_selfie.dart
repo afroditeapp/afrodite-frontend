@@ -86,7 +86,7 @@ class _CurrentSecuritySelfieState extends State<CurrentSecuritySelfie> {
   ) {
     return PopScope(
       canPop: !saveRequired,
-      onPopInvoked: (didPop) {
+      onPopInvokedWithResult: (didPop, _) {
         if (didPop) {
           return;
         }

@@ -54,7 +54,7 @@ class _EditProfileAttributeScreenState extends State<EditProfileAttributeScreen>
 
         return PopScope(
           canPop: !currentSelectionIsInvalid,
-          onPopInvoked: (didPop) {
+          onPopInvokedWithResult: (didPop, _) {
             if (didPop) {
               return;
             }

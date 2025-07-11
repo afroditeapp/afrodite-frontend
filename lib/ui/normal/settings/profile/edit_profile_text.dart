@@ -51,7 +51,7 @@ class EditProfileTextScreenState extends State<EditProfileTextScreen> {
       builder: (context, state) {
         return PopScope(
           canPop: state.profileTextByteLenghtLessOrMaxValue(),
-          onPopInvoked: (didPop) {
+          onPopInvokedWithResult: (didPop, _) {
             if (!didPop) {
               showSnackBar(context.strings.edit_profile_text_screen_text_lenght_too_long);
             }

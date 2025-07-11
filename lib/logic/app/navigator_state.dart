@@ -19,6 +19,10 @@ class RemovePage extends NavigatorStateEvent {
   final Object? pageReturnValue;
   RemovePage(this.pageKey, this.pageReturnValue);
 }
+class RemovePageUsingFlutterObject extends NavigatorStateEvent {
+  final Page<Object?> page;
+  RemovePageUsingFlutterObject(this.page);
+}
 class RemoveMultiplePages extends NavigatorStateEvent {
   final Iterable<PageKey> pageKeys;
   RemoveMultiplePages(this.pageKeys);
@@ -83,6 +87,20 @@ class NavigatorStateBloc extends Bloc<NavigatorStateEvent, NavigatorStateData> {
           newPages.add(p);
         } else {
           p.channel.add(PagePopDone(data.pageReturnValue));
+        }
+      }
+      emit(state.copyWith(
+        pages: UnmodifiableList(newPages),
+        disableAnimation: false,
+      ));
+    });
+    on<RemovePageUsingFlutterObject>((data, emit) {
+      final newPages = <PageAndChannel>[];
+      for (final p in state.pages) {
+        if (p.page != data.page) {
+          newPages.add(p);
+        } else {
+          p.channel.add(const PagePopDone(null));
         }
       }
       emit(state.copyWith(

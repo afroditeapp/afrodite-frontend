@@ -181,7 +181,7 @@ class JsonString {
     return AdminNotification.fromJson(jsonMap);
   }
 
-  static TypeConverter<JsonString, String> driftConverter = TypeConverter.json(
+  static TypeConverter<JsonString, String> driftConverter = TypeConverter.json2(
     fromJson: (json) => JsonString(json as Map<String, Object?>),
     toJson: (object) => object.jsonMap,
   );
@@ -316,7 +316,7 @@ class JsonList {
     return { for (var e in attributes) e.id : e };
   }
 
-  static TypeConverter<JsonList, String> driftConverter = TypeConverter.json(
+  static TypeConverter<JsonList, String> driftConverter = TypeConverter.json2(
     fromJson: (json) => JsonList(json as List<Object?>),
     toJson: (object) => object.jsonList,
   );

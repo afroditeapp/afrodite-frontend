@@ -62,7 +62,7 @@ class ProfilePicturesData with _$ProfilePicturesData {
     ];
 
     return SetProfileContent(
-      c: c.whereNotNull().toList(),
+      c: c.nonNulls.toList(),
       gridCropSize: img0.cropResults.gridCropSize,
       gridCropX: img0.cropResults.gridCropX,
       gridCropY: img0.cropResults.gridCropY,

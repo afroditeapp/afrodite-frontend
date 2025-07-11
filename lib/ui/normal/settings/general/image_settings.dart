@@ -46,7 +46,7 @@ class _ImageSettingsScreenState extends State<ImageSettingsScreen> {
   Widget build(BuildContext context) {
     return PopScope(
       canPop: true,
-      onPopInvoked: (didPop) {
+      onPopInvokedWithResult: (didPop, _) {
         if (didPop) {
           saveSettings();
         }

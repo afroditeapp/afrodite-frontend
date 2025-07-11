@@ -64,7 +64,7 @@ class EditNewsTranslationScreenState extends State<EditNewsTranslationScreen> {
   Widget build(BuildContext context) {
     return PopScope(
       canPop: true,
-      onPopInvoked: (didPop) {
+      onPopInvokedWithResult: (didPop, _) {
         if (didPop && mounted && !widget.bloc.isClosed) {
           widget.bloc.add(SaveTranslation(
             widget.locale,

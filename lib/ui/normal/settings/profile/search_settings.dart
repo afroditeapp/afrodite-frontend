@@ -94,7 +94,7 @@ class _SearchSettingsScreenState extends State<SearchSettingsScreen> {
 
           return PopScope(
             canPop: !settingsChanged,
-            onPopInvoked: (didPop) {
+            onPopInvokedWithResult: (didPop, _) {
               if (didPop) {
                 return;
               }

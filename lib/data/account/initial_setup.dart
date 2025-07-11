@@ -13,7 +13,6 @@ import 'package:app/model/freezed/logic/media/profile_pictures.dart';
 import 'package:app/utils/api.dart';
 import 'package:app/utils/result.dart';
 import 'package:utils/utils.dart';
-import 'package:collection/collection.dart';
 
 var log = Logger("InitialSetupUtils");
 
@@ -257,7 +256,7 @@ Result<SetProfileContent, void> createProfileContent(
 
   if (contentId0 == null) return errAndLog("First profile image is not selected");
 
-  final c = List<ContentId>.from([contentId0, contentId1, contentId2, contentId3].whereNotNull());
+  final c = List<ContentId>.from([contentId0, contentId1, contentId2, contentId3].nonNulls);
 
   return Ok(SetProfileContent(
     c: c,

@@ -66,7 +66,7 @@ class AgeTextField extends StatefulWidget {
   final String Function() getInitialValue;
   final void Function(String) onChanged;
 
-  AgeTextField({
+  const AgeTextField({
     this.getInitialValue = _defaultInitialValue,
     this.onChanged = _defaultOnChanged,
     this.controller,

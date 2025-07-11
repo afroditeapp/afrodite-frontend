@@ -13,7 +13,7 @@ Color getIconButtonEnabledColor(BuildContext context) {
 // This color is from _IconButtonDefaultsM3
 // which is in Flutter sources.
 Color getIconButtonDisabledColor(BuildContext context) {
-  return Theme.of(context).colorScheme.onSurface.withOpacity(0.38);
+  return Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.38);
 }
 
 Color getUnlimitedLikesColor(BuildContext context) {

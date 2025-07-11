@@ -190,7 +190,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
               return PopScope(
                 canPop: !dataEditingDetected,
-                onPopInvoked: (didPop) {
+                onPopInvokedWithResult: (didPop, _) {
                   if (didPop) {
                     return;
                   }
