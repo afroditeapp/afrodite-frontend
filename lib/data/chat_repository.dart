@@ -252,29 +252,6 @@ class ChatRepository extends DataRepositoryWithLifecycle {
       .andThen((value) => db.accountAction((db) => db.daoConversationList.setSentBlockStatusList(value)));
   }
 
-  Future<List<ProfileEntry>> _genericIteratorNextOnlySuccessful(
-    AccountIdDatabaseIterator iterator,
-    {
-      bool cache = false,
-      bool download = false,
-      bool isMatch = false,
-    }
-  ) async {
-    var profiles = <ProfileEntry>[];
-    while (true) {
-      final list = await _genericIteratorNext(iterator, cache: cache, download: download, isMatch: isMatch);
-      if (list.isEmpty) {
-        return profiles;
-      }
-      profiles = list.map((e) => e.$2).nonNulls.toList();
-      if (profiles.isEmpty) {
-        continue;
-      } else {
-        return profiles;
-      }
-    }
-  }
-
   Future<void> receivedLikesCountRefresh() async {
     final currentCount = await accountBackgroundDb.accountStream((db) => db.daoNewReceivedLikesAvailable.watchReceivedLikesCount()).firstOrNull;
     final currentCountInt = currentCount?.c ?? 0;
