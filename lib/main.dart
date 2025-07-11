@@ -24,8 +24,8 @@ import 'package:app/logic/chat/conversation_bloc.dart';
 import 'package:app/logic/app/main_state.dart';
 import 'package:app/storage/encryption.dart';
 
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations_en.dart';
+import 'package:app/l10n/app_localizations.dart';
+import 'package:app/l10n/app_localizations_en.dart';
 
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:app/ui/utils/app_lifecycle_handler.dart';
