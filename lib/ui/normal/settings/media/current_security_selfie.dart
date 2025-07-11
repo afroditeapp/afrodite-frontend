@@ -92,6 +92,9 @@ class _CurrentSecuritySelfieState extends State<CurrentSecuritySelfie> {
         }
         showConfirmDialog(context, context.strings.generic_save_confirmation_title, yesNoActions: true)
           .then((value) {
+            if (!context.mounted) {
+              return;
+            }
             if (value == true) {
               validateAndSaveData(context);
             } else if (value == false) {

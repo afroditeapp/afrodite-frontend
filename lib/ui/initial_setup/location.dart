@@ -72,6 +72,9 @@ class _AskLocationState extends State<AskLocation> {
     if (widget.initialLocation == null && !infoDialogShown) {
       infoDialogShown = true;
       Future.delayed(Duration.zero, () {
+        if (!context.mounted) {
+          return;
+        }
         showInfoDialog(
           context,
           context.strings.initial_setup_screen_location_help_dialog_text,

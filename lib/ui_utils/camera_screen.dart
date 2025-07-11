@@ -126,7 +126,10 @@ class _CameraScreenState extends State<CameraScreen>
         errorDialogOpened = true;
 
         Future.delayed(Duration.zero, () {
-           showInfoDialog(context, initState.error.message)
+          if (!context.mounted) {
+            return;
+          }
+          showInfoDialog(context, initState.error.message)
             .then((_) {
               if (context.mounted) {
                 MyNavigator.pop(context, null);
@@ -248,9 +251,12 @@ class _CameraScreenState extends State<CameraScreen>
           return;
         }
         final file = await takePhoto(currentCamera);
-        if (context.mounted) {
-          Future.delayed(Duration.zero, () => MyNavigator.pop(context, file));
-        }
+        Future.delayed(Duration.zero, () {
+          if (!context.mounted) {
+            return;
+          }
+          MyNavigator.pop(context, file);
+        });
       };
     }
 

@@ -304,19 +304,24 @@ class _NotificationPermissionDialogOpenerState extends State<NotificationPermiss
   void openNotificationPermissionDialog(BuildContext context) {
     final bloc = context.read<NotificationPermissionBloc>();
     final pageKey = PageKey();
-    Future.delayed(Duration.zero, () => MyNavigator.showDialog<bool>(
-      context: context,
-      pageKey: pageKey,
-      builder: (context) {
-        return NotificationPermissionDialog(pageKey: pageKey);
-      },
-    ).then((value) {
-      if (value == true) {
-        bloc.add(AcceptPermissions());
-      } else {
-        bloc.add(DenyPermissions());
+    Future.delayed(Duration.zero, () {
+      if (!context.mounted) {
+        return;
       }
-    }));
+      MyNavigator.showDialog<bool>(
+        context: context,
+        pageKey: pageKey,
+        builder: (context) {
+          return NotificationPermissionDialog(pageKey: pageKey);
+        },
+      ).then((value) {
+        if (value == true) {
+          bloc.add(AcceptPermissions());
+        } else {
+          bloc.add(DenyPermissions());
+        }
+      });
+    });
   }
 }
 

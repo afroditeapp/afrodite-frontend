@@ -237,6 +237,9 @@ class CameraScreenOpener {
       case Closed(:final error): {
         if (error != null) {
           Future.delayed(Duration.zero, () {
+            if (!context.mounted) {
+              return;
+            }
             showInfoDialog(context, error.message);
           });
         }
