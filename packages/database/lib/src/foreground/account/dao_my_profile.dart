@@ -12,7 +12,7 @@ part 'dao_my_profile.g.dart';
 
 @DriftAccessor(tables: [Account])
 class DaoMyProfile extends DatabaseAccessor<AccountDatabase> with _$DaoMyProfileMixin, AccountTools {
-  DaoMyProfile(AccountDatabase db) : super(db);
+  DaoMyProfile(super.db);
 
   Future<void> setApiProfile({
     required api.GetMyProfileResult result,

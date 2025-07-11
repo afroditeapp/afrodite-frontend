@@ -35,7 +35,7 @@ import "package:app/ui/utils/notification_payload_handler.dart";
 import "package:app/ui_utils/profile_thumbnail_image.dart";
 
 class NormalStateScreen extends StatelessWidget {
-  const NormalStateScreen({Key? key}) : super(key: key);
+  const NormalStateScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -84,8 +84,8 @@ class NormalStateContent extends StatefulWidget {
   const NormalStateContent({
     required this.profileAttributesBloc,
     required this.myProfileBloc,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<NormalStateContent> createState() => _NormalStateContentState();

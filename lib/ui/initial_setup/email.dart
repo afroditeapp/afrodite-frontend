@@ -9,7 +9,7 @@ import "package:app/ui/initial_setup/age_confirmation.dart";
 import "package:app/ui_utils/initial_setup_common.dart";
 
 class AskEmailScreen extends StatelessWidget {
-  const AskEmailScreen({Key? key}) : super(key: key);
+  const AskEmailScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

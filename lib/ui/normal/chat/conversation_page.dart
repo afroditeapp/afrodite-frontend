@@ -66,8 +66,8 @@ class ConversationPage extends StatefulWidget {
   const ConversationPage(
     this.pageKey,
     this.profileEntry,
-    {Key? key}
-  ) : super(key: key);
+    {super.key}
+  );
 
   @override
   ConversationPageState createState() => ConversationPageState();

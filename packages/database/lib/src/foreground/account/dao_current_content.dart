@@ -10,7 +10,7 @@ part 'dao_current_content.g.dart';
 
 @DriftAccessor(tables: [Account])
 class DaoCurrentContent extends DatabaseAccessor<AccountDatabase> with _$DaoCurrentContentMixin, AccountTools {
-  DaoCurrentContent(AccountDatabase db) : super(db);
+  DaoCurrentContent(super.db);
 
   Future<void> setMediaContent({
     required GetMediaContentResult info,

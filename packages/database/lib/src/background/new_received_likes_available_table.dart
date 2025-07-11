@@ -20,7 +20,7 @@ class NewReceivedLikesAvailable extends Table {
 
 @DriftAccessor(tables: [NewReceivedLikesAvailable])
 class DaoNewReceivedLikesAvailable extends DatabaseAccessor<AccountBackgroundDatabase> with _$DaoNewReceivedLikesAvailableMixin {
-  DaoNewReceivedLikesAvailable(AccountBackgroundDatabase db) : super(db);
+  DaoNewReceivedLikesAvailable(super.db);
 
   Future<void> updateSyncVersionReceivedLikes(
     ReceivedLikesSyncVersion value,

@@ -8,7 +8,7 @@ import 'package:app/localizations.dart';
 const commonPadding = 5.0;
 
 class LoginScreenOld extends StatefulWidget {
-  const LoginScreenOld({Key? key}) : super(key: key);
+  const LoginScreenOld({super.key});
 
   @override
   State<LoginScreenOld> createState() => _LoginScreenOldState();
@@ -96,7 +96,7 @@ class _LoginScreenOldState extends State<LoginScreenOld> {
 class ServerAddressField extends StatefulWidget {
   final GlobalKey<FormState> formKey;
   final TextEditingController controller;
-  const ServerAddressField(this.formKey, this.controller, {Key? key}) : super(key: key);
+  const ServerAddressField(this.formKey, this.controller, {super.key});
 
   @override
   State<StatefulWidget> createState() => _ServerAddressFieldState();

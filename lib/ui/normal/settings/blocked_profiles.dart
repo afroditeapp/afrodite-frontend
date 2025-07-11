@@ -21,7 +21,7 @@ import 'package:app/ui_utils/list.dart';
 var log = Logger("BlockedProfilesScreen");
 
 class BlockedProfilesScreen extends StatefulWidget {
-  const BlockedProfilesScreen({Key? key}) : super(key: key);
+  const BlockedProfilesScreen({super.key});
 
   @override
   State<BlockedProfilesScreen> createState() => _BlockedProfilesScreen();

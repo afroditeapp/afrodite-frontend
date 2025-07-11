@@ -18,7 +18,7 @@ class ConversationsBackground extends Table {
 
 @DriftAccessor(tables: [ConversationsBackground])
 class DaoConversationsBackground extends DatabaseAccessor<AccountBackgroundDatabase> with _$DaoConversationsBackgroundMixin {
-  DaoConversationsBackground(AccountBackgroundDatabase db) : super(db);
+  DaoConversationsBackground(super.db);
 
   Future<UnreadMessagesCount?> getUnreadMessageCount(AccountId accountId) async {
     final r = await (select(conversationsBackground)

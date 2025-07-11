@@ -5,8 +5,8 @@ import 'package:app/localizations.dart';
 
 class DataSettingsScreen extends StatefulWidget {
   const DataSettingsScreen({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<DataSettingsScreen> createState() => _DataSettingsScreenState();

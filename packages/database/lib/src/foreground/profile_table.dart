@@ -41,7 +41,7 @@ class Profiles extends Table {
 
 @DriftAccessor(tables: [Profiles])
 class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMixin {
-  DaoProfiles(AccountDatabase db) : super(db);
+  DaoProfiles(super.db);
 
   Future<void> removeProfileData(AccountId accountId) async {
     await (update(profiles)..where((t) => t.uuidAccountId.equals(accountId.aid)))

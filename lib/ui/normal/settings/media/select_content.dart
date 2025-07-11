@@ -34,8 +34,8 @@ class SelectContentPage extends StatefulWidget {
     required this.newModerationRequestBloc,
     this.identifyFaceImages = false,
     this.securitySelfieMode = false,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<SelectContentPage> createState() => _SelectContentPageState();

@@ -8,9 +8,9 @@ class IconWithIconButtonPadding extends StatelessWidget {
   final Color iconColor;
 
   const IconWithIconButtonPadding(this.icon, {
-    Key? key,
+    super.key,
     required this.iconColor,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

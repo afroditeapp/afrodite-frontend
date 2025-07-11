@@ -29,7 +29,7 @@ class MessageTable extends Table {
 
 @DriftAccessor(tables: [MessageTable])
 class DaoMessageTable extends DatabaseAccessor<AccountDatabase> with _$DaoMessageTableMixin {
-  DaoMessageTable(AccountDatabase db) : super(db);
+  DaoMessageTable(super.db);
   /// Number of all messages in the database
   Future<int?> countMessagesInConversation(
     AccountId localAccountId,

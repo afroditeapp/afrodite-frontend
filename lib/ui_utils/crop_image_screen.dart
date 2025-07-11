@@ -211,8 +211,8 @@ class CropImageOverlay extends StatefulWidget {
     required this.areaHeight,
     required this.cropState,
     required this.onBuildCalled,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
   final Widget imageWidget;
   final double selectionMaxSize;
   final double areaWidth;

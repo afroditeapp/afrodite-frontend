@@ -24,7 +24,7 @@ class PublicProfileContent extends Table {
 
 @DriftAccessor(tables: [PublicProfileContent])
 class DaoPublicProfileContent extends DatabaseAccessor<AccountDatabase> with _$DaoPublicProfileContentMixin {
-  DaoPublicProfileContent(AccountDatabase db) : super(db);
+  DaoPublicProfileContent(super.db);
 
   Future<void> removeProfileContentData(AccountId accountId) async {
     await (delete(publicProfileContent)..where((t) => t.uuidAccountId.equals(accountId.aid)))

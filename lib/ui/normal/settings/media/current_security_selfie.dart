@@ -26,8 +26,8 @@ class CurrentSecuritySelfie extends StatefulWidget {
   final PageKey pageKey;
   const CurrentSecuritySelfie({
     required this.pageKey,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<CurrentSecuritySelfie> createState() => _CurrentSecuritySelfieState();

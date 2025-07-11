@@ -20,8 +20,8 @@ class ProgressDialogOpener<B extends StateStreamable<S>, S> extends StatefulWidg
     required this.dialogVisibilityGetter,
     this.stateInfoBuilder,
     this.loadingText,
-    Key? key
-  }) : super(key: key);
+    super.key
+  });
 
   @override
   State<StatefulWidget> createState() => _ProgressDialogOpenerState<B, S>();

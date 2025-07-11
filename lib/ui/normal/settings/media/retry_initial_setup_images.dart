@@ -35,8 +35,8 @@ class RetrySecuritySelfieScreen extends StatefulWidget {
   const RetrySecuritySelfieScreen({
     required this.initialSetupBloc,
     required this.profilePicturesBloc,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<RetrySecuritySelfieScreen> createState() => _RetrySecuritySelfieScreenState();
@@ -80,7 +80,7 @@ class _RetrySecuritySelfieScreenState extends State<RetrySecuritySelfieScreen> {
 /// Returns [List<ImgState>?]
 class RetryProfilePicturesScreen extends StatefulWidget {
 
-  const RetryProfilePicturesScreen({Key? key}) : super(key: key);
+  const RetryProfilePicturesScreen({super.key});
 
   @override
   State<RetryProfilePicturesScreen> createState() => _RetryProfilePicturesScreen();

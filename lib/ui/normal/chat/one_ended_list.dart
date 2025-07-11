@@ -15,8 +15,8 @@ class OneEndedMessageListWidget extends StatefulWidget {
   final ConversationBloc conversationBloc;
   const OneEndedMessageListWidget(
     this.conversationBloc,
-    {Key? key}
-  ) : super(key: key);
+    {super.key}
+  );
 
   @override
   OneEndedMessageListWidgetState createState() => OneEndedMessageListWidgetState();
@@ -132,7 +132,7 @@ class SimpleChatScrollPhysicsSettings {
 
 class SimpleChatScrollPhysics extends ScrollPhysics {
   final SimpleChatScrollPhysicsSettings settings;
-  const SimpleChatScrollPhysics(this.settings, {ScrollPhysics? parent}) : super(parent: parent);
+  const SimpleChatScrollPhysics(this.settings, {super.parent});
 
   @override
   ScrollPhysics applyTo(ScrollPhysics? ancestor) {

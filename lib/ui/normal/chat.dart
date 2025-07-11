@@ -34,7 +34,7 @@ import 'package:utils/utils.dart';
 var log = Logger("ChatView");
 
 class ChatView extends BottomNavigationScreen {
-  const ChatView({Key? key}) : super(key: key);
+  const ChatView({super.key});
 
   @override
   State<ChatView> createState() => _ChatViewState();

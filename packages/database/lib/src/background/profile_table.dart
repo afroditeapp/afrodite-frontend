@@ -20,7 +20,7 @@ class ProfilesBackground extends Table {
 
 @DriftAccessor(tables: [ProfilesBackground])
 class DaoProfilesBackground extends DatabaseAccessor<AccountBackgroundDatabase> with _$DaoProfilesBackgroundMixin {
-  DaoProfilesBackground(AccountBackgroundDatabase db) : super(db);
+  DaoProfilesBackground(super.db);
 
   Future<void> removeProfileData(AccountId accountId) async {
     await (update(profilesBackground)..where((t) => t.uuidAccountId.equals(accountId.aid)))

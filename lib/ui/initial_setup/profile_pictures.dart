@@ -32,7 +32,7 @@ import "package:app/ui_utils/view_image_screen.dart";
 final log = Logger("ProfilePictures");
 
 class AskProfilePicturesScreen extends StatelessWidget {
-  const AskProfilePicturesScreen({Key? key}) : super(key: key);
+  const AskProfilePicturesScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +70,7 @@ const ROW_HEIGHT = 150.0;
 const THUMBNAIL_SIZE = 100.0;
 
 class AskProfilePictures extends StatefulWidget {
-  const AskProfilePictures({Key? key}) : super(key: key);
+  const AskProfilePictures({super.key});
 
   @override
   State<AskProfilePictures> createState() => _AskProfilePicturesState();
@@ -101,8 +101,8 @@ class ProfilePictureSelection extends StatefulWidget {
   const ProfilePictureSelection({
     this.mode,
     required this.profilePicturesBloc,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<ProfilePictureSelection> createState() => _ProfilePictureSelection();
@@ -425,8 +425,8 @@ class AddPicture extends StatelessWidget {
   final int imgIndex;
   const AddPicture({
       required this.imgIndex,
-      Key? key,
-    }) : super(key: key);
+      super.key,
+    });
 
   @override
   Widget build(BuildContext context) {
@@ -598,7 +598,7 @@ void openSelectPictureDialog(
 }
 
 class HiddenPicture extends StatelessWidget {
-  const HiddenPicture({Key? key}) : super(key: key);
+  const HiddenPicture({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -617,7 +617,7 @@ class HiddenPicture extends StatelessWidget {
 
 
 class HiddenThumbnailPicture extends StatelessWidget {
-  const HiddenThumbnailPicture({Key? key}) : super(key: key);
+  const HiddenThumbnailPicture({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -640,7 +640,7 @@ class FilePicture extends StatelessWidget {
   final AccountImageId img;
   final int imgIndex;
 
-  const FilePicture({required this.img, required this.imgIndex, Key? key}) : super(key: key);
+  const FilePicture({required this.img, required this.imgIndex, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -787,8 +787,8 @@ class VisibleThumbnailPicture extends StatelessWidget {
     required this.img,
     required this.imgIndex,
     required this.cropResults,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

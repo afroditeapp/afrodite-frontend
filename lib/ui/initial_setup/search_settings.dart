@@ -13,7 +13,7 @@ import "package:app/ui_utils/initial_setup_common.dart";
 import "package:app/utils/age.dart";
 
 class AskSearchSettingsScreen extends StatelessWidget {
-  const AskSearchSettingsScreen({Key? key}) : super(key: key);
+  const AskSearchSettingsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

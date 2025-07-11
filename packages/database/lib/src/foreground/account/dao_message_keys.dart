@@ -11,7 +11,7 @@ part 'dao_message_keys.g.dart';
 
 @DriftAccessor(tables: [Account])
 class DaoMessageKeys extends DatabaseAccessor<AccountDatabase> with _$DaoMessageKeysMixin, AccountTools {
-  DaoMessageKeys(AccountDatabase db) : super(db);
+  DaoMessageKeys(super.db);
 
   Future<void> setMessageKeys({
     required PrivateKeyData private,

@@ -162,8 +162,8 @@ class LikeViewContent extends StatefulWidget {
   final NewReceivedLikesAvailableBloc receivedLikesBloc;
   const LikeViewContent({
     required this.receivedLikesBloc,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
 
   @override

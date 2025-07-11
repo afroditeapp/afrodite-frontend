@@ -16,7 +16,7 @@ class AutomaticProfileSearchCompletedNotificationTable extends Table {
 
 @DriftAccessor(tables: [AutomaticProfileSearchCompletedNotificationTable])
 class DaoAutomaticProfileSearchCompletedNotificationTable extends DatabaseAccessor<AccountBackgroundDatabase> with _$DaoAutomaticProfileSearchCompletedNotificationTableMixin {
-  DaoAutomaticProfileSearchCompletedNotificationTable(AccountBackgroundDatabase db) : super(db);
+  DaoAutomaticProfileSearchCompletedNotificationTable(super.db);
 
   /// Returns true when notification must be shown
   Future<bool> shouldProfilesFoundNotificationBeShown(int profilesFoundNotificationId, int viewedId) async {

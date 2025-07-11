@@ -26,7 +26,7 @@ class AppNotificationSettingsTable extends Table {
 
 @DriftAccessor(tables: [AppNotificationSettingsTable])
 class DaoAppNotificationSettingsTable extends DatabaseAccessor<AccountBackgroundDatabase> with _$DaoAppNotificationSettingsTableMixin {
-  DaoAppNotificationSettingsTable(AccountBackgroundDatabase db) : super(db);
+  DaoAppNotificationSettingsTable(super.db);
 
   Future<void> updateAccountNotificationSettings(api.AccountAppNotificationSettings value) async {
     await into(appNotificationSettingsTable).insertOnConflictUpdate(

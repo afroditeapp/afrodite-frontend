@@ -13,8 +13,8 @@ final log = Logger("ImageSettingsScreen");
 
 class ImageSettingsScreen extends StatefulWidget {
   const ImageSettingsScreen({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<ImageSettingsScreen> createState() => _ImageSettingsScreenState();

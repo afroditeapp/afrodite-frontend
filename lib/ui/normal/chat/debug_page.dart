@@ -159,7 +159,7 @@ class ChatViewDebuggerPage extends StatefulWidget {
   final int initialMsgCount;
   final DebugConversationDataProvider dataProvider;
   final AccountId accountId = AccountId(aid: "");
-  ChatViewDebuggerPage({required this.initialMsgCount, required this.dataProvider, Key? key}) : super(key: key);
+  ChatViewDebuggerPage({required this.initialMsgCount, required this.dataProvider, super.key});
 
   @override
   ChatViewDebuggerPageState createState() => ChatViewDebuggerPageState();

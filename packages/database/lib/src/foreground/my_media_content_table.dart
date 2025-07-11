@@ -26,7 +26,7 @@ class MyMediaContent extends Table {
 
 @DriftAccessor(tables: [MyMediaContent])
 class DaoMyMediaContent extends DatabaseAccessor<AccountDatabase> with _$DaoMyMediaContentMixin {
-  DaoMyMediaContent(AccountDatabase db) : super(db);
+  DaoMyMediaContent(super.db);
 
   Future<void> removeSecurityContent() async {
     await (delete(myMediaContent)..where((t) => t.contentIndex.equals(-1)))

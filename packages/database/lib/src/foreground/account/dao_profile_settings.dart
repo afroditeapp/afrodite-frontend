@@ -9,7 +9,7 @@ part 'dao_profile_settings.g.dart';
 
 @DriftAccessor(tables: [Account])
 class DaoProfileSettings extends DatabaseAccessor<AccountDatabase> with _$DaoProfileSettingsMixin, AccountTools {
-  DaoProfileSettings(AccountDatabase db) : super(db);
+  DaoProfileSettings(super.db);
 
 
   Future<void> updateProfileLocation({required double latitude, required double longitude}) async {

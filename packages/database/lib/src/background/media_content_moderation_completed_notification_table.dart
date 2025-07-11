@@ -18,7 +18,7 @@ class MediaContentModerationCompletedNotificationTable extends Table {
 
 @DriftAccessor(tables: [MediaContentModerationCompletedNotificationTable])
 class DaoMediaContentModerationCompletedNotificationTable extends DatabaseAccessor<AccountBackgroundDatabase> with _$DaoMediaContentModerationCompletedNotificationTableMixin {
-  DaoMediaContentModerationCompletedNotificationTable(AccountBackgroundDatabase db) : super(db);
+  DaoMediaContentModerationCompletedNotificationTable(super.db);
 
   /// Returns true when notification must be shown
   Future<bool> shouldAcceptedNotificationBeShown(int acceptedNotificationId, int viewedId) async {

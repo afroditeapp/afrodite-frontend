@@ -8,7 +8,7 @@ import "package:app/ui/initial_setup/search_settings.dart";
 import "package:app/ui_utils/initial_setup_common.dart";
 
 class AskGenderScreen extends StatelessWidget {
-  const AskGenderScreen({Key? key}) : super(key: key);
+  const AskGenderScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

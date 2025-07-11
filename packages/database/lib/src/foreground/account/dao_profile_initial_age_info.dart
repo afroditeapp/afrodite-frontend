@@ -11,7 +11,7 @@ part 'dao_profile_initial_age_info.g.dart';
 
 @DriftAccessor(tables: [Account])
 class DaoProfileInitialAgeInfo extends DatabaseAccessor<AccountDatabase> with _$DaoProfileInitialAgeInfoMixin, AccountTools {
-  DaoProfileInitialAgeInfo(AccountDatabase db) : super(db);
+  DaoProfileInitialAgeInfo(super.db);
 
   Future<void> setInitialAgeInfo({
     required api.AcceptedProfileAges info,

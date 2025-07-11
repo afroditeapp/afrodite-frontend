@@ -10,7 +10,7 @@ import 'package:app/ui/normal/chat/message_row.dart';
 var log = Logger("MessageRenderer");
 
 class MessageRenderer extends StatefulWidget {
-  const MessageRenderer({Key? key}) : super(key: key);
+  const MessageRenderer({super.key});
 
   @override
   MessageRendererState createState() => MessageRendererState();

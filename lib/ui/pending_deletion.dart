@@ -12,7 +12,7 @@ import "package:flutter/material.dart";
 import "package:openapi/api.dart";
 
 class PendingDeletionPage extends StatefulWidget {
-  const PendingDeletionPage({Key? key}) : super(key: key);
+  const PendingDeletionPage({super.key});
 
   @override
   State<PendingDeletionPage> createState() => _PendingDeletionPageState();

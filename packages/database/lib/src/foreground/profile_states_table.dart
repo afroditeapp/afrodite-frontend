@@ -31,7 +31,7 @@ class ProfileStates extends Table {
 
 @DriftAccessor(tables: [ProfileStates])
 class DaoProfileStates extends DatabaseAccessor<AccountDatabase> with _$DaoProfileStatesMixin {
-  DaoProfileStates(AccountDatabase db) : super(db);
+  DaoProfileStates(super.db);
 
   Future<void> setFavoriteStatus(
     AccountId accountId,

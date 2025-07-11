@@ -29,7 +29,7 @@ var log = Logger("AskSecuritySelfieScreen");
 // closed there is several sending of CloseCmd to close the camera.
 
 class AskSecuritySelfieScreen extends StatelessWidget {
-  const AskSecuritySelfieScreen({Key? key}) : super(key: key);
+  const AskSecuritySelfieScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

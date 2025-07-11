@@ -17,7 +17,7 @@ class News extends Table {
 
 @DriftAccessor(tables: [News])
 class DaoNews extends DatabaseAccessor<AccountBackgroundDatabase> with _$DaoNewsMixin {
-  DaoNews(AccountBackgroundDatabase db) : super(db);
+  DaoNews(super.db);
 
   Future<void> setUnreadNewsCount({
     required api.NewsSyncVersion version,

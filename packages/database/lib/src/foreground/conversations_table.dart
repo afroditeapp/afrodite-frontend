@@ -22,7 +22,7 @@ class Conversations extends Table {
 
 @DriftAccessor(tables: [Conversations])
 class DaoConversations extends DatabaseAccessor<AccountDatabase> with _$DaoConversationsMixin {
-  DaoConversations(AccountDatabase db) : super(db);
+  DaoConversations(super.db);
 
   Future<void> updatePublicKeyAndAddInfoMessage(
     AccountId localAccountId,

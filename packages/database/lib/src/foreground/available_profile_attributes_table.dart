@@ -23,7 +23,7 @@ class AvailableProfileAttributesTable extends Table {
 
 @DriftAccessor(tables: [AvailableProfileAttributesTable])
 class DaoAvailableProfileAttributesTable extends DatabaseAccessor<AccountDatabase> with _$DaoAvailableProfileAttributesTableMixin {
-  DaoAvailableProfileAttributesTable(AccountDatabase db) : super(db);
+  DaoAvailableProfileAttributesTable(super.db);
 
   Future<void> deleteAttributeId(int id) async {
     await (delete(availableProfileAttributesTable)..where((t) => t.id.equals(id)))

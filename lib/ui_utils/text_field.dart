@@ -26,8 +26,8 @@ class SimpleTextField extends StatefulWidget {
     this.obscureText = false,
     this.getInitialValue = _defaultInitialValue,
     this.onChanged = _defaultOnChanged,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<StatefulWidget> createState() => _SimpleTextFieldState();
@@ -70,8 +70,8 @@ class AgeTextField extends StatefulWidget {
     this.getInitialValue = _defaultInitialValue,
     this.onChanged = _defaultOnChanged,
     this.controller,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<StatefulWidget> createState() => _AgeTextFieldState();

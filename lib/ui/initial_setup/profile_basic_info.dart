@@ -13,7 +13,7 @@ import "package:app/utils/age.dart";
 final profileNameRegexp = RegExp("[-'.AÁÅÄBCÇDEÉFGHIÍJKLMNOÖPQRSTUÜVWXYZÞaáàâåäãbcçdeéèêëfghiíïjklmnoóòôöõøpqrstuúùüvwxyz]");
 
 class AskProfileBasicInfoScreen extends StatelessWidget {
-  const AskProfileBasicInfoScreen({Key? key}) : super(key: key);
+  const AskProfileBasicInfoScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

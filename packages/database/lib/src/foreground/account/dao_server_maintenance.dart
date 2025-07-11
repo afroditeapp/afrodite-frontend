@@ -10,7 +10,7 @@ part 'dao_server_maintenance.g.dart';
 
 @DriftAccessor(tables: [Account])
 class DaoServerMaintenance extends DatabaseAccessor<AccountDatabase> with _$DaoServerMaintenanceMixin, AccountTools {
-  DaoServerMaintenance(AccountDatabase db) : super(db);
+  DaoServerMaintenance(super.db);
 
   Future<void> setMaintenanceTime({
     required UtcDateTime? time,

@@ -28,7 +28,7 @@ class ConversationList extends Table {
 
 @DriftAccessor(tables: [ConversationList])
 class DaoConversationList extends DatabaseAccessor<AccountDatabase> with _$DaoConversationListMixin {
-  DaoConversationList(AccountDatabase db) : super(db);
+  DaoConversationList(super.db);
 
   Future<void> setConversationListVisibility(
     AccountId accountId,

@@ -60,8 +60,8 @@ class ContentManagementScreen extends StatefulWidget {
   final SelectContentBloc selectContentBloc;
   const ContentManagementScreen({
     required this.selectContentBloc,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<ContentManagementScreen> createState() => _ContentManagementScreenState();

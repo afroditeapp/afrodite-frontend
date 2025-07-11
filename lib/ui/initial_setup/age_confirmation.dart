@@ -9,7 +9,7 @@ import "package:app/ui_utils/initial_setup_common.dart";
 
 
 class AgeConfirmationScreen extends StatelessWidget {
-  const AgeConfirmationScreen({Key? key}) : super(key: key);
+  const AgeConfirmationScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

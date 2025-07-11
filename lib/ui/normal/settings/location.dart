@@ -100,8 +100,8 @@ class LocationWidget extends StatefulWidget {
     required this.handler,
     this.markerInitialLocation,
     this.editingHelpText,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<LocationWidget> createState() => _LocationWidgetState();

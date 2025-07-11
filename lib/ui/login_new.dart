@@ -30,7 +30,7 @@ import "package:url_launcher/url_launcher_string.dart";
 // connecting to server starts
 
 class LoginScreen extends StatelessWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+  const LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

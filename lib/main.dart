@@ -192,7 +192,7 @@ PageTransitionsTheme createPageTransitionsTheme() {
 
 class GlobalLocalizationsInitializer extends StatelessWidget {
   final Widget child;
-  const GlobalLocalizationsInitializer({required this.child, Key? key}) : super(key: key);
+  const GlobalLocalizationsInitializer({required this.child, super.key});
 
   @override
   Widget build(BuildContext context) {
