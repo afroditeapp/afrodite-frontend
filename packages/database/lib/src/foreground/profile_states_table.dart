@@ -2,7 +2,6 @@
 
 
 import 'package:openapi/api.dart' show AccountId;
-import 'package:openapi/api.dart' as api;
 import 'package:utils/utils.dart';
 import 'account_database.dart';
 

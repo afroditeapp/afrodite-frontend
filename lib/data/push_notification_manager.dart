@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:app/data/general/notification/state/automatic_profile_search.dart';
 import 'package:app/data/general/notification/state/profile_text_moderation_completed.dart';
-import 'package:async/async.dart' show StreamExtensions;
 import 'package:app/data/general/notification/state/media_content_moderation_completed.dart';
 import 'package:app/data/general/notification/state/news_item_available.dart';
 import 'package:firebase_core/firebase_core.dart';

@@ -3,7 +3,6 @@ import "dart:collection";
 
 import 'package:bloc_concurrency/bloc_concurrency.dart' show sequential;
 
-import "package:async/async.dart" show StreamExtensions;
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:logging/logging.dart";
 import "package:openapi/api.dart";

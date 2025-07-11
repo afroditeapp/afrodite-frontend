@@ -1,5 +1,4 @@
 
-import 'package:async/async.dart' show StreamExtensions;
 import 'package:drift/drift.dart';
 import 'package:openapi/api.dart';
 import '../utils.dart';

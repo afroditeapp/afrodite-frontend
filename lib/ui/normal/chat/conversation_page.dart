@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:app/logic/account/client_features_config.dart';
 import 'package:app/ui/normal/chat/message_row.dart';

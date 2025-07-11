@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:database/database.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -10,7 +9,6 @@ import 'package:app/data/general/notification/utils/notification_id.dart';
 import 'package:app/data/general/notification/utils/notification_payload.dart';
 import 'package:app/data/push_notification_manager.dart';
 import 'package:app/database/account_background_database_manager.dart';
-import 'package:app/database/background_database_manager.dart';
 import 'package:utils/utils.dart';
 import 'package:rxdart/rxdart.dart';
 

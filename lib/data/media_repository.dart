@@ -5,7 +5,6 @@ import 'dart:async';
 
 import 'package:app/data/general/notification/state/media_content_moderation_completed.dart';
 import 'package:app/database/account_background_database_manager.dart';
-import 'package:async/async.dart' show StreamExtensions;
 import 'package:drift/drift.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
