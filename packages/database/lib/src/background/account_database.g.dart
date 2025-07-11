@@ -747,29 +747,20 @@ class ConversationsBackgroundCompanion
   }
 }
 
-class $NewMessageNotificationTable extends NewMessageNotification
-    with TableInfo<$NewMessageNotificationTable, NewMessageNotificationData> {
+class $NewMessageNotificationTableTable extends NewMessageNotificationTable
+    with
+        TableInfo<$NewMessageNotificationTableTable,
+            NewMessageNotificationTableData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $NewMessageNotificationTable(this.attachedDatabase, [this._alias]);
-  static const VerificationMeta _idMeta = const VerificationMeta('id');
-  @override
-  late final GeneratedColumn<int> id = GeneratedColumn<int>(
-      'id', aliasedName, false,
-      hasAutoIncrement: true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      defaultConstraints:
-          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  $NewMessageNotificationTableTable(this.attachedDatabase, [this._alias]);
   @override
   late final GeneratedColumnWithTypeConverter<AccountId, String> uuidAccountId =
       GeneratedColumn<String>('uuid_account_id', aliasedName, false,
-              type: DriftSqlType.string,
-              requiredDuringInsert: true,
-              defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'))
+              type: DriftSqlType.string, requiredDuringInsert: true)
           .withConverter<AccountId>(
-              $NewMessageNotificationTable.$converteruuidAccountId);
+              $NewMessageNotificationTableTable.$converteruuidAccountId);
   static const VerificationMeta _notificationShownMeta =
       const VerificationMeta('notificationShown');
   @override
@@ -781,21 +772,26 @@ class $NewMessageNotificationTable extends NewMessageNotification
           'CHECK ("notification_shown" IN (0, 1))'),
       defaultValue: const Constant(false));
   @override
-  List<GeneratedColumn> get $columns => [id, uuidAccountId, notificationShown];
+  late final GeneratedColumnWithTypeConverter<ConversationId?, int>
+      conversationId = GeneratedColumn<int>(
+              'conversation_id', aliasedName, true,
+              type: DriftSqlType.int, requiredDuringInsert: false)
+          .withConverter<ConversationId?>(
+              $NewMessageNotificationTableTable.$converterconversationId);
+  @override
+  List<GeneratedColumn> get $columns =>
+      [uuidAccountId, notificationShown, conversationId];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
-  static const String $name = 'new_message_notification';
+  static const String $name = 'new_message_notification_table';
   @override
   VerificationContext validateIntegrity(
-      Insertable<NewMessageNotificationData> instance,
+      Insertable<NewMessageNotificationTableData> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
-    if (data.containsKey('id')) {
-      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
-    }
     if (data.containsKey('notification_shown')) {
       context.handle(
           _notificationShownMeta,
@@ -806,182 +802,211 @@ class $NewMessageNotificationTable extends NewMessageNotification
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => {id};
+  Set<GeneratedColumn> get $primaryKey => {uuidAccountId};
   @override
-  NewMessageNotificationData map(Map<String, dynamic> data,
+  NewMessageNotificationTableData map(Map<String, dynamic> data,
       {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return NewMessageNotificationData(
-      id: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
-      uuidAccountId: $NewMessageNotificationTable.$converteruuidAccountId
+    return NewMessageNotificationTableData(
+      uuidAccountId: $NewMessageNotificationTableTable.$converteruuidAccountId
           .fromSql(attachedDatabase.typeMapping.read(
               DriftSqlType.string, data['${effectivePrefix}uuid_account_id'])!),
       notificationShown: attachedDatabase.typeMapping.read(
           DriftSqlType.bool, data['${effectivePrefix}notification_shown'])!,
+      conversationId: $NewMessageNotificationTableTable.$converterconversationId
+          .fromSql(attachedDatabase.typeMapping.read(
+              DriftSqlType.int, data['${effectivePrefix}conversation_id'])),
     );
   }
 
   @override
-  $NewMessageNotificationTable createAlias(String alias) {
-    return $NewMessageNotificationTable(attachedDatabase, alias);
+  $NewMessageNotificationTableTable createAlias(String alias) {
+    return $NewMessageNotificationTableTable(attachedDatabase, alias);
   }
 
   static TypeConverter<AccountId, String> $converteruuidAccountId =
       const AccountIdConverter();
+  static TypeConverter<ConversationId?, int?> $converterconversationId =
+      const NullAwareTypeConverter.wrap(ConversationIdConverter());
 }
 
-class NewMessageNotificationData extends DataClass
-    implements Insertable<NewMessageNotificationData> {
-  final int id;
+class NewMessageNotificationTableData extends DataClass
+    implements Insertable<NewMessageNotificationTableData> {
   final AccountId uuidAccountId;
   final bool notificationShown;
-  const NewMessageNotificationData(
-      {required this.id,
-      required this.uuidAccountId,
-      required this.notificationShown});
+  final ConversationId? conversationId;
+  const NewMessageNotificationTableData(
+      {required this.uuidAccountId,
+      required this.notificationShown,
+      this.conversationId});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    map['id'] = Variable<int>(id);
     {
-      map['uuid_account_id'] = Variable<String>($NewMessageNotificationTable
-          .$converteruuidAccountId
-          .toSql(uuidAccountId));
+      map['uuid_account_id'] = Variable<String>(
+          $NewMessageNotificationTableTable.$converteruuidAccountId
+              .toSql(uuidAccountId));
     }
     map['notification_shown'] = Variable<bool>(notificationShown);
+    if (!nullToAbsent || conversationId != null) {
+      map['conversation_id'] = Variable<int>($NewMessageNotificationTableTable
+          .$converterconversationId
+          .toSql(conversationId));
+    }
     return map;
   }
 
-  NewMessageNotificationCompanion toCompanion(bool nullToAbsent) {
-    return NewMessageNotificationCompanion(
-      id: Value(id),
+  NewMessageNotificationTableCompanion toCompanion(bool nullToAbsent) {
+    return NewMessageNotificationTableCompanion(
       uuidAccountId: Value(uuidAccountId),
       notificationShown: Value(notificationShown),
+      conversationId: conversationId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(conversationId),
     );
   }
 
-  factory NewMessageNotificationData.fromJson(Map<String, dynamic> json,
+  factory NewMessageNotificationTableData.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return NewMessageNotificationData(
-      id: serializer.fromJson<int>(json['id']),
+    return NewMessageNotificationTableData(
       uuidAccountId: serializer.fromJson<AccountId>(json['uuidAccountId']),
       notificationShown: serializer.fromJson<bool>(json['notificationShown']),
+      conversationId:
+          serializer.fromJson<ConversationId?>(json['conversationId']),
     );
   }
   @override
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'id': serializer.toJson<int>(id),
       'uuidAccountId': serializer.toJson<AccountId>(uuidAccountId),
       'notificationShown': serializer.toJson<bool>(notificationShown),
+      'conversationId': serializer.toJson<ConversationId?>(conversationId),
     };
   }
 
-  NewMessageNotificationData copyWith(
-          {int? id, AccountId? uuidAccountId, bool? notificationShown}) =>
-      NewMessageNotificationData(
-        id: id ?? this.id,
+  NewMessageNotificationTableData copyWith(
+          {AccountId? uuidAccountId,
+          bool? notificationShown,
+          Value<ConversationId?> conversationId = const Value.absent()}) =>
+      NewMessageNotificationTableData(
         uuidAccountId: uuidAccountId ?? this.uuidAccountId,
         notificationShown: notificationShown ?? this.notificationShown,
+        conversationId:
+            conversationId.present ? conversationId.value : this.conversationId,
       );
-  NewMessageNotificationData copyWithCompanion(
-      NewMessageNotificationCompanion data) {
-    return NewMessageNotificationData(
-      id: data.id.present ? data.id.value : this.id,
+  NewMessageNotificationTableData copyWithCompanion(
+      NewMessageNotificationTableCompanion data) {
+    return NewMessageNotificationTableData(
       uuidAccountId: data.uuidAccountId.present
           ? data.uuidAccountId.value
           : this.uuidAccountId,
       notificationShown: data.notificationShown.present
           ? data.notificationShown.value
           : this.notificationShown,
+      conversationId: data.conversationId.present
+          ? data.conversationId.value
+          : this.conversationId,
     );
   }
 
   @override
   String toString() {
-    return (StringBuffer('NewMessageNotificationData(')
-          ..write('id: $id, ')
+    return (StringBuffer('NewMessageNotificationTableData(')
           ..write('uuidAccountId: $uuidAccountId, ')
-          ..write('notificationShown: $notificationShown')
+          ..write('notificationShown: $notificationShown, ')
+          ..write('conversationId: $conversationId')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, uuidAccountId, notificationShown);
+  int get hashCode =>
+      Object.hash(uuidAccountId, notificationShown, conversationId);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is NewMessageNotificationData &&
-          other.id == this.id &&
+      (other is NewMessageNotificationTableData &&
           other.uuidAccountId == this.uuidAccountId &&
-          other.notificationShown == this.notificationShown);
+          other.notificationShown == this.notificationShown &&
+          other.conversationId == this.conversationId);
 }
 
-class NewMessageNotificationCompanion
-    extends UpdateCompanion<NewMessageNotificationData> {
-  final Value<int> id;
+class NewMessageNotificationTableCompanion
+    extends UpdateCompanion<NewMessageNotificationTableData> {
   final Value<AccountId> uuidAccountId;
   final Value<bool> notificationShown;
-  const NewMessageNotificationCompanion({
-    this.id = const Value.absent(),
+  final Value<ConversationId?> conversationId;
+  final Value<int> rowid;
+  const NewMessageNotificationTableCompanion({
     this.uuidAccountId = const Value.absent(),
     this.notificationShown = const Value.absent(),
+    this.conversationId = const Value.absent(),
+    this.rowid = const Value.absent(),
   });
-  NewMessageNotificationCompanion.insert({
-    this.id = const Value.absent(),
+  NewMessageNotificationTableCompanion.insert({
     required AccountId uuidAccountId,
     this.notificationShown = const Value.absent(),
+    this.conversationId = const Value.absent(),
+    this.rowid = const Value.absent(),
   }) : uuidAccountId = Value(uuidAccountId);
-  static Insertable<NewMessageNotificationData> custom({
-    Expression<int>? id,
+  static Insertable<NewMessageNotificationTableData> custom({
     Expression<String>? uuidAccountId,
     Expression<bool>? notificationShown,
+    Expression<int>? conversationId,
+    Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
-      if (id != null) 'id': id,
       if (uuidAccountId != null) 'uuid_account_id': uuidAccountId,
       if (notificationShown != null) 'notification_shown': notificationShown,
+      if (conversationId != null) 'conversation_id': conversationId,
+      if (rowid != null) 'rowid': rowid,
     });
   }
 
-  NewMessageNotificationCompanion copyWith(
-      {Value<int>? id,
-      Value<AccountId>? uuidAccountId,
-      Value<bool>? notificationShown}) {
-    return NewMessageNotificationCompanion(
-      id: id ?? this.id,
+  NewMessageNotificationTableCompanion copyWith(
+      {Value<AccountId>? uuidAccountId,
+      Value<bool>? notificationShown,
+      Value<ConversationId?>? conversationId,
+      Value<int>? rowid}) {
+    return NewMessageNotificationTableCompanion(
       uuidAccountId: uuidAccountId ?? this.uuidAccountId,
       notificationShown: notificationShown ?? this.notificationShown,
+      conversationId: conversationId ?? this.conversationId,
+      rowid: rowid ?? this.rowid,
     );
   }
 
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    if (id.present) {
-      map['id'] = Variable<int>(id.value);
-    }
     if (uuidAccountId.present) {
-      map['uuid_account_id'] = Variable<String>($NewMessageNotificationTable
-          .$converteruuidAccountId
-          .toSql(uuidAccountId.value));
+      map['uuid_account_id'] = Variable<String>(
+          $NewMessageNotificationTableTable.$converteruuidAccountId
+              .toSql(uuidAccountId.value));
     }
     if (notificationShown.present) {
       map['notification_shown'] = Variable<bool>(notificationShown.value);
+    }
+    if (conversationId.present) {
+      map['conversation_id'] = Variable<int>($NewMessageNotificationTableTable
+          .$converterconversationId
+          .toSql(conversationId.value));
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
     }
     return map;
   }
 
   @override
   String toString() {
-    return (StringBuffer('NewMessageNotificationCompanion(')
-          ..write('id: $id, ')
+    return (StringBuffer('NewMessageNotificationTableCompanion(')
           ..write('uuidAccountId: $uuidAccountId, ')
-          ..write('notificationShown: $notificationShown')
+          ..write('notificationShown: $notificationShown, ')
+          ..write('conversationId: $conversationId, ')
+          ..write('rowid: $rowid')
           ..write(')'))
         .toString();
   }
@@ -3380,8 +3405,8 @@ abstract class _$AccountBackgroundDatabase extends GeneratedDatabase {
       $ProfilesBackgroundTable(this);
   late final $ConversationsBackgroundTable conversationsBackground =
       $ConversationsBackgroundTable(this);
-  late final $NewMessageNotificationTable newMessageNotification =
-      $NewMessageNotificationTable(this);
+  late final $NewMessageNotificationTableTable newMessageNotificationTable =
+      $NewMessageNotificationTableTable(this);
   late final $NewReceivedLikesAvailableTable newReceivedLikesAvailable =
       $NewReceivedLikesAvailableTable(this);
   late final $NewsTable news = $NewsTable(this);
@@ -3402,8 +3427,8 @@ abstract class _$AccountBackgroundDatabase extends GeneratedDatabase {
       DaoProfilesBackground(this as AccountBackgroundDatabase);
   late final DaoConversationsBackground daoConversationsBackground =
       DaoConversationsBackground(this as AccountBackgroundDatabase);
-  late final DaoNewMessageNotification daoNewMessageNotification =
-      DaoNewMessageNotification(this as AccountBackgroundDatabase);
+  late final DaoNewMessageNotificationTable daoNewMessageNotificationTable =
+      DaoNewMessageNotificationTable(this as AccountBackgroundDatabase);
   late final DaoNewReceivedLikesAvailable daoNewReceivedLikesAvailable =
       DaoNewReceivedLikesAvailable(this as AccountBackgroundDatabase);
   late final DaoNews daoNews = DaoNews(this as AccountBackgroundDatabase);
@@ -3431,7 +3456,7 @@ abstract class _$AccountBackgroundDatabase extends GeneratedDatabase {
         accountBackground,
         profilesBackground,
         conversationsBackground,
-        newMessageNotification,
+        newMessageNotificationTable,
         newReceivedLikesAvailable,
         news,
         mediaContentModerationCompletedNotificationTable,

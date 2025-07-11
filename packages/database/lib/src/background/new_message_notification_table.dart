@@ -1,71 +1,74 @@
-
-import 'package:database/database.dart';
 import 'package:database/src/background/account_database.dart';
-import 'package:openapi/api.dart' show AccountId;
+import 'package:openapi/api.dart' show AccountId, ConversationId;
 
 import 'package:drift/drift.dart';
 import '../utils.dart';
 
 part 'new_message_notification_table.g.dart';
 
-class NewMessageNotification extends Table {
-  IntColumn get id => integer().autoIncrement()();
-  TextColumn get uuidAccountId => text().map(const AccountIdConverter()).unique()();
+class NewMessageNotificationTable extends Table {
+  TextColumn get uuidAccountId => text().map(const AccountIdConverter())();
   BoolColumn get notificationShown => boolean().withDefault(const Constant(false))();
+  IntColumn get conversationId => integer().map(const NullAwareTypeConverter.wrap(ConversationIdConverter())).nullable()();
+
+  @override
+  Set<Column<Object>> get primaryKey => {uuidAccountId};
 }
 
-@DriftAccessor(tables: [NewMessageNotification])
-class DaoNewMessageNotification extends DatabaseAccessor<AccountBackgroundDatabase> with _$DaoNewMessageNotificationMixin {
-  DaoNewMessageNotification(AccountBackgroundDatabase db) : super(db);
+@DriftAccessor(tables: [NewMessageNotificationTable])
+class DaoNewMessageNotificationTable extends DatabaseAccessor<AccountBackgroundDatabase> with _$DaoNewMessageNotificationTableMixin {
+  DaoNewMessageNotificationTable(super.db);
 
-  /// The IDs begin from 0.
-  Future<NewMessageNotificationId> getOrCreateNewMessageNotificationId(AccountId id) async {
-    return await transaction(() async {
-      final r = await (select(newMessageNotification)
-        ..where((t) => t.uuidAccountId.equals(id.aid))
-      )
-        .getSingleOrNull();
-
-      if (r == null) {
-        final r = await into(newMessageNotification).insertReturning(
-          NewMessageNotificationCompanion.insert(
-            uuidAccountId: id,
-          ),
-        );
-        return NewMessageNotificationId(r.id);
-      } else {
-        return NewMessageNotificationId(r.id);
-      }
-    });
+  Future<ConversationId?> getConversationId(AccountId id) async {
+    return await (select(newMessageNotificationTable)
+      ..where((t) => t.uuidAccountId.equals(id.aid))
+    )
+      .map((r) => r.conversationId)
+      .getSingleOrNull();
   }
 
-  Future<AccountId?> getAccountId(NewMessageNotificationId notificationId) async {
-    final r = await (select(newMessageNotification)
-        ..where((t) => t.id.equals(notificationId.id))
+  Future<AccountId?> getAccountId(ConversationId conversationId) async {
+    return await (select(newMessageNotificationTable)
+        ..where((t) => t.conversationId.equals(conversationId.id))
       )
+        .map((r) => r.uuidAccountId)
         .getSingleOrNull();
-    return r?.uuidAccountId;
   }
 
   Future<bool> getNotificationShown(AccountId accountId) async {
-    final r = await (select(newMessageNotification)
+    final r = await (select(newMessageNotificationTable)
         ..where((t) => t.uuidAccountId.equals(accountId.aid))
       )
         .getSingleOrNull();
     return r?.notificationShown ?? false;
   }
 
+  Future<void> setConversationId(AccountId accountId, ConversationId value) async {
+    await into(newMessageNotificationTable).insert(
+      NewMessageNotificationTableCompanion.insert(
+        uuidAccountId: accountId,
+        conversationId: Value(value),
+      ),
+      onConflict: DoUpdate(
+        (old) => NewMessageNotificationTableCompanion(
+          conversationId: Value(value),
+        ),
+        target: [newMessageNotificationTable.uuidAccountId]
+      ),
+    );
+  }
+
   Future<void> setNotificationShown(AccountId accountId, bool value) async {
-    await into(newMessageNotification).insert(
-      NewMessageNotificationCompanion.insert(
+    await into(newMessageNotificationTable).insert(
+      NewMessageNotificationTableCompanion.insert(
         uuidAccountId: accountId,
         notificationShown: Value(value),
       ),
       onConflict: DoUpdate(
-        (old) => NewMessageNotificationCompanion(
+        (old) => NewMessageNotificationTableCompanion(
           notificationShown: Value(value),
         ),
-        target: [newMessageNotification.uuidAccountId]
+        target: [newMessageNotificationTable.uuidAccountId]
       ),
     );
   }

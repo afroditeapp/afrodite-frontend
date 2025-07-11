@@ -3,8 +3,8 @@
 part of 'new_message_notification_table.dart';
 
 // ignore_for_file: type=lint
-mixin _$DaoNewMessageNotificationMixin
+mixin _$DaoNewMessageNotificationTableMixin
     on DatabaseAccessor<AccountBackgroundDatabase> {
-  $NewMessageNotificationTable get newMessageNotification =>
-      attachedDatabase.newMessageNotification;
+  $NewMessageNotificationTableTable get newMessageNotificationTable =>
+      attachedDatabase.newMessageNotificationTable;
 }

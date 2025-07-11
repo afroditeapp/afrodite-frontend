@@ -56,7 +56,7 @@ class _DebugSettingsPageState extends State<DebugSettingsPage> {
       if (match == null) {
         return;
       }
-      await NotificationMessageReceived.getInstance().updateMessageReceivedCount(match, 1, accountBackgroundDb);
+      await NotificationMessageReceived.getInstance().updateMessageReceivedCount(match, 1, null, accountBackgroundDb);
     }));
 
     settings.add(Setting.createSetting(Icons.notification_add, "Notification: New message (second chat)", () async {
@@ -65,13 +65,13 @@ class _DebugSettingsPageState extends State<DebugSettingsPage> {
       if (match == null) {
         return;
       }
-      await NotificationMessageReceived.getInstance().updateMessageReceivedCount(match, 1, accountBackgroundDb);
+      await NotificationMessageReceived.getInstance().updateMessageReceivedCount(match, 1, null, accountBackgroundDb);
     }));
 
     settings.add(Setting.createSetting(Icons.notification_add, "Notification: New message (chats 1-5)", () async {
       final List<AccountId> matchList = await accountDb.accountData((db) => db.daoConversationList.getConversationListNoBlocked(0, 5)).ok() ?? [];
       for (final match in matchList) {
-        await NotificationMessageReceived.getInstance().updateMessageReceivedCount(match, 1, accountBackgroundDb);
+        await NotificationMessageReceived.getInstance().updateMessageReceivedCount(match, 1, null, accountBackgroundDb);
       }
     }));
 

@@ -268,6 +268,8 @@ class ApiClient {
           return ClientId.fromJson(value);
         case 'ClientInfo':
           return ClientInfo.fromJson(value);
+        case 'ClientLanguage':
+          return ClientLanguage.fromJson(value);
         case 'ClientLocalId':
           return ClientLocalId.fromJson(value);
         case 'ClientType':
@@ -302,6 +304,8 @@ class ApiClient {
           return ContentProcessingStateTypeTypeTransformer().decode(value);
         case 'ContentSlot':
           return ContentSlotTypeTransformer().decode(value);
+        case 'ConversationId':
+          return ConversationId.fromJson(value);
         case 'CurrentAccountInteractionState':
           return CurrentAccountInteractionStateTypeTransformer().decode(value);
         case 'CustomReport':
@@ -370,6 +374,8 @@ class ApiClient {
           return GetClientVersionStatisticsResult.fromJson(value);
         case 'GetClientVersionStatisticsSettings':
           return GetClientVersionStatisticsSettings.fromJson(value);
+        case 'GetConversationId':
+          return GetConversationId.fromJson(value);
         case 'GetCustomReportsConfigResult':
           return GetCustomReportsConfigResult.fromJson(value);
         case 'GetInitialProfileAgeInfoResult':
@@ -480,6 +486,10 @@ class ApiClient {
           return ModerationQueueTypeTypeTransformer().decode(value);
         case 'MyProfileContent':
           return MyProfileContent.fromJson(value);
+        case 'NewMessageNotification':
+          return NewMessageNotification.fromJson(value);
+        case 'NewMessageNotificationList':
+          return NewMessageNotificationList.fromJson(value);
         case 'NewReceivedLikesCount':
           return NewReceivedLikesCount.fromJson(value);
         case 'NewReceivedLikesCountResult':

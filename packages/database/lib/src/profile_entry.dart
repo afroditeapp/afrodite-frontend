@@ -223,11 +223,6 @@ class MyContent extends ContentIdAndAccepted {
   );
 }
 
-class NewMessageNotificationId {
-  final int id;
-  const NewMessageNotificationId(this.id);
-}
-
 class InitialAgeInfo {
   final int initialAge;
   final UtcDateTime time;

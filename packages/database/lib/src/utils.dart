@@ -356,12 +356,12 @@ class PendingNotificationTokenConverter extends TypeConverter<PendingNotificatio
   }
 }
 
-class NewMessageNotificationIdConverter extends TypeConverter<NewMessageNotificationId, int> {
-  const NewMessageNotificationIdConverter();
+class ConversationIdConverter extends TypeConverter<ConversationId, int> {
+  const ConversationIdConverter();
 
   @override
-  NewMessageNotificationId fromSql(fromDb) {
-    return NewMessageNotificationId(fromDb);
+  ConversationId fromSql(fromDb) {
+    return ConversationId(id: fromDb);
   }
 
   @override

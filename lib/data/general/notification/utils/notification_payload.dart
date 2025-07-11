@@ -4,7 +4,6 @@ import 'dart:convert';
 
 import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
-import 'package:app/data/general/notification/utils/notification_id.dart';
 import 'package:openapi/api.dart';
 import 'package:utils/utils.dart';
 
@@ -115,38 +114,38 @@ class NavigateToConversationList extends NotificationPayload {
 }
 
 class NavigateToConversation extends NotificationPayload {
-  final NotificationId notificationId;
+  final ConversationId conversationId;
 
   const NavigateToConversation({
-    required this.notificationId,
+    required this.conversationId,
     required super.receiverAccountId,
   }) : super(
     payloadType: NotificationPayloadTypeString.navigateToConversation,
   );
 
-  static const String _notificationIdKey = "notificationId";
+  static const String _conversationIdKey = "c";
   static NotificationPayload? parseFromJsonObject(Map<String, Object?> jsonObject, AccountId receiverAccountId) {
-    if (!jsonObject.containsKey(_notificationIdKey)) {
-      log.error("NavigateToConversation payload parsing error: notification ID is missing");
+    if (!jsonObject.containsKey(_conversationIdKey)) {
+      log.error("NavigateToConversation payload parsing error: conversation ID is missing");
       return null;
     }
-    final idValue = jsonObject[_notificationIdKey];
-    final NotificationId id;
+    final idValue = jsonObject[_conversationIdKey];
+    final ConversationId id;
     if (idValue is int) {
-      id = NotificationId(idValue);
+      id = ConversationId(id: idValue);
     } else {
-      log.error("NavigateToConversation payload parsing error: notification ID is not an integer");
+      log.error("NavigateToConversation payload parsing error: conversation ID is not an integer");
       return null;
     }
     return NavigateToConversation(
-      notificationId: id,
+      conversationId: id,
       receiverAccountId: receiverAccountId,
     );
   }
 
   @override
   Map<String, Object?> additionalData() => {
-    _notificationIdKey: notificationId.value,
+    _conversationIdKey: conversationId.id,
   };
 }
 

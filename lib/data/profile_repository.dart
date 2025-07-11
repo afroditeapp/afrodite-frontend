@@ -532,7 +532,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
   Future<Result<void, void>> resetUnreadMessagesCount(AccountId accountId) async {
     // Hide notification
     await NotificationMessageReceived.getInstance()
-      .updateMessageReceivedCount(accountId, 0, accountBackgroundDb);
+      .updateMessageReceivedCount(accountId, 0, null, accountBackgroundDb);
     return accountBackgroundDb.accountAction(
       (db) => db.daoConversationsBackground.setUnreadMessagesCount(accountId, const UnreadMessagesCount(0)),
     );

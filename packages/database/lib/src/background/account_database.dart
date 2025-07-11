@@ -33,7 +33,7 @@ class AccountBackground extends Table {
     AccountBackground,
     ProfilesBackground,
     ConversationsBackground,
-    NewMessageNotification,
+    NewMessageNotificationTable,
     NewReceivedLikesAvailable,
     News,
     MediaContentModerationCompletedNotificationTable,
@@ -47,8 +47,8 @@ class AccountBackground extends Table {
     DaoProfilesBackground,
     // Related to ConversationsBackground table
     DaoConversationsBackground,
-    // Related to NewMessageNotification table
-    DaoNewMessageNotification,
+    // Related to NewMessageNotificationTable table
+    DaoNewMessageNotificationTable,
     // Related to NewReceivedLikesAvailable table
     DaoNewReceivedLikesAvailable,
     // Related to News table

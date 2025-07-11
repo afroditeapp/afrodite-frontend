@@ -65,6 +65,7 @@ lib/model/client_features_config.dart
 lib/model/client_features_file_hash.dart
 lib/model/client_id.dart
 lib/model/client_info.dart
+lib/model/client_language.dart
 lib/model/client_local_id.dart
 lib/model/client_type.dart
 lib/model/client_version.dart
@@ -82,6 +83,7 @@ lib/model/content_processing_state.dart
 lib/model/content_processing_state_changed.dart
 lib/model/content_processing_state_type.dart
 lib/model/content_slot.dart
+lib/model/conversation_id.dart
 lib/model/current_account_interaction_state.dart
 lib/model/custom_report.dart
 lib/model/custom_report_content.dart
@@ -116,6 +118,7 @@ lib/model/get_chat_message_reports.dart
 lib/model/get_client_features_config_result.dart
 lib/model/get_client_version_statistics_result.dart
 lib/model/get_client_version_statistics_settings.dart
+lib/model/get_conversation_id.dart
 lib/model/get_custom_reports_config_result.dart
 lib/model/get_initial_profile_age_info_result.dart
 lib/model/get_ip_address_statistics_result.dart
@@ -171,6 +174,8 @@ lib/model/message_number.dart
 lib/model/min_distance_km.dart
 lib/model/moderation_queue_type.dart
 lib/model/my_profile_content.dart
+lib/model/new_message_notification.dart
+lib/model/new_message_notification_list.dart
 lib/model/new_received_likes_count.dart
 lib/model/new_received_likes_count_result.dart
 lib/model/news_id.dart

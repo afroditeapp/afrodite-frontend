@@ -1,5 +1,5 @@
 
-import 'package:database/database.dart';
+import 'package:openapi/api.dart';
 
 class NotificationId {
   final int value;
@@ -24,6 +24,7 @@ enum NotificationIdStatic {
   automaticProfileSearchCompleted(id: NotificationId(8)),
   /// Category: NotificationCategoryNewsItemAvailable
   adminNotification(id: NotificationId(9)),
+  genericMessageReceived(id: NotificationId(10)),
   firstNewMessageNotificationId(id: NotificationId(1000));
 
   final NotificationId id;
@@ -31,11 +32,11 @@ enum NotificationIdStatic {
     required this.id,
   });
 
-  static NotificationId calculateNotificationIdForNewMessageNotifications(NewMessageNotificationId idStartingFromZero) {
+  static NotificationId calculateNotificationIdForNewMessageNotifications(ConversationId idStartingFromZero) {
     return NotificationId(firstNewMessageNotificationId.id.value + idStartingFromZero.id);
   }
 
-  static NewMessageNotificationId revertNewMessageNotificationIdCalcualtion(NotificationId notificationId) {
-    return NewMessageNotificationId(notificationId.value - firstNewMessageNotificationId.id.value);
+  static ConversationId revertNewMessageNotificationIdCalcualtion(ConversationId notificationId) {
+    return ConversationId(id: notificationId.id - firstNewMessageNotificationId.id.value);
   }
 }

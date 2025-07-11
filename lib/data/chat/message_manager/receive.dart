@@ -113,15 +113,26 @@ class ReceiveMessageUtils {
       if (r.isOk()) {
         toBeDeleted.add(message.parsed.toPendingMessageId());
       }
+
+      ConversationId? conversationId = await accountBackgroundDb.accountData((db) => db.daoNewMessageNotificationTable.getConversationId(message.parsed.sender)).ok();
+      if (conversationId == null) {
+        final r = await api.chat((api) => api.getConversationId(message.parsed.sender.aid)).ok();
+        conversationId = r?.value;
+      }
+
       final unreadMessagesCount = await accountBackgroundDb.accountData((db) => db.daoConversationsBackground.incrementUnreadMessagesCount(message.parsed.sender)).ok();
       if (unreadMessagesCount != null) {
         profile.sendProfileChange(ConversationChanged(message.parsed.sender, ConversationChangeType.messageReceived));
-        await NotificationMessageReceived.getInstance().updateMessageReceivedCount(message.parsed.sender, unreadMessagesCount.count, accountBackgroundDb);
+        if (conversationId == null) {
+          await NotificationMessageReceived.getInstance().showFallbackMessageReceivedNotification(accountBackgroundDb);
+        } else {
+          await NotificationMessageReceived.getInstance().updateMessageReceivedCount(message.parsed.sender, unreadMessagesCount.count, conversationId, accountBackgroundDb);
+        }
       }
     }
 
     for (final sender in newMessages.map((item) => item.parsed.sender).toSet()) {
-      await accountBackgroundDb.accountAction((db) => db.daoNewMessageNotification.setNotificationShown(sender, false));
+      await accountBackgroundDb.accountAction((db) => db.daoNewMessageNotificationTable.setNotificationShown(sender, false));
     }
 
     final toBeAcknowledgedList = PendingMessageAcknowledgementList(ids: toBeDeleted);

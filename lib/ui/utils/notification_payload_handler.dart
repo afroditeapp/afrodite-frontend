@@ -9,7 +9,6 @@ import 'package:app/ui/normal/settings/notifications/automatic_profile_search_re
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
-import 'package:app/data/general/notification/utils/notification_id.dart';
 import 'package:app/data/general/notification/utils/notification_payload.dart';
 import 'package:app/database/account_background_database_manager.dart';
 import 'package:app/database/account_database_manager.dart';
@@ -124,8 +123,7 @@ Future<NewPageDetails?> handlePayload(
 
   switch (payload) {
     case NavigateToConversation():
-      final dbId = NotificationIdStatic.revertNewMessageNotificationIdCalcualtion(payload.notificationId);
-      final accountId = await accountBackgroundDb.accountData((db) => db.daoNewMessageNotification.getAccountId(dbId)).ok();
+      final accountId = await accountBackgroundDb.accountData((db) => db.daoNewMessageNotificationTable.getAccountId(payload.conversationId)).ok();
       if (accountId == null) {
         return null;
       }

@@ -1121,6 +1121,10 @@
       }
     }
   },
+  "notification_message_received_multiple_generic": "New messages received",
+  "@notification_message_received_multiple_generic": {
+    "description": "Title for message received when multiple messages are received but there is no info who sent it"
+  },
   "notification_message_received_single": "{p0} sent a message",
   "@notification_message_received_single": {
     "description": "Title for message received when single message is received",
