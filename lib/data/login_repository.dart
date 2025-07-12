@@ -144,7 +144,10 @@ class LoginRepository extends DataRepository {
             return;
           }
 
-          final info = SignInWithLoginInfo(googleToken: token, clientInfo: _clientInfo());
+          final info = SignInWithLoginInfo(
+            google: SignInWithGoogleInfo(nonce: "", token: token),
+            clientInfo: _clientInfo(),
+          );
           switch (await _handleSignInWithLoginInfo(info)) {
             case Ok():
               ();
@@ -373,7 +376,10 @@ class LoginRepository extends DataRepository {
 
     yield SignInWithEvent.getTokenCompleted;
 
-    final info = SignInWithLoginInfo(googleToken: token, clientInfo: _clientInfo());
+    final info = SignInWithLoginInfo(
+      google: SignInWithGoogleInfo(nonce: "", token: token),
+      clientInfo: _clientInfo(),
+    );
     switch (await _handleSignInWithLoginInfo(info)) {
       case Ok():
         ();

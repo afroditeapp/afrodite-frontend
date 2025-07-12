@@ -109,3 +109,4 @@ class GetConversationId {
   static const requiredKeys = <String>{
   };
 }
+

@@ -15,30 +15,30 @@ class SignInWithLoginInfo {
   SignInWithLoginInfo({
     this.apple,
     required this.clientInfo,
-    this.googleToken,
+    this.google,
   });
 
   SignInWithAppleInfo? apple;
 
   ClientInfo clientInfo;
 
-  String? googleToken;
+  SignInWithGoogleInfo? google;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is SignInWithLoginInfo &&
     other.apple == apple &&
     other.clientInfo == clientInfo &&
-    other.googleToken == googleToken;
+    other.google == google;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (apple == null ? 0 : apple!.hashCode) +
     (clientInfo.hashCode) +
-    (googleToken == null ? 0 : googleToken!.hashCode);
+    (google == null ? 0 : google!.hashCode);
 
   @override
-  String toString() => 'SignInWithLoginInfo[apple=$apple, clientInfo=$clientInfo, googleToken=$googleToken]';
+  String toString() => 'SignInWithLoginInfo[apple=$apple, clientInfo=$clientInfo, google=$google]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -48,10 +48,10 @@ class SignInWithLoginInfo {
       json[r'apple'] = null;
     }
       json[r'client_info'] = this.clientInfo;
-    if (this.googleToken != null) {
-      json[r'google_token'] = this.googleToken;
+    if (this.google != null) {
+      json[r'google'] = this.google;
     } else {
-      json[r'google_token'] = null;
+      json[r'google'] = null;
     }
     return json;
   }
@@ -77,7 +77,7 @@ class SignInWithLoginInfo {
       return SignInWithLoginInfo(
         apple: SignInWithAppleInfo.fromJson(json[r'apple']),
         clientInfo: ClientInfo.fromJson(json[r'client_info'])!,
-        googleToken: mapValueOfType<String>(json, r'google_token'),
+        google: SignInWithGoogleInfo.fromJson(json[r'google']),
       );
     }
     return null;

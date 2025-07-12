@@ -106,3 +106,4 @@ class NewMessageNotificationList {
     'v',
   };
 }
+

@@ -710,6 +710,8 @@ class ApiClient {
           return SetProfileName.fromJson(value);
         case 'SignInWithAppleInfo':
           return SignInWithAppleInfo.fromJson(value);
+        case 'SignInWithGoogleInfo':
+          return SignInWithGoogleInfo.fromJson(value);
         case 'SignInWithLoginInfo':
           return SignInWithLoginInfo.fromJson(value);
         case 'SoftwareInfo':
