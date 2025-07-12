@@ -1,4 +1,4 @@
-import 'package:flutter/services.dart';
+import 'dart:typed_data';
 
 class EncryptResult {
   final Uint8List pgpMessage;

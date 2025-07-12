@@ -6,14 +6,10 @@ publish_to: 'none'
 
 environment:
   sdk: '>=3.6.0 <4.0.0'
-  flutter: '>=3.3.0'
 
 resolution: workspace
 
 dependencies:
-  flutter:
-    sdk: flutter
-
   drift: ^2.26.0
 
   database_provider_native:
@@ -24,6 +20,4 @@ dependencies:
     path: "../database"
 
 dev_dependencies:
-  flutter_test:
-    sdk: flutter
-  flutter_lints: ^6.0.0
+  lints: ^6.0.0
