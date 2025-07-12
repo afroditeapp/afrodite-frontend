@@ -5,11 +5,11 @@ import 'dart:io';
 
 import 'package:app/data/app_version.dart';
 import 'package:app/data/utils/sign_in_with_apple.dart';
+import 'package:app/data/utils/sign_in_with_google.dart';
 import 'package:async/async.dart' show StreamExtensions;
 import 'package:crypto/crypto.dart';
 import 'package:database/database.dart';
 import 'package:flutter/foundation.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:app/api/api_manager.dart';
@@ -29,7 +29,6 @@ import 'package:app/database/background_database_manager.dart';
 import 'package:app/database/database_manager.dart';
 import 'package:app/localizations.dart';
 import 'package:app/logic/app/app_visibility_provider.dart';
-import 'package:app/logic/sign_in_with.dart';
 import 'package:app/main.dart';
 import 'package:app/service_config.dart';
 import 'package:app/ui_utils/snack_bar.dart';
@@ -69,7 +68,7 @@ class LoginRepository extends DataRepository {
 
   final ApiManager _apiNoConnection = ApiManager.withDefaultAddressAndNoConnection();
 
-  late final GoogleSignIn _google;
+  late final SignInWithGoogleManager _google;
 
   final RepositoryStateStreams _repositoryStateStreams = RepositoryStateStreams();
   Stream<AccountState?> get accountState => _repositoryStateStreams.accountState;
@@ -119,43 +118,8 @@ class LoginRepository extends DataRepository {
     }
     _internalState.add(LoginRepositoryState.initComplete);
 
-    _google = createSignInWithGoogle();
-    if (kIsWeb) {
-      _google
-        .onCurrentUserChanged
-        .asyncMap((signedIn) async {
-          if (signedIn == null) {
-            // Perhaps this can happen if page loads and there is no Google
-            // Account session or valid Google Account session invalidates?
-            // Don't do anything in these cases.
-            return;
-          }
-
-          final String token;
-          try {
-            final possibleToken = (await signedIn.authentication).idToken;
-            if (possibleToken == null) {
-              showSnackBarTextsForSignInWithEvent(SignInWithEvent.getTokenFailed);
-              return;
-            }
-            token = possibleToken;
-          } catch (_) {
-            showSnackBarTextsForSignInWithEvent(SignInWithEvent.getTokenFailed);
-            return;
-          }
-
-          final info = SignInWithLoginInfo(
-            google: SignInWithGoogleInfo(nonce: "", token: token),
-            clientInfo: _clientInfo(),
-          );
-          switch (await _handleSignInWithLoginInfo(info)) {
-            case Ok():
-              ();
-            case Err(:final e):
-              showSnackBarTextsForSignInWithEvent(e);
-          }
-        }).listen((_) {});
-    }
+    _google = SignInWithGoogleManager();
+    await _google.init();
 
     await _apiNoConnection.init();
 
@@ -356,31 +320,15 @@ class LoginRepository extends DataRepository {
   }
 
   Stream<SignInWithEvent> signInWithGoogle() async* {
-    final String token;
-    try {
-      final signedIn = await _google.signIn();
-      if (signedIn == null) {
-        yield SignInWithEvent.getTokenFailed;
-        return;
-      }
-      final possibleToken = (await signedIn.authentication).idToken;
-      if (possibleToken == null) {
-        yield SignInWithEvent.getTokenFailed;
-        return;
-      }
-      token = possibleToken;
-    } catch (_) {
+    final info = await _google.login().ok();
+    if (info == null) {
       yield SignInWithEvent.getTokenFailed;
       return;
     }
 
     yield SignInWithEvent.getTokenCompleted;
 
-    final info = SignInWithLoginInfo(
-      google: SignInWithGoogleInfo(nonce: "", token: token),
-      clientInfo: _clientInfo(),
-    );
-    switch (await _handleSignInWithLoginInfo(info)) {
+    switch (await handleSignInWithLoginInfo(info)) {
       case Ok():
         ();
       case Err(:final e):
@@ -388,7 +336,7 @@ class LoginRepository extends DataRepository {
     }
   }
 
-  ClientInfo _clientInfo() {
+  ClientInfo clientInfo() {
     final ClientType clientType;
     if (kIsWeb) {
       clientType = ClientType.web;
@@ -405,7 +353,7 @@ class LoginRepository extends DataRepository {
     );
   }
 
-  Future<Result<void, SignInWithEvent>> _handleSignInWithLoginInfo(SignInWithLoginInfo info) async {
+  Future<Result<void, SignInWithEvent>> handleSignInWithLoginInfo(SignInWithLoginInfo info) async {
     final login = await _apiNoConnection.account((api) => api.postSignInWithLogin(info)).ok();
     if (login == null) {
       return const Err(SignInWithEvent.serverRequestFailed);
@@ -500,12 +448,7 @@ class LoginRepository extends DataRepository {
     // Other repositories
     await repository.onLogout();
 
-    try {
-      // TODO(prod): There is also google.disconnect(). Should that used instead?
-      await _google.signOut();
-    } catch (e) { // No documentation, just catch everything
-      log.error("Sign in with Google error: sign out failed");
-    }
+    await _google.logout();
 
     log.info("Logout completed");
   }
@@ -556,9 +499,9 @@ class LoginRepository extends DataRepository {
         nonce: nonceBase64Url,
         token: token,
       ),
-      clientInfo: _clientInfo(),
+      clientInfo: clientInfo(),
     );
-    switch (await _handleSignInWithLoginInfo(info)) {
+    switch (await handleSignInWithLoginInfo(info)) {
       case Ok():
         ();
       case Err(:final e):
@@ -665,7 +608,7 @@ class LoginRepository extends DataRepository {
       DemoModeLoginToAccount(
         aid: id,
         token: demoToken,
-        clientInfo: _clientInfo(),
+        clientInfo: clientInfo(),
       ),
     )).ok();
     if (loginResult != null) {
@@ -711,23 +654,6 @@ enum SignInWithEvent {
 enum CommonSignInError {
   unsupportedClient,
   otherError,
-}
-
-const String emailScope = "https://www.googleapis.com/auth/userinfo.email";
-
-GoogleSignIn createSignInWithGoogle() {
-  if (kIsWeb || Platform.isAndroid) {
-    return GoogleSignIn(
-      scopes: [emailScope],
-    );
-  } else if (Platform.isIOS) {
-    return GoogleSignIn(
-      serverClientId: signInWithGoogleBackendClientId(),
-      scopes: [emailScope],
-    );
-  } else {
-    throw UnsupportedError("Unsupported platform");
-  }
 }
 
 /// This should contain account specific logic so it is not possible
