@@ -302,7 +302,7 @@ class ReplaceSplashScreenTransitionDelegate extends TransitionDelegate<void> {
         final List<RouteTransitionRecord>? pagelessRoutes = pageRouteToPagelessRoutes[exitingPageRoute];
         if (pagelessRoutes != null) {
           for (final RouteTransitionRecord pagelessRoute in pagelessRoutes) {
-              pagelessRoute.markForRemove();
+              pagelessRoute.markForComplete();
             }
         }
       }

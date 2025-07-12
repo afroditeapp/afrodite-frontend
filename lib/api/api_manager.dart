@@ -51,7 +51,7 @@ class EventToClientContainer implements ServerWsEvent {
 }
 
 class ServerConnectionManager implements LifecycleMethods, ServerConnectionInterface {
-  final ApiManager _account = ApiManager.withDefaultAddress(rememberToInitializeConnectionLateFinalField: true);
+  final ApiManager _account = ApiManager.withDefaultAddress();
   final AccountDatabaseManager accountDb;
   final AccountBackgroundDatabaseManager accountBackgroundDb;
   final AccountId currentUser;
@@ -85,7 +85,7 @@ class ServerConnectionManager implements LifecycleMethods, ServerConnectionInter
 
   @override
   Future<void> init() async {
-    _account.connection = this;
+    _account.initConnection(this);
     await _account.init();
 
     _serverEventsSubscription = accountConnection.serverEvents.listen((event) {
@@ -244,10 +244,18 @@ String addWebSocketRoutePathToAddress(String baseUrl) {
 class ApiManager implements LifecycleMethods {
   final ApiProvider _account = ApiProvider(defaultServerUrlAccount());
 
-  ApiManager.withDefaultAddress({required rememberToInitializeConnectionLateFinalField});
-  ApiManager.withDefaultAddressAndNoConnection() : connection = NoConnection();
+  /// If object is created with this constructor, call [initConnection] before
+  /// calling [init].
+  ApiManager.withDefaultAddress();
+  ApiManager.withDefaultAddressAndNoConnection() : _connection = NoConnection();
 
-  late final ServerConnectionInterface connection;
+  late final ServerConnectionInterface _connection;
+  ServerConnectionInterface get connection => _connection;
+
+  // Can be called only once.
+  void initConnection(ServerConnectionInterface newConnection) {
+    _connection = newConnection;
+  }
 
   @override
   Future<void> init() async {

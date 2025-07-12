@@ -11,7 +11,7 @@ import '../utils.dart';
 part 'profile_states_table.g.dart';
 
 /// Moved from Profile table to avoid unnecessary emissions from
-/// Stream<ProfileEntry>.
+/// `Stream<ProfileEntry>`.
 class ProfileStates extends Table {
   IntColumn get id => integer().autoIncrement()();
   TextColumn get uuidAccountId => text().map(const AccountIdConverter()).unique()();
