@@ -64,7 +64,7 @@ import 'app_localizations_sv.dart';
 /// property.
 abstract class AppLocalizations {
   AppLocalizations(String locale)
-      : localeName = intl.Intl.canonicalizedLocale(locale.toString());
+    : localeName = intl.Intl.canonicalizedLocale(locale.toString());
 
   final String localeName;
 
@@ -87,17 +87,17 @@ abstract class AppLocalizations {
   /// of delegates is preferred or required.
   static const List<LocalizationsDelegate<dynamic>> localizationsDelegates =
       <LocalizationsDelegate<dynamic>>[
-    delegate,
-    GlobalMaterialLocalizations.delegate,
-    GlobalCupertinoLocalizations.delegate,
-    GlobalWidgetsLocalizations.delegate,
-  ];
+        delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ];
 
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[
     Locale('en'),
     Locale('fi'),
-    Locale('sv')
+    Locale('sv'),
   ];
 
   /// Text for account ban reason
@@ -333,7 +333,8 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Deletion possible starting at {p0}'**
   String content_management_screen_content_deletion_allowed_wait_time(
-      String p0);
+    String p0,
+  );
 
   /// Text for profile content
   ///
@@ -406,7 +407,7 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Receiver action prevented message sending'**
   String
-      get conversation_screen_message_error_receiver_blocked_sender_or_receiver_not_found;
+  get conversation_screen_message_error_receiver_blocked_sender_or_receiver_not_found;
 
   /// Info text that encryption key changed
   ///
@@ -617,7 +618,9 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Min age will be increased to {p0} in {p1}'**
   String edit_profile_screen_automatic_min_age_incrementing_info_dialog_text(
-      String p0, String p1);
+    String p0,
+    String p1,
+  );
 
   /// Snackbar text for notifying about invalid age
   ///
@@ -678,8 +681,9 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Sending a chat request to you will not decrease daily chat requests. Disabled automatically at {p0}.'**
   String
-      edit_profile_screen_unlimited_likes_description_enabled_and_automatic_disabling(
-          String p0);
+  edit_profile_screen_unlimited_likes_description_enabled_and_automatic_disabling(
+    String p0,
+  );
 
   /// Dialog text for notifying user when profile text is too long
   ///
@@ -1082,7 +1086,8 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Waiting for processing. Queue number: {p0}'**
   String image_processing_ui_upload_in_processing_queue_dialog_description(
-      String p0);
+    String p0,
+  );
 
   /// Progress dialog info text that image upload is in progress
   ///
@@ -1233,14 +1238,14 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Face is not detected. Please select another picture.'**
   String
-      get initial_setup_screen_profile_pictures_primary_image_face_not_detected;
+  get initial_setup_screen_profile_pictures_primary_image_face_not_detected;
 
   /// Dialog description text about profile primary image
   ///
   /// In en, this message translates to:
   /// **'Adding at least of one profile image is required. The first profile image must be a face picture. The square shaped crop of the first profile image is displayed in profile grid and some other places in the app.'**
   String
-      get initial_setup_screen_profile_pictures_primary_image_info_dialog_description;
+  get initial_setup_screen_profile_pictures_primary_image_info_dialog_description;
 
   /// Dialog title for initial setup profile picture selection dialog
   ///
@@ -1253,21 +1258,21 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'From gallery'**
   String
-      get initial_setup_screen_profile_pictures_select_picture_from_gallery_title;
+  get initial_setup_screen_profile_pictures_select_picture_from_gallery_title;
 
   /// Action title for using security selfie as a profile picture
   ///
   /// In en, this message translates to:
   /// **'Security selfie'**
   String
-      get initial_setup_screen_profile_pictures_select_picture_security_selfie_title;
+  get initial_setup_screen_profile_pictures_select_picture_security_selfie_title;
 
   /// Action title for taking new picture to be used as a profile picture
   ///
   /// In en, this message translates to:
   /// **'Take new photo'**
   String
-      get initial_setup_screen_profile_pictures_select_picture_take_new_picture_title;
+  get initial_setup_screen_profile_pictures_select_picture_take_new_picture_title;
 
   /// Title for profile pictures selection screen
   ///
@@ -1724,14 +1729,14 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Disabled from system notification settings'**
   String
-      get notification_settings_screen_notification_category_disabled_from_system_settings_text;
+  get notification_settings_screen_notification_category_disabled_from_system_settings_text;
 
   /// Info text that notifications are disabled from system settings
   ///
   /// In en, this message translates to:
   /// **'Notifications are disabled from system notification settings'**
   String
-      get notification_settings_screen_notifications_disabled_from_system_settings_text;
+  get notification_settings_screen_notifications_disabled_from_system_settings_text;
 
   /// Action title for opening system notification settings
   ///
@@ -1756,7 +1761,7 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Disable filters?'**
   String
-      get profile_filtering_settings_screen_disable_filters_action_dialog_title;
+  get profile_filtering_settings_screen_disable_filters_action_dialog_title;
 
   /// Title text for distance filter
   ///
@@ -1775,7 +1780,9 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{p0}-{p1} km'**
   String profile_filtering_settings_screen_distance_filter_min_and_max_value(
-      String p0, String p1);
+    String p0,
+    String p1,
+  );
 
   /// Value text for distance filter min value
   ///
@@ -1806,28 +1813,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Anytime'**
   String
-      get profile_filtering_settings_screen_profile_last_seen_time_filter_all;
+  get profile_filtering_settings_screen_profile_last_seen_time_filter_all;
 
   /// Value text for profile last seen time filter when day is selected
   ///
   /// In en, this message translates to:
   /// **'{p0} day'**
   String profile_filtering_settings_screen_profile_last_seen_time_filter_day(
-      String p0);
+    String p0,
+  );
 
   /// Value text for profile last seen time filter when multiple days is selected
   ///
   /// In en, this message translates to:
   /// **'{p0} days'**
   String profile_filtering_settings_screen_profile_last_seen_time_filter_days(
-      String p0);
+    String p0,
+  );
 
   /// Value text for profile last seen time filter when only online profiles should be shown
   ///
   /// In en, this message translates to:
   /// **'Online'**
   String
-      get profile_filtering_settings_screen_profile_last_seen_time_filter_online;
+  get profile_filtering_settings_screen_profile_last_seen_time_filter_online;
 
   /// Value text for profile text filter
   ///
@@ -1840,22 +1849,26 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Max {p0} characters'**
   String profile_filtering_settings_screen_profile_text_filter_max_value(
-      String p0);
+    String p0,
+  );
 
   /// Value text for profile text filter when both min and max values are selected
   ///
   /// In en, this message translates to:
   /// **'{p0}-{p1} characters'**
   String
-      profile_filtering_settings_screen_profile_text_filter_min_and_max_value(
-          String p0, String p1);
+  profile_filtering_settings_screen_profile_text_filter_min_and_max_value(
+    String p0,
+    String p1,
+  );
 
   /// Value text for profile text filter when only min value is selected
   ///
   /// In en, this message translates to:
   /// **'Min {p0} characters'**
   String profile_filtering_settings_screen_profile_text_filter_min_value(
-      String p0);
+    String p0,
+  );
 
   /// Title for profile filtering settings screen
   ///
@@ -2036,14 +2049,14 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Start from your location'**
   String
-      get profile_grid_settings_screen_random_profile_order_description_disabled;
+  get profile_grid_settings_screen_random_profile_order_description_disabled;
 
   /// Description for random profile order setting when setting is enabled
   ///
   /// In en, this message translates to:
   /// **'Start from random location'**
   String
-      get profile_grid_settings_screen_random_profile_order_description_enabled;
+  get profile_grid_settings_screen_random_profile_order_description_enabled;
 
   /// Title for row profile count setting
   ///
@@ -2104,7 +2117,7 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Symmetric message encryption key not found'**
   String
-      get report_chat_message_screen_symmetric_message_encryption_key_not_found;
+  get report_chat_message_screen_symmetric_message_encryption_key_not_found;
 
   /// Profile image reporting confirmation dialog title
   ///
@@ -2597,8 +2610,9 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Picture {p0}'**
   String
-      view_profile_screen_non_accepted_profile_content_info_dialog_text_picture_title(
-          String p0);
+  view_profile_screen_non_accepted_profile_content_info_dialog_text_picture_title(
+    String p0,
+  );
 
   /// View profile screen info dialog text about non-accepted profile name
   ///
@@ -2720,8 +2734,9 @@ AppLocalizations lookupAppLocalizations(Locale locale) {
   }
 
   throw FlutterError(
-      'AppLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
-      'an issue with the localizations generation tool. Please file an issue '
-      'on GitHub with a reproducible sample app and the gen-l10n configuration '
-      'that was used.');
+    'AppLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
+    'an issue with the localizations generation tool. Please file an issue '
+    'on GitHub with a reproducible sample app and the gen-l10n configuration '
+    'that was used.',
+  );
 }

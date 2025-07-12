@@ -117,7 +117,8 @@ class AppLocalizationsFi extends AppLocalizations {
       'No camera permission. Please grant the camera permission from system settings.';
 
   @override
-  String get camera_screen_camera_permission_error_try_again_or_check_settings =>
+  String
+  get camera_screen_camera_permission_error_try_again_or_check_settings =>
       'No camera permission. Please try again. If that will not work then grant the camera permission from system settings.';
 
   @override
@@ -154,7 +155,8 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String content_management_screen_content_deletion_allowed_wait_time(
-      String p0) {
+    String p0,
+  ) {
     return 'Deletion possible starting at $p0';
   }
 
@@ -174,7 +176,8 @@ class AppLocalizationsFi extends AppLocalizations {
   String get conversation_screen_chat_box_placeholder_text => 'Type a message…';
 
   @override
-  String get conversation_screen_install_jitsi_meet_dialog_description_android =>
+  String
+  get conversation_screen_install_jitsi_meet_dialog_description_android =>
       'Video calling requires Jitsi Meet video calling app which is not installed currently. Install the app from Google Play Store?';
 
   @override
@@ -201,8 +204,8 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String
-      get conversation_screen_message_error_receiver_blocked_sender_or_receiver_not_found =>
-          'Receiver action prevented message sending';
+  get conversation_screen_message_error_receiver_blocked_sender_or_receiver_not_found =>
+      'Receiver action prevented message sending';
 
   @override
   String get conversation_screen_message_info_encryption_key_changed =>
@@ -331,7 +334,9 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String edit_profile_screen_automatic_min_age_incrementing_info_dialog_text(
-      String p0, String p1) {
+    String p0,
+    String p1,
+  ) {
     return 'Min age will be increased to $p0 in $p1';
   }
 
@@ -369,8 +374,9 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String
-      edit_profile_screen_unlimited_likes_description_enabled_and_automatic_disabling(
-          String p0) {
+  edit_profile_screen_unlimited_likes_description_enabled_and_automatic_disabling(
+    String p0,
+  ) {
     return 'Sending a chat request to you will not decrease daily chat requests. Disabled automatically at $p0.';
   }
 
@@ -580,7 +586,8 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String image_processing_ui_upload_in_processing_queue_dialog_description(
-      String p0) {
+    String p0,
+  ) {
     return 'Waiting for processing. Queue number: $p0';
   }
 
@@ -671,32 +678,33 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String
-      get initial_setup_screen_profile_pictures_primary_image_face_not_detected =>
-          'Face is not detected. Please select another picture.';
+  get initial_setup_screen_profile_pictures_primary_image_face_not_detected =>
+      'Face is not detected. Please select another picture.';
 
   @override
-  String get initial_setup_screen_profile_pictures_primary_image_info_dialog_description =>
+  String
+  get initial_setup_screen_profile_pictures_primary_image_info_dialog_description =>
       'Adding at least of one profile image is required. The first profile image must be a face picture. The square shaped crop of the first profile image is displayed in profile grid and some other places in the app.';
 
   @override
   String
-      get initial_setup_screen_profile_pictures_select_picture_dialog_title =>
-          'Select picture…';
+  get initial_setup_screen_profile_pictures_select_picture_dialog_title =>
+      'Select picture…';
 
   @override
   String
-      get initial_setup_screen_profile_pictures_select_picture_from_gallery_title =>
-          'From gallery';
+  get initial_setup_screen_profile_pictures_select_picture_from_gallery_title =>
+      'From gallery';
 
   @override
   String
-      get initial_setup_screen_profile_pictures_select_picture_security_selfie_title =>
-          'Security selfie';
+  get initial_setup_screen_profile_pictures_select_picture_security_selfie_title =>
+      'Security selfie';
 
   @override
   String
-      get initial_setup_screen_profile_pictures_select_picture_take_new_picture_title =>
-          'Take new photo';
+  get initial_setup_screen_profile_pictures_select_picture_take_new_picture_title =>
+      'Take new photo';
 
   @override
   String get initial_setup_screen_profile_pictures_title =>
@@ -964,13 +972,13 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String
-      get notification_settings_screen_notification_category_disabled_from_system_settings_text =>
-          'Disabled from system notification settings';
+  get notification_settings_screen_notification_category_disabled_from_system_settings_text =>
+      'Disabled from system notification settings';
 
   @override
   String
-      get notification_settings_screen_notifications_disabled_from_system_settings_text =>
-          'Notifications are disabled from system notification settings';
+  get notification_settings_screen_notifications_disabled_from_system_settings_text =>
+      'Notifications are disabled from system notification settings';
 
   @override
   String get notification_settings_screen_open_system_notification_settings =>
@@ -985,27 +993,31 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String
-      get profile_filtering_settings_screen_disable_filters_action_dialog_title =>
-          'Disable filters?';
+  get profile_filtering_settings_screen_disable_filters_action_dialog_title =>
+      'Disable filters?';
 
   @override
   String get profile_filtering_settings_screen_distance_filter => 'Distance';
 
   @override
   String profile_filtering_settings_screen_distance_filter_max_value(
-      String p0) {
+    String p0,
+  ) {
     return 'Max $p0 km';
   }
 
   @override
   String profile_filtering_settings_screen_distance_filter_min_and_max_value(
-      String p0, String p1) {
+    String p0,
+    String p1,
+  ) {
     return '$p0-$p1 km';
   }
 
   @override
   String profile_filtering_settings_screen_distance_filter_min_value(
-      String p0) {
+    String p0,
+  ) {
     return 'Min $p0 km';
   }
 
@@ -1023,25 +1035,27 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String
-      get profile_filtering_settings_screen_profile_last_seen_time_filter_all =>
-          'Anytime';
+  get profile_filtering_settings_screen_profile_last_seen_time_filter_all =>
+      'Anytime';
 
   @override
   String profile_filtering_settings_screen_profile_last_seen_time_filter_day(
-      String p0) {
+    String p0,
+  ) {
     return '$p0 day';
   }
 
   @override
   String profile_filtering_settings_screen_profile_last_seen_time_filter_days(
-      String p0) {
+    String p0,
+  ) {
     return '$p0 days';
   }
 
   @override
   String
-      get profile_filtering_settings_screen_profile_last_seen_time_filter_online =>
-          'Online';
+  get profile_filtering_settings_screen_profile_last_seen_time_filter_online =>
+      'Online';
 
   @override
   String get profile_filtering_settings_screen_profile_text_filter =>
@@ -1049,20 +1063,24 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String profile_filtering_settings_screen_profile_text_filter_max_value(
-      String p0) {
+    String p0,
+  ) {
     return 'Max $p0 characters';
   }
 
   @override
   String
-      profile_filtering_settings_screen_profile_text_filter_min_and_max_value(
-          String p0, String p1) {
+  profile_filtering_settings_screen_profile_text_filter_min_and_max_value(
+    String p0,
+    String p1,
+  ) {
     return '$p0-$p1 characters';
   }
 
   @override
   String profile_filtering_settings_screen_profile_text_filter_min_value(
-      String p0) {
+    String p0,
+  ) {
     return 'Min $p0 characters';
   }
 
@@ -1104,13 +1122,13 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String
-      get profile_grid_screen_no_profiles_found_description_filters_disabled =>
-          'Spread the word about the app in social media';
+  get profile_grid_screen_no_profiles_found_description_filters_disabled =>
+      'Spread the word about the app in social media';
 
   @override
   String
-      get profile_grid_screen_no_profiles_found_description_filters_enabled =>
-          'Change or disable filter settings';
+  get profile_grid_screen_no_profiles_found_description_filters_enabled =>
+      'Change or disable filter settings';
 
   @override
   String get profile_grid_screen_no_profiles_found_title => 'No profiles found';
@@ -1182,13 +1200,13 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String
-      get profile_grid_settings_screen_random_profile_order_description_disabled =>
-          'Start from your location';
+  get profile_grid_settings_screen_random_profile_order_description_disabled =>
+      'Start from your location';
 
   @override
   String
-      get profile_grid_settings_screen_random_profile_order_description_enabled =>
-          'Start from random location';
+  get profile_grid_settings_screen_random_profile_order_description_enabled =>
+      'Start from random location';
 
   @override
   String get profile_grid_settings_screen_row_profile_count =>
@@ -1224,8 +1242,8 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String
-      get report_chat_message_screen_symmetric_message_encryption_key_not_found =>
-          'Symmetric message encryption key not found';
+  get report_chat_message_screen_symmetric_message_encryption_key_not_found =>
+      'Symmetric message encryption key not found';
 
   @override
   String get report_profile_image_screen_confirm_dialog_title =>
@@ -1527,13 +1545,15 @@ class AppLocalizationsFi extends AppLocalizations {
   String get view_profile_screen_my_profile_title => 'My profile';
 
   @override
-  String get view_profile_screen_non_accepted_profile_content_info_dialog_text =>
+  String
+  get view_profile_screen_non_accepted_profile_content_info_dialog_text =>
       'All profile pictures are not yet moderated or some picture is moderated as rejected. Only accepted pictures are visible to users.';
 
   @override
   String
-      view_profile_screen_non_accepted_profile_content_info_dialog_text_picture_title(
-          String p0) {
+  view_profile_screen_non_accepted_profile_content_info_dialog_text_picture_title(
+    String p0,
+  ) {
     return 'Picture $p0';
   }
 
