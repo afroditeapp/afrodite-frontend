@@ -17,7 +17,7 @@ dependencies:
     path: "../native_utils_common"
 
 dev_dependencies:
-  ffigen: ^18.0.0
+  ffigen: ^19.0.0
   flutter_lints: ^6.0.0
 
 # For information on the generic Dart part of this file, see the
