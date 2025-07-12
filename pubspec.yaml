@@ -115,7 +115,7 @@ dependencies:
   fl_chart: ^1.0.0
   flutter_markdown: ^0.7.4
 
-  flutter_local_notifications: ^17.2.2
+  flutter_local_notifications: ^19.3.0
   device_info_plus: ^10.1.2
   package_info_plus: ^8.1.3
 
