@@ -8,22 +8,20 @@ pub mod content;
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 #[repr(u8)]
-pub enum MessageEncryptionError {
+pub(crate) enum MessageEncryptionError {
     // Generate keys
     GenerateKeysPrivateKeyParams = 1,
     GenerateKeysPrivateKeySubKeyParams = 2,
     GenerateKeysPrivateKeyGenerate = 3,
     GenerateKeysPrivateKeySign = 4,
     GenerateKeysPrivateKeyToBytes = 5,
-    GenerateKeysPublicKeySign = 6,
-    GenerateKeysPublicKeyToBytes = 7,
+    GenerateKeysPublicKeyToBytes = 6,
     // Encrypt data
     EncryptDataPrivateKeyParse = 20,
     EncryptDataPublicKeyParse = 21,
     EncryptDataEncrypt = 22,
-    EncryptDataSign = 23,
-    EncryptDataToBytes = 24,
-    EncryptDataPublicSubkeyMissing = 25,
+    EncryptDataToWriter = 23,
+    EncryptDataPublicSubkeyMissing = 24,
     // Binary data
     BinaryDataLenTooLarge = 30,
     BinaryDataCapacityTooLarge = 31,
@@ -33,12 +31,16 @@ pub enum MessageEncryptionError {
     DecryptDataMessageParse = 42,
     DecryptDataVerify = 43,
     DecryptDataDecrypt = 44,
-    DecryptDataDataNotFound = 45,
-    DecryptDataUnsupportedSessionKeyVersion = 46,
+    DecryptDataAsDataVec = 45,
+    DecryptDataUnsupportedSessionKey = 46,
+    DecryptDataSessionKeyDecryptionError1 = 47,
+    DecryptDataSessionKeyDecryptionError2 = 48,
+    DecryptDataMessageUnsupported = 49,
+    DecryptDataUnsupportedSessionKeyVersion = 50,
+    DecryptDataUnsupportedPrivateKey = 51,
     // Get message content
-    GetMessageContentMessageParse = 50,
-    GetMessageContentGetContent = 51,
-    GetMessageContentNoContent = 52,
+    GetMessageContentMessageParse = 60,
+    GetMessageContentAsDataVec = 61,
 }
 
 impl From<MessageEncryptionError> for isize {

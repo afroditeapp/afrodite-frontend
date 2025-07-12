@@ -1,9 +1,8 @@
 
-use pgp::composed::{KeyType, key::SecretKeyParamsBuilder};
+use pgp::composed::{KeyType, SecretKeyParamsBuilder, SubkeyParamsBuilder};
 use pgp::ser::Serialize;
-use pgp::types::SecretKeyTrait;
+use pgp::types::Password;
 use pgp::crypto::{sym::SymmetricKeyAlgorithm, hash::HashAlgorithm};
-use pgp::SubkeyParamsBuilder;
 use rand::rngs::OsRng;
 use smallvec::smallvec;
 
@@ -30,14 +29,13 @@ pub fn generate_keys(
             SymmetricKeyAlgorithm::AES128,
         ])
         .preferred_hash_algorithms(smallvec![
-            HashAlgorithm::SHA2_256,
+            HashAlgorithm::Sha256,
         ])
         .preferred_compression_algorithms(smallvec![])
         .subkey(
             SubkeyParamsBuilder::default()
                 .key_type(KeyType::X25519)
                 .can_authenticate(false)
-                .can_certify(false)
                 .can_encrypt(true)
                 .can_sign(false)
                 .build()
@@ -49,17 +47,14 @@ pub fn generate_keys(
         .generate(OsRng)
         .map_err(|_| MessageEncryptionError::GenerateKeysPrivateKeyGenerate)?;
     let signed_private_key = private_key
-        .sign(OsRng, String::new)
+        .sign(OsRng, &Password::empty())
         .map_err(|_| MessageEncryptionError::GenerateKeysPrivateKeySign)?;
     let private_key = signed_private_key
         .to_bytes()
         .map_err(|_| MessageEncryptionError::GenerateKeysPrivateKeyToBytes)?;
 
-    let signed_public_key = signed_private_key
-        .public_key()
-        .sign(OsRng, &signed_private_key, String::new)
-        .map_err(|_| MessageEncryptionError::GenerateKeysPublicKeySign)?;
-    let public_key = signed_public_key
+    let public_key = signed_private_key
+        .signed_public_key()
         .to_bytes()
         .map_err(|_| MessageEncryptionError::GenerateKeysPublicKeyToBytes)?;
 

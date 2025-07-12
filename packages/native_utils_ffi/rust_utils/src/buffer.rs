@@ -91,7 +91,7 @@ mod test {
     fn buffer_with_no_data_create_successful() {
         let mut buffer = [0, 1];
         let slice_buffer = SliceBuffer::buffer_with_empty_space(&mut buffer, 2).unwrap();
-        assert_eq!(slice_buffer.as_ref(), &[]);
+        assert_eq!(slice_buffer.as_ref(), &[] as &[u8]);
     }
 
     #[test]
@@ -115,9 +115,9 @@ mod test {
         slice_buffer.truncate(1);
         assert_eq!(slice_buffer.as_ref(), &[0]);
         slice_buffer.truncate(0);
-        assert_eq!(slice_buffer.as_ref(), &[]);
+        assert_eq!(slice_buffer.as_ref(), &[] as &[u8]);
         slice_buffer.truncate(0);
-        assert_eq!(slice_buffer.as_ref(), &[]);
+        assert_eq!(slice_buffer.as_ref(), &[] as &[u8]);
     }
 
     #[test]
