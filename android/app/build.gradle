@@ -50,7 +50,7 @@ android {
         // minSdkVersion flutter.minSdkVersion // original
         minSdkVersion 21 // Camera library requires
         targetSdkVersion flutter.targetSdkVersion
-        ndkVersion "27.0.12077973"
+        ndkVersion "28.2.13676358"
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
