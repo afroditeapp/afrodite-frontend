@@ -1,9 +1,9 @@
 
 
 import 'dart:ffi';
+import 'dart:typed_data';
 
 import 'package:ffi/ffi.dart';
-import 'package:flutter/foundation.dart';
 import 'package:native_utils_ffi/src/bindings.dart';
 
 /// If generation fails, null is returned.
