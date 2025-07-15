@@ -398,7 +398,7 @@ void closeActionsAndOpenDetails(BuildContext screenContext, MessageEntry entry, 
 
   final infoText = """
 ${screenContext.strings.generic_message}: $messageText
-${screenContext.strings.conversation_screen_message_details_message_id}: ${entry.messageNumber?.mn}
+${screenContext.strings.conversation_screen_message_details_message_id}: ${entry.messageId?.id}
 ${screenContext.strings.generic_time}: ${time.dateTime.toIso8601String()}
 ${screenContext.strings.generic_state}: $stateText""";
 

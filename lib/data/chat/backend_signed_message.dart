@@ -12,7 +12,7 @@ class BackendSignedMessage {
   final AccountId receiver;
   final PublicKeyId senderPublicKeyId;
   final PublicKeyId receiverPublicKeyId;
-  final MessageNumber messageNumber;
+  final MessageId messageId;
   final UnixTime serverTime;
   final Uint8List messageFromSender;
 
@@ -22,7 +22,7 @@ class BackendSignedMessage {
       required this.receiver,
       required this.senderPublicKeyId,
       required this.receiverPublicKeyId,
-      required this.messageNumber,
+      required this.messageId,
       required this.serverTime,
       required this.messageFromSender,
     }
@@ -45,7 +45,7 @@ class BackendSignedMessage {
     final receiver = parseAccountId(iterator).ok();
     final senderPublicKeyId = parseMinimalI64(iterator).mapOk((v) => PublicKeyId(id: v)).ok();
     final receiverPublicKeyId = parseMinimalI64(iterator).mapOk((v) => PublicKeyId(id: v)).ok();
-    final messageNumber = parseMinimalI64(iterator).mapOk((v) => MessageNumber(mn: v)).ok();
+    final messageId = parseMinimalI64(iterator).mapOk((v) => MessageId(id: v)).ok();
     final serverTime = parseMinimalI64(iterator).mapOk((v) => UnixTime(ut: v)).ok();
     final messageFromSender  = iterator.takeAllAsBytes();
 
@@ -55,7 +55,7 @@ class BackendSignedMessage {
       receiver == null ||
       senderPublicKeyId == null ||
       receiverPublicKeyId == null ||
-      messageNumber == null ||
+      messageId == null ||
       serverTime == null
     ) {
       return null;
@@ -66,7 +66,7 @@ class BackendSignedMessage {
       receiver: receiver,
       senderPublicKeyId: senderPublicKeyId,
       receiverPublicKeyId: receiverPublicKeyId,
-      messageNumber: messageNumber,
+      messageId: messageId,
       serverTime: serverTime,
       messageFromSender: messageFromSender,
     );
@@ -75,7 +75,7 @@ class BackendSignedMessage {
   PendingMessageId toPendingMessageId() =>
     PendingMessageId(
       sender: sender,
-      mn: messageNumber
+      m: messageId
     );
 }
 

@@ -145,7 +145,7 @@ class AdminSettingsPermissions {
   bool get adminProcessReports => _permissions.adminProcessReports;
   bool get adminViewPermissions => _permissions.adminViewPermissions;
   bool get adminViewAllProfiles => _permissions.adminViewAllProfiles;
-  bool get adminServerMaintenanceRebootBackend => _permissions.adminServerMaintenanceRebootBackend;
+  bool get adminServerMaintenanceRebootBackend => _permissions.adminServerMaintenanceRestartBackend;
   bool get adminServerMaintenanceSaveBackendConfig => _permissions.adminServerMaintenanceSaveBackendConfig;
   bool get adminServerMaintenanceViewBackendConfig => _permissions.adminServerMaintenanceViewBackendConfig;
   bool get adminServerMaintenanceViewInfo => _permissions.adminServerMaintenanceViewInfo;

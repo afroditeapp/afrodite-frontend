@@ -66,10 +66,10 @@ class ReceiveMessageUtils {
         await db.accountAction((db) => db.daoConversationList.setConversationListVisibility(message.parsed.sender, true));
       }
 
-      final alreadyExistingMessageResult = await db.messageData((db) => db.getMessageUsingMessageNumber(
+      final alreadyExistingMessageResult = await db.messageData((db) => db.getMessageUsingMessageId(
         currentUser,
         message.parsed.sender,
-        message.parsed.messageNumber
+        message.parsed.messageId
       ));
       switch (alreadyExistingMessageResult) {
         case Err():
@@ -103,7 +103,7 @@ class ReceiveMessageUtils {
       final r = await db.messageAction((db) => db.insertReceivedMessage(
         currentUser,
         message.parsed.sender,
-        message.parsed.messageNumber,
+        message.parsed.messageId,
         message.parsed.serverTime.toUtcDateTime(),
         message.backendPgpMessage,
         decryptedMessage,

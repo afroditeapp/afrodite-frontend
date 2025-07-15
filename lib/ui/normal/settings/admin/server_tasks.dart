@@ -38,7 +38,7 @@ class _ServerTasksScreenState extends State<ServerTasksScreen> {
     final managers = _managers?.names ?? [];
     final List<ManagerInstanceRelatedState> data = [];
     for (final m in managers) {
-      if (!widget.permissions.adminServerMaintenanceRebootBackend) {
+      if (!widget.permissions.adminServerMaintenanceRestartBackend) {
         data.add(ManagerInstanceRelatedState(m, null));
         continue;
       }
@@ -117,17 +117,17 @@ class _ServerTasksScreenState extends State<ServerTasksScreen> {
         const Padding(padding: EdgeInsets.only(top: 8.0)),
         hPad(Text("Tasks", style: Theme.of(context).textTheme.titleLarge)),
         const Padding(padding: EdgeInsets.only(top: 8.0)),
-        if (widget.permissions.adminServerMaintenanceRebootBackend)
+        if (widget.permissions.adminServerMaintenanceRestartBackend)
           hPad(actionButton(context, data, "Backend restart", null, (api) => api.postTriggerBackendRestart(data.manager))),
-        if (widget.permissions.adminServerMaintenanceRebootBackend)
+        if (widget.permissions.adminServerMaintenanceRestartBackend)
           hPad(actionButton(context, data, "System reboot", null, (api) => api.postTriggerSystemReboot(data.manager))),
         // TODO(prod): Remove data reset task and permission as data is not
         //             wiped properly so it is not GDPR compliant.
         if (widget.permissions.adminServerMaintenanceResetData)
           hPad(actionButton(context, data, "Reset data (for development only)", null, (api) => api.postTriggerBackendDataReset(data.manager))),
         const Padding(padding: EdgeInsets.only(top: 8.0)),
-        if (widget.permissions.adminServerMaintenanceRebootBackend && status == null) hPad(Text(context.strings.generic_error)),
-        if (widget.permissions.adminServerMaintenanceRebootBackend && status != null) displayScheduledtasks(context, data, status),
+        if (widget.permissions.adminServerMaintenanceRestartBackend && status == null) hPad(Text(context.strings.generic_error)),
+        if (widget.permissions.adminServerMaintenanceRestartBackend && status != null) displayScheduledtasks(context, data, status),
       ],
     );
   }

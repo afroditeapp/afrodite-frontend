@@ -171,7 +171,7 @@ class SendMessageUtils {
     }
 
     UnixTime unixTimeFromServer;
-    MessageNumber messageNumberFromServer;
+    MessageId messageIdFromServer;
     Uint8List backendSignedPgpMessage;
     var messageSenderAcknowledgementTried = false;
     while (true) {
@@ -259,7 +259,7 @@ class SendMessageUtils {
         return;
       }
       unixTimeFromServer = data.serverTime;
-      messageNumberFromServer = data.messageNumber;
+      messageIdFromServer = data.messageId;
       break;
     }
 
@@ -267,7 +267,7 @@ class SendMessageUtils {
       localId,
       sentState: SentMessageState.sent,
       unixTimeFromServer: unixTimeFromServer,
-      messageNumberFromServer: messageNumberFromServer,
+      messageIdFromServer: messageIdFromServer,
       backendSignePgpMessage: backendSignedPgpMessage,
     ));
     if (updateSentState.isErr()) {
@@ -316,7 +316,7 @@ class SendMessageUtils {
         final updateSentState = await db.messageAction((db) => db.updateSentMessageState(
           sentMessageLocalId,
           sentState: SentMessageState.sent,
-          messageNumberFromServer: backendSignedMessage.messageNumber,
+          messageIdFromServer: backendSignedMessage.messageId,
           unixTimeFromServer: backendSignedMessage.serverTime,
           backendSignePgpMessage: decoded,
         ));

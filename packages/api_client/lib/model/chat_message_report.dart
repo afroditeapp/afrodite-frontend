@@ -14,7 +14,7 @@ class ChatMessageReport {
   /// Returns a new [ChatMessageReport] instance.
   ChatMessageReport({
     required this.messageBase64,
-    required this.messageNumber,
+    required this.messageId,
     required this.messageTime,
     required this.receiver,
     required this.sender,
@@ -23,7 +23,7 @@ class ChatMessageReport {
   /// Message without encryption and signing
   String messageBase64;
 
-  MessageNumber messageNumber;
+  MessageId messageId;
 
   UnixTime messageTime;
 
@@ -34,7 +34,7 @@ class ChatMessageReport {
   @override
   bool operator ==(Object other) => identical(this, other) || other is ChatMessageReport &&
     other.messageBase64 == messageBase64 &&
-    other.messageNumber == messageNumber &&
+    other.messageId == messageId &&
     other.messageTime == messageTime &&
     other.receiver == receiver &&
     other.sender == sender;
@@ -43,18 +43,18 @@ class ChatMessageReport {
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (messageBase64.hashCode) +
-    (messageNumber.hashCode) +
+    (messageId.hashCode) +
     (messageTime.hashCode) +
     (receiver.hashCode) +
     (sender.hashCode);
 
   @override
-  String toString() => 'ChatMessageReport[messageBase64=$messageBase64, messageNumber=$messageNumber, messageTime=$messageTime, receiver=$receiver, sender=$sender]';
+  String toString() => 'ChatMessageReport[messageBase64=$messageBase64, messageId=$messageId, messageTime=$messageTime, receiver=$receiver, sender=$sender]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'message_base64'] = this.messageBase64;
-      json[r'message_number'] = this.messageNumber;
+      json[r'message_id'] = this.messageId;
       json[r'message_time'] = this.messageTime;
       json[r'receiver'] = this.receiver;
       json[r'sender'] = this.sender;
@@ -81,7 +81,7 @@ class ChatMessageReport {
 
       return ChatMessageReport(
         messageBase64: mapValueOfType<String>(json, r'message_base64')!,
-        messageNumber: MessageNumber.fromJson(json[r'message_number'])!,
+        messageId: MessageId.fromJson(json[r'message_id'])!,
         messageTime: UnixTime.fromJson(json[r'message_time'])!,
         receiver: AccountId.fromJson(json[r'receiver'])!,
         sender: AccountId.fromJson(json[r'sender'])!,
@@ -133,7 +133,7 @@ class ChatMessageReport {
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
     'message_base64',
-    'message_number',
+    'message_id',
     'message_time',
     'receiver',
     'sender',

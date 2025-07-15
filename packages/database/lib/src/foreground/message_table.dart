@@ -22,7 +22,7 @@ class MessageTable extends Table {
   BlobColumn get symmetricMessageEncryptionKey => blob().nullable()();
 
   // Server sends valid values for the next colums.
-  IntColumn get messageNumber => integer().map(const NullAwareTypeConverter.wrap(MessageNumberConverter())).nullable()();
+  IntColumn get messageId => integer().map(const NullAwareTypeConverter.wrap(MessageIdConverter())).nullable()();
   IntColumn get unixTime => integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
   BlobColumn get backendSignedPgpMessage => blob().nullable()();
 }
@@ -52,7 +52,7 @@ class DaoMessageTable extends DatabaseAccessor<AccountDatabase> with _$DaoMessag
       message: Value(entry.message),
       localUnixTime: entry.localUnixTime,
       messageState: entry.messageState.number,
-      messageNumber: Value(entry.messageNumber),
+      messageId: Value(entry.messageId),
       unixTime: Value(entry.unixTime),
       backendSignedPgpMessage: Value(entry.backendSignedPgpMessage),
       symmetricMessageEncryptionKey: Value(entry.symmetricMessageEncryptionKey),
@@ -86,7 +86,7 @@ class DaoMessageTable extends DatabaseAccessor<AccountDatabase> with _$DaoMessag
     {
       SentMessageState? sentState,
       UnixTime? unixTimeFromServer,
-      MessageNumber? messageNumberFromServer,
+      MessageId? messageIdFromServer,
       Uint8List? backendSignePgpMessage,
     }
   ) async {
@@ -101,7 +101,7 @@ class DaoMessageTable extends DatabaseAccessor<AccountDatabase> with _$DaoMessag
     ).write(MessageTableCompanion(
       messageState: Value.absentIfNull(sentState?.toDbState().number),
       unixTime: Value.absentIfNull(unixTime),
-      messageNumber: Value.absentIfNull(messageNumberFromServer),
+      messageId: Value.absentIfNull(messageIdFromServer),
       backendSignedPgpMessage: Value.absentIfNull(backendSignePgpMessage),
     ));
   }
@@ -109,7 +109,7 @@ class DaoMessageTable extends DatabaseAccessor<AccountDatabase> with _$DaoMessag
   Future<void> insertReceivedMessage(
     AccountId localAccountId,
     AccountId senderAccountId,
-    MessageNumber messageNumber,
+    MessageId messageId,
     UtcDateTime serverTime,
     Uint8List backendSignedPgpMessage,
     Message? decryptedMessage,
@@ -122,7 +122,7 @@ class DaoMessageTable extends DatabaseAccessor<AccountDatabase> with _$DaoMessag
       localUnixTime: UtcDateTime.now(),
       message: decryptedMessage,
       messageState: state.toDbState(),
-      messageNumber: messageNumber,
+      messageId: messageId,
       unixTime: serverTime,
       backendSignedPgpMessage: backendSignedPgpMessage,
       symmetricMessageEncryptionKey: symmetricMessageEncryptionKey,
@@ -270,7 +270,7 @@ class DaoMessageTable extends DatabaseAccessor<AccountDatabase> with _$DaoMessag
       message: m.message,
       localUnixTime: m.localUnixTime,
       messageState: messageState,
-      messageNumber: m.messageNumber,
+      messageId: m.messageId,
       unixTime: m.unixTime,
     );
   }
@@ -292,15 +292,15 @@ class DaoMessageTable extends DatabaseAccessor<AccountDatabase> with _$DaoMessag
       .getSingleOrNull();
   }
 
-  Future<MessageEntry?> getMessageUsingMessageNumber(
+  Future<MessageEntry?> getMessageUsingMessageId(
     AccountId localAccountId,
     AccountId remoteAccountId,
-    MessageNumber messageNumber,
+    MessageId messageId,
   ) {
     return (select(messageTable)
       ..where((t) => t.uuidLocalAccountId.equals(localAccountId.aid))
       ..where((t) => t.uuidRemoteAccountId.equals(remoteAccountId.aid))
-      ..where((t) => t.messageNumber.equals(messageNumber.mn))
+      ..where((t) => t.messageId.equals(messageId.id))
       ..limit(1)
     )
       .map((m) => _fromMessage(m))

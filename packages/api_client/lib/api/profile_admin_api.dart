@@ -184,10 +184,10 @@ class ProfileAdminApi {
     return null;
   }
 
-  /// Performs an HTTP 'GET /profile_api/admin/profile_name_pending_moderation' operation and returns the [Response].
+  /// Performs an HTTP 'GET /profile_api/profile_name_pending_moderation' operation and returns the [Response].
   Future<Response> getProfileNamePendingModerationListWithHttpInfo() async {
     // ignore: prefer_const_declarations
-    final path = r'/profile_api/admin/profile_name_pending_moderation';
+    final path = r'/profile_api/profile_name_pending_moderation';
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -349,7 +349,7 @@ class ProfileAdminApi {
   /// * [bool] showTextsWhichBotsCanModerate (required):
   Future<Response> getProfileTextPendingModerationListWithHttpInfo(bool showTextsWhichBotsCanModerate,) async {
     // ignore: prefer_const_declarations
-    final path = r'/profile_api/admin/profile_text_pending_moderation';
+    final path = r'/profile_api/profile_text_pending_moderation';
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -451,13 +451,13 @@ class ProfileAdminApi {
     return null;
   }
 
-  /// Performs an HTTP 'POST /profile_api/admin/moderate_profile_name' operation and returns the [Response].
+  /// Performs an HTTP 'POST /profile_api/moderate_profile_name' operation and returns the [Response].
   /// Parameters:
   ///
   /// * [PostModerateProfileName] postModerateProfileName (required):
   Future<Response> postModerateProfileNameWithHttpInfo(PostModerateProfileName postModerateProfileName,) async {
     // ignore: prefer_const_declarations
-    final path = r'/profile_api/admin/moderate_profile_name';
+    final path = r'/profile_api/moderate_profile_name';
 
     // ignore: prefer_final_locals
     Object? postBody = postModerateProfileName;
@@ -501,7 +501,7 @@ class ProfileAdminApi {
   /// * [PostModerateProfileText] postModerateProfileText (required):
   Future<Response> postModerateProfileTextWithHttpInfo(PostModerateProfileText postModerateProfileText,) async {
     // ignore: prefer_const_declarations
-    final path = r'/profile_api/admin/moderate_profile_text';
+    final path = r'/profile_api/moderate_profile_text';
 
     // ignore: prefer_final_locals
     Object? postBody = postModerateProfileText;

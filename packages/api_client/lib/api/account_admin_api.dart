@@ -16,13 +16,13 @@ class AccountAdminApi {
 
   final ApiClient apiClient;
 
-  /// Performs an HTTP 'DELETE /account_api/admin/delete_news/{nid}' operation and returns the [Response].
+  /// Performs an HTTP 'DELETE /account_api/delete_news/{nid}' operation and returns the [Response].
   /// Parameters:
   ///
   /// * [int] nid (required):
   Future<Response> deleteNewsItemWithHttpInfo(int nid,) async {
     // ignore: prefer_const_declarations
-    final path = r'/account_api/admin/delete_news/{nid}'
+    final path = r'/account_api/delete_news/{nid}'
       .replaceAll('{nid}', nid.toString());
 
     // ignore: prefer_final_locals
@@ -56,7 +56,7 @@ class AccountAdminApi {
     }
   }
 
-  /// Performs an HTTP 'DELETE /account_api/admin/delete_news_translation/{nid}/{locale}' operation and returns the [Response].
+  /// Performs an HTTP 'DELETE /account_api/delete_news_translation/{nid}/{locale}' operation and returns the [Response].
   /// Parameters:
   ///
   /// * [int] nid (required):
@@ -64,7 +64,7 @@ class AccountAdminApi {
   /// * [String] locale (required):
   Future<Response> deleteNewsTranslationWithHttpInfo(int nid, String locale,) async {
     // ignore: prefer_const_declarations
-    final path = r'/account_api/admin/delete_news_translation/{nid}/{locale}'
+    final path = r'/account_api/delete_news_translation/{nid}/{locale}'
       .replaceAll('{nid}', nid.toString())
       .replaceAll('{locale}', locale);
 
@@ -320,10 +320,10 @@ class AccountAdminApi {
     return null;
   }
 
-  /// Performs an HTTP 'POST /account_api/admin/create_news_item' operation and returns the [Response].
+  /// Performs an HTTP 'POST /account_api/create_news_item' operation and returns the [Response].
   Future<Response> postCreateNewsItemWithHttpInfo() async {
     // ignore: prefer_const_declarations
-    final path = r'/account_api/admin/create_news_item';
+    final path = r'/account_api/create_news_item';
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -514,7 +514,7 @@ class AccountAdminApi {
     }
   }
 
-  /// Performs an HTTP 'DELETE /account_api/admin/set_news_publicity/{nid}' operation and returns the [Response].
+  /// Performs an HTTP 'DELETE /account_api/set_news_publicity/{nid}' operation and returns the [Response].
   /// Parameters:
   ///
   /// * [int] nid (required):
@@ -522,7 +522,7 @@ class AccountAdminApi {
   /// * [BooleanSetting] booleanSetting (required):
   Future<Response> postSetNewsPublicityWithHttpInfo(int nid, BooleanSetting booleanSetting,) async {
     // ignore: prefer_const_declarations
-    final path = r'/account_api/admin/set_news_publicity/{nid}'
+    final path = r'/account_api/set_news_publicity/{nid}'
       .replaceAll('{nid}', nid.toString());
 
     // ignore: prefer_final_locals
@@ -560,7 +560,7 @@ class AccountAdminApi {
 
   /// Set permissions for account
   ///
-  /// # Access  Permission [model_account::Permissions::admin_modify_permissions] is required.
+  /// # Access  Permission [model_account::Permissions::admin_edit_permissions] is required.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -597,7 +597,7 @@ class AccountAdminApi {
 
   /// Set permissions for account
   ///
-  /// # Access  Permission [model_account::Permissions::admin_modify_permissions] is required.
+  /// # Access  Permission [model_account::Permissions::admin_edit_permissions] is required.
   ///
   /// Parameters:
   ///
@@ -611,7 +611,7 @@ class AccountAdminApi {
     }
   }
 
-  /// Performs an HTTP 'POST /account_api/admin/update_news_translation/{nid}/{locale}' operation and returns the [Response].
+  /// Performs an HTTP 'POST /account_api/update_news_translation/{nid}/{locale}' operation and returns the [Response].
   /// Parameters:
   ///
   /// * [int] nid (required):
@@ -621,7 +621,7 @@ class AccountAdminApi {
   /// * [UpdateNewsTranslation] updateNewsTranslation (required):
   Future<Response> postUpdateNewsTranslationWithHttpInfo(int nid, String locale, UpdateNewsTranslation updateNewsTranslation,) async {
     // ignore: prefer_const_declarations
-    final path = r'/account_api/admin/update_news_translation/{nid}/{locale}'
+    final path = r'/account_api/update_news_translation/{nid}/{locale}'
       .replaceAll('{nid}', nid.toString())
       .replaceAll('{locale}', locale);
 

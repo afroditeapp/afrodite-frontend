@@ -14,32 +14,25 @@ class SentBlocksPage {
   /// Returns a new [SentBlocksPage] instance.
   SentBlocksPage({
     this.profiles = const [],
-    required this.version,
   });
 
   List<AccountId> profiles;
 
-  /// This version can be sent to the server when WebSocket protocol data sync is happening.
-  SentBlocksSyncVersion version;
-
   @override
   bool operator ==(Object other) => identical(this, other) || other is SentBlocksPage &&
-    _deepEquality.equals(other.profiles, profiles) &&
-    other.version == version;
+    _deepEquality.equals(other.profiles, profiles);
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (profiles.hashCode) +
-    (version.hashCode);
+    (profiles.hashCode);
 
   @override
-  String toString() => 'SentBlocksPage[profiles=$profiles, version=$version]';
+  String toString() => 'SentBlocksPage[profiles=$profiles]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'profiles'] = this.profiles;
-      json[r'version'] = this.version;
     return json;
   }
 
@@ -63,7 +56,6 @@ class SentBlocksPage {
 
       return SentBlocksPage(
         profiles: AccountId.listFromJson(json[r'profiles']),
-        version: SentBlocksSyncVersion.fromJson(json[r'version'])!,
       );
     }
     return null;
@@ -112,7 +104,6 @@ class SentBlocksPage {
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
     'profiles',
-    'version',
   };
 }
 

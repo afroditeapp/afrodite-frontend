@@ -7793,17 +7793,14 @@ class $MessageTableTable extends MessageTable
         requiredDuringInsert: false,
       );
   @override
-  late final GeneratedColumnWithTypeConverter<api.MessageNumber?, int>
-  messageNumber =
+  late final GeneratedColumnWithTypeConverter<api.MessageId?, int> messageId =
       GeneratedColumn<int>(
-        'message_number',
+        'message_id',
         aliasedName,
         true,
         type: DriftSqlType.int,
         requiredDuringInsert: false,
-      ).withConverter<api.MessageNumber?>(
-        $MessageTableTable.$convertermessageNumber,
-      );
+      ).withConverter<api.MessageId?>($MessageTableTable.$convertermessageId);
   @override
   late final GeneratedColumnWithTypeConverter<UtcDateTime?, int> unixTime =
       GeneratedColumn<int>(
@@ -7833,7 +7830,7 @@ class $MessageTableTable extends MessageTable
     localUnixTime,
     messageState,
     symmetricMessageEncryptionKey,
-    messageNumber,
+    messageId,
     unixTime,
     backendSignedPgpMessage,
   ];
@@ -7928,10 +7925,10 @@ class $MessageTableTable extends MessageTable
         DriftSqlType.blob,
         data['${effectivePrefix}symmetric_message_encryption_key'],
       ),
-      messageNumber: $MessageTableTable.$convertermessageNumber.fromSql(
+      messageId: $MessageTableTable.$convertermessageId.fromSql(
         attachedDatabase.typeMapping.read(
           DriftSqlType.int,
-          data['${effectivePrefix}message_number'],
+          data['${effectivePrefix}message_id'],
         ),
       ),
       unixTime: $MessageTableTable.$converterunixTime.fromSql(
@@ -7960,8 +7957,8 @@ class $MessageTableTable extends MessageTable
       const NullAwareTypeConverter.wrap(MessageConverter());
   static TypeConverter<UtcDateTime, int> $converterlocalUnixTime =
       const UtcDateTimeConverter();
-  static TypeConverter<api.MessageNumber?, int?> $convertermessageNumber =
-      const NullAwareTypeConverter.wrap(MessageNumberConverter());
+  static TypeConverter<api.MessageId?, int?> $convertermessageId =
+      const NullAwareTypeConverter.wrap(MessageIdConverter());
   static TypeConverter<UtcDateTime?, int?> $converterunixTime =
       const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
 }
@@ -7975,7 +7972,7 @@ class MessageTableData extends DataClass
   final UtcDateTime localUnixTime;
   final int messageState;
   final Uint8List? symmetricMessageEncryptionKey;
-  final api.MessageNumber? messageNumber;
+  final api.MessageId? messageId;
   final UtcDateTime? unixTime;
   final Uint8List? backendSignedPgpMessage;
   const MessageTableData({
@@ -7986,7 +7983,7 @@ class MessageTableData extends DataClass
     required this.localUnixTime,
     required this.messageState,
     this.symmetricMessageEncryptionKey,
-    this.messageNumber,
+    this.messageId,
     this.unixTime,
     this.backendSignedPgpMessage,
   });
@@ -8024,9 +8021,9 @@ class MessageTableData extends DataClass
         symmetricMessageEncryptionKey,
       );
     }
-    if (!nullToAbsent || messageNumber != null) {
-      map['message_number'] = Variable<int>(
-        $MessageTableTable.$convertermessageNumber.toSql(messageNumber),
+    if (!nullToAbsent || messageId != null) {
+      map['message_id'] = Variable<int>(
+        $MessageTableTable.$convertermessageId.toSql(messageId),
       );
     }
     if (!nullToAbsent || unixTime != null) {
@@ -8056,9 +8053,9 @@ class MessageTableData extends DataClass
           symmetricMessageEncryptionKey == null && nullToAbsent
           ? const Value.absent()
           : Value(symmetricMessageEncryptionKey),
-      messageNumber: messageNumber == null && nullToAbsent
+      messageId: messageId == null && nullToAbsent
           ? const Value.absent()
-          : Value(messageNumber),
+          : Value(messageId),
       unixTime: unixTime == null && nullToAbsent
           ? const Value.absent()
           : Value(unixTime),
@@ -8087,9 +8084,7 @@ class MessageTableData extends DataClass
       symmetricMessageEncryptionKey: serializer.fromJson<Uint8List?>(
         json['symmetricMessageEncryptionKey'],
       ),
-      messageNumber: serializer.fromJson<api.MessageNumber?>(
-        json['messageNumber'],
-      ),
+      messageId: serializer.fromJson<api.MessageId?>(json['messageId']),
       unixTime: serializer.fromJson<UtcDateTime?>(json['unixTime']),
       backendSignedPgpMessage: serializer.fromJson<Uint8List?>(
         json['backendSignedPgpMessage'],
@@ -8113,7 +8108,7 @@ class MessageTableData extends DataClass
       'symmetricMessageEncryptionKey': serializer.toJson<Uint8List?>(
         symmetricMessageEncryptionKey,
       ),
-      'messageNumber': serializer.toJson<api.MessageNumber?>(messageNumber),
+      'messageId': serializer.toJson<api.MessageId?>(messageId),
       'unixTime': serializer.toJson<UtcDateTime?>(unixTime),
       'backendSignedPgpMessage': serializer.toJson<Uint8List?>(
         backendSignedPgpMessage,
@@ -8129,7 +8124,7 @@ class MessageTableData extends DataClass
     UtcDateTime? localUnixTime,
     int? messageState,
     Value<Uint8List?> symmetricMessageEncryptionKey = const Value.absent(),
-    Value<api.MessageNumber?> messageNumber = const Value.absent(),
+    Value<api.MessageId?> messageId = const Value.absent(),
     Value<UtcDateTime?> unixTime = const Value.absent(),
     Value<Uint8List?> backendSignedPgpMessage = const Value.absent(),
   }) => MessageTableData(
@@ -8142,9 +8137,7 @@ class MessageTableData extends DataClass
     symmetricMessageEncryptionKey: symmetricMessageEncryptionKey.present
         ? symmetricMessageEncryptionKey.value
         : this.symmetricMessageEncryptionKey,
-    messageNumber: messageNumber.present
-        ? messageNumber.value
-        : this.messageNumber,
+    messageId: messageId.present ? messageId.value : this.messageId,
     unixTime: unixTime.present ? unixTime.value : this.unixTime,
     backendSignedPgpMessage: backendSignedPgpMessage.present
         ? backendSignedPgpMessage.value
@@ -8169,9 +8162,7 @@ class MessageTableData extends DataClass
       symmetricMessageEncryptionKey: data.symmetricMessageEncryptionKey.present
           ? data.symmetricMessageEncryptionKey.value
           : this.symmetricMessageEncryptionKey,
-      messageNumber: data.messageNumber.present
-          ? data.messageNumber.value
-          : this.messageNumber,
+      messageId: data.messageId.present ? data.messageId.value : this.messageId,
       unixTime: data.unixTime.present ? data.unixTime.value : this.unixTime,
       backendSignedPgpMessage: data.backendSignedPgpMessage.present
           ? data.backendSignedPgpMessage.value
@@ -8191,7 +8182,7 @@ class MessageTableData extends DataClass
           ..write(
             'symmetricMessageEncryptionKey: $symmetricMessageEncryptionKey, ',
           )
-          ..write('messageNumber: $messageNumber, ')
+          ..write('messageId: $messageId, ')
           ..write('unixTime: $unixTime, ')
           ..write('backendSignedPgpMessage: $backendSignedPgpMessage')
           ..write(')'))
@@ -8207,7 +8198,7 @@ class MessageTableData extends DataClass
     localUnixTime,
     messageState,
     $driftBlobEquality.hash(symmetricMessageEncryptionKey),
-    messageNumber,
+    messageId,
     unixTime,
     $driftBlobEquality.hash(backendSignedPgpMessage),
   );
@@ -8225,7 +8216,7 @@ class MessageTableData extends DataClass
             other.symmetricMessageEncryptionKey,
             this.symmetricMessageEncryptionKey,
           ) &&
-          other.messageNumber == this.messageNumber &&
+          other.messageId == this.messageId &&
           other.unixTime == this.unixTime &&
           $driftBlobEquality.equals(
             other.backendSignedPgpMessage,
@@ -8241,7 +8232,7 @@ class MessageTableCompanion extends UpdateCompanion<MessageTableData> {
   final Value<UtcDateTime> localUnixTime;
   final Value<int> messageState;
   final Value<Uint8List?> symmetricMessageEncryptionKey;
-  final Value<api.MessageNumber?> messageNumber;
+  final Value<api.MessageId?> messageId;
   final Value<UtcDateTime?> unixTime;
   final Value<Uint8List?> backendSignedPgpMessage;
   const MessageTableCompanion({
@@ -8252,7 +8243,7 @@ class MessageTableCompanion extends UpdateCompanion<MessageTableData> {
     this.localUnixTime = const Value.absent(),
     this.messageState = const Value.absent(),
     this.symmetricMessageEncryptionKey = const Value.absent(),
-    this.messageNumber = const Value.absent(),
+    this.messageId = const Value.absent(),
     this.unixTime = const Value.absent(),
     this.backendSignedPgpMessage = const Value.absent(),
   });
@@ -8264,7 +8255,7 @@ class MessageTableCompanion extends UpdateCompanion<MessageTableData> {
     required UtcDateTime localUnixTime,
     required int messageState,
     this.symmetricMessageEncryptionKey = const Value.absent(),
-    this.messageNumber = const Value.absent(),
+    this.messageId = const Value.absent(),
     this.unixTime = const Value.absent(),
     this.backendSignedPgpMessage = const Value.absent(),
   }) : uuidLocalAccountId = Value(uuidLocalAccountId),
@@ -8279,7 +8270,7 @@ class MessageTableCompanion extends UpdateCompanion<MessageTableData> {
     Expression<int>? localUnixTime,
     Expression<int>? messageState,
     Expression<Uint8List>? symmetricMessageEncryptionKey,
-    Expression<int>? messageNumber,
+    Expression<int>? messageId,
     Expression<int>? unixTime,
     Expression<Uint8List>? backendSignedPgpMessage,
   }) {
@@ -8294,7 +8285,7 @@ class MessageTableCompanion extends UpdateCompanion<MessageTableData> {
       if (messageState != null) 'message_state': messageState,
       if (symmetricMessageEncryptionKey != null)
         'symmetric_message_encryption_key': symmetricMessageEncryptionKey,
-      if (messageNumber != null) 'message_number': messageNumber,
+      if (messageId != null) 'message_id': messageId,
       if (unixTime != null) 'unix_time': unixTime,
       if (backendSignedPgpMessage != null)
         'backend_signed_pgp_message': backendSignedPgpMessage,
@@ -8309,7 +8300,7 @@ class MessageTableCompanion extends UpdateCompanion<MessageTableData> {
     Value<UtcDateTime>? localUnixTime,
     Value<int>? messageState,
     Value<Uint8List?>? symmetricMessageEncryptionKey,
-    Value<api.MessageNumber?>? messageNumber,
+    Value<api.MessageId?>? messageId,
     Value<UtcDateTime?>? unixTime,
     Value<Uint8List?>? backendSignedPgpMessage,
   }) {
@@ -8322,7 +8313,7 @@ class MessageTableCompanion extends UpdateCompanion<MessageTableData> {
       messageState: messageState ?? this.messageState,
       symmetricMessageEncryptionKey:
           symmetricMessageEncryptionKey ?? this.symmetricMessageEncryptionKey,
-      messageNumber: messageNumber ?? this.messageNumber,
+      messageId: messageId ?? this.messageId,
       unixTime: unixTime ?? this.unixTime,
       backendSignedPgpMessage:
           backendSignedPgpMessage ?? this.backendSignedPgpMessage,
@@ -8367,9 +8358,9 @@ class MessageTableCompanion extends UpdateCompanion<MessageTableData> {
         symmetricMessageEncryptionKey.value,
       );
     }
-    if (messageNumber.present) {
-      map['message_number'] = Variable<int>(
-        $MessageTableTable.$convertermessageNumber.toSql(messageNumber.value),
+    if (messageId.present) {
+      map['message_id'] = Variable<int>(
+        $MessageTableTable.$convertermessageId.toSql(messageId.value),
       );
     }
     if (unixTime.present) {
@@ -8397,7 +8388,7 @@ class MessageTableCompanion extends UpdateCompanion<MessageTableData> {
           ..write(
             'symmetricMessageEncryptionKey: $symmetricMessageEncryptionKey, ',
           )
-          ..write('messageNumber: $messageNumber, ')
+          ..write('messageId: $messageId, ')
           ..write('unixTime: $unixTime, ')
           ..write('backendSignedPgpMessage: $backendSignedPgpMessage')
           ..write(')'))

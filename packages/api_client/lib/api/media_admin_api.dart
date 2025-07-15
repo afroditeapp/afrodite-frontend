@@ -29,7 +29,7 @@ class MediaAdminApi {
   /// * [bool] showContentWhichBotsCanModerate (required):
   Future<Response> getProfileContentPendingModerationListWithHttpInfo(MediaContentType contentType, ModerationQueueType queue, bool showContentWhichBotsCanModerate,) async {
     // ignore: prefer_const_declarations
-    final path = r'/media_api/admin/profile_content_pending_moderation';
+    final path = r'/media_api/profile_content_pending_moderation';
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -139,7 +139,7 @@ class MediaAdminApi {
   /// * [PostModerateProfileContent] postModerateProfileContent (required):
   Future<Response> postModerateProfileContentWithHttpInfo(PostModerateProfileContent postModerateProfileContent,) async {
     // ignore: prefer_const_declarations
-    final path = r'/media_api/admin/moderate_profile_content';
+    final path = r'/media_api/moderate_profile_content';
 
     // ignore: prefer_final_locals
     Object? postBody = postModerateProfileContent;

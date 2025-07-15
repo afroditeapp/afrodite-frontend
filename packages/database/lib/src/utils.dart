@@ -89,17 +89,17 @@ class ProfileAttributeHashConverter extends TypeConverter<ProfileAttributeHash, 
   }
 }
 
-class MessageNumberConverter extends TypeConverter<MessageNumber, int> {
-  const MessageNumberConverter();
+class MessageIdConverter extends TypeConverter<MessageId, int> {
+  const MessageIdConverter();
 
   @override
-  MessageNumber fromSql(fromDb) {
-    return MessageNumber(mn: fromDb);
+  MessageId fromSql(fromDb) {
+    return MessageId(id: fromDb);
   }
 
   @override
   int toSql(value) {
-    return value.mn;
+    return value.id;
   }
 }
 

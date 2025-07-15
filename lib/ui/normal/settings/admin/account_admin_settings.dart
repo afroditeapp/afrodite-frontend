@@ -247,7 +247,7 @@ class _AccountAdminSettingsScreenState extends State<AccountAdminSettingsScreen>
 
 class AccountAdminSettingsPermissions {
   final Permissions _permissions;
-  bool get adminModifyPermissions => _permissions.adminModifyPermissions;
+  bool get adminModifyPermissions => _permissions.adminEditPermissions;
   bool get adminEditProfileName => _permissions.adminEditProfileName;
   bool get adminModerateMediaContent => _permissions.adminModerateMediaContent;
   bool get adminModerateProfileTexts => _permissions.adminModerateProfileTexts;

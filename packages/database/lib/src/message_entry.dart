@@ -17,8 +17,8 @@ class MessageEntry {
   /// Local/client time when message entry is inserted to database.
   final UtcDateTime localUnixTime;
   final MessageState messageState;
-  /// Message number in a conversation. Server sets this value.
-  final MessageNumber? messageNumber;
+  /// Conversation specific identifier for the message. Server sets this value.
+  final MessageId? messageId;
   /// Time since Unix epoch. Server sets this falue.
   final UtcDateTime? unixTime;
 
@@ -30,14 +30,14 @@ class MessageEntry {
       required this.message,
       required this.localUnixTime,
       required this.messageState,
-      this.messageNumber,
+      this.messageId,
       this.unixTime,
     }
   );
 
   @override
   String toString() {
-    return "MessageEntry(localId: $localId, localAccountId: $localAccountId, remoteAccountId: $remoteAccountId, message: $message, messageState: $messageState, messageNumber: $messageNumber, unixTime: $unixTime)";
+    return "MessageEntry(localId: $localId, localAccountId: $localAccountId, remoteAccountId: $remoteAccountId, message: $message, messageState: $messageState, messageId: $messageId, unixTime: $unixTime)";
   }
 }
 
@@ -232,8 +232,8 @@ class NewMessageEntry {
   final MessageState messageState;
   /// Null if message was sent.
   final ReceivedMessageState? receivedMessageState;
-  /// Message number in a conversation. Server sets this value.
-  final MessageNumber? messageNumber;
+  /// Conversation specific ID for the message. Server sets this value.
+  final MessageId? messageId;
   /// Time since Unix epoch. Server sets this falue.
   final UtcDateTime? unixTime;
   /// Backend signed PGP message. Server sets this falue.
@@ -249,7 +249,7 @@ class NewMessageEntry {
       required this.localUnixTime,
       required this.messageState,
       this.receivedMessageState,
-      this.messageNumber,
+      this.messageId,
       this.unixTime,
       this.backendSignedPgpMessage,
       this.symmetricMessageEncryptionKey,
@@ -258,7 +258,7 @@ class NewMessageEntry {
 
   @override
   String toString() {
-    return "NewMessageEntry(localAccountId: $localAccountId, remoteAccountId: $remoteAccountId, message: $message, messageState: $messageState, receivedMessageState: $receivedMessageState, messageNumber: $messageNumber, unixTime: $unixTime, backendSignedPgpMessage: $backendSignedPgpMessage)";
+    return "NewMessageEntry(localAccountId: $localAccountId, remoteAccountId: $remoteAccountId, message: $message, messageState: $messageState, receivedMessageState: $receivedMessageState, messageId: $messageId, unixTime: $unixTime, backendSignedPgpMessage: $backendSignedPgpMessage)";
   }
 }
 

@@ -211,7 +211,7 @@ class ReportUiBuilder extends ContentUiBuilder<WrappedReportDetailed> {
       final time = timeString(chatMessage.messageTime.toUtcDateTime());
       final message = Message.parseFromBytes(base64Decode(chatMessage.messageBase64));
       final String messageText = "\n${messageToText(context, message)}";
-      report = Text("M: $senderReceiverInfo, ID: ${chatMessage.messageNumber.mn}, $time$messageText");
+      report = Text("M: $senderReceiverInfo, ID: ${chatMessage.messageId.id}, $time$messageText");
     } else if (customReportBoolean != null) {
       report = BlocBuilder<CustomReportsConfigBloc, CustomReportsConfig>(
         builder: (context, config) {

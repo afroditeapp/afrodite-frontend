@@ -112,10 +112,10 @@ class CommonAdminApi {
     return null;
   }
 
-  /// Performs an HTTP 'GET /common_api/admin/latest_report_iterator_start_position' operation and returns the [Response].
+  /// Performs an HTTP 'GET /common_api/latest_report_iterator_start_position' operation and returns the [Response].
   Future<Response> getLatestReportIteratorStartPositionWithHttpInfo() async {
     // ignore: prefer_const_declarations
-    final path = r'/common_api/admin/latest_report_iterator_start_position';
+    final path = r'/common_api/latest_report_iterator_start_position';
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -203,7 +203,7 @@ class CommonAdminApi {
 
   /// Get available manager instances.
   ///
-  /// # Access * Permission [model::Permissions::admin_server_maintenance_view_info] * Permission [model::Permissions::admin_server_maintenance_update_software] * Permission [model::Permissions::admin_server_maintenance_reset_data] * Permission [model::Permissions::admin_server_maintenance_reboot_backend]
+  /// # Access * Permission [model::Permissions::admin_server_maintenance_view_info] * Permission [model::Permissions::admin_server_maintenance_update_software] * Permission [model::Permissions::admin_server_maintenance_reset_data] * Permission [model::Permissions::admin_server_maintenance_restart_backend]
   ///
   /// Note: This method returns the HTTP [Response].
   Future<Response> getManagerInstanceNamesWithHttpInfo() async {
@@ -233,7 +233,7 @@ class CommonAdminApi {
 
   /// Get available manager instances.
   ///
-  /// # Access * Permission [model::Permissions::admin_server_maintenance_view_info] * Permission [model::Permissions::admin_server_maintenance_update_software] * Permission [model::Permissions::admin_server_maintenance_reset_data] * Permission [model::Permissions::admin_server_maintenance_reboot_backend]
+  /// # Access * Permission [model::Permissions::admin_server_maintenance_view_info] * Permission [model::Permissions::admin_server_maintenance_update_software] * Permission [model::Permissions::admin_server_maintenance_reset_data] * Permission [model::Permissions::admin_server_maintenance_restart_backend]
   Future<ManagerInstanceNameList?> getManagerInstanceNames() async {
     final response = await getManagerInstanceNamesWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
@@ -251,7 +251,7 @@ class CommonAdminApi {
 
   /// Get scheduled tasks status from manager instance.
   ///
-  /// # Access * Permission [model::Permissions::admin_server_maintenance_reboot_backend]
+  /// # Access * Permission [model::Permissions::admin_server_maintenance_restart_backend]
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -287,7 +287,7 @@ class CommonAdminApi {
 
   /// Get scheduled tasks status from manager instance.
   ///
-  /// # Access * Permission [model::Permissions::admin_server_maintenance_reboot_backend]
+  /// # Access * Permission [model::Permissions::admin_server_maintenance_restart_backend]
   ///
   /// Parameters:
   ///
@@ -423,10 +423,10 @@ class CommonAdminApi {
     return null;
   }
 
-  /// Performs an HTTP 'GET /common_api/admin/waiting_report_page' operation and returns the [Response].
+  /// Performs an HTTP 'GET /common_api/waiting_report_page' operation and returns the [Response].
   Future<Response> getWaitingReportPageWithHttpInfo() async {
     // ignore: prefer_const_declarations
-    final path = r'/common_api/admin/waiting_report_page';
+    final path = r'/common_api/waiting_report_page';
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -887,7 +887,7 @@ class CommonAdminApi {
   /// * [ReportIteratorQuery] reportIteratorQuery (required):
   Future<Response> postGetReportIteratorPageWithHttpInfo(ReportIteratorQuery reportIteratorQuery,) async {
     // ignore: prefer_const_declarations
-    final path = r'/common_api/admin/report_iterator_page';
+    final path = r'/common_api/report_iterator_page';
 
     // ignore: prefer_final_locals
     Object? postBody = reportIteratorQuery;
@@ -932,13 +932,13 @@ class CommonAdminApi {
     return null;
   }
 
-  /// Performs an HTTP 'POST /common_api/admin/process_report' operation and returns the [Response].
+  /// Performs an HTTP 'POST /common_api/process_report' operation and returns the [Response].
   /// Parameters:
   ///
   /// * [ProcessReport] processReport (required):
   Future<Response> postProcessReportWithHttpInfo(ProcessReport processReport,) async {
     // ignore: prefer_const_declarations
-    final path = r'/common_api/admin/process_report';
+    final path = r'/common_api/process_report';
 
     // ignore: prefer_final_locals
     Object? postBody = processReport;
@@ -973,7 +973,7 @@ class CommonAdminApi {
 
   /// Schedule task.
   ///
-  /// # Access * Permission [model::Permissions::admin_server_maintenance_reboot_backend]
+  /// # Access * Permission [model::Permissions::admin_server_maintenance_restart_backend]
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -1015,7 +1015,7 @@ class CommonAdminApi {
 
   /// Schedule task.
   ///
-  /// # Access * Permission [model::Permissions::admin_server_maintenance_reboot_backend]
+  /// # Access * Permission [model::Permissions::admin_server_maintenance_restart_backend]
   ///
   /// Parameters:
   ///
@@ -1083,7 +1083,7 @@ class CommonAdminApi {
 
   /// Trigger backend restart.
   ///
-  /// # Access * Permission [model::Permissions::admin_server_maintenance_reboot_backend]
+  /// # Access * Permission [model::Permissions::admin_server_maintenance_restart_backend]
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -1119,7 +1119,7 @@ class CommonAdminApi {
 
   /// Trigger backend restart.
   ///
-  /// # Access * Permission [model::Permissions::admin_server_maintenance_reboot_backend]
+  /// # Access * Permission [model::Permissions::admin_server_maintenance_restart_backend]
   ///
   /// Parameters:
   ///
@@ -1243,7 +1243,7 @@ class CommonAdminApi {
 
   /// Trigger system reboot.
   ///
-  /// # Access * Permission [model::Permissions::admin_server_maintenance_reboot_backend]
+  /// # Access * Permission [model::Permissions::admin_server_maintenance_restart_backend]
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -1279,7 +1279,7 @@ class CommonAdminApi {
 
   /// Trigger system reboot.
   ///
-  /// # Access * Permission [model::Permissions::admin_server_maintenance_reboot_backend]
+  /// # Access * Permission [model::Permissions::admin_server_maintenance_restart_backend]
   ///
   /// Parameters:
   ///
@@ -1293,7 +1293,7 @@ class CommonAdminApi {
 
   /// Unschedule task.
   ///
-  /// # Access * Permission [model::Permissions::admin_server_maintenance_reboot_backend]
+  /// # Access * Permission [model::Permissions::admin_server_maintenance_restart_backend]
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -1332,7 +1332,7 @@ class CommonAdminApi {
 
   /// Unschedule task.
   ///
-  /// # Access * Permission [model::Permissions::admin_server_maintenance_reboot_backend]
+  /// # Access * Permission [model::Permissions::admin_server_maintenance_restart_backend]
   ///
   /// Parameters:
   ///

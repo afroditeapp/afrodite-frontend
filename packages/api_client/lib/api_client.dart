@@ -216,8 +216,6 @@ class ApiClient {
           return AdminInfo.fromJson(value);
         case 'AdminNotification':
           return AdminNotification.fromJson(value);
-        case 'AllMatchesPage':
-          return AllMatchesPage.fromJson(value);
         case 'ApiUsageCount':
           return ApiUsageCount.fromJson(value);
         case 'ApiUsageStatistics':
@@ -434,8 +432,6 @@ class ApiClient {
           return LastSeenTimeFilter.fromJson(value);
         case 'LatestBirthdate':
           return LatestBirthdate.fromJson(value);
-        case 'LatestViewedMessageChanged':
-          return LatestViewedMessageChanged.fromJson(value);
         case 'LikeLimitsConfig':
           return LikeLimitsConfig.fromJson(value);
         case 'LikeSendingLimitConfig':
@@ -464,8 +460,6 @@ class ApiClient {
           return MatchesIteratorSessionId.fromJson(value);
         case 'MatchesPage':
           return MatchesPage.fromJson(value);
-        case 'MatchesSyncVersion':
-          return MatchesSyncVersion.fromJson(value);
         case 'MaxDistanceKm':
           return MaxDistanceKm.fromJson(value);
         case 'MediaAppNotificationSettings':
@@ -478,8 +472,8 @@ class ApiClient {
           return MediaContentSyncVersion.fromJson(value);
         case 'MediaContentType':
           return MediaContentTypeTypeTransformer().decode(value);
-        case 'MessageNumber':
-          return MessageNumber.fromJson(value);
+        case 'MessageId':
+          return MessageId.fromJson(value);
         case 'MinDistanceKm':
           return MinDistanceKm.fromJson(value);
         case 'ModerationQueueType':
@@ -628,10 +622,6 @@ class ApiClient {
           return ProfileVisibilityTypeTransformer().decode(value);
         case 'PublicKeyId':
           return PublicKeyId.fromJson(value);
-        case 'ReceivedBlocksPage':
-          return ReceivedBlocksPage.fromJson(value);
-        case 'ReceivedBlocksSyncVersion':
-          return ReceivedBlocksSyncVersion.fromJson(value);
         case 'ReceivedLikesIteratorSessionId':
           return ReceivedLikesIteratorSessionId.fromJson(value);
         case 'ReceivedLikesPage':
@@ -688,12 +678,6 @@ class ApiClient {
           return SendMessageResult.fromJson(value);
         case 'SentBlocksPage':
           return SentBlocksPage.fromJson(value);
-        case 'SentBlocksSyncVersion':
-          return SentBlocksSyncVersion.fromJson(value);
-        case 'SentLikesPage':
-          return SentLikesPage.fromJson(value);
-        case 'SentLikesSyncVersion':
-          return SentLikesSyncVersion.fromJson(value);
         case 'SentMessageId':
           return SentMessageId.fromJson(value);
         case 'SentMessageIdList':
@@ -740,8 +724,6 @@ class ApiClient {
           return UpdateChatMessageReport.fromJson(value);
         case 'UpdateCustomReportBoolean':
           return UpdateCustomReportBoolean.fromJson(value);
-        case 'UpdateMessageViewStatus':
-          return UpdateMessageViewStatus.fromJson(value);
         case 'UpdateNewsTranslation':
           return UpdateNewsTranslation.fromJson(value);
         case 'UpdateNewsTranslationResult':
