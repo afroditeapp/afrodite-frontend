@@ -134,6 +134,7 @@ class Error implements ServerConnectionState {
 }
 
 enum ConnectionProtocolState {
+  receiveFirstMessage,
   receiveNewRefreshToken,
   receiveNewAccessToken,
   receiveEvents,
@@ -189,7 +190,7 @@ class ServerConnection {
   Future<void> _connect() async {
     log.info("Starting to connect");
 
-    var protocolState = ConnectionProtocolState.receiveNewRefreshToken;
+    var protocolState = ConnectionProtocolState.receiveFirstMessage;
 
     final accessToken = await db.accountStreamSingle(_server.getterForAccessTokenKey()).ok();
     if (accessToken == null) {
@@ -263,21 +264,46 @@ class ServerConnection {
 
     // Client starts the messaging
     ws.connection.sink.add(clientVersionInfoBytes());
-    final byteToken = base64Decode(refreshToken);
-    ws.connection.sink.add(byteToken);
+
+    Future<void> handleConnectionIsReadyForDataSync() async {
+      ws.connection.sink.add(await syncDataBytes(db, accountBackgroundDb));
+      protocolState = ConnectionProtocolState.receiveEvents;
+      log.info("Connection ready");
+      _state.add(Ready());
+      await ws.updatePingInterval(NavigationStateBlocInstance.getInstance().navigationState);
+    }
 
     ws
       .connection
       .stream
       .asyncMap((message) async {
         switch (protocolState) {
+          case ConnectionProtocolState.receiveFirstMessage: {
+            if (message is List<int>) {
+              switch (message) {
+                case [0]:
+                  await handleConnectionIsReadyForDataSync();
+                case [1]:
+                  final byteToken = base64Decode(refreshToken);
+                  ws.connection.sink.add(byteToken);
+                  protocolState = ConnectionProtocolState.receiveNewRefreshToken;
+                case [2]:
+                  await _endConnectionToGeneralError(error: ServerConnectionError.unsupportedClientVersion);
+                default:
+                  await _endConnectionToGeneralError();
+              }
+              final newRefreshToken = base64Encode(message);
+              await db.accountAction(_server.setterForRefreshTokenKey(newRefreshToken));
+
+            } else {
+              await _endConnectionToGeneralError();
+            }
+          }
           case ConnectionProtocolState.receiveNewRefreshToken: {
             if (message is List<int>) {
               final newRefreshToken = base64Encode(message);
               await db.accountAction(_server.setterForRefreshTokenKey(newRefreshToken));
               protocolState = ConnectionProtocolState.receiveNewAccessToken;
-            } else if (message is String) {
-              await _endConnectionToGeneralError(error: ServerConnectionError.unsupportedClientVersion);
             } else {
               await _endConnectionToGeneralError();
             }
@@ -288,11 +314,7 @@ class ServerConnection {
                 .encode(message)
                 .replaceAll("=", "");
               await db.accountAction(_server.setterForAccessTokenKey(newAccessToken));
-              ws.connection.sink.add(await syncDataBytes(db, accountBackgroundDb));
-              protocolState = ConnectionProtocolState.receiveEvents;
-              log.info("Connection ready");
-              _state.add(Ready());
-              await ws.updatePingInterval(NavigationStateBlocInstance.getInstance().navigationState);
+              await handleConnectionIsReadyForDataSync();
             } else {
               await _endConnectionToGeneralError();
             }
@@ -382,7 +404,7 @@ class ServerConnection {
 }
 
 Uint8List clientVersionInfoBytes() {
-  const protocolVersion = 0;
+  const protocolVersion = 1;
   final int platform;
   if (kIsWeb) {
     platform = 2;
@@ -407,15 +429,11 @@ const forceSync = 255;
 /*
     Account = 0,
     ReveivedLikes = 1,
-    ReveivedBlocks = 2,
-    SentLikes = 3,
-    SentBlocks = 4,
-    Matches = 5,
-    ClientConfig = 6,
-    Profile = 7,
-    News = 8,
-    MediaContent = 9,
-    DailyLikesLeft = 10,
+    ClientConfig = 2,
+    Profile = 3,
+    News = 4,
+    MediaContent = 5,
+    DailyLikesLeft = 6,
     /// Special value without valid [SyncVersionFromClient] informing
     /// the server that client has info that server maintenance is scheduled.
     ServerMaintenanceIsScheduled = 255,
@@ -456,15 +474,15 @@ Future<Uint8List> syncDataBytes(AccountDatabaseManager db, AccountBackgroundData
     syncVersionAccount,
     1, // ReveivedLikes
     syncVersionReceivedLikes,
-    6, // ClientConfig
+    2, // ClientConfig
     syncVersionClientConfig,
-    7, // Profile
+    3, // Profile
     syncVersionProfile,
-    8, // News
+    4, // News
     syncVersionNews,
-    9, // Media content
+    5, // Media content
     syncVersionMediaContent,
-    10, // Daily likes left
+    6, // Daily likes left
     syncVersionDailyLikesLeft,
     if (sendMaintenanceSyncVersion) 255,
     if (sendMaintenanceSyncVersion) 0,
