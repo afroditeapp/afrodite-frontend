@@ -12,75 +12,116 @@ class $CommonBackgroundTable extends CommonBackground
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
-      'id', aliasedName, false,
-      hasAutoIncrement: true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      defaultConstraints:
-          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
-  static const VerificationMeta _serverUrlAccountMeta =
-      const VerificationMeta('serverUrlAccount');
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _serverUrlAccountMeta = const VerificationMeta(
+    'serverUrlAccount',
+  );
   @override
   late final GeneratedColumn<String> serverUrlAccount = GeneratedColumn<String>(
-      'server_url_account', aliasedName, true,
-      type: DriftSqlType.string, requiredDuringInsert: false);
-  static const VerificationMeta _serverUrlMediaMeta =
-      const VerificationMeta('serverUrlMedia');
+    'server_url_account',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _serverUrlMediaMeta = const VerificationMeta(
+    'serverUrlMedia',
+  );
   @override
   late final GeneratedColumn<String> serverUrlMedia = GeneratedColumn<String>(
-      'server_url_media', aliasedName, true,
-      type: DriftSqlType.string, requiredDuringInsert: false);
-  static const VerificationMeta _serverUrlProfileMeta =
-      const VerificationMeta('serverUrlProfile');
+    'server_url_media',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _serverUrlProfileMeta = const VerificationMeta(
+    'serverUrlProfile',
+  );
   @override
   late final GeneratedColumn<String> serverUrlProfile = GeneratedColumn<String>(
-      'server_url_profile', aliasedName, true,
-      type: DriftSqlType.string, requiredDuringInsert: false);
-  static const VerificationMeta _serverUrlChatMeta =
-      const VerificationMeta('serverUrlChat');
+    'server_url_profile',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _serverUrlChatMeta = const VerificationMeta(
+    'serverUrlChat',
+  );
   @override
   late final GeneratedColumn<String> serverUrlChat = GeneratedColumn<String>(
-      'server_url_chat', aliasedName, true,
-      type: DriftSqlType.string, requiredDuringInsert: false);
+    'server_url_chat',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   @override
   late final GeneratedColumnWithTypeConverter<AccountId?, String>
-      uuidAccountId = GeneratedColumn<String>(
-              'uuid_account_id', aliasedName, true,
-              type: DriftSqlType.string, requiredDuringInsert: false)
-          .withConverter<AccountId?>(
-              $CommonBackgroundTable.$converteruuidAccountId);
+  uuidAccountId = GeneratedColumn<String>(
+    'uuid_account_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  ).withConverter<AccountId?>($CommonBackgroundTable.$converteruuidAccountId);
   @override
   late final GeneratedColumnWithTypeConverter<FcmDeviceToken?, String>
-      fcmDeviceToken = GeneratedColumn<String>(
-              'fcm_device_token', aliasedName, true,
-              type: DriftSqlType.string, requiredDuringInsert: false)
-          .withConverter<FcmDeviceToken?>(
-              $CommonBackgroundTable.$converterfcmDeviceToken);
+  fcmDeviceToken =
+      GeneratedColumn<String>(
+        'fcm_device_token',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      ).withConverter<FcmDeviceToken?>(
+        $CommonBackgroundTable.$converterfcmDeviceToken,
+      );
   @override
   late final GeneratedColumnWithTypeConverter<PendingNotificationToken?, String>
-      pendingNotificationToken = GeneratedColumn<String>(
-              'pending_notification_token', aliasedName, true,
-              type: DriftSqlType.string, requiredDuringInsert: false)
-          .withConverter<PendingNotificationToken?>(
-              $CommonBackgroundTable.$converterpendingNotificationToken);
-  static const VerificationMeta _currentLocaleMeta =
-      const VerificationMeta('currentLocale');
+  pendingNotificationToken =
+      GeneratedColumn<String>(
+        'pending_notification_token',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      ).withConverter<PendingNotificationToken?>(
+        $CommonBackgroundTable.$converterpendingNotificationToken,
+      );
+  static const VerificationMeta _currentLocaleMeta = const VerificationMeta(
+    'currentLocale',
+  );
   @override
   late final GeneratedColumn<String> currentLocale = GeneratedColumn<String>(
-      'current_locale', aliasedName, true,
-      type: DriftSqlType.string, requiredDuringInsert: false);
+    'current_locale',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   @override
   List<GeneratedColumn> get $columns => [
-        id,
-        serverUrlAccount,
-        serverUrlMedia,
-        serverUrlProfile,
-        serverUrlChat,
-        uuidAccountId,
-        fcmDeviceToken,
-        pendingNotificationToken,
-        currentLocale
-      ];
+    id,
+    serverUrlAccount,
+    serverUrlMedia,
+    serverUrlProfile,
+    serverUrlChat,
+    uuidAccountId,
+    fcmDeviceToken,
+    pendingNotificationToken,
+    currentLocale,
+  ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -88,8 +129,9 @@ class $CommonBackgroundTable extends CommonBackground
   static const String $name = 'common_background';
   @override
   VerificationContext validateIntegrity(
-      Insertable<CommonBackgroundData> instance,
-      {bool isInserting = false}) {
+    Insertable<CommonBackgroundData> instance, {
+    bool isInserting = false,
+  }) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
@@ -97,33 +139,48 @@ class $CommonBackgroundTable extends CommonBackground
     }
     if (data.containsKey('server_url_account')) {
       context.handle(
+        _serverUrlAccountMeta,
+        serverUrlAccount.isAcceptableOrUnknown(
+          data['server_url_account']!,
           _serverUrlAccountMeta,
-          serverUrlAccount.isAcceptableOrUnknown(
-              data['server_url_account']!, _serverUrlAccountMeta));
+        ),
+      );
     }
     if (data.containsKey('server_url_media')) {
       context.handle(
+        _serverUrlMediaMeta,
+        serverUrlMedia.isAcceptableOrUnknown(
+          data['server_url_media']!,
           _serverUrlMediaMeta,
-          serverUrlMedia.isAcceptableOrUnknown(
-              data['server_url_media']!, _serverUrlMediaMeta));
+        ),
+      );
     }
     if (data.containsKey('server_url_profile')) {
       context.handle(
+        _serverUrlProfileMeta,
+        serverUrlProfile.isAcceptableOrUnknown(
+          data['server_url_profile']!,
           _serverUrlProfileMeta,
-          serverUrlProfile.isAcceptableOrUnknown(
-              data['server_url_profile']!, _serverUrlProfileMeta));
+        ),
+      );
     }
     if (data.containsKey('server_url_chat')) {
       context.handle(
+        _serverUrlChatMeta,
+        serverUrlChat.isAcceptableOrUnknown(
+          data['server_url_chat']!,
           _serverUrlChatMeta,
-          serverUrlChat.isAcceptableOrUnknown(
-              data['server_url_chat']!, _serverUrlChatMeta));
+        ),
+      );
     }
     if (data.containsKey('current_locale')) {
       context.handle(
+        _currentLocaleMeta,
+        currentLocale.isAcceptableOrUnknown(
+          data['current_locale']!,
           _currentLocaleMeta,
-          currentLocale.isAcceptableOrUnknown(
-              data['current_locale']!, _currentLocaleMeta));
+        ),
+      );
     }
     return context;
   }
@@ -134,28 +191,50 @@ class $CommonBackgroundTable extends CommonBackground
   CommonBackgroundData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return CommonBackgroundData(
-      id: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
       serverUrlAccount: attachedDatabase.typeMapping.read(
-          DriftSqlType.string, data['${effectivePrefix}server_url_account']),
+        DriftSqlType.string,
+        data['${effectivePrefix}server_url_account'],
+      ),
       serverUrlMedia: attachedDatabase.typeMapping.read(
-          DriftSqlType.string, data['${effectivePrefix}server_url_media']),
+        DriftSqlType.string,
+        data['${effectivePrefix}server_url_media'],
+      ),
       serverUrlProfile: attachedDatabase.typeMapping.read(
-          DriftSqlType.string, data['${effectivePrefix}server_url_profile']),
-      serverUrlChat: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}server_url_chat']),
+        DriftSqlType.string,
+        data['${effectivePrefix}server_url_profile'],
+      ),
+      serverUrlChat: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}server_url_chat'],
+      ),
       uuidAccountId: $CommonBackgroundTable.$converteruuidAccountId.fromSql(
-          attachedDatabase.typeMapping.read(
-              DriftSqlType.string, data['${effectivePrefix}uuid_account_id'])),
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}uuid_account_id'],
+        ),
+      ),
       fcmDeviceToken: $CommonBackgroundTable.$converterfcmDeviceToken.fromSql(
-          attachedDatabase.typeMapping.read(
-              DriftSqlType.string, data['${effectivePrefix}fcm_device_token'])),
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}fcm_device_token'],
+        ),
+      ),
       pendingNotificationToken: $CommonBackgroundTable
           .$converterpendingNotificationToken
-          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.string,
-              data['${effectivePrefix}pending_notification_token'])),
-      currentLocale: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}current_locale']),
+          .fromSql(
+            attachedDatabase.typeMapping.read(
+              DriftSqlType.string,
+              data['${effectivePrefix}pending_notification_token'],
+            ),
+          ),
+      currentLocale: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}current_locale'],
+      ),
     );
   }
 
@@ -169,8 +248,9 @@ class $CommonBackgroundTable extends CommonBackground
   static TypeConverter<FcmDeviceToken?, String?> $converterfcmDeviceToken =
       const NullAwareTypeConverter.wrap(FcmDeviceTokenConverter());
   static TypeConverter<PendingNotificationToken?, String?>
-      $converterpendingNotificationToken =
-      const NullAwareTypeConverter.wrap(PendingNotificationTokenConverter());
+  $converterpendingNotificationToken = const NullAwareTypeConverter.wrap(
+    PendingNotificationTokenConverter(),
+  );
 }
 
 class CommonBackgroundData extends DataClass
@@ -184,16 +264,17 @@ class CommonBackgroundData extends DataClass
   final FcmDeviceToken? fcmDeviceToken;
   final PendingNotificationToken? pendingNotificationToken;
   final String? currentLocale;
-  const CommonBackgroundData(
-      {required this.id,
-      this.serverUrlAccount,
-      this.serverUrlMedia,
-      this.serverUrlProfile,
-      this.serverUrlChat,
-      this.uuidAccountId,
-      this.fcmDeviceToken,
-      this.pendingNotificationToken,
-      this.currentLocale});
+  const CommonBackgroundData({
+    required this.id,
+    this.serverUrlAccount,
+    this.serverUrlMedia,
+    this.serverUrlProfile,
+    this.serverUrlChat,
+    this.uuidAccountId,
+    this.fcmDeviceToken,
+    this.pendingNotificationToken,
+    this.currentLocale,
+  });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -212,17 +293,20 @@ class CommonBackgroundData extends DataClass
     }
     if (!nullToAbsent || uuidAccountId != null) {
       map['uuid_account_id'] = Variable<String>(
-          $CommonBackgroundTable.$converteruuidAccountId.toSql(uuidAccountId));
+        $CommonBackgroundTable.$converteruuidAccountId.toSql(uuidAccountId),
+      );
     }
     if (!nullToAbsent || fcmDeviceToken != null) {
-      map['fcm_device_token'] = Variable<String>($CommonBackgroundTable
-          .$converterfcmDeviceToken
-          .toSql(fcmDeviceToken));
+      map['fcm_device_token'] = Variable<String>(
+        $CommonBackgroundTable.$converterfcmDeviceToken.toSql(fcmDeviceToken),
+      );
     }
     if (!nullToAbsent || pendingNotificationToken != null) {
       map['pending_notification_token'] = Variable<String>(
-          $CommonBackgroundTable.$converterpendingNotificationToken
-              .toSql(pendingNotificationToken));
+        $CommonBackgroundTable.$converterpendingNotificationToken.toSql(
+          pendingNotificationToken,
+        ),
+      );
     }
     if (!nullToAbsent || currentLocale != null) {
       map['current_locale'] = Variable<String>(currentLocale);
@@ -260,8 +344,10 @@ class CommonBackgroundData extends DataClass
     );
   }
 
-  factory CommonBackgroundData.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
+  factory CommonBackgroundData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return CommonBackgroundData(
       id: serializer.fromJson<int>(json['id']),
@@ -270,10 +356,12 @@ class CommonBackgroundData extends DataClass
       serverUrlProfile: serializer.fromJson<String?>(json['serverUrlProfile']),
       serverUrlChat: serializer.fromJson<String?>(json['serverUrlChat']),
       uuidAccountId: serializer.fromJson<AccountId?>(json['uuidAccountId']),
-      fcmDeviceToken:
-          serializer.fromJson<FcmDeviceToken?>(json['fcmDeviceToken']),
+      fcmDeviceToken: serializer.fromJson<FcmDeviceToken?>(
+        json['fcmDeviceToken'],
+      ),
       pendingNotificationToken: serializer.fromJson<PendingNotificationToken?>(
-          json['pendingNotificationToken']),
+        json['pendingNotificationToken'],
+      ),
       currentLocale: serializer.fromJson<String?>(json['currentLocale']),
     );
   }
@@ -288,45 +376,51 @@ class CommonBackgroundData extends DataClass
       'serverUrlChat': serializer.toJson<String?>(serverUrlChat),
       'uuidAccountId': serializer.toJson<AccountId?>(uuidAccountId),
       'fcmDeviceToken': serializer.toJson<FcmDeviceToken?>(fcmDeviceToken),
-      'pendingNotificationToken': serializer
-          .toJson<PendingNotificationToken?>(pendingNotificationToken),
+      'pendingNotificationToken': serializer.toJson<PendingNotificationToken?>(
+        pendingNotificationToken,
+      ),
       'currentLocale': serializer.toJson<String?>(currentLocale),
     };
   }
 
-  CommonBackgroundData copyWith(
-          {int? id,
-          Value<String?> serverUrlAccount = const Value.absent(),
-          Value<String?> serverUrlMedia = const Value.absent(),
-          Value<String?> serverUrlProfile = const Value.absent(),
-          Value<String?> serverUrlChat = const Value.absent(),
-          Value<AccountId?> uuidAccountId = const Value.absent(),
-          Value<FcmDeviceToken?> fcmDeviceToken = const Value.absent(),
-          Value<PendingNotificationToken?> pendingNotificationToken =
-              const Value.absent(),
-          Value<String?> currentLocale = const Value.absent()}) =>
-      CommonBackgroundData(
-        id: id ?? this.id,
-        serverUrlAccount: serverUrlAccount.present
-            ? serverUrlAccount.value
-            : this.serverUrlAccount,
-        serverUrlMedia:
-            serverUrlMedia.present ? serverUrlMedia.value : this.serverUrlMedia,
-        serverUrlProfile: serverUrlProfile.present
-            ? serverUrlProfile.value
-            : this.serverUrlProfile,
-        serverUrlChat:
-            serverUrlChat.present ? serverUrlChat.value : this.serverUrlChat,
-        uuidAccountId:
-            uuidAccountId.present ? uuidAccountId.value : this.uuidAccountId,
-        fcmDeviceToken:
-            fcmDeviceToken.present ? fcmDeviceToken.value : this.fcmDeviceToken,
-        pendingNotificationToken: pendingNotificationToken.present
-            ? pendingNotificationToken.value
-            : this.pendingNotificationToken,
-        currentLocale:
-            currentLocale.present ? currentLocale.value : this.currentLocale,
-      );
+  CommonBackgroundData copyWith({
+    int? id,
+    Value<String?> serverUrlAccount = const Value.absent(),
+    Value<String?> serverUrlMedia = const Value.absent(),
+    Value<String?> serverUrlProfile = const Value.absent(),
+    Value<String?> serverUrlChat = const Value.absent(),
+    Value<AccountId?> uuidAccountId = const Value.absent(),
+    Value<FcmDeviceToken?> fcmDeviceToken = const Value.absent(),
+    Value<PendingNotificationToken?> pendingNotificationToken =
+        const Value.absent(),
+    Value<String?> currentLocale = const Value.absent(),
+  }) => CommonBackgroundData(
+    id: id ?? this.id,
+    serverUrlAccount: serverUrlAccount.present
+        ? serverUrlAccount.value
+        : this.serverUrlAccount,
+    serverUrlMedia: serverUrlMedia.present
+        ? serverUrlMedia.value
+        : this.serverUrlMedia,
+    serverUrlProfile: serverUrlProfile.present
+        ? serverUrlProfile.value
+        : this.serverUrlProfile,
+    serverUrlChat: serverUrlChat.present
+        ? serverUrlChat.value
+        : this.serverUrlChat,
+    uuidAccountId: uuidAccountId.present
+        ? uuidAccountId.value
+        : this.uuidAccountId,
+    fcmDeviceToken: fcmDeviceToken.present
+        ? fcmDeviceToken.value
+        : this.fcmDeviceToken,
+    pendingNotificationToken: pendingNotificationToken.present
+        ? pendingNotificationToken.value
+        : this.pendingNotificationToken,
+    currentLocale: currentLocale.present
+        ? currentLocale.value
+        : this.currentLocale,
+  );
   CommonBackgroundData copyWithCompanion(CommonBackgroundCompanion data) {
     return CommonBackgroundData(
       id: data.id.present ? data.id.value : this.id,
@@ -375,15 +469,16 @@ class CommonBackgroundData extends DataClass
 
   @override
   int get hashCode => Object.hash(
-      id,
-      serverUrlAccount,
-      serverUrlMedia,
-      serverUrlProfile,
-      serverUrlChat,
-      uuidAccountId,
-      fcmDeviceToken,
-      pendingNotificationToken,
-      currentLocale);
+    id,
+    serverUrlAccount,
+    serverUrlMedia,
+    serverUrlProfile,
+    serverUrlChat,
+    uuidAccountId,
+    fcmDeviceToken,
+    pendingNotificationToken,
+    currentLocale,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -456,16 +551,17 @@ class CommonBackgroundCompanion extends UpdateCompanion<CommonBackgroundData> {
     });
   }
 
-  CommonBackgroundCompanion copyWith(
-      {Value<int>? id,
-      Value<String?>? serverUrlAccount,
-      Value<String?>? serverUrlMedia,
-      Value<String?>? serverUrlProfile,
-      Value<String?>? serverUrlChat,
-      Value<AccountId?>? uuidAccountId,
-      Value<FcmDeviceToken?>? fcmDeviceToken,
-      Value<PendingNotificationToken?>? pendingNotificationToken,
-      Value<String?>? currentLocale}) {
+  CommonBackgroundCompanion copyWith({
+    Value<int>? id,
+    Value<String?>? serverUrlAccount,
+    Value<String?>? serverUrlMedia,
+    Value<String?>? serverUrlProfile,
+    Value<String?>? serverUrlChat,
+    Value<AccountId?>? uuidAccountId,
+    Value<FcmDeviceToken?>? fcmDeviceToken,
+    Value<PendingNotificationToken?>? pendingNotificationToken,
+    Value<String?>? currentLocale,
+  }) {
     return CommonBackgroundCompanion(
       id: id ?? this.id,
       serverUrlAccount: serverUrlAccount ?? this.serverUrlAccount,
@@ -499,19 +595,25 @@ class CommonBackgroundCompanion extends UpdateCompanion<CommonBackgroundData> {
       map['server_url_chat'] = Variable<String>(serverUrlChat.value);
     }
     if (uuidAccountId.present) {
-      map['uuid_account_id'] = Variable<String>($CommonBackgroundTable
-          .$converteruuidAccountId
-          .toSql(uuidAccountId.value));
+      map['uuid_account_id'] = Variable<String>(
+        $CommonBackgroundTable.$converteruuidAccountId.toSql(
+          uuidAccountId.value,
+        ),
+      );
     }
     if (fcmDeviceToken.present) {
-      map['fcm_device_token'] = Variable<String>($CommonBackgroundTable
-          .$converterfcmDeviceToken
-          .toSql(fcmDeviceToken.value));
+      map['fcm_device_token'] = Variable<String>(
+        $CommonBackgroundTable.$converterfcmDeviceToken.toSql(
+          fcmDeviceToken.value,
+        ),
+      );
     }
     if (pendingNotificationToken.present) {
       map['pending_notification_token'] = Variable<String>(
-          $CommonBackgroundTable.$converterpendingNotificationToken
-              .toSql(pendingNotificationToken.value));
+        $CommonBackgroundTable.$converterpendingNotificationToken.toSql(
+          pendingNotificationToken.value,
+        ),
+      );
     }
     if (currentLocale.present) {
       map['current_locale'] = Variable<String>(currentLocale.value);
@@ -538,8 +640,9 @@ class CommonBackgroundCompanion extends UpdateCompanion<CommonBackgroundData> {
 
 abstract class _$CommonBackgroundDatabase extends GeneratedDatabase {
   _$CommonBackgroundDatabase(QueryExecutor e) : super(e);
-  late final $CommonBackgroundTable commonBackground =
-      $CommonBackgroundTable(this);
+  late final $CommonBackgroundTable commonBackground = $CommonBackgroundTable(
+    this,
+  );
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();

@@ -11,74 +11,110 @@ class $CommonTable extends Common with TableInfo<$CommonTable, CommonData> {
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
-      'id', aliasedName, false,
-      hasAutoIncrement: true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      defaultConstraints:
-          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
-  static const VerificationMeta _demoAccountUserIdMeta =
-      const VerificationMeta('demoAccountUserId');
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _demoAccountUserIdMeta = const VerificationMeta(
+    'demoAccountUserId',
+  );
   @override
   late final GeneratedColumn<String> demoAccountUserId =
-      GeneratedColumn<String>('demo_account_user_id', aliasedName, true,
-          type: DriftSqlType.string, requiredDuringInsert: false);
+      GeneratedColumn<String>(
+        'demo_account_user_id',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
   static const VerificationMeta _demoAccountPasswordMeta =
       const VerificationMeta('demoAccountPassword');
   @override
   late final GeneratedColumn<String> demoAccountPassword =
-      GeneratedColumn<String>('demo_account_password', aliasedName, true,
-          type: DriftSqlType.string, requiredDuringInsert: false);
-  static const VerificationMeta _demoAccountTokenMeta =
-      const VerificationMeta('demoAccountToken');
+      GeneratedColumn<String>(
+        'demo_account_password',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _demoAccountTokenMeta = const VerificationMeta(
+    'demoAccountToken',
+  );
   @override
   late final GeneratedColumn<String> demoAccountToken = GeneratedColumn<String>(
-      'demo_account_token', aliasedName, true,
-      type: DriftSqlType.string, requiredDuringInsert: false);
+    'demo_account_token',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   static const VerificationMeta _imageEncryptionKeyMeta =
       const VerificationMeta('imageEncryptionKey');
   @override
   late final GeneratedColumn<Uint8List> imageEncryptionKey =
-      GeneratedColumn<Uint8List>('image_encryption_key', aliasedName, true,
-          type: DriftSqlType.blob, requiredDuringInsert: false);
+      GeneratedColumn<Uint8List>(
+        'image_encryption_key',
+        aliasedName,
+        true,
+        type: DriftSqlType.blob,
+        requiredDuringInsert: false,
+      );
   static const VerificationMeta _notificationPermissionAskedMeta =
       const VerificationMeta('notificationPermissionAsked');
   @override
   late final GeneratedColumn<bool> notificationPermissionAsked =
-      GeneratedColumn<bool>('notification_permission_asked', aliasedName, false,
-          type: DriftSqlType.bool,
-          requiredDuringInsert: false,
-          defaultConstraints: GeneratedColumn.constraintIsAlways(
-              'CHECK ("notification_permission_asked" IN (0, 1))'),
-          defaultValue: const Constant(NOTIFICATION_PERMISSION_ASKED_DEFAULT));
+      GeneratedColumn<bool>(
+        'notification_permission_asked',
+        aliasedName,
+        false,
+        type: DriftSqlType.bool,
+        requiredDuringInsert: false,
+        defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'CHECK ("notification_permission_asked" IN (0, 1))',
+        ),
+        defaultValue: const Constant(NOTIFICATION_PERMISSION_ASKED_DEFAULT),
+      );
   static const VerificationMeta _chatInfoDialogShownMeta =
       const VerificationMeta('chatInfoDialogShown');
   @override
   late final GeneratedColumn<bool> chatInfoDialogShown = GeneratedColumn<bool>(
-      'chat_info_dialog_shown', aliasedName, false,
-      type: DriftSqlType.bool,
-      requiredDuringInsert: false,
-      defaultConstraints: GeneratedColumn.constraintIsAlways(
-          'CHECK ("chat_info_dialog_shown" IN (0, 1))'),
-      defaultValue: const Constant(false));
+    'chat_info_dialog_shown',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("chat_info_dialog_shown" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
   @override
   List<GeneratedColumn> get $columns => [
-        id,
-        demoAccountUserId,
-        demoAccountPassword,
-        demoAccountToken,
-        imageEncryptionKey,
-        notificationPermissionAsked,
-        chatInfoDialogShown
-      ];
+    id,
+    demoAccountUserId,
+    demoAccountPassword,
+    demoAccountToken,
+    imageEncryptionKey,
+    notificationPermissionAsked,
+    chatInfoDialogShown,
+  ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
   static const String $name = 'common';
   @override
-  VerificationContext validateIntegrity(Insertable<CommonData> instance,
-      {bool isInserting = false}) {
+  VerificationContext validateIntegrity(
+    Insertable<CommonData> instance, {
+    bool isInserting = false,
+  }) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
@@ -86,40 +122,57 @@ class $CommonTable extends Common with TableInfo<$CommonTable, CommonData> {
     }
     if (data.containsKey('demo_account_user_id')) {
       context.handle(
+        _demoAccountUserIdMeta,
+        demoAccountUserId.isAcceptableOrUnknown(
+          data['demo_account_user_id']!,
           _demoAccountUserIdMeta,
-          demoAccountUserId.isAcceptableOrUnknown(
-              data['demo_account_user_id']!, _demoAccountUserIdMeta));
+        ),
+      );
     }
     if (data.containsKey('demo_account_password')) {
       context.handle(
+        _demoAccountPasswordMeta,
+        demoAccountPassword.isAcceptableOrUnknown(
+          data['demo_account_password']!,
           _demoAccountPasswordMeta,
-          demoAccountPassword.isAcceptableOrUnknown(
-              data['demo_account_password']!, _demoAccountPasswordMeta));
+        ),
+      );
     }
     if (data.containsKey('demo_account_token')) {
       context.handle(
+        _demoAccountTokenMeta,
+        demoAccountToken.isAcceptableOrUnknown(
+          data['demo_account_token']!,
           _demoAccountTokenMeta,
-          demoAccountToken.isAcceptableOrUnknown(
-              data['demo_account_token']!, _demoAccountTokenMeta));
+        ),
+      );
     }
     if (data.containsKey('image_encryption_key')) {
       context.handle(
+        _imageEncryptionKeyMeta,
+        imageEncryptionKey.isAcceptableOrUnknown(
+          data['image_encryption_key']!,
           _imageEncryptionKeyMeta,
-          imageEncryptionKey.isAcceptableOrUnknown(
-              data['image_encryption_key']!, _imageEncryptionKeyMeta));
+        ),
+      );
     }
     if (data.containsKey('notification_permission_asked')) {
       context.handle(
+        _notificationPermissionAskedMeta,
+        notificationPermissionAsked.isAcceptableOrUnknown(
+          data['notification_permission_asked']!,
           _notificationPermissionAskedMeta,
-          notificationPermissionAsked.isAcceptableOrUnknown(
-              data['notification_permission_asked']!,
-              _notificationPermissionAskedMeta));
+        ),
+      );
     }
     if (data.containsKey('chat_info_dialog_shown')) {
       context.handle(
+        _chatInfoDialogShownMeta,
+        chatInfoDialogShown.isAcceptableOrUnknown(
+          data['chat_info_dialog_shown']!,
           _chatInfoDialogShownMeta,
-          chatInfoDialogShown.isAcceptableOrUnknown(
-              data['chat_info_dialog_shown']!, _chatInfoDialogShownMeta));
+        ),
+      );
     }
     return context;
   }
@@ -130,21 +183,34 @@ class $CommonTable extends Common with TableInfo<$CommonTable, CommonData> {
   CommonData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return CommonData(
-      id: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
       demoAccountUserId: attachedDatabase.typeMapping.read(
-          DriftSqlType.string, data['${effectivePrefix}demo_account_user_id']),
+        DriftSqlType.string,
+        data['${effectivePrefix}demo_account_user_id'],
+      ),
       demoAccountPassword: attachedDatabase.typeMapping.read(
-          DriftSqlType.string, data['${effectivePrefix}demo_account_password']),
+        DriftSqlType.string,
+        data['${effectivePrefix}demo_account_password'],
+      ),
       demoAccountToken: attachedDatabase.typeMapping.read(
-          DriftSqlType.string, data['${effectivePrefix}demo_account_token']),
+        DriftSqlType.string,
+        data['${effectivePrefix}demo_account_token'],
+      ),
       imageEncryptionKey: attachedDatabase.typeMapping.read(
-          DriftSqlType.blob, data['${effectivePrefix}image_encryption_key']),
+        DriftSqlType.blob,
+        data['${effectivePrefix}image_encryption_key'],
+      ),
       notificationPermissionAsked: attachedDatabase.typeMapping.read(
-          DriftSqlType.bool,
-          data['${effectivePrefix}notification_permission_asked'])!,
+        DriftSqlType.bool,
+        data['${effectivePrefix}notification_permission_asked'],
+      )!,
       chatInfoDialogShown: attachedDatabase.typeMapping.read(
-          DriftSqlType.bool, data['${effectivePrefix}chat_info_dialog_shown'])!,
+        DriftSqlType.bool,
+        data['${effectivePrefix}chat_info_dialog_shown'],
+      )!,
     );
   }
 
@@ -168,14 +234,15 @@ class CommonData extends DataClass implements Insertable<CommonData> {
   /// If true info dialog about chat has been shown when
   /// chat list screen (bottom navigation is visible) is opened.
   final bool chatInfoDialogShown;
-  const CommonData(
-      {required this.id,
-      this.demoAccountUserId,
-      this.demoAccountPassword,
-      this.demoAccountToken,
-      this.imageEncryptionKey,
-      required this.notificationPermissionAsked,
-      required this.chatInfoDialogShown});
+  const CommonData({
+    required this.id,
+    this.demoAccountUserId,
+    this.demoAccountPassword,
+    this.demoAccountToken,
+    this.imageEncryptionKey,
+    required this.notificationPermissionAsked,
+    required this.chatInfoDialogShown,
+  });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -192,8 +259,9 @@ class CommonData extends DataClass implements Insertable<CommonData> {
     if (!nullToAbsent || imageEncryptionKey != null) {
       map['image_encryption_key'] = Variable<Uint8List>(imageEncryptionKey);
     }
-    map['notification_permission_asked'] =
-        Variable<bool>(notificationPermissionAsked);
+    map['notification_permission_asked'] = Variable<bool>(
+      notificationPermissionAsked,
+    );
     map['chat_info_dialog_shown'] = Variable<bool>(chatInfoDialogShown);
     return map;
   }
@@ -218,22 +286,29 @@ class CommonData extends DataClass implements Insertable<CommonData> {
     );
   }
 
-  factory CommonData.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
+  factory CommonData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return CommonData(
       id: serializer.fromJson<int>(json['id']),
-      demoAccountUserId:
-          serializer.fromJson<String?>(json['demoAccountUserId']),
-      demoAccountPassword:
-          serializer.fromJson<String?>(json['demoAccountPassword']),
+      demoAccountUserId: serializer.fromJson<String?>(
+        json['demoAccountUserId'],
+      ),
+      demoAccountPassword: serializer.fromJson<String?>(
+        json['demoAccountPassword'],
+      ),
       demoAccountToken: serializer.fromJson<String?>(json['demoAccountToken']),
-      imageEncryptionKey:
-          serializer.fromJson<Uint8List?>(json['imageEncryptionKey']),
-      notificationPermissionAsked:
-          serializer.fromJson<bool>(json['notificationPermissionAsked']),
-      chatInfoDialogShown:
-          serializer.fromJson<bool>(json['chatInfoDialogShown']),
+      imageEncryptionKey: serializer.fromJson<Uint8List?>(
+        json['imageEncryptionKey'],
+      ),
+      notificationPermissionAsked: serializer.fromJson<bool>(
+        json['notificationPermissionAsked'],
+      ),
+      chatInfoDialogShown: serializer.fromJson<bool>(
+        json['chatInfoDialogShown'],
+      ),
     );
   }
   @override
@@ -245,38 +320,39 @@ class CommonData extends DataClass implements Insertable<CommonData> {
       'demoAccountPassword': serializer.toJson<String?>(demoAccountPassword),
       'demoAccountToken': serializer.toJson<String?>(demoAccountToken),
       'imageEncryptionKey': serializer.toJson<Uint8List?>(imageEncryptionKey),
-      'notificationPermissionAsked':
-          serializer.toJson<bool>(notificationPermissionAsked),
+      'notificationPermissionAsked': serializer.toJson<bool>(
+        notificationPermissionAsked,
+      ),
       'chatInfoDialogShown': serializer.toJson<bool>(chatInfoDialogShown),
     };
   }
 
-  CommonData copyWith(
-          {int? id,
-          Value<String?> demoAccountUserId = const Value.absent(),
-          Value<String?> demoAccountPassword = const Value.absent(),
-          Value<String?> demoAccountToken = const Value.absent(),
-          Value<Uint8List?> imageEncryptionKey = const Value.absent(),
-          bool? notificationPermissionAsked,
-          bool? chatInfoDialogShown}) =>
-      CommonData(
-        id: id ?? this.id,
-        demoAccountUserId: demoAccountUserId.present
-            ? demoAccountUserId.value
-            : this.demoAccountUserId,
-        demoAccountPassword: demoAccountPassword.present
-            ? demoAccountPassword.value
-            : this.demoAccountPassword,
-        demoAccountToken: demoAccountToken.present
-            ? demoAccountToken.value
-            : this.demoAccountToken,
-        imageEncryptionKey: imageEncryptionKey.present
-            ? imageEncryptionKey.value
-            : this.imageEncryptionKey,
-        notificationPermissionAsked:
-            notificationPermissionAsked ?? this.notificationPermissionAsked,
-        chatInfoDialogShown: chatInfoDialogShown ?? this.chatInfoDialogShown,
-      );
+  CommonData copyWith({
+    int? id,
+    Value<String?> demoAccountUserId = const Value.absent(),
+    Value<String?> demoAccountPassword = const Value.absent(),
+    Value<String?> demoAccountToken = const Value.absent(),
+    Value<Uint8List?> imageEncryptionKey = const Value.absent(),
+    bool? notificationPermissionAsked,
+    bool? chatInfoDialogShown,
+  }) => CommonData(
+    id: id ?? this.id,
+    demoAccountUserId: demoAccountUserId.present
+        ? demoAccountUserId.value
+        : this.demoAccountUserId,
+    demoAccountPassword: demoAccountPassword.present
+        ? demoAccountPassword.value
+        : this.demoAccountPassword,
+    demoAccountToken: demoAccountToken.present
+        ? demoAccountToken.value
+        : this.demoAccountToken,
+    imageEncryptionKey: imageEncryptionKey.present
+        ? imageEncryptionKey.value
+        : this.imageEncryptionKey,
+    notificationPermissionAsked:
+        notificationPermissionAsked ?? this.notificationPermissionAsked,
+    chatInfoDialogShown: chatInfoDialogShown ?? this.chatInfoDialogShown,
+  );
   CommonData copyWithCompanion(CommonCompanion data) {
     return CommonData(
       id: data.id.present ? data.id.value : this.id,
@@ -317,13 +393,14 @@ class CommonData extends DataClass implements Insertable<CommonData> {
 
   @override
   int get hashCode => Object.hash(
-      id,
-      demoAccountUserId,
-      demoAccountPassword,
-      demoAccountToken,
-      $driftBlobEquality.hash(imageEncryptionKey),
-      notificationPermissionAsked,
-      chatInfoDialogShown);
+    id,
+    demoAccountUserId,
+    demoAccountPassword,
+    demoAccountToken,
+    $driftBlobEquality.hash(imageEncryptionKey),
+    notificationPermissionAsked,
+    chatInfoDialogShown,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -333,7 +410,9 @@ class CommonData extends DataClass implements Insertable<CommonData> {
           other.demoAccountPassword == this.demoAccountPassword &&
           other.demoAccountToken == this.demoAccountToken &&
           $driftBlobEquality.equals(
-              other.imageEncryptionKey, this.imageEncryptionKey) &&
+            other.imageEncryptionKey,
+            this.imageEncryptionKey,
+          ) &&
           other.notificationPermissionAsked ==
               this.notificationPermissionAsked &&
           other.chatInfoDialogShown == this.chatInfoDialogShown);
@@ -389,14 +468,15 @@ class CommonCompanion extends UpdateCompanion<CommonData> {
     });
   }
 
-  CommonCompanion copyWith(
-      {Value<int>? id,
-      Value<String?>? demoAccountUserId,
-      Value<String?>? demoAccountPassword,
-      Value<String?>? demoAccountToken,
-      Value<Uint8List?>? imageEncryptionKey,
-      Value<bool>? notificationPermissionAsked,
-      Value<bool>? chatInfoDialogShown}) {
+  CommonCompanion copyWith({
+    Value<int>? id,
+    Value<String?>? demoAccountUserId,
+    Value<String?>? demoAccountPassword,
+    Value<String?>? demoAccountToken,
+    Value<Uint8List?>? imageEncryptionKey,
+    Value<bool>? notificationPermissionAsked,
+    Value<bool>? chatInfoDialogShown,
+  }) {
     return CommonCompanion(
       id: id ?? this.id,
       demoAccountUserId: demoAccountUserId ?? this.demoAccountUserId,
@@ -419,19 +499,22 @@ class CommonCompanion extends UpdateCompanion<CommonData> {
       map['demo_account_user_id'] = Variable<String>(demoAccountUserId.value);
     }
     if (demoAccountPassword.present) {
-      map['demo_account_password'] =
-          Variable<String>(demoAccountPassword.value);
+      map['demo_account_password'] = Variable<String>(
+        demoAccountPassword.value,
+      );
     }
     if (demoAccountToken.present) {
       map['demo_account_token'] = Variable<String>(demoAccountToken.value);
     }
     if (imageEncryptionKey.present) {
-      map['image_encryption_key'] =
-          Variable<Uint8List>(imageEncryptionKey.value);
+      map['image_encryption_key'] = Variable<Uint8List>(
+        imageEncryptionKey.value,
+      );
     }
     if (notificationPermissionAsked.present) {
-      map['notification_permission_asked'] =
-          Variable<bool>(notificationPermissionAsked.value);
+      map['notification_permission_asked'] = Variable<bool>(
+        notificationPermissionAsked.value,
+      );
     }
     if (chatInfoDialogShown.present) {
       map['chat_info_dialog_shown'] = Variable<bool>(chatInfoDialogShown.value);

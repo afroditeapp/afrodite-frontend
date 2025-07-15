@@ -6,6 +6,6 @@ part of 'automatic_profile_search_completed_notification_table.dart';
 mixin _$DaoAutomaticProfileSearchCompletedNotificationTableMixin
     on DatabaseAccessor<AccountBackgroundDatabase> {
   $AutomaticProfileSearchCompletedNotificationTableTable
-      get automaticProfileSearchCompletedNotificationTable =>
-          attachedDatabase.automaticProfileSearchCompletedNotificationTable;
+  get automaticProfileSearchCompletedNotificationTable =>
+      attachedDatabase.automaticProfileSearchCompletedNotificationTable;
 }

@@ -6,6 +6,6 @@ part of 'profile_text_moderation_completed_notification_table.dart';
 mixin _$DaoProfileTextModerationCompletedNotificationTableMixin
     on DatabaseAccessor<AccountBackgroundDatabase> {
   $ProfileTextModerationCompletedNotificationTableTable
-      get profileTextModerationCompletedNotificationTable =>
-          attachedDatabase.profileTextModerationCompletedNotificationTable;
+  get profileTextModerationCompletedNotificationTable =>
+      attachedDatabase.profileTextModerationCompletedNotificationTable;
 }

@@ -6,6 +6,6 @@ part of 'media_content_moderation_completed_notification_table.dart';
 mixin _$DaoMediaContentModerationCompletedNotificationTableMixin
     on DatabaseAccessor<AccountBackgroundDatabase> {
   $MediaContentModerationCompletedNotificationTableTable
-      get mediaContentModerationCompletedNotificationTable =>
-          attachedDatabase.mediaContentModerationCompletedNotificationTable;
+  get mediaContentModerationCompletedNotificationTable =>
+      attachedDatabase.mediaContentModerationCompletedNotificationTable;
 }

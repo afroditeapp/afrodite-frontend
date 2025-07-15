@@ -11,561 +11,877 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
-      'id', aliasedName, false,
-      hasAutoIncrement: true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      defaultConstraints:
-          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
   @override
   late final GeneratedColumnWithTypeConverter<api.AccountId?, String>
-      uuidAccountId = GeneratedColumn<String>(
-              'uuid_account_id', aliasedName, true,
-              type: DriftSqlType.string, requiredDuringInsert: false)
-          .withConverter<api.AccountId?>($AccountTable.$converteruuidAccountId);
+  uuidAccountId = GeneratedColumn<String>(
+    'uuid_account_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  ).withConverter<api.AccountId?>($AccountTable.$converteruuidAccountId);
   @override
   late final GeneratedColumnWithTypeConverter<JsonString?, String>
-      jsonAccountState = GeneratedColumn<String>(
-              'json_account_state', aliasedName, true,
-              type: DriftSqlType.string, requiredDuringInsert: false)
-          .withConverter<JsonString?>($AccountTable.$converterjsonAccountState);
+  jsonAccountState = GeneratedColumn<String>(
+    'json_account_state',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  ).withConverter<JsonString?>($AccountTable.$converterjsonAccountState);
   @override
   late final GeneratedColumnWithTypeConverter<JsonString?, String>
-      jsonPermissions = GeneratedColumn<String>(
-              'json_permissions', aliasedName, true,
-              type: DriftSqlType.string, requiredDuringInsert: false)
-          .withConverter<JsonString?>($AccountTable.$converterjsonPermissions);
+  jsonPermissions = GeneratedColumn<String>(
+    'json_permissions',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  ).withConverter<JsonString?>($AccountTable.$converterjsonPermissions);
   @override
   late final GeneratedColumnWithTypeConverter<EnumString?, String>
-      jsonProfileVisibility = GeneratedColumn<String>(
-              'json_profile_visibility', aliasedName, true,
-              type: DriftSqlType.string, requiredDuringInsert: false)
-          .withConverter<EnumString?>(
-              $AccountTable.$converterjsonProfileVisibility);
+  jsonProfileVisibility = GeneratedColumn<String>(
+    'json_profile_visibility',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  ).withConverter<EnumString?>($AccountTable.$converterjsonProfileVisibility);
   static const VerificationMeta _profileFilterFavoritesMeta =
       const VerificationMeta('profileFilterFavorites');
   @override
   late final GeneratedColumn<bool> profileFilterFavorites =
-      GeneratedColumn<bool>('profile_filter_favorites', aliasedName, false,
-          type: DriftSqlType.bool,
-          requiredDuringInsert: false,
-          defaultConstraints: GeneratedColumn.constraintIsAlways(
-              'CHECK ("profile_filter_favorites" IN (0, 1))'),
-          defaultValue: const Constant(PROFILE_FILTER_FAVORITES_DEFAULT));
-  @override
-  late final GeneratedColumnWithTypeConverter<api.ProfileIteratorSessionId?,
-      int> profileIteratorSessionId = GeneratedColumn<int>(
-          'profile_iterator_session_id', aliasedName, true,
-          type: DriftSqlType.int, requiredDuringInsert: false)
-      .withConverter<api.ProfileIteratorSessionId?>(
-          $AccountTable.$converterprofileIteratorSessionId);
+      GeneratedColumn<bool>(
+        'profile_filter_favorites',
+        aliasedName,
+        false,
+        type: DriftSqlType.bool,
+        requiredDuringInsert: false,
+        defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'CHECK ("profile_filter_favorites" IN (0, 1))',
+        ),
+        defaultValue: const Constant(PROFILE_FILTER_FAVORITES_DEFAULT),
+      );
   @override
   late final GeneratedColumnWithTypeConverter<
-      api.AutomaticProfileSearchIteratorSessionId?,
-      int> automatiProfileSearchIteratorSessionId = GeneratedColumn<int>(
-          'automati_profile_search_iterator_session_id', aliasedName, true,
-          type: DriftSqlType.int, requiredDuringInsert: false)
-      .withConverter<api.AutomaticProfileSearchIteratorSessionId?>(
-          $AccountTable.$converterautomatiProfileSearchIteratorSessionId);
+    api.ProfileIteratorSessionId?,
+    int
+  >
+  profileIteratorSessionId =
+      GeneratedColumn<int>(
+        'profile_iterator_session_id',
+        aliasedName,
+        true,
+        type: DriftSqlType.int,
+        requiredDuringInsert: false,
+      ).withConverter<api.ProfileIteratorSessionId?>(
+        $AccountTable.$converterprofileIteratorSessionId,
+      );
   @override
   late final GeneratedColumnWithTypeConverter<
-      api.ReceivedLikesIteratorSessionId?,
-      int> receivedLikesIteratorSessionId = GeneratedColumn<int>(
-          'received_likes_iterator_session_id', aliasedName, true,
-          type: DriftSqlType.int, requiredDuringInsert: false)
-      .withConverter<api.ReceivedLikesIteratorSessionId?>(
-          $AccountTable.$converterreceivedLikesIteratorSessionId);
+    api.AutomaticProfileSearchIteratorSessionId?,
+    int
+  >
+  automatiProfileSearchIteratorSessionId =
+      GeneratedColumn<int>(
+        'automati_profile_search_iterator_session_id',
+        aliasedName,
+        true,
+        type: DriftSqlType.int,
+        requiredDuringInsert: false,
+      ).withConverter<api.AutomaticProfileSearchIteratorSessionId?>(
+        $AccountTable.$converterautomatiProfileSearchIteratorSessionId,
+      );
   @override
-  late final GeneratedColumnWithTypeConverter<api.MatchesIteratorSessionId?,
-      int> matchesIteratorSessionId = GeneratedColumn<int>(
-          'matches_iterator_session_id', aliasedName, true,
-          type: DriftSqlType.int, requiredDuringInsert: false)
-      .withConverter<api.MatchesIteratorSessionId?>(
-          $AccountTable.$convertermatchesIteratorSessionId);
+  late final GeneratedColumnWithTypeConverter<
+    api.ReceivedLikesIteratorSessionId?,
+    int
+  >
+  receivedLikesIteratorSessionId =
+      GeneratedColumn<int>(
+        'received_likes_iterator_session_id',
+        aliasedName,
+        true,
+        type: DriftSqlType.int,
+        requiredDuringInsert: false,
+      ).withConverter<api.ReceivedLikesIteratorSessionId?>(
+        $AccountTable.$converterreceivedLikesIteratorSessionId,
+      );
+  @override
+  late final GeneratedColumnWithTypeConverter<
+    api.MatchesIteratorSessionId?,
+    int
+  >
+  matchesIteratorSessionId =
+      GeneratedColumn<int>(
+        'matches_iterator_session_id',
+        aliasedName,
+        true,
+        type: DriftSqlType.int,
+        requiredDuringInsert: false,
+      ).withConverter<api.MatchesIteratorSessionId?>(
+        $AccountTable.$convertermatchesIteratorSessionId,
+      );
   @override
   late final GeneratedColumnWithTypeConverter<api.ClientId?, int> clientId =
-      GeneratedColumn<int>('client_id', aliasedName, true,
-              type: DriftSqlType.int, requiredDuringInsert: false)
-          .withConverter<api.ClientId?>($AccountTable.$converterclientId);
+      GeneratedColumn<int>(
+        'client_id',
+        aliasedName,
+        true,
+        type: DriftSqlType.int,
+        requiredDuringInsert: false,
+      ).withConverter<api.ClientId?>($AccountTable.$converterclientId);
   @override
   late final GeneratedColumnWithTypeConverter<EnumString?, String>
-      jsonAvailableProfileAttributesOrderMode = GeneratedColumn<String>(
-              'json_available_profile_attributes_order_mode', aliasedName, true,
-              type: DriftSqlType.string, requiredDuringInsert: false)
-          .withConverter<EnumString?>(
-              $AccountTable.$converterjsonAvailableProfileAttributesOrderMode);
+  jsonAvailableProfileAttributesOrderMode =
+      GeneratedColumn<String>(
+        'json_available_profile_attributes_order_mode',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      ).withConverter<EnumString?>(
+        $AccountTable.$converterjsonAvailableProfileAttributesOrderMode,
+      );
   static const VerificationMeta _initialSyncDoneLoginRepositoryMeta =
       const VerificationMeta('initialSyncDoneLoginRepository');
   @override
   late final GeneratedColumn<bool> initialSyncDoneLoginRepository =
       GeneratedColumn<bool>(
-          'initial_sync_done_login_repository', aliasedName, false,
-          type: DriftSqlType.bool,
-          requiredDuringInsert: false,
-          defaultConstraints: GeneratedColumn.constraintIsAlways(
-              'CHECK ("initial_sync_done_login_repository" IN (0, 1))'),
-          defaultValue: const Constant(false));
+        'initial_sync_done_login_repository',
+        aliasedName,
+        false,
+        type: DriftSqlType.bool,
+        requiredDuringInsert: false,
+        defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'CHECK ("initial_sync_done_login_repository" IN (0, 1))',
+        ),
+        defaultValue: const Constant(false),
+      );
   static const VerificationMeta _initialSyncDoneAccountRepositoryMeta =
       const VerificationMeta('initialSyncDoneAccountRepository');
   @override
   late final GeneratedColumn<bool> initialSyncDoneAccountRepository =
       GeneratedColumn<bool>(
-          'initial_sync_done_account_repository', aliasedName, false,
-          type: DriftSqlType.bool,
-          requiredDuringInsert: false,
-          defaultConstraints: GeneratedColumn.constraintIsAlways(
-              'CHECK ("initial_sync_done_account_repository" IN (0, 1))'),
-          defaultValue: const Constant(false));
+        'initial_sync_done_account_repository',
+        aliasedName,
+        false,
+        type: DriftSqlType.bool,
+        requiredDuringInsert: false,
+        defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'CHECK ("initial_sync_done_account_repository" IN (0, 1))',
+        ),
+        defaultValue: const Constant(false),
+      );
   static const VerificationMeta _initialSyncDoneMediaRepositoryMeta =
       const VerificationMeta('initialSyncDoneMediaRepository');
   @override
   late final GeneratedColumn<bool> initialSyncDoneMediaRepository =
       GeneratedColumn<bool>(
-          'initial_sync_done_media_repository', aliasedName, false,
-          type: DriftSqlType.bool,
-          requiredDuringInsert: false,
-          defaultConstraints: GeneratedColumn.constraintIsAlways(
-              'CHECK ("initial_sync_done_media_repository" IN (0, 1))'),
-          defaultValue: const Constant(false));
+        'initial_sync_done_media_repository',
+        aliasedName,
+        false,
+        type: DriftSqlType.bool,
+        requiredDuringInsert: false,
+        defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'CHECK ("initial_sync_done_media_repository" IN (0, 1))',
+        ),
+        defaultValue: const Constant(false),
+      );
   static const VerificationMeta _initialSyncDoneProfileRepositoryMeta =
       const VerificationMeta('initialSyncDoneProfileRepository');
   @override
   late final GeneratedColumn<bool> initialSyncDoneProfileRepository =
       GeneratedColumn<bool>(
-          'initial_sync_done_profile_repository', aliasedName, false,
-          type: DriftSqlType.bool,
-          requiredDuringInsert: false,
-          defaultConstraints: GeneratedColumn.constraintIsAlways(
-              'CHECK ("initial_sync_done_profile_repository" IN (0, 1))'),
-          defaultValue: const Constant(false));
+        'initial_sync_done_profile_repository',
+        aliasedName,
+        false,
+        type: DriftSqlType.bool,
+        requiredDuringInsert: false,
+        defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'CHECK ("initial_sync_done_profile_repository" IN (0, 1))',
+        ),
+        defaultValue: const Constant(false),
+      );
   static const VerificationMeta _initialSyncDoneChatRepositoryMeta =
       const VerificationMeta('initialSyncDoneChatRepository');
   @override
   late final GeneratedColumn<bool> initialSyncDoneChatRepository =
       GeneratedColumn<bool>(
-          'initial_sync_done_chat_repository', aliasedName, false,
-          type: DriftSqlType.bool,
-          requiredDuringInsert: false,
-          defaultConstraints: GeneratedColumn.constraintIsAlways(
-              'CHECK ("initial_sync_done_chat_repository" IN (0, 1))'),
-          defaultValue: const Constant(false));
+        'initial_sync_done_chat_repository',
+        aliasedName,
+        false,
+        type: DriftSqlType.bool,
+        requiredDuringInsert: false,
+        defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'CHECK ("initial_sync_done_chat_repository" IN (0, 1))',
+        ),
+        defaultValue: const Constant(false),
+      );
   static const VerificationMeta _syncVersionAccountMeta =
       const VerificationMeta('syncVersionAccount');
   @override
   late final GeneratedColumn<int> syncVersionAccount = GeneratedColumn<int>(
-      'sync_version_account', aliasedName, true,
-      type: DriftSqlType.int, requiredDuringInsert: false);
+    'sync_version_account',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
   static const VerificationMeta _syncVersionProfileMeta =
       const VerificationMeta('syncVersionProfile');
   @override
   late final GeneratedColumn<int> syncVersionProfile = GeneratedColumn<int>(
-      'sync_version_profile', aliasedName, true,
-      type: DriftSqlType.int, requiredDuringInsert: false);
+    'sync_version_profile',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
   static const VerificationMeta _syncVersionMediaContentMeta =
       const VerificationMeta('syncVersionMediaContent');
   @override
   late final GeneratedColumn<int> syncVersionMediaContent =
-      GeneratedColumn<int>('sync_version_media_content', aliasedName, true,
-          type: DriftSqlType.int, requiredDuringInsert: false);
+      GeneratedColumn<int>(
+        'sync_version_media_content',
+        aliasedName,
+        true,
+        type: DriftSqlType.int,
+        requiredDuringInsert: false,
+      );
   static const VerificationMeta _syncVersionClientConfigMeta =
       const VerificationMeta('syncVersionClientConfig');
   @override
   late final GeneratedColumn<int> syncVersionClientConfig =
-      GeneratedColumn<int>('sync_version_client_config', aliasedName, true,
-          type: DriftSqlType.int, requiredDuringInsert: false);
+      GeneratedColumn<int>(
+        'sync_version_client_config',
+        aliasedName,
+        true,
+        type: DriftSqlType.int,
+        requiredDuringInsert: false,
+      );
   static const VerificationMeta _primaryContentGridCropSizeMeta =
       const VerificationMeta('primaryContentGridCropSize');
   @override
   late final GeneratedColumn<double> primaryContentGridCropSize =
       GeneratedColumn<double>(
-          'primary_content_grid_crop_size', aliasedName, true,
-          type: DriftSqlType.double, requiredDuringInsert: false);
+        'primary_content_grid_crop_size',
+        aliasedName,
+        true,
+        type: DriftSqlType.double,
+        requiredDuringInsert: false,
+      );
   static const VerificationMeta _primaryContentGridCropXMeta =
       const VerificationMeta('primaryContentGridCropX');
   @override
   late final GeneratedColumn<double> primaryContentGridCropX =
-      GeneratedColumn<double>('primary_content_grid_crop_x', aliasedName, true,
-          type: DriftSqlType.double, requiredDuringInsert: false);
+      GeneratedColumn<double>(
+        'primary_content_grid_crop_x',
+        aliasedName,
+        true,
+        type: DriftSqlType.double,
+        requiredDuringInsert: false,
+      );
   static const VerificationMeta _primaryContentGridCropYMeta =
       const VerificationMeta('primaryContentGridCropY');
   @override
   late final GeneratedColumn<double> primaryContentGridCropY =
-      GeneratedColumn<double>('primary_content_grid_crop_y', aliasedName, true,
-          type: DriftSqlType.double, requiredDuringInsert: false);
+      GeneratedColumn<double>(
+        'primary_content_grid_crop_y',
+        aliasedName,
+        true,
+        type: DriftSqlType.double,
+        requiredDuringInsert: false,
+      );
   @override
-  late final GeneratedColumnWithTypeConverter<api.ProfileContentVersion?,
-      String> profileContentVersion = GeneratedColumn<String>(
-          'profile_content_version', aliasedName, true,
-          type: DriftSqlType.string, requiredDuringInsert: false)
-      .withConverter<api.ProfileContentVersion?>(
-          $AccountTable.$converterprofileContentVersion);
-  static const VerificationMeta _profileNameMeta =
-      const VerificationMeta('profileName');
+  late final GeneratedColumnWithTypeConverter<
+    api.ProfileContentVersion?,
+    String
+  >
+  profileContentVersion =
+      GeneratedColumn<String>(
+        'profile_content_version',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      ).withConverter<api.ProfileContentVersion?>(
+        $AccountTable.$converterprofileContentVersion,
+      );
+  static const VerificationMeta _profileNameMeta = const VerificationMeta(
+    'profileName',
+  );
   @override
   late final GeneratedColumn<String> profileName = GeneratedColumn<String>(
-      'profile_name', aliasedName, true,
-      type: DriftSqlType.string, requiredDuringInsert: false);
+    'profile_name',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   static const VerificationMeta _profileNameAcceptedMeta =
       const VerificationMeta('profileNameAccepted');
   @override
   late final GeneratedColumn<bool> profileNameAccepted = GeneratedColumn<bool>(
-      'profile_name_accepted', aliasedName, true,
-      type: DriftSqlType.bool,
-      requiredDuringInsert: false,
-      defaultConstraints: GeneratedColumn.constraintIsAlways(
-          'CHECK ("profile_name_accepted" IN (0, 1))'));
+    'profile_name_accepted',
+    aliasedName,
+    true,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("profile_name_accepted" IN (0, 1))',
+    ),
+  );
   @override
   late final GeneratedColumnWithTypeConverter<EnumString?, String>
-      profileNameModerationState = GeneratedColumn<String>(
-              'profile_name_moderation_state', aliasedName, true,
-              type: DriftSqlType.string, requiredDuringInsert: false)
-          .withConverter<EnumString?>(
-              $AccountTable.$converterprofileNameModerationState);
-  static const VerificationMeta _profileTextMeta =
-      const VerificationMeta('profileText');
+  profileNameModerationState =
+      GeneratedColumn<String>(
+        'profile_name_moderation_state',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      ).withConverter<EnumString?>(
+        $AccountTable.$converterprofileNameModerationState,
+      );
+  static const VerificationMeta _profileTextMeta = const VerificationMeta(
+    'profileText',
+  );
   @override
   late final GeneratedColumn<String> profileText = GeneratedColumn<String>(
-      'profile_text', aliasedName, true,
-      type: DriftSqlType.string, requiredDuringInsert: false);
+    'profile_text',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   static const VerificationMeta _profileTextAcceptedMeta =
       const VerificationMeta('profileTextAccepted');
   @override
   late final GeneratedColumn<bool> profileTextAccepted = GeneratedColumn<bool>(
-      'profile_text_accepted', aliasedName, true,
-      type: DriftSqlType.bool,
-      requiredDuringInsert: false,
-      defaultConstraints: GeneratedColumn.constraintIsAlways(
-          'CHECK ("profile_text_accepted" IN (0, 1))'));
+    'profile_text_accepted',
+    aliasedName,
+    true,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("profile_text_accepted" IN (0, 1))',
+    ),
+  );
   @override
   late final GeneratedColumnWithTypeConverter<EnumString?, String>
-      profileTextModerationState = GeneratedColumn<String>(
-              'profile_text_moderation_state', aliasedName, true,
-              type: DriftSqlType.string, requiredDuringInsert: false)
-          .withConverter<EnumString?>(
-              $AccountTable.$converterprofileTextModerationState);
+  profileTextModerationState =
+      GeneratedColumn<String>(
+        'profile_text_moderation_state',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      ).withConverter<EnumString?>(
+        $AccountTable.$converterprofileTextModerationState,
+      );
   @override
   late final GeneratedColumnWithTypeConverter<
-      api.ProfileTextModerationRejectedReasonCategory?,
-      int> profileTextModerationRejectedCategory = GeneratedColumn<int>(
-          'profile_text_moderation_rejected_category', aliasedName, true,
-          type: DriftSqlType.int, requiredDuringInsert: false)
-      .withConverter<api.ProfileTextModerationRejectedReasonCategory?>(
-          $AccountTable.$converterprofileTextModerationRejectedCategory);
+    api.ProfileTextModerationRejectedReasonCategory?,
+    int
+  >
+  profileTextModerationRejectedCategory =
+      GeneratedColumn<int>(
+        'profile_text_moderation_rejected_category',
+        aliasedName,
+        true,
+        type: DriftSqlType.int,
+        requiredDuringInsert: false,
+      ).withConverter<api.ProfileTextModerationRejectedReasonCategory?>(
+        $AccountTable.$converterprofileTextModerationRejectedCategory,
+      );
   @override
   late final GeneratedColumnWithTypeConverter<
-      api.ProfileTextModerationRejectedReasonDetails?,
-      String> profileTextModerationRejectedDetails = GeneratedColumn<String>(
-          'profile_text_moderation_rejected_details', aliasedName, true,
-          type: DriftSqlType.string, requiredDuringInsert: false)
-      .withConverter<api.ProfileTextModerationRejectedReasonDetails?>(
-          $AccountTable.$converterprofileTextModerationRejectedDetails);
-  static const VerificationMeta _profileAgeMeta =
-      const VerificationMeta('profileAge');
+    api.ProfileTextModerationRejectedReasonDetails?,
+    String
+  >
+  profileTextModerationRejectedDetails =
+      GeneratedColumn<String>(
+        'profile_text_moderation_rejected_details',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      ).withConverter<api.ProfileTextModerationRejectedReasonDetails?>(
+        $AccountTable.$converterprofileTextModerationRejectedDetails,
+      );
+  static const VerificationMeta _profileAgeMeta = const VerificationMeta(
+    'profileAge',
+  );
   @override
   late final GeneratedColumn<int> profileAge = GeneratedColumn<int>(
-      'profile_age', aliasedName, true,
-      type: DriftSqlType.int, requiredDuringInsert: false);
+    'profile_age',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
   static const VerificationMeta _profileUnlimitedLikesMeta =
       const VerificationMeta('profileUnlimitedLikes');
   @override
   late final GeneratedColumn<bool> profileUnlimitedLikes =
-      GeneratedColumn<bool>('profile_unlimited_likes', aliasedName, true,
-          type: DriftSqlType.bool,
-          requiredDuringInsert: false,
-          defaultConstraints: GeneratedColumn.constraintIsAlways(
-              'CHECK ("profile_unlimited_likes" IN (0, 1))'));
+      GeneratedColumn<bool>(
+        'profile_unlimited_likes',
+        aliasedName,
+        true,
+        type: DriftSqlType.bool,
+        requiredDuringInsert: false,
+        defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'CHECK ("profile_unlimited_likes" IN (0, 1))',
+        ),
+      );
   @override
   late final GeneratedColumnWithTypeConverter<api.ProfileVersion?, String>
-      profileVersion = GeneratedColumn<String>(
-              'profile_version', aliasedName, true,
-              type: DriftSqlType.string, requiredDuringInsert: false)
-          .withConverter<api.ProfileVersion?>(
-              $AccountTable.$converterprofileVersion);
+  profileVersion = GeneratedColumn<String>(
+    'profile_version',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  ).withConverter<api.ProfileVersion?>($AccountTable.$converterprofileVersion);
   @override
   late final GeneratedColumnWithTypeConverter<JsonList?, String>
-      jsonProfileAttributes = GeneratedColumn<String>(
-              'json_profile_attributes', aliasedName, true,
-              type: DriftSqlType.string, requiredDuringInsert: false)
-          .withConverter<JsonList?>(
-              $AccountTable.$converterjsonProfileAttributes);
+  jsonProfileAttributes = GeneratedColumn<String>(
+    'json_profile_attributes',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  ).withConverter<JsonList?>($AccountTable.$converterjsonProfileAttributes);
   static const VerificationMeta _profileLocationLatitudeMeta =
       const VerificationMeta('profileLocationLatitude');
   @override
   late final GeneratedColumn<double> profileLocationLatitude =
-      GeneratedColumn<double>('profile_location_latitude', aliasedName, true,
-          type: DriftSqlType.double, requiredDuringInsert: false);
+      GeneratedColumn<double>(
+        'profile_location_latitude',
+        aliasedName,
+        true,
+        type: DriftSqlType.double,
+        requiredDuringInsert: false,
+      );
   static const VerificationMeta _profileLocationLongitudeMeta =
       const VerificationMeta('profileLocationLongitude');
   @override
   late final GeneratedColumn<double> profileLocationLongitude =
-      GeneratedColumn<double>('profile_location_longitude', aliasedName, true,
-          type: DriftSqlType.double, requiredDuringInsert: false);
+      GeneratedColumn<double>(
+        'profile_location_longitude',
+        aliasedName,
+        true,
+        type: DriftSqlType.double,
+        requiredDuringInsert: false,
+      );
   @override
   late final GeneratedColumnWithTypeConverter<JsonString?, String>
-      jsonSearchGroups = GeneratedColumn<String>(
-              'json_search_groups', aliasedName, true,
-              type: DriftSqlType.string, requiredDuringInsert: false)
-          .withConverter<JsonString?>($AccountTable.$converterjsonSearchGroups);
+  jsonSearchGroups = GeneratedColumn<String>(
+    'json_search_groups',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  ).withConverter<JsonString?>($AccountTable.$converterjsonSearchGroups);
   @override
   late final GeneratedColumnWithTypeConverter<JsonString?, String>
-      jsonProfileFilteringSettings = GeneratedColumn<String>(
-              'json_profile_filtering_settings', aliasedName, true,
-              type: DriftSqlType.string, requiredDuringInsert: false)
-          .withConverter<JsonString?>(
-              $AccountTable.$converterjsonProfileFilteringSettings);
+  jsonProfileFilteringSettings =
+      GeneratedColumn<String>(
+        'json_profile_filtering_settings',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      ).withConverter<JsonString?>(
+        $AccountTable.$converterjsonProfileFilteringSettings,
+      );
   static const VerificationMeta _profileSearchAgeRangeMinMeta =
       const VerificationMeta('profileSearchAgeRangeMin');
   @override
   late final GeneratedColumn<int> profileSearchAgeRangeMin =
-      GeneratedColumn<int>('profile_search_age_range_min', aliasedName, true,
-          type: DriftSqlType.int, requiredDuringInsert: false);
+      GeneratedColumn<int>(
+        'profile_search_age_range_min',
+        aliasedName,
+        true,
+        type: DriftSqlType.int,
+        requiredDuringInsert: false,
+      );
   static const VerificationMeta _profileSearchAgeRangeMaxMeta =
       const VerificationMeta('profileSearchAgeRangeMax');
   @override
   late final GeneratedColumn<int> profileSearchAgeRangeMax =
-      GeneratedColumn<int>('profile_search_age_range_max', aliasedName, true,
-          type: DriftSqlType.int, requiredDuringInsert: false);
+      GeneratedColumn<int>(
+        'profile_search_age_range_max',
+        aliasedName,
+        true,
+        type: DriftSqlType.int,
+        requiredDuringInsert: false,
+      );
   static const VerificationMeta _accountEmailAddressMeta =
       const VerificationMeta('accountEmailAddress');
   @override
   late final GeneratedColumn<String> accountEmailAddress =
-      GeneratedColumn<String>('account_email_address', aliasedName, true,
-          type: DriftSqlType.string, requiredDuringInsert: false);
+      GeneratedColumn<String>(
+        'account_email_address',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
   static const VerificationMeta _refreshTokenAccountMeta =
       const VerificationMeta('refreshTokenAccount');
   @override
   late final GeneratedColumn<String> refreshTokenAccount =
-      GeneratedColumn<String>('refresh_token_account', aliasedName, true,
-          type: DriftSqlType.string, requiredDuringInsert: false);
-  static const VerificationMeta _refreshTokenMediaMeta =
-      const VerificationMeta('refreshTokenMedia');
+      GeneratedColumn<String>(
+        'refresh_token_account',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _refreshTokenMediaMeta = const VerificationMeta(
+    'refreshTokenMedia',
+  );
   @override
   late final GeneratedColumn<String> refreshTokenMedia =
-      GeneratedColumn<String>('refresh_token_media', aliasedName, true,
-          type: DriftSqlType.string, requiredDuringInsert: false);
+      GeneratedColumn<String>(
+        'refresh_token_media',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
   static const VerificationMeta _refreshTokenProfileMeta =
       const VerificationMeta('refreshTokenProfile');
   @override
   late final GeneratedColumn<String> refreshTokenProfile =
-      GeneratedColumn<String>('refresh_token_profile', aliasedName, true,
-          type: DriftSqlType.string, requiredDuringInsert: false);
-  static const VerificationMeta _refreshTokenChatMeta =
-      const VerificationMeta('refreshTokenChat');
+      GeneratedColumn<String>(
+        'refresh_token_profile',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _refreshTokenChatMeta = const VerificationMeta(
+    'refreshTokenChat',
+  );
   @override
   late final GeneratedColumn<String> refreshTokenChat = GeneratedColumn<String>(
-      'refresh_token_chat', aliasedName, true,
-      type: DriftSqlType.string, requiredDuringInsert: false);
+    'refresh_token_chat',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   static const VerificationMeta _accessTokenAccountMeta =
       const VerificationMeta('accessTokenAccount');
   @override
   late final GeneratedColumn<String> accessTokenAccount =
-      GeneratedColumn<String>('access_token_account', aliasedName, true,
-          type: DriftSqlType.string, requiredDuringInsert: false);
-  static const VerificationMeta _accessTokenMediaMeta =
-      const VerificationMeta('accessTokenMedia');
+      GeneratedColumn<String>(
+        'access_token_account',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _accessTokenMediaMeta = const VerificationMeta(
+    'accessTokenMedia',
+  );
   @override
   late final GeneratedColumn<String> accessTokenMedia = GeneratedColumn<String>(
-      'access_token_media', aliasedName, true,
-      type: DriftSqlType.string, requiredDuringInsert: false);
+    'access_token_media',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   static const VerificationMeta _accessTokenProfileMeta =
       const VerificationMeta('accessTokenProfile');
   @override
   late final GeneratedColumn<String> accessTokenProfile =
-      GeneratedColumn<String>('access_token_profile', aliasedName, true,
-          type: DriftSqlType.string, requiredDuringInsert: false);
-  static const VerificationMeta _accessTokenChatMeta =
-      const VerificationMeta('accessTokenChat');
+      GeneratedColumn<String>(
+        'access_token_profile',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _accessTokenChatMeta = const VerificationMeta(
+    'accessTokenChat',
+  );
   @override
   late final GeneratedColumn<String> accessTokenChat = GeneratedColumn<String>(
-      'access_token_chat', aliasedName, true,
-      type: DriftSqlType.string, requiredDuringInsert: false);
+    'access_token_chat',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   static const VerificationMeta _localImageSettingImageCacheMaxBytesMeta =
       const VerificationMeta('localImageSettingImageCacheMaxBytes');
   @override
   late final GeneratedColumn<int> localImageSettingImageCacheMaxBytes =
       GeneratedColumn<int>(
-          'local_image_setting_image_cache_max_bytes', aliasedName, true,
-          type: DriftSqlType.int, requiredDuringInsert: false);
+        'local_image_setting_image_cache_max_bytes',
+        aliasedName,
+        true,
+        type: DriftSqlType.int,
+        requiredDuringInsert: false,
+      );
   static const VerificationMeta _localImageSettingCacheFullSizedImagesMeta =
       const VerificationMeta('localImageSettingCacheFullSizedImages');
   @override
-  late final GeneratedColumn<
-      bool> localImageSettingCacheFullSizedImages = GeneratedColumn<
-          bool>(
-      'local_image_setting_cache_full_sized_images', aliasedName, true,
-      type: DriftSqlType.bool,
-      requiredDuringInsert: false,
-      defaultConstraints: GeneratedColumn.constraintIsAlways(
-          'CHECK ("local_image_setting_cache_full_sized_images" IN (0, 1))'));
+  late final GeneratedColumn<bool> localImageSettingCacheFullSizedImages =
+      GeneratedColumn<bool>(
+        'local_image_setting_cache_full_sized_images',
+        aliasedName,
+        true,
+        type: DriftSqlType.bool,
+        requiredDuringInsert: false,
+        defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'CHECK ("local_image_setting_cache_full_sized_images" IN (0, 1))',
+        ),
+      );
   static const VerificationMeta
-      _localImageSettingImageCacheDownscalingSizeMeta =
-      const VerificationMeta('localImageSettingImageCacheDownscalingSize');
+  _localImageSettingImageCacheDownscalingSizeMeta = const VerificationMeta(
+    'localImageSettingImageCacheDownscalingSize',
+  );
   @override
   late final GeneratedColumn<int> localImageSettingImageCacheDownscalingSize =
       GeneratedColumn<int>(
-          'local_image_setting_image_cache_downscaling_size', aliasedName, true,
-          type: DriftSqlType.int, requiredDuringInsert: false);
+        'local_image_setting_image_cache_downscaling_size',
+        aliasedName,
+        true,
+        type: DriftSqlType.int,
+        requiredDuringInsert: false,
+      );
   @override
   late final GeneratedColumnWithTypeConverter<PrivateKeyData?, Uint8List>
-      privateKeyData = GeneratedColumn<Uint8List>(
-              'private_key_data', aliasedName, true,
-              type: DriftSqlType.blob, requiredDuringInsert: false)
-          .withConverter<PrivateKeyData?>(
-              $AccountTable.$converterprivateKeyData);
+  privateKeyData = GeneratedColumn<Uint8List>(
+    'private_key_data',
+    aliasedName,
+    true,
+    type: DriftSqlType.blob,
+    requiredDuringInsert: false,
+  ).withConverter<PrivateKeyData?>($AccountTable.$converterprivateKeyData);
   @override
   late final GeneratedColumnWithTypeConverter<PublicKeyData?, Uint8List>
-      publicKeyData = GeneratedColumn<Uint8List>(
-              'public_key_data', aliasedName, true,
-              type: DriftSqlType.blob, requiredDuringInsert: false)
-          .withConverter<PublicKeyData?>($AccountTable.$converterpublicKeyData);
+  publicKeyData = GeneratedColumn<Uint8List>(
+    'public_key_data',
+    aliasedName,
+    true,
+    type: DriftSqlType.blob,
+    requiredDuringInsert: false,
+  ).withConverter<PublicKeyData?>($AccountTable.$converterpublicKeyData);
   @override
   late final GeneratedColumnWithTypeConverter<api.PublicKeyId?, int>
-      publicKeyId = GeneratedColumn<int>('public_key_id', aliasedName, true,
-              type: DriftSqlType.int, requiredDuringInsert: false)
-          .withConverter<api.PublicKeyId?>($AccountTable.$converterpublicKeyId);
+  publicKeyId = GeneratedColumn<int>(
+    'public_key_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  ).withConverter<api.PublicKeyId?>($AccountTable.$converterpublicKeyId);
   @override
   late final GeneratedColumnWithTypeConverter<UtcDateTime?, int>
-      profileInitialAgeSetUnixTime = GeneratedColumn<int>(
-              'profile_initial_age_set_unix_time', aliasedName, true,
-              type: DriftSqlType.int, requiredDuringInsert: false)
-          .withConverter<UtcDateTime?>(
-              $AccountTable.$converterprofileInitialAgeSetUnixTime);
-  static const VerificationMeta _profileInitialAgeMeta =
-      const VerificationMeta('profileInitialAge');
+  profileInitialAgeSetUnixTime =
+      GeneratedColumn<int>(
+        'profile_initial_age_set_unix_time',
+        aliasedName,
+        true,
+        type: DriftSqlType.int,
+        requiredDuringInsert: false,
+      ).withConverter<UtcDateTime?>(
+        $AccountTable.$converterprofileInitialAgeSetUnixTime,
+      );
+  static const VerificationMeta _profileInitialAgeMeta = const VerificationMeta(
+    'profileInitialAge',
+  );
   @override
   late final GeneratedColumn<int> profileInitialAge = GeneratedColumn<int>(
-      'profile_initial_age', aliasedName, true,
-      type: DriftSqlType.int, requiredDuringInsert: false);
+    'profile_initial_age',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
   @override
   late final GeneratedColumnWithTypeConverter<UtcDateTime?, int>
-      serverMaintenanceUnixTime = GeneratedColumn<int>(
-              'server_maintenance_unix_time', aliasedName, true,
-              type: DriftSqlType.int, requiredDuringInsert: false)
-          .withConverter<UtcDateTime?>(
-              $AccountTable.$converterserverMaintenanceUnixTime);
+  serverMaintenanceUnixTime =
+      GeneratedColumn<int>(
+        'server_maintenance_unix_time',
+        aliasedName,
+        true,
+        type: DriftSqlType.int,
+        requiredDuringInsert: false,
+      ).withConverter<UtcDateTime?>(
+        $AccountTable.$converterserverMaintenanceUnixTime,
+      );
   @override
   late final GeneratedColumnWithTypeConverter<UtcDateTime?, int>
-      serverMaintenanceUnixTimeViewed = GeneratedColumn<int>(
-              'server_maintenance_unix_time_viewed', aliasedName, true,
-              type: DriftSqlType.int, requiredDuringInsert: false)
-          .withConverter<UtcDateTime?>(
-              $AccountTable.$converterserverMaintenanceUnixTimeViewed);
+  serverMaintenanceUnixTimeViewed =
+      GeneratedColumn<int>(
+        'server_maintenance_unix_time_viewed',
+        aliasedName,
+        true,
+        type: DriftSqlType.int,
+        requiredDuringInsert: false,
+      ).withConverter<UtcDateTime?>(
+        $AccountTable.$converterserverMaintenanceUnixTimeViewed,
+      );
   @override
-  late final GeneratedColumnWithTypeConverter<api.CustomReportsFileHash?,
-      String> customReportsFileHash = GeneratedColumn<String>(
-          'custom_reports_file_hash', aliasedName, true,
-          type: DriftSqlType.string, requiredDuringInsert: false)
-      .withConverter<api.CustomReportsFileHash?>(
-          $AccountTable.$convertercustomReportsFileHash);
+  late final GeneratedColumnWithTypeConverter<
+    api.CustomReportsFileHash?,
+    String
+  >
+  customReportsFileHash =
+      GeneratedColumn<String>(
+        'custom_reports_file_hash',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      ).withConverter<api.CustomReportsFileHash?>(
+        $AccountTable.$convertercustomReportsFileHash,
+      );
   @override
   late final GeneratedColumnWithTypeConverter<JsonString?, String>
-      customReportsConfig = GeneratedColumn<String>(
-              'custom_reports_config', aliasedName, true,
-              type: DriftSqlType.string, requiredDuringInsert: false)
-          .withConverter<JsonString?>(
-              $AccountTable.$convertercustomReportsConfig);
+  customReportsConfig = GeneratedColumn<String>(
+    'custom_reports_config',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  ).withConverter<JsonString?>($AccountTable.$convertercustomReportsConfig);
   @override
-  late final GeneratedColumnWithTypeConverter<api.ClientFeaturesFileHash?,
-      String> clientFeaturesFileHash = GeneratedColumn<String>(
-          'client_features_file_hash', aliasedName, true,
-          type: DriftSqlType.string, requiredDuringInsert: false)
-      .withConverter<api.ClientFeaturesFileHash?>(
-          $AccountTable.$converterclientFeaturesFileHash);
+  late final GeneratedColumnWithTypeConverter<
+    api.ClientFeaturesFileHash?,
+    String
+  >
+  clientFeaturesFileHash =
+      GeneratedColumn<String>(
+        'client_features_file_hash',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      ).withConverter<api.ClientFeaturesFileHash?>(
+        $AccountTable.$converterclientFeaturesFileHash,
+      );
   @override
   late final GeneratedColumnWithTypeConverter<JsonString?, String>
-      clientFeaturesConfig = GeneratedColumn<String>(
-              'client_features_config', aliasedName, true,
-              type: DriftSqlType.string, requiredDuringInsert: false)
-          .withConverter<JsonString?>(
-              $AccountTable.$converterclientFeaturesConfig);
+  clientFeaturesConfig = GeneratedColumn<String>(
+    'client_features_config',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  ).withConverter<JsonString?>($AccountTable.$converterclientFeaturesConfig);
   static const VerificationMeta _initialSetupSkippedMeta =
       const VerificationMeta('initialSetupSkipped');
   @override
   late final GeneratedColumn<bool> initialSetupSkipped = GeneratedColumn<bool>(
-      'initial_setup_skipped', aliasedName, false,
-      type: DriftSqlType.bool,
-      requiredDuringInsert: false,
-      defaultConstraints: GeneratedColumn.constraintIsAlways(
-          'CHECK ("initial_setup_skipped" IN (0, 1))'),
-      defaultValue: const Constant(false));
+    'initial_setup_skipped',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("initial_setup_skipped" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
   @override
   List<GeneratedColumn> get $columns => [
-        id,
-        uuidAccountId,
-        jsonAccountState,
-        jsonPermissions,
-        jsonProfileVisibility,
-        profileFilterFavorites,
-        profileIteratorSessionId,
-        automatiProfileSearchIteratorSessionId,
-        receivedLikesIteratorSessionId,
-        matchesIteratorSessionId,
-        clientId,
-        jsonAvailableProfileAttributesOrderMode,
-        initialSyncDoneLoginRepository,
-        initialSyncDoneAccountRepository,
-        initialSyncDoneMediaRepository,
-        initialSyncDoneProfileRepository,
-        initialSyncDoneChatRepository,
-        syncVersionAccount,
-        syncVersionProfile,
-        syncVersionMediaContent,
-        syncVersionClientConfig,
-        primaryContentGridCropSize,
-        primaryContentGridCropX,
-        primaryContentGridCropY,
-        profileContentVersion,
-        profileName,
-        profileNameAccepted,
-        profileNameModerationState,
-        profileText,
-        profileTextAccepted,
-        profileTextModerationState,
-        profileTextModerationRejectedCategory,
-        profileTextModerationRejectedDetails,
-        profileAge,
-        profileUnlimitedLikes,
-        profileVersion,
-        jsonProfileAttributes,
-        profileLocationLatitude,
-        profileLocationLongitude,
-        jsonSearchGroups,
-        jsonProfileFilteringSettings,
-        profileSearchAgeRangeMin,
-        profileSearchAgeRangeMax,
-        accountEmailAddress,
-        refreshTokenAccount,
-        refreshTokenMedia,
-        refreshTokenProfile,
-        refreshTokenChat,
-        accessTokenAccount,
-        accessTokenMedia,
-        accessTokenProfile,
-        accessTokenChat,
-        localImageSettingImageCacheMaxBytes,
-        localImageSettingCacheFullSizedImages,
-        localImageSettingImageCacheDownscalingSize,
-        privateKeyData,
-        publicKeyData,
-        publicKeyId,
-        profileInitialAgeSetUnixTime,
-        profileInitialAge,
-        serverMaintenanceUnixTime,
-        serverMaintenanceUnixTimeViewed,
-        customReportsFileHash,
-        customReportsConfig,
-        clientFeaturesFileHash,
-        clientFeaturesConfig,
-        initialSetupSkipped
-      ];
+    id,
+    uuidAccountId,
+    jsonAccountState,
+    jsonPermissions,
+    jsonProfileVisibility,
+    profileFilterFavorites,
+    profileIteratorSessionId,
+    automatiProfileSearchIteratorSessionId,
+    receivedLikesIteratorSessionId,
+    matchesIteratorSessionId,
+    clientId,
+    jsonAvailableProfileAttributesOrderMode,
+    initialSyncDoneLoginRepository,
+    initialSyncDoneAccountRepository,
+    initialSyncDoneMediaRepository,
+    initialSyncDoneProfileRepository,
+    initialSyncDoneChatRepository,
+    syncVersionAccount,
+    syncVersionProfile,
+    syncVersionMediaContent,
+    syncVersionClientConfig,
+    primaryContentGridCropSize,
+    primaryContentGridCropX,
+    primaryContentGridCropY,
+    profileContentVersion,
+    profileName,
+    profileNameAccepted,
+    profileNameModerationState,
+    profileText,
+    profileTextAccepted,
+    profileTextModerationState,
+    profileTextModerationRejectedCategory,
+    profileTextModerationRejectedDetails,
+    profileAge,
+    profileUnlimitedLikes,
+    profileVersion,
+    jsonProfileAttributes,
+    profileLocationLatitude,
+    profileLocationLongitude,
+    jsonSearchGroups,
+    jsonProfileFilteringSettings,
+    profileSearchAgeRangeMin,
+    profileSearchAgeRangeMax,
+    accountEmailAddress,
+    refreshTokenAccount,
+    refreshTokenMedia,
+    refreshTokenProfile,
+    refreshTokenChat,
+    accessTokenAccount,
+    accessTokenMedia,
+    accessTokenProfile,
+    accessTokenChat,
+    localImageSettingImageCacheMaxBytes,
+    localImageSettingCacheFullSizedImages,
+    localImageSettingImageCacheDownscalingSize,
+    privateKeyData,
+    publicKeyData,
+    publicKeyId,
+    profileInitialAgeSetUnixTime,
+    profileInitialAge,
+    serverMaintenanceUnixTime,
+    serverMaintenanceUnixTimeViewed,
+    customReportsFileHash,
+    customReportsConfig,
+    clientFeaturesFileHash,
+    clientFeaturesConfig,
+    initialSetupSkipped,
+  ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
   static const String $name = 'account';
   @override
-  VerificationContext validateIntegrity(Insertable<AccountData> instance,
-      {bool isInserting = false}) {
+  VerificationContext validateIntegrity(
+    Insertable<AccountData> instance, {
+    bool isInserting = false,
+  }) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
@@ -573,242 +889,333 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
     }
     if (data.containsKey('profile_filter_favorites')) {
       context.handle(
+        _profileFilterFavoritesMeta,
+        profileFilterFavorites.isAcceptableOrUnknown(
+          data['profile_filter_favorites']!,
           _profileFilterFavoritesMeta,
-          profileFilterFavorites.isAcceptableOrUnknown(
-              data['profile_filter_favorites']!, _profileFilterFavoritesMeta));
+        ),
+      );
     }
     if (data.containsKey('initial_sync_done_login_repository')) {
       context.handle(
+        _initialSyncDoneLoginRepositoryMeta,
+        initialSyncDoneLoginRepository.isAcceptableOrUnknown(
+          data['initial_sync_done_login_repository']!,
           _initialSyncDoneLoginRepositoryMeta,
-          initialSyncDoneLoginRepository.isAcceptableOrUnknown(
-              data['initial_sync_done_login_repository']!,
-              _initialSyncDoneLoginRepositoryMeta));
+        ),
+      );
     }
     if (data.containsKey('initial_sync_done_account_repository')) {
       context.handle(
+        _initialSyncDoneAccountRepositoryMeta,
+        initialSyncDoneAccountRepository.isAcceptableOrUnknown(
+          data['initial_sync_done_account_repository']!,
           _initialSyncDoneAccountRepositoryMeta,
-          initialSyncDoneAccountRepository.isAcceptableOrUnknown(
-              data['initial_sync_done_account_repository']!,
-              _initialSyncDoneAccountRepositoryMeta));
+        ),
+      );
     }
     if (data.containsKey('initial_sync_done_media_repository')) {
       context.handle(
+        _initialSyncDoneMediaRepositoryMeta,
+        initialSyncDoneMediaRepository.isAcceptableOrUnknown(
+          data['initial_sync_done_media_repository']!,
           _initialSyncDoneMediaRepositoryMeta,
-          initialSyncDoneMediaRepository.isAcceptableOrUnknown(
-              data['initial_sync_done_media_repository']!,
-              _initialSyncDoneMediaRepositoryMeta));
+        ),
+      );
     }
     if (data.containsKey('initial_sync_done_profile_repository')) {
       context.handle(
+        _initialSyncDoneProfileRepositoryMeta,
+        initialSyncDoneProfileRepository.isAcceptableOrUnknown(
+          data['initial_sync_done_profile_repository']!,
           _initialSyncDoneProfileRepositoryMeta,
-          initialSyncDoneProfileRepository.isAcceptableOrUnknown(
-              data['initial_sync_done_profile_repository']!,
-              _initialSyncDoneProfileRepositoryMeta));
+        ),
+      );
     }
     if (data.containsKey('initial_sync_done_chat_repository')) {
       context.handle(
+        _initialSyncDoneChatRepositoryMeta,
+        initialSyncDoneChatRepository.isAcceptableOrUnknown(
+          data['initial_sync_done_chat_repository']!,
           _initialSyncDoneChatRepositoryMeta,
-          initialSyncDoneChatRepository.isAcceptableOrUnknown(
-              data['initial_sync_done_chat_repository']!,
-              _initialSyncDoneChatRepositoryMeta));
+        ),
+      );
     }
     if (data.containsKey('sync_version_account')) {
       context.handle(
+        _syncVersionAccountMeta,
+        syncVersionAccount.isAcceptableOrUnknown(
+          data['sync_version_account']!,
           _syncVersionAccountMeta,
-          syncVersionAccount.isAcceptableOrUnknown(
-              data['sync_version_account']!, _syncVersionAccountMeta));
+        ),
+      );
     }
     if (data.containsKey('sync_version_profile')) {
       context.handle(
+        _syncVersionProfileMeta,
+        syncVersionProfile.isAcceptableOrUnknown(
+          data['sync_version_profile']!,
           _syncVersionProfileMeta,
-          syncVersionProfile.isAcceptableOrUnknown(
-              data['sync_version_profile']!, _syncVersionProfileMeta));
+        ),
+      );
     }
     if (data.containsKey('sync_version_media_content')) {
       context.handle(
+        _syncVersionMediaContentMeta,
+        syncVersionMediaContent.isAcceptableOrUnknown(
+          data['sync_version_media_content']!,
           _syncVersionMediaContentMeta,
-          syncVersionMediaContent.isAcceptableOrUnknown(
-              data['sync_version_media_content']!,
-              _syncVersionMediaContentMeta));
+        ),
+      );
     }
     if (data.containsKey('sync_version_client_config')) {
       context.handle(
+        _syncVersionClientConfigMeta,
+        syncVersionClientConfig.isAcceptableOrUnknown(
+          data['sync_version_client_config']!,
           _syncVersionClientConfigMeta,
-          syncVersionClientConfig.isAcceptableOrUnknown(
-              data['sync_version_client_config']!,
-              _syncVersionClientConfigMeta));
+        ),
+      );
     }
     if (data.containsKey('primary_content_grid_crop_size')) {
       context.handle(
+        _primaryContentGridCropSizeMeta,
+        primaryContentGridCropSize.isAcceptableOrUnknown(
+          data['primary_content_grid_crop_size']!,
           _primaryContentGridCropSizeMeta,
-          primaryContentGridCropSize.isAcceptableOrUnknown(
-              data['primary_content_grid_crop_size']!,
-              _primaryContentGridCropSizeMeta));
+        ),
+      );
     }
     if (data.containsKey('primary_content_grid_crop_x')) {
       context.handle(
+        _primaryContentGridCropXMeta,
+        primaryContentGridCropX.isAcceptableOrUnknown(
+          data['primary_content_grid_crop_x']!,
           _primaryContentGridCropXMeta,
-          primaryContentGridCropX.isAcceptableOrUnknown(
-              data['primary_content_grid_crop_x']!,
-              _primaryContentGridCropXMeta));
+        ),
+      );
     }
     if (data.containsKey('primary_content_grid_crop_y')) {
       context.handle(
+        _primaryContentGridCropYMeta,
+        primaryContentGridCropY.isAcceptableOrUnknown(
+          data['primary_content_grid_crop_y']!,
           _primaryContentGridCropYMeta,
-          primaryContentGridCropY.isAcceptableOrUnknown(
-              data['primary_content_grid_crop_y']!,
-              _primaryContentGridCropYMeta));
+        ),
+      );
     }
     if (data.containsKey('profile_name')) {
       context.handle(
+        _profileNameMeta,
+        profileName.isAcceptableOrUnknown(
+          data['profile_name']!,
           _profileNameMeta,
-          profileName.isAcceptableOrUnknown(
-              data['profile_name']!, _profileNameMeta));
+        ),
+      );
     }
     if (data.containsKey('profile_name_accepted')) {
       context.handle(
+        _profileNameAcceptedMeta,
+        profileNameAccepted.isAcceptableOrUnknown(
+          data['profile_name_accepted']!,
           _profileNameAcceptedMeta,
-          profileNameAccepted.isAcceptableOrUnknown(
-              data['profile_name_accepted']!, _profileNameAcceptedMeta));
+        ),
+      );
     }
     if (data.containsKey('profile_text')) {
       context.handle(
+        _profileTextMeta,
+        profileText.isAcceptableOrUnknown(
+          data['profile_text']!,
           _profileTextMeta,
-          profileText.isAcceptableOrUnknown(
-              data['profile_text']!, _profileTextMeta));
+        ),
+      );
     }
     if (data.containsKey('profile_text_accepted')) {
       context.handle(
+        _profileTextAcceptedMeta,
+        profileTextAccepted.isAcceptableOrUnknown(
+          data['profile_text_accepted']!,
           _profileTextAcceptedMeta,
-          profileTextAccepted.isAcceptableOrUnknown(
-              data['profile_text_accepted']!, _profileTextAcceptedMeta));
+        ),
+      );
     }
     if (data.containsKey('profile_age')) {
       context.handle(
-          _profileAgeMeta,
-          profileAge.isAcceptableOrUnknown(
-              data['profile_age']!, _profileAgeMeta));
+        _profileAgeMeta,
+        profileAge.isAcceptableOrUnknown(data['profile_age']!, _profileAgeMeta),
+      );
     }
     if (data.containsKey('profile_unlimited_likes')) {
       context.handle(
+        _profileUnlimitedLikesMeta,
+        profileUnlimitedLikes.isAcceptableOrUnknown(
+          data['profile_unlimited_likes']!,
           _profileUnlimitedLikesMeta,
-          profileUnlimitedLikes.isAcceptableOrUnknown(
-              data['profile_unlimited_likes']!, _profileUnlimitedLikesMeta));
+        ),
+      );
     }
     if (data.containsKey('profile_location_latitude')) {
       context.handle(
+        _profileLocationLatitudeMeta,
+        profileLocationLatitude.isAcceptableOrUnknown(
+          data['profile_location_latitude']!,
           _profileLocationLatitudeMeta,
-          profileLocationLatitude.isAcceptableOrUnknown(
-              data['profile_location_latitude']!,
-              _profileLocationLatitudeMeta));
+        ),
+      );
     }
     if (data.containsKey('profile_location_longitude')) {
       context.handle(
+        _profileLocationLongitudeMeta,
+        profileLocationLongitude.isAcceptableOrUnknown(
+          data['profile_location_longitude']!,
           _profileLocationLongitudeMeta,
-          profileLocationLongitude.isAcceptableOrUnknown(
-              data['profile_location_longitude']!,
-              _profileLocationLongitudeMeta));
+        ),
+      );
     }
     if (data.containsKey('profile_search_age_range_min')) {
       context.handle(
+        _profileSearchAgeRangeMinMeta,
+        profileSearchAgeRangeMin.isAcceptableOrUnknown(
+          data['profile_search_age_range_min']!,
           _profileSearchAgeRangeMinMeta,
-          profileSearchAgeRangeMin.isAcceptableOrUnknown(
-              data['profile_search_age_range_min']!,
-              _profileSearchAgeRangeMinMeta));
+        ),
+      );
     }
     if (data.containsKey('profile_search_age_range_max')) {
       context.handle(
+        _profileSearchAgeRangeMaxMeta,
+        profileSearchAgeRangeMax.isAcceptableOrUnknown(
+          data['profile_search_age_range_max']!,
           _profileSearchAgeRangeMaxMeta,
-          profileSearchAgeRangeMax.isAcceptableOrUnknown(
-              data['profile_search_age_range_max']!,
-              _profileSearchAgeRangeMaxMeta));
+        ),
+      );
     }
     if (data.containsKey('account_email_address')) {
       context.handle(
+        _accountEmailAddressMeta,
+        accountEmailAddress.isAcceptableOrUnknown(
+          data['account_email_address']!,
           _accountEmailAddressMeta,
-          accountEmailAddress.isAcceptableOrUnknown(
-              data['account_email_address']!, _accountEmailAddressMeta));
+        ),
+      );
     }
     if (data.containsKey('refresh_token_account')) {
       context.handle(
+        _refreshTokenAccountMeta,
+        refreshTokenAccount.isAcceptableOrUnknown(
+          data['refresh_token_account']!,
           _refreshTokenAccountMeta,
-          refreshTokenAccount.isAcceptableOrUnknown(
-              data['refresh_token_account']!, _refreshTokenAccountMeta));
+        ),
+      );
     }
     if (data.containsKey('refresh_token_media')) {
       context.handle(
+        _refreshTokenMediaMeta,
+        refreshTokenMedia.isAcceptableOrUnknown(
+          data['refresh_token_media']!,
           _refreshTokenMediaMeta,
-          refreshTokenMedia.isAcceptableOrUnknown(
-              data['refresh_token_media']!, _refreshTokenMediaMeta));
+        ),
+      );
     }
     if (data.containsKey('refresh_token_profile')) {
       context.handle(
+        _refreshTokenProfileMeta,
+        refreshTokenProfile.isAcceptableOrUnknown(
+          data['refresh_token_profile']!,
           _refreshTokenProfileMeta,
-          refreshTokenProfile.isAcceptableOrUnknown(
-              data['refresh_token_profile']!, _refreshTokenProfileMeta));
+        ),
+      );
     }
     if (data.containsKey('refresh_token_chat')) {
       context.handle(
+        _refreshTokenChatMeta,
+        refreshTokenChat.isAcceptableOrUnknown(
+          data['refresh_token_chat']!,
           _refreshTokenChatMeta,
-          refreshTokenChat.isAcceptableOrUnknown(
-              data['refresh_token_chat']!, _refreshTokenChatMeta));
+        ),
+      );
     }
     if (data.containsKey('access_token_account')) {
       context.handle(
+        _accessTokenAccountMeta,
+        accessTokenAccount.isAcceptableOrUnknown(
+          data['access_token_account']!,
           _accessTokenAccountMeta,
-          accessTokenAccount.isAcceptableOrUnknown(
-              data['access_token_account']!, _accessTokenAccountMeta));
+        ),
+      );
     }
     if (data.containsKey('access_token_media')) {
       context.handle(
+        _accessTokenMediaMeta,
+        accessTokenMedia.isAcceptableOrUnknown(
+          data['access_token_media']!,
           _accessTokenMediaMeta,
-          accessTokenMedia.isAcceptableOrUnknown(
-              data['access_token_media']!, _accessTokenMediaMeta));
+        ),
+      );
     }
     if (data.containsKey('access_token_profile')) {
       context.handle(
+        _accessTokenProfileMeta,
+        accessTokenProfile.isAcceptableOrUnknown(
+          data['access_token_profile']!,
           _accessTokenProfileMeta,
-          accessTokenProfile.isAcceptableOrUnknown(
-              data['access_token_profile']!, _accessTokenProfileMeta));
+        ),
+      );
     }
     if (data.containsKey('access_token_chat')) {
       context.handle(
+        _accessTokenChatMeta,
+        accessTokenChat.isAcceptableOrUnknown(
+          data['access_token_chat']!,
           _accessTokenChatMeta,
-          accessTokenChat.isAcceptableOrUnknown(
-              data['access_token_chat']!, _accessTokenChatMeta));
+        ),
+      );
     }
     if (data.containsKey('local_image_setting_image_cache_max_bytes')) {
       context.handle(
+        _localImageSettingImageCacheMaxBytesMeta,
+        localImageSettingImageCacheMaxBytes.isAcceptableOrUnknown(
+          data['local_image_setting_image_cache_max_bytes']!,
           _localImageSettingImageCacheMaxBytesMeta,
-          localImageSettingImageCacheMaxBytes.isAcceptableOrUnknown(
-              data['local_image_setting_image_cache_max_bytes']!,
-              _localImageSettingImageCacheMaxBytesMeta));
+        ),
+      );
     }
     if (data.containsKey('local_image_setting_cache_full_sized_images')) {
       context.handle(
+        _localImageSettingCacheFullSizedImagesMeta,
+        localImageSettingCacheFullSizedImages.isAcceptableOrUnknown(
+          data['local_image_setting_cache_full_sized_images']!,
           _localImageSettingCacheFullSizedImagesMeta,
-          localImageSettingCacheFullSizedImages.isAcceptableOrUnknown(
-              data['local_image_setting_cache_full_sized_images']!,
-              _localImageSettingCacheFullSizedImagesMeta));
+        ),
+      );
     }
     if (data.containsKey('local_image_setting_image_cache_downscaling_size')) {
       context.handle(
+        _localImageSettingImageCacheDownscalingSizeMeta,
+        localImageSettingImageCacheDownscalingSize.isAcceptableOrUnknown(
+          data['local_image_setting_image_cache_downscaling_size']!,
           _localImageSettingImageCacheDownscalingSizeMeta,
-          localImageSettingImageCacheDownscalingSize.isAcceptableOrUnknown(
-              data['local_image_setting_image_cache_downscaling_size']!,
-              _localImageSettingImageCacheDownscalingSizeMeta));
+        ),
+      );
     }
     if (data.containsKey('profile_initial_age')) {
       context.handle(
+        _profileInitialAgeMeta,
+        profileInitialAge.isAcceptableOrUnknown(
+          data['profile_initial_age']!,
           _profileInitialAgeMeta,
-          profileInitialAge.isAcceptableOrUnknown(
-              data['profile_initial_age']!, _profileInitialAgeMeta));
+        ),
+      );
     }
     if (data.containsKey('initial_setup_skipped')) {
       context.handle(
+        _initialSetupSkippedMeta,
+        initialSetupSkipped.isAcceptableOrUnknown(
+          data['initial_setup_skipped']!,
           _initialSetupSkippedMeta,
-          initialSetupSkipped.isAcceptableOrUnknown(
-              data['initial_setup_skipped']!, _initialSetupSkippedMeta));
+        ),
+      );
     }
     return context;
   }
@@ -819,208 +1226,362 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
   AccountData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return AccountData(
-      id: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
       uuidAccountId: $AccountTable.$converteruuidAccountId.fromSql(
-          attachedDatabase.typeMapping.read(
-              DriftSqlType.string, data['${effectivePrefix}uuid_account_id'])),
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}uuid_account_id'],
+        ),
+      ),
       jsonAccountState: $AccountTable.$converterjsonAccountState.fromSql(
-          attachedDatabase.typeMapping.read(DriftSqlType.string,
-              data['${effectivePrefix}json_account_state'])),
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}json_account_state'],
+        ),
+      ),
       jsonPermissions: $AccountTable.$converterjsonPermissions.fromSql(
-          attachedDatabase.typeMapping.read(
-              DriftSqlType.string, data['${effectivePrefix}json_permissions'])),
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}json_permissions'],
+        ),
+      ),
       jsonProfileVisibility: $AccountTable.$converterjsonProfileVisibility
-          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.string,
-              data['${effectivePrefix}json_profile_visibility'])),
+          .fromSql(
+            attachedDatabase.typeMapping.read(
+              DriftSqlType.string,
+              data['${effectivePrefix}json_profile_visibility'],
+            ),
+          ),
       profileFilterFavorites: attachedDatabase.typeMapping.read(
-          DriftSqlType.bool,
-          data['${effectivePrefix}profile_filter_favorites'])!,
+        DriftSqlType.bool,
+        data['${effectivePrefix}profile_filter_favorites'],
+      )!,
       profileIteratorSessionId: $AccountTable.$converterprofileIteratorSessionId
-          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.int,
-              data['${effectivePrefix}profile_iterator_session_id'])),
+          .fromSql(
+            attachedDatabase.typeMapping.read(
+              DriftSqlType.int,
+              data['${effectivePrefix}profile_iterator_session_id'],
+            ),
+          ),
       automatiProfileSearchIteratorSessionId: $AccountTable
           .$converterautomatiProfileSearchIteratorSessionId
-          .fromSql(attachedDatabase.typeMapping.read(
+          .fromSql(
+            attachedDatabase.typeMapping.read(
               DriftSqlType.int,
-              data[
-                  '${effectivePrefix}automati_profile_search_iterator_session_id'])),
+              data['${effectivePrefix}automati_profile_search_iterator_session_id'],
+            ),
+          ),
       receivedLikesIteratorSessionId: $AccountTable
           .$converterreceivedLikesIteratorSessionId
-          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.int,
-              data['${effectivePrefix}received_likes_iterator_session_id'])),
+          .fromSql(
+            attachedDatabase.typeMapping.read(
+              DriftSqlType.int,
+              data['${effectivePrefix}received_likes_iterator_session_id'],
+            ),
+          ),
       matchesIteratorSessionId: $AccountTable.$convertermatchesIteratorSessionId
-          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.int,
-              data['${effectivePrefix}matches_iterator_session_id'])),
-      clientId: $AccountTable.$converterclientId.fromSql(attachedDatabase
-          .typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}client_id'])),
+          .fromSql(
+            attachedDatabase.typeMapping.read(
+              DriftSqlType.int,
+              data['${effectivePrefix}matches_iterator_session_id'],
+            ),
+          ),
+      clientId: $AccountTable.$converterclientId.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.int,
+          data['${effectivePrefix}client_id'],
+        ),
+      ),
       jsonAvailableProfileAttributesOrderMode: $AccountTable
           .$converterjsonAvailableProfileAttributesOrderMode
-          .fromSql(attachedDatabase.typeMapping.read(
+          .fromSql(
+            attachedDatabase.typeMapping.read(
               DriftSqlType.string,
-              data[
-                  '${effectivePrefix}json_available_profile_attributes_order_mode'])),
+              data['${effectivePrefix}json_available_profile_attributes_order_mode'],
+            ),
+          ),
       initialSyncDoneLoginRepository: attachedDatabase.typeMapping.read(
-          DriftSqlType.bool,
-          data['${effectivePrefix}initial_sync_done_login_repository'])!,
+        DriftSqlType.bool,
+        data['${effectivePrefix}initial_sync_done_login_repository'],
+      )!,
       initialSyncDoneAccountRepository: attachedDatabase.typeMapping.read(
-          DriftSqlType.bool,
-          data['${effectivePrefix}initial_sync_done_account_repository'])!,
+        DriftSqlType.bool,
+        data['${effectivePrefix}initial_sync_done_account_repository'],
+      )!,
       initialSyncDoneMediaRepository: attachedDatabase.typeMapping.read(
-          DriftSqlType.bool,
-          data['${effectivePrefix}initial_sync_done_media_repository'])!,
+        DriftSqlType.bool,
+        data['${effectivePrefix}initial_sync_done_media_repository'],
+      )!,
       initialSyncDoneProfileRepository: attachedDatabase.typeMapping.read(
-          DriftSqlType.bool,
-          data['${effectivePrefix}initial_sync_done_profile_repository'])!,
+        DriftSqlType.bool,
+        data['${effectivePrefix}initial_sync_done_profile_repository'],
+      )!,
       initialSyncDoneChatRepository: attachedDatabase.typeMapping.read(
-          DriftSqlType.bool,
-          data['${effectivePrefix}initial_sync_done_chat_repository'])!,
+        DriftSqlType.bool,
+        data['${effectivePrefix}initial_sync_done_chat_repository'],
+      )!,
       syncVersionAccount: attachedDatabase.typeMapping.read(
-          DriftSqlType.int, data['${effectivePrefix}sync_version_account']),
+        DriftSqlType.int,
+        data['${effectivePrefix}sync_version_account'],
+      ),
       syncVersionProfile: attachedDatabase.typeMapping.read(
-          DriftSqlType.int, data['${effectivePrefix}sync_version_profile']),
+        DriftSqlType.int,
+        data['${effectivePrefix}sync_version_profile'],
+      ),
       syncVersionMediaContent: attachedDatabase.typeMapping.read(
-          DriftSqlType.int,
-          data['${effectivePrefix}sync_version_media_content']),
+        DriftSqlType.int,
+        data['${effectivePrefix}sync_version_media_content'],
+      ),
       syncVersionClientConfig: attachedDatabase.typeMapping.read(
-          DriftSqlType.int,
-          data['${effectivePrefix}sync_version_client_config']),
+        DriftSqlType.int,
+        data['${effectivePrefix}sync_version_client_config'],
+      ),
       primaryContentGridCropSize: attachedDatabase.typeMapping.read(
-          DriftSqlType.double,
-          data['${effectivePrefix}primary_content_grid_crop_size']),
+        DriftSqlType.double,
+        data['${effectivePrefix}primary_content_grid_crop_size'],
+      ),
       primaryContentGridCropX: attachedDatabase.typeMapping.read(
-          DriftSqlType.double,
-          data['${effectivePrefix}primary_content_grid_crop_x']),
+        DriftSqlType.double,
+        data['${effectivePrefix}primary_content_grid_crop_x'],
+      ),
       primaryContentGridCropY: attachedDatabase.typeMapping.read(
-          DriftSqlType.double,
-          data['${effectivePrefix}primary_content_grid_crop_y']),
+        DriftSqlType.double,
+        data['${effectivePrefix}primary_content_grid_crop_y'],
+      ),
       profileContentVersion: $AccountTable.$converterprofileContentVersion
-          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.string,
-              data['${effectivePrefix}profile_content_version'])),
-      profileName: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}profile_name']),
+          .fromSql(
+            attachedDatabase.typeMapping.read(
+              DriftSqlType.string,
+              data['${effectivePrefix}profile_content_version'],
+            ),
+          ),
+      profileName: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}profile_name'],
+      ),
       profileNameAccepted: attachedDatabase.typeMapping.read(
-          DriftSqlType.bool, data['${effectivePrefix}profile_name_accepted']),
+        DriftSqlType.bool,
+        data['${effectivePrefix}profile_name_accepted'],
+      ),
       profileNameModerationState: $AccountTable
           .$converterprofileNameModerationState
-          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.string,
-              data['${effectivePrefix}profile_name_moderation_state'])),
-      profileText: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}profile_text']),
+          .fromSql(
+            attachedDatabase.typeMapping.read(
+              DriftSqlType.string,
+              data['${effectivePrefix}profile_name_moderation_state'],
+            ),
+          ),
+      profileText: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}profile_text'],
+      ),
       profileTextAccepted: attachedDatabase.typeMapping.read(
-          DriftSqlType.bool, data['${effectivePrefix}profile_text_accepted']),
+        DriftSqlType.bool,
+        data['${effectivePrefix}profile_text_accepted'],
+      ),
       profileTextModerationState: $AccountTable
           .$converterprofileTextModerationState
-          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.string,
-              data['${effectivePrefix}profile_text_moderation_state'])),
+          .fromSql(
+            attachedDatabase.typeMapping.read(
+              DriftSqlType.string,
+              data['${effectivePrefix}profile_text_moderation_state'],
+            ),
+          ),
       profileTextModerationRejectedCategory: $AccountTable
           .$converterprofileTextModerationRejectedCategory
-          .fromSql(attachedDatabase.typeMapping.read(
+          .fromSql(
+            attachedDatabase.typeMapping.read(
               DriftSqlType.int,
-              data[
-                  '${effectivePrefix}profile_text_moderation_rejected_category'])),
+              data['${effectivePrefix}profile_text_moderation_rejected_category'],
+            ),
+          ),
       profileTextModerationRejectedDetails: $AccountTable
           .$converterprofileTextModerationRejectedDetails
-          .fromSql(attachedDatabase.typeMapping.read(
+          .fromSql(
+            attachedDatabase.typeMapping.read(
               DriftSqlType.string,
-              data[
-                  '${effectivePrefix}profile_text_moderation_rejected_details'])),
-      profileAge: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}profile_age']),
+              data['${effectivePrefix}profile_text_moderation_rejected_details'],
+            ),
+          ),
+      profileAge: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}profile_age'],
+      ),
       profileUnlimitedLikes: attachedDatabase.typeMapping.read(
-          DriftSqlType.bool, data['${effectivePrefix}profile_unlimited_likes']),
+        DriftSqlType.bool,
+        data['${effectivePrefix}profile_unlimited_likes'],
+      ),
       profileVersion: $AccountTable.$converterprofileVersion.fromSql(
-          attachedDatabase.typeMapping.read(
-              DriftSqlType.string, data['${effectivePrefix}profile_version'])),
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}profile_version'],
+        ),
+      ),
       jsonProfileAttributes: $AccountTable.$converterjsonProfileAttributes
-          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.string,
-              data['${effectivePrefix}json_profile_attributes'])),
+          .fromSql(
+            attachedDatabase.typeMapping.read(
+              DriftSqlType.string,
+              data['${effectivePrefix}json_profile_attributes'],
+            ),
+          ),
       profileLocationLatitude: attachedDatabase.typeMapping.read(
-          DriftSqlType.double,
-          data['${effectivePrefix}profile_location_latitude']),
+        DriftSqlType.double,
+        data['${effectivePrefix}profile_location_latitude'],
+      ),
       profileLocationLongitude: attachedDatabase.typeMapping.read(
-          DriftSqlType.double,
-          data['${effectivePrefix}profile_location_longitude']),
+        DriftSqlType.double,
+        data['${effectivePrefix}profile_location_longitude'],
+      ),
       jsonSearchGroups: $AccountTable.$converterjsonSearchGroups.fromSql(
-          attachedDatabase.typeMapping.read(DriftSqlType.string,
-              data['${effectivePrefix}json_search_groups'])),
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}json_search_groups'],
+        ),
+      ),
       jsonProfileFilteringSettings: $AccountTable
           .$converterjsonProfileFilteringSettings
-          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.string,
-              data['${effectivePrefix}json_profile_filtering_settings'])),
+          .fromSql(
+            attachedDatabase.typeMapping.read(
+              DriftSqlType.string,
+              data['${effectivePrefix}json_profile_filtering_settings'],
+            ),
+          ),
       profileSearchAgeRangeMin: attachedDatabase.typeMapping.read(
-          DriftSqlType.int,
-          data['${effectivePrefix}profile_search_age_range_min']),
+        DriftSqlType.int,
+        data['${effectivePrefix}profile_search_age_range_min'],
+      ),
       profileSearchAgeRangeMax: attachedDatabase.typeMapping.read(
-          DriftSqlType.int,
-          data['${effectivePrefix}profile_search_age_range_max']),
+        DriftSqlType.int,
+        data['${effectivePrefix}profile_search_age_range_max'],
+      ),
       accountEmailAddress: attachedDatabase.typeMapping.read(
-          DriftSqlType.string, data['${effectivePrefix}account_email_address']),
+        DriftSqlType.string,
+        data['${effectivePrefix}account_email_address'],
+      ),
       refreshTokenAccount: attachedDatabase.typeMapping.read(
-          DriftSqlType.string, data['${effectivePrefix}refresh_token_account']),
+        DriftSqlType.string,
+        data['${effectivePrefix}refresh_token_account'],
+      ),
       refreshTokenMedia: attachedDatabase.typeMapping.read(
-          DriftSqlType.string, data['${effectivePrefix}refresh_token_media']),
+        DriftSqlType.string,
+        data['${effectivePrefix}refresh_token_media'],
+      ),
       refreshTokenProfile: attachedDatabase.typeMapping.read(
-          DriftSqlType.string, data['${effectivePrefix}refresh_token_profile']),
+        DriftSqlType.string,
+        data['${effectivePrefix}refresh_token_profile'],
+      ),
       refreshTokenChat: attachedDatabase.typeMapping.read(
-          DriftSqlType.string, data['${effectivePrefix}refresh_token_chat']),
+        DriftSqlType.string,
+        data['${effectivePrefix}refresh_token_chat'],
+      ),
       accessTokenAccount: attachedDatabase.typeMapping.read(
-          DriftSqlType.string, data['${effectivePrefix}access_token_account']),
+        DriftSqlType.string,
+        data['${effectivePrefix}access_token_account'],
+      ),
       accessTokenMedia: attachedDatabase.typeMapping.read(
-          DriftSqlType.string, data['${effectivePrefix}access_token_media']),
+        DriftSqlType.string,
+        data['${effectivePrefix}access_token_media'],
+      ),
       accessTokenProfile: attachedDatabase.typeMapping.read(
-          DriftSqlType.string, data['${effectivePrefix}access_token_profile']),
+        DriftSqlType.string,
+        data['${effectivePrefix}access_token_profile'],
+      ),
       accessTokenChat: attachedDatabase.typeMapping.read(
-          DriftSqlType.string, data['${effectivePrefix}access_token_chat']),
+        DriftSqlType.string,
+        data['${effectivePrefix}access_token_chat'],
+      ),
       localImageSettingImageCacheMaxBytes: attachedDatabase.typeMapping.read(
-          DriftSqlType.int,
-          data['${effectivePrefix}local_image_setting_image_cache_max_bytes']),
+        DriftSqlType.int,
+        data['${effectivePrefix}local_image_setting_image_cache_max_bytes'],
+      ),
       localImageSettingCacheFullSizedImages: attachedDatabase.typeMapping.read(
-          DriftSqlType.bool,
-          data[
-              '${effectivePrefix}local_image_setting_cache_full_sized_images']),
+        DriftSqlType.bool,
+        data['${effectivePrefix}local_image_setting_cache_full_sized_images'],
+      ),
       localImageSettingImageCacheDownscalingSize: attachedDatabase.typeMapping.read(
-          DriftSqlType.int,
-          data[
-              '${effectivePrefix}local_image_setting_image_cache_downscaling_size']),
+        DriftSqlType.int,
+        data['${effectivePrefix}local_image_setting_image_cache_downscaling_size'],
+      ),
       privateKeyData: $AccountTable.$converterprivateKeyData.fromSql(
-          attachedDatabase.typeMapping.read(
-              DriftSqlType.blob, data['${effectivePrefix}private_key_data'])),
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.blob,
+          data['${effectivePrefix}private_key_data'],
+        ),
+      ),
       publicKeyData: $AccountTable.$converterpublicKeyData.fromSql(
-          attachedDatabase.typeMapping.read(
-              DriftSqlType.blob, data['${effectivePrefix}public_key_data'])),
-      publicKeyId: $AccountTable.$converterpublicKeyId.fromSql(attachedDatabase
-          .typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}public_key_id'])),
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.blob,
+          data['${effectivePrefix}public_key_data'],
+        ),
+      ),
+      publicKeyId: $AccountTable.$converterpublicKeyId.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.int,
+          data['${effectivePrefix}public_key_id'],
+        ),
+      ),
       profileInitialAgeSetUnixTime: $AccountTable
           .$converterprofileInitialAgeSetUnixTime
-          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.int,
-              data['${effectivePrefix}profile_initial_age_set_unix_time'])),
+          .fromSql(
+            attachedDatabase.typeMapping.read(
+              DriftSqlType.int,
+              data['${effectivePrefix}profile_initial_age_set_unix_time'],
+            ),
+          ),
       profileInitialAge: attachedDatabase.typeMapping.read(
-          DriftSqlType.int, data['${effectivePrefix}profile_initial_age']),
+        DriftSqlType.int,
+        data['${effectivePrefix}profile_initial_age'],
+      ),
       serverMaintenanceUnixTime: $AccountTable
           .$converterserverMaintenanceUnixTime
-          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.int,
-              data['${effectivePrefix}server_maintenance_unix_time'])),
+          .fromSql(
+            attachedDatabase.typeMapping.read(
+              DriftSqlType.int,
+              data['${effectivePrefix}server_maintenance_unix_time'],
+            ),
+          ),
       serverMaintenanceUnixTimeViewed: $AccountTable
           .$converterserverMaintenanceUnixTimeViewed
-          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.int,
-              data['${effectivePrefix}server_maintenance_unix_time_viewed'])),
+          .fromSql(
+            attachedDatabase.typeMapping.read(
+              DriftSqlType.int,
+              data['${effectivePrefix}server_maintenance_unix_time_viewed'],
+            ),
+          ),
       customReportsFileHash: $AccountTable.$convertercustomReportsFileHash
-          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.string,
-              data['${effectivePrefix}custom_reports_file_hash'])),
+          .fromSql(
+            attachedDatabase.typeMapping.read(
+              DriftSqlType.string,
+              data['${effectivePrefix}custom_reports_file_hash'],
+            ),
+          ),
       customReportsConfig: $AccountTable.$convertercustomReportsConfig.fromSql(
-          attachedDatabase.typeMapping.read(DriftSqlType.string,
-              data['${effectivePrefix}custom_reports_config'])),
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}custom_reports_config'],
+        ),
+      ),
       clientFeaturesFileHash: $AccountTable.$converterclientFeaturesFileHash
-          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.string,
-              data['${effectivePrefix}client_features_file_hash'])),
+          .fromSql(
+            attachedDatabase.typeMapping.read(
+              DriftSqlType.string,
+              data['${effectivePrefix}client_features_file_hash'],
+            ),
+          ),
       clientFeaturesConfig: $AccountTable.$converterclientFeaturesConfig
-          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.string,
-              data['${effectivePrefix}client_features_config'])),
+          .fromSql(
+            attachedDatabase.typeMapping.read(
+              DriftSqlType.string,
+              data['${effectivePrefix}client_features_config'],
+            ),
+          ),
       initialSetupSkipped: attachedDatabase.typeMapping.read(
-          DriftSqlType.bool, data['${effectivePrefix}initial_setup_skipped'])!,
+        DriftSqlType.bool,
+        data['${effectivePrefix}initial_setup_skipped'],
+      )!,
     );
   }
 
@@ -1038,41 +1599,49 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
   static TypeConverter<EnumString?, String?> $converterjsonProfileVisibility =
       NullAwareTypeConverter.wrap(EnumString.driftConverter);
   static TypeConverter<api.ProfileIteratorSessionId?, int?>
-      $converterprofileIteratorSessionId =
-      const NullAwareTypeConverter.wrap(ProfileIteratorSessionIdConverter());
+  $converterprofileIteratorSessionId = const NullAwareTypeConverter.wrap(
+    ProfileIteratorSessionIdConverter(),
+  );
   static TypeConverter<api.AutomaticProfileSearchIteratorSessionId?, int?>
-      $converterautomatiProfileSearchIteratorSessionId =
+  $converterautomatiProfileSearchIteratorSessionId =
       const NullAwareTypeConverter.wrap(
-          AutomaticProfileSearchIteratorSessionIdConverter());
+        AutomaticProfileSearchIteratorSessionIdConverter(),
+      );
   static TypeConverter<api.ReceivedLikesIteratorSessionId?, int?>
-      $converterreceivedLikesIteratorSessionId =
-      const NullAwareTypeConverter.wrap(
-          ReceivedLikesIteratorSessionIdConverter());
+  $converterreceivedLikesIteratorSessionId = const NullAwareTypeConverter.wrap(
+    ReceivedLikesIteratorSessionIdConverter(),
+  );
   static TypeConverter<api.MatchesIteratorSessionId?, int?>
-      $convertermatchesIteratorSessionId =
-      const NullAwareTypeConverter.wrap(MatchesIteratorSessionIdConverter());
+  $convertermatchesIteratorSessionId = const NullAwareTypeConverter.wrap(
+    MatchesIteratorSessionIdConverter(),
+  );
   static TypeConverter<api.ClientId?, int?> $converterclientId =
       const NullAwareTypeConverter.wrap(ClientIdConverter());
   static TypeConverter<EnumString?, String?>
-      $converterjsonAvailableProfileAttributesOrderMode =
+  $converterjsonAvailableProfileAttributesOrderMode =
       NullAwareTypeConverter.wrap(EnumString.driftConverter);
   static TypeConverter<api.ProfileContentVersion?, String?>
-      $converterprofileContentVersion =
-      const NullAwareTypeConverter.wrap(ProfileContentVersionConverter());
+  $converterprofileContentVersion = const NullAwareTypeConverter.wrap(
+    ProfileContentVersionConverter(),
+  );
   static TypeConverter<EnumString?, String?>
-      $converterprofileNameModerationState =
-      NullAwareTypeConverter.wrap(EnumString.driftConverter);
+  $converterprofileNameModerationState = NullAwareTypeConverter.wrap(
+    EnumString.driftConverter,
+  );
   static TypeConverter<EnumString?, String?>
-      $converterprofileTextModerationState =
-      NullAwareTypeConverter.wrap(EnumString.driftConverter);
+  $converterprofileTextModerationState = NullAwareTypeConverter.wrap(
+    EnumString.driftConverter,
+  );
   static TypeConverter<api.ProfileTextModerationRejectedReasonCategory?, int?>
-      $converterprofileTextModerationRejectedCategory =
+  $converterprofileTextModerationRejectedCategory =
       const NullAwareTypeConverter.wrap(
-          ProfileTextModerationRejectedReasonCategoryConverter());
+        ProfileTextModerationRejectedReasonCategoryConverter(),
+      );
   static TypeConverter<api.ProfileTextModerationRejectedReasonDetails?, String?>
-      $converterprofileTextModerationRejectedDetails =
+  $converterprofileTextModerationRejectedDetails =
       const NullAwareTypeConverter.wrap(
-          ProfileTextModerationRejectedReasonDetailsConverter());
+        ProfileTextModerationRejectedReasonDetailsConverter(),
+      );
   static TypeConverter<api.ProfileVersion?, String?> $converterprofileVersion =
       const NullAwareTypeConverter.wrap(ProfileVersionConverter());
   static TypeConverter<JsonList?, String?> $converterjsonProfileAttributes =
@@ -1080,8 +1649,9 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
   static TypeConverter<JsonString?, String?> $converterjsonSearchGroups =
       NullAwareTypeConverter.wrap(JsonString.driftConverter);
   static TypeConverter<JsonString?, String?>
-      $converterjsonProfileFilteringSettings =
-      NullAwareTypeConverter.wrap(JsonString.driftConverter);
+  $converterjsonProfileFilteringSettings = NullAwareTypeConverter.wrap(
+    JsonString.driftConverter,
+  );
   static TypeConverter<PrivateKeyData?, Uint8List?> $converterprivateKeyData =
       const NullAwareTypeConverter.wrap(PrivateKeyDataConverter());
   static TypeConverter<PublicKeyData?, Uint8List?> $converterpublicKeyData =
@@ -1089,21 +1659,25 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
   static TypeConverter<api.PublicKeyId?, int?> $converterpublicKeyId =
       const NullAwareTypeConverter.wrap(PublicKeyIdConverter());
   static TypeConverter<UtcDateTime?, int?>
-      $converterprofileInitialAgeSetUnixTime =
-      const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
+  $converterprofileInitialAgeSetUnixTime = const NullAwareTypeConverter.wrap(
+    UtcDateTimeConverter(),
+  );
   static TypeConverter<UtcDateTime?, int?> $converterserverMaintenanceUnixTime =
       const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
   static TypeConverter<UtcDateTime?, int?>
-      $converterserverMaintenanceUnixTimeViewed =
-      const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
+  $converterserverMaintenanceUnixTimeViewed = const NullAwareTypeConverter.wrap(
+    UtcDateTimeConverter(),
+  );
   static TypeConverter<api.CustomReportsFileHash?, String?>
-      $convertercustomReportsFileHash =
-      const NullAwareTypeConverter.wrap(CustomReportsFileHashConverter());
+  $convertercustomReportsFileHash = const NullAwareTypeConverter.wrap(
+    CustomReportsFileHashConverter(),
+  );
   static TypeConverter<JsonString?, String?> $convertercustomReportsConfig =
       NullAwareTypeConverter.wrap(JsonString.driftConverter);
   static TypeConverter<api.ClientFeaturesFileHash?, String?>
-      $converterclientFeaturesFileHash =
-      const NullAwareTypeConverter.wrap(ClientFeaturesFileHashConverter());
+  $converterclientFeaturesFileHash = const NullAwareTypeConverter.wrap(
+    ClientFeaturesFileHashConverter(),
+  );
   static TypeConverter<JsonString?, String?> $converterclientFeaturesConfig =
       NullAwareTypeConverter.wrap(JsonString.driftConverter);
 }
@@ -1119,7 +1693,7 @@ class AccountData extends DataClass implements Insertable<AccountData> {
   final bool profileFilterFavorites;
   final api.ProfileIteratorSessionId? profileIteratorSessionId;
   final api.AutomaticProfileSearchIteratorSessionId?
-      automatiProfileSearchIteratorSessionId;
+  automatiProfileSearchIteratorSessionId;
   final api.ReceivedLikesIteratorSessionId? receivedLikesIteratorSessionId;
   final api.MatchesIteratorSessionId? matchesIteratorSessionId;
   final api.ClientId? clientId;
@@ -1144,9 +1718,9 @@ class AccountData extends DataClass implements Insertable<AccountData> {
   final bool? profileTextAccepted;
   final EnumString? profileTextModerationState;
   final api.ProfileTextModerationRejectedReasonCategory?
-      profileTextModerationRejectedCategory;
+  profileTextModerationRejectedCategory;
   final api.ProfileTextModerationRejectedReasonDetails?
-      profileTextModerationRejectedDetails;
+  profileTextModerationRejectedDetails;
   final int? profileAge;
   final bool? profileUnlimitedLikes;
   final api.ProfileVersion? profileVersion;
@@ -1181,135 +1755,157 @@ class AccountData extends DataClass implements Insertable<AccountData> {
   final api.ClientFeaturesFileHash? clientFeaturesFileHash;
   final JsonString? clientFeaturesConfig;
   final bool initialSetupSkipped;
-  const AccountData(
-      {required this.id,
-      this.uuidAccountId,
-      this.jsonAccountState,
-      this.jsonPermissions,
-      this.jsonProfileVisibility,
-      required this.profileFilterFavorites,
-      this.profileIteratorSessionId,
-      this.automatiProfileSearchIteratorSessionId,
-      this.receivedLikesIteratorSessionId,
-      this.matchesIteratorSessionId,
-      this.clientId,
-      this.jsonAvailableProfileAttributesOrderMode,
-      required this.initialSyncDoneLoginRepository,
-      required this.initialSyncDoneAccountRepository,
-      required this.initialSyncDoneMediaRepository,
-      required this.initialSyncDoneProfileRepository,
-      required this.initialSyncDoneChatRepository,
-      this.syncVersionAccount,
-      this.syncVersionProfile,
-      this.syncVersionMediaContent,
-      this.syncVersionClientConfig,
-      this.primaryContentGridCropSize,
-      this.primaryContentGridCropX,
-      this.primaryContentGridCropY,
-      this.profileContentVersion,
-      this.profileName,
-      this.profileNameAccepted,
-      this.profileNameModerationState,
-      this.profileText,
-      this.profileTextAccepted,
-      this.profileTextModerationState,
-      this.profileTextModerationRejectedCategory,
-      this.profileTextModerationRejectedDetails,
-      this.profileAge,
-      this.profileUnlimitedLikes,
-      this.profileVersion,
-      this.jsonProfileAttributes,
-      this.profileLocationLatitude,
-      this.profileLocationLongitude,
-      this.jsonSearchGroups,
-      this.jsonProfileFilteringSettings,
-      this.profileSearchAgeRangeMin,
-      this.profileSearchAgeRangeMax,
-      this.accountEmailAddress,
-      this.refreshTokenAccount,
-      this.refreshTokenMedia,
-      this.refreshTokenProfile,
-      this.refreshTokenChat,
-      this.accessTokenAccount,
-      this.accessTokenMedia,
-      this.accessTokenProfile,
-      this.accessTokenChat,
-      this.localImageSettingImageCacheMaxBytes,
-      this.localImageSettingCacheFullSizedImages,
-      this.localImageSettingImageCacheDownscalingSize,
-      this.privateKeyData,
-      this.publicKeyData,
-      this.publicKeyId,
-      this.profileInitialAgeSetUnixTime,
-      this.profileInitialAge,
-      this.serverMaintenanceUnixTime,
-      this.serverMaintenanceUnixTimeViewed,
-      this.customReportsFileHash,
-      this.customReportsConfig,
-      this.clientFeaturesFileHash,
-      this.clientFeaturesConfig,
-      required this.initialSetupSkipped});
+  const AccountData({
+    required this.id,
+    this.uuidAccountId,
+    this.jsonAccountState,
+    this.jsonPermissions,
+    this.jsonProfileVisibility,
+    required this.profileFilterFavorites,
+    this.profileIteratorSessionId,
+    this.automatiProfileSearchIteratorSessionId,
+    this.receivedLikesIteratorSessionId,
+    this.matchesIteratorSessionId,
+    this.clientId,
+    this.jsonAvailableProfileAttributesOrderMode,
+    required this.initialSyncDoneLoginRepository,
+    required this.initialSyncDoneAccountRepository,
+    required this.initialSyncDoneMediaRepository,
+    required this.initialSyncDoneProfileRepository,
+    required this.initialSyncDoneChatRepository,
+    this.syncVersionAccount,
+    this.syncVersionProfile,
+    this.syncVersionMediaContent,
+    this.syncVersionClientConfig,
+    this.primaryContentGridCropSize,
+    this.primaryContentGridCropX,
+    this.primaryContentGridCropY,
+    this.profileContentVersion,
+    this.profileName,
+    this.profileNameAccepted,
+    this.profileNameModerationState,
+    this.profileText,
+    this.profileTextAccepted,
+    this.profileTextModerationState,
+    this.profileTextModerationRejectedCategory,
+    this.profileTextModerationRejectedDetails,
+    this.profileAge,
+    this.profileUnlimitedLikes,
+    this.profileVersion,
+    this.jsonProfileAttributes,
+    this.profileLocationLatitude,
+    this.profileLocationLongitude,
+    this.jsonSearchGroups,
+    this.jsonProfileFilteringSettings,
+    this.profileSearchAgeRangeMin,
+    this.profileSearchAgeRangeMax,
+    this.accountEmailAddress,
+    this.refreshTokenAccount,
+    this.refreshTokenMedia,
+    this.refreshTokenProfile,
+    this.refreshTokenChat,
+    this.accessTokenAccount,
+    this.accessTokenMedia,
+    this.accessTokenProfile,
+    this.accessTokenChat,
+    this.localImageSettingImageCacheMaxBytes,
+    this.localImageSettingCacheFullSizedImages,
+    this.localImageSettingImageCacheDownscalingSize,
+    this.privateKeyData,
+    this.publicKeyData,
+    this.publicKeyId,
+    this.profileInitialAgeSetUnixTime,
+    this.profileInitialAge,
+    this.serverMaintenanceUnixTime,
+    this.serverMaintenanceUnixTimeViewed,
+    this.customReportsFileHash,
+    this.customReportsConfig,
+    this.clientFeaturesFileHash,
+    this.clientFeaturesConfig,
+    required this.initialSetupSkipped,
+  });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     if (!nullToAbsent || uuidAccountId != null) {
       map['uuid_account_id'] = Variable<String>(
-          $AccountTable.$converteruuidAccountId.toSql(uuidAccountId));
+        $AccountTable.$converteruuidAccountId.toSql(uuidAccountId),
+      );
     }
     if (!nullToAbsent || jsonAccountState != null) {
       map['json_account_state'] = Variable<String>(
-          $AccountTable.$converterjsonAccountState.toSql(jsonAccountState));
+        $AccountTable.$converterjsonAccountState.toSql(jsonAccountState),
+      );
     }
     if (!nullToAbsent || jsonPermissions != null) {
       map['json_permissions'] = Variable<String>(
-          $AccountTable.$converterjsonPermissions.toSql(jsonPermissions));
+        $AccountTable.$converterjsonPermissions.toSql(jsonPermissions),
+      );
     }
     if (!nullToAbsent || jsonProfileVisibility != null) {
-      map['json_profile_visibility'] = Variable<String>($AccountTable
-          .$converterjsonProfileVisibility
-          .toSql(jsonProfileVisibility));
+      map['json_profile_visibility'] = Variable<String>(
+        $AccountTable.$converterjsonProfileVisibility.toSql(
+          jsonProfileVisibility,
+        ),
+      );
     }
     map['profile_filter_favorites'] = Variable<bool>(profileFilterFavorites);
     if (!nullToAbsent || profileIteratorSessionId != null) {
-      map['profile_iterator_session_id'] = Variable<int>($AccountTable
-          .$converterprofileIteratorSessionId
-          .toSql(profileIteratorSessionId));
+      map['profile_iterator_session_id'] = Variable<int>(
+        $AccountTable.$converterprofileIteratorSessionId.toSql(
+          profileIteratorSessionId,
+        ),
+      );
     }
     if (!nullToAbsent || automatiProfileSearchIteratorSessionId != null) {
       map['automati_profile_search_iterator_session_id'] = Variable<int>(
-          $AccountTable.$converterautomatiProfileSearchIteratorSessionId
-              .toSql(automatiProfileSearchIteratorSessionId));
+        $AccountTable.$converterautomatiProfileSearchIteratorSessionId.toSql(
+          automatiProfileSearchIteratorSessionId,
+        ),
+      );
     }
     if (!nullToAbsent || receivedLikesIteratorSessionId != null) {
-      map['received_likes_iterator_session_id'] = Variable<int>($AccountTable
-          .$converterreceivedLikesIteratorSessionId
-          .toSql(receivedLikesIteratorSessionId));
+      map['received_likes_iterator_session_id'] = Variable<int>(
+        $AccountTable.$converterreceivedLikesIteratorSessionId.toSql(
+          receivedLikesIteratorSessionId,
+        ),
+      );
     }
     if (!nullToAbsent || matchesIteratorSessionId != null) {
-      map['matches_iterator_session_id'] = Variable<int>($AccountTable
-          .$convertermatchesIteratorSessionId
-          .toSql(matchesIteratorSessionId));
+      map['matches_iterator_session_id'] = Variable<int>(
+        $AccountTable.$convertermatchesIteratorSessionId.toSql(
+          matchesIteratorSessionId,
+        ),
+      );
     }
     if (!nullToAbsent || clientId != null) {
-      map['client_id'] =
-          Variable<int>($AccountTable.$converterclientId.toSql(clientId));
+      map['client_id'] = Variable<int>(
+        $AccountTable.$converterclientId.toSql(clientId),
+      );
     }
     if (!nullToAbsent || jsonAvailableProfileAttributesOrderMode != null) {
       map['json_available_profile_attributes_order_mode'] = Variable<String>(
-          $AccountTable.$converterjsonAvailableProfileAttributesOrderMode
-              .toSql(jsonAvailableProfileAttributesOrderMode));
+        $AccountTable.$converterjsonAvailableProfileAttributesOrderMode.toSql(
+          jsonAvailableProfileAttributesOrderMode,
+        ),
+      );
     }
-    map['initial_sync_done_login_repository'] =
-        Variable<bool>(initialSyncDoneLoginRepository);
-    map['initial_sync_done_account_repository'] =
-        Variable<bool>(initialSyncDoneAccountRepository);
-    map['initial_sync_done_media_repository'] =
-        Variable<bool>(initialSyncDoneMediaRepository);
-    map['initial_sync_done_profile_repository'] =
-        Variable<bool>(initialSyncDoneProfileRepository);
-    map['initial_sync_done_chat_repository'] =
-        Variable<bool>(initialSyncDoneChatRepository);
+    map['initial_sync_done_login_repository'] = Variable<bool>(
+      initialSyncDoneLoginRepository,
+    );
+    map['initial_sync_done_account_repository'] = Variable<bool>(
+      initialSyncDoneAccountRepository,
+    );
+    map['initial_sync_done_media_repository'] = Variable<bool>(
+      initialSyncDoneMediaRepository,
+    );
+    map['initial_sync_done_profile_repository'] = Variable<bool>(
+      initialSyncDoneProfileRepository,
+    );
+    map['initial_sync_done_chat_repository'] = Variable<bool>(
+      initialSyncDoneChatRepository,
+    );
     if (!nullToAbsent || syncVersionAccount != null) {
       map['sync_version_account'] = Variable<int>(syncVersionAccount);
     }
@@ -1317,29 +1913,36 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       map['sync_version_profile'] = Variable<int>(syncVersionProfile);
     }
     if (!nullToAbsent || syncVersionMediaContent != null) {
-      map['sync_version_media_content'] =
-          Variable<int>(syncVersionMediaContent);
+      map['sync_version_media_content'] = Variable<int>(
+        syncVersionMediaContent,
+      );
     }
     if (!nullToAbsent || syncVersionClientConfig != null) {
-      map['sync_version_client_config'] =
-          Variable<int>(syncVersionClientConfig);
+      map['sync_version_client_config'] = Variable<int>(
+        syncVersionClientConfig,
+      );
     }
     if (!nullToAbsent || primaryContentGridCropSize != null) {
-      map['primary_content_grid_crop_size'] =
-          Variable<double>(primaryContentGridCropSize);
+      map['primary_content_grid_crop_size'] = Variable<double>(
+        primaryContentGridCropSize,
+      );
     }
     if (!nullToAbsent || primaryContentGridCropX != null) {
-      map['primary_content_grid_crop_x'] =
-          Variable<double>(primaryContentGridCropX);
+      map['primary_content_grid_crop_x'] = Variable<double>(
+        primaryContentGridCropX,
+      );
     }
     if (!nullToAbsent || primaryContentGridCropY != null) {
-      map['primary_content_grid_crop_y'] =
-          Variable<double>(primaryContentGridCropY);
+      map['primary_content_grid_crop_y'] = Variable<double>(
+        primaryContentGridCropY,
+      );
     }
     if (!nullToAbsent || profileContentVersion != null) {
-      map['profile_content_version'] = Variable<String>($AccountTable
-          .$converterprofileContentVersion
-          .toSql(profileContentVersion));
+      map['profile_content_version'] = Variable<String>(
+        $AccountTable.$converterprofileContentVersion.toSql(
+          profileContentVersion,
+        ),
+      );
     }
     if (!nullToAbsent || profileName != null) {
       map['profile_name'] = Variable<String>(profileName);
@@ -1348,9 +1951,11 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       map['profile_name_accepted'] = Variable<bool>(profileNameAccepted);
     }
     if (!nullToAbsent || profileNameModerationState != null) {
-      map['profile_name_moderation_state'] = Variable<String>($AccountTable
-          .$converterprofileNameModerationState
-          .toSql(profileNameModerationState));
+      map['profile_name_moderation_state'] = Variable<String>(
+        $AccountTable.$converterprofileNameModerationState.toSql(
+          profileNameModerationState,
+        ),
+      );
     }
     if (!nullToAbsent || profileText != null) {
       map['profile_text'] = Variable<String>(profileText);
@@ -1359,19 +1964,25 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       map['profile_text_accepted'] = Variable<bool>(profileTextAccepted);
     }
     if (!nullToAbsent || profileTextModerationState != null) {
-      map['profile_text_moderation_state'] = Variable<String>($AccountTable
-          .$converterprofileTextModerationState
-          .toSql(profileTextModerationState));
+      map['profile_text_moderation_state'] = Variable<String>(
+        $AccountTable.$converterprofileTextModerationState.toSql(
+          profileTextModerationState,
+        ),
+      );
     }
     if (!nullToAbsent || profileTextModerationRejectedCategory != null) {
       map['profile_text_moderation_rejected_category'] = Variable<int>(
-          $AccountTable.$converterprofileTextModerationRejectedCategory
-              .toSql(profileTextModerationRejectedCategory));
+        $AccountTable.$converterprofileTextModerationRejectedCategory.toSql(
+          profileTextModerationRejectedCategory,
+        ),
+      );
     }
     if (!nullToAbsent || profileTextModerationRejectedDetails != null) {
       map['profile_text_moderation_rejected_details'] = Variable<String>(
-          $AccountTable.$converterprofileTextModerationRejectedDetails
-              .toSql(profileTextModerationRejectedDetails));
+        $AccountTable.$converterprofileTextModerationRejectedDetails.toSql(
+          profileTextModerationRejectedDetails,
+        ),
+      );
     }
     if (!nullToAbsent || profileAge != null) {
       map['profile_age'] = Variable<int>(profileAge);
@@ -1381,37 +1992,47 @@ class AccountData extends DataClass implements Insertable<AccountData> {
     }
     if (!nullToAbsent || profileVersion != null) {
       map['profile_version'] = Variable<String>(
-          $AccountTable.$converterprofileVersion.toSql(profileVersion));
+        $AccountTable.$converterprofileVersion.toSql(profileVersion),
+      );
     }
     if (!nullToAbsent || jsonProfileAttributes != null) {
-      map['json_profile_attributes'] = Variable<String>($AccountTable
-          .$converterjsonProfileAttributes
-          .toSql(jsonProfileAttributes));
+      map['json_profile_attributes'] = Variable<String>(
+        $AccountTable.$converterjsonProfileAttributes.toSql(
+          jsonProfileAttributes,
+        ),
+      );
     }
     if (!nullToAbsent || profileLocationLatitude != null) {
-      map['profile_location_latitude'] =
-          Variable<double>(profileLocationLatitude);
+      map['profile_location_latitude'] = Variable<double>(
+        profileLocationLatitude,
+      );
     }
     if (!nullToAbsent || profileLocationLongitude != null) {
-      map['profile_location_longitude'] =
-          Variable<double>(profileLocationLongitude);
+      map['profile_location_longitude'] = Variable<double>(
+        profileLocationLongitude,
+      );
     }
     if (!nullToAbsent || jsonSearchGroups != null) {
       map['json_search_groups'] = Variable<String>(
-          $AccountTable.$converterjsonSearchGroups.toSql(jsonSearchGroups));
+        $AccountTable.$converterjsonSearchGroups.toSql(jsonSearchGroups),
+      );
     }
     if (!nullToAbsent || jsonProfileFilteringSettings != null) {
-      map['json_profile_filtering_settings'] = Variable<String>($AccountTable
-          .$converterjsonProfileFilteringSettings
-          .toSql(jsonProfileFilteringSettings));
+      map['json_profile_filtering_settings'] = Variable<String>(
+        $AccountTable.$converterjsonProfileFilteringSettings.toSql(
+          jsonProfileFilteringSettings,
+        ),
+      );
     }
     if (!nullToAbsent || profileSearchAgeRangeMin != null) {
-      map['profile_search_age_range_min'] =
-          Variable<int>(profileSearchAgeRangeMin);
+      map['profile_search_age_range_min'] = Variable<int>(
+        profileSearchAgeRangeMin,
+      );
     }
     if (!nullToAbsent || profileSearchAgeRangeMax != null) {
-      map['profile_search_age_range_max'] =
-          Variable<int>(profileSearchAgeRangeMax);
+      map['profile_search_age_range_max'] = Variable<int>(
+        profileSearchAgeRangeMax,
+      );
     }
     if (!nullToAbsent || accountEmailAddress != null) {
       map['account_email_address'] = Variable<String>(accountEmailAddress);
@@ -1441,66 +2062,84 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       map['access_token_chat'] = Variable<String>(accessTokenChat);
     }
     if (!nullToAbsent || localImageSettingImageCacheMaxBytes != null) {
-      map['local_image_setting_image_cache_max_bytes'] =
-          Variable<int>(localImageSettingImageCacheMaxBytes);
+      map['local_image_setting_image_cache_max_bytes'] = Variable<int>(
+        localImageSettingImageCacheMaxBytes,
+      );
     }
     if (!nullToAbsent || localImageSettingCacheFullSizedImages != null) {
-      map['local_image_setting_cache_full_sized_images'] =
-          Variable<bool>(localImageSettingCacheFullSizedImages);
+      map['local_image_setting_cache_full_sized_images'] = Variable<bool>(
+        localImageSettingCacheFullSizedImages,
+      );
     }
     if (!nullToAbsent || localImageSettingImageCacheDownscalingSize != null) {
-      map['local_image_setting_image_cache_downscaling_size'] =
-          Variable<int>(localImageSettingImageCacheDownscalingSize);
+      map['local_image_setting_image_cache_downscaling_size'] = Variable<int>(
+        localImageSettingImageCacheDownscalingSize,
+      );
     }
     if (!nullToAbsent || privateKeyData != null) {
       map['private_key_data'] = Variable<Uint8List>(
-          $AccountTable.$converterprivateKeyData.toSql(privateKeyData));
+        $AccountTable.$converterprivateKeyData.toSql(privateKeyData),
+      );
     }
     if (!nullToAbsent || publicKeyData != null) {
       map['public_key_data'] = Variable<Uint8List>(
-          $AccountTable.$converterpublicKeyData.toSql(publicKeyData));
+        $AccountTable.$converterpublicKeyData.toSql(publicKeyData),
+      );
     }
     if (!nullToAbsent || publicKeyId != null) {
-      map['public_key_id'] =
-          Variable<int>($AccountTable.$converterpublicKeyId.toSql(publicKeyId));
+      map['public_key_id'] = Variable<int>(
+        $AccountTable.$converterpublicKeyId.toSql(publicKeyId),
+      );
     }
     if (!nullToAbsent || profileInitialAgeSetUnixTime != null) {
-      map['profile_initial_age_set_unix_time'] = Variable<int>($AccountTable
-          .$converterprofileInitialAgeSetUnixTime
-          .toSql(profileInitialAgeSetUnixTime));
+      map['profile_initial_age_set_unix_time'] = Variable<int>(
+        $AccountTable.$converterprofileInitialAgeSetUnixTime.toSql(
+          profileInitialAgeSetUnixTime,
+        ),
+      );
     }
     if (!nullToAbsent || profileInitialAge != null) {
       map['profile_initial_age'] = Variable<int>(profileInitialAge);
     }
     if (!nullToAbsent || serverMaintenanceUnixTime != null) {
-      map['server_maintenance_unix_time'] = Variable<int>($AccountTable
-          .$converterserverMaintenanceUnixTime
-          .toSql(serverMaintenanceUnixTime));
+      map['server_maintenance_unix_time'] = Variable<int>(
+        $AccountTable.$converterserverMaintenanceUnixTime.toSql(
+          serverMaintenanceUnixTime,
+        ),
+      );
     }
     if (!nullToAbsent || serverMaintenanceUnixTimeViewed != null) {
-      map['server_maintenance_unix_time_viewed'] = Variable<int>($AccountTable
-          .$converterserverMaintenanceUnixTimeViewed
-          .toSql(serverMaintenanceUnixTimeViewed));
+      map['server_maintenance_unix_time_viewed'] = Variable<int>(
+        $AccountTable.$converterserverMaintenanceUnixTimeViewed.toSql(
+          serverMaintenanceUnixTimeViewed,
+        ),
+      );
     }
     if (!nullToAbsent || customReportsFileHash != null) {
-      map['custom_reports_file_hash'] = Variable<String>($AccountTable
-          .$convertercustomReportsFileHash
-          .toSql(customReportsFileHash));
+      map['custom_reports_file_hash'] = Variable<String>(
+        $AccountTable.$convertercustomReportsFileHash.toSql(
+          customReportsFileHash,
+        ),
+      );
     }
     if (!nullToAbsent || customReportsConfig != null) {
-      map['custom_reports_config'] = Variable<String>($AccountTable
-          .$convertercustomReportsConfig
-          .toSql(customReportsConfig));
+      map['custom_reports_config'] = Variable<String>(
+        $AccountTable.$convertercustomReportsConfig.toSql(customReportsConfig),
+      );
     }
     if (!nullToAbsent || clientFeaturesFileHash != null) {
-      map['client_features_file_hash'] = Variable<String>($AccountTable
-          .$converterclientFeaturesFileHash
-          .toSql(clientFeaturesFileHash));
+      map['client_features_file_hash'] = Variable<String>(
+        $AccountTable.$converterclientFeaturesFileHash.toSql(
+          clientFeaturesFileHash,
+        ),
+      );
     }
     if (!nullToAbsent || clientFeaturesConfig != null) {
-      map['client_features_config'] = Variable<String>($AccountTable
-          .$converterclientFeaturesConfig
-          .toSql(clientFeaturesConfig));
+      map['client_features_config'] = Variable<String>(
+        $AccountTable.$converterclientFeaturesConfig.toSql(
+          clientFeaturesConfig,
+        ),
+      );
     }
     map['initial_setup_skipped'] = Variable<bool>(initialSetupSkipped);
     return map;
@@ -1527,12 +2166,12 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           : Value(profileIteratorSessionId),
       automatiProfileSearchIteratorSessionId:
           automatiProfileSearchIteratorSessionId == null && nullToAbsent
-              ? const Value.absent()
-              : Value(automatiProfileSearchIteratorSessionId),
+          ? const Value.absent()
+          : Value(automatiProfileSearchIteratorSessionId),
       receivedLikesIteratorSessionId:
           receivedLikesIteratorSessionId == null && nullToAbsent
-              ? const Value.absent()
-              : Value(receivedLikesIteratorSessionId),
+          ? const Value.absent()
+          : Value(receivedLikesIteratorSessionId),
       matchesIteratorSessionId: matchesIteratorSessionId == null && nullToAbsent
           ? const Value.absent()
           : Value(matchesIteratorSessionId),
@@ -1541,8 +2180,8 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           : Value(clientId),
       jsonAvailableProfileAttributesOrderMode:
           jsonAvailableProfileAttributesOrderMode == null && nullToAbsent
-              ? const Value.absent()
-              : Value(jsonAvailableProfileAttributesOrderMode),
+          ? const Value.absent()
+          : Value(jsonAvailableProfileAttributesOrderMode),
       initialSyncDoneLoginRepository: Value(initialSyncDoneLoginRepository),
       initialSyncDoneAccountRepository: Value(initialSyncDoneAccountRepository),
       initialSyncDoneMediaRepository: Value(initialSyncDoneMediaRepository),
@@ -1562,8 +2201,8 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           : Value(syncVersionClientConfig),
       primaryContentGridCropSize:
           primaryContentGridCropSize == null && nullToAbsent
-              ? const Value.absent()
-              : Value(primaryContentGridCropSize),
+          ? const Value.absent()
+          : Value(primaryContentGridCropSize),
       primaryContentGridCropX: primaryContentGridCropX == null && nullToAbsent
           ? const Value.absent()
           : Value(primaryContentGridCropX),
@@ -1581,8 +2220,8 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           : Value(profileNameAccepted),
       profileNameModerationState:
           profileNameModerationState == null && nullToAbsent
-              ? const Value.absent()
-              : Value(profileNameModerationState),
+          ? const Value.absent()
+          : Value(profileNameModerationState),
       profileText: profileText == null && nullToAbsent
           ? const Value.absent()
           : Value(profileText),
@@ -1591,16 +2230,16 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           : Value(profileTextAccepted),
       profileTextModerationState:
           profileTextModerationState == null && nullToAbsent
-              ? const Value.absent()
-              : Value(profileTextModerationState),
+          ? const Value.absent()
+          : Value(profileTextModerationState),
       profileTextModerationRejectedCategory:
           profileTextModerationRejectedCategory == null && nullToAbsent
-              ? const Value.absent()
-              : Value(profileTextModerationRejectedCategory),
+          ? const Value.absent()
+          : Value(profileTextModerationRejectedCategory),
       profileTextModerationRejectedDetails:
           profileTextModerationRejectedDetails == null && nullToAbsent
-              ? const Value.absent()
-              : Value(profileTextModerationRejectedDetails),
+          ? const Value.absent()
+          : Value(profileTextModerationRejectedDetails),
       profileAge: profileAge == null && nullToAbsent
           ? const Value.absent()
           : Value(profileAge),
@@ -1624,8 +2263,8 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           : Value(jsonSearchGroups),
       jsonProfileFilteringSettings:
           jsonProfileFilteringSettings == null && nullToAbsent
-              ? const Value.absent()
-              : Value(jsonProfileFilteringSettings),
+          ? const Value.absent()
+          : Value(jsonProfileFilteringSettings),
       profileSearchAgeRangeMin: profileSearchAgeRangeMin == null && nullToAbsent
           ? const Value.absent()
           : Value(profileSearchAgeRangeMin),
@@ -1661,16 +2300,16 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           : Value(accessTokenChat),
       localImageSettingImageCacheMaxBytes:
           localImageSettingImageCacheMaxBytes == null && nullToAbsent
-              ? const Value.absent()
-              : Value(localImageSettingImageCacheMaxBytes),
+          ? const Value.absent()
+          : Value(localImageSettingImageCacheMaxBytes),
       localImageSettingCacheFullSizedImages:
           localImageSettingCacheFullSizedImages == null && nullToAbsent
-              ? const Value.absent()
-              : Value(localImageSettingCacheFullSizedImages),
+          ? const Value.absent()
+          : Value(localImageSettingCacheFullSizedImages),
       localImageSettingImageCacheDownscalingSize:
           localImageSettingImageCacheDownscalingSize == null && nullToAbsent
-              ? const Value.absent()
-              : Value(localImageSettingImageCacheDownscalingSize),
+          ? const Value.absent()
+          : Value(localImageSettingImageCacheDownscalingSize),
       privateKeyData: privateKeyData == null && nullToAbsent
           ? const Value.absent()
           : Value(privateKeyData),
@@ -1682,19 +2321,19 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           : Value(publicKeyId),
       profileInitialAgeSetUnixTime:
           profileInitialAgeSetUnixTime == null && nullToAbsent
-              ? const Value.absent()
-              : Value(profileInitialAgeSetUnixTime),
+          ? const Value.absent()
+          : Value(profileInitialAgeSetUnixTime),
       profileInitialAge: profileInitialAge == null && nullToAbsent
           ? const Value.absent()
           : Value(profileInitialAge),
       serverMaintenanceUnixTime:
           serverMaintenanceUnixTime == null && nullToAbsent
-              ? const Value.absent()
-              : Value(serverMaintenanceUnixTime),
+          ? const Value.absent()
+          : Value(serverMaintenanceUnixTime),
       serverMaintenanceUnixTimeViewed:
           serverMaintenanceUnixTimeViewed == null && nullToAbsent
-              ? const Value.absent()
-              : Value(serverMaintenanceUnixTimeViewed),
+          ? const Value.absent()
+          : Value(serverMaintenanceUnixTimeViewed),
       customReportsFileHash: customReportsFileHash == null && nullToAbsent
           ? const Value.absent()
           : Value(customReportsFileHash),
@@ -1711,136 +2350,191 @@ class AccountData extends DataClass implements Insertable<AccountData> {
     );
   }
 
-  factory AccountData.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
+  factory AccountData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return AccountData(
       id: serializer.fromJson<int>(json['id']),
       uuidAccountId: serializer.fromJson<api.AccountId?>(json['uuidAccountId']),
-      jsonAccountState:
-          serializer.fromJson<JsonString?>(json['jsonAccountState']),
-      jsonPermissions:
-          serializer.fromJson<JsonString?>(json['jsonPermissions']),
-      jsonProfileVisibility:
-          serializer.fromJson<EnumString?>(json['jsonProfileVisibility']),
-      profileFilterFavorites:
-          serializer.fromJson<bool>(json['profileFilterFavorites']),
-      profileIteratorSessionId:
-          serializer.fromJson<api.ProfileIteratorSessionId?>(
-              json['profileIteratorSessionId']),
-      automatiProfileSearchIteratorSessionId:
-          serializer.fromJson<api.AutomaticProfileSearchIteratorSessionId?>(
-              json['automatiProfileSearchIteratorSessionId']),
-      receivedLikesIteratorSessionId:
-          serializer.fromJson<api.ReceivedLikesIteratorSessionId?>(
-              json['receivedLikesIteratorSessionId']),
-      matchesIteratorSessionId:
-          serializer.fromJson<api.MatchesIteratorSessionId?>(
-              json['matchesIteratorSessionId']),
+      jsonAccountState: serializer.fromJson<JsonString?>(
+        json['jsonAccountState'],
+      ),
+      jsonPermissions: serializer.fromJson<JsonString?>(
+        json['jsonPermissions'],
+      ),
+      jsonProfileVisibility: serializer.fromJson<EnumString?>(
+        json['jsonProfileVisibility'],
+      ),
+      profileFilterFavorites: serializer.fromJson<bool>(
+        json['profileFilterFavorites'],
+      ),
+      profileIteratorSessionId: serializer
+          .fromJson<api.ProfileIteratorSessionId?>(
+            json['profileIteratorSessionId'],
+          ),
+      automatiProfileSearchIteratorSessionId: serializer
+          .fromJson<api.AutomaticProfileSearchIteratorSessionId?>(
+            json['automatiProfileSearchIteratorSessionId'],
+          ),
+      receivedLikesIteratorSessionId: serializer
+          .fromJson<api.ReceivedLikesIteratorSessionId?>(
+            json['receivedLikesIteratorSessionId'],
+          ),
+      matchesIteratorSessionId: serializer
+          .fromJson<api.MatchesIteratorSessionId?>(
+            json['matchesIteratorSessionId'],
+          ),
       clientId: serializer.fromJson<api.ClientId?>(json['clientId']),
       jsonAvailableProfileAttributesOrderMode: serializer.fromJson<EnumString?>(
-          json['jsonAvailableProfileAttributesOrderMode']),
-      initialSyncDoneLoginRepository:
-          serializer.fromJson<bool>(json['initialSyncDoneLoginRepository']),
-      initialSyncDoneAccountRepository:
-          serializer.fromJson<bool>(json['initialSyncDoneAccountRepository']),
-      initialSyncDoneMediaRepository:
-          serializer.fromJson<bool>(json['initialSyncDoneMediaRepository']),
-      initialSyncDoneProfileRepository:
-          serializer.fromJson<bool>(json['initialSyncDoneProfileRepository']),
-      initialSyncDoneChatRepository:
-          serializer.fromJson<bool>(json['initialSyncDoneChatRepository']),
+        json['jsonAvailableProfileAttributesOrderMode'],
+      ),
+      initialSyncDoneLoginRepository: serializer.fromJson<bool>(
+        json['initialSyncDoneLoginRepository'],
+      ),
+      initialSyncDoneAccountRepository: serializer.fromJson<bool>(
+        json['initialSyncDoneAccountRepository'],
+      ),
+      initialSyncDoneMediaRepository: serializer.fromJson<bool>(
+        json['initialSyncDoneMediaRepository'],
+      ),
+      initialSyncDoneProfileRepository: serializer.fromJson<bool>(
+        json['initialSyncDoneProfileRepository'],
+      ),
+      initialSyncDoneChatRepository: serializer.fromJson<bool>(
+        json['initialSyncDoneChatRepository'],
+      ),
       syncVersionAccount: serializer.fromJson<int?>(json['syncVersionAccount']),
       syncVersionProfile: serializer.fromJson<int?>(json['syncVersionProfile']),
-      syncVersionMediaContent:
-          serializer.fromJson<int?>(json['syncVersionMediaContent']),
-      syncVersionClientConfig:
-          serializer.fromJson<int?>(json['syncVersionClientConfig']),
-      primaryContentGridCropSize:
-          serializer.fromJson<double?>(json['primaryContentGridCropSize']),
-      primaryContentGridCropX:
-          serializer.fromJson<double?>(json['primaryContentGridCropX']),
-      primaryContentGridCropY:
-          serializer.fromJson<double?>(json['primaryContentGridCropY']),
-      profileContentVersion: serializer
-          .fromJson<api.ProfileContentVersion?>(json['profileContentVersion']),
+      syncVersionMediaContent: serializer.fromJson<int?>(
+        json['syncVersionMediaContent'],
+      ),
+      syncVersionClientConfig: serializer.fromJson<int?>(
+        json['syncVersionClientConfig'],
+      ),
+      primaryContentGridCropSize: serializer.fromJson<double?>(
+        json['primaryContentGridCropSize'],
+      ),
+      primaryContentGridCropX: serializer.fromJson<double?>(
+        json['primaryContentGridCropX'],
+      ),
+      primaryContentGridCropY: serializer.fromJson<double?>(
+        json['primaryContentGridCropY'],
+      ),
+      profileContentVersion: serializer.fromJson<api.ProfileContentVersion?>(
+        json['profileContentVersion'],
+      ),
       profileName: serializer.fromJson<String?>(json['profileName']),
-      profileNameAccepted:
-          serializer.fromJson<bool?>(json['profileNameAccepted']),
-      profileNameModerationState:
-          serializer.fromJson<EnumString?>(json['profileNameModerationState']),
+      profileNameAccepted: serializer.fromJson<bool?>(
+        json['profileNameAccepted'],
+      ),
+      profileNameModerationState: serializer.fromJson<EnumString?>(
+        json['profileNameModerationState'],
+      ),
       profileText: serializer.fromJson<String?>(json['profileText']),
-      profileTextAccepted:
-          serializer.fromJson<bool?>(json['profileTextAccepted']),
-      profileTextModerationState:
-          serializer.fromJson<EnumString?>(json['profileTextModerationState']),
-      profileTextModerationRejectedCategory:
-          serializer.fromJson<api.ProfileTextModerationRejectedReasonCategory?>(
-              json['profileTextModerationRejectedCategory']),
-      profileTextModerationRejectedDetails:
-          serializer.fromJson<api.ProfileTextModerationRejectedReasonDetails?>(
-              json['profileTextModerationRejectedDetails']),
+      profileTextAccepted: serializer.fromJson<bool?>(
+        json['profileTextAccepted'],
+      ),
+      profileTextModerationState: serializer.fromJson<EnumString?>(
+        json['profileTextModerationState'],
+      ),
+      profileTextModerationRejectedCategory: serializer
+          .fromJson<api.ProfileTextModerationRejectedReasonCategory?>(
+            json['profileTextModerationRejectedCategory'],
+          ),
+      profileTextModerationRejectedDetails: serializer
+          .fromJson<api.ProfileTextModerationRejectedReasonDetails?>(
+            json['profileTextModerationRejectedDetails'],
+          ),
       profileAge: serializer.fromJson<int?>(json['profileAge']),
-      profileUnlimitedLikes:
-          serializer.fromJson<bool?>(json['profileUnlimitedLikes']),
-      profileVersion:
-          serializer.fromJson<api.ProfileVersion?>(json['profileVersion']),
-      jsonProfileAttributes:
-          serializer.fromJson<JsonList?>(json['jsonProfileAttributes']),
-      profileLocationLatitude:
-          serializer.fromJson<double?>(json['profileLocationLatitude']),
-      profileLocationLongitude:
-          serializer.fromJson<double?>(json['profileLocationLongitude']),
-      jsonSearchGroups:
-          serializer.fromJson<JsonString?>(json['jsonSearchGroups']),
-      jsonProfileFilteringSettings: serializer
-          .fromJson<JsonString?>(json['jsonProfileFilteringSettings']),
-      profileSearchAgeRangeMin:
-          serializer.fromJson<int?>(json['profileSearchAgeRangeMin']),
-      profileSearchAgeRangeMax:
-          serializer.fromJson<int?>(json['profileSearchAgeRangeMax']),
-      accountEmailAddress:
-          serializer.fromJson<String?>(json['accountEmailAddress']),
-      refreshTokenAccount:
-          serializer.fromJson<String?>(json['refreshTokenAccount']),
-      refreshTokenMedia:
-          serializer.fromJson<String?>(json['refreshTokenMedia']),
-      refreshTokenProfile:
-          serializer.fromJson<String?>(json['refreshTokenProfile']),
+      profileUnlimitedLikes: serializer.fromJson<bool?>(
+        json['profileUnlimitedLikes'],
+      ),
+      profileVersion: serializer.fromJson<api.ProfileVersion?>(
+        json['profileVersion'],
+      ),
+      jsonProfileAttributes: serializer.fromJson<JsonList?>(
+        json['jsonProfileAttributes'],
+      ),
+      profileLocationLatitude: serializer.fromJson<double?>(
+        json['profileLocationLatitude'],
+      ),
+      profileLocationLongitude: serializer.fromJson<double?>(
+        json['profileLocationLongitude'],
+      ),
+      jsonSearchGroups: serializer.fromJson<JsonString?>(
+        json['jsonSearchGroups'],
+      ),
+      jsonProfileFilteringSettings: serializer.fromJson<JsonString?>(
+        json['jsonProfileFilteringSettings'],
+      ),
+      profileSearchAgeRangeMin: serializer.fromJson<int?>(
+        json['profileSearchAgeRangeMin'],
+      ),
+      profileSearchAgeRangeMax: serializer.fromJson<int?>(
+        json['profileSearchAgeRangeMax'],
+      ),
+      accountEmailAddress: serializer.fromJson<String?>(
+        json['accountEmailAddress'],
+      ),
+      refreshTokenAccount: serializer.fromJson<String?>(
+        json['refreshTokenAccount'],
+      ),
+      refreshTokenMedia: serializer.fromJson<String?>(
+        json['refreshTokenMedia'],
+      ),
+      refreshTokenProfile: serializer.fromJson<String?>(
+        json['refreshTokenProfile'],
+      ),
       refreshTokenChat: serializer.fromJson<String?>(json['refreshTokenChat']),
-      accessTokenAccount:
-          serializer.fromJson<String?>(json['accessTokenAccount']),
+      accessTokenAccount: serializer.fromJson<String?>(
+        json['accessTokenAccount'],
+      ),
       accessTokenMedia: serializer.fromJson<String?>(json['accessTokenMedia']),
-      accessTokenProfile:
-          serializer.fromJson<String?>(json['accessTokenProfile']),
+      accessTokenProfile: serializer.fromJson<String?>(
+        json['accessTokenProfile'],
+      ),
       accessTokenChat: serializer.fromJson<String?>(json['accessTokenChat']),
-      localImageSettingImageCacheMaxBytes: serializer
-          .fromJson<int?>(json['localImageSettingImageCacheMaxBytes']),
-      localImageSettingCacheFullSizedImages: serializer
-          .fromJson<bool?>(json['localImageSettingCacheFullSizedImages']),
-      localImageSettingImageCacheDownscalingSize: serializer
-          .fromJson<int?>(json['localImageSettingImageCacheDownscalingSize']),
-      privateKeyData:
-          serializer.fromJson<PrivateKeyData?>(json['privateKeyData']),
+      localImageSettingImageCacheMaxBytes: serializer.fromJson<int?>(
+        json['localImageSettingImageCacheMaxBytes'],
+      ),
+      localImageSettingCacheFullSizedImages: serializer.fromJson<bool?>(
+        json['localImageSettingCacheFullSizedImages'],
+      ),
+      localImageSettingImageCacheDownscalingSize: serializer.fromJson<int?>(
+        json['localImageSettingImageCacheDownscalingSize'],
+      ),
+      privateKeyData: serializer.fromJson<PrivateKeyData?>(
+        json['privateKeyData'],
+      ),
       publicKeyData: serializer.fromJson<PublicKeyData?>(json['publicKeyData']),
       publicKeyId: serializer.fromJson<api.PublicKeyId?>(json['publicKeyId']),
-      profileInitialAgeSetUnixTime: serializer
-          .fromJson<UtcDateTime?>(json['profileInitialAgeSetUnixTime']),
+      profileInitialAgeSetUnixTime: serializer.fromJson<UtcDateTime?>(
+        json['profileInitialAgeSetUnixTime'],
+      ),
       profileInitialAge: serializer.fromJson<int?>(json['profileInitialAge']),
-      serverMaintenanceUnixTime:
-          serializer.fromJson<UtcDateTime?>(json['serverMaintenanceUnixTime']),
-      serverMaintenanceUnixTimeViewed: serializer
-          .fromJson<UtcDateTime?>(json['serverMaintenanceUnixTimeViewed']),
-      customReportsFileHash: serializer
-          .fromJson<api.CustomReportsFileHash?>(json['customReportsFileHash']),
-      customReportsConfig:
-          serializer.fromJson<JsonString?>(json['customReportsConfig']),
+      serverMaintenanceUnixTime: serializer.fromJson<UtcDateTime?>(
+        json['serverMaintenanceUnixTime'],
+      ),
+      serverMaintenanceUnixTimeViewed: serializer.fromJson<UtcDateTime?>(
+        json['serverMaintenanceUnixTimeViewed'],
+      ),
+      customReportsFileHash: serializer.fromJson<api.CustomReportsFileHash?>(
+        json['customReportsFileHash'],
+      ),
+      customReportsConfig: serializer.fromJson<JsonString?>(
+        json['customReportsConfig'],
+      ),
       clientFeaturesFileHash: serializer.fromJson<api.ClientFeaturesFileHash?>(
-          json['clientFeaturesFileHash']),
-      clientFeaturesConfig:
-          serializer.fromJson<JsonString?>(json['clientFeaturesConfig']),
-      initialSetupSkipped:
-          serializer.fromJson<bool>(json['initialSetupSkipped']),
+        json['clientFeaturesFileHash'],
+      ),
+      clientFeaturesConfig: serializer.fromJson<JsonString?>(
+        json['clientFeaturesConfig'],
+      ),
+      initialSetupSkipped: serializer.fromJson<bool>(
+        json['initialSetupSkipped'],
+      ),
     );
   }
   @override
@@ -1851,76 +2545,101 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       'uuidAccountId': serializer.toJson<api.AccountId?>(uuidAccountId),
       'jsonAccountState': serializer.toJson<JsonString?>(jsonAccountState),
       'jsonPermissions': serializer.toJson<JsonString?>(jsonPermissions),
-      'jsonProfileVisibility':
-          serializer.toJson<EnumString?>(jsonProfileVisibility),
+      'jsonProfileVisibility': serializer.toJson<EnumString?>(
+        jsonProfileVisibility,
+      ),
       'profileFilterFavorites': serializer.toJson<bool>(profileFilterFavorites),
       'profileIteratorSessionId': serializer
           .toJson<api.ProfileIteratorSessionId?>(profileIteratorSessionId),
-      'automatiProfileSearchIteratorSessionId':
-          serializer.toJson<api.AutomaticProfileSearchIteratorSessionId?>(
-              automatiProfileSearchIteratorSessionId),
-      'receivedLikesIteratorSessionId':
-          serializer.toJson<api.ReceivedLikesIteratorSessionId?>(
-              receivedLikesIteratorSessionId),
+      'automatiProfileSearchIteratorSessionId': serializer
+          .toJson<api.AutomaticProfileSearchIteratorSessionId?>(
+            automatiProfileSearchIteratorSessionId,
+          ),
+      'receivedLikesIteratorSessionId': serializer
+          .toJson<api.ReceivedLikesIteratorSessionId?>(
+            receivedLikesIteratorSessionId,
+          ),
       'matchesIteratorSessionId': serializer
           .toJson<api.MatchesIteratorSessionId?>(matchesIteratorSessionId),
       'clientId': serializer.toJson<api.ClientId?>(clientId),
-      'jsonAvailableProfileAttributesOrderMode': serializer
-          .toJson<EnumString?>(jsonAvailableProfileAttributesOrderMode),
-      'initialSyncDoneLoginRepository':
-          serializer.toJson<bool>(initialSyncDoneLoginRepository),
-      'initialSyncDoneAccountRepository':
-          serializer.toJson<bool>(initialSyncDoneAccountRepository),
-      'initialSyncDoneMediaRepository':
-          serializer.toJson<bool>(initialSyncDoneMediaRepository),
-      'initialSyncDoneProfileRepository':
-          serializer.toJson<bool>(initialSyncDoneProfileRepository),
-      'initialSyncDoneChatRepository':
-          serializer.toJson<bool>(initialSyncDoneChatRepository),
+      'jsonAvailableProfileAttributesOrderMode': serializer.toJson<EnumString?>(
+        jsonAvailableProfileAttributesOrderMode,
+      ),
+      'initialSyncDoneLoginRepository': serializer.toJson<bool>(
+        initialSyncDoneLoginRepository,
+      ),
+      'initialSyncDoneAccountRepository': serializer.toJson<bool>(
+        initialSyncDoneAccountRepository,
+      ),
+      'initialSyncDoneMediaRepository': serializer.toJson<bool>(
+        initialSyncDoneMediaRepository,
+      ),
+      'initialSyncDoneProfileRepository': serializer.toJson<bool>(
+        initialSyncDoneProfileRepository,
+      ),
+      'initialSyncDoneChatRepository': serializer.toJson<bool>(
+        initialSyncDoneChatRepository,
+      ),
       'syncVersionAccount': serializer.toJson<int?>(syncVersionAccount),
       'syncVersionProfile': serializer.toJson<int?>(syncVersionProfile),
-      'syncVersionMediaContent':
-          serializer.toJson<int?>(syncVersionMediaContent),
-      'syncVersionClientConfig':
-          serializer.toJson<int?>(syncVersionClientConfig),
-      'primaryContentGridCropSize':
-          serializer.toJson<double?>(primaryContentGridCropSize),
-      'primaryContentGridCropX':
-          serializer.toJson<double?>(primaryContentGridCropX),
-      'primaryContentGridCropY':
-          serializer.toJson<double?>(primaryContentGridCropY),
-      'profileContentVersion':
-          serializer.toJson<api.ProfileContentVersion?>(profileContentVersion),
+      'syncVersionMediaContent': serializer.toJson<int?>(
+        syncVersionMediaContent,
+      ),
+      'syncVersionClientConfig': serializer.toJson<int?>(
+        syncVersionClientConfig,
+      ),
+      'primaryContentGridCropSize': serializer.toJson<double?>(
+        primaryContentGridCropSize,
+      ),
+      'primaryContentGridCropX': serializer.toJson<double?>(
+        primaryContentGridCropX,
+      ),
+      'primaryContentGridCropY': serializer.toJson<double?>(
+        primaryContentGridCropY,
+      ),
+      'profileContentVersion': serializer.toJson<api.ProfileContentVersion?>(
+        profileContentVersion,
+      ),
       'profileName': serializer.toJson<String?>(profileName),
       'profileNameAccepted': serializer.toJson<bool?>(profileNameAccepted),
-      'profileNameModerationState':
-          serializer.toJson<EnumString?>(profileNameModerationState),
+      'profileNameModerationState': serializer.toJson<EnumString?>(
+        profileNameModerationState,
+      ),
       'profileText': serializer.toJson<String?>(profileText),
       'profileTextAccepted': serializer.toJson<bool?>(profileTextAccepted),
-      'profileTextModerationState':
-          serializer.toJson<EnumString?>(profileTextModerationState),
-      'profileTextModerationRejectedCategory':
-          serializer.toJson<api.ProfileTextModerationRejectedReasonCategory?>(
-              profileTextModerationRejectedCategory),
-      'profileTextModerationRejectedDetails':
-          serializer.toJson<api.ProfileTextModerationRejectedReasonDetails?>(
-              profileTextModerationRejectedDetails),
+      'profileTextModerationState': serializer.toJson<EnumString?>(
+        profileTextModerationState,
+      ),
+      'profileTextModerationRejectedCategory': serializer
+          .toJson<api.ProfileTextModerationRejectedReasonCategory?>(
+            profileTextModerationRejectedCategory,
+          ),
+      'profileTextModerationRejectedDetails': serializer
+          .toJson<api.ProfileTextModerationRejectedReasonDetails?>(
+            profileTextModerationRejectedDetails,
+          ),
       'profileAge': serializer.toJson<int?>(profileAge),
       'profileUnlimitedLikes': serializer.toJson<bool?>(profileUnlimitedLikes),
       'profileVersion': serializer.toJson<api.ProfileVersion?>(profileVersion),
-      'jsonProfileAttributes':
-          serializer.toJson<JsonList?>(jsonProfileAttributes),
-      'profileLocationLatitude':
-          serializer.toJson<double?>(profileLocationLatitude),
-      'profileLocationLongitude':
-          serializer.toJson<double?>(profileLocationLongitude),
+      'jsonProfileAttributes': serializer.toJson<JsonList?>(
+        jsonProfileAttributes,
+      ),
+      'profileLocationLatitude': serializer.toJson<double?>(
+        profileLocationLatitude,
+      ),
+      'profileLocationLongitude': serializer.toJson<double?>(
+        profileLocationLongitude,
+      ),
       'jsonSearchGroups': serializer.toJson<JsonString?>(jsonSearchGroups),
-      'jsonProfileFilteringSettings':
-          serializer.toJson<JsonString?>(jsonProfileFilteringSettings),
-      'profileSearchAgeRangeMin':
-          serializer.toJson<int?>(profileSearchAgeRangeMin),
-      'profileSearchAgeRangeMax':
-          serializer.toJson<int?>(profileSearchAgeRangeMax),
+      'jsonProfileFilteringSettings': serializer.toJson<JsonString?>(
+        jsonProfileFilteringSettings,
+      ),
+      'profileSearchAgeRangeMin': serializer.toJson<int?>(
+        profileSearchAgeRangeMin,
+      ),
+      'profileSearchAgeRangeMax': serializer.toJson<int?>(
+        profileSearchAgeRangeMax,
+      ),
       'accountEmailAddress': serializer.toJson<String?>(accountEmailAddress),
       'refreshTokenAccount': serializer.toJson<String?>(refreshTokenAccount),
       'refreshTokenMedia': serializer.toJson<String?>(refreshTokenMedia),
@@ -1930,303 +2649,318 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       'accessTokenMedia': serializer.toJson<String?>(accessTokenMedia),
       'accessTokenProfile': serializer.toJson<String?>(accessTokenProfile),
       'accessTokenChat': serializer.toJson<String?>(accessTokenChat),
-      'localImageSettingImageCacheMaxBytes':
-          serializer.toJson<int?>(localImageSettingImageCacheMaxBytes),
-      'localImageSettingCacheFullSizedImages':
-          serializer.toJson<bool?>(localImageSettingCacheFullSizedImages),
-      'localImageSettingImageCacheDownscalingSize':
-          serializer.toJson<int?>(localImageSettingImageCacheDownscalingSize),
+      'localImageSettingImageCacheMaxBytes': serializer.toJson<int?>(
+        localImageSettingImageCacheMaxBytes,
+      ),
+      'localImageSettingCacheFullSizedImages': serializer.toJson<bool?>(
+        localImageSettingCacheFullSizedImages,
+      ),
+      'localImageSettingImageCacheDownscalingSize': serializer.toJson<int?>(
+        localImageSettingImageCacheDownscalingSize,
+      ),
       'privateKeyData': serializer.toJson<PrivateKeyData?>(privateKeyData),
       'publicKeyData': serializer.toJson<PublicKeyData?>(publicKeyData),
       'publicKeyId': serializer.toJson<api.PublicKeyId?>(publicKeyId),
-      'profileInitialAgeSetUnixTime':
-          serializer.toJson<UtcDateTime?>(profileInitialAgeSetUnixTime),
+      'profileInitialAgeSetUnixTime': serializer.toJson<UtcDateTime?>(
+        profileInitialAgeSetUnixTime,
+      ),
       'profileInitialAge': serializer.toJson<int?>(profileInitialAge),
-      'serverMaintenanceUnixTime':
-          serializer.toJson<UtcDateTime?>(serverMaintenanceUnixTime),
-      'serverMaintenanceUnixTimeViewed':
-          serializer.toJson<UtcDateTime?>(serverMaintenanceUnixTimeViewed),
-      'customReportsFileHash':
-          serializer.toJson<api.CustomReportsFileHash?>(customReportsFileHash),
-      'customReportsConfig':
-          serializer.toJson<JsonString?>(customReportsConfig),
-      'clientFeaturesFileHash': serializer
-          .toJson<api.ClientFeaturesFileHash?>(clientFeaturesFileHash),
-      'clientFeaturesConfig':
-          serializer.toJson<JsonString?>(clientFeaturesConfig),
+      'serverMaintenanceUnixTime': serializer.toJson<UtcDateTime?>(
+        serverMaintenanceUnixTime,
+      ),
+      'serverMaintenanceUnixTimeViewed': serializer.toJson<UtcDateTime?>(
+        serverMaintenanceUnixTimeViewed,
+      ),
+      'customReportsFileHash': serializer.toJson<api.CustomReportsFileHash?>(
+        customReportsFileHash,
+      ),
+      'customReportsConfig': serializer.toJson<JsonString?>(
+        customReportsConfig,
+      ),
+      'clientFeaturesFileHash': serializer.toJson<api.ClientFeaturesFileHash?>(
+        clientFeaturesFileHash,
+      ),
+      'clientFeaturesConfig': serializer.toJson<JsonString?>(
+        clientFeaturesConfig,
+      ),
       'initialSetupSkipped': serializer.toJson<bool>(initialSetupSkipped),
     };
   }
 
-  AccountData copyWith(
-          {int? id,
-          Value<api.AccountId?> uuidAccountId = const Value.absent(),
-          Value<JsonString?> jsonAccountState = const Value.absent(),
-          Value<JsonString?> jsonPermissions = const Value.absent(),
-          Value<EnumString?> jsonProfileVisibility = const Value.absent(),
-          bool? profileFilterFavorites,
-          Value<api.ProfileIteratorSessionId?> profileIteratorSessionId =
-              const Value.absent(),
-          Value<api.AutomaticProfileSearchIteratorSessionId?>
-              automatiProfileSearchIteratorSessionId = const Value.absent(),
-          Value<api.ReceivedLikesIteratorSessionId?> receivedLikesIteratorSessionId =
-              const Value.absent(),
-          Value<api.MatchesIteratorSessionId?> matchesIteratorSessionId =
-              const Value.absent(),
-          Value<api.ClientId?> clientId = const Value.absent(),
-          Value<EnumString?> jsonAvailableProfileAttributesOrderMode =
-              const Value.absent(),
-          bool? initialSyncDoneLoginRepository,
-          bool? initialSyncDoneAccountRepository,
-          bool? initialSyncDoneMediaRepository,
-          bool? initialSyncDoneProfileRepository,
-          bool? initialSyncDoneChatRepository,
-          Value<int?> syncVersionAccount = const Value.absent(),
-          Value<int?> syncVersionProfile = const Value.absent(),
-          Value<int?> syncVersionMediaContent = const Value.absent(),
-          Value<int?> syncVersionClientConfig = const Value.absent(),
-          Value<double?> primaryContentGridCropSize = const Value.absent(),
-          Value<double?> primaryContentGridCropX = const Value.absent(),
-          Value<double?> primaryContentGridCropY = const Value.absent(),
-          Value<api.ProfileContentVersion?> profileContentVersion =
-              const Value.absent(),
-          Value<String?> profileName = const Value.absent(),
-          Value<bool?> profileNameAccepted = const Value.absent(),
-          Value<EnumString?> profileNameModerationState = const Value.absent(),
-          Value<String?> profileText = const Value.absent(),
-          Value<bool?> profileTextAccepted = const Value.absent(),
-          Value<EnumString?> profileTextModerationState = const Value.absent(),
-          Value<api.ProfileTextModerationRejectedReasonCategory?>
-              profileTextModerationRejectedCategory = const Value.absent(),
-          Value<api.ProfileTextModerationRejectedReasonDetails?>
-              profileTextModerationRejectedDetails = const Value.absent(),
-          Value<int?> profileAge = const Value.absent(),
-          Value<bool?> profileUnlimitedLikes = const Value.absent(),
-          Value<api.ProfileVersion?> profileVersion = const Value.absent(),
-          Value<JsonList?> jsonProfileAttributes = const Value.absent(),
-          Value<double?> profileLocationLatitude = const Value.absent(),
-          Value<double?> profileLocationLongitude = const Value.absent(),
-          Value<JsonString?> jsonSearchGroups = const Value.absent(),
-          Value<JsonString?> jsonProfileFilteringSettings =
-              const Value.absent(),
-          Value<int?> profileSearchAgeRangeMin = const Value.absent(),
-          Value<int?> profileSearchAgeRangeMax = const Value.absent(),
-          Value<String?> accountEmailAddress = const Value.absent(),
-          Value<String?> refreshTokenAccount = const Value.absent(),
-          Value<String?> refreshTokenMedia = const Value.absent(),
-          Value<String?> refreshTokenProfile = const Value.absent(),
-          Value<String?> refreshTokenChat = const Value.absent(),
-          Value<String?> accessTokenAccount = const Value.absent(),
-          Value<String?> accessTokenMedia = const Value.absent(),
-          Value<String?> accessTokenProfile = const Value.absent(),
-          Value<String?> accessTokenChat = const Value.absent(),
-          Value<int?> localImageSettingImageCacheMaxBytes =
-              const Value.absent(),
-          Value<bool?> localImageSettingCacheFullSizedImages =
-              const Value.absent(),
-          Value<int?> localImageSettingImageCacheDownscalingSize =
-              const Value.absent(),
-          Value<PrivateKeyData?> privateKeyData = const Value.absent(),
-          Value<PublicKeyData?> publicKeyData = const Value.absent(),
-          Value<api.PublicKeyId?> publicKeyId = const Value.absent(),
-          Value<UtcDateTime?> profileInitialAgeSetUnixTime =
-              const Value.absent(),
-          Value<int?> profileInitialAge = const Value.absent(),
-          Value<UtcDateTime?> serverMaintenanceUnixTime = const Value.absent(),
-          Value<UtcDateTime?> serverMaintenanceUnixTimeViewed =
-              const Value.absent(),
-          Value<api.CustomReportsFileHash?> customReportsFileHash =
-              const Value.absent(),
-          Value<JsonString?> customReportsConfig = const Value.absent(),
-          Value<api.ClientFeaturesFileHash?> clientFeaturesFileHash = const Value.absent(),
-          Value<JsonString?> clientFeaturesConfig = const Value.absent(),
-          bool? initialSetupSkipped}) =>
-      AccountData(
-        id: id ?? this.id,
-        uuidAccountId:
-            uuidAccountId.present ? uuidAccountId.value : this.uuidAccountId,
-        jsonAccountState: jsonAccountState.present
-            ? jsonAccountState.value
-            : this.jsonAccountState,
-        jsonPermissions: jsonPermissions.present
-            ? jsonPermissions.value
-            : this.jsonPermissions,
-        jsonProfileVisibility: jsonProfileVisibility.present
-            ? jsonProfileVisibility.value
-            : this.jsonProfileVisibility,
-        profileFilterFavorites:
-            profileFilterFavorites ?? this.profileFilterFavorites,
-        profileIteratorSessionId: profileIteratorSessionId.present
-            ? profileIteratorSessionId.value
-            : this.profileIteratorSessionId,
-        automatiProfileSearchIteratorSessionId:
-            automatiProfileSearchIteratorSessionId.present
-                ? automatiProfileSearchIteratorSessionId.value
-                : this.automatiProfileSearchIteratorSessionId,
-        receivedLikesIteratorSessionId: receivedLikesIteratorSessionId.present
-            ? receivedLikesIteratorSessionId.value
-            : this.receivedLikesIteratorSessionId,
-        matchesIteratorSessionId: matchesIteratorSessionId.present
-            ? matchesIteratorSessionId.value
-            : this.matchesIteratorSessionId,
-        clientId: clientId.present ? clientId.value : this.clientId,
-        jsonAvailableProfileAttributesOrderMode:
-            jsonAvailableProfileAttributesOrderMode.present
-                ? jsonAvailableProfileAttributesOrderMode.value
-                : this.jsonAvailableProfileAttributesOrderMode,
-        initialSyncDoneLoginRepository: initialSyncDoneLoginRepository ??
-            this.initialSyncDoneLoginRepository,
-        initialSyncDoneAccountRepository: initialSyncDoneAccountRepository ??
-            this.initialSyncDoneAccountRepository,
-        initialSyncDoneMediaRepository: initialSyncDoneMediaRepository ??
-            this.initialSyncDoneMediaRepository,
-        initialSyncDoneProfileRepository: initialSyncDoneProfileRepository ??
-            this.initialSyncDoneProfileRepository,
-        initialSyncDoneChatRepository:
-            initialSyncDoneChatRepository ?? this.initialSyncDoneChatRepository,
-        syncVersionAccount: syncVersionAccount.present
-            ? syncVersionAccount.value
-            : this.syncVersionAccount,
-        syncVersionProfile: syncVersionProfile.present
-            ? syncVersionProfile.value
-            : this.syncVersionProfile,
-        syncVersionMediaContent: syncVersionMediaContent.present
-            ? syncVersionMediaContent.value
-            : this.syncVersionMediaContent,
-        syncVersionClientConfig: syncVersionClientConfig.present
-            ? syncVersionClientConfig.value
-            : this.syncVersionClientConfig,
-        primaryContentGridCropSize: primaryContentGridCropSize.present
-            ? primaryContentGridCropSize.value
-            : this.primaryContentGridCropSize,
-        primaryContentGridCropX: primaryContentGridCropX.present
-            ? primaryContentGridCropX.value
-            : this.primaryContentGridCropX,
-        primaryContentGridCropY: primaryContentGridCropY.present
-            ? primaryContentGridCropY.value
-            : this.primaryContentGridCropY,
-        profileContentVersion: profileContentVersion.present
-            ? profileContentVersion.value
-            : this.profileContentVersion,
-        profileName: profileName.present ? profileName.value : this.profileName,
-        profileNameAccepted: profileNameAccepted.present
-            ? profileNameAccepted.value
-            : this.profileNameAccepted,
-        profileNameModerationState: profileNameModerationState.present
-            ? profileNameModerationState.value
-            : this.profileNameModerationState,
-        profileText: profileText.present ? profileText.value : this.profileText,
-        profileTextAccepted: profileTextAccepted.present
-            ? profileTextAccepted.value
-            : this.profileTextAccepted,
-        profileTextModerationState: profileTextModerationState.present
-            ? profileTextModerationState.value
-            : this.profileTextModerationState,
-        profileTextModerationRejectedCategory:
-            profileTextModerationRejectedCategory.present
-                ? profileTextModerationRejectedCategory.value
-                : this.profileTextModerationRejectedCategory,
-        profileTextModerationRejectedDetails:
-            profileTextModerationRejectedDetails.present
-                ? profileTextModerationRejectedDetails.value
-                : this.profileTextModerationRejectedDetails,
-        profileAge: profileAge.present ? profileAge.value : this.profileAge,
-        profileUnlimitedLikes: profileUnlimitedLikes.present
-            ? profileUnlimitedLikes.value
-            : this.profileUnlimitedLikes,
-        profileVersion:
-            profileVersion.present ? profileVersion.value : this.profileVersion,
-        jsonProfileAttributes: jsonProfileAttributes.present
-            ? jsonProfileAttributes.value
-            : this.jsonProfileAttributes,
-        profileLocationLatitude: profileLocationLatitude.present
-            ? profileLocationLatitude.value
-            : this.profileLocationLatitude,
-        profileLocationLongitude: profileLocationLongitude.present
-            ? profileLocationLongitude.value
-            : this.profileLocationLongitude,
-        jsonSearchGroups: jsonSearchGroups.present
-            ? jsonSearchGroups.value
-            : this.jsonSearchGroups,
-        jsonProfileFilteringSettings: jsonProfileFilteringSettings.present
-            ? jsonProfileFilteringSettings.value
-            : this.jsonProfileFilteringSettings,
-        profileSearchAgeRangeMin: profileSearchAgeRangeMin.present
-            ? profileSearchAgeRangeMin.value
-            : this.profileSearchAgeRangeMin,
-        profileSearchAgeRangeMax: profileSearchAgeRangeMax.present
-            ? profileSearchAgeRangeMax.value
-            : this.profileSearchAgeRangeMax,
-        accountEmailAddress: accountEmailAddress.present
-            ? accountEmailAddress.value
-            : this.accountEmailAddress,
-        refreshTokenAccount: refreshTokenAccount.present
-            ? refreshTokenAccount.value
-            : this.refreshTokenAccount,
-        refreshTokenMedia: refreshTokenMedia.present
-            ? refreshTokenMedia.value
-            : this.refreshTokenMedia,
-        refreshTokenProfile: refreshTokenProfile.present
-            ? refreshTokenProfile.value
-            : this.refreshTokenProfile,
-        refreshTokenChat: refreshTokenChat.present
-            ? refreshTokenChat.value
-            : this.refreshTokenChat,
-        accessTokenAccount: accessTokenAccount.present
-            ? accessTokenAccount.value
-            : this.accessTokenAccount,
-        accessTokenMedia: accessTokenMedia.present
-            ? accessTokenMedia.value
-            : this.accessTokenMedia,
-        accessTokenProfile: accessTokenProfile.present
-            ? accessTokenProfile.value
-            : this.accessTokenProfile,
-        accessTokenChat: accessTokenChat.present
-            ? accessTokenChat.value
-            : this.accessTokenChat,
-        localImageSettingImageCacheMaxBytes:
-            localImageSettingImageCacheMaxBytes.present
-                ? localImageSettingImageCacheMaxBytes.value
-                : this.localImageSettingImageCacheMaxBytes,
-        localImageSettingCacheFullSizedImages:
-            localImageSettingCacheFullSizedImages.present
-                ? localImageSettingCacheFullSizedImages.value
-                : this.localImageSettingCacheFullSizedImages,
-        localImageSettingImageCacheDownscalingSize:
-            localImageSettingImageCacheDownscalingSize.present
-                ? localImageSettingImageCacheDownscalingSize.value
-                : this.localImageSettingImageCacheDownscalingSize,
-        privateKeyData:
-            privateKeyData.present ? privateKeyData.value : this.privateKeyData,
-        publicKeyData:
-            publicKeyData.present ? publicKeyData.value : this.publicKeyData,
-        publicKeyId: publicKeyId.present ? publicKeyId.value : this.publicKeyId,
-        profileInitialAgeSetUnixTime: profileInitialAgeSetUnixTime.present
-            ? profileInitialAgeSetUnixTime.value
-            : this.profileInitialAgeSetUnixTime,
-        profileInitialAge: profileInitialAge.present
-            ? profileInitialAge.value
-            : this.profileInitialAge,
-        serverMaintenanceUnixTime: serverMaintenanceUnixTime.present
-            ? serverMaintenanceUnixTime.value
-            : this.serverMaintenanceUnixTime,
-        serverMaintenanceUnixTimeViewed: serverMaintenanceUnixTimeViewed.present
-            ? serverMaintenanceUnixTimeViewed.value
-            : this.serverMaintenanceUnixTimeViewed,
-        customReportsFileHash: customReportsFileHash.present
-            ? customReportsFileHash.value
-            : this.customReportsFileHash,
-        customReportsConfig: customReportsConfig.present
-            ? customReportsConfig.value
-            : this.customReportsConfig,
-        clientFeaturesFileHash: clientFeaturesFileHash.present
-            ? clientFeaturesFileHash.value
-            : this.clientFeaturesFileHash,
-        clientFeaturesConfig: clientFeaturesConfig.present
-            ? clientFeaturesConfig.value
-            : this.clientFeaturesConfig,
-        initialSetupSkipped: initialSetupSkipped ?? this.initialSetupSkipped,
-      );
+  AccountData copyWith({
+    int? id,
+    Value<api.AccountId?> uuidAccountId = const Value.absent(),
+    Value<JsonString?> jsonAccountState = const Value.absent(),
+    Value<JsonString?> jsonPermissions = const Value.absent(),
+    Value<EnumString?> jsonProfileVisibility = const Value.absent(),
+    bool? profileFilterFavorites,
+    Value<api.ProfileIteratorSessionId?> profileIteratorSessionId =
+        const Value.absent(),
+    Value<api.AutomaticProfileSearchIteratorSessionId?>
+        automatiProfileSearchIteratorSessionId =
+        const Value.absent(),
+    Value<api.ReceivedLikesIteratorSessionId?> receivedLikesIteratorSessionId =
+        const Value.absent(),
+    Value<api.MatchesIteratorSessionId?> matchesIteratorSessionId =
+        const Value.absent(),
+    Value<api.ClientId?> clientId = const Value.absent(),
+    Value<EnumString?> jsonAvailableProfileAttributesOrderMode =
+        const Value.absent(),
+    bool? initialSyncDoneLoginRepository,
+    bool? initialSyncDoneAccountRepository,
+    bool? initialSyncDoneMediaRepository,
+    bool? initialSyncDoneProfileRepository,
+    bool? initialSyncDoneChatRepository,
+    Value<int?> syncVersionAccount = const Value.absent(),
+    Value<int?> syncVersionProfile = const Value.absent(),
+    Value<int?> syncVersionMediaContent = const Value.absent(),
+    Value<int?> syncVersionClientConfig = const Value.absent(),
+    Value<double?> primaryContentGridCropSize = const Value.absent(),
+    Value<double?> primaryContentGridCropX = const Value.absent(),
+    Value<double?> primaryContentGridCropY = const Value.absent(),
+    Value<api.ProfileContentVersion?> profileContentVersion =
+        const Value.absent(),
+    Value<String?> profileName = const Value.absent(),
+    Value<bool?> profileNameAccepted = const Value.absent(),
+    Value<EnumString?> profileNameModerationState = const Value.absent(),
+    Value<String?> profileText = const Value.absent(),
+    Value<bool?> profileTextAccepted = const Value.absent(),
+    Value<EnumString?> profileTextModerationState = const Value.absent(),
+    Value<api.ProfileTextModerationRejectedReasonCategory?>
+        profileTextModerationRejectedCategory =
+        const Value.absent(),
+    Value<api.ProfileTextModerationRejectedReasonDetails?>
+        profileTextModerationRejectedDetails =
+        const Value.absent(),
+    Value<int?> profileAge = const Value.absent(),
+    Value<bool?> profileUnlimitedLikes = const Value.absent(),
+    Value<api.ProfileVersion?> profileVersion = const Value.absent(),
+    Value<JsonList?> jsonProfileAttributes = const Value.absent(),
+    Value<double?> profileLocationLatitude = const Value.absent(),
+    Value<double?> profileLocationLongitude = const Value.absent(),
+    Value<JsonString?> jsonSearchGroups = const Value.absent(),
+    Value<JsonString?> jsonProfileFilteringSettings = const Value.absent(),
+    Value<int?> profileSearchAgeRangeMin = const Value.absent(),
+    Value<int?> profileSearchAgeRangeMax = const Value.absent(),
+    Value<String?> accountEmailAddress = const Value.absent(),
+    Value<String?> refreshTokenAccount = const Value.absent(),
+    Value<String?> refreshTokenMedia = const Value.absent(),
+    Value<String?> refreshTokenProfile = const Value.absent(),
+    Value<String?> refreshTokenChat = const Value.absent(),
+    Value<String?> accessTokenAccount = const Value.absent(),
+    Value<String?> accessTokenMedia = const Value.absent(),
+    Value<String?> accessTokenProfile = const Value.absent(),
+    Value<String?> accessTokenChat = const Value.absent(),
+    Value<int?> localImageSettingImageCacheMaxBytes = const Value.absent(),
+    Value<bool?> localImageSettingCacheFullSizedImages = const Value.absent(),
+    Value<int?> localImageSettingImageCacheDownscalingSize =
+        const Value.absent(),
+    Value<PrivateKeyData?> privateKeyData = const Value.absent(),
+    Value<PublicKeyData?> publicKeyData = const Value.absent(),
+    Value<api.PublicKeyId?> publicKeyId = const Value.absent(),
+    Value<UtcDateTime?> profileInitialAgeSetUnixTime = const Value.absent(),
+    Value<int?> profileInitialAge = const Value.absent(),
+    Value<UtcDateTime?> serverMaintenanceUnixTime = const Value.absent(),
+    Value<UtcDateTime?> serverMaintenanceUnixTimeViewed = const Value.absent(),
+    Value<api.CustomReportsFileHash?> customReportsFileHash =
+        const Value.absent(),
+    Value<JsonString?> customReportsConfig = const Value.absent(),
+    Value<api.ClientFeaturesFileHash?> clientFeaturesFileHash =
+        const Value.absent(),
+    Value<JsonString?> clientFeaturesConfig = const Value.absent(),
+    bool? initialSetupSkipped,
+  }) => AccountData(
+    id: id ?? this.id,
+    uuidAccountId: uuidAccountId.present
+        ? uuidAccountId.value
+        : this.uuidAccountId,
+    jsonAccountState: jsonAccountState.present
+        ? jsonAccountState.value
+        : this.jsonAccountState,
+    jsonPermissions: jsonPermissions.present
+        ? jsonPermissions.value
+        : this.jsonPermissions,
+    jsonProfileVisibility: jsonProfileVisibility.present
+        ? jsonProfileVisibility.value
+        : this.jsonProfileVisibility,
+    profileFilterFavorites:
+        profileFilterFavorites ?? this.profileFilterFavorites,
+    profileIteratorSessionId: profileIteratorSessionId.present
+        ? profileIteratorSessionId.value
+        : this.profileIteratorSessionId,
+    automatiProfileSearchIteratorSessionId:
+        automatiProfileSearchIteratorSessionId.present
+        ? automatiProfileSearchIteratorSessionId.value
+        : this.automatiProfileSearchIteratorSessionId,
+    receivedLikesIteratorSessionId: receivedLikesIteratorSessionId.present
+        ? receivedLikesIteratorSessionId.value
+        : this.receivedLikesIteratorSessionId,
+    matchesIteratorSessionId: matchesIteratorSessionId.present
+        ? matchesIteratorSessionId.value
+        : this.matchesIteratorSessionId,
+    clientId: clientId.present ? clientId.value : this.clientId,
+    jsonAvailableProfileAttributesOrderMode:
+        jsonAvailableProfileAttributesOrderMode.present
+        ? jsonAvailableProfileAttributesOrderMode.value
+        : this.jsonAvailableProfileAttributesOrderMode,
+    initialSyncDoneLoginRepository:
+        initialSyncDoneLoginRepository ?? this.initialSyncDoneLoginRepository,
+    initialSyncDoneAccountRepository:
+        initialSyncDoneAccountRepository ??
+        this.initialSyncDoneAccountRepository,
+    initialSyncDoneMediaRepository:
+        initialSyncDoneMediaRepository ?? this.initialSyncDoneMediaRepository,
+    initialSyncDoneProfileRepository:
+        initialSyncDoneProfileRepository ??
+        this.initialSyncDoneProfileRepository,
+    initialSyncDoneChatRepository:
+        initialSyncDoneChatRepository ?? this.initialSyncDoneChatRepository,
+    syncVersionAccount: syncVersionAccount.present
+        ? syncVersionAccount.value
+        : this.syncVersionAccount,
+    syncVersionProfile: syncVersionProfile.present
+        ? syncVersionProfile.value
+        : this.syncVersionProfile,
+    syncVersionMediaContent: syncVersionMediaContent.present
+        ? syncVersionMediaContent.value
+        : this.syncVersionMediaContent,
+    syncVersionClientConfig: syncVersionClientConfig.present
+        ? syncVersionClientConfig.value
+        : this.syncVersionClientConfig,
+    primaryContentGridCropSize: primaryContentGridCropSize.present
+        ? primaryContentGridCropSize.value
+        : this.primaryContentGridCropSize,
+    primaryContentGridCropX: primaryContentGridCropX.present
+        ? primaryContentGridCropX.value
+        : this.primaryContentGridCropX,
+    primaryContentGridCropY: primaryContentGridCropY.present
+        ? primaryContentGridCropY.value
+        : this.primaryContentGridCropY,
+    profileContentVersion: profileContentVersion.present
+        ? profileContentVersion.value
+        : this.profileContentVersion,
+    profileName: profileName.present ? profileName.value : this.profileName,
+    profileNameAccepted: profileNameAccepted.present
+        ? profileNameAccepted.value
+        : this.profileNameAccepted,
+    profileNameModerationState: profileNameModerationState.present
+        ? profileNameModerationState.value
+        : this.profileNameModerationState,
+    profileText: profileText.present ? profileText.value : this.profileText,
+    profileTextAccepted: profileTextAccepted.present
+        ? profileTextAccepted.value
+        : this.profileTextAccepted,
+    profileTextModerationState: profileTextModerationState.present
+        ? profileTextModerationState.value
+        : this.profileTextModerationState,
+    profileTextModerationRejectedCategory:
+        profileTextModerationRejectedCategory.present
+        ? profileTextModerationRejectedCategory.value
+        : this.profileTextModerationRejectedCategory,
+    profileTextModerationRejectedDetails:
+        profileTextModerationRejectedDetails.present
+        ? profileTextModerationRejectedDetails.value
+        : this.profileTextModerationRejectedDetails,
+    profileAge: profileAge.present ? profileAge.value : this.profileAge,
+    profileUnlimitedLikes: profileUnlimitedLikes.present
+        ? profileUnlimitedLikes.value
+        : this.profileUnlimitedLikes,
+    profileVersion: profileVersion.present
+        ? profileVersion.value
+        : this.profileVersion,
+    jsonProfileAttributes: jsonProfileAttributes.present
+        ? jsonProfileAttributes.value
+        : this.jsonProfileAttributes,
+    profileLocationLatitude: profileLocationLatitude.present
+        ? profileLocationLatitude.value
+        : this.profileLocationLatitude,
+    profileLocationLongitude: profileLocationLongitude.present
+        ? profileLocationLongitude.value
+        : this.profileLocationLongitude,
+    jsonSearchGroups: jsonSearchGroups.present
+        ? jsonSearchGroups.value
+        : this.jsonSearchGroups,
+    jsonProfileFilteringSettings: jsonProfileFilteringSettings.present
+        ? jsonProfileFilteringSettings.value
+        : this.jsonProfileFilteringSettings,
+    profileSearchAgeRangeMin: profileSearchAgeRangeMin.present
+        ? profileSearchAgeRangeMin.value
+        : this.profileSearchAgeRangeMin,
+    profileSearchAgeRangeMax: profileSearchAgeRangeMax.present
+        ? profileSearchAgeRangeMax.value
+        : this.profileSearchAgeRangeMax,
+    accountEmailAddress: accountEmailAddress.present
+        ? accountEmailAddress.value
+        : this.accountEmailAddress,
+    refreshTokenAccount: refreshTokenAccount.present
+        ? refreshTokenAccount.value
+        : this.refreshTokenAccount,
+    refreshTokenMedia: refreshTokenMedia.present
+        ? refreshTokenMedia.value
+        : this.refreshTokenMedia,
+    refreshTokenProfile: refreshTokenProfile.present
+        ? refreshTokenProfile.value
+        : this.refreshTokenProfile,
+    refreshTokenChat: refreshTokenChat.present
+        ? refreshTokenChat.value
+        : this.refreshTokenChat,
+    accessTokenAccount: accessTokenAccount.present
+        ? accessTokenAccount.value
+        : this.accessTokenAccount,
+    accessTokenMedia: accessTokenMedia.present
+        ? accessTokenMedia.value
+        : this.accessTokenMedia,
+    accessTokenProfile: accessTokenProfile.present
+        ? accessTokenProfile.value
+        : this.accessTokenProfile,
+    accessTokenChat: accessTokenChat.present
+        ? accessTokenChat.value
+        : this.accessTokenChat,
+    localImageSettingImageCacheMaxBytes:
+        localImageSettingImageCacheMaxBytes.present
+        ? localImageSettingImageCacheMaxBytes.value
+        : this.localImageSettingImageCacheMaxBytes,
+    localImageSettingCacheFullSizedImages:
+        localImageSettingCacheFullSizedImages.present
+        ? localImageSettingCacheFullSizedImages.value
+        : this.localImageSettingCacheFullSizedImages,
+    localImageSettingImageCacheDownscalingSize:
+        localImageSettingImageCacheDownscalingSize.present
+        ? localImageSettingImageCacheDownscalingSize.value
+        : this.localImageSettingImageCacheDownscalingSize,
+    privateKeyData: privateKeyData.present
+        ? privateKeyData.value
+        : this.privateKeyData,
+    publicKeyData: publicKeyData.present
+        ? publicKeyData.value
+        : this.publicKeyData,
+    publicKeyId: publicKeyId.present ? publicKeyId.value : this.publicKeyId,
+    profileInitialAgeSetUnixTime: profileInitialAgeSetUnixTime.present
+        ? profileInitialAgeSetUnixTime.value
+        : this.profileInitialAgeSetUnixTime,
+    profileInitialAge: profileInitialAge.present
+        ? profileInitialAge.value
+        : this.profileInitialAge,
+    serverMaintenanceUnixTime: serverMaintenanceUnixTime.present
+        ? serverMaintenanceUnixTime.value
+        : this.serverMaintenanceUnixTime,
+    serverMaintenanceUnixTimeViewed: serverMaintenanceUnixTimeViewed.present
+        ? serverMaintenanceUnixTimeViewed.value
+        : this.serverMaintenanceUnixTimeViewed,
+    customReportsFileHash: customReportsFileHash.present
+        ? customReportsFileHash.value
+        : this.customReportsFileHash,
+    customReportsConfig: customReportsConfig.present
+        ? customReportsConfig.value
+        : this.customReportsConfig,
+    clientFeaturesFileHash: clientFeaturesFileHash.present
+        ? clientFeaturesFileHash.value
+        : this.clientFeaturesFileHash,
+    clientFeaturesConfig: clientFeaturesConfig.present
+        ? clientFeaturesConfig.value
+        : this.clientFeaturesConfig,
+    initialSetupSkipped: initialSetupSkipped ?? this.initialSetupSkipped,
+  );
   AccountData copyWithCompanion(AccountCompanion data) {
     return AccountData(
       id: data.id.present ? data.id.value : this.id,
@@ -2250,36 +2984,36 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           : this.profileIteratorSessionId,
       automatiProfileSearchIteratorSessionId:
           data.automatiProfileSearchIteratorSessionId.present
-              ? data.automatiProfileSearchIteratorSessionId.value
-              : this.automatiProfileSearchIteratorSessionId,
+          ? data.automatiProfileSearchIteratorSessionId.value
+          : this.automatiProfileSearchIteratorSessionId,
       receivedLikesIteratorSessionId:
           data.receivedLikesIteratorSessionId.present
-              ? data.receivedLikesIteratorSessionId.value
-              : this.receivedLikesIteratorSessionId,
+          ? data.receivedLikesIteratorSessionId.value
+          : this.receivedLikesIteratorSessionId,
       matchesIteratorSessionId: data.matchesIteratorSessionId.present
           ? data.matchesIteratorSessionId.value
           : this.matchesIteratorSessionId,
       clientId: data.clientId.present ? data.clientId.value : this.clientId,
       jsonAvailableProfileAttributesOrderMode:
           data.jsonAvailableProfileAttributesOrderMode.present
-              ? data.jsonAvailableProfileAttributesOrderMode.value
-              : this.jsonAvailableProfileAttributesOrderMode,
+          ? data.jsonAvailableProfileAttributesOrderMode.value
+          : this.jsonAvailableProfileAttributesOrderMode,
       initialSyncDoneLoginRepository:
           data.initialSyncDoneLoginRepository.present
-              ? data.initialSyncDoneLoginRepository.value
-              : this.initialSyncDoneLoginRepository,
+          ? data.initialSyncDoneLoginRepository.value
+          : this.initialSyncDoneLoginRepository,
       initialSyncDoneAccountRepository:
           data.initialSyncDoneAccountRepository.present
-              ? data.initialSyncDoneAccountRepository.value
-              : this.initialSyncDoneAccountRepository,
+          ? data.initialSyncDoneAccountRepository.value
+          : this.initialSyncDoneAccountRepository,
       initialSyncDoneMediaRepository:
           data.initialSyncDoneMediaRepository.present
-              ? data.initialSyncDoneMediaRepository.value
-              : this.initialSyncDoneMediaRepository,
+          ? data.initialSyncDoneMediaRepository.value
+          : this.initialSyncDoneMediaRepository,
       initialSyncDoneProfileRepository:
           data.initialSyncDoneProfileRepository.present
-              ? data.initialSyncDoneProfileRepository.value
-              : this.initialSyncDoneProfileRepository,
+          ? data.initialSyncDoneProfileRepository.value
+          : this.initialSyncDoneProfileRepository,
       initialSyncDoneChatRepository: data.initialSyncDoneChatRepository.present
           ? data.initialSyncDoneChatRepository.value
           : this.initialSyncDoneChatRepository,
@@ -2307,16 +3041,18 @@ class AccountData extends DataClass implements Insertable<AccountData> {
       profileContentVersion: data.profileContentVersion.present
           ? data.profileContentVersion.value
           : this.profileContentVersion,
-      profileName:
-          data.profileName.present ? data.profileName.value : this.profileName,
+      profileName: data.profileName.present
+          ? data.profileName.value
+          : this.profileName,
       profileNameAccepted: data.profileNameAccepted.present
           ? data.profileNameAccepted.value
           : this.profileNameAccepted,
       profileNameModerationState: data.profileNameModerationState.present
           ? data.profileNameModerationState.value
           : this.profileNameModerationState,
-      profileText:
-          data.profileText.present ? data.profileText.value : this.profileText,
+      profileText: data.profileText.present
+          ? data.profileText.value
+          : this.profileText,
       profileTextAccepted: data.profileTextAccepted.present
           ? data.profileTextAccepted.value
           : this.profileTextAccepted,
@@ -2325,14 +3061,15 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           : this.profileTextModerationState,
       profileTextModerationRejectedCategory:
           data.profileTextModerationRejectedCategory.present
-              ? data.profileTextModerationRejectedCategory.value
-              : this.profileTextModerationRejectedCategory,
+          ? data.profileTextModerationRejectedCategory.value
+          : this.profileTextModerationRejectedCategory,
       profileTextModerationRejectedDetails:
           data.profileTextModerationRejectedDetails.present
-              ? data.profileTextModerationRejectedDetails.value
-              : this.profileTextModerationRejectedDetails,
-      profileAge:
-          data.profileAge.present ? data.profileAge.value : this.profileAge,
+          ? data.profileTextModerationRejectedDetails.value
+          : this.profileTextModerationRejectedDetails,
+      profileAge: data.profileAge.present
+          ? data.profileAge.value
+          : this.profileAge,
       profileUnlimitedLikes: data.profileUnlimitedLikes.present
           ? data.profileUnlimitedLikes.value
           : this.profileUnlimitedLikes,
@@ -2389,24 +3126,25 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           : this.accessTokenChat,
       localImageSettingImageCacheMaxBytes:
           data.localImageSettingImageCacheMaxBytes.present
-              ? data.localImageSettingImageCacheMaxBytes.value
-              : this.localImageSettingImageCacheMaxBytes,
+          ? data.localImageSettingImageCacheMaxBytes.value
+          : this.localImageSettingImageCacheMaxBytes,
       localImageSettingCacheFullSizedImages:
           data.localImageSettingCacheFullSizedImages.present
-              ? data.localImageSettingCacheFullSizedImages.value
-              : this.localImageSettingCacheFullSizedImages,
+          ? data.localImageSettingCacheFullSizedImages.value
+          : this.localImageSettingCacheFullSizedImages,
       localImageSettingImageCacheDownscalingSize:
           data.localImageSettingImageCacheDownscalingSize.present
-              ? data.localImageSettingImageCacheDownscalingSize.value
-              : this.localImageSettingImageCacheDownscalingSize,
+          ? data.localImageSettingImageCacheDownscalingSize.value
+          : this.localImageSettingImageCacheDownscalingSize,
       privateKeyData: data.privateKeyData.present
           ? data.privateKeyData.value
           : this.privateKeyData,
       publicKeyData: data.publicKeyData.present
           ? data.publicKeyData.value
           : this.publicKeyData,
-      publicKeyId:
-          data.publicKeyId.present ? data.publicKeyId.value : this.publicKeyId,
+      publicKeyId: data.publicKeyId.present
+          ? data.publicKeyId.value
+          : this.publicKeyId,
       profileInitialAgeSetUnixTime: data.profileInitialAgeSetUnixTime.present
           ? data.profileInitialAgeSetUnixTime.value
           : this.profileInitialAgeSetUnixTime,
@@ -2418,8 +3156,8 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           : this.serverMaintenanceUnixTime,
       serverMaintenanceUnixTimeViewed:
           data.serverMaintenanceUnixTimeViewed.present
-              ? data.serverMaintenanceUnixTimeViewed.value
-              : this.serverMaintenanceUnixTimeViewed,
+          ? data.serverMaintenanceUnixTimeViewed.value
+          : this.serverMaintenanceUnixTimeViewed,
       customReportsFileHash: data.customReportsFileHash.present
           ? data.customReportsFileHash.value
           : this.customReportsFileHash,
@@ -2449,23 +3187,31 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           ..write('profileFilterFavorites: $profileFilterFavorites, ')
           ..write('profileIteratorSessionId: $profileIteratorSessionId, ')
           ..write(
-              'automatiProfileSearchIteratorSessionId: $automatiProfileSearchIteratorSessionId, ')
+            'automatiProfileSearchIteratorSessionId: $automatiProfileSearchIteratorSessionId, ',
+          )
           ..write(
-              'receivedLikesIteratorSessionId: $receivedLikesIteratorSessionId, ')
+            'receivedLikesIteratorSessionId: $receivedLikesIteratorSessionId, ',
+          )
           ..write('matchesIteratorSessionId: $matchesIteratorSessionId, ')
           ..write('clientId: $clientId, ')
           ..write(
-              'jsonAvailableProfileAttributesOrderMode: $jsonAvailableProfileAttributesOrderMode, ')
+            'jsonAvailableProfileAttributesOrderMode: $jsonAvailableProfileAttributesOrderMode, ',
+          )
           ..write(
-              'initialSyncDoneLoginRepository: $initialSyncDoneLoginRepository, ')
+            'initialSyncDoneLoginRepository: $initialSyncDoneLoginRepository, ',
+          )
           ..write(
-              'initialSyncDoneAccountRepository: $initialSyncDoneAccountRepository, ')
+            'initialSyncDoneAccountRepository: $initialSyncDoneAccountRepository, ',
+          )
           ..write(
-              'initialSyncDoneMediaRepository: $initialSyncDoneMediaRepository, ')
+            'initialSyncDoneMediaRepository: $initialSyncDoneMediaRepository, ',
+          )
           ..write(
-              'initialSyncDoneProfileRepository: $initialSyncDoneProfileRepository, ')
+            'initialSyncDoneProfileRepository: $initialSyncDoneProfileRepository, ',
+          )
           ..write(
-              'initialSyncDoneChatRepository: $initialSyncDoneChatRepository, ')
+            'initialSyncDoneChatRepository: $initialSyncDoneChatRepository, ',
+          )
           ..write('syncVersionAccount: $syncVersionAccount, ')
           ..write('syncVersionProfile: $syncVersionProfile, ')
           ..write('syncVersionMediaContent: $syncVersionMediaContent, ')
@@ -2481,9 +3227,11 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           ..write('profileTextAccepted: $profileTextAccepted, ')
           ..write('profileTextModerationState: $profileTextModerationState, ')
           ..write(
-              'profileTextModerationRejectedCategory: $profileTextModerationRejectedCategory, ')
+            'profileTextModerationRejectedCategory: $profileTextModerationRejectedCategory, ',
+          )
           ..write(
-              'profileTextModerationRejectedDetails: $profileTextModerationRejectedDetails, ')
+            'profileTextModerationRejectedDetails: $profileTextModerationRejectedDetails, ',
+          )
           ..write('profileAge: $profileAge, ')
           ..write('profileUnlimitedLikes: $profileUnlimitedLikes, ')
           ..write('profileVersion: $profileVersion, ')
@@ -2492,7 +3240,8 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           ..write('profileLocationLongitude: $profileLocationLongitude, ')
           ..write('jsonSearchGroups: $jsonSearchGroups, ')
           ..write(
-              'jsonProfileFilteringSettings: $jsonProfileFilteringSettings, ')
+            'jsonProfileFilteringSettings: $jsonProfileFilteringSettings, ',
+          )
           ..write('profileSearchAgeRangeMin: $profileSearchAgeRangeMin, ')
           ..write('profileSearchAgeRangeMax: $profileSearchAgeRangeMax, ')
           ..write('accountEmailAddress: $accountEmailAddress, ')
@@ -2505,20 +3254,25 @@ class AccountData extends DataClass implements Insertable<AccountData> {
           ..write('accessTokenProfile: $accessTokenProfile, ')
           ..write('accessTokenChat: $accessTokenChat, ')
           ..write(
-              'localImageSettingImageCacheMaxBytes: $localImageSettingImageCacheMaxBytes, ')
+            'localImageSettingImageCacheMaxBytes: $localImageSettingImageCacheMaxBytes, ',
+          )
           ..write(
-              'localImageSettingCacheFullSizedImages: $localImageSettingCacheFullSizedImages, ')
+            'localImageSettingCacheFullSizedImages: $localImageSettingCacheFullSizedImages, ',
+          )
           ..write(
-              'localImageSettingImageCacheDownscalingSize: $localImageSettingImageCacheDownscalingSize, ')
+            'localImageSettingImageCacheDownscalingSize: $localImageSettingImageCacheDownscalingSize, ',
+          )
           ..write('privateKeyData: $privateKeyData, ')
           ..write('publicKeyData: $publicKeyData, ')
           ..write('publicKeyId: $publicKeyId, ')
           ..write(
-              'profileInitialAgeSetUnixTime: $profileInitialAgeSetUnixTime, ')
+            'profileInitialAgeSetUnixTime: $profileInitialAgeSetUnixTime, ',
+          )
           ..write('profileInitialAge: $profileInitialAge, ')
           ..write('serverMaintenanceUnixTime: $serverMaintenanceUnixTime, ')
           ..write(
-              'serverMaintenanceUnixTimeViewed: $serverMaintenanceUnixTimeViewed, ')
+            'serverMaintenanceUnixTimeViewed: $serverMaintenanceUnixTimeViewed, ',
+          )
           ..write('customReportsFileHash: $customReportsFileHash, ')
           ..write('customReportsConfig: $customReportsConfig, ')
           ..write('clientFeaturesFileHash: $clientFeaturesFileHash, ')
@@ -2530,74 +3284,74 @@ class AccountData extends DataClass implements Insertable<AccountData> {
 
   @override
   int get hashCode => Object.hashAll([
-        id,
-        uuidAccountId,
-        jsonAccountState,
-        jsonPermissions,
-        jsonProfileVisibility,
-        profileFilterFavorites,
-        profileIteratorSessionId,
-        automatiProfileSearchIteratorSessionId,
-        receivedLikesIteratorSessionId,
-        matchesIteratorSessionId,
-        clientId,
-        jsonAvailableProfileAttributesOrderMode,
-        initialSyncDoneLoginRepository,
-        initialSyncDoneAccountRepository,
-        initialSyncDoneMediaRepository,
-        initialSyncDoneProfileRepository,
-        initialSyncDoneChatRepository,
-        syncVersionAccount,
-        syncVersionProfile,
-        syncVersionMediaContent,
-        syncVersionClientConfig,
-        primaryContentGridCropSize,
-        primaryContentGridCropX,
-        primaryContentGridCropY,
-        profileContentVersion,
-        profileName,
-        profileNameAccepted,
-        profileNameModerationState,
-        profileText,
-        profileTextAccepted,
-        profileTextModerationState,
-        profileTextModerationRejectedCategory,
-        profileTextModerationRejectedDetails,
-        profileAge,
-        profileUnlimitedLikes,
-        profileVersion,
-        jsonProfileAttributes,
-        profileLocationLatitude,
-        profileLocationLongitude,
-        jsonSearchGroups,
-        jsonProfileFilteringSettings,
-        profileSearchAgeRangeMin,
-        profileSearchAgeRangeMax,
-        accountEmailAddress,
-        refreshTokenAccount,
-        refreshTokenMedia,
-        refreshTokenProfile,
-        refreshTokenChat,
-        accessTokenAccount,
-        accessTokenMedia,
-        accessTokenProfile,
-        accessTokenChat,
-        localImageSettingImageCacheMaxBytes,
-        localImageSettingCacheFullSizedImages,
-        localImageSettingImageCacheDownscalingSize,
-        privateKeyData,
-        publicKeyData,
-        publicKeyId,
-        profileInitialAgeSetUnixTime,
-        profileInitialAge,
-        serverMaintenanceUnixTime,
-        serverMaintenanceUnixTimeViewed,
-        customReportsFileHash,
-        customReportsConfig,
-        clientFeaturesFileHash,
-        clientFeaturesConfig,
-        initialSetupSkipped
-      ]);
+    id,
+    uuidAccountId,
+    jsonAccountState,
+    jsonPermissions,
+    jsonProfileVisibility,
+    profileFilterFavorites,
+    profileIteratorSessionId,
+    automatiProfileSearchIteratorSessionId,
+    receivedLikesIteratorSessionId,
+    matchesIteratorSessionId,
+    clientId,
+    jsonAvailableProfileAttributesOrderMode,
+    initialSyncDoneLoginRepository,
+    initialSyncDoneAccountRepository,
+    initialSyncDoneMediaRepository,
+    initialSyncDoneProfileRepository,
+    initialSyncDoneChatRepository,
+    syncVersionAccount,
+    syncVersionProfile,
+    syncVersionMediaContent,
+    syncVersionClientConfig,
+    primaryContentGridCropSize,
+    primaryContentGridCropX,
+    primaryContentGridCropY,
+    profileContentVersion,
+    profileName,
+    profileNameAccepted,
+    profileNameModerationState,
+    profileText,
+    profileTextAccepted,
+    profileTextModerationState,
+    profileTextModerationRejectedCategory,
+    profileTextModerationRejectedDetails,
+    profileAge,
+    profileUnlimitedLikes,
+    profileVersion,
+    jsonProfileAttributes,
+    profileLocationLatitude,
+    profileLocationLongitude,
+    jsonSearchGroups,
+    jsonProfileFilteringSettings,
+    profileSearchAgeRangeMin,
+    profileSearchAgeRangeMax,
+    accountEmailAddress,
+    refreshTokenAccount,
+    refreshTokenMedia,
+    refreshTokenProfile,
+    refreshTokenChat,
+    accessTokenAccount,
+    accessTokenMedia,
+    accessTokenProfile,
+    accessTokenChat,
+    localImageSettingImageCacheMaxBytes,
+    localImageSettingCacheFullSizedImages,
+    localImageSettingImageCacheDownscalingSize,
+    privateKeyData,
+    publicKeyData,
+    publicKeyId,
+    profileInitialAgeSetUnixTime,
+    profileInitialAge,
+    serverMaintenanceUnixTime,
+    serverMaintenanceUnixTimeViewed,
+    customReportsFileHash,
+    customReportsConfig,
+    clientFeaturesFileHash,
+    clientFeaturesConfig,
+    initialSetupSkipped,
+  ]);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -2696,9 +3450,9 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
   final Value<bool> profileFilterFavorites;
   final Value<api.ProfileIteratorSessionId?> profileIteratorSessionId;
   final Value<api.AutomaticProfileSearchIteratorSessionId?>
-      automatiProfileSearchIteratorSessionId;
+  automatiProfileSearchIteratorSessionId;
   final Value<api.ReceivedLikesIteratorSessionId?>
-      receivedLikesIteratorSessionId;
+  receivedLikesIteratorSessionId;
   final Value<api.MatchesIteratorSessionId?> matchesIteratorSessionId;
   final Value<api.ClientId?> clientId;
   final Value<EnumString?> jsonAvailableProfileAttributesOrderMode;
@@ -2722,9 +3476,9 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
   final Value<bool?> profileTextAccepted;
   final Value<EnumString?> profileTextModerationState;
   final Value<api.ProfileTextModerationRejectedReasonCategory?>
-      profileTextModerationRejectedCategory;
+  profileTextModerationRejectedCategory;
   final Value<api.ProfileTextModerationRejectedReasonDetails?>
-      profileTextModerationRejectedDetails;
+  profileTextModerationRejectedDetails;
   final Value<int?> profileAge;
   final Value<bool?> profileUnlimitedLikes;
   final Value<api.ProfileVersion?> profileVersion;
@@ -3095,78 +3849,78 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     });
   }
 
-  AccountCompanion copyWith(
-      {Value<int>? id,
-      Value<api.AccountId?>? uuidAccountId,
-      Value<JsonString?>? jsonAccountState,
-      Value<JsonString?>? jsonPermissions,
-      Value<EnumString?>? jsonProfileVisibility,
-      Value<bool>? profileFilterFavorites,
-      Value<api.ProfileIteratorSessionId?>? profileIteratorSessionId,
-      Value<api.AutomaticProfileSearchIteratorSessionId?>?
-          automatiProfileSearchIteratorSessionId,
-      Value<api.ReceivedLikesIteratorSessionId?>?
-          receivedLikesIteratorSessionId,
-      Value<api.MatchesIteratorSessionId?>? matchesIteratorSessionId,
-      Value<api.ClientId?>? clientId,
-      Value<EnumString?>? jsonAvailableProfileAttributesOrderMode,
-      Value<bool>? initialSyncDoneLoginRepository,
-      Value<bool>? initialSyncDoneAccountRepository,
-      Value<bool>? initialSyncDoneMediaRepository,
-      Value<bool>? initialSyncDoneProfileRepository,
-      Value<bool>? initialSyncDoneChatRepository,
-      Value<int?>? syncVersionAccount,
-      Value<int?>? syncVersionProfile,
-      Value<int?>? syncVersionMediaContent,
-      Value<int?>? syncVersionClientConfig,
-      Value<double?>? primaryContentGridCropSize,
-      Value<double?>? primaryContentGridCropX,
-      Value<double?>? primaryContentGridCropY,
-      Value<api.ProfileContentVersion?>? profileContentVersion,
-      Value<String?>? profileName,
-      Value<bool?>? profileNameAccepted,
-      Value<EnumString?>? profileNameModerationState,
-      Value<String?>? profileText,
-      Value<bool?>? profileTextAccepted,
-      Value<EnumString?>? profileTextModerationState,
-      Value<api.ProfileTextModerationRejectedReasonCategory?>?
-          profileTextModerationRejectedCategory,
-      Value<api.ProfileTextModerationRejectedReasonDetails?>?
-          profileTextModerationRejectedDetails,
-      Value<int?>? profileAge,
-      Value<bool?>? profileUnlimitedLikes,
-      Value<api.ProfileVersion?>? profileVersion,
-      Value<JsonList?>? jsonProfileAttributes,
-      Value<double?>? profileLocationLatitude,
-      Value<double?>? profileLocationLongitude,
-      Value<JsonString?>? jsonSearchGroups,
-      Value<JsonString?>? jsonProfileFilteringSettings,
-      Value<int?>? profileSearchAgeRangeMin,
-      Value<int?>? profileSearchAgeRangeMax,
-      Value<String?>? accountEmailAddress,
-      Value<String?>? refreshTokenAccount,
-      Value<String?>? refreshTokenMedia,
-      Value<String?>? refreshTokenProfile,
-      Value<String?>? refreshTokenChat,
-      Value<String?>? accessTokenAccount,
-      Value<String?>? accessTokenMedia,
-      Value<String?>? accessTokenProfile,
-      Value<String?>? accessTokenChat,
-      Value<int?>? localImageSettingImageCacheMaxBytes,
-      Value<bool?>? localImageSettingCacheFullSizedImages,
-      Value<int?>? localImageSettingImageCacheDownscalingSize,
-      Value<PrivateKeyData?>? privateKeyData,
-      Value<PublicKeyData?>? publicKeyData,
-      Value<api.PublicKeyId?>? publicKeyId,
-      Value<UtcDateTime?>? profileInitialAgeSetUnixTime,
-      Value<int?>? profileInitialAge,
-      Value<UtcDateTime?>? serverMaintenanceUnixTime,
-      Value<UtcDateTime?>? serverMaintenanceUnixTimeViewed,
-      Value<api.CustomReportsFileHash?>? customReportsFileHash,
-      Value<JsonString?>? customReportsConfig,
-      Value<api.ClientFeaturesFileHash?>? clientFeaturesFileHash,
-      Value<JsonString?>? clientFeaturesConfig,
-      Value<bool>? initialSetupSkipped}) {
+  AccountCompanion copyWith({
+    Value<int>? id,
+    Value<api.AccountId?>? uuidAccountId,
+    Value<JsonString?>? jsonAccountState,
+    Value<JsonString?>? jsonPermissions,
+    Value<EnumString?>? jsonProfileVisibility,
+    Value<bool>? profileFilterFavorites,
+    Value<api.ProfileIteratorSessionId?>? profileIteratorSessionId,
+    Value<api.AutomaticProfileSearchIteratorSessionId?>?
+    automatiProfileSearchIteratorSessionId,
+    Value<api.ReceivedLikesIteratorSessionId?>? receivedLikesIteratorSessionId,
+    Value<api.MatchesIteratorSessionId?>? matchesIteratorSessionId,
+    Value<api.ClientId?>? clientId,
+    Value<EnumString?>? jsonAvailableProfileAttributesOrderMode,
+    Value<bool>? initialSyncDoneLoginRepository,
+    Value<bool>? initialSyncDoneAccountRepository,
+    Value<bool>? initialSyncDoneMediaRepository,
+    Value<bool>? initialSyncDoneProfileRepository,
+    Value<bool>? initialSyncDoneChatRepository,
+    Value<int?>? syncVersionAccount,
+    Value<int?>? syncVersionProfile,
+    Value<int?>? syncVersionMediaContent,
+    Value<int?>? syncVersionClientConfig,
+    Value<double?>? primaryContentGridCropSize,
+    Value<double?>? primaryContentGridCropX,
+    Value<double?>? primaryContentGridCropY,
+    Value<api.ProfileContentVersion?>? profileContentVersion,
+    Value<String?>? profileName,
+    Value<bool?>? profileNameAccepted,
+    Value<EnumString?>? profileNameModerationState,
+    Value<String?>? profileText,
+    Value<bool?>? profileTextAccepted,
+    Value<EnumString?>? profileTextModerationState,
+    Value<api.ProfileTextModerationRejectedReasonCategory?>?
+    profileTextModerationRejectedCategory,
+    Value<api.ProfileTextModerationRejectedReasonDetails?>?
+    profileTextModerationRejectedDetails,
+    Value<int?>? profileAge,
+    Value<bool?>? profileUnlimitedLikes,
+    Value<api.ProfileVersion?>? profileVersion,
+    Value<JsonList?>? jsonProfileAttributes,
+    Value<double?>? profileLocationLatitude,
+    Value<double?>? profileLocationLongitude,
+    Value<JsonString?>? jsonSearchGroups,
+    Value<JsonString?>? jsonProfileFilteringSettings,
+    Value<int?>? profileSearchAgeRangeMin,
+    Value<int?>? profileSearchAgeRangeMax,
+    Value<String?>? accountEmailAddress,
+    Value<String?>? refreshTokenAccount,
+    Value<String?>? refreshTokenMedia,
+    Value<String?>? refreshTokenProfile,
+    Value<String?>? refreshTokenChat,
+    Value<String?>? accessTokenAccount,
+    Value<String?>? accessTokenMedia,
+    Value<String?>? accessTokenProfile,
+    Value<String?>? accessTokenChat,
+    Value<int?>? localImageSettingImageCacheMaxBytes,
+    Value<bool?>? localImageSettingCacheFullSizedImages,
+    Value<int?>? localImageSettingImageCacheDownscalingSize,
+    Value<PrivateKeyData?>? privateKeyData,
+    Value<PublicKeyData?>? publicKeyData,
+    Value<api.PublicKeyId?>? publicKeyId,
+    Value<UtcDateTime?>? profileInitialAgeSetUnixTime,
+    Value<int?>? profileInitialAge,
+    Value<UtcDateTime?>? serverMaintenanceUnixTime,
+    Value<UtcDateTime?>? serverMaintenanceUnixTimeViewed,
+    Value<api.CustomReportsFileHash?>? customReportsFileHash,
+    Value<JsonString?>? customReportsConfig,
+    Value<api.ClientFeaturesFileHash?>? clientFeaturesFileHash,
+    Value<JsonString?>? clientFeaturesConfig,
+    Value<bool>? initialSetupSkipped,
+  }) {
     return AccountCompanion(
       id: id ?? this.id,
       uuidAccountId: uuidAccountId ?? this.uuidAccountId,
@@ -3180,7 +3934,7 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
           profileIteratorSessionId ?? this.profileIteratorSessionId,
       automatiProfileSearchIteratorSessionId:
           automatiProfileSearchIteratorSessionId ??
-              this.automatiProfileSearchIteratorSessionId,
+          this.automatiProfileSearchIteratorSessionId,
       receivedLikesIteratorSessionId:
           receivedLikesIteratorSessionId ?? this.receivedLikesIteratorSessionId,
       matchesIteratorSessionId:
@@ -3188,14 +3942,16 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       clientId: clientId ?? this.clientId,
       jsonAvailableProfileAttributesOrderMode:
           jsonAvailableProfileAttributesOrderMode ??
-              this.jsonAvailableProfileAttributesOrderMode,
+          this.jsonAvailableProfileAttributesOrderMode,
       initialSyncDoneLoginRepository:
           initialSyncDoneLoginRepository ?? this.initialSyncDoneLoginRepository,
-      initialSyncDoneAccountRepository: initialSyncDoneAccountRepository ??
+      initialSyncDoneAccountRepository:
+          initialSyncDoneAccountRepository ??
           this.initialSyncDoneAccountRepository,
       initialSyncDoneMediaRepository:
           initialSyncDoneMediaRepository ?? this.initialSyncDoneMediaRepository,
-      initialSyncDoneProfileRepository: initialSyncDoneProfileRepository ??
+      initialSyncDoneProfileRepository:
+          initialSyncDoneProfileRepository ??
           this.initialSyncDoneProfileRepository,
       initialSyncDoneChatRepository:
           initialSyncDoneChatRepository ?? this.initialSyncDoneChatRepository,
@@ -3223,10 +3979,10 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
           profileTextModerationState ?? this.profileTextModerationState,
       profileTextModerationRejectedCategory:
           profileTextModerationRejectedCategory ??
-              this.profileTextModerationRejectedCategory,
+          this.profileTextModerationRejectedCategory,
       profileTextModerationRejectedDetails:
           profileTextModerationRejectedDetails ??
-              this.profileTextModerationRejectedDetails,
+          this.profileTextModerationRejectedDetails,
       profileAge: profileAge ?? this.profileAge,
       profileUnlimitedLikes:
           profileUnlimitedLikes ?? this.profileUnlimitedLikes,
@@ -3255,13 +4011,13 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       accessTokenChat: accessTokenChat ?? this.accessTokenChat,
       localImageSettingImageCacheMaxBytes:
           localImageSettingImageCacheMaxBytes ??
-              this.localImageSettingImageCacheMaxBytes,
+          this.localImageSettingImageCacheMaxBytes,
       localImageSettingCacheFullSizedImages:
           localImageSettingCacheFullSizedImages ??
-              this.localImageSettingCacheFullSizedImages,
+          this.localImageSettingCacheFullSizedImages,
       localImageSettingImageCacheDownscalingSize:
           localImageSettingImageCacheDownscalingSize ??
-              this.localImageSettingImageCacheDownscalingSize,
+          this.localImageSettingImageCacheDownscalingSize,
       privateKeyData: privateKeyData ?? this.privateKeyData,
       publicKeyData: publicKeyData ?? this.publicKeyData,
       publicKeyId: publicKeyId ?? this.publicKeyId,
@@ -3270,7 +4026,8 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       profileInitialAge: profileInitialAge ?? this.profileInitialAge,
       serverMaintenanceUnixTime:
           serverMaintenanceUnixTime ?? this.serverMaintenanceUnixTime,
-      serverMaintenanceUnixTimeViewed: serverMaintenanceUnixTimeViewed ??
+      serverMaintenanceUnixTimeViewed:
+          serverMaintenanceUnixTimeViewed ??
           this.serverMaintenanceUnixTimeViewed,
       customReportsFileHash:
           customReportsFileHash ?? this.customReportsFileHash,
@@ -3290,74 +4047,95 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     }
     if (uuidAccountId.present) {
       map['uuid_account_id'] = Variable<String>(
-          $AccountTable.$converteruuidAccountId.toSql(uuidAccountId.value));
+        $AccountTable.$converteruuidAccountId.toSql(uuidAccountId.value),
+      );
     }
     if (jsonAccountState.present) {
-      map['json_account_state'] = Variable<String>($AccountTable
-          .$converterjsonAccountState
-          .toSql(jsonAccountState.value));
+      map['json_account_state'] = Variable<String>(
+        $AccountTable.$converterjsonAccountState.toSql(jsonAccountState.value),
+      );
     }
     if (jsonPermissions.present) {
       map['json_permissions'] = Variable<String>(
-          $AccountTable.$converterjsonPermissions.toSql(jsonPermissions.value));
+        $AccountTable.$converterjsonPermissions.toSql(jsonPermissions.value),
+      );
     }
     if (jsonProfileVisibility.present) {
-      map['json_profile_visibility'] = Variable<String>($AccountTable
-          .$converterjsonProfileVisibility
-          .toSql(jsonProfileVisibility.value));
+      map['json_profile_visibility'] = Variable<String>(
+        $AccountTable.$converterjsonProfileVisibility.toSql(
+          jsonProfileVisibility.value,
+        ),
+      );
     }
     if (profileFilterFavorites.present) {
-      map['profile_filter_favorites'] =
-          Variable<bool>(profileFilterFavorites.value);
+      map['profile_filter_favorites'] = Variable<bool>(
+        profileFilterFavorites.value,
+      );
     }
     if (profileIteratorSessionId.present) {
-      map['profile_iterator_session_id'] = Variable<int>($AccountTable
-          .$converterprofileIteratorSessionId
-          .toSql(profileIteratorSessionId.value));
+      map['profile_iterator_session_id'] = Variable<int>(
+        $AccountTable.$converterprofileIteratorSessionId.toSql(
+          profileIteratorSessionId.value,
+        ),
+      );
     }
     if (automatiProfileSearchIteratorSessionId.present) {
       map['automati_profile_search_iterator_session_id'] = Variable<int>(
-          $AccountTable.$converterautomatiProfileSearchIteratorSessionId
-              .toSql(automatiProfileSearchIteratorSessionId.value));
+        $AccountTable.$converterautomatiProfileSearchIteratorSessionId.toSql(
+          automatiProfileSearchIteratorSessionId.value,
+        ),
+      );
     }
     if (receivedLikesIteratorSessionId.present) {
-      map['received_likes_iterator_session_id'] = Variable<int>($AccountTable
-          .$converterreceivedLikesIteratorSessionId
-          .toSql(receivedLikesIteratorSessionId.value));
+      map['received_likes_iterator_session_id'] = Variable<int>(
+        $AccountTable.$converterreceivedLikesIteratorSessionId.toSql(
+          receivedLikesIteratorSessionId.value,
+        ),
+      );
     }
     if (matchesIteratorSessionId.present) {
-      map['matches_iterator_session_id'] = Variable<int>($AccountTable
-          .$convertermatchesIteratorSessionId
-          .toSql(matchesIteratorSessionId.value));
+      map['matches_iterator_session_id'] = Variable<int>(
+        $AccountTable.$convertermatchesIteratorSessionId.toSql(
+          matchesIteratorSessionId.value,
+        ),
+      );
     }
     if (clientId.present) {
-      map['client_id'] =
-          Variable<int>($AccountTable.$converterclientId.toSql(clientId.value));
+      map['client_id'] = Variable<int>(
+        $AccountTable.$converterclientId.toSql(clientId.value),
+      );
     }
     if (jsonAvailableProfileAttributesOrderMode.present) {
       map['json_available_profile_attributes_order_mode'] = Variable<String>(
-          $AccountTable.$converterjsonAvailableProfileAttributesOrderMode
-              .toSql(jsonAvailableProfileAttributesOrderMode.value));
+        $AccountTable.$converterjsonAvailableProfileAttributesOrderMode.toSql(
+          jsonAvailableProfileAttributesOrderMode.value,
+        ),
+      );
     }
     if (initialSyncDoneLoginRepository.present) {
-      map['initial_sync_done_login_repository'] =
-          Variable<bool>(initialSyncDoneLoginRepository.value);
+      map['initial_sync_done_login_repository'] = Variable<bool>(
+        initialSyncDoneLoginRepository.value,
+      );
     }
     if (initialSyncDoneAccountRepository.present) {
-      map['initial_sync_done_account_repository'] =
-          Variable<bool>(initialSyncDoneAccountRepository.value);
+      map['initial_sync_done_account_repository'] = Variable<bool>(
+        initialSyncDoneAccountRepository.value,
+      );
     }
     if (initialSyncDoneMediaRepository.present) {
-      map['initial_sync_done_media_repository'] =
-          Variable<bool>(initialSyncDoneMediaRepository.value);
+      map['initial_sync_done_media_repository'] = Variable<bool>(
+        initialSyncDoneMediaRepository.value,
+      );
     }
     if (initialSyncDoneProfileRepository.present) {
-      map['initial_sync_done_profile_repository'] =
-          Variable<bool>(initialSyncDoneProfileRepository.value);
+      map['initial_sync_done_profile_repository'] = Variable<bool>(
+        initialSyncDoneProfileRepository.value,
+      );
     }
     if (initialSyncDoneChatRepository.present) {
-      map['initial_sync_done_chat_repository'] =
-          Variable<bool>(initialSyncDoneChatRepository.value);
+      map['initial_sync_done_chat_repository'] = Variable<bool>(
+        initialSyncDoneChatRepository.value,
+      );
     }
     if (syncVersionAccount.present) {
       map['sync_version_account'] = Variable<int>(syncVersionAccount.value);
@@ -3366,29 +4144,36 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       map['sync_version_profile'] = Variable<int>(syncVersionProfile.value);
     }
     if (syncVersionMediaContent.present) {
-      map['sync_version_media_content'] =
-          Variable<int>(syncVersionMediaContent.value);
+      map['sync_version_media_content'] = Variable<int>(
+        syncVersionMediaContent.value,
+      );
     }
     if (syncVersionClientConfig.present) {
-      map['sync_version_client_config'] =
-          Variable<int>(syncVersionClientConfig.value);
+      map['sync_version_client_config'] = Variable<int>(
+        syncVersionClientConfig.value,
+      );
     }
     if (primaryContentGridCropSize.present) {
-      map['primary_content_grid_crop_size'] =
-          Variable<double>(primaryContentGridCropSize.value);
+      map['primary_content_grid_crop_size'] = Variable<double>(
+        primaryContentGridCropSize.value,
+      );
     }
     if (primaryContentGridCropX.present) {
-      map['primary_content_grid_crop_x'] =
-          Variable<double>(primaryContentGridCropX.value);
+      map['primary_content_grid_crop_x'] = Variable<double>(
+        primaryContentGridCropX.value,
+      );
     }
     if (primaryContentGridCropY.present) {
-      map['primary_content_grid_crop_y'] =
-          Variable<double>(primaryContentGridCropY.value);
+      map['primary_content_grid_crop_y'] = Variable<double>(
+        primaryContentGridCropY.value,
+      );
     }
     if (profileContentVersion.present) {
-      map['profile_content_version'] = Variable<String>($AccountTable
-          .$converterprofileContentVersion
-          .toSql(profileContentVersion.value));
+      map['profile_content_version'] = Variable<String>(
+        $AccountTable.$converterprofileContentVersion.toSql(
+          profileContentVersion.value,
+        ),
+      );
     }
     if (profileName.present) {
       map['profile_name'] = Variable<String>(profileName.value);
@@ -3397,9 +4182,11 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       map['profile_name_accepted'] = Variable<bool>(profileNameAccepted.value);
     }
     if (profileNameModerationState.present) {
-      map['profile_name_moderation_state'] = Variable<String>($AccountTable
-          .$converterprofileNameModerationState
-          .toSql(profileNameModerationState.value));
+      map['profile_name_moderation_state'] = Variable<String>(
+        $AccountTable.$converterprofileNameModerationState.toSql(
+          profileNameModerationState.value,
+        ),
+      );
     }
     if (profileText.present) {
       map['profile_text'] = Variable<String>(profileText.value);
@@ -3408,76 +4195,95 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       map['profile_text_accepted'] = Variable<bool>(profileTextAccepted.value);
     }
     if (profileTextModerationState.present) {
-      map['profile_text_moderation_state'] = Variable<String>($AccountTable
-          .$converterprofileTextModerationState
-          .toSql(profileTextModerationState.value));
+      map['profile_text_moderation_state'] = Variable<String>(
+        $AccountTable.$converterprofileTextModerationState.toSql(
+          profileTextModerationState.value,
+        ),
+      );
     }
     if (profileTextModerationRejectedCategory.present) {
       map['profile_text_moderation_rejected_category'] = Variable<int>(
-          $AccountTable.$converterprofileTextModerationRejectedCategory
-              .toSql(profileTextModerationRejectedCategory.value));
+        $AccountTable.$converterprofileTextModerationRejectedCategory.toSql(
+          profileTextModerationRejectedCategory.value,
+        ),
+      );
     }
     if (profileTextModerationRejectedDetails.present) {
       map['profile_text_moderation_rejected_details'] = Variable<String>(
-          $AccountTable.$converterprofileTextModerationRejectedDetails
-              .toSql(profileTextModerationRejectedDetails.value));
+        $AccountTable.$converterprofileTextModerationRejectedDetails.toSql(
+          profileTextModerationRejectedDetails.value,
+        ),
+      );
     }
     if (profileAge.present) {
       map['profile_age'] = Variable<int>(profileAge.value);
     }
     if (profileUnlimitedLikes.present) {
-      map['profile_unlimited_likes'] =
-          Variable<bool>(profileUnlimitedLikes.value);
+      map['profile_unlimited_likes'] = Variable<bool>(
+        profileUnlimitedLikes.value,
+      );
     }
     if (profileVersion.present) {
       map['profile_version'] = Variable<String>(
-          $AccountTable.$converterprofileVersion.toSql(profileVersion.value));
+        $AccountTable.$converterprofileVersion.toSql(profileVersion.value),
+      );
     }
     if (jsonProfileAttributes.present) {
-      map['json_profile_attributes'] = Variable<String>($AccountTable
-          .$converterjsonProfileAttributes
-          .toSql(jsonProfileAttributes.value));
+      map['json_profile_attributes'] = Variable<String>(
+        $AccountTable.$converterjsonProfileAttributes.toSql(
+          jsonProfileAttributes.value,
+        ),
+      );
     }
     if (profileLocationLatitude.present) {
-      map['profile_location_latitude'] =
-          Variable<double>(profileLocationLatitude.value);
+      map['profile_location_latitude'] = Variable<double>(
+        profileLocationLatitude.value,
+      );
     }
     if (profileLocationLongitude.present) {
-      map['profile_location_longitude'] =
-          Variable<double>(profileLocationLongitude.value);
+      map['profile_location_longitude'] = Variable<double>(
+        profileLocationLongitude.value,
+      );
     }
     if (jsonSearchGroups.present) {
-      map['json_search_groups'] = Variable<String>($AccountTable
-          .$converterjsonSearchGroups
-          .toSql(jsonSearchGroups.value));
+      map['json_search_groups'] = Variable<String>(
+        $AccountTable.$converterjsonSearchGroups.toSql(jsonSearchGroups.value),
+      );
     }
     if (jsonProfileFilteringSettings.present) {
-      map['json_profile_filtering_settings'] = Variable<String>($AccountTable
-          .$converterjsonProfileFilteringSettings
-          .toSql(jsonProfileFilteringSettings.value));
+      map['json_profile_filtering_settings'] = Variable<String>(
+        $AccountTable.$converterjsonProfileFilteringSettings.toSql(
+          jsonProfileFilteringSettings.value,
+        ),
+      );
     }
     if (profileSearchAgeRangeMin.present) {
-      map['profile_search_age_range_min'] =
-          Variable<int>(profileSearchAgeRangeMin.value);
+      map['profile_search_age_range_min'] = Variable<int>(
+        profileSearchAgeRangeMin.value,
+      );
     }
     if (profileSearchAgeRangeMax.present) {
-      map['profile_search_age_range_max'] =
-          Variable<int>(profileSearchAgeRangeMax.value);
+      map['profile_search_age_range_max'] = Variable<int>(
+        profileSearchAgeRangeMax.value,
+      );
     }
     if (accountEmailAddress.present) {
-      map['account_email_address'] =
-          Variable<String>(accountEmailAddress.value);
+      map['account_email_address'] = Variable<String>(
+        accountEmailAddress.value,
+      );
     }
     if (refreshTokenAccount.present) {
-      map['refresh_token_account'] =
-          Variable<String>(refreshTokenAccount.value);
+      map['refresh_token_account'] = Variable<String>(
+        refreshTokenAccount.value,
+      );
     }
     if (refreshTokenMedia.present) {
       map['refresh_token_media'] = Variable<String>(refreshTokenMedia.value);
     }
     if (refreshTokenProfile.present) {
-      map['refresh_token_profile'] =
-          Variable<String>(refreshTokenProfile.value);
+      map['refresh_token_profile'] = Variable<String>(
+        refreshTokenProfile.value,
+      );
     }
     if (refreshTokenChat.present) {
       map['refresh_token_chat'] = Variable<String>(refreshTokenChat.value);
@@ -3495,66 +4301,86 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
       map['access_token_chat'] = Variable<String>(accessTokenChat.value);
     }
     if (localImageSettingImageCacheMaxBytes.present) {
-      map['local_image_setting_image_cache_max_bytes'] =
-          Variable<int>(localImageSettingImageCacheMaxBytes.value);
+      map['local_image_setting_image_cache_max_bytes'] = Variable<int>(
+        localImageSettingImageCacheMaxBytes.value,
+      );
     }
     if (localImageSettingCacheFullSizedImages.present) {
-      map['local_image_setting_cache_full_sized_images'] =
-          Variable<bool>(localImageSettingCacheFullSizedImages.value);
+      map['local_image_setting_cache_full_sized_images'] = Variable<bool>(
+        localImageSettingCacheFullSizedImages.value,
+      );
     }
     if (localImageSettingImageCacheDownscalingSize.present) {
-      map['local_image_setting_image_cache_downscaling_size'] =
-          Variable<int>(localImageSettingImageCacheDownscalingSize.value);
+      map['local_image_setting_image_cache_downscaling_size'] = Variable<int>(
+        localImageSettingImageCacheDownscalingSize.value,
+      );
     }
     if (privateKeyData.present) {
       map['private_key_data'] = Variable<Uint8List>(
-          $AccountTable.$converterprivateKeyData.toSql(privateKeyData.value));
+        $AccountTable.$converterprivateKeyData.toSql(privateKeyData.value),
+      );
     }
     if (publicKeyData.present) {
       map['public_key_data'] = Variable<Uint8List>(
-          $AccountTable.$converterpublicKeyData.toSql(publicKeyData.value));
+        $AccountTable.$converterpublicKeyData.toSql(publicKeyData.value),
+      );
     }
     if (publicKeyId.present) {
       map['public_key_id'] = Variable<int>(
-          $AccountTable.$converterpublicKeyId.toSql(publicKeyId.value));
+        $AccountTable.$converterpublicKeyId.toSql(publicKeyId.value),
+      );
     }
     if (profileInitialAgeSetUnixTime.present) {
-      map['profile_initial_age_set_unix_time'] = Variable<int>($AccountTable
-          .$converterprofileInitialAgeSetUnixTime
-          .toSql(profileInitialAgeSetUnixTime.value));
+      map['profile_initial_age_set_unix_time'] = Variable<int>(
+        $AccountTable.$converterprofileInitialAgeSetUnixTime.toSql(
+          profileInitialAgeSetUnixTime.value,
+        ),
+      );
     }
     if (profileInitialAge.present) {
       map['profile_initial_age'] = Variable<int>(profileInitialAge.value);
     }
     if (serverMaintenanceUnixTime.present) {
-      map['server_maintenance_unix_time'] = Variable<int>($AccountTable
-          .$converterserverMaintenanceUnixTime
-          .toSql(serverMaintenanceUnixTime.value));
+      map['server_maintenance_unix_time'] = Variable<int>(
+        $AccountTable.$converterserverMaintenanceUnixTime.toSql(
+          serverMaintenanceUnixTime.value,
+        ),
+      );
     }
     if (serverMaintenanceUnixTimeViewed.present) {
-      map['server_maintenance_unix_time_viewed'] = Variable<int>($AccountTable
-          .$converterserverMaintenanceUnixTimeViewed
-          .toSql(serverMaintenanceUnixTimeViewed.value));
+      map['server_maintenance_unix_time_viewed'] = Variable<int>(
+        $AccountTable.$converterserverMaintenanceUnixTimeViewed.toSql(
+          serverMaintenanceUnixTimeViewed.value,
+        ),
+      );
     }
     if (customReportsFileHash.present) {
-      map['custom_reports_file_hash'] = Variable<String>($AccountTable
-          .$convertercustomReportsFileHash
-          .toSql(customReportsFileHash.value));
+      map['custom_reports_file_hash'] = Variable<String>(
+        $AccountTable.$convertercustomReportsFileHash.toSql(
+          customReportsFileHash.value,
+        ),
+      );
     }
     if (customReportsConfig.present) {
-      map['custom_reports_config'] = Variable<String>($AccountTable
-          .$convertercustomReportsConfig
-          .toSql(customReportsConfig.value));
+      map['custom_reports_config'] = Variable<String>(
+        $AccountTable.$convertercustomReportsConfig.toSql(
+          customReportsConfig.value,
+        ),
+      );
     }
     if (clientFeaturesFileHash.present) {
-      map['client_features_file_hash'] = Variable<String>($AccountTable
-          .$converterclientFeaturesFileHash
-          .toSql(clientFeaturesFileHash.value));
+      map['client_features_file_hash'] = Variable<String>(
+        $AccountTable.$converterclientFeaturesFileHash.toSql(
+          clientFeaturesFileHash.value,
+        ),
+      );
     }
     if (clientFeaturesConfig.present) {
-      map['client_features_config'] = Variable<String>($AccountTable
-          .$converterclientFeaturesConfig
-          .toSql(clientFeaturesConfig.value));
+      map['client_features_config'] = Variable<String>(
+        $AccountTable.$converterclientFeaturesConfig.toSql(
+          clientFeaturesConfig.value,
+        ),
+      );
     }
     if (initialSetupSkipped.present) {
       map['initial_setup_skipped'] = Variable<bool>(initialSetupSkipped.value);
@@ -3573,23 +4399,31 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
           ..write('profileFilterFavorites: $profileFilterFavorites, ')
           ..write('profileIteratorSessionId: $profileIteratorSessionId, ')
           ..write(
-              'automatiProfileSearchIteratorSessionId: $automatiProfileSearchIteratorSessionId, ')
+            'automatiProfileSearchIteratorSessionId: $automatiProfileSearchIteratorSessionId, ',
+          )
           ..write(
-              'receivedLikesIteratorSessionId: $receivedLikesIteratorSessionId, ')
+            'receivedLikesIteratorSessionId: $receivedLikesIteratorSessionId, ',
+          )
           ..write('matchesIteratorSessionId: $matchesIteratorSessionId, ')
           ..write('clientId: $clientId, ')
           ..write(
-              'jsonAvailableProfileAttributesOrderMode: $jsonAvailableProfileAttributesOrderMode, ')
+            'jsonAvailableProfileAttributesOrderMode: $jsonAvailableProfileAttributesOrderMode, ',
+          )
           ..write(
-              'initialSyncDoneLoginRepository: $initialSyncDoneLoginRepository, ')
+            'initialSyncDoneLoginRepository: $initialSyncDoneLoginRepository, ',
+          )
           ..write(
-              'initialSyncDoneAccountRepository: $initialSyncDoneAccountRepository, ')
+            'initialSyncDoneAccountRepository: $initialSyncDoneAccountRepository, ',
+          )
           ..write(
-              'initialSyncDoneMediaRepository: $initialSyncDoneMediaRepository, ')
+            'initialSyncDoneMediaRepository: $initialSyncDoneMediaRepository, ',
+          )
           ..write(
-              'initialSyncDoneProfileRepository: $initialSyncDoneProfileRepository, ')
+            'initialSyncDoneProfileRepository: $initialSyncDoneProfileRepository, ',
+          )
           ..write(
-              'initialSyncDoneChatRepository: $initialSyncDoneChatRepository, ')
+            'initialSyncDoneChatRepository: $initialSyncDoneChatRepository, ',
+          )
           ..write('syncVersionAccount: $syncVersionAccount, ')
           ..write('syncVersionProfile: $syncVersionProfile, ')
           ..write('syncVersionMediaContent: $syncVersionMediaContent, ')
@@ -3605,9 +4439,11 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
           ..write('profileTextAccepted: $profileTextAccepted, ')
           ..write('profileTextModerationState: $profileTextModerationState, ')
           ..write(
-              'profileTextModerationRejectedCategory: $profileTextModerationRejectedCategory, ')
+            'profileTextModerationRejectedCategory: $profileTextModerationRejectedCategory, ',
+          )
           ..write(
-              'profileTextModerationRejectedDetails: $profileTextModerationRejectedDetails, ')
+            'profileTextModerationRejectedDetails: $profileTextModerationRejectedDetails, ',
+          )
           ..write('profileAge: $profileAge, ')
           ..write('profileUnlimitedLikes: $profileUnlimitedLikes, ')
           ..write('profileVersion: $profileVersion, ')
@@ -3616,7 +4452,8 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
           ..write('profileLocationLongitude: $profileLocationLongitude, ')
           ..write('jsonSearchGroups: $jsonSearchGroups, ')
           ..write(
-              'jsonProfileFilteringSettings: $jsonProfileFilteringSettings, ')
+            'jsonProfileFilteringSettings: $jsonProfileFilteringSettings, ',
+          )
           ..write('profileSearchAgeRangeMin: $profileSearchAgeRangeMin, ')
           ..write('profileSearchAgeRangeMax: $profileSearchAgeRangeMax, ')
           ..write('accountEmailAddress: $accountEmailAddress, ')
@@ -3629,20 +4466,25 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
           ..write('accessTokenProfile: $accessTokenProfile, ')
           ..write('accessTokenChat: $accessTokenChat, ')
           ..write(
-              'localImageSettingImageCacheMaxBytes: $localImageSettingImageCacheMaxBytes, ')
+            'localImageSettingImageCacheMaxBytes: $localImageSettingImageCacheMaxBytes, ',
+          )
           ..write(
-              'localImageSettingCacheFullSizedImages: $localImageSettingCacheFullSizedImages, ')
+            'localImageSettingCacheFullSizedImages: $localImageSettingCacheFullSizedImages, ',
+          )
           ..write(
-              'localImageSettingImageCacheDownscalingSize: $localImageSettingImageCacheDownscalingSize, ')
+            'localImageSettingImageCacheDownscalingSize: $localImageSettingImageCacheDownscalingSize, ',
+          )
           ..write('privateKeyData: $privateKeyData, ')
           ..write('publicKeyData: $publicKeyData, ')
           ..write('publicKeyId: $publicKeyId, ')
           ..write(
-              'profileInitialAgeSetUnixTime: $profileInitialAgeSetUnixTime, ')
+            'profileInitialAgeSetUnixTime: $profileInitialAgeSetUnixTime, ',
+          )
           ..write('profileInitialAge: $profileInitialAge, ')
           ..write('serverMaintenanceUnixTime: $serverMaintenanceUnixTime, ')
           ..write(
-              'serverMaintenanceUnixTimeViewed: $serverMaintenanceUnixTimeViewed, ')
+            'serverMaintenanceUnixTimeViewed: $serverMaintenanceUnixTimeViewed, ',
+          )
           ..write('customReportsFileHash: $customReportsFileHash, ')
           ..write('customReportsConfig: $customReportsConfig, ')
           ..write('clientFeaturesFileHash: $clientFeaturesFileHash, ')
@@ -3661,153 +4503,230 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
-      'id', aliasedName, false,
-      hasAutoIncrement: true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      defaultConstraints:
-          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
   @override
   late final GeneratedColumnWithTypeConverter<api.AccountId, String>
-      uuidAccountId = GeneratedColumn<String>(
-              'uuid_account_id', aliasedName, false,
-              type: DriftSqlType.string,
-              requiredDuringInsert: true,
-              defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'))
-          .withConverter<api.AccountId>($ProfilesTable.$converteruuidAccountId);
+  uuidAccountId = GeneratedColumn<String>(
+    'uuid_account_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'),
+  ).withConverter<api.AccountId>($ProfilesTable.$converteruuidAccountId);
   @override
-  late final GeneratedColumnWithTypeConverter<api.ProfileContentVersion?,
-      String> profileContentVersion = GeneratedColumn<String>(
-          'profile_content_version', aliasedName, true,
-          type: DriftSqlType.string, requiredDuringInsert: false)
-      .withConverter<api.ProfileContentVersion?>(
-          $ProfilesTable.$converterprofileContentVersion);
-  static const VerificationMeta _profileNameMeta =
-      const VerificationMeta('profileName');
+  late final GeneratedColumnWithTypeConverter<
+    api.ProfileContentVersion?,
+    String
+  >
+  profileContentVersion =
+      GeneratedColumn<String>(
+        'profile_content_version',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      ).withConverter<api.ProfileContentVersion?>(
+        $ProfilesTable.$converterprofileContentVersion,
+      );
+  static const VerificationMeta _profileNameMeta = const VerificationMeta(
+    'profileName',
+  );
   @override
   late final GeneratedColumn<String> profileName = GeneratedColumn<String>(
-      'profile_name', aliasedName, true,
-      type: DriftSqlType.string, requiredDuringInsert: false);
+    'profile_name',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   static const VerificationMeta _profileNameAcceptedMeta =
       const VerificationMeta('profileNameAccepted');
   @override
   late final GeneratedColumn<bool> profileNameAccepted = GeneratedColumn<bool>(
-      'profile_name_accepted', aliasedName, true,
-      type: DriftSqlType.bool,
-      requiredDuringInsert: false,
-      defaultConstraints: GeneratedColumn.constraintIsAlways(
-          'CHECK ("profile_name_accepted" IN (0, 1))'));
-  static const VerificationMeta _profileTextMeta =
-      const VerificationMeta('profileText');
+    'profile_name_accepted',
+    aliasedName,
+    true,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("profile_name_accepted" IN (0, 1))',
+    ),
+  );
+  static const VerificationMeta _profileTextMeta = const VerificationMeta(
+    'profileText',
+  );
   @override
   late final GeneratedColumn<String> profileText = GeneratedColumn<String>(
-      'profile_text', aliasedName, true,
-      type: DriftSqlType.string, requiredDuringInsert: false);
+    'profile_text',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   static const VerificationMeta _profileTextAcceptedMeta =
       const VerificationMeta('profileTextAccepted');
   @override
   late final GeneratedColumn<bool> profileTextAccepted = GeneratedColumn<bool>(
-      'profile_text_accepted', aliasedName, true,
-      type: DriftSqlType.bool,
-      requiredDuringInsert: false,
-      defaultConstraints: GeneratedColumn.constraintIsAlways(
-          'CHECK ("profile_text_accepted" IN (0, 1))'));
+    'profile_text_accepted',
+    aliasedName,
+    true,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("profile_text_accepted" IN (0, 1))',
+    ),
+  );
   @override
   late final GeneratedColumnWithTypeConverter<api.ProfileVersion?, String>
-      profileVersion = GeneratedColumn<String>(
-              'profile_version', aliasedName, true,
-              type: DriftSqlType.string, requiredDuringInsert: false)
-          .withConverter<api.ProfileVersion?>(
-              $ProfilesTable.$converterprofileVersion);
-  static const VerificationMeta _profileAgeMeta =
-      const VerificationMeta('profileAge');
+  profileVersion = GeneratedColumn<String>(
+    'profile_version',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  ).withConverter<api.ProfileVersion?>($ProfilesTable.$converterprofileVersion);
+  static const VerificationMeta _profileAgeMeta = const VerificationMeta(
+    'profileAge',
+  );
   @override
   late final GeneratedColumn<int> profileAge = GeneratedColumn<int>(
-      'profile_age', aliasedName, true,
-      type: DriftSqlType.int, requiredDuringInsert: false);
+    'profile_age',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
   static const VerificationMeta _profileLastSeenTimeValueMeta =
       const VerificationMeta('profileLastSeenTimeValue');
   @override
   late final GeneratedColumn<int> profileLastSeenTimeValue =
-      GeneratedColumn<int>('profile_last_seen_time_value', aliasedName, true,
-          type: DriftSqlType.int, requiredDuringInsert: false);
+      GeneratedColumn<int>(
+        'profile_last_seen_time_value',
+        aliasedName,
+        true,
+        type: DriftSqlType.int,
+        requiredDuringInsert: false,
+      );
   static const VerificationMeta _profileUnlimitedLikesMeta =
       const VerificationMeta('profileUnlimitedLikes');
   @override
   late final GeneratedColumn<bool> profileUnlimitedLikes =
-      GeneratedColumn<bool>('profile_unlimited_likes', aliasedName, true,
-          type: DriftSqlType.bool,
-          requiredDuringInsert: false,
-          defaultConstraints: GeneratedColumn.constraintIsAlways(
-              'CHECK ("profile_unlimited_likes" IN (0, 1))'));
+      GeneratedColumn<bool>(
+        'profile_unlimited_likes',
+        aliasedName,
+        true,
+        type: DriftSqlType.bool,
+        requiredDuringInsert: false,
+        defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'CHECK ("profile_unlimited_likes" IN (0, 1))',
+        ),
+      );
   @override
   late final GeneratedColumnWithTypeConverter<JsonList?, String>
-      jsonProfileAttributes = GeneratedColumn<String>(
-              'json_profile_attributes', aliasedName, true,
-              type: DriftSqlType.string, requiredDuringInsert: false)
-          .withConverter<JsonList?>(
-              $ProfilesTable.$converterjsonProfileAttributes);
+  jsonProfileAttributes = GeneratedColumn<String>(
+    'json_profile_attributes',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  ).withConverter<JsonList?>($ProfilesTable.$converterjsonProfileAttributes);
   static const VerificationMeta _primaryContentGridCropSizeMeta =
       const VerificationMeta('primaryContentGridCropSize');
   @override
   late final GeneratedColumn<double> primaryContentGridCropSize =
       GeneratedColumn<double>(
-          'primary_content_grid_crop_size', aliasedName, true,
-          type: DriftSqlType.double, requiredDuringInsert: false);
+        'primary_content_grid_crop_size',
+        aliasedName,
+        true,
+        type: DriftSqlType.double,
+        requiredDuringInsert: false,
+      );
   static const VerificationMeta _primaryContentGridCropXMeta =
       const VerificationMeta('primaryContentGridCropX');
   @override
   late final GeneratedColumn<double> primaryContentGridCropX =
-      GeneratedColumn<double>('primary_content_grid_crop_x', aliasedName, true,
-          type: DriftSqlType.double, requiredDuringInsert: false);
+      GeneratedColumn<double>(
+        'primary_content_grid_crop_x',
+        aliasedName,
+        true,
+        type: DriftSqlType.double,
+        requiredDuringInsert: false,
+      );
   static const VerificationMeta _primaryContentGridCropYMeta =
       const VerificationMeta('primaryContentGridCropY');
   @override
   late final GeneratedColumn<double> primaryContentGridCropY =
-      GeneratedColumn<double>('primary_content_grid_crop_y', aliasedName, true,
-          type: DriftSqlType.double, requiredDuringInsert: false);
+      GeneratedColumn<double>(
+        'primary_content_grid_crop_y',
+        aliasedName,
+        true,
+        type: DriftSqlType.double,
+        requiredDuringInsert: false,
+      );
   @override
   late final GeneratedColumnWithTypeConverter<UtcDateTime?, int>
-      profileDataRefreshTime = GeneratedColumn<int>(
-              'profile_data_refresh_time', aliasedName, true,
-              type: DriftSqlType.int, requiredDuringInsert: false)
-          .withConverter<UtcDateTime?>(
-              $ProfilesTable.$converterprofileDataRefreshTime);
+  profileDataRefreshTime =
+      GeneratedColumn<int>(
+        'profile_data_refresh_time',
+        aliasedName,
+        true,
+        type: DriftSqlType.int,
+        requiredDuringInsert: false,
+      ).withConverter<UtcDateTime?>(
+        $ProfilesTable.$converterprofileDataRefreshTime,
+      );
   @override
   late final GeneratedColumnWithTypeConverter<UtcDateTime?, int>
-      newLikeInfoReceivedTime = GeneratedColumn<int>(
-              'new_like_info_received_time', aliasedName, true,
-              type: DriftSqlType.int, requiredDuringInsert: false)
-          .withConverter<UtcDateTime?>(
-              $ProfilesTable.$converternewLikeInfoReceivedTime);
+  newLikeInfoReceivedTime =
+      GeneratedColumn<int>(
+        'new_like_info_received_time',
+        aliasedName,
+        true,
+        type: DriftSqlType.int,
+        requiredDuringInsert: false,
+      ).withConverter<UtcDateTime?>(
+        $ProfilesTable.$converternewLikeInfoReceivedTime,
+      );
   @override
   List<GeneratedColumn> get $columns => [
-        id,
-        uuidAccountId,
-        profileContentVersion,
-        profileName,
-        profileNameAccepted,
-        profileText,
-        profileTextAccepted,
-        profileVersion,
-        profileAge,
-        profileLastSeenTimeValue,
-        profileUnlimitedLikes,
-        jsonProfileAttributes,
-        primaryContentGridCropSize,
-        primaryContentGridCropX,
-        primaryContentGridCropY,
-        profileDataRefreshTime,
-        newLikeInfoReceivedTime
-      ];
+    id,
+    uuidAccountId,
+    profileContentVersion,
+    profileName,
+    profileNameAccepted,
+    profileText,
+    profileTextAccepted,
+    profileVersion,
+    profileAge,
+    profileLastSeenTimeValue,
+    profileUnlimitedLikes,
+    jsonProfileAttributes,
+    primaryContentGridCropSize,
+    primaryContentGridCropX,
+    primaryContentGridCropY,
+    profileDataRefreshTime,
+    newLikeInfoReceivedTime,
+  ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
   static const String $name = 'profiles';
   @override
-  VerificationContext validateIntegrity(Insertable<Profile> instance,
-      {bool isInserting = false}) {
+  VerificationContext validateIntegrity(
+    Insertable<Profile> instance, {
+    bool isInserting = false,
+  }) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
@@ -3815,67 +4734,90 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
     }
     if (data.containsKey('profile_name')) {
       context.handle(
+        _profileNameMeta,
+        profileName.isAcceptableOrUnknown(
+          data['profile_name']!,
           _profileNameMeta,
-          profileName.isAcceptableOrUnknown(
-              data['profile_name']!, _profileNameMeta));
+        ),
+      );
     }
     if (data.containsKey('profile_name_accepted')) {
       context.handle(
+        _profileNameAcceptedMeta,
+        profileNameAccepted.isAcceptableOrUnknown(
+          data['profile_name_accepted']!,
           _profileNameAcceptedMeta,
-          profileNameAccepted.isAcceptableOrUnknown(
-              data['profile_name_accepted']!, _profileNameAcceptedMeta));
+        ),
+      );
     }
     if (data.containsKey('profile_text')) {
       context.handle(
+        _profileTextMeta,
+        profileText.isAcceptableOrUnknown(
+          data['profile_text']!,
           _profileTextMeta,
-          profileText.isAcceptableOrUnknown(
-              data['profile_text']!, _profileTextMeta));
+        ),
+      );
     }
     if (data.containsKey('profile_text_accepted')) {
       context.handle(
+        _profileTextAcceptedMeta,
+        profileTextAccepted.isAcceptableOrUnknown(
+          data['profile_text_accepted']!,
           _profileTextAcceptedMeta,
-          profileTextAccepted.isAcceptableOrUnknown(
-              data['profile_text_accepted']!, _profileTextAcceptedMeta));
+        ),
+      );
     }
     if (data.containsKey('profile_age')) {
       context.handle(
-          _profileAgeMeta,
-          profileAge.isAcceptableOrUnknown(
-              data['profile_age']!, _profileAgeMeta));
+        _profileAgeMeta,
+        profileAge.isAcceptableOrUnknown(data['profile_age']!, _profileAgeMeta),
+      );
     }
     if (data.containsKey('profile_last_seen_time_value')) {
       context.handle(
+        _profileLastSeenTimeValueMeta,
+        profileLastSeenTimeValue.isAcceptableOrUnknown(
+          data['profile_last_seen_time_value']!,
           _profileLastSeenTimeValueMeta,
-          profileLastSeenTimeValue.isAcceptableOrUnknown(
-              data['profile_last_seen_time_value']!,
-              _profileLastSeenTimeValueMeta));
+        ),
+      );
     }
     if (data.containsKey('profile_unlimited_likes')) {
       context.handle(
+        _profileUnlimitedLikesMeta,
+        profileUnlimitedLikes.isAcceptableOrUnknown(
+          data['profile_unlimited_likes']!,
           _profileUnlimitedLikesMeta,
-          profileUnlimitedLikes.isAcceptableOrUnknown(
-              data['profile_unlimited_likes']!, _profileUnlimitedLikesMeta));
+        ),
+      );
     }
     if (data.containsKey('primary_content_grid_crop_size')) {
       context.handle(
+        _primaryContentGridCropSizeMeta,
+        primaryContentGridCropSize.isAcceptableOrUnknown(
+          data['primary_content_grid_crop_size']!,
           _primaryContentGridCropSizeMeta,
-          primaryContentGridCropSize.isAcceptableOrUnknown(
-              data['primary_content_grid_crop_size']!,
-              _primaryContentGridCropSizeMeta));
+        ),
+      );
     }
     if (data.containsKey('primary_content_grid_crop_x')) {
       context.handle(
+        _primaryContentGridCropXMeta,
+        primaryContentGridCropX.isAcceptableOrUnknown(
+          data['primary_content_grid_crop_x']!,
           _primaryContentGridCropXMeta,
-          primaryContentGridCropX.isAcceptableOrUnknown(
-              data['primary_content_grid_crop_x']!,
-              _primaryContentGridCropXMeta));
+        ),
+      );
     }
     if (data.containsKey('primary_content_grid_crop_y')) {
       context.handle(
+        _primaryContentGridCropYMeta,
+        primaryContentGridCropY.isAcceptableOrUnknown(
+          data['primary_content_grid_crop_y']!,
           _primaryContentGridCropYMeta,
-          primaryContentGridCropY.isAcceptableOrUnknown(
-              data['primary_content_grid_crop_y']!,
-              _primaryContentGridCropYMeta));
+        ),
+      );
     }
     return context;
   }
@@ -3886,50 +4828,90 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
   Profile map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return Profile(
-      id: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
       uuidAccountId: $ProfilesTable.$converteruuidAccountId.fromSql(
-          attachedDatabase.typeMapping.read(
-              DriftSqlType.string, data['${effectivePrefix}uuid_account_id'])!),
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}uuid_account_id'],
+        )!,
+      ),
       profileContentVersion: $ProfilesTable.$converterprofileContentVersion
-          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.string,
-              data['${effectivePrefix}profile_content_version'])),
-      profileName: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}profile_name']),
+          .fromSql(
+            attachedDatabase.typeMapping.read(
+              DriftSqlType.string,
+              data['${effectivePrefix}profile_content_version'],
+            ),
+          ),
+      profileName: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}profile_name'],
+      ),
       profileNameAccepted: attachedDatabase.typeMapping.read(
-          DriftSqlType.bool, data['${effectivePrefix}profile_name_accepted']),
-      profileText: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}profile_text']),
+        DriftSqlType.bool,
+        data['${effectivePrefix}profile_name_accepted'],
+      ),
+      profileText: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}profile_text'],
+      ),
       profileTextAccepted: attachedDatabase.typeMapping.read(
-          DriftSqlType.bool, data['${effectivePrefix}profile_text_accepted']),
+        DriftSqlType.bool,
+        data['${effectivePrefix}profile_text_accepted'],
+      ),
       profileVersion: $ProfilesTable.$converterprofileVersion.fromSql(
-          attachedDatabase.typeMapping.read(
-              DriftSqlType.string, data['${effectivePrefix}profile_version'])),
-      profileAge: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}profile_age']),
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}profile_version'],
+        ),
+      ),
+      profileAge: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}profile_age'],
+      ),
       profileLastSeenTimeValue: attachedDatabase.typeMapping.read(
-          DriftSqlType.int,
-          data['${effectivePrefix}profile_last_seen_time_value']),
+        DriftSqlType.int,
+        data['${effectivePrefix}profile_last_seen_time_value'],
+      ),
       profileUnlimitedLikes: attachedDatabase.typeMapping.read(
-          DriftSqlType.bool, data['${effectivePrefix}profile_unlimited_likes']),
+        DriftSqlType.bool,
+        data['${effectivePrefix}profile_unlimited_likes'],
+      ),
       jsonProfileAttributes: $ProfilesTable.$converterjsonProfileAttributes
-          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.string,
-              data['${effectivePrefix}json_profile_attributes'])),
+          .fromSql(
+            attachedDatabase.typeMapping.read(
+              DriftSqlType.string,
+              data['${effectivePrefix}json_profile_attributes'],
+            ),
+          ),
       primaryContentGridCropSize: attachedDatabase.typeMapping.read(
-          DriftSqlType.double,
-          data['${effectivePrefix}primary_content_grid_crop_size']),
+        DriftSqlType.double,
+        data['${effectivePrefix}primary_content_grid_crop_size'],
+      ),
       primaryContentGridCropX: attachedDatabase.typeMapping.read(
-          DriftSqlType.double,
-          data['${effectivePrefix}primary_content_grid_crop_x']),
+        DriftSqlType.double,
+        data['${effectivePrefix}primary_content_grid_crop_x'],
+      ),
       primaryContentGridCropY: attachedDatabase.typeMapping.read(
-          DriftSqlType.double,
-          data['${effectivePrefix}primary_content_grid_crop_y']),
+        DriftSqlType.double,
+        data['${effectivePrefix}primary_content_grid_crop_y'],
+      ),
       profileDataRefreshTime: $ProfilesTable.$converterprofileDataRefreshTime
-          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.int,
-              data['${effectivePrefix}profile_data_refresh_time'])),
+          .fromSql(
+            attachedDatabase.typeMapping.read(
+              DriftSqlType.int,
+              data['${effectivePrefix}profile_data_refresh_time'],
+            ),
+          ),
       newLikeInfoReceivedTime: $ProfilesTable.$converternewLikeInfoReceivedTime
-          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.int,
-              data['${effectivePrefix}new_like_info_received_time'])),
+          .fromSql(
+            attachedDatabase.typeMapping.read(
+              DriftSqlType.int,
+              data['${effectivePrefix}new_like_info_received_time'],
+            ),
+          ),
     );
   }
 
@@ -3941,8 +4923,9 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
   static TypeConverter<api.AccountId, String> $converteruuidAccountId =
       const AccountIdConverter();
   static TypeConverter<api.ProfileContentVersion?, String?>
-      $converterprofileContentVersion =
-      const NullAwareTypeConverter.wrap(ProfileContentVersionConverter());
+  $converterprofileContentVersion = const NullAwareTypeConverter.wrap(
+    ProfileContentVersionConverter(),
+  );
   static TypeConverter<api.ProfileVersion?, String?> $converterprofileVersion =
       const NullAwareTypeConverter.wrap(ProfileVersionConverter());
   static TypeConverter<JsonList?, String?> $converterjsonProfileAttributes =
@@ -3971,36 +4954,40 @@ class Profile extends DataClass implements Insertable<Profile> {
   final double? primaryContentGridCropY;
   final UtcDateTime? profileDataRefreshTime;
   final UtcDateTime? newLikeInfoReceivedTime;
-  const Profile(
-      {required this.id,
-      required this.uuidAccountId,
-      this.profileContentVersion,
-      this.profileName,
-      this.profileNameAccepted,
-      this.profileText,
-      this.profileTextAccepted,
-      this.profileVersion,
-      this.profileAge,
-      this.profileLastSeenTimeValue,
-      this.profileUnlimitedLikes,
-      this.jsonProfileAttributes,
-      this.primaryContentGridCropSize,
-      this.primaryContentGridCropX,
-      this.primaryContentGridCropY,
-      this.profileDataRefreshTime,
-      this.newLikeInfoReceivedTime});
+  const Profile({
+    required this.id,
+    required this.uuidAccountId,
+    this.profileContentVersion,
+    this.profileName,
+    this.profileNameAccepted,
+    this.profileText,
+    this.profileTextAccepted,
+    this.profileVersion,
+    this.profileAge,
+    this.profileLastSeenTimeValue,
+    this.profileUnlimitedLikes,
+    this.jsonProfileAttributes,
+    this.primaryContentGridCropSize,
+    this.primaryContentGridCropX,
+    this.primaryContentGridCropY,
+    this.profileDataRefreshTime,
+    this.newLikeInfoReceivedTime,
+  });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     {
       map['uuid_account_id'] = Variable<String>(
-          $ProfilesTable.$converteruuidAccountId.toSql(uuidAccountId));
+        $ProfilesTable.$converteruuidAccountId.toSql(uuidAccountId),
+      );
     }
     if (!nullToAbsent || profileContentVersion != null) {
-      map['profile_content_version'] = Variable<String>($ProfilesTable
-          .$converterprofileContentVersion
-          .toSql(profileContentVersion));
+      map['profile_content_version'] = Variable<String>(
+        $ProfilesTable.$converterprofileContentVersion.toSql(
+          profileContentVersion,
+        ),
+      );
     }
     if (!nullToAbsent || profileName != null) {
       map['profile_name'] = Variable<String>(profileName);
@@ -4016,44 +5003,55 @@ class Profile extends DataClass implements Insertable<Profile> {
     }
     if (!nullToAbsent || profileVersion != null) {
       map['profile_version'] = Variable<String>(
-          $ProfilesTable.$converterprofileVersion.toSql(profileVersion));
+        $ProfilesTable.$converterprofileVersion.toSql(profileVersion),
+      );
     }
     if (!nullToAbsent || profileAge != null) {
       map['profile_age'] = Variable<int>(profileAge);
     }
     if (!nullToAbsent || profileLastSeenTimeValue != null) {
-      map['profile_last_seen_time_value'] =
-          Variable<int>(profileLastSeenTimeValue);
+      map['profile_last_seen_time_value'] = Variable<int>(
+        profileLastSeenTimeValue,
+      );
     }
     if (!nullToAbsent || profileUnlimitedLikes != null) {
       map['profile_unlimited_likes'] = Variable<bool>(profileUnlimitedLikes);
     }
     if (!nullToAbsent || jsonProfileAttributes != null) {
-      map['json_profile_attributes'] = Variable<String>($ProfilesTable
-          .$converterjsonProfileAttributes
-          .toSql(jsonProfileAttributes));
+      map['json_profile_attributes'] = Variable<String>(
+        $ProfilesTable.$converterjsonProfileAttributes.toSql(
+          jsonProfileAttributes,
+        ),
+      );
     }
     if (!nullToAbsent || primaryContentGridCropSize != null) {
-      map['primary_content_grid_crop_size'] =
-          Variable<double>(primaryContentGridCropSize);
+      map['primary_content_grid_crop_size'] = Variable<double>(
+        primaryContentGridCropSize,
+      );
     }
     if (!nullToAbsent || primaryContentGridCropX != null) {
-      map['primary_content_grid_crop_x'] =
-          Variable<double>(primaryContentGridCropX);
+      map['primary_content_grid_crop_x'] = Variable<double>(
+        primaryContentGridCropX,
+      );
     }
     if (!nullToAbsent || primaryContentGridCropY != null) {
-      map['primary_content_grid_crop_y'] =
-          Variable<double>(primaryContentGridCropY);
+      map['primary_content_grid_crop_y'] = Variable<double>(
+        primaryContentGridCropY,
+      );
     }
     if (!nullToAbsent || profileDataRefreshTime != null) {
-      map['profile_data_refresh_time'] = Variable<int>($ProfilesTable
-          .$converterprofileDataRefreshTime
-          .toSql(profileDataRefreshTime));
+      map['profile_data_refresh_time'] = Variable<int>(
+        $ProfilesTable.$converterprofileDataRefreshTime.toSql(
+          profileDataRefreshTime,
+        ),
+      );
     }
     if (!nullToAbsent || newLikeInfoReceivedTime != null) {
-      map['new_like_info_received_time'] = Variable<int>($ProfilesTable
-          .$converternewLikeInfoReceivedTime
-          .toSql(newLikeInfoReceivedTime));
+      map['new_like_info_received_time'] = Variable<int>(
+        $ProfilesTable.$converternewLikeInfoReceivedTime.toSql(
+          newLikeInfoReceivedTime,
+        ),
+      );
     }
     return map;
   }
@@ -4094,8 +5092,8 @@ class Profile extends DataClass implements Insertable<Profile> {
           : Value(jsonProfileAttributes),
       primaryContentGridCropSize:
           primaryContentGridCropSize == null && nullToAbsent
-              ? const Value.absent()
-              : Value(primaryContentGridCropSize),
+          ? const Value.absent()
+          : Value(primaryContentGridCropSize),
       primaryContentGridCropX: primaryContentGridCropX == null && nullToAbsent
           ? const Value.absent()
           : Value(primaryContentGridCropX),
@@ -4111,39 +5109,53 @@ class Profile extends DataClass implements Insertable<Profile> {
     );
   }
 
-  factory Profile.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
+  factory Profile.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return Profile(
       id: serializer.fromJson<int>(json['id']),
       uuidAccountId: serializer.fromJson<api.AccountId>(json['uuidAccountId']),
-      profileContentVersion: serializer
-          .fromJson<api.ProfileContentVersion?>(json['profileContentVersion']),
+      profileContentVersion: serializer.fromJson<api.ProfileContentVersion?>(
+        json['profileContentVersion'],
+      ),
       profileName: serializer.fromJson<String?>(json['profileName']),
-      profileNameAccepted:
-          serializer.fromJson<bool?>(json['profileNameAccepted']),
+      profileNameAccepted: serializer.fromJson<bool?>(
+        json['profileNameAccepted'],
+      ),
       profileText: serializer.fromJson<String?>(json['profileText']),
-      profileTextAccepted:
-          serializer.fromJson<bool?>(json['profileTextAccepted']),
-      profileVersion:
-          serializer.fromJson<api.ProfileVersion?>(json['profileVersion']),
+      profileTextAccepted: serializer.fromJson<bool?>(
+        json['profileTextAccepted'],
+      ),
+      profileVersion: serializer.fromJson<api.ProfileVersion?>(
+        json['profileVersion'],
+      ),
       profileAge: serializer.fromJson<int?>(json['profileAge']),
-      profileLastSeenTimeValue:
-          serializer.fromJson<int?>(json['profileLastSeenTimeValue']),
-      profileUnlimitedLikes:
-          serializer.fromJson<bool?>(json['profileUnlimitedLikes']),
-      jsonProfileAttributes:
-          serializer.fromJson<JsonList?>(json['jsonProfileAttributes']),
-      primaryContentGridCropSize:
-          serializer.fromJson<double?>(json['primaryContentGridCropSize']),
-      primaryContentGridCropX:
-          serializer.fromJson<double?>(json['primaryContentGridCropX']),
-      primaryContentGridCropY:
-          serializer.fromJson<double?>(json['primaryContentGridCropY']),
-      profileDataRefreshTime:
-          serializer.fromJson<UtcDateTime?>(json['profileDataRefreshTime']),
-      newLikeInfoReceivedTime:
-          serializer.fromJson<UtcDateTime?>(json['newLikeInfoReceivedTime']),
+      profileLastSeenTimeValue: serializer.fromJson<int?>(
+        json['profileLastSeenTimeValue'],
+      ),
+      profileUnlimitedLikes: serializer.fromJson<bool?>(
+        json['profileUnlimitedLikes'],
+      ),
+      jsonProfileAttributes: serializer.fromJson<JsonList?>(
+        json['jsonProfileAttributes'],
+      ),
+      primaryContentGridCropSize: serializer.fromJson<double?>(
+        json['primaryContentGridCropSize'],
+      ),
+      primaryContentGridCropX: serializer.fromJson<double?>(
+        json['primaryContentGridCropX'],
+      ),
+      primaryContentGridCropY: serializer.fromJson<double?>(
+        json['primaryContentGridCropY'],
+      ),
+      profileDataRefreshTime: serializer.fromJson<UtcDateTime?>(
+        json['profileDataRefreshTime'],
+      ),
+      newLikeInfoReceivedTime: serializer.fromJson<UtcDateTime?>(
+        json['newLikeInfoReceivedTime'],
+      ),
     );
   }
   @override
@@ -4152,94 +5164,102 @@ class Profile extends DataClass implements Insertable<Profile> {
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'uuidAccountId': serializer.toJson<api.AccountId>(uuidAccountId),
-      'profileContentVersion':
-          serializer.toJson<api.ProfileContentVersion?>(profileContentVersion),
+      'profileContentVersion': serializer.toJson<api.ProfileContentVersion?>(
+        profileContentVersion,
+      ),
       'profileName': serializer.toJson<String?>(profileName),
       'profileNameAccepted': serializer.toJson<bool?>(profileNameAccepted),
       'profileText': serializer.toJson<String?>(profileText),
       'profileTextAccepted': serializer.toJson<bool?>(profileTextAccepted),
       'profileVersion': serializer.toJson<api.ProfileVersion?>(profileVersion),
       'profileAge': serializer.toJson<int?>(profileAge),
-      'profileLastSeenTimeValue':
-          serializer.toJson<int?>(profileLastSeenTimeValue),
+      'profileLastSeenTimeValue': serializer.toJson<int?>(
+        profileLastSeenTimeValue,
+      ),
       'profileUnlimitedLikes': serializer.toJson<bool?>(profileUnlimitedLikes),
-      'jsonProfileAttributes':
-          serializer.toJson<JsonList?>(jsonProfileAttributes),
-      'primaryContentGridCropSize':
-          serializer.toJson<double?>(primaryContentGridCropSize),
-      'primaryContentGridCropX':
-          serializer.toJson<double?>(primaryContentGridCropX),
-      'primaryContentGridCropY':
-          serializer.toJson<double?>(primaryContentGridCropY),
-      'profileDataRefreshTime':
-          serializer.toJson<UtcDateTime?>(profileDataRefreshTime),
-      'newLikeInfoReceivedTime':
-          serializer.toJson<UtcDateTime?>(newLikeInfoReceivedTime),
+      'jsonProfileAttributes': serializer.toJson<JsonList?>(
+        jsonProfileAttributes,
+      ),
+      'primaryContentGridCropSize': serializer.toJson<double?>(
+        primaryContentGridCropSize,
+      ),
+      'primaryContentGridCropX': serializer.toJson<double?>(
+        primaryContentGridCropX,
+      ),
+      'primaryContentGridCropY': serializer.toJson<double?>(
+        primaryContentGridCropY,
+      ),
+      'profileDataRefreshTime': serializer.toJson<UtcDateTime?>(
+        profileDataRefreshTime,
+      ),
+      'newLikeInfoReceivedTime': serializer.toJson<UtcDateTime?>(
+        newLikeInfoReceivedTime,
+      ),
     };
   }
 
-  Profile copyWith(
-          {int? id,
-          api.AccountId? uuidAccountId,
-          Value<api.ProfileContentVersion?> profileContentVersion =
-              const Value.absent(),
-          Value<String?> profileName = const Value.absent(),
-          Value<bool?> profileNameAccepted = const Value.absent(),
-          Value<String?> profileText = const Value.absent(),
-          Value<bool?> profileTextAccepted = const Value.absent(),
-          Value<api.ProfileVersion?> profileVersion = const Value.absent(),
-          Value<int?> profileAge = const Value.absent(),
-          Value<int?> profileLastSeenTimeValue = const Value.absent(),
-          Value<bool?> profileUnlimitedLikes = const Value.absent(),
-          Value<JsonList?> jsonProfileAttributes = const Value.absent(),
-          Value<double?> primaryContentGridCropSize = const Value.absent(),
-          Value<double?> primaryContentGridCropX = const Value.absent(),
-          Value<double?> primaryContentGridCropY = const Value.absent(),
-          Value<UtcDateTime?> profileDataRefreshTime = const Value.absent(),
-          Value<UtcDateTime?> newLikeInfoReceivedTime =
-              const Value.absent()}) =>
-      Profile(
-        id: id ?? this.id,
-        uuidAccountId: uuidAccountId ?? this.uuidAccountId,
-        profileContentVersion: profileContentVersion.present
-            ? profileContentVersion.value
-            : this.profileContentVersion,
-        profileName: profileName.present ? profileName.value : this.profileName,
-        profileNameAccepted: profileNameAccepted.present
-            ? profileNameAccepted.value
-            : this.profileNameAccepted,
-        profileText: profileText.present ? profileText.value : this.profileText,
-        profileTextAccepted: profileTextAccepted.present
-            ? profileTextAccepted.value
-            : this.profileTextAccepted,
-        profileVersion:
-            profileVersion.present ? profileVersion.value : this.profileVersion,
-        profileAge: profileAge.present ? profileAge.value : this.profileAge,
-        profileLastSeenTimeValue: profileLastSeenTimeValue.present
-            ? profileLastSeenTimeValue.value
-            : this.profileLastSeenTimeValue,
-        profileUnlimitedLikes: profileUnlimitedLikes.present
-            ? profileUnlimitedLikes.value
-            : this.profileUnlimitedLikes,
-        jsonProfileAttributes: jsonProfileAttributes.present
-            ? jsonProfileAttributes.value
-            : this.jsonProfileAttributes,
-        primaryContentGridCropSize: primaryContentGridCropSize.present
-            ? primaryContentGridCropSize.value
-            : this.primaryContentGridCropSize,
-        primaryContentGridCropX: primaryContentGridCropX.present
-            ? primaryContentGridCropX.value
-            : this.primaryContentGridCropX,
-        primaryContentGridCropY: primaryContentGridCropY.present
-            ? primaryContentGridCropY.value
-            : this.primaryContentGridCropY,
-        profileDataRefreshTime: profileDataRefreshTime.present
-            ? profileDataRefreshTime.value
-            : this.profileDataRefreshTime,
-        newLikeInfoReceivedTime: newLikeInfoReceivedTime.present
-            ? newLikeInfoReceivedTime.value
-            : this.newLikeInfoReceivedTime,
-      );
+  Profile copyWith({
+    int? id,
+    api.AccountId? uuidAccountId,
+    Value<api.ProfileContentVersion?> profileContentVersion =
+        const Value.absent(),
+    Value<String?> profileName = const Value.absent(),
+    Value<bool?> profileNameAccepted = const Value.absent(),
+    Value<String?> profileText = const Value.absent(),
+    Value<bool?> profileTextAccepted = const Value.absent(),
+    Value<api.ProfileVersion?> profileVersion = const Value.absent(),
+    Value<int?> profileAge = const Value.absent(),
+    Value<int?> profileLastSeenTimeValue = const Value.absent(),
+    Value<bool?> profileUnlimitedLikes = const Value.absent(),
+    Value<JsonList?> jsonProfileAttributes = const Value.absent(),
+    Value<double?> primaryContentGridCropSize = const Value.absent(),
+    Value<double?> primaryContentGridCropX = const Value.absent(),
+    Value<double?> primaryContentGridCropY = const Value.absent(),
+    Value<UtcDateTime?> profileDataRefreshTime = const Value.absent(),
+    Value<UtcDateTime?> newLikeInfoReceivedTime = const Value.absent(),
+  }) => Profile(
+    id: id ?? this.id,
+    uuidAccountId: uuidAccountId ?? this.uuidAccountId,
+    profileContentVersion: profileContentVersion.present
+        ? profileContentVersion.value
+        : this.profileContentVersion,
+    profileName: profileName.present ? profileName.value : this.profileName,
+    profileNameAccepted: profileNameAccepted.present
+        ? profileNameAccepted.value
+        : this.profileNameAccepted,
+    profileText: profileText.present ? profileText.value : this.profileText,
+    profileTextAccepted: profileTextAccepted.present
+        ? profileTextAccepted.value
+        : this.profileTextAccepted,
+    profileVersion: profileVersion.present
+        ? profileVersion.value
+        : this.profileVersion,
+    profileAge: profileAge.present ? profileAge.value : this.profileAge,
+    profileLastSeenTimeValue: profileLastSeenTimeValue.present
+        ? profileLastSeenTimeValue.value
+        : this.profileLastSeenTimeValue,
+    profileUnlimitedLikes: profileUnlimitedLikes.present
+        ? profileUnlimitedLikes.value
+        : this.profileUnlimitedLikes,
+    jsonProfileAttributes: jsonProfileAttributes.present
+        ? jsonProfileAttributes.value
+        : this.jsonProfileAttributes,
+    primaryContentGridCropSize: primaryContentGridCropSize.present
+        ? primaryContentGridCropSize.value
+        : this.primaryContentGridCropSize,
+    primaryContentGridCropX: primaryContentGridCropX.present
+        ? primaryContentGridCropX.value
+        : this.primaryContentGridCropX,
+    primaryContentGridCropY: primaryContentGridCropY.present
+        ? primaryContentGridCropY.value
+        : this.primaryContentGridCropY,
+    profileDataRefreshTime: profileDataRefreshTime.present
+        ? profileDataRefreshTime.value
+        : this.profileDataRefreshTime,
+    newLikeInfoReceivedTime: newLikeInfoReceivedTime.present
+        ? newLikeInfoReceivedTime.value
+        : this.newLikeInfoReceivedTime,
+  );
   Profile copyWithCompanion(ProfilesCompanion data) {
     return Profile(
       id: data.id.present ? data.id.value : this.id,
@@ -4249,21 +5269,24 @@ class Profile extends DataClass implements Insertable<Profile> {
       profileContentVersion: data.profileContentVersion.present
           ? data.profileContentVersion.value
           : this.profileContentVersion,
-      profileName:
-          data.profileName.present ? data.profileName.value : this.profileName,
+      profileName: data.profileName.present
+          ? data.profileName.value
+          : this.profileName,
       profileNameAccepted: data.profileNameAccepted.present
           ? data.profileNameAccepted.value
           : this.profileNameAccepted,
-      profileText:
-          data.profileText.present ? data.profileText.value : this.profileText,
+      profileText: data.profileText.present
+          ? data.profileText.value
+          : this.profileText,
       profileTextAccepted: data.profileTextAccepted.present
           ? data.profileTextAccepted.value
           : this.profileTextAccepted,
       profileVersion: data.profileVersion.present
           ? data.profileVersion.value
           : this.profileVersion,
-      profileAge:
-          data.profileAge.present ? data.profileAge.value : this.profileAge,
+      profileAge: data.profileAge.present
+          ? data.profileAge.value
+          : this.profileAge,
       profileLastSeenTimeValue: data.profileLastSeenTimeValue.present
           ? data.profileLastSeenTimeValue.value
           : this.profileLastSeenTimeValue,
@@ -4317,23 +5340,24 @@ class Profile extends DataClass implements Insertable<Profile> {
 
   @override
   int get hashCode => Object.hash(
-      id,
-      uuidAccountId,
-      profileContentVersion,
-      profileName,
-      profileNameAccepted,
-      profileText,
-      profileTextAccepted,
-      profileVersion,
-      profileAge,
-      profileLastSeenTimeValue,
-      profileUnlimitedLikes,
-      jsonProfileAttributes,
-      primaryContentGridCropSize,
-      primaryContentGridCropX,
-      primaryContentGridCropY,
-      profileDataRefreshTime,
-      newLikeInfoReceivedTime);
+    id,
+    uuidAccountId,
+    profileContentVersion,
+    profileName,
+    profileNameAccepted,
+    profileText,
+    profileTextAccepted,
+    profileVersion,
+    profileAge,
+    profileLastSeenTimeValue,
+    profileUnlimitedLikes,
+    jsonProfileAttributes,
+    primaryContentGridCropSize,
+    primaryContentGridCropX,
+    primaryContentGridCropY,
+    profileDataRefreshTime,
+    newLikeInfoReceivedTime,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -4464,24 +5488,25 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
     });
   }
 
-  ProfilesCompanion copyWith(
-      {Value<int>? id,
-      Value<api.AccountId>? uuidAccountId,
-      Value<api.ProfileContentVersion?>? profileContentVersion,
-      Value<String?>? profileName,
-      Value<bool?>? profileNameAccepted,
-      Value<String?>? profileText,
-      Value<bool?>? profileTextAccepted,
-      Value<api.ProfileVersion?>? profileVersion,
-      Value<int?>? profileAge,
-      Value<int?>? profileLastSeenTimeValue,
-      Value<bool?>? profileUnlimitedLikes,
-      Value<JsonList?>? jsonProfileAttributes,
-      Value<double?>? primaryContentGridCropSize,
-      Value<double?>? primaryContentGridCropX,
-      Value<double?>? primaryContentGridCropY,
-      Value<UtcDateTime?>? profileDataRefreshTime,
-      Value<UtcDateTime?>? newLikeInfoReceivedTime}) {
+  ProfilesCompanion copyWith({
+    Value<int>? id,
+    Value<api.AccountId>? uuidAccountId,
+    Value<api.ProfileContentVersion?>? profileContentVersion,
+    Value<String?>? profileName,
+    Value<bool?>? profileNameAccepted,
+    Value<String?>? profileText,
+    Value<bool?>? profileTextAccepted,
+    Value<api.ProfileVersion?>? profileVersion,
+    Value<int?>? profileAge,
+    Value<int?>? profileLastSeenTimeValue,
+    Value<bool?>? profileUnlimitedLikes,
+    Value<JsonList?>? jsonProfileAttributes,
+    Value<double?>? primaryContentGridCropSize,
+    Value<double?>? primaryContentGridCropX,
+    Value<double?>? primaryContentGridCropY,
+    Value<UtcDateTime?>? profileDataRefreshTime,
+    Value<UtcDateTime?>? newLikeInfoReceivedTime,
+  }) {
     return ProfilesCompanion(
       id: id ?? this.id,
       uuidAccountId: uuidAccountId ?? this.uuidAccountId,
@@ -4520,12 +5545,15 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
     }
     if (uuidAccountId.present) {
       map['uuid_account_id'] = Variable<String>(
-          $ProfilesTable.$converteruuidAccountId.toSql(uuidAccountId.value));
+        $ProfilesTable.$converteruuidAccountId.toSql(uuidAccountId.value),
+      );
     }
     if (profileContentVersion.present) {
-      map['profile_content_version'] = Variable<String>($ProfilesTable
-          .$converterprofileContentVersion
-          .toSql(profileContentVersion.value));
+      map['profile_content_version'] = Variable<String>(
+        $ProfilesTable.$converterprofileContentVersion.toSql(
+          profileContentVersion.value,
+        ),
+      );
     }
     if (profileName.present) {
       map['profile_name'] = Variable<String>(profileName.value);
@@ -4541,45 +5569,57 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
     }
     if (profileVersion.present) {
       map['profile_version'] = Variable<String>(
-          $ProfilesTable.$converterprofileVersion.toSql(profileVersion.value));
+        $ProfilesTable.$converterprofileVersion.toSql(profileVersion.value),
+      );
     }
     if (profileAge.present) {
       map['profile_age'] = Variable<int>(profileAge.value);
     }
     if (profileLastSeenTimeValue.present) {
-      map['profile_last_seen_time_value'] =
-          Variable<int>(profileLastSeenTimeValue.value);
+      map['profile_last_seen_time_value'] = Variable<int>(
+        profileLastSeenTimeValue.value,
+      );
     }
     if (profileUnlimitedLikes.present) {
-      map['profile_unlimited_likes'] =
-          Variable<bool>(profileUnlimitedLikes.value);
+      map['profile_unlimited_likes'] = Variable<bool>(
+        profileUnlimitedLikes.value,
+      );
     }
     if (jsonProfileAttributes.present) {
-      map['json_profile_attributes'] = Variable<String>($ProfilesTable
-          .$converterjsonProfileAttributes
-          .toSql(jsonProfileAttributes.value));
+      map['json_profile_attributes'] = Variable<String>(
+        $ProfilesTable.$converterjsonProfileAttributes.toSql(
+          jsonProfileAttributes.value,
+        ),
+      );
     }
     if (primaryContentGridCropSize.present) {
-      map['primary_content_grid_crop_size'] =
-          Variable<double>(primaryContentGridCropSize.value);
+      map['primary_content_grid_crop_size'] = Variable<double>(
+        primaryContentGridCropSize.value,
+      );
     }
     if (primaryContentGridCropX.present) {
-      map['primary_content_grid_crop_x'] =
-          Variable<double>(primaryContentGridCropX.value);
+      map['primary_content_grid_crop_x'] = Variable<double>(
+        primaryContentGridCropX.value,
+      );
     }
     if (primaryContentGridCropY.present) {
-      map['primary_content_grid_crop_y'] =
-          Variable<double>(primaryContentGridCropY.value);
+      map['primary_content_grid_crop_y'] = Variable<double>(
+        primaryContentGridCropY.value,
+      );
     }
     if (profileDataRefreshTime.present) {
-      map['profile_data_refresh_time'] = Variable<int>($ProfilesTable
-          .$converterprofileDataRefreshTime
-          .toSql(profileDataRefreshTime.value));
+      map['profile_data_refresh_time'] = Variable<int>(
+        $ProfilesTable.$converterprofileDataRefreshTime.toSql(
+          profileDataRefreshTime.value,
+        ),
+      );
     }
     if (newLikeInfoReceivedTime.present) {
-      map['new_like_info_received_time'] = Variable<int>($ProfilesTable
-          .$converternewLikeInfoReceivedTime
-          .toSql(newLikeInfoReceivedTime.value));
+      map['new_like_info_received_time'] = Variable<int>(
+        $ProfilesTable.$converternewLikeInfoReceivedTime.toSql(
+          newLikeInfoReceivedTime.value,
+        ),
+      );
     }
     return map;
   }
@@ -4617,50 +5657,75 @@ class $PublicProfileContentTable extends PublicProfileContent
   $PublicProfileContentTable(this.attachedDatabase, [this._alias]);
   @override
   late final GeneratedColumnWithTypeConverter<api.AccountId, String>
-      uuidAccountId = GeneratedColumn<String>(
-              'uuid_account_id', aliasedName, false,
-              type: DriftSqlType.string, requiredDuringInsert: true)
-          .withConverter<api.AccountId>(
-              $PublicProfileContentTable.$converteruuidAccountId);
-  static const VerificationMeta _contentIndexMeta =
-      const VerificationMeta('contentIndex');
+  uuidAccountId =
+      GeneratedColumn<String>(
+        'uuid_account_id',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      ).withConverter<api.AccountId>(
+        $PublicProfileContentTable.$converteruuidAccountId,
+      );
+  static const VerificationMeta _contentIndexMeta = const VerificationMeta(
+    'contentIndex',
+  );
   @override
   late final GeneratedColumn<int> contentIndex = GeneratedColumn<int>(
-      'content_index', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+    'content_index',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
   @override
   late final GeneratedColumnWithTypeConverter<api.ContentId, String>
-      uuidContentId = GeneratedColumn<String>(
-              'uuid_content_id', aliasedName, false,
-              type: DriftSqlType.string, requiredDuringInsert: true)
-          .withConverter<api.ContentId>(
-              $PublicProfileContentTable.$converteruuidContentId);
-  static const VerificationMeta _contentAcceptedMeta =
-      const VerificationMeta('contentAccepted');
+  uuidContentId =
+      GeneratedColumn<String>(
+        'uuid_content_id',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      ).withConverter<api.ContentId>(
+        $PublicProfileContentTable.$converteruuidContentId,
+      );
+  static const VerificationMeta _contentAcceptedMeta = const VerificationMeta(
+    'contentAccepted',
+  );
   @override
   late final GeneratedColumn<bool> contentAccepted = GeneratedColumn<bool>(
-      'content_accepted', aliasedName, false,
-      type: DriftSqlType.bool,
-      requiredDuringInsert: true,
-      defaultConstraints: GeneratedColumn.constraintIsAlways(
-          'CHECK ("content_accepted" IN (0, 1))'));
-  static const VerificationMeta _primaryContentMeta =
-      const VerificationMeta('primaryContent');
+    'content_accepted',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("content_accepted" IN (0, 1))',
+    ),
+  );
+  static const VerificationMeta _primaryContentMeta = const VerificationMeta(
+    'primaryContent',
+  );
   @override
   late final GeneratedColumn<bool> primaryContent = GeneratedColumn<bool>(
-      'primary_content', aliasedName, false,
-      type: DriftSqlType.bool,
-      requiredDuringInsert: true,
-      defaultConstraints: GeneratedColumn.constraintIsAlways(
-          'CHECK ("primary_content" IN (0, 1))'));
+    'primary_content',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("primary_content" IN (0, 1))',
+    ),
+  );
   @override
   List<GeneratedColumn> get $columns => [
-        uuidAccountId,
-        contentIndex,
-        uuidContentId,
-        contentAccepted,
-        primaryContent
-      ];
+    uuidAccountId,
+    contentIndex,
+    uuidContentId,
+    contentAccepted,
+    primaryContent,
+  ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -4668,31 +5733,41 @@ class $PublicProfileContentTable extends PublicProfileContent
   static const String $name = 'public_profile_content';
   @override
   VerificationContext validateIntegrity(
-      Insertable<PublicProfileContentData> instance,
-      {bool isInserting = false}) {
+    Insertable<PublicProfileContentData> instance, {
+    bool isInserting = false,
+  }) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('content_index')) {
       context.handle(
+        _contentIndexMeta,
+        contentIndex.isAcceptableOrUnknown(
+          data['content_index']!,
           _contentIndexMeta,
-          contentIndex.isAcceptableOrUnknown(
-              data['content_index']!, _contentIndexMeta));
+        ),
+      );
     } else if (isInserting) {
       context.missing(_contentIndexMeta);
     }
     if (data.containsKey('content_accepted')) {
       context.handle(
+        _contentAcceptedMeta,
+        contentAccepted.isAcceptableOrUnknown(
+          data['content_accepted']!,
           _contentAcceptedMeta,
-          contentAccepted.isAcceptableOrUnknown(
-              data['content_accepted']!, _contentAcceptedMeta));
+        ),
+      );
     } else if (isInserting) {
       context.missing(_contentAcceptedMeta);
     }
     if (data.containsKey('primary_content')) {
       context.handle(
+        _primaryContentMeta,
+        primaryContent.isAcceptableOrUnknown(
+          data['primary_content']!,
           _primaryContentMeta,
-          primaryContent.isAcceptableOrUnknown(
-              data['primary_content']!, _primaryContentMeta));
+        ),
+      );
     } else if (isInserting) {
       context.missing(_primaryContentMeta);
     }
@@ -4702,22 +5777,36 @@ class $PublicProfileContentTable extends PublicProfileContent
   @override
   Set<GeneratedColumn> get $primaryKey => {uuidAccountId, contentIndex};
   @override
-  PublicProfileContentData map(Map<String, dynamic> data,
-      {String? tablePrefix}) {
+  PublicProfileContentData map(
+    Map<String, dynamic> data, {
+    String? tablePrefix,
+  }) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return PublicProfileContentData(
       uuidAccountId: $PublicProfileContentTable.$converteruuidAccountId.fromSql(
-          attachedDatabase.typeMapping.read(
-              DriftSqlType.string, data['${effectivePrefix}uuid_account_id'])!),
-      contentIndex: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}content_index'])!,
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}uuid_account_id'],
+        )!,
+      ),
+      contentIndex: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}content_index'],
+      )!,
       uuidContentId: $PublicProfileContentTable.$converteruuidContentId.fromSql(
-          attachedDatabase.typeMapping.read(
-              DriftSqlType.string, data['${effectivePrefix}uuid_content_id'])!),
-      contentAccepted: attachedDatabase.typeMapping
-          .read(DriftSqlType.bool, data['${effectivePrefix}content_accepted'])!,
-      primaryContent: attachedDatabase.typeMapping
-          .read(DriftSqlType.bool, data['${effectivePrefix}primary_content'])!,
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}uuid_content_id'],
+        )!,
+      ),
+      contentAccepted: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}content_accepted'],
+      )!,
+      primaryContent: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}primary_content'],
+      )!,
     );
   }
 
@@ -4739,25 +5828,26 @@ class PublicProfileContentData extends DataClass
   final api.ContentId uuidContentId;
   final bool contentAccepted;
   final bool primaryContent;
-  const PublicProfileContentData(
-      {required this.uuidAccountId,
-      required this.contentIndex,
-      required this.uuidContentId,
-      required this.contentAccepted,
-      required this.primaryContent});
+  const PublicProfileContentData({
+    required this.uuidAccountId,
+    required this.contentIndex,
+    required this.uuidContentId,
+    required this.contentAccepted,
+    required this.primaryContent,
+  });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     {
-      map['uuid_account_id'] = Variable<String>($PublicProfileContentTable
-          .$converteruuidAccountId
-          .toSql(uuidAccountId));
+      map['uuid_account_id'] = Variable<String>(
+        $PublicProfileContentTable.$converteruuidAccountId.toSql(uuidAccountId),
+      );
     }
     map['content_index'] = Variable<int>(contentIndex);
     {
-      map['uuid_content_id'] = Variable<String>($PublicProfileContentTable
-          .$converteruuidContentId
-          .toSql(uuidContentId));
+      map['uuid_content_id'] = Variable<String>(
+        $PublicProfileContentTable.$converteruuidContentId.toSql(uuidContentId),
+      );
     }
     map['content_accepted'] = Variable<bool>(contentAccepted);
     map['primary_content'] = Variable<bool>(primaryContent);
@@ -4774,8 +5864,10 @@ class PublicProfileContentData extends DataClass
     );
   }
 
-  factory PublicProfileContentData.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
+  factory PublicProfileContentData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return PublicProfileContentData(
       uuidAccountId: serializer.fromJson<api.AccountId>(json['uuidAccountId']),
@@ -4797,21 +5889,22 @@ class PublicProfileContentData extends DataClass
     };
   }
 
-  PublicProfileContentData copyWith(
-          {api.AccountId? uuidAccountId,
-          int? contentIndex,
-          api.ContentId? uuidContentId,
-          bool? contentAccepted,
-          bool? primaryContent}) =>
-      PublicProfileContentData(
-        uuidAccountId: uuidAccountId ?? this.uuidAccountId,
-        contentIndex: contentIndex ?? this.contentIndex,
-        uuidContentId: uuidContentId ?? this.uuidContentId,
-        contentAccepted: contentAccepted ?? this.contentAccepted,
-        primaryContent: primaryContent ?? this.primaryContent,
-      );
+  PublicProfileContentData copyWith({
+    api.AccountId? uuidAccountId,
+    int? contentIndex,
+    api.ContentId? uuidContentId,
+    bool? contentAccepted,
+    bool? primaryContent,
+  }) => PublicProfileContentData(
+    uuidAccountId: uuidAccountId ?? this.uuidAccountId,
+    contentIndex: contentIndex ?? this.contentIndex,
+    uuidContentId: uuidContentId ?? this.uuidContentId,
+    contentAccepted: contentAccepted ?? this.contentAccepted,
+    primaryContent: primaryContent ?? this.primaryContent,
+  );
   PublicProfileContentData copyWithCompanion(
-      PublicProfileContentCompanion data) {
+    PublicProfileContentCompanion data,
+  ) {
     return PublicProfileContentData(
       uuidAccountId: data.uuidAccountId.present
           ? data.uuidAccountId.value
@@ -4844,8 +5937,13 @@ class PublicProfileContentData extends DataClass
   }
 
   @override
-  int get hashCode => Object.hash(uuidAccountId, contentIndex, uuidContentId,
-      contentAccepted, primaryContent);
+  int get hashCode => Object.hash(
+    uuidAccountId,
+    contentIndex,
+    uuidContentId,
+    contentAccepted,
+    primaryContent,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -4880,11 +5978,11 @@ class PublicProfileContentCompanion
     required bool contentAccepted,
     required bool primaryContent,
     this.rowid = const Value.absent(),
-  })  : uuidAccountId = Value(uuidAccountId),
-        contentIndex = Value(contentIndex),
-        uuidContentId = Value(uuidContentId),
-        contentAccepted = Value(contentAccepted),
-        primaryContent = Value(primaryContent);
+  }) : uuidAccountId = Value(uuidAccountId),
+       contentIndex = Value(contentIndex),
+       uuidContentId = Value(uuidContentId),
+       contentAccepted = Value(contentAccepted),
+       primaryContent = Value(primaryContent);
   static Insertable<PublicProfileContentData> custom({
     Expression<String>? uuidAccountId,
     Expression<int>? contentIndex,
@@ -4903,13 +6001,14 @@ class PublicProfileContentCompanion
     });
   }
 
-  PublicProfileContentCompanion copyWith(
-      {Value<api.AccountId>? uuidAccountId,
-      Value<int>? contentIndex,
-      Value<api.ContentId>? uuidContentId,
-      Value<bool>? contentAccepted,
-      Value<bool>? primaryContent,
-      Value<int>? rowid}) {
+  PublicProfileContentCompanion copyWith({
+    Value<api.AccountId>? uuidAccountId,
+    Value<int>? contentIndex,
+    Value<api.ContentId>? uuidContentId,
+    Value<bool>? contentAccepted,
+    Value<bool>? primaryContent,
+    Value<int>? rowid,
+  }) {
     return PublicProfileContentCompanion(
       uuidAccountId: uuidAccountId ?? this.uuidAccountId,
       contentIndex: contentIndex ?? this.contentIndex,
@@ -4924,17 +6023,21 @@ class PublicProfileContentCompanion
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     if (uuidAccountId.present) {
-      map['uuid_account_id'] = Variable<String>($PublicProfileContentTable
-          .$converteruuidAccountId
-          .toSql(uuidAccountId.value));
+      map['uuid_account_id'] = Variable<String>(
+        $PublicProfileContentTable.$converteruuidAccountId.toSql(
+          uuidAccountId.value,
+        ),
+      );
     }
     if (contentIndex.present) {
       map['content_index'] = Variable<int>(contentIndex.value);
     }
     if (uuidContentId.present) {
-      map['uuid_content_id'] = Variable<String>($PublicProfileContentTable
-          .$converteruuidContentId
-          .toSql(uuidContentId.value));
+      map['uuid_content_id'] = Variable<String>(
+        $PublicProfileContentTable.$converteruuidContentId.toSql(
+          uuidContentId.value,
+        ),
+      );
     }
     if (contentAccepted.present) {
       map['content_accepted'] = Variable<bool>(contentAccepted.value);
@@ -4968,81 +6071,117 @@ class $MyMediaContentTable extends MyMediaContent
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   $MyMediaContentTable(this.attachedDatabase, [this._alias]);
-  static const VerificationMeta _contentIndexMeta =
-      const VerificationMeta('contentIndex');
+  static const VerificationMeta _contentIndexMeta = const VerificationMeta(
+    'contentIndex',
+  );
   @override
   late final GeneratedColumn<int> contentIndex = GeneratedColumn<int>(
-      'content_index', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: false);
+    'content_index',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
   @override
   late final GeneratedColumnWithTypeConverter<api.ContentId, String>
-      uuidContentId = GeneratedColumn<String>(
-              'uuid_content_id', aliasedName, false,
-              type: DriftSqlType.string, requiredDuringInsert: true)
-          .withConverter<api.ContentId>(
-              $MyMediaContentTable.$converteruuidContentId);
-  static const VerificationMeta _faceDetectedMeta =
-      const VerificationMeta('faceDetected');
+  uuidContentId = GeneratedColumn<String>(
+    'uuid_content_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  ).withConverter<api.ContentId>($MyMediaContentTable.$converteruuidContentId);
+  static const VerificationMeta _faceDetectedMeta = const VerificationMeta(
+    'faceDetected',
+  );
   @override
   late final GeneratedColumn<bool> faceDetected = GeneratedColumn<bool>(
-      'face_detected', aliasedName, false,
-      type: DriftSqlType.bool,
-      requiredDuringInsert: true,
-      defaultConstraints: GeneratedColumn.constraintIsAlways(
-          'CHECK ("face_detected" IN (0, 1))'));
+    'face_detected',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("face_detected" IN (0, 1))',
+    ),
+  );
   @override
   late final GeneratedColumnWithTypeConverter<EnumString?, String>
-      moderationState = GeneratedColumn<String>(
-              'moderation_state', aliasedName, true,
-              type: DriftSqlType.string, requiredDuringInsert: false)
-          .withConverter<EnumString?>(
-              $MyMediaContentTable.$convertermoderationState);
+  moderationState = GeneratedColumn<String>(
+    'moderation_state',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  ).withConverter<EnumString?>($MyMediaContentTable.$convertermoderationState);
   @override
   late final GeneratedColumnWithTypeConverter<
-      api.ProfileContentModerationRejectedReasonCategory?,
-      int> contentModerationRejectedCategory = GeneratedColumn<int>(
-          'content_moderation_rejected_category', aliasedName, true,
-          type: DriftSqlType.int, requiredDuringInsert: false)
-      .withConverter<api.ProfileContentModerationRejectedReasonCategory?>(
-          $MyMediaContentTable.$convertercontentModerationRejectedCategory);
+    api.ProfileContentModerationRejectedReasonCategory?,
+    int
+  >
+  contentModerationRejectedCategory =
+      GeneratedColumn<int>(
+        'content_moderation_rejected_category',
+        aliasedName,
+        true,
+        type: DriftSqlType.int,
+        requiredDuringInsert: false,
+      ).withConverter<api.ProfileContentModerationRejectedReasonCategory?>(
+        $MyMediaContentTable.$convertercontentModerationRejectedCategory,
+      );
   @override
   late final GeneratedColumnWithTypeConverter<
-      api.ProfileContentModerationRejectedReasonDetails?,
-      String> contentModerationRejectedDetails = GeneratedColumn<String>(
-          'content_moderation_rejected_details', aliasedName, true,
-          type: DriftSqlType.string, requiredDuringInsert: false)
-      .withConverter<api.ProfileContentModerationRejectedReasonDetails?>(
-          $MyMediaContentTable.$convertercontentModerationRejectedDetails);
+    api.ProfileContentModerationRejectedReasonDetails?,
+    String
+  >
+  contentModerationRejectedDetails =
+      GeneratedColumn<String>(
+        'content_moderation_rejected_details',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      ).withConverter<api.ProfileContentModerationRejectedReasonDetails?>(
+        $MyMediaContentTable.$convertercontentModerationRejectedDetails,
+      );
   @override
   List<GeneratedColumn> get $columns => [
-        contentIndex,
-        uuidContentId,
-        faceDetected,
-        moderationState,
-        contentModerationRejectedCategory,
-        contentModerationRejectedDetails
-      ];
+    contentIndex,
+    uuidContentId,
+    faceDetected,
+    moderationState,
+    contentModerationRejectedCategory,
+    contentModerationRejectedDetails,
+  ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
   static const String $name = 'my_media_content';
   @override
-  VerificationContext validateIntegrity(Insertable<MyMediaContentData> instance,
-      {bool isInserting = false}) {
+  VerificationContext validateIntegrity(
+    Insertable<MyMediaContentData> instance, {
+    bool isInserting = false,
+  }) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('content_index')) {
       context.handle(
+        _contentIndexMeta,
+        contentIndex.isAcceptableOrUnknown(
+          data['content_index']!,
           _contentIndexMeta,
-          contentIndex.isAcceptableOrUnknown(
-              data['content_index']!, _contentIndexMeta));
+        ),
+      );
     }
     if (data.containsKey('face_detected')) {
       context.handle(
+        _faceDetectedMeta,
+        faceDetected.isAcceptableOrUnknown(
+          data['face_detected']!,
           _faceDetectedMeta,
-          faceDetected.isAcceptableOrUnknown(
-              data['face_detected']!, _faceDetectedMeta));
+        ),
+      );
     } else if (isInserting) {
       context.missing(_faceDetectedMeta);
     }
@@ -5055,24 +6194,42 @@ class $MyMediaContentTable extends MyMediaContent
   MyMediaContentData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return MyMediaContentData(
-      contentIndex: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}content_index'])!,
+      contentIndex: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}content_index'],
+      )!,
       uuidContentId: $MyMediaContentTable.$converteruuidContentId.fromSql(
-          attachedDatabase.typeMapping.read(
-              DriftSqlType.string, data['${effectivePrefix}uuid_content_id'])!),
-      faceDetected: attachedDatabase.typeMapping
-          .read(DriftSqlType.bool, data['${effectivePrefix}face_detected'])!,
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}uuid_content_id'],
+        )!,
+      ),
+      faceDetected: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}face_detected'],
+      )!,
       moderationState: $MyMediaContentTable.$convertermoderationState.fromSql(
-          attachedDatabase.typeMapping.read(
-              DriftSqlType.string, data['${effectivePrefix}moderation_state'])),
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}moderation_state'],
+        ),
+      ),
       contentModerationRejectedCategory: $MyMediaContentTable
           .$convertercontentModerationRejectedCategory
-          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.int,
-              data['${effectivePrefix}content_moderation_rejected_category'])),
+          .fromSql(
+            attachedDatabase.typeMapping.read(
+              DriftSqlType.int,
+              data['${effectivePrefix}content_moderation_rejected_category'],
+            ),
+          ),
       contentModerationRejectedDetails: $MyMediaContentTable
           .$convertercontentModerationRejectedDetails
-          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.string,
-              data['${effectivePrefix}content_moderation_rejected_details'])),
+          .fromSql(
+            attachedDatabase.typeMapping.read(
+              DriftSqlType.string,
+              data['${effectivePrefix}content_moderation_rejected_details'],
+            ),
+          ),
     );
   }
 
@@ -5085,14 +6242,22 @@ class $MyMediaContentTable extends MyMediaContent
       const ContentIdConverter();
   static TypeConverter<EnumString?, String?> $convertermoderationState =
       NullAwareTypeConverter.wrap(EnumString.driftConverter);
-  static TypeConverter<api.ProfileContentModerationRejectedReasonCategory?,
-          int?> $convertercontentModerationRejectedCategory =
+  static TypeConverter<
+    api.ProfileContentModerationRejectedReasonCategory?,
+    int?
+  >
+  $convertercontentModerationRejectedCategory =
       const NullAwareTypeConverter.wrap(
-          ProfileContentModerationRejectedReasonCategoryConverter());
-  static TypeConverter<api.ProfileContentModerationRejectedReasonDetails?,
-          String?> $convertercontentModerationRejectedDetails =
+        ProfileContentModerationRejectedReasonCategoryConverter(),
+      );
+  static TypeConverter<
+    api.ProfileContentModerationRejectedReasonDetails?,
+    String?
+  >
+  $convertercontentModerationRejectedDetails =
       const NullAwareTypeConverter.wrap(
-          ProfileContentModerationRejectedReasonDetailsConverter());
+        ProfileContentModerationRejectedReasonDetailsConverter(),
+      );
 }
 
 class MyMediaContentData extends DataClass
@@ -5103,39 +6268,45 @@ class MyMediaContentData extends DataClass
   final bool faceDetected;
   final EnumString? moderationState;
   final api.ProfileContentModerationRejectedReasonCategory?
-      contentModerationRejectedCategory;
+  contentModerationRejectedCategory;
   final api.ProfileContentModerationRejectedReasonDetails?
-      contentModerationRejectedDetails;
-  const MyMediaContentData(
-      {required this.contentIndex,
-      required this.uuidContentId,
-      required this.faceDetected,
-      this.moderationState,
-      this.contentModerationRejectedCategory,
-      this.contentModerationRejectedDetails});
+  contentModerationRejectedDetails;
+  const MyMediaContentData({
+    required this.contentIndex,
+    required this.uuidContentId,
+    required this.faceDetected,
+    this.moderationState,
+    this.contentModerationRejectedCategory,
+    this.contentModerationRejectedDetails,
+  });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['content_index'] = Variable<int>(contentIndex);
     {
       map['uuid_content_id'] = Variable<String>(
-          $MyMediaContentTable.$converteruuidContentId.toSql(uuidContentId));
+        $MyMediaContentTable.$converteruuidContentId.toSql(uuidContentId),
+      );
     }
     map['face_detected'] = Variable<bool>(faceDetected);
     if (!nullToAbsent || moderationState != null) {
-      map['moderation_state'] = Variable<String>($MyMediaContentTable
-          .$convertermoderationState
-          .toSql(moderationState));
+      map['moderation_state'] = Variable<String>(
+        $MyMediaContentTable.$convertermoderationState.toSql(moderationState),
+      );
     }
     if (!nullToAbsent || contentModerationRejectedCategory != null) {
       map['content_moderation_rejected_category'] = Variable<int>(
-          $MyMediaContentTable.$convertercontentModerationRejectedCategory
-              .toSql(contentModerationRejectedCategory));
+        $MyMediaContentTable.$convertercontentModerationRejectedCategory.toSql(
+          contentModerationRejectedCategory,
+        ),
+      );
     }
     if (!nullToAbsent || contentModerationRejectedDetails != null) {
       map['content_moderation_rejected_details'] = Variable<String>(
-          $MyMediaContentTable.$convertercontentModerationRejectedDetails
-              .toSql(contentModerationRejectedDetails));
+        $MyMediaContentTable.$convertercontentModerationRejectedDetails.toSql(
+          contentModerationRejectedDetails,
+        ),
+      );
     }
     return map;
   }
@@ -5150,30 +6321,35 @@ class MyMediaContentData extends DataClass
           : Value(moderationState),
       contentModerationRejectedCategory:
           contentModerationRejectedCategory == null && nullToAbsent
-              ? const Value.absent()
-              : Value(contentModerationRejectedCategory),
+          ? const Value.absent()
+          : Value(contentModerationRejectedCategory),
       contentModerationRejectedDetails:
           contentModerationRejectedDetails == null && nullToAbsent
-              ? const Value.absent()
-              : Value(contentModerationRejectedDetails),
+          ? const Value.absent()
+          : Value(contentModerationRejectedDetails),
     );
   }
 
-  factory MyMediaContentData.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
+  factory MyMediaContentData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return MyMediaContentData(
       contentIndex: serializer.fromJson<int>(json['contentIndex']),
       uuidContentId: serializer.fromJson<api.ContentId>(json['uuidContentId']),
       faceDetected: serializer.fromJson<bool>(json['faceDetected']),
-      moderationState:
-          serializer.fromJson<EnumString?>(json['moderationState']),
+      moderationState: serializer.fromJson<EnumString?>(
+        json['moderationState'],
+      ),
       contentModerationRejectedCategory: serializer
           .fromJson<api.ProfileContentModerationRejectedReasonCategory?>(
-              json['contentModerationRejectedCategory']),
+            json['contentModerationRejectedCategory'],
+          ),
       contentModerationRejectedDetails: serializer
           .fromJson<api.ProfileContentModerationRejectedReasonDetails?>(
-              json['contentModerationRejectedDetails']),
+            json['contentModerationRejectedDetails'],
+          ),
     );
   }
   @override
@@ -5186,38 +6362,40 @@ class MyMediaContentData extends DataClass
       'moderationState': serializer.toJson<EnumString?>(moderationState),
       'contentModerationRejectedCategory': serializer
           .toJson<api.ProfileContentModerationRejectedReasonCategory?>(
-              contentModerationRejectedCategory),
-      'contentModerationRejectedDetails':
-          serializer.toJson<api.ProfileContentModerationRejectedReasonDetails?>(
-              contentModerationRejectedDetails),
+            contentModerationRejectedCategory,
+          ),
+      'contentModerationRejectedDetails': serializer
+          .toJson<api.ProfileContentModerationRejectedReasonDetails?>(
+            contentModerationRejectedDetails,
+          ),
     };
   }
 
-  MyMediaContentData copyWith(
-          {int? contentIndex,
-          api.ContentId? uuidContentId,
-          bool? faceDetected,
-          Value<EnumString?> moderationState = const Value.absent(),
-          Value<api.ProfileContentModerationRejectedReasonCategory?>
-              contentModerationRejectedCategory = const Value.absent(),
-          Value<api.ProfileContentModerationRejectedReasonDetails?>
-              contentModerationRejectedDetails = const Value.absent()}) =>
-      MyMediaContentData(
-        contentIndex: contentIndex ?? this.contentIndex,
-        uuidContentId: uuidContentId ?? this.uuidContentId,
-        faceDetected: faceDetected ?? this.faceDetected,
-        moderationState: moderationState.present
-            ? moderationState.value
-            : this.moderationState,
-        contentModerationRejectedCategory:
-            contentModerationRejectedCategory.present
-                ? contentModerationRejectedCategory.value
-                : this.contentModerationRejectedCategory,
-        contentModerationRejectedDetails:
-            contentModerationRejectedDetails.present
-                ? contentModerationRejectedDetails.value
-                : this.contentModerationRejectedDetails,
-      );
+  MyMediaContentData copyWith({
+    int? contentIndex,
+    api.ContentId? uuidContentId,
+    bool? faceDetected,
+    Value<EnumString?> moderationState = const Value.absent(),
+    Value<api.ProfileContentModerationRejectedReasonCategory?>
+        contentModerationRejectedCategory =
+        const Value.absent(),
+    Value<api.ProfileContentModerationRejectedReasonDetails?>
+        contentModerationRejectedDetails =
+        const Value.absent(),
+  }) => MyMediaContentData(
+    contentIndex: contentIndex ?? this.contentIndex,
+    uuidContentId: uuidContentId ?? this.uuidContentId,
+    faceDetected: faceDetected ?? this.faceDetected,
+    moderationState: moderationState.present
+        ? moderationState.value
+        : this.moderationState,
+    contentModerationRejectedCategory: contentModerationRejectedCategory.present
+        ? contentModerationRejectedCategory.value
+        : this.contentModerationRejectedCategory,
+    contentModerationRejectedDetails: contentModerationRejectedDetails.present
+        ? contentModerationRejectedDetails.value
+        : this.contentModerationRejectedDetails,
+  );
   MyMediaContentData copyWithCompanion(MyMediaContentCompanion data) {
     return MyMediaContentData(
       contentIndex: data.contentIndex.present
@@ -5234,12 +6412,12 @@ class MyMediaContentData extends DataClass
           : this.moderationState,
       contentModerationRejectedCategory:
           data.contentModerationRejectedCategory.present
-              ? data.contentModerationRejectedCategory.value
-              : this.contentModerationRejectedCategory,
+          ? data.contentModerationRejectedCategory.value
+          : this.contentModerationRejectedCategory,
       contentModerationRejectedDetails:
           data.contentModerationRejectedDetails.present
-              ? data.contentModerationRejectedDetails.value
-              : this.contentModerationRejectedDetails,
+          ? data.contentModerationRejectedDetails.value
+          : this.contentModerationRejectedDetails,
     );
   }
 
@@ -5251,21 +6429,24 @@ class MyMediaContentData extends DataClass
           ..write('faceDetected: $faceDetected, ')
           ..write('moderationState: $moderationState, ')
           ..write(
-              'contentModerationRejectedCategory: $contentModerationRejectedCategory, ')
+            'contentModerationRejectedCategory: $contentModerationRejectedCategory, ',
+          )
           ..write(
-              'contentModerationRejectedDetails: $contentModerationRejectedDetails')
+            'contentModerationRejectedDetails: $contentModerationRejectedDetails',
+          )
           ..write(')'))
         .toString();
   }
 
   @override
   int get hashCode => Object.hash(
-      contentIndex,
-      uuidContentId,
-      faceDetected,
-      moderationState,
-      contentModerationRejectedCategory,
-      contentModerationRejectedDetails);
+    contentIndex,
+    uuidContentId,
+    faceDetected,
+    moderationState,
+    contentModerationRejectedCategory,
+    contentModerationRejectedDetails,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -5286,9 +6467,9 @@ class MyMediaContentCompanion extends UpdateCompanion<MyMediaContentData> {
   final Value<bool> faceDetected;
   final Value<EnumString?> moderationState;
   final Value<api.ProfileContentModerationRejectedReasonCategory?>
-      contentModerationRejectedCategory;
+  contentModerationRejectedCategory;
   final Value<api.ProfileContentModerationRejectedReasonDetails?>
-      contentModerationRejectedDetails;
+  contentModerationRejectedDetails;
   const MyMediaContentCompanion({
     this.contentIndex = const Value.absent(),
     this.uuidContentId = const Value.absent(),
@@ -5304,8 +6485,8 @@ class MyMediaContentCompanion extends UpdateCompanion<MyMediaContentData> {
     this.moderationState = const Value.absent(),
     this.contentModerationRejectedCategory = const Value.absent(),
     this.contentModerationRejectedDetails = const Value.absent(),
-  })  : uuidContentId = Value(uuidContentId),
-        faceDetected = Value(faceDetected);
+  }) : uuidContentId = Value(uuidContentId),
+       faceDetected = Value(faceDetected);
   static Insertable<MyMediaContentData> custom({
     Expression<int>? contentIndex,
     Expression<String>? uuidContentId,
@@ -5327,23 +6508,26 @@ class MyMediaContentCompanion extends UpdateCompanion<MyMediaContentData> {
     });
   }
 
-  MyMediaContentCompanion copyWith(
-      {Value<int>? contentIndex,
-      Value<api.ContentId>? uuidContentId,
-      Value<bool>? faceDetected,
-      Value<EnumString?>? moderationState,
-      Value<api.ProfileContentModerationRejectedReasonCategory?>?
-          contentModerationRejectedCategory,
-      Value<api.ProfileContentModerationRejectedReasonDetails?>?
-          contentModerationRejectedDetails}) {
+  MyMediaContentCompanion copyWith({
+    Value<int>? contentIndex,
+    Value<api.ContentId>? uuidContentId,
+    Value<bool>? faceDetected,
+    Value<EnumString?>? moderationState,
+    Value<api.ProfileContentModerationRejectedReasonCategory?>?
+    contentModerationRejectedCategory,
+    Value<api.ProfileContentModerationRejectedReasonDetails?>?
+    contentModerationRejectedDetails,
+  }) {
     return MyMediaContentCompanion(
       contentIndex: contentIndex ?? this.contentIndex,
       uuidContentId: uuidContentId ?? this.uuidContentId,
       faceDetected: faceDetected ?? this.faceDetected,
       moderationState: moderationState ?? this.moderationState,
-      contentModerationRejectedCategory: contentModerationRejectedCategory ??
+      contentModerationRejectedCategory:
+          contentModerationRejectedCategory ??
           this.contentModerationRejectedCategory,
-      contentModerationRejectedDetails: contentModerationRejectedDetails ??
+      contentModerationRejectedDetails:
+          contentModerationRejectedDetails ??
           this.contentModerationRejectedDetails,
     );
   }
@@ -5355,27 +6539,33 @@ class MyMediaContentCompanion extends UpdateCompanion<MyMediaContentData> {
       map['content_index'] = Variable<int>(contentIndex.value);
     }
     if (uuidContentId.present) {
-      map['uuid_content_id'] = Variable<String>($MyMediaContentTable
-          .$converteruuidContentId
-          .toSql(uuidContentId.value));
+      map['uuid_content_id'] = Variable<String>(
+        $MyMediaContentTable.$converteruuidContentId.toSql(uuidContentId.value),
+      );
     }
     if (faceDetected.present) {
       map['face_detected'] = Variable<bool>(faceDetected.value);
     }
     if (moderationState.present) {
-      map['moderation_state'] = Variable<String>($MyMediaContentTable
-          .$convertermoderationState
-          .toSql(moderationState.value));
+      map['moderation_state'] = Variable<String>(
+        $MyMediaContentTable.$convertermoderationState.toSql(
+          moderationState.value,
+        ),
+      );
     }
     if (contentModerationRejectedCategory.present) {
       map['content_moderation_rejected_category'] = Variable<int>(
-          $MyMediaContentTable.$convertercontentModerationRejectedCategory
-              .toSql(contentModerationRejectedCategory.value));
+        $MyMediaContentTable.$convertercontentModerationRejectedCategory.toSql(
+          contentModerationRejectedCategory.value,
+        ),
+      );
     }
     if (contentModerationRejectedDetails.present) {
       map['content_moderation_rejected_details'] = Variable<String>(
-          $MyMediaContentTable.$convertercontentModerationRejectedDetails
-              .toSql(contentModerationRejectedDetails.value));
+        $MyMediaContentTable.$convertercontentModerationRejectedDetails.toSql(
+          contentModerationRejectedDetails.value,
+        ),
+      );
     }
     return map;
   }
@@ -5388,9 +6578,11 @@ class MyMediaContentCompanion extends UpdateCompanion<MyMediaContentData> {
           ..write('faceDetected: $faceDetected, ')
           ..write('moderationState: $moderationState, ')
           ..write(
-              'contentModerationRejectedCategory: $contentModerationRejectedCategory, ')
+            'contentModerationRejectedCategory: $contentModerationRejectedCategory, ',
+          )
           ..write(
-              'contentModerationRejectedDetails: $contentModerationRejectedDetails')
+            'contentModerationRejectedDetails: $contentModerationRejectedDetails',
+          )
           ..write(')'))
         .toString();
   }
@@ -5405,95 +6597,134 @@ class $ProfileStatesTable extends ProfileStates
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
-      'id', aliasedName, false,
-      hasAutoIncrement: true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      defaultConstraints:
-          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
   @override
   late final GeneratedColumnWithTypeConverter<api.AccountId, String>
-      uuidAccountId = GeneratedColumn<String>(
-              'uuid_account_id', aliasedName, false,
-              type: DriftSqlType.string,
-              requiredDuringInsert: true,
-              defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'))
-          .withConverter<api.AccountId>(
-              $ProfileStatesTable.$converteruuidAccountId);
+  uuidAccountId = GeneratedColumn<String>(
+    'uuid_account_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'),
+  ).withConverter<api.AccountId>($ProfileStatesTable.$converteruuidAccountId);
   @override
   late final GeneratedColumnWithTypeConverter<UtcDateTime?, int> isInFavorites =
-      GeneratedColumn<int>('is_in_favorites', aliasedName, true,
-              type: DriftSqlType.int, requiredDuringInsert: false)
-          .withConverter<UtcDateTime?>(
-              $ProfileStatesTable.$converterisInFavorites);
+      GeneratedColumn<int>(
+        'is_in_favorites',
+        aliasedName,
+        true,
+        type: DriftSqlType.int,
+        requiredDuringInsert: false,
+      ).withConverter<UtcDateTime?>(
+        $ProfileStatesTable.$converterisInFavorites,
+      );
   @override
   late final GeneratedColumnWithTypeConverter<UtcDateTime?, int>
-      isInReceivedLikes = GeneratedColumn<int>(
-              'is_in_received_likes', aliasedName, true,
-              type: DriftSqlType.int, requiredDuringInsert: false)
-          .withConverter<UtcDateTime?>(
-              $ProfileStatesTable.$converterisInReceivedLikes);
+  isInReceivedLikes =
+      GeneratedColumn<int>(
+        'is_in_received_likes',
+        aliasedName,
+        true,
+        type: DriftSqlType.int,
+        requiredDuringInsert: false,
+      ).withConverter<UtcDateTime?>(
+        $ProfileStatesTable.$converterisInReceivedLikes,
+      );
   @override
   late final GeneratedColumnWithTypeConverter<UtcDateTime?, int> isInSentLikes =
-      GeneratedColumn<int>('is_in_sent_likes', aliasedName, true,
-              type: DriftSqlType.int, requiredDuringInsert: false)
-          .withConverter<UtcDateTime?>(
-              $ProfileStatesTable.$converterisInSentLikes);
+      GeneratedColumn<int>(
+        'is_in_sent_likes',
+        aliasedName,
+        true,
+        type: DriftSqlType.int,
+        requiredDuringInsert: false,
+      ).withConverter<UtcDateTime?>(
+        $ProfileStatesTable.$converterisInSentLikes,
+      );
   @override
   late final GeneratedColumnWithTypeConverter<UtcDateTime?, int> isInMatches =
-      GeneratedColumn<int>('is_in_matches', aliasedName, true,
-              type: DriftSqlType.int, requiredDuringInsert: false)
-          .withConverter<UtcDateTime?>(
-              $ProfileStatesTable.$converterisInMatches);
+      GeneratedColumn<int>(
+        'is_in_matches',
+        aliasedName,
+        true,
+        type: DriftSqlType.int,
+        requiredDuringInsert: false,
+      ).withConverter<UtcDateTime?>($ProfileStatesTable.$converterisInMatches);
   @override
   late final GeneratedColumnWithTypeConverter<UtcDateTime?, int>
-      isInProfileGrid = GeneratedColumn<int>(
-              'is_in_profile_grid', aliasedName, true,
-              type: DriftSqlType.int, requiredDuringInsert: false)
-          .withConverter<UtcDateTime?>(
-              $ProfileStatesTable.$converterisInProfileGrid);
+  isInProfileGrid = GeneratedColumn<int>(
+    'is_in_profile_grid',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  ).withConverter<UtcDateTime?>($ProfileStatesTable.$converterisInProfileGrid);
   @override
   late final GeneratedColumnWithTypeConverter<UtcDateTime?, int>
-      isInAutomaticProfileSearchGrid = GeneratedColumn<int>(
-              'is_in_automatic_profile_search_grid', aliasedName, true,
-              type: DriftSqlType.int, requiredDuringInsert: false)
-          .withConverter<UtcDateTime?>(
-              $ProfileStatesTable.$converterisInAutomaticProfileSearchGrid);
+  isInAutomaticProfileSearchGrid =
+      GeneratedColumn<int>(
+        'is_in_automatic_profile_search_grid',
+        aliasedName,
+        true,
+        type: DriftSqlType.int,
+        requiredDuringInsert: false,
+      ).withConverter<UtcDateTime?>(
+        $ProfileStatesTable.$converterisInAutomaticProfileSearchGrid,
+      );
   @override
   late final GeneratedColumnWithTypeConverter<UtcDateTime?, int>
-      isInReceivedLikesGrid = GeneratedColumn<int>(
-              'is_in_received_likes_grid', aliasedName, true,
-              type: DriftSqlType.int, requiredDuringInsert: false)
-          .withConverter<UtcDateTime?>(
-              $ProfileStatesTable.$converterisInReceivedLikesGrid);
+  isInReceivedLikesGrid =
+      GeneratedColumn<int>(
+        'is_in_received_likes_grid',
+        aliasedName,
+        true,
+        type: DriftSqlType.int,
+        requiredDuringInsert: false,
+      ).withConverter<UtcDateTime?>(
+        $ProfileStatesTable.$converterisInReceivedLikesGrid,
+      );
   @override
   late final GeneratedColumnWithTypeConverter<UtcDateTime?, int>
-      isInMatchesGrid = GeneratedColumn<int>(
-              'is_in_matches_grid', aliasedName, true,
-              type: DriftSqlType.int, requiredDuringInsert: false)
-          .withConverter<UtcDateTime?>(
-              $ProfileStatesTable.$converterisInMatchesGrid);
+  isInMatchesGrid = GeneratedColumn<int>(
+    'is_in_matches_grid',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  ).withConverter<UtcDateTime?>($ProfileStatesTable.$converterisInMatchesGrid);
   @override
   List<GeneratedColumn> get $columns => [
-        id,
-        uuidAccountId,
-        isInFavorites,
-        isInReceivedLikes,
-        isInSentLikes,
-        isInMatches,
-        isInProfileGrid,
-        isInAutomaticProfileSearchGrid,
-        isInReceivedLikesGrid,
-        isInMatchesGrid
-      ];
+    id,
+    uuidAccountId,
+    isInFavorites,
+    isInReceivedLikes,
+    isInSentLikes,
+    isInMatches,
+    isInProfileGrid,
+    isInAutomaticProfileSearchGrid,
+    isInReceivedLikesGrid,
+    isInMatchesGrid,
+  ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
   static const String $name = 'profile_states';
   @override
-  VerificationContext validateIntegrity(Insertable<ProfileState> instance,
-      {bool isInserting = false}) {
+  VerificationContext validateIntegrity(
+    Insertable<ProfileState> instance, {
+    bool isInserting = false,
+  }) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
@@ -5508,36 +6739,68 @@ class $ProfileStatesTable extends ProfileStates
   ProfileState map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return ProfileState(
-      id: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
       uuidAccountId: $ProfileStatesTable.$converteruuidAccountId.fromSql(
-          attachedDatabase.typeMapping.read(
-              DriftSqlType.string, data['${effectivePrefix}uuid_account_id'])!),
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}uuid_account_id'],
+        )!,
+      ),
       isInFavorites: $ProfileStatesTable.$converterisInFavorites.fromSql(
-          attachedDatabase.typeMapping.read(
-              DriftSqlType.int, data['${effectivePrefix}is_in_favorites'])),
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.int,
+          data['${effectivePrefix}is_in_favorites'],
+        ),
+      ),
       isInReceivedLikes: $ProfileStatesTable.$converterisInReceivedLikes
-          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.int,
-              data['${effectivePrefix}is_in_received_likes'])),
+          .fromSql(
+            attachedDatabase.typeMapping.read(
+              DriftSqlType.int,
+              data['${effectivePrefix}is_in_received_likes'],
+            ),
+          ),
       isInSentLikes: $ProfileStatesTable.$converterisInSentLikes.fromSql(
-          attachedDatabase.typeMapping.read(
-              DriftSqlType.int, data['${effectivePrefix}is_in_sent_likes'])),
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.int,
+          data['${effectivePrefix}is_in_sent_likes'],
+        ),
+      ),
       isInMatches: $ProfileStatesTable.$converterisInMatches.fromSql(
-          attachedDatabase.typeMapping
-              .read(DriftSqlType.int, data['${effectivePrefix}is_in_matches'])),
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.int,
+          data['${effectivePrefix}is_in_matches'],
+        ),
+      ),
       isInProfileGrid: $ProfileStatesTable.$converterisInProfileGrid.fromSql(
-          attachedDatabase.typeMapping.read(
-              DriftSqlType.int, data['${effectivePrefix}is_in_profile_grid'])),
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.int,
+          data['${effectivePrefix}is_in_profile_grid'],
+        ),
+      ),
       isInAutomaticProfileSearchGrid: $ProfileStatesTable
           .$converterisInAutomaticProfileSearchGrid
-          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.int,
-              data['${effectivePrefix}is_in_automatic_profile_search_grid'])),
+          .fromSql(
+            attachedDatabase.typeMapping.read(
+              DriftSqlType.int,
+              data['${effectivePrefix}is_in_automatic_profile_search_grid'],
+            ),
+          ),
       isInReceivedLikesGrid: $ProfileStatesTable.$converterisInReceivedLikesGrid
-          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.int,
-              data['${effectivePrefix}is_in_received_likes_grid'])),
+          .fromSql(
+            attachedDatabase.typeMapping.read(
+              DriftSqlType.int,
+              data['${effectivePrefix}is_in_received_likes_grid'],
+            ),
+          ),
       isInMatchesGrid: $ProfileStatesTable.$converterisInMatchesGrid.fromSql(
-          attachedDatabase.typeMapping.read(
-              DriftSqlType.int, data['${effectivePrefix}is_in_matches_grid'])),
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.int,
+          data['${effectivePrefix}is_in_matches_grid'],
+        ),
+      ),
     );
   }
 
@@ -5559,8 +6822,9 @@ class $ProfileStatesTable extends ProfileStates
   static TypeConverter<UtcDateTime?, int?> $converterisInProfileGrid =
       const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
   static TypeConverter<UtcDateTime?, int?>
-      $converterisInAutomaticProfileSearchGrid =
-      const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
+  $converterisInAutomaticProfileSearchGrid = const NullAwareTypeConverter.wrap(
+    UtcDateTimeConverter(),
+  );
   static TypeConverter<UtcDateTime?, int?> $converterisInReceivedLikesGrid =
       const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
   static TypeConverter<UtcDateTime?, int?> $converterisInMatchesGrid =
@@ -5578,59 +6842,72 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
   final UtcDateTime? isInAutomaticProfileSearchGrid;
   final UtcDateTime? isInReceivedLikesGrid;
   final UtcDateTime? isInMatchesGrid;
-  const ProfileState(
-      {required this.id,
-      required this.uuidAccountId,
-      this.isInFavorites,
-      this.isInReceivedLikes,
-      this.isInSentLikes,
-      this.isInMatches,
-      this.isInProfileGrid,
-      this.isInAutomaticProfileSearchGrid,
-      this.isInReceivedLikesGrid,
-      this.isInMatchesGrid});
+  const ProfileState({
+    required this.id,
+    required this.uuidAccountId,
+    this.isInFavorites,
+    this.isInReceivedLikes,
+    this.isInSentLikes,
+    this.isInMatches,
+    this.isInProfileGrid,
+    this.isInAutomaticProfileSearchGrid,
+    this.isInReceivedLikesGrid,
+    this.isInMatchesGrid,
+  });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     {
       map['uuid_account_id'] = Variable<String>(
-          $ProfileStatesTable.$converteruuidAccountId.toSql(uuidAccountId));
+        $ProfileStatesTable.$converteruuidAccountId.toSql(uuidAccountId),
+      );
     }
     if (!nullToAbsent || isInFavorites != null) {
       map['is_in_favorites'] = Variable<int>(
-          $ProfileStatesTable.$converterisInFavorites.toSql(isInFavorites));
+        $ProfileStatesTable.$converterisInFavorites.toSql(isInFavorites),
+      );
     }
     if (!nullToAbsent || isInReceivedLikes != null) {
-      map['is_in_received_likes'] = Variable<int>($ProfileStatesTable
-          .$converterisInReceivedLikes
-          .toSql(isInReceivedLikes));
+      map['is_in_received_likes'] = Variable<int>(
+        $ProfileStatesTable.$converterisInReceivedLikes.toSql(
+          isInReceivedLikes,
+        ),
+      );
     }
     if (!nullToAbsent || isInSentLikes != null) {
       map['is_in_sent_likes'] = Variable<int>(
-          $ProfileStatesTable.$converterisInSentLikes.toSql(isInSentLikes));
+        $ProfileStatesTable.$converterisInSentLikes.toSql(isInSentLikes),
+      );
     }
     if (!nullToAbsent || isInMatches != null) {
       map['is_in_matches'] = Variable<int>(
-          $ProfileStatesTable.$converterisInMatches.toSql(isInMatches));
+        $ProfileStatesTable.$converterisInMatches.toSql(isInMatches),
+      );
     }
     if (!nullToAbsent || isInProfileGrid != null) {
       map['is_in_profile_grid'] = Variable<int>(
-          $ProfileStatesTable.$converterisInProfileGrid.toSql(isInProfileGrid));
+        $ProfileStatesTable.$converterisInProfileGrid.toSql(isInProfileGrid),
+      );
     }
     if (!nullToAbsent || isInAutomaticProfileSearchGrid != null) {
       map['is_in_automatic_profile_search_grid'] = Variable<int>(
-          $ProfileStatesTable.$converterisInAutomaticProfileSearchGrid
-              .toSql(isInAutomaticProfileSearchGrid));
+        $ProfileStatesTable.$converterisInAutomaticProfileSearchGrid.toSql(
+          isInAutomaticProfileSearchGrid,
+        ),
+      );
     }
     if (!nullToAbsent || isInReceivedLikesGrid != null) {
-      map['is_in_received_likes_grid'] = Variable<int>($ProfileStatesTable
-          .$converterisInReceivedLikesGrid
-          .toSql(isInReceivedLikesGrid));
+      map['is_in_received_likes_grid'] = Variable<int>(
+        $ProfileStatesTable.$converterisInReceivedLikesGrid.toSql(
+          isInReceivedLikesGrid,
+        ),
+      );
     }
     if (!nullToAbsent || isInMatchesGrid != null) {
       map['is_in_matches_grid'] = Variable<int>(
-          $ProfileStatesTable.$converterisInMatchesGrid.toSql(isInMatchesGrid));
+        $ProfileStatesTable.$converterisInMatchesGrid.toSql(isInMatchesGrid),
+      );
     }
     return map;
   }
@@ -5656,8 +6933,8 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
           : Value(isInProfileGrid),
       isInAutomaticProfileSearchGrid:
           isInAutomaticProfileSearchGrid == null && nullToAbsent
-              ? const Value.absent()
-              : Value(isInAutomaticProfileSearchGrid),
+          ? const Value.absent()
+          : Value(isInAutomaticProfileSearchGrid),
       isInReceivedLikesGrid: isInReceivedLikesGrid == null && nullToAbsent
           ? const Value.absent()
           : Value(isInReceivedLikesGrid),
@@ -5667,25 +6944,32 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
     );
   }
 
-  factory ProfileState.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
+  factory ProfileState.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return ProfileState(
       id: serializer.fromJson<int>(json['id']),
       uuidAccountId: serializer.fromJson<api.AccountId>(json['uuidAccountId']),
       isInFavorites: serializer.fromJson<UtcDateTime?>(json['isInFavorites']),
-      isInReceivedLikes:
-          serializer.fromJson<UtcDateTime?>(json['isInReceivedLikes']),
+      isInReceivedLikes: serializer.fromJson<UtcDateTime?>(
+        json['isInReceivedLikes'],
+      ),
       isInSentLikes: serializer.fromJson<UtcDateTime?>(json['isInSentLikes']),
       isInMatches: serializer.fromJson<UtcDateTime?>(json['isInMatches']),
-      isInProfileGrid:
-          serializer.fromJson<UtcDateTime?>(json['isInProfileGrid']),
-      isInAutomaticProfileSearchGrid: serializer
-          .fromJson<UtcDateTime?>(json['isInAutomaticProfileSearchGrid']),
-      isInReceivedLikesGrid:
-          serializer.fromJson<UtcDateTime?>(json['isInReceivedLikesGrid']),
-      isInMatchesGrid:
-          serializer.fromJson<UtcDateTime?>(json['isInMatchesGrid']),
+      isInProfileGrid: serializer.fromJson<UtcDateTime?>(
+        json['isInProfileGrid'],
+      ),
+      isInAutomaticProfileSearchGrid: serializer.fromJson<UtcDateTime?>(
+        json['isInAutomaticProfileSearchGrid'],
+      ),
+      isInReceivedLikesGrid: serializer.fromJson<UtcDateTime?>(
+        json['isInReceivedLikesGrid'],
+      ),
+      isInMatchesGrid: serializer.fromJson<UtcDateTime?>(
+        json['isInMatchesGrid'],
+      ),
     );
   }
   @override
@@ -5699,50 +6983,53 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
       'isInSentLikes': serializer.toJson<UtcDateTime?>(isInSentLikes),
       'isInMatches': serializer.toJson<UtcDateTime?>(isInMatches),
       'isInProfileGrid': serializer.toJson<UtcDateTime?>(isInProfileGrid),
-      'isInAutomaticProfileSearchGrid':
-          serializer.toJson<UtcDateTime?>(isInAutomaticProfileSearchGrid),
-      'isInReceivedLikesGrid':
-          serializer.toJson<UtcDateTime?>(isInReceivedLikesGrid),
+      'isInAutomaticProfileSearchGrid': serializer.toJson<UtcDateTime?>(
+        isInAutomaticProfileSearchGrid,
+      ),
+      'isInReceivedLikesGrid': serializer.toJson<UtcDateTime?>(
+        isInReceivedLikesGrid,
+      ),
       'isInMatchesGrid': serializer.toJson<UtcDateTime?>(isInMatchesGrid),
     };
   }
 
-  ProfileState copyWith(
-          {int? id,
-          api.AccountId? uuidAccountId,
-          Value<UtcDateTime?> isInFavorites = const Value.absent(),
-          Value<UtcDateTime?> isInReceivedLikes = const Value.absent(),
-          Value<UtcDateTime?> isInSentLikes = const Value.absent(),
-          Value<UtcDateTime?> isInMatches = const Value.absent(),
-          Value<UtcDateTime?> isInProfileGrid = const Value.absent(),
-          Value<UtcDateTime?> isInAutomaticProfileSearchGrid =
-              const Value.absent(),
-          Value<UtcDateTime?> isInReceivedLikesGrid = const Value.absent(),
-          Value<UtcDateTime?> isInMatchesGrid = const Value.absent()}) =>
-      ProfileState(
-        id: id ?? this.id,
-        uuidAccountId: uuidAccountId ?? this.uuidAccountId,
-        isInFavorites:
-            isInFavorites.present ? isInFavorites.value : this.isInFavorites,
-        isInReceivedLikes: isInReceivedLikes.present
-            ? isInReceivedLikes.value
-            : this.isInReceivedLikes,
-        isInSentLikes:
-            isInSentLikes.present ? isInSentLikes.value : this.isInSentLikes,
-        isInMatches: isInMatches.present ? isInMatches.value : this.isInMatches,
-        isInProfileGrid: isInProfileGrid.present
-            ? isInProfileGrid.value
-            : this.isInProfileGrid,
-        isInAutomaticProfileSearchGrid: isInAutomaticProfileSearchGrid.present
-            ? isInAutomaticProfileSearchGrid.value
-            : this.isInAutomaticProfileSearchGrid,
-        isInReceivedLikesGrid: isInReceivedLikesGrid.present
-            ? isInReceivedLikesGrid.value
-            : this.isInReceivedLikesGrid,
-        isInMatchesGrid: isInMatchesGrid.present
-            ? isInMatchesGrid.value
-            : this.isInMatchesGrid,
-      );
+  ProfileState copyWith({
+    int? id,
+    api.AccountId? uuidAccountId,
+    Value<UtcDateTime?> isInFavorites = const Value.absent(),
+    Value<UtcDateTime?> isInReceivedLikes = const Value.absent(),
+    Value<UtcDateTime?> isInSentLikes = const Value.absent(),
+    Value<UtcDateTime?> isInMatches = const Value.absent(),
+    Value<UtcDateTime?> isInProfileGrid = const Value.absent(),
+    Value<UtcDateTime?> isInAutomaticProfileSearchGrid = const Value.absent(),
+    Value<UtcDateTime?> isInReceivedLikesGrid = const Value.absent(),
+    Value<UtcDateTime?> isInMatchesGrid = const Value.absent(),
+  }) => ProfileState(
+    id: id ?? this.id,
+    uuidAccountId: uuidAccountId ?? this.uuidAccountId,
+    isInFavorites: isInFavorites.present
+        ? isInFavorites.value
+        : this.isInFavorites,
+    isInReceivedLikes: isInReceivedLikes.present
+        ? isInReceivedLikes.value
+        : this.isInReceivedLikes,
+    isInSentLikes: isInSentLikes.present
+        ? isInSentLikes.value
+        : this.isInSentLikes,
+    isInMatches: isInMatches.present ? isInMatches.value : this.isInMatches,
+    isInProfileGrid: isInProfileGrid.present
+        ? isInProfileGrid.value
+        : this.isInProfileGrid,
+    isInAutomaticProfileSearchGrid: isInAutomaticProfileSearchGrid.present
+        ? isInAutomaticProfileSearchGrid.value
+        : this.isInAutomaticProfileSearchGrid,
+    isInReceivedLikesGrid: isInReceivedLikesGrid.present
+        ? isInReceivedLikesGrid.value
+        : this.isInReceivedLikesGrid,
+    isInMatchesGrid: isInMatchesGrid.present
+        ? isInMatchesGrid.value
+        : this.isInMatchesGrid,
+  );
   ProfileState copyWithCompanion(ProfileStatesCompanion data) {
     return ProfileState(
       id: data.id.present ? data.id.value : this.id,
@@ -5758,15 +7045,16 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
       isInSentLikes: data.isInSentLikes.present
           ? data.isInSentLikes.value
           : this.isInSentLikes,
-      isInMatches:
-          data.isInMatches.present ? data.isInMatches.value : this.isInMatches,
+      isInMatches: data.isInMatches.present
+          ? data.isInMatches.value
+          : this.isInMatches,
       isInProfileGrid: data.isInProfileGrid.present
           ? data.isInProfileGrid.value
           : this.isInProfileGrid,
       isInAutomaticProfileSearchGrid:
           data.isInAutomaticProfileSearchGrid.present
-              ? data.isInAutomaticProfileSearchGrid.value
-              : this.isInAutomaticProfileSearchGrid,
+          ? data.isInAutomaticProfileSearchGrid.value
+          : this.isInAutomaticProfileSearchGrid,
       isInReceivedLikesGrid: data.isInReceivedLikesGrid.present
           ? data.isInReceivedLikesGrid.value
           : this.isInReceivedLikesGrid,
@@ -5787,7 +7075,8 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
           ..write('isInMatches: $isInMatches, ')
           ..write('isInProfileGrid: $isInProfileGrid, ')
           ..write(
-              'isInAutomaticProfileSearchGrid: $isInAutomaticProfileSearchGrid, ')
+            'isInAutomaticProfileSearchGrid: $isInAutomaticProfileSearchGrid, ',
+          )
           ..write('isInReceivedLikesGrid: $isInReceivedLikesGrid, ')
           ..write('isInMatchesGrid: $isInMatchesGrid')
           ..write(')'))
@@ -5796,16 +7085,17 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
 
   @override
   int get hashCode => Object.hash(
-      id,
-      uuidAccountId,
-      isInFavorites,
-      isInReceivedLikes,
-      isInSentLikes,
-      isInMatches,
-      isInProfileGrid,
-      isInAutomaticProfileSearchGrid,
-      isInReceivedLikesGrid,
-      isInMatchesGrid);
+    id,
+    uuidAccountId,
+    isInFavorites,
+    isInReceivedLikes,
+    isInSentLikes,
+    isInMatches,
+    isInProfileGrid,
+    isInAutomaticProfileSearchGrid,
+    isInReceivedLikesGrid,
+    isInMatchesGrid,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -5886,17 +7176,18 @@ class ProfileStatesCompanion extends UpdateCompanion<ProfileState> {
     });
   }
 
-  ProfileStatesCompanion copyWith(
-      {Value<int>? id,
-      Value<api.AccountId>? uuidAccountId,
-      Value<UtcDateTime?>? isInFavorites,
-      Value<UtcDateTime?>? isInReceivedLikes,
-      Value<UtcDateTime?>? isInSentLikes,
-      Value<UtcDateTime?>? isInMatches,
-      Value<UtcDateTime?>? isInProfileGrid,
-      Value<UtcDateTime?>? isInAutomaticProfileSearchGrid,
-      Value<UtcDateTime?>? isInReceivedLikesGrid,
-      Value<UtcDateTime?>? isInMatchesGrid}) {
+  ProfileStatesCompanion copyWith({
+    Value<int>? id,
+    Value<api.AccountId>? uuidAccountId,
+    Value<UtcDateTime?>? isInFavorites,
+    Value<UtcDateTime?>? isInReceivedLikes,
+    Value<UtcDateTime?>? isInSentLikes,
+    Value<UtcDateTime?>? isInMatches,
+    Value<UtcDateTime?>? isInProfileGrid,
+    Value<UtcDateTime?>? isInAutomaticProfileSearchGrid,
+    Value<UtcDateTime?>? isInReceivedLikesGrid,
+    Value<UtcDateTime?>? isInMatchesGrid,
+  }) {
     return ProfileStatesCompanion(
       id: id ?? this.id,
       uuidAccountId: uuidAccountId ?? this.uuidAccountId,
@@ -5920,48 +7211,59 @@ class ProfileStatesCompanion extends UpdateCompanion<ProfileState> {
       map['id'] = Variable<int>(id.value);
     }
     if (uuidAccountId.present) {
-      map['uuid_account_id'] = Variable<String>($ProfileStatesTable
-          .$converteruuidAccountId
-          .toSql(uuidAccountId.value));
+      map['uuid_account_id'] = Variable<String>(
+        $ProfileStatesTable.$converteruuidAccountId.toSql(uuidAccountId.value),
+      );
     }
     if (isInFavorites.present) {
-      map['is_in_favorites'] = Variable<int>($ProfileStatesTable
-          .$converterisInFavorites
-          .toSql(isInFavorites.value));
+      map['is_in_favorites'] = Variable<int>(
+        $ProfileStatesTable.$converterisInFavorites.toSql(isInFavorites.value),
+      );
     }
     if (isInReceivedLikes.present) {
-      map['is_in_received_likes'] = Variable<int>($ProfileStatesTable
-          .$converterisInReceivedLikes
-          .toSql(isInReceivedLikes.value));
+      map['is_in_received_likes'] = Variable<int>(
+        $ProfileStatesTable.$converterisInReceivedLikes.toSql(
+          isInReceivedLikes.value,
+        ),
+      );
     }
     if (isInSentLikes.present) {
-      map['is_in_sent_likes'] = Variable<int>($ProfileStatesTable
-          .$converterisInSentLikes
-          .toSql(isInSentLikes.value));
+      map['is_in_sent_likes'] = Variable<int>(
+        $ProfileStatesTable.$converterisInSentLikes.toSql(isInSentLikes.value),
+      );
     }
     if (isInMatches.present) {
       map['is_in_matches'] = Variable<int>(
-          $ProfileStatesTable.$converterisInMatches.toSql(isInMatches.value));
+        $ProfileStatesTable.$converterisInMatches.toSql(isInMatches.value),
+      );
     }
     if (isInProfileGrid.present) {
-      map['is_in_profile_grid'] = Variable<int>($ProfileStatesTable
-          .$converterisInProfileGrid
-          .toSql(isInProfileGrid.value));
+      map['is_in_profile_grid'] = Variable<int>(
+        $ProfileStatesTable.$converterisInProfileGrid.toSql(
+          isInProfileGrid.value,
+        ),
+      );
     }
     if (isInAutomaticProfileSearchGrid.present) {
       map['is_in_automatic_profile_search_grid'] = Variable<int>(
-          $ProfileStatesTable.$converterisInAutomaticProfileSearchGrid
-              .toSql(isInAutomaticProfileSearchGrid.value));
+        $ProfileStatesTable.$converterisInAutomaticProfileSearchGrid.toSql(
+          isInAutomaticProfileSearchGrid.value,
+        ),
+      );
     }
     if (isInReceivedLikesGrid.present) {
-      map['is_in_received_likes_grid'] = Variable<int>($ProfileStatesTable
-          .$converterisInReceivedLikesGrid
-          .toSql(isInReceivedLikesGrid.value));
+      map['is_in_received_likes_grid'] = Variable<int>(
+        $ProfileStatesTable.$converterisInReceivedLikesGrid.toSql(
+          isInReceivedLikesGrid.value,
+        ),
+      );
     }
     if (isInMatchesGrid.present) {
-      map['is_in_matches_grid'] = Variable<int>($ProfileStatesTable
-          .$converterisInMatchesGrid
-          .toSql(isInMatchesGrid.value));
+      map['is_in_matches_grid'] = Variable<int>(
+        $ProfileStatesTable.$converterisInMatchesGrid.toSql(
+          isInMatchesGrid.value,
+        ),
+      );
     }
     return map;
   }
@@ -5977,7 +7279,8 @@ class ProfileStatesCompanion extends UpdateCompanion<ProfileState> {
           ..write('isInMatches: $isInMatches, ')
           ..write('isInProfileGrid: $isInProfileGrid, ')
           ..write(
-              'isInAutomaticProfileSearchGrid: $isInAutomaticProfileSearchGrid, ')
+            'isInAutomaticProfileSearchGrid: $isInAutomaticProfileSearchGrid, ',
+          )
           ..write('isInReceivedLikesGrid: $isInReceivedLikesGrid, ')
           ..write('isInMatchesGrid: $isInMatchesGrid')
           ..write(')'))
@@ -5994,50 +7297,73 @@ class $ConversationListTable extends ConversationList
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
-      'id', aliasedName, false,
-      hasAutoIncrement: true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      defaultConstraints:
-          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
   @override
   late final GeneratedColumnWithTypeConverter<api.AccountId, String>
-      uuidAccountId = GeneratedColumn<String>(
-              'uuid_account_id', aliasedName, false,
-              type: DriftSqlType.string,
-              requiredDuringInsert: true,
-              defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'))
-          .withConverter<api.AccountId>(
-              $ConversationListTable.$converteruuidAccountId);
+  uuidAccountId =
+      GeneratedColumn<String>(
+        'uuid_account_id',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+        defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'),
+      ).withConverter<api.AccountId>(
+        $ConversationListTable.$converteruuidAccountId,
+      );
   @override
   late final GeneratedColumnWithTypeConverter<UtcDateTime?, int>
-      conversationLastChangedTime = GeneratedColumn<int>(
-              'conversation_last_changed_time', aliasedName, true,
-              type: DriftSqlType.int, requiredDuringInsert: false)
-          .withConverter<UtcDateTime?>(
-              $ConversationListTable.$converterconversationLastChangedTime);
+  conversationLastChangedTime =
+      GeneratedColumn<int>(
+        'conversation_last_changed_time',
+        aliasedName,
+        true,
+        type: DriftSqlType.int,
+        requiredDuringInsert: false,
+      ).withConverter<UtcDateTime?>(
+        $ConversationListTable.$converterconversationLastChangedTime,
+      );
   @override
   late final GeneratedColumnWithTypeConverter<UtcDateTime?, int>
-      isInConversationList = GeneratedColumn<int>(
-              'is_in_conversation_list', aliasedName, true,
-              type: DriftSqlType.int, requiredDuringInsert: false)
-          .withConverter<UtcDateTime?>(
-              $ConversationListTable.$converterisInConversationList);
+  isInConversationList =
+      GeneratedColumn<int>(
+        'is_in_conversation_list',
+        aliasedName,
+        true,
+        type: DriftSqlType.int,
+        requiredDuringInsert: false,
+      ).withConverter<UtcDateTime?>(
+        $ConversationListTable.$converterisInConversationList,
+      );
   @override
   late final GeneratedColumnWithTypeConverter<UtcDateTime?, int>
-      isInSentBlocks = GeneratedColumn<int>(
-              'is_in_sent_blocks', aliasedName, true,
-              type: DriftSqlType.int, requiredDuringInsert: false)
-          .withConverter<UtcDateTime?>(
-              $ConversationListTable.$converterisInSentBlocks);
+  isInSentBlocks =
+      GeneratedColumn<int>(
+        'is_in_sent_blocks',
+        aliasedName,
+        true,
+        type: DriftSqlType.int,
+        requiredDuringInsert: false,
+      ).withConverter<UtcDateTime?>(
+        $ConversationListTable.$converterisInSentBlocks,
+      );
   @override
   List<GeneratedColumn> get $columns => [
-        id,
-        uuidAccountId,
-        conversationLastChangedTime,
-        isInConversationList,
-        isInSentBlocks
-      ];
+    id,
+    uuidAccountId,
+    conversationLastChangedTime,
+    isInConversationList,
+    isInSentBlocks,
+  ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -6045,8 +7371,9 @@ class $ConversationListTable extends ConversationList
   static const String $name = 'conversation_list';
   @override
   VerificationContext validateIntegrity(
-      Insertable<ConversationListData> instance,
-      {bool isInserting = false}) {
+    Insertable<ConversationListData> instance, {
+    bool isInserting = false,
+  }) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
@@ -6061,22 +7388,38 @@ class $ConversationListTable extends ConversationList
   ConversationListData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return ConversationListData(
-      id: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
       uuidAccountId: $ConversationListTable.$converteruuidAccountId.fromSql(
-          attachedDatabase.typeMapping.read(
-              DriftSqlType.string, data['${effectivePrefix}uuid_account_id'])!),
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}uuid_account_id'],
+        )!,
+      ),
       conversationLastChangedTime: $ConversationListTable
           .$converterconversationLastChangedTime
-          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.int,
-              data['${effectivePrefix}conversation_last_changed_time'])),
+          .fromSql(
+            attachedDatabase.typeMapping.read(
+              DriftSqlType.int,
+              data['${effectivePrefix}conversation_last_changed_time'],
+            ),
+          ),
       isInConversationList: $ConversationListTable
           .$converterisInConversationList
-          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.int,
-              data['${effectivePrefix}is_in_conversation_list'])),
+          .fromSql(
+            attachedDatabase.typeMapping.read(
+              DriftSqlType.int,
+              data['${effectivePrefix}is_in_conversation_list'],
+            ),
+          ),
       isInSentBlocks: $ConversationListTable.$converterisInSentBlocks.fromSql(
-          attachedDatabase.typeMapping.read(
-              DriftSqlType.int, data['${effectivePrefix}is_in_sent_blocks'])),
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.int,
+          data['${effectivePrefix}is_in_sent_blocks'],
+        ),
+      ),
     );
   }
 
@@ -6088,8 +7431,9 @@ class $ConversationListTable extends ConversationList
   static TypeConverter<api.AccountId, String> $converteruuidAccountId =
       const AccountIdConverter();
   static TypeConverter<UtcDateTime?, int?>
-      $converterconversationLastChangedTime =
-      const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
+  $converterconversationLastChangedTime = const NullAwareTypeConverter.wrap(
+    UtcDateTimeConverter(),
+  );
   static TypeConverter<UtcDateTime?, int?> $converterisInConversationList =
       const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
   static TypeConverter<UtcDateTime?, int?> $converterisInSentBlocks =
@@ -6103,34 +7447,40 @@ class ConversationListData extends DataClass
   final UtcDateTime? conversationLastChangedTime;
   final UtcDateTime? isInConversationList;
   final UtcDateTime? isInSentBlocks;
-  const ConversationListData(
-      {required this.id,
-      required this.uuidAccountId,
-      this.conversationLastChangedTime,
-      this.isInConversationList,
-      this.isInSentBlocks});
+  const ConversationListData({
+    required this.id,
+    required this.uuidAccountId,
+    this.conversationLastChangedTime,
+    this.isInConversationList,
+    this.isInSentBlocks,
+  });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     {
       map['uuid_account_id'] = Variable<String>(
-          $ConversationListTable.$converteruuidAccountId.toSql(uuidAccountId));
+        $ConversationListTable.$converteruuidAccountId.toSql(uuidAccountId),
+      );
     }
     if (!nullToAbsent || conversationLastChangedTime != null) {
       map['conversation_last_changed_time'] = Variable<int>(
-          $ConversationListTable.$converterconversationLastChangedTime
-              .toSql(conversationLastChangedTime));
+        $ConversationListTable.$converterconversationLastChangedTime.toSql(
+          conversationLastChangedTime,
+        ),
+      );
     }
     if (!nullToAbsent || isInConversationList != null) {
-      map['is_in_conversation_list'] = Variable<int>($ConversationListTable
-          .$converterisInConversationList
-          .toSql(isInConversationList));
+      map['is_in_conversation_list'] = Variable<int>(
+        $ConversationListTable.$converterisInConversationList.toSql(
+          isInConversationList,
+        ),
+      );
     }
     if (!nullToAbsent || isInSentBlocks != null) {
-      map['is_in_sent_blocks'] = Variable<int>($ConversationListTable
-          .$converterisInSentBlocks
-          .toSql(isInSentBlocks));
+      map['is_in_sent_blocks'] = Variable<int>(
+        $ConversationListTable.$converterisInSentBlocks.toSql(isInSentBlocks),
+      );
     }
     return map;
   }
@@ -6141,8 +7491,8 @@ class ConversationListData extends DataClass
       uuidAccountId: Value(uuidAccountId),
       conversationLastChangedTime:
           conversationLastChangedTime == null && nullToAbsent
-              ? const Value.absent()
-              : Value(conversationLastChangedTime),
+          ? const Value.absent()
+          : Value(conversationLastChangedTime),
       isInConversationList: isInConversationList == null && nullToAbsent
           ? const Value.absent()
           : Value(isInConversationList),
@@ -6152,16 +7502,20 @@ class ConversationListData extends DataClass
     );
   }
 
-  factory ConversationListData.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
+  factory ConversationListData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return ConversationListData(
       id: serializer.fromJson<int>(json['id']),
       uuidAccountId: serializer.fromJson<api.AccountId>(json['uuidAccountId']),
-      conversationLastChangedTime: serializer
-          .fromJson<UtcDateTime?>(json['conversationLastChangedTime']),
-      isInConversationList:
-          serializer.fromJson<UtcDateTime?>(json['isInConversationList']),
+      conversationLastChangedTime: serializer.fromJson<UtcDateTime?>(
+        json['conversationLastChangedTime'],
+      ),
+      isInConversationList: serializer.fromJson<UtcDateTime?>(
+        json['isInConversationList'],
+      ),
       isInSentBlocks: serializer.fromJson<UtcDateTime?>(json['isInSentBlocks']),
     );
   }
@@ -6171,33 +7525,35 @@ class ConversationListData extends DataClass
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'uuidAccountId': serializer.toJson<api.AccountId>(uuidAccountId),
-      'conversationLastChangedTime':
-          serializer.toJson<UtcDateTime?>(conversationLastChangedTime),
-      'isInConversationList':
-          serializer.toJson<UtcDateTime?>(isInConversationList),
+      'conversationLastChangedTime': serializer.toJson<UtcDateTime?>(
+        conversationLastChangedTime,
+      ),
+      'isInConversationList': serializer.toJson<UtcDateTime?>(
+        isInConversationList,
+      ),
       'isInSentBlocks': serializer.toJson<UtcDateTime?>(isInSentBlocks),
     };
   }
 
-  ConversationListData copyWith(
-          {int? id,
-          api.AccountId? uuidAccountId,
-          Value<UtcDateTime?> conversationLastChangedTime =
-              const Value.absent(),
-          Value<UtcDateTime?> isInConversationList = const Value.absent(),
-          Value<UtcDateTime?> isInSentBlocks = const Value.absent()}) =>
-      ConversationListData(
-        id: id ?? this.id,
-        uuidAccountId: uuidAccountId ?? this.uuidAccountId,
-        conversationLastChangedTime: conversationLastChangedTime.present
-            ? conversationLastChangedTime.value
-            : this.conversationLastChangedTime,
-        isInConversationList: isInConversationList.present
-            ? isInConversationList.value
-            : this.isInConversationList,
-        isInSentBlocks:
-            isInSentBlocks.present ? isInSentBlocks.value : this.isInSentBlocks,
-      );
+  ConversationListData copyWith({
+    int? id,
+    api.AccountId? uuidAccountId,
+    Value<UtcDateTime?> conversationLastChangedTime = const Value.absent(),
+    Value<UtcDateTime?> isInConversationList = const Value.absent(),
+    Value<UtcDateTime?> isInSentBlocks = const Value.absent(),
+  }) => ConversationListData(
+    id: id ?? this.id,
+    uuidAccountId: uuidAccountId ?? this.uuidAccountId,
+    conversationLastChangedTime: conversationLastChangedTime.present
+        ? conversationLastChangedTime.value
+        : this.conversationLastChangedTime,
+    isInConversationList: isInConversationList.present
+        ? isInConversationList.value
+        : this.isInConversationList,
+    isInSentBlocks: isInSentBlocks.present
+        ? isInSentBlocks.value
+        : this.isInSentBlocks,
+  );
   ConversationListData copyWithCompanion(ConversationListCompanion data) {
     return ConversationListData(
       id: data.id.present ? data.id.value : this.id,
@@ -6229,8 +7585,13 @@ class ConversationListData extends DataClass
   }
 
   @override
-  int get hashCode => Object.hash(id, uuidAccountId,
-      conversationLastChangedTime, isInConversationList, isInSentBlocks);
+  int get hashCode => Object.hash(
+    id,
+    uuidAccountId,
+    conversationLastChangedTime,
+    isInConversationList,
+    isInSentBlocks,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -6281,12 +7642,13 @@ class ConversationListCompanion extends UpdateCompanion<ConversationListData> {
     });
   }
 
-  ConversationListCompanion copyWith(
-      {Value<int>? id,
-      Value<api.AccountId>? uuidAccountId,
-      Value<UtcDateTime?>? conversationLastChangedTime,
-      Value<UtcDateTime?>? isInConversationList,
-      Value<UtcDateTime?>? isInSentBlocks}) {
+  ConversationListCompanion copyWith({
+    Value<int>? id,
+    Value<api.AccountId>? uuidAccountId,
+    Value<UtcDateTime?>? conversationLastChangedTime,
+    Value<UtcDateTime?>? isInConversationList,
+    Value<UtcDateTime?>? isInSentBlocks,
+  }) {
     return ConversationListCompanion(
       id: id ?? this.id,
       uuidAccountId: uuidAccountId ?? this.uuidAccountId,
@@ -6304,24 +7666,32 @@ class ConversationListCompanion extends UpdateCompanion<ConversationListData> {
       map['id'] = Variable<int>(id.value);
     }
     if (uuidAccountId.present) {
-      map['uuid_account_id'] = Variable<String>($ConversationListTable
-          .$converteruuidAccountId
-          .toSql(uuidAccountId.value));
+      map['uuid_account_id'] = Variable<String>(
+        $ConversationListTable.$converteruuidAccountId.toSql(
+          uuidAccountId.value,
+        ),
+      );
     }
     if (conversationLastChangedTime.present) {
       map['conversation_last_changed_time'] = Variable<int>(
-          $ConversationListTable.$converterconversationLastChangedTime
-              .toSql(conversationLastChangedTime.value));
+        $ConversationListTable.$converterconversationLastChangedTime.toSql(
+          conversationLastChangedTime.value,
+        ),
+      );
     }
     if (isInConversationList.present) {
-      map['is_in_conversation_list'] = Variable<int>($ConversationListTable
-          .$converterisInConversationList
-          .toSql(isInConversationList.value));
+      map['is_in_conversation_list'] = Variable<int>(
+        $ConversationListTable.$converterisInConversationList.toSql(
+          isInConversationList.value,
+        ),
+      );
     }
     if (isInSentBlocks.present) {
-      map['is_in_sent_blocks'] = Variable<int>($ConversationListTable
-          .$converterisInSentBlocks
-          .toSql(isInSentBlocks.value));
+      map['is_in_sent_blocks'] = Variable<int>(
+        $ConversationListTable.$converterisInSentBlocks.toSql(
+          isInSentBlocks.value,
+        ),
+      );
     }
     return map;
   }
@@ -6348,89 +7718,135 @@ class $MessageTableTable extends MessageTable
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
-      'id', aliasedName, false,
-      hasAutoIncrement: true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      defaultConstraints:
-          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
   @override
   late final GeneratedColumnWithTypeConverter<api.AccountId, String>
-      uuidLocalAccountId = GeneratedColumn<String>(
-              'uuid_local_account_id', aliasedName, false,
-              type: DriftSqlType.string, requiredDuringInsert: true)
-          .withConverter<api.AccountId>(
-              $MessageTableTable.$converteruuidLocalAccountId);
+  uuidLocalAccountId =
+      GeneratedColumn<String>(
+        'uuid_local_account_id',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      ).withConverter<api.AccountId>(
+        $MessageTableTable.$converteruuidLocalAccountId,
+      );
   @override
   late final GeneratedColumnWithTypeConverter<api.AccountId, String>
-      uuidRemoteAccountId = GeneratedColumn<String>(
-              'uuid_remote_account_id', aliasedName, false,
-              type: DriftSqlType.string, requiredDuringInsert: true)
-          .withConverter<api.AccountId>(
-              $MessageTableTable.$converteruuidRemoteAccountId);
+  uuidRemoteAccountId =
+      GeneratedColumn<String>(
+        'uuid_remote_account_id',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      ).withConverter<api.AccountId>(
+        $MessageTableTable.$converteruuidRemoteAccountId,
+      );
   @override
   late final GeneratedColumnWithTypeConverter<Message?, Uint8List> message =
-      GeneratedColumn<Uint8List>('message', aliasedName, true,
-              type: DriftSqlType.blob, requiredDuringInsert: false)
-          .withConverter<Message?>($MessageTableTable.$convertermessage);
+      GeneratedColumn<Uint8List>(
+        'message',
+        aliasedName,
+        true,
+        type: DriftSqlType.blob,
+        requiredDuringInsert: false,
+      ).withConverter<Message?>($MessageTableTable.$convertermessage);
   @override
   late final GeneratedColumnWithTypeConverter<UtcDateTime, int> localUnixTime =
-      GeneratedColumn<int>('local_unix_time', aliasedName, false,
-              type: DriftSqlType.int, requiredDuringInsert: true)
-          .withConverter<UtcDateTime>(
-              $MessageTableTable.$converterlocalUnixTime);
-  static const VerificationMeta _messageStateMeta =
-      const VerificationMeta('messageState');
+      GeneratedColumn<int>(
+        'local_unix_time',
+        aliasedName,
+        false,
+        type: DriftSqlType.int,
+        requiredDuringInsert: true,
+      ).withConverter<UtcDateTime>($MessageTableTable.$converterlocalUnixTime);
+  static const VerificationMeta _messageStateMeta = const VerificationMeta(
+    'messageState',
+  );
   @override
   late final GeneratedColumn<int> messageState = GeneratedColumn<int>(
-      'message_state', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+    'message_state',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
   static const VerificationMeta _symmetricMessageEncryptionKeyMeta =
       const VerificationMeta('symmetricMessageEncryptionKey');
   @override
   late final GeneratedColumn<Uint8List> symmetricMessageEncryptionKey =
       GeneratedColumn<Uint8List>(
-          'symmetric_message_encryption_key', aliasedName, true,
-          type: DriftSqlType.blob, requiredDuringInsert: false);
+        'symmetric_message_encryption_key',
+        aliasedName,
+        true,
+        type: DriftSqlType.blob,
+        requiredDuringInsert: false,
+      );
   @override
   late final GeneratedColumnWithTypeConverter<api.MessageNumber?, int>
-      messageNumber = GeneratedColumn<int>('message_number', aliasedName, true,
-              type: DriftSqlType.int, requiredDuringInsert: false)
-          .withConverter<api.MessageNumber?>(
-              $MessageTableTable.$convertermessageNumber);
+  messageNumber =
+      GeneratedColumn<int>(
+        'message_number',
+        aliasedName,
+        true,
+        type: DriftSqlType.int,
+        requiredDuringInsert: false,
+      ).withConverter<api.MessageNumber?>(
+        $MessageTableTable.$convertermessageNumber,
+      );
   @override
   late final GeneratedColumnWithTypeConverter<UtcDateTime?, int> unixTime =
-      GeneratedColumn<int>('unix_time', aliasedName, true,
-              type: DriftSqlType.int, requiredDuringInsert: false)
-          .withConverter<UtcDateTime?>($MessageTableTable.$converterunixTime);
+      GeneratedColumn<int>(
+        'unix_time',
+        aliasedName,
+        true,
+        type: DriftSqlType.int,
+        requiredDuringInsert: false,
+      ).withConverter<UtcDateTime?>($MessageTableTable.$converterunixTime);
   static const VerificationMeta _backendSignedPgpMessageMeta =
       const VerificationMeta('backendSignedPgpMessage');
   @override
   late final GeneratedColumn<Uint8List> backendSignedPgpMessage =
       GeneratedColumn<Uint8List>(
-          'backend_signed_pgp_message', aliasedName, true,
-          type: DriftSqlType.blob, requiredDuringInsert: false);
+        'backend_signed_pgp_message',
+        aliasedName,
+        true,
+        type: DriftSqlType.blob,
+        requiredDuringInsert: false,
+      );
   @override
   List<GeneratedColumn> get $columns => [
-        id,
-        uuidLocalAccountId,
-        uuidRemoteAccountId,
-        message,
-        localUnixTime,
-        messageState,
-        symmetricMessageEncryptionKey,
-        messageNumber,
-        unixTime,
-        backendSignedPgpMessage
-      ];
+    id,
+    uuidLocalAccountId,
+    uuidRemoteAccountId,
+    message,
+    localUnixTime,
+    messageState,
+    symmetricMessageEncryptionKey,
+    messageNumber,
+    unixTime,
+    backendSignedPgpMessage,
+  ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
   static const String $name = 'message_table';
   @override
-  VerificationContext validateIntegrity(Insertable<MessageTableData> instance,
-      {bool isInserting = false}) {
+  VerificationContext validateIntegrity(
+    Insertable<MessageTableData> instance, {
+    bool isInserting = false,
+  }) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
@@ -6438,25 +7854,32 @@ class $MessageTableTable extends MessageTable
     }
     if (data.containsKey('message_state')) {
       context.handle(
+        _messageStateMeta,
+        messageState.isAcceptableOrUnknown(
+          data['message_state']!,
           _messageStateMeta,
-          messageState.isAcceptableOrUnknown(
-              data['message_state']!, _messageStateMeta));
+        ),
+      );
     } else if (isInserting) {
       context.missing(_messageStateMeta);
     }
     if (data.containsKey('symmetric_message_encryption_key')) {
       context.handle(
+        _symmetricMessageEncryptionKeyMeta,
+        symmetricMessageEncryptionKey.isAcceptableOrUnknown(
+          data['symmetric_message_encryption_key']!,
           _symmetricMessageEncryptionKeyMeta,
-          symmetricMessageEncryptionKey.isAcceptableOrUnknown(
-              data['symmetric_message_encryption_key']!,
-              _symmetricMessageEncryptionKeyMeta));
+        ),
+      );
     }
     if (data.containsKey('backend_signed_pgp_message')) {
       context.handle(
+        _backendSignedPgpMessageMeta,
+        backendSignedPgpMessage.isAcceptableOrUnknown(
+          data['backend_signed_pgp_message']!,
           _backendSignedPgpMessageMeta,
-          backendSignedPgpMessage.isAcceptableOrUnknown(
-              data['backend_signed_pgp_message']!,
-              _backendSignedPgpMessageMeta));
+        ),
+      );
     }
     return context;
   }
@@ -6467,34 +7890,60 @@ class $MessageTableTable extends MessageTable
   MessageTableData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return MessageTableData(
-      id: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
       uuidLocalAccountId: $MessageTableTable.$converteruuidLocalAccountId
-          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.string,
-              data['${effectivePrefix}uuid_local_account_id'])!),
+          .fromSql(
+            attachedDatabase.typeMapping.read(
+              DriftSqlType.string,
+              data['${effectivePrefix}uuid_local_account_id'],
+            )!,
+          ),
       uuidRemoteAccountId: $MessageTableTable.$converteruuidRemoteAccountId
-          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.string,
-              data['${effectivePrefix}uuid_remote_account_id'])!),
-      message: $MessageTableTable.$convertermessage.fromSql(attachedDatabase
-          .typeMapping
-          .read(DriftSqlType.blob, data['${effectivePrefix}message'])),
+          .fromSql(
+            attachedDatabase.typeMapping.read(
+              DriftSqlType.string,
+              data['${effectivePrefix}uuid_remote_account_id'],
+            )!,
+          ),
+      message: $MessageTableTable.$convertermessage.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.blob,
+          data['${effectivePrefix}message'],
+        ),
+      ),
       localUnixTime: $MessageTableTable.$converterlocalUnixTime.fromSql(
-          attachedDatabase.typeMapping.read(
-              DriftSqlType.int, data['${effectivePrefix}local_unix_time'])!),
-      messageState: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}message_state'])!,
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.int,
+          data['${effectivePrefix}local_unix_time'],
+        )!,
+      ),
+      messageState: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}message_state'],
+      )!,
       symmetricMessageEncryptionKey: attachedDatabase.typeMapping.read(
-          DriftSqlType.blob,
-          data['${effectivePrefix}symmetric_message_encryption_key']),
+        DriftSqlType.blob,
+        data['${effectivePrefix}symmetric_message_encryption_key'],
+      ),
       messageNumber: $MessageTableTable.$convertermessageNumber.fromSql(
-          attachedDatabase.typeMapping.read(
-              DriftSqlType.int, data['${effectivePrefix}message_number'])),
-      unixTime: $MessageTableTable.$converterunixTime.fromSql(attachedDatabase
-          .typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}unix_time'])),
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.int,
+          data['${effectivePrefix}message_number'],
+        ),
+      ),
+      unixTime: $MessageTableTable.$converterunixTime.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.int,
+          data['${effectivePrefix}unix_time'],
+        ),
+      ),
       backendSignedPgpMessage: attachedDatabase.typeMapping.read(
-          DriftSqlType.blob,
-          data['${effectivePrefix}backend_signed_pgp_message']),
+        DriftSqlType.blob,
+        data['${effectivePrefix}backend_signed_pgp_message'],
+      ),
     );
   }
 
@@ -6529,55 +7978,66 @@ class MessageTableData extends DataClass
   final api.MessageNumber? messageNumber;
   final UtcDateTime? unixTime;
   final Uint8List? backendSignedPgpMessage;
-  const MessageTableData(
-      {required this.id,
-      required this.uuidLocalAccountId,
-      required this.uuidRemoteAccountId,
-      this.message,
-      required this.localUnixTime,
-      required this.messageState,
-      this.symmetricMessageEncryptionKey,
-      this.messageNumber,
-      this.unixTime,
-      this.backendSignedPgpMessage});
+  const MessageTableData({
+    required this.id,
+    required this.uuidLocalAccountId,
+    required this.uuidRemoteAccountId,
+    this.message,
+    required this.localUnixTime,
+    required this.messageState,
+    this.symmetricMessageEncryptionKey,
+    this.messageNumber,
+    this.unixTime,
+    this.backendSignedPgpMessage,
+  });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     {
-      map['uuid_local_account_id'] = Variable<String>($MessageTableTable
-          .$converteruuidLocalAccountId
-          .toSql(uuidLocalAccountId));
+      map['uuid_local_account_id'] = Variable<String>(
+        $MessageTableTable.$converteruuidLocalAccountId.toSql(
+          uuidLocalAccountId,
+        ),
+      );
     }
     {
-      map['uuid_remote_account_id'] = Variable<String>($MessageTableTable
-          .$converteruuidRemoteAccountId
-          .toSql(uuidRemoteAccountId));
+      map['uuid_remote_account_id'] = Variable<String>(
+        $MessageTableTable.$converteruuidRemoteAccountId.toSql(
+          uuidRemoteAccountId,
+        ),
+      );
     }
     if (!nullToAbsent || message != null) {
       map['message'] = Variable<Uint8List>(
-          $MessageTableTable.$convertermessage.toSql(message));
+        $MessageTableTable.$convertermessage.toSql(message),
+      );
     }
     {
       map['local_unix_time'] = Variable<int>(
-          $MessageTableTable.$converterlocalUnixTime.toSql(localUnixTime));
+        $MessageTableTable.$converterlocalUnixTime.toSql(localUnixTime),
+      );
     }
     map['message_state'] = Variable<int>(messageState);
     if (!nullToAbsent || symmetricMessageEncryptionKey != null) {
-      map['symmetric_message_encryption_key'] =
-          Variable<Uint8List>(symmetricMessageEncryptionKey);
+      map['symmetric_message_encryption_key'] = Variable<Uint8List>(
+        symmetricMessageEncryptionKey,
+      );
     }
     if (!nullToAbsent || messageNumber != null) {
       map['message_number'] = Variable<int>(
-          $MessageTableTable.$convertermessageNumber.toSql(messageNumber));
+        $MessageTableTable.$convertermessageNumber.toSql(messageNumber),
+      );
     }
     if (!nullToAbsent || unixTime != null) {
-      map['unix_time'] =
-          Variable<int>($MessageTableTable.$converterunixTime.toSql(unixTime));
+      map['unix_time'] = Variable<int>(
+        $MessageTableTable.$converterunixTime.toSql(unixTime),
+      );
     }
     if (!nullToAbsent || backendSignedPgpMessage != null) {
-      map['backend_signed_pgp_message'] =
-          Variable<Uint8List>(backendSignedPgpMessage);
+      map['backend_signed_pgp_message'] = Variable<Uint8List>(
+        backendSignedPgpMessage,
+      );
     }
     return map;
   }
@@ -6594,8 +8054,8 @@ class MessageTableData extends DataClass
       messageState: Value(messageState),
       symmetricMessageEncryptionKey:
           symmetricMessageEncryptionKey == null && nullToAbsent
-              ? const Value.absent()
-              : Value(symmetricMessageEncryptionKey),
+          ? const Value.absent()
+          : Value(symmetricMessageEncryptionKey),
       messageNumber: messageNumber == null && nullToAbsent
           ? const Value.absent()
           : Value(messageNumber),
@@ -6608,25 +8068,32 @@ class MessageTableData extends DataClass
     );
   }
 
-  factory MessageTableData.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
+  factory MessageTableData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return MessageTableData(
       id: serializer.fromJson<int>(json['id']),
-      uuidLocalAccountId:
-          serializer.fromJson<api.AccountId>(json['uuidLocalAccountId']),
-      uuidRemoteAccountId:
-          serializer.fromJson<api.AccountId>(json['uuidRemoteAccountId']),
+      uuidLocalAccountId: serializer.fromJson<api.AccountId>(
+        json['uuidLocalAccountId'],
+      ),
+      uuidRemoteAccountId: serializer.fromJson<api.AccountId>(
+        json['uuidRemoteAccountId'],
+      ),
       message: serializer.fromJson<Message?>(json['message']),
       localUnixTime: serializer.fromJson<UtcDateTime>(json['localUnixTime']),
       messageState: serializer.fromJson<int>(json['messageState']),
-      symmetricMessageEncryptionKey: serializer
-          .fromJson<Uint8List?>(json['symmetricMessageEncryptionKey']),
-      messageNumber:
-          serializer.fromJson<api.MessageNumber?>(json['messageNumber']),
+      symmetricMessageEncryptionKey: serializer.fromJson<Uint8List?>(
+        json['symmetricMessageEncryptionKey'],
+      ),
+      messageNumber: serializer.fromJson<api.MessageNumber?>(
+        json['messageNumber'],
+      ),
       unixTime: serializer.fromJson<UtcDateTime?>(json['unixTime']),
-      backendSignedPgpMessage:
-          serializer.fromJson<Uint8List?>(json['backendSignedPgpMessage']),
+      backendSignedPgpMessage: serializer.fromJson<Uint8List?>(
+        json['backendSignedPgpMessage'],
+      ),
     );
   }
   @override
@@ -6634,51 +8101,55 @@ class MessageTableData extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
-      'uuidLocalAccountId':
-          serializer.toJson<api.AccountId>(uuidLocalAccountId),
-      'uuidRemoteAccountId':
-          serializer.toJson<api.AccountId>(uuidRemoteAccountId),
+      'uuidLocalAccountId': serializer.toJson<api.AccountId>(
+        uuidLocalAccountId,
+      ),
+      'uuidRemoteAccountId': serializer.toJson<api.AccountId>(
+        uuidRemoteAccountId,
+      ),
       'message': serializer.toJson<Message?>(message),
       'localUnixTime': serializer.toJson<UtcDateTime>(localUnixTime),
       'messageState': serializer.toJson<int>(messageState),
-      'symmetricMessageEncryptionKey':
-          serializer.toJson<Uint8List?>(symmetricMessageEncryptionKey),
+      'symmetricMessageEncryptionKey': serializer.toJson<Uint8List?>(
+        symmetricMessageEncryptionKey,
+      ),
       'messageNumber': serializer.toJson<api.MessageNumber?>(messageNumber),
       'unixTime': serializer.toJson<UtcDateTime?>(unixTime),
-      'backendSignedPgpMessage':
-          serializer.toJson<Uint8List?>(backendSignedPgpMessage),
+      'backendSignedPgpMessage': serializer.toJson<Uint8List?>(
+        backendSignedPgpMessage,
+      ),
     };
   }
 
-  MessageTableData copyWith(
-          {int? id,
-          api.AccountId? uuidLocalAccountId,
-          api.AccountId? uuidRemoteAccountId,
-          Value<Message?> message = const Value.absent(),
-          UtcDateTime? localUnixTime,
-          int? messageState,
-          Value<Uint8List?> symmetricMessageEncryptionKey =
-              const Value.absent(),
-          Value<api.MessageNumber?> messageNumber = const Value.absent(),
-          Value<UtcDateTime?> unixTime = const Value.absent(),
-          Value<Uint8List?> backendSignedPgpMessage = const Value.absent()}) =>
-      MessageTableData(
-        id: id ?? this.id,
-        uuidLocalAccountId: uuidLocalAccountId ?? this.uuidLocalAccountId,
-        uuidRemoteAccountId: uuidRemoteAccountId ?? this.uuidRemoteAccountId,
-        message: message.present ? message.value : this.message,
-        localUnixTime: localUnixTime ?? this.localUnixTime,
-        messageState: messageState ?? this.messageState,
-        symmetricMessageEncryptionKey: symmetricMessageEncryptionKey.present
-            ? symmetricMessageEncryptionKey.value
-            : this.symmetricMessageEncryptionKey,
-        messageNumber:
-            messageNumber.present ? messageNumber.value : this.messageNumber,
-        unixTime: unixTime.present ? unixTime.value : this.unixTime,
-        backendSignedPgpMessage: backendSignedPgpMessage.present
-            ? backendSignedPgpMessage.value
-            : this.backendSignedPgpMessage,
-      );
+  MessageTableData copyWith({
+    int? id,
+    api.AccountId? uuidLocalAccountId,
+    api.AccountId? uuidRemoteAccountId,
+    Value<Message?> message = const Value.absent(),
+    UtcDateTime? localUnixTime,
+    int? messageState,
+    Value<Uint8List?> symmetricMessageEncryptionKey = const Value.absent(),
+    Value<api.MessageNumber?> messageNumber = const Value.absent(),
+    Value<UtcDateTime?> unixTime = const Value.absent(),
+    Value<Uint8List?> backendSignedPgpMessage = const Value.absent(),
+  }) => MessageTableData(
+    id: id ?? this.id,
+    uuidLocalAccountId: uuidLocalAccountId ?? this.uuidLocalAccountId,
+    uuidRemoteAccountId: uuidRemoteAccountId ?? this.uuidRemoteAccountId,
+    message: message.present ? message.value : this.message,
+    localUnixTime: localUnixTime ?? this.localUnixTime,
+    messageState: messageState ?? this.messageState,
+    symmetricMessageEncryptionKey: symmetricMessageEncryptionKey.present
+        ? symmetricMessageEncryptionKey.value
+        : this.symmetricMessageEncryptionKey,
+    messageNumber: messageNumber.present
+        ? messageNumber.value
+        : this.messageNumber,
+    unixTime: unixTime.present ? unixTime.value : this.unixTime,
+    backendSignedPgpMessage: backendSignedPgpMessage.present
+        ? backendSignedPgpMessage.value
+        : this.backendSignedPgpMessage,
+  );
   MessageTableData copyWithCompanion(MessageTableCompanion data) {
     return MessageTableData(
       id: data.id.present ? data.id.value : this.id,
@@ -6718,7 +8189,8 @@ class MessageTableData extends DataClass
           ..write('localUnixTime: $localUnixTime, ')
           ..write('messageState: $messageState, ')
           ..write(
-              'symmetricMessageEncryptionKey: $symmetricMessageEncryptionKey, ')
+            'symmetricMessageEncryptionKey: $symmetricMessageEncryptionKey, ',
+          )
           ..write('messageNumber: $messageNumber, ')
           ..write('unixTime: $unixTime, ')
           ..write('backendSignedPgpMessage: $backendSignedPgpMessage')
@@ -6728,16 +8200,17 @@ class MessageTableData extends DataClass
 
   @override
   int get hashCode => Object.hash(
-      id,
-      uuidLocalAccountId,
-      uuidRemoteAccountId,
-      message,
-      localUnixTime,
-      messageState,
-      $driftBlobEquality.hash(symmetricMessageEncryptionKey),
-      messageNumber,
-      unixTime,
-      $driftBlobEquality.hash(backendSignedPgpMessage));
+    id,
+    uuidLocalAccountId,
+    uuidRemoteAccountId,
+    message,
+    localUnixTime,
+    messageState,
+    $driftBlobEquality.hash(symmetricMessageEncryptionKey),
+    messageNumber,
+    unixTime,
+    $driftBlobEquality.hash(backendSignedPgpMessage),
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -6748,12 +8221,16 @@ class MessageTableData extends DataClass
           other.message == this.message &&
           other.localUnixTime == this.localUnixTime &&
           other.messageState == this.messageState &&
-          $driftBlobEquality.equals(other.symmetricMessageEncryptionKey,
-              this.symmetricMessageEncryptionKey) &&
+          $driftBlobEquality.equals(
+            other.symmetricMessageEncryptionKey,
+            this.symmetricMessageEncryptionKey,
+          ) &&
           other.messageNumber == this.messageNumber &&
           other.unixTime == this.unixTime &&
           $driftBlobEquality.equals(
-              other.backendSignedPgpMessage, this.backendSignedPgpMessage));
+            other.backendSignedPgpMessage,
+            this.backendSignedPgpMessage,
+          ));
 }
 
 class MessageTableCompanion extends UpdateCompanion<MessageTableData> {
@@ -6790,10 +8267,10 @@ class MessageTableCompanion extends UpdateCompanion<MessageTableData> {
     this.messageNumber = const Value.absent(),
     this.unixTime = const Value.absent(),
     this.backendSignedPgpMessage = const Value.absent(),
-  })  : uuidLocalAccountId = Value(uuidLocalAccountId),
-        uuidRemoteAccountId = Value(uuidRemoteAccountId),
-        localUnixTime = Value(localUnixTime),
-        messageState = Value(messageState);
+  }) : uuidLocalAccountId = Value(uuidLocalAccountId),
+       uuidRemoteAccountId = Value(uuidRemoteAccountId),
+       localUnixTime = Value(localUnixTime),
+       messageState = Value(messageState);
   static Insertable<MessageTableData> custom({
     Expression<int>? id,
     Expression<String>? uuidLocalAccountId,
@@ -6824,17 +8301,18 @@ class MessageTableCompanion extends UpdateCompanion<MessageTableData> {
     });
   }
 
-  MessageTableCompanion copyWith(
-      {Value<int>? id,
-      Value<api.AccountId>? uuidLocalAccountId,
-      Value<api.AccountId>? uuidRemoteAccountId,
-      Value<Message?>? message,
-      Value<UtcDateTime>? localUnixTime,
-      Value<int>? messageState,
-      Value<Uint8List?>? symmetricMessageEncryptionKey,
-      Value<api.MessageNumber?>? messageNumber,
-      Value<UtcDateTime?>? unixTime,
-      Value<Uint8List?>? backendSignedPgpMessage}) {
+  MessageTableCompanion copyWith({
+    Value<int>? id,
+    Value<api.AccountId>? uuidLocalAccountId,
+    Value<api.AccountId>? uuidRemoteAccountId,
+    Value<Message?>? message,
+    Value<UtcDateTime>? localUnixTime,
+    Value<int>? messageState,
+    Value<Uint8List?>? symmetricMessageEncryptionKey,
+    Value<api.MessageNumber?>? messageNumber,
+    Value<UtcDateTime?>? unixTime,
+    Value<Uint8List?>? backendSignedPgpMessage,
+  }) {
     return MessageTableCompanion(
       id: id ?? this.id,
       uuidLocalAccountId: uuidLocalAccountId ?? this.uuidLocalAccountId,
@@ -6858,43 +8336,51 @@ class MessageTableCompanion extends UpdateCompanion<MessageTableData> {
       map['id'] = Variable<int>(id.value);
     }
     if (uuidLocalAccountId.present) {
-      map['uuid_local_account_id'] = Variable<String>($MessageTableTable
-          .$converteruuidLocalAccountId
-          .toSql(uuidLocalAccountId.value));
+      map['uuid_local_account_id'] = Variable<String>(
+        $MessageTableTable.$converteruuidLocalAccountId.toSql(
+          uuidLocalAccountId.value,
+        ),
+      );
     }
     if (uuidRemoteAccountId.present) {
-      map['uuid_remote_account_id'] = Variable<String>($MessageTableTable
-          .$converteruuidRemoteAccountId
-          .toSql(uuidRemoteAccountId.value));
+      map['uuid_remote_account_id'] = Variable<String>(
+        $MessageTableTable.$converteruuidRemoteAccountId.toSql(
+          uuidRemoteAccountId.value,
+        ),
+      );
     }
     if (message.present) {
       map['message'] = Variable<Uint8List>(
-          $MessageTableTable.$convertermessage.toSql(message.value));
+        $MessageTableTable.$convertermessage.toSql(message.value),
+      );
     }
     if (localUnixTime.present) {
-      map['local_unix_time'] = Variable<int>($MessageTableTable
-          .$converterlocalUnixTime
-          .toSql(localUnixTime.value));
+      map['local_unix_time'] = Variable<int>(
+        $MessageTableTable.$converterlocalUnixTime.toSql(localUnixTime.value),
+      );
     }
     if (messageState.present) {
       map['message_state'] = Variable<int>(messageState.value);
     }
     if (symmetricMessageEncryptionKey.present) {
-      map['symmetric_message_encryption_key'] =
-          Variable<Uint8List>(symmetricMessageEncryptionKey.value);
+      map['symmetric_message_encryption_key'] = Variable<Uint8List>(
+        symmetricMessageEncryptionKey.value,
+      );
     }
     if (messageNumber.present) {
-      map['message_number'] = Variable<int>($MessageTableTable
-          .$convertermessageNumber
-          .toSql(messageNumber.value));
+      map['message_number'] = Variable<int>(
+        $MessageTableTable.$convertermessageNumber.toSql(messageNumber.value),
+      );
     }
     if (unixTime.present) {
       map['unix_time'] = Variable<int>(
-          $MessageTableTable.$converterunixTime.toSql(unixTime.value));
+        $MessageTableTable.$converterunixTime.toSql(unixTime.value),
+      );
     }
     if (backendSignedPgpMessage.present) {
-      map['backend_signed_pgp_message'] =
-          Variable<Uint8List>(backendSignedPgpMessage.value);
+      map['backend_signed_pgp_message'] = Variable<Uint8List>(
+        backendSignedPgpMessage.value,
+      );
     }
     return map;
   }
@@ -6909,7 +8395,8 @@ class MessageTableCompanion extends UpdateCompanion<MessageTableData> {
           ..write('localUnixTime: $localUnixTime, ')
           ..write('messageState: $messageState, ')
           ..write(
-              'symmetricMessageEncryptionKey: $symmetricMessageEncryptionKey, ')
+            'symmetricMessageEncryptionKey: $symmetricMessageEncryptionKey, ',
+          )
           ..write('messageNumber: $messageNumber, ')
           ..write('unixTime: $unixTime, ')
           ..write('backendSignedPgpMessage: $backendSignedPgpMessage')
@@ -6927,44 +8414,64 @@ class $ConversationsTable extends Conversations
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
-      'id', aliasedName, false,
-      hasAutoIncrement: true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      defaultConstraints:
-          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
   @override
   late final GeneratedColumnWithTypeConverter<api.AccountId, String>
-      uuidAccountId = GeneratedColumn<String>(
-              'uuid_account_id', aliasedName, false,
-              type: DriftSqlType.string,
-              requiredDuringInsert: true,
-              defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'))
-          .withConverter<api.AccountId>(
-              $ConversationsTable.$converteruuidAccountId);
-  static const VerificationMeta _publicKeyDataMeta =
-      const VerificationMeta('publicKeyData');
+  uuidAccountId = GeneratedColumn<String>(
+    'uuid_account_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'),
+  ).withConverter<api.AccountId>($ConversationsTable.$converteruuidAccountId);
+  static const VerificationMeta _publicKeyDataMeta = const VerificationMeta(
+    'publicKeyData',
+  );
   @override
   late final GeneratedColumn<Uint8List> publicKeyData =
-      GeneratedColumn<Uint8List>('public_key_data', aliasedName, true,
-          type: DriftSqlType.blob, requiredDuringInsert: false);
+      GeneratedColumn<Uint8List>(
+        'public_key_data',
+        aliasedName,
+        true,
+        type: DriftSqlType.blob,
+        requiredDuringInsert: false,
+      );
   @override
   late final GeneratedColumnWithTypeConverter<api.PublicKeyId?, int>
-      publicKeyId = GeneratedColumn<int>('public_key_id', aliasedName, true,
-              type: DriftSqlType.int, requiredDuringInsert: false)
-          .withConverter<api.PublicKeyId?>(
-              $ConversationsTable.$converterpublicKeyId);
+  publicKeyId = GeneratedColumn<int>(
+    'public_key_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  ).withConverter<api.PublicKeyId?>($ConversationsTable.$converterpublicKeyId);
   @override
-  List<GeneratedColumn> get $columns =>
-      [id, uuidAccountId, publicKeyData, publicKeyId];
+  List<GeneratedColumn> get $columns => [
+    id,
+    uuidAccountId,
+    publicKeyData,
+    publicKeyId,
+  ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
   static const String $name = 'conversations';
   @override
-  VerificationContext validateIntegrity(Insertable<Conversation> instance,
-      {bool isInserting = false}) {
+  VerificationContext validateIntegrity(
+    Insertable<Conversation> instance, {
+    bool isInserting = false,
+  }) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
@@ -6972,9 +8479,12 @@ class $ConversationsTable extends Conversations
     }
     if (data.containsKey('public_key_data')) {
       context.handle(
+        _publicKeyDataMeta,
+        publicKeyData.isAcceptableOrUnknown(
+          data['public_key_data']!,
           _publicKeyDataMeta,
-          publicKeyData.isAcceptableOrUnknown(
-              data['public_key_data']!, _publicKeyDataMeta));
+        ),
+      );
     }
     return context;
   }
@@ -6985,16 +8495,26 @@ class $ConversationsTable extends Conversations
   Conversation map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return Conversation(
-      id: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
       uuidAccountId: $ConversationsTable.$converteruuidAccountId.fromSql(
-          attachedDatabase.typeMapping.read(
-              DriftSqlType.string, data['${effectivePrefix}uuid_account_id'])!),
-      publicKeyData: attachedDatabase.typeMapping
-          .read(DriftSqlType.blob, data['${effectivePrefix}public_key_data']),
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}uuid_account_id'],
+        )!,
+      ),
+      publicKeyData: attachedDatabase.typeMapping.read(
+        DriftSqlType.blob,
+        data['${effectivePrefix}public_key_data'],
+      ),
       publicKeyId: $ConversationsTable.$converterpublicKeyId.fromSql(
-          attachedDatabase.typeMapping
-              .read(DriftSqlType.int, data['${effectivePrefix}public_key_id'])),
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.int,
+          data['${effectivePrefix}public_key_id'],
+        ),
+      ),
     );
   }
 
@@ -7014,25 +8534,28 @@ class Conversation extends DataClass implements Insertable<Conversation> {
   final api.AccountId uuidAccountId;
   final Uint8List? publicKeyData;
   final api.PublicKeyId? publicKeyId;
-  const Conversation(
-      {required this.id,
-      required this.uuidAccountId,
-      this.publicKeyData,
-      this.publicKeyId});
+  const Conversation({
+    required this.id,
+    required this.uuidAccountId,
+    this.publicKeyData,
+    this.publicKeyId,
+  });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     {
       map['uuid_account_id'] = Variable<String>(
-          $ConversationsTable.$converteruuidAccountId.toSql(uuidAccountId));
+        $ConversationsTable.$converteruuidAccountId.toSql(uuidAccountId),
+      );
     }
     if (!nullToAbsent || publicKeyData != null) {
       map['public_key_data'] = Variable<Uint8List>(publicKeyData);
     }
     if (!nullToAbsent || publicKeyId != null) {
       map['public_key_id'] = Variable<int>(
-          $ConversationsTable.$converterpublicKeyId.toSql(publicKeyId));
+        $ConversationsTable.$converterpublicKeyId.toSql(publicKeyId),
+      );
     }
     return map;
   }
@@ -7050,8 +8573,10 @@ class Conversation extends DataClass implements Insertable<Conversation> {
     );
   }
 
-  factory Conversation.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
+  factory Conversation.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return Conversation(
       id: serializer.fromJson<int>(json['id']),
@@ -7071,18 +8596,19 @@ class Conversation extends DataClass implements Insertable<Conversation> {
     };
   }
 
-  Conversation copyWith(
-          {int? id,
-          api.AccountId? uuidAccountId,
-          Value<Uint8List?> publicKeyData = const Value.absent(),
-          Value<api.PublicKeyId?> publicKeyId = const Value.absent()}) =>
-      Conversation(
-        id: id ?? this.id,
-        uuidAccountId: uuidAccountId ?? this.uuidAccountId,
-        publicKeyData:
-            publicKeyData.present ? publicKeyData.value : this.publicKeyData,
-        publicKeyId: publicKeyId.present ? publicKeyId.value : this.publicKeyId,
-      );
+  Conversation copyWith({
+    int? id,
+    api.AccountId? uuidAccountId,
+    Value<Uint8List?> publicKeyData = const Value.absent(),
+    Value<api.PublicKeyId?> publicKeyId = const Value.absent(),
+  }) => Conversation(
+    id: id ?? this.id,
+    uuidAccountId: uuidAccountId ?? this.uuidAccountId,
+    publicKeyData: publicKeyData.present
+        ? publicKeyData.value
+        : this.publicKeyData,
+    publicKeyId: publicKeyId.present ? publicKeyId.value : this.publicKeyId,
+  );
   Conversation copyWithCompanion(ConversationsCompanion data) {
     return Conversation(
       id: data.id.present ? data.id.value : this.id,
@@ -7092,8 +8618,9 @@ class Conversation extends DataClass implements Insertable<Conversation> {
       publicKeyData: data.publicKeyData.present
           ? data.publicKeyData.value
           : this.publicKeyData,
-      publicKeyId:
-          data.publicKeyId.present ? data.publicKeyId.value : this.publicKeyId,
+      publicKeyId: data.publicKeyId.present
+          ? data.publicKeyId.value
+          : this.publicKeyId,
     );
   }
 
@@ -7110,7 +8637,11 @@ class Conversation extends DataClass implements Insertable<Conversation> {
 
   @override
   int get hashCode => Object.hash(
-      id, uuidAccountId, $driftBlobEquality.hash(publicKeyData), publicKeyId);
+    id,
+    uuidAccountId,
+    $driftBlobEquality.hash(publicKeyData),
+    publicKeyId,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -7152,11 +8683,12 @@ class ConversationsCompanion extends UpdateCompanion<Conversation> {
     });
   }
 
-  ConversationsCompanion copyWith(
-      {Value<int>? id,
-      Value<api.AccountId>? uuidAccountId,
-      Value<Uint8List?>? publicKeyData,
-      Value<api.PublicKeyId?>? publicKeyId}) {
+  ConversationsCompanion copyWith({
+    Value<int>? id,
+    Value<api.AccountId>? uuidAccountId,
+    Value<Uint8List?>? publicKeyData,
+    Value<api.PublicKeyId?>? publicKeyId,
+  }) {
     return ConversationsCompanion(
       id: id ?? this.id,
       uuidAccountId: uuidAccountId ?? this.uuidAccountId,
@@ -7172,16 +8704,17 @@ class ConversationsCompanion extends UpdateCompanion<Conversation> {
       map['id'] = Variable<int>(id.value);
     }
     if (uuidAccountId.present) {
-      map['uuid_account_id'] = Variable<String>($ConversationsTable
-          .$converteruuidAccountId
-          .toSql(uuidAccountId.value));
+      map['uuid_account_id'] = Variable<String>(
+        $ConversationsTable.$converteruuidAccountId.toSql(uuidAccountId.value),
+      );
     }
     if (publicKeyData.present) {
       map['public_key_data'] = Variable<Uint8List>(publicKeyData.value);
     }
     if (publicKeyId.present) {
       map['public_key_id'] = Variable<int>(
-          $ConversationsTable.$converterpublicKeyId.toSql(publicKeyId.value));
+        $ConversationsTable.$converterpublicKeyId.toSql(publicKeyId.value),
+      );
     }
     return map;
   }
@@ -7201,8 +8734,10 @@ class ConversationsCompanion extends UpdateCompanion<Conversation> {
 class $AvailableProfileAttributesTableTable
     extends AvailableProfileAttributesTable
     with
-        TableInfo<$AvailableProfileAttributesTableTable,
-            AvailableProfileAttributesTableData> {
+        TableInfo<
+          $AvailableProfileAttributesTableTable,
+          AvailableProfileAttributesTableData
+        > {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
@@ -7210,22 +8745,36 @@ class $AvailableProfileAttributesTableTable
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
-      'id', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: false);
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
   @override
   late final GeneratedColumnWithTypeConverter<JsonString, String>
-      jsonAttribute = GeneratedColumn<String>(
-              'json_attribute', aliasedName, false,
-              type: DriftSqlType.string, requiredDuringInsert: true)
-          .withConverter<JsonString>(
-              $AvailableProfileAttributesTableTable.$converterjsonAttribute);
+  jsonAttribute =
+      GeneratedColumn<String>(
+        'json_attribute',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      ).withConverter<JsonString>(
+        $AvailableProfileAttributesTableTable.$converterjsonAttribute,
+      );
   @override
   late final GeneratedColumnWithTypeConverter<api.ProfileAttributeHash, String>
-      attributeHash = GeneratedColumn<String>(
-              'attribute_hash', aliasedName, false,
-              type: DriftSqlType.string, requiredDuringInsert: true)
-          .withConverter<api.ProfileAttributeHash>(
-              $AvailableProfileAttributesTableTable.$converterattributeHash);
+  attributeHash =
+      GeneratedColumn<String>(
+        'attribute_hash',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      ).withConverter<api.ProfileAttributeHash>(
+        $AvailableProfileAttributesTableTable.$converterattributeHash,
+      );
   @override
   List<GeneratedColumn> get $columns => [id, jsonAttribute, attributeHash];
   @override
@@ -7235,8 +8784,9 @@ class $AvailableProfileAttributesTableTable
   static const String $name = 'available_profile_attributes_table';
   @override
   VerificationContext validateIntegrity(
-      Insertable<AvailableProfileAttributesTableData> instance,
-      {bool isInserting = false}) {
+    Insertable<AvailableProfileAttributesTableData> instance, {
+    bool isInserting = false,
+  }) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
@@ -7248,20 +8798,32 @@ class $AvailableProfileAttributesTableTable
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  AvailableProfileAttributesTableData map(Map<String, dynamic> data,
-      {String? tablePrefix}) {
+  AvailableProfileAttributesTableData map(
+    Map<String, dynamic> data, {
+    String? tablePrefix,
+  }) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return AvailableProfileAttributesTableData(
-      id: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
       jsonAttribute: $AvailableProfileAttributesTableTable
           .$converterjsonAttribute
-          .fromSql(attachedDatabase.typeMapping.read(
-              DriftSqlType.string, data['${effectivePrefix}json_attribute'])!),
+          .fromSql(
+            attachedDatabase.typeMapping.read(
+              DriftSqlType.string,
+              data['${effectivePrefix}json_attribute'],
+            )!,
+          ),
       attributeHash: $AvailableProfileAttributesTableTable
           .$converterattributeHash
-          .fromSql(attachedDatabase.typeMapping.read(
-              DriftSqlType.string, data['${effectivePrefix}attribute_hash'])!),
+          .fromSql(
+            attachedDatabase.typeMapping.read(
+              DriftSqlType.string,
+              data['${effectivePrefix}attribute_hash'],
+            )!,
+          ),
     );
   }
 
@@ -7273,7 +8835,7 @@ class $AvailableProfileAttributesTableTable
   static TypeConverter<JsonString, String> $converterjsonAttribute =
       JsonString.driftConverter;
   static TypeConverter<api.ProfileAttributeHash, String>
-      $converterattributeHash = const ProfileAttributeHashConverter();
+  $converterattributeHash = const ProfileAttributeHashConverter();
 }
 
 class AvailableProfileAttributesTableData extends DataClass
@@ -7281,23 +8843,28 @@ class AvailableProfileAttributesTableData extends DataClass
   final int id;
   final JsonString jsonAttribute;
   final api.ProfileAttributeHash attributeHash;
-  const AvailableProfileAttributesTableData(
-      {required this.id,
-      required this.jsonAttribute,
-      required this.attributeHash});
+  const AvailableProfileAttributesTableData({
+    required this.id,
+    required this.jsonAttribute,
+    required this.attributeHash,
+  });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     {
       map['json_attribute'] = Variable<String>(
-          $AvailableProfileAttributesTableTable.$converterjsonAttribute
-              .toSql(jsonAttribute));
+        $AvailableProfileAttributesTableTable.$converterjsonAttribute.toSql(
+          jsonAttribute,
+        ),
+      );
     }
     {
       map['attribute_hash'] = Variable<String>(
-          $AvailableProfileAttributesTableTable.$converterattributeHash
-              .toSql(attributeHash));
+        $AvailableProfileAttributesTableTable.$converterattributeHash.toSql(
+          attributeHash,
+        ),
+      );
     }
     return map;
   }
@@ -7311,14 +8878,16 @@ class AvailableProfileAttributesTableData extends DataClass
   }
 
   factory AvailableProfileAttributesTableData.fromJson(
-      Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return AvailableProfileAttributesTableData(
       id: serializer.fromJson<int>(json['id']),
       jsonAttribute: serializer.fromJson<JsonString>(json['jsonAttribute']),
-      attributeHash:
-          serializer.fromJson<api.ProfileAttributeHash>(json['attributeHash']),
+      attributeHash: serializer.fromJson<api.ProfileAttributeHash>(
+        json['attributeHash'],
+      ),
     );
   }
   @override
@@ -7327,22 +8896,24 @@ class AvailableProfileAttributesTableData extends DataClass
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'jsonAttribute': serializer.toJson<JsonString>(jsonAttribute),
-      'attributeHash':
-          serializer.toJson<api.ProfileAttributeHash>(attributeHash),
+      'attributeHash': serializer.toJson<api.ProfileAttributeHash>(
+        attributeHash,
+      ),
     };
   }
 
-  AvailableProfileAttributesTableData copyWith(
-          {int? id,
-          JsonString? jsonAttribute,
-          api.ProfileAttributeHash? attributeHash}) =>
-      AvailableProfileAttributesTableData(
-        id: id ?? this.id,
-        jsonAttribute: jsonAttribute ?? this.jsonAttribute,
-        attributeHash: attributeHash ?? this.attributeHash,
-      );
+  AvailableProfileAttributesTableData copyWith({
+    int? id,
+    JsonString? jsonAttribute,
+    api.ProfileAttributeHash? attributeHash,
+  }) => AvailableProfileAttributesTableData(
+    id: id ?? this.id,
+    jsonAttribute: jsonAttribute ?? this.jsonAttribute,
+    attributeHash: attributeHash ?? this.attributeHash,
+  );
   AvailableProfileAttributesTableData copyWithCompanion(
-      AvailableProfileAttributesTableCompanion data) {
+    AvailableProfileAttributesTableCompanion data,
+  ) {
     return AvailableProfileAttributesTableData(
       id: data.id.present ? data.id.value : this.id,
       jsonAttribute: data.jsonAttribute.present
@@ -7389,8 +8960,8 @@ class AvailableProfileAttributesTableCompanion
     this.id = const Value.absent(),
     required JsonString jsonAttribute,
     required api.ProfileAttributeHash attributeHash,
-  })  : jsonAttribute = Value(jsonAttribute),
-        attributeHash = Value(attributeHash);
+  }) : jsonAttribute = Value(jsonAttribute),
+       attributeHash = Value(attributeHash);
   static Insertable<AvailableProfileAttributesTableData> custom({
     Expression<int>? id,
     Expression<String>? jsonAttribute,
@@ -7403,10 +8974,11 @@ class AvailableProfileAttributesTableCompanion
     });
   }
 
-  AvailableProfileAttributesTableCompanion copyWith(
-      {Value<int>? id,
-      Value<JsonString>? jsonAttribute,
-      Value<api.ProfileAttributeHash>? attributeHash}) {
+  AvailableProfileAttributesTableCompanion copyWith({
+    Value<int>? id,
+    Value<JsonString>? jsonAttribute,
+    Value<api.ProfileAttributeHash>? attributeHash,
+  }) {
     return AvailableProfileAttributesTableCompanion(
       id: id ?? this.id,
       jsonAttribute: jsonAttribute ?? this.jsonAttribute,
@@ -7422,13 +8994,17 @@ class AvailableProfileAttributesTableCompanion
     }
     if (jsonAttribute.present) {
       map['json_attribute'] = Variable<String>(
-          $AvailableProfileAttributesTableTable.$converterjsonAttribute
-              .toSql(jsonAttribute.value));
+        $AvailableProfileAttributesTableTable.$converterjsonAttribute.toSql(
+          jsonAttribute.value,
+        ),
+      );
     }
     if (attributeHash.present) {
       map['attribute_hash'] = Variable<String>(
-          $AvailableProfileAttributesTableTable.$converterattributeHash
-              .toSql(attributeHash.value));
+        $AvailableProfileAttributesTableTable.$converterattributeHash.toSql(
+          attributeHash.value,
+        ),
+      );
     }
     return map;
   }
@@ -7453,64 +9029,93 @@ class $UiSettingsTable extends UiSettings
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
-      'id', aliasedName, false,
-      hasAutoIncrement: true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      defaultConstraints:
-          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
-  static const VerificationMeta _advancedFiltersMeta =
-      const VerificationMeta('advancedFilters');
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _advancedFiltersMeta = const VerificationMeta(
+    'advancedFilters',
+  );
   @override
   late final GeneratedColumn<bool> advancedFilters = GeneratedColumn<bool>(
-      'advanced_filters', aliasedName, false,
-      type: DriftSqlType.bool,
-      requiredDuringInsert: false,
-      defaultConstraints: GeneratedColumn.constraintIsAlways(
-          'CHECK ("advanced_filters" IN (0, 1))'),
-      defaultValue: const Constant(false));
+    'advanced_filters',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("advanced_filters" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
   static const VerificationMeta _gridHorizontalPaddingMeta =
       const VerificationMeta('gridHorizontalPadding');
   @override
   late final GeneratedColumn<double> gridHorizontalPadding =
-      GeneratedColumn<double>('grid_horizontal_padding', aliasedName, true,
-          type: DriftSqlType.double, requiredDuringInsert: false);
+      GeneratedColumn<double>(
+        'grid_horizontal_padding',
+        aliasedName,
+        true,
+        type: DriftSqlType.double,
+        requiredDuringInsert: false,
+      );
   static const VerificationMeta _gridInternalPaddingMeta =
       const VerificationMeta('gridInternalPadding');
   @override
   late final GeneratedColumn<double> gridInternalPadding =
-      GeneratedColumn<double>('grid_internal_padding', aliasedName, true,
-          type: DriftSqlType.double, requiredDuringInsert: false);
+      GeneratedColumn<double>(
+        'grid_internal_padding',
+        aliasedName,
+        true,
+        type: DriftSqlType.double,
+        requiredDuringInsert: false,
+      );
   static const VerificationMeta _gridProfileThumbnailBorderRadiusMeta =
       const VerificationMeta('gridProfileThumbnailBorderRadius');
   @override
   late final GeneratedColumn<double> gridProfileThumbnailBorderRadius =
       GeneratedColumn<double>(
-          'grid_profile_thumbnail_border_radius', aliasedName, true,
-          type: DriftSqlType.double, requiredDuringInsert: false);
+        'grid_profile_thumbnail_border_radius',
+        aliasedName,
+        true,
+        type: DriftSqlType.double,
+        requiredDuringInsert: false,
+      );
   static const VerificationMeta _gridRowProfileCountMeta =
       const VerificationMeta('gridRowProfileCount');
   @override
   late final GeneratedColumn<int> gridRowProfileCount = GeneratedColumn<int>(
-      'grid_row_profile_count', aliasedName, true,
-      type: DriftSqlType.int, requiredDuringInsert: false);
+    'grid_row_profile_count',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
   @override
   List<GeneratedColumn> get $columns => [
-        id,
-        advancedFilters,
-        gridHorizontalPadding,
-        gridInternalPadding,
-        gridProfileThumbnailBorderRadius,
-        gridRowProfileCount
-      ];
+    id,
+    advancedFilters,
+    gridHorizontalPadding,
+    gridInternalPadding,
+    gridProfileThumbnailBorderRadius,
+    gridRowProfileCount,
+  ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
   static const String $name = 'ui_settings';
   @override
-  VerificationContext validateIntegrity(Insertable<UiSetting> instance,
-      {bool isInserting = false}) {
+  VerificationContext validateIntegrity(
+    Insertable<UiSetting> instance, {
+    bool isInserting = false,
+  }) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
@@ -7518,34 +9123,48 @@ class $UiSettingsTable extends UiSettings
     }
     if (data.containsKey('advanced_filters')) {
       context.handle(
+        _advancedFiltersMeta,
+        advancedFilters.isAcceptableOrUnknown(
+          data['advanced_filters']!,
           _advancedFiltersMeta,
-          advancedFilters.isAcceptableOrUnknown(
-              data['advanced_filters']!, _advancedFiltersMeta));
+        ),
+      );
     }
     if (data.containsKey('grid_horizontal_padding')) {
       context.handle(
+        _gridHorizontalPaddingMeta,
+        gridHorizontalPadding.isAcceptableOrUnknown(
+          data['grid_horizontal_padding']!,
           _gridHorizontalPaddingMeta,
-          gridHorizontalPadding.isAcceptableOrUnknown(
-              data['grid_horizontal_padding']!, _gridHorizontalPaddingMeta));
+        ),
+      );
     }
     if (data.containsKey('grid_internal_padding')) {
       context.handle(
+        _gridInternalPaddingMeta,
+        gridInternalPadding.isAcceptableOrUnknown(
+          data['grid_internal_padding']!,
           _gridInternalPaddingMeta,
-          gridInternalPadding.isAcceptableOrUnknown(
-              data['grid_internal_padding']!, _gridInternalPaddingMeta));
+        ),
+      );
     }
     if (data.containsKey('grid_profile_thumbnail_border_radius')) {
       context.handle(
+        _gridProfileThumbnailBorderRadiusMeta,
+        gridProfileThumbnailBorderRadius.isAcceptableOrUnknown(
+          data['grid_profile_thumbnail_border_radius']!,
           _gridProfileThumbnailBorderRadiusMeta,
-          gridProfileThumbnailBorderRadius.isAcceptableOrUnknown(
-              data['grid_profile_thumbnail_border_radius']!,
-              _gridProfileThumbnailBorderRadiusMeta));
+        ),
+      );
     }
     if (data.containsKey('grid_row_profile_count')) {
       context.handle(
+        _gridRowProfileCountMeta,
+        gridRowProfileCount.isAcceptableOrUnknown(
+          data['grid_row_profile_count']!,
           _gridRowProfileCountMeta,
-          gridRowProfileCount.isAcceptableOrUnknown(
-              data['grid_row_profile_count']!, _gridRowProfileCountMeta));
+        ),
+      );
     }
     return context;
   }
@@ -7556,20 +9175,30 @@ class $UiSettingsTable extends UiSettings
   UiSetting map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return UiSetting(
-      id: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
-      advancedFilters: attachedDatabase.typeMapping
-          .read(DriftSqlType.bool, data['${effectivePrefix}advanced_filters'])!,
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      advancedFilters: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}advanced_filters'],
+      )!,
       gridHorizontalPadding: attachedDatabase.typeMapping.read(
-          DriftSqlType.double,
-          data['${effectivePrefix}grid_horizontal_padding']),
+        DriftSqlType.double,
+        data['${effectivePrefix}grid_horizontal_padding'],
+      ),
       gridInternalPadding: attachedDatabase.typeMapping.read(
-          DriftSqlType.double, data['${effectivePrefix}grid_internal_padding']),
+        DriftSqlType.double,
+        data['${effectivePrefix}grid_internal_padding'],
+      ),
       gridProfileThumbnailBorderRadius: attachedDatabase.typeMapping.read(
-          DriftSqlType.double,
-          data['${effectivePrefix}grid_profile_thumbnail_border_radius']),
+        DriftSqlType.double,
+        data['${effectivePrefix}grid_profile_thumbnail_border_radius'],
+      ),
       gridRowProfileCount: attachedDatabase.typeMapping.read(
-          DriftSqlType.int, data['${effectivePrefix}grid_row_profile_count']),
+        DriftSqlType.int,
+        data['${effectivePrefix}grid_row_profile_count'],
+      ),
     );
   }
 
@@ -7586,13 +9215,14 @@ class UiSetting extends DataClass implements Insertable<UiSetting> {
   final double? gridInternalPadding;
   final double? gridProfileThumbnailBorderRadius;
   final int? gridRowProfileCount;
-  const UiSetting(
-      {required this.id,
-      required this.advancedFilters,
-      this.gridHorizontalPadding,
-      this.gridInternalPadding,
-      this.gridProfileThumbnailBorderRadius,
-      this.gridRowProfileCount});
+  const UiSetting({
+    required this.id,
+    required this.advancedFilters,
+    this.gridHorizontalPadding,
+    this.gridInternalPadding,
+    this.gridProfileThumbnailBorderRadius,
+    this.gridRowProfileCount,
+  });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -7605,8 +9235,9 @@ class UiSetting extends DataClass implements Insertable<UiSetting> {
       map['grid_internal_padding'] = Variable<double>(gridInternalPadding);
     }
     if (!nullToAbsent || gridProfileThumbnailBorderRadius != null) {
-      map['grid_profile_thumbnail_border_radius'] =
-          Variable<double>(gridProfileThumbnailBorderRadius);
+      map['grid_profile_thumbnail_border_radius'] = Variable<double>(
+        gridProfileThumbnailBorderRadius,
+      );
     }
     if (!nullToAbsent || gridRowProfileCount != null) {
       map['grid_row_profile_count'] = Variable<int>(gridRowProfileCount);
@@ -7626,28 +9257,34 @@ class UiSetting extends DataClass implements Insertable<UiSetting> {
           : Value(gridInternalPadding),
       gridProfileThumbnailBorderRadius:
           gridProfileThumbnailBorderRadius == null && nullToAbsent
-              ? const Value.absent()
-              : Value(gridProfileThumbnailBorderRadius),
+          ? const Value.absent()
+          : Value(gridProfileThumbnailBorderRadius),
       gridRowProfileCount: gridRowProfileCount == null && nullToAbsent
           ? const Value.absent()
           : Value(gridRowProfileCount),
     );
   }
 
-  factory UiSetting.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
+  factory UiSetting.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return UiSetting(
       id: serializer.fromJson<int>(json['id']),
       advancedFilters: serializer.fromJson<bool>(json['advancedFilters']),
-      gridHorizontalPadding:
-          serializer.fromJson<double?>(json['gridHorizontalPadding']),
-      gridInternalPadding:
-          serializer.fromJson<double?>(json['gridInternalPadding']),
-      gridProfileThumbnailBorderRadius: serializer
-          .fromJson<double?>(json['gridProfileThumbnailBorderRadius']),
-      gridRowProfileCount:
-          serializer.fromJson<int?>(json['gridRowProfileCount']),
+      gridHorizontalPadding: serializer.fromJson<double?>(
+        json['gridHorizontalPadding'],
+      ),
+      gridInternalPadding: serializer.fromJson<double?>(
+        json['gridInternalPadding'],
+      ),
+      gridProfileThumbnailBorderRadius: serializer.fromJson<double?>(
+        json['gridProfileThumbnailBorderRadius'],
+      ),
+      gridRowProfileCount: serializer.fromJson<int?>(
+        json['gridRowProfileCount'],
+      ),
     );
   }
   @override
@@ -7656,40 +9293,40 @@ class UiSetting extends DataClass implements Insertable<UiSetting> {
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'advancedFilters': serializer.toJson<bool>(advancedFilters),
-      'gridHorizontalPadding':
-          serializer.toJson<double?>(gridHorizontalPadding),
+      'gridHorizontalPadding': serializer.toJson<double?>(
+        gridHorizontalPadding,
+      ),
       'gridInternalPadding': serializer.toJson<double?>(gridInternalPadding),
-      'gridProfileThumbnailBorderRadius':
-          serializer.toJson<double?>(gridProfileThumbnailBorderRadius),
+      'gridProfileThumbnailBorderRadius': serializer.toJson<double?>(
+        gridProfileThumbnailBorderRadius,
+      ),
       'gridRowProfileCount': serializer.toJson<int?>(gridRowProfileCount),
     };
   }
 
-  UiSetting copyWith(
-          {int? id,
-          bool? advancedFilters,
-          Value<double?> gridHorizontalPadding = const Value.absent(),
-          Value<double?> gridInternalPadding = const Value.absent(),
-          Value<double?> gridProfileThumbnailBorderRadius =
-              const Value.absent(),
-          Value<int?> gridRowProfileCount = const Value.absent()}) =>
-      UiSetting(
-        id: id ?? this.id,
-        advancedFilters: advancedFilters ?? this.advancedFilters,
-        gridHorizontalPadding: gridHorizontalPadding.present
-            ? gridHorizontalPadding.value
-            : this.gridHorizontalPadding,
-        gridInternalPadding: gridInternalPadding.present
-            ? gridInternalPadding.value
-            : this.gridInternalPadding,
-        gridProfileThumbnailBorderRadius:
-            gridProfileThumbnailBorderRadius.present
-                ? gridProfileThumbnailBorderRadius.value
-                : this.gridProfileThumbnailBorderRadius,
-        gridRowProfileCount: gridRowProfileCount.present
-            ? gridRowProfileCount.value
-            : this.gridRowProfileCount,
-      );
+  UiSetting copyWith({
+    int? id,
+    bool? advancedFilters,
+    Value<double?> gridHorizontalPadding = const Value.absent(),
+    Value<double?> gridInternalPadding = const Value.absent(),
+    Value<double?> gridProfileThumbnailBorderRadius = const Value.absent(),
+    Value<int?> gridRowProfileCount = const Value.absent(),
+  }) => UiSetting(
+    id: id ?? this.id,
+    advancedFilters: advancedFilters ?? this.advancedFilters,
+    gridHorizontalPadding: gridHorizontalPadding.present
+        ? gridHorizontalPadding.value
+        : this.gridHorizontalPadding,
+    gridInternalPadding: gridInternalPadding.present
+        ? gridInternalPadding.value
+        : this.gridInternalPadding,
+    gridProfileThumbnailBorderRadius: gridProfileThumbnailBorderRadius.present
+        ? gridProfileThumbnailBorderRadius.value
+        : this.gridProfileThumbnailBorderRadius,
+    gridRowProfileCount: gridRowProfileCount.present
+        ? gridRowProfileCount.value
+        : this.gridRowProfileCount,
+  );
   UiSetting copyWithCompanion(UiSettingsCompanion data) {
     return UiSetting(
       id: data.id.present ? data.id.value : this.id,
@@ -7704,8 +9341,8 @@ class UiSetting extends DataClass implements Insertable<UiSetting> {
           : this.gridInternalPadding,
       gridProfileThumbnailBorderRadius:
           data.gridProfileThumbnailBorderRadius.present
-              ? data.gridProfileThumbnailBorderRadius.value
-              : this.gridProfileThumbnailBorderRadius,
+          ? data.gridProfileThumbnailBorderRadius.value
+          : this.gridProfileThumbnailBorderRadius,
       gridRowProfileCount: data.gridRowProfileCount.present
           ? data.gridRowProfileCount.value
           : this.gridRowProfileCount,
@@ -7720,7 +9357,8 @@ class UiSetting extends DataClass implements Insertable<UiSetting> {
           ..write('gridHorizontalPadding: $gridHorizontalPadding, ')
           ..write('gridInternalPadding: $gridInternalPadding, ')
           ..write(
-              'gridProfileThumbnailBorderRadius: $gridProfileThumbnailBorderRadius, ')
+            'gridProfileThumbnailBorderRadius: $gridProfileThumbnailBorderRadius, ',
+          )
           ..write('gridRowProfileCount: $gridRowProfileCount')
           ..write(')'))
         .toString();
@@ -7728,12 +9366,13 @@ class UiSetting extends DataClass implements Insertable<UiSetting> {
 
   @override
   int get hashCode => Object.hash(
-      id,
-      advancedFilters,
-      gridHorizontalPadding,
-      gridInternalPadding,
-      gridProfileThumbnailBorderRadius,
-      gridRowProfileCount);
+    id,
+    advancedFilters,
+    gridHorizontalPadding,
+    gridInternalPadding,
+    gridProfileThumbnailBorderRadius,
+    gridRowProfileCount,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -7793,20 +9432,22 @@ class UiSettingsCompanion extends UpdateCompanion<UiSetting> {
     });
   }
 
-  UiSettingsCompanion copyWith(
-      {Value<int>? id,
-      Value<bool>? advancedFilters,
-      Value<double?>? gridHorizontalPadding,
-      Value<double?>? gridInternalPadding,
-      Value<double?>? gridProfileThumbnailBorderRadius,
-      Value<int?>? gridRowProfileCount}) {
+  UiSettingsCompanion copyWith({
+    Value<int>? id,
+    Value<bool>? advancedFilters,
+    Value<double?>? gridHorizontalPadding,
+    Value<double?>? gridInternalPadding,
+    Value<double?>? gridProfileThumbnailBorderRadius,
+    Value<int?>? gridRowProfileCount,
+  }) {
     return UiSettingsCompanion(
       id: id ?? this.id,
       advancedFilters: advancedFilters ?? this.advancedFilters,
       gridHorizontalPadding:
           gridHorizontalPadding ?? this.gridHorizontalPadding,
       gridInternalPadding: gridInternalPadding ?? this.gridInternalPadding,
-      gridProfileThumbnailBorderRadius: gridProfileThumbnailBorderRadius ??
+      gridProfileThumbnailBorderRadius:
+          gridProfileThumbnailBorderRadius ??
           this.gridProfileThumbnailBorderRadius,
       gridRowProfileCount: gridRowProfileCount ?? this.gridRowProfileCount,
     );
@@ -7822,16 +9463,19 @@ class UiSettingsCompanion extends UpdateCompanion<UiSetting> {
       map['advanced_filters'] = Variable<bool>(advancedFilters.value);
     }
     if (gridHorizontalPadding.present) {
-      map['grid_horizontal_padding'] =
-          Variable<double>(gridHorizontalPadding.value);
+      map['grid_horizontal_padding'] = Variable<double>(
+        gridHorizontalPadding.value,
+      );
     }
     if (gridInternalPadding.present) {
-      map['grid_internal_padding'] =
-          Variable<double>(gridInternalPadding.value);
+      map['grid_internal_padding'] = Variable<double>(
+        gridInternalPadding.value,
+      );
     }
     if (gridProfileThumbnailBorderRadius.present) {
-      map['grid_profile_thumbnail_border_radius'] =
-          Variable<double>(gridProfileThumbnailBorderRadius.value);
+      map['grid_profile_thumbnail_border_radius'] = Variable<double>(
+        gridProfileThumbnailBorderRadius.value,
+      );
     }
     if (gridRowProfileCount.present) {
       map['grid_row_profile_count'] = Variable<int>(gridRowProfileCount.value);
@@ -7847,7 +9491,8 @@ class UiSettingsCompanion extends UpdateCompanion<UiSetting> {
           ..write('gridHorizontalPadding: $gridHorizontalPadding, ')
           ..write('gridInternalPadding: $gridInternalPadding, ')
           ..write(
-              'gridProfileThumbnailBorderRadius: $gridProfileThumbnailBorderRadius, ')
+            'gridProfileThumbnailBorderRadius: $gridProfileThumbnailBorderRadius, ',
+          )
           ..write('gridRowProfileCount: $gridRowProfileCount')
           ..write(')'))
         .toString();
@@ -7862,35 +9507,54 @@ class $LimitsTable extends Limits with TableInfo<$LimitsTable, Limit> {
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
-      'id', aliasedName, false,
-      hasAutoIncrement: true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      defaultConstraints:
-          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
-  static const VerificationMeta _dailyLikesLeftMeta =
-      const VerificationMeta('dailyLikesLeft');
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _dailyLikesLeftMeta = const VerificationMeta(
+    'dailyLikesLeft',
+  );
   @override
   late final GeneratedColumn<int> dailyLikesLeft = GeneratedColumn<int>(
-      'daily_likes_left', aliasedName, true,
-      type: DriftSqlType.int, requiredDuringInsert: false);
+    'daily_likes_left',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
   static const VerificationMeta _dailyLikesLeftSyncVersionMeta =
       const VerificationMeta('dailyLikesLeftSyncVersion');
   @override
   late final GeneratedColumn<int> dailyLikesLeftSyncVersion =
-      GeneratedColumn<int>('daily_likes_left_sync_version', aliasedName, true,
-          type: DriftSqlType.int, requiredDuringInsert: false);
+      GeneratedColumn<int>(
+        'daily_likes_left_sync_version',
+        aliasedName,
+        true,
+        type: DriftSqlType.int,
+        requiredDuringInsert: false,
+      );
   @override
-  List<GeneratedColumn> get $columns =>
-      [id, dailyLikesLeft, dailyLikesLeftSyncVersion];
+  List<GeneratedColumn> get $columns => [
+    id,
+    dailyLikesLeft,
+    dailyLikesLeftSyncVersion,
+  ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
   static const String $name = 'limits';
   @override
-  VerificationContext validateIntegrity(Insertable<Limit> instance,
-      {bool isInserting = false}) {
+  VerificationContext validateIntegrity(
+    Insertable<Limit> instance, {
+    bool isInserting = false,
+  }) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
@@ -7898,16 +9562,21 @@ class $LimitsTable extends Limits with TableInfo<$LimitsTable, Limit> {
     }
     if (data.containsKey('daily_likes_left')) {
       context.handle(
+        _dailyLikesLeftMeta,
+        dailyLikesLeft.isAcceptableOrUnknown(
+          data['daily_likes_left']!,
           _dailyLikesLeftMeta,
-          dailyLikesLeft.isAcceptableOrUnknown(
-              data['daily_likes_left']!, _dailyLikesLeftMeta));
+        ),
+      );
     }
     if (data.containsKey('daily_likes_left_sync_version')) {
       context.handle(
+        _dailyLikesLeftSyncVersionMeta,
+        dailyLikesLeftSyncVersion.isAcceptableOrUnknown(
+          data['daily_likes_left_sync_version']!,
           _dailyLikesLeftSyncVersionMeta,
-          dailyLikesLeftSyncVersion.isAcceptableOrUnknown(
-              data['daily_likes_left_sync_version']!,
-              _dailyLikesLeftSyncVersionMeta));
+        ),
+      );
     }
     return context;
   }
@@ -7918,13 +9587,18 @@ class $LimitsTable extends Limits with TableInfo<$LimitsTable, Limit> {
   Limit map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return Limit(
-      id: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
-      dailyLikesLeft: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}daily_likes_left']),
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      dailyLikesLeft: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}daily_likes_left'],
+      ),
       dailyLikesLeftSyncVersion: attachedDatabase.typeMapping.read(
-          DriftSqlType.int,
-          data['${effectivePrefix}daily_likes_left_sync_version']),
+        DriftSqlType.int,
+        data['${effectivePrefix}daily_likes_left_sync_version'],
+      ),
     );
   }
 
@@ -7938,8 +9612,11 @@ class Limit extends DataClass implements Insertable<Limit> {
   final int id;
   final int? dailyLikesLeft;
   final int? dailyLikesLeftSyncVersion;
-  const Limit(
-      {required this.id, this.dailyLikesLeft, this.dailyLikesLeftSyncVersion});
+  const Limit({
+    required this.id,
+    this.dailyLikesLeft,
+    this.dailyLikesLeftSyncVersion,
+  });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -7948,8 +9625,9 @@ class Limit extends DataClass implements Insertable<Limit> {
       map['daily_likes_left'] = Variable<int>(dailyLikesLeft);
     }
     if (!nullToAbsent || dailyLikesLeftSyncVersion != null) {
-      map['daily_likes_left_sync_version'] =
-          Variable<int>(dailyLikesLeftSyncVersion);
+      map['daily_likes_left_sync_version'] = Variable<int>(
+        dailyLikesLeftSyncVersion,
+      );
     }
     return map;
   }
@@ -7962,19 +9640,22 @@ class Limit extends DataClass implements Insertable<Limit> {
           : Value(dailyLikesLeft),
       dailyLikesLeftSyncVersion:
           dailyLikesLeftSyncVersion == null && nullToAbsent
-              ? const Value.absent()
-              : Value(dailyLikesLeftSyncVersion),
+          ? const Value.absent()
+          : Value(dailyLikesLeftSyncVersion),
     );
   }
 
-  factory Limit.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
+  factory Limit.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return Limit(
       id: serializer.fromJson<int>(json['id']),
       dailyLikesLeft: serializer.fromJson<int?>(json['dailyLikesLeft']),
-      dailyLikesLeftSyncVersion:
-          serializer.fromJson<int?>(json['dailyLikesLeftSyncVersion']),
+      dailyLikesLeftSyncVersion: serializer.fromJson<int?>(
+        json['dailyLikesLeftSyncVersion'],
+      ),
     );
   }
   @override
@@ -7983,23 +9664,25 @@ class Limit extends DataClass implements Insertable<Limit> {
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'dailyLikesLeft': serializer.toJson<int?>(dailyLikesLeft),
-      'dailyLikesLeftSyncVersion':
-          serializer.toJson<int?>(dailyLikesLeftSyncVersion),
+      'dailyLikesLeftSyncVersion': serializer.toJson<int?>(
+        dailyLikesLeftSyncVersion,
+      ),
     };
   }
 
-  Limit copyWith(
-          {int? id,
-          Value<int?> dailyLikesLeft = const Value.absent(),
-          Value<int?> dailyLikesLeftSyncVersion = const Value.absent()}) =>
-      Limit(
-        id: id ?? this.id,
-        dailyLikesLeft:
-            dailyLikesLeft.present ? dailyLikesLeft.value : this.dailyLikesLeft,
-        dailyLikesLeftSyncVersion: dailyLikesLeftSyncVersion.present
-            ? dailyLikesLeftSyncVersion.value
-            : this.dailyLikesLeftSyncVersion,
-      );
+  Limit copyWith({
+    int? id,
+    Value<int?> dailyLikesLeft = const Value.absent(),
+    Value<int?> dailyLikesLeftSyncVersion = const Value.absent(),
+  }) => Limit(
+    id: id ?? this.id,
+    dailyLikesLeft: dailyLikesLeft.present
+        ? dailyLikesLeft.value
+        : this.dailyLikesLeft,
+    dailyLikesLeftSyncVersion: dailyLikesLeftSyncVersion.present
+        ? dailyLikesLeftSyncVersion.value
+        : this.dailyLikesLeftSyncVersion,
+  );
   Limit copyWithCompanion(LimitsCompanion data) {
     return Limit(
       id: data.id.present ? data.id.value : this.id,
@@ -8061,10 +9744,11 @@ class LimitsCompanion extends UpdateCompanion<Limit> {
     });
   }
 
-  LimitsCompanion copyWith(
-      {Value<int>? id,
-      Value<int?>? dailyLikesLeft,
-      Value<int?>? dailyLikesLeftSyncVersion}) {
+  LimitsCompanion copyWith({
+    Value<int>? id,
+    Value<int?>? dailyLikesLeft,
+    Value<int?>? dailyLikesLeftSyncVersion,
+  }) {
     return LimitsCompanion(
       id: id ?? this.id,
       dailyLikesLeft: dailyLikesLeft ?? this.dailyLikesLeft,
@@ -8083,8 +9767,9 @@ class LimitsCompanion extends UpdateCompanion<Limit> {
       map['daily_likes_left'] = Variable<int>(dailyLikesLeft.value);
     }
     if (dailyLikesLeftSyncVersion.present) {
-      map['daily_likes_left_sync_version'] =
-          Variable<int>(dailyLikesLeftSyncVersion.value);
+      map['daily_likes_left_sync_version'] = Variable<int>(
+        dailyLikesLeftSyncVersion.value,
+      );
     }
     return map;
   }
@@ -8108,77 +9793,94 @@ abstract class _$AccountDatabase extends GeneratedDatabase {
       $PublicProfileContentTable(this);
   late final $MyMediaContentTable myMediaContent = $MyMediaContentTable(this);
   late final $ProfileStatesTable profileStates = $ProfileStatesTable(this);
-  late final $ConversationListTable conversationList =
-      $ConversationListTable(this);
+  late final $ConversationListTable conversationList = $ConversationListTable(
+    this,
+  );
   late final $MessageTableTable messageTable = $MessageTableTable(this);
   late final $ConversationsTable conversations = $ConversationsTable(this);
   late final $AvailableProfileAttributesTableTable
-      availableProfileAttributesTable =
-      $AvailableProfileAttributesTableTable(this);
+  availableProfileAttributesTable = $AvailableProfileAttributesTableTable(this);
   late final $UiSettingsTable uiSettings = $UiSettingsTable(this);
   late final $LimitsTable limits = $LimitsTable(this);
-  late final DaoCurrentContent daoCurrentContent =
-      DaoCurrentContent(this as AccountDatabase);
+  late final DaoCurrentContent daoCurrentContent = DaoCurrentContent(
+    this as AccountDatabase,
+  );
   late final DaoMyProfile daoMyProfile = DaoMyProfile(this as AccountDatabase);
-  late final DaoProfileSettings daoProfileSettings =
-      DaoProfileSettings(this as AccountDatabase);
-  late final DaoAccountSettings daoAccountSettings =
-      DaoAccountSettings(this as AccountDatabase);
+  late final DaoProfileSettings daoProfileSettings = DaoProfileSettings(
+    this as AccountDatabase,
+  );
+  late final DaoAccountSettings daoAccountSettings = DaoAccountSettings(
+    this as AccountDatabase,
+  );
   late final DaoTokens daoTokens = DaoTokens(this as AccountDatabase);
-  late final DaoInitialSync daoInitialSync =
-      DaoInitialSync(this as AccountDatabase);
-  late final DaoSyncVersions daoSyncVersions =
-      DaoSyncVersions(this as AccountDatabase);
+  late final DaoInitialSync daoInitialSync = DaoInitialSync(
+    this as AccountDatabase,
+  );
+  late final DaoSyncVersions daoSyncVersions = DaoSyncVersions(
+    this as AccountDatabase,
+  );
   late final DaoLocalImageSettings daoLocalImageSettings =
       DaoLocalImageSettings(this as AccountDatabase);
-  late final DaoMessageKeys daoMessageKeys =
-      DaoMessageKeys(this as AccountDatabase);
+  late final DaoMessageKeys daoMessageKeys = DaoMessageKeys(
+    this as AccountDatabase,
+  );
   late final DaoProfileInitialAgeInfo daoProfileInitialAgeInfo =
       DaoProfileInitialAgeInfo(this as AccountDatabase);
   late final DaoAvailableProfileAttributes daoAvailableProfileAttributes =
       DaoAvailableProfileAttributes(this as AccountDatabase);
-  late final DaoServerMaintenance daoServerMaintenance =
-      DaoServerMaintenance(this as AccountDatabase);
-  late final DaoCustomReports daoCustomReports =
-      DaoCustomReports(this as AccountDatabase);
-  late final DaoClientFeatures daoClientFeatures =
-      DaoClientFeatures(this as AccountDatabase);
-  late final DaoInitialSetup daoInitialSetup =
-      DaoInitialSetup(this as AccountDatabase);
-  late final DaoMessageTable daoMessageTable =
-      DaoMessageTable(this as AccountDatabase);
-  late final DaoConversationList daoConversationList =
-      DaoConversationList(this as AccountDatabase);
+  late final DaoServerMaintenance daoServerMaintenance = DaoServerMaintenance(
+    this as AccountDatabase,
+  );
+  late final DaoCustomReports daoCustomReports = DaoCustomReports(
+    this as AccountDatabase,
+  );
+  late final DaoClientFeatures daoClientFeatures = DaoClientFeatures(
+    this as AccountDatabase,
+  );
+  late final DaoInitialSetup daoInitialSetup = DaoInitialSetup(
+    this as AccountDatabase,
+  );
+  late final DaoMessageTable daoMessageTable = DaoMessageTable(
+    this as AccountDatabase,
+  );
+  late final DaoConversationList daoConversationList = DaoConversationList(
+    this as AccountDatabase,
+  );
   late final DaoProfiles daoProfiles = DaoProfiles(this as AccountDatabase);
   late final DaoPublicProfileContent daoPublicProfileContent =
       DaoPublicProfileContent(this as AccountDatabase);
-  late final DaoMyMediaContent daoMyMediaContent =
-      DaoMyMediaContent(this as AccountDatabase);
-  late final DaoProfileStates daoProfileStates =
-      DaoProfileStates(this as AccountDatabase);
-  late final DaoConversations daoConversations =
-      DaoConversations(this as AccountDatabase);
+  late final DaoMyMediaContent daoMyMediaContent = DaoMyMediaContent(
+    this as AccountDatabase,
+  );
+  late final DaoProfileStates daoProfileStates = DaoProfileStates(
+    this as AccountDatabase,
+  );
+  late final DaoConversations daoConversations = DaoConversations(
+    this as AccountDatabase,
+  );
   late final DaoAvailableProfileAttributesTable
-      daoAvailableProfileAttributesTable =
-      DaoAvailableProfileAttributesTable(this as AccountDatabase);
-  late final DaoUiSettings daoUiSettings =
-      DaoUiSettings(this as AccountDatabase);
+  daoAvailableProfileAttributesTable = DaoAvailableProfileAttributesTable(
+    this as AccountDatabase,
+  );
+  late final DaoUiSettings daoUiSettings = DaoUiSettings(
+    this as AccountDatabase,
+  );
   late final DaoLimits daoLimits = DaoLimits(this as AccountDatabase);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities => [
-        account,
-        profiles,
-        publicProfileContent,
-        myMediaContent,
-        profileStates,
-        conversationList,
-        messageTable,
-        conversations,
-        availableProfileAttributesTable,
-        uiSettings,
-        limits
-      ];
+    account,
+    profiles,
+    publicProfileContent,
+    myMediaContent,
+    profileStates,
+    conversationList,
+    messageTable,
+    conversations,
+    availableProfileAttributesTable,
+    uiSettings,
+    limits,
+  ];
 }
