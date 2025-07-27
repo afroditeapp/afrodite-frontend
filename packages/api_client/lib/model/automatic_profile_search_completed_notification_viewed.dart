@@ -16,8 +16,7 @@ class AutomaticProfileSearchCompletedNotificationViewed {
     required this.profilesFound,
   });
 
-  /// Wrapping notification ID
-  int profilesFound;
+  NotificationIdViewed profilesFound;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is AutomaticProfileSearchCompletedNotificationViewed &&
@@ -56,7 +55,7 @@ class AutomaticProfileSearchCompletedNotificationViewed {
       }());
 
       return AutomaticProfileSearchCompletedNotificationViewed(
-        profilesFound: mapValueOfType<int>(json, r'profiles_found')!,
+        profilesFound: NotificationIdViewed.fromJson(json[r'profiles_found'])!,
       );
     }
     return null;

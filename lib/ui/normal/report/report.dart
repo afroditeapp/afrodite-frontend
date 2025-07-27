@@ -162,7 +162,7 @@ class _ReportScreenState extends State<ReportScreen> {
     }
 
     final availableReports = [
-      ...config.report.where((v) => v.reportType == CustomReportType.boolean && v.visible)
+      ...config.report.where((v) => v.reportType == CustomReportType.empty && v.visible)
     ];
 
     availableReports.sort((a, b) => a.orderNumber.compareTo(b.orderNumber));
@@ -177,10 +177,9 @@ class _ReportScreenState extends State<ReportScreen> {
           yesNoActions: true,
         );
         if (context.mounted && r == true) {
-          final result = await api.account((api) => api.postCustomReportBoolean(UpdateCustomReportBoolean(
+          final result = await api.account((api) => api.postCustomReportEmpty(UpdateCustomReportEmpty(
             customReportId: report.id,
             target: widget.profile.uuid,
-            value: true,
           ))).ok();
 
           if (result == null) {

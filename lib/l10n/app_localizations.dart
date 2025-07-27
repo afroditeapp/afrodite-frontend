@@ -1376,11 +1376,11 @@ abstract class AppLocalizations {
   /// **'Demo account login'**
   String get login_screen_demo_account_dialog_title;
 
-  /// Placeholder text for demo account identifier
+  /// Snackbar text for demo account locked error
   ///
   /// In en, this message translates to:
-  /// **'Account ID'**
-  String get login_screen_demo_account_identifier;
+  /// **'Account locked. Contact customer support.'**
+  String get login_screen_demo_account_locked;
 
   /// Snackbar text for demo account login failed
   ///
@@ -1405,6 +1405,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Password'**
   String get login_screen_demo_account_password;
+
+  /// Placeholder text for demo account username
+  ///
+  /// In en, this message translates to:
+  /// **'Username'**
+  String get login_screen_demo_account_username;
 
   /// Login button text
   ///

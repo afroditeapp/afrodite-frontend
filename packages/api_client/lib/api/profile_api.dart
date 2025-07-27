@@ -846,12 +846,12 @@ class ProfileApi {
     return null;
   }
 
-  /// Get profile text moderation completed notification.
+  /// Get profile string moderation completed notification.
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> postGetProfileTextModerationCompletedNotificationWithHttpInfo() async {
+  Future<Response> postGetProfileStringModerationCompletedNotificationWithHttpInfo() async {
     // ignore: prefer_const_declarations
-    final path = r'/profile_api/profile_text_moderation_completed_notification';
+    final path = r'/profile_api/profile_string_moderation_completed_notification';
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -874,9 +874,9 @@ class ProfileApi {
     );
   }
 
-  /// Get profile text moderation completed notification.
-  Future<ProfileTextModerationCompletedNotification?> postGetProfileTextModerationCompletedNotification() async {
-    final response = await postGetProfileTextModerationCompletedNotificationWithHttpInfo();
+  /// Get profile string moderation completed notification.
+  Future<ProfileStringModerationCompletedNotification?> postGetProfileStringModerationCompletedNotification() async {
+    final response = await postGetProfileStringModerationCompletedNotificationWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -884,7 +884,7 @@ class ProfileApi {
     // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'ProfileTextModerationCompletedNotification',) as ProfileTextModerationCompletedNotification;
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'ProfileStringModerationCompletedNotification',) as ProfileStringModerationCompletedNotification;
     
     }
     return null;
@@ -996,13 +996,13 @@ class ProfileApi {
   ///
   /// Parameters:
   ///
-  /// * [ProfileTextModerationCompletedNotificationViewed] profileTextModerationCompletedNotificationViewed (required):
-  Future<Response> postMarkProfileTextModerationCompletedNotificationViewedWithHttpInfo(ProfileTextModerationCompletedNotificationViewed profileTextModerationCompletedNotificationViewed,) async {
+  /// * [ProfileStringModerationCompletedNotificationViewed] profileStringModerationCompletedNotificationViewed (required):
+  Future<Response> postMarkProfileStringModerationCompletedNotificationViewedWithHttpInfo(ProfileStringModerationCompletedNotificationViewed profileStringModerationCompletedNotificationViewed,) async {
     // ignore: prefer_const_declarations
-    final path = r'/profile_api/mark_profile_text_moderation_completed_notification_viewed';
+    final path = r'/profile_api/mark_profile_string_moderation_completed_notification_viewed';
 
     // ignore: prefer_final_locals
-    Object? postBody = profileTextModerationCompletedNotificationViewed;
+    Object? postBody = profileStringModerationCompletedNotificationViewed;
 
     final queryParams = <QueryParam>[];
     final headerParams = <String, String>{};
@@ -1026,9 +1026,9 @@ class ProfileApi {
   ///
   /// Parameters:
   ///
-  /// * [ProfileTextModerationCompletedNotificationViewed] profileTextModerationCompletedNotificationViewed (required):
-  Future<void> postMarkProfileTextModerationCompletedNotificationViewed(ProfileTextModerationCompletedNotificationViewed profileTextModerationCompletedNotificationViewed,) async {
-    final response = await postMarkProfileTextModerationCompletedNotificationViewedWithHttpInfo(profileTextModerationCompletedNotificationViewed,);
+  /// * [ProfileStringModerationCompletedNotificationViewed] profileStringModerationCompletedNotificationViewed (required):
+  Future<void> postMarkProfileStringModerationCompletedNotificationViewed(ProfileStringModerationCompletedNotificationViewed profileStringModerationCompletedNotificationViewed,) async {
+    final response = await postMarkProfileStringModerationCompletedNotificationViewedWithHttpInfo(profileStringModerationCompletedNotificationViewed,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -1036,7 +1036,7 @@ class ProfileApi {
 
   /// Update profile information.
   ///
-  /// Writes the profile to the database only if it is changed.  WebSocket event about profile change will not be emitted. The event is emitted only from server side profile updates.  # Requirements - Profile attributes must be valid. - Profile text must be 2000 bytes or less. - Profile text must be trimmed. - Profile name changes are only possible when initial setup is ongoing. - Profile name must be trimmed and not empty. - Profile name must be 100 bytes or less. - Profile age must match with currently valid age range. The first min   value for the age range is the age at the initial setup. The second min   and max value is calculated using the following algorithm:  - The initial age (initialAge) is paired with the year of initial    setup completed (initialSetupYear).    - Year difference (yearDifference = currentYear - initialSetupYear) is      used for changing the range min and max.      - Min value: initialAge + yearDifference - 1.      - Max value: initialAge + yearDifference + 1.  
+  /// Writes the profile to the database only if it is changed.  WebSocket event about profile change will not be emitted. The event is emitted only from server side profile updates.  # Requirements - Profile attributes must be valid. - Profile text must be 2000 bytes or less. - Profile text must be trimmed. - Profile name changes are only possible when initial setup is ongoing   or current profile name is not accepted. - Profile name must be trimmed and not empty. - Profile name must be 100 bytes or less. - Profile name must start with uppercase letter. - Profile age must match with currently valid age range. The first min   value for the age range is the age at the initial setup. The second min   and max value is calculated using the following algorithm:  - The initial age (initialAge) is paired with the year of initial    setup completed (initialSetupYear).    - Year difference (yearDifference = currentYear - initialSetupYear) is      used for changing the range min and max.      - Min value: initialAge + yearDifference - 1.      - Max value: initialAge + yearDifference + 1.  
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -1070,7 +1070,7 @@ class ProfileApi {
 
   /// Update profile information.
   ///
-  /// Writes the profile to the database only if it is changed.  WebSocket event about profile change will not be emitted. The event is emitted only from server side profile updates.  # Requirements - Profile attributes must be valid. - Profile text must be 2000 bytes or less. - Profile text must be trimmed. - Profile name changes are only possible when initial setup is ongoing. - Profile name must be trimmed and not empty. - Profile name must be 100 bytes or less. - Profile age must match with currently valid age range. The first min   value for the age range is the age at the initial setup. The second min   and max value is calculated using the following algorithm:  - The initial age (initialAge) is paired with the year of initial    setup completed (initialSetupYear).    - Year difference (yearDifference = currentYear - initialSetupYear) is      used for changing the range min and max.      - Min value: initialAge + yearDifference - 1.      - Max value: initialAge + yearDifference + 1.  
+  /// Writes the profile to the database only if it is changed.  WebSocket event about profile change will not be emitted. The event is emitted only from server side profile updates.  # Requirements - Profile attributes must be valid. - Profile text must be 2000 bytes or less. - Profile text must be trimmed. - Profile name changes are only possible when initial setup is ongoing   or current profile name is not accepted. - Profile name must be trimmed and not empty. - Profile name must be 100 bytes or less. - Profile name must start with uppercase letter. - Profile age must match with currently valid age range. The first min   value for the age range is the age at the initial setup. The second min   and max value is calculated using the following algorithm:  - The initial age (initialAge) is paired with the year of initial    setup completed (initialSetupYear).    - Year difference (yearDifference = currentYear - initialSetupYear) is      used for changing the range min and max.      - Min value: initialAge + yearDifference - 1.      - Max value: initialAge + yearDifference + 1.  
   ///
   /// Parameters:
   ///
@@ -1211,6 +1211,8 @@ class ProfileApi {
 
   /// Report profile name
   ///
+  /// If profile name is reported and it is bot moderated, the name's moderation state changes to [model_profile::ProfileStringModerationState::WaitingHumanModeration].
+  ///
   /// Note: This method returns the HTTP [Response].
   ///
   /// Parameters:
@@ -1243,6 +1245,8 @@ class ProfileApi {
 
   /// Report profile name
   ///
+  /// If profile name is reported and it is bot moderated, the name's moderation state changes to [model_profile::ProfileStringModerationState::WaitingHumanModeration].
+  ///
   /// Parameters:
   ///
   /// * [UpdateProfileNameReport] updateProfileNameReport (required):
@@ -1263,7 +1267,7 @@ class ProfileApi {
 
   /// Report profile text
   ///
-  /// If profile text is reported and it is bot moderated, the text's moderation state changes to [model_profile::ProfileTextModerationState::WaitingHumanModeration].
+  /// If profile text is reported and it is bot moderated, the text's moderation state changes to [model_profile::ProfileStringModerationState::WaitingHumanModeration].
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -1297,7 +1301,7 @@ class ProfileApi {
 
   /// Report profile text
   ///
-  /// If profile text is reported and it is bot moderated, the text's moderation state changes to [model_profile::ProfileTextModerationState::WaitingHumanModeration].
+  /// If profile text is reported and it is bot moderated, the text's moderation state changes to [model_profile::ProfileStringModerationState::WaitingHumanModeration].
   ///
   /// Parameters:
   ///

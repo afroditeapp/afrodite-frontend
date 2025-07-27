@@ -95,18 +95,18 @@ String hideOtherCharactersThanTheFirst(String value) {
 }
 
 class MyProfileEntry extends ProfileEntry implements MyContentProvider {
-  final ProfileNameModerationState profileNameModerationState;
-  final ProfileTextModerationState profileTextModerationState;
-  final ProfileTextModerationRejectedReasonCategory? profileTextModerationRejectedCategory;
-  final ProfileTextModerationRejectedReasonDetails? profileTextModerationRejectedDetails;
+  final ProfileStringModerationState? profileNameModerationState;
+  final ProfileStringModerationState? profileTextModerationState;
+  final ProfileStringModerationRejectedReasonCategory? profileTextModerationRejectedCategory;
+  final ProfileStringModerationRejectedReasonDetails? profileTextModerationRejectedDetails;
 
   @override
   final List<MyContent> myContent;
 
   MyProfileEntry({
-    required this.profileNameModerationState,
-    required this.profileTextModerationState,
     required this.myContent,
+    this.profileNameModerationState,
+    this.profileTextModerationState,
     this.profileTextModerationRejectedCategory,
     this.profileTextModerationRejectedDetails,
     required super.uuid,
@@ -184,8 +184,8 @@ abstract class MyContentProvider {
 class MyContent extends ContentIdAndAccepted {
   final bool faceDetected;
   final ContentModerationState state;
-  final ProfileContentModerationRejectedReasonCategory? rejectedCategory;
-  final ProfileContentModerationRejectedReasonDetails? rejectedDetails;
+  final MediaContentModerationRejectedReasonCategory? rejectedCategory;
+  final MediaContentModerationRejectedReasonDetails? rejectedDetails;
   MyContent(
     ContentId id,
     this.faceDetected,

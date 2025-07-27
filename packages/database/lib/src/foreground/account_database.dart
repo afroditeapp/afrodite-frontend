@@ -107,7 +107,7 @@ class Account extends Table {
   TextColumn get profileText => text().nullable()();
   BoolColumn get profileTextAccepted => boolean().nullable()();
   TextColumn get profileTextModerationState => text().map(NullAwareTypeConverter.wrap(EnumString.driftConverter)).nullable()();
-  IntColumn get profileTextModerationRejectedCategory => integer().map(const NullAwareTypeConverter.wrap(ProfileTextModerationRejectedReasonCategoryConverter())).nullable()();
+  IntColumn get profileTextModerationRejectedCategory => integer().map(const NullAwareTypeConverter.wrap(ProfileStringModerationRejectedReasonCategoryConverter())).nullable()();
   TextColumn get profileTextModerationRejectedDetails => text().map(const NullAwareTypeConverter.wrap(ProfileTextModerationRejectedReasonDetailsConverter())).nullable()();
   IntColumn get profileAge => integer().nullable()();
   BoolColumn get profileUnlimitedLikes => boolean().nullable()();
@@ -371,10 +371,10 @@ class AccountDatabase extends _$AccountDatabase {
     final id = r.uuidAccountId;
     final profileName = r.profileName;
     final profileNameAccepted = r.profileNameAccepted;
-    final profileNameModerationState = r.profileNameModerationState?.toProfileNameModerationState();
+    final profileNameModerationState = r.profileNameModerationState?.toProfileStringModerationState();
     final profileText = r.profileText;
     final profileTextAccepted = r.profileTextAccepted;
-    final profileTextModerationState = r.profileTextModerationState?.toProfileTextModerationState();
+    final profileTextModerationState = r.profileTextModerationState?.toProfileStringModerationState();
     final profileTextModerationRejectedCategory = r.profileTextModerationRejectedCategory;
     final profileTextModerationRejectedDetails = r.profileTextModerationRejectedDetails;
     final profileAge = r.profileAge;
@@ -391,10 +391,8 @@ class AccountDatabase extends _$AccountDatabase {
       id != null &&
       profileName != null &&
       profileNameAccepted != null &&
-      profileNameModerationState != null &&
       profileText != null &&
       profileTextAccepted != null &&
-      profileTextModerationState != null &&
       profileAge != null &&
       profileAttributes != null &&
       profileVersion != null &&

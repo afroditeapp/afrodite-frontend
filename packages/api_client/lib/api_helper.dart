@@ -97,14 +97,14 @@ String parameterToString(dynamic value) {
   if (value is ModerationQueueType) {
     return ModerationQueueTypeTypeTransformer().encode(value).toString();
   }
-  if (value is ProfileNameModerationState) {
-    return ProfileNameModerationStateTypeTransformer().encode(value).toString();
-  }
   if (value is ProfileStatisticsHistoryValueType) {
     return ProfileStatisticsHistoryValueTypeTypeTransformer().encode(value).toString();
   }
-  if (value is ProfileTextModerationState) {
-    return ProfileTextModerationStateTypeTransformer().encode(value).toString();
+  if (value is ProfileStringModerationContentType) {
+    return ProfileStringModerationContentTypeTypeTransformer().encode(value).toString();
+  }
+  if (value is ProfileStringModerationState) {
+    return ProfileStringModerationStateTypeTransformer().encode(value).toString();
   }
   if (value is ProfileVisibility) {
     return ProfileVisibilityTypeTransformer().encode(value).toString();

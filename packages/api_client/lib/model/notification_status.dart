@@ -10,36 +10,42 @@
 
 part of openapi.api;
 
-class DemoModePassword {
-  /// Returns a new [DemoModePassword] instance.
-  DemoModePassword({
-    required this.password,
+class NotificationStatus {
+  /// Returns a new [NotificationStatus] instance.
+  NotificationStatus({
+    required this.id,
+    required this.viewed,
   });
 
-  String password;
+  NotificationId id;
+
+  NotificationIdViewed viewed;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is DemoModePassword &&
-    other.password == password;
+  bool operator ==(Object other) => identical(this, other) || other is NotificationStatus &&
+    other.id == id &&
+    other.viewed == viewed;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (password.hashCode);
+    (id.hashCode) +
+    (viewed.hashCode);
 
   @override
-  String toString() => 'DemoModePassword[password=$password]';
+  String toString() => 'NotificationStatus[id=$id, viewed=$viewed]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'password'] = this.password;
+      json[r'id'] = this.id;
+      json[r'viewed'] = this.viewed;
     return json;
   }
 
-  /// Returns a new [DemoModePassword] instance and imports its values from
+  /// Returns a new [NotificationStatus] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static DemoModePassword? fromJson(dynamic value) {
+  static NotificationStatus? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -48,24 +54,25 @@ class DemoModePassword {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "DemoModePassword[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "DemoModePassword[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "NotificationStatus[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "NotificationStatus[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return DemoModePassword(
-        password: mapValueOfType<String>(json, r'password')!,
+      return NotificationStatus(
+        id: NotificationId.fromJson(json[r'id'])!,
+        viewed: NotificationIdViewed.fromJson(json[r'viewed'])!,
       );
     }
     return null;
   }
 
-  static List<DemoModePassword> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <DemoModePassword>[];
+  static List<NotificationStatus> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <NotificationStatus>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = DemoModePassword.fromJson(row);
+        final value = NotificationStatus.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -74,12 +81,12 @@ class DemoModePassword {
     return result.toList(growable: growable);
   }
 
-  static Map<String, DemoModePassword> mapFromJson(dynamic json) {
-    final map = <String, DemoModePassword>{};
+  static Map<String, NotificationStatus> mapFromJson(dynamic json) {
+    final map = <String, NotificationStatus>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = DemoModePassword.fromJson(entry.value);
+        final value = NotificationStatus.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -88,14 +95,14 @@ class DemoModePassword {
     return map;
   }
 
-  // maps a json object with a list of DemoModePassword-objects as value to a dart map
-  static Map<String, List<DemoModePassword>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<DemoModePassword>>{};
+  // maps a json object with a list of NotificationStatus-objects as value to a dart map
+  static Map<String, List<NotificationStatus>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<NotificationStatus>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = DemoModePassword.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = NotificationStatus.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;
@@ -103,7 +110,8 @@ class DemoModePassword {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'password',
+    'id',
+    'viewed',
   };
 }
 

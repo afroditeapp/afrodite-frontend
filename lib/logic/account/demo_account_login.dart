@@ -17,9 +17,9 @@ class DoDemoAccountLogin extends DemoAccountLoginEvent {
   final DemoAccountCredentials credentials;
   DoDemoAccountLogin(this.credentials);
 }
-class NewDemoAccountUserIdValue extends DemoAccountLoginEvent {
+class NewDemoAccountUsernameValue extends DemoAccountLoginEvent {
   final String? value;
-  NewDemoAccountUserIdValue(this.value);
+  NewDemoAccountUsernameValue(this.value);
 }
 class NewDemoAccountPasswordValue extends DemoAccountLoginEvent {
   final String? value;
@@ -33,7 +33,7 @@ class NewLoginProgressValue extends DemoAccountLoginEvent {
 class DemoAccountLoginBloc extends Bloc<DemoAccountLoginEvent, DemoAccountLoginData> with ActionRunner {
   final LoginRepository login = LoginRepository.getInstance();
 
-  StreamSubscription<String?>? userIdSubscription;
+  StreamSubscription<String?>? usernameSubscription;
   StreamSubscription<String?>? passwordSubscription;
   StreamSubscription<bool>? demoAccountLoginSubscription;
 
@@ -43,12 +43,14 @@ class DemoAccountLoginBloc extends Bloc<DemoAccountLoginEvent, DemoAccountLoginD
       switch (await login.demoAccountLogin(data.credentials)) {
         case Ok():
           null;
-        case Err():
+        case Err(e: DemoModeLoginError.otherError):
           showSnackBar(R.strings.login_screen_demo_account_login_failed);
+        case Err(e: DemoModeLoginError.accountLocked):
+          showSnackBar(R.strings.login_screen_demo_account_locked);
       }
     });
-    on<NewDemoAccountUserIdValue>((id, emit) {
-      emit(state.copyWith(userId: id.value));
+    on<NewDemoAccountUsernameValue>((id, emit) {
+      emit(state.copyWith(username: id.value));
     });
     on<NewDemoAccountPasswordValue>((key, emit) {
       emit(state.copyWith(password: key.value));
@@ -57,8 +59,8 @@ class DemoAccountLoginBloc extends Bloc<DemoAccountLoginEvent, DemoAccountLoginD
       emit(state.copyWith(loginProgressVisible: key.value));
     });
 
-    userIdSubscription = login.demoAccountUserId.listen((event) {
-      add(NewDemoAccountUserIdValue(event));
+    usernameSubscription = login.demoAccountUsername.listen((event) {
+      add(NewDemoAccountUsernameValue(event));
     });
     passwordSubscription = login.demoAccountPassword.listen((event) {
       add(NewDemoAccountPasswordValue(event));
@@ -70,7 +72,7 @@ class DemoAccountLoginBloc extends Bloc<DemoAccountLoginEvent, DemoAccountLoginD
 
   @override
   Future<void> close() {
-    userIdSubscription?.cancel();
+    usernameSubscription?.cancel();
     passwordSubscription?.cancel();
     demoAccountLoginSubscription?.cancel();
     return super.close();

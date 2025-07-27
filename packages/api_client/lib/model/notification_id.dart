@@ -10,42 +10,36 @@
 
 part of openapi.api;
 
-class ProfileTextPendingModeration {
-  /// Returns a new [ProfileTextPendingModeration] instance.
-  ProfileTextPendingModeration({
+class NotificationId {
+  /// Returns a new [NotificationId] instance.
+  NotificationId({
     required this.id,
-    required this.text,
   });
 
-  AccountId id;
-
-  String text;
+  int id;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is ProfileTextPendingModeration &&
-    other.id == id &&
-    other.text == text;
+  bool operator ==(Object other) => identical(this, other) || other is NotificationId &&
+    other.id == id;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (id.hashCode) +
-    (text.hashCode);
+    (id.hashCode);
 
   @override
-  String toString() => 'ProfileTextPendingModeration[id=$id, text=$text]';
+  String toString() => 'NotificationId[id=$id]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'id'] = this.id;
-      json[r'text'] = this.text;
     return json;
   }
 
-  /// Returns a new [ProfileTextPendingModeration] instance and imports its values from
+  /// Returns a new [NotificationId] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static ProfileTextPendingModeration? fromJson(dynamic value) {
+  static NotificationId? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -54,25 +48,24 @@ class ProfileTextPendingModeration {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "ProfileTextPendingModeration[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "ProfileTextPendingModeration[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "NotificationId[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "NotificationId[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return ProfileTextPendingModeration(
-        id: AccountId.fromJson(json[r'id'])!,
-        text: mapValueOfType<String>(json, r'text')!,
+      return NotificationId(
+        id: mapValueOfType<int>(json, r'id')!,
       );
     }
     return null;
   }
 
-  static List<ProfileTextPendingModeration> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <ProfileTextPendingModeration>[];
+  static List<NotificationId> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <NotificationId>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = ProfileTextPendingModeration.fromJson(row);
+        final value = NotificationId.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -81,12 +74,12 @@ class ProfileTextPendingModeration {
     return result.toList(growable: growable);
   }
 
-  static Map<String, ProfileTextPendingModeration> mapFromJson(dynamic json) {
-    final map = <String, ProfileTextPendingModeration>{};
+  static Map<String, NotificationId> mapFromJson(dynamic json) {
+    final map = <String, NotificationId>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = ProfileTextPendingModeration.fromJson(entry.value);
+        final value = NotificationId.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -95,14 +88,14 @@ class ProfileTextPendingModeration {
     return map;
   }
 
-  // maps a json object with a list of ProfileTextPendingModeration-objects as value to a dart map
-  static Map<String, List<ProfileTextPendingModeration>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<ProfileTextPendingModeration>>{};
+  // maps a json object with a list of NotificationId-objects as value to a dart map
+  static Map<String, List<NotificationId>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<NotificationId>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = ProfileTextPendingModeration.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = NotificationId.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;
@@ -111,7 +104,6 @@ class ProfileTextPendingModeration {
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
     'id',
-    'text',
   };
 }
 

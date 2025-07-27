@@ -14,33 +14,33 @@ class CustomReportTranslation {
   /// Returns a new [CustomReportTranslation] instance.
   CustomReportTranslation({
     required this.key,
-    required this.value,
+    required this.name,
   });
 
   /// Custom report name.
   String key;
 
   /// Translated text.
-  String value;
+  String name;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is CustomReportTranslation &&
     other.key == key &&
-    other.value == value;
+    other.name == name;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (key.hashCode) +
-    (value.hashCode);
+    (name.hashCode);
 
   @override
-  String toString() => 'CustomReportTranslation[key=$key, value=$value]';
+  String toString() => 'CustomReportTranslation[key=$key, name=$name]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'key'] = this.key;
-      json[r'value'] = this.value;
+      json[r'name'] = this.name;
     return json;
   }
 
@@ -64,7 +64,7 @@ class CustomReportTranslation {
 
       return CustomReportTranslation(
         key: mapValueOfType<String>(json, r'key')!,
-        value: mapValueOfType<String>(json, r'value')!,
+        name: mapValueOfType<String>(json, r'name')!,
       );
     }
     return null;
@@ -113,7 +113,7 @@ class CustomReportTranslation {
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
     'key',
-    'value',
+    'name',
   };
 }
 

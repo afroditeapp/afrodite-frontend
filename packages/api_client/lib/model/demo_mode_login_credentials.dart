@@ -10,42 +10,42 @@
 
 part of openapi.api;
 
-class DemoModeConfirmLogin {
-  /// Returns a new [DemoModeConfirmLogin] instance.
-  DemoModeConfirmLogin({
+class DemoModeLoginCredentials {
+  /// Returns a new [DemoModeLoginCredentials] instance.
+  DemoModeLoginCredentials({
     required this.password,
-    required this.token,
+    required this.username,
   });
 
-  DemoModePassword password;
+  String password;
 
-  DemoModeLoginToken token;
+  String username;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is DemoModeConfirmLogin &&
+  bool operator ==(Object other) => identical(this, other) || other is DemoModeLoginCredentials &&
     other.password == password &&
-    other.token == token;
+    other.username == username;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (password.hashCode) +
-    (token.hashCode);
+    (username.hashCode);
 
   @override
-  String toString() => 'DemoModeConfirmLogin[password=$password, token=$token]';
+  String toString() => 'DemoModeLoginCredentials[password=$password, username=$username]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'password'] = this.password;
-      json[r'token'] = this.token;
+      json[r'username'] = this.username;
     return json;
   }
 
-  /// Returns a new [DemoModeConfirmLogin] instance and imports its values from
+  /// Returns a new [DemoModeLoginCredentials] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static DemoModeConfirmLogin? fromJson(dynamic value) {
+  static DemoModeLoginCredentials? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -54,25 +54,25 @@ class DemoModeConfirmLogin {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "DemoModeConfirmLogin[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "DemoModeConfirmLogin[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "DemoModeLoginCredentials[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "DemoModeLoginCredentials[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return DemoModeConfirmLogin(
-        password: DemoModePassword.fromJson(json[r'password'])!,
-        token: DemoModeLoginToken.fromJson(json[r'token'])!,
+      return DemoModeLoginCredentials(
+        password: mapValueOfType<String>(json, r'password')!,
+        username: mapValueOfType<String>(json, r'username')!,
       );
     }
     return null;
   }
 
-  static List<DemoModeConfirmLogin> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <DemoModeConfirmLogin>[];
+  static List<DemoModeLoginCredentials> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <DemoModeLoginCredentials>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = DemoModeConfirmLogin.fromJson(row);
+        final value = DemoModeLoginCredentials.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -81,12 +81,12 @@ class DemoModeConfirmLogin {
     return result.toList(growable: growable);
   }
 
-  static Map<String, DemoModeConfirmLogin> mapFromJson(dynamic json) {
-    final map = <String, DemoModeConfirmLogin>{};
+  static Map<String, DemoModeLoginCredentials> mapFromJson(dynamic json) {
+    final map = <String, DemoModeLoginCredentials>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = DemoModeConfirmLogin.fromJson(entry.value);
+        final value = DemoModeLoginCredentials.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -95,14 +95,14 @@ class DemoModeConfirmLogin {
     return map;
   }
 
-  // maps a json object with a list of DemoModeConfirmLogin-objects as value to a dart map
-  static Map<String, List<DemoModeConfirmLogin>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<DemoModeConfirmLogin>>{};
+  // maps a json object with a list of DemoModeLoginCredentials-objects as value to a dart map
+  static Map<String, List<DemoModeLoginCredentials>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<DemoModeLoginCredentials>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = DemoModeConfirmLogin.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = DemoModeLoginCredentials.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;
@@ -111,7 +111,7 @@ class DemoModeConfirmLogin {
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
     'password',
-    'token',
+    'username',
   };
 }
 

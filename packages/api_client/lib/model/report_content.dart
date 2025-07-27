@@ -14,15 +14,12 @@ class ReportContent {
   /// Returns a new [ReportContent] instance.
   ReportContent({
     this.chatMessage,
-    this.customReport,
     this.profileContent,
     this.profileName,
     this.profileText,
   });
 
   ChatMessageReport? chatMessage;
-
-  CustomReportContent? customReport;
 
   ContentId? profileContent;
 
@@ -33,7 +30,6 @@ class ReportContent {
   @override
   bool operator ==(Object other) => identical(this, other) || other is ReportContent &&
     other.chatMessage == chatMessage &&
-    other.customReport == customReport &&
     other.profileContent == profileContent &&
     other.profileName == profileName &&
     other.profileText == profileText;
@@ -42,13 +38,12 @@ class ReportContent {
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (chatMessage == null ? 0 : chatMessage!.hashCode) +
-    (customReport == null ? 0 : customReport!.hashCode) +
     (profileContent == null ? 0 : profileContent!.hashCode) +
     (profileName == null ? 0 : profileName!.hashCode) +
     (profileText == null ? 0 : profileText!.hashCode);
 
   @override
-  String toString() => 'ReportContent[chatMessage=$chatMessage, customReport=$customReport, profileContent=$profileContent, profileName=$profileName, profileText=$profileText]';
+  String toString() => 'ReportContent[chatMessage=$chatMessage, profileContent=$profileContent, profileName=$profileName, profileText=$profileText]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -56,11 +51,6 @@ class ReportContent {
       json[r'chat_message'] = this.chatMessage;
     } else {
       json[r'chat_message'] = null;
-    }
-    if (this.customReport != null) {
-      json[r'custom_report'] = this.customReport;
-    } else {
-      json[r'custom_report'] = null;
     }
     if (this.profileContent != null) {
       json[r'profile_content'] = this.profileContent;
@@ -100,7 +90,6 @@ class ReportContent {
 
       return ReportContent(
         chatMessage: ChatMessageReport.fromJson(json[r'chat_message']),
-        customReport: CustomReportContent.fromJson(json[r'custom_report']),
         profileContent: ContentId.fromJson(json[r'profile_content']),
         profileName: mapValueOfType<String>(json, r'profile_name'),
         profileText: mapValueOfType<String>(json, r'profile_text'),

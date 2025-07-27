@@ -11,7 +11,7 @@ const NOTIFICATION_PERMISSION_ASKED_DEFAULT = false;
 
 class Common extends Table {
   IntColumn get id => integer().autoIncrement()();
-  TextColumn get demoAccountUserId => text().nullable()();
+  TextColumn get demoAccountUsername => text().nullable()();
   TextColumn get demoAccountPassword => text().nullable()();
   TextColumn get demoAccountToken => text().nullable()();
   BlobColumn get imageEncryptionKey => blob().nullable()();
@@ -35,11 +35,11 @@ class CommonDatabase extends _$CommonDatabase {
   @override
   int get schemaVersion => 1;
 
-  Future<void> updateDemoAccountUserId(String? userId) async {
+  Future<void> updateDemoAccountUsername(String? username) async {
     await into(common).insertOnConflictUpdate(
       CommonCompanion.insert(
         id: COMMON_DB_DATA_ID,
-        demoAccountUserId: Value(userId),
+        demoAccountUsername: Value(username),
       ),
     );
   }
@@ -89,8 +89,8 @@ class CommonDatabase extends _$CommonDatabase {
     );
   }
 
-  Stream<String?> watchDemoAccountUserId() =>
-    watchColumn((r) => r.demoAccountUserId);
+  Stream<String?> watchDemoAccountUsername() =>
+    watchColumn((r) => r.demoAccountUsername);
 
   Stream<String?> watchDemoAccountPassword() =>
     watchColumn((r) => r.demoAccountPassword);

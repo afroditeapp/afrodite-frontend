@@ -74,9 +74,8 @@ Class | Method | HTTP request | Description
 *AccountApi* | [**postAccountData**](doc//AccountApi.md#postaccountdata) | **POST** /account_api/account_data | Set changeable user information to account.
 *AccountApi* | [**postAccountSetup**](doc//AccountApi.md#postaccountsetup) | **POST** /account_api/account_setup | Setup non-changeable user information during `initial setup` state.
 *AccountApi* | [**postCompleteSetup**](doc//AccountApi.md#postcompletesetup) | **POST** /account_api/complete_setup | Complete initial setup.
-*AccountApi* | [**postCustomReportBoolean**](doc//AccountApi.md#postcustomreportboolean) | **POST** /account_api/custom_report_boolean | Send custom report
+*AccountApi* | [**postCustomReportEmpty**](doc//AccountApi.md#postcustomreportempty) | **POST** /account_api/custom_report_empty | Send custom report without any content
 *AccountApi* | [**postDemoModeAccessibleAccounts**](doc//AccountApi.md#postdemomodeaccessibleaccounts) | **POST** /account_api/demo_mode_accessible_accounts | Get demo account's available accounts.
-*AccountApi* | [**postDemoModeConfirmLogin**](doc//AccountApi.md#postdemomodeconfirmlogin) | **POST** /account_api/demo_mode_confirm_login | 
 *AccountApi* | [**postDemoModeLogin**](doc//AccountApi.md#postdemomodelogin) | **POST** /account_api/demo_mode_login | Access demo mode, which allows accessing all or specific accounts depending on the server configuration.
 *AccountApi* | [**postDemoModeLoginToAccount**](doc//AccountApi.md#postdemomodelogintoaccount) | **POST** /account_api/demo_mode_login_to_account | 
 *AccountApi* | [**postDemoModeLogout**](doc//AccountApi.md#postdemomodelogout) | **POST** /account_api/demo_mode_logout | 
@@ -184,9 +183,9 @@ Class | Method | HTTP request | Description
 *MediaApi* | [**putContentToContentSlot**](doc//MediaApi.md#putcontenttocontentslot) | **PUT** /media_api/content_slot/{slot_id} | Upload content to server. The content is saved to content processing slot when account state is [model::AccountState::InitialSetup]. In other states the slot number is ignored and content goes directly to moderation.
 *MediaApi* | [**putProfileContent**](doc//MediaApi.md#putprofilecontent) | **PUT** /media_api/profile_content | Set new profile content for current account.
 *MediaApi* | [**putSecurityContentInfo**](doc//MediaApi.md#putsecuritycontentinfo) | **PUT** /media_api/security_content_info | Set current security content for current account.
-*MediaAdminApi* | [**getProfileContentPendingModerationList**](doc//MediaAdminApi.md#getprofilecontentpendingmoderationlist) | **GET** /media_api/profile_content_pending_moderation | Get first page of pending profile content moderations. Oldest item is first and count 25.
+*MediaAdminApi* | [**getMediaContentPendingModerationList**](doc//MediaAdminApi.md#getmediacontentpendingmoderationlist) | **GET** /media_api/media_content_pending_moderation | Get first page of pending media content moderations. Oldest item is first and count 25.
 *MediaAdminApi* | [**postMediaContentFaceDetectedValue**](doc//MediaAdminApi.md#postmediacontentfacedetectedvalue) | **POST** /media_api/media_content_face_detected_value | Change media content face detected value
-*MediaAdminApi* | [**postModerateProfileContent**](doc//MediaAdminApi.md#postmoderateprofilecontent) | **POST** /media_api/moderate_profile_content | Rejected category and details can be set only when the content is rejected.
+*MediaAdminApi* | [**postModerateMediaContent**](doc//MediaAdminApi.md#postmoderatemediacontent) | **POST** /media_api/moderate_media_content | Rejected category and details can be set only when the content is rejected.
 *ProfileApi* | [**deleteFavoriteProfile**](doc//ProfileApi.md#deletefavoriteprofile) | **DELETE** /profile_api/favorite_profile | Delete favorite profile
 *ProfileApi* | [**getFavoriteProfiles**](doc//ProfileApi.md#getfavoriteprofiles) | **GET** /profile_api/favorite_profiles | Get list of all favorite profiles.
 *ProfileApi* | [**getInitialProfileAgeInfo**](doc//ProfileApi.md#getinitialprofileageinfo) | **GET** /profile_api/initial_profile_age_info | Get initial profile age information which can be used for calculating current accepted profile ages.
@@ -204,10 +203,10 @@ Class | Method | HTTP request | Description
 *ProfileApi* | [**postFavoriteProfile**](doc//ProfileApi.md#postfavoriteprofile) | **POST** /profile_api/favorite_profile | Add new favorite profile
 *ProfileApi* | [**postGetAutomaticProfileSearchCompletedNotification**](doc//ProfileApi.md#postgetautomaticprofilesearchcompletednotification) | **POST** /profile_api/automatic_profile_search_completed_notification | 
 *ProfileApi* | [**postGetNextProfilePage**](doc//ProfileApi.md#postgetnextprofilepage) | **POST** /profile_api/page/next | Post (updates iterator) to get next page of profile list.
-*ProfileApi* | [**postGetProfileTextModerationCompletedNotification**](doc//ProfileApi.md#postgetprofiletextmoderationcompletednotification) | **POST** /profile_api/profile_text_moderation_completed_notification | Get profile text moderation completed notification.
+*ProfileApi* | [**postGetProfileStringModerationCompletedNotification**](doc//ProfileApi.md#postgetprofilestringmoderationcompletednotification) | **POST** /profile_api/profile_string_moderation_completed_notification | Get profile string moderation completed notification.
 *ProfileApi* | [**postGetQueryAvailableProfileAttributes**](doc//ProfileApi.md#postgetqueryavailableprofileattributes) | **POST** /profile_api/query_available_profile_attributes | Query profile attributes using attribute ID list.
 *ProfileApi* | [**postMarkAutomaticProfileSearchCompletedNotificationViewed**](doc//ProfileApi.md#postmarkautomaticprofilesearchcompletednotificationviewed) | **POST** /profile_api/mark_automatic_profile_search_completed_notification_viewed | The viewed values must be updated to prevent WebSocket code from sending unnecessary event about new notification.
-*ProfileApi* | [**postMarkProfileTextModerationCompletedNotificationViewed**](doc//ProfileApi.md#postmarkprofiletextmoderationcompletednotificationviewed) | **POST** /profile_api/mark_profile_text_moderation_completed_notification_viewed | The viewed values must be updated to prevent WebSocket code from sending unnecessary event about new notification.
+*ProfileApi* | [**postMarkProfileStringModerationCompletedNotificationViewed**](doc//ProfileApi.md#postmarkprofilestringmoderationcompletednotificationviewed) | **POST** /profile_api/mark_profile_string_moderation_completed_notification_viewed | The viewed values must be updated to prevent WebSocket code from sending unnecessary event about new notification.
 *ProfileApi* | [**postProfile**](doc//ProfileApi.md#postprofile) | **POST** /profile_api/profile | Update profile information.
 *ProfileApi* | [**postProfileAppNotificationSettings**](doc//ProfileApi.md#postprofileappnotificationsettings) | **POST** /profile_api/post_profile_app_notification_settings | 
 *ProfileApi* | [**postProfileFilteringSettings**](doc//ProfileApi.md#postprofilefilteringsettings) | **POST** /profile_api/profile_filtering_settings | Set profile filtering settings.
@@ -221,13 +220,10 @@ Class | Method | HTTP request | Description
 *ProfileAdminApi* | [**getAdminProfileIteratorPage**](doc//ProfileAdminApi.md#getadminprofileiteratorpage) | **GET** /profile_api/get_admin_profile_iterator_page | Get admin profile iterator page
 *ProfileAdminApi* | [**getLatestCreatedAccountIdDb**](doc//ProfileAdminApi.md#getlatestcreatedaccountiddb) | **GET** /profile_api/get_latest_created_account_id_db | Get latest created account ID DB
 *ProfileAdminApi* | [**getProfileAgeAndName**](doc//ProfileAdminApi.md#getprofileageandname) | **GET** /profile_api/get_profile_age_and_name/{aid} | Get profile age and name
-*ProfileAdminApi* | [**getProfileNamePendingModerationList**](doc//ProfileAdminApi.md#getprofilenamependingmoderationlist) | **GET** /profile_api/profile_name_pending_moderation | 
-*ProfileAdminApi* | [**getProfileNameState**](doc//ProfileAdminApi.md#getprofilenamestate) | **GET** /profile_api/get_profile_name_state/{aid} | Get profile name state
 *ProfileAdminApi* | [**getProfileStatisticsHistory**](doc//ProfileAdminApi.md#getprofilestatisticshistory) | **GET** /profile_api/profile_statistics_history | 
-*ProfileAdminApi* | [**getProfileTextPendingModerationList**](doc//ProfileAdminApi.md#getprofiletextpendingmoderationlist) | **GET** /profile_api/profile_text_pending_moderation | Get first page of pending profile text moderations. Oldest item is first and count 25.
-*ProfileAdminApi* | [**getProfileTextState**](doc//ProfileAdminApi.md#getprofiletextstate) | **GET** /profile_api/get_profile_text_state/{aid} | Get profile text state
-*ProfileAdminApi* | [**postModerateProfileName**](doc//ProfileAdminApi.md#postmoderateprofilename) | **POST** /profile_api/moderate_profile_name | 
-*ProfileAdminApi* | [**postModerateProfileText**](doc//ProfileAdminApi.md#postmoderateprofiletext) | **POST** /profile_api/moderate_profile_text | Rejected category and details can be set only when the text is rejected.
+*ProfileAdminApi* | [**getProfileStringPendingModerationList**](doc//ProfileAdminApi.md#getprofilestringpendingmoderationlist) | **GET** /profile_api/profile_string_pending_moderation | Get first page of pending profile string moderations. Oldest item is first and count 25.
+*ProfileAdminApi* | [**getProfileStringState**](doc//ProfileAdminApi.md#getprofilestringstate) | **GET** /profile_api/get_profile_string_state/{aid} | Get profile string state
+*ProfileAdminApi* | [**postModerateProfileString**](doc//ProfileAdminApi.md#postmoderateprofilestring) | **POST** /profile_api/moderate_profile_string | Rejected category and details can be set only when [PostModerateProfileString::value] is rejected.
 *ProfileAdminApi* | [**postSetProfileName**](doc//ProfileAdminApi.md#postsetprofilename) | **POST** /profile_api/set_profile_name | Set profile name
 
 
@@ -258,6 +254,7 @@ Class | Method | HTTP request | Description
  - [AttributeOrderMode](doc//AttributeOrderMode.md)
  - [AttributeValue](doc//AttributeValue.md)
  - [AttributeValueOrderMode](doc//AttributeValueOrderMode.md)
+ - [AttributionConfig](doc//AttributionConfig.md)
  - [AuthPair](doc//AuthPair.md)
  - [AutomaticProfileSearchCompletedNotification](doc//AutomaticProfileSearchCompletedNotification.md)
  - [AutomaticProfileSearchCompletedNotificationViewed](doc//AutomaticProfileSearchCompletedNotificationViewed.md)
@@ -296,7 +293,6 @@ Class | Method | HTTP request | Description
  - [ConversationId](doc//ConversationId.md)
  - [CurrentAccountInteractionState](doc//CurrentAccountInteractionState.md)
  - [CustomReport](doc//CustomReport.md)
- - [CustomReportContent](doc//CustomReportContent.md)
  - [CustomReportLanguage](doc//CustomReportLanguage.md)
  - [CustomReportTranslation](doc//CustomReportTranslation.md)
  - [CustomReportType](doc//CustomReportType.md)
@@ -306,12 +302,9 @@ Class | Method | HTTP request | Description
  - [DailyLikesLeft](doc//DailyLikesLeft.md)
  - [DailyLikesLeftSyncVersion](doc//DailyLikesLeftSyncVersion.md)
  - [DeleteLikeResult](doc//DeleteLikeResult.md)
- - [DemoModeConfirmLogin](doc//DemoModeConfirmLogin.md)
- - [DemoModeConfirmLoginResult](doc//DemoModeConfirmLoginResult.md)
+ - [DemoModeLoginCredentials](doc//DemoModeLoginCredentials.md)
  - [DemoModeLoginResult](doc//DemoModeLoginResult.md)
  - [DemoModeLoginToAccount](doc//DemoModeLoginToAccount.md)
- - [DemoModeLoginToken](doc//DemoModeLoginToken.md)
- - [DemoModePassword](doc//DemoModePassword.md)
  - [DemoModeToken](doc//DemoModeToken.md)
  - [EventToClient](doc//EventToClient.md)
  - [EventType](doc//EventType.md)
@@ -334,21 +327,19 @@ Class | Method | HTTP request | Description
  - [GetIpAddressStatisticsResult](doc//GetIpAddressStatisticsResult.md)
  - [GetIpAddressStatisticsSettings](doc//GetIpAddressStatisticsSettings.md)
  - [GetLatestPublicKeyId](doc//GetLatestPublicKeyId.md)
+ - [GetMediaContentPendingModerationList](doc//GetMediaContentPendingModerationList.md)
  - [GetMediaContentResult](doc//GetMediaContentResult.md)
  - [GetMyProfileResult](doc//GetMyProfileResult.md)
  - [GetNewsItemResult](doc//GetNewsItemResult.md)
  - [GetPrivatePublicKeyInfo](doc//GetPrivatePublicKeyInfo.md)
  - [GetProfileAgeAndName](doc//GetProfileAgeAndName.md)
- - [GetProfileContentPendingModerationList](doc//GetProfileContentPendingModerationList.md)
  - [GetProfileContentResult](doc//GetProfileContentResult.md)
  - [GetProfileFilteringSettings](doc//GetProfileFilteringSettings.md)
- - [GetProfileNamePendingModerationList](doc//GetProfileNamePendingModerationList.md)
- - [GetProfileNameState](doc//GetProfileNameState.md)
  - [GetProfileResult](doc//GetProfileResult.md)
  - [GetProfileStatisticsHistoryResult](doc//GetProfileStatisticsHistoryResult.md)
  - [GetProfileStatisticsResult](doc//GetProfileStatisticsResult.md)
- - [GetProfileTextPendingModerationList](doc//GetProfileTextPendingModerationList.md)
- - [GetProfileTextState](doc//GetProfileTextState.md)
+ - [GetProfileStringPendingModerationList](doc//GetProfileStringPendingModerationList.md)
+ - [GetProfileStringState](doc//GetProfileStringState.md)
  - [GetReportList](doc//GetReportList.md)
  - [GetSentMessage](doc//GetSentMessage.md)
  - [GetVideoCallUrlsResult](doc//GetVideoCallUrlsResult.md)
@@ -376,6 +367,9 @@ Class | Method | HTTP request | Description
  - [MediaAppNotificationSettings](doc//MediaAppNotificationSettings.md)
  - [MediaContentModerationCompletedNotification](doc//MediaContentModerationCompletedNotification.md)
  - [MediaContentModerationCompletedNotificationViewed](doc//MediaContentModerationCompletedNotificationViewed.md)
+ - [MediaContentModerationRejectedReasonCategory](doc//MediaContentModerationRejectedReasonCategory.md)
+ - [MediaContentModerationRejectedReasonDetails](doc//MediaContentModerationRejectedReasonDetails.md)
+ - [MediaContentPendingModeration](doc//MediaContentPendingModeration.md)
  - [MediaContentSyncVersion](doc//MediaContentSyncVersion.md)
  - [MediaContentType](doc//MediaContentType.md)
  - [MessageId](doc//MessageId.md)
@@ -386,6 +380,7 @@ Class | Method | HTTP request | Description
  - [NewMessageNotificationList](doc//NewMessageNotificationList.md)
  - [NewReceivedLikesCount](doc//NewReceivedLikesCount.md)
  - [NewReceivedLikesCountResult](doc//NewReceivedLikesCountResult.md)
+ - [NewsConfig](doc//NewsConfig.md)
  - [NewsId](doc//NewsId.md)
  - [NewsItem](doc//NewsItem.md)
  - [NewsItemSimple](doc//NewsItemSimple.md)
@@ -393,6 +388,9 @@ Class | Method | HTTP request | Description
  - [NewsPage](doc//NewsPage.md)
  - [NewsSyncVersion](doc//NewsSyncVersion.md)
  - [NewsTranslationVersion](doc//NewsTranslationVersion.md)
+ - [NotificationId](doc//NotificationId.md)
+ - [NotificationIdViewed](doc//NotificationIdViewed.md)
+ - [NotificationStatus](doc//NotificationStatus.md)
  - [PageItemCountForNewLikes](doc//PageItemCountForNewLikes.md)
  - [PageItemCountForNewPublicNews](doc//PageItemCountForNewPublicNews.md)
  - [PendingMessageAcknowledgementList](doc//PendingMessageAcknowledgementList.md)
@@ -405,9 +403,8 @@ Class | Method | HTTP request | Description
  - [PerfMetricValues](doc//PerfMetricValues.md)
  - [Permissions](doc//Permissions.md)
  - [PostMediaContentFaceDetectedValue](doc//PostMediaContentFaceDetectedValue.md)
- - [PostModerateProfileContent](doc//PostModerateProfileContent.md)
- - [PostModerateProfileName](doc//PostModerateProfileName.md)
- - [PostModerateProfileText](doc//PostModerateProfileText.md)
+ - [PostModerateMediaContent](doc//PostModerateMediaContent.md)
+ - [PostModerateProfileString](doc//PostModerateProfileString.md)
  - [ProcessReport](doc//ProcessReport.md)
  - [Profile](doc//Profile.md)
  - [ProfileAgeCounts](doc//ProfileAgeCounts.md)
@@ -422,9 +419,6 @@ Class | Method | HTTP request | Description
  - [ProfileAttributeValue](doc//ProfileAttributeValue.md)
  - [ProfileAttributeValueUpdate](doc//ProfileAttributeValueUpdate.md)
  - [ProfileContent](doc//ProfileContent.md)
- - [ProfileContentModerationRejectedReasonCategory](doc//ProfileContentModerationRejectedReasonCategory.md)
- - [ProfileContentModerationRejectedReasonDetails](doc//ProfileContentModerationRejectedReasonDetails.md)
- - [ProfileContentPendingModeration](doc//ProfileContentPendingModeration.md)
  - [ProfileContentVersion](doc//ProfileContentVersion.md)
  - [ProfileCreatedTimeFilter](doc//ProfileCreatedTimeFilter.md)
  - [ProfileEditedTimeFilter](doc//ProfileEditedTimeFilter.md)
@@ -433,22 +427,21 @@ Class | Method | HTTP request | Description
  - [ProfileIteratorPageValue](doc//ProfileIteratorPageValue.md)
  - [ProfileIteratorSessionId](doc//ProfileIteratorSessionId.md)
  - [ProfileLink](doc//ProfileLink.md)
- - [ProfileNameModerationState](doc//ProfileNameModerationState.md)
- - [ProfileNamePendingModeration](doc//ProfileNamePendingModeration.md)
  - [ProfilePage](doc//ProfilePage.md)
  - [ProfileSearchAgeRange](doc//ProfileSearchAgeRange.md)
  - [ProfileStatisticsHistoryValue](doc//ProfileStatisticsHistoryValue.md)
  - [ProfileStatisticsHistoryValueType](doc//ProfileStatisticsHistoryValueType.md)
+ - [ProfileStringModerationCompletedNotification](doc//ProfileStringModerationCompletedNotification.md)
+ - [ProfileStringModerationCompletedNotificationViewed](doc//ProfileStringModerationCompletedNotificationViewed.md)
+ - [ProfileStringModerationContentType](doc//ProfileStringModerationContentType.md)
+ - [ProfileStringModerationInfo](doc//ProfileStringModerationInfo.md)
+ - [ProfileStringModerationRejectedReasonCategory](doc//ProfileStringModerationRejectedReasonCategory.md)
+ - [ProfileStringModerationRejectedReasonDetails](doc//ProfileStringModerationRejectedReasonDetails.md)
+ - [ProfileStringModerationState](doc//ProfileStringModerationState.md)
+ - [ProfileStringPendingModeration](doc//ProfileStringPendingModeration.md)
  - [ProfileSyncVersion](doc//ProfileSyncVersion.md)
  - [ProfileTextMaxCharactersFilter](doc//ProfileTextMaxCharactersFilter.md)
  - [ProfileTextMinCharactersFilter](doc//ProfileTextMinCharactersFilter.md)
- - [ProfileTextModerationCompletedNotification](doc//ProfileTextModerationCompletedNotification.md)
- - [ProfileTextModerationCompletedNotificationViewed](doc//ProfileTextModerationCompletedNotificationViewed.md)
- - [ProfileTextModerationInfo](doc//ProfileTextModerationInfo.md)
- - [ProfileTextModerationRejectedReasonCategory](doc//ProfileTextModerationRejectedReasonCategory.md)
- - [ProfileTextModerationRejectedReasonDetails](doc//ProfileTextModerationRejectedReasonDetails.md)
- - [ProfileTextModerationState](doc//ProfileTextModerationState.md)
- - [ProfileTextPendingModeration](doc//ProfileTextPendingModeration.md)
  - [ProfileUpdate](doc//ProfileUpdate.md)
  - [ProfileVersion](doc//ProfileVersion.md)
  - [ProfileVisibility](doc//ProfileVisibility.md)
@@ -495,6 +488,7 @@ Class | Method | HTTP request | Description
  - [SoftwareUpdateState](doc//SoftwareUpdateState.md)
  - [SoftwareUpdateStatus](doc//SoftwareUpdateStatus.md)
  - [StatisticsProfileVisibility](doc//StatisticsProfileVisibility.md)
+ - [StringResource](doc//StringResource.md)
  - [SyncVersion](doc//SyncVersion.md)
  - [SystemInfo](doc//SystemInfo.md)
  - [TimeGranularity](doc//TimeGranularity.md)
@@ -503,7 +497,7 @@ Class | Method | HTTP request | Description
  - [UnreadNewsCount](doc//UnreadNewsCount.md)
  - [UnreadNewsCountResult](doc//UnreadNewsCountResult.md)
  - [UpdateChatMessageReport](doc//UpdateChatMessageReport.md)
- - [UpdateCustomReportBoolean](doc//UpdateCustomReportBoolean.md)
+ - [UpdateCustomReportEmpty](doc//UpdateCustomReportEmpty.md)
  - [UpdateNewsTranslation](doc//UpdateNewsTranslation.md)
  - [UpdateNewsTranslationResult](doc//UpdateNewsTranslationResult.md)
  - [UpdateProfileContentReport](doc//UpdateProfileContentReport.md)

@@ -44,7 +44,7 @@ class NotificationMessageReceived extends AppSingletonNoInit {
     }
   }
 
-  Future<void> _showNotification(AccountId account, NotificationId id, int count, ConversationId conversationId, AccountBackgroundDatabaseManager accountBackgroundDb) async {
+  Future<void> _showNotification(AccountId account, LocalNotificationId id, int count, ConversationId conversationId, AccountBackgroundDatabaseManager accountBackgroundDb) async {
     final profileTitle = await accountBackgroundDb.profileData((db) => db.getProfileTitle(account)).ok();
 
     final String title;

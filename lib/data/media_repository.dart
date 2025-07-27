@@ -5,6 +5,7 @@ import 'dart:async';
 
 import 'package:app/data/general/notification/state/media_content_moderation_completed.dart';
 import 'package:app/database/account_background_database_manager.dart';
+import 'package:app/utils/api.dart';
 import 'package:drift/drift.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
@@ -136,7 +137,11 @@ class MediaRepository extends DataRepositoryWithLifecycle {
 
     await NotificationMediaContentModerationCompleted.handleMediaContentModerationCompleted(notification, accountBackgroundDb);
 
-    final viewed = MediaContentModerationCompletedNotificationViewed(accepted: notification.accepted, rejected: notification.rejected);
+    final viewed = MediaContentModerationCompletedNotificationViewed(
+      accepted: notification.accepted.id.toViewed(),
+      rejected: notification.rejected.id.toViewed(),
+      deleted: notification.deleted.id.toViewed(),
+    );
     await api.mediaAction((api) => api.postMarkMediaContentModerationCompletedNotificationViewed(viewed))
       .andThen((_) => accountBackgroundDb.accountData(
         (db) => db.daoMediaContentModerationCompletedNotificationTable.updateViewedValues(viewed)

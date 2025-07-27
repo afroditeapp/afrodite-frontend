@@ -23,13 +23,11 @@ class ReportProcessingState {
 
   String toJson() => value;
 
-  static const empty = ReportProcessingState._(r'Empty');
   static const waiting = ReportProcessingState._(r'Waiting');
   static const done = ReportProcessingState._(r'Done');
 
   /// List of all possible values in this [enum][ReportProcessingState].
   static const values = <ReportProcessingState>[
-    empty,
     waiting,
     done,
   ];
@@ -70,7 +68,6 @@ class ReportProcessingStateTypeTransformer {
   ReportProcessingState? decode(dynamic data, {bool allowNull = true}) {
     if (data != null) {
       switch (data) {
-        case r'Empty': return ReportProcessingState.empty;
         case r'Waiting': return ReportProcessingState.waiting;
         case r'Done': return ReportProcessingState.done;
         default:

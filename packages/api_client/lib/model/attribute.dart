@@ -50,7 +50,7 @@ class Attribute {
   /// Mode of the attribute.
   AttributeMode mode;
 
-  /// English text for the attribute.
+  /// Default name for the attribute if translated value is not available.
   String name;
 
   /// Attribute order number.

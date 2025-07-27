@@ -12,38 +12,38 @@ import 'package:app/utils/result.dart';
 import 'package:openapi/api.dart';
 import 'package:utils/utils.dart';
 
-class NotificationProfileTextModerationCompleted extends AppSingletonNoInit {
-  NotificationProfileTextModerationCompleted._();
-  static final _instance = NotificationProfileTextModerationCompleted._();
-  factory NotificationProfileTextModerationCompleted.getInstance() {
+class NotificationProfileStringModerationCompleted extends AppSingletonNoInit {
+  NotificationProfileStringModerationCompleted._();
+  static final _instance = NotificationProfileStringModerationCompleted._();
+  factory NotificationProfileStringModerationCompleted.getInstance() {
     return _instance;
   }
 
   final notifications = NotificationManager.getInstance();
 
-  static Future<void> handleProfileTextModerationCompleted(
-    ProfileTextModerationCompletedNotification notification,
+  static Future<void> handleProfileStringModerationCompleted(
+    ProfileStringModerationCompletedNotification notification,
     AccountBackgroundDatabaseManager accountBackgroundDb,
   ) async {
     final showAccepted = await accountBackgroundDb.accountData(
-      (db) => db.daoProfileTextModerationCompletedNotificationTable.shouldAcceptedNotificationBeShown(notification.accepted, notification.acceptedViewed)
+      (db) => db.daoProfileTextModerationCompletedNotificationTable.shouldAcceptedNotificationBeShown(notification.textAccepted)
     ).ok() ?? false;
 
     if (showAccepted) {
-      await NotificationProfileTextModerationCompleted.getInstance().show(ModerationCompletedState.accepted, accountBackgroundDb);
+      await NotificationProfileStringModerationCompleted.getInstance().show(ModerationCompletedState.accepted, accountBackgroundDb);
     }
 
     final showRejected = await accountBackgroundDb.accountData(
-      (db) => db.daoProfileTextModerationCompletedNotificationTable.shouldRejectedNotificationBeShown(notification.rejected, notification.rejectedViewed)
+      (db) => db.daoProfileTextModerationCompletedNotificationTable.shouldRejectedNotificationBeShown(notification.textRejected)
     ).ok() ?? false;
 
     if (showRejected) {
-      await NotificationProfileTextModerationCompleted.getInstance().show(ModerationCompletedState.rejected, accountBackgroundDb);
+      await NotificationProfileStringModerationCompleted.getInstance().show(ModerationCompletedState.rejected, accountBackgroundDb);
     }
   }
 
   Future<void> show(ModerationCompletedState state, AccountBackgroundDatabaseManager accountBackgroundDb) async {
-    final NotificationId id = switch (state) {
+    final LocalNotificationId id = switch (state) {
       ModerationCompletedState.accepted => NotificationIdStatic.profileTextModerationAccepted.id,
       ModerationCompletedState.rejected => NotificationIdStatic.profileTextModerationRejected.id,
     };

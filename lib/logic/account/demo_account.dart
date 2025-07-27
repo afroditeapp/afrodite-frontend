@@ -13,10 +13,6 @@ import "package:app/utils/result.dart";
 var log = Logger("DemoAccountBloc");
 
 abstract class DemoAccountEvent {}
-class DoDemoAccountLogin extends DemoAccountEvent {
-  final DemoAccountCredentials credentials;
-  DoDemoAccountLogin(this.credentials);
-}
 class DoDemoAccountLogout extends DemoAccountEvent {}
 class DoDemoAccountRefreshAccountList extends DemoAccountEvent {}
 class DoDemoAccountCreateNewAccount extends DemoAccountEvent {}
@@ -30,17 +26,6 @@ class DemoAccountBloc extends Bloc<DemoAccountEvent, DemoAccountBlocData> with A
 
   DemoAccountBloc() :
     super(DemoAccountBlocData()) {
-    on<DoDemoAccountLogin>((data, emit) async {
-      // Possibly prevent displaying account info from another demo account.
-      emit(state.copyWith(accounts: const UnmodifiableList.empty()));
-
-      switch (await login.demoAccountLogin(data.credentials)) {
-        case Ok():
-          null;
-        case Err():
-          showSnackBar(R.strings.login_screen_demo_account_login_failed);
-      }
-    });
     on<DoDemoAccountLogout>((_, emit) async {
       await runOnce(() async {
         emit(state.copyWith(

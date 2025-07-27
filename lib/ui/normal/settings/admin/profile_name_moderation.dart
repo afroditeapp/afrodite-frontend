@@ -168,8 +168,8 @@ class ProfileNameModerationScreenState extends State<ProfileNameModerationScreen
 
   Widget viewItem(
     BuildContext context,
-    GetProfileNamePendingModerationList item,
-    Set<ProfileNamePendingModeration> selected,
+    GetProfileStringPendingModerationList item,
+    Set<ProfileStringPendingModeration> selected,
   ) {
     return ListView.builder(
       itemCount: item.values.length,
@@ -181,11 +181,11 @@ class ProfileNameModerationScreenState extends State<ProfileNameModerationScreen
 
   Widget buildEntry(
     BuildContext context,
-    ProfileNamePendingModeration name,
-    Set<ProfileNamePendingModeration> selected,
+    ProfileStringPendingModeration name,
+    Set<ProfileStringPendingModeration> selected,
   ) {
     return ListTile(
-      title: Text(name.name),
+      title: Text(name.value),
       onTap: () {
         context.read<ProfileNameModerationBloc>().add(
           UpdateSelectedStatus(name, !selected.contains(name))

@@ -14,47 +14,37 @@ class MediaContentModerationCompletedNotification {
   /// Returns a new [MediaContentModerationCompletedNotification] instance.
   MediaContentModerationCompletedNotification({
     required this.accepted,
-    required this.acceptedViewed,
+    required this.deleted,
     required this.rejected,
-    required this.rejectedViewed,
   });
 
-  /// Wrapping notification ID
-  int accepted;
+  NotificationStatus accepted;
 
-  /// Wrapping notification ID
-  int acceptedViewed;
+  NotificationStatus deleted;
 
-  /// Wrapping notification ID
-  int rejected;
-
-  /// Wrapping notification ID
-  int rejectedViewed;
+  NotificationStatus rejected;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is MediaContentModerationCompletedNotification &&
     other.accepted == accepted &&
-    other.acceptedViewed == acceptedViewed &&
-    other.rejected == rejected &&
-    other.rejectedViewed == rejectedViewed;
+    other.deleted == deleted &&
+    other.rejected == rejected;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (accepted.hashCode) +
-    (acceptedViewed.hashCode) +
-    (rejected.hashCode) +
-    (rejectedViewed.hashCode);
+    (deleted.hashCode) +
+    (rejected.hashCode);
 
   @override
-  String toString() => 'MediaContentModerationCompletedNotification[accepted=$accepted, acceptedViewed=$acceptedViewed, rejected=$rejected, rejectedViewed=$rejectedViewed]';
+  String toString() => 'MediaContentModerationCompletedNotification[accepted=$accepted, deleted=$deleted, rejected=$rejected]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'accepted'] = this.accepted;
-      json[r'accepted_viewed'] = this.acceptedViewed;
+      json[r'deleted'] = this.deleted;
       json[r'rejected'] = this.rejected;
-      json[r'rejected_viewed'] = this.rejectedViewed;
     return json;
   }
 
@@ -77,10 +67,9 @@ class MediaContentModerationCompletedNotification {
       }());
 
       return MediaContentModerationCompletedNotification(
-        accepted: mapValueOfType<int>(json, r'accepted')!,
-        acceptedViewed: mapValueOfType<int>(json, r'accepted_viewed')!,
-        rejected: mapValueOfType<int>(json, r'rejected')!,
-        rejectedViewed: mapValueOfType<int>(json, r'rejected_viewed')!,
+        accepted: NotificationStatus.fromJson(json[r'accepted'])!,
+        deleted: NotificationStatus.fromJson(json[r'deleted'])!,
+        rejected: NotificationStatus.fromJson(json[r'rejected'])!,
       );
     }
     return null;
@@ -129,9 +118,8 @@ class MediaContentModerationCompletedNotification {
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
     'accepted',
-    'accepted_viewed',
+    'deleted',
     'rejected',
-    'rejected_viewed',
   };
 }
 

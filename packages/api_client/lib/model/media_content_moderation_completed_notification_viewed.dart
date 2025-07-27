@@ -14,32 +14,36 @@ class MediaContentModerationCompletedNotificationViewed {
   /// Returns a new [MediaContentModerationCompletedNotificationViewed] instance.
   MediaContentModerationCompletedNotificationViewed({
     required this.accepted,
+    required this.deleted,
     required this.rejected,
   });
 
-  /// Wrapping notification ID
-  int accepted;
+  NotificationIdViewed accepted;
 
-  /// Wrapping notification ID
-  int rejected;
+  NotificationIdViewed deleted;
+
+  NotificationIdViewed rejected;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is MediaContentModerationCompletedNotificationViewed &&
     other.accepted == accepted &&
+    other.deleted == deleted &&
     other.rejected == rejected;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (accepted.hashCode) +
+    (deleted.hashCode) +
     (rejected.hashCode);
 
   @override
-  String toString() => 'MediaContentModerationCompletedNotificationViewed[accepted=$accepted, rejected=$rejected]';
+  String toString() => 'MediaContentModerationCompletedNotificationViewed[accepted=$accepted, deleted=$deleted, rejected=$rejected]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'accepted'] = this.accepted;
+      json[r'deleted'] = this.deleted;
       json[r'rejected'] = this.rejected;
     return json;
   }
@@ -63,8 +67,9 @@ class MediaContentModerationCompletedNotificationViewed {
       }());
 
       return MediaContentModerationCompletedNotificationViewed(
-        accepted: mapValueOfType<int>(json, r'accepted')!,
-        rejected: mapValueOfType<int>(json, r'rejected')!,
+        accepted: NotificationIdViewed.fromJson(json[r'accepted'])!,
+        deleted: NotificationIdViewed.fromJson(json[r'deleted'])!,
+        rejected: NotificationIdViewed.fromJson(json[r'rejected'])!,
       );
     }
     return null;
@@ -113,6 +118,7 @@ class MediaContentModerationCompletedNotificationViewed {
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
     'accepted',
+    'deleted',
     'rejected',
   };
 }

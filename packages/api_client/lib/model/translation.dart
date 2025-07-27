@@ -14,33 +14,33 @@ class Translation {
   /// Returns a new [Translation] instance.
   Translation({
     required this.key,
-    required this.value,
+    required this.name,
   });
 
   /// Attribute name or attribute value key.
   String key;
 
   /// Translated text.
-  String value;
+  String name;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is Translation &&
     other.key == key &&
-    other.value == value;
+    other.name == name;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (key.hashCode) +
-    (value.hashCode);
+    (name.hashCode);
 
   @override
-  String toString() => 'Translation[key=$key, value=$value]';
+  String toString() => 'Translation[key=$key, name=$name]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'key'] = this.key;
-      json[r'value'] = this.value;
+      json[r'name'] = this.name;
     return json;
   }
 
@@ -64,7 +64,7 @@ class Translation {
 
       return Translation(
         key: mapValueOfType<String>(json, r'key')!,
-        value: mapValueOfType<String>(json, r'value')!,
+        name: mapValueOfType<String>(json, r'name')!,
       );
     }
     return null;
@@ -113,7 +113,7 @@ class Translation {
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
     'key',
-    'value',
+    'name',
   };
 }
 

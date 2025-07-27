@@ -20,10 +20,10 @@ class ModerateProfileTextsScreen extends ContentDecicionScreen<WrappedProfileTex
   );
 }
 
-class WrappedProfileTextModeration extends ProfileTextPendingModeration implements ContentInfoGetter {
+class WrappedProfileTextModeration extends ProfileStringPendingModeration implements ContentInfoGetter {
   WrappedProfileTextModeration({
     required super.id,
-    required super.text
+    required super.value
   });
 
   @override
@@ -41,14 +41,20 @@ class ProfileTextIo extends ContentIo<WrappedProfileTextModeration> {
 
   @override
   Future<Result<List<WrappedProfileTextModeration>, void>> getNextContent() async {
-    return await api.profileAdmin((api) => api.getProfileTextPendingModerationList(showTextsWhichBotsCanModerate))
-      .mapOk((v) => v.values.map((v) => WrappedProfileTextModeration(id: v.id, text: v.text)).toList());
+    return await api.profileAdmin((api) => api.getProfileStringPendingModerationList(ProfileStringModerationContentType.profileText, showTextsWhichBotsCanModerate))
+      .mapOk((v) => v.values.map((v) => WrappedProfileTextModeration(id: v.id, value: v.value)).toList());
   }
 
   @override
   Future<void> sendToServer(WrappedProfileTextModeration content, bool accept) async {
-    final info = PostModerateProfileText(accept: accept, id: content.id, text: content.text);
-    await api.profileAdminAction((api) => api.postModerateProfileText(info));
+    final info = PostModerateProfileString(
+      contentType: ProfileStringModerationContentType.profileText,
+      accept: accept,
+      id: content.id,
+      value: content.value,
+      rejectedDetails: ProfileStringModerationRejectedReasonDetails(value: ""),
+    );
+    await api.profileAdminAction((api) => api.postModerateProfileString(info));
   }
 }
 
@@ -57,7 +63,7 @@ class ProfileTextUiBuilder extends ContentUiBuilder<WrappedProfileTextModeration
   Widget buildRowContent(BuildContext context, WrappedProfileTextModeration content) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
-      child: Text(content.text),
+      child: Text(content.value),
     );
   }
 }

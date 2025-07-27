@@ -11,7 +11,7 @@ class ProfileNameModerationData with _$ProfileNameModerationData {
   factory ProfileNameModerationData({
     @Default(true) bool isLoading,
     @Default(false) bool isError,
-    GetProfileNamePendingModerationList? item,
-    @Default({}) Set<ProfileNamePendingModeration> selected,
+    GetProfileStringPendingModerationList? item,
+    @Default({}) Set<ProfileStringPendingModeration> selected,
   }) = _ProfileNameModerationData;
 }

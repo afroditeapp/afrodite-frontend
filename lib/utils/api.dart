@@ -169,3 +169,9 @@ class ProfileAppNotificationSettingsDefaults {
   static const bool filtersDefault = false;
   static const int weekdaysDefault = 0x7F;
 }
+
+extension NotificationIdExtension on NotificationId {
+  NotificationIdViewed toViewed() {
+    return NotificationIdViewed(id: id);
+  }
+}

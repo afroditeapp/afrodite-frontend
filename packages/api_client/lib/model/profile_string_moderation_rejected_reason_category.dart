@@ -10,16 +10,16 @@
 
 part of openapi.api;
 
-class ProfileTextModerationRejectedReasonCategory {
-  /// Returns a new [ProfileTextModerationRejectedReasonCategory] instance.
-  ProfileTextModerationRejectedReasonCategory({
+class ProfileStringModerationRejectedReasonCategory {
+  /// Returns a new [ProfileStringModerationRejectedReasonCategory] instance.
+  ProfileStringModerationRejectedReasonCategory({
     required this.value,
   });
 
   int value;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is ProfileTextModerationRejectedReasonCategory &&
+  bool operator ==(Object other) => identical(this, other) || other is ProfileStringModerationRejectedReasonCategory &&
     other.value == value;
 
   @override
@@ -28,7 +28,7 @@ class ProfileTextModerationRejectedReasonCategory {
     (value.hashCode);
 
   @override
-  String toString() => 'ProfileTextModerationRejectedReasonCategory[value=$value]';
+  String toString() => 'ProfileStringModerationRejectedReasonCategory[value=$value]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -36,10 +36,10 @@ class ProfileTextModerationRejectedReasonCategory {
     return json;
   }
 
-  /// Returns a new [ProfileTextModerationRejectedReasonCategory] instance and imports its values from
+  /// Returns a new [ProfileStringModerationRejectedReasonCategory] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static ProfileTextModerationRejectedReasonCategory? fromJson(dynamic value) {
+  static ProfileStringModerationRejectedReasonCategory? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -48,24 +48,24 @@ class ProfileTextModerationRejectedReasonCategory {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "ProfileTextModerationRejectedReasonCategory[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "ProfileTextModerationRejectedReasonCategory[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "ProfileStringModerationRejectedReasonCategory[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "ProfileStringModerationRejectedReasonCategory[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return ProfileTextModerationRejectedReasonCategory(
+      return ProfileStringModerationRejectedReasonCategory(
         value: mapValueOfType<int>(json, r'value')!,
       );
     }
     return null;
   }
 
-  static List<ProfileTextModerationRejectedReasonCategory> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <ProfileTextModerationRejectedReasonCategory>[];
+  static List<ProfileStringModerationRejectedReasonCategory> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <ProfileStringModerationRejectedReasonCategory>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = ProfileTextModerationRejectedReasonCategory.fromJson(row);
+        final value = ProfileStringModerationRejectedReasonCategory.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -74,12 +74,12 @@ class ProfileTextModerationRejectedReasonCategory {
     return result.toList(growable: growable);
   }
 
-  static Map<String, ProfileTextModerationRejectedReasonCategory> mapFromJson(dynamic json) {
-    final map = <String, ProfileTextModerationRejectedReasonCategory>{};
+  static Map<String, ProfileStringModerationRejectedReasonCategory> mapFromJson(dynamic json) {
+    final map = <String, ProfileStringModerationRejectedReasonCategory>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = ProfileTextModerationRejectedReasonCategory.fromJson(entry.value);
+        final value = ProfileStringModerationRejectedReasonCategory.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -88,14 +88,14 @@ class ProfileTextModerationRejectedReasonCategory {
     return map;
   }
 
-  // maps a json object with a list of ProfileTextModerationRejectedReasonCategory-objects as value to a dart map
-  static Map<String, List<ProfileTextModerationRejectedReasonCategory>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<ProfileTextModerationRejectedReasonCategory>>{};
+  // maps a json object with a list of ProfileStringModerationRejectedReasonCategory-objects as value to a dart map
+  static Map<String, List<ProfileStringModerationRejectedReasonCategory>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<ProfileStringModerationRejectedReasonCategory>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = ProfileTextModerationRejectedReasonCategory.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = ProfileStringModerationRejectedReasonCategory.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;

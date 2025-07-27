@@ -13,33 +13,26 @@ part of openapi.api;
 class FeaturesConfig {
   /// Returns a new [FeaturesConfig] instance.
   FeaturesConfig({
-    required this.news,
     required this.videoCalls,
   });
-
-  /// Enable news UI
-  bool news;
 
   /// Enable video calls
   bool videoCalls;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is FeaturesConfig &&
-    other.news == news &&
     other.videoCalls == videoCalls;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (news.hashCode) +
     (videoCalls.hashCode);
 
   @override
-  String toString() => 'FeaturesConfig[news=$news, videoCalls=$videoCalls]';
+  String toString() => 'FeaturesConfig[videoCalls=$videoCalls]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'news'] = this.news;
       json[r'video_calls'] = this.videoCalls;
     return json;
   }
@@ -63,7 +56,6 @@ class FeaturesConfig {
       }());
 
       return FeaturesConfig(
-        news: mapValueOfType<bool>(json, r'news')!,
         videoCalls: mapValueOfType<bool>(json, r'video_calls')!,
       );
     }
@@ -112,7 +104,6 @@ class FeaturesConfig {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'news',
     'video_calls',
   };
 }

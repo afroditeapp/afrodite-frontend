@@ -19,7 +19,7 @@ class DaoAutomaticProfileSearchCompletedNotificationTable extends DatabaseAccess
   DaoAutomaticProfileSearchCompletedNotificationTable(super.db);
 
   /// Returns true when notification must be shown
-  Future<bool> shouldProfilesFoundNotificationBeShown(int profilesFoundNotificationId, int viewedId) async {
+  Future<bool> shouldProfilesFoundNotificationBeShown(api.NotificationStatus profilesFound) async {
     final (current, currentViewed) = await (select(automaticProfileSearchCompletedNotificationTable)
       ..where((t) => t.id.equals(ACCOUNT_DB_DATA_ID.value))
     )
@@ -29,19 +29,19 @@ class DaoAutomaticProfileSearchCompletedNotificationTable extends DatabaseAccess
     await into(automaticProfileSearchCompletedNotificationTable).insertOnConflictUpdate(
       AutomaticProfileSearchCompletedNotificationTableCompanion.insert(
         id: ACCOUNT_DB_DATA_ID,
-        profilesFound: Value(profilesFoundNotificationId),
-        profilesFoundViewed: Value(viewedId),
+        profilesFound: Value(profilesFound.id.id),
+        profilesFoundViewed: Value(profilesFound.viewed.id),
       ),
     );
 
-    return profilesFoundNotificationId != current || currentViewed != viewedId;
+    return profilesFound.id.id != current || currentViewed != profilesFound.viewed.id;
   }
 
   Future<void> updateProfilesFoundViewed(api.AutomaticProfileSearchCompletedNotificationViewed viewed) async {
     await into(automaticProfileSearchCompletedNotificationTable).insertOnConflictUpdate(
       AutomaticProfileSearchCompletedNotificationTableCompanion.insert(
         id: ACCOUNT_DB_DATA_ID,
-        profilesFoundViewed: Value(viewed.profilesFound),
+        profilesFoundViewed: Value(viewed.profilesFound.id),
       ),
     );
   }

@@ -123,7 +123,7 @@ class ReportUiBuilder extends ContentUiBuilder<WrappedReportDetailed> {
   @override
   bool get allowRejecting => false;
 
-  static String instructions = "B = block received\nL = like received\nMnumber = match and sent messages count\n\nN = profile name\nT = profile text\nM = chat message\nB = custom report with boolean value";
+  static String instructions = "B = block received\nL = like received\nMnumber = match and sent messages count\n\nN = profile name\nT = profile text\nM = chat message\nC = custom report";
 
   @override
   Widget buildRowContent(BuildContext context, WrappedReportDetailed content) {
@@ -178,11 +178,13 @@ class ReportUiBuilder extends ContentUiBuilder<WrappedReportDetailed> {
       infoText = "";
     }
 
+    const FIRST_CUSTOM_REPORT_TYPE_NUMBER = 64;
+
     final profileName = content.content.profileName;
     final profileText = content.content.profileText;
     final profileContent = content.content.profileContent;
     final chatMessage = content.content.chatMessage;
-    final customReportBoolean = content.content.customReport?.booleanValue;
+    final customReport = content.info.reportType.n >= FIRST_CUSTOM_REPORT_TYPE_NUMBER;
     final target = content.target;
     final Widget report;
 
@@ -212,21 +214,14 @@ class ReportUiBuilder extends ContentUiBuilder<WrappedReportDetailed> {
       final message = Message.parseFromBytes(base64Decode(chatMessage.messageBase64));
       final String messageText = "\n${messageToText(context, message)}";
       report = Text("M: $senderReceiverInfo, ID: ${chatMessage.messageId.id}, $time$messageText");
-    } else if (customReportBoolean != null) {
+    } else if (customReport) {
       report = BlocBuilder<CustomReportsConfigBloc, CustomReportsConfig>(
         builder: (context, config) {
-          const FIRST_CUSTOM_REPORT_TYPE_NUMBER = 64;
           final reportId = content.info.reportType.n - FIRST_CUSTOM_REPORT_TYPE_NUMBER;
           final customReportInfo = config.report.getAtOrNull(reportId);
           if (customReportInfo != null) {
             final text = customReportInfo.translatedName(context);
-            final String falseValue;
-            if (customReportBoolean) {
-              falseValue = "";
-            } else {
-              falseValue = ", value: false";
-            }
-            return Text("B: $text$falseValue");
+            return Text("C: $text");
           } else {
             return const Text("Matching custom report type not found from config");
           }

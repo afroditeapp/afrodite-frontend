@@ -23,10 +23,6 @@ extension ContentModerationStateUiExtensions on ContentModerationState {
 extension CustomReportUiExtensions on CustomReport {
   String translatedName(BuildContext context) {
     final locale = Localizations.localeOf(context);
-    if (locale.languageCode == "en") {
-      return name;
-    }
-
     final languages = translations.where((element) => element.lang == locale.languageCode).firstOrNull;
     if (languages == null) {
       return name;
@@ -34,7 +30,7 @@ extension CustomReportUiExtensions on CustomReport {
 
     for (final t in languages.values) {
       if (t.key == key) {
-        return t.value;
+        return t.name;
       }
     }
 

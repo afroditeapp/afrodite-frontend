@@ -230,7 +230,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
         await _handlePushNotificationNewsChanged(v.newsChanged, accountBackgroundDb);
       }
       if ((v.value & 0x10) == 0x10) {
-        await _handlePushNotificationProfileTextModerationCompleted(v.profileTextModerationCompleted, accountBackgroundDb);
+        await _handlePushNotificationProfileStringModerationCompleted(v.profileStringModerationCompleted, accountBackgroundDb);
       }
       if ((v.value & 0x20) == 0x20) {
         await _handlePushNotificationAutomaticProfileSearchCompleted(v.automaticProfileSearchCompleted, accountBackgroundDb);
@@ -276,14 +276,14 @@ Future<void> _handlePushNotificationMediaContentModerationCompleted(
   await NotificationMediaContentModerationCompleted.handleMediaContentModerationCompleted(notification, accountBackgroundDb);
 }
 
-Future<void> _handlePushNotificationProfileTextModerationCompleted(
-  ProfileTextModerationCompletedNotification? notification,
+Future<void> _handlePushNotificationProfileStringModerationCompleted(
+  ProfileStringModerationCompletedNotification? notification,
   AccountBackgroundDatabaseManager accountBackgroundDb,
 ) async {
   if (notification == null) {
     return;
   }
-  await NotificationProfileTextModerationCompleted.handleProfileTextModerationCompleted(notification, accountBackgroundDb);
+  await NotificationProfileStringModerationCompleted.handleProfileStringModerationCompleted(notification, accountBackgroundDb);
 }
 
 Future<void> _handlePushNotificationNewsChanged(UnreadNewsCountResult? r, AccountBackgroundDatabaseManager accountBackgroundDb) async {

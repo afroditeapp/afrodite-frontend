@@ -10,55 +10,61 @@
 
 part of openapi.api;
 
-class PostModerateProfileText {
-  /// Returns a new [PostModerateProfileText] instance.
-  PostModerateProfileText({
+class PostModerateProfileString {
+  /// Returns a new [PostModerateProfileString] instance.
+  PostModerateProfileString({
     required this.accept,
+    required this.contentType,
     required this.id,
     this.moveToHuman,
     this.rejectedCategory,
-    this.rejectedDetails,
-    required this.text,
+    required this.rejectedDetails,
+    required this.value,
   });
 
   bool accept;
+
+  ProfileStringModerationContentType contentType;
 
   AccountId id;
 
   /// If true, ignore accept, rejected_category, rejected_details and move the text to waiting for human moderation state.
   bool? moveToHuman;
 
-  ProfileTextModerationRejectedReasonCategory? rejectedCategory;
+  ProfileStringModerationRejectedReasonCategory? rejectedCategory;
 
-  ProfileTextModerationRejectedReasonDetails? rejectedDetails;
+  ProfileStringModerationRejectedReasonDetails rejectedDetails;
 
-  String text;
+  String value;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is PostModerateProfileText &&
+  bool operator ==(Object other) => identical(this, other) || other is PostModerateProfileString &&
     other.accept == accept &&
+    other.contentType == contentType &&
     other.id == id &&
     other.moveToHuman == moveToHuman &&
     other.rejectedCategory == rejectedCategory &&
     other.rejectedDetails == rejectedDetails &&
-    other.text == text;
+    other.value == value;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (accept.hashCode) +
+    (contentType.hashCode) +
     (id.hashCode) +
     (moveToHuman == null ? 0 : moveToHuman!.hashCode) +
     (rejectedCategory == null ? 0 : rejectedCategory!.hashCode) +
-    (rejectedDetails == null ? 0 : rejectedDetails!.hashCode) +
-    (text.hashCode);
+    (rejectedDetails.hashCode) +
+    (value.hashCode);
 
   @override
-  String toString() => 'PostModerateProfileText[accept=$accept, id=$id, moveToHuman=$moveToHuman, rejectedCategory=$rejectedCategory, rejectedDetails=$rejectedDetails, text=$text]';
+  String toString() => 'PostModerateProfileString[accept=$accept, contentType=$contentType, id=$id, moveToHuman=$moveToHuman, rejectedCategory=$rejectedCategory, rejectedDetails=$rejectedDetails, value=$value]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'accept'] = this.accept;
+      json[r'content_type'] = this.contentType;
       json[r'id'] = this.id;
     if (this.moveToHuman != null) {
       json[r'move_to_human'] = this.moveToHuman;
@@ -70,19 +76,15 @@ class PostModerateProfileText {
     } else {
       json[r'rejected_category'] = null;
     }
-    if (this.rejectedDetails != null) {
       json[r'rejected_details'] = this.rejectedDetails;
-    } else {
-      json[r'rejected_details'] = null;
-    }
-      json[r'text'] = this.text;
+      json[r'value'] = this.value;
     return json;
   }
 
-  /// Returns a new [PostModerateProfileText] instance and imports its values from
+  /// Returns a new [PostModerateProfileString] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static PostModerateProfileText? fromJson(dynamic value) {
+  static PostModerateProfileString? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -91,29 +93,30 @@ class PostModerateProfileText {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "PostModerateProfileText[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "PostModerateProfileText[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "PostModerateProfileString[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "PostModerateProfileString[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return PostModerateProfileText(
+      return PostModerateProfileString(
         accept: mapValueOfType<bool>(json, r'accept')!,
+        contentType: ProfileStringModerationContentType.fromJson(json[r'content_type'])!,
         id: AccountId.fromJson(json[r'id'])!,
         moveToHuman: mapValueOfType<bool>(json, r'move_to_human'),
-        rejectedCategory: ProfileTextModerationRejectedReasonCategory.fromJson(json[r'rejected_category']),
-        rejectedDetails: ProfileTextModerationRejectedReasonDetails.fromJson(json[r'rejected_details']),
-        text: mapValueOfType<String>(json, r'text')!,
+        rejectedCategory: ProfileStringModerationRejectedReasonCategory.fromJson(json[r'rejected_category']),
+        rejectedDetails: ProfileStringModerationRejectedReasonDetails.fromJson(json[r'rejected_details'])!,
+        value: mapValueOfType<String>(json, r'value')!,
       );
     }
     return null;
   }
 
-  static List<PostModerateProfileText> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <PostModerateProfileText>[];
+  static List<PostModerateProfileString> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <PostModerateProfileString>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = PostModerateProfileText.fromJson(row);
+        final value = PostModerateProfileString.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -122,12 +125,12 @@ class PostModerateProfileText {
     return result.toList(growable: growable);
   }
 
-  static Map<String, PostModerateProfileText> mapFromJson(dynamic json) {
-    final map = <String, PostModerateProfileText>{};
+  static Map<String, PostModerateProfileString> mapFromJson(dynamic json) {
+    final map = <String, PostModerateProfileString>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = PostModerateProfileText.fromJson(entry.value);
+        final value = PostModerateProfileString.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -136,14 +139,14 @@ class PostModerateProfileText {
     return map;
   }
 
-  // maps a json object with a list of PostModerateProfileText-objects as value to a dart map
-  static Map<String, List<PostModerateProfileText>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<PostModerateProfileText>>{};
+  // maps a json object with a list of PostModerateProfileString-objects as value to a dart map
+  static Map<String, List<PostModerateProfileString>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<PostModerateProfileString>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = PostModerateProfileText.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = PostModerateProfileString.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;
@@ -152,8 +155,10 @@ class PostModerateProfileText {
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
     'accept',
+    'content_type',
     'id',
-    'text',
+    'rejected_details',
+    'value',
   };
 }
 

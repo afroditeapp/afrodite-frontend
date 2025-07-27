@@ -392,7 +392,7 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
       );
   @override
   late final GeneratedColumnWithTypeConverter<
-    api.ProfileTextModerationRejectedReasonCategory?,
+    api.ProfileStringModerationRejectedReasonCategory?,
     int
   >
   profileTextModerationRejectedCategory =
@@ -402,12 +402,12 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
         true,
         type: DriftSqlType.int,
         requiredDuringInsert: false,
-      ).withConverter<api.ProfileTextModerationRejectedReasonCategory?>(
+      ).withConverter<api.ProfileStringModerationRejectedReasonCategory?>(
         $AccountTable.$converterprofileTextModerationRejectedCategory,
       );
   @override
   late final GeneratedColumnWithTypeConverter<
-    api.ProfileTextModerationRejectedReasonDetails?,
+    api.ProfileStringModerationRejectedReasonDetails?,
     String
   >
   profileTextModerationRejectedDetails =
@@ -417,7 +417,7 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
         true,
         type: DriftSqlType.string,
         requiredDuringInsert: false,
-      ).withConverter<api.ProfileTextModerationRejectedReasonDetails?>(
+      ).withConverter<api.ProfileStringModerationRejectedReasonDetails?>(
         $AccountTable.$converterprofileTextModerationRejectedDetails,
       );
   static const VerificationMeta _profileAgeMeta = const VerificationMeta(
@@ -1632,12 +1632,15 @@ class $AccountTable extends Account with TableInfo<$AccountTable, AccountData> {
   $converterprofileTextModerationState = NullAwareTypeConverter.wrap(
     EnumString.driftConverter,
   );
-  static TypeConverter<api.ProfileTextModerationRejectedReasonCategory?, int?>
+  static TypeConverter<api.ProfileStringModerationRejectedReasonCategory?, int?>
   $converterprofileTextModerationRejectedCategory =
       const NullAwareTypeConverter.wrap(
-        ProfileTextModerationRejectedReasonCategoryConverter(),
+        ProfileStringModerationRejectedReasonCategoryConverter(),
       );
-  static TypeConverter<api.ProfileTextModerationRejectedReasonDetails?, String?>
+  static TypeConverter<
+    api.ProfileStringModerationRejectedReasonDetails?,
+    String?
+  >
   $converterprofileTextModerationRejectedDetails =
       const NullAwareTypeConverter.wrap(
         ProfileTextModerationRejectedReasonDetailsConverter(),
@@ -1717,9 +1720,9 @@ class AccountData extends DataClass implements Insertable<AccountData> {
   final String? profileText;
   final bool? profileTextAccepted;
   final EnumString? profileTextModerationState;
-  final api.ProfileTextModerationRejectedReasonCategory?
+  final api.ProfileStringModerationRejectedReasonCategory?
   profileTextModerationRejectedCategory;
-  final api.ProfileTextModerationRejectedReasonDetails?
+  final api.ProfileStringModerationRejectedReasonDetails?
   profileTextModerationRejectedDetails;
   final int? profileAge;
   final bool? profileUnlimitedLikes;
@@ -2440,11 +2443,11 @@ class AccountData extends DataClass implements Insertable<AccountData> {
         json['profileTextModerationState'],
       ),
       profileTextModerationRejectedCategory: serializer
-          .fromJson<api.ProfileTextModerationRejectedReasonCategory?>(
+          .fromJson<api.ProfileStringModerationRejectedReasonCategory?>(
             json['profileTextModerationRejectedCategory'],
           ),
       profileTextModerationRejectedDetails: serializer
-          .fromJson<api.ProfileTextModerationRejectedReasonDetails?>(
+          .fromJson<api.ProfileStringModerationRejectedReasonDetails?>(
             json['profileTextModerationRejectedDetails'],
           ),
       profileAge: serializer.fromJson<int?>(json['profileAge']),
@@ -2611,11 +2614,11 @@ class AccountData extends DataClass implements Insertable<AccountData> {
         profileTextModerationState,
       ),
       'profileTextModerationRejectedCategory': serializer
-          .toJson<api.ProfileTextModerationRejectedReasonCategory?>(
+          .toJson<api.ProfileStringModerationRejectedReasonCategory?>(
             profileTextModerationRejectedCategory,
           ),
       'profileTextModerationRejectedDetails': serializer
-          .toJson<api.ProfileTextModerationRejectedReasonDetails?>(
+          .toJson<api.ProfileStringModerationRejectedReasonDetails?>(
             profileTextModerationRejectedDetails,
           ),
       'profileAge': serializer.toJson<int?>(profileAge),
@@ -2726,10 +2729,10 @@ class AccountData extends DataClass implements Insertable<AccountData> {
     Value<String?> profileText = const Value.absent(),
     Value<bool?> profileTextAccepted = const Value.absent(),
     Value<EnumString?> profileTextModerationState = const Value.absent(),
-    Value<api.ProfileTextModerationRejectedReasonCategory?>
+    Value<api.ProfileStringModerationRejectedReasonCategory?>
         profileTextModerationRejectedCategory =
         const Value.absent(),
-    Value<api.ProfileTextModerationRejectedReasonDetails?>
+    Value<api.ProfileStringModerationRejectedReasonDetails?>
         profileTextModerationRejectedDetails =
         const Value.absent(),
     Value<int?> profileAge = const Value.absent(),
@@ -3475,9 +3478,9 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
   final Value<String?> profileText;
   final Value<bool?> profileTextAccepted;
   final Value<EnumString?> profileTextModerationState;
-  final Value<api.ProfileTextModerationRejectedReasonCategory?>
+  final Value<api.ProfileStringModerationRejectedReasonCategory?>
   profileTextModerationRejectedCategory;
-  final Value<api.ProfileTextModerationRejectedReasonDetails?>
+  final Value<api.ProfileStringModerationRejectedReasonDetails?>
   profileTextModerationRejectedDetails;
   final Value<int?> profileAge;
   final Value<bool?> profileUnlimitedLikes;
@@ -3882,9 +3885,9 @@ class AccountCompanion extends UpdateCompanion<AccountData> {
     Value<String?>? profileText,
     Value<bool?>? profileTextAccepted,
     Value<EnumString?>? profileTextModerationState,
-    Value<api.ProfileTextModerationRejectedReasonCategory?>?
+    Value<api.ProfileStringModerationRejectedReasonCategory?>?
     profileTextModerationRejectedCategory,
-    Value<api.ProfileTextModerationRejectedReasonDetails?>?
+    Value<api.ProfileStringModerationRejectedReasonDetails?>?
     profileTextModerationRejectedDetails,
     Value<int?>? profileAge,
     Value<bool?>? profileUnlimitedLikes,
@@ -6116,7 +6119,7 @@ class $MyMediaContentTable extends MyMediaContent
   ).withConverter<EnumString?>($MyMediaContentTable.$convertermoderationState);
   @override
   late final GeneratedColumnWithTypeConverter<
-    api.ProfileContentModerationRejectedReasonCategory?,
+    api.MediaContentModerationRejectedReasonCategory?,
     int
   >
   contentModerationRejectedCategory =
@@ -6126,12 +6129,12 @@ class $MyMediaContentTable extends MyMediaContent
         true,
         type: DriftSqlType.int,
         requiredDuringInsert: false,
-      ).withConverter<api.ProfileContentModerationRejectedReasonCategory?>(
+      ).withConverter<api.MediaContentModerationRejectedReasonCategory?>(
         $MyMediaContentTable.$convertercontentModerationRejectedCategory,
       );
   @override
   late final GeneratedColumnWithTypeConverter<
-    api.ProfileContentModerationRejectedReasonDetails?,
+    api.MediaContentModerationRejectedReasonDetails?,
     String
   >
   contentModerationRejectedDetails =
@@ -6141,7 +6144,7 @@ class $MyMediaContentTable extends MyMediaContent
         true,
         type: DriftSqlType.string,
         requiredDuringInsert: false,
-      ).withConverter<api.ProfileContentModerationRejectedReasonDetails?>(
+      ).withConverter<api.MediaContentModerationRejectedReasonDetails?>(
         $MyMediaContentTable.$convertercontentModerationRejectedDetails,
       );
   @override
@@ -6242,21 +6245,18 @@ class $MyMediaContentTable extends MyMediaContent
       const ContentIdConverter();
   static TypeConverter<EnumString?, String?> $convertermoderationState =
       NullAwareTypeConverter.wrap(EnumString.driftConverter);
-  static TypeConverter<
-    api.ProfileContentModerationRejectedReasonCategory?,
-    int?
-  >
+  static TypeConverter<api.MediaContentModerationRejectedReasonCategory?, int?>
   $convertercontentModerationRejectedCategory =
       const NullAwareTypeConverter.wrap(
-        ProfileContentModerationRejectedReasonCategoryConverter(),
+        MediaContentModerationRejectedReasonCategoryConverter(),
       );
   static TypeConverter<
-    api.ProfileContentModerationRejectedReasonDetails?,
+    api.MediaContentModerationRejectedReasonDetails?,
     String?
   >
   $convertercontentModerationRejectedDetails =
       const NullAwareTypeConverter.wrap(
-        ProfileContentModerationRejectedReasonDetailsConverter(),
+        MediaContentModerationRejectedReasonDetailsConverter(),
       );
 }
 
@@ -6267,9 +6267,9 @@ class MyMediaContentData extends DataClass
   final api.ContentId uuidContentId;
   final bool faceDetected;
   final EnumString? moderationState;
-  final api.ProfileContentModerationRejectedReasonCategory?
+  final api.MediaContentModerationRejectedReasonCategory?
   contentModerationRejectedCategory;
-  final api.ProfileContentModerationRejectedReasonDetails?
+  final api.MediaContentModerationRejectedReasonDetails?
   contentModerationRejectedDetails;
   const MyMediaContentData({
     required this.contentIndex,
@@ -6343,11 +6343,11 @@ class MyMediaContentData extends DataClass
         json['moderationState'],
       ),
       contentModerationRejectedCategory: serializer
-          .fromJson<api.ProfileContentModerationRejectedReasonCategory?>(
+          .fromJson<api.MediaContentModerationRejectedReasonCategory?>(
             json['contentModerationRejectedCategory'],
           ),
       contentModerationRejectedDetails: serializer
-          .fromJson<api.ProfileContentModerationRejectedReasonDetails?>(
+          .fromJson<api.MediaContentModerationRejectedReasonDetails?>(
             json['contentModerationRejectedDetails'],
           ),
     );
@@ -6361,11 +6361,11 @@ class MyMediaContentData extends DataClass
       'faceDetected': serializer.toJson<bool>(faceDetected),
       'moderationState': serializer.toJson<EnumString?>(moderationState),
       'contentModerationRejectedCategory': serializer
-          .toJson<api.ProfileContentModerationRejectedReasonCategory?>(
+          .toJson<api.MediaContentModerationRejectedReasonCategory?>(
             contentModerationRejectedCategory,
           ),
       'contentModerationRejectedDetails': serializer
-          .toJson<api.ProfileContentModerationRejectedReasonDetails?>(
+          .toJson<api.MediaContentModerationRejectedReasonDetails?>(
             contentModerationRejectedDetails,
           ),
     };
@@ -6376,10 +6376,10 @@ class MyMediaContentData extends DataClass
     api.ContentId? uuidContentId,
     bool? faceDetected,
     Value<EnumString?> moderationState = const Value.absent(),
-    Value<api.ProfileContentModerationRejectedReasonCategory?>
+    Value<api.MediaContentModerationRejectedReasonCategory?>
         contentModerationRejectedCategory =
         const Value.absent(),
-    Value<api.ProfileContentModerationRejectedReasonDetails?>
+    Value<api.MediaContentModerationRejectedReasonDetails?>
         contentModerationRejectedDetails =
         const Value.absent(),
   }) => MyMediaContentData(
@@ -6466,9 +6466,9 @@ class MyMediaContentCompanion extends UpdateCompanion<MyMediaContentData> {
   final Value<api.ContentId> uuidContentId;
   final Value<bool> faceDetected;
   final Value<EnumString?> moderationState;
-  final Value<api.ProfileContentModerationRejectedReasonCategory?>
+  final Value<api.MediaContentModerationRejectedReasonCategory?>
   contentModerationRejectedCategory;
-  final Value<api.ProfileContentModerationRejectedReasonDetails?>
+  final Value<api.MediaContentModerationRejectedReasonDetails?>
   contentModerationRejectedDetails;
   const MyMediaContentCompanion({
     this.contentIndex = const Value.absent(),
@@ -6513,9 +6513,9 @@ class MyMediaContentCompanion extends UpdateCompanion<MyMediaContentData> {
     Value<api.ContentId>? uuidContentId,
     Value<bool>? faceDetected,
     Value<EnumString?>? moderationState,
-    Value<api.ProfileContentModerationRejectedReasonCategory?>?
+    Value<api.MediaContentModerationRejectedReasonCategory?>?
     contentModerationRejectedCategory,
-    Value<api.ProfileContentModerationRejectedReasonDetails?>?
+    Value<api.MediaContentModerationRejectedReasonDetails?>?
     contentModerationRejectedDetails,
   }) {
     return MyMediaContentCompanion(

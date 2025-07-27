@@ -243,12 +243,8 @@ class EnumString {
     return ProfileVisibility.fromJson(enumString);
   }
 
-  ProfileNameModerationState? toProfileNameModerationState() {
-    return ProfileNameModerationState.fromJson(enumString);
-  }
-
-  ProfileTextModerationState? toProfileTextModerationState() {
-    return ProfileTextModerationState.fromJson(enumString);
+  ProfileStringModerationState? toProfileStringModerationState() {
+    return ProfileStringModerationState.fromJson(enumString);
   }
 
   ContentModerationState? toContentModerationState() {
@@ -268,13 +264,7 @@ extension ProfileVisibilityConverter on ProfileVisibility {
   }
 }
 
-extension ProfileNameModerationStateConverter on ProfileNameModerationState {
-  EnumString toEnumString() {
-    return EnumString(toJson());
-  }
-}
-
-extension ProfileTextModerationStateConverter on ProfileTextModerationState {
+extension ProfileStringModerationStateConverter on ProfileStringModerationState {
   EnumString toEnumString() {
     return EnumString(toJson());
   }
@@ -524,12 +514,12 @@ class UnreadNewsCountConverter extends TypeConverter<UnreadNewsCount, int> {
   }
 }
 
-class ProfileTextModerationRejectedReasonCategoryConverter extends TypeConverter<ProfileTextModerationRejectedReasonCategory, int> {
-  const ProfileTextModerationRejectedReasonCategoryConverter();
+class ProfileStringModerationRejectedReasonCategoryConverter extends TypeConverter<ProfileStringModerationRejectedReasonCategory, int> {
+  const ProfileStringModerationRejectedReasonCategoryConverter();
 
   @override
-  ProfileTextModerationRejectedReasonCategory fromSql(fromDb) {
-    return ProfileTextModerationRejectedReasonCategory(value: fromDb);
+  ProfileStringModerationRejectedReasonCategory fromSql(fromDb) {
+    return ProfileStringModerationRejectedReasonCategory(value: fromDb);
   }
 
   @override
@@ -538,12 +528,12 @@ class ProfileTextModerationRejectedReasonCategoryConverter extends TypeConverter
   }
 }
 
-class ProfileTextModerationRejectedReasonDetailsConverter extends TypeConverter<ProfileTextModerationRejectedReasonDetails, String> {
+class ProfileTextModerationRejectedReasonDetailsConverter extends TypeConverter<ProfileStringModerationRejectedReasonDetails, String> {
   const ProfileTextModerationRejectedReasonDetailsConverter();
 
   @override
-  ProfileTextModerationRejectedReasonDetails fromSql(fromDb) {
-    return ProfileTextModerationRejectedReasonDetails(value: fromDb);
+  ProfileStringModerationRejectedReasonDetails fromSql(fromDb) {
+    return ProfileStringModerationRejectedReasonDetails(value: fromDb);
   }
 
   @override
@@ -552,12 +542,12 @@ class ProfileTextModerationRejectedReasonDetailsConverter extends TypeConverter<
   }
 }
 
-class ProfileContentModerationRejectedReasonCategoryConverter extends TypeConverter<ProfileContentModerationRejectedReasonCategory, int> {
-  const ProfileContentModerationRejectedReasonCategoryConverter();
+class MediaContentModerationRejectedReasonCategoryConverter extends TypeConverter<MediaContentModerationRejectedReasonCategory, int> {
+  const MediaContentModerationRejectedReasonCategoryConverter();
 
   @override
-  ProfileContentModerationRejectedReasonCategory fromSql(fromDb) {
-    return ProfileContentModerationRejectedReasonCategory(value: fromDb);
+  MediaContentModerationRejectedReasonCategory fromSql(fromDb) {
+    return MediaContentModerationRejectedReasonCategory(value: fromDb);
   }
 
   @override
@@ -566,12 +556,12 @@ class ProfileContentModerationRejectedReasonCategoryConverter extends TypeConver
   }
 }
 
-class ProfileContentModerationRejectedReasonDetailsConverter extends TypeConverter<ProfileContentModerationRejectedReasonDetails, String> {
-  const ProfileContentModerationRejectedReasonDetailsConverter();
+class MediaContentModerationRejectedReasonDetailsConverter extends TypeConverter<MediaContentModerationRejectedReasonDetails, String> {
+  const MediaContentModerationRejectedReasonDetailsConverter();
 
   @override
-  ProfileContentModerationRejectedReasonDetails fromSql(fromDb) {
-    return ProfileContentModerationRejectedReasonDetails(value: fromDb);
+  MediaContentModerationRejectedReasonDetails fromSql(fromDb) {
+    return MediaContentModerationRejectedReasonDetails(value: fromDb);
   }
 
   @override

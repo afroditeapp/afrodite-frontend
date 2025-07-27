@@ -13,12 +13,12 @@ import "package:app/utils/result.dart";
 abstract class ProfileNameModerationEvent {}
 class Reload extends ProfileNameModerationEvent {}
 class UpdateSelectedStatus extends ProfileNameModerationEvent {
-  final ProfileNamePendingModeration item;
+  final ProfileStringPendingModeration item;
   final bool selected;
   UpdateSelectedStatus(this.item, this.selected);
 }
 class HandleList extends ProfileNameModerationEvent {
-  final List<ProfileNamePendingModeration> items;
+  final List<ProfileStringPendingModeration> items;
   final bool accept;
   HandleList(this.items, this.accept);
 }
@@ -29,7 +29,7 @@ class ProfileNameModerationBloc extends Bloc<ProfileNameModerationEvent, Profile
     on<Reload>((data, emit) async {
         emit(ProfileNameModerationData().copyWith(isLoading: true));
 
-        final r = await api.profileAdmin((api) => api.getProfileNamePendingModerationList());
+        final r = await api.profileAdmin((api) => api.getProfileStringPendingModerationList(ProfileStringModerationContentType.profileName, true));
         switch (r) {
           case Ok():
             emit(state.copyWith(
@@ -63,8 +63,14 @@ class ProfileNameModerationBloc extends Bloc<ProfileNameModerationEvent, Profile
         emit(ProfileNameModerationData().copyWith(isLoading: true));
 
         for (final item in data.items) {
-          final r = await api.profileAdminAction((api) => api.postModerateProfileName(
-            PostModerateProfileName(accept: data.accept, id: item.id, name: item.name),
+          final r = await api.profileAdminAction((api) => api.postModerateProfileString(
+            PostModerateProfileString(
+              contentType: ProfileStringModerationContentType.profileName,
+              accept: data.accept,
+              id: item.id,
+              value: item.value,
+              rejectedDetails: ProfileStringModerationRejectedReasonDetails(value: ""),
+            ),
           ));
           if (r.isErr()) {
             showSnackBar(R.strings.generic_error_occurred);

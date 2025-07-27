@@ -581,19 +581,19 @@ class AccountApi {
     }
   }
 
-  /// Send custom report
+  /// Send custom report without any content
   ///
   /// Note: This method returns the HTTP [Response].
   ///
   /// Parameters:
   ///
-  /// * [UpdateCustomReportBoolean] updateCustomReportBoolean (required):
-  Future<Response> postCustomReportBooleanWithHttpInfo(UpdateCustomReportBoolean updateCustomReportBoolean,) async {
+  /// * [UpdateCustomReportEmpty] updateCustomReportEmpty (required):
+  Future<Response> postCustomReportEmptyWithHttpInfo(UpdateCustomReportEmpty updateCustomReportEmpty,) async {
     // ignore: prefer_const_declarations
-    final path = r'/account_api/custom_report_boolean';
+    final path = r'/account_api/custom_report_empty';
 
     // ignore: prefer_final_locals
-    Object? postBody = updateCustomReportBoolean;
+    Object? postBody = updateCustomReportEmpty;
 
     final queryParams = <QueryParam>[];
     final headerParams = <String, String>{};
@@ -613,13 +613,13 @@ class AccountApi {
     );
   }
 
-  /// Send custom report
+  /// Send custom report without any content
   ///
   /// Parameters:
   ///
-  /// * [UpdateCustomReportBoolean] updateCustomReportBoolean (required):
-  Future<UpdateReportResult?> postCustomReportBoolean(UpdateCustomReportBoolean updateCustomReportBoolean,) async {
-    final response = await postCustomReportBooleanWithHttpInfo(updateCustomReportBoolean,);
+  /// * [UpdateCustomReportEmpty] updateCustomReportEmpty (required):
+  Future<UpdateReportResult?> postCustomReportEmpty(UpdateCustomReportEmpty updateCustomReportEmpty,) async {
+    final response = await postCustomReportEmptyWithHttpInfo(updateCustomReportEmpty,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -692,66 +692,21 @@ class AccountApi {
     return null;
   }
 
-  /// Performs an HTTP 'POST /account_api/demo_mode_confirm_login' operation and returns the [Response].
-  /// Parameters:
-  ///
-  /// * [DemoModeConfirmLogin] demoModeConfirmLogin (required):
-  Future<Response> postDemoModeConfirmLoginWithHttpInfo(DemoModeConfirmLogin demoModeConfirmLogin,) async {
-    // ignore: prefer_const_declarations
-    final path = r'/account_api/demo_mode_confirm_login';
-
-    // ignore: prefer_final_locals
-    Object? postBody = demoModeConfirmLogin;
-
-    final queryParams = <QueryParam>[];
-    final headerParams = <String, String>{};
-    final formParams = <String, String>{};
-
-    const contentTypes = <String>['application/json'];
-
-
-    return apiClient.invokeAPI(
-      path,
-      'POST',
-      queryParams,
-      postBody,
-      headerParams,
-      formParams,
-      contentTypes.isEmpty ? null : contentTypes.first,
-    );
-  }
-
-  /// Parameters:
-  ///
-  /// * [DemoModeConfirmLogin] demoModeConfirmLogin (required):
-  Future<DemoModeConfirmLoginResult?> postDemoModeConfirmLogin(DemoModeConfirmLogin demoModeConfirmLogin,) async {
-    final response = await postDemoModeConfirmLoginWithHttpInfo(demoModeConfirmLogin,);
-    if (response.statusCode >= HttpStatus.badRequest) {
-      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
-    }
-    // When a remote server returns no body with a status of 204, we shall not decode it.
-    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
-    // FormatException when trying to decode an empty string.
-    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'DemoModeConfirmLoginResult',) as DemoModeConfirmLoginResult;
-    
-    }
-    return null;
-  }
-
   /// Access demo mode, which allows accessing all or specific accounts depending on the server configuration.
+  ///
+  /// This API route has 1 second wait time to make password guessing harder. Account will be locked if the password is guessed. Server process restart will reset the lock.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
   /// Parameters:
   ///
-  /// * [DemoModePassword] demoModePassword (required):
-  Future<Response> postDemoModeLoginWithHttpInfo(DemoModePassword demoModePassword,) async {
+  /// * [DemoModeLoginCredentials] demoModeLoginCredentials (required):
+  Future<Response> postDemoModeLoginWithHttpInfo(DemoModeLoginCredentials demoModeLoginCredentials,) async {
     // ignore: prefer_const_declarations
     final path = r'/account_api/demo_mode_login';
 
     // ignore: prefer_final_locals
-    Object? postBody = demoModePassword;
+    Object? postBody = demoModeLoginCredentials;
 
     final queryParams = <QueryParam>[];
     final headerParams = <String, String>{};
@@ -773,11 +728,13 @@ class AccountApi {
 
   /// Access demo mode, which allows accessing all or specific accounts depending on the server configuration.
   ///
+  /// This API route has 1 second wait time to make password guessing harder. Account will be locked if the password is guessed. Server process restart will reset the lock.
+  ///
   /// Parameters:
   ///
-  /// * [DemoModePassword] demoModePassword (required):
-  Future<DemoModeLoginResult?> postDemoModeLogin(DemoModePassword demoModePassword,) async {
-    final response = await postDemoModeLoginWithHttpInfo(demoModePassword,);
+  /// * [DemoModeLoginCredentials] demoModeLoginCredentials (required):
+  Future<DemoModeLoginResult?> postDemoModeLogin(DemoModeLoginCredentials demoModeLoginCredentials,) async {
+    final response = await postDemoModeLoginWithHttpInfo(demoModeLoginCredentials,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

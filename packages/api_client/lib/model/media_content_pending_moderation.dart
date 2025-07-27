@@ -10,9 +10,9 @@
 
 part of openapi.api;
 
-class ProfileContentPendingModeration {
-  /// Returns a new [ProfileContentPendingModeration] instance.
-  ProfileContentPendingModeration({
+class MediaContentPendingModeration {
+  /// Returns a new [MediaContentPendingModeration] instance.
+  MediaContentPendingModeration({
     required this.accountId,
     required this.contentId,
   });
@@ -22,7 +22,7 @@ class ProfileContentPendingModeration {
   ContentId contentId;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is ProfileContentPendingModeration &&
+  bool operator ==(Object other) => identical(this, other) || other is MediaContentPendingModeration &&
     other.accountId == accountId &&
     other.contentId == contentId;
 
@@ -33,7 +33,7 @@ class ProfileContentPendingModeration {
     (contentId.hashCode);
 
   @override
-  String toString() => 'ProfileContentPendingModeration[accountId=$accountId, contentId=$contentId]';
+  String toString() => 'MediaContentPendingModeration[accountId=$accountId, contentId=$contentId]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -42,10 +42,10 @@ class ProfileContentPendingModeration {
     return json;
   }
 
-  /// Returns a new [ProfileContentPendingModeration] instance and imports its values from
+  /// Returns a new [MediaContentPendingModeration] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static ProfileContentPendingModeration? fromJson(dynamic value) {
+  static MediaContentPendingModeration? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -54,13 +54,13 @@ class ProfileContentPendingModeration {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "ProfileContentPendingModeration[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "ProfileContentPendingModeration[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "MediaContentPendingModeration[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "MediaContentPendingModeration[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return ProfileContentPendingModeration(
+      return MediaContentPendingModeration(
         accountId: AccountId.fromJson(json[r'account_id'])!,
         contentId: ContentId.fromJson(json[r'content_id'])!,
       );
@@ -68,11 +68,11 @@ class ProfileContentPendingModeration {
     return null;
   }
 
-  static List<ProfileContentPendingModeration> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <ProfileContentPendingModeration>[];
+  static List<MediaContentPendingModeration> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <MediaContentPendingModeration>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = ProfileContentPendingModeration.fromJson(row);
+        final value = MediaContentPendingModeration.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -81,12 +81,12 @@ class ProfileContentPendingModeration {
     return result.toList(growable: growable);
   }
 
-  static Map<String, ProfileContentPendingModeration> mapFromJson(dynamic json) {
-    final map = <String, ProfileContentPendingModeration>{};
+  static Map<String, MediaContentPendingModeration> mapFromJson(dynamic json) {
+    final map = <String, MediaContentPendingModeration>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = ProfileContentPendingModeration.fromJson(entry.value);
+        final value = MediaContentPendingModeration.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -95,14 +95,14 @@ class ProfileContentPendingModeration {
     return map;
   }
 
-  // maps a json object with a list of ProfileContentPendingModeration-objects as value to a dart map
-  static Map<String, List<ProfileContentPendingModeration>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<ProfileContentPendingModeration>>{};
+  // maps a json object with a list of MediaContentPendingModeration-objects as value to a dart map
+  static Map<String, List<MediaContentPendingModeration>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<MediaContentPendingModeration>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = ProfileContentPendingModeration.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = MediaContentPendingModeration.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;

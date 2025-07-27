@@ -24,7 +24,9 @@ class NotificationAutomaticProfileSearch extends AppSingletonNoInit {
     AccountBackgroundDatabaseManager accountBackgroundDb,
   ) async {
     final show = await accountBackgroundDb.accountData(
-      (db) => db.daoAutomaticProfileSearchCompletedNotificationTable.shouldProfilesFoundNotificationBeShown(notification.profilesFound, notification.profilesFoundViewed)
+      (db) => db.daoAutomaticProfileSearchCompletedNotificationTable.shouldProfilesFoundNotificationBeShown(
+        notification.profilesFound,
+      )
     ).ok() ?? false;
 
     if (show) {
@@ -33,7 +35,7 @@ class NotificationAutomaticProfileSearch extends AppSingletonNoInit {
   }
 
   Future<void> show(AccountBackgroundDatabaseManager accountBackgroundDb) async {
-    final NotificationId id = NotificationIdStatic.automaticProfileSearchCompleted.id;
+    final LocalNotificationId id = NotificationIdStatic.automaticProfileSearchCompleted.id;
     final String title = R.strings.notification_automatic_profile_search_found_profiles;
 
     await notifications.sendNotification(

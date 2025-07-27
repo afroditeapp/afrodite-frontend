@@ -154,7 +154,7 @@ class NotificationManager extends AppSingleton {
 
   Future<void> sendNotification(
     {
-      required NotificationId id,
+      required LocalNotificationId id,
       required String title,
       String? body,
       required NotificationCategory category,
@@ -194,7 +194,7 @@ class NotificationManager extends AppSingleton {
     );
   }
 
-  Future<void> hideNotification(NotificationId id) async {
+  Future<void> hideNotification(LocalNotificationId id) async {
     await _pluginHandle.cancel(id.value);
   }
 

@@ -12,6 +12,8 @@ import 'package:app/ui_utils/snack_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 
+// TODO(prod): Remove duplicate code
+
 class ModerateSingleProfileNameScreen extends StatefulWidget {
   final AccountId accountId;
   const ModerateSingleProfileNameScreen({
@@ -28,7 +30,7 @@ class _ModerateSingleProfileNameScreenState extends State<ModerateSingleProfileN
   final profile = LoginRepository.getInstance().repositories.profile;
   final chat = LoginRepository.getInstance().repositories.chat;
 
-  GetProfileNameState? data;
+  GetProfileStringState? data;
 
   bool isLoading = true;
   bool isError = false;
@@ -36,8 +38,9 @@ class _ModerateSingleProfileNameScreenState extends State<ModerateSingleProfileN
   Future<void> _getData() async {
     final result = await api
       .profileAdmin(
-        (api) => api.getProfileNameState(
-          widget.accountId.aid
+        (api) => api.getProfileStringState(
+          ProfileStringModerationContentType.profileName,
+          widget.accountId.aid,
         )).ok();
 
     if (!context.mounted) {
@@ -91,24 +94,23 @@ class _ModerateSingleProfileNameScreenState extends State<ModerateSingleProfileN
     }
   }
 
-  Widget showData(BuildContext context, GetProfileNameState? data, Permissions myPermissions) {
-    final profileNameData = data?.name;
+  Widget showData(BuildContext context, GetProfileStringState? data, Permissions myPermissions) {
+    final profileNameData = data?.value;
     final String? profileName;
     if (profileNameData != null && profileNameData.isNotEmpty) {
       profileName = profileNameData;
     } else {
       profileName = null;
     }
-    final state = data?.state;
-    final accepted = switch (data?.state) {
-      ProfileNameModerationState.empty ||
-      ProfileNameModerationState.waitingBotOrHumanModeration ||
-      ProfileNameModerationState.waitingHumanModeration => null,
-      ProfileNameModerationState.rejectedByBot ||
-      ProfileNameModerationState.rejectedByHuman => false,
-      ProfileNameModerationState.acceptedUsingAllowlist ||
-      ProfileNameModerationState.acceptedByBot ||
-      ProfileNameModerationState.acceptedByHuman => true,
+    final state = data?.moderationInfo?.state;
+    final accepted = switch (state) {
+      ProfileStringModerationState.waitingBotOrHumanModeration ||
+      ProfileStringModerationState.waitingHumanModeration => null,
+      ProfileStringModerationState.rejectedByBot ||
+      ProfileStringModerationState.rejectedByHuman => false,
+      ProfileStringModerationState.acceptedByAllowlist ||
+      ProfileStringModerationState.acceptedByBot ||
+      ProfileStringModerationState.acceptedByHuman => true,
       _ => null,
     };
     return SingleChildScrollView(
@@ -129,7 +131,7 @@ class _ModerateSingleProfileNameScreenState extends State<ModerateSingleProfileN
     BuildContext context,
     String profileName,
     bool? accepted,
-    ProfileNameModerationState state,
+    ProfileStringModerationState state,
   ) {
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -150,11 +152,13 @@ class _ModerateSingleProfileNameScreenState extends State<ModerateSingleProfileN
             if (result == true && context.mounted) {
               final result = await api
                 .profileAdminAction(
-                  (api) => api.postModerateProfileName(
-                    PostModerateProfileName(
+                  (api) => api.postModerateProfileString(
+                    PostModerateProfileString(
+                      contentType: ProfileStringModerationContentType.profileName,
                       id: widget.accountId,
                       accept: false,
-                      name: profileName,
+                      value: profileName,
+                      rejectedDetails: ProfileStringModerationRejectedReasonDetails(value: ""),
                     )
                   ));
               if (result.isErr()) {
@@ -171,11 +175,13 @@ class _ModerateSingleProfileNameScreenState extends State<ModerateSingleProfileN
             if (result == true && context.mounted) {
               final result = await api
                 .profileAdminAction(
-                  (api) => api.postModerateProfileName(
-                    PostModerateProfileName(
+                  (api) => api.postModerateProfileString(
+                    PostModerateProfileString(
+                      contentType: ProfileStringModerationContentType.profileName,
                       id: widget.accountId,
                       accept: true,
-                      name: profileName,
+                      value: profileName,
+                      rejectedDetails: ProfileStringModerationRejectedReasonDetails(value: ""),
                     )
                   ));
               if (result.isErr()) {

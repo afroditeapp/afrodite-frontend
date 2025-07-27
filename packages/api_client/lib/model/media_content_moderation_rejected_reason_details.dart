@@ -10,16 +10,16 @@
 
 part of openapi.api;
 
-class ProfileContentModerationRejectedReasonDetails {
-  /// Returns a new [ProfileContentModerationRejectedReasonDetails] instance.
-  ProfileContentModerationRejectedReasonDetails({
+class MediaContentModerationRejectedReasonDetails {
+  /// Returns a new [MediaContentModerationRejectedReasonDetails] instance.
+  MediaContentModerationRejectedReasonDetails({
     required this.value,
   });
 
   String value;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is ProfileContentModerationRejectedReasonDetails &&
+  bool operator ==(Object other) => identical(this, other) || other is MediaContentModerationRejectedReasonDetails &&
     other.value == value;
 
   @override
@@ -28,7 +28,7 @@ class ProfileContentModerationRejectedReasonDetails {
     (value.hashCode);
 
   @override
-  String toString() => 'ProfileContentModerationRejectedReasonDetails[value=$value]';
+  String toString() => 'MediaContentModerationRejectedReasonDetails[value=$value]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -36,10 +36,10 @@ class ProfileContentModerationRejectedReasonDetails {
     return json;
   }
 
-  /// Returns a new [ProfileContentModerationRejectedReasonDetails] instance and imports its values from
+  /// Returns a new [MediaContentModerationRejectedReasonDetails] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static ProfileContentModerationRejectedReasonDetails? fromJson(dynamic value) {
+  static MediaContentModerationRejectedReasonDetails? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -48,24 +48,24 @@ class ProfileContentModerationRejectedReasonDetails {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "ProfileContentModerationRejectedReasonDetails[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "ProfileContentModerationRejectedReasonDetails[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "MediaContentModerationRejectedReasonDetails[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "MediaContentModerationRejectedReasonDetails[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return ProfileContentModerationRejectedReasonDetails(
+      return MediaContentModerationRejectedReasonDetails(
         value: mapValueOfType<String>(json, r'value')!,
       );
     }
     return null;
   }
 
-  static List<ProfileContentModerationRejectedReasonDetails> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <ProfileContentModerationRejectedReasonDetails>[];
+  static List<MediaContentModerationRejectedReasonDetails> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <MediaContentModerationRejectedReasonDetails>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = ProfileContentModerationRejectedReasonDetails.fromJson(row);
+        final value = MediaContentModerationRejectedReasonDetails.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -74,12 +74,12 @@ class ProfileContentModerationRejectedReasonDetails {
     return result.toList(growable: growable);
   }
 
-  static Map<String, ProfileContentModerationRejectedReasonDetails> mapFromJson(dynamic json) {
-    final map = <String, ProfileContentModerationRejectedReasonDetails>{};
+  static Map<String, MediaContentModerationRejectedReasonDetails> mapFromJson(dynamic json) {
+    final map = <String, MediaContentModerationRejectedReasonDetails>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = ProfileContentModerationRejectedReasonDetails.fromJson(entry.value);
+        final value = MediaContentModerationRejectedReasonDetails.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -88,14 +88,14 @@ class ProfileContentModerationRejectedReasonDetails {
     return map;
   }
 
-  // maps a json object with a list of ProfileContentModerationRejectedReasonDetails-objects as value to a dart map
-  static Map<String, List<ProfileContentModerationRejectedReasonDetails>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<ProfileContentModerationRejectedReasonDetails>>{};
+  // maps a json object with a list of MediaContentModerationRejectedReasonDetails-objects as value to a dart map
+  static Map<String, List<MediaContentModerationRejectedReasonDetails>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<MediaContentModerationRejectedReasonDetails>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = ProfileContentModerationRejectedReasonDetails.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = MediaContentModerationRejectedReasonDetails.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;

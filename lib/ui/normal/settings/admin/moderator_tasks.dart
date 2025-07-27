@@ -26,7 +26,7 @@ class RequiredData {
   final bool contentHumanInitial;
   final bool contentBot;
   final bool contentHuman;
-  final bool profileNames;
+  final bool profileNames; // TODO(prod): profileNameBot and profileNameHuman
   final bool profileTextsBot;
   final bool profileTextsHuman;
   final bool reports;
@@ -86,54 +86,57 @@ class _ModeratorTasksScreenState extends State<ModeratorTasksScreen> {
       return;
     }
 
-    final GetProfileContentPendingModerationList? contentBotInitial;
-    final GetProfileContentPendingModerationList? contentHumanInitial;
-    final GetProfileContentPendingModerationList? contentBot;
-    final GetProfileContentPendingModerationList? contentHuman;
+    final GetMediaContentPendingModerationList? contentBotInitial;
+    final GetMediaContentPendingModerationList? contentHumanInitial;
+    final GetMediaContentPendingModerationList? contentBot;
+    final GetMediaContentPendingModerationList? contentHuman;
     if (permissions.adminModerateMediaContent) {
-      contentBotInitial = await api.mediaAdmin((api) => api.getProfileContentPendingModerationList(
+      contentBotInitial = await api.mediaAdmin((api) => api.getMediaContentPendingModerationList(
         MediaContentType.jpegImage,
         ModerationQueueType.initialMediaModeration,
         true,
       )).ok();
-      contentHumanInitial = await api.mediaAdmin((api) => api.getProfileContentPendingModerationList(
+      contentHumanInitial = await api.mediaAdmin((api) => api.getMediaContentPendingModerationList(
         MediaContentType.jpegImage,
         ModerationQueueType.initialMediaModeration,
         false,
       )).ok();
-      contentBot = await api.mediaAdmin((api) => api.getProfileContentPendingModerationList(
+      contentBot = await api.mediaAdmin((api) => api.getMediaContentPendingModerationList(
         MediaContentType.jpegImage,
         ModerationQueueType.mediaModeration,
         true,
       )).ok();
-      contentHuman = await api.mediaAdmin((api) => api.getProfileContentPendingModerationList(
+      contentHuman = await api.mediaAdmin((api) => api.getMediaContentPendingModerationList(
         MediaContentType.jpegImage,
         ModerationQueueType.mediaModeration,
         false,
       )).ok();
     } else {
-      final empty = GetProfileContentPendingModerationList();
+      final empty = GetMediaContentPendingModerationList();
       contentBotInitial = empty;
       contentHumanInitial = empty;
       contentBot = empty;
       contentHuman = empty;
     }
 
-    final GetProfileNamePendingModerationList? profileNames;
+    final GetProfileStringPendingModerationList? profileNamesBot;
+    final GetProfileStringPendingModerationList? profileNamesHuman;
     if (permissions.adminModerateProfileNames) {
-      profileNames = await api.profileAdmin((api) => api.getProfileNamePendingModerationList()).ok();
+      profileNamesBot = await api.profileAdmin((api) => api.getProfileStringPendingModerationList(ProfileStringModerationContentType.profileName, true)).ok();
+      profileNamesHuman = await api.profileAdmin((api) => api.getProfileStringPendingModerationList(ProfileStringModerationContentType.profileName, false)).ok();
     } else {
-      profileNames = GetProfileNamePendingModerationList();
+      profileNamesBot = GetProfileStringPendingModerationList();
+      profileNamesHuman = GetProfileStringPendingModerationList();
     }
 
-    final GetProfileTextPendingModerationList? profileTextsBot;
-    final GetProfileTextPendingModerationList? profileTextsHuman;
+    final GetProfileStringPendingModerationList? profileTextsBot;
+    final GetProfileStringPendingModerationList? profileTextsHuman;
     if (permissions.adminModerateProfileTexts) {
-      profileTextsBot = await api.profileAdmin((api) => api.getProfileTextPendingModerationList(true)).ok();
-      profileTextsHuman = await api.profileAdmin((api) => api.getProfileTextPendingModerationList(false)).ok();
+      profileTextsBot = await api.profileAdmin((api) => api.getProfileStringPendingModerationList(ProfileStringModerationContentType.profileText, true)).ok();
+      profileTextsHuman = await api.profileAdmin((api) => api.getProfileStringPendingModerationList(ProfileStringModerationContentType.profileText, false)).ok();
     } else {
-      profileTextsBot = GetProfileTextPendingModerationList();
-      profileTextsHuman = GetProfileTextPendingModerationList();
+      profileTextsBot = GetProfileStringPendingModerationList();
+      profileTextsHuman = GetProfileStringPendingModerationList();
     }
 
     final GetReportList? reports;
@@ -152,7 +155,7 @@ class _ModeratorTasksScreenState extends State<ModeratorTasksScreen> {
       contentHumanInitial == null ||
       contentBot == null ||
       contentHuman == null ||
-      profileNames == null ||
+      profileNamesBot == null ||
       profileTextsBot == null ||
       profileTextsHuman == null ||
       reports == null
@@ -170,7 +173,7 @@ class _ModeratorTasksScreenState extends State<ModeratorTasksScreen> {
           contentHumanInitial: contentHumanInitial?.values.isNotEmpty ?? false,
           contentBot: contentBot?.values.isNotEmpty ?? false,
           contentHuman: contentHuman?.values.isNotEmpty ?? false,
-          profileNames: profileNames?.values.isNotEmpty ?? false,
+          profileNames: profileNamesBot?.values.isNotEmpty ?? false,
           profileTextsBot: profileTextsBot?.values.isNotEmpty ?? false,
           profileTextsHuman: profileTextsHuman?.values.isNotEmpty ?? false,
           reports: reports?.values.isNotEmpty ?? false,

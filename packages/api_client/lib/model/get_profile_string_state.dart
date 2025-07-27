@@ -10,36 +10,47 @@
 
 part of openapi.api;
 
-class ProfileTextModerationRejectedReasonDetails {
-  /// Returns a new [ProfileTextModerationRejectedReasonDetails] instance.
-  ProfileTextModerationRejectedReasonDetails({
+class GetProfileStringState {
+  /// Returns a new [GetProfileStringState] instance.
+  GetProfileStringState({
+    this.moderationInfo,
     required this.value,
   });
 
+  ProfileStringModerationInfo? moderationInfo;
+
+  /// If empty, the `moderation_info` is `None`.
   String value;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is ProfileTextModerationRejectedReasonDetails &&
+  bool operator ==(Object other) => identical(this, other) || other is GetProfileStringState &&
+    other.moderationInfo == moderationInfo &&
     other.value == value;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
+    (moderationInfo == null ? 0 : moderationInfo!.hashCode) +
     (value.hashCode);
 
   @override
-  String toString() => 'ProfileTextModerationRejectedReasonDetails[value=$value]';
+  String toString() => 'GetProfileStringState[moderationInfo=$moderationInfo, value=$value]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
+    if (this.moderationInfo != null) {
+      json[r'moderation_info'] = this.moderationInfo;
+    } else {
+      json[r'moderation_info'] = null;
+    }
       json[r'value'] = this.value;
     return json;
   }
 
-  /// Returns a new [ProfileTextModerationRejectedReasonDetails] instance and imports its values from
+  /// Returns a new [GetProfileStringState] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static ProfileTextModerationRejectedReasonDetails? fromJson(dynamic value) {
+  static GetProfileStringState? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -48,24 +59,25 @@ class ProfileTextModerationRejectedReasonDetails {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "ProfileTextModerationRejectedReasonDetails[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "ProfileTextModerationRejectedReasonDetails[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "GetProfileStringState[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "GetProfileStringState[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return ProfileTextModerationRejectedReasonDetails(
+      return GetProfileStringState(
+        moderationInfo: ProfileStringModerationInfo.fromJson(json[r'moderation_info']),
         value: mapValueOfType<String>(json, r'value')!,
       );
     }
     return null;
   }
 
-  static List<ProfileTextModerationRejectedReasonDetails> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <ProfileTextModerationRejectedReasonDetails>[];
+  static List<GetProfileStringState> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <GetProfileStringState>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = ProfileTextModerationRejectedReasonDetails.fromJson(row);
+        final value = GetProfileStringState.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -74,12 +86,12 @@ class ProfileTextModerationRejectedReasonDetails {
     return result.toList(growable: growable);
   }
 
-  static Map<String, ProfileTextModerationRejectedReasonDetails> mapFromJson(dynamic json) {
-    final map = <String, ProfileTextModerationRejectedReasonDetails>{};
+  static Map<String, GetProfileStringState> mapFromJson(dynamic json) {
+    final map = <String, GetProfileStringState>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = ProfileTextModerationRejectedReasonDetails.fromJson(entry.value);
+        final value = GetProfileStringState.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -88,14 +100,14 @@ class ProfileTextModerationRejectedReasonDetails {
     return map;
   }
 
-  // maps a json object with a list of ProfileTextModerationRejectedReasonDetails-objects as value to a dart map
-  static Map<String, List<ProfileTextModerationRejectedReasonDetails>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<ProfileTextModerationRejectedReasonDetails>>{};
+  // maps a json object with a list of GetProfileStringState-objects as value to a dart map
+  static Map<String, List<GetProfileStringState>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<GetProfileStringState>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = ProfileTextModerationRejectedReasonDetails.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = GetProfileStringState.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;

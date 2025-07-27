@@ -20,7 +20,7 @@ String addRejectedCategoryRow(BuildContext context, String input, int? category)
 }
 
 String addRejectedDetailsRow(BuildContext context, String input, String? details) {
-  if (details != null) {
+  if (details != null && details.isNotEmpty) {
     return "$input\n\n${context.strings.moderation_rejected_details(details)}";
   } else {
     return input;

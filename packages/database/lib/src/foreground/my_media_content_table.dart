@@ -17,8 +17,8 @@ class MyMediaContent extends Table {
   TextColumn get uuidContentId => text().map(const ContentIdConverter())();
   BoolColumn get faceDetected => boolean()();
   TextColumn get moderationState => text().map(NullAwareTypeConverter.wrap(EnumString.driftConverter)).nullable()();
-  IntColumn get contentModerationRejectedCategory => integer().map(const NullAwareTypeConverter.wrap(ProfileContentModerationRejectedReasonCategoryConverter())).nullable()();
-  TextColumn get contentModerationRejectedDetails => text().map(const NullAwareTypeConverter.wrap(ProfileContentModerationRejectedReasonDetailsConverter())).nullable()();
+  IntColumn get contentModerationRejectedCategory => integer().map(const NullAwareTypeConverter.wrap(MediaContentModerationRejectedReasonCategoryConverter())).nullable()();
+  TextColumn get contentModerationRejectedDetails => text().map(const NullAwareTypeConverter.wrap(MediaContentModerationRejectedReasonDetailsConverter())).nullable()();
 
   @override
   Set<Column<Object>> get primaryKey => {contentIndex};

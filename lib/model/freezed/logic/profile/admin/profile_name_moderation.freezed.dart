@@ -23,14 +23,14 @@ final _privateConstructorErrorProfileNameModerationData = UnsupportedError(
 mixin _$ProfileNameModerationData {
   bool get isLoading => throw _privateConstructorErrorProfileNameModerationData;
   bool get isError => throw _privateConstructorErrorProfileNameModerationData;
-  GetProfileNamePendingModerationList? get item => throw _privateConstructorErrorProfileNameModerationData;
-  Set<ProfileNamePendingModeration> get selected => throw _privateConstructorErrorProfileNameModerationData;
+  GetProfileStringPendingModerationList? get item => throw _privateConstructorErrorProfileNameModerationData;
+  Set<ProfileStringPendingModeration> get selected => throw _privateConstructorErrorProfileNameModerationData;
 
   ProfileNameModerationData copyWith({
     bool? isLoading,
     bool? isError,
-    GetProfileNamePendingModerationList? item,
-    Set<ProfileNamePendingModeration>? selected,
+    GetProfileStringPendingModerationList? item,
+    Set<ProfileStringPendingModeration>? selected,
   }) => throw _privateConstructorErrorProfileNameModerationData;
 }
 
@@ -39,8 +39,8 @@ abstract class _ProfileNameModerationData implements ProfileNameModerationData {
   factory _ProfileNameModerationData({
     bool isLoading,
     bool isError,
-    GetProfileNamePendingModerationList? item,
-    Set<ProfileNamePendingModeration> selected,
+    GetProfileStringPendingModerationList? item,
+    Set<ProfileStringPendingModeration> selected,
   }) = _$ProfileNameModerationDataImpl;
 }
 
@@ -48,7 +48,7 @@ abstract class _ProfileNameModerationData implements ProfileNameModerationData {
 class _$ProfileNameModerationDataImpl with DiagnosticableTreeMixin implements _ProfileNameModerationData {
   static const bool _isLoadingDefaultValue = true;
   static const bool _isErrorDefaultValue = false;
-  static const Set<ProfileNamePendingModeration> _selectedDefaultValue = {};
+  static const Set<ProfileStringPendingModeration> _selectedDefaultValue = {};
   
   _$ProfileNameModerationDataImpl({
     this.isLoading = _isLoadingDefaultValue,
@@ -62,9 +62,9 @@ class _$ProfileNameModerationDataImpl with DiagnosticableTreeMixin implements _P
   @override
   final bool isError;
   @override
-  final GetProfileNamePendingModerationList? item;
+  final GetProfileStringPendingModerationList? item;
   @override
-  final Set<ProfileNamePendingModeration> selected;
+  final Set<ProfileStringPendingModeration> selected;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
@@ -116,7 +116,7 @@ class _$ProfileNameModerationDataImpl with DiagnosticableTreeMixin implements _P
   }) => _$ProfileNameModerationDataImpl(
     isLoading: (isLoading ?? this.isLoading) as bool,
     isError: (isError ?? this.isError) as bool,
-    item: (item == _detectDefaultValueInCopyWith ? this.item : item) as GetProfileNamePendingModerationList?,
-    selected: (selected ?? this.selected) as Set<ProfileNamePendingModeration>,
+    item: (item == _detectDefaultValueInCopyWith ? this.item : item) as GetProfileStringPendingModerationList?,
+    selected: (selected ?? this.selected) as Set<ProfileStringPendingModeration>,
   );
 }

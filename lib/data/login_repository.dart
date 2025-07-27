@@ -97,8 +97,8 @@ class LoginRepository extends DataRepository {
     .distinct(); // Avoid loop in ServerAddressBloc
 
   // Demo account
-  Stream<String?> get demoAccountUserId => DatabaseManager.getInstance()
-    .commonStream((db) => db.watchDemoAccountUserId());
+  Stream<String?> get demoAccountUsername => DatabaseManager.getInstance()
+    .commonStream((db) => db.watchDemoAccountUsername());
 
   Stream<String?> get demoAccountPassword => DatabaseManager.getInstance()
     .commonStream((db) => db.watchDemoAccountPassword());
@@ -518,28 +518,27 @@ class LoginRepository extends DataRepository {
     await _repositories?.connectionManager.closeAndRefreshServerAddressAndLogout();
   }
 
-  Future<Result<void, void>> demoAccountLogin(DemoAccountCredentials credentials) async {
+  Future<Result<void, DemoModeLoginError>> demoAccountLogin(DemoAccountCredentials credentials) async {
     _demoAccountLoginProgress.add(true);
-    final loginResult = await _apiNoConnection.account((api) => api.postDemoModeLogin(DemoModePassword(password: credentials.id))).ok();
+    final loginResult = await _apiNoConnection.account((api) => api.postDemoModeLogin(
+      DemoModeLoginCredentials(username: credentials.username, password: credentials.password)
+    )).ok();
     _demoAccountLoginProgress.add(false);
 
-    final loginToken = loginResult?.token;
-    if (loginToken == null) {
-      return const Err(null);
+    if (loginResult == null) {
+      return const Err(DemoModeLoginError.otherError);
     }
 
-    final loginResult2 = await _apiNoConnection.account((api) => api.postDemoModeConfirmLogin(
-      DemoModeConfirmLogin(
-        password: DemoModePassword(password: credentials.password),
-        token: loginToken
-      )
-    )).ok();
-    final demoAccountToken = loginResult2?.token?.token;
+    if (loginResult.locked) {
+      return const Err(DemoModeLoginError.accountLocked);
+    }
+
+    final demoAccountToken = loginResult.token?.token;
     if (demoAccountToken == null) {
-      return const Err(null);
+      return const Err(DemoModeLoginError.otherError);
     }
 
-    await DatabaseManager.getInstance().commonAction((db) => db.updateDemoAccountUserId(credentials.id));
+    await DatabaseManager.getInstance().commonAction((db) => db.updateDemoAccountUsername(credentials.username));
     await DatabaseManager.getInstance().commonAction((db) => db.updateDemoAccountPassword(credentials.password));
     await DatabaseManager.getInstance().commonAction((db) => db.updateDemoAccountToken(demoAccountToken));
 
@@ -559,7 +558,7 @@ class LoginRepository extends DataRepository {
 
     // TODO(prod): Uncomment
     // await KvStringManager.getInstance().setValue(KvString.demoAccountPassword, null);
-    // await KvStringManager.getInstance().setValue(KvString.demoAccountUserId, null);
+    // await KvStringManager.getInstance().setValue(KvString.demoAccountUsername, null);
     await DatabaseManager.getInstance().commonAction((db) => db.updateDemoAccountToken(null));
 
     log.info("demo account logout completed");
@@ -633,9 +632,14 @@ class LoginRepository extends DataRepository {
 }
 
 class DemoAccountCredentials {
-  final String id;
+  final String username;
   final String password;
-  DemoAccountCredentials(this.id, this.password);
+  DemoAccountCredentials(this.username, this.password);
+}
+
+enum DemoModeLoginError {
+  accountLocked,
+  otherError,
 }
 
 sealed class SessionOrOtherError {}

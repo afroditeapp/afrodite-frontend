@@ -34,7 +34,7 @@ class EventType {
   static const mediaContentChanged = EventType._(r'MediaContentChanged');
   static const dailyLikesLeftChanged = EventType._(r'DailyLikesLeftChanged');
   static const scheduledMaintenanceStatus = EventType._(r'ScheduledMaintenanceStatus');
-  static const profileTextModerationCompleted = EventType._(r'ProfileTextModerationCompleted');
+  static const profileStringModerationCompleted = EventType._(r'ProfileStringModerationCompleted');
   static const automaticProfileSearchCompleted = EventType._(r'AutomaticProfileSearchCompleted');
   static const adminNotification = EventType._(r'AdminNotification');
 
@@ -51,7 +51,7 @@ class EventType {
     mediaContentChanged,
     dailyLikesLeftChanged,
     scheduledMaintenanceStatus,
-    profileTextModerationCompleted,
+    profileStringModerationCompleted,
     automaticProfileSearchCompleted,
     adminNotification,
   ];
@@ -103,7 +103,7 @@ class EventTypeTypeTransformer {
         case r'MediaContentChanged': return EventType.mediaContentChanged;
         case r'DailyLikesLeftChanged': return EventType.dailyLikesLeftChanged;
         case r'ScheduledMaintenanceStatus': return EventType.scheduledMaintenanceStatus;
-        case r'ProfileTextModerationCompleted': return EventType.profileTextModerationCompleted;
+        case r'ProfileStringModerationCompleted': return EventType.profileStringModerationCompleted;
         case r'AutomaticProfileSearchCompleted': return EventType.automaticProfileSearchCompleted;
         case r'AdminNotification': return EventType.adminNotification;
         default:

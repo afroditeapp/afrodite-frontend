@@ -17,7 +17,7 @@ class ContentInfoWithFd {
     required this.ctype,
     required this.fd,
     this.rejectedReasonCategory,
-    this.rejectedReasonDetails,
+    required this.rejectedReasonDetails,
     required this.state,
   });
 
@@ -28,9 +28,9 @@ class ContentInfoWithFd {
   /// Face detected
   bool fd;
 
-  ProfileContentModerationRejectedReasonCategory? rejectedReasonCategory;
+  MediaContentModerationRejectedReasonCategory? rejectedReasonCategory;
 
-  ProfileContentModerationRejectedReasonDetails? rejectedReasonDetails;
+  MediaContentModerationRejectedReasonDetails rejectedReasonDetails;
 
   ContentModerationState state;
 
@@ -50,7 +50,7 @@ class ContentInfoWithFd {
     (ctype.hashCode) +
     (fd.hashCode) +
     (rejectedReasonCategory == null ? 0 : rejectedReasonCategory!.hashCode) +
-    (rejectedReasonDetails == null ? 0 : rejectedReasonDetails!.hashCode) +
+    (rejectedReasonDetails.hashCode) +
     (state.hashCode);
 
   @override
@@ -66,11 +66,7 @@ class ContentInfoWithFd {
     } else {
       json[r'rejected_reason_category'] = null;
     }
-    if (this.rejectedReasonDetails != null) {
       json[r'rejected_reason_details'] = this.rejectedReasonDetails;
-    } else {
-      json[r'rejected_reason_details'] = null;
-    }
       json[r'state'] = this.state;
     return json;
   }
@@ -97,8 +93,8 @@ class ContentInfoWithFd {
         cid: ContentId.fromJson(json[r'cid'])!,
         ctype: MediaContentType.fromJson(json[r'ctype'])!,
         fd: mapValueOfType<bool>(json, r'fd')!,
-        rejectedReasonCategory: ProfileContentModerationRejectedReasonCategory.fromJson(json[r'rejected_reason_category']),
-        rejectedReasonDetails: ProfileContentModerationRejectedReasonDetails.fromJson(json[r'rejected_reason_details']),
+        rejectedReasonCategory: MediaContentModerationRejectedReasonCategory.fromJson(json[r'rejected_reason_category']),
+        rejectedReasonDetails: MediaContentModerationRejectedReasonDetails.fromJson(json[r'rejected_reason_details'])!,
         state: ContentModerationState.fromJson(json[r'state'])!,
       );
     }
@@ -150,6 +146,7 @@ class ContentInfoWithFd {
     'cid',
     'ctype',
     'fd',
+    'rejected_reason_details',
     'state',
   };
 }

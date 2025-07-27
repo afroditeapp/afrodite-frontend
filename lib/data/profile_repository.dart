@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:app/data/chat_repository.dart';
 import 'package:app/data/general/notification/state/automatic_profile_search.dart';
 import 'package:app/data/general/notification/state/profile_text_moderation_completed.dart';
+import 'package:app/utils/api.dart';
 import 'package:app/utils/stream.dart';
 import 'package:async/async.dart' show StreamExtensions;
 import 'package:logging/logging.dart';
@@ -616,17 +617,22 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
       ));
   }
 
-  Future<void> handleProfileTextModerationCompletedEvent() async {
-    final notification = await _api.profile((api) => api.postGetProfileTextModerationCompletedNotification()).ok();
+  Future<void> handleProfileStringModerationCompletedEvent() async {
+    final notification = await _api.profile((api) => api.postGetProfileStringModerationCompletedNotification()).ok();
 
     if (notification == null) {
       return;
     }
 
-    await NotificationProfileTextModerationCompleted.handleProfileTextModerationCompleted(notification, accountBackgroundDb);
+    await NotificationProfileStringModerationCompleted.handleProfileStringModerationCompleted(notification, accountBackgroundDb);
 
-    final viewed = ProfileTextModerationCompletedNotificationViewed(accepted: notification.accepted, rejected: notification.rejected);
-    await _api.profileAction((api) => api.postMarkProfileTextModerationCompletedNotificationViewed(viewed))
+    final viewed = ProfileStringModerationCompletedNotificationViewed(
+      nameAccepted: notification.nameAccepted.id.toViewed(),
+      nameRejected: notification.nameRejected.id.toViewed(),
+      textAccepted: notification.textAccepted.id.toViewed(),
+      textRejected: notification.textRejected.id.toViewed(),
+    );
+    await _api.profileAction((api) => api.postMarkProfileStringModerationCompletedNotificationViewed(viewed))
       .andThen((_) => accountBackgroundDb.accountData(
         (db) => db.daoProfileTextModerationCompletedNotificationTable.updateViewedValues(viewed)
       ));
@@ -641,7 +647,9 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
 
     await NotificationAutomaticProfileSearch.handleAutomaticProfileSearchCompleted(notification, accountBackgroundDb);
 
-    final viewed = AutomaticProfileSearchCompletedNotificationViewed(profilesFound: notification.profilesFound);
+    final viewed = AutomaticProfileSearchCompletedNotificationViewed(
+      profilesFound: notification.profilesFound.id.toViewed(),
+    );
     await _api.profileAction((api) => api.postMarkAutomaticProfileSearchCompletedNotificationViewed(viewed))
       .andThen((_) => accountBackgroundDb.accountData(
         (db) => db.daoAutomaticProfileSearchCompletedNotificationTable.updateProfilesFoundViewed(viewed)

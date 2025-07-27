@@ -18,8 +18,8 @@ class AttributeValue {
     this.icon,
     required this.id,
     required this.key,
+    required this.name,
     required this.orderNumber,
-    required this.value,
     this.visible = true,
   });
 
@@ -38,13 +38,13 @@ class AttributeValue {
   /// Unique string identifier for the attribute value.
   String key;
 
+  /// Default name for the attribute value if translated value is not available.
+  String name;
+
   /// Order number for client to determine in what order the values should be displayed.
   ///
   /// Minimum value: 0
   int orderNumber;
-
-  /// English text for the attribute value.
-  String value;
 
   bool visible;
 
@@ -55,8 +55,8 @@ class AttributeValue {
     other.icon == icon &&
     other.id == id &&
     other.key == key &&
+    other.name == name &&
     other.orderNumber == orderNumber &&
-    other.value == value &&
     other.visible == visible;
 
   @override
@@ -67,12 +67,12 @@ class AttributeValue {
     (icon == null ? 0 : icon!.hashCode) +
     (id.hashCode) +
     (key.hashCode) +
+    (name.hashCode) +
     (orderNumber.hashCode) +
-    (value.hashCode) +
     (visible.hashCode);
 
   @override
-  String toString() => 'AttributeValue[editable=$editable, groupValues=$groupValues, icon=$icon, id=$id, key=$key, orderNumber=$orderNumber, value=$value, visible=$visible]';
+  String toString() => 'AttributeValue[editable=$editable, groupValues=$groupValues, icon=$icon, id=$id, key=$key, name=$name, orderNumber=$orderNumber, visible=$visible]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -89,8 +89,8 @@ class AttributeValue {
     }
       json[r'id'] = this.id;
       json[r'key'] = this.key;
+      json[r'name'] = this.name;
       json[r'order_number'] = this.orderNumber;
-      json[r'value'] = this.value;
       json[r'visible'] = this.visible;
     return json;
   }
@@ -119,8 +119,8 @@ class AttributeValue {
         icon: mapValueOfType<String>(json, r'icon'),
         id: mapValueOfType<int>(json, r'id')!,
         key: mapValueOfType<String>(json, r'key')!,
+        name: mapValueOfType<String>(json, r'name')!,
         orderNumber: mapValueOfType<int>(json, r'order_number')!,
-        value: mapValueOfType<String>(json, r'value')!,
         visible: mapValueOfType<bool>(json, r'visible') ?? true,
       );
     }
@@ -171,8 +171,8 @@ class AttributeValue {
   static const requiredKeys = <String>{
     'id',
     'key',
+    'name',
     'order_number',
-    'value',
   };
 }
 

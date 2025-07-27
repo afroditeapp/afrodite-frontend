@@ -23,11 +23,11 @@ class CustomReportType {
 
   String toJson() => value;
 
-  static const boolean = CustomReportType._(r'Boolean');
+  static const empty = CustomReportType._(r'Empty');
 
   /// List of all possible values in this [enum][CustomReportType].
   static const values = <CustomReportType>[
-    boolean,
+    empty,
   ];
 
   static CustomReportType? fromJson(dynamic value) => CustomReportTypeTypeTransformer().decode(value);
@@ -66,7 +66,7 @@ class CustomReportTypeTypeTransformer {
   CustomReportType? decode(dynamic data, {bool allowNull = true}) {
     if (data != null) {
       switch (data) {
-        case r'Boolean': return CustomReportType.boolean;
+        case r'Empty': return CustomReportType.empty;
         default:
           if (!allowNull) {
             throw ArgumentError('Unknown enum value to decode: $data');

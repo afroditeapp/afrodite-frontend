@@ -28,7 +28,7 @@ class ModerateImagesScreen extends ContentDecicionScreen<WrappedMediaContentPend
   );
 }
 
-class WrappedMediaContentPendingModeration extends ProfileContentPendingModeration implements ContentInfoGetter {
+class WrappedMediaContentPendingModeration extends MediaContentPendingModeration implements ContentInfoGetter {
   final ContentId? securitySelfie;
   WrappedMediaContentPendingModeration({
     required this.securitySelfie,
@@ -53,13 +53,13 @@ class MediaContentIo extends ContentIo<WrappedMediaContentPendingModeration> {
 
   @override
   Future<Result<List<WrappedMediaContentPendingModeration>, void>> getNextContent() async {
-    final r = await api.mediaAdmin((api) => api.getProfileContentPendingModerationList(
+    final r = await api.mediaAdmin((api) => api.getMediaContentPendingModerationList(
       MediaContentType.jpegImage,
       queue,
       showContentWhichBotsCanModerate,
     ));
 
-    final GetProfileContentPendingModerationList list;
+    final GetMediaContentPendingModerationList list;
     switch (r) {
       case Err():
         return const Err(null);
@@ -83,8 +83,8 @@ class MediaContentIo extends ContentIo<WrappedMediaContentPendingModeration> {
 
   @override
   Future<void> sendToServer(WrappedMediaContentPendingModeration content, bool accept) async {
-    final info = PostModerateProfileContent(accept: accept, accountId: content.accountId, contentId: content.contentId);
-    await api.mediaAdminAction((api) => api.postModerateProfileContent(info));
+    final info = PostModerateMediaContent(accept: accept, accountId: content.accountId, contentId: content.contentId, rejectedDetails: MediaContentModerationRejectedReasonDetails(value: ""));
+    await api.mediaAdminAction((api) => api.postModerateMediaContent(info));
   }
 }
 

@@ -5,24 +5,20 @@ class AttributeTranslation {
   static String getTranslatedString(
     String locale,
     String key,
-    String englishString,
+    String defaultString,
     List<Language> languages,
   ) {
-    if (locale == "en") {
-      return englishString;
-    }
-
     final translations = languages.where((element) => element.lang == locale).firstOrNull;
     if (translations == null) {
-      return englishString;
+      return defaultString;
     }
 
     for (final translation in translations.values) {
       if (translation.key == key) {
-        return translation.value;
+        return translation.name;
       }
     }
 
-    return englishString;
+    return defaultString;
   }
 }

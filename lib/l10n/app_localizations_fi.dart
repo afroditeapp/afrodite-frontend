@@ -770,7 +770,8 @@ class AppLocalizationsFi extends AppLocalizations {
   String get login_screen_demo_account_dialog_title => 'Demo account login';
 
   @override
-  String get login_screen_demo_account_identifier => 'Account ID';
+  String get login_screen_demo_account_locked =>
+      'Account locked. Contact customer support.';
 
   @override
   String get login_screen_demo_account_login_failed => 'Login failed';
@@ -784,6 +785,9 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get login_screen_demo_account_password => 'Password';
+
+  @override
+  String get login_screen_demo_account_username => 'Username';
 
   @override
   String get login_screen_login_button => 'Kirjaudu';

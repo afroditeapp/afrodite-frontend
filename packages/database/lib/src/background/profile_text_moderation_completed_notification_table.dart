@@ -21,7 +21,7 @@ class DaoProfileTextModerationCompletedNotificationTable extends DatabaseAccesso
   DaoProfileTextModerationCompletedNotificationTable(super.db);
 
   /// Returns true when notification must be shown
-  Future<bool> shouldAcceptedNotificationBeShown(int acceptedNotificationId, int viewedId) async {
+  Future<bool> shouldAcceptedNotificationBeShown(api.NotificationStatus accepted) async {
     final (current, currentViewed) = await (select(profileTextModerationCompletedNotificationTable)
       ..where((t) => t.id.equals(ACCOUNT_DB_DATA_ID.value))
     )
@@ -31,16 +31,16 @@ class DaoProfileTextModerationCompletedNotificationTable extends DatabaseAccesso
     await into(profileTextModerationCompletedNotificationTable).insertOnConflictUpdate(
       ProfileTextModerationCompletedNotificationTableCompanion.insert(
         id: ACCOUNT_DB_DATA_ID,
-        accepted: Value(acceptedNotificationId),
-        acceptedViewed: Value(viewedId),
+        accepted: Value(accepted.id.id),
+        acceptedViewed: Value(accepted.viewed.id),
       ),
     );
 
-    return acceptedNotificationId != current || viewedId != currentViewed;
+    return accepted.id.id != current || accepted.viewed.id != currentViewed;
   }
 
   /// Returns true when notification must be shown
-  Future<bool> shouldRejectedNotificationBeShown(int rejectedNotificationId, int viewedId) async {
+  Future<bool> shouldRejectedNotificationBeShown(api.NotificationStatus rejected) async {
     final (current, currentViewed) = await (select(profileTextModerationCompletedNotificationTable)
       ..where((t) => t.id.equals(ACCOUNT_DB_DATA_ID.value))
     )
@@ -50,20 +50,20 @@ class DaoProfileTextModerationCompletedNotificationTable extends DatabaseAccesso
     await into(profileTextModerationCompletedNotificationTable).insertOnConflictUpdate(
       ProfileTextModerationCompletedNotificationTableCompanion.insert(
         id: ACCOUNT_DB_DATA_ID,
-        rejected: Value(rejectedNotificationId),
-        rejectedViewed: Value(viewedId),
+        rejected: Value(rejected.id.id),
+        rejectedViewed: Value(rejected.viewed.id),
       ),
     );
 
-    return rejectedNotificationId != current || viewedId != currentViewed;
+    return rejected.id.id != current || rejected.viewed.id != currentViewed;
   }
 
-  Future<void> updateViewedValues(api.ProfileTextModerationCompletedNotificationViewed viewed) async {
+  Future<void> updateViewedValues(api.ProfileStringModerationCompletedNotificationViewed viewed) async {
     await into(profileTextModerationCompletedNotificationTable).insertOnConflictUpdate(
       ProfileTextModerationCompletedNotificationTableCompanion.insert(
         id: ACCOUNT_DB_DATA_ID,
-        acceptedViewed: Value(viewed.accepted),
-        rejectedViewed: Value(viewed.rejected),
+        acceptedViewed: Value(viewed.textAccepted.id),
+        rejectedViewed: Value(viewed.textRejected.id),
       ),
     );
   }

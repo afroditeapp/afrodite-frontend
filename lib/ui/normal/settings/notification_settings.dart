@@ -132,7 +132,7 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
           profileTextModerationCompleted(context, state),
         ],
         [
-          if (features.features.news) news(context, state),
+          if (features.news != null) news(context, state),
           automaticProfileSearch(context, state),
         ]
       ];

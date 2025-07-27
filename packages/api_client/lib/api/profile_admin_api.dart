@@ -184,104 +184,6 @@ class ProfileAdminApi {
     return null;
   }
 
-  /// Performs an HTTP 'GET /profile_api/profile_name_pending_moderation' operation and returns the [Response].
-  Future<Response> getProfileNamePendingModerationListWithHttpInfo() async {
-    // ignore: prefer_const_declarations
-    final path = r'/profile_api/profile_name_pending_moderation';
-
-    // ignore: prefer_final_locals
-    Object? postBody;
-
-    final queryParams = <QueryParam>[];
-    final headerParams = <String, String>{};
-    final formParams = <String, String>{};
-
-    const contentTypes = <String>[];
-
-
-    return apiClient.invokeAPI(
-      path,
-      'GET',
-      queryParams,
-      postBody,
-      headerParams,
-      formParams,
-      contentTypes.isEmpty ? null : contentTypes.first,
-    );
-  }
-
-  Future<GetProfileNamePendingModerationList?> getProfileNamePendingModerationList() async {
-    final response = await getProfileNamePendingModerationListWithHttpInfo();
-    if (response.statusCode >= HttpStatus.badRequest) {
-      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
-    }
-    // When a remote server returns no body with a status of 204, we shall not decode it.
-    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
-    // FormatException when trying to decode an empty string.
-    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetProfileNamePendingModerationList',) as GetProfileNamePendingModerationList;
-    
-    }
-    return null;
-  }
-
-  /// Get profile name state
-  ///
-  /// # Access - Permission [model::Permissions::admin_moderate_profile_names]
-  ///
-  /// Note: This method returns the HTTP [Response].
-  ///
-  /// Parameters:
-  ///
-  /// * [String] aid (required):
-  Future<Response> getProfileNameStateWithHttpInfo(String aid,) async {
-    // ignore: prefer_const_declarations
-    final path = r'/profile_api/get_profile_name_state/{aid}'
-      .replaceAll('{aid}', aid);
-
-    // ignore: prefer_final_locals
-    Object? postBody;
-
-    final queryParams = <QueryParam>[];
-    final headerParams = <String, String>{};
-    final formParams = <String, String>{};
-
-    const contentTypes = <String>[];
-
-
-    return apiClient.invokeAPI(
-      path,
-      'GET',
-      queryParams,
-      postBody,
-      headerParams,
-      formParams,
-      contentTypes.isEmpty ? null : contentTypes.first,
-    );
-  }
-
-  /// Get profile name state
-  ///
-  /// # Access - Permission [model::Permissions::admin_moderate_profile_names]
-  ///
-  /// Parameters:
-  ///
-  /// * [String] aid (required):
-  Future<GetProfileNameState?> getProfileNameState(String aid,) async {
-    final response = await getProfileNameStateWithHttpInfo(aid,);
-    if (response.statusCode >= HttpStatus.badRequest) {
-      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
-    }
-    // When a remote server returns no body with a status of 204, we shall not decode it.
-    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
-    // FormatException when trying to decode an empty string.
-    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetProfileNameState',) as GetProfileNameState;
-    
-    }
-    return null;
-  }
-
   /// Performs an HTTP 'GET /profile_api/profile_statistics_history' operation and returns the [Response].
   /// Parameters:
   ///
@@ -340,16 +242,20 @@ class ProfileAdminApi {
     return null;
   }
 
-  /// Get first page of pending profile text moderations. Oldest item is first and count 25.
+  /// Get first page of pending profile string moderations. Oldest item is first and count 25.
+  ///
+  /// # Access * [Permissions::admin_moderate_profile_names] or   [Permissions::admin_moderate_profile_texts] depending   on [GetProfilePendingModerationParams::content_type].
   ///
   /// Note: This method returns the HTTP [Response].
   ///
   /// Parameters:
   ///
-  /// * [bool] showTextsWhichBotsCanModerate (required):
-  Future<Response> getProfileTextPendingModerationListWithHttpInfo(bool showTextsWhichBotsCanModerate,) async {
+  /// * [ProfileStringModerationContentType] contentType (required):
+  ///
+  /// * [bool] showValuesWhichBotsCanModerate (required):
+  Future<Response> getProfileStringPendingModerationListWithHttpInfo(ProfileStringModerationContentType contentType, bool showValuesWhichBotsCanModerate,) async {
     // ignore: prefer_const_declarations
-    final path = r'/profile_api/profile_text_pending_moderation';
+    final path = r'/profile_api/profile_string_pending_moderation';
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -358,7 +264,8 @@ class ProfileAdminApi {
     final headerParams = <String, String>{};
     final formParams = <String, String>{};
 
-      queryParams.addAll(_queryParams('', 'show_texts_which_bots_can_moderate', showTextsWhichBotsCanModerate));
+      queryParams.addAll(_queryParams('', 'content_type', contentType));
+      queryParams.addAll(_queryParams('', 'show_values_which_bots_can_moderate', showValuesWhichBotsCanModerate));
 
     const contentTypes = <String>[];
 
@@ -374,13 +281,17 @@ class ProfileAdminApi {
     );
   }
 
-  /// Get first page of pending profile text moderations. Oldest item is first and count 25.
+  /// Get first page of pending profile string moderations. Oldest item is first and count 25.
+  ///
+  /// # Access * [Permissions::admin_moderate_profile_names] or   [Permissions::admin_moderate_profile_texts] depending   on [GetProfilePendingModerationParams::content_type].
   ///
   /// Parameters:
   ///
-  /// * [bool] showTextsWhichBotsCanModerate (required):
-  Future<GetProfileTextPendingModerationList?> getProfileTextPendingModerationList(bool showTextsWhichBotsCanModerate,) async {
-    final response = await getProfileTextPendingModerationListWithHttpInfo(showTextsWhichBotsCanModerate,);
+  /// * [ProfileStringModerationContentType] contentType (required):
+  ///
+  /// * [bool] showValuesWhichBotsCanModerate (required):
+  Future<GetProfileStringPendingModerationList?> getProfileStringPendingModerationList(ProfileStringModerationContentType contentType, bool showValuesWhichBotsCanModerate,) async {
+    final response = await getProfileStringPendingModerationListWithHttpInfo(contentType, showValuesWhichBotsCanModerate,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -388,24 +299,26 @@ class ProfileAdminApi {
     // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetProfileTextPendingModerationList',) as GetProfileTextPendingModerationList;
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetProfileStringPendingModerationList',) as GetProfileStringPendingModerationList;
     
     }
     return null;
   }
 
-  /// Get profile text state
+  /// Get profile string state
   ///
-  /// # Access - Permission [model::Permissions::admin_moderate_profile_texts]
+  /// # Access * [Permissions::admin_moderate_profile_names] or   [Permissions::admin_moderate_profile_texts] depending   on [GetProfileStringStateParams::content_type].
   ///
   /// Note: This method returns the HTTP [Response].
   ///
   /// Parameters:
   ///
+  /// * [ProfileStringModerationContentType] contentType (required):
+  ///
   /// * [String] aid (required):
-  Future<Response> getProfileTextStateWithHttpInfo(String aid,) async {
+  Future<Response> getProfileStringStateWithHttpInfo(ProfileStringModerationContentType contentType, String aid,) async {
     // ignore: prefer_const_declarations
-    final path = r'/profile_api/get_profile_text_state/{aid}'
+    final path = r'/profile_api/get_profile_string_state/{aid}'
       .replaceAll('{aid}', aid);
 
     // ignore: prefer_final_locals
@@ -415,6 +328,8 @@ class ProfileAdminApi {
     final headerParams = <String, String>{};
     final formParams = <String, String>{};
 
+      queryParams.addAll(_queryParams('', 'content_type', contentType));
+
     const contentTypes = <String>[];
 
 
@@ -429,15 +344,17 @@ class ProfileAdminApi {
     );
   }
 
-  /// Get profile text state
+  /// Get profile string state
   ///
-  /// # Access - Permission [model::Permissions::admin_moderate_profile_texts]
+  /// # Access * [Permissions::admin_moderate_profile_names] or   [Permissions::admin_moderate_profile_texts] depending   on [GetProfileStringStateParams::content_type].
   ///
   /// Parameters:
   ///
+  /// * [ProfileStringModerationContentType] contentType (required):
+  ///
   /// * [String] aid (required):
-  Future<GetProfileTextState?> getProfileTextState(String aid,) async {
-    final response = await getProfileTextStateWithHttpInfo(aid,);
+  Future<GetProfileStringState?> getProfileStringState(ProfileStringModerationContentType contentType, String aid,) async {
+    final response = await getProfileStringStateWithHttpInfo(contentType, aid,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -445,66 +362,27 @@ class ProfileAdminApi {
     // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetProfileTextState',) as GetProfileTextState;
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetProfileStringState',) as GetProfileStringState;
     
     }
     return null;
   }
 
-  /// Performs an HTTP 'POST /profile_api/moderate_profile_name' operation and returns the [Response].
-  /// Parameters:
+  /// Rejected category and details can be set only when [PostModerateProfileString::value] is rejected.
   ///
-  /// * [PostModerateProfileName] postModerateProfileName (required):
-  Future<Response> postModerateProfileNameWithHttpInfo(PostModerateProfileName postModerateProfileName,) async {
-    // ignore: prefer_const_declarations
-    final path = r'/profile_api/moderate_profile_name';
-
-    // ignore: prefer_final_locals
-    Object? postBody = postModerateProfileName;
-
-    final queryParams = <QueryParam>[];
-    final headerParams = <String, String>{};
-    final formParams = <String, String>{};
-
-    const contentTypes = <String>['application/json'];
-
-
-    return apiClient.invokeAPI(
-      path,
-      'POST',
-      queryParams,
-      postBody,
-      headerParams,
-      formParams,
-      contentTypes.isEmpty ? null : contentTypes.first,
-    );
-  }
-
-  /// Parameters:
-  ///
-  /// * [PostModerateProfileName] postModerateProfileName (required):
-  Future<void> postModerateProfileName(PostModerateProfileName postModerateProfileName,) async {
-    final response = await postModerateProfileNameWithHttpInfo(postModerateProfileName,);
-    if (response.statusCode >= HttpStatus.badRequest) {
-      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
-    }
-  }
-
-  /// Rejected category and details can be set only when the text is rejected.
-  ///
-  /// This route will fail if the users's profile text is empty or it is not the same text that was moderated.
+  /// This route will fail if the users's profile name/text is empty or it is not the same name/text that was moderated.  # Access * [Permissions::admin_moderate_profile_names] or   [Permissions::admin_moderate_profile_texts] depending   on [PostModerateProfileString::content_type].
   ///
   /// Note: This method returns the HTTP [Response].
   ///
   /// Parameters:
   ///
-  /// * [PostModerateProfileText] postModerateProfileText (required):
-  Future<Response> postModerateProfileTextWithHttpInfo(PostModerateProfileText postModerateProfileText,) async {
+  /// * [PostModerateProfileString] postModerateProfileString (required):
+  Future<Response> postModerateProfileStringWithHttpInfo(PostModerateProfileString postModerateProfileString,) async {
     // ignore: prefer_const_declarations
-    final path = r'/profile_api/moderate_profile_text';
+    final path = r'/profile_api/moderate_profile_string';
 
     // ignore: prefer_final_locals
-    Object? postBody = postModerateProfileText;
+    Object? postBody = postModerateProfileString;
 
     final queryParams = <QueryParam>[];
     final headerParams = <String, String>{};
@@ -524,15 +402,15 @@ class ProfileAdminApi {
     );
   }
 
-  /// Rejected category and details can be set only when the text is rejected.
+  /// Rejected category and details can be set only when [PostModerateProfileString::value] is rejected.
   ///
-  /// This route will fail if the users's profile text is empty or it is not the same text that was moderated.
+  /// This route will fail if the users's profile name/text is empty or it is not the same name/text that was moderated.  # Access * [Permissions::admin_moderate_profile_names] or   [Permissions::admin_moderate_profile_texts] depending   on [PostModerateProfileString::content_type].
   ///
   /// Parameters:
   ///
-  /// * [PostModerateProfileText] postModerateProfileText (required):
-  Future<void> postModerateProfileText(PostModerateProfileText postModerateProfileText,) async {
-    final response = await postModerateProfileTextWithHttpInfo(postModerateProfileText,);
+  /// * [PostModerateProfileString] postModerateProfileString (required):
+  Future<void> postModerateProfileString(PostModerateProfileString postModerateProfileString,) async {
+    final response = await postModerateProfileStringWithHttpInfo(postModerateProfileString,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

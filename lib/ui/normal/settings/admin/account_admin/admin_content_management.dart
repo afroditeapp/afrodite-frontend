@@ -163,8 +163,13 @@ class _AdminContentManagementScreenState extends State<AdminContentManagementScr
   void changeModerationStateAction(AccountId account, ContentId content, bool accepted) async {
     final result = await api
       .mediaAdminAction(
-        (api) => api.postModerateProfileContent(
-          PostModerateProfileContent(accept: accepted, accountId: account, contentId: content)
+        (api) => api.postModerateMediaContent(
+          PostModerateMediaContent(
+            accept: accepted,
+            accountId: account,
+            contentId: content,
+            rejectedDetails: MediaContentModerationRejectedReasonDetails(value: ""),
+          )
         )
       );
 
@@ -350,7 +355,7 @@ Widget _statusInfo(
 Widget _rejectionDetailsInfo(BuildContext context, ContentInfoDetailed content) {
   String infoText = "";
   infoText = addRejectedCategoryRow(context, infoText, content.rejectedReasonCategory?.value);
-  infoText = addRejectedDetailsRow(context, infoText, content.rejectedReasonDetails?.value);
+  infoText = addRejectedDetailsRow(context, infoText, content.rejectedReasonDetails.value);
   infoText = infoText.trim();
 
   if (infoText.isNotEmpty) {

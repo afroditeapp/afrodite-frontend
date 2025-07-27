@@ -122,10 +122,10 @@ class _ViewProfileEntryState extends State<ViewProfileEntry> {
         final profile = widget.profile;
         if (profile is MyProfileEntry) {
           final stateText = switch (profile.profileNameModerationState) {
-            ProfileNameModerationState.rejectedByBot => context.strings.moderation_state_rejected_by_bot,
-            ProfileNameModerationState.rejectedByHuman => context.strings.moderation_state_rejected_by_human,
-            ProfileNameModerationState.waitingBotOrHumanModeration => context.strings.moderation_state_waiting_bot_or_human_moderation,
-            ProfileNameModerationState.waitingHumanModeration => context.strings.moderation_state_waiting_human_moderation,
+            ProfileStringModerationState.rejectedByBot => context.strings.moderation_state_rejected_by_bot,
+            ProfileStringModerationState.rejectedByHuman => context.strings.moderation_state_rejected_by_human,
+            ProfileStringModerationState.waitingBotOrHumanModeration => context.strings.moderation_state_waiting_bot_or_human_moderation,
+            ProfileStringModerationState.waitingHumanModeration => context.strings.moderation_state_waiting_human_moderation,
             _ => null,
           };
           infoText = addModerationStateRow(context, infoText, stateText);
@@ -192,10 +192,10 @@ class _ViewProfileEntryState extends State<ViewProfileEntry> {
               final profile = widget.profile;
               if (profile is MyProfileEntry) {
                 final stateText = switch (profile.profileTextModerationState) {
-                  ProfileTextModerationState.rejectedByBot => context.strings.moderation_state_rejected_by_bot,
-                  ProfileTextModerationState.rejectedByHuman => context.strings.moderation_state_rejected_by_human,
-                  ProfileTextModerationState.waitingBotOrHumanModeration => context.strings.moderation_state_waiting_bot_or_human_moderation,
-                  ProfileTextModerationState.waitingHumanModeration => context.strings.moderation_state_waiting_human_moderation,
+                  ProfileStringModerationState.rejectedByBot => context.strings.moderation_state_rejected_by_bot,
+                  ProfileStringModerationState.rejectedByHuman => context.strings.moderation_state_rejected_by_human,
+                  ProfileStringModerationState.waitingBotOrHumanModeration => context.strings.moderation_state_waiting_bot_or_human_moderation,
+                  ProfileStringModerationState.waitingHumanModeration => context.strings.moderation_state_waiting_human_moderation,
                   _ => null,
                 };
                 infoText = addModerationStateRow(context, infoText, stateText);

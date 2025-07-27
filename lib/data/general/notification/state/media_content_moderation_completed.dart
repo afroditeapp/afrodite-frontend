@@ -25,7 +25,7 @@ class NotificationMediaContentModerationCompleted extends AppSingletonNoInit {
     AccountBackgroundDatabaseManager accountBackgroundDb,
   ) async {
     final showAccepted = await accountBackgroundDb.accountData(
-      (db) => db.daoMediaContentModerationCompletedNotificationTable.shouldAcceptedNotificationBeShown(notification.accepted, notification.acceptedViewed)
+      (db) => db.daoMediaContentModerationCompletedNotificationTable.shouldAcceptedNotificationBeShown(notification.accepted)
     ).ok() ?? false;
 
     if (showAccepted) {
@@ -33,7 +33,7 @@ class NotificationMediaContentModerationCompleted extends AppSingletonNoInit {
     }
 
     final showRejected = await accountBackgroundDb.accountData(
-      (db) => db.daoMediaContentModerationCompletedNotificationTable.shouldRejectedNotificationBeShown(notification.rejected, notification.rejectedViewed)
+      (db) => db.daoMediaContentModerationCompletedNotificationTable.shouldRejectedNotificationBeShown(notification.rejected)
     ).ok() ?? false;
 
     if (showRejected) {
@@ -42,7 +42,7 @@ class NotificationMediaContentModerationCompleted extends AppSingletonNoInit {
   }
 
   Future<void> show(ModerationCompletedState state, AccountBackgroundDatabaseManager accountBackgroundDb) async {
-    final NotificationId id = switch (state) {
+    final LocalNotificationId id = switch (state) {
       ModerationCompletedState.accepted => NotificationIdStatic.mediaContentModerationAccepted.id,
       ModerationCompletedState.rejected => NotificationIdStatic.mediaContentModerationRejected.id,
     };

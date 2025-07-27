@@ -18,7 +18,7 @@ class PendingNotificationWithData {
     this.mediaContentModerationCompleted,
     this.newMessage,
     this.newsChanged,
-    this.profileTextModerationCompleted,
+    this.profileStringModerationCompleted,
     this.receivedLikesChanged,
     required this.value,
   });
@@ -38,13 +38,13 @@ class PendingNotificationWithData {
   /// Data for NEWS_CHANGED notification.
   UnreadNewsCountResult? newsChanged;
 
-  /// Data for PROFILE_TEXT_MODERATION_COMPLETED notification.
-  ProfileTextModerationCompletedNotification? profileTextModerationCompleted;
+  /// Data for PROFILE_STRING_MODERATION_COMPLETED notification.
+  ProfileStringModerationCompletedNotification? profileStringModerationCompleted;
 
   /// Data for RECEIVED_LIKES_CHANGED notification.
   NewReceivedLikesCountResult? receivedLikesChanged;
 
-  /// Pending notification (or multiple notifications which each have different type) not yet received notifications which push notification requests client to download.  The integer is a bitflag.  - const NEW_MESSAGE = 0x1; - const RECEIVED_LIKES_CHANGED = 0x2; - const MEDIA_CONTENT_MODERATION_COMPLETED = 0x4; - const NEWS_CHANGED = 0x8; - const PROFILE_TEXT_MODERATION_COMPLETED = 0x10; - const AUTOMATIC_PROFILE_SEARCH_COMPLETED = 0x20; - const ADMIN_NOTIFICATION = 0x40; 
+  /// Pending notification (or multiple notifications which each have different type) not yet received notifications which push notification requests client to download.  The integer is a bitflag.  - const NEW_MESSAGE = 0x1; - const RECEIVED_LIKES_CHANGED = 0x2; - const MEDIA_CONTENT_MODERATION_COMPLETED = 0x4; - const NEWS_CHANGED = 0x8; - const PROFILE_STRING_MODERATION_COMPLETED = 0x10; - const AUTOMATIC_PROFILE_SEARCH_COMPLETED = 0x20; - const ADMIN_NOTIFICATION = 0x40; 
   int value;
 
   @override
@@ -54,7 +54,7 @@ class PendingNotificationWithData {
     other.mediaContentModerationCompleted == mediaContentModerationCompleted &&
     other.newMessage == newMessage &&
     other.newsChanged == newsChanged &&
-    other.profileTextModerationCompleted == profileTextModerationCompleted &&
+    other.profileStringModerationCompleted == profileStringModerationCompleted &&
     other.receivedLikesChanged == receivedLikesChanged &&
     other.value == value;
 
@@ -66,12 +66,12 @@ class PendingNotificationWithData {
     (mediaContentModerationCompleted == null ? 0 : mediaContentModerationCompleted!.hashCode) +
     (newMessage == null ? 0 : newMessage!.hashCode) +
     (newsChanged == null ? 0 : newsChanged!.hashCode) +
-    (profileTextModerationCompleted == null ? 0 : profileTextModerationCompleted!.hashCode) +
+    (profileStringModerationCompleted == null ? 0 : profileStringModerationCompleted!.hashCode) +
     (receivedLikesChanged == null ? 0 : receivedLikesChanged!.hashCode) +
     (value.hashCode);
 
   @override
-  String toString() => 'PendingNotificationWithData[adminNotification=$adminNotification, automaticProfileSearchCompleted=$automaticProfileSearchCompleted, mediaContentModerationCompleted=$mediaContentModerationCompleted, newMessage=$newMessage, newsChanged=$newsChanged, profileTextModerationCompleted=$profileTextModerationCompleted, receivedLikesChanged=$receivedLikesChanged, value=$value]';
+  String toString() => 'PendingNotificationWithData[adminNotification=$adminNotification, automaticProfileSearchCompleted=$automaticProfileSearchCompleted, mediaContentModerationCompleted=$mediaContentModerationCompleted, newMessage=$newMessage, newsChanged=$newsChanged, profileStringModerationCompleted=$profileStringModerationCompleted, receivedLikesChanged=$receivedLikesChanged, value=$value]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -100,10 +100,10 @@ class PendingNotificationWithData {
     } else {
       json[r'news_changed'] = null;
     }
-    if (this.profileTextModerationCompleted != null) {
-      json[r'profile_text_moderation_completed'] = this.profileTextModerationCompleted;
+    if (this.profileStringModerationCompleted != null) {
+      json[r'profile_string_moderation_completed'] = this.profileStringModerationCompleted;
     } else {
-      json[r'profile_text_moderation_completed'] = null;
+      json[r'profile_string_moderation_completed'] = null;
     }
     if (this.receivedLikesChanged != null) {
       json[r'received_likes_changed'] = this.receivedLikesChanged;
@@ -138,7 +138,7 @@ class PendingNotificationWithData {
         mediaContentModerationCompleted: MediaContentModerationCompletedNotification.fromJson(json[r'media_content_moderation_completed']),
         newMessage: NewMessageNotificationList.fromJson(json[r'new_message']),
         newsChanged: UnreadNewsCountResult.fromJson(json[r'news_changed']),
-        profileTextModerationCompleted: ProfileTextModerationCompletedNotification.fromJson(json[r'profile_text_moderation_completed']),
+        profileStringModerationCompleted: ProfileStringModerationCompletedNotification.fromJson(json[r'profile_string_moderation_completed']),
         receivedLikesChanged: NewReceivedLikesCountResult.fromJson(json[r'received_likes_changed']),
         value: mapValueOfType<int>(json, r'value')!,
       );

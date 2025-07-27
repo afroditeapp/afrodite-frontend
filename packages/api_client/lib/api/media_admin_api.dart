@@ -16,7 +16,7 @@ class MediaAdminApi {
 
   final ApiClient apiClient;
 
-  /// Get first page of pending profile content moderations. Oldest item is first and count 25.
+  /// Get first page of pending media content moderations. Oldest item is first and count 25.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -27,9 +27,9 @@ class MediaAdminApi {
   /// * [ModerationQueueType] queue (required):
   ///
   /// * [bool] showContentWhichBotsCanModerate (required):
-  Future<Response> getProfileContentPendingModerationListWithHttpInfo(MediaContentType contentType, ModerationQueueType queue, bool showContentWhichBotsCanModerate,) async {
+  Future<Response> getMediaContentPendingModerationListWithHttpInfo(MediaContentType contentType, ModerationQueueType queue, bool showContentWhichBotsCanModerate,) async {
     // ignore: prefer_const_declarations
-    final path = r'/media_api/profile_content_pending_moderation';
+    final path = r'/media_api/media_content_pending_moderation';
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -56,7 +56,7 @@ class MediaAdminApi {
     );
   }
 
-  /// Get first page of pending profile content moderations. Oldest item is first and count 25.
+  /// Get first page of pending media content moderations. Oldest item is first and count 25.
   ///
   /// Parameters:
   ///
@@ -65,8 +65,8 @@ class MediaAdminApi {
   /// * [ModerationQueueType] queue (required):
   ///
   /// * [bool] showContentWhichBotsCanModerate (required):
-  Future<GetProfileContentPendingModerationList?> getProfileContentPendingModerationList(MediaContentType contentType, ModerationQueueType queue, bool showContentWhichBotsCanModerate,) async {
-    final response = await getProfileContentPendingModerationListWithHttpInfo(contentType, queue, showContentWhichBotsCanModerate,);
+  Future<GetMediaContentPendingModerationList?> getMediaContentPendingModerationList(MediaContentType contentType, ModerationQueueType queue, bool showContentWhichBotsCanModerate,) async {
+    final response = await getMediaContentPendingModerationListWithHttpInfo(contentType, queue, showContentWhichBotsCanModerate,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -74,7 +74,7 @@ class MediaAdminApi {
     // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetProfileContentPendingModerationList',) as GetProfileContentPendingModerationList;
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetMediaContentPendingModerationList',) as GetMediaContentPendingModerationList;
     
     }
     return null;
@@ -136,13 +136,13 @@ class MediaAdminApi {
   ///
   /// Parameters:
   ///
-  /// * [PostModerateProfileContent] postModerateProfileContent (required):
-  Future<Response> postModerateProfileContentWithHttpInfo(PostModerateProfileContent postModerateProfileContent,) async {
+  /// * [PostModerateMediaContent] postModerateMediaContent (required):
+  Future<Response> postModerateMediaContentWithHttpInfo(PostModerateMediaContent postModerateMediaContent,) async {
     // ignore: prefer_const_declarations
-    final path = r'/media_api/moderate_profile_content';
+    final path = r'/media_api/moderate_media_content';
 
     // ignore: prefer_final_locals
-    Object? postBody = postModerateProfileContent;
+    Object? postBody = postModerateMediaContent;
 
     final queryParams = <QueryParam>[];
     final headerParams = <String, String>{};
@@ -168,9 +168,9 @@ class MediaAdminApi {
   ///
   /// Parameters:
   ///
-  /// * [PostModerateProfileContent] postModerateProfileContent (required):
-  Future<void> postModerateProfileContent(PostModerateProfileContent postModerateProfileContent,) async {
-    final response = await postModerateProfileContentWithHttpInfo(postModerateProfileContent,);
+  /// * [PostModerateMediaContent] postModerateMediaContent (required):
+  Future<void> postModerateMediaContent(PostModerateMediaContent postModerateMediaContent,) async {
+    final response = await postModerateMediaContentWithHttpInfo(postModerateMediaContent,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

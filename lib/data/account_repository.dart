@@ -157,8 +157,8 @@ class AccountRepository extends DataRepositoryWithLifecycle {
       await receiveNewsCount();
     } else if (event.event == EventType.mediaContentModerationCompleted) {
       await media.handleMediaContentModerationCompletedEvent();
-    } else if (event.event == EventType.profileTextModerationCompleted) {
-      await profile.handleProfileTextModerationCompletedEvent();
+    } else if (event.event == EventType.profileStringModerationCompleted) {
+      await profile.handleProfileStringModerationCompletedEvent();
     } else if (event.event == EventType.automaticProfileSearchCompleted) {
       await profile.handleAutomaticProfileSearchCompletedEvent();
     } else if (event.event == EventType.mediaContentChanged) {

@@ -20,7 +20,7 @@ class DemoModeLoginResult {
   /// This password is locked.
   bool locked;
 
-  DemoModeLoginToken? token;
+  DemoModeToken? token;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is DemoModeLoginResult &&
@@ -67,7 +67,7 @@ class DemoModeLoginResult {
 
       return DemoModeLoginResult(
         locked: mapValueOfType<bool>(json, r'locked')!,
-        token: DemoModeLoginToken.fromJson(json[r'token']),
+        token: DemoModeToken.fromJson(json[r'token']),
       );
     }
     return null;

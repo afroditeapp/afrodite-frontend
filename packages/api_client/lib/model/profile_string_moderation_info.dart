@@ -10,22 +10,22 @@
 
 part of openapi.api;
 
-class ProfileTextModerationInfo {
-  /// Returns a new [ProfileTextModerationInfo] instance.
-  ProfileTextModerationInfo({
+class ProfileStringModerationInfo {
+  /// Returns a new [ProfileStringModerationInfo] instance.
+  ProfileStringModerationInfo({
     this.rejectedReasonCategory,
-    this.rejectedReasonDetails,
+    required this.rejectedReasonDetails,
     required this.state,
   });
 
-  ProfileTextModerationRejectedReasonCategory? rejectedReasonCategory;
+  ProfileStringModerationRejectedReasonCategory? rejectedReasonCategory;
 
-  ProfileTextModerationRejectedReasonDetails? rejectedReasonDetails;
+  ProfileStringModerationRejectedReasonDetails rejectedReasonDetails;
 
-  ProfileTextModerationState state;
+  ProfileStringModerationState state;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is ProfileTextModerationInfo &&
+  bool operator ==(Object other) => identical(this, other) || other is ProfileStringModerationInfo &&
     other.rejectedReasonCategory == rejectedReasonCategory &&
     other.rejectedReasonDetails == rejectedReasonDetails &&
     other.state == state;
@@ -34,11 +34,11 @@ class ProfileTextModerationInfo {
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (rejectedReasonCategory == null ? 0 : rejectedReasonCategory!.hashCode) +
-    (rejectedReasonDetails == null ? 0 : rejectedReasonDetails!.hashCode) +
+    (rejectedReasonDetails.hashCode) +
     (state.hashCode);
 
   @override
-  String toString() => 'ProfileTextModerationInfo[rejectedReasonCategory=$rejectedReasonCategory, rejectedReasonDetails=$rejectedReasonDetails, state=$state]';
+  String toString() => 'ProfileStringModerationInfo[rejectedReasonCategory=$rejectedReasonCategory, rejectedReasonDetails=$rejectedReasonDetails, state=$state]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -47,19 +47,15 @@ class ProfileTextModerationInfo {
     } else {
       json[r'rejected_reason_category'] = null;
     }
-    if (this.rejectedReasonDetails != null) {
       json[r'rejected_reason_details'] = this.rejectedReasonDetails;
-    } else {
-      json[r'rejected_reason_details'] = null;
-    }
       json[r'state'] = this.state;
     return json;
   }
 
-  /// Returns a new [ProfileTextModerationInfo] instance and imports its values from
+  /// Returns a new [ProfileStringModerationInfo] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static ProfileTextModerationInfo? fromJson(dynamic value) {
+  static ProfileStringModerationInfo? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -68,26 +64,26 @@ class ProfileTextModerationInfo {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "ProfileTextModerationInfo[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "ProfileTextModerationInfo[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "ProfileStringModerationInfo[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "ProfileStringModerationInfo[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return ProfileTextModerationInfo(
-        rejectedReasonCategory: ProfileTextModerationRejectedReasonCategory.fromJson(json[r'rejected_reason_category']),
-        rejectedReasonDetails: ProfileTextModerationRejectedReasonDetails.fromJson(json[r'rejected_reason_details']),
-        state: ProfileTextModerationState.fromJson(json[r'state'])!,
+      return ProfileStringModerationInfo(
+        rejectedReasonCategory: ProfileStringModerationRejectedReasonCategory.fromJson(json[r'rejected_reason_category']),
+        rejectedReasonDetails: ProfileStringModerationRejectedReasonDetails.fromJson(json[r'rejected_reason_details'])!,
+        state: ProfileStringModerationState.fromJson(json[r'state'])!,
       );
     }
     return null;
   }
 
-  static List<ProfileTextModerationInfo> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <ProfileTextModerationInfo>[];
+  static List<ProfileStringModerationInfo> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <ProfileStringModerationInfo>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = ProfileTextModerationInfo.fromJson(row);
+        final value = ProfileStringModerationInfo.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -96,12 +92,12 @@ class ProfileTextModerationInfo {
     return result.toList(growable: growable);
   }
 
-  static Map<String, ProfileTextModerationInfo> mapFromJson(dynamic json) {
-    final map = <String, ProfileTextModerationInfo>{};
+  static Map<String, ProfileStringModerationInfo> mapFromJson(dynamic json) {
+    final map = <String, ProfileStringModerationInfo>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = ProfileTextModerationInfo.fromJson(entry.value);
+        final value = ProfileStringModerationInfo.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -110,14 +106,14 @@ class ProfileTextModerationInfo {
     return map;
   }
 
-  // maps a json object with a list of ProfileTextModerationInfo-objects as value to a dart map
-  static Map<String, List<ProfileTextModerationInfo>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<ProfileTextModerationInfo>>{};
+  // maps a json object with a list of ProfileStringModerationInfo-objects as value to a dart map
+  static Map<String, List<ProfileStringModerationInfo>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<ProfileStringModerationInfo>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = ProfileTextModerationInfo.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = ProfileStringModerationInfo.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;
@@ -125,6 +121,7 @@ class ProfileTextModerationInfo {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
+    'rejected_reason_details',
     'state',
   };
 }

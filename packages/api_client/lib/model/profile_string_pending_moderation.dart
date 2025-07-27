@@ -10,42 +10,42 @@
 
 part of openapi.api;
 
-class ProfileNamePendingModeration {
-  /// Returns a new [ProfileNamePendingModeration] instance.
-  ProfileNamePendingModeration({
+class ProfileStringPendingModeration {
+  /// Returns a new [ProfileStringPendingModeration] instance.
+  ProfileStringPendingModeration({
     required this.id,
-    required this.name,
+    required this.value,
   });
 
   AccountId id;
 
-  String name;
+  String value;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is ProfileNamePendingModeration &&
+  bool operator ==(Object other) => identical(this, other) || other is ProfileStringPendingModeration &&
     other.id == id &&
-    other.name == name;
+    other.value == value;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (id.hashCode) +
-    (name.hashCode);
+    (value.hashCode);
 
   @override
-  String toString() => 'ProfileNamePendingModeration[id=$id, name=$name]';
+  String toString() => 'ProfileStringPendingModeration[id=$id, value=$value]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'id'] = this.id;
-      json[r'name'] = this.name;
+      json[r'value'] = this.value;
     return json;
   }
 
-  /// Returns a new [ProfileNamePendingModeration] instance and imports its values from
+  /// Returns a new [ProfileStringPendingModeration] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static ProfileNamePendingModeration? fromJson(dynamic value) {
+  static ProfileStringPendingModeration? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -54,25 +54,25 @@ class ProfileNamePendingModeration {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "ProfileNamePendingModeration[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "ProfileNamePendingModeration[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "ProfileStringPendingModeration[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "ProfileStringPendingModeration[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return ProfileNamePendingModeration(
+      return ProfileStringPendingModeration(
         id: AccountId.fromJson(json[r'id'])!,
-        name: mapValueOfType<String>(json, r'name')!,
+        value: mapValueOfType<String>(json, r'value')!,
       );
     }
     return null;
   }
 
-  static List<ProfileNamePendingModeration> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <ProfileNamePendingModeration>[];
+  static List<ProfileStringPendingModeration> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <ProfileStringPendingModeration>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = ProfileNamePendingModeration.fromJson(row);
+        final value = ProfileStringPendingModeration.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -81,12 +81,12 @@ class ProfileNamePendingModeration {
     return result.toList(growable: growable);
   }
 
-  static Map<String, ProfileNamePendingModeration> mapFromJson(dynamic json) {
-    final map = <String, ProfileNamePendingModeration>{};
+  static Map<String, ProfileStringPendingModeration> mapFromJson(dynamic json) {
+    final map = <String, ProfileStringPendingModeration>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = ProfileNamePendingModeration.fromJson(entry.value);
+        final value = ProfileStringPendingModeration.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -95,14 +95,14 @@ class ProfileNamePendingModeration {
     return map;
   }
 
-  // maps a json object with a list of ProfileNamePendingModeration-objects as value to a dart map
-  static Map<String, List<ProfileNamePendingModeration>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<ProfileNamePendingModeration>>{};
+  // maps a json object with a list of ProfileStringPendingModeration-objects as value to a dart map
+  static Map<String, List<ProfileStringPendingModeration>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<ProfileStringPendingModeration>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = ProfileNamePendingModeration.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = ProfileStringPendingModeration.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;
@@ -111,7 +111,7 @@ class ProfileNamePendingModeration {
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
     'id',
-    'name',
+    'value',
   };
 }
 

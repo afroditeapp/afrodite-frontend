@@ -106,7 +106,7 @@ class _BanAccountScreenState extends State<BanAccountScreen> {
     } else {
       bannedUntil = null;
     }
-    final banningReason = bannedInfo.reasonDetails?.value;
+    final banningReason = bannedInfo.reasonDetails.value;
     return SingleChildScrollView(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -115,8 +115,8 @@ class _BanAccountScreenState extends State<BanAccountScreen> {
           const Padding(padding: EdgeInsets.all(8.0)),
           if (bannedUntil != null) hPad(Text("Banned until $bannedUntil")),
           if (bannedUntil == null) hPad(const Text("Not banned")),
-          if (banningReason != null) const Padding(padding: EdgeInsets.all(8.0)),
-          if (banningReason != null) hPad(Text("Banning reason: $banningReason")),
+          if (banningReason.isNotEmpty) const Padding(padding: EdgeInsets.all(8.0)),
+          if (banningReason.isNotEmpty) hPad(Text("Banning reason: $banningReason")),
           const Padding(padding: EdgeInsets.all(8.0)),
           if (bannedUntil != null) hPad(unbanWidget(context)),
           if (bannedUntil == null) hPad(banWidget(context)),
@@ -164,13 +164,7 @@ class _BanAccountScreenState extends State<BanAccountScreen> {
         ElevatedButton(
           onPressed: selectedBanSeconds != null ? () async {
             final seconds = selectedBanSeconds!;
-            final banReason = banDetailsController.text.trim();
-            final AccountBanReasonDetails? banDetails;
-            if (banReason.isNotEmpty) {
-              banDetails = AccountBanReasonDetails(value: banReason);
-            } else {
-              banDetails = null;
-            }
+            final banDetails = AccountBanReasonDetails(value: banDetailsController.text.trim());
 
             final result = await showConfirmDialog(context, "Ban?", yesNoActions: true);
             if (result == true && context.mounted) {
@@ -206,6 +200,7 @@ class _BanAccountScreenState extends State<BanAccountScreen> {
               (api) => api.postSetBanState(
                 SetAccountBanState(
                   account: widget.accountId,
+                  reasonDetails: AccountBanReasonDetails(value: ""),
                 ),
               )
             );

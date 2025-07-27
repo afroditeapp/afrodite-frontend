@@ -10,15 +10,15 @@
 
 part of openapi.api;
 
-class PostModerateProfileContent {
-  /// Returns a new [PostModerateProfileContent] instance.
-  PostModerateProfileContent({
+class PostModerateMediaContent {
+  /// Returns a new [PostModerateMediaContent] instance.
+  PostModerateMediaContent({
     required this.accept,
     required this.accountId,
     required this.contentId,
     this.moveToHuman,
     this.rejectedCategory,
-    this.rejectedDetails,
+    required this.rejectedDetails,
   });
 
   bool accept;
@@ -30,12 +30,12 @@ class PostModerateProfileContent {
   /// If true, ignore accept, rejected_category, rejected_details and move the content to waiting for human moderation state.
   bool? moveToHuman;
 
-  ProfileContentModerationRejectedReasonCategory? rejectedCategory;
+  MediaContentModerationRejectedReasonCategory? rejectedCategory;
 
-  ProfileContentModerationRejectedReasonDetails? rejectedDetails;
+  MediaContentModerationRejectedReasonDetails rejectedDetails;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is PostModerateProfileContent &&
+  bool operator ==(Object other) => identical(this, other) || other is PostModerateMediaContent &&
     other.accept == accept &&
     other.accountId == accountId &&
     other.contentId == contentId &&
@@ -51,10 +51,10 @@ class PostModerateProfileContent {
     (contentId.hashCode) +
     (moveToHuman == null ? 0 : moveToHuman!.hashCode) +
     (rejectedCategory == null ? 0 : rejectedCategory!.hashCode) +
-    (rejectedDetails == null ? 0 : rejectedDetails!.hashCode);
+    (rejectedDetails.hashCode);
 
   @override
-  String toString() => 'PostModerateProfileContent[accept=$accept, accountId=$accountId, contentId=$contentId, moveToHuman=$moveToHuman, rejectedCategory=$rejectedCategory, rejectedDetails=$rejectedDetails]';
+  String toString() => 'PostModerateMediaContent[accept=$accept, accountId=$accountId, contentId=$contentId, moveToHuman=$moveToHuman, rejectedCategory=$rejectedCategory, rejectedDetails=$rejectedDetails]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -71,18 +71,14 @@ class PostModerateProfileContent {
     } else {
       json[r'rejected_category'] = null;
     }
-    if (this.rejectedDetails != null) {
       json[r'rejected_details'] = this.rejectedDetails;
-    } else {
-      json[r'rejected_details'] = null;
-    }
     return json;
   }
 
-  /// Returns a new [PostModerateProfileContent] instance and imports its values from
+  /// Returns a new [PostModerateMediaContent] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static PostModerateProfileContent? fromJson(dynamic value) {
+  static PostModerateMediaContent? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -91,29 +87,29 @@ class PostModerateProfileContent {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "PostModerateProfileContent[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "PostModerateProfileContent[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "PostModerateMediaContent[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "PostModerateMediaContent[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return PostModerateProfileContent(
+      return PostModerateMediaContent(
         accept: mapValueOfType<bool>(json, r'accept')!,
         accountId: AccountId.fromJson(json[r'account_id'])!,
         contentId: ContentId.fromJson(json[r'content_id'])!,
         moveToHuman: mapValueOfType<bool>(json, r'move_to_human'),
-        rejectedCategory: ProfileContentModerationRejectedReasonCategory.fromJson(json[r'rejected_category']),
-        rejectedDetails: ProfileContentModerationRejectedReasonDetails.fromJson(json[r'rejected_details']),
+        rejectedCategory: MediaContentModerationRejectedReasonCategory.fromJson(json[r'rejected_category']),
+        rejectedDetails: MediaContentModerationRejectedReasonDetails.fromJson(json[r'rejected_details'])!,
       );
     }
     return null;
   }
 
-  static List<PostModerateProfileContent> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <PostModerateProfileContent>[];
+  static List<PostModerateMediaContent> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <PostModerateMediaContent>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = PostModerateProfileContent.fromJson(row);
+        final value = PostModerateMediaContent.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -122,12 +118,12 @@ class PostModerateProfileContent {
     return result.toList(growable: growable);
   }
 
-  static Map<String, PostModerateProfileContent> mapFromJson(dynamic json) {
-    final map = <String, PostModerateProfileContent>{};
+  static Map<String, PostModerateMediaContent> mapFromJson(dynamic json) {
+    final map = <String, PostModerateMediaContent>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = PostModerateProfileContent.fromJson(entry.value);
+        final value = PostModerateMediaContent.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -136,14 +132,14 @@ class PostModerateProfileContent {
     return map;
   }
 
-  // maps a json object with a list of PostModerateProfileContent-objects as value to a dart map
-  static Map<String, List<PostModerateProfileContent>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<PostModerateProfileContent>>{};
+  // maps a json object with a list of PostModerateMediaContent-objects as value to a dart map
+  static Map<String, List<PostModerateMediaContent>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<PostModerateMediaContent>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = PostModerateProfileContent.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = PostModerateMediaContent.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;
@@ -154,6 +150,7 @@ class PostModerateProfileContent {
     'accept',
     'account_id',
     'content_id',
+    'rejected_details',
   };
 }
 

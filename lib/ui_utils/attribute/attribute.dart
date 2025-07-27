@@ -138,7 +138,7 @@ class UiAttributeValue {
       AttributeTranslation.getTranslatedString(
         locale,
         value.key,
-        value.value,
+        value.name,
         attribute.translations,
       ),
     );

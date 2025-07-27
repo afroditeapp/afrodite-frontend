@@ -30,7 +30,7 @@ class _ModerateSingleProfileTextScreenState extends State<ModerateSingleProfileT
 
   final detailsController = TextEditingController();
 
-  GetProfileTextState? data;
+  GetProfileStringState? data;
 
   bool isLoading = true;
   bool isError = false;
@@ -38,8 +38,9 @@ class _ModerateSingleProfileTextScreenState extends State<ModerateSingleProfileT
   Future<void> _getData() async {
     final result = await api
       .profileAdmin(
-        (api) => api.getProfileTextState(
-          widget.accountId.aid
+        (api) => api.getProfileStringState(
+          ProfileStringModerationContentType.profileText,
+          widget.accountId.aid,
         )).ok();
 
     if (!context.mounted) {
@@ -93,24 +94,23 @@ class _ModerateSingleProfileTextScreenState extends State<ModerateSingleProfileT
     }
   }
 
-  Widget showData(BuildContext context, GetProfileTextState? data, Permissions myPermissions) {
-    final profileTextData = data?.text;
+  Widget showData(BuildContext context, GetProfileStringState? data, Permissions myPermissions) {
+    final profileTextData = data?.value;
     final String? profileText;
     if (profileTextData != null && profileTextData.isNotEmpty) {
       profileText = profileTextData;
     } else {
       profileText = null;
     }
-    final state = data?.moderationInfo.state;
-    final rejectionReason = data?.moderationInfo.rejectedReasonDetails?.value;
-    final accepted = switch (data?.moderationInfo.state) {
-      ProfileTextModerationState.empty ||
-      ProfileTextModerationState.waitingBotOrHumanModeration ||
-      ProfileTextModerationState.waitingHumanModeration => null,
-      ProfileTextModerationState.rejectedByBot ||
-      ProfileTextModerationState.rejectedByHuman => false,
-      ProfileTextModerationState.acceptedByBot ||
-      ProfileTextModerationState.acceptedByHuman => true,
+    final state = data?.moderationInfo?.state;
+    final rejectionReason = data?.moderationInfo?.rejectedReasonDetails.value;
+    final accepted = switch (state) {
+      ProfileStringModerationState.waitingBotOrHumanModeration ||
+      ProfileStringModerationState.waitingHumanModeration => null,
+      ProfileStringModerationState.rejectedByBot ||
+      ProfileStringModerationState.rejectedByHuman => false,
+      ProfileStringModerationState.acceptedByBot ||
+      ProfileStringModerationState.acceptedByHuman => true,
       _ => null,
     };
     return SingleChildScrollView(
@@ -132,7 +132,7 @@ class _ModerateSingleProfileTextScreenState extends State<ModerateSingleProfileT
     String profileText,
     String? rejectionReason,
     bool? accepted,
-    ProfileTextModerationState state,
+    ProfileStringModerationState state,
   ) {
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -160,23 +160,17 @@ class _ModerateSingleProfileTextScreenState extends State<ModerateSingleProfileT
         const Padding(padding: EdgeInsets.all(8.0)),
         if (accepted == true) ElevatedButton(
           onPressed: () async {
-            final reason = detailsController.text.trim();
-            final ProfileTextModerationRejectedReasonDetails? details;
-            if (reason.isNotEmpty) {
-              details = ProfileTextModerationRejectedReasonDetails(value: reason);
-            } else {
-              details = null;
-            }
-
+            final details = ProfileStringModerationRejectedReasonDetails(value: detailsController.text.trim());
             final result = await showConfirmDialog(context, "Reject?", yesNoActions: true);
             if (result == true && context.mounted) {
               final result = await api
                 .profileAdminAction(
-                  (api) => api.postModerateProfileText(
-                    PostModerateProfileText(
+                  (api) => api.postModerateProfileString(
+                    PostModerateProfileString(
+                      contentType: ProfileStringModerationContentType.profileText,
                       id: widget.accountId,
                       accept: false,
-                      text: profileText,
+                      value: profileText,
                       rejectedDetails: details,
                     )
                   ));
@@ -194,11 +188,13 @@ class _ModerateSingleProfileTextScreenState extends State<ModerateSingleProfileT
             if (result == true && context.mounted) {
               final result = await api
                 .profileAdminAction(
-                  (api) => api.postModerateProfileText(
-                    PostModerateProfileText(
+                  (api) => api.postModerateProfileString(
+                    PostModerateProfileString(
+                      contentType: ProfileStringModerationContentType.profileText,
                       id: widget.accountId,
                       accept: true,
-                      text: profileText,
+                      value: profileText,
+                      rejectedDetails: ProfileStringModerationRejectedReasonDetails(value: ""),
                     )
                   ));
               if (result.isErr()) {

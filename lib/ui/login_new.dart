@@ -266,10 +266,10 @@ Widget logoAndAppNameAndSlogan(BuildContext context) {
 
 
 Future<DemoAccountCredentials?> openFirstDemoAccountLoginDialog(BuildContext context) {
-  final idField = SimpleTextField(
-    hintText: context.strings.login_screen_demo_account_identifier,
+  final usernameField = SimpleTextField(
+    hintText: context.strings.login_screen_demo_account_username,
     // TODO(prod): remove default username and password
-    getInitialValue: () => context.read<DemoAccountLoginBloc>().state.userId ?? "test",
+    getInitialValue: () => context.read<DemoAccountLoginBloc>().state.username ?? "test",
   );
   final passwordField = SimpleTextField(
     hintText: context.strings.login_screen_demo_account_password,
@@ -285,7 +285,7 @@ Future<DemoAccountCredentials?> openFirstDemoAccountLoginDialog(BuildContext con
       content: Column(
         children: [
           Text(context.strings.login_screen_demo_account_dialog_description),
-          idField,
+          usernameField,
           passwordField,
         ],
       ),
@@ -302,7 +302,7 @@ Future<DemoAccountCredentials?> openFirstDemoAccountLoginDialog(BuildContext con
               context,
               pageKey,
               DemoAccountCredentials(
-                idField.controller.text,
+                usernameField.controller.text,
                 passwordField.controller.text
               )
             );

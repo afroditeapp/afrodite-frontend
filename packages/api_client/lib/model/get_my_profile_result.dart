@@ -14,10 +14,10 @@ class GetMyProfileResult {
   /// Returns a new [GetMyProfileResult] instance.
   GetMyProfileResult({
     this.lst,
-    required this.nameModerationState,
+    this.nameModerationInfo,
     required this.p,
     required this.sv,
-    required this.textModerationInfo,
+    this.textModerationInfo,
     required this.v,
   });
 
@@ -30,20 +30,20 @@ class GetMyProfileResult {
   ///
   int? lst;
 
-  ProfileNameModerationState nameModerationState;
+  ProfileStringModerationInfo? nameModerationInfo;
 
   Profile p;
 
   ProfileSyncVersion sv;
 
-  ProfileTextModerationInfo textModerationInfo;
+  ProfileStringModerationInfo? textModerationInfo;
 
   ProfileVersion v;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is GetMyProfileResult &&
     other.lst == lst &&
-    other.nameModerationState == nameModerationState &&
+    other.nameModerationInfo == nameModerationInfo &&
     other.p == p &&
     other.sv == sv &&
     other.textModerationInfo == textModerationInfo &&
@@ -53,14 +53,14 @@ class GetMyProfileResult {
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (lst == null ? 0 : lst!.hashCode) +
-    (nameModerationState.hashCode) +
+    (nameModerationInfo == null ? 0 : nameModerationInfo!.hashCode) +
     (p.hashCode) +
     (sv.hashCode) +
-    (textModerationInfo.hashCode) +
+    (textModerationInfo == null ? 0 : textModerationInfo!.hashCode) +
     (v.hashCode);
 
   @override
-  String toString() => 'GetMyProfileResult[lst=$lst, nameModerationState=$nameModerationState, p=$p, sv=$sv, textModerationInfo=$textModerationInfo, v=$v]';
+  String toString() => 'GetMyProfileResult[lst=$lst, nameModerationInfo=$nameModerationInfo, p=$p, sv=$sv, textModerationInfo=$textModerationInfo, v=$v]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -69,10 +69,18 @@ class GetMyProfileResult {
     } else {
       json[r'lst'] = null;
     }
-      json[r'name_moderation_state'] = this.nameModerationState;
+    if (this.nameModerationInfo != null) {
+      json[r'name_moderation_info'] = this.nameModerationInfo;
+    } else {
+      json[r'name_moderation_info'] = null;
+    }
       json[r'p'] = this.p;
       json[r'sv'] = this.sv;
+    if (this.textModerationInfo != null) {
       json[r'text_moderation_info'] = this.textModerationInfo;
+    } else {
+      json[r'text_moderation_info'] = null;
+    }
       json[r'v'] = this.v;
     return json;
   }
@@ -97,10 +105,10 @@ class GetMyProfileResult {
 
       return GetMyProfileResult(
         lst: mapValueOfType<int>(json, r'lst'),
-        nameModerationState: ProfileNameModerationState.fromJson(json[r'name_moderation_state'])!,
+        nameModerationInfo: ProfileStringModerationInfo.fromJson(json[r'name_moderation_info']),
         p: Profile.fromJson(json[r'p'])!,
         sv: ProfileSyncVersion.fromJson(json[r'sv'])!,
-        textModerationInfo: ProfileTextModerationInfo.fromJson(json[r'text_moderation_info'])!,
+        textModerationInfo: ProfileStringModerationInfo.fromJson(json[r'text_moderation_info']),
         v: ProfileVersion.fromJson(json[r'v'])!,
       );
     }
@@ -149,10 +157,8 @@ class GetMyProfileResult {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'name_moderation_state',
     'p',
     'sv',
-    'text_moderation_info',
     'v',
   };
 }

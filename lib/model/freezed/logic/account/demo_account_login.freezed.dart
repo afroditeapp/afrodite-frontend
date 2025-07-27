@@ -21,12 +21,12 @@ final _privateConstructorErrorDemoAccountLoginData = UnsupportedError(
 
 /// @nodoc
 mixin _$DemoAccountLoginData {
-  String? get userId => throw _privateConstructorErrorDemoAccountLoginData;
+  String? get username => throw _privateConstructorErrorDemoAccountLoginData;
   String? get password => throw _privateConstructorErrorDemoAccountLoginData;
   bool get loginProgressVisible => throw _privateConstructorErrorDemoAccountLoginData;
 
   DemoAccountLoginData copyWith({
-    String? userId,
+    String? username,
     String? password,
     bool? loginProgressVisible,
   }) => throw _privateConstructorErrorDemoAccountLoginData;
@@ -35,7 +35,7 @@ mixin _$DemoAccountLoginData {
 /// @nodoc
 abstract class _DemoAccountLoginData implements DemoAccountLoginData {
   factory _DemoAccountLoginData({
-    String? userId,
+    String? username,
     String? password,
     bool loginProgressVisible,
   }) = _$DemoAccountLoginDataImpl;
@@ -46,13 +46,13 @@ class _$DemoAccountLoginDataImpl with DiagnosticableTreeMixin implements _DemoAc
   static const bool _loginProgressVisibleDefaultValue = false;
   
   _$DemoAccountLoginDataImpl({
-    this.userId,
+    this.username,
     this.password,
     this.loginProgressVisible = _loginProgressVisibleDefaultValue,
   });
 
   @override
-  final String? userId;
+  final String? username;
   @override
   final String? password;
   @override
@@ -60,7 +60,7 @@ class _$DemoAccountLoginDataImpl with DiagnosticableTreeMixin implements _DemoAc
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'DemoAccountLoginData(userId: $userId, password: $password, loginProgressVisible: $loginProgressVisible)';
+    return 'DemoAccountLoginData(username: $username, password: $password, loginProgressVisible: $loginProgressVisible)';
   }
 
   @override
@@ -68,7 +68,7 @@ class _$DemoAccountLoginDataImpl with DiagnosticableTreeMixin implements _DemoAc
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'DemoAccountLoginData'))
-      ..add(DiagnosticsProperty('userId', userId))
+      ..add(DiagnosticsProperty('username', username))
       ..add(DiagnosticsProperty('password', password))
       ..add(DiagnosticsProperty('loginProgressVisible', loginProgressVisible));
   }
@@ -78,8 +78,8 @@ class _$DemoAccountLoginDataImpl with DiagnosticableTreeMixin implements _DemoAc
     return identical(this, other) ||
       (other.runtimeType == runtimeType &&
         other is _$DemoAccountLoginDataImpl &&
-        (identical(other.userId, userId) ||
-          other.userId == userId) &&
+        (identical(other.username, username) ||
+          other.username == username) &&
         (identical(other.password, password) ||
           other.password == password) &&
         (identical(other.loginProgressVisible, loginProgressVisible) ||
@@ -90,18 +90,18 @@ class _$DemoAccountLoginDataImpl with DiagnosticableTreeMixin implements _DemoAc
   @override
   int get hashCode => Object.hash(
     runtimeType,
-    userId,
+    username,
     password,
     loginProgressVisible,
   );
 
   @override
   DemoAccountLoginData copyWith({
-    Object? userId = _detectDefaultValueInCopyWith,
+    Object? username = _detectDefaultValueInCopyWith,
     Object? password = _detectDefaultValueInCopyWith,
     Object? loginProgressVisible,
   }) => _$DemoAccountLoginDataImpl(
-    userId: (userId == _detectDefaultValueInCopyWith ? this.userId : userId) as String?,
+    username: (username == _detectDefaultValueInCopyWith ? this.username : username) as String?,
     password: (password == _detectDefaultValueInCopyWith ? this.password : password) as String?,
     loginProgressVisible: (loginProgressVisible ?? this.loginProgressVisible) as bool,
   );

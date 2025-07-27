@@ -13,10 +13,14 @@ part of openapi.api;
 class ClientFeaturesConfig {
   /// Returns a new [ClientFeaturesConfig] instance.
   ClientFeaturesConfig({
+    required this.attribution,
     required this.features,
     required this.limits,
     required this.map,
+    this.news,
   });
+
+  AttributionConfig attribution;
 
   FeaturesConfig features;
 
@@ -24,27 +28,40 @@ class ClientFeaturesConfig {
 
   MapConfig map;
 
+  /// Enable news UI
+  NewsConfig? news;
+
   @override
   bool operator ==(Object other) => identical(this, other) || other is ClientFeaturesConfig &&
+    other.attribution == attribution &&
     other.features == features &&
     other.limits == limits &&
-    other.map == map;
+    other.map == map &&
+    other.news == news;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
+    (attribution.hashCode) +
     (features.hashCode) +
     (limits.hashCode) +
-    (map.hashCode);
+    (map.hashCode) +
+    (news == null ? 0 : news!.hashCode);
 
   @override
-  String toString() => 'ClientFeaturesConfig[features=$features, limits=$limits, map=$map]';
+  String toString() => 'ClientFeaturesConfig[attribution=$attribution, features=$features, limits=$limits, map=$map, news=$news]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
+      json[r'attribution'] = this.attribution;
       json[r'features'] = this.features;
       json[r'limits'] = this.limits;
       json[r'map'] = this.map;
+    if (this.news != null) {
+      json[r'news'] = this.news;
+    } else {
+      json[r'news'] = null;
+    }
     return json;
   }
 
@@ -67,9 +84,11 @@ class ClientFeaturesConfig {
       }());
 
       return ClientFeaturesConfig(
+        attribution: AttributionConfig.fromJson(json[r'attribution'])!,
         features: FeaturesConfig.fromJson(json[r'features'])!,
         limits: LimitsConfig.fromJson(json[r'limits'])!,
         map: MapConfig.fromJson(json[r'map'])!,
+        news: NewsConfig.fromJson(json[r'news']),
       );
     }
     return null;
@@ -117,6 +136,7 @@ class ClientFeaturesConfig {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
+    'attribution',
     'features',
     'limits',
     'map',

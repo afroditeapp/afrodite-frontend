@@ -10,40 +10,36 @@
 
 part of openapi.api;
 
-class CustomReportContent {
-  /// Returns a new [CustomReportContent] instance.
-  CustomReportContent({
-    this.booleanValue,
+class NotificationIdViewed {
+  /// Returns a new [NotificationIdViewed] instance.
+  NotificationIdViewed({
+    required this.id,
   });
 
-  bool? booleanValue;
+  int id;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is CustomReportContent &&
-    other.booleanValue == booleanValue;
+  bool operator ==(Object other) => identical(this, other) || other is NotificationIdViewed &&
+    other.id == id;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (booleanValue == null ? 0 : booleanValue!.hashCode);
+    (id.hashCode);
 
   @override
-  String toString() => 'CustomReportContent[booleanValue=$booleanValue]';
+  String toString() => 'NotificationIdViewed[id=$id]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-    if (this.booleanValue != null) {
-      json[r'boolean_value'] = this.booleanValue;
-    } else {
-      json[r'boolean_value'] = null;
-    }
+      json[r'id'] = this.id;
     return json;
   }
 
-  /// Returns a new [CustomReportContent] instance and imports its values from
+  /// Returns a new [NotificationIdViewed] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static CustomReportContent? fromJson(dynamic value) {
+  static NotificationIdViewed? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -52,24 +48,24 @@ class CustomReportContent {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "CustomReportContent[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "CustomReportContent[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "NotificationIdViewed[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "NotificationIdViewed[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return CustomReportContent(
-        booleanValue: mapValueOfType<bool>(json, r'boolean_value'),
+      return NotificationIdViewed(
+        id: mapValueOfType<int>(json, r'id')!,
       );
     }
     return null;
   }
 
-  static List<CustomReportContent> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <CustomReportContent>[];
+  static List<NotificationIdViewed> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <NotificationIdViewed>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = CustomReportContent.fromJson(row);
+        final value = NotificationIdViewed.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -78,12 +74,12 @@ class CustomReportContent {
     return result.toList(growable: growable);
   }
 
-  static Map<String, CustomReportContent> mapFromJson(dynamic json) {
-    final map = <String, CustomReportContent>{};
+  static Map<String, NotificationIdViewed> mapFromJson(dynamic json) {
+    final map = <String, NotificationIdViewed>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = CustomReportContent.fromJson(entry.value);
+        final value = NotificationIdViewed.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -92,14 +88,14 @@ class CustomReportContent {
     return map;
   }
 
-  // maps a json object with a list of CustomReportContent-objects as value to a dart map
-  static Map<String, List<CustomReportContent>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<CustomReportContent>>{};
+  // maps a json object with a list of NotificationIdViewed-objects as value to a dart map
+  static Map<String, List<NotificationIdViewed>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<NotificationIdViewed>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = CustomReportContent.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = NotificationIdViewed.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;
@@ -107,6 +103,7 @@ class CustomReportContent {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
+    'id',
   };
 }
 

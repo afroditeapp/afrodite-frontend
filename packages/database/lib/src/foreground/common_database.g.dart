@@ -21,13 +21,12 @@ class $CommonTable extends Common with TableInfo<$CommonTable, CommonData> {
       'PRIMARY KEY AUTOINCREMENT',
     ),
   );
-  static const VerificationMeta _demoAccountUserIdMeta = const VerificationMeta(
-    'demoAccountUserId',
-  );
+  static const VerificationMeta _demoAccountUsernameMeta =
+      const VerificationMeta('demoAccountUsername');
   @override
-  late final GeneratedColumn<String> demoAccountUserId =
+  late final GeneratedColumn<String> demoAccountUsername =
       GeneratedColumn<String>(
-        'demo_account_user_id',
+        'demo_account_username',
         aliasedName,
         true,
         type: DriftSqlType.string,
@@ -98,7 +97,7 @@ class $CommonTable extends Common with TableInfo<$CommonTable, CommonData> {
   @override
   List<GeneratedColumn> get $columns => [
     id,
-    demoAccountUserId,
+    demoAccountUsername,
     demoAccountPassword,
     demoAccountToken,
     imageEncryptionKey,
@@ -120,12 +119,12 @@ class $CommonTable extends Common with TableInfo<$CommonTable, CommonData> {
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
     }
-    if (data.containsKey('demo_account_user_id')) {
+    if (data.containsKey('demo_account_username')) {
       context.handle(
-        _demoAccountUserIdMeta,
-        demoAccountUserId.isAcceptableOrUnknown(
-          data['demo_account_user_id']!,
-          _demoAccountUserIdMeta,
+        _demoAccountUsernameMeta,
+        demoAccountUsername.isAcceptableOrUnknown(
+          data['demo_account_username']!,
+          _demoAccountUsernameMeta,
         ),
       );
     }
@@ -187,9 +186,9 @@ class $CommonTable extends Common with TableInfo<$CommonTable, CommonData> {
         DriftSqlType.int,
         data['${effectivePrefix}id'],
       )!,
-      demoAccountUserId: attachedDatabase.typeMapping.read(
+      demoAccountUsername: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
-        data['${effectivePrefix}demo_account_user_id'],
+        data['${effectivePrefix}demo_account_username'],
       ),
       demoAccountPassword: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
@@ -222,7 +221,7 @@ class $CommonTable extends Common with TableInfo<$CommonTable, CommonData> {
 
 class CommonData extends DataClass implements Insertable<CommonData> {
   final int id;
-  final String? demoAccountUserId;
+  final String? demoAccountUsername;
   final String? demoAccountPassword;
   final String? demoAccountToken;
   final Uint8List? imageEncryptionKey;
@@ -236,7 +235,7 @@ class CommonData extends DataClass implements Insertable<CommonData> {
   final bool chatInfoDialogShown;
   const CommonData({
     required this.id,
-    this.demoAccountUserId,
+    this.demoAccountUsername,
     this.demoAccountPassword,
     this.demoAccountToken,
     this.imageEncryptionKey,
@@ -247,8 +246,8 @@ class CommonData extends DataClass implements Insertable<CommonData> {
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
-    if (!nullToAbsent || demoAccountUserId != null) {
-      map['demo_account_user_id'] = Variable<String>(demoAccountUserId);
+    if (!nullToAbsent || demoAccountUsername != null) {
+      map['demo_account_username'] = Variable<String>(demoAccountUsername);
     }
     if (!nullToAbsent || demoAccountPassword != null) {
       map['demo_account_password'] = Variable<String>(demoAccountPassword);
@@ -269,9 +268,9 @@ class CommonData extends DataClass implements Insertable<CommonData> {
   CommonCompanion toCompanion(bool nullToAbsent) {
     return CommonCompanion(
       id: Value(id),
-      demoAccountUserId: demoAccountUserId == null && nullToAbsent
+      demoAccountUsername: demoAccountUsername == null && nullToAbsent
           ? const Value.absent()
-          : Value(demoAccountUserId),
+          : Value(demoAccountUsername),
       demoAccountPassword: demoAccountPassword == null && nullToAbsent
           ? const Value.absent()
           : Value(demoAccountPassword),
@@ -293,8 +292,8 @@ class CommonData extends DataClass implements Insertable<CommonData> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return CommonData(
       id: serializer.fromJson<int>(json['id']),
-      demoAccountUserId: serializer.fromJson<String?>(
-        json['demoAccountUserId'],
+      demoAccountUsername: serializer.fromJson<String?>(
+        json['demoAccountUsername'],
       ),
       demoAccountPassword: serializer.fromJson<String?>(
         json['demoAccountPassword'],
@@ -316,7 +315,7 @@ class CommonData extends DataClass implements Insertable<CommonData> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
-      'demoAccountUserId': serializer.toJson<String?>(demoAccountUserId),
+      'demoAccountUsername': serializer.toJson<String?>(demoAccountUsername),
       'demoAccountPassword': serializer.toJson<String?>(demoAccountPassword),
       'demoAccountToken': serializer.toJson<String?>(demoAccountToken),
       'imageEncryptionKey': serializer.toJson<Uint8List?>(imageEncryptionKey),
@@ -329,7 +328,7 @@ class CommonData extends DataClass implements Insertable<CommonData> {
 
   CommonData copyWith({
     int? id,
-    Value<String?> demoAccountUserId = const Value.absent(),
+    Value<String?> demoAccountUsername = const Value.absent(),
     Value<String?> demoAccountPassword = const Value.absent(),
     Value<String?> demoAccountToken = const Value.absent(),
     Value<Uint8List?> imageEncryptionKey = const Value.absent(),
@@ -337,9 +336,9 @@ class CommonData extends DataClass implements Insertable<CommonData> {
     bool? chatInfoDialogShown,
   }) => CommonData(
     id: id ?? this.id,
-    demoAccountUserId: demoAccountUserId.present
-        ? demoAccountUserId.value
-        : this.demoAccountUserId,
+    demoAccountUsername: demoAccountUsername.present
+        ? demoAccountUsername.value
+        : this.demoAccountUsername,
     demoAccountPassword: demoAccountPassword.present
         ? demoAccountPassword.value
         : this.demoAccountPassword,
@@ -356,9 +355,9 @@ class CommonData extends DataClass implements Insertable<CommonData> {
   CommonData copyWithCompanion(CommonCompanion data) {
     return CommonData(
       id: data.id.present ? data.id.value : this.id,
-      demoAccountUserId: data.demoAccountUserId.present
-          ? data.demoAccountUserId.value
-          : this.demoAccountUserId,
+      demoAccountUsername: data.demoAccountUsername.present
+          ? data.demoAccountUsername.value
+          : this.demoAccountUsername,
       demoAccountPassword: data.demoAccountPassword.present
           ? data.demoAccountPassword.value
           : this.demoAccountPassword,
@@ -381,7 +380,7 @@ class CommonData extends DataClass implements Insertable<CommonData> {
   String toString() {
     return (StringBuffer('CommonData(')
           ..write('id: $id, ')
-          ..write('demoAccountUserId: $demoAccountUserId, ')
+          ..write('demoAccountUsername: $demoAccountUsername, ')
           ..write('demoAccountPassword: $demoAccountPassword, ')
           ..write('demoAccountToken: $demoAccountToken, ')
           ..write('imageEncryptionKey: $imageEncryptionKey, ')
@@ -394,7 +393,7 @@ class CommonData extends DataClass implements Insertable<CommonData> {
   @override
   int get hashCode => Object.hash(
     id,
-    demoAccountUserId,
+    demoAccountUsername,
     demoAccountPassword,
     demoAccountToken,
     $driftBlobEquality.hash(imageEncryptionKey),
@@ -406,7 +405,7 @@ class CommonData extends DataClass implements Insertable<CommonData> {
       identical(this, other) ||
       (other is CommonData &&
           other.id == this.id &&
-          other.demoAccountUserId == this.demoAccountUserId &&
+          other.demoAccountUsername == this.demoAccountUsername &&
           other.demoAccountPassword == this.demoAccountPassword &&
           other.demoAccountToken == this.demoAccountToken &&
           $driftBlobEquality.equals(
@@ -420,7 +419,7 @@ class CommonData extends DataClass implements Insertable<CommonData> {
 
 class CommonCompanion extends UpdateCompanion<CommonData> {
   final Value<int> id;
-  final Value<String?> demoAccountUserId;
+  final Value<String?> demoAccountUsername;
   final Value<String?> demoAccountPassword;
   final Value<String?> demoAccountToken;
   final Value<Uint8List?> imageEncryptionKey;
@@ -428,7 +427,7 @@ class CommonCompanion extends UpdateCompanion<CommonData> {
   final Value<bool> chatInfoDialogShown;
   const CommonCompanion({
     this.id = const Value.absent(),
-    this.demoAccountUserId = const Value.absent(),
+    this.demoAccountUsername = const Value.absent(),
     this.demoAccountPassword = const Value.absent(),
     this.demoAccountToken = const Value.absent(),
     this.imageEncryptionKey = const Value.absent(),
@@ -437,7 +436,7 @@ class CommonCompanion extends UpdateCompanion<CommonData> {
   });
   CommonCompanion.insert({
     this.id = const Value.absent(),
-    this.demoAccountUserId = const Value.absent(),
+    this.demoAccountUsername = const Value.absent(),
     this.demoAccountPassword = const Value.absent(),
     this.demoAccountToken = const Value.absent(),
     this.imageEncryptionKey = const Value.absent(),
@@ -446,7 +445,7 @@ class CommonCompanion extends UpdateCompanion<CommonData> {
   });
   static Insertable<CommonData> custom({
     Expression<int>? id,
-    Expression<String>? demoAccountUserId,
+    Expression<String>? demoAccountUsername,
     Expression<String>? demoAccountPassword,
     Expression<String>? demoAccountToken,
     Expression<Uint8List>? imageEncryptionKey,
@@ -455,7 +454,8 @@ class CommonCompanion extends UpdateCompanion<CommonData> {
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
-      if (demoAccountUserId != null) 'demo_account_user_id': demoAccountUserId,
+      if (demoAccountUsername != null)
+        'demo_account_username': demoAccountUsername,
       if (demoAccountPassword != null)
         'demo_account_password': demoAccountPassword,
       if (demoAccountToken != null) 'demo_account_token': demoAccountToken,
@@ -470,7 +470,7 @@ class CommonCompanion extends UpdateCompanion<CommonData> {
 
   CommonCompanion copyWith({
     Value<int>? id,
-    Value<String?>? demoAccountUserId,
+    Value<String?>? demoAccountUsername,
     Value<String?>? demoAccountPassword,
     Value<String?>? demoAccountToken,
     Value<Uint8List?>? imageEncryptionKey,
@@ -479,7 +479,7 @@ class CommonCompanion extends UpdateCompanion<CommonData> {
   }) {
     return CommonCompanion(
       id: id ?? this.id,
-      demoAccountUserId: demoAccountUserId ?? this.demoAccountUserId,
+      demoAccountUsername: demoAccountUsername ?? this.demoAccountUsername,
       demoAccountPassword: demoAccountPassword ?? this.demoAccountPassword,
       demoAccountToken: demoAccountToken ?? this.demoAccountToken,
       imageEncryptionKey: imageEncryptionKey ?? this.imageEncryptionKey,
@@ -495,8 +495,10 @@ class CommonCompanion extends UpdateCompanion<CommonData> {
     if (id.present) {
       map['id'] = Variable<int>(id.value);
     }
-    if (demoAccountUserId.present) {
-      map['demo_account_user_id'] = Variable<String>(demoAccountUserId.value);
+    if (demoAccountUsername.present) {
+      map['demo_account_username'] = Variable<String>(
+        demoAccountUsername.value,
+      );
     }
     if (demoAccountPassword.present) {
       map['demo_account_password'] = Variable<String>(
@@ -526,7 +528,7 @@ class CommonCompanion extends UpdateCompanion<CommonData> {
   String toString() {
     return (StringBuffer('CommonCompanion(')
           ..write('id: $id, ')
-          ..write('demoAccountUserId: $demoAccountUserId, ')
+          ..write('demoAccountUsername: $demoAccountUsername, ')
           ..write('demoAccountPassword: $demoAccountPassword, ')
           ..write('demoAccountToken: $demoAccountToken, ')
           ..write('imageEncryptionKey: $imageEncryptionKey, ')

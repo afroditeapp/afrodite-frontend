@@ -14,33 +14,25 @@ class AutomaticProfileSearchCompletedNotification {
   /// Returns a new [AutomaticProfileSearchCompletedNotification] instance.
   AutomaticProfileSearchCompletedNotification({
     required this.profilesFound,
-    required this.profilesFoundViewed,
   });
 
-  /// Wrapping notification ID
-  int profilesFound;
-
-  /// Wrapping notification ID
-  int profilesFoundViewed;
+  NotificationStatus profilesFound;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is AutomaticProfileSearchCompletedNotification &&
-    other.profilesFound == profilesFound &&
-    other.profilesFoundViewed == profilesFoundViewed;
+    other.profilesFound == profilesFound;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (profilesFound.hashCode) +
-    (profilesFoundViewed.hashCode);
+    (profilesFound.hashCode);
 
   @override
-  String toString() => 'AutomaticProfileSearchCompletedNotification[profilesFound=$profilesFound, profilesFoundViewed=$profilesFoundViewed]';
+  String toString() => 'AutomaticProfileSearchCompletedNotification[profilesFound=$profilesFound]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'profiles_found'] = this.profilesFound;
-      json[r'profiles_found_viewed'] = this.profilesFoundViewed;
     return json;
   }
 
@@ -63,8 +55,7 @@ class AutomaticProfileSearchCompletedNotification {
       }());
 
       return AutomaticProfileSearchCompletedNotification(
-        profilesFound: mapValueOfType<int>(json, r'profiles_found')!,
-        profilesFoundViewed: mapValueOfType<int>(json, r'profiles_found_viewed')!,
+        profilesFound: NotificationStatus.fromJson(json[r'profiles_found'])!,
       );
     }
     return null;
@@ -113,7 +104,6 @@ class AutomaticProfileSearchCompletedNotification {
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
     'profiles_found',
-    'profiles_found_viewed',
   };
 }
 

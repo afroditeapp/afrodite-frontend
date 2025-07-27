@@ -1136,7 +1136,7 @@ class ChatApi {
 
   /// Send a like to some account. If both will like each other, then the accounts will be a match.
   ///
-  /// This route might update [model_chat::DailyLikesLeft] and WebSocket event about the update is not sent because this route returns the new value.
+  /// This route might update [model_chat::DailyLikesLeft] and WebSocket event about the update is not sent because this route returns the new value.  The like sending is allowed even if accounts aren't a match when considering age and gender preferences. This is because changing the preferences isn't limited.  # Access * [AccountState::Normal]
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -1170,7 +1170,7 @@ class ChatApi {
 
   /// Send a like to some account. If both will like each other, then the accounts will be a match.
   ///
-  /// This route might update [model_chat::DailyLikesLeft] and WebSocket event about the update is not sent because this route returns the new value.
+  /// This route might update [model_chat::DailyLikesLeft] and WebSocket event about the update is not sent because this route returns the new value.  The like sending is allowed even if accounts aren't a match when considering age and gender preferences. This is because changing the preferences isn't limited.  # Access * [AccountState::Normal]
   ///
   /// Parameters:
   ///
