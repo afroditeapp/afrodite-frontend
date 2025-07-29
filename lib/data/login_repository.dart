@@ -91,7 +91,7 @@ class LoginRepository extends DataRepository {
   Stream<LoginState> get loginState => _loginState.distinct();
   Stream<String> get accountServerAddress => BackgroundDatabaseManager.getInstance()
     .commonStreamOrDefault(
-      (db) => db.watchServerUrlAccount(),
+      (db) => db.app.watchServerUrlAccount(),
       defaultServerUrlAccount(),
     )
     .distinct(); // Avoid loop in ServerAddressBloc
@@ -109,7 +109,7 @@ class LoginRepository extends DataRepository {
 
   // Account
   Stream<AccountId?> get accountId => BackgroundDatabaseManager.getInstance()
-    .commonStream((db) => db.watchAccountId());
+    .commonStream((db) => db.loginSession.watchAccountId());
 
   @override
   Future<void> init() async {
@@ -512,7 +512,7 @@ class LoginRepository extends DataRepository {
   // TODO(prod): Remove runtime server address changing?
   Future<void> setCurrentServerAddress(String serverAddress) async {
     await BackgroundDatabaseManager.getInstance().commonAction(
-      (db) => db.updateServerUrlAccount(serverAddress),
+      (db) => db.app.updateServerUrlAccount(serverAddress),
     );
     await _apiNoConnection.updateAddressFromConfigAndReturnIt();
     await _repositories?.connectionManager.closeAndRefreshServerAddressAndLogout();

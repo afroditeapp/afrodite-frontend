@@ -21,7 +21,7 @@ AppLocalizations getStringsImplementation(BuildContext context) {
   }
   if (localizations != currentLocalizations) {
     log.info("Localizations changed, saving current locale value");
-    BackgroundDatabaseManager.getInstance().commonAction((db) => db.updateCurrentLocale(localizations?.localeName));
+    BackgroundDatabaseManager.getInstance().commonAction((db) => db.app.updateCurrentLocale(localizations?.localeName));
   }
   currentLocalizations = localizations;
   return localizations;
@@ -45,7 +45,7 @@ Future<void> loadLocalizationsFromBackgroundDatabaseIfNeeded() async {
     return;
   }
 
-  final locale = await BackgroundDatabaseManager.getInstance().commonStreamSingle((db) => db.watchCurrentLocale());
+  final locale = await BackgroundDatabaseManager.getInstance().commonStreamSingle((db) => db.app.watchCurrentLocale());
   if (locale == null) {
     log.warning("Locale not in database");
   }

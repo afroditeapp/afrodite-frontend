@@ -216,7 +216,7 @@ class ServerConnectionManager implements LifecycleMethods, ServerConnectionInter
     await state
         .firstWhere((element) => element == ApiManagerState.connected);
 
-    final accountAfterConnection = await BackgroundDatabaseManager.getInstance().commonStreamSingle((db) => db.watchAccountId());
+    final accountAfterConnection = await BackgroundDatabaseManager.getInstance().commonStreamSingle((db) => db.loginSession.watchAccountId());
 
     if (currentUser != accountAfterConnection) {
       log.error("Account changed when waiting connected state");
@@ -273,7 +273,7 @@ class ApiManager implements LifecycleMethods {
 
     // TODO(prod): hardcode address for production release?
     final accountAddress = await backgroundDb.commonStreamSingleOrDefault(
-      (db) => db.watchServerUrlAccount(),
+      (db) => db.app.watchServerUrlAccount(),
       defaultServerUrlAccount(),
     );
     _account.updateServerAddress(accountAddress);

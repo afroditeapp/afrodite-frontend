@@ -111,7 +111,7 @@ Future<NewPageDetails?> handlePayload(
   }
 ) async {
   final currentAccountId = await BackgroundDatabaseManager.getInstance().commonStreamSingle(
-    (db) => db.watchAccountId(),
+    (db) => db.loginSession.watchAccountId(),
   );
   if (currentAccountId == null || currentAccountId != payload.receiverAccountId) {
     log.warning("Notification payload receiver account ID does not match current session account ID");

@@ -46,13 +46,13 @@ class BackgroundDatabaseManager extends AppSingleton {
     );
     commonDatabase = CommonBackgroundDatabase(commonLazyDatabase);
     // Make sure that the database libraries are initialized
-    await commonStream((db) => db.watchAccountId()).first;
+    await commonStream((db) => db.loginSession.watchAccountId()).first;
   }
 
   // Common database
 
-  Stream<T> commonStream<T>(Stream<T> Function(CommonBackgroundDatabase) mapper) async* {
-    final stream = mapper(commonDatabase);
+  Stream<T> commonStream<T>(Stream<T> Function(CommonBackgroundDatabaseRead) mapper) async* {
+    final stream = mapper(commonDatabase.read);
     yield* stream
     // try-catch does not work with *yield, so await for would be required, but
     // events seem not to flow properly with that.
@@ -63,7 +63,7 @@ class BackgroundDatabaseManager extends AppSingleton {
     });
   }
 
-  Stream<T> commonStreamOrDefault<T extends Object>(Stream<T?> Function(CommonBackgroundDatabase) mapper, T defaultValue) async* {
+  Stream<T> commonStreamOrDefault<T extends Object>(Stream<T?> Function(CommonBackgroundDatabaseRead) mapper, T defaultValue) async* {
     final stream = commonStream(mapper);
     yield* stream.map((event) {
       if (event == null) {
@@ -74,19 +74,19 @@ class BackgroundDatabaseManager extends AppSingleton {
     });
   }
 
-  Future<T> commonStreamSingle<T>(Stream<T> Function(CommonBackgroundDatabase) mapper) async {
+  Future<T> commonStreamSingle<T>(Stream<T> Function(CommonBackgroundDatabaseRead) mapper) async {
     final stream = commonStream(mapper);
     return await stream.first;
   }
 
-  Future<T> commonStreamSingleOrDefault<T extends Object>(Stream<T?> Function(CommonBackgroundDatabase) mapper, T defaultValue) async {
+  Future<T> commonStreamSingleOrDefault<T extends Object>(Stream<T?> Function(CommonBackgroundDatabaseRead) mapper, T defaultValue) async {
     final first = await commonStreamSingle(mapper);
     return first ?? defaultValue;
   }
 
-  Future<Result<void, DatabaseError>> commonAction(Future<void> Function(CommonBackgroundDatabase) action) async {
+  Future<Result<void, DatabaseError>> commonAction(Future<void> Function(CommonBackgroundDatabaseWrite) action) async {
     try {
-      await action(commonDatabase);
+      await action(commonDatabase.write);
       return const Ok(null);
     } on CouldNotRollBackException catch (e) {
       return _handleDbException(e);
@@ -121,7 +121,7 @@ class BackgroundDatabaseManager extends AppSingleton {
   }
 
   Future<Result<void, AppError>> setAccountId(AccountId accountId) =>
-    commonAction((db) => db.updateAccountIdUseOnlyFromDatabaseManager(accountId))
+    commonAction((db) => db.loginSession.updateAccountIdUseOnlyFromDatabaseManager(accountId))
       .andThen((_) =>
         getAccountBackgroundDatabaseManager(accountId)
           .accountAction((db) => db.setAccountIdIfNull(accountId))

@@ -50,7 +50,7 @@ class CommonRepository extends DataRepositoryWithLifecycle {
   Future<void> onLogin() async {
     // Force sending the FCM token to server. This is needed if this login
     // is for different account than previously.
-    await BackgroundDatabaseManager.getInstance().commonAction((db) => db.updateFcmDeviceTokenAndPendingNotificationToken(null, null));
+    await BackgroundDatabaseManager.getInstance().commonAction((db) => db.loginSession.updateFcmDeviceTokenAndPendingNotificationToken(null, null));
   }
 
   @override

@@ -1,0 +1,55 @@
+
+import 'package:database/src/background/common/read/login_session.dart';
+import 'package:database/src/background/common/read/app.dart';
+import 'package:database/src/background/common/write/login_session.dart';
+import 'package:database/src/background/common/write/app.dart';
+import 'package:database/src/converter/account.dart';
+import 'package:database/src/converter/common.dart';
+import 'package:database/src/utils.dart';
+import 'package:drift/drift.dart';
+import 'package:openapi/api.dart';
+import 'schema.dart' as schema;
+
+part 'database.g.dart';
+
+/// Common app data which can be accessed when app is in background
+@DriftDatabase(
+  tables: [
+    schema.AccountId,
+    schema.ServerUrl,
+    schema.PushNotification,
+    schema.CurrentLocale,
+  ],
+  daos: [
+    // Write
+    DaoWriteApp,
+    DaoWriteLoginSession,
+    // Read
+    DaoReadApp,
+    DaoReadLoginSession,
+  ]
+)
+class CommonBackgroundDatabase extends _$CommonBackgroundDatabase {
+  CommonBackgroundDatabase(QueryExcecutorProvider dbProvider) :
+    super(dbProvider.getQueryExcecutor());
+
+  CommonBackgroundDatabaseRead get read => CommonBackgroundDatabaseRead(this);
+  CommonBackgroundDatabaseWrite get write => CommonBackgroundDatabaseWrite(this);
+
+  @override
+  int get schemaVersion => 1;
+}
+
+class CommonBackgroundDatabaseRead {
+  final CommonBackgroundDatabase db;
+  CommonBackgroundDatabaseRead(this.db);
+  DaoReadLoginSession get loginSession => db.daoReadLoginSession;
+  DaoReadApp get app => db.daoReadApp;
+}
+
+class CommonBackgroundDatabaseWrite {
+  final CommonBackgroundDatabase db;
+  CommonBackgroundDatabaseWrite(this.db);
+  DaoWriteLoginSession get loginSession => db.daoWriteLoginSession;
+  DaoWriteApp get app => db.daoWriteApp;
+}

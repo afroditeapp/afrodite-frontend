@@ -133,7 +133,7 @@ class PushNotificationManager extends AppSingleton {
   }
 
   Future<void> _refreshTokenToServer(String fcmToken) async {
-    final savedToken = await BackgroundDatabaseManager.getInstance().commonStreamSingle((db) => db.watchFcmDeviceToken());
+    final savedToken = await BackgroundDatabaseManager.getInstance().commonStreamSingle((db) => db.loginSession.watchFcmDeviceToken());
     if (savedToken?.token != fcmToken) {
       log.info("FCM token changed, sending token to server");
       final newToken = FcmDeviceToken(token: fcmToken);
@@ -145,7 +145,7 @@ class PushNotificationManager extends AppSingleton {
       final result = await api.accountCommon((api) => api.postSetDeviceToken(newToken)).ok();
       if (result != null) {
         log.info("FCM token sending successful");
-        final dbResult = await BackgroundDatabaseManager.getInstance().commonAction((db) => db.updateFcmDeviceTokenAndPendingNotificationToken(newToken, result));
+        final dbResult = await BackgroundDatabaseManager.getInstance().commonAction((db) => db.loginSession.updateFcmDeviceTokenAndPendingNotificationToken(newToken, result));
         if (dbResult.isOk()) {
           log.error("FCM token saving to local database successful");
         } else {
@@ -189,16 +189,16 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   log.info("Handling FCM background message");
 
   final accountUrl = await db.commonStreamSingleOrDefault(
-    (db) => db.watchServerUrlAccount(),
+    (db) => db.app.watchServerUrlAccount(),
     defaultServerUrlAccount(),
   );
-  final pendingNotificationToken = await db.commonStreamSingle((db) => db.watchPendingNotificationToken());
+  final pendingNotificationToken = await db.commonStreamSingle((db) => db.loginSession.watchPendingNotificationToken());
   if (pendingNotificationToken == null) {
     log.error("Downloading pending notification failed: pending notification token is null");
     return;
   }
 
-  final currentAccountId = await db.commonStreamSingle((db) => db.watchAccountId());
+  final currentAccountId = await db.commonStreamSingle((db) => db.loginSession.watchAccountId());
   if (currentAccountId == null) {
     log.error("Downloading pending notification failed: AccountId is not available");
     return;

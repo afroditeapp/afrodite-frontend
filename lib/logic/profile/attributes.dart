@@ -57,7 +57,7 @@ class ProfileAttributesBloc extends Bloc<AttributesEvent, AttributesData> with A
     });
 
     _localeSubscription = backgroundDb
-      .commonStream((db) => db.watchCurrentLocale())
+      .commonStream((db) => db.app.watchCurrentLocale())
       .listen((value) => add(NewLocale(value)));
     _attributesSubscription = profile.profileAttributes.listen((value) => add(NewAttributes(value)));
   }
