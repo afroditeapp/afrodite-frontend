@@ -2,6 +2,7 @@
 
 import 'package:app/ui/normal/settings/admin/report/process_reports.dart';
 import 'package:flutter/widgets.dart';
+import 'package:intl/intl.dart';
 import 'package:openapi/api.dart';
 import 'package:app/localizations.dart';
 
@@ -53,5 +54,22 @@ extension ReportExtensions on ReportDetailed {
       targetInfo: targetInfo,
       chatInfo: chatInfo,
     );
+  }
+}
+
+extension ProfileStringModerationContentTypeExtensions on ProfileStringModerationContentType {
+  String adminUiText() {
+    switch (this) {
+      case ProfileStringModerationContentType.profileName:
+        return "profile name";
+      case ProfileStringModerationContentType.profileText:
+        return "profile text";
+      case ProfileStringModerationContentType():
+        return "error";
+    }
+  }
+
+  String adminUiTextFirstLetterUppercase() {
+    return toBeginningOfSentenceCase(adminUiText());
   }
 }

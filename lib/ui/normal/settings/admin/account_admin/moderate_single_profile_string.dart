@@ -1,9 +1,9 @@
 
-
 import 'package:app/localizations.dart';
 import 'package:app/logic/account/account.dart';
 import 'package:app/model/freezed/logic/account/account.dart';
 import 'package:app/ui_utils/dialog.dart';
+import 'package:app/ui_utils/extensions/api.dart';
 import 'package:app/ui_utils/padding.dart';
 import 'package:app/utils/result.dart';
 import 'package:flutter/material.dart';
@@ -12,23 +12,25 @@ import 'package:app/ui_utils/snack_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 
-// TODO(prod): Remove duplicate code
-
-class ModerateSingleProfileNameScreen extends StatefulWidget {
+class ModerateSingleProfileStringScreen extends StatefulWidget {
   final AccountId accountId;
-  const ModerateSingleProfileNameScreen({
+  final ProfileStringModerationContentType contentType;
+  const ModerateSingleProfileStringScreen({
     required this.accountId,
+    required this.contentType,
     super.key,
   });
 
   @override
-  State<ModerateSingleProfileNameScreen> createState() => _ModerateSingleProfileNameScreenState();
+  State<ModerateSingleProfileStringScreen> createState() => _ModerateSingleProfileStringScreenState();
 }
 
-class _ModerateSingleProfileNameScreenState extends State<ModerateSingleProfileNameScreen> {
+class _ModerateSingleProfileStringScreenState extends State<ModerateSingleProfileStringScreen> {
   final api = LoginRepository.getInstance().repositories.api;
   final profile = LoginRepository.getInstance().repositories.profile;
   final chat = LoginRepository.getInstance().repositories.chat;
+
+  final detailsController = TextEditingController();
 
   GetProfileStringState? data;
 
@@ -39,7 +41,7 @@ class _ModerateSingleProfileNameScreenState extends State<ModerateSingleProfileN
     final result = await api
       .profileAdmin(
         (api) => api.getProfileStringState(
-          ProfileStringModerationContentType.profileName,
+          widget.contentType,
           widget.accountId.aid,
         )).ok();
 
@@ -71,7 +73,7 @@ class _ModerateSingleProfileNameScreenState extends State<ModerateSingleProfileN
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Moderate profile name"),
+        title: Text("Moderate ${widget.contentType.adminUiText()}"),
       ),
       body: screenContent(context),
     );
@@ -95,13 +97,14 @@ class _ModerateSingleProfileNameScreenState extends State<ModerateSingleProfileN
   }
 
   Widget showData(BuildContext context, GetProfileStringState? data, Permissions myPermissions) {
-    final profileNameData = data?.value;
-    final String? profileName;
-    if (profileNameData != null && profileNameData.isNotEmpty) {
-      profileName = profileNameData;
+    final profileStringData = data?.value;
+    final String? profileString;
+    if (profileStringData != null && profileStringData.isNotEmpty) {
+      profileString = profileStringData;
     } else {
-      profileName = null;
+      profileString = null;
     }
+    final rejectionReason = data?.moderationInfo?.rejectedReasonDetails.value;
     final state = data?.moderationInfo?.state;
     final accepted = switch (state) {
       ProfileStringModerationState.waitingBotOrHumanModeration ||
@@ -119,17 +122,24 @@ class _ModerateSingleProfileNameScreenState extends State<ModerateSingleProfileN
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Padding(padding: EdgeInsets.all(8.0)),
-          if (profileName != null && state != null) hPad(profileTextModerating(context, profileName, accepted, state)),
-          if (profileName == null) hPad(const Text("No profile name")),
+          if (profileString != null && state != null) hPad(profileStringModerating(
+            context,
+            profileString,
+            rejectionReason ?? "",
+            accepted,
+            state
+          )),
+          if (profileString == null) hPad(Text("No ${widget.contentType.adminUiText()}")),
           const Padding(padding: EdgeInsets.all(8.0)),
         ],
       ),
     );
   }
 
-  Widget profileTextModerating(
+  Widget profileStringModerating(
     BuildContext context,
-    String profileName,
+    String profileString,
+    String rejectionReason,
     bool? accepted,
     ProfileStringModerationState state,
   ) {
@@ -138,27 +148,39 @@ class _ModerateSingleProfileNameScreenState extends State<ModerateSingleProfileN
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Padding(padding: EdgeInsets.all(8.0)),
-        Text("Profile name moderation state", style: Theme.of(context).textTheme.titleSmall),
+        Text("Moderation state", style: Theme.of(context).textTheme.titleSmall),
         const Padding(padding: EdgeInsets.all(8.0)),
         Text(state.toString()),
         const Padding(padding: EdgeInsets.all(8.0)),
-        Text("Profile name", style: Theme.of(context).textTheme.titleSmall),
+        Text(widget.contentType.adminUiTextFirstLetterUppercase(), style: Theme.of(context).textTheme.titleSmall),
         const Padding(padding: EdgeInsets.all(8.0)),
-        Text(profileName),
+        Text(profileString),
+        if (rejectionReason.isNotEmpty) const Padding(padding: EdgeInsets.all(8.0)),
+        if (rejectionReason.isNotEmpty) Text("Rejection reason", style: Theme.of(context).textTheme.titleSmall),
+        if (rejectionReason.isNotEmpty) const Padding(padding: EdgeInsets.all(8.0)),
+        if (rejectionReason.isNotEmpty) Text(rejectionReason),
+        if (accepted == true) const Padding(padding: EdgeInsets.all(8.0)),
+        if (accepted == true) TextField(
+          controller: detailsController,
+          decoration: const InputDecoration(
+            hintText: "Rejection reason",
+          ),
+        ),
         const Padding(padding: EdgeInsets.all(8.0)),
         if (accepted == true) ElevatedButton(
           onPressed: () async {
+            final details = ProfileStringModerationRejectedReasonDetails(value: detailsController.text.trim());
             final result = await showConfirmDialog(context, "Reject?", yesNoActions: true);
             if (result == true && context.mounted) {
               final result = await api
                 .profileAdminAction(
                   (api) => api.postModerateProfileString(
                     PostModerateProfileString(
-                      contentType: ProfileStringModerationContentType.profileName,
+                      contentType: widget.contentType,
                       id: widget.accountId,
                       accept: false,
-                      value: profileName,
-                      rejectedDetails: ProfileStringModerationRejectedReasonDetails(value: ""),
+                      value: profileString,
+                      rejectedDetails: details,
                     )
                   ));
               if (result.isErr()) {
@@ -177,10 +199,10 @@ class _ModerateSingleProfileNameScreenState extends State<ModerateSingleProfileN
                 .profileAdminAction(
                   (api) => api.postModerateProfileString(
                     PostModerateProfileString(
-                      contentType: ProfileStringModerationContentType.profileName,
+                      contentType: widget.contentType,
                       id: widget.accountId,
                       accept: true,
-                      value: profileName,
+                      value: profileString,
                       rejectedDetails: ProfileStringModerationRejectedReasonDetails(value: ""),
                     )
                   ));

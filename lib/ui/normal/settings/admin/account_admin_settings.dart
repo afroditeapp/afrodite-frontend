@@ -15,8 +15,7 @@ import 'package:app/ui/normal/settings/admin/account_admin/ban_account.dart';
 import 'package:app/ui/normal/settings/admin/account_admin/delete_account.dart';
 import 'package:app/ui/normal/settings/admin/account_admin/edit_permissions.dart';
 import 'package:app/ui/normal/settings/admin/account_admin/edit_profile_name.dart';
-import 'package:app/ui/normal/settings/admin/account_admin/moderate_single_profile_name.dart';
-import 'package:app/ui/normal/settings/admin/account_admin/moderate_single_profile_text.dart';
+import 'package:app/ui/normal/settings/admin/account_admin/moderate_single_profile_string.dart';
 import 'package:app/ui/normal/settings/admin/account_admin/view_api_usage.dart';
 import 'package:app/ui/normal/settings/admin/account_admin/view_ip_address_usage.dart';
 import 'package:app/ui/normal/settings/admin/account_admin/view_reports.dart';
@@ -211,13 +210,13 @@ class _AccountAdminSettingsScreenState extends State<AccountAdminSettingsScreen>
 
     if (permissions.adminModerateProfileTexts) {
       settings.add(Setting.createSetting(Icons.text_fields, "Moderate profile text", () =>
-        MyNavigator.push(context, MaterialPage<void>(child: ModerateSingleProfileTextScreen(accountId: widget.accountId)))
+        MyNavigator.push(context, MaterialPage<void>(child: ModerateSingleProfileStringScreen(accountId: widget.accountId, contentType: ProfileStringModerationContentType.profileText)))
       ));
     }
 
     if (permissions.adminModerateProfileNames) {
       settings.add(Setting.createSetting(Icons.text_fields, "Moderate profile name", () =>
-        MyNavigator.push(context, MaterialPage<void>(child: ModerateSingleProfileNameScreen(accountId: widget.accountId)))
+        MyNavigator.push(context, MaterialPage<void>(child: ModerateSingleProfileStringScreen(accountId: widget.accountId, contentType: ProfileStringModerationContentType.profileName)))
       ));
     }
 
