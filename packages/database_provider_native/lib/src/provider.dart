@@ -98,6 +98,8 @@ LazyDatabase openDbConnection(
 
         dbAccess.execute("PRAGMA key = '$encryptionKey';");
         dbAccess.execute("PRAGMA foreign_keys = ON;");
+        dbAccess.execute("PRAGMA journal_mode = WAL;");
+        dbAccess.execute("PRAGMA synchronous = NORMAL;");
       }
     );
   });
