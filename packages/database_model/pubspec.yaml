@@ -1,0 +1,16 @@
+name: database_model
+version: 1.0.0
+
+publish_to: none
+
+environment:
+  sdk: ^3.8.0
+
+resolution: workspace
+
+dependencies:
+  openapi:
+    path: "../api_client"
+
+dev_dependencies:
+  lints: ^6.0.0

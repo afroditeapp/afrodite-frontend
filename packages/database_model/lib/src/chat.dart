@@ -1,7 +1,7 @@
 
 import 'dart:typed_data';
 
-import 'package:database/src/model/chat/message.dart';
+import 'chat/message.dart';
 import 'package:openapi/api.dart';
 import 'package:utils/utils.dart';
 

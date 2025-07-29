@@ -3,11 +3,8 @@
 
 import 'package:async/async.dart' show StreamExtensions;
 import 'package:database/database.dart';
-import 'package:database/src/converter/account.dart';
-import 'package:database/src/converter/app.dart';
-import 'package:database/src/converter/json/list.dart';
-import 'package:database/src/converter/media.dart';
-import 'package:database/src/converter/profile.dart';
+import 'package:database_converter/database_converter.dart';
+import 'package:database_model/database_model.dart';
 import 'package:openapi/api.dart' show AccountId, ProfileContent;
 import 'package:openapi/api.dart' as api;
 import 'package:rxdart/rxdart.dart';

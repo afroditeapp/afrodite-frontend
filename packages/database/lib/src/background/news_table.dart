@@ -1,6 +1,6 @@
 
 import 'package:database/src/background/account_database.dart';
-import 'package:database/src/converter/account.dart';
+import 'package:database_converter/database_converter.dart';
 import 'package:openapi/api.dart' as api;
 
 import 'package:drift/drift.dart';

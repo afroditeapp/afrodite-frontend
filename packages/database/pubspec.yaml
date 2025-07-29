@@ -23,6 +23,10 @@ dependencies:
 
   database_utils:
     path: "../database_utils"
+  database_converter:
+    path: "../database_converter"
+  database_model:
+    path: "../database_model"
 
   utils:
     path: "../utils"

@@ -3,7 +3,7 @@
 
 import 'dart:math';
 
-import 'package:database/src/model/media.dart';
+import 'media.dart';
 import 'package:openapi/api.dart';
 import 'package:utils/utils.dart';
 

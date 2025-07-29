@@ -68,6 +68,8 @@ build-web-profile-tar-macos:
 clean:
 	flutter clean
 	cd packages/database && flutter clean
+	cd packages/database_converter && flutter clean
+	cd packages/database_model && flutter clean
 	cd packages/database_provider && flutter clean
 	cd packages/database_provider_native && flutter clean
 	cd packages/database_provider_web && flutter clean
@@ -90,6 +92,8 @@ code-stats:
 	@find \
 	lib \
 	packages/database \
+	packages/database_converter \
+	packages/database_model \
 	packages/database_provider \
 	packages/database_provider_native \
 	packages/database_provider_web \

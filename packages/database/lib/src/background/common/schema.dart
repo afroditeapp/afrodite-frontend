@@ -1,6 +1,5 @@
 
-import 'package:database/src/converter/account.dart';
-import 'package:database/src/converter/common.dart';
+import 'package:database_converter/database_converter.dart';
 import 'package:database_utils/database_utils.dart';
 import 'package:drift/drift.dart';
 

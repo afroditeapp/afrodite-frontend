@@ -1,8 +1,6 @@
 
-
-
-import 'package:database/database.dart';
-import 'package:database/src/converter/account.dart';
+import 'package:database_converter/database_converter.dart';
+import 'package:database_model/database_model.dart';
 import 'package:openapi/api.dart' show AccountId;
 import 'package:openapi/api.dart' as api;
 import 'account_database.dart';

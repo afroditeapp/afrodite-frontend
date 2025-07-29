@@ -1,6 +1,5 @@
 
-import 'package:database/src/model/chat.dart';
-import 'package:database/src/model/chat/message.dart';
+import 'package:database_model/database_model.dart';
 import 'package:drift/drift.dart';
 import 'package:openapi/api.dart';
 

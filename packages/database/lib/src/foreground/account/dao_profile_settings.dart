@@ -1,7 +1,7 @@
 
 import 'package:openapi/api.dart' show Location, GetProfileFilteringSettings, SearchGroups, ProfileSearchAgeRange;
 import 'package:drift/drift.dart';
-import 'package:database/src/converter/json/string.dart';
+import 'package:database_converter/database_converter.dart';
 
 import '../account_database.dart';
 

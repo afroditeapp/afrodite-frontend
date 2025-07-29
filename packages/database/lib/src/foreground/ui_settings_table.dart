@@ -1,5 +1,5 @@
 
-import 'package:database/database.dart';
+import 'package:database_model/database_model.dart';
 
 import 'account_database.dart';
 

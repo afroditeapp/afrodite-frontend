@@ -1,5 +1,6 @@
 
 import 'package:database/database.dart';
+import 'package:database_model/database_model.dart';
 import 'package:openapi/api.dart' show GetMediaContentResult;
 import 'package:rxdart/rxdart.dart';
 import '../account_database.dart';

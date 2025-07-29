@@ -1,0 +1,21 @@
+name: database_converter
+version: 1.0.0
+
+publish_to: none
+
+environment:
+  sdk: ^3.8.0
+
+resolution: workspace
+
+dependencies:
+  drift: ^2.26.0
+
+  openapi:
+    path: "../api_client"
+
+  database_model:
+    path: "../database_model"
+
+dev_dependencies:
+  lints: ^6.0.0
