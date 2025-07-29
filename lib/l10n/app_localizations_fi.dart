@@ -840,9 +840,6 @@ class AppLocalizationsFi extends AppLocalizations {
   String get moderate_images_screen_title => 'Moderate images';
 
   @override
-  String get moderate_profile_names_screen_title => 'Moderate profile names';
-
-  @override
   String moderation_rejected_category(String p0) {
     return 'Rejected reason category: $p0';
   }

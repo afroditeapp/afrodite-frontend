@@ -11,7 +11,6 @@ import 'package:app/localizations.dart';
 import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/ui/normal/settings.dart';
 import 'package:app/ui/normal/settings/admin/moderate_images.dart';
-import 'package:app/ui/normal/settings/admin/profile_name_moderation.dart';
 
 NewPageDetails newModeratorTasksScreen() {
   return NewPageDetails(
@@ -26,7 +25,8 @@ class RequiredData {
   final bool contentHumanInitial;
   final bool contentBot;
   final bool contentHuman;
-  final bool profileNames; // TODO(prod): profileNameBot and profileNameHuman
+  final bool profileNamesBot;
+  final bool profileNamesHuman;
   final bool profileTextsBot;
   final bool profileTextsHuman;
   final bool reports;
@@ -36,7 +36,8 @@ class RequiredData {
     required this.contentHumanInitial,
     required this.contentBot,
     required this.contentHuman,
-    required this.profileNames,
+    required this.profileNamesBot,
+    required this.profileNamesHuman,
     required this.profileTextsBot,
     required this.profileTextsHuman,
     required this.reports,
@@ -77,7 +78,8 @@ class _ModeratorTasksScreenState extends State<ModeratorTasksScreen> {
           contentHumanInitial: permissions.adminModerateMediaContent,
           contentBot: permissions.adminModerateMediaContent,
           contentHuman: permissions.adminModerateMediaContent,
-          profileNames: permissions.adminModerateProfileNames,
+          profileNamesBot: permissions.adminModerateProfileNames,
+          profileNamesHuman: permissions.adminModerateProfileNames,
           profileTextsBot: permissions.adminModerateProfileTexts,
           profileTextsHuman: permissions.adminModerateProfileTexts,
           reports: permissions.adminProcessReports,
@@ -156,6 +158,7 @@ class _ModeratorTasksScreenState extends State<ModeratorTasksScreen> {
       contentBot == null ||
       contentHuman == null ||
       profileNamesBot == null ||
+      profileNamesHuman == null ||
       profileTextsBot == null ||
       profileTextsHuman == null ||
       reports == null
@@ -173,7 +176,8 @@ class _ModeratorTasksScreenState extends State<ModeratorTasksScreen> {
           contentHumanInitial: contentHumanInitial?.values.isNotEmpty ?? false,
           contentBot: contentBot?.values.isNotEmpty ?? false,
           contentHuman: contentHuman?.values.isNotEmpty ?? false,
-          profileNames: profileNamesBot?.values.isNotEmpty ?? false,
+          profileNamesBot: profileNamesBot?.values.isNotEmpty ?? false,
+          profileNamesHuman: profileNamesHuman?.values.isNotEmpty ?? false,
           profileTextsBot: profileTextsBot?.values.isNotEmpty ?? false,
           profileTextsHuman: profileTextsHuman?.values.isNotEmpty ?? false,
           reports: reports?.values.isNotEmpty ?? false,
@@ -235,14 +239,17 @@ class _ModeratorTasksScreenState extends State<ModeratorTasksScreen> {
       if (data.contentHuman) Setting.createSetting(Icons.image, "Moderate images (normal, human)", () =>
         MyNavigator.push(context, MaterialPage<void>(child: ModerateImagesScreen(queueType: ModerationQueueType.mediaModeration, showContentWhichBotsCanModerate: false)),)
       ),
-      if (data.profileNames) Setting.createSetting(Icons.text_fields, context.strings.moderate_profile_names_screen_title, () =>
-        openProfileNameModerationScreen(context),
+      if (data.profileNamesBot) Setting.createSetting(Icons.text_fields, "Moderate profile names (bot and human)", () =>
+        MyNavigator.push(context, MaterialPage<void>(child: ModerateProfileStringsScreen(contentType: ProfileStringModerationContentType.profileName, showTextsWhichBotsCanModerate: true)),)
+      ),
+      if (data.profileNamesHuman) Setting.createSetting(Icons.text_fields, "Moderate profile names (human)", () =>
+        MyNavigator.push(context, MaterialPage<void>(child: ModerateProfileStringsScreen(contentType: ProfileStringModerationContentType.profileName, showTextsWhichBotsCanModerate: false)),)
       ),
       if (data.profileTextsBot) Setting.createSetting(Icons.text_fields, "Moderate profile texts (bot and human)", () =>
-        MyNavigator.push(context, MaterialPage<void>(child: ModerateProfileTextsScreen(showTextsWhichBotsCanModerate: true)),)
+        MyNavigator.push(context, MaterialPage<void>(child: ModerateProfileStringsScreen(contentType: ProfileStringModerationContentType.profileText, showTextsWhichBotsCanModerate: true)),)
       ),
       if (data.profileTextsHuman) Setting.createSetting(Icons.text_fields, "Moderate profile texts (human)", () =>
-        MyNavigator.push(context, MaterialPage<void>(child: ModerateProfileTextsScreen(showTextsWhichBotsCanModerate: false)),)
+        MyNavigator.push(context, MaterialPage<void>(child: ModerateProfileStringsScreen(contentType: ProfileStringModerationContentType.profileText, showTextsWhichBotsCanModerate: false)),)
       ),
       if (data.reports) Setting.createSetting(Icons.report, "Process reports", () =>
         MyNavigator.push(context, MaterialPage<void>(child: ProcessReportsScreen()))

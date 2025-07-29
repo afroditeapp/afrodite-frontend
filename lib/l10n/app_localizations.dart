@@ -1502,12 +1502,6 @@ abstract class AppLocalizations {
   /// **'Moderate images'**
   String get moderate_images_screen_title;
 
-  /// Title for moderate profile names screen
-  ///
-  /// In en, this message translates to:
-  /// **'Moderate profile names'**
-  String get moderate_profile_names_screen_title;
-
   /// Beginning of moderation rejected reason category text
   ///
   /// In en, this message translates to:

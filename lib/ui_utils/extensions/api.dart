@@ -69,6 +69,17 @@ extension ProfileStringModerationContentTypeExtensions on ProfileStringModeratio
     }
   }
 
+  String adminUiTextPlular() {
+    switch (this) {
+      case ProfileStringModerationContentType.profileName:
+        return "profile names";
+      case ProfileStringModerationContentType.profileText:
+        return "profile texts";
+      case ProfileStringModerationContentType():
+        return "error";
+    }
+  }
+
   String adminUiTextFirstLetterUppercase() {
     return toBeginningOfSentenceCase(adminUiText());
   }

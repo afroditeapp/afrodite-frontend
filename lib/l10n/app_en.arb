@@ -985,10 +985,6 @@
   "@moderate_images_screen_title": {
     "description": "Title for moderate images page"
   },
-  "moderate_profile_names_screen_title": "Moderate profile names",
-  "@moderate_profile_names_screen_title": {
-    "description": "Title for moderate profile names screen"
-  },
   "moderation_rejected_category": "Rejected reason category: {p0}",
   "@moderation_rejected_category": {
     "description": "Beginning of moderation rejected reason category text",

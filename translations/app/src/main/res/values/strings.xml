@@ -560,7 +560,4 @@
     <!-- Profile statistics history screen -->
     <string name="profile_statistics_history_screen_title" description="Title for profile statistics history screen">Profile statistics history</string>
 
-    <!-- Moderate profile names screen -->
-    <string name="moderate_profile_names_screen_title" description="Title for moderate profile names screen">Moderate profile names</string>
-
 </resources>
