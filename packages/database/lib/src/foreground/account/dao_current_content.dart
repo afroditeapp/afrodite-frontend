@@ -1,5 +1,5 @@
 
-import 'package:database/src/profile_entry.dart';
+import 'package:database/database.dart';
 import 'package:openapi/api.dart' show GetMediaContentResult;
 import 'package:rxdart/rxdart.dart';
 import '../account_database.dart';

@@ -1,5 +1,5 @@
 
-import 'package:database/src/utils.dart';
+import 'package:database/src/converter/json/string.dart';
 import 'package:openapi/api.dart' as api;
 
 import 'package:database/src/background/account_database.dart';

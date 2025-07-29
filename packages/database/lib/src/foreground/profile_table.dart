@@ -2,7 +2,12 @@
 
 
 import 'package:async/async.dart' show StreamExtensions;
-import 'package:database/src/model/profile_thumbnail.dart';
+import 'package:database/database.dart';
+import 'package:database/src/converter/account.dart';
+import 'package:database/src/converter/app.dart';
+import 'package:database/src/converter/json/list.dart';
+import 'package:database/src/converter/media.dart';
+import 'package:database/src/converter/profile.dart';
 import 'package:openapi/api.dart' show AccountId, ProfileContent;
 import 'package:openapi/api.dart' as api;
 import 'package:rxdart/rxdart.dart';
@@ -10,8 +15,6 @@ import 'package:utils/utils.dart';
 import 'account_database.dart';
 
 import 'package:drift/drift.dart';
-import '../profile_entry.dart';
-import '../utils.dart';
 
 part 'profile_table.g.dart';
 

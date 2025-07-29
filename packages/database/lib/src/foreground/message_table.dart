@@ -1,14 +1,16 @@
 
 
 
+import 'package:database/src/converter/account.dart';
+import 'package:database/src/converter/app.dart';
+import 'package:database/src/converter/chat.dart';
+import 'package:database/src/model/chat.dart';
+import 'package:database/src/model/chat/message.dart';
 import 'package:openapi/api.dart';
 import 'package:utils/utils.dart';
 import 'account_database.dart';
 
 import 'package:drift/drift.dart';
-import '../message_entry.dart';
-import '../message_converter.dart';
-import '../utils.dart';
 
 part 'message_table.g.dart';
 

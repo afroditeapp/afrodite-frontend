@@ -1,8 +1,9 @@
 import 'package:database/src/background/account_database.dart';
+import 'package:database/src/converter/account.dart';
+import 'package:database/src/converter/chat.dart';
 import 'package:openapi/api.dart' show AccountId, ConversationId;
 
 import 'package:drift/drift.dart';
-import '../utils.dart';
 
 part 'new_message_notification_table.g.dart';
 

@@ -1,9 +1,9 @@
 
 import 'package:database/src/background/account_database.dart';
+import 'package:database/src/converter/chat.dart';
 import 'package:openapi/api.dart' show ReceivedLikesSyncVersion, NewReceivedLikesCount;
 
 import 'package:drift/drift.dart';
-import '../utils.dart';
 
 part 'new_received_likes_available_table.g.dart';
 

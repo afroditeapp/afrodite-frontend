@@ -1,11 +1,11 @@
 
-
-import 'package:database/src/message_entry.dart';
+import 'package:database/src/converter/account.dart';
+import 'package:database/src/converter/chat.dart';
+import 'package:database/src/model/chat.dart';
 import 'package:openapi/api.dart' show AccountId;
 import 'account_database.dart';
 
 import 'package:drift/drift.dart';
-import '../utils.dart';
 
 part 'conversations_table.g.dart';
 

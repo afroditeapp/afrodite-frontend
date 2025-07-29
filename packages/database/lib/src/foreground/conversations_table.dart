@@ -2,12 +2,13 @@
 
 
 import 'package:database/database.dart';
+import 'package:database/src/converter/account.dart';
+import 'package:database/src/converter/chat.dart';
 import 'package:openapi/api.dart' show AccountId;
 import 'package:openapi/api.dart' as api;
 import 'account_database.dart';
 
 import 'package:drift/drift.dart';
-import '../utils.dart';
 
 part 'conversations_table.g.dart';
 

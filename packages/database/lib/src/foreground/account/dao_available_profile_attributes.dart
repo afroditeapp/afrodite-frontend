@@ -1,8 +1,8 @@
 
 import 'package:async/async.dart' show StreamExtensions;
-import 'package:database/src/utils.dart';
 import 'package:openapi/api.dart' as api;
-import 'package:database/src/profile_entry.dart';
+import 'package:database/src/model/profile.dart';
+import 'package:database/src/converter/enum_string.dart';
 import 'package:collection/collection.dart';
 import 'package:rxdart/rxdart.dart';
 

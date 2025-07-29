@@ -1,8 +1,8 @@
 
 import 'package:openapi/api.dart' show Location, GetProfileFilteringSettings, SearchGroups, ProfileSearchAgeRange;
 import 'package:drift/drift.dart';
+import 'package:database/src/converter/json/string.dart';
 
-import 'package:database/src/utils.dart';
 import '../account_database.dart';
 
 part 'dao_profile_settings.g.dart';

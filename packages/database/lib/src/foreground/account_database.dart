@@ -1,6 +1,15 @@
 
 
 import 'package:async/async.dart';
+import 'package:database/database.dart';
+import 'package:database/src/converter/account.dart';
+import 'package:database/src/converter/app.dart';
+import 'package:database/src/converter/chat.dart';
+import 'package:database/src/converter/enum_string.dart';
+import 'package:database/src/converter/json/list.dart';
+import 'package:database/src/converter/json/string.dart';
+import 'package:database/src/converter/media.dart';
+import 'package:database/src/converter/profile.dart';
 import 'package:database/src/foreground/account/dao_account_settings.dart';
 import 'package:database/src/foreground/account/dao_available_profile_attributes.dart';
 import 'package:database/src/foreground/account/dao_client_features.dart';
@@ -31,10 +40,6 @@ import 'account/dao_my_profile.dart';
 import 'account/dao_profile_settings.dart';
 import 'account/dao_tokens.dart';
 import 'message_table.dart';
-import '../message_converter.dart';
-import '../profile_entry.dart';
-import '../private_key_data.dart';
-import '../utils.dart';
 
 part 'account_database.g.dart';
 

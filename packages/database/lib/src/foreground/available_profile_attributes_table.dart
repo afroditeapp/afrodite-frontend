@@ -2,13 +2,14 @@
 
 
 import 'package:async/async.dart' show StreamExtensions;
+import 'package:database/database.dart';
+import 'package:database/src/converter/json/string.dart';
+import 'package:database/src/converter/profile.dart';
 import 'package:openapi/api.dart' show Attribute, ProfileAttributeHash, AttributeIdAndHash;
 import 'package:collection/collection.dart';
 import 'account_database.dart';
 
 import 'package:drift/drift.dart';
-import '../profile_entry.dart';
-import '../utils.dart';
 
 part 'available_profile_attributes_table.g.dart';
 

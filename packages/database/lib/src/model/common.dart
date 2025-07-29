@@ -1,5 +1,4 @@
 
-
 import 'package:utils/utils.dart';
 
 class ServerMaintenanceInfo {

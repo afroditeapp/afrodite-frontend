@@ -1,8 +1,22 @@
 
+
+
 import 'dart:math';
 
+import 'package:database/src/model/media.dart';
 import 'package:openapi/api.dart';
 import 'package:utils/utils.dart';
+
+class ProfileThumbnail {
+  final ProfileEntry entry;
+  final bool isFavorite;
+  ProfileThumbnail(
+    {
+      required this.entry,
+      required this.isFavorite,
+    }
+  );
+}
 
 class ProfileEntry implements PublicContentProvider {
   final AccountId uuid;
@@ -150,79 +164,6 @@ class ProfileTitle {
   }
 }
 
-abstract class PublicContentProvider {
-  List<ContentIdAndAccepted> get content;
-}
-
-class ContentIdAndAccepted {
-  final ContentId id;
-  final bool accepted;
-  final bool primary;
-  ContentIdAndAccepted(this.id, this.accepted, this.primary);
-
-  @override
-  bool operator ==(Object other) {
-    return other is ContentIdAndAccepted &&
-      id == other.id &&
-      accepted == other.accepted &&
-      primary == other.primary;
-  }
-
-  @override
-  int get hashCode => Object.hash(
-    runtimeType,
-    id,
-    accepted,
-    primary,
-  );
-}
-
-abstract class MyContentProvider {
-  List<MyContent> get myContent;
-}
-
-class MyContent extends ContentIdAndAccepted {
-  final bool faceDetected;
-  final ContentModerationState state;
-  final MediaContentModerationRejectedReasonCategory? rejectedCategory;
-  final MediaContentModerationRejectedReasonDetails? rejectedDetails;
-  MyContent(
-    ContentId id,
-    this.faceDetected,
-    this.state,
-    this.rejectedCategory,
-    this.rejectedDetails,
-    {
-      required bool primaryContent,
-    }
-  ) : super(
-    id,
-    state == ContentModerationState.acceptedByBot || state == ContentModerationState.acceptedByHuman,
-    primaryContent,
-  );
-
-  @override
-  bool operator ==(Object other) {
-    return other is MyContent &&
-      id == other.id &&
-      accepted == other.accepted &&
-      faceDetected == other.faceDetected &&
-      state == other.state &&
-      rejectedCategory == other.rejectedCategory &&
-      rejectedDetails == other.rejectedDetails;
-  }
-
-  @override
-  int get hashCode => Object.hash(
-    runtimeType,
-    id,
-    accepted,
-    state,
-    rejectedCategory,
-    rejectedDetails,
-  );
-}
-
 class InitialAgeInfo {
   final int initialAge;
   final UtcDateTime time;
@@ -290,26 +231,6 @@ class AutomaticAgeChangeInfo {
   });
 }
 
-enum AccountState {
-  initialSetup,
-  normal,
-  banned,
-  pendingDeletion,
-}
-
-extension AccountStateContainerToAccountState on AccountStateContainer {
-  AccountState toAccountState() {
-    if (pendingDeletion) {
-      return AccountState.pendingDeletion;
-    } else if (banned) {
-      return AccountState.banned;
-    } else if (!initialSetupCompleted) {
-      return AccountState.initialSetup;
-    } else {
-      return AccountState.normal;
-    }
-  }
-}
 
 class ProfileAttributes {
   final AttributeOrderMode attributeOrder;

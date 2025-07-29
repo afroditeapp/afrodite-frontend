@@ -1,6 +1,7 @@
 
 
-import 'package:database/src/utils.dart';
+import 'package:database/src/converter/json/list.dart';
+import 'package:database/src/converter/enum_string.dart';
 import 'package:openapi/api.dart' as api;
 import '../account_database.dart';
 
