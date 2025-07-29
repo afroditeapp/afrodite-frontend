@@ -981,10 +981,6 @@
   "@menu_screen_title": {
     "description": "Title for menu screen"
   },
-  "moderate_images_screen_title": "Moderate images",
-  "@moderate_images_screen_title": {
-    "description": "Title for moderate images page"
-  },
   "moderation_rejected_category": "Rejected reason category: {p0}",
   "@moderation_rejected_category": {
     "description": "Beginning of moderation rejected reason category text",

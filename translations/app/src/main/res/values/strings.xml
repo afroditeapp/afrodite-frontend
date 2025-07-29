@@ -554,9 +554,6 @@
     <!-- Admin screen -->
     <string name="admin_settings_title" description="Title for admin settings screen">Admin</string>
 
-    <!-- Moderate images screen -->
-    <string name="moderate_images_screen_title" description="Title for moderate images page">Moderate images</string>
-
     <!-- Profile statistics history screen -->
     <string name="profile_statistics_history_screen_title" description="Title for profile statistics history screen">Profile statistics history</string>
 

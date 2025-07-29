@@ -837,9 +837,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get menu_screen_title => 'Menu';
 
   @override
-  String get moderate_images_screen_title => 'Moderate images';
-
-  @override
   String moderation_rejected_category(String p0) {
     return 'Rejected reason category: $p0';
   }

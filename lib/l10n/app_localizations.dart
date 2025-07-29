@@ -1496,12 +1496,6 @@ abstract class AppLocalizations {
   /// **'Menu'**
   String get menu_screen_title;
 
-  /// Title for moderate images page
-  ///
-  /// In en, this message translates to:
-  /// **'Moderate images'**
-  String get moderate_images_screen_title;
-
   /// Beginning of moderation rejected reason category text
   ///
   /// In en, this message translates to:
