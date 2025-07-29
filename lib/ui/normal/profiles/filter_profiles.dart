@@ -24,6 +24,8 @@ import 'package:app/ui/normal/profiles/edit_profile_attribute_filter.dart';
 import 'package:app/ui/normal/settings/profile/edit_profile.dart';
 import 'package:app/ui_utils/common_update_logic.dart';
 
+const _SLIDER_DEFAULT_VALUE_ALPHA = 125;
+
 void openProfileFilteringSettings(BuildContext context) {
   final filteringSettingsBloc = context.read<ProfileFilteringSettingsBloc>();
   if (filteringSettingsBloc.state.updateState is! UpdateIdle) {
@@ -236,6 +238,8 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
               min: VALUE_MIN,
               max: VALUE_MAX,
               divisions: DIVISIONS,
+              thumbColor: Theme.of(context).colorScheme.primary,
+              activeColor: valueInt == null ? Theme.of(context).colorScheme.primary.withAlpha(_SLIDER_DEFAULT_VALUE_ALPHA) : null,
               onChanged: (double value) {
                 final intDays = doubleToIntDays(value);
                 final int? seconds;
@@ -332,6 +336,8 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
               min: VALUE_MIN,
               max: VALUE_MAX,
               divisions: DIVISIONS,
+              thumbColor: Theme.of(context).colorScheme.primary,
+              activeColor: valueInt == null ? Theme.of(context).colorScheme.primary.withAlpha(_SLIDER_DEFAULT_VALUE_ALPHA) : null,
               onChanged: (double value) {
                 final intDays = doubleToIntDays(value);
                 final int? seconds;
@@ -380,7 +386,7 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
           maxValue = valueMax.toDouble();
         }
 
-        return Column(
+        final column = Column(
           children: [
             const Padding(padding: EdgeInsets.all(4)),
             ViewAttributeTitle(
@@ -414,6 +420,14 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
               },
             ),
           ],
+        );
+
+        return SliderTheme(
+          data: SliderThemeData(
+            thumbColor: Theme.of(context).colorScheme.primary,
+            activeTrackColor: min == null && max == null ? Theme.of(context).colorScheme.primary.withAlpha(_SLIDER_DEFAULT_VALUE_ALPHA) : null,
+          ),
+          child: column,
         );
       }
     );
@@ -462,7 +476,7 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
           max = limitMax;
         }
 
-        return Column(
+        final column = Column(
           children: [
             const Padding(padding: EdgeInsets.all(4)),
             ViewAttributeTitle(
@@ -486,6 +500,14 @@ class _ProfileFilteringSettingsPageState extends State<ProfileFilteringSettingsP
               },
             ),
           ],
+        );
+
+        return SliderTheme(
+          data: SliderThemeData(
+            thumbColor: Theme.of(context).colorScheme.primary,
+            activeTrackColor: valueMin == null && valueMax == null ? Theme.of(context).colorScheme.primary.withAlpha(_SLIDER_DEFAULT_VALUE_ALPHA) : null,
+          ),
+          child: column,
         );
       }
     );
