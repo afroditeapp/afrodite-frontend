@@ -5,6 +5,7 @@ import 'package:database_provider/database_provider.dart';
 import 'package:drift/drift.dart';
 import 'package:drift/isolate.dart';
 import 'package:database/database.dart';
+import 'package:database_utils/database_utils.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:app/database/account_background_database_manager.dart';

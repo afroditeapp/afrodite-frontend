@@ -19,5 +19,3 @@ export 'src/model/media.dart' show MyContent, ContentIdAndAccepted;
 export 'src/model/common.dart' show ServerMaintenanceInfo;
 export 'src/model/chat.dart' show PrivateKeyData, PublicKeyData, AllKeyData, ForeignPublicKey;
 export 'src/model/chat/message.dart' show Message, u16ToLittleEndianBytes, TextMessage, VideoCallInvitation, UnsupportedMessage;
-
-export 'src/utils.dart' show QueryExcecutorProvider, DbFile, CommonDbFile, CommonBackgroundDbFile, AccountDbFile, AccountBackgroundDbFile;

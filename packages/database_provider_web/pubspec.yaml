@@ -13,8 +13,8 @@ dependencies:
   logging: ^1.2.0
   drift: ^2.26.0
 
-  database:
-    path: "../database"
+  database_utils:
+    path: "../database_utils"
 
   utils:
     path: "../utils"

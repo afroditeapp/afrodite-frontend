@@ -71,6 +71,7 @@ clean:
 	cd packages/database_provider && flutter clean
 	cd packages/database_provider_native && flutter clean
 	cd packages/database_provider_web && flutter clean
+	cd packages/database_utils && flutter clean
 	cd packages/api_client && flutter clean
 	cd packages/encryption && flutter clean
 	cd packages/encryption_common && flutter clean
@@ -92,6 +93,7 @@ code-stats:
 	packages/database_provider \
 	packages/database_provider_native \
 	packages/database_provider_web \
+	packages/database_utils \
 	packages/encryption \
 	packages/encryption_common \
 	packages/encryption_native \

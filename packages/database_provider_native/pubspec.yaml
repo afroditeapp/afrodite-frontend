@@ -22,8 +22,8 @@ dependencies:
   sqlcipher_flutter_libs: ^0.6.5
   sqlite3: ^2.7.5
 
-  database:
-    path: "../database"
+  database_utils:
+    path: "../database_utils"
 
   encryption:
     path: "../encryption"

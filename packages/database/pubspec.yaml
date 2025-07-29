@@ -21,6 +21,9 @@ dependencies:
   openapi:
     path: "../api_client"
 
+  database_utils:
+    path: "../database_utils"
+
   utils:
     path: "../utils"
 

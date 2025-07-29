@@ -28,6 +28,7 @@ workspace:
   - packages/database_provider
   - packages/database_provider_native
   - packages/database_provider_web
+  - packages/database_utils
   - packages/encryption
   - packages/encryption_common
   - packages/encryption_native
@@ -69,6 +70,9 @@ dependencies:
 
   database:
     path: "packages/database"
+
+  database_utils:
+    path: "packages/database_utils"
 
   database_provider:
     path: "packages/database_provider"

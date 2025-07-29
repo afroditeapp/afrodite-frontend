@@ -5,7 +5,7 @@ import 'package:database/src/background/common/write/login_session.dart';
 import 'package:database/src/background/common/write/app.dart';
 import 'package:database/src/converter/account.dart';
 import 'package:database/src/converter/common.dart';
-import 'package:database/src/utils.dart';
+import 'package:database_utils/database_utils.dart';
 import 'package:drift/drift.dart';
 import 'package:openapi/api.dart';
 import 'schema.dart' as schema;

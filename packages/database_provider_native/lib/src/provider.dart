@@ -11,7 +11,7 @@ import 'package:logging/logging.dart';
 import 'package:sqlite3/open.dart';
 import 'package:sqlcipher_flutter_libs/sqlcipher_flutter_libs.dart';
 import 'package:sqlite3/sqlite3.dart';
-import 'package:database/database.dart';
+import 'package:database_utils/database_utils.dart';
 
 final log = Logger("DbProviderNative");
 

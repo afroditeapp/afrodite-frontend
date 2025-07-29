@@ -17,7 +17,7 @@ import 'package:database/src/converter/chat.dart';
 import 'package:database/src/model/chat.dart';
 import 'package:drift/drift.dart';
 import 'package:openapi/api.dart';
-import '../utils.dart';
+import 'package:database_utils/database_utils.dart';
 
 part 'account_database.g.dart';
 

@@ -1,5 +1,5 @@
 
-import 'package:database/database.dart';
+import 'package:database_utils/database_utils.dart';
 import 'package:drift/drift.dart';
 
 class DbProvider implements QueryExcecutorProvider {

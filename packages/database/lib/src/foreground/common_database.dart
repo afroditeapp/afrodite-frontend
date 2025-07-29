@@ -1,8 +1,6 @@
 
-
-import 'package:database/database.dart';
 import 'package:drift/drift.dart';
-import '../utils.dart';
+import 'package:database_utils/database_utils.dart';
 
 part 'common_database.g.dart';
 
