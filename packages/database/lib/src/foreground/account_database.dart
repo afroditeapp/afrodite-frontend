@@ -1,5 +1,4 @@
 
-import 'package:database_model/database_model.dart';
 import 'package:database_utils/database_utils.dart';
 import 'package:async/async.dart';
 import 'package:database/database.dart';

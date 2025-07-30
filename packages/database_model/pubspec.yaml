@@ -12,5 +12,8 @@ dependencies:
   openapi:
     path: "../api_client"
 
+  utils:
+    path: "../utils"
+
 dev_dependencies:
   lints: ^6.0.0

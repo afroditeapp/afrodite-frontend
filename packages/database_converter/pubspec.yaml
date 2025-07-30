@@ -17,5 +17,8 @@ dependencies:
   database_model:
     path: "../database_model"
 
+  utils:
+    path: "../utils"
+
 dev_dependencies:
   lints: ^6.0.0
