@@ -21,6 +21,8 @@ dependencies:
   openapi:
     path: "../api_client"
 
+  database_account_background:
+    path: "../database_account_background"
   database_common_background:
     path: "../database_common_background"
   database_common_foreground:

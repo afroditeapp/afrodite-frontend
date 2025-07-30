@@ -20,7 +20,7 @@ class NotificationNewsItemAvailable extends AppSingletonNoInit {
   final notifications = NotificationManager.getInstance();
 
   Future<Result<void, void>> handleNewsCountUpdate(UnreadNewsCountResult r, AccountBackgroundDatabaseManager accountBackgroundDb) async {
-    final currentCount = await accountBackgroundDb.accountStream((db) => db.daoNews.watchUnreadNewsCount()).firstOrNull;
+    final currentCount = await accountBackgroundDb.accountStream((db) => db.news.watchUnreadNewsCount()).firstOrNull;
     final currentCountInt = currentCount?.c ?? 0;
     if (currentCountInt < r.c.c) {
       await _updateNotification(true, accountBackgroundDb);
@@ -28,7 +28,7 @@ class NotificationNewsItemAvailable extends AppSingletonNoInit {
       await _updateNotification(false, accountBackgroundDb);
     }
 
-    return await accountBackgroundDb.accountAction((db) => db.daoNews.setUnreadNewsCount(unreadNewsCount: r.c, version: r.v));
+    return await accountBackgroundDb.accountAction((db) => db.news.setUnreadNewsCount(unreadNewsCount: r.c, version: r.v));
   }
 
   Future<void> hide(AccountBackgroundDatabaseManager accountBackgroundDb) =>
@@ -70,6 +70,6 @@ class NotificationNewsItemAvailable extends AppSingletonNoInit {
       accountBackgroundDb: accountBackgroundDb,
     );
 
-    return await accountBackgroundDb.accountAction((db) => db.daoAdminNotificationTable.updateNotification(notificationContent));
+    return await accountBackgroundDb.accountAction((db) => db.notification.updateAdminNotification(notificationContent));
   }
 }

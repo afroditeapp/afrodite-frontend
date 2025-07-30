@@ -24,16 +24,16 @@ class NotificationMediaContentModerationCompleted extends AppSingletonNoInit {
     MediaContentModerationCompletedNotification notification,
     AccountBackgroundDatabaseManager accountBackgroundDb,
   ) async {
-    final showAccepted = await accountBackgroundDb.accountData(
-      (db) => db.daoMediaContentModerationCompletedNotificationTable.shouldAcceptedNotificationBeShown(notification.accepted)
+    final showAccepted = await accountBackgroundDb.accountDataWrite(
+      (db) => db.notification.mediaContentAccepted.shouldBeShown(notification.accepted)
     ).ok() ?? false;
 
     if (showAccepted) {
       await NotificationMediaContentModerationCompleted.getInstance().show(ModerationCompletedState.accepted, accountBackgroundDb);
     }
 
-    final showRejected = await accountBackgroundDb.accountData(
-      (db) => db.daoMediaContentModerationCompletedNotificationTable.shouldRejectedNotificationBeShown(notification.rejected)
+    final showRejected = await accountBackgroundDb.accountDataWrite(
+      (db) => db.notification.mediaContentRejected.shouldBeShown(notification.rejected)
     ).ok() ?? false;
 
     if (showRejected) {

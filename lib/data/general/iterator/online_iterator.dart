@@ -262,7 +262,7 @@ class ReceivedLikesOnlineIteratorIo extends OnlineIteratorIo {
   Future<Result<void, void>> resetServerPaging() async {
     switch (await api.chat((api) => api.postResetReceivedLikesPaging())) {
       case Ok(:final v):
-        await accountBackgroundDb.accountAction((db) => db.daoNewReceivedLikesAvailable.updateSyncVersionReceivedLikes(v.v, v.c));
+        await accountBackgroundDb.accountAction((db) => db.newReceivedLikesCount.updateSyncVersionReceivedLikes(v.v, v.c));
         await db.accountAction((db) => db.daoProfileStates.setReceivedLikeGridStatusList(null, false, clear: true));
         await db.accountAction((db) => db.updateReceivedLikesIteratorSessionId(v.s));
         return const Ok(null);

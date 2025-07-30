@@ -143,8 +143,11 @@ class MediaRepository extends DataRepositoryWithLifecycle {
       deleted: notification.deleted.id.toViewed(),
     );
     await api.mediaAction((api) => api.postMarkMediaContentModerationCompletedNotificationViewed(viewed))
-      .andThen((_) => accountBackgroundDb.accountData(
-        (db) => db.daoMediaContentModerationCompletedNotificationTable.updateViewedValues(viewed)
+      .andThen((_) => accountBackgroundDb.accountAction(
+        (db) => db.notification.mediaContentAccepted.updateViewedId(viewed.accepted)
+      ))
+      .andThen((_) => accountBackgroundDb.accountAction(
+        (db) => db.notification.mediaContentRejected.updateViewedId(viewed.rejected)
       ));
   }
 
@@ -164,7 +167,7 @@ class MediaRepository extends DataRepositoryWithLifecycle {
   Future<Result<void, void>> _reloadMediaNotificationSettings() async {
     return await api.media((api) => api.getMediaAppNotificationSettings())
       .andThen((v) => accountBackgroundDb.accountAction(
-        (db) => db.daoAppNotificationSettingsTable.updateMediaNotificationSettings(v),
+        (db) => db.appNotificationSettings.updateMediaNotificationSettings(v),
       ));
   }
 }

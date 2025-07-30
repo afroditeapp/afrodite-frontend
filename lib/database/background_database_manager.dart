@@ -125,7 +125,7 @@ class BackgroundDatabaseManager extends AppSingleton {
     commonAction((db) => db.loginSession.updateAccountIdUseOnlyFromDatabaseManager(accountId))
       .andThen((_) =>
         getAccountBackgroundDatabaseManager(accountId)
-          .accountAction((db) => db.setAccountIdIfNull(accountId))
+          .accountAction((db) => db.loginSession.setAccountIdIfNull(accountId))
       );
 
   // TODO: Currently there is no location where this could be handled

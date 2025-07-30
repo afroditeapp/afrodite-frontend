@@ -25,16 +25,16 @@ class NotificationProfileStringModerationCompleted extends AppSingletonNoInit {
     ProfileStringModerationCompletedNotification notification,
     AccountBackgroundDatabaseManager accountBackgroundDb,
   ) async {
-    final showAccepted = await accountBackgroundDb.accountData(
-      (db) => db.daoProfileTextModerationCompletedNotificationTable.shouldAcceptedNotificationBeShown(notification.textAccepted)
+    final showAccepted = await accountBackgroundDb.accountDataWrite(
+      (db) => db.notification.profileTextAccepted.shouldBeShown(notification.textAccepted)
     ).ok() ?? false;
 
     if (showAccepted) {
       await NotificationProfileStringModerationCompleted.getInstance().show(ModerationCompletedState.accepted, accountBackgroundDb);
     }
 
-    final showRejected = await accountBackgroundDb.accountData(
-      (db) => db.daoProfileTextModerationCompletedNotificationTable.shouldRejectedNotificationBeShown(notification.textRejected)
+    final showRejected = await accountBackgroundDb.accountDataWrite(
+      (db) => db.notification.profileTextRejected.shouldBeShown(notification.textRejected)
     ).ok() ?? false;
 
     if (showRejected) {

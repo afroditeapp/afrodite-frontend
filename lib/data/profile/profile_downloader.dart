@@ -71,7 +71,7 @@ class ProfileEntryDownloader {
         if (profile != null) {
           // Sent profile version didn't match the latest profile version, so
           // server sent the latest profile.
-          await accountBackgroundDb.profileAction((db) => db.updateProfileData(accountId, profile));
+          await accountBackgroundDb.accountAction((db) => db.profile.updateProfileData(accountId, profile));
           await db.profileAction((db) => db.updateProfileData(accountId, profile, version, v.lst));
         } else {
           // Current profile version is the latest.

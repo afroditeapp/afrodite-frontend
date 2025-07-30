@@ -94,7 +94,7 @@ class NotificationSettingsBloc extends Bloc<NotificationSettingsEvent, Notificat
       {
         final settings = AccountAppNotificationSettings(news: currentState.valueNews());
         final r = await api.accountAction((api) => api.postAccountAppNotificationSettings(settings))
-          .andThen((_) => db.accountAction((db) => db.daoAppNotificationSettingsTable.updateAccountNotificationSettings(settings)));
+          .andThen((_) => db.accountAction((db) => db.appNotificationSettings.updateAccountNotificationSettings(settings)));
         if (r.isErr()) {
           failureDetected = true;
         }
@@ -110,7 +110,7 @@ class NotificationSettingsBloc extends Bloc<NotificationSettingsEvent, Notificat
           automaticProfileSearchWeekdays: currentState.searchWeekdays,
         );
         final r = await api.profileAction((api) => api.postProfileAppNotificationSettings(settings))
-          .andThen((_) => db.accountAction((db) => db.daoAppNotificationSettingsTable.updateProfileNotificationSettings(settings)));
+          .andThen((_) => db.accountAction((db) => db.appNotificationSettings.updateProfileNotificationSettings(settings)));
         if (r.isErr()) {
           failureDetected = true;
         }
@@ -119,7 +119,7 @@ class NotificationSettingsBloc extends Bloc<NotificationSettingsEvent, Notificat
       {
         final settings = MediaAppNotificationSettings(mediaContentModeration: currentState.valueMediaContent());
         final r = await api.mediaAction((api) => api.postMediaAppNotificationSettings(settings))
-          .andThen((_) => db.accountAction((db) => db.daoAppNotificationSettingsTable.updateMediaNotificationSettings(settings)));
+          .andThen((_) => db.accountAction((db) => db.appNotificationSettings.updateMediaNotificationSettings(settings)));
         if (r.isErr()) {
           failureDetected = true;
         }
@@ -131,7 +131,7 @@ class NotificationSettingsBloc extends Bloc<NotificationSettingsEvent, Notificat
           messages: currentState.valueMessages(),
         );
         final r = await api.chatAction((api) => api.postChatAppNotificationSettings(settings))
-          .andThen((_) => db.accountAction((db) => db.daoAppNotificationSettingsTable.updateChatNotificationSettings(settings)));
+          .andThen((_) => db.accountAction((db) => db.appNotificationSettings.updateChatNotificationSettings(settings)));
         if (r.isErr()) {
           failureDetected = true;
         }
@@ -247,22 +247,22 @@ class NotificationSettingsBloc extends Bloc<NotificationSettingsEvent, Notificat
     });
 
     _messagesSubscription = db
-      .accountStream((db) => db.daoAppNotificationSettingsTable.watchMessages())
+      .accountStream((db) => db.appNotificationSettings.watchMessages())
       .listen((state) {
         add(NewValueMessages(state ?? NOTIFICATION_CATEGORY_ENABLED_DEFAULT));
       });
     _likesSubscription = db
-      .accountStream((db) => db.daoAppNotificationSettingsTable.watchLikes())
+      .accountStream((db) => db.appNotificationSettings.watchLikes())
       .listen((state) {
         add(NewValueLikes(state ?? NOTIFICATION_CATEGORY_ENABLED_DEFAULT));
       });
     _mediaContentModerationCompletedSubscription = db
-      .accountStream((db) => db.daoAppNotificationSettingsTable.watchMediaContentModerationCompleted())
+      .accountStream((db) => db.appNotificationSettings.watchMediaContentModerationCompleted())
       .listen((state) {
         add(NewValueMediaContentModerationCompleted(state ?? NOTIFICATION_CATEGORY_ENABLED_DEFAULT));
       });
     _newsSubscription = db
-      .accountStream((db) => db.daoAppNotificationSettingsTable.watchNews())
+      .accountStream((db) => db.appNotificationSettings.watchNews())
       .listen((state) {
         add(NewValueNews(state ?? NOTIFICATION_CATEGORY_ENABLED_DEFAULT));
       });

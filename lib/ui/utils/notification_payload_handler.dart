@@ -123,7 +123,7 @@ Future<NewPageDetails?> handlePayload(
 
   switch (payload) {
     case NavigateToConversation():
-      final accountId = await accountBackgroundDb.accountData((db) => db.daoNewMessageNotificationTable.getAccountId(payload.conversationId)).ok();
+      final accountId = await accountBackgroundDb.accountData((db) => db.notification.convertConversationIdToAccountId(payload.conversationId)).ok();
       if (accountId == null) {
         return null;
       }

@@ -117,7 +117,7 @@ class NewsListScreenState extends State<NewsListScreen> {
         return;
       }
       _sessionId = r.s;
-      final dbResult = await accountBackgroundDb.accountAction((db) => db.daoNews.setUnreadNewsCount(version: r.v, unreadNewsCount: r.c));
+      final dbResult = await accountBackgroundDb.accountAction((db) => db.news.setUnreadNewsCount(version: r.v, unreadNewsCount: r.c));
       if (dbResult.isErr()) {
         showLoadingError();
         return;

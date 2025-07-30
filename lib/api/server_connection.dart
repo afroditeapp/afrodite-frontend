@@ -446,7 +446,7 @@ Future<Uint8List> syncDataBytes(AccountDatabaseManager db, AccountBackgroundData
     (db) => db.daoSyncVersions.watchSyncVersionAccount()
   ).ok() ?? forceSync;
   final syncVersionReceivedLikes = await accountBackgroundDb.accountStreamSingle(
-    (db) => db.daoNewReceivedLikesAvailable.watchSyncVersionReceivedLikes()
+    (db) => db.newReceivedLikesCount.watchSyncVersionReceivedLikes()
   ).ok() ?? forceSync;
   final syncVersionClientConfig = await db.accountStreamSingle(
     (db) => db.daoSyncVersions.watchSyncVersionClientConfig()
@@ -455,7 +455,7 @@ Future<Uint8List> syncDataBytes(AccountDatabaseManager db, AccountBackgroundData
     (db) => db.daoSyncVersions.watchSyncVersionProfile()
   ).ok() ?? forceSync;
   final syncVersionNews = await accountBackgroundDb.accountStreamSingle(
-    (db) => db.daoNews.watchSyncVersionNews()
+    (db) => db.news.watchSyncVersionNews()
   ).ok() ?? forceSync;
   final syncVersionMediaContent = await db.accountStreamSingle(
     (db) => db.daoSyncVersions.watchSyncVersionMediaContent()

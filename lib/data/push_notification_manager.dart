@@ -253,7 +253,7 @@ Future<void> _handlePushNotificationNewMessageReceived(NewMessageNotificationLis
     // Prevent showing the notification again if it is dismissed, another
     // message push notfication for the same sender arives and app is not
     // opened (retrieving pending messages from the server resets this value)
-    await accountBackgroundDb.accountAction((db) => db.daoNewMessageNotificationTable.setNotificationShown(sender.a, true));
+    await accountBackgroundDb.accountAction((db) => db.notification.setNewMessageNotificationShown(sender.a, true));
   }
 }
 
@@ -263,7 +263,7 @@ Future<void> _handlePushNotificationReceivedLikesChanged(NewReceivedLikesCountRe
   }
 
   await NotificationLikeReceived.getInstance().incrementReceivedLikesCount(accountBackgroundDb);
-  await accountBackgroundDb.accountAction((db) => db.daoNewReceivedLikesAvailable.updateSyncVersionReceivedLikes(r.v, r.c));
+  await accountBackgroundDb.accountAction((db) => db.newReceivedLikesCount.updateSyncVersionReceivedLikes(r.v, r.c));
 }
 
 Future<void> _handlePushNotificationMediaContentModerationCompleted(

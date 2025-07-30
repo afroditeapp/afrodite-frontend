@@ -22,20 +22,20 @@ class NotificationMessageReceived extends AppSingletonNoInit {
   final notifications = NotificationManager.getInstance();
 
   Future<void> updateMessageReceivedCount(AccountId accountId, int count, ConversationId? conversation, AccountBackgroundDatabaseManager accountBackgroundDb) async {
-    final dbConversationId = await accountBackgroundDb.accountData((db) => db.daoNewMessageNotificationTable.getConversationId(accountId)).ok();
+    final dbConversationId = await accountBackgroundDb.accountData((db) => db.notification.getConversationId(accountId)).ok();
     final ConversationId conversationId;
     if (dbConversationId == null) {
       if (conversation == null) {
         return;
       }
-      await accountBackgroundDb.accountData((db) => db.daoNewMessageNotificationTable.setConversationId(accountId, conversation));
+      await accountBackgroundDb.accountAction((db) => db.notification.setConversationId(accountId, conversation));
       conversationId = conversation;
     } else {
       conversationId = dbConversationId;
     }
 
     final notificationId = NotificationIdStatic.calculateNotificationIdForNewMessageNotifications(conversationId);
-    final notificationShown = await accountBackgroundDb.accountData((db) => db.daoNewMessageNotificationTable.getNotificationShown(accountId)).ok() ?? false;
+    final notificationShown = await accountBackgroundDb.accountData((db) => db.notification.getNewMessageNotificationShown(accountId)).ok() ?? false;
 
     if (count <= 0 || _isConversationUiOpen(accountId) || notificationShown) {
       await notifications.hideNotification(notificationId);
@@ -45,7 +45,7 @@ class NotificationMessageReceived extends AppSingletonNoInit {
   }
 
   Future<void> _showNotification(AccountId account, LocalNotificationId id, int count, ConversationId conversationId, AccountBackgroundDatabaseManager accountBackgroundDb) async {
-    final profileTitle = await accountBackgroundDb.profileData((db) => db.getProfileTitle(account)).ok();
+    final profileTitle = await accountBackgroundDb.accountData((db) => db.profile.getProfileTitle(account)).ok();
 
     final String title;
     if (profileTitle == null) {

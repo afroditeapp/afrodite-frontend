@@ -112,7 +112,7 @@ class SearchSettingsBloc extends Bloc<SearchSettingsEvent, SearchSettingsData> w
             automaticProfileSearchWeekdays: state.valueSearchWeekdays(),
           );
           final r = await api.profileAction((api) => api.postProfileAppNotificationSettings(settings))
-            .andThen((_) => accountBackgroundDb.accountAction((db) => db.daoAppNotificationSettingsTable.updateProfileNotificationSettings(settings)));
+            .andThen((_) => accountBackgroundDb.accountAction((db) => db.appNotificationSettings.updateProfileNotificationSettings(settings)));
           if (r.isErr()) {
             failureDetected = true;
           }
@@ -224,7 +224,7 @@ class SearchSettingsBloc extends Bloc<SearchSettingsEvent, SearchSettingsData> w
       add(NewSearchGroups(event ?? SearchGroups()));
     });
     _profileSettingsSubscription = accountBackgroundDb
-      .accountStream((db) => db.daoAppNotificationSettingsTable.watchProfileAppNotificationSettings())
+      .accountStream((db) => db.appNotificationSettings.watchProfileAppNotificationSettings())
       .listen((state) {
         add(NewProfileAppNotificationSettings(state ?? ProfileAppNotificationSettingsDefaults.defaultValue));
       });

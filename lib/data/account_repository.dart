@@ -254,14 +254,14 @@ class AccountRepository extends DataRepositoryWithLifecycle {
   Future<Result<void, void>> receiveAdminNotification() async {
     final r = await api.accountCommonAdmin((api) => api.postGetAdminNotification()).ok();
     if (r != null) {
-      final viewedNotification = await accountBackgroundDb.accountData((db) => db.daoAdminNotificationTable.getNotification()).ok();
+      final viewedNotification = await accountBackgroundDb.accountData((db) => db.notification.getAdminNotification()).ok();
       if (viewedNotification != null && r == viewedNotification) {
         // Prevent showing the same notification again when the notification
         // is already received as push notification.
       } else {
         await NotificationNewsItemAvailable.getInstance().showAdminNotification(r, accountBackgroundDb);
       }
-      return await accountBackgroundDb.accountData((db) => db.daoAdminNotificationTable.removeNotification());
+      return await accountBackgroundDb.accountAction((db) => db.notification.removeAdminNotification());
     }
     return const Err(null);
   }
@@ -283,7 +283,7 @@ class AccountRepository extends DataRepositoryWithLifecycle {
   Future<Result<void, void>> _reloadAccountNotificationSettings() async {
     return await api.account((api) => api.getAccountAppNotificationSettings())
       .andThen((v) => accountBackgroundDb.accountAction(
-        (db) => db.daoAppNotificationSettingsTable.updateAccountNotificationSettings(v),
+        (db) => db.appNotificationSettings.updateAccountNotificationSettings(v),
       ));
   }
 }

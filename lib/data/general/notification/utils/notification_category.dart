@@ -6,7 +6,7 @@ import 'package:app/database/account_background_database_manager.dart';
 import 'package:app/localizations.dart';
 import 'package:app/utils/result.dart';
 
-typedef IsEnabledGetter = Stream<bool?> Function(AccountBackgroundDatabase);
+typedef IsEnabledGetter = Stream<bool?> Function(AccountBackgroundDatabaseRead);
 
 sealed class NotificationCategory {
   final String id;
@@ -48,7 +48,7 @@ class NotificationCategoryMessages extends NotificationCategory {
   String get title => R.strings.notification_category_messages;
 
   @override
-  IsEnabledGetter get _isEnabledValueLocation => (db) => db.daoAppNotificationSettingsTable.watchMessages();
+  IsEnabledGetter get _isEnabledValueLocation => (db) => db.appNotificationSettings.watchMessages();
 }
 
 class NotificationCategoryLikes extends NotificationCategory {
@@ -62,7 +62,7 @@ class NotificationCategoryLikes extends NotificationCategory {
   String get title => R.strings.notification_category_likes;
 
   @override
-  IsEnabledGetter get _isEnabledValueLocation => (db) => db.daoAppNotificationSettingsTable.watchLikes();
+  IsEnabledGetter get _isEnabledValueLocation => (db) => db.appNotificationSettings.watchLikes();
 }
 
 class NotificationCategoryMediaContentModerationCompleted extends NotificationCategory {
@@ -76,7 +76,7 @@ class NotificationCategoryMediaContentModerationCompleted extends NotificationCa
   String get title => R.strings.notification_category_media_content_moderation_completed;
 
   @override
-  IsEnabledGetter get _isEnabledValueLocation => (db) => db.daoAppNotificationSettingsTable.watchMediaContentModerationCompleted();
+  IsEnabledGetter get _isEnabledValueLocation => (db) => db.appNotificationSettings.watchMediaContentModerationCompleted();
 }
 
 class NotificationCategoryProfileTextModerationCompleted extends NotificationCategory {
@@ -90,7 +90,7 @@ class NotificationCategoryProfileTextModerationCompleted extends NotificationCat
   String get title => R.strings.notification_category_profile_text_moderation_completed;
 
   @override
-  IsEnabledGetter get _isEnabledValueLocation => (db) => db.daoAppNotificationSettingsTable.watchProfileAppNotificationSettings().map((v) => v?.profileTextModeration);
+  IsEnabledGetter get _isEnabledValueLocation => (db) => db.appNotificationSettings.watchProfileAppNotificationSettings().map((v) => v?.profileTextModeration);
 }
 
 class NotificationCategoryNewsItemAvailable extends NotificationCategory {
@@ -104,7 +104,7 @@ class NotificationCategoryNewsItemAvailable extends NotificationCategory {
   String get title => R.strings.notification_category_news_item_available;
 
   @override
-  IsEnabledGetter get _isEnabledValueLocation => (db) => db.daoAppNotificationSettingsTable.watchNews();
+  IsEnabledGetter get _isEnabledValueLocation => (db) => db.appNotificationSettings.watchNews();
 }
 
 class NotificationCategoryAutomaticProfileSearch extends NotificationCategory {
@@ -118,5 +118,5 @@ class NotificationCategoryAutomaticProfileSearch extends NotificationCategory {
   String get title => R.strings.notification_category_automatic_profile_search;
 
   @override
-  IsEnabledGetter get _isEnabledValueLocation => (db) => db.daoAppNotificationSettingsTable.watchProfileAppNotificationSettings().map((v) => v?.automaticProfileSearch);
+  IsEnabledGetter get _isEnabledValueLocation => (db) => db.appNotificationSettings.watchProfileAppNotificationSettings().map((v) => v?.automaticProfileSearch);
 }

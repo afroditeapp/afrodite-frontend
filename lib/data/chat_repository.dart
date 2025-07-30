@@ -253,7 +253,7 @@ class ChatRepository extends DataRepositoryWithLifecycle {
   }
 
   Future<void> receivedLikesCountRefresh() async {
-    final currentCount = await accountBackgroundDb.accountStream((db) => db.daoNewReceivedLikesAvailable.watchReceivedLikesCount()).firstOrNull;
+    final currentCount = await accountBackgroundDb.accountStream((db) => db.newReceivedLikesCount.watchReceivedLikesCount()).firstOrNull;
     final currentCountInt = currentCount?.c ?? 0;
 
     final r = await api.chat((api) => api.postGetNewReceivedLikesCount()).ok();
@@ -262,7 +262,7 @@ class ChatRepository extends DataRepositoryWithLifecycle {
     if (v == null || c == null) {
       return;
     }
-    await accountBackgroundDb.accountAction((db) => db.daoNewReceivedLikesAvailable.updateSyncVersionReceivedLikes(v, c));
+    await accountBackgroundDb.accountAction((db) => db.newReceivedLikesCount.updateSyncVersionReceivedLikes(v, c));
 
     if (currentCountInt == 0 && c.c > 0) {
       await NotificationLikeReceived.getInstance().incrementReceivedLikesCount(accountBackgroundDb);
@@ -333,7 +333,7 @@ class ChatRepository extends DataRepositoryWithLifecycle {
   Future<Result<void, void>> _reloadChatNotificationSettings() async {
     return await api.chat((api) => api.getChatAppNotificationSettings())
       .andThen((v) => accountBackgroundDb.accountAction(
-        (db) => db.daoAppNotificationSettingsTable.updateChatNotificationSettings(v),
+        (db) => db.appNotificationSettings.updateChatNotificationSettings(v),
       ));
   }
 

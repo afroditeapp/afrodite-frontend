@@ -73,7 +73,7 @@ class NewReceivedLikesAvailableBloc extends Bloc<NewReceivedLikesAvailableEvent,
       transformer: sequential(),
     );
     on<UpdateReceivedLikesCountNotViewed>((data, emit) async {
-      await db.accountAction((db) => db.daoNewReceivedLikesAvailable.updateReceivedLikesCountNotViewed(NewReceivedLikesCount(c: data.value)));
+      await db.accountAction((db) => db.newReceivedLikesCount.updateReceivedLikesCountNotViewed(NewReceivedLikesCount(c: data.value)));
       data.waitDone.add(true);
     },
       transformer: sequential(),
@@ -100,17 +100,17 @@ class NewReceivedLikesAvailableBloc extends Bloc<NewReceivedLikesAvailableEvent,
       transformer: sequential(),
     );
 
-    _countSubscription = db.accountStream((db) => db.daoNewReceivedLikesAvailable.watchReceivedLikesCount()).listen((data) {
+    _countSubscription = db.accountStream((db) => db.newReceivedLikesCount.watchReceivedLikesCount()).listen((data) {
       add(_CountUpdate(data?.c ?? 0));
     });
-    _countDebouncedSubscription = db.accountStream((db) => db.daoNewReceivedLikesAvailable.watchReceivedLikesCount())
+    _countDebouncedSubscription = db.accountStream((db) => db.newReceivedLikesCount.watchReceivedLikesCount())
       .debounceTime(const Duration(milliseconds: 1500))
       .listen((data) {
         final count = data?.c ?? 0;
         add(_SetShowRefreshButton(count > 0));
         add(_CountUpdateDebounced(count));
       });
-    _countNotViewedSubscription = db.accountStream((db) => db.daoNewReceivedLikesAvailable.watchReceivedLikesCountNotViewed()).listen((data) {
+    _countNotViewedSubscription = db.accountStream((db) => db.newReceivedLikesCount.watchReceivedLikesCountNotViewed()).listen((data) {
       add(_CountNotViewedUpdate(data?.c ?? 0));
     });
   }

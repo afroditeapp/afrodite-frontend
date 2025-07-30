@@ -535,7 +535,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
     await NotificationMessageReceived.getInstance()
       .updateMessageReceivedCount(accountId, 0, null, accountBackgroundDb);
     return accountBackgroundDb.accountAction(
-      (db) => db.daoConversationsBackground.setUnreadMessagesCount(accountId, const UnreadMessagesCount(0)),
+      (db) => db.unreadMessagesCount.setUnreadMessagesCount(accountId, const UnreadMessagesCount(0)),
     );
   }
 
@@ -567,7 +567,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
 
   Stream<UnreadMessagesCount?> getUnreadMessagesCountStream(AccountId accountId) {
     return accountBackgroundDb.accountStream(
-      (db) => db.daoConversationsBackground.watchUnreadMessageCount(accountId),
+      (db) => db.unreadMessagesCount.watchUnreadMessageCount(accountId),
     );
   }
 
@@ -613,7 +613,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
   Future<Result<void, void>> _reloadProfileNotificationSettings() async {
     return await _api.profile((api) => api.getProfileAppNotificationSettings())
       .andThen((v) => accountBackgroundDb.accountAction(
-        (db) => db.daoAppNotificationSettingsTable.updateProfileNotificationSettings(v),
+        (db) => db.appNotificationSettings.updateProfileNotificationSettings(v),
       ));
   }
 
@@ -633,8 +633,11 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
       textRejected: notification.textRejected.id.toViewed(),
     );
     await _api.profileAction((api) => api.postMarkProfileStringModerationCompletedNotificationViewed(viewed))
-      .andThen((_) => accountBackgroundDb.accountData(
-        (db) => db.daoProfileTextModerationCompletedNotificationTable.updateViewedValues(viewed)
+      .andThen((_) => accountBackgroundDb.accountAction(
+        (db) => db.notification.profileTextAccepted.updateViewedId(viewed.textAccepted)
+      ))
+      .andThen((_) => accountBackgroundDb.accountAction(
+        (db) => db.notification.profileTextRejected.updateViewedId(viewed.textRejected)
       ));
   }
 
@@ -651,8 +654,8 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
       profilesFound: notification.profilesFound.id.toViewed(),
     );
     await _api.profileAction((api) => api.postMarkAutomaticProfileSearchCompletedNotificationViewed(viewed))
-      .andThen((_) => accountBackgroundDb.accountData(
-        (db) => db.daoAutomaticProfileSearchCompletedNotificationTable.updateProfilesFoundViewed(viewed)
+      .andThen((_) => accountBackgroundDb.accountAction(
+        (db) => db.notification.profilesFound.updateViewedId(viewed.profilesFound)
       ));
   }
 }

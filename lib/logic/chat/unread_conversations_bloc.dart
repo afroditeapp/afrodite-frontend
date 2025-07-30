@@ -28,7 +28,7 @@ class UnreadConversationsCountBloc extends Bloc<UnreadConversationsCountEvent, U
       transformer: sequential(),
     );
 
-    _countSubscription = db.accountStream((db) => db.daoConversationsBackground.watchUnreadConversationsCount()).listen((data) {
+    _countSubscription = db.accountStream((db) => db.unreadMessagesCount.watchUnreadConversationsCount()).listen((data) {
       add(CountUpdate(data ?? 0));
     });
   }

@@ -247,6 +247,7 @@ class DaoProfiles extends DatabaseAccessor<AccountDatabase> with _$DaoProfilesMi
     }
   }
 
+  // TODO(prod): Remove?
   Future<ProfileLocalDbId?> getProfileLocalDbId(AccountId accountId) async {
     final r = await (select(profiles)
       ..where((t) => t.uuidAccountId.equals(accountId.aid))

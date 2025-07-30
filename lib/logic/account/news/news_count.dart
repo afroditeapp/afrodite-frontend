@@ -28,7 +28,7 @@ class NewsCountBloc extends Bloc<NewsCountEvent, NewsCountData> {
       transformer: sequential(),
     );
 
-    _countSubscription = db.accountStream((db) => db.daoNews.watchUnreadNewsCount()).listen((data) {
+    _countSubscription = db.accountStream((db) => db.news.watchUnreadNewsCount()).listen((data) {
       add(CountUpdate(data?.c ?? 0));
     });
   }
