@@ -23,6 +23,8 @@ dependencies:
 
   database_common_background:
     path: "../database_common_background"
+  database_common_foreground:
+    path: "../database_common_foreground"
   database_utils:
     path: "../database_utils"
   database_converter:

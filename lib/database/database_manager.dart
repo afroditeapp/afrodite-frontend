@@ -28,7 +28,7 @@ class DatabaseManager extends AppSingleton {
 
   bool initDone = false;
   late final DbProvider commonLazyDatabase;
-  late final CommonDatabase commonDatabase;
+  late final CommonForegroundDatabase commonDatabase;
   final accountDatabases = <AccountId, (DbProvider, AccountDatabase)>{};
 
   @override
@@ -47,15 +47,15 @@ class DatabaseManager extends AppSingleton {
       doSqlchipherInit: false,
       backgroundDb: false,
     );
-    commonDatabase = CommonDatabase(
+    commonDatabase = CommonForegroundDatabase(
       commonLazyDatabase,
     );
   }
 
   // Common database
 
-  Stream<T> commonStream<T>(Stream<T> Function(CommonDatabase) mapper) async* {
-    final stream = mapper(commonDatabase);
+  Stream<T> commonStream<T>(Stream<T> Function(CommonForegroundDatabaseRead) mapper) async* {
+    final stream = mapper(commonDatabase.read);
     yield* stream
     // try-catch does not work with *yield, so await for would be required, but
     // events seem not to flow properly with that.
@@ -66,7 +66,7 @@ class DatabaseManager extends AppSingleton {
     });
   }
 
-  Stream<T> commonStreamOrDefault<T extends Object>(Stream<T?> Function(CommonDatabase) mapper, T defaultValue) async* {
+  Stream<T> commonStreamOrDefault<T extends Object>(Stream<T?> Function(CommonForegroundDatabaseRead) mapper, T defaultValue) async* {
     final stream = commonStream(mapper);
     yield* stream.map((event) {
       if (event == null) {
@@ -77,19 +77,19 @@ class DatabaseManager extends AppSingleton {
     });
   }
 
-  Future<T> commonStreamSingle<T>(Stream<T> Function(CommonDatabase) mapper) async {
+  Future<T> commonStreamSingle<T>(Stream<T> Function(CommonForegroundDatabaseRead) mapper) async {
     final stream = commonStream(mapper);
     return await stream.first;
   }
 
-  Future<T> commonStreamSingleOrDefault<T extends Object>(Stream<T?> Function(CommonDatabase) mapper, T defaultValue) async {
+  Future<T> commonStreamSingleOrDefault<T extends Object>(Stream<T?> Function(CommonForegroundDatabaseRead) mapper, T defaultValue) async {
     final first = await commonStreamSingle(mapper);
     return first ?? defaultValue;
   }
 
-  Future<Result<void, DatabaseError>> commonAction(Future<void> Function(CommonDatabase) action) async {
+  Future<Result<void, DatabaseError>> commonAction(Future<void> Function(CommonForegroundDatabaseWrite) action) async {
     try {
-      await action(commonDatabase);
+      await action(commonDatabase.write);
       return const Ok(null);
     } on CouldNotRollBackException catch (e) {
       return handleDbException(e);

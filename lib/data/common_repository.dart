@@ -5,7 +5,6 @@ import 'package:logging/logging.dart';
 import 'package:app/api/api_manager.dart';
 import 'package:app/data/push_notification_manager.dart';
 import 'package:app/data/utils.dart';
-import 'package:database/database.dart';
 import 'package:app/database/background_database_manager.dart';
 import 'package:app/database/database_manager.dart';
 import 'package:app/storage/kv.dart';
@@ -25,8 +24,8 @@ class CommonRepository extends DataRepositoryWithLifecycle {
 
   Stream<bool> get notificationPermissionAsked => db
     .commonStreamOrDefault(
-      (db) => db.watchNotificationPermissionAsked(),
-      NOTIFICATION_PERMISSION_ASKED_DEFAULT,
+      (db) => db.app.watchNotificationPermissionAsked(),
+      false,
     );
 
   @override
@@ -43,7 +42,7 @@ class CommonRepository extends DataRepositoryWithLifecycle {
   }
 
   Future<void> setNotificationPermissionAsked(bool value) async {
-    await DatabaseManager.getInstance().commonAction((db) => db.updateNotificationPermissionAsked(value));
+    await DatabaseManager.getInstance().commonAction((db) => db.app.updateNotificationPermissionAsked(value));
   }
 
   @override

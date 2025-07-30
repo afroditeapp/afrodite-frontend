@@ -98,13 +98,13 @@ class LoginRepository extends DataRepository {
 
   // Demo account
   Stream<String?> get demoAccountUsername => DatabaseManager.getInstance()
-    .commonStream((db) => db.watchDemoAccountUsername());
+    .commonStream((db) => db.demoAccount.watchDemoAccountUsername());
 
   Stream<String?> get demoAccountPassword => DatabaseManager.getInstance()
-    .commonStream((db) => db.watchDemoAccountPassword());
+    .commonStream((db) => db.demoAccount.watchDemoAccountPassword());
 
   Stream<String?> get demoAccountToken => DatabaseManager.getInstance()
-    .commonStream((db) => db.watchDemoAccountToken());
+    .commonStream((db) => db.demoAccount.watchDemoAccountToken());
   Stream<bool> get demoAccountLoginProgress => _demoAccountLoginProgress;
 
   // Account
@@ -538,9 +538,9 @@ class LoginRepository extends DataRepository {
       return const Err(DemoModeLoginError.otherError);
     }
 
-    await DatabaseManager.getInstance().commonAction((db) => db.updateDemoAccountUsername(credentials.username));
-    await DatabaseManager.getInstance().commonAction((db) => db.updateDemoAccountPassword(credentials.password));
-    await DatabaseManager.getInstance().commonAction((db) => db.updateDemoAccountToken(demoAccountToken));
+    await DatabaseManager.getInstance().commonAction((db) => db.demoAccount.updateDemoAccountUsername(credentials.username));
+    await DatabaseManager.getInstance().commonAction((db) => db.demoAccount.updateDemoAccountPassword(credentials.password));
+    await DatabaseManager.getInstance().commonAction((db) => db.demoAccount.updateDemoAccountToken(demoAccountToken));
 
     return const Ok(null);
   }
@@ -559,7 +559,7 @@ class LoginRepository extends DataRepository {
     // TODO(prod): Uncomment
     // await KvStringManager.getInstance().setValue(KvString.demoAccountPassword, null);
     // await KvStringManager.getInstance().setValue(KvString.demoAccountUsername, null);
-    await DatabaseManager.getInstance().commonAction((db) => db.updateDemoAccountToken(null));
+    await DatabaseManager.getInstance().commonAction((db) => db.demoAccount.updateDemoAccountToken(null));
 
     log.info("demo account logout completed");
   }

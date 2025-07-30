@@ -17,6 +17,8 @@ update-drift-code:
 	cd packages/database && dart run build_runner build
 update-drift-code-common-background:
 	cd packages/database_common_background && dart run build_runner build
+update-drift-code-common-foreground:
+	cd packages/database_common_foreground && dart run build_runner build
 
 update-translations:
 	xml2arb --input-dir translations/app/src/main/res --output-dir lib/l10n --arb-file-name-template app_en.arb
@@ -71,6 +73,7 @@ clean:
 	flutter clean
 	cd packages/database && flutter clean
 	cd packages/database_common_background && flutter clean
+	cd packages/database_common_foreground && flutter clean
 	cd packages/database_converter && flutter clean
 	cd packages/database_model && flutter clean
 	cd packages/database_provider && flutter clean
@@ -96,6 +99,7 @@ code-stats:
 	lib \
 	packages/database \
 	packages/database_common_background \
+	packages/database_common_foreground \
 	packages/database_converter \
 	packages/database_model \
 	packages/database_provider \

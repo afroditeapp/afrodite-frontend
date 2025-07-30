@@ -22,10 +22,10 @@ class InfoDialogBloc extends Bloc<InfoDialogEvent, InfoDialogData> {
       emit(InfoDialogData(data.value)
     ));
     on<MarkChatInfoDialogShown>((_, emit) async {
-      await commonDb.commonAction((db) => db.updateChatInfoDialogShown(true));
+      await commonDb.commonAction((db) => db.app.updateChatInfoDialogShown(true));
     });
 
-    _chatInfoDialogShownSubscription = commonDb.commonStream((db) => db.watchChatInfoDialogShown()).listen((state) {
+    _chatInfoDialogShownSubscription = commonDb.commonStream((db) => db.app.watchChatInfoDialogShown()).listen((state) {
       add(NewChatInfoDialogShownValue(state ?? false));
     });
   }
