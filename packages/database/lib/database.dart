@@ -2,7 +2,7 @@
 library;
 
 export 'src/background/profile_table.dart' show DaoProfilesBackground;
-export 'src/background/common/database.dart' show CommonBackgroundDatabase, CommonBackgroundDatabaseRead, CommonBackgroundDatabaseWrite;
+export 'package:database_common_background/database_common_background.dart' show CommonBackgroundDatabase, CommonBackgroundDatabaseRead, CommonBackgroundDatabaseWrite;
 export 'src/background/account_database.dart' show AccountBackgroundDatabase;
 
 export 'src/foreground/account/dao_current_content.dart' show PrimaryProfileContent;

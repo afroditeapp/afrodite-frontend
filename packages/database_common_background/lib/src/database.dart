@@ -1,8 +1,8 @@
 
-import 'package:database/src/background/common/read/login_session.dart';
-import 'package:database/src/background/common/read/app.dart';
-import 'package:database/src/background/common/write/login_session.dart';
-import 'package:database/src/background/common/write/app.dart';
+import 'package:database_common_background/src/read/login_session.dart';
+import 'package:database_common_background/src/read/app.dart';
+import 'package:database_common_background/src/write/login_session.dart';
+import 'package:database_common_background/src/write/app.dart';
 import 'package:database_converter/database_converter.dart';
 import 'package:database_utils/database_utils.dart';
 import 'package:drift/drift.dart';

@@ -1,0 +1,30 @@
+name: database_common_background
+version: 1.0.0
+
+publish_to: none
+
+environment:
+  sdk: ^3.8.0
+
+resolution: workspace
+
+dependencies:
+  drift: ^2.26.0
+
+  openapi:
+    path: "../api_client"
+
+  database_model:
+    path: "../database_model"
+  database_converter:
+    path: "../database_converter"
+  database_utils:
+    path: "../database_utils"
+
+  utils:
+    path: "../utils"
+
+dev_dependencies:
+  lints: ^6.0.0
+  build_runner: ^2.4.8
+  drift_dev: ^2.26.0

@@ -21,6 +21,8 @@ dependencies:
   openapi:
     path: "../api_client"
 
+  database_common_background:
+    path: "../database_common_background"
   database_utils:
     path: "../database_utils"
   database_converter:

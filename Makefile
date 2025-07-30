@@ -15,6 +15,8 @@ update-freezed-code:
 
 update-drift-code:
 	cd packages/database && dart run build_runner build
+update-drift-code-common-background:
+	cd packages/database_common_background && dart run build_runner build
 
 update-translations:
 	xml2arb --input-dir translations/app/src/main/res --output-dir lib/l10n --arb-file-name-template app_en.arb
@@ -68,6 +70,7 @@ build-web-profile-tar-macos:
 clean:
 	flutter clean
 	cd packages/database && flutter clean
+	cd packages/database_common_background && flutter clean
 	cd packages/database_converter && flutter clean
 	cd packages/database_model && flutter clean
 	cd packages/database_provider && flutter clean
@@ -92,6 +95,7 @@ code-stats:
 	@find \
 	lib \
 	packages/database \
+	packages/database_common_background \
 	packages/database_converter \
 	packages/database_model \
 	packages/database_provider \

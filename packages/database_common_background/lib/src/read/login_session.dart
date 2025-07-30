@@ -1,5 +1,5 @@
 
-import 'package:database/src/background/common/database.dart';
+import 'package:database_common_background/src/database.dart';
 import 'package:database_utils/database_utils.dart';
 import 'package:drift/drift.dart';
 import 'package:openapi/api.dart';
