@@ -20,12 +20,12 @@ part 'database.g.dart';
     schema.CurrentLocale,
   ],
   daos: [
-    // Write
-    DaoWriteApp,
-    DaoWriteLoginSession,
     // Read
     DaoReadApp,
     DaoReadLoginSession,
+    // Write
+    DaoWriteApp,
+    DaoWriteLoginSession,
   ]
 )
 class CommonBackgroundDatabase extends _$CommonBackgroundDatabase {
