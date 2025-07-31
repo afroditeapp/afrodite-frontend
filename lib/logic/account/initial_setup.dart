@@ -231,7 +231,7 @@ class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData> with Ac
       ));
     });
     on<SkipInitialSetup>((data, emit) async {
-      final r = await db.accountAction((db) => db.daoInitialSetup.updateInitialSetupSkipped(true));
+      final r = await db.accountAction((db) => db.app.updateInitialSetupSkipped(true));
       if (r.isErr()) {
         showSnackBar(R.strings.generic_error_occurred);
       }

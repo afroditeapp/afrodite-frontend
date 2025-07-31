@@ -108,17 +108,17 @@ class OnlineIterator extends IteratorType {
 
           for (final (i, p) in profiles.profiles.indexed) {
             if (i + 1 <= profiles.basicProfilesNewLikesCount) {
-              await db.profileData((db) => db.updateNewLikeInfoReceivedTimeToCurrentTime(p.a));
+              await db.accountDataWrite((db) => db.profile.updateNewLikeInfoReceivedTimeToCurrentTime(p.a));
             }
 
-            var entry = await db.profileData((db) => db.getProfileEntry(p.a)).ok();
+            var entry = await db.accountData((db) => db.profile.getProfileEntry(p.a)).ok();
             final currentVersion = entry?.version;
             final currentContentVersion = entry?.contentVersion;
 
             if (p.p != null && currentVersion == p.p && p.c != null && currentContentVersion == p.c) {
               // No data changes, download can be skipped, but
               // update last seen time.
-              await db.profileAction((db) => db.updateProfileLastSeenTime(p.a, p.l));
+              await db.accountAction((db) => db.profile.updateProfileLastSeenTime(p.a, p.l));
             } else {
               entry = await downloader.download(p.a).ok();
             }
@@ -186,8 +186,8 @@ class ProfileListOnlineIteratorIo extends OnlineIteratorIo {
   Future<Result<void, void>> resetServerPaging() async {
     switch (await api.profile((api) => api.postResetProfilePaging())) {
       case Ok(:final v):
-        await db.accountAction((db) => db.updateProfileIteratorSessionId(v));
-        await db.accountAction((db) => db.daoProfileStates.setProfileGridStatusList(null, false, clear: true));
+        await db.accountAction((db) => db.common.updateProfileIteratorSessionId(v));
+        await db.accountAction((db) => db.profile.setProfileGridStatusList(null, false, clear: true));
         return const Ok(null);
       case Err():
         return const Err(null);
@@ -196,7 +196,7 @@ class ProfileListOnlineIteratorIo extends OnlineIteratorIo {
 
   @override
   Future<bool> loadIteratorSessionIdFromDbAndReturnTrueIfItExists() async {
-    currentSessionId = await db.accountStreamSingle((db) => db.watchProfileSessionId()).ok();
+    currentSessionId = await db.accountStreamSingle((db) => db.common.watchProfileSessionId()).ok();
     if (currentSessionId == null) {
       return false;
     } else {
@@ -224,7 +224,7 @@ class ProfileListOnlineIteratorIo extends OnlineIteratorIo {
 
   @override
   Future<void> setDbVisibility(AccountId id, bool visibility) async {
-    await db.accountAction((db) => db.daoProfileStates.setProfileGridStatus(id, true));
+    await db.accountAction((db) => db.profile.setProfileGridStatus(id, true));
   }
 }
 
@@ -263,8 +263,8 @@ class ReceivedLikesOnlineIteratorIo extends OnlineIteratorIo {
     switch (await api.chat((api) => api.postResetReceivedLikesPaging())) {
       case Ok(:final v):
         await accountBackgroundDb.accountAction((db) => db.newReceivedLikesCount.updateSyncVersionReceivedLikes(v.v, v.c));
-        await db.accountAction((db) => db.daoProfileStates.setReceivedLikeGridStatusList(null, false, clear: true));
-        await db.accountAction((db) => db.updateReceivedLikesIteratorSessionId(v.s));
+        await db.accountAction((db) => db.profile.setReceivedLikeGridStatusList(null, false, clear: true));
+        await db.accountAction((db) => db.common.updateReceivedLikesIteratorSessionId(v.s));
         return const Ok(null);
       case Err():
         return const Err(null);
@@ -273,7 +273,7 @@ class ReceivedLikesOnlineIteratorIo extends OnlineIteratorIo {
 
   @override
   Future<bool> loadIteratorSessionIdFromDbAndReturnTrueIfItExists() async {
-    currentSessionId = await db.accountStreamSingle((db) => db.watchReceivedLikesSessionId()).ok();
+    currentSessionId = await db.accountStreamSingle((db) => db.common.watchReceivedLikesSessionId()).ok();
     if (currentSessionId == null) {
       return false;
     } else {
@@ -297,8 +297,8 @@ class ReceivedLikesOnlineIteratorIo extends OnlineIteratorIo {
 
   @override
   Future<void> setDbVisibility(AccountId id, bool visibility) async {
-    await db.accountAction((db) => db.daoProfileStates.setReceivedLikeStatus(id, true));
-    await db.accountAction((db) => db.daoProfileStates.setReceivedLikeGridStatus(id, true));
+    await db.accountAction((db) => db.profile.setReceivedLikeStatus(id, true));
+    await db.accountAction((db) => db.profile.setReceivedLikeGridStatus(id, true));
   }
 }
 
@@ -328,8 +328,8 @@ class MatchesOnlineIteratorIo extends OnlineIteratorIo {
   Future<Result<void, void>> resetServerPaging() async {
     switch (await api.chat((api) => api.postResetMatchesPaging())) {
       case Ok(:final v):
-        await db.accountAction((db) => db.daoProfileStates.setMatchesGridStatusList(null, false, clear: true));
-        await db.accountAction((db) => db.updateMatchesIteratorSessionId(v.s));
+        await db.accountAction((db) => db.profile.setMatchesGridStatusList(null, false, clear: true));
+        await db.accountAction((db) => db.common.updateMatchesIteratorSessionId(v.s));
         return const Ok(null);
       case Err():
         return const Err(null);
@@ -338,7 +338,7 @@ class MatchesOnlineIteratorIo extends OnlineIteratorIo {
 
   @override
   Future<bool> loadIteratorSessionIdFromDbAndReturnTrueIfItExists() async {
-    currentSessionId = await db.accountStreamSingle((db) => db.watchMatchesSessionId()).ok();
+    currentSessionId = await db.accountStreamSingle((db) => db.common.watchMatchesSessionId()).ok();
     if (currentSessionId == null) {
       return false;
     } else {
@@ -361,8 +361,8 @@ class MatchesOnlineIteratorIo extends OnlineIteratorIo {
 
   @override
   Future<void> setDbVisibility(AccountId id, bool visibility) async {
-    await db.accountAction((db) => db.daoProfileStates.setMatchStatus(id, true));
-    await db.accountAction((db) => db.daoProfileStates.setMatchesGridStatus(id, true));
+    await db.accountAction((db) => db.profile.setMatchStatus(id, true));
+    await db.accountAction((db) => db.profile.setMatchesGridStatus(id, true));
   }
 }
 
@@ -391,8 +391,8 @@ class AutomaticProfileSearchOnlineIteratorIo extends OnlineIteratorIo {
   Future<Result<void, void>> resetServerPaging() async {
     switch (await api.profile((api) => api.postAutomaticProfileSearchResetProfilePaging())) {
       case Ok(:final v):
-        await db.accountAction((db) => db.daoProfileStates.setAutomaticProfileSearchGridStatusList(null, false, clear: true));
-        await db.accountAction((db) => db.updateAutomaticProfileSearchIteratorSessionId(v));
+        await db.accountAction((db) => db.profile.setAutomaticProfileSearchGridStatusList(null, false, clear: true));
+        await db.accountAction((db) => db.common.updateAutomaticProfileSearchIteratorSessionId(v));
         return const Ok(null);
       case Err():
         return const Err(null);
@@ -401,7 +401,7 @@ class AutomaticProfileSearchOnlineIteratorIo extends OnlineIteratorIo {
 
   @override
   Future<bool> loadIteratorSessionIdFromDbAndReturnTrueIfItExists() async {
-    currentSessionId = await db.accountStreamSingle((db) => db.watchAutomaticProfileSearchSessionId()).ok();
+    currentSessionId = await db.accountStreamSingle((db) => db.common.watchAutomaticProfileSearchSessionId()).ok();
     if (currentSessionId == null) {
       return false;
     } else {
@@ -429,6 +429,6 @@ class AutomaticProfileSearchOnlineIteratorIo extends OnlineIteratorIo {
 
   @override
   Future<void> setDbVisibility(AccountId id, bool visibility) async {
-    await db.accountAction((db) => db.daoProfileStates.setAutomaticProfileSearchGridStatus(id, true));
+    await db.accountAction((db) => db.profile.setAutomaticProfileSearchGridStatus(id, true));
   }
 }

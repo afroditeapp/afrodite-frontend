@@ -22,7 +22,7 @@ class ClientIdManager {
   Future<Result<ClientId, void>> getClientId() async {
     if (_state.value == ClientIdManagerState.inProgress) {
       await _state.where((v) => v == ClientIdManagerState.idle).first;
-      final currentClientId = await db.accountStream((db) => db.watchClientId()).firstOrNull;
+      final currentClientId = await db.accountStream((db) => db.loginSession.watchClientId()).firstOrNull;
       if (currentClientId == null) {
         return const Err(null);
       } else {
@@ -31,11 +31,11 @@ class ClientIdManager {
     }
     _state.add(ClientIdManagerState.inProgress);
 
-    final currentClientId = await db.accountStream((db) => db.watchClientId()).first;
+    final currentClientId = await db.accountStream((db) => db.loginSession.watchClientId()).first;
     if (currentClientId == null) {
       final newClientId = await api.account((api) => api.postGetNextClientId()).ok();
       if (newClientId != null) {
-        await db.accountAction((db) => db.updateClientIdIfNull(newClientId));
+        await db.accountAction((db) => db.loginSession.updateClientIdIfNull(newClientId));
         _state.add(ClientIdManagerState.idle);
         return Ok(newClientId);
       } else {

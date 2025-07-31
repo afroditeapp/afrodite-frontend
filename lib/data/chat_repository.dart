@@ -44,7 +44,7 @@ class ChatRepository extends DataRepositoryWithLifecycle {
   }) :
     syncHandler = ConnectedActionScheduler(connectionManager),
     profileEntryDownloader = ProfileEntryDownloader(media, accountBackgroundDb, db, connectionManager.api),
-    sentBlocksIterator = AccountIdDatabaseIterator((startIndex, limit) => db.accountData((db) => db.daoConversationList.getSentBlocksList(startIndex, limit)).ok()),
+    sentBlocksIterator = AccountIdDatabaseIterator((startIndex, limit) => db.accountData((db) => db.conversationList.getSentBlocksList(startIndex, limit)).ok()),
     api = connectionManager.api,
     messageManager = MessageManager(
       messageKeyManager,
@@ -78,8 +78,8 @@ class ChatRepository extends DataRepositoryWithLifecycle {
   @override
   Future<void> onLogin() async {
     sentBlocksIterator.reset();
-    await db.accountAction((db) => db.daoLimits.resetSyncVersion());
-    await db.accountAction((db) => db.daoInitialSync.updateChatSyncDone(false));
+    await db.accountAction((db) => db.like.resetDailyLikesSyncVersion());
+    await db.accountAction((db) => db.app.updateChatSyncDone(false));
   }
 
   @override
@@ -88,13 +88,13 @@ class ChatRepository extends DataRepositoryWithLifecycle {
       .andThen((_) => _generateMessageKeyIfNeeded())
       .andThen((_) => _reloadChatNotificationSettings())
       .andThen((_) => reloadDailyLikesLimit())
-      .andThen((_) => db.accountAction((db) => db.daoInitialSync.updateChatSyncDone(true)));
+      .andThen((_) => db.accountAction((db) => db.app.updateChatSyncDone(true)));
   }
 
   @override
   Future<void> onResumeAppUsage() async {
     syncHandler.onResumeAppUsageSync(() async {
-      final currentChatSyncValue = await db.accountStreamSingle((db) => db.daoInitialSync.watchChatSyncDone()).ok() ?? false;
+      final currentChatSyncValue = await db.accountStreamSingle((db) => db.app.watchChatSyncDone()).ok() ?? false;
       if (currentChatSyncValue) {
         // Already done
         return;
@@ -103,7 +103,7 @@ class ChatRepository extends DataRepositoryWithLifecycle {
         .andThen((_) => _generateMessageKeyIfNeeded())
         .andThen((_) => _reloadChatNotificationSettings())
         .andThen((_) => reloadDailyLikesLimit())
-        .andThen((_) => db.accountAction((db) => db.daoInitialSync.updateChatSyncDone(true)));
+        .andThen((_) => db.accountAction((db) => db.app.updateChatSyncDone(true)));
     });
   }
 
@@ -132,19 +132,19 @@ class ChatRepository extends DataRepositoryWithLifecycle {
   }
 
   Future<bool> isInMatches(AccountId accountId) async {
-    return await db.accountData((db) => db.daoProfileStates.isInMatches(accountId)).ok() ?? false;
+    return await db.accountData((db) => db.profile.isInMatches(accountId)).ok() ?? false;
   }
 
   Future<bool> isInLikedProfiles(AccountId accountId) async {
-    return await db.accountData((db) => db.daoProfileStates.isInSentLikes(accountId)).ok() ?? false;
+    return await db.accountData((db) => db.profile.isInSentLikes(accountId)).ok() ?? false;
   }
 
   Future<bool> isInReceivedLikes(AccountId accountId) async {
-    return await db.accountData((db) => db.daoProfileStates.isInReceivedLikes(accountId)).ok() ?? false;
+    return await db.accountData((db) => db.profile.isInReceivedLikes(accountId)).ok() ?? false;
   }
 
   Future<bool> isInSentBlocks(AccountId accountId) async {
-    return await db.accountData((db) => db.daoConversationList.isInSentBlocks(accountId)).ok() ?? false;
+    return await db.accountData((db) => db.conversationList.isInSentBlocks(accountId)).ok() ?? false;
   }
 
   Future<void> _updateAccountInteractionState(
@@ -154,9 +154,9 @@ class ChatRepository extends DataRepositoryWithLifecycle {
     final sentLike = state == CurrentAccountInteractionState.likeSent;
     final receivedLike = state == CurrentAccountInteractionState.likeReceived;
     final match = state == CurrentAccountInteractionState.match;
-    await db.accountAction((db) => db.daoProfileStates.setSentLikeStatus(accountId, sentLike));
-    await db.accountAction((db) => db.daoProfileStates.setReceivedLikeStatus(accountId, receivedLike));
-    await db.accountAction((db) => db.daoProfileStates.setMatchStatus(accountId, match));
+    await db.accountAction((db) => db.profile.setSentLikeStatus(accountId, sentLike));
+    await db.accountAction((db) => db.profile.setReceivedLikeStatus(accountId, receivedLike));
+    await db.accountAction((db) => db.profile.setMatchStatus(accountId, match));
   }
 
   Future<Result<LimitedActionStatus, SendLikeError>> sendLikeTo(AccountId accountId) async {
@@ -181,13 +181,13 @@ class ChatRepository extends DataRepositoryWithLifecycle {
         if (status != LimitedActionStatus.failureLimitAlreadyReached) {
           final dailyLikesLeft = v.dailyLikesLeft;
           if (dailyLikesLeft != null) {
-            await db.accountAction((db) => db.daoLimits.updateDailyLikesLeft(dailyLikesLeft));
+            await db.accountAction((db) => db.like.updateDailyLikesLeft(dailyLikesLeft));
           }
           final isReceivedLike = await isInReceivedLikes(accountId);
           if (isReceivedLike) {
-            await db.accountAction((db) => db.daoProfileStates.setMatchStatus(accountId, true));
+            await db.accountAction((db) => db.profile.setMatchStatus(accountId, true));
           } else {
-            await db.accountAction((db) => db.daoProfileStates.setSentLikeStatus(accountId, true));
+            await db.accountAction((db) => db.profile.setSentLikeStatus(accountId, true));
           }
         }
         return Ok(status);
@@ -199,8 +199,8 @@ class ChatRepository extends DataRepositoryWithLifecycle {
   Future<bool> sendBlockTo(AccountId accountId) async {
     final result = await api.chatAction((api) => api.postBlockProfile(accountId));
     if (result.isOk()) {
-      await db.accountAction((db) => db.daoConversationList.setSentBlockStatus(accountId, true));
-      await db.accountAction((db) => db.daoProfileStates.setReceivedLikeStatus(accountId, false));
+      await db.accountAction((db) => db.conversationList.setSentBlockStatus(accountId, true));
+      await db.accountAction((db) => db.profile.setReceivedLikeStatus(accountId, false));
       profile.sendProfileChange(ProfileBlocked(accountId));
     }
     return result.isOk();
@@ -209,7 +209,7 @@ class ChatRepository extends DataRepositoryWithLifecycle {
   Future<bool> removeBlockFrom(AccountId accountId) async {
     final result = await api.chatAction((api) => api.postUnblockProfile(accountId));
     if (result.isOk()) {
-      await db.accountAction((db) => db.daoConversationList.setSentBlockStatus(accountId, false));
+      await db.accountAction((db) => db.conversationList.setSentBlockStatus(accountId, false));
       profile.sendProfileChange(ProfileUnblocked(accountId));
     }
     return result.isOk();
@@ -228,7 +228,7 @@ class ChatRepository extends DataRepositoryWithLifecycle {
     for (final accountId in accounts) {
       ProfileEntry? profileData;
       if (cache) {
-        profileData = await db.profileData((db) => db.getProfileEntry(accountId)).ok();
+        profileData = await db.accountData((db) => db.profile.getProfileEntry(accountId)).ok();
       }
       if (download) {
         profileData ??= await profileEntryDownloader.download(accountId, isMatch: isMatch).ok();
@@ -249,7 +249,7 @@ class ChatRepository extends DataRepositoryWithLifecycle {
 
   Future<Result<void, void>> _sentBlocksRefresh() {
     return api.chat((api) => api.getSentBlocks())
-      .andThen((value) => db.accountAction((db) => db.daoConversationList.setSentBlockStatusList(value)));
+      .andThen((value) => db.accountAction((db) => db.conversationList.setSentBlockStatusList(value)));
   }
 
   Future<void> receivedLikesCountRefresh() async {
@@ -271,18 +271,18 @@ class ChatRepository extends DataRepositoryWithLifecycle {
 
   // Local messages
   Stream<MessageEntry?> watchLatestMessage(AccountId match) {
-    return db.accountStream((db) => db.daoMessageTable.watchLatestMessage(currentUser, match));
+    return db.accountStream((db) => db.message.watchLatestMessage(currentUser, match));
   }
 
   /// Get message and updates to it.
   Stream<MessageEntry?> getMessageWithLocalId(LocalMessageId localId) {
-    return db.accountStream((db) => db.daoMessageTable.getMessageUpdatesUsingLocalMessageId(localId));
+    return db.accountStream((db) => db.message.getMessageUpdatesUsingLocalMessageId(localId));
   }
 
   /// Get message and updates to it.
   /// Index 0 is the latest message.
   Stream<MessageEntry?> getMessageWithIndex(AccountId match, int index) async* {
-    final message = await db.messageData((db) => db.getMessage(currentUser, match, index)).ok();
+    final message = await db.accountData((db) => db.message.getMessage(currentUser, match, index)).ok();
     final localId = message?.localId;
     if (message == null || localId == null) {
       yield null;
@@ -291,7 +291,7 @@ class ChatRepository extends DataRepositoryWithLifecycle {
     yield message;
     await for (final event in profile.profileChanges) {
       if (event is ConversationChanged && event.conversationWith == match) {
-        final messageList = await db.messageData((db) => db.getMessageListUsingLocalMessageId(currentUser, match, localId, 1)).ok() ?? [];
+        final messageList = await db.accountData((db) => db.message.getMessageListUsingLocalMessageId(currentUser, match, localId, 1)).ok() ?? [];
         final message = messageList.firstOrNull;
         if (message != null) {
           yield message;
@@ -303,12 +303,12 @@ class ChatRepository extends DataRepositoryWithLifecycle {
   /// Get message count of conversation and possibly the related change event.
   /// Also receive updates to both.
   Stream<(int, ConversationChanged?)> getMessageCountAndChanges(AccountId match) async* {
-    final messageNumber = await db.messageData((db) => db.countMessagesInConversation(currentUser, match)).ok();
+    final messageNumber = await db.accountData((db) => db.message.countMessagesInConversation(currentUser, match)).ok();
     yield (messageNumber ?? 0, null);
 
     await for (final event in profile.profileChanges) {
       if (event is ConversationChanged && event.conversationWith == match) {
-        final messageNumber = await db.messageData((db) => db.countMessagesInConversation(currentUser, match)).ok();
+        final messageNumber = await db.accountData((db) => db.message.countMessagesInConversation(currentUser, match)).ok();
         yield (messageNumber ?? 0, event);
       }
     }
@@ -340,7 +340,7 @@ class ChatRepository extends DataRepositoryWithLifecycle {
   Future<Result<void, void>> reloadDailyLikesLimit() async {
     return await api.chat((api) => api.getDailyLikesLeft())
       .andThen((v) => db.accountAction(
-        (db) => db.daoLimits.updateDailyLikesLeft(v),
+        (db) => db.like.updateDailyLikesLeft(v),
       ));
   }
 

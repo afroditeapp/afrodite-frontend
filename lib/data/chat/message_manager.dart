@@ -155,7 +155,7 @@ class MessageManager extends LifecycleMethods {
       }
     }
 
-    final toBeRemoved = await db.messageData((db) => db.getMessageUsingLocalMessageId(
+    final toBeRemoved = await db.accountData((db) => db.message.getMessageUsingLocalMessageId(
       localId,
     )).ok();
     if (toBeRemoved == null) {
@@ -165,7 +165,7 @@ class MessageManager extends LifecycleMethods {
       return const Err(DeleteSendFailedError.isActuallySentSuccessfully);
     }
 
-    final deleteResult = await db.messageData((db) => db.deleteMessage(
+    final deleteResult = await db.accountDataWrite((db) => db.message.deleteMessage(
       localId,
     ));
     if (deleteResult.isErr()) {
@@ -198,7 +198,7 @@ class MessageManager extends LifecycleMethods {
       return const Err(ResendFailedError.unspecifiedError);
     }
 
-    final toBeResent = await db.messageData((db) => db.getMessageUsingLocalMessageId(
+    final toBeResent = await db.accountData((db) => db.message.getMessageUsingLocalMessageId(
       localId,
     )).ok();
     final toBeResentMessage = toBeResent?.message;
@@ -256,13 +256,13 @@ class MessageManager extends LifecycleMethods {
       return const Err(RetryPublicKeyDownloadError.unspecifiedError);
     }
 
-    final toBeDecrypted = await db.messageData((db) => db.getMessageUsingLocalMessageId(
+    final toBeDecrypted = await db.accountData((db) => db.message.getMessageUsingLocalMessageId(
       localId,
     )).ok();
     if (toBeDecrypted == null || toBeDecrypted.messageState != MessageState.receivedAndPublicKeyDownloadFailed) {
       return const Err(RetryPublicKeyDownloadError.unspecifiedError);
     }
-    final backendSignedPgpMessage = await db.messageData((db) => db.getBackendSignedPgpMessage(
+    final backendSignedPgpMessage = await db.accountData((db) => db.message.getBackendSignedPgpMessage(
       localId,
     )).ok();
     if (backendSignedPgpMessage == null) {
@@ -292,10 +292,10 @@ class MessageManager extends LifecycleMethods {
         messageState = ReceivedMessageState.received;
     }
 
-    final r = await db.messageAction((db) => db.updateReceivedMessageState(
+    final r = await db.accountAction((db) => db.message.updateReceivedMessageState(
       localId,
       messageState,
-      message: decryptedMessage,
+      messageValue: decryptedMessage,
       symmetricMessageEncryptionKey: symmetricMessageEncryptionKey,
     ));
     if (r.isErr()) {

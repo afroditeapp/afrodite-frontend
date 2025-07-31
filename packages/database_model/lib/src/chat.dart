@@ -288,19 +288,19 @@ class UnreadMessagesCount {
   int get hashCode => Object.hash(runtimeType, count);
 }
 
-class PrivateKeyData {
+class PrivateKeyBytes {
   final Uint8List data;
-  const PrivateKeyData({required this.data});
+  const PrivateKeyBytes({required this.data});
 }
 
-class PublicKeyData {
+class PublicKeyBytes {
   final Uint8List data;
-  const PublicKeyData({required this.data});
+  const PublicKeyBytes({required this.data});
 }
 
 class AllKeyData {
-  final PrivateKeyData private;
-  final PublicKeyData public;
+  final PrivateKeyBytes private;
+  final PublicKeyBytes public;
   final PublicKeyId id;
   const AllKeyData({required this.private, required this.public, required this.id});
 }

@@ -131,10 +131,10 @@ class MyProfileBloc extends Bloc<MyProfileEvent, MyProfileData> with ActionRunne
       });
     });
 
-    _profileSubscription = db.accountStream((db) => db.getProfileEntryForMyProfile()).listen((event) {
+    _profileSubscription = db.accountStream((db) => db.myProfile.getProfileEntryForMyProfile()).listen((event) {
       add(NewMyProfile(event));
     });
-    _initialAgeInfoSubscription = db.accountStream((db) => db.daoProfileInitialAgeInfo.watchInitialAgeInfo()).listen((event) {
+    _initialAgeInfoSubscription = db.accountStream((db) => db.myProfile.watchInitialAgeInfo()).listen((event) {
       add(NewInitialAgeInfo(event));
     });
   }

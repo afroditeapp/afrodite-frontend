@@ -51,7 +51,7 @@ class _DebugSettingsPageState extends State<DebugSettingsPage> {
     ));
 
     settings.add(Setting.createSetting(Icons.notification_add, "Notification: New message (first chat)", () async {
-      final matchList = await accountDb.accountData((db) => db.daoConversationList.getConversationListNoBlocked(0, 1)).ok();
+      final matchList = await accountDb.accountData((db) => db.conversationList.getConversationListNoBlocked(0, 1)).ok();
       final match = matchList?.firstOrNull;
       if (match == null) {
         return;
@@ -60,7 +60,7 @@ class _DebugSettingsPageState extends State<DebugSettingsPage> {
     }));
 
     settings.add(Setting.createSetting(Icons.notification_add, "Notification: New message (second chat)", () async {
-      final matchList = await accountDb.accountData((db) => db.daoConversationList.getConversationListNoBlocked(0, 2)).ok();
+      final matchList = await accountDb.accountData((db) => db.conversationList.getConversationListNoBlocked(0, 2)).ok();
       final match = matchList?.lastOrNull;
       if (match == null) {
         return;
@@ -69,7 +69,7 @@ class _DebugSettingsPageState extends State<DebugSettingsPage> {
     }));
 
     settings.add(Setting.createSetting(Icons.notification_add, "Notification: New message (chats 1-5)", () async {
-      final List<AccountId> matchList = await accountDb.accountData((db) => db.daoConversationList.getConversationListNoBlocked(0, 5)).ok() ?? [];
+      final List<AccountId> matchList = await accountDb.accountData((db) => db.conversationList.getConversationListNoBlocked(0, 5)).ok() ?? [];
       for (final match in matchList) {
         await NotificationMessageReceived.getInstance().updateMessageReceivedCount(match, 1, null, accountBackgroundDb);
       }
@@ -121,12 +121,12 @@ class DebugLogic {
     _conversationLastUpdateTimeChangerSubscription = Stream.periodic(
       const Duration(seconds: 1),
       (_) async {
-        final matches = await accountDb.accountData((db) => db.daoConversationList.getConversationListNoBlocked(0, 1000)).ok();
+        final matches = await accountDb.accountData((db) => db.conversationList.getConversationListNoBlocked(0, 1000)).ok();
         if (matches == null || matches.isEmpty) {
           return;
         }
         final randomMatch = matches[_debugRandom.nextInt(matches.length)];
-        await accountDb.accountAction((db) => db.daoConversationList.setCurrentTimeToConversationLastChanged(randomMatch));
+        await accountDb.accountAction((db) => db.conversationList.setCurrentTimeToConversationLastChanged(randomMatch));
       }
     )
       .listen((_) {});

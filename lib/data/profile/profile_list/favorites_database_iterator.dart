@@ -10,5 +10,5 @@ class FavoritesDatabaseIterator extends BaseDatabaseIterator {
 
   @override
   Future<Result<List<AccountId>, DatabaseError>> getAccountListFromDatabase(int startIndex, int limit) =>
-    db.accountData((db) => db.daoProfileStates.getFavoritesList(startIndex, limit));
+    db.accountData((db) => db.profile.getFavoritesList(startIndex, limit));
 }

@@ -59,12 +59,12 @@ class PublicKeyIdConverter extends TypeConverter<PublicKeyId, int> {
   }
 }
 
-class PrivateKeyDataConverter extends TypeConverter<PrivateKeyData, Uint8List> {
-  const PrivateKeyDataConverter();
+class PrivateKeyBytesConverter extends TypeConverter<PrivateKeyBytes, Uint8List> {
+  const PrivateKeyBytesConverter();
 
   @override
-  PrivateKeyData fromSql(fromDb) {
-    return PrivateKeyData(data: fromDb);
+  PrivateKeyBytes fromSql(fromDb) {
+    return PrivateKeyBytes(data: fromDb);
   }
 
   @override
@@ -73,12 +73,12 @@ class PrivateKeyDataConverter extends TypeConverter<PrivateKeyData, Uint8List> {
   }
 }
 
-class PublicKeyDataConverter extends TypeConverter<PublicKeyData, Uint8List> {
-  const PublicKeyDataConverter();
+class PublicKeyBytesConverter extends TypeConverter<PublicKeyBytes, Uint8List> {
+  const PublicKeyBytesConverter();
 
   @override
-  PublicKeyData fromSql(fromDb) {
-    return PublicKeyData(data: fromDb);
+  PublicKeyBytes fromSql(fromDb) {
+    return PublicKeyBytes(data: fromDb);
   }
 
   @override

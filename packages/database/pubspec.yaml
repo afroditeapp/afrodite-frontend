@@ -1,7 +1,5 @@
 name: database
-description: A starting point for Dart libraries or applications.
 version: 1.0.0
-# repository: https://github.com/my_org/my_repo
 
 publish_to: none
 
@@ -10,41 +8,17 @@ environment:
 
 resolution: workspace
 
-# Add regular dependencies here.
 dependencies:
-
-  async: ^2.11.0
-
-  collection: ^1.18.0
-
-  # API client for server API
-  openapi:
-    path: "../api_client"
-
   database_account_background:
     path: "../database_account_background"
+  database_account_foreground:
+    path: "../database_account_foreground"
   database_common_background:
     path: "../database_common_background"
   database_common_foreground:
     path: "../database_common_foreground"
-  database_utils:
-    path: "../database_utils"
-  database_converter:
-    path: "../database_converter"
   database_model:
     path: "../database_model"
 
-  utils:
-    path: "../utils"
-
-  logging: ^1.2.0
-
-  rxdart: ^0.28.0
-
-  path: ^1.9.0
-  drift: ^2.26.0
-
 dev_dependencies:
   lints: ^6.0.0
-  build_runner: ^2.4.8
-  drift_dev: ^2.26.0

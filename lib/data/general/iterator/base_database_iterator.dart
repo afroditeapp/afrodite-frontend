@@ -30,7 +30,7 @@ abstract class BaseDatabaseIterator extends IteratorType {
     final profiles = await getAccountListFromDatabase(_currentIndex, _queryCount).ok();
     if (profiles != null) {
       _currentIndex += _queryCount;
-      return Ok(await db.profileData((db) => db.convertToProfileEntries(profiles)).ok() ?? []);
+      return Ok(await db.accountData((db) => db.profile.convertToProfileEntries(profiles)).ok() ?? []);
     } else {
       return const Ok([]);
     }

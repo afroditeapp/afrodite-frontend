@@ -36,39 +36,39 @@ enum ServerSlot {
   media,
   chat;
 
-  Stream<String?> Function(AccountDatabase) getterForRefreshTokenKey() {
+  Stream<String?> Function(AccountForegroundDatabaseRead) getterForRefreshTokenKey() {
     switch (this) {
-      case ServerSlot.account: return (db) => db.daoTokens.watchRefreshTokenAccount();
-      case ServerSlot.media: return (db) => db.daoTokens.watchRefreshTokenMedia();
-      case ServerSlot.profile: return (db) => db.daoTokens.watchRefreshTokenProfile();
-      case ServerSlot.chat: return (db) => db.daoTokens.watchRefreshTokenChat();
+      case ServerSlot.account: return (db) => db.loginSession.watchRefreshTokenAccount();
+      case ServerSlot.media: return (db) => db.loginSession.watchRefreshTokenMedia();
+      case ServerSlot.profile: return (db) => db.loginSession.watchRefreshTokenProfile();
+      case ServerSlot.chat: return (db) => db.loginSession.watchRefreshTokenChat();
     }
   }
 
-  Future<void> Function(AccountDatabase) setterForRefreshTokenKey(String newValue) {
+  Future<void> Function(AccountForegroundDatabaseWrite) setterForRefreshTokenKey(String newValue) {
     switch (this) {
-      case ServerSlot.account: return (db) => db.daoTokens.updateRefreshTokenAccount(newValue);
-      case ServerSlot.media: return (db) => db.daoTokens.updateRefreshTokenMedia(newValue);
-      case ServerSlot.profile: return (db) => db.daoTokens.updateRefreshTokenProfile(newValue);
-      case ServerSlot.chat: return (db) => db.daoTokens.updateRefreshTokenChat(newValue);
+      case ServerSlot.account: return (db) => db.loginSession.updateRefreshTokenAccount(newValue);
+      case ServerSlot.media: return (db) => db.loginSession.updateRefreshTokenMedia(newValue);
+      case ServerSlot.profile: return (db) => db.loginSession.updateRefreshTokenProfile(newValue);
+      case ServerSlot.chat: return (db) => db.loginSession.updateRefreshTokenChat(newValue);
     }
   }
 
-  Stream<String?> Function(AccountDatabase) getterForAccessTokenKey() {
+  Stream<String?> Function(AccountForegroundDatabaseRead) getterForAccessTokenKey() {
     switch (this) {
-      case ServerSlot.account: return (db) => db.daoTokens.watchAccessTokenAccount();
-      case ServerSlot.media: return (db) => db.daoTokens.watchAccessTokenMedia();
-      case ServerSlot.profile: return (db) => db.daoTokens.watchAccessTokenProfile();
-      case ServerSlot.chat: return (db) => db.daoTokens.watchAccessTokenChat();
+      case ServerSlot.account: return (db) => db.loginSession.watchAccessTokenAccount();
+      case ServerSlot.media: return (db) => db.loginSession.watchAccessTokenMedia();
+      case ServerSlot.profile: return (db) => db.loginSession.watchAccessTokenProfile();
+      case ServerSlot.chat: return (db) => db.loginSession.watchAccessTokenChat();
     }
   }
 
-  Future<void> Function(AccountDatabase) setterForAccessTokenKey(String newValue) {
+  Future<void> Function(AccountForegroundDatabaseWrite) setterForAccessTokenKey(String newValue) {
     switch (this) {
-      case ServerSlot.account: return (db) => db.daoTokens.updateAccessTokenAccount(newValue);
-      case ServerSlot.media: return (db) => db.daoTokens.updateAccessTokenMedia(newValue);
-      case ServerSlot.profile: return (db) => db.daoTokens.updateAccessTokenProfile(newValue);
-      case ServerSlot.chat: return (db) => db.daoTokens.updateAccessTokenChat(newValue);
+      case ServerSlot.account: return (db) => db.loginSession.updateAccessTokenAccount(newValue);
+      case ServerSlot.media: return (db) => db.loginSession.updateAccessTokenMedia(newValue);
+      case ServerSlot.profile: return (db) => db.loginSession.updateAccessTokenProfile(newValue);
+      case ServerSlot.chat: return (db) => db.loginSession.updateAccessTokenChat(newValue);
     }
   }
 }
@@ -443,29 +443,29 @@ const forceSync = 255;
 
 Future<Uint8List> syncDataBytes(AccountDatabaseManager db, AccountBackgroundDatabaseManager accountBackgroundDb) async {
   final syncVersionAccount = await db.accountStreamSingle(
-    (db) => db.daoSyncVersions.watchSyncVersionAccount()
+    (db) => db.common.watchSyncVersionAccount()
   ).ok() ?? forceSync;
   final syncVersionReceivedLikes = await accountBackgroundDb.accountStreamSingle(
     (db) => db.newReceivedLikesCount.watchSyncVersionReceivedLikes()
   ).ok() ?? forceSync;
   final syncVersionClientConfig = await db.accountStreamSingle(
-    (db) => db.daoSyncVersions.watchSyncVersionClientConfig()
+    (db) => db.common.watchSyncVersionClientConfig()
   ).ok() ?? forceSync;
   final syncVersionProfile = await db.accountStreamSingle(
-    (db) => db.daoSyncVersions.watchSyncVersionProfile()
+    (db) => db.common.watchSyncVersionProfile()
   ).ok() ?? forceSync;
   final syncVersionNews = await accountBackgroundDb.accountStreamSingle(
     (db) => db.news.watchSyncVersionNews()
   ).ok() ?? forceSync;
   final syncVersionMediaContent = await db.accountStreamSingle(
-    (db) => db.daoSyncVersions.watchSyncVersionMediaContent()
+    (db) => db.common.watchSyncVersionMediaContent()
   ).ok() ?? forceSync;
   final syncVersionDailyLikesLeft = await db.accountStreamSingle(
-    (db) => db.daoLimits.watchDailyLikesLeftSyncVersion()
+    (db) => db.like.watchDailyLikesLeftSyncVersion()
   ).ok() ?? forceSync;
 
   final currentMaintenanceInfo = await db.accountStreamSingle(
-    (db) => db.daoServerMaintenance.watchServerMaintenanceInfo()
+    (db) => db.common.watchServerMaintenanceInfo()
   ).ok();
   final sendMaintenanceSyncVersion = currentMaintenanceInfo?.maintenanceLatest != null;
 

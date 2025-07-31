@@ -24,11 +24,11 @@ class ServerMaintenanceBloc extends Bloc<ServerMaintenanceEvent, ServerMaintenan
     on<ViewServerMaintenanceInfo>((data, emit) async {
       final latest = state.maintenanceLatest;
       if (latest != null && state.uiBadgeCount() == 1) {
-        await db.accountAction((db) => db.daoServerMaintenance.setMaintenanceTimeViewed(time: latest));
+        await db.accountAction((db) => db.common.setMaintenanceTimeViewed(time: latest));
       }
     });
 
-    _maintenanceInfoSubscription = db.accountStream((db) => db.daoServerMaintenance.watchServerMaintenanceInfo())
+    _maintenanceInfoSubscription = db.accountStream((db) => db.common.watchServerMaintenanceInfo())
       .listen((value) => add(MaintenanceInfoChanged(value ?? ServerMaintenanceInfo.empty())));
   }
 

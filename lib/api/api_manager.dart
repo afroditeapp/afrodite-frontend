@@ -161,9 +161,9 @@ class ServerConnectionManager implements LifecycleMethods, ServerConnectionInter
     _state.add(ApiManagerState.connecting);
 
     final accountRefreshToken =
-      await accountDb.accountStreamSingle((db) => db.daoTokens.watchRefreshTokenAccount()).ok();
+      await accountDb.accountStreamSingle((db) => db.loginSession.watchRefreshTokenAccount()).ok();
     final accountAccessToken =
-      await accountDb.accountStreamSingle((db) => db.daoTokens.watchAccessTokenAccount()).ok();
+      await accountDb.accountStreamSingle((db) => db.loginSession.watchAccessTokenAccount()).ok();
 
     if (accountRefreshToken == null || accountAccessToken == null) {
       _state.add(ApiManagerState.waitingRefreshToken);
@@ -282,7 +282,7 @@ class ApiManager implements LifecycleMethods {
   }
 
   Future<void> setupTokensFromDb(AccountDatabaseManager accountDb) async {
-    final accessTokenAccount = await accountDb.accountStreamSingle((db) => db.daoTokens.watchAccessTokenAccount()).ok();
+    final accessTokenAccount = await accountDb.accountStreamSingle((db) => db.loginSession.watchAccessTokenAccount()).ok();
     if (accessTokenAccount != null) {
       _account.setAccessToken(AccessToken(accessToken: accessTokenAccount));
     }

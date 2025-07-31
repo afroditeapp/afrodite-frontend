@@ -356,7 +356,7 @@ Widget profileEntryWidgetStream(
   }
 ) {
   return StreamBuilder(
-    stream: db.accountStream((db) => db.daoProfiles.watchProfileThumbnail(profile.entry.uuid)).whereNotNull(),
+    stream: db.accountStream((db) => db.profile.watchProfileThumbnail(profile.entry.uuid)).whereNotNull(),
     builder: (context, data) {
       final e = data.data ?? profile;
       return ProfileThumbnailImageOrError.fromProfileEntry(

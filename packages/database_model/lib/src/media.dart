@@ -75,3 +75,16 @@ class MyContent extends ContentIdAndAccepted {
     rejectedDetails,
   );
 }
+
+class PrimaryProfileContent {
+  final MyContent? content0;
+  final double? gridCropSize;
+  final double? gridCropX;
+  final double? gridCropY;
+  const PrimaryProfileContent({
+    required this.content0,
+    required this.gridCropSize,
+    required this.gridCropX,
+    required this.gridCropY,
+  });
+}

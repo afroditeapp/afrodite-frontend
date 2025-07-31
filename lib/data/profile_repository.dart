@@ -48,13 +48,13 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
 
   Stream<Location> get location => db
     .accountStreamOrDefault(
-      (db) => db.daoProfileSettings.watchProfileLocation(),
+      (db) => db.myProfile.watchProfileLocation(),
       Location(latitude: 0.0, longitude: 0.0),
     );
 
   Stream<ProfileAttributes?> get profileAttributes => db
     .accountStream(
-      (db) => db.daoAvailableProfileAttributes.watchAvailableProfileAttributes(),
+      (db) => db.config.watchAvailableProfileAttributes(),
     );
 
   @override
@@ -69,7 +69,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
 
   @override
   Future<void> onLogin() async {
-    await db.accountAction((db) => db.daoInitialSync.updateProfileSyncDone(false));
+    await db.accountAction((db) => db.app.updateProfileSyncDone(false));
   }
 
   @override
@@ -84,7 +84,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
       })
       .andThen((_) => reloadFavoriteProfiles())
       .andThen((_) => _reloadProfileNotificationSettings())
-      .andThen((_) => db.accountAction((db) => db.daoInitialSync.updateProfileSyncDone(true)));
+      .andThen((_) => db.accountAction((db) => db.app.updateProfileSyncDone(true)));
   }
 
   @override
@@ -93,37 +93,37 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
       // TODO(quality): Replace ok method with okAndNull to avoid reload when
       // database query fails.
 
-      final result = await db.accountStreamSingle((db) => db.daoProfileSettings.watchProfileLocation()).ok();
+      final result = await db.accountStreamSingle((db) => db.myProfile.watchProfileLocation()).ok();
       if (result == null) {
         await reloadLocation();
       }
 
-      final attributeFilters = await db.accountStreamSingle((db) => db.daoProfileSettings.watchProfileFilteringSettings()).ok();
+      final attributeFilters = await db.accountStreamSingle((db) => db.search.watchProfileFilteringSettings()).ok();
       if (attributeFilters == null) {
         await reloadProfileFilteringSettings();
       }
 
-      final searchAgeRangeMin = await db.accountStreamSingle((db) => db.daoProfileSettings.watchProfileSearchAgeRangeMin()).ok();
-      final searchAgeRangeMax = await db.accountStreamSingle((db) => db.daoProfileSettings.watchProfileSearchAgeRangeMax()).ok();
+      final searchAgeRangeMin = await db.accountStreamSingle((db) => db.search.watchProfileSearchAgeRangeMin()).ok();
+      final searchAgeRangeMax = await db.accountStreamSingle((db) => db.search.watchProfileSearchAgeRangeMax()).ok();
       if (searchAgeRangeMin == null || searchAgeRangeMax == null) {
         await reloadSearchAgeRange();
       }
 
-      final searchGroups = await db.accountStreamSingle((db) => db.daoProfileSettings.watchSearchGroups()).ok();
+      final searchGroups = await db.accountStreamSingle((db) => db.search.watchSearchGroups()).ok();
       if (searchGroups == null) {
         await reloadSearchGroups();
       }
 
-      final initialAgeInfo = await db.accountStreamSingle((db) => db.daoProfileInitialAgeInfo.watchInitialAgeInfo()).ok();
+      final initialAgeInfo = await db.accountStreamSingle((db) => db.myProfile.watchInitialAgeInfo()).ok();
       if (initialAgeInfo == null) {
         await downloadInitialSetupAgeInfoIfNull(skipIfAccountStateIsInitialSetup: false);
       }
 
-      final syncDone = await db.accountStreamSingle((db) => db.daoInitialSync.watchProfileSyncDone()).ok() ?? false;
+      final syncDone = await db.accountStreamSingle((db) => db.app.watchProfileSyncDone()).ok() ?? false;
       if (!syncDone) {
         await reloadFavoriteProfiles()
           .andThen((_) => _reloadProfileNotificationSettings())
-          .andThen((_) => db.accountAction((db) => db.daoInitialSync.updateProfileSyncDone(true)));
+          .andThen((_) => db.accountAction((db) => db.app.updateProfileSyncDone(true)));
       }
     });
   }
@@ -143,7 +143,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
   @override
   Future<void> onLogout() async {
     await db.accountAction(
-      (db) => db.updateProfileFilterFavorites(false),
+      (db) => db.app.updateProfileFilterFavorites(false),
     );
   }
 
@@ -151,7 +151,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
     final requestSuccessful = await _api.profileAction((api) => api.putLocation(location)).isOk();
     if (requestSuccessful) {
       await db.accountAction(
-        (db) => db.daoProfileSettings.updateProfileLocation(
+        (db) => db.myProfile.updateProfileLocation(
           latitude: location.latitude,
           longitude: location.longitude,
         ),
@@ -169,7 +169,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
     // private profile can be handled.
 
     if (cache) {
-      final profile = await db.profileData((db) => db.getProfileEntry(id)).ok();
+      final profile = await db.accountData((db) => db.profile.getProfileEntry(id)).ok();
       if (profile != null) {
         return profile;
       }
@@ -187,7 +187,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
     // TODO: perhaps more detailed error message, so that changes from public to
     // private profile can be handled.
 
-    final dbProfileIteator = StreamIterator(db.accountStream((db) => db.daoProfiles.watchProfileEntry(id)));
+    final dbProfileIteator = StreamIterator(db.accountStream((db) => db.profile.watchProfileEntry(id)));
 
     final profile = await dbProfileIteator.next();
     if (profile != null) {
@@ -196,7 +196,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
 
     bool download = true;
 
-    final lastRefreshTime = await db.profileData((db) => db.getProfileDataRefreshTime(id)).ok();
+    final lastRefreshTime = await db.accountData((db) => db.profile.getProfileDataRefreshTime(id)).ok();
     if (profile != null && lastRefreshTime != null) {
       final currentTime = UtcDateTime.now();
       final difference = currentTime.dateTime.difference(lastRefreshTime.dateTime);
@@ -219,8 +219,8 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
           switch (e) {
             case PrivateProfile():
               // Accessing profile failed (not public or something else)
-              await db.profileAction((db) => db.removeProfileData(id));
-              await db.accountAction((db) => db.daoProfileStates.setProfileGridStatus(id, false));
+              await db.accountAction((db) => db.profile.removeProfileData(id));
+              await db.accountAction((db) => db.profile.setProfileGridStatus(id, false));
               // Favorites are not changed even if profile will become private
               yield GetProfileDoesNotExist();
               _profileChangesRelay.add(
@@ -259,7 +259,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
   }
 
   Future<bool> isInFavorites(AccountId accountId) async {
-    return await db.accountData((db) => db.daoProfileStates.isInFavorites(accountId)).ok() ?? false;
+    return await db.accountData((db) => db.profile.isInFavorites(accountId)).ok() ?? false;
   }
 
   // Returns new isFavorite status for account. The status might not change
@@ -280,7 +280,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
     if (status.isErr()) {
       return currentValue;
     } else {
-      await db.accountAction((db) => db.daoProfileStates.setFavoriteStatus(accountId, newValue));
+      await db.accountAction((db) => db.profile.setFavoriteStatus(accountId, newValue));
       _profileChangesRelay.add(
         ProfileFavoriteStatusChange(accountId, newValue)
       );
@@ -290,14 +290,14 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
 
   Future<void> changeProfileFilteringSettings(bool showOnlyFavorites) async {
     await db.accountAction(
-      (db) => db.updateProfileFilterFavorites(showOnlyFavorites),
+      (db) => db.app.updateProfileFilterFavorites(showOnlyFavorites),
     );
   }
 
   Future<bool> getFilterFavoriteProfilesValue() async {
     return await db.accountStreamSingleOrDefault(
-      (db) => db.watchProfileFilterFavorites(),
-      PROFILE_FILTER_FAVORITES_DEFAULT,
+      (db) => db.app.watchProfileFilterFavorites(),
+      false,
     );
   }
 
@@ -311,7 +311,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
     final attributeOrder = config.profileAttributes?.attributeOrder;
 
     final attributeRefreshList = await db.accountData(
-      (db) => db.daoAvailableProfileAttributesTable.getAttributeRefreshList(latestAttributes),
+      (db) => db.config.getAttributeRefreshList(latestAttributes),
     ).ok();
     if (attributeRefreshList == null) {
       return const Err(null);
@@ -349,7 +349,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
     }
 
     await db.accountAction(
-      (db) => db.daoAvailableProfileAttributes.updateClientConfig(
+      (db) => db.config.updateClientConfig(
         attributeOrder,
         config.syncVersion,
         latestAttributes,
@@ -367,10 +367,10 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
     CustomReportsFileHash? latestFileHash,
   ) async {
     final currentFileHash = await db.accountStream(
-      (db) => db.daoCustomReports.watchCustomReportsFileHash(),
+      (db) => db.config.watchCustomReportsFileHash(),
     ).firstOrNull;
     final currentConfig = await db.accountStream(
-      (db) => db.daoCustomReports.watchCustomReportsConfig(),
+      (db) => db.config.watchCustomReportsConfig(),
     ).firstOrNull;
 
     final CustomReportsFileHash? fileHash;
@@ -401,10 +401,10 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
     ClientFeaturesFileHash? latestFileHash,
   ) async {
     final currentFileHash = await db.accountStream(
-      (db) => db.daoClientFeatures.watchClientFeaturesFileHash(),
+      (db) => db.config.watchClientFeaturesFileHash(),
     ).firstOrNull;
     final currentConfig = await db.accountStream(
-      (db) => db.daoClientFeatures.watchClientFeaturesConfig(),
+      (db) => db.config.watchClientFeaturesConfig(),
     ).firstOrNull;
 
     final ClientFeaturesFileHash? fileHash;
@@ -435,22 +435,22 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
     return await _api.profile((api) => api.getMyProfile())
       .emptyErr()
       .andThen((info) {
-        return db.accountAction((db) => db.daoMyProfile.setApiProfile(result: info))
-          .andThen((_) => db.accountAction((db) => db.daoSyncVersions.updateSyncVersionProfile(info.sv)));
+        return db.accountAction((db) => db.myProfile.setApiProfile(result: info))
+          .andThen((_) => db.accountAction((db) => db.common.updateSyncVersionProfile(info.sv)));
       });
   }
 
   Future<Result<void, void>> reloadFavoriteProfiles() async {
     return await _api.profile((api) => api.getFavoriteProfiles())
       .emptyErr()
-      .andThen((f) => db.accountAction((db) => db.daoProfileStates.replaceFavorites(f.profiles)));
+      .andThen((f) => db.accountAction((db) => db.profile.replaceFavorites(f.profiles)));
   }
 
   Future<Result<void, void>> reloadLocation() async {
     return await _api.profile((api) => api.getLocation())
       .emptyErr()
       .andThen((l) => db.accountAction(
-        (db) => db.daoProfileSettings.updateProfileLocation(
+        (db) => db.myProfile.updateProfileLocation(
           latitude: l.latitude,
           longitude: l.longitude,
         )
@@ -461,7 +461,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
     return await _api.profile((api) => api.getProfileFilteringSettings())
       .emptyErr()
       .andThen((f) => db.accountAction(
-        (db) => db.daoProfileSettings.updateProfileFilteringSettings(f),
+        (db) => db.search.updateProfileFilteringSettings(f),
       ));
   }
 
@@ -508,14 +508,14 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
     return await _api.profile((api) => api.getSearchAgeRange())
       .emptyErr()
       .andThen((r) => db.accountAction(
-        (db) => db.daoProfileSettings.updateProfileSearchAgeRange(r),
+        (db) => db.search.updateProfileSearchAgeRange(r),
       ));
   }
 
   Future<Result<void, void>> reloadSearchGroups() async {
     return await _api.profile((api) => api.getSearchGroups())
       .andThen((v) => db.accountAction(
-        (db) => db.daoProfileSettings.updateSearchGroups(v),
+        (db) => db.search.updateSearchGroups(v),
       ));
   }
 
@@ -543,7 +543,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
   /// After that emit only DB updates.
   Stream<ProfileEntry?> getProfileEntryUpdates(AccountId accountId) async* {
     final stream = db.accountStream(
-      (db) => db.daoProfiles.watchProfileEntry(accountId),
+      (db) => db.profile.watchProfileEntry(accountId),
     );
     bool downloaded = false;
     await for (final p in stream) {
@@ -560,7 +560,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
   /// Latest conversation is the first conversation in every emitted list
   Stream<List<AccountId>> getConversationListUpdates() {
     return db.accountStreamOrDefault(
-      (db) => db.daoConversationList.watchConversationList(),
+      (db) => db.conversationList.watchConversationList(),
       <AccountId>[],
     );
   }
@@ -582,7 +582,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
     }
 
     final value = await db.accountStreamSingle(
-      (db) => db.daoProfileInitialAgeInfo.watchInitialAgeInfo(),
+      (db) => db.myProfile.watchInitialAgeInfo(),
     ).ok();
     if (value != null) {
       // Already downloaded
@@ -604,7 +604,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
           // that much.
         } else {
           await db.accountAction(
-            (db) => db.daoProfileInitialAgeInfo.setInitialAgeInfo(info: info),
+            (db) => db.myProfile.setInitialAgeInfo(info: info),
           );
         }
     }

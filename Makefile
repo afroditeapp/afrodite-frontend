@@ -13,10 +13,10 @@ update-api-bindings:
 update-freezed-code:
 	icegen --code-dir lib/model/freezed
 
-update-drift-code:
-	cd packages/database && dart run build_runner build
 update-drift-code-account-background:
 	cd packages/database_account_background && dart run build_runner build
+update-drift-code-account-foreground:
+	cd packages/database_account_foreground && dart run build_runner build
 update-drift-code-common-background:
 	cd packages/database_common_background && dart run build_runner build
 update-drift-code-common-foreground:
@@ -75,6 +75,7 @@ clean:
 	flutter clean
 	cd packages/database && flutter clean
 	cd packages/database_account_background && flutter clean
+	cd packages/database_account_foreground && flutter clean
 	cd packages/database_common_background && flutter clean
 	cd packages/database_common_foreground && flutter clean
 	cd packages/database_converter && flutter clean
@@ -102,6 +103,7 @@ code-stats:
 	lib \
 	packages/database \
 	packages/database_account_background \
+	packages/database_account_foreground \
 	packages/database_common_background \
 	packages/database_common_foreground \
 	packages/database_converter \

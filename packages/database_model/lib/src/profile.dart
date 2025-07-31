@@ -141,15 +141,6 @@ class MyProfileEntry extends ProfileEntry implements MyContentProvider {
   }) : super(content: myContent);
 }
 
-/// Local unique identifier for a profile entry.
-///
-/// The profile table primary key autoincrements so this ID points only
-/// to single AccountId.
-class ProfileLocalDbId {
-  final int id;
-  const ProfileLocalDbId(this.id);
-}
-
 class ProfileTitle {
   final String name;
   final bool nameAccepted;

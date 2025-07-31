@@ -57,7 +57,7 @@ class SendMessageUtils {
         case ErrorAfterMessageSaving(:final id):
           // The existing error is more important, so ignore
           // the state change result.
-          await db.messageAction((db) => db.updateSentMessageState(
+          await db.accountAction((db) => db.message.updateSentMessageState(
             id,
             sentState: SentMessageState.sendingError,
           ));
@@ -74,7 +74,7 @@ class SendMessageUtils {
         yield const ErrorBeforeMessageSaving();
         return;
       }
-      final matchStatusChange = await db.accountAction((db) => db.daoProfileStates.setMatchStatus(accountId, true));
+      final matchStatusChange = await db.accountAction((db) => db.profile.setMatchStatus(accountId, true));
       if (matchStatusChange.isErr()) {
         yield const ErrorBeforeMessageSaving();
         return;
@@ -82,14 +82,14 @@ class SendMessageUtils {
     }
 
     if (!await _isInConversationList(accountId)) {
-      final r = await db.accountAction((db) => db.daoConversationList.setConversationListVisibility(accountId, true));
+      final r = await db.accountAction((db) => db.conversationList.setConversationListVisibility(accountId, true));
       if (r.isErr()) {
         yield const ErrorBeforeMessageSaving();
         return;
       }
     }
 
-    final lastSentMessageResult = await db.messageData((db) => db.getLatestSentMessage(
+    final lastSentMessageResult = await db.accountData((db) => db.message.getLatestSentMessage(
       currentUser,
       accountId,
     ));
@@ -101,7 +101,7 @@ class SendMessageUtils {
         // If previous sent message is still in pending state, then the app is
         // probably closed or crashed too early.
         if (lastSentMessage != null && lastSentMessage.messageState.toSentState() == SentMessageState.pending) {
-          final result = await db.messageAction((db) => db.updateSentMessageState(
+          final result = await db.accountAction((db) => db.message.updateSentMessageState(
             lastSentMessage.localId,
             sentState: SentMessageState.sendingError,
           ));
@@ -120,7 +120,7 @@ class SendMessageUtils {
     }
     receiverPublicKey = receiverPublicKeyOrNull;
 
-    final saveMessageResult = await db.messageData((db) => db.insertToBeSentMessage(
+    final saveMessageResult = await db.accountDataWrite((db) => db.message.insertToBeSentMessage(
       currentUser,
       accountId,
       message,
@@ -163,7 +163,7 @@ class SendMessageUtils {
       return;
     }
 
-    final updateSymmetricEncryptionKeyResult = await db.messageAction((db) => db.updateSymmetricMessageEncryptionKey(localId, encryptedMessage.sessionKey));
+    final updateSymmetricEncryptionKeyResult = await db.accountAction((db) => db.message.updateSymmetricMessageEncryptionKey(localId, encryptedMessage.sessionKey));
     if (updateSymmetricEncryptionKeyResult.isErr()) {
       log.error("Updating symmetric encryption key failed");
       yield ErrorAfterMessageSaving(localId);
@@ -263,7 +263,7 @@ class SendMessageUtils {
       break;
     }
 
-    final updateSentState = await db.messageAction((db) => db.updateSentMessageState(
+    final updateSentState = await db.accountAction((db) => db.message.updateSentMessageState(
       localId,
       sentState: SentMessageState.sent,
       unixTimeFromServer: unixTimeFromServer,
@@ -296,10 +296,10 @@ class SendMessageUtils {
         continue;
       }
       final sentMessageLocalId = sentMessageId.l.toLocalMessageId();
-      final currentMessage = await db.messageData((db) => db.getMessageUsingLocalMessageId(
+      final currentMessage = await db.accountData((db) => db.message.getMessageUsingLocalMessageId(
         sentMessageLocalId,
       )).ok();
-      final currentBackendSignedPgpMessage = await db.messageData((db) => db.getBackendSignedPgpMessage(
+      final currentBackendSignedPgpMessage = await db.accountData((db) => db.message.getBackendSignedPgpMessage(
         sentMessageLocalId,
       )).ok();
       if (currentMessage?.messageState.toSentState() == SentMessageState.sendingError || currentBackendSignedPgpMessage == null) {
@@ -313,7 +313,7 @@ class SendMessageUtils {
         if (backendSignedMessage == null) {
           return const Err(null);
         }
-        final updateSentState = await db.messageAction((db) => db.updateSentMessageState(
+        final updateSentState = await db.accountAction((db) => db.message.updateSentMessageState(
           sentMessageLocalId,
           sentState: SentMessageState.sent,
           messageIdFromServer: backendSignedMessage.messageId,
@@ -336,10 +336,10 @@ class SendMessageUtils {
   }
 
   Future<bool> _isInMatches(AccountId accountId) async {
-    return await db.accountData((db) => db.daoProfileStates.isInMatches(accountId)).ok() ?? false;
+    return await db.accountData((db) => db.profile.isInMatches(accountId)).ok() ?? false;
   }
 
   Future<bool> _isInConversationList(AccountId accountId) async {
-    return await db.accountData((db) => db.daoConversationList.isInConversationList(accountId)).ok() ?? false;
+    return await db.accountData((db) => db.conversationList.isInConversationList(accountId)).ok() ?? false;
   }
 }

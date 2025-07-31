@@ -22,7 +22,7 @@ class ProfileEntryDownloader {
 
   /// Download profile entry, save to databases and return it.
   Future<Result<ProfileEntry, ProfileDownloadError>> download(AccountId accountId, {bool isMatch = false}) async {
-    final currentData = await db.profileData((db) => db.getProfileEntry(accountId)).ok();
+    final currentData = await db.accountData((db) => db.profile.getProfileEntry(accountId)).ok();
     final currentVersion = currentData?.version;
     final currentContentVersion = currentData?.contentVersion;
 
@@ -36,7 +36,7 @@ class ProfileEntryDownloader {
         }
         final contentInfo = v.c;
         if (contentInfo != null) {
-          await db.profileAction((db) => db.updateProfileContent(accountId, contentInfo, contentVersion));
+          await db.accountAction((db) => db.profile.updateProfileContent(accountId, contentInfo, contentVersion));
 
           final primaryContentId = contentInfo.c.firstOrNull?.cid;
           if (primaryContentId == null) {
@@ -72,24 +72,24 @@ class ProfileEntryDownloader {
           // Sent profile version didn't match the latest profile version, so
           // server sent the latest profile.
           await accountBackgroundDb.accountAction((db) => db.profile.updateProfileData(accountId, profile));
-          await db.profileAction((db) => db.updateProfileData(accountId, profile, version, v.lst));
+          await db.accountAction((db) => db.profile.updateProfileData(accountId, profile, version, v.lst));
         } else {
           // Current profile version is the latest.
           // Only updating last seen time to database is latest.
-          await db.profileAction((db) => db.updateProfileLastSeenTime(accountId, v.lst));
+          await db.accountAction((db) => db.profile.updateProfileLastSeenTime(accountId, v.lst));
         }
       case Err(:final e):
         e.logError(log);
         return Err(OtherProfileDownloadError());
     }
 
-    final refreshTimeUpdateResult = await db.profileAction((db) => db.updateProfileDataRefreshTimeToCurrentTime(accountId));
+    final refreshTimeUpdateResult = await db.accountAction((db) => db.profile.updateProfileDataRefreshTimeToCurrentTime(accountId));
     if (refreshTimeUpdateResult.isErr()) {
       log.error("Refresh time update failed");
       return Err(OtherProfileDownloadError());
     }
 
-    final dataEntry = await db.profileData((db) => db.getProfileEntry(accountId)).ok();
+    final dataEntry = await db.accountData((db) => db.profile.getProfileEntry(accountId)).ok();
 
     if (dataEntry == null) {
       log.warning("Storing profile data to database failed");

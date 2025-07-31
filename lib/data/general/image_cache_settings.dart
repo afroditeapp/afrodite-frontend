@@ -40,7 +40,7 @@ class ImageCacheSettings implements LifecycleMethods {
   Future<void> init() async {
     _imageCacheMaxBytesSubscription = db
       .accountStreamOrDefault(
-        (db) => db.daoLocalImageSettings.watchLocalImageSettingImageCacheMaxBytes(),
+        (db) => db.app.watchLocalImageSettingImageCacheMaxBytes(),
         CACHE_DEFAULT_BYTES,
       )
       .listen((event) {
@@ -52,7 +52,7 @@ class ImageCacheSettings implements LifecycleMethods {
 
     _cacheFullSizedImagesSubscription = db
       .accountStreamOrDefault(
-        (db) => db.daoLocalImageSettings.watchCacheFullSizedImages(),
+        (db) => db.app.watchCacheFullSizedImages(),
         CACHE_FULL_SIZED_IMAGES_DEFAULT,
       )
       .listen((event) {
@@ -61,7 +61,7 @@ class ImageCacheSettings implements LifecycleMethods {
 
     _cacheDownscalingValueSubscription = db
       .accountStreamOrDefault(
-        (db) => db.daoLocalImageSettings.watchImageCacheDownscalingSize(),
+        (db) => db.app.watchImageCacheDownscalingSize(),
         CACHE_DOWNSCALING_SIZE_DEFAULT,
       )
       .listen((event) {
@@ -95,9 +95,9 @@ class ImageCacheSettings implements LifecycleMethods {
     imageCache.maximumSizeBytes = currentMaxBytes;
 
     await db.accountAction((db) async {
-      await db.daoLocalImageSettings.updateImageCacheMaxBytes(maxBytes);
-      await db.daoLocalImageSettings.updateCacheFullSizedImages(cacheFullSizedImages);
-      await db.daoLocalImageSettings.updateImageCacheDownscalingSize(downscalingSize);
+      await db.app.updateImageCacheMaxBytes(maxBytes);
+      await db.app.updateCacheFullSizedImages(cacheFullSizedImages);
+      await db.app.updateImageCacheDownscalingSize(downscalingSize);
     });
   }
 }

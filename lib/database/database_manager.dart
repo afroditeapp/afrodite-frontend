@@ -29,7 +29,7 @@ class DatabaseManager extends AppSingleton {
   bool initDone = false;
   late final DbProvider commonLazyDatabase;
   late final CommonForegroundDatabase commonDatabase;
-  final accountDatabases = <AccountId, (DbProvider, AccountDatabase)>{};
+  final accountDatabases = <AccountId, (DbProvider, AccountForegroundDatabase)>{};
 
   @override
   Future<void> init() async {
@@ -109,7 +109,7 @@ class DatabaseManager extends AppSingleton {
     return AccountDatabaseManager(db);
   }
 
-  AccountDatabase _getAccountDatabaseUsingAccount(AccountId accountId) {
+  AccountForegroundDatabase _getAccountDatabaseUsingAccount(AccountId accountId) {
     final db = accountDatabases[accountId];
     if (db != null) {
       return db.$2;
@@ -119,7 +119,7 @@ class DatabaseManager extends AppSingleton {
         doSqlchipherInit: false,
         backgroundDb: false,
       );
-      final newDb = AccountDatabase(dbProvider);
+      final newDb = AccountForegroundDatabase(dbProvider);
       accountDatabases[accountId] = (dbProvider, newDb);
       return newDb;
     }
@@ -130,7 +130,7 @@ class DatabaseManager extends AppSingleton {
       .setAccountId(accountId)
       .andThen((_) =>
         getAccountDatabaseManager(accountId)
-          .accountAction((db) => db.setAccountIdIfNull(accountId))
+          .accountAction((db) => db.loginSession.setAccountIdIfNull(accountId))
       );
 
   // TODO: Currently there is no location where this could be handled

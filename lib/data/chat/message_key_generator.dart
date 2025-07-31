@@ -41,7 +41,7 @@ class MessageKeyManager {
     if (generation.value == KeyGeneratorState.inProgress) {
       await generation.where((v) => v == KeyGeneratorState.idle).first;
       // Key generation is now complete and it should be in database
-      final keys = await db.accountData((db) => db.daoMessageKeys.getMessageKeys()).ok();
+      final keys = await db.accountData((db) => db.key.getMessageKeys()).ok();
       if (keys == null) {
         return const Err(null);
       } else {
@@ -49,7 +49,7 @@ class MessageKeyManager {
       }
     } else {
       generation.add(KeyGeneratorState.inProgress);
-      switch (await db.accountData((db) => db.daoMessageKeys.getMessageKeys())) {
+      switch (await db.accountData((db) => db.key.getMessageKeys())) {
         case Err():
           generation.add(KeyGeneratorState.idle);
           return const Err(null);
@@ -90,10 +90,10 @@ class MessageKeyManager {
       return const Err(null);
     }
 
-    final private = PrivateKeyData(data: newKeys.private);
-    final public = PublicKeyData(data: newKeys.public);
+    final private = PrivateKeyBytes(data: newKeys.private);
+    final public = PublicKeyBytes(data: newKeys.public);
 
-    final dbResult = await db.accountAction((db) => db.daoMessageKeys.setMessageKeys(
+    final dbResult = await db.accountAction((db) => db.key.setMessageKeys(
       private: private,
       public: public,
       publicKeyId: keyId,

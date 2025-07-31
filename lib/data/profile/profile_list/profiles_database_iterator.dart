@@ -10,5 +10,5 @@ class ProfileListDatabaseIterator extends BaseDatabaseIterator {
 
   @override
   Future<Result<List<AccountId>, DatabaseError>> getAccountListFromDatabase(int startIndex, int limit) =>
-    db.accountData((db) => db.daoProfileStates.getProfileGridList(startIndex, limit));
+    db.accountData((db) => db.profile.getProfileGridList(startIndex, limit));
 }

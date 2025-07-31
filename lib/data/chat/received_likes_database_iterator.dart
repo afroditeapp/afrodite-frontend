@@ -10,5 +10,5 @@ class ReceivedLikesDatabaseIterator extends BaseDatabaseIterator {
 
   @override
   Future<Result<List<AccountId>, DatabaseError>> getAccountListFromDatabase(int startIndex, int limit) =>
-    db.accountData((db) => db.daoProfileStates.getReceivedLikesGridList(startIndex, limit));
+    db.accountData((db) => db.profile.getReceivedLikesGridList(startIndex, limit));
 }

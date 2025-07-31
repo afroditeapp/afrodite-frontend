@@ -128,7 +128,7 @@ class LoginRepository extends DataRepository {
       await _createRepositories(currentAccountId);
 
       // Restore previous state
-      final previousState = await repositories.accountDb.accountStreamSingle((db) => db.watchAccountState()).ok();
+      final previousState = await repositories.accountDb.accountStreamSingle((db) => db.account.watchAccountState()).ok();
       if (previousState != null) {
         _loginState.add(LoginState.viewAccountStateOnceItExists);
         await onResumeAppUsage();
@@ -384,7 +384,7 @@ class LoginRepository extends DataRepository {
     final r = await DatabaseManager.getInstance().setAccountId(aid)
       .andThen(
         (_) => accountDb.accountAction(
-          (db) => db.daoAccountSettings.updateEmailAddress(loginResult.email)
+          (db) => db.account.updateEmailAddress(loginResult.email)
         )
       );
     if (r.isErr()) {
@@ -392,8 +392,8 @@ class LoginRepository extends DataRepository {
     }
 
     // Login repository
-    await accountDb.accountAction((db) => db.daoTokens.updateRefreshTokenAccount(authPair.refresh.token));
-    await accountDb.accountAction((db) => db.daoTokens.updateAccessTokenAccount(authPair.access.accessToken));
+    await accountDb.accountAction((db) => db.loginSession.updateRefreshTokenAccount(authPair.refresh.token));
+    await accountDb.accountAction((db) => db.loginSession.updateAccessTokenAccount(authPair.access.accessToken));
     // TODO(microservice): microservice support
     await onLogin();
 
@@ -440,8 +440,8 @@ class LoginRepository extends DataRepository {
     await repository.connectionManager.closeAndLogout();
 
     // Login repository
-    await repository.accountDb.accountAction((db) => db.daoTokens.updateRefreshTokenAccount(null));
-    await repository.accountDb.accountAction((db) => db.daoTokens.updateAccessTokenAccount(null));
+    await repository.accountDb.accountAction((db) => db.loginSession.updateRefreshTokenAccount(null));
+    await repository.accountDb.accountAction((db) => db.loginSession.updateAccessTokenAccount(null));
     // await onLogout(); // Not used currently
     // TODO(microservice): microservice support
 
@@ -802,7 +802,7 @@ class RepositoryStateStreams {
 
     await _initialSetupSkippedSubscription?.cancel();
     _initialSetupSkippedSubscription = accountDb
-      .accountStream((db) => db.daoInitialSetup.watchInitialSetupSkipped())
+      .accountStream((db) => db.app.watchInitialSetupSkipped())
       .listen((v) {
         _initialSetupSkipped.add(v);
       });

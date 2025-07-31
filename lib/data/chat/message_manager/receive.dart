@@ -59,14 +59,14 @@ class ReceiveMessageUtils {
     for (final message in newMessages) {
       final isMatch = await _isInMatches(message.parsed.sender);
       if (!isMatch) {
-        await db.accountAction((db) => db.daoProfileStates.setMatchStatus(message.parsed.sender, true));
+        await db.accountAction((db) => db.profile.setMatchStatus(message.parsed.sender, true));
       }
 
       if (!await _isInConversationList(message.parsed.sender)) {
-        await db.accountAction((db) => db.daoConversationList.setConversationListVisibility(message.parsed.sender, true));
+        await db.accountAction((db) => db.conversationList.setConversationListVisibility(message.parsed.sender, true));
       }
 
-      final alreadyExistingMessageResult = await db.messageData((db) => db.getMessageUsingMessageId(
+      final alreadyExistingMessageResult = await db.accountData((db) => db.message.getMessageUsingMessageId(
         currentUser,
         message.parsed.sender,
         message.parsed.messageId
@@ -100,7 +100,7 @@ class ReceiveMessageUtils {
           messageState = ReceivedMessageState.received;
       }
 
-      final r = await db.messageAction((db) => db.insertReceivedMessage(
+      final r = await db.accountAction((db) => db.message.insertReceivedMessage(
         currentUser,
         message.parsed.sender,
         message.parsed.messageId,
@@ -194,11 +194,11 @@ class ReceiveMessageUtils {
   }
 
   Future<bool> _isInMatches(AccountId accountId) async {
-    return await db.accountData((db) => db.daoProfileStates.isInMatches(accountId)).ok() ?? false;
+    return await db.accountData((db) => db.profile.isInMatches(accountId)).ok() ?? false;
   }
 
   Future<bool> _isInConversationList(AccountId accountId) async {
-    return await db.accountData((db) => db.daoConversationList.isInConversationList(accountId)).ok() ?? false;
+    return await db.accountData((db) => db.conversationList.isInConversationList(accountId)).ok() ?? false;
   }
 }
 

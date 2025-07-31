@@ -50,24 +50,24 @@ class MediaRepository extends DataRepositoryWithLifecycle {
 
   @override
   Future<void> onLogin() async {
-    await db.accountAction((db) => db.daoInitialSync.updateMediaSyncDone(false));
+    await db.accountAction((db) => db.app.updateMediaSyncDone(false));
   }
 
   @override
   Future<Result<void, void>> onLoginDataSync() async {
     return await reloadMyMediaContent()
       .andThen((_) => _reloadMediaNotificationSettings())
-      .andThen((_) => db.accountAction((db) => db.daoInitialSync.updateMediaSyncDone(true)));
+      .andThen((_) => db.accountAction((db) => db.app.updateMediaSyncDone(true)));
   }
 
   @override
   Future<void> onResumeAppUsage() async {
     syncHandler.onResumeAppUsageSync(() async {
-      final syncDone = await db.accountStreamSingle((db) => db.daoInitialSync.watchMediaSyncDone()).ok() ?? false;
+      final syncDone = await db.accountStreamSingle((db) => db.app.watchMediaSyncDone()).ok() ?? false;
       if (!syncDone) {
         await reloadMyMediaContent()
           .andThen((_) => _reloadMediaNotificationSettings())
-          .andThen((_) => db.accountAction((db) => db.daoInitialSync.updateMediaSyncDone(true)));
+          .andThen((_) => db.accountAction((db) => db.app.updateMediaSyncDone(true)));
       }
     });
   }
@@ -119,7 +119,7 @@ class MediaRepository extends DataRepositoryWithLifecycle {
       return const Err(null);
     }
 
-    return await db.accountAction((db) => db.daoCurrentContent.setMediaContent(info: infoResult));
+    return await db.accountAction((db) => db.myMedia.setMyMediaContent(info: infoResult));
   }
 
   /// Last event from stream is ProcessingCompleted or SendToSlotError.

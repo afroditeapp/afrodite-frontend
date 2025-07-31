@@ -58,14 +58,14 @@ class UiSettingsBloc extends Bloc<UiSettingsEvent, UiSettingsData> {
     on<UpdateRowProfileCount>((data, emit) {
       saveGridSettings((s) => s.copyWith(rowProfileCount: data.value));
     });
-    _gridSettingsSubscription = db.accountStream((db) => db.daoUiSettings.watchGridSettings()).listen((value) {
+    _gridSettingsSubscription = db.accountStream((db) => db.app.watchGridSettings()).listen((value) {
       add(NewGridSettings(value ?? const GridSettings()));
     });
   }
 
   void saveGridSettings(GridSettings Function(GridSettings) action) {
     final newSettings = action(state.gridSettings);
-    db.accountAction((db) => db.daoUiSettings.updateGridSettings(newSettings));
+    db.accountAction((db) => db.app.updateGridSettings(newSettings));
   }
 
   @override

@@ -10,5 +10,5 @@ class MatchesDatabaseIterator extends BaseDatabaseIterator {
 
   @override
   Future<Result<List<AccountId>, DatabaseError>> getAccountListFromDatabase(int startIndex, int limit) =>
-    db.accountData((db) => db.daoProfileStates.getMatchesGridList(startIndex, limit));
+    db.accountData((db) => db.profile.getMatchesGridList(startIndex, limit));
 }

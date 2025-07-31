@@ -10,5 +10,5 @@ class AutomaticProfileSearchDatabaseIterator extends BaseDatabaseIterator {
 
   @override
   Future<Result<List<AccountId>, DatabaseError>> getAccountListFromDatabase(int startIndex, int limit) =>
-    db.accountData((db) => db.daoProfileStates.getAutomaticProfileSearchGridList(startIndex, limit));
+    db.accountData((db) => db.profile.getAutomaticProfileSearchGridList(startIndex, limit));
 }

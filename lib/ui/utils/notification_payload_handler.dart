@@ -128,7 +128,7 @@ Future<NewPageDetails?> handlePayload(
         return null;
       }
 
-      final profile = await accountDb.profileData((db) => db.getProfileEntry(accountId)).ok();
+      final profile = await accountDb.accountData((db) => db.profile.getProfileEntry(accountId)).ok();
       if (profile == null) {
         return null;
       }

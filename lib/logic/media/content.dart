@@ -78,10 +78,10 @@ class ContentBloc extends Bloc<ContentEvent, ContentData> with ActionRunner {
       });
     });
 
-    _primaryContentSubscription = db.accountStream((db) => db.daoCurrentContent.watchPrimaryProfileContent()).listen((event) {
+    _primaryContentSubscription = db.accountStream((db) => db.myMedia.watchMyPrimaryProfileContent()).listen((event) {
       add(NewPrimaryContent(event));
     });
-    _securityContentSubscription = db.accountStream((db) => db.daoCurrentContent.watchCurrentSecurityContent()).listen((event) {
+    _securityContentSubscription = db.accountStream((db) => db.myMedia.watchMyCurrentSecurityContent()).listen((event) {
       add(NewSecurityContent(event));
     });
 

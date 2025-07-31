@@ -214,13 +214,13 @@ class SearchSettingsBloc extends Bloc<SearchSettingsEvent, SearchSettingsData> w
       }
     });
 
-    _minAgeSubscription = db.accountStream((db) => db.daoProfileSettings.watchProfileSearchAgeRangeMin()).listen((event) {
+    _minAgeSubscription = db.accountStream((db) => db.search.watchProfileSearchAgeRangeMin()).listen((event) {
       add(NewMinAge(event ?? MIN_AGE));
     });
-    _maxAgeSubscription = db.accountStream((db) => db.daoProfileSettings.watchProfileSearchAgeRangeMax()).listen((event) {
+    _maxAgeSubscription = db.accountStream((db) => db.search.watchProfileSearchAgeRangeMax()).listen((event) {
       add(NewMaxAge(event ?? MAX_AGE));
     });
-    _searchGroupsSubscription = db.accountStream((db) => db.daoProfileSettings.watchSearchGroups()).listen((event) {
+    _searchGroupsSubscription = db.accountStream((db) => db.search.watchSearchGroups()).listen((event) {
       add(NewSearchGroups(event ?? SearchGroups()));
     });
     _profileSettingsSubscription = accountBackgroundDb

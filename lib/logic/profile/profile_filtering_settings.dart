@@ -187,7 +187,7 @@ class ProfileFilteringSettingsBloc extends Bloc<ProfileFilteringSettingsEvent, P
       ));
     });
     on<SetShowAdvancedFilters>((data, emit) async {
-      await db.accountAction((db) => db.daoUiSettings.updateShowAdvancedFilters(data.value));
+      await db.accountAction((db) => db.app.updateShowAdvancedFilters(data.value));
     });
     on<SetFavoriteProfilesFilter>((data, emit) async {
       await runOnce(() async {
@@ -273,13 +273,13 @@ class ProfileFilteringSettingsBloc extends Bloc<ProfileFilteringSettingsEvent, P
       );
     });
 
-    _showAdvancedFiltersSubscription = db.accountStream((db) => db.daoUiSettings.watchShowAdvancedFilters()).listen((event) {
+    _showAdvancedFiltersSubscription = db.accountStream((db) => db.app.watchShowAdvancedFilters()).listen((event) {
       add(NewShowAdvancedFiltersValue(event ?? false));
     });
-    _filterFavoritesSubscription = db.accountStream((db) => db.watchProfileFilterFavorites()).listen((event) {
+    _filterFavoritesSubscription = db.accountStream((db) => db.app.watchProfileFilterFavorites()).listen((event) {
       add(NewFilterFavoriteProfilesValue(event ?? false));
     });
-    _profileFilteringSettingsSubscription = db.accountStream((db) => db.daoProfileSettings.watchProfileFilteringSettings()).listen((event) {
+    _profileFilteringSettingsSubscription = db.accountStream((db) => db.search.watchProfileFilteringSettings()).listen((event) {
       add(NewProfileFilteringSettings(event));
     });
   }

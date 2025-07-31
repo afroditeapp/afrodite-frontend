@@ -57,11 +57,11 @@ class AccountRepository extends DataRepositoryWithLifecycle {
   // TODO(prod): Default value for AccountState?
 
   Stream<AccountState?> get accountState => db
-    .accountStream((db) => db.watchAccountState());
+    .accountStream((db) => db.account.watchAccountState());
   Stream<String?> get emailAddress => _cachedValues._cachedEmailAddress;
   Stream<Permissions> get permissions => db
     .accountStreamOrDefault(
-      (db) => db.watchPermissions(),
+      (db) => db.account.watchPermissions(),
       Permissions(),
     );
   Stream<ProfileVisibility> get profileVisibility => _cachedValues._cachedProfileVisibility;
@@ -92,16 +92,16 @@ class AccountRepository extends DataRepositoryWithLifecycle {
 
   @override
   Future<void> onLogin() async {
-    await db.accountAction((db) => db.daoSyncVersions.resetSyncVersions());
+    await db.accountAction((db) => db.common.resetSyncVersions());
     await accountBackgroundDb.accountAction((db) => db.resetSyncVersions());
-    await db.accountAction((db) => db.daoInitialSync.updateAccountSyncDone(false));
+    await db.accountAction((db) => db.app.updateAccountSyncDone(false));
   }
 
   @override
   Future<Result<void, void>> onLoginDataSync() async {
     return await clientIdManager.getClientId()
       .andThen((_) => _reloadAccountNotificationSettings())
-      .andThen((_) => db.accountAction((db) => db.daoInitialSync.updateAccountSyncDone(true)));
+      .andThen((_) => db.accountAction((db) => db.app.updateAccountSyncDone(true)));
   }
 
   @override
@@ -109,10 +109,10 @@ class AccountRepository extends DataRepositoryWithLifecycle {
     _syncHandler.onResumeAppUsageSync(() async {
       await clientIdManager.getClientId();
 
-      final syncDone = await db.accountStreamSingle((db) => db.daoInitialSync.watchAccountSyncDone()).ok() ?? false;
+      final syncDone = await db.accountStreamSingle((db) => db.app.watchAccountSyncDone()).ok() ?? false;
       if (!syncDone) {
         await _reloadAccountNotificationSettings()
-          .andThen((_) => db.accountAction((db) => db.daoInitialSync.updateAccountSyncDone(true)));
+          .andThen((_) => db.accountAction((db) => db.app.updateAccountSyncDone(true)));
       }
     });
   }
@@ -122,7 +122,7 @@ class AccountRepository extends DataRepositoryWithLifecycle {
       api.getAccountState()
     ).ok();
     if (result != null) {
-      await db.accountAction((db) => db.updateAccountState(result));
+      await db.accountAction((db) => db.account.updateAccountState(result));
     }
   }
 
@@ -275,7 +275,7 @@ class AccountRepository extends DataRepositoryWithLifecycle {
     } else {
       time = null;
     }
-    return db.accountAction((db) => db.daoServerMaintenance.setMaintenanceTime(
+    return db.accountAction((db) => db.common.setMaintenanceTime(
       time: time?.toUtcDateTime(),
     ));
   }
@@ -301,19 +301,19 @@ class CachedValues {
 
   void _subscribe(AccountDatabaseManager db) {
     _cachedEmailSubscription = db
-      .accountStream((db) => db.daoAccountSettings.watchEmailAddress())
+      .accountStream((db) => db.account.watchEmailAddress())
       .listen((v) {
         _cachedEmailAddress.add(v);
       });
 
     _cachedProfileVisibilitySubscription = db
-      .accountStreamOrDefault((db) => db.watchProfileVisibility(), PROFILE_VISIBILITY_DEFAULT)
+      .accountStreamOrDefault((db) => db.account.watchProfileVisibility(), PROFILE_VISIBILITY_DEFAULT)
       .listen((v) {
         _cachedProfileVisibility.add(v);
       });
 
     _cachedAccountStateSubscription = db
-      .accountStream((db) => db.watchAccountState())
+      .accountStream((db) => db.account.watchAccountState())
       .listen((v) {
         _cachedAccountState.add(v);
       });

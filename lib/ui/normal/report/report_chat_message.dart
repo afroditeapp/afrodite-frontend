@@ -124,12 +124,12 @@ class _ReportChatMessageScreen extends State<ReportChatMessageScreen> {
           scrollable: true,
         );
         if (context.mounted && r == true) {
-          final backendSignedMessage = await db.messageData((db) => db.getBackendSignedPgpMessage(entry.localId)).ok();
+          final backendSignedMessage = await db.accountData((db) => db.message.getBackendSignedPgpMessage(entry.localId)).ok();
           if (backendSignedMessage == null) {
             showSnackBar(R.strings.report_chat_message_screen_backend_signed_message_not_found);
             return;
           }
-          final symmetricKey = await db.messageData((db) => db.getSymmetricMessageEncryptionKey(entry.localId)).ok();
+          final symmetricKey = await db.accountData((db) => db.message.getSymmetricMessageEncryptionKey(entry.localId)).ok();
           if (symmetricKey == null) {
             showSnackBar(R.strings.report_chat_message_screen_symmetric_message_encryption_key_not_found);
             return;

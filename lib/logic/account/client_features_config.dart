@@ -29,9 +29,9 @@ class ClientFeaturesConfigBloc extends Bloc<ClientFeaturesConfigEvent, ClientFea
     on<DailyLikesLeftChanged>((data, emit) {
       emit(state.copyWith(dailyLikesLeft: data.value));
     });
-    _configSubscription = db.accountStream((db) => db.daoClientFeatures.watchClientFeaturesConfig())
+    _configSubscription = db.accountStream((db) => db.config.watchClientFeaturesConfig())
       .listen((value) => add(ConfigChanged(value ?? _emptyClientFeaturesConfig())));
-    _dailyLikesLeftSubscription = db.accountStream((db) => db.daoLimits.watchDailyLikesLeft())
+    _dailyLikesLeftSubscription = db.accountStream((db) => db.like.watchDailyLikesLeft())
       .listen((value) => add(DailyLikesLeftChanged(value)));
   }
 

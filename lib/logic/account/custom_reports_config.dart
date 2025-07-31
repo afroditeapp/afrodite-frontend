@@ -20,7 +20,7 @@ class CustomReportsConfigBloc extends Bloc<CustomReportsConfigEvent, CustomRepor
     on<ConfigChanged>((data, emit) async {
       emit(data.value);
     });
-    _configSubscription = db.accountStream((db) => db.daoCustomReports.watchCustomReportsConfig())
+    _configSubscription = db.accountStream((db) => db.config.watchCustomReportsConfig())
       .listen((value) => add(ConfigChanged(value ?? emptyCustomReportConfig())));
   }
 
