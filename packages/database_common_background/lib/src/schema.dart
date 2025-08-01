@@ -8,10 +8,7 @@ class AccountId extends SingleRowTable {
 }
 
 class ServerUrl extends SingleRowTable {
-  TextColumn get serverUrlAccount => text().nullable()();
-  TextColumn get serverUrlMedia => text().nullable()();
-  TextColumn get serverUrlProfile => text().nullable()();
-  TextColumn get serverUrlChat => text().nullable()();
+  TextColumn get serverUrl => text().nullable()();
 }
 
 class PushNotification extends SingleRowTable {

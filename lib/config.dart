@@ -5,14 +5,14 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
-const String _defaultAccountServerAddressAndroid = "http://10.0.2.2:3000"; // Android emulator host
-const String _defaultAccountServerAddressIosAndWeb = "http://localhost:3000"; // This address is for iOS simulator and web browsers
+const String _defaultServerAddressAndroid = "http://10.0.2.2:3000"; // Android emulator host
+const String _defaultServerAddressIosAndWeb = "http://localhost:3000"; // This address is for iOS simulator and web browsers
 
 const String developmentServerUrl = "https://localhost:3000";
 
-String defaultServerUrlAccount() {
+String defaultServerUrl() {
   if (kProfileMode && kIsWeb) {
-    return _defaultAccountServerAddressIosAndWeb;
+    return _defaultServerAddressIosAndWeb;
   }
 
   if (!kDebugMode) {
@@ -20,24 +20,12 @@ String defaultServerUrlAccount() {
   }
 
   if (kIsWeb || Platform.isIOS) {
-    return _defaultAccountServerAddressIosAndWeb;
+    return _defaultServerAddressIosAndWeb;
   } else if (Platform.isAndroid) {
-    return _defaultAccountServerAddressAndroid;
+    return _defaultServerAddressAndroid;
   } else {
     throw UnimplementedError();
   }
-}
-
-String defaultServerUrlMedia() {
-  return defaultServerUrlAccount();
-}
-
-String defaultServerUrlProfile() {
-  return defaultServerUrlAccount();
-}
-
-String defaultServerUrlChat() {
-  return defaultServerUrlAccount();
 }
 
 const List<DeviceOrientation> DEFAULT_ORIENTATIONS = [

@@ -189,8 +189,8 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   log.info("Handling FCM background message");
 
   final accountUrl = await db.commonStreamSingleOrDefault(
-    (db) => db.app.watchServerUrlAccount(),
-    defaultServerUrlAccount(),
+    (db) => db.app.watchServerUrl(),
+    defaultServerUrl(),
   );
   final pendingNotificationToken = await db.commonStreamSingle((db) => db.loginSession.watchPendingNotificationToken());
   if (pendingNotificationToken == null) {

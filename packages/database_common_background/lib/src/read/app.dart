@@ -19,17 +19,8 @@ class DaoReadApp extends DatabaseAccessor<CommonBackgroundDatabase> with _$DaoRe
   Stream<String?> watchCurrentLocale() =>
     _watchCurrentLocaleColumn((r) => r.currentLocale);
 
-  Stream<String?> watchServerUrlAccount() =>
-    watchServerUrlColumn((r) => r.serverUrlAccount);
-
-  Stream<String?> watchServerUrlMedia() =>
-    watchServerUrlColumn((r) => r.serverUrlMedia);
-
-  Stream<String?> watchServerUrlProfile() =>
-    watchServerUrlColumn((r) => r.serverUrlProfile);
-
-  Stream<String?> watchServerUrlChat() =>
-    watchServerUrlColumn((r) => r.serverUrlChat);
+  Stream<String?> watchServerUrl() =>
+    watchServerUrlColumn((r) => r.serverUrl);
 
   Stream<T?> _watchCurrentLocaleColumn<T extends Object>(T? Function(CurrentLocaleData) extractColumn) {
     return (select(currentLocale)..where((t) => t.id.equals(SingleRowTable.ID.value)))

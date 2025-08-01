@@ -241,7 +241,7 @@ String addWebSocketRoutePathToAddress(String baseUrl) {
 
 
 class ApiManager implements LifecycleMethods {
-  final ApiProvider _account = ApiProvider(defaultServerUrlAccount());
+  final ApiProvider _account = ApiProvider(defaultServerUrl());
 
   /// If object is created with this constructor, call [initConnection] before
   /// calling [init].
@@ -272,8 +272,8 @@ class ApiManager implements LifecycleMethods {
 
     // TODO(prod): hardcode address for production release?
     final accountAddress = await backgroundDb.commonStreamSingleOrDefault(
-      (db) => db.app.watchServerUrlAccount(),
-      defaultServerUrlAccount(),
+      (db) => db.app.watchServerUrl(),
+      defaultServerUrl(),
     );
     _account.updateServerAddress(accountAddress);
 

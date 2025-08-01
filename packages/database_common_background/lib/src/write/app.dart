@@ -25,11 +25,11 @@ class DaoWriteApp extends DatabaseAccessor<CommonBackgroundDatabase> with _$DaoW
     );
   }
 
-  Future<void> updateServerUrlAccount(String? url) async {
+  Future<void> updateServerUrl(String? url) async {
     await into(serverUrl).insertOnConflictUpdate(
       ServerUrlCompanion.insert(
         id: SingleRowTable.ID,
-        serverUrlAccount: Value(url),
+        serverUrl: Value(url),
       ),
     );
   }
