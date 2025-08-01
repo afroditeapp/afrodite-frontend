@@ -7030,14 +7030,20 @@ class $MyProfileTable extends schema.MyProfile
     requiredDuringInsert: false,
   ).withConverter<ProfileVersion?>($MyProfileTable.$converterprofileVersion);
   @override
-  late final GeneratedColumnWithTypeConverter<JsonList?, String>
-  jsonProfileAttributes = GeneratedColumn<String>(
-    'json_profile_attributes',
-    aliasedName,
-    true,
-    type: DriftSqlType.string,
-    requiredDuringInsert: false,
-  ).withConverter<JsonList?>($MyProfileTable.$converterjsonProfileAttributes);
+  late final GeneratedColumnWithTypeConverter<
+    JsonList<ProfileAttributeValue>?,
+    String
+  >
+  jsonProfileAttributes =
+      GeneratedColumn<String>(
+        'json_profile_attributes',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      ).withConverter<JsonList<ProfileAttributeValue>?>(
+        $MyProfileTable.$converterjsonProfileAttributes,
+      );
   static const VerificationMeta _primaryContentGridCropSizeMeta =
       const VerificationMeta('primaryContentGridCropSize');
   @override
@@ -7325,8 +7331,10 @@ class $MyProfileTable extends schema.MyProfile
       );
   static TypeConverter<ProfileVersion?, String?> $converterprofileVersion =
       const NullAwareTypeConverter.wrap(ProfileVersionConverter());
-  static TypeConverter<JsonList?, String?> $converterjsonProfileAttributes =
-      NullAwareTypeConverter.wrap(JsonList.driftConverter);
+  static TypeConverter<JsonList<ProfileAttributeValue>?, String?>
+  $converterjsonProfileAttributes = NullAwareTypeConverter.wrap(
+    const ProfileAttributeValueConverter(),
+  );
   static TypeConverter<ProfileContentVersion?, String?>
   $converterprofileContentVersion = const NullAwareTypeConverter.wrap(
     ProfileContentVersionConverter(),
@@ -7348,7 +7356,7 @@ class MyProfileData extends DataClass implements Insertable<MyProfileData> {
   final int? profileAge;
   final bool? profileUnlimitedLikes;
   final ProfileVersion? profileVersion;
-  final JsonList? jsonProfileAttributes;
+  final JsonList<ProfileAttributeValue>? jsonProfileAttributes;
   final double? primaryContentGridCropSize;
   final double? primaryContentGridCropX;
   final double? primaryContentGridCropY;
@@ -7556,9 +7564,10 @@ class MyProfileData extends DataClass implements Insertable<MyProfileData> {
       profileVersion: serializer.fromJson<ProfileVersion?>(
         json['profileVersion'],
       ),
-      jsonProfileAttributes: serializer.fromJson<JsonList?>(
-        json['jsonProfileAttributes'],
-      ),
+      jsonProfileAttributes: serializer
+          .fromJson<JsonList<ProfileAttributeValue>?>(
+            json['jsonProfileAttributes'],
+          ),
       primaryContentGridCropSize: serializer.fromJson<double?>(
         json['primaryContentGridCropSize'],
       ),
@@ -7601,9 +7610,8 @@ class MyProfileData extends DataClass implements Insertable<MyProfileData> {
       'profileAge': serializer.toJson<int?>(profileAge),
       'profileUnlimitedLikes': serializer.toJson<bool?>(profileUnlimitedLikes),
       'profileVersion': serializer.toJson<ProfileVersion?>(profileVersion),
-      'jsonProfileAttributes': serializer.toJson<JsonList?>(
-        jsonProfileAttributes,
-      ),
+      'jsonProfileAttributes': serializer
+          .toJson<JsonList<ProfileAttributeValue>?>(jsonProfileAttributes),
       'primaryContentGridCropSize': serializer.toJson<double?>(
         primaryContentGridCropSize,
       ),
@@ -7640,7 +7648,8 @@ class MyProfileData extends DataClass implements Insertable<MyProfileData> {
     Value<int?> profileAge = const Value.absent(),
     Value<bool?> profileUnlimitedLikes = const Value.absent(),
     Value<ProfileVersion?> profileVersion = const Value.absent(),
-    Value<JsonList?> jsonProfileAttributes = const Value.absent(),
+    Value<JsonList<ProfileAttributeValue>?> jsonProfileAttributes =
+        const Value.absent(),
     Value<double?> primaryContentGridCropSize = const Value.absent(),
     Value<double?> primaryContentGridCropX = const Value.absent(),
     Value<double?> primaryContentGridCropY = const Value.absent(),
@@ -7838,7 +7847,7 @@ class MyProfileCompanion extends UpdateCompanion<MyProfileData> {
   final Value<int?> profileAge;
   final Value<bool?> profileUnlimitedLikes;
   final Value<ProfileVersion?> profileVersion;
-  final Value<JsonList?> jsonProfileAttributes;
+  final Value<JsonList<ProfileAttributeValue>?> jsonProfileAttributes;
   final Value<double?> primaryContentGridCropSize;
   final Value<double?> primaryContentGridCropX;
   final Value<double?> primaryContentGridCropY;
@@ -7952,7 +7961,7 @@ class MyProfileCompanion extends UpdateCompanion<MyProfileData> {
     Value<int?>? profileAge,
     Value<bool?>? profileUnlimitedLikes,
     Value<ProfileVersion?>? profileVersion,
-    Value<JsonList?>? jsonProfileAttributes,
+    Value<JsonList<ProfileAttributeValue>?>? jsonProfileAttributes,
     Value<double?>? primaryContentGridCropSize,
     Value<double?>? primaryContentGridCropX,
     Value<double?>? primaryContentGridCropY,
@@ -8232,14 +8241,20 @@ class $ProfileTable extends schema.Profile
         ),
       );
   @override
-  late final GeneratedColumnWithTypeConverter<JsonList?, String>
-  jsonProfileAttributes = GeneratedColumn<String>(
-    'json_profile_attributes',
-    aliasedName,
-    true,
-    type: DriftSqlType.string,
-    requiredDuringInsert: false,
-  ).withConverter<JsonList?>($ProfileTable.$converterjsonProfileAttributes);
+  late final GeneratedColumnWithTypeConverter<
+    JsonList<ProfileAttributeValue>?,
+    String
+  >
+  jsonProfileAttributes =
+      GeneratedColumn<String>(
+        'json_profile_attributes',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      ).withConverter<JsonList<ProfileAttributeValue>?>(
+        $ProfileTable.$converterjsonProfileAttributes,
+      );
   static const VerificationMeta _primaryContentGridCropSizeMeta =
       const VerificationMeta('primaryContentGridCropSize');
   @override
@@ -8517,8 +8532,10 @@ class $ProfileTable extends schema.Profile
   );
   static TypeConverter<ProfileVersion?, String?> $converterprofileVersion =
       const NullAwareTypeConverter.wrap(ProfileVersionConverter());
-  static TypeConverter<JsonList?, String?> $converterjsonProfileAttributes =
-      NullAwareTypeConverter.wrap(JsonList.driftConverter);
+  static TypeConverter<JsonList<ProfileAttributeValue>?, String?>
+  $converterjsonProfileAttributes = NullAwareTypeConverter.wrap(
+    const ProfileAttributeValueConverter(),
+  );
   static TypeConverter<UtcDateTime?, int?> $converterprofileDataRefreshTime =
       const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
   static TypeConverter<UtcDateTime?, int?> $converternewLikeInfoReceivedTime =
@@ -8536,7 +8553,7 @@ class ProfileData extends DataClass implements Insertable<ProfileData> {
   final int? profileAge;
   final int? profileLastSeenTimeValue;
   final bool? profileUnlimitedLikes;
-  final JsonList? jsonProfileAttributes;
+  final JsonList<ProfileAttributeValue>? jsonProfileAttributes;
   final double? primaryContentGridCropSize;
   final double? primaryContentGridCropX;
   final double? primaryContentGridCropY;
@@ -8722,9 +8739,10 @@ class ProfileData extends DataClass implements Insertable<ProfileData> {
       profileUnlimitedLikes: serializer.fromJson<bool?>(
         json['profileUnlimitedLikes'],
       ),
-      jsonProfileAttributes: serializer.fromJson<JsonList?>(
-        json['jsonProfileAttributes'],
-      ),
+      jsonProfileAttributes: serializer
+          .fromJson<JsonList<ProfileAttributeValue>?>(
+            json['jsonProfileAttributes'],
+          ),
       primaryContentGridCropSize: serializer.fromJson<double?>(
         json['primaryContentGridCropSize'],
       ),
@@ -8760,9 +8778,8 @@ class ProfileData extends DataClass implements Insertable<ProfileData> {
         profileLastSeenTimeValue,
       ),
       'profileUnlimitedLikes': serializer.toJson<bool?>(profileUnlimitedLikes),
-      'jsonProfileAttributes': serializer.toJson<JsonList?>(
-        jsonProfileAttributes,
-      ),
+      'jsonProfileAttributes': serializer
+          .toJson<JsonList<ProfileAttributeValue>?>(jsonProfileAttributes),
       'primaryContentGridCropSize': serializer.toJson<double?>(
         primaryContentGridCropSize,
       ),
@@ -8792,7 +8809,8 @@ class ProfileData extends DataClass implements Insertable<ProfileData> {
     Value<int?> profileAge = const Value.absent(),
     Value<int?> profileLastSeenTimeValue = const Value.absent(),
     Value<bool?> profileUnlimitedLikes = const Value.absent(),
-    Value<JsonList?> jsonProfileAttributes = const Value.absent(),
+    Value<JsonList<ProfileAttributeValue>?> jsonProfileAttributes =
+        const Value.absent(),
     Value<double?> primaryContentGridCropSize = const Value.absent(),
     Value<double?> primaryContentGridCropX = const Value.absent(),
     Value<double?> primaryContentGridCropY = const Value.absent(),
@@ -8966,7 +8984,7 @@ class ProfileCompanion extends UpdateCompanion<ProfileData> {
   final Value<int?> profileAge;
   final Value<int?> profileLastSeenTimeValue;
   final Value<bool?> profileUnlimitedLikes;
-  final Value<JsonList?> jsonProfileAttributes;
+  final Value<JsonList<ProfileAttributeValue>?> jsonProfileAttributes;
   final Value<double?> primaryContentGridCropSize;
   final Value<double?> primaryContentGridCropX;
   final Value<double?> primaryContentGridCropY;
@@ -9073,7 +9091,7 @@ class ProfileCompanion extends UpdateCompanion<ProfileData> {
     Value<int?>? profileAge,
     Value<int?>? profileLastSeenTimeValue,
     Value<bool?>? profileUnlimitedLikes,
-    Value<JsonList?>? jsonProfileAttributes,
+    Value<JsonList<ProfileAttributeValue>?>? jsonProfileAttributes,
     Value<double?>? primaryContentGridCropSize,
     Value<double?>? primaryContentGridCropX,
     Value<double?>? primaryContentGridCropY,

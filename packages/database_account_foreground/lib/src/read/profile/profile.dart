@@ -1,6 +1,7 @@
 
 import 'package:async/async.dart';
 import 'package:database_account_foreground/src/database.dart';
+import 'package:database_converter/database_converter.dart';
 import 'package:database_model/database_model.dart';
 import 'package:drift/drift.dart';
 import 'package:openapi/api.dart' as api;
@@ -74,7 +75,7 @@ class DaoReadProfile extends DatabaseAccessor<AccountForegroundDatabase> with _$
     final profileText = r.profileText;
     final profileAge = r.profileAge;
     final profileVersion = r.profileVersion;
-    final profileAttributes = r.jsonProfileAttributes?.toProfileAttributes();
+    final profileAttributes = r.jsonProfileAttributes?.value.toProfileAttributesMap();
     final profileUnlimitedLikes = r.profileUnlimitedLikes;
     final contentVersion = r.profileContentVersion;
 

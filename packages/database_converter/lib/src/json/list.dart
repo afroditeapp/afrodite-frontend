@@ -1,24 +1,35 @@
+import 'dart:convert';
+
 import 'package:drift/drift.dart';
 import 'package:openapi/api.dart';
 
-class JsonList {
-  final List<Object?> jsonList;
-  JsonList(this.jsonList);
-
-  Map<int, ProfileAttributeValueUpdate> toProfileAttributes() {
-    final attributes = ProfileAttributeValue.listFromJson(jsonList)
-      .map((v) => ProfileAttributeValueUpdate(id: v.id, v: v.v));
-    return { for (var e in attributes) e.id : e };
-  }
-
-  static TypeConverter<JsonList, String> driftConverter = TypeConverter.json2(
-    fromJson: (json) => JsonList(json as List<Object?>),
-    toJson: (object) => object.jsonList,
-  );
+/// List does not contain objects which can't be parsed from string to T
+class JsonList<T> {
+  final List<T> value;
+  JsonList._(this.value);
 }
 
-extension ProfileAttributeValueListJson on List<ProfileAttributeValue> {
-  JsonList toJsonList() {
-    return JsonList(map((e) => e.toJson()).toList());
+class ProfileAttributeValueConverter extends TypeConverter<JsonList<ProfileAttributeValue>, String> {
+  const ProfileAttributeValueConverter();
+
+  @override
+  JsonList<ProfileAttributeValue> fromSql(fromDb) {
+    return JsonList._(ProfileAttributeValue.listFromJson(jsonDecode(fromDb)));
+  }
+
+  @override
+  String toSql(value) {
+    return jsonEncode(value.value.map((e) => e.toJson()).toList());
+  }
+}
+
+extension ProfileAttributeValueJsonList on List<ProfileAttributeValue> {
+  JsonList<ProfileAttributeValue> toJsonList() {
+    return JsonList._(this);
+  }
+
+  Map<int, ProfileAttributeValueUpdate> toProfileAttributesMap() {
+    final attributes = map((v) => ProfileAttributeValueUpdate(id: v.id, v: v.v));
+    return { for (var e in attributes) e.id : e };
   }
 }

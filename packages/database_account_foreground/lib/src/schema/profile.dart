@@ -14,7 +14,7 @@ class MyProfile extends SingleRowTable {
   IntColumn get profileAge => integer().nullable()();
   BoolColumn get profileUnlimitedLikes => boolean().nullable()();
   TextColumn get profileVersion => text().map(const NullAwareTypeConverter.wrap(ProfileVersionConverter())).nullable()();
-  TextColumn get jsonProfileAttributes => text().map(NullAwareTypeConverter.wrap(JsonList.driftConverter)).nullable()();
+  TextColumn get jsonProfileAttributes => text().map(NullAwareTypeConverter.wrap(const ProfileAttributeValueConverter())).nullable()();
 
   // Profile content
   RealColumn get primaryContentGridCropSize => real().nullable()();
@@ -59,7 +59,7 @@ class Profile extends Table {
   IntColumn get profileAge => integer().nullable()();
   IntColumn get profileLastSeenTimeValue => integer().nullable()();
   BoolColumn get profileUnlimitedLikes => boolean().nullable()();
-  TextColumn get jsonProfileAttributes => text().map(NullAwareTypeConverter.wrap(JsonList.driftConverter)).nullable()();
+  TextColumn get jsonProfileAttributes => text().map(NullAwareTypeConverter.wrap(const ProfileAttributeValueConverter())).nullable()();
 
   RealColumn get primaryContentGridCropSize => real().nullable()();
   RealColumn get primaryContentGridCropX => real().nullable()();

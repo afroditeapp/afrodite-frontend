@@ -1,5 +1,6 @@
 
 import 'package:database_account_foreground/src/database.dart';
+import 'package:database_converter/database_converter.dart';
 import 'package:database_model/database_model.dart';
 import 'package:database_utils/database_utils.dart';
 import 'package:drift/drift.dart';
@@ -43,7 +44,7 @@ class DaoReadMyProfile extends DatabaseAccessor<AccountForegroundDatabase> with 
     final profileTextModerationRejectedCategory = r.profileTextModerationRejectedCategory;
     final profileTextModerationRejectedDetails = r.profileTextModerationRejectedDetails;
     final profileAge = r.profileAge;
-    final profileAttributes = r.jsonProfileAttributes?.toProfileAttributes();
+    final profileAttributes = r.jsonProfileAttributes?.value.toProfileAttributesMap();
     final profileVersion = r.profileVersion;
     final profileContentVersion = r.profileContentVersion;
     final profileUnlimitedLikes = r.profileUnlimitedLikes;
@@ -90,7 +91,7 @@ class DaoReadMyProfile extends DatabaseAccessor<AccountForegroundDatabase> with 
   }
 
   Stream<Map<int, api.ProfileAttributeValueUpdate>?> watchMyProfileAttributes() =>
-    watchColumnMyProfile((r) => r.jsonProfileAttributes?.toProfileAttributes());
+    watchColumnMyProfile((r) => r.jsonProfileAttributes?.value.toProfileAttributesMap());
 
   Stream<T?> watchColumnMyProfile<T extends Object>(T? Function(MyProfileData) extractColumn) {
     return (select(myProfile)..where((t) => t.id.equals(SingleRowTable.ID.value)))
