@@ -64,6 +64,8 @@ class MainStateBloc extends Bloc<MainStateEvent, MainState> {
           AccountState.banned => ToAccountBannedScreen(),
           AccountState.pendingDeletion => ToPendingRemovalScreen(),
           AccountState.normal => ToMainScreen(),
+          // TODO(prod): There should be failure case which
+          //             changes to login screen
           _ => null,
         },
       };

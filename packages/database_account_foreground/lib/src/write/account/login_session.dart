@@ -47,7 +47,7 @@ class DaoWriteLoginSession extends DatabaseAccessor<AccountForegroundDatabase> w
     });
   }
 
-  Future<void> updateRefreshTokenAccount(String? token) async {
+  Future<void> updateRefreshTokenAccount(api.RefreshToken? token) async {
     await into(loginSessionTokens).insertOnConflictUpdate(
       LoginSessionTokensCompanion.insert(
         id: SingleRowTable.ID,
@@ -56,7 +56,7 @@ class DaoWriteLoginSession extends DatabaseAccessor<AccountForegroundDatabase> w
     );
   }
 
-  Future<void> updateRefreshTokenMedia(String? token) async {
+  Future<void> updateRefreshTokenMedia(api.RefreshToken? token) async {
     await into(loginSessionTokens).insertOnConflictUpdate(
       LoginSessionTokensCompanion.insert(
         id: SingleRowTable.ID,
@@ -65,7 +65,7 @@ class DaoWriteLoginSession extends DatabaseAccessor<AccountForegroundDatabase> w
     );
   }
 
-  Future<void> updateRefreshTokenProfile(String? token) async {
+  Future<void> updateRefreshTokenProfile(api.RefreshToken? token) async {
     await into(loginSessionTokens).insertOnConflictUpdate(
       LoginSessionTokensCompanion.insert(
         id: SingleRowTable.ID,
@@ -74,7 +74,7 @@ class DaoWriteLoginSession extends DatabaseAccessor<AccountForegroundDatabase> w
     );
   }
 
-  Future<void> updateRefreshTokenChat(String? token) async {
+  Future<void> updateRefreshTokenChat(api.RefreshToken? token) async {
     await into(loginSessionTokens).insertOnConflictUpdate(
       LoginSessionTokensCompanion.insert(
         id: SingleRowTable.ID,
@@ -83,7 +83,7 @@ class DaoWriteLoginSession extends DatabaseAccessor<AccountForegroundDatabase> w
     );
   }
 
-  Future<void> updateAccessTokenAccount(String? token) async {
+  Future<void> updateAccessTokenAccount(api.AccessToken? token) async {
     await into(loginSessionTokens).insertOnConflictUpdate(
       LoginSessionTokensCompanion.insert(
         id: SingleRowTable.ID,
@@ -92,7 +92,7 @@ class DaoWriteLoginSession extends DatabaseAccessor<AccountForegroundDatabase> w
     );
   }
 
-  Future<void> updateAccessTokenMedia(String? token) async {
+  Future<void> updateAccessTokenMedia(api.AccessToken? token) async {
     await into(loginSessionTokens).insertOnConflictUpdate(
       LoginSessionTokensCompanion.insert(
         id: SingleRowTable.ID,
@@ -101,7 +101,7 @@ class DaoWriteLoginSession extends DatabaseAccessor<AccountForegroundDatabase> w
     );
   }
 
-  Future<void> updateAccessTokenProfile(String? token) async {
+  Future<void> updateAccessTokenProfile(api.AccessToken? token) async {
     await into(loginSessionTokens).insertOnConflictUpdate(
       LoginSessionTokensCompanion.insert(
         id: SingleRowTable.ID,
@@ -110,7 +110,7 @@ class DaoWriteLoginSession extends DatabaseAccessor<AccountForegroundDatabase> w
     );
   }
 
-  Future<void> updateAccessTokenChat(String? token) async {
+  Future<void> updateAccessTokenChat(api.AccessToken? token) async {
     await into(loginSessionTokens).insertOnConflictUpdate(
       LoginSessionTokensCompanion.insert(
         id: SingleRowTable.ID,

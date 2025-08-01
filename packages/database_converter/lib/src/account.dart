@@ -16,6 +16,34 @@ class AccountIdConverter extends TypeConverter<AccountId, String> {
   }
 }
 
+class AccessTokenConverter extends TypeConverter<AccessToken, String> {
+  const AccessTokenConverter();
+
+  @override
+  AccessToken fromSql(fromDb) {
+    return AccessToken(accessToken: fromDb);
+  }
+
+  @override
+  String toSql(value) {
+    return value.accessToken;
+  }
+}
+
+class RefreshTokenConverter extends TypeConverter<RefreshToken, String> {
+  const RefreshTokenConverter();
+
+  @override
+  RefreshToken fromSql(fromDb) {
+    return RefreshToken(token: fromDb);
+  }
+
+  @override
+  String toSql(value) {
+    return value.token;
+  }
+}
+
 class CustomReportsFileHashConverter extends TypeConverter<CustomReportsFileHash, String> {
   const CustomReportsFileHashConverter();
 

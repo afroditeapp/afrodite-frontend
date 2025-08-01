@@ -36,7 +36,7 @@ enum ServerSlot {
   media,
   chat;
 
-  Stream<String?> Function(AccountForegroundDatabaseRead) getterForRefreshTokenKey() {
+  Stream<RefreshToken?> Function(AccountForegroundDatabaseRead) getterForRefreshTokenKey() {
     switch (this) {
       case ServerSlot.account: return (db) => db.loginSession.watchRefreshTokenAccount();
       case ServerSlot.media: return (db) => db.loginSession.watchRefreshTokenMedia();
@@ -45,7 +45,7 @@ enum ServerSlot {
     }
   }
 
-  Future<void> Function(AccountForegroundDatabaseWrite) setterForRefreshTokenKey(String newValue) {
+  Future<void> Function(AccountForegroundDatabaseWrite) setterForRefreshTokenKey(RefreshToken newValue) {
     switch (this) {
       case ServerSlot.account: return (db) => db.loginSession.updateRefreshTokenAccount(newValue);
       case ServerSlot.media: return (db) => db.loginSession.updateRefreshTokenMedia(newValue);
@@ -54,7 +54,7 @@ enum ServerSlot {
     }
   }
 
-  Stream<String?> Function(AccountForegroundDatabaseRead) getterForAccessTokenKey() {
+  Stream<AccessToken?> Function(AccountForegroundDatabaseRead) getterForAccessTokenKey() {
     switch (this) {
       case ServerSlot.account: return (db) => db.loginSession.watchAccessTokenAccount();
       case ServerSlot.media: return (db) => db.loginSession.watchAccessTokenMedia();
@@ -63,7 +63,7 @@ enum ServerSlot {
     }
   }
 
-  Future<void> Function(AccountForegroundDatabaseWrite) setterForAccessTokenKey(String newValue) {
+  Future<void> Function(AccountForegroundDatabaseWrite) setterForAccessTokenKey(AccessToken newValue) {
     switch (this) {
       case ServerSlot.account: return (db) => db.loginSession.updateAccessTokenAccount(newValue);
       case ServerSlot.media: return (db) => db.loginSession.updateAccessTokenMedia(newValue);
@@ -105,13 +105,16 @@ class Connecting implements ServerConnectionState {
 }
 /// Connection exists. New tokens received and event listening started.
 class Ready implements ServerConnectionState {
+  final AccessToken token;
+  const Ready(this.token);
+
   @override
   bool operator ==(Object other) {
-    return other is Ready;
+    return other is Ready && other.token == token;
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode => Object.hash(runtimeType.hashCode, token);
 }
 
 /// No connection. Connection ended in error.
@@ -210,7 +213,7 @@ class ServerConnection {
       }
       final wsAddress = Uri.parse(_address.replaceFirst("http", "ws"));
       try {
-        ws = WebSocketWrapper(WebSocketChannel.connect(wsAddress, protocols: ["0", accessToken]));
+        ws = WebSocketWrapper(WebSocketChannel.connect(wsAddress, protocols: ["0", accessToken.accessToken]));
         _connection = ws;
       } catch (e) {
         log.error("Server connection: WebScocket connecting exception");
@@ -229,7 +232,7 @@ class ServerConnection {
         HttpHeaders.upgradeHeader: "websocket",
         "sec-websocket-version": "13",
         "sec-websocket-key": key,
-        "sec-websocket-protocol": "0,$accessToken",
+        "sec-websocket-protocol": "0,${accessToken.accessToken}",
       };
       final request = Request("GET", Uri.parse(_address));
       request.headers.addAll(headers);
@@ -265,11 +268,11 @@ class ServerConnection {
     // Client starts the messaging
     ws.connection.sink.add(clientVersionInfoBytes());
 
-    Future<void> handleConnectionIsReadyForDataSync() async {
+    Future<void> handleConnectionIsReadyForDataSync(AccessToken token) async {
       ws.connection.sink.add(await syncDataBytes(db, accountBackgroundDb));
       protocolState = ConnectionProtocolState.receiveEvents;
       log.info("Connection ready");
-      _state.add(Ready());
+      _state.add(Ready(token));
       await ws.updatePingInterval(NavigationStateBlocInstance.getInstance().navigationState);
     }
 
@@ -282,9 +285,9 @@ class ServerConnection {
             if (message is List<int>) {
               switch (message) {
                 case [0]:
-                  await handleConnectionIsReadyForDataSync();
+                  await handleConnectionIsReadyForDataSync(accessToken);
                 case [1]:
-                  final byteToken = base64Decode(refreshToken);
+                  final byteToken = base64Decode(refreshToken.token);
                   ws.connection.sink.add(byteToken);
                   protocolState = ConnectionProtocolState.receiveNewRefreshToken;
                 case [2]:
@@ -292,7 +295,7 @@ class ServerConnection {
                 default:
                   await _endConnectionToGeneralError();
               }
-              final newRefreshToken = base64Encode(message);
+              final newRefreshToken = RefreshToken(token: base64Encode(message));
               await db.accountAction(_server.setterForRefreshTokenKey(newRefreshToken));
 
             } else {
@@ -301,7 +304,7 @@ class ServerConnection {
           }
           case ConnectionProtocolState.receiveNewRefreshToken: {
             if (message is List<int>) {
-              final newRefreshToken = base64Encode(message);
+              final newRefreshToken = RefreshToken(token: base64Encode(message));
               await db.accountAction(_server.setterForRefreshTokenKey(newRefreshToken));
               protocolState = ConnectionProtocolState.receiveNewAccessToken;
             } else {
@@ -310,11 +313,13 @@ class ServerConnection {
           }
           case ConnectionProtocolState.receiveNewAccessToken: {
             if (message is List<int>) {
-              final newAccessToken = base64Url
-                .encode(message)
-                .replaceAll("=", "");
+              final newAccessToken = AccessToken(
+                accessToken: base64Url
+                  .encode(message)
+                  .replaceAll("=", "")
+              );
               await db.accountAction(_server.setterForAccessTokenKey(newAccessToken));
-              await handleConnectionIsReadyForDataSync();
+              await handleConnectionIsReadyForDataSync(newAccessToken);
             } else {
               await _endConnectionToGeneralError();
             }

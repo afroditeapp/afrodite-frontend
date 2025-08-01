@@ -392,8 +392,8 @@ class LoginRepository extends DataRepository {
     }
 
     // Login repository
-    await accountDb.accountAction((db) => db.loginSession.updateRefreshTokenAccount(authPair.refresh.token));
-    await accountDb.accountAction((db) => db.loginSession.updateAccessTokenAccount(authPair.access.accessToken));
+    await accountDb.accountAction((db) => db.loginSession.updateRefreshTokenAccount(authPair.refresh));
+    await accountDb.accountAction((db) => db.loginSession.updateAccessTokenAccount(authPair.access));
     // TODO(microservice): microservice support
     await onLogin();
 

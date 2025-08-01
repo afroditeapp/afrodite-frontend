@@ -5668,95 +5668,102 @@ class $LoginSessionTokensTable extends schema.LoginSessionTokens
       'PRIMARY KEY AUTOINCREMENT',
     ),
   );
-  static const VerificationMeta _refreshTokenAccountMeta =
-      const VerificationMeta('refreshTokenAccount');
   @override
-  late final GeneratedColumn<String> refreshTokenAccount =
+  late final GeneratedColumnWithTypeConverter<RefreshToken?, String>
+  refreshTokenAccount =
       GeneratedColumn<String>(
         'refresh_token_account',
         aliasedName,
         true,
         type: DriftSqlType.string,
         requiredDuringInsert: false,
+      ).withConverter<RefreshToken?>(
+        $LoginSessionTokensTable.$converterrefreshTokenAccount,
       );
-  static const VerificationMeta _refreshTokenMediaMeta = const VerificationMeta(
-    'refreshTokenMedia',
-  );
   @override
-  late final GeneratedColumn<String> refreshTokenMedia =
+  late final GeneratedColumnWithTypeConverter<RefreshToken?, String>
+  refreshTokenMedia =
       GeneratedColumn<String>(
         'refresh_token_media',
         aliasedName,
         true,
         type: DriftSqlType.string,
         requiredDuringInsert: false,
+      ).withConverter<RefreshToken?>(
+        $LoginSessionTokensTable.$converterrefreshTokenMedia,
       );
-  static const VerificationMeta _refreshTokenProfileMeta =
-      const VerificationMeta('refreshTokenProfile');
   @override
-  late final GeneratedColumn<String> refreshTokenProfile =
+  late final GeneratedColumnWithTypeConverter<RefreshToken?, String>
+  refreshTokenProfile =
       GeneratedColumn<String>(
         'refresh_token_profile',
         aliasedName,
         true,
         type: DriftSqlType.string,
         requiredDuringInsert: false,
+      ).withConverter<RefreshToken?>(
+        $LoginSessionTokensTable.$converterrefreshTokenProfile,
       );
-  static const VerificationMeta _refreshTokenChatMeta = const VerificationMeta(
-    'refreshTokenChat',
-  );
   @override
-  late final GeneratedColumn<String> refreshTokenChat = GeneratedColumn<String>(
-    'refresh_token_chat',
-    aliasedName,
-    true,
-    type: DriftSqlType.string,
-    requiredDuringInsert: false,
-  );
-  static const VerificationMeta _accessTokenAccountMeta =
-      const VerificationMeta('accessTokenAccount');
+  late final GeneratedColumnWithTypeConverter<RefreshToken?, String>
+  refreshTokenChat =
+      GeneratedColumn<String>(
+        'refresh_token_chat',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      ).withConverter<RefreshToken?>(
+        $LoginSessionTokensTable.$converterrefreshTokenChat,
+      );
   @override
-  late final GeneratedColumn<String> accessTokenAccount =
+  late final GeneratedColumnWithTypeConverter<AccessToken?, String>
+  accessTokenAccount =
       GeneratedColumn<String>(
         'access_token_account',
         aliasedName,
         true,
         type: DriftSqlType.string,
         requiredDuringInsert: false,
+      ).withConverter<AccessToken?>(
+        $LoginSessionTokensTable.$converteraccessTokenAccount,
       );
-  static const VerificationMeta _accessTokenMediaMeta = const VerificationMeta(
-    'accessTokenMedia',
-  );
   @override
-  late final GeneratedColumn<String> accessTokenMedia = GeneratedColumn<String>(
-    'access_token_media',
-    aliasedName,
-    true,
-    type: DriftSqlType.string,
-    requiredDuringInsert: false,
-  );
-  static const VerificationMeta _accessTokenProfileMeta =
-      const VerificationMeta('accessTokenProfile');
+  late final GeneratedColumnWithTypeConverter<AccessToken?, String>
+  accessTokenMedia =
+      GeneratedColumn<String>(
+        'access_token_media',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      ).withConverter<AccessToken?>(
+        $LoginSessionTokensTable.$converteraccessTokenMedia,
+      );
   @override
-  late final GeneratedColumn<String> accessTokenProfile =
+  late final GeneratedColumnWithTypeConverter<AccessToken?, String>
+  accessTokenProfile =
       GeneratedColumn<String>(
         'access_token_profile',
         aliasedName,
         true,
         type: DriftSqlType.string,
         requiredDuringInsert: false,
+      ).withConverter<AccessToken?>(
+        $LoginSessionTokensTable.$converteraccessTokenProfile,
       );
-  static const VerificationMeta _accessTokenChatMeta = const VerificationMeta(
-    'accessTokenChat',
-  );
   @override
-  late final GeneratedColumn<String> accessTokenChat = GeneratedColumn<String>(
-    'access_token_chat',
-    aliasedName,
-    true,
-    type: DriftSqlType.string,
-    requiredDuringInsert: false,
-  );
+  late final GeneratedColumnWithTypeConverter<AccessToken?, String>
+  accessTokenChat =
+      GeneratedColumn<String>(
+        'access_token_chat',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      ).withConverter<AccessToken?>(
+        $LoginSessionTokensTable.$converteraccessTokenChat,
+      );
   @override
   List<GeneratedColumn> get $columns => [
     id,
@@ -5784,78 +5791,6 @@ class $LoginSessionTokensTable extends schema.LoginSessionTokens
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
     }
-    if (data.containsKey('refresh_token_account')) {
-      context.handle(
-        _refreshTokenAccountMeta,
-        refreshTokenAccount.isAcceptableOrUnknown(
-          data['refresh_token_account']!,
-          _refreshTokenAccountMeta,
-        ),
-      );
-    }
-    if (data.containsKey('refresh_token_media')) {
-      context.handle(
-        _refreshTokenMediaMeta,
-        refreshTokenMedia.isAcceptableOrUnknown(
-          data['refresh_token_media']!,
-          _refreshTokenMediaMeta,
-        ),
-      );
-    }
-    if (data.containsKey('refresh_token_profile')) {
-      context.handle(
-        _refreshTokenProfileMeta,
-        refreshTokenProfile.isAcceptableOrUnknown(
-          data['refresh_token_profile']!,
-          _refreshTokenProfileMeta,
-        ),
-      );
-    }
-    if (data.containsKey('refresh_token_chat')) {
-      context.handle(
-        _refreshTokenChatMeta,
-        refreshTokenChat.isAcceptableOrUnknown(
-          data['refresh_token_chat']!,
-          _refreshTokenChatMeta,
-        ),
-      );
-    }
-    if (data.containsKey('access_token_account')) {
-      context.handle(
-        _accessTokenAccountMeta,
-        accessTokenAccount.isAcceptableOrUnknown(
-          data['access_token_account']!,
-          _accessTokenAccountMeta,
-        ),
-      );
-    }
-    if (data.containsKey('access_token_media')) {
-      context.handle(
-        _accessTokenMediaMeta,
-        accessTokenMedia.isAcceptableOrUnknown(
-          data['access_token_media']!,
-          _accessTokenMediaMeta,
-        ),
-      );
-    }
-    if (data.containsKey('access_token_profile')) {
-      context.handle(
-        _accessTokenProfileMeta,
-        accessTokenProfile.isAcceptableOrUnknown(
-          data['access_token_profile']!,
-          _accessTokenProfileMeta,
-        ),
-      );
-    }
-    if (data.containsKey('access_token_chat')) {
-      context.handle(
-        _accessTokenChatMeta,
-        accessTokenChat.isAcceptableOrUnknown(
-          data['access_token_chat']!,
-          _accessTokenChatMeta,
-        ),
-      );
-    }
     return context;
   }
 
@@ -5869,38 +5804,64 @@ class $LoginSessionTokensTable extends schema.LoginSessionTokens
         DriftSqlType.int,
         data['${effectivePrefix}id'],
       )!,
-      refreshTokenAccount: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}refresh_token_account'],
-      ),
-      refreshTokenMedia: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}refresh_token_media'],
-      ),
-      refreshTokenProfile: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}refresh_token_profile'],
-      ),
-      refreshTokenChat: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}refresh_token_chat'],
-      ),
-      accessTokenAccount: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}access_token_account'],
-      ),
-      accessTokenMedia: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}access_token_media'],
-      ),
-      accessTokenProfile: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}access_token_profile'],
-      ),
-      accessTokenChat: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}access_token_chat'],
-      ),
+      refreshTokenAccount: $LoginSessionTokensTable
+          .$converterrefreshTokenAccount
+          .fromSql(
+            attachedDatabase.typeMapping.read(
+              DriftSqlType.string,
+              data['${effectivePrefix}refresh_token_account'],
+            ),
+          ),
+      refreshTokenMedia: $LoginSessionTokensTable.$converterrefreshTokenMedia
+          .fromSql(
+            attachedDatabase.typeMapping.read(
+              DriftSqlType.string,
+              data['${effectivePrefix}refresh_token_media'],
+            ),
+          ),
+      refreshTokenProfile: $LoginSessionTokensTable
+          .$converterrefreshTokenProfile
+          .fromSql(
+            attachedDatabase.typeMapping.read(
+              DriftSqlType.string,
+              data['${effectivePrefix}refresh_token_profile'],
+            ),
+          ),
+      refreshTokenChat: $LoginSessionTokensTable.$converterrefreshTokenChat
+          .fromSql(
+            attachedDatabase.typeMapping.read(
+              DriftSqlType.string,
+              data['${effectivePrefix}refresh_token_chat'],
+            ),
+          ),
+      accessTokenAccount: $LoginSessionTokensTable.$converteraccessTokenAccount
+          .fromSql(
+            attachedDatabase.typeMapping.read(
+              DriftSqlType.string,
+              data['${effectivePrefix}access_token_account'],
+            ),
+          ),
+      accessTokenMedia: $LoginSessionTokensTable.$converteraccessTokenMedia
+          .fromSql(
+            attachedDatabase.typeMapping.read(
+              DriftSqlType.string,
+              data['${effectivePrefix}access_token_media'],
+            ),
+          ),
+      accessTokenProfile: $LoginSessionTokensTable.$converteraccessTokenProfile
+          .fromSql(
+            attachedDatabase.typeMapping.read(
+              DriftSqlType.string,
+              data['${effectivePrefix}access_token_profile'],
+            ),
+          ),
+      accessTokenChat: $LoginSessionTokensTable.$converteraccessTokenChat
+          .fromSql(
+            attachedDatabase.typeMapping.read(
+              DriftSqlType.string,
+              data['${effectivePrefix}access_token_chat'],
+            ),
+          ),
     );
   }
 
@@ -5908,19 +5869,36 @@ class $LoginSessionTokensTable extends schema.LoginSessionTokens
   $LoginSessionTokensTable createAlias(String alias) {
     return $LoginSessionTokensTable(attachedDatabase, alias);
   }
+
+  static TypeConverter<RefreshToken?, String?> $converterrefreshTokenAccount =
+      NullAwareTypeConverter.wrap(RefreshTokenConverter());
+  static TypeConverter<RefreshToken?, String?> $converterrefreshTokenMedia =
+      NullAwareTypeConverter.wrap(RefreshTokenConverter());
+  static TypeConverter<RefreshToken?, String?> $converterrefreshTokenProfile =
+      NullAwareTypeConverter.wrap(RefreshTokenConverter());
+  static TypeConverter<RefreshToken?, String?> $converterrefreshTokenChat =
+      NullAwareTypeConverter.wrap(RefreshTokenConverter());
+  static TypeConverter<AccessToken?, String?> $converteraccessTokenAccount =
+      NullAwareTypeConverter.wrap(AccessTokenConverter());
+  static TypeConverter<AccessToken?, String?> $converteraccessTokenMedia =
+      NullAwareTypeConverter.wrap(AccessTokenConverter());
+  static TypeConverter<AccessToken?, String?> $converteraccessTokenProfile =
+      NullAwareTypeConverter.wrap(AccessTokenConverter());
+  static TypeConverter<AccessToken?, String?> $converteraccessTokenChat =
+      NullAwareTypeConverter.wrap(AccessTokenConverter());
 }
 
 class LoginSessionToken extends DataClass
     implements Insertable<LoginSessionToken> {
   final int id;
-  final String? refreshTokenAccount;
-  final String? refreshTokenMedia;
-  final String? refreshTokenProfile;
-  final String? refreshTokenChat;
-  final String? accessTokenAccount;
-  final String? accessTokenMedia;
-  final String? accessTokenProfile;
-  final String? accessTokenChat;
+  final RefreshToken? refreshTokenAccount;
+  final RefreshToken? refreshTokenMedia;
+  final RefreshToken? refreshTokenProfile;
+  final RefreshToken? refreshTokenChat;
+  final AccessToken? accessTokenAccount;
+  final AccessToken? accessTokenMedia;
+  final AccessToken? accessTokenProfile;
+  final AccessToken? accessTokenChat;
   const LoginSessionToken({
     required this.id,
     this.refreshTokenAccount,
@@ -5937,28 +5915,60 @@ class LoginSessionToken extends DataClass
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     if (!nullToAbsent || refreshTokenAccount != null) {
-      map['refresh_token_account'] = Variable<String>(refreshTokenAccount);
+      map['refresh_token_account'] = Variable<String>(
+        $LoginSessionTokensTable.$converterrefreshTokenAccount.toSql(
+          refreshTokenAccount,
+        ),
+      );
     }
     if (!nullToAbsent || refreshTokenMedia != null) {
-      map['refresh_token_media'] = Variable<String>(refreshTokenMedia);
+      map['refresh_token_media'] = Variable<String>(
+        $LoginSessionTokensTable.$converterrefreshTokenMedia.toSql(
+          refreshTokenMedia,
+        ),
+      );
     }
     if (!nullToAbsent || refreshTokenProfile != null) {
-      map['refresh_token_profile'] = Variable<String>(refreshTokenProfile);
+      map['refresh_token_profile'] = Variable<String>(
+        $LoginSessionTokensTable.$converterrefreshTokenProfile.toSql(
+          refreshTokenProfile,
+        ),
+      );
     }
     if (!nullToAbsent || refreshTokenChat != null) {
-      map['refresh_token_chat'] = Variable<String>(refreshTokenChat);
+      map['refresh_token_chat'] = Variable<String>(
+        $LoginSessionTokensTable.$converterrefreshTokenChat.toSql(
+          refreshTokenChat,
+        ),
+      );
     }
     if (!nullToAbsent || accessTokenAccount != null) {
-      map['access_token_account'] = Variable<String>(accessTokenAccount);
+      map['access_token_account'] = Variable<String>(
+        $LoginSessionTokensTable.$converteraccessTokenAccount.toSql(
+          accessTokenAccount,
+        ),
+      );
     }
     if (!nullToAbsent || accessTokenMedia != null) {
-      map['access_token_media'] = Variable<String>(accessTokenMedia);
+      map['access_token_media'] = Variable<String>(
+        $LoginSessionTokensTable.$converteraccessTokenMedia.toSql(
+          accessTokenMedia,
+        ),
+      );
     }
     if (!nullToAbsent || accessTokenProfile != null) {
-      map['access_token_profile'] = Variable<String>(accessTokenProfile);
+      map['access_token_profile'] = Variable<String>(
+        $LoginSessionTokensTable.$converteraccessTokenProfile.toSql(
+          accessTokenProfile,
+        ),
+      );
     }
     if (!nullToAbsent || accessTokenChat != null) {
-      map['access_token_chat'] = Variable<String>(accessTokenChat);
+      map['access_token_chat'] = Variable<String>(
+        $LoginSessionTokensTable.$converteraccessTokenChat.toSql(
+          accessTokenChat,
+        ),
+      );
     }
     return map;
   }
@@ -6000,24 +6010,30 @@ class LoginSessionToken extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return LoginSessionToken(
       id: serializer.fromJson<int>(json['id']),
-      refreshTokenAccount: serializer.fromJson<String?>(
+      refreshTokenAccount: serializer.fromJson<RefreshToken?>(
         json['refreshTokenAccount'],
       ),
-      refreshTokenMedia: serializer.fromJson<String?>(
+      refreshTokenMedia: serializer.fromJson<RefreshToken?>(
         json['refreshTokenMedia'],
       ),
-      refreshTokenProfile: serializer.fromJson<String?>(
+      refreshTokenProfile: serializer.fromJson<RefreshToken?>(
         json['refreshTokenProfile'],
       ),
-      refreshTokenChat: serializer.fromJson<String?>(json['refreshTokenChat']),
-      accessTokenAccount: serializer.fromJson<String?>(
+      refreshTokenChat: serializer.fromJson<RefreshToken?>(
+        json['refreshTokenChat'],
+      ),
+      accessTokenAccount: serializer.fromJson<AccessToken?>(
         json['accessTokenAccount'],
       ),
-      accessTokenMedia: serializer.fromJson<String?>(json['accessTokenMedia']),
-      accessTokenProfile: serializer.fromJson<String?>(
+      accessTokenMedia: serializer.fromJson<AccessToken?>(
+        json['accessTokenMedia'],
+      ),
+      accessTokenProfile: serializer.fromJson<AccessToken?>(
         json['accessTokenProfile'],
       ),
-      accessTokenChat: serializer.fromJson<String?>(json['accessTokenChat']),
+      accessTokenChat: serializer.fromJson<AccessToken?>(
+        json['accessTokenChat'],
+      ),
     );
   }
   @override
@@ -6025,27 +6041,31 @@ class LoginSessionToken extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
-      'refreshTokenAccount': serializer.toJson<String?>(refreshTokenAccount),
-      'refreshTokenMedia': serializer.toJson<String?>(refreshTokenMedia),
-      'refreshTokenProfile': serializer.toJson<String?>(refreshTokenProfile),
-      'refreshTokenChat': serializer.toJson<String?>(refreshTokenChat),
-      'accessTokenAccount': serializer.toJson<String?>(accessTokenAccount),
-      'accessTokenMedia': serializer.toJson<String?>(accessTokenMedia),
-      'accessTokenProfile': serializer.toJson<String?>(accessTokenProfile),
-      'accessTokenChat': serializer.toJson<String?>(accessTokenChat),
+      'refreshTokenAccount': serializer.toJson<RefreshToken?>(
+        refreshTokenAccount,
+      ),
+      'refreshTokenMedia': serializer.toJson<RefreshToken?>(refreshTokenMedia),
+      'refreshTokenProfile': serializer.toJson<RefreshToken?>(
+        refreshTokenProfile,
+      ),
+      'refreshTokenChat': serializer.toJson<RefreshToken?>(refreshTokenChat),
+      'accessTokenAccount': serializer.toJson<AccessToken?>(accessTokenAccount),
+      'accessTokenMedia': serializer.toJson<AccessToken?>(accessTokenMedia),
+      'accessTokenProfile': serializer.toJson<AccessToken?>(accessTokenProfile),
+      'accessTokenChat': serializer.toJson<AccessToken?>(accessTokenChat),
     };
   }
 
   LoginSessionToken copyWith({
     int? id,
-    Value<String?> refreshTokenAccount = const Value.absent(),
-    Value<String?> refreshTokenMedia = const Value.absent(),
-    Value<String?> refreshTokenProfile = const Value.absent(),
-    Value<String?> refreshTokenChat = const Value.absent(),
-    Value<String?> accessTokenAccount = const Value.absent(),
-    Value<String?> accessTokenMedia = const Value.absent(),
-    Value<String?> accessTokenProfile = const Value.absent(),
-    Value<String?> accessTokenChat = const Value.absent(),
+    Value<RefreshToken?> refreshTokenAccount = const Value.absent(),
+    Value<RefreshToken?> refreshTokenMedia = const Value.absent(),
+    Value<RefreshToken?> refreshTokenProfile = const Value.absent(),
+    Value<RefreshToken?> refreshTokenChat = const Value.absent(),
+    Value<AccessToken?> accessTokenAccount = const Value.absent(),
+    Value<AccessToken?> accessTokenMedia = const Value.absent(),
+    Value<AccessToken?> accessTokenProfile = const Value.absent(),
+    Value<AccessToken?> accessTokenChat = const Value.absent(),
   }) => LoginSessionToken(
     id: id ?? this.id,
     refreshTokenAccount: refreshTokenAccount.present
@@ -6148,14 +6168,14 @@ class LoginSessionToken extends DataClass
 
 class LoginSessionTokensCompanion extends UpdateCompanion<LoginSessionToken> {
   final Value<int> id;
-  final Value<String?> refreshTokenAccount;
-  final Value<String?> refreshTokenMedia;
-  final Value<String?> refreshTokenProfile;
-  final Value<String?> refreshTokenChat;
-  final Value<String?> accessTokenAccount;
-  final Value<String?> accessTokenMedia;
-  final Value<String?> accessTokenProfile;
-  final Value<String?> accessTokenChat;
+  final Value<RefreshToken?> refreshTokenAccount;
+  final Value<RefreshToken?> refreshTokenMedia;
+  final Value<RefreshToken?> refreshTokenProfile;
+  final Value<RefreshToken?> refreshTokenChat;
+  final Value<AccessToken?> accessTokenAccount;
+  final Value<AccessToken?> accessTokenMedia;
+  final Value<AccessToken?> accessTokenProfile;
+  final Value<AccessToken?> accessTokenChat;
   const LoginSessionTokensCompanion({
     this.id = const Value.absent(),
     this.refreshTokenAccount = const Value.absent(),
@@ -6208,14 +6228,14 @@ class LoginSessionTokensCompanion extends UpdateCompanion<LoginSessionToken> {
 
   LoginSessionTokensCompanion copyWith({
     Value<int>? id,
-    Value<String?>? refreshTokenAccount,
-    Value<String?>? refreshTokenMedia,
-    Value<String?>? refreshTokenProfile,
-    Value<String?>? refreshTokenChat,
-    Value<String?>? accessTokenAccount,
-    Value<String?>? accessTokenMedia,
-    Value<String?>? accessTokenProfile,
-    Value<String?>? accessTokenChat,
+    Value<RefreshToken?>? refreshTokenAccount,
+    Value<RefreshToken?>? refreshTokenMedia,
+    Value<RefreshToken?>? refreshTokenProfile,
+    Value<RefreshToken?>? refreshTokenChat,
+    Value<AccessToken?>? accessTokenAccount,
+    Value<AccessToken?>? accessTokenMedia,
+    Value<AccessToken?>? accessTokenProfile,
+    Value<AccessToken?>? accessTokenChat,
   }) {
     return LoginSessionTokensCompanion(
       id: id ?? this.id,
@@ -6238,31 +6258,59 @@ class LoginSessionTokensCompanion extends UpdateCompanion<LoginSessionToken> {
     }
     if (refreshTokenAccount.present) {
       map['refresh_token_account'] = Variable<String>(
-        refreshTokenAccount.value,
+        $LoginSessionTokensTable.$converterrefreshTokenAccount.toSql(
+          refreshTokenAccount.value,
+        ),
       );
     }
     if (refreshTokenMedia.present) {
-      map['refresh_token_media'] = Variable<String>(refreshTokenMedia.value);
+      map['refresh_token_media'] = Variable<String>(
+        $LoginSessionTokensTable.$converterrefreshTokenMedia.toSql(
+          refreshTokenMedia.value,
+        ),
+      );
     }
     if (refreshTokenProfile.present) {
       map['refresh_token_profile'] = Variable<String>(
-        refreshTokenProfile.value,
+        $LoginSessionTokensTable.$converterrefreshTokenProfile.toSql(
+          refreshTokenProfile.value,
+        ),
       );
     }
     if (refreshTokenChat.present) {
-      map['refresh_token_chat'] = Variable<String>(refreshTokenChat.value);
+      map['refresh_token_chat'] = Variable<String>(
+        $LoginSessionTokensTable.$converterrefreshTokenChat.toSql(
+          refreshTokenChat.value,
+        ),
+      );
     }
     if (accessTokenAccount.present) {
-      map['access_token_account'] = Variable<String>(accessTokenAccount.value);
+      map['access_token_account'] = Variable<String>(
+        $LoginSessionTokensTable.$converteraccessTokenAccount.toSql(
+          accessTokenAccount.value,
+        ),
+      );
     }
     if (accessTokenMedia.present) {
-      map['access_token_media'] = Variable<String>(accessTokenMedia.value);
+      map['access_token_media'] = Variable<String>(
+        $LoginSessionTokensTable.$converteraccessTokenMedia.toSql(
+          accessTokenMedia.value,
+        ),
+      );
     }
     if (accessTokenProfile.present) {
-      map['access_token_profile'] = Variable<String>(accessTokenProfile.value);
+      map['access_token_profile'] = Variable<String>(
+        $LoginSessionTokensTable.$converteraccessTokenProfile.toSql(
+          accessTokenProfile.value,
+        ),
+      );
     }
     if (accessTokenChat.present) {
-      map['access_token_chat'] = Variable<String>(accessTokenChat.value);
+      map['access_token_chat'] = Variable<String>(
+        $LoginSessionTokensTable.$converteraccessTokenChat.toSql(
+          accessTokenChat.value,
+        ),
+      );
     }
     return map;
   }

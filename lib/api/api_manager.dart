@@ -139,12 +139,12 @@ class ServerConnectionManager implements LifecycleMethods, ServerConnectionInter
           // Ongoing connection states
           case Connecting():
             _state.add(ApiManagerState.connecting);
-          case Ready(): {
+          case Ready(:final token): {
             if (_reconnectInProgress) {
               showSnackBar("Connected");
               _reconnectInProgress = false;
             }
-            await _account.setupTokensFromDb(accountDb);
+            await _account.setupAccessToken(token);
             _state.add(ApiManagerState.connected);
           }
         }
@@ -281,11 +281,8 @@ class ApiManager implements LifecycleMethods {
     return accountAddress;
   }
 
-  Future<void> setupTokensFromDb(AccountDatabaseManager accountDb) async {
-    final accessTokenAccount = await accountDb.accountStreamSingle((db) => db.loginSession.watchAccessTokenAccount()).ok();
-    if (accessTokenAccount != null) {
-      _account.setAccessToken(AccessToken(accessToken: accessTokenAccount));
-    }
+  Future<void> setupAccessToken(AccessToken token) async {
+    _account.setAccessToken(token);
   }
 
   bool inMicroserviceMode() {
