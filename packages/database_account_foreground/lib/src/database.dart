@@ -59,7 +59,7 @@ part 'database.g.dart';
     schema.AccountState,
     schema.Permissions,
     schema.ProfileVisibility,
-    schema.AccountEmailAddress,
+    schema.EmailAddress,
     schema.AccountId,
     schema.ClientId,
     schema.LoginSessionTokens,

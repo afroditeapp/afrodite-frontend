@@ -14,7 +14,7 @@ part 'account.g.dart';
     schema.AccountState,
     schema.Permissions,
     schema.ProfileVisibility,
-    schema.AccountEmailAddress,
+    schema.EmailAddress,
   ]
 )
 class DaoWriteAccount extends DatabaseAccessor<AccountForegroundDatabase> with _$DaoWriteAccountMixin {
@@ -45,10 +45,10 @@ class DaoWriteAccount extends DatabaseAccessor<AccountForegroundDatabase> with _
   }
 
   Future<void> updateEmailAddress(String? value) async {
-    await into(accountEmailAddress).insertOnConflictUpdate(
-      AccountEmailAddressCompanion.insert(
+    await into(emailAddress).insertOnConflictUpdate(
+      EmailAddressCompanion.insert(
         id: SingleRowTable.ID,
-        accountEmailAddress: Value(value),
+        emailAddress: Value(value),
       ),
     );
   }

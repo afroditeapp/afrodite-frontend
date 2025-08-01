@@ -5054,12 +5054,12 @@ class ProfileVisibilityCompanion
   }
 }
 
-class $AccountEmailAddressTable extends schema.AccountEmailAddress
-    with TableInfo<$AccountEmailAddressTable, AccountEmailAddressData> {
+class $EmailAddressTable extends schema.EmailAddress
+    with TableInfo<$EmailAddressTable, EmailAddressData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $AccountEmailAddressTable(this.attachedDatabase, [this._alias]);
+  $EmailAddressTable(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
@@ -5073,27 +5073,27 @@ class $AccountEmailAddressTable extends schema.AccountEmailAddress
       'PRIMARY KEY AUTOINCREMENT',
     ),
   );
-  static const VerificationMeta _accountEmailAddressMeta =
-      const VerificationMeta('accountEmailAddress');
+  static const VerificationMeta _emailAddressMeta = const VerificationMeta(
+    'emailAddress',
+  );
   @override
-  late final GeneratedColumn<String> accountEmailAddress =
-      GeneratedColumn<String>(
-        'account_email_address',
-        aliasedName,
-        true,
-        type: DriftSqlType.string,
-        requiredDuringInsert: false,
-      );
+  late final GeneratedColumn<String> emailAddress = GeneratedColumn<String>(
+    'email_address',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   @override
-  List<GeneratedColumn> get $columns => [id, accountEmailAddress];
+  List<GeneratedColumn> get $columns => [id, emailAddress];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
-  static const String $name = 'account_email_address';
+  static const String $name = 'email_address';
   @override
   VerificationContext validateIntegrity(
-    Insertable<AccountEmailAddressData> instance, {
+    Insertable<EmailAddressData> instance, {
     bool isInserting = false,
   }) {
     final context = VerificationContext();
@@ -5101,12 +5101,12 @@ class $AccountEmailAddressTable extends schema.AccountEmailAddress
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
     }
-    if (data.containsKey('account_email_address')) {
+    if (data.containsKey('email_address')) {
       context.handle(
-        _accountEmailAddressMeta,
-        accountEmailAddress.isAcceptableOrUnknown(
-          data['account_email_address']!,
-          _accountEmailAddressMeta,
+        _emailAddressMeta,
+        emailAddress.isAcceptableOrUnknown(
+          data['email_address']!,
+          _emailAddressMeta,
         ),
       );
     }
@@ -5116,63 +5116,58 @@ class $AccountEmailAddressTable extends schema.AccountEmailAddress
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  AccountEmailAddressData map(
-    Map<String, dynamic> data, {
-    String? tablePrefix,
-  }) {
+  EmailAddressData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return AccountEmailAddressData(
+    return EmailAddressData(
       id: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
         data['${effectivePrefix}id'],
       )!,
-      accountEmailAddress: attachedDatabase.typeMapping.read(
+      emailAddress: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
-        data['${effectivePrefix}account_email_address'],
+        data['${effectivePrefix}email_address'],
       ),
     );
   }
 
   @override
-  $AccountEmailAddressTable createAlias(String alias) {
-    return $AccountEmailAddressTable(attachedDatabase, alias);
+  $EmailAddressTable createAlias(String alias) {
+    return $EmailAddressTable(attachedDatabase, alias);
   }
 }
 
-class AccountEmailAddressData extends DataClass
-    implements Insertable<AccountEmailAddressData> {
+class EmailAddressData extends DataClass
+    implements Insertable<EmailAddressData> {
   final int id;
-  final String? accountEmailAddress;
-  const AccountEmailAddressData({required this.id, this.accountEmailAddress});
+  final String? emailAddress;
+  const EmailAddressData({required this.id, this.emailAddress});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
-    if (!nullToAbsent || accountEmailAddress != null) {
-      map['account_email_address'] = Variable<String>(accountEmailAddress);
+    if (!nullToAbsent || emailAddress != null) {
+      map['email_address'] = Variable<String>(emailAddress);
     }
     return map;
   }
 
-  AccountEmailAddressCompanion toCompanion(bool nullToAbsent) {
-    return AccountEmailAddressCompanion(
+  EmailAddressCompanion toCompanion(bool nullToAbsent) {
+    return EmailAddressCompanion(
       id: Value(id),
-      accountEmailAddress: accountEmailAddress == null && nullToAbsent
+      emailAddress: emailAddress == null && nullToAbsent
           ? const Value.absent()
-          : Value(accountEmailAddress),
+          : Value(emailAddress),
     );
   }
 
-  factory AccountEmailAddressData.fromJson(
+  factory EmailAddressData.fromJson(
     Map<String, dynamic> json, {
     ValueSerializer? serializer,
   }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return AccountEmailAddressData(
+    return EmailAddressData(
       id: serializer.fromJson<int>(json['id']),
-      accountEmailAddress: serializer.fromJson<String?>(
-        json['accountEmailAddress'],
-      ),
+      emailAddress: serializer.fromJson<String?>(json['emailAddress']),
     );
   }
   @override
@@ -5180,77 +5175,73 @@ class AccountEmailAddressData extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
-      'accountEmailAddress': serializer.toJson<String?>(accountEmailAddress),
+      'emailAddress': serializer.toJson<String?>(emailAddress),
     };
   }
 
-  AccountEmailAddressData copyWith({
+  EmailAddressData copyWith({
     int? id,
-    Value<String?> accountEmailAddress = const Value.absent(),
-  }) => AccountEmailAddressData(
+    Value<String?> emailAddress = const Value.absent(),
+  }) => EmailAddressData(
     id: id ?? this.id,
-    accountEmailAddress: accountEmailAddress.present
-        ? accountEmailAddress.value
-        : this.accountEmailAddress,
+    emailAddress: emailAddress.present ? emailAddress.value : this.emailAddress,
   );
-  AccountEmailAddressData copyWithCompanion(AccountEmailAddressCompanion data) {
-    return AccountEmailAddressData(
+  EmailAddressData copyWithCompanion(EmailAddressCompanion data) {
+    return EmailAddressData(
       id: data.id.present ? data.id.value : this.id,
-      accountEmailAddress: data.accountEmailAddress.present
-          ? data.accountEmailAddress.value
-          : this.accountEmailAddress,
+      emailAddress: data.emailAddress.present
+          ? data.emailAddress.value
+          : this.emailAddress,
     );
   }
 
   @override
   String toString() {
-    return (StringBuffer('AccountEmailAddressData(')
+    return (StringBuffer('EmailAddressData(')
           ..write('id: $id, ')
-          ..write('accountEmailAddress: $accountEmailAddress')
+          ..write('emailAddress: $emailAddress')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, accountEmailAddress);
+  int get hashCode => Object.hash(id, emailAddress);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is AccountEmailAddressData &&
+      (other is EmailAddressData &&
           other.id == this.id &&
-          other.accountEmailAddress == this.accountEmailAddress);
+          other.emailAddress == this.emailAddress);
 }
 
-class AccountEmailAddressCompanion
-    extends UpdateCompanion<AccountEmailAddressData> {
+class EmailAddressCompanion extends UpdateCompanion<EmailAddressData> {
   final Value<int> id;
-  final Value<String?> accountEmailAddress;
-  const AccountEmailAddressCompanion({
+  final Value<String?> emailAddress;
+  const EmailAddressCompanion({
     this.id = const Value.absent(),
-    this.accountEmailAddress = const Value.absent(),
+    this.emailAddress = const Value.absent(),
   });
-  AccountEmailAddressCompanion.insert({
+  EmailAddressCompanion.insert({
     this.id = const Value.absent(),
-    this.accountEmailAddress = const Value.absent(),
+    this.emailAddress = const Value.absent(),
   });
-  static Insertable<AccountEmailAddressData> custom({
+  static Insertable<EmailAddressData> custom({
     Expression<int>? id,
-    Expression<String>? accountEmailAddress,
+    Expression<String>? emailAddress,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
-      if (accountEmailAddress != null)
-        'account_email_address': accountEmailAddress,
+      if (emailAddress != null) 'email_address': emailAddress,
     });
   }
 
-  AccountEmailAddressCompanion copyWith({
+  EmailAddressCompanion copyWith({
     Value<int>? id,
-    Value<String?>? accountEmailAddress,
+    Value<String?>? emailAddress,
   }) {
-    return AccountEmailAddressCompanion(
+    return EmailAddressCompanion(
       id: id ?? this.id,
-      accountEmailAddress: accountEmailAddress ?? this.accountEmailAddress,
+      emailAddress: emailAddress ?? this.emailAddress,
     );
   }
 
@@ -5260,19 +5251,17 @@ class AccountEmailAddressCompanion
     if (id.present) {
       map['id'] = Variable<int>(id.value);
     }
-    if (accountEmailAddress.present) {
-      map['account_email_address'] = Variable<String>(
-        accountEmailAddress.value,
-      );
+    if (emailAddress.present) {
+      map['email_address'] = Variable<String>(emailAddress.value);
     }
     return map;
   }
 
   @override
   String toString() {
-    return (StringBuffer('AccountEmailAddressCompanion(')
+    return (StringBuffer('EmailAddressCompanion(')
           ..write('id: $id, ')
-          ..write('accountEmailAddress: $accountEmailAddress')
+          ..write('emailAddress: $emailAddress')
           ..write(')'))
         .toString();
   }
@@ -13129,8 +13118,7 @@ abstract class _$AccountForegroundDatabase extends GeneratedDatabase {
   late final $PermissionsTable permissions = $PermissionsTable(this);
   late final $ProfileVisibilityTable profileVisibility =
       $ProfileVisibilityTable(this);
-  late final $AccountEmailAddressTable accountEmailAddress =
-      $AccountEmailAddressTable(this);
+  late final $EmailAddressTable emailAddress = $EmailAddressTable(this);
   late final $AccountIdTable accountId = $AccountIdTable(this);
   late final $ClientIdTable clientId = $ClientIdTable(this);
   late final $LoginSessionTokensTable loginSessionTokens =
@@ -13260,7 +13248,7 @@ abstract class _$AccountForegroundDatabase extends GeneratedDatabase {
     accountState,
     permissions,
     profileVisibility,
-    accountEmailAddress,
+    emailAddress,
     accountId,
     clientId,
     loginSessionTokens,

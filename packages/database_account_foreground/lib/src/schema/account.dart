@@ -23,8 +23,8 @@ class ClientId extends SingleRowTable {
   IntColumn get clientId => integer().map(const NullAwareTypeConverter.wrap(ClientIdConverter())).nullable()();
 }
 
-class AccountEmailAddress extends SingleRowTable {
-  TextColumn get accountEmailAddress => text().nullable()();
+class EmailAddress extends SingleRowTable {
+  TextColumn get emailAddress => text().nullable()();
 }
 
 class LoginSessionTokens extends SingleRowTable {

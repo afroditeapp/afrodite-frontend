@@ -14,7 +14,7 @@ part 'account.g.dart';
     schema.AccountState,
     schema.Permissions,
     schema.ProfileVisibility,
-    schema.AccountEmailAddress,
+    schema.EmailAddress,
   ]
 )
 class DaoReadAccount extends DatabaseAccessor<AccountForegroundDatabase> with _$DaoReadAccountMixin {
@@ -36,7 +36,7 @@ class DaoReadAccount extends DatabaseAccessor<AccountForegroundDatabase> with _$
       .watchSingleOrNull();
 
   Stream<String?> watchEmailAddress() =>
-    (select(accountEmailAddress)..where((t) => t.id.equals(SingleRowTable.ID.value)))
-      .map((r) => r.accountEmailAddress)
+    (select(emailAddress)..where((t) => t.id.equals(SingleRowTable.ID.value)))
+      .map((r) => r.emailAddress)
       .watchSingleOrNull();
 }
