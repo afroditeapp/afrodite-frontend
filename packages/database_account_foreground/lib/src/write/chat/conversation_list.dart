@@ -20,15 +20,10 @@ class DaoWriteConversationList extends DatabaseAccessor<AccountForegroundDatabas
     api.AccountId accountId,
     bool value,
   ) async {
-    await into(conversationList).insert(
+    await into(conversationList).insertOnConflictUpdate(
       ConversationListCompanion.insert(
         accountId: accountId,
         isInConversationList: _toGroupValue(value),
-      ),
-      onConflict: DoUpdate((old) => ConversationListCompanion(
-        isInConversationList: _toGroupValue(value),
-      ),
-        target: [conversationList.accountId]
       ),
     );
   }
@@ -37,15 +32,10 @@ class DaoWriteConversationList extends DatabaseAccessor<AccountForegroundDatabas
     api.AccountId accountId,
     bool value,
   ) async {
-    await into(conversationList).insert(
+    await into(conversationList).insertOnConflictUpdate(
       ConversationListCompanion.insert(
         accountId: accountId,
         isInSentBlocks: _toGroupValue(value),
-      ),
-      onConflict: DoUpdate((old) => ConversationListCompanion(
-        isInSentBlocks: _toGroupValue(value),
-      ),
-        target: [conversationList.accountId]
       ),
     );
   }
@@ -72,15 +62,10 @@ class DaoWriteConversationList extends DatabaseAccessor<AccountForegroundDatabas
 
   Future<void> setCurrentTimeToConversationLastChanged(api.AccountId accountId) async {
     final currentTime = UtcDateTime.now();
-    await into(conversationList).insert(
+    await into(conversationList).insertOnConflictUpdate(
       ConversationListCompanion.insert(
         accountId: accountId,
         conversationLastChangedTime: Value(currentTime),
-      ),
-      onConflict: DoUpdate((old) => ConversationListCompanion(
-        conversationLastChangedTime: Value(currentTime),
-      ),
-        target: [conversationList.accountId]
       ),
     );
   }
