@@ -8,11 +8,11 @@ class AccountId extends SingleRowTable {
 }
 
 class AccountState extends SingleRowTable {
-  TextColumn get jsonAccountState => text().map(NullAwareTypeConverter.wrap(JsonString.driftConverter)).nullable()();
+  TextColumn get jsonAccountState => text().map(NullAwareTypeConverter.wrap(const AccountStateContainerConverter())).nullable()();
 }
 
 class Permissions extends SingleRowTable {
-  TextColumn get jsonPermissions => text().map(NullAwareTypeConverter.wrap(JsonString.driftConverter)).nullable()();
+  TextColumn get jsonPermissions => text().map(NullAwareTypeConverter.wrap(const PermissionsConverter())).nullable()();
 }
 
 class ProfileVisibility extends SingleRowTable {

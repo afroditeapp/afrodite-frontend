@@ -26,7 +26,7 @@ class DaoReadConfig extends DatabaseAccessor<AccountForegroundDatabase> with _$D
   Stream<api.ClientFeaturesFileHash?> watchClientFeaturesFileHash() =>
     _watchColumnClientFeatures((r) => r.clientFeaturesFileHash);
   Stream<api.ClientFeaturesConfig?> watchClientFeaturesConfig() =>
-    _watchColumnClientFeatures((r) => r.clientFeaturesConfig?.toClientFeaturesConfig());
+    _watchColumnClientFeatures((r) => r.clientFeaturesConfig?.value);
 
   Stream<T?> _watchColumnClientFeatures<T extends Object>(T? Function(ClientFeaturesConfigData) extractColumn) {
     return (select(clientFeaturesConfig)..where((t) => t.id.equals(SingleRowTable.ID.value)))
@@ -37,7 +37,7 @@ class DaoReadConfig extends DatabaseAccessor<AccountForegroundDatabase> with _$D
   Stream<api.CustomReportsFileHash?> watchCustomReportsFileHash() =>
     _watchColumnCustomReports((r) => r.customReportsFileHash);
   Stream<api.CustomReportsConfig?> watchCustomReportsConfig() =>
-    _watchColumnCustomReports((r) => r.customReportsConfig?.toCustomReportsConfig());
+    _watchColumnCustomReports((r) => r.customReportsConfig?.value);
 
   Stream<T?> _watchColumnCustomReports<T extends Object>(T? Function(CustomReportsConfigData) extractColumn) {
     return (select(customReportsConfig)..where((t) => t.id.equals(SingleRowTable.ID.value)))
@@ -76,7 +76,7 @@ class DaoReadConfig extends DatabaseAccessor<AccountForegroundDatabase> with _$D
       .map((r) {
         final List<ProfileAttributeAndHash> attributes = [];
         for (final item in r) {
-          final attribute = item.jsonAttribute.toAttribute();
+          final attribute = item.jsonAttribute.value;
           if (attribute == null) {
             return null;
           }

@@ -19,7 +19,7 @@ class DaoReadSearch extends DatabaseAccessor<AccountForegroundDatabase> with _$D
   DaoReadSearch(super.db);
 
   Stream<api.GetProfileFilteringSettings?> watchProfileFilteringSettings() =>
-    _watchColumnFilters((r) => r.jsonProfileFilters?.toProfileAttributeFilterList());
+    _watchColumnFilters((r) => r.jsonProfileFilters?.value);
 
   Stream<T?> _watchColumnFilters<T extends Object>(T? Function(ProfileFilter) extractColumn) {
     return (select(profileFilters)..where((t) => t.id.equals(SingleRowTable.ID.value)))
@@ -40,7 +40,7 @@ class DaoReadSearch extends DatabaseAccessor<AccountForegroundDatabase> with _$D
   }
 
   Stream<api.SearchGroups?> watchSearchGroups() =>
-    _watchColumnGroups((r) => r.jsonProfileSearchGroups?.toSearchGroups());
+    _watchColumnGroups((r) => r.jsonProfileSearchGroups?.value);
 
   Stream<T?> _watchColumnGroups<T extends Object>(T? Function(ProfileSearchGroup) extractColumn) {
     return (select(profileSearchGroups)..where((t) => t.id.equals(SingleRowTable.ID.value)))

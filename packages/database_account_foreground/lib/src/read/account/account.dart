@@ -22,7 +22,7 @@ class DaoReadAccount extends DatabaseAccessor<AccountForegroundDatabase> with _$
 
   Stream<dbm.AccountState?> watchAccountState() =>
     (select(accountState)..where((t) => t.id.equals(SingleRowTable.ID.value)))
-      .map((r) => r.jsonAccountState?.toAccountStateContainer()?.toAccountState())
+      .map((r) => r.jsonAccountState?.value?.toAccountState())
       .watchSingleOrNull();
 
   Stream<api.ProfileVisibility?> watchProfileVisibility() =>
@@ -32,7 +32,7 @@ class DaoReadAccount extends DatabaseAccessor<AccountForegroundDatabase> with _$
 
   Stream<api.Permissions?> watchPermissions() =>
     (select(permissions)..where((t) => t.id.equals(SingleRowTable.ID.value)))
-      .map((r) => r.jsonPermissions?.toPermissions())
+      .map((r) => r.jsonPermissions?.value)
       .watchSingleOrNull();
 
   Stream<String?> watchEmailAddress() =>

@@ -28,12 +28,12 @@ class ServerMaintenance extends SingleRowTable {
 
 class CustomReportsConfig extends SingleRowTable {
   TextColumn get customReportsFileHash => text().map(const NullAwareTypeConverter.wrap(CustomReportsFileHashConverter())).nullable()();
-  TextColumn get customReportsConfig => text().map(NullAwareTypeConverter.wrap(JsonString.driftConverter)).nullable()();
+  TextColumn get customReportsConfig => text().map(NullAwareTypeConverter.wrap(const CustomReportsConfigConverter())).nullable()();
 }
 
 class ClientFeaturesConfig extends SingleRowTable {
   TextColumn get clientFeaturesFileHash => text().map(const NullAwareTypeConverter.wrap(ClientFeaturesFileHashConverter())).nullable()();
-  TextColumn get clientFeaturesConfig => text().map(NullAwareTypeConverter.wrap(JsonString.driftConverter)).nullable()();
+  TextColumn get clientFeaturesConfig => text().map(NullAwareTypeConverter.wrap(const ClientFeaturesConfigConverter())).nullable()();
 }
 
 class ProfileAttributesConfig extends SingleRowTable {
@@ -43,7 +43,7 @@ class ProfileAttributesConfig extends SingleRowTable {
 class ProfileAttributesConfigAttributes extends Table {
   /// Attribute ID
   IntColumn get id => integer()();
-  TextColumn get jsonAttribute => text().map(JsonString.driftConverter)();
+  TextColumn get jsonAttribute => text().map(const AttributeConverter())();
   TextColumn get attributeHash => text().map(const ProfileAttributeHashConverter())();
 
   @override

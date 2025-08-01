@@ -6,6 +6,5 @@ export 'src/common.dart';
 export 'src/profile.dart';
 export 'src/media.dart';
 export 'src/enum_string.dart';
-export 'src/json/string.dart';
 export 'src/json/list.dart';
 export 'src/json/object.dart';

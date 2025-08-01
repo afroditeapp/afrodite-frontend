@@ -3220,7 +3220,10 @@ class $ClientFeaturesConfigTable extends schema.ClientFeaturesConfig
         $ClientFeaturesConfigTable.$converterclientFeaturesFileHash,
       );
   @override
-  late final GeneratedColumnWithTypeConverter<JsonString?, String>
+  late final GeneratedColumnWithTypeConverter<
+    JsonObject<ClientFeaturesConfig>?,
+    String
+  >
   clientFeaturesConfig =
       GeneratedColumn<String>(
         'client_features_config',
@@ -3228,7 +3231,7 @@ class $ClientFeaturesConfigTable extends schema.ClientFeaturesConfig
         true,
         type: DriftSqlType.string,
         requiredDuringInsert: false,
-      ).withConverter<JsonString?>(
+      ).withConverter<JsonObject<ClientFeaturesConfig>?>(
         $ClientFeaturesConfigTable.$converterclientFeaturesConfig,
       );
   @override
@@ -3296,15 +3299,17 @@ class $ClientFeaturesConfigTable extends schema.ClientFeaturesConfig
   $converterclientFeaturesFileHash = const NullAwareTypeConverter.wrap(
     ClientFeaturesFileHashConverter(),
   );
-  static TypeConverter<JsonString?, String?> $converterclientFeaturesConfig =
-      NullAwareTypeConverter.wrap(JsonString.driftConverter);
+  static TypeConverter<JsonObject<ClientFeaturesConfig>?, String?>
+  $converterclientFeaturesConfig = NullAwareTypeConverter.wrap(
+    const ClientFeaturesConfigConverter(),
+  );
 }
 
 class ClientFeaturesConfigData extends DataClass
     implements Insertable<ClientFeaturesConfigData> {
   final int id;
   final ClientFeaturesFileHash? clientFeaturesFileHash;
-  final JsonString? clientFeaturesConfig;
+  final JsonObject<ClientFeaturesConfig>? clientFeaturesConfig;
   const ClientFeaturesConfigData({
     required this.id,
     this.clientFeaturesFileHash,
@@ -3353,9 +3358,10 @@ class ClientFeaturesConfigData extends DataClass
       clientFeaturesFileHash: serializer.fromJson<ClientFeaturesFileHash?>(
         json['clientFeaturesFileHash'],
       ),
-      clientFeaturesConfig: serializer.fromJson<JsonString?>(
-        json['clientFeaturesConfig'],
-      ),
+      clientFeaturesConfig: serializer
+          .fromJson<JsonObject<ClientFeaturesConfig>?>(
+            json['clientFeaturesConfig'],
+          ),
     );
   }
   @override
@@ -3366,9 +3372,8 @@ class ClientFeaturesConfigData extends DataClass
       'clientFeaturesFileHash': serializer.toJson<ClientFeaturesFileHash?>(
         clientFeaturesFileHash,
       ),
-      'clientFeaturesConfig': serializer.toJson<JsonString?>(
-        clientFeaturesConfig,
-      ),
+      'clientFeaturesConfig': serializer
+          .toJson<JsonObject<ClientFeaturesConfig>?>(clientFeaturesConfig),
     };
   }
 
@@ -3376,7 +3381,8 @@ class ClientFeaturesConfigData extends DataClass
     int? id,
     Value<ClientFeaturesFileHash?> clientFeaturesFileHash =
         const Value.absent(),
-    Value<JsonString?> clientFeaturesConfig = const Value.absent(),
+    Value<JsonObject<ClientFeaturesConfig>?> clientFeaturesConfig =
+        const Value.absent(),
   }) => ClientFeaturesConfigData(
     id: id ?? this.id,
     clientFeaturesFileHash: clientFeaturesFileHash.present
@@ -3426,7 +3432,7 @@ class ClientFeaturesConfigCompanion
     extends UpdateCompanion<ClientFeaturesConfigData> {
   final Value<int> id;
   final Value<ClientFeaturesFileHash?> clientFeaturesFileHash;
-  final Value<JsonString?> clientFeaturesConfig;
+  final Value<JsonObject<ClientFeaturesConfig>?> clientFeaturesConfig;
   const ClientFeaturesConfigCompanion({
     this.id = const Value.absent(),
     this.clientFeaturesFileHash = const Value.absent(),
@@ -3454,7 +3460,7 @@ class ClientFeaturesConfigCompanion
   ClientFeaturesConfigCompanion copyWith({
     Value<int>? id,
     Value<ClientFeaturesFileHash?>? clientFeaturesFileHash,
-    Value<JsonString?>? clientFeaturesConfig,
+    Value<JsonObject<ClientFeaturesConfig>?>? clientFeaturesConfig,
   }) {
     return ClientFeaturesConfigCompanion(
       id: id ?? this.id,
@@ -3530,7 +3536,10 @@ class $CustomReportsConfigTable extends schema.CustomReportsConfig
         $CustomReportsConfigTable.$convertercustomReportsFileHash,
       );
   @override
-  late final GeneratedColumnWithTypeConverter<JsonString?, String>
+  late final GeneratedColumnWithTypeConverter<
+    JsonObject<CustomReportsConfig>?,
+    String
+  >
   customReportsConfig =
       GeneratedColumn<String>(
         'custom_reports_config',
@@ -3538,7 +3547,7 @@ class $CustomReportsConfigTable extends schema.CustomReportsConfig
         true,
         type: DriftSqlType.string,
         requiredDuringInsert: false,
-      ).withConverter<JsonString?>(
+      ).withConverter<JsonObject<CustomReportsConfig>?>(
         $CustomReportsConfigTable.$convertercustomReportsConfig,
       );
   @override
@@ -3606,15 +3615,17 @@ class $CustomReportsConfigTable extends schema.CustomReportsConfig
   $convertercustomReportsFileHash = const NullAwareTypeConverter.wrap(
     CustomReportsFileHashConverter(),
   );
-  static TypeConverter<JsonString?, String?> $convertercustomReportsConfig =
-      NullAwareTypeConverter.wrap(JsonString.driftConverter);
+  static TypeConverter<JsonObject<CustomReportsConfig>?, String?>
+  $convertercustomReportsConfig = NullAwareTypeConverter.wrap(
+    const CustomReportsConfigConverter(),
+  );
 }
 
 class CustomReportsConfigData extends DataClass
     implements Insertable<CustomReportsConfigData> {
   final int id;
   final CustomReportsFileHash? customReportsFileHash;
-  final JsonString? customReportsConfig;
+  final JsonObject<CustomReportsConfig>? customReportsConfig;
   const CustomReportsConfigData({
     required this.id,
     this.customReportsFileHash,
@@ -3663,9 +3674,10 @@ class CustomReportsConfigData extends DataClass
       customReportsFileHash: serializer.fromJson<CustomReportsFileHash?>(
         json['customReportsFileHash'],
       ),
-      customReportsConfig: serializer.fromJson<JsonString?>(
-        json['customReportsConfig'],
-      ),
+      customReportsConfig: serializer
+          .fromJson<JsonObject<CustomReportsConfig>?>(
+            json['customReportsConfig'],
+          ),
     );
   }
   @override
@@ -3676,16 +3688,16 @@ class CustomReportsConfigData extends DataClass
       'customReportsFileHash': serializer.toJson<CustomReportsFileHash?>(
         customReportsFileHash,
       ),
-      'customReportsConfig': serializer.toJson<JsonString?>(
-        customReportsConfig,
-      ),
+      'customReportsConfig': serializer
+          .toJson<JsonObject<CustomReportsConfig>?>(customReportsConfig),
     };
   }
 
   CustomReportsConfigData copyWith({
     int? id,
     Value<CustomReportsFileHash?> customReportsFileHash = const Value.absent(),
-    Value<JsonString?> customReportsConfig = const Value.absent(),
+    Value<JsonObject<CustomReportsConfig>?> customReportsConfig =
+        const Value.absent(),
   }) => CustomReportsConfigData(
     id: id ?? this.id,
     customReportsFileHash: customReportsFileHash.present
@@ -3733,7 +3745,7 @@ class CustomReportsConfigCompanion
     extends UpdateCompanion<CustomReportsConfigData> {
   final Value<int> id;
   final Value<CustomReportsFileHash?> customReportsFileHash;
-  final Value<JsonString?> customReportsConfig;
+  final Value<JsonObject<CustomReportsConfig>?> customReportsConfig;
   const CustomReportsConfigCompanion({
     this.id = const Value.absent(),
     this.customReportsFileHash = const Value.absent(),
@@ -3761,7 +3773,7 @@ class CustomReportsConfigCompanion
   CustomReportsConfigCompanion copyWith({
     Value<int>? id,
     Value<CustomReportsFileHash?>? customReportsFileHash,
-    Value<JsonString?>? customReportsConfig,
+    Value<JsonObject<CustomReportsConfig>?>? customReportsConfig,
   }) {
     return CustomReportsConfigCompanion(
       id: id ?? this.id,
@@ -4079,7 +4091,7 @@ class $ProfileAttributesConfigAttributesTable
     requiredDuringInsert: false,
   );
   @override
-  late final GeneratedColumnWithTypeConverter<JsonString, String>
+  late final GeneratedColumnWithTypeConverter<JsonObject<Attribute>, String>
   jsonAttribute =
       GeneratedColumn<String>(
         'json_attribute',
@@ -4087,7 +4099,7 @@ class $ProfileAttributesConfigAttributesTable
         false,
         type: DriftSqlType.string,
         requiredDuringInsert: true,
-      ).withConverter<JsonString>(
+      ).withConverter<JsonObject<Attribute>>(
         $ProfileAttributesConfigAttributesTable.$converterjsonAttribute,
       );
   @override
@@ -4159,8 +4171,8 @@ class $ProfileAttributesConfigAttributesTable
     return $ProfileAttributesConfigAttributesTable(attachedDatabase, alias);
   }
 
-  static TypeConverter<JsonString, String> $converterjsonAttribute =
-      JsonString.driftConverter;
+  static TypeConverter<JsonObject<Attribute>, String> $converterjsonAttribute =
+      const AttributeConverter();
   static TypeConverter<ProfileAttributeHash, String> $converterattributeHash =
       const ProfileAttributeHashConverter();
 }
@@ -4169,7 +4181,7 @@ class ProfileAttributesConfigAttribute extends DataClass
     implements Insertable<ProfileAttributesConfigAttribute> {
   /// Attribute ID
   final int id;
-  final JsonString jsonAttribute;
+  final JsonObject<Attribute> jsonAttribute;
   final ProfileAttributeHash attributeHash;
   const ProfileAttributesConfigAttribute({
     required this.id,
@@ -4212,7 +4224,9 @@ class ProfileAttributesConfigAttribute extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return ProfileAttributesConfigAttribute(
       id: serializer.fromJson<int>(json['id']),
-      jsonAttribute: serializer.fromJson<JsonString>(json['jsonAttribute']),
+      jsonAttribute: serializer.fromJson<JsonObject<Attribute>>(
+        json['jsonAttribute'],
+      ),
       attributeHash: serializer.fromJson<ProfileAttributeHash>(
         json['attributeHash'],
       ),
@@ -4223,14 +4237,14 @@ class ProfileAttributesConfigAttribute extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
-      'jsonAttribute': serializer.toJson<JsonString>(jsonAttribute),
+      'jsonAttribute': serializer.toJson<JsonObject<Attribute>>(jsonAttribute),
       'attributeHash': serializer.toJson<ProfileAttributeHash>(attributeHash),
     };
   }
 
   ProfileAttributesConfigAttribute copyWith({
     int? id,
-    JsonString? jsonAttribute,
+    JsonObject<Attribute>? jsonAttribute,
     ProfileAttributeHash? attributeHash,
   }) => ProfileAttributesConfigAttribute(
     id: id ?? this.id,
@@ -4275,7 +4289,7 @@ class ProfileAttributesConfigAttribute extends DataClass
 class ProfileAttributesConfigAttributesCompanion
     extends UpdateCompanion<ProfileAttributesConfigAttribute> {
   final Value<int> id;
-  final Value<JsonString> jsonAttribute;
+  final Value<JsonObject<Attribute>> jsonAttribute;
   final Value<ProfileAttributeHash> attributeHash;
   const ProfileAttributesConfigAttributesCompanion({
     this.id = const Value.absent(),
@@ -4284,7 +4298,7 @@ class ProfileAttributesConfigAttributesCompanion
   });
   ProfileAttributesConfigAttributesCompanion.insert({
     this.id = const Value.absent(),
-    required JsonString jsonAttribute,
+    required JsonObject<Attribute> jsonAttribute,
     required ProfileAttributeHash attributeHash,
   }) : jsonAttribute = Value(jsonAttribute),
        attributeHash = Value(attributeHash);
@@ -4302,7 +4316,7 @@ class ProfileAttributesConfigAttributesCompanion
 
   ProfileAttributesConfigAttributesCompanion copyWith({
     Value<int>? id,
-    Value<JsonString>? jsonAttribute,
+    Value<JsonObject<Attribute>>? jsonAttribute,
     Value<ProfileAttributeHash>? attributeHash,
   }) {
     return ProfileAttributesConfigAttributesCompanion(
@@ -4366,14 +4380,20 @@ class $AccountStateTable extends schema.AccountState
     ),
   );
   @override
-  late final GeneratedColumnWithTypeConverter<JsonString?, String>
-  jsonAccountState = GeneratedColumn<String>(
-    'json_account_state',
-    aliasedName,
-    true,
-    type: DriftSqlType.string,
-    requiredDuringInsert: false,
-  ).withConverter<JsonString?>($AccountStateTable.$converterjsonAccountState);
+  late final GeneratedColumnWithTypeConverter<
+    JsonObject<AccountStateContainer>?,
+    String
+  >
+  jsonAccountState =
+      GeneratedColumn<String>(
+        'json_account_state',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      ).withConverter<JsonObject<AccountStateContainer>?>(
+        $AccountStateTable.$converterjsonAccountState,
+      );
   @override
   List<GeneratedColumn> get $columns => [id, jsonAccountState];
   @override
@@ -4418,14 +4438,16 @@ class $AccountStateTable extends schema.AccountState
     return $AccountStateTable(attachedDatabase, alias);
   }
 
-  static TypeConverter<JsonString?, String?> $converterjsonAccountState =
-      NullAwareTypeConverter.wrap(JsonString.driftConverter);
+  static TypeConverter<JsonObject<AccountStateContainer>?, String?>
+  $converterjsonAccountState = NullAwareTypeConverter.wrap(
+    const AccountStateContainerConverter(),
+  );
 }
 
 class AccountStateData extends DataClass
     implements Insertable<AccountStateData> {
   final int id;
-  final JsonString? jsonAccountState;
+  final JsonObject<AccountStateContainer>? jsonAccountState;
   const AccountStateData({required this.id, this.jsonAccountState});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -4455,7 +4477,7 @@ class AccountStateData extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return AccountStateData(
       id: serializer.fromJson<int>(json['id']),
-      jsonAccountState: serializer.fromJson<JsonString?>(
+      jsonAccountState: serializer.fromJson<JsonObject<AccountStateContainer>?>(
         json['jsonAccountState'],
       ),
     );
@@ -4465,13 +4487,16 @@ class AccountStateData extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
-      'jsonAccountState': serializer.toJson<JsonString?>(jsonAccountState),
+      'jsonAccountState': serializer.toJson<JsonObject<AccountStateContainer>?>(
+        jsonAccountState,
+      ),
     };
   }
 
   AccountStateData copyWith({
     int? id,
-    Value<JsonString?> jsonAccountState = const Value.absent(),
+    Value<JsonObject<AccountStateContainer>?> jsonAccountState =
+        const Value.absent(),
   }) => AccountStateData(
     id: id ?? this.id,
     jsonAccountState: jsonAccountState.present
@@ -4508,7 +4533,7 @@ class AccountStateData extends DataClass
 
 class AccountStateCompanion extends UpdateCompanion<AccountStateData> {
   final Value<int> id;
-  final Value<JsonString?> jsonAccountState;
+  final Value<JsonObject<AccountStateContainer>?> jsonAccountState;
   const AccountStateCompanion({
     this.id = const Value.absent(),
     this.jsonAccountState = const Value.absent(),
@@ -4529,7 +4554,7 @@ class AccountStateCompanion extends UpdateCompanion<AccountStateData> {
 
   AccountStateCompanion copyWith({
     Value<int>? id,
-    Value<JsonString?>? jsonAccountState,
+    Value<JsonObject<AccountStateContainer>?>? jsonAccountState,
   }) {
     return AccountStateCompanion(
       id: id ?? this.id,
@@ -4583,14 +4608,17 @@ class $PermissionsTable extends schema.Permissions
     ),
   );
   @override
-  late final GeneratedColumnWithTypeConverter<JsonString?, String>
-  jsonPermissions = GeneratedColumn<String>(
-    'json_permissions',
-    aliasedName,
-    true,
-    type: DriftSqlType.string,
-    requiredDuringInsert: false,
-  ).withConverter<JsonString?>($PermissionsTable.$converterjsonPermissions);
+  late final GeneratedColumnWithTypeConverter<JsonObject<Permissions>?, String>
+  jsonPermissions =
+      GeneratedColumn<String>(
+        'json_permissions',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      ).withConverter<JsonObject<Permissions>?>(
+        $PermissionsTable.$converterjsonPermissions,
+      );
   @override
   List<GeneratedColumn> get $columns => [id, jsonPermissions];
   @override
@@ -4635,13 +4663,15 @@ class $PermissionsTable extends schema.Permissions
     return $PermissionsTable(attachedDatabase, alias);
   }
 
-  static TypeConverter<JsonString?, String?> $converterjsonPermissions =
-      NullAwareTypeConverter.wrap(JsonString.driftConverter);
+  static TypeConverter<JsonObject<Permissions>?, String?>
+  $converterjsonPermissions = NullAwareTypeConverter.wrap(
+    const PermissionsConverter(),
+  );
 }
 
 class Permission extends DataClass implements Insertable<Permission> {
   final int id;
-  final JsonString? jsonPermissions;
+  final JsonObject<Permissions>? jsonPermissions;
   const Permission({required this.id, this.jsonPermissions});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -4671,7 +4701,7 @@ class Permission extends DataClass implements Insertable<Permission> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return Permission(
       id: serializer.fromJson<int>(json['id']),
-      jsonPermissions: serializer.fromJson<JsonString?>(
+      jsonPermissions: serializer.fromJson<JsonObject<Permissions>?>(
         json['jsonPermissions'],
       ),
     );
@@ -4681,13 +4711,15 @@ class Permission extends DataClass implements Insertable<Permission> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
-      'jsonPermissions': serializer.toJson<JsonString?>(jsonPermissions),
+      'jsonPermissions': serializer.toJson<JsonObject<Permissions>?>(
+        jsonPermissions,
+      ),
     };
   }
 
   Permission copyWith({
     int? id,
-    Value<JsonString?> jsonPermissions = const Value.absent(),
+    Value<JsonObject<Permissions>?> jsonPermissions = const Value.absent(),
   }) => Permission(
     id: id ?? this.id,
     jsonPermissions: jsonPermissions.present
@@ -4724,7 +4756,7 @@ class Permission extends DataClass implements Insertable<Permission> {
 
 class PermissionsCompanion extends UpdateCompanion<Permission> {
   final Value<int> id;
-  final Value<JsonString?> jsonPermissions;
+  final Value<JsonObject<Permissions>?> jsonPermissions;
   const PermissionsCompanion({
     this.id = const Value.absent(),
     this.jsonPermissions = const Value.absent(),
@@ -4745,7 +4777,7 @@ class PermissionsCompanion extends UpdateCompanion<Permission> {
 
   PermissionsCompanion copyWith({
     Value<int>? id,
-    Value<JsonString?>? jsonPermissions,
+    Value<JsonObject<Permissions>?>? jsonPermissions,
   }) {
     return PermissionsCompanion(
       id: id ?? this.id,
@@ -9428,7 +9460,7 @@ class $ProfileSearchGroupsTable extends schema.ProfileSearchGroups
     ),
   );
   @override
-  late final GeneratedColumnWithTypeConverter<JsonString?, String>
+  late final GeneratedColumnWithTypeConverter<JsonObject<SearchGroups>?, String>
   jsonProfileSearchGroups =
       GeneratedColumn<String>(
         'json_profile_search_groups',
@@ -9436,7 +9468,7 @@ class $ProfileSearchGroupsTable extends schema.ProfileSearchGroups
         true,
         type: DriftSqlType.string,
         requiredDuringInsert: false,
-      ).withConverter<JsonString?>(
+      ).withConverter<JsonObject<SearchGroups>?>(
         $ProfileSearchGroupsTable.$converterjsonProfileSearchGroups,
       );
   @override
@@ -9485,14 +9517,16 @@ class $ProfileSearchGroupsTable extends schema.ProfileSearchGroups
     return $ProfileSearchGroupsTable(attachedDatabase, alias);
   }
 
-  static TypeConverter<JsonString?, String?> $converterjsonProfileSearchGroups =
-      NullAwareTypeConverter.wrap(JsonString.driftConverter);
+  static TypeConverter<JsonObject<SearchGroups>?, String?>
+  $converterjsonProfileSearchGroups = NullAwareTypeConverter.wrap(
+    const SearchGroupsConverter(),
+  );
 }
 
 class ProfileSearchGroup extends DataClass
     implements Insertable<ProfileSearchGroup> {
   final int id;
-  final JsonString? jsonProfileSearchGroups;
+  final JsonObject<SearchGroups>? jsonProfileSearchGroups;
   const ProfileSearchGroup({required this.id, this.jsonProfileSearchGroups});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -9524,7 +9558,7 @@ class ProfileSearchGroup extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return ProfileSearchGroup(
       id: serializer.fromJson<int>(json['id']),
-      jsonProfileSearchGroups: serializer.fromJson<JsonString?>(
+      jsonProfileSearchGroups: serializer.fromJson<JsonObject<SearchGroups>?>(
         json['jsonProfileSearchGroups'],
       ),
     );
@@ -9534,7 +9568,7 @@ class ProfileSearchGroup extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
-      'jsonProfileSearchGroups': serializer.toJson<JsonString?>(
+      'jsonProfileSearchGroups': serializer.toJson<JsonObject<SearchGroups>?>(
         jsonProfileSearchGroups,
       ),
     };
@@ -9542,7 +9576,8 @@ class ProfileSearchGroup extends DataClass
 
   ProfileSearchGroup copyWith({
     int? id,
-    Value<JsonString?> jsonProfileSearchGroups = const Value.absent(),
+    Value<JsonObject<SearchGroups>?> jsonProfileSearchGroups =
+        const Value.absent(),
   }) => ProfileSearchGroup(
     id: id ?? this.id,
     jsonProfileSearchGroups: jsonProfileSearchGroups.present
@@ -9579,7 +9614,7 @@ class ProfileSearchGroup extends DataClass
 
 class ProfileSearchGroupsCompanion extends UpdateCompanion<ProfileSearchGroup> {
   final Value<int> id;
-  final Value<JsonString?> jsonProfileSearchGroups;
+  final Value<JsonObject<SearchGroups>?> jsonProfileSearchGroups;
   const ProfileSearchGroupsCompanion({
     this.id = const Value.absent(),
     this.jsonProfileSearchGroups = const Value.absent(),
@@ -9601,7 +9636,7 @@ class ProfileSearchGroupsCompanion extends UpdateCompanion<ProfileSearchGroup> {
 
   ProfileSearchGroupsCompanion copyWith({
     Value<int>? id,
-    Value<JsonString?>? jsonProfileSearchGroups,
+    Value<JsonObject<SearchGroups>?>? jsonProfileSearchGroups,
   }) {
     return ProfileSearchGroupsCompanion(
       id: id ?? this.id,
@@ -9656,7 +9691,10 @@ class $ProfileFiltersTable extends schema.ProfileFilters
     ),
   );
   @override
-  late final GeneratedColumnWithTypeConverter<JsonString?, String>
+  late final GeneratedColumnWithTypeConverter<
+    JsonObject<GetProfileFilteringSettings>?,
+    String
+  >
   jsonProfileFilters =
       GeneratedColumn<String>(
         'json_profile_filters',
@@ -9664,7 +9702,7 @@ class $ProfileFiltersTable extends schema.ProfileFilters
         true,
         type: DriftSqlType.string,
         requiredDuringInsert: false,
-      ).withConverter<JsonString?>(
+      ).withConverter<JsonObject<GetProfileFilteringSettings>?>(
         $ProfileFiltersTable.$converterjsonProfileFilters,
       );
   @override
@@ -9712,13 +9750,15 @@ class $ProfileFiltersTable extends schema.ProfileFilters
     return $ProfileFiltersTable(attachedDatabase, alias);
   }
 
-  static TypeConverter<JsonString?, String?> $converterjsonProfileFilters =
-      NullAwareTypeConverter.wrap(JsonString.driftConverter);
+  static TypeConverter<JsonObject<GetProfileFilteringSettings>?, String?>
+  $converterjsonProfileFilters = NullAwareTypeConverter.wrap(
+    const GetProfileFilteringSettingsConverter(),
+  );
 }
 
 class ProfileFilter extends DataClass implements Insertable<ProfileFilter> {
   final int id;
-  final JsonString? jsonProfileFilters;
+  final JsonObject<GetProfileFilteringSettings>? jsonProfileFilters;
   const ProfileFilter({required this.id, this.jsonProfileFilters});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -9750,9 +9790,10 @@ class ProfileFilter extends DataClass implements Insertable<ProfileFilter> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return ProfileFilter(
       id: serializer.fromJson<int>(json['id']),
-      jsonProfileFilters: serializer.fromJson<JsonString?>(
-        json['jsonProfileFilters'],
-      ),
+      jsonProfileFilters: serializer
+          .fromJson<JsonObject<GetProfileFilteringSettings>?>(
+            json['jsonProfileFilters'],
+          ),
     );
   }
   @override
@@ -9760,13 +9801,15 @@ class ProfileFilter extends DataClass implements Insertable<ProfileFilter> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
-      'jsonProfileFilters': serializer.toJson<JsonString?>(jsonProfileFilters),
+      'jsonProfileFilters': serializer
+          .toJson<JsonObject<GetProfileFilteringSettings>?>(jsonProfileFilters),
     };
   }
 
   ProfileFilter copyWith({
     int? id,
-    Value<JsonString?> jsonProfileFilters = const Value.absent(),
+    Value<JsonObject<GetProfileFilteringSettings>?> jsonProfileFilters =
+        const Value.absent(),
   }) => ProfileFilter(
     id: id ?? this.id,
     jsonProfileFilters: jsonProfileFilters.present
@@ -9803,7 +9846,7 @@ class ProfileFilter extends DataClass implements Insertable<ProfileFilter> {
 
 class ProfileFiltersCompanion extends UpdateCompanion<ProfileFilter> {
   final Value<int> id;
-  final Value<JsonString?> jsonProfileFilters;
+  final Value<JsonObject<GetProfileFilteringSettings>?> jsonProfileFilters;
   const ProfileFiltersCompanion({
     this.id = const Value.absent(),
     this.jsonProfileFilters = const Value.absent(),
@@ -9825,7 +9868,7 @@ class ProfileFiltersCompanion extends UpdateCompanion<ProfileFilter> {
 
   ProfileFiltersCompanion copyWith({
     Value<int>? id,
-    Value<JsonString?>? jsonProfileFilters,
+    Value<JsonObject<GetProfileFilteringSettings>?>? jsonProfileFilters,
   }) {
     return ProfileFiltersCompanion(
       id: id ?? this.id,
