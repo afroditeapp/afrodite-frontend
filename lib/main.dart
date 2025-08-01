@@ -239,6 +239,7 @@ class GlobalInitManager {
     // Initializes formatting for other locales as well
     await initializeDateFormatting("en_US", null);
 
+    log.fine("Global init completed");
     _globalInitCompleted.add(true);
   }
 
