@@ -143,7 +143,7 @@ class _ModeratorTasksScreenState extends State<ModeratorTasksScreen> {
 
     final GetReportList? reports;
     if (permissions.adminModerateProfileNames) {
-      reports = await api.accountCommonAdmin((api) => api.getWaitingReportPage()).ok();
+      reports = await api.commonAdmin((api) => api.getWaitingReportPage()).ok();
     } else {
       reports = GetReportList();
     }

@@ -31,13 +31,13 @@ class _ServerSoftwareUpdatePageState extends State<ServerSoftwareUpdatePage> {
   }
 
   Future<void> _refreshData() async {
-    _managers ??= await api.accountCommonAdmin((api) => api.getManagerInstanceNames()).ok();
-    _runningVersion = await api.accountCommon((api) => api.getVersion()).ok();
+    _managers ??= await api.commonAdmin((api) => api.getManagerInstanceNames()).ok();
+    _runningVersion = await api.common((api) => api.getVersion()).ok();
 
     final managers = _managers?.names ?? [];
     final List<ManagerInstanceRelatedState> data = [];
     for (final m in managers) {
-      final status = await api.accountCommonAdmin((api) => api.getSoftwareUpdateStatus(m)).ok();
+      final status = await api.commonAdmin((api) => api.getSoftwareUpdateStatus(m)).ok();
       if (status != null) {
         data.add(ManagerInstanceRelatedState(m, status));
       } else {
@@ -206,7 +206,7 @@ class _ServerSoftwareUpdatePageState extends State<ServerSoftwareUpdatePage> {
           .then((value) async {
             if (value == true) {
               final result = await api
-                .accountCommonAdminAction(
+                .commonAdminAction(
                   (api) => api.postTriggerSoftwareUpdateInstall(state.manager, downloaded.name, downloaded.sha256)
                 );
               if (result case Ok()) {
@@ -249,7 +249,7 @@ class _ServerSoftwareUpdatePageState extends State<ServerSoftwareUpdatePage> {
           .then((value) async {
             if (value == true) {
               final result = await api
-                .accountCommonAdminAction(
+                .commonAdminAction(
                   (api) => api.postTriggerSoftwareUpdateDownload(state.manager)
                 );
               if (result case Ok()) {

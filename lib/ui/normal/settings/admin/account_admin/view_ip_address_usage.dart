@@ -31,7 +31,7 @@ class _ViewIpAddressUsageScreenState extends State<ViewIpAddressUsageScreen> {
 
   Future<void> _getData() async {
     final result = await api
-      .accountCommonAdmin(
+      .commonAdmin(
         (api) => api.postGetIpAddressUsageData(GetIpAddressStatisticsSettings(account: widget.accountId))
       ).ok();
 

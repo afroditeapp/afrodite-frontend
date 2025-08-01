@@ -38,7 +38,7 @@ class AdminNotificationsDataApi extends EditBooleanValuesDataApi {
   @override
   Future<Result<BooleanValuesManager, void>> load(ApiManager api) async {
     return await api
-      .accountCommonAdmin(
+      .commonAdmin(
         (api) => api.getAdminNotificationSubscriptions()
       ).mapOk((v) => BooleanValuesManager(v.toJson()));
   }
@@ -51,7 +51,7 @@ class AdminNotificationsDataApi extends EditBooleanValuesDataApi {
     }
 
     return await api
-      .accountCommonAdminAction(
+      .commonAdminAction(
         (api) => api.postAdminNotificationSubscriptions(subscriptions)
       );
   }

@@ -36,7 +36,7 @@ class _ConfigureBackendPageState extends State<ConfigureBackendPage> {
   }
 
   Future<void> _refreshData() async {
-    final data = await api.accountCommonAdmin((api) => api.getBackendConfig()).ok();
+    final data = await api.commonAdmin((api) => api.getBackendConfig()).ok();
 
     setState(() {
       isLoading = false;
@@ -173,7 +173,7 @@ class _ConfigureBackendPageState extends State<ConfigureBackendPage> {
           .then((value) async {
             if (value == true) {
               final result = await api
-                .accountCommonAdminAction(
+                .commonAdminAction(
                   (api) => api.postBackendConfig(config)
                 );
               switch (result) {

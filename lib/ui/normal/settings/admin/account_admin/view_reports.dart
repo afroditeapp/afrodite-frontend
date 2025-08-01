@@ -39,7 +39,7 @@ class ViewReportReportIo extends ContentIo<WrappedReportDetailed> {
     final currentStartPosition = startPosition;
     final UnixTime start;
     if (currentStartPosition == null) {
-      final s = await api.accountCommonAdmin((api) => api.getLatestReportIteratorStartPosition()).ok();
+      final s = await api.commonAdmin((api) => api.getLatestReportIteratorStartPosition()).ok();
       if (s == null) {
         return const Err(null);
       }
@@ -56,7 +56,7 @@ class ViewReportReportIo extends ContentIo<WrappedReportDetailed> {
       aid: account,
     );
 
-    final result = await api.accountCommonAdmin((api) => api.postGetReportIteratorPage(
+    final result = await api.commonAdmin((api) => api.postGetReportIteratorPage(
       q
     ));
 

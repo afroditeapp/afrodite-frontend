@@ -33,7 +33,7 @@ class _ServerTasksScreenState extends State<ServerTasksScreen> {
   }
 
   Future<void> _refreshData() async {
-    _managers ??= await api.accountCommonAdmin((api) => api.getManagerInstanceNames()).ok();
+    _managers ??= await api.commonAdmin((api) => api.getManagerInstanceNames()).ok();
 
     final managers = _managers?.names ?? [];
     final List<ManagerInstanceRelatedState> data = [];
@@ -42,7 +42,7 @@ class _ServerTasksScreenState extends State<ServerTasksScreen> {
         data.add(ManagerInstanceRelatedState(m, null));
         continue;
       }
-      final status = await api.accountCommonAdmin((api) => api.getScheduledTasksStatus(m)).ok();
+      final status = await api.commonAdmin((api) => api.getScheduledTasksStatus(m)).ok();
       if (status != null) {
         data.add(ManagerInstanceRelatedState(m, status));
       } else {
@@ -256,7 +256,7 @@ class _ServerTasksScreenState extends State<ServerTasksScreen> {
         showConfirmDialog(context, buttonTitle)
           .then((value) async {
             if (value == true) {
-              final result = await api.accountCommonAdminAction(action);
+              final result = await api.commonAdminAction(action);
               if (result case Ok()) {
                 showSnackBar("Action successful");
               } else {

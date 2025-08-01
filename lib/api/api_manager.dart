@@ -19,12 +19,6 @@ import 'package:rxdart/rxdart.dart';
 
 final log = Logger("ApiManager");
 
-enum Server {
-  account,
-  media,
-  profile,
-}
-
 // TODO(prod): Localize connection snackbar texts
 
 // TODO(prod): Rename ApiManagerState to ServerConnectionState?
@@ -284,18 +278,6 @@ class ApiManager implements LifecycleMethods {
     _account.setAccessToken(token);
   }
 
-  bool inMicroserviceMode() {
-    return mediaInMicroserviceMode() || profileInMicroserviceMode();
-  }
-
-  bool mediaInMicroserviceMode() {
-    return false;
-  }
-
-  bool profileInMicroserviceMode() {
-    return false;
-  }
-
   /// Provider for media and media admin API
   ApiProvider _mediaApiProvider() {
     return _account;
@@ -325,7 +307,7 @@ class ApiManager implements LifecycleMethods {
     return ApiWrapper(_profileApiProvider().profileAdmin, connection);
   }
 
-  ApiWrapper<ChatApi> chatWrapper() {
+  ApiWrapper<ChatApi> _chatWrapper() {
     return ApiWrapper(_chatApiProvider().chat, connection);
   }
 
@@ -337,32 +319,6 @@ class ApiManager implements LifecycleMethods {
     return ApiWrapper(_mediaApiProvider().mediaAdmin, connection);
   }
 
-  // TODO(microservice): Chat server missing from common, commonAdmin
-  // commmonAction, commonAdminAction
-
-  Future<Result<R, ValueApiError>> common<R extends Object>(Server server, Future<R?> Function(CommonApi) action) async {
-    switch (server) {
-      case Server.account:
-        return accountCommon(action);
-      case Server.media:
-        return mediaCommon(action);
-      case Server.profile:
-        return profileCommon(action);
-    }
-  }
-
-  Future<Result<R, ValueApiError>> commonAdmin<R extends Object>(Server server, Future<R?> Function(CommonAdminApi) action) async {
-    switch (server) {
-      case Server.account:
-        return accountCommonAdmin(action);
-      case Server.media:
-        return mediaCommonAdmin(action);
-      case Server.profile:
-        return profileCommonAdmin(action);
-    }
-  }
-
-
   Future<Result<R, ValueApiError>> account<R extends Object>(Future<R?> Function(AccountApi) action) async {
     return await _accountWrapper().requestValue(action);
   }
@@ -371,11 +327,11 @@ class ApiManager implements LifecycleMethods {
     return await _accountAdminWrapper().requestValue(action);
   }
 
-  Future<Result<R, ValueApiError>> accountCommon<R extends Object>(Future<R?> Function(CommonApi) action) async {
+  Future<Result<R, ValueApiError>> common<R extends Object>(Future<R?> Function(CommonApi) action) async {
     return await ApiWrapper(_account.common, connection).requestValue(action);
   }
 
-  Future<Result<R, ValueApiError>> accountCommonAdmin<R extends Object>(Future<R?> Function(CommonAdminApi) action) async {
+  Future<Result<R, ValueApiError>> commonAdmin<R extends Object>(Future<R?> Function(CommonAdminApi) action) async {
     return await ApiWrapper(_account.commonAdmin, connection).requestValue(action);
   }
 
@@ -387,14 +343,6 @@ class ApiManager implements LifecycleMethods {
     return await _mediaAdminWrapper().requestValue(action);
   }
 
-  Future<Result<R, ValueApiError>> mediaCommon<R extends Object>(Future<R?> Function(CommonApi) action) async {
-    return await ApiWrapper(_mediaApiProvider().common, connection).requestValue(action);
-  }
-
-  Future<Result<R, ValueApiError>> mediaCommonAdmin<R extends Object>(Future<R?> Function(CommonAdminApi) action) async {
-    return await ApiWrapper(_mediaApiProvider().commonAdmin, connection).requestValue(action);
-  }
-
   Future<Result<R, ValueApiError>> profile<R extends Object>(Future<R?> Function(ProfileApi) action) async {
     return await profileWrapper().requestValue(action);
   }
@@ -404,41 +352,10 @@ class ApiManager implements LifecycleMethods {
   }
 
   Future<Result<R, ValueApiError>> chat<R extends Object>(Future<R?> Function(ChatApi) action) async {
-    return await chatWrapper().requestValue(action);
-  }
-
-  Future<Result<R, ValueApiError>> profileCommon<R extends Object>(Future<R?> Function(CommonApi) action) async {
-    return await ApiWrapper(_profileApiProvider().common, connection).requestValue(action);
-  }
-
-  Future<Result<R, ValueApiError>> profileCommonAdmin<R extends Object>(Future<R?> Function(CommonAdminApi) action) async {
-    return await ApiWrapper(_mediaApiProvider().commonAdmin, connection).requestValue(action);
+    return await _chatWrapper().requestValue(action);
   }
 
   // Actions
-
-  Future<Result<void, ActionApiError>> commonAction(Server server, Future<void> Function(CommonApi) action) async {
-    switch (server) {
-      case Server.account:
-        return accountCommonAction(action);
-      case Server.media:
-        return mediaCommonAction(action);
-      case Server.profile:
-        return profileCommonAction(action);
-    }
-  }
-
-  Future<Result<void, ActionApiError>> commonAdminAction(Server server, Future<void> Function(CommonAdminApi) action) async {
-    switch (server) {
-      case Server.account:
-        return accountCommonAdminAction(action);
-      case Server.media:
-        return mediaCommonAdminAction(action);
-      case Server.profile:
-        return profileCommonAdminAction(action);
-    }
-  }
-
 
   Future<Result<void, ActionApiError>> accountAction(Future<void> Function(AccountApi) action) async {
     return await _accountWrapper().requestAction(action);
@@ -448,11 +365,11 @@ class ApiManager implements LifecycleMethods {
     return await _accountAdminWrapper().requestAction(action);
   }
 
-  Future<Result<void, ActionApiError>> accountCommonAction(Future<void> Function(CommonApi) action) async {
+  Future<Result<void, ActionApiError>> commonAction(Future<void> Function(CommonApi) action) async {
     return await ApiWrapper(_account.common, connection).requestAction(action);
   }
 
-  Future<Result<void, ActionApiError>> accountCommonAdminAction(Future<void> Function(CommonAdminApi) action) async {
+  Future<Result<void, ActionApiError>> commonAdminAction(Future<void> Function(CommonAdminApi) action) async {
     return await ApiWrapper(_account.commonAdmin, connection).requestAction(action);
   }
 
@@ -464,14 +381,6 @@ class ApiManager implements LifecycleMethods {
     return await _mediaAdminWrapper().requestAction(action);
   }
 
-  Future<Result<void, ActionApiError>> mediaCommonAction(Future<void> Function(CommonApi) action) async {
-    return await ApiWrapper(_mediaApiProvider().common, connection).requestAction(action);
-  }
-
-  Future<Result<void, ActionApiError>> mediaCommonAdminAction(Future<void> Function(CommonAdminApi) action) async {
-    return await ApiWrapper(_mediaApiProvider().commonAdmin, connection).requestAction(action);
-  }
-
   Future<Result<void, ActionApiError>> profileAction(Future<void> Function(ProfileApi) action) async {
     return await profileWrapper().requestAction(action);
   }
@@ -481,14 +390,6 @@ class ApiManager implements LifecycleMethods {
   }
 
   Future<Result<void, ActionApiError>> chatAction(Future<void> Function(ChatApi) action) async {
-    return await chatWrapper().requestAction(action);
-  }
-
-  Future<Result<void, ActionApiError>> profileCommonAction(Future<void> Function(CommonApi) action) async {
-    return await ApiWrapper(_profileApiProvider().common, connection).requestAction(action);
-  }
-
-  Future<Result<void, ActionApiError>> profileCommonAdminAction(Future<void> Function(CommonAdminApi) action) async {
-    return await ApiWrapper(_mediaApiProvider().commonAdmin, connection).requestAction(action);
+    return await _chatWrapper().requestAction(action);
   }
 }

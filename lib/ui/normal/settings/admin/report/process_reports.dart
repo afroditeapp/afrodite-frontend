@@ -60,7 +60,7 @@ class ReportIo extends ContentIo<WrappedReportDetailed> {
 
   @override
   Future<Result<List<WrappedReportDetailed>, void>> getNextContent() async {
-    return await api.accountCommonAdmin((api) => api.getWaitingReportPage())
+    return await api.commonAdmin((api) => api.getWaitingReportPage())
       .andThen((v) => handleReportList(api, addedReports, v.values, onlyNotProcessed: true));
   }
 
@@ -72,7 +72,7 @@ class ReportIo extends ContentIo<WrappedReportDetailed> {
       reportType: content.info.reportType,
       content: content.content,
     );
-    await api.accountCommonAdminAction((api) => api.postProcessReport(info));
+    await api.commonAdminAction((api) => api.postProcessReport(info));
   }
 }
 
@@ -91,7 +91,7 @@ Future<Result<List<WrappedReportDetailed>, ApiError>> handleReportList(
     }
 
     if (r.content.chatMessage != null) {
-      final apiResult = await api.accountCommonAdmin((api) => api.postGetChatMessageReports(
+      final apiResult = await api.commonAdmin((api) => api.postGetChatMessageReports(
         GetChatMessageReports(
           creator: r.info.creator,
           target: r.info.target,

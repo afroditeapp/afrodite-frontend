@@ -27,7 +27,7 @@ class GetPerfData extends GetMetrics {
 
   @override
   Future<Result<List<Metric>, void>> getMetrics() async {
-    final queryResults = await api.accountCommonAdmin((api) => api.postGetPerfData(PerfMetricQuery())).ok();
+    final queryResults = await api.commonAdmin((api) => api.postGetPerfData(PerfMetricQuery())).ok();
 
     if (queryResults == null) {
       return const Err(null);

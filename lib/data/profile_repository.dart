@@ -303,7 +303,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
 
   /// Save client config from server to local database and return them.
   Future<Result<ClientConfig, void>> receiveClientConfig() async {
-    final config = await _api.accountCommon((api) => api.getClientConfig()).ok();
+    final config = await _api.common((api) => api.getClientConfig()).ok();
     if (config == null) {
       return const Err(null);
     }

@@ -252,7 +252,7 @@ class AccountRepository extends DataRepositoryWithLifecycle {
   }
 
   Future<Result<void, void>> receiveAdminNotification() async {
-    final r = await api.accountCommonAdmin((api) => api.postGetAdminNotification()).ok();
+    final r = await api.commonAdmin((api) => api.postGetAdminNotification()).ok();
     if (r != null) {
       final viewedNotification = await accountBackgroundDb.accountData((db) => db.notification.getAdminNotification()).ok();
       if (viewedNotification != null && r == viewedNotification) {

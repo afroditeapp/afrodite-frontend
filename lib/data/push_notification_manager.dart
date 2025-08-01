@@ -142,7 +142,7 @@ class PushNotificationManager extends AppSingleton {
         log.info("FCM token changed, skipping FCM token update because server API is not available");
         return;
       }
-      final result = await api.accountCommon((api) => api.postSetDeviceToken(newToken)).ok();
+      final result = await api.common((api) => api.postSetDeviceToken(newToken)).ok();
       if (result != null) {
         log.info("FCM token sending successful");
         final dbResult = await BackgroundDatabaseManager.getInstance().commonAction((db) => db.loginSession.updateFcmDeviceTokenAndPendingNotificationToken(newToken, result));

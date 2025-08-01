@@ -37,7 +37,7 @@ class _EditMaintenanceNotificationScreenState extends State<EditMaintenanceNotif
   }
 
   Future<void> _refreshData() async {
-    final data = await api.accountCommonAdmin((api) => api.getMaintenanceNotification()).ok();
+    final data = await api.commonAdmin((api) => api.getMaintenanceNotification()).ok();
 
     setState(() {
       isLoading = false;
@@ -171,7 +171,7 @@ class _EditMaintenanceNotificationScreenState extends State<EditMaintenanceNotif
           .then((value) async {
             if (value == true) {
               final result = await api
-                .accountCommonAdminAction(
+                .commonAdminAction(
                   (api) => api.postEditMaintenanceNotification(maintenanceStatus)
                 );
               switch (result) {
