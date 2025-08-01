@@ -13,7 +13,5 @@ class AttributesData with _$AttributesData {
     AttributeManager? manager,
   }) = _AttributesData;
 
-  String localeOrDefaultLocale() => locale ?? "en";
-
   int requiredAttributesCount() => manager?.requiredAttributes().length ?? 0;
 }

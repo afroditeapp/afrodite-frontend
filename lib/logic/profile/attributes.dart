@@ -28,16 +28,15 @@ class ProfileAttributesBloc extends Bloc<AttributesEvent, AttributesData> with A
 
   ProfileAttributesBloc() : super(AttributesData()) {
     on<NewLocale>((data, emit) async {
-      final locale = data.value ?? state.localeOrDefaultLocale();
       final attributes = state.attributes;
       AttributeManager? manager;
       if (attributes != null) {
-        manager = AttributeManager.createFrom(attributes, locale);
+        manager = AttributeManager.createFrom(attributes, data.value);
       } else {
         manager = null;
       }
       emit(state.copyWith(
-        locale: locale,
+        locale: data.value,
         attributes: attributes,
         manager: manager,
       ));
@@ -46,7 +45,7 @@ class ProfileAttributesBloc extends Bloc<AttributesEvent, AttributesData> with A
       final attributes = data.attributes;
       AttributeManager? manager;
       if (attributes != null) {
-        manager = AttributeManager.createFrom(attributes, state.localeOrDefaultLocale());
+        manager = AttributeManager.createFrom(attributes, state.locale);
       } else {
         manager = null;
       }

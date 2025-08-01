@@ -3,7 +3,7 @@ import 'package:openapi/api.dart';
 
 class AttributeTranslation {
   static String getTranslatedString(
-    String locale,
+    String? locale,
     String key,
     String defaultString,
     List<Language> languages,

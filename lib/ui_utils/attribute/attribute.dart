@@ -15,7 +15,7 @@ class AttributeManager {
 
   final List<UiAttribute> _list;
 
-  factory AttributeManager.createFrom(ProfileAttributes attributes, String locale) {
+  factory AttributeManager.createFrom(ProfileAttributes attributes, String? locale) {
     final attributesCopy = attributes.attributes.map((a) => UiAttribute.createFrom(a, locale)).toList();
 
     if (attributes.attributeOrder == AttributeOrderMode.orderNumber) {
@@ -73,7 +73,7 @@ class UiAttribute {
     this._uiName,
   );
 
-  factory UiAttribute.createFrom(Attribute attribute, String locale) {
+  factory UiAttribute.createFrom(Attribute attribute, String? locale) {
     final attributeValues = attribute.values.map(
       (v) => UiAttributeValue.createFrom(attribute, v, null, locale),
     ).toList();
@@ -128,7 +128,7 @@ class UiAttributeValue {
     Attribute attribute,
     AttributeValue value,
     UiAttributeValue? groupValueParent,
-    String locale,
+    String? locale,
   ) {
     return UiAttributeValue._(
       attribute,
