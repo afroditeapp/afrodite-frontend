@@ -60,7 +60,6 @@ class MainStateBloc extends Bloc<MainStateEvent, MainState> {
           AccountState.initialSetup => switch (initialSetupSkipped) {
             true => ToMainScreenWhenInitialSetupIsSkipped(),
             false => ToInitialSetup(),
-            null => null,
           },
           AccountState.banned => ToAccountBannedScreen(),
           AccountState.pendingDeletion => ToPendingRemovalScreen(),

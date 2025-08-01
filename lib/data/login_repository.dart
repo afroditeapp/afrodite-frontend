@@ -72,7 +72,7 @@ class LoginRepository extends DataRepository {
 
   final RepositoryStateStreams _repositoryStateStreams = RepositoryStateStreams();
   Stream<AccountState?> get accountState => _repositoryStateStreams.accountState;
-  Stream<bool?> get initialSetupSkipped => _repositoryStateStreams.initialSetupSkipped;
+  Stream<bool> get initialSetupSkipped => _repositoryStateStreams.initialSetupSkipped;
 
   final BehaviorSubject<LoginState> _loginState =
     BehaviorSubject.seeded(LoginState.splashScreen);
@@ -775,10 +775,10 @@ class RepositoryStateStreams {
   StreamSubscription<AccountState?>? _accountStateSubscription;
   Stream<AccountState?> get accountState => _accountState;
 
-  final BehaviorSubject<bool?> _initialSetupSkipped =
-    BehaviorSubject.seeded(null);
-  StreamSubscription<bool?>? _initialSetupSkippedSubscription;
-  Stream<bool?> get initialSetupSkipped => _initialSetupSkipped;
+  final BehaviorSubject<bool> _initialSetupSkipped =
+    BehaviorSubject.seeded(false);
+  StreamSubscription<bool>? _initialSetupSkippedSubscription;
+  Stream<bool> get initialSetupSkipped => _initialSetupSkipped;
 
   final PublishSubject<ServerWsEvent> _serverEvents =
     PublishSubject();
@@ -803,6 +803,7 @@ class RepositoryStateStreams {
     await _initialSetupSkippedSubscription?.cancel();
     _initialSetupSkippedSubscription = accountDb
       .accountStream((db) => db.app.watchInitialSetupSkipped())
+      .map((v) => v ?? false)
       .listen((v) {
         _initialSetupSkipped.add(v);
       });
