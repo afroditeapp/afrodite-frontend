@@ -30,49 +30,6 @@ import 'package:web_socket_channel/status.dart' as status;
 
 var log = Logger("ServerConnection");
 
-enum ServerSlot {
-  account,
-  profile,
-  media,
-  chat;
-
-  Stream<RefreshToken?> Function(AccountForegroundDatabaseRead) getterForRefreshTokenKey() {
-    switch (this) {
-      case ServerSlot.account: return (db) => db.loginSession.watchRefreshTokenAccount();
-      case ServerSlot.media: return (db) => db.loginSession.watchRefreshTokenMedia();
-      case ServerSlot.profile: return (db) => db.loginSession.watchRefreshTokenProfile();
-      case ServerSlot.chat: return (db) => db.loginSession.watchRefreshTokenChat();
-    }
-  }
-
-  Future<void> Function(AccountForegroundDatabaseWrite) setterForRefreshTokenKey(RefreshToken newValue) {
-    switch (this) {
-      case ServerSlot.account: return (db) => db.loginSession.updateRefreshTokenAccount(newValue);
-      case ServerSlot.media: return (db) => db.loginSession.updateRefreshTokenMedia(newValue);
-      case ServerSlot.profile: return (db) => db.loginSession.updateRefreshTokenProfile(newValue);
-      case ServerSlot.chat: return (db) => db.loginSession.updateRefreshTokenChat(newValue);
-    }
-  }
-
-  Stream<AccessToken?> Function(AccountForegroundDatabaseRead) getterForAccessTokenKey() {
-    switch (this) {
-      case ServerSlot.account: return (db) => db.loginSession.watchAccessTokenAccount();
-      case ServerSlot.media: return (db) => db.loginSession.watchAccessTokenMedia();
-      case ServerSlot.profile: return (db) => db.loginSession.watchAccessTokenProfile();
-      case ServerSlot.chat: return (db) => db.loginSession.watchAccessTokenChat();
-    }
-  }
-
-  Future<void> Function(AccountForegroundDatabaseWrite) setterForAccessTokenKey(AccessToken newValue) {
-    switch (this) {
-      case ServerSlot.account: return (db) => db.loginSession.updateAccessTokenAccount(newValue);
-      case ServerSlot.media: return (db) => db.loginSession.updateAccessTokenMedia(newValue);
-      case ServerSlot.profile: return (db) => db.loginSession.updateAccessTokenProfile(newValue);
-      case ServerSlot.chat: return (db) => db.loginSession.updateAccessTokenChat(newValue);
-    }
-  }
-}
-
 enum ServerConnectionError {
   /// Invalid token, so new login required.
   invalidToken,
@@ -144,7 +101,6 @@ enum ConnectionProtocolState {
 }
 
 class ServerConnection {
-  final ServerSlot _server;
   String _address;
   final AccountDatabaseManager db;
   final AccountBackgroundDatabaseManager accountBackgroundDb;
@@ -163,7 +119,7 @@ class ServerConnection {
 
   bool _startInProgress = false;
 
-  ServerConnection(this._server, this._address, this.db, this.accountBackgroundDb);
+  ServerConnection(this._address, this.db, this.accountBackgroundDb);
 
   /// Starts new connection if it does not already exists.
   Future<void> start() async {
@@ -195,12 +151,12 @@ class ServerConnection {
 
     var protocolState = ConnectionProtocolState.receiveFirstMessage;
 
-    final accessToken = await db.accountStreamSingle(_server.getterForAccessTokenKey()).ok();
+    final accessToken = await db.accountStreamSingle((db) => db.loginSession.watchAccessToken()).ok();
     if (accessToken == null) {
       _state.add(Error(ServerConnectionError.invalidToken));
       return;
     }
-    final refreshToken = await db.accountStreamSingle(_server.getterForRefreshTokenKey()).ok();
+    final refreshToken = await db.accountStreamSingle((db) => db.loginSession.watchRefreshToken()).ok();
     if (refreshToken == null) {
       _state.add(Error(ServerConnectionError.invalidToken));
       return;
@@ -296,7 +252,7 @@ class ServerConnection {
                   await _endConnectionToGeneralError();
               }
               final newRefreshToken = RefreshToken(token: base64Encode(message));
-              await db.accountAction(_server.setterForRefreshTokenKey(newRefreshToken));
+              await db.accountAction((db) => db.loginSession.updateRefreshToken(newRefreshToken));
 
             } else {
               await _endConnectionToGeneralError();
@@ -305,7 +261,7 @@ class ServerConnection {
           case ConnectionProtocolState.receiveNewRefreshToken: {
             if (message is List<int>) {
               final newRefreshToken = RefreshToken(token: base64Encode(message));
-              await db.accountAction(_server.setterForRefreshTokenKey(newRefreshToken));
+              await db.accountAction((db) => db.loginSession.updateRefreshToken(newRefreshToken));
               protocolState = ConnectionProtocolState.receiveNewAccessToken;
             } else {
               await _endConnectionToGeneralError();
@@ -318,7 +274,7 @@ class ServerConnection {
                   .encode(message)
                   .replaceAll("=", "")
               );
-              await db.accountAction(_server.setterForAccessTokenKey(newAccessToken));
+              await db.accountAction((db) => db.loginSession.updateAccessToken(newAccessToken));
               await handleConnectionIsReadyForDataSync(newAccessToken);
             } else {
               await _endConnectionToGeneralError();

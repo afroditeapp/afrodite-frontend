@@ -59,7 +59,6 @@ class ServerConnectionManager implements LifecycleMethods, ServerConnectionInter
 
   ServerConnectionManager(this.accountDb, this.accountBackgroundDb, this.currentUser) :
     accountConnection =  ServerConnection(
-      ServerSlot.account,
       "",
       accountDb,
       accountBackgroundDb,
@@ -161,9 +160,9 @@ class ServerConnectionManager implements LifecycleMethods, ServerConnectionInter
     _state.add(ApiManagerState.connecting);
 
     final accountRefreshToken =
-      await accountDb.accountStreamSingle((db) => db.loginSession.watchRefreshTokenAccount()).ok();
+      await accountDb.accountStreamSingle((db) => db.loginSession.watchRefreshToken()).ok();
     final accountAccessToken =
-      await accountDb.accountStreamSingle((db) => db.loginSession.watchAccessTokenAccount()).ok();
+      await accountDb.accountStreamSingle((db) => db.loginSession.watchAccessToken()).ok();
 
     if (accountRefreshToken == null || accountAccessToken == null) {
       _state.add(ApiManagerState.waitingRefreshToken);

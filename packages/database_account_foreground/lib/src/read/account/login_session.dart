@@ -28,29 +28,11 @@ class DaoReadLoginSession extends DatabaseAccessor<AccountForegroundDatabase> wi
       .map((r) => r.clientId)
       .watchSingleOrNull();
 
-  Stream<api.RefreshToken?> watchRefreshTokenAccount() =>
-    _watchColumnLoginSessionTokens((r) => r.refreshTokenAccount);
+  Stream<api.RefreshToken?> watchRefreshToken() =>
+    _watchColumnLoginSessionTokens((r) => r.refreshToken);
 
-  Stream<api.RefreshToken?> watchRefreshTokenMedia() =>
-    _watchColumnLoginSessionTokens((r) => r.refreshTokenMedia);
-
-  Stream<api.RefreshToken?> watchRefreshTokenProfile() =>
-    _watchColumnLoginSessionTokens((r) => r.refreshTokenProfile);
-
-  Stream<api.RefreshToken?> watchRefreshTokenChat() =>
-    _watchColumnLoginSessionTokens((r) => r.refreshTokenChat);
-
-  Stream<api.AccessToken?> watchAccessTokenAccount() =>
-    _watchColumnLoginSessionTokens((r) => r.accessTokenAccount);
-
-  Stream<api.AccessToken?> watchAccessTokenMedia() =>
-    _watchColumnLoginSessionTokens((r) => r.accessTokenMedia);
-
-  Stream<api.AccessToken?> watchAccessTokenProfile() =>
-    _watchColumnLoginSessionTokens((r) => r.accessTokenProfile);
-
-  Stream<api.AccessToken?> watchAccessTokenChat() =>
-    _watchColumnLoginSessionTokens((r) => r.accessTokenChat);
+  Stream<api.AccessToken?> watchAccessToken() =>
+    _watchColumnLoginSessionTokens((r) => r.accessToken);
 
   Stream<T?> _watchColumnLoginSessionTokens<T extends Object>(T? Function(LoginSessionToken) extractColumn) {
     return (select(loginSessionTokens)..where((t) => t.id.equals(SingleRowTable.ID.value)))

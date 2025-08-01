@@ -392,8 +392,8 @@ class LoginRepository extends DataRepository {
     }
 
     // Login repository
-    await accountDb.accountAction((db) => db.loginSession.updateRefreshTokenAccount(authPair.refresh));
-    await accountDb.accountAction((db) => db.loginSession.updateAccessTokenAccount(authPair.access));
+    await accountDb.accountAction((db) => db.loginSession.updateRefreshToken(authPair.refresh));
+    await accountDb.accountAction((db) => db.loginSession.updateAccessToken(authPair.access));
     // TODO(microservice): microservice support
     await onLogin();
 
@@ -440,8 +440,8 @@ class LoginRepository extends DataRepository {
     await repository.connectionManager.closeAndLogout();
 
     // Login repository
-    await repository.accountDb.accountAction((db) => db.loginSession.updateRefreshTokenAccount(null));
-    await repository.accountDb.accountAction((db) => db.loginSession.updateAccessTokenAccount(null));
+    await repository.accountDb.accountAction((db) => db.loginSession.updateRefreshToken(null));
+    await repository.accountDb.accountAction((db) => db.loginSession.updateAccessToken(null));
     // await onLogout(); // Not used currently
     // TODO(microservice): microservice support
 

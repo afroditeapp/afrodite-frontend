@@ -5670,112 +5670,27 @@ class $LoginSessionTokensTable extends schema.LoginSessionTokens
   );
   @override
   late final GeneratedColumnWithTypeConverter<RefreshToken?, String>
-  refreshTokenAccount =
+  refreshToken =
       GeneratedColumn<String>(
-        'refresh_token_account',
+        'refresh_token',
         aliasedName,
         true,
         type: DriftSqlType.string,
         requiredDuringInsert: false,
       ).withConverter<RefreshToken?>(
-        $LoginSessionTokensTable.$converterrefreshTokenAccount,
-      );
-  @override
-  late final GeneratedColumnWithTypeConverter<RefreshToken?, String>
-  refreshTokenMedia =
-      GeneratedColumn<String>(
-        'refresh_token_media',
-        aliasedName,
-        true,
-        type: DriftSqlType.string,
-        requiredDuringInsert: false,
-      ).withConverter<RefreshToken?>(
-        $LoginSessionTokensTable.$converterrefreshTokenMedia,
-      );
-  @override
-  late final GeneratedColumnWithTypeConverter<RefreshToken?, String>
-  refreshTokenProfile =
-      GeneratedColumn<String>(
-        'refresh_token_profile',
-        aliasedName,
-        true,
-        type: DriftSqlType.string,
-        requiredDuringInsert: false,
-      ).withConverter<RefreshToken?>(
-        $LoginSessionTokensTable.$converterrefreshTokenProfile,
-      );
-  @override
-  late final GeneratedColumnWithTypeConverter<RefreshToken?, String>
-  refreshTokenChat =
-      GeneratedColumn<String>(
-        'refresh_token_chat',
-        aliasedName,
-        true,
-        type: DriftSqlType.string,
-        requiredDuringInsert: false,
-      ).withConverter<RefreshToken?>(
-        $LoginSessionTokensTable.$converterrefreshTokenChat,
+        $LoginSessionTokensTable.$converterrefreshToken,
       );
   @override
   late final GeneratedColumnWithTypeConverter<AccessToken?, String>
-  accessTokenAccount =
-      GeneratedColumn<String>(
-        'access_token_account',
-        aliasedName,
-        true,
-        type: DriftSqlType.string,
-        requiredDuringInsert: false,
-      ).withConverter<AccessToken?>(
-        $LoginSessionTokensTable.$converteraccessTokenAccount,
-      );
+  accessToken = GeneratedColumn<String>(
+    'access_token',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  ).withConverter<AccessToken?>($LoginSessionTokensTable.$converteraccessToken);
   @override
-  late final GeneratedColumnWithTypeConverter<AccessToken?, String>
-  accessTokenMedia =
-      GeneratedColumn<String>(
-        'access_token_media',
-        aliasedName,
-        true,
-        type: DriftSqlType.string,
-        requiredDuringInsert: false,
-      ).withConverter<AccessToken?>(
-        $LoginSessionTokensTable.$converteraccessTokenMedia,
-      );
-  @override
-  late final GeneratedColumnWithTypeConverter<AccessToken?, String>
-  accessTokenProfile =
-      GeneratedColumn<String>(
-        'access_token_profile',
-        aliasedName,
-        true,
-        type: DriftSqlType.string,
-        requiredDuringInsert: false,
-      ).withConverter<AccessToken?>(
-        $LoginSessionTokensTable.$converteraccessTokenProfile,
-      );
-  @override
-  late final GeneratedColumnWithTypeConverter<AccessToken?, String>
-  accessTokenChat =
-      GeneratedColumn<String>(
-        'access_token_chat',
-        aliasedName,
-        true,
-        type: DriftSqlType.string,
-        requiredDuringInsert: false,
-      ).withConverter<AccessToken?>(
-        $LoginSessionTokensTable.$converteraccessTokenChat,
-      );
-  @override
-  List<GeneratedColumn> get $columns => [
-    id,
-    refreshTokenAccount,
-    refreshTokenMedia,
-    refreshTokenProfile,
-    refreshTokenChat,
-    accessTokenAccount,
-    accessTokenMedia,
-    accessTokenProfile,
-    accessTokenChat,
-  ];
+  List<GeneratedColumn> get $columns => [id, refreshToken, accessToken];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -5804,64 +5719,18 @@ class $LoginSessionTokensTable extends schema.LoginSessionTokens
         DriftSqlType.int,
         data['${effectivePrefix}id'],
       )!,
-      refreshTokenAccount: $LoginSessionTokensTable
-          .$converterrefreshTokenAccount
-          .fromSql(
-            attachedDatabase.typeMapping.read(
-              DriftSqlType.string,
-              data['${effectivePrefix}refresh_token_account'],
-            ),
-          ),
-      refreshTokenMedia: $LoginSessionTokensTable.$converterrefreshTokenMedia
-          .fromSql(
-            attachedDatabase.typeMapping.read(
-              DriftSqlType.string,
-              data['${effectivePrefix}refresh_token_media'],
-            ),
-          ),
-      refreshTokenProfile: $LoginSessionTokensTable
-          .$converterrefreshTokenProfile
-          .fromSql(
-            attachedDatabase.typeMapping.read(
-              DriftSqlType.string,
-              data['${effectivePrefix}refresh_token_profile'],
-            ),
-          ),
-      refreshTokenChat: $LoginSessionTokensTable.$converterrefreshTokenChat
-          .fromSql(
-            attachedDatabase.typeMapping.read(
-              DriftSqlType.string,
-              data['${effectivePrefix}refresh_token_chat'],
-            ),
-          ),
-      accessTokenAccount: $LoginSessionTokensTable.$converteraccessTokenAccount
-          .fromSql(
-            attachedDatabase.typeMapping.read(
-              DriftSqlType.string,
-              data['${effectivePrefix}access_token_account'],
-            ),
-          ),
-      accessTokenMedia: $LoginSessionTokensTable.$converteraccessTokenMedia
-          .fromSql(
-            attachedDatabase.typeMapping.read(
-              DriftSqlType.string,
-              data['${effectivePrefix}access_token_media'],
-            ),
-          ),
-      accessTokenProfile: $LoginSessionTokensTable.$converteraccessTokenProfile
-          .fromSql(
-            attachedDatabase.typeMapping.read(
-              DriftSqlType.string,
-              data['${effectivePrefix}access_token_profile'],
-            ),
-          ),
-      accessTokenChat: $LoginSessionTokensTable.$converteraccessTokenChat
-          .fromSql(
-            attachedDatabase.typeMapping.read(
-              DriftSqlType.string,
-              data['${effectivePrefix}access_token_chat'],
-            ),
-          ),
+      refreshToken: $LoginSessionTokensTable.$converterrefreshToken.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}refresh_token'],
+        ),
+      ),
+      accessToken: $LoginSessionTokensTable.$converteraccessToken.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}access_token'],
+        ),
+      ),
     );
   }
 
@@ -5870,104 +5739,34 @@ class $LoginSessionTokensTable extends schema.LoginSessionTokens
     return $LoginSessionTokensTable(attachedDatabase, alias);
   }
 
-  static TypeConverter<RefreshToken?, String?> $converterrefreshTokenAccount =
+  static TypeConverter<RefreshToken?, String?> $converterrefreshToken =
       NullAwareTypeConverter.wrap(RefreshTokenConverter());
-  static TypeConverter<RefreshToken?, String?> $converterrefreshTokenMedia =
-      NullAwareTypeConverter.wrap(RefreshTokenConverter());
-  static TypeConverter<RefreshToken?, String?> $converterrefreshTokenProfile =
-      NullAwareTypeConverter.wrap(RefreshTokenConverter());
-  static TypeConverter<RefreshToken?, String?> $converterrefreshTokenChat =
-      NullAwareTypeConverter.wrap(RefreshTokenConverter());
-  static TypeConverter<AccessToken?, String?> $converteraccessTokenAccount =
-      NullAwareTypeConverter.wrap(AccessTokenConverter());
-  static TypeConverter<AccessToken?, String?> $converteraccessTokenMedia =
-      NullAwareTypeConverter.wrap(AccessTokenConverter());
-  static TypeConverter<AccessToken?, String?> $converteraccessTokenProfile =
-      NullAwareTypeConverter.wrap(AccessTokenConverter());
-  static TypeConverter<AccessToken?, String?> $converteraccessTokenChat =
+  static TypeConverter<AccessToken?, String?> $converteraccessToken =
       NullAwareTypeConverter.wrap(AccessTokenConverter());
 }
 
 class LoginSessionToken extends DataClass
     implements Insertable<LoginSessionToken> {
   final int id;
-  final RefreshToken? refreshTokenAccount;
-  final RefreshToken? refreshTokenMedia;
-  final RefreshToken? refreshTokenProfile;
-  final RefreshToken? refreshTokenChat;
-  final AccessToken? accessTokenAccount;
-  final AccessToken? accessTokenMedia;
-  final AccessToken? accessTokenProfile;
-  final AccessToken? accessTokenChat;
+  final RefreshToken? refreshToken;
+  final AccessToken? accessToken;
   const LoginSessionToken({
     required this.id,
-    this.refreshTokenAccount,
-    this.refreshTokenMedia,
-    this.refreshTokenProfile,
-    this.refreshTokenChat,
-    this.accessTokenAccount,
-    this.accessTokenMedia,
-    this.accessTokenProfile,
-    this.accessTokenChat,
+    this.refreshToken,
+    this.accessToken,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
-    if (!nullToAbsent || refreshTokenAccount != null) {
-      map['refresh_token_account'] = Variable<String>(
-        $LoginSessionTokensTable.$converterrefreshTokenAccount.toSql(
-          refreshTokenAccount,
-        ),
+    if (!nullToAbsent || refreshToken != null) {
+      map['refresh_token'] = Variable<String>(
+        $LoginSessionTokensTable.$converterrefreshToken.toSql(refreshToken),
       );
     }
-    if (!nullToAbsent || refreshTokenMedia != null) {
-      map['refresh_token_media'] = Variable<String>(
-        $LoginSessionTokensTable.$converterrefreshTokenMedia.toSql(
-          refreshTokenMedia,
-        ),
-      );
-    }
-    if (!nullToAbsent || refreshTokenProfile != null) {
-      map['refresh_token_profile'] = Variable<String>(
-        $LoginSessionTokensTable.$converterrefreshTokenProfile.toSql(
-          refreshTokenProfile,
-        ),
-      );
-    }
-    if (!nullToAbsent || refreshTokenChat != null) {
-      map['refresh_token_chat'] = Variable<String>(
-        $LoginSessionTokensTable.$converterrefreshTokenChat.toSql(
-          refreshTokenChat,
-        ),
-      );
-    }
-    if (!nullToAbsent || accessTokenAccount != null) {
-      map['access_token_account'] = Variable<String>(
-        $LoginSessionTokensTable.$converteraccessTokenAccount.toSql(
-          accessTokenAccount,
-        ),
-      );
-    }
-    if (!nullToAbsent || accessTokenMedia != null) {
-      map['access_token_media'] = Variable<String>(
-        $LoginSessionTokensTable.$converteraccessTokenMedia.toSql(
-          accessTokenMedia,
-        ),
-      );
-    }
-    if (!nullToAbsent || accessTokenProfile != null) {
-      map['access_token_profile'] = Variable<String>(
-        $LoginSessionTokensTable.$converteraccessTokenProfile.toSql(
-          accessTokenProfile,
-        ),
-      );
-    }
-    if (!nullToAbsent || accessTokenChat != null) {
-      map['access_token_chat'] = Variable<String>(
-        $LoginSessionTokensTable.$converteraccessTokenChat.toSql(
-          accessTokenChat,
-        ),
+    if (!nullToAbsent || accessToken != null) {
+      map['access_token'] = Variable<String>(
+        $LoginSessionTokensTable.$converteraccessToken.toSql(accessToken),
       );
     }
     return map;
@@ -5976,30 +5775,12 @@ class LoginSessionToken extends DataClass
   LoginSessionTokensCompanion toCompanion(bool nullToAbsent) {
     return LoginSessionTokensCompanion(
       id: Value(id),
-      refreshTokenAccount: refreshTokenAccount == null && nullToAbsent
+      refreshToken: refreshToken == null && nullToAbsent
           ? const Value.absent()
-          : Value(refreshTokenAccount),
-      refreshTokenMedia: refreshTokenMedia == null && nullToAbsent
+          : Value(refreshToken),
+      accessToken: accessToken == null && nullToAbsent
           ? const Value.absent()
-          : Value(refreshTokenMedia),
-      refreshTokenProfile: refreshTokenProfile == null && nullToAbsent
-          ? const Value.absent()
-          : Value(refreshTokenProfile),
-      refreshTokenChat: refreshTokenChat == null && nullToAbsent
-          ? const Value.absent()
-          : Value(refreshTokenChat),
-      accessTokenAccount: accessTokenAccount == null && nullToAbsent
-          ? const Value.absent()
-          : Value(accessTokenAccount),
-      accessTokenMedia: accessTokenMedia == null && nullToAbsent
-          ? const Value.absent()
-          : Value(accessTokenMedia),
-      accessTokenProfile: accessTokenProfile == null && nullToAbsent
-          ? const Value.absent()
-          : Value(accessTokenProfile),
-      accessTokenChat: accessTokenChat == null && nullToAbsent
-          ? const Value.absent()
-          : Value(accessTokenChat),
+          : Value(accessToken),
     );
   }
 
@@ -6010,30 +5791,8 @@ class LoginSessionToken extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return LoginSessionToken(
       id: serializer.fromJson<int>(json['id']),
-      refreshTokenAccount: serializer.fromJson<RefreshToken?>(
-        json['refreshTokenAccount'],
-      ),
-      refreshTokenMedia: serializer.fromJson<RefreshToken?>(
-        json['refreshTokenMedia'],
-      ),
-      refreshTokenProfile: serializer.fromJson<RefreshToken?>(
-        json['refreshTokenProfile'],
-      ),
-      refreshTokenChat: serializer.fromJson<RefreshToken?>(
-        json['refreshTokenChat'],
-      ),
-      accessTokenAccount: serializer.fromJson<AccessToken?>(
-        json['accessTokenAccount'],
-      ),
-      accessTokenMedia: serializer.fromJson<AccessToken?>(
-        json['accessTokenMedia'],
-      ),
-      accessTokenProfile: serializer.fromJson<AccessToken?>(
-        json['accessTokenProfile'],
-      ),
-      accessTokenChat: serializer.fromJson<AccessToken?>(
-        json['accessTokenChat'],
-      ),
+      refreshToken: serializer.fromJson<RefreshToken?>(json['refreshToken']),
+      accessToken: serializer.fromJson<AccessToken?>(json['accessToken']),
     );
   }
   @override
@@ -6041,85 +5800,29 @@ class LoginSessionToken extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
-      'refreshTokenAccount': serializer.toJson<RefreshToken?>(
-        refreshTokenAccount,
-      ),
-      'refreshTokenMedia': serializer.toJson<RefreshToken?>(refreshTokenMedia),
-      'refreshTokenProfile': serializer.toJson<RefreshToken?>(
-        refreshTokenProfile,
-      ),
-      'refreshTokenChat': serializer.toJson<RefreshToken?>(refreshTokenChat),
-      'accessTokenAccount': serializer.toJson<AccessToken?>(accessTokenAccount),
-      'accessTokenMedia': serializer.toJson<AccessToken?>(accessTokenMedia),
-      'accessTokenProfile': serializer.toJson<AccessToken?>(accessTokenProfile),
-      'accessTokenChat': serializer.toJson<AccessToken?>(accessTokenChat),
+      'refreshToken': serializer.toJson<RefreshToken?>(refreshToken),
+      'accessToken': serializer.toJson<AccessToken?>(accessToken),
     };
   }
 
   LoginSessionToken copyWith({
     int? id,
-    Value<RefreshToken?> refreshTokenAccount = const Value.absent(),
-    Value<RefreshToken?> refreshTokenMedia = const Value.absent(),
-    Value<RefreshToken?> refreshTokenProfile = const Value.absent(),
-    Value<RefreshToken?> refreshTokenChat = const Value.absent(),
-    Value<AccessToken?> accessTokenAccount = const Value.absent(),
-    Value<AccessToken?> accessTokenMedia = const Value.absent(),
-    Value<AccessToken?> accessTokenProfile = const Value.absent(),
-    Value<AccessToken?> accessTokenChat = const Value.absent(),
+    Value<RefreshToken?> refreshToken = const Value.absent(),
+    Value<AccessToken?> accessToken = const Value.absent(),
   }) => LoginSessionToken(
     id: id ?? this.id,
-    refreshTokenAccount: refreshTokenAccount.present
-        ? refreshTokenAccount.value
-        : this.refreshTokenAccount,
-    refreshTokenMedia: refreshTokenMedia.present
-        ? refreshTokenMedia.value
-        : this.refreshTokenMedia,
-    refreshTokenProfile: refreshTokenProfile.present
-        ? refreshTokenProfile.value
-        : this.refreshTokenProfile,
-    refreshTokenChat: refreshTokenChat.present
-        ? refreshTokenChat.value
-        : this.refreshTokenChat,
-    accessTokenAccount: accessTokenAccount.present
-        ? accessTokenAccount.value
-        : this.accessTokenAccount,
-    accessTokenMedia: accessTokenMedia.present
-        ? accessTokenMedia.value
-        : this.accessTokenMedia,
-    accessTokenProfile: accessTokenProfile.present
-        ? accessTokenProfile.value
-        : this.accessTokenProfile,
-    accessTokenChat: accessTokenChat.present
-        ? accessTokenChat.value
-        : this.accessTokenChat,
+    refreshToken: refreshToken.present ? refreshToken.value : this.refreshToken,
+    accessToken: accessToken.present ? accessToken.value : this.accessToken,
   );
   LoginSessionToken copyWithCompanion(LoginSessionTokensCompanion data) {
     return LoginSessionToken(
       id: data.id.present ? data.id.value : this.id,
-      refreshTokenAccount: data.refreshTokenAccount.present
-          ? data.refreshTokenAccount.value
-          : this.refreshTokenAccount,
-      refreshTokenMedia: data.refreshTokenMedia.present
-          ? data.refreshTokenMedia.value
-          : this.refreshTokenMedia,
-      refreshTokenProfile: data.refreshTokenProfile.present
-          ? data.refreshTokenProfile.value
-          : this.refreshTokenProfile,
-      refreshTokenChat: data.refreshTokenChat.present
-          ? data.refreshTokenChat.value
-          : this.refreshTokenChat,
-      accessTokenAccount: data.accessTokenAccount.present
-          ? data.accessTokenAccount.value
-          : this.accessTokenAccount,
-      accessTokenMedia: data.accessTokenMedia.present
-          ? data.accessTokenMedia.value
-          : this.accessTokenMedia,
-      accessTokenProfile: data.accessTokenProfile.present
-          ? data.accessTokenProfile.value
-          : this.accessTokenProfile,
-      accessTokenChat: data.accessTokenChat.present
-          ? data.accessTokenChat.value
-          : this.accessTokenChat,
+      refreshToken: data.refreshToken.present
+          ? data.refreshToken.value
+          : this.refreshToken,
+      accessToken: data.accessToken.present
+          ? data.accessToken.value
+          : this.accessToken,
     );
   }
 
@@ -6127,126 +5830,58 @@ class LoginSessionToken extends DataClass
   String toString() {
     return (StringBuffer('LoginSessionToken(')
           ..write('id: $id, ')
-          ..write('refreshTokenAccount: $refreshTokenAccount, ')
-          ..write('refreshTokenMedia: $refreshTokenMedia, ')
-          ..write('refreshTokenProfile: $refreshTokenProfile, ')
-          ..write('refreshTokenChat: $refreshTokenChat, ')
-          ..write('accessTokenAccount: $accessTokenAccount, ')
-          ..write('accessTokenMedia: $accessTokenMedia, ')
-          ..write('accessTokenProfile: $accessTokenProfile, ')
-          ..write('accessTokenChat: $accessTokenChat')
+          ..write('refreshToken: $refreshToken, ')
+          ..write('accessToken: $accessToken')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(
-    id,
-    refreshTokenAccount,
-    refreshTokenMedia,
-    refreshTokenProfile,
-    refreshTokenChat,
-    accessTokenAccount,
-    accessTokenMedia,
-    accessTokenProfile,
-    accessTokenChat,
-  );
+  int get hashCode => Object.hash(id, refreshToken, accessToken);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is LoginSessionToken &&
           other.id == this.id &&
-          other.refreshTokenAccount == this.refreshTokenAccount &&
-          other.refreshTokenMedia == this.refreshTokenMedia &&
-          other.refreshTokenProfile == this.refreshTokenProfile &&
-          other.refreshTokenChat == this.refreshTokenChat &&
-          other.accessTokenAccount == this.accessTokenAccount &&
-          other.accessTokenMedia == this.accessTokenMedia &&
-          other.accessTokenProfile == this.accessTokenProfile &&
-          other.accessTokenChat == this.accessTokenChat);
+          other.refreshToken == this.refreshToken &&
+          other.accessToken == this.accessToken);
 }
 
 class LoginSessionTokensCompanion extends UpdateCompanion<LoginSessionToken> {
   final Value<int> id;
-  final Value<RefreshToken?> refreshTokenAccount;
-  final Value<RefreshToken?> refreshTokenMedia;
-  final Value<RefreshToken?> refreshTokenProfile;
-  final Value<RefreshToken?> refreshTokenChat;
-  final Value<AccessToken?> accessTokenAccount;
-  final Value<AccessToken?> accessTokenMedia;
-  final Value<AccessToken?> accessTokenProfile;
-  final Value<AccessToken?> accessTokenChat;
+  final Value<RefreshToken?> refreshToken;
+  final Value<AccessToken?> accessToken;
   const LoginSessionTokensCompanion({
     this.id = const Value.absent(),
-    this.refreshTokenAccount = const Value.absent(),
-    this.refreshTokenMedia = const Value.absent(),
-    this.refreshTokenProfile = const Value.absent(),
-    this.refreshTokenChat = const Value.absent(),
-    this.accessTokenAccount = const Value.absent(),
-    this.accessTokenMedia = const Value.absent(),
-    this.accessTokenProfile = const Value.absent(),
-    this.accessTokenChat = const Value.absent(),
+    this.refreshToken = const Value.absent(),
+    this.accessToken = const Value.absent(),
   });
   LoginSessionTokensCompanion.insert({
     this.id = const Value.absent(),
-    this.refreshTokenAccount = const Value.absent(),
-    this.refreshTokenMedia = const Value.absent(),
-    this.refreshTokenProfile = const Value.absent(),
-    this.refreshTokenChat = const Value.absent(),
-    this.accessTokenAccount = const Value.absent(),
-    this.accessTokenMedia = const Value.absent(),
-    this.accessTokenProfile = const Value.absent(),
-    this.accessTokenChat = const Value.absent(),
+    this.refreshToken = const Value.absent(),
+    this.accessToken = const Value.absent(),
   });
   static Insertable<LoginSessionToken> custom({
     Expression<int>? id,
-    Expression<String>? refreshTokenAccount,
-    Expression<String>? refreshTokenMedia,
-    Expression<String>? refreshTokenProfile,
-    Expression<String>? refreshTokenChat,
-    Expression<String>? accessTokenAccount,
-    Expression<String>? accessTokenMedia,
-    Expression<String>? accessTokenProfile,
-    Expression<String>? accessTokenChat,
+    Expression<String>? refreshToken,
+    Expression<String>? accessToken,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
-      if (refreshTokenAccount != null)
-        'refresh_token_account': refreshTokenAccount,
-      if (refreshTokenMedia != null) 'refresh_token_media': refreshTokenMedia,
-      if (refreshTokenProfile != null)
-        'refresh_token_profile': refreshTokenProfile,
-      if (refreshTokenChat != null) 'refresh_token_chat': refreshTokenChat,
-      if (accessTokenAccount != null)
-        'access_token_account': accessTokenAccount,
-      if (accessTokenMedia != null) 'access_token_media': accessTokenMedia,
-      if (accessTokenProfile != null)
-        'access_token_profile': accessTokenProfile,
-      if (accessTokenChat != null) 'access_token_chat': accessTokenChat,
+      if (refreshToken != null) 'refresh_token': refreshToken,
+      if (accessToken != null) 'access_token': accessToken,
     });
   }
 
   LoginSessionTokensCompanion copyWith({
     Value<int>? id,
-    Value<RefreshToken?>? refreshTokenAccount,
-    Value<RefreshToken?>? refreshTokenMedia,
-    Value<RefreshToken?>? refreshTokenProfile,
-    Value<RefreshToken?>? refreshTokenChat,
-    Value<AccessToken?>? accessTokenAccount,
-    Value<AccessToken?>? accessTokenMedia,
-    Value<AccessToken?>? accessTokenProfile,
-    Value<AccessToken?>? accessTokenChat,
+    Value<RefreshToken?>? refreshToken,
+    Value<AccessToken?>? accessToken,
   }) {
     return LoginSessionTokensCompanion(
       id: id ?? this.id,
-      refreshTokenAccount: refreshTokenAccount ?? this.refreshTokenAccount,
-      refreshTokenMedia: refreshTokenMedia ?? this.refreshTokenMedia,
-      refreshTokenProfile: refreshTokenProfile ?? this.refreshTokenProfile,
-      refreshTokenChat: refreshTokenChat ?? this.refreshTokenChat,
-      accessTokenAccount: accessTokenAccount ?? this.accessTokenAccount,
-      accessTokenMedia: accessTokenMedia ?? this.accessTokenMedia,
-      accessTokenProfile: accessTokenProfile ?? this.accessTokenProfile,
-      accessTokenChat: accessTokenChat ?? this.accessTokenChat,
+      refreshToken: refreshToken ?? this.refreshToken,
+      accessToken: accessToken ?? this.accessToken,
     );
   }
 
@@ -6256,60 +5891,16 @@ class LoginSessionTokensCompanion extends UpdateCompanion<LoginSessionToken> {
     if (id.present) {
       map['id'] = Variable<int>(id.value);
     }
-    if (refreshTokenAccount.present) {
-      map['refresh_token_account'] = Variable<String>(
-        $LoginSessionTokensTable.$converterrefreshTokenAccount.toSql(
-          refreshTokenAccount.value,
+    if (refreshToken.present) {
+      map['refresh_token'] = Variable<String>(
+        $LoginSessionTokensTable.$converterrefreshToken.toSql(
+          refreshToken.value,
         ),
       );
     }
-    if (refreshTokenMedia.present) {
-      map['refresh_token_media'] = Variable<String>(
-        $LoginSessionTokensTable.$converterrefreshTokenMedia.toSql(
-          refreshTokenMedia.value,
-        ),
-      );
-    }
-    if (refreshTokenProfile.present) {
-      map['refresh_token_profile'] = Variable<String>(
-        $LoginSessionTokensTable.$converterrefreshTokenProfile.toSql(
-          refreshTokenProfile.value,
-        ),
-      );
-    }
-    if (refreshTokenChat.present) {
-      map['refresh_token_chat'] = Variable<String>(
-        $LoginSessionTokensTable.$converterrefreshTokenChat.toSql(
-          refreshTokenChat.value,
-        ),
-      );
-    }
-    if (accessTokenAccount.present) {
-      map['access_token_account'] = Variable<String>(
-        $LoginSessionTokensTable.$converteraccessTokenAccount.toSql(
-          accessTokenAccount.value,
-        ),
-      );
-    }
-    if (accessTokenMedia.present) {
-      map['access_token_media'] = Variable<String>(
-        $LoginSessionTokensTable.$converteraccessTokenMedia.toSql(
-          accessTokenMedia.value,
-        ),
-      );
-    }
-    if (accessTokenProfile.present) {
-      map['access_token_profile'] = Variable<String>(
-        $LoginSessionTokensTable.$converteraccessTokenProfile.toSql(
-          accessTokenProfile.value,
-        ),
-      );
-    }
-    if (accessTokenChat.present) {
-      map['access_token_chat'] = Variable<String>(
-        $LoginSessionTokensTable.$converteraccessTokenChat.toSql(
-          accessTokenChat.value,
-        ),
+    if (accessToken.present) {
+      map['access_token'] = Variable<String>(
+        $LoginSessionTokensTable.$converteraccessToken.toSql(accessToken.value),
       );
     }
     return map;
@@ -6319,14 +5910,8 @@ class LoginSessionTokensCompanion extends UpdateCompanion<LoginSessionToken> {
   String toString() {
     return (StringBuffer('LoginSessionTokensCompanion(')
           ..write('id: $id, ')
-          ..write('refreshTokenAccount: $refreshTokenAccount, ')
-          ..write('refreshTokenMedia: $refreshTokenMedia, ')
-          ..write('refreshTokenProfile: $refreshTokenProfile, ')
-          ..write('refreshTokenChat: $refreshTokenChat, ')
-          ..write('accessTokenAccount: $accessTokenAccount, ')
-          ..write('accessTokenMedia: $accessTokenMedia, ')
-          ..write('accessTokenProfile: $accessTokenProfile, ')
-          ..write('accessTokenChat: $accessTokenChat')
+          ..write('refreshToken: $refreshToken, ')
+          ..write('accessToken: $accessToken')
           ..write(')'))
         .toString();
   }

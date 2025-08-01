@@ -47,74 +47,20 @@ class DaoWriteLoginSession extends DatabaseAccessor<AccountForegroundDatabase> w
     });
   }
 
-  Future<void> updateRefreshTokenAccount(api.RefreshToken? token) async {
+  Future<void> updateRefreshToken(api.RefreshToken? token) async {
     await into(loginSessionTokens).insertOnConflictUpdate(
       LoginSessionTokensCompanion.insert(
         id: SingleRowTable.ID,
-        refreshTokenAccount: Value(token),
+        refreshToken: Value(token),
       ),
     );
   }
 
-  Future<void> updateRefreshTokenMedia(api.RefreshToken? token) async {
+  Future<void> updateAccessToken(api.AccessToken? token) async {
     await into(loginSessionTokens).insertOnConflictUpdate(
       LoginSessionTokensCompanion.insert(
         id: SingleRowTable.ID,
-        refreshTokenMedia: Value(token),
-      ),
-    );
-  }
-
-  Future<void> updateRefreshTokenProfile(api.RefreshToken? token) async {
-    await into(loginSessionTokens).insertOnConflictUpdate(
-      LoginSessionTokensCompanion.insert(
-        id: SingleRowTable.ID,
-        refreshTokenProfile: Value(token),
-      ),
-    );
-  }
-
-  Future<void> updateRefreshTokenChat(api.RefreshToken? token) async {
-    await into(loginSessionTokens).insertOnConflictUpdate(
-      LoginSessionTokensCompanion.insert(
-        id: SingleRowTable.ID,
-        refreshTokenChat: Value(token),
-      ),
-    );
-  }
-
-  Future<void> updateAccessTokenAccount(api.AccessToken? token) async {
-    await into(loginSessionTokens).insertOnConflictUpdate(
-      LoginSessionTokensCompanion.insert(
-        id: SingleRowTable.ID,
-        accessTokenAccount: Value(token),
-      ),
-    );
-  }
-
-  Future<void> updateAccessTokenMedia(api.AccessToken? token) async {
-    await into(loginSessionTokens).insertOnConflictUpdate(
-      LoginSessionTokensCompanion.insert(
-        id: SingleRowTable.ID,
-        accessTokenMedia: Value(token),
-      ),
-    );
-  }
-
-  Future<void> updateAccessTokenProfile(api.AccessToken? token) async {
-    await into(loginSessionTokens).insertOnConflictUpdate(
-      LoginSessionTokensCompanion.insert(
-        id: SingleRowTable.ID,
-        accessTokenProfile: Value(token),
-      ),
-    );
-  }
-
-  Future<void> updateAccessTokenChat(api.AccessToken? token) async {
-    await into(loginSessionTokens).insertOnConflictUpdate(
-      LoginSessionTokensCompanion.insert(
-        id: SingleRowTable.ID,
-        accessTokenChat: Value(token),
+        accessToken: Value(token),
       ),
     );
   }

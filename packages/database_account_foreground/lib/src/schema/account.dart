@@ -28,12 +28,6 @@ class AccountEmailAddress extends SingleRowTable {
 }
 
 class LoginSessionTokens extends SingleRowTable {
-  TextColumn get refreshTokenAccount => text().map(NullAwareTypeConverter.wrap(RefreshTokenConverter())).nullable()();
-  TextColumn get refreshTokenMedia => text().map(NullAwareTypeConverter.wrap(RefreshTokenConverter())).nullable()();
-  TextColumn get refreshTokenProfile => text().map(NullAwareTypeConverter.wrap(RefreshTokenConverter())).nullable()();
-  TextColumn get refreshTokenChat => text().map(NullAwareTypeConverter.wrap(RefreshTokenConverter())).nullable()();
-  TextColumn get accessTokenAccount => text().map(NullAwareTypeConverter.wrap(AccessTokenConverter())).nullable()();
-  TextColumn get accessTokenMedia => text().map(NullAwareTypeConverter.wrap(AccessTokenConverter())).nullable()();
-  TextColumn get accessTokenProfile => text().map(NullAwareTypeConverter.wrap(AccessTokenConverter())).nullable()();
-  TextColumn get accessTokenChat => text().map(NullAwareTypeConverter.wrap(AccessTokenConverter())).nullable()();
+  TextColumn get refreshToken => text().map(NullAwareTypeConverter.wrap(RefreshTokenConverter())).nullable()();
+  TextColumn get accessToken => text().map(NullAwareTypeConverter.wrap(AccessTokenConverter())).nullable()();
 }
