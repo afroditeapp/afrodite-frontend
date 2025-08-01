@@ -248,7 +248,7 @@ class LikeViewContentState extends State<LikeViewContent> {
   }
 
   void _removeAccountIdFromList(AccountId accountId) {
-    updatePagingState((s) => s.filterItems((item) => item.profile.entry.uuid != accountId));
+    updatePagingState((s) => s.filterItems((item) => item.profile.entry.accountId != accountId));
   }
 
   Future<List<ProfileGridProfileEntry>?> _fetchPage() async {
@@ -272,8 +272,8 @@ class LikeViewContentState extends State<LikeViewContent> {
 
     final newList = List<ProfileGridProfileEntry>.empty(growable: true);
     for (final profile in profileList) {
-      final initialProfileAction = await resolveProfileAction(chatRepository, profile.uuid);
-      final isFavorite = await profileRepository.isInFavorites(profile.uuid);
+      final initialProfileAction = await resolveProfileAction(chatRepository, profile.accountId);
+      final isFavorite = await profileRepository.isInFavorites(profile.accountId);
       newList.add((
         profile: ProfileThumbnail(entry: profile, isFavorite: isFavorite),
         initialProfileAction: initialProfileAction,

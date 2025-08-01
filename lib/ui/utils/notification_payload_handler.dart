@@ -136,7 +136,7 @@ Future<NewPageDetails?> handlePayload(
       final lastPage = NavigationStateBlocInstance.getInstance().navigationState.pages.lastOrNull;
       final info = lastPage?.pageInfo;
       final correctConversatinoAlreadyOpen = info is ConversationPageInfo &&
-        info.accountId == profile.uuid;
+        info.accountId == profile.accountId;
       if (!correctConversatinoAlreadyOpen) {
         return newConversationPage(
           profile,

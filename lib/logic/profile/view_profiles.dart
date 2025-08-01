@@ -58,9 +58,9 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData> with Acti
     this.priority
   ) : super(ViewProfilesData(profile: currentProfile, profileActionState: initialProfileAction)) {
     on<InitEvent>((data, emit) async {
-      final isInFavorites = await profile.isInFavorites(state.profile.uuid);
-      final isBlocked = await chat.isInSentBlocks(state.profile.uuid);
-      final action = await resolveProfileAction(chat, state.profile.uuid);
+      final isInFavorites = await profile.isInFavorites(state.profile.accountId);
+      final isBlocked = await chat.isInSentBlocks(state.profile.accountId);
+      final action = await resolveProfileAction(chat, state.profile.accountId);
 
       emit(state.copyWith(
         isFavorite: FavoriteStateIdle(isInFavorites),
@@ -71,7 +71,7 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData> with Acti
     on<ToggleFavoriteStatus>((data, emit) async {
       await runOnce(() async {
         final currentIsFavorite = state.isFavorite.isFavorite;
-        final accountId = state.profile.uuid;
+        final accountId = state.profile.accountId;
 
         emit(state.copyWith(
           isFavorite: FavoriteStateChangeInProgress(!currentIsFavorite),
@@ -118,13 +118,13 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData> with Acti
       final change = data.change;
       switch (change) {
         case ProfileBlocked(): {
-          if (change.profile == state.profile.uuid) {
+          if (change.profile == state.profile.accountId) {
             emit(state.copyWith(isBlocked: true));
           }
         }
         case ConversationChanged(): {
           // Show the chat action when the first message is received
-          final action = await resolveProfileAction(chat, state.profile.uuid);
+          final action = await resolveProfileAction(chat, state.profile.accountId);
           emit(state.copyWith(
             profileActionState: action,
           ));
@@ -204,7 +204,7 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData> with Acti
       });
 
     _getProfileDataSubscription = profile
-      .getProfileStream(chat, state.profile.uuid, priority)
+      .getProfileStream(chat, state.profile.accountId, priority)
       .listen((event) {
         add(HandleProfileResult(event));
       });

@@ -81,7 +81,7 @@ class ViewProfilePage extends StatelessWidget {
               favoriteButton(context, state),
               menuActions([
                 commonActionBlockProfile(context, () {
-                  context.read<ViewProfileBloc>().add(BlockProfile(initialProfile.uuid));
+                  context.read<ViewProfileBloc>().add(BlockProfile(initialProfile.accountId));
                 }),
                 showReportAction(context, state.profile),
                 BlocBuilder<AccountBloc, AccountBlocData>(
@@ -89,7 +89,7 @@ class ViewProfilePage extends StatelessWidget {
                     final p = AccountAdminSettingsPermissions(state.permissions);
                     if (p.somePermissionEnabled()) {
                       return MenuItemButton(
-                        onPressed: () => getAgeAndNameAndShowAdminSettings(context, api, initialProfile.uuid),
+                        onPressed: () => getAgeAndNameAndShowAdminSettings(context, api, initialProfile.accountId),
                         child: const Text("Admin"),
                       );
                     } else {
@@ -121,7 +121,7 @@ class ViewProfilePage extends StatelessWidget {
       onPressed: () {
         switch (state.isFavorite) {
           case FavoriteStateIdle():
-            context.read<ViewProfileBloc>().add(ToggleFavoriteStatus(state.profile.uuid));
+            context.read<ViewProfileBloc>().add(ToggleFavoriteStatus(state.profile.accountId));
           case FavoriteStateChangeInProgress():
             showSnackBar(context.strings.generic_previous_action_in_progress);
         }
@@ -164,7 +164,7 @@ class ViewProfilePage extends StatelessWidget {
     if (context.mounted && accepted == true && action != null) {
       context.read<ViewProfileBloc>()
         .add(DoProfileAction(
-          s.profile.uuid,
+          s.profile.accountId,
           action,
         ));
     }

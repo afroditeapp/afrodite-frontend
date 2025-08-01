@@ -48,7 +48,7 @@ NewPageDetails newConversationPage(
     MaterialPage<void>(
       child: BlocProvider(
         create: (_) => ConversationBloc(
-          profile.uuid,
+          profile.accountId,
           DefaultConversationDataProvider(LoginRepository.getInstance().repositories.chat)
         ),
         lazy: false,
@@ -56,7 +56,7 @@ NewPageDetails newConversationPage(
       ),
     ),
     pageKey: pageKey,
-    pageInfo: ConversationPageInfo(profile.uuid),
+    pageInfo: ConversationPageInfo(profile.accountId),
   );
 }
 
@@ -79,7 +79,7 @@ class ConversationPageState extends State<ConversationPage> {
   @override
   void initState() {
     super.initState();
-    log.finest("Opening conversation for account: ${widget.profileEntry.uuid}");
+    log.finest("Opening conversation for account: ${widget.profileEntry.accountId}");
   }
 
   @override
@@ -132,7 +132,7 @@ class ConversationPageState extends State<ConversationPage> {
           ),
           menuActions([
             commonActionBlockProfile(context, () {
-              context.read<ConversationBloc>().add(BlockProfile(widget.profileEntry.uuid));
+              context.read<ConversationBloc>().add(BlockProfile(widget.profileEntry.accountId));
             }),
             showReportAction(context, widget.profileEntry),
           ]),

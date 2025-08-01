@@ -90,7 +90,7 @@ class DaoReadProfile extends DatabaseAccessor<AccountForegroundDatabase> with _$
       contentVersion != null
     ) {
       return ProfileEntry(
-        uuid: r.accountId,
+        accountId: r.accountId,
         content: content,
         primaryContentGridCropSize: gridCropSize,
         primaryContentGridCropX: gridCropX,

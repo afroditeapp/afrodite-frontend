@@ -75,7 +75,7 @@ class _ViewProfileEntryState extends State<ViewProfileEntry> {
   }
 
   bool isMyProfile() {
-    return currentUser == widget.profile.uuid;
+    return currentUser == widget.profile.accountId;
   }
 
   Widget title(BuildContext context) {
@@ -343,7 +343,7 @@ class _ViewProfileImgViewerState extends State<ViewProfileImgViewer> {
       if (!widget.showNonAcceptedImages && !contentList[i].accepted) {
         continue;
       }
-      imgs.add(viewProifleImage(context, widget.profile.uuid, contentList[i].id));
+      imgs.add(viewProifleImage(context, widget.profile.accountId, contentList[i].id));
     }
 
     if (imgs.isEmpty) {

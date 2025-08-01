@@ -65,7 +65,7 @@ class DaoReadMyProfile extends DatabaseAccessor<AccountForegroundDatabase> with 
       profileUnlimitedLikes != null
     ) {
       return MyProfileEntry(
-        uuid: id,
+        accountId: id,
         myContent: content,
         primaryContentGridCropSize: gridCropSize,
         primaryContentGridCropX: gridCropX,

@@ -19,7 +19,7 @@ class ProfileThumbnail {
 }
 
 class ProfileEntry implements PublicContentProvider {
-  final AccountId uuid;
+  final AccountId accountId;
   @override
   final List<ContentIdAndAccepted> content;
   final double primaryContentGridCropSize;
@@ -44,7 +44,7 @@ class ProfileEntry implements PublicContentProvider {
   final UtcDateTime? newLikeInfoReceivedTime;
   ProfileEntry(
     {
-      required this.uuid,
+      required this.accountId,
       required this.content,
       required this.primaryContentGridCropSize,
       required this.primaryContentGridCropX,
@@ -123,7 +123,7 @@ class MyProfileEntry extends ProfileEntry implements MyContentProvider {
     this.profileTextModerationState,
     this.profileTextModerationRejectedCategory,
     this.profileTextModerationRejectedDetails,
-    required super.uuid,
+    required super.accountId,
     required super.primaryContentGridCropSize,
     required super.primaryContentGridCropX,
     required super.primaryContentGridCropY,

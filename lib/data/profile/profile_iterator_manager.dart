@@ -136,14 +136,14 @@ class ProfileIteratorManager {
       }
       final toBeRemoved = <ProfileEntry>[];
       for (final p in list) {
-        final isBlocked = await chat.isInSentBlocks(p.uuid);
-        final alreadyReturned = _duplicateAccountsPreventer.contains(p.uuid);
+        final isBlocked = await chat.isInSentBlocks(p.accountId);
+        final alreadyReturned = _duplicateAccountsPreventer.contains(p.accountId);
         final invalidPrimaryContent = p.content.firstOrNull?.primary != true || p.content.firstOrNull?.accepted != true;
 
-        if (isBlocked || alreadyReturned || p.uuid == currentUser || invalidPrimaryContent) {
+        if (isBlocked || alreadyReturned || p.accountId == currentUser || invalidPrimaryContent) {
           toBeRemoved.add(p);
         } else {
-          _duplicateAccountsPreventer.add(p.uuid);
+          _duplicateAccountsPreventer.add(p.accountId);
         }
       }
       list.removeWhere((element) => toBeRemoved.contains(element));

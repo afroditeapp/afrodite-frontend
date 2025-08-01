@@ -18,8 +18,8 @@ Widget showReportAction(BuildContext context, ProfileEntry profile) {
   return MenuItemButton(
     onPressed: () async {
       final chat = LoginRepository.getInstance().repositories.chat;
-      final isMatch = await chat.isInMatches(profile.uuid);
-      final messages = await chat.getAllMessages(profile.uuid);
+      final isMatch = await chat.isInMatches(profile.accountId);
+      final messages = await chat.getAllMessages(profile.accountId);
       if (!context.mounted) {
         return;
       }
@@ -95,7 +95,7 @@ class _ReportScreenState extends State<ReportScreen> {
         );
         if (context.mounted && r == true) {
           final result = await api.profile((api) => api.postReportProfileName(UpdateProfileNameReport(
-            target: widget.profile.uuid,
+            target: widget.profile.accountId,
             profileName: widget.profile.name,
           ))).ok();
 
@@ -107,7 +107,7 @@ class _ReportScreenState extends State<ReportScreen> {
             showSnackBar(R.strings.report_screen_snackbar_too_many_reports_error);
           } else {
             showSnackBar(R.strings.report_screen_snackbar_report_successful);
-            await profile.downloadProfileToDatabase(chat, widget.profile.uuid);
+            await profile.downloadProfileToDatabase(chat, widget.profile.accountId);
           }
         }
       }));
@@ -124,7 +124,7 @@ class _ReportScreenState extends State<ReportScreen> {
         );
         if (context.mounted && r == true) {
           final result = await api.profile((api) => api.postReportProfileText(UpdateProfileTextReport(
-            target: widget.profile.uuid,
+            target: widget.profile.accountId,
             profileText: widget.profile.profileText,
           ))).ok();
 
@@ -136,7 +136,7 @@ class _ReportScreenState extends State<ReportScreen> {
             showSnackBar(R.strings.report_screen_snackbar_too_many_reports_error);
           } else {
             showSnackBar(R.strings.report_screen_snackbar_report_successful);
-            await profile.downloadProfileToDatabase(chat, widget.profile.uuid);
+            await profile.downloadProfileToDatabase(chat, widget.profile.accountId);
           }
         }
       }));
@@ -179,7 +179,7 @@ class _ReportScreenState extends State<ReportScreen> {
         if (context.mounted && r == true) {
           final result = await api.account((api) => api.postCustomReportEmpty(UpdateCustomReportEmpty(
             customReportId: report.id,
-            target: widget.profile.uuid,
+            target: widget.profile.accountId,
           ))).ok();
 
           if (result == null) {

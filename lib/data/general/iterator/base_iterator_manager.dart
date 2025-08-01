@@ -71,9 +71,9 @@ abstract class BaseIteratorManager implements UiProfileIterator {
       }
       final toBeRemoved = <ProfileEntry>[];
       for (final p in list) {
-        final isBlocked = await _chat.isInSentBlocks(p.uuid);
+        final isBlocked = await _chat.isInSentBlocks(p.accountId);
 
-        if (isBlocked || p.uuid == _currentUser) {
+        if (isBlocked || p.accountId == _currentUser) {
           toBeRemoved.add(p);
         }
       }

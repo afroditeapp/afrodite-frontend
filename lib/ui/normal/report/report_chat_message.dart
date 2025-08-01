@@ -136,7 +136,7 @@ class _ReportChatMessageScreen extends State<ReportChatMessageScreen> {
           }
 
           final result = await api.chat((api) => api.postChatMessageReport(UpdateChatMessageReport(
-            target: widget.profileEntry.uuid,
+            target: widget.profileEntry.accountId,
             backendSignedMessageBase64: base64Encode(backendSignedMessage),
             decryptionKeyBase64: base64Encode(symmetricKey),
           ))).ok();

@@ -133,7 +133,7 @@ class _ProfileGridState extends State<ProfileGrid> {
       case ProfileFavoriteStatusChange(): {
         // Remove profile if favorites filter is enabled and favorite status is changed to false
         if (event.isFavorite == false && widget.filteringSettingsBloc.state.showOnlyFavorites) {
-          updatePagingState((s) => s.filterItems((item) => item.profile.entry.uuid != event.profile));
+          updatePagingState((s) => s.filterItems((item) => item.profile.entry.accountId != event.profile));
         }
       }
       case ReloadMainProfileView():
@@ -154,7 +154,7 @@ class _ProfileGridState extends State<ProfileGrid> {
   }
 
   void removeAccountIdFromList(AccountId accountId) {
-    updatePagingState((s) => s.filterItems((item) => item.profile.entry.uuid != accountId));
+    updatePagingState((s) => s.filterItems((item) => item.profile.entry.accountId != accountId));
   }
 
   Future<List<ProfileGridProfileEntry>?> _fetchPage() async {
@@ -174,8 +174,8 @@ class _ProfileGridState extends State<ProfileGrid> {
 
     final newList = List<ProfileGridProfileEntry>.empty(growable: true);
     for (final profile in profileList) {
-      final initialProfileAction = await resolveProfileAction(chatRepository, profile.uuid);
-      final isFavorite = await profileRepository.isInFavorites(profile.uuid);
+      final initialProfileAction = await resolveProfileAction(chatRepository, profile.accountId);
+      final isFavorite = await profileRepository.isInFavorites(profile.accountId);
       newList.add((
         profile: ProfileThumbnail(entry: profile, isFavorite: isFavorite),
         initialProfileAction: initialProfileAction,
@@ -356,7 +356,7 @@ Widget profileEntryWidgetStream(
   }
 ) {
   return StreamBuilder(
-    stream: db.accountStream((db) => db.profile.watchProfileThumbnail(profile.entry.uuid)).whereNotNull(),
+    stream: db.accountStream((db) => db.profile.watchProfileThumbnail(profile.entry.accountId)).whereNotNull(),
     builder: (context, data) {
       final e = data.data ?? profile;
       return ProfileThumbnailImageOrError.fromProfileEntry(

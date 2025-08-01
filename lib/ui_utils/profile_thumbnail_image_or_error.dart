@@ -46,7 +46,7 @@ class ProfileThumbnailImageOrError extends StatelessWidget {
       return error(context.strings.profile_image_error_image_not_accepted);
     } else {
       return ProfileThumbnailImage(
-        accountId: entry.uuid,
+        accountId: entry.accountId,
         contentId: img.id,
         width: width,
         height: height,

@@ -58,7 +58,7 @@ class _ReportProfileImageScreen extends State<ReportProfileImageScreen> {
 
   Widget imageRow(BuildContext context, ContentId content, String imageName) {
     final Widget imageWidget = accountImgWidget(
-      widget.profileEntry.uuid,
+      widget.profileEntry.accountId,
       content,
       isMatch: widget.isMatch,
       width: _IMG_SIZE,
@@ -91,7 +91,7 @@ class _ReportProfileImageScreen extends State<ReportProfileImageScreen> {
         );
         if (context.mounted && r == true) {
           final result = await api.media((api) => api.postProfileContentReport(UpdateProfileContentReport(
-            target: widget.profileEntry.uuid,
+            target: widget.profileEntry.accountId,
             content: content,
           ))).ok();
 
@@ -108,7 +108,7 @@ class _ReportProfileImageScreen extends State<ReportProfileImageScreen> {
               setState(() {
                 images = images.where((v) => v.$2.id != content).toList();
               });
-              await profile.downloadProfileToDatabase(chat, widget.profileEntry.uuid);
+              await profile.downloadProfileToDatabase(chat, widget.profileEntry.accountId);
             }
           }
         }
