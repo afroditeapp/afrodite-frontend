@@ -58,6 +58,9 @@ sealed class ValueApiError extends ApiError {
   /// Is status code HTTP 304
   bool isNotModified() { return false; }
 
+  /// Is status code HTTP 401
+  bool isUnauthorized() { return false; }
+
   /// Is status code HTTP 404
   bool isNotFoundError() { return false; }
 
@@ -94,6 +97,11 @@ class ValueApiException extends ValueApiError {
   @override
   bool isNotModified() {
     return e.code == 304;
+  }
+
+  @override
+  bool isUnauthorized() {
+    return e.code == 401;
   }
 
   @override

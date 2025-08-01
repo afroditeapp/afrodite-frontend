@@ -560,14 +560,17 @@ class LoginRepository extends DataRepository {
     if (token == null) {
       return Err(OtherError());
     }
-    final accounts = await _apiNoConnection.account((api) => api.postDemoModeAccessibleAccounts(DemoModeToken(token: token))).ok();
-    if (accounts != null) {
-      return Ok(accounts);
-    } else {
-      // TODO(prod): Better error handling, check HTTP error code
-      // Assume session expiration every time for now.
-      await demoAccountLogout();
-      return Err(SessionExpired());
+    final accounts = await _apiNoConnection.accountWrapper().requestValue((api) => api.postDemoModeAccessibleAccounts(DemoModeToken(token: token)));
+    switch (accounts) {
+      case Ok(:final v):
+        return Ok(v);
+      case Err(:final e):
+        if (e.isUnauthorized()) {
+          await demoAccountLogout();
+          return Err(SessionExpired());
+        } else {
+          return Err(OtherError());
+        }
     }
   }
 
@@ -577,14 +580,17 @@ class LoginRepository extends DataRepository {
       return Err(OtherError());
     }
     final demoToken = DemoModeToken(token: token);
-    final id = await _apiNoConnection.account((api) => api.postDemoModeRegisterAccount(demoToken)).ok();
-    if (id != null) {
-      return await demoAccountLoginToAccount(id);
-    } else {
-      // TODO(prod): Better error handling, check HTTP error code
-      // Assume session expiration every time for now.
-      await demoAccountLogout();
-      return Err(SessionExpired());
+    final id = await _apiNoConnection.accountWrapper().requestValue((api) => api.postDemoModeRegisterAccount(demoToken));
+    switch (id) {
+      case Ok(:final v):
+        return await demoAccountLoginToAccount(v);
+      case Err(:final e):
+        if (e.isUnauthorized()) {
+          await demoAccountLogout();
+          return Err(SessionExpired());
+        } else {
+          return Err(OtherError());
+        }
     }
   }
 
@@ -594,30 +600,33 @@ class LoginRepository extends DataRepository {
       return Err(OtherError());
     }
     final demoToken = DemoModeToken(token: token);
-    final loginResult = await _apiNoConnection.account((api) => api.postDemoModeLoginToAccount(
+    final loginResult = await _apiNoConnection.accountWrapper().requestValue((api) => api.postDemoModeLoginToAccount(
       DemoModeLoginToAccount(
         aid: id,
         token: demoToken,
         clientInfo: clientInfo(),
       ),
-    )).ok();
-    if (loginResult != null) {
-      switch (await _handleLoginResult(loginResult)) {
-        case Err(:final e):
-          switch (e) {
-            case CommonSignInError.unsupportedClient:
-              return Err(UnsupportedClient());
-            case CommonSignInError.otherError:
-              return Err(OtherError());
-          }
-        case Ok():
-          return const Ok(null);
-      }
-    } else {
-      // TODO(prod): Better error handling, check HTTP error code
-      // Assume session expiration every time for now.
-      await demoAccountLogout();
-      return Err(SessionExpired());
+    ));
+    switch (loginResult) {
+      case Ok(:final v):
+        switch (await _handleLoginResult(v)) {
+          case Err(:final e):
+            switch (e) {
+              case CommonSignInError.unsupportedClient:
+                return Err(UnsupportedClient());
+              case CommonSignInError.otherError:
+                return Err(OtherError());
+            }
+          case Ok():
+            return const Ok(null);
+        }
+      case Err(:final e):
+        if (e.isUnauthorized()) {
+          await demoAccountLogout();
+          return Err(SessionExpired());
+        } else {
+          return Err(OtherError());
+        }
     }
   }
 }

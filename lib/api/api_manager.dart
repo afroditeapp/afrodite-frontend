@@ -291,7 +291,7 @@ class ApiManager implements LifecycleMethods {
     return _account;
   }
 
-  ApiWrapper<AccountApi> _accountWrapper() {
+  ApiWrapper<AccountApi> accountWrapper() {
     return ApiWrapper(_account.account, connection);
   }
 
@@ -320,7 +320,7 @@ class ApiManager implements LifecycleMethods {
   }
 
   Future<Result<R, ValueApiError>> account<R extends Object>(Future<R?> Function(AccountApi) action) async {
-    return await _accountWrapper().requestValue(action);
+    return await accountWrapper().requestValue(action);
   }
 
   Future<Result<R, ValueApiError>> accountAdmin<R extends Object>(Future<R?> Function(AccountAdminApi) action) async {
@@ -358,7 +358,7 @@ class ApiManager implements LifecycleMethods {
   // Actions
 
   Future<Result<void, ActionApiError>> accountAction(Future<void> Function(AccountApi) action) async {
-    return await _accountWrapper().requestAction(action);
+    return await accountWrapper().requestAction(action);
   }
 
   Future<Result<void, ActionApiError>> accountAdminAction(Future<void> Function(AccountAdminApi) action) async {
