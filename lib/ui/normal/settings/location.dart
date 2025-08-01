@@ -388,9 +388,8 @@ class MapAnimationManager {
 
   void dispose() {
     _controller.dispose();
+    // LocationWidget disposes _animatedMapController
     _animatedMapController = null;
-
-    // TODO: dispose something else?
   }
 
   void preventAnimation() {

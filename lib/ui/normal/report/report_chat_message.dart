@@ -66,7 +66,6 @@ class _ReportChatMessageScreen extends State<ReportChatMessageScreen> {
 
     final String text;
     if (entry.messageState.isSent() == true) {
-      // TODO(prod): Send message owner info as JSON?
       text = context.strings.chat_list_screen_sent_message_indicator(textNoOwnerIndicator);
     } else {
       text = textNoOwnerIndicator;

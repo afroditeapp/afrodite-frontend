@@ -4,9 +4,6 @@ use rand::rngs::OsRng;
 
 use super::MessageEncryptionError;
 
-// TODO(prod): Check is it possible to enable AES GCM and data packet V2
-//             creation. Current library version is missing support for
-//             creating V2 data packets at least using the Message API.
 // TODO(prod): Consider changing AES-256 to AES-128 for images.
 //             SQLChipher uses AES-256.
 

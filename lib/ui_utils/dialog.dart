@@ -8,10 +8,9 @@ import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui_utils/loading_dialog.dart';
 
 void showAppAboutDialog(BuildContext context) {
-  // TODO(prod): Finish about dialog information
   const double ICON_SIZE = 80.0;
 
-  // TODO: Test about dialog with notification related navigation.
+  // TODO(prod): Test about dialog with notification related navigation.
 
   // About dialog uses root navigator as there is navigation related to
   // viewing licenses.

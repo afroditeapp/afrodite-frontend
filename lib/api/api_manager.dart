@@ -112,7 +112,7 @@ class ServerConnectionManager implements LifecycleMethods, ServerConnectionInter
                 _state.add(ApiManagerState.reconnectWaitTime);
                 _reconnectInProgress = true;
                 showSnackBar("Connection error - reconnecting in 5 seconds");
-                // TODO: check that internet connectivity exists?
+                // TODO(prod): check that internet connectivity exists?
                 unawaited(Future.delayed(const Duration(seconds: 5), () async {
                   final currentState = await accountConnection.state.first;
 

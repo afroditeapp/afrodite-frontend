@@ -219,7 +219,7 @@ Rect calculateSquareSrcRect(ui.Image img, CropResults cropResults) {
   return src;
 }
 
-// TODO: Images are too high resolution for cacheing as cache has decoded
+// TODO(quality): Images are too high resolution for cacheing as cache has decoded
 // data. Cache needs smaller img data if the image is small on UI.
 // Perhaps use full HD max width 1920 as max dimension for image and scale
 // that down depending on UI img size. The small profile img on top left

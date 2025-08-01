@@ -59,6 +59,7 @@ class ImageCacheData extends AppSingleton {
       return null;
     }
 
+    // TODO(prod): return null if exception is thrown
     final encryptedImgBytes = await ImageEncryptionManager.getInstance().encryptImageData(imageData);
     await cacheManager.putFile("null", encryptedImgBytes, key: imgKey);
     return imageData;
@@ -89,6 +90,7 @@ class ImageCacheData extends AppSingleton {
     switch (tileResult) {
       case MapTileSuccess tileResult:
         if (mapTileCacheKey != null) {
+          // TODO(prod): return null if exception is thrown
           final encryptedImgBytes = await ImageEncryptionManager.getInstance().encryptImageData(tileResult.pngData);
           await cacheManager.putFile("null", encryptedImgBytes, key: mapTileCacheKey);
         }

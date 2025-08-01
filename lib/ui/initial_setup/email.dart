@@ -60,9 +60,8 @@ class _AskEmailState extends State<AskEmail> {
   Widget emailRow(BuildContext context) {
     final email = widget.initialEmail;
     if (email != null) {
-      // TODO(prod): Perhaps add IconButton which displays info dialog about
-      // the email address. Or text which says "The above email adderss is
-      // provided by Sign in with Apple/Google"
+      // TODO(prod): Make email editing possible even if sign in with login
+      //             is used.
       return Center(
         child: Padding(
           padding: const EdgeInsets.all(8.0),

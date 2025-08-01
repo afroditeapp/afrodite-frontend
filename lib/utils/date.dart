@@ -1,7 +1,7 @@
 
 
 extension CheckAge on DateTime {
-  // TODO(prod): Should this check the time zone as well?
+  // TODO(prod): Remove unused code
 
   /// Is 18 years old or older
   bool isNowAdult() {

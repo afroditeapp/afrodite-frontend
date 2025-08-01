@@ -30,8 +30,6 @@ import 'package:rxdart/rxdart.dart';
 
 var log = Logger("PushNotificationManager");
 
-// TODO(prod): For ios check app capabilities related to push notifications
-
 class PushNotificationManager extends AppSingleton {
   PushNotificationManager._private();
   static final _instance = PushNotificationManager._private();
@@ -171,7 +169,6 @@ class PushNotificationManager extends AppSingleton {
         log.finest("Exception: $e");
       }
     }
-    // TODO(prod): Make sure that server unassociates this FCM token with the user
   }
 }
 

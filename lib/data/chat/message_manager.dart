@@ -74,8 +74,6 @@ class RetryPublicKeyDownload extends MessageManagerCommand {
   }
 }
 
-// TODO(prod): Enable message sender verification from Rust code
-
 /// Synchronized message actions
 class MessageManager extends LifecycleMethods {
   final MessageKeyManager messageKeyManager;

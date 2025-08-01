@@ -219,6 +219,7 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
               resetMessageInputField: true,
             ));
           case ErrorBeforeMessageSaving():
+            // TODO(prod): Show error
             ();
           case ErrorAfterMessageSaving(:final details):
             switch (details) {

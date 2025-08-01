@@ -4,8 +4,6 @@
 import 'package:flutter/material.dart';
 import 'package:app/main.dart';
 
-
-// TODO: Show details button for displaying more detailed error message
 void showSnackBar(String text) {
   Future.delayed(Duration.zero, () {
     globalScaffoldMessengerKey.currentState?.hideCurrentSnackBar();

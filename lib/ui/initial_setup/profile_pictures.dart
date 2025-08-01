@@ -381,8 +381,6 @@ Future<void> openEditThumbnail(
   CropResults currentCrop,
   int imgStateIndex,
 ) async {
-  // TODO: Error handling (now done?)
-
   final bytes = await ImageCacheData.getInstance().getImage(
     img.accountId,
     img.contentId,
@@ -547,11 +545,8 @@ void openSelectPictureDialog(
             onTap: () async {
               final imageProcessingBloc = context.read<ProfilePicturesImageProcessingBloc>();
               MyNavigator.removePage(context, pageKey, null);
-              // TODO: Read image on client side and show error if
+              // TODO(prod): Read image on client side and show error if
               // image is not JPEG.
-              // TODO: Consider resizing image on client side?
-              // The built in ImagePicker resizing produces poor quality
-              // images at least on Android.
 
               try {
                 final image  = await ImagePicker().pickImage(

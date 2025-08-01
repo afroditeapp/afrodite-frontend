@@ -121,8 +121,9 @@ class _ServerTasksScreenState extends State<ServerTasksScreen> {
           hPad(actionButton(context, data, "Backend restart", null, (api) => api.postTriggerBackendRestart(data.manager))),
         if (widget.permissions.adminServerMaintenanceRestartBackend)
           hPad(actionButton(context, data, "System reboot", null, (api) => api.postTriggerSystemReboot(data.manager))),
-        // TODO(prod): Remove data reset task and permission as data is not
-        //             wiped properly so it is not GDPR compliant.
+        // TODO(prod): Change data reset API to remove all accounts
+        //             before server data directory removing,
+        //             so that data reset will be GDPR compliant.
         if (widget.permissions.adminServerMaintenanceResetData)
           hPad(actionButton(context, data, "Reset data (for development only)", null, (api) => api.postTriggerBackendDataReset(data.manager))),
         const Padding(padding: EdgeInsets.only(top: 8.0)),

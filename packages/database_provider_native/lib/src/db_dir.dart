@@ -9,6 +9,7 @@ import 'package:path/path.dart' as p;
 
 final log = Logger("DbDirUtils");
 
+/// TODO(quality): Error handling
 class DbDirUtils {
   static Future<String> _dbDirPath({bool backgroundDb = false}) async {
     final String dbDirName;
@@ -22,7 +23,7 @@ class DbDirUtils {
     final dbDirPath = p.join(supportDir.path, dbDirName);
     final dir = Directory(dbDirPath);
     if (!await dir.exists()) {
-      await dir.create(); // TODO: Error handling
+      await dir.create();
     }
     return dbDirPath;
   }

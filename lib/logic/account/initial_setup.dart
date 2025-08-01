@@ -23,12 +23,6 @@ import "package:app/ui_utils/snack_bar.dart";
 import "package:app/utils.dart";
 import "package:app/utils/immutable_list.dart";
 
-
-// TODO(prod): Figure out email address changing?
-//  Remove it from complete initial setup?
-//  Allow changeing email in AccountData only if it null?
-//  That allows easy debugging.
-
 final log = Logger("InitialSetupBloc");
 
 sealed class InitialSetupEvent {}

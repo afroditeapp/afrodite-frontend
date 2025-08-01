@@ -55,12 +55,12 @@ abstract class BaseIteratorManager implements UiProfileIterator {
   }
 
   Future<Result<List<ProfileEntry>, void>> _nextListImpl() async {
-    // TODO: Perhaps move to iterator when filters are implemented?
     while (true) {
       final List<ProfileEntry> list;
       switch (await _nextListRaw()) {
         case Ok(value: final profiles):
           list = profiles;
+          // TODO(prod): remove unnecessary break
           break;
         case Err():
           return const Err(null);

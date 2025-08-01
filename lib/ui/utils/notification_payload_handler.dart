@@ -181,16 +181,3 @@ Future<NewPageDetails?> handlePayload(
   }
   return null;
 }
-
-// TODO: Thinking about the server side iterator for likes:
-//
-// If there is no reset iterator command in server API,
-// then the next page API should have the iterator
-// origin point as a parameter? Perhaps AccountId could be used for that?
-// Actually that is not possible as for example that specific AccountId can be
-// removed from likes. Perhaps use timestamp instead? Then the likeing time
-// is exposed from API. Autoincrementing like ID perhaps could be used if
-// those are unique.
-
-// TODO: Notification settings. On Android 8 or later system notification
-// settings should be opened.

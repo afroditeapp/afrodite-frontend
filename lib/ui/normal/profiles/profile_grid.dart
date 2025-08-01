@@ -38,9 +38,6 @@ import 'package:utils/utils.dart';
 
 var log = Logger("ProfileGrid");
 
-// TODO: Check that specific profile in profile grid updates if needed
-// when returning from view profile screen.
-
 class ProfileGrid extends StatefulWidget {
   final ProfileFilteringSettingsBloc filteringSettingsBloc;
   const ProfileGrid({required this.filteringSettingsBloc, super.key});

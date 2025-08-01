@@ -148,14 +148,13 @@ class _MenuViewState extends State<MenuView> {
       ),
     ];
 
-    // TODO(prod): Remove/hide admin settings from production build?
     if (AdminSettingsPermissions(permissions).somePermissionEnabled()) {
       settings.add(Setting.createSetting(Icons.admin_panel_settings, context.strings.admin_settings_title, () =>
         MyNavigator.push(context, const MaterialPage<void>(child: AdminSettingsPage()))
       ));
     }
 
-    // TODO(prod): Remove/hide debug settings
+    // TODO(prod): Hide debug settings from release builds
     settings.add(Setting.createSetting(Icons.bug_report_rounded, "Debug", () =>
       MyNavigator.push(context, const MaterialPage<void>(child: DebugSettingsPage()))
     ));

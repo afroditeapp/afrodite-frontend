@@ -28,8 +28,7 @@ import 'package:app/ui_utils/profile_thumbnail_image.dart';
 
 const double PROFILE_IMG_HEIGHT = 400;
 
-// TODO: Check that IconButtons have tooltips
-// TODO(prod): Set scrolledUnderElevation: 0 to app bar theme
+// TODO(quality): Check that IconButtons have tooltips
 
 class ViewProfileEntry extends StatefulWidget {
   final ProfileEntry profile;

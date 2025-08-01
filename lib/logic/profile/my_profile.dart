@@ -53,12 +53,6 @@ class MyProfileBloc extends Bloc<MyProfileEvent, MyProfileData> with ActionRunne
   MyProfileBloc() : super(MyProfileData()) {
     on<SetProfile>((data, emit) async {
       await runOnce(() async {
-        // TODO: check if the profile has actually changed
-        // if (state.profile?.age == data.profile.age &&
-        //   state.profile?.name == data.profile.name) {
-        //   return;
-        // }
-
         final current = state.profile;
         if (current == null) {
           return;

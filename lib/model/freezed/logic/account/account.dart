@@ -8,8 +8,6 @@ import "package:app/utils/api.dart";
 
 part 'account.freezed.dart';
 
-// TODO(prod): Add default value for AccountState?
-
 @freezed
 class AccountBlocData with _$AccountBlocData {
   AccountBlocData._();

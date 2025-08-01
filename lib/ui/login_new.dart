@@ -26,9 +26,6 @@ import "package:sign_in_with_apple/sign_in_with_apple.dart";
 import 'package:app/localizations.dart';
 import "package:url_launcher/url_launcher_string.dart";
 
-// TODO(prod): Show progress when sign in with google/apple returns and
-// connecting to server starts
-
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
 
@@ -69,7 +66,6 @@ class LoginScreen extends StatelessWidget {
                   });
               },
             ),
-            // TODO(prod): remove
             // It is not possible to build web debug build using
             // "flutter build web" command, so profile mode is used as
             // a workaround. Also some devices are too slow for debug builds.
@@ -131,7 +127,6 @@ Widget signInButtonArea(BuildContext context) {
         ],
       ),
       const Padding(padding: EdgeInsets.symmetric(vertical: COMMON_PADDING)),
-      // TODO(prod): Add more padding?
       SizedBox(
         width: 240,
         child: Column(
@@ -268,7 +263,10 @@ Widget logoAndAppNameAndSlogan(BuildContext context) {
 Future<DemoAccountCredentials?> openFirstDemoAccountLoginDialog(BuildContext context) {
   final usernameField = SimpleTextField(
     hintText: context.strings.login_screen_demo_account_username,
-    // TODO(prod): remove default username and password
+    // TODO(prod): Change defaults to "username" and "password"
+    // TODO(prod): Use empty strings as default values for release builds
+    // TODO(prod): After password login is implemented add boolean constant which
+    //             can hide demo account login.
     getInitialValue: () => context.read<DemoAccountLoginBloc>().state.username ?? "test",
   );
   final passwordField = SimpleTextField(

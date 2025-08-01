@@ -162,7 +162,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
   ///
   /// If `cache` is true, then getting the profile is tried from cache first.
   Future<ProfileEntry?> getProfile(AccountId id, {bool cache = false}) async {
-    // TODO: perhaps more detailed error message, so that changes from public to
+    // TODO(prod): perhaps more detailed error message, so that changes from public to
     // private profile can be handled.
 
     if (cache) {
@@ -181,7 +181,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
   /// time has passed since last profile data refresh) and future profile
   /// updates.
   Stream<GetProfileResultClient> getProfileStream(ChatRepository chat, AccountId id, ProfileRefreshPriority priority) async* {
-    // TODO: perhaps more detailed error message, so that changes from public to
+    // TODO(prod): perhaps more detailed error message, so that changes from public to
     // private profile can be handled.
 
     final dbProfileIteator = StreamIterator(db.accountStream((db) => db.profile.watchProfileEntry(id)));

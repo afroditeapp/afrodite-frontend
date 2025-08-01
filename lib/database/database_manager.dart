@@ -133,7 +133,7 @@ class DatabaseManager extends AppSingleton {
           .accountAction((db) => db.loginSession.setAccountIdIfNull(accountId))
       );
 
-  // TODO: Currently there is no location where this could be handled
+  // NOTE: This is not used as there is no good location for calling this
   Future<void> dispose() async {
     await commonDatabase.close();
     await commonLazyDatabase.close();
