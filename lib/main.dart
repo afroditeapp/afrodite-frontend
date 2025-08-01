@@ -18,8 +18,6 @@ import 'package:app/data/push_notification_manager.dart';
 import 'package:app/database/background_database_manager.dart';
 import 'package:app/database/database_manager.dart';
 import 'package:app/localizations.dart';
-import 'package:app/logic/app/navigator_state.dart';
-import 'package:app/logic/chat/conversation_bloc.dart';
 
 import 'package:app/logic/app/main_state.dart';
 import 'package:app/storage/encryption.dart';
@@ -83,8 +81,6 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await SystemChrome.setPreferredOrientations(DEFAULT_ORIENTATIONS);
-
-  Bloc.observer = DebugObserver();
 
   await GlobalInitManager.getInstance().init();
 
@@ -199,19 +195,6 @@ class GlobalLocalizationsInitializer extends StatelessWidget {
     // Init correct localizations to R class.
     final _ = context.strings.app_name;
     return child;
-  }
-}
-
-// TODO(prod); Remove bloc state change printing
-class DebugObserver extends BlocObserver {
-  @override
-  void onChange(BlocBase<dynamic> bloc, Change<dynamic> change) {
-    super.onChange(bloc, change);
-    if (bloc is NavigatorStateBloc || bloc is ConversationBloc) {
-      if (kDebugMode) {
-        log.finest("${bloc.runtimeType} $change");
-      }
-    }
   }
 }
 
