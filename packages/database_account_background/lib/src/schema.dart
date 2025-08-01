@@ -4,7 +4,7 @@ import 'package:database_utils/database_utils.dart';
 import 'package:drift/drift.dart';
 
 class AccountId extends SingleRowTable {
-  TextColumn get uuidAccountId => text().map(const NullAwareTypeConverter.wrap(AccountIdConverter())).nullable()();
+  TextColumn get uuidAccountId => text().map(const AccountIdConverter())();
 }
 
 class AdminNotification extends SingleRowTable {
