@@ -23,8 +23,6 @@ import 'package:app/utils/result.dart';
 
 var log = Logger("ChatRepository");
 
-// TODO(architecture): Do login related database data reset in transaction?
-
 class ChatRepository extends DataRepositoryWithLifecycle {
   final AccountDatabaseManager db;
   final ProfileRepository profile;

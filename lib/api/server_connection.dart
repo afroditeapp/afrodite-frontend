@@ -400,8 +400,6 @@ const forceSync = 255;
     ServerMaintenanceIsScheduled = 255,
 */
 
-// TODO(prod): Implement sync data version handling
-
 Future<Uint8List> syncDataBytes(AccountDatabaseManager db, AccountBackgroundDatabaseManager accountBackgroundDb) async {
   final syncVersionAccount = await db.accountStreamSingle(
     (db) => db.common.watchSyncVersionAccount()

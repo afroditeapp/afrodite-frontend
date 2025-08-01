@@ -90,9 +90,6 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
   @override
   Future<void> onResumeAppUsage() async {
     syncHandler.onResumeAppUsageSync(() async {
-      // TODO(quality): Replace ok method with okAndNull to avoid reload when
-      // database query fails.
-
       final result = await db.accountStreamSingle((db) => db.myProfile.watchProfileLocation()).ok();
       if (result == null) {
         await reloadLocation();

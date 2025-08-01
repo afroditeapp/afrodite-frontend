@@ -54,8 +54,6 @@ class AccountRepository extends DataRepositoryWithLifecycle {
 
   final CachedValues _cachedValues = CachedValues();
 
-  // TODO(prod): Default value for AccountState?
-
   Stream<AccountState?> get accountState => db
     .accountStream((db) => db.account.watchAccountState());
   Stream<String?> get emailAddress => _cachedValues._cachedEmailAddress;
@@ -125,10 +123,6 @@ class AccountRepository extends DataRepositoryWithLifecycle {
       await db.accountAction((db) => db.account.updateAccountState(result));
     }
   }
-
-  // TODO: Background futures might cause issues
-  // for example if logout is made while in background.
-  // (account specific databases solves this?)
 
   Future<void> handleEventToClient(EventToClient event) async {
     log.finer("Event from server: $event");

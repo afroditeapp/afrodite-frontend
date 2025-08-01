@@ -45,7 +45,7 @@ class ImageCacheData extends AppSingleton {
     final imgKey = "img:${imageOwner.aid}${id.cid}";
     final fileInfo = await cacheManager.getFileFromCache(imgKey);
     if (fileInfo != null) {
-      // TODO: error handling?
+      // TODO(prod): if exception is thrown, fallback to downloading
 
       final encryptedImgBytes = await fileInfo.file.readAsBytes();
       final decryptedImgBytes = await ImageEncryptionManager.getInstance().decryptImageData(encryptedImgBytes);
@@ -73,7 +73,7 @@ class ImageCacheData extends AppSingleton {
       mapTileCacheKey = key;
       final fileInfo = await cacheManager.getFileFromCache(key);
       if (fileInfo != null) {
-        // TODO: error handling?
+        // TODO(prod): if exception is thrown, fallback to downloading
         final encryptedImgBytes = await fileInfo.file.readAsBytes();
         final decryptedImgBytes = await ImageEncryptionManager.getInstance().decryptImageData(encryptedImgBytes);
         return decryptedImgBytes;

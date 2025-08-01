@@ -52,9 +52,6 @@ enum LoginRepositoryState {
   initComplete,
 }
 
-// TODO: Check didRequestAppExit, onDetach and end of main function. Could
-// any be used to quit connection to server and close databases.
-
 class LoginRepository extends DataRepository {
   LoginRepository._private();
   static final _instance = LoginRepository._private();
@@ -372,7 +369,6 @@ class LoginRepository extends DataRepository {
 
   Future<Result<void, CommonSignInError>> _handleLoginResult(LoginResult loginResult) async {
     if (loginResult.errorUnsupportedClient) {
-      // TODO(prod): Add proper error type and show error in bloc
       return const Err(CommonSignInError.unsupportedClient);
     }
     final aid = loginResult.aid;
@@ -554,9 +550,6 @@ class LoginRepository extends DataRepository {
       }
     }
 
-    // TODO(prod): Uncomment
-    // await KvStringManager.getInstance().setValue(KvString.demoAccountPassword, null);
-    // await KvStringManager.getInstance().setValue(KvString.demoAccountUsername, null);
     await DatabaseManager.getInstance().commonAction((db) => db.demoAccount.updateDemoAccountToken(null));
 
     log.info("demo account logout completed");
@@ -571,7 +564,7 @@ class LoginRepository extends DataRepository {
     if (accounts != null) {
       return Ok(accounts);
     } else {
-      // TODO: Better error handling
+      // TODO(prod): Better error handling, check HTTP error code
       // Assume session expiration every time for now.
       await demoAccountLogout();
       return Err(SessionExpired());
@@ -588,7 +581,7 @@ class LoginRepository extends DataRepository {
     if (id != null) {
       return await demoAccountLoginToAccount(id);
     } else {
-      // TODO: Better error handling
+      // TODO(prod): Better error handling, check HTTP error code
       // Assume session expiration every time for now.
       await demoAccountLogout();
       return Err(SessionExpired());
@@ -621,7 +614,7 @@ class LoginRepository extends DataRepository {
           return const Ok(null);
       }
     } else {
-      // TODO: Better error handling
+      // TODO(prod): Better error handling, check HTTP error code
       // Assume session expiration every time for now.
       await demoAccountLogout();
       return Err(SessionExpired());

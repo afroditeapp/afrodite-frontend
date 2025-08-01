@@ -20,8 +20,6 @@ const String _ANDROID_ICON_RESOURCE_NAME = "ic_notification";
 
 const bool NOTIFICATION_CATEGORY_ENABLED_DEFAULT = true;
 
-// TODO(prod): Check local notifications README
-
 class NotificationManager extends AppSingleton {
   NotificationManager._private();
   static final _instance = NotificationManager._private();
@@ -275,18 +273,3 @@ class NotificationManager extends AppSingleton {
     }
   }
 }
-
-// TODO(prod): iOS notifications are not working
-// TODO(prod): iOS notification permission is asked when app starts.
-//             It should be asked at same location as on Android.
-// TODO(prod): iOS back navigation gesture is not working on screens which have
-//             some special PopScope logic. If back gesture is not working
-//             perhaps floating action button should be displayed with
-//             save data action.
-// TODO(prod): Check that Sqlchipher is loading properly on iOS.
-//             At least current error checking code does not notice anything
-//             odd.
-
-// TODO(prod): Add some public ID to profiles and use that ID in notifications.
-//             Also add list of those IDs to pending notification JSON, sot that
-//             normal conversation notifications are possible to be shown.

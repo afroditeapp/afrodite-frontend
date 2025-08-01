@@ -11,9 +11,6 @@ import 'package:app/utils/result.dart';
 
 final log = Logger("ApiWrapper");
 
-// TODO(prod): make sure that error messages do not contain API paths
-//             in production
-
 class ApiWrapper<T> {
   final T api;
   final ServerConnectionInterface serverConnection;
