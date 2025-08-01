@@ -23,7 +23,7 @@ class DaoReadProfile extends DatabaseAccessor<AccountForegroundDatabase> with _$
 
   Future<ProfileEntry?> getProfileEntry(api.AccountId accountId) async {
     final r = await (select(profile)
-      ..where((t) => t.uuidAccountId.equals(accountId.aid))
+      ..where((t) => t.accountId.equals(accountId.aid))
     )
       .getSingleOrNull();
 
@@ -35,7 +35,7 @@ class DaoReadProfile extends DatabaseAccessor<AccountForegroundDatabase> with _$
   Stream<ProfileEntry?> watchProfileEntry(api.AccountId accountId) =>
     Rx.combineLatest2(
       (select(profile)
-        ..where((t) => t.uuidAccountId.equals(accountId.aid))
+        ..where((t) => t.accountId.equals(accountId.aid))
       )
         .watchSingleOrNull(),
       db.read.media.watchAllProfileContent(accountId),
@@ -45,7 +45,7 @@ class DaoReadProfile extends DatabaseAccessor<AccountForegroundDatabase> with _$
   Stream<ProfileThumbnail?> watchProfileThumbnail(api.AccountId accountId) =>
     Rx.combineLatest3(
       (select(profile)
-        ..where((t) => t.uuidAccountId.equals(accountId.aid))
+        ..where((t) => t.accountId.equals(accountId.aid))
       )
         .watchSingleOrNull(),
       db.read.media.watchAllProfileContent(accountId),
@@ -90,7 +90,7 @@ class DaoReadProfile extends DatabaseAccessor<AccountForegroundDatabase> with _$
       contentVersion != null
     ) {
       return ProfileEntry(
-        uuid: r.uuidAccountId,
+        uuid: r.accountId,
         content: content,
         primaryContentGridCropSize: gridCropSize,
         primaryContentGridCropX: gridCropX,
@@ -125,7 +125,7 @@ class DaoReadProfile extends DatabaseAccessor<AccountForegroundDatabase> with _$
 
   Future<UtcDateTime?> getProfileDataRefreshTime(api.AccountId accountId) async {
     final r = await (select(profile)
-      ..where((t) => t.uuidAccountId.equals(accountId.aid))
+      ..where((t) => t.accountId.equals(accountId.aid))
     )
       .getSingleOrNull();
 
@@ -192,7 +192,7 @@ class DaoReadProfile extends DatabaseAccessor<AccountForegroundDatabase> with _$
         (t) => OrderingTerm(expression: getter(t), mode: mode),
         // If list is added, the time values can have same value, so
         // order by AccountId to make the order deterministic.
-        (t) => OrderingTerm(expression: t.uuidAccountId),
+        (t) => OrderingTerm(expression: t.accountId),
       ]);
 
     if (limit != null) {
@@ -200,7 +200,7 @@ class DaoReadProfile extends DatabaseAccessor<AccountForegroundDatabase> with _$
     }
 
     final r = await q
-      .map((t) => t.uuidAccountId)
+      .map((t) => t.accountId)
       .get();
 
     return r;
@@ -209,7 +209,7 @@ class DaoReadProfile extends DatabaseAccessor<AccountForegroundDatabase> with _$
   Future<bool> _existenceCheck(api.AccountId accountId, Expression<bool> Function($ProfileStatesTable) additionalCheck) async {
     final r = await (select(profileStates)
       ..where((t) => Expression.and([
-        t.uuidAccountId.equals(accountId.aid),
+        t.accountId.equals(accountId.aid),
         additionalCheck(t),
        ]))
     ).getSingleOrNull();
@@ -218,7 +218,7 @@ class DaoReadProfile extends DatabaseAccessor<AccountForegroundDatabase> with _$
 
   Stream<bool> watchFavoriteProfileStatus(api.AccountId accountId) {
     return (select(profileStates)
-      ..where((t) => t.uuidAccountId.equals(accountId.aid))
+      ..where((t) => t.accountId.equals(accountId.aid))
     )
       .watchSingleOrNull()
       .map((r) => r?.isInFavorites != null);

@@ -43,7 +43,7 @@ class DaoWriteKey extends DatabaseAccessor<AccountForegroundDatabase> with _$Dao
     await transaction(() async {
       await into(publicKey).insertOnConflictUpdate(
         PublicKeyCompanion.insert(
-          uuidAccountId: remoteAccountId,
+          accountId: remoteAccountId,
           publicKeyData: Value(publicKeyData),
           publicKeyId: Value(publicKeyId),
         ),

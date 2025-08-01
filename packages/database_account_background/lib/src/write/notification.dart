@@ -127,7 +127,7 @@ class DaoWriteNotification extends DatabaseAccessor<AccountBackgroundDatabase> w
   Future<void> setConversationId(api.AccountId accountId, api.ConversationId value) async {
     await into(newMessageNotification).insertOnConflictUpdate(
       NewMessageNotificationCompanion.insert(
-        uuidAccountId: accountId,
+        accountId: accountId,
         conversationId: Value(value),
       ),
     );
@@ -136,7 +136,7 @@ class DaoWriteNotification extends DatabaseAccessor<AccountBackgroundDatabase> w
   Future<void> setNewMessageNotificationShown(api.AccountId accountId, bool value) async {
     await into(newMessageNotification).insertOnConflictUpdate(
       NewMessageNotificationCompanion.insert(
-        uuidAccountId: accountId,
+        accountId: accountId,
         notificationShown: Value(value),
       ),
     );

@@ -18,7 +18,7 @@ class DaoReadMedia extends DatabaseAccessor<AccountForegroundDatabase> with _$Da
 
   Future<ContentIdAndAccepted?> getContent(api.AccountId accountId, int index) async {
     final r = await (select(profileContent)
-      ..where((t) => t.uuidAccountId.equals(accountId.aid) & t.contentIndex.equals(index))
+      ..where((t) => t.accountId.equals(accountId.aid) & t.contentIndex.equals(index))
     )
       .getSingleOrNull();
 
@@ -27,7 +27,7 @@ class DaoReadMedia extends DatabaseAccessor<AccountForegroundDatabase> with _$Da
 
   Stream<ContentIdAndAccepted?> watchContent(api.AccountId accountId, int index) {
     return (select(profileContent)
-      ..where((t) => t.uuidAccountId.equals(accountId.aid) & t.contentIndex.equals(index))
+      ..where((t) => t.accountId.equals(accountId.aid) & t.contentIndex.equals(index))
     )
       .map((t) => _rowToProfileContent(t))
       .watchSingleOrNull();
@@ -35,7 +35,7 @@ class DaoReadMedia extends DatabaseAccessor<AccountForegroundDatabase> with _$Da
 
   Stream<List<ContentIdAndAccepted>> watchAllProfileContent(api.AccountId accountId) {
     return (select(profileContent)
-      ..where((t) => t.uuidAccountId.equalsValue(accountId))
+      ..where((t) => t.accountId.equalsValue(accountId))
       ..orderBy([
         (t) => OrderingTerm(
           expression: t.contentIndex,

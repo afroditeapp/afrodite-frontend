@@ -47,7 +47,7 @@ class ProfileInitialAgeInfo extends SingleRowTable {
 }
 
 class Profile extends Table {
-  TextColumn get uuidAccountId => text().map(const AccountIdConverter())();
+  TextColumn get accountId => text().map(const AccountIdConverter())();
 
   TextColumn get profileContentVersion => text().map(const NullAwareTypeConverter.wrap(ProfileContentVersionConverter())).nullable()();
 
@@ -69,13 +69,13 @@ class Profile extends Table {
   IntColumn get newLikeInfoReceivedTime => integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
 
   @override
-  Set<Column<Object>> get primaryKey => {uuidAccountId};
+  Set<Column<Object>> get primaryKey => {accountId};
 }
 
 /// Moved from Profile table to avoid unnecessary emissions from
 /// `Stream<ProfileEntry>`.
 class ProfileStates extends Table {
-  TextColumn get uuidAccountId => text().map(const AccountIdConverter())();
+  TextColumn get accountId => text().map(const AccountIdConverter())();
 
   // If column is not null, then it is in the specific group.
   // The time is the time when the profile was added to the group.
@@ -90,5 +90,5 @@ class ProfileStates extends Table {
   IntColumn get isInMatchesGrid => integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
 
   @override
-  Set<Column<Object>> get primaryKey => {uuidAccountId};
+  Set<Column<Object>> get primaryKey => {accountId};
 }

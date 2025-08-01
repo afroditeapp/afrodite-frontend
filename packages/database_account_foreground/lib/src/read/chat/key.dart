@@ -37,7 +37,7 @@ class DaoReadKey extends DatabaseAccessor<AccountForegroundDatabase> with _$DaoR
 
   Future<dbm.ForeignPublicKey?> getPublicKey(api.AccountId accountId) async {
     final r = await (select(publicKey)
-      ..where((t) => t.uuidAccountId.equals(accountId.aid))
+      ..where((t) => t.accountId.equals(accountId.aid))
     )
       .getSingleOrNull();
 

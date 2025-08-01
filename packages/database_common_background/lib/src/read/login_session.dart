@@ -18,7 +18,7 @@ class DaoReadLoginSession extends DatabaseAccessor<CommonBackgroundDatabase> wit
   DaoReadLoginSession(super.db);
 
   Stream<AccountId?> watchAccountId() =>
-    _watchAccountIdColumn((r) => r.uuidAccountId);
+    _watchAccountIdColumn((r) => r.accountId);
 
   Stream<FcmDeviceToken?> watchFcmDeviceToken() =>
     _watchPushNotificationColumn((r) => r.fcmDeviceToken);

@@ -25,7 +25,7 @@ class DaoReadConversationList extends DatabaseAccessor<AccountForegroundDatabase
   Future<bool> _existenceCheck(api.AccountId accountId, Expression<bool> Function($ConversationListTable) additionalCheck) async {
     final r = await (select(conversationList)
       ..where((t) => Expression.and([
-        t.uuidAccountId.equals(accountId.aid),
+        t.accountId.equals(accountId.aid),
         additionalCheck(t),
        ]))
     ).getSingleOrNull();
@@ -40,7 +40,7 @@ class DaoReadConversationList extends DatabaseAccessor<AccountForegroundDatabase
         (t) => OrderingTerm(expression: t.isInConversationList),
         // If list is added, the time values can have same value, so
         // order by AccountId to make the order deterministic.
-        (t) => OrderingTerm(expression: t.uuidAccountId),
+        (t) => OrderingTerm(expression: t.accountId),
       ]);
 
     if (limit != null) {
@@ -48,7 +48,7 @@ class DaoReadConversationList extends DatabaseAccessor<AccountForegroundDatabase
     }
 
     final r = await q
-      .map((t) => t.uuidAccountId)
+      .map((t) => t.accountId)
       .get();
 
     return r;
@@ -64,7 +64,7 @@ class DaoReadConversationList extends DatabaseAccessor<AccountForegroundDatabase
         (t) => OrderingTerm(expression: getter(t)),
         // If list is added, the time values can have same value, so
         // order by AccountId to make the order deterministic.
-        (t) => OrderingTerm(expression: t.uuidAccountId),
+        (t) => OrderingTerm(expression: t.accountId),
       ]);
 
     if (limit != null) {
@@ -72,7 +72,7 @@ class DaoReadConversationList extends DatabaseAccessor<AccountForegroundDatabase
     }
 
     final r = await q
-      .map((t) => t.uuidAccountId)
+      .map((t) => t.accountId)
       .get();
 
     return r;
@@ -80,7 +80,7 @@ class DaoReadConversationList extends DatabaseAccessor<AccountForegroundDatabase
 
   Future<UtcDateTime?> getConversationLastChanged(api.AccountId accountId) async {
     final r = await (select(conversationList)
-      ..where((t) => t.uuidAccountId.equals(accountId.aid))
+      ..where((t) => t.accountId.equals(accountId.aid))
     )
       .getSingleOrNull();
 
@@ -91,7 +91,7 @@ class DaoReadConversationList extends DatabaseAccessor<AccountForegroundDatabase
   // Latest conversation is the first one in the emitted list
   Stream<List<api.AccountId>> watchConversationList() {
     return (selectOnly(conversationList)
-      ..addColumns([conversationList.uuidAccountId])
+      ..addColumns([conversationList.accountId])
       ..where(conversationList.isInConversationList.isNotNull() & conversationList.isInSentBlocks.isNull())
       ..orderBy([
         OrderingTerm(
@@ -100,13 +100,13 @@ class DaoReadConversationList extends DatabaseAccessor<AccountForegroundDatabase
         ),
         // Use AccountId ordering if there is same time values
         OrderingTerm(
-          expression: conversationList.uuidAccountId,
+          expression: conversationList.accountId,
           mode: OrderingMode.desc,
         ),
       ])
     )
       .map((r) {
-        final raw = r.read(conversationList.uuidAccountId)!;
+        final raw = r.read(conversationList.accountId)!;
         return api.AccountId(aid: raw);
       })
       .watch();

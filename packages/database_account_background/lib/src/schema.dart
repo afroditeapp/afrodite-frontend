@@ -4,7 +4,7 @@ import 'package:database_utils/database_utils.dart';
 import 'package:drift/drift.dart';
 
 class AccountId extends SingleRowTable {
-  TextColumn get uuidAccountId => text().map(const AccountIdConverter())();
+  TextColumn get accountId => text().map(const AccountIdConverter())();
 }
 
 class AdminNotification extends SingleRowTable {
@@ -38,20 +38,20 @@ class NotificationStatus extends SingleRowTable {
 }
 
 class UnreadMessagesCount extends Table {
-  TextColumn get uuidAccountId => text().map(const AccountIdConverter())();
+  TextColumn get accountId => text().map(const AccountIdConverter())();
   IntColumn get unreadMessagesCount => integer().map(UnreadMessagesCountConverter()).withDefault(const Constant(0))();
 
   @override
-  Set<Column<Object>> get primaryKey => {uuidAccountId};
+  Set<Column<Object>> get primaryKey => {accountId};
 }
 
 class NewMessageNotification extends Table {
-  TextColumn get uuidAccountId => text().map(const AccountIdConverter())();
+  TextColumn get accountId => text().map(const AccountIdConverter())();
   IntColumn get conversationId => integer().map(const NullAwareTypeConverter.wrap(ConversationIdConverter())).nullable()();
   BoolColumn get notificationShown => boolean().withDefault(const Constant(false))();
 
   @override
-  Set<Column<Object>> get primaryKey => {uuidAccountId};
+  Set<Column<Object>> get primaryKey => {accountId};
 }
 
 class NewReceivedLikesCount extends SingleRowTable {
@@ -68,10 +68,10 @@ class News extends SingleRowTable {
 }
 
 class Profile extends Table {
-  TextColumn get uuidAccountId => text().map(const AccountIdConverter())();
+  TextColumn get accountId => text().map(const AccountIdConverter())();
   TextColumn get profileName => text().nullable()();
   BoolColumn get profileNameAccepted => boolean().nullable()();
 
   @override
-  Set<Column<Object>> get primaryKey => {uuidAccountId};
+  Set<Column<Object>> get primaryKey => {accountId};
 }

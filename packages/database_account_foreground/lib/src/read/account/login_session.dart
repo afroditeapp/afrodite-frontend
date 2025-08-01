@@ -20,7 +20,7 @@ class DaoReadLoginSession extends DatabaseAccessor<AccountForegroundDatabase> wi
 
   Stream<api.AccountId?> watchAccountId() =>
     (select(accountId)..where((t) => t.id.equals(SingleRowTable.ID.value)))
-      .map((r) => r.uuidAccountId)
+      .map((r) => r.accountId)
       .watchSingleOrNull();
 
   Stream<api.ClientId?> watchClientId() =>

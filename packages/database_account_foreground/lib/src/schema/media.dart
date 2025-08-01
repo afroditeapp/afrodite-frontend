@@ -17,7 +17,7 @@ class MyMediaContent extends Table {
 }
 
 class ProfileContent extends Table {
-  TextColumn get uuidAccountId => text().map(const AccountIdConverter())();
+  TextColumn get accountId => text().map(const AccountIdConverter())();
   IntColumn get contentIndex => integer()();
 
   TextColumn get uuidContentId => text().map(const ContentIdConverter())();
@@ -25,5 +25,5 @@ class ProfileContent extends Table {
   BoolColumn get primaryContent => boolean()();
 
   @override
-  Set<Column<Object>> get primaryKey => {uuidAccountId, contentIndex};
+  Set<Column<Object>> get primaryKey => {accountId, contentIndex};
 }

@@ -17,7 +17,7 @@ class DaoReadLoginSession extends DatabaseAccessor<AccountBackgroundDatabase> wi
   DaoReadLoginSession(super.db);
 
   Stream<AccountId?> watchAccountId() =>
-    _watchAccountIdColumn((r) => r.uuidAccountId);
+    _watchAccountIdColumn((r) => r.accountId);
 
   Stream<T?> _watchAccountIdColumn<T extends Object>(T? Function(AccountIdData) extractColumn) {
     return (select(accountId)..where((t) => t.id.equals(SingleRowTable.ID.value)))

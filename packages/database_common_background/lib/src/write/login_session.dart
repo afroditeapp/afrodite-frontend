@@ -21,7 +21,7 @@ class DaoWriteLoginSession extends DatabaseAccessor<CommonBackgroundDatabase> wi
     await into(accountId).insertOnConflictUpdate(
       AccountIdCompanion.insert(
         id: SingleRowTable.ID,
-        uuidAccountId: Value(id),
+        accountId: Value(id),
       ),
     );
   }

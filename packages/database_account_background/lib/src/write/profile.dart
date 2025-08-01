@@ -16,7 +16,7 @@ class DaoWriteProfile extends DatabaseAccessor<AccountBackgroundDatabase> with _
   DaoWriteProfile(super.db);
 
   Future<void> removeProfileData(api.AccountId accountId) async {
-    await (update(profile)..where((t) => t.uuidAccountId.equals(accountId.aid)))
+    await (update(profile)..where((t) => t.accountId.equals(accountId.aid)))
       .write(const ProfileCompanion(
         profileName: Value(null),
         profileNameAccepted: Value(null),
@@ -26,7 +26,7 @@ class DaoWriteProfile extends DatabaseAccessor<AccountBackgroundDatabase> with _
   Future<void> updateProfileData(api.AccountId idValue, api.Profile profileValue) async {
     await into(profile).insertOnConflictUpdate(
       ProfileCompanion.insert(
-        uuidAccountId: idValue,
+        accountId: idValue,
         profileName: Value(profileValue.name),
         profileNameAccepted: Value(profileValue.nameAccepted),
       ),

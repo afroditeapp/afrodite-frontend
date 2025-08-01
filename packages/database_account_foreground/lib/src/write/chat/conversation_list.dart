@@ -22,13 +22,13 @@ class DaoWriteConversationList extends DatabaseAccessor<AccountForegroundDatabas
   ) async {
     await into(conversationList).insert(
       ConversationListCompanion.insert(
-        uuidAccountId: accountId,
+        accountId: accountId,
         isInConversationList: _toGroupValue(value),
       ),
       onConflict: DoUpdate((old) => ConversationListCompanion(
         isInConversationList: _toGroupValue(value),
       ),
-        target: [conversationList.uuidAccountId]
+        target: [conversationList.accountId]
       ),
     );
   }
@@ -39,13 +39,13 @@ class DaoWriteConversationList extends DatabaseAccessor<AccountForegroundDatabas
   ) async {
     await into(conversationList).insert(
       ConversationListCompanion.insert(
-        uuidAccountId: accountId,
+        accountId: accountId,
         isInSentBlocks: _toGroupValue(value),
       ),
       onConflict: DoUpdate((old) => ConversationListCompanion(
         isInSentBlocks: _toGroupValue(value),
       ),
-        target: [conversationList.uuidAccountId]
+        target: [conversationList.accountId]
       ),
     );
   }
@@ -74,13 +74,13 @@ class DaoWriteConversationList extends DatabaseAccessor<AccountForegroundDatabas
     final currentTime = UtcDateTime.now();
     await into(conversationList).insert(
       ConversationListCompanion.insert(
-        uuidAccountId: accountId,
+        accountId: accountId,
         conversationLastChangedTime: Value(currentTime),
       ),
       onConflict: DoUpdate((old) => ConversationListCompanion(
         conversationLastChangedTime: Value(currentTime),
       ),
-        target: [conversationList.uuidAccountId]
+        target: [conversationList.accountId]
       ),
     );
   }

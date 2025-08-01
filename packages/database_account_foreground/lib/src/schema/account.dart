@@ -4,7 +4,7 @@ import 'package:drift/drift.dart';
 
 
 class AccountId extends SingleRowTable {
-  TextColumn get uuidAccountId => text().map(const AccountIdConverter())();
+  TextColumn get accountId => text().map(const AccountIdConverter())();
 }
 
 class AccountState extends SingleRowTable {

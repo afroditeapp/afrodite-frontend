@@ -17,7 +17,7 @@ class DaoReadProfile extends DatabaseAccessor<AccountBackgroundDatabase> with _$
 
   Future<ProfileTitle?> getProfileTitle(api.AccountId accountId) async {
     final r = await (select(profile)
-      ..where((t) => t.uuidAccountId.equals(accountId.aid))
+      ..where((t) => t.accountId.equals(accountId.aid))
     )
       .getSingleOrNull();
 

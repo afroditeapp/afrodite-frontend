@@ -28,7 +28,7 @@ class DaoWriteUnreadMessagesCount extends DatabaseAccessor<AccountBackgroundData
   Future<void> setUnreadMessagesCount(api.AccountId accountId, UnreadMessagesCount unreadMessagesCountValue) async {
     await into(unreadMessagesCount).insertOnConflictUpdate(
       UnreadMessagesCountCompanion.insert(
-        uuidAccountId: accountId,
+        accountId: accountId,
         unreadMessagesCount: Value(unreadMessagesCountValue),
       ),
     );

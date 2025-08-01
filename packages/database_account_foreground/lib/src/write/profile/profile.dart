@@ -19,7 +19,7 @@ class DaoWriteProfile extends DatabaseAccessor<AccountForegroundDatabase> with _
   DaoWriteProfile(super.db);
 
   Future<void> removeProfileData(api.AccountId accountId) async {
-    await (update(profile)..where((t) => t.uuidAccountId.equals(accountId.aid)))
+    await (update(profile)..where((t) => t.accountId.equals(accountId.aid)))
       .write(const ProfileCompanion(
         profileContentVersion: Value(null),
         profileName: Value(null),
@@ -44,7 +44,7 @@ class DaoWriteProfile extends DatabaseAccessor<AccountForegroundDatabase> with _
   Future<void> updateProfileData(api.AccountId accountId, api.Profile p, api.ProfileVersion profileVersion, int? profileLastSeenTime) async {
     await into(profile).insertOnConflictUpdate(
       ProfileCompanion.insert(
-        uuidAccountId: accountId,
+        accountId: accountId,
         profileName: Value(p.name),
         profileNameAccepted: Value(p.nameAccepted),
         profileText: Value(p.ptext),
@@ -61,7 +61,7 @@ class DaoWriteProfile extends DatabaseAccessor<AccountForegroundDatabase> with _
   Future<void> updateProfileLastSeenTime(api.AccountId accountId, int? profileLastSeenTime) async {
     await into(profile).insertOnConflictUpdate(
       ProfileCompanion.insert(
-        uuidAccountId: accountId,
+        accountId: accountId,
         profileLastSeenTimeValue: Value(profileLastSeenTime),
       ),
     );
@@ -71,7 +71,7 @@ class DaoWriteProfile extends DatabaseAccessor<AccountForegroundDatabase> with _
     final currentTime = UtcDateTime.now();
     await into(profile).insertOnConflictUpdate(
       ProfileCompanion.insert(
-        uuidAccountId: accountId,
+        accountId: accountId,
         newLikeInfoReceivedTime: Value(currentTime),
       ),
     );
@@ -91,7 +91,7 @@ class DaoWriteProfile extends DatabaseAccessor<AccountForegroundDatabase> with _
 
       await into(profile).insertOnConflictUpdate(
         ProfileCompanion.insert(
-          uuidAccountId: accountId,
+          accountId: accountId,
           primaryContentGridCropSize: Value(content.gridCropSize),
           primaryContentGridCropX: Value(content.gridCropX),
           primaryContentGridCropY: Value(content.gridCropY),
@@ -105,7 +105,7 @@ class DaoWriteProfile extends DatabaseAccessor<AccountForegroundDatabase> with _
     final currentTime = UtcDateTime.now();
     await into(profile).insertOnConflictUpdate(
       ProfileCompanion.insert(
-        uuidAccountId: accountId,
+        accountId: accountId,
         profileDataRefreshTime: Value(currentTime),
       ),
     );
@@ -117,7 +117,7 @@ class DaoWriteProfile extends DatabaseAccessor<AccountForegroundDatabase> with _
   ) async {
     await into(profileStates).insertOnConflictUpdate(
       ProfileStatesCompanion.insert(
-        uuidAccountId: accountId,
+        accountId: accountId,
         isInFavorites: _toGroupValue(value),
       ),
     );
@@ -130,7 +130,7 @@ class DaoWriteProfile extends DatabaseAccessor<AccountForegroundDatabase> with _
     final utcTime = UtcDateTime.fromUnixEpochMilliseconds(unixTime);
     await into(profileStates).insertOnConflictUpdate(
       ProfileStatesCompanion.insert(
-        uuidAccountId: accountId,
+        accountId: accountId,
         isInFavorites: Value(utcTime),
       ),
     );
@@ -142,7 +142,7 @@ class DaoWriteProfile extends DatabaseAccessor<AccountForegroundDatabase> with _
   ) async {
     await into(profileStates).insertOnConflictUpdate(
       ProfileStatesCompanion.insert(
-        uuidAccountId: accountId,
+        accountId: accountId,
         isInReceivedLikes: _toGroupValue(value),
       ),
     );
@@ -154,7 +154,7 @@ class DaoWriteProfile extends DatabaseAccessor<AccountForegroundDatabase> with _
   ) async {
     await into(profileStates).insertOnConflictUpdate(
       ProfileStatesCompanion.insert(
-        uuidAccountId: accountId,
+        accountId: accountId,
         isInSentLikes: _toGroupValue(value),
       ),
     );
@@ -166,7 +166,7 @@ class DaoWriteProfile extends DatabaseAccessor<AccountForegroundDatabase> with _
   ) async {
     await into(profileStates).insertOnConflictUpdate(
       ProfileStatesCompanion.insert(
-        uuidAccountId: accountId,
+        accountId: accountId,
         isInMatches: _toGroupValue(value),
       ),
     );
@@ -178,7 +178,7 @@ class DaoWriteProfile extends DatabaseAccessor<AccountForegroundDatabase> with _
   ) async {
     await into(profileStates).insertOnConflictUpdate(
       ProfileStatesCompanion.insert(
-        uuidAccountId: accountId,
+        accountId: accountId,
         isInProfileGrid: _toGroupValue(value),
       ),
     );
@@ -190,7 +190,7 @@ class DaoWriteProfile extends DatabaseAccessor<AccountForegroundDatabase> with _
   ) async {
     await into(profileStates).insertOnConflictUpdate(
       ProfileStatesCompanion.insert(
-        uuidAccountId: accountId,
+        accountId: accountId,
         isInAutomaticProfileSearchGrid: _toGroupValue(value),
       ),
     );
@@ -202,7 +202,7 @@ class DaoWriteProfile extends DatabaseAccessor<AccountForegroundDatabase> with _
   ) async {
     await into(profileStates).insertOnConflictUpdate(
       ProfileStatesCompanion.insert(
-        uuidAccountId: accountId,
+        accountId: accountId,
         isInReceivedLikesGrid: _toGroupValue(value),
       ),
     );
@@ -214,7 +214,7 @@ class DaoWriteProfile extends DatabaseAccessor<AccountForegroundDatabase> with _
   ) async {
     await into(profileStates).insertOnConflictUpdate(
       ProfileStatesCompanion.insert(
-        uuidAccountId: accountId,
+        accountId: accountId,
         isInMatchesGrid: _toGroupValue(value),
       ),
     );

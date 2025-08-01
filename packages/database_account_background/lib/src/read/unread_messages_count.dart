@@ -18,7 +18,7 @@ class DaoReadUnreadMessagesCount extends DatabaseAccessor<AccountBackgroundDatab
 
   Future<UnreadMessagesCount?> getUnreadMessageCount(api.AccountId accountId) async {
     final r = await (select(unreadMessagesCount)
-      ..where((t) => t.uuidAccountId.equals(accountId.aid))
+      ..where((t) => t.accountId.equals(accountId.aid))
     )
       .getSingleOrNull();
 
@@ -28,7 +28,7 @@ class DaoReadUnreadMessagesCount extends DatabaseAccessor<AccountBackgroundDatab
   Stream<UnreadMessagesCount?> watchUnreadMessageCount(api.AccountId accountId) {
     return (selectOnly(unreadMessagesCount)
       ..addColumns([unreadMessagesCount.unreadMessagesCount])
-      ..where(unreadMessagesCount.uuidAccountId.equals(accountId.aid))
+      ..where(unreadMessagesCount.accountId.equals(accountId.aid))
     )
       .map((r) {
         final raw = r.read(unreadMessagesCount.unreadMessagesCount);

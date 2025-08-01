@@ -16,12 +16,12 @@ class DaoWriteMedia extends DatabaseAccessor<AccountForegroundDatabase> with _$D
   DaoWriteMedia(super.db);
 
   Future<void> removeProfileContentData(api.AccountId accountId) async {
-    await (delete(profileContent)..where((t) => t.uuidAccountId.equals(accountId.aid)))
+    await (delete(profileContent)..where((t) => t.accountId.equals(accountId.aid)))
       .go();
   }
 
   Future<void> removeContentStartingFrom(api.AccountId accountId, int index) async {
-    await (delete(profileContent)..where((t) => t.uuidAccountId.equals(accountId.aid) & t.contentIndex.isBiggerOrEqualValue(index)))
+    await (delete(profileContent)..where((t) => t.accountId.equals(accountId.aid) & t.contentIndex.isBiggerOrEqualValue(index)))
       .go();
   }
 
@@ -34,7 +34,7 @@ class DaoWriteMedia extends DatabaseAccessor<AccountForegroundDatabase> with _$D
   ) async {
     await into(profileContent).insertOnConflictUpdate(
       ProfileContentCompanion.insert(
-        uuidAccountId: accountId,
+        accountId: accountId,
         contentIndex: index,
         uuidContentId: contentId,
         contentAccepted: accepted,

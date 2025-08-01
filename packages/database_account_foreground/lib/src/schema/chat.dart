@@ -9,18 +9,18 @@ class MyKeyPair extends SingleRowTable {
 }
 
 class PublicKey extends Table {
-  TextColumn get uuidAccountId => text().map(const AccountIdConverter())();
+  TextColumn get accountId => text().map(const AccountIdConverter())();
 
   BlobColumn get publicKeyData => blob().nullable()();
   IntColumn get publicKeyId => integer().map(const NullAwareTypeConverter.wrap(PublicKeyIdConverter())).nullable()();
 
   @override
-  Set<Column<Object>> get primaryKey => {uuidAccountId};
+  Set<Column<Object>> get primaryKey => {accountId};
 }
 
 // Conversation list related data
 class ConversationList extends Table {
-  TextColumn get uuidAccountId => text().map(const AccountIdConverter())();
+  TextColumn get accountId => text().map(const AccountIdConverter())();
 
   IntColumn get conversationLastChangedTime => integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
 
@@ -31,7 +31,7 @@ class ConversationList extends Table {
   IntColumn get isInSentBlocks => integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
 
   @override
-  Set<Column<Object>> get primaryKey => {uuidAccountId};
+  Set<Column<Object>> get primaryKey => {accountId};
 }
 
 class DailyLikesLeft extends SingleRowTable {

@@ -29,7 +29,7 @@ class DaoReadNotification extends DatabaseAccessor<AccountBackgroundDatabase> wi
 
   Future<api.ConversationId?> getConversationId(api.AccountId id) async {
     return await (select(newMessageNotification)
-      ..where((t) => t.uuidAccountId.equals(id.aid))
+      ..where((t) => t.accountId.equals(id.aid))
     )
       .map((r) => r.conversationId)
       .getSingleOrNull();
@@ -39,13 +39,13 @@ class DaoReadNotification extends DatabaseAccessor<AccountBackgroundDatabase> wi
     return await (select(newMessageNotification)
         ..where((t) => t.conversationId.equals(conversationId.id))
       )
-        .map((r) => r.uuidAccountId)
+        .map((r) => r.accountId)
         .getSingleOrNull();
   }
 
   Future<bool> getNewMessageNotificationShown(api.AccountId accountId) async {
     final r = await (select(newMessageNotification)
-        ..where((t) => t.uuidAccountId.equals(accountId.aid))
+        ..where((t) => t.accountId.equals(accountId.aid))
       )
         .getSingleOrNull();
     return r?.notificationShown ?? false;
