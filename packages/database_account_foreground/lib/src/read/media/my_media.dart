@@ -49,7 +49,7 @@ class DaoReadMyMedia extends DatabaseAccessor<AccountForegroundDatabase> with _$
   }
 
   MyContent? _rowToMyMediaContent(MyMediaContentData? r) {
-    final state = r?.moderationState?.toContentModerationState();
+    final state = r?.moderationState?.value;
     if (r == null || state == null) {
       return null;
     }

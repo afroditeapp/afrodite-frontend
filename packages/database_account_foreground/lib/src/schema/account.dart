@@ -16,7 +16,7 @@ class Permissions extends SingleRowTable {
 }
 
 class ProfileVisibility extends SingleRowTable {
-  TextColumn get jsonProfileVisibility => text().map(NullAwareTypeConverter.wrap(EnumString.driftConverter)).nullable()();
+  TextColumn get jsonProfileVisibility => text().map(NullAwareTypeConverter.wrap(const ProfileVisibilityConverter())).nullable()();
 }
 
 class ClientId extends SingleRowTable {

@@ -3837,7 +3837,10 @@ class $ProfileAttributesConfigTable extends schema.ProfileAttributesConfig
     ),
   );
   @override
-  late final GeneratedColumnWithTypeConverter<EnumString?, String>
+  late final GeneratedColumnWithTypeConverter<
+    EnumString<AttributeOrderMode>?,
+    String
+  >
   jsonAvailableProfileAttributesOrderMode =
       GeneratedColumn<String>(
         'json_available_profile_attributes_order_mode',
@@ -3845,7 +3848,7 @@ class $ProfileAttributesConfigTable extends schema.ProfileAttributesConfig
         true,
         type: DriftSqlType.string,
         requiredDuringInsert: false,
-      ).withConverter<EnumString?>(
+      ).withConverter<EnumString<AttributeOrderMode>?>(
         $ProfileAttributesConfigTable
             .$converterjsonAvailableProfileAttributesOrderMode,
       );
@@ -3901,15 +3904,15 @@ class $ProfileAttributesConfigTable extends schema.ProfileAttributesConfig
     return $ProfileAttributesConfigTable(attachedDatabase, alias);
   }
 
-  static TypeConverter<EnumString?, String?>
+  static TypeConverter<EnumString<AttributeOrderMode>?, String?>
   $converterjsonAvailableProfileAttributesOrderMode =
-      NullAwareTypeConverter.wrap(EnumString.driftConverter);
+      NullAwareTypeConverter.wrap(const AttributeOrderModeConverter());
 }
 
 class ProfileAttributesConfigData extends DataClass
     implements Insertable<ProfileAttributesConfigData> {
   final int id;
-  final EnumString? jsonAvailableProfileAttributesOrderMode;
+  final EnumString<AttributeOrderMode>? jsonAvailableProfileAttributesOrderMode;
   const ProfileAttributesConfigData({
     required this.id,
     this.jsonAvailableProfileAttributesOrderMode,
@@ -3945,9 +3948,10 @@ class ProfileAttributesConfigData extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return ProfileAttributesConfigData(
       id: serializer.fromJson<int>(json['id']),
-      jsonAvailableProfileAttributesOrderMode: serializer.fromJson<EnumString?>(
-        json['jsonAvailableProfileAttributesOrderMode'],
-      ),
+      jsonAvailableProfileAttributesOrderMode: serializer
+          .fromJson<EnumString<AttributeOrderMode>?>(
+            json['jsonAvailableProfileAttributesOrderMode'],
+          ),
     );
   }
   @override
@@ -3955,15 +3959,17 @@ class ProfileAttributesConfigData extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
-      'jsonAvailableProfileAttributesOrderMode': serializer.toJson<EnumString?>(
-        jsonAvailableProfileAttributesOrderMode,
-      ),
+      'jsonAvailableProfileAttributesOrderMode': serializer
+          .toJson<EnumString<AttributeOrderMode>?>(
+            jsonAvailableProfileAttributesOrderMode,
+          ),
     };
   }
 
   ProfileAttributesConfigData copyWith({
     int? id,
-    Value<EnumString?> jsonAvailableProfileAttributesOrderMode =
+    Value<EnumString<AttributeOrderMode>?>
+        jsonAvailableProfileAttributesOrderMode =
         const Value.absent(),
   }) => ProfileAttributesConfigData(
     id: id ?? this.id,
@@ -4009,7 +4015,8 @@ class ProfileAttributesConfigData extends DataClass
 class ProfileAttributesConfigCompanion
     extends UpdateCompanion<ProfileAttributesConfigData> {
   final Value<int> id;
-  final Value<EnumString?> jsonAvailableProfileAttributesOrderMode;
+  final Value<EnumString<AttributeOrderMode>?>
+  jsonAvailableProfileAttributesOrderMode;
   const ProfileAttributesConfigCompanion({
     this.id = const Value.absent(),
     this.jsonAvailableProfileAttributesOrderMode = const Value.absent(),
@@ -4032,7 +4039,8 @@ class ProfileAttributesConfigCompanion
 
   ProfileAttributesConfigCompanion copyWith({
     Value<int>? id,
-    Value<EnumString?>? jsonAvailableProfileAttributesOrderMode,
+    Value<EnumString<AttributeOrderMode>?>?
+    jsonAvailableProfileAttributesOrderMode,
   }) {
     return ProfileAttributesConfigCompanion(
       id: id ?? this.id,
@@ -4831,7 +4839,10 @@ class $ProfileVisibilityTable extends schema.ProfileVisibility
     ),
   );
   @override
-  late final GeneratedColumnWithTypeConverter<EnumString?, String>
+  late final GeneratedColumnWithTypeConverter<
+    EnumString<ProfileVisibility>?,
+    String
+  >
   jsonProfileVisibility =
       GeneratedColumn<String>(
         'json_profile_visibility',
@@ -4839,7 +4850,7 @@ class $ProfileVisibilityTable extends schema.ProfileVisibility
         true,
         type: DriftSqlType.string,
         requiredDuringInsert: false,
-      ).withConverter<EnumString?>(
+      ).withConverter<EnumString<ProfileVisibility>?>(
         $ProfileVisibilityTable.$converterjsonProfileVisibility,
       );
   @override
@@ -4888,14 +4899,16 @@ class $ProfileVisibilityTable extends schema.ProfileVisibility
     return $ProfileVisibilityTable(attachedDatabase, alias);
   }
 
-  static TypeConverter<EnumString?, String?> $converterjsonProfileVisibility =
-      NullAwareTypeConverter.wrap(EnumString.driftConverter);
+  static TypeConverter<EnumString<ProfileVisibility>?, String?>
+  $converterjsonProfileVisibility = NullAwareTypeConverter.wrap(
+    const ProfileVisibilityConverter(),
+  );
 }
 
 class ProfileVisibilityData extends DataClass
     implements Insertable<ProfileVisibilityData> {
   final int id;
-  final EnumString? jsonProfileVisibility;
+  final EnumString<ProfileVisibility>? jsonProfileVisibility;
   const ProfileVisibilityData({required this.id, this.jsonProfileVisibility});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -4927,9 +4940,10 @@ class ProfileVisibilityData extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return ProfileVisibilityData(
       id: serializer.fromJson<int>(json['id']),
-      jsonProfileVisibility: serializer.fromJson<EnumString?>(
-        json['jsonProfileVisibility'],
-      ),
+      jsonProfileVisibility: serializer
+          .fromJson<EnumString<ProfileVisibility>?>(
+            json['jsonProfileVisibility'],
+          ),
     );
   }
   @override
@@ -4937,15 +4951,15 @@ class ProfileVisibilityData extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
-      'jsonProfileVisibility': serializer.toJson<EnumString?>(
-        jsonProfileVisibility,
-      ),
+      'jsonProfileVisibility': serializer
+          .toJson<EnumString<ProfileVisibility>?>(jsonProfileVisibility),
     };
   }
 
   ProfileVisibilityData copyWith({
     int? id,
-    Value<EnumString?> jsonProfileVisibility = const Value.absent(),
+    Value<EnumString<ProfileVisibility>?> jsonProfileVisibility =
+        const Value.absent(),
   }) => ProfileVisibilityData(
     id: id ?? this.id,
     jsonProfileVisibility: jsonProfileVisibility.present
@@ -4983,7 +4997,7 @@ class ProfileVisibilityData extends DataClass
 class ProfileVisibilityCompanion
     extends UpdateCompanion<ProfileVisibilityData> {
   final Value<int> id;
-  final Value<EnumString?> jsonProfileVisibility;
+  final Value<EnumString<ProfileVisibility>?> jsonProfileVisibility;
   const ProfileVisibilityCompanion({
     this.id = const Value.absent(),
     this.jsonProfileVisibility = const Value.absent(),
@@ -5005,7 +5019,7 @@ class ProfileVisibilityCompanion
 
   ProfileVisibilityCompanion copyWith({
     Value<int>? id,
-    Value<EnumString?>? jsonProfileVisibility,
+    Value<EnumString<ProfileVisibility>?>? jsonProfileVisibility,
   }) {
     return ProfileVisibilityCompanion(
       id: id ?? this.id,
@@ -5973,14 +5987,20 @@ class $MyMediaContentTable extends schema.MyMediaContent
     ),
   );
   @override
-  late final GeneratedColumnWithTypeConverter<EnumString?, String>
-  moderationState = GeneratedColumn<String>(
-    'moderation_state',
-    aliasedName,
-    true,
-    type: DriftSqlType.string,
-    requiredDuringInsert: false,
-  ).withConverter<EnumString?>($MyMediaContentTable.$convertermoderationState);
+  late final GeneratedColumnWithTypeConverter<
+    EnumString<ContentModerationState>?,
+    String
+  >
+  moderationState =
+      GeneratedColumn<String>(
+        'moderation_state',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      ).withConverter<EnumString<ContentModerationState>?>(
+        $MyMediaContentTable.$convertermoderationState,
+      );
   @override
   late final GeneratedColumnWithTypeConverter<
     MediaContentModerationRejectedReasonCategory?,
@@ -6107,8 +6127,10 @@ class $MyMediaContentTable extends schema.MyMediaContent
 
   static TypeConverter<ContentId, String> $converteruuidContentId =
       const ContentIdConverter();
-  static TypeConverter<EnumString?, String?> $convertermoderationState =
-      NullAwareTypeConverter.wrap(EnumString.driftConverter);
+  static TypeConverter<EnumString<ContentModerationState>?, String?>
+  $convertermoderationState = NullAwareTypeConverter.wrap(
+    const ContentModerationStateConverter(),
+  );
   static TypeConverter<MediaContentModerationRejectedReasonCategory?, int?>
   $convertercontentModerationRejectedCategory =
       const NullAwareTypeConverter.wrap(
@@ -6127,7 +6149,7 @@ class MyMediaContentData extends DataClass
   final int contentIndex;
   final ContentId uuidContentId;
   final bool faceDetected;
-  final EnumString? moderationState;
+  final EnumString<ContentModerationState>? moderationState;
   final MediaContentModerationRejectedReasonCategory?
   contentModerationRejectedCategory;
   final MediaContentModerationRejectedReasonDetails?
@@ -6200,7 +6222,7 @@ class MyMediaContentData extends DataClass
       contentIndex: serializer.fromJson<int>(json['contentIndex']),
       uuidContentId: serializer.fromJson<ContentId>(json['uuidContentId']),
       faceDetected: serializer.fromJson<bool>(json['faceDetected']),
-      moderationState: serializer.fromJson<EnumString?>(
+      moderationState: serializer.fromJson<EnumString<ContentModerationState>?>(
         json['moderationState'],
       ),
       contentModerationRejectedCategory: serializer
@@ -6220,7 +6242,9 @@ class MyMediaContentData extends DataClass
       'contentIndex': serializer.toJson<int>(contentIndex),
       'uuidContentId': serializer.toJson<ContentId>(uuidContentId),
       'faceDetected': serializer.toJson<bool>(faceDetected),
-      'moderationState': serializer.toJson<EnumString?>(moderationState),
+      'moderationState': serializer.toJson<EnumString<ContentModerationState>?>(
+        moderationState,
+      ),
       'contentModerationRejectedCategory': serializer
           .toJson<MediaContentModerationRejectedReasonCategory?>(
             contentModerationRejectedCategory,
@@ -6236,7 +6260,8 @@ class MyMediaContentData extends DataClass
     int? contentIndex,
     ContentId? uuidContentId,
     bool? faceDetected,
-    Value<EnumString?> moderationState = const Value.absent(),
+    Value<EnumString<ContentModerationState>?> moderationState =
+        const Value.absent(),
     Value<MediaContentModerationRejectedReasonCategory?>
         contentModerationRejectedCategory =
         const Value.absent(),
@@ -6326,7 +6351,7 @@ class MyMediaContentCompanion extends UpdateCompanion<MyMediaContentData> {
   final Value<int> contentIndex;
   final Value<ContentId> uuidContentId;
   final Value<bool> faceDetected;
-  final Value<EnumString?> moderationState;
+  final Value<EnumString<ContentModerationState>?> moderationState;
   final Value<MediaContentModerationRejectedReasonCategory?>
   contentModerationRejectedCategory;
   final Value<MediaContentModerationRejectedReasonDetails?>
@@ -6373,7 +6398,7 @@ class MyMediaContentCompanion extends UpdateCompanion<MyMediaContentData> {
     Value<int>? contentIndex,
     Value<ContentId>? uuidContentId,
     Value<bool>? faceDetected,
-    Value<EnumString?>? moderationState,
+    Value<EnumString<ContentModerationState>?>? moderationState,
     Value<MediaContentModerationRejectedReasonCategory?>?
     contentModerationRejectedCategory,
     Value<MediaContentModerationRejectedReasonDetails?>?
@@ -6891,7 +6916,10 @@ class $MyProfileTable extends schema.MyProfile
     ),
   );
   @override
-  late final GeneratedColumnWithTypeConverter<EnumString?, String>
+  late final GeneratedColumnWithTypeConverter<
+    EnumString<ProfileStringModerationState>?,
+    String
+  >
   profileNameModerationState =
       GeneratedColumn<String>(
         'profile_name_moderation_state',
@@ -6899,7 +6927,7 @@ class $MyProfileTable extends schema.MyProfile
         true,
         type: DriftSqlType.string,
         requiredDuringInsert: false,
-      ).withConverter<EnumString?>(
+      ).withConverter<EnumString<ProfileStringModerationState>?>(
         $MyProfileTable.$converterprofileNameModerationState,
       );
   static const VerificationMeta _profileTextMeta = const VerificationMeta(
@@ -6927,7 +6955,10 @@ class $MyProfileTable extends schema.MyProfile
     ),
   );
   @override
-  late final GeneratedColumnWithTypeConverter<EnumString?, String>
+  late final GeneratedColumnWithTypeConverter<
+    EnumString<ProfileStringModerationState>?,
+    String
+  >
   profileTextModerationState =
       GeneratedColumn<String>(
         'profile_text_moderation_state',
@@ -6935,7 +6966,7 @@ class $MyProfileTable extends schema.MyProfile
         true,
         type: DriftSqlType.string,
         requiredDuringInsert: false,
-      ).withConverter<EnumString?>(
+      ).withConverter<EnumString<ProfileStringModerationState>?>(
         $MyProfileTable.$converterprofileTextModerationState,
       );
   @override
@@ -7278,13 +7309,13 @@ class $MyProfileTable extends schema.MyProfile
     return $MyProfileTable(attachedDatabase, alias);
   }
 
-  static TypeConverter<EnumString?, String?>
+  static TypeConverter<EnumString<ProfileStringModerationState>?, String?>
   $converterprofileNameModerationState = NullAwareTypeConverter.wrap(
-    EnumString.driftConverter,
+    const ProfileStringModerationStateConverter(),
   );
-  static TypeConverter<EnumString?, String?>
+  static TypeConverter<EnumString<ProfileStringModerationState>?, String?>
   $converterprofileTextModerationState = NullAwareTypeConverter.wrap(
-    EnumString.driftConverter,
+    const ProfileStringModerationStateConverter(),
   );
   static TypeConverter<ProfileStringModerationRejectedReasonCategory?, int?>
   $converterprofileTextModerationRejectedCategory =
@@ -7310,10 +7341,10 @@ class MyProfileData extends DataClass implements Insertable<MyProfileData> {
   final int id;
   final String? profileName;
   final bool? profileNameAccepted;
-  final EnumString? profileNameModerationState;
+  final EnumString<ProfileStringModerationState>? profileNameModerationState;
   final String? profileText;
   final bool? profileTextAccepted;
-  final EnumString? profileTextModerationState;
+  final EnumString<ProfileStringModerationState>? profileTextModerationState;
   final ProfileStringModerationRejectedReasonCategory?
   profileTextModerationRejectedCategory;
   final ProfileStringModerationRejectedReasonDetails?
@@ -7502,16 +7533,18 @@ class MyProfileData extends DataClass implements Insertable<MyProfileData> {
       profileNameAccepted: serializer.fromJson<bool?>(
         json['profileNameAccepted'],
       ),
-      profileNameModerationState: serializer.fromJson<EnumString?>(
-        json['profileNameModerationState'],
-      ),
+      profileNameModerationState: serializer
+          .fromJson<EnumString<ProfileStringModerationState>?>(
+            json['profileNameModerationState'],
+          ),
       profileText: serializer.fromJson<String?>(json['profileText']),
       profileTextAccepted: serializer.fromJson<bool?>(
         json['profileTextAccepted'],
       ),
-      profileTextModerationState: serializer.fromJson<EnumString?>(
-        json['profileTextModerationState'],
-      ),
+      profileTextModerationState: serializer
+          .fromJson<EnumString<ProfileStringModerationState>?>(
+            json['profileTextModerationState'],
+          ),
       profileTextModerationRejectedCategory: serializer
           .fromJson<ProfileStringModerationRejectedReasonCategory?>(
             json['profileTextModerationRejectedCategory'],
@@ -7551,14 +7584,16 @@ class MyProfileData extends DataClass implements Insertable<MyProfileData> {
       'id': serializer.toJson<int>(id),
       'profileName': serializer.toJson<String?>(profileName),
       'profileNameAccepted': serializer.toJson<bool?>(profileNameAccepted),
-      'profileNameModerationState': serializer.toJson<EnumString?>(
-        profileNameModerationState,
-      ),
+      'profileNameModerationState': serializer
+          .toJson<EnumString<ProfileStringModerationState>?>(
+            profileNameModerationState,
+          ),
       'profileText': serializer.toJson<String?>(profileText),
       'profileTextAccepted': serializer.toJson<bool?>(profileTextAccepted),
-      'profileTextModerationState': serializer.toJson<EnumString?>(
-        profileTextModerationState,
-      ),
+      'profileTextModerationState': serializer
+          .toJson<EnumString<ProfileStringModerationState>?>(
+            profileTextModerationState,
+          ),
       'profileTextModerationRejectedCategory': serializer
           .toJson<ProfileStringModerationRejectedReasonCategory?>(
             profileTextModerationRejectedCategory,
@@ -7592,10 +7627,14 @@ class MyProfileData extends DataClass implements Insertable<MyProfileData> {
     int? id,
     Value<String?> profileName = const Value.absent(),
     Value<bool?> profileNameAccepted = const Value.absent(),
-    Value<EnumString?> profileNameModerationState = const Value.absent(),
+    Value<EnumString<ProfileStringModerationState>?>
+        profileNameModerationState =
+        const Value.absent(),
     Value<String?> profileText = const Value.absent(),
     Value<bool?> profileTextAccepted = const Value.absent(),
-    Value<EnumString?> profileTextModerationState = const Value.absent(),
+    Value<EnumString<ProfileStringModerationState>?>
+        profileTextModerationState =
+        const Value.absent(),
     Value<ProfileStringModerationRejectedReasonCategory?>
         profileTextModerationRejectedCategory =
         const Value.absent(),
@@ -7790,10 +7829,12 @@ class MyProfileCompanion extends UpdateCompanion<MyProfileData> {
   final Value<int> id;
   final Value<String?> profileName;
   final Value<bool?> profileNameAccepted;
-  final Value<EnumString?> profileNameModerationState;
+  final Value<EnumString<ProfileStringModerationState>?>
+  profileNameModerationState;
   final Value<String?> profileText;
   final Value<bool?> profileTextAccepted;
-  final Value<EnumString?> profileTextModerationState;
+  final Value<EnumString<ProfileStringModerationState>?>
+  profileTextModerationState;
   final Value<ProfileStringModerationRejectedReasonCategory?>
   profileTextModerationRejectedCategory;
   final Value<ProfileStringModerationRejectedReasonDetails?>
@@ -7902,10 +7943,12 @@ class MyProfileCompanion extends UpdateCompanion<MyProfileData> {
     Value<int>? id,
     Value<String?>? profileName,
     Value<bool?>? profileNameAccepted,
-    Value<EnumString?>? profileNameModerationState,
+    Value<EnumString<ProfileStringModerationState>?>?
+    profileNameModerationState,
     Value<String?>? profileText,
     Value<bool?>? profileTextAccepted,
-    Value<EnumString?>? profileTextModerationState,
+    Value<EnumString<ProfileStringModerationState>?>?
+    profileTextModerationState,
     Value<ProfileStringModerationRejectedReasonCategory?>?
     profileTextModerationRejectedCategory,
     Value<ProfileStringModerationRejectedReasonDetails?>?

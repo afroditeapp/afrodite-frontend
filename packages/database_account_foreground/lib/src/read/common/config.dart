@@ -89,7 +89,7 @@ class DaoReadConfig extends DatabaseAccessor<AccountForegroundDatabase> with _$D
 
   Stream<ProfileAttributes?> watchAvailableProfileAttributes() =>
     Rx.combineLatest2(
-      _watchColumnProfileAttributesConfig((r) => r.jsonAvailableProfileAttributesOrderMode?.toAttributeOrderMode()),
+      _watchColumnProfileAttributesConfig((r) => r.jsonAvailableProfileAttributesOrderMode?.value),
       watchAttributes(),
       (orderMode, currentAttributes) {
         if (orderMode == null || currentAttributes == null) {

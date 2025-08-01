@@ -27,7 +27,7 @@ class DaoReadAccount extends DatabaseAccessor<AccountForegroundDatabase> with _$
 
   Stream<api.ProfileVisibility?> watchProfileVisibility() =>
     (select(profileVisibility)..where((t) => t.id.equals(SingleRowTable.ID.value)))
-      .map((r) => r.jsonProfileVisibility?.toProfileVisibility())
+      .map((r) => r.jsonProfileVisibility?.value)
       .watchSingleOrNull();
 
   Stream<api.Permissions?> watchPermissions() =>

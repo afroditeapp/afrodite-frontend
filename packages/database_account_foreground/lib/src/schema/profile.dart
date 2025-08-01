@@ -5,10 +5,10 @@ import 'package:drift/drift.dart';
 class MyProfile extends SingleRowTable {
   TextColumn get profileName => text().nullable()();
   BoolColumn get profileNameAccepted => boolean().nullable()();
-  TextColumn get profileNameModerationState => text().map(NullAwareTypeConverter.wrap(EnumString.driftConverter)).nullable()();
+  TextColumn get profileNameModerationState => text().map(NullAwareTypeConverter.wrap(const ProfileStringModerationStateConverter())).nullable()();
   TextColumn get profileText => text().nullable()();
   BoolColumn get profileTextAccepted => boolean().nullable()();
-  TextColumn get profileTextModerationState => text().map(NullAwareTypeConverter.wrap(EnumString.driftConverter)).nullable()();
+  TextColumn get profileTextModerationState => text().map(NullAwareTypeConverter.wrap(const ProfileStringModerationStateConverter())).nullable()();
   IntColumn get profileTextModerationRejectedCategory => integer().map(const NullAwareTypeConverter.wrap(ProfileStringModerationRejectedReasonCategoryConverter())).nullable()();
   TextColumn get profileTextModerationRejectedDetails => text().map(const NullAwareTypeConverter.wrap(ProfileTextModerationRejectedReasonDetailsConverter())).nullable()();
   IntColumn get profileAge => integer().nullable()();

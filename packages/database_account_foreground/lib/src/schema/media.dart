@@ -8,7 +8,7 @@ class MyMediaContent extends Table {
 
   TextColumn get uuidContentId => text().map(const ContentIdConverter())();
   BoolColumn get faceDetected => boolean()();
-  TextColumn get moderationState => text().map(NullAwareTypeConverter.wrap(EnumString.driftConverter)).nullable()();
+  TextColumn get moderationState => text().map(NullAwareTypeConverter.wrap(const ContentModerationStateConverter())).nullable()();
   IntColumn get contentModerationRejectedCategory => integer().map(const NullAwareTypeConverter.wrap(MediaContentModerationRejectedReasonCategoryConverter())).nullable()();
   TextColumn get contentModerationRejectedDetails => text().map(const NullAwareTypeConverter.wrap(MediaContentModerationRejectedReasonDetailsConverter())).nullable()();
 

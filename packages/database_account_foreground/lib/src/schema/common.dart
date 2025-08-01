@@ -37,7 +37,7 @@ class ClientFeaturesConfig extends SingleRowTable {
 }
 
 class ProfileAttributesConfig extends SingleRowTable {
-  TextColumn get jsonAvailableProfileAttributesOrderMode => text().map(NullAwareTypeConverter.wrap(EnumString.driftConverter)).nullable()();
+  TextColumn get jsonAvailableProfileAttributesOrderMode => text().map(NullAwareTypeConverter.wrap(const AttributeOrderModeConverter())).nullable()();
 }
 
 class ProfileAttributesConfigAttributes extends Table {
