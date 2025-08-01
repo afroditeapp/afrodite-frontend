@@ -6,7 +6,7 @@ class MyMediaContent extends Table {
   /// Security content has index -1. Profile content indexes start from 0.
   IntColumn get contentIndex => integer()();
 
-  TextColumn get uuidContentId => text().map(const ContentIdConverter())();
+  TextColumn get contentId => text().map(const ContentIdConverter())();
   BoolColumn get faceDetected => boolean()();
   TextColumn get moderationState => text().map(NullAwareTypeConverter.wrap(const ContentModerationStateConverter())).nullable()();
   IntColumn get contentModerationRejectedCategory => integer().map(const NullAwareTypeConverter.wrap(MediaContentModerationRejectedReasonCategoryConverter())).nullable()();
@@ -20,7 +20,7 @@ class ProfileContent extends Table {
   TextColumn get accountId => text().map(const AccountIdConverter())();
   IntColumn get contentIndex => integer()();
 
-  TextColumn get uuidContentId => text().map(const ContentIdConverter())();
+  TextColumn get contentId => text().map(const ContentIdConverter())();
   BoolColumn get contentAccepted => boolean()();
   BoolColumn get primaryContent => boolean()();
 

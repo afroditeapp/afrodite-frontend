@@ -42,8 +42,8 @@ class DailyLikesLeft extends SingleRowTable {
 class Message extends Table {
   /// Local message ID
   IntColumn get id => integer().autoIncrement()();
-  TextColumn get uuidLocalAccountId => text().map(const AccountIdConverter())();
-  TextColumn get uuidRemoteAccountId => text().map(const AccountIdConverter())();
+  TextColumn get localAccountId => text().map(const AccountIdConverter())();
+  TextColumn get remoteAccountId => text().map(const AccountIdConverter())();
   BlobColumn get message => blob().map(const NullAwareTypeConverter.wrap(MessageConverter())).nullable()();
   IntColumn get localUnixTime => integer().map(const UtcDateTimeConverter())();
   IntColumn get messageState => integer()();

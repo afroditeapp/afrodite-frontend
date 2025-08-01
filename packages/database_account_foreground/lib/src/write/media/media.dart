@@ -36,7 +36,7 @@ class DaoWriteMedia extends DatabaseAccessor<AccountForegroundDatabase> with _$D
       ProfileContentCompanion.insert(
         accountId: accountId,
         contentIndex: index,
-        uuidContentId: contentId,
+        contentId: contentId,
         contentAccepted: accepted,
         primaryContent: primary,
       ),

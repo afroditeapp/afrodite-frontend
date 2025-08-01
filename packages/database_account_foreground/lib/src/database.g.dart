@@ -5964,14 +5964,14 @@ class $MyMediaContentTable extends schema.MyMediaContent
     requiredDuringInsert: false,
   );
   @override
-  late final GeneratedColumnWithTypeConverter<ContentId, String> uuidContentId =
+  late final GeneratedColumnWithTypeConverter<ContentId, String> contentId =
       GeneratedColumn<String>(
-        'uuid_content_id',
+        'content_id',
         aliasedName,
         false,
         type: DriftSqlType.string,
         requiredDuringInsert: true,
-      ).withConverter<ContentId>($MyMediaContentTable.$converteruuidContentId);
+      ).withConverter<ContentId>($MyMediaContentTable.$convertercontentId);
   static const VerificationMeta _faceDetectedMeta = const VerificationMeta(
     'faceDetected',
   );
@@ -6034,7 +6034,7 @@ class $MyMediaContentTable extends schema.MyMediaContent
   @override
   List<GeneratedColumn> get $columns => [
     contentIndex,
-    uuidContentId,
+    contentId,
     faceDetected,
     moderationState,
     contentModerationRejectedCategory,
@@ -6085,10 +6085,10 @@ class $MyMediaContentTable extends schema.MyMediaContent
         DriftSqlType.int,
         data['${effectivePrefix}content_index'],
       )!,
-      uuidContentId: $MyMediaContentTable.$converteruuidContentId.fromSql(
+      contentId: $MyMediaContentTable.$convertercontentId.fromSql(
         attachedDatabase.typeMapping.read(
           DriftSqlType.string,
-          data['${effectivePrefix}uuid_content_id'],
+          data['${effectivePrefix}content_id'],
         )!,
       ),
       faceDetected: attachedDatabase.typeMapping.read(
@@ -6125,7 +6125,7 @@ class $MyMediaContentTable extends schema.MyMediaContent
     return $MyMediaContentTable(attachedDatabase, alias);
   }
 
-  static TypeConverter<ContentId, String> $converteruuidContentId =
+  static TypeConverter<ContentId, String> $convertercontentId =
       const ContentIdConverter();
   static TypeConverter<EnumString<ContentModerationState>?, String?>
   $convertermoderationState = NullAwareTypeConverter.wrap(
@@ -6147,7 +6147,7 @@ class MyMediaContentData extends DataClass
     implements Insertable<MyMediaContentData> {
   /// Security content has index -1. Profile content indexes start from 0.
   final int contentIndex;
-  final ContentId uuidContentId;
+  final ContentId contentId;
   final bool faceDetected;
   final EnumString<ContentModerationState>? moderationState;
   final MediaContentModerationRejectedReasonCategory?
@@ -6156,7 +6156,7 @@ class MyMediaContentData extends DataClass
   contentModerationRejectedDetails;
   const MyMediaContentData({
     required this.contentIndex,
-    required this.uuidContentId,
+    required this.contentId,
     required this.faceDetected,
     this.moderationState,
     this.contentModerationRejectedCategory,
@@ -6167,8 +6167,8 @@ class MyMediaContentData extends DataClass
     final map = <String, Expression>{};
     map['content_index'] = Variable<int>(contentIndex);
     {
-      map['uuid_content_id'] = Variable<String>(
-        $MyMediaContentTable.$converteruuidContentId.toSql(uuidContentId),
+      map['content_id'] = Variable<String>(
+        $MyMediaContentTable.$convertercontentId.toSql(contentId),
       );
     }
     map['face_detected'] = Variable<bool>(faceDetected);
@@ -6197,7 +6197,7 @@ class MyMediaContentData extends DataClass
   MyMediaContentCompanion toCompanion(bool nullToAbsent) {
     return MyMediaContentCompanion(
       contentIndex: Value(contentIndex),
-      uuidContentId: Value(uuidContentId),
+      contentId: Value(contentId),
       faceDetected: Value(faceDetected),
       moderationState: moderationState == null && nullToAbsent
           ? const Value.absent()
@@ -6220,7 +6220,7 @@ class MyMediaContentData extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return MyMediaContentData(
       contentIndex: serializer.fromJson<int>(json['contentIndex']),
-      uuidContentId: serializer.fromJson<ContentId>(json['uuidContentId']),
+      contentId: serializer.fromJson<ContentId>(json['contentId']),
       faceDetected: serializer.fromJson<bool>(json['faceDetected']),
       moderationState: serializer.fromJson<EnumString<ContentModerationState>?>(
         json['moderationState'],
@@ -6240,7 +6240,7 @@ class MyMediaContentData extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'contentIndex': serializer.toJson<int>(contentIndex),
-      'uuidContentId': serializer.toJson<ContentId>(uuidContentId),
+      'contentId': serializer.toJson<ContentId>(contentId),
       'faceDetected': serializer.toJson<bool>(faceDetected),
       'moderationState': serializer.toJson<EnumString<ContentModerationState>?>(
         moderationState,
@@ -6258,7 +6258,7 @@ class MyMediaContentData extends DataClass
 
   MyMediaContentData copyWith({
     int? contentIndex,
-    ContentId? uuidContentId,
+    ContentId? contentId,
     bool? faceDetected,
     Value<EnumString<ContentModerationState>?> moderationState =
         const Value.absent(),
@@ -6270,7 +6270,7 @@ class MyMediaContentData extends DataClass
         const Value.absent(),
   }) => MyMediaContentData(
     contentIndex: contentIndex ?? this.contentIndex,
-    uuidContentId: uuidContentId ?? this.uuidContentId,
+    contentId: contentId ?? this.contentId,
     faceDetected: faceDetected ?? this.faceDetected,
     moderationState: moderationState.present
         ? moderationState.value
@@ -6287,9 +6287,7 @@ class MyMediaContentData extends DataClass
       contentIndex: data.contentIndex.present
           ? data.contentIndex.value
           : this.contentIndex,
-      uuidContentId: data.uuidContentId.present
-          ? data.uuidContentId.value
-          : this.uuidContentId,
+      contentId: data.contentId.present ? data.contentId.value : this.contentId,
       faceDetected: data.faceDetected.present
           ? data.faceDetected.value
           : this.faceDetected,
@@ -6311,7 +6309,7 @@ class MyMediaContentData extends DataClass
   String toString() {
     return (StringBuffer('MyMediaContentData(')
           ..write('contentIndex: $contentIndex, ')
-          ..write('uuidContentId: $uuidContentId, ')
+          ..write('contentId: $contentId, ')
           ..write('faceDetected: $faceDetected, ')
           ..write('moderationState: $moderationState, ')
           ..write(
@@ -6327,7 +6325,7 @@ class MyMediaContentData extends DataClass
   @override
   int get hashCode => Object.hash(
     contentIndex,
-    uuidContentId,
+    contentId,
     faceDetected,
     moderationState,
     contentModerationRejectedCategory,
@@ -6338,7 +6336,7 @@ class MyMediaContentData extends DataClass
       identical(this, other) ||
       (other is MyMediaContentData &&
           other.contentIndex == this.contentIndex &&
-          other.uuidContentId == this.uuidContentId &&
+          other.contentId == this.contentId &&
           other.faceDetected == this.faceDetected &&
           other.moderationState == this.moderationState &&
           other.contentModerationRejectedCategory ==
@@ -6349,7 +6347,7 @@ class MyMediaContentData extends DataClass
 
 class MyMediaContentCompanion extends UpdateCompanion<MyMediaContentData> {
   final Value<int> contentIndex;
-  final Value<ContentId> uuidContentId;
+  final Value<ContentId> contentId;
   final Value<bool> faceDetected;
   final Value<EnumString<ContentModerationState>?> moderationState;
   final Value<MediaContentModerationRejectedReasonCategory?>
@@ -6358,7 +6356,7 @@ class MyMediaContentCompanion extends UpdateCompanion<MyMediaContentData> {
   contentModerationRejectedDetails;
   const MyMediaContentCompanion({
     this.contentIndex = const Value.absent(),
-    this.uuidContentId = const Value.absent(),
+    this.contentId = const Value.absent(),
     this.faceDetected = const Value.absent(),
     this.moderationState = const Value.absent(),
     this.contentModerationRejectedCategory = const Value.absent(),
@@ -6366,16 +6364,16 @@ class MyMediaContentCompanion extends UpdateCompanion<MyMediaContentData> {
   });
   MyMediaContentCompanion.insert({
     this.contentIndex = const Value.absent(),
-    required ContentId uuidContentId,
+    required ContentId contentId,
     required bool faceDetected,
     this.moderationState = const Value.absent(),
     this.contentModerationRejectedCategory = const Value.absent(),
     this.contentModerationRejectedDetails = const Value.absent(),
-  }) : uuidContentId = Value(uuidContentId),
+  }) : contentId = Value(contentId),
        faceDetected = Value(faceDetected);
   static Insertable<MyMediaContentData> custom({
     Expression<int>? contentIndex,
-    Expression<String>? uuidContentId,
+    Expression<String>? contentId,
     Expression<bool>? faceDetected,
     Expression<String>? moderationState,
     Expression<int>? contentModerationRejectedCategory,
@@ -6383,7 +6381,7 @@ class MyMediaContentCompanion extends UpdateCompanion<MyMediaContentData> {
   }) {
     return RawValuesInsertable({
       if (contentIndex != null) 'content_index': contentIndex,
-      if (uuidContentId != null) 'uuid_content_id': uuidContentId,
+      if (contentId != null) 'content_id': contentId,
       if (faceDetected != null) 'face_detected': faceDetected,
       if (moderationState != null) 'moderation_state': moderationState,
       if (contentModerationRejectedCategory != null)
@@ -6396,7 +6394,7 @@ class MyMediaContentCompanion extends UpdateCompanion<MyMediaContentData> {
 
   MyMediaContentCompanion copyWith({
     Value<int>? contentIndex,
-    Value<ContentId>? uuidContentId,
+    Value<ContentId>? contentId,
     Value<bool>? faceDetected,
     Value<EnumString<ContentModerationState>?>? moderationState,
     Value<MediaContentModerationRejectedReasonCategory?>?
@@ -6406,7 +6404,7 @@ class MyMediaContentCompanion extends UpdateCompanion<MyMediaContentData> {
   }) {
     return MyMediaContentCompanion(
       contentIndex: contentIndex ?? this.contentIndex,
-      uuidContentId: uuidContentId ?? this.uuidContentId,
+      contentId: contentId ?? this.contentId,
       faceDetected: faceDetected ?? this.faceDetected,
       moderationState: moderationState ?? this.moderationState,
       contentModerationRejectedCategory:
@@ -6424,9 +6422,9 @@ class MyMediaContentCompanion extends UpdateCompanion<MyMediaContentData> {
     if (contentIndex.present) {
       map['content_index'] = Variable<int>(contentIndex.value);
     }
-    if (uuidContentId.present) {
-      map['uuid_content_id'] = Variable<String>(
-        $MyMediaContentTable.$converteruuidContentId.toSql(uuidContentId.value),
+    if (contentId.present) {
+      map['content_id'] = Variable<String>(
+        $MyMediaContentTable.$convertercontentId.toSql(contentId.value),
       );
     }
     if (faceDetected.present) {
@@ -6460,7 +6458,7 @@ class MyMediaContentCompanion extends UpdateCompanion<MyMediaContentData> {
   String toString() {
     return (StringBuffer('MyMediaContentCompanion(')
           ..write('contentIndex: $contentIndex, ')
-          ..write('uuidContentId: $uuidContentId, ')
+          ..write('contentId: $contentId, ')
           ..write('faceDetected: $faceDetected, ')
           ..write('moderationState: $moderationState, ')
           ..write(
@@ -6501,14 +6499,14 @@ class $ProfileContentTable extends schema.ProfileContent
     requiredDuringInsert: true,
   );
   @override
-  late final GeneratedColumnWithTypeConverter<ContentId, String> uuidContentId =
+  late final GeneratedColumnWithTypeConverter<ContentId, String> contentId =
       GeneratedColumn<String>(
-        'uuid_content_id',
+        'content_id',
         aliasedName,
         false,
         type: DriftSqlType.string,
         requiredDuringInsert: true,
-      ).withConverter<ContentId>($ProfileContentTable.$converteruuidContentId);
+      ).withConverter<ContentId>($ProfileContentTable.$convertercontentId);
   static const VerificationMeta _contentAcceptedMeta = const VerificationMeta(
     'contentAccepted',
   );
@@ -6541,7 +6539,7 @@ class $ProfileContentTable extends schema.ProfileContent
   List<GeneratedColumn> get $columns => [
     accountId,
     contentIndex,
-    uuidContentId,
+    contentId,
     contentAccepted,
     primaryContent,
   ];
@@ -6609,10 +6607,10 @@ class $ProfileContentTable extends schema.ProfileContent
         DriftSqlType.int,
         data['${effectivePrefix}content_index'],
       )!,
-      uuidContentId: $ProfileContentTable.$converteruuidContentId.fromSql(
+      contentId: $ProfileContentTable.$convertercontentId.fromSql(
         attachedDatabase.typeMapping.read(
           DriftSqlType.string,
-          data['${effectivePrefix}uuid_content_id'],
+          data['${effectivePrefix}content_id'],
         )!,
       ),
       contentAccepted: attachedDatabase.typeMapping.read(
@@ -6633,7 +6631,7 @@ class $ProfileContentTable extends schema.ProfileContent
 
   static TypeConverter<AccountId, String> $converteraccountId =
       const AccountIdConverter();
-  static TypeConverter<ContentId, String> $converteruuidContentId =
+  static TypeConverter<ContentId, String> $convertercontentId =
       const ContentIdConverter();
 }
 
@@ -6641,13 +6639,13 @@ class ProfileContentData extends DataClass
     implements Insertable<ProfileContentData> {
   final AccountId accountId;
   final int contentIndex;
-  final ContentId uuidContentId;
+  final ContentId contentId;
   final bool contentAccepted;
   final bool primaryContent;
   const ProfileContentData({
     required this.accountId,
     required this.contentIndex,
-    required this.uuidContentId,
+    required this.contentId,
     required this.contentAccepted,
     required this.primaryContent,
   });
@@ -6661,8 +6659,8 @@ class ProfileContentData extends DataClass
     }
     map['content_index'] = Variable<int>(contentIndex);
     {
-      map['uuid_content_id'] = Variable<String>(
-        $ProfileContentTable.$converteruuidContentId.toSql(uuidContentId),
+      map['content_id'] = Variable<String>(
+        $ProfileContentTable.$convertercontentId.toSql(contentId),
       );
     }
     map['content_accepted'] = Variable<bool>(contentAccepted);
@@ -6674,7 +6672,7 @@ class ProfileContentData extends DataClass
     return ProfileContentCompanion(
       accountId: Value(accountId),
       contentIndex: Value(contentIndex),
-      uuidContentId: Value(uuidContentId),
+      contentId: Value(contentId),
       contentAccepted: Value(contentAccepted),
       primaryContent: Value(primaryContent),
     );
@@ -6688,7 +6686,7 @@ class ProfileContentData extends DataClass
     return ProfileContentData(
       accountId: serializer.fromJson<AccountId>(json['accountId']),
       contentIndex: serializer.fromJson<int>(json['contentIndex']),
-      uuidContentId: serializer.fromJson<ContentId>(json['uuidContentId']),
+      contentId: serializer.fromJson<ContentId>(json['contentId']),
       contentAccepted: serializer.fromJson<bool>(json['contentAccepted']),
       primaryContent: serializer.fromJson<bool>(json['primaryContent']),
     );
@@ -6699,7 +6697,7 @@ class ProfileContentData extends DataClass
     return <String, dynamic>{
       'accountId': serializer.toJson<AccountId>(accountId),
       'contentIndex': serializer.toJson<int>(contentIndex),
-      'uuidContentId': serializer.toJson<ContentId>(uuidContentId),
+      'contentId': serializer.toJson<ContentId>(contentId),
       'contentAccepted': serializer.toJson<bool>(contentAccepted),
       'primaryContent': serializer.toJson<bool>(primaryContent),
     };
@@ -6708,13 +6706,13 @@ class ProfileContentData extends DataClass
   ProfileContentData copyWith({
     AccountId? accountId,
     int? contentIndex,
-    ContentId? uuidContentId,
+    ContentId? contentId,
     bool? contentAccepted,
     bool? primaryContent,
   }) => ProfileContentData(
     accountId: accountId ?? this.accountId,
     contentIndex: contentIndex ?? this.contentIndex,
-    uuidContentId: uuidContentId ?? this.uuidContentId,
+    contentId: contentId ?? this.contentId,
     contentAccepted: contentAccepted ?? this.contentAccepted,
     primaryContent: primaryContent ?? this.primaryContent,
   );
@@ -6724,9 +6722,7 @@ class ProfileContentData extends DataClass
       contentIndex: data.contentIndex.present
           ? data.contentIndex.value
           : this.contentIndex,
-      uuidContentId: data.uuidContentId.present
-          ? data.uuidContentId.value
-          : this.uuidContentId,
+      contentId: data.contentId.present ? data.contentId.value : this.contentId,
       contentAccepted: data.contentAccepted.present
           ? data.contentAccepted.value
           : this.contentAccepted,
@@ -6741,7 +6737,7 @@ class ProfileContentData extends DataClass
     return (StringBuffer('ProfileContentData(')
           ..write('accountId: $accountId, ')
           ..write('contentIndex: $contentIndex, ')
-          ..write('uuidContentId: $uuidContentId, ')
+          ..write('contentId: $contentId, ')
           ..write('contentAccepted: $contentAccepted, ')
           ..write('primaryContent: $primaryContent')
           ..write(')'))
@@ -6752,7 +6748,7 @@ class ProfileContentData extends DataClass
   int get hashCode => Object.hash(
     accountId,
     contentIndex,
-    uuidContentId,
+    contentId,
     contentAccepted,
     primaryContent,
   );
@@ -6762,7 +6758,7 @@ class ProfileContentData extends DataClass
       (other is ProfileContentData &&
           other.accountId == this.accountId &&
           other.contentIndex == this.contentIndex &&
-          other.uuidContentId == this.uuidContentId &&
+          other.contentId == this.contentId &&
           other.contentAccepted == this.contentAccepted &&
           other.primaryContent == this.primaryContent);
 }
@@ -6770,14 +6766,14 @@ class ProfileContentData extends DataClass
 class ProfileContentCompanion extends UpdateCompanion<ProfileContentData> {
   final Value<AccountId> accountId;
   final Value<int> contentIndex;
-  final Value<ContentId> uuidContentId;
+  final Value<ContentId> contentId;
   final Value<bool> contentAccepted;
   final Value<bool> primaryContent;
   final Value<int> rowid;
   const ProfileContentCompanion({
     this.accountId = const Value.absent(),
     this.contentIndex = const Value.absent(),
-    this.uuidContentId = const Value.absent(),
+    this.contentId = const Value.absent(),
     this.contentAccepted = const Value.absent(),
     this.primaryContent = const Value.absent(),
     this.rowid = const Value.absent(),
@@ -6785,19 +6781,19 @@ class ProfileContentCompanion extends UpdateCompanion<ProfileContentData> {
   ProfileContentCompanion.insert({
     required AccountId accountId,
     required int contentIndex,
-    required ContentId uuidContentId,
+    required ContentId contentId,
     required bool contentAccepted,
     required bool primaryContent,
     this.rowid = const Value.absent(),
   }) : accountId = Value(accountId),
        contentIndex = Value(contentIndex),
-       uuidContentId = Value(uuidContentId),
+       contentId = Value(contentId),
        contentAccepted = Value(contentAccepted),
        primaryContent = Value(primaryContent);
   static Insertable<ProfileContentData> custom({
     Expression<String>? accountId,
     Expression<int>? contentIndex,
-    Expression<String>? uuidContentId,
+    Expression<String>? contentId,
     Expression<bool>? contentAccepted,
     Expression<bool>? primaryContent,
     Expression<int>? rowid,
@@ -6805,7 +6801,7 @@ class ProfileContentCompanion extends UpdateCompanion<ProfileContentData> {
     return RawValuesInsertable({
       if (accountId != null) 'account_id': accountId,
       if (contentIndex != null) 'content_index': contentIndex,
-      if (uuidContentId != null) 'uuid_content_id': uuidContentId,
+      if (contentId != null) 'content_id': contentId,
       if (contentAccepted != null) 'content_accepted': contentAccepted,
       if (primaryContent != null) 'primary_content': primaryContent,
       if (rowid != null) 'rowid': rowid,
@@ -6815,7 +6811,7 @@ class ProfileContentCompanion extends UpdateCompanion<ProfileContentData> {
   ProfileContentCompanion copyWith({
     Value<AccountId>? accountId,
     Value<int>? contentIndex,
-    Value<ContentId>? uuidContentId,
+    Value<ContentId>? contentId,
     Value<bool>? contentAccepted,
     Value<bool>? primaryContent,
     Value<int>? rowid,
@@ -6823,7 +6819,7 @@ class ProfileContentCompanion extends UpdateCompanion<ProfileContentData> {
     return ProfileContentCompanion(
       accountId: accountId ?? this.accountId,
       contentIndex: contentIndex ?? this.contentIndex,
-      uuidContentId: uuidContentId ?? this.uuidContentId,
+      contentId: contentId ?? this.contentId,
       contentAccepted: contentAccepted ?? this.contentAccepted,
       primaryContent: primaryContent ?? this.primaryContent,
       rowid: rowid ?? this.rowid,
@@ -6841,9 +6837,9 @@ class ProfileContentCompanion extends UpdateCompanion<ProfileContentData> {
     if (contentIndex.present) {
       map['content_index'] = Variable<int>(contentIndex.value);
     }
-    if (uuidContentId.present) {
-      map['uuid_content_id'] = Variable<String>(
-        $ProfileContentTable.$converteruuidContentId.toSql(uuidContentId.value),
+    if (contentId.present) {
+      map['content_id'] = Variable<String>(
+        $ProfileContentTable.$convertercontentId.toSql(contentId.value),
       );
     }
     if (contentAccepted.present) {
@@ -6863,7 +6859,7 @@ class ProfileContentCompanion extends UpdateCompanion<ProfileContentData> {
     return (StringBuffer('ProfileContentCompanion(')
           ..write('accountId: $accountId, ')
           ..write('contentIndex: $contentIndex, ')
-          ..write('uuidContentId: $uuidContentId, ')
+          ..write('contentId: $contentId, ')
           ..write('contentAccepted: $contentAccepted, ')
           ..write('primaryContent: $primaryContent, ')
           ..write('rowid: $rowid')
@@ -12445,22 +12441,22 @@ class $MessageTable extends schema.Message
   );
   @override
   late final GeneratedColumnWithTypeConverter<AccountId, String>
-  uuidLocalAccountId = GeneratedColumn<String>(
-    'uuid_local_account_id',
+  localAccountId = GeneratedColumn<String>(
+    'local_account_id',
     aliasedName,
     false,
     type: DriftSqlType.string,
     requiredDuringInsert: true,
-  ).withConverter<AccountId>($MessageTable.$converteruuidLocalAccountId);
+  ).withConverter<AccountId>($MessageTable.$converterlocalAccountId);
   @override
   late final GeneratedColumnWithTypeConverter<AccountId, String>
-  uuidRemoteAccountId = GeneratedColumn<String>(
-    'uuid_remote_account_id',
+  remoteAccountId = GeneratedColumn<String>(
+    'remote_account_id',
     aliasedName,
     false,
     type: DriftSqlType.string,
     requiredDuringInsert: true,
-  ).withConverter<AccountId>($MessageTable.$converteruuidRemoteAccountId);
+  ).withConverter<AccountId>($MessageTable.$converterremoteAccountId);
   @override
   late final GeneratedColumnWithTypeConverter<Message?, Uint8List> message =
       GeneratedColumn<Uint8List>(
@@ -12533,8 +12529,8 @@ class $MessageTable extends schema.Message
   @override
   List<GeneratedColumn> get $columns => [
     id,
-    uuidLocalAccountId,
-    uuidRemoteAccountId,
+    localAccountId,
+    remoteAccountId,
     message,
     localUnixTime,
     messageState,
@@ -12600,16 +12596,16 @@ class $MessageTable extends schema.Message
         DriftSqlType.int,
         data['${effectivePrefix}id'],
       )!,
-      uuidLocalAccountId: $MessageTable.$converteruuidLocalAccountId.fromSql(
+      localAccountId: $MessageTable.$converterlocalAccountId.fromSql(
         attachedDatabase.typeMapping.read(
           DriftSqlType.string,
-          data['${effectivePrefix}uuid_local_account_id'],
+          data['${effectivePrefix}local_account_id'],
         )!,
       ),
-      uuidRemoteAccountId: $MessageTable.$converteruuidRemoteAccountId.fromSql(
+      remoteAccountId: $MessageTable.$converterremoteAccountId.fromSql(
         attachedDatabase.typeMapping.read(
           DriftSqlType.string,
-          data['${effectivePrefix}uuid_remote_account_id'],
+          data['${effectivePrefix}remote_account_id'],
         )!,
       ),
       message: $MessageTable.$convertermessage.fromSql(
@@ -12656,9 +12652,9 @@ class $MessageTable extends schema.Message
     return $MessageTable(attachedDatabase, alias);
   }
 
-  static TypeConverter<AccountId, String> $converteruuidLocalAccountId =
+  static TypeConverter<AccountId, String> $converterlocalAccountId =
       const AccountIdConverter();
-  static TypeConverter<AccountId, String> $converteruuidRemoteAccountId =
+  static TypeConverter<AccountId, String> $converterremoteAccountId =
       const AccountIdConverter();
   static TypeConverter<Message?, Uint8List?> $convertermessage =
       const NullAwareTypeConverter.wrap(MessageConverter());
@@ -12673,8 +12669,8 @@ class $MessageTable extends schema.Message
 class MessageData extends DataClass implements Insertable<MessageData> {
   /// Local message ID
   final int id;
-  final AccountId uuidLocalAccountId;
-  final AccountId uuidRemoteAccountId;
+  final AccountId localAccountId;
+  final AccountId remoteAccountId;
   final Message? message;
   final UtcDateTime localUnixTime;
   final int messageState;
@@ -12684,8 +12680,8 @@ class MessageData extends DataClass implements Insertable<MessageData> {
   final Uint8List? backendSignedPgpMessage;
   const MessageData({
     required this.id,
-    required this.uuidLocalAccountId,
-    required this.uuidRemoteAccountId,
+    required this.localAccountId,
+    required this.remoteAccountId,
     this.message,
     required this.localUnixTime,
     required this.messageState,
@@ -12699,13 +12695,13 @@ class MessageData extends DataClass implements Insertable<MessageData> {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     {
-      map['uuid_local_account_id'] = Variable<String>(
-        $MessageTable.$converteruuidLocalAccountId.toSql(uuidLocalAccountId),
+      map['local_account_id'] = Variable<String>(
+        $MessageTable.$converterlocalAccountId.toSql(localAccountId),
       );
     }
     {
-      map['uuid_remote_account_id'] = Variable<String>(
-        $MessageTable.$converteruuidRemoteAccountId.toSql(uuidRemoteAccountId),
+      map['remote_account_id'] = Variable<String>(
+        $MessageTable.$converterremoteAccountId.toSql(remoteAccountId),
       );
     }
     if (!nullToAbsent || message != null) {
@@ -12745,8 +12741,8 @@ class MessageData extends DataClass implements Insertable<MessageData> {
   MessageCompanion toCompanion(bool nullToAbsent) {
     return MessageCompanion(
       id: Value(id),
-      uuidLocalAccountId: Value(uuidLocalAccountId),
-      uuidRemoteAccountId: Value(uuidRemoteAccountId),
+      localAccountId: Value(localAccountId),
+      remoteAccountId: Value(remoteAccountId),
       message: message == null && nullToAbsent
           ? const Value.absent()
           : Value(message),
@@ -12775,12 +12771,8 @@ class MessageData extends DataClass implements Insertable<MessageData> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return MessageData(
       id: serializer.fromJson<int>(json['id']),
-      uuidLocalAccountId: serializer.fromJson<AccountId>(
-        json['uuidLocalAccountId'],
-      ),
-      uuidRemoteAccountId: serializer.fromJson<AccountId>(
-        json['uuidRemoteAccountId'],
-      ),
+      localAccountId: serializer.fromJson<AccountId>(json['localAccountId']),
+      remoteAccountId: serializer.fromJson<AccountId>(json['remoteAccountId']),
       message: serializer.fromJson<Message?>(json['message']),
       localUnixTime: serializer.fromJson<UtcDateTime>(json['localUnixTime']),
       messageState: serializer.fromJson<int>(json['messageState']),
@@ -12799,8 +12791,8 @@ class MessageData extends DataClass implements Insertable<MessageData> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
-      'uuidLocalAccountId': serializer.toJson<AccountId>(uuidLocalAccountId),
-      'uuidRemoteAccountId': serializer.toJson<AccountId>(uuidRemoteAccountId),
+      'localAccountId': serializer.toJson<AccountId>(localAccountId),
+      'remoteAccountId': serializer.toJson<AccountId>(remoteAccountId),
       'message': serializer.toJson<Message?>(message),
       'localUnixTime': serializer.toJson<UtcDateTime>(localUnixTime),
       'messageState': serializer.toJson<int>(messageState),
@@ -12817,8 +12809,8 @@ class MessageData extends DataClass implements Insertable<MessageData> {
 
   MessageData copyWith({
     int? id,
-    AccountId? uuidLocalAccountId,
-    AccountId? uuidRemoteAccountId,
+    AccountId? localAccountId,
+    AccountId? remoteAccountId,
     Value<Message?> message = const Value.absent(),
     UtcDateTime? localUnixTime,
     int? messageState,
@@ -12828,8 +12820,8 @@ class MessageData extends DataClass implements Insertable<MessageData> {
     Value<Uint8List?> backendSignedPgpMessage = const Value.absent(),
   }) => MessageData(
     id: id ?? this.id,
-    uuidLocalAccountId: uuidLocalAccountId ?? this.uuidLocalAccountId,
-    uuidRemoteAccountId: uuidRemoteAccountId ?? this.uuidRemoteAccountId,
+    localAccountId: localAccountId ?? this.localAccountId,
+    remoteAccountId: remoteAccountId ?? this.remoteAccountId,
     message: message.present ? message.value : this.message,
     localUnixTime: localUnixTime ?? this.localUnixTime,
     messageState: messageState ?? this.messageState,
@@ -12845,12 +12837,12 @@ class MessageData extends DataClass implements Insertable<MessageData> {
   MessageData copyWithCompanion(MessageCompanion data) {
     return MessageData(
       id: data.id.present ? data.id.value : this.id,
-      uuidLocalAccountId: data.uuidLocalAccountId.present
-          ? data.uuidLocalAccountId.value
-          : this.uuidLocalAccountId,
-      uuidRemoteAccountId: data.uuidRemoteAccountId.present
-          ? data.uuidRemoteAccountId.value
-          : this.uuidRemoteAccountId,
+      localAccountId: data.localAccountId.present
+          ? data.localAccountId.value
+          : this.localAccountId,
+      remoteAccountId: data.remoteAccountId.present
+          ? data.remoteAccountId.value
+          : this.remoteAccountId,
       message: data.message.present ? data.message.value : this.message,
       localUnixTime: data.localUnixTime.present
           ? data.localUnixTime.value
@@ -12873,8 +12865,8 @@ class MessageData extends DataClass implements Insertable<MessageData> {
   String toString() {
     return (StringBuffer('MessageData(')
           ..write('id: $id, ')
-          ..write('uuidLocalAccountId: $uuidLocalAccountId, ')
-          ..write('uuidRemoteAccountId: $uuidRemoteAccountId, ')
+          ..write('localAccountId: $localAccountId, ')
+          ..write('remoteAccountId: $remoteAccountId, ')
           ..write('message: $message, ')
           ..write('localUnixTime: $localUnixTime, ')
           ..write('messageState: $messageState, ')
@@ -12891,8 +12883,8 @@ class MessageData extends DataClass implements Insertable<MessageData> {
   @override
   int get hashCode => Object.hash(
     id,
-    uuidLocalAccountId,
-    uuidRemoteAccountId,
+    localAccountId,
+    remoteAccountId,
     message,
     localUnixTime,
     messageState,
@@ -12906,8 +12898,8 @@ class MessageData extends DataClass implements Insertable<MessageData> {
       identical(this, other) ||
       (other is MessageData &&
           other.id == this.id &&
-          other.uuidLocalAccountId == this.uuidLocalAccountId &&
-          other.uuidRemoteAccountId == this.uuidRemoteAccountId &&
+          other.localAccountId == this.localAccountId &&
+          other.remoteAccountId == this.remoteAccountId &&
           other.message == this.message &&
           other.localUnixTime == this.localUnixTime &&
           other.messageState == this.messageState &&
@@ -12925,8 +12917,8 @@ class MessageData extends DataClass implements Insertable<MessageData> {
 
 class MessageCompanion extends UpdateCompanion<MessageData> {
   final Value<int> id;
-  final Value<AccountId> uuidLocalAccountId;
-  final Value<AccountId> uuidRemoteAccountId;
+  final Value<AccountId> localAccountId;
+  final Value<AccountId> remoteAccountId;
   final Value<Message?> message;
   final Value<UtcDateTime> localUnixTime;
   final Value<int> messageState;
@@ -12936,8 +12928,8 @@ class MessageCompanion extends UpdateCompanion<MessageData> {
   final Value<Uint8List?> backendSignedPgpMessage;
   const MessageCompanion({
     this.id = const Value.absent(),
-    this.uuidLocalAccountId = const Value.absent(),
-    this.uuidRemoteAccountId = const Value.absent(),
+    this.localAccountId = const Value.absent(),
+    this.remoteAccountId = const Value.absent(),
     this.message = const Value.absent(),
     this.localUnixTime = const Value.absent(),
     this.messageState = const Value.absent(),
@@ -12948,8 +12940,8 @@ class MessageCompanion extends UpdateCompanion<MessageData> {
   });
   MessageCompanion.insert({
     this.id = const Value.absent(),
-    required AccountId uuidLocalAccountId,
-    required AccountId uuidRemoteAccountId,
+    required AccountId localAccountId,
+    required AccountId remoteAccountId,
     this.message = const Value.absent(),
     required UtcDateTime localUnixTime,
     required int messageState,
@@ -12957,14 +12949,14 @@ class MessageCompanion extends UpdateCompanion<MessageData> {
     this.messageId = const Value.absent(),
     this.unixTime = const Value.absent(),
     this.backendSignedPgpMessage = const Value.absent(),
-  }) : uuidLocalAccountId = Value(uuidLocalAccountId),
-       uuidRemoteAccountId = Value(uuidRemoteAccountId),
+  }) : localAccountId = Value(localAccountId),
+       remoteAccountId = Value(remoteAccountId),
        localUnixTime = Value(localUnixTime),
        messageState = Value(messageState);
   static Insertable<MessageData> custom({
     Expression<int>? id,
-    Expression<String>? uuidLocalAccountId,
-    Expression<String>? uuidRemoteAccountId,
+    Expression<String>? localAccountId,
+    Expression<String>? remoteAccountId,
     Expression<Uint8List>? message,
     Expression<int>? localUnixTime,
     Expression<int>? messageState,
@@ -12975,10 +12967,8 @@ class MessageCompanion extends UpdateCompanion<MessageData> {
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
-      if (uuidLocalAccountId != null)
-        'uuid_local_account_id': uuidLocalAccountId,
-      if (uuidRemoteAccountId != null)
-        'uuid_remote_account_id': uuidRemoteAccountId,
+      if (localAccountId != null) 'local_account_id': localAccountId,
+      if (remoteAccountId != null) 'remote_account_id': remoteAccountId,
       if (message != null) 'message': message,
       if (localUnixTime != null) 'local_unix_time': localUnixTime,
       if (messageState != null) 'message_state': messageState,
@@ -12993,8 +12983,8 @@ class MessageCompanion extends UpdateCompanion<MessageData> {
 
   MessageCompanion copyWith({
     Value<int>? id,
-    Value<AccountId>? uuidLocalAccountId,
-    Value<AccountId>? uuidRemoteAccountId,
+    Value<AccountId>? localAccountId,
+    Value<AccountId>? remoteAccountId,
     Value<Message?>? message,
     Value<UtcDateTime>? localUnixTime,
     Value<int>? messageState,
@@ -13005,8 +12995,8 @@ class MessageCompanion extends UpdateCompanion<MessageData> {
   }) {
     return MessageCompanion(
       id: id ?? this.id,
-      uuidLocalAccountId: uuidLocalAccountId ?? this.uuidLocalAccountId,
-      uuidRemoteAccountId: uuidRemoteAccountId ?? this.uuidRemoteAccountId,
+      localAccountId: localAccountId ?? this.localAccountId,
+      remoteAccountId: remoteAccountId ?? this.remoteAccountId,
       message: message ?? this.message,
       localUnixTime: localUnixTime ?? this.localUnixTime,
       messageState: messageState ?? this.messageState,
@@ -13025,18 +13015,14 @@ class MessageCompanion extends UpdateCompanion<MessageData> {
     if (id.present) {
       map['id'] = Variable<int>(id.value);
     }
-    if (uuidLocalAccountId.present) {
-      map['uuid_local_account_id'] = Variable<String>(
-        $MessageTable.$converteruuidLocalAccountId.toSql(
-          uuidLocalAccountId.value,
-        ),
+    if (localAccountId.present) {
+      map['local_account_id'] = Variable<String>(
+        $MessageTable.$converterlocalAccountId.toSql(localAccountId.value),
       );
     }
-    if (uuidRemoteAccountId.present) {
-      map['uuid_remote_account_id'] = Variable<String>(
-        $MessageTable.$converteruuidRemoteAccountId.toSql(
-          uuidRemoteAccountId.value,
-        ),
+    if (remoteAccountId.present) {
+      map['remote_account_id'] = Variable<String>(
+        $MessageTable.$converterremoteAccountId.toSql(remoteAccountId.value),
       );
     }
     if (message.present) {
@@ -13079,8 +13065,8 @@ class MessageCompanion extends UpdateCompanion<MessageData> {
   String toString() {
     return (StringBuffer('MessageCompanion(')
           ..write('id: $id, ')
-          ..write('uuidLocalAccountId: $uuidLocalAccountId, ')
-          ..write('uuidRemoteAccountId: $uuidRemoteAccountId, ')
+          ..write('localAccountId: $localAccountId, ')
+          ..write('remoteAccountId: $remoteAccountId, ')
           ..write('message: $message, ')
           ..write('localUnixTime: $localUnixTime, ')
           ..write('messageState: $messageState, ')

@@ -53,6 +53,6 @@ class DaoReadMedia extends DatabaseAccessor<AccountForegroundDatabase> with _$Da
       return null;
     }
 
-    return ContentIdAndAccepted(r.uuidContentId, r.contentAccepted, r.primaryContent);
+    return ContentIdAndAccepted(r.contentId, r.contentAccepted, r.primaryContent);
   }
 }

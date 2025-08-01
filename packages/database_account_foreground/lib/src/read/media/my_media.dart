@@ -55,7 +55,7 @@ class DaoReadMyMedia extends DatabaseAccessor<AccountForegroundDatabase> with _$
     }
 
     return MyContent(
-      r.uuidContentId,
+      r.contentId,
       r.faceDetected,
       state,
       r.contentModerationRejectedCategory,

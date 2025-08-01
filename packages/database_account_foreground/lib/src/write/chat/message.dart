@@ -20,8 +20,8 @@ class DaoWriteMessage extends DatabaseAccessor<AccountForegroundDatabase> with _
   /// Returns ID of last inserted row.
   Future<dbm.LocalMessageId> _insert(dbm.NewMessageEntry entry) async {
     final localId = await into(message).insert(MessageCompanion.insert(
-      uuidLocalAccountId: entry.localAccountId,
-      uuidRemoteAccountId: entry.remoteAccountId,
+      localAccountId: entry.localAccountId,
+      remoteAccountId: entry.remoteAccountId,
       message: Value(entry.message),
       localUnixTime: entry.localUnixTime,
       messageState: entry.messageState.number,

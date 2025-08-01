@@ -33,7 +33,7 @@ class DaoWriteMyMedia extends DatabaseAccessor<AccountForegroundDatabase> with _
     await into(myMediaContent).insertOnConflictUpdate(
       MyMediaContentCompanion.insert(
         contentIndex: Value(index),
-        uuidContentId: content.cid,
+        contentId: content.cid,
         faceDetected: content.fd,
         moderationState: Value(content.state.toEnumString()),
         contentModerationRejectedCategory: Value(content.rejectedReasonCategory),

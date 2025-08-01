@@ -23,8 +23,8 @@ class DaoReadMessage extends DatabaseAccessor<AccountForegroundDatabase> with _$
   ) async {
     final messageCount = message.id.count();
     final q = (selectOnly(message)
-      ..where(message.uuidLocalAccountId.equals(localAccountId.aid))
-      ..where(message.uuidRemoteAccountId.equals(remoteAccountId.aid))
+      ..where(message.localAccountId.equals(localAccountId.aid))
+      ..where(message.remoteAccountId.equals(remoteAccountId.aid))
       ..addColumns([messageCount])
     );
     return await q.map((r) => r.read(messageCount)).getSingleOrNull();
@@ -39,8 +39,8 @@ class DaoReadMessage extends DatabaseAccessor<AccountForegroundDatabase> with _$
     int index,
   ) async {
     return await (select(message)
-      ..where((t) => t.uuidLocalAccountId.equals(localAccountId.aid))
-      ..where((t) => t.uuidRemoteAccountId.equals(remoteAccountId.aid))
+      ..where((t) => t.localAccountId.equals(localAccountId.aid))
+      ..where((t) => t.remoteAccountId.equals(remoteAccountId.aid))
       ..limit(1, offset: index)
       ..orderBy([
         (t) => OrderingTerm(expression: t.id, mode: OrderingMode.desc),
@@ -55,8 +55,8 @@ class DaoReadMessage extends DatabaseAccessor<AccountForegroundDatabase> with _$
     api.AccountId remoteAccountId,
   ) {
     return (select(message)
-      ..where((t) => t.uuidLocalAccountId.equals(localAccountId.aid))
-      ..where((t) => t.uuidRemoteAccountId.equals(remoteAccountId.aid))
+      ..where((t) => t.localAccountId.equals(localAccountId.aid))
+      ..where((t) => t.remoteAccountId.equals(remoteAccountId.aid))
       ..limit(1)
       ..orderBy([
         (t) => OrderingTerm(expression: t.id, mode: OrderingMode.desc),
@@ -74,8 +74,8 @@ class DaoReadMessage extends DatabaseAccessor<AccountForegroundDatabase> with _$
     int limit,
   ) async {
     final list = await (select(message)
-      ..where((t) => t.uuidLocalAccountId.equals(localAccountId.aid))
-      ..where((t) => t.uuidRemoteAccountId.equals(remoteAccountId.aid))
+      ..where((t) => t.localAccountId.equals(localAccountId.aid))
+      ..where((t) => t.remoteAccountId.equals(remoteAccountId.aid))
       ..where((t) => t.id.isSmallerOrEqualValue(startId.id))
       ..limit(limit)
       ..orderBy([
@@ -117,8 +117,8 @@ class DaoReadMessage extends DatabaseAccessor<AccountForegroundDatabase> with _$
 
     return dbm.MessageEntry(
       localId: dbm.LocalMessageId(m.id),
-      localAccountId: m.uuidLocalAccountId,
-      remoteAccountId: m.uuidRemoteAccountId,
+      localAccountId: m.localAccountId,
+      remoteAccountId: m.remoteAccountId,
       message: m.message,
       localUnixTime: m.localUnixTime,
       messageState: messageState,
@@ -132,8 +132,8 @@ class DaoReadMessage extends DatabaseAccessor<AccountForegroundDatabase> with _$
     api.AccountId remoteAccountId,
   ) {
     return (select(message)
-      ..where((t) => t.uuidLocalAccountId.equals(localAccountId.aid))
-      ..where((t) => t.uuidRemoteAccountId.equals(remoteAccountId.aid))
+      ..where((t) => t.localAccountId.equals(localAccountId.aid))
+      ..where((t) => t.remoteAccountId.equals(remoteAccountId.aid))
       ..where((t) => t.messageState.isBetweenValues(dbm.MessageState.MIN_VALUE_SENT_MESSAGE, dbm.MessageState.MAX_VALUE_SENT_MESSAGE))
       ..limit(1)
       ..orderBy([
@@ -150,8 +150,8 @@ class DaoReadMessage extends DatabaseAccessor<AccountForegroundDatabase> with _$
     api.MessageId messageId,
   ) {
     return (select(message)
-      ..where((t) => t.uuidLocalAccountId.equals(localAccountId.aid))
-      ..where((t) => t.uuidRemoteAccountId.equals(remoteAccountId.aid))
+      ..where((t) => t.localAccountId.equals(localAccountId.aid))
+      ..where((t) => t.remoteAccountId.equals(remoteAccountId.aid))
       ..where((t) => t.messageId.equals(messageId.id))
       ..limit(1)
     )
