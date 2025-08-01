@@ -57,17 +57,20 @@ class MainStateBloc extends Bloc<MainStateEvent, MainState> {
         LoginState.splashScreen => ToSplashScreen(),
         LoginState.unsupportedClientVersion => ToUnsupportedClientScreen(),
         LoginState.viewAccountStateOnceItExists => switch (accountState) {
-          AccountState.initialSetup => switch (initialSetupSkipped) {
-            true => ToMainScreenWhenInitialSetupIsSkipped(),
-            false => ToInitialSetup(),
+          // Prevent client getting stuck on splash screen when app starts
+          // and getting AccountState fails.
+          AccountStateEmpty() => loginState == LoginState.demoAccount ? ToDemoAccountScreen() : ToLoginRequiredScreen(),
+          AccountStateLoading() => null,
+          AccountStateExists(:final state) => switch (state) {
+            AccountState.initialSetup => switch (initialSetupSkipped) {
+              true => ToMainScreenWhenInitialSetupIsSkipped(),
+              false => ToInitialSetup(),
+            },
+            AccountState.banned => ToAccountBannedScreen(),
+            AccountState.pendingDeletion => ToPendingRemovalScreen(),
+            AccountState.normal => ToMainScreen(),
           },
-          AccountState.banned => ToAccountBannedScreen(),
-          AccountState.pendingDeletion => ToPendingRemovalScreen(),
-          AccountState.normal => ToMainScreen(),
-          // TODO(prod): There should be failure case which
-          //             changes to login screen
-          _ => null,
-        },
+        }
       };
 
       if (action != null) {

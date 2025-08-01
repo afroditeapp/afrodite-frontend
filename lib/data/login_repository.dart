@@ -71,7 +71,7 @@ class LoginRepository extends DataRepository {
   late final SignInWithGoogleManager _google;
 
   final RepositoryStateStreams _repositoryStateStreams = RepositoryStateStreams();
-  Stream<AccountState?> get accountState => _repositoryStateStreams.accountState;
+  Stream<AccountStateStreamValue> get accountState => _repositoryStateStreams.accountState;
   Stream<bool> get initialSetupSkipped => _repositoryStateStreams.initialSetupSkipped;
 
   final BehaviorSubject<LoginState> _loginState =
@@ -770,10 +770,10 @@ class RepositoryInstances implements DataRepositoryMethods {
 }
 
 class RepositoryStateStreams {
-  final BehaviorSubject<AccountState?> _accountState =
-    BehaviorSubject.seeded(null);
+  final BehaviorSubject<AccountStateStreamValue> _accountState =
+    BehaviorSubject.seeded(AccountStateLoading());
   StreamSubscription<AccountState?>? _accountStateSubscription;
-  Stream<AccountState?> get accountState => _accountState;
+  Stream<AccountStateStreamValue> get accountState => _accountState;
 
   final BehaviorSubject<bool> _initialSetupSkipped =
     BehaviorSubject.seeded(false);
@@ -796,8 +796,13 @@ class RepositoryStateStreams {
     ServerConnectionManager connectionManager,
   ) async {
     await _accountStateSubscription?.cancel();
+    _accountState.add(AccountStateLoading());
     _accountStateSubscription = account.accountState.listen((v) {
-      _accountState.add(v);
+      if (v == null) {
+        _accountState.add(AccountStateEmpty());
+      } else {
+        _accountState.add(AccountStateExists(v));
+      }
     });
 
     await _initialSetupSkippedSubscription?.cancel();
@@ -821,5 +826,18 @@ class RepositoryStateStreams {
 
   void _handleAppStartWithoutLoggedInAccount() {
     _serverConnectionManagerStateEvents.add(ApiManagerState.waitingRefreshToken);
+  }
+}
+
+sealed class AccountStateStreamValue {}
+class AccountStateLoading extends AccountStateStreamValue {}
+class AccountStateEmpty extends AccountStateStreamValue {}
+class AccountStateExists extends AccountStateStreamValue {
+  final AccountState state;
+  AccountStateExists(this.state);
+
+  @override
+  String toString() {
+    return "AccountStateExists($state)";
   }
 }
