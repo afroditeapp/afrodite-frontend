@@ -20,15 +20,16 @@ final log = Logger("EditNewsScreen");
 Future<void> openEditNewsScreen(
   BuildContext context,
   NewsId id,
+  List<String> supportedLocales,
 ) {
   final pageKey = PageKey();
   return MyNavigator.pushWithKey(
     context,
     MaterialPage<void>(
       child: BlocProvider(
-        create: (_) => EditNewsBloc(id),
+        create: (_) => EditNewsBloc(id, supportedLocales: supportedLocales),
         lazy: false,
-        child: EditNewsScreen(pageKey: pageKey)
+        child: EditNewsScreen(pageKey: pageKey, supportedLocales: supportedLocales)
       ),
     ),
     pageKey,
@@ -37,8 +38,10 @@ Future<void> openEditNewsScreen(
 
 class EditNewsScreen extends StatefulWidget {
   final PageKey pageKey;
+  final List<String> supportedLocales;
   const EditNewsScreen({
     required this.pageKey,
+    required this.supportedLocales,
     super.key,
   });
 
@@ -149,7 +152,7 @@ class EditNewsScreenState extends State<EditNewsScreen> {
     final List<Widget> widgets = [
       Text(visibilityText),
     ];
-    for (final l in NEWS_LOCALE_ALL) {
+    for (final l in widget.supportedLocales) {
       final c = state.editedOrCurrentlNewsContent(l);
       widgets.add(const Divider());
       widgets.addAll(newsContentToWidgets(context, l, c));

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:app/logic/account/client_features_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
@@ -152,7 +153,8 @@ class ViewNewsScreenState extends State<ViewNewsScreen> {
     return IconButton(
       onPressed: () async {
         final bloc = context.read<ViewNewsBloc>();
-        await openEditNewsScreen(context, widget.id);
+        final config = context.read<ClientFeaturesConfigBloc>().state;
+        await openEditNewsScreen(context, widget.id, config.newsLocales());
         if (!bloc.isClosed) {
           bloc.add(Reload());
           widget.refreshNewsList();

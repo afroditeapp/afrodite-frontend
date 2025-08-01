@@ -10,6 +10,7 @@ class EditNewsData with _$EditNewsData {
   const EditNewsData._();
 
   factory EditNewsData({
+    required List<String> supportedLocales,
     @Default({}) Map<String, NewsContent> editableTranslations,
     @Default({}) Map<String, NewsContent> currentTranslations,
     @Default(true) bool isLoading,
@@ -40,7 +41,7 @@ class EditNewsData with _$EditNewsData {
   }
 
   bool unsavedChanges() {
-    for (final l in NEWS_LOCALE_ALL) {
+    for (final l in supportedLocales) {
       if (translationContainsUnsavedChanges(l)) {
         return true;
       }
@@ -56,7 +57,3 @@ class EditNewsData with _$EditNewsData {
 }
 
 typedef NewsContent = ({String title, String body, NewsTranslationVersion? version});
-
-const String NEWS_LOCALE_EN = "en";
-const String NEWS_LOCALE_FI = "fi";
-const List<String> NEWS_LOCALE_ALL = [NEWS_LOCALE_EN, NEWS_LOCALE_FI];

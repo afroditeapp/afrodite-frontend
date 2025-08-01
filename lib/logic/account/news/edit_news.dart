@@ -28,12 +28,13 @@ class SaveToServer extends EditNewsEvent {
 class EditNewsBloc extends Bloc<EditNewsEvent, EditNewsData> with ActionRunner {
   final ApiManager api = LoginRepository.getInstance().repositories.api;
   final NewsId id;
-  EditNewsBloc(this.id) : super(EditNewsData()) {
+  final List<String> supportedLocales;
+  EditNewsBloc(this.id, {required this.supportedLocales}) : super(EditNewsData(supportedLocales: supportedLocales)) {
     on<Reload>((data, emit) async {
-      emit(EditNewsData().copyWith(isLoading: true));
+      emit(EditNewsData(supportedLocales: supportedLocales).copyWith(isLoading: true));
 
       var errorDetected = false;
-      for (final l in NEWS_LOCALE_ALL) {
+      for (final l in supportedLocales) {
         final r = await loadTranslation(emit, l);
         if (r.isErr()) {
           errorDetected = true;
@@ -74,7 +75,7 @@ class EditNewsBloc extends Bloc<EditNewsEvent, EditNewsData> with ActionRunner {
     on<SaveToServer>((data, emit) async {
       await runOnce(() async {
         var errorDetected = false;
-        for (final l in NEWS_LOCALE_ALL) {
+        for (final l in supportedLocales) {
           if (!state.translationContainsUnsavedChanges(l)) {
             continue;
           }

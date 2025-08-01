@@ -13,6 +13,7 @@ final _privateConstructorErrorEditNewsData = UnsupportedError(
 
 /// @nodoc
 mixin _$EditNewsData {
+  List<String> get supportedLocales => throw _privateConstructorErrorEditNewsData;
   Map<String, NewsContent> get editableTranslations => throw _privateConstructorErrorEditNewsData;
   Map<String, NewsContent> get currentTranslations => throw _privateConstructorErrorEditNewsData;
   bool get isLoading => throw _privateConstructorErrorEditNewsData;
@@ -20,6 +21,7 @@ mixin _$EditNewsData {
   bool get isVisibleToUsers => throw _privateConstructorErrorEditNewsData;
 
   EditNewsData copyWith({
+    List<String>? supportedLocales,
     Map<String, NewsContent>? editableTranslations,
     Map<String, NewsContent>? currentTranslations,
     bool? isLoading,
@@ -31,6 +33,7 @@ mixin _$EditNewsData {
 /// @nodoc
 abstract class _EditNewsData extends EditNewsData {
   factory _EditNewsData({
+    required List<String> supportedLocales,
     Map<String, NewsContent> editableTranslations,
     Map<String, NewsContent> currentTranslations,
     bool isLoading,
@@ -49,6 +52,7 @@ class _$EditNewsDataImpl extends _EditNewsData with DiagnosticableTreeMixin {
   static const bool _isVisibleToUsersDefaultValue = false;
   
   _$EditNewsDataImpl({
+    required this.supportedLocales,
     this.editableTranslations = _editableTranslationsDefaultValue,
     this.currentTranslations = _currentTranslationsDefaultValue,
     this.isLoading = _isLoadingDefaultValue,
@@ -56,6 +60,8 @@ class _$EditNewsDataImpl extends _EditNewsData with DiagnosticableTreeMixin {
     this.isVisibleToUsers = _isVisibleToUsersDefaultValue,
   }) : super._();
 
+  @override
+  final List<String> supportedLocales;
   @override
   final Map<String, NewsContent> editableTranslations;
   @override
@@ -69,7 +75,7 @@ class _$EditNewsDataImpl extends _EditNewsData with DiagnosticableTreeMixin {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'EditNewsData(editableTranslations: $editableTranslations, currentTranslations: $currentTranslations, isLoading: $isLoading, isError: $isError, isVisibleToUsers: $isVisibleToUsers)';
+    return 'EditNewsData(supportedLocales: $supportedLocales, editableTranslations: $editableTranslations, currentTranslations: $currentTranslations, isLoading: $isLoading, isError: $isError, isVisibleToUsers: $isVisibleToUsers)';
   }
 
   @override
@@ -77,6 +83,7 @@ class _$EditNewsDataImpl extends _EditNewsData with DiagnosticableTreeMixin {
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'EditNewsData'))
+      ..add(DiagnosticsProperty('supportedLocales', supportedLocales))
       ..add(DiagnosticsProperty('editableTranslations', editableTranslations))
       ..add(DiagnosticsProperty('currentTranslations', currentTranslations))
       ..add(DiagnosticsProperty('isLoading', isLoading))
@@ -89,6 +96,8 @@ class _$EditNewsDataImpl extends _EditNewsData with DiagnosticableTreeMixin {
     return identical(this, other) ||
       (other.runtimeType == runtimeType &&
         other is _$EditNewsDataImpl &&
+        (identical(other.supportedLocales, supportedLocales) ||
+          other.supportedLocales == supportedLocales) &&
         (identical(other.editableTranslations, editableTranslations) ||
           other.editableTranslations == editableTranslations) &&
         (identical(other.currentTranslations, currentTranslations) ||
@@ -105,6 +114,7 @@ class _$EditNewsDataImpl extends _EditNewsData with DiagnosticableTreeMixin {
   @override
   int get hashCode => Object.hash(
     runtimeType,
+    supportedLocales,
     editableTranslations,
     currentTranslations,
     isLoading,
@@ -114,12 +124,14 @@ class _$EditNewsDataImpl extends _EditNewsData with DiagnosticableTreeMixin {
 
   @override
   EditNewsData copyWith({
+    Object? supportedLocales,
     Object? editableTranslations,
     Object? currentTranslations,
     Object? isLoading,
     Object? isError,
     Object? isVisibleToUsers,
   }) => _$EditNewsDataImpl(
+    supportedLocales: (supportedLocales ?? this.supportedLocales) as List<String>,
     editableTranslations: (editableTranslations ?? this.editableTranslations) as Map<String, NewsContent>,
     currentTranslations: (currentTranslations ?? this.currentTranslations) as Map<String, NewsContent>,
     isLoading: (isLoading ?? this.isLoading) as bool,

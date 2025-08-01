@@ -51,6 +51,19 @@ class ClientFeaturesConfigData with _$ClientFeaturesConfigData {
   bool dailyLikesLimitEnabled() {
     return config.limits.likes.likeSending != null;
   }
+
+  List<String> newsLocales() {
+    final locales = [
+      ...?config.news?.locales,
+    ];
+
+    // Make sure that first item is "default" locale.
+    final defaultLocale = "default";
+    locales.remove(defaultLocale);
+    locales.insert(0, defaultLocale);
+
+    return locales;
+  }
 }
 
 class Time {
