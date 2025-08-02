@@ -172,7 +172,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
       }
     }
 
-    await connectionManager.state.where((e) => e == ApiManagerState.connected).firstOrNull;
+    await connectionManager.state.where((e) => e == ServerConnectionState.connected).firstOrNull;
     final entry = await ProfileEntryDownloader(media, accountBackgroundDb, db, _api).download(id).ok();
     return entry;
   }
@@ -545,7 +545,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
     bool downloaded = false;
     await for (final p in stream) {
       if (p == null && !downloaded) {
-        await connectionManager.state.where((e) => e == ApiManagerState.connected).firstOrNull;
+        await connectionManager.state.where((e) => e == ServerConnectionState.connected).firstOrNull;
         await ProfileEntryDownloader(media, accountBackgroundDb, db, _api).download(accountId);
         downloaded = true;
         continue;

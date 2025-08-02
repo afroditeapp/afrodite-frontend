@@ -80,7 +80,7 @@ class LoginRepository extends DataRepository {
   final BehaviorSubject<bool> _loginInProgress =
     BehaviorSubject.seeded(false);
 
-  StreamSubscription<ApiManagerState>? _repositorySpecificAutomaticLogoutSubscription;
+  StreamSubscription<ServerConnectionState>? _repositorySpecificAutomaticLogoutSubscription;
 
   DateTime? _backgroundedAt;
 
@@ -151,18 +151,18 @@ class LoginRepository extends DataRepository {
       }
 
       switch (apiState) {
-        case ApiManagerState.waitingRefreshToken:
+        case ServerConnectionState.waitingRefreshToken:
           if (demoAccountToken != null) {
             _loginState.add(LoginState.demoAccount);
           } else {
             _loginState.add(LoginState.loginRequired);
           }
-        case ApiManagerState.connecting ||
-          ApiManagerState.reconnectWaitTime ||
-          ApiManagerState.noConnection: {}
-        case ApiManagerState.connected:
+        case ServerConnectionState.connecting ||
+          ServerConnectionState.reconnectWaitTime ||
+          ServerConnectionState.noConnection: {}
+        case ServerConnectionState.connected:
           _loginState.add(LoginState.viewAccountStateOnceItExists);
-        case ApiManagerState.unsupportedClientVersion:
+        case ServerConnectionState.unsupportedClientVersion:
           _loginState.add(LoginState.unsupportedClientVersion);
       }
     });
@@ -215,7 +215,7 @@ class LoginRepository extends DataRepository {
 
         final connectionManager = repositoriesOrNull?.connectionManager;
         final state = await connectionManager?.state.firstOrNull;
-        if (state == ApiManagerState.noConnection) {
+        if (state == ServerConnectionState.noConnection) {
           await connectionManager?.restart();
         }
       })
@@ -303,7 +303,7 @@ class LoginRepository extends DataRepository {
 
     await _repositorySpecificAutomaticLogoutSubscription?.cancel();
     _repositorySpecificAutomaticLogoutSubscription = connectionManager.state.listen((v) {
-      if (v == ApiManagerState.waitingRefreshToken && !newRepositories.logoutStarted) {
+      if (v == ServerConnectionState.waitingRefreshToken && !newRepositories.logoutStarted) {
         // Tokens are invalid. Logout is required.
         newRepositories.logoutStarted = true;
         log.info("Automatic logout");
@@ -785,10 +785,10 @@ class RepositoryStateStreams {
   StreamSubscription<ServerWsEvent>? _serverEventsSubscription;
   Stream<ServerWsEvent> get serverEvents => _serverEvents;
 
-  final PublishSubject<ApiManagerState> _serverConnectionManagerStateEvents =
+  final PublishSubject<ServerConnectionState> _serverConnectionManagerStateEvents =
     PublishSubject();
-  StreamSubscription<ApiManagerState>? _serverConnectionManagerStateEventsSubscription;
-  Stream<ApiManagerState> get serverConnectionState => _serverConnectionManagerStateEvents;
+  StreamSubscription<ServerConnectionState>? _serverConnectionManagerStateEventsSubscription;
+  Stream<ServerConnectionState> get serverConnectionState => _serverConnectionManagerStateEvents;
 
   Future<void> _subscribe(
     AccountRepository account,
@@ -825,7 +825,7 @@ class RepositoryStateStreams {
   }
 
   void _handleAppStartWithoutLoggedInAccount() {
-    _serverConnectionManagerStateEvents.add(ApiManagerState.waitingRefreshToken);
+    _serverConnectionManagerStateEvents.add(ServerConnectionState.waitingRefreshToken);
   }
 }
 

@@ -104,7 +104,7 @@ class ContentBloc extends Bloc<ContentEvent, ContentData> with ActionRunner {
         } else {
           yield true;
         }
-        await connection.state.where((v) => v == ApiManagerState.connected).first;
+        await connection.state.where((v) => v == ServerConnectionState.connected).first;
         final imgData2 = await cache.getImage(currentUser, newImg, media: media);
         if (imgData2 == null) {
           yield false;

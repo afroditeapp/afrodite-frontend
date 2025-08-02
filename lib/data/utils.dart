@@ -112,10 +112,10 @@ class ConnectedActionScheduler {
     final count = _onLoginScheduledCount;
     _onLoginScheduled = true;
 
-    Future.any<ApiManagerState?>([
+    Future.any<ServerConnectionState?>([
       connectionManager
         .state
-        .firstWhere((element) => element == ApiManagerState.connected),
+        .firstWhere((element) => element == ServerConnectionState.connected),
       _cancel
         .firstWhere((v) => v)
         .then((v) => null)
@@ -137,10 +137,10 @@ class ConnectedActionScheduler {
   }
 
   void onResumeAppUsageSync(Future<void> Function() action) {
-    Future.any<ApiManagerState?>([
+    Future.any<ServerConnectionState?>([
       connectionManager
         .state
-        .firstWhere((element) => element == ApiManagerState.connected),
+        .firstWhere((element) => element == ServerConnectionState.connected),
       _cancel
         .firstWhere((v) => v)
         .then((v) => null)

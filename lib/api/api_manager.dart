@@ -21,9 +21,7 @@ final log = Logger("ApiManager");
 
 // TODO(prod): Localize connection snackbar texts
 
-// TODO(prod): Rename ApiManagerState to ServerConnectionState?
-
-enum ApiManagerState {
+enum ServerConnectionState {
   /// No valid refresh token available. UI should display login view.
   waitingRefreshToken,
   /// Reconnecting will happen in few seconds.
@@ -58,8 +56,8 @@ class ServerConnectionManager implements LifecycleMethods, ServerConnectionInter
       accountBackgroundDb,
     );
 
-  final BehaviorSubject<ApiManagerState> _state =
-    BehaviorSubject.seeded(ApiManagerState.connecting);
+  final BehaviorSubject<ServerConnectionState> _state =
+    BehaviorSubject.seeded(ServerConnectionState.connecting);
 
   final PublishSubject<ServerWsEvent> _serverEvents =
     PublishSubject();
@@ -67,12 +65,12 @@ class ServerConnectionManager implements LifecycleMethods, ServerConnectionInter
 
   StreamSubscription<void>? _serverConnectionEventsSubscription;
 
-  ApiManagerState get currentState => _state.value;
+  ServerConnectionState get currentState => _state.value;
   Stream<ServerWsEvent> get serverEvents => _serverEvents;
   ApiManager get api => _account;
 
   @override
-  Stream<ApiManagerState> get state => _state.distinct();
+  Stream<ServerConnectionState> get state => _state.distinct();
 
   bool _reconnectInProgress = false;
 
@@ -105,11 +103,11 @@ class ServerConnectionManager implements LifecycleMethods, ServerConnectionInter
         switch (event) {
           // No connection states.
           case ReadyToConnect():
-            _state.add(ApiManagerState.noConnection);
+            _state.add(ServerConnectionState.noConnection);
           case Error e: {
             switch (e.error) {
               case ServerConnectionError.connectionFailure: {
-                _state.add(ApiManagerState.reconnectWaitTime);
+                _state.add(ServerConnectionState.reconnectWaitTime);
                 _reconnectInProgress = true;
                 showSnackBar("Connection error - reconnecting in 5 seconds");
                 // TODO(prod): check that internet connectivity exists?
@@ -122,23 +120,23 @@ class ServerConnectionManager implements LifecycleMethods, ServerConnectionInter
                 }));
               }
               case ServerConnectionError.invalidToken: {
-                _state.add(ApiManagerState.waitingRefreshToken);
+                _state.add(ServerConnectionState.waitingRefreshToken);
               }
               case ServerConnectionError.unsupportedClientVersion: {
-                _state.add(ApiManagerState.unsupportedClientVersion);
+                _state.add(ServerConnectionState.unsupportedClientVersion);
               }
             }
           }
           // Ongoing connection states
           case Connecting():
-            _state.add(ApiManagerState.connecting);
+            _state.add(ServerConnectionState.connecting);
           case Ready(:final token): {
             if (_reconnectInProgress) {
               showSnackBar("Connected");
               _reconnectInProgress = false;
             }
             await _account.setupAccessToken(token);
-            _state.add(ApiManagerState.connected);
+            _state.add(ServerConnectionState.connected);
           }
         }
       })
@@ -151,7 +149,7 @@ class ServerConnectionManager implements LifecycleMethods, ServerConnectionInter
   }
 
   Future<void> _connect() async {
-    _state.add(ApiManagerState.connecting);
+    _state.add(ServerConnectionState.connecting);
 
     final accountRefreshToken =
       await accountDb.accountStreamSingle((db) => db.loginSession.watchRefreshToken()).ok();
@@ -159,7 +157,7 @@ class ServerConnectionManager implements LifecycleMethods, ServerConnectionInter
       await accountDb.accountStreamSingle((db) => db.loginSession.watchAccessToken()).ok();
 
     if (accountRefreshToken == null || accountAccessToken == null) {
-      _state.add(ApiManagerState.waitingRefreshToken);
+      _state.add(ServerConnectionState.waitingRefreshToken);
       return;
     }
 
@@ -176,20 +174,20 @@ class ServerConnectionManager implements LifecycleMethods, ServerConnectionInter
   Future<void> close() async {
     _reconnectInProgress = false;
     await accountConnection.close();
-    _state.add(ApiManagerState.noConnection);
+    _state.add(ServerConnectionState.noConnection);
   }
 
   Future<void> closeAndLogout() async {
     _reconnectInProgress = false;
     await accountConnection.close(logoutClose: true);
-    _state.add(ApiManagerState.waitingRefreshToken);
+    _state.add(ServerConnectionState.waitingRefreshToken);
   }
 
   Future<void> closeAndRefreshServerAddressAndLogout() async {
     _reconnectInProgress = false;
     await accountConnection.close(logoutClose: true);
     await _loadAddressesFromConfig();
-    _state.add(ApiManagerState.waitingRefreshToken);
+    _state.add(ServerConnectionState.waitingRefreshToken);
   }
 
   /// Returns true if connected, false if not connected within the timeout.
@@ -197,7 +195,7 @@ class ServerConnectionManager implements LifecycleMethods, ServerConnectionInter
     return await Future.any([
       Future.delayed(Duration(seconds: waitTimeoutSeconds), () => false),
       state
-        .firstWhere((element) => element == ApiManagerState.connected)
+        .firstWhere((element) => element == ServerConnectionState.connected)
         .then((value) => true),
     ]);
   }
@@ -207,7 +205,7 @@ class ServerConnectionManager implements LifecycleMethods, ServerConnectionInter
   /// If current login session changes to different account then error is returned.
   Future<Result<void, void>> waitUntilCurrentSessionConnects() async {
     await state
-        .firstWhere((element) => element == ApiManagerState.connected);
+        .firstWhere((element) => element == ServerConnectionState.connected);
 
     final accountAfterConnection = await BackgroundDatabaseManager.getInstance().commonStreamSingle((db) => db.loginSession.watchAccountId());
 

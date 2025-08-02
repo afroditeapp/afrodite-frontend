@@ -71,7 +71,7 @@ class ApiWrapper<T> {
       (e.code == 400 && e.innerException != null)
     ) {
       final currentState = await serverConnection.state.firstOrNull;
-      if (!_connectionRestartInProgress && currentState == ApiManagerState.connected) {
+      if (!_connectionRestartInProgress && currentState == ServerConnectionState.connected) {
         _connectionRestartInProgress = true;
         log.warning("Current connection might be broken");
         await serverConnection.restart();
@@ -84,13 +84,13 @@ class ApiWrapper<T> {
 bool _connectionRestartInProgress = false;
 
 abstract class ServerConnectionInterface {
-  Stream<ApiManagerState> get state;
+  Stream<ServerConnectionState> get state;
   Future<void> restart();
 }
 
 class NoConnection implements ServerConnectionInterface {
   @override
-  Stream<ApiManagerState> get state => const Stream.empty();
+  Stream<ServerConnectionState> get state => const Stream.empty();
 
   @override
   Future<void> restart() async {}
