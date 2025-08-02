@@ -28,6 +28,7 @@ import "package:app/ui_utils/initial_setup_common.dart";
 import "package:app/ui_utils/profile_thumbnail_image.dart";
 import "package:app/ui_utils/snack_bar.dart";
 import "package:app/ui_utils/view_image_screen.dart";
+import 'package:image/image.dart' as img;
 
 final log = Logger("ProfilePictures");
 
@@ -545,16 +546,22 @@ void openSelectPictureDialog(
             onTap: () async {
               final imageProcessingBloc = context.read<ProfilePicturesImageProcessingBloc>();
               MyNavigator.removePage(context, pageKey, null);
-              // TODO(prod): Read image on client side and show error if
-              // image is not JPEG.
 
               try {
                 final image  = await ImagePicker().pickImage(
                   source: ImageSource.gallery,
                   requestFullMetadata: false
                 );
+
                 if (image != null) {
                   final imageBytes = await image.readAsBytes();
+
+                  final decodedImg = img.decodeJpg(imageBytes);
+                  if (decodedImg == null) {
+                    showSnackBar(R.strings.initial_setup_screen_profile_pictures_unsupported_image_error);
+                    return;
+                  }
+
                   imageProcessingBloc.add(SendImageToSlot(imageBytes, serverSlotIndex));
                 }
               } catch (e) {

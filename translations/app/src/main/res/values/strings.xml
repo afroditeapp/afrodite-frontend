@@ -189,6 +189,7 @@
     <string name="initial_setup_screen_profile_pictures_select_picture_from_gallery_title" description="Action title for selecting profile picture from gallery">From gallery</string>
     <string name="initial_setup_screen_profile_pictures_select_picture_take_new_picture_title" description="Action title for taking new picture to be used as a profile picture">Take new photo</string>
     <string name="initial_setup_screen_profile_pictures_select_picture_security_selfie_title" description="Action title for using security selfie as a profile picture">Security selfie</string>
+    <string name="initial_setup_screen_profile_pictures_unsupported_image_error" description="Snackbar error text that selected picture is unsupported">Selected image is not an JPEG image</string>
     <string name="initial_setup_screen_profile_pictures_primary_image_info_dialog_description" description="Dialog description text about profile primary image">Adding at least of one profile image is required. The first profile image must be a face picture. The square shaped crop of the first profile image is displayed in profile grid and some other places in the app.</string>
     <string name="initial_setup_screen_profile_pictures_primary_image_face_not_detected" description="Error text that face is not detected for primary profile image">Face is not detected. Please select another picture.</string>
     <string name="initial_setup_screen_profile_basic_info_title" description="Title text for asking profile information">My profile has this info…</string>

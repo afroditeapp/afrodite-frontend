@@ -714,6 +714,10 @@ class AppLocalizationsFi extends AppLocalizations {
       'My profile pictures are…';
 
   @override
+  String get initial_setup_screen_profile_pictures_unsupported_image_error =>
+      'Selected image is not an JPEG image';
+
+  @override
   String get initial_setup_screen_refresh_face_detected_values_action =>
       'Refresh face detection statuses';
 

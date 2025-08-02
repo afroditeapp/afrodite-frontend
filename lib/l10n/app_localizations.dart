@@ -1286,6 +1286,12 @@ abstract class AppLocalizations {
   /// **'My profile pictures are…'**
   String get initial_setup_screen_profile_pictures_title;
 
+  /// Snackbar error text that selected picture is unsupported
+  ///
+  /// In en, this message translates to:
+  /// **'Selected image is not an JPEG image'**
+  String get initial_setup_screen_profile_pictures_unsupported_image_error;
+
   /// Title for refresh face detected values
   ///
   /// In en, this message translates to:
