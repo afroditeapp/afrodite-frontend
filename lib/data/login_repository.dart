@@ -503,7 +503,6 @@ class LoginRepository extends DataRepository {
     }
   }
 
-  // TODO(prod): Remove runtime server address changing?
   Future<void> setCurrentServerAddress(String serverAddress) async {
     await BackgroundDatabaseManager.getInstance().commonAction(
       (db) => db.app.updateServerUrl(serverAddress),

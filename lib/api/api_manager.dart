@@ -261,7 +261,6 @@ class ApiManager implements LifecycleMethods {
   Future<String> updateAddressFromConfigAndReturnIt() async {
     final backgroundDb = BackgroundDatabaseManager.getInstance();
 
-    // TODO(prod): hardcode address for production release?
     final accountAddress = await backgroundDb.commonStreamSingleOrDefault(
       (db) => db.app.watchServerUrl(),
       defaultServerUrl(),
