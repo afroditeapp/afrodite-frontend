@@ -1,6 +1,7 @@
 
 import 'dart:async';
 
+import 'package:app/localizations.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:app/api/api_provider.dart';
@@ -18,8 +19,6 @@ import 'package:app/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
 
 final log = Logger("ApiManager");
-
-// TODO(prod): Localize connection snackbar texts
 
 enum ServerConnectionState {
   /// No valid refresh token available. UI should display login view.
@@ -109,7 +108,7 @@ class ServerConnectionManager implements LifecycleMethods, ServerConnectionInter
               case ServerConnectionError.connectionFailure: {
                 _state.add(ServerConnectionState.reconnectWaitTime);
                 _reconnectInProgress = true;
-                showSnackBar("Connection error - reconnecting in 5 seconds");
+                showSnackBar(R.strings.snackbar_reconnecting_in_5_seconds);
                 // TODO(prod): check that internet connectivity exists?
                 unawaited(Future.delayed(const Duration(seconds: 5), () async {
                   final currentState = await accountConnection.state.first;
@@ -132,7 +131,7 @@ class ServerConnectionManager implements LifecycleMethods, ServerConnectionInter
             _state.add(ServerConnectionState.connecting);
           case Ready(:final token): {
             if (_reconnectInProgress) {
-              showSnackBar("Connected");
+              showSnackBar(R.strings.snackbar_connected);
               _reconnectInProgress = false;
             }
             await _account.setupAccessToken(token);

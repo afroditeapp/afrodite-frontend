@@ -75,6 +75,14 @@
     <string name="generic_reset_to_defaults" description="Title for reset values to defaults action">Reset to default values</string>
     <string name="generic_reset_to_defaults_dialog_title" description="Dialog title for confirming reseting values to defaults">Reset to default values?</string>
 
+    <!-- Global stackbar texts -->
+    <string name="snackbar_error_api" description="Snackbar error text for API errors">API error</string>
+    <string name="snackbar_error_database" description="Snackbar error text for database errors">Database error</string>
+    <string name="snackbar_error_file" description="Snackbar error text for file errors">File error</string>
+    <string name="snackbar_error_logic" description="Snackbar error text for logic errors">Logic error</string>
+    <string name="snackbar_connected" description="Snackbar info text that connection to server is established">Connected</string>
+    <string name="snackbar_reconnecting_in_5_seconds" description="Snackbar info text that reconnecting to server happens in 5 seconds">Connection error - reconnecting in 5 seconds</string>
+
     <!-- Moderation states -->
     <string name="moderation_state" description="Beginning of moderation state text">Moderation state: %s</string>
     <string name="moderation_rejected_category" description="Beginning of moderation rejected reason category text">Rejected reason category: %s</string>

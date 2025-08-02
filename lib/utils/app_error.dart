@@ -1,5 +1,6 @@
 
 
+import 'package:app/localizations.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:app/api/error_manager.dart';
@@ -21,7 +22,7 @@ sealed class ApiError extends AppError {
   const ApiError();
 
   @override
-  String title() => "API error";
+  String title() => R.strings.snackbar_error_api;
 }
 
 sealed class ActionApiError extends ApiError {
@@ -128,7 +129,7 @@ class FileError extends AppError {
   const FileError();
 
   @override
-  String title() => "File error";
+  String title() => R.strings.snackbar_error_file;
 
   @override
   void logError(Logger log) {}
@@ -138,7 +139,7 @@ sealed class DatabaseError extends AppError {
   const DatabaseError();
 
   @override
-  String title() => "Database error";
+  String title() => R.strings.snackbar_error_database;
 }
 
 class DatabaseException extends DatabaseError {
@@ -178,13 +179,11 @@ class MissingRequiredValue extends DatabaseError {
   }
 }
 
-// TODO(prod): translate error titles
-
 sealed class LogicError extends AppError {
   const LogicError();
 
   @override
-  String title() => "Logic error";
+  String title() => R.strings.snackbar_error_logic;
 }
 
 class MissingValue extends LogicError {

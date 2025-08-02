@@ -1395,6 +1395,25 @@ class AppLocalizationsFi extends AppLocalizations {
   String get settings_screen_title => 'Asetukset';
 
   @override
+  String get snackbar_connected => 'Connected';
+
+  @override
+  String get snackbar_error_api => 'API error';
+
+  @override
+  String get snackbar_error_database => 'Database error';
+
+  @override
+  String get snackbar_error_file => 'File error';
+
+  @override
+  String get snackbar_error_logic => 'Logic error';
+
+  @override
+  String get snackbar_reconnecting_in_5_seconds =>
+      'Connection error - reconnecting in 5 seconds';
+
+  @override
   String statistics_screen_age_range(String p0) {
     return 'Ages: $p0';
   }

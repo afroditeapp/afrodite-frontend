@@ -2365,6 +2365,42 @@ abstract class AppLocalizations {
   /// **'Settings'**
   String get settings_screen_title;
 
+  /// Snackbar info text that connection to server is established
+  ///
+  /// In en, this message translates to:
+  /// **'Connected'**
+  String get snackbar_connected;
+
+  /// Snackbar error text for API errors
+  ///
+  /// In en, this message translates to:
+  /// **'API error'**
+  String get snackbar_error_api;
+
+  /// Snackbar error text for database errors
+  ///
+  /// In en, this message translates to:
+  /// **'Database error'**
+  String get snackbar_error_database;
+
+  /// Snackbar error text for file errors
+  ///
+  /// In en, this message translates to:
+  /// **'File error'**
+  String get snackbar_error_file;
+
+  /// Snackbar error text for logic errors
+  ///
+  /// In en, this message translates to:
+  /// **'Logic error'**
+  String get snackbar_error_logic;
+
+  /// Snackbar info text that reconnecting to server happens in 5 seconds
+  ///
+  /// In en, this message translates to:
+  /// **'Connection error - reconnecting in 5 seconds'**
+  String get snackbar_reconnecting_in_5_seconds;
+
   /// Text for age range
   ///
   /// In en, this message translates to:
