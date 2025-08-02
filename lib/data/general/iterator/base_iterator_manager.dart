@@ -60,8 +60,6 @@ abstract class BaseIteratorManager implements UiProfileIterator {
       switch (await _nextListRaw()) {
         case Ok(value: final profiles):
           list = profiles;
-          // TODO(prod): remove unnecessary break
-          break;
         case Err():
           return const Err(null);
       }

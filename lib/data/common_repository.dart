@@ -7,7 +7,6 @@ import 'package:app/data/push_notification_manager.dart';
 import 'package:app/data/utils.dart';
 import 'package:app/database/background_database_manager.dart';
 import 'package:app/database/database_manager.dart';
-import 'package:app/storage/kv.dart';
 import 'package:app/utils/result.dart';
 
 var log = Logger("CommonRepository");
@@ -77,9 +76,3 @@ class CommonRepository extends DataRepositoryWithLifecycle {
 }
 
 // TODO(prod): Fix onLogout to run when token invalidation is detected
-
-class KvBooleanUpdate {
-  KvBoolean key;
-  bool value;
-  KvBooleanUpdate(this.key, this.value);
-}

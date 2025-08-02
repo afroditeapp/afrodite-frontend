@@ -78,9 +78,8 @@ class ProfileEntry implements PublicContentProvider {
     return "${profileTitle(showNonAcceptedProfileNames)}, $age";
   }
 
-  String profileTextOrFirstCharacterProfileText(bool showNonAcceptedProfileTexts) {
-    // TODO(prod): Remove showNonAcceptedProfileTexts
-    if (showNonAcceptedProfileTexts || profileTextAccepted) {
+  String profileTextOrFirstCharacterProfileText() {
+    if (profileTextAccepted) {
       return profileText;
     } else {
       return hideOtherCharactersThanTheFirst(profileText);

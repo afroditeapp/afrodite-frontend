@@ -60,7 +60,6 @@ dependencies:
   flutter_bloc: ^9.1.1
   bloc_concurrency: ^0.3.0
 
-  shared_preferences: ^2.1.0
   rxdart: ^0.28.0
 
   camera: ^0.11.0+2

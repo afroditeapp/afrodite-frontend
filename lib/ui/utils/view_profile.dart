@@ -179,9 +179,7 @@ class _ViewProfileEntryState extends State<ViewProfileEntry> {
         children: [
           Expanded(
             child: Text(
-              widget.profile.profileTextOrFirstCharacterProfileText(
-                isMyProfile(),
-              ),
+              widget.profile.profileTextOrFirstCharacterProfileText(),
               style: Theme.of(context).textTheme.bodyLarge,
             ),
           ),

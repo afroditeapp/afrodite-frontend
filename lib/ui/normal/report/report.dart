@@ -118,7 +118,7 @@ class _ReportScreenState extends State<ReportScreen> {
         final r = await showConfirmDialog(
           context,
           context.strings.report_screen_profile_text_dialog_title,
-          details: widget.profile.profileTextOrFirstCharacterProfileText(false),
+          details: widget.profile.profileTextOrFirstCharacterProfileText(),
           yesNoActions: true,
           scrollable: true,
         );
