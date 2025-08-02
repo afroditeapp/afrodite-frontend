@@ -458,6 +458,9 @@ class AppLocalizationsSv extends AppLocalizations {
   String get generic_login => 'Login';
 
   @override
+  String get generic_login_progress_dialog_text => 'Login…';
+
+  @override
   String get generic_logout => 'Logout';
 
   @override
@@ -760,9 +763,6 @@ class AppLocalizationsSv extends AppLocalizations {
   String get likes_screen_title => 'Requests';
 
   @override
-  String get login_screen_action_demo_account_login => 'Demo account login';
-
-  @override
   String get login_screen_demo_account_dialog_description =>
       'Login to demo account on the demo account server.';
 
@@ -777,9 +777,6 @@ class AppLocalizationsSv extends AppLocalizations {
   String get login_screen_demo_account_login_failed => 'Login failed';
 
   @override
-  String get login_screen_demo_account_login_progress_dialog => 'Login…';
-
-  @override
   String get login_screen_demo_account_login_session_expired =>
       'Demo account session expired';
 
@@ -788,9 +785,6 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String get login_screen_demo_account_username => 'Username';
-
-  @override
-  String get login_screen_login_button => 'Login';
 
   @override
   String get login_screen_login_note_text_and => 'and';
@@ -806,13 +800,7 @@ class AppLocalizationsSv extends AppLocalizations {
   String get login_screen_login_note_text_tos => 'Terms of Service';
 
   @override
-  String get login_screen_register_button => 'Register';
-
-  @override
   String get login_screen_sign_in_with_error => 'Sign in with failed';
-
-  @override
-  String get login_screen_sign_in_with_progress_dialog => 'Login…';
 
   @override
   String get map_location_update_failed => 'Location update failed';

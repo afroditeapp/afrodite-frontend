@@ -835,6 +835,12 @@ abstract class AppLocalizations {
   /// **'Login'**
   String get generic_login;
 
+  /// Generic login progress dialog text
+  ///
+  /// In en, this message translates to:
+  /// **'Login…'**
+  String get generic_login_progress_dialog_text;
+
   /// Generic logout text
   ///
   /// In en, this message translates to:
@@ -1358,12 +1364,6 @@ abstract class AppLocalizations {
   /// **'Requests'**
   String get likes_screen_title;
 
-  /// Text for demo account login action
-  ///
-  /// In en, this message translates to:
-  /// **'Demo account login'**
-  String get login_screen_action_demo_account_login;
-
   /// Description for demo account login dialog
   ///
   /// In en, this message translates to:
@@ -1388,12 +1388,6 @@ abstract class AppLocalizations {
   /// **'Login failed'**
   String get login_screen_demo_account_login_failed;
 
-  /// Dialog info text that demo account login is in progress
-  ///
-  /// In en, this message translates to:
-  /// **'Login…'**
-  String get login_screen_demo_account_login_progress_dialog;
-
   /// Snackbar text for demo account login session expiration
   ///
   /// In en, this message translates to:
@@ -1411,12 +1405,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Username'**
   String get login_screen_demo_account_username;
-
-  /// Login button text
-  ///
-  /// In en, this message translates to:
-  /// **'Login'**
-  String get login_screen_login_button;
 
   /// Word 'and' between terms of service and privacy policy links
   ///
@@ -1442,23 +1430,11 @@ abstract class AppLocalizations {
   /// **'Terms of Service'**
   String get login_screen_login_note_text_tos;
 
-  /// Register button text
-  ///
-  /// In en, this message translates to:
-  /// **'Register'**
-  String get login_screen_register_button;
-
   /// Snackbar text for sign in with error
   ///
   /// In en, this message translates to:
   /// **'Sign in with failed'**
   String get login_screen_sign_in_with_error;
-
-  /// Dialog info text that sign in with login is in progress
-  ///
-  /// In en, this message translates to:
-  /// **'Login…'**
-  String get login_screen_sign_in_with_progress_dialog;
 
   /// Snackbar text about failed location update
   ///

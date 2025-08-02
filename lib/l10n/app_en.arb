@@ -533,6 +533,10 @@
   "@generic_login": {
     "description": "Generic login text"
   },
+  "generic_login_progress_dialog_text": "Login…",
+  "@generic_login_progress_dialog_text": {
+    "description": "Generic login progress dialog text"
+  },
   "generic_logout": "Logout",
   "@generic_logout": {
     "description": "Generic logout text"
@@ -884,10 +888,6 @@
   "@likes_screen_title": {
     "description": "Title for likes screen"
   },
-  "login_screen_action_demo_account_login": "Demo account login",
-  "@login_screen_action_demo_account_login": {
-    "description": "Text for demo account login action"
-  },
   "login_screen_demo_account_dialog_description": "Login to demo account on the demo account server.",
   "@login_screen_demo_account_dialog_description": {
     "description": "Description for demo account login dialog"
@@ -904,10 +904,6 @@
   "@login_screen_demo_account_login_failed": {
     "description": "Snackbar text for demo account login failed"
   },
-  "login_screen_demo_account_login_progress_dialog": "Login…",
-  "@login_screen_demo_account_login_progress_dialog": {
-    "description": "Dialog info text that demo account login is in progress"
-  },
   "login_screen_demo_account_login_session_expired": "Demo account session expired",
   "@login_screen_demo_account_login_session_expired": {
     "description": "Snackbar text for demo account login session expiration"
@@ -919,10 +915,6 @@
   "login_screen_demo_account_username": "Username",
   "@login_screen_demo_account_username": {
     "description": "Placeholder text for demo account username"
-  },
-  "login_screen_login_button": "Login",
-  "@login_screen_login_button": {
-    "description": "Login button text"
   },
   "login_screen_login_note_text_and": "and",
   "@login_screen_login_note_text_and": {
@@ -940,17 +932,9 @@
   "@login_screen_login_note_text_tos": {
     "description": "Text for terms of service link"
   },
-  "login_screen_register_button": "Register",
-  "@login_screen_register_button": {
-    "description": "Register button text"
-  },
   "login_screen_sign_in_with_error": "Sign in with failed",
   "@login_screen_sign_in_with_error": {
     "description": "Snackbar text for sign in with error"
-  },
-  "login_screen_sign_in_with_progress_dialog": "Login…",
-  "@login_screen_sign_in_with_progress_dialog": {
-    "description": "Dialog info text that sign in with login is in progress"
   },
   "map_location_update_failed": "Location update failed",
   "@map_location_update_failed": {

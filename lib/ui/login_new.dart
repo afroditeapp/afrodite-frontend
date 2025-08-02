@@ -39,13 +39,13 @@ class LoginScreen extends StatelessWidget {
             dialogVisibilityGetter:
               (state) => state.loginProgressVisible,
             loadingText:
-              context.strings.login_screen_demo_account_login_progress_dialog,
+              context.strings.generic_login_progress_dialog_text,
           ),
           ProgressDialogOpener<SignInWithBloc, SignInWithData>(
             dialogVisibilityGetter:
               (state) => state.showProgress,
             loadingText:
-              context.strings.login_screen_sign_in_with_progress_dialog,
+              context.strings.generic_login_progress_dialog_text,
           ),
         ],
       ),
@@ -55,7 +55,7 @@ class LoginScreen extends StatelessWidget {
         actions: [
           menuActions([
             MenuItemButton(
-              child: Text(context.strings.login_screen_action_demo_account_login),
+              child: Text(context.strings.login_screen_demo_account_dialog_title),
               onPressed: () {
                 final demoAccountBloc = context.read<DemoAccountLoginBloc>();
                 openFirstDemoAccountLoginDialog(context)
