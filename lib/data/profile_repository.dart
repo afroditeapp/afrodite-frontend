@@ -159,19 +159,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
   }
 
   /// Waits connection before downloading starts.
-  ///
-  /// If `cache` is true, then getting the profile is tried from cache first.
-  Future<ProfileEntry?> getProfile(AccountId id, {bool cache = false}) async {
-    // TODO(prod): perhaps more detailed error message, so that changes from public to
-    // private profile can be handled.
-
-    if (cache) {
-      final profile = await db.accountData((db) => db.profile.getProfileEntry(id)).ok();
-      if (profile != null) {
-        return profile;
-      }
-    }
-
+  Future<ProfileEntry?> downloadProfile(AccountId id) async {
     await connectionManager.state.where((e) => e == ServerConnectionState.connected).firstOrNull;
     final entry = await ProfileEntryDownloader(media, accountBackgroundDb, db, _api).download(id).ok();
     return entry;
@@ -181,9 +169,6 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
   /// time has passed since last profile data refresh) and future profile
   /// updates.
   Stream<GetProfileResultClient> getProfileStream(ChatRepository chat, AccountId id, ProfileRefreshPriority priority) async* {
-    // TODO(prod): perhaps more detailed error message, so that changes from public to
-    // private profile can be handled.
-
     final dbProfileIteator = StreamIterator(db.accountStream((db) => db.profile.watchProfileEntry(id)));
 
     final profile = await dbProfileIteator.next();

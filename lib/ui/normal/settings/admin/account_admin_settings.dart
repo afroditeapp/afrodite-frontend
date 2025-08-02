@@ -124,7 +124,7 @@ class _AccountAdminSettingsScreenState extends State<AccountAdminSettingsScreen>
   }
 
   Future<void> openProfile(BuildContext context) async {
-    final entry = await profile.getProfile(widget.accountId);
+    final entry = await profile.downloadProfile(widget.accountId);
 
     if (!context.mounted) {
       return;
