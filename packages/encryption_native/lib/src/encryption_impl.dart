@@ -113,7 +113,7 @@ class SecureStorageManager extends AppSingleton {
 }
 
 void _testEncryptionSupport() {
-  final key = Uint8List(32); // 256 bits
+  final key = Uint8List(16); // 128 bits
   final data = Uint8List(1);
   const plaintext = 123;
   data[0] = plaintext;

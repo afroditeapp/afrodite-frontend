@@ -2,7 +2,7 @@
 
 //! Encrypt and decrypt content files.
 
-use aes_gcm::{aead::{generic_array::GenericArray, AeadMutInPlace, OsRng}, AeadCore, Aes256Gcm, KeyInit, Nonce};
+use aes_gcm::{aead::{generic_array::GenericArray, AeadMutInPlace, OsRng}, AeadCore, Aes128Gcm, KeyInit, Nonce};
 
 use crate::buffer::SliceBuffer;
 
@@ -27,19 +27,19 @@ const AUTHENTICATION_TAG_SIZE_IN_BYTES: usize = 16;
 ///
 /// The buffer can contain random data as it will be overwritten.
 ///
-/// The key must be 32 bytes (256 bits) long.
+/// The key must be 16 bytes (128 bits) long.
 pub fn encrypt_content(data: &mut [u8], key: &[u8]) -> Result<(), ContentEncryptionError> {
     encrypt_content_with_nonce_provider(
         data,
         key,
-        || Aes256Gcm::generate_nonce(OsRng)
+        || Aes128Gcm::generate_nonce(OsRng)
     )
 }
 
 fn encrypt_content_with_nonce_provider(
     data: &mut [u8],
     key: &[u8],
-    nonce_provider: impl FnOnce() -> Nonce<<Aes256Gcm as AeadCore>::NonceSize>,
+    nonce_provider: impl FnOnce() -> Nonce<<Aes128Gcm as AeadCore>::NonceSize>,
 ) -> Result<(), ContentEncryptionError> {
     let empty_space_size = AUTHENTICATION_TAG_SIZE_IN_BYTES + NONCE_SIZE_IN_BYTES;
     if data.len() <= empty_space_size {
@@ -51,7 +51,7 @@ fn encrypt_content_with_nonce_provider(
     let mut buf = SliceBuffer::buffer_with_empty_space(working_area, AUTHENTICATION_TAG_SIZE_IN_BYTES)
         .map_err(|_| ContentEncryptionError::BufferInitFailed)?;
 
-    let mut chipher = Aes256Gcm::new_from_slice(key)
+    let mut chipher = Aes128Gcm::new_from_slice(key)
         .map_err(|_| ContentEncryptionError::InvalidKeyBufferSize)?;
 
     let nonce = nonce_provider();
@@ -84,7 +84,7 @@ pub fn decrypt_content(data: &mut [u8], key: &[u8]) -> Result<(), ContentEncrypt
     let mut buf = SliceBuffer::buffer_with_empty_space(chiphertext, 0)
         .map_err(|_| ContentEncryptionError::BufferInitFailed)?;
 
-    let mut chipher = Aes256Gcm::new_from_slice(key)
+    let mut chipher = Aes128Gcm::new_from_slice(key)
         .map_err(|_| ContentEncryptionError::InvalidKeyBufferSize)?;
     chipher.decrypt_in_place(&nonce, &[], &mut buf)
         .map_err(|_| ContentEncryptionError::DecryptionError)?;
@@ -96,7 +96,7 @@ pub fn decrypt_content(data: &mut [u8], key: &[u8]) -> Result<(), ContentEncrypt
 mod test {
     use super::*;
 
-    const KEY_SIZE: usize = 32;
+    const KEY_SIZE: usize = 16;
 
     #[test]
     fn test_encrypt_and_decrypt() {

@@ -5,9 +5,6 @@ use rand::rngs::OsRng;
 
 use super::MessageEncryptionError;
 
-// TODO(prod): Consider changing AES-256 to AES-128 for images.
-//             SQLChipher uses AES-256.
-
 pub fn encrypt_data(
     // The sender private key can be used for signing the message
     sender_private_key: &[u8],

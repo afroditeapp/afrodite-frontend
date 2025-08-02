@@ -14,7 +14,7 @@
 //
 // The buffer can contain random data as it will be overwritten.
 //
-// The key must be 32 bytes (256 bits) long.
+// The key must be 16 bytes (128 bits) long.
 //
 // Returns 0 if operation was successful.
 FFI_PLUGIN_EXPORT intptr_t encrypt_content(

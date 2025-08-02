@@ -88,6 +88,6 @@ class ImageEncryptionManager extends AppSingleton {
   }
 
   Uint8List _generateImageEncryptionKey() {
-    return generate256BitRandomValue();
+    return generate128BitRandomValue();
   }
 }
