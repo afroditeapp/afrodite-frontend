@@ -24,7 +24,6 @@ mixin _$ViewProfilesData {
   ProfileEntry get profile => throw _privateConstructorErrorViewProfilesData;
   FavoriteState get isFavorite => throw _privateConstructorErrorViewProfilesData;
   ProfileActionState? get profileActionState => throw _privateConstructorErrorViewProfilesData;
-  bool get isNotAvailable => throw _privateConstructorErrorViewProfilesData;
   bool get isBlocked => throw _privateConstructorErrorViewProfilesData;
   bool get showAddToFavoritesCompleted => throw _privateConstructorErrorViewProfilesData;
   bool get showRemoveFromFavoritesCompleted => throw _privateConstructorErrorViewProfilesData;
@@ -38,7 +37,6 @@ mixin _$ViewProfilesData {
     ProfileEntry? profile,
     FavoriteState? isFavorite,
     ProfileActionState? profileActionState,
-    bool? isNotAvailable,
     bool? isBlocked,
     bool? showAddToFavoritesCompleted,
     bool? showRemoveFromFavoritesCompleted,
@@ -56,7 +54,6 @@ abstract class _ViewProfilesData implements ViewProfilesData {
     required ProfileEntry profile,
     FavoriteState isFavorite,
     ProfileActionState? profileActionState,
-    bool isNotAvailable,
     bool isBlocked,
     bool showAddToFavoritesCompleted,
     bool showRemoveFromFavoritesCompleted,
@@ -71,7 +68,6 @@ abstract class _ViewProfilesData implements ViewProfilesData {
 /// @nodoc
 class _$ViewProfilesDataImpl with DiagnosticableTreeMixin implements _ViewProfilesData {
   static const FavoriteState _isFavoriteDefaultValue = FavoriteStateIdle(false);
-  static const bool _isNotAvailableDefaultValue = false;
   static const bool _isBlockedDefaultValue = false;
   static const bool _showAddToFavoritesCompletedDefaultValue = false;
   static const bool _showRemoveFromFavoritesCompletedDefaultValue = false;
@@ -85,7 +81,6 @@ class _$ViewProfilesDataImpl with DiagnosticableTreeMixin implements _ViewProfil
     required this.profile,
     this.isFavorite = _isFavoriteDefaultValue,
     this.profileActionState,
-    this.isNotAvailable = _isNotAvailableDefaultValue,
     this.isBlocked = _isBlockedDefaultValue,
     this.showAddToFavoritesCompleted = _showAddToFavoritesCompletedDefaultValue,
     this.showRemoveFromFavoritesCompleted = _showRemoveFromFavoritesCompletedDefaultValue,
@@ -102,8 +97,6 @@ class _$ViewProfilesDataImpl with DiagnosticableTreeMixin implements _ViewProfil
   final FavoriteState isFavorite;
   @override
   final ProfileActionState? profileActionState;
-  @override
-  final bool isNotAvailable;
   @override
   final bool isBlocked;
   @override
@@ -123,7 +116,7 @@ class _$ViewProfilesDataImpl with DiagnosticableTreeMixin implements _ViewProfil
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ViewProfilesData(profile: $profile, isFavorite: $isFavorite, profileActionState: $profileActionState, isNotAvailable: $isNotAvailable, isBlocked: $isBlocked, showAddToFavoritesCompleted: $showAddToFavoritesCompleted, showRemoveFromFavoritesCompleted: $showRemoveFromFavoritesCompleted, showLikeCompleted: $showLikeCompleted, showLikeFailedBecauseAlreadyLiked: $showLikeFailedBecauseAlreadyLiked, showLikeFailedBecauseAlreadyMatch: $showLikeFailedBecauseAlreadyMatch, showLikeFailedBecauseOfLimit: $showLikeFailedBecauseOfLimit, showGenericError: $showGenericError)';
+    return 'ViewProfilesData(profile: $profile, isFavorite: $isFavorite, profileActionState: $profileActionState, isBlocked: $isBlocked, showAddToFavoritesCompleted: $showAddToFavoritesCompleted, showRemoveFromFavoritesCompleted: $showRemoveFromFavoritesCompleted, showLikeCompleted: $showLikeCompleted, showLikeFailedBecauseAlreadyLiked: $showLikeFailedBecauseAlreadyLiked, showLikeFailedBecauseAlreadyMatch: $showLikeFailedBecauseAlreadyMatch, showLikeFailedBecauseOfLimit: $showLikeFailedBecauseOfLimit, showGenericError: $showGenericError)';
   }
 
   @override
@@ -134,7 +127,6 @@ class _$ViewProfilesDataImpl with DiagnosticableTreeMixin implements _ViewProfil
       ..add(DiagnosticsProperty('profile', profile))
       ..add(DiagnosticsProperty('isFavorite', isFavorite))
       ..add(DiagnosticsProperty('profileActionState', profileActionState))
-      ..add(DiagnosticsProperty('isNotAvailable', isNotAvailable))
       ..add(DiagnosticsProperty('isBlocked', isBlocked))
       ..add(DiagnosticsProperty('showAddToFavoritesCompleted', showAddToFavoritesCompleted))
       ..add(DiagnosticsProperty('showRemoveFromFavoritesCompleted', showRemoveFromFavoritesCompleted))
@@ -156,8 +148,6 @@ class _$ViewProfilesDataImpl with DiagnosticableTreeMixin implements _ViewProfil
           other.isFavorite == isFavorite) &&
         (identical(other.profileActionState, profileActionState) ||
           other.profileActionState == profileActionState) &&
-        (identical(other.isNotAvailable, isNotAvailable) ||
-          other.isNotAvailable == isNotAvailable) &&
         (identical(other.isBlocked, isBlocked) ||
           other.isBlocked == isBlocked) &&
         (identical(other.showAddToFavoritesCompleted, showAddToFavoritesCompleted) ||
@@ -183,7 +173,6 @@ class _$ViewProfilesDataImpl with DiagnosticableTreeMixin implements _ViewProfil
     profile,
     isFavorite,
     profileActionState,
-    isNotAvailable,
     isBlocked,
     showAddToFavoritesCompleted,
     showRemoveFromFavoritesCompleted,
@@ -199,7 +188,6 @@ class _$ViewProfilesDataImpl with DiagnosticableTreeMixin implements _ViewProfil
     Object? profile,
     Object? isFavorite,
     Object? profileActionState = _detectDefaultValueInCopyWith,
-    Object? isNotAvailable,
     Object? isBlocked,
     Object? showAddToFavoritesCompleted,
     Object? showRemoveFromFavoritesCompleted,
@@ -212,7 +200,6 @@ class _$ViewProfilesDataImpl with DiagnosticableTreeMixin implements _ViewProfil
     profile: (profile ?? this.profile) as ProfileEntry,
     isFavorite: (isFavorite ?? this.isFavorite) as FavoriteState,
     profileActionState: (profileActionState == _detectDefaultValueInCopyWith ? this.profileActionState : profileActionState) as ProfileActionState?,
-    isNotAvailable: (isNotAvailable ?? this.isNotAvailable) as bool,
     isBlocked: (isBlocked ?? this.isBlocked) as bool,
     showAddToFavoritesCompleted: (showAddToFavoritesCompleted ?? this.showAddToFavoritesCompleted) as bool,
     showRemoveFromFavoritesCompleted: (showRemoveFromFavoritesCompleted ?? this.showRemoveFromFavoritesCompleted) as bool,

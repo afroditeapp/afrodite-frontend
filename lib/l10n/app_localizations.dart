@@ -2662,12 +2662,6 @@ abstract class AppLocalizations {
   /// **'Last seen {p0} seconds ago'**
   String view_profile_screen_profile_last_seen_seconds(String p0);
 
-  /// Text for view profile screen profile not available dialog
-  ///
-  /// In en, this message translates to:
-  /// **'Profile not available'**
-  String get view_profile_screen_profile_not_available_dialog_description;
-
   /// Text for view profile screen remove from favorites action
   ///
   /// In en, this message translates to:

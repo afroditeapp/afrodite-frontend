@@ -1603,10 +1603,6 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get view_profile_screen_profile_not_available_dialog_description =>
-      'Profile not available';
-
-  @override
   String get view_profile_screen_remove_from_favorites_action =>
       'Remove from favorites';
 

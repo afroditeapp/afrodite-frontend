@@ -102,15 +102,9 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData> with Acti
       switch (data.result) {
         case GetProfileSuccess(:final profile):
           emit(state.copyWith(profile: profile));
-        case GetProfileDoesNotExist(): {
-          // TODO(prod): Remove once backend supports getting private profiles
-          //             of matches. Should profile visiblity related
-          //             exit from view profile screen be disabled?
-          //             Remove isNotAvailable completely?
-          emit(state.copyWith(
-            isNotAvailable: state.profileActionState != ProfileActionState.chat
-          ));
-        }
+        case GetProfileDoesNotExist():
+          // Profile viewing is allowed using existing data
+          ();
         case GetProfileFailed():
           // No extra logic needed for errors as global error messages are enough.
           log.warning("Received GetProfileFailed");

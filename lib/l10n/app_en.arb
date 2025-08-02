@@ -1947,10 +1947,6 @@
       }
     }
   },
-  "view_profile_screen_profile_not_available_dialog_description": "Profile not available",
-  "@view_profile_screen_profile_not_available_dialog_description": {
-    "description": "Text for view profile screen profile not available dialog"
-  },
   "view_profile_screen_remove_from_favorites_action": "Remove from favorites",
   "@view_profile_screen_remove_from_favorites_action": {
     "description": "Text for view profile screen remove from favorites action"

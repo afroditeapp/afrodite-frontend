@@ -175,11 +175,7 @@ class ViewProfilePage extends StatelessWidget {
       builder: (context, state) {
         handleStateAction(context, state);
 
-        return AnimatedOpacity(
-          duration: const Duration(milliseconds: 150),
-          opacity: state.isNotAvailable ? 0.0 : 1.0,
-          child: ViewProfileEntry(profile: state.profile),
-        );
+        return ViewProfileEntry(profile: state.profile);
       }
     );
   }
@@ -223,15 +219,7 @@ class ViewProfilePage extends StatelessWidget {
         context.read<ViewProfileBloc>().add(ResetShowMessages());
       }
 
-      if (state.isNotAvailable) {
-        await showInfoDialog(
-          context,
-          context.strings.view_profile_screen_profile_not_available_dialog_description
-        );
-        if (context.mounted) {
-          MyNavigator.removePage(context, pageKey);
-        }
-      } else if (state.isBlocked) {
+      if (state.isBlocked) {
         showSnackBar(context.strings.view_profile_screen_block_action_successful);
         if (context.mounted) {
           MyNavigator.removePage(context, pageKey);

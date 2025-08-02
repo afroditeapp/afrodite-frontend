@@ -6,7 +6,6 @@ import 'package:flutter/foundation.dart';
 
 part 'view_profiles.freezed.dart';
 
-
 enum ProfileActionState {
   like,
   makeMatch,
@@ -19,7 +18,6 @@ class ViewProfilesData with _$ViewProfilesData {
     required ProfileEntry profile,
     @Default(FavoriteStateIdle(false)) FavoriteState isFavorite,
     ProfileActionState? profileActionState,
-    @Default(false) bool isNotAvailable,
     @Default(false) bool isBlocked,
     @Default(false) bool showAddToFavoritesCompleted,
     @Default(false) bool showRemoveFromFavoritesCompleted,
