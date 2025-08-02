@@ -214,7 +214,7 @@
     <string name="camera_screen_camera_initialization_error_with_error_code" description="Error text displayed when camera initialization fails and error code exists">Camera initialization failed. Error code: %s</string>
     <string name="camera_screen_camera_permission_error_try_again_or_check_settings" description="Error text displayed when there is no camera permission">No camera permission. Please try again. If that will not work then grant the camera permission from system settings.</string>
     <string name="camera_screen_camera_permission_error_check_settings" description="Error text displayed when there is no camera permission and system settings must be used for granting the permission">No camera permission. Please grant the camera permission from system settings.</string>
-<!--  TODO(prod):  <string name="camera_screen_camera_access_restricted_error" description="Error text displayed when camera access is restricted">TODO</string>-->
+    <string name="camera_screen_camera_access_restricted_error" description="Error text displayed when camera access is restricted">Camera access is restricted. Opening camera is not possible.</string>
     <string name="camera_screen_take_photo_error" description="Snackbar error text displayed when taking photo fails">Taking photo failed</string>
 
     <!-- Map texts -->

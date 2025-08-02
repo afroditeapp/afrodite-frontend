@@ -100,6 +100,10 @@ class AppLocalizationsSv extends AppLocalizations {
       'Unblock successful';
 
   @override
+  String get camera_screen_camera_access_restricted_error =>
+      'Camera access is restricted. Opening camera is not possible.';
+
+  @override
   String get camera_screen_camera_initialization_error =>
       'Camera initialization failed';
 

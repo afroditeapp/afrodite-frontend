@@ -10,7 +10,6 @@ import 'package:rxdart/rxdart.dart';
 
 var log = Logger("CameraManager");
 
-
 sealed class CameraInitError {
   String get message {
     return switch (this) {
@@ -20,8 +19,7 @@ sealed class CameraInitError {
       NoCameraPermissionCheckSettings() =>
         R.strings.camera_screen_camera_permission_error_check_settings,
       NoCameraPermissionCameraAccessRestricted() =>
-        // TODO(prod): Figure out good error text
-        "Error",
+        R.strings.camera_screen_camera_access_restricted_error,
       InitFailedWithErrorCode(:final code) =>
         R.strings.camera_screen_camera_initialization_error_with_error_code(code.toString()),
       InitFailed() =>

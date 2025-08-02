@@ -244,6 +244,12 @@ abstract class AppLocalizations {
   /// **'Unblock successful'**
   String get blocked_profiles_screen_unblock_profile_successful;
 
+  /// Error text displayed when camera access is restricted
+  ///
+  /// In en, this message translates to:
+  /// **'Camera access is restricted. Opening camera is not possible.'**
+  String get camera_screen_camera_access_restricted_error;
+
   /// Error text displayed when camera initialization fails
   ///
   /// In en, this message translates to:

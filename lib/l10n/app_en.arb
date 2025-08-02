@@ -115,6 +115,10 @@
   "@blocked_profiles_screen_unblock_profile_successful": {
     "description": "Snackbar text displayed when profile unblocking was successful"
   },
+  "camera_screen_camera_access_restricted_error": "Camera access is restricted. Opening camera is not possible.",
+  "@camera_screen_camera_access_restricted_error": {
+    "description": "Error text displayed when camera access is restricted"
+  },
   "camera_screen_camera_initialization_error": "Camera initialization failed",
   "@camera_screen_camera_initialization_error": {
     "description": "Error text displayed when camera initialization fails"
