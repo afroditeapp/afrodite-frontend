@@ -2,7 +2,6 @@
 
 // Make sure that required symbols are not removed
 void do_not_call() {
-  generate_content_encryption_key(0, 0);
   encrypt_content(0, 0, 0, 0);
   decrypt_content(0, 0, 0, 0);
   struct BinaryDataResult2 generateMessageKeysResult = generate_message_keys(0);

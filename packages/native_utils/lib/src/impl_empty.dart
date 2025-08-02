@@ -3,10 +3,6 @@ import 'dart:typed_data';
 
 import 'package:native_utils/native_utils.dart';
 
-/// If generation fails, null is returned.
-(Uint8List?, int) generate256BitSecretKey() =>
-  throw UnsupportedError("Not implemented");
-
 (Uint8List?, int) encryptContentData(Uint8List input, Uint8List key) =>
   throw UnsupportedError("Not implemented");
 

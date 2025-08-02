@@ -1,18 +1,5 @@
 use crate::{content, ffi::CApiResult};
 
-#[unsafe(no_mangle)]
-pub unsafe extern "C" fn generate_content_encryption_key(
-    key: *mut u8,
-    key_len: isize,
-) -> isize {
-    assert!(!key.is_null());
-    assert!(key_len >= 0);
-    content::generate_content_encryption_key(
-        unsafe {
-            std::slice::from_raw_parts_mut(key, key_len as usize)
-        }
-    ).to_c_api_result()
-}
 
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn encrypt_content(

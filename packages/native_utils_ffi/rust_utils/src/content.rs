@@ -2,7 +2,7 @@
 
 //! Encrypt and decrypt content files.
 
-use aes_gcm::{aead::{generic_array::GenericArray, AeadMutInPlace, OsRng}, AeadCore, Aes256Gcm, Key, KeyInit, Nonce};
+use aes_gcm::{aead::{generic_array::GenericArray, AeadMutInPlace, OsRng}, AeadCore, Aes256Gcm, KeyInit, Nonce};
 
 use crate::buffer::SliceBuffer;
 
@@ -21,37 +21,13 @@ pub enum ContentEncryptionError {
 const NONCE_SIZE_IN_BYTES: usize = 12;
 const AUTHENTICATION_TAG_SIZE_IN_BYTES: usize = 16;
 
-/// Generate a new content encryption key.
-///
-/// The buffer for key generation must be 32 bytes long.
-///
-/// The buffer can contain random data as it will be overwritten.
-pub fn generate_content_encryption_key(key_output: &mut [u8]) -> Result<(), ContentEncryptionError> {
-    generate_content_encryption_key_with_key_provider(
-        key_output,
-        || Aes256Gcm::generate_key(OsRng),
-    )
-}
-
-fn generate_content_encryption_key_with_key_provider(
-    key_output: &mut [u8],
-    key_provider: impl FnOnce() -> Key<Aes256Gcm>,
-) -> Result<(), ContentEncryptionError> {
-    let key = key_provider();
-    if key_output.len() != key.len() {
-        return Err(ContentEncryptionError::InvalidKeyBufferSize);
-    }
-
-    key_output.copy_from_slice(key.as_ref());
-
-    Ok(())
-}
-
 /// Replace plaintext with chiphertext and nonce.
 ///
 /// The buffer needs to have 28 bytes empty space at the end.
 ///
 /// The buffer can contain random data as it will be overwritten.
+///
+/// The key must be 32 bytes (256 bits) long.
 pub fn encrypt_content(data: &mut [u8], key: &[u8]) -> Result<(), ContentEncryptionError> {
     encrypt_content_with_nonce_provider(
         data,
@@ -121,18 +97,6 @@ mod test {
     use super::*;
 
     const KEY_SIZE: usize = 32;
-    #[test]
-    fn test_generate_content_encryption_key() {
-        let mut key_buffer = [0u8; KEY_SIZE];
-        let wanted_key = [1u8; KEY_SIZE];
-
-        assert_ne!(key_buffer, wanted_key);
-        assert_eq!(
-            generate_content_encryption_key_with_key_provider(&mut key_buffer, || wanted_key.into()),
-            Ok(())
-        );
-        assert_eq!(key_buffer, wanted_key);
-    }
 
     #[test]
     fn test_encrypt_and_decrypt() {

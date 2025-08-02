@@ -69,7 +69,7 @@ class ImageEncryptionManager extends AppSingleton {
       final existingKey = await DatabaseManager.getInstance().commonStreamSingle((db) => db.app.watchImageEncryptionKey());
       if (existingKey == null) {
         log.info("Generating a new image encryption key");
-        final newKey = await _generateImageEncryptionKey();
+        final newKey = _generateImageEncryptionKey();
         await DatabaseManager.getInstance().commonAction((db) => db.app.updateImageEncryptionKey(newKey));
         final dbKey = await DatabaseManager.getInstance().commonStreamSingle((db) => db.app.watchImageEncryptionKey());
         if (!listEquals(newKey, dbKey)) {
@@ -87,12 +87,7 @@ class ImageEncryptionManager extends AppSingleton {
     }
   }
 
-  Future<Uint8List> _generateImageEncryptionKey() async {
-    final (key, result) = generate256BitSecretKey();
-    if (key == null) {
-      throw Exception("Failed to generate a key. Error: $result");
-    } else {
-      return key;
-    }
+  Uint8List _generateImageEncryptionKey() {
+    return generate256BitRandomValue();
   }
 }

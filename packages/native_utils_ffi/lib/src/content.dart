@@ -6,23 +6,6 @@ import 'dart:typed_data';
 import 'package:ffi/ffi.dart';
 import 'package:native_utils_ffi/src/bindings.dart';
 
-/// If generation fails, null is returned.
-(Uint8List?, int) generate256BitSecretKey() {
-  const int keyLength = 32; // 256 bits
-
-  final Pointer<Uint8> data = malloc.allocate(keyLength);
-  final keyGenerationResult = getBindings().generate_content_encryption_key(data, keyLength);
-  final l = data.asTypedList(keyLength);
-  final key = Uint8List.fromList(l);
-  malloc.free(data);
-
-  if (keyGenerationResult != 0) {
-    return (null, keyGenerationResult);
-  } else {
-    return (key, keyGenerationResult);
-  }
-}
-
 const _ENCRYPTION_EXTRA_SPACE = 28;
 
 (Uint8List?, int) encryptContentData(Uint8List input, Uint8List key) {

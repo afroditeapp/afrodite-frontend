@@ -27,36 +27,13 @@ class NativeUtilsBindings {
           lookup)
       : _lookup = lookup;
 
-  /// Generate a new content encryption key.
-  ///
-  /// The buffer for key generation must be 32 bytes long.
-  ///
-  /// The buffer can contain random data as it will be overwritten.
-  ///
-  /// Returns 0 if operation was successful.
-  int generate_content_encryption_key(
-    ffi.Pointer<ffi.Uint8> key,
-    int key_len,
-  ) {
-    return _generate_content_encryption_key(
-      key,
-      key_len,
-    );
-  }
-
-  late final _generate_content_encryption_keyPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.IntPtr Function(ffi.Pointer<ffi.Uint8>,
-              ffi.IntPtr)>>('generate_content_encryption_key');
-  late final _generate_content_encryption_key =
-      _generate_content_encryption_keyPtr
-          .asFunction<int Function(ffi.Pointer<ffi.Uint8>, int)>(isLeaf: true);
-
   /// Replace plaintext with chiphertext and nonce.
   ///
   /// Data buffer needs to have 28 bytes empty space at the end.
   ///
   /// The buffer can contain random data as it will be overwritten.
+  ///
+  /// The key must be 32 bytes (256 bits) long.
   ///
   /// Returns 0 if operation was successful.
   int encrypt_content(

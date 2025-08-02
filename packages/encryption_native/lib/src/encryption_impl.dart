@@ -91,7 +91,7 @@ class SecureStorageManager extends AppSingleton {
     final key = await _getStorageKeyForDbEncryptionKey(backgroundDb: backgroundDb);
     final value = await storage.read(key: key, iOptions: iosOptions);
     if (value == null) {
-      final newValue = await _generateDbEncryptionKey();
+      final newValue = _generateDbEncryptionKey();
       await storage.write(key: key, value: newValue, iOptions: iosOptions);
       final newValueReadingTest = await storage.read(key: key, iOptions: iosOptions);
       if (newValueReadingTest != newValue) {
@@ -106,13 +106,9 @@ class SecureStorageManager extends AppSingleton {
     }
   }
 
-  Future<String> _generateDbEncryptionKey() async {
-    final (key, result) = generate256BitSecretKey();
-    if (key == null) {
-      throw Exception("Failed to generate a key. Error: $result");
-    } else {
-      return base64.encode(key);
-    }
+  String _generateDbEncryptionKey() {
+    final key = generate256BitRandomValue();
+    return base64.encode(key);
   }
 }
 

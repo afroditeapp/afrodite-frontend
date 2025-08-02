@@ -8,23 +8,13 @@
 
 // Content encryption API
 
-// Generate a new content encryption key.
-//
-// The buffer for key generation must be 32 bytes long.
-//
-// The buffer can contain random data as it will be overwritten.
-//
-// Returns 0 if operation was successful.
-FFI_PLUGIN_EXPORT intptr_t generate_content_encryption_key(
-  uint8_t* key,
-  intptr_t key_len
-);
-
 // Replace plaintext with chiphertext and nonce.
 //
 // Data buffer needs to have 28 bytes empty space at the end.
 //
 // The buffer can contain random data as it will be overwritten.
+//
+// The key must be 32 bytes (256 bits) long.
 //
 // Returns 0 if operation was successful.
 FFI_PLUGIN_EXPORT intptr_t encrypt_content(
