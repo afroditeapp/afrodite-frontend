@@ -259,21 +259,22 @@ Widget logoAndAppNameAndSlogan(BuildContext context) {
   );
 }
 
-
 Future<DemoAccountCredentials?> openFirstDemoAccountLoginDialog(BuildContext context) {
+  final defaultUsername = kReleaseMode ? "" : "username";
+  final defaultPassword = kReleaseMode ? "" : "password";
+
   final usernameField = SimpleTextField(
     hintText: context.strings.login_screen_demo_account_username,
-    // TODO(prod): Change defaults to "username" and "password"
-    // TODO(prod): Use empty strings as default values for release builds
     // TODO(prod): After password login is implemented add boolean constant which
     //             can hide demo account login.
-    getInitialValue: () => context.read<DemoAccountLoginBloc>().state.username ?? "test",
+    getInitialValue: () => context.read<DemoAccountLoginBloc>().state.username ?? defaultUsername,
   );
   final passwordField = SimpleTextField(
     hintText: context.strings.login_screen_demo_account_password,
     obscureText: true,
-    getInitialValue: () => context.read<DemoAccountLoginBloc>().state.password ?? "tThlYqVHIiY=",
+    getInitialValue: () => context.read<DemoAccountLoginBloc>().state.password ?? defaultPassword,
   );
+
   final pageKey = PageKey();
   return MyNavigator.showDialog<DemoAccountCredentials?>(
     context: context,
