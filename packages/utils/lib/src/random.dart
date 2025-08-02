@@ -7,6 +7,11 @@ Uint8List generate256BitRandomValue() {
   return _generateRandomBytes(32);
 }
 
+/// 16 bytes
+Uint8List generate128BitRandomValue() {
+  return _generateRandomBytes(16);
+}
+
 Uint8List _generateRandomBytes(int byteCount) {
   final random = Random.secure();
   final data = Uint8List(byteCount);

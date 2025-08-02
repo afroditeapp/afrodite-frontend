@@ -5,7 +5,6 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'dart:math';
 
 import 'package:app/data/app_version.dart';
 import 'package:database/database.dart';
@@ -178,8 +177,7 @@ class ServerConnection {
         return;
       }
     } else {
-      final r = Random.secure();
-      final bytes = List<int>.generate(16, (_) => r.nextInt(255));
+      final bytes = generate128BitRandomValue();
       final key = base64.encode(bytes);
 
       final client = IOClient(HttpClient(context: await createSecurityContextForBackendConnection()));
