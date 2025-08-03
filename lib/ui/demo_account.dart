@@ -64,16 +64,7 @@ class _DemoAccountScreenContentState extends State<DemoAccountScreenContent> {
             ),
             MenuItemButton(
               child: Text(context.strings.demo_account_screen_new_account_action),
-              onPressed: () {
-                showConfirmDialogAdvanced(
-                  context: context,
-                  title: context.strings.demo_account_screen_new_account_dialog_title,
-                  details: context.strings.demo_account_screen_new_account_dialog_description,
-                  onSuccess: () => context
-                    .read<DemoAccountBloc>()
-                    .add(DoDemoAccountCreateNewAccount()),
-                );
-              }
+              onPressed: () => createDemoAccountAction(context),
             ),
             ...commonActionsWhenLoggedOut(context),
           ]),
@@ -81,6 +72,17 @@ class _DemoAccountScreenContentState extends State<DemoAccountScreenContent> {
       ),
     );
   }
+}
+
+void createDemoAccountAction(BuildContext context) {
+  showConfirmDialogAdvanced(
+      context: context,
+      title: context.strings.demo_account_screen_new_account_action,
+      details: context.strings.demo_account_screen_new_account_dialog_description,
+      onSuccess: () => context
+        .read<DemoAccountBloc>()
+        .add(DoDemoAccountCreateNewAccount()),
+    );
 }
 
 Widget content(BuildContext context) {
@@ -96,7 +98,16 @@ Widget content(BuildContext context) {
             itemBuilder: (context, index) {
               return ListTile(
                 title: Center(
-                    child: Text(context.strings.demo_account_screen_no_accounts_available)
+                    child: Column(
+                      children: [
+                        Text(context.strings.demo_account_screen_no_accounts_available),
+                        Padding(padding: EdgeInsets.only(top: 8)),
+                        ElevatedButton(
+                          onPressed: () => createDemoAccountAction(context),
+                          child: Text(context.strings.demo_account_screen_new_account_action),
+                        ),
+                      ],
+                    )
                   ),
               );
             },

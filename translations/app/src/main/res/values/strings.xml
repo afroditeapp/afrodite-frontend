@@ -176,7 +176,6 @@
     <!-- Demo account screen -->
     <string name="demo_account_screen_no_accounts_available" description="Text displayed when available accounts list is empty">No accounts available</string>
     <string name="demo_account_screen_new_account_action" description="Text for action which creates a new account">New account</string>
-    <string name="demo_account_screen_new_account_dialog_title" description="Dialog title text for action which creates a new account">New account</string>
     <string name="demo_account_screen_new_account_dialog_description" description="">Create new account and login to it?</string>
     <string name="demo_account_screen_login_to_account_dialog_title" description="Dialog title text for confirming login to some account">Login to account?</string>
     <string name="demo_account_screen_confirm_logout_dialog_title" description="Dialog title text for confirming logout from demo account">Logout?</string>

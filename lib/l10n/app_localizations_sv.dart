@@ -296,9 +296,6 @@ class AppLocalizationsSv extends AppLocalizations {
       'Create new account and login to it?';
 
   @override
-  String get demo_account_screen_new_account_dialog_title => 'New account';
-
-  @override
   String get demo_account_screen_no_accounts_available =>
       'No accounts available';
 

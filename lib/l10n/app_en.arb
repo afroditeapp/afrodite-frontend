@@ -339,10 +339,6 @@
   "@demo_account_screen_new_account_dialog_description": {
     "description": ""
   },
-  "demo_account_screen_new_account_dialog_title": "New account",
-  "@demo_account_screen_new_account_dialog_title": {
-    "description": "Dialog title text for action which creates a new account"
-  },
   "demo_account_screen_no_accounts_available": "No accounts available",
   "@demo_account_screen_no_accounts_available": {
     "description": "Text displayed when available accounts list is empty"

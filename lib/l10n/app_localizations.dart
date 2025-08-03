@@ -553,12 +553,6 @@ abstract class AppLocalizations {
   /// **'Create new account and login to it?'**
   String get demo_account_screen_new_account_dialog_description;
 
-  /// Dialog title text for action which creates a new account
-  ///
-  /// In en, this message translates to:
-  /// **'New account'**
-  String get demo_account_screen_new_account_dialog_title;
-
   /// Text displayed when available accounts list is empty
   ///
   /// In en, this message translates to:
