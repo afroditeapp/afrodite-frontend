@@ -34,11 +34,6 @@ import 'package:rxdart/rxdart.dart';
 
 final log = Logger("main");
 
-// TODO(prod): When there are two conversation notifications, opening those
-//             one by one, results in the second opened to below the first.
-// TODO(prod): When conversation is opened, remove only the related conversation
-//             notification.
-
 bool loggerInitDone = false;
 
 void initLogging() {
