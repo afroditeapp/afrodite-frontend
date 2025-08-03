@@ -153,20 +153,22 @@ class UpdateNotificationStatus {
     api.NotificationStatus newValue,
   ) async {
     final currentStatusJsonObject = await currentValueGetter();
-    final currentStatus = currentStatusJsonObject?.value;
+    final currentStatus = currentStatusJsonObject?.value ?? _defaultNotificationStatus();
     await updateValue(newValue);
-    return newValue.id.id != currentStatus?.id.id || newValue.viewed.id != currentStatus?.viewed.id;
+    return newValue.id.id != currentStatus.id.id || newValue.viewed.id != currentStatus.viewed.id;
   }
 
   Future<void> updateViewedId(
     api.NotificationIdViewed newValue,
   ) async {
     final currentStatusJsonObject = await currentValueGetter();
-    final currentStatus = currentStatusJsonObject?.value ?? api.NotificationStatus(
-        id: api.NotificationId(id: 0),
-        viewed: api.NotificationIdViewed(id: 0),
-      );
+    final currentStatus = currentStatusJsonObject?.value ?? _defaultNotificationStatus();
     currentStatus.viewed = newValue;
     await updateValue(currentStatus);
   }
+
+  api.NotificationStatus _defaultNotificationStatus() => api.NotificationStatus(
+    id: api.NotificationId(id: 0),
+    viewed: api.NotificationIdViewed(id: 0),
+  );
 }
