@@ -15,7 +15,7 @@ part 'my_profile.g.dart';
   tables: [
     schema.MyProfile,
     schema.ProfileLocation,
-    schema.ProfileInitialAgeInfo,
+    schema.InitialProfileAge,
   ]
 )
 class DaoReadMyProfile extends DatabaseAccessor<AccountForegroundDatabase> with _$DaoReadMyProfileMixin {
@@ -100,12 +100,12 @@ class DaoReadMyProfile extends DatabaseAccessor<AccountForegroundDatabase> with 
   }
 
   Stream<InitialAgeInfo?> watchInitialAgeInfo() {
-    return (select(profileInitialAgeInfo)
+    return (select(initialProfileAge)
       ..where((t) => t.id.equals(SingleRowTable.ID.value))
     )
       .map((r) {
-        final age = r.profileInitialAge;
-        final ageSetUnixTime = r.profileInitialAgeSetUnixTime;
+        final age = r.initialProfileAge;
+        final ageSetUnixTime = r.initialProfileAgeSetUnixTime;
 
         if (age != null && ageSetUnixTime != null) {
           return InitialAgeInfo(age, ageSetUnixTime);

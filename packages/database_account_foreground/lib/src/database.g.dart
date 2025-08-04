@@ -9947,12 +9947,12 @@ class ProfileFiltersCompanion extends UpdateCompanion<ProfileFilter> {
   }
 }
 
-class $ProfileInitialAgeInfoTable extends schema.ProfileInitialAgeInfo
-    with TableInfo<$ProfileInitialAgeInfoTable, ProfileInitialAgeInfoData> {
+class $InitialProfileAgeTable extends schema.InitialProfileAge
+    with TableInfo<$InitialProfileAgeTable, InitialProfileAgeData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $ProfileInitialAgeInfoTable(this.attachedDatabase, [this._alias]);
+  $InitialProfileAgeTable(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
@@ -9968,22 +9968,22 @@ class $ProfileInitialAgeInfoTable extends schema.ProfileInitialAgeInfo
   );
   @override
   late final GeneratedColumnWithTypeConverter<UtcDateTime?, int>
-  profileInitialAgeSetUnixTime =
+  initialProfileAgeSetUnixTime =
       GeneratedColumn<int>(
-        'profile_initial_age_set_unix_time',
+        'initial_profile_age_set_unix_time',
         aliasedName,
         true,
         type: DriftSqlType.int,
         requiredDuringInsert: false,
       ).withConverter<UtcDateTime?>(
-        $ProfileInitialAgeInfoTable.$converterprofileInitialAgeSetUnixTime,
+        $InitialProfileAgeTable.$converterinitialProfileAgeSetUnixTime,
       );
-  static const VerificationMeta _profileInitialAgeMeta = const VerificationMeta(
-    'profileInitialAge',
+  static const VerificationMeta _initialProfileAgeMeta = const VerificationMeta(
+    'initialProfileAge',
   );
   @override
-  late final GeneratedColumn<int> profileInitialAge = GeneratedColumn<int>(
-    'profile_initial_age',
+  late final GeneratedColumn<int> initialProfileAge = GeneratedColumn<int>(
+    'initial_profile_age',
     aliasedName,
     true,
     type: DriftSqlType.int,
@@ -9992,17 +9992,17 @@ class $ProfileInitialAgeInfoTable extends schema.ProfileInitialAgeInfo
   @override
   List<GeneratedColumn> get $columns => [
     id,
-    profileInitialAgeSetUnixTime,
-    profileInitialAge,
+    initialProfileAgeSetUnixTime,
+    initialProfileAge,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
-  static const String $name = 'profile_initial_age_info';
+  static const String $name = 'initial_profile_age';
   @override
   VerificationContext validateIntegrity(
-    Insertable<ProfileInitialAgeInfoData> instance, {
+    Insertable<InitialProfileAgeData> instance, {
     bool isInserting = false,
   }) {
     final context = VerificationContext();
@@ -10010,12 +10010,12 @@ class $ProfileInitialAgeInfoTable extends schema.ProfileInitialAgeInfo
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
     }
-    if (data.containsKey('profile_initial_age')) {
+    if (data.containsKey('initial_profile_age')) {
       context.handle(
-        _profileInitialAgeMeta,
-        profileInitialAge.isAcceptableOrUnknown(
-          data['profile_initial_age']!,
-          _profileInitialAgeMeta,
+        _initialProfileAgeMeta,
+        initialProfileAge.isAcceptableOrUnknown(
+          data['initial_profile_age']!,
+          _initialProfileAgeMeta,
         ),
       );
     }
@@ -10025,92 +10025,90 @@ class $ProfileInitialAgeInfoTable extends schema.ProfileInitialAgeInfo
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  ProfileInitialAgeInfoData map(
-    Map<String, dynamic> data, {
-    String? tablePrefix,
-  }) {
+  InitialProfileAgeData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return ProfileInitialAgeInfoData(
+    return InitialProfileAgeData(
       id: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
         data['${effectivePrefix}id'],
       )!,
-      profileInitialAgeSetUnixTime: $ProfileInitialAgeInfoTable
-          .$converterprofileInitialAgeSetUnixTime
+      initialProfileAgeSetUnixTime: $InitialProfileAgeTable
+          .$converterinitialProfileAgeSetUnixTime
           .fromSql(
             attachedDatabase.typeMapping.read(
               DriftSqlType.int,
-              data['${effectivePrefix}profile_initial_age_set_unix_time'],
+              data['${effectivePrefix}initial_profile_age_set_unix_time'],
             ),
           ),
-      profileInitialAge: attachedDatabase.typeMapping.read(
+      initialProfileAge: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
-        data['${effectivePrefix}profile_initial_age'],
+        data['${effectivePrefix}initial_profile_age'],
       ),
     );
   }
 
   @override
-  $ProfileInitialAgeInfoTable createAlias(String alias) {
-    return $ProfileInitialAgeInfoTable(attachedDatabase, alias);
+  $InitialProfileAgeTable createAlias(String alias) {
+    return $InitialProfileAgeTable(attachedDatabase, alias);
   }
 
   static TypeConverter<UtcDateTime?, int?>
-  $converterprofileInitialAgeSetUnixTime = const NullAwareTypeConverter.wrap(
+  $converterinitialProfileAgeSetUnixTime = const NullAwareTypeConverter.wrap(
     UtcDateTimeConverter(),
   );
 }
 
-class ProfileInitialAgeInfoData extends DataClass
-    implements Insertable<ProfileInitialAgeInfoData> {
+class InitialProfileAgeData extends DataClass
+    implements Insertable<InitialProfileAgeData> {
   final int id;
-  final UtcDateTime? profileInitialAgeSetUnixTime;
-  final int? profileInitialAge;
-  const ProfileInitialAgeInfoData({
+  final UtcDateTime? initialProfileAgeSetUnixTime;
+  final int? initialProfileAge;
+  const InitialProfileAgeData({
     required this.id,
-    this.profileInitialAgeSetUnixTime,
-    this.profileInitialAge,
+    this.initialProfileAgeSetUnixTime,
+    this.initialProfileAge,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
-    if (!nullToAbsent || profileInitialAgeSetUnixTime != null) {
-      map['profile_initial_age_set_unix_time'] = Variable<int>(
-        $ProfileInitialAgeInfoTable.$converterprofileInitialAgeSetUnixTime
-            .toSql(profileInitialAgeSetUnixTime),
+    if (!nullToAbsent || initialProfileAgeSetUnixTime != null) {
+      map['initial_profile_age_set_unix_time'] = Variable<int>(
+        $InitialProfileAgeTable.$converterinitialProfileAgeSetUnixTime.toSql(
+          initialProfileAgeSetUnixTime,
+        ),
       );
     }
-    if (!nullToAbsent || profileInitialAge != null) {
-      map['profile_initial_age'] = Variable<int>(profileInitialAge);
+    if (!nullToAbsent || initialProfileAge != null) {
+      map['initial_profile_age'] = Variable<int>(initialProfileAge);
     }
     return map;
   }
 
-  ProfileInitialAgeInfoCompanion toCompanion(bool nullToAbsent) {
-    return ProfileInitialAgeInfoCompanion(
+  InitialProfileAgeCompanion toCompanion(bool nullToAbsent) {
+    return InitialProfileAgeCompanion(
       id: Value(id),
-      profileInitialAgeSetUnixTime:
-          profileInitialAgeSetUnixTime == null && nullToAbsent
+      initialProfileAgeSetUnixTime:
+          initialProfileAgeSetUnixTime == null && nullToAbsent
           ? const Value.absent()
-          : Value(profileInitialAgeSetUnixTime),
-      profileInitialAge: profileInitialAge == null && nullToAbsent
+          : Value(initialProfileAgeSetUnixTime),
+      initialProfileAge: initialProfileAge == null && nullToAbsent
           ? const Value.absent()
-          : Value(profileInitialAge),
+          : Value(initialProfileAge),
     );
   }
 
-  factory ProfileInitialAgeInfoData.fromJson(
+  factory InitialProfileAgeData.fromJson(
     Map<String, dynamic> json, {
     ValueSerializer? serializer,
   }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return ProfileInitialAgeInfoData(
+    return InitialProfileAgeData(
       id: serializer.fromJson<int>(json['id']),
-      profileInitialAgeSetUnixTime: serializer.fromJson<UtcDateTime?>(
-        json['profileInitialAgeSetUnixTime'],
+      initialProfileAgeSetUnixTime: serializer.fromJson<UtcDateTime?>(
+        json['initialProfileAgeSetUnixTime'],
       ),
-      profileInitialAge: serializer.fromJson<int?>(json['profileInitialAge']),
+      initialProfileAge: serializer.fromJson<int?>(json['initialProfileAge']),
     );
   }
   @override
@@ -10118,103 +10116,101 @@ class ProfileInitialAgeInfoData extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
-      'profileInitialAgeSetUnixTime': serializer.toJson<UtcDateTime?>(
-        profileInitialAgeSetUnixTime,
+      'initialProfileAgeSetUnixTime': serializer.toJson<UtcDateTime?>(
+        initialProfileAgeSetUnixTime,
       ),
-      'profileInitialAge': serializer.toJson<int?>(profileInitialAge),
+      'initialProfileAge': serializer.toJson<int?>(initialProfileAge),
     };
   }
 
-  ProfileInitialAgeInfoData copyWith({
+  InitialProfileAgeData copyWith({
     int? id,
-    Value<UtcDateTime?> profileInitialAgeSetUnixTime = const Value.absent(),
-    Value<int?> profileInitialAge = const Value.absent(),
-  }) => ProfileInitialAgeInfoData(
+    Value<UtcDateTime?> initialProfileAgeSetUnixTime = const Value.absent(),
+    Value<int?> initialProfileAge = const Value.absent(),
+  }) => InitialProfileAgeData(
     id: id ?? this.id,
-    profileInitialAgeSetUnixTime: profileInitialAgeSetUnixTime.present
-        ? profileInitialAgeSetUnixTime.value
-        : this.profileInitialAgeSetUnixTime,
-    profileInitialAge: profileInitialAge.present
-        ? profileInitialAge.value
-        : this.profileInitialAge,
+    initialProfileAgeSetUnixTime: initialProfileAgeSetUnixTime.present
+        ? initialProfileAgeSetUnixTime.value
+        : this.initialProfileAgeSetUnixTime,
+    initialProfileAge: initialProfileAge.present
+        ? initialProfileAge.value
+        : this.initialProfileAge,
   );
-  ProfileInitialAgeInfoData copyWithCompanion(
-    ProfileInitialAgeInfoCompanion data,
-  ) {
-    return ProfileInitialAgeInfoData(
+  InitialProfileAgeData copyWithCompanion(InitialProfileAgeCompanion data) {
+    return InitialProfileAgeData(
       id: data.id.present ? data.id.value : this.id,
-      profileInitialAgeSetUnixTime: data.profileInitialAgeSetUnixTime.present
-          ? data.profileInitialAgeSetUnixTime.value
-          : this.profileInitialAgeSetUnixTime,
-      profileInitialAge: data.profileInitialAge.present
-          ? data.profileInitialAge.value
-          : this.profileInitialAge,
+      initialProfileAgeSetUnixTime: data.initialProfileAgeSetUnixTime.present
+          ? data.initialProfileAgeSetUnixTime.value
+          : this.initialProfileAgeSetUnixTime,
+      initialProfileAge: data.initialProfileAge.present
+          ? data.initialProfileAge.value
+          : this.initialProfileAge,
     );
   }
 
   @override
   String toString() {
-    return (StringBuffer('ProfileInitialAgeInfoData(')
+    return (StringBuffer('InitialProfileAgeData(')
           ..write('id: $id, ')
           ..write(
-            'profileInitialAgeSetUnixTime: $profileInitialAgeSetUnixTime, ',
+            'initialProfileAgeSetUnixTime: $initialProfileAgeSetUnixTime, ',
           )
-          ..write('profileInitialAge: $profileInitialAge')
+          ..write('initialProfileAge: $initialProfileAge')
           ..write(')'))
         .toString();
   }
 
   @override
   int get hashCode =>
-      Object.hash(id, profileInitialAgeSetUnixTime, profileInitialAge);
+      Object.hash(id, initialProfileAgeSetUnixTime, initialProfileAge);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is ProfileInitialAgeInfoData &&
+      (other is InitialProfileAgeData &&
           other.id == this.id &&
-          other.profileInitialAgeSetUnixTime ==
-              this.profileInitialAgeSetUnixTime &&
-          other.profileInitialAge == this.profileInitialAge);
+          other.initialProfileAgeSetUnixTime ==
+              this.initialProfileAgeSetUnixTime &&
+          other.initialProfileAge == this.initialProfileAge);
 }
 
-class ProfileInitialAgeInfoCompanion
-    extends UpdateCompanion<ProfileInitialAgeInfoData> {
+class InitialProfileAgeCompanion
+    extends UpdateCompanion<InitialProfileAgeData> {
   final Value<int> id;
-  final Value<UtcDateTime?> profileInitialAgeSetUnixTime;
-  final Value<int?> profileInitialAge;
-  const ProfileInitialAgeInfoCompanion({
+  final Value<UtcDateTime?> initialProfileAgeSetUnixTime;
+  final Value<int?> initialProfileAge;
+  const InitialProfileAgeCompanion({
     this.id = const Value.absent(),
-    this.profileInitialAgeSetUnixTime = const Value.absent(),
-    this.profileInitialAge = const Value.absent(),
+    this.initialProfileAgeSetUnixTime = const Value.absent(),
+    this.initialProfileAge = const Value.absent(),
   });
-  ProfileInitialAgeInfoCompanion.insert({
+  InitialProfileAgeCompanion.insert({
     this.id = const Value.absent(),
-    this.profileInitialAgeSetUnixTime = const Value.absent(),
-    this.profileInitialAge = const Value.absent(),
+    this.initialProfileAgeSetUnixTime = const Value.absent(),
+    this.initialProfileAge = const Value.absent(),
   });
-  static Insertable<ProfileInitialAgeInfoData> custom({
+  static Insertable<InitialProfileAgeData> custom({
     Expression<int>? id,
-    Expression<int>? profileInitialAgeSetUnixTime,
-    Expression<int>? profileInitialAge,
+    Expression<int>? initialProfileAgeSetUnixTime,
+    Expression<int>? initialProfileAge,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
-      if (profileInitialAgeSetUnixTime != null)
-        'profile_initial_age_set_unix_time': profileInitialAgeSetUnixTime,
-      if (profileInitialAge != null) 'profile_initial_age': profileInitialAge,
+      if (initialProfileAgeSetUnixTime != null)
+        'initial_profile_age_set_unix_time': initialProfileAgeSetUnixTime,
+      if (initialProfileAge != null) 'initial_profile_age': initialProfileAge,
     });
   }
 
-  ProfileInitialAgeInfoCompanion copyWith({
+  InitialProfileAgeCompanion copyWith({
     Value<int>? id,
-    Value<UtcDateTime?>? profileInitialAgeSetUnixTime,
-    Value<int?>? profileInitialAge,
+    Value<UtcDateTime?>? initialProfileAgeSetUnixTime,
+    Value<int?>? initialProfileAge,
   }) {
-    return ProfileInitialAgeInfoCompanion(
+    return InitialProfileAgeCompanion(
       id: id ?? this.id,
-      profileInitialAgeSetUnixTime:
-          profileInitialAgeSetUnixTime ?? this.profileInitialAgeSetUnixTime,
-      profileInitialAge: profileInitialAge ?? this.profileInitialAge,
+      initialProfileAgeSetUnixTime:
+          initialProfileAgeSetUnixTime ?? this.initialProfileAgeSetUnixTime,
+      initialProfileAge: initialProfileAge ?? this.initialProfileAge,
     );
   }
 
@@ -10224,26 +10220,27 @@ class ProfileInitialAgeInfoCompanion
     if (id.present) {
       map['id'] = Variable<int>(id.value);
     }
-    if (profileInitialAgeSetUnixTime.present) {
-      map['profile_initial_age_set_unix_time'] = Variable<int>(
-        $ProfileInitialAgeInfoTable.$converterprofileInitialAgeSetUnixTime
-            .toSql(profileInitialAgeSetUnixTime.value),
+    if (initialProfileAgeSetUnixTime.present) {
+      map['initial_profile_age_set_unix_time'] = Variable<int>(
+        $InitialProfileAgeTable.$converterinitialProfileAgeSetUnixTime.toSql(
+          initialProfileAgeSetUnixTime.value,
+        ),
       );
     }
-    if (profileInitialAge.present) {
-      map['profile_initial_age'] = Variable<int>(profileInitialAge.value);
+    if (initialProfileAge.present) {
+      map['initial_profile_age'] = Variable<int>(initialProfileAge.value);
     }
     return map;
   }
 
   @override
   String toString() {
-    return (StringBuffer('ProfileInitialAgeInfoCompanion(')
+    return (StringBuffer('InitialProfileAgeCompanion(')
           ..write('id: $id, ')
           ..write(
-            'profileInitialAgeSetUnixTime: $profileInitialAgeSetUnixTime, ',
+            'initialProfileAgeSetUnixTime: $initialProfileAgeSetUnixTime, ',
           )
-          ..write('profileInitialAge: $profileInitialAge')
+          ..write('initialProfileAge: $initialProfileAge')
           ..write(')'))
         .toString();
   }
@@ -13131,8 +13128,8 @@ abstract class _$AccountForegroundDatabase extends GeneratedDatabase {
   late final $ProfileSearchGroupsTable profileSearchGroups =
       $ProfileSearchGroupsTable(this);
   late final $ProfileFiltersTable profileFilters = $ProfileFiltersTable(this);
-  late final $ProfileInitialAgeInfoTable profileInitialAgeInfo =
-      $ProfileInitialAgeInfoTable(this);
+  late final $InitialProfileAgeTable initialProfileAge =
+      $InitialProfileAgeTable(this);
   late final $ProfileStatesTable profileStates = $ProfileStatesTable(this);
   late final $ProfileLocationTable profileLocation = $ProfileLocationTable(
     this,
@@ -13258,7 +13255,7 @@ abstract class _$AccountForegroundDatabase extends GeneratedDatabase {
     profileSearchAgeRange,
     profileSearchGroups,
     profileFilters,
-    profileInitialAgeInfo,
+    initialProfileAge,
     profileStates,
     profileLocation,
     myKeyPair,

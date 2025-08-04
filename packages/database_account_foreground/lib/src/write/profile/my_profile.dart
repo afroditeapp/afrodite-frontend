@@ -14,7 +14,7 @@ part 'my_profile.g.dart';
   tables: [
     schema.MyProfile,
     schema.ProfileLocation,
-    schema.ProfileInitialAgeInfo,
+    schema.InitialProfileAge,
   ]
 )
 class DaoWriteMyProfile extends DatabaseAccessor<AccountForegroundDatabase> with _$DaoWriteMyProfileMixin {
@@ -62,11 +62,11 @@ class DaoWriteMyProfile extends DatabaseAccessor<AccountForegroundDatabase> with
     required api.AcceptedProfileAges info,
   }) async {
     final time = UtcDateTime.fromUnixEpochMilliseconds(info.profileInitialAgeSetUnixTime.ut * 1000);
-    await into(profileInitialAgeInfo).insertOnConflictUpdate(
-      ProfileInitialAgeInfoCompanion.insert(
+    await into(initialProfileAge).insertOnConflictUpdate(
+      InitialProfileAgeCompanion.insert(
         id: SingleRowTable.ID,
-        profileInitialAge: Value(info.profileInitialAge),
-        profileInitialAgeSetUnixTime: Value(time),
+        initialProfileAge: Value(info.profileInitialAge),
+        initialProfileAgeSetUnixTime: Value(time),
       ),
     );
   }

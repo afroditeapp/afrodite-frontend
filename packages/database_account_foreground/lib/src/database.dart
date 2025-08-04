@@ -72,7 +72,7 @@ part 'database.g.dart';
     schema.ProfileSearchAgeRange,
     schema.ProfileSearchGroups,
     schema.ProfileFilters,
-    schema.ProfileInitialAgeInfo,
+    schema.InitialProfileAge,
     schema.ProfileStates,
     schema.ProfileLocation,
     // Chat

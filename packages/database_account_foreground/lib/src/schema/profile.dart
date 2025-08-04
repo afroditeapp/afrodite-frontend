@@ -41,9 +41,9 @@ class ProfileSearchAgeRange extends SingleRowTable {
   IntColumn get maxAge => integer().nullable()();
 }
 
-class ProfileInitialAgeInfo extends SingleRowTable {
-  IntColumn get profileInitialAgeSetUnixTime => integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
-  IntColumn get profileInitialAge => integer().nullable()();
+class InitialProfileAge extends SingleRowTable {
+  IntColumn get initialProfileAgeSetUnixTime => integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
+  IntColumn get initialProfileAge => integer().nullable()();
 }
 
 class Profile extends Table {

@@ -6,6 +6,6 @@ part of 'my_profile.dart';
 mixin _$DaoReadMyProfileMixin on DatabaseAccessor<AccountForegroundDatabase> {
   $MyProfileTable get myProfile => attachedDatabase.myProfile;
   $ProfileLocationTable get profileLocation => attachedDatabase.profileLocation;
-  $ProfileInitialAgeInfoTable get profileInitialAgeInfo =>
-      attachedDatabase.profileInitialAgeInfo;
+  $InitialProfileAgeTable get initialProfileAge =>
+      attachedDatabase.initialProfileAge;
 }
