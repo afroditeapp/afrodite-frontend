@@ -22,9 +22,9 @@ import 'package:database/database.dart';
 import 'package:app/database/account_database_manager.dart';
 import 'package:app/localizations.dart';
 import 'package:app/logic/app/bottom_navigation_state.dart';
-import 'package:app/logic/profile/profile_filtering_settings.dart';
+import 'package:app/logic/profile/profile_filters.dart';
 import 'package:app/model/freezed/logic/main/bottom_navigation_state.dart';
-import 'package:app/model/freezed/logic/profile/profile_filtering_settings.dart';
+import 'package:app/model/freezed/logic/profile/profile_filters.dart';
 import 'package:app/ui/normal/profiles/view_profile.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:app/ui_utils/common_update_logic.dart';
@@ -39,8 +39,8 @@ import 'package:utils/utils.dart';
 var log = Logger("ProfileGrid");
 
 class ProfileGrid extends StatefulWidget {
-  final ProfileFilteringSettingsBloc filteringSettingsBloc;
-  const ProfileGrid({required this.filteringSettingsBloc, super.key});
+  final ProfileFiltersBloc profileFiltersBloc;
+  const ProfileGrid({required this.profileFiltersBloc, super.key});
 
   @override
   State<ProfileGrid> createState() => _ProfileGridState();
@@ -76,7 +76,7 @@ class _ProfileGridState extends State<ProfileGrid> {
 
     _gridLogic.init();
 
-    if (widget.filteringSettingsBloc.state.showOnlyFavorites) {
+    if (widget.profileFiltersBloc.state.showOnlyFavorites) {
       _mainProfilesViewIterator.reset(ModeFavorites());
     } else {
       _mainProfilesViewIterator.reset(ModePublicProfiles(
@@ -129,7 +129,7 @@ class _ProfileGridState extends State<ProfileGrid> {
         removeAccountIdFromList(event.profile);
       case ProfileFavoriteStatusChange(): {
         // Remove profile if favorites filter is enabled and favorite status is changed to false
-        if (event.isFavorite == false && widget.filteringSettingsBloc.state.showOnlyFavorites) {
+        if (event.isFavorite == false && widget.profileFiltersBloc.state.showOnlyFavorites) {
           updatePagingState((s) => s.filterItems((item) => item.profile.entry.accountId != event.profile));
         }
       }
@@ -199,7 +199,7 @@ class _ProfileGridState extends State<ProfileGrid> {
       child: BlocBuilder<UiSettingsBloc, UiSettingsData>(
         buildWhen: (previous, current) => previous.gridSettings != current.gridSettings,
         builder: (context, uiSettings) {
-          return BlocBuilder<ProfileFilteringSettingsBloc, ProfileFilteringSettingsData>(
+          return BlocBuilder<ProfileFiltersBloc, ProfileFiltersData>(
             builder: (context, state) {
               if (state.updateState is UpdateIdle && !state.unsavedChanges()) {
                 return showGrid(context, uiSettings.gridSettings, _pagingState);
@@ -256,7 +256,7 @@ class _ProfileGridState extends State<ProfileGrid> {
           return profileEntryWidgetStream(item.profile, item.initialProfileAction, accountDb, settings);
         },
         noItemsFoundIndicatorBuilder: (context) {
-          final filterState = context.read<ProfileFilteringSettingsBloc>().state;
+          final filterState = context.read<ProfileFiltersBloc>().state;
           final String descriptionText;
           if (filterState.showOnlyFavorites) {
             descriptionText =

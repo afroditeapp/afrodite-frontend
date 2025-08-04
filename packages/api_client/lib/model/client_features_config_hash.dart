@@ -10,36 +10,36 @@
 
 part of openapi.api;
 
-class DemoModeToken {
-  /// Returns a new [DemoModeToken] instance.
-  DemoModeToken({
-    required this.token,
+class ClientFeaturesConfigHash {
+  /// Returns a new [ClientFeaturesConfigHash] instance.
+  ClientFeaturesConfigHash({
+    required this.h,
   });
 
-  String token;
+  String h;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is DemoModeToken &&
-    other.token == token;
+  bool operator ==(Object other) => identical(this, other) || other is ClientFeaturesConfigHash &&
+    other.h == h;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (token.hashCode);
+    (h.hashCode);
 
   @override
-  String toString() => 'DemoModeToken[token=$token]';
+  String toString() => 'ClientFeaturesConfigHash[h=$h]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'token'] = this.token;
+      json[r'h'] = this.h;
     return json;
   }
 
-  /// Returns a new [DemoModeToken] instance and imports its values from
+  /// Returns a new [ClientFeaturesConfigHash] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static DemoModeToken? fromJson(dynamic value) {
+  static ClientFeaturesConfigHash? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -48,24 +48,24 @@ class DemoModeToken {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "DemoModeToken[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "DemoModeToken[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "ClientFeaturesConfigHash[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "ClientFeaturesConfigHash[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return DemoModeToken(
-        token: mapValueOfType<String>(json, r'token')!,
+      return ClientFeaturesConfigHash(
+        h: mapValueOfType<String>(json, r'h')!,
       );
     }
     return null;
   }
 
-  static List<DemoModeToken> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <DemoModeToken>[];
+  static List<ClientFeaturesConfigHash> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <ClientFeaturesConfigHash>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = DemoModeToken.fromJson(row);
+        final value = ClientFeaturesConfigHash.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -74,12 +74,12 @@ class DemoModeToken {
     return result.toList(growable: growable);
   }
 
-  static Map<String, DemoModeToken> mapFromJson(dynamic json) {
-    final map = <String, DemoModeToken>{};
+  static Map<String, ClientFeaturesConfigHash> mapFromJson(dynamic json) {
+    final map = <String, ClientFeaturesConfigHash>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = DemoModeToken.fromJson(entry.value);
+        final value = ClientFeaturesConfigHash.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -88,14 +88,14 @@ class DemoModeToken {
     return map;
   }
 
-  // maps a json object with a list of DemoModeToken-objects as value to a dart map
-  static Map<String, List<DemoModeToken>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<DemoModeToken>>{};
+  // maps a json object with a list of ClientFeaturesConfigHash-objects as value to a dart map
+  static Map<String, List<ClientFeaturesConfigHash>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<ClientFeaturesConfigHash>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = DemoModeToken.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = ClientFeaturesConfigHash.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;
@@ -103,7 +103,7 @@ class DemoModeToken {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'token',
+    'h',
   };
 }
 

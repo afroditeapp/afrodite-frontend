@@ -10,43 +10,36 @@
 
 part of openapi.api;
 
-class AttributeIdAndHash {
-  /// Returns a new [AttributeIdAndHash] instance.
-  AttributeIdAndHash({
+class AttributeHash {
+  /// Returns a new [AttributeHash] instance.
+  AttributeHash({
     required this.h,
-    required this.id,
   });
 
-  ProfileAttributeHash h;
-
-  /// Minimum value: 0
-  int id;
+  String h;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is AttributeIdAndHash &&
-    other.h == h &&
-    other.id == id;
+  bool operator ==(Object other) => identical(this, other) || other is AttributeHash &&
+    other.h == h;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (h.hashCode) +
-    (id.hashCode);
+    (h.hashCode);
 
   @override
-  String toString() => 'AttributeIdAndHash[h=$h, id=$id]';
+  String toString() => 'AttributeHash[h=$h]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'h'] = this.h;
-      json[r'id'] = this.id;
     return json;
   }
 
-  /// Returns a new [AttributeIdAndHash] instance and imports its values from
+  /// Returns a new [AttributeHash] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static AttributeIdAndHash? fromJson(dynamic value) {
+  static AttributeHash? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -55,25 +48,24 @@ class AttributeIdAndHash {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "AttributeIdAndHash[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "AttributeIdAndHash[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "AttributeHash[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "AttributeHash[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return AttributeIdAndHash(
-        h: ProfileAttributeHash.fromJson(json[r'h'])!,
-        id: mapValueOfType<int>(json, r'id')!,
+      return AttributeHash(
+        h: mapValueOfType<String>(json, r'h')!,
       );
     }
     return null;
   }
 
-  static List<AttributeIdAndHash> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <AttributeIdAndHash>[];
+  static List<AttributeHash> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <AttributeHash>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = AttributeIdAndHash.fromJson(row);
+        final value = AttributeHash.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -82,12 +74,12 @@ class AttributeIdAndHash {
     return result.toList(growable: growable);
   }
 
-  static Map<String, AttributeIdAndHash> mapFromJson(dynamic json) {
-    final map = <String, AttributeIdAndHash>{};
+  static Map<String, AttributeHash> mapFromJson(dynamic json) {
+    final map = <String, AttributeHash>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = AttributeIdAndHash.fromJson(entry.value);
+        final value = AttributeHash.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -96,14 +88,14 @@ class AttributeIdAndHash {
     return map;
   }
 
-  // maps a json object with a list of AttributeIdAndHash-objects as value to a dart map
-  static Map<String, List<AttributeIdAndHash>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<AttributeIdAndHash>>{};
+  // maps a json object with a list of AttributeHash-objects as value to a dart map
+  static Map<String, List<AttributeHash>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<AttributeHash>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = AttributeIdAndHash.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = AttributeHash.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;
@@ -112,7 +104,6 @@ class AttributeIdAndHash {
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
     'h',
-    'id',
   };
 }
 

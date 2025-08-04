@@ -13,27 +13,27 @@ part of openapi.api;
 class AccessToken {
   /// Returns a new [AccessToken] instance.
   AccessToken({
-    required this.accessToken,
+    required this.token,
   });
 
   /// API token which server generates.
-  String accessToken;
+  String token;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is AccessToken &&
-    other.accessToken == accessToken;
+    other.token == token;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (accessToken.hashCode);
+    (token.hashCode);
 
   @override
-  String toString() => 'AccessToken[accessToken=$accessToken]';
+  String toString() => 'AccessToken[token=$token]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'access_token'] = this.accessToken;
+      json[r'token'] = this.token;
     return json;
   }
 
@@ -56,7 +56,7 @@ class AccessToken {
       }());
 
       return AccessToken(
-        accessToken: mapValueOfType<String>(json, r'access_token')!,
+        token: mapValueOfType<String>(json, r'token')!,
       );
     }
     return null;
@@ -104,7 +104,7 @@ class AccessToken {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'access_token',
+    'token',
   };
 }
 

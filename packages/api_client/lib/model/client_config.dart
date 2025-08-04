@@ -20,13 +20,13 @@ class ClientConfig {
   });
 
   /// Account component specific config. It is also possible that client features are not configured.
-  ClientFeaturesFileHash? clientFeatures;
+  ClientFeaturesConfigHash? clientFeatures;
 
   /// Account component specific config. It is also possible that custom reports are not configured.
-  CustomReportsFileHash? customReports;
+  CustomReportsConfigHash? customReports;
 
   /// Profile component specific config. It is also possible that attributes are not configured.
-  ProfileAttributeInfo? profileAttributes;
+  PartialProfileAttributesConfig? profileAttributes;
 
   ClientConfigSyncVersion syncVersion;
 
@@ -88,9 +88,9 @@ class ClientConfig {
       }());
 
       return ClientConfig(
-        clientFeatures: ClientFeaturesFileHash.fromJson(json[r'client_features']),
-        customReports: CustomReportsFileHash.fromJson(json[r'custom_reports']),
-        profileAttributes: ProfileAttributeInfo.fromJson(json[r'profile_attributes']),
+        clientFeatures: ClientFeaturesConfigHash.fromJson(json[r'client_features']),
+        customReports: CustomReportsConfigHash.fromJson(json[r'custom_reports']),
+        profileAttributes: PartialProfileAttributesConfig.fromJson(json[r'profile_attributes']),
         syncVersion: ClientConfigSyncVersion.fromJson(json[r'sync_version'])!,
       );
     }

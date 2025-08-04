@@ -10,36 +10,42 @@
 
 part of openapi.api;
 
-class ProfileAttributeQuery {
-  /// Returns a new [ProfileAttributeQuery] instance.
-  ProfileAttributeQuery({
+class IpCountryStatistics {
+  /// Returns a new [IpCountryStatistics] instance.
+  IpCountryStatistics({
+    required this.country,
     this.values = const [],
   });
 
-  List<int> values;
+  String country;
+
+  List<IpCountryStatisticsValue> values;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is ProfileAttributeQuery &&
+  bool operator ==(Object other) => identical(this, other) || other is IpCountryStatistics &&
+    other.country == country &&
     _deepEquality.equals(other.values, values);
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
+    (country.hashCode) +
     (values.hashCode);
 
   @override
-  String toString() => 'ProfileAttributeQuery[values=$values]';
+  String toString() => 'IpCountryStatistics[country=$country, values=$values]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
+      json[r'country'] = this.country;
       json[r'values'] = this.values;
     return json;
   }
 
-  /// Returns a new [ProfileAttributeQuery] instance and imports its values from
+  /// Returns a new [IpCountryStatistics] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static ProfileAttributeQuery? fromJson(dynamic value) {
+  static IpCountryStatistics? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -48,26 +54,25 @@ class ProfileAttributeQuery {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "ProfileAttributeQuery[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "ProfileAttributeQuery[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "IpCountryStatistics[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "IpCountryStatistics[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return ProfileAttributeQuery(
-        values: json[r'values'] is Iterable
-            ? (json[r'values'] as Iterable).cast<int>().toList(growable: false)
-            : const [],
+      return IpCountryStatistics(
+        country: mapValueOfType<String>(json, r'country')!,
+        values: IpCountryStatisticsValue.listFromJson(json[r'values']),
       );
     }
     return null;
   }
 
-  static List<ProfileAttributeQuery> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <ProfileAttributeQuery>[];
+  static List<IpCountryStatistics> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <IpCountryStatistics>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = ProfileAttributeQuery.fromJson(row);
+        final value = IpCountryStatistics.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -76,12 +81,12 @@ class ProfileAttributeQuery {
     return result.toList(growable: growable);
   }
 
-  static Map<String, ProfileAttributeQuery> mapFromJson(dynamic json) {
-    final map = <String, ProfileAttributeQuery>{};
+  static Map<String, IpCountryStatistics> mapFromJson(dynamic json) {
+    final map = <String, IpCountryStatistics>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = ProfileAttributeQuery.fromJson(entry.value);
+        final value = IpCountryStatistics.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -90,14 +95,14 @@ class ProfileAttributeQuery {
     return map;
   }
 
-  // maps a json object with a list of ProfileAttributeQuery-objects as value to a dart map
-  static Map<String, List<ProfileAttributeQuery>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<ProfileAttributeQuery>>{};
+  // maps a json object with a list of IpCountryStatistics-objects as value to a dart map
+  static Map<String, List<IpCountryStatistics>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<IpCountryStatistics>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = ProfileAttributeQuery.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = IpCountryStatistics.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;
@@ -105,6 +110,7 @@ class ProfileAttributeQuery {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
+    'country',
     'values',
   };
 }

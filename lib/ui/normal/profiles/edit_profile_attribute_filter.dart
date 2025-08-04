@@ -1,7 +1,7 @@
 
 
-import 'package:app/logic/profile/profile_filtering_settings.dart';
-import 'package:app/model/freezed/logic/profile/profile_filtering_settings.dart';
+import 'package:app/logic/profile/profile_filters.dart';
+import 'package:app/model/freezed/logic/profile/profile_filters.dart';
 import 'package:app/ui_utils/app_bar/menu_actions.dart';
 import 'package:app/ui_utils/attribute/filter.dart';
 import 'package:app/ui_utils/attribute/widgets/select_value.dart';
@@ -45,9 +45,9 @@ class _EditProfileAttributeFilterScreenState extends State<EditProfileAttributeF
         searchHintText: context.strings.edit_attribute_filter_value_screen_search_placeholder_text,
         actions: [
           menuActions([
-            BlocBuilder<ProfileFilteringSettingsBloc, ProfileFilteringSettingsData>(
+            BlocBuilder<ProfileFiltersBloc, ProfileFiltersData>(
               builder: (context, state) {
-                final bloc = context.read<ProfileFilteringSettingsBloc>();
+                final bloc = context.read<ProfileFiltersBloc>();
                 if (state.showAdvancedFilters) {
                   return MenuItemButton(
                     child: Text(context.strings.edit_attribute_filter_value_screen_show_basic_filters_action),
@@ -81,7 +81,7 @@ class _EditProfileAttributeFilterScreenState extends State<EditProfileAttributeF
       filterValue = null;
     }
 
-    return BlocBuilder<ProfileFilteringSettingsBloc, ProfileFilteringSettingsData>(
+    return BlocBuilder<ProfileFiltersBloc, ProfileFiltersData>(
       buildWhen: (previous, current) => previous.showAdvancedFilters != current.showAdvancedFilters,
       builder: (context, state) {
         return SelectAttributeValue(
@@ -92,7 +92,7 @@ class _EditProfileAttributeFilterScreenState extends State<EditProfileAttributeF
             unwanted: widget.a.unwanted.copy(),
           ),
           onChanged: (state) =>
-            context.read<ProfileFilteringSettingsBloc>().add(SetAttributeFilterValueLists(widget.a.attribute(), state.selected, state.unwanted)),
+            context.read<ProfileFiltersBloc>().add(SetAttributeFilterValueLists(widget.a.attribute(), state.selected, state.unwanted)),
           firstListItem: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -101,7 +101,7 @@ class _EditProfileAttributeFilterScreenState extends State<EditProfileAttributeF
               EditAttributeFilterSettings(
                 a: widget.a,
                 onChanged: (settings) =>
-                  context.read<ProfileFilteringSettingsBloc>().add(SetAttributeFilterSettings(widget.a.attribute(), settings)),
+                  context.read<ProfileFiltersBloc>().add(SetAttributeFilterSettings(widget.a.attribute(), settings)),
                 showAdvancedFilters: state.showAdvancedFilters,
               )
             ],

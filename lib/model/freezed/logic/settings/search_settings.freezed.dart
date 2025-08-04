@@ -31,8 +31,8 @@ mixin _$SearchSettingsData {
   int? get editedMaxAge => throw _privateConstructorErrorSearchSettingsData;
   GenderSearchSettingsAll? get editedGenderSearchSettingsAll => throw _privateConstructorErrorSearchSettingsData;
   Gender? get editedGender => throw _privateConstructorErrorSearchSettingsData;
-  bool? get editedSearchDistance => throw _privateConstructorErrorSearchSettingsData;
-  bool? get editedSearchFilters => throw _privateConstructorErrorSearchSettingsData;
+  bool? get editedSearchDistanceFilters => throw _privateConstructorErrorSearchSettingsData;
+  bool? get editedSearchAttributeFilters => throw _privateConstructorErrorSearchSettingsData;
   bool? get editedSearchNewProfiles => throw _privateConstructorErrorSearchSettingsData;
   int? get editedSearchWeekdays => throw _privateConstructorErrorSearchSettingsData;
 
@@ -47,8 +47,8 @@ mixin _$SearchSettingsData {
     int? editedMaxAge,
     GenderSearchSettingsAll? editedGenderSearchSettingsAll,
     Gender? editedGender,
-    bool? editedSearchDistance,
-    bool? editedSearchFilters,
+    bool? editedSearchDistanceFilters,
+    bool? editedSearchAttributeFilters,
     bool? editedSearchNewProfiles,
     int? editedSearchWeekdays,
   }) => throw _privateConstructorErrorSearchSettingsData;
@@ -67,8 +67,8 @@ abstract class _SearchSettingsData extends SearchSettingsData {
     int? editedMaxAge,
     GenderSearchSettingsAll? editedGenderSearchSettingsAll,
     Gender? editedGender,
-    bool? editedSearchDistance,
-    bool? editedSearchFilters,
+    bool? editedSearchDistanceFilters,
+    bool? editedSearchAttributeFilters,
     bool? editedSearchNewProfiles,
     int? editedSearchWeekdays,
   }) = _$SearchSettingsDataImpl;
@@ -93,8 +93,8 @@ class _$SearchSettingsDataImpl extends _SearchSettingsData with DiagnosticableTr
     this.editedMaxAge,
     this.editedGenderSearchSettingsAll,
     this.editedGender,
-    this.editedSearchDistance,
-    this.editedSearchFilters,
+    this.editedSearchDistanceFilters,
+    this.editedSearchAttributeFilters,
     this.editedSearchNewProfiles,
     this.editedSearchWeekdays,
   }) : super._();
@@ -120,9 +120,9 @@ class _$SearchSettingsDataImpl extends _SearchSettingsData with DiagnosticableTr
   @override
   final Gender? editedGender;
   @override
-  final bool? editedSearchDistance;
+  final bool? editedSearchDistanceFilters;
   @override
-  final bool? editedSearchFilters;
+  final bool? editedSearchAttributeFilters;
   @override
   final bool? editedSearchNewProfiles;
   @override
@@ -130,7 +130,7 @@ class _$SearchSettingsDataImpl extends _SearchSettingsData with DiagnosticableTr
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'SearchSettingsData(updateState: $updateState, minAge: $minAge, maxAge: $maxAge, genderSearchSettingsAll: $genderSearchSettingsAll, gender: $gender, profileSettings: $profileSettings, editedMinAge: $editedMinAge, editedMaxAge: $editedMaxAge, editedGenderSearchSettingsAll: $editedGenderSearchSettingsAll, editedGender: $editedGender, editedSearchDistance: $editedSearchDistance, editedSearchFilters: $editedSearchFilters, editedSearchNewProfiles: $editedSearchNewProfiles, editedSearchWeekdays: $editedSearchWeekdays)';
+    return 'SearchSettingsData(updateState: $updateState, minAge: $minAge, maxAge: $maxAge, genderSearchSettingsAll: $genderSearchSettingsAll, gender: $gender, profileSettings: $profileSettings, editedMinAge: $editedMinAge, editedMaxAge: $editedMaxAge, editedGenderSearchSettingsAll: $editedGenderSearchSettingsAll, editedGender: $editedGender, editedSearchDistanceFilters: $editedSearchDistanceFilters, editedSearchAttributeFilters: $editedSearchAttributeFilters, editedSearchNewProfiles: $editedSearchNewProfiles, editedSearchWeekdays: $editedSearchWeekdays)';
   }
 
   @override
@@ -148,8 +148,8 @@ class _$SearchSettingsDataImpl extends _SearchSettingsData with DiagnosticableTr
       ..add(DiagnosticsProperty('editedMaxAge', editedMaxAge))
       ..add(DiagnosticsProperty('editedGenderSearchSettingsAll', editedGenderSearchSettingsAll))
       ..add(DiagnosticsProperty('editedGender', editedGender))
-      ..add(DiagnosticsProperty('editedSearchDistance', editedSearchDistance))
-      ..add(DiagnosticsProperty('editedSearchFilters', editedSearchFilters))
+      ..add(DiagnosticsProperty('editedSearchDistanceFilters', editedSearchDistanceFilters))
+      ..add(DiagnosticsProperty('editedSearchAttributeFilters', editedSearchAttributeFilters))
       ..add(DiagnosticsProperty('editedSearchNewProfiles', editedSearchNewProfiles))
       ..add(DiagnosticsProperty('editedSearchWeekdays', editedSearchWeekdays));
   }
@@ -179,10 +179,10 @@ class _$SearchSettingsDataImpl extends _SearchSettingsData with DiagnosticableTr
           other.editedGenderSearchSettingsAll == editedGenderSearchSettingsAll) &&
         (identical(other.editedGender, editedGender) ||
           other.editedGender == editedGender) &&
-        (identical(other.editedSearchDistance, editedSearchDistance) ||
-          other.editedSearchDistance == editedSearchDistance) &&
-        (identical(other.editedSearchFilters, editedSearchFilters) ||
-          other.editedSearchFilters == editedSearchFilters) &&
+        (identical(other.editedSearchDistanceFilters, editedSearchDistanceFilters) ||
+          other.editedSearchDistanceFilters == editedSearchDistanceFilters) &&
+        (identical(other.editedSearchAttributeFilters, editedSearchAttributeFilters) ||
+          other.editedSearchAttributeFilters == editedSearchAttributeFilters) &&
         (identical(other.editedSearchNewProfiles, editedSearchNewProfiles) ||
           other.editedSearchNewProfiles == editedSearchNewProfiles) &&
         (identical(other.editedSearchWeekdays, editedSearchWeekdays) ||
@@ -203,8 +203,8 @@ class _$SearchSettingsDataImpl extends _SearchSettingsData with DiagnosticableTr
     editedMaxAge,
     editedGenderSearchSettingsAll,
     editedGender,
-    editedSearchDistance,
-    editedSearchFilters,
+    editedSearchDistanceFilters,
+    editedSearchAttributeFilters,
     editedSearchNewProfiles,
     editedSearchWeekdays,
   );
@@ -221,8 +221,8 @@ class _$SearchSettingsDataImpl extends _SearchSettingsData with DiagnosticableTr
     Object? editedMaxAge = _detectDefaultValueInCopyWith,
     Object? editedGenderSearchSettingsAll = _detectDefaultValueInCopyWith,
     Object? editedGender = _detectDefaultValueInCopyWith,
-    Object? editedSearchDistance = _detectDefaultValueInCopyWith,
-    Object? editedSearchFilters = _detectDefaultValueInCopyWith,
+    Object? editedSearchDistanceFilters = _detectDefaultValueInCopyWith,
+    Object? editedSearchAttributeFilters = _detectDefaultValueInCopyWith,
     Object? editedSearchNewProfiles = _detectDefaultValueInCopyWith,
     Object? editedSearchWeekdays = _detectDefaultValueInCopyWith,
   }) => _$SearchSettingsDataImpl(
@@ -236,8 +236,8 @@ class _$SearchSettingsDataImpl extends _SearchSettingsData with DiagnosticableTr
     editedMaxAge: (editedMaxAge == _detectDefaultValueInCopyWith ? this.editedMaxAge : editedMaxAge) as int?,
     editedGenderSearchSettingsAll: (editedGenderSearchSettingsAll == _detectDefaultValueInCopyWith ? this.editedGenderSearchSettingsAll : editedGenderSearchSettingsAll) as GenderSearchSettingsAll?,
     editedGender: (editedGender == _detectDefaultValueInCopyWith ? this.editedGender : editedGender) as Gender?,
-    editedSearchDistance: (editedSearchDistance == _detectDefaultValueInCopyWith ? this.editedSearchDistance : editedSearchDistance) as bool?,
-    editedSearchFilters: (editedSearchFilters == _detectDefaultValueInCopyWith ? this.editedSearchFilters : editedSearchFilters) as bool?,
+    editedSearchDistanceFilters: (editedSearchDistanceFilters == _detectDefaultValueInCopyWith ? this.editedSearchDistanceFilters : editedSearchDistanceFilters) as bool?,
+    editedSearchAttributeFilters: (editedSearchAttributeFilters == _detectDefaultValueInCopyWith ? this.editedSearchAttributeFilters : editedSearchAttributeFilters) as bool?,
     editedSearchNewProfiles: (editedSearchNewProfiles == _detectDefaultValueInCopyWith ? this.editedSearchNewProfiles : editedSearchNewProfiles) as bool?,
     editedSearchWeekdays: (editedSearchWeekdays == _detectDefaultValueInCopyWith ? this.editedSearchWeekdays : editedSearchWeekdays) as int?,
   );

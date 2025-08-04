@@ -51,8 +51,8 @@ class UpdateGenderSearchSettingsAll extends SearchSettingsEvent {
   final GenderSearchSettingsAll settings;
   UpdateGenderSearchSettingsAll(this.settings);
 }
-class ToggleSearchDistance extends SearchSettingsEvent {}
-class ToggleSearchFilters extends SearchSettingsEvent {}
+class ToggleSearchDistanceFilters extends SearchSettingsEvent {}
+class ToggleSearchAttributeFilters extends SearchSettingsEvent {}
 class ToggleSearchNewProfiles extends SearchSettingsEvent {}
 class UpdateSearchWeekday extends SearchSettingsEvent {
   final int value;
@@ -106,9 +106,9 @@ class SearchSettingsBloc extends Bloc<SearchSettingsEvent, SearchSettingsData> w
           final settings = ProfileAppNotificationSettings(
             profileTextModeration: state.profileSettings.profileTextModeration,
             automaticProfileSearch: state.profileSettings.automaticProfileSearch,
-            automaticProfileSearchDistance: state.valueSearchDistance(),
+            automaticProfileSearchDistanceFilters: state.valueSearchDistanceFilters(),
             automaticProfileSearchNewProfiles: state.valueSearchNewProfiles(),
-            automaticProfileSearchFilters: state.valueSearchFilters(),
+            automaticProfileSearchAttributeFilters: state.valueSearchAttributeFilters(),
             automaticProfileSearchWeekdays: state.valueSearchWeekdays(),
           );
           final r = await api.profileAction((api) => api.postProfileAppNotificationSettings(settings))
@@ -181,18 +181,18 @@ class SearchSettingsBloc extends Bloc<SearchSettingsEvent, SearchSettingsData> w
         emit(state.copyWith(editedGenderSearchSettingsAll: data.settings));
       }
     });
-    on<ToggleSearchDistance>((data, emit) async {
-      if (state.editedSearchDistance == null) {
-        emit(state.copyWith(editedSearchDistance: !state.profileSettings.automaticProfileSearchDistance));
+    on<ToggleSearchDistanceFilters>((data, emit) async {
+      if (state.editedSearchDistanceFilters == null) {
+        emit(state.copyWith(editedSearchDistanceFilters: !state.profileSettings.automaticProfileSearchDistanceFilters));
       } else {
-        emit(state.copyWith(editedSearchDistance: null));
+        emit(state.copyWith(editedSearchDistanceFilters: null));
       }
     });
-    on<ToggleSearchFilters>((data, emit) async {
-      if (state.editedSearchFilters == null) {
-        emit(state.copyWith(editedSearchFilters: !state.profileSettings.automaticProfileSearchFilters));
+    on<ToggleSearchAttributeFilters>((data, emit) async {
+      if (state.editedSearchAttributeFilters == null) {
+        emit(state.copyWith(editedSearchAttributeFilters: !state.profileSettings.automaticProfileSearchAttributeFilters));
       } else {
-        emit(state.copyWith(editedSearchFilters: null));
+        emit(state.copyWith(editedSearchAttributeFilters: null));
       }
     });
     on<ToggleSearchNewProfiles>((data, emit) async {
@@ -236,8 +236,8 @@ class SearchSettingsBloc extends Bloc<SearchSettingsEvent, SearchSettingsData> w
       editedMaxAge: null,
       editedGenderSearchSettingsAll: null,
       editedGender: null,
-      editedSearchDistance: null,
-      editedSearchFilters: null,
+      editedSearchDistanceFilters: null,
+      editedSearchAttributeFilters: null,
       editedSearchNewProfiles: null,
       editedSearchWeekdays: null,
     ));

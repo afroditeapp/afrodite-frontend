@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'profile_filtering_settings.dart';
+part of 'profile_filters.dart';
 
 // **************************************************************************
 // Generated with Icegen
@@ -16,54 +16,54 @@ class _DetectDefaultValueInCopyWith {
 const _detectDefaultValueInCopyWith = _DetectDefaultValueInCopyWith();
 
 /// @nodoc
-final _privateConstructorErrorProfileFilteringSettingsData = UnsupportedError(
-    'Private constructor ProfileFilteringSettingsData._() was called. Please call factory constructor instead.');
+final _privateConstructorErrorProfileFiltersData = UnsupportedError(
+    'Private constructor ProfileFiltersData._() was called. Please call factory constructor instead.');
 
 /// @nodoc
-mixin _$ProfileFilteringSettingsData {
-  UpdateState get updateState => throw _privateConstructorErrorProfileFilteringSettingsData;
-  bool get showAdvancedFilters => throw _privateConstructorErrorProfileFilteringSettingsData;
-  bool get showOnlyFavorites => throw _privateConstructorErrorProfileFilteringSettingsData;
-  GetProfileFilteringSettings? get filteringSettings => throw _privateConstructorErrorProfileFilteringSettingsData;
-  Map<int, ProfileAttributeFilterValueUpdate> get attributeIdAndFilterValueMap => throw _privateConstructorErrorProfileFilteringSettingsData;
-  EditedFilteringSettingsData get edited => throw _privateConstructorErrorProfileFilteringSettingsData;
+mixin _$ProfileFiltersData {
+  UpdateState get updateState => throw _privateConstructorErrorProfileFiltersData;
+  bool get showAdvancedFilters => throw _privateConstructorErrorProfileFiltersData;
+  bool get showOnlyFavorites => throw _privateConstructorErrorProfileFiltersData;
+  GetProfileFilters? get filters => throw _privateConstructorErrorProfileFiltersData;
+  Map<int, ProfileAttributeFilterValueUpdate> get attributeIdAndAttributeFilterMap => throw _privateConstructorErrorProfileFiltersData;
+  EditedFiltersData get edited => throw _privateConstructorErrorProfileFiltersData;
 
-  ProfileFilteringSettingsData copyWith({
+  ProfileFiltersData copyWith({
     UpdateState? updateState,
     bool? showAdvancedFilters,
     bool? showOnlyFavorites,
-    GetProfileFilteringSettings? filteringSettings,
-    Map<int, ProfileAttributeFilterValueUpdate>? attributeIdAndFilterValueMap,
-    EditedFilteringSettingsData? edited,
-  }) => throw _privateConstructorErrorProfileFilteringSettingsData;
+    GetProfileFilters? filters,
+    Map<int, ProfileAttributeFilterValueUpdate>? attributeIdAndAttributeFilterMap,
+    EditedFiltersData? edited,
+  }) => throw _privateConstructorErrorProfileFiltersData;
 }
 
 /// @nodoc
-abstract class _ProfileFilteringSettingsData extends ProfileFilteringSettingsData {
-  factory _ProfileFilteringSettingsData({
+abstract class _ProfileFiltersData extends ProfileFiltersData {
+  factory _ProfileFiltersData({
     UpdateState updateState,
     bool showAdvancedFilters,
     bool showOnlyFavorites,
-    GetProfileFilteringSettings? filteringSettings,
-    Map<int, ProfileAttributeFilterValueUpdate> attributeIdAndFilterValueMap,
-    required EditedFilteringSettingsData edited,
-  }) = _$ProfileFilteringSettingsDataImpl;
-  const _ProfileFilteringSettingsData._() : super._();
+    GetProfileFilters? filters,
+    Map<int, ProfileAttributeFilterValueUpdate> attributeIdAndAttributeFilterMap,
+    required EditedFiltersData edited,
+  }) = _$ProfileFiltersDataImpl;
+  const _ProfileFiltersData._() : super._();
 }
 
 /// @nodoc
-class _$ProfileFilteringSettingsDataImpl extends _ProfileFilteringSettingsData with DiagnosticableTreeMixin {
+class _$ProfileFiltersDataImpl extends _ProfileFiltersData with DiagnosticableTreeMixin {
   static const UpdateState _updateStateDefaultValue = UpdateIdle();
   static const bool _showAdvancedFiltersDefaultValue = false;
   static const bool _showOnlyFavoritesDefaultValue = false;
-  static const Map<int, ProfileAttributeFilterValueUpdate> _attributeIdAndFilterValueMapDefaultValue = {};
+  static const Map<int, ProfileAttributeFilterValueUpdate> _attributeIdAndAttributeFilterMapDefaultValue = {};
   
-  _$ProfileFilteringSettingsDataImpl({
+  _$ProfileFiltersDataImpl({
     this.updateState = _updateStateDefaultValue,
     this.showAdvancedFilters = _showAdvancedFiltersDefaultValue,
     this.showOnlyFavorites = _showOnlyFavoritesDefaultValue,
-    this.filteringSettings,
-    this.attributeIdAndFilterValueMap = _attributeIdAndFilterValueMapDefaultValue,
+    this.filters,
+    this.attributeIdAndAttributeFilterMap = _attributeIdAndAttributeFilterMapDefaultValue,
     required this.edited,
   }) : super._();
 
@@ -74,27 +74,27 @@ class _$ProfileFilteringSettingsDataImpl extends _ProfileFilteringSettingsData w
   @override
   final bool showOnlyFavorites;
   @override
-  final GetProfileFilteringSettings? filteringSettings;
+  final GetProfileFilters? filters;
   @override
-  final Map<int, ProfileAttributeFilterValueUpdate> attributeIdAndFilterValueMap;
+  final Map<int, ProfileAttributeFilterValueUpdate> attributeIdAndAttributeFilterMap;
   @override
-  final EditedFilteringSettingsData edited;
+  final EditedFiltersData edited;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ProfileFilteringSettingsData(updateState: $updateState, showAdvancedFilters: $showAdvancedFilters, showOnlyFavorites: $showOnlyFavorites, filteringSettings: $filteringSettings, attributeIdAndFilterValueMap: $attributeIdAndFilterValueMap, edited: $edited)';
+    return 'ProfileFiltersData(updateState: $updateState, showAdvancedFilters: $showAdvancedFilters, showOnlyFavorites: $showOnlyFavorites, filters: $filters, attributeIdAndAttributeFilterMap: $attributeIdAndAttributeFilterMap, edited: $edited)';
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
-      ..add(DiagnosticsProperty('type', 'ProfileFilteringSettingsData'))
+      ..add(DiagnosticsProperty('type', 'ProfileFiltersData'))
       ..add(DiagnosticsProperty('updateState', updateState))
       ..add(DiagnosticsProperty('showAdvancedFilters', showAdvancedFilters))
       ..add(DiagnosticsProperty('showOnlyFavorites', showOnlyFavorites))
-      ..add(DiagnosticsProperty('filteringSettings', filteringSettings))
-      ..add(DiagnosticsProperty('attributeIdAndFilterValueMap', attributeIdAndFilterValueMap))
+      ..add(DiagnosticsProperty('filters', filters))
+      ..add(DiagnosticsProperty('attributeIdAndAttributeFilterMap', attributeIdAndAttributeFilterMap))
       ..add(DiagnosticsProperty('edited', edited));
   }
 
@@ -102,17 +102,17 @@ class _$ProfileFilteringSettingsDataImpl extends _ProfileFilteringSettingsData w
   bool operator ==(Object other) {
     return identical(this, other) ||
       (other.runtimeType == runtimeType &&
-        other is _$ProfileFilteringSettingsDataImpl &&
+        other is _$ProfileFiltersDataImpl &&
         (identical(other.updateState, updateState) ||
           other.updateState == updateState) &&
         (identical(other.showAdvancedFilters, showAdvancedFilters) ||
           other.showAdvancedFilters == showAdvancedFilters) &&
         (identical(other.showOnlyFavorites, showOnlyFavorites) ||
           other.showOnlyFavorites == showOnlyFavorites) &&
-        (identical(other.filteringSettings, filteringSettings) ||
-          other.filteringSettings == filteringSettings) &&
-        (identical(other.attributeIdAndFilterValueMap, attributeIdAndFilterValueMap) ||
-          other.attributeIdAndFilterValueMap == attributeIdAndFilterValueMap) &&
+        (identical(other.filters, filters) ||
+          other.filters == filters) &&
+        (identical(other.attributeIdAndAttributeFilterMap, attributeIdAndAttributeFilterMap) ||
+          other.attributeIdAndAttributeFilterMap == attributeIdAndAttributeFilterMap) &&
         (identical(other.edited, edited) ||
           other.edited == edited)
     );
@@ -124,48 +124,48 @@ class _$ProfileFilteringSettingsDataImpl extends _ProfileFilteringSettingsData w
     updateState,
     showAdvancedFilters,
     showOnlyFavorites,
-    filteringSettings,
-    attributeIdAndFilterValueMap,
+    filters,
+    attributeIdAndAttributeFilterMap,
     edited,
   );
 
   @override
-  ProfileFilteringSettingsData copyWith({
+  ProfileFiltersData copyWith({
     Object? updateState,
     Object? showAdvancedFilters,
     Object? showOnlyFavorites,
-    Object? filteringSettings = _detectDefaultValueInCopyWith,
-    Object? attributeIdAndFilterValueMap,
+    Object? filters = _detectDefaultValueInCopyWith,
+    Object? attributeIdAndAttributeFilterMap,
     Object? edited,
-  }) => _$ProfileFilteringSettingsDataImpl(
+  }) => _$ProfileFiltersDataImpl(
     updateState: (updateState ?? this.updateState) as UpdateState,
     showAdvancedFilters: (showAdvancedFilters ?? this.showAdvancedFilters) as bool,
     showOnlyFavorites: (showOnlyFavorites ?? this.showOnlyFavorites) as bool,
-    filteringSettings: (filteringSettings == _detectDefaultValueInCopyWith ? this.filteringSettings : filteringSettings) as GetProfileFilteringSettings?,
-    attributeIdAndFilterValueMap: (attributeIdAndFilterValueMap ?? this.attributeIdAndFilterValueMap) as Map<int, ProfileAttributeFilterValueUpdate>,
-    edited: (edited ?? this.edited) as EditedFilteringSettingsData,
+    filters: (filters == _detectDefaultValueInCopyWith ? this.filters : filters) as GetProfileFilters?,
+    attributeIdAndAttributeFilterMap: (attributeIdAndAttributeFilterMap ?? this.attributeIdAndAttributeFilterMap) as Map<int, ProfileAttributeFilterValueUpdate>,
+    edited: (edited ?? this.edited) as EditedFiltersData,
   );
 }
 
 /// @nodoc
-final _privateConstructorErrorEditedFilteringSettingsData = UnsupportedError(
-    'Private constructor EditedFilteringSettingsData._() was called. Please call factory constructor instead.');
+final _privateConstructorErrorEditedFiltersData = UnsupportedError(
+    'Private constructor EditedFiltersData._() was called. Please call factory constructor instead.');
 
 /// @nodoc
-mixin _$EditedFilteringSettingsData {
-  Map<int, ProfileAttributeFilterValueUpdate>? get attributeIdAndFilterValueMap => throw _privateConstructorErrorEditedFilteringSettingsData;
-  EditValue<LastSeenTimeFilter> get lastSeenTimeFilter => throw _privateConstructorErrorEditedFilteringSettingsData;
-  EditValue<bool> get unlimitedLikesFilter => throw _privateConstructorErrorEditedFilteringSettingsData;
-  EditValue<MinDistanceKm> get minDistanceKmFilter => throw _privateConstructorErrorEditedFilteringSettingsData;
-  EditValue<MaxDistanceKm> get maxDistanceKmFilter => throw _privateConstructorErrorEditedFilteringSettingsData;
-  EditValue<ProfileCreatedTimeFilter> get profileCreatedFilter => throw _privateConstructorErrorEditedFilteringSettingsData;
-  EditValue<ProfileEditedTimeFilter> get profileEditedFilter => throw _privateConstructorErrorEditedFilteringSettingsData;
-  EditValue<ProfileTextMinCharactersFilter> get profileTextMinCharactersFilter => throw _privateConstructorErrorEditedFilteringSettingsData;
-  EditValue<ProfileTextMaxCharactersFilter> get profileTextMaxCharactersFilter => throw _privateConstructorErrorEditedFilteringSettingsData;
-  bool? get randomProfileOrder => throw _privateConstructorErrorEditedFilteringSettingsData;
+mixin _$EditedFiltersData {
+  Map<int, ProfileAttributeFilterValueUpdate>? get attributeIdAndAttributeFilterMap => throw _privateConstructorErrorEditedFiltersData;
+  EditValue<LastSeenTimeFilter> get lastSeenTimeFilter => throw _privateConstructorErrorEditedFiltersData;
+  EditValue<bool> get unlimitedLikesFilter => throw _privateConstructorErrorEditedFiltersData;
+  EditValue<MinDistanceKm> get minDistanceKmFilter => throw _privateConstructorErrorEditedFiltersData;
+  EditValue<MaxDistanceKm> get maxDistanceKmFilter => throw _privateConstructorErrorEditedFiltersData;
+  EditValue<ProfileCreatedTimeFilter> get profileCreatedFilter => throw _privateConstructorErrorEditedFiltersData;
+  EditValue<ProfileEditedTimeFilter> get profileEditedFilter => throw _privateConstructorErrorEditedFiltersData;
+  EditValue<ProfileTextMinCharactersFilter> get profileTextMinCharactersFilter => throw _privateConstructorErrorEditedFiltersData;
+  EditValue<ProfileTextMaxCharactersFilter> get profileTextMaxCharactersFilter => throw _privateConstructorErrorEditedFiltersData;
+  bool? get randomProfileOrder => throw _privateConstructorErrorEditedFiltersData;
 
-  EditedFilteringSettingsData copyWith({
-    Map<int, ProfileAttributeFilterValueUpdate>? attributeIdAndFilterValueMap,
+  EditedFiltersData copyWith({
+    Map<int, ProfileAttributeFilterValueUpdate>? attributeIdAndAttributeFilterMap,
     EditValue<LastSeenTimeFilter>? lastSeenTimeFilter,
     EditValue<bool>? unlimitedLikesFilter,
     EditValue<MinDistanceKm>? minDistanceKmFilter,
@@ -175,13 +175,13 @@ mixin _$EditedFilteringSettingsData {
     EditValue<ProfileTextMinCharactersFilter>? profileTextMinCharactersFilter,
     EditValue<ProfileTextMaxCharactersFilter>? profileTextMaxCharactersFilter,
     bool? randomProfileOrder,
-  }) => throw _privateConstructorErrorEditedFilteringSettingsData;
+  }) => throw _privateConstructorErrorEditedFiltersData;
 }
 
 /// @nodoc
-abstract class _EditedFilteringSettingsData implements EditedFilteringSettingsData {
-  factory _EditedFilteringSettingsData({
-    Map<int, ProfileAttributeFilterValueUpdate>? attributeIdAndFilterValueMap,
+abstract class _EditedFiltersData implements EditedFiltersData {
+  factory _EditedFiltersData({
+    Map<int, ProfileAttributeFilterValueUpdate>? attributeIdAndAttributeFilterMap,
     EditValue<LastSeenTimeFilter> lastSeenTimeFilter,
     EditValue<bool> unlimitedLikesFilter,
     EditValue<MinDistanceKm> minDistanceKmFilter,
@@ -191,11 +191,11 @@ abstract class _EditedFilteringSettingsData implements EditedFilteringSettingsDa
     EditValue<ProfileTextMinCharactersFilter> profileTextMinCharactersFilter,
     EditValue<ProfileTextMaxCharactersFilter> profileTextMaxCharactersFilter,
     bool? randomProfileOrder,
-  }) = _$EditedFilteringSettingsDataImpl;
+  }) = _$EditedFiltersDataImpl;
 }
 
 /// @nodoc
-class _$EditedFilteringSettingsDataImpl with DiagnosticableTreeMixin implements _EditedFilteringSettingsData {
+class _$EditedFiltersDataImpl with DiagnosticableTreeMixin implements _EditedFiltersData {
   static const EditValue<LastSeenTimeFilter> _lastSeenTimeFilterDefaultValue = NoEdit();
   static const EditValue<bool> _unlimitedLikesFilterDefaultValue = NoEdit();
   static const EditValue<MinDistanceKm> _minDistanceKmFilterDefaultValue = NoEdit();
@@ -205,8 +205,8 @@ class _$EditedFilteringSettingsDataImpl with DiagnosticableTreeMixin implements 
   static const EditValue<ProfileTextMinCharactersFilter> _profileTextMinCharactersFilterDefaultValue = NoEdit();
   static const EditValue<ProfileTextMaxCharactersFilter> _profileTextMaxCharactersFilterDefaultValue = NoEdit();
   
-  _$EditedFilteringSettingsDataImpl({
-    this.attributeIdAndFilterValueMap,
+  _$EditedFiltersDataImpl({
+    this.attributeIdAndAttributeFilterMap,
     this.lastSeenTimeFilter = _lastSeenTimeFilterDefaultValue,
     this.unlimitedLikesFilter = _unlimitedLikesFilterDefaultValue,
     this.minDistanceKmFilter = _minDistanceKmFilterDefaultValue,
@@ -219,7 +219,7 @@ class _$EditedFilteringSettingsDataImpl with DiagnosticableTreeMixin implements 
   });
 
   @override
-  final Map<int, ProfileAttributeFilterValueUpdate>? attributeIdAndFilterValueMap;
+  final Map<int, ProfileAttributeFilterValueUpdate>? attributeIdAndAttributeFilterMap;
   @override
   final EditValue<LastSeenTimeFilter> lastSeenTimeFilter;
   @override
@@ -241,15 +241,15 @@ class _$EditedFilteringSettingsDataImpl with DiagnosticableTreeMixin implements 
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'EditedFilteringSettingsData(attributeIdAndFilterValueMap: $attributeIdAndFilterValueMap, lastSeenTimeFilter: $lastSeenTimeFilter, unlimitedLikesFilter: $unlimitedLikesFilter, minDistanceKmFilter: $minDistanceKmFilter, maxDistanceKmFilter: $maxDistanceKmFilter, profileCreatedFilter: $profileCreatedFilter, profileEditedFilter: $profileEditedFilter, profileTextMinCharactersFilter: $profileTextMinCharactersFilter, profileTextMaxCharactersFilter: $profileTextMaxCharactersFilter, randomProfileOrder: $randomProfileOrder)';
+    return 'EditedFiltersData(attributeIdAndAttributeFilterMap: $attributeIdAndAttributeFilterMap, lastSeenTimeFilter: $lastSeenTimeFilter, unlimitedLikesFilter: $unlimitedLikesFilter, minDistanceKmFilter: $minDistanceKmFilter, maxDistanceKmFilter: $maxDistanceKmFilter, profileCreatedFilter: $profileCreatedFilter, profileEditedFilter: $profileEditedFilter, profileTextMinCharactersFilter: $profileTextMinCharactersFilter, profileTextMaxCharactersFilter: $profileTextMaxCharactersFilter, randomProfileOrder: $randomProfileOrder)';
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
-      ..add(DiagnosticsProperty('type', 'EditedFilteringSettingsData'))
-      ..add(DiagnosticsProperty('attributeIdAndFilterValueMap', attributeIdAndFilterValueMap))
+      ..add(DiagnosticsProperty('type', 'EditedFiltersData'))
+      ..add(DiagnosticsProperty('attributeIdAndAttributeFilterMap', attributeIdAndAttributeFilterMap))
       ..add(DiagnosticsProperty('lastSeenTimeFilter', lastSeenTimeFilter))
       ..add(DiagnosticsProperty('unlimitedLikesFilter', unlimitedLikesFilter))
       ..add(DiagnosticsProperty('minDistanceKmFilter', minDistanceKmFilter))
@@ -265,9 +265,9 @@ class _$EditedFilteringSettingsDataImpl with DiagnosticableTreeMixin implements 
   bool operator ==(Object other) {
     return identical(this, other) ||
       (other.runtimeType == runtimeType &&
-        other is _$EditedFilteringSettingsDataImpl &&
-        (identical(other.attributeIdAndFilterValueMap, attributeIdAndFilterValueMap) ||
-          other.attributeIdAndFilterValueMap == attributeIdAndFilterValueMap) &&
+        other is _$EditedFiltersDataImpl &&
+        (identical(other.attributeIdAndAttributeFilterMap, attributeIdAndAttributeFilterMap) ||
+          other.attributeIdAndAttributeFilterMap == attributeIdAndAttributeFilterMap) &&
         (identical(other.lastSeenTimeFilter, lastSeenTimeFilter) ||
           other.lastSeenTimeFilter == lastSeenTimeFilter) &&
         (identical(other.unlimitedLikesFilter, unlimitedLikesFilter) ||
@@ -292,7 +292,7 @@ class _$EditedFilteringSettingsDataImpl with DiagnosticableTreeMixin implements 
   @override
   int get hashCode => Object.hash(
     runtimeType,
-    attributeIdAndFilterValueMap,
+    attributeIdAndAttributeFilterMap,
     lastSeenTimeFilter,
     unlimitedLikesFilter,
     minDistanceKmFilter,
@@ -305,8 +305,8 @@ class _$EditedFilteringSettingsDataImpl with DiagnosticableTreeMixin implements 
   );
 
   @override
-  EditedFilteringSettingsData copyWith({
-    Object? attributeIdAndFilterValueMap = _detectDefaultValueInCopyWith,
+  EditedFiltersData copyWith({
+    Object? attributeIdAndAttributeFilterMap = _detectDefaultValueInCopyWith,
     Object? lastSeenTimeFilter,
     Object? unlimitedLikesFilter,
     Object? minDistanceKmFilter,
@@ -316,8 +316,8 @@ class _$EditedFilteringSettingsDataImpl with DiagnosticableTreeMixin implements 
     Object? profileTextMinCharactersFilter,
     Object? profileTextMaxCharactersFilter,
     Object? randomProfileOrder = _detectDefaultValueInCopyWith,
-  }) => _$EditedFilteringSettingsDataImpl(
-    attributeIdAndFilterValueMap: (attributeIdAndFilterValueMap == _detectDefaultValueInCopyWith ? this.attributeIdAndFilterValueMap : attributeIdAndFilterValueMap) as Map<int, ProfileAttributeFilterValueUpdate>?,
+  }) => _$EditedFiltersDataImpl(
+    attributeIdAndAttributeFilterMap: (attributeIdAndAttributeFilterMap == _detectDefaultValueInCopyWith ? this.attributeIdAndAttributeFilterMap : attributeIdAndAttributeFilterMap) as Map<int, ProfileAttributeFilterValueUpdate>?,
     lastSeenTimeFilter: (lastSeenTimeFilter ?? this.lastSeenTimeFilter) as EditValue<LastSeenTimeFilter>,
     unlimitedLikesFilter: (unlimitedLikesFilter ?? this.unlimitedLikesFilter) as EditValue<bool>,
     minDistanceKmFilter: (minDistanceKmFilter ?? this.minDistanceKmFilter) as EditValue<MinDistanceKm>,

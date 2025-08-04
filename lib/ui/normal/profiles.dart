@@ -20,9 +20,9 @@ import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:app/logic/account/account.dart';
 import 'package:app/logic/app/navigator_state.dart';
-import 'package:app/logic/profile/profile_filtering_settings.dart';
+import 'package:app/logic/profile/profile_filters.dart';
 import 'package:app/model/freezed/logic/account/account.dart';
-import 'package:app/model/freezed/logic/profile/profile_filtering_settings.dart';
+import 'package:app/model/freezed/logic/profile/profile_filters.dart';
 import 'package:app/ui/normal/profiles/filter_profiles.dart';
 import 'package:app/ui/normal/profiles/profile_grid.dart';
 import 'package:app/ui_utils/bottom_navigation.dart';
@@ -69,18 +69,18 @@ class ProfileView extends BottomNavigationScreen {
           );
         },
       ),
-      BlocBuilder<ProfileFilteringSettingsBloc, ProfileFilteringSettingsData>(
+      BlocBuilder<ProfileFiltersBloc, ProfileFiltersData>(
         builder: (context, state) {
           return IconButton(
             icon: Icon(state.showOnlyFavorites ? Icons.star_rounded : Icons.star_border_rounded),
             tooltip: state.showOnlyFavorites ?
               context.strings.profile_grid_screen_show_all_profiles_action :
               context.strings.profile_grid_screen_show_favorite_profiles_action,
-            onPressed: () => context.read<ProfileFilteringSettingsBloc>().add(SetFavoriteProfilesFilter(!state.showOnlyFavorites)),
+            onPressed: () => context.read<ProfileFiltersBloc>().add(SetFavoriteProfilesFilter(!state.showOnlyFavorites)),
           );
         },
       ),
-      BlocBuilder<ProfileFilteringSettingsBloc, ProfileFilteringSettingsData>(
+      BlocBuilder<ProfileFiltersBloc, ProfileFiltersData>(
         builder: (context, state) {
           final Icon icon;
           if (state.showOnlyFavorites) {
@@ -95,7 +95,7 @@ class ProfileView extends BottomNavigationScreen {
             icon: icon,
             onPressed: state.showOnlyFavorites ?
               () => showSnackBar(context.strings.profile_grid_screen_filtering_favorite_profiles_is_not_supported) :
-              () => openProfileFilteringSettings(context),
+              () => openProfileFilters(context),
           );
         },
       ),
@@ -108,7 +108,7 @@ class _ProfileViewState extends State<ProfileView> {
   Widget build(BuildContext context) {
     return PublicProfileViewingBlocker(
       child: ProfileGrid(
-        filteringSettingsBloc: context.read<ProfileFilteringSettingsBloc>(),
+        profileFiltersBloc: context.read<ProfileFiltersBloc>(),
       ),
     );
   }

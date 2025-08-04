@@ -33,7 +33,7 @@ class ProfileSearchGroups extends SingleRowTable {
 }
 
 class ProfileFilters extends SingleRowTable {
-  TextColumn get jsonProfileFilters => text().map(NullAwareTypeConverter.wrap(const GetProfileFilteringSettingsConverter())).nullable()();
+  TextColumn get jsonProfileFilters => text().map(NullAwareTypeConverter.wrap(const GetProfileFiltersConverter())).nullable()();
 }
 
 class ProfileSearchAgeRange extends SingleRowTable {

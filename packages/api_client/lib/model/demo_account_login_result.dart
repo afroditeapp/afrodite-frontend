@@ -10,9 +10,9 @@
 
 part of openapi.api;
 
-class DemoModeLoginResult {
-  /// Returns a new [DemoModeLoginResult] instance.
-  DemoModeLoginResult({
+class DemoAccountLoginResult {
+  /// Returns a new [DemoAccountLoginResult] instance.
+  DemoAccountLoginResult({
     required this.locked,
     this.token,
   });
@@ -20,10 +20,10 @@ class DemoModeLoginResult {
   /// This password is locked.
   bool locked;
 
-  DemoModeToken? token;
+  DemoAccountToken? token;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is DemoModeLoginResult &&
+  bool operator ==(Object other) => identical(this, other) || other is DemoAccountLoginResult &&
     other.locked == locked &&
     other.token == token;
 
@@ -34,7 +34,7 @@ class DemoModeLoginResult {
     (token == null ? 0 : token!.hashCode);
 
   @override
-  String toString() => 'DemoModeLoginResult[locked=$locked, token=$token]';
+  String toString() => 'DemoAccountLoginResult[locked=$locked, token=$token]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -47,10 +47,10 @@ class DemoModeLoginResult {
     return json;
   }
 
-  /// Returns a new [DemoModeLoginResult] instance and imports its values from
+  /// Returns a new [DemoAccountLoginResult] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static DemoModeLoginResult? fromJson(dynamic value) {
+  static DemoAccountLoginResult? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -59,25 +59,25 @@ class DemoModeLoginResult {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "DemoModeLoginResult[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "DemoModeLoginResult[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "DemoAccountLoginResult[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "DemoAccountLoginResult[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return DemoModeLoginResult(
+      return DemoAccountLoginResult(
         locked: mapValueOfType<bool>(json, r'locked')!,
-        token: DemoModeToken.fromJson(json[r'token']),
+        token: DemoAccountToken.fromJson(json[r'token']),
       );
     }
     return null;
   }
 
-  static List<DemoModeLoginResult> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <DemoModeLoginResult>[];
+  static List<DemoAccountLoginResult> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <DemoAccountLoginResult>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = DemoModeLoginResult.fromJson(row);
+        final value = DemoAccountLoginResult.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -86,12 +86,12 @@ class DemoModeLoginResult {
     return result.toList(growable: growable);
   }
 
-  static Map<String, DemoModeLoginResult> mapFromJson(dynamic json) {
-    final map = <String, DemoModeLoginResult>{};
+  static Map<String, DemoAccountLoginResult> mapFromJson(dynamic json) {
+    final map = <String, DemoAccountLoginResult>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = DemoModeLoginResult.fromJson(entry.value);
+        final value = DemoAccountLoginResult.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -100,14 +100,14 @@ class DemoModeLoginResult {
     return map;
   }
 
-  // maps a json object with a list of DemoModeLoginResult-objects as value to a dart map
-  static Map<String, List<DemoModeLoginResult>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<DemoModeLoginResult>>{};
+  // maps a json object with a list of DemoAccountLoginResult-objects as value to a dart map
+  static Map<String, List<DemoAccountLoginResult>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<DemoAccountLoginResult>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = DemoModeLoginResult.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = DemoAccountLoginResult.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;

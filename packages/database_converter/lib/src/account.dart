@@ -21,12 +21,12 @@ class AccessTokenConverter extends TypeConverter<AccessToken, String> {
 
   @override
   AccessToken fromSql(fromDb) {
-    return AccessToken(accessToken: fromDb);
+    return AccessToken(token: fromDb);
   }
 
   @override
   String toSql(value) {
-    return value.accessToken;
+    return value.token;
   }
 }
 
@@ -44,12 +44,12 @@ class RefreshTokenConverter extends TypeConverter<RefreshToken, String> {
   }
 }
 
-class CustomReportsFileHashConverter extends TypeConverter<CustomReportsFileHash, String> {
-  const CustomReportsFileHashConverter();
+class CustomReportsConfigHashConverter extends TypeConverter<CustomReportsConfigHash, String> {
+  const CustomReportsConfigHashConverter();
 
   @override
-  CustomReportsFileHash fromSql(fromDb) {
-    return CustomReportsFileHash(h: fromDb);
+  CustomReportsConfigHash fromSql(fromDb) {
+    return CustomReportsConfigHash(h: fromDb);
   }
 
   @override
@@ -58,12 +58,12 @@ class CustomReportsFileHashConverter extends TypeConverter<CustomReportsFileHash
   }
 }
 
-class ClientFeaturesFileHashConverter  extends TypeConverter<ClientFeaturesFileHash, String> {
-  const ClientFeaturesFileHashConverter();
+class ClientFeaturesConfigHashConverter  extends TypeConverter<ClientFeaturesConfigHash, String> {
+  const ClientFeaturesConfigHashConverter();
 
   @override
-  ClientFeaturesFileHash fromSql(fromDb) {
-    return ClientFeaturesFileHash(h: fromDb);
+  ClientFeaturesConfigHash fromSql(fromDb) {
+    return ClientFeaturesConfigHash(h: fromDb);
   }
 
   @override

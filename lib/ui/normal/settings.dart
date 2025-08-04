@@ -1,5 +1,5 @@
-import 'package:app/logic/profile/profile_filtering_settings.dart';
-import 'package:app/model/freezed/logic/profile/profile_filtering_settings.dart';
+import 'package:app/logic/profile/profile_filters.dart';
+import 'package:app/model/freezed/logic/profile/profile_filters.dart';
 import 'package:app/model/freezed/logic/settings/privacy_settings.dart';
 import 'package:app/ui/normal/profiles/filter_profiles.dart';
 import 'package:app/ui/normal/settings/blocked_profiles.dart';
@@ -112,11 +112,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
         );
       }).toListTile(),
       Setting.createSettingWithCustomIcon(
-        BlocBuilder<ProfileFilteringSettingsBloc, ProfileFilteringSettingsData>(
+        BlocBuilder<ProfileFiltersBloc, ProfileFiltersData>(
           builder: (_, state) => Icon(state.icon()),
         ),
-        context.strings.profile_filtering_settings_screen_title,
-        () => openProfileFilteringSettings(context),
+        context.strings.profile_filters_screen_title,
+        () => openProfileFilters(context),
       ).toListTile(),
       Setting.createSetting(Icons.location_on, context.strings.profile_location_screen_title, () {
         MyNavigator.push(context, const MaterialPage<void>(child: LocationScreen()));

@@ -19,8 +19,8 @@ class AppNotificationSettings extends SingleRowTable {
   BoolColumn get news => boolean().nullable()();
 
   BoolColumn get automaticProfileSearch => boolean().nullable()();
-  BoolColumn get automaticProfileSearchDistance => boolean().nullable()();
-  BoolColumn get automaticProfileSearchFilters => boolean().nullable()();
+  BoolColumn get automaticProfileSearchDistanceFilters => boolean().nullable()();
+  BoolColumn get automaticProfileSearchAttributeFilters => boolean().nullable()();
   BoolColumn get automaticProfileSearchNewProfiles => boolean().nullable()();
   IntColumn get automaticProfileSearchWeekdays => integer().nullable()();
 }

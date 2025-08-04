@@ -16,8 +16,8 @@ class NotificationSettingsData with _$NotificationSettingsData, UpdateStateProvi
     required EditedNotificationSettingsData edited,
 
     // Automatic profile search
-    @Default(ProfileAppNotificationSettingsDefaults.distanceDefault) bool searchDistance,
-    @Default(ProfileAppNotificationSettingsDefaults.filtersDefault) bool searchFilters,
+    @Default(ProfileAppNotificationSettingsDefaults.distanceFiltersDefault) bool searchDistanceFilters,
+    @Default(ProfileAppNotificationSettingsDefaults.attributeFiltersDefault) bool searchAttributeFilters,
     @Default(ProfileAppNotificationSettingsDefaults.newProfilesDefault) bool searchNewProfiles,
     @Default(ProfileAppNotificationSettingsDefaults.weekdaysDefault) int searchWeekdays,
   }) = _NotificationSettingsData;

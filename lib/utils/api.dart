@@ -131,9 +131,9 @@ extension ContentInfoDetailedExtensions on ContentInfoDetailed {
   }
 }
 
-extension GetProfileFilteringSettingsExtension on GetProfileFilteringSettings {
+extension GetProfileFiltersExtension on GetProfileFilters {
   Map<int, ProfileAttributeFilterValueUpdate> currentFiltersCopy() {
-    final values = filters.map((e) {
+    final values = attributeFilters.map((e) {
       final convertedValue = ProfileAttributeFilterValueUpdate(
         acceptMissingAttribute: e.acceptMissingAttribute,
         useLogicalOperatorAnd: e.useLogicalOperatorAnd,
@@ -157,16 +157,16 @@ extension MapCoordinateExtension on MapCoordinate {
 class ProfileAppNotificationSettingsDefaults {
   static ProfileAppNotificationSettings defaultValue = ProfileAppNotificationSettings(
       automaticProfileSearch: NOTIFICATION_CATEGORY_ENABLED_DEFAULT,
-      automaticProfileSearchDistance: distanceDefault,
+      automaticProfileSearchDistanceFilters: distanceFiltersDefault,
       automaticProfileSearchNewProfiles: newProfilesDefault,
-      automaticProfileSearchFilters: filtersDefault,
+      automaticProfileSearchAttributeFilters: attributeFiltersDefault,
       automaticProfileSearchWeekdays: weekdaysDefault,
       profileTextModeration: NOTIFICATION_CATEGORY_ENABLED_DEFAULT,
     );
 
-  static const bool distanceDefault = false;
+  static const bool distanceFiltersDefault = false;
   static const bool newProfilesDefault = false;
-  static const bool filtersDefault = false;
+  static const bool attributeFiltersDefault = false;
   static const int weekdaysDefault = 0x7F;
 }
 

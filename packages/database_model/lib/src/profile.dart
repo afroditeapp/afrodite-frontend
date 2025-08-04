@@ -233,7 +233,7 @@ class ProfileAttributes {
 }
 
 class ProfileAttributeAndHash {
-  final ProfileAttributeHash hash;
+  final AttributeHash hash;
   final Attribute attribute;
   ProfileAttributeAndHash(this.hash, this.attribute);
 }

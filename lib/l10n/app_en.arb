@@ -1158,20 +1158,20 @@
   "@notification_settings_screen_title": {
     "description": "Title for notification settings screen"
   },
-  "profile_filtering_settings_screen_disable_filters_action": "Disable filters",
-  "@profile_filtering_settings_screen_disable_filters_action": {
+  "profile_filters_screen_disable_filters_action": "Disable filters",
+  "@profile_filters_screen_disable_filters_action": {
     "description": "Title for disable filters action"
   },
-  "profile_filtering_settings_screen_disable_filters_action_dialog_title": "Disable filters?",
-  "@profile_filtering_settings_screen_disable_filters_action_dialog_title": {
+  "profile_filters_screen_disable_filters_action_dialog_title": "Disable filters?",
+  "@profile_filters_screen_disable_filters_action_dialog_title": {
     "description": "Title for disable filters action confirm dialog"
   },
-  "profile_filtering_settings_screen_distance_filter": "Distance",
-  "@profile_filtering_settings_screen_distance_filter": {
+  "profile_filters_screen_distance_filter": "Distance",
+  "@profile_filters_screen_distance_filter": {
     "description": "Title text for distance filter"
   },
-  "profile_filtering_settings_screen_distance_filter_max_value": "Max {p0} km",
-  "@profile_filtering_settings_screen_distance_filter_max_value": {
+  "profile_filters_screen_distance_filter_max_value": "Max {p0} km",
+  "@profile_filters_screen_distance_filter_max_value": {
     "description": "Value text for distance filter max value",
     "placeholders": {
       "p0": {
@@ -1179,8 +1179,8 @@
       }
     }
   },
-  "profile_filtering_settings_screen_distance_filter_min_and_max_value": "{p0}-{p1} km",
-  "@profile_filtering_settings_screen_distance_filter_min_and_max_value": {
+  "profile_filters_screen_distance_filter_min_and_max_value": "{p0}-{p1} km",
+  "@profile_filters_screen_distance_filter_min_and_max_value": {
     "description": "Value text for distance filter min and max value",
     "placeholders": {
       "p0": {
@@ -1191,8 +1191,8 @@
       }
     }
   },
-  "profile_filtering_settings_screen_distance_filter_min_value": "Min {p0} km",
-  "@profile_filtering_settings_screen_distance_filter_min_value": {
+  "profile_filters_screen_distance_filter_min_value": "Min {p0} km",
+  "@profile_filters_screen_distance_filter_min_value": {
     "description": "Value text for distance filter min value",
     "placeholders": {
       "p0": {
@@ -1200,24 +1200,24 @@
       }
     }
   },
-  "profile_filtering_settings_screen_profile_created_filter": "Profile created",
-  "@profile_filtering_settings_screen_profile_created_filter": {
+  "profile_filters_screen_profile_created_filter": "Profile created",
+  "@profile_filters_screen_profile_created_filter": {
     "description": "Title for profile created time filter"
   },
-  "profile_filtering_settings_screen_profile_edited_filter": "Profile edited",
-  "@profile_filtering_settings_screen_profile_edited_filter": {
+  "profile_filters_screen_profile_edited_filter": "Profile edited",
+  "@profile_filters_screen_profile_edited_filter": {
     "description": "Title for profile edited time filter"
   },
-  "profile_filtering_settings_screen_profile_last_seen_time_filter": "Last seen",
-  "@profile_filtering_settings_screen_profile_last_seen_time_filter": {
+  "profile_filters_screen_profile_last_seen_time_filter": "Last seen",
+  "@profile_filters_screen_profile_last_seen_time_filter": {
     "description": "Title for profile last seen time filter"
   },
-  "profile_filtering_settings_screen_profile_last_seen_time_filter_all": "Anytime",
-  "@profile_filtering_settings_screen_profile_last_seen_time_filter_all": {
+  "profile_filters_screen_profile_last_seen_time_filter_all": "Anytime",
+  "@profile_filters_screen_profile_last_seen_time_filter_all": {
     "description": "Value text for profile last seen time filter when all is selected"
   },
-  "profile_filtering_settings_screen_profile_last_seen_time_filter_day": "{p0} day",
-  "@profile_filtering_settings_screen_profile_last_seen_time_filter_day": {
+  "profile_filters_screen_profile_last_seen_time_filter_day": "{p0} day",
+  "@profile_filters_screen_profile_last_seen_time_filter_day": {
     "description": "Value text for profile last seen time filter when day is selected",
     "placeholders": {
       "p0": {
@@ -1225,8 +1225,8 @@
       }
     }
   },
-  "profile_filtering_settings_screen_profile_last_seen_time_filter_days": "{p0} days",
-  "@profile_filtering_settings_screen_profile_last_seen_time_filter_days": {
+  "profile_filters_screen_profile_last_seen_time_filter_days": "{p0} days",
+  "@profile_filters_screen_profile_last_seen_time_filter_days": {
     "description": "Value text for profile last seen time filter when multiple days is selected",
     "placeholders": {
       "p0": {
@@ -1234,16 +1234,16 @@
       }
     }
   },
-  "profile_filtering_settings_screen_profile_last_seen_time_filter_online": "Online",
-  "@profile_filtering_settings_screen_profile_last_seen_time_filter_online": {
+  "profile_filters_screen_profile_last_seen_time_filter_online": "Online",
+  "@profile_filters_screen_profile_last_seen_time_filter_online": {
     "description": "Value text for profile last seen time filter when only online profiles should be shown"
   },
-  "profile_filtering_settings_screen_profile_text_filter": "Profile text length",
-  "@profile_filtering_settings_screen_profile_text_filter": {
+  "profile_filters_screen_profile_text_filter": "Profile text length",
+  "@profile_filters_screen_profile_text_filter": {
     "description": "Value text for profile text filter"
   },
-  "profile_filtering_settings_screen_profile_text_filter_max_value": "Max {p0} characters",
-  "@profile_filtering_settings_screen_profile_text_filter_max_value": {
+  "profile_filters_screen_profile_text_filter_max_value": "Max {p0} characters",
+  "@profile_filters_screen_profile_text_filter_max_value": {
     "description": "Value text for profile text filter when only max value is selected",
     "placeholders": {
       "p0": {
@@ -1251,8 +1251,8 @@
       }
     }
   },
-  "profile_filtering_settings_screen_profile_text_filter_min_and_max_value": "{p0}-{p1} characters",
-  "@profile_filtering_settings_screen_profile_text_filter_min_and_max_value": {
+  "profile_filters_screen_profile_text_filter_min_and_max_value": "{p0}-{p1} characters",
+  "@profile_filters_screen_profile_text_filter_min_and_max_value": {
     "description": "Value text for profile text filter when both min and max values are selected",
     "placeholders": {
       "p0": {
@@ -1263,8 +1263,8 @@
       }
     }
   },
-  "profile_filtering_settings_screen_profile_text_filter_min_value": "Min {p0} characters",
-  "@profile_filtering_settings_screen_profile_text_filter_min_value": {
+  "profile_filters_screen_profile_text_filter_min_value": "Min {p0} characters",
+  "@profile_filters_screen_profile_text_filter_min_value": {
     "description": "Value text for profile text filter when only min value is selected",
     "placeholders": {
       "p0": {
@@ -1272,16 +1272,16 @@
       }
     }
   },
-  "profile_filtering_settings_screen_title": "Profile filters",
-  "@profile_filtering_settings_screen_title": {
-    "description": "Title for profile filtering settings screen"
+  "profile_filters_screen_title": "Profile filters",
+  "@profile_filters_screen_title": {
+    "description": "Title for profile filters screen"
   },
-  "profile_filtering_settings_screen_unlimited_likes_filter": "Looking for a date for today",
-  "@profile_filtering_settings_screen_unlimited_likes_filter": {
+  "profile_filters_screen_unlimited_likes_filter": "Looking for a date for today",
+  "@profile_filters_screen_unlimited_likes_filter": {
     "description": "Title for unlimited likes filter"
   },
-  "profile_filtering_settings_screen_updating_filters_failed": "Updating profile filters failed",
-  "@profile_filtering_settings_screen_updating_filters_failed": {
+  "profile_filters_screen_updating_filters_failed": "Updating profile filters failed",
+  "@profile_filters_screen_updating_filters_failed": {
     "description": "Snackbar text for notifying about failed profile filters update"
   },
   "profile_grid_screen_daily_likes_dialog_text": "Daily chat requests left: {p0}\nReset time: {p1}",

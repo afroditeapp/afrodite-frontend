@@ -65,12 +65,12 @@ class PermissionsConverter extends TypeConverter<JsonObject<Permissions>, String
   }
 }
 
-class GetProfileFilteringSettingsConverter extends TypeConverter<JsonObject<GetProfileFilteringSettings>, String> {
-  const GetProfileFilteringSettingsConverter();
+class GetProfileFiltersConverter extends TypeConverter<JsonObject<GetProfileFilters>, String> {
+  const GetProfileFiltersConverter();
 
   @override
-  JsonObject<GetProfileFilteringSettings> fromSql(fromDb) {
-    return JsonObject._(GetProfileFilteringSettings.fromJson(jsonDecode(fromDb)));
+  JsonObject<GetProfileFilters> fromSql(fromDb) {
+    return JsonObject._(GetProfileFilters.fromJson(jsonDecode(fromDb)));
   }
 
   @override
@@ -159,8 +159,8 @@ extension PermissionsJson on Permissions {
   }
 }
 
-extension GetProfileFilteringSettingsJson on GetProfileFilteringSettings {
-  JsonObject<GetProfileFilteringSettings> toJsonString() {
+extension GetProfileFiltersJson on GetProfileFilters {
+  JsonObject<GetProfileFilters> toJsonString() {
     return JsonObject._(this);
   }
 }

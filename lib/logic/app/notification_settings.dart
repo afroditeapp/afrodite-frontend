@@ -104,9 +104,9 @@ class NotificationSettingsBloc extends Bloc<NotificationSettingsEvent, Notificat
         final settings = ProfileAppNotificationSettings(
           profileTextModeration: currentState.valueProfileText(),
           automaticProfileSearch: currentState.valueAutomaticProfileSearch(),
-          automaticProfileSearchDistance: currentState.searchDistance,
+          automaticProfileSearchDistanceFilters: currentState.searchDistanceFilters,
           automaticProfileSearchNewProfiles: currentState.searchNewProfiles,
-          automaticProfileSearchFilters: currentState.searchFilters,
+          automaticProfileSearchAttributeFilters: currentState.searchAttributeFilters,
           automaticProfileSearchWeekdays: currentState.searchWeekdays,
         );
         final r = await api.profileAction((api) => api.postProfileAppNotificationSettings(settings))
@@ -239,8 +239,8 @@ class NotificationSettingsBloc extends Bloc<NotificationSettingsEvent, Notificat
         categories: state.categories.copyWith(
           profileTextModerationCompleted: v.profileTextModeration
         ),
-        searchDistance: v.automaticProfileSearchDistance,
-        searchFilters: v.automaticProfileSearchFilters,
+        searchDistanceFilters: v.automaticProfileSearchDistanceFilters,
+        searchAttributeFilters: v.automaticProfileSearchAttributeFilters,
         searchNewProfiles: v.automaticProfileSearchNewProfiles,
         searchWeekdays: v.automaticProfileSearchWeekdays,
       ));

@@ -820,6 +820,62 @@ class CommonAdminApi {
     return null;
   }
 
+  /// Get IP country statistics.
+  ///
+  /// HTTP method is POST to allow JSON request body.  # Permissions Requires admin_server_maintenance_view_info.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [GetIpCountryStatisticsSettings] getIpCountryStatisticsSettings (required):
+  Future<Response> postGetIpCountryStatisticsWithHttpInfo(GetIpCountryStatisticsSettings getIpCountryStatisticsSettings,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/common_api/ip_country_statistics';
+
+    // ignore: prefer_final_locals
+    Object? postBody = getIpCountryStatisticsSettings;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Get IP country statistics.
+  ///
+  /// HTTP method is POST to allow JSON request body.  # Permissions Requires admin_server_maintenance_view_info.
+  ///
+  /// Parameters:
+  ///
+  /// * [GetIpCountryStatisticsSettings] getIpCountryStatisticsSettings (required):
+  Future<GetIpCountryStatisticsResult?> postGetIpCountryStatistics(GetIpCountryStatisticsSettings getIpCountryStatisticsSettings,) async {
+    final response = await postGetIpCountryStatisticsWithHttpInfo(getIpCountryStatisticsSettings,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetIpCountryStatisticsResult',) as GetIpCountryStatisticsResult;
+    
+    }
+    return null;
+  }
+
   /// Get performance data
   ///
   /// HTTP method is POST because JSON request body requires it.  # Permissions Requires admin_server_maintenance_view_info.
@@ -1031,9 +1087,9 @@ class CommonAdminApi {
     }
   }
 
-  /// Trigger backend data reset which also restarts the backend.
+  /// Trigger backend data reset
   ///
-  /// # Access * Permission [model::Permissions::admin_server_maintenance_reset_data]
+  /// This API route will fail if backend config file field debug_allow_backend_data_reset is not true.  Registering new accounts will be prevented and all accounts will be deleted. After that manager will stop the backend, delete backend's data directory and start the backend.  This can be requested only once per backend process.  Account registering prevention is process specific, so restarting backend will disable that.  # Access * Permission [model::Permissions::admin_server_maintenance_reset_data]
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -1067,9 +1123,9 @@ class CommonAdminApi {
     );
   }
 
-  /// Trigger backend data reset which also restarts the backend.
+  /// Trigger backend data reset
   ///
-  /// # Access * Permission [model::Permissions::admin_server_maintenance_reset_data]
+  /// This API route will fail if backend config file field debug_allow_backend_data_reset is not true.  Registering new accounts will be prevented and all accounts will be deleted. After that manager will stop the backend, delete backend's data directory and start the backend.  This can be requested only once per backend process.  Account registering prevention is process specific, so restarting backend will disable that.  # Access * Permission [model::Permissions::admin_server_maintenance_reset_data]
   ///
   /// Parameters:
   ///

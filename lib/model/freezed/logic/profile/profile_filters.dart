@@ -6,23 +6,23 @@ import 'package:flutter/foundation.dart';
 import 'package:openapi/api.dart';
 import 'package:app/ui_utils/common_update_logic.dart';
 
-part 'profile_filtering_settings.freezed.dart';
+part 'profile_filters.freezed.dart';
 
 @freezed
-class ProfileFilteringSettingsData with _$ProfileFilteringSettingsData, UpdateStateProvider {
-  const ProfileFilteringSettingsData._();
+class ProfileFiltersData with _$ProfileFiltersData, UpdateStateProvider {
+  const ProfileFiltersData._();
 
-  factory ProfileFilteringSettingsData({
+  factory ProfileFiltersData({
     @Default(UpdateIdle()) UpdateState updateState,
     @Default(false) bool showAdvancedFilters,
     @Default(false) bool showOnlyFavorites,
-    GetProfileFilteringSettings? filteringSettings,
-    @Default({}) Map<int, ProfileAttributeFilterValueUpdate> attributeIdAndFilterValueMap,
-    required EditedFilteringSettingsData edited,
-  }) = _ProfileFilteringSettingsData;
+    GetProfileFilters? filters,
+    @Default({}) Map<int, ProfileAttributeFilterValueUpdate> attributeIdAndAttributeFilterMap,
+    required EditedFiltersData edited,
+  }) = _ProfileFiltersData;
 
   bool isSomeFilterEnabled() {
-    return valueAttributes().values.where((v) => v.enabled).firstOrNull != null ||
+    return valueAttributeFilters().values.where((v) => v.enabled).firstOrNull != null ||
       valueLastSeenTimeFilter() != null ||
       valueUnlimitedLikesFilter() != null ||
       valueMinDistanceKmFilter() != null ||
@@ -41,7 +41,7 @@ class ProfileFilteringSettingsData with _$ProfileFilteringSettingsData, UpdateSt
     }
   }
 
-  bool unsavedChanges() => edited.attributeIdAndFilterValueMap != null ||
+  bool unsavedChanges() => edited.attributeIdAndAttributeFilterMap != null ||
     edited.lastSeenTimeFilter.unsavedChanges() ||
     edited.unlimitedLikesFilter.unsavedChanges() ||
     edited.minDistanceKmFilter.unsavedChanges() ||
@@ -52,22 +52,22 @@ class ProfileFilteringSettingsData with _$ProfileFilteringSettingsData, UpdateSt
     edited.profileTextMaxCharactersFilter.unsavedChanges() ||
     edited.randomProfileOrder != null;
 
-  Map<int, ProfileAttributeFilterValueUpdate> valueAttributes() => edited.attributeIdAndFilterValueMap ?? attributeIdAndFilterValueMap;
-  LastSeenTimeFilter? valueLastSeenTimeFilter() => edited.lastSeenTimeFilter.editedValue(filteringSettings?.lastSeenTimeFilter);
-  bool? valueUnlimitedLikesFilter() => edited.unlimitedLikesFilter.editedValue(filteringSettings?.unlimitedLikesFilter);
-  MinDistanceKm? valueMinDistanceKmFilter() => edited.minDistanceKmFilter.editedValue(filteringSettings?.minDistanceKmFilter);
-  MaxDistanceKm? valueMaxDistanceKmFilter() => edited.maxDistanceKmFilter.editedValue(filteringSettings?.maxDistanceKmFilter);
-  ProfileCreatedTimeFilter? valueProfileCreatedTime() => edited.profileCreatedFilter.editedValue(filteringSettings?.profileCreatedFilter);
-  ProfileEditedTimeFilter? valueProfileEditedTime() => edited.profileEditedFilter.editedValue(filteringSettings?.profileEditedFilter);
-  ProfileTextMinCharactersFilter? valueProfileTextMinCharacters() => edited.profileTextMinCharactersFilter.editedValue(filteringSettings?.profileTextMinCharactersFilter);
-  ProfileTextMaxCharactersFilter? valueProfileTextMaxCharacters() => edited.profileTextMaxCharactersFilter.editedValue(filteringSettings?.profileTextMaxCharactersFilter);
-  bool valueRandomProfileOrder() => edited.randomProfileOrder ?? filteringSettings?.randomProfileOrder ?? false;
+  Map<int, ProfileAttributeFilterValueUpdate> valueAttributeFilters() => edited.attributeIdAndAttributeFilterMap ?? attributeIdAndAttributeFilterMap;
+  LastSeenTimeFilter? valueLastSeenTimeFilter() => edited.lastSeenTimeFilter.editedValue(filters?.lastSeenTimeFilter);
+  bool? valueUnlimitedLikesFilter() => edited.unlimitedLikesFilter.editedValue(filters?.unlimitedLikesFilter);
+  MinDistanceKm? valueMinDistanceKmFilter() => edited.minDistanceKmFilter.editedValue(filters?.minDistanceKmFilter);
+  MaxDistanceKm? valueMaxDistanceKmFilter() => edited.maxDistanceKmFilter.editedValue(filters?.maxDistanceKmFilter);
+  ProfileCreatedTimeFilter? valueProfileCreatedTime() => edited.profileCreatedFilter.editedValue(filters?.profileCreatedFilter);
+  ProfileEditedTimeFilter? valueProfileEditedTime() => edited.profileEditedFilter.editedValue(filters?.profileEditedFilter);
+  ProfileTextMinCharactersFilter? valueProfileTextMinCharacters() => edited.profileTextMinCharactersFilter.editedValue(filters?.profileTextMinCharactersFilter);
+  ProfileTextMaxCharactersFilter? valueProfileTextMaxCharacters() => edited.profileTextMaxCharactersFilter.editedValue(filters?.profileTextMaxCharactersFilter);
+  bool valueRandomProfileOrder() => edited.randomProfileOrder ?? filters?.randomProfileOrder ?? false;
 }
 
 @freezed
-class EditedFilteringSettingsData with _$EditedFilteringSettingsData {
-  factory EditedFilteringSettingsData({
-    Map<int, ProfileAttributeFilterValueUpdate>? attributeIdAndFilterValueMap,
+class EditedFiltersData with _$EditedFiltersData {
+  factory EditedFiltersData({
+    Map<int, ProfileAttributeFilterValueUpdate>? attributeIdAndAttributeFilterMap,
     @Default(NoEdit()) EditValue<LastSeenTimeFilter> lastSeenTimeFilter,
     @Default(NoEdit()) EditValue<bool> unlimitedLikesFilter,
     @Default(NoEdit()) EditValue<MinDistanceKm> minDistanceKmFilter,
@@ -77,7 +77,7 @@ class EditedFilteringSettingsData with _$EditedFilteringSettingsData {
     @Default(NoEdit()) EditValue<ProfileTextMinCharactersFilter> profileTextMinCharactersFilter,
     @Default(NoEdit()) EditValue<ProfileTextMaxCharactersFilter> profileTextMaxCharactersFilter,
     bool? randomProfileOrder,
-  }) = _EditedFilteringSettingsData;
+  }) = _EditedFiltersData;
 }
 
 /// Type for handling API null values

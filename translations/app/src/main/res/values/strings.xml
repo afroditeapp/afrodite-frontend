@@ -317,27 +317,27 @@
     <string name="content_management_screen_content_profile_content" description="Text for profile content">Profile image %s</string>
     <string name="content_management_screen_content_deletion_allowed_wait_time" description="Text for content deletion allowed wait time">Deletion possible starting at %s</string>
 
-    <!-- Profile filtering settings screen -->
-    <string name="profile_filtering_settings_screen_title" description="Title for profile filtering settings screen">Profile filters</string>
-    <string name="profile_filtering_settings_screen_disable_filters_action" description="Title for disable filters action">Disable filters</string>
-    <string name="profile_filtering_settings_screen_disable_filters_action_dialog_title" description="Title for disable filters action confirm dialog">Disable filters?</string>
-    <string name="profile_filtering_settings_screen_unlimited_likes_filter" description="Title for unlimited likes filter">Looking for a date for today</string>
-    <string name="profile_filtering_settings_screen_profile_last_seen_time_filter" description="Title for profile last seen time filter">Last seen</string>
-    <string name="profile_filtering_settings_screen_profile_last_seen_time_filter_online" description="Value text for profile last seen time filter when only online profiles should be shown">Online</string>
-    <string name="profile_filtering_settings_screen_profile_last_seen_time_filter_day" description="Value text for profile last seen time filter when day is selected">%s day</string>
-    <string name="profile_filtering_settings_screen_profile_last_seen_time_filter_days" description="Value text for profile last seen time filter when multiple days is selected">%s days</string>
-    <string name="profile_filtering_settings_screen_profile_last_seen_time_filter_all" description="Value text for profile last seen time filter when all is selected">Anytime</string>
-    <string name="profile_filtering_settings_screen_profile_created_filter" description="Title for profile created time filter">Profile created</string>
-    <string name="profile_filtering_settings_screen_profile_edited_filter" description="Title for profile edited time filter">Profile edited</string>
-    <string name="profile_filtering_settings_screen_distance_filter" description="Title text for distance filter">Distance</string>
-    <string name="profile_filtering_settings_screen_distance_filter_min_value" description="Value text for distance filter min value">Min %s km</string>
-    <string name="profile_filtering_settings_screen_distance_filter_max_value" description="Value text for distance filter max value">Max %s km</string>
-    <string name="profile_filtering_settings_screen_distance_filter_min_and_max_value" description="Value text for distance filter min and max value">%s-%s km</string>
-    <string name="profile_filtering_settings_screen_profile_text_filter" description="Value text for profile text filter">Profile text length</string>
-    <string name="profile_filtering_settings_screen_profile_text_filter_min_value" description="Value text for profile text filter when only min value is selected">Min %s characters</string>
-    <string name="profile_filtering_settings_screen_profile_text_filter_max_value" description="Value text for profile text filter when only max value is selected">Max %s characters</string>
-    <string name="profile_filtering_settings_screen_profile_text_filter_min_and_max_value" description="Value text for profile text filter when both min and max values are selected">%s-%s characters</string>
-    <string name="profile_filtering_settings_screen_updating_filters_failed" description="Snackbar text for notifying about failed profile filters update">Updating profile filters failed</string>
+    <!-- Profile filters screen -->
+    <string name="profile_filters_screen_title" description="Title for profile filters screen">Profile filters</string>
+    <string name="profile_filters_screen_disable_filters_action" description="Title for disable filters action">Disable filters</string>
+    <string name="profile_filters_screen_disable_filters_action_dialog_title" description="Title for disable filters action confirm dialog">Disable filters?</string>
+    <string name="profile_filters_screen_unlimited_likes_filter" description="Title for unlimited likes filter">Looking for a date for today</string>
+    <string name="profile_filters_screen_profile_last_seen_time_filter" description="Title for profile last seen time filter">Last seen</string>
+    <string name="profile_filters_screen_profile_last_seen_time_filter_online" description="Value text for profile last seen time filter when only online profiles should be shown">Online</string>
+    <string name="profile_filters_screen_profile_last_seen_time_filter_day" description="Value text for profile last seen time filter when day is selected">%s day</string>
+    <string name="profile_filters_screen_profile_last_seen_time_filter_days" description="Value text for profile last seen time filter when multiple days is selected">%s days</string>
+    <string name="profile_filters_screen_profile_last_seen_time_filter_all" description="Value text for profile last seen time filter when all is selected">Anytime</string>
+    <string name="profile_filters_screen_profile_created_filter" description="Title for profile created time filter">Profile created</string>
+    <string name="profile_filters_screen_profile_edited_filter" description="Title for profile edited time filter">Profile edited</string>
+    <string name="profile_filters_screen_distance_filter" description="Title text for distance filter">Distance</string>
+    <string name="profile_filters_screen_distance_filter_min_value" description="Value text for distance filter min value">Min %s km</string>
+    <string name="profile_filters_screen_distance_filter_max_value" description="Value text for distance filter max value">Max %s km</string>
+    <string name="profile_filters_screen_distance_filter_min_and_max_value" description="Value text for distance filter min and max value">%s-%s km</string>
+    <string name="profile_filters_screen_profile_text_filter" description="Value text for profile text filter">Profile text length</string>
+    <string name="profile_filters_screen_profile_text_filter_min_value" description="Value text for profile text filter when only min value is selected">Min %s characters</string>
+    <string name="profile_filters_screen_profile_text_filter_max_value" description="Value text for profile text filter when only max value is selected">Max %s characters</string>
+    <string name="profile_filters_screen_profile_text_filter_min_and_max_value" description="Value text for profile text filter when both min and max values are selected">%s-%s characters</string>
+    <string name="profile_filters_screen_updating_filters_failed" description="Snackbar text for notifying about failed profile filters update">Updating profile filters failed</string>
 
     <!-- Edit profile attribute filter value screen -->
     <string name="edit_attribute_filter_value_screen_title" description="Title for edit attribute filter screen">Edit filter</string>

@@ -18,7 +18,7 @@ part 'search.g.dart';
 class DaoReadSearch extends DatabaseAccessor<AccountForegroundDatabase> with _$DaoReadSearchMixin {
   DaoReadSearch(super.db);
 
-  Stream<api.GetProfileFilteringSettings?> watchProfileFilteringSettings() =>
+  Stream<api.GetProfileFilters?> watchProfileFilters() =>
     _watchColumnFilters((r) => r.jsonProfileFilters?.value);
 
   Stream<T?> _watchColumnFilters<T extends Object>(T? Function(ProfileFilter) extractColumn) {

@@ -22,8 +22,8 @@ class SearchSettingsData with _$SearchSettingsData, UpdateStateProvider {
     int? editedMaxAge,
     GenderSearchSettingsAll? editedGenderSearchSettingsAll,
     Gender? editedGender,
-    bool? editedSearchDistance,
-    bool? editedSearchFilters,
+    bool? editedSearchDistanceFilters,
+    bool? editedSearchAttributeFilters,
     bool? editedSearchNewProfiles,
     int? editedSearchWeekdays,
   }) = _SearchSettingsData;
@@ -33,8 +33,8 @@ class SearchSettingsData with _$SearchSettingsData, UpdateStateProvider {
   GenderSearchSettingsAll valueGenderSearchSettingsAll() =>
     editedGenderSearchSettingsAll ?? genderSearchSettingsAll;
   Gender? valueGender() => editedGender ?? gender;
-  bool valueSearchDistance() => editedSearchDistance ?? profileSettings.automaticProfileSearchDistance;
-  bool valueSearchFilters() => editedSearchFilters ?? profileSettings.automaticProfileSearchFilters;
+  bool valueSearchDistanceFilters() => editedSearchDistanceFilters ?? profileSettings.automaticProfileSearchDistanceFilters;
+  bool valueSearchAttributeFilters() => editedSearchAttributeFilters ?? profileSettings.automaticProfileSearchAttributeFilters;
   bool valueSearchNewProfiles() => editedSearchNewProfiles ?? profileSettings.automaticProfileSearchNewProfiles;
   int valueSearchWeekdays() => editedSearchWeekdays ?? profileSettings.automaticProfileSearchWeekdays;
 
@@ -42,8 +42,8 @@ class SearchSettingsData with _$SearchSettingsData, UpdateStateProvider {
     editedMaxAge != null ||
     editedGenderSearchSettingsAll != null ||
     editedGender != null ||
-    editedSearchDistance != null ||
-    editedSearchFilters != null ||
+    editedSearchDistanceFilters != null ||
+    editedSearchAttributeFilters != null ||
     editedSearchNewProfiles != null ||
     editedSearchWeekdays != null;
 }

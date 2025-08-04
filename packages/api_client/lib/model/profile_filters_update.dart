@@ -10,10 +10,10 @@
 
 part of openapi.api;
 
-class ProfileFilteringSettingsUpdate {
-  /// Returns a new [ProfileFilteringSettingsUpdate] instance.
-  ProfileFilteringSettingsUpdate({
-    this.filters = const [],
+class ProfileFiltersUpdate {
+  /// Returns a new [ProfileFiltersUpdate] instance.
+  ProfileFiltersUpdate({
+    this.attributeFilters = const [],
     this.lastSeenTimeFilter,
     this.maxDistanceKmFilter,
     this.minDistanceKmFilter,
@@ -25,7 +25,7 @@ class ProfileFilteringSettingsUpdate {
     this.unlimitedLikesFilter,
   });
 
-  List<ProfileAttributeFilterValueUpdate> filters;
+  List<ProfileAttributeFilterValueUpdate> attributeFilters;
 
   LastSeenTimeFilter? lastSeenTimeFilter;
 
@@ -46,8 +46,8 @@ class ProfileFilteringSettingsUpdate {
   bool? unlimitedLikesFilter;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is ProfileFilteringSettingsUpdate &&
-    _deepEquality.equals(other.filters, filters) &&
+  bool operator ==(Object other) => identical(this, other) || other is ProfileFiltersUpdate &&
+    _deepEquality.equals(other.attributeFilters, attributeFilters) &&
     other.lastSeenTimeFilter == lastSeenTimeFilter &&
     other.maxDistanceKmFilter == maxDistanceKmFilter &&
     other.minDistanceKmFilter == minDistanceKmFilter &&
@@ -61,7 +61,7 @@ class ProfileFilteringSettingsUpdate {
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (filters.hashCode) +
+    (attributeFilters.hashCode) +
     (lastSeenTimeFilter == null ? 0 : lastSeenTimeFilter!.hashCode) +
     (maxDistanceKmFilter == null ? 0 : maxDistanceKmFilter!.hashCode) +
     (minDistanceKmFilter == null ? 0 : minDistanceKmFilter!.hashCode) +
@@ -73,11 +73,11 @@ class ProfileFilteringSettingsUpdate {
     (unlimitedLikesFilter == null ? 0 : unlimitedLikesFilter!.hashCode);
 
   @override
-  String toString() => 'ProfileFilteringSettingsUpdate[filters=$filters, lastSeenTimeFilter=$lastSeenTimeFilter, maxDistanceKmFilter=$maxDistanceKmFilter, minDistanceKmFilter=$minDistanceKmFilter, profileCreatedFilter=$profileCreatedFilter, profileEditedFilter=$profileEditedFilter, profileTextMaxCharactersFilter=$profileTextMaxCharactersFilter, profileTextMinCharactersFilter=$profileTextMinCharactersFilter, randomProfileOrder=$randomProfileOrder, unlimitedLikesFilter=$unlimitedLikesFilter]';
+  String toString() => 'ProfileFiltersUpdate[attributeFilters=$attributeFilters, lastSeenTimeFilter=$lastSeenTimeFilter, maxDistanceKmFilter=$maxDistanceKmFilter, minDistanceKmFilter=$minDistanceKmFilter, profileCreatedFilter=$profileCreatedFilter, profileEditedFilter=$profileEditedFilter, profileTextMaxCharactersFilter=$profileTextMaxCharactersFilter, profileTextMinCharactersFilter=$profileTextMinCharactersFilter, randomProfileOrder=$randomProfileOrder, unlimitedLikesFilter=$unlimitedLikesFilter]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'filters'] = this.filters;
+      json[r'attribute_filters'] = this.attributeFilters;
     if (this.lastSeenTimeFilter != null) {
       json[r'last_seen_time_filter'] = this.lastSeenTimeFilter;
     } else {
@@ -122,10 +122,10 @@ class ProfileFilteringSettingsUpdate {
     return json;
   }
 
-  /// Returns a new [ProfileFilteringSettingsUpdate] instance and imports its values from
+  /// Returns a new [ProfileFiltersUpdate] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static ProfileFilteringSettingsUpdate? fromJson(dynamic value) {
+  static ProfileFiltersUpdate? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -134,14 +134,14 @@ class ProfileFilteringSettingsUpdate {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "ProfileFilteringSettingsUpdate[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "ProfileFilteringSettingsUpdate[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "ProfileFiltersUpdate[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "ProfileFiltersUpdate[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return ProfileFilteringSettingsUpdate(
-        filters: ProfileAttributeFilterValueUpdate.listFromJson(json[r'filters']),
+      return ProfileFiltersUpdate(
+        attributeFilters: ProfileAttributeFilterValueUpdate.listFromJson(json[r'attribute_filters']),
         lastSeenTimeFilter: LastSeenTimeFilter.fromJson(json[r'last_seen_time_filter']),
         maxDistanceKmFilter: MaxDistanceKm.fromJson(json[r'max_distance_km_filter']),
         minDistanceKmFilter: MinDistanceKm.fromJson(json[r'min_distance_km_filter']),
@@ -156,11 +156,11 @@ class ProfileFilteringSettingsUpdate {
     return null;
   }
 
-  static List<ProfileFilteringSettingsUpdate> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <ProfileFilteringSettingsUpdate>[];
+  static List<ProfileFiltersUpdate> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <ProfileFiltersUpdate>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = ProfileFilteringSettingsUpdate.fromJson(row);
+        final value = ProfileFiltersUpdate.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -169,12 +169,12 @@ class ProfileFilteringSettingsUpdate {
     return result.toList(growable: growable);
   }
 
-  static Map<String, ProfileFilteringSettingsUpdate> mapFromJson(dynamic json) {
-    final map = <String, ProfileFilteringSettingsUpdate>{};
+  static Map<String, ProfileFiltersUpdate> mapFromJson(dynamic json) {
+    final map = <String, ProfileFiltersUpdate>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = ProfileFilteringSettingsUpdate.fromJson(entry.value);
+        final value = ProfileFiltersUpdate.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -183,14 +183,14 @@ class ProfileFilteringSettingsUpdate {
     return map;
   }
 
-  // maps a json object with a list of ProfileFilteringSettingsUpdate-objects as value to a dart map
-  static Map<String, List<ProfileFilteringSettingsUpdate>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<ProfileFilteringSettingsUpdate>>{};
+  // maps a json object with a list of ProfileFiltersUpdate-objects as value to a dart map
+  static Map<String, List<ProfileFiltersUpdate>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<ProfileFiltersUpdate>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = ProfileFilteringSettingsUpdate.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = ProfileFiltersUpdate.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;
@@ -198,7 +198,7 @@ class ProfileFilteringSettingsUpdate {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'filters',
+    'attribute_filters',
   };
 }
 

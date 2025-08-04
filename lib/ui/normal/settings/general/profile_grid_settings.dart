@@ -1,6 +1,6 @@
 
-import 'package:app/logic/profile/profile_filtering_settings.dart';
-import 'package:app/model/freezed/logic/profile/profile_filtering_settings.dart';
+import 'package:app/logic/profile/profile_filters.dart';
+import 'package:app/model/freezed/logic/profile/profile_filters.dart';
 import 'package:app/ui/normal/settings.dart';
 import 'package:app/ui/normal/settings/general/image_settings.dart';
 import 'package:app/ui_utils/common_update_logic.dart';
@@ -18,7 +18,7 @@ import 'package:app/model/freezed/logic/settings/ui_settings.dart';
 Future<void> openProfileGridSettingsScreen(
   BuildContext context,
 ) {
-  final bloc = context.read<ProfileFilteringSettingsBloc>();
+  final bloc = context.read<ProfileFiltersBloc>();
   bloc.add(ResetEditedValues());
   final pageKey = PageKey();
   return MyNavigator.pushWithKey(
@@ -160,7 +160,7 @@ class _ProfileGridSettingsScreenState extends State<ProfileGridSettingsScreen> {
   }
 
   Widget randomProfileOrderSetting(BuildContext context) {
-    return BlocBuilder<ProfileFilteringSettingsBloc, ProfileFilteringSettingsData>(
+    return BlocBuilder<ProfileFiltersBloc, ProfileFiltersData>(
       builder: (context, state) {
         if (previousProfileFiltersUpdateState is! UpdateIdle && state.updateState is UpdateIdle) {
           showSnackBar(context.strings.generic_setting_saved);
@@ -178,7 +178,7 @@ class _ProfileGridSettingsScreenState extends State<ProfileGridSettingsScreen> {
             if (state.updateState is! UpdateIdle) {
               showSnackBar(context.strings.generic_previous_action_in_progress);
             } else {
-              context.read<ProfileFilteringSettingsBloc>().add(SetRandomProfileOrderAndSaveSettings(value));
+              context.read<ProfileFiltersBloc>().add(SetRandomProfileOrderAndSaveSettings(value));
             }
           },
         );

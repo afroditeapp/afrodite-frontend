@@ -53,7 +53,7 @@ class ApiProvider {
 
   void setAccessToken(AccessToken token) {
     var auth = ApiKeyAuth("header", accessTokenHeaderName);
-    auth.apiKey = token.accessToken;
+    auth.apiKey = token.token;
     _apiKey = auth;
     _refreshApiClient(serverAddress, auth);
   }

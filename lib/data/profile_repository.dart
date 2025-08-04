@@ -75,7 +75,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
   @override
   Future<Result<void, void>> onLoginDataSync() async {
     return await reloadLocation()
-      .andThen((_) => reloadProfileFilteringSettings())
+      .andThen((_) => reloadProfileFilters())
       .andThen((_) => reloadSearchAgeRange())
       .andThen((_) => reloadSearchGroups())
       .andThen((_) async {
@@ -95,9 +95,9 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
         await reloadLocation();
       }
 
-      final attributeFilters = await db.accountStreamSingle((db) => db.search.watchProfileFilteringSettings()).ok();
+      final attributeFilters = await db.accountStreamSingle((db) => db.search.watchProfileFilters()).ok();
       if (attributeFilters == null) {
-        await reloadProfileFilteringSettings();
+        await reloadProfileFilters();
       }
 
       final searchAgeRangeMin = await db.accountStreamSingle((db) => db.search.watchProfileSearchAgeRangeMin()).ok();
@@ -129,7 +129,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
   Future<void> onInitialSetupComplete() async {
     await reloadLocation();
     await reloadMyProfile();
-    await reloadProfileFilteringSettings();
+    await reloadProfileFilters();
     await reloadSearchAgeRange();
     await reloadSearchGroups();
     // The account state might still be InitialSetup as events from server
@@ -270,7 +270,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
     }
   }
 
-  Future<void> changeProfileFilteringSettings(bool showOnlyFavorites) async {
+  Future<void> changeProfileFilterFavorites(bool showOnlyFavorites) async {
     await db.accountAction(
       (db) => db.app.updateProfileFilterFavorites(showOnlyFavorites),
     );
@@ -299,34 +299,34 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
       return const Err(null);
     }
 
-    final List<ProfileAttributeQueryItem> updatedAttributes;
+    final List<ProfileAttributesConfigQueryItem> updatedAttributes;
     if (attributeRefreshList.isEmpty) {
       updatedAttributes = [];
     } else {
-      final r = await _api.profile((api) => api.postGetQueryAvailableProfileAttributes(ProfileAttributeQuery(values: attributeRefreshList))).ok();
+      final r = await _api.profile((api) => api.postGetQueryProfileAttributesConfig(ProfileAttributesConfigQuery(values: attributeRefreshList))).ok();
       if (r == null) {
         return const Err(null);
       }
       updatedAttributes = r.values;
     }
 
-    final CustomReportsFileHash? customReportsFileHash;
+    final CustomReportsConfigHash? customReportsConfigHash;
     final CustomReportsConfig? customReportsConfig;
     switch (await _downloadCustomReportsIfNeeded(config.customReports)) {
       case Err():
         return const Err(null);
-      case Ok(v: (final fileHash, final config)):
-        customReportsFileHash = fileHash;
+      case Ok(v: (final hash, final config)):
+        customReportsConfigHash = hash;
         customReportsConfig = config;
     }
 
-    final ClientFeaturesFileHash? clientFeaturesFileHash;
+    final ClientFeaturesConfigHash? clientFeaturesConfigHash;
     final ClientFeaturesConfig? clientFeaturesConfig;
     switch (await _downloadClientFeaturesIfNeeded(config.clientFeatures)) {
       case Err():
         return const Err(null);
-      case Ok(v: (final fileHash, final config)):
-        clientFeaturesFileHash = fileHash;
+      case Ok(v: (final hash, final config)):
+        clientFeaturesConfigHash = hash;
         clientFeaturesConfig = config;
     }
 
@@ -336,81 +336,81 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
         config.syncVersion,
         latestAttributes,
         updatedAttributes,
-        customReportsFileHash,
+        customReportsConfigHash,
         customReportsConfig,
-        clientFeaturesFileHash,
+        clientFeaturesConfigHash,
         clientFeaturesConfig,
       ),
     );
     return Ok(config);
   }
 
-  Future<Result<(CustomReportsFileHash?, CustomReportsConfig?), void>> _downloadCustomReportsIfNeeded(
-    CustomReportsFileHash? latestFileHash,
+  Future<Result<(CustomReportsConfigHash?, CustomReportsConfig?), void>> _downloadCustomReportsIfNeeded(
+    CustomReportsConfigHash? latestHash,
   ) async {
-    final currentFileHash = await db.accountStream(
-      (db) => db.config.watchCustomReportsFileHash(),
+    final currentHash = await db.accountStream(
+      (db) => db.config.watchCustomReportsConfigHash(),
     ).firstOrNull;
     final currentConfig = await db.accountStream(
       (db) => db.config.watchCustomReportsConfig(),
     ).firstOrNull;
 
-    final CustomReportsFileHash? fileHash;
+    final CustomReportsConfigHash? hash;
     final CustomReportsConfig? config;
-    if (latestFileHash != null) {
-      if (currentFileHash == latestFileHash && currentConfig != null) {
+    if (latestHash != null) {
+      if (currentHash == latestHash && currentConfig != null) {
         // Latest config already downloaded
-        fileHash = currentFileHash;
+        hash = currentHash;
         config = currentConfig;
       } else {
-        final latestConfig = await _api.account((api) => api.postGetCustomReportsConfig(latestFileHash)).ok();
+        final latestConfig = await _api.account((api) => api.postGetCustomReportsConfig(latestHash)).ok();
         if (latestConfig == null) {
           return const Err(null);
         }
-        fileHash = latestFileHash;
+        hash = latestHash;
         config = latestConfig.config;
       }
     } else {
       // Custom reports disabled
-      fileHash = null;
+      hash = null;
       config = null;
     }
 
-    return Ok((fileHash, config));
+    return Ok((hash, config));
   }
 
-  Future<Result<(ClientFeaturesFileHash?, ClientFeaturesConfig?), void>> _downloadClientFeaturesIfNeeded(
-    ClientFeaturesFileHash? latestFileHash,
+  Future<Result<(ClientFeaturesConfigHash?, ClientFeaturesConfig?), void>> _downloadClientFeaturesIfNeeded(
+    ClientFeaturesConfigHash? latestHash,
   ) async {
-    final currentFileHash = await db.accountStream(
-      (db) => db.config.watchClientFeaturesFileHash(),
+    final currentHash = await db.accountStream(
+      (db) => db.config.watchClientFeaturesConfigHash(),
     ).firstOrNull;
     final currentConfig = await db.accountStream(
       (db) => db.config.watchClientFeaturesConfig(),
     ).firstOrNull;
 
-    final ClientFeaturesFileHash? fileHash;
+    final ClientFeaturesConfigHash? hash;
     final ClientFeaturesConfig? config;
-    if (latestFileHash != null) {
-      if (currentFileHash == latestFileHash && currentConfig != null) {
+    if (latestHash != null) {
+      if (currentHash == latestHash && currentConfig != null) {
         // Latest config already downloaded
-        fileHash = currentFileHash;
+        hash = currentHash;
         config = currentConfig;
       } else {
-        final latestConfig = await _api.account((api) => api.postGetClientFeaturesConfig(latestFileHash)).ok();
+        final latestConfig = await _api.account((api) => api.postGetClientFeaturesConfig(latestHash)).ok();
         if (latestConfig == null) {
           return const Err(null);
         }
-        fileHash = latestFileHash;
+        hash = latestHash;
         config = latestConfig.config;
       }
     } else {
       // Client features disabled
-      fileHash = null;
+      hash = null;
       config = null;
     }
 
-    return Ok((fileHash, config));
+    return Ok((hash, config));
   }
 
   Future<Result<void, void>> reloadMyProfile() async {
@@ -439,16 +439,16 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
       ));
   }
 
-  Future<Result<void, void>> reloadProfileFilteringSettings() async {
-    return await _api.profile((api) => api.getProfileFilteringSettings())
+  Future<Result<void, void>> reloadProfileFilters() async {
+    return await _api.profile((api) => api.getProfileFilters())
       .emptyErr()
       .andThen((f) => db.accountAction(
-        (db) => db.search.updateProfileFilteringSettings(f),
+        (db) => db.search.updateProfileFilters(f),
       ));
   }
 
-  Future<Result<void, void>> updateProfileFilteringSettings(
-    Map<int, ProfileAttributeFilterValueUpdate> attributeIdAndFilterValueMap,
+  Future<Result<void, void>> updateProfileFilters(
+    Map<int, ProfileAttributeFilterValueUpdate> attributeIdAndAttributeFilterMap,
     LastSeenTimeFilter? lastSeenTimeFilter,
     bool? unlimitedLikesFilter,
     MinDistanceKm? minDistanceFilter,
@@ -459,8 +459,8 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
     ProfileTextMaxCharactersFilter? profileTextMaxCharactersFilter,
     bool randomProfileOrder,
   ) async {
-    final update = ProfileFilteringSettingsUpdate(
-      filters: attributeIdAndFilterValueMap.values.toList(),
+    final update = ProfileFiltersUpdate(
+      attributeFilters: attributeIdAndAttributeFilterMap.values.toList(),
       lastSeenTimeFilter: lastSeenTimeFilter,
       unlimitedLikesFilter: unlimitedLikesFilter,
       minDistanceKmFilter: minDistanceFilter,
@@ -471,8 +471,8 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
       profileTextMaxCharactersFilter: profileTextMaxCharactersFilter,
       randomProfileOrder: randomProfileOrder,
     );
-    return await _api.profileAction((api) => api.postProfileFilteringSettings(update))
-      .onOk(() => reloadProfileFilteringSettings())
+    return await _api.profileAction((api) => api.postProfileFilters(update))
+      .onOk(() => reloadProfileFilters())
       .empty();
   }
 

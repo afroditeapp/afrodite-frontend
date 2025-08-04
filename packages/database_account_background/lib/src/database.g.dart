@@ -532,32 +532,32 @@ class $AppNotificationSettingsTable extends schema.AppNotificationSettings
           'CHECK ("automatic_profile_search" IN (0, 1))',
         ),
       );
-  static const VerificationMeta _automaticProfileSearchDistanceMeta =
-      const VerificationMeta('automaticProfileSearchDistance');
+  static const VerificationMeta _automaticProfileSearchDistanceFiltersMeta =
+      const VerificationMeta('automaticProfileSearchDistanceFilters');
   @override
-  late final GeneratedColumn<bool> automaticProfileSearchDistance =
+  late final GeneratedColumn<bool> automaticProfileSearchDistanceFilters =
       GeneratedColumn<bool>(
-        'automatic_profile_search_distance',
+        'automatic_profile_search_distance_filters',
         aliasedName,
         true,
         type: DriftSqlType.bool,
         requiredDuringInsert: false,
         defaultConstraints: GeneratedColumn.constraintIsAlways(
-          'CHECK ("automatic_profile_search_distance" IN (0, 1))',
+          'CHECK ("automatic_profile_search_distance_filters" IN (0, 1))',
         ),
       );
-  static const VerificationMeta _automaticProfileSearchFiltersMeta =
-      const VerificationMeta('automaticProfileSearchFilters');
+  static const VerificationMeta _automaticProfileSearchAttributeFiltersMeta =
+      const VerificationMeta('automaticProfileSearchAttributeFilters');
   @override
-  late final GeneratedColumn<bool> automaticProfileSearchFilters =
+  late final GeneratedColumn<bool> automaticProfileSearchAttributeFilters =
       GeneratedColumn<bool>(
-        'automatic_profile_search_filters',
+        'automatic_profile_search_attribute_filters',
         aliasedName,
         true,
         type: DriftSqlType.bool,
         requiredDuringInsert: false,
         defaultConstraints: GeneratedColumn.constraintIsAlways(
-          'CHECK ("automatic_profile_search_filters" IN (0, 1))',
+          'CHECK ("automatic_profile_search_attribute_filters" IN (0, 1))',
         ),
       );
   static const VerificationMeta _automaticProfileSearchNewProfilesMeta =
@@ -594,8 +594,8 @@ class $AppNotificationSettingsTable extends schema.AppNotificationSettings
     profileTextModerationCompleted,
     news,
     automaticProfileSearch,
-    automaticProfileSearchDistance,
-    automaticProfileSearchFilters,
+    automaticProfileSearchDistanceFilters,
+    automaticProfileSearchAttributeFilters,
     automaticProfileSearchNewProfiles,
     automaticProfileSearchWeekdays,
   ];
@@ -659,21 +659,21 @@ class $AppNotificationSettingsTable extends schema.AppNotificationSettings
         ),
       );
     }
-    if (data.containsKey('automatic_profile_search_distance')) {
+    if (data.containsKey('automatic_profile_search_distance_filters')) {
       context.handle(
-        _automaticProfileSearchDistanceMeta,
-        automaticProfileSearchDistance.isAcceptableOrUnknown(
-          data['automatic_profile_search_distance']!,
-          _automaticProfileSearchDistanceMeta,
+        _automaticProfileSearchDistanceFiltersMeta,
+        automaticProfileSearchDistanceFilters.isAcceptableOrUnknown(
+          data['automatic_profile_search_distance_filters']!,
+          _automaticProfileSearchDistanceFiltersMeta,
         ),
       );
     }
-    if (data.containsKey('automatic_profile_search_filters')) {
+    if (data.containsKey('automatic_profile_search_attribute_filters')) {
       context.handle(
-        _automaticProfileSearchFiltersMeta,
-        automaticProfileSearchFilters.isAcceptableOrUnknown(
-          data['automatic_profile_search_filters']!,
-          _automaticProfileSearchFiltersMeta,
+        _automaticProfileSearchAttributeFiltersMeta,
+        automaticProfileSearchAttributeFilters.isAcceptableOrUnknown(
+          data['automatic_profile_search_attribute_filters']!,
+          _automaticProfileSearchAttributeFiltersMeta,
         ),
       );
     }
@@ -732,13 +732,13 @@ class $AppNotificationSettingsTable extends schema.AppNotificationSettings
         DriftSqlType.bool,
         data['${effectivePrefix}automatic_profile_search'],
       ),
-      automaticProfileSearchDistance: attachedDatabase.typeMapping.read(
+      automaticProfileSearchDistanceFilters: attachedDatabase.typeMapping.read(
         DriftSqlType.bool,
-        data['${effectivePrefix}automatic_profile_search_distance'],
+        data['${effectivePrefix}automatic_profile_search_distance_filters'],
       ),
-      automaticProfileSearchFilters: attachedDatabase.typeMapping.read(
+      automaticProfileSearchAttributeFilters: attachedDatabase.typeMapping.read(
         DriftSqlType.bool,
-        data['${effectivePrefix}automatic_profile_search_filters'],
+        data['${effectivePrefix}automatic_profile_search_attribute_filters'],
       ),
       automaticProfileSearchNewProfiles: attachedDatabase.typeMapping.read(
         DriftSqlType.bool,
@@ -766,8 +766,8 @@ class AppNotificationSetting extends DataClass
   final bool? profileTextModerationCompleted;
   final bool? news;
   final bool? automaticProfileSearch;
-  final bool? automaticProfileSearchDistance;
-  final bool? automaticProfileSearchFilters;
+  final bool? automaticProfileSearchDistanceFilters;
+  final bool? automaticProfileSearchAttributeFilters;
   final bool? automaticProfileSearchNewProfiles;
   final int? automaticProfileSearchWeekdays;
   const AppNotificationSetting({
@@ -778,8 +778,8 @@ class AppNotificationSetting extends DataClass
     this.profileTextModerationCompleted,
     this.news,
     this.automaticProfileSearch,
-    this.automaticProfileSearchDistance,
-    this.automaticProfileSearchFilters,
+    this.automaticProfileSearchDistanceFilters,
+    this.automaticProfileSearchAttributeFilters,
     this.automaticProfileSearchNewProfiles,
     this.automaticProfileSearchWeekdays,
   });
@@ -809,14 +809,14 @@ class AppNotificationSetting extends DataClass
     if (!nullToAbsent || automaticProfileSearch != null) {
       map['automatic_profile_search'] = Variable<bool>(automaticProfileSearch);
     }
-    if (!nullToAbsent || automaticProfileSearchDistance != null) {
-      map['automatic_profile_search_distance'] = Variable<bool>(
-        automaticProfileSearchDistance,
+    if (!nullToAbsent || automaticProfileSearchDistanceFilters != null) {
+      map['automatic_profile_search_distance_filters'] = Variable<bool>(
+        automaticProfileSearchDistanceFilters,
       );
     }
-    if (!nullToAbsent || automaticProfileSearchFilters != null) {
-      map['automatic_profile_search_filters'] = Variable<bool>(
-        automaticProfileSearchFilters,
+    if (!nullToAbsent || automaticProfileSearchAttributeFilters != null) {
+      map['automatic_profile_search_attribute_filters'] = Variable<bool>(
+        automaticProfileSearchAttributeFilters,
       );
     }
     if (!nullToAbsent || automaticProfileSearchNewProfiles != null) {
@@ -853,14 +853,14 @@ class AppNotificationSetting extends DataClass
       automaticProfileSearch: automaticProfileSearch == null && nullToAbsent
           ? const Value.absent()
           : Value(automaticProfileSearch),
-      automaticProfileSearchDistance:
-          automaticProfileSearchDistance == null && nullToAbsent
+      automaticProfileSearchDistanceFilters:
+          automaticProfileSearchDistanceFilters == null && nullToAbsent
           ? const Value.absent()
-          : Value(automaticProfileSearchDistance),
-      automaticProfileSearchFilters:
-          automaticProfileSearchFilters == null && nullToAbsent
+          : Value(automaticProfileSearchDistanceFilters),
+      automaticProfileSearchAttributeFilters:
+          automaticProfileSearchAttributeFilters == null && nullToAbsent
           ? const Value.absent()
-          : Value(automaticProfileSearchFilters),
+          : Value(automaticProfileSearchAttributeFilters),
       automaticProfileSearchNewProfiles:
           automaticProfileSearchNewProfiles == null && nullToAbsent
           ? const Value.absent()
@@ -891,11 +891,11 @@ class AppNotificationSetting extends DataClass
       automaticProfileSearch: serializer.fromJson<bool?>(
         json['automaticProfileSearch'],
       ),
-      automaticProfileSearchDistance: serializer.fromJson<bool?>(
-        json['automaticProfileSearchDistance'],
+      automaticProfileSearchDistanceFilters: serializer.fromJson<bool?>(
+        json['automaticProfileSearchDistanceFilters'],
       ),
-      automaticProfileSearchFilters: serializer.fromJson<bool?>(
-        json['automaticProfileSearchFilters'],
+      automaticProfileSearchAttributeFilters: serializer.fromJson<bool?>(
+        json['automaticProfileSearchAttributeFilters'],
       ),
       automaticProfileSearchNewProfiles: serializer.fromJson<bool?>(
         json['automaticProfileSearchNewProfiles'],
@@ -922,11 +922,11 @@ class AppNotificationSetting extends DataClass
       'automaticProfileSearch': serializer.toJson<bool?>(
         automaticProfileSearch,
       ),
-      'automaticProfileSearchDistance': serializer.toJson<bool?>(
-        automaticProfileSearchDistance,
+      'automaticProfileSearchDistanceFilters': serializer.toJson<bool?>(
+        automaticProfileSearchDistanceFilters,
       ),
-      'automaticProfileSearchFilters': serializer.toJson<bool?>(
-        automaticProfileSearchFilters,
+      'automaticProfileSearchAttributeFilters': serializer.toJson<bool?>(
+        automaticProfileSearchAttributeFilters,
       ),
       'automaticProfileSearchNewProfiles': serializer.toJson<bool?>(
         automaticProfileSearchNewProfiles,
@@ -945,8 +945,8 @@ class AppNotificationSetting extends DataClass
     Value<bool?> profileTextModerationCompleted = const Value.absent(),
     Value<bool?> news = const Value.absent(),
     Value<bool?> automaticProfileSearch = const Value.absent(),
-    Value<bool?> automaticProfileSearchDistance = const Value.absent(),
-    Value<bool?> automaticProfileSearchFilters = const Value.absent(),
+    Value<bool?> automaticProfileSearchDistanceFilters = const Value.absent(),
+    Value<bool?> automaticProfileSearchAttributeFilters = const Value.absent(),
     Value<bool?> automaticProfileSearchNewProfiles = const Value.absent(),
     Value<int?> automaticProfileSearchWeekdays = const Value.absent(),
   }) => AppNotificationSetting(
@@ -963,12 +963,14 @@ class AppNotificationSetting extends DataClass
     automaticProfileSearch: automaticProfileSearch.present
         ? automaticProfileSearch.value
         : this.automaticProfileSearch,
-    automaticProfileSearchDistance: automaticProfileSearchDistance.present
-        ? automaticProfileSearchDistance.value
-        : this.automaticProfileSearchDistance,
-    automaticProfileSearchFilters: automaticProfileSearchFilters.present
-        ? automaticProfileSearchFilters.value
-        : this.automaticProfileSearchFilters,
+    automaticProfileSearchDistanceFilters:
+        automaticProfileSearchDistanceFilters.present
+        ? automaticProfileSearchDistanceFilters.value
+        : this.automaticProfileSearchDistanceFilters,
+    automaticProfileSearchAttributeFilters:
+        automaticProfileSearchAttributeFilters.present
+        ? automaticProfileSearchAttributeFilters.value
+        : this.automaticProfileSearchAttributeFilters,
     automaticProfileSearchNewProfiles: automaticProfileSearchNewProfiles.present
         ? automaticProfileSearchNewProfiles.value
         : this.automaticProfileSearchNewProfiles,
@@ -995,13 +997,14 @@ class AppNotificationSetting extends DataClass
       automaticProfileSearch: data.automaticProfileSearch.present
           ? data.automaticProfileSearch.value
           : this.automaticProfileSearch,
-      automaticProfileSearchDistance:
-          data.automaticProfileSearchDistance.present
-          ? data.automaticProfileSearchDistance.value
-          : this.automaticProfileSearchDistance,
-      automaticProfileSearchFilters: data.automaticProfileSearchFilters.present
-          ? data.automaticProfileSearchFilters.value
-          : this.automaticProfileSearchFilters,
+      automaticProfileSearchDistanceFilters:
+          data.automaticProfileSearchDistanceFilters.present
+          ? data.automaticProfileSearchDistanceFilters.value
+          : this.automaticProfileSearchDistanceFilters,
+      automaticProfileSearchAttributeFilters:
+          data.automaticProfileSearchAttributeFilters.present
+          ? data.automaticProfileSearchAttributeFilters.value
+          : this.automaticProfileSearchAttributeFilters,
       automaticProfileSearchNewProfiles:
           data.automaticProfileSearchNewProfiles.present
           ? data.automaticProfileSearchNewProfiles.value
@@ -1028,10 +1031,10 @@ class AppNotificationSetting extends DataClass
           ..write('news: $news, ')
           ..write('automaticProfileSearch: $automaticProfileSearch, ')
           ..write(
-            'automaticProfileSearchDistance: $automaticProfileSearchDistance, ',
+            'automaticProfileSearchDistanceFilters: $automaticProfileSearchDistanceFilters, ',
           )
           ..write(
-            'automaticProfileSearchFilters: $automaticProfileSearchFilters, ',
+            'automaticProfileSearchAttributeFilters: $automaticProfileSearchAttributeFilters, ',
           )
           ..write(
             'automaticProfileSearchNewProfiles: $automaticProfileSearchNewProfiles, ',
@@ -1052,8 +1055,8 @@ class AppNotificationSetting extends DataClass
     profileTextModerationCompleted,
     news,
     automaticProfileSearch,
-    automaticProfileSearchDistance,
-    automaticProfileSearchFilters,
+    automaticProfileSearchDistanceFilters,
+    automaticProfileSearchAttributeFilters,
     automaticProfileSearchNewProfiles,
     automaticProfileSearchWeekdays,
   );
@@ -1070,10 +1073,10 @@ class AppNotificationSetting extends DataClass
               this.profileTextModerationCompleted &&
           other.news == this.news &&
           other.automaticProfileSearch == this.automaticProfileSearch &&
-          other.automaticProfileSearchDistance ==
-              this.automaticProfileSearchDistance &&
-          other.automaticProfileSearchFilters ==
-              this.automaticProfileSearchFilters &&
+          other.automaticProfileSearchDistanceFilters ==
+              this.automaticProfileSearchDistanceFilters &&
+          other.automaticProfileSearchAttributeFilters ==
+              this.automaticProfileSearchAttributeFilters &&
           other.automaticProfileSearchNewProfiles ==
               this.automaticProfileSearchNewProfiles &&
           other.automaticProfileSearchWeekdays ==
@@ -1089,8 +1092,8 @@ class AppNotificationSettingsCompanion
   final Value<bool?> profileTextModerationCompleted;
   final Value<bool?> news;
   final Value<bool?> automaticProfileSearch;
-  final Value<bool?> automaticProfileSearchDistance;
-  final Value<bool?> automaticProfileSearchFilters;
+  final Value<bool?> automaticProfileSearchDistanceFilters;
+  final Value<bool?> automaticProfileSearchAttributeFilters;
   final Value<bool?> automaticProfileSearchNewProfiles;
   final Value<int?> automaticProfileSearchWeekdays;
   const AppNotificationSettingsCompanion({
@@ -1101,8 +1104,8 @@ class AppNotificationSettingsCompanion
     this.profileTextModerationCompleted = const Value.absent(),
     this.news = const Value.absent(),
     this.automaticProfileSearch = const Value.absent(),
-    this.automaticProfileSearchDistance = const Value.absent(),
-    this.automaticProfileSearchFilters = const Value.absent(),
+    this.automaticProfileSearchDistanceFilters = const Value.absent(),
+    this.automaticProfileSearchAttributeFilters = const Value.absent(),
     this.automaticProfileSearchNewProfiles = const Value.absent(),
     this.automaticProfileSearchWeekdays = const Value.absent(),
   });
@@ -1114,8 +1117,8 @@ class AppNotificationSettingsCompanion
     this.profileTextModerationCompleted = const Value.absent(),
     this.news = const Value.absent(),
     this.automaticProfileSearch = const Value.absent(),
-    this.automaticProfileSearchDistance = const Value.absent(),
-    this.automaticProfileSearchFilters = const Value.absent(),
+    this.automaticProfileSearchDistanceFilters = const Value.absent(),
+    this.automaticProfileSearchAttributeFilters = const Value.absent(),
     this.automaticProfileSearchNewProfiles = const Value.absent(),
     this.automaticProfileSearchWeekdays = const Value.absent(),
   });
@@ -1127,8 +1130,8 @@ class AppNotificationSettingsCompanion
     Expression<bool>? profileTextModerationCompleted,
     Expression<bool>? news,
     Expression<bool>? automaticProfileSearch,
-    Expression<bool>? automaticProfileSearchDistance,
-    Expression<bool>? automaticProfileSearchFilters,
+    Expression<bool>? automaticProfileSearchDistanceFilters,
+    Expression<bool>? automaticProfileSearchAttributeFilters,
     Expression<bool>? automaticProfileSearchNewProfiles,
     Expression<int>? automaticProfileSearchWeekdays,
   }) {
@@ -1143,10 +1146,12 @@ class AppNotificationSettingsCompanion
       if (news != null) 'news': news,
       if (automaticProfileSearch != null)
         'automatic_profile_search': automaticProfileSearch,
-      if (automaticProfileSearchDistance != null)
-        'automatic_profile_search_distance': automaticProfileSearchDistance,
-      if (automaticProfileSearchFilters != null)
-        'automatic_profile_search_filters': automaticProfileSearchFilters,
+      if (automaticProfileSearchDistanceFilters != null)
+        'automatic_profile_search_distance_filters':
+            automaticProfileSearchDistanceFilters,
+      if (automaticProfileSearchAttributeFilters != null)
+        'automatic_profile_search_attribute_filters':
+            automaticProfileSearchAttributeFilters,
       if (automaticProfileSearchNewProfiles != null)
         'automatic_profile_search_new_profiles':
             automaticProfileSearchNewProfiles,
@@ -1163,8 +1168,8 @@ class AppNotificationSettingsCompanion
     Value<bool?>? profileTextModerationCompleted,
     Value<bool?>? news,
     Value<bool?>? automaticProfileSearch,
-    Value<bool?>? automaticProfileSearchDistance,
-    Value<bool?>? automaticProfileSearchFilters,
+    Value<bool?>? automaticProfileSearchDistanceFilters,
+    Value<bool?>? automaticProfileSearchAttributeFilters,
     Value<bool?>? automaticProfileSearchNewProfiles,
     Value<int?>? automaticProfileSearchWeekdays,
   }) {
@@ -1180,10 +1185,12 @@ class AppNotificationSettingsCompanion
       news: news ?? this.news,
       automaticProfileSearch:
           automaticProfileSearch ?? this.automaticProfileSearch,
-      automaticProfileSearchDistance:
-          automaticProfileSearchDistance ?? this.automaticProfileSearchDistance,
-      automaticProfileSearchFilters:
-          automaticProfileSearchFilters ?? this.automaticProfileSearchFilters,
+      automaticProfileSearchDistanceFilters:
+          automaticProfileSearchDistanceFilters ??
+          this.automaticProfileSearchDistanceFilters,
+      automaticProfileSearchAttributeFilters:
+          automaticProfileSearchAttributeFilters ??
+          this.automaticProfileSearchAttributeFilters,
       automaticProfileSearchNewProfiles:
           automaticProfileSearchNewProfiles ??
           this.automaticProfileSearchNewProfiles,
@@ -1222,14 +1229,14 @@ class AppNotificationSettingsCompanion
         automaticProfileSearch.value,
       );
     }
-    if (automaticProfileSearchDistance.present) {
-      map['automatic_profile_search_distance'] = Variable<bool>(
-        automaticProfileSearchDistance.value,
+    if (automaticProfileSearchDistanceFilters.present) {
+      map['automatic_profile_search_distance_filters'] = Variable<bool>(
+        automaticProfileSearchDistanceFilters.value,
       );
     }
-    if (automaticProfileSearchFilters.present) {
-      map['automatic_profile_search_filters'] = Variable<bool>(
-        automaticProfileSearchFilters.value,
+    if (automaticProfileSearchAttributeFilters.present) {
+      map['automatic_profile_search_attribute_filters'] = Variable<bool>(
+        automaticProfileSearchAttributeFilters.value,
       );
     }
     if (automaticProfileSearchNewProfiles.present) {
@@ -1260,10 +1267,10 @@ class AppNotificationSettingsCompanion
           ..write('news: $news, ')
           ..write('automaticProfileSearch: $automaticProfileSearch, ')
           ..write(
-            'automaticProfileSearchDistance: $automaticProfileSearchDistance, ',
+            'automaticProfileSearchDistanceFilters: $automaticProfileSearchDistanceFilters, ',
           )
           ..write(
-            'automaticProfileSearchFilters: $automaticProfileSearchFilters, ',
+            'automaticProfileSearchAttributeFilters: $automaticProfileSearchAttributeFilters, ',
           )
           ..write(
             'automaticProfileSearchNewProfiles: $automaticProfileSearchNewProfiles, ',

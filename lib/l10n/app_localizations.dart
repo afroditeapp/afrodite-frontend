@@ -1730,32 +1730,31 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'Disable filters'**
-  String get profile_filtering_settings_screen_disable_filters_action;
+  String get profile_filters_screen_disable_filters_action;
 
   /// Title for disable filters action confirm dialog
   ///
   /// In en, this message translates to:
   /// **'Disable filters?'**
-  String
-  get profile_filtering_settings_screen_disable_filters_action_dialog_title;
+  String get profile_filters_screen_disable_filters_action_dialog_title;
 
   /// Title text for distance filter
   ///
   /// In en, this message translates to:
   /// **'Distance'**
-  String get profile_filtering_settings_screen_distance_filter;
+  String get profile_filters_screen_distance_filter;
 
   /// Value text for distance filter max value
   ///
   /// In en, this message translates to:
   /// **'Max {p0} km'**
-  String profile_filtering_settings_screen_distance_filter_max_value(String p0);
+  String profile_filters_screen_distance_filter_max_value(String p0);
 
   /// Value text for distance filter min and max value
   ///
   /// In en, this message translates to:
   /// **'{p0}-{p1} km'**
-  String profile_filtering_settings_screen_distance_filter_min_and_max_value(
+  String profile_filters_screen_distance_filter_min_and_max_value(
     String p0,
     String p1,
   );
@@ -1764,76 +1763,67 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'Min {p0} km'**
-  String profile_filtering_settings_screen_distance_filter_min_value(String p0);
+  String profile_filters_screen_distance_filter_min_value(String p0);
 
   /// Title for profile created time filter
   ///
   /// In en, this message translates to:
   /// **'Profile created'**
-  String get profile_filtering_settings_screen_profile_created_filter;
+  String get profile_filters_screen_profile_created_filter;
 
   /// Title for profile edited time filter
   ///
   /// In en, this message translates to:
   /// **'Profile edited'**
-  String get profile_filtering_settings_screen_profile_edited_filter;
+  String get profile_filters_screen_profile_edited_filter;
 
   /// Title for profile last seen time filter
   ///
   /// In en, this message translates to:
   /// **'Last seen'**
-  String get profile_filtering_settings_screen_profile_last_seen_time_filter;
+  String get profile_filters_screen_profile_last_seen_time_filter;
 
   /// Value text for profile last seen time filter when all is selected
   ///
   /// In en, this message translates to:
   /// **'Anytime'**
-  String
-  get profile_filtering_settings_screen_profile_last_seen_time_filter_all;
+  String get profile_filters_screen_profile_last_seen_time_filter_all;
 
   /// Value text for profile last seen time filter when day is selected
   ///
   /// In en, this message translates to:
   /// **'{p0} day'**
-  String profile_filtering_settings_screen_profile_last_seen_time_filter_day(
-    String p0,
-  );
+  String profile_filters_screen_profile_last_seen_time_filter_day(String p0);
 
   /// Value text for profile last seen time filter when multiple days is selected
   ///
   /// In en, this message translates to:
   /// **'{p0} days'**
-  String profile_filtering_settings_screen_profile_last_seen_time_filter_days(
-    String p0,
-  );
+  String profile_filters_screen_profile_last_seen_time_filter_days(String p0);
 
   /// Value text for profile last seen time filter when only online profiles should be shown
   ///
   /// In en, this message translates to:
   /// **'Online'**
-  String
-  get profile_filtering_settings_screen_profile_last_seen_time_filter_online;
+  String get profile_filters_screen_profile_last_seen_time_filter_online;
 
   /// Value text for profile text filter
   ///
   /// In en, this message translates to:
   /// **'Profile text length'**
-  String get profile_filtering_settings_screen_profile_text_filter;
+  String get profile_filters_screen_profile_text_filter;
 
   /// Value text for profile text filter when only max value is selected
   ///
   /// In en, this message translates to:
   /// **'Max {p0} characters'**
-  String profile_filtering_settings_screen_profile_text_filter_max_value(
-    String p0,
-  );
+  String profile_filters_screen_profile_text_filter_max_value(String p0);
 
   /// Value text for profile text filter when both min and max values are selected
   ///
   /// In en, this message translates to:
   /// **'{p0}-{p1} characters'**
-  String
-  profile_filtering_settings_screen_profile_text_filter_min_and_max_value(
+  String profile_filters_screen_profile_text_filter_min_and_max_value(
     String p0,
     String p1,
   );
@@ -1842,27 +1832,25 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'Min {p0} characters'**
-  String profile_filtering_settings_screen_profile_text_filter_min_value(
-    String p0,
-  );
+  String profile_filters_screen_profile_text_filter_min_value(String p0);
 
-  /// Title for profile filtering settings screen
+  /// Title for profile filters screen
   ///
   /// In en, this message translates to:
   /// **'Profile filters'**
-  String get profile_filtering_settings_screen_title;
+  String get profile_filters_screen_title;
 
   /// Title for unlimited likes filter
   ///
   /// In en, this message translates to:
   /// **'Looking for a date for today'**
-  String get profile_filtering_settings_screen_unlimited_likes_filter;
+  String get profile_filters_screen_unlimited_likes_filter;
 
   /// Snackbar text for notifying about failed profile filters update
   ///
   /// In en, this message translates to:
   /// **'Updating profile filters failed'**
-  String get profile_filtering_settings_screen_updating_filters_failed;
+  String get profile_filters_screen_updating_filters_failed;
 
   /// Dialog text for daily likes info dialog
   ///

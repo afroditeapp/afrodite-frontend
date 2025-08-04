@@ -10,36 +10,36 @@
 
 part of openapi.api;
 
-class CustomReportsFileHash {
-  /// Returns a new [CustomReportsFileHash] instance.
-  CustomReportsFileHash({
-    required this.h,
+class DemoAccountToken {
+  /// Returns a new [DemoAccountToken] instance.
+  DemoAccountToken({
+    required this.token,
   });
 
-  String h;
+  String token;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is CustomReportsFileHash &&
-    other.h == h;
+  bool operator ==(Object other) => identical(this, other) || other is DemoAccountToken &&
+    other.token == token;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (h.hashCode);
+    (token.hashCode);
 
   @override
-  String toString() => 'CustomReportsFileHash[h=$h]';
+  String toString() => 'DemoAccountToken[token=$token]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'h'] = this.h;
+      json[r'token'] = this.token;
     return json;
   }
 
-  /// Returns a new [CustomReportsFileHash] instance and imports its values from
+  /// Returns a new [DemoAccountToken] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static CustomReportsFileHash? fromJson(dynamic value) {
+  static DemoAccountToken? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -48,24 +48,24 @@ class CustomReportsFileHash {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "CustomReportsFileHash[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "CustomReportsFileHash[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "DemoAccountToken[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "DemoAccountToken[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return CustomReportsFileHash(
-        h: mapValueOfType<String>(json, r'h')!,
+      return DemoAccountToken(
+        token: mapValueOfType<String>(json, r'token')!,
       );
     }
     return null;
   }
 
-  static List<CustomReportsFileHash> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <CustomReportsFileHash>[];
+  static List<DemoAccountToken> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <DemoAccountToken>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = CustomReportsFileHash.fromJson(row);
+        final value = DemoAccountToken.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -74,12 +74,12 @@ class CustomReportsFileHash {
     return result.toList(growable: growable);
   }
 
-  static Map<String, CustomReportsFileHash> mapFromJson(dynamic json) {
-    final map = <String, CustomReportsFileHash>{};
+  static Map<String, DemoAccountToken> mapFromJson(dynamic json) {
+    final map = <String, DemoAccountToken>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = CustomReportsFileHash.fromJson(entry.value);
+        final value = DemoAccountToken.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -88,14 +88,14 @@ class CustomReportsFileHash {
     return map;
   }
 
-  // maps a json object with a list of CustomReportsFileHash-objects as value to a dart map
-  static Map<String, List<CustomReportsFileHash>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<CustomReportsFileHash>>{};
+  // maps a json object with a list of DemoAccountToken-objects as value to a dart map
+  static Map<String, List<DemoAccountToken>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<DemoAccountToken>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = CustomReportsFileHash.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = DemoAccountToken.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;
@@ -103,7 +103,7 @@ class CustomReportsFileHash {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'h',
+    'token',
   };
 }
 

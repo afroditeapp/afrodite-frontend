@@ -641,13 +641,13 @@ class AccountApi {
   ///
   /// Parameters:
   ///
-  /// * [DemoModeToken] demoModeToken (required):
-  Future<Response> postDemoModeAccessibleAccountsWithHttpInfo(DemoModeToken demoModeToken,) async {
+  /// * [DemoAccountToken] demoAccountToken (required):
+  Future<Response> postDemoAccountAccessibleAccountsWithHttpInfo(DemoAccountToken demoAccountToken,) async {
     // ignore: prefer_const_declarations
-    final path = r'/account_api/demo_mode_accessible_accounts';
+    final path = r'/account_api/demo_account_accessible_accounts';
 
     // ignore: prefer_final_locals
-    Object? postBody = demoModeToken;
+    Object? postBody = demoAccountToken;
 
     final queryParams = <QueryParam>[];
     final headerParams = <String, String>{};
@@ -673,9 +673,9 @@ class AccountApi {
   ///
   /// Parameters:
   ///
-  /// * [DemoModeToken] demoModeToken (required):
-  Future<List<AccessibleAccount>?> postDemoModeAccessibleAccounts(DemoModeToken demoModeToken,) async {
-    final response = await postDemoModeAccessibleAccountsWithHttpInfo(demoModeToken,);
+  /// * [DemoAccountToken] demoAccountToken (required):
+  Future<List<AccessibleAccount>?> postDemoAccountAccessibleAccounts(DemoAccountToken demoAccountToken,) async {
+    final response = await postDemoAccountAccessibleAccountsWithHttpInfo(demoAccountToken,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -692,7 +692,7 @@ class AccountApi {
     return null;
   }
 
-  /// Access demo mode, which allows accessing all or specific accounts depending on the server configuration.
+  /// Access demo account, which allows accessing all or specific accounts depending on the server configuration.
   ///
   /// This API route has 1 second wait time to make password guessing harder. Account will be locked if the password is guessed. Server process restart will reset the lock.
   ///
@@ -700,13 +700,13 @@ class AccountApi {
   ///
   /// Parameters:
   ///
-  /// * [DemoModeLoginCredentials] demoModeLoginCredentials (required):
-  Future<Response> postDemoModeLoginWithHttpInfo(DemoModeLoginCredentials demoModeLoginCredentials,) async {
+  /// * [DemoAccountLoginCredentials] demoAccountLoginCredentials (required):
+  Future<Response> postDemoAccountLoginWithHttpInfo(DemoAccountLoginCredentials demoAccountLoginCredentials,) async {
     // ignore: prefer_const_declarations
-    final path = r'/account_api/demo_mode_login';
+    final path = r'/account_api/demo_account_login';
 
     // ignore: prefer_final_locals
-    Object? postBody = demoModeLoginCredentials;
+    Object? postBody = demoAccountLoginCredentials;
 
     final queryParams = <QueryParam>[];
     final headerParams = <String, String>{};
@@ -726,15 +726,15 @@ class AccountApi {
     );
   }
 
-  /// Access demo mode, which allows accessing all or specific accounts depending on the server configuration.
+  /// Access demo account, which allows accessing all or specific accounts depending on the server configuration.
   ///
   /// This API route has 1 second wait time to make password guessing harder. Account will be locked if the password is guessed. Server process restart will reset the lock.
   ///
   /// Parameters:
   ///
-  /// * [DemoModeLoginCredentials] demoModeLoginCredentials (required):
-  Future<DemoModeLoginResult?> postDemoModeLogin(DemoModeLoginCredentials demoModeLoginCredentials,) async {
-    final response = await postDemoModeLoginWithHttpInfo(demoModeLoginCredentials,);
+  /// * [DemoAccountLoginCredentials] demoAccountLoginCredentials (required):
+  Future<DemoAccountLoginResult?> postDemoAccountLogin(DemoAccountLoginCredentials demoAccountLoginCredentials,) async {
+    final response = await postDemoAccountLoginWithHttpInfo(demoAccountLoginCredentials,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -742,22 +742,22 @@ class AccountApi {
     // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'DemoModeLoginResult',) as DemoModeLoginResult;
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'DemoAccountLoginResult',) as DemoAccountLoginResult;
     
     }
     return null;
   }
 
-  /// Performs an HTTP 'POST /account_api/demo_mode_login_to_account' operation and returns the [Response].
+  /// Performs an HTTP 'POST /account_api/demo_account_login_to_account' operation and returns the [Response].
   /// Parameters:
   ///
-  /// * [DemoModeLoginToAccount] demoModeLoginToAccount (required):
-  Future<Response> postDemoModeLoginToAccountWithHttpInfo(DemoModeLoginToAccount demoModeLoginToAccount,) async {
+  /// * [DemoAccountLoginToAccount] demoAccountLoginToAccount (required):
+  Future<Response> postDemoAccountLoginToAccountWithHttpInfo(DemoAccountLoginToAccount demoAccountLoginToAccount,) async {
     // ignore: prefer_const_declarations
-    final path = r'/account_api/demo_mode_login_to_account';
+    final path = r'/account_api/demo_account_login_to_account';
 
     // ignore: prefer_final_locals
-    Object? postBody = demoModeLoginToAccount;
+    Object? postBody = demoAccountLoginToAccount;
 
     final queryParams = <QueryParam>[];
     final headerParams = <String, String>{};
@@ -779,9 +779,9 @@ class AccountApi {
 
   /// Parameters:
   ///
-  /// * [DemoModeLoginToAccount] demoModeLoginToAccount (required):
-  Future<LoginResult?> postDemoModeLoginToAccount(DemoModeLoginToAccount demoModeLoginToAccount,) async {
-    final response = await postDemoModeLoginToAccountWithHttpInfo(demoModeLoginToAccount,);
+  /// * [DemoAccountLoginToAccount] demoAccountLoginToAccount (required):
+  Future<LoginResult?> postDemoAccountLoginToAccount(DemoAccountLoginToAccount demoAccountLoginToAccount,) async {
+    final response = await postDemoAccountLoginToAccountWithHttpInfo(demoAccountLoginToAccount,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -795,16 +795,16 @@ class AccountApi {
     return null;
   }
 
-  /// Performs an HTTP 'POST /account_api/demo_mode_logout' operation and returns the [Response].
+  /// Performs an HTTP 'POST /account_api/demo_account_logout' operation and returns the [Response].
   /// Parameters:
   ///
-  /// * [DemoModeToken] demoModeToken (required):
-  Future<Response> postDemoModeLogoutWithHttpInfo(DemoModeToken demoModeToken,) async {
+  /// * [DemoAccountToken] demoAccountToken (required):
+  Future<Response> postDemoAccountLogoutWithHttpInfo(DemoAccountToken demoAccountToken,) async {
     // ignore: prefer_const_declarations
-    final path = r'/account_api/demo_mode_logout';
+    final path = r'/account_api/demo_account_logout';
 
     // ignore: prefer_final_locals
-    Object? postBody = demoModeToken;
+    Object? postBody = demoAccountToken;
 
     final queryParams = <QueryParam>[];
     final headerParams = <String, String>{};
@@ -826,24 +826,24 @@ class AccountApi {
 
   /// Parameters:
   ///
-  /// * [DemoModeToken] demoModeToken (required):
-  Future<void> postDemoModeLogout(DemoModeToken demoModeToken,) async {
-    final response = await postDemoModeLogoutWithHttpInfo(demoModeToken,);
+  /// * [DemoAccountToken] demoAccountToken (required):
+  Future<void> postDemoAccountLogout(DemoAccountToken demoAccountToken,) async {
+    final response = await postDemoAccountLogoutWithHttpInfo(demoAccountToken,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
   }
 
-  /// Performs an HTTP 'POST /account_api/demo_mode_register_account' operation and returns the [Response].
+  /// Performs an HTTP 'POST /account_api/demo_account_register_account' operation and returns the [Response].
   /// Parameters:
   ///
-  /// * [DemoModeToken] demoModeToken (required):
-  Future<Response> postDemoModeRegisterAccountWithHttpInfo(DemoModeToken demoModeToken,) async {
+  /// * [DemoAccountToken] demoAccountToken (required):
+  Future<Response> postDemoAccountRegisterAccountWithHttpInfo(DemoAccountToken demoAccountToken,) async {
     // ignore: prefer_const_declarations
-    final path = r'/account_api/demo_mode_register_account';
+    final path = r'/account_api/demo_account_register_account';
 
     // ignore: prefer_final_locals
-    Object? postBody = demoModeToken;
+    Object? postBody = demoAccountToken;
 
     final queryParams = <QueryParam>[];
     final headerParams = <String, String>{};
@@ -865,9 +865,9 @@ class AccountApi {
 
   /// Parameters:
   ///
-  /// * [DemoModeToken] demoModeToken (required):
-  Future<AccountId?> postDemoModeRegisterAccount(DemoModeToken demoModeToken,) async {
-    final response = await postDemoModeRegisterAccountWithHttpInfo(demoModeToken,);
+  /// * [DemoAccountToken] demoAccountToken (required):
+  Future<AccountId?> postDemoAccountRegisterAccount(DemoAccountToken demoAccountToken,) async {
+    final response = await postDemoAccountRegisterAccountWithHttpInfo(demoAccountToken,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -884,13 +884,13 @@ class AccountApi {
   /// Performs an HTTP 'POST /account_api/client_features_config' operation and returns the [Response].
   /// Parameters:
   ///
-  /// * [ClientFeaturesFileHash] clientFeaturesFileHash (required):
-  Future<Response> postGetClientFeaturesConfigWithHttpInfo(ClientFeaturesFileHash clientFeaturesFileHash,) async {
+  /// * [ClientFeaturesConfigHash] clientFeaturesConfigHash (required):
+  Future<Response> postGetClientFeaturesConfigWithHttpInfo(ClientFeaturesConfigHash clientFeaturesConfigHash,) async {
     // ignore: prefer_const_declarations
     final path = r'/account_api/client_features_config';
 
     // ignore: prefer_final_locals
-    Object? postBody = clientFeaturesFileHash;
+    Object? postBody = clientFeaturesConfigHash;
 
     final queryParams = <QueryParam>[];
     final headerParams = <String, String>{};
@@ -912,9 +912,9 @@ class AccountApi {
 
   /// Parameters:
   ///
-  /// * [ClientFeaturesFileHash] clientFeaturesFileHash (required):
-  Future<GetClientFeaturesConfigResult?> postGetClientFeaturesConfig(ClientFeaturesFileHash clientFeaturesFileHash,) async {
-    final response = await postGetClientFeaturesConfigWithHttpInfo(clientFeaturesFileHash,);
+  /// * [ClientFeaturesConfigHash] clientFeaturesConfigHash (required):
+  Future<GetClientFeaturesConfigResult?> postGetClientFeaturesConfig(ClientFeaturesConfigHash clientFeaturesConfigHash,) async {
+    final response = await postGetClientFeaturesConfigWithHttpInfo(clientFeaturesConfigHash,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -931,13 +931,13 @@ class AccountApi {
   /// Performs an HTTP 'POST /account_api/custom_reports_config' operation and returns the [Response].
   /// Parameters:
   ///
-  /// * [CustomReportsFileHash] customReportsFileHash (required):
-  Future<Response> postGetCustomReportsConfigWithHttpInfo(CustomReportsFileHash customReportsFileHash,) async {
+  /// * [CustomReportsConfigHash] customReportsConfigHash (required):
+  Future<Response> postGetCustomReportsConfigWithHttpInfo(CustomReportsConfigHash customReportsConfigHash,) async {
     // ignore: prefer_const_declarations
     final path = r'/account_api/custom_reports_config';
 
     // ignore: prefer_final_locals
-    Object? postBody = customReportsFileHash;
+    Object? postBody = customReportsConfigHash;
 
     final queryParams = <QueryParam>[];
     final headerParams = <String, String>{};
@@ -959,9 +959,9 @@ class AccountApi {
 
   /// Parameters:
   ///
-  /// * [CustomReportsFileHash] customReportsFileHash (required):
-  Future<GetCustomReportsConfigResult?> postGetCustomReportsConfig(CustomReportsFileHash customReportsFileHash,) async {
-    final response = await postGetCustomReportsConfigWithHttpInfo(customReportsFileHash,);
+  /// * [CustomReportsConfigHash] customReportsConfigHash (required):
+  Future<GetCustomReportsConfigResult?> postGetCustomReportsConfig(CustomReportsConfigHash customReportsConfigHash,) async {
+    final response = await postGetCustomReportsConfigWithHttpInfo(customReportsConfigHash,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

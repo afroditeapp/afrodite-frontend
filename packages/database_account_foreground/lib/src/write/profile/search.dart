@@ -19,7 +19,7 @@ part 'search.g.dart';
 class DaoWriteSearch extends DatabaseAccessor<AccountForegroundDatabase> with _$DaoWriteSearchMixin {
   DaoWriteSearch(super.db);
 
-  Future<void> updateProfileFilteringSettings(api.GetProfileFilteringSettings? value) async {
+  Future<void> updateProfileFilters(api.GetProfileFilters? value) async {
     await into(profileFilters).insertOnConflictUpdate(
       ProfileFiltersCompanion.insert(
         id: SingleRowTable.ID,

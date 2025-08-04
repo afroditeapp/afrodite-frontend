@@ -44,7 +44,7 @@ import 'package:app/logic/profile/attributes.dart';
 import 'package:app/logic/profile/edit_my_profile.dart';
 import 'package:app/logic/profile/location.dart';
 import 'package:app/logic/profile/my_profile.dart';
-import 'package:app/logic/profile/profile_filtering_settings.dart';
+import 'package:app/logic/profile/profile_filters.dart';
 import 'package:app/logic/settings/blocked_profiles.dart';
 import 'package:app/logic/settings/privacy_settings.dart';
 import 'package:app/logic/settings/search_settings.dart';
@@ -186,7 +186,7 @@ class _MainStateUiLogicState extends State<MainStateUiLogic> {
               BlocProvider(create: (_) => LocationBloc()),
               BlocProvider(create: (_) => MyProfileBloc()),
               BlocProvider(create: (_) => AccountDetailsBloc()),
-              BlocProvider(create: (_) => ProfileFilteringSettingsBloc()),
+              BlocProvider(create: (_) => ProfileFiltersBloc()),
 
               // Settings
               BlocProvider(create: (_) => EditMyProfileBloc()),

@@ -10,16 +10,16 @@
 
 part of openapi.api;
 
-class ProfileAttributeQueryResult {
-  /// Returns a new [ProfileAttributeQueryResult] instance.
-  ProfileAttributeQueryResult({
+class ProfileAttributesConfigQuery {
+  /// Returns a new [ProfileAttributesConfigQuery] instance.
+  ProfileAttributesConfigQuery({
     this.values = const [],
   });
 
-  List<ProfileAttributeQueryItem> values;
+  List<int> values;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is ProfileAttributeQueryResult &&
+  bool operator ==(Object other) => identical(this, other) || other is ProfileAttributesConfigQuery &&
     _deepEquality.equals(other.values, values);
 
   @override
@@ -28,7 +28,7 @@ class ProfileAttributeQueryResult {
     (values.hashCode);
 
   @override
-  String toString() => 'ProfileAttributeQueryResult[values=$values]';
+  String toString() => 'ProfileAttributesConfigQuery[values=$values]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -36,10 +36,10 @@ class ProfileAttributeQueryResult {
     return json;
   }
 
-  /// Returns a new [ProfileAttributeQueryResult] instance and imports its values from
+  /// Returns a new [ProfileAttributesConfigQuery] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static ProfileAttributeQueryResult? fromJson(dynamic value) {
+  static ProfileAttributesConfigQuery? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -48,24 +48,26 @@ class ProfileAttributeQueryResult {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "ProfileAttributeQueryResult[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "ProfileAttributeQueryResult[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "ProfileAttributesConfigQuery[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "ProfileAttributesConfigQuery[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return ProfileAttributeQueryResult(
-        values: ProfileAttributeQueryItem.listFromJson(json[r'values']),
+      return ProfileAttributesConfigQuery(
+        values: json[r'values'] is Iterable
+            ? (json[r'values'] as Iterable).cast<int>().toList(growable: false)
+            : const [],
       );
     }
     return null;
   }
 
-  static List<ProfileAttributeQueryResult> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <ProfileAttributeQueryResult>[];
+  static List<ProfileAttributesConfigQuery> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <ProfileAttributesConfigQuery>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = ProfileAttributeQueryResult.fromJson(row);
+        final value = ProfileAttributesConfigQuery.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -74,12 +76,12 @@ class ProfileAttributeQueryResult {
     return result.toList(growable: growable);
   }
 
-  static Map<String, ProfileAttributeQueryResult> mapFromJson(dynamic json) {
-    final map = <String, ProfileAttributeQueryResult>{};
+  static Map<String, ProfileAttributesConfigQuery> mapFromJson(dynamic json) {
+    final map = <String, ProfileAttributesConfigQuery>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = ProfileAttributeQueryResult.fromJson(entry.value);
+        final value = ProfileAttributesConfigQuery.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -88,14 +90,14 @@ class ProfileAttributeQueryResult {
     return map;
   }
 
-  // maps a json object with a list of ProfileAttributeQueryResult-objects as value to a dart map
-  static Map<String, List<ProfileAttributeQueryResult>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<ProfileAttributeQueryResult>>{};
+  // maps a json object with a list of ProfileAttributesConfigQuery-objects as value to a dart map
+  static Map<String, List<ProfileAttributesConfigQuery>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<ProfileAttributesConfigQuery>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = ProfileAttributeQueryResult.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = ProfileAttributesConfigQuery.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;

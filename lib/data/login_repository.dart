@@ -511,24 +511,24 @@ class LoginRepository extends DataRepository {
     await _repositories?.connectionManager.closeAndRefreshServerAddressAndLogout();
   }
 
-  Future<Result<void, DemoModeLoginError>> demoAccountLogin(DemoAccountCredentials credentials) async {
+  Future<Result<void, DemoAccountLoginError>> demoAccountLogin(DemoAccountCredentials credentials) async {
     _demoAccountLoginProgress.add(true);
-    final loginResult = await _apiNoConnection.account((api) => api.postDemoModeLogin(
-      DemoModeLoginCredentials(username: credentials.username, password: credentials.password)
+    final loginResult = await _apiNoConnection.account((api) => api.postDemoAccountLogin(
+      DemoAccountLoginCredentials(username: credentials.username, password: credentials.password)
     )).ok();
     _demoAccountLoginProgress.add(false);
 
     if (loginResult == null) {
-      return const Err(DemoModeLoginError.otherError);
+      return const Err(DemoAccountLoginError.otherError);
     }
 
     if (loginResult.locked) {
-      return const Err(DemoModeLoginError.accountLocked);
+      return const Err(DemoAccountLoginError.accountLocked);
     }
 
     final demoAccountToken = loginResult.token?.token;
     if (demoAccountToken == null) {
-      return const Err(DemoModeLoginError.otherError);
+      return const Err(DemoAccountLoginError.otherError);
     }
 
     await DatabaseManager.getInstance().commonAction((db) => db.demoAccount.updateDemoAccountUsername(credentials.username));
@@ -543,7 +543,7 @@ class LoginRepository extends DataRepository {
 
     final token = await demoAccountToken.first;
     if (token != null) {
-      final r = await _apiNoConnection.accountAction((api) => api.postDemoModeLogout(DemoModeToken(token: token)));
+      final r = await _apiNoConnection.accountAction((api) => api.postDemoAccountLogout(DemoAccountToken(token: token)));
       if (r.isErr()) {
         showSnackBar(R.strings.generic_logout_failed);
       }
@@ -559,7 +559,7 @@ class LoginRepository extends DataRepository {
     if (token == null) {
       return Err(OtherError());
     }
-    final accounts = await _apiNoConnection.accountWrapper().requestValue((api) => api.postDemoModeAccessibleAccounts(DemoModeToken(token: token)));
+    final accounts = await _apiNoConnection.accountWrapper().requestValue((api) => api.postDemoAccountAccessibleAccounts(DemoAccountToken(token: token)));
     switch (accounts) {
       case Ok(:final v):
         return Ok(v);
@@ -578,8 +578,8 @@ class LoginRepository extends DataRepository {
     if (token == null) {
       return Err(OtherError());
     }
-    final demoToken = DemoModeToken(token: token);
-    final id = await _apiNoConnection.accountWrapper().requestValue((api) => api.postDemoModeRegisterAccount(demoToken));
+    final demoToken = DemoAccountToken(token: token);
+    final id = await _apiNoConnection.accountWrapper().requestValue((api) => api.postDemoAccountRegisterAccount(demoToken));
     switch (id) {
       case Ok(:final v):
         return await demoAccountLoginToAccount(v);
@@ -598,9 +598,9 @@ class LoginRepository extends DataRepository {
     if (token == null) {
       return Err(OtherError());
     }
-    final demoToken = DemoModeToken(token: token);
-    final loginResult = await _apiNoConnection.accountWrapper().requestValue((api) => api.postDemoModeLoginToAccount(
-      DemoModeLoginToAccount(
+    final demoToken = DemoAccountToken(token: token);
+    final loginResult = await _apiNoConnection.accountWrapper().requestValue((api) => api.postDemoAccountLoginToAccount(
+      DemoAccountLoginToAccount(
         aid: id,
         token: demoToken,
         clientInfo: clientInfo(),
@@ -636,7 +636,7 @@ class DemoAccountCredentials {
   DemoAccountCredentials(this.username, this.password);
 }
 
-enum DemoModeLoginError {
+enum DemoAccountLoginError {
   accountLocked,
   otherError,
 }

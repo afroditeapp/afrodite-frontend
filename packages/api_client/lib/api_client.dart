@@ -222,8 +222,8 @@ class ApiClient {
           return ApiUsageStatistics.fromJson(value);
         case 'Attribute':
           return Attribute.fromJson(value);
-        case 'AttributeIdAndHash':
-          return AttributeIdAndHash.fromJson(value);
+        case 'AttributeHash':
+          return AttributeHash.fromJson(value);
         case 'AttributeMode':
           return AttributeModeTypeTransformer().decode(value);
         case 'AttributeOrderMode':
@@ -262,8 +262,8 @@ class ApiClient {
           return ClientConfigSyncVersion.fromJson(value);
         case 'ClientFeaturesConfig':
           return ClientFeaturesConfig.fromJson(value);
-        case 'ClientFeaturesFileHash':
-          return ClientFeaturesFileHash.fromJson(value);
+        case 'ClientFeaturesConfigHash':
+          return ClientFeaturesConfigHash.fromJson(value);
         case 'ClientId':
           return ClientId.fromJson(value);
         case 'ClientInfo':
@@ -318,8 +318,8 @@ class ApiClient {
           return CustomReportTypeTypeTransformer().decode(value);
         case 'CustomReportsConfig':
           return CustomReportsConfig.fromJson(value);
-        case 'CustomReportsFileHash':
-          return CustomReportsFileHash.fromJson(value);
+        case 'CustomReportsConfigHash':
+          return CustomReportsConfigHash.fromJson(value);
         case 'CustomReportsOrderMode':
           return CustomReportsOrderModeTypeTransformer().decode(value);
         case 'DailyLikesLeft':
@@ -328,14 +328,14 @@ class ApiClient {
           return DailyLikesLeftSyncVersion.fromJson(value);
         case 'DeleteLikeResult':
           return DeleteLikeResult.fromJson(value);
-        case 'DemoModeLoginCredentials':
-          return DemoModeLoginCredentials.fromJson(value);
-        case 'DemoModeLoginResult':
-          return DemoModeLoginResult.fromJson(value);
-        case 'DemoModeLoginToAccount':
-          return DemoModeLoginToAccount.fromJson(value);
-        case 'DemoModeToken':
-          return DemoModeToken.fromJson(value);
+        case 'DemoAccountLoginCredentials':
+          return DemoAccountLoginCredentials.fromJson(value);
+        case 'DemoAccountLoginResult':
+          return DemoAccountLoginResult.fromJson(value);
+        case 'DemoAccountLoginToAccount':
+          return DemoAccountLoginToAccount.fromJson(value);
+        case 'DemoAccountToken':
+          return DemoAccountToken.fromJson(value);
         case 'EventToClient':
           return EventToClient.fromJson(value);
         case 'EventType':
@@ -376,6 +376,10 @@ class ApiClient {
           return GetIpAddressStatisticsResult.fromJson(value);
         case 'GetIpAddressStatisticsSettings':
           return GetIpAddressStatisticsSettings.fromJson(value);
+        case 'GetIpCountryStatisticsResult':
+          return GetIpCountryStatisticsResult.fromJson(value);
+        case 'GetIpCountryStatisticsSettings':
+          return GetIpCountryStatisticsSettings.fromJson(value);
         case 'GetLatestPublicKeyId':
           return GetLatestPublicKeyId.fromJson(value);
         case 'GetMediaContentPendingModerationList':
@@ -392,8 +396,8 @@ class ApiClient {
           return GetProfileAgeAndName.fromJson(value);
         case 'GetProfileContentResult':
           return GetProfileContentResult.fromJson(value);
-        case 'GetProfileFilteringSettings':
-          return GetProfileFilteringSettings.fromJson(value);
+        case 'GetProfileFilters':
+          return GetProfileFilters.fromJson(value);
         case 'GetProfileResult':
           return GetProfileResult.fromJson(value);
         case 'GetProfileStatisticsHistoryResult':
@@ -414,6 +418,12 @@ class ApiClient {
           return GroupValues.fromJson(value);
         case 'IpAddressInfo':
           return IpAddressInfo.fromJson(value);
+        case 'IpCountryStatistics':
+          return IpCountryStatistics.fromJson(value);
+        case 'IpCountryStatisticsType':
+          return IpCountryStatisticsTypeTypeTransformer().decode(value);
+        case 'IpCountryStatisticsValue':
+          return IpCountryStatisticsValue.fromJson(value);
         case 'JitsiMeetUrls':
           return JitsiMeetUrls.fromJson(value);
         case 'Language':
@@ -510,6 +520,8 @@ class ApiClient {
           return PageItemCountForNewLikes.fromJson(value);
         case 'PageItemCountForNewPublicNews':
           return PageItemCountForNewPublicNews.fromJson(value);
+        case 'PartialProfileAttributesConfig':
+          return PartialProfileAttributesConfig.fromJson(value);
         case 'PendingMessageAcknowledgementList':
           return PendingMessageAcknowledgementList.fromJson(value);
         case 'PendingMessageId':
@@ -546,20 +558,18 @@ class ApiClient {
           return ProfileAttributeFilterValue.fromJson(value);
         case 'ProfileAttributeFilterValueUpdate':
           return ProfileAttributeFilterValueUpdate.fromJson(value);
-        case 'ProfileAttributeHash':
-          return ProfileAttributeHash.fromJson(value);
         case 'ProfileAttributeInfo':
           return ProfileAttributeInfo.fromJson(value);
-        case 'ProfileAttributeQuery':
-          return ProfileAttributeQuery.fromJson(value);
-        case 'ProfileAttributeQueryItem':
-          return ProfileAttributeQueryItem.fromJson(value);
-        case 'ProfileAttributeQueryResult':
-          return ProfileAttributeQueryResult.fromJson(value);
         case 'ProfileAttributeValue':
           return ProfileAttributeValue.fromJson(value);
         case 'ProfileAttributeValueUpdate':
           return ProfileAttributeValueUpdate.fromJson(value);
+        case 'ProfileAttributesConfigQuery':
+          return ProfileAttributesConfigQuery.fromJson(value);
+        case 'ProfileAttributesConfigQueryItem':
+          return ProfileAttributesConfigQueryItem.fromJson(value);
+        case 'ProfileAttributesConfigQueryResult':
+          return ProfileAttributesConfigQueryResult.fromJson(value);
         case 'ProfileContent':
           return ProfileContent.fromJson(value);
         case 'ProfileContentVersion':
@@ -568,8 +578,8 @@ class ApiClient {
           return ProfileCreatedTimeFilter.fromJson(value);
         case 'ProfileEditedTimeFilter':
           return ProfileEditedTimeFilter.fromJson(value);
-        case 'ProfileFilteringSettingsUpdate':
-          return ProfileFilteringSettingsUpdate.fromJson(value);
+        case 'ProfileFiltersUpdate':
+          return ProfileFiltersUpdate.fromJson(value);
         case 'ProfileIteratorPage':
           return ProfileIteratorPage.fromJson(value);
         case 'ProfileIteratorPageValue':

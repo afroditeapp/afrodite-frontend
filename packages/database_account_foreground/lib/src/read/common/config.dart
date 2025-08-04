@@ -23,8 +23,8 @@ part 'config.g.dart';
 class DaoReadConfig extends DatabaseAccessor<AccountForegroundDatabase> with _$DaoReadConfigMixin {
   DaoReadConfig(super.db);
 
-  Stream<api.ClientFeaturesFileHash?> watchClientFeaturesFileHash() =>
-    _watchColumnClientFeatures((r) => r.clientFeaturesFileHash);
+  Stream<api.ClientFeaturesConfigHash?> watchClientFeaturesConfigHash() =>
+    _watchColumnClientFeatures((r) => r.clientFeaturesConfigHash);
   Stream<api.ClientFeaturesConfig?> watchClientFeaturesConfig() =>
     _watchColumnClientFeatures((r) => r.clientFeaturesConfig?.value);
 
@@ -34,8 +34,8 @@ class DaoReadConfig extends DatabaseAccessor<AccountForegroundDatabase> with _$D
       .watchSingleOrNull();
   }
 
-  Stream<api.CustomReportsFileHash?> watchCustomReportsFileHash() =>
-    _watchColumnCustomReports((r) => r.customReportsFileHash);
+  Stream<api.CustomReportsConfigHash?> watchCustomReportsConfigHash() =>
+    _watchColumnCustomReports((r) => r.customReportsConfigHash);
   Stream<api.CustomReportsConfig?> watchCustomReportsConfig() =>
     _watchColumnCustomReports((r) => r.customReportsConfig?.value);
 
@@ -47,7 +47,7 @@ class DaoReadConfig extends DatabaseAccessor<AccountForegroundDatabase> with _$D
 
   /// Get list of attribute IDs which require refresh.
   Future<List<int>> getAttributeRefreshList(
-    List<api.AttributeIdAndHash> availableAttributes,
+    List<api.ProfileAttributeInfo> availableAttributes,
   ) async {
     final currentAttributes = await watchAttributes().firstOrNull;
     if (currentAttributes == null) {

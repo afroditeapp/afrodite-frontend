@@ -979,26 +979,22 @@ class AppLocalizationsEn extends AppLocalizations {
   String get notification_settings_screen_title => 'Notifications';
 
   @override
-  String get profile_filtering_settings_screen_disable_filters_action =>
-      'Disable filters';
+  String get profile_filters_screen_disable_filters_action => 'Disable filters';
 
   @override
-  String
-  get profile_filtering_settings_screen_disable_filters_action_dialog_title =>
+  String get profile_filters_screen_disable_filters_action_dialog_title =>
       'Disable filters?';
 
   @override
-  String get profile_filtering_settings_screen_distance_filter => 'Distance';
+  String get profile_filters_screen_distance_filter => 'Distance';
 
   @override
-  String profile_filtering_settings_screen_distance_filter_max_value(
-    String p0,
-  ) {
+  String profile_filters_screen_distance_filter_max_value(String p0) {
     return 'Max $p0 km';
   }
 
   @override
-  String profile_filtering_settings_screen_distance_filter_min_and_max_value(
+  String profile_filters_screen_distance_filter_min_and_max_value(
     String p0,
     String p1,
   ) {
@@ -1006,62 +1002,49 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String profile_filtering_settings_screen_distance_filter_min_value(
-    String p0,
-  ) {
+  String profile_filters_screen_distance_filter_min_value(String p0) {
     return 'Min $p0 km';
   }
 
   @override
-  String get profile_filtering_settings_screen_profile_created_filter =>
-      'Profile created';
+  String get profile_filters_screen_profile_created_filter => 'Profile created';
 
   @override
-  String get profile_filtering_settings_screen_profile_edited_filter =>
-      'Profile edited';
+  String get profile_filters_screen_profile_edited_filter => 'Profile edited';
 
   @override
-  String get profile_filtering_settings_screen_profile_last_seen_time_filter =>
+  String get profile_filters_screen_profile_last_seen_time_filter =>
       'Last seen';
 
   @override
-  String
-  get profile_filtering_settings_screen_profile_last_seen_time_filter_all =>
+  String get profile_filters_screen_profile_last_seen_time_filter_all =>
       'Anytime';
 
   @override
-  String profile_filtering_settings_screen_profile_last_seen_time_filter_day(
-    String p0,
-  ) {
+  String profile_filters_screen_profile_last_seen_time_filter_day(String p0) {
     return '$p0 day';
   }
 
   @override
-  String profile_filtering_settings_screen_profile_last_seen_time_filter_days(
-    String p0,
-  ) {
+  String profile_filters_screen_profile_last_seen_time_filter_days(String p0) {
     return '$p0 days';
   }
 
   @override
-  String
-  get profile_filtering_settings_screen_profile_last_seen_time_filter_online =>
+  String get profile_filters_screen_profile_last_seen_time_filter_online =>
       'Online';
 
   @override
-  String get profile_filtering_settings_screen_profile_text_filter =>
+  String get profile_filters_screen_profile_text_filter =>
       'Profile text length';
 
   @override
-  String profile_filtering_settings_screen_profile_text_filter_max_value(
-    String p0,
-  ) {
+  String profile_filters_screen_profile_text_filter_max_value(String p0) {
     return 'Max $p0 characters';
   }
 
   @override
-  String
-  profile_filtering_settings_screen_profile_text_filter_min_and_max_value(
+  String profile_filters_screen_profile_text_filter_min_and_max_value(
     String p0,
     String p1,
   ) {
@@ -1069,21 +1052,19 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String profile_filtering_settings_screen_profile_text_filter_min_value(
-    String p0,
-  ) {
+  String profile_filters_screen_profile_text_filter_min_value(String p0) {
     return 'Min $p0 characters';
   }
 
   @override
-  String get profile_filtering_settings_screen_title => 'Profile filters';
+  String get profile_filters_screen_title => 'Profile filters';
 
   @override
-  String get profile_filtering_settings_screen_unlimited_likes_filter =>
+  String get profile_filters_screen_unlimited_likes_filter =>
       'Looking for a date for today';
 
   @override
-  String get profile_filtering_settings_screen_updating_filters_failed =>
+  String get profile_filters_screen_updating_filters_failed =>
       'Updating profile filters failed';
 
   @override

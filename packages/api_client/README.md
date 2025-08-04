@@ -75,11 +75,11 @@ Class | Method | HTTP request | Description
 *AccountApi* | [**postAccountSetup**](doc//AccountApi.md#postaccountsetup) | **POST** /account_api/account_setup | Setup non-changeable user information during `initial setup` state.
 *AccountApi* | [**postCompleteSetup**](doc//AccountApi.md#postcompletesetup) | **POST** /account_api/complete_setup | Complete initial setup.
 *AccountApi* | [**postCustomReportEmpty**](doc//AccountApi.md#postcustomreportempty) | **POST** /account_api/custom_report_empty | Send custom report without any content
-*AccountApi* | [**postDemoModeAccessibleAccounts**](doc//AccountApi.md#postdemomodeaccessibleaccounts) | **POST** /account_api/demo_mode_accessible_accounts | Get demo account's available accounts.
-*AccountApi* | [**postDemoModeLogin**](doc//AccountApi.md#postdemomodelogin) | **POST** /account_api/demo_mode_login | Access demo mode, which allows accessing all or specific accounts depending on the server configuration.
-*AccountApi* | [**postDemoModeLoginToAccount**](doc//AccountApi.md#postdemomodelogintoaccount) | **POST** /account_api/demo_mode_login_to_account | 
-*AccountApi* | [**postDemoModeLogout**](doc//AccountApi.md#postdemomodelogout) | **POST** /account_api/demo_mode_logout | 
-*AccountApi* | [**postDemoModeRegisterAccount**](doc//AccountApi.md#postdemomoderegisteraccount) | **POST** /account_api/demo_mode_register_account | 
+*AccountApi* | [**postDemoAccountAccessibleAccounts**](doc//AccountApi.md#postdemoaccountaccessibleaccounts) | **POST** /account_api/demo_account_accessible_accounts | Get demo account's available accounts.
+*AccountApi* | [**postDemoAccountLogin**](doc//AccountApi.md#postdemoaccountlogin) | **POST** /account_api/demo_account_login | Access demo account, which allows accessing all or specific accounts depending on the server configuration.
+*AccountApi* | [**postDemoAccountLoginToAccount**](doc//AccountApi.md#postdemoaccountlogintoaccount) | **POST** /account_api/demo_account_login_to_account | 
+*AccountApi* | [**postDemoAccountLogout**](doc//AccountApi.md#postdemoaccountlogout) | **POST** /account_api/demo_account_logout | 
+*AccountApi* | [**postDemoAccountRegisterAccount**](doc//AccountApi.md#postdemoaccountregisteraccount) | **POST** /account_api/demo_account_register_account | 
 *AccountApi* | [**postGetClientFeaturesConfig**](doc//AccountApi.md#postgetclientfeaturesconfig) | **POST** /account_api/client_features_config | 
 *AccountApi* | [**postGetCustomReportsConfig**](doc//AccountApi.md#postgetcustomreportsconfig) | **POST** /account_api/custom_reports_config | 
 *AccountApi* | [**postGetNextClientId**](doc//AccountApi.md#postgetnextclientid) | **POST** /account_api/next_client_id | 
@@ -157,11 +157,12 @@ Class | Method | HTTP request | Description
 *CommonAdminApi* | [**postGetApiUsageData**](doc//CommonAdminApi.md#postgetapiusagedata) | **POST** /common_api/api_usage_data | Get API usage data for account
 *CommonAdminApi* | [**postGetChatMessageReports**](doc//CommonAdminApi.md#postgetchatmessagereports) | **POST** /chat_api/get_chat_message_reports | Get all chat message reports. The reports are ordered by message sending order from oldest to latest.
 *CommonAdminApi* | [**postGetIpAddressUsageData**](doc//CommonAdminApi.md#postgetipaddressusagedata) | **POST** /common_api/ip_address_usage_data | Get IP address usage data for account
+*CommonAdminApi* | [**postGetIpCountryStatistics**](doc//CommonAdminApi.md#postgetipcountrystatistics) | **POST** /common_api/ip_country_statistics | Get IP country statistics.
 *CommonAdminApi* | [**postGetPerfData**](doc//CommonAdminApi.md#postgetperfdata) | **POST** /common_api/perf_data | Get performance data
 *CommonAdminApi* | [**postGetReportIteratorPage**](doc//CommonAdminApi.md#postgetreportiteratorpage) | **POST** /common_api/report_iterator_page | Get report iterator page.
 *CommonAdminApi* | [**postProcessReport**](doc//CommonAdminApi.md#postprocessreport) | **POST** /common_api/process_report | 
 *CommonAdminApi* | [**postScheduleTask**](doc//CommonAdminApi.md#postscheduletask) | **POST** /common_api/schedule_task | Schedule task.
-*CommonAdminApi* | [**postTriggerBackendDataReset**](doc//CommonAdminApi.md#posttriggerbackenddatareset) | **POST** /common_api/trigger_backend_data_reset | Trigger backend data reset which also restarts the backend.
+*CommonAdminApi* | [**postTriggerBackendDataReset**](doc//CommonAdminApi.md#posttriggerbackenddatareset) | **POST** /common_api/trigger_backend_data_reset | Trigger backend data reset
 *CommonAdminApi* | [**postTriggerBackendRestart**](doc//CommonAdminApi.md#posttriggerbackendrestart) | **POST** /common_api/trigger_backend_restart | Trigger backend restart.
 *CommonAdminApi* | [**postTriggerSoftwareUpdateDownload**](doc//CommonAdminApi.md#posttriggersoftwareupdatedownload) | **POST** /common_api/trigger_software_update_download | Trigger software update download.
 *CommonAdminApi* | [**postTriggerSoftwareUpdateInstall**](doc//CommonAdminApi.md#posttriggersoftwareupdateinstall) | **POST** /common_api/trigger_software_update_install | Trigger software update install.
@@ -193,7 +194,7 @@ Class | Method | HTTP request | Description
 *ProfileApi* | [**getMyProfile**](doc//ProfileApi.md#getmyprofile) | **GET** /profile_api/my_profile | Get my profile
 *ProfileApi* | [**getProfile**](doc//ProfileApi.md#getprofile) | **GET** /profile_api/profile/{aid} | Get account's current profile.
 *ProfileApi* | [**getProfileAppNotificationSettings**](doc//ProfileApi.md#getprofileappnotificationsettings) | **GET** /profile_api/get_profile_app_notification_settings | 
-*ProfileApi* | [**getProfileFilteringSettings**](doc//ProfileApi.md#getprofilefilteringsettings) | **GET** /profile_api/profile_filtering_settings | Get current profile filtering settings.
+*ProfileApi* | [**getProfileFilters**](doc//ProfileApi.md#getprofilefilters) | **GET** /profile_api/profile_filters | Get current profile filters.
 *ProfileApi* | [**getProfileFromDatabaseDebugModeBenchmark**](doc//ProfileApi.md#getprofilefromdatabasedebugmodebenchmark) | **GET** /profile_api/benchmark/profile/{aid} | Get account's current profile from database. Debug mode must be enabled that route can be used.
 *ProfileApi* | [**getProfileStatistics**](doc//ProfileApi.md#getprofilestatistics) | **GET** /profile_api/profile_statistics | Non default values for [model::GetProfileStatisticsParams] requires [model::Permissions::admin_profile_statistics].
 *ProfileApi* | [**getSearchAgeRange**](doc//ProfileApi.md#getsearchagerange) | **GET** /profile_api/search_age_range | Get account's current search age range
@@ -204,12 +205,12 @@ Class | Method | HTTP request | Description
 *ProfileApi* | [**postGetAutomaticProfileSearchCompletedNotification**](doc//ProfileApi.md#postgetautomaticprofilesearchcompletednotification) | **POST** /profile_api/automatic_profile_search_completed_notification | 
 *ProfileApi* | [**postGetNextProfilePage**](doc//ProfileApi.md#postgetnextprofilepage) | **POST** /profile_api/page/next | Post (updates iterator) to get next page of profile list.
 *ProfileApi* | [**postGetProfileStringModerationCompletedNotification**](doc//ProfileApi.md#postgetprofilestringmoderationcompletednotification) | **POST** /profile_api/profile_string_moderation_completed_notification | Get profile string moderation completed notification.
-*ProfileApi* | [**postGetQueryAvailableProfileAttributes**](doc//ProfileApi.md#postgetqueryavailableprofileattributes) | **POST** /profile_api/query_available_profile_attributes | Query profile attributes using attribute ID list.
+*ProfileApi* | [**postGetQueryProfileAttributesConfig**](doc//ProfileApi.md#postgetqueryprofileattributesconfig) | **POST** /profile_api/query_profile_attributes_config | Query profile attributes from profile attributes config using profile attribute ID list.
 *ProfileApi* | [**postMarkAutomaticProfileSearchCompletedNotificationViewed**](doc//ProfileApi.md#postmarkautomaticprofilesearchcompletednotificationviewed) | **POST** /profile_api/mark_automatic_profile_search_completed_notification_viewed | The viewed values must be updated to prevent WebSocket code from sending unnecessary event about new notification.
 *ProfileApi* | [**postMarkProfileStringModerationCompletedNotificationViewed**](doc//ProfileApi.md#postmarkprofilestringmoderationcompletednotificationviewed) | **POST** /profile_api/mark_profile_string_moderation_completed_notification_viewed | The viewed values must be updated to prevent WebSocket code from sending unnecessary event about new notification.
 *ProfileApi* | [**postProfile**](doc//ProfileApi.md#postprofile) | **POST** /profile_api/profile | Update profile information.
 *ProfileApi* | [**postProfileAppNotificationSettings**](doc//ProfileApi.md#postprofileappnotificationsettings) | **POST** /profile_api/post_profile_app_notification_settings | 
-*ProfileApi* | [**postProfileFilteringSettings**](doc//ProfileApi.md#postprofilefilteringsettings) | **POST** /profile_api/profile_filtering_settings | Set profile filtering settings.
+*ProfileApi* | [**postProfileFilters**](doc//ProfileApi.md#postprofilefilters) | **POST** /profile_api/profile_filters | Set profile filters.
 *ProfileApi* | [**postProfileToDatabaseDebugModeBenchmark**](doc//ProfileApi.md#postprofiletodatabasedebugmodebenchmark) | **POST** /profile_api/benchmark/profile | Post account's current profile directly to database. Debug mode must be enabled that route can be used.
 *ProfileApi* | [**postReportProfileName**](doc//ProfileApi.md#postreportprofilename) | **POST** /profile_api/report_profile_name | Report profile name
 *ProfileApi* | [**postReportProfileText**](doc//ProfileApi.md#postreportprofiletext) | **POST** /profile_api/report_profile_text | Report profile text
@@ -249,7 +250,7 @@ Class | Method | HTTP request | Description
  - [ApiUsageCount](doc//ApiUsageCount.md)
  - [ApiUsageStatistics](doc//ApiUsageStatistics.md)
  - [Attribute](doc//Attribute.md)
- - [AttributeIdAndHash](doc//AttributeIdAndHash.md)
+ - [AttributeHash](doc//AttributeHash.md)
  - [AttributeMode](doc//AttributeMode.md)
  - [AttributeOrderMode](doc//AttributeOrderMode.md)
  - [AttributeValue](doc//AttributeValue.md)
@@ -269,7 +270,7 @@ Class | Method | HTTP request | Description
  - [ClientConfig](doc//ClientConfig.md)
  - [ClientConfigSyncVersion](doc//ClientConfigSyncVersion.md)
  - [ClientFeaturesConfig](doc//ClientFeaturesConfig.md)
- - [ClientFeaturesFileHash](doc//ClientFeaturesFileHash.md)
+ - [ClientFeaturesConfigHash](doc//ClientFeaturesConfigHash.md)
  - [ClientId](doc//ClientId.md)
  - [ClientInfo](doc//ClientInfo.md)
  - [ClientLanguage](doc//ClientLanguage.md)
@@ -297,15 +298,15 @@ Class | Method | HTTP request | Description
  - [CustomReportTranslation](doc//CustomReportTranslation.md)
  - [CustomReportType](doc//CustomReportType.md)
  - [CustomReportsConfig](doc//CustomReportsConfig.md)
- - [CustomReportsFileHash](doc//CustomReportsFileHash.md)
+ - [CustomReportsConfigHash](doc//CustomReportsConfigHash.md)
  - [CustomReportsOrderMode](doc//CustomReportsOrderMode.md)
  - [DailyLikesLeft](doc//DailyLikesLeft.md)
  - [DailyLikesLeftSyncVersion](doc//DailyLikesLeftSyncVersion.md)
  - [DeleteLikeResult](doc//DeleteLikeResult.md)
- - [DemoModeLoginCredentials](doc//DemoModeLoginCredentials.md)
- - [DemoModeLoginResult](doc//DemoModeLoginResult.md)
- - [DemoModeLoginToAccount](doc//DemoModeLoginToAccount.md)
- - [DemoModeToken](doc//DemoModeToken.md)
+ - [DemoAccountLoginCredentials](doc//DemoAccountLoginCredentials.md)
+ - [DemoAccountLoginResult](doc//DemoAccountLoginResult.md)
+ - [DemoAccountLoginToAccount](doc//DemoAccountLoginToAccount.md)
+ - [DemoAccountToken](doc//DemoAccountToken.md)
  - [EventToClient](doc//EventToClient.md)
  - [EventType](doc//EventType.md)
  - [FavoriteProfilesPage](doc//FavoriteProfilesPage.md)
@@ -326,6 +327,8 @@ Class | Method | HTTP request | Description
  - [GetInitialProfileAgeInfoResult](doc//GetInitialProfileAgeInfoResult.md)
  - [GetIpAddressStatisticsResult](doc//GetIpAddressStatisticsResult.md)
  - [GetIpAddressStatisticsSettings](doc//GetIpAddressStatisticsSettings.md)
+ - [GetIpCountryStatisticsResult](doc//GetIpCountryStatisticsResult.md)
+ - [GetIpCountryStatisticsSettings](doc//GetIpCountryStatisticsSettings.md)
  - [GetLatestPublicKeyId](doc//GetLatestPublicKeyId.md)
  - [GetMediaContentPendingModerationList](doc//GetMediaContentPendingModerationList.md)
  - [GetMediaContentResult](doc//GetMediaContentResult.md)
@@ -334,7 +337,7 @@ Class | Method | HTTP request | Description
  - [GetPrivatePublicKeyInfo](doc//GetPrivatePublicKeyInfo.md)
  - [GetProfileAgeAndName](doc//GetProfileAgeAndName.md)
  - [GetProfileContentResult](doc//GetProfileContentResult.md)
- - [GetProfileFilteringSettings](doc//GetProfileFilteringSettings.md)
+ - [GetProfileFilters](doc//GetProfileFilters.md)
  - [GetProfileResult](doc//GetProfileResult.md)
  - [GetProfileStatisticsHistoryResult](doc//GetProfileStatisticsHistoryResult.md)
  - [GetProfileStatisticsResult](doc//GetProfileStatisticsResult.md)
@@ -345,6 +348,9 @@ Class | Method | HTTP request | Description
  - [GetVideoCallUrlsResult](doc//GetVideoCallUrlsResult.md)
  - [GroupValues](doc//GroupValues.md)
  - [IpAddressInfo](doc//IpAddressInfo.md)
+ - [IpCountryStatistics](doc//IpCountryStatistics.md)
+ - [IpCountryStatisticsType](doc//IpCountryStatisticsType.md)
+ - [IpCountryStatisticsValue](doc//IpCountryStatisticsValue.md)
  - [JitsiMeetUrls](doc//JitsiMeetUrls.md)
  - [Language](doc//Language.md)
  - [LastSeenTimeFilter](doc//LastSeenTimeFilter.md)
@@ -393,6 +399,7 @@ Class | Method | HTTP request | Description
  - [NotificationStatus](doc//NotificationStatus.md)
  - [PageItemCountForNewLikes](doc//PageItemCountForNewLikes.md)
  - [PageItemCountForNewPublicNews](doc//PageItemCountForNewPublicNews.md)
+ - [PartialProfileAttributesConfig](doc//PartialProfileAttributesConfig.md)
  - [PendingMessageAcknowledgementList](doc//PendingMessageAcknowledgementList.md)
  - [PendingMessageId](doc//PendingMessageId.md)
  - [PendingNotificationToken](doc//PendingNotificationToken.md)
@@ -411,18 +418,17 @@ Class | Method | HTTP request | Description
  - [ProfileAppNotificationSettings](doc//ProfileAppNotificationSettings.md)
  - [ProfileAttributeFilterValue](doc//ProfileAttributeFilterValue.md)
  - [ProfileAttributeFilterValueUpdate](doc//ProfileAttributeFilterValueUpdate.md)
- - [ProfileAttributeHash](doc//ProfileAttributeHash.md)
  - [ProfileAttributeInfo](doc//ProfileAttributeInfo.md)
- - [ProfileAttributeQuery](doc//ProfileAttributeQuery.md)
- - [ProfileAttributeQueryItem](doc//ProfileAttributeQueryItem.md)
- - [ProfileAttributeQueryResult](doc//ProfileAttributeQueryResult.md)
  - [ProfileAttributeValue](doc//ProfileAttributeValue.md)
  - [ProfileAttributeValueUpdate](doc//ProfileAttributeValueUpdate.md)
+ - [ProfileAttributesConfigQuery](doc//ProfileAttributesConfigQuery.md)
+ - [ProfileAttributesConfigQueryItem](doc//ProfileAttributesConfigQueryItem.md)
+ - [ProfileAttributesConfigQueryResult](doc//ProfileAttributesConfigQueryResult.md)
  - [ProfileContent](doc//ProfileContent.md)
  - [ProfileContentVersion](doc//ProfileContentVersion.md)
  - [ProfileCreatedTimeFilter](doc//ProfileCreatedTimeFilter.md)
  - [ProfileEditedTimeFilter](doc//ProfileEditedTimeFilter.md)
- - [ProfileFilteringSettingsUpdate](doc//ProfileFilteringSettingsUpdate.md)
+ - [ProfileFiltersUpdate](doc//ProfileFiltersUpdate.md)
  - [ProfileIteratorPage](doc//ProfileIteratorPage.md)
  - [ProfileIteratorPageValue](doc//ProfileIteratorPageValue.md)
  - [ProfileIteratorSessionId](doc//ProfileIteratorSessionId.md)

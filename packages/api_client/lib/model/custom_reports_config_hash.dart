@@ -10,42 +10,36 @@
 
 part of openapi.api;
 
-class ProfileAttributeQueryItem {
-  /// Returns a new [ProfileAttributeQueryItem] instance.
-  ProfileAttributeQueryItem({
-    required this.a,
+class CustomReportsConfigHash {
+  /// Returns a new [CustomReportsConfigHash] instance.
+  CustomReportsConfigHash({
     required this.h,
   });
 
-  Attribute a;
-
-  ProfileAttributeHash h;
+  String h;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is ProfileAttributeQueryItem &&
-    other.a == a &&
+  bool operator ==(Object other) => identical(this, other) || other is CustomReportsConfigHash &&
     other.h == h;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (a.hashCode) +
     (h.hashCode);
 
   @override
-  String toString() => 'ProfileAttributeQueryItem[a=$a, h=$h]';
+  String toString() => 'CustomReportsConfigHash[h=$h]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'a'] = this.a;
       json[r'h'] = this.h;
     return json;
   }
 
-  /// Returns a new [ProfileAttributeQueryItem] instance and imports its values from
+  /// Returns a new [CustomReportsConfigHash] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static ProfileAttributeQueryItem? fromJson(dynamic value) {
+  static CustomReportsConfigHash? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -54,25 +48,24 @@ class ProfileAttributeQueryItem {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "ProfileAttributeQueryItem[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "ProfileAttributeQueryItem[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "CustomReportsConfigHash[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "CustomReportsConfigHash[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return ProfileAttributeQueryItem(
-        a: Attribute.fromJson(json[r'a'])!,
-        h: ProfileAttributeHash.fromJson(json[r'h'])!,
+      return CustomReportsConfigHash(
+        h: mapValueOfType<String>(json, r'h')!,
       );
     }
     return null;
   }
 
-  static List<ProfileAttributeQueryItem> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <ProfileAttributeQueryItem>[];
+  static List<CustomReportsConfigHash> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <CustomReportsConfigHash>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = ProfileAttributeQueryItem.fromJson(row);
+        final value = CustomReportsConfigHash.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -81,12 +74,12 @@ class ProfileAttributeQueryItem {
     return result.toList(growable: growable);
   }
 
-  static Map<String, ProfileAttributeQueryItem> mapFromJson(dynamic json) {
-    final map = <String, ProfileAttributeQueryItem>{};
+  static Map<String, CustomReportsConfigHash> mapFromJson(dynamic json) {
+    final map = <String, CustomReportsConfigHash>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = ProfileAttributeQueryItem.fromJson(entry.value);
+        final value = CustomReportsConfigHash.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -95,14 +88,14 @@ class ProfileAttributeQueryItem {
     return map;
   }
 
-  // maps a json object with a list of ProfileAttributeQueryItem-objects as value to a dart map
-  static Map<String, List<ProfileAttributeQueryItem>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<ProfileAttributeQueryItem>>{};
+  // maps a json object with a list of CustomReportsConfigHash-objects as value to a dart map
+  static Map<String, List<CustomReportsConfigHash>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<CustomReportsConfigHash>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = ProfileAttributeQueryItem.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = CustomReportsConfigHash.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;
@@ -110,7 +103,6 @@ class ProfileAttributeQueryItem {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'a',
     'h',
   };
 }

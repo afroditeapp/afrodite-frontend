@@ -15,12 +15,12 @@ class ProfileVersionConverter extends TypeConverter<ProfileVersion, String> {
   }
 }
 
-class ProfileAttributeHashConverter extends TypeConverter<ProfileAttributeHash, String> {
-  const ProfileAttributeHashConverter();
+class AttributeHashConverter extends TypeConverter<AttributeHash, String> {
+  const AttributeHashConverter();
 
   @override
-  ProfileAttributeHash fromSql(fromDb) {
-    return ProfileAttributeHash(h: fromDb);
+  AttributeHash fromSql(fromDb) {
+    return AttributeHash(h: fromDb);
   }
 
   @override

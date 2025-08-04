@@ -238,9 +238,9 @@ class _SearchSettingsScreenState extends State<SearchSettingsScreen> {
   Widget distanceWidget(BuildContext context, SearchSettingsData state) {
     return CheckboxListTile(
       title: Text(context.strings.search_settings_screen_distance),
-      value: state.valueSearchDistance(),
+      value: state.valueSearchDistanceFilters(),
       onChanged: (value) {
-        context.read<SearchSettingsBloc>().add(ToggleSearchDistance());
+        context.read<SearchSettingsBloc>().add(ToggleSearchDistanceFilters());
       },
     );
   }
@@ -248,9 +248,9 @@ class _SearchSettingsScreenState extends State<SearchSettingsScreen> {
   Widget filtersWidget(BuildContext context, SearchSettingsData state) {
     return CheckboxListTile(
       title: Text(context.strings.search_settings_screen_filters),
-      value: state.valueSearchFilters(),
+      value: state.valueSearchAttributeFilters(),
       onChanged: (value) {
-        context.read<SearchSettingsBloc>().add(ToggleSearchFilters());
+        context.read<SearchSettingsBloc>().add(ToggleSearchAttributeFilters());
       },
     );
   }

@@ -168,7 +168,7 @@ class ServerConnection {
       }
       final wsAddress = Uri.parse(_address.replaceFirst("http", "ws"));
       try {
-        ws = WebSocketWrapper(WebSocketChannel.connect(wsAddress, protocols: ["0", accessToken.accessToken]));
+        ws = WebSocketWrapper(WebSocketChannel.connect(wsAddress, protocols: ["0", accessToken.token]));
         _connection = ws;
       } catch (e) {
         log.error("Server connection: WebScocket connecting exception");
@@ -186,7 +186,7 @@ class ServerConnection {
         HttpHeaders.upgradeHeader: "websocket",
         "sec-websocket-version": "13",
         "sec-websocket-key": key,
-        "sec-websocket-protocol": "0,${accessToken.accessToken}",
+        "sec-websocket-protocol": "0,${accessToken.token}",
       };
       final request = Request("GET", Uri.parse(_address));
       request.headers.addAll(headers);
@@ -268,7 +268,7 @@ class ServerConnection {
           case ConnectionProtocolState.receiveNewAccessToken: {
             if (message is List<int>) {
               final newAccessToken = AccessToken(
-                accessToken: base64Url
+                token: base64Url
                   .encode(message)
                   .replaceAll("=", "")
               );

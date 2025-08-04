@@ -23,26 +23,26 @@ class DaoWriteConfig extends DatabaseAccessor<AccountForegroundDatabase> with _$
   DaoWriteConfig(super.db);
 
   Future<void> updateClientFeaturesConfig(
-    api.ClientFeaturesFileHash? fileHash,
+    api.ClientFeaturesConfigHash? hash,
     api.ClientFeaturesConfig? config,
   ) async {
     await into(clientFeaturesConfig).insertOnConflictUpdate(
       ClientFeaturesConfigCompanion.insert(
         id: SingleRowTable.ID,
-        clientFeaturesFileHash: Value(fileHash),
+        clientFeaturesConfigHash: Value(hash),
         clientFeaturesConfig: Value(config?.toJsonString()),
       ),
     );
   }
 
   Future<void> updateCustomReportsConfig(
-    api.CustomReportsFileHash? fileHash,
+    api.CustomReportsConfigHash? hash,
     api.CustomReportsConfig? config,
   ) async {
     await into(customReportsConfig).insertOnConflictUpdate(
       CustomReportsConfigCompanion.insert(
         id: SingleRowTable.ID,
-        customReportsFileHash: Value(fileHash),
+        customReportsConfigHash: Value(hash),
         customReportsConfig: Value(config?.toJsonString()),
       ),
     );
@@ -54,7 +54,7 @@ class DaoWriteConfig extends DatabaseAccessor<AccountForegroundDatabase> with _$
   }
 
   Future<void> updateAttribute(
-    api.ProfileAttributeHash hash,
+    api.AttributeHash hash,
     api.Attribute attribute,
   ) async {
     await into(profileAttributesConfigAttributes).insertOnConflictUpdate(
@@ -69,11 +69,11 @@ class DaoWriteConfig extends DatabaseAccessor<AccountForegroundDatabase> with _$
   Future<void> updateClientConfig(
     api.AttributeOrderMode? orderMode,
     api.ClientConfigSyncVersion syncVersion,
-    List<api.AttributeIdAndHash> latestAttributes,
-    List<api.ProfileAttributeQueryItem> updatedAttributes,
-    api.CustomReportsFileHash? customReportsFileHash,
+    List<api.ProfileAttributeInfo> latestAttributes,
+    List<api.ProfileAttributesConfigQueryItem> updatedAttributes,
+    api.CustomReportsConfigHash? customReportsConfigHash,
     api.CustomReportsConfig? customReportsConfig,
-    api.ClientFeaturesFileHash? clientFeaturesFileHash,
+    api.ClientFeaturesConfigHash? clientFeaturesConfigHash,
     api.ClientFeaturesConfig? clientFeaturesConfig,
   ) async {
     await transaction(() async {
@@ -102,8 +102,8 @@ class DaoWriteConfig extends DatabaseAccessor<AccountForegroundDatabase> with _$
         await db.write.config.updateAttribute(u.h, u.a);
       }
 
-      await db.write.config.updateCustomReportsConfig(customReportsFileHash, customReportsConfig);
-      await db.write.config.updateClientFeaturesConfig(clientFeaturesFileHash, clientFeaturesConfig);
+      await db.write.config.updateCustomReportsConfig(customReportsConfigHash, customReportsConfig);
+      await db.write.config.updateClientFeaturesConfig(clientFeaturesConfigHash, clientFeaturesConfig);
     });
   }
 }

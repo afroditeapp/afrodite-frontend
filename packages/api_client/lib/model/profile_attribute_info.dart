@@ -13,32 +13,33 @@ part of openapi.api;
 class ProfileAttributeInfo {
   /// Returns a new [ProfileAttributeInfo] instance.
   ProfileAttributeInfo({
-    required this.attributeOrder,
-    this.attributes = const [],
+    required this.h,
+    required this.id,
   });
 
-  AttributeOrderMode attributeOrder;
+  AttributeHash h;
 
-  List<AttributeIdAndHash> attributes;
+  /// Minimum value: 0
+  int id;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is ProfileAttributeInfo &&
-    other.attributeOrder == attributeOrder &&
-    _deepEquality.equals(other.attributes, attributes);
+    other.h == h &&
+    other.id == id;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (attributeOrder.hashCode) +
-    (attributes.hashCode);
+    (h.hashCode) +
+    (id.hashCode);
 
   @override
-  String toString() => 'ProfileAttributeInfo[attributeOrder=$attributeOrder, attributes=$attributes]';
+  String toString() => 'ProfileAttributeInfo[h=$h, id=$id]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'attribute_order'] = this.attributeOrder;
-      json[r'attributes'] = this.attributes;
+      json[r'h'] = this.h;
+      json[r'id'] = this.id;
     return json;
   }
 
@@ -61,8 +62,8 @@ class ProfileAttributeInfo {
       }());
 
       return ProfileAttributeInfo(
-        attributeOrder: AttributeOrderMode.fromJson(json[r'attribute_order'])!,
-        attributes: AttributeIdAndHash.listFromJson(json[r'attributes']),
+        h: AttributeHash.fromJson(json[r'h'])!,
+        id: mapValueOfType<int>(json, r'id')!,
       );
     }
     return null;
@@ -110,8 +111,8 @@ class ProfileAttributeInfo {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'attribute_order',
-    'attributes',
+    'h',
+    'id',
   };
 }
 
