@@ -15,20 +15,21 @@ class PublicKeyUtils {
 
   PublicKeyUtils(this.db, this.api, this.currentUser);
 
-  Future<Result<ForeignPublicKey, void>> getLatestPublicKeyForForeignAccount(
+  Future<Result<ForeignPublicKey, ()>> getLatestPublicKeyForForeignAccount(
     AccountId accountId,
   ) async {
     // Download and return latest public key
     final r = await _refreshForeignPublicKey(accountId, null);
     if (r.isErr()) {
-      return const Err(null);
+      return const Err(());
     } else {
       return await db.accountData((db) => db.key.getPublicKey(accountId))
-        .errorIfNull();
+        .errorIfNull()
+        .emptyErr();
     }
   }
 
-  Future<Result<ForeignPublicKey, void>> getSpecificPublicKeyForForeignAccount(
+  Future<Result<ForeignPublicKey, ()>> getSpecificPublicKeyForForeignAccount(
     AccountId accountId,
     PublicKeyId wantedPublicKeyId,
   ) async {
@@ -36,40 +37,42 @@ class PublicKeyUtils {
       case Ok(:final v):
         if (v == null || v.id != wantedPublicKeyId) {
           if (await _refreshForeignPublicKey(accountId, wantedPublicKeyId).isErr()) {
-            return const Err(null);
+            return const Err(());
           } else {
             return await db.accountData((db) => db.key.getPublicKey(accountId))
-              .errorIfNull();
+              .errorIfNull()
+              .emptyErr();
           }
         } else {
           return Ok(v);
         }
       case Err():
-        return const Err(null);
+        return const Err(());
     }
   }
 
-  Future<Result<ForeignPublicKey, void>> getPublicKeyForForeignAccountFromDbOrDownloadIfNotExits(
+  Future<Result<ForeignPublicKey, ()>> getPublicKeyForForeignAccountFromDbOrDownloadIfNotExits(
     AccountId accountId,
   ) async {
     switch (await db.accountData((db) => db.key.getPublicKey(accountId))) {
       case Ok(:final v):
         if (v == null) {
           if (await _refreshForeignPublicKey(accountId, null).isErr()) {
-            return const Err(null);
+            return const Err(());
           } else {
             return await db.accountData((db) => db.key.getPublicKey(accountId))
-              .errorIfNull();
+              .errorIfNull()
+              .emptyErr();
           }
         } else {
           return Ok(v);
         }
       case Err():
-        return const Err(null);
+        return const Err(());
     }
   }
 
-  Future<Result<void, void>> _refreshForeignPublicKey(AccountId accountId, PublicKeyId? wantedKey) async {
+  Future<Result<(), ()>> _refreshForeignPublicKey(AccountId accountId, PublicKeyId? wantedKey) async {
     final PublicKeyId wantedPublicKeyId;
     if (wantedKey == null) {
       // Get latest key
@@ -78,12 +81,12 @@ class PublicKeyUtils {
         case Ok(:final v):
           final id = v.id;
           if (id == null) {
-            return const Err(null);
+            return const Err(());
           } else {
             wantedPublicKeyId = id;
           }
         case Err():
-          return const Err(null);
+          return const Err(());
       }
     } else {
       wantedPublicKeyId = wantedKey;
@@ -95,7 +98,7 @@ class PublicKeyUtils {
       case Ok(:final v):
         latestPublicKeyData = v;
       case Err():
-        return const Err(null);
+        return const Err(());
     }
 
     final InfoMessageState? infoState;
@@ -109,10 +112,10 @@ class PublicKeyUtils {
           infoState = null;
         }
       case Err():
-        return const Err(null);
+        return const Err(());
     }
 
     return await db.accountAction((db) => db.key.updatePublicKeyAndAddInfoMessage(currentUser, accountId, latestPublicKeyData, wantedPublicKeyId, infoState))
-      .mapErr((_) => null);
+      .emptyErr();
   }
 }

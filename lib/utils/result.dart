@@ -118,23 +118,23 @@ extension FutureResultExt<Success, Error> on Future<Result<Success, Error>> {
     }
   }
 
-  Future<Result<void, void>> empty() async {
+  Future<Result<(), ()>> empty() async {
     final result = await this;
     switch (result) {
       case Ok():
-        return const Ok(null);
+        return const Ok(());
       case Err():
-        return const Err(null);
+        return const Err(());
     }
   }
 
-  Future<Result<Success, void>> emptyErr() async {
+  Future<Result<Success, ()>> emptyErr() async {
     final result = await this;
     switch (result) {
       case Ok(:final v):
         return Ok(v);
       case Err():
-        return const Err(null);
+        return const Err(());
     }
   }
 
@@ -145,6 +145,21 @@ extension FutureResultExt<Success, Error> on Future<Result<Success, Error>> {
         return await andThenAction(v);
       case Err(:final e):
         return Err(e);
+    }
+  }
+
+  Future<Result<NextSuccess, ()>> andThenEmptyErr<NextSuccess, NextError>(FutureOr<Result<NextSuccess, NextError>> Function(Success) andThenAction) async {
+    final result = await this;
+    switch (result) {
+      case Ok(:final v):
+        switch (await andThenAction(v)) {
+          case Ok(:final v):
+            return Ok(v);
+          case Err():
+            return Err(());
+        }
+      case Err():
+        return Err(());
     }
   }
 }

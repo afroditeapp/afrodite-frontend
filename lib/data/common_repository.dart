@@ -52,9 +52,9 @@ class CommonRepository extends DataRepositoryWithLifecycle {
   }
 
   @override
-  Future<Result<void, void>> onLoginDataSync() async {
+  Future<Result<(), ()>> onLoginDataSync() async {
     await PushNotificationManager.getInstance().initPushNotifications();
-    return const Ok(null);
+    return const Ok(());
   }
 
   @override

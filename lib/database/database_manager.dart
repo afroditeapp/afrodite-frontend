@@ -87,10 +87,10 @@ class DatabaseManager extends AppSingleton {
     return first ?? defaultValue;
   }
 
-  Future<Result<void, DatabaseError>> commonAction(Future<void> Function(CommonForegroundDatabaseWrite) action) async {
+  Future<Result<(), DatabaseError>> commonAction(Future<void> Function(CommonForegroundDatabaseWrite) action) async {
     try {
       await action(commonDatabase.write);
-      return const Ok(null);
+      return const Ok(());
     } on CouldNotRollBackException catch (e) {
       return handleDbException(e);
     } on DriftWrappedException catch (e) {
@@ -125,7 +125,7 @@ class DatabaseManager extends AppSingleton {
     }
   }
 
-  Future<Result<void, AppError>> setAccountId(AccountId accountId) =>
+  Future<Result<(), AppError>> setAccountId(AccountId accountId) =>
     backgroundDbManager
       .setAccountId(accountId)
       .andThen((_) =>

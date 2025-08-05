@@ -73,7 +73,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
   }
 
   @override
-  Future<Result<void, void>> onLoginDataSync() async {
+  Future<Result<(), ()>> onLoginDataSync() async {
     return await reloadLocation()
       .andThen((_) => reloadProfileFilters())
       .andThen((_) => reloadSearchAgeRange())
@@ -81,11 +81,11 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
       .andThen((_) => reloadAutomaticProfileSearchSettings())
       .andThen((_) async {
         await downloadInitialSetupAgeInfoIfNull(skipIfAccountStateIsInitialSetup: true);
-        return const Ok(null);
+        return const Ok(());
       })
       .andThen((_) => reloadFavoriteProfiles())
       .andThen((_) => _reloadProfileNotificationSettings())
-      .andThen((_) => db.accountAction((db) => db.app.updateProfileSyncDone(true)));
+      .andThenEmptyErr((_) => db.accountAction((db) => db.app.updateProfileSyncDone(true)));
   }
 
   @override
@@ -126,7 +126,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
       if (!syncDone) {
         await reloadFavoriteProfiles()
           .andThen((_) => _reloadProfileNotificationSettings())
-          .andThen((_) => db.accountAction((db) => db.app.updateProfileSyncDone(true)));
+          .andThenEmptyErr((_) => db.accountAction((db) => db.app.updateProfileSyncDone(true)));
       }
     });
   }
@@ -256,7 +256,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
   Future<bool> toggleFavoriteStatus(AccountId accountId) async {
     final currentValue = await isInFavorites(accountId);
 
-    final Result<void, ActionApiError> status;
+    final Result<(), ActionApiError> status;
     final bool newValue;
     if (currentValue) {
       status = await _api.profileAction((api) => api.deleteFavoriteProfile(accountId));
@@ -291,10 +291,10 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
   }
 
   /// Save client config from server to local database and return them.
-  Future<Result<ClientConfig, void>> receiveClientConfig() async {
+  Future<Result<ClientConfig, ()>> receiveClientConfig() async {
     final config = await _api.common((api) => api.getClientConfig()).ok();
     if (config == null) {
-      return const Err(null);
+      return const Err(());
     }
     final latestAttributes = config.profileAttributes?.attributes ?? [];
     final attributeOrder = config.profileAttributes?.attributeOrder;
@@ -303,7 +303,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
       (db) => db.config.getAttributeRefreshList(latestAttributes),
     ).ok();
     if (attributeRefreshList == null) {
-      return const Err(null);
+      return const Err(());
     }
 
     final List<ProfileAttributesConfigQueryItem> updatedAttributes;
@@ -312,7 +312,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
     } else {
       final r = await _api.profile((api) => api.postGetQueryProfileAttributesConfig(ProfileAttributesConfigQuery(values: attributeRefreshList))).ok();
       if (r == null) {
-        return const Err(null);
+        return const Err(());
       }
       updatedAttributes = r.values;
     }
@@ -321,7 +321,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
     final CustomReportsConfig? customReportsConfig;
     switch (await _downloadCustomReportsIfNeeded(config.customReports)) {
       case Err():
-        return const Err(null);
+        return const Err(());
       case Ok(v: (final hash, final config)):
         customReportsConfigHash = hash;
         customReportsConfig = config;
@@ -331,7 +331,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
     final ClientFeaturesConfig? clientFeaturesConfig;
     switch (await _downloadClientFeaturesIfNeeded(config.clientFeatures)) {
       case Err():
-        return const Err(null);
+        return const Err(());
       case Ok(v: (final hash, final config)):
         clientFeaturesConfigHash = hash;
         clientFeaturesConfig = config;
@@ -352,7 +352,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
     return Ok(config);
   }
 
-  Future<Result<(CustomReportsConfigHash?, CustomReportsConfig?), void>> _downloadCustomReportsIfNeeded(
+  Future<Result<(CustomReportsConfigHash?, CustomReportsConfig?), ()>> _downloadCustomReportsIfNeeded(
     CustomReportsConfigHash? latestHash,
   ) async {
     final currentHash = await db.accountStream(
@@ -372,7 +372,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
       } else {
         final latestConfig = await _api.account((api) => api.postGetCustomReportsConfig(latestHash)).ok();
         if (latestConfig == null) {
-          return const Err(null);
+          return const Err(());
         }
         hash = latestHash;
         config = latestConfig.config;
@@ -386,7 +386,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
     return Ok((hash, config));
   }
 
-  Future<Result<(ClientFeaturesConfigHash?, ClientFeaturesConfig?), void>> _downloadClientFeaturesIfNeeded(
+  Future<Result<(ClientFeaturesConfigHash?, ClientFeaturesConfig?), ()>> _downloadClientFeaturesIfNeeded(
     ClientFeaturesConfigHash? latestHash,
   ) async {
     final currentHash = await db.accountStream(
@@ -406,7 +406,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
       } else {
         final latestConfig = await _api.account((api) => api.postGetClientFeaturesConfig(latestHash)).ok();
         if (latestConfig == null) {
-          return const Err(null);
+          return const Err(());
         }
         hash = latestHash;
         config = latestConfig.config;
@@ -420,25 +420,22 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
     return Ok((hash, config));
   }
 
-  Future<Result<void, void>> reloadMyProfile() async {
+  Future<Result<(), ()>> reloadMyProfile() async {
     return await _api.profile((api) => api.getMyProfile())
-      .emptyErr()
-      .andThen((info) {
+      .andThenEmptyErr((info) {
         return db.accountAction((db) => db.myProfile.setApiProfile(result: info))
-          .andThen((_) => db.accountAction((db) => db.common.updateSyncVersionProfile(info.sv)));
+          .andThenEmptyErr((_) => db.accountAction((db) => db.common.updateSyncVersionProfile(info.sv)));
       });
   }
 
-  Future<Result<void, void>> reloadFavoriteProfiles() async {
+  Future<Result<(), ()>> reloadFavoriteProfiles() async {
     return await _api.profile((api) => api.getFavoriteProfiles())
-      .emptyErr()
-      .andThen((f) => db.accountAction((db) => db.profile.replaceFavorites(f.profiles)));
+      .andThenEmptyErr((f) => db.accountAction((db) => db.profile.replaceFavorites(f.profiles)));
   }
 
-  Future<Result<void, void>> reloadLocation() async {
+  Future<Result<(), ()>> reloadLocation() async {
     return await _api.profile((api) => api.getLocation())
-      .emptyErr()
-      .andThen((l) => db.accountAction(
+      .andThenEmptyErr((l) => db.accountAction(
         (db) => db.myProfile.updateProfileLocation(
           latitude: l.latitude,
           longitude: l.longitude,
@@ -446,15 +443,14 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
       ));
   }
 
-  Future<Result<void, void>> reloadProfileFilters() async {
+  Future<Result<(), ()>> reloadProfileFilters() async {
     return await _api.profile((api) => api.getProfileFilters())
-      .emptyErr()
-      .andThen((f) => db.accountAction(
+      .andThenEmptyErr((f) => db.accountAction(
         (db) => db.search.updateProfileFilters(f),
       ));
   }
 
-  Future<Result<void, void>> updateProfileFilters(
+  Future<Result<(), ()>> updateProfileFilters(
     Map<int, ProfileAttributeFilterValueUpdate> attributeIdAndAttributeFilterMap,
     LastSeenTimeFilter? lastSeenTimeFilter,
     bool? unlimitedLikesFilter,
@@ -493,51 +489,53 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
 
   // Search settings
 
-  Future<Result<void, void>> reloadSearchAgeRange() async {
+  Future<Result<(), ()>> reloadSearchAgeRange() async {
     return await _api.profile((api) => api.getSearchAgeRange())
-      .emptyErr()
-      .andThen((r) => db.accountAction(
+      .andThenEmptyErr((r) => db.accountAction(
         (db) => db.search.updateSearchAgeRange(r),
       ));
   }
 
-  Future<Result<void, void>> reloadSearchGroups() async {
+  Future<Result<(), ()>> reloadSearchGroups() async {
     return await _api.profile((api) => api.getSearchGroups())
-      .andThen((v) => db.accountAction(
+      .andThenEmptyErr((v) => db.accountAction(
         (db) => db.search.updateSearchGroups(v),
       ));
   }
 
-  Future<Result<void, void>> reloadAutomaticProfileSearchSettings() async {
+  Future<Result<(), ()>> reloadAutomaticProfileSearchSettings() async {
     return await _api.profile((api) => api.getAutomaticProfileSearchSettings())
-      .andThen((v) => db.accountAction(
+      .andThenEmptyErr((v) => db.accountAction(
         (db) => db.search.updateAutomaticProfileSearchSettings(v),
       ));
   }
 
-  Future<Result<void, void>> updateSearchAgeRange(int minAge, int maxAge) async {
+  Future<Result<(), ()>> updateSearchAgeRange(int minAge, int maxAge) async {
     final update = SearchAgeRange(min: minAge, max: maxAge);
     return await _api.profileAction((api) => api.postSearchAgeRange(update))
-      .onOk(() => reloadSearchAgeRange());
+      .onOk(() => reloadSearchAgeRange())
+      .emptyErr();
   }
 
-  Future<Result<void, void>> updateSearchGroups(SearchGroups groups) async {
+  Future<Result<(), ()>> updateSearchGroups(SearchGroups groups) async {
     return await _api.profileAction((api) => api.postSearchGroups(groups))
-      .onOk(() => reloadSearchGroups());
+      .onOk(() => reloadSearchGroups())
+      .emptyErr();
   }
 
-  Future<Result<void, void>> updateAutomaticProfileSearchSettings(AutomaticProfileSearchSettings settings) async {
+  Future<Result<(), ()>> updateAutomaticProfileSearchSettings(AutomaticProfileSearchSettings settings) async {
     return await _api.profileAction((api) => api.postAutomaticProfileSearchSettings(settings))
-      .onOk(() => reloadAutomaticProfileSearchSettings());
+      .onOk(() => reloadAutomaticProfileSearchSettings())
+      .emptyErr();
   }
 
-  Future<Result<void, void>> resetUnreadMessagesCount(AccountId accountId) async {
+  Future<Result<(), ()>> resetUnreadMessagesCount(AccountId accountId) async {
     // Hide notification
     await NotificationMessageReceived.getInstance()
       .updateMessageReceivedCount(accountId, 0, null, accountBackgroundDb);
     return accountBackgroundDb.accountAction(
       (db) => db.unreadMessagesCount.setUnreadMessagesCount(accountId, const UnreadMessagesCount(0)),
-    );
+    ).emptyErr();
   }
 
   /// If profile does not exist in DB, try download it when connection exists.
@@ -611,9 +609,9 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
     }
   }
 
-  Future<Result<void, void>> _reloadProfileNotificationSettings() async {
+  Future<Result<(), ()>> _reloadProfileNotificationSettings() async {
     return await _api.profile((api) => api.getProfileAppNotificationSettings())
-      .andThen((v) => accountBackgroundDb.accountAction(
+      .andThenEmptyErr((v) => accountBackgroundDb.accountAction(
         (db) => db.appNotificationSettings.updateProfileNotificationSettings(v),
       ));
   }

@@ -26,7 +26,7 @@ abstract class BaseDatabaseIterator extends IteratorType {
   Future<Result<List<AccountId>, DatabaseError>> getAccountListFromDatabase(int startIndex, int limit);
 
   @override
-  Future<Result<List<ProfileEntry>, void>> nextList() async {
+  Future<Result<List<ProfileEntry>, ()>> nextList() async {
     final profiles = await getAccountListFromDatabase(_currentIndex, _queryCount).ok();
     if (profiles != null) {
       _currentIndex += _queryCount;

@@ -140,18 +140,18 @@ class DebugConversationDataProvider extends ConversationDataProvider {
   }
 
   @override
-  Future<Result<void, DeleteSendFailedError>> deleteSendFailedMessage(LocalMessageId localId) async {
-    return const Ok(null);
+  Future<Result<(), DeleteSendFailedError>> deleteSendFailedMessage(LocalMessageId localId) async {
+    return const Ok(());
   }
 
   @override
-  Future<Result<void, ResendFailedError>> resendSendFailedMessage(LocalMessageId localId) async {
-    return const Ok(null);
+  Future<Result<(), ResendFailedError>> resendSendFailedMessage(LocalMessageId localId) async {
+    return const Ok(());
   }
 
   @override
-  Future<Result<void, RetryPublicKeyDownloadError>> retryPublicKeyDownload(LocalMessageId localId) async {
-    return const Ok(null);
+  Future<Result<(), RetryPublicKeyDownloadError>> retryPublicKeyDownload(LocalMessageId localId) async {
+    return const Ok(());
   }
 }
 

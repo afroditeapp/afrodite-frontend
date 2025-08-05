@@ -74,9 +74,9 @@ abstract class ConversationDataProvider {
   /// First message is the latest new message
   Future<List<MessageEntry>> getNewMessages(AccountId senderAccountId, LocalMessageId? latestCurrentMessageLocalId);
 
-  Future<Result<void, DeleteSendFailedError>> deleteSendFailedMessage(LocalMessageId localId);
-  Future<Result<void, ResendFailedError>> resendSendFailedMessage(LocalMessageId localId);
-  Future<Result<void, RetryPublicKeyDownloadError>> retryPublicKeyDownload(LocalMessageId localId);
+  Future<Result<(), DeleteSendFailedError>> deleteSendFailedMessage(LocalMessageId localId);
+  Future<Result<(), ResendFailedError>> resendSendFailedMessage(LocalMessageId localId);
+  Future<Result<(), RetryPublicKeyDownloadError>> retryPublicKeyDownload(LocalMessageId localId);
 }
 
 class DefaultConversationDataProvider extends ConversationDataProvider {
@@ -140,17 +140,17 @@ class DefaultConversationDataProvider extends ConversationDataProvider {
   }
 
   @override
-  Future<Result<void, DeleteSendFailedError>> deleteSendFailedMessage(LocalMessageId localId) {
+  Future<Result<(), DeleteSendFailedError>> deleteSendFailedMessage(LocalMessageId localId) {
     return chat.deleteSendFailedMessage(localId);
   }
 
   @override
-  Future<Result<void, ResendFailedError>> resendSendFailedMessage(LocalMessageId localId) {
+  Future<Result<(), ResendFailedError>> resendSendFailedMessage(LocalMessageId localId) {
     return chat.resendSendFailedMessage(localId);
   }
 
   @override
-  Future<Result<void, RetryPublicKeyDownloadError>> retryPublicKeyDownload(LocalMessageId localId) {
+  Future<Result<(), RetryPublicKeyDownloadError>> retryPublicKeyDownload(LocalMessageId localId) {
     return chat.retryPublicKeyDownload(localId);
   }
 }

@@ -36,23 +36,24 @@ class AdminNotificationsDataApi extends EditBooleanValuesDataApi {
   const AdminNotificationsDataApi();
 
   @override
-  Future<Result<BooleanValuesManager, void>> load(ApiManager api) async {
+  Future<Result<BooleanValuesManager, ()>> load(ApiManager api) async {
     return await api
       .commonAdmin(
         (api) => api.getAdminNotificationSubscriptions()
-      ).mapOk((v) => BooleanValuesManager(v.toJson()));
+      ).mapOk((v) => BooleanValuesManager(v.toJson()))
+      .emptyErr();
   }
 
   @override
-  Future<Result<void, void>> save(ApiManager api, BooleanValuesManager values) async {
+  Future<Result<(), ()>> save(ApiManager api, BooleanValuesManager values) async {
     final subscriptions = AdminNotification.fromJson(values.editedState());
     if (subscriptions == null) {
-      return const Err(null);
+      return const Err(());
     }
 
     return await api
       .commonAdminAction(
         (api) => api.postAdminNotificationSubscriptions(subscriptions)
-      );
+      ).emptyErr();
   }
 }

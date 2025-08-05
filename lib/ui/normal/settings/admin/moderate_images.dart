@@ -52,7 +52,7 @@ class MediaContentIo extends ContentIo<WrappedMediaContentPendingModeration> {
   MediaContentIo(this.showContentWhichBotsCanModerate, this.queue);
 
   @override
-  Future<Result<List<WrappedMediaContentPendingModeration>, void>> getNextContent() async {
+  Future<Result<List<WrappedMediaContentPendingModeration>, ()>> getNextContent() async {
     final r = await api.mediaAdmin((api) => api.getMediaContentPendingModerationList(
       MediaContentType.jpegImage,
       queue,
@@ -62,7 +62,7 @@ class MediaContentIo extends ContentIo<WrappedMediaContentPendingModeration> {
     final GetMediaContentPendingModerationList list;
     switch (r) {
       case Err():
-        return const Err(null);
+        return const Err(());
       case Ok():
         list = r.v;
     }

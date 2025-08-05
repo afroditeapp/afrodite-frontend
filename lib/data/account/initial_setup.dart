@@ -122,7 +122,7 @@ class InitialSetupUtils {
     return null;
   }
 
-  Future<Result<void, void>> doInitialSetup(
+  Future<Result<(), ()>> doInitialSetup(
     InitialSetupData data,
   ) async {
 
@@ -199,10 +199,10 @@ class InitialSetupUtils {
       if (r.isErr()) return errAndLog("Completing setup failed");
     }
 
-    return const Ok(null);
+    return const Ok(());
   }
 
-  Future<Result<void, void>> handleInitialSetupImages(ContentId? securitySelfie, Iterable<ImgState>? profileImages) async {
+  Future<Result<(), ()>> handleInitialSetupImages(ContentId? securitySelfie, Iterable<ImgState>? profileImages) async {
     if (securitySelfie == null) return errAndLog("Security selfie is null");
     final r1 = await _api.mediaAction((api) => api.putSecurityContentInfo(securitySelfie));
     if (r1.isErr()) return errAndLog("Setting security selfie failed");
@@ -213,11 +213,11 @@ class InitialSetupUtils {
     final r2 = await _api.mediaAction((api) => api.putProfileContent(newProfileContent));
     if (r2.isErr()) return errAndLog("Setting profile images failed");
 
-    return const Ok(null);
+    return const Ok(());
   }
 }
 
-Result<SetProfileContent, void> createProfileContent(
+Result<SetProfileContent, ()> createProfileContent(
   ContentId securitySelfie,
   Iterable<ImgState> imgs,
 ) {
@@ -273,9 +273,9 @@ ContentId getId(SelectedImageInfo info, ContentId securitySelfie) {
   };
 }
 
-Result<T, void> errAndLog<T>(String message) {
+Result<T, ()> errAndLog<T>(String message) {
   log.error(message);
-  return const Err(null);
+  return const Err(());
 }
 
 sealed class WaitProcessingResult {}

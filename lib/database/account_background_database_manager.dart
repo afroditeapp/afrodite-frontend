@@ -85,10 +85,10 @@ class AccountBackgroundDatabaseManager {
     }
   }
 
-  Future<Result<void, DatabaseError>> accountAction(Future<void> Function(AccountBackgroundDatabaseWrite) action) async {
+  Future<Result<(), DatabaseError>> accountAction(Future<void> Function(AccountBackgroundDatabaseWrite) action) async {
     try {
       await action(db.write);
-      return const Ok(null);
+      return const Ok(());
     } on CouldNotRollBackException catch (e) {
       return _handleDbException(e);
     } on DriftWrappedException catch (e) {

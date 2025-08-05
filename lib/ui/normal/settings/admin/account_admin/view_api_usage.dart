@@ -29,12 +29,12 @@ class GetApiUsage extends GetMetrics {
   GetApiUsage(this.api, this.account);
 
   @override
-  Future<Result<List<Metric>, void>> getMetrics() async {
+  Future<Result<List<Metric>, ()>> getMetrics() async {
     final oldestDate = UtcDateTime.now().substract(const Duration(days: 30));
     final queryResults = await api.commonAdmin((api) => api.postGetApiUsageData(GetApiUsageStatisticsSettings(account: account, minTime: oldestDate.toUnixTime()))).ok();
 
     if (queryResults == null) {
-      return const Err(null);
+      return const Err(());
     }
 
     queryResults.values.sort((a, b) {

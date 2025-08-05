@@ -12,8 +12,8 @@ abstract class DataRepository extends AppSingleton implements DataRepositoryMeth
   @override
   Future<void> onLogin() async {}
   @override
-  Future<Result<void, void>> onLoginDataSync() async {
-    return const Ok(null);
+  Future<Result<(), ()>> onLoginDataSync() async {
+    return const Ok(());
   }
   @override
   Future<void> onLogout() async {}
@@ -32,8 +32,8 @@ abstract class DataRepositoryWithLifecycle implements DataRepositoryMethods, Lif
   @override
   Future<void> onLogin() async {}
   @override
-  Future<Result<void, void>> onLoginDataSync() async {
-    return const Ok(null);
+  Future<Result<(), ()>> onLoginDataSync() async {
+    return const Ok(());
   }
   @override
   Future<void> onLogout() async {}
@@ -57,8 +57,8 @@ abstract class DataRepositoryMethods {
   /// repository will stop calling this method.
   ///
   /// Server API is available.
-  Future<Result<void, void>> onLoginDataSync() async {
-    return const Ok(null);
+  Future<Result<(), ()>> onLoginDataSync() async {
+    return const Ok(());
   }
 
   /// Called when the user logs out. Note that this is not called

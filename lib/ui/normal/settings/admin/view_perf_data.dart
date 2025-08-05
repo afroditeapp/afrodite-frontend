@@ -26,11 +26,11 @@ class GetPerfData extends GetMetrics {
   GetPerfData(this.api);
 
   @override
-  Future<Result<List<Metric>, void>> getMetrics() async {
+  Future<Result<List<Metric>, ()>> getMetrics() async {
     final queryResults = await api.commonAdmin((api) => api.postGetPerfData(PerfMetricQuery())).ok();
 
     if (queryResults == null) {
-      return const Err(null);
+      return const Err(());
     }
 
     queryResults.metrics.sort((a, b) {

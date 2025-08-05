@@ -98,11 +98,11 @@ class AccountRepository extends DataRepositoryWithLifecycle {
   }
 
   @override
-  Future<Result<void, void>> onLoginDataSync() async {
+  Future<Result<(), ()>> onLoginDataSync() async {
     return await clientIdManager.getClientId()
       .andThen((_) => _reloadAccountNotificationSettings())
       .andThen((_) => _reloadClientLanguageOnServer())
-      .andThen((_) => db.accountAction((db) => db.app.updateAccountSyncDone(true)));
+      .andThenEmptyErr((_) => db.accountAction((db) => db.app.updateAccountSyncDone(true)));
   }
 
   @override
@@ -115,7 +115,7 @@ class AccountRepository extends DataRepositoryWithLifecycle {
       if (!syncDone) {
         await _reloadAccountNotificationSettings()
           .andThen((_) => _reloadClientLanguageOnServer())
-          .andThen((_) => db.accountAction((db) => db.app.updateAccountSyncDone(true)));
+          .andThenEmptyErr((_) => db.accountAction((db) => db.app.updateAccountSyncDone(true)));
       }
     });
   }
@@ -195,7 +195,7 @@ class AccountRepository extends DataRepositoryWithLifecycle {
     return resultString;
   }
 
-  Future<Result<void, void>> doInitialSetup(
+  Future<Result<(), ()>> doInitialSetup(
     InitialSetupData data,
   ) async {
     final result = await InitialSetupUtils(api).doInitialSetup(data);
@@ -236,21 +236,21 @@ class AccountRepository extends DataRepositoryWithLifecycle {
       .mapErr((_) => ());
   }
 
-  Future<Result<void, void>> moveAccountToPendingDeletionState() async {
+  Future<Result<(), ()>> moveAccountToPendingDeletionState() async {
     return await api.accountAction((api) => api.postSetAccountDeletionRequestState(currentUser.aid, BooleanSetting(value: true)))
       .mapErr((_) => ())
       .mapOk((_) => ());
   }
 
-  Future<Result<void, void>> receiveNewsCount() async {
+  Future<Result<(), ()>> receiveNewsCount() async {
     final r = await api.account((api) => api.postGetUnreadNewsCount()).ok();
     if (r != null) {
       return await NotificationNewsItemAvailable.getInstance().handleNewsCountUpdate(r, accountBackgroundDb);
     }
-    return const Err(null);
+    return const Err(());
   }
 
-  Future<Result<void, void>> receiveAdminNotification() async {
+  Future<Result<(), ()>> receiveAdminNotification() async {
     final r = await api.commonAdmin((api) => api.postGetAdminNotification()).ok();
     if (r != null) {
       final viewedNotification = await accountBackgroundDb.accountData((db) => db.notification.getAdminNotification()).ok();
@@ -260,12 +260,13 @@ class AccountRepository extends DataRepositoryWithLifecycle {
       } else {
         await NotificationNewsItemAvailable.getInstance().showAdminNotification(r, accountBackgroundDb);
       }
-      return await accountBackgroundDb.accountAction((db) => db.notification.removeAdminNotification());
+      return await accountBackgroundDb.accountAction((db) => db.notification.removeAdminNotification())
+        .emptyErr();
     }
-    return const Err(null);
+    return const Err(());
   }
 
-  Future<Result<void, void>> handleServerMaintenanceStatusEvent(ScheduledMaintenanceStatus event) {
+  Future<Result<(), ()>> handleServerMaintenanceStatusEvent(ScheduledMaintenanceStatus event) {
     // Workaroud OpenAPI generator bug
     final UnixTime? time;
     final timeRaw = event.scheduledMaintenance?.ut;
@@ -276,19 +277,19 @@ class AccountRepository extends DataRepositoryWithLifecycle {
     }
     return db.accountAction((db) => db.common.setMaintenanceTime(
       time: time?.toUtcDateTime(),
-    ));
+    )).emptyErr();
   }
 
-  Future<Result<void, void>> _reloadAccountNotificationSettings() async {
+  Future<Result<(), ()>> _reloadAccountNotificationSettings() async {
     return await api.account((api) => api.getAccountAppNotificationSettings())
-      .andThen((v) => accountBackgroundDb.accountAction(
+      .andThenEmptyErr((v) => accountBackgroundDb.accountAction(
         (db) => db.appNotificationSettings.updateAccountNotificationSettings(v),
       ));
   }
 
-  Future<Result<void, void>> _reloadClientLanguageOnServer() async {
+  Future<Result<(), ()>> _reloadClientLanguageOnServer() async {
     return await api.common((api) => api.getClientLanguage())
-      .andThen((v) => db.accountAction(
+      .andThenEmptyErr((v) => db.accountAction(
         (db) => db.common.updateClientLanguageOnServer(v),
       ));
   }

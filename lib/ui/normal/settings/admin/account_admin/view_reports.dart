@@ -35,13 +35,13 @@ class ViewReportReportIo extends ContentIo<WrappedReportDetailed> {
   Set<ReportId> addedReports = {};
 
   @override
-  Future<Result<List<WrappedReportDetailed>, void>> getNextContent() async {
+  Future<Result<List<WrappedReportDetailed>, ()>> getNextContent() async {
     final currentStartPosition = startPosition;
     final UnixTime start;
     if (currentStartPosition == null) {
       final s = await api.commonAdmin((api) => api.getLatestReportIteratorStartPosition()).ok();
       if (s == null) {
-        return const Err(null);
+        return const Err(());
       }
       startPosition = s;
       start = s;
@@ -62,9 +62,9 @@ class ViewReportReportIo extends ContentIo<WrappedReportDetailed> {
 
     switch (result) {
       case Err():
-        return const Err(null);
+        return const Err(());
       case Ok():
-        final getReportListResult = await handleReportList(api, addedReports, result.v.values, onlyNotProcessed: false);
+        final getReportListResult = await handleReportList(api, addedReports, result.v.values, onlyNotProcessed: false).emptyErr();
         if (getReportListResult.isOk()) {
           page += 1;
         }

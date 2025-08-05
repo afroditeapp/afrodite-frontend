@@ -202,7 +202,7 @@ class ServerConnectionManager implements LifecycleMethods, ServerConnectionInter
   /// Wait until current login session connects to server.
   ///
   /// If current login session changes to different account then error is returned.
-  Future<Result<void, void>> waitUntilCurrentSessionConnects() async {
+  Future<Result<(), ()>> waitUntilCurrentSessionConnects() async {
     await state
         .firstWhere((element) => element == ServerConnectionState.connected);
 
@@ -210,10 +210,10 @@ class ServerConnectionManager implements LifecycleMethods, ServerConnectionInter
 
     if (currentUser != accountAfterConnection) {
       log.error("Account changed when waiting connected state");
-      return const Err(null);
+      return const Err(());
     }
 
-    return const Ok(null);
+    return const Ok(());
   }
 }
 
@@ -353,39 +353,39 @@ class ApiManager implements LifecycleMethods {
 
   // Actions
 
-  Future<Result<void, ActionApiError>> accountAction(Future<void> Function(AccountApi) action) async {
+  Future<Result<(), ActionApiError>> accountAction(Future<void> Function(AccountApi) action) async {
     return await accountWrapper().requestAction(action);
   }
 
-  Future<Result<void, ActionApiError>> accountAdminAction(Future<void> Function(AccountAdminApi) action) async {
+  Future<Result<(), ActionApiError>> accountAdminAction(Future<void> Function(AccountAdminApi) action) async {
     return await _accountAdminWrapper().requestAction(action);
   }
 
-  Future<Result<void, ActionApiError>> commonAction(Future<void> Function(CommonApi) action) async {
+  Future<Result<(), ActionApiError>> commonAction(Future<void> Function(CommonApi) action) async {
     return await ApiWrapper(_account.common, connection).requestAction(action);
   }
 
-  Future<Result<void, ActionApiError>> commonAdminAction(Future<void> Function(CommonAdminApi) action) async {
+  Future<Result<(), ActionApiError>> commonAdminAction(Future<void> Function(CommonAdminApi) action) async {
     return await ApiWrapper(_account.commonAdmin, connection).requestAction(action);
   }
 
-  Future<Result<void, ActionApiError>> mediaAction(Future<void> Function(MediaApi) action) async {
+  Future<Result<(), ActionApiError>> mediaAction(Future<void> Function(MediaApi) action) async {
     return await mediaWrapper().requestAction(action);
   }
 
-  Future<Result<void, ActionApiError>> mediaAdminAction(Future<void> Function(MediaAdminApi) action) async {
+  Future<Result<(), ActionApiError>> mediaAdminAction(Future<void> Function(MediaAdminApi) action) async {
     return await _mediaAdminWrapper().requestAction(action);
   }
 
-  Future<Result<void, ActionApiError>> profileAction(Future<void> Function(ProfileApi) action) async {
+  Future<Result<(), ActionApiError>> profileAction(Future<void> Function(ProfileApi) action) async {
     return await profileWrapper().requestAction(action);
   }
 
-  Future<Result<void, ActionApiError>> profileAdminAction(Future<void> Function(ProfileAdminApi) action) async {
+  Future<Result<(), ActionApiError>> profileAdminAction(Future<void> Function(ProfileAdminApi) action) async {
     return await _profileAdminWrapper().requestAction(action);
   }
 
-  Future<Result<void, ActionApiError>> chatAction(Future<void> Function(ChatApi) action) async {
+  Future<Result<(), ActionApiError>> chatAction(Future<void> Function(ChatApi) action) async {
     return await _chatWrapper().requestAction(action);
   }
 }

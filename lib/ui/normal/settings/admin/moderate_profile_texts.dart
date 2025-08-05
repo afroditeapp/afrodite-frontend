@@ -43,9 +43,10 @@ class ProfileStringIo extends ContentIo<WrappedProfileStringModeration> {
   ProfileStringIo(this.contentType, this.showTextsWhichBotsCanModerate);
 
   @override
-  Future<Result<List<WrappedProfileStringModeration>, void>> getNextContent() async {
+  Future<Result<List<WrappedProfileStringModeration>, ()>> getNextContent() async {
     return await api.profileAdmin((api) => api.getProfileStringPendingModerationList(contentType, showTextsWhichBotsCanModerate))
-      .mapOk((v) => v.values.map((v) => WrappedProfileStringModeration(id: v.id, value: v.value)).toList());
+      .mapOk((v) => v.values.map((v) => WrappedProfileStringModeration(id: v.id, value: v.value)).toList())
+      .emptyErr();
   }
 
   @override

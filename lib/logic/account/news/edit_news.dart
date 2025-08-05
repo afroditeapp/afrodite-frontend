@@ -104,7 +104,7 @@ class EditNewsBloc extends Bloc<EditNewsEvent, EditNewsData> with ActionRunner {
     add(Reload());
   }
 
-  Future<Result<void, void>> loadTranslation(Emitter<EditNewsData> emit, String locale) async {
+  Future<Result<(), ()>> loadTranslation(Emitter<EditNewsData> emit, String locale) async {
     final translation = await api.account((api) => api.getNewsItem(id.nid, locale, requireLocale: true));
     switch (translation) {
       case Ok():
@@ -118,13 +118,13 @@ class EditNewsBloc extends Bloc<EditNewsEvent, EditNewsData> with ActionRunner {
           editableTranslations: state.editableTranslationsWith(locale, c),
           isVisibleToUsers: !translation.value.private,
         ));
-        return const Ok(null);
+        return const Ok(());
       case Err():
-        return const Err(null);
+        return const Err(());
     }
   }
 
-  Future<Result<void, _SaveError>> _saveTranslation(Emitter<EditNewsData> emit, String locale) async {
+  Future<Result<(), _SaveError>> _saveTranslation(Emitter<EditNewsData> emit, String locale) async {
     final currentVersion = state.currentlNewsContent(locale).version ?? NewsTranslationVersion(version: 0);
     final edited = state.editedOrCurrentlNewsContent(locale);
     final r = await api.accountAdmin((api) => api.postUpdateNewsTranslation(
@@ -143,7 +143,7 @@ class EditNewsBloc extends Bloc<EditNewsEvent, EditNewsData> with ActionRunner {
           return const Err(_SaveError.reloadFailed);
         }
 
-        return const Ok(null);
+        return const Ok(());
       case Err():
         return const Err(_SaveError.saveFailed);
     }

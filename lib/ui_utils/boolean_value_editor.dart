@@ -13,8 +13,8 @@ import 'package:app/utils/result.dart';
 
 abstract class EditBooleanValuesDataApi {
   const EditBooleanValuesDataApi();
-  Future<Result<BooleanValuesManager, void>> load(ApiManager api);
-  Future<Result<void, void>> save(ApiManager api, BooleanValuesManager values);
+  Future<Result<BooleanValuesManager, ()>> load(ApiManager api);
+  Future<Result<(), ()>> save(ApiManager api, BooleanValuesManager values);
 }
 
 class EditBooleanValuesScreen extends StatefulWidget {

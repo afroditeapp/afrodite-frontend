@@ -217,7 +217,7 @@ class ModerationCacher<C> {
 abstract class ContentIo<C> {
   /// Get next content available. Previous content might
   /// be returned.
-  Future<Result<List<C>, void>> getNextContent();
+  Future<Result<List<C>, ()>> getNextContent();
 
   Future<void> sendToServer(C content, bool accept);
 }

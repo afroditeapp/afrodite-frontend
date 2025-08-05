@@ -47,29 +47,29 @@ class SendMessage extends MessageManagerCommand {
   }
 }
 class DeleteSendFailedMessage extends MessageManagerCommand {
-  final BehaviorSubject<Result<void, DeleteSendFailedError>?> _completed = BehaviorSubject.seeded(null);
+  final BehaviorSubject<Result<(), DeleteSendFailedError>?> _completed = BehaviorSubject.seeded(null);
   final LocalMessageId localId;
   DeleteSendFailedMessage(this.localId);
 
-  Future<Result<void, DeleteSendFailedError>> waitUntilReady() async  {
+  Future<Result<(), DeleteSendFailedError>> waitUntilReady() async  {
     return await _completed.whereNotNull().first;
   }
 }
 class ResendSendFailedMessage extends MessageManagerCommand {
-  final BehaviorSubject<Result<void, ResendFailedError>?> _completed = BehaviorSubject.seeded(null);
+  final BehaviorSubject<Result<(), ResendFailedError>?> _completed = BehaviorSubject.seeded(null);
   final LocalMessageId localId;
   ResendSendFailedMessage(this.localId);
 
-  Future<Result<void, ResendFailedError>> waitUntilReady() async  {
+  Future<Result<(), ResendFailedError>> waitUntilReady() async  {
     return await _completed.whereNotNull().first;
   }
 }
 class RetryPublicKeyDownload extends MessageManagerCommand {
-  final BehaviorSubject<Result<void, RetryPublicKeyDownloadError>?> _completed = BehaviorSubject.seeded(null);
+  final BehaviorSubject<Result<(), RetryPublicKeyDownloadError>?> _completed = BehaviorSubject.seeded(null);
   final LocalMessageId localId;
   RetryPublicKeyDownload(this.localId);
 
-  Future<Result<void, RetryPublicKeyDownloadError>> waitUntilReady() async  {
+  Future<Result<(), RetryPublicKeyDownloadError>> waitUntilReady() async  {
     return await _completed.whereNotNull().first;
   }
 }
@@ -127,7 +127,7 @@ class MessageManager extends LifecycleMethods {
     _commands.add(cmd);
   }
 
-  Future<Result<void, DeleteSendFailedError>> _deleteSendFailedMessage(
+  Future<Result<(), DeleteSendFailedError>> _deleteSendFailedMessage(
     LocalMessageId localId,
     {
       bool sendUiEvent = true,
@@ -172,11 +172,11 @@ class MessageManager extends LifecycleMethods {
       if (sendUiEvent) {
         profile.sendProfileChange(ConversationChanged(toBeRemoved.remoteAccountId, ConversationChangeType.messageRemoved));
       }
-      return const Ok(null);
+      return const Ok(());
     }
   }
 
-  Future<Result<void, ResendFailedError>> _resendSendFailedMessage(
+  Future<Result<(), ResendFailedError>> _resendSendFailedMessage(
     LocalMessageId localId,
   ) async {
     if (kIsWeb) {
@@ -238,10 +238,10 @@ class MessageManager extends LifecycleMethods {
     if (currentDeleteError != null) {
       return Err(currentDeleteError);
     }
-    return const Ok(null);
+    return const Ok(());
   }
 
-  Future<Result<void, RetryPublicKeyDownloadError>> _retryPublicKeyDownload(
+  Future<Result<(), RetryPublicKeyDownloadError>> _retryPublicKeyDownload(
     LocalMessageId localId,
   ) async {
     if (kIsWeb) {
@@ -299,7 +299,7 @@ class MessageManager extends LifecycleMethods {
     if (r.isErr()) {
       return const Err(RetryPublicKeyDownloadError.unspecifiedError);
     } else {
-      return const Ok(null);
+      return const Ok(());
     }
   }
 }

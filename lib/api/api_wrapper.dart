@@ -46,9 +46,10 @@ class ApiWrapper<T> {
   }
 
   /// Handle ApiException.
-  Future<Result<void, ActionApiError>> requestAction(Future<void> Function(T) action, {bool logError = true}) async {
+  Future<Result<(), ActionApiError>> requestAction(Future<void> Function(T) action, {bool logError = true}) async {
     try {
-      return Ok(await action(api));
+      await action(api);
+      return Ok(());
     } on ApiException catch (e) {
       await restartConnectionIfNeeded(e);
       final err = ActionApiErrorException(e);

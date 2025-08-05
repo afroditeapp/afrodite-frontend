@@ -79,29 +79,29 @@ class BackendSignedMessage {
     );
 }
 
-Result<int, void> parseVersion(Iterator<int> data) {
+Result<int, ()> parseVersion(Iterator<int> data) {
   final first = data.next();
   if (first == null) {
-    return const Err(null);
+    return const Err(());
   }
   final value = ByteData.view(Uint8List.fromList([first]).buffer).getInt8(0);
   return Ok(value);
 }
 
-Result<AccountId, void> parseAccountId(Iterator<int> data) {
+Result<AccountId, ()> parseAccountId(Iterator<int> data) {
   final uuidBytes = data.takeAndAdvance(16);
   if (uuidBytes == null) {
-    return const Err(null);
+    return const Err(());
   }
   final base64UrlsNoPadding = base64UrlEncode(uuidBytes).replaceAll("=", "");
   return Ok(AccountId(aid: base64UrlsNoPadding));
 }
 
-Result<int, void> parseMinimalI64(Iterator<int> data) {
+Result<int, ()> parseMinimalI64(Iterator<int> data) {
   final count = data.next();
   final first = data.next();
   if (count == null || first == null) {
-    return const Err(null);
+    return const Err(());
   }
   if (count == 1) {
     final value = ByteData.view(Uint8List.fromList([first]).buffer).getInt8(0);
@@ -110,7 +110,7 @@ Result<int, void> parseMinimalI64(Iterator<int> data) {
 
   final second = data.next();
   if (second == null) {
-    return const Err(null);
+    return const Err(());
   }
   if (count == 2) {
     final value = ByteData.view(Uint8List.fromList([first, second]).buffer).getInt16(0, Endian.little);
@@ -120,7 +120,7 @@ Result<int, void> parseMinimalI64(Iterator<int> data) {
   final third = data.next();
   final fourth = data.next();
   if (third == null || fourth == null) {
-    return const Err(null);
+    return const Err(());
   }
   if (count == 4) {
     final list = Uint8List.fromList([first, second, third, fourth]);
@@ -133,7 +133,7 @@ Result<int, void> parseMinimalI64(Iterator<int> data) {
   final sevent = data.next();
   final eight = data.next();
   if (fift == null || sixth == null || sevent == null || eight == null) {
-    return const Err(null);
+    return const Err(());
   }
   if (count == 8) {
     final list = Uint8List.fromList([first, second, third, fourth, fift, sixth, sevent, eight]);
@@ -141,5 +141,5 @@ Result<int, void> parseMinimalI64(Iterator<int> data) {
     return Ok(value);
   }
 
-  return const Err(null);
+  return const Err(());
 }

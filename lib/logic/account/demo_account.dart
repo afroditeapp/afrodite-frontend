@@ -70,7 +70,7 @@ class DemoAccountBloc extends Bloc<DemoAccountEvent, DemoAccountBlocData> with A
   }
 }
 
-void handleErrors(Result<void, SessionOrOtherError> result) {
+void handleErrors(Result<(), SessionOrOtherError> result) {
   switch (result) {
     case Ok():
       null;

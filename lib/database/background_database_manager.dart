@@ -85,10 +85,10 @@ class BackgroundDatabaseManager extends AppSingleton {
     return first ?? defaultValue;
   }
 
-  Future<Result<void, DatabaseError>> commonAction(Future<void> Function(CommonBackgroundDatabaseWrite) action) async {
+  Future<Result<(), DatabaseError>> commonAction(Future<void> Function(CommonBackgroundDatabaseWrite) action) async {
     try {
       await action(commonDatabase.write);
-      return const Ok(null);
+      return const Ok(());
     } on CouldNotRollBackException catch (e) {
       return _handleDbException(e);
     } on DriftWrappedException catch (e) {
@@ -121,7 +121,7 @@ class BackgroundDatabaseManager extends AppSingleton {
     }
   }
 
-  Future<Result<void, AppError>> setAccountId(AccountId accountId) =>
+  Future<Result<(), AppError>> setAccountId(AccountId accountId) =>
     commonAction((db) => db.loginSession.updateAccountIdUseOnlyFromDatabaseManager(accountId))
       .andThen((_) =>
         getAccountBackgroundDatabaseManager(accountId)

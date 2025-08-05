@@ -286,10 +286,10 @@ class SendMessageUtils {
     }
   }
 
-  Future<Result<void, void>> markSentMessagesAcknowledged(ClientId clientId) async {
+  Future<Result<(), ()>> markSentMessagesAcknowledged(ClientId clientId) async {
     final sentMessages = await api.chat((api) => api.getSentMessageIds()).ok();
     if (sentMessages == null) {
-      return const Err(null);
+      return const Err(());
     }
     for (final sentMessageId in sentMessages.ids) {
       if (clientId != sentMessageId.c) {
@@ -306,12 +306,12 @@ class SendMessageUtils {
         final r = await api.chat((api) => api.postGetSentMessage(sentMessageId)).ok();
         final base64EncodedMessage = r?.data;
         if (base64EncodedMessage == null) {
-          return const Err(null);
+          return const Err(());
         }
         final decoded = base64Decode(base64EncodedMessage);
         final backendSignedMessage = BackendSignedMessage.parseFromSignedPgpMessage(decoded);
         if (backendSignedMessage == null) {
-          return const Err(null);
+          return const Err(());
         }
         final updateSentState = await db.accountAction((db) => db.message.updateSentMessageState(
           sentMessageLocalId,
@@ -321,18 +321,18 @@ class SendMessageUtils {
           backendSignePgpMessage: decoded,
         ));
         if (updateSentState.isErr()) {
-          return const Err(null);
+          return const Err(());
         }
       }
     }
 
     final acknowledgeResult = await api.chatAction((api) => api.postAddSenderAcknowledgement(sentMessages));
     if (acknowledgeResult.isErr()) {
-      return const Err(null);
+      return const Err(());
     }
 
     allSentMessagesAcknowledgedOnce = true;
-    return const Ok(null);
+    return const Ok(());
   }
 
   Future<bool> _isInMatches(AccountId accountId) async {

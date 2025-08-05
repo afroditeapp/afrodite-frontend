@@ -270,7 +270,7 @@ class _ViewMetricsScreenState extends State<ViewMetricsScreen> {
 }
 
 abstract class GetMetrics {
-  Future<Result<List<Metric>, void>> getMetrics();
+  Future<Result<List<Metric>, ()>> getMetrics();
 }
 
 abstract class Metric {

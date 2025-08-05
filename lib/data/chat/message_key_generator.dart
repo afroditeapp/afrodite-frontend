@@ -32,10 +32,10 @@ class MessageKeyManager {
 
   MessageKeyManager(this.db, this.api, this.currentUser);
 
-  Future<Result<AllKeyData, void>> generateOrLoadMessageKeys() async {
+  Future<Result<AllKeyData, ()>> generateOrLoadMessageKeys() async {
     if (kIsWeb) {
       // Messages are not supported on web
-      return const Err(null);
+      return const Err(());
     }
 
     if (generation.value == KeyGeneratorState.inProgress) {
@@ -43,7 +43,7 @@ class MessageKeyManager {
       // Key generation is now complete and it should be in database
       final keys = await db.accountData((db) => db.key.getMessageKeys()).ok();
       if (keys == null) {
-        return const Err(null);
+        return const Err(());
       } else {
         return Ok(keys);
       }
@@ -52,7 +52,7 @@ class MessageKeyManager {
       switch (await db.accountData((db) => db.key.getMessageKeys())) {
         case Err():
           generation.add(KeyGeneratorState.idle);
-          return const Err(null);
+          return const Err(());
         case Ok(:final v):
           if (v != null) {
             // Key is already created
@@ -66,20 +66,20 @@ class MessageKeyManager {
     }
   }
 
-  Future<Result<AllKeyData, void>> _generateMessageKeys() async {
+  Future<Result<AllKeyData, ()>> _generateMessageKeys() async {
     // For some reason passing the currentUser.accountId directly to closure
     // does not work.
     final currentUserString = currentUser.aid;
     final (newKeys, result) = await Isolate.run(() => generateMessageKeys(currentUserString));
     if (newKeys == null) {
       log.error("Generating message keys failed, error: $result");
-      return const Err(null);
+      return const Err(());
     }
 
     return await uploadPublicKeyAndSaveAllKeys(newKeys);
   }
 
-  Future<Result<AllKeyData, void>> uploadPublicKeyAndSaveAllKeys(
+  Future<Result<AllKeyData, ()>> uploadPublicKeyAndSaveAllKeys(
     GeneratedMessageKeys newKeys,
   ) async {
     final r = await api.chat((api) => api.postAddPublicKey(MultipartFile.fromBytes("", newKeys.public.toList()))).ok();
@@ -87,7 +87,7 @@ class MessageKeyManager {
     // TODO(prod): Handle errorTooManyPublicKeys properly
     final keyId = r?.keyId;
     if (r == null || keyId == null || r.errorTooManyPublicKeys) {
-      return const Err(null);
+      return const Err(());
     }
 
     final private = PrivateKeyBytes(data: newKeys.private);
@@ -100,7 +100,7 @@ class MessageKeyManager {
     ));
 
     if (dbResult.isErr()) {
-      return const Err(null);
+      return const Err(());
     } else {
       return Ok(AllKeyData(private: private, public: public, id: keyId));
     }

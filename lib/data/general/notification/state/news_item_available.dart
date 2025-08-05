@@ -19,7 +19,7 @@ class NotificationNewsItemAvailable extends AppSingletonNoInit {
 
   final notifications = NotificationManager.getInstance();
 
-  Future<Result<void, void>> handleNewsCountUpdate(UnreadNewsCountResult r, AccountBackgroundDatabaseManager accountBackgroundDb) async {
+  Future<Result<(), ()>> handleNewsCountUpdate(UnreadNewsCountResult r, AccountBackgroundDatabaseManager accountBackgroundDb) async {
     final currentCount = await accountBackgroundDb.accountStream((db) => db.news.watchUnreadNewsCount()).firstOrNull;
     final currentCountInt = currentCount?.c ?? 0;
     if (currentCountInt < r.c.c) {
@@ -28,7 +28,7 @@ class NotificationNewsItemAvailable extends AppSingletonNoInit {
       await _updateNotification(false, accountBackgroundDb);
     }
 
-    return await accountBackgroundDb.accountAction((db) => db.news.setUnreadNewsCount(unreadNewsCount: r.c, version: r.v));
+    return await accountBackgroundDb.accountAction((db) => db.news.setUnreadNewsCount(unreadNewsCount: r.c, version: r.v)).emptyErr();
   }
 
   Future<void> hide(AccountBackgroundDatabaseManager accountBackgroundDb) =>
@@ -51,7 +51,7 @@ class NotificationNewsItemAvailable extends AppSingletonNoInit {
     );
   }
 
-  Future<Result<void, void>> showAdminNotification(AdminNotification notificationContent, AccountBackgroundDatabaseManager accountBackgroundDb) async {
+  Future<Result<(), ()>> showAdminNotification(AdminNotification notificationContent, AccountBackgroundDatabaseManager accountBackgroundDb) async {
     Map<String, dynamic> booleanValues = notificationContent.toJson();
     List<String> trueValues = [];
     for (final e in booleanValues.entries) {
@@ -70,6 +70,6 @@ class NotificationNewsItemAvailable extends AppSingletonNoInit {
       accountBackgroundDb: accountBackgroundDb,
     );
 
-    return await accountBackgroundDb.accountAction((db) => db.notification.updateAdminNotification(notificationContent));
+    return await accountBackgroundDb.accountAction((db) => db.notification.updateAdminNotification(notificationContent)).emptyErr();
   }
 }

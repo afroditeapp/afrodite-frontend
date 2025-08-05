@@ -36,7 +36,7 @@ abstract class BaseIteratorManager implements UiProfileIterator {
     _currentIterator.reset();
   }
 
-  Future<Result<List<ProfileEntry>, void>> _nextListRaw() async {
+  Future<Result<List<ProfileEntry>, ()>> _nextListRaw() async {
     final List<ProfileEntry> nextList;
     switch (await _currentIterator.nextList()) {
       case Ok(:final value): {
@@ -44,7 +44,7 @@ abstract class BaseIteratorManager implements UiProfileIterator {
         break;
       }
       case Err(): {
-        return const Err(null);
+        return const Err(());
       }
     }
 
@@ -54,14 +54,14 @@ abstract class BaseIteratorManager implements UiProfileIterator {
     return Ok(nextList);
   }
 
-  Future<Result<List<ProfileEntry>, void>> _nextListImpl() async {
+  Future<Result<List<ProfileEntry>, ()>> _nextListImpl() async {
     while (true) {
       final List<ProfileEntry> list;
       switch (await _nextListRaw()) {
         case Ok(value: final profiles):
           list = profiles;
         case Err():
-          return const Err(null);
+          return const Err(());
       }
 
       if (list.isEmpty) {
@@ -84,7 +84,7 @@ abstract class BaseIteratorManager implements UiProfileIterator {
   }
 
   @override
-  Future<Result<List<ProfileEntry>, void>> nextList() async {
+  Future<Result<List<ProfileEntry>, ()>> nextList() async {
     await _loadingInProgress.firstWhere((e) => e == false);
 
     _loadingInProgress.add(true);
@@ -98,5 +98,5 @@ abstract class UiProfileIterator {
   Stream<bool> get loadingInProgress;
   void reset(bool clearDatabase);
   void resetToBeginning();
-  Future<Result<List<ProfileEntry>, void>> nextList();
+  Future<Result<List<ProfileEntry>, ()>> nextList();
 }

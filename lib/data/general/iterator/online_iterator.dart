@@ -51,11 +51,11 @@ class OnlineIterator extends IteratorType {
   }
 
   @override
-  Future<Result<List<ProfileEntry>, void>> nextList() async {
+  Future<Result<List<ProfileEntry>, ()>> nextList() async {
     if (_resetServerIterator) {
       if (await connectionManager.waitUntilCurrentSessionConnects().isErr()) {
         log.error("Connection waiting failed");
-        return const Err(null);
+        return const Err(());
       }
 
       switch (await io.resetServerPaging()) {
@@ -63,7 +63,7 @@ class OnlineIterator extends IteratorType {
           _resetServerIterator = false;
         case Err():
           log.error("Profile paging reset failed");
-          return const Err(null);
+          return const Err(());
       }
     }
 
@@ -80,26 +80,26 @@ class OnlineIterator extends IteratorType {
           }
         case Err():
           log.error("Database iterator failed");
-          return const Err(null);
+          return const Err(());
       }
     }
 
     if (!await io.loadIteratorSessionIdFromDbAndReturnTrueIfItExists()) {
       log.error("No iterator session ID in database");
-      return const Err(null);
+      return const Err(());
     }
 
     final List<ProfileEntry> list = List.empty(growable: true);
     while (true) {
       if (await connectionManager.waitUntilCurrentSessionConnects().isErr()) {
         log.error("Connection waiting failed");
-        return const Err(null);
+        return const Err(());
       }
       switch (await io.nextServerPage()) {
         case Ok(value: final profiles):
           if (profiles.errorInvalidIteratorSessionId) {
             log.error("Current iterator session ID is invalid");
-            return const Err(null);
+            return const Err(());
           }
 
           if (profiles.profiles.isEmpty) {
@@ -139,7 +139,7 @@ class OnlineIterator extends IteratorType {
           }
         case Err():
           log.error("Profile page fetching failed");
-          return const Err(null);
+          return const Err(());
       }
 
       return Ok(list);
@@ -153,11 +153,11 @@ abstract class OnlineIteratorIo {
   void resetDatabaseIterator();
   void setDatabaseIteratorToNull();
 
-  Future<Result<void, void>> resetServerPaging();
+  Future<Result<(), ()>> resetServerPaging();
   Future<bool> loadIteratorSessionIdFromDbAndReturnTrueIfItExists();
   /// Await loadIteratorSessionIdFromDbAndReturnTrueIfItExists before awaiting
   /// Future returned from this method.
-  Future<Result<IteratorPage, void>> nextServerPage();
+  Future<Result<IteratorPage, ()>> nextServerPage();
   Future<void> setDbVisibility(AccountId id, bool visibility);
 }
 
@@ -183,14 +183,14 @@ class ProfileListOnlineIteratorIo extends OnlineIteratorIo {
   }
 
   @override
-  Future<Result<void, void>> resetServerPaging() async {
+  Future<Result<(), ()>> resetServerPaging() async {
     switch (await api.profile((api) => api.postResetProfilePaging())) {
       case Ok(:final v):
         await db.accountAction((db) => db.common.updateProfileIteratorSessionId(v));
         await db.accountAction((db) => db.profile.setProfileGridStatusList(null, false, clear: true));
-        return const Ok(null);
+        return const Ok(());
       case Err():
-        return const Err(null);
+        return const Err(());
     }
   }
 
@@ -205,10 +205,10 @@ class ProfileListOnlineIteratorIo extends OnlineIteratorIo {
   }
 
   @override
-  Future<Result<IteratorPage, void>> nextServerPage() async {
+  Future<Result<IteratorPage, ()>> nextServerPage() async {
     final sessionId = currentSessionId;
     if (sessionId == null) {
-      return const Err(null);
+      return const Err(());
     }
     return await api.profile((api) => api.postGetNextProfilePage(sessionId))
       .mapOk((value) => IteratorPage(
@@ -219,7 +219,7 @@ class ProfileListOnlineIteratorIo extends OnlineIteratorIo {
           l: v.l,
         )),
         errorInvalidIteratorSessionId: value.errorInvalidIteratorSessionId
-      ));
+      )).emptyErr();
   }
 
   @override
@@ -259,15 +259,15 @@ class ReceivedLikesOnlineIteratorIo extends OnlineIteratorIo {
   }
 
   @override
-  Future<Result<void, void>> resetServerPaging() async {
+  Future<Result<(), ()>> resetServerPaging() async {
     switch (await api.chat((api) => api.postResetReceivedLikesPaging())) {
       case Ok(:final v):
         await accountBackgroundDb.accountAction((db) => db.newReceivedLikesCount.updateSyncVersionReceivedLikes(v.v, v.c));
         await db.accountAction((db) => db.profile.setReceivedLikeGridStatusList(null, false, clear: true));
         await db.accountAction((db) => db.common.updateReceivedLikesIteratorSessionId(v.s));
-        return const Ok(null);
+        return const Ok(());
       case Err():
-        return const Err(null);
+        return const Err(());
     }
   }
 
@@ -282,17 +282,17 @@ class ReceivedLikesOnlineIteratorIo extends OnlineIteratorIo {
   }
 
   @override
-  Future<Result<IteratorPage, void>> nextServerPage() async {
+  Future<Result<IteratorPage, ()>> nextServerPage() async {
     final sessionId = currentSessionId;
     if (sessionId == null) {
-      return const Err(null);
+      return const Err(());
     }
     return await api.chat((api) => api.postGetNextReceivedLikesPage(sessionId))
       .mapOk((value) => IteratorPage(
         value.p,
         errorInvalidIteratorSessionId: value.errorInvalidIteratorSessionId,
         basicProfilesNewLikesCount: value.n.c,
-      ));
+      )).emptyErr();
   }
 
   @override
@@ -325,14 +325,14 @@ class MatchesOnlineIteratorIo extends OnlineIteratorIo {
   }
 
   @override
-  Future<Result<void, void>> resetServerPaging() async {
+  Future<Result<(), ()>> resetServerPaging() async {
     switch (await api.chat((api) => api.postResetMatchesPaging())) {
       case Ok(:final v):
         await db.accountAction((db) => db.profile.setMatchesGridStatusList(null, false, clear: true));
         await db.accountAction((db) => db.common.updateMatchesIteratorSessionId(v.s));
-        return const Ok(null);
+        return const Ok(());
       case Err():
-        return const Err(null);
+        return const Err(());
     }
   }
 
@@ -347,16 +347,16 @@ class MatchesOnlineIteratorIo extends OnlineIteratorIo {
   }
 
   @override
-  Future<Result<IteratorPage, void>> nextServerPage() async {
+  Future<Result<IteratorPage, ()>> nextServerPage() async {
     final sessionId = currentSessionId;
     if (sessionId == null) {
-      return const Err(null);
+      return const Err(());
     }
     return await api.chat((api) => api.postGetNextMatchesPage(sessionId))
       .mapOk((value) => IteratorPage(
         value.p,
         errorInvalidIteratorSessionId: value.errorInvalidIteratorSessionId,
-      ));
+      )).emptyErr();
   }
 
   @override
@@ -388,14 +388,14 @@ class AutomaticProfileSearchOnlineIteratorIo extends OnlineIteratorIo {
   }
 
   @override
-  Future<Result<void, void>> resetServerPaging() async {
+  Future<Result<(), ()>> resetServerPaging() async {
     switch (await api.profile((api) => api.postAutomaticProfileSearchResetProfilePaging())) {
       case Ok(:final v):
         await db.accountAction((db) => db.profile.setAutomaticProfileSearchGridStatusList(null, false, clear: true));
         await db.accountAction((db) => db.common.updateAutomaticProfileSearchIteratorSessionId(v));
-        return const Ok(null);
+        return const Ok(());
       case Err():
-        return const Err(null);
+        return const Err(());
     }
   }
 
@@ -410,10 +410,10 @@ class AutomaticProfileSearchOnlineIteratorIo extends OnlineIteratorIo {
   }
 
   @override
-  Future<Result<IteratorPage, void>> nextServerPage() async {
+  Future<Result<IteratorPage, ()>> nextServerPage() async {
     final sessionId = currentSessionId;
     if (sessionId == null) {
-      return const Err(null);
+      return const Err(());
     }
     return await api.profile((api) => api.postAutomaticProfileSearchGetNextProfilePage(sessionId))
       .mapOk((value) => IteratorPage(
@@ -424,7 +424,7 @@ class AutomaticProfileSearchOnlineIteratorIo extends OnlineIteratorIo {
           l: v.l,
         )),
         errorInvalidIteratorSessionId: value.errorInvalidIteratorSessionId,
-      ));
+      )).emptyErr();
   }
 
   @override

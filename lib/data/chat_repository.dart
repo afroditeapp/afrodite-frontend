@@ -81,12 +81,12 @@ class ChatRepository extends DataRepositoryWithLifecycle {
   }
 
   @override
-  Future<Result<void, void>> onLoginDataSync() async {
+  Future<Result<(), ()>> onLoginDataSync() async {
     return await _sentBlocksRefresh()
       .andThen((_) => _generateMessageKeyIfNeeded())
       .andThen((_) => _reloadChatNotificationSettings())
       .andThen((_) => reloadDailyLikesLimit())
-      .andThen((_) => db.accountAction((db) => db.app.updateChatSyncDone(true)));
+      .andThenEmptyErr((_) => db.accountAction((db) => db.app.updateChatSyncDone(true)));
   }
 
   @override
@@ -101,19 +101,19 @@ class ChatRepository extends DataRepositoryWithLifecycle {
         .andThen((_) => _generateMessageKeyIfNeeded())
         .andThen((_) => _reloadChatNotificationSettings())
         .andThen((_) => reloadDailyLikesLimit())
-        .andThen((_) => db.accountAction((db) => db.app.updateChatSyncDone(true)));
+        .andThenEmptyErr((_) => db.accountAction((db) => db.app.updateChatSyncDone(true)));
     });
   }
 
-  Future<Result<void, void>> _generateMessageKeyIfNeeded() async {
+  Future<Result<(), ()>> _generateMessageKeyIfNeeded() async {
     final keys = await messageKeyManager.generateOrLoadMessageKeys().ok();
     if (keys == null) {
-      return const Err(null);
+      return const Err(());
     }
     final serverPublicKeyInfo =
       await api.chat((api) => api.getPrivatePublicKeyInfo(currentUser.aid)).ok();
     if (serverPublicKeyInfo == null) {
-      return const Err(null);
+      return const Err(());
     }
 
     if (serverPublicKeyInfo.latestPublicKeyId != keys.id) {
@@ -122,11 +122,11 @@ class ChatRepository extends DataRepositoryWithLifecycle {
         private: keys.private.data,
       ));
       if (uploadAndSaveResult.isErr()) {
-        return const Err(null);
+        return const Err(());
       }
     }
 
-    return const Ok(null);
+    return const Ok(());
   }
 
   Future<bool> isInMatches(AccountId accountId) async {
@@ -245,9 +245,9 @@ class ChatRepository extends DataRepositoryWithLifecycle {
     sentBlocksIterator.reset();
   }
 
-  Future<Result<void, void>> _sentBlocksRefresh() {
+  Future<Result<(), ()>> _sentBlocksRefresh() {
     return api.chat((api) => api.getSentBlocks())
-      .andThen((value) => db.accountAction((db) => db.conversationList.setSentBlockStatusList(value)));
+      .andThenEmptyErr((value) => db.accountAction((db) => db.conversationList.setSentBlockStatusList(value)));
   }
 
   Future<void> receivedLikesCountRefresh() async {
@@ -328,16 +328,16 @@ class ChatRepository extends DataRepositoryWithLifecycle {
     return allMessages;
   }
 
-  Future<Result<void, void>> _reloadChatNotificationSettings() async {
+  Future<Result<(), ()>> _reloadChatNotificationSettings() async {
     return await api.chat((api) => api.getChatAppNotificationSettings())
-      .andThen((v) => accountBackgroundDb.accountAction(
+      .andThenEmptyErr((v) => accountBackgroundDb.accountAction(
         (db) => db.appNotificationSettings.updateChatNotificationSettings(v),
       ));
   }
 
-  Future<Result<void, void>> reloadDailyLikesLimit() async {
+  Future<Result<(), ()>> reloadDailyLikesLimit() async {
     return await api.chat((api) => api.getDailyLikesLeft())
-      .andThen((v) => db.accountAction(
+      .andThenEmptyErr((v) => db.accountAction(
         (db) => db.like.updateDailyLikesLeft(v),
       ));
   }
@@ -356,19 +356,19 @@ class ChatRepository extends DataRepositoryWithLifecycle {
     yield* cmd.events();
   }
 
-  Future<Result<void, DeleteSendFailedError>> deleteSendFailedMessage(LocalMessageId localId) async {
+  Future<Result<(), DeleteSendFailedError>> deleteSendFailedMessage(LocalMessageId localId) async {
     final cmd = DeleteSendFailedMessage(localId);
     messageManager.queueCmd(cmd);
     return await cmd.waitUntilReady();
   }
 
-  Future<Result<void, ResendFailedError>> resendSendFailedMessage(LocalMessageId localId) async {
+  Future<Result<(), ResendFailedError>> resendSendFailedMessage(LocalMessageId localId) async {
     final cmd = ResendSendFailedMessage(localId);
     messageManager.queueCmd(cmd);
     return await cmd.waitUntilReady();
   }
 
-  Future<Result<void, RetryPublicKeyDownloadError>> retryPublicKeyDownload(LocalMessageId localId) async {
+  Future<Result<(), RetryPublicKeyDownloadError>> retryPublicKeyDownload(LocalMessageId localId) async {
     final cmd = RetryPublicKeyDownload(localId);
     messageManager.queueCmd(cmd);
     return await cmd.waitUntilReady();

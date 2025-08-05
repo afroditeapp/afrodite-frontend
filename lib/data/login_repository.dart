@@ -350,7 +350,7 @@ class LoginRepository extends DataRepository {
     );
   }
 
-  Future<Result<void, SignInWithEvent>> handleSignInWithLoginInfo(SignInWithLoginInfo info) async {
+  Future<Result<(), SignInWithEvent>> handleSignInWithLoginInfo(SignInWithLoginInfo info) async {
     final login = await _apiNoConnection.account((api) => api.postSignInWithLogin(info)).ok();
     if (login == null) {
       return const Err(SignInWithEvent.serverRequestFailed);
@@ -367,7 +367,7 @@ class LoginRepository extends DataRepository {
       });
   }
 
-  Future<Result<void, CommonSignInError>> _handleLoginResult(LoginResult loginResult) async {
+  Future<Result<(), CommonSignInError>> _handleLoginResult(LoginResult loginResult) async {
     if (loginResult.errorUnsupportedClient) {
       return const Err(CommonSignInError.unsupportedClient);
     }
@@ -410,7 +410,7 @@ class LoginRepository extends DataRepository {
       showSnackBar(R.strings.generic_data_sync_failed);
     }
     _loginInProgress.add(false);
-    return const Ok(null);
+    return const Ok(());
   }
 
   /// Logout back to login or demo account screen
@@ -511,7 +511,7 @@ class LoginRepository extends DataRepository {
     await _repositories?.connectionManager.closeAndRefreshServerAddressAndLogout();
   }
 
-  Future<Result<void, DemoAccountLoginError>> demoAccountLogin(DemoAccountCredentials credentials) async {
+  Future<Result<(), DemoAccountLoginError>> demoAccountLogin(DemoAccountCredentials credentials) async {
     _demoAccountLoginProgress.add(true);
     final loginResult = await _apiNoConnection.account((api) => api.postDemoAccountLogin(
       DemoAccountLoginCredentials(username: credentials.username, password: credentials.password)
@@ -535,7 +535,7 @@ class LoginRepository extends DataRepository {
     await DatabaseManager.getInstance().commonAction((db) => db.demoAccount.updateDemoAccountPassword(credentials.password));
     await DatabaseManager.getInstance().commonAction((db) => db.demoAccount.updateDemoAccountToken(demoAccountToken));
 
-    return const Ok(null);
+    return const Ok(());
   }
 
   Future<void> demoAccountLogout() async {
@@ -573,7 +573,7 @@ class LoginRepository extends DataRepository {
     }
   }
 
-  Future<Result<void, SessionOrOtherError>> demoAccountRegisterAndLogin() async {
+  Future<Result<(), SessionOrOtherError>> demoAccountRegisterAndLogin() async {
     final token = await demoAccountToken.first;
     if (token == null) {
       return Err(OtherError());
@@ -593,7 +593,7 @@ class LoginRepository extends DataRepository {
     }
   }
 
-  Future<Result<void, SessionOrOtherError>> demoAccountLoginToAccount(AccountId id) async {
+  Future<Result<(), SessionOrOtherError>> demoAccountLoginToAccount(AccountId id) async {
     final token = await demoAccountToken.first;
     if (token == null) {
       return Err(OtherError());
@@ -617,7 +617,7 @@ class LoginRepository extends DataRepository {
                 return Err(OtherError());
             }
           case Ok():
-            return const Ok(null);
+            return const Ok(());
         }
       case Err(:final e):
         if (e.isUnauthorized()) {
@@ -741,7 +741,7 @@ class RepositoryInstances implements DataRepositoryMethods {
   }
 
   @override
-  Future<Result<void, void>> onLoginDataSync() async {
+  Future<Result<(), ()>> onLoginDataSync() async {
     return await common.onLoginDataSync()
       .andThen((_) => chat.onLoginDataSync())
       .andThen((_) => media.onLoginDataSync())

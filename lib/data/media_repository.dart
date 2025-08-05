@@ -54,10 +54,10 @@ class MediaRepository extends DataRepositoryWithLifecycle {
   }
 
   @override
-  Future<Result<void, void>> onLoginDataSync() async {
+  Future<Result<(), ()>> onLoginDataSync() async {
     return await reloadMyMediaContent()
       .andThen((_) => _reloadMediaNotificationSettings())
-      .andThen((_) => db.accountAction((db) => db.app.updateMediaSyncDone(true)));
+      .andThenEmptyErr((_) => db.accountAction((db) => db.app.updateMediaSyncDone(true)));
   }
 
   @override
@@ -67,7 +67,7 @@ class MediaRepository extends DataRepositoryWithLifecycle {
       if (!syncDone) {
         await reloadMyMediaContent()
           .andThen((_) => _reloadMediaNotificationSettings())
-          .andThen((_) => db.accountAction((db) => db.app.updateMediaSyncDone(true)));
+          .andThenEmptyErr((_) => db.accountAction((db) => db.app.updateMediaSyncDone(true)));
       }
     });
   }
@@ -113,13 +113,13 @@ class MediaRepository extends DataRepositoryWithLifecycle {
       .map((img) => img.c?.cid);
 
   /// Reload current profile and security content.
-  Future<Result<void, void>> reloadMyMediaContent() async {
+  Future<Result<(), ()>> reloadMyMediaContent() async {
     final infoResult = await api.media((api) => api.getMediaContentInfo()).ok();
     if (infoResult == null) {
-      return const Err(null);
+      return const Err(());
     }
 
-    return await db.accountAction((db) => db.myMedia.setMyMediaContent(info: infoResult));
+    return await db.accountAction((db) => db.myMedia.setMyMediaContent(info: infoResult)).emptyErr();
   }
 
   /// Last event from stream is ProcessingCompleted or SendToSlotError.
@@ -151,22 +151,23 @@ class MediaRepository extends DataRepositoryWithLifecycle {
       ));
   }
 
-  Future<Result<void, void>> setProfileContent(SetProfileContent imgInfo) =>
+  Future<Result<(), ()>> setProfileContent(SetProfileContent imgInfo) =>
     api.mediaAction((api) => api.putProfileContent(imgInfo))
-      .onOk(() => reloadMyMediaContent());
+      .onOk(() => reloadMyMediaContent())
+      .emptyErr();
 
-  Future<Result<AccountContent, void>> loadAllContent() =>
-    api.media((api) => api.getAllAccountMediaContent(currentUser.aid));
+  Future<Result<AccountContent, ()>> loadAllContent() =>
+    api.media((api) => api.getAllAccountMediaContent(currentUser.aid)).emptyErr();
 
-  Future<Result<void, void>> retryInitialSetupImages(RetryInitialSetupImages content) async {
+  Future<Result<(), ()>> retryInitialSetupImages(RetryInitialSetupImages content) async {
     final result = await InitialSetupUtils(api).handleInitialSetupImages(content.securitySelfie, content.profileImgs);
     await reloadMyMediaContent();
     return result;
   }
 
-  Future<Result<void, void>> _reloadMediaNotificationSettings() async {
+  Future<Result<(), ()>> _reloadMediaNotificationSettings() async {
     return await api.media((api) => api.getMediaAppNotificationSettings())
-      .andThen((v) => accountBackgroundDb.accountAction(
+      .andThenEmptyErr((v) => accountBackgroundDb.accountAction(
         (db) => db.appNotificationSettings.updateMediaNotificationSettings(v),
       ));
   }

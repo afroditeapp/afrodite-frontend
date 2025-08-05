@@ -13,7 +13,7 @@ class IteratorType {
   ///
   /// Error should be returned only when online iterator is used and downloading
   /// next profile page fails.
-  Future<Result<List<ProfileEntry>, void>> nextList() async {
+  Future<Result<List<ProfileEntry>, ()>> nextList() async {
     return const Ok([]);
   }
 }

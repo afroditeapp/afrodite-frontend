@@ -82,10 +82,10 @@ class SignInWithGoogleManager {
     _initDone = true;
   }
 
-  Future<Result<SignInWithLoginInfo, void>> login() async {
+  Future<Result<SignInWithLoginInfo, ()>> login() async {
     if (!_initDone) {
       log.error("Init is not done");
-      return const Err(null);
+      return const Err(());
     }
 
     final String token;
@@ -95,12 +95,12 @@ class SignInWithGoogleManager {
       final possibleToken = session.authentication.idToken;
       if (possibleToken == null) {
         log.error("Token is null");
-        return const Err(null);
+        return const Err(());
       }
       token = possibleToken;
     } catch (_) {
       log.error("Authenticate method failed");
-      return const Err(null);
+      return const Err(());
     }
 
     return Ok(SignInWithLoginInfo(

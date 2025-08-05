@@ -19,12 +19,12 @@ class ClientIdManager {
   final BehaviorSubject<ClientIdManagerState> _state =
     BehaviorSubject.seeded(ClientIdManagerState.idle, sync: true);
 
-  Future<Result<ClientId, void>> getClientId() async {
+  Future<Result<ClientId, ()>> getClientId() async {
     if (_state.value == ClientIdManagerState.inProgress) {
       await _state.where((v) => v == ClientIdManagerState.idle).first;
       final currentClientId = await db.accountStream((db) => db.loginSession.watchClientId()).firstOrNull;
       if (currentClientId == null) {
-        return const Err(null);
+        return const Err(());
       } else {
         return Ok(currentClientId);
       }
@@ -40,7 +40,7 @@ class ClientIdManager {
         return Ok(newClientId);
       } else {
         _state.add(ClientIdManagerState.idle);
-        return const Err(null);
+        return const Err(());
       }
     } else {
       _state.add(ClientIdManagerState.idle);

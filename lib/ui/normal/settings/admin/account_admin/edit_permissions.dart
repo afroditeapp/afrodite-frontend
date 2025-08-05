@@ -20,23 +20,23 @@ class PermissionsDataApi extends EditBooleanValuesDataApi {
   const PermissionsDataApi(this.account);
 
   @override
-  Future<Result<BooleanValuesManager, void>> load(ApiManager api) async {
+  Future<Result<BooleanValuesManager, ()>> load(ApiManager api) async {
     return await api
       .accountAdmin(
         (api) => api.getPermissions(account.aid),
-      ).mapOk((v) => BooleanValuesManager(v.toJson()));
+      ).mapOk((v) => BooleanValuesManager(v.toJson())).emptyErr();
   }
 
   @override
-  Future<Result<void, void>> save(ApiManager api, BooleanValuesManager values) async {
+  Future<Result<(), ()>> save(ApiManager api, BooleanValuesManager values) async {
     final permissions = Permissions.fromJson(values.editedState());
     if (permissions == null) {
-      return const Err(null);
+      return const Err(());
     }
 
     return await api
       .accountAdminAction(
         (api) => api.postSetPermissions(account.aid, permissions)
-      );
+      ).emptyErr();
   }
 }

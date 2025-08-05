@@ -92,7 +92,7 @@ class ProfileIteratorManager {
     }
   }
 
-  Future<Result<List<ProfileEntry>, void>> _nextListRaw() async {
+  Future<Result<List<ProfileEntry>, ()>> _nextListRaw() async {
     switch (_currentMode) {
       case ModeFavorites(): {
         return await _currentIterator.nextList();
@@ -105,7 +105,7 @@ class ProfileIteratorManager {
             break;
           }
           case Err(): {
-            return const Err(null);
+            return const Err(());
           }
         }
 
@@ -119,14 +119,14 @@ class ProfileIteratorManager {
     }
   }
 
-  Future<Result<List<ProfileEntry>, void>> _nextListImpl() async {
+  Future<Result<List<ProfileEntry>, ()>> _nextListImpl() async {
     while (true) {
       final List<ProfileEntry> list;
       switch (await _nextListRaw()) {
         case Ok(value: final profiles):
           list = profiles;
         case Err():
-          return const Err(null);
+          return const Err(());
       }
 
       if (list.isEmpty) {
@@ -152,7 +152,7 @@ class ProfileIteratorManager {
     }
   }
 
-  Future<Result<List<ProfileEntry>, void>> nextList() async {
+  Future<Result<List<ProfileEntry>, ()>> nextList() async {
     await loadingInProgress.firstWhere((e) => e == false);
 
     loadingInProgress.add(true);
