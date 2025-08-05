@@ -39,20 +39,31 @@ class NotificationMediaContentModerationCompleted extends AppSingletonNoInit {
     if (showRejected) {
       await NotificationMediaContentModerationCompleted.getInstance().show(ModerationCompletedState.rejected, accountBackgroundDb);
     }
+
+    final showDeleted = await accountBackgroundDb.accountDataWrite(
+      (db) => db.notification.mediaContentDeleted.shouldBeShown(notification.deleted)
+    ).ok() ?? false;
+
+    if (showDeleted) {
+      await NotificationMediaContentModerationCompleted.getInstance().show(ModerationCompletedState.deleted, accountBackgroundDb);
+    }
   }
 
   Future<void> show(ModerationCompletedState state, AccountBackgroundDatabaseManager accountBackgroundDb) async {
     final LocalNotificationId id = switch (state) {
       ModerationCompletedState.accepted => NotificationIdStatic.mediaContentModerationAccepted.id,
       ModerationCompletedState.rejected => NotificationIdStatic.mediaContentModerationRejected.id,
+      ModerationCompletedState.deleted => NotificationIdStatic.mediaContentModerationDeleted.id,
     };
     final String title = switch (state) {
       ModerationCompletedState.accepted => R.strings.notification_media_content_accepted,
       ModerationCompletedState.rejected => R.strings.notification_media_content_rejected,
+      ModerationCompletedState.deleted => R.strings.notification_media_content_deleted,
     };
     await notifications.sendNotification(
       id: id,
       title: title,
+      body: state == ModerationCompletedState.deleted ? R.strings.notification_media_content_deleted_description : null,
       category: const NotificationCategoryMediaContentModerationCompleted(),
       notificationPayload: NavigateToContentManagement(receiverAccountId: accountBackgroundDb.accountId()),
       accountBackgroundDb: accountBackgroundDb,
@@ -63,4 +74,5 @@ class NotificationMediaContentModerationCompleted extends AppSingletonNoInit {
 enum ModerationCompletedState {
   accepted,
   rejected,
+  deleted,
 }

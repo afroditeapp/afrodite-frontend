@@ -1092,6 +1092,14 @@
   "@notification_media_content_accepted": {
     "description": "Title for media content accepted notification"
   },
+  "notification_media_content_deleted": "Image deleted",
+  "@notification_media_content_deleted": {
+    "description": "Title for media content deleted notification"
+  },
+  "notification_media_content_deleted_description": "Unallowed content was detected from the image. This might be false positive detection.",
+  "@notification_media_content_deleted_description": {
+    "description": "Description for media content deleted notification"
+  },
   "notification_media_content_rejected": "Image rejected",
   "@notification_media_content_rejected": {
     "description": "Title for media content rejected notification"

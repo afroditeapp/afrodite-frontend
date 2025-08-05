@@ -925,6 +925,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get notification_media_content_accepted => 'Image accepted';
 
   @override
+  String get notification_media_content_deleted => 'Image deleted';
+
+  @override
+  String get notification_media_content_deleted_description =>
+      'Unallowed content was detected from the image. This might be false positive detection.';
+
+  @override
   String get notification_media_content_rejected => 'Image rejected';
 
   @override

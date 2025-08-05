@@ -18,15 +18,16 @@ enum NotificationIdStatic {
   likeReceived(id: LocalNotificationId(2)),
   mediaContentModerationAccepted(id: LocalNotificationId(3)),
   mediaContentModerationRejected(id: LocalNotificationId(4)),
-  newsItemAvailable(id: LocalNotificationId(5)),
-  profileNameModerationAccepted(id: LocalNotificationId(6)),
-  profileNameModerationRejected(id: LocalNotificationId(7)),
-  profileTextModerationAccepted(id: LocalNotificationId(8)),
-  profileTextModerationRejected(id: LocalNotificationId(9)),
-  automaticProfileSearchCompleted(id: LocalNotificationId(10)),
+  mediaContentModerationDeleted(id: LocalNotificationId(5)),
+  newsItemAvailable(id: LocalNotificationId(6)),
+  profileNameModerationAccepted(id: LocalNotificationId(7)),
+  profileNameModerationRejected(id: LocalNotificationId(8)),
+  profileTextModerationAccepted(id: LocalNotificationId(9)),
+  profileTextModerationRejected(id: LocalNotificationId(10)),
+  automaticProfileSearchCompleted(id: LocalNotificationId(11)),
   /// Category: NotificationCategoryNewsItemAvailable
-  adminNotification(id: LocalNotificationId(11)),
-  genericMessageReceived(id: LocalNotificationId(12)),
+  adminNotification(id: LocalNotificationId(12)),
+  genericMessageReceived(id: LocalNotificationId(13)),
   firstNewMessageNotificationId(id: LocalNotificationId(1000));
 
   final LocalNotificationId id;

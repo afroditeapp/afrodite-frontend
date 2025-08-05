@@ -1640,6 +1640,18 @@ abstract class AppLocalizations {
   /// **'Image accepted'**
   String get notification_media_content_accepted;
 
+  /// Title for media content deleted notification
+  ///
+  /// In en, this message translates to:
+  /// **'Image deleted'**
+  String get notification_media_content_deleted;
+
+  /// Description for media content deleted notification
+  ///
+  /// In en, this message translates to:
+  /// **'Unallowed content was detected from the image. This might be false positive detection.'**
+  String get notification_media_content_deleted_description;
+
   /// Title for media content rejected notification
   ///
   /// In en, this message translates to:

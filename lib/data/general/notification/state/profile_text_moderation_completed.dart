@@ -1,7 +1,6 @@
 
 
 
-import 'package:app/data/general/notification/state/media_content_moderation_completed.dart';
 import 'package:app/data/general/notification/utils/notification_category.dart';
 import 'package:app/data/general/notification/utils/notification_id.dart';
 import 'package:app/data/general/notification/utils/notification_payload.dart';
@@ -107,4 +106,9 @@ class NotificationProfileStringModerationCompleted extends AppSingletonNoInit {
       accountBackgroundDb: accountBackgroundDb,
     );
   }
+}
+
+enum ModerationCompletedState {
+  accepted,
+  rejected,
 }

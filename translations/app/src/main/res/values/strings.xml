@@ -113,6 +113,8 @@
     <!-- Notification media content moderation completed -->
     <string name="notification_media_content_accepted" description="Title for media content accepted notification">Image accepted</string>
     <string name="notification_media_content_rejected" description="Title for media content rejected notification">Image rejected</string>
+    <string name="notification_media_content_deleted" description="Title for media content deleted notification">Image deleted</string>
+    <string name="notification_media_content_deleted_description" description="Description for media content deleted notification">Unallowed content was detected from the image. This might be false positive detection.</string>
 
     <!-- Notification profile string moderation completed -->
     <string name="notification_profile_name_accepted" description="Title for profile name accepted notification">Profile name accepted</string>
