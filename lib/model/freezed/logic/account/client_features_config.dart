@@ -71,6 +71,11 @@ class ClientFeaturesConfigData with _$ClientFeaturesConfigData {
     final locale = context.strings.localeName;
     return config.attribution.generic?.translations[locale] ?? config.attribution.generic?.default_;
   }
+
+  String? ipCountryDataAttribution(BuildContext context) {
+    final locale = context.strings.localeName;
+    return config.attribution.ipCountry?.translations[locale] ?? config.attribution.ipCountry?.default_;
+  }
 }
 
 class Time {

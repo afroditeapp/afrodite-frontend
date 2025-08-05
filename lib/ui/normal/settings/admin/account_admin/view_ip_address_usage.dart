@@ -1,6 +1,7 @@
 
 
 import 'package:app/localizations.dart';
+import 'package:app/logic/account/client_features_config.dart';
 import 'package:app/ui_utils/padding.dart';
 import 'package:app/utils/api.dart';
 import 'package:app/utils/time.dart';
@@ -8,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:app/data/login_repository.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/result.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 
 class ViewIpAddressUsageScreen extends StatefulWidget {
@@ -90,6 +92,11 @@ class _ViewIpAddressUsageScreenState extends State<ViewIpAddressUsageScreen> {
     for (final ip in ipData.values) {
       widgets.add(hPad(IpInfoWidget(ip)));
       widgets.add(const Padding(padding: EdgeInsets.all(8.0)));
+    }
+
+    final ipCountryDataAttribution = context.read<ClientFeaturesConfigBloc>().state.ipCountryDataAttribution(context);
+    if (ipCountryDataAttribution != null) {
+      widgets.add(hPad(SelectableText(ipCountryDataAttribution)));
     }
 
     return SingleChildScrollView(
