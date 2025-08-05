@@ -29,8 +29,7 @@ class DaoWriteAppNotificationSettings extends DatabaseAccessor<AccountBackground
     await into(appNotificationSettings).insertOnConflictUpdate(
       AppNotificationSettingsCompanion.insert(
         id: SingleRowTable.ID,
-        // TODO(prod): Update
-        profileTextModerationCompleted: Value(value.profileStringModeration),
+        profileStringModerationCompleted: Value(value.profileStringModeration),
         automaticProfileSearch: Value(value.automaticProfileSearch),
       ),
     );

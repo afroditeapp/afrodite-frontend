@@ -31,7 +31,7 @@ sealed class NotificationCategory {
     NotificationCategoryLikes(),
     NotificationCategoryMessages(),
     NotificationCategoryMediaContentModerationCompleted(),
-    NotificationCategoryProfileTextModerationCompleted(),
+    NotificationCategoryProfileStringModerationCompleted(),
     NotificationCategoryNewsItemAvailable(),
     NotificationCategoryAutomaticProfileSearch(),
   ];
@@ -79,15 +79,15 @@ class NotificationCategoryMediaContentModerationCompleted extends NotificationCa
   IsEnabledGetter get _isEnabledValueLocation => (db) => db.appNotificationSettings.watchMediaContentModerationCompleted();
 }
 
-class NotificationCategoryProfileTextModerationCompleted extends NotificationCategory {
-  const NotificationCategoryProfileTextModerationCompleted() : super(
-    id: "notification_category_profile_text_moderation_completed",
+class NotificationCategoryProfileStringModerationCompleted extends NotificationCategory {
+  const NotificationCategoryProfileStringModerationCompleted() : super(
+    id: "notification_category_profile_string_moderation_completed",
     group: const NotificationCategoryGroupContentModeration(),
     headsUpNotification: true,
   );
 
   @override
-  String get title => R.strings.notification_category_profile_text_moderation_completed;
+  String get title => R.strings.notification_category_profile_string_moderation_completed;
 
   @override
   IsEnabledGetter get _isEnabledValueLocation => (db) => db.appNotificationSettings.watchProfileAppNotificationSettings().map((v) => v?.profileStringModeration);

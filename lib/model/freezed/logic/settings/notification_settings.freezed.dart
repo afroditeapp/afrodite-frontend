@@ -142,7 +142,7 @@ mixin _$NotificationCategoryData {
   bool get messages => throw _privateConstructorErrorNotificationCategoryData;
   bool get likes => throw _privateConstructorErrorNotificationCategoryData;
   bool get mediaContentModerationCompleted => throw _privateConstructorErrorNotificationCategoryData;
-  bool get profileTextModerationCompleted => throw _privateConstructorErrorNotificationCategoryData;
+  bool get profileStringModerationCompleted => throw _privateConstructorErrorNotificationCategoryData;
   bool get news => throw _privateConstructorErrorNotificationCategoryData;
   bool get automaticProfileSearch => throw _privateConstructorErrorNotificationCategoryData;
 
@@ -150,7 +150,7 @@ mixin _$NotificationCategoryData {
     bool? messages,
     bool? likes,
     bool? mediaContentModerationCompleted,
-    bool? profileTextModerationCompleted,
+    bool? profileStringModerationCompleted,
     bool? news,
     bool? automaticProfileSearch,
   }) => throw _privateConstructorErrorNotificationCategoryData;
@@ -162,7 +162,7 @@ abstract class _NotificationCategoryData extends NotificationCategoryData {
     bool messages,
     bool likes,
     bool mediaContentModerationCompleted,
-    bool profileTextModerationCompleted,
+    bool profileStringModerationCompleted,
     bool news,
     bool automaticProfileSearch,
   }) = _$NotificationCategoryDataImpl;
@@ -174,7 +174,7 @@ class _$NotificationCategoryDataImpl extends _NotificationCategoryData with Diag
   static const bool _messagesDefaultValue = true;
   static const bool _likesDefaultValue = true;
   static const bool _mediaContentModerationCompletedDefaultValue = true;
-  static const bool _profileTextModerationCompletedDefaultValue = true;
+  static const bool _profileStringModerationCompletedDefaultValue = true;
   static const bool _newsDefaultValue = true;
   static const bool _automaticProfileSearchDefaultValue = true;
   
@@ -182,7 +182,7 @@ class _$NotificationCategoryDataImpl extends _NotificationCategoryData with Diag
     this.messages = _messagesDefaultValue,
     this.likes = _likesDefaultValue,
     this.mediaContentModerationCompleted = _mediaContentModerationCompletedDefaultValue,
-    this.profileTextModerationCompleted = _profileTextModerationCompletedDefaultValue,
+    this.profileStringModerationCompleted = _profileStringModerationCompletedDefaultValue,
     this.news = _newsDefaultValue,
     this.automaticProfileSearch = _automaticProfileSearchDefaultValue,
   }) : super._();
@@ -194,7 +194,7 @@ class _$NotificationCategoryDataImpl extends _NotificationCategoryData with Diag
   @override
   final bool mediaContentModerationCompleted;
   @override
-  final bool profileTextModerationCompleted;
+  final bool profileStringModerationCompleted;
   @override
   final bool news;
   @override
@@ -202,7 +202,7 @@ class _$NotificationCategoryDataImpl extends _NotificationCategoryData with Diag
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'NotificationCategoryData(messages: $messages, likes: $likes, mediaContentModerationCompleted: $mediaContentModerationCompleted, profileTextModerationCompleted: $profileTextModerationCompleted, news: $news, automaticProfileSearch: $automaticProfileSearch)';
+    return 'NotificationCategoryData(messages: $messages, likes: $likes, mediaContentModerationCompleted: $mediaContentModerationCompleted, profileStringModerationCompleted: $profileStringModerationCompleted, news: $news, automaticProfileSearch: $automaticProfileSearch)';
   }
 
   @override
@@ -213,7 +213,7 @@ class _$NotificationCategoryDataImpl extends _NotificationCategoryData with Diag
       ..add(DiagnosticsProperty('messages', messages))
       ..add(DiagnosticsProperty('likes', likes))
       ..add(DiagnosticsProperty('mediaContentModerationCompleted', mediaContentModerationCompleted))
-      ..add(DiagnosticsProperty('profileTextModerationCompleted', profileTextModerationCompleted))
+      ..add(DiagnosticsProperty('profileStringModerationCompleted', profileStringModerationCompleted))
       ..add(DiagnosticsProperty('news', news))
       ..add(DiagnosticsProperty('automaticProfileSearch', automaticProfileSearch));
   }
@@ -229,8 +229,8 @@ class _$NotificationCategoryDataImpl extends _NotificationCategoryData with Diag
           other.likes == likes) &&
         (identical(other.mediaContentModerationCompleted, mediaContentModerationCompleted) ||
           other.mediaContentModerationCompleted == mediaContentModerationCompleted) &&
-        (identical(other.profileTextModerationCompleted, profileTextModerationCompleted) ||
-          other.profileTextModerationCompleted == profileTextModerationCompleted) &&
+        (identical(other.profileStringModerationCompleted, profileStringModerationCompleted) ||
+          other.profileStringModerationCompleted == profileStringModerationCompleted) &&
         (identical(other.news, news) ||
           other.news == news) &&
         (identical(other.automaticProfileSearch, automaticProfileSearch) ||
@@ -244,7 +244,7 @@ class _$NotificationCategoryDataImpl extends _NotificationCategoryData with Diag
     messages,
     likes,
     mediaContentModerationCompleted,
-    profileTextModerationCompleted,
+    profileStringModerationCompleted,
     news,
     automaticProfileSearch,
   );
@@ -254,14 +254,14 @@ class _$NotificationCategoryDataImpl extends _NotificationCategoryData with Diag
     Object? messages,
     Object? likes,
     Object? mediaContentModerationCompleted,
-    Object? profileTextModerationCompleted,
+    Object? profileStringModerationCompleted,
     Object? news,
     Object? automaticProfileSearch,
   }) => _$NotificationCategoryDataImpl(
     messages: (messages ?? this.messages) as bool,
     likes: (likes ?? this.likes) as bool,
     mediaContentModerationCompleted: (mediaContentModerationCompleted ?? this.mediaContentModerationCompleted) as bool,
-    profileTextModerationCompleted: (profileTextModerationCompleted ?? this.profileTextModerationCompleted) as bool,
+    profileStringModerationCompleted: (profileStringModerationCompleted ?? this.profileStringModerationCompleted) as bool,
     news: (news ?? this.news) as bool,
     automaticProfileSearch: (automaticProfileSearch ?? this.automaticProfileSearch) as bool,
   );
@@ -276,7 +276,7 @@ mixin _$EditedNotificationSettingsData {
   bool? get messages => throw _privateConstructorErrorEditedNotificationSettingsData;
   bool? get likes => throw _privateConstructorErrorEditedNotificationSettingsData;
   bool? get mediaContent => throw _privateConstructorErrorEditedNotificationSettingsData;
-  bool? get profileText => throw _privateConstructorErrorEditedNotificationSettingsData;
+  bool? get profileString => throw _privateConstructorErrorEditedNotificationSettingsData;
   bool? get news => throw _privateConstructorErrorEditedNotificationSettingsData;
   bool? get automaticProfileSearch => throw _privateConstructorErrorEditedNotificationSettingsData;
 
@@ -284,7 +284,7 @@ mixin _$EditedNotificationSettingsData {
     bool? messages,
     bool? likes,
     bool? mediaContent,
-    bool? profileText,
+    bool? profileString,
     bool? news,
     bool? automaticProfileSearch,
   }) => throw _privateConstructorErrorEditedNotificationSettingsData;
@@ -296,7 +296,7 @@ abstract class _EditedNotificationSettingsData extends EditedNotificationSetting
     bool? messages,
     bool? likes,
     bool? mediaContent,
-    bool? profileText,
+    bool? profileString,
     bool? news,
     bool? automaticProfileSearch,
   }) = _$EditedNotificationSettingsDataImpl;
@@ -309,7 +309,7 @@ class _$EditedNotificationSettingsDataImpl extends _EditedNotificationSettingsDa
     this.messages,
     this.likes,
     this.mediaContent,
-    this.profileText,
+    this.profileString,
     this.news,
     this.automaticProfileSearch,
   }) : super._();
@@ -321,7 +321,7 @@ class _$EditedNotificationSettingsDataImpl extends _EditedNotificationSettingsDa
   @override
   final bool? mediaContent;
   @override
-  final bool? profileText;
+  final bool? profileString;
   @override
   final bool? news;
   @override
@@ -329,7 +329,7 @@ class _$EditedNotificationSettingsDataImpl extends _EditedNotificationSettingsDa
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'EditedNotificationSettingsData(messages: $messages, likes: $likes, mediaContent: $mediaContent, profileText: $profileText, news: $news, automaticProfileSearch: $automaticProfileSearch)';
+    return 'EditedNotificationSettingsData(messages: $messages, likes: $likes, mediaContent: $mediaContent, profileString: $profileString, news: $news, automaticProfileSearch: $automaticProfileSearch)';
   }
 
   @override
@@ -340,7 +340,7 @@ class _$EditedNotificationSettingsDataImpl extends _EditedNotificationSettingsDa
       ..add(DiagnosticsProperty('messages', messages))
       ..add(DiagnosticsProperty('likes', likes))
       ..add(DiagnosticsProperty('mediaContent', mediaContent))
-      ..add(DiagnosticsProperty('profileText', profileText))
+      ..add(DiagnosticsProperty('profileString', profileString))
       ..add(DiagnosticsProperty('news', news))
       ..add(DiagnosticsProperty('automaticProfileSearch', automaticProfileSearch));
   }
@@ -356,8 +356,8 @@ class _$EditedNotificationSettingsDataImpl extends _EditedNotificationSettingsDa
           other.likes == likes) &&
         (identical(other.mediaContent, mediaContent) ||
           other.mediaContent == mediaContent) &&
-        (identical(other.profileText, profileText) ||
-          other.profileText == profileText) &&
+        (identical(other.profileString, profileString) ||
+          other.profileString == profileString) &&
         (identical(other.news, news) ||
           other.news == news) &&
         (identical(other.automaticProfileSearch, automaticProfileSearch) ||
@@ -371,7 +371,7 @@ class _$EditedNotificationSettingsDataImpl extends _EditedNotificationSettingsDa
     messages,
     likes,
     mediaContent,
-    profileText,
+    profileString,
     news,
     automaticProfileSearch,
   );
@@ -381,14 +381,14 @@ class _$EditedNotificationSettingsDataImpl extends _EditedNotificationSettingsDa
     Object? messages = _detectDefaultValueInCopyWith,
     Object? likes = _detectDefaultValueInCopyWith,
     Object? mediaContent = _detectDefaultValueInCopyWith,
-    Object? profileText = _detectDefaultValueInCopyWith,
+    Object? profileString = _detectDefaultValueInCopyWith,
     Object? news = _detectDefaultValueInCopyWith,
     Object? automaticProfileSearch = _detectDefaultValueInCopyWith,
   }) => _$EditedNotificationSettingsDataImpl(
     messages: (messages == _detectDefaultValueInCopyWith ? this.messages : messages) as bool?,
     likes: (likes == _detectDefaultValueInCopyWith ? this.likes : likes) as bool?,
     mediaContent: (mediaContent == _detectDefaultValueInCopyWith ? this.mediaContent : mediaContent) as bool?,
-    profileText: (profileText == _detectDefaultValueInCopyWith ? this.profileText : profileText) as bool?,
+    profileString: (profileString == _detectDefaultValueInCopyWith ? this.profileString : profileString) as bool?,
     news: (news == _detectDefaultValueInCopyWith ? this.news : news) as bool?,
     automaticProfileSearch: (automaticProfileSearch == _detectDefaultValueInCopyWith ? this.automaticProfileSearch : automaticProfileSearch) as bool?,
   );

@@ -492,18 +492,18 @@ class $AppNotificationSettingsTable extends schema.AppNotificationSettings
           'CHECK ("media_content_moderation_completed" IN (0, 1))',
         ),
       );
-  static const VerificationMeta _profileTextModerationCompletedMeta =
-      const VerificationMeta('profileTextModerationCompleted');
+  static const VerificationMeta _profileStringModerationCompletedMeta =
+      const VerificationMeta('profileStringModerationCompleted');
   @override
-  late final GeneratedColumn<bool> profileTextModerationCompleted =
+  late final GeneratedColumn<bool> profileStringModerationCompleted =
       GeneratedColumn<bool>(
-        'profile_text_moderation_completed',
+        'profile_string_moderation_completed',
         aliasedName,
         true,
         type: DriftSqlType.bool,
         requiredDuringInsert: false,
         defaultConstraints: GeneratedColumn.constraintIsAlways(
-          'CHECK ("profile_text_moderation_completed" IN (0, 1))',
+          'CHECK ("profile_string_moderation_completed" IN (0, 1))',
         ),
       );
   static const VerificationMeta _newsMeta = const VerificationMeta('news');
@@ -538,7 +538,7 @@ class $AppNotificationSettingsTable extends schema.AppNotificationSettings
     messages,
     likes,
     mediaContentModerationCompleted,
-    profileTextModerationCompleted,
+    profileStringModerationCompleted,
     news,
     automaticProfileSearch,
   ];
@@ -578,12 +578,12 @@ class $AppNotificationSettingsTable extends schema.AppNotificationSettings
         ),
       );
     }
-    if (data.containsKey('profile_text_moderation_completed')) {
+    if (data.containsKey('profile_string_moderation_completed')) {
       context.handle(
-        _profileTextModerationCompletedMeta,
-        profileTextModerationCompleted.isAcceptableOrUnknown(
-          data['profile_text_moderation_completed']!,
-          _profileTextModerationCompletedMeta,
+        _profileStringModerationCompletedMeta,
+        profileStringModerationCompleted.isAcceptableOrUnknown(
+          data['profile_string_moderation_completed']!,
+          _profileStringModerationCompletedMeta,
         ),
       );
     }
@@ -627,9 +627,9 @@ class $AppNotificationSettingsTable extends schema.AppNotificationSettings
         DriftSqlType.bool,
         data['${effectivePrefix}media_content_moderation_completed'],
       ),
-      profileTextModerationCompleted: attachedDatabase.typeMapping.read(
+      profileStringModerationCompleted: attachedDatabase.typeMapping.read(
         DriftSqlType.bool,
-        data['${effectivePrefix}profile_text_moderation_completed'],
+        data['${effectivePrefix}profile_string_moderation_completed'],
       ),
       news: attachedDatabase.typeMapping.read(
         DriftSqlType.bool,
@@ -654,7 +654,7 @@ class AppNotificationSetting extends DataClass
   final bool? messages;
   final bool? likes;
   final bool? mediaContentModerationCompleted;
-  final bool? profileTextModerationCompleted;
+  final bool? profileStringModerationCompleted;
   final bool? news;
   final bool? automaticProfileSearch;
   const AppNotificationSetting({
@@ -662,7 +662,7 @@ class AppNotificationSetting extends DataClass
     this.messages,
     this.likes,
     this.mediaContentModerationCompleted,
-    this.profileTextModerationCompleted,
+    this.profileStringModerationCompleted,
     this.news,
     this.automaticProfileSearch,
   });
@@ -681,9 +681,9 @@ class AppNotificationSetting extends DataClass
         mediaContentModerationCompleted,
       );
     }
-    if (!nullToAbsent || profileTextModerationCompleted != null) {
-      map['profile_text_moderation_completed'] = Variable<bool>(
-        profileTextModerationCompleted,
+    if (!nullToAbsent || profileStringModerationCompleted != null) {
+      map['profile_string_moderation_completed'] = Variable<bool>(
+        profileStringModerationCompleted,
       );
     }
     if (!nullToAbsent || news != null) {
@@ -708,10 +708,10 @@ class AppNotificationSetting extends DataClass
           mediaContentModerationCompleted == null && nullToAbsent
           ? const Value.absent()
           : Value(mediaContentModerationCompleted),
-      profileTextModerationCompleted:
-          profileTextModerationCompleted == null && nullToAbsent
+      profileStringModerationCompleted:
+          profileStringModerationCompleted == null && nullToAbsent
           ? const Value.absent()
-          : Value(profileTextModerationCompleted),
+          : Value(profileStringModerationCompleted),
       news: news == null && nullToAbsent ? const Value.absent() : Value(news),
       automaticProfileSearch: automaticProfileSearch == null && nullToAbsent
           ? const Value.absent()
@@ -731,8 +731,8 @@ class AppNotificationSetting extends DataClass
       mediaContentModerationCompleted: serializer.fromJson<bool?>(
         json['mediaContentModerationCompleted'],
       ),
-      profileTextModerationCompleted: serializer.fromJson<bool?>(
-        json['profileTextModerationCompleted'],
+      profileStringModerationCompleted: serializer.fromJson<bool?>(
+        json['profileStringModerationCompleted'],
       ),
       news: serializer.fromJson<bool?>(json['news']),
       automaticProfileSearch: serializer.fromJson<bool?>(
@@ -750,8 +750,8 @@ class AppNotificationSetting extends DataClass
       'mediaContentModerationCompleted': serializer.toJson<bool?>(
         mediaContentModerationCompleted,
       ),
-      'profileTextModerationCompleted': serializer.toJson<bool?>(
-        profileTextModerationCompleted,
+      'profileStringModerationCompleted': serializer.toJson<bool?>(
+        profileStringModerationCompleted,
       ),
       'news': serializer.toJson<bool?>(news),
       'automaticProfileSearch': serializer.toJson<bool?>(
@@ -765,7 +765,7 @@ class AppNotificationSetting extends DataClass
     Value<bool?> messages = const Value.absent(),
     Value<bool?> likes = const Value.absent(),
     Value<bool?> mediaContentModerationCompleted = const Value.absent(),
-    Value<bool?> profileTextModerationCompleted = const Value.absent(),
+    Value<bool?> profileStringModerationCompleted = const Value.absent(),
     Value<bool?> news = const Value.absent(),
     Value<bool?> automaticProfileSearch = const Value.absent(),
   }) => AppNotificationSetting(
@@ -775,9 +775,9 @@ class AppNotificationSetting extends DataClass
     mediaContentModerationCompleted: mediaContentModerationCompleted.present
         ? mediaContentModerationCompleted.value
         : this.mediaContentModerationCompleted,
-    profileTextModerationCompleted: profileTextModerationCompleted.present
-        ? profileTextModerationCompleted.value
-        : this.profileTextModerationCompleted,
+    profileStringModerationCompleted: profileStringModerationCompleted.present
+        ? profileStringModerationCompleted.value
+        : this.profileStringModerationCompleted,
     news: news.present ? news.value : this.news,
     automaticProfileSearch: automaticProfileSearch.present
         ? automaticProfileSearch.value
@@ -794,10 +794,10 @@ class AppNotificationSetting extends DataClass
           data.mediaContentModerationCompleted.present
           ? data.mediaContentModerationCompleted.value
           : this.mediaContentModerationCompleted,
-      profileTextModerationCompleted:
-          data.profileTextModerationCompleted.present
-          ? data.profileTextModerationCompleted.value
-          : this.profileTextModerationCompleted,
+      profileStringModerationCompleted:
+          data.profileStringModerationCompleted.present
+          ? data.profileStringModerationCompleted.value
+          : this.profileStringModerationCompleted,
       news: data.news.present ? data.news.value : this.news,
       automaticProfileSearch: data.automaticProfileSearch.present
           ? data.automaticProfileSearch.value
@@ -815,7 +815,7 @@ class AppNotificationSetting extends DataClass
             'mediaContentModerationCompleted: $mediaContentModerationCompleted, ',
           )
           ..write(
-            'profileTextModerationCompleted: $profileTextModerationCompleted, ',
+            'profileStringModerationCompleted: $profileStringModerationCompleted, ',
           )
           ..write('news: $news, ')
           ..write('automaticProfileSearch: $automaticProfileSearch')
@@ -829,7 +829,7 @@ class AppNotificationSetting extends DataClass
     messages,
     likes,
     mediaContentModerationCompleted,
-    profileTextModerationCompleted,
+    profileStringModerationCompleted,
     news,
     automaticProfileSearch,
   );
@@ -842,8 +842,8 @@ class AppNotificationSetting extends DataClass
           other.likes == this.likes &&
           other.mediaContentModerationCompleted ==
               this.mediaContentModerationCompleted &&
-          other.profileTextModerationCompleted ==
-              this.profileTextModerationCompleted &&
+          other.profileStringModerationCompleted ==
+              this.profileStringModerationCompleted &&
           other.news == this.news &&
           other.automaticProfileSearch == this.automaticProfileSearch);
 }
@@ -854,7 +854,7 @@ class AppNotificationSettingsCompanion
   final Value<bool?> messages;
   final Value<bool?> likes;
   final Value<bool?> mediaContentModerationCompleted;
-  final Value<bool?> profileTextModerationCompleted;
+  final Value<bool?> profileStringModerationCompleted;
   final Value<bool?> news;
   final Value<bool?> automaticProfileSearch;
   const AppNotificationSettingsCompanion({
@@ -862,7 +862,7 @@ class AppNotificationSettingsCompanion
     this.messages = const Value.absent(),
     this.likes = const Value.absent(),
     this.mediaContentModerationCompleted = const Value.absent(),
-    this.profileTextModerationCompleted = const Value.absent(),
+    this.profileStringModerationCompleted = const Value.absent(),
     this.news = const Value.absent(),
     this.automaticProfileSearch = const Value.absent(),
   });
@@ -871,7 +871,7 @@ class AppNotificationSettingsCompanion
     this.messages = const Value.absent(),
     this.likes = const Value.absent(),
     this.mediaContentModerationCompleted = const Value.absent(),
-    this.profileTextModerationCompleted = const Value.absent(),
+    this.profileStringModerationCompleted = const Value.absent(),
     this.news = const Value.absent(),
     this.automaticProfileSearch = const Value.absent(),
   });
@@ -880,7 +880,7 @@ class AppNotificationSettingsCompanion
     Expression<bool>? messages,
     Expression<bool>? likes,
     Expression<bool>? mediaContentModerationCompleted,
-    Expression<bool>? profileTextModerationCompleted,
+    Expression<bool>? profileStringModerationCompleted,
     Expression<bool>? news,
     Expression<bool>? automaticProfileSearch,
   }) {
@@ -890,8 +890,8 @@ class AppNotificationSettingsCompanion
       if (likes != null) 'likes': likes,
       if (mediaContentModerationCompleted != null)
         'media_content_moderation_completed': mediaContentModerationCompleted,
-      if (profileTextModerationCompleted != null)
-        'profile_text_moderation_completed': profileTextModerationCompleted,
+      if (profileStringModerationCompleted != null)
+        'profile_string_moderation_completed': profileStringModerationCompleted,
       if (news != null) 'news': news,
       if (automaticProfileSearch != null)
         'automatic_profile_search': automaticProfileSearch,
@@ -903,7 +903,7 @@ class AppNotificationSettingsCompanion
     Value<bool?>? messages,
     Value<bool?>? likes,
     Value<bool?>? mediaContentModerationCompleted,
-    Value<bool?>? profileTextModerationCompleted,
+    Value<bool?>? profileStringModerationCompleted,
     Value<bool?>? news,
     Value<bool?>? automaticProfileSearch,
   }) {
@@ -914,8 +914,9 @@ class AppNotificationSettingsCompanion
       mediaContentModerationCompleted:
           mediaContentModerationCompleted ??
           this.mediaContentModerationCompleted,
-      profileTextModerationCompleted:
-          profileTextModerationCompleted ?? this.profileTextModerationCompleted,
+      profileStringModerationCompleted:
+          profileStringModerationCompleted ??
+          this.profileStringModerationCompleted,
       news: news ?? this.news,
       automaticProfileSearch:
           automaticProfileSearch ?? this.automaticProfileSearch,
@@ -939,9 +940,9 @@ class AppNotificationSettingsCompanion
         mediaContentModerationCompleted.value,
       );
     }
-    if (profileTextModerationCompleted.present) {
-      map['profile_text_moderation_completed'] = Variable<bool>(
-        profileTextModerationCompleted.value,
+    if (profileStringModerationCompleted.present) {
+      map['profile_string_moderation_completed'] = Variable<bool>(
+        profileStringModerationCompleted.value,
       );
     }
     if (news.present) {
@@ -965,7 +966,7 @@ class AppNotificationSettingsCompanion
             'mediaContentModerationCompleted: $mediaContentModerationCompleted, ',
           )
           ..write(
-            'profileTextModerationCompleted: $profileTextModerationCompleted, ',
+            'profileStringModerationCompleted: $profileStringModerationCompleted, ',
           )
           ..write('news: $news, ')
           ..write('automaticProfileSearch: $automaticProfileSearch')

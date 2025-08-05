@@ -15,7 +15,7 @@ class AppNotificationSettings extends SingleRowTable {
   BoolColumn get messages => boolean().nullable()();
   BoolColumn get likes => boolean().nullable()();
   BoolColumn get mediaContentModerationCompleted => boolean().nullable()();
-  BoolColumn get profileTextModerationCompleted => boolean().nullable()();
+  BoolColumn get profileStringModerationCompleted => boolean().nullable()();
   BoolColumn get news => boolean().nullable()();
   BoolColumn get automaticProfileSearch => boolean().nullable()();
 }

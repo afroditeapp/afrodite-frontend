@@ -44,7 +44,7 @@ class NotificationProfileStringModerationCompleted extends AppSingletonNoInit {
 
   Future<void> show(ModerationCompletedState state, AccountBackgroundDatabaseManager accountBackgroundDb) async {
     final LocalNotificationId id = switch (state) {
-      ModerationCompletedState.accepted => NotificationIdStatic.profileTextModerationAccepted.id,
+      ModerationCompletedState.accepted => NotificationIdStatic.profileStringModerationAccepted.id,
       ModerationCompletedState.rejected => NotificationIdStatic.profileTextModerationRejected.id,
     };
     final String title = switch (state) {
@@ -55,13 +55,13 @@ class NotificationProfileStringModerationCompleted extends AppSingletonNoInit {
     if (state == ModerationCompletedState.accepted) {
       await notifications.hideNotification(NotificationIdStatic.profileTextModerationRejected.id);
     } else if (state == ModerationCompletedState.rejected) {
-      await notifications.hideNotification(NotificationIdStatic.profileTextModerationAccepted.id);
+      await notifications.hideNotification(NotificationIdStatic.profileStringModerationAccepted.id);
     }
 
     await notifications.sendNotification(
       id: id,
       title: title,
-      category: const NotificationCategoryProfileTextModerationCompleted(),
+      category: const NotificationCategoryProfileStringModerationCompleted(),
       notificationPayload: NavigateToMyProfile(receiverAccountId: accountBackgroundDb.accountId()),
       accountBackgroundDb: accountBackgroundDb,
     );

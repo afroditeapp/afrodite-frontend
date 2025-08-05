@@ -1616,11 +1616,11 @@ abstract class AppLocalizations {
   /// **'News'**
   String get notification_category_news_item_available;
 
-  /// Title for notification category profile text moderation completed
+  /// Title for notification category profile string moderation completed
   ///
   /// In en, this message translates to:
-  /// **'Profile texts'**
-  String get notification_category_profile_text_moderation_completed;
+  /// **'Profile name and text'**
+  String get notification_category_profile_string_moderation_completed;
 
   /// Title for like received notification when multiple likes is received
   ///

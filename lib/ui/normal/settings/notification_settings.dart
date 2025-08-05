@@ -129,7 +129,7 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
         ],
         [
           mediaContentModerationCompleted(context, state),
-          profileTextModerationCompleted(context, state),
+          profileStringModerationCompleted(context, state),
         ],
         [
           if (features.news != null) news(context, state),
@@ -212,14 +212,14 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
     return (category, widget);
   }
 
-  (NotificationCategory, Widget) profileTextModerationCompleted(BuildContext context, NotificationSettingsData state) {
-    const category = NotificationCategoryProfileTextModerationCompleted();
+  (NotificationCategory, Widget) profileStringModerationCompleted(BuildContext context, NotificationSettingsData state) {
+    const category = NotificationCategoryProfileStringModerationCompleted();
     final widget = categorySwitch(
       title: category.title,
-      isEnabled: state.valueProfileText(),
-      isEnabledFromSystemSettings: state.systemCategories.profileTextModerationCompleted,
+      isEnabled: state.valueProfileString(),
+      isEnabledFromSystemSettings: state.systemCategories.profileStringModerationCompleted,
       onChanged: (value) {
-        context.read<NotificationSettingsBloc>().add(ToggleProfileTextModerationCompleted());
+        context.read<NotificationSettingsBloc>().add(ToggleProfileStringModerationCompleted());
       },
     );
     return (category, widget);

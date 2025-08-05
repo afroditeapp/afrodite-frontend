@@ -20,7 +20,7 @@ class SaveSettings extends NotificationSettingsEvent {}
 class ToggleMessages extends NotificationSettingsEvent {}
 class ToggleLikes extends NotificationSettingsEvent {}
 class ToggleMediaContentModerationCompleted extends NotificationSettingsEvent {}
-class ToggleProfileTextModerationCompleted extends NotificationSettingsEvent {}
+class ToggleProfileStringModerationCompleted extends NotificationSettingsEvent {}
 class ToggleNews extends NotificationSettingsEvent {}
 class ToggleAutomaticProfileSearch extends NotificationSettingsEvent {}
 class NewValueMessages extends NotificationSettingsEvent {
@@ -67,7 +67,7 @@ class NotificationSettingsBloc extends Bloc<NotificationSettingsEvent, Notificat
           likes: !disabledChannelIds.contains(const NotificationCategoryLikes().id),
           messages: !disabledChannelIds.contains(const NotificationCategoryMessages().id),
           mediaContentModerationCompleted: !disabledChannelIds.contains(const NotificationCategoryMediaContentModerationCompleted().id),
-          profileTextModerationCompleted: !disabledChannelIds.contains(const NotificationCategoryProfileTextModerationCompleted().id),
+          profileStringModerationCompleted: !disabledChannelIds.contains(const NotificationCategoryProfileStringModerationCompleted().id),
           news: !disabledChannelIds.contains(const NotificationCategoryNewsItemAvailable().id),
           automaticProfileSearch: !disabledChannelIds.contains(const NotificationCategoryAutomaticProfileSearch().id),
         ),
@@ -102,7 +102,7 @@ class NotificationSettingsBloc extends Bloc<NotificationSettingsEvent, Notificat
 
       {
         final settings = ProfileAppNotificationSettings(
-          profileStringModeration: currentState.valueProfileText(),
+          profileStringModeration: currentState.valueProfileString(),
           automaticProfileSearch: currentState.valueAutomaticProfileSearch(),
         );
         final r = await api.profileAction((api) => api.postProfileAppNotificationSettings(settings))
@@ -181,15 +181,15 @@ class NotificationSettingsBloc extends Bloc<NotificationSettingsEvent, Notificat
         ),
       );
     });
-    on<ToggleProfileTextModerationCompleted>((data, emit) async {
+    on<ToggleProfileStringModerationCompleted>((data, emit) async {
       _updateEditedValue(
         emit,
-        () => state.edited.profileText == null,
+        () => state.edited.profileString == null,
         () => state.edited.copyWith(
-          profileText: !state.categories.profileTextModerationCompleted
+          profileString: !state.categories.profileStringModerationCompleted
         ),
         () => state.edited.copyWith(
-          profileText: null,
+          profileString: null,
         ),
       );
     });
@@ -233,7 +233,7 @@ class NotificationSettingsBloc extends Bloc<NotificationSettingsEvent, Notificat
       final v = data.value;
       emit(state.copyWith(
         categories: state.categories.copyWith(
-          profileTextModerationCompleted: v.profileStringModeration
+          profileStringModerationCompleted: v.profileStringModeration
         ),
       ));
     });

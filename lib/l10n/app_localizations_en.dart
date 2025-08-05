@@ -912,8 +912,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get notification_category_news_item_available => 'News';
 
   @override
-  String get notification_category_profile_text_moderation_completed =>
-      'Profile texts';
+  String get notification_category_profile_string_moderation_completed =>
+      'Profile name and text';
 
   @override
   String get notification_like_received_multiple => 'Chat requests received';

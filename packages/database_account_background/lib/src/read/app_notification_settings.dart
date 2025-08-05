@@ -18,7 +18,7 @@ class DaoReadAppNotificationSettings extends DatabaseAccessor<AccountBackgroundD
 
   Stream<api.ProfileAppNotificationSettings?> watchProfileAppNotificationSettings() =>
     _watchColumn((r) {
-      final profileStringModerationCompleted = r.profileTextModerationCompleted;
+      final profileStringModerationCompleted = r.profileStringModerationCompleted;
       final automaticProfileSearch = r.automaticProfileSearch;
 
       if (

@@ -18,14 +18,14 @@ class NotificationSettingsData with _$NotificationSettingsData, UpdateStateProvi
   bool valueMessages() => edited.messages ?? categories.messages;
   bool valueLikes() => edited.likes ?? categories.likes;
   bool valueMediaContent() => edited.mediaContent ?? categories.mediaContentModerationCompleted;
-  bool valueProfileText() => edited.profileText ?? categories.profileTextModerationCompleted;
+  bool valueProfileString() => edited.profileString ?? categories.profileStringModerationCompleted;
   bool valueNews() => edited.news ?? categories.news;
   bool valueAutomaticProfileSearch() => edited.automaticProfileSearch ?? categories.automaticProfileSearch;
 
   bool unsavedChanges() => edited.messages != null ||
     edited.likes != null ||
     edited.mediaContent != null ||
-    edited.profileText != null ||
+    edited.profileString != null ||
     edited.news != null ||
     edited.automaticProfileSearch != null;
 }
@@ -37,7 +37,7 @@ class NotificationCategoryData with _$NotificationCategoryData {
     @Default(true) bool messages,
     @Default(true) bool likes,
     @Default(true) bool mediaContentModerationCompleted,
-    @Default(true) bool profileTextModerationCompleted,
+    @Default(true) bool profileStringModerationCompleted,
     @Default(true) bool news,
     @Default(true) bool automaticProfileSearch,
   }) = _NotificationCategoryData;
@@ -50,7 +50,7 @@ class EditedNotificationSettingsData with _$EditedNotificationSettingsData {
     bool? messages,
     bool? likes,
     bool? mediaContent,
-    bool? profileText,
+    bool? profileString,
     bool? news,
     bool? automaticProfileSearch,
   }) = _EditedNotificationSettingsData;
