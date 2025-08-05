@@ -1688,6 +1688,18 @@ abstract class AppLocalizations {
   /// **'Allow notifications?'**
   String get notification_permission_dialog_title;
 
+  /// Title for profile name accepted notification
+  ///
+  /// In en, this message translates to:
+  /// **'Profile name accepted'**
+  String get notification_profile_name_accepted;
+
+  /// Title for profile name rejected notification
+  ///
+  /// In en, this message translates to:
+  /// **'Profile name rejected'**
+  String get notification_profile_name_rejected;
+
   /// Title for profile text accepted notification
   ///
   /// In en, this message translates to:

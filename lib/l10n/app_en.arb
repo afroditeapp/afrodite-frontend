@@ -1134,6 +1134,14 @@
   "@notification_permission_dialog_title": {
     "description": "Title for notification permission dialog"
   },
+  "notification_profile_name_accepted": "Profile name accepted",
+  "@notification_profile_name_accepted": {
+    "description": "Title for profile name accepted notification"
+  },
+  "notification_profile_name_rejected": "Profile name rejected",
+  "@notification_profile_name_rejected": {
+    "description": "Title for profile name rejected notification"
+  },
   "notification_profile_text_accepted": "Profile text accepted",
   "@notification_profile_text_accepted": {
     "description": "Title for profile text accepted notification"

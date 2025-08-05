@@ -956,6 +956,12 @@ class AppLocalizationsSv extends AppLocalizations {
   String get notification_permission_dialog_title => 'Allow notifications?';
 
   @override
+  String get notification_profile_name_accepted => 'Profile name accepted';
+
+  @override
+  String get notification_profile_name_rejected => 'Profile name rejected';
+
+  @override
   String get notification_profile_text_accepted => 'Profile text accepted';
 
   @override
