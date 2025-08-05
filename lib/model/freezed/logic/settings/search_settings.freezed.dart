@@ -26,7 +26,7 @@ mixin _$SearchSettingsData {
   int get maxAge => throw _privateConstructorErrorSearchSettingsData;
   GenderSearchSettingsAll get genderSearchSettingsAll => throw _privateConstructorErrorSearchSettingsData;
   Gender? get gender => throw _privateConstructorErrorSearchSettingsData;
-  ProfileAppNotificationSettings get profileSettings => throw _privateConstructorErrorSearchSettingsData;
+  AutomaticProfileSearchSettings get automaticProfileSearchSettings => throw _privateConstructorErrorSearchSettingsData;
   int? get editedMinAge => throw _privateConstructorErrorSearchSettingsData;
   int? get editedMaxAge => throw _privateConstructorErrorSearchSettingsData;
   GenderSearchSettingsAll? get editedGenderSearchSettingsAll => throw _privateConstructorErrorSearchSettingsData;
@@ -42,7 +42,7 @@ mixin _$SearchSettingsData {
     int? maxAge,
     GenderSearchSettingsAll? genderSearchSettingsAll,
     Gender? gender,
-    ProfileAppNotificationSettings? profileSettings,
+    AutomaticProfileSearchSettings? automaticProfileSearchSettings,
     int? editedMinAge,
     int? editedMaxAge,
     GenderSearchSettingsAll? editedGenderSearchSettingsAll,
@@ -62,7 +62,7 @@ abstract class _SearchSettingsData extends SearchSettingsData {
     int maxAge,
     GenderSearchSettingsAll genderSearchSettingsAll,
     Gender? gender,
-    required ProfileAppNotificationSettings profileSettings,
+    required AutomaticProfileSearchSettings automaticProfileSearchSettings,
     int? editedMinAge,
     int? editedMaxAge,
     GenderSearchSettingsAll? editedGenderSearchSettingsAll,
@@ -88,7 +88,7 @@ class _$SearchSettingsDataImpl extends _SearchSettingsData with DiagnosticableTr
     this.maxAge = _maxAgeDefaultValue,
     this.genderSearchSettingsAll = _genderSearchSettingsAllDefaultValue,
     this.gender,
-    required this.profileSettings,
+    required this.automaticProfileSearchSettings,
     this.editedMinAge,
     this.editedMaxAge,
     this.editedGenderSearchSettingsAll,
@@ -110,7 +110,7 @@ class _$SearchSettingsDataImpl extends _SearchSettingsData with DiagnosticableTr
   @override
   final Gender? gender;
   @override
-  final ProfileAppNotificationSettings profileSettings;
+  final AutomaticProfileSearchSettings automaticProfileSearchSettings;
   @override
   final int? editedMinAge;
   @override
@@ -130,7 +130,7 @@ class _$SearchSettingsDataImpl extends _SearchSettingsData with DiagnosticableTr
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'SearchSettingsData(updateState: $updateState, minAge: $minAge, maxAge: $maxAge, genderSearchSettingsAll: $genderSearchSettingsAll, gender: $gender, profileSettings: $profileSettings, editedMinAge: $editedMinAge, editedMaxAge: $editedMaxAge, editedGenderSearchSettingsAll: $editedGenderSearchSettingsAll, editedGender: $editedGender, editedSearchDistanceFilters: $editedSearchDistanceFilters, editedSearchAttributeFilters: $editedSearchAttributeFilters, editedSearchNewProfiles: $editedSearchNewProfiles, editedSearchWeekdays: $editedSearchWeekdays)';
+    return 'SearchSettingsData(updateState: $updateState, minAge: $minAge, maxAge: $maxAge, genderSearchSettingsAll: $genderSearchSettingsAll, gender: $gender, automaticProfileSearchSettings: $automaticProfileSearchSettings, editedMinAge: $editedMinAge, editedMaxAge: $editedMaxAge, editedGenderSearchSettingsAll: $editedGenderSearchSettingsAll, editedGender: $editedGender, editedSearchDistanceFilters: $editedSearchDistanceFilters, editedSearchAttributeFilters: $editedSearchAttributeFilters, editedSearchNewProfiles: $editedSearchNewProfiles, editedSearchWeekdays: $editedSearchWeekdays)';
   }
 
   @override
@@ -143,7 +143,7 @@ class _$SearchSettingsDataImpl extends _SearchSettingsData with DiagnosticableTr
       ..add(DiagnosticsProperty('maxAge', maxAge))
       ..add(DiagnosticsProperty('genderSearchSettingsAll', genderSearchSettingsAll))
       ..add(DiagnosticsProperty('gender', gender))
-      ..add(DiagnosticsProperty('profileSettings', profileSettings))
+      ..add(DiagnosticsProperty('automaticProfileSearchSettings', automaticProfileSearchSettings))
       ..add(DiagnosticsProperty('editedMinAge', editedMinAge))
       ..add(DiagnosticsProperty('editedMaxAge', editedMaxAge))
       ..add(DiagnosticsProperty('editedGenderSearchSettingsAll', editedGenderSearchSettingsAll))
@@ -169,8 +169,8 @@ class _$SearchSettingsDataImpl extends _SearchSettingsData with DiagnosticableTr
           other.genderSearchSettingsAll == genderSearchSettingsAll) &&
         (identical(other.gender, gender) ||
           other.gender == gender) &&
-        (identical(other.profileSettings, profileSettings) ||
-          other.profileSettings == profileSettings) &&
+        (identical(other.automaticProfileSearchSettings, automaticProfileSearchSettings) ||
+          other.automaticProfileSearchSettings == automaticProfileSearchSettings) &&
         (identical(other.editedMinAge, editedMinAge) ||
           other.editedMinAge == editedMinAge) &&
         (identical(other.editedMaxAge, editedMaxAge) ||
@@ -198,7 +198,7 @@ class _$SearchSettingsDataImpl extends _SearchSettingsData with DiagnosticableTr
     maxAge,
     genderSearchSettingsAll,
     gender,
-    profileSettings,
+    automaticProfileSearchSettings,
     editedMinAge,
     editedMaxAge,
     editedGenderSearchSettingsAll,
@@ -216,7 +216,7 @@ class _$SearchSettingsDataImpl extends _SearchSettingsData with DiagnosticableTr
     Object? maxAge,
     Object? genderSearchSettingsAll,
     Object? gender = _detectDefaultValueInCopyWith,
-    Object? profileSettings,
+    Object? automaticProfileSearchSettings,
     Object? editedMinAge = _detectDefaultValueInCopyWith,
     Object? editedMaxAge = _detectDefaultValueInCopyWith,
     Object? editedGenderSearchSettingsAll = _detectDefaultValueInCopyWith,
@@ -231,7 +231,7 @@ class _$SearchSettingsDataImpl extends _SearchSettingsData with DiagnosticableTr
     maxAge: (maxAge ?? this.maxAge) as int,
     genderSearchSettingsAll: (genderSearchSettingsAll ?? this.genderSearchSettingsAll) as GenderSearchSettingsAll,
     gender: (gender == _detectDefaultValueInCopyWith ? this.gender : gender) as Gender?,
-    profileSettings: (profileSettings ?? this.profileSettings) as ProfileAppNotificationSettings,
+    automaticProfileSearchSettings: (automaticProfileSearchSettings ?? this.automaticProfileSearchSettings) as AutomaticProfileSearchSettings,
     editedMinAge: (editedMinAge == _detectDefaultValueInCopyWith ? this.editedMinAge : editedMinAge) as int?,
     editedMaxAge: (editedMaxAge == _detectDefaultValueInCopyWith ? this.editedMaxAge : editedMaxAge) as int?,
     editedGenderSearchSettingsAll: (editedGenderSearchSettingsAll == _detectDefaultValueInCopyWith ? this.editedGenderSearchSettingsAll : editedGenderSearchSettingsAll) as GenderSearchSettingsAll?,

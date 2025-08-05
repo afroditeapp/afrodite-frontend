@@ -26,10 +26,6 @@ mixin _$NotificationSettingsData {
   NotificationCategoryData get categories => throw _privateConstructorErrorNotificationSettingsData;
   NotificationCategoryData get systemCategories => throw _privateConstructorErrorNotificationSettingsData;
   EditedNotificationSettingsData get edited => throw _privateConstructorErrorNotificationSettingsData;
-  bool get searchDistanceFilters => throw _privateConstructorErrorNotificationSettingsData;
-  bool get searchAttributeFilters => throw _privateConstructorErrorNotificationSettingsData;
-  bool get searchNewProfiles => throw _privateConstructorErrorNotificationSettingsData;
-  int get searchWeekdays => throw _privateConstructorErrorNotificationSettingsData;
 
   NotificationSettingsData copyWith({
     UpdateState? updateState,
@@ -37,10 +33,6 @@ mixin _$NotificationSettingsData {
     NotificationCategoryData? categories,
     NotificationCategoryData? systemCategories,
     EditedNotificationSettingsData? edited,
-    bool? searchDistanceFilters,
-    bool? searchAttributeFilters,
-    bool? searchNewProfiles,
-    int? searchWeekdays,
   }) => throw _privateConstructorErrorNotificationSettingsData;
 }
 
@@ -52,10 +44,6 @@ abstract class _NotificationSettingsData extends NotificationSettingsData {
     required NotificationCategoryData categories,
     required NotificationCategoryData systemCategories,
     required EditedNotificationSettingsData edited,
-    bool searchDistanceFilters,
-    bool searchAttributeFilters,
-    bool searchNewProfiles,
-    int searchWeekdays,
   }) = _$NotificationSettingsDataImpl;
   _NotificationSettingsData._() : super._();
 }
@@ -64,10 +52,6 @@ abstract class _NotificationSettingsData extends NotificationSettingsData {
 class _$NotificationSettingsDataImpl extends _NotificationSettingsData with DiagnosticableTreeMixin {
   static const UpdateState _updateStateDefaultValue = UpdateIdle();
   static const bool _areNotificationsEnabledDefaultValue = false;
-  static const bool _searchDistanceFiltersDefaultValue = ProfileAppNotificationSettingsDefaults.distanceFiltersDefault;
-  static const bool _searchAttributeFiltersDefaultValue = ProfileAppNotificationSettingsDefaults.attributeFiltersDefault;
-  static const bool _searchNewProfilesDefaultValue = ProfileAppNotificationSettingsDefaults.newProfilesDefault;
-  static const int _searchWeekdaysDefaultValue = ProfileAppNotificationSettingsDefaults.weekdaysDefault;
   
   _$NotificationSettingsDataImpl({
     this.updateState = _updateStateDefaultValue,
@@ -75,10 +59,6 @@ class _$NotificationSettingsDataImpl extends _NotificationSettingsData with Diag
     required this.categories,
     required this.systemCategories,
     required this.edited,
-    this.searchDistanceFilters = _searchDistanceFiltersDefaultValue,
-    this.searchAttributeFilters = _searchAttributeFiltersDefaultValue,
-    this.searchNewProfiles = _searchNewProfilesDefaultValue,
-    this.searchWeekdays = _searchWeekdaysDefaultValue,
   }) : super._();
 
   @override
@@ -91,18 +71,10 @@ class _$NotificationSettingsDataImpl extends _NotificationSettingsData with Diag
   final NotificationCategoryData systemCategories;
   @override
   final EditedNotificationSettingsData edited;
-  @override
-  final bool searchDistanceFilters;
-  @override
-  final bool searchAttributeFilters;
-  @override
-  final bool searchNewProfiles;
-  @override
-  final int searchWeekdays;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'NotificationSettingsData(updateState: $updateState, areNotificationsEnabled: $areNotificationsEnabled, categories: $categories, systemCategories: $systemCategories, edited: $edited, searchDistanceFilters: $searchDistanceFilters, searchAttributeFilters: $searchAttributeFilters, searchNewProfiles: $searchNewProfiles, searchWeekdays: $searchWeekdays)';
+    return 'NotificationSettingsData(updateState: $updateState, areNotificationsEnabled: $areNotificationsEnabled, categories: $categories, systemCategories: $systemCategories, edited: $edited)';
   }
 
   @override
@@ -114,11 +86,7 @@ class _$NotificationSettingsDataImpl extends _NotificationSettingsData with Diag
       ..add(DiagnosticsProperty('areNotificationsEnabled', areNotificationsEnabled))
       ..add(DiagnosticsProperty('categories', categories))
       ..add(DiagnosticsProperty('systemCategories', systemCategories))
-      ..add(DiagnosticsProperty('edited', edited))
-      ..add(DiagnosticsProperty('searchDistanceFilters', searchDistanceFilters))
-      ..add(DiagnosticsProperty('searchAttributeFilters', searchAttributeFilters))
-      ..add(DiagnosticsProperty('searchNewProfiles', searchNewProfiles))
-      ..add(DiagnosticsProperty('searchWeekdays', searchWeekdays));
+      ..add(DiagnosticsProperty('edited', edited));
   }
 
   @override
@@ -135,15 +103,7 @@ class _$NotificationSettingsDataImpl extends _NotificationSettingsData with Diag
         (identical(other.systemCategories, systemCategories) ||
           other.systemCategories == systemCategories) &&
         (identical(other.edited, edited) ||
-          other.edited == edited) &&
-        (identical(other.searchDistanceFilters, searchDistanceFilters) ||
-          other.searchDistanceFilters == searchDistanceFilters) &&
-        (identical(other.searchAttributeFilters, searchAttributeFilters) ||
-          other.searchAttributeFilters == searchAttributeFilters) &&
-        (identical(other.searchNewProfiles, searchNewProfiles) ||
-          other.searchNewProfiles == searchNewProfiles) &&
-        (identical(other.searchWeekdays, searchWeekdays) ||
-          other.searchWeekdays == searchWeekdays)
+          other.edited == edited)
     );
   }
 
@@ -155,10 +115,6 @@ class _$NotificationSettingsDataImpl extends _NotificationSettingsData with Diag
     categories,
     systemCategories,
     edited,
-    searchDistanceFilters,
-    searchAttributeFilters,
-    searchNewProfiles,
-    searchWeekdays,
   );
 
   @override
@@ -168,20 +124,12 @@ class _$NotificationSettingsDataImpl extends _NotificationSettingsData with Diag
     Object? categories,
     Object? systemCategories,
     Object? edited,
-    Object? searchDistanceFilters,
-    Object? searchAttributeFilters,
-    Object? searchNewProfiles,
-    Object? searchWeekdays,
   }) => _$NotificationSettingsDataImpl(
     updateState: (updateState ?? this.updateState) as UpdateState,
     areNotificationsEnabled: (areNotificationsEnabled ?? this.areNotificationsEnabled) as bool,
     categories: (categories ?? this.categories) as NotificationCategoryData,
     systemCategories: (systemCategories ?? this.systemCategories) as NotificationCategoryData,
     edited: (edited ?? this.edited) as EditedNotificationSettingsData,
-    searchDistanceFilters: (searchDistanceFilters ?? this.searchDistanceFilters) as bool,
-    searchAttributeFilters: (searchAttributeFilters ?? this.searchAttributeFilters) as bool,
-    searchNewProfiles: (searchNewProfiles ?? this.searchNewProfiles) as bool,
-    searchWeekdays: (searchWeekdays ?? this.searchWeekdays) as int,
   );
 }
 

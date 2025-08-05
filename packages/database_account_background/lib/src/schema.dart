@@ -17,12 +17,7 @@ class AppNotificationSettings extends SingleRowTable {
   BoolColumn get mediaContentModerationCompleted => boolean().nullable()();
   BoolColumn get profileTextModerationCompleted => boolean().nullable()();
   BoolColumn get news => boolean().nullable()();
-
   BoolColumn get automaticProfileSearch => boolean().nullable()();
-  BoolColumn get automaticProfileSearchDistanceFilters => boolean().nullable()();
-  BoolColumn get automaticProfileSearchAttributeFilters => boolean().nullable()();
-  BoolColumn get automaticProfileSearchNewProfiles => boolean().nullable()();
-  IntColumn get automaticProfileSearchWeekdays => integer().nullable()();
 }
 
 /// Notifications with NotificationStatus (ID and viewed ID) available.

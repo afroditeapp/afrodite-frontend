@@ -1,6 +1,4 @@
 
-
-import 'package:app/data/notification_manager.dart';
 import 'package:database/database.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:openapi/api.dart';
@@ -154,16 +152,13 @@ extension MapCoordinateExtension on MapCoordinate {
   }
 }
 
-class ProfileAppNotificationSettingsDefaults {
-  static ProfileAppNotificationSettings defaultValue = ProfileAppNotificationSettings(
-      automaticProfileSearch: NOTIFICATION_CATEGORY_ENABLED_DEFAULT,
-      // TODO(prod): Update
-      // automaticProfileSearchDistanceFilters: distanceFiltersDefault,
-      // automaticProfileSearchNewProfiles: newProfilesDefault,
-      // automaticProfileSearchAttributeFilters: attributeFiltersDefault,
-      // automaticProfileSearchWeekdays: weekdaysDefault,
-      profileStringModeration: NOTIFICATION_CATEGORY_ENABLED_DEFAULT,
-    );
+class AutomaticProfileSearchSettingsDefaults {
+  static AutomaticProfileSearchSettings defaultValue = AutomaticProfileSearchSettings(
+    distanceFilters: distanceFiltersDefault,
+    newProfiles: newProfilesDefault,
+    attributeFilters: attributeFiltersDefault,
+    weekdays: weekdaysDefault,
+  );
 
   static const bool distanceFiltersDefault = false;
   static const bool newProfilesDefault = false;

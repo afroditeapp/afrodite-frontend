@@ -78,6 +78,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
       .andThen((_) => reloadProfileFilters())
       .andThen((_) => reloadSearchAgeRange())
       .andThen((_) => reloadSearchGroups())
+      .andThen((_) => reloadAutomaticProfileSearchSettings())
       .andThen((_) async {
         await downloadInitialSetupAgeInfoIfNull(skipIfAccountStateIsInitialSetup: true);
         return const Ok(null);
@@ -111,6 +112,11 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
         await reloadSearchGroups();
       }
 
+      final automaticProfileSearchSettings = await db.accountStreamSingle((db) => db.search.watchAutomaticProfileSearchSettings()).ok();
+      if (automaticProfileSearchSettings == null) {
+        await reloadAutomaticProfileSearchSettings();
+      }
+
       final initialAgeInfo = await db.accountStreamSingle((db) => db.myProfile.watchInitialAgeInfo()).ok();
       if (initialAgeInfo == null) {
         await downloadInitialSetupAgeInfoIfNull(skipIfAccountStateIsInitialSetup: false);
@@ -132,6 +138,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
     await reloadProfileFilters();
     await reloadSearchAgeRange();
     await reloadSearchGroups();
+    await reloadAutomaticProfileSearchSettings();
     // The account state might still be InitialSetup as events from server
     // updates the state, so skip account state check.
     await downloadInitialSetupAgeInfoIfNull(skipIfAccountStateIsInitialSetup: true);
@@ -501,6 +508,13 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
       ));
   }
 
+  Future<Result<void, void>> reloadAutomaticProfileSearchSettings() async {
+    return await _api.profile((api) => api.getAutomaticProfileSearchSettings())
+      .andThen((v) => db.accountAction(
+        (db) => db.search.updateAutomaticProfileSearchSettings(v),
+      ));
+  }
+
   Future<Result<void, void>> updateSearchAgeRange(int minAge, int maxAge) async {
     final update = SearchAgeRange(min: minAge, max: maxAge);
     return await _api.profileAction((api) => api.postSearchAgeRange(update))
@@ -510,6 +524,11 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
   Future<Result<void, void>> updateSearchGroups(SearchGroups groups) async {
     return await _api.profileAction((api) => api.postSearchGroups(groups))
       .onOk(() => reloadSearchGroups());
+  }
+
+  Future<Result<void, void>> updateAutomaticProfileSearchSettings(AutomaticProfileSearchSettings settings) async {
+    return await _api.profileAction((api) => api.postAutomaticProfileSearchSettings(settings))
+      .onOk(() => reloadAutomaticProfileSearchSettings());
   }
 
   Future<Result<void, void>> resetUnreadMessagesCount(AccountId accountId) async {

@@ -11154,6 +11154,274 @@ class ProfileLocationCompanion extends UpdateCompanion<ProfileLocationData> {
   }
 }
 
+class $AutomaticProfileSearchSettingsTable
+    extends schema.AutomaticProfileSearchSettings
+    with
+        TableInfo<
+          $AutomaticProfileSearchSettingsTable,
+          AutomaticProfileSearchSetting
+        > {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $AutomaticProfileSearchSettingsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<
+    JsonObject<AutomaticProfileSearchSettings>?,
+    String
+  >
+  jsonAutomaticProfileSearchSettings =
+      GeneratedColumn<String>(
+        'json_automatic_profile_search_settings',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      ).withConverter<JsonObject<AutomaticProfileSearchSettings>?>(
+        $AutomaticProfileSearchSettingsTable
+            .$converterjsonAutomaticProfileSearchSettings,
+      );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    jsonAutomaticProfileSearchSettings,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'automatic_profile_search_settings';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<AutomaticProfileSearchSetting> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  AutomaticProfileSearchSetting map(
+    Map<String, dynamic> data, {
+    String? tablePrefix,
+  }) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return AutomaticProfileSearchSetting(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      jsonAutomaticProfileSearchSettings: $AutomaticProfileSearchSettingsTable
+          .$converterjsonAutomaticProfileSearchSettings
+          .fromSql(
+            attachedDatabase.typeMapping.read(
+              DriftSqlType.string,
+              data['${effectivePrefix}json_automatic_profile_search_settings'],
+            ),
+          ),
+    );
+  }
+
+  @override
+  $AutomaticProfileSearchSettingsTable createAlias(String alias) {
+    return $AutomaticProfileSearchSettingsTable(attachedDatabase, alias);
+  }
+
+  static TypeConverter<JsonObject<AutomaticProfileSearchSettings>?, String?>
+  $converterjsonAutomaticProfileSearchSettings = NullAwareTypeConverter.wrap(
+    const AutomaticProfileSearchSettingsConverter(),
+  );
+}
+
+class AutomaticProfileSearchSetting extends DataClass
+    implements Insertable<AutomaticProfileSearchSetting> {
+  final int id;
+  final JsonObject<AutomaticProfileSearchSettings>?
+  jsonAutomaticProfileSearchSettings;
+  const AutomaticProfileSearchSetting({
+    required this.id,
+    this.jsonAutomaticProfileSearchSettings,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    if (!nullToAbsent || jsonAutomaticProfileSearchSettings != null) {
+      map['json_automatic_profile_search_settings'] = Variable<String>(
+        $AutomaticProfileSearchSettingsTable
+            .$converterjsonAutomaticProfileSearchSettings
+            .toSql(jsonAutomaticProfileSearchSettings),
+      );
+    }
+    return map;
+  }
+
+  AutomaticProfileSearchSettingsCompanion toCompanion(bool nullToAbsent) {
+    return AutomaticProfileSearchSettingsCompanion(
+      id: Value(id),
+      jsonAutomaticProfileSearchSettings:
+          jsonAutomaticProfileSearchSettings == null && nullToAbsent
+          ? const Value.absent()
+          : Value(jsonAutomaticProfileSearchSettings),
+    );
+  }
+
+  factory AutomaticProfileSearchSetting.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return AutomaticProfileSearchSetting(
+      id: serializer.fromJson<int>(json['id']),
+      jsonAutomaticProfileSearchSettings: serializer
+          .fromJson<JsonObject<AutomaticProfileSearchSettings>?>(
+            json['jsonAutomaticProfileSearchSettings'],
+          ),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'jsonAutomaticProfileSearchSettings': serializer
+          .toJson<JsonObject<AutomaticProfileSearchSettings>?>(
+            jsonAutomaticProfileSearchSettings,
+          ),
+    };
+  }
+
+  AutomaticProfileSearchSetting copyWith({
+    int? id,
+    Value<JsonObject<AutomaticProfileSearchSettings>?>
+        jsonAutomaticProfileSearchSettings =
+        const Value.absent(),
+  }) => AutomaticProfileSearchSetting(
+    id: id ?? this.id,
+    jsonAutomaticProfileSearchSettings:
+        jsonAutomaticProfileSearchSettings.present
+        ? jsonAutomaticProfileSearchSettings.value
+        : this.jsonAutomaticProfileSearchSettings,
+  );
+  AutomaticProfileSearchSetting copyWithCompanion(
+    AutomaticProfileSearchSettingsCompanion data,
+  ) {
+    return AutomaticProfileSearchSetting(
+      id: data.id.present ? data.id.value : this.id,
+      jsonAutomaticProfileSearchSettings:
+          data.jsonAutomaticProfileSearchSettings.present
+          ? data.jsonAutomaticProfileSearchSettings.value
+          : this.jsonAutomaticProfileSearchSettings,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('AutomaticProfileSearchSetting(')
+          ..write('id: $id, ')
+          ..write(
+            'jsonAutomaticProfileSearchSettings: $jsonAutomaticProfileSearchSettings',
+          )
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, jsonAutomaticProfileSearchSettings);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is AutomaticProfileSearchSetting &&
+          other.id == this.id &&
+          other.jsonAutomaticProfileSearchSettings ==
+              this.jsonAutomaticProfileSearchSettings);
+}
+
+class AutomaticProfileSearchSettingsCompanion
+    extends UpdateCompanion<AutomaticProfileSearchSetting> {
+  final Value<int> id;
+  final Value<JsonObject<AutomaticProfileSearchSettings>?>
+  jsonAutomaticProfileSearchSettings;
+  const AutomaticProfileSearchSettingsCompanion({
+    this.id = const Value.absent(),
+    this.jsonAutomaticProfileSearchSettings = const Value.absent(),
+  });
+  AutomaticProfileSearchSettingsCompanion.insert({
+    this.id = const Value.absent(),
+    this.jsonAutomaticProfileSearchSettings = const Value.absent(),
+  });
+  static Insertable<AutomaticProfileSearchSetting> custom({
+    Expression<int>? id,
+    Expression<String>? jsonAutomaticProfileSearchSettings,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (jsonAutomaticProfileSearchSettings != null)
+        'json_automatic_profile_search_settings':
+            jsonAutomaticProfileSearchSettings,
+    });
+  }
+
+  AutomaticProfileSearchSettingsCompanion copyWith({
+    Value<int>? id,
+    Value<JsonObject<AutomaticProfileSearchSettings>?>?
+    jsonAutomaticProfileSearchSettings,
+  }) {
+    return AutomaticProfileSearchSettingsCompanion(
+      id: id ?? this.id,
+      jsonAutomaticProfileSearchSettings:
+          jsonAutomaticProfileSearchSettings ??
+          this.jsonAutomaticProfileSearchSettings,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (jsonAutomaticProfileSearchSettings.present) {
+      map['json_automatic_profile_search_settings'] = Variable<String>(
+        $AutomaticProfileSearchSettingsTable
+            .$converterjsonAutomaticProfileSearchSettings
+            .toSql(jsonAutomaticProfileSearchSettings.value),
+      );
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('AutomaticProfileSearchSettingsCompanion(')
+          ..write('id: $id, ')
+          ..write(
+            'jsonAutomaticProfileSearchSettings: $jsonAutomaticProfileSearchSettings',
+          )
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $MyKeyPairTable extends schema.MyKeyPair
     with TableInfo<$MyKeyPairTable, MyKeyPairData> {
   @override
@@ -13134,6 +13402,8 @@ abstract class _$AccountForegroundDatabase extends GeneratedDatabase {
   late final $ProfileLocationTable profileLocation = $ProfileLocationTable(
     this,
   );
+  late final $AutomaticProfileSearchSettingsTable
+  automaticProfileSearchSettings = $AutomaticProfileSearchSettingsTable(this);
   late final $MyKeyPairTable myKeyPair = $MyKeyPairTable(this);
   late final $PublicKeyTable publicKey = $PublicKeyTable(this);
   late final $ConversationListTable conversationList = $ConversationListTable(
@@ -13258,6 +13528,7 @@ abstract class _$AccountForegroundDatabase extends GeneratedDatabase {
     initialProfileAge,
     profileStates,
     profileLocation,
+    automaticProfileSearchSettings,
     myKeyPair,
     publicKey,
     conversationList,

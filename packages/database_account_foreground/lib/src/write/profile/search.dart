@@ -14,6 +14,7 @@ part 'search.g.dart';
     schema.ProfileFilters,
     schema.ProfileSearchGroups,
     schema.ProfileSearchAgeRange,
+    schema.AutomaticProfileSearchSettings,
   ]
 )
 class DaoWriteSearch extends DatabaseAccessor<AccountForegroundDatabase> with _$DaoWriteSearchMixin {
@@ -43,6 +44,15 @@ class DaoWriteSearch extends DatabaseAccessor<AccountForegroundDatabase> with _$
       ProfileSearchGroupsCompanion.insert(
         id: SingleRowTable.ID,
         jsonProfileSearchGroups: Value(value?.toJsonObject()),
+      ),
+    );
+  }
+
+  Future<void> updateAutomaticProfileSearchSettings(api.AutomaticProfileSearchSettings? value) async {
+    await into(automaticProfileSearchSettings).insertOnConflictUpdate(
+      AutomaticProfileSearchSettingsCompanion.insert(
+        id: SingleRowTable.ID,
+        jsonAutomaticProfileSearchSettings: Value(value?.toJsonObject()),
       ),
     );
   }

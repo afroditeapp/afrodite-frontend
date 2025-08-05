@@ -92,3 +92,7 @@ class ProfileStates extends Table {
   @override
   Set<Column<Object>> get primaryKey => {accountId};
 }
+
+class AutomaticProfileSearchSettings extends SingleRowTable {
+  TextColumn get jsonAutomaticProfileSearchSettings => text().map(NullAwareTypeConverter.wrap(const AutomaticProfileSearchSettingsConverter())).nullable()();
+}

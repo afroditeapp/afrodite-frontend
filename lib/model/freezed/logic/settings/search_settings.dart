@@ -16,7 +16,7 @@ class SearchSettingsData with _$SearchSettingsData, UpdateStateProvider {
     @Default(MAX_AGE) int maxAge,
     @Default(GenderSearchSettingsAll()) GenderSearchSettingsAll genderSearchSettingsAll,
     Gender? gender,
-    required ProfileAppNotificationSettings profileSettings,
+    required AutomaticProfileSearchSettings automaticProfileSearchSettings,
 
     int? editedMinAge,
     int? editedMaxAge,
@@ -33,15 +33,10 @@ class SearchSettingsData with _$SearchSettingsData, UpdateStateProvider {
   GenderSearchSettingsAll valueGenderSearchSettingsAll() =>
     editedGenderSearchSettingsAll ?? genderSearchSettingsAll;
   Gender? valueGender() => editedGender ?? gender;
-  // TODO(prod): Update
-  // bool valueSearchDistanceFilters() => editedSearchDistanceFilters ?? profileSettings.automaticProfileSearchDistanceFilters;
-  // bool valueSearchAttributeFilters() => editedSearchAttributeFilters ?? profileSettings.automaticProfileSearchAttributeFilters;
-  // bool valueSearchNewProfiles() => editedSearchNewProfiles ?? profileSettings.automaticProfileSearchNewProfiles;
-  // int valueSearchWeekdays() => editedSearchWeekdays ?? profileSettings.automaticProfileSearchWeekdays;
-  bool valueSearchDistanceFilters() => editedSearchDistanceFilters ?? false;
-  bool valueSearchAttributeFilters() => editedSearchAttributeFilters ?? false;
-  bool valueSearchNewProfiles() => editedSearchNewProfiles ?? false;
-  int valueSearchWeekdays() => editedSearchWeekdays ?? 0;
+  bool valueSearchDistanceFilters() => editedSearchDistanceFilters ?? automaticProfileSearchSettings.distanceFilters;
+  bool valueSearchAttributeFilters() => editedSearchAttributeFilters ?? automaticProfileSearchSettings.attributeFilters;
+  bool valueSearchNewProfiles() => editedSearchNewProfiles ?? automaticProfileSearchSettings.newProfiles;
+  int valueSearchWeekdays() => editedSearchWeekdays ?? automaticProfileSearchSettings.weekdays;
 
   bool unsavedChanges() => editedMinAge != null ||
     editedMaxAge != null ||

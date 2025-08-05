@@ -135,6 +135,20 @@ class ClientFeaturesConfigConverter extends TypeConverter<JsonObject<ClientFeatu
   }
 }
 
+class AutomaticProfileSearchSettingsConverter extends TypeConverter<JsonObject<AutomaticProfileSearchSettings>, String> {
+  const AutomaticProfileSearchSettingsConverter();
+
+  @override
+  JsonObject<AutomaticProfileSearchSettings> fromSql(fromDb) {
+    return JsonObject._(AutomaticProfileSearchSettings.fromJson(jsonDecode(fromDb)));
+  }
+
+  @override
+  String toSql(value) {
+    return jsonEncode(value.value?.toJson());
+  }
+}
+
 extension NotificationStatusJson on NotificationStatus {
   JsonObject<NotificationStatus> toJsonObject() {
     return JsonObject._(this);
@@ -185,6 +199,12 @@ extension CustomReportsConfigJson on CustomReportsConfig {
 
 extension ClientFeaturesConfigJson on ClientFeaturesConfig {
   JsonObject<ClientFeaturesConfig> toJsonObject() {
+    return JsonObject._(this);
+  }
+}
+
+extension AutomaticProfileSearchSettingsJson on AutomaticProfileSearchSettings {
+  JsonObject<AutomaticProfileSearchSettings> toJsonObject() {
     return JsonObject._(this);
   }
 }

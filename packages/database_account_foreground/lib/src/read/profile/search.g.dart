@@ -9,4 +9,6 @@ mixin _$DaoReadSearchMixin on DatabaseAccessor<AccountForegroundDatabase> {
       attachedDatabase.profileSearchAgeRange;
   $ProfileSearchGroupsTable get profileSearchGroups =>
       attachedDatabase.profileSearchGroups;
+  $AutomaticProfileSearchSettingsTable get automaticProfileSearchSettings =>
+      attachedDatabase.automaticProfileSearchSettings;
 }

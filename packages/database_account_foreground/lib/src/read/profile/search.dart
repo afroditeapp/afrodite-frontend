@@ -13,6 +13,7 @@ part 'search.g.dart';
     schema.ProfileFilters,
     schema.ProfileSearchAgeRange,
     schema.ProfileSearchGroups,
+    schema.AutomaticProfileSearchSettings,
   ]
 )
 class DaoReadSearch extends DatabaseAccessor<AccountForegroundDatabase> with _$DaoReadSearchMixin {
@@ -44,6 +45,15 @@ class DaoReadSearch extends DatabaseAccessor<AccountForegroundDatabase> with _$D
 
   Stream<T?> _watchColumnGroups<T extends Object>(T? Function(ProfileSearchGroup) extractColumn) {
     return (select(profileSearchGroups)..where((t) => t.id.equals(SingleRowTable.ID.value)))
+      .map(extractColumn)
+      .watchSingleOrNull();
+  }
+
+  Stream<api.AutomaticProfileSearchSettings?> watchAutomaticProfileSearchSettings() =>
+    _watchColumnAutomaticProfileSearchSettings((r) => r.jsonAutomaticProfileSearchSettings?.value);
+
+  Stream<T?> _watchColumnAutomaticProfileSearchSettings<T extends Object>(T? Function(AutomaticProfileSearchSetting) extractColumn) {
+    return (select(automaticProfileSearchSettings)..where((t) => t.id.equals(SingleRowTable.ID.value)))
       .map(extractColumn)
       .watchSingleOrNull();
   }

@@ -1,5 +1,4 @@
 import 'package:app/ui_utils/common_update_logic.dart';
-import 'package:app/utils/api.dart';
 import "package:freezed_annotation/freezed_annotation.dart";
 import 'package:flutter/foundation.dart';
 
@@ -14,12 +13,6 @@ class NotificationSettingsData with _$NotificationSettingsData, UpdateStateProvi
     required NotificationCategoryData categories,
     required NotificationCategoryData systemCategories,
     required EditedNotificationSettingsData edited,
-
-    // Automatic profile search
-    @Default(ProfileAppNotificationSettingsDefaults.distanceFiltersDefault) bool searchDistanceFilters,
-    @Default(ProfileAppNotificationSettingsDefaults.attributeFiltersDefault) bool searchAttributeFilters,
-    @Default(ProfileAppNotificationSettingsDefaults.newProfilesDefault) bool searchNewProfiles,
-    @Default(ProfileAppNotificationSettingsDefaults.weekdaysDefault) int searchWeekdays,
   }) = _NotificationSettingsData;
 
   bool valueMessages() => edited.messages ?? categories.messages;
