@@ -1,4 +1,5 @@
 import 'package:app/data/app_version.dart';
+import 'package:app/model/freezed/logic/account/client_features_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:app/assets.dart';
@@ -7,10 +8,12 @@ import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui_utils/loading_dialog.dart';
 
-void showAppAboutDialog(BuildContext context) {
+void showAppAboutDialog(BuildContext context, ClientFeaturesConfigData? config) {
   const double ICON_SIZE = 80.0;
 
   // TODO(prod): Test about dialog with notification related navigation.
+
+  final attributionText = config?.aboutDialogAttribution(context);
 
   // About dialog uses root navigator as there is navigation related to
   // viewing licenses.
@@ -25,6 +28,9 @@ void showAppAboutDialog(BuildContext context) {
         height: ICON_SIZE,
       ),
       applicationLegalese: "© 2024 Afrodite",
+      children: [
+        if (attributionText != null) SelectableText(attributionText),
+      ],
     ),
   );
 }

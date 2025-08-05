@@ -37,7 +37,7 @@ class MenuView extends BottomNavigationScreen {
   List<Widget> actions(BuildContext context) {
     return [
       menuActions([
-        commonActionOpenAboutDialog(context),
+        commonActionOpenAboutDialog(context, context.read<ClientFeaturesConfigBloc>().state),
         commonActionLogout(context),
       ]),
     ];

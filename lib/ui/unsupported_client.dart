@@ -15,7 +15,7 @@ class UnsupportedClientScreen extends StatelessWidget {
         actions: [
           menuActions([
             commonActionLogout(context),
-            commonActionOpenAboutDialog(context),
+            commonActionOpenAboutDialog(context, null),
           ]),
         ],
       ),

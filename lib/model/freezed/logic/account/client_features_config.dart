@@ -1,5 +1,7 @@
 
+import "package:app/localizations.dart";
 import "package:app/utils/list.dart";
+import "package:flutter/widgets.dart";
 import "package:freezed_annotation/freezed_annotation.dart";
 import 'package:flutter/foundation.dart';
 import "package:intl/intl.dart";
@@ -63,6 +65,11 @@ class ClientFeaturesConfigData with _$ClientFeaturesConfigData {
     locales.insert(0, defaultLocale);
 
     return locales;
+  }
+
+  String? aboutDialogAttribution(BuildContext context) {
+    final locale = context.strings.localeName;
+    return config.attribution.generic?.translations[locale] ?? config.attribution.generic?.default_;
   }
 }
 

@@ -2,6 +2,7 @@
 
 
 
+import 'package:app/model/freezed/logic/account/client_features_config.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,7 +15,7 @@ import 'package:app/ui_utils/dialog.dart';
 /// normal account.
 List<MenuItemButton> commonActionsWhenLoggedOut(BuildContext context) {
   return [
-    commonActionOpenAboutDialog(context),
+    commonActionOpenAboutDialog(context, null),
   ];
 }
 
@@ -23,14 +24,14 @@ List<MenuItemButton> commonActionsWhenLoggedOut(BuildContext context) {
 List<MenuItemButton> commonActionsWhenLoggedInAndAccountIsNotNormallyUsable(BuildContext context) {
   return [
     commonActionLogout(context),
-    commonActionOpenAboutDialog(context),
+    commonActionOpenAboutDialog(context, null),
   ];
 }
 
-MenuItemButton commonActionOpenAboutDialog(BuildContext context) {
+MenuItemButton commonActionOpenAboutDialog(BuildContext context, ClientFeaturesConfigData? config) {
   return MenuItemButton(
     child: Text(context.strings.app_bar_action_about),
-    onPressed: () => showAppAboutDialog(context),
+    onPressed: () => showAppAboutDialog(context, config),
   );
 }
 
