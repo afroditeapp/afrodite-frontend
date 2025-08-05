@@ -1060,7 +1060,7 @@
   "@notification_category_group_general": {
     "description": "Title for notification category group general"
   },
-  "notification_category_likes": "Chat requests",
+  "notification_category_likes": "Requests",
   "@notification_category_likes": {
     "description": "Title for notification category likes"
   },

@@ -100,7 +100,7 @@
 
     <!-- Notification categories -->
     <string name="notification_category_messages" description="Title for notification category messages">Messages</string>
-    <string name="notification_category_likes" description="Title for notification category likes">Chat requests</string>
+    <string name="notification_category_likes" description="Title for notification category likes">Requests</string>
     <string name="notification_category_media_content_moderation_completed" description="Title for notification category media content moderation completed">Images</string>
     <string name="notification_category_profile_string_moderation_completed" description="Title for notification category profile string moderation completed">Profile name and text</string>
     <string name="notification_category_news_item_available" description="Title for notification category news item available">News</string>

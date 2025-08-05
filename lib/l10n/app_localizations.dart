@@ -1595,7 +1595,7 @@ abstract class AppLocalizations {
   /// Title for notification category likes
   ///
   /// In en, this message translates to:
-  /// **'Chat requests'**
+  /// **'Requests'**
   String get notification_category_likes;
 
   /// Title for notification category media content moderation completed

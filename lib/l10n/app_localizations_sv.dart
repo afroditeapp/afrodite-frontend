@@ -899,7 +899,7 @@ class AppLocalizationsSv extends AppLocalizations {
   String get notification_category_group_general => 'General';
 
   @override
-  String get notification_category_likes => 'Chat requests';
+  String get notification_category_likes => 'Requests';
 
   @override
   String get notification_category_media_content_moderation_completed =>
