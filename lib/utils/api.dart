@@ -157,11 +157,12 @@ extension MapCoordinateExtension on MapCoordinate {
 class ProfileAppNotificationSettingsDefaults {
   static ProfileAppNotificationSettings defaultValue = ProfileAppNotificationSettings(
       automaticProfileSearch: NOTIFICATION_CATEGORY_ENABLED_DEFAULT,
-      automaticProfileSearchDistanceFilters: distanceFiltersDefault,
-      automaticProfileSearchNewProfiles: newProfilesDefault,
-      automaticProfileSearchAttributeFilters: attributeFiltersDefault,
-      automaticProfileSearchWeekdays: weekdaysDefault,
-      profileTextModeration: NOTIFICATION_CATEGORY_ENABLED_DEFAULT,
+      // TODO(prod): Update
+      // automaticProfileSearchDistanceFilters: distanceFiltersDefault,
+      // automaticProfileSearchNewProfiles: newProfilesDefault,
+      // automaticProfileSearchAttributeFilters: attributeFiltersDefault,
+      // automaticProfileSearchWeekdays: weekdaysDefault,
+      profileStringModeration: NOTIFICATION_CATEGORY_ENABLED_DEFAULT,
     );
 
   static const bool distanceFiltersDefault = false;

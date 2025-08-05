@@ -60,6 +60,47 @@ class ProfileApi {
     }
   }
 
+  /// Performs an HTTP 'GET /profile_api/automatic_profile_search_settings' operation and returns the [Response].
+  Future<Response> getAutomaticProfileSearchSettingsWithHttpInfo() async {
+    // ignore: prefer_const_declarations
+    final path = r'/profile_api/automatic_profile_search_settings';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  Future<AutomaticProfileSearchSettings?> getAutomaticProfileSearchSettings() async {
+    final response = await getAutomaticProfileSearchSettingsWithHttpInfo();
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'AutomaticProfileSearchSettings',) as AutomaticProfileSearchSettings;
+    
+    }
+    return null;
+  }
+
   /// Get list of all favorite profiles.
   ///
   /// First item is the oldest favorite (ordered using UnixTime and account ID).
@@ -108,12 +149,12 @@ class ProfileApi {
     return null;
   }
 
-  /// Get initial profile age information which can be used for calculating current accepted profile ages.
+  /// Get initial profile age which can be used for calculating current accepted profile ages.
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> getInitialProfileAgeInfoWithHttpInfo() async {
+  Future<Response> getInitialProfileAgeWithHttpInfo() async {
     // ignore: prefer_const_declarations
-    final path = r'/profile_api/initial_profile_age_info';
+    final path = r'/profile_api/initial_profile_age';
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -136,9 +177,9 @@ class ProfileApi {
     );
   }
 
-  /// Get initial profile age information which can be used for calculating current accepted profile ages.
-  Future<GetInitialProfileAgeInfoResult?> getInitialProfileAgeInfo() async {
-    final response = await getInitialProfileAgeInfoWithHttpInfo();
+  /// Get initial profile age which can be used for calculating current accepted profile ages.
+  Future<GetInitialProfileAgeResult?> getInitialProfileAge() async {
+    final response = await getInitialProfileAgeWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -146,7 +187,7 @@ class ProfileApi {
     // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetInitialProfileAgeInfoResult',) as GetInitialProfileAgeInfoResult;
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetInitialProfileAgeResult',) as GetInitialProfileAgeResult;
     
     }
     return null;
@@ -550,7 +591,7 @@ class ProfileApi {
   }
 
   /// Get account's current search age range
-  Future<ProfileSearchAgeRange?> getSearchAgeRange() async {
+  Future<SearchAgeRange?> getSearchAgeRange() async {
     final response = await getSearchAgeRangeWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
@@ -559,7 +600,7 @@ class ProfileApi {
     // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'ProfileSearchAgeRange',) as ProfileSearchAgeRange;
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'SearchAgeRange',) as SearchAgeRange;
     
     }
     return null;
@@ -707,6 +748,45 @@ class ProfileApi {
     
     }
     return null;
+  }
+
+  /// Performs an HTTP 'POST /profile_api/automatic_profile_search_settings' operation and returns the [Response].
+  /// Parameters:
+  ///
+  /// * [AutomaticProfileSearchSettings] automaticProfileSearchSettings (required):
+  Future<Response> postAutomaticProfileSearchSettingsWithHttpInfo(AutomaticProfileSearchSettings automaticProfileSearchSettings,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/profile_api/automatic_profile_search_settings';
+
+    // ignore: prefer_final_locals
+    Object? postBody = automaticProfileSearchSettings;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Parameters:
+  ///
+  /// * [AutomaticProfileSearchSettings] automaticProfileSearchSettings (required):
+  Future<void> postAutomaticProfileSearchSettings(AutomaticProfileSearchSettings automaticProfileSearchSettings,) async {
+    final response = await postAutomaticProfileSearchSettingsWithHttpInfo(automaticProfileSearchSettings,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
   }
 
   /// Add new favorite profile
@@ -1375,13 +1455,13 @@ class ProfileApi {
   ///
   /// Parameters:
   ///
-  /// * [ProfileSearchAgeRange] profileSearchAgeRange (required):
-  Future<Response> postSearchAgeRangeWithHttpInfo(ProfileSearchAgeRange profileSearchAgeRange,) async {
+  /// * [SearchAgeRange] searchAgeRange (required):
+  Future<Response> postSearchAgeRangeWithHttpInfo(SearchAgeRange searchAgeRange,) async {
     // ignore: prefer_const_declarations
     final path = r'/profile_api/search_age_range';
 
     // ignore: prefer_final_locals
-    Object? postBody = profileSearchAgeRange;
+    Object? postBody = searchAgeRange;
 
     final queryParams = <QueryParam>[];
     final headerParams = <String, String>{};
@@ -1405,9 +1485,9 @@ class ProfileApi {
   ///
   /// Parameters:
   ///
-  /// * [ProfileSearchAgeRange] profileSearchAgeRange (required):
-  Future<void> postSearchAgeRange(ProfileSearchAgeRange profileSearchAgeRange,) async {
-    final response = await postSearchAgeRangeWithHttpInfo(profileSearchAgeRange,);
+  /// * [SearchAgeRange] searchAgeRange (required):
+  Future<void> postSearchAgeRange(SearchAgeRange searchAgeRange,) async {
+    final response = await postSearchAgeRangeWithHttpInfo(searchAgeRange,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

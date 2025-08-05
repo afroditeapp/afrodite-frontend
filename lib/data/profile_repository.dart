@@ -490,7 +490,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
     return await _api.profile((api) => api.getSearchAgeRange())
       .emptyErr()
       .andThen((r) => db.accountAction(
-        (db) => db.search.updateProfileSearchAgeRange(r),
+        (db) => db.search.updateSearchAgeRange(r),
       ));
   }
 
@@ -502,7 +502,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
   }
 
   Future<Result<void, void>> updateSearchAgeRange(int minAge, int maxAge) async {
-    final update = ProfileSearchAgeRange(min: minAge, max: maxAge);
+    final update = SearchAgeRange(min: minAge, max: maxAge);
     return await _api.profileAction((api) => api.postSearchAgeRange(update))
       .onOk(() => reloadSearchAgeRange());
   }
@@ -571,12 +571,12 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
       return;
     }
 
-    final apiResult = await _api.profile((api) => api.getInitialProfileAgeInfo());
+    final apiResult = await _api.profile((api) => api.getInitialProfileAge());
     switch (apiResult) {
       case Err():
         return;
       case Ok(:final v):
-        final info = v.info;
+        final info = v.value;
         if (info == null) {
           // Initial setup is ongoing. This might happen at least for
           // new accounts as onLogin runs for those and client might not

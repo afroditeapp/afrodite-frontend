@@ -104,12 +104,8 @@ class SearchSettingsBloc extends Bloc<SearchSettingsEvent, SearchSettingsData> w
 
         {
           final settings = ProfileAppNotificationSettings(
-            profileTextModeration: state.profileSettings.profileTextModeration,
+            profileStringModeration: state.profileSettings.profileStringModeration,
             automaticProfileSearch: state.profileSettings.automaticProfileSearch,
-            automaticProfileSearchDistanceFilters: state.valueSearchDistanceFilters(),
-            automaticProfileSearchNewProfiles: state.valueSearchNewProfiles(),
-            automaticProfileSearchAttributeFilters: state.valueSearchAttributeFilters(),
-            automaticProfileSearchWeekdays: state.valueSearchWeekdays(),
           );
           final r = await api.profileAction((api) => api.postProfileAppNotificationSettings(settings))
             .andThen((_) => accountBackgroundDb.accountAction((db) => db.appNotificationSettings.updateProfileNotificationSettings(settings)));
@@ -183,35 +179,39 @@ class SearchSettingsBloc extends Bloc<SearchSettingsEvent, SearchSettingsData> w
     });
     on<ToggleSearchDistanceFilters>((data, emit) async {
       if (state.editedSearchDistanceFilters == null) {
-        emit(state.copyWith(editedSearchDistanceFilters: !state.profileSettings.automaticProfileSearchDistanceFilters));
+        // TODO(prod): Update
+        // emit(state.copyWith(editedSearchDistanceFilters: !state.profileSettings.automaticProfileSearchDistanceFilters));
       } else {
         emit(state.copyWith(editedSearchDistanceFilters: null));
       }
     });
     on<ToggleSearchAttributeFilters>((data, emit) async {
       if (state.editedSearchAttributeFilters == null) {
-        emit(state.copyWith(editedSearchAttributeFilters: !state.profileSettings.automaticProfileSearchAttributeFilters));
+        // TODO(prod): Update
+        // emit(state.copyWith(editedSearchAttributeFilters: !state.profileSettings.automaticProfileSearchAttributeFilters));
       } else {
         emit(state.copyWith(editedSearchAttributeFilters: null));
       }
     });
     on<ToggleSearchNewProfiles>((data, emit) async {
       if (state.editedSearchNewProfiles == null) {
-        emit(state.copyWith(editedSearchNewProfiles: !state.profileSettings.automaticProfileSearchNewProfiles));
+        // TODO(prod): Update
+        // emit(state.copyWith(editedSearchNewProfiles: !state.profileSettings.automaticProfileSearchNewProfiles));
       } else {
         emit(state.copyWith(editedSearchNewProfiles: null));
       }
     });
     on<UpdateSearchWeekday>((data, emit) async {
-      if (data.value == state.profileSettings.automaticProfileSearchWeekdays) {
-        emit(state.copyWith(
-          editedSearchWeekdays: null,
-        ));
-      } else {
-        emit(state.copyWith(
-          editedSearchWeekdays: data.value,
-        ));
-      }
+      // TODO(prod): Update
+      // if (data.value == state.profileSettings.automaticProfileSearchWeekdays) {
+      //   emit(state.copyWith(
+      //     editedSearchWeekdays: null,
+      //   ));
+      // } else {
+      //   emit(state.copyWith(
+      //     editedSearchWeekdays: data.value,
+      //   ));
+      // }
     });
 
     _minAgeSubscription = db.accountStream((db) => db.search.watchProfileSearchAgeRangeMin()).listen((event) {

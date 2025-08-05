@@ -16,6 +16,54 @@ class CommonAdminApi {
 
   final ApiClient apiClient;
 
+  /// Get admin notification settings.
+  ///
+  /// # Access Requires [Permissions::admin_subscribe_admin_notifications].
+  ///
+  /// Note: This method returns the HTTP [Response].
+  Future<Response> getAdminNotificationSettingsWithHttpInfo() async {
+    // ignore: prefer_const_declarations
+    final path = r'/common_api/admin_notification_settings';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Get admin notification settings.
+  ///
+  /// # Access Requires [Permissions::admin_subscribe_admin_notifications].
+  Future<AdminNotificationSettings?> getAdminNotificationSettings() async {
+    final response = await getAdminNotificationSettingsWithHttpInfo();
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'AdminNotificationSettings',) as AdminNotificationSettings;
+    
+    }
+    return null;
+  }
+
   /// Get admin notification subscriptions.
   ///
   /// # Access Requires [Permissions::admin_subscribe_admin_notifications].
@@ -462,6 +510,54 @@ class CommonAdminApi {
     
     }
     return null;
+  }
+
+  /// Save admin notification settings.
+  ///
+  /// # Access Requires [Permissions::admin_subscribe_admin_notifications].
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [AdminNotificationSettings] adminNotificationSettings (required):
+  Future<Response> postAdminNotificationSettingsWithHttpInfo(AdminNotificationSettings adminNotificationSettings,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/common_api/admin_notification_settings';
+
+    // ignore: prefer_final_locals
+    Object? postBody = adminNotificationSettings;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Save admin notification settings.
+  ///
+  /// # Access Requires [Permissions::admin_subscribe_admin_notifications].
+  ///
+  /// Parameters:
+  ///
+  /// * [AdminNotificationSettings] adminNotificationSettings (required):
+  Future<void> postAdminNotificationSettings(AdminNotificationSettings adminNotificationSettings,) async {
+    final response = await postAdminNotificationSettingsWithHttpInfo(adminNotificationSettings,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
   }
 
   /// Save admin notification subscriptions.

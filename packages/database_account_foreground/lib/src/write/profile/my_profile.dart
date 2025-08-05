@@ -59,13 +59,13 @@ class DaoWriteMyProfile extends DatabaseAccessor<AccountForegroundDatabase> with
   }
 
   Future<void> setInitialAgeInfo({
-    required api.AcceptedProfileAges info,
+    required api.InitialProfileAge info,
   }) async {
-    final time = UtcDateTime.fromUnixEpochMilliseconds(info.profileInitialAgeSetUnixTime.ut * 1000);
+    final time = UtcDateTime.fromUnixEpochMilliseconds(info.initialProfileAgeSetUnixTime.ut * 1000);
     await into(initialProfileAge).insertOnConflictUpdate(
       InitialProfileAgeCompanion.insert(
         id: SingleRowTable.ID,
-        initialProfileAge: Value(info.profileInitialAge),
+        initialProfileAge: Value(info.initialProfileAge),
         initialProfileAgeSetUnixTime: Value(time),
       ),
     );

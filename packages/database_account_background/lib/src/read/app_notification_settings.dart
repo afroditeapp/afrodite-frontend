@@ -18,31 +18,19 @@ class DaoReadAppNotificationSettings extends DatabaseAccessor<AccountBackgroundD
 
   Stream<api.ProfileAppNotificationSettings?> watchProfileAppNotificationSettings() =>
     _watchColumn((r) {
-      final profileTextModerationCompleted = r.profileTextModerationCompleted;
+      final profileStringModerationCompleted = r.profileTextModerationCompleted;
       final automaticProfileSearch = r.automaticProfileSearch;
-      final automaticProfileSearchDistanceFilters = r.automaticProfileSearchDistanceFilters;
-      final automaticProfileSearchAttributeFilters = r.automaticProfileSearchAttributeFilters;
-      final automaticProfileSearchNewProfiles = r.automaticProfileSearchNewProfiles;
-      final automaticProfileSearchWeekdays = r.automaticProfileSearchWeekdays;
 
       if (
-        profileTextModerationCompleted == null ||
-        automaticProfileSearch == null ||
-        automaticProfileSearchDistanceFilters == null ||
-        automaticProfileSearchAttributeFilters == null ||
-        automaticProfileSearchNewProfiles == null ||
-        automaticProfileSearchWeekdays == null
+        profileStringModerationCompleted == null ||
+        automaticProfileSearch == null
       ) {
         return null;
       }
 
       return api.ProfileAppNotificationSettings(
-        profileTextModeration: profileTextModerationCompleted,
+        profileStringModeration: profileStringModerationCompleted,
         automaticProfileSearch: automaticProfileSearch,
-        automaticProfileSearchDistanceFilters: automaticProfileSearchDistanceFilters,
-        automaticProfileSearchAttributeFilters: automaticProfileSearchAttributeFilters,
-        automaticProfileSearchNewProfiles: automaticProfileSearchNewProfiles,
-        automaticProfileSearchWeekdays: automaticProfileSearchWeekdays,
       );
     });
 

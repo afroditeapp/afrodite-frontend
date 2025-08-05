@@ -90,7 +90,7 @@ class NotificationCategoryProfileTextModerationCompleted extends NotificationCat
   String get title => R.strings.notification_category_profile_text_moderation_completed;
 
   @override
-  IsEnabledGetter get _isEnabledValueLocation => (db) => db.appNotificationSettings.watchProfileAppNotificationSettings().map((v) => v?.profileTextModeration);
+  IsEnabledGetter get _isEnabledValueLocation => (db) => db.appNotificationSettings.watchProfileAppNotificationSettings().map((v) => v?.profileStringModeration);
 }
 
 class NotificationCategoryNewsItemAvailable extends NotificationCategory {

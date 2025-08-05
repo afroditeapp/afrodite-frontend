@@ -22,7 +22,6 @@ lib/auth/authentication.dart
 lib/auth/http_basic_auth.dart
 lib/auth/http_bearer_auth.dart
 lib/auth/oauth.dart
-lib/model/accepted_profile_ages.dart
 lib/model/access_token.dart
 lib/model/accessible_account.dart
 lib/model/account.dart
@@ -39,6 +38,7 @@ lib/model/account_sync_version.dart
 lib/model/add_public_key_result.dart
 lib/model/admin_info.dart
 lib/model/admin_notification.dart
+lib/model/admin_notification_settings.dart
 lib/model/api_usage_count.dart
 lib/model/api_usage_statistics.dart
 lib/model/attribute.dart
@@ -52,6 +52,7 @@ lib/model/auth_pair.dart
 lib/model/automatic_profile_search_completed_notification.dart
 lib/model/automatic_profile_search_completed_notification_viewed.dart
 lib/model/automatic_profile_search_iterator_session_id.dart
+lib/model/automatic_profile_search_settings.dart
 lib/model/backend_config.dart
 lib/model/backend_version.dart
 lib/model/boolean_setting.dart
@@ -116,7 +117,7 @@ lib/model/get_client_version_statistics_result.dart
 lib/model/get_client_version_statistics_settings.dart
 lib/model/get_conversation_id.dart
 lib/model/get_custom_reports_config_result.dart
-lib/model/get_initial_profile_age_info_result.dart
+lib/model/get_initial_profile_age_result.dart
 lib/model/get_ip_address_statistics_result.dart
 lib/model/get_ip_address_statistics_settings.dart
 lib/model/get_ip_country_statistics_result.dart
@@ -139,6 +140,7 @@ lib/model/get_report_list.dart
 lib/model/get_sent_message.dart
 lib/model/get_video_call_urls_result.dart
 lib/model/group_values.dart
+lib/model/initial_profile_age.dart
 lib/model/ip_address_info.dart
 lib/model/ip_country_statistics.dart
 lib/model/ip_country_statistics_type.dart
@@ -226,7 +228,6 @@ lib/model/profile_iterator_page_value.dart
 lib/model/profile_iterator_session_id.dart
 lib/model/profile_link.dart
 lib/model/profile_page.dart
-lib/model/profile_search_age_range.dart
 lib/model/profile_statistics_history_value.dart
 lib/model/profile_statistics_history_value_type.dart
 lib/model/profile_string_moderation_completed_notification.dart
@@ -267,6 +268,7 @@ lib/model/scheduled_maintenance_status.dart
 lib/model/scheduled_task_status.dart
 lib/model/scheduled_task_type.dart
 lib/model/scheduled_task_type_value.dart
+lib/model/search_age_range.dart
 lib/model/search_groups.dart
 lib/model/security_content.dart
 lib/model/send_like_result.dart

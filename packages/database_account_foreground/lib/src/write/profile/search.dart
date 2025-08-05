@@ -28,7 +28,7 @@ class DaoWriteSearch extends DatabaseAccessor<AccountForegroundDatabase> with _$
     );
   }
 
-  Future<void> updateProfileSearchAgeRange(api.ProfileSearchAgeRange? value) async {
+  Future<void> updateSearchAgeRange(api.SearchAgeRange? value) async {
     await into(profileSearchAgeRange).insertOnConflictUpdate(
       ProfileSearchAgeRangeCompanion.insert(
         id: SingleRowTable.ID,

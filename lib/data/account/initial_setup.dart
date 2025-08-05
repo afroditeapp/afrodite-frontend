@@ -101,7 +101,7 @@ class InitialSetupUtils {
     await _api.profileAction((api) => api.postProfile(update));
     final location = Location(latitude: 61, longitude: 24.5);
     await _api.profileAction((api) => api.putLocation(location));
-    final ageRange = ProfileSearchAgeRange(min: 18, max: 99);
+    final ageRange = SearchAgeRange(min: 18, max: 99);
     await _api.profileAction((api) => api.postSearchAgeRange(ageRange));
     final groups = SearchGroups(
       manForMan: true,
@@ -170,7 +170,7 @@ class InitialSetupUtils {
       if (minAge == null) return errAndLog("Min age is null");
       final maxAge = data.searchAgeRangeMax;
       if (maxAge == null) return errAndLog("Max age is null");
-      final ageRange = ProfileSearchAgeRange(min: minAge, max: maxAge);
+      final ageRange = SearchAgeRange(min: minAge, max: maxAge);
       final r = await _api.profileAction((api) => api.postSearchAgeRange(ageRange));
       if (r.isErr()) return errAndLog("Setting search age range failed");
     }

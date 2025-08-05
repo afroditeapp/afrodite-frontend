@@ -182,8 +182,6 @@ class ApiClient {
           return valueString == 'true' || valueString == '1';
         case 'DateTime':
           return value is DateTime ? value : DateTime.tryParse(value);
-        case 'AcceptedProfileAges':
-          return AcceptedProfileAges.fromJson(value);
         case 'AccessToken':
           return AccessToken.fromJson(value);
         case 'AccessibleAccount':
@@ -216,6 +214,8 @@ class ApiClient {
           return AdminInfo.fromJson(value);
         case 'AdminNotification':
           return AdminNotification.fromJson(value);
+        case 'AdminNotificationSettings':
+          return AdminNotificationSettings.fromJson(value);
         case 'ApiUsageCount':
           return ApiUsageCount.fromJson(value);
         case 'ApiUsageStatistics':
@@ -242,6 +242,8 @@ class ApiClient {
           return AutomaticProfileSearchCompletedNotificationViewed.fromJson(value);
         case 'AutomaticProfileSearchIteratorSessionId':
           return AutomaticProfileSearchIteratorSessionId.fromJson(value);
+        case 'AutomaticProfileSearchSettings':
+          return AutomaticProfileSearchSettings.fromJson(value);
         case 'BackendConfig':
           return BackendConfig.fromJson(value);
         case 'BackendVersion':
@@ -370,8 +372,8 @@ class ApiClient {
           return GetConversationId.fromJson(value);
         case 'GetCustomReportsConfigResult':
           return GetCustomReportsConfigResult.fromJson(value);
-        case 'GetInitialProfileAgeInfoResult':
-          return GetInitialProfileAgeInfoResult.fromJson(value);
+        case 'GetInitialProfileAgeResult':
+          return GetInitialProfileAgeResult.fromJson(value);
         case 'GetIpAddressStatisticsResult':
           return GetIpAddressStatisticsResult.fromJson(value);
         case 'GetIpAddressStatisticsSettings':
@@ -416,6 +418,8 @@ class ApiClient {
           return GetVideoCallUrlsResult.fromJson(value);
         case 'GroupValues':
           return GroupValues.fromJson(value);
+        case 'InitialProfileAge':
+          return InitialProfileAge.fromJson(value);
         case 'IpAddressInfo':
           return IpAddressInfo.fromJson(value);
         case 'IpCountryStatistics':
@@ -590,8 +594,6 @@ class ApiClient {
           return ProfileLink.fromJson(value);
         case 'ProfilePage':
           return ProfilePage.fromJson(value);
-        case 'ProfileSearchAgeRange':
-          return ProfileSearchAgeRange.fromJson(value);
         case 'ProfileStatisticsHistoryValue':
           return ProfileStatisticsHistoryValue.fromJson(value);
         case 'ProfileStatisticsHistoryValueType':
@@ -672,6 +674,8 @@ class ApiClient {
           return ScheduledTaskTypeTypeTransformer().decode(value);
         case 'ScheduledTaskTypeValue':
           return ScheduledTaskTypeValue.fromJson(value);
+        case 'SearchAgeRange':
+          return SearchAgeRange.fromJson(value);
         case 'SearchGroups':
           return SearchGroups.fromJson(value);
         case 'SecurityContent':

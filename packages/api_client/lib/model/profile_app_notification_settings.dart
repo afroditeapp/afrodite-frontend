@@ -14,56 +14,31 @@ class ProfileAppNotificationSettings {
   /// Returns a new [ProfileAppNotificationSettings] instance.
   ProfileAppNotificationSettings({
     required this.automaticProfileSearch,
-    required this.automaticProfileSearchAttributeFilters,
-    required this.automaticProfileSearchDistanceFilters,
-    required this.automaticProfileSearchNewProfiles,
-    required this.automaticProfileSearchWeekdays,
-    required this.profileTextModeration,
+    required this.profileStringModeration,
   });
 
   bool automaticProfileSearch;
 
-  bool automaticProfileSearchAttributeFilters;
-
-  bool automaticProfileSearchDistanceFilters;
-
-  bool automaticProfileSearchNewProfiles;
-
-  /// Selected weekdays.  The integer is a bitflag.  - const MONDAY = 0x1; - const TUESDAY = 0x2; - const WEDNESDAY = 0x4; - const THURSDAY = 0x8; - const FRIDAY = 0x10; - const SATURDAY = 0x20; - const SUNDAY = 0x40; 
-  int automaticProfileSearchWeekdays;
-
-  bool profileTextModeration;
+  bool profileStringModeration;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is ProfileAppNotificationSettings &&
     other.automaticProfileSearch == automaticProfileSearch &&
-    other.automaticProfileSearchAttributeFilters == automaticProfileSearchAttributeFilters &&
-    other.automaticProfileSearchDistanceFilters == automaticProfileSearchDistanceFilters &&
-    other.automaticProfileSearchNewProfiles == automaticProfileSearchNewProfiles &&
-    other.automaticProfileSearchWeekdays == automaticProfileSearchWeekdays &&
-    other.profileTextModeration == profileTextModeration;
+    other.profileStringModeration == profileStringModeration;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (automaticProfileSearch.hashCode) +
-    (automaticProfileSearchAttributeFilters.hashCode) +
-    (automaticProfileSearchDistanceFilters.hashCode) +
-    (automaticProfileSearchNewProfiles.hashCode) +
-    (automaticProfileSearchWeekdays.hashCode) +
-    (profileTextModeration.hashCode);
+    (profileStringModeration.hashCode);
 
   @override
-  String toString() => 'ProfileAppNotificationSettings[automaticProfileSearch=$automaticProfileSearch, automaticProfileSearchAttributeFilters=$automaticProfileSearchAttributeFilters, automaticProfileSearchDistanceFilters=$automaticProfileSearchDistanceFilters, automaticProfileSearchNewProfiles=$automaticProfileSearchNewProfiles, automaticProfileSearchWeekdays=$automaticProfileSearchWeekdays, profileTextModeration=$profileTextModeration]';
+  String toString() => 'ProfileAppNotificationSettings[automaticProfileSearch=$automaticProfileSearch, profileStringModeration=$profileStringModeration]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'automatic_profile_search'] = this.automaticProfileSearch;
-      json[r'automatic_profile_search_attribute_filters'] = this.automaticProfileSearchAttributeFilters;
-      json[r'automatic_profile_search_distance_filters'] = this.automaticProfileSearchDistanceFilters;
-      json[r'automatic_profile_search_new_profiles'] = this.automaticProfileSearchNewProfiles;
-      json[r'automatic_profile_search_weekdays'] = this.automaticProfileSearchWeekdays;
-      json[r'profile_text_moderation'] = this.profileTextModeration;
+      json[r'profile_string_moderation'] = this.profileStringModeration;
     return json;
   }
 
@@ -87,11 +62,7 @@ class ProfileAppNotificationSettings {
 
       return ProfileAppNotificationSettings(
         automaticProfileSearch: mapValueOfType<bool>(json, r'automatic_profile_search')!,
-        automaticProfileSearchAttributeFilters: mapValueOfType<bool>(json, r'automatic_profile_search_attribute_filters')!,
-        automaticProfileSearchDistanceFilters: mapValueOfType<bool>(json, r'automatic_profile_search_distance_filters')!,
-        automaticProfileSearchNewProfiles: mapValueOfType<bool>(json, r'automatic_profile_search_new_profiles')!,
-        automaticProfileSearchWeekdays: mapValueOfType<int>(json, r'automatic_profile_search_weekdays')!,
-        profileTextModeration: mapValueOfType<bool>(json, r'profile_text_moderation')!,
+        profileStringModeration: mapValueOfType<bool>(json, r'profile_string_moderation')!,
       );
     }
     return null;
@@ -140,11 +111,7 @@ class ProfileAppNotificationSettings {
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
     'automatic_profile_search',
-    'automatic_profile_search_attribute_filters',
-    'automatic_profile_search_distance_filters',
-    'automatic_profile_search_new_profiles',
-    'automatic_profile_search_weekdays',
-    'profile_text_moderation',
+    'profile_string_moderation',
   };
 }
 

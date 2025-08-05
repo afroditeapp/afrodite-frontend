@@ -33,10 +33,15 @@ class SearchSettingsData with _$SearchSettingsData, UpdateStateProvider {
   GenderSearchSettingsAll valueGenderSearchSettingsAll() =>
     editedGenderSearchSettingsAll ?? genderSearchSettingsAll;
   Gender? valueGender() => editedGender ?? gender;
-  bool valueSearchDistanceFilters() => editedSearchDistanceFilters ?? profileSettings.automaticProfileSearchDistanceFilters;
-  bool valueSearchAttributeFilters() => editedSearchAttributeFilters ?? profileSettings.automaticProfileSearchAttributeFilters;
-  bool valueSearchNewProfiles() => editedSearchNewProfiles ?? profileSettings.automaticProfileSearchNewProfiles;
-  int valueSearchWeekdays() => editedSearchWeekdays ?? profileSettings.automaticProfileSearchWeekdays;
+  // TODO(prod): Update
+  // bool valueSearchDistanceFilters() => editedSearchDistanceFilters ?? profileSettings.automaticProfileSearchDistanceFilters;
+  // bool valueSearchAttributeFilters() => editedSearchAttributeFilters ?? profileSettings.automaticProfileSearchAttributeFilters;
+  // bool valueSearchNewProfiles() => editedSearchNewProfiles ?? profileSettings.automaticProfileSearchNewProfiles;
+  // int valueSearchWeekdays() => editedSearchWeekdays ?? profileSettings.automaticProfileSearchWeekdays;
+  bool valueSearchDistanceFilters() => editedSearchDistanceFilters ?? false;
+  bool valueSearchAttributeFilters() => editedSearchAttributeFilters ?? false;
+  bool valueSearchNewProfiles() => editedSearchNewProfiles ?? false;
+  int valueSearchWeekdays() => editedSearchWeekdays ?? 0;
 
   bool unsavedChanges() => editedMinAge != null ||
     editedMaxAge != null ||

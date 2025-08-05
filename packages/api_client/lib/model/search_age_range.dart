@@ -10,9 +10,9 @@
 
 part of openapi.api;
 
-class ProfileSearchAgeRange {
-  /// Returns a new [ProfileSearchAgeRange] instance.
-  ProfileSearchAgeRange({
+class SearchAgeRange {
+  /// Returns a new [SearchAgeRange] instance.
+  SearchAgeRange({
     required this.max,
     required this.min,
   });
@@ -28,7 +28,7 @@ class ProfileSearchAgeRange {
   int min;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is ProfileSearchAgeRange &&
+  bool operator ==(Object other) => identical(this, other) || other is SearchAgeRange &&
     other.max == max &&
     other.min == min;
 
@@ -39,7 +39,7 @@ class ProfileSearchAgeRange {
     (min.hashCode);
 
   @override
-  String toString() => 'ProfileSearchAgeRange[max=$max, min=$min]';
+  String toString() => 'SearchAgeRange[max=$max, min=$min]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -48,10 +48,10 @@ class ProfileSearchAgeRange {
     return json;
   }
 
-  /// Returns a new [ProfileSearchAgeRange] instance and imports its values from
+  /// Returns a new [SearchAgeRange] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static ProfileSearchAgeRange? fromJson(dynamic value) {
+  static SearchAgeRange? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -60,13 +60,13 @@ class ProfileSearchAgeRange {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "ProfileSearchAgeRange[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "ProfileSearchAgeRange[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "SearchAgeRange[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "SearchAgeRange[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return ProfileSearchAgeRange(
+      return SearchAgeRange(
         max: mapValueOfType<int>(json, r'max')!,
         min: mapValueOfType<int>(json, r'min')!,
       );
@@ -74,11 +74,11 @@ class ProfileSearchAgeRange {
     return null;
   }
 
-  static List<ProfileSearchAgeRange> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <ProfileSearchAgeRange>[];
+  static List<SearchAgeRange> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <SearchAgeRange>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = ProfileSearchAgeRange.fromJson(row);
+        final value = SearchAgeRange.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -87,12 +87,12 @@ class ProfileSearchAgeRange {
     return result.toList(growable: growable);
   }
 
-  static Map<String, ProfileSearchAgeRange> mapFromJson(dynamic json) {
-    final map = <String, ProfileSearchAgeRange>{};
+  static Map<String, SearchAgeRange> mapFromJson(dynamic json) {
+    final map = <String, SearchAgeRange>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = ProfileSearchAgeRange.fromJson(entry.value);
+        final value = SearchAgeRange.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -101,14 +101,14 @@ class ProfileSearchAgeRange {
     return map;
   }
 
-  // maps a json object with a list of ProfileSearchAgeRange-objects as value to a dart map
-  static Map<String, List<ProfileSearchAgeRange>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<ProfileSearchAgeRange>>{};
+  // maps a json object with a list of SearchAgeRange-objects as value to a dart map
+  static Map<String, List<SearchAgeRange>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<SearchAgeRange>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = ProfileSearchAgeRange.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = SearchAgeRange.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;
