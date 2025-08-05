@@ -49,3 +49,7 @@ class ProfileAttributesConfigAttributes extends Table {
   @override
   Set<Column<Object>> get primaryKey => {id};
 }
+
+class ClientLanguageOnServer extends SingleRowTable {
+  TextColumn get clientLanguageOnServer => text().map(const NullAwareTypeConverter.wrap(ClientLanguageConverter())).nullable()();
+}

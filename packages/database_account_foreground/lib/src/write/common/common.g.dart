@@ -9,4 +9,6 @@ mixin _$DaoWriteCommonMixin on DatabaseAccessor<AccountForegroundDatabase> {
   $SyncVersionTable get syncVersion => attachedDatabase.syncVersion;
   $IteratorSessionIdTable get iteratorSessionId =>
       attachedDatabase.iteratorSessionId;
+  $ClientLanguageOnServerTable get clientLanguageOnServer =>
+      attachedDatabase.clientLanguageOnServer;
 }

@@ -4367,6 +4367,245 @@ class ProfileAttributesConfigAttributesCompanion
   }
 }
 
+class $ClientLanguageOnServerTable extends schema.ClientLanguageOnServer
+    with TableInfo<$ClientLanguageOnServerTable, ClientLanguageOnServerData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $ClientLanguageOnServerTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<ClientLanguage?, String>
+  clientLanguageOnServer =
+      GeneratedColumn<String>(
+        'client_language_on_server',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      ).withConverter<ClientLanguage?>(
+        $ClientLanguageOnServerTable.$converterclientLanguageOnServer,
+      );
+  @override
+  List<GeneratedColumn> get $columns => [id, clientLanguageOnServer];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'client_language_on_server';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<ClientLanguageOnServerData> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  ClientLanguageOnServerData map(
+    Map<String, dynamic> data, {
+    String? tablePrefix,
+  }) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return ClientLanguageOnServerData(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      clientLanguageOnServer: $ClientLanguageOnServerTable
+          .$converterclientLanguageOnServer
+          .fromSql(
+            attachedDatabase.typeMapping.read(
+              DriftSqlType.string,
+              data['${effectivePrefix}client_language_on_server'],
+            ),
+          ),
+    );
+  }
+
+  @override
+  $ClientLanguageOnServerTable createAlias(String alias) {
+    return $ClientLanguageOnServerTable(attachedDatabase, alias);
+  }
+
+  static TypeConverter<ClientLanguage?, String?>
+  $converterclientLanguageOnServer = const NullAwareTypeConverter.wrap(
+    ClientLanguageConverter(),
+  );
+}
+
+class ClientLanguageOnServerData extends DataClass
+    implements Insertable<ClientLanguageOnServerData> {
+  final int id;
+  final ClientLanguage? clientLanguageOnServer;
+  const ClientLanguageOnServerData({
+    required this.id,
+    this.clientLanguageOnServer,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    if (!nullToAbsent || clientLanguageOnServer != null) {
+      map['client_language_on_server'] = Variable<String>(
+        $ClientLanguageOnServerTable.$converterclientLanguageOnServer.toSql(
+          clientLanguageOnServer,
+        ),
+      );
+    }
+    return map;
+  }
+
+  ClientLanguageOnServerCompanion toCompanion(bool nullToAbsent) {
+    return ClientLanguageOnServerCompanion(
+      id: Value(id),
+      clientLanguageOnServer: clientLanguageOnServer == null && nullToAbsent
+          ? const Value.absent()
+          : Value(clientLanguageOnServer),
+    );
+  }
+
+  factory ClientLanguageOnServerData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return ClientLanguageOnServerData(
+      id: serializer.fromJson<int>(json['id']),
+      clientLanguageOnServer: serializer.fromJson<ClientLanguage?>(
+        json['clientLanguageOnServer'],
+      ),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'clientLanguageOnServer': serializer.toJson<ClientLanguage?>(
+        clientLanguageOnServer,
+      ),
+    };
+  }
+
+  ClientLanguageOnServerData copyWith({
+    int? id,
+    Value<ClientLanguage?> clientLanguageOnServer = const Value.absent(),
+  }) => ClientLanguageOnServerData(
+    id: id ?? this.id,
+    clientLanguageOnServer: clientLanguageOnServer.present
+        ? clientLanguageOnServer.value
+        : this.clientLanguageOnServer,
+  );
+  ClientLanguageOnServerData copyWithCompanion(
+    ClientLanguageOnServerCompanion data,
+  ) {
+    return ClientLanguageOnServerData(
+      id: data.id.present ? data.id.value : this.id,
+      clientLanguageOnServer: data.clientLanguageOnServer.present
+          ? data.clientLanguageOnServer.value
+          : this.clientLanguageOnServer,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ClientLanguageOnServerData(')
+          ..write('id: $id, ')
+          ..write('clientLanguageOnServer: $clientLanguageOnServer')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, clientLanguageOnServer);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is ClientLanguageOnServerData &&
+          other.id == this.id &&
+          other.clientLanguageOnServer == this.clientLanguageOnServer);
+}
+
+class ClientLanguageOnServerCompanion
+    extends UpdateCompanion<ClientLanguageOnServerData> {
+  final Value<int> id;
+  final Value<ClientLanguage?> clientLanguageOnServer;
+  const ClientLanguageOnServerCompanion({
+    this.id = const Value.absent(),
+    this.clientLanguageOnServer = const Value.absent(),
+  });
+  ClientLanguageOnServerCompanion.insert({
+    this.id = const Value.absent(),
+    this.clientLanguageOnServer = const Value.absent(),
+  });
+  static Insertable<ClientLanguageOnServerData> custom({
+    Expression<int>? id,
+    Expression<String>? clientLanguageOnServer,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (clientLanguageOnServer != null)
+        'client_language_on_server': clientLanguageOnServer,
+    });
+  }
+
+  ClientLanguageOnServerCompanion copyWith({
+    Value<int>? id,
+    Value<ClientLanguage?>? clientLanguageOnServer,
+  }) {
+    return ClientLanguageOnServerCompanion(
+      id: id ?? this.id,
+      clientLanguageOnServer:
+          clientLanguageOnServer ?? this.clientLanguageOnServer,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (clientLanguageOnServer.present) {
+      map['client_language_on_server'] = Variable<String>(
+        $ClientLanguageOnServerTable.$converterclientLanguageOnServer.toSql(
+          clientLanguageOnServer.value,
+        ),
+      );
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ClientLanguageOnServerCompanion(')
+          ..write('id: $id, ')
+          ..write('clientLanguageOnServer: $clientLanguageOnServer')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $AccountStateTable extends schema.AccountState
     with TableInfo<$AccountStateTable, AccountStateData> {
   @override
@@ -13378,6 +13617,8 @@ abstract class _$AccountForegroundDatabase extends GeneratedDatabase {
   profileAttributesConfigAttributes = $ProfileAttributesConfigAttributesTable(
     this,
   );
+  late final $ClientLanguageOnServerTable clientLanguageOnServer =
+      $ClientLanguageOnServerTable(this);
   late final $AccountStateTable accountState = $AccountStateTable(this);
   late final $PermissionsTable permissions = $PermissionsTable(this);
   late final $ProfileVisibilityTable profileVisibility =
@@ -13511,6 +13752,7 @@ abstract class _$AccountForegroundDatabase extends GeneratedDatabase {
     customReportsConfig,
     profileAttributesConfig,
     profileAttributesConfigAttributes,
+    clientLanguageOnServer,
     accountState,
     permissions,
     profileVisibility,

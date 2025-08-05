@@ -29,3 +29,17 @@ class PendingNotificationTokenConverter extends TypeConverter<PendingNotificatio
     return value.token;
   }
 }
+
+class ClientLanguageConverter extends TypeConverter<ClientLanguage, String> {
+  const ClientLanguageConverter();
+
+  @override
+  ClientLanguage fromSql(fromDb) {
+    return ClientLanguage(l: fromDb);
+  }
+
+  @override
+  String toSql(value) {
+    return value.l;
+  }
+}

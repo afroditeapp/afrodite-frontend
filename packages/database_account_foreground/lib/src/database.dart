@@ -55,6 +55,7 @@ part 'database.g.dart';
     schema.CustomReportsConfig,
     schema.ProfileAttributesConfig,
     schema.ProfileAttributesConfigAttributes,
+    schema.ClientLanguageOnServer,
     // Account
     schema.AccountState,
     schema.Permissions,

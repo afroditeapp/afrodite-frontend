@@ -4,6 +4,7 @@ import 'dart:typed_data';
 
 import 'package:app/data/general/notification/state/news_item_available.dart';
 import 'package:app/database/account_background_database_manager.dart';
+import 'package:app/database/background_database_manager.dart';
 import 'package:database/database.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
@@ -93,12 +94,14 @@ class AccountRepository extends DataRepositoryWithLifecycle {
     await db.accountAction((db) => db.common.resetSyncVersions());
     await accountBackgroundDb.accountAction((db) => db.resetSyncVersions());
     await db.accountAction((db) => db.app.updateAccountSyncDone(false));
+    await db.accountAction((db) => db.common.updateClientLanguageOnServer(null));
   }
 
   @override
   Future<Result<void, void>> onLoginDataSync() async {
     return await clientIdManager.getClientId()
       .andThen((_) => _reloadAccountNotificationSettings())
+      .andThen((_) => _reloadClientLanguageOnServer())
       .andThen((_) => db.accountAction((db) => db.app.updateAccountSyncDone(true)));
   }
 
@@ -106,10 +109,12 @@ class AccountRepository extends DataRepositoryWithLifecycle {
   Future<void> onResumeAppUsage() async {
     _syncHandler.onResumeAppUsageSync(() async {
       await clientIdManager.getClientId();
+      await _updateClientLanguageIfNeeded();
 
       final syncDone = await db.accountStreamSingle((db) => db.app.watchAccountSyncDone()).ok() ?? false;
       if (!syncDone) {
         await _reloadAccountNotificationSettings()
+          .andThen((_) => _reloadClientLanguageOnServer())
           .andThen((_) => db.accountAction((db) => db.app.updateAccountSyncDone(true)));
       }
     });
@@ -279,6 +284,29 @@ class AccountRepository extends DataRepositoryWithLifecycle {
       .andThen((v) => accountBackgroundDb.accountAction(
         (db) => db.appNotificationSettings.updateAccountNotificationSettings(v),
       ));
+  }
+
+  Future<Result<void, void>> _reloadClientLanguageOnServer() async {
+    return await api.common((api) => api.getClientLanguage())
+      .andThen((v) => db.accountAction(
+        (db) => db.common.updateClientLanguageOnServer(v),
+      ));
+  }
+
+  Future<void> _updateClientLanguageIfNeeded() async {
+    final clientLanguageOnServer = await db.accountStreamSingle((db) => db.common.watchClientLanguageOnServer()).ok();
+    final clientLocale = await BackgroundDatabaseManager.getInstance().commonStreamSingle((db) => db.app.watchCurrentLocale());
+
+    if (clientLanguageOnServer == null || clientLocale == null) {
+      return;
+    }
+
+    if (clientLanguageOnServer.l != clientLocale) {
+      final r = await api.commonAction((db) => db.postClientLanguage(ClientLanguage(l: clientLocale)));
+      if (r.isOk()) {
+        await _reloadClientLanguageOnServer();
+      }
+    }
   }
 }
 

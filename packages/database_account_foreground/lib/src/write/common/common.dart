@@ -14,6 +14,7 @@ part 'common.g.dart';
     schema.ServerMaintenance,
     schema.SyncVersion,
     schema.IteratorSessionId,
+    schema.ClientLanguageOnServer,
   ],
 )
 class DaoWriteCommon extends DatabaseAccessor<AccountForegroundDatabase> with _$DaoWriteCommonMixin {
@@ -121,6 +122,15 @@ class DaoWriteCommon extends DatabaseAccessor<AccountForegroundDatabase> with _$
       IteratorSessionIdCompanion.insert(
         id: SingleRowTable.ID,
         matchesIteratorSessionId: Value(value),
+      ),
+    );
+  }
+
+  Future<void> updateClientLanguageOnServer(api.ClientLanguage? value) async {
+    await into(clientLanguageOnServer).insertOnConflictUpdate(
+      ClientLanguageOnServerCompanion.insert(
+        id: SingleRowTable.ID,
+        clientLanguageOnServer: Value(value),
       ),
     );
   }

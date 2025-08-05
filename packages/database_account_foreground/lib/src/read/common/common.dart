@@ -14,6 +14,7 @@ part 'common.g.dart';
     schema.ServerMaintenance,
     schema.SyncVersion,
     schema.IteratorSessionId,
+    schema.ClientLanguageOnServer,
   ]
 )
 class DaoReadCommon extends DatabaseAccessor<AccountForegroundDatabase> with _$DaoReadCommonMixin {
@@ -61,6 +62,15 @@ class DaoReadCommon extends DatabaseAccessor<AccountForegroundDatabase> with _$D
 
   Stream<T?> _watchColumnIteratorSessionId<T extends Object>(T? Function(IteratorSessionIdData) extractColumn) {
     return (select(iteratorSessionId)..where((t) => t.id.equals(SingleRowTable.ID.value)))
+      .map(extractColumn)
+      .watchSingleOrNull();
+  }
+
+  Stream<api.ClientLanguage?> watchClientLanguageOnServer() =>
+    _watchColumnClientLanguage((r) => r.clientLanguageOnServer);
+
+  Stream<T?> _watchColumnClientLanguage<T extends Object>(T? Function(ClientLanguageOnServerData) extractColumn) {
+    return (select(clientLanguageOnServer)..where((t) => t.id.equals(SingleRowTable.ID.value)))
       .map(extractColumn)
       .watchSingleOrNull();
   }
