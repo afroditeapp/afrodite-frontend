@@ -148,43 +148,43 @@ extension AdminNotificationJson on AdminNotification {
 }
 
 extension AccountStateContainerJson on AccountStateContainer {
-  JsonObject<AccountStateContainer> toJsonString() {
+  JsonObject<AccountStateContainer> toJsonObject() {
     return JsonObject._(this);
   }
 }
 
 extension PermissionsJson on Permissions {
-  JsonObject<Permissions> toJsonString() {
+  JsonObject<Permissions> toJsonObject() {
     return JsonObject._(this);
   }
 }
 
 extension GetProfileFiltersJson on GetProfileFilters {
-  JsonObject<GetProfileFilters> toJsonString() {
+  JsonObject<GetProfileFilters> toJsonObject() {
     return JsonObject._(this);
   }
 }
 
 extension SearchGroupsJson on SearchGroups {
-  JsonObject<SearchGroups> toJsonString() {
+  JsonObject<SearchGroups> toJsonObject() {
     return JsonObject._(this);
   }
 }
 
 extension AttributeJson on Attribute {
-  JsonObject<Attribute> toJsonString() {
+  JsonObject<Attribute> toJsonObject() {
     return JsonObject._(this);
   }
 }
 
 extension CustomReportsConfigJson on CustomReportsConfig {
-  JsonObject<CustomReportsConfig> toJsonString() {
+  JsonObject<CustomReportsConfig> toJsonObject() {
     return JsonObject._(this);
   }
 }
 
 extension ClientFeaturesConfigJson on ClientFeaturesConfig {
-  JsonObject<ClientFeaturesConfig> toJsonString() {
+  JsonObject<ClientFeaturesConfig> toJsonObject() {
     return JsonObject._(this);
   }
 }

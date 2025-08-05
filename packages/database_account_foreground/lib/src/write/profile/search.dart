@@ -23,7 +23,7 @@ class DaoWriteSearch extends DatabaseAccessor<AccountForegroundDatabase> with _$
     await into(profileFilters).insertOnConflictUpdate(
       ProfileFiltersCompanion.insert(
         id: SingleRowTable.ID,
-        jsonProfileFilters: Value(value?.toJsonString()),
+        jsonProfileFilters: Value(value?.toJsonObject()),
       ),
     );
   }
@@ -42,7 +42,7 @@ class DaoWriteSearch extends DatabaseAccessor<AccountForegroundDatabase> with _$
     await into(profileSearchGroups).insertOnConflictUpdate(
       ProfileSearchGroupsCompanion.insert(
         id: SingleRowTable.ID,
-        jsonProfileSearchGroups: Value(value?.toJsonString()),
+        jsonProfileSearchGroups: Value(value?.toJsonObject()),
       ),
     );
   }

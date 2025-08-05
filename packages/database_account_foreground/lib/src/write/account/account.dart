@@ -25,13 +25,13 @@ class DaoWriteAccount extends DatabaseAccessor<AccountForegroundDatabase> with _
       await into(accountState).insertOnConflictUpdate(
         AccountStateCompanion.insert(
           id: SingleRowTable.ID,
-          jsonAccountState: Value(value.state.toJsonString()),
+          jsonAccountState: Value(value.state.toJsonObject()),
         ),
       );
       await into(permissions).insertOnConflictUpdate(
         PermissionsCompanion.insert(
           id: SingleRowTable.ID,
-          jsonPermissions: Value(value.permissions.toJsonString()),
+          jsonPermissions: Value(value.permissions.toJsonObject()),
         ),
       );
       await into(profileVisibility).insertOnConflictUpdate(

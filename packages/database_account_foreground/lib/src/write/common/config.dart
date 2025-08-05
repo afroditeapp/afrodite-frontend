@@ -30,7 +30,7 @@ class DaoWriteConfig extends DatabaseAccessor<AccountForegroundDatabase> with _$
       ClientFeaturesConfigCompanion.insert(
         id: SingleRowTable.ID,
         clientFeaturesConfigHash: Value(hash),
-        clientFeaturesConfig: Value(config?.toJsonString()),
+        clientFeaturesConfig: Value(config?.toJsonObject()),
       ),
     );
   }
@@ -43,7 +43,7 @@ class DaoWriteConfig extends DatabaseAccessor<AccountForegroundDatabase> with _$
       CustomReportsConfigCompanion.insert(
         id: SingleRowTable.ID,
         customReportsConfigHash: Value(hash),
-        customReportsConfig: Value(config?.toJsonString()),
+        customReportsConfig: Value(config?.toJsonObject()),
       ),
     );
   }
@@ -61,7 +61,7 @@ class DaoWriteConfig extends DatabaseAccessor<AccountForegroundDatabase> with _$
       ProfileAttributesConfigAttributesCompanion.insert(
         id: Value(attribute.id),
         attributeHash: hash,
-        jsonAttribute: attribute.toJsonString(),
+        jsonAttribute: attribute.toJsonObject(),
       ),
     );
   }
