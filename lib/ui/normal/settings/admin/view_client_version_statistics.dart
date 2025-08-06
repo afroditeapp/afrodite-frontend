@@ -52,6 +52,8 @@ class GetClientVersions extends GetMetrics {
 class ClientVersionMetric extends Metric {
   @override
   final String name;
+  @override
+  final String? group = null;
   final List<ClientVersionCount> values;
   final bool daily;
 

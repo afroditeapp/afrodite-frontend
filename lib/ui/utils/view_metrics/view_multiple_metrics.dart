@@ -1,5 +1,6 @@
 
 
+import 'dart:collection';
 import 'dart:math';
 
 import 'package:app/ui/utils/view_metrics.dart';
@@ -31,9 +32,45 @@ class MetricAndMinMaxValues {
 
     return MetricAndMinMaxValues(metric, metricMin, metricMax);
   }
+
+  String groupNameOrDefaultGroup() {
+    return metric.group ?? "default";
+  }
+}
+
+class MetricGroupManager {
+  List<MetricAndMinMaxValues> data = [];
+  LinkedHashSet<String> groups = LinkedHashSet();
+  String selectedGroup = "";
+
+  bool initialUpdateDone = false;
+
+  void updateData(List<Metric> newData) {
+    data = newData.map((v) => MetricAndMinMaxValues.create(v))
+      .whereType<MetricAndMinMaxValues>()
+      .toList();
+    groups = LinkedHashSet.from({"default"});
+    for (final d in data) {
+      final g = d.metric.group;
+      if (g != null) {
+        groups.add(g);
+      }
+    }
+
+    if (!initialUpdateDone) {
+      initialUpdateDone = true;
+      selectedGroup = groups.first;
+    }
+  }
+
+  List<MetricAndMinMaxValues> selectedGroupData() {
+    return data.where((v) => v.groupNameOrDefaultGroup() == selectedGroup).toList();
+  }
 }
 
 class ViewMultipleMetricsController {
+  MetricGroupManager group = MetricGroupManager();
+
   double minDataValue = 0;
   double maxDataValue = 0;
 
@@ -46,9 +83,12 @@ class ViewMultipleMetricsController {
   List<(int, Metric)> filteredList = [];
 
   void updateData(List<Metric> newData) {
-    data = newData.map((v) => MetricAndMinMaxValues.create(v))
-      .whereType<MetricAndMinMaxValues>()
-      .toList();
+    group.updateData(newData);
+    _groupChangeRefresh();
+  }
+
+  void _groupChangeRefresh() {
+    data = group.selectedGroupData();
 
     minDataValue = double.maxFinite;
     maxDataValue = -double.maxFinite;
@@ -78,6 +118,12 @@ class ViewMultipleMetricsController {
       })
       .map((v) => (v.$1, v.$2.metric))
       .toList();
+  }
+
+  void updateGroupSelection(String selected) {
+    group.selectedGroup = selected;
+    _groupChangeRefresh();
+    _refreshSelected(minDataValue, maxDataValue);
   }
 }
 
@@ -110,6 +156,24 @@ class _ViewMultipleMetricsState extends State<ViewMultipleMetrics> {
 
     return Column(
       children: [
+        if (widget.controller.group.groups.length > 1) SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            spacing: 8,
+            children: widget.controller.group.groups
+              .map((v) => FilterChip(
+                label: Text(v),
+                selected: v == widget.controller.group.selectedGroup,
+                onSelected: (value) {
+                  if (value) {
+                    setState(() {
+                      widget.controller.updateGroupSelection(v);
+                    });
+                  }
+                },
+              )
+            ).toList()),
+        ),
         RangeSlider(
           values: RangeValues(widget.controller.selectedMin, widget.controller.selectedMax),
           min: widget.controller.minDataValue,

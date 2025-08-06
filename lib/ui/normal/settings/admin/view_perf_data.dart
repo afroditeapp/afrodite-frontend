@@ -37,7 +37,7 @@ class GetPerfData extends GetMetrics {
       return a.name.compareTo(b.name);
     });
 
-    final list = queryResults.metrics.map((v) => PerfMetric(v.name, v.values)).toList();
+    final list = queryResults.metrics.map((v) => PerfMetric(v.name, v.group, v.values)).toList();
 
     return Ok(list);
   }
@@ -46,9 +46,11 @@ class GetPerfData extends GetMetrics {
 class PerfMetric extends Metric {
   @override
   final String name;
+  @override
+  final String? group;
   final List<PerfMetricValueArea> values;
 
-  PerfMetric(this.name, this.values);
+  PerfMetric(this.name, this.group, this.values);
 
   @override
   List<FlSpot> getValues() {

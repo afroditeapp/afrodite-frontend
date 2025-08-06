@@ -104,6 +104,7 @@ abstract class GetMetrics {
 
 abstract class Metric {
   String get name;
+  String? get group;
 
   List<FlSpot> getValues();
 }

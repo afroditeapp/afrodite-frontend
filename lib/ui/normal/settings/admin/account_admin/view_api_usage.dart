@@ -50,6 +50,8 @@ class GetApiUsage extends GetMetrics {
 class ApiUsageMetric extends Metric {
   @override
   final String name;
+  @override
+  final String? group = null;
   final List<ApiUsageCount> values;
 
   ApiUsageMetric(this.name, this.values);
