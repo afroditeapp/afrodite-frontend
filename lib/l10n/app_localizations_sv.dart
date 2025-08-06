@@ -881,8 +881,15 @@ class AppLocalizationsSv extends AppLocalizations {
       'Notification action ignored because it is for another account';
 
   @override
-  String get notification_automatic_profile_search_found_profiles =>
-      'New or updated profiles found';
+  String notification_automatic_profile_search_found_profiles_multiple(
+    String p0,
+  ) {
+    return '$p0 new or updated profiles found';
+  }
+
+  @override
+  String get notification_automatic_profile_search_found_profiles_single =>
+      'New or updated profile found';
 
   @override
   String get notification_category_automatic_profile_search =>

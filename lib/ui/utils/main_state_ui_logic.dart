@@ -11,6 +11,7 @@ import 'package:app/logic/account/demo_account_login.dart';
 import 'package:app/logic/app/info_dialog.dart';
 import 'package:app/logic/app/like_grid_instance_manager.dart';
 import 'package:app/logic/login.dart';
+import 'package:app/logic/profile/automatic_profile_search_badge.dart';
 import 'package:app/logic/server/address.dart';
 import 'package:app/logic/server/maintenance.dart';
 import 'package:app/logic/sign_in_with.dart';
@@ -207,6 +208,9 @@ class _MainStateUiLogicState extends State<MainStateUiLogic> {
 
               // Likes
               BlocProvider(create: (_) => LikeGridInstanceManagerBloc()),
+
+              // Automatic profile search
+              BlocProvider(create: (_) => AutomaticProfileSearchBadgeBloc()),
             ],
             child: NotificationActionHandler(
               notificationNavigation: notficationRelatedObjects,

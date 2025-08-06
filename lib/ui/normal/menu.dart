@@ -1,6 +1,8 @@
 import 'package:app/logic/account/client_features_config.dart';
+import 'package:app/logic/profile/automatic_profile_search_badge.dart';
 import 'package:app/logic/server/maintenance.dart';
 import 'package:app/model/freezed/logic/account/client_features_config.dart';
+import 'package:app/model/freezed/logic/profile/automatic_profile_search_badge.dart';
 import 'package:app/ui/normal/settings.dart';
 import 'package:app/ui/normal/settings/notifications/automatic_profile_search_results.dart';
 import 'package:app/utils/time.dart';
@@ -141,8 +143,19 @@ class _MenuViewState extends State<MenuView> {
       Setting.createSetting(Icons.bar_chart, context.strings.statistics_screen_title, () =>
         openStatisticsScreen(context)
       ),
-      Setting.createSetting(Icons.search, context.strings.automatic_profile_search_results_screen_title, () =>
-        openAutomaticProfileSearchResultsScreen(context)
+      Setting.createSettingWithCustomIcon(
+        BlocBuilder<AutomaticProfileSearchBadgeBloc, AutomaticProfileSearchBadgeData>(
+          builder: (context, state) {
+            const icon = Icon(Icons.search);
+            final count = state.profileCount();
+            if (count == 0) {
+              return icon;
+            } else {
+              return Badge.count(count: count, child: icon);
+            }
+          }
+        ),
+        context.strings.automatic_profile_search_results_screen_title, () => openAutomaticProfileSearchResultsScreen(context),
       ),
       Setting.createSetting(Icons.settings, context.strings.settings_screen_title, () =>
         openSettingsScreen(context)

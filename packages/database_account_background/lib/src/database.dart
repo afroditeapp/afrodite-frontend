@@ -35,6 +35,7 @@ part 'database.g.dart';
     schema.NewReceivedLikesCount,
     schema.News,
     schema.Profile,
+    schema.AutomaticProfileSearchBadgeState,
   ],
   daos: [
     // Read

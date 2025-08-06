@@ -1,7 +1,9 @@
 import "package:app/data/login_repository.dart";
 import "package:app/logic/account/client_features_config.dart";
+import "package:app/logic/profile/automatic_profile_search_badge.dart";
 import "package:app/logic/server/maintenance.dart";
 import "package:app/model/freezed/logic/account/client_features_config.dart";
+import "package:app/model/freezed/logic/profile/automatic_profile_search_badge.dart";
 import "package:app/ui/normal/menu.dart";
 import "package:database/database.dart";
 import 'package:flutter/material.dart';
@@ -211,14 +213,20 @@ class _NormalStateContentState extends State<NormalStateContent> {
             return BlocBuilder<ServerMaintenanceBloc, ServerMaintenanceInfo>(
               builder: (context, serverMaintenanceInfo) {
                 return BlocBuilder<NewsCountBloc, NewsCountData>(
-                  builder: (context, state) {
-                    final icon = Icon(selectedView == 3 ? Icons.menu : Icons.menu_outlined);
-                    final count = serverMaintenanceInfo.uiBadgeCount() + state.newsCountForUi(clientFeatures.config);
-                    if (count == 0) {
-                      return icon;
-                    } else {
-                      return Badge.count(count: count, child: icon);
-                    }
+                  builder: (context, newsState) {
+                    return BlocBuilder<AutomaticProfileSearchBadgeBloc, AutomaticProfileSearchBadgeData>(
+                      builder: (context, searchState) {
+                        final icon = Icon(selectedView == 3 ? Icons.menu : Icons.menu_outlined);
+                        final count = serverMaintenanceInfo.uiBadgeCount() +
+                          newsState.newsCountForUi(clientFeatures.config) +
+                          searchState.profileCount();
+                        if (count == 0) {
+                          return icon;
+                        } else {
+                          return Badge.count(count: count, child: icon);
+                        }
+                      }
+                    );
                   }
                 );
               }

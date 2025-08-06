@@ -3233,6 +3233,277 @@ class ProfileCompanion extends UpdateCompanion<ProfileData> {
   }
 }
 
+class $AutomaticProfileSearchBadgeStateTable
+    extends schema.AutomaticProfileSearchBadgeState
+    with
+        TableInfo<
+          $AutomaticProfileSearchBadgeStateTable,
+          AutomaticProfileSearchBadgeStateData
+        > {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $AutomaticProfileSearchBadgeStateTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _profileCountMeta = const VerificationMeta(
+    'profileCount',
+  );
+  @override
+  late final GeneratedColumn<int> profileCount = GeneratedColumn<int>(
+    'profile_count',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _showBadgeMeta = const VerificationMeta(
+    'showBadge',
+  );
+  @override
+  late final GeneratedColumn<bool> showBadge = GeneratedColumn<bool>(
+    'show_badge',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("show_badge" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  @override
+  List<GeneratedColumn> get $columns => [id, profileCount, showBadge];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'automatic_profile_search_badge_state';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<AutomaticProfileSearchBadgeStateData> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('profile_count')) {
+      context.handle(
+        _profileCountMeta,
+        profileCount.isAcceptableOrUnknown(
+          data['profile_count']!,
+          _profileCountMeta,
+        ),
+      );
+    }
+    if (data.containsKey('show_badge')) {
+      context.handle(
+        _showBadgeMeta,
+        showBadge.isAcceptableOrUnknown(data['show_badge']!, _showBadgeMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  AutomaticProfileSearchBadgeStateData map(
+    Map<String, dynamic> data, {
+    String? tablePrefix,
+  }) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return AutomaticProfileSearchBadgeStateData(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      profileCount: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}profile_count'],
+      )!,
+      showBadge: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}show_badge'],
+      )!,
+    );
+  }
+
+  @override
+  $AutomaticProfileSearchBadgeStateTable createAlias(String alias) {
+    return $AutomaticProfileSearchBadgeStateTable(attachedDatabase, alias);
+  }
+}
+
+class AutomaticProfileSearchBadgeStateData extends DataClass
+    implements Insertable<AutomaticProfileSearchBadgeStateData> {
+  final int id;
+  final int profileCount;
+  final bool showBadge;
+  const AutomaticProfileSearchBadgeStateData({
+    required this.id,
+    required this.profileCount,
+    required this.showBadge,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['profile_count'] = Variable<int>(profileCount);
+    map['show_badge'] = Variable<bool>(showBadge);
+    return map;
+  }
+
+  AutomaticProfileSearchBadgeStateCompanion toCompanion(bool nullToAbsent) {
+    return AutomaticProfileSearchBadgeStateCompanion(
+      id: Value(id),
+      profileCount: Value(profileCount),
+      showBadge: Value(showBadge),
+    );
+  }
+
+  factory AutomaticProfileSearchBadgeStateData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return AutomaticProfileSearchBadgeStateData(
+      id: serializer.fromJson<int>(json['id']),
+      profileCount: serializer.fromJson<int>(json['profileCount']),
+      showBadge: serializer.fromJson<bool>(json['showBadge']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'profileCount': serializer.toJson<int>(profileCount),
+      'showBadge': serializer.toJson<bool>(showBadge),
+    };
+  }
+
+  AutomaticProfileSearchBadgeStateData copyWith({
+    int? id,
+    int? profileCount,
+    bool? showBadge,
+  }) => AutomaticProfileSearchBadgeStateData(
+    id: id ?? this.id,
+    profileCount: profileCount ?? this.profileCount,
+    showBadge: showBadge ?? this.showBadge,
+  );
+  AutomaticProfileSearchBadgeStateData copyWithCompanion(
+    AutomaticProfileSearchBadgeStateCompanion data,
+  ) {
+    return AutomaticProfileSearchBadgeStateData(
+      id: data.id.present ? data.id.value : this.id,
+      profileCount: data.profileCount.present
+          ? data.profileCount.value
+          : this.profileCount,
+      showBadge: data.showBadge.present ? data.showBadge.value : this.showBadge,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('AutomaticProfileSearchBadgeStateData(')
+          ..write('id: $id, ')
+          ..write('profileCount: $profileCount, ')
+          ..write('showBadge: $showBadge')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, profileCount, showBadge);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is AutomaticProfileSearchBadgeStateData &&
+          other.id == this.id &&
+          other.profileCount == this.profileCount &&
+          other.showBadge == this.showBadge);
+}
+
+class AutomaticProfileSearchBadgeStateCompanion
+    extends UpdateCompanion<AutomaticProfileSearchBadgeStateData> {
+  final Value<int> id;
+  final Value<int> profileCount;
+  final Value<bool> showBadge;
+  const AutomaticProfileSearchBadgeStateCompanion({
+    this.id = const Value.absent(),
+    this.profileCount = const Value.absent(),
+    this.showBadge = const Value.absent(),
+  });
+  AutomaticProfileSearchBadgeStateCompanion.insert({
+    this.id = const Value.absent(),
+    this.profileCount = const Value.absent(),
+    this.showBadge = const Value.absent(),
+  });
+  static Insertable<AutomaticProfileSearchBadgeStateData> custom({
+    Expression<int>? id,
+    Expression<int>? profileCount,
+    Expression<bool>? showBadge,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (profileCount != null) 'profile_count': profileCount,
+      if (showBadge != null) 'show_badge': showBadge,
+    });
+  }
+
+  AutomaticProfileSearchBadgeStateCompanion copyWith({
+    Value<int>? id,
+    Value<int>? profileCount,
+    Value<bool>? showBadge,
+  }) {
+    return AutomaticProfileSearchBadgeStateCompanion(
+      id: id ?? this.id,
+      profileCount: profileCount ?? this.profileCount,
+      showBadge: showBadge ?? this.showBadge,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (profileCount.present) {
+      map['profile_count'] = Variable<int>(profileCount.value);
+    }
+    if (showBadge.present) {
+      map['show_badge'] = Variable<bool>(showBadge.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('AutomaticProfileSearchBadgeStateCompanion(')
+          ..write('id: $id, ')
+          ..write('profileCount: $profileCount, ')
+          ..write('showBadge: $showBadge')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AccountBackgroundDatabase extends GeneratedDatabase {
   _$AccountBackgroundDatabase(QueryExecutor e) : super(e);
   late final $AccountIdTable accountId = $AccountIdTable(this);
@@ -3250,6 +3521,10 @@ abstract class _$AccountBackgroundDatabase extends GeneratedDatabase {
       $NewReceivedLikesCountTable(this);
   late final $NewsTable news = $NewsTable(this);
   late final $ProfileTable profile = $ProfileTable(this);
+  late final $AutomaticProfileSearchBadgeStateTable
+  automaticProfileSearchBadgeState = $AutomaticProfileSearchBadgeStateTable(
+    this,
+  );
   late final DaoReadAppNotificationSettings daoReadAppNotificationSettings =
       DaoReadAppNotificationSettings(this as AccountBackgroundDatabase);
   late final DaoReadLoginSession daoReadLoginSession = DaoReadLoginSession(
@@ -3300,5 +3575,6 @@ abstract class _$AccountBackgroundDatabase extends GeneratedDatabase {
     newReceivedLikesCount,
     news,
     profile,
+    automaticProfileSearchBadgeState,
   ];
 }

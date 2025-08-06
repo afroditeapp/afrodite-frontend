@@ -237,3 +237,11 @@ class ProfileAttributeAndHash {
   final Attribute attribute;
   ProfileAttributeAndHash(this.hash, this.attribute);
 }
+
+class AutomaticProfileSearchBadgeState {
+  final int profileCount;
+  final bool showBadge;
+  const AutomaticProfileSearchBadgeState(this.profileCount, this.showBadge);
+
+  static const defaultValue = AutomaticProfileSearchBadgeState(0, false);
+}

@@ -30,13 +30,21 @@ class NotificationAutomaticProfileSearch extends AppSingletonNoInit {
     ).ok() ?? false;
 
     if (show) {
-      await NotificationAutomaticProfileSearch.getInstance().show(accountBackgroundDb);
+      await accountBackgroundDb.accountAction(
+        (db) => db.profile.showAutomaticProfileSearchBadge(notification.profileCount)
+      );
+      await NotificationAutomaticProfileSearch.getInstance().show(accountBackgroundDb, notification.profileCount);
     }
   }
 
-  Future<void> show(AccountBackgroundDatabaseManager accountBackgroundDb) async {
+  Future<void> show(AccountBackgroundDatabaseManager accountBackgroundDb, int profileCount) async {
     final LocalNotificationId id = NotificationIdStatic.automaticProfileSearchCompleted.id;
-    final String title = R.strings.notification_automatic_profile_search_found_profiles;
+    final String title;
+    if (profileCount == 1) {
+      title = R.strings.notification_automatic_profile_search_found_profiles_single;
+    } else {
+      title = R.strings.notification_automatic_profile_search_found_profiles_multiple(profileCount.toString());
+    }
 
     await notifications.sendNotification(
       id: id,

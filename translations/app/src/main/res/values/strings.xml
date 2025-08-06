@@ -132,7 +132,8 @@
     <string name="notification_news_item_available" description="Title for news item available notification">News available</string>
 
     <!-- Notification automatic profile search completed -->
-    <string name="notification_automatic_profile_search_found_profiles" description="Title for automatic profile search found profiles notification">New or updated profiles found</string>
+    <string name="notification_automatic_profile_search_found_profiles_single" description="Title for automatic profile search found single profile notification">New or updated profile found</string>
+    <string name="notification_automatic_profile_search_found_profiles_multiple" description="Title for automatic profile search found multiple profiles notification">%s new or updated profiles found</string>
 
     <!-- Notification -->
     <string name="notification_action_ignored" description="Snackbar text for notifying that notification action was ignored">Notification action ignored because it is for another account</string>

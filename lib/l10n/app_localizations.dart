@@ -1562,11 +1562,19 @@ abstract class AppLocalizations {
   /// **'Notification action ignored because it is for another account'**
   String get notification_action_ignored;
 
-  /// Title for automatic profile search found profiles notification
+  /// Title for automatic profile search found multiple profiles notification
   ///
   /// In en, this message translates to:
-  /// **'New or updated profiles found'**
-  String get notification_automatic_profile_search_found_profiles;
+  /// **'{p0} new or updated profiles found'**
+  String notification_automatic_profile_search_found_profiles_multiple(
+    String p0,
+  );
+
+  /// Title for automatic profile search found single profile notification
+  ///
+  /// In en, this message translates to:
+  /// **'New or updated profile found'**
+  String get notification_automatic_profile_search_found_profiles_single;
 
   /// Title for notification category automatic profile search
   ///

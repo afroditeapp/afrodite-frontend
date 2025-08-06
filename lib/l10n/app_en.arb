@@ -1040,9 +1040,18 @@
   "@notification_action_ignored": {
     "description": "Snackbar text for notifying that notification action was ignored"
   },
-  "notification_automatic_profile_search_found_profiles": "New or updated profiles found",
-  "@notification_automatic_profile_search_found_profiles": {
-    "description": "Title for automatic profile search found profiles notification"
+  "notification_automatic_profile_search_found_profiles_multiple": "{p0} new or updated profiles found",
+  "@notification_automatic_profile_search_found_profiles_multiple": {
+    "description": "Title for automatic profile search found multiple profiles notification",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
+  "notification_automatic_profile_search_found_profiles_single": "New or updated profile found",
+  "@notification_automatic_profile_search_found_profiles_single": {
+    "description": "Title for automatic profile search found single profile notification"
   },
   "notification_category_automatic_profile_search": "Automatic profile search",
   "@notification_category_automatic_profile_search": {

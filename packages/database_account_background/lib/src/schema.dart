@@ -62,6 +62,11 @@ class News extends SingleRowTable {
   IntColumn get syncVersionNews => integer().nullable()();
 }
 
+class AutomaticProfileSearchBadgeState extends SingleRowTable {
+  IntColumn get profileCount => integer().withDefault(const Constant(0))();
+  BoolColumn get showBadge => boolean().withDefault(const Constant(false))();
+}
+
 class Profile extends Table {
   TextColumn get accountId => text().map(const AccountIdConverter())();
   TextColumn get profileName => text().nullable()();
