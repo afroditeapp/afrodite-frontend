@@ -13,9 +13,12 @@ part of openapi.api;
 class PerfMetricValues {
   /// Returns a new [PerfMetricValues] instance.
   PerfMetricValues({
+    this.group,
     required this.name,
     this.values = const [],
   });
+
+  String? group;
 
   String name;
 
@@ -23,20 +26,27 @@ class PerfMetricValues {
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is PerfMetricValues &&
+    other.group == group &&
     other.name == name &&
     _deepEquality.equals(other.values, values);
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
+    (group == null ? 0 : group!.hashCode) +
     (name.hashCode) +
     (values.hashCode);
 
   @override
-  String toString() => 'PerfMetricValues[name=$name, values=$values]';
+  String toString() => 'PerfMetricValues[group=$group, name=$name, values=$values]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
+    if (this.group != null) {
+      json[r'group'] = this.group;
+    } else {
+      json[r'group'] = null;
+    }
       json[r'name'] = this.name;
       json[r'values'] = this.values;
     return json;
@@ -61,6 +71,7 @@ class PerfMetricValues {
       }());
 
       return PerfMetricValues(
+        group: mapValueOfType<String>(json, r'group'),
         name: mapValueOfType<String>(json, r'name')!,
         values: PerfMetricValueArea.listFromJson(json[r'values']),
       );
