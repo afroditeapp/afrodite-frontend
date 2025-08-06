@@ -369,13 +369,13 @@ abstract class AppLocalizations {
   /// Description text for install Jitsi Meet dialog when app is running on Android
   ///
   /// In en, this message translates to:
-  /// **'Video calling requires Jitsi Meet video calling app which is not installed currently. Install the app from Google Play Store?'**
+  /// **'Video calling requires Jitsi Meet video calling app which is not installed currently. Install the app from Google Play Store? After that, press \"Join video call\" button again.'**
   String get conversation_screen_install_jitsi_meet_dialog_description_android;
 
   /// Description text for install Jitsi Meet dialog when app is running on iOS
   ///
   /// In en, this message translates to:
-  /// **'Video calling requires Jitsi Meet video calling app which is not installed currently. Install the app from App Store?'**
+  /// **'Video calling requires Jitsi Meet video calling app which is not installed currently. Install the app from App Store? After that, press \"Join video call\" button again.'**
   String get conversation_screen_install_jitsi_meet_dialog_description_ios;
 
   /// Title for install Jitsi Meet dialog

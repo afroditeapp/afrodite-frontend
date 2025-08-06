@@ -182,11 +182,11 @@ class AppLocalizationsSv extends AppLocalizations {
   @override
   String
   get conversation_screen_install_jitsi_meet_dialog_description_android =>
-      'Video calling requires Jitsi Meet video calling app which is not installed currently. Install the app from Google Play Store?';
+      'Video calling requires Jitsi Meet video calling app which is not installed currently. Install the app from Google Play Store? After that, press \"Join video call\" button again.';
 
   @override
   String get conversation_screen_install_jitsi_meet_dialog_description_ios =>
-      'Video calling requires Jitsi Meet video calling app which is not installed currently. Install the app from App Store?';
+      'Video calling requires Jitsi Meet video calling app which is not installed currently. Install the app from App Store? After that, press \"Join video call\" button again.';
 
   @override
   String get conversation_screen_install_jitsi_meet_dialog_title =>
