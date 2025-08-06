@@ -5,6 +5,9 @@ import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui_utils/data_editor.dart';
 import 'package:app/ui_utils/data_editor/base.dart';
 import 'package:app/ui_utils/data_editor/boolean.dart';
+import 'package:app/ui_utils/data_editor/day_timestamp.dart';
+import 'package:app/ui_utils/data_editor/weekday.dart';
+import 'package:app/ui_utils/padding.dart';
 import 'package:app/utils/result.dart';
 import 'package:flutter/material.dart';
 import 'package:openapi/api.dart';
@@ -39,32 +42,58 @@ class AdminNotificationDataApi extends EditDataApi<AdminNotificationDataManager>
 
   @override
   Future<Result<AdminNotificationDataManager, ()>> load(ApiManager api) async {
-    return await api
+    final settings = await api
+      .commonAdmin(
+        (api) => api.getAdminNotificationSettings(),
+      ).ok();
+    final subscriptions = await api
       .commonAdmin(
         (api) => api.getAdminNotificationSubscriptions(),
-      ).mapOk((v) {
-        final valueManager = BooleanValuesManager(v.toJson());
-        return AdminNotificationDataManager(valueManager);
-      }).emptyErr();
+      ).ok();
+
+    if (settings == null || subscriptions == null) {
+      return const Err(());
+    }
+
+    return Ok(AdminNotificationDataManager(
+      settings,
+      BooleanValuesManager(subscriptions.toJson()),
+    ));
   }
 
   @override
-  Future<Result<(), ()>> save(ApiManager api, AdminNotificationDataManager values) async {
+  Future<Result<(), String>> save(ApiManager api, AdminNotificationDataManager values) async {
     final subscriptions = AdminNotification.fromJson(values.values.editedState());
     if (subscriptions == null) {
-      return const Err(());
+      return const Err("subscriptions == null");
+    }
+
+    if (values.editedSettings.dailyEnabledTimeEndSeconds > values.editedSettings.dailyEnabledTimeStartSeconds) {
+      return const Err("end time is smaller than start time");
     }
 
     return await api
       .commonAdminAction(
-        (api) => api.postAdminNotificationSubscriptions(subscriptions)
-      ).emptyErr();
+        (api) => api.postAdminNotificationSettings(values.editedSettings)
+      )
+      .andThenEmptyErr((_) => api
+        .commonAdminAction(
+          (api) => api.postAdminNotificationSubscriptions(subscriptions)
+        )
+      ).mapErr((_) => "API request failed");
   }
 }
 
-class AdminNotificationDataManager extends BaseDataManager implements DataManager, BooleanDataManager  {
+class AdminNotificationDataManager extends BaseDataManager implements DataManager, BooleanDataManager, WeekdayDataManager  {
+  final AdminNotificationSettings settings;
+  AdminNotificationSettings editedSettings;
   final BooleanValuesManager values;
-  AdminNotificationDataManager(this.values);
+  AdminNotificationDataManager(this.settings, this.values) :
+    editedSettings = AdminNotificationSettings(
+      dailyEnabledTimeStartSeconds: settings.dailyEnabledTimeStartSeconds,
+      dailyEnabledTimeEndSeconds: settings.dailyEnabledTimeEndSeconds,
+      weekdays: settings.weekdays,
+    );
 
   @override
   List<Widget> actions() => [
@@ -73,13 +102,46 @@ class AdminNotificationDataManager extends BaseDataManager implements DataManage
   ];
 
   @override
-  String changesText() => values.changesText();
+  String changesText() => "";
 
   @override
-  List<Widget> slivers() => [BooleanDataViewerSliver(dataManager: this)];
+  List<Widget> slivers() => [
+    SliverToBoxAdapter(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(padding: EdgeInsetsGeometry.only(top: 8)),
+          hPad(Text("Notification sending weekdays")),
+          Padding(padding: EdgeInsetsGeometry.only(top: 8)),
+          hPad(WeekdayDataViewer(dataManager: this)),
+          Padding(padding: EdgeInsetsGeometry.only(top: 8)),
+          hPad(Text("Notification sending daily start and end time (UTC+0)")),
+          hPad(Row(
+            spacing: 8,
+            children: [
+              DayTimestampDataViewer(dataManager: StartTimeManager(this)),
+              DayTimestampDataViewer(dataManager: EndTimeManager(this))
+            ]
+          )),
+        ],
+      )
+    ),
+    BooleanDataViewerSliver(dataManager: this),
+  ];
 
   @override
-  bool unsavedChanges() => values.unsavedChanges();
+  bool unsavedChanges() => values.unsavedChanges() || settings != editedSettings;
+
+  // Weekday
+
+  @override
+  int selectedWeekdays() => editedSettings.weekdays;
+
+  @override
+  void setWeekdays(int value) => editedSettings.weekdays = value;
+
+  // Boolean
 
   @override
   List<String> keys() => values.keys();
@@ -95,4 +157,32 @@ class AdminNotificationDataManager extends BaseDataManager implements DataManage
 
   @override
   bool value(int i) => values.value(i);
+}
+
+class StartTimeManager implements DayTimestampDataManager {
+  final AdminNotificationDataManager data;
+  StartTimeManager(this.data);
+
+  @override
+  BaseDataManager get baseDataManager => data;
+
+  @override
+  int currentDayTimestamp() => data.editedSettings.dailyEnabledTimeStartSeconds;
+
+  @override
+  void setDayTimestamp(int value) => data.editedSettings.dailyEnabledTimeStartSeconds = value;
+}
+
+class EndTimeManager implements DayTimestampDataManager {
+  final AdminNotificationDataManager data;
+  EndTimeManager(this.data);
+
+  @override
+  BaseDataManager get baseDataManager => data;
+
+  @override
+  int currentDayTimestamp() => data.editedSettings.dailyEnabledTimeEndSeconds;
+
+  @override
+  void setDayTimestamp(int value) => data.editedSettings.dailyEnabledTimeEndSeconds = value;
 }

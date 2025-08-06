@@ -3,7 +3,7 @@ import 'package:app/ui_utils/data_editor/base.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 
-abstract class BooleanDataManager implements BaseDataManager {
+abstract class BooleanDataManager implements BaseDataManagerProvider {
   const BooleanDataManager();
   List<String> keys();
   bool value(int i);
@@ -20,17 +20,9 @@ class BooleanDataViewerSliver extends StatefulWidget {
   State<BooleanDataViewerSliver> createState() => _BooleanDataViewerSliverState();
 }
 
-class _BooleanDataViewerSliverState extends State<BooleanDataViewerSliver> {
-  late final RefreshUiAction action;
-
+class _BooleanDataViewerSliverState extends State<BooleanDataViewerSliver> with RefreshSupport<BooleanDataViewerSliver>{
   @override
-  void initState() {
-    super.initState();
-    action = RefreshUiAction(() {
-      setState(() {});
-    });
-    widget.dataManager.addUiRefreshAction(action);
-  }
+  BaseDataManager get baseDataManager => widget.dataManager.baseDataManager;
 
   @override
   Widget build(BuildContext context) {
@@ -42,19 +34,13 @@ class _BooleanDataViewerSliverState extends State<BooleanDataViewerSliver> {
           onChanged: (newValue) {
             if (newValue != null) {
               widget.dataManager.setValue(i, newValue);
-              widget.dataManager.triggerUiRefresh();
+              widget.dataManager.baseDataManager.triggerUiRefresh();
             }
           },
           title: Text(widget.dataManager.name(i)),
         );
       },
     );
-  }
-
-  @override
-  void dispose() {
-    widget.dataManager.removeUiRefreshAction(action);
-    super.dispose();
   }
 }
 
@@ -72,7 +58,7 @@ class _BooleanDataDeselectActionState extends State<BooleanDataDeselectAction> {
     return IconButton(
       onPressed: () {
         widget.dataManager.setAll(false);
-        widget.dataManager.triggerUiRefresh();
+        widget.dataManager.baseDataManager.triggerUiRefresh();
       },
       icon: const Icon(Icons.deselect),
     );
@@ -93,7 +79,7 @@ class _BooleanDataSelectActionState extends State<BooleanDataSelectAction> {
     return IconButton(
       onPressed: () {
         widget.dataManager.setAll(true);
-        widget.dataManager.triggerUiRefresh();
+        widget.dataManager.baseDataManager.triggerUiRefresh();
       },
       icon: const Icon(Icons.select_all),
     );

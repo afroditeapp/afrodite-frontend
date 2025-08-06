@@ -11,6 +11,12 @@ import 'package:app/data/login_repository.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/result.dart';
 
+// TODO(refactor): Remove DataManager and related types as those
+//                 are complex and require RefreshUiAction.
+//                 Perhaps it would be better to just make reusable editor
+//                 components with controller classes and copy-paste
+//                 unsaved changes logic. Or perhaps the logic could be mixin.
+
 abstract class DataManager implements BaseDataManager {
   const DataManager();
   bool unsavedChanges();
@@ -20,6 +26,9 @@ abstract class DataManager implements BaseDataManager {
 }
 
 class EmptyDataManager extends DataManager {
+  @override
+  BaseDataManager get baseDataManager => this;
+
   @override
   bool unsavedChanges() {
     return false;
@@ -53,7 +62,7 @@ class EmptyDataManager extends DataManager {
 abstract class EditDataApi<T extends DataManager> {
   const EditDataApi();
   Future<Result<T, ()>> load(ApiManager api);
-  Future<Result<(), ()>> save(ApiManager api, T manager);
+  Future<Result<(), String>> save(ApiManager api, T manager);
 }
 
 class EditDataScreen<T extends DataManager> extends StatefulWidget {
@@ -105,8 +114,8 @@ class _EditDataScreenState extends State<EditDataScreen> {
 
   Future<void> saveData() async {
     final result = await widget.dataApi.save(api, dataManager);
-    if (result.isErr()) {
-      showSnackBar(R.strings.generic_error);
+    if (result case Err()) {
+      showSnackBar("Error: ${result.e}");
     }
   }
 
@@ -126,10 +135,11 @@ class _EditDataScreenState extends State<EditDataScreen> {
       saveButton = FloatingActionButton(
         child: const Icon(Icons.save),
         onPressed: () async {
+          final changes = dataManager.changesText();
           final r = await showConfirmDialog(
             context,
             context.strings.generic_save_confirmation_title,
-            details: dataManager.changesText(),
+            details: changes.isEmpty ? null : changes,
             scrollable: true,
           );
           if (r == true && context.mounted) {

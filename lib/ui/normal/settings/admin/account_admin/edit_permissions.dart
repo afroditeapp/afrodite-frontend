@@ -34,16 +34,16 @@ class PermissionsDataApi extends EditDataApi<PermissionsDataManager> {
   }
 
   @override
-  Future<Result<(), ()>> save(ApiManager api, PermissionsDataManager values) async {
+  Future<Result<(), String>> save(ApiManager api, PermissionsDataManager values) async {
     final permissions = Permissions.fromJson(values.values.editedState());
     if (permissions == null) {
-      return const Err(());
+      return const Err("permissions == null");
     }
 
     return await api
       .accountAdminAction(
         (api) => api.postSetPermissions(account.aid, permissions)
-      ).emptyErr();
+      ).mapErr((_) => "API request failed");
   }
 }
 
