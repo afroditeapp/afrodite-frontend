@@ -1,0 +1,183 @@
+
+import 'package:app/api/api_manager.dart';
+import 'package:app/localizations.dart';
+import 'package:app/logic/app/navigator_state.dart';
+import 'package:app/model/freezed/logic/main/navigator_state.dart';
+import 'package:app/ui_utils/consts/padding.dart';
+import 'package:app/ui_utils/data_editor/base.dart';
+import 'package:app/ui_utils/dialog.dart';
+import 'package:flutter/material.dart';
+import 'package:app/data/login_repository.dart';
+import 'package:app/ui_utils/snack_bar.dart';
+import 'package:app/utils/result.dart';
+
+abstract class DataManager implements BaseDataManager {
+  const DataManager();
+  bool unsavedChanges();
+  String changesText();
+  List<Widget> actions();
+  List<Widget> slivers();
+}
+
+class EmptyDataManager extends DataManager {
+  @override
+  bool unsavedChanges() {
+    return false;
+  }
+
+  @override
+  String changesText() {
+    return "";
+  }
+
+  @override
+  List<Widget> actions() {
+    return [];
+  }
+
+  @override
+  List<Widget> slivers() {
+    return [];
+  }
+
+  @override
+  void addUiRefreshAction(RefreshUiAction action) {}
+
+  @override
+  void removeUiRefreshAction(RefreshUiAction action) {}
+
+  @override
+  void triggerUiRefresh() {}
+}
+
+abstract class EditDataApi<T extends DataManager> {
+  const EditDataApi();
+  Future<Result<T, ()>> load(ApiManager api);
+  Future<Result<(), ()>> save(ApiManager api, T manager);
+}
+
+class EditDataScreen<T extends DataManager> extends StatefulWidget {
+  final PageKey pageKey;
+  final String title;
+  final EditDataApi<T> dataApi;
+  const EditDataScreen({
+    required this.pageKey,
+    required this.title,
+    required this.dataApi,
+    super.key,
+  });
+
+  @override
+  State<EditDataScreen> createState() => _EditDataScreenState();
+}
+
+class _EditDataScreenState extends State<EditDataScreen> {
+  final api = LoginRepository.getInstance().repositories.api;
+
+  DataManager dataManager = EmptyDataManager();
+  bool isLoading = true;
+  bool isError = false;
+
+  late final RefreshUiAction action;
+
+  Future<void> _getData() async {
+    final result = await widget.dataApi.load(api).ok();
+
+    if (!context.mounted) {
+      return;
+    }
+
+    if (result == null) {
+      showSnackBar(R.strings.generic_error);
+      setState(() {
+        isLoading = false;
+        isError = true;
+      });
+    } else {
+      setState(() {
+        isLoading = false;
+        dataManager.removeUiRefreshAction(action);
+        dataManager = result;
+        dataManager.addUiRefreshAction(action);
+      });
+    }
+  }
+
+  Future<void> saveData() async {
+    final result = await widget.dataApi.save(api, dataManager);
+    if (result.isErr()) {
+      showSnackBar(R.strings.generic_error);
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    action = RefreshUiAction(() {
+      setState(() {});
+    });
+    _getData();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    Widget? saveButton;
+    if (dataManager.unsavedChanges()) {
+      saveButton = FloatingActionButton(
+        child: const Icon(Icons.save),
+        onPressed: () async {
+          final r = await showConfirmDialog(
+            context,
+            context.strings.generic_save_confirmation_title,
+            details: dataManager.changesText(),
+            scrollable: true,
+          );
+          if (r == true && context.mounted) {
+            await saveData();
+            if (context.mounted) {
+              MyNavigator.removePage(context, widget.pageKey);
+            }
+          }
+        },
+      );
+    }
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
+        actions: [
+          ...dataManager.actions(),
+        ],
+      ),
+      body: screenContent(context),
+      floatingActionButton: saveButton,
+    );
+  }
+
+  Widget screenContent(BuildContext context) {
+    if (isLoading) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    } else if (isError) {
+      return Center(child: Text(context.strings.generic_error));
+    } else {
+      return showData(context);
+    }
+  }
+
+  Widget showData(BuildContext context) {
+    return CustomScrollView(
+      slivers: [
+        ...dataManager.slivers(),
+        const SliverToBoxAdapter(child: Padding(padding: EdgeInsets.only(top: FLOATING_ACTION_BUTTON_EMPTY_AREA))),
+      ],
+    );
+  }
+
+  @override
+  void dispose() {
+    dataManager.removeUiRefreshAction(action);
+    super.dispose();
+  }
+}
