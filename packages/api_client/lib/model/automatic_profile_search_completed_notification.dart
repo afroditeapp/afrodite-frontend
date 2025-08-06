@@ -13,25 +13,31 @@ part of openapi.api;
 class AutomaticProfileSearchCompletedNotification {
   /// Returns a new [AutomaticProfileSearchCompletedNotification] instance.
   AutomaticProfileSearchCompletedNotification({
+    required this.profileCount,
     required this.profilesFound,
   });
+
+  int profileCount;
 
   NotificationStatus profilesFound;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is AutomaticProfileSearchCompletedNotification &&
+    other.profileCount == profileCount &&
     other.profilesFound == profilesFound;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
+    (profileCount.hashCode) +
     (profilesFound.hashCode);
 
   @override
-  String toString() => 'AutomaticProfileSearchCompletedNotification[profilesFound=$profilesFound]';
+  String toString() => 'AutomaticProfileSearchCompletedNotification[profileCount=$profileCount, profilesFound=$profilesFound]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
+      json[r'profile_count'] = this.profileCount;
       json[r'profiles_found'] = this.profilesFound;
     return json;
   }
@@ -55,6 +61,7 @@ class AutomaticProfileSearchCompletedNotification {
       }());
 
       return AutomaticProfileSearchCompletedNotification(
+        profileCount: mapValueOfType<int>(json, r'profile_count')!,
         profilesFound: NotificationStatus.fromJson(json[r'profiles_found'])!,
       );
     }
@@ -103,6 +110,7 @@ class AutomaticProfileSearchCompletedNotification {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
+    'profile_count',
     'profiles_found',
   };
 }
