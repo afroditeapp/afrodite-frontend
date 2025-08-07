@@ -43,50 +43,69 @@ class GetClientVersions extends GetMetrics {
       return a.version.versionString().compareTo(b.version.versionString());
     });
 
-    final list = queryResults.values.map((v) => ClientVersionMetric(v.version.versionString(), v.values, daily)).toList();
+    final list = queryResults.values.map((v) {
+      final metric = ClientVersionMetric(v.version.versionString(), v.values);
+      if (daily) {
+        return DailyMetrics(metric);
+      } else {
+        return metric;
+      }
+    }).toList();
 
     return Ok(list);
   }
 }
-
 
 class ClientVersionMetric extends Metric {
   @override
   final String name;
   @override
   final String? group = null;
-  final List<ClientVersionCount> values;
-  final bool daily;
   List<FlSpot> _processedValues = [];
 
-  ClientVersionMetric(this.name, this.values, this.daily) {
+  ClientVersionMetric(this.name, List<ClientVersionCount> values) {
     final data = <FlSpot>[];
-    if (daily) {
-      DateTime date = DateTime.utc(2000);
-      int count = 0;
-      int? day;
-      for (final v in values) {
-          final valueDateTime = v.t.toUtcDateTime().dateTime;
-          if (day == null) {
-            date = DateTime.utc(valueDateTime.year, valueDateTime.month, valueDateTime.day);
-            count = v.c;
-            day = valueDateTime.day;
-          } else if (day != valueDateTime.day) {
-            data.add(FlSpot(UtcDateTime.fromDateTime(date).toUnixTime().ut.toDouble(), count.toDouble()));
-            date = DateTime.utc(valueDateTime.year, valueDateTime.month, valueDateTime.day);
-            count = v.c;
-            day = valueDateTime.day;
-          } else {
-            count += v.c;
-          }
-      }
-      if (values.isNotEmpty) {
+    for (final v in values) {
+        data.add(FlSpot(v.t.ut.toDouble(), v.c.toDouble()));
+    }
+    _processedValues = data.sortedBy((v) => v.x);
+  }
+
+  @override
+  List<FlSpot> getValues() => _processedValues;
+}
+
+class DailyMetrics extends Metric {
+  @override
+  final String name;
+  @override
+  final String? group;
+  List<FlSpot> _processedValues = [];
+
+  DailyMetrics(Metric metric) : name = metric.name, group = metric.group {
+    final values = metric.getValues();
+    final data = <FlSpot>[];
+    DateTime date = DateTime.utc(2000);
+    int count = 0;
+    int? day;
+    for (final v in values) {
+      final valueUnixTime = UnixTime(ut: v.x.toInt());
+      final valueDateTime = valueUnixTime.toUtcDateTime().dateTime;
+      if (day == null) {
+        date = DateTime.utc(valueDateTime.year, valueDateTime.month, valueDateTime.day);
+        count = v.y.toInt();
+        day = valueDateTime.day;
+      } else if (day != valueDateTime.day) {
         data.add(FlSpot(UtcDateTime.fromDateTime(date).toUnixTime().ut.toDouble(), count.toDouble()));
+        date = DateTime.utc(valueDateTime.year, valueDateTime.month, valueDateTime.day);
+        count = v.y.toInt();
+        day = valueDateTime.day;
+      } else {
+        count += v.y.toInt();
       }
-    } else {
-      for (final v in values) {
-          data.add(FlSpot(v.t.ut.toDouble(), v.c.toDouble()));
-      }
+    }
+    if (values.isNotEmpty) {
+      data.add(FlSpot(UtcDateTime.fromDateTime(date).toUnixTime().ut.toDouble(), count.toDouble()));
     }
     _processedValues = data.sortedBy((v) => v.x);
   }

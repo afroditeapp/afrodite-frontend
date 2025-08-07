@@ -179,7 +179,7 @@ class _ViewSingleMetricState extends State<ViewSingleMetric> {
             sideTitles: SideTitles(
               showTitles: true,
               reservedSize: 44,
-              interval: xAxisTitleInterval,
+              interval: xAxisTitleInterval != 0 ? xAxisTitleInterval : null,
               getTitlesWidget: (value, meta) {
                 final upperTimeText = value == data.first.x || value == data.last.x || (value >= xAxisCenterAreaMin && value <= xAxisCenterAreaMax);
                 final utcTime = UnixTime(ut: value.toInt()).toUtcDateTime();

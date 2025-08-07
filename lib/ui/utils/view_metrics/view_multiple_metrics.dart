@@ -52,12 +52,22 @@ class MetricGroupManager {
     data = newData.map((v) => MetricAndMinMaxValues.create(v))
       .whereType<MetricAndMinMaxValues>()
       .toList();
-    groups = LinkedHashSet.from({"default"});
+
+    groups = LinkedHashSet();
+
+    if (data.firstWhereOrNull((v) => v.metric.group == null) != null) {
+      groups.add("default");
+    }
+
     for (final d in data) {
       final g = d.metric.group;
       if (g != null) {
         groups.add(g);
       }
+    }
+
+    if (groups.isEmpty) {
+      groups.add("default");
     }
 
     if (!initialUpdateDone) {
@@ -98,11 +108,16 @@ class ViewMultipleMetricsController extends BaseDataManager {
   void _groupChangeRefresh() {
     data = group.selectedGroupData();
 
-    minDataValue = double.maxFinite;
-    maxDataValue = -double.maxFinite;
-    for (final m in data) {
-      minDataValue = min(minDataValue, m.minValue);
-      maxDataValue = max(maxDataValue, m.maxValue);
+    if (data.isEmpty) {
+      minDataValue = 0;
+      maxDataValue = 0;
+    } else {
+      minDataValue = double.maxFinite;
+      maxDataValue = -double.maxFinite;
+      for (final m in data) {
+        minDataValue = min(minDataValue, m.minValue);
+        maxDataValue = max(maxDataValue, m.maxValue);
+      }
     }
 
     if (!initialUpdateDone) {
@@ -170,13 +185,22 @@ class _ViewMultipleMetricsState extends State<ViewMultipleMetrics> with RefreshS
   Widget displayData(BuildContext context) {
     final filteredMetrics = widget.controller.filteredList;
 
-    final Widget chart;
+    final Widget metricsViewer;
     if (filteredMetrics.isEmpty) {
-      chart = const Center(
+      metricsViewer = const Center(
         child: Text("No data"),
       );
     } else {
-      chart = getChart(context, filteredMetrics);
+      final showValueListIfNull = filteredMetrics.firstWhereOrNull((v) {
+        final metricWithMultipleValues = v.$2.getValues().length > 1;
+        final differentXValue = v.$2.getValues().first.x != filteredMetrics.first.$2.getValues().first.x;
+        return metricWithMultipleValues || differentXValue;
+      });
+      if (showValueListIfNull == null) {
+        metricsViewer = getList(context, filteredMetrics);
+      } else {
+        metricsViewer = getChart(context, filteredMetrics);
+      }
     }
 
     return Column(
@@ -256,10 +280,23 @@ class _ViewMultipleMetricsState extends State<ViewMultipleMetrics> with RefreshS
         Expanded(
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: chart,
+            child: metricsViewer,
           )
         ),
       ],
+    );
+  }
+
+  Widget getList(BuildContext context, List<(int, Metric)> values) {
+    final sortedValues = [...values];
+    sortedValues.sortBy((v) => v.$2.getValues().first.y);
+    final text = sortedValues.reversed.map((v) => "${v.$2.name}: ${v.$2.getValues().first.y.toInt()}").join("\n");
+    return SingleChildScrollView(
+      padding: EdgeInsets.all(8),
+      child: Align(
+        alignment: AlignmentDirectional.topStart,
+        child: Text(text),
+      ),
     );
   }
 
@@ -304,7 +341,7 @@ class _ViewMultipleMetricsState extends State<ViewMultipleMetrics> with RefreshS
             sideTitles: SideTitles(
               showTitles: true,
               reservedSize: 44,
-              interval: xAxisTitleInterval,
+              interval: xAxisTitleInterval != 0 ? xAxisTitleInterval : null,
               getTitlesWidget: (value, meta) {
                 final upperTimeText = value == xMin || value == xMax || (value >= xAxisCenterAreaMin && value <= xAxisCenterAreaMax);
                 final utcTime = UnixTime(ut: value.toInt()).toUtcDateTime();

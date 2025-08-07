@@ -8,6 +8,7 @@ import 'package:app/ui/normal/settings/admin/server_tasks.dart';
 import 'package:app/ui/normal/settings/admin/view_accounts.dart';
 import 'package:app/ui/normal/settings/admin/view_admins.dart';
 import 'package:app/ui/normal/settings/admin/view_client_version_statistics.dart';
+import 'package:app/ui/normal/settings/admin/view_ip_country_statistics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
@@ -101,6 +102,18 @@ class AdminSettingsPage extends StatelessWidget {
       const clientVersionStatisticsDaily = "Client version statistics (daily)";
       settings.add(Setting.createSetting(Icons.query_stats, clientVersionStatisticsDaily, () =>
         openViewClientVersionStatisticsScreen(context, clientVersionStatisticsDaily, api, daily: true)
+      ));
+      const ipCountryStatisticsHourly = "IP country statistics (hourly)";
+      settings.add(Setting.createSetting(Icons.query_stats, ipCountryStatisticsHourly, () =>
+        openViewIpCountryStatisticsScreen(context, ipCountryStatisticsHourly, api)
+      ));
+      const ipCountryStatisticsDaily = "IP country statistics (daily)";
+      settings.add(Setting.createSetting(Icons.query_stats, ipCountryStatisticsDaily, () =>
+        openViewIpCountryStatisticsScreen(context, ipCountryStatisticsDaily, api, daily: true)
+      ));
+      const ipCountryStatisticsCounters = "IP country statistics (counters)";
+      settings.add(Setting.createSetting(Icons.query_stats, ipCountryStatisticsCounters, () =>
+        openViewIpCountryStatisticsScreen(context, ipCountryStatisticsCounters, api, fromRam: true)
       ));
     }
     if (permissions.adminServerMaintenanceEditNotification) {

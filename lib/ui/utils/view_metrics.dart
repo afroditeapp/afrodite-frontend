@@ -77,10 +77,10 @@ class _ViewMetricsScreenState extends State<ViewMetricsScreen> {
 
   Widget showState() {
     final data = _currentData;
-    if (data == null || isLoading) {
-      return buildProgressIndicator();
-    } else if (isError) {
+    if (isError) {
       return Center(child: Text("Error"));
+    } else if (data == null || isLoading) {
+      return buildProgressIndicator();
     } else {
       return displayData(data);
     }
