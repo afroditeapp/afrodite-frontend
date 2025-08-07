@@ -2379,6 +2379,12 @@ abstract class AppLocalizations {
   /// **'Settings'**
   String get settings_screen_title;
 
+  /// Snackbar info text that API usage limit is reached
+  ///
+  /// In en, this message translates to:
+  /// **'API usage limit is reached. Try again tomorrow.'**
+  String get snackbar_api_usage_limit_reached;
+
   /// Snackbar info text that connection to server is established
   ///
   /// In en, this message translates to:

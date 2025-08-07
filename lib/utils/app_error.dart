@@ -1,6 +1,7 @@
 
 
 import 'package:app/localizations.dart';
+import 'package:app/ui_utils/snack_bar.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:app/api/error_manager.dart';
@@ -38,7 +39,12 @@ class ActionApiErrorException extends ActionApiError {
     log.error("Action API error, code: ${e.code}");
     log.fine(e.toString());
     log.fine(StackTrace.current);
-    ErrorManager.getInstance().show(this);
+    // HTTP 429 Too Many Requests
+    if (e.code == 429) {
+      showSnackBar(R.strings.snackbar_api_usage_limit_reached);
+    } else {
+      ErrorManager.getInstance().show(this);
+    }
   }
 }
 
@@ -120,7 +126,12 @@ class ValueApiException extends ValueApiError {
     log.error("Value API error, code: ${e.code}");
     log.fine(e.toString());
     log.fine(StackTrace.current);
-    ErrorManager.getInstance().show(this);
+    // HTTP 429 Too Many Requests
+    if (e.code == 429) {
+      showSnackBar(R.strings.snackbar_api_usage_limit_reached);
+    } else {
+      ErrorManager.getInstance().show(this);
+    }
   }
 }
 

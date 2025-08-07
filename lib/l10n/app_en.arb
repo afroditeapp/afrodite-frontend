@@ -1663,6 +1663,10 @@
   "@settings_screen_title": {
     "description": "Title for settings screen"
   },
+  "snackbar_api_usage_limit_reached": "API usage limit is reached. Try again tomorrow.",
+  "@snackbar_api_usage_limit_reached": {
+    "description": "Snackbar info text that API usage limit is reached"
+  },
   "snackbar_connected": "Connected",
   "@snackbar_connected": {
     "description": "Snackbar info text that connection to server is established"

@@ -1393,6 +1393,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settings_screen_title => 'Settings';
 
   @override
+  String get snackbar_api_usage_limit_reached =>
+      'API usage limit is reached. Try again tomorrow.';
+
+  @override
   String get snackbar_connected => 'Connected';
 
   @override

@@ -1,7 +1,4 @@
 
-
-
-
 import 'package:async/async.dart' show StreamExtensions;
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
