@@ -4,6 +4,7 @@ import "dart:async";
 import "package:app/ui_utils/attribute/attribute.dart";
 import "package:app/ui_utils/attribute/filter.dart";
 import "package:app/ui_utils/attribute/state.dart";
+import "package:app/utils/age.dart";
 import "package:app/utils/api.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:openapi/api.dart";
@@ -34,6 +35,14 @@ class NewFilterFavoriteProfilesValue extends ProfileFiltersEvent {
 class NewProfileFilters extends ProfileFiltersEvent {
   final GetProfileFilters? value;
   NewProfileFilters(this.value);
+}
+class NewMinAge extends ProfileFiltersEvent {
+  final int value;
+  NewMinAge(this.value);
+}
+class NewMaxAge extends ProfileFiltersEvent {
+  final int value;
+  NewMaxAge(this.value);
 }
 class SetFavoriteProfilesFilter extends ProfileFiltersEvent {
   final bool value;
@@ -84,6 +93,14 @@ class SetAttributeFilterSettings extends ProfileFiltersEvent {
   final FilterSettingsState value;
   SetAttributeFilterSettings(this.attribute, this.value);
 }
+class UpdateMinAge extends ProfileFiltersEvent {
+  final int value;
+  UpdateMinAge(this.value);
+}
+class UpdateMaxAge extends ProfileFiltersEvent {
+  final int value;
+  UpdateMaxAge(this.value);
+}
 
 class ProfileFiltersBloc extends Bloc<ProfileFiltersEvent, ProfileFiltersData> with ActionRunner {
   final ProfileRepository profile = LoginRepository.getInstance().repositories.profile;
@@ -92,6 +109,8 @@ class ProfileFiltersBloc extends Bloc<ProfileFiltersEvent, ProfileFiltersData> w
   StreamSubscription<bool?>? _showAdvancedFiltersSubscription;
   StreamSubscription<bool?>? _filterFavoritesSubscription;
   StreamSubscription<GetProfileFilters?>? _profileFiltersSubscription;
+  StreamSubscription<int?>? _minAgeSubscription;
+  StreamSubscription<int?>? _maxAgeSubscription;
 
   ProfileFiltersBloc() : super(ProfileFiltersData(edited: EditedFiltersData())) {
     on<SaveNewFilterSettings>((data, emit) async {
@@ -123,6 +142,10 @@ class ProfileFiltersBloc extends Bloc<ProfileFiltersEvent, ProfileFiltersData> w
             s.valueRandomProfileOrder(),
           ).isErr()
         ) {
+          failureDetected = true;
+        }
+
+        if (!await profile.updateSearchAgeRange(s.valueMinAge(), s.valueMaxAge()).isOk()) {
           failureDetected = true;
         }
 
@@ -185,6 +208,12 @@ class ProfileFiltersBloc extends Bloc<ProfileFiltersEvent, ProfileFiltersData> w
         filters: data.value,
         attributeIdAndAttributeFilterMap: data.value?.currentFiltersCopy() ?? {},
       ));
+    });
+    on<NewMinAge>((data, emit) async {
+      emit(state.copyWith(minAge: data.value));
+    });
+    on<NewMaxAge>((data, emit) async {
+      emit(state.copyWith(maxAge: data.value));
     });
     on<SetShowAdvancedFilters>((data, emit) async {
       await db.accountAction((db) => db.app.updateShowAdvancedFilters(data.value));
@@ -272,6 +301,32 @@ class ProfileFiltersBloc extends Bloc<ProfileFiltersEvent, ProfileFiltersData> w
         (current) => AttributeFilterUpdateBuilder.copyWithSettings(data.attribute, current, data.value),
       );
     });
+    on<UpdateMinAge>((data, emit) async {
+      if (data.value == state.minAge) {
+        modifyEdited(
+          emit,
+          (e) => e.copyWith(minAge: null),
+        );
+      } else {
+        modifyEdited(
+          emit,
+          (e) => e.copyWith(minAge: data.value),
+        );
+      }
+    });
+    on<UpdateMaxAge>((data, emit) async {
+      if (data.value == state.maxAge) {
+        modifyEdited(
+          emit,
+          (e) => e.copyWith(maxAge: null),
+        );
+      } else {
+        modifyEdited(
+          emit,
+          (e) => e.copyWith(maxAge: data.value),
+        );
+      }
+    });
 
     _showAdvancedFiltersSubscription = db.accountStream((db) => db.app.watchShowAdvancedFilters()).listen((event) {
       add(NewShowAdvancedFiltersValue(event ?? false));
@@ -281,6 +336,12 @@ class ProfileFiltersBloc extends Bloc<ProfileFiltersEvent, ProfileFiltersData> w
     });
     _profileFiltersSubscription = db.accountStream((db) => db.search.watchProfileFilters()).listen((event) {
       add(NewProfileFilters(event));
+    });
+    _minAgeSubscription = db.accountStream((db) => db.search.watchProfileSearchAgeRangeMin()).listen((event) {
+      add(NewMinAge(event ?? MIN_AGE));
+    });
+    _maxAgeSubscription = db.accountStream((db) => db.search.watchProfileSearchAgeRangeMax()).listen((event) {
+      add(NewMaxAge(event ?? MAX_AGE));
     });
   }
 
@@ -344,6 +405,8 @@ class ProfileFiltersBloc extends Bloc<ProfileFiltersEvent, ProfileFiltersData> w
     await _showAdvancedFiltersSubscription?.cancel();
     await _filterFavoritesSubscription?.cancel();
     await _profileFiltersSubscription?.cancel();
+    await _minAgeSubscription?.cancel();
+    await _maxAgeSubscription?.cancel();
     await super.close();
   }
 }

@@ -3,7 +3,6 @@ import "dart:async";
 import "package:app/api/api_manager.dart";
 import "package:app/database/account_background_database_manager.dart";
 import "package:app/model/freezed/logic/account/initial_setup.dart";
-import "package:app/utils/age.dart";
 import "package:app/utils/api.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:openapi/api.dart";
@@ -19,14 +18,6 @@ import "package:app/utils/result.dart";
 import "package:app/utils/time.dart";
 
 sealed class SearchSettingsEvent {}
-class NewMinAge extends SearchSettingsEvent {
-  final int value;
-  NewMinAge(this.value);
-}
-class NewMaxAge extends SearchSettingsEvent {
-  final int value;
-  NewMaxAge(this.value);
-}
 class NewSearchGroups extends SearchSettingsEvent {
   final SearchGroups value;
   NewSearchGroups(this.value);
@@ -34,14 +25,6 @@ class NewSearchGroups extends SearchSettingsEvent {
 class NewAutomaticProfileSearchSettings extends SearchSettingsEvent {
   final AutomaticProfileSearchSettings value;
   NewAutomaticProfileSearchSettings(this.value);
-}
-class UpdateMinAge extends SearchSettingsEvent {
-  final int value;
-  UpdateMinAge(this.value);
-}
-class UpdateMaxAge extends SearchSettingsEvent {
-  final int value;
-  UpdateMaxAge(this.value);
 }
 class UpdateGender extends SearchSettingsEvent {
   final Gender value;
@@ -70,8 +53,6 @@ class SearchSettingsBloc extends Bloc<SearchSettingsEvent, SearchSettingsData> w
   final AccountBackgroundDatabaseManager accountBackgroundDb = LoginRepository.getInstance().repositories.accountBackgroundDb;
   final ApiManager api = LoginRepository.getInstance().repositories.api;
 
-  StreamSubscription<int?>? _minAgeSubscription;
-  StreamSubscription<int?>? _maxAgeSubscription;
   StreamSubscription<SearchGroups?>? _searchGroupsSubscription;
   StreamSubscription<AutomaticProfileSearchSettings?>? _automaticProfileSearchSettingsSubscription;
 
@@ -93,10 +74,6 @@ class SearchSettingsBloc extends Bloc<SearchSettingsEvent, SearchSettingsData> w
         emit(state.copyWith(
           updateState: const UpdateInProgress(),
         ));
-
-        if (!await profile.updateSearchAgeRange(currentState.valueMinAge(), currentState.valueMaxAge()).isOk()) {
-          failureDetected = true;
-        }
 
         if (!await profile.updateSearchGroups(data.searchGroups).isOk()) {
           failureDetected = true;
@@ -132,12 +109,6 @@ class SearchSettingsBloc extends Bloc<SearchSettingsEvent, SearchSettingsData> w
     on<ResetEditedValues>((data, emit) async {
       _resetEditedValues(emit);
     });
-    on<NewMinAge>((data, emit) async {
-      emit(state.copyWith(minAge: data.value));
-    });
-    on<NewMaxAge>((data, emit) async {
-      emit(state.copyWith(maxAge: data.value));
-    });
     on<NewSearchGroups>((data, emit) async {
       emit(state.copyWith(
         gender: data.value.toGender(),
@@ -148,20 +119,6 @@ class SearchSettingsBloc extends Bloc<SearchSettingsEvent, SearchSettingsData> w
       emit(state.copyWith(
         automaticProfileSearchSettings: data.value,
       ));
-    });
-    on<UpdateMinAge>((data, emit) async {
-      if (data.value == state.minAge) {
-        emit(state.copyWith(editedMinAge: null));
-      } else {
-        emit(state.copyWith(editedMinAge: data.value));
-      }
-    });
-    on<UpdateMaxAge>((data, emit) async {
-      if (data.value == state.maxAge) {
-        emit(state.copyWith(editedMaxAge: null));
-      } else {
-        emit(state.copyWith(editedMaxAge: data.value));
-      }
     });
     on<UpdateGender>((data, emit) async {
       if (data.value == state.gender) {
@@ -210,12 +167,6 @@ class SearchSettingsBloc extends Bloc<SearchSettingsEvent, SearchSettingsData> w
       }
     });
 
-    _minAgeSubscription = db.accountStream((db) => db.search.watchProfileSearchAgeRangeMin()).listen((event) {
-      add(NewMinAge(event ?? MIN_AGE));
-    });
-    _maxAgeSubscription = db.accountStream((db) => db.search.watchProfileSearchAgeRangeMax()).listen((event) {
-      add(NewMaxAge(event ?? MAX_AGE));
-    });
     _searchGroupsSubscription = db.accountStream((db) => db.search.watchSearchGroups()).listen((event) {
       add(NewSearchGroups(event ?? SearchGroups()));
     });
@@ -228,8 +179,6 @@ class SearchSettingsBloc extends Bloc<SearchSettingsEvent, SearchSettingsData> w
 
   void _resetEditedValues(Emitter<SearchSettingsData> emit) {
     emit(state.copyWith(
-      editedMinAge: null,
-      editedMaxAge: null,
       editedGenderSearchSettingsAll: null,
       editedGender: null,
       editedSearchDistanceFilters: null,
@@ -241,8 +190,6 @@ class SearchSettingsBloc extends Bloc<SearchSettingsEvent, SearchSettingsData> w
 
   @override
   Future<void> close() async {
-    await _minAgeSubscription?.cancel();
-    await _maxAgeSubscription?.cancel();
     await _searchGroupsSubscription?.cancel();
     await _automaticProfileSearchSettingsSubscription?.cancel();
     await super.close();

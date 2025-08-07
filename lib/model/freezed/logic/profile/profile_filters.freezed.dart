@@ -26,6 +26,8 @@ mixin _$ProfileFiltersData {
   bool get showOnlyFavorites => throw _privateConstructorErrorProfileFiltersData;
   GetProfileFilters? get filters => throw _privateConstructorErrorProfileFiltersData;
   Map<int, ProfileAttributeFilterValueUpdate> get attributeIdAndAttributeFilterMap => throw _privateConstructorErrorProfileFiltersData;
+  int get minAge => throw _privateConstructorErrorProfileFiltersData;
+  int get maxAge => throw _privateConstructorErrorProfileFiltersData;
   EditedFiltersData get edited => throw _privateConstructorErrorProfileFiltersData;
 
   ProfileFiltersData copyWith({
@@ -34,6 +36,8 @@ mixin _$ProfileFiltersData {
     bool? showOnlyFavorites,
     GetProfileFilters? filters,
     Map<int, ProfileAttributeFilterValueUpdate>? attributeIdAndAttributeFilterMap,
+    int? minAge,
+    int? maxAge,
     EditedFiltersData? edited,
   }) => throw _privateConstructorErrorProfileFiltersData;
 }
@@ -46,6 +50,8 @@ abstract class _ProfileFiltersData extends ProfileFiltersData {
     bool showOnlyFavorites,
     GetProfileFilters? filters,
     Map<int, ProfileAttributeFilterValueUpdate> attributeIdAndAttributeFilterMap,
+    int minAge,
+    int maxAge,
     required EditedFiltersData edited,
   }) = _$ProfileFiltersDataImpl;
   const _ProfileFiltersData._() : super._();
@@ -57,6 +63,8 @@ class _$ProfileFiltersDataImpl extends _ProfileFiltersData with DiagnosticableTr
   static const bool _showAdvancedFiltersDefaultValue = false;
   static const bool _showOnlyFavoritesDefaultValue = false;
   static const Map<int, ProfileAttributeFilterValueUpdate> _attributeIdAndAttributeFilterMapDefaultValue = {};
+  static const int _minAgeDefaultValue = MIN_AGE;
+  static const int _maxAgeDefaultValue = MAX_AGE;
   
   _$ProfileFiltersDataImpl({
     this.updateState = _updateStateDefaultValue,
@@ -64,6 +72,8 @@ class _$ProfileFiltersDataImpl extends _ProfileFiltersData with DiagnosticableTr
     this.showOnlyFavorites = _showOnlyFavoritesDefaultValue,
     this.filters,
     this.attributeIdAndAttributeFilterMap = _attributeIdAndAttributeFilterMapDefaultValue,
+    this.minAge = _minAgeDefaultValue,
+    this.maxAge = _maxAgeDefaultValue,
     required this.edited,
   }) : super._();
 
@@ -78,11 +88,15 @@ class _$ProfileFiltersDataImpl extends _ProfileFiltersData with DiagnosticableTr
   @override
   final Map<int, ProfileAttributeFilterValueUpdate> attributeIdAndAttributeFilterMap;
   @override
+  final int minAge;
+  @override
+  final int maxAge;
+  @override
   final EditedFiltersData edited;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ProfileFiltersData(updateState: $updateState, showAdvancedFilters: $showAdvancedFilters, showOnlyFavorites: $showOnlyFavorites, filters: $filters, attributeIdAndAttributeFilterMap: $attributeIdAndAttributeFilterMap, edited: $edited)';
+    return 'ProfileFiltersData(updateState: $updateState, showAdvancedFilters: $showAdvancedFilters, showOnlyFavorites: $showOnlyFavorites, filters: $filters, attributeIdAndAttributeFilterMap: $attributeIdAndAttributeFilterMap, minAge: $minAge, maxAge: $maxAge, edited: $edited)';
   }
 
   @override
@@ -95,6 +109,8 @@ class _$ProfileFiltersDataImpl extends _ProfileFiltersData with DiagnosticableTr
       ..add(DiagnosticsProperty('showOnlyFavorites', showOnlyFavorites))
       ..add(DiagnosticsProperty('filters', filters))
       ..add(DiagnosticsProperty('attributeIdAndAttributeFilterMap', attributeIdAndAttributeFilterMap))
+      ..add(DiagnosticsProperty('minAge', minAge))
+      ..add(DiagnosticsProperty('maxAge', maxAge))
       ..add(DiagnosticsProperty('edited', edited));
   }
 
@@ -113,6 +129,10 @@ class _$ProfileFiltersDataImpl extends _ProfileFiltersData with DiagnosticableTr
           other.filters == filters) &&
         (identical(other.attributeIdAndAttributeFilterMap, attributeIdAndAttributeFilterMap) ||
           other.attributeIdAndAttributeFilterMap == attributeIdAndAttributeFilterMap) &&
+        (identical(other.minAge, minAge) ||
+          other.minAge == minAge) &&
+        (identical(other.maxAge, maxAge) ||
+          other.maxAge == maxAge) &&
         (identical(other.edited, edited) ||
           other.edited == edited)
     );
@@ -126,6 +146,8 @@ class _$ProfileFiltersDataImpl extends _ProfileFiltersData with DiagnosticableTr
     showOnlyFavorites,
     filters,
     attributeIdAndAttributeFilterMap,
+    minAge,
+    maxAge,
     edited,
   );
 
@@ -136,6 +158,8 @@ class _$ProfileFiltersDataImpl extends _ProfileFiltersData with DiagnosticableTr
     Object? showOnlyFavorites,
     Object? filters = _detectDefaultValueInCopyWith,
     Object? attributeIdAndAttributeFilterMap,
+    Object? minAge,
+    Object? maxAge,
     Object? edited,
   }) => _$ProfileFiltersDataImpl(
     updateState: (updateState ?? this.updateState) as UpdateState,
@@ -143,6 +167,8 @@ class _$ProfileFiltersDataImpl extends _ProfileFiltersData with DiagnosticableTr
     showOnlyFavorites: (showOnlyFavorites ?? this.showOnlyFavorites) as bool,
     filters: (filters == _detectDefaultValueInCopyWith ? this.filters : filters) as GetProfileFilters?,
     attributeIdAndAttributeFilterMap: (attributeIdAndAttributeFilterMap ?? this.attributeIdAndAttributeFilterMap) as Map<int, ProfileAttributeFilterValueUpdate>,
+    minAge: (minAge ?? this.minAge) as int,
+    maxAge: (maxAge ?? this.maxAge) as int,
     edited: (edited ?? this.edited) as EditedFiltersData,
   );
 }
@@ -163,6 +189,8 @@ mixin _$EditedFiltersData {
   EditValue<ProfileTextMinCharactersFilter> get profileTextMinCharactersFilter => throw _privateConstructorErrorEditedFiltersData;
   EditValue<ProfileTextMaxCharactersFilter> get profileTextMaxCharactersFilter => throw _privateConstructorErrorEditedFiltersData;
   bool? get randomProfileOrder => throw _privateConstructorErrorEditedFiltersData;
+  int? get minAge => throw _privateConstructorErrorEditedFiltersData;
+  int? get maxAge => throw _privateConstructorErrorEditedFiltersData;
 
   EditedFiltersData copyWith({
     Map<int, ProfileAttributeFilterValueUpdate>? attributeIdAndAttributeFilterMap,
@@ -175,6 +203,8 @@ mixin _$EditedFiltersData {
     EditValue<ProfileTextMinCharactersFilter>? profileTextMinCharactersFilter,
     EditValue<ProfileTextMaxCharactersFilter>? profileTextMaxCharactersFilter,
     bool? randomProfileOrder,
+    int? minAge,
+    int? maxAge,
   }) => throw _privateConstructorErrorEditedFiltersData;
 }
 
@@ -191,6 +221,8 @@ abstract class _EditedFiltersData implements EditedFiltersData {
     EditValue<ProfileTextMinCharactersFilter> profileTextMinCharactersFilter,
     EditValue<ProfileTextMaxCharactersFilter> profileTextMaxCharactersFilter,
     bool? randomProfileOrder,
+    int? minAge,
+    int? maxAge,
   }) = _$EditedFiltersDataImpl;
 }
 
@@ -216,6 +248,8 @@ class _$EditedFiltersDataImpl with DiagnosticableTreeMixin implements _EditedFil
     this.profileTextMinCharactersFilter = _profileTextMinCharactersFilterDefaultValue,
     this.profileTextMaxCharactersFilter = _profileTextMaxCharactersFilterDefaultValue,
     this.randomProfileOrder,
+    this.minAge,
+    this.maxAge,
   });
 
   @override
@@ -238,10 +272,14 @@ class _$EditedFiltersDataImpl with DiagnosticableTreeMixin implements _EditedFil
   final EditValue<ProfileTextMaxCharactersFilter> profileTextMaxCharactersFilter;
   @override
   final bool? randomProfileOrder;
+  @override
+  final int? minAge;
+  @override
+  final int? maxAge;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'EditedFiltersData(attributeIdAndAttributeFilterMap: $attributeIdAndAttributeFilterMap, lastSeenTimeFilter: $lastSeenTimeFilter, unlimitedLikesFilter: $unlimitedLikesFilter, minDistanceKmFilter: $minDistanceKmFilter, maxDistanceKmFilter: $maxDistanceKmFilter, profileCreatedFilter: $profileCreatedFilter, profileEditedFilter: $profileEditedFilter, profileTextMinCharactersFilter: $profileTextMinCharactersFilter, profileTextMaxCharactersFilter: $profileTextMaxCharactersFilter, randomProfileOrder: $randomProfileOrder)';
+    return 'EditedFiltersData(attributeIdAndAttributeFilterMap: $attributeIdAndAttributeFilterMap, lastSeenTimeFilter: $lastSeenTimeFilter, unlimitedLikesFilter: $unlimitedLikesFilter, minDistanceKmFilter: $minDistanceKmFilter, maxDistanceKmFilter: $maxDistanceKmFilter, profileCreatedFilter: $profileCreatedFilter, profileEditedFilter: $profileEditedFilter, profileTextMinCharactersFilter: $profileTextMinCharactersFilter, profileTextMaxCharactersFilter: $profileTextMaxCharactersFilter, randomProfileOrder: $randomProfileOrder, minAge: $minAge, maxAge: $maxAge)';
   }
 
   @override
@@ -258,7 +296,9 @@ class _$EditedFiltersDataImpl with DiagnosticableTreeMixin implements _EditedFil
       ..add(DiagnosticsProperty('profileEditedFilter', profileEditedFilter))
       ..add(DiagnosticsProperty('profileTextMinCharactersFilter', profileTextMinCharactersFilter))
       ..add(DiagnosticsProperty('profileTextMaxCharactersFilter', profileTextMaxCharactersFilter))
-      ..add(DiagnosticsProperty('randomProfileOrder', randomProfileOrder));
+      ..add(DiagnosticsProperty('randomProfileOrder', randomProfileOrder))
+      ..add(DiagnosticsProperty('minAge', minAge))
+      ..add(DiagnosticsProperty('maxAge', maxAge));
   }
 
   @override
@@ -285,7 +325,11 @@ class _$EditedFiltersDataImpl with DiagnosticableTreeMixin implements _EditedFil
         (identical(other.profileTextMaxCharactersFilter, profileTextMaxCharactersFilter) ||
           other.profileTextMaxCharactersFilter == profileTextMaxCharactersFilter) &&
         (identical(other.randomProfileOrder, randomProfileOrder) ||
-          other.randomProfileOrder == randomProfileOrder)
+          other.randomProfileOrder == randomProfileOrder) &&
+        (identical(other.minAge, minAge) ||
+          other.minAge == minAge) &&
+        (identical(other.maxAge, maxAge) ||
+          other.maxAge == maxAge)
     );
   }
 
@@ -302,6 +346,8 @@ class _$EditedFiltersDataImpl with DiagnosticableTreeMixin implements _EditedFil
     profileTextMinCharactersFilter,
     profileTextMaxCharactersFilter,
     randomProfileOrder,
+    minAge,
+    maxAge,
   );
 
   @override
@@ -316,6 +362,8 @@ class _$EditedFiltersDataImpl with DiagnosticableTreeMixin implements _EditedFil
     Object? profileTextMinCharactersFilter,
     Object? profileTextMaxCharactersFilter,
     Object? randomProfileOrder = _detectDefaultValueInCopyWith,
+    Object? minAge = _detectDefaultValueInCopyWith,
+    Object? maxAge = _detectDefaultValueInCopyWith,
   }) => _$EditedFiltersDataImpl(
     attributeIdAndAttributeFilterMap: (attributeIdAndAttributeFilterMap == _detectDefaultValueInCopyWith ? this.attributeIdAndAttributeFilterMap : attributeIdAndAttributeFilterMap) as Map<int, ProfileAttributeFilterValueUpdate>?,
     lastSeenTimeFilter: (lastSeenTimeFilter ?? this.lastSeenTimeFilter) as EditValue<LastSeenTimeFilter>,
@@ -327,5 +375,7 @@ class _$EditedFiltersDataImpl with DiagnosticableTreeMixin implements _EditedFil
     profileTextMinCharactersFilter: (profileTextMinCharactersFilter ?? this.profileTextMinCharactersFilter) as EditValue<ProfileTextMinCharactersFilter>,
     profileTextMaxCharactersFilter: (profileTextMaxCharactersFilter ?? this.profileTextMaxCharactersFilter) as EditValue<ProfileTextMaxCharactersFilter>,
     randomProfileOrder: (randomProfileOrder == _detectDefaultValueInCopyWith ? this.randomProfileOrder : randomProfileOrder) as bool?,
+    minAge: (minAge == _detectDefaultValueInCopyWith ? this.minAge : minAge) as int?,
+    maxAge: (maxAge == _detectDefaultValueInCopyWith ? this.maxAge : maxAge) as int?,
   );
 }

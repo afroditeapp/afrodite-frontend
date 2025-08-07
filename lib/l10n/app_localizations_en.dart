@@ -1027,6 +1027,12 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get profile_filters_screen_max_age_filter => 'Max age';
+
+  @override
+  String get profile_filters_screen_min_age_filter => 'Min age';
+
+  @override
   String get profile_filters_screen_profile_created_filter => 'Profile created';
 
   @override
@@ -1293,16 +1299,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get report_screen_title => 'Report';
-
-  @override
-  String get search_settings_screen_age_range_is_invalid =>
-      'Age range is invalid';
-
-  @override
-  String get search_settings_screen_age_range_max_value_title => 'Max age';
-
-  @override
-  String get search_settings_screen_age_range_min_value_title => 'Min age';
 
   @override
   String get search_settings_screen_automatic_search => 'Automatic search';

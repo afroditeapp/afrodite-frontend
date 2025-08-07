@@ -1,5 +1,6 @@
 
 
+import 'package:app/utils/age.dart';
 import 'package:flutter/material.dart';
 import "package:freezed_annotation/freezed_annotation.dart";
 import 'package:flutter/foundation.dart';
@@ -18,6 +19,8 @@ class ProfileFiltersData with _$ProfileFiltersData, UpdateStateProvider {
     @Default(false) bool showOnlyFavorites,
     GetProfileFilters? filters,
     @Default({}) Map<int, ProfileAttributeFilterValueUpdate> attributeIdAndAttributeFilterMap,
+    @Default(MIN_AGE) int minAge,
+    @Default(MAX_AGE) int maxAge,
     required EditedFiltersData edited,
   }) = _ProfileFiltersData;
 
@@ -50,7 +53,9 @@ class ProfileFiltersData with _$ProfileFiltersData, UpdateStateProvider {
     edited.profileEditedFilter.unsavedChanges() ||
     edited.profileTextMinCharactersFilter.unsavedChanges() ||
     edited.profileTextMaxCharactersFilter.unsavedChanges() ||
-    edited.randomProfileOrder != null;
+    edited.randomProfileOrder != null ||
+    edited.minAge != null ||
+    edited.maxAge != null;
 
   Map<int, ProfileAttributeFilterValueUpdate> valueAttributeFilters() => edited.attributeIdAndAttributeFilterMap ?? attributeIdAndAttributeFilterMap;
   LastSeenTimeFilter? valueLastSeenTimeFilter() => edited.lastSeenTimeFilter.editedValue(filters?.lastSeenTimeFilter);
@@ -62,6 +67,8 @@ class ProfileFiltersData with _$ProfileFiltersData, UpdateStateProvider {
   ProfileTextMinCharactersFilter? valueProfileTextMinCharacters() => edited.profileTextMinCharactersFilter.editedValue(filters?.profileTextMinCharactersFilter);
   ProfileTextMaxCharactersFilter? valueProfileTextMaxCharacters() => edited.profileTextMaxCharactersFilter.editedValue(filters?.profileTextMaxCharactersFilter);
   bool valueRandomProfileOrder() => edited.randomProfileOrder ?? filters?.randomProfileOrder ?? false;
+  int valueMinAge() => edited.minAge ?? minAge;
+  int valueMaxAge() => edited.maxAge ?? maxAge;
 }
 
 @freezed
@@ -77,6 +84,8 @@ class EditedFiltersData with _$EditedFiltersData {
     @Default(NoEdit()) EditValue<ProfileTextMinCharactersFilter> profileTextMinCharactersFilter,
     @Default(NoEdit()) EditValue<ProfileTextMaxCharactersFilter> profileTextMaxCharactersFilter,
     bool? randomProfileOrder,
+    int? minAge,
+    int? maxAge,
   }) = _EditedFiltersData;
 }
 

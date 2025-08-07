@@ -1797,6 +1797,18 @@ abstract class AppLocalizations {
   /// **'Min {p0} km'**
   String profile_filters_screen_distance_filter_min_value(String p0);
 
+  /// Title for max profile age filter
+  ///
+  /// In en, this message translates to:
+  /// **'Max age'**
+  String get profile_filters_screen_max_age_filter;
+
+  /// Title for min profile age filter
+  ///
+  /// In en, this message translates to:
+  /// **'Min age'**
+  String get profile_filters_screen_min_age_filter;
+
   /// Title for profile created time filter
   ///
   /// In en, this message translates to:
@@ -2210,24 +2222,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Report'**
   String get report_screen_title;
-
-  /// Snackbar text about invalid age range
-  ///
-  /// In en, this message translates to:
-  /// **'Age range is invalid'**
-  String get search_settings_screen_age_range_is_invalid;
-
-  /// Title for search age range max value text field
-  ///
-  /// In en, this message translates to:
-  /// **'Max age'**
-  String get search_settings_screen_age_range_max_value_title;
-
-  /// Title for search age range min value text field
-  ///
-  /// In en, this message translates to:
-  /// **'Min age'**
-  String get search_settings_screen_age_range_min_value_title;
 
   /// Title for automatic profile search settings category
   ///

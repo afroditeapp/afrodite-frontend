@@ -1225,6 +1225,14 @@
       }
     }
   },
+  "profile_filters_screen_max_age_filter": "Max age",
+  "@profile_filters_screen_max_age_filter": {
+    "description": "Title for max profile age filter"
+  },
+  "profile_filters_screen_min_age_filter": "Min age",
+  "@profile_filters_screen_min_age_filter": {
+    "description": "Title for min profile age filter"
+  },
   "profile_filters_screen_profile_created_filter": "Profile created",
   "@profile_filters_screen_profile_created_filter": {
     "description": "Title for profile created time filter"
@@ -1542,18 +1550,6 @@
   "report_screen_title": "Report",
   "@report_screen_title": {
     "description": "Title for report screen"
-  },
-  "search_settings_screen_age_range_is_invalid": "Age range is invalid",
-  "@search_settings_screen_age_range_is_invalid": {
-    "description": "Snackbar text about invalid age range"
-  },
-  "search_settings_screen_age_range_max_value_title": "Max age",
-  "@search_settings_screen_age_range_max_value_title": {
-    "description": "Title for search age range max value text field"
-  },
-  "search_settings_screen_age_range_min_value_title": "Min age",
-  "@search_settings_screen_age_range_min_value_title": {
-    "description": "Title for search age range min value text field"
   },
   "search_settings_screen_automatic_search": "Automatic search",
   "@search_settings_screen_automatic_search": {

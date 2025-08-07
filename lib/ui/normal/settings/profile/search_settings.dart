@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:app/localizations.dart';
 import 'package:app/logic/app/navigator_state.dart';
-import 'package:app/logic/profile/my_profile.dart';
 import 'package:app/logic/settings/search_settings.dart';
 import 'package:app/model/freezed/logic/account/initial_setup.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
@@ -17,7 +16,6 @@ import 'package:app/ui_utils/common_update_logic.dart';
 import 'package:app/ui_utils/consts/colors.dart';
 import 'package:app/ui_utils/consts/padding.dart';
 import 'package:app/ui_utils/dialog.dart';
-import 'package:app/ui_utils/dropdown_menu.dart';
 import 'package:app/ui_utils/icon_button.dart';
 import 'package:app/ui_utils/padding.dart';
 import 'package:app/ui_utils/snack_bar.dart';
@@ -48,20 +46,10 @@ class _SearchSettingsScreenState extends State<SearchSettingsScreen> {
     super.initState();
 
     widget.searchSettingsBloc.add(ResetEditedValues());
-
-    initialMinAge = widget.searchSettingsBloc.state.minAge;
-    initialMaxAge = widget.searchSettingsBloc.state.maxAge;
   }
 
   void validateAndSaveData(BuildContext context) {
     final s = widget.searchSettingsBloc.state;
-
-    final minAge = s.valueMinAge();
-    final maxAge = s.valueMaxAge();
-    if (!ageRangeIsValid(minAge, maxAge)) {
-      showSnackBar(context.strings.search_settings_screen_age_range_is_invalid);
-      return;
-    }
 
     final gender = s.valueGender();
     if (gender == null) {
@@ -138,26 +126,6 @@ class _SearchSettingsScreenState extends State<SearchSettingsScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Padding(padding: EdgeInsets.all(8)),
-          Row(
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  hPad(Text(context.strings.search_settings_screen_age_range_min_value_title)),
-                  hPad(minAgeField(context)),
-                ],
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(context.strings.search_settings_screen_age_range_max_value_title),
-                  maxAgeField(context),
-                ],
-              ),
-            ],
-          ),
           hPad(Text(context.strings.search_settings_screen_change_gender_filter_action_tile)),
           const Padding(padding: EdgeInsets.all(4)),
           editGenderFilter(state),
@@ -190,48 +158,6 @@ class _SearchSettingsScreenState extends State<SearchSettingsScreen> {
       onStartEditor: () => MyNavigator.push(context, const MaterialPage<void>(child: EditGenderFilterScreen())),
       genderSearchSetting: state.valueGenderSearchSettingsAll(),
       gender: state.valueGender(),
-    );
-  }
-
-  Widget minAgeField(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: AgeDropdown(
-        getMinValue: () => MIN_AGE,
-        getMaxValue: () {
-          final currentAge = context.read<MyProfileBloc>().state.profile?.age;
-          if (currentAge != null) {
-            return currentAge;
-          } else {
-            return MAX_AGE;
-          }
-        },
-        getInitialValue: () => initialMinAge,
-        onChanged: (value) {
-          context.read<SearchSettingsBloc>().add(UpdateMinAge(value));
-        },
-      ),
-    );
-  }
-
-  Widget maxAgeField(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: AgeDropdown(
-        getMinValue: () {
-          final currentAge = context.read<MyProfileBloc>().state.profile?.age;
-          if (currentAge != null) {
-            return currentAge;
-          } else {
-            return MIN_AGE;
-          }
-        },
-        getMaxValue: () => MAX_AGE,
-        getInitialValue: () => initialMaxAge,
-        onChanged: (value) {
-          context.read<SearchSettingsBloc>().add(UpdateMaxAge(value));
-        },
-      ),
     );
   }
 

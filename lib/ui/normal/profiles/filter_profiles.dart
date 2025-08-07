@@ -1,13 +1,17 @@
 
 import 'dart:math';
 
+import 'package:app/logic/profile/my_profile.dart';
 import 'package:app/ui_utils/attribute/attribute.dart';
 import 'package:app/ui_utils/consts/colors.dart';
 import 'package:app/ui_utils/consts/corners.dart';
 import 'package:app/ui_utils/consts/icons.dart';
 import 'package:app/ui_utils/consts/size.dart';
 import 'package:app/ui_utils/dialog.dart';
+import 'package:app/ui_utils/dropdown_menu.dart';
+import 'package:app/ui_utils/padding.dart';
 import 'package:app/ui_utils/snack_bar.dart';
+import 'package:app/utils/age.dart';
 import 'package:app/utils/list.dart';
 import 'package:app/utils/option.dart';
 import 'package:flutter/material.dart';
@@ -57,11 +61,16 @@ class ProfileFiltersPage extends StatefulWidget {
 }
 
 class _ProfileFiltersPageState extends State<ProfileFiltersPage> {
+  int initialMinAge = MIN_AGE;
+  int initialMaxAge = MAX_AGE;
 
   @override
   void initState() {
     super.initState();
     widget.profileFiltersBloc.add(ResetEditedValues());
+
+    initialMinAge = widget.profileFiltersBloc.state.minAge;
+    initialMaxAge = widget.profileFiltersBloc.state.maxAge;
   }
 
   @override
@@ -115,6 +124,8 @@ class _ProfileFiltersPageState extends State<ProfileFiltersPage> {
     return SingleChildScrollView(
       child: Column(
         children: <Widget>[
+          selectMinAndMaxAge(context),
+          const Divider(),
           const EditAttributeFilters(),
           const Divider(),
           unlimitedLikesSetting(context),
@@ -153,6 +164,75 @@ class _ProfileFiltersPageState extends State<ProfileFiltersPage> {
           const Divider(),
           profileTextFilter(context),
         ],
+      ),
+    );
+  }
+
+  // TODO(prod): After changing profile age it is possible to
+  //             try to save invalid min and max age range.
+  //             Consider replacing the dropdowns with range slider.
+
+  Widget selectMinAndMaxAge(BuildContext context) {
+    return Row(
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            hPad(Text(context.strings.profile_filters_screen_min_age_filter)),
+            hPad(minAgeField(context)),
+          ],
+        ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(context.strings.profile_filters_screen_max_age_filter),
+            maxAgeField(context),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget minAgeField(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: AgeDropdown(
+        getMinValue: () => MIN_AGE,
+        getMaxValue: () {
+          final currentAge = context.read<MyProfileBloc>().state.profile?.age;
+          if (currentAge != null) {
+            return currentAge;
+          } else {
+            return MAX_AGE;
+          }
+        },
+        getInitialValue: () => initialMinAge,
+        onChanged: (value) {
+          widget.profileFiltersBloc.add(UpdateMinAge(value));
+        },
+      ),
+    );
+  }
+
+  Widget maxAgeField(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: AgeDropdown(
+        getMinValue: () {
+          final currentAge = context.read<MyProfileBloc>().state.profile?.age;
+          if (currentAge != null) {
+            return currentAge;
+          } else {
+            return MIN_AGE;
+          }
+        },
+        getMaxValue: () => MAX_AGE,
+        getInitialValue: () => initialMaxAge,
+        onChanged: (value) {
+          widget.profileFiltersBloc.add(UpdateMaxAge(value));
+        },
       ),
     );
   }
