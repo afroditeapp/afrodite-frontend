@@ -4,6 +4,7 @@ import 'dart:collection';
 import 'dart:math';
 
 import 'package:app/ui/utils/view_metrics.dart';
+import 'package:app/ui_utils/data_editor/base.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/padding.dart';
 import 'package:app/utils/api.dart';
@@ -70,7 +71,7 @@ class MetricGroupManager {
   }
 }
 
-class ViewMultipleMetricsController {
+class ViewMultipleMetricsController extends BaseDataManager {
   MetricGroupManager group = MetricGroupManager();
 
   double minDataValue = 0;
@@ -86,6 +87,8 @@ class ViewMultipleMetricsController {
 
   double xMinFiltered = 0;
   double xMaxFiltered = 0;
+
+  bool showTextFieldControls = false;
 
   void updateData(List<Metric> newData) {
     group.updateData(newData);
@@ -110,10 +113,16 @@ class ViewMultipleMetricsController {
 
     selectedMin = selectedMin.clamp(minDataValue, maxDataValue);
     selectedMax = selectedMax.clamp(minDataValue, maxDataValue);
-    _refreshSelected(selectedMin, selectedMax);
+    refreshSelected(selectedMin, selectedMax);
   }
 
-  void _refreshSelected(double newMin, double newMax) {
+  void refreshSelected(double newMin, double newMax) {
+    if (newMin > newMax) {
+      newMax = newMin;
+    }
+    if (newMax < newMin) {
+      newMin = newMax;
+    }
     selectedMin = newMin.clamp(minDataValue, maxDataValue);
     selectedMax = newMax.clamp(minDataValue, maxDataValue);
     filteredList = data
@@ -135,7 +144,7 @@ class ViewMultipleMetricsController {
   void updateGroupSelection(String selected) {
     group.selectedGroup = selected;
     _groupChangeRefresh();
-    _refreshSelected(minDataValue, maxDataValue);
+    refreshSelected(minDataValue, maxDataValue);
   }
 }
 
@@ -148,7 +157,11 @@ class ViewMultipleMetrics extends StatefulWidget {
   State<ViewMultipleMetrics> createState() => _ViewMultipleMetricsState();
 }
 
-class _ViewMultipleMetricsState extends State<ViewMultipleMetrics> {
+class _ViewMultipleMetricsState extends State<ViewMultipleMetrics> with RefreshSupport<ViewMultipleMetrics> {
+
+  @override
+  BaseDataManager get baseDataManager => widget.controller;
+
   @override
   Widget build(BuildContext context) {
     return displayData(context);
@@ -192,7 +205,7 @@ class _ViewMultipleMetricsState extends State<ViewMultipleMetrics> {
           max: widget.controller.maxDataValue,
           onChanged: (RangeValues values) {
             setState(() {
-              widget.controller._refreshSelected(values.start, values.end);
+              widget.controller.refreshSelected(values.start, values.end);
             });
           },
         ),
@@ -203,6 +216,41 @@ class _ViewMultipleMetricsState extends State<ViewMultipleMetrics> {
             Text("${widget.controller.selectedMin.toStringAsFixed(0)}, ${widget.controller.selectedMax.toStringAsFixed(0)}"),
             Spacer(),
             Text("${widget.controller.maxDataValue}"),
+          ],
+        )),
+        if (widget.controller.showTextFieldControls) hPad(Row(
+          spacing: 8,
+          children: [
+            Expanded(
+              child: TextField(
+                onChanged: (value) {
+                    final number = double.tryParse(value);
+                    if (number != null) {
+                      setState(() {
+                        widget.controller.refreshSelected(number, widget.controller.selectedMax);
+                      });
+                    }
+                },
+                onTapOutside: (_) {
+                  FocusScope.of(context).unfocus();
+                },
+              ),
+            ),
+            Expanded(
+              child: TextField(
+                onChanged: (value) {
+                    final number = double.tryParse(value);
+                    if (number != null) {
+                      setState(() {
+                        widget.controller.refreshSelected(widget.controller.selectedMin, number);
+                      });
+                    }
+                },
+                onTapOutside: (_) {
+                  FocusScope.of(context).unfocus();
+                },
+              ),
+            ),
           ],
         )),
         Expanded(
@@ -290,6 +338,13 @@ class ViewMultipleMetricsActions extends StatelessWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
+        IconButton(
+          onPressed: () {
+            controller.showTextFieldControls = !controller.showTextFieldControls;
+            controller.triggerUiRefresh();
+          },
+          icon: const Icon(Icons.text_fields),
+        ),
         IconButton(
           onPressed: () async {
             final visibleMetrics = controller.filteredList.map((v) => v.$2.name).join("\n");
