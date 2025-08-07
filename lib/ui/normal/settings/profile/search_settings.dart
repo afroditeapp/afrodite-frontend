@@ -130,8 +130,6 @@ class _SearchSettingsScreenState extends State<SearchSettingsScreen> {
           const Padding(padding: EdgeInsets.all(4)),
           editGenderFilter(state),
           const Padding(padding: EdgeInsets.all(4)),
-          hPad(Text(context.strings.search_settings_screen_help_text)),
-          const Padding(padding: EdgeInsets.all(4)),
           settingsCategoryTitle(context, context.strings.search_settings_screen_automatic_search),
           distanceWidget(context, state),
           filtersWidget(context, state),

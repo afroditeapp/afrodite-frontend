@@ -356,7 +356,6 @@
 
     <!-- Search settings screen -->
     <string name="search_settings_screen_title" description="Title for search settings">Profile search</string>
-    <string name="search_settings_screen_help_text" description="Note about search behavior">Profile grid only shows profiles which match with the above values.</string>
     <string name="search_settings_screen_change_gender_filter_action_tile" description="Title for change gender filter value action">Gender filter</string>
     <string name="search_settings_screen_change_my_gender_action_title" description="Title for change my profile's gender action">Change my profile\'s gender</string>
     <string name="search_settings_screen_gender_is_not_selected" description="Snackbar text about missing gender information">Your gender information is not set</string>

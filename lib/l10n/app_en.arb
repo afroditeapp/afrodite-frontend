@@ -1579,10 +1579,6 @@
   "@search_settings_screen_gender_is_not_selected": {
     "description": "Snackbar text about missing gender information"
   },
-  "search_settings_screen_help_text": "Profile grid only shows profiles which match with the above values.",
-  "@search_settings_screen_help_text": {
-    "description": "Note about search behavior"
-  },
   "search_settings_screen_new_profiles": "Show only new profiles",
   "@search_settings_screen_new_profiles": {
     "description": "Title text for new profiles setting"

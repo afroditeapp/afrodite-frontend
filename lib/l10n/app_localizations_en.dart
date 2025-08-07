@@ -1327,10 +1327,6 @@ class AppLocalizationsEn extends AppLocalizations {
       'Your gender information is not set';
 
   @override
-  String get search_settings_screen_help_text =>
-      'Profile grid only shows profiles which match with the above values.';
-
-  @override
   String get search_settings_screen_new_profiles => 'Show only new profiles';
 
   @override

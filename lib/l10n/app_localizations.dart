@@ -2265,12 +2265,6 @@ abstract class AppLocalizations {
   /// **'Your gender information is not set'**
   String get search_settings_screen_gender_is_not_selected;
 
-  /// Note about search behavior
-  ///
-  /// In en, this message translates to:
-  /// **'Profile grid only shows profiles which match with the above values.'**
-  String get search_settings_screen_help_text;
-
   /// Title text for new profiles setting
   ///
   /// In en, this message translates to:
