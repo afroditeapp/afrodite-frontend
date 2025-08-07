@@ -12,13 +12,19 @@ import 'package:app/api/api_manager.dart';
 import 'package:app/utils/result.dart';
 import 'package:utils/utils.dart';
 
-void openViewIpCountryStatisticsScreen(BuildContext context, String title, ApiManager api, {bool daily = false, bool fromRam = false}) {
+void openViewIpCountryStatisticsScreen(
+  BuildContext context,
+  String title,
+  ApiManager api,
+  {bool daily = false, bool fromRam = false, String? dataAttribution}
+) {
   MyNavigator.push(
     context,
     MaterialPage<void>(
       child: ViewMetricsScreen(
         title: title,
         metrics: GetIpCountryHistory(api, daily: daily, fromRam: fromRam),
+        dataAttribution: dataAttribution,
       )
     ),
   );

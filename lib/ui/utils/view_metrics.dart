@@ -10,7 +10,8 @@ import 'package:app/utils/result.dart';
 class ViewMetricsScreen extends StatefulWidget {
   final String title;
   final GetMetrics metrics;
-  const ViewMetricsScreen({required this.title, required this.metrics, super.key});
+  final String? dataAttribution;
+  const ViewMetricsScreen({required this.title, required this.metrics, this.dataAttribution, super.key});
 
   @override
   State<ViewMetricsScreen> createState() => _ViewMetricsScreenState();
@@ -82,7 +83,17 @@ class _ViewMetricsScreenState extends State<ViewMetricsScreen> {
     } else if (data == null || isLoading) {
       return buildProgressIndicator();
     } else {
-      return displayData(data);
+      final dataAttribution = widget.dataAttribution;
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(child: displayData(data)),
+          if (dataAttribution != null) Padding(
+            padding: EdgeInsetsGeometry.only(left: 16, right: 16, bottom: 16, top: 0),
+            child: Text(dataAttribution),
+          )
+        ],
+      );
     }
   }
 

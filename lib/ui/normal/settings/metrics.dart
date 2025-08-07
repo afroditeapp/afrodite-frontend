@@ -1,6 +1,7 @@
 
 import 'package:app/data/login_repository.dart';
 import 'package:app/localizations.dart';
+import 'package:app/logic/account/client_features_config.dart';
 import 'package:app/ui/normal/settings/admin.dart';
 import 'package:app/ui/normal/settings/admin/profile_statistics_history.dart';
 import 'package:app/ui/normal/settings/admin/view_client_version_statistics.dart';
@@ -41,6 +42,7 @@ class MetricsScreen extends StatelessWidget {
 
   List<Setting> settingsList(BuildContext context, AdminSettingsPermissions permissions) {
     final api = LoginRepository.getInstance().repositories.api;
+    final ipCountryDataAttribution = context.read<ClientFeaturesConfigBloc>().state.ipCountryDataAttribution(context);
     List<Setting> settings = [];
 
     if (permissions.adminServerMaintenanceViewInfo) {
@@ -58,15 +60,15 @@ class MetricsScreen extends StatelessWidget {
       ));
       const ipCountryStatisticsHourly = "IP country statistics (hourly)";
       settings.add(Setting.createSetting(Icons.query_stats, ipCountryStatisticsHourly, () =>
-        openViewIpCountryStatisticsScreen(context, ipCountryStatisticsHourly, api)
+        openViewIpCountryStatisticsScreen(context, ipCountryStatisticsHourly, api, dataAttribution: ipCountryDataAttribution)
       ));
       const ipCountryStatisticsDaily = "IP country statistics (daily)";
       settings.add(Setting.createSetting(Icons.query_stats, ipCountryStatisticsDaily, () =>
-        openViewIpCountryStatisticsScreen(context, ipCountryStatisticsDaily, api, daily: true)
+        openViewIpCountryStatisticsScreen(context, ipCountryStatisticsDaily, api, daily: true, dataAttribution: ipCountryDataAttribution)
       ));
       const ipCountryStatisticsCounters = "IP country statistics (counters)";
       settings.add(Setting.createSetting(Icons.query_stats, ipCountryStatisticsCounters, () =>
-        openViewIpCountryStatisticsScreen(context, ipCountryStatisticsCounters, api, fromRam: true)
+        openViewIpCountryStatisticsScreen(context, ipCountryStatisticsCounters, api, fromRam: true, dataAttribution: ipCountryDataAttribution)
       ));
     }
     if (permissions.adminProfileStatistics) {
