@@ -117,6 +117,8 @@ class _ProfileFiltersPageState extends State<ProfileFiltersPage> {
         children: <Widget>[
           const EditAttributeFilters(),
           const Divider(),
+          unlimitedLikesSetting(context),
+          const Divider(),
           maxDistanceFilter(context),
           const Divider(),
           lastSeenTimeFilter(context),
@@ -150,8 +152,6 @@ class _ProfileFiltersPageState extends State<ProfileFiltersPage> {
           ),
           const Divider(),
           profileTextFilter(context),
-          const Divider(),
-          unlimitedLikesSetting(context),
         ],
       ),
     );
