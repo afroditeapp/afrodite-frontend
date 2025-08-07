@@ -7,6 +7,7 @@ import 'package:app/ui/utils/view_metrics.dart';
 import 'package:app/ui_utils/padding.dart';
 import 'package:app/utils/api.dart';
 import 'package:app/utils/time.dart';
+import 'package:collection/collection.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:openapi/api.dart';
@@ -22,7 +23,7 @@ class MetricAndMinMaxValues {
   static MetricAndMinMaxValues? create(Metric metric) {
     final values = metric.getValues();
 
-    if (values.isEmpty) {
+    if (values.isEmpty || values.firstWhereOrNull((v) => v.y != 0) == null) {
       return null;
     }
 
