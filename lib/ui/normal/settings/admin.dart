@@ -1,5 +1,4 @@
 
-import 'package:app/data/login_repository.dart';
 import 'package:app/ui/normal/settings/admin/edit_admin_notifications.dart';
 import 'package:app/ui/normal/settings/admin/edit_maintenance_notification.dart';
 import 'package:app/ui/normal/settings/admin/moderator_tasks.dart';
@@ -7,8 +6,7 @@ import 'package:app/ui/normal/settings/admin/open_account_admin_settings.dart';
 import 'package:app/ui/normal/settings/admin/server_tasks.dart';
 import 'package:app/ui/normal/settings/admin/view_accounts.dart';
 import 'package:app/ui/normal/settings/admin/view_admins.dart';
-import 'package:app/ui/normal/settings/admin/view_client_version_statistics.dart';
-import 'package:app/ui/normal/settings/admin/view_ip_country_statistics.dart';
+import 'package:app/ui/normal/settings/metrics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
@@ -18,10 +16,8 @@ import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/model/freezed/logic/account/account.dart';
 import 'package:app/ui/normal/settings.dart';
 import 'package:app/ui/normal/settings/admin/configure_backend.dart';
-import 'package:app/ui/normal/settings/admin/profile_statistics_history.dart';
 import 'package:app/ui/normal/settings/admin/server_software_update.dart';
 import 'package:app/ui/normal/settings/admin/server_system_info.dart';
-import 'package:app/ui/normal/settings/admin/view_perf_data.dart';
 
 class AdminSettingsPage extends StatelessWidget {
   const AdminSettingsPage({super.key});
@@ -50,7 +46,6 @@ class AdminSettingsPage extends StatelessWidget {
   }
 
   List<Setting> settingsList(BuildContext context, AdminSettingsPermissions permissions) {
-    final api = LoginRepository.getInstance().repositories.api;
     List<Setting> settings = [];
 
     if (
@@ -90,40 +85,15 @@ class AdminSettingsPage extends StatelessWidget {
         MyNavigator.push(context, const MaterialPage<void>(child: ServerSoftwareUpdatePage()),)
       ));
     }
-    if (permissions.adminServerMaintenanceViewInfo) {
-      const title = "View server perf data";
+    if (permissions.adminServerMaintenanceViewInfo || permissions.adminProfileStatistics) {
+      const title = "Metrics";
       settings.add(Setting.createSetting(Icons.query_stats, title, () =>
-        openViewPerfDataScreen(context, title, api)
-      ));
-      const clientVersionStatistics = "Client version statistics (hourly)";
-      settings.add(Setting.createSetting(Icons.query_stats, clientVersionStatistics, () =>
-        openViewClientVersionStatisticsScreen(context, clientVersionStatistics, api)
-      ));
-      const clientVersionStatisticsDaily = "Client version statistics (daily)";
-      settings.add(Setting.createSetting(Icons.query_stats, clientVersionStatisticsDaily, () =>
-        openViewClientVersionStatisticsScreen(context, clientVersionStatisticsDaily, api, daily: true)
-      ));
-      const ipCountryStatisticsHourly = "IP country statistics (hourly)";
-      settings.add(Setting.createSetting(Icons.query_stats, ipCountryStatisticsHourly, () =>
-        openViewIpCountryStatisticsScreen(context, ipCountryStatisticsHourly, api)
-      ));
-      const ipCountryStatisticsDaily = "IP country statistics (daily)";
-      settings.add(Setting.createSetting(Icons.query_stats, ipCountryStatisticsDaily, () =>
-        openViewIpCountryStatisticsScreen(context, ipCountryStatisticsDaily, api, daily: true)
-      ));
-      const ipCountryStatisticsCounters = "IP country statistics (counters)";
-      settings.add(Setting.createSetting(Icons.query_stats, ipCountryStatisticsCounters, () =>
-        openViewIpCountryStatisticsScreen(context, ipCountryStatisticsCounters, api, fromRam: true)
+        MyNavigator.push(context, const MaterialPage<void>(child: MetricsScreen(title: title)))
       ));
     }
     if (permissions.adminServerMaintenanceEditNotification) {
       settings.add(Setting.createSetting(Icons.settings, "Edit maintenance notification", () =>
         MyNavigator.push(context, const MaterialPage<void>(child: EditMaintenanceNotificationScreen()))
-      ));
-    }
-    if (permissions.adminProfileStatistics) {
-      settings.add(Setting.createSetting(Icons.query_stats, context.strings.profile_statistics_history_screen_title, () =>
-        openProfileStatisticsHistoryScreen(context),
       ));
     }
     if (permissions.adminFindAccountByEmail) {
