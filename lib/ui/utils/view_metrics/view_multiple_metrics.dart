@@ -4,6 +4,7 @@ import 'dart:collection';
 import 'dart:math';
 
 import 'package:app/ui/utils/view_metrics.dart';
+import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/padding.dart';
 import 'package:app/utils/api.dart';
 import 'package:app/utils/time.dart';
@@ -254,6 +255,32 @@ class _ViewMultipleMetricsState extends State<ViewMultipleMetrics> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class ViewMultipleMetricsActions extends StatelessWidget {
+  final ViewMultipleMetricsController controller;
+  const ViewMultipleMetricsActions({required this.controller, super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        IconButton(
+          onPressed: () async {
+            final visibleMetrics = controller.filteredList.map((v) => v.$2.name).join("\n");
+            final text = "Visible metrics:\n$visibleMetrics";
+            await showInfoDialog(
+              context,
+              text,
+              scrollable: true,
+            );
+          },
+          icon: const Icon(Icons.info),
+        ),
+      ],
     );
   }
 }

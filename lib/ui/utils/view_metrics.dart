@@ -52,6 +52,9 @@ class _ViewMetricsScreenState extends State<ViewMetricsScreen> {
       appBar: AppBar(
         title: Text(widget.title),
         actions: [
+          if (!viewSingle) ViewMultipleMetricsActions(
+            controller: _multipleController,
+          ),
           IconButton(
             onPressed: () async {
               setState(() {
