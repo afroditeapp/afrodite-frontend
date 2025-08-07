@@ -143,8 +143,10 @@ class _ViewSingleMetricState extends State<ViewSingleMetric> {
 
   Widget getChart(BuildContext context, Metric value) {
     final data = value.getValues();
-    var upperTimeText = true;
-
+    final diff = data.last.x - data.first.x;
+    final xAxisCenterAreaMin = data.first.x + diff / 3;
+    final xAxisCenterAreaMax = data.first.x + (diff / 3) * 2;
+    final xAxisTitleInterval = diff / 3;
     return LineChart(
       LineChartData(
         lineTouchData: LineTouchData(
@@ -177,24 +179,19 @@ class _ViewSingleMetricState extends State<ViewSingleMetric> {
             sideTitles: SideTitles(
               showTitles: true,
               reservedSize: 44,
+              interval: xAxisTitleInterval,
               getTitlesWidget: (value, meta) {
-                if (value == data[0].x) {
-                  upperTimeText = true;
-                }
-                final date = DateTime.fromMillisecondsSinceEpoch(value.toInt() * 1000, isUtc: true);
-                final time = date.toUtc();
-                // Add zero padding to formatting string
-                final timeText = "${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}";
+                final upperTimeText = value == data.first.x || value == data.last.x || (value >= xAxisCenterAreaMin && value <= xAxisCenterAreaMax);
+                final utcTime = UnixTime(ut: value.toInt()).toUtcDateTime();
+                final timeText = timeString(utcTime);
                 if (upperTimeText) {
-                  upperTimeText = false;
                   return Padding(
-                    padding: const EdgeInsets.only(top: 22),
+                    padding: const EdgeInsets.only(top: 4),
                     child: Text(timeText),
                   );
                 } else {
-                  upperTimeText = true;
                   return Padding(
-                    padding: const EdgeInsets.only(top: 2),
+                    padding: const EdgeInsets.only(top: 22),
                     child: Text(timeText),
                   );
                 }

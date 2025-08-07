@@ -109,5 +109,6 @@ abstract class Metric {
   String get name;
   String? get group;
 
+  /// The values are sorted by X coordinate
   List<FlSpot> getValues();
 }

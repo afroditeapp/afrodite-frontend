@@ -84,6 +84,9 @@ class ViewMultipleMetricsController {
   List<MetricAndMinMaxValues> data = [];
   List<(int, Metric)> filteredList = [];
 
+  double xMinFiltered = 0;
+  double xMaxFiltered = 0;
+
   void updateData(List<Metric> newData) {
     group.updateData(newData);
     _groupChangeRefresh();
@@ -120,6 +123,13 @@ class ViewMultipleMetricsController {
       })
       .map((v) => (v.$1, v.$2.metric))
       .toList();
+    xMinFiltered = double.maxFinite;
+    xMaxFiltered = -double.maxFinite;
+    for (final (_, m) in filteredList) {
+      final values = m.getValues();
+      xMinFiltered = min(xMinFiltered, values.first.x);
+      xMaxFiltered = max(xMaxFiltered, values.last.x);
+    }
   }
 
   void updateGroupSelection(String selected) {
@@ -212,6 +222,13 @@ class _ViewMultipleMetricsState extends State<ViewMultipleMetrics> {
       barWidth: 4,
     )).toList();
 
+    final xMin = widget.controller.xMinFiltered;
+    final xMax = widget.controller.xMaxFiltered;
+    final diff = xMax - xMin;
+    final xAxisCenterAreaMin = xMin + diff / 3;
+    final xAxisCenterAreaMax = xMin + (diff / 3) * 2;
+    final xAxisTitleInterval = diff / 3;
+
     return LineChart(
       LineChartData(
         lineTouchData: LineTouchData(
@@ -239,17 +256,22 @@ class _ViewMultipleMetricsState extends State<ViewMultipleMetrics> {
             sideTitles: SideTitles(
               showTitles: true,
               reservedSize: 44,
-              maxIncluded: false,
-              minIncluded: false,
+              interval: xAxisTitleInterval,
               getTitlesWidget: (value, meta) {
-                final date = DateTime.fromMillisecondsSinceEpoch(value.toInt() * 1000, isUtc: true);
-                final time = date.toUtc();
-                // Add zero padding to formatting string
-                final timeText = "${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}";
-                return Padding(
-                  padding: const EdgeInsets.only(top: 8),
-                  child: Text(timeText),
-                );
+                final upperTimeText = value == xMin || value == xMax || (value >= xAxisCenterAreaMin && value <= xAxisCenterAreaMax);
+                final utcTime = UnixTime(ut: value.toInt()).toUtcDateTime();
+                final timeText = timeString(utcTime);
+                if (upperTimeText) {
+                  return Padding(
+                    padding: const EdgeInsets.only(top: 4),
+                    child: Text(timeText),
+                  );
+                } else {
+                  return Padding(
+                    padding: const EdgeInsets.only(top: 22),
+                    child: Text(timeText),
+                  );
+                }
               },
             ),
           ),
