@@ -9,6 +9,11 @@ class AppLocalizationsSv extends AppLocalizations {
   AppLocalizationsSv([String locale = 'sv']) : super(locale);
 
   @override
+  String about_dialog_git_commit_id(String p0) {
+    return 'Version ID: $p0';
+  }
+
+  @override
   String account_banned_screen_ban_reason(String p0) {
     return 'Ban reason: $p0';
   }

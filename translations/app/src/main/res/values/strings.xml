@@ -151,6 +151,9 @@
     <!-- App bar actions -->
     <string name="app_bar_action_about" description="Title for app bar action which opens about dialog">About</string>
 
+    <!-- About dialog -->
+    <string name="about_dialog_git_commit_id" description="Text for Git commit ID">Version ID: %s</string>
+
     <!-- Image processing UI -->
     <string name="image_processing_ui_confirm_photo_dialog_title" description="Dialog title for confirming new image">Continue with this photo?</string>
     <string name="image_processing_ui_upload_in_progress_dialog_description" description="Progress dialog info text that image upload is in progress">Uploading photo</string>

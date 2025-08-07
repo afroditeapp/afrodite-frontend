@@ -32,3 +32,6 @@ const List<DeviceOrientation> DEFAULT_ORIENTATIONS = [
   DeviceOrientation.portraitUp,
   DeviceOrientation.portraitDown,
 ];
+
+const String? GIT_COMMIT_ID = bool.hasEnvironment("GIT_COMMIT_ID") ?
+  String.fromEnvironment("GIT_COMMIT_ID") : null;

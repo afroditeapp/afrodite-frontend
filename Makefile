@@ -51,6 +51,12 @@ remove-and-download-drift-web-dependencies:
 	# Download for sqlite3-2.7.5 does not exist so download older version
 	cd web && curl "https://github.com/simolus3/sqlite3.dart/releases/download/sqlite3-2.7.4/sqlite3.wasm" -L -o sqlite3.wasm
 
+build-android-release:
+	flutter build apk --release --dart-define=GIT_COMMIT_ID=`git rev-parse --short HEAD`
+
+build-ios-release:
+	flutter build ios --release --dart-define=GIT_COMMIT_ID=`git rev-parse --short HEAD`
+
 build-web-release-tar-linux:
 	flutter build web --release --wasm
 	cd build && tar --owner=0 --group=0 -czf web-release.tar.gz web

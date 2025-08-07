@@ -100,6 +100,12 @@ abstract class AppLocalizations {
     Locale('sv'),
   ];
 
+  /// Text for Git commit ID
+  ///
+  /// In en, this message translates to:
+  /// **'Version ID: {p0}'**
+  String about_dialog_git_commit_id(String p0);
+
   /// Text for account ban reason
   ///
   /// In en, this message translates to:

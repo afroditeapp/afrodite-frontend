@@ -1,4 +1,13 @@
 {
+  "about_dialog_git_commit_id": "Version ID: {p0}",
+  "@about_dialog_git_commit_id": {
+    "description": "Text for Git commit ID",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
   "account_banned_screen_ban_reason": "Ban reason: {p0}",
   "@account_banned_screen_ban_reason": {
     "description": "Text for account ban reason",

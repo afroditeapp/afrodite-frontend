@@ -1,3 +1,4 @@
+import 'package:app/config.dart';
 import 'package:app/data/app_version.dart';
 import 'package:app/model/freezed/logic/account/client_features_config.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,7 @@ void showAppAboutDialog(BuildContext context, ClientFeaturesConfigData? config) 
   // TODO(prod): Test about dialog with notification related navigation.
 
   final attributionText = config?.aboutDialogAttribution(context);
+  final commitId = GIT_COMMIT_ID;
 
   // About dialog uses root navigator as there is navigation related to
   // viewing licenses.
@@ -30,6 +32,8 @@ void showAppAboutDialog(BuildContext context, ClientFeaturesConfigData? config) 
       applicationLegalese: "© 2024 Afrodite",
       children: [
         if (attributionText != null) SelectableText(attributionText),
+        if (attributionText != null && commitId != null) Padding(padding: EdgeInsetsGeometry.only(top: 8)),
+        if (commitId != null) SelectableText(R.strings.about_dialog_git_commit_id(commitId)),
       ],
     ),
   );
