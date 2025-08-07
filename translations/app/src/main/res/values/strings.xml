@@ -69,7 +69,6 @@
     <string name="generic_weekday_sun" description="Generic short text for Sunday">Sun</string>
 
     <string name="generic_text_field_age_hint_text" description="Input field hint text for age">Insert an age between 18–99</string>
-    <string name="generic_search_settings_looking_for_all_genders_text" desctiption="Search settings radio button option for men and women who are looking all genders">All</string>
     <string name="generic_error_app_version_is_unsupported" desctiption="Snackbar text that client version is unsupported">Current app version is unsupported</string>
 
     <string name="generic_reset_to_defaults" description="Title for reset values to defaults action">Reset to default values</string>

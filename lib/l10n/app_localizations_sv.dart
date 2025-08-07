@@ -521,9 +521,6 @@ class AppLocalizationsSv extends AppLocalizations {
   String get generic_save_confirmation_title => 'Save?';
 
   @override
-  String get generic_search_settings_looking_for_all_genders_text => 'All';
-
-  @override
   String get generic_setting_saved => 'Setting saved';
 
   @override

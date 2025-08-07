@@ -114,27 +114,15 @@ class _AskSearchSettingsState extends State<AskSearchSettings> {
   Widget askGenderSearchQuestion(BuildContext context) {
     return BlocBuilder<InitialSetupBloc, InitialSetupData>(
       builder: (context, state) {
-        if (state.gender == Gender.nonBinary) {
-          return searchingCheckboxesForNonBinary(
-            context,
-            state.genderSearchSetting,
-            (isSelected, whatWasSelected) {
-              final newValue = state.genderSearchSetting.updateWith(isSelected, whatWasSelected);
-              context.read<InitialSetupBloc>().add(SetGenderSearchSetting(newValue));
-            }
-          );
-        } else {
-          return searchingRadioButtonsForMenAndWomen(
-            context,
-            state.genderSearchSetting.toGenderSearchSetting(),
-            (selected) {
-              if (selected != null) {
-                context.read<InitialSetupBloc>().add(SetGenderSearchSetting(selected.toGenderSearchSettingsAll()));
-              }
-            },
-            () => context.read<InitialSetupBloc>().state.gender,
-          );
-        }
+        return genderSearchSettingCheckboxes(
+          context,
+          state.gender,
+          state.genderSearchSetting,
+          (isSelected, whatWasSelected) {
+            final newValue = state.genderSearchSetting.updateWith(isSelected, whatWasSelected);
+            context.read<InitialSetupBloc>().add(SetGenderSearchSetting(newValue));
+          }
+        );
       }
     );
   }
@@ -182,61 +170,31 @@ class _AskSearchSettingsState extends State<AskSearchSettings> {
   }
 }
 
-Widget searchingRadioButtonsForMenAndWomen(
-  BuildContext context,
-  GenderSearchSetting? selected,
-  void Function(GenderSearchSetting?) onChanged,
-  Gender? Function() getGender,
-) {
-  final men = searchSettingRadioButton(context, selected, GenderSearchSetting.men, onChanged);
-  final women = searchSettingRadioButton(context, selected, GenderSearchSetting.women, onChanged);
-  final Widget first;
-  final Widget second;
-  if (getGender() == Gender.man) {
-    first = women;
-    second = men;
-  } else {
-    first = men;
-    second = women;
-  }
-
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: <Widget>[
-      first,
-      second,
-      searchSettingRadioButton(context, selected, GenderSearchSetting.all, onChanged),
-    ],
-  );
+List<Gender> genderSearchSettingCheckboxOrder(Gender? myProfileGender) {
+  return switch (myProfileGender) {
+    Gender.man => [Gender.woman, Gender.man, Gender.nonBinary],
+    null || Gender.woman => [Gender.man, Gender.woman, Gender.nonBinary],
+    Gender.nonBinary => [Gender.nonBinary, Gender.man, Gender.woman],
+  };
 }
 
-Widget searchSettingRadioButton(
+Widget genderSearchSettingCheckboxes(
   BuildContext context,
-  GenderSearchSetting? selected,
-  GenderSearchSetting gender,
-  void Function(GenderSearchSetting?) onChanged,
-) {
-  return RadioListTile<GenderSearchSetting>(
-    title: Text(gender.uiText(context)),
-    value: gender,
-    groupValue: selected,
-    onChanged: onChanged,
-  );
-}
-
-
-Widget searchingCheckboxesForNonBinary(
-  BuildContext context,
+  Gender? myProfileGender,
   GenderSearchSettingsAll? selected,
   void Function(bool, Gender) onChanged,
 ) {
+  final checkboxOrder = genderSearchSettingCheckboxOrder(myProfileGender);
+  final widgets = checkboxOrder.map((e) {
+    return switch (e) {
+      Gender.man => searchSettingCheckbox(context, selected?.men == true, Gender.man, onChanged),
+      Gender.woman => searchSettingCheckbox(context, selected?.women == true, Gender.woman, onChanged),
+      Gender.nonBinary => searchSettingCheckbox(context, selected?.nonBinary == true, Gender.nonBinary, onChanged),
+    };
+  }).toList();
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
-    children: <Widget>[
-      searchSettingCheckbox(context, selected?.nonBinary == true, Gender.nonBinary, onChanged),
-      searchSettingCheckbox(context, selected?.men == true, Gender.man, onChanged),
-      searchSettingCheckbox(context, selected?.women == true, Gender.woman, onChanged),
-    ],
+    children: widgets,
   );
 }
 
@@ -247,6 +205,7 @@ Widget searchSettingCheckbox(
   void Function(bool, Gender) onChanged,
 ) {
   return CheckboxListTile(
+    controlAffinity: ListTileControlAffinity.leading,
     title: Text(gender.uiTextPlural(context)),
     value: selected,
     onChanged: (value) {

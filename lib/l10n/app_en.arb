@@ -613,7 +613,6 @@
   "@generic_save_confirmation_title": {
     "description": "Generic save confirmation title text"
   },
-  "generic_search_settings_looking_for_all_genders_text": "All",
   "generic_setting_saved": "Setting saved",
   "@generic_setting_saved": {
     "description": "Generic setting saved text"

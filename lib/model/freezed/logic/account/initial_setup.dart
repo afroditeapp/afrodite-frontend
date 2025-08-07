@@ -1,4 +1,5 @@
 
+import "package:app/ui/initial_setup/search_settings.dart";
 import "package:flutter/material.dart";
 import "package:latlong2/latlong.dart";
 import "package:openapi/api.dart";
@@ -55,28 +56,6 @@ enum Gender {
   }
 }
 
-enum GenderSearchSetting {
-  men,
-  women,
-  all;
-
-  String uiText(BuildContext context) {
-    return switch (this) {
-      men => context.strings.generic_gender_man_plural,
-      women => context.strings.generic_gender_woman_plural,
-      all => context.strings.generic_search_settings_looking_for_all_genders_text,
-    };
-  }
-
-  GenderSearchSettingsAll toGenderSearchSettingsAll() {
-    return switch (this) {
-      men => const GenderSearchSettingsAll(men: true),
-      women => const GenderSearchSettingsAll(women: true),
-      all => const GenderSearchSettingsAll(men: true, women: true, nonBinary: true),
-    };
-  }
-}
-
 class GenderSearchSettingsAll {
   final bool men;
   final bool women;
@@ -86,15 +65,6 @@ class GenderSearchSettingsAll {
     this.women = false,
     this.nonBinary = false,
   });
-
-  GenderSearchSetting? toGenderSearchSetting() {
-    return switch (this) {
-      GenderSearchSettingsAll(men: true, women: true, nonBinary: true) => GenderSearchSetting.all,
-      GenderSearchSettingsAll(men: true, women: false) => GenderSearchSetting.men,
-      GenderSearchSettingsAll(women: true, men: false) => GenderSearchSetting.women,
-      _ => null,
-    };
-  }
 
   GenderSearchSettingsAll updateWith(bool value, Gender whatUpdated) {
     return switch (whatUpdated) {
@@ -109,25 +79,25 @@ class GenderSearchSettingsAll {
   }
 
   List<String> toUiTexts(BuildContext context, Gender? gender) {
-    if (gender == Gender.nonBinary) {
-      final selected = <String>[];
-      if (nonBinary) {
-        selected.add(Gender.nonBinary.uiTextPlural(context));
+    final valueOrder = genderSearchSettingCheckboxOrder(gender);
+    final selected = <String>[];
+    for (final g in valueOrder) {
+      switch (g) {
+        case Gender.man:
+          if (men) {
+            selected.add(Gender.man.uiTextPlural(context));
+          }
+        case Gender.woman:
+          if (women) {
+            selected.add(Gender.woman.uiTextPlural(context));
+          }
+        case Gender.nonBinary:
+          if (nonBinary) {
+            selected.add(Gender.nonBinary.uiTextPlural(context));
+          }
       }
-      if (men) {
-        selected.add(Gender.man.uiTextPlural(context));
-      }
-      if (women) {
-        selected.add(Gender.woman.uiTextPlural(context));
-      }
-      return selected;
-    } else {
-      final setting = toGenderSearchSetting();
-      if (setting == null) {
-        return [];
-      }
-      return [setting.uiText(context)];
     }
+    return selected;
   }
 }
 

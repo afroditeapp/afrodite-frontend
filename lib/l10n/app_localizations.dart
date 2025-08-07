@@ -955,12 +955,6 @@ abstract class AppLocalizations {
   /// **'Save?'**
   String get generic_save_confirmation_title;
 
-  /// No description provided for @generic_search_settings_looking_for_all_genders_text.
-  ///
-  /// In en, this message translates to:
-  /// **'All'**
-  String get generic_search_settings_looking_for_all_genders_text;
-
   /// Generic setting saved text
   ///
   /// In en, this message translates to:
