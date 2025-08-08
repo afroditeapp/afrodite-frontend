@@ -1,12 +1,9 @@
-import 'dart:io';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
-import 'package:app/api/error_manager.dart';
 import 'package:app/data/login_repository.dart';
 import 'package:app/data/media_repository.dart';
 import 'package:app/storage/encryption.dart';
@@ -15,8 +12,6 @@ import 'package:utils/utils.dart';
 
 import 'package:image/image.dart' as img;
 import 'package:app/model/freezed/utils/account_img_key.dart';
-import 'package:app/utils/app_error.dart';
-import 'package:app/utils/tmp_dir.dart';
 
 var log = Logger("ImageCacheData");
 
@@ -90,22 +85,26 @@ class ImageCacheData extends AppSingleton {
     }
 
     final tileResult = await media.getMapTile(z, x, y);
+    final Uint8List tilePngData;
     switch (tileResult) {
       case MapTileSuccess tileResult:
-        if (mapTileCacheKey != null) {
-          try {
-            final encryptedImgBytes = await ImageEncryptionManager.getInstance().encryptImageData(tileResult.pngData);
-            await cacheManager.putFile("null", encryptedImgBytes, key: mapTileCacheKey);
-          } catch (_) {
-            // Ignore errors
-          }
-        }
-        return tileResult.pngData;
+        tilePngData = tileResult.pngData;
       case MapTileNotAvailable():
-        return await emptyMapTile();
+        tilePngData = _cachedEmptyMapTile();
       case MapTileError():
         return null;
     }
+
+    if (mapTileCacheKey != null) {
+      try {
+        final encryptedImgBytes = await ImageEncryptionManager.getInstance().encryptImageData(tilePngData);
+        await cacheManager.putFile("null", encryptedImgBytes, key: mapTileCacheKey);
+      } catch (_) {
+        // Ignore errors
+      }
+    }
+
+    return tilePngData;
   }
 
   @override
@@ -118,36 +117,15 @@ String createMapTileKey(int z, int x, int y) {
   return "map_tile:${z}_${x}_$y";
 }
 
-Uint8List? emptyMapTilePngBytesWeb;
+Uint8List? _emptyMapTilePng;
 
-Future<Uint8List?> emptyMapTile() async {
-  if (kIsWeb) {
-    emptyMapTilePngBytesWeb ??= emptyMapTilePngBytes();
-    return emptyMapTilePngBytesWeb;
-  }
-
-  final imgFile = await TmpDirUtils.emptyMapTileFilePath();
-  if (await imgFile.exists()) {
-    final encryptedImgBytes = await imgFile.readAsBytes();
-    final decryptedImgBytes = await ImageEncryptionManager.getInstance().decryptImageData(encryptedImgBytes);
-    return decryptedImgBytes;
-  }
-
-  final pngBytes = emptyMapTilePngBytes();
-  final encryptedImgBytes = await ImageEncryptionManager.getInstance().encryptImageData(pngBytes);
-
-  try {
-    await imgFile.writeAsBytes(encryptedImgBytes.toList());
-    return pngBytes;
-  } on IOException catch (e) {
-    log.error("Image writing failed");
-    log.finer("Error: $e");
-    ErrorManager.getInstance().show(const FileError());
-    return null;
-  }
+Uint8List _cachedEmptyMapTile() {
+  final data = _emptyMapTilePng ?? _emptyMapTilePngBytes();
+  _emptyMapTilePng = data;
+  return data;
 }
 
-Uint8List emptyMapTilePngBytes() {
+Uint8List _emptyMapTilePngBytes() {
   final imageBuffer = img.Image(width: 1, height: 1);
 
   for (var pixel in imageBuffer) {
