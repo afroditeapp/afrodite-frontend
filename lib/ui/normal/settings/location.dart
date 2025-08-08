@@ -115,8 +115,17 @@ enum MapModeInternal {
   viewLocationEditButtonDisabled,
 }
 
+class IntColor {
+  final int r;
+  final int g;
+  final int b;
+  const IntColor.fromRGB(this.r, this.g, this.b);
+
+  Color toColor() => Color.fromARGB(255, r, g, b);
+}
+
 /// Zoomed out country color in OpenStreetMap tiles
-const MAP_BACKGROUND_COLOR = Color.fromARGB(255, 242, 239, 233);
+const MAP_BACKGROUND_COLOR = IntColor.fromRGB(242, 239, 233);
 
 class _LocationWidgetState extends State<LocationWidget> with SingleTickerProviderStateMixin {
   final MapController _mapController = MapController();
@@ -179,7 +188,7 @@ class _LocationWidgetState extends State<LocationWidget> with SingleTickerProvid
         onLongPress: (tapPosition, point) {
           handleOnTap(context, point);
         },
-        backgroundColor: MAP_BACKGROUND_COLOR,
+        backgroundColor: MAP_BACKGROUND_COLOR.toColor(),
       ),
       children: [
         TileLayer(
