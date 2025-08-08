@@ -63,6 +63,7 @@ ClientFeaturesConfig _emptyClientFeaturesConfig() {
         maxTileDownloading: 19,
         min: 0,
       ),
+      tileDataVersion: 0,
     ),
     limits: LimitsConfig(
       likes: LikeLimitsConfig(

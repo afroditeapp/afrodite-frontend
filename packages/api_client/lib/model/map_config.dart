@@ -15,6 +15,7 @@ class MapConfig {
   MapConfig({
     required this.bounds,
     required this.initialLocation,
+    required this.tileDataVersion,
     required this.zoom,
   });
 
@@ -23,12 +24,18 @@ class MapConfig {
 
   MapCoordinate initialLocation;
 
+  /// Increase this version number to make client to redownload cached map tiles.
+  ///
+  /// Minimum value: 0
+  int tileDataVersion;
+
   MapZoom zoom;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is MapConfig &&
     other.bounds == bounds &&
     other.initialLocation == initialLocation &&
+    other.tileDataVersion == tileDataVersion &&
     other.zoom == zoom;
 
   @override
@@ -36,15 +43,17 @@ class MapConfig {
     // ignore: unnecessary_parenthesis
     (bounds.hashCode) +
     (initialLocation.hashCode) +
+    (tileDataVersion.hashCode) +
     (zoom.hashCode);
 
   @override
-  String toString() => 'MapConfig[bounds=$bounds, initialLocation=$initialLocation, zoom=$zoom]';
+  String toString() => 'MapConfig[bounds=$bounds, initialLocation=$initialLocation, tileDataVersion=$tileDataVersion, zoom=$zoom]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'bounds'] = this.bounds;
       json[r'initial_location'] = this.initialLocation;
+      json[r'tile_data_version'] = this.tileDataVersion;
       json[r'zoom'] = this.zoom;
     return json;
   }
@@ -70,6 +79,7 @@ class MapConfig {
       return MapConfig(
         bounds: MapBounds.fromJson(json[r'bounds'])!,
         initialLocation: MapCoordinate.fromJson(json[r'initial_location'])!,
+        tileDataVersion: mapValueOfType<int>(json, r'tile_data_version')!,
         zoom: MapZoom.fromJson(json[r'zoom'])!,
       );
     }
@@ -120,6 +130,7 @@ class MapConfig {
   static const requiredKeys = <String>{
     'bounds',
     'initial_location',
+    'tile_data_version',
     'zoom',
   };
 }
