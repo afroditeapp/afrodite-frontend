@@ -193,7 +193,7 @@ class _LocationWidgetState extends State<LocationWidget> with SingleTickerProvid
       children: [
         TileLayer(
           maxNativeZoom: config.zoom.maxTileDownloading,
-          tileProvider: CustomTileProvider(),
+          tileProvider: CustomTileProvider(config.tileDataVersion),
         ),
         markerLayer(),
         attributionWidget(context),
@@ -559,19 +559,23 @@ Widget attributionWidget(BuildContext context) {
 }
 
 class CustomTileProvider extends TileProvider {
+  final int mapTileDataVersion;
+  CustomTileProvider(this.mapTileDataVersion);
+
   @override
   ImageProvider getImage(TileCoordinates coordinates, TileLayer options) {
-    return CustomImageProvider(coordinates);
+    return CustomImageProvider(coordinates, mapTileDataVersion);
   }
 }
 
-class CustomImageProvider extends ImageProvider<(int, int, int)> {
+class CustomImageProvider extends ImageProvider<(int, int, int, int)> {
   final TileCoordinates coordinates;
+  final int mapTileDataVersion;
 
-  CustomImageProvider(this.coordinates);
+  CustomImageProvider(this.coordinates, this.mapTileDataVersion);
 
   @override
-  ImageStreamCompleter loadImage((int, int, int) key, ImageDecoderCallback decode) {
+  ImageStreamCompleter loadImage((int, int, int, int) key, ImageDecoderCallback decode) {
     return OneFrameImageStreamCompleter(
       () async {
         final pngBytes =
@@ -579,6 +583,7 @@ class CustomImageProvider extends ImageProvider<(int, int, int)> {
             coordinates.z,
             coordinates.x,
             coordinates.y,
+            mapTileDataVersion,
             media: LoginRepository.getInstance().repositories.media,
           );
 
@@ -596,7 +601,7 @@ class CustomImageProvider extends ImageProvider<(int, int, int)> {
   }
 
   @override
-  Future<(int, int, int)> obtainKey(ImageConfiguration configuration) =>
-    SynchronousFuture((coordinates.z, coordinates.x, coordinates.y));
+  Future<(int, int, int, int)> obtainKey(ImageConfiguration configuration) =>
+    SynchronousFuture((coordinates.z, coordinates.x, coordinates.y, mapTileDataVersion));
 
 }

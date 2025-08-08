@@ -64,13 +64,13 @@ class ImageCacheData extends AppSingleton {
   }
 
   /// Get PNG file bytes for map tile.
-  Future<Uint8List?> getMapTile(int z, int x, int y, {required MediaRepository media}) async {
+  Future<Uint8List?> getMapTile(int z, int x, int y, int version, {required MediaRepository media}) async {
     final String? mapTileCacheKey;
     if (kIsWeb) {
       // Web uses XMLHttpRequest for caching
       mapTileCacheKey = null;
     } else {
-      final key = createMapTileKey(z, x, y);
+      final key = createMapTileKey(z, x, y, version);
       mapTileCacheKey = key;
       final fileInfo = await cacheManager.getFileFromCache(key);
       if (fileInfo != null) {
@@ -113,8 +113,8 @@ class ImageCacheData extends AppSingleton {
   }
 }
 
-String createMapTileKey(int z, int x, int y) {
-  return "map_tile:${z}_${x}_$y";
+String createMapTileKey(int z, int x, int y, int version) {
+  return "map_tile:${z}_${x}_${y}_$version";
 }
 
 Uint8List? _emptyMapTilePng;
