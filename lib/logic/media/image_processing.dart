@@ -1,5 +1,6 @@
 import "dart:typed_data";
 
+import "package:app/api/api_manager.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:logging/logging.dart";
 import "package:app/data/account_repository.dart";
@@ -33,6 +34,7 @@ class ResetState extends ImageProcessingEvent {}
 class ImageProcessingBloc extends Bloc<ImageProcessingEvent, ImageProcessingData> {
   final AccountRepository account = LoginRepository.getInstance().repositories.account;
   final MediaRepository media = LoginRepository.getInstance().repositories.media;
+  final ServerConnectionManager connection = LoginRepository.getInstance().repositories.connectionManager;
   final ImageCacheData imageCache = ImageCacheData.getInstance();
 
   ImageProcessingBloc() : super(ImageProcessingData()) {
@@ -50,6 +52,10 @@ class ImageProcessingBloc extends Bloc<ImageProcessingEvent, ImageProcessingData
       ));
 
       final currentUser = media.currentUser;
+
+      // Server connection might not exist for example if
+      // image selection takes too long.
+      await connection.tryWaitUntilConnected(waitTimeoutSeconds: 5);
 
       await for (final e in media.sendImageToSlot(data.imgBytes, data.slot, secureCapture: data.secureCapture)) {
         switch (e) {
