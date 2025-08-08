@@ -37,7 +37,7 @@ class _LoginScreenOldState extends State<LoginScreenOld> {
       changeAddressButton("http://10.0.2.2:3000"),
       changeAddressButton("http://localhost:3000"),
       changeAddressButton("http://192.168.0.13:3000"),
-      changeAddressButton(developmentServerUrl),
+      changeAddressButton(defaultServerUrl()),
       const Padding(padding: EdgeInsets.symmetric(vertical: commonPadding)),
       // const Padding(padding: EdgeInsets.symmetric(vertical: commonPadding)),
       // ElevatedButton(
