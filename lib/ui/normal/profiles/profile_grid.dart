@@ -204,7 +204,7 @@ class _ProfileGridState extends State<ProfileGrid> {
               if (state.updateState is UpdateIdle && !state.unsavedChanges()) {
                 return showGrid(context, uiSettings.gridSettings, _pagingState);
               } else {
-                return showGrid(context, uiSettings.gridSettings, _pagingState.copyAndShowLoading());
+                return showGrid(context, uiSettings.gridSettings, PagingState(isLoading: true));
               }
             }
           );
