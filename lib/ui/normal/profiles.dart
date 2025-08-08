@@ -69,16 +69,9 @@ class ProfileView extends BottomNavigationScreen {
           );
         },
       ),
-      BlocBuilder<ProfileFiltersBloc, ProfileFiltersData>(
-        builder: (context, state) {
-          return IconButton(
-            icon: Icon(state.showOnlyFavorites ? Icons.star_rounded : Icons.star_border_rounded),
-            tooltip: state.showOnlyFavorites ?
-              context.strings.profile_grid_screen_show_all_profiles_action :
-              context.strings.profile_grid_screen_show_favorite_profiles_action,
-            onPressed: () => context.read<ProfileFiltersBloc>().add(SetFavoriteProfilesFilter(!state.showOnlyFavorites)),
-          );
-        },
+      PublicProfileViewingBlocker(
+        showIfBlocked: favoritesButton(false),
+        child: favoritesButton(true),
       ),
       BlocBuilder<ProfileFiltersBloc, ProfileFiltersData>(
         builder: (context, state) {
@@ -101,6 +94,20 @@ class ProfileView extends BottomNavigationScreen {
       ),
     ];
   }
+
+  Widget favoritesButton(bool waitEventHandling) {
+    return BlocBuilder<ProfileFiltersBloc, ProfileFiltersData>(
+      builder: (context, state) {
+        return IconButton(
+          icon: Icon(state.showOnlyFavorites ? Icons.star_rounded : Icons.star_border_rounded),
+          tooltip: state.showOnlyFavorites ?
+            context.strings.profile_grid_screen_show_all_profiles_action :
+            context.strings.profile_grid_screen_show_favorite_profiles_action,
+          onPressed: () => context.read<ProfileFiltersBloc>().add(SetFavoriteProfilesFilter(!state.showOnlyFavorites, waitEventHandling)),
+        );
+      },
+    );
+  }
 }
 
 class _ProfileViewState extends State<ProfileView> {
@@ -115,20 +122,29 @@ class _ProfileViewState extends State<ProfileView> {
 }
 
 class PublicProfileViewingBlocker extends StatelessWidget {
+  final Widget? showIfBlocked;
   final Widget child;
-  const PublicProfileViewingBlocker({required this.child, super.key});
+  const PublicProfileViewingBlocker({
+    this.showIfBlocked,
+    required this.child,
+    super.key,
+  });
+
+  Widget _handleBlocked(Widget w) {
+    return showIfBlocked ?? w;
+  }
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AccountBloc, AccountBlocData>(
       builder: (context, data) {
         if (data.accountState == AccountState.initialSetup) {
-          return startInitialSetupButton(context);
+          return _handleBlocked(startInitialSetupButton(context));
         } else if (data.visibility == ProfileVisibility.public) {
           return BlocBuilder<ContentBloc, ContentData>(
             builder: (context, contentState) {
               if (contentState.isLoadingSecurityContent || contentState.isLoadingPrimaryContent) {
-                return const SizedBox.shrink();
+                return _handleBlocked(const SizedBox.shrink());
               }
 
               final securityContent = contentState.securityContent;
@@ -139,25 +155,19 @@ class PublicProfileViewingBlocker extends StatelessWidget {
                     if (primaryContent?.accepted == true) {
                       return child;
                     } else {
-                      return primaryProfileContentIsNotAccepted(context, primaryContent);
+                      return _handleBlocked(primaryProfileContentIsNotAccepted(context, primaryContent));
                     }
                   },
                 );
               } else {
-                return securityContentIsNotAccepted(context, securityContent);
+                return _handleBlocked(securityContentIsNotAccepted(context, securityContent));
               }
             },
           );
         } else if (data.visibility == ProfileVisibility.pendingPublic) {
-          return LayoutBuilder(
-            builder: (context, constraints) {
-              return SingleChildScrollView(
-                child: profileIsInModerationInfo(context),
-              );
-            }
-          );
+          return _handleBlocked(profileIsInModerationInfo(context));
         } else {
-          return profileIsSetToPrivateInfo(context);
+          return _handleBlocked(profileIsSetToPrivateInfo(context));
         }
       }
     );

@@ -46,7 +46,8 @@ class NewMaxAge extends ProfileFiltersEvent {
 }
 class SetFavoriteProfilesFilter extends ProfileFiltersEvent {
   final bool value;
-  SetFavoriteProfilesFilter(this.value);
+  final bool waitEventHandling;
+  SetFavoriteProfilesFilter(this.value, this.waitEventHandling);
 }
 class SetShowAdvancedFilters extends ProfileFiltersEvent {
   final bool value;
@@ -225,7 +226,14 @@ class ProfileFiltersBloc extends Bloc<ProfileFiltersEvent, ProfileFiltersData> w
         await profile.resetMainProfileIterator(eventHandlingTracking: isHandled);
         // Prevent showing all profiles when favorites should be shown. That
         // can happen when toggling favorites filter fast enough.
-        await isHandled.firstWhere((v) => v == true);
+        if (data.waitEventHandling) {
+          await Future.any([
+            isHandled.firstWhere((v) => v == true),
+            // Prevent favorites filter getting stuck as
+            // ProfileGrid might not exist.
+            Future<void>.delayed(Duration(seconds: 1)),
+          ]);
+        }
       });
     });
     on<SetLastSeenTimeFilter>((data, emit) {
