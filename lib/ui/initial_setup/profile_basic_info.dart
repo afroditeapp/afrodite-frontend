@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import "package:flutter/services.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:app/localizations.dart";
 import "package:app/logic/account/initial_setup.dart";
@@ -8,6 +9,7 @@ import "package:app/ui_utils/consts/padding.dart";
 import "package:app/ui_utils/initial_setup_common.dart";
 import "package:app/ui_utils/text_field.dart";
 import "package:app/utils/age.dart";
+import "package:intl/intl.dart";
 
 class AskProfileBasicInfoScreen extends StatelessWidget {
   const AskProfileBasicInfoScreen({super.key});
@@ -102,7 +104,7 @@ class _AskProfileBasicInfoState extends State<AskProfileBasicInfo> {
   }
 
   Widget askInfo(BuildContext context) {
-    final initialField = TextField(
+    final nameField = TextField(
       decoration: InputDecoration(
         hintText: context.strings.initial_setup_screen_profile_basic_info_first_name_hint_text,
       ),
@@ -114,6 +116,11 @@ class _AskProfileBasicInfoState extends State<AskProfileBasicInfo> {
       onChanged: (value) {
         widget.setterProfileName(value);
       },
+      inputFormatters: [
+        TextInputFormatter.withFunction((_, newText) {
+          return newText.copyWith(text: toBeginningOfSentenceCase(newText.text));
+        })
+      ],
     );
 
     final ageField = AgeTextField(
@@ -131,7 +138,7 @@ class _AskProfileBasicInfoState extends State<AskProfileBasicInfo> {
           context.strings.initial_setup_screen_profile_basic_info_first_name_title,
           style: Theme.of(context).textTheme.bodyLarge,
         ),
-        initialField,
+        nameField,
         Text(
           context.strings.generic_age,
           style: Theme.of(context).textTheme.bodyLarge,
