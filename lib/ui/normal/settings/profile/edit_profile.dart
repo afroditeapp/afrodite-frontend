@@ -492,7 +492,7 @@ class _EditProfileBasicInfoState extends State<EditProfileBasicInfo> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          context.strings.initial_setup_screen_profile_basic_info_age_title,
+          context.strings.generic_age,
           style: Theme.of(context).textTheme.bodyLarge,
         ),
         const Padding(padding: EdgeInsets.only(top: 8)),

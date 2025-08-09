@@ -59,6 +59,7 @@
     <string name="generic_max" description="Generic max text">Max</string>
     <string name="generic_average" description="Generic average text">Average</string>
     <string name="generic_login_progress_dialog_text" description="Generic login progress dialog text">Login…</string>
+    <string name="generic_age" description="Generic age text">Age</string>
 
     <string name="generic_weekday_mon" description="Generic short text for Monday">Mon</string>
     <string name="generic_weekday_tue" description="Generic short text for Tuesday">Tue</string>
@@ -210,7 +211,6 @@
     <string name="initial_setup_screen_profile_basic_info_title" description="Title text for asking profile information">My profile has this info…</string>
     <string name="initial_setup_screen_profile_basic_info_first_name_title" description="Title text for asking first name">First name</string>
     <string name="initial_setup_screen_profile_basic_info_first_name_hint_text" description="Input field hint text for profile first name">Insert your first name</string>
-    <string name="initial_setup_screen_profile_basic_info_age_title" description="Title text for asking age">Age</string>
     <string name="initial_setup_screen_gender_title" description="Title for ask gender screen">I am…</string>
     <string name="initial_setup_screen_search_settings_title" description="Title for ask search settings screen">I am searching for…</string>
     <string name="initial_setup_screen_search_settings_min_age_subtitle" description="Subtitle for min age search setting">…with min age…</string>

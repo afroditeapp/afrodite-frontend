@@ -703,6 +703,12 @@ abstract class AppLocalizations {
   /// **'Action completed'**
   String get generic_action_completed;
 
+  /// Generic age text
+  ///
+  /// In en, this message translates to:
+  /// **'Age'**
+  String get generic_age;
+
   /// Generic average text
   ///
   /// In en, this message translates to:
@@ -1214,12 +1220,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'My profile\'s location is…'**
   String get initial_setup_screen_location_title;
-
-  /// Title text for asking age
-  ///
-  /// In en, this message translates to:
-  /// **'Age'**
-  String get initial_setup_screen_profile_basic_info_age_title;
 
   /// Input field hint text for profile first name
   ///

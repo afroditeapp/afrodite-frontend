@@ -453,6 +453,10 @@
   "@generic_action_completed": {
     "description": "Generic action completed text"
   },
+  "generic_age": "Age",
+  "@generic_age": {
+    "description": "Generic age text"
+  },
   "generic_average": "Average",
   "@generic_average": {
     "description": "Generic average text"
@@ -799,10 +803,6 @@
   "initial_setup_screen_location_title": "My profile's location is…",
   "@initial_setup_screen_location_title": {
     "description": "Title for initial setup location screen"
-  },
-  "initial_setup_screen_profile_basic_info_age_title": "Age",
-  "@initial_setup_screen_profile_basic_info_age_title": {
-    "description": "Title text for asking age"
   },
   "initial_setup_screen_profile_basic_info_first_name_hint_text": "Insert your first name",
   "@initial_setup_screen_profile_basic_info_first_name_hint_text": {

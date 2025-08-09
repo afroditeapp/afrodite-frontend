@@ -394,6 +394,9 @@ class AppLocalizationsSv extends AppLocalizations {
   String get generic_action_completed => 'Action completed';
 
   @override
+  String get generic_age => 'Age';
+
+  @override
   String get generic_average => 'Average';
 
   @override
@@ -666,9 +669,6 @@ class AppLocalizationsSv extends AppLocalizations {
   @override
   String get initial_setup_screen_location_title =>
       'My profile\'s location is…';
-
-  @override
-  String get initial_setup_screen_profile_basic_info_age_title => 'Age';
 
   @override
   String get initial_setup_screen_profile_basic_info_first_name_hint_text =>

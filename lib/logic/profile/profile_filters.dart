@@ -94,13 +94,10 @@ class SetAttributeFilterSettings extends ProfileFiltersEvent {
   final FilterSettingsState value;
   SetAttributeFilterSettings(this.attribute, this.value);
 }
-class UpdateAgeRangeMin extends ProfileFiltersEvent {
+class UpdateAgeRange extends ProfileFiltersEvent {
   final int min;
-  UpdateAgeRangeMin(this.min);
-}
-class UpdateAgeRangeMax extends ProfileFiltersEvent {
   final int max;
-  UpdateAgeRangeMax(this.max);
+  UpdateAgeRange(this.min, this.max);
 }
 
 class ProfileFiltersBloc extends Bloc<ProfileFiltersEvent, ProfileFiltersData> with ActionRunner {
@@ -309,23 +306,8 @@ class ProfileFiltersBloc extends Bloc<ProfileFiltersEvent, ProfileFiltersData> w
         (current) => AttributeFilterUpdateBuilder.copyWithSettings(data.attribute, current, data.value),
       );
     });
-    on<UpdateAgeRangeMin>((data, emit) async {
-      var max = state.valueMaxAge();
-
-      if (data.min > max) {
-        max = data.min;
-      }
-
-      handleAgeRangeSaving(emit, data.min, max);
-    });
-    on<UpdateAgeRangeMax>((data, emit) async {
-      var min = state.valueMinAge();
-
-      if (data.max < min) {
-        min = data.max;
-      }
-
-      handleAgeRangeSaving(emit, min, data.max);
+    on<UpdateAgeRange>((data, emit) {
+      handleAgeRangeSaving(emit, data.min, data.max);
     });
 
     _showAdvancedFiltersSubscription = db.accountStream((db) => db.app.watchShowAdvancedFilters()).listen((event) {
