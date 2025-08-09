@@ -128,44 +128,38 @@ class _AskSearchSettingsState extends State<AskSearchSettings> {
   }
 
   Widget minAgeField() {
-    return Align(
-      alignment: Alignment.centerLeft,
-      child: AgeDropdown(
-        getMinValue: () => MIN_AGE,
-        getMaxValue: () {
-          final currentAge = context.read<InitialSetupBloc>().state.profileAge;
-          if (currentAge != null) {
-            return currentAge;
-          } else {
-            return MAX_AGE;
-          }
-        },
-        getInitialValue: () => widget.minAgeInitialValue,
-        onChanged: (value) {
-          context.read<InitialSetupBloc>().add(SetAgeRangeMin(value));
-        },
-      ),
+    return BlocBuilder<InitialSetupBloc, InitialSetupData>(
+      builder: (context, state) {
+        return Align(
+          alignment: Alignment.centerLeft,
+          child: AgeDropdown(
+            getMinValue: () => MIN_AGE,
+            getMaxValue: () => MAX_AGE,
+            value: state.searchAgeRangeMin ?? widget.minAgeInitialValue,
+            onChanged: (value) {
+              context.read<InitialSetupBloc>().add(SetAgeRangeMin(value));
+            },
+          ),
+        );
+      }
     );
   }
 
   Widget maxAgeField() {
-    return Align(
-      alignment: Alignment.centerLeft,
-      child: AgeDropdown(
-        getMinValue: () {
-          final currentAge = context.read<InitialSetupBloc>().state.profileAge;
-          if (currentAge != null) {
-            return currentAge;
-          } else {
-            return MIN_AGE;
-          }
-        },
-        getMaxValue: () => MAX_AGE,
-        getInitialValue: () => widget.maxAgeInitialValue,
-        onChanged: (value) {
-          context.read<InitialSetupBloc>().add(SetAgeRangeMax(value));
-        },
-      ),
+    return BlocBuilder<InitialSetupBloc, InitialSetupData>(
+      builder: (context, state) {
+        return Align(
+          alignment: Alignment.centerLeft,
+          child: AgeDropdown(
+            getMinValue: () => MIN_AGE,
+            getMaxValue: () => MAX_AGE,
+            value: state.searchAgeRangeMax ?? widget.maxAgeInitialValue,
+            onChanged: (value) {
+              context.read<InitialSetupBloc>().add(SetAgeRangeMax(value));
+            },
+          ),
+        );
+      }
     );
   }
 }

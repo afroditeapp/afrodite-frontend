@@ -6,8 +6,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 class AgeDropdown extends StatefulWidget {
-  /// Called only once when the widget is initialized.
-  final int Function() getInitialValue;
+  final int value;
   /// Called only once when the widget is initialized.
   final int Function() getMinValue;
   /// Called only once when the widget is initialized.
@@ -17,7 +16,7 @@ class AgeDropdown extends StatefulWidget {
   final bool enabled;
 
   const AgeDropdown({
-    required this.getInitialValue,
+    required this.value,
     required this.getMinValue,
     required this.getMaxValue,
     required this.onChanged,
@@ -31,7 +30,7 @@ class AgeDropdown extends StatefulWidget {
 
 class _AgeDropdownState extends State<AgeDropdown> {
   late final List<int> availableValues;
-  late final int initialSelection;
+  final controller = TextEditingController();
 
   @override
   void initState() {
@@ -45,13 +44,22 @@ class _AgeDropdownState extends State<AgeDropdown> {
       (index) => minValue + index,
     );
 
-    initialSelection = widget.getInitialValue();
+    controller.text = widget.value.toString();
+  }
+
+  @override
+  void didUpdateWidget(covariant AgeDropdown oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (widget.value != oldWidget.value) {
+      controller.text = widget.value.toString();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return DropdownMenu<int>(
-      initialSelection: initialSelection,
+      controller: controller,
       enabled: widget.enabled,
       dropdownMenuEntries: availableValues
         .map((value) {
@@ -67,5 +75,11 @@ class _AgeDropdownState extends State<AgeDropdown> {
         }
       },
     );
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
   }
 }

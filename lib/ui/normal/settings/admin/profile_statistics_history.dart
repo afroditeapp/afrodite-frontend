@@ -232,7 +232,7 @@ class ProfileStatisticsHistoryScreenState extends State<ProfileStatisticsHistory
       child: AgeDropdown(
         getMinValue: () => MIN_AGE,
         getMaxValue: () => MAX_AGE,
-        getInitialValue: () => age,
+        value: age,
         onChanged: (value) {
           age = value;
           reload(context);

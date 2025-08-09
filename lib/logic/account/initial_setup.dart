@@ -3,6 +3,7 @@ import "dart:typed_data";
 
 import "package:app/api/api_manager.dart";
 import "package:app/database/account_database_manager.dart";
+import "package:app/utils/age.dart";
 import "package:app/utils/result.dart";
 import "package:collection/collection.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
@@ -69,11 +70,11 @@ class InitAgeRange extends InitialSetupEvent {
   InitAgeRange(this.min, this.max);
 }
 class SetAgeRangeMin extends InitialSetupEvent {
-  final int? min;
+  final int min;
   SetAgeRangeMin(this.min);
 }
 class SetAgeRangeMax extends InitialSetupEvent {
-  final int? max;
+  final int max;
   SetAgeRangeMax(this.max);
 }
 class SetLocation extends InitialSetupEvent {
@@ -152,12 +153,26 @@ class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData> with Ac
       ));
     });
     on<SetAgeRangeMin>((data, emit) async {
+      var max = state.searchAgeRangeMax ?? MAX_AGE;
+
+      if (data.min > max) {
+        max = data.min;
+      }
+
       emit(state.copyWith(
         searchAgeRangeMin: data.min,
+        searchAgeRangeMax: max,
       ));
     });
     on<SetAgeRangeMax>((data, emit) async {
+      var min = state.searchAgeRangeMin ?? MIN_AGE;
+
+      if (data.max < min) {
+        min = data.max;
+      }
+
       emit(state.copyWith(
+        searchAgeRangeMin: min,
         searchAgeRangeMax: data.max,
       ));
     });

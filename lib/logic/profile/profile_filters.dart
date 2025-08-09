@@ -94,13 +94,13 @@ class SetAttributeFilterSettings extends ProfileFiltersEvent {
   final FilterSettingsState value;
   SetAttributeFilterSettings(this.attribute, this.value);
 }
-class UpdateMinAge extends ProfileFiltersEvent {
-  final int value;
-  UpdateMinAge(this.value);
+class UpdateAgeRangeMin extends ProfileFiltersEvent {
+  final int min;
+  UpdateAgeRangeMin(this.min);
 }
-class UpdateMaxAge extends ProfileFiltersEvent {
-  final int value;
-  UpdateMaxAge(this.value);
+class UpdateAgeRangeMax extends ProfileFiltersEvent {
+  final int max;
+  UpdateAgeRangeMax(this.max);
 }
 
 class ProfileFiltersBloc extends Bloc<ProfileFiltersEvent, ProfileFiltersData> with ActionRunner {
@@ -309,31 +309,23 @@ class ProfileFiltersBloc extends Bloc<ProfileFiltersEvent, ProfileFiltersData> w
         (current) => AttributeFilterUpdateBuilder.copyWithSettings(data.attribute, current, data.value),
       );
     });
-    on<UpdateMinAge>((data, emit) async {
-      if (data.value == state.minAge) {
-        modifyEdited(
-          emit,
-          (e) => e.copyWith(minAge: null),
-        );
-      } else {
-        modifyEdited(
-          emit,
-          (e) => e.copyWith(minAge: data.value),
-        );
+    on<UpdateAgeRangeMin>((data, emit) async {
+      var max = state.valueMaxAge();
+
+      if (data.min > max) {
+        max = data.min;
       }
+
+      handleAgeRangeSaving(emit, data.min, max);
     });
-    on<UpdateMaxAge>((data, emit) async {
-      if (data.value == state.maxAge) {
-        modifyEdited(
-          emit,
-          (e) => e.copyWith(maxAge: null),
-        );
-      } else {
-        modifyEdited(
-          emit,
-          (e) => e.copyWith(maxAge: data.value),
-        );
+    on<UpdateAgeRangeMax>((data, emit) async {
+      var min = state.valueMinAge();
+
+      if (data.max < min) {
+        min = data.max;
       }
+
+      handleAgeRangeSaving(emit, min, data.max);
     });
 
     _showAdvancedFiltersSubscription = db.accountStream((db) => db.app.watchShowAdvancedFilters()).listen((event) {
@@ -351,6 +343,32 @@ class ProfileFiltersBloc extends Bloc<ProfileFiltersEvent, ProfileFiltersData> w
     _maxAgeSubscription = db.accountStream((db) => db.search.watchProfileSearchAgeRangeMax()).listen((event) {
       add(NewMaxAge(event ?? MAX_AGE));
     });
+  }
+
+  void handleAgeRangeSaving(Emitter<ProfileFiltersData> emit, int min, int max) {
+    if (min == state.minAge) {
+      modifyEdited(
+        emit,
+        (e) => e.copyWith(minAge: null),
+      );
+    } else {
+      modifyEdited(
+        emit,
+        (e) => e.copyWith(minAge: min),
+      );
+    }
+
+    if (max == state.maxAge) {
+      modifyEdited(
+        emit,
+        (e) => e.copyWith(maxAge: null),
+      );
+    } else {
+      modifyEdited(
+        emit,
+        (e) => e.copyWith(maxAge: max),
+      );
+    }
   }
 
   void resetEditedValues(Emitter<ProfileFiltersData> emit) {
