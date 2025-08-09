@@ -12,8 +12,6 @@ import 'package:app/ui_utils/loading_dialog.dart';
 void showAppAboutDialog(BuildContext context, ClientFeaturesConfigData? config) {
   const double ICON_SIZE = 80.0;
 
-  // TODO(prod): Test about dialog with notification related navigation.
-
   final attributionText = config?.aboutDialogAttribution(context);
   final commitId = GIT_COMMIT_ID;
 
