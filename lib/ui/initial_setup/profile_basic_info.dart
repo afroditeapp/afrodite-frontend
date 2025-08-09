@@ -1,5 +1,4 @@
 import "package:flutter/material.dart";
-import "package:flutter/services.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:app/localizations.dart";
 import "package:app/logic/account/initial_setup.dart";
@@ -9,8 +8,6 @@ import "package:app/ui_utils/consts/padding.dart";
 import "package:app/ui_utils/initial_setup_common.dart";
 import "package:app/ui_utils/text_field.dart";
 import "package:app/utils/age.dart";
-
-final profileNameRegexp = RegExp("[-'.AÁÅÄBCÇDEÉFGHIÍJKLMNOÖPQRSTUÜVWXYZÞaáàâåäãbcçdeéèêëfghiíïjklmnoóòôöõøpqrstuúùüvwxyz]");
 
 class AskProfileBasicInfoScreen extends StatelessWidget {
   const AskProfileBasicInfoScreen({super.key});
@@ -61,7 +58,7 @@ class AskProfileBasicInfoScreen extends StatelessWidget {
 }
 
 bool nameIsValid(String? name) {
-  return name != null && profileNameRegexp.hasMatch(name);
+  return name != null && name.isNotEmpty;
 }
 
 class AskProfileBasicInfo extends StatefulWidget {
@@ -117,9 +114,6 @@ class _AskProfileBasicInfoState extends State<AskProfileBasicInfo> {
       onChanged: (value) {
         widget.setterProfileName(value);
       },
-      inputFormatters: [
-        FilteringTextInputFormatter.allow(profileNameRegexp),
-      ],
     );
 
     final ageField = AgeTextField(
