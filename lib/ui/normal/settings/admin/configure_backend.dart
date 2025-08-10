@@ -20,9 +20,10 @@ class ConfigureBackendPage extends StatefulWidget {
 }
 
 class _ConfigureBackendPageState extends State<ConfigureBackendPage> {
-  int _userBots = 0;
-  bool _adminBotEnabled = false;
-  final TextEditingController _userBotsController = TextEditingController(text: "0");
+  bool? _remoteBotLogin;
+  int? _userBots;
+  bool? _adminBotEnabled;
+  final TextEditingController _userBotsController = TextEditingController();
   final _configFormKey = GlobalKey<FormState>();
   BackendConfig? _currentConfig;
   final api = LoginRepository.getInstance().repositories.api;
@@ -40,8 +41,9 @@ class _ConfigureBackendPageState extends State<ConfigureBackendPage> {
 
     setState(() {
       isLoading = false;
-      _adminBotEnabled = data?.bots?.admin ?? false;
-      _userBots = data?.bots?.users ?? 0;
+      _remoteBotLogin = data?.remoteBotLogin;
+      _adminBotEnabled = data?.bots?.admin;
+      _userBots = data?.bots?.users;
       _userBotsController.text = _userBots.toString();
       _currentConfig = data;
     });
@@ -86,10 +88,10 @@ class _ConfigureBackendPageState extends State<ConfigureBackendPage> {
               state.permissions.adminServerMaintenanceViewBackendConfig ?
                 hPad(Text(_currentConfig.toString())) :
                 hPad(const Text("No permission for viewing backend configuration")),
-              const Padding(padding: EdgeInsets.all(8.0)),
+              const Padding(padding: EdgeInsets.only(top: 8.0)),
               state.permissions.adminServerMaintenanceSaveBackendConfig ?
                 displaySaveConfig(context) :
-                const Text("No permission for saving backend config"),
+                hPad(const Text("No permission for saving backend config")),
             ],
           ),
         );
@@ -98,25 +100,54 @@ class _ConfigureBackendPageState extends State<ConfigureBackendPage> {
   }
 
   Widget displaySaveConfig(BuildContext context) {
-    final widgets = [
-      Text("Bots"),
-      const Padding(padding: EdgeInsets.all(8.0)),
-      SwitchListTile(
-        title: const Text("Admin bot"),
-        value: _adminBotEnabled,
-        onChanged: (bool value) =>
-          setState(() {
-            _adminBotEnabled = value;
-          })
-      ),
-      const Padding(padding: EdgeInsets.all(8.0)),
-      hPad(userBotsTextField()),
-      const Padding(padding: EdgeInsets.all(8.0)),
-      saveBackendConfigButton(),
-    ];
+    final remoteBotLogin = _remoteBotLogin;
+    final adminBotEnabled = _adminBotEnabled;
+    final userBots = _userBots;
 
     return Column(
-      children: widgets,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        hPad(Text(
+          "Bots",
+          style: Theme.of(context).textTheme.titleSmall,
+        )),
+        const Padding(padding: EdgeInsets.only(top: 8.0)),
+        remoteBotLogin != null ?
+          remoteBotLoginSwitchTile(remoteBotLogin):
+          hPad(const Text("Remote bot login config disabled")),
+        if (remoteBotLogin == null) const Padding(padding: EdgeInsets.only(top: 8.0)),
+        adminBotEnabled != null ?
+          adminBotSwitchTile(adminBotEnabled):
+          hPad(const Text("Admin bot config disabled")),
+        const Padding(padding: EdgeInsets.only(top: 8.0)),
+        userBots != null ?
+          hPad(userBotsTextField()) :
+          hPad(const Text("User bot config disabled")),
+        const Padding(padding: EdgeInsets.only(top: 8.0)),
+        hPad(saveBackendConfigButton()),
+      ],
+    );
+  }
+
+  Widget remoteBotLoginSwitchTile(bool currentValue) {
+    return SwitchListTile(
+      title: const Text("Remote bot login"),
+      value: currentValue,
+      onChanged: (bool value) =>
+        setState(() {
+          _remoteBotLogin = value;
+        })
+    );
+  }
+
+  Widget adminBotSwitchTile(bool currentValue) {
+    return SwitchListTile(
+      title: const Text("Admin bot"),
+      value: currentValue,
+      onChanged: (bool value) =>
+        setState(() {
+          _adminBotEnabled = value;
+        })
     );
   }
 
@@ -159,8 +190,23 @@ class _ConfigureBackendPageState extends State<ConfigureBackendPage> {
 
         FocusScope.of(context).unfocus();
 
-        final bots = BotConfig(admin: _adminBotEnabled, users: _userBots);
-        final config = BackendConfig(bots: bots);
+        final adminBotEnabled = _adminBotEnabled;
+        final userBots = _userBots;
+
+        final BotConfig? botConfig;
+        if (adminBotEnabled != null && userBots != null) {
+          botConfig = BotConfig(
+            admin: adminBotEnabled,
+            users: userBots,
+          );
+        } else {
+          botConfig = null;
+        }
+
+        final config = BackendConfig(
+          remoteBotLogin: _remoteBotLogin,
+          bots: botConfig,
+        );
         showConfirmDialog(context, "Save backend config?", details: "New config: ${config.toString()}")
           .then((value) async {
             if (value == true) {
@@ -182,5 +228,11 @@ class _ConfigureBackendPageState extends State<ConfigureBackendPage> {
       },
       child: const Text("Save backend config"),
     );
+  }
+
+  @override
+  void dispose() {
+    _userBotsController.dispose();
+    super.dispose();
   }
 }
