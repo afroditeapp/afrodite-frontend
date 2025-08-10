@@ -5,6 +5,7 @@ import 'package:app/model/freezed/logic/account/client_features_config.dart';
 import 'package:app/ui/normal/settings/profile/edit_profile_text.dart';
 import 'package:app/ui_utils/attribute/attribute.dart';
 import 'package:app/ui_utils/consts/icons.dart';
+import 'package:app/ui_utils/padding.dart';
 import 'package:app/utils/list.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
@@ -233,6 +234,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
           const Divider(),
           const Padding(padding: EdgeInsets.only(top: 8)),
           EditProfileBasicInfo(
+            profileNameAccepted: widget.initialProfile.nameAccepted,
+            nameInitialValue: widget.initialProfile.name,
+            setterProfileName: (value) {
+              widget.editMyProfileBloc.add(NewName(value));
+            },
             ageInitialValue: widget.initialProfile.age,
             setterProfileAge: (value) {
               widget.editMyProfileBloc.add(NewAge(value));
@@ -453,9 +459,15 @@ class ViewAttributeTitle extends StatelessWidget {
 }
 
 class EditProfileBasicInfo extends StatefulWidget {
+  final bool profileNameAccepted;
+  final String nameInitialValue;
+  final void Function(String) setterProfileName;
   final int? ageInitialValue;
   final void Function(int?) setterProfileAge;
   const EditProfileBasicInfo({
+    required this.profileNameAccepted,
+    required this.nameInitialValue,
+    required this.setterProfileName,
     required this.ageInitialValue,
     required this.setterProfileAge,
     super.key,
@@ -466,29 +478,54 @@ class EditProfileBasicInfo extends StatefulWidget {
 }
 
 class _EditProfileBasicInfoState extends State<EditProfileBasicInfo> {
+  final nameTextController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
+    nameTextController.text = widget.nameInitialValue;
   }
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: INITIAL_SETUP_PADDING),
-              child: askInfo(context),
-            ),
-          ],
+        if (!widget.profileNameAccepted) hPad(profileName(context)),
+        if (!widget.profileNameAccepted) const Padding(padding: EdgeInsets.only(top: 8)),
+        if (!widget.profileNameAccepted) Divider(),
+        if (!widget.profileNameAccepted) const Padding(padding: EdgeInsets.only(top: 8)),
+        hPad(age(context)),
+      ],
+    );
+  }
+
+  Widget profileName(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          context.strings.edit_profile_screen_first_name,
+          style: Theme.of(context).textTheme.bodyLarge,
+        ),
+        profileNameTextField(
+          context,
+          controller: nameTextController,
+          onChanged: widget.setterProfileName,
+        ),
+        const Padding(padding: EdgeInsets.only(top: 4)),
+        Text(
+          context.strings.edit_profile_screen_first_name_description,
         ),
       ],
     );
   }
 
-  Widget askInfo(BuildContext context) {
+  Widget age(BuildContext context) {
     return Column(
+      mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(

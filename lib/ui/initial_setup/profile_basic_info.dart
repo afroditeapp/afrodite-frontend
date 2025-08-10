@@ -104,33 +104,6 @@ class _AskProfileBasicInfoState extends State<AskProfileBasicInfo> {
   }
 
   Widget askInfo(BuildContext context) {
-    final nameField = TextField(
-      decoration: InputDecoration(
-        hintText: context.strings.initial_setup_screen_profile_basic_info_first_name_hint_text,
-      ),
-      controller: nameTextController,
-      textCapitalization: TextCapitalization.sentences,
-      enableSuggestions: false,
-      autocorrect: false,
-      maxLength: 25,
-      onChanged: (value) {
-        widget.setterProfileName(value);
-      },
-      inputFormatters: [
-        TextInputFormatter.withFunction((_, newText) {
-          return newText.copyWith(text: toBeginningOfSentenceCase(newText.text));
-        })
-      ],
-    );
-
-    final ageField = AgeTextField(
-      getInitialValue: () => widget.ageInitialValue,
-      onChanged: (value) {
-        final age = int.tryParse(value);
-        widget.setterProfileAge(age);
-      },
-    );
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -138,13 +111,50 @@ class _AskProfileBasicInfoState extends State<AskProfileBasicInfo> {
           context.strings.initial_setup_screen_profile_basic_info_first_name_title,
           style: Theme.of(context).textTheme.bodyLarge,
         ),
-        nameField,
+        profileNameTextField(
+          context,
+          controller: nameTextController,
+          onChanged: (value) {
+            widget.setterProfileName(value);
+          },
+        ),
         Text(
           context.strings.generic_age,
           style: Theme.of(context).textTheme.bodyLarge,
         ),
-        ageField,
+        AgeTextField(
+          getInitialValue: () => widget.ageInitialValue,
+          onChanged: (value) {
+            final age = int.tryParse(value);
+            widget.setterProfileAge(age);
+          },
+        ),
       ],
     );
   }
+}
+
+Widget profileNameTextField(
+  BuildContext context,
+  {
+    required TextEditingController controller,
+    required void Function(String) onChanged,
+  }
+) {
+  return TextField(
+    decoration: InputDecoration(
+      hintText: context.strings.initial_setup_screen_profile_basic_info_first_name_hint_text,
+    ),
+    controller: controller,
+    textCapitalization: TextCapitalization.sentences,
+    enableSuggestions: false,
+    autocorrect: false,
+    maxLength: 25,
+    onChanged: onChanged,
+    inputFormatters: [
+      TextInputFormatter.withFunction((_, newText) {
+        return newText.copyWith(text: toBeginningOfSentenceCase(newText.text));
+      })
+    ],
+  );
 }

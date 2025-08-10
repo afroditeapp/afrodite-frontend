@@ -628,6 +628,18 @@ abstract class AppLocalizations {
     String p1,
   );
 
+  /// Title for first name text field
+  ///
+  /// In en, this message translates to:
+  /// **'First name'**
+  String get edit_profile_screen_first_name;
+
+  /// Description for first name text field
+  ///
+  /// In en, this message translates to:
+  /// **'Changing first name is possible only before it is accepted by moderators.'**
+  String get edit_profile_screen_first_name_description;
+
   /// Snackbar text for notifying about invalid age
   ///
   /// In en, this message translates to:

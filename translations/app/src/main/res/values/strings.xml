@@ -295,6 +295,8 @@
 
     <!-- Edit profile screen -->
     <string name="edit_profile_screen_title" description="Title for edit profile screen">Edit profile</string>
+    <string name="edit_profile_screen_first_name" description="Title for first name text field">First name</string>
+    <string name="edit_profile_screen_first_name_description" description="Description for first name text field">Changing first name is possible only before it is accepted by moderators.</string>
     <string name="edit_profile_screen_profile_text" description="Title for profile text field">Profile text</string>
     <string name="edit_profile_screen_unlimited_likes" description="Title for unlimited likes setting">Looking for a date for today</string>
     <string name="edit_profile_screen_unlimited_likes_description_enabled" description="Description for unlimited likes setting when it is enabled">Sending a chat request to you will not decrease daily chat requests</string>

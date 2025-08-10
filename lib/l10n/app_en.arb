@@ -400,6 +400,14 @@
       }
     }
   },
+  "edit_profile_screen_first_name": "First name",
+  "@edit_profile_screen_first_name": {
+    "description": "Title for first name text field"
+  },
+  "edit_profile_screen_first_name_description": "Changing first name is possible only before it is accepted by moderators.",
+  "@edit_profile_screen_first_name_description": {
+    "description": "Description for first name text field"
+  },
   "edit_profile_screen_invalid_age": "Invalid age",
   "@edit_profile_screen_invalid_age": {
     "description": "Snackbar text for notifying about invalid age"

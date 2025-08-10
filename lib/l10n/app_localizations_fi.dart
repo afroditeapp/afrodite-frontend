@@ -347,6 +347,13 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
+  String get edit_profile_screen_first_name => 'First name';
+
+  @override
+  String get edit_profile_screen_first_name_description =>
+      'Changing first name is possible only before it is accepted by moderators.';
+
+  @override
   String get edit_profile_screen_invalid_age => 'Invalid age';
 
   @override
