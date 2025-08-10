@@ -209,7 +209,7 @@ mixin _$EditedFiltersData {
 }
 
 /// @nodoc
-abstract class _EditedFiltersData implements EditedFiltersData {
+abstract class _EditedFiltersData extends EditedFiltersData {
   factory _EditedFiltersData({
     Map<int, ProfileAttributeFilterValueUpdate>? attributeIdAndAttributeFilterMap,
     EditValue<LastSeenTimeFilter> lastSeenTimeFilter,
@@ -224,10 +224,11 @@ abstract class _EditedFiltersData implements EditedFiltersData {
     int? minAge,
     int? maxAge,
   }) = _$EditedFiltersDataImpl;
+  _EditedFiltersData._() : super._();
 }
 
 /// @nodoc
-class _$EditedFiltersDataImpl with DiagnosticableTreeMixin implements _EditedFiltersData {
+class _$EditedFiltersDataImpl extends _EditedFiltersData with DiagnosticableTreeMixin {
   static const EditValue<LastSeenTimeFilter> _lastSeenTimeFilterDefaultValue = NoEdit();
   static const EditValue<bool> _unlimitedLikesFilterDefaultValue = NoEdit();
   static const EditValue<MinDistanceKm> _minDistanceKmFilterDefaultValue = NoEdit();
@@ -250,7 +251,7 @@ class _$EditedFiltersDataImpl with DiagnosticableTreeMixin implements _EditedFil
     this.randomProfileOrder,
     this.minAge,
     this.maxAge,
-  });
+  }) : super._();
 
   @override
   final Map<int, ProfileAttributeFilterValueUpdate>? attributeIdAndAttributeFilterMap;

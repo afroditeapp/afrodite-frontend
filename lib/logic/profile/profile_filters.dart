@@ -126,25 +126,29 @@ class ProfileFiltersBloc extends Bloc<ProfileFiltersEvent, ProfileFiltersData> w
           updateState: const UpdateInProgress(),
         ));
 
-        if (
-          await profile.updateProfileFilters(
-            s.valueAttributeFilters(),
-            s.valueLastSeenTimeFilter(),
-            s.valueUnlimitedLikesFilter(),
-            s.valueMinDistanceKmFilter(),
-            s.valueMaxDistanceKmFilter(),
-            s.valueProfileCreatedTime(),
-            s.valueProfileEditedTime(),
-            s.valueProfileTextMinCharacters(),
-            s.valueProfileTextMaxCharacters(),
-            s.valueRandomProfileOrder(),
-          ).isErr()
-        ) {
-          failureDetected = true;
+        if (s.edited.isProfileFiltersUpdateNeeded()) {
+          if (
+            await profile.updateProfileFilters(
+              s.valueAttributeFilters(),
+              s.valueLastSeenTimeFilter(),
+              s.valueUnlimitedLikesFilter(),
+              s.valueMinDistanceKmFilter(),
+              s.valueMaxDistanceKmFilter(),
+              s.valueProfileCreatedTime(),
+              s.valueProfileEditedTime(),
+              s.valueProfileTextMinCharacters(),
+              s.valueProfileTextMaxCharacters(),
+              s.valueRandomProfileOrder(),
+            ).isErr()
+          ) {
+            failureDetected = true;
+          }
         }
 
-        if (!await profile.updateSearchAgeRange(s.valueMinAge(), s.valueMaxAge()).isOk()) {
-          failureDetected = true;
+        if (s.edited.isAgeRangeUpdateNeeded()) {
+          if (!await profile.updateSearchAgeRange(s.valueMinAge(), s.valueMaxAge()).isOk()) {
+            failureDetected = true;
+          }
         }
 
         await profile.resetMainProfileIterator();

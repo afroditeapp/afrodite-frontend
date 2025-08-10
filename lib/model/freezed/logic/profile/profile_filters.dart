@@ -73,6 +73,7 @@ class ProfileFiltersData with _$ProfileFiltersData, UpdateStateProvider {
 
 @freezed
 class EditedFiltersData with _$EditedFiltersData {
+  EditedFiltersData._();
   factory EditedFiltersData({
     Map<int, ProfileAttributeFilterValueUpdate>? attributeIdAndAttributeFilterMap,
     @Default(NoEdit()) EditValue<LastSeenTimeFilter> lastSeenTimeFilter,
@@ -87,6 +88,20 @@ class EditedFiltersData with _$EditedFiltersData {
     int? minAge,
     int? maxAge,
   }) = _EditedFiltersData;
+
+  bool isProfileFiltersUpdateNeeded() => attributeIdAndAttributeFilterMap != null ||
+    lastSeenTimeFilter.unsavedChanges() ||
+    unlimitedLikesFilter.unsavedChanges() ||
+    minDistanceKmFilter.unsavedChanges() ||
+    maxDistanceKmFilter.unsavedChanges() ||
+    profileCreatedFilter.unsavedChanges() ||
+    profileEditedFilter.unsavedChanges() ||
+    profileTextMinCharactersFilter.unsavedChanges() ||
+    profileTextMaxCharactersFilter.unsavedChanges() ||
+    randomProfileOrder != null;
+
+  bool isAgeRangeUpdateNeeded() => minAge != null ||
+    maxAge != null;
 }
 
 /// Type for handling API null values
