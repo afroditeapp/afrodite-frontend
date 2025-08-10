@@ -347,17 +347,10 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get edit_profile_screen_first_name => 'First name';
-
-  @override
-  String get edit_profile_screen_first_name_description =>
-      'Changing first name is possible only before it is accepted by moderators.';
-
-  @override
   String get edit_profile_screen_invalid_age => 'Invalid age';
 
   @override
-  String get edit_profile_screen_invalid_first_name => 'Invalid first name';
+  String get edit_profile_screen_invalid_profile_name => 'Invalid first name';
 
   @override
   String get edit_profile_screen_one_profile_image_required =>
@@ -366,6 +359,13 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get edit_profile_screen_primary_profile_content_not_accepted =>
       'Picture is not currently accepted by moderators. Your profile will not be shown in profile grid until the picture is accepted.';
+
+  @override
+  String get edit_profile_screen_profile_name => 'First name';
+
+  @override
+  String get edit_profile_screen_profile_name_description =>
+      'Changing first name is possible only before it is accepted by moderators.';
 
   @override
   String get edit_profile_screen_profile_text => 'Profile text';
@@ -678,11 +678,11 @@ class AppLocalizationsEn extends AppLocalizations {
       'My profile\'s location is…';
 
   @override
-  String get initial_setup_screen_profile_basic_info_first_name_hint_text =>
+  String get initial_setup_screen_profile_basic_info_profile_name_hint_text =>
       'Insert your first name';
 
   @override
-  String get initial_setup_screen_profile_basic_info_first_name_title =>
+  String get initial_setup_screen_profile_basic_info_profile_name_title =>
       'First name';
 
   @override

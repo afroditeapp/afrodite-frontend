@@ -108,7 +108,7 @@ class _AskProfileBasicInfoState extends State<AskProfileBasicInfo> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          context.strings.initial_setup_screen_profile_basic_info_first_name_title,
+          context.strings.initial_setup_screen_profile_basic_info_profile_name_title,
           style: Theme.of(context).textTheme.bodyLarge,
         ),
         profileNameTextField(
@@ -143,7 +143,7 @@ Widget profileNameTextField(
 ) {
   return TextField(
     decoration: InputDecoration(
-      hintText: context.strings.initial_setup_screen_profile_basic_info_first_name_hint_text,
+      hintText: context.strings.initial_setup_screen_profile_basic_info_profile_name_hint_text,
     ),
     controller: controller,
     textCapitalization: TextCapitalization.sentences,

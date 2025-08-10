@@ -98,7 +98,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
     final name = s.name;
     if (name == null || !nameIsValid(name)) {
-      showSnackBar(context.strings.edit_profile_screen_invalid_first_name);
+      showSnackBar(context.strings.edit_profile_screen_invalid_profile_name);
       return;
     }
 
@@ -507,7 +507,7 @@ class _EditProfileBasicInfoState extends State<EditProfileBasicInfo> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          context.strings.edit_profile_screen_first_name,
+          context.strings.edit_profile_screen_profile_name,
           style: Theme.of(context).textTheme.bodyLarge,
         ),
         profileNameTextField(
@@ -517,7 +517,7 @@ class _EditProfileBasicInfoState extends State<EditProfileBasicInfo> {
         ),
         const Padding(padding: EdgeInsets.only(top: 4)),
         Text(
-          context.strings.edit_profile_screen_first_name_description,
+          context.strings.edit_profile_screen_profile_name_description,
         ),
       ],
     );

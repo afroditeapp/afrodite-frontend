@@ -400,21 +400,13 @@
       }
     }
   },
-  "edit_profile_screen_first_name": "First name",
-  "@edit_profile_screen_first_name": {
-    "description": "Title for first name text field"
-  },
-  "edit_profile_screen_first_name_description": "Changing first name is possible only before it is accepted by moderators.",
-  "@edit_profile_screen_first_name_description": {
-    "description": "Description for first name text field"
-  },
   "edit_profile_screen_invalid_age": "Invalid age",
   "@edit_profile_screen_invalid_age": {
     "description": "Snackbar text for notifying about invalid age"
   },
-  "edit_profile_screen_invalid_first_name": "Invalid first name",
-  "@edit_profile_screen_invalid_first_name": {
-    "description": "Snackbar text for notifying about invalid first name"
+  "edit_profile_screen_invalid_profile_name": "Invalid first name",
+  "@edit_profile_screen_invalid_profile_name": {
+    "description": "Snackbar text for notifying about invalid profile name"
   },
   "edit_profile_screen_one_profile_image_required": "One profile image is required",
   "@edit_profile_screen_one_profile_image_required": {
@@ -423,6 +415,14 @@
   "edit_profile_screen_primary_profile_content_not_accepted": "Picture is not currently accepted by moderators. Your profile will not be shown in profile grid until the picture is accepted.",
   "@edit_profile_screen_primary_profile_content_not_accepted": {
     "description": "Info text that primary profile image is not accepted"
+  },
+  "edit_profile_screen_profile_name": "First name",
+  "@edit_profile_screen_profile_name": {
+    "description": "Title for profile name text field"
+  },
+  "edit_profile_screen_profile_name_description": "Changing first name is possible only before it is accepted by moderators.",
+  "@edit_profile_screen_profile_name_description": {
+    "description": "Description for profile name text field"
   },
   "edit_profile_screen_profile_text": "Profile text",
   "@edit_profile_screen_profile_text": {
@@ -656,7 +656,7 @@
   },
   "generic_text_field_age_hint_text": "Insert an age between 18–99",
   "@generic_text_field_age_hint_text": {
-    "description": "Input field hint text for age"
+    "description": "Text field hint text for age"
   },
   "generic_this_feature_is_disabled": "This feature is disabled",
   "@generic_this_feature_is_disabled": {
@@ -812,13 +812,13 @@
   "@initial_setup_screen_location_title": {
     "description": "Title for initial setup location screen"
   },
-  "initial_setup_screen_profile_basic_info_first_name_hint_text": "Insert your first name",
-  "@initial_setup_screen_profile_basic_info_first_name_hint_text": {
-    "description": "Input field hint text for profile first name"
+  "initial_setup_screen_profile_basic_info_profile_name_hint_text": "Insert your first name",
+  "@initial_setup_screen_profile_basic_info_profile_name_hint_text": {
+    "description": "Text field hint text for profile name"
   },
-  "initial_setup_screen_profile_basic_info_first_name_title": "First name",
-  "@initial_setup_screen_profile_basic_info_first_name_title": {
-    "description": "Title text for asking first name"
+  "initial_setup_screen_profile_basic_info_profile_name_title": "First name",
+  "@initial_setup_screen_profile_basic_info_profile_name_title": {
+    "description": "Title text for profile name text field"
   },
   "initial_setup_screen_profile_basic_info_title": "My profile has this info…",
   "@initial_setup_screen_profile_basic_info_title": {

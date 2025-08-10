@@ -628,29 +628,17 @@ abstract class AppLocalizations {
     String p1,
   );
 
-  /// Title for first name text field
-  ///
-  /// In en, this message translates to:
-  /// **'First name'**
-  String get edit_profile_screen_first_name;
-
-  /// Description for first name text field
-  ///
-  /// In en, this message translates to:
-  /// **'Changing first name is possible only before it is accepted by moderators.'**
-  String get edit_profile_screen_first_name_description;
-
   /// Snackbar text for notifying about invalid age
   ///
   /// In en, this message translates to:
   /// **'Invalid age'**
   String get edit_profile_screen_invalid_age;
 
-  /// Snackbar text for notifying about invalid first name
+  /// Snackbar text for notifying about invalid profile name
   ///
   /// In en, this message translates to:
   /// **'Invalid first name'**
-  String get edit_profile_screen_invalid_first_name;
+  String get edit_profile_screen_invalid_profile_name;
 
   /// Snackbar text for notifying about that one profile image is required
   ///
@@ -663,6 +651,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Picture is not currently accepted by moderators. Your profile will not be shown in profile grid until the picture is accepted.'**
   String get edit_profile_screen_primary_profile_content_not_accepted;
+
+  /// Title for profile name text field
+  ///
+  /// In en, this message translates to:
+  /// **'First name'**
+  String get edit_profile_screen_profile_name;
+
+  /// Description for profile name text field
+  ///
+  /// In en, this message translates to:
+  /// **'Changing first name is possible only before it is accepted by moderators.'**
+  String get edit_profile_screen_profile_name_description;
 
   /// Title for profile text field
   ///
@@ -1009,7 +1009,7 @@ abstract class AppLocalizations {
   /// **'Take photo'**
   String get generic_take_photo;
 
-  /// Input field hint text for age
+  /// Text field hint text for age
   ///
   /// In en, this message translates to:
   /// **'Insert an age between 18–99'**
@@ -1233,17 +1233,17 @@ abstract class AppLocalizations {
   /// **'My profile\'s location is…'**
   String get initial_setup_screen_location_title;
 
-  /// Input field hint text for profile first name
+  /// Text field hint text for profile name
   ///
   /// In en, this message translates to:
   /// **'Insert your first name'**
-  String get initial_setup_screen_profile_basic_info_first_name_hint_text;
+  String get initial_setup_screen_profile_basic_info_profile_name_hint_text;
 
-  /// Title text for asking first name
+  /// Title text for profile name text field
   ///
   /// In en, this message translates to:
   /// **'First name'**
-  String get initial_setup_screen_profile_basic_info_first_name_title;
+  String get initial_setup_screen_profile_basic_info_profile_name_title;
 
   /// Title text for asking profile information
   ///

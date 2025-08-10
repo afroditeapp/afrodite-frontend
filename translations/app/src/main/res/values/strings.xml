@@ -69,7 +69,7 @@
     <string name="generic_weekday_sat" description="Generic short text for Saturday">Sat</string>
     <string name="generic_weekday_sun" description="Generic short text for Sunday">Sun</string>
 
-    <string name="generic_text_field_age_hint_text" description="Input field hint text for age">Insert an age between 18–99</string>
+    <string name="generic_text_field_age_hint_text" description="Text field hint text for age">Insert an age between 18–99</string>
     <string name="generic_error_app_version_is_unsupported" desctiption="Snackbar text that client version is unsupported">Current app version is unsupported</string>
 
     <string name="generic_reset_to_defaults" description="Title for reset values to defaults action">Reset to default values</string>
@@ -209,8 +209,8 @@
     <string name="initial_setup_screen_profile_pictures_primary_image_info_dialog_description" description="Dialog description text about profile primary image">Adding at least of one profile image is required. The first profile image must be a face picture. The square shaped crop of the first profile image is displayed in profile grid and some other places in the app.</string>
     <string name="initial_setup_screen_profile_pictures_primary_image_face_not_detected" description="Error text that face is not detected for primary profile image">Face is not detected. Please select another picture.</string>
     <string name="initial_setup_screen_profile_basic_info_title" description="Title text for asking profile information">My profile has this info…</string>
-    <string name="initial_setup_screen_profile_basic_info_first_name_title" description="Title text for asking first name">First name</string>
-    <string name="initial_setup_screen_profile_basic_info_first_name_hint_text" description="Input field hint text for profile first name">Insert your first name</string>
+    <string name="initial_setup_screen_profile_basic_info_profile_name_title" description="Title text for profile name text field">First name</string>
+    <string name="initial_setup_screen_profile_basic_info_profile_name_hint_text" description="Text field hint text for profile name">Insert your first name</string>
     <string name="initial_setup_screen_gender_title" description="Title for ask gender screen">I am…</string>
     <string name="initial_setup_screen_search_settings_title" description="Title for ask search settings screen">I am searching for…</string>
     <string name="initial_setup_screen_search_settings_min_age_subtitle" description="Subtitle for min age search setting">…with min age…</string>
@@ -295,14 +295,14 @@
 
     <!-- Edit profile screen -->
     <string name="edit_profile_screen_title" description="Title for edit profile screen">Edit profile</string>
-    <string name="edit_profile_screen_first_name" description="Title for first name text field">First name</string>
-    <string name="edit_profile_screen_first_name_description" description="Description for first name text field">Changing first name is possible only before it is accepted by moderators.</string>
+    <string name="edit_profile_screen_profile_name" description="Title for profile name text field">First name</string>
+    <string name="edit_profile_screen_profile_name_description" description="Description for profile name text field">Changing first name is possible only before it is accepted by moderators.</string>
     <string name="edit_profile_screen_profile_text" description="Title for profile text field">Profile text</string>
     <string name="edit_profile_screen_unlimited_likes" description="Title for unlimited likes setting">Looking for a date for today</string>
     <string name="edit_profile_screen_unlimited_likes_description_enabled" description="Description for unlimited likes setting when it is enabled">Sending a chat request to you will not decrease daily chat requests</string>
     <string name="edit_profile_screen_unlimited_likes_description_enabled_and_automatic_disabling" description="Description for unlimited likes setting when it is enabled and automatic disabling is enabled">Sending a chat request to you will not decrease daily chat requests. Disabled automatically at %s.</string>
     <string name="edit_profile_screen_unlimited_likes_description_disabled" description="Description for unlimited likes setting when it is disabled">Sending a chat request to you will decrease daily chat requests</string>
-    <string name="edit_profile_screen_invalid_first_name" description="Snackbar text for notifying about invalid first name">Invalid first name</string>
+    <string name="edit_profile_screen_invalid_profile_name" description="Snackbar text for notifying about invalid profile name">Invalid first name</string>
     <string name="edit_profile_screen_invalid_age" description="Snackbar text for notifying about invalid age">Invalid age</string>
     <string name="edit_profile_screen_one_profile_image_required" description="Snackbar text for notifying about that one profile image is required">One profile image is required</string>
     <string name="edit_profile_screen_automatic_min_age_incrementing_info_dialog_text" description="Dialog text for notifying user when profile age min value is incremented">Min age will be increased to %s in %s</string>
