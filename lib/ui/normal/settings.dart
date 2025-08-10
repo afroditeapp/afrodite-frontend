@@ -1,7 +1,7 @@
 import 'package:app/logic/profile/profile_filters.dart';
 import 'package:app/model/freezed/logic/profile/profile_filters.dart';
 import 'package:app/model/freezed/logic/settings/privacy_settings.dart';
-import 'package:app/ui/normal/profiles/filter_profiles.dart';
+import 'package:app/ui/normal/profiles/profile_filters.dart';
 import 'package:app/ui/normal/settings/blocked_profiles.dart';
 import 'package:app/ui/normal/settings/general/image_settings.dart';
 import 'package:app/ui/normal/settings/general/profile_grid_settings.dart';

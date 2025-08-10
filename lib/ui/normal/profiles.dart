@@ -23,7 +23,7 @@ import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/logic/profile/profile_filters.dart';
 import 'package:app/model/freezed/logic/account/account.dart';
 import 'package:app/model/freezed/logic/profile/profile_filters.dart';
-import 'package:app/ui/normal/profiles/filter_profiles.dart';
+import 'package:app/ui/normal/profiles/profile_filters.dart';
 import 'package:app/ui/normal/profiles/profile_grid.dart';
 import 'package:app/ui_utils/bottom_navigation.dart';
 
