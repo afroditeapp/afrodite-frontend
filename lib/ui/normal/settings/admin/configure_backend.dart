@@ -49,16 +49,15 @@ class _ConfigureBackendPageState extends State<ConfigureBackendPage> {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> actions = [];
-    actions.add(IconButton(
-      onPressed: _refreshData,
-      icon: const Icon(Icons.refresh)
-    ));
-
     return Scaffold(
       appBar: AppBar(
         title: const Text("Configure backend"),
-        actions: actions,
+        actions: [
+          IconButton(
+            onPressed: _refreshData,
+            icon: const Icon(Icons.refresh)
+          ),
+        ],
       ),
       body: displayState(context),
     );
@@ -79,58 +78,49 @@ class _ConfigureBackendPageState extends State<ConfigureBackendPage> {
   Widget showContent(BuildContext context) {
     return BlocBuilder<AccountBloc, AccountBlocData>(
       builder: (context, state) {
-        final Widget currentConfig;
-        if (state.permissions.adminServerMaintenanceViewBackendConfig) {
-          currentConfig = showBackendConfiguration();
-        } else {
-          currentConfig = const Text("No permission for viewing backend configuration");
-        }
-
-        final Widget configureBackend;
-        if (state.permissions.adminServerMaintenanceSaveBackendConfig) {
-          configureBackend = displaySaveConfig(context);
-        } else {
-          configureBackend = const Text("No permission for saving backend config");
-        }
-
-        final widgets = [
-          hPad(currentConfig),
-          const Padding(padding: EdgeInsets.all(8.0)),
-          configureBackend,
-        ];
-
         return SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: widgets,
+            children: [
+              state.permissions.adminServerMaintenanceViewBackendConfig ?
+                hPad(Text(_currentConfig.toString())) :
+                hPad(const Text("No permission for viewing backend configuration")),
+              const Padding(padding: EdgeInsets.all(8.0)),
+              state.permissions.adminServerMaintenanceSaveBackendConfig ?
+                displaySaveConfig(context) :
+                const Text("No permission for saving backend config"),
+            ],
           ),
         );
       }
     );
   }
 
-  Widget showBackendConfiguration() {
-    final currentConfig = _currentConfig;
-    if (currentConfig == null) {
-      return Text(currentConfig.toString());
-    } else {
-      return Text(currentConfig.toString());
-    }
+  Widget displaySaveConfig(BuildContext context) {
+    final widgets = [
+      Text("Bots"),
+      const Padding(padding: EdgeInsets.all(8.0)),
+      SwitchListTile(
+        title: const Text("Admin bot"),
+        value: _adminBotEnabled,
+        onChanged: (bool value) =>
+          setState(() {
+            _adminBotEnabled = value;
+          })
+      ),
+      const Padding(padding: EdgeInsets.all(8.0)),
+      hPad(userBotsTextField()),
+      const Padding(padding: EdgeInsets.all(8.0)),
+      saveBackendConfigButton(),
+    ];
+
+    return Column(
+      children: widgets,
+    );
   }
 
-  Widget displaySaveConfig(BuildContext context) {
-    const text = Text("Bots");
-
-    final adminBotEnabled = SwitchListTile(
-      title: const Text("Admin bot"),
-      value: _adminBotEnabled,
-      onChanged: (bool value) =>
-        setState(() {
-          _adminBotEnabled = value;
-        })
-    );
-
+  Widget userBotsTextField() {
     final userBots = TextFormField(
       decoration: const InputDecoration(
         border: OutlineInputBorder(),
@@ -154,12 +144,14 @@ class _ConfigureBackendPageState extends State<ConfigureBackendPage> {
       controller: _userBotsController,
     );
 
-    final form = Form(
+    return Form(
       key: _configFormKey,
       child: userBots,
     );
+  }
 
-    final button = ElevatedButton(
+  Widget saveBackendConfigButton() {
+    return ElevatedButton(
       onPressed: () {
         if (_configFormKey.currentState?.validate() == false) {
           return;
@@ -189,20 +181,6 @@ class _ConfigureBackendPageState extends State<ConfigureBackendPage> {
           });
       },
       child: const Text("Save backend config"),
-    );
-
-    final widgets = [
-      text,
-      const Padding(padding: EdgeInsets.all(8.0)),
-      adminBotEnabled,
-      const Padding(padding: EdgeInsets.all(8.0)),
-      hPad(form),
-      const Padding(padding: EdgeInsets.all(8.0)),
-      button,
-    ];
-
-    return Column(
-      children: widgets,
     );
   }
 }
