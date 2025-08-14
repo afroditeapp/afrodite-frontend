@@ -1,5 +1,6 @@
 import "package:app/data/login_repository.dart";
 import "package:app/localizations.dart";
+import "package:app/ui/normal/settings/data_export.dart";
 import "package:app/ui_utils/app_bar/common_actions.dart";
 import "package:app/ui_utils/app_bar/menu_actions.dart";
 import "package:app/ui_utils/dialog.dart";
@@ -55,6 +56,17 @@ class _PendingDeletionPageState extends State<PendingDeletionPage> {
           title: Text(context.strings.account_deletion_pending_screen_title),
           actions: [
             menuActions([
+              MenuItemButton(
+                child: Text(context.strings.data_export_screen_title_export_type_user),
+                onPressed: () {
+                  openDataExportScreen(
+                    context,
+                    context.strings.data_export_screen_title_export_type_user,
+                    currentUser,
+                    DataExportType.user,
+                  );
+                }
+              ),
               ...commonActionsWhenLoggedInAndAccountIsNotNormallyUsable(context),
             ]),
           ],

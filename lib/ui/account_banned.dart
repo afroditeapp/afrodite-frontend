@@ -1,5 +1,6 @@
 import "package:app/data/login_repository.dart";
 import "package:app/ui/normal/settings/account_settings.dart";
+import "package:app/ui/normal/settings/data_export.dart";
 import "package:app/ui_utils/app_bar/common_actions.dart";
 import "package:app/ui_utils/app_bar/menu_actions.dart";
 import "package:app/ui_utils/list.dart";
@@ -58,6 +59,17 @@ class _AccountBannedScreenState extends State<AccountBannedScreen> {
             MenuItemButton(
               child: Text(context.strings.account_settings_screen_title),
               onPressed: () => openAccountSettings(context),
+            ),
+            MenuItemButton(
+              child: Text(context.strings.data_export_screen_title_export_type_user),
+              onPressed: () {
+                openDataExportScreen(
+                  context,
+                  context.strings.data_export_screen_title_export_type_user,
+                  currentUser,
+                  DataExportType.user,
+                );
+              }
             ),
             ...commonActionsWhenLoggedInAndAccountIsNotNormallyUsable(context),
           ]),

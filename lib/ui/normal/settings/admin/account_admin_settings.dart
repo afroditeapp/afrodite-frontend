@@ -19,6 +19,7 @@ import 'package:app/ui/normal/settings/admin/account_admin/moderate_single_profi
 import 'package:app/ui/normal/settings/admin/account_admin/view_api_usage.dart';
 import 'package:app/ui/normal/settings/admin/account_admin/view_ip_address_usage.dart';
 import 'package:app/ui/normal/settings/admin/account_admin/view_reports.dart';
+import 'package:app/ui/normal/settings/data_export.dart';
 import 'package:app/ui_utils/padding.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/result.dart';
@@ -240,6 +241,17 @@ class _AccountAdminSettingsScreenState extends State<AccountAdminSettingsScreen>
       ));
     }
 
+    if (permissions.adminExportData) {
+      settings.add(Setting.createSetting(Icons.cloud_download, context.strings.data_export_screen_title_export_type_admin, () {
+        openDataExportScreen(
+          context,
+          context.strings.data_export_screen_title_export_type_admin,
+          widget.accountId,
+          DataExportType.admin,
+        );
+      }));
+    }
+
     return settings;
   }
 }
@@ -247,6 +259,7 @@ class _AccountAdminSettingsScreenState extends State<AccountAdminSettingsScreen>
 class AccountAdminSettingsPermissions {
   final Permissions _permissions;
   bool get adminModifyPermissions => _permissions.adminEditPermissions;
+  bool get adminExportData => _permissions.adminExportData;
   bool get adminEditProfileName => _permissions.adminEditProfileName;
   bool get adminModerateMediaContent => _permissions.adminModerateMediaContent;
   bool get adminModerateProfileTexts => _permissions.adminModerateProfileTexts;
@@ -263,6 +276,7 @@ class AccountAdminSettingsPermissions {
   bool somePermissionEnabled() {
     return adminModifyPermissions ||
       adminEditProfileName ||
+      adminExportData ||
       adminModerateMediaContent ||
       adminModerateProfileTexts ||
       adminModerateProfileNames ||

@@ -284,7 +284,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get current_security_selfie_screen_title => 'Security selfie';
 
   @override
-  String get data_settings_screen_title => 'Data management';
+  String get data_export_screen_api_limit_error => 'Try again after 24 hours';
+
+  @override
+  String get data_export_screen_title_export_type_admin => 'Data export';
+
+  @override
+  String get data_export_screen_title_export_type_user => 'Download my data';
 
   @override
   String get demo_account_screen_confirm_logout_dialog_title => 'Logout?';
@@ -428,6 +434,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get generic_disabled => 'Disabled';
 
   @override
+  String get generic_download => 'Download';
+
+  @override
+  String get generic_download_question => 'Download?';
+
+  @override
   String get generic_edit => 'Edit';
 
   @override
@@ -522,6 +534,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get generic_retry => 'Retry';
+
+  @override
+  String get generic_save => 'Save';
 
   @override
   String get generic_save_confirmation_title => 'Save?';

@@ -28,11 +28,19 @@ sealed class ApiError extends AppError {
 
 sealed class ActionApiError extends ApiError {
   const ActionApiError();
+
+  /// Is status code HTTP 429
+  bool isTooManyRequests() { return false; }
 }
 
 class ActionApiErrorException extends ActionApiError {
   final ApiException e;
   const ActionApiErrorException(this.e);
+
+  @override
+  bool isTooManyRequests() {
+    return e.code == 429;
+  }
 
   @override
   void logError(Logger log) {

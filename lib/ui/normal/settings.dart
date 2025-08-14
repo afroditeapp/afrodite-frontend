@@ -1,3 +1,4 @@
+import 'package:app/data/login_repository.dart';
 import 'package:app/logic/profile/profile_filters.dart';
 import 'package:app/model/freezed/logic/profile/profile_filters.dart';
 import 'package:app/model/freezed/logic/settings/privacy_settings.dart';
@@ -18,7 +19,7 @@ import 'package:app/logic/settings/privacy_settings.dart';
 import 'package:app/logic/settings/search_settings.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui/normal/settings/account_settings.dart';
-import 'package:app/ui/normal/settings/data_settings.dart';
+import 'package:app/ui/normal/settings/data_export.dart';
 import 'package:app/ui/normal/settings/media/content_management.dart';
 import 'package:app/ui/normal/settings/notification_settings.dart';
 import 'package:app/ui/normal/settings/profile/search_settings.dart';
@@ -46,6 +47,7 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
+  final AccountId currentUser = LoginRepository.getInstance().repositories.accountId;
 
   @override
   Widget build(BuildContext context) {
@@ -168,12 +170,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
       Setting.createSetting(Icons.image_rounded, context.strings.content_management_screen_title, () {
         openContentManagementScreen(context);
       }).toListTile(),
-      Setting.createSetting(Icons.storage, context.strings.data_settings_screen_title, () {
-          MyNavigator.push(context, const MaterialPage<void>(child:
-            DataSettingsScreen()
-          ));
-        }
-      ).toListTile(),
+      Setting.createSetting(Icons.cloud_download, context.strings.data_export_screen_title_export_type_user, () {
+        openDataExportScreen(
+          context,
+          context.strings.data_export_screen_title_export_type_user,
+          currentUser,
+          DataExportType.user,
+        );
+      }).toListTile(),
     ];
   }
 

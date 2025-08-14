@@ -6,6 +6,30 @@ import 'dart:typed_data';
 
 import 'package:openapi/api.dart';
 
+extension CommonManualAdditions on CommonApi {
+  /// Download current data export archive
+  ///
+  /// Requires data export state [DataExportStateType::Done].
+  ///
+  /// Parameters:
+  ///
+  /// * [String] name (required):
+  Future<Uint8List?> getDataExportArchiveFixed(String name,) async {
+    final response = await getDataExportArchiveWithHttpInfo(name,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, "Data export downloading failed");
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return response.bodyBytes;
+
+    }
+    return null;
+  }
+}
+
 extension MediaManualAdditions on MediaApi {
   /// Get content
   ///

@@ -287,6 +287,10 @@ class ApiManager implements LifecycleMethods {
     return _account;
   }
 
+  ApiWrapper<CommonApi> commonWrapper() {
+    return ApiWrapper(_account.common, connection);
+  }
+
   ApiWrapper<AccountApi> accountWrapper() {
     return ApiWrapper(_account.account, connection);
   }

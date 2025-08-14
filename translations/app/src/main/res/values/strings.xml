@@ -12,6 +12,8 @@
     <string name="generic_empty" description="Generic empty text">Empty</string>
     <string name="generic_disabled" description="Generic disabled text">Disabled</string>
     <string name="generic_details" description="Generic details text">Details</string>
+    <string name="generic_download" description="Generic download text">Download</string>
+    <string name="generic_save" description="Generic save text">Save</string>
     <string name="generic_resend" description="Generic resend text">Resend</string>
     <string name="generic_refresh" description="Generic refresh text">Refresh</string>
     <string name="generic_retry" description="Generic retry text">Retry</string>
@@ -48,6 +50,7 @@
     <string name="generic_reject_question" description="Generic reject question">Reject?</string>
     <string name="generic_delete_question" description="Generic delete question">Delete?</string>
     <string name="generic_cancel_question" description="Generic cancel question">Cancel?</string>
+    <string name="generic_download_question" description="Generic download question">Download?</string>
     <string name="generic_logout_failed" description="Generic logout failed text">Logout failed</string>
     <string name="generic_copy" description="Generic copy text">Copy</string>
     <string name="generic_edit" description="Generic edit text">Edit</string>
@@ -448,8 +451,10 @@
     <!-- Profile location screen -->
     <string name="profile_location_screen_title" description="Title for profile location screen">Location</string>
 
-    <!-- Data settings selfie -->
-    <string name="data_settings_screen_title" description="Title for data settings">Data management</string>
+    <!-- Data export -->
+    <string name="data_export_screen_title_export_type_user" description="Title for data export screen when export type is user">Download my data</string>
+    <string name="data_export_screen_title_export_type_admin" description="Title for data export screen when export type is admin">Data export</string>
+    <string name="data_export_screen_api_limit_error" description="Snackbar text for API limit error">Try again after 24 hours</string>
 
     <!-- Account settings selfie -->
     <string name="account_settings_screen_title" description="Title for account settings">Account</string>

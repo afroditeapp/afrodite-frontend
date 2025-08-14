@@ -328,9 +328,17 @@
   "@current_security_selfie_screen_title": {
     "description": "Current security selfie screen title"
   },
-  "data_settings_screen_title": "Data management",
-  "@data_settings_screen_title": {
-    "description": "Title for data settings"
+  "data_export_screen_api_limit_error": "Try again after 24 hours",
+  "@data_export_screen_api_limit_error": {
+    "description": "Snackbar text for API limit error"
+  },
+  "data_export_screen_title_export_type_admin": "Data export",
+  "@data_export_screen_title_export_type_admin": {
+    "description": "Title for data export screen when export type is admin"
+  },
+  "data_export_screen_title_export_type_user": "Download my data",
+  "@data_export_screen_title_export_type_user": {
+    "description": "Title for data export screen when export type is user"
   },
   "demo_account_screen_confirm_logout_dialog_title": "Logout?",
   "@demo_account_screen_confirm_logout_dialog_title": {
@@ -501,6 +509,14 @@
   "@generic_disabled": {
     "description": "Generic disabled text"
   },
+  "generic_download": "Download",
+  "@generic_download": {
+    "description": "Generic download text"
+  },
+  "generic_download_question": "Download?",
+  "@generic_download_question": {
+    "description": "Generic download question"
+  },
   "generic_edit": "Edit",
   "@generic_edit": {
     "description": "Generic edit text"
@@ -621,6 +637,10 @@
   "generic_retry": "Retry",
   "@generic_retry": {
     "description": "Generic retry text"
+  },
+  "generic_save": "Save",
+  "@generic_save": {
+    "description": "Generic save text"
   },
   "generic_save_confirmation_title": "Save?",
   "@generic_save_confirmation_title": {

@@ -14,6 +14,7 @@ import 'package:app/logic/login.dart';
 import 'package:app/logic/profile/automatic_profile_search_badge.dart';
 import 'package:app/logic/server/address.dart';
 import 'package:app/logic/server/maintenance.dart';
+import 'package:app/logic/settings/data_export.dart';
 import 'package:app/logic/sign_in_with.dart';
 import 'package:app/main.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
@@ -200,6 +201,7 @@ class _MainStateUiLogicState extends State<MainStateUiLogic> {
               BlocProvider(create: (_) => SearchSettingsBloc()),
               BlocProvider(create: (_) => NotificationSettingsBloc()),
               BlocProvider(create: (_) => UiSettingsBloc()),
+              BlocProvider(create: (_) => DataExportBloc()),
 
               // News
               BlocProvider(create: (_) => NewsCountBloc()),
@@ -221,10 +223,16 @@ class _MainStateUiLogicState extends State<MainStateUiLogic> {
           MainState.accountBanned => MultiBlocProvider(
             providers: [
               BlocProvider(create: (_) => AccountDetailsBloc()),
+              BlocProvider(create: (_) => DataExportBloc()),
             ],
             child: navigator
           ),
-          MainState.pendingRemoval ||
+          MainState.pendingRemoval => MultiBlocProvider(
+            providers: [
+              BlocProvider(create: (_) => DataExportBloc()),
+            ],
+            child: navigator
+          ),
           MainState.unsupportedClientVersion ||
           MainState.splashScreen => navigator,
         };

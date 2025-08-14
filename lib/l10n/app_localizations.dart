@@ -529,11 +529,23 @@ abstract class AppLocalizations {
   /// **'Security selfie'**
   String get current_security_selfie_screen_title;
 
-  /// Title for data settings
+  /// Snackbar text for API limit error
   ///
   /// In en, this message translates to:
-  /// **'Data management'**
-  String get data_settings_screen_title;
+  /// **'Try again after 24 hours'**
+  String get data_export_screen_api_limit_error;
+
+  /// Title for data export screen when export type is admin
+  ///
+  /// In en, this message translates to:
+  /// **'Data export'**
+  String get data_export_screen_title_export_type_admin;
+
+  /// Title for data export screen when export type is user
+  ///
+  /// In en, this message translates to:
+  /// **'Download my data'**
+  String get data_export_screen_title_export_type_user;
 
   /// Dialog title text for confirming logout from demo account
   ///
@@ -775,6 +787,18 @@ abstract class AppLocalizations {
   /// **'Disabled'**
   String get generic_disabled;
 
+  /// Generic download text
+  ///
+  /// In en, this message translates to:
+  /// **'Download'**
+  String get generic_download;
+
+  /// Generic download question
+  ///
+  /// In en, this message translates to:
+  /// **'Download?'**
+  String get generic_download_question;
+
   /// Generic edit text
   ///
   /// In en, this message translates to:
@@ -960,6 +984,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Retry'**
   String get generic_retry;
+
+  /// Generic save text
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get generic_save;
 
   /// Generic save confirmation title text
   ///
