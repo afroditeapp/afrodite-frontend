@@ -258,7 +258,7 @@
     <string name="profile_grid_screen_no_favorite_profiles_found_description" description="Description that no favorite profiles were found">Mark a profile as a favorite to add it here.</string>
     <string name="profile_grid_screen_filtering_favorite_profiles_is_not_supported" description="Snackbar text that filtering favorite profiles is not supported">Filtering favorite profiles is not supported</string>
     <string name="profile_grid_screen_daily_likes_dialog_text" description="Dialog text for daily likes info dialog">Daily chat requests left: %s\nReset time: %s</string>
-    <string name="profile_grid_screen_daily_likes_dialog_unlimited_likes_text" description="Dialog text for unlimited likes specific text in daily likes info dialog">Sending chat requests to those who are looking for a date for today does not decrease daily chat requests.</string>
+    <string name="profile_grid_screen_daily_likes_dialog_unlimited_likes_text" description="Dialog text for unlimited likes specific text in daily likes info dialog">Sending chat requests to those who are up for a date today does not decrease daily chat requests.</string>
 
     <!-- View profile screen -->
     <string name="view_profile_screen_my_profile_initial_setup_not_done" description="Snackbar text that it is not possible to open my profile screen when initial setup is not done">Dating profile is not created</string>
@@ -298,10 +298,8 @@
     <string name="edit_profile_screen_profile_name" description="Title for profile name text field">First name</string>
     <string name="edit_profile_screen_profile_name_description" description="Description for profile name text field">Changing first name is possible only before it is accepted by moderators.</string>
     <string name="edit_profile_screen_profile_text" description="Title for profile text field">Profile text</string>
-    <string name="edit_profile_screen_unlimited_likes" description="Title for unlimited likes setting">Looking for a date for today</string>
-    <string name="edit_profile_screen_unlimited_likes_description_enabled" description="Description for unlimited likes setting when it is enabled">Sending a chat request to you will not decrease daily chat requests</string>
-    <string name="edit_profile_screen_unlimited_likes_description_enabled_and_automatic_disabling" description="Description for unlimited likes setting when it is enabled and automatic disabling is enabled">Sending a chat request to you will not decrease daily chat requests. Disabled automatically at %s.</string>
-    <string name="edit_profile_screen_unlimited_likes_description_disabled" description="Description for unlimited likes setting when it is disabled">Sending a chat request to you will decrease daily chat requests</string>
+    <string name="edit_profile_screen_unlimited_likes" description="Title for unlimited likes setting">Up for a date today</string>
+    <string name="edit_profile_screen_unlimited_likes_description_enabled_and_automatic_disabling" description="Description for unlimited likes setting when it is enabled and automatic disabling is enabled">Turns off at %s</string>
     <string name="edit_profile_screen_invalid_profile_name" description="Snackbar text for notifying about invalid profile name">Invalid first name</string>
     <string name="edit_profile_screen_invalid_age" description="Snackbar text for notifying about invalid age">Invalid age</string>
     <string name="edit_profile_screen_one_profile_image_required" description="Snackbar text for notifying about that one profile image is required">One profile image is required</string>
@@ -333,7 +331,7 @@
     <string name="profile_filters_screen_disable_filters_action_dialog_title" description="Title for disable filters action confirm dialog">Disable filters?</string>
     <string name="profile_filters_screen_min_age_filter" description="Title for min profile age filter">Min age</string>
     <string name="profile_filters_screen_max_age_filter" description="Title for max profile age filter">Max age</string>
-    <string name="profile_filters_screen_unlimited_likes_filter" description="Title for unlimited likes filter">Looking for a date for today</string>
+    <string name="profile_filters_screen_unlimited_likes_filter" description="Title for unlimited likes filter">Up for a date today</string>
     <string name="profile_filters_screen_profile_last_seen_time_filter" description="Title for profile last seen time filter">Last seen</string>
     <string name="profile_filters_screen_profile_last_seen_time_filter_online" description="Value text for profile last seen time filter when only online profiles should be shown">Online</string>
     <string name="profile_filters_screen_profile_last_seen_time_filter_day" description="Value text for profile last seen time filter when day is selected">%s day</string>

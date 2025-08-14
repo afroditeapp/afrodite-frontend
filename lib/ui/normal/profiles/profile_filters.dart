@@ -157,9 +157,9 @@ class _ProfileFiltersPageState extends State<ProfileFiltersPage> {
           const Divider(),
           profileTextFilter(context),
           const Divider(),
-          const EditAttributeFilters(),
-          const Divider(),
           unlimitedLikesSetting(context),
+          const Divider(),
+          const EditAttributeFilters(),
         ],
       ),
     );

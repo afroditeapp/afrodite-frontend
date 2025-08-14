@@ -432,19 +432,11 @@
   "@edit_profile_screen_title": {
     "description": "Title for edit profile screen"
   },
-  "edit_profile_screen_unlimited_likes": "Looking for a date for today",
+  "edit_profile_screen_unlimited_likes": "Up for a date today",
   "@edit_profile_screen_unlimited_likes": {
     "description": "Title for unlimited likes setting"
   },
-  "edit_profile_screen_unlimited_likes_description_disabled": "Sending a chat request to you will decrease daily chat requests",
-  "@edit_profile_screen_unlimited_likes_description_disabled": {
-    "description": "Description for unlimited likes setting when it is disabled"
-  },
-  "edit_profile_screen_unlimited_likes_description_enabled": "Sending a chat request to you will not decrease daily chat requests",
-  "@edit_profile_screen_unlimited_likes_description_enabled": {
-    "description": "Description for unlimited likes setting when it is enabled"
-  },
-  "edit_profile_screen_unlimited_likes_description_enabled_and_automatic_disabling": "Sending a chat request to you will not decrease daily chat requests. Disabled automatically at {p0}.",
+  "edit_profile_screen_unlimited_likes_description_enabled_and_automatic_disabling": "Turns off at {p0}",
   "@edit_profile_screen_unlimited_likes_description_enabled_and_automatic_disabling": {
     "description": "Description for unlimited likes setting when it is enabled and automatic disabling is enabled",
     "placeholders": {
@@ -1325,7 +1317,7 @@
   "@profile_filters_screen_title": {
     "description": "Title for profile filters screen"
   },
-  "profile_filters_screen_unlimited_likes_filter": "Looking for a date for today",
+  "profile_filters_screen_unlimited_likes_filter": "Up for a date today",
   "@profile_filters_screen_unlimited_likes_filter": {
     "description": "Title for unlimited likes filter"
   },
@@ -1345,7 +1337,7 @@
       }
     }
   },
-  "profile_grid_screen_daily_likes_dialog_unlimited_likes_text": "Sending chat requests to those who are looking for a date for today does not decrease daily chat requests.",
+  "profile_grid_screen_daily_likes_dialog_unlimited_likes_text": "Sending chat requests to those who are up for a date today does not decrease daily chat requests.",
   "@profile_grid_screen_daily_likes_dialog_unlimited_likes_text": {
     "description": "Dialog text for unlimited likes specific text in daily likes info dialog"
   },

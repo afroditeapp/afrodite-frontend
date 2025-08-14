@@ -374,23 +374,14 @@ class AppLocalizationsFi extends AppLocalizations {
   String get edit_profile_screen_title => 'Edit profile';
 
   @override
-  String get edit_profile_screen_unlimited_likes =>
-      'Looking for a date for today';
-
-  @override
-  String get edit_profile_screen_unlimited_likes_description_disabled =>
-      'Sending a chat request to you will decrease daily chat requests';
-
-  @override
-  String get edit_profile_screen_unlimited_likes_description_enabled =>
-      'Sending a chat request to you will not decrease daily chat requests';
+  String get edit_profile_screen_unlimited_likes => 'Up for a date today';
 
   @override
   String
   edit_profile_screen_unlimited_likes_description_enabled_and_automatic_disabling(
     String p0,
   ) {
-    return 'Sending a chat request to you will not decrease daily chat requests. Disabled automatically at $p0.';
+    return 'Turns off at $p0';
   }
 
   @override
@@ -1096,7 +1087,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get profile_filters_screen_unlimited_likes_filter =>
-      'Looking for a date for today';
+      'Up for a date today';
 
   @override
   String get profile_filters_screen_updating_filters_failed =>
@@ -1109,7 +1100,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get profile_grid_screen_daily_likes_dialog_unlimited_likes_text =>
-      'Sending chat requests to those who are looking for a date for today does not decrease daily chat requests.';
+      'Sending chat requests to those who are up for a date today does not decrease daily chat requests.';
 
   @override
   String get profile_grid_screen_filtering_favorite_profiles_is_not_supported =>

@@ -679,25 +679,13 @@ abstract class AppLocalizations {
   /// Title for unlimited likes setting
   ///
   /// In en, this message translates to:
-  /// **'Looking for a date for today'**
+  /// **'Up for a date today'**
   String get edit_profile_screen_unlimited_likes;
-
-  /// Description for unlimited likes setting when it is disabled
-  ///
-  /// In en, this message translates to:
-  /// **'Sending a chat request to you will decrease daily chat requests'**
-  String get edit_profile_screen_unlimited_likes_description_disabled;
-
-  /// Description for unlimited likes setting when it is enabled
-  ///
-  /// In en, this message translates to:
-  /// **'Sending a chat request to you will not decrease daily chat requests'**
-  String get edit_profile_screen_unlimited_likes_description_enabled;
 
   /// Description for unlimited likes setting when it is enabled and automatic disabling is enabled
   ///
   /// In en, this message translates to:
-  /// **'Sending a chat request to you will not decrease daily chat requests. Disabled automatically at {p0}.'**
+  /// **'Turns off at {p0}'**
   String
   edit_profile_screen_unlimited_likes_description_enabled_and_automatic_disabling(
     String p0,
@@ -1899,7 +1887,7 @@ abstract class AppLocalizations {
   /// Title for unlimited likes filter
   ///
   /// In en, this message translates to:
-  /// **'Looking for a date for today'**
+  /// **'Up for a date today'**
   String get profile_filters_screen_unlimited_likes_filter;
 
   /// Snackbar text for notifying about failed profile filters update
@@ -1917,7 +1905,7 @@ abstract class AppLocalizations {
   /// Dialog text for unlimited likes specific text in daily likes info dialog
   ///
   /// In en, this message translates to:
-  /// **'Sending chat requests to those who are looking for a date for today does not decrease daily chat requests.'**
+  /// **'Sending chat requests to those who are up for a date today does not decrease daily chat requests.'**
   String get profile_grid_screen_daily_likes_dialog_unlimited_likes_text;
 
   /// Snackbar text that filtering favorite profiles is not supported

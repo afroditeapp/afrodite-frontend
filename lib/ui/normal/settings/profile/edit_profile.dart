@@ -246,11 +246,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
           ),
           const Padding(padding: EdgeInsets.only(top: 8)),
           const Divider(),
+          unlimitedLikesSetting(context),
+          const Divider(),
           const EditProfileText(),
           const Divider(),
           const EditAttributes(),
-          const Divider(),
-          unlimitedLikesSetting(context),
           const Padding(
             padding: EdgeInsets.only(top: FLOATING_ACTION_BUTTON_EMPTY_AREA),
             child: null,
@@ -264,21 +264,20 @@ class _EditProfilePageState extends State<EditProfilePage> {
     return BlocBuilder<ClientFeaturesConfigBloc, ClientFeaturesConfigData>(
       builder: (context, clientFeatures) {
         return BlocBuilder<EditMyProfileBloc, EditMyProfileData>(builder: (context, myProfileData) {
-          final String subtitle;
+          final String? subtitle;
           if (myProfileData.unlimitedLikes) {
             final resetTime = clientFeatures.unlimitedLikesResetTime();
             if (resetTime != null) {
               subtitle = context.strings.edit_profile_screen_unlimited_likes_description_enabled_and_automatic_disabling(resetTime.uiString());
             } else {
-              subtitle = context.strings.edit_profile_screen_unlimited_likes_description_enabled;
+              subtitle = null;
             }
           } else {
-            subtitle = context.strings.edit_profile_screen_unlimited_likes_description_disabled;
+            subtitle = null;
           }
           return SwitchListTile(
             title: Text(context.strings.edit_profile_screen_unlimited_likes),
-            subtitle: Text(subtitle),
-            isThreeLine: true,
+            subtitle: subtitle != null ? Text(subtitle) : null,
             secondary: Icon(
               UNLIMITED_LIKES_ICON,
               color: getUnlimitedLikesColor(context),
