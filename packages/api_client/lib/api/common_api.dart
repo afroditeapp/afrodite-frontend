@@ -16,6 +16,46 @@ class CommonApi {
 
   final ApiClient apiClient;
 
+  /// Delete current data export
+  ///
+  /// Data export state will move from [DataExportStateType::Done] or [DataExportStateType::Error] to [DataExportStateType::Empty].
+  ///
+  /// Note: This method returns the HTTP [Response].
+  Future<Response> deleteDataExportWithHttpInfo() async {
+    // ignore: prefer_const_declarations
+    final path = r'/common_api/delete_data_export';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'DELETE',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Delete current data export
+  ///
+  /// Data export state will move from [DataExportStateType::Done] or [DataExportStateType::Error] to [DataExportStateType::Empty].
+  Future<void> deleteDataExport() async {
+    final response = await deleteDataExportWithHttpInfo();
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+  }
+
   /// Performs an HTTP 'GET /common_api/client_config' operation and returns the [Response].
   Future<Response> getClientConfigWithHttpInfo() async {
     // ignore: prefer_const_declarations
@@ -136,6 +176,105 @@ class CommonApi {
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
+  }
+
+  /// Download current data export archive
+  ///
+  /// Requires data export state [DataExportStateType::Done].
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [String] name (required):
+  Future<Response> getDataExportArchiveWithHttpInfo(String name,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/common_api/data_export_archive';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+      queryParams.addAll(_queryParams('', 'name', name));
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Download current data export archive
+  ///
+  /// Requires data export state [DataExportStateType::Done].
+  ///
+  /// Parameters:
+  ///
+  /// * [String] name (required):
+  Future<MultipartFile?> getDataExportArchive(String name,) async {
+    final response = await getDataExportArchiveWithHttpInfo(name,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'MultipartFile',) as MultipartFile;
+    
+    }
+    return null;
+  }
+
+  /// Performs an HTTP 'GET /common_api/data_export_state' operation and returns the [Response].
+  Future<Response> getDataExportStateWithHttpInfo() async {
+    // ignore: prefer_const_declarations
+    final path = r'/common_api/data_export_state';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  Future<DataExportState?> getDataExportState() async {
+    final response = await getDataExportStateWithHttpInfo();
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'DataExportState',) as DataExportState;
+    
+    }
+    return null;
   }
 
   /// Get backend version.
@@ -322,5 +461,53 @@ class CommonApi {
     
     }
     return null;
+  }
+
+  /// Start data export
+  ///
+  /// Data export state will move from [DataExportStateType::Empty] to [DataExportStateType::InProgress].  # Access  * Without admin permission, own account can exported once per 24 hours.   The export command sending time is stored only in RAM, so the limit   resets when backend restarts. Only allowed data export type is   [DataExportType::User]. * With [Permissions::admin_export_data] all accounts can be exported   without limits.  
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [PostStartDataExport] postStartDataExport (required):
+  Future<Response> postStartDataExportWithHttpInfo(PostStartDataExport postStartDataExport,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/common_api/start_data_export';
+
+    // ignore: prefer_final_locals
+    Object? postBody = postStartDataExport;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Start data export
+  ///
+  /// Data export state will move from [DataExportStateType::Empty] to [DataExportStateType::InProgress].  # Access  * Without admin permission, own account can exported once per 24 hours.   The export command sending time is stored only in RAM, so the limit   resets when backend restarts. Only allowed data export type is   [DataExportType::User]. * With [Permissions::admin_export_data] all accounts can be exported   without limits.  
+  ///
+  /// Parameters:
+  ///
+  /// * [PostStartDataExport] postStartDataExport (required):
+  Future<void> postStartDataExport(PostStartDataExport postStartDataExport,) async {
+    final response = await postStartDataExportWithHttpInfo(postStartDataExport,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
   }
 }

@@ -10,46 +10,40 @@
 
 part of openapi.api;
 
-class BotConfig {
-  /// Returns a new [BotConfig] instance.
-  BotConfig({
-    required this.admin,
-    required this.users,
+class ProfileConfig {
+  /// Returns a new [ProfileConfig] instance.
+  ProfileConfig({
+    this.profileNameRegex,
   });
 
-  /// Admin bot
-  bool admin;
-
-  /// User bot count
-  ///
-  /// Minimum value: 0
-  int users;
+  String? profileNameRegex;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is BotConfig &&
-    other.admin == admin &&
-    other.users == users;
+  bool operator ==(Object other) => identical(this, other) || other is ProfileConfig &&
+    other.profileNameRegex == profileNameRegex;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (admin.hashCode) +
-    (users.hashCode);
+    (profileNameRegex == null ? 0 : profileNameRegex!.hashCode);
 
   @override
-  String toString() => 'BotConfig[admin=$admin, users=$users]';
+  String toString() => 'ProfileConfig[profileNameRegex=$profileNameRegex]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'admin'] = this.admin;
-      json[r'users'] = this.users;
+    if (this.profileNameRegex != null) {
+      json[r'profile_name_regex'] = this.profileNameRegex;
+    } else {
+      json[r'profile_name_regex'] = null;
+    }
     return json;
   }
 
-  /// Returns a new [BotConfig] instance and imports its values from
+  /// Returns a new [ProfileConfig] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static BotConfig? fromJson(dynamic value) {
+  static ProfileConfig? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -58,25 +52,24 @@ class BotConfig {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "BotConfig[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "BotConfig[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "ProfileConfig[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "ProfileConfig[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return BotConfig(
-        admin: mapValueOfType<bool>(json, r'admin')!,
-        users: mapValueOfType<int>(json, r'users')!,
+      return ProfileConfig(
+        profileNameRegex: mapValueOfType<String>(json, r'profile_name_regex'),
       );
     }
     return null;
   }
 
-  static List<BotConfig> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <BotConfig>[];
+  static List<ProfileConfig> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <ProfileConfig>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = BotConfig.fromJson(row);
+        final value = ProfileConfig.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -85,12 +78,12 @@ class BotConfig {
     return result.toList(growable: growable);
   }
 
-  static Map<String, BotConfig> mapFromJson(dynamic json) {
-    final map = <String, BotConfig>{};
+  static Map<String, ProfileConfig> mapFromJson(dynamic json) {
+    final map = <String, ProfileConfig>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = BotConfig.fromJson(entry.value);
+        final value = ProfileConfig.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -99,14 +92,14 @@ class BotConfig {
     return map;
   }
 
-  // maps a json object with a list of BotConfig-objects as value to a dart map
-  static Map<String, List<BotConfig>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<BotConfig>>{};
+  // maps a json object with a list of ProfileConfig-objects as value to a dart map
+  static Map<String, List<ProfileConfig>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<ProfileConfig>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = BotConfig.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = ProfileConfig.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;
@@ -114,8 +107,6 @@ class BotConfig {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'admin',
-    'users',
   };
 }
 

@@ -13,34 +13,35 @@ part of openapi.api;
 class BackendConfig {
   /// Returns a new [BackendConfig] instance.
   BackendConfig({
-    this.bots,
+    this.localBots,
     this.remoteBotLogin,
   });
 
-  BotConfig? bots;
+  LocalBotsConfig? localBots;
 
+  /// Enable remote bot login API  If None, editing the value is disabled.
   bool? remoteBotLogin;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is BackendConfig &&
-    other.bots == bots &&
+    other.localBots == localBots &&
     other.remoteBotLogin == remoteBotLogin;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (bots == null ? 0 : bots!.hashCode) +
+    (localBots == null ? 0 : localBots!.hashCode) +
     (remoteBotLogin == null ? 0 : remoteBotLogin!.hashCode);
 
   @override
-  String toString() => 'BackendConfig[bots=$bots, remoteBotLogin=$remoteBotLogin]';
+  String toString() => 'BackendConfig[localBots=$localBots, remoteBotLogin=$remoteBotLogin]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-    if (this.bots != null) {
-      json[r'bots'] = this.bots;
+    if (this.localBots != null) {
+      json[r'local_bots'] = this.localBots;
     } else {
-      json[r'bots'] = null;
+      json[r'local_bots'] = null;
     }
     if (this.remoteBotLogin != null) {
       json[r'remote_bot_login'] = this.remoteBotLogin;
@@ -69,7 +70,7 @@ class BackendConfig {
       }());
 
       return BackendConfig(
-        bots: BotConfig.fromJson(json[r'bots']),
+        localBots: LocalBotsConfig.fromJson(json[r'local_bots']),
         remoteBotLogin: mapValueOfType<bool>(json, r'remote_bot_login'),
       );
     }

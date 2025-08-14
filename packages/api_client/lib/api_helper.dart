@@ -85,6 +85,12 @@ String parameterToString(dynamic value) {
   if (value is CustomReportsOrderMode) {
     return CustomReportsOrderModeTypeTransformer().encode(value).toString();
   }
+  if (value is DataExportStateType) {
+    return DataExportStateTypeTypeTransformer().encode(value).toString();
+  }
+  if (value is DataExportType) {
+    return DataExportTypeTypeTransformer().encode(value).toString();
+  }
   if (value is EventType) {
     return EventTypeTypeTransformer().encode(value).toString();
   }

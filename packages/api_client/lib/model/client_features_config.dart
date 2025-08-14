@@ -18,6 +18,7 @@ class ClientFeaturesConfig {
     required this.limits,
     required this.map,
     this.news,
+    required this.profile,
   });
 
   AttributionConfig attribution;
@@ -31,13 +32,16 @@ class ClientFeaturesConfig {
   /// Enable news UI
   NewsConfig? news;
 
+  ProfileConfig profile;
+
   @override
   bool operator ==(Object other) => identical(this, other) || other is ClientFeaturesConfig &&
     other.attribution == attribution &&
     other.features == features &&
     other.limits == limits &&
     other.map == map &&
-    other.news == news;
+    other.news == news &&
+    other.profile == profile;
 
   @override
   int get hashCode =>
@@ -46,10 +50,11 @@ class ClientFeaturesConfig {
     (features.hashCode) +
     (limits.hashCode) +
     (map.hashCode) +
-    (news == null ? 0 : news!.hashCode);
+    (news == null ? 0 : news!.hashCode) +
+    (profile.hashCode);
 
   @override
-  String toString() => 'ClientFeaturesConfig[attribution=$attribution, features=$features, limits=$limits, map=$map, news=$news]';
+  String toString() => 'ClientFeaturesConfig[attribution=$attribution, features=$features, limits=$limits, map=$map, news=$news, profile=$profile]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -62,6 +67,7 @@ class ClientFeaturesConfig {
     } else {
       json[r'news'] = null;
     }
+      json[r'profile'] = this.profile;
     return json;
   }
 
@@ -89,6 +95,7 @@ class ClientFeaturesConfig {
         limits: LimitsConfig.fromJson(json[r'limits'])!,
         map: MapConfig.fromJson(json[r'map'])!,
         news: NewsConfig.fromJson(json[r'news']),
+        profile: ProfileConfig.fromJson(json[r'profile'])!,
       );
     }
     return null;
@@ -140,6 +147,7 @@ class ClientFeaturesConfig {
     'features',
     'limits',
     'map',
+    'profile',
   };
 }
 

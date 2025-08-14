@@ -250,8 +250,6 @@ class ApiClient {
           return BackendVersion.fromJson(value);
         case 'BooleanSetting':
           return BooleanSetting.fromJson(value);
-        case 'BotConfig':
-          return BotConfig.fromJson(value);
         case 'ChatAppNotificationSettings':
           return ChatAppNotificationSettings.fromJson(value);
         case 'ChatMessageReport':
@@ -328,6 +326,14 @@ class ApiClient {
           return DailyLikesLeft.fromJson(value);
         case 'DailyLikesLeftSyncVersion':
           return DailyLikesLeftSyncVersion.fromJson(value);
+        case 'DataExportName':
+          return DataExportName.fromJson(value);
+        case 'DataExportState':
+          return DataExportState.fromJson(value);
+        case 'DataExportStateType':
+          return DataExportStateTypeTypeTransformer().decode(value);
+        case 'DataExportType':
+          return DataExportTypeTypeTransformer().decode(value);
         case 'DeleteLikeResult':
           return DeleteLikeResult.fromJson(value);
         case 'DemoAccountLoginCredentials':
@@ -444,6 +450,8 @@ class ApiClient {
           return LimitedActionStatusTypeTransformer().decode(value);
         case 'LimitsConfig':
           return LimitsConfig.fromJson(value);
+        case 'LocalBotsConfig':
+          return LocalBotsConfig.fromJson(value);
         case 'Location':
           return Location.fromJson(value);
         case 'LoginResult':
@@ -550,6 +558,8 @@ class ApiClient {
           return PostModerateMediaContent.fromJson(value);
         case 'PostModerateProfileString':
           return PostModerateProfileString.fromJson(value);
+        case 'PostStartDataExport':
+          return PostStartDataExport.fromJson(value);
         case 'ProcessReport':
           return ProcessReport.fromJson(value);
         case 'Profile':
@@ -574,6 +584,8 @@ class ApiClient {
           return ProfileAttributesConfigQueryItem.fromJson(value);
         case 'ProfileAttributesConfigQueryResult':
           return ProfileAttributesConfigQueryResult.fromJson(value);
+        case 'ProfileConfig':
+          return ProfileConfig.fromJson(value);
         case 'ProfileContent':
           return ProfileContent.fromJson(value);
         case 'ProfileContentVersion':

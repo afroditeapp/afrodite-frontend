@@ -70,6 +70,7 @@ ClientFeaturesConfig _emptyClientFeaturesConfig() {
         likeSending: null,
         unlimitedLikesDisablingTime: null,
       ),
-    )
+    ),
+    profile: ProfileConfig(),
   );
 }

@@ -134,13 +134,17 @@ Class | Method | HTTP request | Description
 *ChatApi* | [**postSendMessage**](doc//ChatApi.md#postsendmessage) | **POST** /chat_api/send_message | Send message to a match.
 *ChatApi* | [**postUnblockProfile**](doc//ChatApi.md#postunblockprofile) | **POST** /chat_api/unblock_profile | Unblock profile
 *ChatAdminApi* | [**postSetMaxPublicKeyCount**](doc//ChatAdminApi.md#postsetmaxpublickeycount) | **POST** /chat_api/set_max_public_key_count | Set max public key count
+*CommonApi* | [**deleteDataExport**](doc//CommonApi.md#deletedataexport) | **DELETE** /common_api/delete_data_export | Delete current data export
 *CommonApi* | [**getClientConfig**](doc//CommonApi.md#getclientconfig) | **GET** /common_api/client_config | 
 *CommonApi* | [**getClientLanguage**](doc//CommonApi.md#getclientlanguage) | **GET** /common_api/client_language | 
 *CommonApi* | [**getConnectWebsocket**](doc//CommonApi.md#getconnectwebsocket) | **GET** /common_api/connect | Connect to server using WebSocket after getting refresh and access tokens. Connection is required as API access is allowed for connected clients.
+*CommonApi* | [**getDataExportArchive**](doc//CommonApi.md#getdataexportarchive) | **GET** /common_api/data_export_archive | Download current data export archive
+*CommonApi* | [**getDataExportState**](doc//CommonApi.md#getdataexportstate) | **GET** /common_api/data_export_state | 
 *CommonApi* | [**getVersion**](doc//CommonApi.md#getversion) | **GET** /common_api/version | Get backend version.
 *CommonApi* | [**postClientLanguage**](doc//CommonApi.md#postclientlanguage) | **POST** /common_api/client_language | 
 *CommonApi* | [**postGetPendingNotification**](doc//CommonApi.md#postgetpendingnotification) | **POST** /common_api/get_pending_notification | Get pending notification and reset pending notification.
 *CommonApi* | [**postSetDeviceToken**](doc//CommonApi.md#postsetdevicetoken) | **POST** /common_api/set_device_token | 
+*CommonApi* | [**postStartDataExport**](doc//CommonApi.md#poststartdataexport) | **POST** /common_api/start_data_export | Start data export
 *CommonAdminApi* | [**getAdminNotificationSettings**](doc//CommonAdminApi.md#getadminnotificationsettings) | **GET** /common_api/admin_notification_settings | Get admin notification settings.
 *CommonAdminApi* | [**getAdminNotificationSubscriptions**](doc//CommonAdminApi.md#getadminnotificationsubscriptions) | **GET** /common_api/admin_notification_subscriptions | Get admin notification subscriptions.
 *CommonAdminApi* | [**getBackendConfig**](doc//CommonAdminApi.md#getbackendconfig) | **GET** /common_api/backend_config | Get dynamic backend config.
@@ -268,7 +272,6 @@ Class | Method | HTTP request | Description
  - [BackendConfig](doc//BackendConfig.md)
  - [BackendVersion](doc//BackendVersion.md)
  - [BooleanSetting](doc//BooleanSetting.md)
- - [BotConfig](doc//BotConfig.md)
  - [ChatAppNotificationSettings](doc//ChatAppNotificationSettings.md)
  - [ChatMessageReport](doc//ChatMessageReport.md)
  - [ChatProfileLink](doc//ChatProfileLink.md)
@@ -307,6 +310,10 @@ Class | Method | HTTP request | Description
  - [CustomReportsOrderMode](doc//CustomReportsOrderMode.md)
  - [DailyLikesLeft](doc//DailyLikesLeft.md)
  - [DailyLikesLeftSyncVersion](doc//DailyLikesLeftSyncVersion.md)
+ - [DataExportName](doc//DataExportName.md)
+ - [DataExportState](doc//DataExportState.md)
+ - [DataExportStateType](doc//DataExportStateType.md)
+ - [DataExportType](doc//DataExportType.md)
  - [DeleteLikeResult](doc//DeleteLikeResult.md)
  - [DemoAccountLoginCredentials](doc//DemoAccountLoginCredentials.md)
  - [DemoAccountLoginResult](doc//DemoAccountLoginResult.md)
@@ -365,6 +372,7 @@ Class | Method | HTTP request | Description
  - [LikeSendingLimitConfig](doc//LikeSendingLimitConfig.md)
  - [LimitedActionStatus](doc//LimitedActionStatus.md)
  - [LimitsConfig](doc//LimitsConfig.md)
+ - [LocalBotsConfig](doc//LocalBotsConfig.md)
  - [Location](doc//Location.md)
  - [LoginResult](doc//LoginResult.md)
  - [MaintenanceTask](doc//MaintenanceTask.md)
@@ -418,6 +426,7 @@ Class | Method | HTTP request | Description
  - [PostMediaContentFaceDetectedValue](doc//PostMediaContentFaceDetectedValue.md)
  - [PostModerateMediaContent](doc//PostModerateMediaContent.md)
  - [PostModerateProfileString](doc//PostModerateProfileString.md)
+ - [PostStartDataExport](doc//PostStartDataExport.md)
  - [ProcessReport](doc//ProcessReport.md)
  - [Profile](doc//Profile.md)
  - [ProfileAgeCounts](doc//ProfileAgeCounts.md)
@@ -430,6 +439,7 @@ Class | Method | HTTP request | Description
  - [ProfileAttributesConfigQuery](doc//ProfileAttributesConfigQuery.md)
  - [ProfileAttributesConfigQueryItem](doc//ProfileAttributesConfigQueryItem.md)
  - [ProfileAttributesConfigQueryResult](doc//ProfileAttributesConfigQueryResult.md)
+ - [ProfileConfig](doc//ProfileConfig.md)
  - [ProfileContent](doc//ProfileContent.md)
  - [ProfileContentVersion](doc//ProfileContentVersion.md)
  - [ProfileCreatedTimeFilter](doc//ProfileCreatedTimeFilter.md)

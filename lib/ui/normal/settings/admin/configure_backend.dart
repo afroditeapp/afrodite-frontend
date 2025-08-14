@@ -42,8 +42,8 @@ class _ConfigureBackendPageState extends State<ConfigureBackendPage> {
     setState(() {
       isLoading = false;
       _remoteBotLogin = data?.remoteBotLogin;
-      _adminBotEnabled = data?.bots?.admin;
-      _userBots = data?.bots?.users;
+      _adminBotEnabled = data?.localBots?.admin;
+      _userBots = data?.localBots?.users;
       _userBotsController.text = _userBots.toString();
       _currentConfig = data;
     });
@@ -193,9 +193,9 @@ class _ConfigureBackendPageState extends State<ConfigureBackendPage> {
         final adminBotEnabled = _adminBotEnabled;
         final userBots = _userBots;
 
-        final BotConfig? botConfig;
+        final LocalBotsConfig? botConfig;
         if (adminBotEnabled != null && userBots != null) {
-          botConfig = BotConfig(
+          botConfig = LocalBotsConfig(
             admin: adminBotEnabled,
             users: userBots,
           );
@@ -205,7 +205,7 @@ class _ConfigureBackendPageState extends State<ConfigureBackendPage> {
 
         final config = BackendConfig(
           remoteBotLogin: _remoteBotLogin,
-          bots: botConfig,
+          localBots: botConfig,
         );
         showConfirmDialog(context, "Save backend config?", details: "New config: ${config.toString()}")
           .then((value) async {
