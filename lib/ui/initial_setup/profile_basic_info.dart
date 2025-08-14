@@ -1,3 +1,5 @@
+import "package:app/logic/account/client_features_config.dart";
+import "package:app/model/freezed/logic/account/client_features_config.dart";
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
@@ -31,7 +33,7 @@ class AskProfileBasicInfoScreen extends StatelessWidget {
         getContinueButtonCallback: (context, state) {
           final age = state.profileAge;
           final name = state.profileName;
-          if (ageIsValid(age) && nameIsValid(name)) {
+          if (ageIsValid(age) && nameIsValid(context, name)) {
             return () {
               MyNavigator.push(context, const MaterialPage<void>(child: AskGenderScreen()));
             };
@@ -59,8 +61,9 @@ class AskProfileBasicInfoScreen extends StatelessWidget {
   }
 }
 
-bool nameIsValid(String? name) {
-  return name != null && name.isNotEmpty;
+bool nameIsValid(BuildContext context, String? name) {
+  final profileNameRegex = context.read<ClientFeaturesConfigBloc>().state.profileNameRegex;
+  return name != null && name.isNotEmpty && (profileNameRegex == null || profileNameRegex.hasMatch(name));
 }
 
 class AskProfileBasicInfo extends StatefulWidget {
@@ -141,20 +144,32 @@ Widget profileNameTextField(
     required void Function(String) onChanged,
   }
 ) {
-  return TextField(
-    decoration: InputDecoration(
-      hintText: context.strings.initial_setup_screen_profile_basic_info_profile_name_hint_text,
-    ),
-    controller: controller,
-    textCapitalization: TextCapitalization.sentences,
-    enableSuggestions: false,
-    autocorrect: false,
-    maxLength: 25,
-    onChanged: onChanged,
-    inputFormatters: [
-      TextInputFormatter.withFunction((_, newText) {
-        return newText.copyWith(text: toBeginningOfSentenceCase(newText.text));
-      })
-    ],
+  return BlocBuilder<ClientFeaturesConfigBloc, ClientFeaturesConfigData>(
+    builder: (context, state) {
+      return TextField(
+        decoration: InputDecoration(
+          hintText: context.strings.initial_setup_screen_profile_basic_info_profile_name_hint_text,
+        ),
+        controller: controller,
+        textCapitalization: TextCapitalization.sentences,
+        enableSuggestions: false,
+        autocorrect: false,
+        maxLength: 25,
+        onChanged: onChanged,
+        inputFormatters: [
+          TextInputFormatter.withFunction((_, newText) {
+            return newText.copyWith(text: toBeginningOfSentenceCase(newText.text));
+          }),
+          TextInputFormatter.withFunction((currentText, newText) {
+            final regex = state.profileNameRegex;
+            if (regex == null || regex.hasMatch(newText.text) || newText.text.isEmpty) {
+              return newText;
+            } else {
+              return currentText;
+            }
+          }),
+        ],
+      );
+    }
   );
 }

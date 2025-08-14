@@ -4,7 +4,11 @@ import "package:app/database/account_database_manager.dart";
 import "package:app/model/freezed/logic/account/client_features_config.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:app/data/login_repository.dart";
+import "package:logging/logging.dart";
 import "package:openapi/api.dart";
+import "package:utils/utils.dart";
+
+final log = Logger("ClientFeaturesConfigBloc");
 
 sealed class ClientFeaturesConfigEvent {}
 class ConfigChanged extends ClientFeaturesConfigEvent {
@@ -24,7 +28,19 @@ class ClientFeaturesConfigBloc extends Bloc<ClientFeaturesConfigEvent, ClientFea
 
   ClientFeaturesConfigBloc() : super(ClientFeaturesConfigData(config: _emptyClientFeaturesConfig())) {
     on<ConfigChanged>((data, emit) async {
-      emit(state.copyWith(config: data.value));
+      final regex = data.value.profile.profileNameRegex;
+      RegExp? profileNameRegex;
+      if (regex != null) {
+        try {
+          profileNameRegex = RegExp(regex);
+        } catch (_) {
+          log.error("Invalid profile name regex");
+        }
+      }
+      emit(state.copyWith(
+        config: data.value,
+        profileNameRegex: profileNameRegex,
+      ));
     });
     on<DailyLikesLeftChanged>((data, emit) {
       emit(state.copyWith(dailyLikesLeft: data.value));

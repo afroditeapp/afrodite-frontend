@@ -97,7 +97,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     }
 
     final name = s.name;
-    if (name == null || !nameIsValid(name)) {
+    if (name == null || !nameIsValid(context, name)) {
       showSnackBar(context.strings.edit_profile_screen_invalid_profile_name);
       return;
     }

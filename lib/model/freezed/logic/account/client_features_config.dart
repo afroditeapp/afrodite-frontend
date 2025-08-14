@@ -15,6 +15,7 @@ class ClientFeaturesConfigData with _$ClientFeaturesConfigData {
   ClientFeaturesConfigData._();
   factory ClientFeaturesConfigData({
     required ClientFeaturesConfig config,
+    RegExp? profileNameRegex,
     int? dailyLikesLeft,
   }) = _ClientFeaturesConfigData;
 
