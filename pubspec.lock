@@ -506,10 +506,11 @@ packages:
   flutter_file_manager_ios:
     dependency: "direct overridden"
     description:
-      name: flutter_file_manager_ios
-      sha256: "27113ea24199c6109b55687e052a952b2612af347503187d90b5a1b9ccbf266a"
-      url: "https://pub.dev"
-    source: hosted
+      path: "packages/flutter_file_manager_ios"
+      ref: c62c5069c4debd4b36688133a248c662af03870c
+      resolved-ref: c62c5069c4debd4b36688133a248c662af03870c
+      url: "https://github.com/jutuon/flutter_file_saver.git"
+    source: git
     version: "2.1.0"
   flutter_file_manager_macos:
     dependency: "direct overridden"

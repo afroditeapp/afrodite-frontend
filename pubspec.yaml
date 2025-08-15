@@ -161,10 +161,17 @@ dependency_overrides:
 
   # Code reviewed 2025-08-14
   flutter_file_manager_android: 2.1.0
-  flutter_file_manager_ios: 2.1.0
   flutter_file_manager_macos: 2.1.0
   flutter_file_manager_platform_interface: 2.1.0
   flutter_file_manager_web: 2.2.0
+
+  # Version 2.1.0 with iOS min version 13 and temporary
+  # file moving.
+  flutter_file_manager_ios:
+    git:
+      url: https://github.com/jutuon/flutter_file_saver.git
+      ref: c62c5069c4debd4b36688133a248c662af03870c
+      path: packages/flutter_file_manager_ios
 
 dev_dependencies:
   flutter_test:
