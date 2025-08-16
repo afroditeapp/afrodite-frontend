@@ -67,7 +67,6 @@ class _AccountBannedScreenState extends State<AccountBannedScreen> {
                   context,
                   context.strings.data_export_screen_title_export_type_user,
                   currentUser,
-                  DataExportType.user,
                 );
               }
             ),

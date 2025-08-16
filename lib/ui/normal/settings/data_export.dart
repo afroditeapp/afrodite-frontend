@@ -9,20 +9,20 @@ import 'package:app/localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 
-void openDataExportScreen(BuildContext context, String title, AccountId account, DataExportType dataExportType) {
+void openDataExportScreen(BuildContext context, String title, AccountId account, {bool allowAdminDataExport = false}) {
   MyNavigator.push(context, MaterialPage<void>(child:
-    DataExportScreen(title: title, account: account, dataExportType: dataExportType),
+    DataExportScreen(title: title, account: account, allowAdminDataExport: allowAdminDataExport),
   ));
 }
 
 class DataExportScreen extends StatefulWidget {
   final String title;
   final AccountId account;
-  final DataExportType dataExportType;
+  final bool allowAdminDataExport;
   const DataExportScreen({
     required this.title,
     required this.account,
-    required this.dataExportType,
+    required this.allowAdminDataExport,
     super.key,
   });
 
@@ -31,6 +31,8 @@ class DataExportScreen extends StatefulWidget {
 }
 
 class _DataExportScreenState extends State<DataExportScreen> {
+
+  DataExportType dataExportType = DataExportType.user;
 
   @override
   Widget build(BuildContext context) {
@@ -65,6 +67,7 @@ class _DataExportScreenState extends State<DataExportScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(padding: EdgeInsetsGeometry.only(top: 8)),
+            if (widget.allowAdminDataExport) exportTypeSelection(context),
             hPad(Row(
               spacing: 16,
               children: [
@@ -86,6 +89,33 @@ class _DataExportScreenState extends State<DataExportScreen> {
     );
   }
 
+  Widget exportTypeSelection(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          child: RadioListTile<DataExportType>(
+            value: DataExportType.user,
+            groupValue: dataExportType,
+            onChanged: (_) => setState(() {
+              dataExportType = DataExportType.user;
+            }),
+            title: Text("User"),
+          ),
+        ),
+        Expanded(
+          child: RadioListTile<DataExportType>(
+            value: DataExportType.admin,
+            groupValue: dataExportType,
+            onChanged: (_) => setState(() {
+              dataExportType = DataExportType.admin;
+            }),
+            title: Text("Admin"),
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget statusText(BuildContext context, DataExportData state) {
     final dataExport = state.dataExport;
     if (state.isError) {
@@ -102,7 +132,7 @@ class _DataExportScreenState extends State<DataExportScreen> {
       onPressed: state.dataExport == null ? () async {
         final r = await showConfirmDialog(context, context.strings.generic_download_question, yesNoActions: true);
         if (r == true && context.mounted) {
-          context.read<DataExportBloc>().add(DownloadDataExport(widget.account, widget.dataExportType));
+          context.read<DataExportBloc>().add(DownloadDataExport(widget.account, dataExportType));
         }
       } : null,
       child: Text(context.strings.generic_download),

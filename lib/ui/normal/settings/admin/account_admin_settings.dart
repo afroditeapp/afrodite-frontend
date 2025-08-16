@@ -247,7 +247,7 @@ class _AccountAdminSettingsScreenState extends State<AccountAdminSettingsScreen>
           context,
           context.strings.data_export_screen_title_export_type_admin,
           widget.accountId,
-          DataExportType.admin,
+          allowAdminDataExport: true,
         );
       }));
     }

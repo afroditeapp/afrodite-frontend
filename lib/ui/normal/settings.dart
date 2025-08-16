@@ -175,7 +175,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
           context,
           context.strings.data_export_screen_title_export_type_user,
           currentUser,
-          DataExportType.user,
         );
       }).toListTile(),
     ];
