@@ -138,10 +138,7 @@ Uint8List _emptyMapTilePngBytes() {
   return img.encodePng(imageBuffer);
 }
 
-// Use only ContentId as key for image cache as that is most likely
-// faster than using both AccountId and ContentId. Also all images
-// have unique ContentId.
-class AccountImageProvider extends ImageProvider<ContentId> {
+class AccountImageProvider extends ImageProvider<AccountImgKey> {
   final AccountImgKey imgInfo;
   final bool isMatch;
   final MediaRepository media;
@@ -149,7 +146,7 @@ class AccountImageProvider extends ImageProvider<ContentId> {
   AccountImageProvider._(this.imgInfo, {this.isMatch = false, required this.media});
 
   @override
-  ImageStreamCompleter loadImage(ContentId key, ImageDecoderCallback decode) {
+  ImageStreamCompleter loadImage(AccountImgKey key, ImageDecoderCallback decode) {
     return OneFrameImageStreamCompleter(
       () async {
         final imgBytes =
@@ -169,8 +166,8 @@ class AccountImageProvider extends ImageProvider<ContentId> {
   }
 
   @override
-  Future<ContentId> obtainKey(ImageConfiguration configuration) =>
-    SynchronousFuture(imgInfo.contentId);
+  Future<AccountImgKey> obtainKey(ImageConfiguration configuration) =>
+    SynchronousFuture(imgInfo);
 
   static ImageProvider<Object> create(
     AccountId accountId,
