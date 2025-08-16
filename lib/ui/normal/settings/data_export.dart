@@ -4,11 +4,9 @@ import 'package:app/logic/settings/data_export.dart';
 import 'package:app/model/freezed/logic/settings/data_export.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/padding.dart';
-import 'package:app/ui_utils/snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:app/localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_file_saver/flutter_file_saver.dart';
 import 'package:openapi/api.dart';
 
 void openDataExportScreen(BuildContext context, String title, AccountId account, DataExportType dataExportType) {
@@ -114,16 +112,10 @@ class _DataExportScreenState extends State<DataExportScreen> {
   Widget saveButton(BuildContext context, DataExportData state) {
     final dataExport = state.dataExport;
       return ElevatedButton(
-        onPressed: dataExport != null ? () async {
-          try {
-            await FlutterFileSaver().writeFileAsBytes(fileName: dataExport.name, bytes: dataExport.data);
-          } catch (_) {
-            return;
-          }
-          showSnackBar(R.strings.generic_action_completed);
+        onPressed: dataExport != null && !state.isLoading ? () async {
+          context.read<DataExportBloc>().add(SaveDataExport(dataExport));
         } : null,
         child: Text(context.strings.generic_save),
       );
-
   }
 }
