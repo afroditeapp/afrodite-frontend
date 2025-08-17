@@ -43,12 +43,12 @@ class ProfileGrid extends StatefulWidget {
   const ProfileGrid({required this.profileFiltersBloc, super.key});
 
   @override
-  State<ProfileGrid> createState() => _ProfileGridState();
+  State<ProfileGrid> createState() => ProfileGridState();
 }
 
-class _ProfileGridState extends State<ProfileGrid> {
+class ProfileGridState extends State<ProfileGrid> {
   final ScrollController _scrollController = ScrollController();
-  PagingState<int, ProfileGridProfileEntry> _pagingState = PagingState();
+  PagingState<int, ProfileGridProfileEntry> pagingState = PagingState();
   StreamSubscription<ProfileChange>? _profileChangesSubscription;
 
   final AccountDatabaseManager accountDb = LoginRepository.getInstance().repositories.accountDb;
@@ -115,7 +115,7 @@ class _ProfileGridState extends State<ProfileGrid> {
       return;
     }
     setState(() {
-      _pagingState = action(_pagingState);
+      pagingState = action(pagingState);
     });
   }
 
@@ -155,7 +155,7 @@ class _ProfileGridState extends State<ProfileGrid> {
   }
 
   Future<List<ProfileGridProfileEntry>?> _fetchPage() async {
-    if (!_pagingState.hasNextPage) {
+    if (!pagingState.hasNextPage) {
       return null;
     }
 
@@ -202,7 +202,7 @@ class _ProfileGridState extends State<ProfileGrid> {
           return BlocBuilder<ProfileFiltersBloc, ProfileFiltersData>(
             builder: (context, state) {
               if (state.updateState is UpdateIdle && !state.unsavedChanges()) {
-                return showGrid(context, uiSettings.gridSettings, _pagingState);
+                return showGrid(context, uiSettings.gridSettings, pagingState);
               } else {
                 return showGrid(context, uiSettings.gridSettings, PagingState(isLoading: true));
               }

@@ -103,18 +103,28 @@ class ProfileView extends BottomNavigationScreen {
           tooltip: state.showOnlyFavorites ?
             context.strings.profile_grid_screen_show_all_profiles_action :
             context.strings.profile_grid_screen_show_favorite_profiles_action,
-          onPressed: () => context.read<ProfileFiltersBloc>().add(SetFavoriteProfilesFilter(!state.showOnlyFavorites, waitEventHandling)),
+          onPressed: () {
+            // Prevent starting another reload when previous is ongoing
+            if (_profileGridKey.currentState?.pagingState.isLoading == true) {
+              showSnackBar(context.strings.generic_previous_action_in_progress);
+            } else {
+              context.read<ProfileFiltersBloc>().add(SetFavoriteProfilesFilter(!state.showOnlyFavorites, waitEventHandling));
+            }
+          },
         );
       },
     );
   }
 }
 
+final _profileGridKey = GlobalKey<ProfileGridState>();
+
 class _ProfileViewState extends State<ProfileView> {
   @override
   Widget build(BuildContext context) {
     return PublicProfileViewingBlocker(
       child: ProfileGrid(
+        key: _profileGridKey,
         profileFiltersBloc: context.read<ProfileFiltersBloc>(),
       ),
     );
