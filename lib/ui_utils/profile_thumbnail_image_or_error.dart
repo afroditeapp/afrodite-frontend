@@ -48,6 +48,7 @@ class ProfileThumbnailImageOrError extends StatelessWidget {
       return ProfileThumbnailImage(
         accountId: entry.accountId,
         contentId: img.id,
+        cropResults: cropResults,
         width: width,
         height: height,
         squareFactor: squareFactor,
