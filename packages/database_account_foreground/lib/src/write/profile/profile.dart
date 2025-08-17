@@ -59,13 +59,20 @@ class DaoWriteProfile extends DatabaseAccessor<AccountForegroundDatabase> with _
     );
   }
 
-  Future<void> updateProfileLastSeenTime(api.AccountId accountId, int? profileLastSeenTime) async {
-    await into(profile).insertOnConflictUpdate(
-      ProfileCompanion.insert(
-        accountId: accountId,
-        profileLastSeenTimeValue: Value(profileLastSeenTime),
-      ),
-    );
+  Future<void> updateProfileLastSeenTimeIfNeeded(api.AccountId accountId, int? profileLastSeenTime) async {
+    final currentLastSeenTime = await (select(profile)
+      ..where((t) => t.accountId.equals(accountId.aid))
+    )
+      .getSingleOrNull();
+
+    if (currentLastSeenTime?.profileLastSeenTimeValue != profileLastSeenTime) {
+      await into(profile).insertOnConflictUpdate(
+        ProfileCompanion.insert(
+          accountId: accountId,
+          profileLastSeenTimeValue: Value(profileLastSeenTime),
+        ),
+      );
+    }
   }
 
   Future<void> updateNewLikeInfoReceivedTimeToCurrentTime(api.AccountId accountId) async {

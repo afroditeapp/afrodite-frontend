@@ -118,7 +118,7 @@ class OnlineIterator extends IteratorType {
             if (p.p != null && currentVersion == p.p && p.c != null && currentContentVersion == p.c) {
               // No data changes, download can be skipped, but
               // update last seen time.
-              await db.accountAction((db) => db.profile.updateProfileLastSeenTime(p.a, p.l));
+              await db.accountAction((db) => db.profile.updateProfileLastSeenTimeIfNeeded(p.a, p.l));
             } else {
               entry = await downloader.download(p.a).ok();
             }

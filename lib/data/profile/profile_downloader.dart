@@ -76,7 +76,7 @@ class ProfileEntryDownloader {
         } else {
           // Current profile version is the latest.
           // Only updating last seen time to database is latest.
-          await db.accountAction((db) => db.profile.updateProfileLastSeenTime(accountId, v.lst));
+          await db.accountAction((db) => db.profile.updateProfileLastSeenTimeIfNeeded(accountId, v.lst));
         }
       case Err(:final e):
         e.logError(log);
