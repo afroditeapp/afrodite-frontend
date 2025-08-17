@@ -29,12 +29,6 @@ class InitialSetupSkipped extends SingleRowTable {
     .withDefault(const Constant(false))();
 }
 
-class ImageSettings extends SingleRowTable {
-  IntColumn get imageCacheMaxBytes => integer().nullable()();
-  BoolColumn get cacheFullSizedImages => boolean().nullable()();
-  IntColumn get imageCacheDownscalingSize => integer().nullable()();
-}
-
 class GridSettings extends SingleRowTable {
   RealColumn get gridHorizontalPadding => real().nullable()();
   RealColumn get gridInternalPadding => real().nullable()();

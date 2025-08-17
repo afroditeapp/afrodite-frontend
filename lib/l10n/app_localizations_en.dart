@@ -622,44 +622,6 @@ class AppLocalizationsEn extends AppLocalizations {
       'Processing ongoing';
 
   @override
-  String get image_quality_settings_screen_image_cache_max_size =>
-      'Image cache max size';
-
-  @override
-  String get image_quality_settings_screen_image_quality_custom => 'Custom';
-
-  @override
-  String get image_quality_settings_screen_image_quality_high => 'High';
-
-  @override
-  String get image_quality_settings_screen_image_quality_low => 'Low';
-
-  @override
-  String get image_quality_settings_screen_image_quality_max => 'Max';
-
-  @override
-  String get image_quality_settings_screen_image_quality_medium => 'Medium';
-
-  @override
-  String image_quality_settings_screen_image_quality_pixel_value(String p0) {
-    return '$p0 pixels';
-  }
-
-  @override
-  String get image_quality_settings_screen_image_quality_setting =>
-      'Image width and height max quality';
-
-  @override
-  String get image_quality_settings_screen_image_quality_tiny => 'Tiny';
-
-  @override
-  String get image_quality_settings_screen_max_image_quality =>
-      'Max image quality';
-
-  @override
-  String get image_quality_settings_screen_title => 'Image quality';
-
-  @override
   String get initial_setup_screen_age_confirmation_checkbox =>
       'I\'m at least 18 years old';
 

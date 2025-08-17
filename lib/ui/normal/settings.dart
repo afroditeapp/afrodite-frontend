@@ -4,7 +4,6 @@ import 'package:app/model/freezed/logic/profile/profile_filters.dart';
 import 'package:app/model/freezed/logic/settings/privacy_settings.dart';
 import 'package:app/ui/normal/profiles/profile_filters.dart';
 import 'package:app/ui/normal/settings/blocked_profiles.dart';
-import 'package:app/ui/normal/settings/general/image_settings.dart';
 import 'package:app/ui/normal/settings/general/profile_grid_settings.dart';
 import 'package:app/ui/normal/settings/location.dart';
 import 'package:app/ui/normal/settings/media/current_security_selfie.dart';
@@ -188,11 +187,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
       ).toListTile(),
       Setting.createSetting(Icons.grid_view_rounded, context.strings.profile_grid_settings_screen_title, () {
         openProfileGridSettingsScreen(context);
-      }).toListTile(),
-      Setting.createSetting(Icons.image, context.strings.image_quality_settings_screen_title, () {
-        MyNavigator.push(context, const MaterialPage<void>(child:
-          ImageSettingsScreen()
-        ));
       }).toListTile(),
     ];
   }

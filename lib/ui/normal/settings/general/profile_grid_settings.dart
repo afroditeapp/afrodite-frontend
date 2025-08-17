@@ -2,7 +2,6 @@
 import 'package:app/logic/profile/profile_filters.dart';
 import 'package:app/model/freezed/logic/profile/profile_filters.dart';
 import 'package:app/ui/normal/settings.dart';
-import 'package:app/ui/normal/settings/general/image_settings.dart';
 import 'package:app/ui_utils/common_update_logic.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/padding.dart';
@@ -183,6 +182,26 @@ class _ProfileGridSettingsScreenState extends State<ProfileGridSettingsScreen> {
           },
         );
       }
+    );
+  }
+}
+
+class TitleWithValue extends StatelessWidget {
+  final String title;
+  final String? value;
+  final bool isEnabled;
+  const TitleWithValue({required this.title, this.value, this.isEnabled = true, super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final textStyle = isEnabled ? null : TextStyle(color: Theme.of(context).disabledColor);
+    final currentValue = value;
+    return Row(
+      children: [
+        Text(title, style: textStyle),
+        if (currentValue != null) const Spacer(),
+        if (currentValue != null) Text(currentValue, style: textStyle),
+      ],
     );
   }
 }

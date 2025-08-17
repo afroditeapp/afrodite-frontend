@@ -19,7 +19,6 @@ import 'package:app/data/account_repository.dart';
 import 'package:app/data/chat/message_key_generator.dart';
 import 'package:app/data/chat_repository.dart';
 import 'package:app/data/common_repository.dart';
-import 'package:app/data/general/image_cache_settings.dart';
 import 'package:app/data/media_repository.dart';
 import 'package:app/data/profile_repository.dart';
 import 'package:app/data/utils.dart';
@@ -255,8 +254,6 @@ class LoginRepository extends DataRepository {
     final connectionManager = ServerConnectionManager(accountDb, accountBackgroundDb, accountId);
     final clientIdManager = ClientIdManager(accountDb, connectionManager.api);
 
-    final imageCacheSettings = ImageCacheSettings(accountDb);
-
     final account = AccountRepository(
       db: accountDb,
       accountBackgroundDb: accountBackgroundDb,
@@ -287,7 +284,6 @@ class LoginRepository extends DataRepository {
       media: media,
       profile: profile,
       account: account,
-      imageCacheSettings: imageCacheSettings,
       accountBackgroundDb: accountBackgroundDb,
       accountDb: accountDb,
       connectionManager: connectionManager,
@@ -676,9 +672,6 @@ class RepositoryInstances implements DataRepositoryMethods {
   final ProfileRepository profile;
   final AccountRepository account;
 
-  // Only lifecycle methods
-  final ImageCacheSettings imageCacheSettings;
-
   // No lifecycle or other methods
   final AccountBackgroundDatabaseManager accountBackgroundDb;
   final AccountDatabaseManager accountDb;
@@ -696,7 +689,6 @@ class RepositoryInstances implements DataRepositoryMethods {
     required this.media,
     required this.profile,
     required this.account,
-    required this.imageCacheSettings,
     required this.accountBackgroundDb,
     required this.accountDb,
     required this.connectionManager,
@@ -709,11 +701,9 @@ class RepositoryInstances implements DataRepositoryMethods {
     await media.init();
     await profile.init();
     await account.init();
-    await imageCacheSettings.init();
   }
 
   Future<void> dispose() async {
-    await imageCacheSettings.dispose();
     await account.dispose();
     await profile.dispose();
     await media.dispose();

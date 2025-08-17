@@ -11,6 +11,5 @@ mixin _$DaoReadAppMixin on DatabaseAccessor<AccountForegroundDatabase> {
   $InitialSyncTable get initialSync => attachedDatabase.initialSync;
   $InitialSetupSkippedTable get initialSetupSkipped =>
       attachedDatabase.initialSetupSkipped;
-  $ImageSettingsTable get imageSettings => attachedDatabase.imageSettings;
   $GridSettingsTable get gridSettings => attachedDatabase.gridSettings;
 }

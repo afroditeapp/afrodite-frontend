@@ -192,38 +192,6 @@ class AccountImageProvider extends ImageProvider<AccountImgKey> {
   }
 }
 
-const MAX_IMG_WIDTH_AND_HEIGHT = 1920;
-
-enum ImageCacheSizeSetting {
-  /// Downscale to 1/4 of the max image size (Full HD)
-  tiny,
-  /// Downscale to 1/3 of the max image size (Full HD)
-  low,
-  /// Downscale to 1/2 of the max image size (Full HD)
-  medium,
-  /// Downscale to 1/1.5 of the max image size (Full HD)
-  high,
-  /// No downscaling
-  maxQuality;
-
-  int getImgSize() {
-    final size = switch (this) {
-      ImageCacheSizeSetting.tiny =>
-        MAX_IMG_WIDTH_AND_HEIGHT ~/ 4,
-      ImageCacheSizeSetting.low =>
-        MAX_IMG_WIDTH_AND_HEIGHT ~/ 3,
-      ImageCacheSizeSetting.medium =>
-        MAX_IMG_WIDTH_AND_HEIGHT ~/ 2,
-      ImageCacheSizeSetting.high =>
-        MAX_IMG_WIDTH_AND_HEIGHT ~/ 1.5,
-      ImageCacheSizeSetting.maxQuality =>
-        MAX_IMG_WIDTH_AND_HEIGHT,
-    };
-
-    return size;
-  }
-}
-
 class ImageCacheSize {
   final int? width;
   final int? height;

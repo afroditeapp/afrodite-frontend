@@ -14,25 +14,11 @@ part 'app.g.dart';
     schema.ShowAdvancedProfileFilters,
     schema.InitialSync,
     schema.InitialSetupSkipped,
-    schema.ImageSettings,
     schema.GridSettings,
   ]
 )
 class DaoReadApp extends DatabaseAccessor<AccountForegroundDatabase> with _$DaoReadAppMixin {
   DaoReadApp(super.db);
-
-  Stream<int?> watchLocalImageSettingImageCacheMaxBytes() =>
-    _watchColumnImageSettings((r) => r.imageCacheMaxBytes);
-  Stream<bool?> watchCacheFullSizedImages() =>
-    _watchColumnImageSettings((r) => r.cacheFullSizedImages);
-  Stream<int?> watchImageCacheDownscalingSize() =>
-    _watchColumnImageSettings((r) => r.imageCacheDownscalingSize);
-
-  Stream<T?> _watchColumnImageSettings<T extends Object>(T? Function(ImageSetting) extractColumn) {
-    return (select(imageSettings)..where((t) => t.id.equals(SingleRowTable.ID.value)))
-      .map(extractColumn)
-      .watchSingleOrNull();
-  }
 
   Stream<bool?> watchLoginSyncDone() =>
     _watchColumnInitialSync((r) => r.initialSyncDoneLoginRepository);

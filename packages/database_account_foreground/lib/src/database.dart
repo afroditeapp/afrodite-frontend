@@ -45,7 +45,6 @@ part 'database.g.dart';
     schema.ShowAdvancedProfileFilters,
     schema.InitialSync,
     schema.InitialSetupSkipped,
-    schema.ImageSettings,
     schema.GridSettings,
     // Common
     schema.ServerMaintenance,

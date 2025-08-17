@@ -15,39 +15,11 @@ part 'app.g.dart';
     schema.ShowAdvancedProfileFilters,
     schema.InitialSync,
     schema.InitialSetupSkipped,
-    schema.ImageSettings,
     schema.GridSettings,
   ]
 )
 class DaoWriteApp extends DatabaseAccessor<AccountForegroundDatabase> with _$DaoWriteAppMixin {
   DaoWriteApp(super.db);
-
-  Future<void> updateImageCacheMaxBytes(int value) async {
-    await into(imageSettings).insertOnConflictUpdate(
-      ImageSettingsCompanion.insert(
-        id: SingleRowTable.ID,
-        imageCacheMaxBytes: Value(value),
-      ),
-    );
-  }
-
-  Future<void> updateCacheFullSizedImages(bool value) async {
-    await into(imageSettings).insertOnConflictUpdate(
-      ImageSettingsCompanion.insert(
-        id: SingleRowTable.ID,
-        cacheFullSizedImages: Value(value),
-      ),
-    );
-  }
-
-  Future<void> updateImageCacheDownscalingSize(int value) async {
-    await into(imageSettings).insertOnConflictUpdate(
-      ImageSettingsCompanion.insert(
-        id: SingleRowTable.ID,
-        imageCacheDownscalingSize: Value(value),
-      ),
-    );
-  }
 
   Future<void> updateLoginSyncDone(bool value) async {
     await into(initialSync).insertOnConflictUpdate(
