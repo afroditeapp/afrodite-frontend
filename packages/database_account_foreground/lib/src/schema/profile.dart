@@ -72,6 +72,10 @@ class Profile extends Table {
   Set<Column<Object>> get primaryKey => {accountId};
 }
 
+// TODO(prod): Consider own tables for profileDataRefreshTime and
+//             newLikeInfoReceivedTime.
+// TODO(prod): Consider splitting ProfileStates to multiple tables.
+
 /// Moved from Profile table to avoid unnecessary emissions from
 /// `Stream<ProfileEntry>`.
 class ProfileStates extends Table {
