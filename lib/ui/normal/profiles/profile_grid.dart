@@ -360,7 +360,7 @@ Widget profileEntryWidgetStream(
           return ProfileThumbnailImageOrError.fromProfileEntry(
             entry: e.entry,
             borderRadius: BorderRadius.circular(settings.valueProfileThumbnailBorderRadius()),
-            cacheSize: ImageCacheSize.sizeForGrid(context, constraints.maxHeight, e.entry.primaryContentGridCropSize),
+            cacheSize: ImageCacheSize.sizeForGrid(context, constraints.maxHeight),
             child: Stack(
               children: [
                 _thumbnailStatusIndicatorsTop(

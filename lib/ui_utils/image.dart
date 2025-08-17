@@ -1,4 +1,5 @@
 
+import 'package:app/ui_utils/crop_image_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:openapi/api.dart';
@@ -32,6 +33,7 @@ Widget accountImgWidget(
       isMatch: isMatch,
       cacheSize: cacheSize,
       media: LoginRepository.getInstance().repositories.media,
+      cropArea: CropResults.full,
     ),
     width: width,
     height: height,
@@ -59,6 +61,7 @@ Widget accountImgWidgetInk(
       isMatch: isMatch,
       media: LoginRepository.getInstance().repositories.media,
       cacheSize: cacheSize,
+      cropArea: CropResults.full,
     ),
     width: width,
     height: height,

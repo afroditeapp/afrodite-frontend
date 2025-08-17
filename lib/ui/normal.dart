@@ -244,17 +244,23 @@ class _NormalStateContentState extends State<NormalStateContent> {
         final img = state.primaryProfilePicture;
         final cropInfo = state.primaryProfilePictureCropInfo;
         if (img != null && state.primaryImageDataAvailable) {
-          return ProfileThumbnailImage(
-            accountId: currentUser,
-            contentId: img,
-            cropResults: cropInfo,
-            cacheSize: ImageCacheSize.sizeForAppBarThumbnail(context),
-            child: Material(
-              color: Colors.transparent,
-              child: InkWell(
-                onTap: () => openMyProfileScreen(context),
-              ),
-            )
+          return LayoutBuilder(
+            builder: (context, constraints) {
+              return ProfileThumbnailImage(
+                accountId: currentUser,
+                contentId: img,
+                cropResults: cropInfo,
+                width: constraints.maxHeight,
+                height: constraints.maxHeight,
+                cacheSize: ImageCacheSize.sizeForAppBarThumbnail(context),
+                child: Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    onTap: () => openMyProfileScreen(context),
+                  ),
+                )
+              );
+            }
           );
         } else {
           return primaryImageButtonError();

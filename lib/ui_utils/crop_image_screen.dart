@@ -202,7 +202,7 @@ class CropResults {
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, gridCropSize, gridCropX, gridCropY);
+  int get hashCode => Object.hash(gridCropSize, gridCropX, gridCropY);
 }
 
 class CropImageOverlay extends StatefulWidget {

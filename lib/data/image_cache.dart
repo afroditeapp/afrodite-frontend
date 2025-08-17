@@ -1,5 +1,9 @@
+import 'dart:ui';
+
 import 'package:app/data/login_repository.dart';
 import 'package:app/ui/utils/view_profile.dart';
+import 'package:app/ui_utils/crop_image_screen.dart';
+import 'package:app/ui_utils/profile_thumbnail_image.dart';
 import 'package:database/database.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -162,7 +166,22 @@ class AccountImageProvider extends ImageProvider<AccountImgKey> {
         final codec = await decode(buffer);
         final frame = await codec.getNextFrame();
 
-        return ImageInfo(image: frame.image);
+        if (imgInfo.cropArea == CropResults.full) {
+          return ImageInfo(image: frame.image);
+        }
+
+        final pictureRecorder = PictureRecorder();
+        final canvas = Canvas(pictureRecorder);
+        final painter = CroppedImagePainter(
+          frame.image,
+          imgInfo.cropArea,
+          1.0,
+        );
+        final srcRect = painter.calculateSrcRect();
+        final dstRect = Rect.fromLTWH(0, 0, srcRect.width, srcRect.height);
+        canvas.drawImageRect(frame.image, srcRect, dstRect, Paint());
+        final image = await pictureRecorder.endRecording().toImage(srcRect.width.round(), srcRect.height.round());
+        return ImageInfo(image: image);
       }(),
     );
   }
@@ -178,11 +197,16 @@ class AccountImageProvider extends ImageProvider<AccountImgKey> {
       bool isMatch = false,
       required ImageCacheSize cacheSize,
       required MediaRepository media,
+      required CropResults cropArea,
     }
   ) {
-    final key = AccountImgKey(accountId: accountId, contentId: contentId, cacheSize: cacheSize);
+    final key = AccountImgKey(
+      accountId: accountId,
+      contentId: contentId,
+      cacheSize: cacheSize,
+      cropArea: cropArea,
+    );
     final imgProvider = AccountImageProvider._(key, isMatch: isMatch, media: media);
-
     return ResizeImage(
       imgProvider,
       width: cacheSize.width,
@@ -234,23 +258,16 @@ class ImageCacheSize {
     );
   }
 
-  factory ImageCacheSize._heightWithPrimaryImageCroppingCompensated(BuildContext context, double height, double gridCropSize) {
-    // Add more pixels to cached image so that cropping does not make
-    // clearly visible quality loss.
-    final extraSizeForCacheMultiplier = 1.0 + (1.0 - gridCropSize);
-    return ImageCacheSize.height(context, height * extraSizeForCacheMultiplier);
-  }
-
   static ImageCacheSize sizeForAppBarThumbnail(BuildContext context) {
     return ImageCacheSize._divideFullScreen(context, 4);
   }
 
-  static ImageCacheSize sizeForGrid(BuildContext context, double height, double gridCropSize) {
-    return ImageCacheSize._heightWithPrimaryImageCroppingCompensated(context, height, gridCropSize);
+  static ImageCacheSize sizeForGrid(BuildContext context, double height) {
+    return ImageCacheSize.height(context, height);
   }
 
-  static ImageCacheSize sizeForListWithTextContent(BuildContext context, double height, double gridCropSize) {
-    return ImageCacheSize._heightWithPrimaryImageCroppingCompensated(context, height, gridCropSize);
+  static ImageCacheSize sizeForListWithTextContent(BuildContext context, double height) {
+    return ImageCacheSize.height(context, height);
   }
 
   @override
@@ -281,6 +298,7 @@ class PrecacheImageForViewProfileScreen {
       content,
       cacheSize: ImageCacheSize.height(context, VIEW_PROFILE_WIDGET_IMG_HEIGHT),
       media: LoginRepository.getInstance().repositories.media,
+      cropArea: CropResults.full,
     );
     await precacheImage(imageProvider, context);
   }

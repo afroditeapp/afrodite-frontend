@@ -2,6 +2,7 @@
 import 'package:app/localizations.dart';
 import 'package:app/ui_utils/profile_thumbnail_image.dart';
 import 'package:app/ui_utils/snack_bar.dart';
+import 'package:app/utils/profile_entry.dart';
 import 'package:flutter/material.dart';
 import 'package:app/data/image_cache.dart';
 import 'package:database/database.dart';
@@ -29,11 +30,7 @@ class ProfileThumbnailImageOrError extends StatelessWidget {
     required this.cacheSize,
     super.key,
   }) :
-    cropResults = CropResults.fromValues(
-      entry.primaryContentGridCropSize,
-      entry.primaryContentGridCropX,
-      entry.primaryContentGridCropY,
-    );
+    cropResults = entry.primaryImageCropInfo();
 
   @override
   Widget build(BuildContext context) {

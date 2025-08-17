@@ -16,11 +16,13 @@ mixin _$AccountImgKey {
   AccountId get accountId => throw _privateConstructorErrorAccountImgKey;
   ContentId get contentId => throw _privateConstructorErrorAccountImgKey;
   ImageCacheSize get cacheSize => throw _privateConstructorErrorAccountImgKey;
+  CropResults get cropArea => throw _privateConstructorErrorAccountImgKey;
 
   AccountImgKey copyWith({
     AccountId? accountId,
     ContentId? contentId,
     ImageCacheSize? cacheSize,
+    CropResults? cropArea,
   }) => throw _privateConstructorErrorAccountImgKey;
 }
 
@@ -30,6 +32,7 @@ abstract class _AccountImgKey implements AccountImgKey {
     required AccountId accountId,
     required ContentId contentId,
     required ImageCacheSize cacheSize,
+    required CropResults cropArea,
   }) = _$AccountImgKeyImpl;
 }
 
@@ -39,6 +42,7 @@ class _$AccountImgKeyImpl with DiagnosticableTreeMixin implements _AccountImgKey
     required this.accountId,
     required this.contentId,
     required this.cacheSize,
+    required this.cropArea,
   });
 
   @override
@@ -47,10 +51,12 @@ class _$AccountImgKeyImpl with DiagnosticableTreeMixin implements _AccountImgKey
   final ContentId contentId;
   @override
   final ImageCacheSize cacheSize;
+  @override
+  final CropResults cropArea;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'AccountImgKey(accountId: $accountId, contentId: $contentId, cacheSize: $cacheSize)';
+    return 'AccountImgKey(accountId: $accountId, contentId: $contentId, cacheSize: $cacheSize, cropArea: $cropArea)';
   }
 
   @override
@@ -60,7 +66,8 @@ class _$AccountImgKeyImpl with DiagnosticableTreeMixin implements _AccountImgKey
       ..add(DiagnosticsProperty('type', 'AccountImgKey'))
       ..add(DiagnosticsProperty('accountId', accountId))
       ..add(DiagnosticsProperty('contentId', contentId))
-      ..add(DiagnosticsProperty('cacheSize', cacheSize));
+      ..add(DiagnosticsProperty('cacheSize', cacheSize))
+      ..add(DiagnosticsProperty('cropArea', cropArea));
   }
 
   @override
@@ -73,7 +80,9 @@ class _$AccountImgKeyImpl with DiagnosticableTreeMixin implements _AccountImgKey
         (identical(other.contentId, contentId) ||
           other.contentId == contentId) &&
         (identical(other.cacheSize, cacheSize) ||
-          other.cacheSize == cacheSize)
+          other.cacheSize == cacheSize) &&
+        (identical(other.cropArea, cropArea) ||
+          other.cropArea == cropArea)
     );
   }
 
@@ -83,6 +92,7 @@ class _$AccountImgKeyImpl with DiagnosticableTreeMixin implements _AccountImgKey
     accountId,
     contentId,
     cacheSize,
+    cropArea,
   );
 
   @override
@@ -90,9 +100,11 @@ class _$AccountImgKeyImpl with DiagnosticableTreeMixin implements _AccountImgKey
     Object? accountId,
     Object? contentId,
     Object? cacheSize,
+    Object? cropArea,
   }) => _$AccountImgKeyImpl(
     accountId: (accountId ?? this.accountId) as AccountId,
     contentId: (contentId ?? this.contentId) as ContentId,
     cacheSize: (cacheSize ?? this.cacheSize) as ImageCacheSize,
+    cropArea: (cropArea ?? this.cropArea) as CropResults,
   );
 }

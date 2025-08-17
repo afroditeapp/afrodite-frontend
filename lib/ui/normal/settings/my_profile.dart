@@ -24,10 +24,15 @@ import 'package:app/ui_utils/loading_dialog.dart';
 
 Future<void> openMyProfileScreen(BuildContext context) async {
   final account = LoginRepository.getInstance().repositories.accountId;
-  final content = context.read<ContentBloc>().state.primaryProfilePicture;
+  final contentState = context.read<ContentBloc>().state;
+  final content = contentState.primaryProfilePicture;
 
   if (content != null) {
-    await PrecacheImageForViewProfileScreen.usingAccountAndContentIds(context, account, content);
+    await PrecacheImageForViewProfileScreen.usingAccountAndContentIds(
+      context,
+      account,
+      content,
+    );
   }
 
   if (!context.mounted) {
