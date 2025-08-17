@@ -136,7 +136,7 @@ class _AccountAdminSettingsScreenState extends State<AccountAdminSettingsScreen>
       return;
     }
 
-    openProfileView(context, entry, null, ProfileRefreshPriority.low);
+    await openProfileView(context, entry, null, ProfileRefreshPriority.low);
   }
 
   List<Setting> settingsList(BuildContext context, AccountAdminSettingsPermissions permissions) {

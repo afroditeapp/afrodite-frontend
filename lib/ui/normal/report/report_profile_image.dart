@@ -64,7 +64,7 @@ class _ReportProfileImageScreen extends State<ReportProfileImageScreen> {
       isMatch: widget.isMatch,
       width: _IMG_SIZE,
       height: _IMG_SIZE,
-      cacheSize: ImageCacheSize.sizeForViewProfile(context),
+      cacheSize: ImageCacheSize.sizeForListWithTextContent(context, _IMG_SIZE, 1.0),
     );
 
     final textWidget = Padding(

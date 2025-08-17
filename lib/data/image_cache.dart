@@ -1,4 +1,6 @@
+import 'package:app/data/login_repository.dart';
 import 'package:app/ui/utils/view_profile.dart';
+import 'package:database/database.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -188,7 +190,6 @@ class AccountImageProvider extends ImageProvider<AccountImgKey> {
       allowUpscaling: false,
       policy: ResizeImagePolicy.fit,
     );
-
   }
 }
 
@@ -206,13 +207,17 @@ class ImageCacheSize {
     );
   }
 
-  factory ImageCacheSize.halfScreen(BuildContext context) {
+  factory ImageCacheSize._divideFullScreen(BuildContext context, int heightDivider) {
     final size = MediaQuery.sizeOf(context);
     final devicePixelRatio = MediaQuery.devicePixelRatioOf(context);
     return ImageCacheSize._(
-      width: (size.width ~/ 2 * devicePixelRatio).round(),
-      height: (size.height ~/ 2 * devicePixelRatio).round(),
+      width: (size.width ~/ heightDivider * devicePixelRatio).round(),
+      height: (size.height ~/ heightDivider * devicePixelRatio).round(),
     );
+  }
+
+  factory ImageCacheSize.halfScreen(BuildContext context) {
+    return ImageCacheSize._divideFullScreen(context, 2);
   }
 
   factory ImageCacheSize.width(BuildContext context, double width) {
@@ -229,20 +234,23 @@ class ImageCacheSize {
     );
   }
 
+  factory ImageCacheSize._heightWithPrimaryImageCroppingCompensated(BuildContext context, double height, double gridCropSize) {
+    // Add more pixels to cached image so that cropping does not make
+    // clearly visible quality loss.
+    final extraSizeForCacheMultiplier = 1.0 + (1.0 - gridCropSize);
+    return ImageCacheSize.height(context, height * extraSizeForCacheMultiplier);
+  }
+
   static ImageCacheSize sizeForAppBarThumbnail(BuildContext context) {
-    return ImageCacheSize.height(context, VIEW_PROFILE_WIDGET_IMG_HEIGHT);
+    return ImageCacheSize._divideFullScreen(context, 4);
   }
 
-  static ImageCacheSize sizeForGrid(BuildContext context) {
-    return ImageCacheSize.height(context, VIEW_PROFILE_WIDGET_IMG_HEIGHT);
+  static ImageCacheSize sizeForGrid(BuildContext context, double height, double gridCropSize) {
+    return ImageCacheSize._heightWithPrimaryImageCroppingCompensated(context, height, gridCropSize);
   }
 
-  static ImageCacheSize sizeForListWithTextContent(BuildContext context) {
-    return ImageCacheSize.height(context, VIEW_PROFILE_WIDGET_IMG_HEIGHT);
-  }
-
-  static ImageCacheSize sizeForViewProfile(BuildContext context) {
-    return ImageCacheSize.height(context, VIEW_PROFILE_WIDGET_IMG_HEIGHT);
+  static ImageCacheSize sizeForListWithTextContent(BuildContext context, double height, double gridCropSize) {
+    return ImageCacheSize._heightWithPrimaryImageCroppingCompensated(context, height, gridCropSize);
   }
 
   @override
@@ -254,4 +262,26 @@ class ImageCacheSize {
 
   @override
   int get hashCode => Object.hash(width, height);
+}
+
+class PrecacheImageForViewProfileScreen {
+  static Future<void> usingProfileEntry(BuildContext context, ProfileEntry e) async {
+    final first = e.content.firstOrNull;
+    if (first != null && first.primary == true && first.accepted == true) {
+      // AccountImageProvider.create does not need isMatch
+      // set to true as image is available locally and
+      // it is loaded to ImageCache.
+      await PrecacheImageForViewProfileScreen.usingAccountAndContentIds(context, e.accountId, first.id);
+    }
+  }
+
+  static Future<void> usingAccountAndContentIds(BuildContext context, AccountId account, ContentId content) async {
+    final imageProvider = AccountImageProvider.create(
+      account,
+      content,
+      cacheSize: ImageCacheSize.height(context, VIEW_PROFILE_WIDGET_IMG_HEIGHT),
+      media: LoginRepository.getInstance().repositories.media,
+    );
+    await precacheImage(imageProvider, context);
+  }
 }

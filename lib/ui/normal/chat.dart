@@ -313,7 +313,7 @@ class _ChatViewState extends State<ChatView> {
       entry: data.entry,
       width: _IMG_SIZE,
       height: _IMG_SIZE,
-      cacheSize: ImageCacheSize.sizeForAppBarThumbnail(context),
+      cacheSize: ImageCacheSize.sizeForListWithTextContent(context, _IMG_SIZE, data.entry.primaryContentGridCropSize),
     );
     final Widget textColumn = Column(
       mainAxisSize: MainAxisSize.min,

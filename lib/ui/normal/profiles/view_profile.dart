@@ -2,6 +2,7 @@
 
 
 import 'package:app/api/api_manager.dart';
+import 'package:app/data/image_cache.dart';
 import 'package:app/data/login_repository.dart';
 import 'package:app/logic/account/account.dart';
 import 'package:app/model/freezed/logic/account/account.dart';
@@ -27,7 +28,7 @@ import 'package:app/ui_utils/snack_bar.dart';
 // TODO(refactor): Consider making ApiManager available using
 //                 context.read<ApiManager>().
 
-void openProfileView(
+Future<void> openProfileView(
   BuildContext context,
   ProfileEntry profile,
   ProfileActionState? initialProfileAction,
@@ -35,10 +36,16 @@ void openProfileView(
   {
     bool noAction = false,
   }
-) {
+) async {
+  await PrecacheImageForViewProfileScreen.usingProfileEntry(context, profile);
+
+  if (!context.mounted) {
+    return;
+  }
+
   final ApiManager api = LoginRepository.getInstance().repositories.api;
   final pageKey = PageKey();
-  MyNavigator.pushWithKey(
+  await MyNavigator.pushWithKey(
     context,
     MaterialPage<void>(child:
       BlocProvider(

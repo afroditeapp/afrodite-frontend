@@ -349,41 +349,41 @@ Widget profileEntryWidgetStream(
   GridSettings settings,
   {
     bool showNewLikeMarker = false,
-    void Function(BuildContext)? overrideOnTap,
   }
 ) {
   return StreamBuilder(
     stream: db.accountStream((db) => db.profile.watchProfileThumbnail(profile.entry.accountId)).whereNotNull(),
     builder: (context, data) {
       final e = data.data ?? profile;
-      return ProfileThumbnailImageOrError.fromProfileEntry(
-        entry: e.entry,
-        borderRadius: BorderRadius.circular(settings.valueProfileThumbnailBorderRadius()),
-        cacheSize: ImageCacheSize.sizeForGrid(context),
-        child: Stack(
-          children: [
-            _thumbnailStatusIndicatorsTop(
-              showNewLikeMarker,
-              e.entry.newLikeInfoReceivedTime,
-              e.isFavorite,
+      return LayoutBuilder(
+        builder: (context, constraints) {
+          return ProfileThumbnailImageOrError.fromProfileEntry(
+            entry: e.entry,
+            borderRadius: BorderRadius.circular(settings.valueProfileThumbnailBorderRadius()),
+            cacheSize: ImageCacheSize.sizeForGrid(context, constraints.maxHeight, e.entry.primaryContentGridCropSize),
+            child: Stack(
+              children: [
+                _thumbnailStatusIndicatorsTop(
+                  showNewLikeMarker,
+                  e.entry.newLikeInfoReceivedTime,
+                  e.isFavorite,
+                ),
+                _thumbnailStatusIndicatorsBottom(
+                  context,
+                  e.entry,
+                ),
+                Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    onTap: () {
+                      openProfileView(context, e.entry, initialProfileAction, ProfileRefreshPriority.low);
+                    },
+                  ),
+                ),
+              ]
             ),
-            _thumbnailStatusIndicatorsBottom(
-              context,
-              e.entry,
-            ),
-            Material(
-              color: Colors.transparent,
-              child: InkWell(
-                onTap: () {
-                  if (overrideOnTap != null) {
-                    return overrideOnTap(context);
-                  }
-                  openProfileView(context, e.entry, initialProfileAction, ProfileRefreshPriority.low);
-                },
-              ),
-            ),
-          ]
-        ),
+          );
+        }
       );
     }
   );
