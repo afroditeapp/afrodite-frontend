@@ -79,6 +79,7 @@ class _AskEmailState extends State<AskEmail> {
           onChanged: (value) {
             context.read<InitialSetupBloc>().add(SetEmail(value.trim()));
           },
+          keyboardType: TextInputType.emailAddress,
         ),
       );
     }
