@@ -2,6 +2,7 @@
 import 'dart:convert';
 
 import 'package:app/api/api_manager.dart';
+import 'package:app/data/image_cache.dart';
 import 'package:app/data/login_repository.dart';
 import 'package:app/localizations.dart';
 import 'package:app/logic/account/custom_reports_config.dart';
@@ -257,6 +258,7 @@ class ReportUiBuilder extends ContentUiBuilder<WrappedReportDetailed> {
         imageOwner,
         image,
         width: width,
+        cacheSize: ImageCacheSize.halfScreen(context),
       ),
     );
   }

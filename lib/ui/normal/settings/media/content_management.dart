@@ -1,5 +1,6 @@
 
 
+import 'package:app/data/image_cache.dart';
 import 'package:app/data/login_repository.dart';
 import 'package:app/logic/media/content.dart';
 import 'package:app/logic/media/select_content.dart';
@@ -186,7 +187,11 @@ Widget _buildAvailableImg(
                   )
                 );
               },
-              child: accountImgWidgetInk(accountId, content.cid),
+              child: accountImgWidgetInk(
+                accountId,
+                content.cid,
+                cacheSize: ImageCacheSize.halfScreen(context),
+              ),
             ),
           ),
         ),
@@ -309,7 +314,13 @@ Future<bool?> _confirmDialogForImage(BuildContext context, AccountId account, Co
       );
     },
     // Width seems to prevent the dialog from expanding horizontaly
-    child: accountImgWidget(account, content, height: 200, width: 150),
+    child: accountImgWidget(
+      account,
+      content,
+      height: 200,
+      width: 150,
+      cacheSize: ImageCacheSize.halfScreen(context),
+    ),
   );
 
   Widget dialog = AlertDialog(

@@ -15,10 +15,12 @@ final _privateConstructorErrorAccountImgKey = UnsupportedError(
 mixin _$AccountImgKey {
   AccountId get accountId => throw _privateConstructorErrorAccountImgKey;
   ContentId get contentId => throw _privateConstructorErrorAccountImgKey;
+  ImageCacheSize get cacheSize => throw _privateConstructorErrorAccountImgKey;
 
   AccountImgKey copyWith({
     AccountId? accountId,
     ContentId? contentId,
+    ImageCacheSize? cacheSize,
   }) => throw _privateConstructorErrorAccountImgKey;
 }
 
@@ -27,6 +29,7 @@ abstract class _AccountImgKey implements AccountImgKey {
   factory _AccountImgKey({
     required AccountId accountId,
     required ContentId contentId,
+    required ImageCacheSize cacheSize,
   }) = _$AccountImgKeyImpl;
 }
 
@@ -35,16 +38,19 @@ class _$AccountImgKeyImpl with DiagnosticableTreeMixin implements _AccountImgKey
   _$AccountImgKeyImpl({
     required this.accountId,
     required this.contentId,
+    required this.cacheSize,
   });
 
   @override
   final AccountId accountId;
   @override
   final ContentId contentId;
+  @override
+  final ImageCacheSize cacheSize;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'AccountImgKey(accountId: $accountId, contentId: $contentId)';
+    return 'AccountImgKey(accountId: $accountId, contentId: $contentId, cacheSize: $cacheSize)';
   }
 
   @override
@@ -53,7 +59,8 @@ class _$AccountImgKeyImpl with DiagnosticableTreeMixin implements _AccountImgKey
     properties
       ..add(DiagnosticsProperty('type', 'AccountImgKey'))
       ..add(DiagnosticsProperty('accountId', accountId))
-      ..add(DiagnosticsProperty('contentId', contentId));
+      ..add(DiagnosticsProperty('contentId', contentId))
+      ..add(DiagnosticsProperty('cacheSize', cacheSize));
   }
 
   @override
@@ -64,7 +71,9 @@ class _$AccountImgKeyImpl with DiagnosticableTreeMixin implements _AccountImgKey
         (identical(other.accountId, accountId) ||
           other.accountId == accountId) &&
         (identical(other.contentId, contentId) ||
-          other.contentId == contentId)
+          other.contentId == contentId) &&
+        (identical(other.cacheSize, cacheSize) ||
+          other.cacheSize == cacheSize)
     );
   }
 
@@ -73,14 +82,17 @@ class _$AccountImgKeyImpl with DiagnosticableTreeMixin implements _AccountImgKey
     runtimeType,
     accountId,
     contentId,
+    cacheSize,
   );
 
   @override
   AccountImgKey copyWith({
     Object? accountId,
     Object? contentId,
+    Object? cacheSize,
   }) => _$AccountImgKeyImpl(
     accountId: (accountId ?? this.accountId) as AccountId,
     contentId: (contentId ?? this.contentId) as ContentId,
+    cacheSize: (cacheSize ?? this.cacheSize) as ImageCacheSize,
   );
 }

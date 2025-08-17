@@ -1,5 +1,6 @@
 
 
+import 'package:app/data/image_cache.dart';
 import 'package:app/data/login_repository.dart';
 import 'package:app/logic/media/image_processing.dart';
 import 'package:app/logic/media/new_moderation_request.dart';
@@ -215,7 +216,11 @@ Widget buildAvailableImg(
   final img = Material(
     child: InkWell(
       onTap: onTap,
-      child: accountImgWidgetInk(accountId, contentId),
+      child: accountImgWidgetInk(
+        accountId,
+        contentId,
+        cacheSize: ImageCacheSize.halfScreen(context),
+      ),
     ),
   );
 

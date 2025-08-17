@@ -1,6 +1,7 @@
 import "dart:async";
 import "dart:typed_data";
 
+import "package:app/data/image_cache.dart";
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:logging/logging.dart";
@@ -153,7 +154,13 @@ class _AskSecuritySelfieState extends State<AskSecuritySelfie> {
                       )
                     );
                   },
-                  child: accountImgWidgetInk(image.accountId, image.contentId, height: IMAGE_AREA_HEIGHT, width: IMG_WIDTH),
+                  child: accountImgWidgetInk(
+                    image.accountId,
+                    image.contentId,
+                    height: IMAGE_AREA_HEIGHT,
+                    width: IMG_WIDTH,
+                    cacheSize: ImageCacheSize.halfScreen(context),
+                  ),
                 ),
               ),
               IconButton(

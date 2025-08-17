@@ -359,7 +359,7 @@ Widget profileEntryWidgetStream(
       return ProfileThumbnailImageOrError.fromProfileEntry(
         entry: e.entry,
         borderRadius: BorderRadius.circular(settings.valueProfileThumbnailBorderRadius()),
-        cacheSize: ImageCacheSize.sizeForGrid(),
+        cacheSize: ImageCacheSize.sizeForGrid(context),
         child: Stack(
           children: [
             _thumbnailStatusIndicatorsTop(

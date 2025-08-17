@@ -29,7 +29,7 @@ class ProfileThumbnailImage extends StatefulWidget {
     this.child,
     this.squareFactor = 1.0,
     this.borderRadius = const BorderRadius.all(Radius.circular(PROFILE_PICTURE_BORDER_RADIUS)),
-    this.cacheSize = ImageCacheSize.maxQuality,
+    required this.cacheSize,
     super.key,
   });
 
@@ -41,7 +41,7 @@ class ProfileThumbnailImage extends StatefulWidget {
     this.child,
     this.squareFactor = 1.0,
     this.borderRadius = const BorderRadius.all(Radius.circular(PROFILE_PICTURE_BORDER_RADIUS)),
-    this.cacheSize = ImageCacheSize.maxQuality,
+    required this.cacheSize,
     super.key,
   }) :
     accountId = img.accountId,
@@ -75,7 +75,7 @@ class _ProfileThumbnailImageState extends State<ProfileThumbnailImage> {
     final newStream = AccountImageProvider.create(
       widget.accountId,
       widget.contentId,
-      sizeSetting: widget.cacheSize,
+      cacheSize: widget.cacheSize,
       media: LoginRepository.getInstance().repositories.media,
     )
       .resolve(createLocalImageConfiguration(context));

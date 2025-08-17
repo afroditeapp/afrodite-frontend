@@ -103,7 +103,7 @@ class ConversationPageState extends State<ConversationPage> {
                         entry: widget.profileEntry,
                         width: 40,
                         height: 40,
-                        cacheSize: ImageCacheSize.sizeForAppBarThumbnail(),
+                        cacheSize: ImageCacheSize.sizeForAppBarThumbnail(context),
                       ),
                       const Padding(padding: EdgeInsets.all(8.0)),
                       Flexible(

@@ -248,7 +248,7 @@ class _NormalStateContentState extends State<NormalStateContent> {
             accountId: currentUser,
             contentId: img,
             cropResults: cropInfo,
-            cacheSize: ImageCacheSize.sizeForAppBarThumbnail(),
+            cacheSize: ImageCacheSize.sizeForAppBarThumbnail(context),
             child: Material(
               color: Colors.transparent,
               child: InkWell(

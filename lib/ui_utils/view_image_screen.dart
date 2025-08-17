@@ -2,6 +2,7 @@
 
 import "dart:typed_data";
 
+import "package:app/data/image_cache.dart";
 import "package:flutter/material.dart";
 import "package:openapi/api.dart";
 
@@ -60,7 +61,7 @@ class _ViewImageScreenState extends State<ViewImageScreen> {
   }
 
   Widget buildImage(BuildContext contex, AccountId imageOwner, ContentId image) {
-    return accountImgWidget(imageOwner, image);
+    return accountImgWidget(imageOwner, image, cacheSize: ImageCacheSize.fullScreen(context));
   }
 
   Widget viewerForWidget(Widget child) {

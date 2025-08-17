@@ -1,5 +1,6 @@
 
 
+import 'package:app/data/image_cache.dart';
 import 'package:app/data/login_repository.dart';
 import 'package:app/logic/admin/content_decicion_stream.dart';
 import 'package:app/ui/normal/settings/admin/content_decicion_stream.dart';
@@ -136,6 +137,7 @@ class MediaContentUiBuilder extends ContentUiBuilder<WrappedMediaContentPendingM
         image,
         width: width,
         height: height,
+        cacheSize: ImageCacheSize.halfScreen(context),
       ),
     );
   }

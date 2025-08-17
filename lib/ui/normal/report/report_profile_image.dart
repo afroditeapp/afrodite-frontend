@@ -1,4 +1,5 @@
 
+import 'package:app/data/image_cache.dart';
 import 'package:app/ui_utils/image.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/result.dart';
@@ -63,6 +64,7 @@ class _ReportProfileImageScreen extends State<ReportProfileImageScreen> {
       isMatch: widget.isMatch,
       width: _IMG_SIZE,
       height: _IMG_SIZE,
+      cacheSize: ImageCacheSize.sizeForViewProfile(context),
     );
 
     final textWidget = Padding(

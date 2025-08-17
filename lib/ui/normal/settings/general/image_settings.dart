@@ -64,7 +64,7 @@ class _ImageSettingsScreenState extends State<ImageSettingsScreen> {
 
   Widget content(BuildContext context) {
     final selectedImageQualityValueInt = fullImgSize ?
-      ImageCacheSizeSetting.maxQuality.getImgSize().maxSize :
+      ImageCacheSizeSetting.maxQuality.getImgSize() :
         downscalingSize;
 
     return Column(
@@ -117,23 +117,23 @@ class _ImageSettingsScreenState extends State<ImageSettingsScreen> {
 
     final items = [
       DropdownMenuItem(
-        value: ImageCacheSizeSetting.maxQuality.getImgSize().maxSize,
+        value: ImageCacheSizeSetting.maxQuality.getImgSize(),
         child: Text(context.strings.image_quality_settings_screen_image_quality_max),
       ),
       DropdownMenuItem(
-        value: ImageCacheSizeSetting.high.getImgSize().maxSize,
+        value: ImageCacheSizeSetting.high.getImgSize(),
         child: Text(context.strings.image_quality_settings_screen_image_quality_high),
       ),
       DropdownMenuItem(
-        value: ImageCacheSizeSetting.medium.getImgSize().maxSize,
+        value: ImageCacheSizeSetting.medium.getImgSize(),
         child: Text(context.strings.image_quality_settings_screen_image_quality_medium),
       ),
       DropdownMenuItem(
-        value: ImageCacheSizeSetting.low.getImgSize().maxSize,
+        value: ImageCacheSizeSetting.low.getImgSize(),
         child: Text(context.strings.image_quality_settings_screen_image_quality_low),
       ),
       DropdownMenuItem(
-        value: ImageCacheSizeSetting.tiny.getImgSize().maxSize,
+        value: ImageCacheSizeSetting.tiny.getImgSize(),
         child: Text(context.strings.image_quality_settings_screen_image_quality_tiny),
       ),
     ];
@@ -153,7 +153,7 @@ class _ImageSettingsScreenState extends State<ImageSettingsScreen> {
     }
 
     return DropdownButton<int>(
-      value: fullImgSize ? ImageCacheSizeSetting.maxQuality.getImgSize().maxSize : downscalingSize,
+      value: fullImgSize ? ImageCacheSizeSetting.maxQuality.getImgSize() : downscalingSize,
       items: items,
       isExpanded: true,
       onChanged: onChanged,
@@ -169,13 +169,13 @@ class _ImageSettingsScreenState extends State<ImageSettingsScreen> {
     };
 
     final selectedValueInt = fullImgSize ?
-      ImageCacheSizeSetting.maxQuality.getImgSize().maxSize :
+      ImageCacheSizeSetting.maxQuality.getImgSize() :
         downscalingSize;
 
     return [
       Slider(
-        min: ImageCacheSizeSetting.tiny.getImgSize().maxSize.toDouble(),
-        max: ImageCacheSizeSetting.maxQuality.getImgSize().maxSize.toDouble(),
+        min: ImageCacheSizeSetting.tiny.getImgSize().toDouble(),
+        max: ImageCacheSizeSetting.maxQuality.getImgSize().toDouble(),
         value: selectedValueInt.toDouble(),
         onChanged: onChanged,
       ),

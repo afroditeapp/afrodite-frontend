@@ -1,10 +1,10 @@
+import 'package:app/ui/utils/view_profile.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
-import 'package:app/data/login_repository.dart';
 import 'package:app/data/media_repository.dart';
 import 'package:app/storage/encryption.dart';
 import 'package:app/ui/normal/settings/location.dart';
@@ -174,24 +174,21 @@ class AccountImageProvider extends ImageProvider<AccountImgKey> {
     ContentId contentId,
     {
       bool isMatch = false,
-      ImageCacheSize sizeSetting = ImageCacheSize.maxQuality,
+      required ImageCacheSize cacheSize,
       required MediaRepository media,
     }
   ) {
-    final key = AccountImgKey(accountId: accountId, contentId: contentId);
+    final key = AccountImgKey(accountId: accountId, contentId: contentId, cacheSize: cacheSize);
     final imgProvider = AccountImageProvider._(key, isMatch: isMatch, media: media);
-    if (sizeSetting == ImageCacheSize.maxQuality) {
-      return imgProvider;
-    } else {
-      final size = sizeSetting.maxSize;
-      return ResizeImage(
-        imgProvider,
-        width: size,
-        height: size,
-        allowUpscaling: false,
-        policy: ResizeImagePolicy.fit,
-      );
-    }
+
+    return ResizeImage(
+      imgProvider,
+      width: cacheSize.width,
+      height: cacheSize.height,
+      allowUpscaling: false,
+      policy: ResizeImagePolicy.fit,
+    );
+
   }
 }
 
@@ -209,7 +206,7 @@ enum ImageCacheSizeSetting {
   /// No downscaling
   maxQuality;
 
-  ImageCacheSize getImgSize() {
+  int getImgSize() {
     final size = switch (this) {
       ImageCacheSizeSetting.tiny =>
         MAX_IMG_WIDTH_AND_HEIGHT ~/ 4,
@@ -223,29 +220,70 @@ enum ImageCacheSizeSetting {
         MAX_IMG_WIDTH_AND_HEIGHT,
     };
 
-    return ImageCacheSize(size);
+    return size;
   }
 }
 
 class ImageCacheSize {
-  final int maxSize;
-  const ImageCacheSize(this.maxSize);
+  final int? width;
+  final int? height;
+  ImageCacheSize._({this.width, this.height});
 
-  static const ImageCacheSize maxQuality = ImageCacheSize(MAX_IMG_WIDTH_AND_HEIGHT);
-
-  static ImageCacheSize sizeForAppBarThumbnail() {
-    return LoginRepository.getInstance().repositoriesOrNull?.imageCacheSettings.getCurrentImageCacheSize() ?? maxQuality;
+  factory ImageCacheSize.fullScreen(BuildContext context) {
+    final size = MediaQuery.sizeOf(context);
+    final devicePixelRatio = MediaQuery.devicePixelRatioOf(context);
+    return ImageCacheSize._(
+      width: (size.width * devicePixelRatio).round(),
+      height: (size.height * devicePixelRatio).round(),
+    );
   }
 
-  static ImageCacheSize sizeForGrid() {
-    return LoginRepository.getInstance().repositoriesOrNull?.imageCacheSettings.getCurrentImageCacheSize() ?? maxQuality;
+  factory ImageCacheSize.halfScreen(BuildContext context) {
+    final size = MediaQuery.sizeOf(context);
+    final devicePixelRatio = MediaQuery.devicePixelRatioOf(context);
+    return ImageCacheSize._(
+      width: (size.width ~/ 2 * devicePixelRatio).round(),
+      height: (size.height ~/ 2 * devicePixelRatio).round(),
+    );
   }
 
-  static ImageCacheSize sizeForListWithTextContent() {
-    return LoginRepository.getInstance().repositoriesOrNull?.imageCacheSettings.getCurrentImageCacheSize() ?? maxQuality;
+  factory ImageCacheSize.width(BuildContext context, double width) {
+    final devicePixelRatio = MediaQuery.devicePixelRatioOf(context);
+    return ImageCacheSize._(
+      width: (width * devicePixelRatio).round(),
+    );
   }
 
-  static ImageCacheSize sizeForViewProfile() {
-    return LoginRepository.getInstance().repositoriesOrNull?.imageCacheSettings.getCurrentImageCacheSize() ?? maxQuality;
+  factory ImageCacheSize.height(BuildContext context, double height) {
+    final devicePixelRatio = MediaQuery.devicePixelRatioOf(context);
+    return ImageCacheSize._(
+      height: (height * devicePixelRatio).round(),
+    );
   }
+
+  static ImageCacheSize sizeForAppBarThumbnail(BuildContext context) {
+    return ImageCacheSize.height(context, VIEW_PROFILE_WIDGET_IMG_HEIGHT);
+  }
+
+  static ImageCacheSize sizeForGrid(BuildContext context) {
+    return ImageCacheSize.height(context, VIEW_PROFILE_WIDGET_IMG_HEIGHT);
+  }
+
+  static ImageCacheSize sizeForListWithTextContent(BuildContext context) {
+    return ImageCacheSize.height(context, VIEW_PROFILE_WIDGET_IMG_HEIGHT);
+  }
+
+  static ImageCacheSize sizeForViewProfile(BuildContext context) {
+    return ImageCacheSize.height(context, VIEW_PROFILE_WIDGET_IMG_HEIGHT);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is ImageCacheSize &&
+      other.width == width &&
+      other.height == height;
+  }
+
+  @override
+  int get hashCode => Object.hash(width, height);
 }

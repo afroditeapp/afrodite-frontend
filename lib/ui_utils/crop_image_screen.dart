@@ -1,6 +1,7 @@
 
 import "dart:math";
 
+import "package:app/data/image_cache.dart";
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 import "package:logging/logging.dart";
@@ -89,7 +90,8 @@ class _CropImageScreenState extends State<CropImageScreen> {
           imageId,
           width: imgWidgetWidth,
           height: imgWidgetHeight,
-          alignment: Alignment.topLeft
+          alignment: Alignment.topLeft,
+          cacheSize: ImageCacheSize.fullScreen(context),
         );
 
         log.fine("Constraints: $constraints");

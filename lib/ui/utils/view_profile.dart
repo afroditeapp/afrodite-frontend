@@ -26,7 +26,7 @@ import 'package:app/ui_utils/consts/corners.dart';
 import 'package:app/ui_utils/consts/padding.dart';
 import 'package:app/ui_utils/profile_thumbnail_image.dart';
 
-const double PROFILE_IMG_HEIGHT = 400;
+const double VIEW_PROFILE_WIDGET_IMG_HEIGHT = 400;
 
 // TODO(quality): Check that IconButtons have tooltips
 
@@ -50,7 +50,7 @@ class _ViewProfileEntryState extends State<ViewProfileEntry> {
           child: Column(
             children: [
               SizedBox(
-                height: PROFILE_IMG_HEIGHT,
+                height: VIEW_PROFILE_WIDGET_IMG_HEIGHT,
                 width: constraints.maxWidth,
                 child: ViewProfileImgViewer(
                   profile: widget.profile,
@@ -416,7 +416,7 @@ class _ViewProfileImgViewerState extends State<ViewProfileImgViewer> {
       contentId: contentId,
       borderRadius: null,
       squareFactor: 0.0,
-      cacheSize: ImageCacheSize.sizeForViewProfile(),
+      cacheSize: ImageCacheSize.sizeForViewProfile(context),
     );
   }
 }

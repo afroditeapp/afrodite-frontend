@@ -76,14 +76,6 @@ class ImageCacheSettings implements LifecycleMethods {
     await _cacheDownscalingValueSubscription?.cancel();
   }
 
-  ImageCacheSize getCurrentImageCacheSize() {
-    if (_cacheFullSizedImages.value) {
-      return ImageCacheSize.maxQuality;
-    } else {
-      return ImageCacheSize(_cacheDownscalingSize.value);
-    }
-  }
-
   Future<void> saveSettings(
     int maxBytes,
     bool cacheFullSizedImages,

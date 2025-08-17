@@ -1,5 +1,6 @@
 
 
+import 'package:app/data/image_cache.dart';
 import 'package:app/data/login_repository.dart';
 import 'package:app/logic/media/new_moderation_request.dart';
 import 'package:app/logic/media/select_content.dart';
@@ -198,7 +199,11 @@ class _CurrentSecuritySelfieState extends State<CurrentSecuritySelfie> {
                 child: ViewImageScreen(ViewImageAccountContent(accountId, securitySelfie))
               )
             ),
-          child: accountImgWidgetInk(accountId, securitySelfie),
+          child: accountImgWidgetInk(
+            accountId,
+            securitySelfie,
+            cacheSize: ImageCacheSize.halfScreen(context),
+          ),
         ),
       ),
     );

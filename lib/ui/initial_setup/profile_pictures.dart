@@ -495,7 +495,11 @@ class AddPicture extends StatelessWidget {
           width: iconSize,
           height: iconSize,
           child: FittedBox(
-            child: accountImgWidget(securitySelfie.accountId, securitySelfie.contentId),
+            child: accountImgWidget(
+              securitySelfie.accountId,
+              securitySelfie.contentId,
+              cacheSize: ImageCacheSize.halfScreen(context),
+            ),
           )
         ),
         title: Text(context.strings.initial_setup_screen_profile_pictures_select_picture_security_selfie_title),
@@ -684,7 +688,13 @@ class FilePicture extends StatelessWidget {
   Widget draggableImgWidget(BuildContext context, double imgWidth, double imgHeight) {
     return LongPressDraggable<int>(
       data: imgIndex,
-      feedback: accountImgWidget(img.accountId, img.contentId, width: imgWidth, height: imgHeight),
+      feedback: accountImgWidget(
+        img.accountId,
+        img.contentId,
+        width: imgWidth,
+        height: imgHeight,
+        cacheSize: ImageCacheSize.halfScreen(context),
+      ),
       childWhenDragging: Container(
         width: imgWidth,
         height: imgHeight,
@@ -773,7 +783,14 @@ class ImgWithCloseButton extends StatelessWidget {
         color: Colors.transparent,
         child: InkWell(
           onTap: () => openViewImageScreenForAccountImage(context, accountId, contentId),
-          child: accountImgWidgetInk(accountId, contentId, width: imgWidth, height: imgHeight, alignment: Alignment.topRight),
+          child: accountImgWidgetInk(
+            accountId,
+            contentId,
+            width: imgWidth,
+            height: imgHeight,
+            alignment: Alignment.topRight,
+            cacheSize: ImageCacheSize.halfScreen(context),
+          ),
         ),
       ),
     );
@@ -799,6 +816,7 @@ class VisibleThumbnailPicture extends StatelessWidget {
       cropResults: cropResults,
       width: THUMBNAIL_SIZE,
       height: THUMBNAIL_SIZE,
+      cacheSize: ImageCacheSize.halfScreen(context),
       child: Material(
         color: Colors.transparent,
         child: InkWell(

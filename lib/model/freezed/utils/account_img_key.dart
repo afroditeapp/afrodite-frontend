@@ -1,3 +1,4 @@
+import 'package:app/data/image_cache.dart';
 import "package:freezed_annotation/freezed_annotation.dart";
 import 'package:flutter/foundation.dart';
 import 'package:openapi/api.dart';
@@ -9,5 +10,6 @@ class AccountImgKey with _$AccountImgKey {
   factory AccountImgKey({
     required AccountId accountId,
     required ContentId contentId,
+    required ImageCacheSize cacheSize,
   }) = _AccountImgKey;
 }

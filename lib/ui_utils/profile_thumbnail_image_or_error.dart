@@ -26,7 +26,7 @@ class ProfileThumbnailImageOrError extends StatelessWidget {
     this.child,
     this.squareFactor = 1.0,
     this.borderRadius = const BorderRadius.all(Radius.circular(PROFILE_PICTURE_BORDER_RADIUS)),
-    this.cacheSize = ImageCacheSize.maxQuality,
+    required this.cacheSize,
     super.key,
   }) :
     cropResults = CropResults.fromValues(

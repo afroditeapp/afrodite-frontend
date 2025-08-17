@@ -22,7 +22,7 @@ Widget accountImgWidget(
     double? width,
     double? height,
     AlignmentGeometry alignment = Alignment.center,
-    ImageCacheSize cacheSize = ImageCacheSize.maxQuality,
+    required ImageCacheSize cacheSize,
   }
 ) {
   return Image(
@@ -30,7 +30,7 @@ Widget accountImgWidget(
       accountId,
       contentId,
       isMatch: isMatch,
-      sizeSetting: cacheSize,
+      cacheSize: cacheSize,
       media: LoginRepository.getInstance().repositories.media,
     ),
     width: width,
@@ -49,6 +49,7 @@ Widget accountImgWidgetInk(
     double? height,
     AlignmentGeometry alignment = Alignment.center,
     BoxFit? fit,
+    required ImageCacheSize cacheSize,
   }
 ) {
   return Ink.image(
@@ -57,6 +58,7 @@ Widget accountImgWidgetInk(
       contentId,
       isMatch: isMatch,
       media: LoginRepository.getInstance().repositories.media,
+      cacheSize: cacheSize,
     ),
     width: width,
     height: height,
