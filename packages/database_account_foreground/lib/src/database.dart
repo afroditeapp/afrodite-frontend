@@ -75,6 +75,7 @@ part 'database.g.dart';
     schema.InitialProfileAge,
     schema.ProfileStates,
     schema.ProfileLocation,
+    schema.FavoriteProfiles,
     schema.AutomaticProfileSearchSettings,
     // Chat
     schema.MyKeyPair,

@@ -13,6 +13,7 @@ part 'profile.g.dart';
   tables: [
     schema.Profile,
     schema.ProfileStates,
+    schema.FavoriteProfiles,
   ]
 )
 class DaoWriteProfile extends DatabaseAccessor<AccountForegroundDatabase> with _$DaoWriteProfileMixin {
@@ -115,23 +116,28 @@ class DaoWriteProfile extends DatabaseAccessor<AccountForegroundDatabase> with _
     api.AccountId accountId,
     bool value,
   ) async {
-    await into(profileStates).insertOnConflictUpdate(
-      ProfileStatesCompanion.insert(
-        accountId: accountId,
-        isInFavorites: _toGroupValue(value),
-      ),
-    );
+    if (value) {
+      await into(favoriteProfiles).insertOnConflictUpdate(
+        FavoriteProfilesCompanion.insert(
+          accountId: accountId,
+          addedToFavoritesUnixTime: UtcDateTime.now(),
+        ),
+      );
+    } else {
+      await (delete(favoriteProfiles)..where((t) => t.accountId.equals(accountId.aid)))
+        .go();
+    }
   }
 
   Future<void> setFavoriteStatusWithTime(
     api.AccountId accountId,
     int unixTime,
   ) async {
-    final utcTime = UtcDateTime.fromUnixEpochMilliseconds(unixTime);
-    await into(profileStates).insertOnConflictUpdate(
-      ProfileStatesCompanion.insert(
+    final utcTime = UtcDateTime.fromUnixEpoch(unixTime);
+    await into(favoriteProfiles).insertOnConflictUpdate(
+      FavoriteProfilesCompanion.insert(
         accountId: accountId,
-        isInFavorites: Value(utcTime),
+        addedToFavoritesUnixTime: utcTime,
       ),
     );
   }
@@ -220,11 +226,9 @@ class DaoWriteProfile extends DatabaseAccessor<AccountForegroundDatabase> with _
     );
   }
 
-
   Future<void> replaceFavorites(List<api.AccountId> accounts) async {
     await transaction(() async {
-      await update(profileStates)
-        .write(const ProfileStatesCompanion(isInFavorites: Value(null)));
+      await delete(favoriteProfiles).go();
       for (final (i, a) in accounts.indexed) {
         // Order the favorites so that oldest added favorite has unix time 0.
         await setFavoriteStatusWithTime(a, i);

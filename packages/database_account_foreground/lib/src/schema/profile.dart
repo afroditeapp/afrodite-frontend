@@ -79,7 +79,6 @@ class ProfileStates extends Table {
 
   // If column is not null, then it is in the specific group.
   // The time is the time when the profile was added to the group.
-  IntColumn get isInFavorites => integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
   IntColumn get isInReceivedLikes => integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
   IntColumn get isInSentLikes => integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
   IntColumn get isInMatches => integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
@@ -88,6 +87,14 @@ class ProfileStates extends Table {
   IntColumn get isInAutomaticProfileSearchGrid => integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
   IntColumn get isInReceivedLikesGrid => integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
   IntColumn get isInMatchesGrid => integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
+
+  @override
+  Set<Column<Object>> get primaryKey => {accountId};
+}
+
+class FavoriteProfiles extends Table {
+  TextColumn get accountId => text().map(const AccountIdConverter())();
+  IntColumn get addedToFavoritesUnixTime => integer().map(UtcDateTimeConverter())();
 
   @override
   Set<Column<Object>> get primaryKey => {accountId};

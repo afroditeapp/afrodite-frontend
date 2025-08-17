@@ -10148,17 +10148,6 @@ class $ProfileStatesTable extends schema.ProfileStates
         requiredDuringInsert: true,
       ).withConverter<AccountId>($ProfileStatesTable.$converteraccountId);
   @override
-  late final GeneratedColumnWithTypeConverter<UtcDateTime?, int> isInFavorites =
-      GeneratedColumn<int>(
-        'is_in_favorites',
-        aliasedName,
-        true,
-        type: DriftSqlType.int,
-        requiredDuringInsert: false,
-      ).withConverter<UtcDateTime?>(
-        $ProfileStatesTable.$converterisInFavorites,
-      );
-  @override
   late final GeneratedColumnWithTypeConverter<UtcDateTime?, int>
   isInReceivedLikes =
       GeneratedColumn<int>(
@@ -10235,7 +10224,6 @@ class $ProfileStatesTable extends schema.ProfileStates
   @override
   List<GeneratedColumn> get $columns => [
     accountId,
-    isInFavorites,
     isInReceivedLikes,
     isInSentLikes,
     isInMatches,
@@ -10260,12 +10248,6 @@ class $ProfileStatesTable extends schema.ProfileStates
           DriftSqlType.string,
           data['${effectivePrefix}account_id'],
         )!,
-      ),
-      isInFavorites: $ProfileStatesTable.$converterisInFavorites.fromSql(
-        attachedDatabase.typeMapping.read(
-          DriftSqlType.int,
-          data['${effectivePrefix}is_in_favorites'],
-        ),
       ),
       isInReceivedLikes: $ProfileStatesTable.$converterisInReceivedLikes
           .fromSql(
@@ -10323,8 +10305,6 @@ class $ProfileStatesTable extends schema.ProfileStates
 
   static TypeConverter<AccountId, String> $converteraccountId =
       const AccountIdConverter();
-  static TypeConverter<UtcDateTime?, int?> $converterisInFavorites =
-      const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
   static TypeConverter<UtcDateTime?, int?> $converterisInReceivedLikes =
       const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
   static TypeConverter<UtcDateTime?, int?> $converterisInSentLikes =
@@ -10345,7 +10325,6 @@ class $ProfileStatesTable extends schema.ProfileStates
 
 class ProfileState extends DataClass implements Insertable<ProfileState> {
   final AccountId accountId;
-  final UtcDateTime? isInFavorites;
   final UtcDateTime? isInReceivedLikes;
   final UtcDateTime? isInSentLikes;
   final UtcDateTime? isInMatches;
@@ -10355,7 +10334,6 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
   final UtcDateTime? isInMatchesGrid;
   const ProfileState({
     required this.accountId,
-    this.isInFavorites,
     this.isInReceivedLikes,
     this.isInSentLikes,
     this.isInMatches,
@@ -10370,11 +10348,6 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
     {
       map['account_id'] = Variable<String>(
         $ProfileStatesTable.$converteraccountId.toSql(accountId),
-      );
-    }
-    if (!nullToAbsent || isInFavorites != null) {
-      map['is_in_favorites'] = Variable<int>(
-        $ProfileStatesTable.$converterisInFavorites.toSql(isInFavorites),
       );
     }
     if (!nullToAbsent || isInReceivedLikes != null) {
@@ -10424,9 +10397,6 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
   ProfileStatesCompanion toCompanion(bool nullToAbsent) {
     return ProfileStatesCompanion(
       accountId: Value(accountId),
-      isInFavorites: isInFavorites == null && nullToAbsent
-          ? const Value.absent()
-          : Value(isInFavorites),
       isInReceivedLikes: isInReceivedLikes == null && nullToAbsent
           ? const Value.absent()
           : Value(isInReceivedLikes),
@@ -10459,7 +10429,6 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return ProfileState(
       accountId: serializer.fromJson<AccountId>(json['accountId']),
-      isInFavorites: serializer.fromJson<UtcDateTime?>(json['isInFavorites']),
       isInReceivedLikes: serializer.fromJson<UtcDateTime?>(
         json['isInReceivedLikes'],
       ),
@@ -10484,7 +10453,6 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'accountId': serializer.toJson<AccountId>(accountId),
-      'isInFavorites': serializer.toJson<UtcDateTime?>(isInFavorites),
       'isInReceivedLikes': serializer.toJson<UtcDateTime?>(isInReceivedLikes),
       'isInSentLikes': serializer.toJson<UtcDateTime?>(isInSentLikes),
       'isInMatches': serializer.toJson<UtcDateTime?>(isInMatches),
@@ -10501,7 +10469,6 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
 
   ProfileState copyWith({
     AccountId? accountId,
-    Value<UtcDateTime?> isInFavorites = const Value.absent(),
     Value<UtcDateTime?> isInReceivedLikes = const Value.absent(),
     Value<UtcDateTime?> isInSentLikes = const Value.absent(),
     Value<UtcDateTime?> isInMatches = const Value.absent(),
@@ -10511,9 +10478,6 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
     Value<UtcDateTime?> isInMatchesGrid = const Value.absent(),
   }) => ProfileState(
     accountId: accountId ?? this.accountId,
-    isInFavorites: isInFavorites.present
-        ? isInFavorites.value
-        : this.isInFavorites,
     isInReceivedLikes: isInReceivedLikes.present
         ? isInReceivedLikes.value
         : this.isInReceivedLikes,
@@ -10537,9 +10501,6 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
   ProfileState copyWithCompanion(ProfileStatesCompanion data) {
     return ProfileState(
       accountId: data.accountId.present ? data.accountId.value : this.accountId,
-      isInFavorites: data.isInFavorites.present
-          ? data.isInFavorites.value
-          : this.isInFavorites,
       isInReceivedLikes: data.isInReceivedLikes.present
           ? data.isInReceivedLikes.value
           : this.isInReceivedLikes,
@@ -10569,7 +10530,6 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
   String toString() {
     return (StringBuffer('ProfileState(')
           ..write('accountId: $accountId, ')
-          ..write('isInFavorites: $isInFavorites, ')
           ..write('isInReceivedLikes: $isInReceivedLikes, ')
           ..write('isInSentLikes: $isInSentLikes, ')
           ..write('isInMatches: $isInMatches, ')
@@ -10586,7 +10546,6 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
   @override
   int get hashCode => Object.hash(
     accountId,
-    isInFavorites,
     isInReceivedLikes,
     isInSentLikes,
     isInMatches,
@@ -10600,7 +10559,6 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
       identical(this, other) ||
       (other is ProfileState &&
           other.accountId == this.accountId &&
-          other.isInFavorites == this.isInFavorites &&
           other.isInReceivedLikes == this.isInReceivedLikes &&
           other.isInSentLikes == this.isInSentLikes &&
           other.isInMatches == this.isInMatches &&
@@ -10613,7 +10571,6 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
 
 class ProfileStatesCompanion extends UpdateCompanion<ProfileState> {
   final Value<AccountId> accountId;
-  final Value<UtcDateTime?> isInFavorites;
   final Value<UtcDateTime?> isInReceivedLikes;
   final Value<UtcDateTime?> isInSentLikes;
   final Value<UtcDateTime?> isInMatches;
@@ -10624,7 +10581,6 @@ class ProfileStatesCompanion extends UpdateCompanion<ProfileState> {
   final Value<int> rowid;
   const ProfileStatesCompanion({
     this.accountId = const Value.absent(),
-    this.isInFavorites = const Value.absent(),
     this.isInReceivedLikes = const Value.absent(),
     this.isInSentLikes = const Value.absent(),
     this.isInMatches = const Value.absent(),
@@ -10636,7 +10592,6 @@ class ProfileStatesCompanion extends UpdateCompanion<ProfileState> {
   });
   ProfileStatesCompanion.insert({
     required AccountId accountId,
-    this.isInFavorites = const Value.absent(),
     this.isInReceivedLikes = const Value.absent(),
     this.isInSentLikes = const Value.absent(),
     this.isInMatches = const Value.absent(),
@@ -10648,7 +10603,6 @@ class ProfileStatesCompanion extends UpdateCompanion<ProfileState> {
   }) : accountId = Value(accountId);
   static Insertable<ProfileState> custom({
     Expression<String>? accountId,
-    Expression<int>? isInFavorites,
     Expression<int>? isInReceivedLikes,
     Expression<int>? isInSentLikes,
     Expression<int>? isInMatches,
@@ -10660,7 +10614,6 @@ class ProfileStatesCompanion extends UpdateCompanion<ProfileState> {
   }) {
     return RawValuesInsertable({
       if (accountId != null) 'account_id': accountId,
-      if (isInFavorites != null) 'is_in_favorites': isInFavorites,
       if (isInReceivedLikes != null) 'is_in_received_likes': isInReceivedLikes,
       if (isInSentLikes != null) 'is_in_sent_likes': isInSentLikes,
       if (isInMatches != null) 'is_in_matches': isInMatches,
@@ -10676,7 +10629,6 @@ class ProfileStatesCompanion extends UpdateCompanion<ProfileState> {
 
   ProfileStatesCompanion copyWith({
     Value<AccountId>? accountId,
-    Value<UtcDateTime?>? isInFavorites,
     Value<UtcDateTime?>? isInReceivedLikes,
     Value<UtcDateTime?>? isInSentLikes,
     Value<UtcDateTime?>? isInMatches,
@@ -10688,7 +10640,6 @@ class ProfileStatesCompanion extends UpdateCompanion<ProfileState> {
   }) {
     return ProfileStatesCompanion(
       accountId: accountId ?? this.accountId,
-      isInFavorites: isInFavorites ?? this.isInFavorites,
       isInReceivedLikes: isInReceivedLikes ?? this.isInReceivedLikes,
       isInSentLikes: isInSentLikes ?? this.isInSentLikes,
       isInMatches: isInMatches ?? this.isInMatches,
@@ -10708,11 +10659,6 @@ class ProfileStatesCompanion extends UpdateCompanion<ProfileState> {
     if (accountId.present) {
       map['account_id'] = Variable<String>(
         $ProfileStatesTable.$converteraccountId.toSql(accountId.value),
-      );
-    }
-    if (isInFavorites.present) {
-      map['is_in_favorites'] = Variable<int>(
-        $ProfileStatesTable.$converterisInFavorites.toSql(isInFavorites.value),
       );
     }
     if (isInReceivedLikes.present) {
@@ -10770,7 +10716,6 @@ class ProfileStatesCompanion extends UpdateCompanion<ProfileState> {
   String toString() {
     return (StringBuffer('ProfileStatesCompanion(')
           ..write('accountId: $accountId, ')
-          ..write('isInFavorites: $isInFavorites, ')
           ..write('isInReceivedLikes: $isInReceivedLikes, ')
           ..write('isInSentLikes: $isInSentLikes, ')
           ..write('isInMatches: $isInMatches, ')
@@ -11035,6 +10980,238 @@ class ProfileLocationCompanion extends UpdateCompanion<ProfileLocationData> {
           ..write('id: $id, ')
           ..write('latitude: $latitude, ')
           ..write('longitude: $longitude')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $FavoriteProfilesTable extends schema.FavoriteProfiles
+    with TableInfo<$FavoriteProfilesTable, FavoriteProfile> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $FavoriteProfilesTable(this.attachedDatabase, [this._alias]);
+  @override
+  late final GeneratedColumnWithTypeConverter<AccountId, String> accountId =
+      GeneratedColumn<String>(
+        'account_id',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      ).withConverter<AccountId>($FavoriteProfilesTable.$converteraccountId);
+  @override
+  late final GeneratedColumnWithTypeConverter<UtcDateTime, int>
+  addedToFavoritesUnixTime =
+      GeneratedColumn<int>(
+        'added_to_favorites_unix_time',
+        aliasedName,
+        false,
+        type: DriftSqlType.int,
+        requiredDuringInsert: true,
+      ).withConverter<UtcDateTime>(
+        $FavoriteProfilesTable.$converteraddedToFavoritesUnixTime,
+      );
+  @override
+  List<GeneratedColumn> get $columns => [accountId, addedToFavoritesUnixTime];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'favorite_profiles';
+  @override
+  Set<GeneratedColumn> get $primaryKey => {accountId};
+  @override
+  FavoriteProfile map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return FavoriteProfile(
+      accountId: $FavoriteProfilesTable.$converteraccountId.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}account_id'],
+        )!,
+      ),
+      addedToFavoritesUnixTime: $FavoriteProfilesTable
+          .$converteraddedToFavoritesUnixTime
+          .fromSql(
+            attachedDatabase.typeMapping.read(
+              DriftSqlType.int,
+              data['${effectivePrefix}added_to_favorites_unix_time'],
+            )!,
+          ),
+    );
+  }
+
+  @override
+  $FavoriteProfilesTable createAlias(String alias) {
+    return $FavoriteProfilesTable(attachedDatabase, alias);
+  }
+
+  static TypeConverter<AccountId, String> $converteraccountId =
+      const AccountIdConverter();
+  static TypeConverter<UtcDateTime, int> $converteraddedToFavoritesUnixTime =
+      UtcDateTimeConverter();
+}
+
+class FavoriteProfile extends DataClass implements Insertable<FavoriteProfile> {
+  final AccountId accountId;
+  final UtcDateTime addedToFavoritesUnixTime;
+  const FavoriteProfile({
+    required this.accountId,
+    required this.addedToFavoritesUnixTime,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    {
+      map['account_id'] = Variable<String>(
+        $FavoriteProfilesTable.$converteraccountId.toSql(accountId),
+      );
+    }
+    {
+      map['added_to_favorites_unix_time'] = Variable<int>(
+        $FavoriteProfilesTable.$converteraddedToFavoritesUnixTime.toSql(
+          addedToFavoritesUnixTime,
+        ),
+      );
+    }
+    return map;
+  }
+
+  FavoriteProfilesCompanion toCompanion(bool nullToAbsent) {
+    return FavoriteProfilesCompanion(
+      accountId: Value(accountId),
+      addedToFavoritesUnixTime: Value(addedToFavoritesUnixTime),
+    );
+  }
+
+  factory FavoriteProfile.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return FavoriteProfile(
+      accountId: serializer.fromJson<AccountId>(json['accountId']),
+      addedToFavoritesUnixTime: serializer.fromJson<UtcDateTime>(
+        json['addedToFavoritesUnixTime'],
+      ),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'accountId': serializer.toJson<AccountId>(accountId),
+      'addedToFavoritesUnixTime': serializer.toJson<UtcDateTime>(
+        addedToFavoritesUnixTime,
+      ),
+    };
+  }
+
+  FavoriteProfile copyWith({
+    AccountId? accountId,
+    UtcDateTime? addedToFavoritesUnixTime,
+  }) => FavoriteProfile(
+    accountId: accountId ?? this.accountId,
+    addedToFavoritesUnixTime:
+        addedToFavoritesUnixTime ?? this.addedToFavoritesUnixTime,
+  );
+  FavoriteProfile copyWithCompanion(FavoriteProfilesCompanion data) {
+    return FavoriteProfile(
+      accountId: data.accountId.present ? data.accountId.value : this.accountId,
+      addedToFavoritesUnixTime: data.addedToFavoritesUnixTime.present
+          ? data.addedToFavoritesUnixTime.value
+          : this.addedToFavoritesUnixTime,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('FavoriteProfile(')
+          ..write('accountId: $accountId, ')
+          ..write('addedToFavoritesUnixTime: $addedToFavoritesUnixTime')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(accountId, addedToFavoritesUnixTime);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is FavoriteProfile &&
+          other.accountId == this.accountId &&
+          other.addedToFavoritesUnixTime == this.addedToFavoritesUnixTime);
+}
+
+class FavoriteProfilesCompanion extends UpdateCompanion<FavoriteProfile> {
+  final Value<AccountId> accountId;
+  final Value<UtcDateTime> addedToFavoritesUnixTime;
+  final Value<int> rowid;
+  const FavoriteProfilesCompanion({
+    this.accountId = const Value.absent(),
+    this.addedToFavoritesUnixTime = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  FavoriteProfilesCompanion.insert({
+    required AccountId accountId,
+    required UtcDateTime addedToFavoritesUnixTime,
+    this.rowid = const Value.absent(),
+  }) : accountId = Value(accountId),
+       addedToFavoritesUnixTime = Value(addedToFavoritesUnixTime);
+  static Insertable<FavoriteProfile> custom({
+    Expression<String>? accountId,
+    Expression<int>? addedToFavoritesUnixTime,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (accountId != null) 'account_id': accountId,
+      if (addedToFavoritesUnixTime != null)
+        'added_to_favorites_unix_time': addedToFavoritesUnixTime,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  FavoriteProfilesCompanion copyWith({
+    Value<AccountId>? accountId,
+    Value<UtcDateTime>? addedToFavoritesUnixTime,
+    Value<int>? rowid,
+  }) {
+    return FavoriteProfilesCompanion(
+      accountId: accountId ?? this.accountId,
+      addedToFavoritesUnixTime:
+          addedToFavoritesUnixTime ?? this.addedToFavoritesUnixTime,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (accountId.present) {
+      map['account_id'] = Variable<String>(
+        $FavoriteProfilesTable.$converteraccountId.toSql(accountId.value),
+      );
+    }
+    if (addedToFavoritesUnixTime.present) {
+      map['added_to_favorites_unix_time'] = Variable<int>(
+        $FavoriteProfilesTable.$converteraddedToFavoritesUnixTime.toSql(
+          addedToFavoritesUnixTime.value,
+        ),
+      );
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('FavoriteProfilesCompanion(')
+          ..write('accountId: $accountId, ')
+          ..write('addedToFavoritesUnixTime: $addedToFavoritesUnixTime, ')
+          ..write('rowid: $rowid')
           ..write(')'))
         .toString();
   }
@@ -13289,6 +13466,9 @@ abstract class _$AccountForegroundDatabase extends GeneratedDatabase {
   late final $ProfileLocationTable profileLocation = $ProfileLocationTable(
     this,
   );
+  late final $FavoriteProfilesTable favoriteProfiles = $FavoriteProfilesTable(
+    this,
+  );
   late final $AutomaticProfileSearchSettingsTable
   automaticProfileSearchSettings = $AutomaticProfileSearchSettingsTable(this);
   late final $MyKeyPairTable myKeyPair = $MyKeyPairTable(this);
@@ -13415,6 +13595,7 @@ abstract class _$AccountForegroundDatabase extends GeneratedDatabase {
     initialProfileAge,
     profileStates,
     profileLocation,
+    favoriteProfiles,
     automaticProfileSearchSettings,
     myKeyPair,
     publicKey,

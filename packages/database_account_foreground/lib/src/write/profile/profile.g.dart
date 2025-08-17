@@ -6,4 +6,6 @@ part of 'profile.dart';
 mixin _$DaoWriteProfileMixin on DatabaseAccessor<AccountForegroundDatabase> {
   $ProfileTable get profile => attachedDatabase.profile;
   $ProfileStatesTable get profileStates => attachedDatabase.profileStates;
+  $FavoriteProfilesTable get favoriteProfiles =>
+      attachedDatabase.favoriteProfiles;
 }

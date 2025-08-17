@@ -16,6 +16,7 @@ part 'profile.g.dart';
   tables: [
     schema.Profile,
     schema.ProfileStates,
+    schema.FavoriteProfiles,
   ]
 )
 class DaoReadProfile extends DatabaseAccessor<AccountForegroundDatabase> with _$DaoReadProfileMixin {
@@ -137,8 +138,11 @@ class DaoReadProfile extends DatabaseAccessor<AccountForegroundDatabase> with _$
     return r.profileDataRefreshTime;
   }
 
-  Future<bool> isInFavorites(api.AccountId accountId) =>
-    _existenceCheck(accountId, (t) => t.isInFavorites.isNotNull());
+  Future<bool> isInFavorites(api.AccountId accountId) async {
+    return await (select(favoriteProfiles)
+      ..where((t) => t.accountId.equals(accountId.aid))
+    ).getSingleOrNull() != null;
+  }
 
   Future<bool> isInReceivedLikes(api.AccountId accountId) =>
     _existenceCheck(accountId, (t) => t.isInReceivedLikes.isNotNull());
@@ -159,7 +163,15 @@ class DaoReadProfile extends DatabaseAccessor<AccountForegroundDatabase> with _$
     _existenceCheck(accountId, (t) => t.isInMatchesGrid.isNotNull());
 
   Future<List<api.AccountId>> getFavoritesList(int startIndex, int limit) =>
-    _getProfilesList(startIndex, limit, (t) => t.isInFavorites, mode: OrderingMode.desc);
+    (select(favoriteProfiles)
+      ..orderBy([
+        (t) => OrderingTerm(expression: t.addedToFavoritesUnixTime, mode: OrderingMode.desc),
+        (t) => OrderingTerm(expression: t.accountId),
+      ])
+      ..limit(limit, offset: startIndex)
+    )
+      .map((t) => t.accountId)
+      .get();
 
   Future<List<api.AccountId>> getReceivedLikesList(int startIndex, int limit) =>
     _getProfilesList(startIndex, limit, (t) => t.isInReceivedLikes);
@@ -181,31 +193,23 @@ class DaoReadProfile extends DatabaseAccessor<AccountForegroundDatabase> with _$
 
   Future<List<api.AccountId>> _getProfilesList(
     int? startIndex,
-    int? limit,
+    int limit,
     GeneratedColumnWithTypeConverter<UtcDateTime?, int> Function($ProfileStatesTable) getter,
     {
       OrderingMode mode = OrderingMode.asc,
     }
-  ) async {
-    final q = select(profileStates)
-      ..where((t) => getter(t).isNotNull())
-      ..orderBy([
-        (t) => OrderingTerm(expression: getter(t), mode: mode),
-        // If list is added, the time values can have same value, so
-        // order by AccountId to make the order deterministic.
-        (t) => OrderingTerm(expression: t.accountId),
-      ]);
-
-    if (limit != null) {
-      q.limit(limit, offset: startIndex);
-    }
-
-    final r = await q
-      .map((t) => t.accountId)
-      .get();
-
-    return r;
-  }
+  ) => (select(profileStates)
+    ..where((t) => getter(t).isNotNull())
+    ..orderBy([
+      (t) => OrderingTerm(expression: getter(t), mode: mode),
+      // If list is added, the time values can have same value, so
+      // order by AccountId to make the order deterministic.
+      (t) => OrderingTerm(expression: t.accountId),
+    ])
+    ..limit(limit, offset: startIndex)
+  )
+    .map((t) => t.accountId)
+    .get();
 
   Future<bool> _existenceCheck(api.AccountId accountId, Expression<bool> Function($ProfileStatesTable) additionalCheck) async {
     final r = await (select(profileStates)
@@ -218,10 +222,10 @@ class DaoReadProfile extends DatabaseAccessor<AccountForegroundDatabase> with _$
   }
 
   Stream<bool> watchFavoriteProfileStatus(api.AccountId accountId) {
-    return (select(profileStates)
+    return (select(favoriteProfiles)
       ..where((t) => t.accountId.equals(accountId.aid))
     )
       .watchSingleOrNull()
-      .map((r) => r?.isInFavorites != null);
+      .map((r) => r != null);
   }
 }

@@ -9,6 +9,10 @@ class UtcDateTime {
     return UtcDateTime._(DateTime.now().toUtc());
   }
 
+  factory UtcDateTime.fromUnixEpoch(int seconds) {
+    return UtcDateTime._(DateTime.fromMillisecondsSinceEpoch(seconds * 1000, isUtc: true));
+  }
+
   factory UtcDateTime.fromUnixEpochMilliseconds(int milliseconds) {
     return UtcDateTime._(DateTime.fromMillisecondsSinceEpoch(milliseconds, isUtc: true));
   }
