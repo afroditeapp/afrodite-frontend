@@ -22,11 +22,11 @@ class ContentData with _$ContentData {
     return primaryContent?.content0?.id;
   }
 
-  CropResults get primaryProfilePictureCropInfo {
+  CropArea get primaryProfilePictureCropInfo {
     final size = primaryContent?.gridCropSize ?? 1.0;
     final x = primaryContent?.gridCropX ?? 0.0;
     final y = primaryContent?.gridCropY ?? 0.0;
-    return CropResults.fromValues(size, x, y);
+    return CropArea.fromValues(size, x, y);
   }
 
   ContentId? get currentSecurityContent {

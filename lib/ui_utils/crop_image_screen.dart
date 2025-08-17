@@ -14,19 +14,19 @@ import "package:app/ui_utils/image.dart";
 final log = Logger("CropImageScreen");
 
 class CropImageFileContent {
-  CropImageFileContent(this.imageOwner, this.imageId, this.imgWidth, this.imgHeight, this.cropResults);
+  CropImageFileContent(this.imageOwner, this.imageId, this.imgWidth, this.imgHeight, this.cropArea);
   final AccountId imageOwner;
   final ContentId imageId;
   final int imgWidth;
   final int imgHeight;
-  final CropResults cropResults;
+  final CropArea cropArea;
 }
 
 const MIN_CROP_ALLOWED_FACTOR = 0.75;
 
 class CropImageScreen extends StatefulWidget {
   final CropImageFileContent info;
-  final void Function(CropResults?) onCropAreaChanged;
+  final void Function(CropArea?) onCropAreaChanged;
   const CropImageScreen({
     required this.info,
     required this.onCropAreaChanged,
@@ -42,7 +42,7 @@ class _CropImageScreenState extends State<CropImageScreen> {
   double areaWidth = 1;
   double areaHeight = 1;
 
-  CropResults? cropResultsCache;
+  CropArea? cropAreaCache;
 
   @override
   Widget build(BuildContext context) {
@@ -109,9 +109,9 @@ class _CropImageScreenState extends State<CropImageScreen> {
         final CropState c;
         if (currentCropState == null) {
           c = CropState(
-            areaWidth * widget.info.cropResults.gridCropX,
-            areaHeight * widget.info.cropResults.gridCropY,
-            selectionMaxSize * widget.info.cropResults.gridCropSize,
+            areaWidth * widget.info.cropArea.gridCropX,
+            areaHeight * widget.info.cropArea.gridCropY,
+            selectionMaxSize * widget.info.cropArea.gridCropSize,
           );
           cropState = c;
         } else {
@@ -129,10 +129,10 @@ class _CropImageScreenState extends State<CropImageScreen> {
               child: imgWidget,
             ),
             onBuildCalled: (cropState) {
-              final cropResults = calculateCropResults(cropState, areaWidth, areaHeight);
-              if (cropResults != cropResultsCache) {
-                cropResultsCache = cropResults;
-                widget.onCropAreaChanged(cropResults);
+              final cropArea = _calculateCropArea(cropState, areaWidth, areaHeight);
+              if (cropArea != cropAreaCache) {
+                cropAreaCache = cropArea;
+                widget.onCropAreaChanged(cropArea);
               }
             },
           ),
@@ -142,7 +142,7 @@ class _CropImageScreenState extends State<CropImageScreen> {
   }
 }
 
-CropResults calculateCropResults(
+CropArea _calculateCropArea(
   CropState s,
   double areaWidth,
   double areaHeight,
@@ -151,9 +151,9 @@ CropResults calculateCropResults(
   final gridCropX = s.left / areaWidth;
   final gridCropY = s.top / areaHeight;
 
-  // log.fine("Crop results: size: $gridCropSize, x: $gridCropX, y: $gridCropY");
+  // log.fine("Crop area: size: $gridCropSize, x: $gridCropX, y: $gridCropY");
 
-  return CropResults.fromValues(gridCropSize, gridCropX, gridCropY);
+  return CropArea.fromValues(gridCropSize, gridCropX, gridCropY);
 }
 
 class CropState {
@@ -163,7 +163,7 @@ class CropState {
   double size;
 }
 
-class CropResults {
+class CropArea {
   /// Values are between [MIN_CROP_ALLOWED_FACTOR] and 1.
   /// The shorter side of the image should be multiplied by this
   /// factor to get the crop side length.
@@ -173,10 +173,10 @@ class CropResults {
   /// Top left corner location difference relative to the image height.
   final double gridCropY;
 
-  const CropResults._(this.gridCropSize, this.gridCropX, this.gridCropY);
+  const CropArea._(this.gridCropSize, this.gridCropX, this.gridCropY);
 
-  static CropResults fromValues(double gridCropSize, double gridCropX, double gridCropY) {
-    return CropResults._(
+  static CropArea fromValues(double gridCropSize, double gridCropX, double gridCropY) {
+    return CropArea._(
       clampDouble(gridCropSize, MIN_CROP_ALLOWED_FACTOR, 1.0),
       gridCropX,
       gridCropY
@@ -185,7 +185,7 @@ class CropResults {
 
   /// Square image from top left corner.
   static const full =
-    CropResults._(
+    CropArea._(
       1.0,
       0.0,
       0.0,
@@ -193,7 +193,7 @@ class CropResults {
 
   @override
   bool operator ==(Object other) {
-    if (other is CropResults) {
+    if (other is CropArea) {
       return gridCropSize == other.gridCropSize &&
         gridCropX == other.gridCropX &&
         gridCropY == other.gridCropY;

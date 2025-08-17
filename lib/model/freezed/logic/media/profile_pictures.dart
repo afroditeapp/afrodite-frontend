@@ -63,9 +63,9 @@ class ProfilePicturesData with _$ProfilePicturesData {
 
     return SetProfileContent(
       c: c.nonNulls.toList(),
-      gridCropSize: img0.cropResults.gridCropSize,
-      gridCropX: img0.cropResults.gridCropX,
-      gridCropY: img0.cropResults.gridCropY,
+      gridCropSize: img0.cropArea.gridCropSize,
+      gridCropX: img0.cropArea.gridCropX,
+      gridCropY: img0.cropArea.gridCropY,
     );
   }
 
@@ -107,11 +107,11 @@ class Add extends ImgState {
 }
 class ImageSelected extends ImgState {
   final SelectedImageInfo img;
-  final CropResults cropResults;
-  const ImageSelected(this.img, {this.cropResults = CropResults.full});
+  final CropArea cropArea;
+  const ImageSelected(this.img, {this.cropArea = CropArea.full});
 
   ImageSelected copyWithImg(SelectedImageInfo img) {
-    return ImageSelected(img, cropResults: cropResults);
+    return ImageSelected(img, cropArea: cropArea);
   }
 }
 

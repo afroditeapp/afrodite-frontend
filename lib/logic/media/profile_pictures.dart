@@ -23,10 +23,10 @@ class AddProcessedImage extends ProfilePicturesEvent {
   final int profileImagesIndex;
   AddProcessedImage(this.img, this.profileImagesIndex);
 }
-class UpdateCropResults extends ProfilePicturesEvent {
-  final CropResults cropResults;
+class UpdateCropArea extends ProfilePicturesEvent {
+  final CropArea cropArea;
   final int imgIndex;
-  UpdateCropResults(this.cropResults, this.imgIndex);
+  UpdateCropArea(this.cropArea, this.imgIndex);
 }
 class RemoveImage extends ProfilePicturesEvent {
   final int imgIndex;
@@ -77,11 +77,11 @@ class ProfilePicturesBloc extends Bloc<ProfilePicturesEvent, ProfilePicturesData
       _modifyPicturesListToHaveCorrectStates(pictures);
       _emitPictureChanges(emit, pictures);
     });
-    on<UpdateCropResults>((data, emit) async {
+    on<UpdateCropArea>((data, emit) async {
       final pictures = _pictureList();
       final img = pictures[data.imgIndex];
       if (img is ImageSelected) {
-        pictures[data.imgIndex] = ImageSelected(img.img, cropResults: data.cropResults);
+        pictures[data.imgIndex] = ImageSelected(img.img, cropArea: data.cropArea);
       }
       _emitPictureChanges(emit, pictures);
     });

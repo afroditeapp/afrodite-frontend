@@ -244,7 +244,7 @@ class _ProfilePictureSelection extends State<ProfilePictureSelection> {
         if (img != null && imgState is ImageSelected) {
           return IconButton(
             onPressed: () {
-              openEditThumbnail(context, img, imgState.cropResults, imgStateIndex);
+              openEditThumbnail(context, img, imgState.cropArea, imgStateIndex);
             },
             icon: const Icon(Icons.edit)
           );
@@ -303,10 +303,10 @@ class _ProfilePictureSelection extends State<ProfilePictureSelection> {
         switch (imgState) {
           case Add(): return const HiddenThumbnailPicture();
           case Hidden(): return const HiddenThumbnailPicture();
-          case ImageSelected(:final cropResults): {
+          case ImageSelected(:final cropArea): {
             final processedImg = getProcessedAccountImage(context, imgState);
             if (processedImg != null) {
-              return VisibleThumbnailPicture(img: processedImg, imgIndex: imgStateIndex, cropResults: cropResults);
+              return VisibleThumbnailPicture(img: processedImg, imgIndex: imgStateIndex, cropArea: cropArea);
             } else {
               return const HiddenThumbnailPicture();
             }
@@ -379,7 +379,7 @@ class _ProfilePictureSelection extends State<ProfilePictureSelection> {
 Future<void> openEditThumbnail(
   BuildContext context,
   AccountImageId img,
-  CropResults currentCrop,
+  CropArea currentCrop,
   int imgStateIndex,
 ) async {
   final bytes = await ImageCacheData.getInstance().getImage(
@@ -398,9 +398,9 @@ Future<void> openEditThumbnail(
   if (!context.mounted) {
     return;
   }
-  await MyNavigator.push<CropResults>(
+  await MyNavigator.push<CropArea>(
     context,
-    MaterialPage<CropResults>(
+    MaterialPage<CropArea>(
       child:
         CropImageScreen(
           info: CropImageFileContent(
@@ -410,9 +410,9 @@ Future<void> openEditThumbnail(
             flutterImg.height,
             currentCrop,
           ),
-          onCropAreaChanged: (cropResults) {
-            if (cropResults != null && context.mounted) {
-              context.read<ProfilePicturesBloc>().add(UpdateCropResults(cropResults, imgStateIndex));
+          onCropAreaChanged: (cropArea) {
+            if (cropArea != null && context.mounted) {
+              context.read<ProfilePicturesBloc>().add(UpdateCropArea(cropArea, imgStateIndex));
             }
           },
         )
@@ -799,13 +799,13 @@ class ImgWithCloseButton extends StatelessWidget {
 
 class VisibleThumbnailPicture extends StatelessWidget {
   final AccountImageId img;
-  final CropResults cropResults;
+  final CropArea cropArea;
   final int imgIndex;
 
   const VisibleThumbnailPicture({
     required this.img,
     required this.imgIndex,
-    required this.cropResults,
+    required this.cropArea,
     super.key,
   });
 
@@ -813,7 +813,7 @@ class VisibleThumbnailPicture extends StatelessWidget {
   Widget build(BuildContext context) {
     return ProfileThumbnailImage.fromAccountImageId(
       img: img,
-      cropResults: cropResults,
+      cropArea: cropArea,
       width: THUMBNAIL_SIZE,
       height: THUMBNAIL_SIZE,
       cacheSize: ImageCacheSize.halfScreen(context),
@@ -821,7 +821,7 @@ class VisibleThumbnailPicture extends StatelessWidget {
         color: Colors.transparent,
         child: InkWell(
           onTap: () {
-            openEditThumbnail(context, img, cropResults, imgIndex);
+            openEditThumbnail(context, img, cropArea, imgIndex);
           },
         ),
       ),

@@ -11,7 +11,7 @@ import 'package:app/ui_utils/crop_image_screen.dart';
 
 class ProfileThumbnailImageOrError extends StatelessWidget {
   final ProfileEntry entry;
-  final CropResults cropResults;
+  final CropArea cropArea;
   /// 1.0 means square image, 0.0 means original aspect ratio
   final double squareFactor;
   final double? width;
@@ -30,7 +30,7 @@ class ProfileThumbnailImageOrError extends StatelessWidget {
     required this.cacheSize,
     super.key,
   }) :
-    cropResults = entry.primaryImageCropInfo();
+    cropArea = entry.primaryImageCropArea();
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +45,7 @@ class ProfileThumbnailImageOrError extends StatelessWidget {
       return ProfileThumbnailImage(
         accountId: entry.accountId,
         contentId: img.id,
-        cropResults: cropResults,
+        cropArea: cropArea,
         width: width,
         height: height,
         squareFactor: squareFactor,

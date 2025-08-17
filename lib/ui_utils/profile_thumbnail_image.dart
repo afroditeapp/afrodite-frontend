@@ -12,7 +12,7 @@ import 'package:app/ui_utils/crop_image_screen.dart';
 class ProfileThumbnailImage extends StatelessWidget {
   final AccountId accountId;
   final ContentId contentId;
-  final CropResults cropResults;
+  final CropArea cropArea;
   /// 1.0 means square image, 0.0 means original aspect ratio
   final double squareFactor;
   final double? width;
@@ -23,7 +23,7 @@ class ProfileThumbnailImage extends StatelessWidget {
   const ProfileThumbnailImage({
     required this.accountId,
     required this.contentId,
-    this.cropResults = CropResults.full,
+    this.cropArea = CropArea.full,
     this.width,
     this.height,
     this.child,
@@ -35,7 +35,7 @@ class ProfileThumbnailImage extends StatelessWidget {
 
   ProfileThumbnailImage.fromAccountImageId({
     required AccountImageId img,
-    required this.cropResults,
+    required this.cropArea,
     this.width,
     this.height,
     this.child,
@@ -54,7 +54,7 @@ class ProfileThumbnailImage extends StatelessWidget {
       contentId,
       cacheSize: cacheSize,
       media: LoginRepository.getInstance().repositories.media,
-      cropArea: cropResults,
+      cropArea: cropArea,
     );
     return Align(
       alignment: Alignment.center,
@@ -81,16 +81,16 @@ class ProfileThumbnailImage extends StatelessWidget {
 
 class CroppedImagePainter {
   final ui.Image img;
-  final CropResults cropResults;
+  final CropArea cropArea;
   final double squareFactor;
   CroppedImagePainter(
     this.img,
-    this.cropResults,
+    this.cropArea,
     this.squareFactor,
   );
 
   Rect calculateSrcRect() {
-    final squareRect = _calculateSquareSrcRect(img, cropResults);
+    final squareRect = _calculateSquareSrcRect(img, cropArea);
     final fullImgRect = Rect.fromLTWH(0, 0, img.width.toDouble(), img.height.toDouble());
 
     final animatedSrc = RectTween(begin: fullImgRect, end: squareRect).lerp(squareFactor);
@@ -100,11 +100,11 @@ class CroppedImagePainter {
   }
 }
 
-Rect _calculateSquareSrcRect(ui.Image img, CropResults cropResults) {
+Rect _calculateSquareSrcRect(ui.Image img, CropArea cropArea) {
   final imgSize = Size(img.width.toDouble(), img.height.toDouble());
-  final areaWidth = imgSize.shortestSide * cropResults.gridCropSize;
-  final xOffset = img.width.toDouble() * cropResults.gridCropX;
-  final yOffset = img.height.toDouble() * cropResults.gridCropY;
+  final areaWidth = imgSize.shortestSide * cropArea.gridCropSize;
+  final xOffset = img.width.toDouble() * cropArea.gridCropX;
+  final yOffset = img.height.toDouble() * cropArea.gridCropY;
 
   final src = Rect.fromLTWH(
     xOffset,

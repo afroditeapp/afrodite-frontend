@@ -166,7 +166,7 @@ class AccountImageProvider extends ImageProvider<AccountImgKey> {
         final codec = await decode(buffer);
         final frame = await codec.getNextFrame();
 
-        if (imgInfo.cropArea == CropResults.full) {
+        if (imgInfo.cropArea == CropArea.full) {
           return ImageInfo(image: frame.image);
         }
 
@@ -197,7 +197,7 @@ class AccountImageProvider extends ImageProvider<AccountImgKey> {
       bool isMatch = false,
       required ImageCacheSize cacheSize,
       required MediaRepository media,
-      required CropResults cropArea,
+      required CropArea cropArea,
     }
   ) {
     final key = AccountImgKey(
@@ -298,7 +298,7 @@ class PrecacheImageForViewProfileScreen {
       content,
       cacheSize: ImageCacheSize.height(context, VIEW_PROFILE_WIDGET_IMG_HEIGHT),
       media: LoginRepository.getInstance().repositories.media,
-      cropArea: CropResults.full,
+      cropArea: CropArea.full,
     );
     await precacheImage(imageProvider, context);
   }

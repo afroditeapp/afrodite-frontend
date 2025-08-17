@@ -239,9 +239,9 @@ Result<SetProfileContent, ()> createProfileContent(
     }
     switch (i) {
       case 0:
-        gridCropSize = img.cropResults.gridCropSize;
-        gridCropX = img.cropResults.gridCropX;
-        gridCropY = img.cropResults.gridCropY;
+        gridCropSize = img.cropArea.gridCropSize;
+        gridCropX = img.cropArea.gridCropX;
+        gridCropY = img.cropArea.gridCropY;
         contentId0 = getId(img.img, securitySelfie);
       case 1:
         contentId1 = getId(img.img, securitySelfie);

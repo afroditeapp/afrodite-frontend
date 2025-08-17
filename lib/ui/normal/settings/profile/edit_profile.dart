@@ -72,7 +72,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     widget.profilePicturesBloc.add(ResetIfModeChanges(const NormalProfilePictures()));
 
     setImgToBloc(p.myContent.getAtOrNull(0), 0);
-    widget.profilePicturesBloc.add(UpdateCropResults(p.primaryImageCropInfo(), 0));
+    widget.profilePicturesBloc.add(UpdateCropArea(p.primaryImageCropArea(), 0));
 
     setImgToBloc(p.myContent.getAtOrNull(1), 1);
     setImgToBloc(p.myContent.getAtOrNull(2), 2);

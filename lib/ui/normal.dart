@@ -249,7 +249,7 @@ class _NormalStateContentState extends State<NormalStateContent> {
               return ProfileThumbnailImage(
                 accountId: currentUser,
                 contentId: img,
-                cropResults: cropInfo,
+                cropArea: cropInfo,
                 width: constraints.maxHeight,
                 height: constraints.maxHeight,
                 cacheSize: ImageCacheSize.sizeForAppBarThumbnail(context),
