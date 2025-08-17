@@ -2,6 +2,7 @@ import "dart:io";
 
 import "package:app/logic/account/demo_account_login.dart";
 import "package:app/model/freezed/logic/account/demo_account_login.dart";
+import "package:app/ui_utils/image.dart";
 import "package:flutter/foundation.dart";
 import "package:flutter/gestures.dart";
 import "package:flutter/material.dart";
@@ -229,6 +230,7 @@ Widget signInWithGoogleButton(BuildContext context) {
       iconPath,
       width: null,
       height: SIGN_IN_BUTTON_HEIGHT,
+      cacheHeight: calculateCachedImageSize(context, SIGN_IN_BUTTON_HEIGHT),
     ),
     padding: EdgeInsets.zero,
     onPressed: () =>
@@ -245,6 +247,7 @@ Widget logoAndAppNameAndSlogan(BuildContext context) {
         ImageAsset.appLogo.path,
         width: APP_ICON_SIZE,
         height: APP_ICON_SIZE,
+        cacheHeight: calculateCachedImageSize(context, APP_ICON_SIZE),
       ),
       Text(context.strings.app_name, style: Theme.of(context).textTheme.headlineMedium),
     ],

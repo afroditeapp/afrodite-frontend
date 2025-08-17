@@ -1,3 +1,4 @@
+import "package:app/ui_utils/image.dart";
 import "package:flutter/material.dart";
 import "package:app/assets.dart";
 import "package:app/main.dart";
@@ -17,6 +18,7 @@ class SplashScreen extends StatelessWidget {
                 ImageAsset.appLogo.path,
                 width: appIconSize,
                 height: appIconSize,
+                cacheHeight: calculateCachedImageSize(context, appIconSize),
               ),
               FutureBuilder(
                 future: GlobalInitManager.getInstance().triggerGlobalInit(),

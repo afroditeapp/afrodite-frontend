@@ -1,6 +1,7 @@
 import 'package:app/config.dart';
 import 'package:app/data/app_version.dart';
 import 'package:app/model/freezed/logic/account/client_features_config.dart';
+import 'package:app/ui_utils/image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:app/assets.dart';
@@ -26,6 +27,7 @@ void showAppAboutDialog(BuildContext context, ClientFeaturesConfigData? config) 
         ImageAsset.appLogo.path,
         width: ICON_SIZE,
         height: ICON_SIZE,
+        cacheHeight: calculateCachedImageSize(context, ICON_SIZE),
       ),
       applicationLegalese: "© 2024 Afrodite",
       children: [

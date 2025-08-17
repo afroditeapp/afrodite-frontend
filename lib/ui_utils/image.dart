@@ -66,3 +66,7 @@ Widget accountImgWidgetInk(
     fit: fit,
   );
 }
+
+int calculateCachedImageSize(BuildContext context, double size) {
+  return (size * MediaQuery.devicePixelRatioOf(context)).round();
+}
