@@ -7,9 +7,13 @@ file contains the differences. For backend features check backend repository
 
 ## Profile
 
-* Name (max characters 25, allowlisted characters)
+* Name (max characters 25)
 * Text (max characters 400)
 * Images (min 1, max 4)
+
+# Missing frontend features
+
+* Import and export for chat messages and message encryption key pair
 
 # Possible future frontend features
 
