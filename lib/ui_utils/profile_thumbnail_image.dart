@@ -20,7 +20,8 @@ class ProfileThumbnailImage extends StatelessWidget {
   final Widget? child;
   final BorderRadius? borderRadius;
   final ImageCacheSize cacheSize;
-  const ProfileThumbnailImage({
+  final ImageProvider<Object> _imageProvider;
+  ProfileThumbnailImage({
     required this.accountId,
     required this.contentId,
     this.cropArea = CropArea.full,
@@ -31,31 +32,38 @@ class ProfileThumbnailImage extends StatelessWidget {
     this.borderRadius = const BorderRadius.all(Radius.circular(PROFILE_PICTURE_BORDER_RADIUS)),
     required this.cacheSize,
     super.key,
-  });
-
-  ProfileThumbnailImage.fromAccountImageId({
-    required AccountImageId img,
-    required this.cropArea,
-    this.width,
-    this.height,
-    this.child,
-    this.squareFactor = 1.0,
-    this.borderRadius = const BorderRadius.all(Radius.circular(PROFILE_PICTURE_BORDER_RADIUS)),
-    required this.cacheSize,
-    super.key,
-  }) :
-    accountId = img.accountId,
-    contentId = img.contentId;
-
-  @override
-  Widget build(BuildContext context) {
-    final imageProvider = AccountImageProvider.create(
+  }) : _imageProvider = AccountImageProvider.create(
       accountId,
       contentId,
       cacheSize: cacheSize,
       media: LoginRepository.getInstance().repositories.media,
       cropArea: cropArea,
     );
+
+  ProfileThumbnailImage.fromAccountImageId({
+    required AccountImageId img,
+    required CropArea cropArea,
+    double? width,
+    double? height,
+    Widget? child,
+    double squareFactor = 1.0,
+    BorderRadius borderRadius = const BorderRadius.all(Radius.circular(PROFILE_PICTURE_BORDER_RADIUS)),
+    required ImageCacheSize cacheSize,
+    Key? key,
+  }) : this(
+    accountId: img.accountId,
+    contentId: img.contentId,
+    width: width,
+    height: height,
+    child: child,
+    squareFactor: squareFactor,
+    borderRadius: borderRadius,
+    cacheSize: cacheSize,
+    key: key,
+  );
+
+  @override
+  Widget build(BuildContext context) {
     return Align(
       alignment: Alignment.center,
       child: SizedBox(
@@ -66,12 +74,34 @@ class ProfileThumbnailImage extends StatelessWidget {
             borderRadius: borderRadius,
           ),
           clipBehavior: Clip.hardEdge,
-          child: Stack(
-            alignment: AlignmentDirectional.center,
-            children: [
-              Image(image: imageProvider),
-              ?child,
-            ],
+          child: Image(
+            image: _imageProvider,
+            frameBuilder: (context, image, frame, wasSynchronouslyLoaded) {
+              final loadingReady = Center(
+                child: Stack(
+                  alignment: AlignmentDirectional.center,
+                  children: [
+                    image,
+                    ?child,
+                  ],
+                ),
+              );
+              if (frame == null && wasSynchronouslyLoaded) {
+                return loadingReady;
+              } else if (frame == null) {
+                return AnimatedOpacity(
+                  opacity: 0,
+                  duration: Duration(milliseconds: 200),
+                  child: image,
+                );
+              } else {
+                return AnimatedOpacity(
+                  opacity: 1,
+                  duration: Duration(milliseconds: 200),
+                  child: loadingReady,
+                );
+              }
+            },
           )
         ),
       ),
