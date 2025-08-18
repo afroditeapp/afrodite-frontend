@@ -30,9 +30,7 @@ class PagedGridLogic {
     Future<List<ProfileGridProfileEntry>?> Function() fetchPage,
     void Function(List<ProfileGridProfileEntry>) addPage,
   ) {
-    // It is safe to check inProgress is FetchPage as
-    // changing PagingState happen synchronously using addPage callback.
-    if (scheduled is FetchPage || scheduled is Refresh || inProgress is FetchPage) {
+    if (scheduled != null || inProgress != null) {
       return;
     }
     scheduled = FetchPage(fetchPage, addPage);
