@@ -3,6 +3,35 @@
 default:
 	exit 0
 
+fmt:
+	find . \
+	-type f \
+	-name "*.dart" \
+	! -name "*.g.dart" \
+	! -name "*.freezed.dart" \
+	! -path "./packages/api_client/*" \
+	! -path "./lib/l10n/*" \
+	| \
+	xargs dart format \
+	--show none \
+	--page-width 100
+
+check-fmt:
+	find . \
+	-type f \
+	-name "*.dart" \
+	! -name "*.g.dart" \
+	! -name "*.freezed.dart" \
+	! -path "./packages/api_client/*" \
+	! -path "./lib/l10n/*" \
+	| \
+	xargs dart format \
+	--show none \
+	--page-width 100 \
+	--summary none \
+	--output none \
+	--set-exit-if-changed
+
 update-api-bindings:
 	openapi-generator-cli generate \
 	-i http://localhost:3002/api-doc/app_api.json \
