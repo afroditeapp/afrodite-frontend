@@ -26,7 +26,9 @@ class _BlockedProfilesScreen extends State<ViewAccountsScreen> {
 
   bool isDisposed = false;
 
-  void updatePagingState(PagingState<int, AccountEntry> Function(PagingState<int, AccountEntry>) action) {
+  void updatePagingState(
+    PagingState<int, AccountEntry> Function(PagingState<int, AccountEntry>) action,
+  ) {
     if (isDisposed || !context.mounted) {
       return;
     }
@@ -48,7 +50,9 @@ class _BlockedProfilesScreen extends State<ViewAccountsScreen> {
       iteratorStartPosition = null;
     }
 
-    iteratorStartPosition ??= await api.profileAdmin((api) => api.getLatestCreatedAccountIdDb()).ok();
+    iteratorStartPosition ??= await api
+        .profileAdmin((api) => api.getLatestCreatedAccountIdDb())
+        .ok();
 
     final startPosition = iteratorStartPosition;
     if (startPosition == null) {
@@ -57,7 +61,9 @@ class _BlockedProfilesScreen extends State<ViewAccountsScreen> {
     }
 
     final page = _pagingState.currentPageNumber();
-    final data = await api.profileAdmin((api) => api.getAdminProfileIteratorPage(startPosition.accountDbId, page)).ok();
+    final data = await api
+        .profileAdmin((api) => api.getAdminProfileIteratorPage(startPosition.accountDbId, page))
+        .ok();
     if (data == null) {
       updatePagingState((s) => s.copyAndShowError());
       return;

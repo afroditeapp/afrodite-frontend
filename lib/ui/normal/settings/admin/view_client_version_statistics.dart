@@ -1,5 +1,3 @@
-
-
 import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/ui/utils/view_metrics.dart';
 import 'package:app/ui_utils/extensions/api.dart';
@@ -12,14 +10,19 @@ import 'package:app/api/api_manager.dart';
 import 'package:app/utils/result.dart';
 import 'package:utils/utils.dart';
 
-void openViewClientVersionStatisticsScreen(BuildContext context, String title, ApiManager api, {bool daily = false}) {
+void openViewClientVersionStatisticsScreen(
+  BuildContext context,
+  String title,
+  ApiManager api, {
+  bool daily = false,
+}) {
   MyNavigator.push(
     context,
     MaterialPage<void>(
       child: ViewMetricsScreen(
         title: title,
         metrics: GetClientVersions(api, daily: daily),
-      )
+      ),
     ),
   );
 }
@@ -33,7 +36,13 @@ class GetClientVersions extends GetMetrics {
   @override
   Future<Result<List<Metric>, ()>> getMetrics() async {
     final oldestDate = UtcDateTime.now().substract(const Duration(days: 30));
-    final queryResults = await api.accountAdmin((api) => api.postGetClientVersionStatistics(GetClientVersionStatisticsSettings(minTime: oldestDate.toUnixTime()))).ok();
+    final queryResults = await api
+        .accountAdmin(
+          (api) => api.postGetClientVersionStatistics(
+            GetClientVersionStatisticsSettings(minTime: oldestDate.toUnixTime()),
+          ),
+        )
+        .ok();
 
     if (queryResults == null) {
       return const Err(());
@@ -66,7 +75,7 @@ class ClientVersionMetric extends Metric {
   ClientVersionMetric(this.name, List<ClientVersionCount> values) {
     final data = <FlSpot>[];
     for (final v in values) {
-        data.add(FlSpot(v.t.ut.toDouble(), v.c.toDouble()));
+      data.add(FlSpot(v.t.ut.toDouble(), v.c.toDouble()));
     }
     _processedValues = data.sortedBy((v) => v.x);
   }
@@ -96,7 +105,9 @@ class DailyMetrics extends Metric {
         count = v.y.toInt();
         day = valueDateTime.day;
       } else if (day != valueDateTime.day) {
-        data.add(FlSpot(UtcDateTime.fromDateTime(date).toUnixTime().ut.toDouble(), count.toDouble()));
+        data.add(
+          FlSpot(UtcDateTime.fromDateTime(date).toUnixTime().ut.toDouble(), count.toDouble()),
+        );
         date = DateTime.utc(valueDateTime.year, valueDateTime.month, valueDateTime.day);
         count = v.y.toInt();
         day = valueDateTime.day;

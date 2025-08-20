@@ -1,4 +1,3 @@
-
 import "package:app/ui/initial_setup/search_settings.dart";
 import "package:flutter/material.dart";
 import "package:latlong2/latlong.dart";
@@ -32,8 +31,6 @@ class InitialSetupData with _$InitialSetupData {
   }) = _InitialSetupData;
 }
 
-
-
 enum Gender {
   man,
   woman,
@@ -60,11 +57,7 @@ class GenderSearchSettingsAll {
   final bool men;
   final bool women;
   final bool nonBinary;
-  const GenderSearchSettingsAll({
-    this.men = false,
-    this.women = false,
-    this.nonBinary = false,
-  });
+  const GenderSearchSettingsAll({this.men = false, this.women = false, this.nonBinary = false});
 
   GenderSearchSettingsAll updateWith(bool value, Gender whatUpdated) {
     return switch (whatUpdated) {

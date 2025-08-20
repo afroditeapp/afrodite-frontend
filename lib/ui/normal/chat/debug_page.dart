@@ -17,18 +17,15 @@ import 'package:rxdart/rxdart.dart';
 import 'package:utils/utils.dart';
 
 void openConversationDebugScreen(BuildContext context, int initialMsgCount) {
-  final details = _newDebugConversationPage(
-    AccountId(aid: ""),
-    initialMsgCount,
+  final details = _newDebugConversationPage(AccountId(aid: ""), initialMsgCount);
+  context.read<NavigatorStateBloc>().pushWithKey(
+    details.page,
+    details.pageKey!,
+    pageInfo: details.pageInfo,
   );
-  context.read<NavigatorStateBloc>()
-    .pushWithKey(details.page, details.pageKey!, pageInfo: details.pageInfo);
 }
 
-NewPageDetails _newDebugConversationPage(
-  AccountId accountId,
-  int initialMsgCount,
-) {
+NewPageDetails _newDebugConversationPage(AccountId accountId, int initialMsgCount) {
   final dataProvider = DebugConversationDataProvider();
   dataProvider.sendInitialMessages(accountId, initialMsgCount);
   final pageKey = PageKey();
@@ -37,7 +34,7 @@ NewPageDetails _newDebugConversationPage(
       child: BlocProvider(
         create: (_) => ConversationBloc(accountId, dataProvider),
         lazy: false,
-        child: ChatViewDebuggerPage(initialMsgCount: initialMsgCount, dataProvider: dataProvider)
+        child: ChatViewDebuggerPage(initialMsgCount: initialMsgCount, dataProvider: dataProvider),
       ),
     ),
     pageKey: pageKey,
@@ -123,7 +120,10 @@ class DebugConversationDataProvider extends ConversationDataProvider {
   }
 
   @override
-  Future<List<MessageEntry>> getNewMessages(AccountId senderAccountId, LocalMessageId? latestCurrentMessageLocalId) async {
+  Future<List<MessageEntry>> getNewMessages(
+    AccountId senderAccountId,
+    LocalMessageId? latestCurrentMessageLocalId,
+  ) async {
     final newMessages = <MessageEntry>[];
     for (final message in messages.reversed) {
       if (message.localId == latestCurrentMessageLocalId) {
@@ -150,7 +150,9 @@ class DebugConversationDataProvider extends ConversationDataProvider {
   }
 
   @override
-  Future<Result<(), RetryPublicKeyDownloadError>> retryPublicKeyDownload(LocalMessageId localId) async {
+  Future<Result<(), RetryPublicKeyDownloadError>> retryPublicKeyDownload(
+    LocalMessageId localId,
+  ) async {
     return const Ok(());
   }
 }
@@ -208,7 +210,7 @@ class ChatViewDebuggerPageState extends State<ChatViewDebuggerPage> {
                 alignment: Alignment.topCenter,
                 child: OneEndedMessageListWidget(context.read<ConversationBloc>()),
               ),
-            )
+            ),
           ),
           textEditArea(context),
           newMessageArea(context),
@@ -218,7 +220,7 @@ class ChatViewDebuggerPageState extends State<ChatViewDebuggerPage> {
     );
   }
 
-   Widget textEditArea(BuildContext context) {
+  Widget textEditArea(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: Row(
@@ -226,9 +228,7 @@ class ChatViewDebuggerPageState extends State<ChatViewDebuggerPage> {
           Expanded(
             child: TextField(
               controller: _textEditingController,
-              decoration: const InputDecoration(
-                hintText: 'Type a message...',
-              ),
+              decoration: const InputDecoration(hintText: 'Type a message...'),
               keyboardType: TextInputType.multiline,
               maxLines: 4,
               minLines: 1,
@@ -255,7 +255,7 @@ class ChatViewDebuggerPageState extends State<ChatViewDebuggerPage> {
             onPressed: () {
               widget.dataProvider.msgCountPerUpdate++;
             },
-            child: const Text("msgPerUpdate++")
+            child: const Text("msgPerUpdate++"),
           ),
           ElevatedButton(
             onPressed: () {
@@ -263,7 +263,7 @@ class ChatViewDebuggerPageState extends State<ChatViewDebuggerPage> {
                 widget.dataProvider.msgCountPerUpdate--;
               }
             },
-            child: const Text("msgPerUpdate--")
+            child: const Text("msgPerUpdate--"),
           ),
         ],
       ),

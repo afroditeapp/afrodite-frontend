@@ -1,4 +1,3 @@
-
 import 'package:app/ui_utils/attribute/attribute.dart';
 import 'package:openapi/api.dart';
 
@@ -6,14 +5,11 @@ class AttributeStateStorage {
   final Map<String, UiAttributeValue> selected = {};
   AttributeStateStorage();
 
-  bool isSelected(UiAttributeValue attribute) =>
-    selected.containsKey(attribute.apiValue().key);
+  bool isSelected(UiAttributeValue attribute) => selected.containsKey(attribute.apiValue().key);
 
-  void select(UiAttributeValue attribute) =>
-    selected[attribute.apiValue().key] = attribute;
+  void select(UiAttributeValue attribute) => selected[attribute.apiValue().key] = attribute;
 
-  void unselect(UiAttributeValue attribute) =>
-    selected.remove(attribute.apiValue().key);
+  void unselect(UiAttributeValue attribute) => selected.remove(attribute.apiValue().key);
 
   void clear() => selected.clear();
 
@@ -51,7 +47,10 @@ class AttributeStateStorage {
     final values = selected.values;
     List<int> intList;
     if (attribute.apiAttribute().mode == AttributeMode.bitflag) {
-      final apiValue = values.fold(0, (previous, current) => previous | current.selectedValueForApi());
+      final apiValue = values.fold(
+        0,
+        (previous, current) => previous | current.selectedValueForApi(),
+      );
       if (apiValue == 0) {
         // Empty list removes the attribute
         intList = [];
@@ -61,10 +60,7 @@ class AttributeStateStorage {
     } else {
       intList = values.map((v) => v.selectedValueForApi()).toList();
     }
-    return ProfileAttributeValueUpdate(
-      id: attribute.apiAttribute().id,
-      v: intList,
-    );
+    return ProfileAttributeValueUpdate(id: attribute.apiAttribute().id, v: intList);
   }
 
   AttributeStateStorage copy() {
@@ -75,7 +71,10 @@ class AttributeStateStorage {
     return storage;
   }
 
-  factory AttributeStateStorage.parseFromUpdateList(UiAttribute attribute, List<ProfileAttributeValueUpdate> state) {
+  factory AttributeStateStorage.parseFromUpdateList(
+    UiAttribute attribute,
+    List<ProfileAttributeValueUpdate> state,
+  ) {
     for (final u in state) {
       if (u.id != attribute.apiAttribute().id) {
         continue;
@@ -85,7 +84,10 @@ class AttributeStateStorage {
     return AttributeStateStorage();
   }
 
-  factory AttributeStateStorage.parseFromUpdate(UiAttribute attribute, ProfileAttributeValueUpdate u) {
+  factory AttributeStateStorage.parseFromUpdate(
+    UiAttribute attribute,
+    ProfileAttributeValueUpdate u,
+  ) {
     final storage = AttributeStateStorage();
     if (u.id != attribute.apiAttribute().id) {
       return storage;
@@ -93,7 +95,8 @@ class AttributeStateStorage {
     for (final update in u.v) {
       if (attribute.apiAttribute().mode == AttributeMode.bitflag) {
         for (final availableValue in attribute.values()) {
-          if (availableValue.selectedValueForApi() & update == availableValue.selectedValueForApi()) {
+          if (availableValue.selectedValueForApi() & update ==
+              availableValue.selectedValueForApi()) {
             storage.select(availableValue);
           }
         }
@@ -111,11 +114,9 @@ class AttributeStateStorage {
 
   factory AttributeStateStorage.parseFromFilterUpdate(
     UiAttribute attribute,
-    ProfileAttributeFilterValueUpdate u,
-    {
-      bool parseUnwanted = false,
-    }
-  ) {
+    ProfileAttributeFilterValueUpdate u, {
+    bool parseUnwanted = false,
+  }) {
     return AttributeStateStorage.parseFromUpdate(
       attribute,
       ProfileAttributeValueUpdate(

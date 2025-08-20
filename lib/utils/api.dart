@@ -1,4 +1,3 @@
-
 import 'package:database/database.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:openapi/api.dart';
@@ -7,22 +6,18 @@ import 'package:utils/utils.dart';
 
 extension ProfileVisibilityExtensions on ProfileVisibility {
   bool isInitialModerationOngoing() {
-    return this == ProfileVisibility.pendingPrivate ||
-      this == ProfileVisibility.pendingPublic;
+    return this == ProfileVisibility.pendingPrivate || this == ProfileVisibility.pendingPublic;
   }
 
   /// Convert visibility to boolean without the pending state
   bool isPublic() {
-    return this == ProfileVisibility.public ||
-      this == ProfileVisibility.pendingPublic;
+    return this == ProfileVisibility.public || this == ProfileVisibility.pendingPublic;
   }
 }
 
 extension ProfileAttributeFilterValueUpdateExtensions on ProfileAttributeFilterValueUpdate {
   void updateIsEnabled() {
-    enabled = acceptMissingAttribute ||
-      wanted.isNotEmpty ||
-      unwanted.isNotEmpty;
+    enabled = acceptMissingAttribute || wanted.isNotEmpty || unwanted.isNotEmpty;
   }
 }
 
@@ -66,14 +61,14 @@ extension SearchGroupsExtensions on SearchGroups {
 
   bool somethingIsSelected() {
     return manForMan ||
-      manForWoman ||
-      manForNonBinary ||
-      womanForMan ||
-      womanForWoman ||
-      womanForNonBinary ||
-      nonBinaryForMan ||
-      nonBinaryForWoman ||
-      nonBinaryForNonBinary;
+        manForWoman ||
+        manForNonBinary ||
+        womanForMan ||
+        womanForWoman ||
+        womanForNonBinary ||
+        nonBinaryForMan ||
+        nonBinaryForWoman ||
+        nonBinaryForNonBinary;
   }
 
   static SearchGroups createFrom(Gender gender, GenderSearchSettingsAll genderSearchSetting) {
@@ -125,7 +120,7 @@ extension UtcDateTimeExtensions on UtcDateTime {
 extension ContentInfoDetailedExtensions on ContentInfoDetailed {
   bool accepted() {
     return state == ContentModerationState.acceptedByBot ||
-      state == ContentModerationState.acceptedByHuman;
+        state == ContentModerationState.acceptedByHuman;
   }
 }
 
@@ -142,7 +137,7 @@ extension GetProfileFiltersExtension on GetProfileFilters {
       convertedValue.updateIsEnabled();
       return convertedValue;
     });
-    return { for (var e in values) e.id : e };
+    return {for (var e in values) e.id: e};
   }
 }
 

@@ -29,10 +29,7 @@ class _AccountBannedScreenState extends State<AccountBannedScreen> {
   Future<void> _refreshData() async {
     await connectionManager.tryWaitUntilConnected(waitTimeoutSeconds: 5);
 
-    final result = await api
-      .account(
-        (api) => api.getAccountBanTime(currentUser.aid),
-      ).ok();
+    final result = await api.account((api) => api.getAccountBanTime(currentUser.aid)).ok();
 
     if (context.mounted) {
       setState(() {
@@ -68,7 +65,7 @@ class _AccountBannedScreenState extends State<AccountBannedScreen> {
                   context.strings.data_export_screen_title_export_type_user,
                   currentUser,
                 );
-              }
+              },
             ),
             ...commonActionsWhenLoggedInAndAccountIsNotNormallyUsable(context),
           ]),
@@ -80,13 +77,10 @@ class _AccountBannedScreenState extends State<AccountBannedScreen> {
             onRefresh: _refreshData,
             child: SingleChildScrollView(
               physics: const AlwaysScrollableScrollPhysics(),
-              child: ConstrainedBox(
-                constraints: constraints,
-                child: screenContent(context),
-              ),
+              child: ConstrainedBox(constraints: constraints, child: screenContent(context)),
             ),
           );
-        }
+        },
       ),
     );
   }
@@ -100,9 +94,7 @@ class _AccountBannedScreenState extends State<AccountBannedScreen> {
   }
 
   Widget buildProgressIndicator() {
-    return const Center(
-      child: CircularProgressIndicator(),
-    );
+    return const Center(child: CircularProgressIndicator());
   }
 
   Widget showData(BuildContext context) {
@@ -110,13 +102,9 @@ class _AccountBannedScreenState extends State<AccountBannedScreen> {
     final UnixTime? bannedUntil = data?.bannedUntil;
     List<Widget> widgets;
     if (result == null) {
-      widgets = [
-        Text(context.strings.generic_error_occurred),
-      ];
+      widgets = [Text(context.strings.generic_error_occurred)];
     } else if (bannedUntil == null) {
-      widgets = [
-        Text(context.strings.generic_error),
-      ];
+      widgets = [Text(context.strings.generic_error)];
     } else {
       final String banReason = result.reasonDetails.value;
       final localTime = fullTimeString(bannedUntil.toUtcDateTime());
@@ -131,7 +119,7 @@ class _AccountBannedScreenState extends State<AccountBannedScreen> {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: widgets,
-      )
+      ),
     );
   }
 }

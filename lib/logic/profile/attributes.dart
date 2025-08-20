@@ -9,16 +9,18 @@ import "package:app/data/profile_repository.dart";
 import "package:app/model/freezed/logic/profile/attributes.dart";
 import "package:app/utils.dart";
 
-
 sealed class AttributesEvent {}
+
 class NewAttributes extends AttributesEvent {
   final ProfileAttributes? attributes;
   NewAttributes(this.attributes);
 }
+
 class NewLocale extends AttributesEvent {
   final String? value;
   NewLocale(this.value);
 }
+
 class ProfileAttributesBloc extends Bloc<AttributesEvent, AttributesData> with ActionRunner {
   final BackgroundDatabaseManager backgroundDb = BackgroundDatabaseManager.getInstance();
   final ProfileRepository profile = LoginRepository.getInstance().repositories.profile;
@@ -35,11 +37,7 @@ class ProfileAttributesBloc extends Bloc<AttributesEvent, AttributesData> with A
       } else {
         manager = null;
       }
-      emit(state.copyWith(
-        locale: data.value,
-        attributes: attributes,
-        manager: manager,
-      ));
+      emit(state.copyWith(locale: data.value, attributes: attributes, manager: manager));
     });
     on<NewAttributes>((data, emit) async {
       final attributes = data.attributes;
@@ -49,16 +47,15 @@ class ProfileAttributesBloc extends Bloc<AttributesEvent, AttributesData> with A
       } else {
         manager = null;
       }
-      emit(state.copyWith(
-        attributes: data.attributes,
-        manager: manager,
-      ));
+      emit(state.copyWith(attributes: data.attributes, manager: manager));
     });
 
     _localeSubscription = backgroundDb
-      .commonStream((db) => db.app.watchCurrentLocale())
-      .listen((value) => add(NewLocale(value)));
-    _attributesSubscription = profile.profileAttributes.listen((value) => add(NewAttributes(value)));
+        .commonStream((db) => db.app.watchCurrentLocale())
+        .listen((value) => add(NewLocale(value)));
+    _attributesSubscription = profile.profileAttributes.listen(
+      (value) => add(NewAttributes(value)),
+    );
   }
 
   @override

@@ -24,7 +24,10 @@ class AskEmailScreen extends StatelessWidget {
               final email = state.email;
               if ((email != null && isValidEmail(email)) || currentAccountEmail != null) {
                 return () {
-                  MyNavigator.push(context, const MaterialPage<void>(child: AgeConfirmationScreen()));
+                  MyNavigator.push(
+                    context,
+                    const MaterialPage<void>(child: AgeConfirmationScreen()),
+                  );
                 };
               } else {
                 return null;
@@ -33,7 +36,7 @@ class AskEmailScreen extends StatelessWidget {
             question: AskEmail(initialEmail: currentAccountEmail),
           ),
         );
-      }
+      },
     );
   }
 }
@@ -63,10 +66,7 @@ class _AskEmailState extends State<AskEmail> {
       // TODO(prod): Make email editing possible even if sign in with login
       //             is used.
       return Center(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(email),
-        ),
+        child: Padding(padding: const EdgeInsets.all(8.0), child: Text(email)),
       );
     } else {
       return Padding(

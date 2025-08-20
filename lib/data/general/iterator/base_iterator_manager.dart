@@ -10,8 +10,8 @@ import 'package:rxdart/rxdart.dart';
 abstract class BaseIteratorManager implements UiProfileIterator {
   final ChatRepository _chat;
   final AccountId _currentUser;
-  BaseIteratorManager(this._chat, this._currentUser, {required IteratorType initialIterator}) :
-    _currentIterator = initialIterator;
+  BaseIteratorManager(this._chat, this._currentUser, {required IteratorType initialIterator})
+    : _currentIterator = initialIterator;
 
   IteratorType _currentIterator;
 
@@ -39,13 +39,15 @@ abstract class BaseIteratorManager implements UiProfileIterator {
   Future<Result<List<ProfileEntry>, ()>> _nextListRaw() async {
     final List<ProfileEntry> nextList;
     switch (await _currentIterator.nextList()) {
-      case Ok(:final value): {
-        nextList = value;
-        break;
-      }
-      case Err(): {
-        return const Err(());
-      }
+      case Ok(:final value):
+        {
+          nextList = value;
+          break;
+        }
+      case Err():
+        {
+          return const Err(());
+        }
     }
 
     if (nextList.isEmpty && _currentIterator.clearsDatabase) {

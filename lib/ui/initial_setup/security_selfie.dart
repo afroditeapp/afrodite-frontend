@@ -42,7 +42,10 @@ class AskSecuritySelfieScreen extends StatelessWidget {
           if (selfie != null && selfie.faceDetected) {
             return () {
               CameraManager.getInstance().sendCmd(CloseCmd());
-              MyNavigator.push(context, const MaterialPage<void>(child: AskProfilePicturesScreen()));
+              MyNavigator.push(
+                context,
+                const MaterialPage<void>(child: AskProfilePicturesScreen()),
+              );
             };
           } else {
             return null;
@@ -110,12 +113,10 @@ class _AskSecuritySelfieState extends State<AskSecuritySelfie> {
           Expanded(
             child: Align(
               alignment: Alignment.bottomRight,
-              child: Icon(Icons.person, size: 150.0, color: Theme.of(context).colorScheme.primary)
+              child: Icon(Icons.person, size: 150.0, color: Theme.of(context).colorScheme.primary),
             ),
           ),
-          Expanded(
-            child: imageAndCameraButton(context)
-          ),
+          Expanded(child: imageAndCameraButton(context)),
         ],
       ),
     );
@@ -130,10 +131,7 @@ class _AskSecuritySelfieState extends State<AskSecuritySelfie> {
   }
 
   Widget imageAndCameraButton(BuildContext context) {
-    Widget cameraButton = Align(
-      alignment: Alignment.centerLeft,
-      child: normalCameraButton(),
-    );
+    Widget cameraButton = Align(alignment: Alignment.centerLeft, child: normalCameraButton());
 
     return BlocBuilder<InitialSetupBloc, InitialSetupData>(
       builder: (context, state) {
@@ -150,8 +148,10 @@ class _AskSecuritySelfieState extends State<AskSecuritySelfie> {
                     MyNavigator.push(
                       context,
                       MaterialPage<void>(
-                        child: ViewImageScreen(ViewImageAccountContent(image.accountId, image.contentId))
-                      )
+                        child: ViewImageScreen(
+                          ViewImageAccountContent(image.accountId, image.contentId),
+                        ),
+                      ),
                     );
                   },
                   child: accountImgWidgetInk(
@@ -166,12 +166,12 @@ class _AskSecuritySelfieState extends State<AskSecuritySelfie> {
               IconButton(
                 onPressed: () => cameraScreenOpener.openCameraScreenAction(context),
                 icon: const Icon(Icons.camera_alt),
-              )
+              ),
             ],
           );
         }
         return w;
-      }
+      },
     );
   }
 
@@ -189,13 +189,13 @@ class _AskSecuritySelfieState extends State<AskSecuritySelfie> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Icon(
-                      Icons.close,
-                      color: Colors.red,
-                      size: 32,
-                    ),
+                    const Icon(Icons.close, color: Colors.red, size: 32),
                     const Padding(padding: EdgeInsets.only(right: 8.0)),
-                    Flexible(child: Text(context.strings.initial_setup_screen_security_selfie_face_not_detected)),
+                    Flexible(
+                      child: Text(
+                        context.strings.initial_setup_screen_security_selfie_face_not_detected,
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -206,7 +206,7 @@ class _AskSecuritySelfieState extends State<AskSecuritySelfie> {
         } else {
           return const SizedBox.shrink();
         }
-      }
+      },
     );
   }
 }
@@ -224,37 +224,40 @@ class CameraScreenOpener {
 
     final result = await CameraManager.getInstance().openNewControllerAndThenEvents().first;
     switch (result) {
-      case Open(:final controller): {
-        if (!context.mounted) {
+      case Open(:final controller):
+        {
+          if (!context.mounted) {
+            CameraManager.getInstance().sendCmd(CloseCmd());
+            return;
+          }
+
+          final image = await MyNavigator.push<Uint8List?>(
+            context,
+            MaterialPage<Uint8List?>(child: CameraScreen(controller: controller)),
+          );
+
+          if (image != null) {
+            bloc.add(ConfirmImage(image, SECURITY_SELFIE_SLOT, secureCapture: true));
+          }
+
+          // Assume that CameraScreens will close the camera.
+        }
+      case Closed(:final error):
+        {
+          if (error != null) {
+            Future.delayed(Duration.zero, () {
+              if (!context.mounted) {
+                return;
+              }
+              showInfoDialog(context, error.message);
+            });
+          }
           CameraManager.getInstance().sendCmd(CloseCmd());
-          return;
         }
-
-        final image = await MyNavigator.push<Uint8List?>(
-          context,
-          MaterialPage<Uint8List?>(child: CameraScreen(controller: controller)),
-        );
-
-        if (image != null) {
-          bloc.add(ConfirmImage(image, SECURITY_SELFIE_SLOT, secureCapture: true));
+      case DisposeOngoing():
+        {
+          CameraManager.getInstance().sendCmd(CloseCmd());
         }
-
-        // Assume that CameraScreens will close the camera.
-      }
-      case Closed(:final error): {
-        if (error != null) {
-          Future.delayed(Duration.zero, () {
-            if (!context.mounted) {
-              return;
-            }
-            showInfoDialog(context, error.message);
-          });
-        }
-        CameraManager.getInstance().sendCmd(CloseCmd());
-      }
-      case DisposeOngoing(): {
-        CameraManager.getInstance().sendCmd(CloseCmd());
-      }
     }
 
     cameraOpeningInProgress = false;

@@ -31,18 +31,22 @@ class SendMessageUtils {
 
   final PublicKeyUtils publicKeyUtils;
 
-  SendMessageUtils(this.messageKeyManager, this.clientIdManager, this.api, this.db, this.currentUser, this.profile) :
-    publicKeyUtils = PublicKeyUtils(db, api, currentUser);
+  SendMessageUtils(
+    this.messageKeyManager,
+    this.clientIdManager,
+    this.api,
+    this.db,
+    this.currentUser,
+    this.profile,
+  ) : publicKeyUtils = PublicKeyUtils(db, api, currentUser);
 
   bool allSentMessagesAcknowledgedOnce = false;
 
   Stream<MessageSendingEvent> sendMessageTo(
     AccountId accountId,
-    Message message,
-    {
-      bool sendUiEvent = true,
-    }
-  ) async* {
+    Message message, {
+    bool sendUiEvent = true,
+  }) async* {
     if (kIsWeb) {
       // Messages are not supported on web
       yield const ErrorBeforeMessageSaving();
@@ -57,16 +61,19 @@ class SendMessageUtils {
         case ErrorAfterMessageSaving(:final id):
           // The existing error is more important, so ignore
           // the state change result.
-          await db.accountAction((db) => db.message.updateSentMessageState(
-            id,
-            sentState: SentMessageState.sendingError,
-          ));
+          await db.accountAction(
+            (db) => db.message.updateSentMessageState(id, sentState: SentMessageState.sendingError),
+          );
           yield e;
       }
     }
   }
 
-  Stream<MessageSendingEvent> _sendMessageToInternal(AccountId accountId, Message message, {bool sendUiEvent = true}) async* {
+  Stream<MessageSendingEvent> _sendMessageToInternal(
+    AccountId accountId,
+    Message message, {
+    bool sendUiEvent = true,
+  }) async* {
     final isMatch = await _isInMatches(accountId);
     if (!isMatch) {
       final resultSendLike = await api.chatAction((api) => api.postSendLike(accountId));
@@ -74,7 +81,9 @@ class SendMessageUtils {
         yield const ErrorBeforeMessageSaving();
         return;
       }
-      final matchStatusChange = await db.accountAction((db) => db.profile.setMatchStatus(accountId, true));
+      final matchStatusChange = await db.accountAction(
+        (db) => db.profile.setMatchStatus(accountId, true),
+      );
       if (matchStatusChange.isErr()) {
         yield const ErrorBeforeMessageSaving();
         return;
@@ -82,17 +91,18 @@ class SendMessageUtils {
     }
 
     if (!await _isInConversationList(accountId)) {
-      final r = await db.accountAction((db) => db.conversationList.setConversationListVisibility(accountId, true));
+      final r = await db.accountAction(
+        (db) => db.conversationList.setConversationListVisibility(accountId, true),
+      );
       if (r.isErr()) {
         yield const ErrorBeforeMessageSaving();
         return;
       }
     }
 
-    final lastSentMessageResult = await db.accountData((db) => db.message.getLatestSentMessage(
-      currentUser,
-      accountId,
-    ));
+    final lastSentMessageResult = await db.accountData(
+      (db) => db.message.getLatestSentMessage(currentUser, accountId),
+    );
     switch (lastSentMessageResult) {
       case Err():
         yield const ErrorBeforeMessageSaving();
@@ -100,11 +110,14 @@ class SendMessageUtils {
       case Ok(v: final lastSentMessage):
         // If previous sent message is still in pending state, then the app is
         // probably closed or crashed too early.
-        if (lastSentMessage != null && lastSentMessage.messageState.toSentState() == SentMessageState.pending) {
-          final result = await db.accountAction((db) => db.message.updateSentMessageState(
-            lastSentMessage.localId,
-            sentState: SentMessageState.sendingError,
-          ));
+        if (lastSentMessage != null &&
+            lastSentMessage.messageState.toSentState() == SentMessageState.pending) {
+          final result = await db.accountAction(
+            (db) => db.message.updateSentMessageState(
+              lastSentMessage.localId,
+              sentState: SentMessageState.sendingError,
+            ),
+          );
           if (result.isErr()) {
             yield const ErrorBeforeMessageSaving();
             return;
@@ -113,18 +126,18 @@ class SendMessageUtils {
     }
 
     final ForeignPublicKey receiverPublicKey;
-    final receiverPublicKeyOrNull = await publicKeyUtils.getPublicKeyForForeignAccountFromDbOrDownloadIfNotExits(accountId).ok();
+    final receiverPublicKeyOrNull = await publicKeyUtils
+        .getPublicKeyForForeignAccountFromDbOrDownloadIfNotExits(accountId)
+        .ok();
     if (receiverPublicKeyOrNull == null) {
       yield const ErrorBeforeMessageSaving();
       return;
     }
     receiverPublicKey = receiverPublicKeyOrNull;
 
-    final saveMessageResult = await db.accountDataWrite((db) => db.message.insertToBeSentMessage(
-      currentUser,
-      accountId,
-      message,
-    ));
+    final saveMessageResult = await db.accountDataWrite(
+      (db) => db.message.insertToBeSentMessage(currentUser, accountId, message),
+    );
     final LocalMessageId localId;
     switch (saveMessageResult) {
       case Ok(:final v):
@@ -163,7 +176,9 @@ class SendMessageUtils {
       return;
     }
 
-    final updateSymmetricEncryptionKeyResult = await db.accountAction((db) => db.message.updateSymmetricMessageEncryptionKey(localId, encryptedMessage.sessionKey));
+    final updateSymmetricEncryptionKeyResult = await db.accountAction(
+      (db) => db.message.updateSymmetricMessageEncryptionKey(localId, encryptedMessage.sessionKey),
+    );
     if (updateSymmetricEncryptionKeyResult.isErr()) {
       log.error("Updating symmetric encryption key failed");
       yield ErrorAfterMessageSaving(localId);
@@ -175,21 +190,28 @@ class SendMessageUtils {
     Uint8List backendSignedPgpMessage;
     var messageSenderAcknowledgementTried = false;
     while (true) {
-      final result = await api.chat((api) => api.postSendMessage(
-        currentUserKeys.id.id,
-        accountId.aid,
-        receiverPublicKey.id.id,
-        clientId.id,
-        localId.id,
-        MultipartFile.fromBytes("", encryptedMessage.pgpMessage),
-      )).ok();
+      final result = await api
+          .chat(
+            (api) => api.postSendMessage(
+              currentUserKeys.id.id,
+              accountId.aid,
+              receiverPublicKey.id.id,
+              clientId.id,
+              localId.id,
+              MultipartFile.fromBytes("", encryptedMessage.pgpMessage),
+            ),
+          )
+          .ok();
       if (result == null) {
         yield ErrorAfterMessageSaving(localId);
         return;
       }
 
       if (result.errorReceiverBlockedSenderOrReceiverNotFound) {
-        yield ErrorAfterMessageSaving(localId, MessageSendingErrorDetails.receiverBlockedSenderOrReceiverNotFound);
+        yield ErrorAfterMessageSaving(
+          localId,
+          MessageSendingErrorDetails.receiverBlockedSenderOrReceiverNotFound,
+        );
         return;
       }
 
@@ -232,7 +254,9 @@ class SendMessageUtils {
         await publicKeyUtils.getLatestPublicKeyForForeignAccount(accountId);
         // Show possible key change info to user
         if (sendUiEvent) {
-          profile.sendProfileChange(ConversationChanged(accountId, ConversationChangeType.messageSent));
+          profile.sendProfileChange(
+            ConversationChanged(accountId, ConversationChangeType.messageSent),
+          );
         }
         yield ErrorAfterMessageSaving(localId);
         return;
@@ -246,9 +270,13 @@ class SendMessageUtils {
 
       backendSignedPgpMessage = base64Decode(signedPgpMessageBase64);
 
-      final (backendSignedMessage, getMessageContentResult) = getMessageContent(backendSignedPgpMessage);
+      final (backendSignedMessage, getMessageContentResult) = getMessageContent(
+        backendSignedPgpMessage,
+      );
       if (backendSignedMessage == null) {
-        log.error("Send message error: get message content failed, error: $getMessageContentResult");
+        log.error(
+          "Send message error: get message content failed, error: $getMessageContentResult",
+        );
         yield ErrorAfterMessageSaving(localId);
         return;
       }
@@ -263,13 +291,15 @@ class SendMessageUtils {
       break;
     }
 
-    final updateSentState = await db.accountAction((db) => db.message.updateSentMessageState(
-      localId,
-      sentState: SentMessageState.sent,
-      unixTimeFromServer: unixTimeFromServer,
-      messageIdFromServer: messageIdFromServer,
-      backendSignePgpMessage: backendSignedPgpMessage,
-    ));
+    final updateSentState = await db.accountAction(
+      (db) => db.message.updateSentMessageState(
+        localId,
+        sentState: SentMessageState.sent,
+        unixTimeFromServer: unixTimeFromServer,
+        messageIdFromServer: messageIdFromServer,
+        backendSignePgpMessage: backendSignedPgpMessage,
+      ),
+    );
     if (updateSentState.isErr()) {
       yield ErrorAfterMessageSaving(localId);
       return;
@@ -278,11 +308,18 @@ class SendMessageUtils {
     if (!allSentMessagesAcknowledgedOnce) {
       await markSentMessagesAcknowledged(clientId);
     } else {
-      await api.chatAction((api) => api.postAddSenderAcknowledgement(
-        SentMessageIdList(ids: [
-          SentMessageId(c: clientId, l: ClientLocalId(id: localId.id))],
-        )
-      ));
+      await api.chatAction(
+        (api) => api.postAddSenderAcknowledgement(
+          SentMessageIdList(
+            ids: [
+              SentMessageId(
+                c: clientId,
+                l: ClientLocalId(id: localId.id),
+              ),
+            ],
+          ),
+        ),
+      );
     }
   }
 
@@ -296,13 +333,14 @@ class SendMessageUtils {
         continue;
       }
       final sentMessageLocalId = sentMessageId.l.toLocalMessageId();
-      final currentMessage = await db.accountData((db) => db.message.getMessageUsingLocalMessageId(
-        sentMessageLocalId,
-      )).ok();
-      final currentBackendSignedPgpMessage = await db.accountData((db) => db.message.getBackendSignedPgpMessage(
-        sentMessageLocalId,
-      )).ok();
-      if (currentMessage?.messageState.toSentState() == SentMessageState.sendingError || currentBackendSignedPgpMessage == null) {
+      final currentMessage = await db
+          .accountData((db) => db.message.getMessageUsingLocalMessageId(sentMessageLocalId))
+          .ok();
+      final currentBackendSignedPgpMessage = await db
+          .accountData((db) => db.message.getBackendSignedPgpMessage(sentMessageLocalId))
+          .ok();
+      if (currentMessage?.messageState.toSentState() == SentMessageState.sendingError ||
+          currentBackendSignedPgpMessage == null) {
         final r = await api.chat((api) => api.postGetSentMessage(sentMessageId)).ok();
         final base64EncodedMessage = r?.data;
         if (base64EncodedMessage == null) {
@@ -313,20 +351,24 @@ class SendMessageUtils {
         if (backendSignedMessage == null) {
           return const Err(());
         }
-        final updateSentState = await db.accountAction((db) => db.message.updateSentMessageState(
-          sentMessageLocalId,
-          sentState: SentMessageState.sent,
-          messageIdFromServer: backendSignedMessage.messageId,
-          unixTimeFromServer: backendSignedMessage.serverTime,
-          backendSignePgpMessage: decoded,
-        ));
+        final updateSentState = await db.accountAction(
+          (db) => db.message.updateSentMessageState(
+            sentMessageLocalId,
+            sentState: SentMessageState.sent,
+            messageIdFromServer: backendSignedMessage.messageId,
+            unixTimeFromServer: backendSignedMessage.serverTime,
+            backendSignePgpMessage: decoded,
+          ),
+        );
         if (updateSentState.isErr()) {
           return const Err(());
         }
       }
     }
 
-    final acknowledgeResult = await api.chatAction((api) => api.postAddSenderAcknowledgement(sentMessages));
+    final acknowledgeResult = await api.chatAction(
+      (api) => api.postAddSenderAcknowledgement(sentMessages),
+    );
     if (acknowledgeResult.isErr()) {
       return const Err(());
     }
@@ -340,6 +382,7 @@ class SendMessageUtils {
   }
 
   Future<bool> _isInConversationList(AccountId accountId) async {
-    return await db.accountData((db) => db.conversationList.isInConversationList(accountId)).ok() ?? false;
+    return await db.accountData((db) => db.conversationList.isInConversationList(accountId)).ok() ??
+        false;
   }
 }

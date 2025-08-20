@@ -21,7 +21,10 @@ import 'package:app/localizations.dart';
 import 'package:app/ui_utils/list.dart';
 import 'package:app/utils/result.dart';
 
-typedef ProfileGridProfileEntry = ({ProfileThumbnail profile, ProfileActionState? initialProfileAction});
+typedef ProfileGridProfileEntry = ({
+  ProfileThumbnail profile,
+  ProfileActionState? initialProfileAction,
+});
 
 class GenericProfileGrid extends StatefulWidget {
   final UiProfileIterator Function() buildIteratorManager;
@@ -71,14 +74,18 @@ class _GenericProfileGridState extends State<GenericProfileGrid> {
       case ProfileBlocked():
         _removeAccountIdFromList(event.profile);
       case ProfileNowPrivate() ||
-        ProfileUnblocked() ||
-        ConversationChanged() ||
-        ReloadMainProfileView() ||
-        ProfileFavoriteStatusChange(): {}
+          ProfileUnblocked() ||
+          ConversationChanged() ||
+          ReloadMainProfileView() ||
+          ProfileFavoriteStatusChange():
+        {}
     }
   }
 
-  void updatePagingState(PagingState<int, ProfileGridProfileEntry> Function(PagingState<int, ProfileGridProfileEntry>) action) {
+  void updatePagingState(
+    PagingState<int, ProfileGridProfileEntry> Function(PagingState<int, ProfileGridProfileEntry>)
+    action,
+  ) {
     if (isDisposed || !context.mounted) {
       return;
     }
@@ -114,7 +121,10 @@ class _GenericProfileGridState extends State<GenericProfileGrid> {
     for (final profile in profileList) {
       final initialProfileAction = await resolveProfileAction(chatRepository, profile.accountId);
       final isFavorite = await profileRepository.isInFavorites(profile.accountId);
-      newList.add((profile: ProfileThumbnail(entry: profile, isFavorite: isFavorite), initialProfileAction: initialProfileAction));
+      newList.add((
+        profile: ProfileThumbnail(entry: profile, isFavorite: isFavorite),
+        initialProfileAction: initialProfileAction,
+      ));
     }
 
     return newList;
@@ -134,16 +144,18 @@ class _GenericProfileGridState extends State<GenericProfileGrid> {
       onRefresh: () async {
         await refreshProfileGrid();
       },
-      child: Column(children: [
-        Expanded(
-          child: BlocBuilder<UiSettingsBloc, UiSettingsData>(
-            buildWhen: (previous, current) => previous.gridSettings != current.gridSettings,
-            builder: (context, uiSettings) {
-              return grid(context, uiSettings.gridSettings);
-            }
+      child: Column(
+        children: [
+          Expanded(
+            child: BlocBuilder<UiSettingsBloc, UiSettingsData>(
+              buildWhen: (previous, current) => previous.gridSettings != current.gridSettings,
+              builder: (context, uiSettings) {
+                return grid(context, uiSettings.gridSettings);
+              },
+            ),
           ),
-        ),
-      ],),
+        ],
+      ),
     );
   }
 
@@ -160,24 +172,19 @@ class _GenericProfileGridState extends State<GenericProfileGrid> {
         animateTransitions: true,
         itemBuilder: (context, item, index) {
           return GestureDetector(
-              child: profileEntryWidgetStream(
-                item.profile,
-                item.initialProfileAction,
-                accountDb,
-                settings,
-            )
+            child: profileEntryWidgetStream(
+              item.profile,
+              item.initialProfileAction,
+              accountDb,
+              settings,
+            ),
           );
         },
         noItemsFoundIndicatorBuilder: (context) {
           return buildListReplacementMessage(
             child: Column(
               mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  widget.noProfilesText,
-                  style: Theme.of(context).textTheme.bodyLarge,
-                ),
-              ],
+              children: [Text(widget.noProfilesText, style: Theme.of(context).textTheme.bodyLarge)],
             ),
           );
         },
@@ -217,10 +224,14 @@ class _GenericProfileGridState extends State<GenericProfileGrid> {
   }
 
   Future<void> refreshProfileGrid() async {
-    _gridLogic.refresh(() {
-      _mainProfilesViewIterator.reset(true);
-      updatePagingState((_) => PagingState());
-    }, _fetchPage, _addPage);
+    _gridLogic.refresh(
+      () {
+        _mainProfilesViewIterator.reset(true);
+        updatePagingState((_) => PagingState());
+      },
+      _fetchPage,
+      _addPage,
+    );
   }
 
   @override

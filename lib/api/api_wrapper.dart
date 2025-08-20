@@ -1,4 +1,3 @@
-
 import 'package:async/async.dart' show StreamExtensions;
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
@@ -15,7 +14,10 @@ class ApiWrapper<T> {
   ApiWrapper(this.api, this.serverConnection);
 
   /// Handle ApiException.
-  Future<Result<R, ValueApiError>> requestValue<R extends Object>(Future<R?> Function(T) action, {bool logError = true}) async {
+  Future<Result<R, ValueApiError>> requestValue<R extends Object>(
+    Future<R?> Function(T) action, {
+    bool logError = true,
+  }) async {
     try {
       final value = await action(api);
 
@@ -43,7 +45,10 @@ class ApiWrapper<T> {
   }
 
   /// Handle ApiException.
-  Future<Result<(), ActionApiError>> requestAction(Future<void> Function(T) action, {bool logError = true}) async {
+  Future<Result<(), ActionApiError>> requestAction(
+    Future<void> Function(T) action, {
+    bool logError = true,
+  }) async {
     try {
       await action(api);
       return Ok(());
@@ -63,11 +68,10 @@ class ApiWrapper<T> {
 
   Future<void> restartConnectionIfNeeded(ApiException e) async {
     if (
-      // HTTP 401 Unauthorized
-      e.code == 401 ||
-      // Current HTTP connection broke (and perhaps some other errors also)
-      (e.code == 400 && e.innerException != null)
-    ) {
+    // HTTP 401 Unauthorized
+    e.code == 401 ||
+        // Current HTTP connection broke (and perhaps some other errors also)
+        (e.code == 400 && e.innerException != null)) {
       final currentState = await serverConnection.state.firstOrNull;
       if (!_connectionRestartInProgress && currentState == ServerConnectionState.connected) {
         _connectionRestartInProgress = true;

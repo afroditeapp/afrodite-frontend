@@ -14,8 +14,14 @@ class AutomaticProfileSearchIteratorManager extends BaseIteratorManager {
   final AccountBackgroundDatabaseManager accountBackgroundDb;
   final ServerConnectionManager connectionManager;
 
-  AutomaticProfileSearchIteratorManager(ChatRepository chat, this.media, this.accountBackgroundDb, this.db, this.connectionManager, AccountId currentUser) :
-    super(chat, currentUser, initialIterator: AutomaticProfileSearchDatabaseIterator(db: db));
+  AutomaticProfileSearchIteratorManager(
+    ChatRepository chat,
+    this.media,
+    this.accountBackgroundDb,
+    this.db,
+    this.connectionManager,
+    AccountId currentUser,
+  ) : super(chat, currentUser, initialIterator: AutomaticProfileSearchDatabaseIterator(db: db));
 
   @override
   OnlineIterator createClearDatabaseIterator() {
@@ -31,5 +37,5 @@ class AutomaticProfileSearchIteratorManager extends BaseIteratorManager {
 
   @override
   AutomaticProfileSearchDatabaseIterator createDatabaseIterator() =>
-    AutomaticProfileSearchDatabaseIterator(db: db);
+      AutomaticProfileSearchDatabaseIterator(db: db);
 }

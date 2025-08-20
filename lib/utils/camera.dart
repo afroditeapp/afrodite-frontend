@@ -1,5 +1,3 @@
-
-
 import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
@@ -22,48 +20,60 @@ sealed class CameraInitError {
         R.strings.camera_screen_camera_access_restricted_error,
       InitFailedWithErrorCode(:final code) =>
         R.strings.camera_screen_camera_initialization_error_with_error_code(code.toString()),
-      InitFailed() =>
-        R.strings.camera_screen_camera_initialization_error,
+      InitFailed() => R.strings.camera_screen_camera_initialization_error,
     };
   }
 }
+
 class NoCamera extends CameraInitError {}
+
 class NoCameraPermissionTryAgainOrCheckSettings extends CameraInitError {}
+
 class NoCameraPermissionCheckSettings extends CameraInitError {}
+
 class NoCameraPermissionCameraAccessRestricted extends CameraInitError {}
+
 class InitFailedWithErrorCode extends CameraInitError {
   final int code;
   InitFailedWithErrorCode(this.code);
 }
+
 class InitFailed extends CameraInitError {}
 
 enum ScheduledAction {
   openCameraAgain,
+
   /// Clear CameraManagerState
   closeComplately,
 }
 
 sealed class CameraManagerState {}
+
 class Closed extends CameraManagerState {
   final CameraInitError? error;
   Closed(this.error);
 }
+
 class DisposeOngoing extends CameraManagerState {}
+
 class Open extends CameraManagerState {
   final CameraControllerWrapper controller;
   Open(this.controller);
 }
 
 sealed class CameraManagerCmd {}
+
 /// Close camera if open. Before sending this command, make sure
 /// that CameraPreview does not try to use the camera anymore.
 class CloseCmd extends CameraManagerCmd {}
+
 /// Open camera if closed. Schedule to open camera again if camera
 /// disposing is ongoing.
 class OpenCmd extends CameraManagerCmd {}
-class EventDisposeStart extends CameraManagerCmd {}
-class EventDisposeComplete extends CameraManagerCmd {}
 
+class EventDisposeStart extends CameraManagerCmd {}
+
+class EventDisposeComplete extends CameraManagerCmd {}
 
 class CameraManager extends AppSingleton {
   CameraManager._private();
@@ -78,11 +88,9 @@ class CameraManager extends AppSingleton {
   bool _availableCamerasInitComplete = false;
   List<CameraDescription> _availableCamerasList = [];
 
-  final BehaviorSubject<CameraManagerState> _state =
-    BehaviorSubject.seeded(Closed(null));
+  final BehaviorSubject<CameraManagerState> _state = BehaviorSubject.seeded(Closed(null));
 
-  final PublishSubject<CameraManagerCmd> _cmds =
-    PublishSubject();
+  final PublishSubject<CameraManagerCmd> _cmds = PublishSubject();
 
   CameraManagerState get _currentState => _state.value;
 
@@ -93,14 +101,11 @@ class CameraManager extends AppSingleton {
     }
     _managerInitCompleted = true;
 
-    _cmds.stream
-      .asyncMap((event) async => await _runCmd(event))
-      .listen((event) {});
+    _cmds.stream.asyncMap((event) async => await _runCmd(event)).listen((event) {});
 
-    _state.stream
-      .listen((event) {
-        log.fine("CameraManagerState: $event");
-      });
+    _state.stream.listen((event) {
+      log.fine("CameraManagerState: $event");
+    });
   }
 
   Future<void> _runCmd(CameraManagerCmd cmd) async {
@@ -127,8 +132,8 @@ class CameraManager extends AppSingleton {
     final cameras = await availableCameras();
     log.fine(cameras);
     final frontCameras = cameras
-      .where((element) => element.lensDirection == CameraLensDirection.front)
-      .toList();
+        .where((element) => element.lensDirection == CameraLensDirection.front)
+        .toList();
     if (frontCameras.isEmpty) {
       if (kIsWeb) {
         // At least on macOS Chrome, web camera is external camera, so
@@ -144,16 +149,19 @@ class CameraManager extends AppSingleton {
 
   Future<void> _openCameraCmd() async {
     switch (_currentState) {
-      case DisposeOngoing(): {
-        log.info("Open camera again after camera disposing is done");
-        _action = ScheduledAction.openCameraAgain;
-        return;
-      }
-      case Open(): {
-        log.info("Camera already open");
-        return;
-      }
-      case Closed(): {}
+      case DisposeOngoing():
+        {
+          log.info("Open camera again after camera disposing is done");
+          _action = ScheduledAction.openCameraAgain;
+          return;
+        }
+      case Open():
+        {
+          log.info("Camera already open");
+          return;
+        }
+      case Closed():
+        {}
     }
 
     await _initAvailableCameras();
@@ -164,11 +172,7 @@ class CameraManager extends AppSingleton {
       return;
     }
 
-    final controller = CameraController(
-      firstCamera,
-      ResolutionPreset.veryHigh,
-      enableAudio: false,
-    );
+    final controller = CameraController(firstCamera, ResolutionPreset.veryHigh, enableAudio: false);
 
     CameraInitError? error;
     try {
@@ -224,22 +228,25 @@ class CameraManager extends AppSingleton {
 
   Future<void> _closeCmd() async {
     switch (_currentState) {
-      case Open(:final controller): {
-        if (controller.isDisposed()) {
+      case Open(:final controller):
+        {
+          if (controller.isDisposed()) {
+            _action = null;
+            _state.add(Closed(null));
+          } else {
+            _action = ScheduledAction.closeComplately;
+            controller.dispose();
+          }
+        }
+      case DisposeOngoing():
+        {
+          _action = ScheduledAction.closeComplately;
+        }
+      case Closed():
+        {
           _action = null;
           _state.add(Closed(null));
-        } else {
-          _action = ScheduledAction.closeComplately;
-          controller.dispose();
         }
-      }
-      case DisposeOngoing(): {
-        _action = ScheduledAction.closeComplately;
-      }
-      case Closed(): {
-        _action = null;
-        _state.add(Closed(null));
-      }
     }
   }
 
@@ -253,24 +260,27 @@ class CameraManager extends AppSingleton {
     final a = _action;
     _action = null;
     switch (a) {
-      case ScheduledAction.openCameraAgain: {
-        if (_state.value case Closed(:final error)) {
+      case ScheduledAction.openCameraAgain:
+        {
+          if (_state.value case Closed(:final error)) {
             _state.add(Closed(error));
-        } else {
+          } else {
+            _state.add(Closed(null));
+          }
+          await _openCameraCmd();
+        }
+      case ScheduledAction.closeComplately:
+        {
           _state.add(Closed(null));
         }
-        await _openCameraCmd();
-      }
-      case ScheduledAction.closeComplately: {
-        _state.add(Closed(null));
-      }
-      case null: {
-        if (_state.value case Closed(:final error)) {
+      case null:
+        {
+          if (_state.value case Closed(:final error)) {
             _state.add(Closed(error));
-        } else {
-          _state.add(Closed(null));
+          } else {
+            _state.add(Closed(null));
+          }
         }
-      }
     }
   }
 
@@ -288,7 +298,7 @@ class CameraManager extends AppSingleton {
       return switch (element) {
         DisposeOngoing() => false,
         Open() => true,
-        Closed(:final error) => error != null
+        Closed(:final error) => error != null,
       };
     });
 
@@ -314,11 +324,10 @@ class CameraControllerWrapper {
     }
     _disposeCalled = true;
     CameraManager.getInstance().sendCmd(EventDisposeStart());
-    _controller.dispose()
-      .then((value) async {
-        // await Future<void>.delayed(const Duration(seconds: 1), null);
-        CameraManager.getInstance().sendCmd(EventDisposeComplete());
-      });
+    _controller.dispose().then((value) async {
+      // await Future<void>.delayed(const Duration(seconds: 1), null);
+      CameraManager.getInstance().sendCmd(EventDisposeComplete());
+    });
   }
 
   bool isDisposed() {
@@ -332,7 +341,6 @@ class CameraControllerWrapper {
     return _controller;
   }
 }
-
 
 /*
 

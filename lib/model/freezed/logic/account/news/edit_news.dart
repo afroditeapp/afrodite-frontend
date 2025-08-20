@@ -1,4 +1,3 @@
-
 import "package:freezed_annotation/freezed_annotation.dart";
 import 'package:flutter/foundation.dart';
 import 'package:openapi/api.dart';
@@ -19,7 +18,9 @@ class EditNewsData with _$EditNewsData {
   }) = _EditNewsData;
 
   NewsContent editedOrCurrentlNewsContent(String locale) {
-    return editableTranslations[locale] ?? currentTranslations[locale] ?? (title: "", body: "", version: null);
+    return editableTranslations[locale] ??
+        currentTranslations[locale] ??
+        (title: "", body: "", version: null);
   }
 
   NewsContent currentlNewsContent(String locale) {

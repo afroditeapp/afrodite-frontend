@@ -1,4 +1,3 @@
-
 import 'package:database_model/database_model.dart';
 import 'package:drift/drift.dart';
 import 'package:openapi/api.dart';
@@ -17,7 +16,8 @@ class MessageIdConverter extends TypeConverter<MessageId, int> {
   }
 }
 
-class ReceivedLikesIteratorSessionIdConverter extends TypeConverter<ReceivedLikesIteratorSessionId, int> {
+class ReceivedLikesIteratorSessionIdConverter
+    extends TypeConverter<ReceivedLikesIteratorSessionId, int> {
   const ReceivedLikesIteratorSessionIdConverter();
 
   @override
@@ -101,7 +101,6 @@ class ConversationIdConverter extends TypeConverter<ConversationId, int> {
   }
 }
 
-
 class NewReceivedLikesCountConverter extends TypeConverter<NewReceivedLikesCount, int> {
   const NewReceivedLikesCountConverter();
 
@@ -115,7 +114,6 @@ class NewReceivedLikesCountConverter extends TypeConverter<NewReceivedLikesCount
     return value.c;
   }
 }
-
 
 class UnreadMessagesCountConverter extends TypeConverter<UnreadMessagesCount, int> {
   const UnreadMessagesCountConverter();

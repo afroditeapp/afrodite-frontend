@@ -21,7 +21,8 @@ class ProfileVisibilityConverter extends TypeConverter<EnumString<ProfileVisibil
   }
 }
 
-class ProfileStringModerationStateConverter extends TypeConverter<EnumString<ProfileStringModerationState>, String> {
+class ProfileStringModerationStateConverter
+    extends TypeConverter<EnumString<ProfileStringModerationState>, String> {
   const ProfileStringModerationStateConverter();
 
   @override
@@ -35,7 +36,8 @@ class ProfileStringModerationStateConverter extends TypeConverter<EnumString<Pro
   }
 }
 
-class ContentModerationStateConverter extends TypeConverter<EnumString<ContentModerationState>, String> {
+class ContentModerationStateConverter
+    extends TypeConverter<EnumString<ContentModerationState>, String> {
   const ContentModerationStateConverter();
 
   @override

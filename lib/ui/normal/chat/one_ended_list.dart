@@ -1,4 +1,3 @@
-
 import 'package:database/database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,10 +12,7 @@ var log = Logger("OneEndedMessageListWidget");
 /// Infinite list where adding to one end is possible.
 class OneEndedMessageListWidget extends StatefulWidget {
   final ConversationBloc conversationBloc;
-  const OneEndedMessageListWidget(
-    this.conversationBloc,
-    {super.key}
-  );
+  const OneEndedMessageListWidget(this.conversationBloc, {super.key});
 
   @override
   OneEndedMessageListWidgetState createState() => OneEndedMessageListWidgetState();
@@ -42,15 +38,12 @@ class OneEndedMessageListWidgetState extends State<OneEndedMessageListWidget> {
         _chatScrollPhysics.settings.newMessageHeight = update.addedHeight;
         // Reset chat position to bottom
         if (
-          // I sent message or
-          update.jumpToLatestMessage ||
-          // I received message and chat is at bottom.
-          (
-            _scrollController.hasClients &&
-            _scrollController.position.atEdge &&
-            _scrollController.position.pixels == _scrollController.position.minScrollExtent
-          )
-        ) {
+        // I sent message or
+        update.jumpToLatestMessage ||
+            // I received message and chat is at bottom.
+            (_scrollController.hasClients &&
+                _scrollController.position.atEdge &&
+                _scrollController.position.pixels == _scrollController.position.minScrollExtent)) {
           if (_scrollController.hasClients) {
             _chatScrollPhysics.settings.jumpToLatest = true;
             _scrollController.position.jumpTo(0);
@@ -85,7 +78,7 @@ class OneEndedMessageListWidgetState extends State<OneEndedMessageListWidget> {
       builder: (context, constraints) {
         _chatScrollPhysics.settings.availableArea = constraints.maxHeight;
         return messageList(visibleMessages);
-      }
+      },
     );
   }
 
@@ -103,21 +96,19 @@ class OneEndedMessageListWidgetState extends State<OneEndedMessageListWidget> {
         final sentMessageState = entry.messageState.toSentState();
         if (sentMessageState != null && sentMessageState != SentMessageState.sent) {
           return StreamBuilder<MessageEntry?>(
-            stream: widget.conversationBloc.dataProvider.getMessageWithLocalId(entry.localId).whereNotNull(),
+            stream: widget.conversationBloc.dataProvider
+                .getMessageWithLocalId(entry.localId)
+                .whereNotNull(),
             builder: (context, snapshot) {
               return messageRowWidget(
                 context,
                 snapshot.data ?? entry,
-                parentTextStyle: style.style
+                parentTextStyle: style.style,
               );
             },
           );
         } else {
-          return messageRowWidget(
-            context,
-            entry,
-            parentTextStyle: style.style
-          );
+          return messageRowWidget(context, entry, parentTextStyle: style.style);
         }
       },
     );
@@ -144,14 +135,13 @@ class SimpleChatScrollPhysics extends ScrollPhysics {
     required ScrollMetrics oldPosition,
     required ScrollMetrics newPosition,
     required bool isScrolling,
-    required double velocity
+    required double velocity,
   }) {
-
     final getNewPosition = super.adjustPositionForNewDimensions(
       oldPosition: oldPosition,
       newPosition: newPosition,
       isScrolling: isScrolling,
-      velocity: velocity
+      velocity: velocity,
     );
 
     if (settings.jumpToLatest) {
@@ -166,7 +156,7 @@ class SimpleChatScrollPhysics extends ScrollPhysics {
     if (addedMessageHeight != null && availableArea != null) {
       settings.newMessageHeight = null;
       if (oldPosition.viewportDimension < availableArea &&
-        newPosition.viewportDimension >= availableArea) {
+          newPosition.viewportDimension >= availableArea) {
         log.info("Partial scroll");
         final diff = newPosition.viewportDimension - oldPosition.viewportDimension;
         return getNewPosition + addedMessageHeight - diff;

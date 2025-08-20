@@ -10,25 +10,25 @@ class SplashScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     const appIconSize = 100.0;
     return Scaffold(
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset(
-                ImageAsset.appLogo.path,
-                width: appIconSize,
-                height: appIconSize,
-                cacheHeight: calculateCachedImageSize(context, appIconSize),
-              ),
-              FutureBuilder(
-                future: GlobalInitManager.getInstance().triggerGlobalInit(),
-                builder: (context, snapshot) {
-                  return const SizedBox.shrink();
-                },
-              ),
-            ],
-          ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              ImageAsset.appLogo.path,
+              width: appIconSize,
+              height: appIconSize,
+              cacheHeight: calculateCachedImageSize(context, appIconSize),
+            ),
+            FutureBuilder(
+              future: GlobalInitManager.getInstance().triggerGlobalInit(),
+              builder: (context, snapshot) {
+                return const SizedBox.shrink();
+              },
+            ),
+          ],
         ),
-      );
+      ),
+    );
   }
 }

@@ -10,7 +10,8 @@ class AutomaticProfileSearchBadgeData with _$AutomaticProfileSearchBadgeData {
 
   factory AutomaticProfileSearchBadgeData({
     @Default(false) bool dataLoaded,
-    @Default(AutomaticProfileSearchBadgeState.defaultValue) AutomaticProfileSearchBadgeState badgeState,
+    @Default(AutomaticProfileSearchBadgeState.defaultValue)
+    AutomaticProfileSearchBadgeState badgeState,
   }) = _AutomaticProfileSearchBadgeData;
 
   int profileCount() => badgeState.showBadge ? badgeState.profileCount : 0;

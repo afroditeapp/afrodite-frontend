@@ -1,5 +1,3 @@
-
-
 import 'package:app/data/image_cache.dart';
 import 'package:app/data/login_repository.dart';
 import 'package:app/logic/account/account.dart';
@@ -28,11 +26,7 @@ Future<void> openMyProfileScreen(BuildContext context) async {
   final content = contentState.primaryProfilePicture;
 
   if (content != null) {
-    await PrecacheImageForViewProfileScreen.usingAccountAndContentIds(
-      context,
-      account,
-      content,
-    );
+    await PrecacheImageForViewProfileScreen.usingAccountAndContentIds(context, account, content);
   }
 
   if (!context.mounted) {
@@ -42,15 +36,17 @@ Future<void> openMyProfileScreen(BuildContext context) async {
   if (context.read<AccountBloc>().state.accountState == AccountState.initialSetup) {
     showSnackBar(context.strings.view_profile_screen_my_profile_initial_setup_not_done);
   } else {
-    await MyNavigator.push(context, const MaterialPage<void>(child: MyProfileScreen()), pageInfo: const MyProfilePageInfo());
+    await MyNavigator.push(
+      context,
+      const MaterialPage<void>(child: MyProfileScreen()),
+      pageInfo: const MyProfilePageInfo(),
+    );
   }
 }
 
 NewPageDetails newMyProfileScreen() {
   return NewPageDetails(
-    const MaterialPage<void>(
-      child: MyProfileScreen(),
-    ),
+    const MaterialPage<void>(child: MyProfileScreen()),
     pageInfo: const MyProfilePageInfo(),
   );
 }
@@ -66,10 +62,10 @@ class MyProfileScreen extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () =>
-              MyNavigator.push(context, const MaterialPage<void>(child: LocationScreen())),
+                MyNavigator.push(context, const MaterialPage<void>(child: LocationScreen())),
             icon: const Icon(Icons.location_on),
             tooltip: context.strings.profile_location_screen_title,
-          )
+          ),
         ],
       ),
       body: Column(
@@ -77,8 +73,8 @@ class MyProfileScreen extends StatelessWidget {
           Expanded(child: myProfilePage(context)),
           ProgressDialogOpener<MyProfileBloc, MyProfileData>(
             dialogVisibilityGetter: (state) => state.loadingMyProfile,
-          )
-        ]
+          ),
+        ],
       ),
       floatingActionButton: BlocBuilder<MyProfileBloc, MyProfileData>(
         builder: ((context, state) {
@@ -89,13 +85,15 @@ class MyProfileScreen extends StatelessWidget {
               final pageKey = PageKey();
               MyNavigator.pushWithKey(
                 context,
-                MaterialPage<void>(child: EditProfilePage(
-                  pageKey: pageKey,
-                  initialProfile: profile,
-                  profilePicturesBloc: context.read<ProfilePicturesBloc>(),
-                  editMyProfileBloc: context.read<EditMyProfileBloc>(),
-                  profileAttributesBloc: context.read<ProfileAttributesBloc>(),
-                )),
+                MaterialPage<void>(
+                  child: EditProfilePage(
+                    pageKey: pageKey,
+                    initialProfile: profile,
+                    profilePicturesBloc: context.read<ProfilePicturesBloc>(),
+                    editMyProfileBloc: context.read<EditMyProfileBloc>(),
+                    profileAttributesBloc: context.read<ProfileAttributesBloc>(),
+                  ),
+                ),
                 pageKey,
               );
             };
@@ -106,7 +104,7 @@ class MyProfileScreen extends StatelessWidget {
             tooltip: context.strings.view_profile_screen_my_profile_edit_action,
             child: const Icon(Icons.edit),
           );
-        })
+        }),
       ),
     );
   }
@@ -139,11 +137,8 @@ class MyProfileScreen extends StatelessWidget {
           );
         }
 
-        return AnimatedSwitcher(
-          duration: const Duration(milliseconds: 300),
-          child: wantedWidget,
-        );
-      }
+        return AnimatedSwitcher(duration: const Duration(milliseconds: 300), child: wantedWidget);
+      },
     );
   }
 }

@@ -1,4 +1,3 @@
-
 import 'package:database_account_foreground/src/database.dart';
 import 'package:drift/drift.dart';
 import 'package:database_converter/database_converter.dart';
@@ -8,28 +7,20 @@ import '../../schema.dart' as schema;
 
 part 'my_media.g.dart';
 
-@DriftAccessor(
-  tables: [
-    schema.MyMediaContent,
-  ]
-)
-class DaoWriteMyMedia extends DatabaseAccessor<AccountForegroundDatabase> with _$DaoWriteMyMediaMixin {
+@DriftAccessor(tables: [schema.MyMediaContent])
+class DaoWriteMyMedia extends DatabaseAccessor<AccountForegroundDatabase>
+    with _$DaoWriteMyMediaMixin {
   DaoWriteMyMedia(super.db);
 
   Future<void> removeMySecurityContent() async {
-    await (delete(myMediaContent)..where((t) => t.contentIndex.equals(-1)))
-      .go();
+    await (delete(myMediaContent)..where((t) => t.contentIndex.equals(-1))).go();
   }
 
   Future<void> removeMyContentStartingFrom(int index) async {
-    await (delete(myMediaContent)..where((t) => t.contentIndex.isBiggerOrEqualValue(index)))
-      .go();
+    await (delete(myMediaContent)..where((t) => t.contentIndex.isBiggerOrEqualValue(index))).go();
   }
 
-  Future<void> updateMyProfileContent(
-    int index,
-    api.ContentInfoWithFd content,
-  ) async {
+  Future<void> updateMyProfileContent(int index, api.ContentInfoWithFd content) async {
     await into(myMediaContent).insertOnConflictUpdate(
       MyMediaContentCompanion.insert(
         contentIndex: Value(index),
@@ -42,9 +33,7 @@ class DaoWriteMyMedia extends DatabaseAccessor<AccountForegroundDatabase> with _
     );
   }
 
-  Future<void> setMyMediaContent({
-    required api.GetMediaContentResult info,
-  }) async {
+  Future<void> setMyMediaContent({required api.GetMediaContentResult info}) async {
     await transaction(() async {
       final securityContent = info.securityContent;
       if (securityContent != null) {

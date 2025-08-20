@@ -1,4 +1,3 @@
-
 import 'package:database_account_foreground/src/database.dart';
 import 'package:database_utils/database_utils.dart';
 import 'package:drift/drift.dart';
@@ -8,11 +7,7 @@ import '../../schema.dart' as schema;
 
 part 'like.g.dart';
 
-@DriftAccessor(
-  tables: [
-    schema.DailyLikesLeft,
-  ]
-)
+@DriftAccessor(tables: [schema.DailyLikesLeft])
 class DaoWriteLike extends DatabaseAccessor<AccountForegroundDatabase> with _$DaoWriteLikeMixin {
   DaoWriteLike(super.db);
 
@@ -21,17 +16,14 @@ class DaoWriteLike extends DatabaseAccessor<AccountForegroundDatabase> with _$Da
       DailyLikesLeftCompanion.insert(
         id: SingleRowTable.ID,
         dailyLikesLeft: Value(value.likes),
-        dailyLikesLeftSyncVersion: Value(value.version.version)
+        dailyLikesLeftSyncVersion: Value(value.version.version),
       ),
     );
   }
 
   Future<void> resetDailyLikesSyncVersion() async {
     await into(dailyLikesLeft).insertOnConflictUpdate(
-      DailyLikesLeftCompanion.insert(
-        id: SingleRowTable.ID,
-        dailyLikesLeftSyncVersion: Value(null),
-      ),
+      DailyLikesLeftCompanion.insert(id: SingleRowTable.ID, dailyLikesLeftSyncVersion: Value(null)),
     );
   }
 }

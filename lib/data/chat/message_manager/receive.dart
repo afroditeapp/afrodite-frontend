@@ -31,8 +31,14 @@ class ReceiveMessageUtils {
 
   final PublicKeyUtils publicKeyUtils;
 
-  ReceiveMessageUtils(this.messageKeyManager, this.api, this.db, this.accountBackgroundDb, this.currentUser, this.profile) :
-    publicKeyUtils = PublicKeyUtils(db, api, currentUser);
+  ReceiveMessageUtils(
+    this.messageKeyManager,
+    this.api,
+    this.db,
+    this.accountBackgroundDb,
+    this.currentUser,
+    this.profile,
+  ) : publicKeyUtils = PublicKeyUtils(db, api, currentUser);
 
   Future<void> receiveNewMessages() async {
     if (kIsWeb) {
@@ -63,14 +69,18 @@ class ReceiveMessageUtils {
       }
 
       if (!await _isInConversationList(message.parsed.sender)) {
-        await db.accountAction((db) => db.conversationList.setConversationListVisibility(message.parsed.sender, true));
+        await db.accountAction(
+          (db) => db.conversationList.setConversationListVisibility(message.parsed.sender, true),
+        );
       }
 
-      final alreadyExistingMessageResult = await db.accountData((db) => db.message.getMessageUsingMessageId(
-        currentUser,
-        message.parsed.sender,
-        message.parsed.messageId
-      ));
+      final alreadyExistingMessageResult = await db.accountData(
+        (db) => db.message.getMessageUsingMessageId(
+          currentUser,
+          message.parsed.sender,
+          message.parsed.messageId,
+        ),
+      );
       switch (alreadyExistingMessageResult) {
         case Err():
           return;
@@ -100,43 +110,64 @@ class ReceiveMessageUtils {
           messageState = ReceivedMessageState.received;
       }
 
-      final r = await db.accountAction((db) => db.message.insertReceivedMessage(
-        currentUser,
-        message.parsed.sender,
-        message.parsed.messageId,
-        message.parsed.serverTime.toUtcDateTime(),
-        message.backendPgpMessage,
-        decryptedMessage,
-        symmetricMessageEncryptionKey,
-        messageState,
-      ));
+      final r = await db.accountAction(
+        (db) => db.message.insertReceivedMessage(
+          currentUser,
+          message.parsed.sender,
+          message.parsed.messageId,
+          message.parsed.serverTime.toUtcDateTime(),
+          message.backendPgpMessage,
+          decryptedMessage,
+          symmetricMessageEncryptionKey,
+          messageState,
+        ),
+      );
       if (r.isOk()) {
         toBeDeleted.add(message.parsed.toPendingMessageId());
       }
 
-      ConversationId? conversationId = await accountBackgroundDb.accountData((db) => db.notification.getConversationId(message.parsed.sender)).ok();
+      ConversationId? conversationId = await accountBackgroundDb
+          .accountData((db) => db.notification.getConversationId(message.parsed.sender))
+          .ok();
       if (conversationId == null) {
         final r = await api.chat((api) => api.getConversationId(message.parsed.sender.aid)).ok();
         conversationId = r?.value;
       }
 
-      final unreadMessagesCount = await accountBackgroundDb.accountDataWrite((db) => db.unreadMessagesCount.incrementUnreadMessagesCount(message.parsed.sender)).ok();
+      final unreadMessagesCount = await accountBackgroundDb
+          .accountDataWrite(
+            (db) => db.unreadMessagesCount.incrementUnreadMessagesCount(message.parsed.sender),
+          )
+          .ok();
       if (unreadMessagesCount != null) {
-        profile.sendProfileChange(ConversationChanged(message.parsed.sender, ConversationChangeType.messageReceived));
+        profile.sendProfileChange(
+          ConversationChanged(message.parsed.sender, ConversationChangeType.messageReceived),
+        );
         if (conversationId == null) {
-          await NotificationMessageReceived.getInstance().showFallbackMessageReceivedNotification(accountBackgroundDb);
+          await NotificationMessageReceived.getInstance().showFallbackMessageReceivedNotification(
+            accountBackgroundDb,
+          );
         } else {
-          await NotificationMessageReceived.getInstance().updateMessageReceivedCount(message.parsed.sender, unreadMessagesCount.count, conversationId, accountBackgroundDb);
+          await NotificationMessageReceived.getInstance().updateMessageReceivedCount(
+            message.parsed.sender,
+            unreadMessagesCount.count,
+            conversationId,
+            accountBackgroundDb,
+          );
         }
       }
     }
 
     for (final sender in newMessages.map((item) => item.parsed.sender).toSet()) {
-      await accountBackgroundDb.accountAction((db) => db.notification.setNewMessageNotificationShown(sender, false));
+      await accountBackgroundDb.accountAction(
+        (db) => db.notification.setNewMessageNotificationShown(sender, false),
+      );
     }
 
     final toBeAcknowledgedList = PendingMessageAcknowledgementList(ids: toBeDeleted);
-    final result = await api.chatAction((api) => api.postAddReceiverAcknowledgement(toBeAcknowledgedList));
+    final result = await api.chatAction(
+      (api) => api.postAddReceiverAcknowledgement(toBeAcknowledgedList),
+    );
     if (result.isErr()) {
       log.error("Receive messages: acknowleding the server failed");
     }
@@ -174,7 +205,9 @@ class ReceiveMessageUtils {
     AllKeyData allKeys,
     BackendSignedMessage message,
   ) async {
-    final publicKey = await publicKeyUtils.getSpecificPublicKeyForForeignAccount(message.sender, message.senderPublicKeyId).ok();
+    final publicKey = await publicKeyUtils
+        .getSpecificPublicKeyForForeignAccount(message.sender, message.senderPublicKeyId)
+        .ok();
     if (publicKey == null) {
       return const Err(ReceivedMessageError.publicKeyDonwloadingFailed);
     }
@@ -198,14 +231,12 @@ class ReceiveMessageUtils {
   }
 
   Future<bool> _isInConversationList(AccountId accountId) async {
-    return await db.accountData((db) => db.conversationList.isInConversationList(accountId)).ok() ?? false;
+    return await db.accountData((db) => db.conversationList.isInConversationList(accountId)).ok() ??
+        false;
   }
 }
 
-enum ReceivedMessageError {
-  decryptingFailed,
-  publicKeyDonwloadingFailed,
-}
+enum ReceivedMessageError { decryptingFailed, publicKeyDonwloadingFailed }
 
 class PendingMessageData {
   final BackendSignedMessage parsed;

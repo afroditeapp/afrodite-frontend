@@ -1,4 +1,3 @@
-
 import 'package:database/database.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -12,18 +11,17 @@ extension GridSettingsExtensions on GridSettings {
     );
   }
 
-  GridSettings copyWith(
-    {
-      double? horizontalPadding,
-      double? internalPadding,
-      double? profileThumbnailBorderRadius,
-      int? rowProfileCount,
-    }
-  ) {
+  GridSettings copyWith({
+    double? horizontalPadding,
+    double? internalPadding,
+    double? profileThumbnailBorderRadius,
+    int? rowProfileCount,
+  }) {
     return GridSettings(
       horizontalPadding: horizontalPadding ?? this.horizontalPadding,
       internalPadding: internalPadding ?? this.internalPadding,
-      profileThumbnailBorderRadius: profileThumbnailBorderRadius ?? this.profileThumbnailBorderRadius,
+      profileThumbnailBorderRadius:
+          profileThumbnailBorderRadius ?? this.profileThumbnailBorderRadius,
       rowProfileCount: rowProfileCount ?? this.rowProfileCount,
     );
   }
@@ -53,16 +51,10 @@ extension PagingStateExtensions<T> on PagingState<int, T> {
   }
 
   PagingState<int, T> copyAndShowError() {
-    return copyWith(
-      isLoading: false,
-      error: true,
-    );
+    return copyWith(isLoading: false, error: true);
   }
 
   PagingState<int, T> copyAndShowLoading() {
-    return copyWith(
-      isLoading: true,
-      error: null,
-    );
+    return copyWith(isLoading: true, error: null);
   }
 }

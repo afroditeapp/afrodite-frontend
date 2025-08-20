@@ -1,5 +1,3 @@
-
-
 import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/ui/utils/view_metrics.dart';
 import 'package:collection/collection.dart';
@@ -13,10 +11,7 @@ void openViewPerfDataScreen(BuildContext context, String title, ApiManager api) 
   MyNavigator.push(
     context,
     MaterialPage<void>(
-      child: ViewMetricsScreen(
-        title: title,
-        metrics: GetPerfData(api),
-      )
+      child: ViewMetricsScreen(title: title, metrics: GetPerfData(api)),
     ),
   );
 }
@@ -28,7 +23,9 @@ class GetPerfData extends GetMetrics {
 
   @override
   Future<Result<List<Metric>, ()>> getMetrics() async {
-    final queryResults = await api.commonAdmin((api) => api.postGetPerfData(PerfMetricQuery())).ok();
+    final queryResults = await api
+        .commonAdmin((api) => api.postGetPerfData(PerfMetricQuery()))
+        .ok();
 
     if (queryResults == null) {
       return const Err(());

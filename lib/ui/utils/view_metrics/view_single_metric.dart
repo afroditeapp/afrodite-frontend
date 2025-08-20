@@ -1,5 +1,3 @@
-
-
 import 'package:app/ui/utils/view_metrics.dart';
 import 'package:app/utils/api.dart';
 import 'package:app/utils/time.dart';
@@ -20,21 +18,16 @@ class ViewSingleMetricController {
     if (filterText.isEmpty) {
       filteredList = newData.indexed.toList();
     } else {
-      filteredList = newData
-          .indexed
-          .where((indexAndCounter) {
-            final name = indexAndCounter.$2.name;
-            return name.toLowerCase().contains(filterText.toLowerCase());
-          })
-          .toList();
+      filteredList = newData.indexed.where((indexAndCounter) {
+        final name = indexAndCounter.$2.name;
+        return name.toLowerCase().contains(filterText.toLowerCase());
+      }).toList();
     }
 
     // Try to select the same item as before
     selectedIndexFromAllData = null;
     if (currentName.isNotEmpty) {
-      final item = filteredList.where(
-        (element) => element.$2.name == currentName,
-      ).firstOrNull;
+      final item = filteredList.where((element) => element.$2.name == currentName).firstOrNull;
       selectedIndexFromAllData = item?.$1;
     }
 
@@ -65,9 +58,7 @@ class _ViewSingleMetricState extends State<ViewSingleMetric> {
 
   Widget displayData(BuildContext context, List<Metric> metrics) {
     if (metrics.isEmpty) {
-      return const Center(
-        child: Text("No data"),
-      );
+      return const Center(child: Text("No data"));
     }
 
     final Widget chart;
@@ -93,14 +84,12 @@ class _ViewSingleMetricState extends State<ViewSingleMetric> {
             onChanged: (value) {
               // Filter the visible items based on the search value
               setState(() {
-                widget.controller.filteredList = metrics
-                    .indexed
-                    .where((indexAndCounter) {
-                      final name = indexAndCounter.$2.name;
-                      return value.isEmpty || name.toLowerCase().contains(value.toLowerCase());
-                    })
-                    .toList();
-                widget.controller.selectedIndexFromAllData = widget.controller.filteredList.firstOrNull?.$1;
+                widget.controller.filteredList = metrics.indexed.where((indexAndCounter) {
+                  final name = indexAndCounter.$2.name;
+                  return value.isEmpty || name.toLowerCase().contains(value.toLowerCase());
+                }).toList();
+                widget.controller.selectedIndexFromAllData =
+                    widget.controller.filteredList.firstOrNull?.$1;
               });
             },
             onTapOutside: (_) {
@@ -124,18 +113,12 @@ class _ViewSingleMetricState extends State<ViewSingleMetric> {
             },
             items: widget.controller.filteredList.map<DropdownMenuItem<String>>((value) {
               final (index, counter) = value;
-              return DropdownMenuItem<String>(
-                value: index.toString(),
-                child: Text(counter.name),
-              );
+              return DropdownMenuItem<String>(value: index.toString(), child: Text(counter.name));
             }).toList(),
           ),
         ),
         Expanded(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: chart,
-          )
+          child: Padding(padding: const EdgeInsets.all(8.0), child: chart),
         ),
       ],
     );
@@ -156,44 +139,30 @@ class _ViewSingleMetricState extends State<ViewSingleMetric> {
               return touchedSpots.map((touchedSpot) {
                 final utcTime = UnixTime(ut: touchedSpot.x.toInt()).toUtcDateTime();
                 final time = "${timeString(utcTime)}, ${touchedSpot.y.toInt()}";
-                return LineTooltipItem(
-                  time,
-                  Theme.of(context).textTheme.labelLarge!,
-                );
+                return LineTooltipItem(time, Theme.of(context).textTheme.labelLarge!);
               }).toList();
             },
           ),
         ),
-        lineBarsData: [
-          LineChartBarData(
-            spots: data,
-            isCurved: false,
-            barWidth: 4,
-          ),
-        ],
+        lineBarsData: [LineChartBarData(spots: data, isCurved: false, barWidth: 4)],
         titlesData: FlTitlesData(
-          topTitles: const AxisTitles(
-            sideTitles: SideTitles(showTitles: false),
-          ),
+          topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
           bottomTitles: AxisTitles(
             sideTitles: SideTitles(
               showTitles: true,
               reservedSize: 44,
               interval: xAxisTitleInterval != 0 ? xAxisTitleInterval : null,
               getTitlesWidget: (value, meta) {
-                final upperTimeText = value == data.first.x || value == data.last.x || (value >= xAxisCenterAreaMin && value <= xAxisCenterAreaMax);
+                final upperTimeText =
+                    value == data.first.x ||
+                    value == data.last.x ||
+                    (value >= xAxisCenterAreaMin && value <= xAxisCenterAreaMax);
                 final utcTime = UnixTime(ut: value.toInt()).toUtcDateTime();
                 final timeText = timeString(utcTime);
                 if (upperTimeText) {
-                  return Padding(
-                    padding: const EdgeInsets.only(top: 4),
-                    child: Text(timeText),
-                  );
+                  return Padding(padding: const EdgeInsets.only(top: 4), child: Text(timeText));
                 } else {
-                  return Padding(
-                    padding: const EdgeInsets.only(top: 22),
-                    child: Text(timeText),
-                  );
+                  return Padding(padding: const EdgeInsets.only(top: 22), child: Text(timeText));
                 }
               },
             ),

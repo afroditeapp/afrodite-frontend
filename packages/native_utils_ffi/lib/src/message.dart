@@ -1,5 +1,3 @@
-
-
 import 'dart:ffi';
 import 'dart:typed_data';
 
@@ -16,10 +14,7 @@ import 'package:native_utils_ffi/src/native_utils_ffi_bindings_generated.dart';
 
   final (public, private, result) = handleBinaryDataResult2(keyGenerationResult);
   if (public != null && private != null) {
-    final keys = GeneratedMessageKeys(
-      public: public,
-      private: private,
-    );
+    final keys = GeneratedMessageKeys(public: public, private: private);
     return (keys, result);
   } else {
     return (null, result);
@@ -79,7 +74,7 @@ import 'package:native_utils_ffi/src/native_utils_ffi_bindings_generated.dart';
     cReceiverPrivateKey,
     receiverPrivateKey.length,
     cMessageData,
-    pgpMessage.length
+    pgpMessage.length,
   );
 
   malloc.free(cSenderPublicKey);
@@ -95,15 +90,13 @@ import 'package:native_utils_ffi/src/native_utils_ffi_bindings_generated.dart';
 }
 
 /// When getting the PGP message content fails, null is returned
-(Uint8List?, int) getMessageContent(
-  Uint8List pgpMessage,
-) {
+(Uint8List?, int) getMessageContent(Uint8List pgpMessage) {
   final Pointer<Uint8> cMessageData = malloc.allocate(pgpMessage.length);
   cMessageData.asTypedList(pgpMessage.length).setAll(0, pgpMessage);
 
   final getMessageContentResult = getBindings().get_message_content(
     cMessageData,
-    pgpMessage.length
+    pgpMessage.length,
   );
 
   malloc.free(cMessageData);

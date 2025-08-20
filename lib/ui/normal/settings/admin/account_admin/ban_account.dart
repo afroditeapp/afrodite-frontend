@@ -1,5 +1,3 @@
-
-
 import 'package:app/localizations.dart';
 import 'package:app/logic/account/account.dart';
 import 'package:app/model/freezed/logic/account/account.dart';
@@ -18,10 +16,7 @@ import 'package:utils/utils.dart';
 
 class BanAccountScreen extends StatefulWidget {
   final AccountId accountId;
-  const BanAccountScreen({
-    required this.accountId,
-    super.key,
-  });
+  const BanAccountScreen({required this.accountId, super.key});
 
   @override
   State<BanAccountScreen> createState() => _BanAccountScreenState();
@@ -42,10 +37,7 @@ class _BanAccountScreenState extends State<BanAccountScreen> {
   int? selectedBanSeconds;
 
   Future<void> _getData() async {
-    final result = await api
-      .account(
-        (api) => api.getAccountBanTime(widget.accountId.aid)
-      ).ok();
+    final result = await api.account((api) => api.getAccountBanTime(widget.accountId.aid)).ok();
 
     if (!context.mounted) {
       return;
@@ -74,9 +66,7 @@ class _BanAccountScreenState extends State<BanAccountScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Ban account"),
-      ),
+      appBar: AppBar(title: const Text("Ban account")),
       body: screenContent(context),
     );
   }
@@ -84,21 +74,23 @@ class _BanAccountScreenState extends State<BanAccountScreen> {
   Widget screenContent(BuildContext context) {
     final bannedInfo = data;
     if (isLoading) {
-      return const Center(
-        child: CircularProgressIndicator(),
-      );
+      return const Center(child: CircularProgressIndicator());
     } else if (isError || bannedInfo == null) {
       return Center(child: Text(context.strings.generic_error));
     } else {
       return BlocBuilder<AccountBloc, AccountBlocData>(
         builder: (context, state) {
           return showData(context, bannedInfo, state.permissions);
-        }
+        },
       );
     }
   }
 
-  Widget showData(BuildContext context, GetAccountBanTimeResult bannedInfo, Permissions myPermissions) {
+  Widget showData(
+    BuildContext context,
+    GetAccountBanTimeResult bannedInfo,
+    Permissions myPermissions,
+  ) {
     final bannedUntilUnixTime = bannedInfo.bannedUntil;
     final String? bannedUntil;
     if (bannedUntilUnixTime != null) {
@@ -134,9 +126,7 @@ class _BanAccountScreenState extends State<BanAccountScreen> {
         const Padding(padding: EdgeInsets.all(8.0)),
         TextField(
           controller: banDaysTextController,
-          decoration: const InputDecoration(
-            hintText: "Days",
-          ),
+          decoration: const InputDecoration(hintText: "Days"),
           keyboardType: TextInputType.number,
           enableSuggestions: false,
           autocorrect: false,
@@ -147,45 +137,44 @@ class _BanAccountScreenState extends State<BanAccountScreen> {
               selectedBanSeconds = (valueInt ?? 0) * 60 * 60 * 24;
             });
           },
-          inputFormatters: [
-            FilteringTextInputFormatter.allow(RegExp("[0-9]")),
-          ],
+          inputFormatters: [FilteringTextInputFormatter.allow(RegExp("[0-9]"))],
         ),
         const Padding(padding: EdgeInsets.all(8.0)),
         TextField(
           controller: banDetailsController,
-          decoration: const InputDecoration(
-            hintText: "Ban reason",
-          ),
+          decoration: const InputDecoration(hintText: "Ban reason"),
         ),
         const Padding(padding: EdgeInsets.all(8.0)),
         bannedUntilTimePreview(),
         const Padding(padding: EdgeInsets.all(8.0)),
         ElevatedButton(
-          onPressed: selectedBanSeconds != null ? () async {
-            final seconds = selectedBanSeconds!;
-            final banDetails = AccountBanReasonDetails(value: banDetailsController.text.trim());
+          onPressed: selectedBanSeconds != null
+              ? () async {
+                  final seconds = selectedBanSeconds!;
+                  final banDetails = AccountBanReasonDetails(
+                    value: banDetailsController.text.trim(),
+                  );
 
-            final result = await showConfirmDialog(context, "Ban?", yesNoActions: true);
-            if (result == true && context.mounted) {
-              final result = await api
-                .accountAdminAction(
-                  (api) => api.postSetBanState(
-                    SetAccountBanState(
-                      account: widget.accountId,
-                      banUntil: UtcDateTime.now().toUnixTime()..addSeconds(seconds),
-                      reasonDetails: banDetails,
-                    ),
-                  )
-                );
-              if (result.isErr()) {
-                showSnackBar(R.strings.generic_error);
-              }
-              await _getData();
-            }
-          } : null,
+                  final result = await showConfirmDialog(context, "Ban?", yesNoActions: true);
+                  if (result == true && context.mounted) {
+                    final result = await api.accountAdminAction(
+                      (api) => api.postSetBanState(
+                        SetAccountBanState(
+                          account: widget.accountId,
+                          banUntil: UtcDateTime.now().toUnixTime()..addSeconds(seconds),
+                          reasonDetails: banDetails,
+                        ),
+                      ),
+                    );
+                    if (result.isErr()) {
+                      showSnackBar(R.strings.generic_error);
+                    }
+                    await _getData();
+                  }
+                }
+              : null,
           child: const Text("Ban"),
-        )
+        ),
       ],
     );
   }
@@ -195,15 +184,14 @@ class _BanAccountScreenState extends State<BanAccountScreen> {
       onPressed: () async {
         final result = await showConfirmDialog(context, "Unban?", yesNoActions: true);
         if (result == true && context.mounted) {
-          final result = await api
-            .accountAdminAction(
-              (api) => api.postSetBanState(
-                SetAccountBanState(
-                  account: widget.accountId,
-                  reasonDetails: AccountBanReasonDetails(value: ""),
-                ),
-              )
-            );
+          final result = await api.accountAdminAction(
+            (api) => api.postSetBanState(
+              SetAccountBanState(
+                account: widget.accountId,
+                reasonDetails: AccountBanReasonDetails(value: ""),
+              ),
+            ),
+          );
           if (result.isErr()) {
             showSnackBar(R.strings.generic_error);
           }

@@ -1,4 +1,3 @@
-
 import 'package:flutter/widgets.dart';
 
 abstract class BaseDataManager extends BaseDataManagerProvider {
@@ -11,9 +10,11 @@ abstract class BaseDataManager extends BaseDataManagerProvider {
   void addUiRefreshAction(RefreshUiAction action) {
     _actions.add(action);
   }
+
   void removeUiRefreshAction(RefreshUiAction action) {
     _actions.remove(action);
   }
+
   void triggerUiRefresh() {
     for (final a in _actions) {
       a.action();

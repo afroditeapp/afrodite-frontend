@@ -94,12 +94,7 @@ class NormalStateContent extends StatefulWidget {
 }
 
 class _NormalStateContentState extends State<NormalStateContent> {
-  static const VIEWS = [
-    ProfileView(),
-    LikeView(),
-    ChatView(),
-    MenuView(),
-  ];
+  static const VIEWS = [ProfileView(), LikeView(), ChatView(), MenuView()];
 
   final currentUser = LoginRepository.getInstance().repositories.accountId;
 
@@ -107,7 +102,6 @@ class _NormalStateContentState extends State<NormalStateContent> {
   Widget build(BuildContext context) {
     return BlocBuilder<BottomNavigationStateBloc, BottomNavigationStateData>(
       builder: (context, state) {
-
         final isScrolled = switch (numberToScreen(state.screen.screenIndex)) {
           BottomNavigationScreenId.profiles => state.isScrolledProfile,
           BottomNavigationScreenId.likes => state.isScrolledLikes,
@@ -115,12 +109,8 @@ class _NormalStateContentState extends State<NormalStateContent> {
           BottomNavigationScreenId.settings => state.isScrolledSettings,
         };
 
-        return buildScreen(
-          context,
-          state.screen.screenIndex,
-          isScrolled,
-        );
-      }
+        return buildScreen(context, state.screen.screenIndex, isScrolled);
+      },
     );
   }
 
@@ -146,10 +136,7 @@ class _NormalStateContentState extends State<NormalStateContent> {
       body: Column(
         children: [
           Expanded(
-            child: IndexedStack(
-              index: selectedView,
-              children: VIEWS,
-            )
+            child: IndexedStack(index: selectedView, children: VIEWS),
           ),
           const NotificationPermissionDialogOpener(),
           const NotificationPayloadHandler(),
@@ -178,7 +165,7 @@ class _NormalStateContentState extends State<NormalStateContent> {
     return [
       BottomNavigationBarItem(
         icon: Icon(selectedView == 0 ? Icons.people : Icons.people_outline),
-        label: VIEWS[0].title(context)
+        label: VIEWS[0].title(context),
       ),
       BottomNavigationBarItem(
         icon: BlocBuilder<NewReceivedLikesAvailableBloc, NewReceivedLikesAvailableData>(
@@ -190,7 +177,7 @@ class _NormalStateContentState extends State<NormalStateContent> {
             } else {
               return Badge.count(count: count, child: icon);
             }
-          }
+          },
         ),
         label: VIEWS[1].title(context),
       ),
@@ -203,7 +190,7 @@ class _NormalStateContentState extends State<NormalStateContent> {
             } else {
               return Badge.count(count: state.unreadConversations, child: icon);
             }
-          }
+          },
         ),
         label: VIEWS[2].title(context),
       ),
@@ -214,24 +201,28 @@ class _NormalStateContentState extends State<NormalStateContent> {
               builder: (context, serverMaintenanceInfo) {
                 return BlocBuilder<NewsCountBloc, NewsCountData>(
                   builder: (context, newsState) {
-                    return BlocBuilder<AutomaticProfileSearchBadgeBloc, AutomaticProfileSearchBadgeData>(
+                    return BlocBuilder<
+                      AutomaticProfileSearchBadgeBloc,
+                      AutomaticProfileSearchBadgeData
+                    >(
                       builder: (context, searchState) {
                         final icon = Icon(selectedView == 3 ? Icons.menu : Icons.menu_outlined);
-                        final count = serverMaintenanceInfo.uiBadgeCount() +
-                          newsState.newsCountForUi(clientFeatures.config) +
-                          searchState.profileCount();
+                        final count =
+                            serverMaintenanceInfo.uiBadgeCount() +
+                            newsState.newsCountForUi(clientFeatures.config) +
+                            searchState.profileCount();
                         if (count == 0) {
                           return icon;
                         } else {
                           return Badge.count(count: count, child: icon);
                         }
-                      }
+                      },
                     );
-                  }
+                  },
                 );
-              }
+              },
             );
-          }
+          },
         ),
         label: VIEWS[3].title(context),
       ),
@@ -255,17 +246,15 @@ class _NormalStateContentState extends State<NormalStateContent> {
                 cacheSize: ImageCacheSize.sizeForAppBarThumbnail(context),
                 child: Material(
                   color: Colors.transparent,
-                  child: InkWell(
-                    onTap: () => openMyProfileScreen(context),
-                  ),
-                )
+                  child: InkWell(onTap: () => openMyProfileScreen(context)),
+                ),
               );
-            }
+            },
           );
         } else {
           return primaryImageButtonError();
         }
-      }
+      },
     );
   }
 
@@ -281,7 +270,8 @@ class NotificationPermissionDialogOpener extends StatefulWidget {
   const NotificationPermissionDialogOpener({super.key});
 
   @override
-  State<NotificationPermissionDialogOpener> createState() => _NotificationPermissionDialogOpenerState();
+  State<NotificationPermissionDialogOpener> createState() =>
+      _NotificationPermissionDialogOpenerState();
 }
 
 class _NotificationPermissionDialogOpenerState extends State<NotificationPermissionDialogOpener> {
@@ -302,16 +292,17 @@ class _NotificationPermissionDialogOpenerState extends State<NotificationPermiss
               return const SizedBox.shrink();
             }
 
-            final notificationPermissionSupported = NotificationManager.getInstance().osSupportsNotificationPermission;
+            final notificationPermissionSupported =
+                NotificationManager.getInstance().osSupportsNotificationPermission;
             if (notificationPermissionSupported && !storedPermissionAskedState && !askedOnce) {
               askedOnce = true;
               openNotificationPermissionDialog(context);
             }
 
             return const SizedBox.shrink();
-          }
+          },
         );
-      }
+      },
     );
   }
 
@@ -347,10 +338,7 @@ class NotificationPermissionDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     final dialogContent = Column(
       children: [
-        const Icon(
-          Icons.notifications_outlined,
-          size: 48,
-        ),
+        const Icon(Icons.notifications_outlined, size: 48),
         const Padding(padding: EdgeInsets.all(8.0)),
         Text(
           context.strings.notification_permission_dialog_title,
@@ -358,7 +346,7 @@ class NotificationPermissionDialog extends StatelessWidget {
         ),
         const Padding(padding: EdgeInsets.all(8.0)),
         Text(context.strings.notification_permission_dialog_description),
-      ]
+      ],
     );
 
     return AlertDialog(

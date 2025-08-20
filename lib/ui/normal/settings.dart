@@ -31,15 +31,11 @@ void openSettingsScreen(BuildContext context) {
   // to init some blocs which load data from DB.
   context.read<SearchSettingsBloc>();
   context.read<PrivacySettingsBloc>().add(ResetEdited());
-  MyNavigator.push(context, const MaterialPage<void>(child:
-    SettingsScreen()
-  ));
+  MyNavigator.push(context, const MaterialPage<void>(child: SettingsScreen()));
 }
 
 class SettingsScreen extends StatefulWidget {
-  const SettingsScreen({
-    super.key,
-  });
+  const SettingsScreen({super.key});
 
   @override
   State<SettingsScreen> createState() => _SettingsScreenState();
@@ -51,9 +47,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(context.strings.settings_screen_title),
-      ),
+      appBar: AppBar(title: Text(context.strings.settings_screen_title)),
       body: list(context),
     );
   }
@@ -64,12 +58,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Setting.createSetting(Icons.person, context.strings.account_settings_screen_title, () {
-              openAccountSettings(context);
-            }
-          ).toListTile(),
+            openAccountSettings(context);
+          }).toListTile(),
           settingsCategoryTitle(context, context.strings.settings_screen_profile_category),
           ...profileSettings(context),
-          settingsCategoryTitle(context, context.strings.settings_screen_privacy_and_security_category),
+          settingsCategoryTitle(
+            context,
+            context.strings.settings_screen_privacy_and_security_category,
+          ),
           ...securityAndPrivacySettings(context),
           settingsCategoryTitle(context, context.strings.settings_screen_data_category),
           ...dataSettings(context),
@@ -81,20 +77,25 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   Widget blockedProfiles(BuildContext context) {
-    return Setting.createSetting(Icons.block, context.strings.blocked_profiles_screen_title, () =>
-      MyNavigator.push(context, const MaterialPage<void>(child: BlockedProfilesScreen()))
+    return Setting.createSetting(
+      Icons.block,
+      context.strings.blocked_profiles_screen_title,
+      () => MyNavigator.push(context, const MaterialPage<void>(child: BlockedProfilesScreen())),
     ).toListTile();
   }
 
   Widget securitySelfie(BuildContext context) {
-    return Setting.createSetting(Icons.image_rounded, context.strings.current_security_selfie_screen_title, () {
-      final pageKey = PageKey();
-      MyNavigator.pushWithKey(
-        context,
-        MaterialPage<void>(child: CurrentSecuritySelfie(pageKey: pageKey)),
-        pageKey,
-      );
-    }
+    return Setting.createSetting(
+      Icons.image_rounded,
+      context.strings.current_security_selfie_screen_title,
+      () {
+        final pageKey = PageKey();
+        MyNavigator.pushWithKey(
+          context,
+          MaterialPage<void>(child: CurrentSecuritySelfie(pageKey: pageKey)),
+          pageKey,
+        );
+      },
     ).toListTile();
   }
 
@@ -105,10 +106,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
         final searchSettingsBloc = context.read<SearchSettingsBloc>();
         MyNavigator.pushWithKey(
           context,
-          MaterialPage<void>(child: SearchSettingsScreen(
-            pageKey: pageKey,
-            searchSettingsBloc: searchSettingsBloc,
-          )),
+          MaterialPage<void>(
+            child: SearchSettingsScreen(pageKey: pageKey, searchSettingsBloc: searchSettingsBloc),
+          ),
           pageKey,
         );
       }).toListTile(),
@@ -157,7 +157,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       BlocBuilder<PrivacySettingsBloc, PrivacySettingsData>(
         builder: (context, state) {
           return profileVisibilitySetting(context, state);
-        }
+        },
       ),
       blockedProfiles(context),
       securitySelfie(context),
@@ -166,28 +166,44 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   List<Widget> dataSettings(BuildContext context) {
     return [
-      Setting.createSetting(Icons.image_rounded, context.strings.content_management_screen_title, () {
-        openContentManagementScreen(context);
-      }).toListTile(),
-      Setting.createSetting(Icons.cloud_download, context.strings.data_export_screen_title_export_type_user, () {
-        openDataExportScreen(
-          context,
-          context.strings.data_export_screen_title_export_type_user,
-          currentUser,
-        );
-      }).toListTile(),
+      Setting.createSetting(
+        Icons.image_rounded,
+        context.strings.content_management_screen_title,
+        () {
+          openContentManagementScreen(context);
+        },
+      ).toListTile(),
+      Setting.createSetting(
+        Icons.cloud_download,
+        context.strings.data_export_screen_title_export_type_user,
+        () {
+          openDataExportScreen(
+            context,
+            context.strings.data_export_screen_title_export_type_user,
+            currentUser,
+          );
+        },
+      ).toListTile(),
     ];
   }
 
   List<Widget> generalSettings(BuildContext context) {
     return [
-      if (!kIsWeb) Setting.createSetting(Icons.notifications, context.strings.notification_settings_screen_title, () {
-          openNotificationSettings(context);
-        }
+      if (!kIsWeb)
+        Setting.createSetting(
+          Icons.notifications,
+          context.strings.notification_settings_screen_title,
+          () {
+            openNotificationSettings(context);
+          },
+        ).toListTile(),
+      Setting.createSetting(
+        Icons.grid_view_rounded,
+        context.strings.profile_grid_settings_screen_title,
+        () {
+          openProfileGridSettingsScreen(context);
+        },
       ).toListTile(),
-      Setting.createSetting(Icons.grid_view_rounded, context.strings.profile_grid_settings_screen_title, () {
-        openProfileGridSettingsScreen(context);
-      }).toListTile(),
     ];
   }
 }
@@ -199,19 +215,11 @@ class Setting {
   Setting(this._iconWidget, this._widget, this.action);
 
   factory Setting.createSetting(IconData icon, String text, void Function() action) {
-    return Setting(
-      Icon(icon),
-      Text(text),
-      action,
-    );
+    return Setting(Icon(icon), Text(text), action);
   }
 
   factory Setting.createSettingWithCustomIcon(Widget icon, String text, void Function() action) {
-    return Setting(
-      icon,
-      Text(text),
-      action,
-    );
+    return Setting(icon, Text(text), action);
   }
 
   Widget toListTile() {
@@ -230,9 +238,9 @@ Widget settingsCategoryTitle(BuildContext context, String text) {
     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
     child: Text(
       text,
-      style: Theme.of(context).textTheme.titleSmall?.copyWith(
-        color: Theme.of(context).colorScheme.primary,
-      ),
+      style: Theme.of(
+        context,
+      ).textTheme.titleSmall?.copyWith(color: Theme.of(context).colorScheme.primary),
     ),
   );
 }

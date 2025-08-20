@@ -1,4 +1,3 @@
-
 import 'package:async/async.dart';
 import 'package:collection/collection.dart';
 import 'package:database_account_foreground/src/database.dart';
@@ -18,31 +17,35 @@ part 'config.g.dart';
     schema.CustomReportsConfig,
     schema.ProfileAttributesConfig,
     schema.ProfileAttributesConfigAttributes,
-  ]
+  ],
 )
 class DaoReadConfig extends DatabaseAccessor<AccountForegroundDatabase> with _$DaoReadConfigMixin {
   DaoReadConfig(super.db);
 
   Stream<api.ClientFeaturesConfigHash?> watchClientFeaturesConfigHash() =>
-    _watchColumnClientFeatures((r) => r.clientFeaturesConfigHash);
+      _watchColumnClientFeatures((r) => r.clientFeaturesConfigHash);
   Stream<api.ClientFeaturesConfig?> watchClientFeaturesConfig() =>
-    _watchColumnClientFeatures((r) => r.clientFeaturesConfig?.value);
+      _watchColumnClientFeatures((r) => r.clientFeaturesConfig?.value);
 
-  Stream<T?> _watchColumnClientFeatures<T extends Object>(T? Function(ClientFeaturesConfigData) extractColumn) {
-    return (select(clientFeaturesConfig)..where((t) => t.id.equals(SingleRowTable.ID.value)))
-      .map(extractColumn)
-      .watchSingleOrNull();
+  Stream<T?> _watchColumnClientFeatures<T extends Object>(
+    T? Function(ClientFeaturesConfigData) extractColumn,
+  ) {
+    return (select(
+      clientFeaturesConfig,
+    )..where((t) => t.id.equals(SingleRowTable.ID.value))).map(extractColumn).watchSingleOrNull();
   }
 
   Stream<api.CustomReportsConfigHash?> watchCustomReportsConfigHash() =>
-    _watchColumnCustomReports((r) => r.customReportsConfigHash);
+      _watchColumnCustomReports((r) => r.customReportsConfigHash);
   Stream<api.CustomReportsConfig?> watchCustomReportsConfig() =>
-    _watchColumnCustomReports((r) => r.customReportsConfig?.value);
+      _watchColumnCustomReports((r) => r.customReportsConfig?.value);
 
-  Stream<T?> _watchColumnCustomReports<T extends Object>(T? Function(CustomReportsConfigData) extractColumn) {
-    return (select(customReportsConfig)..where((t) => t.id.equals(SingleRowTable.ID.value)))
-      .map(extractColumn)
-      .watchSingleOrNull();
+  Stream<T?> _watchColumnCustomReports<T extends Object>(
+    T? Function(CustomReportsConfigData) extractColumn,
+  ) {
+    return (select(
+      customReportsConfig,
+    )..where((t) => t.id.equals(SingleRowTable.ID.value))).map(extractColumn).watchSingleOrNull();
   }
 
   /// Get list of attribute IDs which require refresh.
@@ -67,42 +70,39 @@ class DaoReadConfig extends DatabaseAccessor<AccountForegroundDatabase> with _$D
 
   /// Attributes are sorted by attribute ID
   Stream<List<ProfileAttributeAndHash>?> watchAttributes() {
-    return (select(profileAttributesConfigAttributes)
-      ..orderBy([
-        (t) => OrderingTerm(expression: t.id, mode: OrderingMode.asc),
-      ])
-    )
-      .watch()
-      .map((r) {
-        final List<ProfileAttributeAndHash> attributes = [];
-        for (final item in r) {
-          final attribute = item.jsonAttribute.value;
-          if (attribute == null) {
-            return null;
-          }
-          attributes.add(ProfileAttributeAndHash(item.attributeHash, attribute));
+    return (select(
+      profileAttributesConfigAttributes,
+    )..orderBy([(t) => OrderingTerm(expression: t.id, mode: OrderingMode.asc)])).watch().map((r) {
+      final List<ProfileAttributeAndHash> attributes = [];
+      for (final item in r) {
+        final attribute = item.jsonAttribute.value;
+        if (attribute == null) {
+          return null;
         }
+        attributes.add(ProfileAttributeAndHash(item.attributeHash, attribute));
+      }
 
-        return attributes;
-      });
+      return attributes;
+    });
   }
 
-  Stream<ProfileAttributes?> watchAvailableProfileAttributes() =>
-    Rx.combineLatest2(
-      _watchColumnProfileAttributesConfig((r) => r.jsonAvailableProfileAttributesOrderMode?.value),
-      watchAttributes(),
-      (orderMode, currentAttributes) {
-        if (orderMode == null || currentAttributes == null) {
-          return null;
-        } else {
-          return ProfileAttributes(orderMode, currentAttributes);
-        }
-      },
-    );
+  Stream<ProfileAttributes?> watchAvailableProfileAttributes() => Rx.combineLatest2(
+    _watchColumnProfileAttributesConfig((r) => r.jsonAvailableProfileAttributesOrderMode?.value),
+    watchAttributes(),
+    (orderMode, currentAttributes) {
+      if (orderMode == null || currentAttributes == null) {
+        return null;
+      } else {
+        return ProfileAttributes(orderMode, currentAttributes);
+      }
+    },
+  );
 
-  Stream<T?> _watchColumnProfileAttributesConfig<T extends Object>(T? Function(ProfileAttributesConfigData) extractColumn) {
-    return (select(profileAttributesConfig)..where((t) => t.id.equals(SingleRowTable.ID.value)))
-      .map(extractColumn)
-      .watchSingleOrNull();
+  Stream<T?> _watchColumnProfileAttributesConfig<T extends Object>(
+    T? Function(ProfileAttributesConfigData) extractColumn,
+  ) {
+    return (select(
+      profileAttributesConfig,
+    )..where((t) => t.id.equals(SingleRowTable.ID.value))).map(extractColumn).watchSingleOrNull();
   }
 }

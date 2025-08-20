@@ -1,9 +1,9 @@
-
 import 'package:database/database.dart';
 
 sealed class MessageSendingEvent {
   const MessageSendingEvent();
 }
+
 class SavedToLocalDb extends MessageSendingEvent {
   const SavedToLocalDb();
 }
@@ -26,6 +26,7 @@ enum MessageSendingErrorDetails {
 class ErrorBeforeMessageSaving extends MessageSendingEvent {
   const ErrorBeforeMessageSaving();
 }
+
 class ErrorAfterMessageSaving extends MessageSendingEvent {
   final LocalMessageId id;
   final MessageSendingErrorDetails? details;

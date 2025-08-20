@@ -18,7 +18,9 @@ import 'package:image/image.dart' as img;
 var log = Logger("CameraScreen");
 
 sealed class CameraInitState {}
+
 class InitSuccessful extends CameraInitState {}
+
 class InitFailed extends CameraInitState {
   final CameraInitError error;
   InitFailed(this.error);
@@ -32,8 +34,7 @@ class CameraScreen extends StatefulWidget {
   State<CameraScreen> createState() => _CameraScreenState();
 }
 
-class _CameraScreenState extends State<CameraScreen>
-  with WidgetsBindingObserver {
+class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver {
   bool photoTakingInProgress = false;
   bool errorDialogOpened = false;
 
@@ -46,9 +47,7 @@ class _CameraScreenState extends State<CameraScreen>
   @override
   void initState() {
     super.initState();
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-    ]);
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     WidgetsBinding.instance.addObserver(this);
 
     final c = widget.controller;
@@ -66,20 +65,23 @@ class _CameraScreenState extends State<CameraScreen>
       }
 
       switch (state) {
-        case Closed(:final error): {
-           if (error != null) {
+        case Closed(:final error):
+          {
+            if (error != null) {
+              setState(() {
+                cameraInitState = InitFailed(error);
+              });
+            }
+          }
+        case DisposeOngoing():
+          {}
+        case Open(:final controller):
+          {
             setState(() {
-              cameraInitState = InitFailed(error);
+              cameraInitState = InitSuccessful();
+              this.controller = controller;
             });
           }
-        }
-        case DisposeOngoing(): {}
-        case Open(:final controller): {
-          setState(() {
-            cameraInitState = InitSuccessful();
-            this.controller = controller;
-          });
-        }
       }
     });
   }
@@ -129,12 +131,11 @@ class _CameraScreenState extends State<CameraScreen>
           if (!context.mounted) {
             return;
           }
-          showInfoDialog(context, initState.error.message)
-            .then((_) {
-              if (context.mounted) {
-                MyNavigator.pop(context, null);
-              }
-            });
+          showInfoDialog(context, initState.error.message).then((_) {
+            if (context.mounted) {
+              MyNavigator.pop(context, null);
+            }
+          });
         });
       }
       log.info("Simulating camera preview");
@@ -146,12 +147,7 @@ class _CameraScreenState extends State<CameraScreen>
 
     return Scaffold(
       appBar: AppBar(title: Text(context.strings.generic_take_photo)),
-      body: Column(
-        children: [
-          preview,
-          controlRow(context, currentCamera),
-        ]
-      )
+      body: Column(children: [preview, controlRow(context, currentCamera)]),
     );
   }
 
@@ -169,10 +165,7 @@ class _CameraScreenState extends State<CameraScreen>
             child: Align(
               alignment: Alignment.topCenter,
               heightFactor: cropFactorToAspectRatioAtLeast43(size),
-              child: SizedBox(
-                width: constraints.maxWidth,
-                child: CameraPreview(currentCamera)
-              ),
+              child: SizedBox(width: constraints.maxWidth, child: CameraPreview(currentCamera)),
             ),
           );
 
@@ -194,7 +187,7 @@ class _CameraScreenState extends State<CameraScreen>
               AnimatedShutter(controller: shutterController),
             ],
           );
-        }
+        },
       ),
     );
   }
@@ -204,7 +197,7 @@ class _CameraScreenState extends State<CameraScreen>
       child: LayoutBuilder(
         builder: (context, constraints) {
           return emptyCameraPreviewArea(context, constraints.maxWidth, constraints.maxHeight);
-        }
+        },
       ),
     );
   }
@@ -231,9 +224,7 @@ class _CameraScreenState extends State<CameraScreen>
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Expanded(
-            child: Center(child: progress),
-          ),
+          Expanded(child: Center(child: progress)),
           takePhotoButton(context, currentCamera),
           Expanded(child: Container()),
         ],
@@ -266,7 +257,7 @@ class _CameraScreenState extends State<CameraScreen>
       child: ElevatedButton.icon(
         onPressed: onPressed,
         icon: const Icon(Icons.camera_alt),
-        label: Text(context.strings.generic_take_photo)
+        label: Text(context.strings.generic_take_photo),
       ),
     );
   }
@@ -348,16 +339,27 @@ Future<img.Image> cropToAspectRatio43(img.Image imgData) async {
   if (imgData.width > imgData.height) {
     final newWidth = imgData.width * factor;
     log.fine("newWidth: $newWidth");
-    croppedImage = img.copyCrop(imgData, x: 0, y: 0, width: newWidth.toInt(), height: imgData.height);
+    croppedImage = img.copyCrop(
+      imgData,
+      x: 0,
+      y: 0,
+      width: newWidth.toInt(),
+      height: imgData.height,
+    );
   } else {
     final newHeight = imgData.height * factor;
     log.fine("newHeight: $newHeight");
-    croppedImage = img.copyCrop(imgData, x: 0, y: 0, width: imgData.width, height: newHeight.toInt());
+    croppedImage = img.copyCrop(
+      imgData,
+      x: 0,
+      y: 0,
+      width: imgData.width,
+      height: newHeight.toInt(),
+    );
   }
 
   return croppedImage;
 }
-
 
 class ShutterController {
   void Function()? _startShutterCallback;
@@ -374,8 +376,7 @@ class AnimatedShutter extends StatefulWidget {
   State<AnimatedShutter> createState() => _AnimatedShutterState();
 }
 
-class _AnimatedShutterState extends State<AnimatedShutter>
-    with SingleTickerProviderStateMixin {
+class _AnimatedShutterState extends State<AnimatedShutter> with SingleTickerProviderStateMixin {
   Animation<int>? _opacityAnimation;
   late AnimationController _controller;
 
@@ -414,20 +415,14 @@ class _AnimatedShutterState extends State<AnimatedShutter>
         // ),
 
         // Single item version
-        TweenSequenceItem(
-          tween: IntTween(
-            begin: MIDDLE_VALUE,
-            end: 0,
-          ),
-          weight: 1.0
-        ),
+        TweenSequenceItem(tween: IntTween(begin: MIDDLE_VALUE, end: 0), weight: 1.0),
       ]);
 
       _controller.duration = DURATION;
       _opacityAnimation = opacityTween.animate(_controller);
       _controller
-          ..reset()
-          ..forward();
+        ..reset()
+        ..forward();
     };
   }
 

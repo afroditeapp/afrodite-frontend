@@ -1,4 +1,3 @@
-
 import 'package:app/ui_utils/data_editor/base.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +19,8 @@ class BooleanDataViewerSliver extends StatefulWidget {
   State<BooleanDataViewerSliver> createState() => _BooleanDataViewerSliverState();
 }
 
-class _BooleanDataViewerSliverState extends State<BooleanDataViewerSliver> with RefreshSupport<BooleanDataViewerSliver>{
+class _BooleanDataViewerSliverState extends State<BooleanDataViewerSliver>
+    with RefreshSupport<BooleanDataViewerSliver> {
   @override
   BaseDataManager get baseDataManager => widget.dataManager.baseDataManager;
 
@@ -90,17 +90,14 @@ class BooleanValuesManager {
   List<String> _jsonKeys = [];
   Map<String, dynamic> _originalState = {};
   Map<String, dynamic> _editedState = {};
-  BooleanValuesManager._(this._jsonKeys, this._originalState) : _editedState = { ..._originalState };
+  BooleanValuesManager._(this._jsonKeys, this._originalState) : _editedState = {..._originalState};
 
   BooleanValuesManager.empty();
 
   factory BooleanValuesManager(Map<String, dynamic> jsonObject) {
     final keys = jsonObject.entries.map((v) => v.key).toList();
     keys.sortBy((v) => v);
-    return BooleanValuesManager._(
-      keys,
-      { ...jsonObject },
-    );
+    return BooleanValuesManager._(keys, {...jsonObject});
   }
 
   List<String> keys() => _jsonKeys;

@@ -29,8 +29,8 @@ class ProfileContentVersionConverter extends TypeConverter<ProfileContentVersion
   }
 }
 
-
-class MediaContentModerationRejectedReasonCategoryConverter extends TypeConverter<MediaContentModerationRejectedReasonCategory, int> {
+class MediaContentModerationRejectedReasonCategoryConverter
+    extends TypeConverter<MediaContentModerationRejectedReasonCategory, int> {
   const MediaContentModerationRejectedReasonCategoryConverter();
 
   @override
@@ -44,7 +44,8 @@ class MediaContentModerationRejectedReasonCategoryConverter extends TypeConverte
   }
 }
 
-class MediaContentModerationRejectedReasonDetailsConverter extends TypeConverter<MediaContentModerationRejectedReasonDetails, String> {
+class MediaContentModerationRejectedReasonDetailsConverter
+    extends TypeConverter<MediaContentModerationRejectedReasonDetails, String> {
   const MediaContentModerationRejectedReasonDetailsConverter();
 
   @override

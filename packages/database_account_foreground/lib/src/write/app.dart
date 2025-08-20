@@ -1,5 +1,3 @@
-
-
 import 'package:database_account_foreground/src/database.dart';
 import 'package:database_utils/database_utils.dart';
 import 'package:drift/drift.dart';
@@ -16,7 +14,7 @@ part 'app.g.dart';
     schema.InitialSync,
     schema.InitialSetupSkipped,
     schema.GridSettings,
-  ]
+  ],
 )
 class DaoWriteApp extends DatabaseAccessor<AccountForegroundDatabase> with _$DaoWriteAppMixin {
   DaoWriteApp(super.db);
@@ -66,9 +64,7 @@ class DaoWriteApp extends DatabaseAccessor<AccountForegroundDatabase> with _$Dao
     );
   }
 
-  Future<void> updateInitialSetupSkipped(
-    bool skipped,
-  ) async {
+  Future<void> updateInitialSetupSkipped(bool skipped) async {
     await into(initialSetupSkipped).insertOnConflictUpdate(
       InitialSetupSkippedCompanion.insert(
         id: SingleRowTable.ID,

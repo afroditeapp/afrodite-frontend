@@ -1,4 +1,3 @@
-
 import 'package:database_account_foreground/src/database.dart';
 import 'package:database_utils/database_utils.dart';
 import 'package:database_converter/database_converter.dart';
@@ -10,14 +9,10 @@ import '../../schema.dart' as schema;
 part 'account.g.dart';
 
 @DriftAccessor(
-  tables: [
-    schema.AccountState,
-    schema.Permissions,
-    schema.ProfileVisibility,
-    schema.EmailAddress,
-  ]
+  tables: [schema.AccountState, schema.Permissions, schema.ProfileVisibility, schema.EmailAddress],
 )
-class DaoWriteAccount extends DatabaseAccessor<AccountForegroundDatabase> with _$DaoWriteAccountMixin {
+class DaoWriteAccount extends DatabaseAccessor<AccountForegroundDatabase>
+    with _$DaoWriteAccountMixin {
   DaoWriteAccount(super.db);
 
   Future<void> updateAccountState(api.Account value) async {
@@ -46,10 +41,7 @@ class DaoWriteAccount extends DatabaseAccessor<AccountForegroundDatabase> with _
 
   Future<void> updateEmailAddress(String? value) async {
     await into(emailAddress).insertOnConflictUpdate(
-      EmailAddressCompanion.insert(
-        id: SingleRowTable.ID,
-        emailAddress: Value(value),
-      ),
+      EmailAddressCompanion.insert(id: SingleRowTable.ID, emailAddress: Value(value)),
     );
   }
 }

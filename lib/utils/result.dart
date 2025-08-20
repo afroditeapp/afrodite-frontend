@@ -1,5 +1,3 @@
-
-
 import 'dart:async';
 
 import 'package:app/utils/app_error.dart';
@@ -18,7 +16,7 @@ sealed class Result<Success, Error> {
   Success? ok() {
     return switch (this) {
       Ok(:final v) => v,
-      Err() => null
+      Err() => null,
     };
   }
 
@@ -73,7 +71,9 @@ extension FutureResultExt<Success, Error> on Future<Result<Success, Error>> {
     };
   }
 
-  Future<Result<NextSuccess, Error>> mapOk<NextSuccess>(FutureOr<NextSuccess> Function(Success) okMap) async {
+  Future<Result<NextSuccess, Error>> mapOk<NextSuccess>(
+    FutureOr<NextSuccess> Function(Success) okMap,
+  ) async {
     return switch (await this) {
       Ok(:final v) => Ok(await okMap(v)),
       Err(:final e) => Err(e),
@@ -138,7 +138,9 @@ extension FutureResultExt<Success, Error> on Future<Result<Success, Error>> {
     }
   }
 
-  Future<Result<NextSuccess, Error>> andThen<NextSuccess>(FutureOr<Result<NextSuccess, Error>> Function(Success) andThenAction) async {
+  Future<Result<NextSuccess, Error>> andThen<NextSuccess>(
+    FutureOr<Result<NextSuccess, Error>> Function(Success) andThenAction,
+  ) async {
     final result = await this;
     switch (result) {
       case Ok(:final v):
@@ -148,7 +150,9 @@ extension FutureResultExt<Success, Error> on Future<Result<Success, Error>> {
     }
   }
 
-  Future<Result<NextSuccess, ()>> andThenEmptyErr<NextSuccess, NextError>(FutureOr<Result<NextSuccess, NextError>> Function(Success) andThenAction) async {
+  Future<Result<NextSuccess, ()>> andThenEmptyErr<NextSuccess, NextError>(
+    FutureOr<Result<NextSuccess, NextError>> Function(Success) andThenAction,
+  ) async {
     final result = await this;
     switch (result) {
       case Ok(:final v):
@@ -165,7 +169,9 @@ extension FutureResultExt<Success, Error> on Future<Result<Success, Error>> {
 }
 
 extension ResultExtAppError<Success, Error extends AppError> on Future<Result<Success, Error>> {
-  Future<Result<NextSuccess, AppError>> andThen<NextSuccess, NextErr extends AppError>(FutureOr<Result<NextSuccess, NextErr>> Function(Success) andThenAction) async {
+  Future<Result<NextSuccess, AppError>> andThen<NextSuccess, NextErr extends AppError>(
+    FutureOr<Result<NextSuccess, NextErr>> Function(Success) andThenAction,
+  ) async {
     final result = await this;
     switch (result) {
       case Ok(:final v):
@@ -176,7 +182,12 @@ extension ResultExtAppError<Success, Error extends AppError> on Future<Result<Su
   }
 }
 
-extension ResultExtAppErrorFlatten<Success, ErrorInner extends AppError, ErrorOuter extends AppError> on Future<Result<Result<Success, ErrorInner>, ErrorOuter>> {
+extension ResultExtAppErrorFlatten<
+  Success,
+  ErrorInner extends AppError,
+  ErrorOuter extends AppError
+>
+    on Future<Result<Result<Success, ErrorInner>, ErrorOuter>> {
   Future<Result<Success, AppError>> flatten() async {
     final result = await this;
     switch (result) {
@@ -188,7 +199,8 @@ extension ResultExtAppErrorFlatten<Success, ErrorInner extends AppError, ErrorOu
   }
 }
 
-extension ResultExtAppErrorErrorIfNull<Success extends Object, ErrorInner extends AppError> on Future<Result<Success?, ErrorInner>> {
+extension ResultExtAppErrorErrorIfNull<Success extends Object, ErrorInner extends AppError>
+    on Future<Result<Success?, ErrorInner>> {
   Future<Result<Success, AppError>> errorIfNull() async {
     final result = await this;
     switch (result) {

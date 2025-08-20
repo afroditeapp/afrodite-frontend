@@ -1,4 +1,3 @@
-
 import "package:app/localizations.dart";
 import "package:app/utils/list.dart";
 import "package:flutter/widgets.dart";
@@ -56,9 +55,7 @@ class ClientFeaturesConfigData with _$ClientFeaturesConfigData {
   }
 
   List<String> newsLocales() {
-    final locales = [
-      ...?config.news?.locales,
-    ];
+    final locales = [...?config.news?.locales];
 
     // Make sure that first item is "default" locale.
     final defaultLocale = "default";
@@ -75,7 +72,8 @@ class ClientFeaturesConfigData with _$ClientFeaturesConfigData {
 
   String? ipCountryDataAttribution(BuildContext context) {
     final locale = context.strings.localeName;
-    return config.attribution.ipCountry?.translations[locale] ?? config.attribution.ipCountry?.default_;
+    return config.attribution.ipCountry?.translations[locale] ??
+        config.attribution.ipCountry?.default_;
   }
 }
 
@@ -114,11 +112,13 @@ class Time {
 }
 
 UtcDateTime currentDayTime(UtcDateTime currentTime, Time time) {
-  return UtcDateTime.fromDateTime(currentTime.dateTime.copyWith(
-    hour: time.hour,
-    minute: time.minute,
-    second: 0,
-    millisecond: 0,
-    microsecond: 0,
-  ));
+  return UtcDateTime.fromDateTime(
+    currentTime.dateTime.copyWith(
+      hour: time.hour,
+      minute: time.minute,
+      second: 0,
+      millisecond: 0,
+      microsecond: 0,
+    ),
+  );
 }

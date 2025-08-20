@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 
 import 'package:app/ui/normal/chat/message_row.dart';
@@ -15,11 +14,7 @@ import 'package:app/ui_utils/dialog.dart';
 class ReportChatMessageScreen extends StatefulWidget {
   final ProfileEntry profileEntry;
   final List<MessageEntry> messages;
-  const ReportChatMessageScreen({
-    required this.profileEntry,
-    required this.messages,
-    super.key,
-  });
+  const ReportChatMessageScreen({required this.profileEntry, required this.messages, super.key});
 
   @override
   State<ReportChatMessageScreen> createState() => _ReportChatMessageScreen();
@@ -52,7 +47,7 @@ class _ReportChatMessageScreen extends State<ReportChatMessageScreen> {
       itemBuilder: (context, index) {
         final entry = messages[index];
         return messageRow(context, entry);
-      }
+      },
     );
   }
 
@@ -61,7 +56,7 @@ class _ReportChatMessageScreen extends State<ReportChatMessageScreen> {
       context,
       entry.message,
       entry.messageState.toSentState(),
-      entry.messageState.toReceivedState()
+      entry.messageState.toReceivedState(),
     );
 
     final String text;
@@ -98,16 +93,20 @@ class _ReportChatMessageScreen extends State<ReportChatMessageScreen> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Align(
-                alignment: entry.messageState.isSent() == true ? Alignment.centerRight : Alignment.centerLeft,
+                alignment: entry.messageState.isSent() == true
+                    ? Alignment.centerRight
+                    : Alignment.centerLeft,
                 child: textWidget,
               ),
               const Padding(padding: EdgeInsets.only(top: 8)),
               Align(
-                alignment: entry.messageState.isSent() == true ? Alignment.centerRight : Alignment.centerLeft,
+                alignment: entry.messageState.isSent() == true
+                    ? Alignment.centerRight
+                    : Alignment.centerLeft,
                 child: timeTextWidget,
-              )
+              ),
             ],
-          )
+          ),
         ),
         if (entry.messageState.isSent() == false) const Spacer(flex: 3),
       ],
@@ -123,22 +122,34 @@ class _ReportChatMessageScreen extends State<ReportChatMessageScreen> {
           scrollable: true,
         );
         if (context.mounted && r == true) {
-          final backendSignedMessage = await db.accountData((db) => db.message.getBackendSignedPgpMessage(entry.localId)).ok();
+          final backendSignedMessage = await db
+              .accountData((db) => db.message.getBackendSignedPgpMessage(entry.localId))
+              .ok();
           if (backendSignedMessage == null) {
             showSnackBar(R.strings.report_chat_message_screen_backend_signed_message_not_found);
             return;
           }
-          final symmetricKey = await db.accountData((db) => db.message.getSymmetricMessageEncryptionKey(entry.localId)).ok();
+          final symmetricKey = await db
+              .accountData((db) => db.message.getSymmetricMessageEncryptionKey(entry.localId))
+              .ok();
           if (symmetricKey == null) {
-            showSnackBar(R.strings.report_chat_message_screen_symmetric_message_encryption_key_not_found);
+            showSnackBar(
+              R.strings.report_chat_message_screen_symmetric_message_encryption_key_not_found,
+            );
             return;
           }
 
-          final result = await api.chat((api) => api.postChatMessageReport(UpdateChatMessageReport(
-            target: widget.profileEntry.accountId,
-            backendSignedMessageBase64: base64Encode(backendSignedMessage),
-            decryptionKeyBase64: base64Encode(symmetricKey),
-          ))).ok();
+          final result = await api
+              .chat(
+                (api) => api.postChatMessageReport(
+                  UpdateChatMessageReport(
+                    target: widget.profileEntry.accountId,
+                    backendSignedMessageBase64: base64Encode(backendSignedMessage),
+                    decryptionKeyBase64: base64Encode(symmetricKey),
+                  ),
+                ),
+              )
+              .ok();
 
           if (result == null) {
             showSnackBar(R.strings.generic_error_occurred);

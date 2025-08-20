@@ -30,26 +30,25 @@ import 'package:app/ui_utils/snack_bar.dart';
 var log = Logger("ConversationPage");
 
 void openConversationScreen(BuildContext context, ProfileEntry profile) {
-  final details = newConversationPage(
-    profile,
+  final details = newConversationPage(profile);
+  context.read<NavigatorStateBloc>().pushWithKey(
+    details.page,
+    details.pageKey!,
+    pageInfo: details.pageInfo,
   );
-  context.read<NavigatorStateBloc>()
-    .pushWithKey(details.page, details.pageKey!, pageInfo: details.pageInfo);
 }
 
-NewPageDetails newConversationPage(
-  ProfileEntry profile,
-) {
+NewPageDetails newConversationPage(ProfileEntry profile) {
   final pageKey = PageKey();
   return NewPageDetails(
     MaterialPage<void>(
       child: BlocProvider(
         create: (_) => ConversationBloc(
           profile.accountId,
-          DefaultConversationDataProvider(LoginRepository.getInstance().repositories.chat)
+          DefaultConversationDataProvider(LoginRepository.getInstance().repositories.chat),
         ),
         lazy: false,
-        child: ConversationPage(pageKey, profile)
+        child: ConversationPage(pageKey, profile),
       ),
     ),
     pageKey: pageKey,
@@ -60,11 +59,7 @@ NewPageDetails newConversationPage(
 class ConversationPage extends StatefulWidget {
   final PageKey pageKey;
   final ProfileEntry profileEntry;
-  const ConversationPage(
-    this.pageKey,
-    this.profileEntry,
-    {super.key}
-  );
+  const ConversationPage(this.pageKey, this.profileEntry, {super.key});
 
   @override
   ConversationPageState createState() => ConversationPageState();
@@ -92,7 +87,13 @@ class ConversationPageState extends State<ConversationPage> {
               ),
               child: InkWell(
                 onTap: () {
-                  openProfileView(context, widget.profileEntry, null, ProfileRefreshPriority.high, noAction: true);
+                  openProfileView(
+                    context,
+                    widget.profileEntry,
+                    null,
+                    ProfileRefreshPriority.high,
+                    noAction: true,
+                  );
                 },
                 child: Padding(
                   padding: const EdgeInsets.only(left: 8.0, right: 8.0),
@@ -119,14 +120,15 @@ class ConversationPageState extends State<ConversationPage> {
                 ),
               ),
             );
-          }
+          },
         ),
         actions: [
-          if (context.read<ClientFeaturesConfigBloc>().state.config.features.videoCalls) IconButton(
-            onPressed: () => sendVideoCallInviteDialog(context),
-            icon: const Icon(Icons.videocam),
-            tooltip: context.strings.conversation_screen_send_video_call_invitation_action,
-          ),
+          if (context.read<ClientFeaturesConfigBloc>().state.config.features.videoCalls)
+            IconButton(
+              onPressed: () => sendVideoCallInviteDialog(context),
+              icon: const Icon(Icons.videocam),
+              tooltip: context.strings.conversation_screen_send_video_call_invitation_action,
+            ),
           menuActions([
             commonActionBlockProfile(context, () {
               context.read<ConversationBloc>().add(BlockProfile(widget.profileEntry.accountId));
@@ -170,8 +172,7 @@ class ConversationPageState extends State<ConversationPage> {
               alignment: Alignment.topCenter,
               child: BlocBuilder<ConversationBloc, ConversationData>(
                 buildWhen: (previous, current) =>
-                  previous.isMatch != current.isMatch ||
-                  previous.isBlocked != current.isBlocked,
+                    previous.isMatch != current.isMatch || previous.isBlocked != current.isBlocked,
                 builder: (context, state) {
                   if (state.isBlocked) {
                     Future.delayed(Duration.zero, () {
@@ -191,7 +192,7 @@ class ConversationPageState extends State<ConversationPage> {
                 },
               ),
             ),
-          )
+          ),
         ),
         SafeArea(child: newMessageArea(context)),
         const MessageRenderer(),
@@ -201,7 +202,8 @@ class ConversationPageState extends State<ConversationPage> {
 
   Widget newMessageArea(BuildContext context) {
     return BlocBuilder<ConversationBloc, ConversationData>(
-      buildWhen: (previous, current) => previous.resetMessageInputField != current.resetMessageInputField,
+      buildWhen: (previous, current) =>
+          previous.resetMessageInputField != current.resetMessageInputField,
       builder: (context, state) {
         if (state.resetMessageInputField) {
           _textEditingController.clear();
@@ -256,7 +258,11 @@ class ConversationPageState extends State<ConversationPage> {
       return;
     }
 
-    final r = await showConfirmDialog(context, context.strings.conversation_screen_send_video_call_invitation_dialog_title, yesNoActions: true);
+    final r = await showConfirmDialog(
+      context,
+      context.strings.conversation_screen_send_video_call_invitation_dialog_title,
+      yesNoActions: true,
+    );
     if (r == true && context.mounted) {
       sendMessage(context, VideoCallInvitation());
     }

@@ -1,5 +1,3 @@
-
-
 import 'package:meta/meta.dart';
 
 /// List with immutable order and elemtents.
@@ -35,9 +33,7 @@ class UnmodifiableList<T> extends Iterable<T> {
 
   /// Create copy of this list and remove element at [index] from the new list.
   UnmodifiableList<T> removeAt(int index) {
-    final l = [
-      ..._list,
-    ];
+    final l = [..._list];
 
     l.removeAt(index);
 
@@ -46,19 +42,13 @@ class UnmodifiableList<T> extends Iterable<T> {
 
   /// Create copy of this list and push new value to the new list.
   UnmodifiableList<T> add(T value) {
-    final l = [
-      ..._list,
-      value,
-    ];
+    final l = [..._list, value];
     return UnmodifiableList(l);
   }
 
   /// Create copy of this list and push new values to the new list.
   UnmodifiableList<T> addAll(Iterable<T> values) {
-    final l = [
-      ..._list,
-      ...values,
-    ];
+    final l = [..._list, ...values];
     return UnmodifiableList(l);
   }
 

@@ -43,7 +43,10 @@ class AskProfileBasicInfoScreen extends StatelessWidget {
         },
         question: Column(
           children: [
-            questionTitleText(context, context.strings.initial_setup_screen_profile_basic_info_title),
+            questionTitleText(
+              context,
+              context.strings.initial_setup_screen_profile_basic_info_title,
+            ),
             AskProfileBasicInfo(
               profileNameInitialValue: profileName,
               setterProfileName: (value) {
@@ -63,7 +66,9 @@ class AskProfileBasicInfoScreen extends StatelessWidget {
 
 bool nameIsValid(BuildContext context, String? name) {
   final profileNameRegex = context.read<ClientFeaturesConfigBloc>().state.profileNameRegex;
-  return name != null && name.isNotEmpty && (profileNameRegex == null || profileNameRegex.hasMatch(name));
+  return name != null &&
+      name.isNotEmpty &&
+      (profileNameRegex == null || profileNameRegex.hasMatch(name));
 }
 
 class AskProfileBasicInfo extends StatefulWidget {
@@ -121,10 +126,7 @@ class _AskProfileBasicInfoState extends State<AskProfileBasicInfo> {
             widget.setterProfileName(value);
           },
         ),
-        Text(
-          context.strings.generic_age,
-          style: Theme.of(context).textTheme.bodyLarge,
-        ),
+        Text(context.strings.generic_age, style: Theme.of(context).textTheme.bodyLarge),
         AgeTextField(
           getInitialValue: () => widget.ageInitialValue,
           onChanged: (value) {
@@ -138,12 +140,10 @@ class _AskProfileBasicInfoState extends State<AskProfileBasicInfo> {
 }
 
 Widget profileNameTextField(
-  BuildContext context,
-  {
-    required TextEditingController controller,
-    required void Function(String) onChanged,
-  }
-) {
+  BuildContext context, {
+  required TextEditingController controller,
+  required void Function(String) onChanged,
+}) {
   return BlocBuilder<ClientFeaturesConfigBloc, ClientFeaturesConfigData>(
     builder: (context, state) {
       return TextField(
@@ -170,6 +170,6 @@ Widget profileNameTextField(
           }),
         ],
       );
-    }
+    },
   );
 }

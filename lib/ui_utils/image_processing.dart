@@ -14,7 +14,9 @@ import "package:app/ui_utils/view_image_screen.dart";
 import "package:app/ui_utils/dialog.dart";
 
 /// Zero sized widgets related to image processing.
-List<Widget> imageProcessingUiWidgets<B extends Bloc<ImageProcessingEvent, ImageProcessingData>>({required void Function(BuildContext, ProcessedAccountImage) onComplete}) {
+List<Widget> imageProcessingUiWidgets<B extends Bloc<ImageProcessingEvent, ImageProcessingData>>({
+  required void Function(BuildContext, ProcessedAccountImage) onComplete,
+}) {
   return [
     confirmDialogOpener<B>(),
     uploadImageProgressDialogListener<B>(),
@@ -33,11 +35,13 @@ Widget confirmDialogOpener<B extends Bloc<ImageProcessingEvent, ImageProcessingD
         bloc.add(ResetState());
         final accepted = await _confirmDialogForImage(context, processingState.imgBytes);
         if (accepted == true) {
-          bloc.add(SendImageToSlot(
-            processingState.imgBytes,
-            processingState.slot,
-            secureCapture: processingState.secureCapture,
-          ));
+          bloc.add(
+            SendImageToSlot(
+              processingState.imgBytes,
+              processingState.slot,
+              secureCapture: processingState.secureCapture,
+            ),
+          );
         }
       }
     },
@@ -50,9 +54,7 @@ Future<bool?> _confirmDialogForImage(BuildContext context, Uint8List imageBytes)
     onTap: () {
       MyNavigator.push(
         context,
-        MaterialPage<void>(
-          child: ViewImageScreen(ViewImageBytesContent(imageBytes))
-        )
+        MaterialPage<void>(child: ViewImageScreen(ViewImageBytesContent(imageBytes))),
       );
     },
     // Width seems to prevent the dialog from expanding horizontaly
@@ -86,14 +88,16 @@ Future<bool?> _confirmDialogForImage(BuildContext context, Uint8List imageBytes)
   );
 }
 
-Widget uploadImageProgressDialogListener<B extends Bloc<ImageProcessingEvent, ImageProcessingData>>() {
+Widget
+uploadImageProgressDialogListener<B extends Bloc<ImageProcessingEvent, ImageProcessingData>>() {
   return ProgressDialogOpener<B, ImageProcessingData>(
     dialogVisibilityGetter: (state) => state.processingState is SendingInProgress,
     stateInfoBuilder: (context, state) {
       final processingState = state.processingState;
       if (processingState is SendingInProgress) {
         final String s = switch (processingState.state) {
-          DataUploadInProgress() => context.strings.image_processing_ui_upload_in_progress_dialog_description,
+          DataUploadInProgress() =>
+            context.strings.image_processing_ui_upload_in_progress_dialog_description,
           ServerDataProcessingInProgress s => s.uiText(context),
         };
         return Text(s);
@@ -112,9 +116,15 @@ Widget uploadErrorDialogOpener<B extends Bloc<ImageProcessingEvent, ImageProcess
       if (processingState is SendingFailed) {
         context.read<B>().add(ResetState());
         if (processingState.nsfwDetected) {
-          await showInfoDialog(context, context.strings.image_processing_ui_nsfw_detected_dialog_title);
+          await showInfoDialog(
+            context,
+            context.strings.image_processing_ui_nsfw_detected_dialog_title,
+          );
         } else {
-          await showInfoDialog(context, context.strings.image_processing_ui_upload_failed_dialog_title);
+          await showInfoDialog(
+            context,
+            context.strings.image_processing_ui_upload_failed_dialog_title,
+          );
         }
       }
     },
@@ -122,7 +132,9 @@ Widget uploadErrorDialogOpener<B extends Bloc<ImageProcessingEvent, ImageProcess
   );
 }
 
-Widget uploadCompletedListener<B extends Bloc<ImageProcessingEvent, ImageProcessingData>>(void Function(BuildContext, ProcessedAccountImage) onComplete) {
+Widget uploadCompletedListener<B extends Bloc<ImageProcessingEvent, ImageProcessingData>>(
+  void Function(BuildContext, ProcessedAccountImage) onComplete,
+) {
   return BlocListener<B, ImageProcessingData>(
     listenWhen: (previous, current) => previous.processedImage != current.processedImage,
     listener: (context, state) async {

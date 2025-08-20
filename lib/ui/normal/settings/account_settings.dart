@@ -1,5 +1,3 @@
-
-
 import 'package:app/logic/app/navigator_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,26 +10,21 @@ import 'package:app/ui_utils/padding.dart';
 
 void openAccountSettings(BuildContext context) {
   final accountDetailsBloc = context.read<AccountDetailsBloc>();
-  MyNavigator.push(context, MaterialPage<void>(child:
-    AccountSettingsScreen(
-      accountDetailsBloc: accountDetailsBloc,
-    )
-  ));
+  MyNavigator.push(
+    context,
+    MaterialPage<void>(child: AccountSettingsScreen(accountDetailsBloc: accountDetailsBloc)),
+  );
 }
 
 class AccountSettingsScreen extends StatefulWidget {
   final AccountDetailsBloc accountDetailsBloc;
-  const AccountSettingsScreen({
-    required this.accountDetailsBloc,
-    super.key,
-  });
+  const AccountSettingsScreen({required this.accountDetailsBloc, super.key});
 
   @override
   State<AccountSettingsScreen> createState() => _AccountSettingsScreenState();
 }
 
 class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
-
   @override
   void initState() {
     super.initState();
@@ -41,9 +34,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(context.strings.account_settings_screen_title),
-      ),
+      appBar: AppBar(title: Text(context.strings.account_settings_screen_title)),
       body: content(),
     );
   }
@@ -59,22 +50,21 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
         } else {
           return successfulLoading(context, email);
         }
-      }
+      },
     );
   }
 
-  Widget successfulLoading(
-    BuildContext context,
-    String email,
-  ) {
+  Widget successfulLoading(BuildContext context, String email) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Padding(padding: EdgeInsets.all(4)),
-        hPad(Text(
-          context.strings.account_settings_screen_email_title,
-          style: Theme.of(context).textTheme.titleSmall,
-        )),
+        hPad(
+          Text(
+            context.strings.account_settings_screen_email_title,
+            style: Theme.of(context).textTheme.titleSmall,
+          ),
+        ),
         hPad(Text(email)),
         const Padding(padding: EdgeInsets.all(4)),
         deleteAccount(),
@@ -83,11 +73,18 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
   }
 
   Widget deleteAccount() {
-    return Setting.createSetting(Icons.delete, context.strings.account_settings_screen_delete_account_action, () async {
-      final accepted = await showConfirmDialog(context, context.strings.account_settings_screen_delete_account_confirm_dialog_title);
-      if (accepted == true) {
-        widget.accountDetailsBloc.add(MoveAccountToPendingDeletionState());
-      }
-    }).toListTile();
+    return Setting.createSetting(
+      Icons.delete,
+      context.strings.account_settings_screen_delete_account_action,
+      () async {
+        final accepted = await showConfirmDialog(
+          context,
+          context.strings.account_settings_screen_delete_account_confirm_dialog_title,
+        );
+        if (accepted == true) {
+          widget.accountDetailsBloc.add(MoveAccountToPendingDeletionState());
+        }
+      },
+    ).toListTile();
   }
 }

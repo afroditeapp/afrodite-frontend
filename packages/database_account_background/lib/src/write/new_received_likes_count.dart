@@ -1,4 +1,3 @@
-
 import 'package:database_account_background/database_account_background.dart';
 import 'package:database_utils/database_utils.dart';
 import 'package:drift/drift.dart';
@@ -8,12 +7,9 @@ import '../schema.dart' as schema;
 
 part 'new_received_likes_count.g.dart';
 
-@DriftAccessor(
-  tables: [
-    schema.NewReceivedLikesCount,
-  ]
-)
-class DaoWriteNewReceivedLikesCount extends DatabaseAccessor<AccountBackgroundDatabase> with _$DaoWriteNewReceivedLikesCountMixin {
+@DriftAccessor(tables: [schema.NewReceivedLikesCount])
+class DaoWriteNewReceivedLikesCount extends DatabaseAccessor<AccountBackgroundDatabase>
+    with _$DaoWriteNewReceivedLikesCountMixin {
   DaoWriteNewReceivedLikesCount(super.db);
 
   Future<void> updateSyncVersionReceivedLikes(
@@ -29,9 +25,7 @@ class DaoWriteNewReceivedLikesCount extends DatabaseAccessor<AccountBackgroundDa
     );
   }
 
-  Future<void> updateReceivedLikesCountNotViewed(
-    api.NewReceivedLikesCount count,
-  ) async {
+  Future<void> updateReceivedLikesCountNotViewed(api.NewReceivedLikesCount count) async {
     await into(newReceivedLikesCount).insertOnConflictUpdate(
       NewReceivedLikesCountCompanion.insert(
         id: SingleRowTable.ID,

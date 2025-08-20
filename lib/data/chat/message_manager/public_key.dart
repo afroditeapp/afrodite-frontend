@@ -23,9 +23,7 @@ class PublicKeyUtils {
     if (r.isErr()) {
       return const Err(());
     } else {
-      return await db.accountData((db) => db.key.getPublicKey(accountId))
-        .errorIfNull()
-        .emptyErr();
+      return await db.accountData((db) => db.key.getPublicKey(accountId)).errorIfNull().emptyErr();
     }
   }
 
@@ -39,9 +37,10 @@ class PublicKeyUtils {
           if (await _refreshForeignPublicKey(accountId, wantedPublicKeyId).isErr()) {
             return const Err(());
           } else {
-            return await db.accountData((db) => db.key.getPublicKey(accountId))
-              .errorIfNull()
-              .emptyErr();
+            return await db
+                .accountData((db) => db.key.getPublicKey(accountId))
+                .errorIfNull()
+                .emptyErr();
           }
         } else {
           return Ok(v);
@@ -60,9 +59,10 @@ class PublicKeyUtils {
           if (await _refreshForeignPublicKey(accountId, null).isErr()) {
             return const Err(());
           } else {
-            return await db.accountData((db) => db.key.getPublicKey(accountId))
-              .errorIfNull()
-              .emptyErr();
+            return await db
+                .accountData((db) => db.key.getPublicKey(accountId))
+                .errorIfNull()
+                .emptyErr();
           }
         } else {
           return Ok(v);
@@ -72,7 +72,10 @@ class PublicKeyUtils {
     }
   }
 
-  Future<Result<(), ()>> _refreshForeignPublicKey(AccountId accountId, PublicKeyId? wantedKey) async {
+  Future<Result<(), ()>> _refreshForeignPublicKey(
+    AccountId accountId,
+    PublicKeyId? wantedKey,
+  ) async {
     final PublicKeyId wantedPublicKeyId;
     if (wantedKey == null) {
       // Get latest key
@@ -92,7 +95,9 @@ class PublicKeyUtils {
       wantedPublicKeyId = wantedKey;
     }
 
-    final keyResult = await api.chat((api) => api.getPublicKeyFixed(accountId.aid, wantedPublicKeyId.id));
+    final keyResult = await api.chat(
+      (api) => api.getPublicKeyFixed(accountId.aid, wantedPublicKeyId.id),
+    );
     final Uint8List latestPublicKeyData;
     switch (keyResult) {
       case Ok(:final v):
@@ -115,7 +120,16 @@ class PublicKeyUtils {
         return const Err(());
     }
 
-    return await db.accountAction((db) => db.key.updatePublicKeyAndAddInfoMessage(currentUser, accountId, latestPublicKeyData, wantedPublicKeyId, infoState))
-      .emptyErr();
+    return await db
+        .accountAction(
+          (db) => db.key.updatePublicKeyAndAddInfoMessage(
+            currentUser,
+            accountId,
+            latestPublicKeyData,
+            wantedPublicKeyId,
+            infoState,
+          ),
+        )
+        .emptyErr();
   }
 }

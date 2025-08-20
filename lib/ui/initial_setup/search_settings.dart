@@ -40,7 +40,8 @@ class AskSearchSettingsScreen extends StatelessWidget {
       context: context,
       child: QuestionAsker(
         getContinueButtonCallback: (context, state) {
-          if (state.genderSearchSetting.notEmpty() && ageRangeIsValid(state.searchAgeRangeMin, state.searchAgeRangeMax)) {
+          if (state.genderSearchSetting.notEmpty() &&
+              ageRangeIsValid(state.searchAgeRangeMin, state.searchAgeRangeMax)) {
             return () {
               MyNavigator.push(context, const MaterialPage<void>(child: AskLocationScreen()));
             };
@@ -71,7 +72,6 @@ class AskSearchSettings extends StatefulWidget {
 }
 
 class _AskSearchSettingsState extends State<AskSearchSettings> {
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -80,18 +80,12 @@ class _AskSearchSettingsState extends State<AskSearchSettings> {
         askGenderSearchQuestion(context),
         subtitle(context.strings.initial_setup_screen_search_settings_min_age_subtitle),
         Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: INITIAL_SETUP_PADDING,
-            vertical: 8.0,
-          ),
+          padding: const EdgeInsets.symmetric(horizontal: INITIAL_SETUP_PADDING, vertical: 8.0),
           child: minAgeField(),
         ),
         subtitle(context.strings.initial_setup_screen_search_settings_max_age_subtitle),
         Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: INITIAL_SETUP_PADDING,
-            vertical: 8.0,
-          ),
+          padding: const EdgeInsets.symmetric(horizontal: INITIAL_SETUP_PADDING, vertical: 8.0),
           child: maxAgeField(),
         ),
       ],
@@ -103,10 +97,7 @@ class _AskSearchSettingsState extends State<AskSearchSettings> {
       alignment: Alignment.centerLeft,
       child: Padding(
         padding: const EdgeInsets.all(INITIAL_SETUP_PADDING),
-        child: Text(
-          text,
-          style: Theme.of(context).textTheme.titleLarge,
-        ),
+        child: Text(text, style: Theme.of(context).textTheme.titleLarge),
       ),
     );
   }
@@ -114,16 +105,14 @@ class _AskSearchSettingsState extends State<AskSearchSettings> {
   Widget askGenderSearchQuestion(BuildContext context) {
     return BlocBuilder<InitialSetupBloc, InitialSetupData>(
       builder: (context, state) {
-        return genderSearchSettingCheckboxes(
-          context,
-          state.gender,
-          state.genderSearchSetting,
-          (isSelected, whatWasSelected) {
-            final newValue = state.genderSearchSetting.updateWith(isSelected, whatWasSelected);
-            context.read<InitialSetupBloc>().add(SetGenderSearchSetting(newValue));
-          }
-        );
-      }
+        return genderSearchSettingCheckboxes(context, state.gender, state.genderSearchSetting, (
+          isSelected,
+          whatWasSelected,
+        ) {
+          final newValue = state.genderSearchSetting.updateWith(isSelected, whatWasSelected);
+          context.read<InitialSetupBloc>().add(SetGenderSearchSetting(newValue));
+        });
+      },
     );
   }
 
@@ -141,7 +130,7 @@ class _AskSearchSettingsState extends State<AskSearchSettings> {
             },
           ),
         );
-      }
+      },
     );
   }
 
@@ -159,7 +148,7 @@ class _AskSearchSettingsState extends State<AskSearchSettings> {
             },
           ),
         );
-      }
+      },
     );
   }
 }
@@ -182,14 +171,21 @@ Widget genderSearchSettingCheckboxes(
   final widgets = checkboxOrder.map((e) {
     return switch (e) {
       Gender.man => searchSettingCheckbox(context, selected?.men == true, Gender.man, onChanged),
-      Gender.woman => searchSettingCheckbox(context, selected?.women == true, Gender.woman, onChanged),
-      Gender.nonBinary => searchSettingCheckbox(context, selected?.nonBinary == true, Gender.nonBinary, onChanged),
+      Gender.woman => searchSettingCheckbox(
+        context,
+        selected?.women == true,
+        Gender.woman,
+        onChanged,
+      ),
+      Gender.nonBinary => searchSettingCheckbox(
+        context,
+        selected?.nonBinary == true,
+        Gender.nonBinary,
+        onChanged,
+      ),
     };
   }).toList();
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: widgets,
-  );
+  return Column(crossAxisAlignment: CrossAxisAlignment.start, children: widgets);
 }
 
 Widget searchSettingCheckbox(

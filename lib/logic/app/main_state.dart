@@ -13,19 +13,27 @@ enum MainState {
   accountBanned,
   pendingRemoval,
   unsupportedClientVersion,
-  demoAccount;
+  demoAccount,
 }
 
 abstract class MainStateEvent {}
 
 class ToSplashScreen extends MainStateEvent {}
+
 class ToLoginRequiredScreen extends MainStateEvent {}
+
 class ToInitialSetup extends MainStateEvent {}
+
 class ToMainScreenWhenInitialSetupIsSkipped extends MainStateEvent {}
+
 class ToMainScreen extends MainStateEvent {}
+
 class ToAccountBannedScreen extends MainStateEvent {}
+
 class ToPendingRemovalScreen extends MainStateEvent {}
+
 class ToUnsupportedClientScreen extends MainStateEvent {}
+
 class ToDemoAccountScreen extends MainStateEvent {}
 
 /// Get current main state of the account/app
@@ -50,7 +58,9 @@ class MainStateBloc extends Bloc<MainStateEvent, MainState> {
       (a, b, c) => (a, b, c),
     ).listen((current) {
       final (loginState, accountState, initialSetupSkipped) = current;
-      log.finer("loginState: $loginState, accountState: $accountState, initialSetupSkipped: $initialSetupSkipped");
+      log.finer(
+        "loginState: $loginState, accountState: $accountState, initialSetupSkipped: $initialSetupSkipped",
+      );
       final action = switch (loginState) {
         LoginState.loginRequired => ToLoginRequiredScreen(),
         LoginState.demoAccount => ToDemoAccountScreen(),
@@ -59,7 +69,8 @@ class MainStateBloc extends Bloc<MainStateEvent, MainState> {
         LoginState.viewAccountStateOnceItExists => switch (accountState) {
           // Prevent client getting stuck on splash screen when app starts
           // and getting AccountState fails.
-          AccountStateEmpty() => loginState == LoginState.demoAccount ? ToDemoAccountScreen() : ToLoginRequiredScreen(),
+          AccountStateEmpty() =>
+            loginState == LoginState.demoAccount ? ToDemoAccountScreen() : ToLoginRequiredScreen(),
           AccountStateLoading() => null,
           AccountStateExists(:final state) => switch (state) {
             AccountState.initialSetup => switch (initialSetupSkipped) {
@@ -70,7 +81,7 @@ class MainStateBloc extends Bloc<MainStateEvent, MainState> {
             AccountState.pendingDeletion => ToPendingRemovalScreen(),
             AccountState.normal => ToMainScreen(),
           },
-        }
+        },
       };
 
       if (action != null) {

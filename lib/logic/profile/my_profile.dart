@@ -16,29 +16,26 @@ import "package:app/utils.dart";
 import "package:app/utils/result.dart";
 import "package:app/utils/time.dart";
 
-
 sealed class MyProfileEvent {}
+
 class SetProfile extends MyProfileEvent {
   final ProfileUpdate profile;
   final SetProfileContent pictures;
   final bool unlimitedLikes;
 
-  SetProfile(
-    this.profile,
-    this.pictures,
-    {
-      required this.unlimitedLikes,
-    }
-  );
+  SetProfile(this.profile, this.pictures, {required this.unlimitedLikes});
 }
+
 class NewMyProfile extends MyProfileEvent {
   final MyProfileEntry? profile;
   NewMyProfile(this.profile);
 }
+
 class NewInitialAgeInfo extends MyProfileEvent {
   final InitialAgeInfo? value;
   NewInitialAgeInfo(this.value);
 }
+
 class ReloadMyProfile extends MyProfileEvent {}
 
 class MyProfileBloc extends Bloc<MyProfileEvent, MyProfileData> with ActionRunner {
@@ -58,17 +55,13 @@ class MyProfileBloc extends Bloc<MyProfileEvent, MyProfileData> with ActionRunne
           return;
         }
 
-        emit(state.copyWith(
-          updateState: const UpdateStarted(),
-        ));
+        emit(state.copyWith(updateState: const UpdateStarted()));
 
         final waitTime = WantedWaitingTimeManager();
 
         var failureDetected = false;
 
-        emit(state.copyWith(
-          updateState: const UpdateInProgress(),
-        ));
+        emit(state.copyWith(updateState: const UpdateInProgress()));
 
         // Do this first as updateProfile reloads the profile
         if (!await account.updateUnlimitedLikesWithoutReloadingProfile(data.unlimitedLikes)) {
@@ -89,9 +82,7 @@ class MyProfileBloc extends Bloc<MyProfileEvent, MyProfileData> with ActionRunne
 
         await waitTime.waitIfNeeded();
 
-        emit(state.copyWith(
-          updateState: const UpdateIdle(),
-        ));
+        emit(state.copyWith(updateState: const UpdateIdle()));
       });
     });
     on<NewMyProfile>((data, emit) async {
@@ -125,12 +116,16 @@ class MyProfileBloc extends Bloc<MyProfileEvent, MyProfileData> with ActionRunne
       });
     });
 
-    _profileSubscription = db.accountStream((db) => db.myProfile.getProfileEntryForMyProfile()).listen((event) {
-      add(NewMyProfile(event));
-    });
-    _initialAgeInfoSubscription = db.accountStream((db) => db.myProfile.watchInitialAgeInfo()).listen((event) {
-      add(NewInitialAgeInfo(event));
-    });
+    _profileSubscription = db
+        .accountStream((db) => db.myProfile.getProfileEntryForMyProfile())
+        .listen((event) {
+          add(NewMyProfile(event));
+        });
+    _initialAgeInfoSubscription = db
+        .accountStream((db) => db.myProfile.watchInitialAgeInfo())
+        .listen((event) {
+          add(NewInitialAgeInfo(event));
+        });
   }
 
   @override

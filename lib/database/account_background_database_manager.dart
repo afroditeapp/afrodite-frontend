@@ -1,4 +1,3 @@
-
 import 'dart:async';
 
 import 'package:drift/drift.dart';
@@ -19,7 +18,9 @@ class AccountBackgroundDatabaseManager {
 
   // Access current account database
 
-  Stream<T?> accountStream<T extends Object>(Stream<T?> Function(AccountBackgroundDatabaseRead) mapper) async* {
+  Stream<T?> accountStream<T extends Object>(
+    Stream<T?> Function(AccountBackgroundDatabaseRead) mapper,
+  ) async* {
     final accountDatabase = db;
     yield* mapper(accountDatabase.read)
     // try-catch does not work with *yield, so await for would be required, but
@@ -31,18 +32,22 @@ class AccountBackgroundDatabaseManager {
     });
   }
 
-  Stream<T> accountStreamOrDefault<T extends Object>(Stream<T?> Function(AccountBackgroundDatabaseRead) mapper, T defaultValue) async* {
-    yield* accountStream(mapper)
-      .map((event) {
-        if (event == null) {
-          return defaultValue;
-        } else {
-          return event;
-        }
-      });
+  Stream<T> accountStreamOrDefault<T extends Object>(
+    Stream<T?> Function(AccountBackgroundDatabaseRead) mapper,
+    T defaultValue,
+  ) async* {
+    yield* accountStream(mapper).map((event) {
+      if (event == null) {
+        return defaultValue;
+      } else {
+        return event;
+      }
+    });
   }
 
-  Future<Result<T, DatabaseError>> accountStreamSingle<T extends Object>(Stream<T?> Function(AccountBackgroundDatabaseRead) mapper) async {
+  Future<Result<T, DatabaseError>> accountStreamSingle<T extends Object>(
+    Stream<T?> Function(AccountBackgroundDatabaseRead) mapper,
+  ) async {
     final stream = accountStream(mapper);
     final value = await stream.first;
     if (value == null) {
@@ -52,12 +57,17 @@ class AccountBackgroundDatabaseManager {
     }
   }
 
-  Future<T> accountStreamSingleOrDefault<T extends Object>(Stream<T?> Function(AccountBackgroundDatabaseRead) mapper, T defaultValue) async {
+  Future<T> accountStreamSingleOrDefault<T extends Object>(
+    Stream<T?> Function(AccountBackgroundDatabaseRead) mapper,
+    T defaultValue,
+  ) async {
     final value = await accountStreamSingle(mapper);
     return value.ok() ?? defaultValue;
   }
 
-  Future<Result<T, DatabaseError>> accountData<T extends Object?>(Future<T> Function(AccountBackgroundDatabaseRead) action) async {
+  Future<Result<T, DatabaseError>> accountData<T extends Object?>(
+    Future<T> Function(AccountBackgroundDatabaseRead) action,
+  ) async {
     try {
       return Ok(await action(db.read));
     } on CouldNotRollBackException catch (e) {
@@ -71,7 +81,9 @@ class AccountBackgroundDatabaseManager {
     }
   }
 
-  Future<Result<T, DatabaseError>> accountDataWrite<T extends Object?>(Future<T> Function(AccountBackgroundDatabaseWrite) action) async {
+  Future<Result<T, DatabaseError>> accountDataWrite<T extends Object?>(
+    Future<T> Function(AccountBackgroundDatabaseWrite) action,
+  ) async {
     try {
       return Ok(await action(db.write));
     } on CouldNotRollBackException catch (e) {
@@ -85,7 +97,9 @@ class AccountBackgroundDatabaseManager {
     }
   }
 
-  Future<Result<(), DatabaseError>> accountAction(Future<void> Function(AccountBackgroundDatabaseWrite) action) async {
+  Future<Result<(), DatabaseError>> accountAction(
+    Future<void> Function(AccountBackgroundDatabaseWrite) action,
+  ) async {
     try {
       await action(db.write);
       return const Ok(());

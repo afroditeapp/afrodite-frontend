@@ -9,7 +9,8 @@ class JsonList<T> {
   JsonList._(this.value);
 }
 
-class ProfileAttributeValueConverter extends TypeConverter<JsonList<ProfileAttributeValue>, String> {
+class ProfileAttributeValueConverter
+    extends TypeConverter<JsonList<ProfileAttributeValue>, String> {
   const ProfileAttributeValueConverter();
 
   @override
@@ -30,6 +31,6 @@ extension ProfileAttributeValueJsonList on List<ProfileAttributeValue> {
 
   Map<int, ProfileAttributeValueUpdate> toProfileAttributesMap() {
     final attributes = map((v) => ProfileAttributeValueUpdate(id: v.id, v: v.v));
-    return { for (var e in attributes) e.id : e };
+    return {for (var e in attributes) e.id: e};
   }
 }

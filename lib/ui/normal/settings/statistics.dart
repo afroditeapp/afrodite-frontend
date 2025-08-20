@@ -1,5 +1,3 @@
-
-
 import 'package:app/utils/list.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -18,9 +16,7 @@ import 'package:app/utils/api.dart';
 import 'package:app/utils/time.dart';
 import 'package:utils/utils.dart';
 
-Future<void> openStatisticsScreen(
-  BuildContext context,
-) {
+Future<void> openStatisticsScreen(BuildContext context) {
   final pageKey = PageKey();
   return MyNavigator.pushWithKey(
     context,
@@ -35,11 +31,7 @@ Future<void> openStatisticsScreen(
   );
 }
 
-enum SelectedConnectionStatistics {
-  min,
-  max,
-  average,
-}
+enum SelectedConnectionStatistics { min, max, average }
 
 enum HourGroup {
   first(0, 5),
@@ -86,15 +78,12 @@ class StatisticsScreenState extends State<StatisticsScreen> {
   int adminVisibilitySelection = 0;
 
   HourGroup? startPositionForConnectionStatisticsByGender;
-  SelectedConnectionStatistics selectedConnectionStatistics =
-    SelectedConnectionStatistics.max;
+  SelectedConnectionStatistics selectedConnectionStatistics = SelectedConnectionStatistics.max;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(context.strings.statistics_screen_title),
-      ),
+      appBar: AppBar(title: Text(context.strings.statistics_screen_title)),
       body: content(),
     );
   }
@@ -106,28 +95,29 @@ class StatisticsScreenState extends State<StatisticsScreen> {
         builder: (context, state) {
           final item = state.item;
           if (state.isLoading) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+            return const Center(child: CircularProgressIndicator());
           } else if (state.isError) {
             return buildListReplacementMessageSimple(
-              context, context.strings.generic_error_occurred
+              context,
+              context.strings.generic_error_occurred,
             );
           } else if (item == null) {
-            return buildListReplacementMessageSimple(
-              context, context.strings.generic_not_found
-            );
+            return buildListReplacementMessageSimple(context, context.strings.generic_not_found);
           } else {
             return viewItem(context, item);
           }
-        }
+        },
       ),
     );
   }
 
   Widget viewItem(BuildContext context, GetProfileStatisticsResult item) {
     final dataTime = fullTimeString(item.generationTime.toUtcDateTime());
-    final adminSettingsAvailable = context.read<AccountBloc>().state.permissions.adminProfileStatistics;
+    final adminSettingsAvailable = context
+        .read<AccountBloc>()
+        .state
+        .permissions
+        .adminProfileStatistics;
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -137,8 +127,16 @@ class StatisticsScreenState extends State<StatisticsScreen> {
           children: [
             if (adminSettingsAvailable) adminControls(context),
             const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
-            Text(context.strings.statistics_screen_count_registered_users(item.accountCountBotsExcluded.toString())),
-            Text(context.strings.statistics_screen_count_online_users(item.onlineAccountCountBotsExcluded.toString())),
+            Text(
+              context.strings.statistics_screen_count_registered_users(
+                item.accountCountBotsExcluded.toString(),
+              ),
+            ),
+            Text(
+              context.strings.statistics_screen_count_online_users(
+                item.onlineAccountCountBotsExcluded.toString(),
+              ),
+            ),
             const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
             const Divider(),
             const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
@@ -154,7 +152,7 @@ class StatisticsScreenState extends State<StatisticsScreen> {
             const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
           ],
         ),
-      )
+      ),
     );
   }
 
@@ -166,7 +164,9 @@ class StatisticsScreenState extends State<StatisticsScreen> {
     };
     final data = ConnectionStatisticsManager.create(connections);
 
-    final hourGroup = startPositionForConnectionStatisticsByGender ?? HourGroup.findLastGroupWithDataOrDefault(data);
+    final hourGroup =
+        startPositionForConnectionStatisticsByGender ??
+        HourGroup.findLastGroupWithDataOrDefault(data);
     startPositionForConnectionStatisticsByGender = hourGroup;
 
     return [
@@ -175,11 +175,20 @@ class StatisticsScreenState extends State<StatisticsScreen> {
       Center(
         child: SegmentedButton<SelectedConnectionStatistics>(
           segments: [
-            ButtonSegment(value: SelectedConnectionStatistics.min, label: Text(context.strings.generic_min)),
-            ButtonSegment(value: SelectedConnectionStatistics.average, label: Text(context.strings.generic_average)),
-            ButtonSegment(value: SelectedConnectionStatistics.max, label: Text(context.strings.generic_max)),
+            ButtonSegment(
+              value: SelectedConnectionStatistics.min,
+              label: Text(context.strings.generic_min),
+            ),
+            ButtonSegment(
+              value: SelectedConnectionStatistics.average,
+              label: Text(context.strings.generic_average),
+            ),
+            ButtonSegment(
+              value: SelectedConnectionStatistics.max,
+              label: Text(context.strings.generic_max),
+            ),
           ],
-          selected: { selectedConnectionStatistics },
+          selected: {selectedConnectionStatistics},
           onSelectionChanged: (selected) {
             setState(() {
               selectedConnectionStatistics = selected.first;
@@ -194,22 +203,28 @@ class StatisticsScreenState extends State<StatisticsScreen> {
         () {
           final groups = <BarChartGroupData>[];
           for (final (localHour, _) in connections.all.indexed) {
-            groups.add(BarChartGroupData(
-              x: localHour,
-              barRods: [
-                BarChartRodData(
-                  color: Theme.of(context).colorScheme.primaryContainer,
-                  toY: data.all(localHour).toDouble(),
-                ),
-              ],
-            ));
+            groups.add(
+              BarChartGroupData(
+                x: localHour,
+                barRods: [
+                  BarChartRodData(
+                    color: Theme.of(context).colorScheme.primaryContainer,
+                    toY: data.all(localHour).toDouble(),
+                  ),
+                ],
+              ),
+            );
           }
           return groups;
         },
         (localHour, rods) {
           var text = "";
           text = appendToString(text, context.strings.statistics_screen_hour_value, localHour);
-          text = appendToStringIfNotZero(text, context.strings.statistics_screen_count_online_users_bar_chart_tooltip, data.all(localHour));
+          text = appendToStringIfNotZero(
+            text,
+            context.strings.statistics_screen_count_online_users_bar_chart_tooltip,
+            data.all(localHour),
+          );
           return text.trim();
         },
         (i) {
@@ -226,23 +241,19 @@ class StatisticsScreenState extends State<StatisticsScreen> {
           final groups = <BarChartGroupData>[];
           for (final (i, _) in connections.all.skip(hourGroup.startIndex).take(6).indexed) {
             final localHour = hourGroup.startIndex + i;
-            groups.add(BarChartGroupData(
-              x: i,
-              barRods: [
-                BarChartRodData(
-                  color: Colors.lightBlue,
-                  toY: data.men(localHour).toDouble(),
-                ),
-                BarChartRodData(
-                  color: Colors.pink,
-                  toY: data.women(localHour).toDouble(),
-                ),
-                BarChartRodData(
-                  color: Theme.of(context).colorScheme.primaryContainer,
-                  toY: data.nonbinaries(localHour).toDouble(),
-                ),
-              ],
-            ));
+            groups.add(
+              BarChartGroupData(
+                x: i,
+                barRods: [
+                  BarChartRodData(color: Colors.lightBlue, toY: data.men(localHour).toDouble()),
+                  BarChartRodData(color: Colors.pink, toY: data.women(localHour).toDouble()),
+                  BarChartRodData(
+                    color: Theme.of(context).colorScheme.primaryContainer,
+                    toY: data.nonbinaries(localHour).toDouble(),
+                  ),
+                ],
+              ),
+            );
           }
           return groups;
         },
@@ -250,9 +261,21 @@ class StatisticsScreenState extends State<StatisticsScreen> {
           final localHour = hourGroup.startIndex + i;
           var text = "";
           text = appendToString(text, context.strings.statistics_screen_hour_value, localHour);
-          text = appendToStringIfNotZero(text, context.strings.statistics_screen_count_men, data.men(localHour));
-          text = appendToStringIfNotZero(text, context.strings.statistics_screen_count_women, data.women(localHour));
-          text = appendToStringIfNotZero(text, context.strings.statistics_screen_count_nonbinaries, data.nonbinaries(localHour));
+          text = appendToStringIfNotZero(
+            text,
+            context.strings.statistics_screen_count_men,
+            data.men(localHour),
+          );
+          text = appendToStringIfNotZero(
+            text,
+            context.strings.statistics_screen_count_women,
+            data.women(localHour),
+          );
+          text = appendToStringIfNotZero(
+            text,
+            context.strings.statistics_screen_count_nonbinaries,
+            data.nonbinaries(localHour),
+          );
           return text.trim();
         },
         (i) {
@@ -269,7 +292,7 @@ class StatisticsScreenState extends State<StatisticsScreen> {
             ButtonSegment(value: HourGroup.third, label: Text(HourGroup.third.uiText())),
             ButtonSegment(value: HourGroup.fourth, label: Text(HourGroup.fourth.uiText())),
           ],
-          selected: { hourGroup },
+          selected: {hourGroup},
           onSelectionChanged: (selected) {
             setState(() {
               startPositionForConnectionStatisticsByGender = selected.first;
@@ -277,7 +300,7 @@ class StatisticsScreenState extends State<StatisticsScreen> {
           },
           showSelectedIcon: false,
         ),
-      )
+      ),
     ];
   }
 
@@ -313,21 +336,26 @@ class StatisticsScreenState extends State<StatisticsScreen> {
         () {
           final groups = <BarChartGroupData>[];
           for (final (i, g) in data.groups.indexed) {
-            groups.add(BarChartGroupData(
-              x: i,
-              barRods: [
-                BarChartRodData(
-                  color: Theme.of(context).colorScheme.primaryContainer,
-                  toY: g.total().toDouble(),
-                ),
-              ],
-            ));
+            groups.add(
+              BarChartGroupData(
+                x: i,
+                barRods: [
+                  BarChartRodData(
+                    color: Theme.of(context).colorScheme.primaryContainer,
+                    toY: g.total().toDouble(),
+                  ),
+                ],
+              ),
+            );
           }
           return groups;
         },
         (i, rods) {
           var text = "";
-          text = appendStringToString(text, context.strings.statistics_screen_age_range(data.groups[i].group().uiText()));
+          text = appendStringToString(
+            text,
+            context.strings.statistics_screen_age_range(data.groups[i].group().uiText()),
+          );
           text = appendToStringIfNotZero(text, currentCountFunction, rods[0].toY.toInt());
           return text.trim();
         },
@@ -343,32 +371,43 @@ class StatisticsScreenState extends State<StatisticsScreen> {
         () {
           final groups = <BarChartGroupData>[];
           for (final (i, g) in data.groups.indexed) {
-            groups.add(BarChartGroupData(
-              x: i,
-              barRods: [
-                BarChartRodData(
-                  color: Colors.lightBlue,
-                  toY: g.men().toDouble(),
-                ),
-                BarChartRodData(
-                  color: Colors.pink,
-                  toY: g.women().toDouble(),
-                ),
-                BarChartRodData(
-                  color: Theme.of(context).colorScheme.primaryContainer,
-                  toY: g.nonbinaries().toDouble(),
-                ),
-              ],
-            ));
+            groups.add(
+              BarChartGroupData(
+                x: i,
+                barRods: [
+                  BarChartRodData(color: Colors.lightBlue, toY: g.men().toDouble()),
+                  BarChartRodData(color: Colors.pink, toY: g.women().toDouble()),
+                  BarChartRodData(
+                    color: Theme.of(context).colorScheme.primaryContainer,
+                    toY: g.nonbinaries().toDouble(),
+                  ),
+                ],
+              ),
+            );
           }
           return groups;
         },
         (i, rods) {
           var text = "";
-          text = appendStringToString(text, context.strings.statistics_screen_age_range(data.groups[i].group().uiText()));
-          text = appendToStringIfNotZero(text, context.strings.statistics_screen_count_men, rods[0].toY.toInt());
-          text = appendToStringIfNotZero(text, context.strings.statistics_screen_count_women, rods[1].toY.toInt());
-          text = appendToStringIfNotZero(text, context.strings.statistics_screen_count_nonbinaries, rods[2].toY.toInt());
+          text = appendStringToString(
+            text,
+            context.strings.statistics_screen_age_range(data.groups[i].group().uiText()),
+          );
+          text = appendToStringIfNotZero(
+            text,
+            context.strings.statistics_screen_count_men,
+            rods[0].toY.toInt(),
+          );
+          text = appendToStringIfNotZero(
+            text,
+            context.strings.statistics_screen_count_women,
+            rods[1].toY.toInt(),
+          );
+          text = appendToStringIfNotZero(
+            text,
+            context.strings.statistics_screen_count_nonbinaries,
+            rods[2].toY.toInt(),
+          );
           return text.trim();
         },
         (i) => data.groups[i].group().uiText(),
@@ -398,21 +437,17 @@ class StatisticsScreenState extends State<StatisticsScreen> {
               },
               getTooltipColor: (group) {
                 return Theme.of(context).colorScheme.primaryContainer;
-              }
-            )
+              },
+            ),
           ),
           titlesData: FlTitlesData(
-            topTitles: const AxisTitles(
-              sideTitles: SideTitles(
-                showTitles: false,
-              ),
-            ),
+            topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
             leftTitles: const AxisTitles(
               sideTitles: SideTitles(
                 showTitles: true,
                 minIncluded: false,
                 maxIncluded: false,
-                reservedSize: 44
+                reservedSize: 44,
               ),
             ),
             rightTitles: const AxisTitles(
@@ -420,7 +455,7 @@ class StatisticsScreenState extends State<StatisticsScreen> {
                 showTitles: true,
                 minIncluded: false,
                 maxIncluded: false,
-                reservedSize: 44
+                reservedSize: 44,
               ),
             ),
             bottomTitles: AxisTitles(
@@ -430,10 +465,7 @@ class StatisticsScreenState extends State<StatisticsScreen> {
                 getTitlesWidget: (value, meta) {
                   final title = groupTitleBuilder(value.toInt());
                   if (title != null) {
-                    return Padding(
-                      padding: const EdgeInsets.only(top: 2),
-                      child: Text(title),
-                    );
+                    return Padding(padding: const EdgeInsets.only(top: 2), child: Text(title));
                   } else {
                     return const SizedBox.shrink();
                   }
@@ -451,10 +483,7 @@ class StatisticsScreenState extends State<StatisticsScreen> {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          "Admin settings",
-          style: Theme.of(context).textTheme.titleLarge,
-        ),
+        Text("Admin settings", style: Theme.of(context).textTheme.titleLarge),
         const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
         CheckboxListTile(
           title: const Text("Show only fresh statistics"),
@@ -464,7 +493,8 @@ class StatisticsScreenState extends State<StatisticsScreen> {
               adminGenerateStatistics = value ?? false;
               reload(context);
             });
-        }),
+          },
+        ),
         const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -477,21 +507,18 @@ class StatisticsScreenState extends State<StatisticsScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Wrap(
             spacing: 5.0,
-            children: List<ChoiceChip>.generate(
-              StatisticsProfileVisibility.values.length,
-                (i) {
-                  return ChoiceChip(
-                    label: Text(StatisticsProfileVisibility.values[i].toString()),
-                    selected: adminVisibilitySelection == i,
-                    onSelected: (value) {
-                      setState(() {
-                        adminVisibilitySelection = i;
-                        reload(context);
-                      });
-                    },
-                  );
+            children: List<ChoiceChip>.generate(StatisticsProfileVisibility.values.length, (i) {
+              return ChoiceChip(
+                label: Text(StatisticsProfileVisibility.values[i].toString()),
+                selected: adminVisibilitySelection == i,
+                onSelected: (value) {
+                  setState(() {
+                    adminVisibilitySelection = i;
+                    reload(context);
+                  });
                 },
-              ),
+              );
+            }),
           ),
         ),
         const Divider(),
@@ -500,11 +527,13 @@ class StatisticsScreenState extends State<StatisticsScreen> {
   }
 
   void reload(BuildContext context) {
-    context.read<StatisticsBloc>().add(Reload(
-      adminRefresh: true,
-      generateNew: adminGenerateStatistics,
-      visibility: StatisticsProfileVisibility.values[adminVisibilitySelection],
-    ));
+    context.read<StatisticsBloc>().add(
+      Reload(
+        adminRefresh: true,
+        generateNew: adminGenerateStatistics,
+        visibility: StatisticsProfileVisibility.values[adminVisibilitySelection],
+      ),
+    );
   }
 
   String appendStringToString(String current, String value) {
@@ -583,9 +612,7 @@ class AgeGroupManager {
   AgeGroupManager._(this.groups);
 
   factory AgeGroupManager() {
-    return AgeGroupManager._(
-      AgeGroup.visibleGroups.map((v) => AgeGroupAndValues(v)).toList()
-    );
+    return AgeGroupManager._(AgeGroup.visibleGroups.map((v) => AgeGroupAndValues(v)).toList());
   }
 
   void addMen(int age, int value) {

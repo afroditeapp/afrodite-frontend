@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 import 'dart:typed_data';
 
@@ -16,17 +15,15 @@ class BackendSignedMessage {
   final UnixTime serverTime;
   final Uint8List messageFromSender;
 
-  BackendSignedMessage._(
-    {
-      required this.sender,
-      required this.receiver,
-      required this.senderPublicKeyId,
-      required this.receiverPublicKeyId,
-      required this.messageId,
-      required this.serverTime,
-      required this.messageFromSender,
-    }
-  );
+  BackendSignedMessage._({
+    required this.sender,
+    required this.receiver,
+    required this.senderPublicKeyId,
+    required this.receiverPublicKeyId,
+    required this.messageId,
+    required this.serverTime,
+    required this.messageFromSender,
+  });
 
   static BackendSignedMessage? parseFromSignedPgpMessage(Uint8List uint8List) {
     final (data, _) = getMessageContent(uint8List);
@@ -47,17 +44,15 @@ class BackendSignedMessage {
     final receiverPublicKeyId = parseMinimalI64(iterator).mapOk((v) => PublicKeyId(id: v)).ok();
     final messageId = parseMinimalI64(iterator).mapOk((v) => MessageId(id: v)).ok();
     final serverTime = parseMinimalI64(iterator).mapOk((v) => UnixTime(ut: v)).ok();
-    final messageFromSender  = iterator.takeAllAsBytes();
+    final messageFromSender = iterator.takeAllAsBytes();
 
-    if (
-      version != 1 ||
-      sender == null ||
-      receiver == null ||
-      senderPublicKeyId == null ||
-      receiverPublicKeyId == null ||
-      messageId == null ||
-      serverTime == null
-    ) {
+    if (version != 1 ||
+        sender == null ||
+        receiver == null ||
+        senderPublicKeyId == null ||
+        receiverPublicKeyId == null ||
+        messageId == null ||
+        serverTime == null) {
       return null;
     }
 
@@ -72,11 +67,7 @@ class BackendSignedMessage {
     );
   }
 
-  PendingMessageId toPendingMessageId() =>
-    PendingMessageId(
-      sender: sender,
-      m: messageId
-    );
+  PendingMessageId toPendingMessageId() => PendingMessageId(sender: sender, m: messageId);
 }
 
 Result<int, ()> parseVersion(Iterator<int> data) {
@@ -113,7 +104,9 @@ Result<int, ()> parseMinimalI64(Iterator<int> data) {
     return const Err(());
   }
   if (count == 2) {
-    final value = ByteData.view(Uint8List.fromList([first, second]).buffer).getInt16(0, Endian.little);
+    final value = ByteData.view(
+      Uint8List.fromList([first, second]).buffer,
+    ).getInt16(0, Endian.little);
     return Ok(value);
   }
 

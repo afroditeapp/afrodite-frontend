@@ -1,4 +1,3 @@
-
 import 'package:app/utils/result.dart';
 import 'package:async/async.dart' show StreamExtensions;
 import 'package:app/data/general/notification/utils/notification_category.dart';
@@ -19,8 +18,13 @@ class NotificationNewsItemAvailable extends AppSingletonNoInit {
 
   final notifications = NotificationManager.getInstance();
 
-  Future<Result<(), ()>> handleNewsCountUpdate(UnreadNewsCountResult r, AccountBackgroundDatabaseManager accountBackgroundDb) async {
-    final currentCount = await accountBackgroundDb.accountStream((db) => db.news.watchUnreadNewsCount()).firstOrNull;
+  Future<Result<(), ()>> handleNewsCountUpdate(
+    UnreadNewsCountResult r,
+    AccountBackgroundDatabaseManager accountBackgroundDb,
+  ) async {
+    final currentCount = await accountBackgroundDb
+        .accountStream((db) => db.news.watchUnreadNewsCount())
+        .firstOrNull;
     final currentCountInt = currentCount?.c ?? 0;
     if (currentCountInt < r.c.c) {
       await _updateNotification(true, accountBackgroundDb);
@@ -28,13 +32,18 @@ class NotificationNewsItemAvailable extends AppSingletonNoInit {
       await _updateNotification(false, accountBackgroundDb);
     }
 
-    return await accountBackgroundDb.accountAction((db) => db.news.setUnreadNewsCount(unreadNewsCount: r.c, version: r.v)).emptyErr();
+    return await accountBackgroundDb
+        .accountAction((db) => db.news.setUnreadNewsCount(unreadNewsCount: r.c, version: r.v))
+        .emptyErr();
   }
 
   Future<void> hide(AccountBackgroundDatabaseManager accountBackgroundDb) =>
-    _updateNotification(false, accountBackgroundDb);
+      _updateNotification(false, accountBackgroundDb);
 
-  Future<void> _updateNotification(bool show, AccountBackgroundDatabaseManager accountBackgroundDb) async {
+  Future<void> _updateNotification(
+    bool show,
+    AccountBackgroundDatabaseManager accountBackgroundDb,
+  ) async {
     if (!show) {
       await notifications.hideNotification(NotificationIdStatic.newsItemAvailable.id);
       return;
@@ -44,14 +53,15 @@ class NotificationNewsItemAvailable extends AppSingletonNoInit {
       id: NotificationIdStatic.newsItemAvailable.id,
       title: R.strings.notification_news_item_available,
       category: const NotificationCategoryNewsItemAvailable(),
-      notificationPayload: NavigateToNews(
-        receiverAccountId: accountBackgroundDb.accountId(),
-      ),
+      notificationPayload: NavigateToNews(receiverAccountId: accountBackgroundDb.accountId()),
       accountBackgroundDb: accountBackgroundDb,
     );
   }
 
-  Future<Result<(), ()>> showAdminNotification(AdminNotification notificationContent, AccountBackgroundDatabaseManager accountBackgroundDb) async {
+  Future<Result<(), ()>> showAdminNotification(
+    AdminNotification notificationContent,
+    AccountBackgroundDatabaseManager accountBackgroundDb,
+  ) async {
     Map<String, dynamic> booleanValues = notificationContent.toJson();
     List<String> trueValues = [];
     for (final e in booleanValues.entries) {
@@ -70,6 +80,8 @@ class NotificationNewsItemAvailable extends AppSingletonNoInit {
       accountBackgroundDb: accountBackgroundDb,
     );
 
-    return await accountBackgroundDb.accountAction((db) => db.notification.updateAdminNotification(notificationContent)).emptyErr();
+    return await accountBackgroundDb
+        .accountAction((db) => db.notification.updateAdminNotification(notificationContent))
+        .emptyErr();
   }
 }

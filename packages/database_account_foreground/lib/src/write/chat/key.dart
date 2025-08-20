@@ -1,4 +1,3 @@
-
 import 'package:database_account_foreground/src/database.dart';
 import 'package:database_utils/database_utils.dart';
 import 'package:database_model/database_model.dart' as dbm;
@@ -9,12 +8,7 @@ import '../../schema.dart' as schema;
 
 part 'key.g.dart';
 
-@DriftAccessor(
-  tables: [
-    schema.MyKeyPair,
-    schema.PublicKey,
-  ]
-)
+@DriftAccessor(tables: [schema.MyKeyPair, schema.PublicKey])
 class DaoWriteKey extends DatabaseAccessor<AccountForegroundDatabase> with _$DaoWriteKeyMixin {
   DaoWriteKey(super.db);
 

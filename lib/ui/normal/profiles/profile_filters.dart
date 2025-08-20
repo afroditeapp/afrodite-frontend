@@ -1,4 +1,3 @@
-
 import 'dart:math';
 
 import 'package:app/ui_utils/attribute/attribute.dart';
@@ -36,10 +35,9 @@ void openProfileFilters(BuildContext context) {
   final pageKey = PageKey();
   MyNavigator.pushWithKey(
     context,
-    MaterialPage<void>(child: ProfileFiltersPage(
-      pageKey: pageKey,
-      profileFiltersBloc: profileFiltersBloc,
-    )),
+    MaterialPage<void>(
+      child: ProfileFiltersPage(pageKey: pageKey, profileFiltersBloc: profileFiltersBloc),
+    ),
     pageKey,
   );
 }
@@ -47,11 +45,7 @@ void openProfileFilters(BuildContext context) {
 class ProfileFiltersPage extends StatefulWidget {
   final PageKey pageKey;
   final ProfileFiltersBloc profileFiltersBloc;
-  const ProfileFiltersPage({
-    required this.pageKey,
-    required this.profileFiltersBloc,
-    super.key,
-  });
+  const ProfileFiltersPage({required this.pageKey, required this.profileFiltersBloc, super.key});
 
   @override
   State<ProfileFiltersPage> createState() => _ProfileFiltersPageState();
@@ -97,7 +91,7 @@ class _ProfileFiltersPageState extends State<ProfileFiltersPage> {
                 } else {
                   return const SizedBox.shrink();
                 }
-              }
+              },
             ),
           ],
         ),
@@ -138,7 +132,7 @@ class _ProfileFiltersPageState extends State<ProfileFiltersPage> {
               } else {
                 bloc.add(SetProfileCreatedFilter(ProfileCreatedTimeFilter(value: value)));
               }
-            }
+            },
           ),
           const Divider(),
           profileCreatedOrEditedFilter(
@@ -152,7 +146,7 @@ class _ProfileFiltersPageState extends State<ProfileFiltersPage> {
               } else {
                 bloc.add(SetProfileEditedFilter(ProfileEditedTimeFilter(value: value)));
               }
-            }
+            },
           ),
           const Divider(),
           profileTextFilter(context),
@@ -186,12 +180,14 @@ class _ProfileFiltersPageState extends State<ProfileFiltersPage> {
               max: MAX_AGE.toDouble(),
               divisions: MAX_AGE - MIN_AGE - 1,
               onChanged: (values) {
-                context.read<ProfileFiltersBloc>().add(UpdateAgeRange(values.start.toInt(), values.end.toInt()));
+                context.read<ProfileFiltersBloc>().add(
+                  UpdateAgeRange(values.start.toInt(), values.end.toInt()),
+                );
               },
             ),
           ],
         );
-      }
+      },
     );
   }
 
@@ -205,6 +201,7 @@ class _ProfileFiltersPageState extends State<ProfileFiltersPage> {
 
         /// Only online
         const VALUE_MIN = 0.0;
+
         /// All
         const VALUE_MAX = 15.0;
 
@@ -245,9 +242,13 @@ class _ProfileFiltersPageState extends State<ProfileFiltersPage> {
         } else if (valueInt >= 0) {
           final daysInt = valueInt ~/ 60 ~/ 60 ~/ 24;
           if (daysInt <= 1) {
-            stateText = context.strings.profile_filters_screen_profile_last_seen_time_filter_day(1.toString());
+            stateText = context.strings.profile_filters_screen_profile_last_seen_time_filter_day(
+              1.toString(),
+            );
           } else {
-            stateText = context.strings.profile_filters_screen_profile_last_seen_time_filter_days(daysInt.toString());
+            stateText = context.strings.profile_filters_screen_profile_last_seen_time_filter_days(
+              daysInt.toString(),
+            );
           }
           days = intDaysToDouble(daysInt);
         } else {
@@ -277,7 +278,9 @@ class _ProfileFiltersPageState extends State<ProfileFiltersPage> {
               max: VALUE_MAX,
               divisions: DIVISIONS,
               thumbColor: Theme.of(context).colorScheme.primary,
-              activeColor: valueInt == null ? Theme.of(context).colorScheme.primary.withAlpha(_SLIDER_DEFAULT_VALUE_ALPHA) : null,
+              activeColor: valueInt == null
+                  ? Theme.of(context).colorScheme.primary.withAlpha(_SLIDER_DEFAULT_VALUE_ALPHA)
+                  : null,
               onChanged: (double value) {
                 final intDays = doubleToIntDays(value);
                 final int? seconds;
@@ -293,7 +296,7 @@ class _ProfileFiltersPageState extends State<ProfileFiltersPage> {
             ),
           ],
         );
-      }
+      },
     );
   }
 
@@ -313,6 +316,7 @@ class _ProfileFiltersPageState extends State<ProfileFiltersPage> {
 
         /// 1 day
         const VALUE_MIN = 1.0;
+
         /// All
         const VALUE_MAX = 15.0;
 
@@ -350,9 +354,13 @@ class _ProfileFiltersPageState extends State<ProfileFiltersPage> {
         } else if (valueInt >= 0) {
           final daysInt = valueInt ~/ 60 ~/ 60 ~/ 24;
           if (daysInt <= 1) {
-            stateText = context.strings.profile_filters_screen_profile_last_seen_time_filter_day(1.toString());
+            stateText = context.strings.profile_filters_screen_profile_last_seen_time_filter_day(
+              1.toString(),
+            );
           } else {
-            stateText = context.strings.profile_filters_screen_profile_last_seen_time_filter_days(daysInt.toString());
+            stateText = context.strings.profile_filters_screen_profile_last_seen_time_filter_days(
+              daysInt.toString(),
+            );
           }
           days = intDaysToDouble(daysInt);
         } else {
@@ -363,11 +371,7 @@ class _ProfileFiltersPageState extends State<ProfileFiltersPage> {
         return Column(
           children: [
             const Padding(padding: EdgeInsets.all(4)),
-            ViewAttributeTitle(
-              title,
-              icon: icon,
-              valueText: stateText,
-            ),
+            ViewAttributeTitle(title, icon: icon, valueText: stateText),
             const Padding(padding: EdgeInsets.all(4)),
             Slider(
               value: days,
@@ -375,7 +379,9 @@ class _ProfileFiltersPageState extends State<ProfileFiltersPage> {
               max: VALUE_MAX,
               divisions: DIVISIONS,
               thumbColor: Theme.of(context).colorScheme.primary,
-              activeColor: valueInt == null ? Theme.of(context).colorScheme.primary.withAlpha(_SLIDER_DEFAULT_VALUE_ALPHA) : null,
+              activeColor: valueInt == null
+                  ? Theme.of(context).colorScheme.primary.withAlpha(_SLIDER_DEFAULT_VALUE_ALPHA)
+                  : null,
               onChanged: (double value) {
                 final intDays = doubleToIntDays(value);
                 final int? seconds;
@@ -389,7 +395,7 @@ class _ProfileFiltersPageState extends State<ProfileFiltersPage> {
             ),
           ],
         );
-      }
+      },
     );
   }
 
@@ -398,6 +404,7 @@ class _ProfileFiltersPageState extends State<ProfileFiltersPage> {
       builder: (context, state) {
         /// Min: Unlimited, Max: 1 kilometers
         const VALUE_MIN = 0;
+
         /// Min: 1000 kilometers, Max: Unlimited
         final valueMax = DistanceValues.availableValues.length - 1;
 
@@ -407,15 +414,22 @@ class _ProfileFiltersPageState extends State<ProfileFiltersPage> {
         final double minValue;
         final double maxValue;
         if (min != null && max != null) {
-          stateText = context.strings.profile_filters_screen_distance_filter_min_and_max_value(min.toString(), max.toString());
+          stateText = context.strings.profile_filters_screen_distance_filter_min_and_max_value(
+            min.toString(),
+            max.toString(),
+          );
           minValue = (DistanceValues.valueToIndex[min] ?? VALUE_MIN).toDouble();
           maxValue = (DistanceValues.valueToIndex[max] ?? valueMax).toDouble();
         } else if (min != null) {
-          stateText = context.strings.profile_filters_screen_distance_filter_min_value(min.toString());
+          stateText = context.strings.profile_filters_screen_distance_filter_min_value(
+            min.toString(),
+          );
           maxValue = valueMax.toDouble();
           minValue = (DistanceValues.valueToIndex[min] ?? VALUE_MIN).toDouble();
         } else if (max != null) {
-          stateText = context.strings.profile_filters_screen_distance_filter_max_value(max.toString());
+          stateText = context.strings.profile_filters_screen_distance_filter_max_value(
+            max.toString(),
+          );
           minValue = VALUE_MIN.toDouble();
           maxValue = (DistanceValues.valueToIndex[max] ?? valueMax).toDouble();
         } else {
@@ -440,11 +454,10 @@ class _ProfileFiltersPageState extends State<ProfileFiltersPage> {
               divisions: DistanceValues.availableValues.length - 1,
               onChanged: (values) {
                 final minDistanceInt = values.start.round().toInt();
-                final minDistance = switch(minDistanceInt) {
+                final minDistance = switch (minDistanceInt) {
                   0 => null,
                   _ => DistanceValues.availableValues.getAtOrNull(minDistanceInt),
-                }
-                  .map((v) => MinDistanceKm(value: v));
+                }.map((v) => MinDistanceKm(value: v));
                 final maxDistanceInt = values.end.round().toInt();
                 final int? maxDistanceIntOrNull;
                 if (maxDistanceInt == valueMax) {
@@ -452,8 +465,7 @@ class _ProfileFiltersPageState extends State<ProfileFiltersPage> {
                 } else {
                   maxDistanceIntOrNull = DistanceValues.availableValues.getAtOrNull(maxDistanceInt);
                 }
-                final maxDistance = maxDistanceIntOrNull
-                  .map((v) => MaxDistanceKm(value: v));
+                final maxDistance = maxDistanceIntOrNull.map((v) => MaxDistanceKm(value: v));
                 context.read<ProfileFiltersBloc>().add(SetDistanceFilter(minDistance, maxDistance));
               },
             ),
@@ -463,11 +475,13 @@ class _ProfileFiltersPageState extends State<ProfileFiltersPage> {
         return SliderTheme(
           data: SliderThemeData(
             thumbColor: Theme.of(context).colorScheme.primary,
-            activeTrackColor: min == null && max == null ? Theme.of(context).colorScheme.primary.withAlpha(_SLIDER_DEFAULT_VALUE_ALPHA) : null,
+            activeTrackColor: min == null && max == null
+                ? Theme.of(context).colorScheme.primary.withAlpha(_SLIDER_DEFAULT_VALUE_ALPHA)
+                : null,
           ),
           child: column,
         );
-      }
+      },
     );
   }
 
@@ -497,17 +511,24 @@ class _ProfileFiltersPageState extends State<ProfileFiltersPage> {
           min = findNearestIndex(currentMin).toDouble();
           final currentMax = valueMax.clamp(AVAILABLE_VALUES.first, AVAILABLE_VALUES.last);
           max = findNearestIndex(currentMax).toDouble();
-          stateText = context.strings.profile_filters_screen_profile_text_filter_min_and_max_value(valueMin.toString(), valueMax.toString());
+          stateText = context.strings.profile_filters_screen_profile_text_filter_min_and_max_value(
+            valueMin.toString(),
+            valueMax.toString(),
+          );
         } else if (valueMax != null) {
           min = LIMIT_MIN;
           final currentMax = valueMax.clamp(AVAILABLE_VALUES.first, AVAILABLE_VALUES.last);
           max = findNearestIndex(currentMax).toDouble();
-          stateText = context.strings.profile_filters_screen_profile_text_filter_max_value(valueMax.toString());
+          stateText = context.strings.profile_filters_screen_profile_text_filter_max_value(
+            valueMax.toString(),
+          );
         } else if (valueMin != null) {
           max = limitMax;
           final currentMin = valueMin.clamp(AVAILABLE_VALUES.first, AVAILABLE_VALUES.last);
           min = findNearestIndex(currentMin).toDouble();
-          stateText = context.strings.profile_filters_screen_profile_text_filter_min_value(valueMin.toString());
+          stateText = context.strings.profile_filters_screen_profile_text_filter_min_value(
+            valueMin.toString(),
+          );
         } else {
           stateText = context.strings.generic_unlimited;
           min = LIMIT_MIN;
@@ -529,12 +550,22 @@ class _ProfileFiltersPageState extends State<ProfileFiltersPage> {
               max: limitMax,
               divisions: AVAILABLE_VALUES.length - 1,
               onChanged: (RangeValues values) {
-                final currentMin = AVAILABLE_VALUES.getAtOrNull(values.start.round().toInt()) ?? AVAILABLE_VALUES.first;
-                final currentMax = AVAILABLE_VALUES.getAtOrNull(values.end.round().toInt()) ?? AVAILABLE_VALUES.last;
-                context.read<ProfileFiltersBloc>().add(SetProfileTextFilter(
-                  currentMin == AVAILABLE_VALUES.first ? null : ProfileTextMinCharactersFilter(value: currentMin),
-                  currentMax == AVAILABLE_VALUES.last ? null : ProfileTextMaxCharactersFilter(value: currentMax),
-                ));
+                final currentMin =
+                    AVAILABLE_VALUES.getAtOrNull(values.start.round().toInt()) ??
+                    AVAILABLE_VALUES.first;
+                final currentMax =
+                    AVAILABLE_VALUES.getAtOrNull(values.end.round().toInt()) ??
+                    AVAILABLE_VALUES.last;
+                context.read<ProfileFiltersBloc>().add(
+                  SetProfileTextFilter(
+                    currentMin == AVAILABLE_VALUES.first
+                        ? null
+                        : ProfileTextMinCharactersFilter(value: currentMin),
+                    currentMax == AVAILABLE_VALUES.last
+                        ? null
+                        : ProfileTextMaxCharactersFilter(value: currentMax),
+                  ),
+                );
               },
             ),
           ],
@@ -543,11 +574,13 @@ class _ProfileFiltersPageState extends State<ProfileFiltersPage> {
         return SliderTheme(
           data: SliderThemeData(
             thumbColor: Theme.of(context).colorScheme.primary,
-            activeTrackColor: valueMin == null && valueMax == null ? Theme.of(context).colorScheme.primary.withAlpha(_SLIDER_DEFAULT_VALUE_ALPHA) : null,
+            activeTrackColor: valueMin == null && valueMax == null
+                ? Theme.of(context).colorScheme.primary.withAlpha(_SLIDER_DEFAULT_VALUE_ALPHA)
+                : null,
           ),
           child: column,
         );
-      }
+      },
     );
   }
 
@@ -556,17 +589,14 @@ class _ProfileFiltersPageState extends State<ProfileFiltersPage> {
       builder: (context, state) {
         return SwitchListTile(
           title: Text(context.strings.profile_filters_screen_unlimited_likes_filter),
-          secondary: Icon(
-            UNLIMITED_LIKES_ICON,
-            color: getUnlimitedLikesColor(context),
-          ),
+          secondary: Icon(UNLIMITED_LIKES_ICON, color: getUnlimitedLikesColor(context)),
           value: state.valueUnlimitedLikesFilter() ?? false,
           onChanged: (bool value) {
             final filterValue = value ? true : null;
             context.read<ProfileFiltersBloc>().add(SetUnlimitedLikesFilter(filterValue));
           },
         );
-      }
+      },
     );
   }
 }
@@ -583,16 +613,13 @@ class EditAttributeFilters extends StatelessWidget {
           return const SizedBox.shrink();
         }
 
-        return BlocBuilder<ProfileFiltersBloc, ProfileFiltersData>(builder: (context, eState) {
-          return Column(
-            children: attributeTiles(
-              context,
-              true,
-              manager,
-              eState.valueAttributeFilters(),
-            )
-          );
-        });
+        return BlocBuilder<ProfileFiltersBloc, ProfileFiltersData>(
+          builder: (context, eState) {
+            return Column(
+              children: attributeTiles(context, true, manager, eState.valueAttributeFilters()),
+            );
+          },
+        );
       },
     );
   }
@@ -616,8 +643,8 @@ class EditAttributeFilters extends StatelessWidget {
               context,
               MaterialPage<void>(child: EditProfileAttributeFilterScreen(a: a)),
             );
-          }
-        )
+          },
+        ),
       );
       attributeWidgets.add(const Divider());
     }
@@ -640,13 +667,37 @@ class DistanceValues {
   DistanceValues.__(this._availableValues, this._valueToIndex);
   factory DistanceValues._() {
     const AVAILABLE_VALUES = [
-      1, 2, 3, 4, 5, 6, 7, 8, 9,
-      10, 20, 30, 40, 50, 60, 70, 80, 90,
-      100, 200, 300, 400, 500, 600, 700, 800, 900,
-      1000
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      20,
+      30,
+      40,
+      50,
+      60,
+      70,
+      80,
+      90,
+      100,
+      200,
+      300,
+      400,
+      500,
+      600,
+      700,
+      800,
+      900,
+      1000,
     ];
 
-    final Map<int, int> valueToIndex = { for (final (i, v) in AVAILABLE_VALUES.indexed) v: i};
+    final Map<int, int> valueToIndex = {for (final (i, v) in AVAILABLE_VALUES.indexed) v: i};
 
     return DistanceValues.__(AVAILABLE_VALUES, valueToIndex);
   }

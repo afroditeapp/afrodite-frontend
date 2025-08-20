@@ -20,14 +20,16 @@ class NotificationSettingsData with _$NotificationSettingsData, UpdateStateProvi
   bool valueMediaContent() => edited.mediaContent ?? categories.mediaContentModerationCompleted;
   bool valueProfileString() => edited.profileString ?? categories.profileStringModerationCompleted;
   bool valueNews() => edited.news ?? categories.news;
-  bool valueAutomaticProfileSearch() => edited.automaticProfileSearch ?? categories.automaticProfileSearch;
+  bool valueAutomaticProfileSearch() =>
+      edited.automaticProfileSearch ?? categories.automaticProfileSearch;
 
-  bool unsavedChanges() => edited.messages != null ||
-    edited.likes != null ||
-    edited.mediaContent != null ||
-    edited.profileString != null ||
-    edited.news != null ||
-    edited.automaticProfileSearch != null;
+  bool unsavedChanges() =>
+      edited.messages != null ||
+      edited.likes != null ||
+      edited.mediaContent != null ||
+      edited.profileString != null ||
+      edited.news != null ||
+      edited.automaticProfileSearch != null;
 }
 
 @freezed

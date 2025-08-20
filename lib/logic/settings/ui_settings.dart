@@ -8,23 +8,29 @@ import "package:app/data/login_repository.dart";
 import "package:app/model/freezed/logic/settings/ui_settings.dart";
 
 sealed class UiSettingsEvent {}
+
 class NewGridSettings extends UiSettingsEvent {
   final GridSettings value;
   NewGridSettings(this.value);
 }
+
 class ResetGridSettings extends UiSettingsEvent {}
+
 class UpdateHorizontalPadding extends UiSettingsEvent {
   final double value;
   UpdateHorizontalPadding(this.value);
 }
+
 class UpdateInternalPadding extends UiSettingsEvent {
   final double value;
   UpdateInternalPadding(this.value);
 }
+
 class UpdateProfileThumbnailBorderRadius extends UiSettingsEvent {
   final double value;
   UpdateProfileThumbnailBorderRadius(this.value);
 }
+
 class UpdateRowProfileCount extends UiSettingsEvent {
   final int value;
   UpdateRowProfileCount(this.value);
@@ -37,14 +43,10 @@ class UiSettingsBloc extends Bloc<UiSettingsEvent, UiSettingsData> {
 
   UiSettingsBloc() : super(UiSettingsData()) {
     on<NewGridSettings>((data, emit) {
-      emit(state.copyWith(
-        gridSettings: data.value,
-      ));
+      emit(state.copyWith(gridSettings: data.value));
     });
     on<ResetGridSettings>((data, emit) {
-      emit(state.copyWith(
-        gridSettings: const GridSettings(),
-      ));
+      emit(state.copyWith(gridSettings: const GridSettings()));
     });
     on<UpdateHorizontalPadding>((data, emit) {
       saveGridSettings((s) => s.copyWith(horizontalPadding: data.value));
@@ -58,7 +60,9 @@ class UiSettingsBloc extends Bloc<UiSettingsEvent, UiSettingsData> {
     on<UpdateRowProfileCount>((data, emit) {
       saveGridSettings((s) => s.copyWith(rowProfileCount: data.value));
     });
-    _gridSettingsSubscription = db.accountStream((db) => db.app.watchGridSettings()).listen((value) {
+    _gridSettingsSubscription = db.accountStream((db) => db.app.watchGridSettings()).listen((
+      value,
+    ) {
       add(NewGridSettings(value ?? const GridSettings()));
     });
   }

@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 
 import 'package:app/api/api_manager.dart';
@@ -26,15 +25,14 @@ import 'package:openapi/api.dart';
 const double ROW_HEIGHT = 100;
 
 class ProcessReportsScreen extends ContentDecicionScreen<WrappedReportDetailed> {
-  ProcessReportsScreen({
-    super.key,
-  }) : super(
-    title: "Process reports",
-    screenInstructions: ReportUiBuilder.instructions,
-    infoMessageRowHeight: ROW_HEIGHT,
-    io: ReportIo(),
-    builder: ReportUiBuilder(),
-  );
+  ProcessReportsScreen({super.key})
+    : super(
+        title: "Process reports",
+        screenInstructions: ReportUiBuilder.instructions,
+        infoMessageRowHeight: ROW_HEIGHT,
+        io: ReportIo(),
+        builder: ReportUiBuilder(),
+      );
 }
 
 class WrappedReportDetailed extends ReportDetailed implements ContentInfoGetter {
@@ -61,8 +59,11 @@ class ReportIo extends ContentIo<WrappedReportDetailed> {
 
   @override
   Future<Result<List<WrappedReportDetailed>, ()>> getNextContent() async {
-    return await api.commonAdmin((api) => api.getWaitingReportPage())
-      .andThenEmptyErr((v) => handleReportList(api, addedReports, v.values, onlyNotProcessed: true));
+    return await api
+        .commonAdmin((api) => api.getWaitingReportPage())
+        .andThenEmptyErr(
+          (v) => handleReportList(api, addedReports, v.values, onlyNotProcessed: true),
+        );
   }
 
   @override
@@ -80,11 +81,9 @@ class ReportIo extends ContentIo<WrappedReportDetailed> {
 Future<Result<List<WrappedReportDetailed>, ApiError>> handleReportList(
   ApiManager api,
   Set<ReportId> addedReports,
-  List<ReportDetailed> reportList,
-  {
-    required bool onlyNotProcessed,
-  }
-) async {
+  List<ReportDetailed> reportList, {
+  required bool onlyNotProcessed,
+}) async {
   final detailedReports = <WrappedReportDetailed>[];
   for (final r in reportList) {
     if (addedReports.contains(r.info.id)) {
@@ -92,13 +91,15 @@ Future<Result<List<WrappedReportDetailed>, ApiError>> handleReportList(
     }
 
     if (r.content.chatMessage != null) {
-      final apiResult = await api.commonAdmin((api) => api.postGetChatMessageReports(
-        GetChatMessageReports(
-          creator: r.info.creator,
-          target: r.info.target,
-          onlyNotProcessed: onlyNotProcessed,
-        )
-      ));
+      final apiResult = await api.commonAdmin(
+        (api) => api.postGetChatMessageReports(
+          GetChatMessageReports(
+            creator: r.info.creator,
+            target: r.info.target,
+            onlyNotProcessed: onlyNotProcessed,
+          ),
+        ),
+      );
 
       switch (apiResult) {
         case Err(:final e):
@@ -124,7 +125,8 @@ class ReportUiBuilder extends ContentUiBuilder<WrappedReportDetailed> {
   @override
   bool get allowRejecting => false;
 
-  static String instructions = "B = block received\nL = like received\nMnumber = match and sent messages count\n\nN = profile name\nT = profile text\nM = chat message\nC = custom report";
+  static String instructions =
+      "B = block received\nL = like received\nMnumber = match and sent messages count\n\nN = profile name\nT = profile text\nM = chat message\nC = custom report";
 
   @override
   Widget buildRowContent(BuildContext context, WrappedReportDetailed content) {
@@ -174,7 +176,8 @@ class ReportUiBuilder extends ContentUiBuilder<WrappedReportDetailed> {
 
     final String infoText;
     if (creatorInfo != null && targetInfo != null) {
-      infoText = "${creatorInfo.name}, ${creatorInfo.age}$creatorDetails -> ${targetInfo.name}, ${targetInfo.age}$targetDetails";
+      infoText =
+          "${creatorInfo.name}, ${creatorInfo.age}$creatorDetails -> ${targetInfo.name}, ${targetInfo.age}$targetDetails";
     } else {
       infoText = "";
     }
@@ -196,12 +199,7 @@ class ReportUiBuilder extends ContentUiBuilder<WrappedReportDetailed> {
     } else if (profileContent != null && target != null) {
       report = LayoutBuilder(
         builder: (context, constraints) {
-          return buildImage(
-            context,
-            target,
-            profileContent,
-            constraints.maxWidth / 2,
-          );
+          return buildImage(context, target, profileContent, constraints.maxWidth / 2);
         },
       );
     } else if (chatMessage != null) {

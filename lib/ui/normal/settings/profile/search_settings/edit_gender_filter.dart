@@ -11,9 +11,11 @@ class EditGenderFilterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text(context.strings.search_settings_screen_change_gender_filter_action_tile)),
-        body: edit(context),
-      );
+      appBar: AppBar(
+        title: Text(context.strings.search_settings_screen_change_gender_filter_action_tile),
+      ),
+      body: edit(context),
+    );
   }
 
   Widget edit(BuildContext context) {
@@ -37,10 +39,13 @@ Widget askGenderSearchQuestionForSearchSettings(BuildContext context) {
         state.valueGender(),
         state.valueGenderSearchSettingsAll(),
         (isSelected, whatWasSelected) {
-          final newValue = state.valueGenderSearchSettingsAll().updateWith(isSelected, whatWasSelected);
+          final newValue = state.valueGenderSearchSettingsAll().updateWith(
+            isSelected,
+            whatWasSelected,
+          );
           context.read<SearchSettingsBloc>().add(UpdateGenderSearchSettingsAll(newValue));
-        }
+        },
       );
-    }
+    },
   );
 }

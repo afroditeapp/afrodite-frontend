@@ -1,4 +1,3 @@
-
 import 'package:database/database.dart';
 
 import "package:freezed_annotation/freezed_annotation.dart";
@@ -6,11 +5,7 @@ import 'package:flutter/foundation.dart';
 
 part 'view_profiles.freezed.dart';
 
-enum ProfileActionState {
-  like,
-  makeMatch,
-  chat,
-}
+enum ProfileActionState { like, makeMatch, chat }
 
 @freezed
 class ViewProfilesData with _$ViewProfilesData {
@@ -28,7 +23,6 @@ class ViewProfilesData with _$ViewProfilesData {
     @Default(false) bool showGenericError,
   }) = _ViewProfilesData;
 }
-
 
 sealed class FavoriteState {
   final bool isFavorite;

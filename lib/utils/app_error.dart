@@ -1,5 +1,3 @@
-
-
 import 'package:app/localizations.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:logging/logging.dart';
@@ -30,7 +28,9 @@ sealed class ActionApiError extends ApiError {
   const ActionApiError();
 
   /// Is status code HTTP 429
-  bool isTooManyRequests() { return false; }
+  bool isTooManyRequests() {
+    return false;
+  }
 }
 
 class ActionApiErrorException extends ActionApiError {
@@ -71,16 +71,24 @@ sealed class ValueApiError extends ApiError {
   const ValueApiError();
 
   /// Is status code HTTP 304
-  bool isNotModified() { return false; }
+  bool isNotModified() {
+    return false;
+  }
 
   /// Is status code HTTP 401
-  bool isUnauthorized() { return false; }
+  bool isUnauthorized() {
+    return false;
+  }
 
   /// Is status code HTTP 404
-  bool isNotFoundError() { return false; }
+  bool isNotFoundError() {
+    return false;
+  }
 
   /// Is status code HTTP 500
-  bool isInternalServerError() { return false; }
+  bool isInternalServerError() {
+    return false;
+  }
 }
 
 class NullError extends ValueApiError {
@@ -142,7 +150,6 @@ class ValueApiException extends ValueApiError {
     }
   }
 }
-
 
 class FileError extends AppError {
   const FileError();

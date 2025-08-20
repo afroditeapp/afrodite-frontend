@@ -1,19 +1,18 @@
-
 import 'dart:typed_data';
 
 import 'package:native_utils/native_utils.dart';
 
 (Uint8List?, int) encryptContentData(Uint8List input, Uint8List key) =>
-  throw UnsupportedError("Not implemented");
+    throw UnsupportedError("Not implemented");
 
 (Uint8List?, int) decryptContentData(Uint8List input, Uint8List key) =>
-  throw UnsupportedError("Not implemented");
+    throw UnsupportedError("Not implemented");
 
 // Message API
 
 /// If generation fails, null is returned.
 (GeneratedMessageKeys?, int) generateMessageKeys(String accountId) =>
-  throw UnsupportedError("Not implemented");
+    throw UnsupportedError("Not implemented");
 
 /// If encrypting fails, null is returned
 (EncryptResult?, int) encryptMessage(
@@ -30,6 +29,5 @@ import 'package:native_utils/native_utils.dart';
 ) => throw UnsupportedError("Not implemented");
 
 /// When getting message content fails, null is returned
-(Uint8List?, int) getMessageContent(
-  Uint8List pgpMessage,
-) => throw UnsupportedError("Not implemented");
+(Uint8List?, int) getMessageContent(Uint8List pgpMessage) =>
+    throw UnsupportedError("Not implemented");

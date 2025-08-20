@@ -14,8 +14,14 @@ class MatchesIteratorManager extends BaseIteratorManager {
   final AccountBackgroundDatabaseManager accountBackgroundDb;
   final ServerConnectionManager connectionManager;
 
-  MatchesIteratorManager(ChatRepository chat, this.media, this.accountBackgroundDb, this.db, this.connectionManager, AccountId currentUser) :
-    super(chat, currentUser, initialIterator: MatchesDatabaseIterator(db: db));
+  MatchesIteratorManager(
+    ChatRepository chat,
+    this.media,
+    this.accountBackgroundDb,
+    this.db,
+    this.connectionManager,
+    AccountId currentUser,
+  ) : super(chat, currentUser, initialIterator: MatchesDatabaseIterator(db: db));
 
   @override
   OnlineIterator createClearDatabaseIterator() {
@@ -30,6 +36,5 @@ class MatchesIteratorManager extends BaseIteratorManager {
   }
 
   @override
-  MatchesDatabaseIterator createDatabaseIterator() =>
-    MatchesDatabaseIterator(db: db);
+  MatchesDatabaseIterator createDatabaseIterator() => MatchesDatabaseIterator(db: db);
 }

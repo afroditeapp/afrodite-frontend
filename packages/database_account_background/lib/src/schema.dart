@@ -1,4 +1,3 @@
-
 import 'package:database_converter/database_converter.dart';
 import 'package:database_utils/database_utils.dart';
 import 'package:drift/drift.dart';
@@ -8,7 +7,8 @@ class AccountId extends SingleRowTable {
 }
 
 class AdminNotification extends SingleRowTable {
-  TextColumn get jsonViewedNotification => text().map(NullAwareTypeConverter.wrap(const AdminNotificationConverter())).nullable()();
+  TextColumn get jsonViewedNotification =>
+      text().map(NullAwareTypeConverter.wrap(const AdminNotificationConverter())).nullable()();
 }
 
 class AppNotificationSettings extends SingleRowTable {
@@ -22,19 +22,28 @@ class AppNotificationSettings extends SingleRowTable {
 
 /// Notifications with NotificationStatus (ID and viewed ID) available.
 class NotificationStatus extends SingleRowTable {
-  TextColumn get jsonAutomaticProfileSearchFoundProfiles => text().map(NullAwareTypeConverter.wrap(const NotificationStatusConverter())).nullable()();
-  TextColumn get jsonMediaContentAccepted => text().map(NullAwareTypeConverter.wrap(const NotificationStatusConverter())).nullable()();
-  TextColumn get jsonMediaContentRejected => text().map(NullAwareTypeConverter.wrap(const NotificationStatusConverter())).nullable()();
-  TextColumn get jsonMediaContentDeleted => text().map(NullAwareTypeConverter.wrap(const NotificationStatusConverter())).nullable()();
-  TextColumn get jsonProfileNameAccepted => text().map(NullAwareTypeConverter.wrap(const NotificationStatusConverter())).nullable()();
-  TextColumn get jsonProfileNameRejected => text().map(NullAwareTypeConverter.wrap(const NotificationStatusConverter())).nullable()();
-  TextColumn get jsonProfileTextAccepted => text().map(NullAwareTypeConverter.wrap(const NotificationStatusConverter())).nullable()();
-  TextColumn get jsonProfileTextRejected => text().map(NullAwareTypeConverter.wrap(const NotificationStatusConverter())).nullable()();
+  TextColumn get jsonAutomaticProfileSearchFoundProfiles =>
+      text().map(NullAwareTypeConverter.wrap(const NotificationStatusConverter())).nullable()();
+  TextColumn get jsonMediaContentAccepted =>
+      text().map(NullAwareTypeConverter.wrap(const NotificationStatusConverter())).nullable()();
+  TextColumn get jsonMediaContentRejected =>
+      text().map(NullAwareTypeConverter.wrap(const NotificationStatusConverter())).nullable()();
+  TextColumn get jsonMediaContentDeleted =>
+      text().map(NullAwareTypeConverter.wrap(const NotificationStatusConverter())).nullable()();
+  TextColumn get jsonProfileNameAccepted =>
+      text().map(NullAwareTypeConverter.wrap(const NotificationStatusConverter())).nullable()();
+  TextColumn get jsonProfileNameRejected =>
+      text().map(NullAwareTypeConverter.wrap(const NotificationStatusConverter())).nullable()();
+  TextColumn get jsonProfileTextAccepted =>
+      text().map(NullAwareTypeConverter.wrap(const NotificationStatusConverter())).nullable()();
+  TextColumn get jsonProfileTextRejected =>
+      text().map(NullAwareTypeConverter.wrap(const NotificationStatusConverter())).nullable()();
 }
 
 class UnreadMessagesCount extends Table {
   TextColumn get accountId => text().map(const AccountIdConverter())();
-  IntColumn get unreadMessagesCount => integer().map(UnreadMessagesCountConverter()).withDefault(const Constant(0))();
+  IntColumn get unreadMessagesCount =>
+      integer().map(UnreadMessagesCountConverter()).withDefault(const Constant(0))();
 
   @override
   Set<Column<Object>> get primaryKey => {accountId};
@@ -42,7 +51,8 @@ class UnreadMessagesCount extends Table {
 
 class NewMessageNotification extends Table {
   TextColumn get accountId => text().map(const AccountIdConverter())();
-  IntColumn get conversationId => integer().map(const NullAwareTypeConverter.wrap(ConversationIdConverter())).nullable()();
+  IntColumn get conversationId =>
+      integer().map(const NullAwareTypeConverter.wrap(ConversationIdConverter())).nullable()();
   BoolColumn get notificationShown => boolean().withDefault(const Constant(false))();
 
   @override
@@ -51,14 +61,19 @@ class NewMessageNotification extends Table {
 
 class NewReceivedLikesCount extends SingleRowTable {
   IntColumn get syncVersionReceivedLikes => integer().nullable()();
-  IntColumn get newReceivedLikesCount => integer().map(const NullAwareTypeConverter.wrap(NewReceivedLikesCountConverter())).nullable()();
+  IntColumn get newReceivedLikesCount => integer()
+      .map(const NullAwareTypeConverter.wrap(NewReceivedLikesCountConverter()))
+      .nullable()();
 
   /// Count which will be reset once user views received likes screen
-  IntColumn get newReceivedLikesCountNotViewed => integer().map(const NullAwareTypeConverter.wrap(NewReceivedLikesCountConverter())).nullable()();
+  IntColumn get newReceivedLikesCountNotViewed => integer()
+      .map(const NullAwareTypeConverter.wrap(NewReceivedLikesCountConverter()))
+      .nullable()();
 }
 
 class News extends SingleRowTable {
-  IntColumn get newsCount => integer().map(const NullAwareTypeConverter.wrap(UnreadNewsCountConverter())).nullable()();
+  IntColumn get newsCount =>
+      integer().map(const NullAwareTypeConverter.wrap(UnreadNewsCountConverter())).nullable()();
   IntColumn get syncVersionNews => integer().nullable()();
 }
 

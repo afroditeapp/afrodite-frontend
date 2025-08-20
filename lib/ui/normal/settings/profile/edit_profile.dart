@@ -1,5 +1,3 @@
-
-
 import 'package:app/logic/account/client_features_config.dart';
 import 'package:app/model/freezed/logic/account/client_features_config.dart';
 import 'package:app/ui/normal/settings/profile/edit_profile_text.dart';
@@ -57,7 +55,6 @@ class EditProfilePage extends StatefulWidget {
 }
 
 class _EditProfilePageState extends State<EditProfilePage> {
-
   @override
   void initState() {
     super.initState();
@@ -112,51 +109,51 @@ class _EditProfilePageState extends State<EditProfilePage> {
     }
 
     if (!imgUpdateState.faceDetectedFromPrimaryImage()) {
-      showSnackBar(context.strings.initial_setup_screen_profile_pictures_primary_image_face_not_detected);
+      showSnackBar(
+        context.strings.initial_setup_screen_profile_pictures_primary_image_face_not_detected,
+      );
       return;
     }
 
-    context.read<MyProfileBloc>().add(SetProfile(
-      ProfileUpdate(
-        age: age,
-        name: name,
-        ptext: profileText,
-        attributes: s.attributeIdAndStateMap.values.toList(),
+    context.read<MyProfileBloc>().add(
+      SetProfile(
+        ProfileUpdate(
+          age: age,
+          name: name,
+          ptext: profileText,
+          attributes: s.attributeIdAndStateMap.values.toList(),
+        ),
+        imgUpdate,
+        unlimitedLikes: s.unlimitedLikes,
       ),
-      imgUpdate,
-      unlimitedLikes: s.unlimitedLikes,
-    ));
+    );
   }
 
   bool dataChanged(EditMyProfileData editedData, ProfilePicturesData editedImgData) {
     final currentState = widget.initialProfile;
-    if (
-      currentState.age != editedData.age ||
-      currentState.name != editedData.name ||
-      currentState.profileText != editedData.profileText ||
-      currentState.unlimitedLikes != editedData.unlimitedLikes
-    ) {
+    if (currentState.age != editedData.age ||
+        currentState.name != editedData.name ||
+        currentState.profileText != editedData.profileText ||
+        currentState.unlimitedLikes != editedData.unlimitedLikes) {
       return true;
     }
 
     final editedImgs = editedImgData.toSetProfileContent();
-    if (
-      editedImgs == null ||
-      currentState.content.firstOrNull?.id != editedImgs.c.firstOrNull ||
-      currentState.content.getAtOrNull(1)?.id != editedImgs.c.getAtOrNull(1)||
-      currentState.content.getAtOrNull(2)?.id != editedImgs.c.getAtOrNull(2) ||
-      currentState.content.getAtOrNull(3)?.id != editedImgs.c.getAtOrNull(3) ||
-      currentState.content.getAtOrNull(4)?.id != editedImgs.c.getAtOrNull(4) ||
-      currentState.content.getAtOrNull(5)?.id != editedImgs.c.getAtOrNull(5) ||
-      currentState.primaryContentGridCropSize != editedImgs.gridCropSize ||
-      currentState.primaryContentGridCropX != editedImgs.gridCropX ||
-      currentState.primaryContentGridCropY != editedImgs.gridCropY
-    ) {
+    if (editedImgs == null ||
+        currentState.content.firstOrNull?.id != editedImgs.c.firstOrNull ||
+        currentState.content.getAtOrNull(1)?.id != editedImgs.c.getAtOrNull(1) ||
+        currentState.content.getAtOrNull(2)?.id != editedImgs.c.getAtOrNull(2) ||
+        currentState.content.getAtOrNull(3)?.id != editedImgs.c.getAtOrNull(3) ||
+        currentState.content.getAtOrNull(4)?.id != editedImgs.c.getAtOrNull(4) ||
+        currentState.content.getAtOrNull(5)?.id != editedImgs.c.getAtOrNull(5) ||
+        currentState.primaryContentGridCropSize != editedImgs.gridCropSize ||
+        currentState.primaryContentGridCropX != editedImgs.gridCropX ||
+        currentState.primaryContentGridCropY != editedImgs.gridCropY) {
       return true;
     }
 
     final originalAttributes = currentState.attributeIdAndStateMap.values.toList();
-    final modifiedAttributes = { ...editedData.attributeIdAndStateMap };
+    final modifiedAttributes = {...editedData.attributeIdAndStateMap};
     for (final a in originalAttributes) {
       final removed = modifiedAttributes.remove(a.id);
       if (removed == null) {
@@ -195,30 +192,35 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   if (didPop) {
                     return;
                   }
-                  showConfirmDialog(context, context.strings.generic_save_confirmation_title, yesNoActions: true)
-                    .then((value) {
-                      if (!context.mounted) {
-                        return;
-                      }
-                      if (value == true) {
-                        validateAndSaveData(context);
-                      } else if (value == false) {
-                        MyNavigator.pop(context);
-                      }
-                    });
+                  showConfirmDialog(
+                    context,
+                    context.strings.generic_save_confirmation_title,
+                    yesNoActions: true,
+                  ).then((value) {
+                    if (!context.mounted) {
+                      return;
+                    }
+                    if (value == true) {
+                      validateAndSaveData(context);
+                    } else if (value == false) {
+                      MyNavigator.pop(context);
+                    }
+                  });
                 },
                 child: Scaffold(
                   appBar: AppBar(title: Text(context.strings.edit_profile_screen_title)),
                   body: edit(context, dataEditingDetected),
-                  floatingActionButton: dataEditingDetected ? FloatingActionButton(
-                    onPressed: () => validateAndSaveData(context),
-                    child: const Icon(Icons.check),
-                  ) : null
+                  floatingActionButton: dataEditingDetected
+                      ? FloatingActionButton(
+                          onPressed: () => validateAndSaveData(context),
+                          child: const Icon(Icons.check),
+                        )
+                      : null,
                 ),
               );
-            }
+            },
           );
-        }
+        },
       ),
     );
   }
@@ -227,9 +229,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     return SingleChildScrollView(
       child: Column(
         children: [
-          ProfilePictureSelection(
-            profilePicturesBloc: context.read<ProfilePicturesBloc>(),
-          ),
+          ProfilePictureSelection(profilePicturesBloc: context.read<ProfilePicturesBloc>()),
           const Padding(padding: EdgeInsets.only(top: 16)),
           const Divider(),
           const Padding(padding: EdgeInsets.only(top: 8)),
@@ -263,31 +263,33 @@ class _EditProfilePageState extends State<EditProfilePage> {
   Widget unlimitedLikesSetting(BuildContext context) {
     return BlocBuilder<ClientFeaturesConfigBloc, ClientFeaturesConfigData>(
       builder: (context, clientFeatures) {
-        return BlocBuilder<EditMyProfileBloc, EditMyProfileData>(builder: (context, myProfileData) {
-          final String? subtitle;
-          if (myProfileData.unlimitedLikes) {
-            final resetTime = clientFeatures.unlimitedLikesResetTime();
-            if (resetTime != null) {
-              subtitle = context.strings.edit_profile_screen_unlimited_likes_description_enabled_and_automatic_disabling(resetTime.uiString());
+        return BlocBuilder<EditMyProfileBloc, EditMyProfileData>(
+          builder: (context, myProfileData) {
+            final String? subtitle;
+            if (myProfileData.unlimitedLikes) {
+              final resetTime = clientFeatures.unlimitedLikesResetTime();
+              if (resetTime != null) {
+                subtitle = context.strings
+                    .edit_profile_screen_unlimited_likes_description_enabled_and_automatic_disabling(
+                      resetTime.uiString(),
+                    );
+              } else {
+                subtitle = null;
+              }
             } else {
               subtitle = null;
             }
-          } else {
-            subtitle = null;
-          }
-          return SwitchListTile(
-            title: Text(context.strings.edit_profile_screen_unlimited_likes),
-            subtitle: subtitle != null ? Text(subtitle) : null,
-            secondary: Icon(
-              UNLIMITED_LIKES_ICON,
-              color: getUnlimitedLikesColor(context),
-            ),
-            value: myProfileData.unlimitedLikes,
-            onChanged: (bool value) =>
-              context.read<EditMyProfileBloc>().add(NewUnlimitedLikesValue(value)),
-          );
-        });
-      }
+            return SwitchListTile(
+              title: Text(context.strings.edit_profile_screen_unlimited_likes),
+              subtitle: subtitle != null ? Text(subtitle) : null,
+              secondary: Icon(UNLIMITED_LIKES_ICON, color: getUnlimitedLikesColor(context)),
+              value: myProfileData.unlimitedLikes,
+              onChanged: (bool value) =>
+                  context.read<EditMyProfileBloc>().add(NewUnlimitedLikesValue(value)),
+            );
+          },
+        );
+      },
     );
   }
 }
@@ -304,11 +306,13 @@ class EditAttributes extends StatelessWidget {
           return const SizedBox.shrink();
         }
 
-        return BlocBuilder<EditMyProfileBloc, EditMyProfileData>(builder: (context, myProfileData) {
-          return Column(
-            children: attributeTiles(context, manager, myProfileData.attributeIdAndStateMap)
-          );
-        });
+        return BlocBuilder<EditMyProfileBloc, EditMyProfileData>(
+          builder: (context, myProfileData) {
+            return Column(
+              children: attributeTiles(context, manager, myProfileData.attributeIdAndStateMap),
+            );
+          },
+        );
       },
     );
   }
@@ -320,21 +324,15 @@ class EditAttributes extends StatelessWidget {
   ) {
     final List<Widget> attributeWidgets = <Widget>[];
 
-    final l = manager.parseStates(
-      myAttributes,
-      includeNullAttributes: true,
-    );
+    final l = manager.parseStates(myAttributes, includeNullAttributes: true);
     for (final a in l) {
       attributeWidgets.add(
         EditAttributeRow(
           a: a,
           onStartEditor: () {
-            MyNavigator.push(
-              context,
-              MaterialPage<void>(child: EditProfileAttributeScreen(a: a))
-            );
-          }
-        )
+            MyNavigator.push(context, MaterialPage<void>(child: EditProfileAttributeScreen(a: a)));
+          },
+        ),
       );
       attributeWidgets.add(const Divider());
     }
@@ -355,7 +353,7 @@ class EditAttributeRow extends StatelessWidget {
     required this.a,
     required this.onStartEditor,
     this.isEnabled = true,
-    super.key
+    super.key,
   });
 
   @override
@@ -388,13 +386,14 @@ class EditAttributeRow extends StatelessWidget {
               const Padding(padding: EdgeInsets.all(4)),
               ViewAttributeTitle(attributeText, isEnabled: isEnabled, icon: icon),
               const Padding(padding: EdgeInsets.all(4)),
-              if (valueWidget != null) Row(
-                children: [
-                  const SizedBox(height: 48),
-                  const Padding(padding: EdgeInsets.only(right: 16)),
-                  Expanded(child: valueWidget),
-                ],
-              ),
+              if (valueWidget != null)
+                Row(
+                  children: [
+                    const SizedBox(height: 48),
+                    const Padding(padding: EdgeInsets.only(right: 16)),
+                    Expanded(child: valueWidget),
+                  ],
+                ),
             ],
           ),
         ),
@@ -405,10 +404,7 @@ class EditAttributeRow extends StatelessWidget {
       ],
     );
 
-    return InkWell(
-      onTap: startEditorCallback,
-      child: attributeWidget,
-    );
+    return InkWell(onTap: startEditorCallback, child: attributeWidget);
   }
 }
 
@@ -418,7 +414,14 @@ class ViewAttributeTitle extends StatelessWidget {
   final IconData? icon;
   final Widget Function(Color? disabledColor)? iconWidgetBuilder;
   final String? valueText;
-  const ViewAttributeTitle(this.text, {this.isEnabled = true, this.icon, this.iconWidgetBuilder, this.valueText, super.key});
+  const ViewAttributeTitle(
+    this.text, {
+    this.isEnabled = true,
+    this.icon,
+    this.iconWidgetBuilder,
+    this.valueText,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -439,14 +442,16 @@ class ViewAttributeTitle extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: COMMON_SCREEN_EDGE_PADDING),
         child: Row(
           children: [
-            if (icon != null) Padding(
-              padding: const EdgeInsets.only(right: 8.0),
-              child: Icon(icon, color: disabledColor),
-            ),
-            if (currentIconWidgetBuilder != null) Padding(
-              padding: const EdgeInsets.only(right: 8.0),
-              child: currentIconWidgetBuilder(disabledColor),
-            ),
+            if (icon != null)
+              Padding(
+                padding: const EdgeInsets.only(right: 8.0),
+                child: Icon(icon, color: disabledColor),
+              ),
+            if (currentIconWidgetBuilder != null)
+              Padding(
+                padding: const EdgeInsets.only(right: 8.0),
+                child: currentIconWidgetBuilder(disabledColor),
+              ),
             Text(text, style: titleStyle),
             if (currentValueText != null) const Spacer(),
             if (currentValueText != null) Text(currentValueText),
@@ -515,9 +520,7 @@ class _EditProfileBasicInfoState extends State<EditProfileBasicInfo> {
           onChanged: widget.setterProfileName,
         ),
         const Padding(padding: EdgeInsets.only(top: 4)),
-        Text(
-          context.strings.edit_profile_screen_profile_name_description,
-        ),
+        Text(context.strings.edit_profile_screen_profile_name_description),
       ],
     );
   }
@@ -527,10 +530,7 @@ class _EditProfileBasicInfoState extends State<EditProfileBasicInfo> {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          context.strings.generic_age,
-          style: Theme.of(context).textTheme.bodyLarge,
-        ),
+        Text(context.strings.generic_age, style: Theme.of(context).textTheme.bodyLarge),
         const Padding(padding: EdgeInsets.only(top: 8)),
         ageSelectionOrError(),
       ],
@@ -549,36 +549,33 @@ class _EditProfileBasicInfoState extends State<EditProfileBasicInfo> {
           return Row(
             children: [
               ageSelection(context, availableAges),
-              if (nextAutomaticAgeChange != null) IconButton(
-                onPressed: () {
-                  showInfoDialog(
-                    context,
-                    context.strings.edit_profile_screen_automatic_min_age_incrementing_info_dialog_text(
-                      nextAutomaticAgeChange.age.toString(),
-                      nextAutomaticAgeChange.year.toString(),
-                    )
-                  );
-                },
-                icon: const Icon(Icons.info),
-              )
-            ]
+              if (nextAutomaticAgeChange != null)
+                IconButton(
+                  onPressed: () {
+                    showInfoDialog(
+                      context,
+                      context.strings
+                          .edit_profile_screen_automatic_min_age_incrementing_info_dialog_text(
+                            nextAutomaticAgeChange.age.toString(),
+                            nextAutomaticAgeChange.year.toString(),
+                          ),
+                    );
+                  },
+                  icon: const Icon(Icons.info),
+                ),
+            ],
           );
         }
-      }
+      },
     );
   }
 
   Widget ageSelection(BuildContext context, AvailableAges info) {
     return DropdownMenu<int>(
       initialSelection: widget.ageInitialValue,
-      dropdownMenuEntries: info.availableAges
-        .map((value) {
-          return DropdownMenuEntry<int>(
-            value: value,
-            label: value.toString(),
-          );
-        })
-        .toList(),
+      dropdownMenuEntries: info.availableAges.map((value) {
+        return DropdownMenuEntry<int>(value: value, label: value.toString());
+      }).toList(),
       onSelected: (value) {
         if (value != null) {
           widget.setterProfileAge(value);
@@ -589,16 +586,13 @@ class _EditProfileBasicInfoState extends State<EditProfileBasicInfo> {
 }
 
 class EditProfileText extends StatefulWidget {
-  const EditProfileText({
-    super.key,
-  });
+  const EditProfileText({super.key});
 
   @override
   State<EditProfileText> createState() => _EditProfileTextState();
 }
 
 class _EditProfileTextState extends State<EditProfileText> {
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<EditMyProfileBloc, EditMyProfileData>(
@@ -639,17 +633,21 @@ class _EditProfileTextState extends State<EditProfileText> {
                     ],
                   ),
                 ),
-                if (displayedText != null) Padding(
-                  padding: const EdgeInsets.only(left: 16, top: 8),
-                  child: Text(displayedText),
-                ),
+                if (displayedText != null)
+                  Padding(
+                    padding: const EdgeInsets.only(left: 16, top: 8),
+                    child: Text(displayedText),
+                  ),
               ],
             ),
           ),
         ),
         Padding(
           padding: const EdgeInsets.only(right: 4.0),
-          child: IconWithIconButtonPadding(Icons.edit_rounded, iconColor: getIconButtonEnabledColor(context)),
+          child: IconWithIconButtonPadding(
+            Icons.edit_rounded,
+            iconColor: getIconButtonEnabledColor(context),
+          ),
         ),
       ],
     );

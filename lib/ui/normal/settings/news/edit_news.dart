@@ -17,11 +17,7 @@ import 'package:app/ui_utils/list.dart';
 
 final log = Logger("EditNewsScreen");
 
-Future<void> openEditNewsScreen(
-  BuildContext context,
-  NewsId id,
-  List<String> supportedLocales,
-) {
+Future<void> openEditNewsScreen(BuildContext context, NewsId id, List<String> supportedLocales) {
   final pageKey = PageKey();
   return MyNavigator.pushWithKey(
     context,
@@ -29,7 +25,7 @@ Future<void> openEditNewsScreen(
       child: BlocProvider(
         create: (_) => EditNewsBloc(id, supportedLocales: supportedLocales),
         lazy: false,
-        child: EditNewsScreen(pageKey: pageKey, supportedLocales: supportedLocales)
+        child: EditNewsScreen(pageKey: pageKey, supportedLocales: supportedLocales),
       ),
     ),
     pageKey,
@@ -39,18 +35,13 @@ Future<void> openEditNewsScreen(
 class EditNewsScreen extends StatefulWidget {
   final PageKey pageKey;
   final List<String> supportedLocales;
-  const EditNewsScreen({
-    required this.pageKey,
-    required this.supportedLocales,
-    super.key,
-  });
+  const EditNewsScreen({required this.pageKey, required this.supportedLocales, super.key});
 
   @override
   State<EditNewsScreen> createState() => EditNewsScreenState();
 }
 
 class EditNewsScreenState extends State<EditNewsScreen> {
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<EditNewsBloc, EditNewsData>(
@@ -67,7 +58,7 @@ class EditNewsScreenState extends State<EditNewsScreen> {
           },
           child: screen(state),
         );
-      }
+      },
     );
   }
 
@@ -97,11 +88,7 @@ class EditNewsScreenState extends State<EditNewsScreen> {
       toggleVisibilityAction = const SizedBox.shrink();
     }
     return Scaffold(
-      appBar: AppBar(
-        actions: [
-          toggleVisibilityAction
-        ],
-      ),
+      appBar: AppBar(actions: [toggleVisibilityAction]),
       body: content(state),
       floatingActionButton: BlocBuilder<EditNewsBloc, EditNewsData>(
         builder: (context, state) {
@@ -109,7 +96,10 @@ class EditNewsScreenState extends State<EditNewsScreen> {
             return FloatingActionButton(
               child: const Icon(Icons.save),
               onPressed: () async {
-                final r = await showConfirmDialog(context, context.strings.generic_save_confirmation_title);
+                final r = await showConfirmDialog(
+                  context,
+                  context.strings.generic_save_confirmation_title,
+                );
                 if (r == true && context.mounted) {
                   context.read<EditNewsBloc>().add(SaveToServer());
                 }
@@ -126,20 +116,13 @@ class EditNewsScreenState extends State<EditNewsScreen> {
   Widget content(EditNewsData state) {
     final Widget w;
     if (state.isLoading) {
-      w = const Center(
-        child: CircularProgressIndicator(),
-      );
+      w = const Center(child: CircularProgressIndicator());
     } else if (state.isError) {
-      w = buildListReplacementMessageSimple(
-        context, context.strings.generic_error_occurred
-      );
+      w = buildListReplacementMessageSimple(context, context.strings.generic_error_occurred);
     } else {
       w = viewTranslations(context, state);
     }
-    return AnimatedSwitcher(
-      duration: ANIMATED_SWITCHER_DEFAULT_DURATION,
-      child: w,
-    );
+    return AnimatedSwitcher(duration: ANIMATED_SWITCHER_DEFAULT_DURATION, child: w);
   }
 
   Widget viewTranslations(BuildContext context, EditNewsData state) {
@@ -149,9 +132,7 @@ class EditNewsScreenState extends State<EditNewsScreen> {
     } else {
       visibilityText = "Visibility: private (admins can view)";
     }
-    final List<Widget> widgets = [
-      Text(visibilityText),
-    ];
+    final List<Widget> widgets = [Text(visibilityText)];
     for (final l in widget.supportedLocales) {
       final c = state.editedOrCurrentlNewsContent(l);
       widgets.add(const Divider());
@@ -161,11 +142,8 @@ class EditNewsScreenState extends State<EditNewsScreen> {
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: widgets,
-        ),
-      )
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: widgets),
+      ),
     );
   }
 
@@ -192,7 +170,7 @@ class EditNewsScreenState extends State<EditNewsScreen> {
               openEditNewsTranslationScreen(context, c, locale, context.read<EditNewsBloc>());
             },
             icon: const Icon(Icons.edit),
-          )
+          ),
         ],
       ),
       ViewNewsItem(title: title, body: body),

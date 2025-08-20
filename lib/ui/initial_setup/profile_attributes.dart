@@ -30,7 +30,9 @@ class AskProfileAttributesScreen extends StatelessWidget {
       context: context,
       child: QuestionAsker(
         getContinueButtonCallback: (context, state) {
-          if (state.profileAttributes.answerForRequiredAttributeExists(currentAttribute.apiAttribute().id)) {
+          if (state.profileAttributes.answerForRequiredAttributeExists(
+            currentAttribute.apiAttribute().id,
+          )) {
             return () {
               final nextAttributeIndex = attributeIndex + 1;
               final nextAttribute = attributes.getAtOrNull(nextAttributeIndex);
@@ -39,11 +41,13 @@ class AskProfileAttributesScreen extends StatelessWidget {
               } else {
                 MyNavigator.push(
                   context,
-                  MaterialPage<void>(child: AskProfileAttributesScreen(
-                    attributeIndex: nextAttributeIndex,
-                    currentAttribute: nextAttribute,
-                    attributes: attributes,
-                  )),
+                  MaterialPage<void>(
+                    child: AskProfileAttributesScreen(
+                      attributeIndex: nextAttributeIndex,
+                      currentAttribute: nextAttribute,
+                      attributes: attributes,
+                    ),
+                  ),
                 );
               }
             };
@@ -51,9 +55,7 @@ class AskProfileAttributesScreen extends StatelessWidget {
             return null;
           }
         },
-        question: AskProfileAttributes(
-          currentAttribute: currentAttribute,
-        ),
+        question: AskProfileAttributes(currentAttribute: currentAttribute),
         expandQuestion: true,
       ),
     );
@@ -62,10 +64,7 @@ class AskProfileAttributesScreen extends StatelessWidget {
 
 class AskProfileAttributes extends StatefulWidget {
   final UiAttribute currentAttribute;
-  const AskProfileAttributes({
-    required this.currentAttribute,
-    super.key,
-  });
+  const AskProfileAttributes({required this.currentAttribute, super.key});
 
   @override
   State<AskProfileAttributes> createState() => _AskProfileAttributesState();
@@ -90,10 +89,12 @@ class _AskProfileAttributesState extends State<AskProfileAttributes> {
           attributeTitle(context),
         ],
       ),
-      initialStateBuilder: () => SelectAttributeValueStorage.selected(AttributeStateStorage.parseFromUpdateList(
-        widget.currentAttribute,
-        context.read<InitialSetupBloc>().state.profileAttributes.answers,
-      )),
+      initialStateBuilder: () => SelectAttributeValueStorage.selected(
+        AttributeStateStorage.parseFromUpdateList(
+          widget.currentAttribute,
+          context.read<InitialSetupBloc>().state.profileAttributes.answers,
+        ),
+      ),
       onChanged: (storage) {
         context.read<InitialSetupBloc>().add(
           UpdateAttributeValue(storage.selected.toAttributeValueUpdate(widget.currentAttribute)),
@@ -107,9 +108,6 @@ class _AskProfileAttributesState extends State<AskProfileAttributes> {
       widget.currentAttribute.uiName(),
       style: Theme.of(context).textTheme.titleLarge,
     );
-    return Padding(
-      padding: const EdgeInsets.all(INITIAL_SETUP_PADDING),
-      child: text
-    );
+    return Padding(padding: const EdgeInsets.all(INITIAL_SETUP_PADDING), child: text);
   }
 }

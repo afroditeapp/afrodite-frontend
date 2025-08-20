@@ -1,5 +1,3 @@
-
-
 import 'dart:convert';
 
 import 'package:logging/logging.dart';
@@ -13,10 +11,7 @@ final log = Logger("NotificationPayload");
 sealed class NotificationPayload extends Immutable {
   final NotificationPayloadTypeString payloadType;
   final AccountId receiverAccountId;
-  const NotificationPayload({
-    required this.payloadType,
-    required this.receiverAccountId,
-  });
+  const NotificationPayload({required this.payloadType, required this.receiverAccountId});
 
   Map<String, Object?> additionalData() {
     return {};
@@ -33,10 +28,7 @@ sealed class NotificationPayload extends Immutable {
     return jsonEncode(map);
   }
 
-  static NotificationPayload? parse(
-    String jsonPayload,
-  ) {
-
+  static NotificationPayload? parse(String jsonPayload) {
     final jsonObject = jsonDecode(jsonPayload);
     if (jsonObject is! Map<String, Object?>) {
       log.error("Payload is not JSON object");
@@ -90,41 +82,31 @@ sealed class NotificationPayload extends Immutable {
 }
 
 class NavigateToLikes extends NotificationPayload {
-  const NavigateToLikes({
-    required super.receiverAccountId,
-  }) : super(
-    payloadType: NotificationPayloadTypeString.navigateToLikes,
-  );
+  const NavigateToLikes({required super.receiverAccountId})
+    : super(payloadType: NotificationPayloadTypeString.navigateToLikes);
 }
 
 class NavigateToNews extends NotificationPayload {
-  const NavigateToNews({
-    required super.receiverAccountId,
-  }) : super(
-    payloadType: NotificationPayloadTypeString.navigateToNews,
-  );
+  const NavigateToNews({required super.receiverAccountId})
+    : super(payloadType: NotificationPayloadTypeString.navigateToNews);
 }
 
 class NavigateToConversationList extends NotificationPayload {
-  const NavigateToConversationList({
-    required super.receiverAccountId,
-  }) : super(
-    payloadType: NotificationPayloadTypeString.navigateToConversationList,
-  );
+  const NavigateToConversationList({required super.receiverAccountId})
+    : super(payloadType: NotificationPayloadTypeString.navigateToConversationList);
 }
 
 class NavigateToConversation extends NotificationPayload {
   final ConversationId conversationId;
 
-  const NavigateToConversation({
-    required this.conversationId,
-    required super.receiverAccountId,
-  }) : super(
-    payloadType: NotificationPayloadTypeString.navigateToConversation,
-  );
+  const NavigateToConversation({required this.conversationId, required super.receiverAccountId})
+    : super(payloadType: NotificationPayloadTypeString.navigateToConversation);
 
   static const String _conversationIdKey = "c";
-  static NotificationPayload? parseFromJsonObject(Map<String, Object?> jsonObject, AccountId receiverAccountId) {
+  static NotificationPayload? parseFromJsonObject(
+    Map<String, Object?> jsonObject,
+    AccountId receiverAccountId,
+  ) {
     if (!jsonObject.containsKey(_conversationIdKey)) {
       log.error("NavigateToConversation payload parsing error: conversation ID is missing");
       return null;
@@ -137,32 +119,21 @@ class NavigateToConversation extends NotificationPayload {
       log.error("NavigateToConversation payload parsing error: conversation ID is not an integer");
       return null;
     }
-    return NavigateToConversation(
-      conversationId: id,
-      receiverAccountId: receiverAccountId,
-    );
+    return NavigateToConversation(conversationId: id, receiverAccountId: receiverAccountId);
   }
 
   @override
-  Map<String, Object?> additionalData() => {
-    _conversationIdKey: conversationId.id,
-  };
+  Map<String, Object?> additionalData() => {_conversationIdKey: conversationId.id};
 }
 
 class NavigateToContentManagement extends NotificationPayload {
-  const NavigateToContentManagement({
-    required super.receiverAccountId,
-  }) : super(
-    payloadType: NotificationPayloadTypeString.navigateToContentManagement,
-  );
+  const NavigateToContentManagement({required super.receiverAccountId})
+    : super(payloadType: NotificationPayloadTypeString.navigateToContentManagement);
 }
 
 class NavigateToMyProfile extends NotificationPayload {
-  const NavigateToMyProfile({
-    required super.receiverAccountId,
-  }) : super(
-    payloadType: NotificationPayloadTypeString.navigateToMyProfile,
-  );
+  const NavigateToMyProfile({required super.receiverAccountId})
+    : super(payloadType: NotificationPayloadTypeString.navigateToMyProfile);
 }
 
 // TODO(quality): Opening another automatic profile search result screen
@@ -173,19 +144,13 @@ class NavigateToMyProfile extends NotificationPayload {
 //                received likes screen works.
 
 class NavigateToAutomaticProfileSearchResults extends NotificationPayload {
-  const NavigateToAutomaticProfileSearchResults({
-    required super.receiverAccountId,
-  }) : super(
-    payloadType: NotificationPayloadTypeString.navigateToAutomaticProfileSearchResults,
-  );
+  const NavigateToAutomaticProfileSearchResults({required super.receiverAccountId})
+    : super(payloadType: NotificationPayloadTypeString.navigateToAutomaticProfileSearchResults);
 }
 
 class NavigateToModeratorTasks extends NotificationPayload {
-  const NavigateToModeratorTasks({
-    required super.receiverAccountId,
-  }) : super(
-    payloadType: NotificationPayloadTypeString.navigateToModeratorTasks,
-  );
+  const NavigateToModeratorTasks({required super.receiverAccountId})
+    : super(payloadType: NotificationPayloadTypeString.navigateToModeratorTasks);
 }
 
 enum NotificationPayloadTypeString {
@@ -199,9 +164,7 @@ enum NotificationPayloadTypeString {
   navigateToModeratorTasks(value: stringNavigateToModeratorTasks);
 
   final String value;
-  const NotificationPayloadTypeString({
-    required this.value,
-  });
+  const NotificationPayloadTypeString({required this.value});
 
   static const String stringNavigateToLikes = "navigate_to_likes";
   static const String stringNavigateToNews = "navigate_to_news";
@@ -209,6 +172,7 @@ enum NotificationPayloadTypeString {
   static const String stringNavigateToConversationList = "navigate_to_conversation_list";
   static const String stringNavigateToContentManagement = "navigate_to_content_management";
   static const String stringNavigateToMyProfile = "navigate_to_my_profile";
-  static const String stringNavigateToAutomaticProfileSearchResults = "navigate_to_automatic_profile_search_results";
+  static const String stringNavigateToAutomaticProfileSearchResults =
+      "navigate_to_automatic_profile_search_results";
   static const String stringNavigateToModeratorTasks = "navigate_to_moderator_tasks";
 }

@@ -1,5 +1,3 @@
-
-
 import 'package:app/data/image_cache.dart';
 import 'package:app/data/login_repository.dart';
 import 'package:app/logic/media/content.dart';
@@ -30,9 +28,7 @@ void openContentManagementScreen(BuildContext context) {
   final bloc = context.read<SelectContentBloc>();
   MyNavigator.push(
     context,
-    MaterialPage<void>(child:
-      ContentManagementScreen(selectContentBloc: bloc)
-    ),
+    MaterialPage<void>(child: ContentManagementScreen(selectContentBloc: bloc)),
     pageInfo: const ContentManagementPageInfo(),
   );
 }
@@ -42,34 +38,26 @@ class ContentManagementScreenOpener extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ContentManagementScreen(
-      selectContentBloc: context.read<SelectContentBloc>()
-    );
+    return ContentManagementScreen(selectContentBloc: context.read<SelectContentBloc>());
   }
 }
 
 NewPageDetails newContentManagementScreen() {
   return NewPageDetails(
-    const MaterialPage<void>(
-      child: ContentManagementScreenOpener(),
-    ),
+    const MaterialPage<void>(child: ContentManagementScreenOpener()),
     pageInfo: const ContentManagementPageInfo(),
   );
 }
 
 class ContentManagementScreen extends StatefulWidget {
   final SelectContentBloc selectContentBloc;
-  const ContentManagementScreen({
-    required this.selectContentBloc,
-    super.key,
-  });
+  const ContentManagementScreen({required this.selectContentBloc, super.key});
 
   @override
   State<ContentManagementScreen> createState() => _ContentManagementScreenState();
 }
 
 class _ContentManagementScreenState extends State<ContentManagementScreen> {
-
   @override
   void initState() {
     super.initState();
@@ -79,9 +67,7 @@ class _ContentManagementScreenState extends State<ContentManagementScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(context.strings.content_management_screen_title),
-      ),
+      appBar: AppBar(title: Text(context.strings.content_management_screen_title)),
       body: BlocBuilder<ContentBloc, ContentData>(
         builder: (context, contentState) {
           final securityContent = contentState.currentSecurityContent;
@@ -104,12 +90,12 @@ class _ContentManagementScreenState extends State<ContentManagementScreen> {
                       myProfile,
                     );
                   }
-                }
+                },
               );
-            }
+            },
           );
-        }
-      )
+        },
+      ),
     );
   }
 
@@ -123,14 +109,16 @@ class _ContentManagementScreenState extends State<ContentManagementScreen> {
     final List<Widget> listWidgets = [];
 
     listWidgets.addAll(
-      content.data.reversed.map((e) => _buildAvailableImg(
-        context,
-        accountId,
-        e,
-        content.unusedContentWaitSeconds,
-        securityContent,
-        myProfile,
-      ))
+      content.data.reversed.map(
+        (e) => _buildAvailableImg(
+          context,
+          accountId,
+          e,
+          content.unusedContentWaitSeconds,
+          securityContent,
+          myProfile,
+        ),
+      ),
     );
 
     final listView = ListView(
@@ -141,18 +129,22 @@ class _ContentManagementScreenState extends State<ContentManagementScreen> {
 
     final List<Widget> widgets = [];
 
-    widgets.add(Padding(
-      padding: const EdgeInsets.all(COMMON_SCREEN_EDGE_PADDING),
-      child: Text(context.strings.select_content_screen_count(content.data.length.toString(), content.maxContentCount.toString())),
-    ));
+    widgets.add(
+      Padding(
+        padding: const EdgeInsets.all(COMMON_SCREEN_EDGE_PADDING),
+        child: Text(
+          context.strings.select_content_screen_count(
+            content.data.length.toString(),
+            content.maxContentCount.toString(),
+          ),
+        ),
+      ),
+    );
 
     widgets.add(listView);
 
     return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: widgets,
-      ),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: widgets),
     );
   }
 }
@@ -170,7 +162,7 @@ Widget _buildAvailableImg(
       top: 4.0,
       bottom: 4.0,
       left: COMMON_SCREEN_EDGE_PADDING,
-      right: COMMON_SCREEN_EDGE_PADDING
+      right: COMMON_SCREEN_EDGE_PADDING,
     ),
     child: Row(
       children: [
@@ -183,8 +175,8 @@ Widget _buildAvailableImg(
                 MyNavigator.push(
                   context,
                   MaterialPage<void>(
-                    child: ViewImageScreen(ViewImageAccountContent(accountId, content.cid))
-                  )
+                    child: ViewImageScreen(ViewImageAccountContent(accountId, content.cid)),
+                  ),
                 );
               },
               child: accountImgWidgetInk(
@@ -206,14 +198,13 @@ Widget _buildAvailableImg(
               securityContent,
               myProfile,
             ),
-          )
+          ),
         ),
         _rejectionDetailsInfo(context, content),
       ],
     ),
   );
 }
-
 
 Widget _statusInfo(
   BuildContext context,
@@ -240,7 +231,11 @@ Widget _statusInfo(
     for (final (i, c) in myProfile.content.indexed) {
       if (content.cid == c.id) {
         final contentNumber = i + 1;
-        stateTexts.add(context.strings.content_management_screen_content_profile_content(contentNumber.toString()));
+        stateTexts.add(
+          context.strings.content_management_screen_content_profile_content(
+            contentNumber.toString(),
+          ),
+        );
       }
     }
     deleteButton = null;
@@ -251,7 +246,9 @@ Widget _statusInfo(
       deleteButton = _createDeleteButton(context, accountId, content.cid);
     } else {
       final timeString = fullTimeString(deletionAllowed);
-      stateTexts.add(context.strings.content_management_screen_content_deletion_allowed_wait_time(timeString));
+      stateTexts.add(
+        context.strings.content_management_screen_content_deletion_allowed_wait_time(timeString),
+      );
       deleteButton = null;
     }
   } else {
@@ -265,7 +262,8 @@ Widget _statusInfo(
     mainAxisSize: MainAxisSize.min,
     children: [
       if (totalText.isNotEmpty) Text(totalText, textAlign: TextAlign.center),
-      if (totalText.isNotEmpty && deleteButton != null) const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
+      if (totalText.isNotEmpty && deleteButton != null)
+        const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
       if (deleteButton != null) deleteButton,
     ],
   );
@@ -302,15 +300,16 @@ Widget _createDeleteButton(BuildContext context, AccountId accountId, ContentId 
   );
 }
 
-
-Future<bool?> _confirmDialogForImage(BuildContext context, AccountId account, ContentId content) async {
+Future<bool?> _confirmDialogForImage(
+  BuildContext context,
+  AccountId account,
+  ContentId content,
+) async {
   Widget img = InkWell(
     onTap: () {
       MyNavigator.push(
         context,
-        MaterialPage<void>(
-          child: ViewImageScreen(ViewImageAccountContent(account, content))
-        )
+        MaterialPage<void>(child: ViewImageScreen(ViewImageAccountContent(account, content))),
       );
     },
     // Width seems to prevent the dialog from expanding horizontaly

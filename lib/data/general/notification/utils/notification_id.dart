@@ -1,4 +1,3 @@
-
 import 'package:openapi/api.dart';
 
 class LocalNotificationId {
@@ -9,6 +8,7 @@ class LocalNotificationId {
 enum NotificationIdStatic {
   /// Server uses this as FCM collapse ID for data messages.
   empty(id: LocalNotificationId(0)),
+
   /// Server sends this FCM visible notification if client does not respond
   /// to the data message.
   newNotificationAvailable(id: LocalNotificationId(1)),
@@ -25,17 +25,18 @@ enum NotificationIdStatic {
   profileTextModerationAccepted(id: LocalNotificationId(9)),
   profileTextModerationRejected(id: LocalNotificationId(10)),
   automaticProfileSearchCompleted(id: LocalNotificationId(11)),
+
   /// Category: NotificationCategoryNewsItemAvailable
   adminNotification(id: LocalNotificationId(12)),
   genericMessageReceived(id: LocalNotificationId(13)),
   firstNewMessageNotificationId(id: LocalNotificationId(1000));
 
   final LocalNotificationId id;
-  const NotificationIdStatic({
-    required this.id,
-  });
+  const NotificationIdStatic({required this.id});
 
-  static LocalNotificationId calculateNotificationIdForNewMessageNotifications(ConversationId idStartingFromZero) {
+  static LocalNotificationId calculateNotificationIdForNewMessageNotifications(
+    ConversationId idStartingFromZero,
+  ) {
     return LocalNotificationId(firstNewMessageNotificationId.id.value + idStartingFromZero.id);
   }
 

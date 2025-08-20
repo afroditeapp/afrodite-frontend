@@ -23,14 +23,17 @@ class NewPrimaryContent extends ContentEvent {
   final PrimaryProfileContent? content;
   NewPrimaryContent(this.content);
 }
+
 class NewSecurityContent extends ContentEvent {
   final MyContent? content;
   NewSecurityContent(this.content);
 }
+
 class NewPrimaryImageDataAvailable extends ContentEvent {
   final bool value;
   NewPrimaryImageDataAvailable(this.value);
 }
+
 class ChangeSecurityContent extends ContentEvent {
   final ContentId content;
   ChangeSecurityContent(this.content);
@@ -39,9 +42,10 @@ class ChangeSecurityContent extends ContentEvent {
 class ContentBloc extends Bloc<ContentEvent, ContentData> with ActionRunner {
   final AccountDatabaseManager db = LoginRepository.getInstance().repositories.accountDb;
   final MediaRepository media = LoginRepository.getInstance().repositories.media;
-  final ServerConnectionManager connection = LoginRepository.getInstance().repositories.connectionManager;
+  final ServerConnectionManager connection =
+      LoginRepository.getInstance().repositories.connectionManager;
   final ImageCacheData cache = ImageCacheData.getInstance();
-  final AccountId currentUser =  LoginRepository.getInstance().repositories.accountId;
+  final AccountId currentUser = LoginRepository.getInstance().repositories.accountId;
   final ApiManager api = LoginRepository.getInstance().repositories.api;
 
   StreamSubscription<PrimaryProfileContent?>? _primaryContentSubscription;
@@ -50,25 +54,19 @@ class ContentBloc extends Bloc<ContentEvent, ContentData> with ActionRunner {
 
   ContentBloc() : super(ContentData()) {
     on<NewPrimaryContent>((data, emit) {
-      emit(state.copyWith(
-        primaryContent: data.content,
-        isLoadingPrimaryContent: false,
-      ));
+      emit(state.copyWith(primaryContent: data.content, isLoadingPrimaryContent: false));
     });
     on<NewSecurityContent>((data, emit) {
-      emit(state.copyWith(
-        securityContent: data.content,
-        isLoadingSecurityContent: false,
-      ));
+      emit(state.copyWith(securityContent: data.content, isLoadingSecurityContent: false));
     });
     on<NewPrimaryImageDataAvailable>((data, emit) {
-      emit(state.copyWith(
-        primaryImageDataAvailable: data.value,
-      ));
+      emit(state.copyWith(primaryImageDataAvailable: data.value));
     });
     on<ChangeSecurityContent>((data, emit) async {
       await runOnce(() async {
-        final changeResult = await api.mediaAction((api) => api.putSecurityContentInfo(data.content));
+        final changeResult = await api.mediaAction(
+          (api) => api.putSecurityContentInfo(data.content),
+        );
         final updateResult = await media.reloadMyMediaContent();
         if (changeResult.isErr() || updateResult.isErr()) {
           showSnackBar(R.strings.generic_error_occurred);
@@ -78,12 +76,16 @@ class ContentBloc extends Bloc<ContentEvent, ContentData> with ActionRunner {
       });
     });
 
-    _primaryContentSubscription = db.accountStream((db) => db.myMedia.watchMyPrimaryProfileContent()).listen((event) {
-      add(NewPrimaryContent(event));
-    });
-    _securityContentSubscription = db.accountStream((db) => db.myMedia.watchMyCurrentSecurityContent()).listen((event) {
-      add(NewSecurityContent(event));
-    });
+    _primaryContentSubscription = db
+        .accountStream((db) => db.myMedia.watchMyPrimaryProfileContent())
+        .listen((event) {
+          add(NewPrimaryContent(event));
+        });
+    _securityContentSubscription = db
+        .accountStream((db) => db.myMedia.watchMyCurrentSecurityContent())
+        .listen((event) {
+          add(NewSecurityContent(event));
+        });
 
     // Retry main screen my profile primary image thumbnail loading
     // if it is not available at the first try.

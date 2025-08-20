@@ -1,4 +1,3 @@
-
 import "package:openapi/api.dart";
 import 'package:database/database.dart';
 
@@ -28,9 +27,9 @@ class ConversationData with _$ConversationData {
 
   bool isActionsInProgress() {
     return isMessageSendingInProgress ||
-    isMessageRemovingInProgress ||
-    isMessageResendingInProgress ||
-    isRetryPublicKeyDownloadInProgress;
+        isMessageRemovingInProgress ||
+        isMessageResendingInProgress ||
+        isRetryPublicKeyDownloadInProgress;
   }
 }
 

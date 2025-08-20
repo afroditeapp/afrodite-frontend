@@ -9,28 +9,18 @@ import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-Future<void> openEditProfileText(
-  BuildContext context,
-  EditMyProfileBloc bloc,
-) {
+Future<void> openEditProfileText(BuildContext context, EditMyProfileBloc bloc) {
   final pageKey = PageKey();
   return MyNavigator.pushWithKey(
     context,
-    MaterialPage<void>(
-      child: EditProfileTextScreen(
-        bloc: bloc,
-      ),
-    ),
+    MaterialPage<void>(child: EditProfileTextScreen(bloc: bloc)),
     pageKey,
   );
 }
 
 class EditProfileTextScreen extends StatefulWidget {
   final EditMyProfileBloc bloc;
-  const EditProfileTextScreen({
-    required this.bloc,
-    super.key,
-  });
+  const EditProfileTextScreen({required this.bloc, super.key});
 
   @override
   State<EditProfileTextScreen> createState() => EditProfileTextScreenState();
@@ -59,23 +49,18 @@ class EditProfileTextScreenState extends State<EditProfileTextScreen> {
           child: GestureDetector(
             onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
             child: Scaffold(
-              appBar: AppBar(
-                title: Text(context.strings.edit_profile_screen_profile_text),
-              ),
+              appBar: AppBar(title: Text(context.strings.edit_profile_screen_profile_text)),
               body: content(context),
             ),
           ),
         );
-      }
+      },
     );
   }
 
   Widget content(BuildContext context) {
     return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: editProfileText(context),
-      )
+      child: Padding(padding: const EdgeInsets.all(8.0), child: editProfileText(context)),
     );
   }
 
@@ -92,9 +77,7 @@ class EditProfileTextScreenState extends State<EditProfileTextScreen> {
           labelText: context.strings.edit_profile_screen_profile_text,
         ),
         onChanged: (value) {
-          context.read<EditMyProfileBloc>().add(NewProfileText(
-            value.trim()
-          ));
+          context.read<EditMyProfileBloc>().add(NewProfileText(value.trim()));
         },
       ),
     );

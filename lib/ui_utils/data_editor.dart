@@ -1,4 +1,3 @@
-
 import 'package:app/api/api_manager.dart';
 import 'package:app/localizations.dart';
 import 'package:app/logic/app/navigator_state.dart';
@@ -153,12 +152,7 @@ class _EditDataScreenState extends State<EditDataScreen> {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-        actions: [
-          ...dataManager.actions(),
-        ],
-      ),
+      appBar: AppBar(title: Text(widget.title), actions: [...dataManager.actions()]),
       body: screenContent(context),
       floatingActionButton: saveButton,
     );
@@ -166,9 +160,7 @@ class _EditDataScreenState extends State<EditDataScreen> {
 
   Widget screenContent(BuildContext context) {
     if (isLoading) {
-      return const Center(
-        child: CircularProgressIndicator(),
-      );
+      return const Center(child: CircularProgressIndicator());
     } else if (isError) {
       return Center(child: Text(context.strings.generic_error));
     } else {
@@ -180,7 +172,9 @@ class _EditDataScreenState extends State<EditDataScreen> {
     return CustomScrollView(
       slivers: [
         ...dataManager.slivers(),
-        const SliverToBoxAdapter(child: Padding(padding: EdgeInsets.only(top: FLOATING_ACTION_BUTTON_EMPTY_AREA))),
+        const SliverToBoxAdapter(
+          child: Padding(padding: EdgeInsets.only(top: FLOATING_ACTION_BUTTON_EMPTY_AREA)),
+        ),
       ],
     );
   }

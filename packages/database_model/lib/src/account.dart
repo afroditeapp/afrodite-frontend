@@ -1,12 +1,6 @@
-
 import 'package:openapi/api.dart';
 
-enum AccountState {
-  initialSetup,
-  normal,
-  banned,
-  pendingDeletion,
-}
+enum AccountState { initialSetup, normal, banned, pendingDeletion }
 
 extension AccountStateContainerToAccountState on AccountStateContainer {
   AccountState toAccountState() {

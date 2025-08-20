@@ -1,4 +1,3 @@
-
 export 'schema/app.dart';
 export 'schema/account.dart';
 export 'schema/chat.dart';

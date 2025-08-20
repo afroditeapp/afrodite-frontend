@@ -13,7 +13,9 @@ class EditMyGenderScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(context.strings.search_settings_screen_change_my_gender_action_title)),
+      appBar: AppBar(
+        title: Text(context.strings.search_settings_screen_change_my_gender_action_title),
+      ),
       body: edit(context),
     );
   }
@@ -39,16 +41,12 @@ class EditMyGenderScreen extends StatelessWidget {
   Widget askGender() {
     return BlocBuilder<SearchSettingsBloc, SearchSettingsData>(
       builder: (context, state) {
-        return genderRadioButtons(
-          context,
-          state.valueGender(),
-          (selected) {
-            if (selected != null) {
-              context.read<SearchSettingsBloc>().add(UpdateGender(selected));
-            }
+        return genderRadioButtons(context, state.valueGender(), (selected) {
+          if (selected != null) {
+            context.read<SearchSettingsBloc>().add(UpdateGender(selected));
           }
-        );
-      }
+        });
+      },
     );
   }
 }

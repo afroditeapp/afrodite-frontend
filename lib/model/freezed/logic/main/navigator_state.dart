@@ -46,13 +46,14 @@ class PageAndChannel {
   }
 }
 
-
 sealed class ReturnChannelValue {
   const ReturnChannelValue();
 }
+
 class WaitingPagePop extends ReturnChannelValue {
   const WaitingPagePop();
 }
+
 class PagePopDone extends ReturnChannelValue {
   final Object? returnValue;
   const PagePopDone(this.returnValue);
@@ -60,23 +61,27 @@ class PagePopDone extends ReturnChannelValue {
 
 class PageKey extends UniqueKey {}
 
-
 sealed class PageInfo {
   const PageInfo();
 }
+
 class ConversationPageInfo extends PageInfo {
   final AccountId accountId;
   const ConversationPageInfo(this.accountId);
 }
+
 class LikesPageInfo extends PageInfo {
   const LikesPageInfo();
 }
+
 class ContentManagementPageInfo extends PageInfo {
   const ContentManagementPageInfo();
 }
+
 class MyProfilePageInfo extends PageInfo {
   const MyProfilePageInfo();
 }
+
 class AutomaticProfileSearchResultsPageInfo extends PageInfo {
   const AutomaticProfileSearchResultsPageInfo();
 }

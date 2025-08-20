@@ -14,18 +14,15 @@ import 'dart:ffi' as ffi;
 ///
 class NativeUtilsBindings {
   /// Holds the symbol lookup function.
-  final ffi.Pointer<T> Function<T extends ffi.NativeType>(String symbolName)
-      _lookup;
+  final ffi.Pointer<T> Function<T extends ffi.NativeType>(String symbolName) _lookup;
 
   /// The symbols are looked up in [dynamicLibrary].
-  NativeUtilsBindings(ffi.DynamicLibrary dynamicLibrary)
-      : _lookup = dynamicLibrary.lookup;
+  NativeUtilsBindings(ffi.DynamicLibrary dynamicLibrary) : _lookup = dynamicLibrary.lookup;
 
   /// The symbols are looked up with [lookup].
   NativeUtilsBindings.fromLookup(
-      ffi.Pointer<T> Function<T extends ffi.NativeType>(String symbolName)
-          lookup)
-      : _lookup = lookup;
+    ffi.Pointer<T> Function<T extends ffi.NativeType>(String symbolName) lookup,
+  ) : _lookup = lookup;
 
   /// Replace plaintext with chiphertext and nonce.
   ///
@@ -42,21 +39,24 @@ class NativeUtilsBindings {
     ffi.Pointer<ffi.Uint8> key,
     int key_len,
   ) {
-    return _encrypt_content(
-      data,
-      data_len,
-      key,
-      key_len,
-    );
+    return _encrypt_content(data, data_len, key, key_len);
   }
 
-  late final _encrypt_contentPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.IntPtr Function(ffi.Pointer<ffi.Uint8>, ffi.IntPtr,
-              ffi.Pointer<ffi.Uint8>, ffi.IntPtr)>>('encrypt_content');
-  late final _encrypt_content = _encrypt_contentPtr.asFunction<
-      int Function(ffi.Pointer<ffi.Uint8>, int, ffi.Pointer<ffi.Uint8>,
-          int)>(isLeaf: true);
+  late final _encrypt_contentPtr =
+      _lookup<
+        ffi.NativeFunction<
+          ffi.IntPtr Function(
+            ffi.Pointer<ffi.Uint8>,
+            ffi.IntPtr,
+            ffi.Pointer<ffi.Uint8>,
+            ffi.IntPtr,
+          )
+        >
+      >('encrypt_content');
+  late final _encrypt_content = _encrypt_contentPtr
+      .asFunction<int Function(ffi.Pointer<ffi.Uint8>, int, ffi.Pointer<ffi.Uint8>, int)>(
+        isLeaf: true,
+      );
 
   /// Replace chiphertext and nonce with plaintext data.
   ///
@@ -69,33 +69,33 @@ class NativeUtilsBindings {
     ffi.Pointer<ffi.Uint8> key,
     int key_len,
   ) {
-    return _decrypt_content(
-      data,
-      data_len,
-      key,
-      key_len,
-    );
+    return _decrypt_content(data, data_len, key, key_len);
   }
 
-  late final _decrypt_contentPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.IntPtr Function(ffi.Pointer<ffi.Uint8>, ffi.IntPtr,
-              ffi.Pointer<ffi.Uint8>, ffi.IntPtr)>>('decrypt_content');
-  late final _decrypt_content = _decrypt_contentPtr.asFunction<
-      int Function(ffi.Pointer<ffi.Uint8>, int, ffi.Pointer<ffi.Uint8>,
-          int)>(isLeaf: true);
+  late final _decrypt_contentPtr =
+      _lookup<
+        ffi.NativeFunction<
+          ffi.IntPtr Function(
+            ffi.Pointer<ffi.Uint8>,
+            ffi.IntPtr,
+            ffi.Pointer<ffi.Uint8>,
+            ffi.IntPtr,
+          )
+        >
+      >('decrypt_content');
+  late final _decrypt_content = _decrypt_contentPtr
+      .asFunction<int Function(ffi.Pointer<ffi.Uint8>, int, ffi.Pointer<ffi.Uint8>, int)>(
+        isLeaf: true,
+      );
 
-  void free_binary_data_result_2(
-    BinaryDataResult2 result,
-  ) {
-    return _free_binary_data_result_2(
-      result,
-    );
+  void free_binary_data_result_2(BinaryDataResult2 result) {
+    return _free_binary_data_result_2(result);
   }
 
   late final _free_binary_data_result_2Ptr =
       _lookup<ffi.NativeFunction<ffi.Void Function(BinaryDataResult2)>>(
-          'free_binary_data_result_2');
+        'free_binary_data_result_2',
+      );
   late final _free_binary_data_result_2 = _free_binary_data_result_2Ptr
       .asFunction<void Function(BinaryDataResult2)>(isLeaf: true);
 
@@ -104,33 +104,23 @@ class NativeUtilsBindings {
   /// Run equivalent free function for the result.
   ///
   /// First result value is public key and second is private key.
-  BinaryDataResult2 generate_message_keys(
-    ffi.Pointer<ffi.Char> account_id,
-  ) {
-    return _generate_message_keys(
-      account_id,
-    );
+  BinaryDataResult2 generate_message_keys(ffi.Pointer<ffi.Char> account_id) {
+    return _generate_message_keys(account_id);
   }
 
-  late final _generate_message_keysPtr = _lookup<
-          ffi
-          .NativeFunction<BinaryDataResult2 Function(ffi.Pointer<ffi.Char>)>>(
-      'generate_message_keys');
+  late final _generate_message_keysPtr =
+      _lookup<ffi.NativeFunction<BinaryDataResult2 Function(ffi.Pointer<ffi.Char>)>>(
+        'generate_message_keys',
+      );
   late final _generate_message_keys = _generate_message_keysPtr
-      .asFunction<BinaryDataResult2 Function(ffi.Pointer<ffi.Char>)>(
-          isLeaf: true);
+      .asFunction<BinaryDataResult2 Function(ffi.Pointer<ffi.Char>)>(isLeaf: true);
 
-  void free_binary_data_result(
-    BinaryDataResult result,
-  ) {
-    return _free_binary_data_result(
-      result,
-    );
+  void free_binary_data_result(BinaryDataResult result) {
+    return _free_binary_data_result(result);
   }
 
   late final _free_binary_data_resultPtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(BinaryDataResult)>>(
-          'free_binary_data_result');
+      _lookup<ffi.NativeFunction<ffi.Void Function(BinaryDataResult)>>('free_binary_data_result');
   late final _free_binary_data_result = _free_binary_data_resultPtr
       .asFunction<void Function(BinaryDataResult)>(isLeaf: true);
 
@@ -157,23 +147,30 @@ class NativeUtilsBindings {
     );
   }
 
-  late final _encrypt_messagePtr = _lookup<
-      ffi.NativeFunction<
+  late final _encrypt_messagePtr =
+      _lookup<
+        ffi.NativeFunction<
           BinaryDataResult2 Function(
-              ffi.Pointer<ffi.Uint8>,
-              ffi.IntPtr,
-              ffi.Pointer<ffi.Uint8>,
-              ffi.IntPtr,
-              ffi.Pointer<ffi.Uint8>,
-              ffi.IntPtr)>>('encrypt_message');
-  late final _encrypt_message = _encrypt_messagePtr.asFunction<
-      BinaryDataResult2 Function(
+            ffi.Pointer<ffi.Uint8>,
+            ffi.IntPtr,
+            ffi.Pointer<ffi.Uint8>,
+            ffi.IntPtr,
+            ffi.Pointer<ffi.Uint8>,
+            ffi.IntPtr,
+          )
+        >
+      >('encrypt_message');
+  late final _encrypt_message = _encrypt_messagePtr
+      .asFunction<
+        BinaryDataResult2 Function(
           ffi.Pointer<ffi.Uint8>,
           int,
           ffi.Pointer<ffi.Uint8>,
           int,
           ffi.Pointer<ffi.Uint8>,
-          int)>(isLeaf: true);
+          int,
+        )
+      >(isLeaf: true);
 
   /// Decrypt message data.
   ///
@@ -198,44 +195,44 @@ class NativeUtilsBindings {
     );
   }
 
-  late final _decrypt_messagePtr = _lookup<
-      ffi.NativeFunction<
+  late final _decrypt_messagePtr =
+      _lookup<
+        ffi.NativeFunction<
           BinaryDataResult2 Function(
-              ffi.Pointer<ffi.Uint8>,
-              ffi.IntPtr,
-              ffi.Pointer<ffi.Uint8>,
-              ffi.IntPtr,
-              ffi.Pointer<ffi.Uint8>,
-              ffi.IntPtr)>>('decrypt_message');
-  late final _decrypt_message = _decrypt_messagePtr.asFunction<
-      BinaryDataResult2 Function(
+            ffi.Pointer<ffi.Uint8>,
+            ffi.IntPtr,
+            ffi.Pointer<ffi.Uint8>,
+            ffi.IntPtr,
+            ffi.Pointer<ffi.Uint8>,
+            ffi.IntPtr,
+          )
+        >
+      >('decrypt_message');
+  late final _decrypt_message = _decrypt_messagePtr
+      .asFunction<
+        BinaryDataResult2 Function(
           ffi.Pointer<ffi.Uint8>,
           int,
           ffi.Pointer<ffi.Uint8>,
           int,
           ffi.Pointer<ffi.Uint8>,
-          int)>(isLeaf: true);
+          int,
+        )
+      >(isLeaf: true);
 
   /// Get message content from PGP message if possible.
   ///
   /// The result must be freed using free_binary_data_result.
-  BinaryDataResult get_message_content(
-    ffi.Pointer<ffi.Uint8> pgp_message,
-    int pgp_message_len,
-  ) {
-    return _get_message_content(
-      pgp_message,
-      pgp_message_len,
-    );
+  BinaryDataResult get_message_content(ffi.Pointer<ffi.Uint8> pgp_message, int pgp_message_len) {
+    return _get_message_content(pgp_message, pgp_message_len);
   }
 
-  late final _get_message_contentPtr = _lookup<
-      ffi.NativeFunction<
-          BinaryDataResult Function(
-              ffi.Pointer<ffi.Uint8>, ffi.IntPtr)>>('get_message_content');
+  late final _get_message_contentPtr =
+      _lookup<ffi.NativeFunction<BinaryDataResult Function(ffi.Pointer<ffi.Uint8>, ffi.IntPtr)>>(
+        'get_message_content',
+      );
   late final _get_message_content = _get_message_contentPtr
-      .asFunction<BinaryDataResult Function(ffi.Pointer<ffi.Uint8>, int)>(
-          isLeaf: true);
+      .asFunction<BinaryDataResult Function(ffi.Pointer<ffi.Uint8>, int)>(isLeaf: true);
 }
 
 /// Message encryption API

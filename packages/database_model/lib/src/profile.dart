@@ -1,6 +1,3 @@
-
-
-
 import 'dart:math';
 
 import 'media.dart';
@@ -10,12 +7,7 @@ import 'package:utils/utils.dart';
 class ProfileThumbnail {
   final ProfileEntry entry;
   final bool isFavorite;
-  ProfileThumbnail(
-    {
-      required this.entry,
-      required this.isFavorite,
-    }
-  );
+  ProfileThumbnail({required this.entry, required this.isFavorite});
 }
 
 class ProfileEntry implements PublicContentProvider {
@@ -31,47 +23,44 @@ class ProfileEntry implements PublicContentProvider {
   final bool profileTextAccepted;
   final int age;
   final bool unlimitedLikes;
+
   /// Possible values:
   /// When -1, the user is currently online.
   /// When 0 or greater, the value is unix timestamp when profile has been
   /// seen online previously.
   final int? lastSeenTimeValue;
+
   /// Use update type also here to avoid extra type conversions when
   /// editing attributes.
   final Map<int, ProfileAttributeValueUpdate> attributeIdAndStateMap;
   final ProfileVersion version;
   final ProfileContentVersion contentVersion;
   final UtcDateTime? newLikeInfoReceivedTime;
-  ProfileEntry(
-    {
-      required this.accountId,
-      required this.content,
-      required this.primaryContentGridCropSize,
-      required this.primaryContentGridCropX,
-      required this.primaryContentGridCropY,
-      required this.name,
-      required this.nameAccepted,
-      required this.profileText,
-      required this.profileTextAccepted,
-      required this.age,
-      required this.unlimitedLikes,
-      required this.attributeIdAndStateMap,
-      required this.version,
-      required this.contentVersion,
-      this.lastSeenTimeValue,
-      this.newLikeInfoReceivedTime,
-    }
-  );
+  ProfileEntry({
+    required this.accountId,
+    required this.content,
+    required this.primaryContentGridCropSize,
+    required this.primaryContentGridCropX,
+    required this.primaryContentGridCropY,
+    required this.name,
+    required this.nameAccepted,
+    required this.profileText,
+    required this.profileTextAccepted,
+    required this.age,
+    required this.unlimitedLikes,
+    required this.attributeIdAndStateMap,
+    required this.version,
+    required this.contentVersion,
+    this.lastSeenTimeValue,
+    this.newLikeInfoReceivedTime,
+  });
 
   bool containsNonAcceptedContent() {
     return content.any((v) => !v.accepted);
   }
 
   String profileTitle(bool showNonAcceptedProfileNames) {
-    return ProfileTitle(
-      name,
-      nameAccepted,
-    ).profileTitle();
+    return ProfileTitle(name, nameAccepted).profileTitle();
   }
 
   String profileTitleWithAge(bool showNonAcceptedProfileNames) {
@@ -184,46 +173,31 @@ class InitialAgeInfo {
       nextAutomaticAgeChange = null;
     } else {
       if (initialAge == middleAge) {
-        nextAutomaticAgeChange = AutomaticAgeChangeInfo(
-          age: minAge + 2,
-          year: currentYear + 2,
-        );
+        nextAutomaticAgeChange = AutomaticAgeChangeInfo(age: minAge + 2, year: currentYear + 2);
       } else {
-        nextAutomaticAgeChange = AutomaticAgeChangeInfo(
-          age: minAge + 1,
-          year: currentYear + 1,
-        );
+        nextAutomaticAgeChange = AutomaticAgeChangeInfo(age: minAge + 1, year: currentYear + 1);
       }
     }
 
-    return AvailableAges(
-      availableAges: ages,
-      nextAutomaticAgeChange: nextAutomaticAgeChange,
-    );
+    return AvailableAges(availableAges: ages, nextAutomaticAgeChange: nextAutomaticAgeChange);
   }
 }
 
 class AvailableAges {
   final List<int> availableAges;
   final AutomaticAgeChangeInfo? nextAutomaticAgeChange;
-  AvailableAges({
-    required this.availableAges,
-    required this.nextAutomaticAgeChange,
-  });
+  AvailableAges({required this.availableAges, required this.nextAutomaticAgeChange});
 }
 
 class AutomaticAgeChangeInfo {
   final int age;
   final int year;
-  AutomaticAgeChangeInfo({
-    required this.age,
-    required this.year,
-  });
+  AutomaticAgeChangeInfo({required this.age, required this.year});
 }
-
 
 class ProfileAttributes {
   final AttributeOrderMode attributeOrder;
+
   /// This list is sorted by Attribute ID and the IDs can be used to
   /// index this list.
   final List<ProfileAttributeAndHash> attributeInfo;

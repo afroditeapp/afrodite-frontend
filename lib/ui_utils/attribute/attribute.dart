@@ -1,4 +1,3 @@
-
 import 'package:app/ui_utils/attribute/filter.dart';
 import 'package:app/ui_utils/attribute/icon.dart';
 import 'package:app/ui_utils/attribute/state.dart';
@@ -16,7 +15,9 @@ class AttributeManager {
   final List<UiAttribute> _list;
 
   factory AttributeManager.createFrom(ProfileAttributes attributes, String? locale) {
-    final attributesCopy = attributes.attributes.map((a) => UiAttribute.createFrom(a, locale)).toList();
+    final attributesCopy = attributes.attributes
+        .map((a) => UiAttribute.createFrom(a, locale))
+        .toList();
 
     if (attributes.attributeOrder == AttributeOrderMode.orderNumber) {
       attributesCopy.sort((a, b) {
@@ -29,7 +30,10 @@ class AttributeManager {
   List<UiAttribute> requiredAttributes() => _list.where((a) => a.apiAttribute().required_).toList();
   List<UiAttribute> allAttributes() => _list;
 
-  List<AttributeAndState> parseStates(Map<int, ProfileAttributeValueUpdate> states, {bool includeNullAttributes = false}) {
+  List<AttributeAndState> parseStates(
+    Map<int, ProfileAttributeValueUpdate> states, {
+    bool includeNullAttributes = false,
+  }) {
     final list = <AttributeAndState>[];
     for (final a in allAttributes()) {
       final state = states[a.apiAttribute().id];
@@ -42,19 +46,30 @@ class AttributeManager {
     return list;
   }
 
-  List<AttributeAndFilterState> parseFilterStates(Map<int, ProfileAttributeFilterValueUpdate> states) {
+  List<AttributeAndFilterState> parseFilterStates(
+    Map<int, ProfileAttributeFilterValueUpdate> states,
+  ) {
     final list = <AttributeAndFilterState>[];
     for (final a in allAttributes()) {
       final state = states[a.apiAttribute().id];
       if (state != null) {
-        list.add(AttributeAndFilterState(
-          a,
-          AttributeStateStorage.parseFromFilterUpdate(a, state),
-          AttributeStateStorage.parseFromFilterUpdate(a, state, parseUnwanted: true),
-          FilterSettingsState.parseFromFilterUpdate(state),
-        ));
+        list.add(
+          AttributeAndFilterState(
+            a,
+            AttributeStateStorage.parseFromFilterUpdate(a, state),
+            AttributeStateStorage.parseFromFilterUpdate(a, state, parseUnwanted: true),
+            FilterSettingsState.parseFromFilterUpdate(state),
+          ),
+        );
       } else {
-        list.add(AttributeAndFilterState(a, AttributeStateStorage(), AttributeStateStorage(), FilterSettingsState()));
+        list.add(
+          AttributeAndFilterState(
+            a,
+            AttributeStateStorage(),
+            AttributeStateStorage(),
+            FilterSettingsState(),
+          ),
+        );
       }
     }
     return list;
@@ -66,25 +81,25 @@ class UiAttribute {
   final List<UiAttributeValue> _valuesAndGroupValues;
   final IconData? _icon;
   final String _uiName;
-  UiAttribute._(
-    this._attribute,
-    this._valuesAndGroupValues,
-    this._icon,
-    this._uiName,
-  );
+  UiAttribute._(this._attribute, this._valuesAndGroupValues, this._icon, this._uiName);
 
   factory UiAttribute.createFrom(Attribute attribute, String? locale) {
-    final attributeValues = attribute.values.map(
-      (v) => UiAttributeValue.createFrom(attribute, v, null, locale),
-    ).toList();
+    final attributeValues = attribute.values
+        .map((v) => UiAttributeValue.createFrom(attribute, v, null, locale))
+        .toList();
     reorderAttributeValues(attributeValues, attribute.valueOrder);
 
     final valuesAndGroupValues = <UiAttributeValue>[];
     for (final levelOneValue in attributeValues) {
       valuesAndGroupValues.add(levelOneValue);
-      final groupValues = levelOneValue.apiValue().groupValues?.values.map(
-        (v) => UiAttributeValue.createFrom(attribute, v, levelOneValue, locale),
-      ).toList() ?? [];
+      final groupValues =
+          levelOneValue
+              .apiValue()
+              .groupValues
+              ?.values
+              .map((v) => UiAttributeValue.createFrom(attribute, v, levelOneValue, locale))
+              .toList() ??
+          [];
       reorderAttributeValues(groupValues, attribute.valueOrder);
       valuesAndGroupValues.addAll(groupValues);
     }
@@ -122,7 +137,13 @@ class UiAttributeValue {
   final IconData? _icon;
   final UiAttributeValue? _groupValueParent;
   final String _uiName;
-  UiAttributeValue._(this._apiAttribute, this._value, this._icon, this._groupValueParent, this._uiName);
+  UiAttributeValue._(
+    this._apiAttribute,
+    this._value,
+    this._icon,
+    this._groupValueParent,
+    this._uiName,
+  );
 
   factory UiAttributeValue.createFrom(
     Attribute attribute,
@@ -182,8 +203,8 @@ abstract class AttributeValueAreaInfoProvider {
 
   bool isEmpty() {
     return valueAreaExtraValues().isEmpty &&
-      valueAreaSelectedValues().isEmpty &&
-      valueAreaUnwantedValues().isEmpty;
+        valueAreaSelectedValues().isEmpty &&
+        valueAreaUnwantedValues().isEmpty;
   }
 }
 

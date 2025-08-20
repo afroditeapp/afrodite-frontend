@@ -1,4 +1,3 @@
-
 import "package:freezed_annotation/freezed_annotation.dart";
 import "package:openapi/api.dart";
 import "package:app/ui_utils/crop_image_screen.dart";
@@ -18,12 +17,7 @@ class ProfilePicturesData with _$ProfilePicturesData {
   }) = _ProfilePicturesData;
 
   List<ImgState> pictures() {
-    return [
-      picture0,
-      picture1,
-      picture2,
-      picture3,
-    ];
+    return [picture0, picture1, picture2, picture3];
   }
 
   int? nextAvailableSlotInInitialSetup() {
@@ -88,9 +82,11 @@ ContentId? imgStateToContentId(ImgState state) {
 sealed class PictureSelectionMode {
   const PictureSelectionMode();
 }
+
 class InitialSetupProfilePictures extends PictureSelectionMode {
   const InitialSetupProfilePictures();
 }
+
 class NormalProfilePictures extends PictureSelectionMode {
   const NormalProfilePictures();
 }
@@ -99,12 +95,15 @@ class NormalProfilePictures extends PictureSelectionMode {
 sealed class ImgState extends Immutable {
   const ImgState();
 }
+
 class Hidden extends ImgState {
   const Hidden();
 }
+
 class Add extends ImgState {
   const Add();
 }
+
 class ImageSelected extends ImgState {
   final SelectedImageInfo img;
   final CropArea cropArea;
@@ -126,15 +125,21 @@ sealed class SelectedImageInfo {
     return img is InitialSetupSecuritySelfie || (img is ProfileImage && img.id.accepted);
   }
 }
+
 class InitialSetupSecuritySelfie extends SelectedImageInfo {}
+
 class ProfileImage extends SelectedImageInfo {
   final AccountImageId id;
+
   /// Slot where image is uploaded to.
   final int? slot;
   ProfileImage(this.id, this.slot);
 
   ProfileImage copyWithFaceDetected(bool faceDetected) {
-    return ProfileImage(AccountImageId(id.accountId, id.contentId, faceDetected, id.accepted), slot);
+    return ProfileImage(
+      AccountImageId(id.accountId, id.contentId, faceDetected, id.accepted),
+      slot,
+    );
   }
 }
 

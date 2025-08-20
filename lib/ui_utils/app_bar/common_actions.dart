@@ -1,7 +1,3 @@
-
-
-
-
 import 'package:app/model/freezed/logic/account/client_features_config.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:flutter/material.dart';
@@ -10,22 +6,16 @@ import 'package:app/localizations.dart';
 import 'package:app/logic/login.dart';
 import 'package:app/ui_utils/dialog.dart';
 
-
 /// Common action that should be shown when the user is logged out from
 /// normal account.
 List<MenuItemButton> commonActionsWhenLoggedOut(BuildContext context) {
-  return [
-    commonActionOpenAboutDialog(context, null),
-  ];
+  return [commonActionOpenAboutDialog(context, null)];
 }
 
 /// Common action that should be shown when the user is logged in to normal
 /// account but account state is not "initialSetupComplete".
 List<MenuItemButton> commonActionsWhenLoggedInAndAccountIsNotNormallyUsable(BuildContext context) {
-  return [
-    commonActionLogout(context),
-    commonActionOpenAboutDialog(context, null),
-  ];
+  return [commonActionLogout(context), commonActionOpenAboutDialog(context, null)];
 }
 
 MenuItemButton commonActionOpenAboutDialog(BuildContext context, ClientFeaturesConfigData? config) {
@@ -56,7 +46,10 @@ MenuItemButton commonActionLogout(BuildContext context) {
 MenuItemButton commonActionBlockProfile(BuildContext context, void Function() blockAction) {
   return MenuItemButton(
     onPressed: () async {
-      final accepted = await showConfirmDialog(context, context.strings.view_profile_screen_block_action_dialog_title);
+      final accepted = await showConfirmDialog(
+        context,
+        context.strings.view_profile_screen_block_action_dialog_title,
+      );
       if (context.mounted && accepted == true) {
         blockAction();
       }

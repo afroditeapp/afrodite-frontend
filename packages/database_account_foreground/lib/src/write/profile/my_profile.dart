@@ -1,4 +1,3 @@
-
 import 'package:database_account_foreground/src/database.dart';
 import 'package:database_utils/database_utils.dart';
 import 'package:database_converter/database_converter.dart';
@@ -10,19 +9,12 @@ import '../../schema.dart' as schema;
 
 part 'my_profile.g.dart';
 
-@DriftAccessor(
-  tables: [
-    schema.MyProfile,
-    schema.ProfileLocation,
-    schema.InitialProfileAge,
-  ]
-)
-class DaoWriteMyProfile extends DatabaseAccessor<AccountForegroundDatabase> with _$DaoWriteMyProfileMixin {
+@DriftAccessor(tables: [schema.MyProfile, schema.ProfileLocation, schema.InitialProfileAge])
+class DaoWriteMyProfile extends DatabaseAccessor<AccountForegroundDatabase>
+    with _$DaoWriteMyProfileMixin {
   DaoWriteMyProfile(super.db);
 
-  Future<void> setApiProfile({
-    required api.GetMyProfileResult result,
-  }) async {
+  Future<void> setApiProfile({required api.GetMyProfileResult result}) async {
     final profile = result.p;
     await into(myProfile).insertOnConflictUpdate(
       MyProfileCompanion.insert(
@@ -33,8 +25,12 @@ class DaoWriteMyProfile extends DatabaseAccessor<AccountForegroundDatabase> with
         profileText: Value(profile.ptext),
         profileTextAccepted: Value(result.p.ptextAccepted),
         profileTextModerationState: Value(result.textModerationInfo?.state.toEnumString()),
-        profileTextModerationRejectedCategory: Value(result.textModerationInfo?.rejectedReasonCategory),
-        profileTextModerationRejectedDetails: Value(result.textModerationInfo?.rejectedReasonDetails),
+        profileTextModerationRejectedCategory: Value(
+          result.textModerationInfo?.rejectedReasonCategory,
+        ),
+        profileTextModerationRejectedDetails: Value(
+          result.textModerationInfo?.rejectedReasonDetails,
+        ),
         profileAge: Value(profile.age),
         profileVersion: Value(result.v),
         profileUnlimitedLikes: Value(profile.unlimitedLikes),
@@ -43,24 +39,20 @@ class DaoWriteMyProfile extends DatabaseAccessor<AccountForegroundDatabase> with
     );
   }
 
-  Future<void> dbInternalMethodUpdateContentInfo({
-    required api.GetMediaContentResult info,
-  }) async {
-      final content = info.profileContent;
-      await into(myProfile).insertOnConflictUpdate(
-        MyProfileCompanion.insert(
-          id: SingleRowTable.ID,
-          primaryContentGridCropSize: Value(content.gridCropSize),
-          primaryContentGridCropX: Value(content.gridCropX),
-          primaryContentGridCropY: Value(content.gridCropY),
-          profileContentVersion: Value(info.profileContentVersion),
-        ),
-      );
+  Future<void> dbInternalMethodUpdateContentInfo({required api.GetMediaContentResult info}) async {
+    final content = info.profileContent;
+    await into(myProfile).insertOnConflictUpdate(
+      MyProfileCompanion.insert(
+        id: SingleRowTable.ID,
+        primaryContentGridCropSize: Value(content.gridCropSize),
+        primaryContentGridCropX: Value(content.gridCropX),
+        primaryContentGridCropY: Value(content.gridCropY),
+        profileContentVersion: Value(info.profileContentVersion),
+      ),
+    );
   }
 
-  Future<void> setInitialAgeInfo({
-    required api.InitialProfileAge info,
-  }) async {
+  Future<void> setInitialAgeInfo({required api.InitialProfileAge info}) async {
     final time = UtcDateTime.fromUnixEpochMilliseconds(info.initialProfileAgeSetUnixTime.ut * 1000);
     await into(initialProfileAge).insertOnConflictUpdate(
       InitialProfileAgeCompanion.insert(

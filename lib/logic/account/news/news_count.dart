@@ -9,24 +9,22 @@ import "package:app/data/login_repository.dart";
 import "package:app/model/freezed/logic/account/news/news_count.dart";
 
 sealed class NewsCountEvent {}
+
 class CountUpdate extends NewsCountEvent {
   final int value;
   CountUpdate(this.value);
 }
 
 class NewsCountBloc extends Bloc<NewsCountEvent, NewsCountData> {
-  final AccountBackgroundDatabaseManager db = LoginRepository.getInstance().repositories.accountBackgroundDb;
+  final AccountBackgroundDatabaseManager db =
+      LoginRepository.getInstance().repositories.accountBackgroundDb;
 
   StreamSubscription<UnreadNewsCount?>? _countSubscription;
 
   NewsCountBloc() : super(NewsCountData()) {
     on<CountUpdate>((data, emit) {
-      emit(state.copyWith(
-        newsCount: data.value,
-      ));
-    },
-      transformer: sequential(),
-    );
+      emit(state.copyWith(newsCount: data.value));
+    }, transformer: sequential());
 
     _countSubscription = db.accountStream((db) => db.news.watchUnreadNewsCount()).listen((data) {
       add(CountUpdate(data?.c ?? 0));

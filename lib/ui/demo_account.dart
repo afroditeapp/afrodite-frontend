@@ -1,4 +1,3 @@
-
 import "package:app/ui_utils/snack_bar.dart";
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
@@ -55,12 +54,10 @@ class _DemoAccountScreenContentState extends State<DemoAccountScreenContent> {
                   showConfirmDialogAdvanced(
                     context: context,
                     title: context.strings.demo_account_screen_confirm_logout_dialog_title,
-                    onSuccess: () => context
-                      .read<DemoAccountBloc>()
-                      .add(DoDemoAccountLogout()),
+                    onSuccess: () => context.read<DemoAccountBloc>().add(DoDemoAccountLogout()),
                   );
                 }
-              }
+              },
             ),
             MenuItemButton(
               child: Text(context.strings.demo_account_screen_new_account_action),
@@ -76,13 +73,11 @@ class _DemoAccountScreenContentState extends State<DemoAccountScreenContent> {
 
 void createDemoAccountAction(BuildContext context) {
   showConfirmDialogAdvanced(
-      context: context,
-      title: context.strings.demo_account_screen_new_account_action,
-      details: context.strings.demo_account_screen_new_account_dialog_description,
-      onSuccess: () => context
-        .read<DemoAccountBloc>()
-        .add(DoDemoAccountCreateNewAccount()),
-    );
+    context: context,
+    title: context.strings.demo_account_screen_new_account_action,
+    details: context.strings.demo_account_screen_new_account_dialog_description,
+    onSuccess: () => context.read<DemoAccountBloc>().add(DoDemoAccountCreateNewAccount()),
+  );
 }
 
 Widget content(BuildContext context) {
@@ -98,17 +93,17 @@ Widget content(BuildContext context) {
             itemBuilder: (context, index) {
               return ListTile(
                 title: Center(
-                    child: Column(
-                      children: [
-                        Text(context.strings.demo_account_screen_no_accounts_available),
-                        Padding(padding: EdgeInsets.only(top: 8)),
-                        ElevatedButton(
-                          onPressed: () => createDemoAccountAction(context),
-                          child: Text(context.strings.demo_account_screen_new_account_action),
-                        ),
-                      ],
-                    )
+                  child: Column(
+                    children: [
+                      Text(context.strings.demo_account_screen_no_accounts_available),
+                      Padding(padding: EdgeInsets.only(top: 8)),
+                      ElevatedButton(
+                        onPressed: () => createDemoAccountAction(context),
+                        child: Text(context.strings.demo_account_screen_new_account_action),
+                      ),
+                    ],
                   ),
+                ),
               );
             },
           ),
@@ -126,19 +121,17 @@ Widget content(BuildContext context) {
             return ListTile(
               title: Text("${account.name}, ${account.age}"),
               subtitle: Text(account.aid.aid),
-              onTap: () =>
-                showConfirmDialogAdvanced(
-                  context: context,
-                  title: context.strings.demo_account_screen_login_to_account_dialog_title,
-                  details: account.aid.aid,
-                  onSuccess: () => context
-                    .read<DemoAccountBloc>()
-                    .add(DoDemoAccountLoginToAccount(account.aid)),
-                ),
+              onTap: () => showConfirmDialogAdvanced(
+                context: context,
+                title: context.strings.demo_account_screen_login_to_account_dialog_title,
+                details: account.aid.aid,
+                onSuccess: () =>
+                    context.read<DemoAccountBloc>().add(DoDemoAccountLoginToAccount(account.aid)),
+              ),
             );
           },
         ),
       );
-    }
+    },
   );
 }

@@ -1,4 +1,3 @@
-
 import "package:app/api/api_manager.dart";
 import "package:app/data/login_repository.dart";
 import "package:app/localizations.dart";
@@ -14,30 +13,37 @@ import "package:openapi/api.dart";
 final log = Logger("ProfilePicturesBloc");
 
 sealed class ProfilePicturesEvent {}
+
 class ResetIfModeChanges extends ProfilePicturesEvent {
   final PictureSelectionMode mode;
   ResetIfModeChanges(this.mode);
 }
+
 class AddProcessedImage extends ProfilePicturesEvent {
   final SelectedImageInfo img;
   final int profileImagesIndex;
   AddProcessedImage(this.img, this.profileImagesIndex);
 }
+
 class UpdateCropArea extends ProfilePicturesEvent {
   final CropArea cropArea;
   final int imgIndex;
   UpdateCropArea(this.cropArea, this.imgIndex);
 }
+
 class RemoveImage extends ProfilePicturesEvent {
   final int imgIndex;
   RemoveImage(this.imgIndex);
 }
+
 class MoveImageTo extends ProfilePicturesEvent {
   final int src;
   final int dst;
   MoveImageTo(this.src, this.dst);
 }
+
 class ResetProfilePicturesBloc extends ProfilePicturesEvent {}
+
 class RefreshProfilePicturesFaceDetectedValues extends ProfilePicturesEvent {}
 
 class ProfilePicturesBloc extends Bloc<ProfilePicturesEvent, ProfilePicturesData> {
@@ -47,9 +53,7 @@ class ProfilePicturesBloc extends Bloc<ProfilePicturesEvent, ProfilePicturesData
   ProfilePicturesBloc() : super(const ProfilePicturesData()) {
     on<ResetIfModeChanges>((data, emit) {
       if (state.mode.runtimeType != data.mode.runtimeType) {
-        emit(ProfilePicturesData(
-          mode: data.mode,
-        ));
+        emit(ProfilePicturesData(mode: data.mode));
       }
     });
     on<ResetProfilePicturesBloc>((data, emit) {
@@ -58,12 +62,14 @@ class ProfilePicturesBloc extends Bloc<ProfilePicturesEvent, ProfilePicturesData
     on<AddProcessedImage>((data, emit) {
       final pictures = _pictureList();
       switch (data.img) {
-       case InitialSetupSecuritySelfie(): {
-          pictures[data.profileImagesIndex] = ImageSelected(data.img);
-        }
-        case ProfileImage(): {
-          pictures[data.profileImagesIndex] = ImageSelected(data.img);
-        }
+        case InitialSetupSecuritySelfie():
+          {
+            pictures[data.profileImagesIndex] = ImageSelected(data.img);
+          }
+        case ProfileImage():
+          {
+            pictures[data.profileImagesIndex] = ImageSelected(data.img);
+          }
       }
       _modifyPicturesListToHaveCorrectStates(pictures);
       _emitPictureChanges(emit, pictures);
@@ -113,12 +119,9 @@ class ProfilePicturesBloc extends Bloc<ProfilePicturesEvent, ProfilePicturesData
           }
         }
       }
-      emit(state.copyWith(
-        picture0: imgs[0],
-        picture1: imgs[1],
-        picture2: imgs[2],
-        picture3: imgs[3],
-      ));
+      emit(
+        state.copyWith(picture0: imgs[0], picture1: imgs[1], picture2: imgs[2], picture3: imgs[3]),
+      );
 
       showSnackBar(R.strings.generic_action_completed);
     });
@@ -150,11 +153,13 @@ class ProfilePicturesBloc extends Bloc<ProfilePicturesEvent, ProfilePicturesData
   }
 
   void _emitPictureChanges(Emitter<ProfilePicturesData> emit, List<ImgState> pictures) {
-    emit(state.copyWith(
-      picture0: pictures[0],
-      picture1: pictures[1],
-      picture2: pictures[2],
-      picture3: pictures[3],
-    ));
+    emit(
+      state.copyWith(
+        picture0: pictures[0],
+        picture1: pictures[1],
+        picture2: pictures[2],
+        picture3: pictures[3],
+      ),
+    );
   }
 }

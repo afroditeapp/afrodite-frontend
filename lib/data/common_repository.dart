@@ -1,4 +1,3 @@
-
 import 'dart:async';
 
 import 'package:logging/logging.dart';
@@ -18,14 +17,11 @@ class CommonRepository extends DataRepositoryWithLifecycle {
   final ConnectedActionScheduler syncHandler;
   bool initDone = false;
 
-  CommonRepository(ServerConnectionManager connectionManager) :
-    syncHandler = ConnectedActionScheduler(connectionManager);
+  CommonRepository(ServerConnectionManager connectionManager)
+    : syncHandler = ConnectedActionScheduler(connectionManager);
 
-  Stream<bool> get notificationPermissionAsked => db
-    .commonStreamOrDefault(
-      (db) => db.app.watchNotificationPermissionAsked(),
-      false,
-    );
+  Stream<bool> get notificationPermissionAsked =>
+      db.commonStreamOrDefault((db) => db.app.watchNotificationPermissionAsked(), false);
 
   @override
   Future<void> init() async {
@@ -41,14 +37,18 @@ class CommonRepository extends DataRepositoryWithLifecycle {
   }
 
   Future<void> setNotificationPermissionAsked(bool value) async {
-    await DatabaseManager.getInstance().commonAction((db) => db.app.updateNotificationPermissionAsked(value));
+    await DatabaseManager.getInstance().commonAction(
+      (db) => db.app.updateNotificationPermissionAsked(value),
+    );
   }
 
   @override
   Future<void> onLogin() async {
     // Force sending the FCM token to server. This is needed if this login
     // is for different account than previously.
-    await BackgroundDatabaseManager.getInstance().commonAction((db) => db.loginSession.updateFcmDeviceTokenAndPendingNotificationToken(null, null));
+    await BackgroundDatabaseManager.getInstance().commonAction(
+      (db) => db.loginSession.updateFcmDeviceTokenAndPendingNotificationToken(null, null),
+    );
   }
 
   @override

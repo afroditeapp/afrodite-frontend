@@ -1,5 +1,3 @@
-
-
 import "dart:typed_data";
 
 import "package:app/data/image_cache.dart";
@@ -11,22 +9,26 @@ import "package:app/logic/app/navigator_state.dart";
 import "package:app/ui_utils/image.dart";
 
 sealed class ViewImageScreenMode {}
+
 class ViewImageAccountContent extends ViewImageScreenMode {
   ViewImageAccountContent(this.imageOwner, this.imageId);
   final AccountId imageOwner;
   final ContentId imageId;
 }
+
 class ViewImageBytesContent extends ViewImageScreenMode {
   ViewImageBytesContent(this.imageBytes);
   final Uint8List imageBytes;
 }
 
-void openViewImageScreenForAccountImage(BuildContext context, AccountId accountId, ContentId contentId) {
+void openViewImageScreenForAccountImage(
+  BuildContext context,
+  AccountId accountId,
+  ContentId contentId,
+) {
   MyNavigator.push(
     context,
-    MaterialPage<void>(
-      child: ViewImageScreen(ViewImageAccountContent(accountId, contentId))
-    )
+    MaterialPage<void>(child: ViewImageScreen(ViewImageAccountContent(accountId, contentId))),
   );
 }
 
@@ -39,7 +41,6 @@ class ViewImageScreen extends StatefulWidget {
 }
 
 class _ViewImageScreenState extends State<ViewImageScreen> {
-
   @override
   void initState() {
     super.initState();
@@ -48,10 +49,12 @@ class _ViewImageScreenState extends State<ViewImageScreen> {
   @override
   Widget build(BuildContext context) {
     final imageWidget = switch (widget.mode) {
-      ViewImageAccountContent(:final imageOwner, :final imageId) =>
-        buildImage(context, imageOwner, imageId),
-      ViewImageBytesContent(:final imageBytes) =>
-        viewerForWidget(bytesImgWidget(imageBytes)),
+      ViewImageAccountContent(:final imageOwner, :final imageId) => buildImage(
+        context,
+        imageOwner,
+        imageId,
+      ),
+      ViewImageBytesContent(:final imageBytes) => viewerForWidget(bytesImgWidget(imageBytes)),
     };
 
     return Scaffold(
@@ -65,11 +68,6 @@ class _ViewImageScreenState extends State<ViewImageScreen> {
   }
 
   Widget viewerForWidget(Widget child) {
-    return InteractiveViewer(
-      panEnabled: false,
-      minScale: 1.0,
-      maxScale: 2.0,
-      child: child,
-    );
+    return InteractiveViewer(panEnabled: false, minScale: 1.0, maxScale: 2.0, child: child);
   }
 }

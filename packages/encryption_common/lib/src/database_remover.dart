@@ -1,8 +1,3 @@
-
 abstract class DatabaseRemover {
-  Future<void> recreateDatabasesDir(
-  {
-    required bool backgroundDb,
-  }
-  );
+  Future<void> recreateDatabasesDir({required bool backgroundDb});
 }

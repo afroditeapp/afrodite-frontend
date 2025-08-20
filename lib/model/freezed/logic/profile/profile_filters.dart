@@ -1,5 +1,3 @@
-
-
 import 'package:app/utils/age.dart';
 import 'package:flutter/material.dart';
 import "package:freezed_annotation/freezed_annotation.dart";
@@ -26,14 +24,14 @@ class ProfileFiltersData with _$ProfileFiltersData, UpdateStateProvider {
 
   bool isSomeFilterEnabled() {
     return valueAttributeFilters().values.where((v) => v.enabled).firstOrNull != null ||
-      valueLastSeenTimeFilter() != null ||
-      valueUnlimitedLikesFilter() != null ||
-      valueMinDistanceKmFilter() != null ||
-      valueMaxDistanceKmFilter() != null ||
-      valueProfileCreatedTime() != null ||
-      valueProfileEditedTime() != null ||
-      valueProfileTextMinCharacters() != null ||
-      valueProfileTextMaxCharacters() != null;
+        valueLastSeenTimeFilter() != null ||
+        valueUnlimitedLikesFilter() != null ||
+        valueMinDistanceKmFilter() != null ||
+        valueMaxDistanceKmFilter() != null ||
+        valueProfileCreatedTime() != null ||
+        valueProfileEditedTime() != null ||
+        valueProfileTextMinCharacters() != null ||
+        valueProfileTextMaxCharacters() != null;
   }
 
   IconData icon() {
@@ -44,29 +42,40 @@ class ProfileFiltersData with _$ProfileFiltersData, UpdateStateProvider {
     }
   }
 
-  bool unsavedChanges() => edited.attributeIdAndAttributeFilterMap != null ||
-    edited.lastSeenTimeFilter.unsavedChanges() ||
-    edited.unlimitedLikesFilter.unsavedChanges() ||
-    edited.minDistanceKmFilter.unsavedChanges() ||
-    edited.maxDistanceKmFilter.unsavedChanges() ||
-    edited.profileCreatedFilter.unsavedChanges() ||
-    edited.profileEditedFilter.unsavedChanges() ||
-    edited.profileTextMinCharactersFilter.unsavedChanges() ||
-    edited.profileTextMaxCharactersFilter.unsavedChanges() ||
-    edited.randomProfileOrder != null ||
-    edited.minAge != null ||
-    edited.maxAge != null;
+  bool unsavedChanges() =>
+      edited.attributeIdAndAttributeFilterMap != null ||
+      edited.lastSeenTimeFilter.unsavedChanges() ||
+      edited.unlimitedLikesFilter.unsavedChanges() ||
+      edited.minDistanceKmFilter.unsavedChanges() ||
+      edited.maxDistanceKmFilter.unsavedChanges() ||
+      edited.profileCreatedFilter.unsavedChanges() ||
+      edited.profileEditedFilter.unsavedChanges() ||
+      edited.profileTextMinCharactersFilter.unsavedChanges() ||
+      edited.profileTextMaxCharactersFilter.unsavedChanges() ||
+      edited.randomProfileOrder != null ||
+      edited.minAge != null ||
+      edited.maxAge != null;
 
-  Map<int, ProfileAttributeFilterValueUpdate> valueAttributeFilters() => edited.attributeIdAndAttributeFilterMap ?? attributeIdAndAttributeFilterMap;
-  LastSeenTimeFilter? valueLastSeenTimeFilter() => edited.lastSeenTimeFilter.editedValue(filters?.lastSeenTimeFilter);
-  bool? valueUnlimitedLikesFilter() => edited.unlimitedLikesFilter.editedValue(filters?.unlimitedLikesFilter);
-  MinDistanceKm? valueMinDistanceKmFilter() => edited.minDistanceKmFilter.editedValue(filters?.minDistanceKmFilter);
-  MaxDistanceKm? valueMaxDistanceKmFilter() => edited.maxDistanceKmFilter.editedValue(filters?.maxDistanceKmFilter);
-  ProfileCreatedTimeFilter? valueProfileCreatedTime() => edited.profileCreatedFilter.editedValue(filters?.profileCreatedFilter);
-  ProfileEditedTimeFilter? valueProfileEditedTime() => edited.profileEditedFilter.editedValue(filters?.profileEditedFilter);
-  ProfileTextMinCharactersFilter? valueProfileTextMinCharacters() => edited.profileTextMinCharactersFilter.editedValue(filters?.profileTextMinCharactersFilter);
-  ProfileTextMaxCharactersFilter? valueProfileTextMaxCharacters() => edited.profileTextMaxCharactersFilter.editedValue(filters?.profileTextMaxCharactersFilter);
-  bool valueRandomProfileOrder() => edited.randomProfileOrder ?? filters?.randomProfileOrder ?? false;
+  Map<int, ProfileAttributeFilterValueUpdate> valueAttributeFilters() =>
+      edited.attributeIdAndAttributeFilterMap ?? attributeIdAndAttributeFilterMap;
+  LastSeenTimeFilter? valueLastSeenTimeFilter() =>
+      edited.lastSeenTimeFilter.editedValue(filters?.lastSeenTimeFilter);
+  bool? valueUnlimitedLikesFilter() =>
+      edited.unlimitedLikesFilter.editedValue(filters?.unlimitedLikesFilter);
+  MinDistanceKm? valueMinDistanceKmFilter() =>
+      edited.minDistanceKmFilter.editedValue(filters?.minDistanceKmFilter);
+  MaxDistanceKm? valueMaxDistanceKmFilter() =>
+      edited.maxDistanceKmFilter.editedValue(filters?.maxDistanceKmFilter);
+  ProfileCreatedTimeFilter? valueProfileCreatedTime() =>
+      edited.profileCreatedFilter.editedValue(filters?.profileCreatedFilter);
+  ProfileEditedTimeFilter? valueProfileEditedTime() =>
+      edited.profileEditedFilter.editedValue(filters?.profileEditedFilter);
+  ProfileTextMinCharactersFilter? valueProfileTextMinCharacters() =>
+      edited.profileTextMinCharactersFilter.editedValue(filters?.profileTextMinCharactersFilter);
+  ProfileTextMaxCharactersFilter? valueProfileTextMaxCharacters() =>
+      edited.profileTextMaxCharactersFilter.editedValue(filters?.profileTextMaxCharactersFilter);
+  bool valueRandomProfileOrder() =>
+      edited.randomProfileOrder ?? filters?.randomProfileOrder ?? false;
   int valueMinAge() => edited.minAge ?? minAge;
   int valueMaxAge() => edited.maxAge ?? maxAge;
 }
@@ -89,19 +98,19 @@ class EditedFiltersData with _$EditedFiltersData {
     int? maxAge,
   }) = _EditedFiltersData;
 
-  bool isProfileFiltersUpdateNeeded() => attributeIdAndAttributeFilterMap != null ||
-    lastSeenTimeFilter.unsavedChanges() ||
-    unlimitedLikesFilter.unsavedChanges() ||
-    minDistanceKmFilter.unsavedChanges() ||
-    maxDistanceKmFilter.unsavedChanges() ||
-    profileCreatedFilter.unsavedChanges() ||
-    profileEditedFilter.unsavedChanges() ||
-    profileTextMinCharactersFilter.unsavedChanges() ||
-    profileTextMaxCharactersFilter.unsavedChanges() ||
-    randomProfileOrder != null;
+  bool isProfileFiltersUpdateNeeded() =>
+      attributeIdAndAttributeFilterMap != null ||
+      lastSeenTimeFilter.unsavedChanges() ||
+      unlimitedLikesFilter.unsavedChanges() ||
+      minDistanceKmFilter.unsavedChanges() ||
+      maxDistanceKmFilter.unsavedChanges() ||
+      profileCreatedFilter.unsavedChanges() ||
+      profileEditedFilter.unsavedChanges() ||
+      profileTextMinCharactersFilter.unsavedChanges() ||
+      profileTextMaxCharactersFilter.unsavedChanges() ||
+      randomProfileOrder != null;
 
-  bool isAgeRangeUpdateNeeded() => minAge != null ||
-    maxAge != null;
+  bool isAgeRangeUpdateNeeded() => minAge != null || maxAge != null;
 }
 
 /// Type for handling API null values
@@ -110,15 +119,18 @@ sealed class EditValue<T extends Object> {
   T? editedValue(T? defaultValue) => defaultValue;
   bool unsavedChanges() => false;
 }
+
 class NoEdit<T extends Object> extends EditValue<T> {
   const NoEdit();
 }
+
 class ChangeToNull<T extends Object> extends EditValue<T> {
   @override
   T? editedValue(T? defaultValue) => null;
   @override
   bool unsavedChanges() => true;
 }
+
 class ChangeToValue<T extends Object> extends EditValue<T> {
   final T value;
   const ChangeToValue(this.value);

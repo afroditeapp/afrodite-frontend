@@ -1,4 +1,3 @@
-
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
@@ -36,20 +35,19 @@ class ApiProvider {
   ChatApi get chat => _chat;
   String get serverAddress => _serverAddress;
 
-  ApiProvider(String address) :
-    this._withClient(ApiClient(basePath: address), address);
+  ApiProvider(String address) : this._withClient(ApiClient(basePath: address), address);
 
-  ApiProvider._withClient(ApiClient client, String serverAddress) :
-    _serverAddress = serverAddress,
-    _account = AccountApi(client),
-    _accountAdmin = AccountAdminApi(client),
-    _profile = ProfileApi(client),
-    _profileAdmin = ProfileAdminApi(client),
-    _media = MediaApi(client),
-    _mediaAdmin = MediaAdminApi(client),
-    _common = CommonApi(client),
-    _commonAdmin = CommonAdminApi(client),
-    _chat = ChatApi(client);
+  ApiProvider._withClient(ApiClient client, String serverAddress)
+    : _serverAddress = serverAddress,
+      _account = AccountApi(client),
+      _accountAdmin = AccountAdminApi(client),
+      _profile = ProfileApi(client),
+      _profileAdmin = ProfileAdminApi(client),
+      _media = MediaApi(client),
+      _mediaAdmin = MediaAdminApi(client),
+      _common = CommonApi(client),
+      _commonAdmin = CommonAdminApi(client),
+      _chat = ChatApi(client);
 
   void setAccessToken(AccessToken token) {
     var auth = ApiKeyAuth("header", accessTokenHeaderName);

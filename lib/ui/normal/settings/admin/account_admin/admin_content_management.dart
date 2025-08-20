@@ -1,5 +1,3 @@
-
-
 import 'package:app/data/image_cache.dart';
 import 'package:app/localizations.dart';
 import 'package:app/logic/account/account.dart';
@@ -26,10 +24,7 @@ class RequiredData {
 
 class AdminContentManagementScreen extends StatefulWidget {
   final AccountId accountId;
-  const AdminContentManagementScreen({
-    required this.accountId,
-    super.key,
-  });
+  const AdminContentManagementScreen({required this.accountId, super.key});
 
   @override
   State<AdminContentManagementScreen> createState() => _AdminContentManagementScreenState();
@@ -47,9 +42,8 @@ class _AdminContentManagementScreenState extends State<AdminContentManagementScr
 
   Future<void> _getData() async {
     final result = await api
-      .media(
-        (api) => api.getAllAccountMediaContent(widget.accountId.aid)
-      ).ok();
+        .media((api) => api.getAllAccountMediaContent(widget.accountId.aid))
+        .ok();
 
     if (!context.mounted) {
       return;
@@ -78,9 +72,7 @@ class _AdminContentManagementScreenState extends State<AdminContentManagementScr
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Admin image management"),
-      ),
+      appBar: AppBar(title: const Text("Admin image management")),
       body: screenContent(context),
     );
   }
@@ -88,16 +80,19 @@ class _AdminContentManagementScreenState extends State<AdminContentManagementScr
   Widget screenContent(BuildContext context) {
     final info = data;
     if (isLoading) {
-      return const Center(
-        child: CircularProgressIndicator(),
-      );
+      return const Center(child: CircularProgressIndicator());
     } else if (isError || info == null) {
       return Center(child: Text(context.strings.generic_error));
     } else {
       return BlocBuilder<AccountBloc, AccountBlocData>(
         builder: (context, state) {
-          return selectContentPage(context, widget.accountId, info.accountContent, state.permissions);
-        }
+          return selectContentPage(
+            context,
+            widget.accountId,
+            info.accountContent,
+            state.permissions,
+          );
+        },
       );
     }
   }
@@ -111,14 +106,16 @@ class _AdminContentManagementScreenState extends State<AdminContentManagementScr
     final List<Widget> listWidgets = [];
 
     listWidgets.addAll(
-      content.data.reversed.map((e) => _buildAvailableImg(
-        context,
-        accountId,
-        e,
-        permissions.adminDeleteMediaContent ? deleteAction : null,
-        changeModerationStateAction,
-        permissions.adminEditMediaContentFaceDetectedValue ? changeFaceDetectedValue : null,
-      ))
+      content.data.reversed.map(
+        (e) => _buildAvailableImg(
+          context,
+          accountId,
+          e,
+          permissions.adminDeleteMediaContent ? deleteAction : null,
+          changeModerationStateAction,
+          permissions.adminEditMediaContentFaceDetectedValue ? changeFaceDetectedValue : null,
+        ),
+      ),
     );
 
     final listView = ListView(
@@ -129,26 +126,27 @@ class _AdminContentManagementScreenState extends State<AdminContentManagementScr
 
     final List<Widget> widgets = [];
 
-    widgets.add(Padding(
-      padding: const EdgeInsets.all(COMMON_SCREEN_EDGE_PADDING),
-      child: Text(context.strings.select_content_screen_count(content.data.length.toString(), content.maxContentCount.toString())),
-    ));
+    widgets.add(
+      Padding(
+        padding: const EdgeInsets.all(COMMON_SCREEN_EDGE_PADDING),
+        child: Text(
+          context.strings.select_content_screen_count(
+            content.data.length.toString(),
+            content.maxContentCount.toString(),
+          ),
+        ),
+      ),
+    );
 
     widgets.add(listView);
 
     return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: widgets,
-      ),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: widgets),
     );
   }
 
   void deleteAction(AccountId account, ContentId content) async {
-    final result = await api
-      .mediaAction(
-        (api) => api.deleteContent(account.aid, content.cid)
-      );
+    final result = await api.mediaAction((api) => api.deleteContent(account.aid, content.cid));
 
     if (!context.mounted) {
       return;
@@ -162,17 +160,16 @@ class _AdminContentManagementScreenState extends State<AdminContentManagementScr
   }
 
   void changeModerationStateAction(AccountId account, ContentId content, bool accepted) async {
-    final result = await api
-      .mediaAdminAction(
-        (api) => api.postModerateMediaContent(
-          PostModerateMediaContent(
-            accept: accepted,
-            accountId: account,
-            contentId: content,
-            rejectedDetails: MediaContentModerationRejectedReasonDetails(value: ""),
-          )
-        )
-      );
+    final result = await api.mediaAdminAction(
+      (api) => api.postModerateMediaContent(
+        PostModerateMediaContent(
+          accept: accepted,
+          accountId: account,
+          contentId: content,
+          rejectedDetails: MediaContentModerationRejectedReasonDetails(value: ""),
+        ),
+      ),
+    );
 
     if (!context.mounted) {
       return;
@@ -188,10 +185,11 @@ class _AdminContentManagementScreenState extends State<AdminContentManagementScr
   }
 
   void changeFaceDetectedValue(AccountId account, ContentId content, bool value) async {
-    final result = await api
-      .mediaAdminAction(
-        (api) => api.postMediaContentFaceDetectedValue(PostMediaContentFaceDetectedValue(accountId: account, contentId: content, value: value))
-      );
+    final result = await api.mediaAdminAction(
+      (api) => api.postMediaContentFaceDetectedValue(
+        PostMediaContentFaceDetectedValue(accountId: account, contentId: content, value: value),
+      ),
+    );
 
     if (!context.mounted) {
       return;
@@ -218,7 +216,7 @@ Widget _buildAvailableImg(
       top: 4.0,
       bottom: 4.0,
       left: COMMON_SCREEN_EDGE_PADDING,
-      right: COMMON_SCREEN_EDGE_PADDING
+      right: COMMON_SCREEN_EDGE_PADDING,
     ),
     child: Row(
       children: [
@@ -231,11 +229,15 @@ Widget _buildAvailableImg(
                 MyNavigator.push(
                   context,
                   MaterialPage<void>(
-                    child: ViewImageScreen(ViewImageAccountContent(accountId, content.cid))
-                  )
+                    child: ViewImageScreen(ViewImageAccountContent(accountId, content.cid)),
+                  ),
                 );
               },
-              child: accountImgWidgetInk(accountId, content.cid, cacheSize: ImageCacheSize.halfScreen(context)),
+              child: accountImgWidgetInk(
+                accountId,
+                content.cid,
+                cacheSize: ImageCacheSize.halfScreen(context),
+              ),
             ),
           ),
         ),
@@ -250,7 +252,7 @@ Widget _buildAvailableImg(
               changeModerationStateAction,
               changeFaceDetectedValueAction,
             ),
-          )
+          ),
         ),
         _rejectionDetailsInfo(context, content),
       ],
@@ -268,8 +270,10 @@ Widget _statusInfo(
 ) {
   final String moderationState = switch (content.state) {
     ContentModerationState.inSlot => "In slot",
-    ContentModerationState.waitingBotOrHumanModeration => context.strings.moderation_state_waiting_bot_or_human_moderation,
-    ContentModerationState.waitingHumanModeration => context.strings.moderation_state_waiting_human_moderation,
+    ContentModerationState.waitingBotOrHumanModeration =>
+      context.strings.moderation_state_waiting_bot_or_human_moderation,
+    ContentModerationState.waitingHumanModeration =>
+      context.strings.moderation_state_waiting_human_moderation,
     ContentModerationState.acceptedByBot => "Accepted by bot",
     ContentModerationState.acceptedByHuman => "Accepted by human",
     ContentModerationState.rejectedByBot => context.strings.moderation_state_rejected_by_bot,
@@ -281,7 +285,8 @@ Widget _statusInfo(
   stateTexts.add(moderationState);
 
   final Widget? moderationStateChangeButton;
-  if (content.state == ContentModerationState.acceptedByBot || content.state == ContentModerationState.acceptedByHuman) {
+  if (content.state == ContentModerationState.acceptedByBot ||
+      content.state == ContentModerationState.acceptedByHuman) {
     moderationStateChangeButton = _createModerationStateChangeButton(
       context,
       accountId,
@@ -291,7 +296,8 @@ Widget _statusInfo(
       false,
       changeModerationStateAction,
     );
-  } else if (content.state == ContentModerationState.rejectedByBot || content.state == ContentModerationState.rejectedByHuman) {
+  } else if (content.state == ContentModerationState.rejectedByBot ||
+      content.state == ContentModerationState.rejectedByHuman) {
     moderationStateChangeButton = _createModerationStateChangeButton(
       context,
       accountId,
@@ -343,7 +349,8 @@ Widget _statusInfo(
     mainAxisSize: MainAxisSize.min,
     children: [
       Text(moderationState, textAlign: TextAlign.center),
-      if (moderationStateChangeButton != null) const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
+      if (moderationStateChangeButton != null)
+        const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
       if (moderationStateChangeButton != null) moderationStateChangeButton,
       if (deleteButton != null) const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
       if (deleteButton != null) deleteButton,
@@ -380,7 +387,12 @@ Widget _createDeleteButton(
   return ElevatedButton(
     child: Text(context.strings.generic_delete),
     onPressed: () async {
-      final result = await _confirmDialogForImage(context, accountId, content, context.strings.generic_delete_question);
+      final result = await _confirmDialogForImage(
+        context,
+        accountId,
+        content,
+        context.strings.generic_delete_question,
+      );
       if (result == true) {
         deleteImgAction(accountId, content);
       }
@@ -408,14 +420,17 @@ Widget _createModerationStateChangeButton(
   );
 }
 
-Future<bool?> _confirmDialogForImage(BuildContext context, AccountId account, ContentId content, String dialogTitle) async {
+Future<bool?> _confirmDialogForImage(
+  BuildContext context,
+  AccountId account,
+  ContentId content,
+  String dialogTitle,
+) async {
   Widget img = InkWell(
     onTap: () {
       MyNavigator.push(
         context,
-        MaterialPage<void>(
-          child: ViewImageScreen(ViewImageAccountContent(account, content))
-        )
+        MaterialPage<void>(child: ViewImageScreen(ViewImageAccountContent(account, content))),
       );
     },
     // Width seems to prevent the dialog from expanding horizontaly

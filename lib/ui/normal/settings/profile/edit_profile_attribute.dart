@@ -1,5 +1,3 @@
-
-
 import 'package:app/ui_utils/attribute/attribute.dart';
 import 'package:app/ui_utils/attribute/state.dart';
 import 'package:app/ui_utils/attribute/widgets/select_value.dart';
@@ -15,10 +13,7 @@ import 'package:app/ui_utils/snack_bar.dart';
 
 class EditProfileAttributeScreen extends StatefulWidget {
   final AttributeAndState a;
-  const EditProfileAttributeScreen({
-    required this.a,
-    super.key,
-  });
+  const EditProfileAttributeScreen({required this.a, super.key});
 
   @override
   State<EditProfileAttributeScreen> createState() => _EditProfileAttributeScreenState();
@@ -31,8 +26,9 @@ class _EditProfileAttributeScreenState extends State<EditProfileAttributeScreen>
   @override
   void initState() {
     super.initState();
-    searchPossible = widget.a.attribute().apiAttribute().mode == AttributeMode.oneLevel ||
-      widget.a.attribute().apiAttribute().mode == AttributeMode.twoLevel;
+    searchPossible =
+        widget.a.attribute().apiAttribute().mode == AttributeMode.oneLevel ||
+        widget.a.attribute().apiAttribute().mode == AttributeMode.twoLevel;
     searchController = AppBarSearchController(onChanged: () => setState(() {}));
   }
 
@@ -90,15 +86,16 @@ class _EditProfileAttributeScreenState extends State<EditProfileAttributeScreen>
     return SelectAttributeValue(
       attribute: widget.a.attribute(),
       initialStateBuilder: () => SelectAttributeValueStorage.selected(widget.a.state.copy()),
-      onChanged: (state) =>
-        context.read<EditMyProfileBloc>().add(
-          NewAttributeValue(state.selected.toAttributeValueUpdate(widget.a.attribute()))
-        ),
+      onChanged: (state) => context.read<EditMyProfileBloc>().add(
+        NewAttributeValue(state.selected.toAttributeValueUpdate(widget.a.attribute())),
+      ),
       firstListItem: EditAttributeTitle(a: widget.a.attribute()),
-      lastListItem: invalidSelection ? Padding(
-        padding: const EdgeInsets.all(COMMON_SCREEN_EDGE_PADDING),
-        child: Text(context.strings.edit_attribute_value_screen_one_value_must_be_selected),
-      ) : null,
+      lastListItem: invalidSelection
+          ? Padding(
+              padding: const EdgeInsets.all(COMMON_SCREEN_EDGE_PADDING),
+              child: Text(context.strings.edit_attribute_value_screen_one_value_must_be_selected),
+            )
+          : null,
       filterText: filterValue,
     );
   }
@@ -114,13 +111,7 @@ class EditAttributeTitle extends StatelessWidget {
   }
 
   Widget questionTitle(BuildContext context, UiAttribute attribute) {
-    final text = Text(
-      attribute.uiName(),
-      style: Theme.of(context).textTheme.bodyLarge,
-    );
-    return Padding(
-      padding: const EdgeInsets.all(INITIAL_SETUP_PADDING),
-      child: text,
-    );
+    final text = Text(attribute.uiName(), style: Theme.of(context).textTheme.bodyLarge);
+    return Padding(padding: const EdgeInsets.all(INITIAL_SETUP_PADDING), child: text);
   }
 }

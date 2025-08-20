@@ -11,9 +11,7 @@ import "package:app/data/media_repository.dart";
 import "package:app/data/media/send_to_slot.dart";
 import "package:app/model/freezed/logic/media/image_processing.dart";
 
-
 final log = Logger("ImageProcessingBloc");
-
 
 sealed class ImageProcessingEvent {}
 
@@ -23,18 +21,21 @@ class ConfirmImage extends ImageProcessingEvent {
   final bool secureCapture;
   ConfirmImage(this.imgBytes, this.slot, {this.secureCapture = false});
 }
+
 class SendImageToSlot extends ImageProcessingEvent {
   final Uint8List imgBytes;
   final int slot;
   final bool secureCapture;
   SendImageToSlot(this.imgBytes, this.slot, {this.secureCapture = false});
 }
+
 class ResetState extends ImageProcessingEvent {}
 
 class ImageProcessingBloc extends Bloc<ImageProcessingEvent, ImageProcessingData> {
   final AccountRepository account = LoginRepository.getInstance().repositories.account;
   final MediaRepository media = LoginRepository.getInstance().repositories.media;
-  final ServerConnectionManager connection = LoginRepository.getInstance().repositories.connectionManager;
+  final ServerConnectionManager connection =
+      LoginRepository.getInstance().repositories.connectionManager;
   final ImageCacheData imageCache = ImageCacheData.getInstance();
 
   ImageProcessingBloc() : super(ImageProcessingData()) {
@@ -42,14 +43,18 @@ class ImageProcessingBloc extends Bloc<ImageProcessingEvent, ImageProcessingData
       emit(ImageProcessingData());
     });
     on<ConfirmImage>((data, emit) {
-      emit(state.copyWith(
-        processingState: UnconfirmedImage(data.imgBytes, data.slot, secureCapture: data.secureCapture),
-      ));
+      emit(
+        state.copyWith(
+          processingState: UnconfirmedImage(
+            data.imgBytes,
+            data.slot,
+            secureCapture: data.secureCapture,
+          ),
+        ),
+      );
     });
     on<SendImageToSlot>((data, emit) async {
-      emit(state.copyWith(
-        processingState: SendingInProgress(DataUploadInProgress()),
-      ));
+      emit(state.copyWith(processingState: SendingInProgress(DataUploadInProgress())));
 
       final currentUser = media.currentUser;
 
@@ -57,40 +62,49 @@ class ImageProcessingBloc extends Bloc<ImageProcessingEvent, ImageProcessingData
       // image selection takes too long.
       await connection.tryWaitUntilConnected(waitTimeoutSeconds: 5);
 
-      await for (final e in media.sendImageToSlot(data.imgBytes, data.slot, secureCapture: data.secureCapture)) {
+      await for (final e in media.sendImageToSlot(
+        data.imgBytes,
+        data.slot,
+        secureCapture: data.secureCapture,
+      )) {
         switch (e) {
-          case Uploading(): {}
-          case UploadCompleted(): {}
-          case InProcessingQueue(:final queueNumber): {
-            final selfieState = SendingInProgress(ServerDataProcessingInProgress(queueNumber));
-            emit(state.copyWith(
-              processingState: selfieState,
-            ));
-          }
-          case Processing(): {
-            final selfieState = SendingInProgress(ServerDataProcessingInProgress(null));
-            emit(state.copyWith(
-              processingState: selfieState,
-            ));
-          }
-          case ProcessingCompleted(:final contentId, :final faceDetected): {
-            final imgFile = await imageCache.getImage(currentUser, contentId, media: media);
-            if (imgFile == null) {
-              emit(state.copyWith(
-                processingState: SendingFailed(),
-              ));
-            } else {
-              emit(state.copyWith(
-                processingState: null,
-                processedImage: ProcessedAccountImage(currentUser, contentId, data.slot, faceDetected),
-              ));
+          case Uploading():
+            {}
+          case UploadCompleted():
+            {}
+          case InProcessingQueue(:final queueNumber):
+            {
+              final selfieState = SendingInProgress(ServerDataProcessingInProgress(queueNumber));
+              emit(state.copyWith(processingState: selfieState));
             }
-          }
-          case SendToSlotError(): {
-            emit(state.copyWith(
-              processingState: SendingFailed(nsfwDetected: e.nsfwDetected),
-            ));
-          }
+          case Processing():
+            {
+              final selfieState = SendingInProgress(ServerDataProcessingInProgress(null));
+              emit(state.copyWith(processingState: selfieState));
+            }
+          case ProcessingCompleted(:final contentId, :final faceDetected):
+            {
+              final imgFile = await imageCache.getImage(currentUser, contentId, media: media);
+              if (imgFile == null) {
+                emit(state.copyWith(processingState: SendingFailed()));
+              } else {
+                emit(
+                  state.copyWith(
+                    processingState: null,
+                    processedImage: ProcessedAccountImage(
+                      currentUser,
+                      contentId,
+                      data.slot,
+                      faceDetected,
+                    ),
+                  ),
+                );
+              }
+            }
+          case SendToSlotError():
+            {
+              emit(state.copyWith(processingState: SendingFailed(nsfwDetected: e.nsfwDetected)));
+            }
         }
       }
     });
@@ -98,4 +112,5 @@ class ImageProcessingBloc extends Bloc<ImageProcessingEvent, ImageProcessingData
 }
 
 class SecuritySelfieImageProcessingBloc extends ImageProcessingBloc {}
+
 class ProfilePicturesImageProcessingBloc extends ImageProcessingBloc {}

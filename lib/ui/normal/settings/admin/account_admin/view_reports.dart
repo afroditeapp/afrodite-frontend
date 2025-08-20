@@ -1,4 +1,3 @@
-
 import 'package:app/data/login_repository.dart';
 import 'package:app/logic/admin/content_decicion_stream.dart';
 import 'package:app/ui/normal/settings/admin/content_decicion_stream.dart';
@@ -15,11 +14,11 @@ class ViewReportsScreen extends ContentDecicionScreen<WrappedReportDetailed> {
     required super.title,
     super.key,
   }) : super(
-    infoMessageRowHeight: ROW_HEIGHT,
-    screenInstructions: ReportUiBuilder.instructions,
-    io: ViewReportReportIo(account, mode),
-    builder: ViewReportUiBuilder(),
-  );
+         infoMessageRowHeight: ROW_HEIGHT,
+         screenInstructions: ReportUiBuilder.instructions,
+         io: ViewReportReportIo(account, mode),
+         builder: ViewReportUiBuilder(),
+       );
 }
 
 class ViewReportReportIo extends ContentIo<WrappedReportDetailed> {
@@ -49,22 +48,20 @@ class ViewReportReportIo extends ContentIo<WrappedReportDetailed> {
       start = currentStartPosition;
     }
 
-    final q = ReportIteratorQuery(
-      startPosition: start,
-      page: page,
-      mode: mode,
-      aid: account,
-    );
+    final q = ReportIteratorQuery(startPosition: start, page: page, mode: mode, aid: account);
 
-    final result = await api.commonAdmin((api) => api.postGetReportIteratorPage(
-      q
-    ));
+    final result = await api.commonAdmin((api) => api.postGetReportIteratorPage(q));
 
     switch (result) {
       case Err():
         return const Err(());
       case Ok():
-        final getReportListResult = await handleReportList(api, addedReports, result.v.values, onlyNotProcessed: false).emptyErr();
+        final getReportListResult = await handleReportList(
+          api,
+          addedReports,
+          result.v.values,
+          onlyNotProcessed: false,
+        ).emptyErr();
         if (getReportListResult.isOk()) {
           page += 1;
         }

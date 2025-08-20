@@ -2,16 +2,19 @@ import 'package:database_converter/database_converter.dart';
 import 'package:database_utils/database_utils.dart';
 import 'package:drift/drift.dart';
 
-
 class IteratorSessionId extends SingleRowTable {
   IntColumn get profileIteratorSessionId => integer()
-    .map(const NullAwareTypeConverter.wrap(ProfileIteratorSessionIdConverter())).nullable()();
+      .map(const NullAwareTypeConverter.wrap(ProfileIteratorSessionIdConverter()))
+      .nullable()();
   IntColumn get automatiProfileSearchIteratorSessionId => integer()
-    .map(const NullAwareTypeConverter.wrap(AutomaticProfileSearchIteratorSessionIdConverter())).nullable()();
+      .map(const NullAwareTypeConverter.wrap(AutomaticProfileSearchIteratorSessionIdConverter()))
+      .nullable()();
   IntColumn get receivedLikesIteratorSessionId => integer()
-    .map(const NullAwareTypeConverter.wrap(ReceivedLikesIteratorSessionIdConverter())).nullable()();
+      .map(const NullAwareTypeConverter.wrap(ReceivedLikesIteratorSessionIdConverter()))
+      .nullable()();
   IntColumn get matchesIteratorSessionId => integer()
-    .map(const NullAwareTypeConverter.wrap(MatchesIteratorSessionIdConverter())).nullable()();
+      .map(const NullAwareTypeConverter.wrap(MatchesIteratorSessionIdConverter()))
+      .nullable()();
 }
 
 class SyncVersion extends SingleRowTable {
@@ -22,22 +25,31 @@ class SyncVersion extends SingleRowTable {
 }
 
 class ServerMaintenance extends SingleRowTable {
-  IntColumn get serverMaintenanceUnixTime => integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
-  IntColumn get serverMaintenanceUnixTimeViewed => integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
+  IntColumn get serverMaintenanceUnixTime =>
+      integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
+  IntColumn get serverMaintenanceUnixTimeViewed =>
+      integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
 }
 
 class CustomReportsConfig extends SingleRowTable {
-  TextColumn get customReportsConfigHash => text().map(const NullAwareTypeConverter.wrap(CustomReportsConfigHashConverter())).nullable()();
-  TextColumn get customReportsConfig => text().map(NullAwareTypeConverter.wrap(const CustomReportsConfigConverter())).nullable()();
+  TextColumn get customReportsConfigHash => text()
+      .map(const NullAwareTypeConverter.wrap(CustomReportsConfigHashConverter()))
+      .nullable()();
+  TextColumn get customReportsConfig =>
+      text().map(NullAwareTypeConverter.wrap(const CustomReportsConfigConverter())).nullable()();
 }
 
 class ClientFeaturesConfig extends SingleRowTable {
-  TextColumn get clientFeaturesConfigHash => text().map(const NullAwareTypeConverter.wrap(ClientFeaturesConfigHashConverter())).nullable()();
-  TextColumn get clientFeaturesConfig => text().map(NullAwareTypeConverter.wrap(const ClientFeaturesConfigConverter())).nullable()();
+  TextColumn get clientFeaturesConfigHash => text()
+      .map(const NullAwareTypeConverter.wrap(ClientFeaturesConfigHashConverter()))
+      .nullable()();
+  TextColumn get clientFeaturesConfig =>
+      text().map(NullAwareTypeConverter.wrap(const ClientFeaturesConfigConverter())).nullable()();
 }
 
 class ProfileAttributesConfig extends SingleRowTable {
-  TextColumn get jsonAvailableProfileAttributesOrderMode => text().map(NullAwareTypeConverter.wrap(const AttributeOrderModeConverter())).nullable()();
+  TextColumn get jsonAvailableProfileAttributesOrderMode =>
+      text().map(NullAwareTypeConverter.wrap(const AttributeOrderModeConverter())).nullable()();
 }
 
 class ProfileAttributesConfigAttributes extends Table {
@@ -51,5 +63,6 @@ class ProfileAttributesConfigAttributes extends Table {
 }
 
 class ClientLanguageOnServer extends SingleRowTable {
-  TextColumn get clientLanguageOnServer => text().map(const NullAwareTypeConverter.wrap(ClientLanguageConverter())).nullable()();
+  TextColumn get clientLanguageOnServer =>
+      text().map(const NullAwareTypeConverter.wrap(ClientLanguageConverter())).nullable()();
 }

@@ -6,12 +6,13 @@ import "package:app/data/login_repository.dart";
 import "package:app/data/profile_repository.dart";
 import "package:app/utils.dart";
 
-
 sealed class LocationEvent {}
+
 class SetLocation extends LocationEvent {
   final Location location;
   SetLocation(this.location);
 }
+
 class NewLocation extends LocationEvent {
   final Location location;
   NewLocation(this.location);
@@ -30,9 +31,7 @@ class LocationBloc extends Bloc<LocationEvent, Location?> with ActionRunner {
       emit(data.location);
     });
 
-    _locationSubscription = profile
-      .location
-      .listen((value) => add(NewLocation(value)));
+    _locationSubscription = profile.location.listen((value) => add(NewLocation(value)));
   }
 
   @override

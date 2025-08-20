@@ -54,14 +54,17 @@ class _BlockedProfilesScreen extends State<BlockedProfilesScreen> {
       case ProfileUnblocked():
         removeAccountIdFromList(event.profile);
       case ProfileNowPrivate() ||
-        ProfileBlocked() ||
-        ProfileFavoriteStatusChange() ||
-        ConversationChanged() ||
-        ReloadMainProfileView(): {}
+          ProfileBlocked() ||
+          ProfileFavoriteStatusChange() ||
+          ConversationChanged() ||
+          ReloadMainProfileView():
+        {}
     }
   }
 
-  void updatePagingState(PagingState<int, BlockedProfileEntry> Function(PagingState<int, BlockedProfileEntry>) action) {
+  void updatePagingState(
+    PagingState<int, BlockedProfileEntry> Function(PagingState<int, BlockedProfileEntry>) action,
+  ) {
     if (isDisposed || !context.mounted) {
       return;
     }
@@ -75,7 +78,7 @@ class _BlockedProfilesScreen extends State<BlockedProfilesScreen> {
   }
 
   void _fetchPage() async {
-     if (_pagingState.isLoading) {
+    if (_pagingState.isLoading) {
       return;
     }
 
@@ -129,9 +132,7 @@ class _BlockedProfilesScreen extends State<BlockedProfilesScreen> {
             imageWidget = SizedBox(
               width: _IMG_SIZE,
               height: _IMG_SIZE,
-              child: Container(
-                color: Colors.grey,
-              ),
+              child: Container(color: Colors.grey),
             );
           }
 
@@ -151,11 +152,9 @@ class _BlockedProfilesScreen extends State<BlockedProfilesScreen> {
                 alignment: Alignment.centerRight,
                 child: Padding(
                   padding: EdgeInsets.all(COMMON_SCREEN_EDGE_PADDING),
-                  child: Icon(
-                    Icons.undo_rounded,
-                  ),
+                  child: Icon(Icons.undo_rounded),
                 ),
-              )
+              ),
             ],
           );
 
@@ -165,7 +164,9 @@ class _BlockedProfilesScreen extends State<BlockedProfilesScreen> {
               final accepted = await showConfirmDialog(
                 context,
                 context.strings.blocked_profiles_screen_unblock_profile_dialog_title,
-                details: context.strings.blocked_profiles_screen_unblock_profile_dialog_description(name),
+                details: context.strings.blocked_profiles_screen_unblock_profile_dialog_description(
+                  name,
+                ),
               );
               if (accepted == true) {
                 bloc.add(UnblockProfile(item.$1));
@@ -173,10 +174,7 @@ class _BlockedProfilesScreen extends State<BlockedProfilesScreen> {
             },
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: SizedBox(
-                height: _IMG_SIZE,
-                child: rowWidget,
-              ),
+              child: SizedBox(height: _IMG_SIZE, child: rowWidget),
             ),
           );
         },

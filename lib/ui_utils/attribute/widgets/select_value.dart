@@ -4,15 +4,13 @@ import 'package:app/ui_utils/attribute/state.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:flutter/material.dart';
 
-enum FilterMode {
-  basic,
-  advanced,
-}
+enum FilterMode { basic, advanced }
 
 class SelectAttributeValueStorage {
   /// Used for saving attribute values and filter values for wanted
   /// values.
   final AttributeStateStorage selected;
+
   /// Used for saving filter values for unwanted values.
   final AttributeStateStorage unwanted;
   SelectAttributeValueStorage({required this.selected, required this.unwanted});
@@ -87,13 +85,11 @@ class _SelectAttributeValueState extends State<SelectAttributeValue> {
         matchesFilter = true;
       }
       return matchesFilter &&
-        (
-          !showOnlySelected ||
-          storageSelected.isSelected(a) ||
-          (a.isParentOfGroupValue() && storageSelected.groupValueSelected(a)) ||
-          storageUnwanted.isSelected(a) ||
-          (a.isParentOfGroupValue() && storageUnwanted.groupValueSelected(a))
-        );
+          (!showOnlySelected ||
+              storageSelected.isSelected(a) ||
+              (a.isParentOfGroupValue() && storageSelected.groupValueSelected(a)) ||
+              storageUnwanted.isSelected(a) ||
+              (a.isParentOfGroupValue() && storageUnwanted.groupValueSelected(a)));
     }).toList();
   }
 
@@ -103,7 +99,8 @@ class _SelectAttributeValueState extends State<SelectAttributeValue> {
     return CustomScrollView(
       slivers: [
         SliverToBoxAdapter(child: widget.firstListItem ?? const SizedBox.shrink()),
-        if (showOnlySelectedFilterSetting) SliverToBoxAdapter(child: showOnlySelectedSetting(context)),
+        if (showOnlySelectedFilterSetting)
+          SliverToBoxAdapter(child: showOnlySelectedSetting(context)),
         SliverList.builder(
           itemCount: list.length,
           itemBuilder: (context, i) => selectWidget(context, list[i]),
@@ -115,7 +112,7 @@ class _SelectAttributeValueState extends State<SelectAttributeValue> {
 
   Widget selectWidget(BuildContext context, UiAttributeValue v) {
     if (widget.filterMode == FilterMode.advanced ||
-      (widget.filterMode == FilterMode.basic && storageUnwanted.isSelected(v))) {
+        (widget.filterMode == FilterMode.basic && storageUnwanted.isSelected(v))) {
       return selectWidgetAdvanced(context, v);
     } else {
       return selectWidgetBasic(context, v);
@@ -133,18 +130,14 @@ class _SelectAttributeValueState extends State<SelectAttributeValue> {
         setState(() {
           updateSelectedStatusBasic(storageSelected, v, currentValue, newValue);
         });
-        widget.onChanged(SelectAttributeValueStorage(
-          selected: storageSelected,
-          unwanted: storageUnwanted,
-        ));
+        widget.onChanged(
+          SelectAttributeValueStorage(selected: storageSelected, unwanted: storageUnwanted),
+        );
       },
     );
 
     if (v.isGroupValue()) {
-      return Padding(
-        padding: const EdgeInsets.only(left: 24),
-        child: checkbox,
-      );
+      return Padding(padding: const EdgeInsets.only(left: 24), child: checkbox);
     } else {
       return checkbox;
     }
@@ -172,22 +165,20 @@ class _SelectAttributeValueState extends State<SelectAttributeValue> {
               setState(() {
                 storageSelected.unselect(v);
                 storageUnwanted.unselect(v);
-                if (selectedIndex == 0 && (currentSelectedValue == false || currentSelectedValue == null)) {
+                if (selectedIndex == 0 &&
+                    (currentSelectedValue == false || currentSelectedValue == null)) {
                   updateSelectedStatusBasic(storageSelected, v, currentSelectedValue, true);
-                } else if (selectedIndex == 1 && (currentUnwantedValue == false || currentUnwantedValue == null)) {
+                } else if (selectedIndex == 1 &&
+                    (currentUnwantedValue == false || currentUnwantedValue == null)) {
                   updateSelectedStatusBasic(storageUnwanted, v, currentUnwantedValue, true);
                 }
               });
-              widget.onChanged(SelectAttributeValueStorage(
-                selected: storageSelected,
-                unwanted: storageUnwanted,
-              ));
+              widget.onChanged(
+                SelectAttributeValueStorage(selected: storageSelected, unwanted: storageUnwanted),
+              );
             },
-            children: const [
-              Icon(Icons.check),
-              Icon(Icons.close),
-            ],
-          )
+            children: const [Icon(Icons.check), Icon(Icons.close)],
+          ),
         ],
       ),
       onTap: () {
@@ -202,18 +193,14 @@ class _SelectAttributeValueState extends State<SelectAttributeValue> {
             updateSelectedStatusBasic(storageSelected, v, currentSelectedValue, true);
           }
         });
-        widget.onChanged(SelectAttributeValueStorage(
-          selected: storageSelected,
-          unwanted: storageUnwanted,
-        ));
+        widget.onChanged(
+          SelectAttributeValueStorage(selected: storageSelected, unwanted: storageUnwanted),
+        );
       },
     );
 
     if (v.isGroupValue()) {
-      return Padding(
-        padding: const EdgeInsets.only(left: 24),
-        child: checkbox,
-      );
+      return Padding(padding: const EdgeInsets.only(left: 24), child: checkbox);
     } else {
       return checkbox;
     }
@@ -242,11 +229,13 @@ class _SelectAttributeValueState extends State<SelectAttributeValue> {
     return SwitchListTile(
       title: Text(context.strings.generic_show_only_selected),
       value: showOnlySelected,
-      onChanged: storageSelected.isNotEmpty() || storageUnwanted.isNotEmpty() ? (value) {
-        setState(() {
-          showOnlySelected = value;
-        });
-      } : null,
+      onChanged: storageSelected.isNotEmpty() || storageUnwanted.isNotEmpty()
+          ? (value) {
+              setState(() {
+                showOnlySelected = value;
+              });
+            }
+          : null,
     );
   }
 

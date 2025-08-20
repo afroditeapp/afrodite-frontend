@@ -1,4 +1,3 @@
-
 import 'dart:async';
 
 import 'package:app/localizations.dart';
@@ -23,19 +22,25 @@ final log = Logger("ApiManager");
 enum ServerConnectionState {
   /// No valid refresh token available. UI should display login view.
   waitingRefreshToken,
+
   /// Reconnecting will happen in few seconds.
   reconnectWaitTime,
+
   /// No connection to server.
   noConnection,
+
   /// Making connections to servers.
   connecting,
+
   /// Connection to servers established.
   connected,
+
   /// Server does not support this client version.
   unsupportedClientVersion,
 }
 
 sealed class ServerWsEvent {}
+
 class EventToClientContainer implements ServerWsEvent {
   final EventToClient event;
   EventToClientContainer(this.event);
@@ -48,18 +53,14 @@ class ServerConnectionManager implements LifecycleMethods, ServerConnectionInter
   final AccountId currentUser;
   ServerConnection accountConnection;
 
-  ServerConnectionManager(this.accountDb, this.accountBackgroundDb, this.currentUser) :
-    accountConnection =  ServerConnection(
-      "",
-      accountDb,
-      accountBackgroundDb,
-    );
+  ServerConnectionManager(this.accountDb, this.accountBackgroundDb, this.currentUser)
+    : accountConnection = ServerConnection("", accountDb, accountBackgroundDb);
 
-  final BehaviorSubject<ServerConnectionState> _state =
-    BehaviorSubject.seeded(ServerConnectionState.connecting);
+  final BehaviorSubject<ServerConnectionState> _state = BehaviorSubject.seeded(
+    ServerConnectionState.connecting,
+  );
 
-  final PublishSubject<ServerWsEvent> _serverEvents =
-    PublishSubject();
+  final PublishSubject<ServerWsEvent> _serverEvents = PublishSubject();
   StreamSubscription<ServerWsEvent>? _serverEventsSubscription;
 
   StreamSubscription<void>? _serverConnectionEventsSubscription;
@@ -94,52 +95,59 @@ class ServerConnectionManager implements LifecycleMethods, ServerConnectionInter
   }
 
   StreamSubscription<void> _listenAccountConnectionEvents(AccountDatabaseManager accountDb) {
-    return accountConnection
-      .state
-      .distinct()
-      .asyncMap((event) async {
-        log.info(event);
-        switch (event) {
-          // No connection states.
-          case ReadyToConnect():
-            _state.add(ServerConnectionState.noConnection);
-          case Error e: {
-            switch (e.error) {
-              case ServerConnectionError.connectionFailure: {
-                _state.add(ServerConnectionState.reconnectWaitTime);
-                _reconnectInProgress = true;
-                showSnackBar(R.strings.snackbar_reconnecting_in_5_seconds);
-                // TODO(prod): check that internet connectivity exists?
-                unawaited(Future.delayed(const Duration(seconds: 5), () async {
-                  final currentState = await accountConnection.state.first;
+    return accountConnection.state
+        .distinct()
+        .asyncMap((event) async {
+          log.info(event);
+          switch (event) {
+            // No connection states.
+            case ReadyToConnect():
+              _state.add(ServerConnectionState.noConnection);
+            case Error e:
+              {
+                switch (e.error) {
+                  case ServerConnectionError.connectionFailure:
+                    {
+                      _state.add(ServerConnectionState.reconnectWaitTime);
+                      _reconnectInProgress = true;
+                      showSnackBar(R.strings.snackbar_reconnecting_in_5_seconds);
+                      // TODO(prod): check that internet connectivity exists?
+                      unawaited(
+                        Future.delayed(const Duration(seconds: 5), () async {
+                          final currentState = await accountConnection.state.first;
 
-                  if (currentState is Error && currentState.error == ServerConnectionError.connectionFailure) {
-                    await restart();
-                  }
-                }));
+                          if (currentState is Error &&
+                              currentState.error == ServerConnectionError.connectionFailure) {
+                            await restart();
+                          }
+                        }),
+                      );
+                    }
+                  case ServerConnectionError.invalidToken:
+                    {
+                      _state.add(ServerConnectionState.waitingRefreshToken);
+                    }
+                  case ServerConnectionError.unsupportedClientVersion:
+                    {
+                      _state.add(ServerConnectionState.unsupportedClientVersion);
+                    }
+                }
               }
-              case ServerConnectionError.invalidToken: {
-                _state.add(ServerConnectionState.waitingRefreshToken);
+            // Ongoing connection states
+            case Connecting():
+              _state.add(ServerConnectionState.connecting);
+            case Ready(:final token):
+              {
+                if (_reconnectInProgress) {
+                  showSnackBar(R.strings.snackbar_connected);
+                  _reconnectInProgress = false;
+                }
+                await _account.setupAccessToken(token);
+                _state.add(ServerConnectionState.connected);
               }
-              case ServerConnectionError.unsupportedClientVersion: {
-                _state.add(ServerConnectionState.unsupportedClientVersion);
-              }
-            }
           }
-          // Ongoing connection states
-          case Connecting():
-            _state.add(ServerConnectionState.connecting);
-          case Ready(:final token): {
-            if (_reconnectInProgress) {
-              showSnackBar(R.strings.snackbar_connected);
-              _reconnectInProgress = false;
-            }
-            await _account.setupAccessToken(token);
-            _state.add(ServerConnectionState.connected);
-          }
-        }
-      })
-      .listen((_) {});
+        })
+        .listen((_) {});
   }
 
   Future<void> _loadAddressesFromConfig() async {
@@ -150,10 +158,12 @@ class ServerConnectionManager implements LifecycleMethods, ServerConnectionInter
   Future<void> _connect() async {
     _state.add(ServerConnectionState.connecting);
 
-    final accountRefreshToken =
-      await accountDb.accountStreamSingle((db) => db.loginSession.watchRefreshToken()).ok();
-    final accountAccessToken =
-      await accountDb.accountStreamSingle((db) => db.loginSession.watchAccessToken()).ok();
+    final accountRefreshToken = await accountDb
+        .accountStreamSingle((db) => db.loginSession.watchRefreshToken())
+        .ok();
+    final accountAccessToken = await accountDb
+        .accountStreamSingle((db) => db.loginSession.watchAccessToken())
+        .ok();
 
     if (accountRefreshToken == null || accountAccessToken == null) {
       _state.add(ServerConnectionState.waitingRefreshToken);
@@ -194,8 +204,8 @@ class ServerConnectionManager implements LifecycleMethods, ServerConnectionInter
     return await Future.any([
       Future.delayed(Duration(seconds: waitTimeoutSeconds), () => false),
       state
-        .firstWhere((element) => element == ServerConnectionState.connected)
-        .then((value) => true),
+          .firstWhere((element) => element == ServerConnectionState.connected)
+          .then((value) => true),
     ]);
   }
 
@@ -203,10 +213,11 @@ class ServerConnectionManager implements LifecycleMethods, ServerConnectionInter
   ///
   /// If current login session changes to different account then error is returned.
   Future<Result<(), ()>> waitUntilCurrentSessionConnects() async {
-    await state
-        .firstWhere((element) => element == ServerConnectionState.connected);
+    await state.firstWhere((element) => element == ServerConnectionState.connected);
 
-    final accountAfterConnection = await BackgroundDatabaseManager.getInstance().commonStreamSingle((db) => db.loginSession.watchAccountId());
+    final accountAfterConnection = await BackgroundDatabaseManager.getInstance().commonStreamSingle(
+      (db) => db.loginSession.watchAccountId(),
+    );
 
     if (currentUser != accountAfterConnection) {
       log.error("Account changed when waiting connected state");
@@ -229,7 +240,6 @@ String addWebSocketRoutePathToAddress(String baseUrl) {
 
   return newAddress;
 }
-
 
 class ApiManager implements LifecycleMethods {
   final ApiProvider _account = ApiProvider(defaultServerUrl());
@@ -319,39 +329,57 @@ class ApiManager implements LifecycleMethods {
     return ApiWrapper(_mediaApiProvider().mediaAdmin, connection);
   }
 
-  Future<Result<R, ValueApiError>> account<R extends Object>(Future<R?> Function(AccountApi) action) async {
+  Future<Result<R, ValueApiError>> account<R extends Object>(
+    Future<R?> Function(AccountApi) action,
+  ) async {
     return await accountWrapper().requestValue(action);
   }
 
-  Future<Result<R, ValueApiError>> accountAdmin<R extends Object>(Future<R?> Function(AccountAdminApi) action) async {
+  Future<Result<R, ValueApiError>> accountAdmin<R extends Object>(
+    Future<R?> Function(AccountAdminApi) action,
+  ) async {
     return await _accountAdminWrapper().requestValue(action);
   }
 
-  Future<Result<R, ValueApiError>> common<R extends Object>(Future<R?> Function(CommonApi) action) async {
+  Future<Result<R, ValueApiError>> common<R extends Object>(
+    Future<R?> Function(CommonApi) action,
+  ) async {
     return await ApiWrapper(_account.common, connection).requestValue(action);
   }
 
-  Future<Result<R, ValueApiError>> commonAdmin<R extends Object>(Future<R?> Function(CommonAdminApi) action) async {
+  Future<Result<R, ValueApiError>> commonAdmin<R extends Object>(
+    Future<R?> Function(CommonAdminApi) action,
+  ) async {
     return await ApiWrapper(_account.commonAdmin, connection).requestValue(action);
   }
 
-  Future<Result<R, ValueApiError>> media<R extends Object>(Future<R?> Function(MediaApi) action) async {
+  Future<Result<R, ValueApiError>> media<R extends Object>(
+    Future<R?> Function(MediaApi) action,
+  ) async {
     return await mediaWrapper().requestValue(action);
   }
 
-  Future<Result<R, ValueApiError>> mediaAdmin<R extends Object>(Future<R?> Function(MediaAdminApi) action) async {
+  Future<Result<R, ValueApiError>> mediaAdmin<R extends Object>(
+    Future<R?> Function(MediaAdminApi) action,
+  ) async {
     return await _mediaAdminWrapper().requestValue(action);
   }
 
-  Future<Result<R, ValueApiError>> profile<R extends Object>(Future<R?> Function(ProfileApi) action) async {
+  Future<Result<R, ValueApiError>> profile<R extends Object>(
+    Future<R?> Function(ProfileApi) action,
+  ) async {
     return await profileWrapper().requestValue(action);
   }
 
-  Future<Result<R, ValueApiError>> profileAdmin<R extends Object>(Future<R?> Function(ProfileAdminApi) action) async {
+  Future<Result<R, ValueApiError>> profileAdmin<R extends Object>(
+    Future<R?> Function(ProfileAdminApi) action,
+  ) async {
     return await _profileAdminWrapper().requestValue(action);
   }
 
-  Future<Result<R, ValueApiError>> chat<R extends Object>(Future<R?> Function(ChatApi) action) async {
+  Future<Result<R, ValueApiError>> chat<R extends Object>(
+    Future<R?> Function(ChatApi) action,
+  ) async {
     return await _chatWrapper().requestValue(action);
   }
 
@@ -361,7 +389,9 @@ class ApiManager implements LifecycleMethods {
     return await accountWrapper().requestAction(action);
   }
 
-  Future<Result<(), ActionApiError>> accountAdminAction(Future<void> Function(AccountAdminApi) action) async {
+  Future<Result<(), ActionApiError>> accountAdminAction(
+    Future<void> Function(AccountAdminApi) action,
+  ) async {
     return await _accountAdminWrapper().requestAction(action);
   }
 
@@ -369,7 +399,9 @@ class ApiManager implements LifecycleMethods {
     return await ApiWrapper(_account.common, connection).requestAction(action);
   }
 
-  Future<Result<(), ActionApiError>> commonAdminAction(Future<void> Function(CommonAdminApi) action) async {
+  Future<Result<(), ActionApiError>> commonAdminAction(
+    Future<void> Function(CommonAdminApi) action,
+  ) async {
     return await ApiWrapper(_account.commonAdmin, connection).requestAction(action);
   }
 
@@ -377,7 +409,9 @@ class ApiManager implements LifecycleMethods {
     return await mediaWrapper().requestAction(action);
   }
 
-  Future<Result<(), ActionApiError>> mediaAdminAction(Future<void> Function(MediaAdminApi) action) async {
+  Future<Result<(), ActionApiError>> mediaAdminAction(
+    Future<void> Function(MediaAdminApi) action,
+  ) async {
     return await _mediaAdminWrapper().requestAction(action);
   }
 
@@ -385,7 +419,9 @@ class ApiManager implements LifecycleMethods {
     return await profileWrapper().requestAction(action);
   }
 
-  Future<Result<(), ActionApiError>> profileAdminAction(Future<void> Function(ProfileAdminApi) action) async {
+  Future<Result<(), ActionApiError>> profileAdminAction(
+    Future<void> Function(ProfileAdminApi) action,
+  ) async {
     return await _profileAdminWrapper().requestAction(action);
   }
 

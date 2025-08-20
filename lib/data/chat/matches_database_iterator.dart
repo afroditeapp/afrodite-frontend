@@ -9,6 +9,8 @@ class MatchesDatabaseIterator extends BaseDatabaseIterator {
   MatchesDatabaseIterator({required super.db});
 
   @override
-  Future<Result<List<AccountId>, DatabaseError>> getAccountListFromDatabase(int startIndex, int limit) =>
-    db.accountData((db) => db.profile.getMatchesGridList(startIndex, limit));
+  Future<Result<List<AccountId>, DatabaseError>> getAccountListFromDatabase(
+    int startIndex,
+    int limit,
+  ) => db.accountData((db) => db.profile.getMatchesGridList(startIndex, limit));
 }

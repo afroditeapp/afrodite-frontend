@@ -1,5 +1,3 @@
-
-
 import 'package:app/ui/normal/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,11 +23,7 @@ import 'package:app/utils/api.dart';
 class SearchSettingsScreen extends StatefulWidget {
   final PageKey pageKey;
   final SearchSettingsBloc searchSettingsBloc;
-  const SearchSettingsScreen({
-    required this.pageKey,
-    required this.searchSettingsBloc,
-    super.key,
-  });
+  const SearchSettingsScreen({required this.pageKey, required this.searchSettingsBloc, super.key});
 
   @override
   State<SearchSettingsScreen> createState() => _SearchSettingsScreenState();
@@ -57,15 +51,16 @@ class _SearchSettingsScreenState extends State<SearchSettingsScreen> {
       return;
     }
 
-    final searchGroups = SearchGroupsExtensions.createFrom(gender, s.valueGenderSearchSettingsAll());
+    final searchGroups = SearchGroupsExtensions.createFrom(
+      gender,
+      s.valueGenderSearchSettingsAll(),
+    );
     if (!searchGroups.somethingIsSelected()) {
       showSnackBar(context.strings.search_settings_screen_gender_filter_is_not_selected);
       return;
     }
 
-    context.read<SearchSettingsBloc>().add(SaveSearchSettings(
-      searchGroups
-    ));
+    context.read<SearchSettingsBloc>().add(SaveSearchSettings(searchGroups));
   }
 
   @override
@@ -86,15 +81,18 @@ class _SearchSettingsScreenState extends State<SearchSettingsScreen> {
               if (didPop) {
                 return;
               }
-              showConfirmDialog(context, context.strings.generic_save_confirmation_title, yesNoActions: true)
-                .then((value) {
-                  if (value == true && context.mounted) {
-                    validateAndSaveData(context);
-                  } else if (value == false && context.mounted) {
-                    MyNavigator.pop(context);
-                    widget.searchSettingsBloc.add(ResetEditedValues());
-                  }
-                });
+              showConfirmDialog(
+                context,
+                context.strings.generic_save_confirmation_title,
+                yesNoActions: true,
+              ).then((value) {
+                if (value == true && context.mounted) {
+                  validateAndSaveData(context);
+                } else if (value == false && context.mounted) {
+                  MyNavigator.pop(context);
+                  widget.searchSettingsBloc.add(ResetEditedValues());
+                }
+              });
             },
             child: Scaffold(
               appBar: AppBar(
@@ -102,17 +100,24 @@ class _SearchSettingsScreenState extends State<SearchSettingsScreen> {
                 actions: [
                   menuActions([
                     MenuItemButton(
-                      child: Text(context.strings.search_settings_screen_change_my_gender_action_title),
-                      onPressed: () => MyNavigator.push(context, const MaterialPage<void>(child: EditMyGenderScreen())),
-                    )
+                      child: Text(
+                        context.strings.search_settings_screen_change_my_gender_action_title,
+                      ),
+                      onPressed: () => MyNavigator.push(
+                        context,
+                        const MaterialPage<void>(child: EditMyGenderScreen()),
+                      ),
+                    ),
                   ]),
                 ],
               ),
               body: edit(context, data),
-              floatingActionButton: settingsChanged ? FloatingActionButton(
-                onPressed: () => validateAndSaveData(context),
-                child: const Icon(Icons.check),
-              ) : null
+              floatingActionButton: settingsChanged
+                  ? FloatingActionButton(
+                      onPressed: () => validateAndSaveData(context),
+                      child: const Icon(Icons.check),
+                    )
+                  : null,
             ),
           );
         },
@@ -136,16 +141,15 @@ class _SearchSettingsScreenState extends State<SearchSettingsScreen> {
           newProfilesWidget(context, state),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            child: Text(
-              context.strings.search_settings_screen_weekdays,
-            ),
+            child: Text(context.strings.search_settings_screen_weekdays),
           ),
           hPad(weekdaysWidget(context, state)),
           const Padding(padding: EdgeInsets.all(4)),
-          if (floatingActionButtonPadding) const Padding(
-            padding: EdgeInsets.only(top: FLOATING_ACTION_BUTTON_EMPTY_AREA),
-            child: null,
-          ),
+          if (floatingActionButtonPadding)
+            const Padding(
+              padding: EdgeInsets.only(top: FLOATING_ACTION_BUTTON_EMPTY_AREA),
+              child: null,
+            ),
         ],
       ),
     );
@@ -153,7 +157,8 @@ class _SearchSettingsScreenState extends State<SearchSettingsScreen> {
 
   Widget editGenderFilter(SearchSettingsData state) {
     return EditGenderFilter(
-      onStartEditor: () => MyNavigator.push(context, const MaterialPage<void>(child: EditGenderFilterScreen())),
+      onStartEditor: () =>
+          MyNavigator.push(context, const MaterialPage<void>(child: EditGenderFilterScreen())),
       genderSearchSetting: state.valueGenderSearchSettingsAll(),
       gender: state.valueGender(),
     );
@@ -198,7 +203,9 @@ class _SearchSettingsScreenState extends State<SearchSettingsScreen> {
           selected: state.valueSearchWeekdays() & day.bitflag == day.bitflag,
           onSelected: (value) {
             if (value) {
-              context.read<SearchSettingsBloc>().add(UpdateSearchWeekday(state.valueSearchWeekdays() | day.bitflag));
+              context.read<SearchSettingsBloc>().add(
+                UpdateSearchWeekday(state.valueSearchWeekdays() | day.bitflag),
+              );
             } else {
               final newValue = state.valueSearchWeekdays() & ~day.bitflag;
               context.read<SearchSettingsBloc>().add(UpdateSearchWeekday(newValue));
@@ -218,7 +225,7 @@ class EditGenderFilter extends StatelessWidget {
     required this.onStartEditor,
     required this.gender,
     required this.genderSearchSetting,
-    super.key
+    super.key,
   });
 
   @override
@@ -235,25 +242,19 @@ class EditGenderFilter extends StatelessWidget {
           padding: const EdgeInsets.only(right: 4.0),
           child: IconWithIconButtonPadding(
             Icons.edit_rounded,
-            iconColor: getIconButtonEnabledColor(context)
-          )
+            iconColor: getIconButtonEnabledColor(context),
+          ),
         ),
       ],
     );
 
-    return InkWell(
-      onTap: onStartEditor,
-      child: attributeWidget,
-    );
+    return InkWell(onTap: onStartEditor, child: attributeWidget);
   }
 
   Widget visibleValues(BuildContext context) {
     final values = genderSearchSetting.toUiTexts(context, gender);
     final valueWidgets = values.map((e) => Chip(label: Text(e))).toList();
-    return Wrap(
-      spacing: 8,
-      children: valueWidgets,
-    );
+    return Wrap(spacing: 8, children: valueWidgets);
   }
 }
 

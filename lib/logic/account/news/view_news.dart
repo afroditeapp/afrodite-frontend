@@ -1,5 +1,3 @@
-
-
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:openapi/api.dart";
 import "package:app/api/api_manager.dart";
@@ -9,6 +7,7 @@ import "package:app/utils.dart";
 import "package:app/utils/result.dart";
 
 abstract class ViewNewsEvent {}
+
 class Reload extends ViewNewsEvent {}
 
 class ViewNewsBloc extends Bloc<ViewNewsEvent, ViewNewsData> with ActionRunner {
@@ -23,16 +22,9 @@ class ViewNewsBloc extends Bloc<ViewNewsEvent, ViewNewsData> with ActionRunner {
         final r = await api.account((api) => api.getNewsItem(id.nid, locale));
         switch (r) {
           case Ok():
-            emit(state.copyWith(
-              isLoading: false,
-              isError: false,
-              item: r.value.item,
-            ));
+            emit(state.copyWith(isLoading: false, isError: false, item: r.value.item));
           case Err():
-            emit(state.copyWith(
-              isLoading: false,
-              isError: true,
-            ));
+            emit(state.copyWith(isLoading: false, isError: true));
         }
       });
     });

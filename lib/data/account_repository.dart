@@ -1,4 +1,3 @@
-
 import 'dart:async';
 import 'dart:typed_data';
 
@@ -22,13 +21,9 @@ import 'package:utils/utils.dart';
 
 var log = Logger("AccountRepository");
 
-enum AccountRepositoryState {
-  initRequired,
-  initComplete,
-}
+enum AccountRepositoryState { initRequired, initComplete }
 
-const ProfileVisibility PROFILE_VISIBILITY_DEFAULT =
-  ProfileVisibility.pendingPrivate;
+const ProfileVisibility PROFILE_VISIBILITY_DEFAULT = ProfileVisibility.pendingPrivate;
 
 class AccountRepository extends DataRepositoryWithLifecycle {
   final ConnectedActionScheduler _syncHandler;
@@ -47,22 +42,19 @@ class AccountRepository extends DataRepositoryWithLifecycle {
     required this.clientIdManager,
     required bool rememberToInitRepositoriesLateFinal,
     required this.currentUser,
-  }) :
-    _syncHandler = ConnectedActionScheduler(connectionManager);
+  }) : _syncHandler = ConnectedActionScheduler(connectionManager);
 
-  final BehaviorSubject<AccountRepositoryState> _internalState =
-    BehaviorSubject.seeded(AccountRepositoryState.initRequired);
+  final BehaviorSubject<AccountRepositoryState> _internalState = BehaviorSubject.seeded(
+    AccountRepositoryState.initRequired,
+  );
 
   final CachedValues _cachedValues = CachedValues();
 
-  Stream<AccountState?> get accountState => db
-    .accountStream((db) => db.account.watchAccountState());
+  Stream<AccountState?> get accountState =>
+      db.accountStream((db) => db.account.watchAccountState());
   Stream<String?> get emailAddress => _cachedValues._cachedEmailAddress;
-  Stream<Permissions> get permissions => db
-    .accountStreamOrDefault(
-      (db) => db.account.watchPermissions(),
-      Permissions(),
-    );
+  Stream<Permissions> get permissions =>
+      db.accountStreamOrDefault((db) => db.account.watchPermissions(), Permissions());
   Stream<ProfileVisibility> get profileVisibility => _cachedValues._cachedProfileVisibility;
 
   ProfileVisibility get profileVisibilityValue => _cachedValues._cachedProfileVisibility.value;
@@ -71,7 +63,8 @@ class AccountRepository extends DataRepositoryWithLifecycle {
 
   // WebSocket related event streams
   final _contentProcessingStateChanges = PublishSubject<ContentProcessingStateChanged>();
-  Stream<ContentProcessingStateChanged> get contentProcessingStateChanges => _contentProcessingStateChanges.stream;
+  Stream<ContentProcessingStateChanged> get contentProcessingStateChanges =>
+      _contentProcessingStateChanges.stream;
 
   @override
   Future<void> init() async {
@@ -99,10 +92,11 @@ class AccountRepository extends DataRepositoryWithLifecycle {
 
   @override
   Future<Result<(), ()>> onLoginDataSync() async {
-    return await clientIdManager.getClientId()
-      .andThen((_) => _reloadAccountNotificationSettings())
-      .andThen((_) => _reloadClientLanguageOnServer())
-      .andThenEmptyErr((_) => db.accountAction((db) => db.app.updateAccountSyncDone(true)));
+    return await clientIdManager
+        .getClientId()
+        .andThen((_) => _reloadAccountNotificationSettings())
+        .andThen((_) => _reloadClientLanguageOnServer())
+        .andThenEmptyErr((_) => db.accountAction((db) => db.app.updateAccountSyncDone(true)));
   }
 
   @override
@@ -111,19 +105,18 @@ class AccountRepository extends DataRepositoryWithLifecycle {
       await clientIdManager.getClientId();
       await _updateClientLanguageIfNeeded();
 
-      final syncDone = await db.accountStreamSingle((db) => db.app.watchAccountSyncDone()).ok() ?? false;
+      final syncDone =
+          await db.accountStreamSingle((db) => db.app.watchAccountSyncDone()).ok() ?? false;
       if (!syncDone) {
         await _reloadAccountNotificationSettings()
-          .andThen((_) => _reloadClientLanguageOnServer())
-          .andThenEmptyErr((_) => db.accountAction((db) => db.app.updateAccountSyncDone(true)));
+            .andThen((_) => _reloadClientLanguageOnServer())
+            .andThenEmptyErr((_) => db.accountAction((db) => db.app.updateAccountSyncDone(true)));
       }
     });
   }
 
   Future<void> _receiveAccountState() async {
-    final result = await api.account((api) =>
-      api.getAccountState()
-    ).ok();
+    final result = await api.account((api) => api.getAccountState()).ok();
     if (result != null) {
       await db.accountAction((db) => db.account.updateAccountState(result));
     }
@@ -140,9 +133,10 @@ class AccountRepository extends DataRepositoryWithLifecycle {
     final maintenanceEvent = event.scheduledMaintenanceStatus;
     if (event.event == EventType.accountStateChanged) {
       await _receiveAccountState();
-    } else if (event.event == EventType.contentProcessingStateChanged && contentProcessingEvent != null) {
+    } else if (event.event == EventType.contentProcessingStateChanged &&
+        contentProcessingEvent != null) {
       _contentProcessingStateChanges.add(contentProcessingEvent);
-    } else if (event.event == EventType.scheduledMaintenanceStatus && maintenanceEvent != null ) {
+    } else if (event.event == EventType.scheduledMaintenanceStatus && maintenanceEvent != null) {
       await handleServerMaintenanceStatusEvent(maintenanceEvent);
     } else if (event.event == EventType.receivedLikesChanged) {
       await chat.receivedLikesCountRefresh();
@@ -178,14 +172,11 @@ class AccountRepository extends DataRepositoryWithLifecycle {
     String email,
     String name,
     Uint8List securitySelfieBytes,
-    Uint8List profileImageBytes
+    Uint8List profileImageBytes,
   ) async {
-    final resultString = await InitialSetupUtils(api).doDeveloperInitialSetup(
-      email,
-      name,
-      securitySelfieBytes,
-      profileImageBytes
-    );
+    final resultString = await InitialSetupUtils(
+      api,
+    ).doDeveloperInitialSetup(email, name, securitySelfieBytes, profileImageBytes);
 
     if (resultString == null) {
       // Success
@@ -195,9 +186,7 @@ class AccountRepository extends DataRepositoryWithLifecycle {
     return resultString;
   }
 
-  Future<Result<(), ()>> doInitialSetup(
-    InitialSetupData data,
-  ) async {
+  Future<Result<(), ()>> doInitialSetup(InitialSetupData data) async {
     final result = await InitialSetupUtils(api).doInitialSetup(data);
     if (result.isOk()) {
       await LoginRepository.getInstance().onInitialSetupComplete();
@@ -208,8 +197,8 @@ class AccountRepository extends DataRepositoryWithLifecycle {
 
   /// Returns true if successful.
   Future<bool> doProfileVisibilityChange(bool profileVisiblity) async {
-    final result = await api.accountAction((api) =>
-      api.putSettingProfileVisiblity(BooleanSetting(value: profileVisiblity))
+    final result = await api.accountAction(
+      (api) => api.putSettingProfileVisiblity(BooleanSetting(value: profileVisiblity)),
     );
 
     return result.isOk();
@@ -217,7 +206,9 @@ class AccountRepository extends DataRepositoryWithLifecycle {
 
   /// Returns true if successful.
   Future<bool> updateUnlimitedLikesWithoutReloadingProfile(bool unlimitedLikes) async {
-    final result = await api.accountAction((api) => api.putSettingUnlimitedLikes(BooleanSetting(value: unlimitedLikes)));
+    final result = await api.accountAction(
+      (api) => api.putSettingUnlimitedLikes(BooleanSetting(value: unlimitedLikes)),
+    );
     return result.isOk();
   }
 
@@ -227,25 +218,30 @@ class AccountRepository extends DataRepositoryWithLifecycle {
   }
 
   Future<Result<AccountSetup, ()>> downloadAccountSetup() async {
-    return await api.account((api) => api.getAccountSetup())
-      .mapErr((_) => ());
+    return await api.account((api) => api.getAccountSetup()).mapErr((_) => ());
   }
 
   Future<Result<AccountData, ()>> downloadAccountData() async {
-    return await api.account((api) => api.getAccountData())
-      .mapErr((_) => ());
+    return await api.account((api) => api.getAccountData()).mapErr((_) => ());
   }
 
   Future<Result<(), ()>> moveAccountToPendingDeletionState() async {
-    return await api.accountAction((api) => api.postSetAccountDeletionRequestState(currentUser.aid, BooleanSetting(value: true)))
-      .mapErr((_) => ())
-      .mapOk((_) => ());
+    return await api
+        .accountAction(
+          (api) =>
+              api.postSetAccountDeletionRequestState(currentUser.aid, BooleanSetting(value: true)),
+        )
+        .mapErr((_) => ())
+        .mapOk((_) => ());
   }
 
   Future<Result<(), ()>> receiveNewsCount() async {
     final r = await api.account((api) => api.postGetUnreadNewsCount()).ok();
     if (r != null) {
-      return await NotificationNewsItemAvailable.getInstance().handleNewsCountUpdate(r, accountBackgroundDb);
+      return await NotificationNewsItemAvailable.getInstance().handleNewsCountUpdate(
+        r,
+        accountBackgroundDb,
+      );
     }
     return const Err(());
   }
@@ -253,15 +249,21 @@ class AccountRepository extends DataRepositoryWithLifecycle {
   Future<Result<(), ()>> receiveAdminNotification() async {
     final r = await api.commonAdmin((api) => api.postGetAdminNotification()).ok();
     if (r != null) {
-      final viewedNotification = await accountBackgroundDb.accountData((db) => db.notification.getAdminNotification()).ok();
+      final viewedNotification = await accountBackgroundDb
+          .accountData((db) => db.notification.getAdminNotification())
+          .ok();
       if (viewedNotification != null && r == viewedNotification) {
         // Prevent showing the same notification again when the notification
         // is already received as push notification.
       } else {
-        await NotificationNewsItemAvailable.getInstance().showAdminNotification(r, accountBackgroundDb);
+        await NotificationNewsItemAvailable.getInstance().showAdminNotification(
+          r,
+          accountBackgroundDb,
+        );
       }
-      return await accountBackgroundDb.accountAction((db) => db.notification.removeAdminNotification())
-        .emptyErr();
+      return await accountBackgroundDb
+          .accountAction((db) => db.notification.removeAdminNotification())
+          .emptyErr();
     }
     return const Err(());
   }
@@ -275,35 +277,45 @@ class AccountRepository extends DataRepositoryWithLifecycle {
     } else {
       time = null;
     }
-    return db.accountAction((db) => db.common.setMaintenanceTime(
-      time: time?.toUtcDateTime(),
-    )).emptyErr();
+    return db
+        .accountAction((db) => db.common.setMaintenanceTime(time: time?.toUtcDateTime()))
+        .emptyErr();
   }
 
   Future<Result<(), ()>> _reloadAccountNotificationSettings() async {
-    return await api.account((api) => api.getAccountAppNotificationSettings())
-      .andThenEmptyErr((v) => accountBackgroundDb.accountAction(
-        (db) => db.appNotificationSettings.updateAccountNotificationSettings(v),
-      ));
+    return await api
+        .account((api) => api.getAccountAppNotificationSettings())
+        .andThenEmptyErr(
+          (v) => accountBackgroundDb.accountAction(
+            (db) => db.appNotificationSettings.updateAccountNotificationSettings(v),
+          ),
+        );
   }
 
   Future<Result<(), ()>> _reloadClientLanguageOnServer() async {
-    return await api.common((api) => api.getClientLanguage())
-      .andThenEmptyErr((v) => db.accountAction(
-        (db) => db.common.updateClientLanguageOnServer(v),
-      ));
+    return await api
+        .common((api) => api.getClientLanguage())
+        .andThenEmptyErr(
+          (v) => db.accountAction((db) => db.common.updateClientLanguageOnServer(v)),
+        );
   }
 
   Future<void> _updateClientLanguageIfNeeded() async {
-    final clientLanguageOnServer = await db.accountStreamSingle((db) => db.common.watchClientLanguageOnServer()).ok();
-    final clientLocale = await BackgroundDatabaseManager.getInstance().commonStreamSingle((db) => db.app.watchCurrentLocale());
+    final clientLanguageOnServer = await db
+        .accountStreamSingle((db) => db.common.watchClientLanguageOnServer())
+        .ok();
+    final clientLocale = await BackgroundDatabaseManager.getInstance().commonStreamSingle(
+      (db) => db.app.watchCurrentLocale(),
+    );
 
     if (clientLanguageOnServer == null || clientLocale == null) {
       return;
     }
 
     if (clientLanguageOnServer.l != clientLocale) {
-      final r = await api.commonAction((db) => db.postClientLanguage(ClientLanguage(l: clientLocale)));
+      final r = await api.commonAction(
+        (db) => db.postClientLanguage(ClientLanguage(l: clientLocale)),
+      );
       if (r.isOk()) {
         await _reloadClientLanguageOnServer();
       }
@@ -312,34 +324,34 @@ class AccountRepository extends DataRepositoryWithLifecycle {
 }
 
 class CachedValues {
-  final BehaviorSubject<String?> _cachedEmailAddress =
-    BehaviorSubject.seeded(null);
+  final BehaviorSubject<String?> _cachedEmailAddress = BehaviorSubject.seeded(null);
   StreamSubscription<String?>? _cachedEmailSubscription;
-  final BehaviorSubject<ProfileVisibility> _cachedProfileVisibility =
-    BehaviorSubject.seeded(PROFILE_VISIBILITY_DEFAULT);
+  final BehaviorSubject<ProfileVisibility> _cachedProfileVisibility = BehaviorSubject.seeded(
+    PROFILE_VISIBILITY_DEFAULT,
+  );
   StreamSubscription<ProfileVisibility>? _cachedProfileVisibilitySubscription;
-  final BehaviorSubject<AccountState?> _cachedAccountState =
-    BehaviorSubject.seeded(null);
+  final BehaviorSubject<AccountState?> _cachedAccountState = BehaviorSubject.seeded(null);
   StreamSubscription<AccountState?>? _cachedAccountStateSubscription;
 
   void _subscribe(AccountDatabaseManager db) {
-    _cachedEmailSubscription = db
-      .accountStream((db) => db.account.watchEmailAddress())
-      .listen((v) {
-        _cachedEmailAddress.add(v);
-      });
+    _cachedEmailSubscription = db.accountStream((db) => db.account.watchEmailAddress()).listen((v) {
+      _cachedEmailAddress.add(v);
+    });
 
     _cachedProfileVisibilitySubscription = db
-      .accountStreamOrDefault((db) => db.account.watchProfileVisibility(), PROFILE_VISIBILITY_DEFAULT)
-      .listen((v) {
-        _cachedProfileVisibility.add(v);
-      });
+        .accountStreamOrDefault(
+          (db) => db.account.watchProfileVisibility(),
+          PROFILE_VISIBILITY_DEFAULT,
+        )
+        .listen((v) {
+          _cachedProfileVisibility.add(v);
+        });
 
     _cachedAccountStateSubscription = db
-      .accountStream((db) => db.account.watchAccountState())
-      .listen((v) {
-        _cachedAccountState.add(v);
-      });
+        .accountStream((db) => db.account.watchAccountState())
+        .listen((v) {
+          _cachedAccountState.add(v);
+        });
   }
 
   Future<void> _dispose() async {

@@ -1,5 +1,3 @@
-
-
 import 'package:app/localizations.dart';
 import 'package:app/ui/normal/settings/admin/account_admin_settings.dart';
 import 'package:app/ui_utils/padding.dart';
@@ -23,10 +21,7 @@ class _ViewAdminsScreenState extends State<ViewAdminsScreen> {
   final api = LoginRepository.getInstance().repositories.api;
 
   Future<ViewAdminsData> _getData() async {
-    final result = await api
-      .accountAdmin(
-        (api) => api.getAllAdmins()
-      ).ok();
+    final result = await api.accountAdmin((api) => api.getAllAdmins()).ok();
 
     final ViewAdminsData data = [];
 
@@ -36,9 +31,8 @@ class _ViewAdminsScreenState extends State<ViewAdminsScreen> {
     } else {
       for (final a in admins) {
         final ageAndName = await api
-          .profileAdmin(
-            (api) => api.getProfileAgeAndName(a.aid.aid)
-          ).ok();
+            .profileAdmin((api) => api.getProfileAgeAndName(a.aid.aid))
+            .ok();
 
         if (ageAndName == null) {
           showSnackBar("Get profile age and name failed");
@@ -54,9 +48,7 @@ class _ViewAdminsScreenState extends State<ViewAdminsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("View admins"),
-      ),
+      appBar: AppBar(title: const Text("View admins")),
       body: screenContent(context),
     );
   }
@@ -67,28 +59,33 @@ class _ViewAdminsScreenState extends State<ViewAdminsScreen> {
       initialData: null,
       builder: (context, snapshot) {
         switch (snapshot.connectionState) {
-          case ConnectionState.active || ConnectionState.waiting: {
-            return buildProgressIndicator();
-          }
-          case ConnectionState.none || ConnectionState.done: {
-            final data = snapshot.data;
-            if (data == null) {
-              return Center(child: Text(context.strings.generic_error));
-            } else {
-              return showData(context, data);
+          case ConnectionState.active || ConnectionState.waiting:
+            {
+              return buildProgressIndicator();
             }
-          }
+          case ConnectionState.none || ConnectionState.done:
+            {
+              final data = snapshot.data;
+              if (data == null) {
+                return Center(child: Text(context.strings.generic_error));
+              } else {
+                return showData(context, data);
+              }
+            }
         }
-      });
-  }
-
-  Widget buildProgressIndicator() {
-    return const Center(
-      child: CircularProgressIndicator(),
+      },
     );
   }
 
-  Widget openAccountAdminSettings(BuildContext context, AccountId accountId, GetProfileAgeAndName ageAndName) {
+  Widget buildProgressIndicator() {
+    return const Center(child: CircularProgressIndicator());
+  }
+
+  Widget openAccountAdminSettings(
+    BuildContext context,
+    AccountId accountId,
+    GetProfileAgeAndName ageAndName,
+  ) {
     return ElevatedButton(
       onPressed: () {
         getAgeAndNameAndShowAdminSettings(context, api, accountId);
@@ -119,7 +116,7 @@ class _ViewAdminsScreenState extends State<ViewAdminsScreen> {
                   const Padding(padding: EdgeInsets.all(8.0)),
                   openAccountAdminSettings(context, accountId, ageAndName),
                 ],
-              )
+              ),
             ),
             const Padding(padding: EdgeInsets.all(8.0)),
             hPad(Text(enabledPermissions(permissions))),

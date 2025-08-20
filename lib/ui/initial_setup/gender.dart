@@ -38,7 +38,6 @@ class AskGender extends StatefulWidget {
 }
 
 class _AskGenderState extends State<AskGender> {
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -52,21 +51,21 @@ class _AskGenderState extends State<AskGender> {
   Widget askInfo(BuildContext context) {
     return BlocBuilder<InitialSetupBloc, InitialSetupData>(
       builder: (context, state) {
-        return genderRadioButtons(
-          context,
-          state.gender,
-          (selected) {
-            if (selected != null) {
-              context.read<InitialSetupBloc>().add(SetGender(selected));
-            }
+        return genderRadioButtons(context, state.gender, (selected) {
+          if (selected != null) {
+            context.read<InitialSetupBloc>().add(SetGender(selected));
           }
-        );
-      }
+        });
+      },
     );
   }
 }
 
-Widget genderRadioButtons(BuildContext context, Gender? selected, void Function(Gender?) onChanged) {
+Widget genderRadioButtons(
+  BuildContext context,
+  Gender? selected,
+  void Function(Gender?) onChanged,
+) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: <Widget>[
@@ -77,7 +76,12 @@ Widget genderRadioButtons(BuildContext context, Gender? selected, void Function(
   );
 }
 
-Widget genderListTile(BuildContext context, Gender? selected, Gender gender, void Function(Gender?) onChanged) {
+Widget genderListTile(
+  BuildContext context,
+  Gender? selected,
+  Gender gender,
+  void Function(Gender?) onChanged,
+) {
   return RadioListTile<Gender>(
     title: Text(gender.uiTextSingular(context)),
     value: gender,

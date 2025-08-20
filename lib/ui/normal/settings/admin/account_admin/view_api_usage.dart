@@ -1,5 +1,3 @@
-
-
 import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/ui/utils/view_metrics.dart';
 import 'package:app/utils/api.dart';
@@ -15,10 +13,7 @@ void openViewApiUsageScreen(BuildContext context, String title, ApiManager api, 
   MyNavigator.push(
     context,
     MaterialPage<void>(
-      child: ViewMetricsScreen(
-        title: title,
-        metrics: GetApiUsage(api, account),
-      )
+      child: ViewMetricsScreen(title: title, metrics: GetApiUsage(api, account)),
     ),
   );
 }
@@ -32,7 +27,13 @@ class GetApiUsage extends GetMetrics {
   @override
   Future<Result<List<Metric>, ()>> getMetrics() async {
     final oldestDate = UtcDateTime.now().substract(const Duration(days: 30));
-    final queryResults = await api.commonAdmin((api) => api.postGetApiUsageData(GetApiUsageStatisticsSettings(account: account, minTime: oldestDate.toUnixTime()))).ok();
+    final queryResults = await api
+        .commonAdmin(
+          (api) => api.postGetApiUsageData(
+            GetApiUsageStatisticsSettings(account: account, minTime: oldestDate.toUnixTime()),
+          ),
+        )
+        .ok();
 
     if (queryResults == null) {
       return const Err(());

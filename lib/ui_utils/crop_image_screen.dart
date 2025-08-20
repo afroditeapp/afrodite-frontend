@@ -1,4 +1,3 @@
-
 import "dart:math";
 
 import "package:app/data/image_cache.dart";
@@ -27,11 +26,7 @@ const MIN_CROP_ALLOWED_FACTOR = 0.75;
 class CropImageScreen extends StatefulWidget {
   final CropImageFileContent info;
   final void Function(CropArea?) onCropAreaChanged;
-  const CropImageScreen({
-    required this.info,
-    required this.onCropAreaChanged,
-    super.key,
-  });
+  const CropImageScreen({required this.info, required this.onCropAreaChanged, super.key});
 
   @override
   State<CropImageScreen> createState() => _CropImageScreenState();
@@ -56,13 +51,13 @@ class _CropImageScreenState extends State<CropImageScreen> {
     return LayoutBuilder(
       builder: (context, constraints) {
         final (imageOwner, imageId, imgWidth, imgHeight) = switch (widget.info) {
-          CropImageFileContent(:final imageOwner, :final imageId, :final imgWidth, :final imgHeight) =>
-            (
-              imageOwner,
-              imageId,
-              imgWidth,
-              imgHeight
-            ),
+          CropImageFileContent(
+            :final imageOwner,
+            :final imageId,
+            :final imgWidth,
+            :final imgHeight,
+          ) =>
+            (imageOwner, imageId, imgWidth, imgHeight),
         };
 
         final double imgWidgetWidth;
@@ -124,10 +119,7 @@ class _CropImageScreenState extends State<CropImageScreen> {
             selectionMaxSize: selectionMaxSize,
             areaWidth: imgWidgetWidth,
             areaHeight: imgWidgetHeight,
-            imageWidget: Align(
-              alignment: Alignment.topLeft,
-              child: imgWidget,
-            ),
+            imageWidget: Align(alignment: Alignment.topLeft, child: imgWidget),
             onBuildCalled: (cropState) {
               final cropArea = _calculateCropArea(cropState, areaWidth, areaHeight);
               if (cropArea != cropAreaCache) {
@@ -137,16 +129,12 @@ class _CropImageScreenState extends State<CropImageScreen> {
             },
           ),
         );
-      }
+      },
     );
   }
 }
 
-CropArea _calculateCropArea(
-  CropState s,
-  double areaWidth,
-  double areaHeight,
-) {
+CropArea _calculateCropArea(CropState s, double areaWidth, double areaHeight) {
   final gridCropSize = s.size / min(areaWidth, areaHeight);
   final gridCropX = s.left / areaWidth;
   final gridCropY = s.top / areaHeight;
@@ -168,8 +156,10 @@ class CropArea {
   /// The shorter side of the image should be multiplied by this
   /// factor to get the crop side length.
   final double gridCropSize;
+
   /// Top left corner location difference relative to the image width.
   final double gridCropX;
+
   /// Top left corner location difference relative to the image height.
   final double gridCropY;
 
@@ -179,24 +169,19 @@ class CropArea {
     return CropArea._(
       clampDouble(gridCropSize, MIN_CROP_ALLOWED_FACTOR, 1.0),
       gridCropX,
-      gridCropY
+      gridCropY,
     );
   }
 
   /// Square image from top left corner.
-  static const full =
-    CropArea._(
-      1.0,
-      0.0,
-      0.0,
-    );
+  static const full = CropArea._(1.0, 0.0, 0.0);
 
   @override
   bool operator ==(Object other) {
     if (other is CropArea) {
       return gridCropSize == other.gridCropSize &&
-        gridCropX == other.gridCropX &&
-        gridCropY == other.gridCropY;
+          gridCropX == other.gridCropX &&
+          gridCropY == other.gridCropY;
     }
     return false;
   }
@@ -284,24 +269,16 @@ class _CropImageOverlayState extends State<CropImageOverlay> {
         Expanded(
           child: Column(
             children: [
-              Expanded(
-                child: handle(Alignment.topLeft)
-              ),
-              Expanded(
-                child: handle(Alignment.bottomLeft)
-              ),
+              Expanded(child: handle(Alignment.topLeft)),
+              Expanded(child: handle(Alignment.bottomLeft)),
             ],
           ),
         ),
         Expanded(
           child: Column(
             children: [
-              Expanded(
-                child: handle(Alignment.topRight)
-              ),
-              Expanded(
-                child: handle(Alignment.bottomRight)
-              ),
+              Expanded(child: handle(Alignment.topRight)),
+              Expanded(child: handle(Alignment.bottomRight)),
             ],
           ),
         ),
@@ -314,24 +291,16 @@ class _CropImageOverlayState extends State<CropImageOverlay> {
     final BorderRadius radius;
     final void Function(double, double) scaleAction;
     if (alignment == Alignment.topLeft) {
-      radius = const BorderRadius.only(
-        topLeft: r,
-      );
+      radius = const BorderRadius.only(topLeft: r);
       scaleAction = scaleUsingTopLeftHandle;
     } else if (alignment == Alignment.topRight) {
-      radius = const BorderRadius.only(
-        topRight: r,
-      );
+      radius = const BorderRadius.only(topRight: r);
       scaleAction = scaleUsingTopRightHandle;
     } else if (alignment == Alignment.bottomLeft) {
-      radius = const BorderRadius.only(
-        bottomLeft: r,
-      );
+      radius = const BorderRadius.only(bottomLeft: r);
       scaleAction = scaleUsingBottomLeftHandle;
     } else {
-      radius = const BorderRadius.only(
-        bottomRight: r,
-      );
+      radius = const BorderRadius.only(bottomRight: r);
       scaleAction = scaleUsingBottomRightHandle;
     }
 
@@ -346,10 +315,7 @@ class _CropImageOverlayState extends State<CropImageOverlay> {
         child: Container(
           width: 48,
           height: 48,
-          decoration: BoxDecoration(
-            color: Colors.black45,
-            borderRadius: radius,
-          ),
+          decoration: BoxDecoration(color: Colors.black45, borderRadius: radius),
         ),
       ),
     );

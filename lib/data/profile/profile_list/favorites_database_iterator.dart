@@ -9,6 +9,8 @@ class FavoritesDatabaseIterator extends BaseDatabaseIterator {
   FavoritesDatabaseIterator({required super.db});
 
   @override
-  Future<Result<List<AccountId>, DatabaseError>> getAccountListFromDatabase(int startIndex, int limit) =>
-    db.accountData((db) => db.profile.getFavoritesList(startIndex, limit));
+  Future<Result<List<AccountId>, DatabaseError>> getAccountListFromDatabase(
+    int startIndex,
+    int limit,
+  ) => db.accountData((db) => db.profile.getFavoritesList(startIndex, limit));
 }

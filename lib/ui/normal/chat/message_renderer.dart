@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -54,12 +53,10 @@ class MessageRendererState extends State<MessageRenderer> {
                   ),
                 ),
               );
-            }
+            },
           );
 
-          Overlay.of(context).insert(
-            ovEntry
-          );
+          Overlay.of(context).insert(ovEntry);
 
           SchedulerBinding.instance.addPostFrameCallback((_) {
             final box = key.currentContext?.findRenderObject() as RenderBox;
@@ -74,7 +71,7 @@ class MessageRendererState extends State<MessageRenderer> {
         });
 
         return const SizedBox.shrink();
-      }
+      },
     );
   }
 }

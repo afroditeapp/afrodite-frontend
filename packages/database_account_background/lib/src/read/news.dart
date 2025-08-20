@@ -7,32 +7,19 @@ import '../schema.dart' as schema;
 
 part 'news.g.dart';
 
-@DriftAccessor(
-  tables: [
-    schema.News,
-  ]
-)
+@DriftAccessor(tables: [schema.News])
 class DaoReadNews extends DatabaseAccessor<AccountBackgroundDatabase> with _$DaoReadNewsMixin {
   DaoReadNews(super.db);
 
   Stream<api.UnreadNewsCount?> watchUnreadNewsCount() {
-    return (select(news)
-      ..where((t) => t.id.equals(SingleRowTable.ID.value))
-    )
-      .map((r) {
-        return r.newsCount;
-      })
-      .watchSingleOrNull();
+    return (select(news)..where((t) => t.id.equals(SingleRowTable.ID.value))).map((r) {
+      return r.newsCount;
+    }).watchSingleOrNull();
   }
 
   Stream<int?> watchSyncVersionNews() {
-    return (select(news)
-      ..where((t) => t.id.equals(SingleRowTable.ID.value))
-    )
-      .map((r) {
-        return r.syncVersionNews;
-      })
-      .watchSingleOrNull();
+    return (select(news)..where((t) => t.id.equals(SingleRowTable.ID.value))).map((r) {
+      return r.syncVersionNews;
+    }).watchSingleOrNull();
   }
-
 }

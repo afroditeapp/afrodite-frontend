@@ -1,4 +1,3 @@
-
 import 'package:app/logic/account/client_features_config.dart';
 import 'package:app/logic/media/content.dart';
 import 'package:app/logic/profile/my_profile.dart';
@@ -60,11 +59,13 @@ class ProfileView extends BottomNavigationScreen {
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
               IconButton(
-                icon: Icon(state.valueDailyLikesLeft() == 0 ? Icons.waving_hand_outlined : Icons.waving_hand),
+                icon: Icon(
+                  state.valueDailyLikesLeft() == 0 ? Icons.waving_hand_outlined : Icons.waving_hand,
+                ),
                 onPressed: () {
                   showDailyLikesInfoDialog(context, state);
-                }
-              )
+                },
+              ),
             ],
           );
         },
@@ -77,18 +78,19 @@ class ProfileView extends BottomNavigationScreen {
         builder: (context, state) {
           final Icon icon;
           if (state.showOnlyFavorites) {
-            icon = Icon(
-              Icons.filter_alt_outlined,
-              color: Theme.of(context).disabledColor,
-            );
+            icon = Icon(Icons.filter_alt_outlined, color: Theme.of(context).disabledColor);
           } else {
             icon = Icon(state.icon());
           }
           return IconButton(
             icon: icon,
-            onPressed: state.showOnlyFavorites ?
-              () => showSnackBar(context.strings.profile_grid_screen_filtering_favorite_profiles_is_not_supported) :
-              () => openProfileFilters(context),
+            onPressed: state.showOnlyFavorites
+                ? () => showSnackBar(
+                    context
+                        .strings
+                        .profile_grid_screen_filtering_favorite_profiles_is_not_supported,
+                  )
+                : () => openProfileFilters(context),
           );
         },
       ),
@@ -100,15 +102,17 @@ class ProfileView extends BottomNavigationScreen {
       builder: (context, state) {
         return IconButton(
           icon: Icon(state.showOnlyFavorites ? Icons.star_rounded : Icons.star_border_rounded),
-          tooltip: state.showOnlyFavorites ?
-            context.strings.profile_grid_screen_show_all_profiles_action :
-            context.strings.profile_grid_screen_show_favorite_profiles_action,
+          tooltip: state.showOnlyFavorites
+              ? context.strings.profile_grid_screen_show_all_profiles_action
+              : context.strings.profile_grid_screen_show_favorite_profiles_action,
           onPressed: () {
             // Prevent starting another reload when previous is ongoing
             if (_profileGridKey.currentState?.pagingState.isLoading == true) {
               showSnackBar(context.strings.generic_previous_action_in_progress);
             } else {
-              context.read<ProfileFiltersBloc>().add(SetFavoriteProfilesFilter(!state.showOnlyFavorites, waitEventHandling));
+              context.read<ProfileFiltersBloc>().add(
+                SetFavoriteProfilesFilter(!state.showOnlyFavorites, waitEventHandling),
+              );
             }
           },
         );
@@ -134,11 +138,7 @@ class _ProfileViewState extends State<ProfileView> {
 class PublicProfileViewingBlocker extends StatelessWidget {
   final Widget? showIfBlocked;
   final Widget child;
-  const PublicProfileViewingBlocker({
-    this.showIfBlocked,
-    required this.child,
-    super.key,
-  });
+  const PublicProfileViewingBlocker({this.showIfBlocked, required this.child, super.key});
 
   Widget _handleBlocked(Widget w) {
     return showIfBlocked ?? w;
@@ -165,7 +165,9 @@ class PublicProfileViewingBlocker extends StatelessWidget {
                     if (primaryContent?.accepted == true) {
                       return child;
                     } else {
-                      return _handleBlocked(primaryProfileContentIsNotAccepted(context, primaryContent));
+                      return _handleBlocked(
+                        primaryProfileContentIsNotAccepted(context, primaryContent),
+                      );
                     }
                   },
                 );
@@ -179,7 +181,7 @@ class PublicProfileViewingBlocker extends StatelessWidget {
         } else {
           return _handleBlocked(profileIsSetToPrivateInfo(context));
         }
-      }
+      },
     );
   }
 
@@ -193,7 +195,7 @@ class PublicProfileViewingBlocker extends StatelessWidget {
           const Padding(padding: EdgeInsets.all(16)),
           Text(context.strings.profile_grid_screen_profile_is_private_info),
         ],
-      )
+      ),
     );
   }
 
@@ -251,12 +253,7 @@ class PublicProfileViewingBlocker extends StatelessWidget {
     return Center(
       child: ElevatedButton(
         onPressed: () {
-           MyNavigator.push(
-            context,
-            const MaterialPage<void>(
-              child: InitialSetupScreen(),
-            ),
-          );
+          MyNavigator.push(context, const MaterialPage<void>(child: InitialSetupScreen()));
         },
         child: Text(context.strings.profile_grid_screen_start_initial_setup_button),
       ),
@@ -281,16 +278,18 @@ Future<bool?> showDailyLikesInfoDialog(BuildContext context, ClientFeaturesConfi
       children: [
         Text(dailyLikesText),
         if (showUnlimitedLikesInfo) const Padding(padding: EdgeInsets.only(top: 8)),
-        if (showUnlimitedLikesInfo) Row(
-          children: [
-            Expanded(child: Text(context.strings.profile_grid_screen_daily_likes_dialog_unlimited_likes_text)),
-            const Padding(padding: EdgeInsets.only(left: 8)),
-            Icon(
-              UNLIMITED_LIKES_ICON,
-              color: getUnlimitedLikesColor(context),
-            ),
-          ],
-        ),
+        if (showUnlimitedLikesInfo)
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  context.strings.profile_grid_screen_daily_likes_dialog_unlimited_likes_text,
+                ),
+              ),
+              const Padding(padding: EdgeInsets.only(left: 8)),
+              Icon(UNLIMITED_LIKES_ICON, color: getUnlimitedLikesColor(context)),
+            ],
+          ),
       ],
     ),
     actions: <Widget>[
@@ -298,14 +297,10 @@ Future<bool?> showDailyLikesInfoDialog(BuildContext context, ClientFeaturesConfi
         onPressed: () {
           MyNavigator.removePage(context, pageKey, false);
         },
-        child: Text(context.strings.generic_close)
+        child: Text(context.strings.generic_close),
       ),
     ],
   );
 
-  return MyNavigator.showDialog<bool>(
-    context: context,
-    pageKey: pageKey,
-    builder: dialogBuilder,
-  );
+  return MyNavigator.showDialog<bool>(context: context, pageKey: pageKey, builder: dialogBuilder);
 }

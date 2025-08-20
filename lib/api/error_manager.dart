@@ -1,5 +1,3 @@
-
-
 import 'package:logging/logging.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:utils/utils.dart';

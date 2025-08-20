@@ -1,4 +1,3 @@
-
 import 'package:database_common_background/src/database.dart';
 import 'package:database_utils/database_utils.dart';
 import 'package:drift/drift.dart';
@@ -8,21 +7,14 @@ import '../schema.dart' as schema;
 
 part 'login_session.g.dart';
 
-@DriftAccessor(
-  tables: [
-    schema.AccountId,
-    schema.PushNotification,
-  ],
-)
-class DaoWriteLoginSession extends DatabaseAccessor<CommonBackgroundDatabase> with _$DaoWriteLoginSessionMixin {
+@DriftAccessor(tables: [schema.AccountId, schema.PushNotification])
+class DaoWriteLoginSession extends DatabaseAccessor<CommonBackgroundDatabase>
+    with _$DaoWriteLoginSessionMixin {
   DaoWriteLoginSession(super.db);
 
   Future<void> updateAccountIdUseOnlyFromDatabaseManager(AccountId? id) async {
     await into(accountId).insertOnConflictUpdate(
-      AccountIdCompanion.insert(
-        id: SingleRowTable.ID,
-        accountId: Value(id),
-      ),
+      AccountIdCompanion.insert(id: SingleRowTable.ID, accountId: Value(id)),
     );
   }
 

@@ -1,4 +1,3 @@
-
 import 'package:database_account_foreground/src/database.dart';
 import 'package:database_utils/database_utils.dart';
 import 'package:drift/drift.dart';
@@ -14,47 +13,51 @@ part 'search.g.dart';
     schema.ProfileSearchAgeRange,
     schema.ProfileSearchGroups,
     schema.AutomaticProfileSearchSettings,
-  ]
+  ],
 )
 class DaoReadSearch extends DatabaseAccessor<AccountForegroundDatabase> with _$DaoReadSearchMixin {
   DaoReadSearch(super.db);
 
   Stream<api.GetProfileFilters?> watchProfileFilters() =>
-    _watchColumnFilters((r) => r.jsonProfileFilters?.value);
+      _watchColumnFilters((r) => r.jsonProfileFilters?.value);
 
   Stream<T?> _watchColumnFilters<T extends Object>(T? Function(ProfileFilter) extractColumn) {
-    return (select(profileFilters)..where((t) => t.id.equals(SingleRowTable.ID.value)))
-      .map(extractColumn)
-      .watchSingleOrNull();
+    return (select(
+      profileFilters,
+    )..where((t) => t.id.equals(SingleRowTable.ID.value))).map(extractColumn).watchSingleOrNull();
   }
 
-  Stream<int?> watchProfileSearchAgeRangeMin() =>
-    _watchColumnAgeRange((r) => r.minAge);
+  Stream<int?> watchProfileSearchAgeRangeMin() => _watchColumnAgeRange((r) => r.minAge);
 
-  Stream<int?> watchProfileSearchAgeRangeMax() =>
-    _watchColumnAgeRange((r) => r.maxAge);
+  Stream<int?> watchProfileSearchAgeRangeMax() => _watchColumnAgeRange((r) => r.maxAge);
 
-  Stream<T?> _watchColumnAgeRange<T extends Object>(T? Function(ProfileSearchAgeRangeData) extractColumn) {
-    return (select(profileSearchAgeRange)..where((t) => t.id.equals(SingleRowTable.ID.value)))
-      .map(extractColumn)
-      .watchSingleOrNull();
+  Stream<T?> _watchColumnAgeRange<T extends Object>(
+    T? Function(ProfileSearchAgeRangeData) extractColumn,
+  ) {
+    return (select(
+      profileSearchAgeRange,
+    )..where((t) => t.id.equals(SingleRowTable.ID.value))).map(extractColumn).watchSingleOrNull();
   }
 
   Stream<api.SearchGroups?> watchSearchGroups() =>
-    _watchColumnGroups((r) => r.jsonProfileSearchGroups?.value);
+      _watchColumnGroups((r) => r.jsonProfileSearchGroups?.value);
 
   Stream<T?> _watchColumnGroups<T extends Object>(T? Function(ProfileSearchGroup) extractColumn) {
-    return (select(profileSearchGroups)..where((t) => t.id.equals(SingleRowTable.ID.value)))
-      .map(extractColumn)
-      .watchSingleOrNull();
+    return (select(
+      profileSearchGroups,
+    )..where((t) => t.id.equals(SingleRowTable.ID.value))).map(extractColumn).watchSingleOrNull();
   }
 
   Stream<api.AutomaticProfileSearchSettings?> watchAutomaticProfileSearchSettings() =>
-    _watchColumnAutomaticProfileSearchSettings((r) => r.jsonAutomaticProfileSearchSettings?.value);
+      _watchColumnAutomaticProfileSearchSettings(
+        (r) => r.jsonAutomaticProfileSearchSettings?.value,
+      );
 
-  Stream<T?> _watchColumnAutomaticProfileSearchSettings<T extends Object>(T? Function(AutomaticProfileSearchSetting) extractColumn) {
-    return (select(automaticProfileSearchSettings)..where((t) => t.id.equals(SingleRowTable.ID.value)))
-      .map(extractColumn)
-      .watchSingleOrNull();
+  Stream<T?> _watchColumnAutomaticProfileSearchSettings<T extends Object>(
+    T? Function(AutomaticProfileSearchSetting) extractColumn,
+  ) {
+    return (select(
+      automaticProfileSearchSettings,
+    )..where((t) => t.id.equals(SingleRowTable.ID.value))).map(extractColumn).watchSingleOrNull();
   }
 }

@@ -1,4 +1,3 @@
-
 import 'package:app/logic/app/info_dialog.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/profile_thumbnail_image_or_error.dart';
@@ -87,8 +86,7 @@ class _ChatViewState extends State<ChatView> {
   final GlobalKey<SliverAnimatedListState> _listKey = GlobalKey<SliverAnimatedListState>();
 
   /// Avoid UI flickering when conversation animation runs
-  final RemoveOldestCache<AccountId, ConversationData> dataCache =
-    RemoveOldestCache(maxValues: 25);
+  final RemoveOldestCache<AccountId, ConversationData> dataCache = RemoveOldestCache(maxValues: 25);
 
   @override
   void initState() {
@@ -107,12 +105,11 @@ class _ChatViewState extends State<ChatView> {
   }
 
   void updateIsScrolled(bool isScrolled) {
-    BottomNavigationStateBlocInstance.getInstance()
-      .updateIsScrolled(
-        isScrolled,
-        BottomNavigationScreenId.chats,
-        (state) => state.isScrolledChats,
-      );
+    BottomNavigationStateBlocInstance.getInstance().updateIsScrolled(
+      isScrolled,
+      BottomNavigationScreenId.chats,
+      (state) => state.isScrolledChats,
+    );
   }
 
   Stream<ConversationData> conversationData(AccountId id) {
@@ -122,11 +119,7 @@ class _ChatViewState extends State<ChatView> {
       chat.watchLatestMessage(id),
       (a, b, c) {
         if (a != null) {
-          return ConversationData(
-            a,
-            b ?? const UnreadMessagesCount(0),
-            c,
-          );
+          return ConversationData(a, b ?? const UnreadMessagesCount(0), c);
         } else {
           return null;
         }
@@ -172,10 +165,13 @@ class _ChatViewState extends State<ChatView> {
         return true;
       },
       child: BlocListener<BottomNavigationStateBloc, BottomNavigationStateData>(
-        listenWhen: (previous, current) => previous.isTappedAgainChats != current.isTappedAgainChats,
+        listenWhen: (previous, current) =>
+            previous.isTappedAgainChats != current.isTappedAgainChats,
         listener: (context, state) {
           if (state.isTappedAgainChats) {
-            context.read<BottomNavigationStateBloc>().add(SetIsTappedAgainValue(BottomNavigationScreenId.chats, false));
+            context.read<BottomNavigationStateBloc>().add(
+              SetIsTappedAgainValue(BottomNavigationScreenId.chats, false),
+            );
             _scrollController.bottomNavigationRelatedJumpToBeginningIfClientsConnected();
           }
         },
@@ -192,18 +188,19 @@ class _ChatViewState extends State<ChatView> {
                       listState.insertItem(i);
                     case RemoveItem(:final i, :final id):
                       log.finest("Remove, i: $i");
-                      listState.removeItem(
-                        i,
-                        (context, animation) {
-                          return SizeTransition(
-                            sizeFactor: animation,
-                            child: FadeTransition(
-                              opacity: animation,
-                              child: itemWidgetForAnimation(context, id, allowOpenConversation: false),
-                            )
-                          );
-                        }
-                      );
+                      listState.removeItem(i, (context, animation) {
+                        return SizeTransition(
+                          sizeFactor: animation,
+                          child: FadeTransition(
+                            opacity: animation,
+                            child: itemWidgetForAnimation(
+                              context,
+                              id,
+                              allowOpenConversation: false,
+                            ),
+                          ),
+                        );
+                      });
                   }
                 }
               }
@@ -212,17 +209,18 @@ class _ChatViewState extends State<ChatView> {
               return Stack(
                 children: [
                   grid(context),
-                  if (conversations.isEmpty) buildListReplacementMessage(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          context.strings.chat_list_screen_no_chats_found,
-                          style: Theme.of(context).textTheme.bodyLarge,
-                        ),
-                      ],
+                  if (conversations.isEmpty)
+                    buildListReplacementMessage(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            context.strings.chat_list_screen_no_chats_found,
+                            style: Theme.of(context).textTheme.bodyLarge,
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
                 ],
               );
             } else {
@@ -252,7 +250,7 @@ class _ChatViewState extends State<ChatView> {
                   conversations.getAtOrNull(index),
                   allowOpenConversation: true,
                 ),
-              )
+              ),
             );
           },
         ),
@@ -262,14 +260,15 @@ class _ChatViewState extends State<ChatView> {
 
   Widget errorWidget(BuildContext context) {
     return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(8),
-        child: Text(context.strings.generic_error),
-      ),
+      child: Padding(padding: const EdgeInsets.all(8), child: Text(context.strings.generic_error)),
     );
   }
 
-  Widget itemWidgetForAnimation(BuildContext context, AccountId? id, {required bool allowOpenConversation}) {
+  Widget itemWidgetForAnimation(
+    BuildContext context,
+    AccountId? id, {
+    required bool allowOpenConversation,
+  }) {
     Widget w;
     if (id == null) {
       w = errorWidget(context);
@@ -298,17 +297,14 @@ class _ChatViewState extends State<ChatView> {
       );
     }
 
-    return SizedBox(
-      height: _IMG_SIZE + _ITEM_PADDING_SIZE * 2,
-      child: w,
-    );
+    return SizedBox(height: _IMG_SIZE + _ITEM_PADDING_SIZE * 2, child: w);
   }
 
   Widget conversationItem(
     BuildContext context,
-    ConversationData data,
-    {required bool allowOpenConversation}
-  ) {
+    ConversationData data, {
+    required bool allowOpenConversation,
+  }) {
     final Widget imageWidget = ProfileThumbnailImageOrError.fromProfileEntry(
       entry: data.entry,
       width: _IMG_SIZE,
@@ -318,29 +314,20 @@ class _ChatViewState extends State<ChatView> {
     final Widget textColumn = Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        conversationTitle(context, data),
-        ...conversationStatusText(context, data),
-      ],
+      children: [conversationTitle(context, data), ...conversationStatusText(context, data)],
     );
     final Widget rowWidget = Row(
       children: [
         imageWidget,
         Expanded(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: textColumn,
-          ),
+          child: Padding(padding: const EdgeInsets.all(8.0), child: textColumn),
         ),
       ],
     );
 
     final rowAndPadding = Padding(
       padding: const EdgeInsets.all(_ITEM_PADDING_SIZE),
-      child: SizedBox(
-        height: _IMG_SIZE,
-        child: rowWidget,
-      ),
+      child: SizedBox(height: _IMG_SIZE, child: rowWidget),
     );
 
     if (allowOpenConversation) {
@@ -364,9 +351,7 @@ class _ChatViewState extends State<ChatView> {
     return Row(
       children: [
         Text(
-          data.entry.profileTitle(
-            context.read<UiSettingsBloc>().state.showNonAcceptedProfileNames,
-          ),
+          data.entry.profileTitle(context.read<UiSettingsBloc>().state.showNonAcceptedProfileNames),
           style: Theme.of(context).textTheme.titleMedium,
           overflow: TextOverflow.ellipsis,
           maxLines: 1,
@@ -389,7 +374,12 @@ class _ChatViewState extends State<ChatView> {
       text = context.strings.chat_list_screen_unread_message;
     } else if (message != null) {
       textStyle = Theme.of(context).textTheme.bodyMedium;
-      final messageText = messageWidgetText(context, message, sentMessageState, receivedMessageState);
+      final messageText = messageWidgetText(
+        context,
+        message,
+        sentMessageState,
+        receivedMessageState,
+      );
       if (data.message?.messageState.isSent() == true) {
         text = context.strings.chat_list_screen_sent_message_indicator(messageText);
       } else {
@@ -400,12 +390,7 @@ class _ChatViewState extends State<ChatView> {
     }
     return [
       const Padding(padding: EdgeInsets.only(top: 8.0)),
-      Text(
-        text,
-        style: textStyle,
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
-      ),
+      Text(text, style: textStyle, maxLines: 1, overflow: TextOverflow.ellipsis),
     ];
   }
 
@@ -445,9 +430,9 @@ class _ChatInfoDialogOpenerState extends State<ChatInfoDialogOpener> {
             context.read<InfoDialogBloc>().add(MarkChatInfoDialogShown());
             openNotificationPermissionDialog(context);
             return const SizedBox.shrink();
-          }
+          },
         );
-      }
+      },
     );
   }
 

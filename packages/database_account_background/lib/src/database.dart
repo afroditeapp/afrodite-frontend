@@ -1,5 +1,3 @@
-
-
 import 'package:database_account_background/src/read/app_notification_settings.dart';
 import 'package:database_account_background/src/read/login_session.dart';
 import 'package:database_account_background/src/read/new_received_likes_count.dart';
@@ -54,11 +52,11 @@ part 'database.g.dart';
     DaoWriteNewReceivedLikesCount,
     DaoWriteUnreadMessagesCount,
     DaoWriteProfile,
-  ]
+  ],
 )
 class AccountBackgroundDatabase extends _$AccountBackgroundDatabase {
-  AccountBackgroundDatabase(QueryExcecutorProvider dbProvider) :
-    super(dbProvider.getQueryExcecutor());
+  AccountBackgroundDatabase(QueryExcecutorProvider dbProvider)
+    : super(dbProvider.getQueryExcecutor());
 
   AccountBackgroundDatabaseRead get read => AccountBackgroundDatabaseRead(this);
   AccountBackgroundDatabaseWrite get write => AccountBackgroundDatabaseWrite(this);

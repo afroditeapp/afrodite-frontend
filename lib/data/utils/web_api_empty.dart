@@ -1,4 +1,3 @@
-
 WebApiWindow window = WebApiWindow(WebApiLocation(""));
 
 class WebApiWindow {

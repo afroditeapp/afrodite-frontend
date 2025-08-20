@@ -1,4 +1,3 @@
-
 import 'package:app/data/login_repository.dart';
 import 'package:app/ui/normal/settings/admin/moderate_profile_texts.dart';
 import 'package:app/ui/normal/settings/admin/report/process_reports.dart';
@@ -13,11 +12,7 @@ import 'package:app/ui/normal/settings.dart';
 import 'package:app/ui/normal/settings/admin/moderate_images.dart';
 
 NewPageDetails newModeratorTasksScreen() {
-  return NewPageDetails(
-    const MaterialPage<void>(
-      child: ModeratorTasksScreen(),
-    ),
-  );
+  return NewPageDetails(const MaterialPage<void>(child: ModeratorTasksScreen()));
 }
 
 class RequiredData {
@@ -93,26 +88,42 @@ class _ModeratorTasksScreenState extends State<ModeratorTasksScreen> {
     final GetMediaContentPendingModerationList? contentBot;
     final GetMediaContentPendingModerationList? contentHuman;
     if (permissions.adminModerateMediaContent) {
-      contentBotInitial = await api.mediaAdmin((api) => api.getMediaContentPendingModerationList(
-        MediaContentType.jpegImage,
-        ModerationQueueType.initialMediaModeration,
-        true,
-      )).ok();
-      contentHumanInitial = await api.mediaAdmin((api) => api.getMediaContentPendingModerationList(
-        MediaContentType.jpegImage,
-        ModerationQueueType.initialMediaModeration,
-        false,
-      )).ok();
-      contentBot = await api.mediaAdmin((api) => api.getMediaContentPendingModerationList(
-        MediaContentType.jpegImage,
-        ModerationQueueType.mediaModeration,
-        true,
-      )).ok();
-      contentHuman = await api.mediaAdmin((api) => api.getMediaContentPendingModerationList(
-        MediaContentType.jpegImage,
-        ModerationQueueType.mediaModeration,
-        false,
-      )).ok();
+      contentBotInitial = await api
+          .mediaAdmin(
+            (api) => api.getMediaContentPendingModerationList(
+              MediaContentType.jpegImage,
+              ModerationQueueType.initialMediaModeration,
+              true,
+            ),
+          )
+          .ok();
+      contentHumanInitial = await api
+          .mediaAdmin(
+            (api) => api.getMediaContentPendingModerationList(
+              MediaContentType.jpegImage,
+              ModerationQueueType.initialMediaModeration,
+              false,
+            ),
+          )
+          .ok();
+      contentBot = await api
+          .mediaAdmin(
+            (api) => api.getMediaContentPendingModerationList(
+              MediaContentType.jpegImage,
+              ModerationQueueType.mediaModeration,
+              true,
+            ),
+          )
+          .ok();
+      contentHuman = await api
+          .mediaAdmin(
+            (api) => api.getMediaContentPendingModerationList(
+              MediaContentType.jpegImage,
+              ModerationQueueType.mediaModeration,
+              false,
+            ),
+          )
+          .ok();
     } else {
       final empty = GetMediaContentPendingModerationList();
       contentBotInitial = empty;
@@ -124,8 +135,22 @@ class _ModeratorTasksScreenState extends State<ModeratorTasksScreen> {
     final GetProfileStringPendingModerationList? profileNamesBot;
     final GetProfileStringPendingModerationList? profileNamesHuman;
     if (permissions.adminModerateProfileNames) {
-      profileNamesBot = await api.profileAdmin((api) => api.getProfileStringPendingModerationList(ProfileStringModerationContentType.profileName, true)).ok();
-      profileNamesHuman = await api.profileAdmin((api) => api.getProfileStringPendingModerationList(ProfileStringModerationContentType.profileName, false)).ok();
+      profileNamesBot = await api
+          .profileAdmin(
+            (api) => api.getProfileStringPendingModerationList(
+              ProfileStringModerationContentType.profileName,
+              true,
+            ),
+          )
+          .ok();
+      profileNamesHuman = await api
+          .profileAdmin(
+            (api) => api.getProfileStringPendingModerationList(
+              ProfileStringModerationContentType.profileName,
+              false,
+            ),
+          )
+          .ok();
     } else {
       profileNamesBot = GetProfileStringPendingModerationList();
       profileNamesHuman = GetProfileStringPendingModerationList();
@@ -134,8 +159,22 @@ class _ModeratorTasksScreenState extends State<ModeratorTasksScreen> {
     final GetProfileStringPendingModerationList? profileTextsBot;
     final GetProfileStringPendingModerationList? profileTextsHuman;
     if (permissions.adminModerateProfileTexts) {
-      profileTextsBot = await api.profileAdmin((api) => api.getProfileStringPendingModerationList(ProfileStringModerationContentType.profileText, true)).ok();
-      profileTextsHuman = await api.profileAdmin((api) => api.getProfileStringPendingModerationList(ProfileStringModerationContentType.profileText, false)).ok();
+      profileTextsBot = await api
+          .profileAdmin(
+            (api) => api.getProfileStringPendingModerationList(
+              ProfileStringModerationContentType.profileText,
+              true,
+            ),
+          )
+          .ok();
+      profileTextsHuman = await api
+          .profileAdmin(
+            (api) => api.getProfileStringPendingModerationList(
+              ProfileStringModerationContentType.profileText,
+              false,
+            ),
+          )
+          .ok();
     } else {
       profileTextsBot = GetProfileStringPendingModerationList();
       profileTextsHuman = GetProfileStringPendingModerationList();
@@ -152,17 +191,15 @@ class _ModeratorTasksScreenState extends State<ModeratorTasksScreen> {
       return;
     }
 
-    if (
-      contentBotInitial == null ||
-      contentHumanInitial == null ||
-      contentBot == null ||
-      contentHuman == null ||
-      profileNamesBot == null ||
-      profileNamesHuman == null ||
-      profileTextsBot == null ||
-      profileTextsHuman == null ||
-      reports == null
-    ) {
+    if (contentBotInitial == null ||
+        contentHumanInitial == null ||
+        contentBot == null ||
+        contentHuman == null ||
+        profileNamesBot == null ||
+        profileNamesHuman == null ||
+        profileTextsBot == null ||
+        profileTextsHuman == null ||
+        reports == null) {
       showSnackBar(R.strings.generic_error);
       setState(() {
         isLoading = false;
@@ -195,9 +232,7 @@ class _ModeratorTasksScreenState extends State<ModeratorTasksScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Moderator tasks"),
-      ),
+      appBar: AppBar(title: const Text("Moderator tasks")),
       body: screenContent(context),
     );
   }
@@ -205,9 +240,7 @@ class _ModeratorTasksScreenState extends State<ModeratorTasksScreen> {
   Widget screenContent(BuildContext context) {
     final currentData = data;
     if (isLoading) {
-      return const Center(
-        child: CircularProgressIndicator(),
-      );
+      return const Center(child: CircularProgressIndicator());
     } else if (isError || currentData == null) {
       return Center(child: Text(context.strings.generic_error));
     } else {
@@ -216,44 +249,129 @@ class _ModeratorTasksScreenState extends State<ModeratorTasksScreen> {
   }
 
   Widget taskListWidget(BuildContext context, RequiredData data) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          ...tasks(context, data),
-        ],
-      ),
-    );
+    return SingleChildScrollView(child: Column(children: [...tasks(context, data)]));
   }
 
   Iterable<Widget> tasks(BuildContext context, RequiredData data) {
     List<Setting> settings = [
-      if (data.contentBotInitial) Setting.createSetting(Icons.image, "Moderate images (initial moderation, bot and human)", () =>
-        MyNavigator.push(context, MaterialPage<void>(child: ModerateImagesScreen(queueType: ModerationQueueType.initialMediaModeration, showContentWhichBotsCanModerate: true)),)
-      ),
-      if (data.contentHumanInitial) Setting.createSetting(Icons.image, "Moderate images (initial moderation, human)", () =>
-        MyNavigator.push(context, MaterialPage<void>(child: ModerateImagesScreen(queueType: ModerationQueueType.initialMediaModeration, showContentWhichBotsCanModerate: false)),)
-      ),
-      if (data.contentBot) Setting.createSetting(Icons.image, "Moderate images (normal, bot and human)", () =>
-        MyNavigator.push(context, MaterialPage<void>(child: ModerateImagesScreen(queueType: ModerationQueueType.mediaModeration, showContentWhichBotsCanModerate: true)),)
-      ),
-      if (data.contentHuman) Setting.createSetting(Icons.image, "Moderate images (normal, human)", () =>
-        MyNavigator.push(context, MaterialPage<void>(child: ModerateImagesScreen(queueType: ModerationQueueType.mediaModeration, showContentWhichBotsCanModerate: false)),)
-      ),
-      if (data.profileNamesBot) Setting.createSetting(Icons.text_fields, "Moderate profile names (bot and human)", () =>
-        MyNavigator.push(context, MaterialPage<void>(child: ModerateProfileStringsScreen(contentType: ProfileStringModerationContentType.profileName, showTextsWhichBotsCanModerate: true)),)
-      ),
-      if (data.profileNamesHuman) Setting.createSetting(Icons.text_fields, "Moderate profile names (human)", () =>
-        MyNavigator.push(context, MaterialPage<void>(child: ModerateProfileStringsScreen(contentType: ProfileStringModerationContentType.profileName, showTextsWhichBotsCanModerate: false)),)
-      ),
-      if (data.profileTextsBot) Setting.createSetting(Icons.text_fields, "Moderate profile texts (bot and human)", () =>
-        MyNavigator.push(context, MaterialPage<void>(child: ModerateProfileStringsScreen(contentType: ProfileStringModerationContentType.profileText, showTextsWhichBotsCanModerate: true)),)
-      ),
-      if (data.profileTextsHuman) Setting.createSetting(Icons.text_fields, "Moderate profile texts (human)", () =>
-        MyNavigator.push(context, MaterialPage<void>(child: ModerateProfileStringsScreen(contentType: ProfileStringModerationContentType.profileText, showTextsWhichBotsCanModerate: false)),)
-      ),
-      if (data.reports) Setting.createSetting(Icons.report, "Process reports", () =>
-        MyNavigator.push(context, MaterialPage<void>(child: ProcessReportsScreen()))
-      ),
+      if (data.contentBotInitial)
+        Setting.createSetting(
+          Icons.image,
+          "Moderate images (initial moderation, bot and human)",
+          () => MyNavigator.push(
+            context,
+            MaterialPage<void>(
+              child: ModerateImagesScreen(
+                queueType: ModerationQueueType.initialMediaModeration,
+                showContentWhichBotsCanModerate: true,
+              ),
+            ),
+          ),
+        ),
+      if (data.contentHumanInitial)
+        Setting.createSetting(
+          Icons.image,
+          "Moderate images (initial moderation, human)",
+          () => MyNavigator.push(
+            context,
+            MaterialPage<void>(
+              child: ModerateImagesScreen(
+                queueType: ModerationQueueType.initialMediaModeration,
+                showContentWhichBotsCanModerate: false,
+              ),
+            ),
+          ),
+        ),
+      if (data.contentBot)
+        Setting.createSetting(
+          Icons.image,
+          "Moderate images (normal, bot and human)",
+          () => MyNavigator.push(
+            context,
+            MaterialPage<void>(
+              child: ModerateImagesScreen(
+                queueType: ModerationQueueType.mediaModeration,
+                showContentWhichBotsCanModerate: true,
+              ),
+            ),
+          ),
+        ),
+      if (data.contentHuman)
+        Setting.createSetting(
+          Icons.image,
+          "Moderate images (normal, human)",
+          () => MyNavigator.push(
+            context,
+            MaterialPage<void>(
+              child: ModerateImagesScreen(
+                queueType: ModerationQueueType.mediaModeration,
+                showContentWhichBotsCanModerate: false,
+              ),
+            ),
+          ),
+        ),
+      if (data.profileNamesBot)
+        Setting.createSetting(
+          Icons.text_fields,
+          "Moderate profile names (bot and human)",
+          () => MyNavigator.push(
+            context,
+            MaterialPage<void>(
+              child: ModerateProfileStringsScreen(
+                contentType: ProfileStringModerationContentType.profileName,
+                showTextsWhichBotsCanModerate: true,
+              ),
+            ),
+          ),
+        ),
+      if (data.profileNamesHuman)
+        Setting.createSetting(
+          Icons.text_fields,
+          "Moderate profile names (human)",
+          () => MyNavigator.push(
+            context,
+            MaterialPage<void>(
+              child: ModerateProfileStringsScreen(
+                contentType: ProfileStringModerationContentType.profileName,
+                showTextsWhichBotsCanModerate: false,
+              ),
+            ),
+          ),
+        ),
+      if (data.profileTextsBot)
+        Setting.createSetting(
+          Icons.text_fields,
+          "Moderate profile texts (bot and human)",
+          () => MyNavigator.push(
+            context,
+            MaterialPage<void>(
+              child: ModerateProfileStringsScreen(
+                contentType: ProfileStringModerationContentType.profileText,
+                showTextsWhichBotsCanModerate: true,
+              ),
+            ),
+          ),
+        ),
+      if (data.profileTextsHuman)
+        Setting.createSetting(
+          Icons.text_fields,
+          "Moderate profile texts (human)",
+          () => MyNavigator.push(
+            context,
+            MaterialPage<void>(
+              child: ModerateProfileStringsScreen(
+                contentType: ProfileStringModerationContentType.profileText,
+                showTextsWhichBotsCanModerate: false,
+              ),
+            ),
+          ),
+        ),
+      if (data.reports)
+        Setting.createSetting(
+          Icons.report,
+          "Process reports",
+          () => MyNavigator.push(context, MaterialPage<void>(child: ProcessReportsScreen())),
+        ),
     ];
     return settings.map((v) => v.toListTile());
   }

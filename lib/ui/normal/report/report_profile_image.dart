@@ -1,4 +1,3 @@
-
 import 'package:app/data/image_cache.dart';
 import 'package:app/ui_utils/image.dart';
 import 'package:app/ui_utils/snack_bar.dart';
@@ -13,11 +12,7 @@ import 'package:app/ui_utils/dialog.dart';
 class ReportProfileImageScreen extends StatefulWidget {
   final ProfileEntry profileEntry;
   final bool isMatch;
-  const ReportProfileImageScreen({
-    required this.profileEntry,
-    required this.isMatch,
-    super.key,
-  });
+  const ReportProfileImageScreen({required this.profileEntry, required this.isMatch, super.key});
 
   @override
   State<ReportProfileImageScreen> createState() => _ReportProfileImageScreen();
@@ -52,8 +47,12 @@ class _ReportProfileImageScreen extends State<ReportProfileImageScreen> {
       itemBuilder: (context, index) {
         final (i, img) = images[index];
         final imageNumber = i + 1;
-        return imageRow(context, img.id, context.strings.report_profile_image_screen_image_title(imageNumber.toString()));
-      }
+        return imageRow(
+          context,
+          img.id,
+          context.strings.report_profile_image_screen_image_title(imageNumber.toString()),
+        );
+      },
     );
   }
 
@@ -92,10 +91,16 @@ class _ReportProfileImageScreen extends State<ReportProfileImageScreen> {
           scrollable: true,
         );
         if (context.mounted && r == true) {
-          final result = await api.media((api) => api.postProfileContentReport(UpdateProfileContentReport(
-            target: widget.profileEntry.accountId,
-            content: content,
-          ))).ok();
+          final result = await api
+              .media(
+                (api) => api.postProfileContentReport(
+                  UpdateProfileContentReport(
+                    target: widget.profileEntry.accountId,
+                    content: content,
+                  ),
+                ),
+              )
+              .ok();
 
           if (result == null) {
             showSnackBar(R.strings.generic_error_occurred);
@@ -117,10 +122,7 @@ class _ReportProfileImageScreen extends State<ReportProfileImageScreen> {
       },
       child: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: SizedBox(
-          height: _IMG_SIZE,
-          child: rowWidget,
-        ),
+        child: SizedBox(height: _IMG_SIZE, child: rowWidget),
       ),
     );
   }

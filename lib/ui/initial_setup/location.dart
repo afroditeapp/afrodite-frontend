@@ -24,18 +24,21 @@ class AskLocationScreen extends StatelessWidget {
         getContinueButtonCallback: (context, state) {
           if (state.profileLocation != null) {
             return () {
-              final attributes = context.read<ProfileAttributesBloc>().state.manager?.requiredAttributes() ?? [];
+              final attributes =
+                  context.read<ProfileAttributesBloc>().state.manager?.requiredAttributes() ?? [];
               final nextAttribute = attributes.firstOrNull;
               if (nextAttribute == null) {
                 context.read<InitialSetupBloc>().add(CompleteInitialSetup());
               } else {
                 MyNavigator.push(
                   context,
-                  MaterialPage<void>(child: AskProfileAttributesScreen(
-                    attributeIndex: 0,
-                    currentAttribute: nextAttribute,
-                    attributes: attributes,
-                  )),
+                  MaterialPage<void>(
+                    child: AskProfileAttributesScreen(
+                      attributeIndex: 0,
+                      currentAttribute: nextAttribute,
+                      attributes: attributes,
+                    ),
+                  ),
                 );
               }
             };
@@ -43,7 +46,9 @@ class AskLocationScreen extends StatelessWidget {
             return null;
           }
         },
-        question: AskLocation(initialLocation: context.read<InitialSetupBloc>().state.profileLocation),
+        question: AskLocation(
+          initialLocation: context.read<InitialSetupBloc>().state.profileLocation,
+        ),
         expandQuestion: true,
       ),
     );
@@ -59,7 +64,6 @@ class AskLocation extends StatefulWidget {
 }
 
 class _AskLocationState extends State<AskLocation> {
-
   bool infoDialogShown = false;
 
   @override
@@ -75,10 +79,7 @@ class _AskLocationState extends State<AskLocation> {
         if (!context.mounted) {
           return;
         }
-        showInfoDialog(
-          context,
-          context.strings.initial_setup_screen_location_help_dialog_text,
-        );
+        showInfoDialog(context, context.strings.initial_setup_screen_location_help_dialog_text);
       });
     }
 
@@ -99,7 +100,7 @@ class _AskLocationState extends State<AskLocation> {
             handler: InitialSetupLocationHandler(),
             editingHelpText: context.strings.map_select_location_help_text,
           ),
-        )
+        ),
       ],
     );
   }
@@ -111,7 +112,7 @@ class InitialSetupLocationHandler extends SelectedLocationHandler {
     required BuildContext context,
     required LatLng location,
     required void Function() onStart,
-    required void Function(bool) onComplete
+    required void Function(bool) onComplete,
   }) async {
     onStart();
     if (context.mounted) {

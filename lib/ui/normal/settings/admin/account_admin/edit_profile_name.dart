@@ -1,5 +1,3 @@
-
-
 import 'package:app/localizations.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/padding.dart';
@@ -11,11 +9,7 @@ import 'package:openapi/api.dart';
 class EditProfileNameScreen extends StatefulWidget {
   final AccountId accountId;
   final String initialName;
-  const EditProfileNameScreen({
-    required this.accountId,
-    required this.initialName,
-    super.key,
-  });
+  const EditProfileNameScreen({required this.accountId, required this.initialName, super.key});
 
   @override
   State<EditProfileNameScreen> createState() => _EditProfileNameScreenState();
@@ -37,19 +31,14 @@ class _EditProfileNameScreenState extends State<EditProfileNameScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Edit profile name"),
-      ),
+      appBar: AppBar(title: const Text("Edit profile name")),
       body: screenContent(context),
     );
   }
 
   Widget screenContent(BuildContext context) {
     final field = TextFormField(
-      decoration: const InputDecoration(
-        border: OutlineInputBorder(),
-        labelText: 'Profile name',
-      ),
+      decoration: const InputDecoration(border: OutlineInputBorder(), labelText: 'Profile name'),
       controller: _controller,
     );
 
@@ -59,14 +48,11 @@ class _EditProfileNameScreenState extends State<EditProfileNameScreen> {
 
         final result = await showConfirmDialog(context, "Update?", yesNoActions: true);
         if (result == true && context.mounted) {
-          final result = await api
-            .profileAdminAction(
-              (api) => api.postSetProfileName(
-                SetProfileName(
-                  account: widget.accountId,
-                  name: _controller.text,
-                )
-              ));
+          final result = await api.profileAdminAction(
+            (api) => api.postSetProfileName(
+              SetProfileName(account: widget.accountId, name: _controller.text),
+            ),
+          );
           if (result.isErr()) {
             showSnackBar(R.strings.generic_error);
           } else {

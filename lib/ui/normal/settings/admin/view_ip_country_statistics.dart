@@ -1,5 +1,3 @@
-
-
 import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/ui/normal/settings/admin/view_client_version_statistics.dart';
 import 'package:app/ui/utils/view_metrics.dart';
@@ -15,9 +13,11 @@ import 'package:utils/utils.dart';
 void openViewIpCountryStatisticsScreen(
   BuildContext context,
   String title,
-  ApiManager api,
-  {bool daily = false, bool fromRam = false, String? dataAttribution}
-) {
+  ApiManager api, {
+  bool daily = false,
+  bool fromRam = false,
+  String? dataAttribution,
+}) {
   MyNavigator.push(
     context,
     MaterialPage<void>(
@@ -25,7 +25,7 @@ void openViewIpCountryStatisticsScreen(
         title: title,
         metrics: GetIpCountryHistory(api, daily: daily, fromRam: fromRam),
         dataAttribution: dataAttribution,
-      )
+      ),
     ),
   );
 }
@@ -44,9 +44,17 @@ class GetIpCountryHistory extends GetMetrics {
     final List<Metric> metrics = [];
 
     Future<Result<(), ()>> downloadStatistics(IpCountryStatisticsType statisticsType) async {
-      final queryResults = await api.commonAdmin((api) => api.postGetIpCountryStatistics(
-        GetIpCountryStatisticsSettings(minTime: oldestDate.toUnixTime(), dataFromRam: fromRam, statisticsType: statisticsType)
-      )).ok();
+      final queryResults = await api
+          .commonAdmin(
+            (api) => api.postGetIpCountryStatistics(
+              GetIpCountryStatisticsSettings(
+                minTime: oldestDate.toUnixTime(),
+                dataFromRam: fromRam,
+                statisticsType: statisticsType,
+              ),
+            ),
+          )
+          .ok();
 
       if (queryResults == null) {
         return const Err(());
@@ -59,22 +67,23 @@ class GetIpCountryHistory extends GetMetrics {
         group = "http";
       }
 
-      metrics.addAll(queryResults.values.map((v) {
-        final metric = IpCountryMetric(
-          "${group}_${v.country}", group, v.values
-        );
-        if (daily) {
-          return DailyMetrics(metric);
-        } else {
-          return metric;
-        }
-      }));
+      metrics.addAll(
+        queryResults.values.map((v) {
+          final metric = IpCountryMetric("${group}_${v.country}", group, v.values);
+          if (daily) {
+            return DailyMetrics(metric);
+          } else {
+            return metric;
+          }
+        }),
+      );
 
       return Ok(());
     }
 
-    final r = await downloadStatistics(IpCountryStatisticsType.newTcpConnections)
-      .andThen((_) => downloadStatistics(IpCountryStatisticsType.newHttpRequests));
+    final r = await downloadStatistics(
+      IpCountryStatisticsType.newTcpConnections,
+    ).andThen((_) => downloadStatistics(IpCountryStatisticsType.newHttpRequests));
 
     if (r.isErr()) {
       return Err(());
@@ -98,7 +107,7 @@ class IpCountryMetric extends Metric {
   IpCountryMetric(this.name, this.group, List<IpCountryStatisticsValue> values) {
     final data = <FlSpot>[];
     for (final v in values) {
-        data.add(FlSpot(v.t?.ut.toDouble() ?? 0, v.c.toDouble()));
+      data.add(FlSpot(v.t?.ut.toDouble() ?? 0, v.c.toDouble()));
     }
     _processedValues = data.sortedBy((v) => v.x);
   }

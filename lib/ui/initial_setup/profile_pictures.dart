@@ -49,7 +49,10 @@ class AskProfilePicturesScreen extends StatelessWidget {
               if (primaryPicture is ImageSelected && primaryPicture.img.isFaceDetected()) {
                 onPressed = () {
                   context.read<InitialSetupBloc>().add(SetProfileImages(pictures));
-                  MyNavigator.push(context, const MaterialPage<void>(child: AskProfileBasicInfoScreen()));
+                  MyNavigator.push(
+                    context,
+                    const MaterialPage<void>(child: AskProfileBasicInfoScreen()),
+                  );
                 };
               }
 
@@ -57,7 +60,7 @@ class AskProfilePicturesScreen extends StatelessWidget {
                 onPressed: onPressed,
                 child: Text(context.strings.generic_continue),
               );
-            }
+            },
           );
         },
         question: const AskProfilePictures(),
@@ -78,7 +81,6 @@ class AskProfilePictures extends StatefulWidget {
 }
 
 class _AskProfilePicturesState extends State<AskProfilePictures> {
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -93,24 +95,18 @@ class _AskProfilePicturesState extends State<AskProfilePictures> {
   }
 }
 
-
 class ProfilePictureSelection extends StatefulWidget {
   /// If [mode] is null, the [ProfilePicturesBloc] should be used manually to
   /// init state.
   final PictureSelectionMode? mode;
   final ProfilePicturesBloc profilePicturesBloc;
-  const ProfilePictureSelection({
-    this.mode,
-    required this.profilePicturesBloc,
-    super.key,
-  });
+  const ProfilePictureSelection({this.mode, required this.profilePicturesBloc, super.key});
 
   @override
   State<ProfilePictureSelection> createState() => _ProfilePictureSelection();
 }
 
 class _ProfilePictureSelection extends State<ProfilePictureSelection> {
-
   @override
   void initState() {
     super.initState();
@@ -126,15 +122,26 @@ class _ProfilePictureSelection extends State<ProfilePictureSelection> {
     if (widget.mode is InitialSetupProfilePictures) {
       zeroSizedWidgets = imageProcessingUiWidgets<ProfilePicturesImageProcessingBloc>(
         onComplete: (context, processedImg) {
-          final id = AccountImageId(processedImg.accountId, processedImg.contentId, processedImg.faceDetected, false);
-          final nextAddImgState = widget.profilePicturesBloc.state.pictures().indexed.where((element) => element.$2 is Add).firstOrNull;
+          final id = AccountImageId(
+            processedImg.accountId,
+            processedImg.contentId,
+            processedImg.faceDetected,
+            false,
+          );
+          final nextAddImgState = widget.profilePicturesBloc.state
+              .pictures()
+              .indexed
+              .where((element) => element.$2 is Add)
+              .firstOrNull;
           final int index;
           if (nextAddImgState != null) {
             index = nextAddImgState.$1;
           } else {
             return;
           }
-          widget.profilePicturesBloc.add(AddProcessedImage(ProfileImage(id, processedImg.slot), index));
+          widget.profilePicturesBloc.add(
+            AddProcessedImage(ProfileImage(id, processedImg.slot), index),
+          );
         },
       );
     } else {
@@ -145,10 +152,9 @@ class _ProfilePictureSelection extends State<ProfilePictureSelection> {
       children: [
         topRow(context),
         primaryImageIsNotFaceImageError(),
-        if (widget.profilePicturesBloc.state.mode is NormalProfilePictures) primaryImageIsNotAcceptedError(),
-        const Divider(
-          height: 50,
-        ),
+        if (widget.profilePicturesBloc.state.mode is NormalProfilePictures)
+          primaryImageIsNotAcceptedError(),
+        const Divider(height: 50),
         bottomRow(context),
 
         // Zero sized widgets
@@ -158,44 +164,26 @@ class _ProfilePictureSelection extends State<ProfilePictureSelection> {
   }
 
   Widget topRow(BuildContext context) {
-    return Row(children: [
-      Expanded(
-        flex: 1,
-        child: Center(
-          child: imgStateToWidget(context, 0),
-        ),
-      ),
-      Expanded(
-        flex: 2,
-        child: Center(
-          child: SizedBox(
-            height: ROW_HEIGHT,
-            child: thumbnailArea(context),
+    return Row(
+      children: [
+        Expanded(flex: 1, child: Center(child: imgStateToWidget(context, 0))),
+        Expanded(
+          flex: 2,
+          child: Center(
+            child: SizedBox(height: ROW_HEIGHT, child: thumbnailArea(context)),
           ),
         ),
-      )
-    ],);
+      ],
+    );
   }
 
   Widget bottomRow(BuildContext context) {
     return Row(
       children: [
-        Expanded(
-          child: Center(
-            child: imgStateToWidget(context, 1),
-          ),
-        ),
-        Expanded(
-          child: Center(
-            child: imgStateToWidget(context, 2),
-          ),
-        ),
-        Expanded(
-          child: Center(
-            child: imgStateToWidget(context, 3),
-          ),
-        ),
-      ]
+        Expanded(child: Center(child: imgStateToWidget(context, 1))),
+        Expanded(child: Center(child: imgStateToWidget(context, 2))),
+        Expanded(child: Center(child: imgStateToWidget(context, 3))),
+      ],
     );
   }
 
@@ -204,10 +192,7 @@ class _ProfilePictureSelection extends State<ProfilePictureSelection> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Flexible(
-          child: Align(
-            alignment: Alignment.topRight,
-            child: primaryImageInfoButton(context),
-          ),
+          child: Align(alignment: Alignment.topRight, child: primaryImageInfoButton(context)),
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -215,10 +200,7 @@ class _ProfilePictureSelection extends State<ProfilePictureSelection> {
             Flexible(child: Container()),
             imgStateToPrimaryImageThumbnail(0),
             Flexible(
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: thumbnailEditButton(0),
-              ),
+              child: Align(alignment: Alignment.centerLeft, child: thumbnailEditButton(0)),
             ),
           ],
         ),
@@ -229,15 +211,21 @@ class _ProfilePictureSelection extends State<ProfilePictureSelection> {
   Widget primaryImageInfoButton(BuildContext context) {
     return IconButton(
       onPressed: () {
-        showInfoDialog(context, context.strings.initial_setup_screen_profile_pictures_primary_image_info_dialog_description);
+        showInfoDialog(
+          context,
+          context
+              .strings
+              .initial_setup_screen_profile_pictures_primary_image_info_dialog_description,
+        );
       },
-      icon: const Icon(Icons.info)
+      icon: const Icon(Icons.info),
     );
   }
 
   Widget thumbnailEditButton(int imgStateIndex) {
     return BlocBuilder<ProfilePicturesBloc, ProfilePicturesData>(
-      buildWhen: (previous, current) => previous.pictures()[imgStateIndex] != current.pictures()[imgStateIndex],
+      buildWhen: (previous, current) =>
+          previous.pictures()[imgStateIndex] != current.pictures()[imgStateIndex],
       builder: (context, state) {
         final imgState = state.pictures()[imgStateIndex];
         final img = getProcessedAccountImage(context, imgState);
@@ -246,12 +234,12 @@ class _ProfilePictureSelection extends State<ProfilePictureSelection> {
             onPressed: () {
               openEditThumbnail(context, img, imgState.cropArea, imgStateIndex);
             },
-            icon: const Icon(Icons.edit)
+            icon: const Icon(Icons.edit),
           );
         } else {
           return Container();
         }
-      }
+      },
     );
   }
 
@@ -261,7 +249,12 @@ class _ProfilePictureSelection extends State<ProfilePictureSelection> {
         case InitialSetupSecuritySelfie():
           final securitySelfie = context.read<InitialSetupBloc>().state.securitySelfie;
           if (securitySelfie != null) {
-            return AccountImageId(securitySelfie.accountId, securitySelfie.contentId, securitySelfie.faceDetected, false);
+            return AccountImageId(
+              securitySelfie.accountId,
+              securitySelfie.contentId,
+              securitySelfie.faceDetected,
+              false,
+            );
           } else {
             return null;
           }
@@ -275,7 +268,8 @@ class _ProfilePictureSelection extends State<ProfilePictureSelection> {
 
   Widget imgStateToWidget(BuildContext context, int imgStateIndex) {
     return BlocBuilder<ProfilePicturesBloc, ProfilePicturesData>(
-      buildWhen: (previous, current) => previous.pictures()[imgStateIndex] != current.pictures()[imgStateIndex],
+      buildWhen: (previous, current) =>
+          previous.pictures()[imgStateIndex] != current.pictures()[imgStateIndex],
       builder: (context, state) {
         final imgState = state.pictures()[imgStateIndex];
         switch (imgState) {
@@ -291,28 +285,36 @@ class _ProfilePictureSelection extends State<ProfilePictureSelection> {
               return AddPicture(imgIndex: imgStateIndex);
             }
         }
-      }
+      },
     );
   }
 
   Widget imgStateToPrimaryImageThumbnail(int imgStateIndex) {
     return BlocBuilder<ProfilePicturesBloc, ProfilePicturesData>(
-      buildWhen: (previous, current) => previous.pictures()[imgStateIndex] != current.pictures()[imgStateIndex],
+      buildWhen: (previous, current) =>
+          previous.pictures()[imgStateIndex] != current.pictures()[imgStateIndex],
       builder: (context, state) {
         final imgState = state.pictures()[imgStateIndex];
         switch (imgState) {
-          case Add(): return const HiddenThumbnailPicture();
-          case Hidden(): return const HiddenThumbnailPicture();
-          case ImageSelected(:final cropArea): {
-            final processedImg = getProcessedAccountImage(context, imgState);
-            if (processedImg != null) {
-              return VisibleThumbnailPicture(img: processedImg, imgIndex: imgStateIndex, cropArea: cropArea);
-            } else {
-              return const HiddenThumbnailPicture();
+          case Add():
+            return const HiddenThumbnailPicture();
+          case Hidden():
+            return const HiddenThumbnailPicture();
+          case ImageSelected(:final cropArea):
+            {
+              final processedImg = getProcessedAccountImage(context, imgState);
+              if (processedImg != null) {
+                return VisibleThumbnailPicture(
+                  img: processedImg,
+                  imgIndex: imgStateIndex,
+                  cropArea: cropArea,
+                );
+              } else {
+                return const HiddenThumbnailPicture();
+              }
             }
-          }
         }
-      }
+      },
     );
   }
 
@@ -327,18 +329,18 @@ class _ProfilePictureSelection extends State<ProfilePictureSelection> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Icon(
-                  Icons.close,
-                  color: Colors.red,
-                  size: 32,
+                const Icon(Icons.close, color: Colors.red, size: 32),
+                Text(
+                  context
+                      .strings
+                      .initial_setup_screen_profile_pictures_primary_image_face_not_detected,
                 ),
-                Text(context.strings.initial_setup_screen_profile_pictures_primary_image_face_not_detected),
               ],
             ),
           );
         }
         return const SizedBox.shrink();
-      }
+      },
     );
   }
 
@@ -359,19 +361,19 @@ class _ProfilePictureSelection extends State<ProfilePictureSelection> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(
-                  Icons.warning,
-                  size: 32,
-                  color: Theme.of(context).primaryColor,
-                ),
+                Icon(Icons.warning, size: 32, color: Theme.of(context).primaryColor),
                 const Padding(padding: EdgeInsets.only(left: 8.0)),
-                Flexible(child: Text(context.strings.edit_profile_screen_primary_profile_content_not_accepted)),
+                Flexible(
+                  child: Text(
+                    context.strings.edit_profile_screen_primary_profile_content_not_accepted,
+                  ),
+                ),
               ],
             ),
           );
         }
         return const SizedBox.shrink();
-      }
+      },
     );
   }
 }
@@ -385,7 +387,7 @@ Future<void> openEditThumbnail(
   final bytes = await ImageCacheData.getInstance().getImage(
     img.accountId,
     img.contentId,
-    media: LoginRepository.getInstance().repositories.media
+    media: LoginRepository.getInstance().repositories.media,
   );
   if (!context.mounted) {
     return;
@@ -401,31 +403,27 @@ Future<void> openEditThumbnail(
   await MyNavigator.push<CropArea>(
     context,
     MaterialPage<CropArea>(
-      child:
-        CropImageScreen(
-          info: CropImageFileContent(
-            img.accountId,
-            img.contentId,
-            flutterImg.width,
-            flutterImg.height,
-            currentCrop,
-          ),
-          onCropAreaChanged: (cropArea) {
-            if (cropArea != null && context.mounted) {
-              context.read<ProfilePicturesBloc>().add(UpdateCropArea(cropArea, imgStateIndex));
-            }
-          },
-        )
-    )
+      child: CropImageScreen(
+        info: CropImageFileContent(
+          img.accountId,
+          img.contentId,
+          flutterImg.width,
+          flutterImg.height,
+          currentCrop,
+        ),
+        onCropAreaChanged: (cropArea) {
+          if (cropArea != null && context.mounted) {
+            context.read<ProfilePicturesBloc>().add(UpdateCropArea(cropArea, imgStateIndex));
+          }
+        },
+      ),
+    ),
   );
 }
 
 class AddPicture extends StatelessWidget {
   final int imgIndex;
-  const AddPicture({
-      required this.imgIndex,
-      super.key,
-    });
+  const AddPicture({required this.imgIndex, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -500,11 +498,17 @@ class AddPicture extends StatelessWidget {
               securitySelfie.contentId,
               cacheSize: ImageCacheSize.halfScreen(context),
             ),
-          )
+          ),
         ),
-        title: Text(context.strings.initial_setup_screen_profile_pictures_select_picture_security_selfie_title),
+        title: Text(
+          context
+              .strings
+              .initial_setup_screen_profile_pictures_select_picture_security_selfie_title,
+        ),
         onTap: () {
-          context.read<ProfilePicturesBloc>().add(AddProcessedImage(InitialSetupSecuritySelfie(), imgIndex));
+          context.read<ProfilePicturesBloc>().add(
+            AddProcessedImage(InitialSetupSecuritySelfie(), imgIndex),
+          );
           MyNavigator.pop(context, null);
         },
       );
@@ -519,11 +523,16 @@ class AddPicture extends StatelessWidget {
     final bloc = context.read<ProfilePicturesBloc>();
     final selectContentBloc = context.read<SelectContentBloc>();
     final newModerationRequestBloc = context.read<NewModerationRequestBloc>();
-    final selectedImg = await MyNavigator.push(context, MaterialPage<AccountImageId?>(child: SelectContentPage(
-      selectContentBloc: selectContentBloc,
-      newModerationRequestBloc: newModerationRequestBloc,
-      identifyFaceImages: imgIndex == 0,
-    )));
+    final selectedImg = await MyNavigator.push(
+      context,
+      MaterialPage<AccountImageId?>(
+        child: SelectContentPage(
+          selectContentBloc: selectContentBloc,
+          newModerationRequestBloc: newModerationRequestBloc,
+          identifyFaceImages: imgIndex == 0,
+        ),
+      ),
+    );
     if (selectedImg != null) {
       bloc.add(AddProcessedImage(ProfileImage(selectedImg, null), imgIndex));
     }
@@ -531,58 +540,67 @@ class AddPicture extends StatelessWidget {
 }
 
 void openSelectPictureDialog(
-  BuildContext context,
-  {
-    Widget lastOption = const SizedBox.shrink(),
-    required int serverSlotIndex,
-  }
-) {
+  BuildContext context, {
+  Widget lastOption = const SizedBox.shrink(),
+  required int serverSlotIndex,
+}) {
   final pageKey = PageKey();
   MyNavigator.showDialog<void>(
     context: context,
     pageKey: pageKey,
     builder: (context) => SimpleDialog(
-      title: Text(context.strings.initial_setup_screen_profile_pictures_select_picture_dialog_title),
-        children: [
-          ListTile(
-            leading: const Icon(Icons.photo),
-            title: Text(context.strings.initial_setup_screen_profile_pictures_select_picture_from_gallery_title),
-            onTap: () async {
-              final imageProcessingBloc = context.read<ProfilePicturesImageProcessingBloc>();
-              MyNavigator.removePage(context, pageKey, null);
-
-              try {
-                final image  = await ImagePicker().pickImage(
-                  source: ImageSource.gallery,
-                  requestFullMetadata: false
-                );
-
-                if (image != null) {
-                  final imageBytes = await image.readAsBytes();
-
-                  final decodedImg = img.decodeJpg(imageBytes);
-                  if (decodedImg == null) {
-                    showSnackBar(R.strings.initial_setup_screen_profile_pictures_unsupported_image_error);
-                    return;
-                  }
-
-                  imageProcessingBloc.add(SendImageToSlot(imageBytes, serverSlotIndex));
-                }
-              } catch (e) {
-                log.error("Picking image failed");
-                log.finest("$e");
-              }
-            },
+      title: Text(
+        context.strings.initial_setup_screen_profile_pictures_select_picture_dialog_title,
+      ),
+      children: [
+        ListTile(
+          leading: const Icon(Icons.photo),
+          title: Text(
+            context.strings.initial_setup_screen_profile_pictures_select_picture_from_gallery_title,
           ),
-          if (!kIsWeb) ListTile(
+          onTap: () async {
+            final imageProcessingBloc = context.read<ProfilePicturesImageProcessingBloc>();
+            MyNavigator.removePage(context, pageKey, null);
+
+            try {
+              final image = await ImagePicker().pickImage(
+                source: ImageSource.gallery,
+                requestFullMetadata: false,
+              );
+
+              if (image != null) {
+                final imageBytes = await image.readAsBytes();
+
+                final decodedImg = img.decodeJpg(imageBytes);
+                if (decodedImg == null) {
+                  showSnackBar(
+                    R.strings.initial_setup_screen_profile_pictures_unsupported_image_error,
+                  );
+                  return;
+                }
+
+                imageProcessingBloc.add(SendImageToSlot(imageBytes, serverSlotIndex));
+              }
+            } catch (e) {
+              log.error("Picking image failed");
+              log.finest("$e");
+            }
+          },
+        ),
+        if (!kIsWeb)
+          ListTile(
             leading: const Icon(Icons.camera_alt),
-            title: Text(context.strings.initial_setup_screen_profile_pictures_select_picture_take_new_picture_title),
+            title: Text(
+              context
+                  .strings
+                  .initial_setup_screen_profile_pictures_select_picture_take_new_picture_title,
+            ),
             onTap: () async {
               final imageProcessingBloc = context.read<ProfilePicturesImageProcessingBloc>();
               MyNavigator.removePage(context, pageKey, null);
 
               try {
-                final image  = await ImagePicker().pickImage(
+                final image = await ImagePicker().pickImage(
                   source: ImageSource.camera,
                   requestFullMetadata: false,
                   preferredCameraDevice: CameraDevice.front,
@@ -595,11 +613,11 @@ void openSelectPictureDialog(
                 log.error("Taking image failed");
                 log.finest("$e");
               }
-            }
+            },
           ),
-          lastOption,
-        ],
-    )
+        lastOption,
+      ],
+    ),
   );
 }
 
@@ -621,7 +639,6 @@ class HiddenPicture extends StatelessWidget {
   }
 }
 
-
 class HiddenThumbnailPicture extends StatelessWidget {
   const HiddenThumbnailPicture({super.key});
 
@@ -631,16 +648,12 @@ class HiddenThumbnailPicture extends StatelessWidget {
       width: THUMBNAIL_SIZE,
       height: THUMBNAIL_SIZE,
       decoration: BoxDecoration(
-        border: Border.all(
-          color: Colors.grey.shade400,
-          width: 1.0,
-        ),
+        border: Border.all(color: Colors.grey.shade400, width: 1.0),
         borderRadius: BorderRadius.circular(PROFILE_PICTURE_BORDER_RADIUS),
       ),
     );
   }
 }
-
 
 class FilePicture extends StatelessWidget {
   final AccountImageId img;
@@ -653,18 +666,10 @@ class FilePicture extends StatelessWidget {
     const maxWidth = 150.0;
     const maxHeight = ROW_HEIGHT;
 
-    return imgAndDeleteButton(
-      context,
-      maxWidth,
-      maxHeight,
-    );
+    return imgAndDeleteButton(context, maxWidth, maxHeight);
   }
 
-  Widget imgAndDeleteButton(
-    BuildContext context,
-    double maxWidth,
-    double maxHeight,
-  ) {
+  Widget imgAndDeleteButton(BuildContext context, double maxWidth, double maxHeight) {
     return DragTarget<int>(
       onAcceptWithDetails: (details) {
         context.read<ProfilePicturesBloc>().add(MoveImageTo(details.data, imgIndex));
@@ -672,16 +677,18 @@ class FilePicture extends StatelessWidget {
       onWillAcceptWithDetails: (details) => details.data != imgIndex,
       builder: (context, candidateData, rejectedData) {
         final acceptedCandidate = candidateData.where((element) => element != imgIndex).firstOrNull;
-        final backgroundColor = acceptedCandidate == null ? Colors.transparent : Theme.of(context).colorScheme.surfaceContainerHighest;
+        final backgroundColor = acceptedCandidate == null
+            ? Colors.transparent
+            : Theme.of(context).colorScheme.surfaceContainerHighest;
         return ImgWithCloseButton(
-            onCloseButtonPressed: () =>
+          onCloseButtonPressed: () =>
               context.read<ProfilePicturesBloc>().add(RemoveImage(imgIndex)),
-            imgWidgetBuilder: (c, width, height) => draggableImgWidget(context, width, height),
-            maxHeight: maxHeight,
-            maxWidth: maxWidth,
-            backgroundColor: backgroundColor,
+          imgWidgetBuilder: (c, width, height) => draggableImgWidget(context, width, height),
+          maxHeight: maxHeight,
+          maxWidth: maxWidth,
+          backgroundColor: backgroundColor,
         );
-      }
+      },
     );
   }
 
@@ -700,7 +707,13 @@ class FilePicture extends StatelessWidget {
         height: imgHeight,
         color: Theme.of(context).colorScheme.surfaceContainerHighest,
       ),
-      child: ImgWithCloseButton.defaultImgWidgetBuilder(context, imgWidth, imgHeight, img.accountId, img.contentId),
+      child: ImgWithCloseButton.defaultImgWidgetBuilder(
+        context,
+        imgWidth,
+        imgHeight,
+        img.accountId,
+        img.contentId,
+      ),
     );
   }
 }
@@ -731,14 +744,14 @@ class ImgWithCloseButton extends StatelessWidget {
       height: maxHeight,
       color: backgroundColor,
       child: Stack(
-          alignment: Alignment.topRight,
-          children: [
-            Padding(
-              padding: EdgeInsets.only(top: iconSize, right: iconSize, left: iconSize),
-              child: imgWidgetBuilder(context, imgWidth, imgHeight),
-            ),
-            closeButton(context),
-          ],
+        alignment: Alignment.topRight,
+        children: [
+          Padding(
+            padding: EdgeInsets.only(top: iconSize, right: iconSize, left: iconSize),
+            child: imgWidgetBuilder(context, imgWidth, imgHeight),
+          ),
+          closeButton(context),
+        ],
       ),
     );
   }
@@ -766,16 +779,19 @@ class ImgWithCloseButton extends StatelessWidget {
               ],
             ),
           ),
-          IconButton(
-            onPressed: onCloseButtonPressed,
-            icon: const Icon(Icons.close_rounded),
-          ),
+          IconButton(onPressed: onCloseButtonPressed, icon: const Icon(Icons.close_rounded)),
         ],
       ),
     );
   }
 
-  static Widget defaultImgWidgetBuilder(BuildContext context, double imgWidth, double imgHeight, AccountId accountId, ContentId contentId) {
+  static Widget defaultImgWidgetBuilder(
+    BuildContext context,
+    double imgWidth,
+    double imgHeight,
+    AccountId accountId,
+    ContentId contentId,
+  ) {
     return SizedBox(
       width: imgWidth,
       height: imgHeight,

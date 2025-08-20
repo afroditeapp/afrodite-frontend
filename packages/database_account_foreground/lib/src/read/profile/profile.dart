@@ -1,4 +1,3 @@
-
 import 'package:async/async.dart';
 import 'package:database_account_foreground/src/database.dart';
 import 'package:database_converter/database_converter.dart';
@@ -12,55 +11,40 @@ import '../../schema.dart' as schema;
 
 part 'profile.g.dart';
 
-@DriftAccessor(
-  tables: [
-    schema.Profile,
-    schema.ProfileStates,
-    schema.FavoriteProfiles,
-  ]
-)
-class DaoReadProfile extends DatabaseAccessor<AccountForegroundDatabase> with _$DaoReadProfileMixin {
+@DriftAccessor(tables: [schema.Profile, schema.ProfileStates, schema.FavoriteProfiles])
+class DaoReadProfile extends DatabaseAccessor<AccountForegroundDatabase>
+    with _$DaoReadProfileMixin {
   DaoReadProfile(super.db);
 
-
   Future<ProfileEntry?> getProfileEntry(api.AccountId accountId) async {
-    final r = await (select(profile)
-      ..where((t) => t.accountId.equals(accountId.aid))
-    )
-      .getSingleOrNull();
+    final r = await (select(
+      profile,
+    )..where((t) => t.accountId.equals(accountId.aid))).getSingleOrNull();
 
     final content = await db.read.media.watchAllProfileContent(accountId).firstOrNull ?? [];
 
     return _rowToProfileEntry(r, content);
   }
 
-  Stream<ProfileEntry?> watchProfileEntry(api.AccountId accountId) =>
-    Rx.combineLatest2(
-      (select(profile)
-        ..where((t) => t.accountId.equals(accountId.aid))
-      )
-        .watchSingleOrNull(),
-      db.read.media.watchAllProfileContent(accountId),
-      (r, content) => _rowToProfileEntry(r, content),
-    );
+  Stream<ProfileEntry?> watchProfileEntry(api.AccountId accountId) => Rx.combineLatest2(
+    (select(profile)..where((t) => t.accountId.equals(accountId.aid))).watchSingleOrNull(),
+    db.read.media.watchAllProfileContent(accountId),
+    (r, content) => _rowToProfileEntry(r, content),
+  );
 
-  Stream<ProfileThumbnail?> watchProfileThumbnail(api.AccountId accountId) =>
-    Rx.combineLatest3(
-      (select(profile)
-        ..where((t) => t.accountId.equals(accountId.aid))
-      )
-        .watchSingleOrNull(),
-      db.read.media.watchAllProfileContent(accountId),
-      watchFavoriteProfileStatus(accountId),
-      (r, content, isFavorite) {
-        final entry = _rowToProfileEntry(r, content);
-        if (entry == null) {
-          return null;
-        } else {
-          return ProfileThumbnail(entry: entry, isFavorite: isFavorite);
-        }
+  Stream<ProfileThumbnail?> watchProfileThumbnail(api.AccountId accountId) => Rx.combineLatest3(
+    (select(profile)..where((t) => t.accountId.equals(accountId.aid))).watchSingleOrNull(),
+    db.read.media.watchAllProfileContent(accountId),
+    watchFavoriteProfileStatus(accountId),
+    (r, content, isFavorite) {
+      final entry = _rowToProfileEntry(r, content);
+      if (entry == null) {
+        return null;
+      } else {
+        return ProfileThumbnail(entry: entry, isFavorite: isFavorite);
       }
-    );
+    },
+  );
 
   ProfileEntry? _rowToProfileEntry(ProfileData? r, List<ContentIdAndAccepted> content) {
     if (r == null) {
@@ -80,17 +64,15 @@ class DaoReadProfile extends DatabaseAccessor<AccountForegroundDatabase> with _$
     final profileUnlimitedLikes = r.profileUnlimitedLikes;
     final contentVersion = r.profileContentVersion;
 
-    if (
-      profileName != null &&
-      profileNameAccepted != null &&
-      profileText != null &&
-      profileTextAccepted != null &&
-      profileAge != null &&
-      profileVersion != null &&
-      profileAttributes != null &&
-      profileUnlimitedLikes != null &&
-      contentVersion != null
-    ) {
+    if (profileName != null &&
+        profileNameAccepted != null &&
+        profileText != null &&
+        profileTextAccepted != null &&
+        profileAge != null &&
+        profileVersion != null &&
+        profileAttributes != null &&
+        profileUnlimitedLikes != null &&
+        contentVersion != null) {
       return ProfileEntry(
         accountId: r.accountId,
         content: content,
@@ -126,10 +108,9 @@ class DaoReadProfile extends DatabaseAccessor<AccountForegroundDatabase> with _$
   }
 
   Future<UtcDateTime?> getProfileDataRefreshTime(api.AccountId accountId) async {
-    final r = await (select(profile)
-      ..where((t) => t.accountId.equals(accountId.aid))
-    )
-      .getSingleOrNull();
+    final r = await (select(
+      profile,
+    )..where((t) => t.accountId.equals(accountId.aid))).getSingleOrNull();
 
     if (r == null) {
       return null;
@@ -139,93 +120,91 @@ class DaoReadProfile extends DatabaseAccessor<AccountForegroundDatabase> with _$
   }
 
   Future<bool> isInFavorites(api.AccountId accountId) async {
-    return await (select(favoriteProfiles)
-      ..where((t) => t.accountId.equals(accountId.aid))
-    ).getSingleOrNull() != null;
+    return await (select(
+          favoriteProfiles,
+        )..where((t) => t.accountId.equals(accountId.aid))).getSingleOrNull() !=
+        null;
   }
 
   Future<bool> isInReceivedLikes(api.AccountId accountId) =>
-    _existenceCheck(accountId, (t) => t.isInReceivedLikes.isNotNull());
+      _existenceCheck(accountId, (t) => t.isInReceivedLikes.isNotNull());
 
   Future<bool> isInSentLikes(api.AccountId accountId) =>
-    _existenceCheck(accountId, (t) => t.isInSentLikes.isNotNull());
+      _existenceCheck(accountId, (t) => t.isInSentLikes.isNotNull());
 
   Future<bool> isInMatches(api.AccountId accountId) =>
-    _existenceCheck(accountId, (t) => t.isInMatches.isNotNull());
+      _existenceCheck(accountId, (t) => t.isInMatches.isNotNull());
 
   Future<bool> isInProfileGrid(api.AccountId accountId) =>
-    _existenceCheck(accountId, (t) => t.isInProfileGrid.isNotNull());
+      _existenceCheck(accountId, (t) => t.isInProfileGrid.isNotNull());
 
   Future<bool> isInReceivedLikesGrid(api.AccountId accountId) =>
-    _existenceCheck(accountId, (t) => t.isInReceivedLikesGrid.isNotNull());
+      _existenceCheck(accountId, (t) => t.isInReceivedLikesGrid.isNotNull());
 
   Future<bool> isInMatchesGrid(api.AccountId accountId) =>
-    _existenceCheck(accountId, (t) => t.isInMatchesGrid.isNotNull());
+      _existenceCheck(accountId, (t) => t.isInMatchesGrid.isNotNull());
 
   Future<List<api.AccountId>> getFavoritesList(int startIndex, int limit) =>
-    (select(favoriteProfiles)
-      ..orderBy([
-        (t) => OrderingTerm(expression: t.addedToFavoritesUnixTime, mode: OrderingMode.desc),
-        (t) => OrderingTerm(expression: t.accountId),
-      ])
-      ..limit(limit, offset: startIndex)
-    )
-      .map((t) => t.accountId)
-      .get();
+      (select(favoriteProfiles)
+            ..orderBy([
+              (t) => OrderingTerm(expression: t.addedToFavoritesUnixTime, mode: OrderingMode.desc),
+              (t) => OrderingTerm(expression: t.accountId),
+            ])
+            ..limit(limit, offset: startIndex))
+          .map((t) => t.accountId)
+          .get();
 
   Future<List<api.AccountId>> getReceivedLikesList(int startIndex, int limit) =>
-    _getProfilesList(startIndex, limit, (t) => t.isInReceivedLikes);
+      _getProfilesList(startIndex, limit, (t) => t.isInReceivedLikes);
 
   Future<List<api.AccountId>> getSentLikesList(int startIndex, int limit) =>
-    _getProfilesList(startIndex, limit, (t) => t.isInSentLikes);
+      _getProfilesList(startIndex, limit, (t) => t.isInSentLikes);
 
   Future<List<api.AccountId>> getProfileGridList(int startIndex, int limit) =>
-    _getProfilesList(startIndex, limit, (t) => t.isInProfileGrid);
+      _getProfilesList(startIndex, limit, (t) => t.isInProfileGrid);
 
   Future<List<api.AccountId>> getAutomaticProfileSearchGridList(int startIndex, int limit) =>
-    _getProfilesList(startIndex, limit, (t) => t.isInAutomaticProfileSearchGrid);
+      _getProfilesList(startIndex, limit, (t) => t.isInAutomaticProfileSearchGrid);
 
   Future<List<api.AccountId>> getReceivedLikesGridList(int startIndex, int limit) =>
-    _getProfilesList(startIndex, limit, (t) => t.isInReceivedLikesGrid);
+      _getProfilesList(startIndex, limit, (t) => t.isInReceivedLikesGrid);
 
   Future<List<api.AccountId>> getMatchesGridList(int startIndex, int limit) =>
-    _getProfilesList(startIndex, limit, (t) => t.isInMatchesGrid);
+      _getProfilesList(startIndex, limit, (t) => t.isInMatchesGrid);
 
   Future<List<api.AccountId>> _getProfilesList(
     int? startIndex,
     int limit,
-    GeneratedColumnWithTypeConverter<UtcDateTime?, int> Function($ProfileStatesTable) getter,
-    {
-      OrderingMode mode = OrderingMode.asc,
-    }
-  ) => (select(profileStates)
-    ..where((t) => getter(t).isNotNull())
-    ..orderBy([
-      (t) => OrderingTerm(expression: getter(t), mode: mode),
-      // If list is added, the time values can have same value, so
-      // order by AccountId to make the order deterministic.
-      (t) => OrderingTerm(expression: t.accountId),
-    ])
-    ..limit(limit, offset: startIndex)
-  )
-    .map((t) => t.accountId)
-    .get();
+    GeneratedColumnWithTypeConverter<UtcDateTime?, int> Function($ProfileStatesTable) getter, {
+    OrderingMode mode = OrderingMode.asc,
+  }) =>
+      (select(profileStates)
+            ..where((t) => getter(t).isNotNull())
+            ..orderBy([
+              (t) => OrderingTerm(expression: getter(t), mode: mode),
+              // If list is added, the time values can have same value, so
+              // order by AccountId to make the order deterministic.
+              (t) => OrderingTerm(expression: t.accountId),
+            ])
+            ..limit(limit, offset: startIndex))
+          .map((t) => t.accountId)
+          .get();
 
-  Future<bool> _existenceCheck(api.AccountId accountId, Expression<bool> Function($ProfileStatesTable) additionalCheck) async {
-    final r = await (select(profileStates)
-      ..where((t) => Expression.and([
-        t.accountId.equals(accountId.aid),
-        additionalCheck(t),
-       ]))
-    ).getSingleOrNull();
+  Future<bool> _existenceCheck(
+    api.AccountId accountId,
+    Expression<bool> Function($ProfileStatesTable) additionalCheck,
+  ) async {
+    final r =
+        await (select(profileStates)..where(
+              (t) => Expression.and([t.accountId.equals(accountId.aid), additionalCheck(t)]),
+            ))
+            .getSingleOrNull();
     return r != null;
   }
 
   Stream<bool> watchFavoriteProfileStatus(api.AccountId accountId) {
-    return (select(favoriteProfiles)
-      ..where((t) => t.accountId.equals(accountId.aid))
-    )
-      .watchSingleOrNull()
-      .map((r) => r != null);
+    return (select(
+      favoriteProfiles,
+    )..where((t) => t.accountId.equals(accountId.aid))).watchSingleOrNull().map((r) => r != null);
   }
 }

@@ -25,13 +25,8 @@ import 'package:app/utils/time.dart';
 
 final log = Logger("NewsListScreen");
 
-Future<void> openNewsList(
-  BuildContext context,
-) {
-  return MyNavigator.push(
-    context,
-    const MaterialPage<void>(child: NewsListScreenOpener()),
-  );
+Future<void> openNewsList(BuildContext context) {
+  return MyNavigator.push(context, const MaterialPage<void>(child: NewsListScreenOpener()));
 }
 
 class NewsListScreenOpener extends StatefulWidget {
@@ -48,21 +43,14 @@ class _NewsListScreenOpenerState extends State<NewsListScreenOpener> {
   Widget build(BuildContext context) {
     initialLocale ??= Localizations.localeOf(context).languageCode;
     final bloc = context.read<NewsCountBloc>();
-    return NewsListScreen(
-      locale: initialLocale!,
-      bloc: bloc,
-    );
+    return NewsListScreen(locale: initialLocale!, bloc: bloc);
   }
 }
 
 class NewsListScreen extends StatefulWidget {
   final String locale;
   final NewsCountBloc bloc;
-  const NewsListScreen({
-    required this.locale,
-    required this.bloc,
-    super.key,
-  });
+  const NewsListScreen({required this.locale, required this.bloc, super.key});
 
   @override
   State<NewsListScreen> createState() => NewsListScreenState();
@@ -74,7 +62,8 @@ class NewsListScreenState extends State<NewsListScreen> {
   final ScrollController _scrollController = ScrollController();
   PagingState<int, NewsViewEntry> _pagingState = PagingState();
 
-  final AccountBackgroundDatabaseManager accountBackgroundDb = LoginRepository.getInstance().repositories.accountBackgroundDb;
+  final AccountBackgroundDatabaseManager accountBackgroundDb =
+      LoginRepository.getInstance().repositories.accountBackgroundDb;
   final ApiManager api = LoginRepository.getInstance().repositories.api;
 
   NewsIteratorSessionId? _sessionId;
@@ -87,7 +76,9 @@ class NewsListScreenState extends State<NewsListScreen> {
     NotificationNewsItemAvailable.getInstance().hide(accountBackgroundDb);
   }
 
-  void updatePagingState(PagingState<int, NewsViewEntry> Function(PagingState<int, NewsViewEntry>) action) {
+  void updatePagingState(
+    PagingState<int, NewsViewEntry> Function(PagingState<int, NewsViewEntry>) action,
+  ) {
     if (isDisposed || !context.mounted) {
       return;
     }
@@ -95,7 +86,6 @@ class NewsListScreenState extends State<NewsListScreen> {
       _pagingState = action(_pagingState);
     });
   }
-
 
   void showLoadingError() {
     updatePagingState((s) => s.copyAndShowError());
@@ -117,7 +107,9 @@ class NewsListScreenState extends State<NewsListScreen> {
         return;
       }
       _sessionId = r.s;
-      final dbResult = await accountBackgroundDb.accountAction((db) => db.news.setUnreadNewsCount(version: r.v, unreadNewsCount: r.c));
+      final dbResult = await accountBackgroundDb.accountAction(
+        (db) => db.news.setUnreadNewsCount(version: r.v, unreadNewsCount: r.c),
+      );
       if (dbResult.isErr()) {
         showLoadingError();
         return;
@@ -155,7 +147,11 @@ class NewsListScreenState extends State<NewsListScreen> {
               if (state.permissions.adminNewsCreate) {
                 return IconButton(
                   onPressed: () async {
-                    final r = await showConfirmDialog(context, context.strings.news_list_screen_create_new, yesNoActions: true);
+                    final r = await showConfirmDialog(
+                      context,
+                      context.strings.news_list_screen_create_new,
+                      yesNoActions: true,
+                    );
                     if (r == true) {
                       final id = await api.accountAdmin((api) => api.postCreateNewsItem()).ok();
                       if (id == null) {
@@ -173,8 +169,8 @@ class NewsListScreenState extends State<NewsListScreen> {
               } else {
                 return const SizedBox.shrink();
               }
-            }
-          )
+            },
+          ),
         ],
       ),
       body: content(),
@@ -186,11 +182,7 @@ class NewsListScreenState extends State<NewsListScreen> {
       onRefresh: () async {
         refresh();
       },
-      child: Column(children: [
-        Expanded(
-          child: grid(context),
-        ),
-      ],),
+      child: Column(children: [Expanded(child: grid(context))]),
     );
   }
 
@@ -222,17 +214,12 @@ class NewsListScreenState extends State<NewsListScreen> {
             title: Text(title),
             subtitle: Text(subtitle),
             onTap: () {
-              openViewNewsScreen(
-                context,
-                widget.locale,
-                item.newsItem.id,
-                () {
-                  if (context.mounted) {
-                    refresh();
-                  }
+              openViewNewsScreen(context, widget.locale, item.newsItem.id, () {
+                if (context.mounted) {
+                  refresh();
                 }
-              );
-            }
+              });
+            },
           );
         },
         noItemsFoundIndicatorBuilder: (context) {

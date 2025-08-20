@@ -1,24 +1,25 @@
-
-
 import 'package:app/ui/utils/view_metrics/view_multiple_metrics.dart';
 import 'package:app/ui/utils/view_metrics/view_single_metric.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:app/utils/result.dart';
 
-
 class ViewMetricsScreen extends StatefulWidget {
   final String title;
   final GetMetrics metrics;
   final String? dataAttribution;
-  const ViewMetricsScreen({required this.title, required this.metrics, this.dataAttribution, super.key});
+  const ViewMetricsScreen({
+    required this.title,
+    required this.metrics,
+    this.dataAttribution,
+    super.key,
+  });
 
   @override
   State<ViewMetricsScreen> createState() => _ViewMetricsScreenState();
 }
 
 class _ViewMetricsScreenState extends State<ViewMetricsScreen> {
-
   final ViewSingleMetricController _singleController = ViewSingleMetricController();
   final ViewMultipleMetricsController _multipleController = ViewMultipleMetricsController();
 
@@ -35,7 +36,7 @@ class _ViewMetricsScreenState extends State<ViewMetricsScreen> {
       _multipleController.updateData(data.ok() ?? []);
       _currentData = data.ok();
       if (data.isErr()) {
-          isError = true;
+        isError = true;
       }
       isLoading = false;
     });
@@ -53,9 +54,7 @@ class _ViewMetricsScreenState extends State<ViewMetricsScreen> {
       appBar: AppBar(
         title: Text(widget.title),
         actions: [
-          if (!viewSingle) ViewMultipleMetricsActions(
-            controller: _multipleController,
-          ),
+          if (!viewSingle) ViewMultipleMetricsActions(controller: _multipleController),
           IconButton(
             onPressed: () async {
               setState(() {
@@ -69,7 +68,7 @@ class _ViewMetricsScreenState extends State<ViewMetricsScreen> {
               await updateData();
             },
             icon: const Icon(Icons.refresh),
-          )
+          ),
         ],
       ),
       body: showState(),
@@ -88,19 +87,18 @@ class _ViewMetricsScreenState extends State<ViewMetricsScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(child: displayData(data)),
-          if (dataAttribution != null) Padding(
-            padding: EdgeInsetsGeometry.only(left: 16, right: 16, bottom: 16, top: 0),
-            child: Text(dataAttribution),
-          )
+          if (dataAttribution != null)
+            Padding(
+              padding: EdgeInsetsGeometry.only(left: 16, right: 16, bottom: 16, top: 0),
+              child: Text(dataAttribution),
+            ),
         ],
       );
     }
   }
 
   Widget buildProgressIndicator() {
-    return const Center(
-      child: CircularProgressIndicator(),
-    );
+    return const Center(child: CircularProgressIndicator());
   }
 
   Widget displayData(List<Metric> data) {

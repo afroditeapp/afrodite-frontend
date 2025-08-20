@@ -1,4 +1,3 @@
-
 import 'package:app/api/api_manager.dart';
 import 'package:app/ui_utils/data_editor.dart';
 import 'package:app/ui_utils/data_editor/base.dart';
@@ -8,14 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:openapi/api.dart';
 
 class EditPermissionsScreen extends EditDataScreen<PermissionsDataManager> {
-  EditPermissionsScreen({
-    required super.pageKey,
-    required AccountId account,
-    super.key,
-  }) : super(
-    dataApi: PermissionsDataApi(account),
-    title: "Edit permissions",
-  );
+  EditPermissionsScreen({required super.pageKey, required AccountId account, super.key})
+    : super(dataApi: PermissionsDataApi(account), title: "Edit permissions");
 }
 
 class PermissionsDataApi extends EditDataApi<PermissionsDataManager> {
@@ -24,13 +17,10 @@ class PermissionsDataApi extends EditDataApi<PermissionsDataManager> {
 
   @override
   Future<Result<PermissionsDataManager, ()>> load(ApiManager api) async {
-    return await api
-      .accountAdmin(
-        (api) => api.getPermissions(account.aid),
-      ).mapOk((v) {
-        final valueManager = BooleanValuesManager(v.toJson());
-        return PermissionsDataManager(valueManager);
-      }).emptyErr();
+    return await api.accountAdmin((api) => api.getPermissions(account.aid)).mapOk((v) {
+      final valueManager = BooleanValuesManager(v.toJson());
+      return PermissionsDataManager(valueManager);
+    }).emptyErr();
   }
 
   @override
@@ -41,13 +31,12 @@ class PermissionsDataApi extends EditDataApi<PermissionsDataManager> {
     }
 
     return await api
-      .accountAdminAction(
-        (api) => api.postSetPermissions(account.aid, permissions)
-      ).mapErr((_) => "API request failed");
+        .accountAdminAction((api) => api.postSetPermissions(account.aid, permissions))
+        .mapErr((_) => "API request failed");
   }
 }
 
-class PermissionsDataManager extends BaseDataManager implements DataManager, BooleanDataManager  {
+class PermissionsDataManager extends BaseDataManager implements DataManager, BooleanDataManager {
   final BooleanValuesManager values;
   PermissionsDataManager(this.values);
 

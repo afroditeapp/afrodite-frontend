@@ -1,5 +1,3 @@
-
-
 import 'package:app/data/image_cache.dart';
 import 'package:app/data/login_repository.dart';
 import 'package:app/logic/admin/content_decicion_stream.dart';
@@ -22,14 +20,15 @@ class ModerateImagesScreen extends ContentDecicionScreen<WrappedMediaContentPend
     required this.showContentWhichBotsCanModerate,
     super.key,
   }) : super(
-    title: "Moderate profile images",
-    infoMessageRowHeight: ROW_HEIGHT,
-    io: MediaContentIo(showContentWhichBotsCanModerate, queueType),
-    builder: MediaContentUiBuilder(),
-  );
+         title: "Moderate profile images",
+         infoMessageRowHeight: ROW_HEIGHT,
+         io: MediaContentIo(showContentWhichBotsCanModerate, queueType),
+         builder: MediaContentUiBuilder(),
+       );
 }
 
-class WrappedMediaContentPendingModeration extends MediaContentPendingModeration implements ContentInfoGetter {
+class WrappedMediaContentPendingModeration extends MediaContentPendingModeration
+    implements ContentInfoGetter {
   final ContentId? securitySelfie;
   WrappedMediaContentPendingModeration({
     required this.securitySelfie,
@@ -54,11 +53,13 @@ class MediaContentIo extends ContentIo<WrappedMediaContentPendingModeration> {
 
   @override
   Future<Result<List<WrappedMediaContentPendingModeration>, ()>> getNextContent() async {
-    final r = await api.mediaAdmin((api) => api.getMediaContentPendingModerationList(
-      MediaContentType.jpegImage,
-      queue,
-      showContentWhichBotsCanModerate,
-    ));
+    final r = await api.mediaAdmin(
+      (api) => api.getMediaContentPendingModerationList(
+        MediaContentType.jpegImage,
+        queue,
+        showContentWhichBotsCanModerate,
+      ),
+    );
 
     final GetMediaContentPendingModerationList list;
     switch (r) {
@@ -72,11 +73,13 @@ class MediaContentIo extends ContentIo<WrappedMediaContentPendingModeration> {
     for (final v in list.values) {
       var securitySelfie = await media.getSecuritySelfie(v.accountId);
 
-      newList.add(WrappedMediaContentPendingModeration(
-        securitySelfie: securitySelfie,
-        accountId: v.accountId,
-        contentId: v.contentId,
-      ));
+      newList.add(
+        WrappedMediaContentPendingModeration(
+          securitySelfie: securitySelfie,
+          accountId: v.accountId,
+          contentId: v.contentId,
+        ),
+      );
     }
 
     return Ok(newList);
@@ -84,7 +87,12 @@ class MediaContentIo extends ContentIo<WrappedMediaContentPendingModeration> {
 
   @override
   Future<void> sendToServer(WrappedMediaContentPendingModeration content, bool accept) async {
-    final info = PostModerateMediaContent(accept: accept, accountId: content.accountId, contentId: content.contentId, rejectedDetails: MediaContentModerationRejectedReasonDetails(value: ""));
+    final info = PostModerateMediaContent(
+      accept: accept,
+      accountId: content.accountId,
+      contentId: content.contentId,
+      rejectedDetails: MediaContentModerationRejectedReasonDetails(value: ""),
+    );
     await api.mediaAdminAction((api) => api.postModerateMediaContent(info));
   }
 }
@@ -99,32 +107,48 @@ class MediaContentUiBuilder extends ContentUiBuilder<WrappedMediaContentPendingM
     );
   }
 
-  Widget buildRow(BuildContext context, WrappedMediaContentPendingModeration content, int maxWidth) {
+  Widget buildRow(
+    BuildContext context,
+    WrappedMediaContentPendingModeration content,
+    int maxWidth,
+  ) {
     final securitySelfie = content.securitySelfie;
     final Widget securitySelfieWidget;
     if (securitySelfie != null) {
-      securitySelfieWidget =
-        buildImage(context, content.accountId, securitySelfie, maxWidth/2, ROW_HEIGHT);
+      securitySelfieWidget = buildImage(
+        context,
+        content.accountId,
+        securitySelfie,
+        maxWidth / 2,
+        ROW_HEIGHT,
+      );
     } else {
-      securitySelfieWidget =
-        SizedBox(width: maxWidth/2, height: ROW_HEIGHT, child: Row(
+      securitySelfieWidget = SizedBox(
+        width: maxWidth / 2,
+        height: ROW_HEIGHT,
+        child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(context.strings.generic_empty),
-          ],
-        ));
+          children: [Text(context.strings.generic_empty)],
+        ),
+      );
     }
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         securitySelfieWidget,
-        buildImage(context, content.accountId, content.contentId, maxWidth/2, ROW_HEIGHT),
+        buildImage(context, content.accountId, content.contentId, maxWidth / 2, ROW_HEIGHT),
       ],
     );
   }
 
-  Widget buildImage(BuildContext context, AccountId imageOwner, ContentId image, double width, double height) {
+  Widget buildImage(
+    BuildContext context,
+    AccountId imageOwner,
+    ContentId image,
+    double width,
+    double height,
+  ) {
     return InkWell(
       onTap: () {
         MyNavigator.push(

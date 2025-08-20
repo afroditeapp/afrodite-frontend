@@ -14,27 +14,22 @@ sealed class NotificationCategoryGroup {
 }
 
 class NotificationCategoryGroupGeneral extends NotificationCategoryGroup {
-  const NotificationCategoryGroupGeneral() : super(
-    id: "notification_category_group_general",
-  );
+  const NotificationCategoryGroupGeneral() : super(id: "notification_category_group_general");
 
   @override
   String get title => R.strings.notification_category_group_general;
 }
 
 class NotificationCategoryGroupChat extends NotificationCategoryGroup {
-  const NotificationCategoryGroupChat() : super(
-    id: "notification_category_group_chat",
-  );
+  const NotificationCategoryGroupChat() : super(id: "notification_category_group_chat");
 
   @override
   String get title => R.strings.notification_category_group_chat;
 }
 
 class NotificationCategoryGroupContentModeration extends NotificationCategoryGroup {
-  const NotificationCategoryGroupContentModeration() : super(
-    id: "notification_category_group_content_moderation",
-  );
+  const NotificationCategoryGroupContentModeration()
+    : super(id: "notification_category_group_content_moderation");
 
   @override
   String get title => R.strings.notification_category_group_content_moderation;

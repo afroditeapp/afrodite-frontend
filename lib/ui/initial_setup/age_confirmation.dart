@@ -7,7 +7,6 @@ import "package:app/model/freezed/logic/account/initial_setup.dart";
 import "package:app/ui/initial_setup/security_selfie.dart";
 import "package:app/ui_utils/initial_setup_common.dart";
 
-
 class AgeConfirmationScreen extends StatelessWidget {
   const AgeConfirmationScreen({super.key});
 
@@ -32,7 +31,6 @@ class AgeConfirmationScreen extends StatelessWidget {
   }
 }
 
-
 class AskAgeConfirmation extends StatefulWidget {
   const AskAgeConfirmation({super.key});
 
@@ -41,7 +39,6 @@ class AskAgeConfirmation extends StatefulWidget {
 }
 
 class _AskAgeConfirmationState extends State<AskAgeConfirmation> {
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -61,9 +58,9 @@ class _AskAgeConfirmationState extends State<AskAgeConfirmation> {
           title: Text(context.strings.initial_setup_screen_age_confirmation_checkbox),
           onChanged: (value) {
             context.read<InitialSetupBloc>().add(SetAgeConfirmation(value ?? false));
-          }
+          },
         );
-      }
+      },
     );
   }
 }

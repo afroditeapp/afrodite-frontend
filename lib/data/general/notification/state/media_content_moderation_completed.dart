@@ -1,6 +1,3 @@
-
-
-
 import 'package:app/data/general/notification/utils/notification_category.dart';
 import 'package:app/data/general/notification/utils/notification_id.dart';
 import 'package:app/data/general/notification/utils/notification_payload.dart';
@@ -24,32 +21,56 @@ class NotificationMediaContentModerationCompleted extends AppSingletonNoInit {
     MediaContentModerationCompletedNotification notification,
     AccountBackgroundDatabaseManager accountBackgroundDb,
   ) async {
-    final showAccepted = await accountBackgroundDb.accountDataWrite(
-      (db) => db.notification.mediaContentAccepted.shouldBeShown(notification.accepted)
-    ).ok() ?? false;
+    final showAccepted =
+        await accountBackgroundDb
+            .accountDataWrite(
+              (db) => db.notification.mediaContentAccepted.shouldBeShown(notification.accepted),
+            )
+            .ok() ??
+        false;
 
     if (showAccepted) {
-      await NotificationMediaContentModerationCompleted.getInstance().show(ModerationCompletedState.accepted, accountBackgroundDb);
+      await NotificationMediaContentModerationCompleted.getInstance().show(
+        ModerationCompletedState.accepted,
+        accountBackgroundDb,
+      );
     }
 
-    final showRejected = await accountBackgroundDb.accountDataWrite(
-      (db) => db.notification.mediaContentRejected.shouldBeShown(notification.rejected)
-    ).ok() ?? false;
+    final showRejected =
+        await accountBackgroundDb
+            .accountDataWrite(
+              (db) => db.notification.mediaContentRejected.shouldBeShown(notification.rejected),
+            )
+            .ok() ??
+        false;
 
     if (showRejected) {
-      await NotificationMediaContentModerationCompleted.getInstance().show(ModerationCompletedState.rejected, accountBackgroundDb);
+      await NotificationMediaContentModerationCompleted.getInstance().show(
+        ModerationCompletedState.rejected,
+        accountBackgroundDb,
+      );
     }
 
-    final showDeleted = await accountBackgroundDb.accountDataWrite(
-      (db) => db.notification.mediaContentDeleted.shouldBeShown(notification.deleted)
-    ).ok() ?? false;
+    final showDeleted =
+        await accountBackgroundDb
+            .accountDataWrite(
+              (db) => db.notification.mediaContentDeleted.shouldBeShown(notification.deleted),
+            )
+            .ok() ??
+        false;
 
     if (showDeleted) {
-      await NotificationMediaContentModerationCompleted.getInstance().show(ModerationCompletedState.deleted, accountBackgroundDb);
+      await NotificationMediaContentModerationCompleted.getInstance().show(
+        ModerationCompletedState.deleted,
+        accountBackgroundDb,
+      );
     }
   }
 
-  Future<void> show(ModerationCompletedState state, AccountBackgroundDatabaseManager accountBackgroundDb) async {
+  Future<void> show(
+    ModerationCompletedState state,
+    AccountBackgroundDatabaseManager accountBackgroundDb,
+  ) async {
     final LocalNotificationId id = switch (state) {
       ModerationCompletedState.accepted => NotificationIdStatic.mediaContentModerationAccepted.id,
       ModerationCompletedState.rejected => NotificationIdStatic.mediaContentModerationRejected.id,
@@ -63,16 +84,16 @@ class NotificationMediaContentModerationCompleted extends AppSingletonNoInit {
     await notifications.sendNotification(
       id: id,
       title: title,
-      body: state == ModerationCompletedState.deleted ? R.strings.notification_media_content_deleted_description : null,
+      body: state == ModerationCompletedState.deleted
+          ? R.strings.notification_media_content_deleted_description
+          : null,
       category: const NotificationCategoryMediaContentModerationCompleted(),
-      notificationPayload: NavigateToContentManagement(receiverAccountId: accountBackgroundDb.accountId()),
+      notificationPayload: NavigateToContentManagement(
+        receiverAccountId: accountBackgroundDb.accountId(),
+      ),
       accountBackgroundDb: accountBackgroundDb,
     );
   }
 }
 
-enum ModerationCompletedState {
-  accepted,
-  rejected,
-  deleted,
-}
+enum ModerationCompletedState { accepted, rejected, deleted }

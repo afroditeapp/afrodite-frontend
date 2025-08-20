@@ -9,26 +9,32 @@ import "package:app/model/freezed/logic/profile/edit_my_profile.dart";
 import "package:app/utils.dart";
 
 sealed class EditMyProfileEvent {}
+
 class SetInitialValues extends EditMyProfileEvent {
   final ProfileEntry profile;
   SetInitialValues(this.profile);
 }
+
 class NewAge extends EditMyProfileEvent {
   final int? value;
   NewAge(this.value);
 }
+
 class NewName extends EditMyProfileEvent {
   final String? value;
   NewName(this.value);
 }
+
 class NewProfileText extends EditMyProfileEvent {
   final String? value;
   NewProfileText(this.value);
 }
+
 class NewUnlimitedLikesValue extends EditMyProfileEvent {
   final bool value;
   NewUnlimitedLikesValue(this.value);
 }
+
 class NewAttributeValue extends EditMyProfileEvent {
   final ProfileAttributeValueUpdate value;
   NewAttributeValue(this.value);
@@ -42,13 +48,15 @@ class EditMyProfileBloc extends Bloc<EditMyProfileEvent, EditMyProfileData> with
   EditMyProfileBloc() : super(EditMyProfileData()) {
     on<SetInitialValues>((data, emit) async {
       final attributes = data.profile.attributeIdAndStateMap;
-      emit(EditMyProfileData(
-        age: data.profile.age,
-        name: data.profile.name,
-        profileText: data.profile.profileText,
-        attributeIdAndStateMap: attributes,
-        unlimitedLikes: data.profile.unlimitedLikes,
-      ));
+      emit(
+        EditMyProfileData(
+          age: data.profile.age,
+          name: data.profile.name,
+          profileText: data.profile.profileText,
+          attributeIdAndStateMap: attributes,
+          unlimitedLikes: data.profile.unlimitedLikes,
+        ),
+      );
     });
     on<NewAge>((data, emit) async {
       emit(state.copyWith(age: data.value));

@@ -1,5 +1,3 @@
-
-
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,10 +16,7 @@ import 'package:app/utils/age.dart';
 import 'package:app/utils/api.dart';
 import 'package:app/utils/time.dart';
 
-
-Future<void> openProfileStatisticsHistoryScreen(
-  BuildContext context,
-) {
+Future<void> openProfileStatisticsHistoryScreen(BuildContext context) {
   final pageKey = PageKey();
   return MyNavigator.pushWithKey(
     context,
@@ -52,9 +47,7 @@ class ProfileStatisticsHistoryScreenState extends State<ProfileStatisticsHistory
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(context.strings.profile_statistics_history_screen_title),
-      ),
+      appBar: AppBar(title: Text(context.strings.profile_statistics_history_screen_title)),
       body: content(),
     );
   }
@@ -66,28 +59,28 @@ class ProfileStatisticsHistoryScreenState extends State<ProfileStatisticsHistory
         builder: (context, state) {
           final item = state.item;
           if (state.isLoading) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+            return const Center(child: CircularProgressIndicator());
           } else if (state.isError) {
             return buildListReplacementMessageSimple(
-              context, context.strings.generic_error_occurred
+              context,
+              context.strings.generic_error_occurred,
             );
           } else if (item == null) {
-            return buildListReplacementMessageSimple(
-              context, context.strings.generic_not_found
-            );
+            return buildListReplacementMessageSimple(context, context.strings.generic_not_found);
           } else {
             return viewItem(context, item);
           }
-        }
+        },
       ),
     );
   }
 
   Widget viewItem(BuildContext context, GetProfileStatisticsHistoryResult item) {
-
-    final adminSettingsAvailable = context.read<AccountBloc>().state.permissions.adminProfileStatistics;
+    final adminSettingsAvailable = context
+        .read<AccountBloc>()
+        .state
+        .permissions
+        .adminProfileStatistics;
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -101,14 +94,14 @@ class ProfileStatisticsHistoryScreenState extends State<ProfileStatisticsHistory
             const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
           ],
         ),
-      )
+      ),
     );
   }
 
   Widget getChart(BuildContext context, GetProfileStatisticsHistoryResult item) {
     final data = <FlSpot>[];
     for (final v in item.values) {
-        data.add(FlSpot(v.ut.ut.toDouble(), v.c.toDouble()));
+      data.add(FlSpot(v.ut.ut.toDouble(), v.c.toDouble()));
     }
 
     return SizedBox(
@@ -123,36 +116,23 @@ class ProfileStatisticsHistoryScreenState extends State<ProfileStatisticsHistory
                   final time = UnixTime(ut: touchedSpot.x.toInt()).toUtcDateTime();
                   final timeStringValue = fullTimeString(time);
                   final value = "$timeStringValue, ${touchedSpot.y}";
-                  return LineTooltipItem(
-                    value,
-                    Theme.of(context).textTheme.labelLarge!,
-                  );
+                  return LineTooltipItem(value, Theme.of(context).textTheme.labelLarge!);
                 }).toList();
               },
               getTooltipColor: (group) {
                 return Theme.of(context).colorScheme.primaryContainer;
-              }
-            )
+              },
+            ),
           ),
-          lineBarsData: [
-            LineChartBarData(
-              spots: data,
-              isCurved: false,
-              barWidth: 4,
-            ),
-          ],
+          lineBarsData: [LineChartBarData(spots: data, isCurved: false, barWidth: 4)],
           titlesData: const FlTitlesData(
-            topTitles: AxisTitles(
-              sideTitles: SideTitles(
-                showTitles: false,
-              ),
-            ),
+            topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
             leftTitles: AxisTitles(
               sideTitles: SideTitles(
                 showTitles: true,
                 minIncluded: false,
                 maxIncluded: false,
-                reservedSize: 44
+                reservedSize: 44,
               ),
             ),
             rightTitles: AxisTitles(
@@ -160,14 +140,10 @@ class ProfileStatisticsHistoryScreenState extends State<ProfileStatisticsHistory
                 showTitles: true,
                 minIncluded: false,
                 maxIncluded: false,
-                reservedSize: 44
+                reservedSize: 44,
               ),
             ),
-            bottomTitles: AxisTitles(
-              sideTitles: SideTitles(
-                showTitles: false,
-              ),
-            ),
+            bottomTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
           ),
         ),
       ),
@@ -179,38 +155,31 @@ class ProfileStatisticsHistoryScreenState extends State<ProfileStatisticsHistory
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          "Admin settings",
-          style: Theme.of(context).textTheme.titleLarge,
-        ),
+        Text("Admin settings", style: Theme.of(context).textTheme.titleLarge),
         const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Text(
-            "Select history data",
-            style: Theme.of(context).textTheme.bodyLarge,
-          ),
+          child: Text("Select history data", style: Theme.of(context).textTheme.bodyLarge),
         ),
         const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Wrap(
             spacing: 5.0,
-            children: List<ChoiceChip>.generate(
-              ProfileStatisticsHistoryValueType.values.length,
-                (i) {
-                  return ChoiceChip(
-                    label: Text(ProfileStatisticsHistoryValueType.values[i].toString()),
-                    selected: historyValueSelection == i,
-                    onSelected: (value) {
-                      setState(() {
-                        historyValueSelection = i;
-                        reload(context);
-                      });
-                    },
-                  );
+            children: List<ChoiceChip>.generate(ProfileStatisticsHistoryValueType.values.length, (
+              i,
+            ) {
+              return ChoiceChip(
+                label: Text(ProfileStatisticsHistoryValueType.values[i].toString()),
+                selected: historyValueSelection == i,
+                onSelected: (value) {
+                  setState(() {
+                    historyValueSelection = i;
+                    reload(context);
+                  });
                 },
-              ),
+              );
+            }),
           ),
         ),
         const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
@@ -223,10 +192,11 @@ class ProfileStatisticsHistoryScreenState extends State<ProfileStatisticsHistory
 
   Widget ageField(BuildContext context) {
     final currentSelection = ProfileStatisticsHistoryValueType.values[historyValueSelection];
-    final ageSupported = currentSelection == ProfileStatisticsHistoryValueType.ageChange ||
-      currentSelection == ProfileStatisticsHistoryValueType.ageChangeMan ||
-      currentSelection == ProfileStatisticsHistoryValueType.ageChangeWoman ||
-      currentSelection == ProfileStatisticsHistoryValueType.ageChangeNonBinary;
+    final ageSupported =
+        currentSelection == ProfileStatisticsHistoryValueType.ageChange ||
+        currentSelection == ProfileStatisticsHistoryValueType.ageChangeMan ||
+        currentSelection == ProfileStatisticsHistoryValueType.ageChangeWoman ||
+        currentSelection == ProfileStatisticsHistoryValueType.ageChangeNonBinary;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
       child: AgeDropdown(
@@ -243,10 +213,12 @@ class ProfileStatisticsHistoryScreenState extends State<ProfileStatisticsHistory
   }
 
   void reload(BuildContext context) {
-    context.read<ProfileStatisticsHistoryBloc>().add(Reload(
-      historyValue: ProfileStatisticsHistoryValueType.values[historyValueSelection],
-      age: age,
-      manualRefresh: true,
-    ));
+    context.read<ProfileStatisticsHistoryBloc>().add(
+      Reload(
+        historyValue: ProfileStatisticsHistoryValueType.values[historyValueSelection],
+        age: age,
+        manualRefresh: true,
+      ),
+    );
   }
 }

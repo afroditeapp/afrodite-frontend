@@ -1,4 +1,3 @@
-
 import 'package:app/api/api_manager.dart';
 import 'package:app/data/login_repository.dart';
 import 'package:app/data/profile_repository.dart';
@@ -27,15 +26,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 
-Future<void> getAgeAndNameAndShowAdminSettings(BuildContext context, ApiManager api, AccountId account) async {
+Future<void> getAgeAndNameAndShowAdminSettings(
+  BuildContext context,
+  ApiManager api,
+  AccountId account,
+) async {
   final ageAndName = await api.profileAdmin((api) => api.getProfileAgeAndName(account.aid)).ok();
 
   if (ageAndName != null && context.mounted) {
-    await MyNavigator.push(context, MaterialPage<void>(child: AccountAdminSettingsScreen(
-      accountId: account,
-      initialAge: ageAndName.age,
-      initialName: ageAndName.name,
-    )));
+    await MyNavigator.push(
+      context,
+      MaterialPage<void>(
+        child: AccountAdminSettingsScreen(
+          accountId: account,
+          initialAge: ageAndName.age,
+          initialName: ageAndName.name,
+        ),
+      ),
+    );
   } else if (ageAndName == null) {
     showSnackBar("Get profile age and name failed");
   }
@@ -59,7 +67,6 @@ class AccountAdminSettingsScreen extends StatefulWidget {
 }
 
 class _AccountAdminSettingsScreenState extends State<AccountAdminSettingsScreen> {
-
   final profile = LoginRepository.getInstance().repositories.profile;
   final api = LoginRepository.getInstance().repositories.api;
 
@@ -74,7 +81,9 @@ class _AccountAdminSettingsScreenState extends State<AccountAdminSettingsScreen>
   }
 
   Future<void> updateProfileAgeAndName() async {
-    final ageAndName = await api.profileAdmin((api) => api.getProfileAgeAndName(widget.accountId.aid)).ok();
+    final ageAndName = await api
+        .profileAdmin((api) => api.getProfileAgeAndName(widget.accountId.aid))
+        .ok();
     if (ageAndName != null && context.mounted) {
       setState(() {
         age = ageAndName.age;
@@ -86,13 +95,11 @@ class _AccountAdminSettingsScreenState extends State<AccountAdminSettingsScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Account admin settings"),
-      ),
+      appBar: AppBar(title: const Text("Account admin settings")),
       body: BlocBuilder<AccountBloc, AccountBlocData>(
         builder: (context, state) {
           return screenContent(context, state.permissions);
-        }
+        },
       ),
     );
   }
@@ -106,21 +113,20 @@ class _AccountAdminSettingsScreenState extends State<AccountAdminSettingsScreen>
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Padding(padding: EdgeInsets.all(8.0)),
-              hPad(Text(
-                "$name, $age",
-                style: Theme.of(context).textTheme.titleMedium,
-              )),
+              hPad(Text("$name, $age", style: Theme.of(context).textTheme.titleMedium)),
               const Padding(padding: EdgeInsets.all(4.0)),
-              hPad(SelectableText(
-                "Account ID: ${widget.accountId.aid}",
-                style: Theme.of(context).textTheme.bodySmall,
-              )),
+              hPad(
+                SelectableText(
+                  "Account ID: ${widget.accountId.aid}",
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+              ),
               const Padding(padding: EdgeInsets.all(8.0)),
               ...settings.map((setting) => setting.toListTile()),
             ],
           ),
         );
-      }
+      },
     );
   }
 
@@ -152,104 +158,191 @@ class _AccountAdminSettingsScreenState extends State<AccountAdminSettingsScreen>
     settings.add(Setting.createSetting(Icons.person, showProfileTitle, () => openProfile(context)));
 
     if (permissions.adminViewPrivateInfo) {
-      settings.add(Setting.createSetting(Icons.person, "Account private info", () =>
-        MyNavigator.push(context, MaterialPage<void>(child: AccountPrivateInfoScreen(accountId: widget.accountId)))
-      ));
+      settings.add(
+        Setting.createSetting(
+          Icons.person,
+          "Account private info",
+          () => MyNavigator.push(
+            context,
+            MaterialPage<void>(child: AccountPrivateInfoScreen(accountId: widget.accountId)),
+          ),
+        ),
+      );
       const apiUsageStatistics = "API usage statistics";
-      settings.add(Setting.createSetting(Icons.query_stats, apiUsageStatistics, () {
-        openViewApiUsageScreen(context, apiUsageStatistics, api, widget.accountId);
-      }));
-      settings.add(Setting.createSetting(Icons.public, "IP address usage", () =>
-        MyNavigator.push(context, MaterialPage<void>(child: ViewIpAddressUsageScreen(accountId: widget.accountId)))
-      ));
+      settings.add(
+        Setting.createSetting(Icons.query_stats, apiUsageStatistics, () {
+          openViewApiUsageScreen(context, apiUsageStatistics, api, widget.accountId);
+        }),
+      );
+      settings.add(
+        Setting.createSetting(
+          Icons.public,
+          "IP address usage",
+          () => MyNavigator.push(
+            context,
+            MaterialPage<void>(child: ViewIpAddressUsageScreen(accountId: widget.accountId)),
+          ),
+        ),
+      );
     }
 
     if (permissions.adminViewPermissions && permissions.adminModifyPermissions) {
-      settings.add(Setting.createSetting(Icons.admin_panel_settings, "Edit permissions", () {
-        final pageKey = PageKey();
-        MyNavigator.pushWithKey(
-          context,
-          MaterialPage<void>(child: EditPermissionsScreen(
-            pageKey: pageKey,
-            account: widget.accountId
-          )),
-          pageKey
-        );
-      }));
+      settings.add(
+        Setting.createSetting(Icons.admin_panel_settings, "Edit permissions", () {
+          final pageKey = PageKey();
+          MyNavigator.pushWithKey(
+            context,
+            MaterialPage<void>(
+              child: EditPermissionsScreen(pageKey: pageKey, account: widget.accountId),
+            ),
+            pageKey,
+          );
+        }),
+      );
     }
 
     if (permissions.adminEditProfileName) {
-      settings.add(Setting.createSetting(Icons.edit, "Edit profile name", () async {
-        await MyNavigator.push(
-          context,
-          MaterialPage<void>(child: EditProfileNameScreen(
-            accountId: widget.accountId,
-            initialName: name,
-          )),
-        );
-        await updateProfileAgeAndName();
-      }));
+      settings.add(
+        Setting.createSetting(Icons.edit, "Edit profile name", () async {
+          await MyNavigator.push(
+            context,
+            MaterialPage<void>(
+              child: EditProfileNameScreen(accountId: widget.accountId, initialName: name),
+            ),
+          );
+          await updateProfileAgeAndName();
+        }),
+      );
     }
 
     if (permissions.adminBanAccount) {
-      settings.add(Setting.createSetting(Icons.block, "Ban account", () =>
-        MyNavigator.push(context, MaterialPage<void>(child: BanAccountScreen(accountId: widget.accountId)))
-      ));
+      settings.add(
+        Setting.createSetting(
+          Icons.block,
+          "Ban account",
+          () => MyNavigator.push(
+            context,
+            MaterialPage<void>(child: BanAccountScreen(accountId: widget.accountId)),
+          ),
+        ),
+      );
     }
 
     if (permissions.adminDeleteAccount || permissions.adminRequestAccountDeletion) {
-      settings.add(Setting.createSetting(Icons.delete, "Delete account", () =>
-        MyNavigator.push(context, MaterialPage<void>(child: DeleteAccountScreen(accountId: widget.accountId)))
-      ));
+      settings.add(
+        Setting.createSetting(
+          Icons.delete,
+          "Delete account",
+          () => MyNavigator.push(
+            context,
+            MaterialPage<void>(child: DeleteAccountScreen(accountId: widget.accountId)),
+          ),
+        ),
+      );
     }
 
     if (permissions.adminModerateMediaContent) {
-      settings.add(Setting.createSetting(Icons.image, "Admin image management", () =>
-        MyNavigator.push(context, MaterialPage<void>(child: AdminContentManagementScreen(accountId: widget.accountId)))
-      ));
+      settings.add(
+        Setting.createSetting(
+          Icons.image,
+          "Admin image management",
+          () => MyNavigator.push(
+            context,
+            MaterialPage<void>(child: AdminContentManagementScreen(accountId: widget.accountId)),
+          ),
+        ),
+      );
     }
 
     if (permissions.adminModerateProfileTexts) {
-      settings.add(Setting.createSetting(Icons.text_fields, "Moderate profile text", () =>
-        MyNavigator.push(context, MaterialPage<void>(child: ModerateSingleProfileStringScreen(accountId: widget.accountId, contentType: ProfileStringModerationContentType.profileText)))
-      ));
+      settings.add(
+        Setting.createSetting(
+          Icons.text_fields,
+          "Moderate profile text",
+          () => MyNavigator.push(
+            context,
+            MaterialPage<void>(
+              child: ModerateSingleProfileStringScreen(
+                accountId: widget.accountId,
+                contentType: ProfileStringModerationContentType.profileText,
+              ),
+            ),
+          ),
+        ),
+      );
     }
 
     if (permissions.adminModerateProfileNames) {
-      settings.add(Setting.createSetting(Icons.text_fields, "Moderate profile name", () =>
-        MyNavigator.push(context, MaterialPage<void>(child: ModerateSingleProfileStringScreen(accountId: widget.accountId, contentType: ProfileStringModerationContentType.profileName)))
-      ));
+      settings.add(
+        Setting.createSetting(
+          Icons.text_fields,
+          "Moderate profile name",
+          () => MyNavigator.push(
+            context,
+            MaterialPage<void>(
+              child: ModerateSingleProfileStringScreen(
+                accountId: widget.accountId,
+                contentType: ProfileStringModerationContentType.profileName,
+              ),
+            ),
+          ),
+        ),
+      );
     }
 
     if (permissions.adminProcessReports) {
       const sentReports = "View sent reports";
-      settings.add(Setting.createSetting(Icons.report, sentReports, () =>
-        MyNavigator.push(context, MaterialPage<void>(child: ViewReportsScreen(
-          account: widget.accountId,
-          mode: ReportIteratorMode.sent,
-          title: sentReports,
-        )))
-      ));
+      settings.add(
+        Setting.createSetting(
+          Icons.report,
+          sentReports,
+          () => MyNavigator.push(
+            context,
+            MaterialPage<void>(
+              child: ViewReportsScreen(
+                account: widget.accountId,
+                mode: ReportIteratorMode.sent,
+                title: sentReports,
+              ),
+            ),
+          ),
+        ),
+      );
 
       const receivedReports = "View received reports";
-      settings.add(Setting.createSetting(Icons.report, receivedReports, () =>
-        MyNavigator.push(context, MaterialPage<void>(child: ViewReportsScreen(
-          account: widget.accountId,
-          mode: ReportIteratorMode.received,
-          title: receivedReports,
-        )))
-      ));
+      settings.add(
+        Setting.createSetting(
+          Icons.report,
+          receivedReports,
+          () => MyNavigator.push(
+            context,
+            MaterialPage<void>(
+              child: ViewReportsScreen(
+                account: widget.accountId,
+                mode: ReportIteratorMode.received,
+                title: receivedReports,
+              ),
+            ),
+          ),
+        ),
+      );
     }
 
     if (permissions.adminExportData) {
-      settings.add(Setting.createSetting(Icons.cloud_download, context.strings.data_export_screen_title_export_type_admin, () {
-        openDataExportScreen(
-          context,
+      settings.add(
+        Setting.createSetting(
+          Icons.cloud_download,
           context.strings.data_export_screen_title_export_type_admin,
-          widget.accountId,
-          allowAdminDataExport: true,
-        );
-      }));
+          () {
+            openDataExportScreen(
+              context,
+              context.strings.data_export_screen_title_export_type_admin,
+              widget.accountId,
+              allowAdminDataExport: true,
+            );
+          },
+        ),
+      );
     }
 
     return settings;
@@ -275,17 +368,17 @@ class AccountAdminSettingsPermissions {
 
   bool somePermissionEnabled() {
     return adminModifyPermissions ||
-      adminEditProfileName ||
-      adminExportData ||
-      adminModerateMediaContent ||
-      adminModerateProfileTexts ||
-      adminModerateProfileNames ||
-      adminProcessReports ||
-      adminDeleteAccount ||
-      adminRequestAccountDeletion ||
-      adminBanAccount ||
-      adminViewAllProfiles ||
-      adminViewPermissions ||
-      adminViewPrivateInfo;
+        adminEditProfileName ||
+        adminExportData ||
+        adminModerateMediaContent ||
+        adminModerateProfileTexts ||
+        adminModerateProfileNames ||
+        adminProcessReports ||
+        adminDeleteAccount ||
+        adminRequestAccountDeletion ||
+        adminBanAccount ||
+        adminViewAllProfiles ||
+        adminViewPermissions ||
+        adminViewPrivateInfo;
   }
 }

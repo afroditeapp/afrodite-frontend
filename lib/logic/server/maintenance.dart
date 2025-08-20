@@ -6,10 +6,12 @@ import "package:flutter_bloc/flutter_bloc.dart";
 import "package:app/data/login_repository.dart";
 
 sealed class ServerMaintenanceEvent {}
+
 class MaintenanceInfoChanged extends ServerMaintenanceEvent {
   final ServerMaintenanceInfo value;
   MaintenanceInfoChanged(this.value);
 }
+
 class ViewServerMaintenanceInfo extends ServerMaintenanceEvent {}
 
 class ServerMaintenanceBloc extends Bloc<ServerMaintenanceEvent, ServerMaintenanceInfo> {
@@ -28,8 +30,9 @@ class ServerMaintenanceBloc extends Bloc<ServerMaintenanceEvent, ServerMaintenan
       }
     });
 
-    _maintenanceInfoSubscription = db.accountStream((db) => db.common.watchServerMaintenanceInfo())
-      .listen((value) => add(MaintenanceInfoChanged(value ?? ServerMaintenanceInfo.empty())));
+    _maintenanceInfoSubscription = db
+        .accountStream((db) => db.common.watchServerMaintenanceInfo())
+        .listen((value) => add(MaintenanceInfoChanged(value ?? ServerMaintenanceInfo.empty())));
   }
 
   @override

@@ -9,18 +9,22 @@ import "package:app/model/freezed/logic/account/account.dart";
 import "package:app/utils.dart";
 
 sealed class AccountEvent {}
+
 class NewPermissionsValue extends AccountEvent {
   final Permissions value;
   NewPermissionsValue(this.value);
 }
+
 class NewProfileVisibilityValue extends AccountEvent {
   final ProfileVisibility value;
   NewProfileVisibilityValue(this.value);
 }
+
 class NewAccountStateValue extends AccountEvent {
   final AccountState? accountState;
   NewAccountStateValue(this.accountState);
 }
+
 class NewEmailAddressValue extends AccountEvent {
   final String? value;
   NewEmailAddressValue(this.value);
@@ -35,19 +39,21 @@ class AccountBloc extends Bloc<AccountEvent, AccountBlocData> with ActionRunner 
   StreamSubscription<AccountState?>? _accountStateSubscription;
   StreamSubscription<String?>? _emailAddressSubscription;
 
-  AccountBloc() :
-    super(AccountBlocData(
-      // Use cached account state value to directly show start initial setup
-      // button when initial setup is skipped.
-      accountState: LoginRepository.getInstance().repositories.account.accountStateValue,
-      permissions: Permissions(),
-      // Use cached profile visiblity to avoid profile grid UI changing quickly
-      // from private profile info to profile grid after login.
-      visibility: LoginRepository.getInstance().repositories.account.profileVisibilityValue,
-      // Use cached email to avoid showing input field UI for email
-      // when initial setup is displayed.
-      email: LoginRepository.getInstance().repositories.account.emailAddressValue,
-    )) {
+  AccountBloc()
+    : super(
+        AccountBlocData(
+          // Use cached account state value to directly show start initial setup
+          // button when initial setup is skipped.
+          accountState: LoginRepository.getInstance().repositories.account.accountStateValue,
+          permissions: Permissions(),
+          // Use cached profile visiblity to avoid profile grid UI changing quickly
+          // from private profile info to profile grid after login.
+          visibility: LoginRepository.getInstance().repositories.account.profileVisibilityValue,
+          // Use cached email to avoid showing input field UI for email
+          // when initial setup is displayed.
+          email: LoginRepository.getInstance().repositories.account.emailAddressValue,
+        ),
+      ) {
     on<NewPermissionsValue>((key, emit) {
       emit(state.copyWith(permissions: key.value));
     });

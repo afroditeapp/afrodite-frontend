@@ -1,4 +1,3 @@
-
 import 'dart:io';
 
 import 'package:database_provider_native/src/db_dir.dart';
@@ -19,13 +18,9 @@ class DbProvider implements QueryExcecutorProvider {
   final DbFile _db;
   final bool _doSqlchipherInit;
   final bool _backgroundDb;
-  DbProvider(
-    this._db,
-    {
-      required bool doSqlchipherInit,
-      required bool backgroundDb,
-    }
-  ) : _backgroundDb = backgroundDb, _doSqlchipherInit = doSqlchipherInit;
+  DbProvider(this._db, {required bool doSqlchipherInit, required bool backgroundDb})
+    : _backgroundDb = backgroundDb,
+      _doSqlchipherInit = doSqlchipherInit;
 
   LazyDatabase? _dbConnection;
 
@@ -34,13 +29,12 @@ class DbProvider implements QueryExcecutorProvider {
     _dbConnection ??= openDbConnection(
       _db,
       doSqlchipherInit: _doSqlchipherInit,
-      backgroundDb: _backgroundDb
+      backgroundDb: _backgroundDb,
     );
     return _dbConnection!;
   }
 
-  Future<void> close() async =>
-    await _dbConnection?.close();
+  Future<void> close() async => await _dbConnection?.close();
 }
 
 Future<File> dbFileToFile(DbFile dbFile) async {
@@ -57,17 +51,16 @@ Future<File> dbFileToFile(DbFile dbFile) async {
 }
 
 LazyDatabase openDbConnection(
-  DbFile db,
-  {
-    bool doSqlchipherInit = false,
-    bool backgroundDb = false,
-  }
-) {
+  DbFile db, {
+  bool doSqlchipherInit = false,
+  bool backgroundDb = false,
+}) {
   return LazyDatabase(() async {
-    final encryptionKey = await SecureStorageManager.getInstance().getDbEncryptionKeyOrCreateNewKeyAndRecreateDatabasesDir(
-      backgroundDb: backgroundDb,
-      remover: DatabaseRemoverImpl(),
-    );
+    final encryptionKey = await SecureStorageManager.getInstance()
+        .getDbEncryptionKeyOrCreateNewKeyAndRecreateDatabasesDir(
+          backgroundDb: backgroundDb,
+          remover: DatabaseRemoverImpl(),
+        );
     final dbFile = await dbFileToFile(db);
     final isolateToken = RootIsolateToken.instance!;
     return NativeDatabase.createInBackground(
@@ -100,7 +93,7 @@ LazyDatabase openDbConnection(
         dbAccess.execute("PRAGMA foreign_keys = ON;");
         dbAccess.execute("PRAGMA journal_mode = WAL;");
         dbAccess.execute("PRAGMA synchronous = NORMAL;");
-      }
+      },
     );
   });
 }

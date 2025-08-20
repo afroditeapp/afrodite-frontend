@@ -1,6 +1,3 @@
-
-
-
 import 'dart:typed_data';
 
 import 'package:database/database.dart';
@@ -31,20 +28,25 @@ class InitialSetupUtils {
 
       switch (state.state) {
         case ContentProcessingStateType.processing:
-        case ContentProcessingStateType.inQueue: {
-          await Future<void>.delayed(const Duration(seconds: 1));
-        }
-        case ContentProcessingStateType.nsfwDetected: return ProcessingError("Image processing failed: NSFW detected");
-        case ContentProcessingStateType.failed: return ProcessingError("Image processing failed");
-        case ContentProcessingStateType.empty: return ProcessingError("Slot is empty");
-        case ContentProcessingStateType.completed: {
-          final contentId = state.cid;
-          if (contentId == null) {
-            return ProcessingError("Server did not return content ID");
-          } else {
-            return ProcessingSuccess(contentId);
+        case ContentProcessingStateType.inQueue:
+          {
+            await Future<void>.delayed(const Duration(seconds: 1));
           }
-        }
+        case ContentProcessingStateType.nsfwDetected:
+          return ProcessingError("Image processing failed: NSFW detected");
+        case ContentProcessingStateType.failed:
+          return ProcessingError("Image processing failed");
+        case ContentProcessingStateType.empty:
+          return ProcessingError("Slot is empty");
+        case ContentProcessingStateType.completed:
+          {
+            final contentId = state.cid;
+            if (contentId == null) {
+              return ProcessingError("Server did not return content ID");
+            } else {
+              return ProcessingSuccess(contentId);
+            }
+          }
       }
     }
   }
@@ -56,34 +58,41 @@ class InitialSetupUtils {
     String email,
     String name,
     Uint8List securitySelfieBytes,
-    Uint8List profileImageBytes
+    Uint8List profileImageBytes,
   ) async {
     // Handle images
 
-
     final securitySelfie = MultipartFile.fromBytes("", securitySelfieBytes);
-    final processingId = await _api.media((api) => api.putContentToContentSlot(0, true, MediaContentType.jpegImage, securitySelfie));
+    final processingId = await _api.media(
+      (api) => api.putContentToContentSlot(0, true, MediaContentType.jpegImage, securitySelfie),
+    );
     if (processingId case Err()) {
       return "Server did not return content processing ID";
     }
     final result = await _waitContentProcessing(0);
     final ContentId contentId0;
     switch (result) {
-      case ProcessingError(): return result.message;
-      case ProcessingSuccess(): contentId0 = result.contentId;
+      case ProcessingError():
+        return result.message;
+      case ProcessingSuccess():
+        contentId0 = result.contentId;
     }
     await _api.mediaAction((api) => api.putSecurityContentInfo(contentId0));
 
     final profileImage = MultipartFile.fromBytes("", profileImageBytes);
-    final processingId2 = await _api.media((api) => api.putContentToContentSlot(1, false, MediaContentType.jpegImage, profileImage));
+    final processingId2 = await _api.media(
+      (api) => api.putContentToContentSlot(1, false, MediaContentType.jpegImage, profileImage),
+    );
     if (processingId2 case Err()) {
       return "Server did not return content processing ID";
     }
     final result2 = await _waitContentProcessing(1);
     final ContentId contentId1;
     switch (result2) {
-      case ProcessingError(): return result2.message;
-      case ProcessingSuccess(): contentId1 = result2.contentId;
+      case ProcessingError():
+        return result2.message;
+      case ProcessingSuccess():
+        contentId1 = result2.contentId;
     }
     await _api.mediaAction((api) => api.putProfileContent(SetProfileContent(c: [contentId1])));
 
@@ -92,22 +101,13 @@ class InitialSetupUtils {
     await _api.accountAction((api) => api.postAccountData(AccountData(email: email)));
     await _api.accountAction((api) => api.postAccountSetup(SetAccountSetup(isAdult: true)));
 
-    final update = ProfileUpdate(
-      age: 30,
-      name: "X",
-      ptext: "",
-      attributes: [],
-    );
+    final update = ProfileUpdate(age: 30, name: "X", ptext: "", attributes: []);
     await _api.profileAction((api) => api.postProfile(update));
     final location = Location(latitude: 61, longitude: 24.5);
     await _api.profileAction((api) => api.putLocation(location));
     final ageRange = SearchAgeRange(min: 18, max: 99);
     await _api.profileAction((api) => api.postSearchAgeRange(ageRange));
-    final groups = SearchGroups(
-      manForMan: true,
-      manForWoman: true,
-      manForNonBinary: true,
-    );
+    final groups = SearchGroups(manForMan: true, manForWoman: true, manForNonBinary: true);
     await _api.profileAction((api) => api.postSearchGroups(groups));
 
     await _api.accountAction((api) => api.putSettingProfileVisiblity(BooleanSetting(value: true)));
@@ -122,10 +122,7 @@ class InitialSetupUtils {
     return null;
   }
 
-  Future<Result<(), ()>> doInitialSetup(
-    InitialSetupData data,
-  ) async {
-
+  Future<Result<(), ()>> doInitialSetup(InitialSetupData data) async {
     {
       // Email can be null if Apple or Google login was used.
       final email = data.email;
@@ -138,7 +135,9 @@ class InitialSetupUtils {
     {
       final isAdult = data.isAdult;
       if (isAdult == null) return errAndLog("Age info is null");
-      final r = await _api.accountAction((api) => api.postAccountSetup(SetAccountSetup(isAdult: isAdult)));
+      final r = await _api.accountAction(
+        (api) => api.postAccountSetup(SetAccountSetup(isAdult: isAdult)),
+      );
       if (r.isErr()) return errAndLog("Setting account setup info failed");
     }
 
@@ -184,7 +183,9 @@ class InitialSetupUtils {
     }
 
     {
-      final r = await _api.accountAction((api) => api.putSettingProfileVisiblity(BooleanSetting(value: true)));
+      final r = await _api.accountAction(
+        (api) => api.putSettingProfileVisiblity(BooleanSetting(value: true)),
+      );
       if (r.isErr()) return errAndLog("Setting profile visibility failed");
     }
 
@@ -202,7 +203,10 @@ class InitialSetupUtils {
     return const Ok(());
   }
 
-  Future<Result<(), ()>> handleInitialSetupImages(ContentId? securitySelfie, Iterable<ImgState>? profileImages) async {
+  Future<Result<(), ()>> handleInitialSetupImages(
+    ContentId? securitySelfie,
+    Iterable<ImgState>? profileImages,
+  ) async {
     if (securitySelfie == null) return errAndLog("Security selfie is null");
     final r1 = await _api.mediaAction((api) => api.putSecurityContentInfo(securitySelfie));
     if (r1.isErr()) return errAndLog("Setting security selfie failed");
@@ -258,12 +262,9 @@ Result<SetProfileContent, ()> createProfileContent(
 
   final c = List<ContentId>.from([contentId0, contentId1, contentId2, contentId3].nonNulls);
 
-  return Ok(SetProfileContent(
-    c: c,
-    gridCropSize: gridCropSize,
-    gridCropX: gridCropX,
-    gridCropY: gridCropY,
-  ));
+  return Ok(
+    SetProfileContent(c: c, gridCropSize: gridCropSize, gridCropX: gridCropX, gridCropY: gridCropY),
+  );
 }
 
 ContentId getId(SelectedImageInfo info, ContentId securitySelfie) {
@@ -279,10 +280,12 @@ Result<T, ()> errAndLog<T>(String message) {
 }
 
 sealed class WaitProcessingResult {}
+
 class ProcessingError extends WaitProcessingResult {
   final String message;
   ProcessingError(this.message);
 }
+
 class ProcessingSuccess extends WaitProcessingResult {
   final ContentId contentId;
   ProcessingSuccess(this.contentId);

@@ -1,14 +1,13 @@
-
-
-
 import 'dart:math';
 
 import 'package:flutter/material.dart';
 
 class AgeDropdown extends StatefulWidget {
   final int value;
+
   /// Called only once when the widget is initialized.
   final int Function() getMinValue;
+
   /// Called only once when the widget is initialized.
   final int Function() getMaxValue;
   final void Function(int) onChanged;
@@ -39,10 +38,7 @@ class _AgeDropdownState extends State<AgeDropdown> {
     final minValue = widget.getMinValue();
     final maxValue = widget.getMaxValue();
 
-    availableValues = List.generate(
-      max(0, maxValue - minValue + 1),
-      (index) => minValue + index,
-    );
+    availableValues = List.generate(max(0, maxValue - minValue + 1), (index) => minValue + index);
 
     controller.text = widget.value.toString();
   }
@@ -61,14 +57,9 @@ class _AgeDropdownState extends State<AgeDropdown> {
     return DropdownMenu<int>(
       controller: controller,
       enabled: widget.enabled,
-      dropdownMenuEntries: availableValues
-        .map((value) {
-          return DropdownMenuEntry<int>(
-            value: value,
-            label: value.toString(),
-          );
-        })
-        .toList(),
+      dropdownMenuEntries: availableValues.map((value) {
+        return DropdownMenuEntry<int>(value: value, label: value.toString());
+      }).toList(),
       onSelected: (value) {
         if (value != null) {
           widget.onChanged(value);

@@ -1,6 +1,3 @@
-
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
@@ -14,19 +11,19 @@ import 'package:app/ui/initial_setup/security_selfie.dart';
 import 'package:app/ui_utils/initial_setup_common.dart';
 import 'package:app/utils/camera.dart';
 
-
 Future<RetryInitialSetupImages?> openRetryInitialSetupImages(BuildContext context) async {
   final initialSetupBloc = context.read<InitialSetupBloc>();
   final profilePicturesBloc = context.read<ProfilePicturesBloc>();
   return await MyNavigator.push(
     context,
-    MaterialPage<RetryInitialSetupImages>(child: RetrySecuritySelfieScreen(
-      initialSetupBloc: initialSetupBloc,
-      profilePicturesBloc: profilePicturesBloc,
-    )),
+    MaterialPage<RetryInitialSetupImages>(
+      child: RetrySecuritySelfieScreen(
+        initialSetupBloc: initialSetupBloc,
+        profilePicturesBloc: profilePicturesBloc,
+      ),
+    ),
   );
 }
-
 
 /// Returns [RetryInitialSetupImages?]
 class RetrySecuritySelfieScreen extends StatefulWidget {
@@ -43,7 +40,6 @@ class RetrySecuritySelfieScreen extends StatefulWidget {
 }
 
 class _RetrySecuritySelfieScreenState extends State<RetrySecuritySelfieScreen> {
-
   @override
   void initState() {
     super.initState();
@@ -61,7 +57,10 @@ class _RetrySecuritySelfieScreenState extends State<RetrySecuritySelfieScreen> {
           if (selfie != null) {
             return () async {
               CameraManager.getInstance().sendCmd(CloseCmd());
-              final imgStateList = await MyNavigator.push(context, const MaterialPage<List<ImgState>>(child: RetryProfilePicturesScreen()));
+              final imgStateList = await MyNavigator.push(
+                context,
+                const MaterialPage<List<ImgState>>(child: RetryProfilePicturesScreen()),
+              );
               if (context.mounted && imgStateList != null) {
                 MyNavigator.pop(context, RetryInitialSetupImages(imgStateList, selfie.contentId));
               }
@@ -76,10 +75,8 @@ class _RetrySecuritySelfieScreenState extends State<RetrySecuritySelfieScreen> {
   }
 }
 
-
 /// Returns [List<ImgState>?]
 class RetryProfilePicturesScreen extends StatefulWidget {
-
   const RetryProfilePicturesScreen({super.key});
 
   @override
@@ -87,7 +84,6 @@ class RetryProfilePicturesScreen extends StatefulWidget {
 }
 
 class _RetryProfilePicturesScreen extends State<RetryProfilePicturesScreen> {
-
   @override
   void initState() {
     super.initState();
@@ -113,7 +109,7 @@ class _RetryProfilePicturesScreen extends State<RetryProfilePicturesScreen> {
                 onPressed: onPressed,
                 child: Text(context.strings.generic_continue),
               );
-            }
+            },
           );
         },
         question: const AskProfilePictures(),
@@ -121,7 +117,6 @@ class _RetryProfilePicturesScreen extends State<RetryProfilePicturesScreen> {
     );
   }
 }
-
 
 class RetryInitialSetupImages {
   final List<ImgState> profileImgs;

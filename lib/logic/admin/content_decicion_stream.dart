@@ -6,41 +6,25 @@ import "package:app/data/login_repository.dart";
 import "package:app/utils/result.dart";
 import "package:rxdart/rxdart.dart";
 
+enum ContentDecicionStreamStatus { loading, handling, allHandled }
 
-enum ContentDecicionStreamStatus {
-  loading,
-  handling,
-  allHandled,
-}
-
-enum RowStatus {
-  decicionNeeded,
-  accepted,
-  rejected,
-}
+enum RowStatus { decicionNeeded, accepted, rejected }
 
 sealed class RowState<C> {}
+
 class AllModerated<C> implements RowState<C> {}
+
 class Loading<C> implements RowState<C> {}
+
 class ContentRow<C> implements RowState<C> {
   final C content;
   final RowStatus status;
   final bool sentToServer;
 
-  ContentRow(
-    this.content,
-    {
-      required this.status,
-      this.sentToServer = false,
-    }
-  );
+  ContentRow(this.content, {required this.status, this.sentToServer = false});
 
   ContentRow<C> copyWith(RowStatus status, bool sentToServer) {
-    return ContentRow(
-      content,
-      status: status,
-      sentToServer: sentToServer,
-    );
+    return ContentRow(content, status: status, sentToServer: sentToServer);
   }
 
   Future<ContentRow<C>?> sendToServer(ContentIo<C> io) async {
@@ -61,8 +45,9 @@ class ContentRow<C> implements RowState<C> {
 class ContentDecicionStreamLogic<C> {
   final api = LoginRepository.getInstance().repositories.api;
 
-  final BehaviorSubject<ContentDecicionStreamStatus> _moderationStatus =
-    BehaviorSubject.seeded(ContentDecicionStreamStatus.loading);
+  final BehaviorSubject<ContentDecicionStreamStatus> _moderationStatus = BehaviorSubject.seeded(
+    ContentDecicionStreamStatus.loading,
+  );
 
   final ContentIo<C> io;
 
@@ -127,7 +112,9 @@ class ContentDecicionStreamLogic<C> {
 }
 
 sealed class LoadMoreState {}
+
 class Idle extends LoadMoreState {}
+
 class AlreadyLoading extends LoadMoreState {
   final BehaviorSubject<bool> completed = BehaviorSubject.seeded(false);
 }
@@ -136,14 +123,7 @@ class LoadMoreManager<C> {
   LoadMoreState state = Idle();
   final LinkedHashMap<int, BehaviorSubject<RowState<C>>> rows = LinkedHashMap();
 
-
-
-  Stream<RowState<C>> getRow(
-    int i,
-    ModerationCacher<C> cacher,
-    ContentIo<C> logic,
-  ) async* {
-
+  Stream<RowState<C>> getRow(int i, ModerationCacher<C> cacher, ContentIo<C> logic) async* {
     while (true) {
       final relay = rows[i];
 
@@ -195,12 +175,7 @@ class ModerationCacher<C> {
         continue;
       }
 
-      newStates.add(
-        ContentRow(
-          m,
-          status: RowStatus.decicionNeeded,
-        )
-      );
+      newStates.add(ContentRow(m, status: RowStatus.decicionNeeded));
 
       alreadyStoredContent.add(m);
     }

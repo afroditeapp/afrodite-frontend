@@ -1,4 +1,3 @@
-
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
@@ -46,10 +45,7 @@ enum LoginState {
   viewAccountStateOnceItExists,
 }
 
-enum LoginRepositoryState {
-  initRequired,
-  initComplete,
-}
+enum LoginRepositoryState { initRequired, initComplete }
 
 class LoginRepository extends DataRepository {
   LoginRepository._private();
@@ -70,14 +66,12 @@ class LoginRepository extends DataRepository {
   Stream<AccountStateStreamValue> get accountState => _repositoryStateStreams.accountState;
   Stream<bool> get initialSetupSkipped => _repositoryStateStreams.initialSetupSkipped;
 
-  final BehaviorSubject<LoginState> _loginState =
-    BehaviorSubject.seeded(LoginState.splashScreen);
-  final BehaviorSubject<LoginRepositoryState> _internalState =
-    BehaviorSubject.seeded(LoginRepositoryState.initRequired);
-  final BehaviorSubject<bool> _demoAccountLoginProgress =
-    BehaviorSubject.seeded(false);
-  final BehaviorSubject<bool> _loginInProgress =
-    BehaviorSubject.seeded(false);
+  final BehaviorSubject<LoginState> _loginState = BehaviorSubject.seeded(LoginState.splashScreen);
+  final BehaviorSubject<LoginRepositoryState> _internalState = BehaviorSubject.seeded(
+    LoginRepositoryState.initRequired,
+  );
+  final BehaviorSubject<bool> _demoAccountLoginProgress = BehaviorSubject.seeded(false);
+  final BehaviorSubject<bool> _loginInProgress = BehaviorSubject.seeded(false);
 
   StreamSubscription<ServerConnectionState>? _repositorySpecificAutomaticLogoutSubscription;
 
@@ -86,26 +80,24 @@ class LoginRepository extends DataRepository {
   // Main app state streams
   Stream<LoginState> get loginState => _loginState.distinct();
   Stream<String> get accountServerAddress => BackgroundDatabaseManager.getInstance()
-    .commonStreamOrDefault(
-      (db) => db.app.watchServerUrl(),
-      defaultServerUrl(),
-    )
-    .distinct(); // Avoid loop in ServerAddressBloc
+      .commonStreamOrDefault((db) => db.app.watchServerUrl(), defaultServerUrl())
+      .distinct(); // Avoid loop in ServerAddressBloc
 
   // Demo account
-  Stream<String?> get demoAccountUsername => DatabaseManager.getInstance()
-    .commonStream((db) => db.demoAccount.watchDemoAccountUsername());
+  Stream<String?> get demoAccountUsername =>
+      DatabaseManager.getInstance().commonStream((db) => db.demoAccount.watchDemoAccountUsername());
 
-  Stream<String?> get demoAccountPassword => DatabaseManager.getInstance()
-    .commonStream((db) => db.demoAccount.watchDemoAccountPassword());
+  Stream<String?> get demoAccountPassword =>
+      DatabaseManager.getInstance().commonStream((db) => db.demoAccount.watchDemoAccountPassword());
 
-  Stream<String?> get demoAccountToken => DatabaseManager.getInstance()
-    .commonStream((db) => db.demoAccount.watchDemoAccountToken());
+  Stream<String?> get demoAccountToken =>
+      DatabaseManager.getInstance().commonStream((db) => db.demoAccount.watchDemoAccountToken());
   Stream<bool> get demoAccountLoginProgress => _demoAccountLoginProgress;
 
   // Account
-  Stream<AccountId?> get accountId => BackgroundDatabaseManager.getInstance()
-    .commonStream((db) => db.loginSession.watchAccountId());
+  Stream<AccountId?> get accountId => BackgroundDatabaseManager.getInstance().commonStream(
+    (db) => db.loginSession.watchAccountId(),
+  );
 
   @override
   Future<void> init() async {
@@ -124,7 +116,9 @@ class LoginRepository extends DataRepository {
       await _createRepositories(currentAccountId);
 
       // Restore previous state
-      final previousState = await repositories.accountDb.accountStreamSingle((db) => db.account.watchAccountState()).ok();
+      final previousState = await repositories.accountDb
+          .accountStreamSingle((db) => db.account.watchAccountState())
+          .ok();
       if (previousState != null) {
         _loginState.add(LoginState.viewAccountStateOnceItExists);
         await onResumeAppUsage();
@@ -139,7 +133,9 @@ class LoginRepository extends DataRepository {
       (a, b, c) => (a, b, c),
     ).listen((event) {
       final (apiState, demoAccountToken, loginInProgress) = event;
-      log.finer("state changed. apiState: $apiState, demoAccountToken: ${demoAccountToken != null}, loginInProgress: $loginInProgress");
+      log.finer(
+        "state changed. apiState: $apiState, demoAccountToken: ${demoAccountToken != null}, loginInProgress: $loginInProgress",
+      );
       if (loginInProgress) {
         if (demoAccountToken != null) {
           _loginState.add(LoginState.demoAccount);
@@ -157,8 +153,9 @@ class LoginRepository extends DataRepository {
             _loginState.add(LoginState.loginRequired);
           }
         case ServerConnectionState.connecting ||
-          ServerConnectionState.reconnectWaitTime ||
-          ServerConnectionState.noConnection: {}
+            ServerConnectionState.reconnectWaitTime ||
+            ServerConnectionState.noConnection:
+          {}
         case ServerConnectionState.connected:
           _loginState.add(LoginState.viewAccountStateOnceItExists);
         case ServerConnectionState.unsupportedClientVersion:
@@ -173,82 +170,84 @@ class LoginRepository extends DataRepository {
       _repositoryStateStreams._handleAppStartWithoutLoggedInAccount();
     }
 
-    _repositoryStateStreams
-      .serverEvents
-      .asyncMap((event) async {
-        switch (event) {
-          case EventToClientContainer e: {
-            await repositories.account.handleEventToClient(e.event);
+    _repositoryStateStreams.serverEvents
+        .asyncMap((event) async {
+          switch (event) {
+            case EventToClientContainer e:
+              {
+                await repositories.account.handleEventToClient(e.event);
+              }
           }
-        }
-        return;
-      })
-      .listen((_) {});
+          return;
+        })
+        .listen((_) {});
 
     // Automatic connect based on app visibility
-    AppVisibilityProvider.getInstance()
-      .isForegroundStream
-      .asyncMap((isForeground) async {
-        await GlobalInitManager.getInstance()
-          .globalInitCompletedStream
-          .firstWhere((initCompleted) => initCompleted);
+    AppVisibilityProvider.getInstance().isForegroundStream
+        .asyncMap((isForeground) async {
+          await GlobalInitManager.getInstance().globalInitCompletedStream.firstWhere(
+            (initCompleted) => initCompleted,
+          );
 
-        if (!isForeground) {
-          return;
-        }
-        if (await accountId.firstOrNull == null) {
-          // Not logged in
-          _backgroundedAt = null;
-          return;
-        }
-
-        final backgroundedAt = _backgroundedAt;
-        if (backgroundedAt != null) {
-          final now = DateTime.now();
-          if (now.difference(backgroundedAt) > const Duration(days: 1)) {
-            log.info("Refreshing profile grid automatically");
-            await repositories.profile.resetMainProfileIterator();
+          if (!isForeground) {
+            return;
           }
-        }
-        _backgroundedAt = null;
+          if (await accountId.firstOrNull == null) {
+            // Not logged in
+            _backgroundedAt = null;
+            return;
+          }
 
-        final connectionManager = repositoriesOrNull?.connectionManager;
-        final state = await connectionManager?.state.firstOrNull;
-        if (state == ServerConnectionState.noConnection) {
-          await connectionManager?.restart();
-        }
-      })
-      .listen(null);
+          final backgroundedAt = _backgroundedAt;
+          if (backgroundedAt != null) {
+            final now = DateTime.now();
+            if (now.difference(backgroundedAt) > const Duration(days: 1)) {
+              log.info("Refreshing profile grid automatically");
+              await repositories.profile.resetMainProfileIterator();
+            }
+          }
+          _backgroundedAt = null;
+
+          final connectionManager = repositoriesOrNull?.connectionManager;
+          final state = await connectionManager?.state.firstOrNull;
+          if (state == ServerConnectionState.noConnection) {
+            await connectionManager?.restart();
+          }
+        })
+        .listen(null);
 
     // Automatic disconnect based on app visibility
-    AppVisibilityProvider.getInstance()
-      .isForegroundStream
-      .debounceTime(const Duration(seconds: 10))
-      .asyncMap((isForeground) async {
-        await GlobalInitManager.getInstance()
-          .globalInitCompletedStream
-          .firstWhere((initCompleted) => initCompleted);
+    AppVisibilityProvider.getInstance().isForegroundStream
+        .debounceTime(const Duration(seconds: 10))
+        .asyncMap((isForeground) async {
+          await GlobalInitManager.getInstance().globalInitCompletedStream.firstWhere(
+            (initCompleted) => initCompleted,
+          );
 
-        if (isForeground) {
-          return;
-        }
-        if (await accountId.firstOrNull == null) {
-          // Not logged in
-          _backgroundedAt = null;
-          return;
-        }
-        final connectionManager = repositoriesOrNull?.connectionManager;
-        await connectionManager?.close();
-        _backgroundedAt = DateTime.now();
-      })
-      .listen(null);
+          if (isForeground) {
+            return;
+          }
+          if (await accountId.firstOrNull == null) {
+            // Not logged in
+            _backgroundedAt = null;
+            return;
+          }
+          final connectionManager = repositoriesOrNull?.connectionManager;
+          await connectionManager?.close();
+          _backgroundedAt = DateTime.now();
+        })
+        .listen(null);
   }
 
-  Future<RepositoryInstances> _createRepositories(AccountId accountId, {bool accountLoginHappened = false}) async {
+  Future<RepositoryInstances> _createRepositories(
+    AccountId accountId, {
+    bool accountLoginHappened = false,
+  }) async {
     final currentRepositories = _repositories;
     await currentRepositories?.dispose();
 
-    final accountBackgroundDb = BackgroundDatabaseManager.getInstance().getAccountBackgroundDatabaseManager(accountId);
+    final accountBackgroundDb = BackgroundDatabaseManager.getInstance()
+        .getAccountBackgroundDatabaseManager(accountId);
     final accountDb = DatabaseManager.getInstance().getAccountDatabaseManager(accountId);
 
     final connectionManager = ServerConnectionManager(accountDb, accountBackgroundDb, accountId);
@@ -264,8 +263,21 @@ class LoginRepository extends DataRepository {
       currentUser: accountId,
     );
     final common = CommonRepository(connectionManager);
-    final media = MediaRepository(account, accountDb, accountBackgroundDb, connectionManager, accountId);
-    final profile = ProfileRepository(media, account, accountDb, accountBackgroundDb, connectionManager, accountId);
+    final media = MediaRepository(
+      account,
+      accountDb,
+      accountBackgroundDb,
+      connectionManager,
+      accountId,
+    );
+    final profile = ProfileRepository(
+      media,
+      account,
+      accountDb,
+      accountBackgroundDb,
+      connectionManager,
+      accountId,
+    );
     final chat = ChatRepository(
       media: media,
       profile: profile,
@@ -291,11 +303,7 @@ class LoginRepository extends DataRepository {
     account.repositories = newRepositories;
     await newRepositories.init();
 
-    await _repositoryStateStreams._subscribe(
-      account,
-      accountDb,
-      connectionManager
-    );
+    await _repositoryStateStreams._subscribe(account, accountDb, connectionManager);
 
     await _repositorySpecificAutomaticLogoutSubscription?.cancel();
     _repositorySpecificAutomaticLogoutSubscription = connectionManager.state.listen((v) {
@@ -352,15 +360,14 @@ class LoginRepository extends DataRepository {
       return const Err(SignInWithEvent.serverRequestFailed);
     }
 
-    return await _handleLoginResult(login)
-      .mapErr((e) {
-        switch (e) {
-          case CommonSignInError.unsupportedClient:
-            return SignInWithEvent.unsupportedClient;
-          case CommonSignInError.otherError:
-            return SignInWithEvent.otherError;
-        }
-      });
+    return await _handleLoginResult(login).mapErr((e) {
+      switch (e) {
+        case CommonSignInError.unsupportedClient:
+          return SignInWithEvent.unsupportedClient;
+        case CommonSignInError.otherError:
+          return SignInWithEvent.otherError;
+      }
+    });
   }
 
   Future<Result<(), CommonSignInError>> _handleLoginResult(LoginResult loginResult) async {
@@ -373,12 +380,11 @@ class LoginRepository extends DataRepository {
       return const Err(CommonSignInError.otherError);
     }
     final accountDb = DatabaseManager.getInstance().getAccountDatabaseManager(aid);
-    final r = await DatabaseManager.getInstance().setAccountId(aid)
-      .andThen(
-        (_) => accountDb.accountAction(
-          (db) => db.account.updateEmailAddress(loginResult.email)
-        )
-      );
+    final r = await DatabaseManager.getInstance()
+        .setAccountId(aid)
+        .andThen(
+          (_) => accountDb.accountAction((db) => db.account.updateEmailAddress(loginResult.email)),
+        );
     if (r.isErr()) {
       return const Err(CommonSignInError.otherError);
     }
@@ -461,13 +467,12 @@ class LoginRepository extends DataRepository {
     try {
       // On Android this might not never complete
       signedIn = await SignInWithApple.getAppleIDCredential(
-        scopes: [
-          AppleIDAuthorizationScopes.email,
-        ],
+        scopes: [AppleIDAuthorizationScopes.email],
         webAuthenticationOptions: WebAuthenticationOptions(
           clientId: signInWithAppleServiceIdForAndroidAndWebLogin(),
-          redirectUri: kIsWeb ? signInWithAppleRedirectUrlForWeb() :
-            serverUrl.replace(path: "account_api/sign_in_with_apple_redirect_to_app"),
+          redirectUri: kIsWeb
+              ? signInWithAppleRedirectUrlForWeb()
+              : serverUrl.replace(path: "account_api/sign_in_with_apple_redirect_to_app"),
         ),
         nonce: hashedNonceBase64Url,
       );
@@ -485,10 +490,7 @@ class LoginRepository extends DataRepository {
     yield SignInWithEvent.getTokenCompleted;
 
     final info = SignInWithLoginInfo(
-      apple: SignInWithAppleInfo(
-        nonce: nonceBase64Url,
-        token: token,
-      ),
+      apple: SignInWithAppleInfo(nonce: nonceBase64Url, token: token),
       clientInfo: clientInfo(),
     );
     switch (await handleSignInWithLoginInfo(info)) {
@@ -507,11 +509,20 @@ class LoginRepository extends DataRepository {
     await _repositories?.connectionManager.closeAndRefreshServerAddressAndLogout();
   }
 
-  Future<Result<(), DemoAccountLoginError>> demoAccountLogin(DemoAccountCredentials credentials) async {
+  Future<Result<(), DemoAccountLoginError>> demoAccountLogin(
+    DemoAccountCredentials credentials,
+  ) async {
     _demoAccountLoginProgress.add(true);
-    final loginResult = await _apiNoConnection.account((api) => api.postDemoAccountLogin(
-      DemoAccountLoginCredentials(username: credentials.username, password: credentials.password)
-    )).ok();
+    final loginResult = await _apiNoConnection
+        .account(
+          (api) => api.postDemoAccountLogin(
+            DemoAccountLoginCredentials(
+              username: credentials.username,
+              password: credentials.password,
+            ),
+          ),
+        )
+        .ok();
     _demoAccountLoginProgress.add(false);
 
     if (loginResult == null) {
@@ -527,9 +538,15 @@ class LoginRepository extends DataRepository {
       return const Err(DemoAccountLoginError.otherError);
     }
 
-    await DatabaseManager.getInstance().commonAction((db) => db.demoAccount.updateDemoAccountUsername(credentials.username));
-    await DatabaseManager.getInstance().commonAction((db) => db.demoAccount.updateDemoAccountPassword(credentials.password));
-    await DatabaseManager.getInstance().commonAction((db) => db.demoAccount.updateDemoAccountToken(demoAccountToken));
+    await DatabaseManager.getInstance().commonAction(
+      (db) => db.demoAccount.updateDemoAccountUsername(credentials.username),
+    );
+    await DatabaseManager.getInstance().commonAction(
+      (db) => db.demoAccount.updateDemoAccountPassword(credentials.password),
+    );
+    await DatabaseManager.getInstance().commonAction(
+      (db) => db.demoAccount.updateDemoAccountToken(demoAccountToken),
+    );
 
     return const Ok(());
   }
@@ -539,13 +556,17 @@ class LoginRepository extends DataRepository {
 
     final token = await demoAccountToken.first;
     if (token != null) {
-      final r = await _apiNoConnection.accountAction((api) => api.postDemoAccountLogout(DemoAccountToken(token: token)));
+      final r = await _apiNoConnection.accountAction(
+        (api) => api.postDemoAccountLogout(DemoAccountToken(token: token)),
+      );
       if (r.isErr()) {
         showSnackBar(R.strings.generic_logout_failed);
       }
     }
 
-    await DatabaseManager.getInstance().commonAction((db) => db.demoAccount.updateDemoAccountToken(null));
+    await DatabaseManager.getInstance().commonAction(
+      (db) => db.demoAccount.updateDemoAccountToken(null),
+    );
 
     log.info("demo account logout completed");
   }
@@ -555,7 +576,9 @@ class LoginRepository extends DataRepository {
     if (token == null) {
       return Err(OtherError());
     }
-    final accounts = await _apiNoConnection.accountWrapper().requestValue((api) => api.postDemoAccountAccessibleAccounts(DemoAccountToken(token: token)));
+    final accounts = await _apiNoConnection.accountWrapper().requestValue(
+      (api) => api.postDemoAccountAccessibleAccounts(DemoAccountToken(token: token)),
+    );
     switch (accounts) {
       case Ok(:final v):
         return Ok(v);
@@ -575,7 +598,9 @@ class LoginRepository extends DataRepository {
       return Err(OtherError());
     }
     final demoToken = DemoAccountToken(token: token);
-    final id = await _apiNoConnection.accountWrapper().requestValue((api) => api.postDemoAccountRegisterAccount(demoToken));
+    final id = await _apiNoConnection.accountWrapper().requestValue(
+      (api) => api.postDemoAccountRegisterAccount(demoToken),
+    );
     switch (id) {
       case Ok(:final v):
         return await demoAccountLoginToAccount(v);
@@ -595,13 +620,11 @@ class LoginRepository extends DataRepository {
       return Err(OtherError());
     }
     final demoToken = DemoAccountToken(token: token);
-    final loginResult = await _apiNoConnection.accountWrapper().requestValue((api) => api.postDemoAccountLoginToAccount(
-      DemoAccountLoginToAccount(
-        aid: id,
-        token: demoToken,
-        clientInfo: clientInfo(),
+    final loginResult = await _apiNoConnection.accountWrapper().requestValue(
+      (api) => api.postDemoAccountLoginToAccount(
+        DemoAccountLoginToAccount(aid: id, token: demoToken, clientInfo: clientInfo()),
       ),
-    ));
+    );
     switch (loginResult) {
       case Ok(:final v):
         switch (await _handleLoginResult(v)) {
@@ -632,14 +655,14 @@ class DemoAccountCredentials {
   DemoAccountCredentials(this.username, this.password);
 }
 
-enum DemoAccountLoginError {
-  accountLocked,
-  otherError,
-}
+enum DemoAccountLoginError { accountLocked, otherError }
 
 sealed class SessionOrOtherError {}
+
 class SessionExpired extends SessionOrOtherError {}
+
 class UnsupportedClient extends SessionOrOtherError {}
+
 class OtherError extends SessionOrOtherError {}
 
 enum SignInWithEvent {
@@ -650,10 +673,7 @@ enum SignInWithEvent {
   otherError,
 }
 
-enum CommonSignInError {
-  unsupportedClient,
-  otherError,
-}
+enum CommonSignInError { unsupportedClient, otherError }
 
 /// This should contain account specific logic so it is not possible
 /// the logic will touch another account's data if there is long running
@@ -663,6 +683,7 @@ enum CommonSignInError {
 class RepositoryInstances implements DataRepositoryMethods {
   final AccountId accountId;
   final UtcDateTime creationTime = UtcDateTime.now();
+
   /// True only if repository was created because of manual login action.
   /// Usually this is false as usually the account is logged in when app starts.
   final bool accountLoginHappened;
@@ -732,11 +753,12 @@ class RepositoryInstances implements DataRepositoryMethods {
 
   @override
   Future<Result<(), ()>> onLoginDataSync() async {
-    return await common.onLoginDataSync()
-      .andThen((_) => chat.onLoginDataSync())
-      .andThen((_) => media.onLoginDataSync())
-      .andThen((_) => profile.onLoginDataSync())
-      .andThen((_) => account.onLoginDataSync());
+    return await common
+        .onLoginDataSync()
+        .andThen((_) => chat.onLoginDataSync())
+        .andThen((_) => media.onLoginDataSync())
+        .andThen((_) => profile.onLoginDataSync())
+        .andThen((_) => account.onLoginDataSync());
   }
 
   @override
@@ -759,23 +781,22 @@ class RepositoryInstances implements DataRepositoryMethods {
 }
 
 class RepositoryStateStreams {
-  final BehaviorSubject<AccountStateStreamValue> _accountState =
-    BehaviorSubject.seeded(AccountStateLoading());
+  final BehaviorSubject<AccountStateStreamValue> _accountState = BehaviorSubject.seeded(
+    AccountStateLoading(),
+  );
   StreamSubscription<AccountState?>? _accountStateSubscription;
   Stream<AccountStateStreamValue> get accountState => _accountState;
 
-  final BehaviorSubject<bool> _initialSetupSkipped =
-    BehaviorSubject.seeded(false);
+  final BehaviorSubject<bool> _initialSetupSkipped = BehaviorSubject.seeded(false);
   StreamSubscription<bool>? _initialSetupSkippedSubscription;
   Stream<bool> get initialSetupSkipped => _initialSetupSkipped;
 
-  final PublishSubject<ServerWsEvent> _serverEvents =
-    PublishSubject();
+  final PublishSubject<ServerWsEvent> _serverEvents = PublishSubject();
   StreamSubscription<ServerWsEvent>? _serverEventsSubscription;
   Stream<ServerWsEvent> get serverEvents => _serverEvents;
 
   final PublishSubject<ServerConnectionState> _serverConnectionManagerStateEvents =
-    PublishSubject();
+      PublishSubject();
   StreamSubscription<ServerConnectionState>? _serverConnectionManagerStateEventsSubscription;
   Stream<ServerConnectionState> get serverConnectionState => _serverConnectionManagerStateEvents;
 
@@ -796,11 +817,11 @@ class RepositoryStateStreams {
 
     await _initialSetupSkippedSubscription?.cancel();
     _initialSetupSkippedSubscription = accountDb
-      .accountStream((db) => db.app.watchInitialSetupSkipped())
-      .map((v) => v ?? false)
-      .listen((v) {
-        _initialSetupSkipped.add(v);
-      });
+        .accountStream((db) => db.app.watchInitialSetupSkipped())
+        .map((v) => v ?? false)
+        .listen((v) {
+          _initialSetupSkipped.add(v);
+        });
 
     await _serverEventsSubscription?.cancel();
     _serverEventsSubscription = connectionManager.serverEvents.listen((v) {
@@ -819,8 +840,11 @@ class RepositoryStateStreams {
 }
 
 sealed class AccountStateStreamValue {}
+
 class AccountStateLoading extends AccountStateStreamValue {}
+
 class AccountStateEmpty extends AccountStateStreamValue {}
+
 class AccountStateExists extends AccountStateStreamValue {
   final AccountState state;
   AccountStateExists(this.state);

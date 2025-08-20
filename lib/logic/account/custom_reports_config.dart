@@ -6,6 +6,7 @@ import "package:app/data/login_repository.dart";
 import "package:openapi/api.dart";
 
 sealed class CustomReportsConfigEvent {}
+
 class ConfigChanged extends CustomReportsConfigEvent {
   final CustomReportsConfig value;
   ConfigChanged(this.value);
@@ -20,8 +21,9 @@ class CustomReportsConfigBloc extends Bloc<CustomReportsConfigEvent, CustomRepor
     on<ConfigChanged>((data, emit) async {
       emit(data.value);
     });
-    _configSubscription = db.accountStream((db) => db.config.watchCustomReportsConfig())
-      .listen((value) => add(ConfigChanged(value ?? emptyCustomReportConfig())));
+    _configSubscription = db
+        .accountStream((db) => db.config.watchCustomReportsConfig())
+        .listen((value) => add(ConfigChanged(value ?? emptyCustomReportConfig())));
   }
 
   @override
@@ -32,8 +34,5 @@ class CustomReportsConfigBloc extends Bloc<CustomReportsConfigEvent, CustomRepor
 }
 
 CustomReportsConfig emptyCustomReportConfig() {
-  return CustomReportsConfig(
-    reportOrder: CustomReportsOrderMode.orderNumber,
-    report: [],
-  );
+  return CustomReportsConfig(reportOrder: CustomReportsOrderMode.orderNumber, report: []);
 }

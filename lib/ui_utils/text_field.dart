@@ -1,6 +1,3 @@
-
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:app/localizations.dart';
@@ -34,7 +31,6 @@ class SimpleTextField extends StatefulWidget {
 }
 
 class _SimpleTextFieldState extends State<SimpleTextField> {
-
   @override
   void initState() {
     super.initState();
@@ -47,10 +43,7 @@ class _SimpleTextFieldState extends State<SimpleTextField> {
       child: TextFormField(
         controller: widget.controller,
         obscureText: widget.obscureText,
-        decoration: InputDecoration(
-          icon: null,
-          hintText: widget.hintText,
-        ),
+        decoration: InputDecoration(icon: null, hintText: widget.hintText),
         onChanged: (newValue) {
           widget.onChanged(newValue);
         },
@@ -99,9 +92,7 @@ class _AgeTextFieldState extends State<AgeTextField> {
     return Form(
       child: TextFormField(
         controller: controller,
-        decoration: InputDecoration(
-          hintText: context.strings.generic_text_field_age_hint_text,
-        ),
+        decoration: InputDecoration(hintText: context.strings.generic_text_field_age_hint_text),
         keyboardType: TextInputType.number,
         enableSuggestions: false,
         autocorrect: false,
@@ -109,9 +100,7 @@ class _AgeTextFieldState extends State<AgeTextField> {
         onChanged: (newValue) {
           widget.onChanged(newValue);
         },
-        inputFormatters: [
-          FilteringTextInputFormatter.allow(RegExp("[0-9]")),
-        ],
+        inputFormatters: [FilteringTextInputFormatter.allow(RegExp("[0-9]"))],
       ),
     );
   }

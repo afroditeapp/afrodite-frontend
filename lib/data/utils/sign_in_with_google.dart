@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 import 'dart:io';
 
@@ -35,13 +34,9 @@ class SignInWithGoogleManager {
 
     try {
       if (kIsWeb || Platform.isAndroid) {
-        await GoogleSignIn.instance.initialize(
-          nonce: _hashedNonceBase64Url,
-        );
+        await GoogleSignIn.instance.initialize(nonce: _hashedNonceBase64Url);
       } else if (Platform.isIOS) {
-        await GoogleSignIn.instance.initialize(
-          serverClientId: signInWithGoogleBackendClientId(),
-        );
+        await GoogleSignIn.instance.initialize(serverClientId: signInWithGoogleBackendClientId());
       }
     } catch (_) {
       log.error("Init failed");
@@ -49,34 +44,33 @@ class SignInWithGoogleManager {
     }
 
     if (kIsWeb) {
-      GoogleSignIn
-        .instance
-        .authenticationEvents
-        .asyncMap((signedIn) async {
-          final String token;
-          switch (signedIn) {
-            case GoogleSignInAuthenticationEventSignIn():
-              final possibleToken = signedIn.user.authentication.idToken;
-              if (possibleToken == null) {
-                showSnackBarTextsForSignInWithEvent(SignInWithEvent.getTokenFailed);
+      GoogleSignIn.instance.authenticationEvents
+          .asyncMap((signedIn) async {
+            final String token;
+            switch (signedIn) {
+              case GoogleSignInAuthenticationEventSignIn():
+                final possibleToken = signedIn.user.authentication.idToken;
+                if (possibleToken == null) {
+                  showSnackBarTextsForSignInWithEvent(SignInWithEvent.getTokenFailed);
+                  return;
+                }
+                token = possibleToken;
+              case GoogleSignInAuthenticationEventSignOut():
                 return;
-              }
-              token = possibleToken;
-            case GoogleSignInAuthenticationEventSignOut():
-              return;
-          }
+            }
 
-          final info = SignInWithLoginInfo(
-            google: SignInWithGoogleInfo(nonce: _nonceBase64Url, token: token),
-            clientInfo: LoginRepository.getInstance().clientInfo(),
-          );
-          switch (await LoginRepository.getInstance().handleSignInWithLoginInfo(info)) {
-            case Ok():
-              ();
-            case Err(:final e):
-              showSnackBarTextsForSignInWithEvent(e);
-          }
-        }).listen((_) {});
+            final info = SignInWithLoginInfo(
+              google: SignInWithGoogleInfo(nonce: _nonceBase64Url, token: token),
+              clientInfo: LoginRepository.getInstance().clientInfo(),
+            );
+            switch (await LoginRepository.getInstance().handleSignInWithLoginInfo(info)) {
+              case Ok():
+                ();
+              case Err(:final e):
+                showSnackBarTextsForSignInWithEvent(e);
+            }
+          })
+          .listen((_) {});
     }
 
     _initDone = true;
@@ -103,10 +97,12 @@ class SignInWithGoogleManager {
       return const Err(());
     }
 
-    return Ok(SignInWithLoginInfo(
-      google: SignInWithGoogleInfo(nonce: _nonceBase64Url, token: token),
-      clientInfo: LoginRepository.getInstance().clientInfo(),
-    ));
+    return Ok(
+      SignInWithLoginInfo(
+        google: SignInWithGoogleInfo(nonce: _nonceBase64Url, token: token),
+        clientInfo: LoginRepository.getInstance().clientInfo(),
+      ),
+    );
   }
 
   Future<void> logout() async {

@@ -11,9 +11,7 @@ import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-Future<void> openAutomaticProfileSearchResultsScreen(
-  BuildContext context,
-) {
+Future<void> openAutomaticProfileSearchResultsScreen(BuildContext context) {
   return MyNavigator.push(
     context,
     const MaterialPage<void>(child: AutomaticProfileSearchResultsScreen()),
@@ -23,20 +21,17 @@ Future<void> openAutomaticProfileSearchResultsScreen(
 
 NewPageDetails newAutomaticProfileSearchResultsScreen() {
   return NewPageDetails(
-    const MaterialPage<void>(
-      child: AutomaticProfileSearchResultsScreen(),
-    ),
+    const MaterialPage<void>(child: AutomaticProfileSearchResultsScreen()),
     pageInfo: const AutomaticProfileSearchResultsPageInfo(),
   );
 }
 
 class AutomaticProfileSearchResultsScreen extends StatefulWidget {
-  const AutomaticProfileSearchResultsScreen({
-    super.key,
-  });
+  const AutomaticProfileSearchResultsScreen({super.key});
 
   @override
-  State<AutomaticProfileSearchResultsScreen> createState() => AutomaticProfileSearchResultsScreenState();
+  State<AutomaticProfileSearchResultsScreen> createState() =>
+      AutomaticProfileSearchResultsScreenState();
 }
 
 class AutomaticProfileSearchResultsScreenState extends State<AutomaticProfileSearchResultsScreen> {
@@ -50,9 +45,7 @@ class AutomaticProfileSearchResultsScreenState extends State<AutomaticProfileSea
     }
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(context.strings.automatic_profile_search_results_screen_title),
-      ),
+      appBar: AppBar(title: Text(context.strings.automatic_profile_search_results_screen_title)),
       body: PublicProfileViewingBlocker(
         child: GenericProfileGrid(
           buildIteratorManager: () {

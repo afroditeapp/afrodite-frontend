@@ -1,4 +1,3 @@
-
 import 'package:database_account_background/database_account_background.dart';
 import 'package:database_utils/database_utils.dart';
 import 'package:drift/drift.dart';
@@ -8,20 +7,14 @@ import '../schema.dart' as schema;
 
 part 'app_notification_settings.g.dart';
 
-@DriftAccessor(
-  tables: [
-    schema.AppNotificationSettings,
-  ]
-)
-class DaoWriteAppNotificationSettings extends DatabaseAccessor<AccountBackgroundDatabase> with _$DaoWriteAppNotificationSettingsMixin {
+@DriftAccessor(tables: [schema.AppNotificationSettings])
+class DaoWriteAppNotificationSettings extends DatabaseAccessor<AccountBackgroundDatabase>
+    with _$DaoWriteAppNotificationSettingsMixin {
   DaoWriteAppNotificationSettings(super.db);
 
   Future<void> updateAccountNotificationSettings(api.AccountAppNotificationSettings value) async {
     await into(appNotificationSettings).insertOnConflictUpdate(
-      AppNotificationSettingsCompanion.insert(
-        id: SingleRowTable.ID,
-        news: Value(value.news),
-      ),
+      AppNotificationSettingsCompanion.insert(id: SingleRowTable.ID, news: Value(value.news)),
     );
   }
 

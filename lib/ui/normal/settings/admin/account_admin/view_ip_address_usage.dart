@@ -1,5 +1,3 @@
-
-
 import 'package:app/localizations.dart';
 import 'package:app/logic/account/client_features_config.dart';
 import 'package:app/ui_utils/padding.dart';
@@ -14,10 +12,7 @@ import 'package:openapi/api.dart';
 
 class ViewIpAddressUsageScreen extends StatefulWidget {
   final AccountId accountId;
-  const ViewIpAddressUsageScreen({
-    required this.accountId,
-    super.key,
-  });
+  const ViewIpAddressUsageScreen({required this.accountId, super.key});
 
   @override
   State<ViewIpAddressUsageScreen> createState() => _ViewIpAddressUsageScreenState();
@@ -33,9 +28,12 @@ class _ViewIpAddressUsageScreenState extends State<ViewIpAddressUsageScreen> {
 
   Future<void> _getData() async {
     final result = await api
-      .commonAdmin(
-        (api) => api.postGetIpAddressUsageData(GetIpAddressStatisticsSettings(account: widget.accountId))
-      ).ok();
+        .commonAdmin(
+          (api) => api.postGetIpAddressUsageData(
+            GetIpAddressStatisticsSettings(account: widget.accountId),
+          ),
+        )
+        .ok();
 
     if (!context.mounted) {
       return;
@@ -64,9 +62,7 @@ class _ViewIpAddressUsageScreenState extends State<ViewIpAddressUsageScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("IP address usage"),
-      ),
+      appBar: AppBar(title: const Text("IP address usage")),
       body: screenContent(context),
     );
   }
@@ -74,9 +70,7 @@ class _ViewIpAddressUsageScreenState extends State<ViewIpAddressUsageScreen> {
   Widget screenContent(BuildContext context) {
     final currentData = data;
     if (isLoading) {
-      return const Center(
-        child: CircularProgressIndicator(),
-      );
+      return const Center(child: CircularProgressIndicator());
     } else if (isError || currentData == null) {
       return Center(child: Text(context.strings.generic_error));
     } else {
@@ -94,7 +88,10 @@ class _ViewIpAddressUsageScreenState extends State<ViewIpAddressUsageScreen> {
       widgets.add(const Padding(padding: EdgeInsets.all(8.0)));
     }
 
-    final ipCountryDataAttribution = context.read<ClientFeaturesConfigBloc>().state.ipCountryDataAttribution(context);
+    final ipCountryDataAttribution = context
+        .read<ClientFeaturesConfigBloc>()
+        .state
+        .ipCountryDataAttribution(context);
     if (ipCountryDataAttribution != null) {
       widgets.add(hPad(SelectableText(ipCountryDataAttribution)));
     }

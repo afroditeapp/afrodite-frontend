@@ -1,4 +1,3 @@
-
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
@@ -13,6 +12,7 @@ class ProfileThumbnailImage extends StatelessWidget {
   final AccountId accountId;
   final ContentId contentId;
   final CropArea cropArea;
+
   /// 1.0 means square image, 0.0 means original aspect ratio
   final double squareFactor;
   final double? width;
@@ -33,12 +33,12 @@ class ProfileThumbnailImage extends StatelessWidget {
     required this.cacheSize,
     super.key,
   }) : _imageProvider = AccountImageProvider.create(
-      accountId,
-      contentId,
-      cacheSize: cacheSize,
-      media: LoginRepository.getInstance().repositories.media,
-      cropArea: cropArea,
-    );
+         accountId,
+         contentId,
+         cacheSize: cacheSize,
+         media: LoginRepository.getInstance().repositories.media,
+         cropArea: cropArea,
+       );
 
   ProfileThumbnailImage.fromAccountImageId({
     required AccountImageId img,
@@ -47,20 +47,22 @@ class ProfileThumbnailImage extends StatelessWidget {
     double? height,
     Widget? child,
     double squareFactor = 1.0,
-    BorderRadius borderRadius = const BorderRadius.all(Radius.circular(PROFILE_PICTURE_BORDER_RADIUS)),
+    BorderRadius borderRadius = const BorderRadius.all(
+      Radius.circular(PROFILE_PICTURE_BORDER_RADIUS),
+    ),
     required ImageCacheSize cacheSize,
     Key? key,
   }) : this(
-    accountId: img.accountId,
-    contentId: img.contentId,
-    width: width,
-    height: height,
-    child: child,
-    squareFactor: squareFactor,
-    borderRadius: borderRadius,
-    cacheSize: cacheSize,
-    key: key,
-  );
+         accountId: img.accountId,
+         contentId: img.contentId,
+         width: width,
+         height: height,
+         child: child,
+         squareFactor: squareFactor,
+         borderRadius: borderRadius,
+         cacheSize: cacheSize,
+         key: key,
+       );
 
   @override
   Widget build(BuildContext context) {
@@ -70,21 +72,13 @@ class ProfileThumbnailImage extends StatelessWidget {
         width: width,
         height: height,
         child: Container(
-          decoration: BoxDecoration(
-            borderRadius: borderRadius,
-          ),
+          decoration: BoxDecoration(borderRadius: borderRadius),
           clipBehavior: Clip.hardEdge,
           child: Image(
             image: _imageProvider,
             frameBuilder: (context, image, frame, wasSynchronouslyLoaded) {
               final loadingReady = Center(
-                child: Stack(
-                  alignment: AlignmentDirectional.center,
-                  children: [
-                    image,
-                    ?child,
-                  ],
-                ),
+                child: Stack(alignment: AlignmentDirectional.center, children: [image, ?child]),
               );
               if (frame == null && wasSynchronouslyLoaded) {
                 return loadingReady;
@@ -102,7 +96,7 @@ class ProfileThumbnailImage extends StatelessWidget {
                 );
               }
             },
-          )
+          ),
         ),
       ),
     );
@@ -113,11 +107,7 @@ class CroppedImagePainter {
   final ui.Image img;
   final CropArea cropArea;
   final double squareFactor;
-  CroppedImagePainter(
-    this.img,
-    this.cropArea,
-    this.squareFactor,
-  );
+  CroppedImagePainter(this.img, this.cropArea, this.squareFactor);
 
   Rect calculateSrcRect() {
     final squareRect = _calculateSquareSrcRect(img, cropArea);
@@ -136,12 +126,7 @@ Rect _calculateSquareSrcRect(ui.Image img, CropArea cropArea) {
   final xOffset = img.width.toDouble() * cropArea.gridCropX;
   final yOffset = img.height.toDouble() * cropArea.gridCropY;
 
-  final src = Rect.fromLTWH(
-    xOffset,
-    yOffset,
-    areaWidth,
-    areaWidth,
-  );
+  final src = Rect.fromLTWH(xOffset, yOffset, areaWidth, areaWidth);
 
   return src;
 }

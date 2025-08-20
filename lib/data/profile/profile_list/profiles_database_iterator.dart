@@ -9,6 +9,8 @@ class ProfileListDatabaseIterator extends BaseDatabaseIterator {
   ProfileListDatabaseIterator({required super.db});
 
   @override
-  Future<Result<List<AccountId>, DatabaseError>> getAccountListFromDatabase(int startIndex, int limit) =>
-    db.accountData((db) => db.profile.getProfileGridList(startIndex, limit));
+  Future<Result<List<AccountId>, DatabaseError>> getAccountListFromDatabase(
+    int startIndex,
+    int limit,
+  ) => db.accountData((db) => db.profile.getProfileGridList(startIndex, limit));
 }

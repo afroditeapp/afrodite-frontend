@@ -9,36 +9,39 @@ import "package:app/ui_utils/snack_bar.dart";
 import "package:app/utils.dart";
 import "package:app/utils/result.dart";
 
-
 var log = Logger("DemoAccountBloc");
 
 abstract class DemoAccountLoginEvent {}
+
 class DoDemoAccountLogin extends DemoAccountLoginEvent {
   final DemoAccountCredentials credentials;
   DoDemoAccountLogin(this.credentials);
 }
+
 class NewDemoAccountUsernameValue extends DemoAccountLoginEvent {
   final String? value;
   NewDemoAccountUsernameValue(this.value);
 }
+
 class NewDemoAccountPasswordValue extends DemoAccountLoginEvent {
   final String? value;
   NewDemoAccountPasswordValue(this.value);
 }
+
 class NewLoginProgressValue extends DemoAccountLoginEvent {
   final bool value;
   NewLoginProgressValue(this.value);
 }
 
-class DemoAccountLoginBloc extends Bloc<DemoAccountLoginEvent, DemoAccountLoginData> with ActionRunner {
+class DemoAccountLoginBloc extends Bloc<DemoAccountLoginEvent, DemoAccountLoginData>
+    with ActionRunner {
   final LoginRepository login = LoginRepository.getInstance();
 
   StreamSubscription<String?>? usernameSubscription;
   StreamSubscription<String?>? passwordSubscription;
   StreamSubscription<bool>? demoAccountLoginSubscription;
 
-  DemoAccountLoginBloc() :
-    super(DemoAccountLoginData()) {
+  DemoAccountLoginBloc() : super(DemoAccountLoginData()) {
     on<DoDemoAccountLogin>((data, emit) async {
       switch (await login.demoAccountLogin(data.credentials)) {
         case Ok():

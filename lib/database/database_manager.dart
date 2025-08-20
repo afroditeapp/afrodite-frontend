@@ -1,4 +1,3 @@
-
 import 'dart:async';
 
 import 'package:database_provider/database_provider.dart';
@@ -42,14 +41,8 @@ class DatabaseManager extends AppSingleton {
     // related things.
     await backgroundDbManager.init();
 
-    commonLazyDatabase = DbProvider(
-      CommonDbFile(),
-      doSqlchipherInit: false,
-      backgroundDb: false,
-    );
-    commonDatabase = CommonForegroundDatabase(
-      commonLazyDatabase,
-    );
+    commonLazyDatabase = DbProvider(CommonDbFile(), doSqlchipherInit: false, backgroundDb: false);
+    commonDatabase = CommonForegroundDatabase(commonLazyDatabase);
   }
 
   // Common database
@@ -66,7 +59,10 @@ class DatabaseManager extends AppSingleton {
     });
   }
 
-  Stream<T> commonStreamOrDefault<T extends Object>(Stream<T?> Function(CommonForegroundDatabaseRead) mapper, T defaultValue) async* {
+  Stream<T> commonStreamOrDefault<T extends Object>(
+    Stream<T?> Function(CommonForegroundDatabaseRead) mapper,
+    T defaultValue,
+  ) async* {
     final stream = commonStream(mapper);
     yield* stream.map((event) {
       if (event == null) {
@@ -82,12 +78,17 @@ class DatabaseManager extends AppSingleton {
     return await stream.first;
   }
 
-  Future<T> commonStreamSingleOrDefault<T extends Object>(Stream<T?> Function(CommonForegroundDatabaseRead) mapper, T defaultValue) async {
+  Future<T> commonStreamSingleOrDefault<T extends Object>(
+    Stream<T?> Function(CommonForegroundDatabaseRead) mapper,
+    T defaultValue,
+  ) async {
     final first = await commonStreamSingle(mapper);
     return first ?? defaultValue;
   }
 
-  Future<Result<(), DatabaseError>> commonAction(Future<void> Function(CommonForegroundDatabaseWrite) action) async {
+  Future<Result<(), DatabaseError>> commonAction(
+    Future<void> Function(CommonForegroundDatabaseWrite) action,
+  ) async {
     try {
       await action(commonDatabase.write);
       return const Ok(());
@@ -125,12 +126,12 @@ class DatabaseManager extends AppSingleton {
     }
   }
 
-  Future<Result<(), AppError>> setAccountId(AccountId accountId) =>
-    backgroundDbManager
+  Future<Result<(), AppError>> setAccountId(AccountId accountId) => backgroundDbManager
       .setAccountId(accountId)
-      .andThen((_) =>
-        getAccountDatabaseManager(accountId)
-          .accountAction((db) => db.loginSession.setAccountIdIfNull(accountId))
+      .andThen(
+        (_) => getAccountDatabaseManager(
+          accountId,
+        ).accountAction((db) => db.loginSession.setAccountIdIfNull(accountId)),
       );
 
   // NOTE: This is not used as there is no good location for calling this

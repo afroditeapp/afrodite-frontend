@@ -1,5 +1,3 @@
-
-
 import 'dart:io';
 
 import 'package:app/data/general/notification/utils/notification_category.dart';
@@ -83,26 +81,31 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
               if (didPop) {
                 return;
               }
-              showConfirmDialog(context, context.strings.generic_save_confirmation_title, yesNoActions: true)
-                .then((value) {
-                  if (value == true) {
-                    widget.notificationSettingsBloc.add(SaveSettings());
-                  } else if (value == false && context.mounted) {
-                    widget.notificationSettingsBloc.add(ResetEditedValues());
-                    MyNavigator.pop(context);
-                  }
-                });
+              showConfirmDialog(
+                context,
+                context.strings.generic_save_confirmation_title,
+                yesNoActions: true,
+              ).then((value) {
+                if (value == true) {
+                  widget.notificationSettingsBloc.add(SaveSettings());
+                } else if (value == false && context.mounted) {
+                  widget.notificationSettingsBloc.add(ResetEditedValues());
+                  MyNavigator.pop(context);
+                }
+              });
             },
             child: Scaffold(
               appBar: AppBar(title: Text(context.strings.notification_settings_screen_title)),
               body: content(context, data),
-              floatingActionButton: dataEditingDetected ? FloatingActionButton(
-                onPressed: () => widget.notificationSettingsBloc.add(SaveSettings()),
-                child: const Icon(Icons.check),
-              ) : null
+              floatingActionButton: dataEditingDetected
+                  ? FloatingActionButton(
+                      onPressed: () => widget.notificationSettingsBloc.add(SaveSettings()),
+                      child: const Icon(Icons.check),
+                    )
+                  : null,
             ),
           );
-        }
+        },
       ),
     );
   }
@@ -111,7 +114,7 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
     return BlocBuilder<ClientFeaturesConfigBloc, ClientFeaturesConfigData>(
       builder: (context, features) {
         return contentWidget(context, features.config, state);
-      }
+      },
     );
   }
 
@@ -123,18 +126,12 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
     final List<Widget> settingsList;
     if (state.areNotificationsEnabled) {
       final settings = [
-        [
-          messages(context, state),
-          likes(context, state),
-        ],
+        [messages(context, state), likes(context, state)],
         [
           mediaContentModerationCompleted(context, state),
           profileStringModerationCompleted(context, state),
         ],
-        [
-          if (features.news != null) news(context, state),
-          automaticProfileSearch(context, state),
-        ]
+        [if (features.news != null) news(context, state), automaticProfileSearch(context, state)],
       ];
       for (final group in settings) {
         if (Platform.isAndroid) {
@@ -160,16 +157,19 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
     } else {
       settingsList = [
         const Padding(padding: EdgeInsets.all(4)),
-        hPad(Text(context.strings.notification_settings_screen_notifications_disabled_from_system_settings_text)),
+        hPad(
+          Text(
+            context
+                .strings
+                .notification_settings_screen_notifications_disabled_from_system_settings_text,
+          ),
+        ),
         const Padding(padding: EdgeInsets.all(4)),
       ];
     }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        ...settingsList,
-        actionOpenSystemNotificationSettings(),
-      ],
+      children: [...settingsList, actionOpenSystemNotificationSettings()],
     );
   }
 
@@ -199,7 +199,10 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
     return (category, widget);
   }
 
-  (NotificationCategory, Widget) mediaContentModerationCompleted(BuildContext context, NotificationSettingsData state) {
+  (NotificationCategory, Widget) mediaContentModerationCompleted(
+    BuildContext context,
+    NotificationSettingsData state,
+  ) {
     const category = NotificationCategoryMediaContentModerationCompleted();
     final widget = categorySwitch(
       title: category.title,
@@ -212,7 +215,10 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
     return (category, widget);
   }
 
-  (NotificationCategory, Widget) profileStringModerationCompleted(BuildContext context, NotificationSettingsData state) {
+  (NotificationCategory, Widget) profileStringModerationCompleted(
+    BuildContext context,
+    NotificationSettingsData state,
+  ) {
     const category = NotificationCategoryProfileStringModerationCompleted();
     final widget = categorySwitch(
       title: category.title,
@@ -238,7 +244,10 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
     return (category, widget);
   }
 
-  (NotificationCategory, Widget) automaticProfileSearch(BuildContext context, NotificationSettingsData state) {
+  (NotificationCategory, Widget) automaticProfileSearch(
+    BuildContext context,
+    NotificationSettingsData state,
+  ) {
     const category = NotificationCategoryAutomaticProfileSearch();
     final widget = categorySwitch(
       title: category.title,
@@ -261,14 +270,12 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
     );
   }
 
-  Widget categorySwitch(
-    {
-      required String title,
-      required bool isEnabled,
-      required bool isEnabledFromSystemSettings,
-      required void Function(bool) onChanged,
-    }
-  ) {
+  Widget categorySwitch({
+    required String title,
+    required bool isEnabled,
+    required bool isEnabledFromSystemSettings,
+    required void Function(bool) onChanged,
+  }) {
     final bool isEnabledValue;
     final void Function(bool)? onChangedValue;
     final Widget? subtitle;
@@ -279,7 +286,11 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
     } else {
       isEnabledValue = false;
       onChangedValue = null;
-      subtitle = Text(context.strings.notification_settings_screen_notification_category_disabled_from_system_settings_text);
+      subtitle = Text(
+        context
+            .strings
+            .notification_settings_screen_notification_category_disabled_from_system_settings_text,
+      );
     }
 
     return SwitchListTile(

@@ -1,4 +1,3 @@
-
 import 'package:app/localizations.dart';
 import 'package:app/ui_utils/padding.dart';
 import 'package:app/utils/api.dart';
@@ -19,7 +18,6 @@ class ServerTasksScreen extends StatefulWidget {
 }
 
 class _ServerTasksScreenState extends State<ServerTasksScreen> {
-
   ManagerInstanceNameList? _managers;
   List<ManagerInstanceRelatedState>? _currentData = [];
   final api = LoginRepository.getInstance().repositories.api;
@@ -59,16 +57,10 @@ class _ServerTasksScreenState extends State<ServerTasksScreen> {
   @override
   Widget build(BuildContext context) {
     List<Widget> actions = [];
-    actions.add(IconButton(
-      onPressed: _refreshData,
-      icon: const Icon(Icons.refresh),
-    ));
+    actions.add(IconButton(onPressed: _refreshData, icon: const Icon(Icons.refresh)));
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Server tasks"),
-        actions: actions,
-      ),
+      appBar: AppBar(title: const Text("Server tasks"), actions: actions),
       body: displayState(),
     );
   }
@@ -76,9 +68,7 @@ class _ServerTasksScreenState extends State<ServerTasksScreen> {
   Widget displayState() {
     final data = _currentData;
     if (isLoading) {
-      return const Center(
-        child: CircularProgressIndicator(),
-      );
+      return const Center(child: CircularProgressIndicator());
     } else if (_managers == null || data == null) {
       return Center(child: Text(context.strings.generic_error));
     } else {
@@ -118,14 +108,40 @@ class _ServerTasksScreenState extends State<ServerTasksScreen> {
         hPad(Text("Tasks", style: Theme.of(context).textTheme.titleLarge)),
         const Padding(padding: EdgeInsets.only(top: 8.0)),
         if (widget.permissions.adminServerMaintenanceRestartBackend)
-          hPad(actionButton(context, data, "Backend restart", null, (api) => api.postTriggerBackendRestart(data.manager))),
+          hPad(
+            actionButton(
+              context,
+              data,
+              "Backend restart",
+              null,
+              (api) => api.postTriggerBackendRestart(data.manager),
+            ),
+          ),
         if (widget.permissions.adminServerMaintenanceRestartBackend)
-          hPad(actionButton(context, data, "System reboot", null, (api) => api.postTriggerSystemReboot(data.manager))),
+          hPad(
+            actionButton(
+              context,
+              data,
+              "System reboot",
+              null,
+              (api) => api.postTriggerSystemReboot(data.manager),
+            ),
+          ),
         if (widget.permissions.adminServerMaintenanceResetData)
-          hPad(actionButton(context, data, "Reset data", null, (api) => api.postTriggerBackendDataReset(data.manager))),
+          hPad(
+            actionButton(
+              context,
+              data,
+              "Reset data",
+              null,
+              (api) => api.postTriggerBackendDataReset(data.manager),
+            ),
+          ),
         const Padding(padding: EdgeInsets.only(top: 8.0)),
-        if (widget.permissions.adminServerMaintenanceRestartBackend && status == null) hPad(Text(context.strings.generic_error)),
-        if (widget.permissions.adminServerMaintenanceRestartBackend && status != null) displayScheduledtasks(context, data, status),
+        if (widget.permissions.adminServerMaintenanceRestartBackend && status == null)
+          hPad(Text(context.strings.generic_error)),
+        if (widget.permissions.adminServerMaintenanceRestartBackend && status != null)
+          displayScheduledtasks(context, data, status),
       ],
     );
   }
@@ -161,23 +177,39 @@ class _ServerTasksScreenState extends State<ServerTasksScreen> {
     widgets.add(hPad(Text(restartBackendTitle, style: Theme.of(context).textTheme.titleMedium)));
     widgets.add(const Padding(padding: EdgeInsets.all(8.0)));
     if (backendRestart != null) {
-      widgets.add(displayMaintenanceTaskState(context, state, restartBackendTitle, backendRestart, restartBackendTaskType));
+      widgets.add(
+        displayMaintenanceTaskState(
+          context,
+          state,
+          restartBackendTitle,
+          backendRestart,
+          restartBackendTaskType,
+        ),
+      );
       widgets.add(const Padding(padding: EdgeInsets.all(8.0)));
     } else {
-      widgets.add(hPad(actionButton(
-        context,
-        state,
-        "Schedule",
-        restartBackendTitle,
-        (api) => api.postScheduleTask(state.manager, restartBackendTaskType, true)
-      )));
-      widgets.add(hPad(actionButton(
-        context,
-        state,
-        "Schedule hidden",
-        restartBackendTitle,
-        (api) => api.postScheduleTask(state.manager, restartBackendTaskType, false)
-      )));
+      widgets.add(
+        hPad(
+          actionButton(
+            context,
+            state,
+            "Schedule",
+            restartBackendTitle,
+            (api) => api.postScheduleTask(state.manager, restartBackendTaskType, true),
+          ),
+        ),
+      );
+      widgets.add(
+        hPad(
+          actionButton(
+            context,
+            state,
+            "Schedule hidden",
+            restartBackendTitle,
+            (api) => api.postScheduleTask(state.manager, restartBackendTaskType, false),
+          ),
+        ),
+      );
     }
 
     const systemRebootTitle = "System reboot";
@@ -186,23 +218,39 @@ class _ServerTasksScreenState extends State<ServerTasksScreen> {
     widgets.add(hPad(Text(systemRebootTitle, style: Theme.of(context).textTheme.titleMedium)));
     widgets.add(const Padding(padding: EdgeInsets.all(8.0)));
     if (systemReboot != null) {
-      widgets.add(displayMaintenanceTaskState(context, state, systemRebootTitle, systemReboot, systemRebootTaskType));
+      widgets.add(
+        displayMaintenanceTaskState(
+          context,
+          state,
+          systemRebootTitle,
+          systemReboot,
+          systemRebootTaskType,
+        ),
+      );
       widgets.add(const Padding(padding: EdgeInsets.all(8.0)));
     } else {
-      widgets.add(hPad(actionButton(
-        context,
-        state,
-        "Schedule",
-        systemRebootTitle,
-        (api) => api.postScheduleTask(state.manager, systemRebootTaskType, true)
-      )));
-      widgets.add(hPad(actionButton(
-        context,
-        state,
-        "Schedule hidden",
-        systemRebootTitle,
-        (api) => api.postScheduleTask(state.manager, systemRebootTaskType, false)
-      )));
+      widgets.add(
+        hPad(
+          actionButton(
+            context,
+            state,
+            "Schedule",
+            systemRebootTitle,
+            (api) => api.postScheduleTask(state.manager, systemRebootTaskType, true),
+          ),
+        ),
+      );
+      widgets.add(
+        hPad(
+          actionButton(
+            context,
+            state,
+            "Schedule hidden",
+            systemRebootTitle,
+            (api) => api.postScheduleTask(state.manager, systemRebootTaskType, false),
+          ),
+        ),
+      );
     }
 
     return widgets;
@@ -225,13 +273,15 @@ class _ServerTasksScreenState extends State<ServerTasksScreen> {
         hPad(Text("Notify backend", style: Theme.of(context).textTheme.titleSmall)),
         hPad(Text(info.notifyBackend.toString())),
         const Padding(padding: EdgeInsets.all(8.0)),
-        hPad(actionButton(
-          context,
-          state,
-          "Unschedule",
-          title,
-          (api) => api.postUnscheduleTask(state.manager, taskType)
-        )),
+        hPad(
+          actionButton(
+            context,
+            state,
+            "Unschedule",
+            title,
+            (api) => api.postUnscheduleTask(state.manager, taskType),
+          ),
+        ),
       ],
     );
   }
@@ -251,20 +301,19 @@ class _ServerTasksScreenState extends State<ServerTasksScreen> {
     }
     return ElevatedButton(
       onPressed: () {
-        showConfirmDialog(context, buttonTitle)
-          .then((value) async {
-            if (value == true) {
-              final result = await api.commonAdminAction(action);
-              if (result case Ok()) {
-                showSnackBar("Action successful");
-              } else {
-                showSnackBar("Action failed");
-              }
-              if (context.mounted) {
-                await _refreshData();
-              }
+        showConfirmDialog(context, buttonTitle).then((value) async {
+          if (value == true) {
+            final result = await api.commonAdminAction(action);
+            if (result case Ok()) {
+              showSnackBar("Action successful");
+            } else {
+              showSnackBar("Action failed");
             }
-          });
+            if (context.mounted) {
+              await _refreshData();
+            }
+          }
+        });
       },
       child: Text(title),
     );

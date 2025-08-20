@@ -1,5 +1,3 @@
-
-
 import 'dart:collection';
 import 'dart:math';
 
@@ -49,9 +47,10 @@ class MetricGroupManager {
   bool initialUpdateDone = false;
 
   void updateData(List<Metric> newData) {
-    data = newData.map((v) => MetricAndMinMaxValues.create(v))
-      .whereType<MetricAndMinMaxValues>()
-      .toList();
+    data = newData
+        .map((v) => MetricAndMinMaxValues.create(v))
+        .whereType<MetricAndMinMaxValues>()
+        .toList();
 
     groups = LinkedHashSet();
 
@@ -140,13 +139,13 @@ class ViewMultipleMetricsController extends BaseDataManager {
     }
     selectedMin = newMin.clamp(minDataValue, maxDataValue);
     selectedMax = newMax.clamp(minDataValue, maxDataValue);
-    filteredList = data
-      .indexed
-      .where((indexAndMetric) {
-        return indexAndMetric.$2.minValue >= selectedMin && indexAndMetric.$2.maxValue <= selectedMax;
-      })
-      .map((v) => (v.$1, v.$2.metric))
-      .toList();
+    filteredList = data.indexed
+        .where((indexAndMetric) {
+          return indexAndMetric.$2.minValue >= selectedMin &&
+              indexAndMetric.$2.maxValue <= selectedMax;
+        })
+        .map((v) => (v.$1, v.$2.metric))
+        .toList();
     xMinFiltered = double.maxFinite;
     xMaxFiltered = -double.maxFinite;
     for (final (_, m) in filteredList) {
@@ -172,8 +171,8 @@ class ViewMultipleMetrics extends StatefulWidget {
   State<ViewMultipleMetrics> createState() => _ViewMultipleMetricsState();
 }
 
-class _ViewMultipleMetricsState extends State<ViewMultipleMetrics> with RefreshSupport<ViewMultipleMetrics> {
-
+class _ViewMultipleMetricsState extends State<ViewMultipleMetrics>
+    with RefreshSupport<ViewMultipleMetrics> {
   @override
   BaseDataManager get baseDataManager => widget.controller;
 
@@ -187,13 +186,12 @@ class _ViewMultipleMetricsState extends State<ViewMultipleMetrics> with RefreshS
 
     final Widget metricsViewer;
     if (filteredMetrics.isEmpty) {
-      metricsViewer = const Center(
-        child: Text("No data"),
-      );
+      metricsViewer = const Center(child: Text("No data"));
     } else {
       final showValueListIfNull = filteredMetrics.firstWhereOrNull((v) {
         final metricWithMultipleValues = v.$2.getValues().length > 1;
-        final differentXValue = v.$2.getValues().first.x != filteredMetrics.first.$2.getValues().first.x;
+        final differentXValue =
+            v.$2.getValues().first.x != filteredMetrics.first.$2.getValues().first.x;
         return metricWithMultipleValues || differentXValue;
       });
       if (showValueListIfNull == null) {
@@ -205,24 +203,28 @@ class _ViewMultipleMetricsState extends State<ViewMultipleMetrics> with RefreshS
 
     return Column(
       children: [
-        if (widget.controller.group.groups.length > 1) SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            spacing: 8,
-            children: widget.controller.group.groups
-              .map((v) => FilterChip(
-                label: Text(v),
-                selected: v == widget.controller.group.selectedGroup,
-                onSelected: (value) {
-                  if (value) {
-                    setState(() {
-                      widget.controller.updateGroupSelection(v);
-                    });
-                  }
-                },
-              )
-            ).toList()),
-        ),
+        if (widget.controller.group.groups.length > 1)
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              spacing: 8,
+              children: widget.controller.group.groups
+                  .map(
+                    (v) => FilterChip(
+                      label: Text(v),
+                      selected: v == widget.controller.group.selectedGroup,
+                      onSelected: (value) {
+                        if (value) {
+                          setState(() {
+                            widget.controller.updateGroupSelection(v);
+                          });
+                        }
+                      },
+                    ),
+                  )
+                  .toList(),
+            ),
+          ),
         RangeSlider(
           values: RangeValues(widget.controller.selectedMin, widget.controller.selectedMax),
           min: widget.controller.minDataValue,
@@ -233,55 +235,59 @@ class _ViewMultipleMetricsState extends State<ViewMultipleMetrics> with RefreshS
             });
           },
         ),
-        hPad(Row(
-          children: [
-            Text("${widget.controller.minDataValue}"),
-            Spacer(),
-            Text("${widget.controller.selectedMin.toStringAsFixed(0)}, ${widget.controller.selectedMax.toStringAsFixed(0)}"),
-            Spacer(),
-            Text("${widget.controller.maxDataValue}"),
-          ],
-        )),
-        if (widget.controller.showTextFieldControls) hPad(Row(
-          spacing: 8,
-          children: [
-            Expanded(
-              child: TextField(
-                onChanged: (value) {
-                    final number = double.tryParse(value);
-                    if (number != null) {
-                      setState(() {
-                        widget.controller.refreshSelected(number, widget.controller.selectedMax);
-                      });
-                    }
-                },
-                onTapOutside: (_) {
-                  FocusScope.of(context).unfocus();
-                },
+        hPad(
+          Row(
+            children: [
+              Text("${widget.controller.minDataValue}"),
+              Spacer(),
+              Text(
+                "${widget.controller.selectedMin.toStringAsFixed(0)}, ${widget.controller.selectedMax.toStringAsFixed(0)}",
               ),
+              Spacer(),
+              Text("${widget.controller.maxDataValue}"),
+            ],
+          ),
+        ),
+        if (widget.controller.showTextFieldControls)
+          hPad(
+            Row(
+              spacing: 8,
+              children: [
+                Expanded(
+                  child: TextField(
+                    onChanged: (value) {
+                      final number = double.tryParse(value);
+                      if (number != null) {
+                        setState(() {
+                          widget.controller.refreshSelected(number, widget.controller.selectedMax);
+                        });
+                      }
+                    },
+                    onTapOutside: (_) {
+                      FocusScope.of(context).unfocus();
+                    },
+                  ),
+                ),
+                Expanded(
+                  child: TextField(
+                    onChanged: (value) {
+                      final number = double.tryParse(value);
+                      if (number != null) {
+                        setState(() {
+                          widget.controller.refreshSelected(widget.controller.selectedMin, number);
+                        });
+                      }
+                    },
+                    onTapOutside: (_) {
+                      FocusScope.of(context).unfocus();
+                    },
+                  ),
+                ),
+              ],
             ),
-            Expanded(
-              child: TextField(
-                onChanged: (value) {
-                    final number = double.tryParse(value);
-                    if (number != null) {
-                      setState(() {
-                        widget.controller.refreshSelected(widget.controller.selectedMin, number);
-                      });
-                    }
-                },
-                onTapOutside: (_) {
-                  FocusScope.of(context).unfocus();
-                },
-              ),
-            ),
-          ],
-        )),
+          ),
         Expanded(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: metricsViewer,
-          )
+          child: Padding(padding: const EdgeInsets.all(8.0), child: metricsViewer),
         ),
       ],
     );
@@ -290,22 +296,19 @@ class _ViewMultipleMetricsState extends State<ViewMultipleMetrics> with RefreshS
   Widget getList(BuildContext context, List<(int, Metric)> values) {
     final sortedValues = [...values];
     sortedValues.sortBy((v) => v.$2.getValues().first.y);
-    final text = sortedValues.reversed.map((v) => "${v.$2.name}: ${v.$2.getValues().first.y.toInt()}").join("\n");
+    final text = sortedValues.reversed
+        .map((v) => "${v.$2.name}: ${v.$2.getValues().first.y.toInt()}")
+        .join("\n");
     return SingleChildScrollView(
       padding: EdgeInsets.all(8),
-      child: Align(
-        alignment: AlignmentDirectional.topStart,
-        child: Text(text),
-      ),
+      child: Align(alignment: AlignmentDirectional.topStart, child: Text(text)),
     );
   }
 
   Widget getChart(BuildContext context, List<(int, Metric)> values) {
-    final data = values.map((e) => LineChartBarData(
-      spots: e.$2.getValues(),
-      isCurved: false,
-      barWidth: 4,
-    )).toList();
+    final data = values
+        .map((e) => LineChartBarData(spots: e.$2.getValues(), isCurved: false, barWidth: 4))
+        .toList();
 
     final xMin = widget.controller.xMinFiltered;
     final xMax = widget.controller.xMaxFiltered;
@@ -324,38 +327,30 @@ class _ViewMultipleMetricsState extends State<ViewMultipleMetrics> with RefreshS
                 final name = values[touchedSpot.barIndex].$2.name;
                 final utcTime = UnixTime(ut: touchedSpot.x.toInt()).toUtcDateTime();
                 final time = "$name, ${timeString(utcTime)}, ${touchedSpot.y.toInt()}";
-                return LineTooltipItem(
-                  time,
-                  Theme.of(context).textTheme.labelLarge!,
-                );
+                return LineTooltipItem(time, Theme.of(context).textTheme.labelLarge!);
               }).toList();
             },
           ),
         ),
         lineBarsData: data,
         titlesData: FlTitlesData(
-          topTitles: const AxisTitles(
-            sideTitles: SideTitles(showTitles: false),
-          ),
+          topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
           bottomTitles: AxisTitles(
             sideTitles: SideTitles(
               showTitles: true,
               reservedSize: 44,
               interval: xAxisTitleInterval != 0 ? xAxisTitleInterval : null,
               getTitlesWidget: (value, meta) {
-                final upperTimeText = value == xMin || value == xMax || (value >= xAxisCenterAreaMin && value <= xAxisCenterAreaMax);
+                final upperTimeText =
+                    value == xMin ||
+                    value == xMax ||
+                    (value >= xAxisCenterAreaMin && value <= xAxisCenterAreaMax);
                 final utcTime = UnixTime(ut: value.toInt()).toUtcDateTime();
                 final timeText = timeString(utcTime);
                 if (upperTimeText) {
-                  return Padding(
-                    padding: const EdgeInsets.only(top: 4),
-                    child: Text(timeText),
-                  );
+                  return Padding(padding: const EdgeInsets.only(top: 4), child: Text(timeText));
                 } else {
-                  return Padding(
-                    padding: const EdgeInsets.only(top: 22),
-                    child: Text(timeText),
-                  );
+                  return Padding(padding: const EdgeInsets.only(top: 22), child: Text(timeText));
                 }
               },
             ),
@@ -386,11 +381,7 @@ class ViewMultipleMetricsActions extends StatelessWidget {
           onPressed: () async {
             final visibleMetrics = controller.filteredList.map((v) => v.$2.name).join("\n");
             final text = "Visible metrics:\n$visibleMetrics";
-            await showInfoDialog(
-              context,
-              text,
-              scrollable: true,
-            );
+            await showInfoDialog(context, text, scrollable: true);
           },
           icon: const Icon(Icons.info),
         ),

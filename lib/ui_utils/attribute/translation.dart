@@ -1,4 +1,3 @@
-
 import 'package:openapi/api.dart';
 
 class AttributeTranslation {

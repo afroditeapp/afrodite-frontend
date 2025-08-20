@@ -11,6 +11,7 @@ class NewChatInfoDialogShownValue extends InfoDialogEvent {
   final bool value;
   NewChatInfoDialogShownValue(this.value);
 }
+
 class MarkChatInfoDialogShown extends InfoDialogEvent {}
 
 class InfoDialogBloc extends Bloc<InfoDialogEvent, InfoDialogData> {
@@ -18,16 +19,16 @@ class InfoDialogBloc extends Bloc<InfoDialogEvent, InfoDialogData> {
   StreamSubscription<bool?>? _chatInfoDialogShownSubscription;
 
   InfoDialogBloc() : super(InfoDialogData(false)) {
-    on<NewChatInfoDialogShownValue>((data, emit) =>
-      emit(InfoDialogData(data.value)
-    ));
+    on<NewChatInfoDialogShownValue>((data, emit) => emit(InfoDialogData(data.value)));
     on<MarkChatInfoDialogShown>((_, emit) async {
       await commonDb.commonAction((db) => db.app.updateChatInfoDialogShown(true));
     });
 
-    _chatInfoDialogShownSubscription = commonDb.commonStream((db) => db.app.watchChatInfoDialogShown()).listen((state) {
-      add(NewChatInfoDialogShownValue(state ?? false));
-    });
+    _chatInfoDialogShownSubscription = commonDb
+        .commonStream((db) => db.app.watchChatInfoDialogShown())
+        .listen((state) {
+          add(NewChatInfoDialogShownValue(state ?? false));
+        });
   }
 
   @override

@@ -1,8 +1,8 @@
-
 import 'dart:typed_data';
 
 import 'package:app/data/utils/web_api_empty.dart'
-  if (dart.library.js_interop) 'package:web/web.dart' show window;
+    if (dart.library.js_interop) 'package:web/web.dart'
+    show window;
 import 'package:utils/utils.dart';
 
 Uri signInWithAppleRedirectUrlForWeb() {

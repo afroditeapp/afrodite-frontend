@@ -1,4 +1,3 @@
-
 import "dart:async";
 
 import "package:app/ui_utils/attribute/attribute.dart";
@@ -21,79 +20,99 @@ import "package:app/utils/time.dart";
 import "package:rxdart/rxdart.dart";
 
 sealed class ProfileFiltersEvent {}
+
 class SaveNewFilterSettings extends ProfileFiltersEvent {}
+
 class ResetEditedValues extends ProfileFiltersEvent {}
+
 class DisableAllFilterSettings extends ProfileFiltersEvent {}
+
 class NewShowAdvancedFiltersValue extends ProfileFiltersEvent {
   final bool value;
   NewShowAdvancedFiltersValue(this.value);
 }
+
 class NewFilterFavoriteProfilesValue extends ProfileFiltersEvent {
   final bool filterFavorites;
   NewFilterFavoriteProfilesValue(this.filterFavorites);
 }
+
 class NewProfileFilters extends ProfileFiltersEvent {
   final GetProfileFilters? value;
   NewProfileFilters(this.value);
 }
+
 class NewMinAge extends ProfileFiltersEvent {
   final int value;
   NewMinAge(this.value);
 }
+
 class NewMaxAge extends ProfileFiltersEvent {
   final int value;
   NewMaxAge(this.value);
 }
+
 class SetFavoriteProfilesFilter extends ProfileFiltersEvent {
   final bool value;
   final bool waitEventHandling;
   SetFavoriteProfilesFilter(this.value, this.waitEventHandling);
 }
+
 class SetShowAdvancedFilters extends ProfileFiltersEvent {
   final bool value;
   SetShowAdvancedFilters(this.value);
 }
+
 class SetLastSeenTimeFilter extends ProfileFiltersEvent {
   final int? value;
   SetLastSeenTimeFilter(this.value);
 }
+
 class SetUnlimitedLikesFilter extends ProfileFiltersEvent {
   final bool? value;
   SetUnlimitedLikesFilter(this.value);
 }
+
 class SetDistanceFilter extends ProfileFiltersEvent {
   final MinDistanceKm? min;
   final MaxDistanceKm? max;
   SetDistanceFilter(this.min, this.max);
 }
+
 class SetProfileCreatedFilter extends ProfileFiltersEvent {
   final ProfileCreatedTimeFilter? value;
   SetProfileCreatedFilter(this.value);
 }
+
 class SetProfileEditedFilter extends ProfileFiltersEvent {
   final ProfileEditedTimeFilter? value;
   SetProfileEditedFilter(this.value);
 }
+
 class SetProfileTextFilter extends ProfileFiltersEvent {
   final ProfileTextMinCharactersFilter? min;
   final ProfileTextMaxCharactersFilter? max;
   SetProfileTextFilter(this.min, this.max);
 }
+
 class SetRandomProfileOrderAndSaveSettings extends ProfileFiltersEvent {
   final bool value;
   SetRandomProfileOrderAndSaveSettings(this.value);
 }
+
 class SetAttributeFilterValueLists extends ProfileFiltersEvent {
   final UiAttribute attribute;
   final AttributeStateStorage wanted;
   final AttributeStateStorage unwanted;
   SetAttributeFilterValueLists(this.attribute, this.wanted, this.unwanted);
 }
+
 class SetAttributeFilterSettings extends ProfileFiltersEvent {
   final UiAttribute attribute;
   final FilterSettingsState value;
   SetAttributeFilterSettings(this.attribute, this.value);
 }
+
 class UpdateAgeRange extends ProfileFiltersEvent {
   final int min;
   final int max;
@@ -114,33 +133,29 @@ class ProfileFiltersBloc extends Bloc<ProfileFiltersEvent, ProfileFiltersData> w
     on<SaveNewFilterSettings>((data, emit) async {
       await runOnce(() async {
         final s = state;
-        emit(state.copyWith(
-          updateState: const UpdateStarted(),
-        ));
+        emit(state.copyWith(updateState: const UpdateStarted()));
 
         final waitTime = WantedWaitingTimeManager();
 
         var failureDetected = false;
 
-        emit(state.copyWith(
-          updateState: const UpdateInProgress(),
-        ));
+        emit(state.copyWith(updateState: const UpdateInProgress()));
 
         if (s.edited.isProfileFiltersUpdateNeeded()) {
-          if (
-            await profile.updateProfileFilters(
-              s.valueAttributeFilters(),
-              s.valueLastSeenTimeFilter(),
-              s.valueUnlimitedLikesFilter(),
-              s.valueMinDistanceKmFilter(),
-              s.valueMaxDistanceKmFilter(),
-              s.valueProfileCreatedTime(),
-              s.valueProfileEditedTime(),
-              s.valueProfileTextMinCharacters(),
-              s.valueProfileTextMaxCharacters(),
-              s.valueRandomProfileOrder(),
-            ).isErr()
-          ) {
+          if (await profile
+              .updateProfileFilters(
+                s.valueAttributeFilters(),
+                s.valueLastSeenTimeFilter(),
+                s.valueUnlimitedLikesFilter(),
+                s.valueMinDistanceKmFilter(),
+                s.valueMaxDistanceKmFilter(),
+                s.valueProfileCreatedTime(),
+                s.valueProfileEditedTime(),
+                s.valueProfileTextMinCharacters(),
+                s.valueProfileTextMaxCharacters(),
+                s.valueRandomProfileOrder(),
+              )
+              .isErr()) {
             failureDetected = true;
           }
         }
@@ -159,9 +174,7 @@ class ProfileFiltersBloc extends Bloc<ProfileFiltersEvent, ProfileFiltersData> w
 
         await waitTime.waitIfNeeded();
 
-        emit(state.copyWith(
-          updateState: const UpdateIdle(),
-        ));
+        emit(state.copyWith(updateState: const UpdateIdle()));
 
         resetEditedValues(emit);
       });
@@ -172,24 +185,19 @@ class ProfileFiltersBloc extends Bloc<ProfileFiltersEvent, ProfileFiltersData> w
     on<DisableAllFilterSettings>((data, emit) {
       final Map<int, ProfileAttributeFilterValueUpdate> disableAttributeFilters = {};
       for (final a in state.attributeIdAndAttributeFilterMap.values) {
-        disableAttributeFilters[a.id] = ProfileAttributeFilterValueUpdate(
-          id: a.id,
-          enabled: false,
-        );
+        disableAttributeFilters[a.id] = ProfileAttributeFilterValueUpdate(id: a.id, enabled: false);
       }
 
       if (disableAttributeFilters.isEmpty) {
-        emit(state.copyWith(
-          edited: state.edited.copyWith(
-            attributeIdAndAttributeFilterMap: null,
-          )
-        ));
+        emit(state.copyWith(edited: state.edited.copyWith(attributeIdAndAttributeFilterMap: null)));
       } else {
-        emit(state.copyWith(
-          edited: state.edited.copyWith(
-            attributeIdAndAttributeFilterMap: disableAttributeFilters,
-          )
-        ));
+        emit(
+          state.copyWith(
+            edited: state.edited.copyWith(
+              attributeIdAndAttributeFilterMap: disableAttributeFilters,
+            ),
+          ),
+        );
       }
 
       add(SetLastSeenTimeFilter(null));
@@ -206,10 +214,12 @@ class ProfileFiltersBloc extends Bloc<ProfileFiltersEvent, ProfileFiltersData> w
       emit(state.copyWith(showOnlyFavorites: data.filterFavorites));
     });
     on<NewProfileFilters>((data, emit) {
-      emit(state.copyWith(
-        filters: data.value,
-        attributeIdAndAttributeFilterMap: data.value?.currentFiltersCopy() ?? {},
-      ));
+      emit(
+        state.copyWith(
+          filters: data.value,
+          attributeIdAndAttributeFilterMap: data.value?.currentFiltersCopy() ?? {},
+        ),
+      );
     });
     on<NewMinAge>((data, emit) async {
       emit(state.copyWith(minAge: data.value));
@@ -242,46 +252,51 @@ class ProfileFiltersBloc extends Bloc<ProfileFiltersEvent, ProfileFiltersData> w
       final newLastSeenTimeFilter = newValue == null ? null : LastSeenTimeFilter(value: newValue);
       modifyEdited(
         emit,
-        (e) => state.filters?.lastSeenTimeFilter == newLastSeenTimeFilter ?
-          e.copyWith(lastSeenTimeFilter: const NoEdit()) :
-          e.copyWith(lastSeenTimeFilter: editValue(newLastSeenTimeFilter))
+        (e) => state.filters?.lastSeenTimeFilter == newLastSeenTimeFilter
+            ? e.copyWith(lastSeenTimeFilter: const NoEdit())
+            : e.copyWith(lastSeenTimeFilter: editValue(newLastSeenTimeFilter)),
       );
     });
     on<SetUnlimitedLikesFilter>((data, emit) {
       modifyEdited(
         emit,
-        (e) => state.filters?.unlimitedLikesFilter == data.value ?
-          e.copyWith(unlimitedLikesFilter: const NoEdit()) :
-          e.copyWith(unlimitedLikesFilter: editValue(data.value))
+        (e) => state.filters?.unlimitedLikesFilter == data.value
+            ? e.copyWith(unlimitedLikesFilter: const NoEdit())
+            : e.copyWith(unlimitedLikesFilter: editValue(data.value)),
       );
     });
     on<SetDistanceFilter>((data, emit) {
-      final min = state.filters?.minDistanceKmFilter == data.min ? const NoEdit<MinDistanceKm>() : editValue(data.min);
-      final max = state.filters?.maxDistanceKmFilter == data.max ? const NoEdit<MaxDistanceKm>() : editValue(data.max);
-      modifyEdited(
-        emit,
-        (e) => e.copyWith(minDistanceKmFilter: min, maxDistanceKmFilter: max),
-      );
+      final min = state.filters?.minDistanceKmFilter == data.min
+          ? const NoEdit<MinDistanceKm>()
+          : editValue(data.min);
+      final max = state.filters?.maxDistanceKmFilter == data.max
+          ? const NoEdit<MaxDistanceKm>()
+          : editValue(data.max);
+      modifyEdited(emit, (e) => e.copyWith(minDistanceKmFilter: min, maxDistanceKmFilter: max));
     });
     on<SetProfileCreatedFilter>((data, emit) {
       modifyEdited(
         emit,
-        (e) => state.filters?.profileCreatedFilter == data.value ?
-          e.copyWith(profileCreatedFilter: const NoEdit()) :
-          e.copyWith(profileCreatedFilter: editValue(data.value))
+        (e) => state.filters?.profileCreatedFilter == data.value
+            ? e.copyWith(profileCreatedFilter: const NoEdit())
+            : e.copyWith(profileCreatedFilter: editValue(data.value)),
       );
     });
     on<SetProfileEditedFilter>((data, emit) {
       modifyEdited(
         emit,
-        (e) => state.filters?.profileEditedFilter == data.value ?
-          e.copyWith(profileEditedFilter: const NoEdit()) :
-          e.copyWith(profileEditedFilter: editValue(data.value))
+        (e) => state.filters?.profileEditedFilter == data.value
+            ? e.copyWith(profileEditedFilter: const NoEdit())
+            : e.copyWith(profileEditedFilter: editValue(data.value)),
       );
     });
     on<SetProfileTextFilter>((data, emit) {
-      final min = state.filters?.profileTextMinCharactersFilter == data.min ? const NoEdit<ProfileTextMinCharactersFilter>() : editValue(data.min);
-      final max = state.filters?.profileTextMaxCharactersFilter == data.max ? const NoEdit<ProfileTextMaxCharactersFilter>() : editValue(data.max);
+      final min = state.filters?.profileTextMinCharactersFilter == data.min
+          ? const NoEdit<ProfileTextMinCharactersFilter>()
+          : editValue(data.min);
+      final max = state.filters?.profileTextMaxCharactersFilter == data.max
+          ? const NoEdit<ProfileTextMaxCharactersFilter>()
+          : editValue(data.max);
       modifyEdited(
         emit,
         (e) => e.copyWith(profileTextMinCharactersFilter: min, profileTextMaxCharactersFilter: max),
@@ -290,9 +305,9 @@ class ProfileFiltersBloc extends Bloc<ProfileFiltersEvent, ProfileFiltersData> w
     on<SetRandomProfileOrderAndSaveSettings>((data, emit) {
       modifyEdited(
         emit,
-        (e) => state.filters?.randomProfileOrder == data.value ?
-          e.copyWith(randomProfileOrder: null) :
-          e.copyWith(randomProfileOrder: data.value)
+        (e) => state.filters?.randomProfileOrder == data.value
+            ? e.copyWith(randomProfileOrder: null)
+            : e.copyWith(randomProfileOrder: data.value),
       );
       add(SaveNewFilterSettings());
     });
@@ -300,79 +315,83 @@ class ProfileFiltersBloc extends Bloc<ProfileFiltersEvent, ProfileFiltersData> w
       updateFilters(
         emit,
         data.attribute.apiAttribute().id,
-        (current) => AttributeFilterUpdateBuilder.copyWithValues(data.attribute, current, data.wanted, data.unwanted),
+        (current) => AttributeFilterUpdateBuilder.copyWithValues(
+          data.attribute,
+          current,
+          data.wanted,
+          data.unwanted,
+        ),
       );
     });
     on<SetAttributeFilterSettings>((data, emit) {
       updateFilters(
         emit,
         data.attribute.apiAttribute().id,
-        (current) => AttributeFilterUpdateBuilder.copyWithSettings(data.attribute, current, data.value),
+        (current) =>
+            AttributeFilterUpdateBuilder.copyWithSettings(data.attribute, current, data.value),
       );
     });
     on<UpdateAgeRange>((data, emit) {
       handleAgeRangeSaving(emit, data.min, data.max);
     });
 
-    _showAdvancedFiltersSubscription = db.accountStream((db) => db.app.watchShowAdvancedFilters()).listen((event) {
-      add(NewShowAdvancedFiltersValue(event ?? false));
-    });
-    _filterFavoritesSubscription = db.accountStream((db) => db.app.watchProfileFilterFavorites()).listen((event) {
-      add(NewFilterFavoriteProfilesValue(event ?? false));
-    });
-    _profileFiltersSubscription = db.accountStream((db) => db.search.watchProfileFilters()).listen((event) {
+    _showAdvancedFiltersSubscription = db
+        .accountStream((db) => db.app.watchShowAdvancedFilters())
+        .listen((event) {
+          add(NewShowAdvancedFiltersValue(event ?? false));
+        });
+    _filterFavoritesSubscription = db
+        .accountStream((db) => db.app.watchProfileFilterFavorites())
+        .listen((event) {
+          add(NewFilterFavoriteProfilesValue(event ?? false));
+        });
+    _profileFiltersSubscription = db.accountStream((db) => db.search.watchProfileFilters()).listen((
+      event,
+    ) {
       add(NewProfileFilters(event));
     });
-    _minAgeSubscription = db.accountStream((db) => db.search.watchProfileSearchAgeRangeMin()).listen((event) {
-      add(NewMinAge(event ?? MIN_AGE));
-    });
-    _maxAgeSubscription = db.accountStream((db) => db.search.watchProfileSearchAgeRangeMax()).listen((event) {
-      add(NewMaxAge(event ?? MAX_AGE));
-    });
+    _minAgeSubscription = db
+        .accountStream((db) => db.search.watchProfileSearchAgeRangeMin())
+        .listen((event) {
+          add(NewMinAge(event ?? MIN_AGE));
+        });
+    _maxAgeSubscription = db
+        .accountStream((db) => db.search.watchProfileSearchAgeRangeMax())
+        .listen((event) {
+          add(NewMaxAge(event ?? MAX_AGE));
+        });
   }
 
   void handleAgeRangeSaving(Emitter<ProfileFiltersData> emit, int min, int max) {
     if (min == state.minAge) {
-      modifyEdited(
-        emit,
-        (e) => e.copyWith(minAge: null),
-      );
+      modifyEdited(emit, (e) => e.copyWith(minAge: null));
     } else {
-      modifyEdited(
-        emit,
-        (e) => e.copyWith(minAge: min),
-      );
+      modifyEdited(emit, (e) => e.copyWith(minAge: min));
     }
 
     if (max == state.maxAge) {
-      modifyEdited(
-        emit,
-        (e) => e.copyWith(maxAge: null),
-      );
+      modifyEdited(emit, (e) => e.copyWith(maxAge: null));
     } else {
-      modifyEdited(
-        emit,
-        (e) => e.copyWith(maxAge: max),
-      );
+      modifyEdited(emit, (e) => e.copyWith(maxAge: max));
     }
   }
 
   void resetEditedValues(Emitter<ProfileFiltersData> emit) {
-    emit(state.copyWith(
-      edited: EditedFiltersData(),
-    ));
+    emit(state.copyWith(edited: EditedFiltersData()));
   }
 
-  void modifyEdited(Emitter<ProfileFiltersData> emit, EditedFiltersData Function(EditedFiltersData) modify) {
-    emit(state.copyWith(
-      edited: modify(state.edited),
-    ));
+  void modifyEdited(
+    Emitter<ProfileFiltersData> emit,
+    EditedFiltersData Function(EditedFiltersData) modify,
+  ) {
+    emit(state.copyWith(edited: modify(state.edited)));
   }
 
   void updateFilters(
     Emitter<ProfileFiltersData> emit,
     int attributeId,
-    ProfileAttributeFilterValueUpdate Function(ProfileAttributeFilterValueUpdate) modifyCurrentValue,
+    ProfileAttributeFilterValueUpdate Function(ProfileAttributeFilterValueUpdate)
+    modifyCurrentValue,
   ) {
     final newAttributes = <int, ProfileAttributeFilterValueUpdate>{};
     var found = false;
@@ -385,12 +404,16 @@ class ProfileFiltersBloc extends Bloc<ProfileFiltersEvent, ProfileFiltersData> w
       }
     }
     if (!found) {
-      newAttributes[attributeId] = modifyCurrentValue(ProfileAttributeFilterValueUpdate(id: attributeId));
+      newAttributes[attributeId] = modifyCurrentValue(
+        ProfileAttributeFilterValueUpdate(id: attributeId),
+      );
     }
 
     bool different = false;
     for (final a in newAttributes.values) {
-      final current = state.attributeIdAndAttributeFilterMap[a.id] ?? ProfileAttributeFilterValueUpdate(id: a.id);
+      final current =
+          state.attributeIdAndAttributeFilterMap[a.id] ??
+          ProfileAttributeFilterValueUpdate(id: a.id);
       if (attributeValuesDiffer(a, current)) {
         different = true;
         break;
@@ -398,17 +421,13 @@ class ProfileFiltersBloc extends Bloc<ProfileFiltersEvent, ProfileFiltersData> w
     }
 
     if (different) {
-      emit(state.copyWith(
-        edited: state.edited.copyWith(
-          attributeIdAndAttributeFilterMap: newAttributes
+      emit(
+        state.copyWith(
+          edited: state.edited.copyWith(attributeIdAndAttributeFilterMap: newAttributes),
         ),
-      ));
+      );
     } else {
-      emit(state.copyWith(
-        edited: state.edited.copyWith(
-          attributeIdAndAttributeFilterMap: null,
-        ),
-      ));
+      emit(state.copyWith(edited: state.edited.copyWith(attributeIdAndAttributeFilterMap: null)));
     }
   }
 
@@ -427,13 +446,11 @@ bool attributeValuesDiffer(
   ProfileAttributeFilterValueUpdate a,
   ProfileAttributeFilterValueUpdate current,
 ) {
-  if (
-    a.enabled != current.enabled ||
-    a.acceptMissingAttribute != current.acceptMissingAttribute ||
-    a.useLogicalOperatorAnd != current.useLogicalOperatorAnd ||
-    a.wanted.length != current.wanted.length ||
-    a.unwanted.length != current.unwanted.length
-  ) {
+  if (a.enabled != current.enabled ||
+      a.acceptMissingAttribute != current.acceptMissingAttribute ||
+      a.useLogicalOperatorAnd != current.useLogicalOperatorAnd ||
+      a.wanted.length != current.wanted.length ||
+      a.unwanted.length != current.unwanted.length) {
     return true;
   }
   for (final v in a.wanted) {

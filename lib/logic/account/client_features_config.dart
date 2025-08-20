@@ -11,10 +11,12 @@ import "package:utils/utils.dart";
 final log = Logger("ClientFeaturesConfigBloc");
 
 sealed class ClientFeaturesConfigEvent {}
+
 class ConfigChanged extends ClientFeaturesConfigEvent {
   final ClientFeaturesConfig value;
   ConfigChanged(this.value);
 }
+
 class DailyLikesLeftChanged extends ClientFeaturesConfigEvent {
   final int? value;
   DailyLikesLeftChanged(this.value);
@@ -26,7 +28,8 @@ class ClientFeaturesConfigBloc extends Bloc<ClientFeaturesConfigEvent, ClientFea
   StreamSubscription<ClientFeaturesConfig?>? _configSubscription;
   StreamSubscription<int?>? _dailyLikesLeftSubscription;
 
-  ClientFeaturesConfigBloc() : super(ClientFeaturesConfigData(config: _emptyClientFeaturesConfig())) {
+  ClientFeaturesConfigBloc()
+    : super(ClientFeaturesConfigData(config: _emptyClientFeaturesConfig())) {
     on<ConfigChanged>((data, emit) async {
       final regex = data.value.profile.profileNameRegex;
       RegExp? profileNameRegex;
@@ -37,18 +40,17 @@ class ClientFeaturesConfigBloc extends Bloc<ClientFeaturesConfigEvent, ClientFea
           log.error("Invalid profile name regex");
         }
       }
-      emit(state.copyWith(
-        config: data.value,
-        profileNameRegex: profileNameRegex,
-      ));
+      emit(state.copyWith(config: data.value, profileNameRegex: profileNameRegex));
     });
     on<DailyLikesLeftChanged>((data, emit) {
       emit(state.copyWith(dailyLikesLeft: data.value));
     });
-    _configSubscription = db.accountStream((db) => db.config.watchClientFeaturesConfig())
-      .listen((value) => add(ConfigChanged(value ?? _emptyClientFeaturesConfig())));
-    _dailyLikesLeftSubscription = db.accountStream((db) => db.like.watchDailyLikesLeft())
-      .listen((value) => add(DailyLikesLeftChanged(value)));
+    _configSubscription = db
+        .accountStream((db) => db.config.watchClientFeaturesConfig())
+        .listen((value) => add(ConfigChanged(value ?? _emptyClientFeaturesConfig())));
+    _dailyLikesLeftSubscription = db
+        .accountStream((db) => db.like.watchDailyLikesLeft())
+        .listen((value) => add(DailyLikesLeftChanged(value)));
   }
 
   @override
@@ -62,9 +64,7 @@ class ClientFeaturesConfigBloc extends Bloc<ClientFeaturesConfigEvent, ClientFea
 ClientFeaturesConfig _emptyClientFeaturesConfig() {
   return ClientFeaturesConfig(
     attribution: AttributionConfig(),
-    features: FeaturesConfig(
-      videoCalls: false,
-    ),
+    features: FeaturesConfig(videoCalls: false),
     news: NewsConfig(),
     map: MapConfig(
       bounds: MapBounds(
@@ -82,10 +82,7 @@ ClientFeaturesConfig _emptyClientFeaturesConfig() {
       tileDataVersion: 0,
     ),
     limits: LimitsConfig(
-      likes: LikeLimitsConfig(
-        likeSending: null,
-        unlimitedLikesDisablingTime: null,
-      ),
+      likes: LikeLimitsConfig(likeSending: null, unlimitedLikesDisablingTime: null),
     ),
     profile: ProfileConfig(),
   );

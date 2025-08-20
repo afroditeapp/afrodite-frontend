@@ -1,6 +1,3 @@
-
-
-
 import 'package:flutter/material.dart';
 
 /// Crop factor which is used to make longer size less long

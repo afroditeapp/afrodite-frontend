@@ -12,43 +12,42 @@ import "package:app/ui_utils/snack_bar.dart";
 import "package:app/utils.dart";
 
 sealed class PrivacySettingsEvent {}
+
 class NewVisibility extends PrivacySettingsEvent {
   final ProfileVisibility value;
   NewVisibility(this.value);
 }
+
 class ResetEdited extends PrivacySettingsEvent {}
+
 class ToggleVisibilityAndSaveSettings extends PrivacySettingsEvent {}
 
-class PrivacySettingsBloc extends Bloc<PrivacySettingsEvent, PrivacySettingsData> with ActionRunner {
+class PrivacySettingsBloc extends Bloc<PrivacySettingsEvent, PrivacySettingsData>
+    with ActionRunner {
   final AccountRepository account = LoginRepository.getInstance().repositories.account;
 
   StreamSubscription<ProfileVisibility>? _visibilitySubscription;
 
   PrivacySettingsBloc() : super(PrivacySettingsData()) {
     on<NewVisibility>((data, emit) {
-      emit(state.copyWith(
-        visiblity: data.value,
-        editedVisibility: null,
-      ));
+      emit(state.copyWith(visiblity: data.value, editedVisibility: null));
     });
     on<ResetEdited>((data, emit) {
-      emit(state.copyWith(
-        editedVisibility: null,
-      ));
+      emit(state.copyWith(editedVisibility: null));
     });
     on<ToggleVisibilityAndSaveSettings>((data, emit) async {
       final newValue = _toggleVisibility(state.valueVisibility());
 
-      emit(state.copyWith(
-        updateState: const UpdateStarted(),
-        editedVisibility: state.visiblity == newValue ? null : newValue,
-      ));
+      emit(
+        state.copyWith(
+          updateState: const UpdateStarted(),
+          editedVisibility: state.visiblity == newValue ? null : newValue,
+        ),
+      );
 
       var failureDetected = false;
 
-      emit(state.copyWith(
-        updateState: const UpdateInProgress(),
-      ));
+      emit(state.copyWith(updateState: const UpdateInProgress()));
 
       if (!await account.doProfileVisibilityChange(newValue.isPublic())) {
         failureDetected = true;
@@ -58,9 +57,7 @@ class PrivacySettingsBloc extends Bloc<PrivacySettingsEvent, PrivacySettingsData
         showSnackBar(R.strings.generic_error_occurred);
       }
 
-      emit(state.copyWith(
-        updateState: const UpdateIdle(),
-      ));
+      emit(state.copyWith(updateState: const UpdateIdle()));
     });
 
     _visibilitySubscription = account.profileVisibility.listen((event) {

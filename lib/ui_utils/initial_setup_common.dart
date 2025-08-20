@@ -1,6 +1,3 @@
-
-
-
 import 'package:app/logic/media/profile_pictures.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:flutter/foundation.dart';
@@ -24,15 +21,17 @@ Widget commonInitialSetupScreenContent({
   return Scaffold(
     appBar: AppBar(
       actions: [
-        if (kDebugMode) IconButton(
-          icon: const Icon(Icons.skip_next),
-          onPressed: () {
-            context.read<InitialSetupBloc>().add(CreateDebugAdminAccount());
-          },
-        ),
+        if (kDebugMode)
+          IconButton(
+            icon: const Icon(Icons.skip_next),
+            onPressed: () {
+              context.read<InitialSetupBloc>().add(CreateDebugAdminAccount());
+            },
+          ),
         menuActions([
-            ...commonActionsWhenLoggedInAndAccountIsNotNormallyUsable(context),
-            if (showSkipInitialSetupAction) MenuItemButton(
+          ...commonActionsWhenLoggedInAndAccountIsNotNormallyUsable(context),
+          if (showSkipInitialSetupAction)
+            MenuItemButton(
               child: Text(context.strings.generic_skip),
               onPressed: () async {
                 final r = await showConfirmDialog(
@@ -46,7 +45,8 @@ Widget commonInitialSetupScreenContent({
                 }
               },
             ),
-            if (showRefreshSecuritySelfieFaceDetectedValuesAction) MenuItemButton(
+          if (showRefreshSecuritySelfieFaceDetectedValuesAction)
+            MenuItemButton(
               child: Text(context.strings.initial_setup_screen_refresh_face_detected_values_action),
               onPressed: () async {
                 if (context.mounted) {
@@ -54,11 +54,14 @@ Widget commonInitialSetupScreenContent({
                 }
               },
             ),
-            if (showRefreshProfilePicturesFaceDetectedValuesAction) MenuItemButton(
+          if (showRefreshProfilePicturesFaceDetectedValuesAction)
+            MenuItemButton(
               child: Text(context.strings.initial_setup_screen_refresh_face_detected_values_action),
               onPressed: () async {
                 if (context.mounted) {
-                  context.read<ProfilePicturesBloc>().add(RefreshProfilePicturesFaceDetectedValues());
+                  context.read<ProfilePicturesBloc>().add(
+                    RefreshProfilePicturesFaceDetectedValues(),
+                  );
                 }
               },
             ),
@@ -76,7 +79,9 @@ void Function()? defaultAction(BuildContext context, InitialSetupData data) {
 
 class QuestionAsker extends StatefulWidget {
   final Widget question;
-  final void Function()? Function(BuildContext context, InitialSetupData state) getContinueButtonCallback;
+  final void Function()? Function(BuildContext context, InitialSetupData state)
+  getContinueButtonCallback;
+
   /// If this is set, the getContentButtonCallback is ignored.
   final Widget Function(BuildContext)? continueButtonBuilder;
   final bool expandQuestion;
@@ -85,7 +90,7 @@ class QuestionAsker extends StatefulWidget {
     this.getContinueButtonCallback = defaultAction,
     this.continueButtonBuilder,
     this.expandQuestion = false,
-    super.key
+    super.key,
   });
 
   @override
@@ -117,7 +122,7 @@ class _QuestionAskerState extends State<QuestionAsker> {
               onPressed: wrappedCallback,
               child: Text(context.strings.generic_continue),
             );
-          }
+          },
         );
       };
     }
@@ -133,9 +138,7 @@ class _QuestionAskerState extends State<QuestionAsker> {
     if (widget.expandQuestion) {
       return Column(
         children: [
-          Expanded(
-            child: widget.question,
-          ),
+          Expanded(child: widget.question),
           continueButton,
         ],
       );
@@ -143,30 +146,20 @@ class _QuestionAskerState extends State<QuestionAsker> {
       return CustomScrollView(
         physics: const ClampingScrollPhysics(),
         slivers: [
-          SliverToBoxAdapter(
-            child: widget.question,
-          ),
-          SliverFillRemaining(
-            hasScrollBody: false,
-            fillOverscroll: true,
-            child: continueButton,
-          ),
+          SliverToBoxAdapter(child: widget.question),
+          SliverFillRemaining(hasScrollBody: false, fillOverscroll: true, child: continueButton),
         ],
       );
     }
   }
 }
 
-
 Widget questionTitleText(BuildContext context, String title) {
   return Align(
     alignment: Alignment.centerLeft,
     child: Padding(
       padding: const EdgeInsets.all(INITIAL_SETUP_PADDING),
-      child: Text(
-        title,
-        style: Theme.of(context).textTheme.headlineSmall
-      ),
+      child: Text(title, style: Theme.of(context).textTheme.headlineSmall),
     ),
   );
 }

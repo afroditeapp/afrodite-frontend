@@ -1,4 +1,3 @@
-
 import 'package:app/ui/normal/settings/admin.dart';
 import 'package:app/ui/normal/settings/admin/edit_maintenance_notification.dart';
 import 'package:app/ui/normal/settings/admin/server_tasks.dart';
@@ -29,13 +28,9 @@ class ServerScreen extends StatelessWidget {
       builder: (context, state) {
         List<Setting> settings = settingsList(context, AdminSettingsPermissions(state.permissions));
         return SingleChildScrollView(
-          child: Column(
-            children: [
-              ...settings.map((setting) => setting.toListTile()),
-            ],
-          ),
+          child: Column(children: [...settings.map((setting) => setting.toListTile())]),
         );
-      }
+      },
     );
   }
 
@@ -44,32 +39,59 @@ class ServerScreen extends StatelessWidget {
 
     if (permissions.adminServerMaintenanceSaveBackendConfig ||
         permissions.adminServerMaintenanceViewBackendConfig) {
-      settings.add(Setting.createSetting(Icons.settings, "Configure backend", () =>
-        MyNavigator.push(context, const MaterialPage<void>(child: ConfigureBackendPage()),)
-      ));
+      settings.add(
+        Setting.createSetting(
+          Icons.settings,
+          "Configure backend",
+          () => MyNavigator.push(context, const MaterialPage<void>(child: ConfigureBackendPage())),
+        ),
+      );
     }
     if (permissions.adminServerMaintenanceViewInfo) {
-      settings.add(Setting.createSetting(Icons.info_outline, "Server system info", () =>
-        MyNavigator.push(context, const MaterialPage<void>(child: ServerSystemInfoPage()),)
-      ));
+      settings.add(
+        Setting.createSetting(
+          Icons.info_outline,
+          "Server system info",
+          () => MyNavigator.push(context, const MaterialPage<void>(child: ServerSystemInfoPage())),
+        ),
+      );
     }
-    if (
-      permissions.adminServerMaintenanceRebootBackend ||
-      permissions.adminServerMaintenanceResetData
-    ) {
-      settings.add(Setting.createSetting(Icons.schedule, "Server tasks", () =>
-        MyNavigator.push(context, MaterialPage<void>(child: ServerTasksScreen(permissions: permissions.apiPermissions)))
-      ));
+    if (permissions.adminServerMaintenanceRebootBackend ||
+        permissions.adminServerMaintenanceResetData) {
+      settings.add(
+        Setting.createSetting(
+          Icons.schedule,
+          "Server tasks",
+          () => MyNavigator.push(
+            context,
+            MaterialPage<void>(child: ServerTasksScreen(permissions: permissions.apiPermissions)),
+          ),
+        ),
+      );
     }
     if (permissions.adminServerMaintenanceUpdateSoftware) {
-      settings.add(Setting.createSetting(Icons.system_update_alt, "Server software update", () =>
-        MyNavigator.push(context, const MaterialPage<void>(child: ServerSoftwareUpdatePage()),)
-      ));
+      settings.add(
+        Setting.createSetting(
+          Icons.system_update_alt,
+          "Server software update",
+          () => MyNavigator.push(
+            context,
+            const MaterialPage<void>(child: ServerSoftwareUpdatePage()),
+          ),
+        ),
+      );
     }
     if (permissions.adminServerMaintenanceEditNotification) {
-      settings.add(Setting.createSetting(Icons.settings, "Edit maintenance notification", () =>
-        MyNavigator.push(context, const MaterialPage<void>(child: EditMaintenanceNotificationScreen()))
-      ));
+      settings.add(
+        Setting.createSetting(
+          Icons.settings,
+          "Edit maintenance notification",
+          () => MyNavigator.push(
+            context,
+            const MaterialPage<void>(child: EditMaintenanceNotificationScreen()),
+          ),
+        ),
+      );
     }
     return settings;
   }

@@ -1,4 +1,3 @@
-
 import 'package:database_common_background/src/read/login_session.dart';
 import 'package:database_common_background/src/read/app.dart';
 import 'package:database_common_background/src/write/login_session.dart';
@@ -13,12 +12,7 @@ part 'database.g.dart';
 
 /// Common app data which can be accessed when app is in background
 @DriftDatabase(
-  tables: [
-    schema.AccountId,
-    schema.ServerUrl,
-    schema.PushNotification,
-    schema.CurrentLocale,
-  ],
+  tables: [schema.AccountId, schema.ServerUrl, schema.PushNotification, schema.CurrentLocale],
   daos: [
     // Read
     DaoReadApp,
@@ -26,11 +20,11 @@ part 'database.g.dart';
     // Write
     DaoWriteApp,
     DaoWriteLoginSession,
-  ]
+  ],
 )
 class CommonBackgroundDatabase extends _$CommonBackgroundDatabase {
-  CommonBackgroundDatabase(QueryExcecutorProvider dbProvider) :
-    super(dbProvider.getQueryExcecutor());
+  CommonBackgroundDatabase(QueryExcecutorProvider dbProvider)
+    : super(dbProvider.getQueryExcecutor());
 
   CommonBackgroundDatabaseRead get read => CommonBackgroundDatabaseRead(this);
   CommonBackgroundDatabaseWrite get write => CommonBackgroundDatabaseWrite(this);

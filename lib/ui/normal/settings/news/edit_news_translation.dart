@@ -66,10 +66,13 @@ class EditNewsTranslationScreenState extends State<EditNewsTranslationScreen> {
       canPop: true,
       onPopInvokedWithResult: (didPop, _) {
         if (didPop && mounted && !widget.bloc.isClosed) {
-          widget.bloc.add(SaveTranslation(
-            widget.locale,
-            (title: _titleTextController.text, body: _bodyTextController.text, version: null),
-          ));
+          widget.bloc.add(
+            SaveTranslation(widget.locale, (
+              title: _titleTextController.text,
+              body: _bodyTextController.text,
+              version: null,
+            )),
+          );
         }
       },
       child: Scaffold(
@@ -83,7 +86,7 @@ class EditNewsTranslationScreenState extends State<EditNewsTranslationScreen> {
                   showLivePreview = !showLivePreview;
                 });
               },
-            )
+            ),
           ],
         ),
         body: content(),
@@ -95,8 +98,8 @@ class EditNewsTranslationScreenState extends State<EditNewsTranslationScreen> {
     return Column(
       children: [
         if (showLivePreview) Expanded(child: livePreview()),
-        Expanded(child: editArea())
-      ]
+        Expanded(child: editArea()),
+      ],
     );
   }
 
@@ -105,10 +108,7 @@ class EditNewsTranslationScreenState extends State<EditNewsTranslationScreen> {
       padding: const EdgeInsets.all(8.0),
       child: TextField(
         controller: _titleTextController,
-        decoration: const InputDecoration(
-          border: OutlineInputBorder(),
-          labelText: "Title text",
-        ),
+        decoration: const InputDecoration(border: OutlineInputBorder(), labelText: "Title text"),
       ),
     );
   }
@@ -120,10 +120,7 @@ class EditNewsTranslationScreenState extends State<EditNewsTranslationScreen> {
         controller: _bodyTextController,
         minLines: 3,
         maxLines: null,
-        decoration: const InputDecoration(
-          border: OutlineInputBorder(),
-          labelText: "Body text",
-        ),
+        decoration: const InputDecoration(border: OutlineInputBorder(), labelText: "Body text"),
       ),
     );
   }
@@ -134,12 +131,9 @@ class EditNewsTranslationScreenState extends State<EditNewsTranslationScreen> {
         padding: const EdgeInsets.all(8.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            editTitleText(),
-            editBodyText(),
-          ],
+          children: [editTitleText(), editBodyText()],
         ),
-      )
+      ),
     );
   }
 
@@ -151,7 +145,7 @@ class EditNewsTranslationScreenState extends State<EditNewsTranslationScreen> {
           titleController: _titleTextController,
           bodyController: _bodyTextController,
         ),
-      )
+      ),
     );
   }
 }
@@ -162,7 +156,7 @@ class NewsTranslationLivePreview extends StatefulWidget {
   const NewsTranslationLivePreview({
     required this.titleController,
     required this.bodyController,
-    super.key
+    super.key,
   });
 
   @override
@@ -170,7 +164,6 @@ class NewsTranslationLivePreview extends StatefulWidget {
 }
 
 class NewsTranslationLivePreviewState extends State<NewsTranslationLivePreview> {
-
   @override
   void initState() {
     super.initState();
@@ -190,7 +183,7 @@ class NewsTranslationLivePreviewState extends State<NewsTranslationLivePreview> 
   Widget build(BuildContext context) {
     return Align(
       alignment: Alignment.topLeft,
-      child: ViewNewsItem(title: widget.titleController.text, body: widget.bodyController.text)
+      child: ViewNewsItem(title: widget.titleController.text, body: widget.bodyController.text),
     );
   }
 

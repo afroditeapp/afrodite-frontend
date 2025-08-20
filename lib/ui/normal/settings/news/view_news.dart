@@ -36,11 +36,7 @@ Future<void> openViewNewsScreen(
       child: BlocProvider(
         create: (_) => ViewNewsBloc(id, locale),
         lazy: false,
-        child: ViewNewsScreen(
-          pageKey: pageKey,
-          id: id,
-          refreshNewsList: refreshNewsList,
-        ),
+        child: ViewNewsScreen(pageKey: pageKey, id: id, refreshNewsList: refreshNewsList),
       ),
     ),
     pageKey,
@@ -87,8 +83,8 @@ class ViewNewsScreenState extends State<ViewNewsScreen> {
               } else {
                 return const SizedBox.shrink();
               }
-            }
-          )
+            },
+          ),
         ],
       ),
       body: content(),
@@ -102,21 +98,18 @@ class ViewNewsScreenState extends State<ViewNewsScreen> {
         builder: (context, state) {
           final item = state.item;
           if (state.isLoading) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+            return const Center(child: CircularProgressIndicator());
           } else if (state.isError) {
             return buildListReplacementMessageSimple(
-              context, context.strings.generic_error_occurred
+              context,
+              context.strings.generic_error_occurred,
             );
           } else if (item == null) {
-            return buildListReplacementMessageSimple(
-              context, context.strings.generic_not_found
-            );
+            return buildListReplacementMessageSimple(context, context.strings.generic_not_found);
           } else {
             return viewItem(context, item);
           }
-        }
+        },
       ),
     );
   }
@@ -145,7 +138,7 @@ class ViewNewsScreenState extends State<ViewNewsScreen> {
             Text(details),
           ],
         ),
-      )
+      ),
     );
   }
 
@@ -175,10 +168,7 @@ class ViewNewsItem extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          title,
-          style: Theme.of(context).textTheme.headlineSmall,
-        ),
+        Text(title, style: Theme.of(context).textTheme.headlineSmall),
         const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
         MarkdownBody(
           data: body,

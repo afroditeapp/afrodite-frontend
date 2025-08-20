@@ -1,5 +1,3 @@
-
-
 import 'package:logging/logging.dart';
 
 extension LogUtils on Logger {

@@ -32,63 +32,81 @@ class SetAgeConfirmation extends InitialSetupEvent {
   final bool isAdult;
   SetAgeConfirmation(this.isAdult);
 }
+
 class SetEmail extends InitialSetupEvent {
   final String email;
   SetEmail(this.email);
 }
+
 class SetProfileName extends InitialSetupEvent {
   final String value;
   SetProfileName(this.value);
 }
+
 class SetProfileAge extends InitialSetupEvent {
   final int? age;
   SetProfileAge(this.age);
 }
+
 class SetSecuritySelfie extends InitialSetupEvent {
   final ProcessedAccountImage securitySelfie;
   SetSecuritySelfie(this.securitySelfie);
 }
+
 class SendSecuritySelfie extends InitialSetupEvent {
   final File securitySelfie;
   SendSecuritySelfie(this.securitySelfie);
 }
+
 class SetProfileImages extends InitialSetupEvent {
   final List<ImgState> profileImages;
   SetProfileImages(this.profileImages);
 }
+
 class SetGender extends InitialSetupEvent {
   final Gender gender;
   SetGender(this.gender);
 }
+
 class SetGenderSearchSetting extends InitialSetupEvent {
   final GenderSearchSettingsAll settings;
   SetGenderSearchSetting(this.settings);
 }
+
 class InitAgeRange extends InitialSetupEvent {
   final int min;
   final int max;
   InitAgeRange(this.min, this.max);
 }
+
 class SetAgeRangeMin extends InitialSetupEvent {
   final int min;
   SetAgeRangeMin(this.min);
 }
+
 class SetAgeRangeMax extends InitialSetupEvent {
   final int max;
   SetAgeRangeMax(this.max);
 }
+
 class SetLocation extends InitialSetupEvent {
   final LatLng location;
   SetLocation(this.location);
 }
+
 class UpdateAttributeValue extends InitialSetupEvent {
   final ProfileAttributeValueUpdate update;
   UpdateAttributeValue(this.update);
 }
+
 class CompleteInitialSetup extends InitialSetupEvent {}
+
 class ResetState extends InitialSetupEvent {}
+
 class CreateDebugAdminAccount extends InitialSetupEvent {}
+
 class SkipInitialSetup extends InitialSetupEvent {}
+
 class RefreshSecuritySelfieFaceDetectedValue extends InitialSetupEvent {}
 
 class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData> with ActionRunner {
@@ -105,52 +123,39 @@ class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData> with Ac
       emit(InitialSetupData());
     });
     on<SetAgeConfirmation>((data, emit) {
-      emit(state.copyWith(
-        isAdult: data.isAdult,
-      ));
+      emit(state.copyWith(isAdult: data.isAdult));
     });
     on<SetEmail>((data, emit) {
-      emit(state.copyWith(
-        email: data.email,
-      ));
+      emit(state.copyWith(email: data.email));
     });
     on<SetProfileName>((data, emit) {
-      emit(state.copyWith(
-        profileName: data.value,
-      ));
+      emit(state.copyWith(profileName: data.value));
     });
     on<SetProfileAge>((data, emit) {
-      emit(state.copyWith(
-        profileAge: data.age,
-      ));
+      emit(state.copyWith(profileAge: data.age));
     });
     on<SetSecuritySelfie>((data, emit) {
-      emit(state.copyWith(
-        securitySelfie: data.securitySelfie,
-      ));
+      emit(state.copyWith(securitySelfie: data.securitySelfie));
     });
     on<SetProfileImages>((data, emit) async {
-      emit(state.copyWith(
-        profileImages: ImmutableList(data.profileImages),
-      ));
+      emit(state.copyWith(profileImages: ImmutableList(data.profileImages)));
     });
     on<SetGender>((data, emit) async {
-      emit(state.copyWith(
-        gender: data.gender,
-        genderSearchSetting: const GenderSearchSettingsAll(),
-      ));
+      emit(
+        state.copyWith(gender: data.gender, genderSearchSetting: const GenderSearchSettingsAll()),
+      );
     });
     on<SetGenderSearchSetting>((data, emit) async {
-      emit(state.copyWith(
-        genderSearchSetting: data.settings,
-      ));
+      emit(state.copyWith(genderSearchSetting: data.settings));
     });
     on<InitAgeRange>((data, emit) async {
-      emit(state.copyWith(
-        searchAgeRangeMin: data.min,
-        searchAgeRangeMax: data.max,
-        searchAgeRangeInitDone: true,
-      ));
+      emit(
+        state.copyWith(
+          searchAgeRangeMin: data.min,
+          searchAgeRangeMax: data.max,
+          searchAgeRangeInitDone: true,
+        ),
+      );
     });
     on<SetAgeRangeMin>((data, emit) async {
       var max = state.searchAgeRangeMax ?? MAX_AGE;
@@ -159,10 +164,7 @@ class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData> with Ac
         max = data.min;
       }
 
-      emit(state.copyWith(
-        searchAgeRangeMin: data.min,
-        searchAgeRangeMax: max,
-      ));
+      emit(state.copyWith(searchAgeRangeMin: data.min, searchAgeRangeMax: max));
     });
     on<SetAgeRangeMax>((data, emit) async {
       var min = state.searchAgeRangeMin ?? MIN_AGE;
@@ -171,56 +173,43 @@ class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData> with Ac
         min = data.max;
       }
 
-      emit(state.copyWith(
-        searchAgeRangeMin: min,
-        searchAgeRangeMax: data.max,
-      ));
+      emit(state.copyWith(searchAgeRangeMin: min, searchAgeRangeMax: data.max));
     });
     on<SetLocation>((data, emit) async {
-      emit(state.copyWith(
-        profileLocation: data.location,
-      ));
+      emit(state.copyWith(profileLocation: data.location));
     });
     on<UpdateAttributeValue>((data, emit) async {
-      emit(state.copyWith(
-        profileAttributes: state.profileAttributes.addOrReplace(data.update),
-      ));
+      emit(state.copyWith(profileAttributes: state.profileAttributes.addOrReplace(data.update)));
     });
     on<CompleteInitialSetup>((data, emit) async {
       await runOnce(() async {
-        emit(state.copyWith(
-          sendingInProgress: true,
-        ));
-        var result = await account.doInitialSetup(
-          state,
-        );
+        emit(state.copyWith(sendingInProgress: true));
+        var result = await account.doInitialSetup(state);
 
         if (result.isErr()) {
           showSnackBar(R.strings.generic_error_occurred);
         }
 
-        emit(state.copyWith(
-          sendingInProgress: false,
-        ));
+        emit(state.copyWith(sendingInProgress: false));
       });
     });
     on<CreateDebugAdminAccount>((data, emit) async {
-      emit(state.copyWith(
-        sendingInProgress: true,
-      ));
+      emit(state.copyWith(sendingInProgress: true));
 
       final securitySelfie = await createImage("debug_security_selfie.jpg", (pixel) {
-        pixel..r = 0
-             ..g = 145
-             ..b = 255
-             ..a = 255;
+        pixel
+          ..r = 0
+          ..g = 145
+          ..b = 255
+          ..a = 255;
       });
 
       final profileImage = await createImage("debug_profile_image.jpg", (pixel) {
-        pixel..r = 255
-             ..g = 150
-             ..b = 0
-             ..a = 255;
+        pixel
+          ..r = 255
+          ..g = 150
+          ..b = 0
+          ..a = 255;
       });
 
       var error = await account.doDeveloperInitialSetup(
@@ -235,9 +224,7 @@ class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData> with Ac
         showSnackBar(R.strings.generic_error_occurred);
       }
 
-      emit(state.copyWith(
-        sendingInProgress: false,
-      ));
+      emit(state.copyWith(sendingInProgress: false));
     });
     on<SkipInitialSetup>((data, emit) async {
       final r = await db.accountAction((db) => db.app.updateInitialSetupSkipped(true));
@@ -254,11 +241,15 @@ class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData> with Ac
 
       final securitySelfie = state.securitySelfie;
       if (securitySelfie != null) {
-        final newSecuritySelfieState = r.data.firstWhereOrNull((v) => v.cid == securitySelfie.contentId);
+        final newSecuritySelfieState = r.data.firstWhereOrNull(
+          (v) => v.cid == securitySelfie.contentId,
+        );
         if (newSecuritySelfieState != null) {
-          emit(state.copyWith(
-            securitySelfie: securitySelfie.copyWithFaceDetectedValue(newSecuritySelfieState.fd),
-          ));
+          emit(
+            state.copyWith(
+              securitySelfie: securitySelfie.copyWithFaceDetectedValue(newSecuritySelfieState.fd),
+            ),
+          );
         }
       }
 

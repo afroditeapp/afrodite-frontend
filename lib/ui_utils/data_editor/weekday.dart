@@ -1,4 +1,3 @@
-
 import 'package:app/ui/normal/settings/profile/search_settings.dart';
 import 'package:app/ui_utils/data_editor/base.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +15,8 @@ class WeekdayDataViewer extends StatefulWidget {
   State<WeekdayDataViewer> createState() => _WeekdayDataViewerState();
 }
 
-class _WeekdayDataViewerState extends State<WeekdayDataViewer> with RefreshSupport<WeekdayDataViewer> {
+class _WeekdayDataViewerState extends State<WeekdayDataViewer>
+    with RefreshSupport<WeekdayDataViewer> {
   @override
   BaseDataManager get baseDataManager => widget.dataManager.baseDataManager;
 

@@ -1,5 +1,3 @@
-
-
 import 'dart:isolate';
 
 import 'package:database/database.dart';
@@ -17,14 +15,13 @@ import 'package:rxdart/subjects.dart';
 
 final log = Logger("MessageKeyManager");
 
-enum KeyGeneratorState {
-  idle,
-  inProgress,
-}
+enum KeyGeneratorState { idle, inProgress }
 
 class MessageKeyManager {
-  final BehaviorSubject<KeyGeneratorState> generation =
-    BehaviorSubject.seeded(KeyGeneratorState.idle, sync: true);
+  final BehaviorSubject<KeyGeneratorState> generation = BehaviorSubject.seeded(
+    KeyGeneratorState.idle,
+    sync: true,
+  );
 
   final AccountDatabaseManager db;
   final ApiManager api;
@@ -79,10 +76,10 @@ class MessageKeyManager {
     return await uploadPublicKeyAndSaveAllKeys(newKeys);
   }
 
-  Future<Result<AllKeyData, ()>> uploadPublicKeyAndSaveAllKeys(
-    GeneratedMessageKeys newKeys,
-  ) async {
-    final r = await api.chat((api) => api.postAddPublicKey(MultipartFile.fromBytes("", newKeys.public.toList()))).ok();
+  Future<Result<AllKeyData, ()>> uploadPublicKeyAndSaveAllKeys(GeneratedMessageKeys newKeys) async {
+    final r = await api
+        .chat((api) => api.postAddPublicKey(MultipartFile.fromBytes("", newKeys.public.toList())))
+        .ok();
 
     // TODO(prod): Handle errorTooManyPublicKeys properly
     final keyId = r?.keyId;
@@ -93,11 +90,9 @@ class MessageKeyManager {
     final private = PrivateKeyBytes(data: newKeys.private);
     final public = PublicKeyBytes(data: newKeys.public);
 
-    final dbResult = await db.accountAction((db) => db.key.setMessageKeys(
-      private: private,
-      public: public,
-      publicKeyId: keyId,
-    ));
+    final dbResult = await db.accountAction(
+      (db) => db.key.setMessageKeys(private: private, public: public, publicKeyId: keyId),
+    );
 
     if (dbResult.isErr()) {
       return const Err(());

@@ -1,4 +1,3 @@
-
 import 'package:app/localizations.dart';
 import 'package:app/ui_utils/attribute/attribute.dart';
 import 'package:app/ui_utils/attribute/state.dart';
@@ -45,10 +44,7 @@ class AttributeAndFilterState extends AttributeValueAreaInfoProvider {
 class FilterSettingsState {
   final bool acceptMissingAttribute;
   final bool requireAllWantedValues;
-  FilterSettingsState({
-    this.acceptMissingAttribute = false,
-    this.requireAllWantedValues = false,
-  });
+  FilterSettingsState({this.acceptMissingAttribute = false, this.requireAllWantedValues = false});
 
   factory FilterSettingsState.parseFromFilterUpdate(ProfileAttributeFilterValueUpdate u) {
     return FilterSettingsState(
@@ -85,8 +81,8 @@ class AttributeFilterUpdateBuilder {
       id: attribute.apiAttribute().id,
       acceptMissingAttribute: settings.acceptMissingAttribute,
       useLogicalOperatorAnd: settings.requireAllWantedValues,
-      wanted: [ ...current.wanted ],
-      unwanted: [ ...current.unwanted ],
+      wanted: [...current.wanted],
+      unwanted: [...current.unwanted],
     );
     update.updateIsEnabled();
     return update;

@@ -1,5 +1,3 @@
-
-
 import 'dart:ui';
 
 import 'package:app/logic/account/client_features_config.dart';
@@ -18,7 +16,6 @@ import 'package:app/logic/profile/location.dart';
 import 'package:app/localizations.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 
 class LocationScreen extends StatelessWidget {
   const LocationScreen({super.key});
@@ -53,10 +50,7 @@ class LocationScreen extends StatelessWidget {
   }
 }
 
-enum MapMode {
-  selectInitialLocation,
-  selectLocation,
-}
+enum MapMode { selectInitialLocation, selectLocation }
 
 class LocationUploader extends SelectedLocationHandler {
   bool locationUploadInProgress = false;
@@ -69,7 +63,7 @@ class LocationUploader extends SelectedLocationHandler {
     required BuildContext context,
     required LatLng location,
     required void Function() onStart,
-    required void Function(bool) onComplete
+    required void Function(bool) onComplete,
   }) async {
     if (locationUploadInProgress) {
       return;
@@ -141,12 +135,14 @@ class _LocationWidgetState extends State<LocationWidget> with SingleTickerProvid
     _profileLocationMarker = widget.markerInitialLocation;
     _animationManager?.init(_mapController, this);
     switch (widget.mode) {
-      case MapMode.selectInitialLocation: {
-        _internalMode = MapModeInternal.selectLocationNoModeButton;
-      }
-      case MapMode.selectLocation: {
-        _internalMode = MapModeInternal.selectLocationNoModeButton;
-      }
+      case MapMode.selectInitialLocation:
+        {
+          _internalMode = MapModeInternal.selectLocationNoModeButton;
+        }
+      case MapMode.selectLocation:
+        {
+          _internalMode = MapModeInternal.selectLocationNoModeButton;
+        }
     }
   }
 
@@ -227,16 +223,19 @@ class _LocationWidgetState extends State<LocationWidget> with SingleTickerProvid
             }
           },
         );
-      case MapModeInternal.viewLocation || MapModeInternal.viewLocationEditButtonDisabled: {}
-      case MapModeInternal.waitUpdateCompletionNoModeButton: {
-        showSnackBar(context.strings.generic_previous_action_in_progress);
-      }
+      case MapModeInternal.viewLocation || MapModeInternal.viewLocationEditButtonDisabled:
+        {}
+      case MapModeInternal.waitUpdateCompletionNoModeButton:
+        {
+          showSnackBar(context.strings.generic_previous_action_in_progress);
+        }
     }
   }
 
   Widget? modeButton() {
     switch (_internalMode) {
-      case MapModeInternal.selectLocationNoModeButton || MapModeInternal.waitUpdateCompletionNoModeButton:
+      case MapModeInternal.selectLocationNoModeButton ||
+          MapModeInternal.waitUpdateCompletionNoModeButton:
         return null;
       case MapModeInternal.selectLocation:
         return FloatingActionButton(
@@ -247,21 +246,19 @@ class _LocationWidgetState extends State<LocationWidget> with SingleTickerProvid
           },
           child: const Icon(Icons.check),
         );
-      case MapModeInternal.viewLocation || MapModeInternal.viewLocationEditButtonDisabled: {
-        void Function()? editButtonAction;
-        if (_internalMode == MapModeInternal.viewLocation) {
-          editButtonAction = () {
-            setState(() {
-              _internalMode = MapModeInternal.selectLocation;
-            });
-          };
-        }
+      case MapModeInternal.viewLocation || MapModeInternal.viewLocationEditButtonDisabled:
+        {
+          void Function()? editButtonAction;
+          if (_internalMode == MapModeInternal.viewLocation) {
+            editButtonAction = () {
+              setState(() {
+                _internalMode = MapModeInternal.selectLocation;
+              });
+            };
+          }
 
-        return FloatingActionButton(
-          onPressed: editButtonAction,
-          child: const Icon(Icons.edit),
-        );
-      }
+          return FloatingActionButton(onPressed: editButtonAction, child: const Icon(Icons.edit));
+        }
     }
   }
 
@@ -274,19 +271,16 @@ class _LocationWidgetState extends State<LocationWidget> with SingleTickerProvid
     final helpText = Text(helpTextString);
 
     switch (_internalMode) {
-      case MapModeInternal.selectLocationNoModeButton || MapModeInternal.selectLocation || MapModeInternal.waitUpdateCompletionNoModeButton:
+      case MapModeInternal.selectLocationNoModeButton ||
+          MapModeInternal.selectLocation ||
+          MapModeInternal.waitUpdateCompletionNoModeButton:
         return Align(
           alignment: Alignment.topCenter,
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Container(
               decoration: BoxDecoration(
-                boxShadow: const [
-                  BoxShadow(
-                    blurRadius: 15.0,
-                    color: Colors.black45,
-                  )
-                ],
+                boxShadow: const [BoxShadow(blurRadius: 15.0, color: Colors.black45)],
                 color: Theme.of(context).colorScheme.surfaceContainer,
                 borderRadius: const BorderRadius.all(Radius.circular(10)),
               ),
@@ -312,10 +306,7 @@ class _LocationWidgetState extends State<LocationWidget> with SingleTickerProvid
       alignment: Alignment.bottomRight,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: buttons,
-        ),
+        child: Column(mainAxisAlignment: MainAxisAlignment.end, children: buttons),
       ),
     );
   }
@@ -326,28 +317,23 @@ class _LocationWidgetState extends State<LocationWidget> with SingleTickerProvid
     const locationSize = 70.0;
     final profileLocation = _profileLocationMarker;
     if (profileLocation != null) {
-      markers.add(Marker(
-        width: locationSize,
-        height: locationSize,
-        point: profileLocation,
-        alignment: Alignment.topCenter,
-        child: Icon(
-          Icons.location_on,
-          color: Theme.of(context).colorScheme.onPrimaryFixedVariant,
-          size: locationSize,
-          shadows: const [
-            Shadow(
-              blurRadius: 1.0,
-              color: Colors.black,
-              offset: Offset(0.0, 0.0),
-            ),],
+      markers.add(
+        Marker(
+          width: locationSize,
+          height: locationSize,
+          point: profileLocation,
+          alignment: Alignment.topCenter,
+          child: Icon(
+            Icons.location_on,
+            color: Theme.of(context).colorScheme.onPrimaryFixedVariant,
+            size: locationSize,
+            shadows: const [Shadow(blurRadius: 1.0, color: Colors.black, offset: Offset(0.0, 0.0))],
+          ),
         ),
-      ));
+      );
     }
 
-    return MarkerLayer(
-        markers: markers,
-    );
+    return MarkerLayer(markers: markers);
   }
 
   bool notDisposed() {
@@ -367,14 +353,12 @@ abstract class SelectedLocationHandler {
   /// onComplete(true) is called if this succeeds, otherwise onComplete(false).
   ///
   /// BuildContext is the [LocationWidget]'s context.
-  Future<void> handleLocationSelection(
-    {
-      required BuildContext context,
-      required LatLng location,
-      required void Function() onStart,
-      required void Function(bool) onComplete
-    }
-  );
+  Future<void> handleLocationSelection({
+    required BuildContext context,
+    required LatLng location,
+    required void Function() onStart,
+    required void Function(bool) onComplete,
+  });
 }
 
 class MapAnimationManager {
@@ -388,7 +372,10 @@ class MapAnimationManager {
 
   void init(MapController mapController, TickerProvider provider) {
     _animatedMapController = mapController;
-    _controller = AnimationController(duration: const Duration(milliseconds: 1500), vsync: provider);
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 1500),
+      vsync: provider,
+    );
     _controller.addListener(() {
       final newLocation = LatLng(_latitudeAnimation.value, _longitudeAnimation.value);
       _animatedMapController?.move(newLocation, _zoomAnimation.value);
@@ -411,10 +398,7 @@ class MapAnimationManager {
 
   /// Start map animation with some limits, so that map does not
   /// move too fast or map is not zoomed too much or too little.
-  void startLimitedMapAnimation(
-    MapController mapController,
-    LatLng targetLocation,
-  ) {
+  void startLimitedMapAnimation(MapController mapController, LatLng targetLocation) {
     const locateMinZoom = 11.0;
     var targetZoom = locateMinZoom;
     if (mapController.camera.zoom > locateMinZoom) {
@@ -431,7 +415,11 @@ class MapAnimationManager {
     bool longDistance = false;
     final locationIsOnVisibleMapArea = mapController.camera.visibleBounds.contains(targetLocation);
     const distance = DistanceHaversine();
-    final distanceToTargetLocation = distance.as(LengthUnit.Kilometer, mapController.camera.center, targetLocation);
+    final distanceToTargetLocation = distance.as(
+      LengthUnit.Kilometer,
+      mapController.camera.center,
+      targetLocation,
+    );
     if (!locationIsOnVisibleMapArea && distanceToTargetLocation > 100) {
       longDistance = true;
     }
@@ -475,52 +463,33 @@ class MapAnimationManager {
     if (middleZoom != null) {
       zoomTween = TweenSequence([
         TweenSequenceItem<double>(
-          tween: Tween<double>(
-            begin: currentZoom,
-            end: middleZoom,
-          ),
-          weight: 1.0
+          tween: Tween<double>(begin: currentZoom, end: middleZoom),
+          weight: 1.0,
         ),
         TweenSequenceItem<double>(
-          tween: Tween<double>(
-            begin: middleZoom,
-            end: targetZoom,
-          ),
-          weight: 1.0
+          tween: Tween<double>(begin: middleZoom, end: targetZoom),
+          weight: 1.0,
         ),
       ]);
     } else {
-
       if (targetZoom > currentZoom && longDistance) {
         _controller.duration = const Duration(milliseconds: 1750);
         zoomTween = TweenSequence([
           TweenSequenceItem<double>(
-            tween: Tween<double>(
-              begin: currentZoom,
-              end: currentZoom,
-            ),
-            weight: 0.5
+            tween: Tween<double>(begin: currentZoom, end: currentZoom),
+            weight: 0.5,
           ),
           TweenSequenceItem<double>(
-            tween: Tween<double>(
-              begin: currentZoom,
-              end: targetZoom,
-            ),
-            weight: 0.45
+            tween: Tween<double>(begin: currentZoom, end: targetZoom),
+            weight: 0.45,
           ),
           TweenSequenceItem<double>(
-            tween: Tween<double>(
-              begin: targetZoom,
-              end: targetZoom,
-            ),
-            weight: 0.05
-          )
+            tween: Tween<double>(begin: targetZoom, end: targetZoom),
+            weight: 0.05,
+          ),
         ]);
       } else {
-        zoomTween = Tween<double>(
-          begin: currentZoom,
-          end: targetZoom,
-        );
+        zoomTween = Tween<double>(begin: currentZoom, end: targetZoom);
       }
     }
 
@@ -531,10 +500,7 @@ class MapAnimationManager {
       curve = Curves.easeInOut;
     }
 
-    final animation = CurvedAnimation(
-      parent: _controller,
-      curve: curve,
-    );
+    final animation = CurvedAnimation(parent: _controller, curve: curve);
 
     _latitudeAnimation = latitudeTween.animate(animation);
     _longitudeAnimation = longitudeTween.animate(animation);
@@ -576,32 +542,28 @@ class CustomImageProvider extends ImageProvider<(int, int, int, int)> {
 
   @override
   ImageStreamCompleter loadImage((int, int, int, int) key, ImageDecoderCallback decode) {
-    return OneFrameImageStreamCompleter(
-      () async {
-        final pngBytes =
-          await ImageCacheData.getInstance().getMapTile(
-            coordinates.z,
-            coordinates.x,
-            coordinates.y,
-            mapTileDataVersion,
-            media: LoginRepository.getInstance().repositories.media,
-          );
+    return OneFrameImageStreamCompleter(() async {
+      final pngBytes = await ImageCacheData.getInstance().getMapTile(
+        coordinates.z,
+        coordinates.x,
+        coordinates.y,
+        mapTileDataVersion,
+        media: LoginRepository.getInstance().repositories.media,
+      );
 
-        if (pngBytes == null) {
-          return Future<ImageInfo>.error("Failed to load map tile");
-        }
+      if (pngBytes == null) {
+        return Future<ImageInfo>.error("Failed to load map tile");
+      }
 
-        final buffer = await ImmutableBuffer.fromUint8List(pngBytes);
-        final codec = await decode(buffer);
-        final frame = await codec.getNextFrame();
+      final buffer = await ImmutableBuffer.fromUint8List(pngBytes);
+      final codec = await decode(buffer);
+      final frame = await codec.getNextFrame();
 
-        return ImageInfo(image: frame.image);
-      }(),
-    );
+      return ImageInfo(image: frame.image);
+    }());
   }
 
   @override
   Future<(int, int, int, int)> obtainKey(ImageConfiguration configuration) =>
-    SynchronousFuture((coordinates.z, coordinates.x, coordinates.y, mapTileDataVersion));
-
+      SynchronousFuture((coordinates.z, coordinates.x, coordinates.y, mapTileDataVersion));
 }

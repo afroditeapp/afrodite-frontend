@@ -6,7 +6,9 @@ import "package:app/ui_utils/snack_bar.dart";
 import "package:app/utils.dart";
 
 sealed class SignInWithBlocEvent {}
+
 class SignInWithGoogle extends SignInWithBlocEvent {}
+
 class SignInWithAppleEvent extends SignInWithBlocEvent {}
 
 class SignInWithBloc extends Bloc<SignInWithBlocEvent, SignInWithData> with ActionRunner {
@@ -24,13 +26,14 @@ class SignInWithBloc extends Bloc<SignInWithBlocEvent, SignInWithData> with Acti
     });
   }
 
-  Future<void> _handleSignInWith(Emitter<SignInWithData> emit, Stream<SignInWithEvent> stream) async {
+  Future<void> _handleSignInWith(
+    Emitter<SignInWithData> emit,
+    Stream<SignInWithEvent> stream,
+  ) async {
     await for (final event in stream) {
       switch (event) {
         case SignInWithEvent.getTokenCompleted:
-          emit(state.copyWith(
-            showProgress: true,
-          ));
+          emit(state.copyWith(showProgress: true));
         case SignInWithEvent.getTokenFailed:
           ();
         case SignInWithEvent.serverRequestFailed:
@@ -43,9 +46,7 @@ class SignInWithBloc extends Bloc<SignInWithBlocEvent, SignInWithData> with Acti
       showSnackBarTextsForSignInWithEvent(event);
     }
 
-    emit(state.copyWith(
-      showProgress: false,
-    ));
+    emit(state.copyWith(showProgress: false));
   }
 }
 

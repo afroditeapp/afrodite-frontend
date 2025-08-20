@@ -22,14 +22,15 @@ import 'package:app/model/freezed/utils/account_img_key.dart';
 var log = Logger("ImageCacheData");
 
 class ImageCacheData extends AppSingleton {
-  ImageCacheData._private(): cacheManager = CacheManager(
-    Config(
-      "image_cache",
-      stalePeriod: const Duration(days: 90),
-      // Images are about 100 KiB each, so 10 000 images is about 1 GiB
-      maxNrOfCacheObjects: 10000,
-    )
-  );
+  ImageCacheData._private()
+    : cacheManager = CacheManager(
+        Config(
+          "image_cache",
+          stalePeriod: const Duration(days: 90),
+          // Images are about 100 KiB each, so 10 000 images is about 1 GiB
+          maxNrOfCacheObjects: 10000,
+        ),
+      );
   static final _instance = ImageCacheData._private();
   factory ImageCacheData.getInstance() {
     return _instance;
@@ -38,7 +39,12 @@ class ImageCacheData extends AppSingleton {
   final CacheManager cacheManager;
 
   /// Get image bytes for profile picture.
-  Future<Uint8List?> getImage(AccountId imageOwner, ContentId id, {bool isMatch = false, required MediaRepository media}) async {
+  Future<Uint8List?> getImage(
+    AccountId imageOwner,
+    ContentId id, {
+    bool isMatch = false,
+    required MediaRepository media,
+  }) async {
     if (kIsWeb) {
       // Web uses XMLHttpRequest for caching
       return await media.getImage(imageOwner, id, isMatch: isMatch);
@@ -48,7 +54,9 @@ class ImageCacheData extends AppSingleton {
     if (fileInfo != null) {
       try {
         final encryptedImgBytes = await fileInfo.file.readAsBytes();
-        final decryptedImgBytes = await ImageEncryptionManager.getInstance().decryptImageData(encryptedImgBytes);
+        final decryptedImgBytes = await ImageEncryptionManager.getInstance().decryptImageData(
+          encryptedImgBytes,
+        );
         return decryptedImgBytes;
       } catch (_) {
         // Fallback to image downloading
@@ -61,7 +69,9 @@ class ImageCacheData extends AppSingleton {
     }
 
     try {
-      final encryptedImgBytes = await ImageEncryptionManager.getInstance().encryptImageData(imageData);
+      final encryptedImgBytes = await ImageEncryptionManager.getInstance().encryptImageData(
+        imageData,
+      );
       await cacheManager.putFile("null", encryptedImgBytes, key: imgKey);
     } catch (_) {
       // Ignore errors
@@ -70,7 +80,13 @@ class ImageCacheData extends AppSingleton {
   }
 
   /// Get PNG file bytes for map tile.
-  Future<Uint8List?> getMapTile(int z, int x, int y, int version, {required MediaRepository media}) async {
+  Future<Uint8List?> getMapTile(
+    int z,
+    int x,
+    int y,
+    int version, {
+    required MediaRepository media,
+  }) async {
     final String? mapTileCacheKey;
     if (kIsWeb) {
       // Web uses XMLHttpRequest for caching
@@ -82,7 +98,9 @@ class ImageCacheData extends AppSingleton {
       if (fileInfo != null) {
         try {
           final encryptedImgBytes = await fileInfo.file.readAsBytes();
-          final decryptedImgBytes = await ImageEncryptionManager.getInstance().decryptImageData(encryptedImgBytes);
+          final decryptedImgBytes = await ImageEncryptionManager.getInstance().decryptImageData(
+            encryptedImgBytes,
+          );
           return decryptedImgBytes;
         } catch (_) {
           // Fallback to image downloading
@@ -103,7 +121,9 @@ class ImageCacheData extends AppSingleton {
 
     if (mapTileCacheKey != null) {
       try {
-        final encryptedImgBytes = await ImageEncryptionManager.getInstance().encryptImageData(tilePngData);
+        final encryptedImgBytes = await ImageEncryptionManager.getInstance().encryptImageData(
+          tilePngData,
+        );
         await cacheManager.putFile("null", encryptedImgBytes, key: mapTileCacheKey);
       } catch (_) {
         // Ignore errors
@@ -135,10 +155,11 @@ Uint8List _emptyMapTilePngBytes() {
   final imageBuffer = img.Image(width: 1, height: 1);
 
   for (var pixel in imageBuffer) {
-    pixel..r = MAP_BACKGROUND_COLOR.r
-        ..g = MAP_BACKGROUND_COLOR.g
-        ..b = MAP_BACKGROUND_COLOR.b
-        ..a = 255;
+    pixel
+      ..r = MAP_BACKGROUND_COLOR.r
+      ..g = MAP_BACKGROUND_COLOR.g
+      ..b = MAP_BACKGROUND_COLOR.b
+      ..a = 255;
   }
 
   return img.encodePng(imageBuffer);
@@ -153,53 +174,51 @@ class AccountImageProvider extends ImageProvider<AccountImgKey> {
 
   @override
   ImageStreamCompleter loadImage(AccountImgKey key, ImageDecoderCallback decode) {
-    return OneFrameImageStreamCompleter(
-      () async {
-        final imgBytes =
-          await ImageCacheData.getInstance().getImage(imgInfo.accountId, imgInfo.contentId, isMatch: isMatch, media: media);
+    return OneFrameImageStreamCompleter(() async {
+      final imgBytes = await ImageCacheData.getInstance().getImage(
+        imgInfo.accountId,
+        imgInfo.contentId,
+        isMatch: isMatch,
+        media: media,
+      );
 
-        if (imgBytes == null) {
-          return Future<ImageInfo>.error("Failed to load the image");
-        }
+      if (imgBytes == null) {
+        return Future<ImageInfo>.error("Failed to load the image");
+      }
 
-        final buffer = await ImmutableBuffer.fromUint8List(imgBytes);
-        final codec = await decode(buffer);
-        final frame = await codec.getNextFrame();
+      final buffer = await ImmutableBuffer.fromUint8List(imgBytes);
+      final codec = await decode(buffer);
+      final frame = await codec.getNextFrame();
 
-        if (imgInfo.cropArea == CropArea.full) {
-          return ImageInfo(image: frame.image);
-        }
+      if (imgInfo.cropArea == CropArea.full) {
+        return ImageInfo(image: frame.image);
+      }
 
-        final pictureRecorder = PictureRecorder();
-        final canvas = Canvas(pictureRecorder);
-        final painter = CroppedImagePainter(
-          frame.image,
-          imgInfo.cropArea,
-          1.0,
-        );
-        final srcRect = painter.calculateSrcRect();
-        final dstRect = Rect.fromLTWH(0, 0, srcRect.width, srcRect.height);
-        canvas.drawImageRect(frame.image, srcRect, dstRect, Paint());
-        final image = await pictureRecorder.endRecording().toImage(srcRect.width.round(), srcRect.height.round());
-        return ImageInfo(image: image);
-      }(),
-    );
+      final pictureRecorder = PictureRecorder();
+      final canvas = Canvas(pictureRecorder);
+      final painter = CroppedImagePainter(frame.image, imgInfo.cropArea, 1.0);
+      final srcRect = painter.calculateSrcRect();
+      final dstRect = Rect.fromLTWH(0, 0, srcRect.width, srcRect.height);
+      canvas.drawImageRect(frame.image, srcRect, dstRect, Paint());
+      final image = await pictureRecorder.endRecording().toImage(
+        srcRect.width.round(),
+        srcRect.height.round(),
+      );
+      return ImageInfo(image: image);
+    }());
   }
 
   @override
-  Future<AccountImgKey> obtainKey(ImageConfiguration configuration) =>
-    SynchronousFuture(imgInfo);
+  Future<AccountImgKey> obtainKey(ImageConfiguration configuration) => SynchronousFuture(imgInfo);
 
   static ImageProvider<Object> create(
     AccountId accountId,
-    ContentId contentId,
-    {
-      bool isMatch = false,
-      required ImageCacheSize cacheSize,
-      required MediaRepository media,
-      required CropArea cropArea,
-    }
-  ) {
+    ContentId contentId, {
+    bool isMatch = false,
+    required ImageCacheSize cacheSize,
+    required MediaRepository media,
+    required CropArea cropArea,
+  }) {
     final key = AccountImgKey(
       accountId: accountId,
       contentId: contentId,
@@ -246,16 +265,12 @@ class ImageCacheSize {
 
   factory ImageCacheSize.width(BuildContext context, double width) {
     final devicePixelRatio = MediaQuery.devicePixelRatioOf(context);
-    return ImageCacheSize._(
-      width: (width * devicePixelRatio).round(),
-    );
+    return ImageCacheSize._(width: (width * devicePixelRatio).round());
   }
 
   factory ImageCacheSize.height(BuildContext context, double height) {
     final devicePixelRatio = MediaQuery.devicePixelRatioOf(context);
-    return ImageCacheSize._(
-      height: (height * devicePixelRatio).round(),
-    );
+    return ImageCacheSize._(height: (height * devicePixelRatio).round());
   }
 
   static ImageCacheSize sizeForAppBarThumbnail(BuildContext context) {
@@ -272,9 +287,7 @@ class ImageCacheSize {
 
   @override
   bool operator ==(Object other) {
-    return other is ImageCacheSize &&
-      other.width == width &&
-      other.height == height;
+    return other is ImageCacheSize && other.width == width && other.height == height;
   }
 
   @override
@@ -288,11 +301,19 @@ class PrecacheImageForViewProfileScreen {
       // AccountImageProvider.create does not need isMatch
       // set to true as image is available locally and
       // it is loaded to ImageCache.
-      await PrecacheImageForViewProfileScreen.usingAccountAndContentIds(context, e.accountId, first.id);
+      await PrecacheImageForViewProfileScreen.usingAccountAndContentIds(
+        context,
+        e.accountId,
+        first.id,
+      );
     }
   }
 
-  static Future<void> usingAccountAndContentIds(BuildContext context, AccountId account, ContentId content) async {
+  static Future<void> usingAccountAndContentIds(
+    BuildContext context,
+    AccountId account,
+    ContentId content,
+  ) async {
     final imageProvider = AccountImageProvider.create(
       account,
       content,

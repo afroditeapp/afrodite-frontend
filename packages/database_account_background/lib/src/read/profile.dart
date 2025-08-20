@@ -8,20 +8,15 @@ import '../schema.dart' as schema;
 
 part 'profile.g.dart';
 
-@DriftAccessor(
-  tables: [
-    schema.Profile,
-    schema.AutomaticProfileSearchBadgeState,
-  ]
-)
-class DaoReadProfile extends DatabaseAccessor<AccountBackgroundDatabase> with _$DaoReadProfileMixin {
+@DriftAccessor(tables: [schema.Profile, schema.AutomaticProfileSearchBadgeState])
+class DaoReadProfile extends DatabaseAccessor<AccountBackgroundDatabase>
+    with _$DaoReadProfileMixin {
   DaoReadProfile(super.db);
 
   Future<ProfileTitle?> getProfileTitle(api.AccountId accountId) async {
-    final r = await (select(profile)
-      ..where((t) => t.accountId.equals(accountId.aid))
-    )
-      .getSingleOrNull();
+    final r = await (select(
+      profile,
+    )..where((t) => t.accountId.equals(accountId.aid))).getSingleOrNull();
 
     if (r == null) {
       return null;
@@ -40,15 +35,13 @@ class DaoReadProfile extends DatabaseAccessor<AccountBackgroundDatabase> with _$
   }
 
   Stream<AutomaticProfileSearchBadgeState?> watchAutomaticProfileSearchUiState() {
-    return (select(automaticProfileSearchBadgeState)
-      ..where((t) => t.id.equals(SingleRowTable.ID.value))
-    )
-      .watchSingleOrNull()
-      .map((r) {
-        if (r == null) {
-          return null;
-        }
-        return AutomaticProfileSearchBadgeState(r.profileCount, r.showBadge);
-      });
+    return (select(
+      automaticProfileSearchBadgeState,
+    )..where((t) => t.id.equals(SingleRowTable.ID.value))).watchSingleOrNull().map((r) {
+      if (r == null) {
+        return null;
+      }
+      return AutomaticProfileSearchBadgeState(r.profileCount, r.showBadge);
+    });
   }
 }

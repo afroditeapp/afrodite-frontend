@@ -1,5 +1,3 @@
-
-
 import 'package:app/data/login_repository.dart';
 import 'package:app/logic/admin/content_decicion_stream.dart';
 import 'package:app/ui/normal/settings/admin/account_admin_settings.dart';
@@ -31,7 +29,8 @@ class ContentDecicionScreen<C extends ContentInfoGetter> extends StatefulWidget 
   State<ContentDecicionScreen<C>> createState() => _ContentDecicionScreenState<C>();
 }
 
-class _ContentDecicionScreenState<C extends ContentInfoGetter> extends State<ContentDecicionScreen<C>> {
+class _ContentDecicionScreenState<C extends ContentInfoGetter>
+    extends State<ContentDecicionScreen<C>> {
   final ItemPositionsListener _listener = ItemPositionsListener.create();
   late final ContentDecicionStreamLogic<C> _logic;
   final api = LoginRepository.getInstance().repositories.api;
@@ -58,12 +57,13 @@ class _ContentDecicionScreenState<C extends ContentInfoGetter> extends State<Con
       appBar: AppBar(
         title: Text(widget.title),
         actions: [
-          if (instructions != null) IconButton(
-            onPressed: () {
-              showInfoDialog(context, instructions);
-            },
-            icon: const Icon(Icons.info),
-          )
+          if (instructions != null)
+            IconButton(
+              onPressed: () {
+                showInfoDialog(context, instructions);
+              },
+              icon: const Icon(Icons.info),
+            ),
         ],
       ),
       body: list(context),
@@ -103,41 +103,45 @@ class _ContentDecicionScreenState<C extends ContentInfoGetter> extends State<Con
         final s = snapshot.data;
         if (s != null) {
           switch (s) {
-            case AllModerated<C>() : return buildEmptyText(widget.infoMessageRowHeight);
-            case Loading<C>() : return buildProgressIndicator(widget.infoMessageRowHeight);
-            case ContentRow<C> r : {
-              return LayoutBuilder(
-                builder: (context, constraints) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 4.0),
-                    child: buildRow(context, r, index),
-                  );
-                }
-              );
-            }
+            case AllModerated<C>():
+              return buildEmptyText(widget.infoMessageRowHeight);
+            case Loading<C>():
+              return buildProgressIndicator(widget.infoMessageRowHeight);
+            case ContentRow<C> r:
+              {
+                return LayoutBuilder(
+                  builder: (context, constraints) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 4.0),
+                      child: buildRow(context, r, index),
+                    );
+                  },
+                );
+              }
           }
         } else {
           return buildProgressIndicator(widget.infoMessageRowHeight);
         }
-      }
+      },
     );
   }
 
   Widget buildRow(BuildContext contex, ContentRow<C> r, int index) {
     final Color? color;
     switch (r.status) {
-      case RowStatus.accepted: color = Colors.green.shade200;
-      case RowStatus.rejected: color = Colors.red.shade200;
-      case RowStatus.decicionNeeded: color = null;
+      case RowStatus.accepted:
+        color = Colors.green.shade200;
+      case RowStatus.rejected:
+        color = Colors.red.shade200;
+      case RowStatus.decicionNeeded:
+        color = null;
     }
 
     return Container(
       color: color,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Expanded(child: buildContent(context, r.content, index)),
-        ],
+        children: [Expanded(child: buildContent(context, r.content, index))],
       ),
     );
   }
@@ -158,10 +162,8 @@ class _ContentDecicionScreenState<C extends ContentInfoGetter> extends State<Con
       height: height,
       child: const Row(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          CircularProgressIndicator(),
-        ],
-      )
+        children: [CircularProgressIndicator()],
+      ),
     );
   }
 
@@ -170,10 +172,8 @@ class _ContentDecicionScreenState<C extends ContentInfoGetter> extends State<Con
       height: height,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(context.strings.generic_empty)
-        ],
-      )
+        children: [Text(context.strings.generic_empty)],
+      ),
     );
   }
 
@@ -183,17 +183,11 @@ class _ContentDecicionScreenState<C extends ContentInfoGetter> extends State<Con
     final rejectAction = SimpleDialogOption(
       onPressed: () {
         MyNavigator.removePage(context, pageKey);
-        showConfirmDialog(
-          context,
-          context.strings.generic_reject_question,
-        )
-        .then(
-            (value) {
-              if (value == true) {
-                _logic.moderateRow(index, false);
-              }
-            }
-        );
+        showConfirmDialog(context, context.strings.generic_reject_question).then((value) {
+          if (value == true) {
+            _logic.moderateRow(index, false);
+          }
+        });
       },
       child: const Text("Reject"),
     );
@@ -208,24 +202,17 @@ class _ContentDecicionScreenState<C extends ContentInfoGetter> extends State<Con
           title: const Text("Select action"),
           children: <Widget>[
             if (_logic.rejectingIsPossible(index) && widget.builder.allowRejecting) rejectAction,
-            if (target == null) openAdminSettingsAction(
-              dialogContext,
-              pageKey,
-              "Show admin settings",
-              info.owner,
-            ),
-            if (target != null) openAdminSettingsAction(
-              dialogContext,
-              pageKey,
-              "Show creator admin settings",
-              info.owner,
-            ),
-            if (target != null) openAdminSettingsAction(
-              dialogContext,
-              pageKey,
-              "Show target admin settings",
-              target,
-            ),
+            if (target == null)
+              openAdminSettingsAction(dialogContext, pageKey, "Show admin settings", info.owner),
+            if (target != null)
+              openAdminSettingsAction(
+                dialogContext,
+                pageKey,
+                "Show creator admin settings",
+                info.owner,
+              ),
+            if (target != null)
+              openAdminSettingsAction(dialogContext, pageKey, "Show target admin settings", target),
           ],
         );
       },

@@ -8,12 +8,14 @@ import "package:app/ui_utils/snack_bar.dart";
 import "package:app/utils.dart";
 
 sealed class BlockedProfilesEvent {}
+
 class UnblockProfile extends BlockedProfilesEvent {
   final AccountId value;
   UnblockProfile(this.value);
 }
 
-class BlockedProfilesBloc extends Bloc<BlockedProfilesEvent, BlockedProfilesData> with ActionRunner {
+class BlockedProfilesBloc extends Bloc<BlockedProfilesEvent, BlockedProfilesData>
+    with ActionRunner {
   final ChatRepository chat = LoginRepository.getInstance().repositories.chat;
 
   BlockedProfilesBloc() : super(BlockedProfilesData()) {
@@ -23,9 +25,7 @@ class BlockedProfilesBloc extends Bloc<BlockedProfilesEvent, BlockedProfilesData
         return;
       }
 
-      emit(state.copyWith(
-        unblockOngoing: true,
-      ));
+      emit(state.copyWith(unblockOngoing: true));
 
       if (await chat.removeBlockFrom(data.value)) {
         showSnackBar(R.strings.blocked_profiles_screen_unblock_profile_successful);
@@ -33,9 +33,7 @@ class BlockedProfilesBloc extends Bloc<BlockedProfilesEvent, BlockedProfilesData
         showSnackBar(R.strings.blocked_profiles_screen_unblock_profile_failed);
       }
 
-      emit(state.copyWith(
-        unblockOngoing: false,
-      ));
+      emit(state.copyWith(unblockOngoing: false));
     });
   }
 }

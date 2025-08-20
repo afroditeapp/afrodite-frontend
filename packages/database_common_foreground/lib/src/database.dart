@@ -1,4 +1,3 @@
-
 import 'package:database_common_foreground/src/read/app.dart';
 import 'package:database_common_foreground/src/read/demo_account.dart';
 import 'package:database_common_foreground/src/write/app.dart';
@@ -24,11 +23,11 @@ part 'database.g.dart';
     // Write
     DaoWriteApp,
     DaoWriteDemoAccount,
-  ]
+  ],
 )
 class CommonForegroundDatabase extends _$CommonForegroundDatabase {
-  CommonForegroundDatabase(QueryExcecutorProvider dbProvider) :
-    super(dbProvider.getQueryExcecutor());
+  CommonForegroundDatabase(QueryExcecutorProvider dbProvider)
+    : super(dbProvider.getQueryExcecutor());
 
   CommonForegroundDatabaseRead get read => CommonForegroundDatabaseRead(this);
   CommonForegroundDatabaseWrite get write => CommonForegroundDatabaseWrite(this);

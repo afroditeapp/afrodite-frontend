@@ -1,7 +1,3 @@
-
-
-
-
 import 'package:app/data/general/notification/utils/notification_category.dart';
 import 'package:app/data/general/notification/utils/notification_id.dart';
 import 'package:app/data/general/notification/utils/notification_payload.dart';
@@ -27,7 +23,9 @@ class NotificationLikeReceived extends AppSingletonNoInit {
 
   int _receivedCount = 0;
 
-  Future<void> incrementReceivedLikesCount(AccountBackgroundDatabaseManager accountBackgroundDb) async {
+  Future<void> incrementReceivedLikesCount(
+    AccountBackgroundDatabaseManager accountBackgroundDb,
+  ) async {
     _receivedCount++;
 
     if (!isLikesUiOpen()) {
@@ -57,17 +55,18 @@ class NotificationLikeReceived extends AppSingletonNoInit {
       id: NotificationIdStatic.likeReceived.id,
       title: title,
       category: const NotificationCategoryLikes(),
-      notificationPayload: NavigateToLikes(
-        receiverAccountId: accountBackgroundDb.accountId(),
-      ),
+      notificationPayload: NavigateToLikes(receiverAccountId: accountBackgroundDb.accountId()),
       accountBackgroundDb: accountBackgroundDb,
     );
   }
 
   bool isLikesUiOpen() {
-    final likesScreenOpen = (NavigationStateBlocInstance.getInstance().navigationState.pages.length == 1 &&
-      BottomNavigationStateBlocInstance.getInstance().navigationState.screen == BottomNavigationScreenId.likes) ||
-      (NavigationStateBlocInstance.getInstance().navigationState.pages.lastOrNull?.pageInfo is LikesPageInfo);
+    final likesScreenOpen =
+        (NavigationStateBlocInstance.getInstance().navigationState.pages.length == 1 &&
+            BottomNavigationStateBlocInstance.getInstance().navigationState.screen ==
+                BottomNavigationScreenId.likes) ||
+        (NavigationStateBlocInstance.getInstance().navigationState.pages.lastOrNull?.pageInfo
+            is LikesPageInfo);
     return likesScreenOpen && AppVisibilityProvider.getInstance().isForeground;
   }
 }

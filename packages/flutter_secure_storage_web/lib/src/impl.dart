@@ -1,6 +1,3 @@
-
 class FlutterSecureStorageWeb {
-  static void registerWith(Object registrar) {
-
-  }
+  static void registerWith(Object registrar) {}
 }

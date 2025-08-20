@@ -1,6 +1,3 @@
-
-
-
 import 'package:app/api/api_manager.dart';
 import 'package:app/data/image_cache.dart';
 import 'package:app/data/login_repository.dart';
@@ -32,11 +29,9 @@ Future<void> openProfileView(
   BuildContext context,
   ProfileEntry profile,
   ProfileActionState? initialProfileAction,
-  ProfileRefreshPriority priority,
-  {
-    bool noAction = false,
-  }
-) async {
+  ProfileRefreshPriority priority, {
+  bool noAction = false,
+}) async {
   await PrecacheImageForViewProfileScreen.usingProfileEntry(context, profile);
 
   if (!context.mounted) {
@@ -47,8 +42,8 @@ Future<void> openProfileView(
   final pageKey = PageKey();
   await MyNavigator.pushWithKey(
     context,
-    MaterialPage<void>(child:
-      BlocProvider(
+    MaterialPage<void>(
+      child: BlocProvider(
         create: (_) => ViewProfileBloc(profile, initialProfileAction, priority),
         lazy: false,
         child: ViewProfilePage(
@@ -96,7 +91,11 @@ class ViewProfilePage extends StatelessWidget {
                     final p = AccountAdminSettingsPermissions(state.permissions);
                     if (p.somePermissionEnabled()) {
                       return MenuItemButton(
-                        onPressed: () => getAgeAndNameAndShowAdminSettings(context, api, initialProfile.accountId),
+                        onPressed: () => getAgeAndNameAndShowAdminSettings(
+                          context,
+                          api,
+                          initialProfile.accountId,
+                        ),
                         child: const Text("Admin"),
                       );
                     } else {
@@ -110,7 +109,7 @@ class ViewProfilePage extends StatelessWidget {
           body: profilePage(context),
           floatingActionButton: actionButton(context, state),
         );
-      }
+      },
     );
   }
 
@@ -149,7 +148,7 @@ class ViewProfilePage extends StatelessWidget {
           onPressed: () => confirmProfileAction(
             context,
             state,
-            context.strings.view_profile_screen_like_action_dialog_title
+            context.strings.view_profile_screen_like_action_dialog_title,
           ),
           tooltip: context.strings.view_profile_screen_like_action,
           child: const Icon(Icons.waving_hand),
@@ -165,15 +164,16 @@ class ViewProfilePage extends StatelessWidget {
     }
   }
 
-  void confirmProfileAction(BuildContext context, ViewProfilesData s, String dialogTitle, {String? details}) async {
+  void confirmProfileAction(
+    BuildContext context,
+    ViewProfilesData s,
+    String dialogTitle, {
+    String? details,
+  }) async {
     final accepted = await showConfirmDialog(context, dialogTitle, details: details);
     final action = s.profileActionState;
     if (context.mounted && accepted == true && action != null) {
-      context.read<ViewProfileBloc>()
-        .add(DoProfileAction(
-          s.profile.accountId,
-          action,
-        ));
+      context.read<ViewProfileBloc>().add(DoProfileAction(s.profile.accountId, action));
     }
   }
 
@@ -183,7 +183,7 @@ class ViewProfilePage extends StatelessWidget {
         handleStateAction(context, state);
 
         return ViewProfileEntry(profile: state.profile);
-      }
+      },
     );
   }
 
@@ -193,15 +193,13 @@ class ViewProfilePage extends StatelessWidget {
         return;
       }
 
-      if (
-        state.showAddToFavoritesCompleted ||
-        state.showRemoveFromFavoritesCompleted ||
-        state.showLikeCompleted ||
-        state.showLikeFailedBecauseOfLimit ||
-        state.showLikeFailedBecauseAlreadyLiked ||
-        state.showLikeFailedBecauseAlreadyMatch ||
-        state.showGenericError
-      ) {
+      if (state.showAddToFavoritesCompleted ||
+          state.showRemoveFromFavoritesCompleted ||
+          state.showLikeCompleted ||
+          state.showLikeFailedBecauseOfLimit ||
+          state.showLikeFailedBecauseAlreadyLiked ||
+          state.showLikeFailedBecauseAlreadyMatch ||
+          state.showGenericError) {
         if (state.showAddToFavoritesCompleted) {
           showSnackBar(context.strings.view_profile_screen_add_to_favorites_action_successful);
         }

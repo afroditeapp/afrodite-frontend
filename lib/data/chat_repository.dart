@@ -39,20 +39,27 @@ class ChatRepository extends DataRepositoryWithLifecycle {
     required ClientIdManager clientIdManager,
     required ServerConnectionManager connectionManager,
     required this.currentUser,
-  }) :
-    syncHandler = ConnectedActionScheduler(connectionManager),
-    profileEntryDownloader = ProfileEntryDownloader(media, accountBackgroundDb, db, connectionManager.api),
-    sentBlocksIterator = AccountIdDatabaseIterator((startIndex, limit) => db.accountData((db) => db.conversationList.getSentBlocksList(startIndex, limit)).ok()),
-    api = connectionManager.api,
-    messageManager = MessageManager(
-      messageKeyManager,
-      clientIdManager,
-      connectionManager.api,
-      db,
-      profile,
-      accountBackgroundDb,
-      currentUser
-    );
+  }) : syncHandler = ConnectedActionScheduler(connectionManager),
+       profileEntryDownloader = ProfileEntryDownloader(
+         media,
+         accountBackgroundDb,
+         db,
+         connectionManager.api,
+       ),
+       sentBlocksIterator = AccountIdDatabaseIterator(
+         (startIndex, limit) =>
+             db.accountData((db) => db.conversationList.getSentBlocksList(startIndex, limit)).ok(),
+       ),
+       api = connectionManager.api,
+       messageManager = MessageManager(
+         messageKeyManager,
+         clientIdManager,
+         connectionManager.api,
+         db,
+         profile,
+         accountBackgroundDb,
+         currentUser,
+       );
 
   final ConnectedActionScheduler syncHandler;
 
@@ -83,25 +90,26 @@ class ChatRepository extends DataRepositoryWithLifecycle {
   @override
   Future<Result<(), ()>> onLoginDataSync() async {
     return await _sentBlocksRefresh()
-      .andThen((_) => _generateMessageKeyIfNeeded())
-      .andThen((_) => _reloadChatNotificationSettings())
-      .andThen((_) => reloadDailyLikesLimit())
-      .andThenEmptyErr((_) => db.accountAction((db) => db.app.updateChatSyncDone(true)));
+        .andThen((_) => _generateMessageKeyIfNeeded())
+        .andThen((_) => _reloadChatNotificationSettings())
+        .andThen((_) => reloadDailyLikesLimit())
+        .andThenEmptyErr((_) => db.accountAction((db) => db.app.updateChatSyncDone(true)));
   }
 
   @override
   Future<void> onResumeAppUsage() async {
     syncHandler.onResumeAppUsageSync(() async {
-      final currentChatSyncValue = await db.accountStreamSingle((db) => db.app.watchChatSyncDone()).ok() ?? false;
+      final currentChatSyncValue =
+          await db.accountStreamSingle((db) => db.app.watchChatSyncDone()).ok() ?? false;
       if (currentChatSyncValue) {
         // Already done
         return;
       }
       await _sentBlocksRefresh()
-        .andThen((_) => _generateMessageKeyIfNeeded())
-        .andThen((_) => _reloadChatNotificationSettings())
-        .andThen((_) => reloadDailyLikesLimit())
-        .andThenEmptyErr((_) => db.accountAction((db) => db.app.updateChatSyncDone(true)));
+          .andThen((_) => _generateMessageKeyIfNeeded())
+          .andThen((_) => _reloadChatNotificationSettings())
+          .andThen((_) => reloadDailyLikesLimit())
+          .andThenEmptyErr((_) => db.accountAction((db) => db.app.updateChatSyncDone(true)));
     });
   }
 
@@ -110,17 +118,17 @@ class ChatRepository extends DataRepositoryWithLifecycle {
     if (keys == null) {
       return const Err(());
     }
-    final serverPublicKeyInfo =
-      await api.chat((api) => api.getPrivatePublicKeyInfo(currentUser.aid)).ok();
+    final serverPublicKeyInfo = await api
+        .chat((api) => api.getPrivatePublicKeyInfo(currentUser.aid))
+        .ok();
     if (serverPublicKeyInfo == null) {
       return const Err(());
     }
 
     if (serverPublicKeyInfo.latestPublicKeyId != keys.id) {
-      final uploadAndSaveResult = await messageKeyManager.uploadPublicKeyAndSaveAllKeys(GeneratedMessageKeys(
-        public: keys.public.data,
-        private: keys.private.data,
-      ));
+      final uploadAndSaveResult = await messageKeyManager.uploadPublicKeyAndSaveAllKeys(
+        GeneratedMessageKeys(public: keys.public.data, private: keys.private.data),
+      );
       if (uploadAndSaveResult.isErr()) {
         return const Err(());
       }
@@ -142,7 +150,8 @@ class ChatRepository extends DataRepositoryWithLifecycle {
   }
 
   Future<bool> isInSentBlocks(AccountId accountId) async {
-    return await db.accountData((db) => db.conversationList.isInSentBlocks(accountId)).ok() ?? false;
+    return await db.accountData((db) => db.conversationList.isInSentBlocks(accountId)).ok() ??
+        false;
   }
 
   Future<void> _updateAccountInteractionState(
@@ -214,13 +223,11 @@ class ChatRepository extends DataRepositoryWithLifecycle {
   }
 
   Future<List<(AccountId, ProfileEntry?)>> _genericIteratorNext(
-    AccountIdDatabaseIterator iterator,
-    {
-      bool cache = false,
-      bool download = false,
-      bool isMatch = false,
-    }
-  ) async {
+    AccountIdDatabaseIterator iterator, {
+    bool cache = false,
+    bool download = false,
+    bool isMatch = false,
+  }) async {
     final accounts = await iterator.nextList();
     final newList = <(AccountId, ProfileEntry?)>[];
     for (final accountId in accounts) {
@@ -239,19 +246,24 @@ class ChatRepository extends DataRepositoryWithLifecycle {
   /// Returns AccountId for all blocked profiles. ProfileEntry is returned only
   /// if the blocked profile is public.
   Future<List<(AccountId, ProfileEntry?)>> sentBlocksIteratorNext() =>
-    _genericIteratorNext(sentBlocksIterator, download: true);
+      _genericIteratorNext(sentBlocksIterator, download: true);
 
   void sentBlocksIteratorReset() {
     sentBlocksIterator.reset();
   }
 
   Future<Result<(), ()>> _sentBlocksRefresh() {
-    return api.chat((api) => api.getSentBlocks())
-      .andThenEmptyErr((value) => db.accountAction((db) => db.conversationList.setSentBlockStatusList(value)));
+    return api
+        .chat((api) => api.getSentBlocks())
+        .andThenEmptyErr(
+          (value) => db.accountAction((db) => db.conversationList.setSentBlockStatusList(value)),
+        );
   }
 
   Future<void> receivedLikesCountRefresh() async {
-    final currentCount = await accountBackgroundDb.accountStream((db) => db.newReceivedLikesCount.watchReceivedLikesCount()).firstOrNull;
+    final currentCount = await accountBackgroundDb
+        .accountStream((db) => db.newReceivedLikesCount.watchReceivedLikesCount())
+        .firstOrNull;
     final currentCountInt = currentCount?.c ?? 0;
 
     final r = await api.chat((api) => api.postGetNewReceivedLikesCount()).ok();
@@ -260,7 +272,9 @@ class ChatRepository extends DataRepositoryWithLifecycle {
     if (v == null || c == null) {
       return;
     }
-    await accountBackgroundDb.accountAction((db) => db.newReceivedLikesCount.updateSyncVersionReceivedLikes(v, c));
+    await accountBackgroundDb.accountAction(
+      (db) => db.newReceivedLikesCount.updateSyncVersionReceivedLikes(v, c),
+    );
 
     if (currentCountInt == 0 && c.c > 0) {
       await NotificationLikeReceived.getInstance().incrementReceivedLikesCount(accountBackgroundDb);
@@ -280,7 +294,9 @@ class ChatRepository extends DataRepositoryWithLifecycle {
   /// Get message and updates to it.
   /// Index 0 is the latest message.
   Stream<MessageEntry?> getMessageWithIndex(AccountId match, int index) async* {
-    final message = await db.accountData((db) => db.message.getMessage(currentUser, match, index)).ok();
+    final message = await db
+        .accountData((db) => db.message.getMessage(currentUser, match, index))
+        .ok();
     final localId = message?.localId;
     if (message == null || localId == null) {
       yield null;
@@ -289,7 +305,14 @@ class ChatRepository extends DataRepositoryWithLifecycle {
     yield message;
     await for (final event in profile.profileChanges) {
       if (event is ConversationChanged && event.conversationWith == match) {
-        final messageList = await db.accountData((db) => db.message.getMessageListUsingLocalMessageId(currentUser, match, localId, 1)).ok() ?? [];
+        final messageList =
+            await db
+                .accountData(
+                  (db) =>
+                      db.message.getMessageListUsingLocalMessageId(currentUser, match, localId, 1),
+                )
+                .ok() ??
+            [];
         final message = messageList.firstOrNull;
         if (message != null) {
           yield message;
@@ -301,12 +324,16 @@ class ChatRepository extends DataRepositoryWithLifecycle {
   /// Get message count of conversation and possibly the related change event.
   /// Also receive updates to both.
   Stream<(int, ConversationChanged?)> getMessageCountAndChanges(AccountId match) async* {
-    final messageNumber = await db.accountData((db) => db.message.countMessagesInConversation(currentUser, match)).ok();
+    final messageNumber = await db
+        .accountData((db) => db.message.countMessagesInConversation(currentUser, match))
+        .ok();
     yield (messageNumber ?? 0, null);
 
     await for (final event in profile.profileChanges) {
       if (event is ConversationChanged && event.conversationWith == match) {
-        final messageNumber = await db.accountData((db) => db.message.countMessagesInConversation(currentUser, match)).ok();
+        final messageNumber = await db
+            .accountData((db) => db.message.countMessagesInConversation(currentUser, match))
+            .ok();
         yield (messageNumber ?? 0, event);
       }
     }
@@ -329,17 +356,19 @@ class ChatRepository extends DataRepositoryWithLifecycle {
   }
 
   Future<Result<(), ()>> _reloadChatNotificationSettings() async {
-    return await api.chat((api) => api.getChatAppNotificationSettings())
-      .andThenEmptyErr((v) => accountBackgroundDb.accountAction(
-        (db) => db.appNotificationSettings.updateChatNotificationSettings(v),
-      ));
+    return await api
+        .chat((api) => api.getChatAppNotificationSettings())
+        .andThenEmptyErr(
+          (v) => accountBackgroundDb.accountAction(
+            (db) => db.appNotificationSettings.updateChatNotificationSettings(v),
+          ),
+        );
   }
 
   Future<Result<(), ()>> reloadDailyLikesLimit() async {
-    return await api.chat((api) => api.getDailyLikesLeft())
-      .andThenEmptyErr((v) => db.accountAction(
-        (db) => db.like.updateDailyLikesLeft(v),
-      ));
+    return await api
+        .chat((api) => api.getDailyLikesLeft())
+        .andThenEmptyErr((v) => db.accountAction((db) => db.like.updateDailyLikesLeft(v)));
   }
 
   // Message manager API
@@ -368,15 +397,13 @@ class ChatRepository extends DataRepositoryWithLifecycle {
     return await cmd.waitUntilReady();
   }
 
-  Future<Result<(), RetryPublicKeyDownloadError>> retryPublicKeyDownload(LocalMessageId localId) async {
+  Future<Result<(), RetryPublicKeyDownloadError>> retryPublicKeyDownload(
+    LocalMessageId localId,
+  ) async {
     final cmd = RetryPublicKeyDownload(localId);
     messageManager.queueCmd(cmd);
     return await cmd.waitUntilReady();
   }
 }
 
-enum SendLikeError {
-  alreadyLiked,
-  alreadyMatch,
-  unspecifiedError,
-}
+enum SendLikeError { alreadyLiked, alreadyMatch, unspecifiedError }

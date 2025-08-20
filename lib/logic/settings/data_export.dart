@@ -11,12 +11,15 @@ import "package:app/utils.dart";
 import "package:openapi/manual_additions.dart";
 
 sealed class DataExportEvent {}
+
 class DownloadDataExport extends DataExportEvent {
   final AccountId account;
   final DataExportType dataExportType;
   DownloadDataExport(this.account, this.dataExportType);
 }
+
 class DeleteCurrentDataExport extends DataExportEvent {}
+
 class SaveDataExport extends DataExportEvent {
   final DataExportNameAndData data;
   SaveDataExport(this.data);
@@ -36,9 +39,12 @@ class DataExportBloc extends Bloc<DataExportEvent, DataExportData> with ActionRu
           return;
         }
 
-        final startDataExportResult = await api.commonWrapper().requestAction((api) => api.postStartDataExport(
-          PostStartDataExport(source_: data.account, dataExportType: data.dataExportType),
-        ), logError: false);
+        final startDataExportResult = await api.commonWrapper().requestAction(
+          (api) => api.postStartDataExport(
+            PostStartDataExport(source_: data.account, dataExportType: data.dataExportType),
+          ),
+          logError: false,
+        );
         if (startDataExportResult case Err()) {
           if (startDataExportResult.e.isTooManyRequests()) {
             showSnackBar(R.strings.data_export_screen_api_limit_error);
@@ -73,7 +79,9 @@ class DataExportBloc extends Bloc<DataExportEvent, DataExportData> with ActionRu
           return;
         }
 
-        emit(state.copyWith(isLoading: false, dataExport: DataExportNameAndData(name, downloadResult)));
+        emit(
+          state.copyWith(isLoading: false, dataExport: DataExportNameAndData(name, downloadResult)),
+        );
       });
     });
     on<DeleteCurrentDataExport>((data, emit) async {
@@ -94,7 +102,10 @@ class DataExportBloc extends Bloc<DataExportEvent, DataExportData> with ActionRu
         emit(state.copyWith(isLoading: true));
 
         try {
-          await FlutterFileSaver().writeFileAsBytes(fileName: data.data.name, bytes: data.data.data);
+          await FlutterFileSaver().writeFileAsBytes(
+            fileName: data.data.name,
+            bytes: data.data.data,
+          );
         } catch (_) {
           emit(state.copyWith(isLoading: false));
           return;

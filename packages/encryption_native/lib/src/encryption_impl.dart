@@ -1,5 +1,3 @@
-
-
 import 'dart:convert';
 
 import 'package:encryption_common/encryption_common.dart';
@@ -15,11 +13,7 @@ final log = Logger("SecureStorageManager");
 const RAW_STORAGE_KEY_FOR_DB_ENCRYPTION_KEY = "SxxccCgbFSMkdaho";
 const RAW_STORAGE_KEY_FOR_BACKGROUND_DB_ENCRYPTION_KEY = "Aeq5gGUHgn6IVqaK";
 
-Future<String> _getStorageKeyForDbEncryptionKey(
-  {
-    required bool backgroundDb,
-  }
-) async {
+Future<String> _getStorageKeyForDbEncryptionKey({required bool backgroundDb}) async {
   final String keyRaw;
   if (backgroundDb) {
     keyRaw = RAW_STORAGE_KEY_FOR_BACKGROUND_DB_ENCRYPTION_KEY;
@@ -51,41 +45,28 @@ class SecureStorageManager extends AppSingleton {
     }
     initDone = true;
 
-    const androidOptions = AndroidOptions(
-      encryptedSharedPreferences: true,
-    );
+    const androidOptions = AndroidOptions(encryptedSharedPreferences: true);
 
-    const iosOptions = IOSOptions(
-      accessibility: KeychainAccessibility.unlocked,
-    );
+    const iosOptions = IOSOptions(accessibility: KeychainAccessibility.unlocked);
 
-    storage = const FlutterSecureStorage(
-      aOptions: androidOptions,
-      iOptions: iosOptions,
-    );
+    storage = const FlutterSecureStorage(aOptions: androidOptions, iOptions: iosOptions);
 
     _testEncryptionSupport();
   }
 
-  Future<String> getDbEncryptionKeyOrCreateNewKeyAndRecreateDatabasesDir(
-    {
-      required bool backgroundDb,
-      required DatabaseRemover remover,
-    }
-  ) async {
+  Future<String> getDbEncryptionKeyOrCreateNewKeyAndRecreateDatabasesDir({
+    required bool backgroundDb,
+    required DatabaseRemover remover,
+  }) async {
     if (kIsWeb) {
       throw UnsupportedError("Encryption is not supported on web");
     }
 
     final IOSOptions iosOptions;
     if (backgroundDb) {
-      iosOptions = const IOSOptions(
-        accessibility: KeychainAccessibility.first_unlock,
-      );
+      iosOptions = const IOSOptions(accessibility: KeychainAccessibility.first_unlock);
     } else {
-      iosOptions = const IOSOptions(
-        accessibility: KeychainAccessibility.unlocked,
-      );
+      iosOptions = const IOSOptions(accessibility: KeychainAccessibility.unlocked);
     }
 
     final key = await _getStorageKeyForDbEncryptionKey(backgroundDb: backgroundDb);

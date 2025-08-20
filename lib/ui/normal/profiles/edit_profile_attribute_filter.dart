@@ -1,5 +1,3 @@
-
-
 import 'package:app/logic/profile/profile_filters.dart';
 import 'package:app/model/freezed/logic/profile/profile_filters.dart';
 import 'package:app/ui_utils/app_bar/menu_actions.dart';
@@ -14,10 +12,7 @@ import 'package:app/ui_utils/app_bar/search.dart';
 
 class EditProfileAttributeFilterScreen extends StatefulWidget {
   final AttributeAndFilterState a;
-  const EditProfileAttributeFilterScreen({
-    required this.a,
-    super.key,
-  });
+  const EditProfileAttributeFilterScreen({required this.a, super.key});
 
   @override
   State<EditProfileAttributeFilterScreen> createState() => _EditProfileAttributeFilterScreenState();
@@ -30,8 +25,9 @@ class _EditProfileAttributeFilterScreenState extends State<EditProfileAttributeF
   @override
   void initState() {
     super.initState();
-    searchPossible = widget.a.attribute().apiAttribute().mode == AttributeMode.oneLevel ||
-      widget.a.attribute().apiAttribute().mode == AttributeMode.twoLevel;
+    searchPossible =
+        widget.a.attribute().apiAttribute().mode == AttributeMode.oneLevel ||
+        widget.a.attribute().apiAttribute().mode == AttributeMode.twoLevel;
     searchController = AppBarSearchController(onChanged: () => setState(() {}));
   }
 
@@ -50,16 +46,22 @@ class _EditProfileAttributeFilterScreenState extends State<EditProfileAttributeF
                 final bloc = context.read<ProfileFiltersBloc>();
                 if (state.showAdvancedFilters) {
                   return MenuItemButton(
-                    child: Text(context.strings.edit_attribute_filter_value_screen_show_basic_filters_action),
+                    child: Text(
+                      context.strings.edit_attribute_filter_value_screen_show_basic_filters_action,
+                    ),
                     onPressed: () => bloc.add(SetShowAdvancedFilters(false)),
                   );
                 } else {
                   return MenuItemButton(
-                    child: Text(context.strings.edit_attribute_filter_value_screen_show_advanced_filters_action),
+                    child: Text(
+                      context
+                          .strings
+                          .edit_attribute_filter_value_screen_show_advanced_filters_action,
+                    ),
                     onPressed: () => bloc.add(SetShowAdvancedFilters(true)),
                   );
                 }
-              }
+              },
             ),
           ]),
         ],
@@ -91,8 +93,9 @@ class _EditProfileAttributeFilterScreenState extends State<EditProfileAttributeF
             selected: widget.a.wanted.copy(),
             unwanted: widget.a.unwanted.copy(),
           ),
-          onChanged: (state) =>
-            context.read<ProfileFiltersBloc>().add(SetAttributeFilterValueLists(widget.a.attribute(), state.selected, state.unwanted)),
+          onChanged: (state) => context.read<ProfileFiltersBloc>().add(
+            SetAttributeFilterValueLists(widget.a.attribute(), state.selected, state.unwanted),
+          ),
           firstListItem: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -100,15 +103,16 @@ class _EditProfileAttributeFilterScreenState extends State<EditProfileAttributeF
               EditAttributeTitle(a: widget.a.attribute()),
               EditAttributeFilterSettings(
                 a: widget.a,
-                onChanged: (settings) =>
-                  context.read<ProfileFiltersBloc>().add(SetAttributeFilterSettings(widget.a.attribute(), settings)),
+                onChanged: (settings) => context.read<ProfileFiltersBloc>().add(
+                  SetAttributeFilterSettings(widget.a.attribute(), settings),
+                ),
                 showAdvancedFilters: state.showAdvancedFilters,
-              )
+              ),
             ],
           ),
           filterText: filterValue,
         );
-      }
+      },
     );
   }
 }
@@ -152,26 +156,33 @@ class _EditAttributeFilterSettingsState extends State<EditAttributeFilterSetting
             setState(() {
               acceptMissingAttributeState = !acceptMissingAttributeState;
             });
-            widget.onChanged(FilterSettingsState(
-              acceptMissingAttribute: acceptMissingAttributeState,
-              requireAllWantedValues: requireAllWantedValuesState,
-            ));
+            widget.onChanged(
+              FilterSettingsState(
+                acceptMissingAttribute: acceptMissingAttributeState,
+                requireAllWantedValues: requireAllWantedValuesState,
+              ),
+            );
           },
         ),
-        if (widget.showAdvancedFilters || requireAllWantedValuesState) CheckboxListTile(
-          title: Text(context.strings.edit_attribute_filter_value_screen_require_all_wanted_values),
-          controlAffinity: ListTileControlAffinity.leading,
-          value: requireAllWantedValuesState,
-          onChanged: (_) {
-            setState(() {
-              requireAllWantedValuesState = !requireAllWantedValuesState;
-            });
-            widget.onChanged(FilterSettingsState(
-              acceptMissingAttribute: acceptMissingAttributeState,
-              requireAllWantedValues: requireAllWantedValuesState,
-            ));
-          },
-        ),
+        if (widget.showAdvancedFilters || requireAllWantedValuesState)
+          CheckboxListTile(
+            title: Text(
+              context.strings.edit_attribute_filter_value_screen_require_all_wanted_values,
+            ),
+            controlAffinity: ListTileControlAffinity.leading,
+            value: requireAllWantedValuesState,
+            onChanged: (_) {
+              setState(() {
+                requireAllWantedValuesState = !requireAllWantedValuesState;
+              });
+              widget.onChanged(
+                FilterSettingsState(
+                  acceptMissingAttribute: acceptMissingAttributeState,
+                  requireAllWantedValues: requireAllWantedValuesState,
+                ),
+              );
+            },
+          ),
       ],
     );
   }

@@ -12,17 +12,20 @@ class SetNotificationPermissionAskedValue extends NotificationPermissionEvent {
   final bool value;
   SetNotificationPermissionAskedValue(this.value);
 }
+
 class DenyPermissions extends NotificationPermissionEvent {}
+
 class AcceptPermissions extends NotificationPermissionEvent {}
 
-class NotificationPermissionBloc extends Bloc<NotificationPermissionEvent, NotificationPermissionAsked> {
+class NotificationPermissionBloc
+    extends Bloc<NotificationPermissionEvent, NotificationPermissionAsked> {
   final common = LoginRepository.getInstance().repositories.common;
   StreamSubscription<bool?>? _notificationPermissionAskedSubscription;
 
   NotificationPermissionBloc() : super(NotificationPermissionAsked(null)) {
-    on<SetNotificationPermissionAskedValue>((data, emit) =>
-      emit(NotificationPermissionAsked(data.value)
-    ));
+    on<SetNotificationPermissionAskedValue>(
+      (data, emit) => emit(NotificationPermissionAsked(data.value)),
+    );
     on<DenyPermissions>((_, emit) async {
       await common.setNotificationPermissionAsked(true);
     });

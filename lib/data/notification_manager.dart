@@ -45,18 +45,13 @@ class NotificationManager extends AppSingleton {
     }
     _initDone = true;
 
-    const android = AndroidInitializationSettings(
-      _ANDROID_ICON_RESOURCE_NAME
-    );
+    const android = AndroidInitializationSettings(_ANDROID_ICON_RESOURCE_NAME);
     const darwin = DarwinInitializationSettings(
       requestAlertPermission: false,
       requestBadgePermission: false,
       requestSoundPermission: false,
     );
-    const settings = InitializationSettings(
-      android: android,
-      iOS: darwin,
-    );
+    const settings = InitializationSettings(android: android, iOS: darwin);
     final result = await _pluginHandle.initialize(
       settings,
       onDidReceiveNotificationResponse: (response) {
@@ -69,7 +64,7 @@ class NotificationManager extends AppSingleton {
           return;
         }
         onReceivedPayload.add(parsedPayload);
-      }
+      },
     );
 
     if (result == true) {
@@ -101,14 +96,15 @@ class NotificationManager extends AppSingleton {
   Future<void> askPermissions() async {
     if (kIsWeb) {
       return;
-    } if (Platform.isAndroid) {
-      await _pluginHandle.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()?.requestNotificationsPermission();
+    }
+    if (Platform.isAndroid) {
+      await _pluginHandle
+          .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
+          ?.requestNotificationsPermission();
     } else if (Platform.isIOS) {
-      await _pluginHandle.resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>()?.requestPermissions(
-        alert: true,
-        badge: true,
-        sound: true,
-      );
+      await _pluginHandle
+          .resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>()
+          ?.requestPermissions(alert: true, badge: true, sound: true);
     } else {
       throw UnsupportedError("Unsupported platform");
     }
@@ -150,16 +146,14 @@ class NotificationManager extends AppSingleton {
     }
   }
 
-  Future<void> sendNotification(
-    {
-      required LocalNotificationId id,
-      required String title,
-      String? body,
-      required NotificationCategory category,
-      NotificationPayload? notificationPayload,
-      required AccountBackgroundDatabaseManager accountBackgroundDb,
-    }
-  ) async {
+  Future<void> sendNotification({
+    required LocalNotificationId id,
+    required String title,
+    String? body,
+    required NotificationCategory category,
+    NotificationPayload? notificationPayload,
+    required AccountBackgroundDatabaseManager accountBackgroundDb,
+  }) async {
     if (!await category.isEnabled(accountBackgroundDb)) {
       return;
     }
@@ -185,9 +179,7 @@ class NotificationManager extends AppSingleton {
       id.value,
       title,
       body,
-      NotificationDetails(
-        android: androidDetails,
-      ),
+      NotificationDetails(android: androidDetails),
       payload: notificationPayload?.toJson(),
     );
   }
@@ -202,7 +194,8 @@ class NotificationManager extends AppSingleton {
       return;
     }
 
-    final handle = _pluginHandle.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>();
+    final handle = _pluginHandle
+        .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>();
 
     // The notification library does not support getting info
     // is AndroidNotificationChannelGroup enabled, so the channels are
@@ -239,9 +232,14 @@ class NotificationManager extends AppSingleton {
     if (kIsWeb) {
       return false;
     } else if (Platform.isAndroid) {
-      return await _pluginHandle.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()?.areNotificationsEnabled() ?? false;
+      return await _pluginHandle
+              .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
+              ?.areNotificationsEnabled() ??
+          false;
     } else if (Platform.isIOS) {
-      final permissions = await _pluginHandle.resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>()?.checkPermissions();
+      final permissions = await _pluginHandle
+          .resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>()
+          ?.checkPermissions();
       return permissions?.isEnabled ?? false;
     } else {
       throw UnsupportedError("Unsupported platform");
@@ -252,20 +250,22 @@ class NotificationManager extends AppSingleton {
     if (kIsWeb) {
       return [];
     } else if (Platform.isAndroid) {
-      final channels = await _pluginHandle.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()?.getNotificationChannels();
+      final channels = await _pluginHandle
+          .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
+          ?.getNotificationChannels();
       if (channels == null) {
         log.error("Failed to get notification channels list");
         return [];
       }
 
       final disabledChannelIds = channels
-        .where((channel) {
-          return channel.importance == Importance.none;
-        })
-        .map((disabledChannel) {
-          return disabledChannel.id;
-        })
-        .toList();
+          .where((channel) {
+            return channel.importance == Importance.none;
+          })
+          .map((disabledChannel) {
+            return disabledChannel.id;
+          })
+          .toList();
 
       return disabledChannelIds;
     } else {

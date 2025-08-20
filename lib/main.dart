@@ -49,19 +49,19 @@ void initLogging() {
   }
 
   Logger.root.onRecord.listen((record) {
-      // TODO(prod): Remove print if logcat printing works somehow
-      // without print.
-      if (kDebugMode) {
-        print('${record.level.name}: ${record.time}: ${record.message}');
-      }
+    // TODO(prod): Remove print if logcat printing works somehow
+    // without print.
+    if (kDebugMode) {
+      print('${record.level.name}: ${record.time}: ${record.message}');
+    }
 
-      developer.log(
-        record.message,
-        name: record.loggerName,
-        time: record.time,
-        sequenceNumber: record.sequenceNumber,
-        level: record.level.value,
-      );
+    developer.log(
+      record.message,
+      name: record.loggerName,
+      time: record.time,
+      sequenceNumber: record.sequenceNumber,
+      level: record.level.value,
+    );
   });
 }
 
@@ -86,7 +86,7 @@ Future<void> main() async {
         BlocProvider(create: (_) => MainStateBloc()),
       ],
       child: const MyApp(),
-    )
+    ),
   );
 }
 
@@ -102,17 +102,11 @@ class MyApp extends StatelessWidget {
       title: AppLocalizationsEn().app_name,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-      theme: ThemeData.light().copyWith(
-        pageTransitionsTheme: createPageTransitionsTheme(),
-      ),
-      darkTheme: ThemeData.dark().copyWith(
-        pageTransitionsTheme: createPageTransitionsTheme(),
-      ),
+      theme: ThemeData.light().copyWith(pageTransitionsTheme: createPageTransitionsTheme()),
+      darkTheme: ThemeData.dark().copyWith(pageTransitionsTheme: createPageTransitionsTheme()),
       themeMode: ThemeMode.system,
       home: const GlobalLocalizationsInitializer(
-        child: AppLifecycleHandler(
-          child: MainStateUiLogic(),
-        ),
+        child: AppLifecycleHandler(child: MainStateUiLogic()),
       ),
       scaffoldMessengerKey: globalScaffoldMessengerKey,
       debugShowCheckedModeBanner: false,
@@ -204,9 +198,7 @@ class GlobalInitManager {
 
   /// Run this in app main function.
   Future<void> init() async {
-    _startInit.stream
-      .asyncMap((event) async => await _runInit())
-      .listen((event) {});
+    _startInit.stream.asyncMap((event) async => await _runInit()).listen((event) {});
   }
 
   Future<void> _runInit() async {
@@ -257,14 +249,14 @@ class ReplaceSplashScreenTransitionDelegate extends TransitionDelegate<void> {
     var first = true;
     for (final RouteTransitionRecord pageRoute in newPageRouteHistory) {
       if (pageRoute.isWaitingForEnteringDecision) {
-          if (first) {
-            first = false;
-            pageRoute.markForAdd();
-          } else {
-            // Push other than main screen, so that exit transitions will
-            // work.
-            pageRoute.markForPush();
-          }
+        if (first) {
+          first = false;
+          pageRoute.markForAdd();
+        } else {
+          // Push other than main screen, so that exit transitions will
+          // work.
+          pageRoute.markForPush();
+        }
       }
       results.add(pageRoute);
     }
@@ -274,15 +266,15 @@ class ReplaceSplashScreenTransitionDelegate extends TransitionDelegate<void> {
         // Pop the splash screen, so that main screen will not be visible
         // for short time to the user.
         exitingPageRoute.markForPop();
-        final List<RouteTransitionRecord>? pagelessRoutes = pageRouteToPagelessRoutes[exitingPageRoute];
+        final List<RouteTransitionRecord>? pagelessRoutes =
+            pageRouteToPagelessRoutes[exitingPageRoute];
         if (pagelessRoutes != null) {
           for (final RouteTransitionRecord pagelessRoute in pagelessRoutes) {
-              pagelessRoute.markForComplete();
-            }
+            pagelessRoute.markForComplete();
+          }
         }
       }
       results.add(exitingPageRoute);
-
     }
     return results;
   }

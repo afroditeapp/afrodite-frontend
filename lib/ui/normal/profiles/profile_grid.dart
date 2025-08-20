@@ -79,14 +79,12 @@ class ProfileGridState extends State<ProfileGrid> {
     if (widget.profileFiltersBloc.state.showOnlyFavorites) {
       _mainProfilesViewIterator.reset(ModeFavorites());
     } else {
-      _mainProfilesViewIterator.reset(ModePublicProfiles(
-        clearDatabase: true,
-      ));
+      _mainProfilesViewIterator.reset(ModePublicProfiles(clearDatabase: true));
     }
 
     _profileChangesSubscription?.cancel();
     _profileChangesSubscription = profileRepository.profileChanges.listen((event) {
-        handleProfileChange(event);
+      handleProfileChange(event);
     });
     _scrollController.addListener(scrollEventListener);
   }
@@ -102,15 +100,17 @@ class ProfileGridState extends State<ProfileGrid> {
   }
 
   void updateIsScrolled(bool isScrolled) {
-    BottomNavigationStateBlocInstance.getInstance()
-      .updateIsScrolled(
-        isScrolled,
-        BottomNavigationScreenId.profiles,
-        (state) => state.isScrolledProfile,
-      );
+    BottomNavigationStateBlocInstance.getInstance().updateIsScrolled(
+      isScrolled,
+      BottomNavigationScreenId.profiles,
+      (state) => state.isScrolledProfile,
+    );
   }
 
-  void updatePagingState(PagingState<int, ProfileGridProfileEntry> Function(PagingState<int, ProfileGridProfileEntry>) action) {
+  void updatePagingState(
+    PagingState<int, ProfileGridProfileEntry> Function(PagingState<int, ProfileGridProfileEntry>)
+    action,
+  ) {
     if (isDisposed || !context.mounted) {
       return;
     }
@@ -121,32 +121,34 @@ class ProfileGridState extends State<ProfileGrid> {
 
   void handleProfileChange(ProfileChange event) {
     switch (event) {
-      case ProfileNowPrivate(): {
-        // Remove profile if it was made private
-        removeAccountIdFromList(event.profile);
-      }
+      case ProfileNowPrivate():
+        {
+          // Remove profile if it was made private
+          removeAccountIdFromList(event.profile);
+        }
       case ProfileBlocked():
         removeAccountIdFromList(event.profile);
-      case ProfileFavoriteStatusChange(): {
-        // Remove profile if favorites filter is enabled and favorite status is changed to false
-        if (event.isFavorite == false && widget.profileFiltersBloc.state.showOnlyFavorites) {
-          updatePagingState((s) => s.filterItems((item) => item.profile.entry.accountId != event.profile));
+      case ProfileFavoriteStatusChange():
+        {
+          // Remove profile if favorites filter is enabled and favorite status is changed to false
+          if (event.isFavorite == false && widget.profileFiltersBloc.state.showOnlyFavorites) {
+            updatePagingState(
+              (s) => s.filterItems((item) => item.profile.entry.accountId != event.profile),
+            );
+          }
         }
-      }
       case ReloadMainProfileView():
         reloadEventDoneTrackers.add(event.eventHandled);
         updatePagingState((_) {
           if (event.showOnlyFavorites) {
             _mainProfilesViewIterator.reset(ModeFavorites());
           } else {
-            _mainProfilesViewIterator.reset(ModePublicProfiles(
-              clearDatabase: true,
-            ));
+            _mainProfilesViewIterator.reset(ModePublicProfiles(clearDatabase: true));
           }
           return PagingState();
         });
-      case ProfileUnblocked() ||
-        ConversationChanged(): {}
+      case ProfileUnblocked() || ConversationChanged():
+        {}
     }
   }
 
@@ -206,9 +208,9 @@ class ProfileGridState extends State<ProfileGrid> {
               } else {
                 return showGrid(context, uiSettings.gridSettings, PagingState(isLoading: true));
               }
-            }
+            },
           );
-        }
+        },
       ),
     );
   }
@@ -225,14 +227,17 @@ class ProfileGridState extends State<ProfileGrid> {
         return true;
       },
       child: BlocListener<BottomNavigationStateBloc, BottomNavigationStateData>(
-        listenWhen: (previous, current) => previous.isTappedAgainProfile != current.isTappedAgainProfile,
+        listenWhen: (previous, current) =>
+            previous.isTappedAgainProfile != current.isTappedAgainProfile,
         listener: (context, state) {
           if (state.isTappedAgainProfile) {
-            context.read<BottomNavigationStateBloc>().add(SetIsTappedAgainValue(BottomNavigationScreenId.profiles, false));
+            context.read<BottomNavigationStateBloc>().add(
+              SetIsTappedAgainValue(BottomNavigationScreenId.profiles, false),
+            );
             _scrollController.bottomNavigationRelatedJumpToBeginningIfClientsConnected();
           }
         },
-        child: grid(context, settings, pagingState)
+        child: grid(context, settings, pagingState),
       ),
     );
   }
@@ -253,29 +258,34 @@ class ProfileGridState extends State<ProfileGrid> {
       builderDelegate: PagedChildBuilderDelegate<ProfileGridProfileEntry>(
         animateTransitions: true,
         itemBuilder: (context, item, index) {
-          return profileEntryWidgetStream(item.profile, item.initialProfileAction, accountDb, settings);
+          return profileEntryWidgetStream(
+            item.profile,
+            item.initialProfileAction,
+            accountDb,
+            settings,
+          );
         },
         noItemsFoundIndicatorBuilder: (context) {
           final filterState = context.read<ProfileFiltersBloc>().state;
           final String descriptionText;
           if (filterState.showOnlyFavorites) {
             descriptionText =
-              context.strings.profile_grid_screen_no_favorite_profiles_found_description;
+                context.strings.profile_grid_screen_no_favorite_profiles_found_description;
           } else if (filterState.isSomeFilterEnabled()) {
             descriptionText =
-              context.strings.profile_grid_screen_no_profiles_found_description_filters_enabled;
+                context.strings.profile_grid_screen_no_profiles_found_description_filters_enabled;
           } else {
             descriptionText =
-              context.strings.profile_grid_screen_no_profiles_found_description_filters_disabled;
+                context.strings.profile_grid_screen_no_profiles_found_description_filters_disabled;
           }
           return buildListReplacementMessage(
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  filterState.showOnlyFavorites ?
-                    context.strings.profile_grid_screen_no_favorite_profiles_found_title :
-                    context.strings.profile_grid_screen_no_profiles_found_title,
+                  filterState.showOnlyFavorites
+                      ? context.strings.profile_grid_screen_no_favorite_profiles_found_title
+                      : context.strings.profile_grid_screen_no_profiles_found_title,
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
                 const Padding(padding: EdgeInsets.all(8)),
@@ -303,7 +313,6 @@ class ProfileGridState extends State<ProfileGrid> {
     );
   }
 
-
   Widget errorDetectedWidgetWithRetryButton() {
     return Center(
       child: Column(
@@ -324,10 +333,14 @@ class ProfileGridState extends State<ProfileGrid> {
   }
 
   Future<void> refreshProfileGrid() async {
-    _gridLogic.refresh(() {
-      _mainProfilesViewIterator.refresh();
-      updatePagingState((_) => PagingState());
-    }, _fetchPage, _addPage);
+    _gridLogic.refresh(
+      () {
+        _mainProfilesViewIterator.refresh();
+        updatePagingState((_) => PagingState());
+      },
+      _fetchPage,
+      _addPage,
+    );
   }
 
   @override
@@ -346,13 +359,13 @@ Widget profileEntryWidgetStream(
   ProfileThumbnail profile,
   ProfileActionState? initialProfileAction,
   AccountDatabaseManager db,
-  GridSettings settings,
-  {
-    bool showNewLikeMarker = false,
-  }
-) {
+  GridSettings settings, {
+  bool showNewLikeMarker = false,
+}) {
   return StreamBuilder(
-    stream: db.accountStream((db) => db.profile.watchProfileThumbnail(profile.entry.accountId)).whereNotNull(),
+    stream: db
+        .accountStream((db) => db.profile.watchProfileThumbnail(profile.entry.accountId))
+        .whereNotNull(),
     builder: (context, data) {
       final e = data.data ?? profile;
       return LayoutBuilder(
@@ -368,56 +381,53 @@ Widget profileEntryWidgetStream(
                   e.entry.newLikeInfoReceivedTime,
                   e.isFavorite,
                 ),
-                _thumbnailStatusIndicatorsBottom(
-                  context,
-                  e.entry,
-                ),
+                _thumbnailStatusIndicatorsBottom(context, e.entry),
                 Material(
                   color: Colors.transparent,
                   child: InkWell(
                     onTap: () {
-                      openProfileView(context, e.entry, initialProfileAction, ProfileRefreshPriority.low);
+                      openProfileView(
+                        context,
+                        e.entry,
+                        initialProfileAction,
+                        ProfileRefreshPriority.low,
+                      );
                     },
                   ),
                 ),
-              ]
+              ],
             ),
           );
-        }
+        },
       );
-    }
+    },
   );
 }
 
-Widget _thumbnailStatusIndicatorsBottom(
-  BuildContext context,
-  ProfileEntry profile,
-) {
+Widget _thumbnailStatusIndicatorsBottom(BuildContext context, ProfileEntry profile) {
   return Align(
     alignment: Alignment.bottomCenter,
     child: Row(
       children: [
-        if (profile.lastSeenTimeValue == -1) Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Container(
-            width: PROFILE_CURRENTLY_ONLINE_SIZE,
-            height: PROFILE_CURRENTLY_ONLINE_SIZE,
-            decoration: BoxDecoration(
-              color: Colors.green,
-              borderRadius: BorderRadius.circular(PROFILE_CURRENTLY_ONLINE_RADIUS),
+        if (profile.lastSeenTimeValue == -1)
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              width: PROFILE_CURRENTLY_ONLINE_SIZE,
+              height: PROFILE_CURRENTLY_ONLINE_SIZE,
+              decoration: BoxDecoration(
+                color: Colors.green,
+                borderRadius: BorderRadius.circular(PROFILE_CURRENTLY_ONLINE_RADIUS),
+              ),
             ),
           ),
-        ),
         const Spacer(),
-        profile.unlimitedLikes ?
-          Padding(
-            padding: const EdgeInsets.only(right: 8.0),
-            child: Icon(
-              UNLIMITED_LIKES_ICON,
-              color: getUnlimitedLikesColor(context),
-            ),
-          ) :
-          const SizedBox.shrink(),
+        profile.unlimitedLikes
+            ? Padding(
+                padding: const EdgeInsets.only(right: 8.0),
+                child: Icon(UNLIMITED_LIKES_ICON, color: getUnlimitedLikesColor(context)),
+              )
+            : const SizedBox.shrink(),
       ],
     ),
   );
@@ -429,28 +439,25 @@ Widget _thumbnailStatusIndicatorsTop(
   bool isFavorite,
 ) {
   final currentTime = UtcDateTime.now();
-  final showNewLikeIcon = showNewLikeMarker &&
-    newLikeInfoReceivedTime != null &&
-    currentTime.difference(newLikeInfoReceivedTime).inHours < 24;
+  final showNewLikeIcon =
+      showNewLikeMarker &&
+      newLikeInfoReceivedTime != null &&
+      currentTime.difference(newLikeInfoReceivedTime).inHours < 24;
   return Align(
     alignment: Alignment.topLeft,
     child: Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        if (showNewLikeIcon) const Padding(
-          padding: EdgeInsets.all(8.0),
-          child: Icon(
-            Icons.auto_awesome,
-            color: Colors.amber,
+        if (showNewLikeIcon)
+          const Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Icon(Icons.auto_awesome, color: Colors.amber),
           ),
-        ),
-        if (isFavorite) Padding(
-          padding: showNewLikeIcon ? const EdgeInsets.all(0) : const EdgeInsets.all(4.0),
-          child: const Icon(
-            Icons.star_rounded,
-            color: Colors.orange,
+        if (isFavorite)
+          Padding(
+            padding: showNewLikeIcon ? const EdgeInsets.all(0) : const EdgeInsets.all(4.0),
+            child: const Icon(Icons.star_rounded, color: Colors.orange),
           ),
-        ),
       ],
     ),
   );

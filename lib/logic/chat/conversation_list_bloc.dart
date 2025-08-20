@@ -16,12 +16,14 @@ import "package:app/utils/iterator.dart";
 var log = Logger("ConversationListBloc");
 
 sealed class ConversationListEvent {}
+
 class HandleNewConversationList extends ConversationListEvent {
   final List<AccountId> data;
   HandleNewConversationList(this.data);
 }
 
-class ConversationListBloc extends Bloc<ConversationListEvent, ConversationListData> with ActionRunner {
+class ConversationListBloc extends Bloc<ConversationListEvent, ConversationListData>
+    with ActionRunner {
   final ProfileRepository profile = LoginRepository.getInstance().repositories.profile;
 
   final ConversationListChangeCalculator calculator = ConversationListChangeCalculator();
@@ -31,14 +33,14 @@ class ConversationListBloc extends Bloc<ConversationListEvent, ConversationListD
   ConversationListBloc() : super(ConversationListData()) {
     on<HandleNewConversationList>((data, emit) async {
       final calculatorResult = calculator.calculate(data.data);
-      emit(state.copyWith(
-        conversations: UnmodifiableList(calculatorResult.current),
-        changesBetweenCurrentAndPrevious: UnmodifiableList(calculatorResult.changes),
-        initialLoadDone: true,
-      ));
-    },
-      transformer: sequential(),
-    );
+      emit(
+        state.copyWith(
+          conversations: UnmodifiableList(calculatorResult.current),
+          changesBetweenCurrentAndPrevious: UnmodifiableList(calculatorResult.changes),
+          initialLoadDone: true,
+        ),
+      );
+    }, transformer: sequential());
 
     _conversationListSubscription = profile.getConversationListUpdates().listen((data) {
       log.finest(data);

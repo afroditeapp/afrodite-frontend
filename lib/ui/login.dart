@@ -24,9 +24,7 @@ class _LoginScreenOldState extends State<LoginScreenOld> {
       Text(context.strings.app_name),
       ServerAddressField(_serverAddressFormKey, _serverAddressController),
       ElevatedButton(
-        child: const Text(
-            "Update address"
-        ),
+        child: const Text("Update address"),
         onPressed: () {
           final valid = _serverAddressFormKey.currentState?.validate();
           if (valid != null && valid) {
@@ -69,10 +67,7 @@ class _LoginScreenOldState extends State<LoginScreenOld> {
         child: Padding(
           padding: const EdgeInsets.all(20.0),
           child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: loginPageWidgets,
-            ),
+            child: Column(mainAxisAlignment: MainAxisAlignment.center, children: loginPageWidgets),
           ),
         ),
       ),

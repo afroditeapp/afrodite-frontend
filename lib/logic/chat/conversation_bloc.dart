@@ -24,39 +24,48 @@ import "package:app/utils/result.dart";
 var log = Logger("ConversationBloc");
 
 sealed class ConversationEvent {}
+
 class InitEvent extends ConversationEvent {}
+
 class SendMessageTo extends ConversationEvent {
   final AccountId accountId;
   final Message message;
   SendMessageTo(this.accountId, this.message);
 }
+
 class HandleProfileChange extends ConversationEvent {
   final ProfileChange change;
   HandleProfileChange(this.change);
 }
+
 class MessageCountChanged extends ConversationEvent {
   final int newMessageCount;
   final ConversationChangeType? changeInfo;
   MessageCountChanged(this.newMessageCount, this.changeInfo);
 }
+
 class BlockProfile extends ConversationEvent {
   final AccountId accountId;
   BlockProfile(this.accountId);
 }
+
 class NotifyMessageInputFieldCleared extends ConversationEvent {}
 
 class RenderingCompleted extends ConversationEvent {
   final double height;
   RenderingCompleted(this.height);
 }
+
 class RemoveSendFailedMessage extends ConversationEvent {
   final LocalMessageId id;
   RemoveSendFailedMessage(this.id);
 }
+
 class ResendSendFailedMessage extends ConversationEvent {
   final LocalMessageId id;
   ResendSendFailedMessage(this.id);
 }
+
 class RetryPublicKeyDownload extends ConversationEvent {
   final LocalMessageId id;
   RetryPublicKeyDownload(this.id);
@@ -72,7 +81,10 @@ abstract class ConversationDataProvider {
   Stream<MessageEntry?> getMessageWithLocalId(LocalMessageId localId);
 
   /// First message is the latest new message
-  Future<List<MessageEntry>> getNewMessages(AccountId senderAccountId, LocalMessageId? latestCurrentMessageLocalId);
+  Future<List<MessageEntry>> getNewMessages(
+    AccountId senderAccountId,
+    LocalMessageId? latestCurrentMessageLocalId,
+  );
 
   Future<Result<(), DeleteSendFailedError>> deleteSendFailedMessage(LocalMessageId localId);
   Future<Result<(), ResendFailedError>> resendSendFailedMessage(LocalMessageId localId);
@@ -113,7 +125,10 @@ class DefaultConversationDataProvider extends ConversationDataProvider {
   }
 
   @override
-  Future<List<MessageEntry>> getNewMessages(AccountId senderAccountId, LocalMessageId? latestCurrentMessageLocalId) async {
+  Future<List<MessageEntry>> getNewMessages(
+    AccountId senderAccountId,
+    LocalMessageId? latestCurrentMessageLocalId,
+  ) async {
     MessageDatabaseIterator messageIterator = MessageDatabaseIterator(chat.db);
     await messageIterator.switchConversation(chat.currentUser, senderAccountId);
 
@@ -165,11 +180,8 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
 
   final BehaviorSubject<bool> _renderingSynchronizer = BehaviorSubject<bool>.seeded(false);
 
-  ConversationBloc(
-    AccountId messageSenderAccountId,
-    this.dataProvider,
-  ) : super(ConversationData(accountId: messageSenderAccountId)) {
-
+  ConversationBloc(AccountId messageSenderAccountId, this.dataProvider)
+    : super(ConversationData(accountId: messageSenderAccountId)) {
     on<InitEvent>((data, emit) async {
       log.info("Set conversation bloc initial state");
 
@@ -178,46 +190,39 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
 
       await profile.resetUnreadMessagesCount(state.accountId);
 
-      emit(state.copyWith(
-        isMatch: isMatch,
-        isBlocked: isBlocked,
-      ));
+      emit(state.copyWith(isMatch: isMatch, isBlocked: isBlocked));
     });
     on<HandleProfileChange>((data, emit) async {
       final change = data.change;
       switch (change) {
-        case ProfileBlocked(): {
-          if (change.profile == state.accountId) {
-            emit(state.copyWith(isBlocked: true));
+        case ProfileBlocked():
+          {
+            if (change.profile == state.accountId) {
+              emit(state.copyWith(isBlocked: true));
+            }
           }
-        }
         case ProfileNowPrivate() ||
-          ProfileUnblocked() ||
-          ConversationChanged() ||
-          ReloadMainProfileView() ||
-          ProfileFavoriteStatusChange(): {}
+            ProfileUnblocked() ||
+            ConversationChanged() ||
+            ReloadMainProfileView() ||
+            ProfileFavoriteStatusChange():
+          {}
       }
     });
     on<BlockProfile>((data, emit) async {
       await runOnce(() async {
         if (await dataProvider.sendBlockTo(state.accountId)) {
-          emit(state.copyWith(
-            isBlocked: true,
-          ));
+          emit(state.copyWith(isBlocked: true));
         }
       });
     });
     on<SendMessageTo>((data, emit) async {
-      emit(state.copyWith(
-        isMessageSendingInProgress: true,
-      ));
+      emit(state.copyWith(isMessageSendingInProgress: true));
 
       await for (final e in dataProvider.sendMessageTo(data.accountId, data.message)) {
         switch (e) {
           case SavedToLocalDb():
-            emit(state.copyWith(
-              resetMessageInputField: true,
-            ));
+            emit(state.copyWith(resetMessageInputField: true));
           case ErrorBeforeMessageSaving():
             showSnackBar(R.strings.generic_error);
           case ErrorAfterMessageSaving(:final details):
@@ -227,23 +232,20 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
               case MessageSendingErrorDetails.tooManyPendingMessages:
                 showSnackBar(R.strings.conversation_screen_message_too_many_pending_messages);
               case MessageSendingErrorDetails.receiverBlockedSenderOrReceiverNotFound:
-                showSnackBar(R.strings.conversation_screen_message_error_receiver_blocked_sender_or_receiver_not_found);
+                showSnackBar(
+                  R
+                      .strings
+                      .conversation_screen_message_error_receiver_blocked_sender_or_receiver_not_found,
+                );
             }
         }
       }
 
       final isMatch = await dataProvider.isInMatches(state.accountId);
-      emit(state.copyWith(
-        isMessageSendingInProgress: false,
-        isMatch: isMatch,
-      ));
-    },
-      transformer: sequential(),
-    );
+      emit(state.copyWith(isMessageSendingInProgress: false, isMatch: isMatch));
+    }, transformer: sequential());
     on<RemoveSendFailedMessage>((data, emit) async {
-      emit(state.copyWith(
-        isMessageRemovingInProgress: true,
-      ));
+      emit(state.copyWith(isMessageRemovingInProgress: true));
 
       switch (await dataProvider.deleteSendFailedMessage(data.id)) {
         case Ok():
@@ -253,20 +255,16 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
             case DeleteSendFailedError.unspecifiedError:
               showSnackBar(R.strings.generic_error_occurred);
             case DeleteSendFailedError.isActuallySentSuccessfully:
-              showSnackBar(R.strings.conversation_screen_message_error_is_actually_sent_successfully);
+              showSnackBar(
+                R.strings.conversation_screen_message_error_is_actually_sent_successfully,
+              );
           }
       }
 
-      emit(state.copyWith(
-        isMessageRemovingInProgress: false,
-      ));
-    },
-      transformer: sequential(),
-    );
+      emit(state.copyWith(isMessageRemovingInProgress: false));
+    }, transformer: sequential());
     on<ResendSendFailedMessage>((data, emit) async {
-      emit(state.copyWith(
-        isMessageResendingInProgress: true,
-      ));
+      emit(state.copyWith(isMessageResendingInProgress: true));
 
       switch (await dataProvider.resendSendFailedMessage(data.id)) {
         case Ok():
@@ -276,24 +274,24 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
             case ResendFailedError.unspecifiedError:
               showSnackBar(R.strings.generic_error_occurred);
             case ResendFailedError.isActuallySentSuccessfully:
-              showSnackBar(R.strings.conversation_screen_message_error_is_actually_sent_successfully);
+              showSnackBar(
+                R.strings.conversation_screen_message_error_is_actually_sent_successfully,
+              );
             case ResendFailedError.tooManyPendingMessages:
               showSnackBar(R.strings.conversation_screen_message_too_many_pending_messages);
             case ResendFailedError.receiverBlockedSenderOrReceiverNotFound:
-              showSnackBar(R.strings.conversation_screen_message_error_receiver_blocked_sender_or_receiver_not_found);
+              showSnackBar(
+                R
+                    .strings
+                    .conversation_screen_message_error_receiver_blocked_sender_or_receiver_not_found,
+              );
           }
       }
 
-      emit(state.copyWith(
-        isMessageResendingInProgress: false,
-      ));
-    },
-      transformer: sequential(),
-    );
+      emit(state.copyWith(isMessageResendingInProgress: false));
+    }, transformer: sequential());
     on<RetryPublicKeyDownload>((data, emit) async {
-      emit(state.copyWith(
-        isRetryPublicKeyDownloadInProgress: true,
-      ));
+      emit(state.copyWith(isRetryPublicKeyDownloadInProgress: true));
 
       switch (await dataProvider.retryPublicKeyDownload(data.id)) {
         case Ok():
@@ -305,42 +303,36 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
           }
       }
 
-      emit(state.copyWith(
-        isRetryPublicKeyDownloadInProgress: false,
-      ));
-    },
-      transformer: sequential(),
-    );
+      emit(state.copyWith(isRetryPublicKeyDownloadInProgress: false));
+    }, transformer: sequential());
     on<NotifyMessageInputFieldCleared>((data, emit) async {
-      emit(state.copyWith(
-        resetMessageInputField: false,
-      ));
+      emit(state.copyWith(resetMessageInputField: false));
     });
     on<MessageCountChanged>((data, emit) async {
       await profile.resetUnreadMessagesCount(state.accountId);
 
       final visibleMessages = state.visibleMessages;
-      if (
-          visibleMessages == null ||
+      if (visibleMessages == null ||
           data.changeInfo == ConversationChangeType.messageRemoved ||
-          data.changeInfo == ConversationChangeType.messageResent
-        ) {
+          data.changeInfo == ConversationChangeType.messageResent) {
         final initialMessages = await dataProvider.getAllMessages(state.accountId);
         final fromOldestToNewest = initialMessages.reversed.toList();
         renderingManager.initWithMessages(fromOldestToNewest);
-        emit(state.copyWith(
-          visibleMessages: ReadyVisibleMessageListUpdate(
-            MessageList(fromOldestToNewest),
-            null,
-            data.changeInfo == ConversationChangeType.messageResent,
+        emit(
+          state.copyWith(
+            visibleMessages: ReadyVisibleMessageListUpdate(
+              MessageList(fromOldestToNewest),
+              null,
+              data.changeInfo == ConversationChangeType.messageResent,
+            ),
+            // Fix issue where app is opened from push notification to
+            // conversation screen and the first message is received.
+            // The conversation screen would only displays
+            // context.strings.conversation_screen_make_match_instruction
+            // without updating isMatch.
+            isMatch: await dataProvider.isInMatches(state.accountId),
           ),
-          // Fix issue where app is opened from push notification to
-          // conversation screen and the first message is received.
-          // The conversation screen would only displays
-          // context.strings.conversation_screen_make_match_instruction
-          // without updating isMatch.
-          isMatch: await dataProvider.isInMatches(state.accountId),
-        ));
+        );
         if (visibleMessages == null) {
           log.info("Initial message list update done");
         } else if (data.changeInfo == ConversationChangeType.messageRemoved) {
@@ -368,17 +360,13 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
         final msgForRendering = renderingManager.getAndRemoveNextToBeRendered();
         if (msgForRendering != null) {
           _renderingSynchronizer.add(false);
-          emit(state.copyWith(
-            rendererCurrentlyRendering: msgForRendering,
-          ));
+          emit(state.copyWith(rendererCurrentlyRendering: msgForRendering));
           // Wait that rendering completes to avoid sending the same
           // messages to renderer.
           await _renderingSynchronizer.where((v) => v).firstOrNull;
         }
       }
-    },
-      transformer: sequential(),
-    );
+    }, transformer: sequential());
     on<RenderingCompleted>((data, emit) {
       final renderedMsg = state.rendererCurrentlyRendering;
       if (renderedMsg == null) {
@@ -393,29 +381,22 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
         log.info("Rendering completed");
         final currentUpdate = renderingManager.resetCurrentMessageUpdateAndMoveToVisibleMessages();
         if (currentUpdate != null) {
-          emit(state.copyWith(
-            visibleMessages: currentUpdate,
-            rendererCurrentlyRendering: null,
-          ));
+          emit(state.copyWith(visibleMessages: currentUpdate, rendererCurrentlyRendering: null));
           _renderingSynchronizer.add(true);
         }
       } else {
         log.info("Continue rendering");
-        emit(state.copyWith(
-          rendererCurrentlyRendering: nextMsg,
-        ));
+        emit(state.copyWith(rendererCurrentlyRendering: nextMsg));
       }
-    },
-      transformer: sequential(),
-    );
+    }, transformer: sequential());
 
-    _profileChangeSubscription = profile
-      .profileChanges
-      .listen((event) {
-        add(HandleProfileChange(event));
-      });
+    _profileChangeSubscription = profile.profileChanges.listen((event) {
+      add(HandleProfileChange(event));
+    });
 
-    _messageCountSubscription = dataProvider.getMessageCountAndChanges(state.accountId).listen((countAndEvent) {
+    _messageCountSubscription = dataProvider.getMessageCountAndChanges(state.accountId).listen((
+      countAndEvent,
+    ) {
       final (newMessageCount, event) = countAndEvent;
       add(MessageCountChanged(newMessageCount, event?.change));
     });
@@ -447,13 +428,9 @@ class RenderingManager {
 
   /// Sets last message's jumpToLatestMessage value to `jumpToLatestMessage`.
   void addToBeRendered(Iterable<MessageEntry> toBeRendered, bool jumpToLatestMessage) {
-    final messages = [
-      ...toBeRendered,
-    ]
-      .map((msg) {
-        return EntryAndJumpInfo(msg, false);
-      })
-      .toList();
+    final messages = [...toBeRendered].map((msg) {
+      return EntryAndJumpInfo(msg, false);
+    }).toList();
 
     if (messages.isNotEmpty) {
       final lastI = messages.length - 1;
@@ -499,10 +476,7 @@ class RenderingManager {
         jmp = renderedMsg.jumpToLatestMessage;
       }
       currentMessagesUpdate = ReadyVisibleMessageListUpdate(
-        MessageList([
-          ...currentUpdate.messages.messages,
-          renderedMsg.entry,
-        ]),
+        MessageList([...currentUpdate.messages.messages, renderedMsg.entry]),
         (currentUpdate.addedHeight ?? 0) + height,
         jmp,
       );
@@ -520,9 +494,7 @@ class RenderingManager {
     visibleMessages.addAll(currentUpdate.messages.messages);
 
     return ReadyVisibleMessageListUpdate(
-      MessageList(
-        [...visibleMessages]
-      ),
+      MessageList([...visibleMessages]),
       currentUpdate.addedHeight,
       currentUpdate.jumpToLatestMessage,
     );
@@ -533,6 +505,8 @@ class RenderingManager {
   }
 
   int currentMsgCount() {
-    return visibleMessages.length + (currentMessagesUpdate?.messages.messages.length ?? 0) + toBeRendered.length;
+    return visibleMessages.length +
+        (currentMessagesUpdate?.messages.messages.length ?? 0) +
+        toBeRendered.length;
   }
 }

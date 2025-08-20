@@ -1,11 +1,10 @@
-
-
 import 'dart:async';
 
 import 'package:rxdart/rxdart.dart';
 
 mixin ActionRunner {
   bool isRunning = false;
+
   /// Helper method for preventing spamming of actions for example with
   /// buttons.
   Future<void> runOnce(FutureOr<void> Function() action) async {

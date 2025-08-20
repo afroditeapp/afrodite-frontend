@@ -54,9 +54,11 @@ class PushNotificationManager extends AppSingleton {
 
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
-    _newFcmTokenReceived.asyncMap((fcmToken) async {
-      await _refreshTokenToServer(fcmToken);
-    }).listen((value) {});
+    _newFcmTokenReceived
+        .asyncMap((fcmToken) async {
+          await _refreshTokenToServer(fcmToken);
+        })
+        .listen((value) {});
   }
 
   /// Initializes push notifications. Can be called multiple times.
@@ -119,9 +121,7 @@ class PushNotificationManager extends AppSingleton {
   /// Can be called multiple times
   Future<void> _initFirebaseIfNeeded() async {
     if (_firebaseApp == null) {
-      final app = await Firebase.initializeApp(
-        options: DefaultFirebaseOptions.currentPlatform,
-      );
+      final app = await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
       if (app.isAutomaticDataCollectionEnabled) {
         log.info("Disabling Firebase automatic data collection");
         await app.setAutomaticDataCollectionEnabled(false);
@@ -131,19 +131,25 @@ class PushNotificationManager extends AppSingleton {
   }
 
   Future<void> _refreshTokenToServer(String fcmToken) async {
-    final savedToken = await BackgroundDatabaseManager.getInstance().commonStreamSingle((db) => db.loginSession.watchFcmDeviceToken());
+    final savedToken = await BackgroundDatabaseManager.getInstance().commonStreamSingle(
+      (db) => db.loginSession.watchFcmDeviceToken(),
+    );
     if (savedToken?.token != fcmToken) {
       log.info("FCM token changed, sending token to server");
       final newToken = FcmDeviceToken(token: fcmToken);
       final api = LoginRepository.getInstance().repositoriesOrNull?.api;
       if (api == null) {
-        log.info("FCM token changed, skipping FCM token update because server API is not available");
+        log.info(
+          "FCM token changed, skipping FCM token update because server API is not available",
+        );
         return;
       }
       final result = await api.common((api) => api.postSetDeviceToken(newToken)).ok();
       if (result != null) {
         log.info("FCM token sending successful");
-        final dbResult = await BackgroundDatabaseManager.getInstance().commonAction((db) => db.loginSession.updateFcmDeviceTokenAndPendingNotificationToken(newToken, result));
+        final dbResult = await BackgroundDatabaseManager.getInstance().commonAction(
+          (db) => db.loginSession.updateFcmDeviceTokenAndPendingNotificationToken(newToken, result),
+        );
         if (dbResult.isOk()) {
           log.error("FCM token saving to local database successful");
         } else {
@@ -189,7 +195,9 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
     (db) => db.app.watchServerUrl(),
     defaultServerUrl(),
   );
-  final pendingNotificationToken = await db.commonStreamSingle((db) => db.loginSession.watchPendingNotificationToken());
+  final pendingNotificationToken = await db.commonStreamSingle(
+    (db) => db.loginSession.watchPendingNotificationToken(),
+  );
   if (pendingNotificationToken == null) {
     log.error("Downloading pending notification failed: pending notification token is null");
     return;
@@ -205,7 +213,10 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   final apiProvider = ApiProvider(accountUrl);
   await apiProvider.init();
   final ApiWrapper<CommonApi> commonApi = ApiWrapper(apiProvider.common, NoConnection());
-  final result = await commonApi.requestValue((api) => api.postGetPendingNotification(pendingNotificationToken), logError: false);
+  final result = await commonApi.requestValue(
+    (api) => api.postGetPendingNotification(pendingNotificationToken),
+    logError: false,
+  );
   switch (result) {
     case Ok(:final v):
       final manager = NotificationManager.getInstance();
@@ -218,19 +229,31 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
         await _handlePushNotificationNewMessageReceived(v.newMessage, accountBackgroundDb);
       }
       if ((v.value & 0x2) == 0x2) {
-        await _handlePushNotificationReceivedLikesChanged(v.receivedLikesChanged, accountBackgroundDb);
+        await _handlePushNotificationReceivedLikesChanged(
+          v.receivedLikesChanged,
+          accountBackgroundDb,
+        );
       }
       if ((v.value & 0x4) == 0x4) {
-        await _handlePushNotificationMediaContentModerationCompleted(v.mediaContentModerationCompleted, accountBackgroundDb);
+        await _handlePushNotificationMediaContentModerationCompleted(
+          v.mediaContentModerationCompleted,
+          accountBackgroundDb,
+        );
       }
       if ((v.value & 0x8) == 0x8) {
         await _handlePushNotificationNewsChanged(v.newsChanged, accountBackgroundDb);
       }
       if ((v.value & 0x10) == 0x10) {
-        await _handlePushNotificationProfileStringModerationCompleted(v.profileStringModerationCompleted, accountBackgroundDb);
+        await _handlePushNotificationProfileStringModerationCompleted(
+          v.profileStringModerationCompleted,
+          accountBackgroundDb,
+        );
       }
       if ((v.value & 0x20) == 0x20) {
-        await _handlePushNotificationAutomaticProfileSearchCompleted(v.automaticProfileSearchCompleted, accountBackgroundDb);
+        await _handlePushNotificationAutomaticProfileSearchCompleted(
+          v.automaticProfileSearchCompleted,
+          accountBackgroundDb,
+        );
       }
       if ((v.value & 0x40) == 0x40) {
         await _handlePushNotificationAdminNotification(v.adminNotification, accountBackgroundDb);
@@ -240,27 +263,42 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   }
 }
 
-Future<void> _handlePushNotificationNewMessageReceived(NewMessageNotificationList? messageSenders, AccountBackgroundDatabaseManager accountBackgroundDb) async {
+Future<void> _handlePushNotificationNewMessageReceived(
+  NewMessageNotificationList? messageSenders,
+  AccountBackgroundDatabaseManager accountBackgroundDb,
+) async {
   if (messageSenders == null) {
     return;
   }
 
   for (final sender in messageSenders.v) {
-    await NotificationMessageReceived.getInstance().updateMessageReceivedCount(sender.a, sender.m, sender.c, accountBackgroundDb);
+    await NotificationMessageReceived.getInstance().updateMessageReceivedCount(
+      sender.a,
+      sender.m,
+      sender.c,
+      accountBackgroundDb,
+    );
     // Prevent showing the notification again if it is dismissed, another
     // message push notfication for the same sender arives and app is not
     // opened (retrieving pending messages from the server resets this value)
-    await accountBackgroundDb.accountAction((db) => db.notification.setNewMessageNotificationShown(sender.a, true));
+    await accountBackgroundDb.accountAction(
+      (db) => db.notification.setNewMessageNotificationShown(sender.a, true),
+    );
   }
 }
 
-Future<void> _handlePushNotificationReceivedLikesChanged(NewReceivedLikesCountResult? r, AccountBackgroundDatabaseManager accountBackgroundDb) async {
+Future<void> _handlePushNotificationReceivedLikesChanged(
+  NewReceivedLikesCountResult? r,
+  AccountBackgroundDatabaseManager accountBackgroundDb,
+) async {
   if (r == null) {
     return;
   }
 
   await NotificationLikeReceived.getInstance().incrementReceivedLikesCount(accountBackgroundDb);
-  await accountBackgroundDb.accountAction((db) => db.newReceivedLikesCount.updateSyncVersionReceivedLikes(r.v, r.c));
+  await accountBackgroundDb.accountAction(
+    (db) => db.newReceivedLikesCount.updateSyncVersionReceivedLikes(r.v, r.c),
+  );
 }
 
 Future<void> _handlePushNotificationMediaContentModerationCompleted(
@@ -270,7 +308,10 @@ Future<void> _handlePushNotificationMediaContentModerationCompleted(
   if (notification == null) {
     return;
   }
-  await NotificationMediaContentModerationCompleted.handleMediaContentModerationCompleted(notification, accountBackgroundDb);
+  await NotificationMediaContentModerationCompleted.handleMediaContentModerationCompleted(
+    notification,
+    accountBackgroundDb,
+  );
 }
 
 Future<void> _handlePushNotificationProfileStringModerationCompleted(
@@ -280,10 +321,16 @@ Future<void> _handlePushNotificationProfileStringModerationCompleted(
   if (notification == null) {
     return;
   }
-  await NotificationProfileStringModerationCompleted.handleProfileStringModerationCompleted(notification, accountBackgroundDb);
+  await NotificationProfileStringModerationCompleted.handleProfileStringModerationCompleted(
+    notification,
+    accountBackgroundDb,
+  );
 }
 
-Future<void> _handlePushNotificationNewsChanged(UnreadNewsCountResult? r, AccountBackgroundDatabaseManager accountBackgroundDb) async {
+Future<void> _handlePushNotificationNewsChanged(
+  UnreadNewsCountResult? r,
+  AccountBackgroundDatabaseManager accountBackgroundDb,
+) async {
   if (r == null) {
     return;
   }
@@ -297,7 +344,10 @@ Future<void> _handlePushNotificationAutomaticProfileSearchCompleted(
   if (notification == null) {
     return;
   }
-  await NotificationAutomaticProfileSearch.handleAutomaticProfileSearchCompleted(notification, accountBackgroundDb);
+  await NotificationAutomaticProfileSearch.handleAutomaticProfileSearchCompleted(
+    notification,
+    accountBackgroundDb,
+  );
 }
 
 Future<void> _handlePushNotificationAdminNotification(
@@ -307,5 +357,8 @@ Future<void> _handlePushNotificationAdminNotification(
   if (notification == null) {
     return;
   }
-  await NotificationNewsItemAvailable.getInstance().showAdminNotification(notification, accountBackgroundDb);
+  await NotificationNewsItemAvailable.getInstance().showAdminNotification(
+    notification,
+    accountBackgroundDb,
+  );
 }

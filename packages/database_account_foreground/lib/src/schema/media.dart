@@ -1,16 +1,24 @@
 import 'package:database_converter/database_converter.dart';
 import 'package:drift/drift.dart';
 
-
 class MyMediaContent extends Table {
   /// Security content has index -1. Profile content indexes start from 0.
   IntColumn get contentIndex => integer()();
 
   TextColumn get contentId => text().map(const ContentIdConverter())();
   BoolColumn get faceDetected => boolean()();
-  TextColumn get moderationState => text().map(NullAwareTypeConverter.wrap(const ContentModerationStateConverter())).nullable()();
-  IntColumn get contentModerationRejectedCategory => integer().map(const NullAwareTypeConverter.wrap(MediaContentModerationRejectedReasonCategoryConverter())).nullable()();
-  TextColumn get contentModerationRejectedDetails => text().map(const NullAwareTypeConverter.wrap(MediaContentModerationRejectedReasonDetailsConverter())).nullable()();
+  TextColumn get moderationState =>
+      text().map(NullAwareTypeConverter.wrap(const ContentModerationStateConverter())).nullable()();
+  IntColumn get contentModerationRejectedCategory => integer()
+      .map(
+        const NullAwareTypeConverter.wrap(MediaContentModerationRejectedReasonCategoryConverter()),
+      )
+      .nullable()();
+  TextColumn get contentModerationRejectedDetails => text()
+      .map(
+        const NullAwareTypeConverter.wrap(MediaContentModerationRejectedReasonDetailsConverter()),
+      )
+      .nullable()();
 
   @override
   Set<Column<Object>> get primaryKey => {contentIndex};

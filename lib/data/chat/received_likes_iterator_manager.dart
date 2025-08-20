@@ -14,8 +14,14 @@ class ReceivedLikesIteratorManager extends BaseIteratorManager {
   final AccountBackgroundDatabaseManager accountBackgroundDb;
   final ServerConnectionManager connectionManager;
 
-  ReceivedLikesIteratorManager(ChatRepository chat, this.media, this.accountBackgroundDb, this.db, this.connectionManager, AccountId currentUser) :
-    super(chat, currentUser, initialIterator: ReceivedLikesDatabaseIterator(db: db));
+  ReceivedLikesIteratorManager(
+    ChatRepository chat,
+    this.media,
+    this.accountBackgroundDb,
+    this.db,
+    this.connectionManager,
+    AccountId currentUser,
+  ) : super(chat, currentUser, initialIterator: ReceivedLikesDatabaseIterator(db: db));
 
   @override
   OnlineIterator createClearDatabaseIterator() {
@@ -30,6 +36,5 @@ class ReceivedLikesIteratorManager extends BaseIteratorManager {
   }
 
   @override
-  ReceivedLikesDatabaseIterator createDatabaseIterator() =>
-    ReceivedLikesDatabaseIterator(db: db);
+  ReceivedLikesDatabaseIterator createDatabaseIterator() => ReceivedLikesDatabaseIterator(db: db);
 }

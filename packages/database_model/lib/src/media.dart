@@ -1,6 +1,3 @@
-
-
-
 import 'package:openapi/api.dart';
 
 abstract class PublicContentProvider {
@@ -16,18 +13,13 @@ class ContentIdAndAccepted {
   @override
   bool operator ==(Object other) {
     return other is ContentIdAndAccepted &&
-      id == other.id &&
-      accepted == other.accepted &&
-      primary == other.primary;
+        id == other.id &&
+        accepted == other.accepted &&
+        primary == other.primary;
   }
 
   @override
-  int get hashCode => Object.hash(
-    runtimeType,
-    id,
-    accepted,
-    primary,
-  );
+  int get hashCode => Object.hash(runtimeType, id, accepted, primary);
 }
 
 abstract class MyContentProvider {
@@ -44,36 +36,29 @@ class MyContent extends ContentIdAndAccepted {
     this.faceDetected,
     this.state,
     this.rejectedCategory,
-    this.rejectedDetails,
-    {
-      required bool primaryContent,
-    }
-  ) : super(
-    id,
-    state == ContentModerationState.acceptedByBot || state == ContentModerationState.acceptedByHuman,
-    primaryContent,
-  );
+    this.rejectedDetails, {
+    required bool primaryContent,
+  }) : super(
+         id,
+         state == ContentModerationState.acceptedByBot ||
+             state == ContentModerationState.acceptedByHuman,
+         primaryContent,
+       );
 
   @override
   bool operator ==(Object other) {
     return other is MyContent &&
-      id == other.id &&
-      accepted == other.accepted &&
-      faceDetected == other.faceDetected &&
-      state == other.state &&
-      rejectedCategory == other.rejectedCategory &&
-      rejectedDetails == other.rejectedDetails;
+        id == other.id &&
+        accepted == other.accepted &&
+        faceDetected == other.faceDetected &&
+        state == other.state &&
+        rejectedCategory == other.rejectedCategory &&
+        rejectedDetails == other.rejectedDetails;
   }
 
   @override
-  int get hashCode => Object.hash(
-    runtimeType,
-    id,
-    accepted,
-    state,
-    rejectedCategory,
-    rejectedDetails,
-  );
+  int get hashCode =>
+      Object.hash(runtimeType, id, accepted, state, rejectedCategory, rejectedDetails);
 }
 
 class PrimaryProfileContent {

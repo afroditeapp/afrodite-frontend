@@ -1,5 +1,3 @@
-
-
 import 'package:app/data/general/notification/utils/notification_category.dart';
 import 'package:app/data/general/notification/utils/notification_id.dart';
 import 'package:app/data/general/notification/utils/notification_payload.dart';
@@ -23,17 +21,22 @@ class NotificationAutomaticProfileSearch extends AppSingletonNoInit {
     AutomaticProfileSearchCompletedNotification notification,
     AccountBackgroundDatabaseManager accountBackgroundDb,
   ) async {
-    final show = await accountBackgroundDb.accountDataWrite(
-      (db) => db.notification.profilesFound.shouldBeShown(
-        notification.profilesFound,
-      )
-    ).ok() ?? false;
+    final show =
+        await accountBackgroundDb
+            .accountDataWrite(
+              (db) => db.notification.profilesFound.shouldBeShown(notification.profilesFound),
+            )
+            .ok() ??
+        false;
 
     if (show) {
       await accountBackgroundDb.accountAction(
-        (db) => db.profile.showAutomaticProfileSearchBadge(notification.profileCount)
+        (db) => db.profile.showAutomaticProfileSearchBadge(notification.profileCount),
       );
-      await NotificationAutomaticProfileSearch.getInstance().show(accountBackgroundDb, notification.profileCount);
+      await NotificationAutomaticProfileSearch.getInstance().show(
+        accountBackgroundDb,
+        notification.profileCount,
+      );
     }
   }
 
@@ -43,14 +46,18 @@ class NotificationAutomaticProfileSearch extends AppSingletonNoInit {
     if (profileCount == 1) {
       title = R.strings.notification_automatic_profile_search_found_profiles_single;
     } else {
-      title = R.strings.notification_automatic_profile_search_found_profiles_multiple(profileCount.toString());
+      title = R.strings.notification_automatic_profile_search_found_profiles_multiple(
+        profileCount.toString(),
+      );
     }
 
     await notifications.sendNotification(
       id: id,
       title: title,
       category: const NotificationCategoryAutomaticProfileSearch(),
-      notificationPayload: NavigateToAutomaticProfileSearchResults(receiverAccountId: accountBackgroundDb.accountId()),
+      notificationPayload: NavigateToAutomaticProfileSearchResults(
+        receiverAccountId: accountBackgroundDb.accountId(),
+      ),
       accountBackgroundDb: accountBackgroundDb,
     );
   }

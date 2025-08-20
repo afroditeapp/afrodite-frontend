@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/widgets.dart';
 
 import 'package:google_sign_in_web/web_only.dart';
@@ -13,7 +11,9 @@ Widget signInWithGoogleButtonWebImpl(bool darkTheme, String locale) {
   } else {
     theme = GSIButtonTheme.filledBlack;
   }
-  if (_currentConfiguration == null || _currentConfiguration?.theme != theme || _currentConfiguration?.locale != locale) {
+  if (_currentConfiguration == null ||
+      _currentConfiguration?.theme != theme ||
+      _currentConfiguration?.locale != locale) {
     _currentConfiguration = GSIButtonConfiguration(
       type: GSIButtonType.standard,
       shape: GSIButtonShape.pill,
@@ -23,7 +23,5 @@ Widget signInWithGoogleButtonWebImpl(bool darkTheme, String locale) {
       locale: locale,
     );
   }
-  return renderButton(
-    configuration: _currentConfiguration
-  );
+  return renderButton(configuration: _currentConfiguration);
 }

@@ -1,4 +1,3 @@
-
 import 'dart:typed_data';
 
 import 'chat/message.dart';
@@ -11,29 +10,31 @@ class MessageEntry {
 
   final AccountId localAccountId;
   final AccountId remoteAccountId;
+
   /// For sent messages this is Message. For received messages this can
   /// be Message or in error state null.
   final Message? message;
+
   /// Local/client time when message entry is inserted to database.
   final UtcDateTime localUnixTime;
   final MessageState messageState;
+
   /// Conversation specific identifier for the message. Server sets this value.
   final MessageId? messageId;
+
   /// Time since Unix epoch. Server sets this falue.
   final UtcDateTime? unixTime;
 
-  MessageEntry(
-    {
-      required this.localId,
-      required this.localAccountId,
-      required this.remoteAccountId,
-      required this.message,
-      required this.localUnixTime,
-      required this.messageState,
-      this.messageId,
-      this.unixTime,
-    }
-  );
+  MessageEntry({
+    required this.localId,
+    required this.localAccountId,
+    required this.remoteAccountId,
+    required this.message,
+    required this.localUnixTime,
+    required this.messageState,
+    this.messageId,
+    this.unixTime,
+  });
 
   @override
   String toString() {
@@ -46,8 +47,10 @@ enum MessageState {
 
   /// Message is waiting to be sent to server.
   pendingSending(_VALUE_PENDING_SENDING),
+
   /// Message sent to server.
   sent(_VALUE_SENT),
+
   /// Message sending failed.
   sendingError(_VALUE_SENDING_ERROR),
 
@@ -55,8 +58,10 @@ enum MessageState {
 
   /// Message received successfully.
   received(_VALUE_RECEIVED),
+
   /// Message received, but decrypting failed.
   receivedAndDecryptingFailed(_VALUE_RECEIVED_AND_DECRYPTING_FAILED),
+
   /// Message received, but public key download failed.
   receivedAndPublicKeyDownloadFailed(_VALUE_RECEIVED_AND_PUBLIC_KEY_DOWNLOAD_FAILED),
 
@@ -110,10 +115,10 @@ enum MessageState {
       case sendingError:
         return SentMessageState.sendingError;
       case received ||
-        receivedAndDecryptingFailed ||
-        receivedAndPublicKeyDownloadFailed ||
-        infoMatchFirstPublicKeyReceived ||
-        infoMatchPublicKeyChanged:
+          receivedAndDecryptingFailed ||
+          receivedAndPublicKeyDownloadFailed ||
+          infoMatchFirstPublicKeyReceived ||
+          infoMatchPublicKeyChanged:
         return null;
     }
   }
@@ -131,10 +136,10 @@ enum MessageState {
       case receivedAndPublicKeyDownloadFailed:
         return ReceivedMessageState.publicKeyDownloadFailed;
       case pendingSending ||
-        sent ||
-        sendingError ||
-        infoMatchFirstPublicKeyReceived ||
-        infoMatchPublicKeyChanged:
+          sent ||
+          sendingError ||
+          infoMatchFirstPublicKeyReceived ||
+          infoMatchPublicKeyChanged:
         return null;
     }
   }
@@ -146,11 +151,11 @@ enum MessageState {
       case infoMatchPublicKeyChanged:
         return InfoMessageState.infoMatchPublicKeyChanged;
       case received ||
-        receivedAndDecryptingFailed ||
-        receivedAndPublicKeyDownloadFailed ||
-        pendingSending ||
-        sent ||
-        sendingError:
+          receivedAndDecryptingFailed ||
+          receivedAndPublicKeyDownloadFailed ||
+          pendingSending ||
+          sent ||
+          sendingError:
         return null;
     }
   }
@@ -159,8 +164,10 @@ enum MessageState {
 enum SentMessageState {
   /// Waiting to be sent to server.
   pending,
+
   /// Sent to server, but not yet received by the other user.
   sent,
+
   /// Sending failed.
   sendingError;
 
@@ -183,14 +190,15 @@ enum SentMessageState {
 enum ReceivedMessageState {
   /// Received successfully
   received,
+
   /// Received, but decrypting failed
   decryptingFailed,
+
   /// Received, but public key download failed.
   publicKeyDownloadFailed;
 
   bool isError() {
-    return this == decryptingFailed ||
-      this == publicKeyDownloadFailed;
+    return this == decryptingFailed || this == publicKeyDownloadFailed;
   }
 
   const ReceivedMessageState();
@@ -227,34 +235,38 @@ class NewMessageEntry {
   final AccountId localAccountId;
   final AccountId remoteAccountId;
   final Message? message;
+
   /// Local/client time when message entry is inserted to database.
   final UtcDateTime localUnixTime;
   final MessageState messageState;
+
   /// Null if message was sent.
   final ReceivedMessageState? receivedMessageState;
+
   /// Conversation specific ID for the message. Server sets this value.
   final MessageId? messageId;
+
   /// Time since Unix epoch. Server sets this falue.
   final UtcDateTime? unixTime;
+
   /// Backend signed PGP message. Server sets this falue.
   final Uint8List? backendSignedPgpMessage;
+
   /// Symmetric encryption key for PGP message from sender.
   final Uint8List? symmetricMessageEncryptionKey;
 
-  NewMessageEntry(
-    {
-      required this.localAccountId,
-      required this.remoteAccountId,
-      required this.message,
-      required this.localUnixTime,
-      required this.messageState,
-      this.receivedMessageState,
-      this.messageId,
-      this.unixTime,
-      this.backendSignedPgpMessage,
-      this.symmetricMessageEncryptionKey,
-    }
-  );
+  NewMessageEntry({
+    required this.localAccountId,
+    required this.remoteAccountId,
+    required this.message,
+    required this.localUnixTime,
+    required this.messageState,
+    this.receivedMessageState,
+    this.messageId,
+    this.unixTime,
+    this.backendSignedPgpMessage,
+    this.symmetricMessageEncryptionKey,
+  });
 
   @override
   String toString() {

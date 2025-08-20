@@ -23,7 +23,6 @@ import "package:app/ui_utils/text_field.dart";
 
 import "package:sign_in_with_apple/sign_in_with_apple.dart";
 
-
 import 'package:app/localizations.dart';
 import "package:url_launcher/url_launcher_string.dart";
 
@@ -37,16 +36,12 @@ class LoginScreen extends StatelessWidget {
         children: [
           Expanded(child: screenContent()),
           ProgressDialogOpener<DemoAccountLoginBloc, DemoAccountLoginData>(
-            dialogVisibilityGetter:
-              (state) => state.loginProgressVisible,
-            loadingText:
-              context.strings.generic_login_progress_dialog_text,
+            dialogVisibilityGetter: (state) => state.loginProgressVisible,
+            loadingText: context.strings.generic_login_progress_dialog_text,
           ),
           ProgressDialogOpener<SignInWithBloc, SignInWithData>(
-            dialogVisibilityGetter:
-              (state) => state.showProgress,
-            loadingText:
-              context.strings.generic_login_progress_dialog_text,
+            dialogVisibilityGetter: (state) => state.showProgress,
+            loadingText: context.strings.generic_login_progress_dialog_text,
           ),
         ],
       ),
@@ -59,23 +54,23 @@ class LoginScreen extends StatelessWidget {
               child: Text(context.strings.login_screen_demo_account_dialog_title),
               onPressed: () {
                 final demoAccountBloc = context.read<DemoAccountLoginBloc>();
-                openFirstDemoAccountLoginDialog(context)
-                  .then((value) {
-                    if (value != null) {
-                      demoAccountBloc.add(DoDemoAccountLogin(value));
-                    }
-                  });
+                openFirstDemoAccountLoginDialog(context).then((value) {
+                  if (value != null) {
+                    demoAccountBloc.add(DoDemoAccountLogin(value));
+                  }
+                });
               },
             ),
             // It is not possible to build web debug build using
             // "flutter build web" command, so profile mode is used as
             // a workaround. Also some devices are too slow for debug builds.
-            if (kDebugMode || kProfileMode) MenuItemButton(
-              child: const Text("Old login"),
-              onPressed: () {
-                MyNavigator.push(context, const MaterialPage<void>(child: LoginScreenOld()));
-              },
-            ),
+            if (kDebugMode || kProfileMode)
+              MenuItemButton(
+                child: const Text("Old login"),
+                onPressed: () {
+                  MyNavigator.push(context, const MaterialPage<void>(child: LoginScreenOld()));
+                },
+              ),
             ...commonActionsWhenLoggedOut(context),
           ]),
         ],
@@ -102,7 +97,7 @@ class LoginScreen extends StatelessWidget {
             ),
           ),
         );
-      }
+      },
     );
   }
 }
@@ -120,12 +115,7 @@ Widget signInButtonArea(BuildContext context) {
       // this case.
       Row(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SizedBox(
-            width: 300,
-            child: termsOfServiceAndPrivacyPolicyInfo(context)
-          ),
-        ],
+        children: [SizedBox(width: 300, child: termsOfServiceAndPrivacyPolicyInfo(context))],
       ),
       const Padding(padding: EdgeInsets.symmetric(vertical: COMMON_PADDING)),
       SizedBox(
@@ -148,30 +138,30 @@ Widget termsOfServiceAndPrivacyPolicyInfo(BuildContext context) {
   // NOTE: Adding spaces like this does not work for all languages.
 
   final textStyle = Theme.of(context).textTheme.bodyLarge;
-  final linkStyle = textStyle?.copyWith(
-    color: LINK_COLOR,
-  );
+  final linkStyle = textStyle?.copyWith(color: LINK_COLOR);
 
-  return RichText(text: TextSpan(
-    text: "${context.strings.login_screen_login_note_text_beginning} ",
-    style: textStyle,
-    children: [
-      TextSpan(
-        text: context.strings.login_screen_login_note_text_tos,
-        style: linkStyle,
-        recognizer: TapGestureRecognizer()
-          ..onTap = () => launchUrlString(context.strings.url_app_tos_link)
-      ),
-      TextSpan(text: " ${context.strings.login_screen_login_note_text_and} "),
-      TextSpan(
-        text: context.strings.login_screen_login_note_text_privacy_policy,
-        style: linkStyle,
-        recognizer: TapGestureRecognizer()
-          ..onTap = () => launchUrlString(context.strings.url_app_privacy_policy_link)
-      ),
-      const TextSpan(text: "."),
-    ],
-  ));
+  return RichText(
+    text: TextSpan(
+      text: "${context.strings.login_screen_login_note_text_beginning} ",
+      style: textStyle,
+      children: [
+        TextSpan(
+          text: context.strings.login_screen_login_note_text_tos,
+          style: linkStyle,
+          recognizer: TapGestureRecognizer()
+            ..onTap = () => launchUrlString(context.strings.url_app_tos_link),
+        ),
+        TextSpan(text: " ${context.strings.login_screen_login_note_text_and} "),
+        TextSpan(
+          text: context.strings.login_screen_login_note_text_privacy_policy,
+          style: linkStyle,
+          recognizer: TapGestureRecognizer()
+            ..onTap = () => launchUrlString(context.strings.url_app_privacy_policy_link),
+        ),
+        const TextSpan(text: "."),
+      ],
+    ),
+  );
 }
 
 Widget firstSignInButton(BuildContext context) {
@@ -209,8 +199,7 @@ Widget signInWithAppleButton(BuildContext context) {
   }
 
   return SignInWithAppleButton(
-    onPressed: () =>
-      context.read<SignInWithBloc>().add(SignInWithAppleEvent()),
+    onPressed: () => context.read<SignInWithBloc>().add(SignInWithAppleEvent()),
     borderRadius: const BorderRadius.all(Radius.circular(24.0)),
     height: SIGN_IN_BUTTON_HEIGHT,
     style: style,
@@ -233,8 +222,7 @@ Widget signInWithGoogleButton(BuildContext context) {
       cacheHeight: calculateCachedImageSize(context, SIGN_IN_BUTTON_HEIGHT),
     ),
     padding: EdgeInsets.zero,
-    onPressed: () =>
-      context.read<SignInWithBloc>().add(SignInWithGoogle()),
+    onPressed: () => context.read<SignInWithBloc>().add(SignInWithGoogle()),
   );
 }
 
@@ -296,23 +284,20 @@ Future<DemoAccountCredentials?> openFirstDemoAccountLoginDialog(BuildContext con
           onPressed: () {
             MyNavigator.removePage(context, pageKey);
           },
-          child: Text(context.strings.generic_cancel)
+          child: Text(context.strings.generic_cancel),
         ),
         TextButton(
           onPressed: () {
             MyNavigator.removePage(
               context,
               pageKey,
-              DemoAccountCredentials(
-                usernameField.controller.text,
-                passwordField.controller.text
-              )
+              DemoAccountCredentials(usernameField.controller.text, passwordField.controller.text),
             );
           },
-          child: Text(context.strings.generic_login)
-        )
+          child: Text(context.strings.generic_login),
+        ),
       ],
       scrollable: true,
-    )
+    ),
   );
 }

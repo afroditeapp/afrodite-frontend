@@ -1,5 +1,3 @@
-
-
 import 'package:app/localizations.dart';
 import 'package:app/logic/account/account.dart';
 import 'package:app/model/freezed/logic/account/account.dart';
@@ -15,10 +13,7 @@ import 'package:openapi/api.dart';
 
 class AccountPrivateInfoScreen extends StatefulWidget {
   final AccountId accountId;
-  const AccountPrivateInfoScreen({
-    required this.accountId,
-    super.key,
-  });
+  const AccountPrivateInfoScreen({required this.accountId, super.key});
 
   @override
   State<AccountPrivateInfoScreen> createState() => _AccountPrivateInfoScreenState();
@@ -35,9 +30,8 @@ class _AccountPrivateInfoScreenState extends State<AccountPrivateInfoScreen> {
 
   Future<void> _getData() async {
     final result = await api
-      .accountAdmin(
-        (api) => api.getAccountStateAdmin(widget.accountId.aid)
-      ).ok();
+        .accountAdmin((api) => api.getAccountStateAdmin(widget.accountId.aid))
+        .ok();
 
     if (!context.mounted) {
       return;
@@ -66,9 +60,7 @@ class _AccountPrivateInfoScreenState extends State<AccountPrivateInfoScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Account private info"),
-      ),
+      appBar: AppBar(title: const Text("Account private info")),
       body: screenContent(context),
     );
   }
@@ -76,16 +68,14 @@ class _AccountPrivateInfoScreenState extends State<AccountPrivateInfoScreen> {
   Widget screenContent(BuildContext context) {
     final account = accountInfo;
     if (isLoading) {
-      return const Center(
-        child: CircularProgressIndicator(),
-      );
+      return const Center(child: CircularProgressIndicator());
     } else if (isError || account == null) {
       return Center(child: Text(context.strings.generic_error));
     } else {
       return BlocBuilder<AccountBloc, AccountBlocData>(
         builder: (context, state) {
           return showData(context, account, state.permissions);
-        }
+        },
       );
     }
   }

@@ -1,5 +1,3 @@
-
-
 import 'dart:async';
 
 import 'package:app/ui/normal/settings/admin/moderator_tasks.dart';
@@ -36,7 +34,6 @@ class NotificationPayloadHandler extends StatefulWidget {
 }
 
 class _NotificationPayloadHandlerState extends State<NotificationPayloadHandler> {
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<NotificationPayloadHandlerBloc, NotificationPayloadHandlerData>(
@@ -49,19 +46,22 @@ class _NotificationPayloadHandlerState extends State<NotificationPayloadHandler>
           final bottomNavigationStateBloc = context.read<BottomNavigationStateBloc>();
           final likeGridInstanceBloc = context.read<LikeGridInstanceManagerBloc>();
           bloc.add(
-            HandleFirstPayload(createHandlePayloadCallback(
-              context,
-              bloc.accountBackgroundDb,
-              bloc.accountDb,
-              navigatorStateBloc,
-              bottomNavigationStateBloc,
-              likeGridInstanceBloc,
-              showError: true)),
+            HandleFirstPayload(
+              createHandlePayloadCallback(
+                context,
+                bloc.accountBackgroundDb,
+                bloc.accountDb,
+                navigatorStateBloc,
+                bottomNavigationStateBloc,
+                likeGridInstanceBloc,
+                showError: true,
+              ),
+            ),
           );
         }
 
         return const SizedBox.shrink();
-      }
+      },
     );
   }
 }
@@ -72,12 +72,10 @@ Future<void> Function(NotificationPayload) createHandlePayloadCallback(
   AccountDatabaseManager accountDb,
   NavigatorStateBloc navigatorStateBloc,
   BottomNavigationStateBloc bottomNavigatorStateBloc,
-  LikeGridInstanceManagerBloc likeGridInstanceBloc,
-  {
-    required bool showError,
-    void Function(NavigatorStateBloc, NewPageDetails?) navigateToAction = defaultNavigateToAction,
-  }) {
-
+  LikeGridInstanceManagerBloc likeGridInstanceBloc, {
+  required bool showError,
+  void Function(NavigatorStateBloc, NewPageDetails?) navigateToAction = defaultNavigateToAction,
+}) {
   return (payload) async {
     final newPage = await handlePayload(
       payload,
@@ -105,16 +103,16 @@ Future<NewPageDetails?> handlePayload(
   BottomNavigationStateBloc bottomNavigationStateBloc,
   LikeGridInstanceManagerBloc likeGridInstanceManagerBloc,
   AccountBackgroundDatabaseManager accountBackgroundDb,
-  AccountDatabaseManager accountDb,
-  {
-    required bool showError,
-  }
-) async {
+  AccountDatabaseManager accountDb, {
+  required bool showError,
+}) async {
   final currentAccountId = await BackgroundDatabaseManager.getInstance().commonStreamSingle(
     (db) => db.loginSession.watchAccountId(),
   );
   if (currentAccountId == null || currentAccountId != payload.receiverAccountId) {
-    log.warning("Notification payload receiver account ID does not match current session account ID");
+    log.warning(
+      "Notification payload receiver account ID does not match current session account ID",
+    );
     if (showError) {
       showSnackBar(R.strings.notification_action_ignored);
     }
@@ -123,24 +121,28 @@ Future<NewPageDetails?> handlePayload(
 
   switch (payload) {
     case NavigateToConversation():
-      final accountId = await accountBackgroundDb.accountData((db) => db.notification.convertConversationIdToAccountId(payload.conversationId)).ok();
+      final accountId = await accountBackgroundDb
+          .accountData(
+            (db) => db.notification.convertConversationIdToAccountId(payload.conversationId),
+          )
+          .ok();
       if (accountId == null) {
         return null;
       }
 
-      final profile = await accountDb.accountData((db) => db.profile.getProfileEntry(accountId)).ok();
+      final profile = await accountDb
+          .accountData((db) => db.profile.getProfileEntry(accountId))
+          .ok();
       if (profile == null) {
         return null;
       }
 
       final lastPage = NavigationStateBlocInstance.getInstance().navigationState.pages.lastOrNull;
       final info = lastPage?.pageInfo;
-      final correctConversatinoAlreadyOpen = info is ConversationPageInfo &&
-        info.accountId == profile.accountId;
+      final correctConversatinoAlreadyOpen =
+          info is ConversationPageInfo && info.accountId == profile.accountId;
       if (!correctConversatinoAlreadyOpen) {
-        return newConversationPage(
-          profile,
-        );
+        return newConversationPage(profile);
       }
     case NavigateToConversationList():
       if (navigatorStateBloc.state.pages.length == 1) {
@@ -156,23 +158,22 @@ Future<NewPageDetails?> handlePayload(
         return newLikesScreen(likeGridInstanceManagerBloc);
       }
     case NavigateToNews():
-      return NewPageDetails(
-        const MaterialPage<void>(
-          child: NewsListScreenOpener(),
-        ),
-      );
+      return NewPageDetails(const MaterialPage<void>(child: NewsListScreenOpener()));
     case NavigateToContentManagement():
-      final currentPageInfo = NavigationStateBlocInstance.getInstance().navigationState.pages.lastOrNull?.pageInfo;
+      final currentPageInfo =
+          NavigationStateBlocInstance.getInstance().navigationState.pages.lastOrNull?.pageInfo;
       if (currentPageInfo is! ContentManagementPageInfo) {
         return newContentManagementScreen();
       }
     case NavigateToMyProfile():
-      final currentPageInfo = NavigationStateBlocInstance.getInstance().navigationState.pages.lastOrNull?.pageInfo;
+      final currentPageInfo =
+          NavigationStateBlocInstance.getInstance().navigationState.pages.lastOrNull?.pageInfo;
       if (currentPageInfo is! MyProfilePageInfo) {
         return newMyProfileScreen();
       }
     case NavigateToAutomaticProfileSearchResults():
-      final currentPageInfo = NavigationStateBlocInstance.getInstance().navigationState.pages.lastOrNull?.pageInfo;
+      final currentPageInfo =
+          NavigationStateBlocInstance.getInstance().navigationState.pages.lastOrNull?.pageInfo;
       if (currentPageInfo is! AutomaticProfileSearchResultsPageInfo) {
         return newAutomaticProfileSearchResultsScreen();
       }

@@ -13,10 +13,7 @@ class UnsupportedClientScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(context.strings.unsupported_client_screen_title),
         actions: [
-          menuActions([
-            commonActionLogout(context),
-            commonActionOpenAboutDialog(context, null),
-          ]),
+          menuActions([commonActionLogout(context), commonActionOpenAboutDialog(context, null)]),
         ],
       ),
       body: showInfo(context),
@@ -28,10 +25,8 @@ class UnsupportedClientScreen extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(context.strings.unsupported_client_screen_info),
-        ],
-      )
+        children: [Text(context.strings.unsupported_client_screen_info)],
+      ),
     );
   }
 }

@@ -1,4 +1,3 @@
-
 import 'package:database_account_foreground/src/database.dart';
 import 'package:database_converter/database_converter.dart';
 import 'package:database_utils/database_utils.dart';
@@ -15,9 +14,10 @@ part 'search.g.dart';
     schema.ProfileSearchGroups,
     schema.ProfileSearchAgeRange,
     schema.AutomaticProfileSearchSettings,
-  ]
+  ],
 )
-class DaoWriteSearch extends DatabaseAccessor<AccountForegroundDatabase> with _$DaoWriteSearchMixin {
+class DaoWriteSearch extends DatabaseAccessor<AccountForegroundDatabase>
+    with _$DaoWriteSearchMixin {
   DaoWriteSearch(super.db);
 
   Future<void> updateProfileFilters(api.GetProfileFilters? value) async {
@@ -48,7 +48,9 @@ class DaoWriteSearch extends DatabaseAccessor<AccountForegroundDatabase> with _$
     );
   }
 
-  Future<void> updateAutomaticProfileSearchSettings(api.AutomaticProfileSearchSettings? value) async {
+  Future<void> updateAutomaticProfileSearchSettings(
+    api.AutomaticProfileSearchSettings? value,
+  ) async {
     await into(automaticProfileSearchSettings).insertOnConflictUpdate(
       AutomaticProfileSearchSettingsCompanion.insert(
         id: SingleRowTable.ID,

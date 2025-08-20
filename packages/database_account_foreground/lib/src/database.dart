@@ -1,4 +1,3 @@
-
 import 'package:database_account_foreground/src/read/account/account.dart';
 import 'package:database_account_foreground/src/read/chat/conversation_list.dart';
 import 'package:database_account_foreground/src/read/chat/key.dart';
@@ -130,11 +129,11 @@ part 'database.g.dart';
     DaoWriteKey,
     DaoWriteLike,
     DaoWriteMessage,
-  ]
+  ],
 )
 class AccountForegroundDatabase extends _$AccountForegroundDatabase {
-  AccountForegroundDatabase(QueryExcecutorProvider dbProvider) :
-    super(dbProvider.getQueryExcecutor());
+  AccountForegroundDatabase(QueryExcecutorProvider dbProvider)
+    : super(dbProvider.getQueryExcecutor());
 
   AccountForegroundDatabaseRead get read => AccountForegroundDatabaseRead(this);
   AccountForegroundDatabaseWrite get write => AccountForegroundDatabaseWrite(this);

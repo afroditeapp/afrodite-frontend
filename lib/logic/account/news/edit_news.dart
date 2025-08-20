@@ -1,5 +1,3 @@
-
-
 import "package:bloc_concurrency/bloc_concurrency.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:openapi/api.dart";
@@ -11,16 +9,20 @@ import "package:app/utils.dart";
 import "package:app/utils/result.dart";
 
 abstract class EditNewsEvent {}
+
 class Reload extends EditNewsEvent {}
+
 class SaveTranslation extends EditNewsEvent {
   final String locale;
   final NewsContent content;
   SaveTranslation(this.locale, this.content);
 }
+
 class SetVisibilityToServer extends EditNewsEvent {
   final bool isVisible;
   SetVisibilityToServer(this.isVisible);
 }
+
 class SaveToServer extends EditNewsEvent {
   SaveToServer();
 }
@@ -29,7 +31,8 @@ class EditNewsBloc extends Bloc<EditNewsEvent, EditNewsData> with ActionRunner {
   final ApiManager api = LoginRepository.getInstance().repositories.api;
   final NewsId id;
   final List<String> supportedLocales;
-  EditNewsBloc(this.id, {required this.supportedLocales}) : super(EditNewsData(supportedLocales: supportedLocales)) {
+  EditNewsBloc(this.id, {required this.supportedLocales})
+    : super(EditNewsData(supportedLocales: supportedLocales)) {
     on<Reload>((data, emit) async {
       emit(EditNewsData(supportedLocales: supportedLocales).copyWith(isLoading: true));
 
@@ -42,27 +45,23 @@ class EditNewsBloc extends Bloc<EditNewsEvent, EditNewsData> with ActionRunner {
         }
       }
       if (errorDetected) {
-        emit(state.copyWith(
-          isLoading: false,
-          isError: true,
-        ));
+        emit(state.copyWith(isLoading: false, isError: true));
       } else {
-        emit(state.copyWith(
-          isLoading: false,
-        ));
+        emit(state.copyWith(isLoading: false));
       }
     });
     on<SaveTranslation>((data, emit) async {
-      emit(state.copyWith(
-        editableTranslations: state.editableTranslationsWith(data.locale, data.content),
-      ));
+      emit(
+        state.copyWith(
+          editableTranslations: state.editableTranslationsWith(data.locale, data.content),
+        ),
+      );
     }, transformer: sequential());
     on<SetVisibilityToServer>((data, emit) async {
       await runOnce(() async {
-        final r = await api.accountAdminAction((api) => api.postSetNewsPublicity(
-          id.nid,
-          BooleanSetting(value:data.isVisible),
-        ));
+        final r = await api.accountAdminAction(
+          (api) => api.postSetNewsPublicity(id.nid, BooleanSetting(value: data.isVisible)),
+        );
         switch (r) {
           case Ok():
             showSnackBar("Visibility change successful");
@@ -85,7 +84,9 @@ class EditNewsBloc extends Bloc<EditNewsEvent, EditNewsData> with ActionRunner {
             case Ok():
               ();
             case Err(e: _SaveError.saveFailedAlreadyChanged):
-              showSnackBar("Error: saving translation $l failed because someone already changed it");
+              showSnackBar(
+                "Error: saving translation $l failed because someone already changed it",
+              );
               break;
             case Err(e: _SaveError.saveFailed):
               showSnackBar("Error: saving translation $l failed");
@@ -105,7 +106,9 @@ class EditNewsBloc extends Bloc<EditNewsEvent, EditNewsData> with ActionRunner {
   }
 
   Future<Result<(), ()>> loadTranslation(Emitter<EditNewsData> emit, String locale) async {
-    final translation = await api.account((api) => api.getNewsItem(id.nid, locale, requireLocale: true));
+    final translation = await api.account(
+      (api) => api.getNewsItem(id.nid, locale, requireLocale: true),
+    );
     switch (translation) {
       case Ok():
         final NewsContent c = (
@@ -113,11 +116,13 @@ class EditNewsBloc extends Bloc<EditNewsEvent, EditNewsData> with ActionRunner {
           body: translation.value.item?.body ?? "",
           version: translation.value.item?.version ?? NewsTranslationVersion(version: 0),
         );
-        emit(state.copyWith(
-          currentTranslations: state.currentTranslationsWith(locale, c),
-          editableTranslations: state.editableTranslationsWith(locale, c),
-          isVisibleToUsers: !translation.value.private,
-        ));
+        emit(
+          state.copyWith(
+            currentTranslations: state.currentTranslationsWith(locale, c),
+            editableTranslations: state.editableTranslationsWith(locale, c),
+            isVisibleToUsers: !translation.value.private,
+          ),
+        );
         return const Ok(());
       case Err():
         return const Err(());
@@ -125,12 +130,19 @@ class EditNewsBloc extends Bloc<EditNewsEvent, EditNewsData> with ActionRunner {
   }
 
   Future<Result<(), _SaveError>> _saveTranslation(Emitter<EditNewsData> emit, String locale) async {
-    final currentVersion = state.currentlNewsContent(locale).version ?? NewsTranslationVersion(version: 0);
+    final currentVersion =
+        state.currentlNewsContent(locale).version ?? NewsTranslationVersion(version: 0);
     final edited = state.editedOrCurrentlNewsContent(locale);
-    final r = await api.accountAdmin((api) => api.postUpdateNewsTranslation(
-      id.nid,
-      locale,
-      UpdateNewsTranslation(body: edited.body, title: edited.title, currentVersion: currentVersion))
+    final r = await api.accountAdmin(
+      (api) => api.postUpdateNewsTranslation(
+        id.nid,
+        locale,
+        UpdateNewsTranslation(
+          body: edited.body,
+          title: edited.title,
+          currentVersion: currentVersion,
+        ),
+      ),
     );
     switch (r) {
       case Ok():
@@ -150,8 +162,4 @@ class EditNewsBloc extends Bloc<EditNewsEvent, EditNewsData> with ActionRunner {
   }
 }
 
-enum _SaveError {
-  saveFailedAlreadyChanged,
-  saveFailed,
-  reloadFailed,
-}
+enum _SaveError { saveFailedAlreadyChanged, saveFailed, reloadFailed }

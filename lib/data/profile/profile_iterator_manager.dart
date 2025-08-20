@@ -15,7 +15,9 @@ import 'package:app/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
 
 sealed class ProfileIteratorMode {}
+
 class ModeFavorites extends ProfileIteratorMode {}
+
 class ModePublicProfiles extends ProfileIteratorMode {
   final bool clearDatabase;
   ModePublicProfiles({required this.clearDatabase});
@@ -30,11 +32,16 @@ class ProfileIteratorManager {
 
   final AccountId currentUser;
 
-  ProfileIteratorManager(this.chat, this.media, this.accountBackgroundDb, this.db, this.connectionManager, this.currentUser) :
-    _currentIterator = ProfileListDatabaseIterator(db: db);
+  ProfileIteratorManager(
+    this.chat,
+    this.media,
+    this.accountBackgroundDb,
+    this.db,
+    this.connectionManager,
+    this.currentUser,
+  ) : _currentIterator = ProfileListDatabaseIterator(db: db);
 
-  ProfileIteratorMode _currentMode =
-    ModePublicProfiles(clearDatabase: false);
+  ProfileIteratorMode _currentMode = ModePublicProfiles(clearDatabase: false);
   IteratorType _currentIterator;
 
   BehaviorSubject<bool> loadingInProgress = BehaviorSubject.seeded(false);
@@ -49,23 +56,15 @@ class ProfileIteratorManager {
     _duplicateAccountsPreventer.clear();
 
     switch (mode) {
-      case ModeFavorites(): {
-        _currentIterator = FavoritesDatabaseIterator(db: db);
-      }
-      case ModePublicProfiles(): {
-        if (mode.clearDatabase) {
-
-          _currentIterator = OnlineIterator(
-            resetServerIterator: true,
-            media: media,
-            io: ProfileListOnlineIteratorIo(db, connectionManager.api),
-            accountBackgroundDb: accountBackgroundDb,
-            db: db,
-            connectionManager: connectionManager,
-          );
-        } else {
-          if (_currentMode is ModeFavorites) {
+      case ModeFavorites():
+        {
+          _currentIterator = FavoritesDatabaseIterator(db: db);
+        }
+      case ModePublicProfiles():
+        {
+          if (mode.clearDatabase) {
             _currentIterator = OnlineIterator(
+              resetServerIterator: true,
               media: media,
               io: ProfileListOnlineIteratorIo(db, connectionManager.api),
               accountBackgroundDb: accountBackgroundDb,
@@ -73,49 +72,62 @@ class ProfileIteratorManager {
               connectionManager: connectionManager,
             );
           } else {
-            _currentIterator.reset();
+            if (_currentMode is ModeFavorites) {
+              _currentIterator = OnlineIterator(
+                media: media,
+                io: ProfileListOnlineIteratorIo(db, connectionManager.api),
+                accountBackgroundDb: accountBackgroundDb,
+                db: db,
+                connectionManager: connectionManager,
+              );
+            } else {
+              _currentIterator.reset();
+            }
           }
         }
-      }
     }
     _currentMode = mode;
   }
 
   void refresh() async {
     switch (_currentMode) {
-      case ModeFavorites(): {
-        reset(ModeFavorites());
-      }
-      case ModePublicProfiles(): {
-        reset(ModePublicProfiles(clearDatabase: true));
-      }
+      case ModeFavorites():
+        {
+          reset(ModeFavorites());
+        }
+      case ModePublicProfiles():
+        {
+          reset(ModePublicProfiles(clearDatabase: true));
+        }
     }
   }
 
   Future<Result<List<ProfileEntry>, ()>> _nextListRaw() async {
     switch (_currentMode) {
-      case ModeFavorites(): {
-        return await _currentIterator.nextList();
-      }
-      case ModePublicProfiles(): {
-        final List<ProfileEntry> nextList;
-        switch (await _currentIterator.nextList()) {
-          case Ok(:final value): {
-            nextList = value;
-            break;
-          }
-          case Err(): {
-            return const Err(());
-          }
+      case ModeFavorites():
+        {
+          return await _currentIterator.nextList();
         }
+      case ModePublicProfiles():
+        {
+          final List<ProfileEntry> nextList;
+          switch (await _currentIterator.nextList()) {
+            case Ok(:final value):
+              {
+                nextList = value;
+                break;
+              }
+            case Err():
+              {
+                return const Err(());
+              }
+          }
 
-        if (nextList.isEmpty && _currentIterator is OnlineIterator) {
-          _currentIterator = ProfileListDatabaseIterator(
-            db: db,
-          );
+          if (nextList.isEmpty && _currentIterator is OnlineIterator) {
+            _currentIterator = ProfileListDatabaseIterator(db: db);
+          }
+          return Ok(nextList);
         }
-        return Ok(nextList);
-      }
     }
   }
 
@@ -136,7 +148,8 @@ class ProfileIteratorManager {
       for (final p in list) {
         final isBlocked = await chat.isInSentBlocks(p.accountId);
         final alreadyReturned = _duplicateAccountsPreventer.contains(p.accountId);
-        final invalidPrimaryContent = p.content.firstOrNull?.primary != true || p.content.firstOrNull?.accepted != true;
+        final invalidPrimaryContent =
+            p.content.firstOrNull?.primary != true || p.content.firstOrNull?.accepted != true;
 
         if (isBlocked || alreadyReturned || p.accountId == currentUser || invalidPrimaryContent) {
           toBeRemoved.add(p);

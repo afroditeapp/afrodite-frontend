@@ -1,5 +1,3 @@
-
-
 class GridSettings {
   final double? horizontalPadding;
   final double? internalPadding;

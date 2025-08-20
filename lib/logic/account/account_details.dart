@@ -8,10 +8,13 @@ import "package:app/utils.dart";
 import "package:app/utils/result.dart";
 
 abstract class AccountDetailsEvent {}
+
 class Reload extends AccountDetailsEvent {}
+
 class MoveAccountToPendingDeletionState extends AccountDetailsEvent {}
 
-class AccountDetailsBloc extends Bloc<AccountDetailsEvent, AccountDetailsBlocData> with ActionRunner {
+class AccountDetailsBloc extends Bloc<AccountDetailsEvent, AccountDetailsBlocData>
+    with ActionRunner {
   final AccountRepository account = LoginRepository.getInstance().repositories.account;
 
   AccountDetailsBloc() : super(AccountDetailsBlocData()) {
@@ -25,11 +28,7 @@ class AccountDetailsBloc extends Bloc<AccountDetailsEvent, AccountDetailsBlocDat
           return;
         }
 
-        emit(state.copyWith(
-          isLoading: false,
-          isError: false,
-          email: accountData.email,
-        ));
+        emit(state.copyWith(isLoading: false, isError: false, email: accountData.email));
       });
     });
     on<MoveAccountToPendingDeletionState>((key, emit) async {

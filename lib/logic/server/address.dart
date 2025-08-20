@@ -5,6 +5,7 @@ import "package:app/config.dart";
 import "package:app/data/login_repository.dart";
 
 sealed class ServerAddressEvent {}
+
 class ChangeCachedServerAddress extends ServerAddressEvent {
   final String value;
   ChangeCachedServerAddress(this.value);

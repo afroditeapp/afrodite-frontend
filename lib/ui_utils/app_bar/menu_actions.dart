@@ -1,6 +1,3 @@
-
-
-
 import 'package:flutter/material.dart';
 
 Widget menuActions(List<Widget> actions) {
@@ -17,6 +14,6 @@ Widget menuActions(List<Widget> actions) {
         icon: const Icon(Icons.more_vert),
       );
     },
-    menuChildren: actions
+    menuChildren: actions,
   );
 }

@@ -78,21 +78,16 @@ class _LikeViewState extends State<LikeView> {
         } else {
           return Center(child: Text(context.strings.generic_error));
         }
-      }
+      },
     );
   }
 }
 
-NewPageDetails newLikesScreen(
-  LikeGridInstanceManagerBloc likeGridInstanceManagerBloc,
-) {
+NewPageDetails newLikesScreen(LikeGridInstanceManagerBloc likeGridInstanceManagerBloc) {
   final newGridId = likeGridInstanceManagerBloc.newId();
   return NewPageDetails(
     MaterialPage<void>(
-      child: LikesScreen(
-        gridInstanceId: newGridId,
-        bloc: likeGridInstanceManagerBloc,
-      ),
+      child: LikesScreen(gridInstanceId: newGridId, bloc: likeGridInstanceManagerBloc),
     ),
     pageInfo: const LikesPageInfo(),
   );
@@ -101,11 +96,7 @@ NewPageDetails newLikesScreen(
 class LikesScreen extends StatefulWidget {
   final int gridInstanceId;
   final LikeGridInstanceManagerBloc bloc;
-  const LikesScreen({
-    required this.gridInstanceId,
-    required this.bloc,
-    super.key,
-  });
+  const LikesScreen({required this.gridInstanceId, required this.bloc, super.key});
 
   @override
   State<LikesScreen> createState() => _LikesScreenState();
@@ -117,9 +108,7 @@ class _LikesScreenState extends State<LikesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(context.strings.likes_screen_title),
-      ),
+      appBar: AppBar(title: Text(context.strings.likes_screen_title)),
       body: content(),
       floatingActionButton: refreshLikesFloatingActionButton(),
     );
@@ -136,7 +125,7 @@ class _LikesScreenState extends State<LikesScreen> {
         if (state.currentlyVisibleId == widget.gridInstanceId && state.visible) {
           return LikeViewContent(
             receivedLikesBloc: context.read<NewReceivedLikesAvailableBloc>(),
-            key: likeViewContentState
+            key: likeViewContentState,
           );
         } else if (state.currentlyVisibleId == widget.gridInstanceId && !state.visible) {
           final bloc = context.read<LikeGridInstanceManagerBloc>();
@@ -147,7 +136,7 @@ class _LikesScreenState extends State<LikesScreen> {
         } else {
           return const SizedBox.shrink();
         }
-      }
+      },
     );
   }
 
@@ -160,11 +149,7 @@ class _LikesScreenState extends State<LikesScreen> {
 
 class LikeViewContent extends StatefulWidget {
   final NewReceivedLikesAvailableBloc receivedLikesBloc;
-  const LikeViewContent({
-    required this.receivedLikesBloc,
-    super.key,
-  });
-
+  const LikeViewContent({required this.receivedLikesBloc, super.key});
 
   @override
   State<LikeViewContent> createState() => LikeViewContentState();
@@ -217,12 +202,11 @@ class LikeViewContentState extends State<LikeViewContent> {
   }
 
   void updateIsScrolled(bool isScrolled) {
-    BottomNavigationStateBlocInstance.getInstance()
-      .updateIsScrolled(
-        isScrolled,
-        BottomNavigationScreenId.likes,
-        (state) => state.isScrolledLikes,
-      );
+    BottomNavigationStateBlocInstance.getInstance().updateIsScrolled(
+      isScrolled,
+      BottomNavigationScreenId.likes,
+      (state) => state.isScrolledLikes,
+    );
   }
 
   void _handleProfileChange(ProfileChange event) {
@@ -232,13 +216,17 @@ class LikeViewContentState extends State<LikeViewContent> {
       case ProfileBlocked():
         _removeAccountIdFromList(event.profile);
       case ProfileUnblocked() ||
-        ConversationChanged() ||
-        ReloadMainProfileView() ||
-        ProfileFavoriteStatusChange(): {}
+          ConversationChanged() ||
+          ReloadMainProfileView() ||
+          ProfileFavoriteStatusChange():
+        {}
     }
   }
 
-  void updatePagingState(PagingState<int, ProfileGridProfileEntry> Function(PagingState<int, ProfileGridProfileEntry>) action) {
+  void updatePagingState(
+    PagingState<int, ProfileGridProfileEntry> Function(PagingState<int, ProfileGridProfileEntry>)
+    action,
+  ) {
     if (isDisposed || !context.mounted) {
       return;
     }
@@ -301,26 +289,31 @@ class LikeViewContentState extends State<LikeViewContent> {
           return true;
         },
         child: BlocListener<BottomNavigationStateBloc, BottomNavigationStateData>(
-          listenWhen: (previous, current) => previous.isTappedAgainLikes != current.isTappedAgainLikes,
+          listenWhen: (previous, current) =>
+              previous.isTappedAgainLikes != current.isTappedAgainLikes,
           listener: (context, state) {
             if (state.isTappedAgainLikes) {
-              context.read<BottomNavigationStateBloc>().add(SetIsTappedAgainValue(BottomNavigationScreenId.likes, false));
+              context.read<BottomNavigationStateBloc>().add(
+                SetIsTappedAgainValue(BottomNavigationScreenId.likes, false),
+              );
               _scrollController.bottomNavigationRelatedJumpToBeginningIfClientsConnected();
             }
           },
-          child: Column(children: [
-            Expanded(
-              child: BlocBuilder<UiSettingsBloc, UiSettingsData>(
-                buildWhen: (previous, current) => previous.gridSettings != current.gridSettings,
-                builder: (context, uiSettings) {
-                  return grid(context, uiSettings.gridSettings);
-                }
+          child: Column(
+            children: [
+              Expanded(
+                child: BlocBuilder<UiSettingsBloc, UiSettingsData>(
+                  buildWhen: (previous, current) => previous.gridSettings != current.gridSettings,
+                  builder: (context, uiSettings) {
+                    return grid(context, uiSettings.gridSettings);
+                  },
+                ),
               ),
-            ),
-            logicRefreshLikesCommandFromFloatingActionButton(),
-            logicResetLikesCountWhenLikesScreenOpens(),
-            logicAutomaticReload(),
-          ],),
+              logicRefreshLikesCommandFromFloatingActionButton(),
+              logicResetLikesCountWhenLikesScreenOpens(),
+              logicAutomaticReload(),
+            ],
+          ),
         ),
       ),
     );
@@ -384,7 +377,9 @@ class LikeViewContentState extends State<LikeViewContent> {
           const Padding(padding: EdgeInsets.all(8)),
           ElevatedButton(
             onPressed: () {
-              context.read<NewReceivedLikesAvailableBloc>().add(UpdateReceivedLikesCountNotViewed(0));
+              context.read<NewReceivedLikesAvailableBloc>().add(
+                UpdateReceivedLikesCountNotViewed(0),
+              );
               refreshProfileGrid();
             },
             child: Text(context.strings.generic_try_again),
@@ -397,7 +392,8 @@ class LikeViewContentState extends State<LikeViewContent> {
 
   Widget logicRefreshLikesCommandFromFloatingActionButton() {
     return BlocBuilder<NewReceivedLikesAvailableBloc, NewReceivedLikesAvailableData>(
-      buildWhen: (previous, current) => previous.triggerReceivedLikesRefresh != current.triggerReceivedLikesRefresh,
+      buildWhen: (previous, current) =>
+          previous.triggerReceivedLikesRefresh != current.triggerReceivedLikesRefresh,
       builder: (context, state) {
         if (state.triggerReceivedLikesRefresh) {
           final bloc = context.read<NewReceivedLikesAvailableBloc>();
@@ -406,7 +402,7 @@ class LikeViewContentState extends State<LikeViewContent> {
           refreshProfileGrid();
         }
         return const SizedBox.shrink();
-      }
+      },
     );
   }
 
@@ -419,38 +415,43 @@ class LikeViewContentState extends State<LikeViewContent> {
           bloc.add(UpdateReceivedLikesCountNotViewed(0));
         }
         return const SizedBox.shrink();
-      }
+      },
     );
   }
 
   Widget logicAutomaticReload() {
     return BlocBuilder<NewReceivedLikesAvailableBloc, NewReceivedLikesAvailableData>(
-      buildWhen: (previous, current) => previous.newReceivedLikesCount != current.newReceivedLikesCount,
+      buildWhen: (previous, current) =>
+          previous.newReceivedLikesCount != current.newReceivedLikesCount,
       builder: (context, state) {
         final currentTime = UtcDateTime.now();
         final previousTime = _previousAutomaticReloadTime;
-        final enoughTimeElapsedFromPreviousReload = previousTime == null ||
-          currentTime.difference(previousTime).inSeconds > 5;
+        final enoughTimeElapsedFromPreviousReload =
+            previousTime == null || currentTime.difference(previousTime).inSeconds > 5;
 
         if (!enoughTimeElapsedFromPreviousReload) {
           return const SizedBox.shrink();
         }
 
         final repositories = LoginRepository.getInstance().repositoriesOrNull;
-        if (state.newReceivedLikesCount == 0 && repositories != null && repositories.accountLoginHappened && !_onLoginReloadDoneOnce) {
+        if (state.newReceivedLikesCount == 0 &&
+            repositories != null &&
+            repositories.accountLoginHappened &&
+            !_onLoginReloadDoneOnce) {
           // This exits to get current received likes from the server after
           // login.
           automaticReloadLogic(state);
           _onLoginReloadDoneOnce = true;
           _previousAutomaticReloadTime = currentTime;
-        } else if (state.newReceivedLikesCount > 0 && !context.read<BottomNavigationStateBloc>().state.isScrolledLikes) {
+        } else if (state.newReceivedLikesCount > 0 &&
+            !context.read<BottomNavigationStateBloc>().state.isScrolledLikes) {
           automaticReloadLogic(state);
           _onLoginReloadDoneOnce = true;
           _previousAutomaticReloadTime = currentTime;
         }
 
         return const SizedBox.shrink();
-      }
+      },
     );
   }
 
@@ -472,10 +473,14 @@ class LikeViewContentState extends State<LikeViewContent> {
   }
 
   Future<void> refreshProfileGrid() async {
-    _gridLogic.refresh(() {
-      _mainProfilesViewIterator.reset(true);
-      updatePagingState((_) => PagingState());
-    }, _fetchPage, _addPage);
+    _gridLogic.refresh(
+      () {
+        _mainProfilesViewIterator.reset(true);
+        updatePagingState((_) => PagingState());
+      },
+      _fetchPage,
+      _addPage,
+    );
   }
 
   @override
@@ -503,6 +508,6 @@ Widget refreshLikesFloatingActionButton() {
       } else {
         return const SizedBox.shrink();
       }
-    }
+    },
   );
 }

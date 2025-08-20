@@ -6,7 +6,5 @@ part 'login.freezed.dart';
 @freezed
 class LoginBlocData with _$LoginBlocData {
   LoginBlocData._();
-  factory LoginBlocData({
-    @Default(false) bool logoutInProgress,
-  }) = _LoginBlocData;
+  factory LoginBlocData({@Default(false) bool logoutInProgress}) = _LoginBlocData;
 }

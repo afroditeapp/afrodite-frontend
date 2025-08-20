@@ -8,9 +8,7 @@ part 'news_count.freezed.dart';
 class NewsCountData with _$NewsCountData {
   const NewsCountData._();
 
-  factory NewsCountData({
-    @Default(0) int newsCount,
-  }) = _NewsCountData;
+  factory NewsCountData({@Default(0) int newsCount}) = _NewsCountData;
 
   int newsCountForUi(ClientFeaturesConfig clientFeatures) {
     if (clientFeatures.news != null) {

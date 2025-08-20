@@ -1,5 +1,3 @@
-
-
 import 'package:app/config.dart';
 import 'package:app/localizations.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +7,6 @@ import 'package:openapi/api.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:app/data/login_repository.dart';
 import 'package:app/utils/result.dart';
-
 
 class ServerSystemInfoPage extends StatefulWidget {
   const ServerSystemInfoPage({super.key});
@@ -58,16 +55,10 @@ class _ServerSystemInfoPageState extends State<ServerSystemInfoPage> {
   @override
   Widget build(BuildContext context) {
     List<Widget> actions = [];
-    actions.add(IconButton(
-      onPressed: _refreshData,
-      icon: const Icon(Icons.refresh),
-    ));
+    actions.add(IconButton(onPressed: _refreshData, icon: const Icon(Icons.refresh)));
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Server system info"),
-        actions: actions,
-      ),
+      appBar: AppBar(title: const Text("Server system info"), actions: actions),
       body: displayState(),
     );
   }
@@ -75,9 +66,7 @@ class _ServerSystemInfoPageState extends State<ServerSystemInfoPage> {
   Widget displayState() {
     final data = _currentData;
     if (isLoading) {
-      return const Center(
-        child: CircularProgressIndicator(),
-      );
+      return const Center(child: CircularProgressIndicator());
     } else if (_managers == null || data == null) {
       return Center(child: Text(context.strings.generic_error));
     } else {
@@ -106,21 +95,17 @@ class _ServerSystemInfoPageState extends State<ServerSystemInfoPage> {
 
           final cmdList = info.info;
           if (cmdList == null) {
-            widgets.add(Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                context.strings.generic_error,
-                textAlign: TextAlign.left,
+            widgets.add(
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(context.strings.generic_error, textAlign: TextAlign.left),
               ),
-            ));
+            );
           } else {
             widgets.addAll(displayCommandList(cmdList.info));
           }
 
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: widgets,
-          );
+          return Column(crossAxisAlignment: CrossAxisAlignment.start, children: widgets);
         },
       ),
     );
@@ -130,23 +115,22 @@ class _ServerSystemInfoPageState extends State<ServerSystemInfoPage> {
     List<Widget> list = [];
 
     for (var command in commands) {
-      list.add(Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Text(
-          command.name,
-          textAlign: TextAlign.left,
-          style: Theme.of(context).textTheme.headlineSmall,
+      list.add(
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            command.name,
+            textAlign: TextAlign.left,
+            style: Theme.of(context).textTheme.headlineSmall,
+          ),
         ),
-      ));
+      );
 
       Widget output = SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Text(
-            command.output,
-            style: GoogleFonts.robotoMono(),
-          ),
+          child: Text(command.output, style: GoogleFonts.robotoMono()),
         ),
       );
       list.add(output);

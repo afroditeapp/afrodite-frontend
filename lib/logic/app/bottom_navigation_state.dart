@@ -5,7 +5,6 @@ import "package:app/model/freezed/logic/main/bottom_navigation_state.dart";
 import "package:rxdart/rxdart.dart";
 import 'package:utils/utils.dart';
 
-
 abstract class BottomNavigationStateEvent {}
 
 class ChangeScreen extends BottomNavigationStateEvent {
@@ -13,20 +12,25 @@ class ChangeScreen extends BottomNavigationStateEvent {
   final bool resetIsScrolledValues;
   ChangeScreen(this.value, {this.resetIsScrolledValues = false});
 }
+
 class SetIsScrolledValue extends BottomNavigationStateEvent {
   final BottomNavigationScreenId screen;
   final bool value;
   SetIsScrolledValue(this.screen, this.value);
 }
+
 class SetIsTappedAgainValue extends BottomNavigationStateEvent {
   final BottomNavigationScreenId screen;
   final bool value;
   SetIsTappedAgainValue(this.screen, this.value);
 }
-class BottomNavigationStateBloc extends Bloc<BottomNavigationStateEvent, BottomNavigationStateData> {
+
+class BottomNavigationStateBloc
+    extends Bloc<BottomNavigationStateEvent, BottomNavigationStateData> {
   BottomNavigationStateBloc() : super(BottomNavigationStateData()) {
     on<ChangeScreen>((data, emit) {
-      final accountBackgroundDb = LoginRepository.getInstance().repositoriesOrNull?.accountBackgroundDb;
+      final accountBackgroundDb =
+          LoginRepository.getInstance().repositoriesOrNull?.accountBackgroundDb;
       if (data.value == BottomNavigationScreenId.likes && accountBackgroundDb != null) {
         NotificationLikeReceived.getInstance().resetReceivedLikesCount(accountBackgroundDb);
       }
@@ -34,25 +38,29 @@ class BottomNavigationStateBloc extends Bloc<BottomNavigationStateEvent, BottomN
       final bool? resetIsTappedAgainValue = data.value != state.screen ? false : null;
 
       if (data.resetIsScrolledValues) {
-        emit(state.copyWith(
-          screen: data.value,
-          isScrolledProfile: false,
-          isScrolledLikes: false,
-          isScrolledChats: false,
-          isScrolledSettings: false,
-          isTappedAgainProfile: resetIsTappedAgainValue ?? state.isTappedAgainProfile,
-          isTappedAgainLikes: resetIsTappedAgainValue ?? state.isTappedAgainLikes,
-          isTappedAgainChats: resetIsTappedAgainValue ?? state.isTappedAgainChats,
-          isTappedAgainSettings: resetIsTappedAgainValue ?? state.isTappedAgainSettings,
-        ));
+        emit(
+          state.copyWith(
+            screen: data.value,
+            isScrolledProfile: false,
+            isScrolledLikes: false,
+            isScrolledChats: false,
+            isScrolledSettings: false,
+            isTappedAgainProfile: resetIsTappedAgainValue ?? state.isTappedAgainProfile,
+            isTappedAgainLikes: resetIsTappedAgainValue ?? state.isTappedAgainLikes,
+            isTappedAgainChats: resetIsTappedAgainValue ?? state.isTappedAgainChats,
+            isTappedAgainSettings: resetIsTappedAgainValue ?? state.isTappedAgainSettings,
+          ),
+        );
       } else {
-        emit(state.copyWith(
-          screen: data.value,
-          isTappedAgainProfile: resetIsTappedAgainValue ?? state.isTappedAgainProfile,
-          isTappedAgainLikes: resetIsTappedAgainValue ?? state.isTappedAgainLikes,
-          isTappedAgainChats: resetIsTappedAgainValue ?? state.isTappedAgainChats,
-          isTappedAgainSettings: resetIsTappedAgainValue ?? state.isTappedAgainSettings,
-        ));
+        emit(
+          state.copyWith(
+            screen: data.value,
+            isTappedAgainProfile: resetIsTappedAgainValue ?? state.isTappedAgainProfile,
+            isTappedAgainLikes: resetIsTappedAgainValue ?? state.isTappedAgainLikes,
+            isTappedAgainChats: resetIsTappedAgainValue ?? state.isTappedAgainChats,
+            isTappedAgainSettings: resetIsTappedAgainValue ?? state.isTappedAgainSettings,
+          ),
+        );
       }
     });
     on<SetIsScrolledValue>((data, emit) {
@@ -108,11 +116,12 @@ class BottomNavigationStateBlocInstance extends AppSingletonNoInit {
     return _instance;
   }
 
-  final BehaviorSubject<BottomNavigationStateBloc> _latestBloc =
-    BehaviorSubject.seeded(BottomNavigationStateBloc());
+  final BehaviorSubject<BottomNavigationStateBloc> _latestBloc = BehaviorSubject.seeded(
+    BottomNavigationStateBloc(),
+  );
 
-  Stream<BottomNavigationStateData> get navigationStateStream => _latestBloc
-    .switchMap((b) => b.stream);
+  Stream<BottomNavigationStateData> get navigationStateStream =>
+      _latestBloc.switchMap((b) => b.stream);
 
   BottomNavigationStateData get navigationState => _latestBloc.value.state;
 

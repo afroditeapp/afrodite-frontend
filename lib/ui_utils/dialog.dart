@@ -32,14 +32,21 @@ void showAppAboutDialog(BuildContext context, ClientFeaturesConfigData? config) 
       applicationLegalese: "© 2024 Afrodite",
       children: [
         if (attributionText != null) SelectableText(attributionText),
-        if (attributionText != null && commitId != null) Padding(padding: EdgeInsetsGeometry.only(top: 8)),
+        if (attributionText != null && commitId != null)
+          Padding(padding: EdgeInsetsGeometry.only(top: 8)),
         if (commitId != null) SelectableText(R.strings.about_dialog_git_commit_id(commitId)),
       ],
     ),
   );
 }
 
-Future<bool?> showConfirmDialog(BuildContext context, String titleText, {String? details, bool yesNoActions = false, bool scrollable = false}) {
+Future<bool?> showConfirmDialog(
+  BuildContext context,
+  String titleText, {
+  String? details,
+  bool yesNoActions = false,
+  bool scrollable = false,
+}) {
   final String negativeActionText;
   final String positiveActionText;
   if (yesNoActions) {
@@ -63,27 +70,25 @@ Future<bool?> showConfirmDialog(BuildContext context, String titleText, {String?
           onPressed: () {
             MyNavigator.removePage(context, pageKey, false);
           },
-          child: Text(negativeActionText)
+          child: Text(negativeActionText),
         ),
         TextButton(
           onPressed: () {
             MyNavigator.removePage(context, pageKey, true);
           },
-          child: Text(positiveActionText)
-        )
+          child: Text(positiveActionText),
+        ),
       ],
-    )
+    ),
   );
 }
 
-Future<void> showConfirmDialogAdvanced(
-  {
-    required BuildContext context,
-    required String title,
-    String? details,
-    void Function()? onSuccess,
-  }
-) {
+Future<void> showConfirmDialogAdvanced({
+  required BuildContext context,
+  required String title,
+  String? details,
+  void Function()? onSuccess,
+}) {
   final pageKey = PageKey();
   return MyNavigator.showDialog<void>(
     context: context,
@@ -96,7 +101,7 @@ Future<void> showConfirmDialogAdvanced(
           onPressed: () {
             MyNavigator.removePage(context, pageKey);
           },
-          child: Text(context.strings.generic_cancel)
+          child: Text(context.strings.generic_cancel),
         ),
         TextButton(
           onPressed: () {
@@ -105,35 +110,36 @@ Future<void> showConfirmDialogAdvanced(
               onSuccess();
             }
           },
-          child: Text(context.strings.generic_ok)
-        )
+          child: Text(context.strings.generic_ok),
+        ),
       ],
-    )
+    ),
   );
 }
 
-Future<bool?> showInfoDialog(BuildContext context, String text, {PageKey? existingPageToBeRemoved, bool scrollable = false}) {
+Future<bool?> showInfoDialog(
+  BuildContext context,
+  String text, {
+  PageKey? existingPageToBeRemoved,
+  bool scrollable = false,
+}) {
   final pageKey = PageKey();
 
   dialogBuilder(BuildContext context) => AlertDialog(
-      content: SelectableText(text),
-      actions: <Widget>[
-        TextButton(
-          onPressed: () {
-            MyNavigator.removePage(context, pageKey, false);
-          },
-          child: Text(context.strings.generic_close)
-        ),
-      ],
-      scrollable: scrollable,
-    );
+    content: SelectableText(text),
+    actions: <Widget>[
+      TextButton(
+        onPressed: () {
+          MyNavigator.removePage(context, pageKey, false);
+        },
+        child: Text(context.strings.generic_close),
+      ),
+    ],
+    scrollable: scrollable,
+  );
 
   if (existingPageToBeRemoved == null) {
-    return MyNavigator.showDialog<bool>(
-      context: context,
-      pageKey: pageKey,
-      builder: dialogBuilder,
-    );
+    return MyNavigator.showDialog<bool>(context: context, pageKey: pageKey, builder: dialogBuilder);
   } else {
     return MyNavigator.removeAndShowDialog<bool>(
       context: context,
@@ -146,12 +152,10 @@ Future<bool?> showInfoDialog(BuildContext context, String text, {PageKey? existi
 
 /// When dismiss action runs the dialog is already dismissed.
 Future<void> showLoadingDialogWithAutoDismiss<B extends StateStreamable<S>, S>(
-  BuildContext context,
-  {
-    required bool Function(S) dialogVisibilityGetter,
-    required PageKey removeAlsoThisPage,
-  }
-) async {
+  BuildContext context, {
+  required bool Function(S) dialogVisibilityGetter,
+  required PageKey removeAlsoThisPage,
+}) async {
   final pageKey = PageKey();
   return await MyNavigator.showDialog<void>(
     context: context,
@@ -164,18 +168,16 @@ Future<void> showLoadingDialogWithAutoDismiss<B extends StateStreamable<S>, S>(
         dialogVisibilityGetter: dialogVisibilityGetter,
         removeAlsoThisPage: removeAlsoThisPage,
       );
-    }
+    },
   );
 }
 
 Widget _loadingDialogContent<B extends StateStreamable<S>, S>(
-  BuildContext context,
-  {
-    required PageKey pageKey,
-    required bool Function(S) dialogVisibilityGetter,
-    required PageKey removeAlsoThisPage,
-  }
-) {
+  BuildContext context, {
+  required PageKey pageKey,
+  required bool Function(S) dialogVisibilityGetter,
+  required PageKey removeAlsoThisPage,
+}) {
   return PopScope(
     canPop: false,
     child: AlertDialog(
@@ -184,13 +186,13 @@ Widget _loadingDialogContent<B extends StateStreamable<S>, S>(
         children: [
           BlocBuilder<B, S>(
             buildWhen: (previous, current) =>
-              dialogVisibilityGetter(previous) != dialogVisibilityGetter(current),
+                dialogVisibilityGetter(previous) != dialogVisibilityGetter(current),
             builder: (context, state) {
               if (!dialogVisibilityGetter(state)) {
                 MyNavigator.removeMultiplePages(context, [removeAlsoThisPage, pageKey]);
               }
               return commonLoadingDialogIndicator();
-            }
+            },
           ),
         ],
       ),

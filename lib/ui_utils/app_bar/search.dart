@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 
 class AppBarSearchController {
@@ -22,7 +20,7 @@ class AppBarWithSearch extends StatefulWidget implements PreferredSizeWidget {
     this.title,
     this.searchHintText,
     this.actions,
-    super.key
+    super.key,
   });
 
   @override
@@ -57,9 +55,7 @@ class _AppBarWithSearchState extends State<AppBarWithSearch> {
         title = TextField(
           controller: widget.controller.searchController,
           autofocus: true,
-          decoration: InputDecoration(
-            hintText: widget.searchHintText,
-          ),
+          decoration: InputDecoration(hintText: widget.searchHintText),
           onChanged: (value) {
             widget.controller.onChanged?.call();
           },
@@ -68,15 +64,10 @@ class _AppBarWithSearchState extends State<AppBarWithSearch> {
         title = widget.title;
       }
     } else {
-      actions = [
-        ...?widget.actions,
-      ];
+      actions = [...?widget.actions];
       title = widget.title;
     }
 
-    return AppBar(
-      title: title,
-      actions: actions,
-    );
+    return AppBar(title: title, actions: actions);
   }
 }

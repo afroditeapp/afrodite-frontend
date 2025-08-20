@@ -1,4 +1,3 @@
-
 import 'dart:async';
 
 import 'package:database_provider/database_provider.dart';
@@ -64,7 +63,10 @@ class BackgroundDatabaseManager extends AppSingleton {
     });
   }
 
-  Stream<T> commonStreamOrDefault<T extends Object>(Stream<T?> Function(CommonBackgroundDatabaseRead) mapper, T defaultValue) async* {
+  Stream<T> commonStreamOrDefault<T extends Object>(
+    Stream<T?> Function(CommonBackgroundDatabaseRead) mapper,
+    T defaultValue,
+  ) async* {
     final stream = commonStream(mapper);
     yield* stream.map((event) {
       if (event == null) {
@@ -80,12 +82,17 @@ class BackgroundDatabaseManager extends AppSingleton {
     return await stream.first;
   }
 
-  Future<T> commonStreamSingleOrDefault<T extends Object>(Stream<T?> Function(CommonBackgroundDatabaseRead) mapper, T defaultValue) async {
+  Future<T> commonStreamSingleOrDefault<T extends Object>(
+    Stream<T?> Function(CommonBackgroundDatabaseRead) mapper,
+    T defaultValue,
+  ) async {
     final first = await commonStreamSingle(mapper);
     return first ?? defaultValue;
   }
 
-  Future<Result<(), DatabaseError>> commonAction(Future<void> Function(CommonBackgroundDatabaseWrite) action) async {
+  Future<Result<(), DatabaseError>> commonAction(
+    Future<void> Function(CommonBackgroundDatabaseWrite) action,
+  ) async {
     try {
       await action(commonDatabase.write);
       return const Ok(());
@@ -122,10 +129,12 @@ class BackgroundDatabaseManager extends AppSingleton {
   }
 
   Future<Result<(), AppError>> setAccountId(AccountId accountId) =>
-    commonAction((db) => db.loginSession.updateAccountIdUseOnlyFromDatabaseManager(accountId))
-      .andThen((_) =>
-        getAccountBackgroundDatabaseManager(accountId)
-          .accountAction((db) => db.loginSession.setAccountIdIfNull(accountId))
+      commonAction(
+        (db) => db.loginSession.updateAccountIdUseOnlyFromDatabaseManager(accountId),
+      ).andThen(
+        (_) => getAccountBackgroundDatabaseManager(
+          accountId,
+        ).accountAction((db) => db.loginSession.setAccountIdIfNull(accountId)),
       );
 
   // NOTE: This is not used as there is no good location for calling this

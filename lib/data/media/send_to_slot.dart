@@ -1,5 +1,3 @@
-
-
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
@@ -15,18 +13,24 @@ import 'package:rxdart/rxdart.dart';
 var log = Logger("SendToSlotTask");
 
 sealed class SendToSlotEvent {}
+
 class Uploading extends SendToSlotEvent {}
+
 class UploadCompleted extends SendToSlotEvent {}
+
 class InProcessingQueue extends SendToSlotEvent {
   final int queueNumber;
   InProcessingQueue(this.queueNumber);
 }
+
 class Processing extends SendToSlotEvent {}
+
 class ProcessingCompleted extends SendToSlotEvent {
   final ContentId contentId;
   final bool faceDetected;
   ProcessingCompleted(this.contentId, this.faceDetected);
 }
+
 class SendToSlotError extends SendToSlotEvent {
   bool nsfwDetected;
   SendToSlotError({this.nsfwDetected = false});
@@ -34,7 +38,6 @@ class SendToSlotError extends SendToSlotEvent {
 
 /// Asynchronous system for sending image to a slot
 class SendImageToSlotTask {
-
   final ApiManager api;
   final token = CancellationToken();
   final uploadDone = BehaviorSubject<ContentProcessingId?>.seeded(null);
@@ -42,7 +45,11 @@ class SendImageToSlotTask {
   final AccountRepository account;
   SendImageToSlotTask(this.account, this.api);
 
-  Stream<SendToSlotEvent> sendImageToSlot(Uint8List imgBytes, int slot, {bool secureCapture = false}) {
+  Stream<SendToSlotEvent> sendImageToSlot(
+    Uint8List imgBytes,
+    int slot, {
+    bool secureCapture = false,
+  }) {
     return Rx.merge([
       _uploadImageToSlot(imgBytes, slot, secureCapture: secureCapture),
       _trackEvents(slot),
@@ -50,10 +57,16 @@ class SendImageToSlotTask {
   }
 
   /// Only uploading part of the sendImageToSlot method
-  Stream<SendToSlotEvent> _uploadImageToSlot(Uint8List imgBytes, int slot, {bool secureCapture = false}) async* {
+  Stream<SendToSlotEvent> _uploadImageToSlot(
+    Uint8List imgBytes,
+    int slot, {
+    bool secureCapture = false,
+  }) async* {
     yield Uploading();
     final MultipartFile data = MultipartFile.fromBytes("", imgBytes);
-    final processingId = await api.media((api) => api.putContentToContentSlot(slot, secureCapture, MediaContentType.jpegImage, data));
+    final processingId = await api.media(
+      (api) => api.putContentToContentSlot(slot, secureCapture, MediaContentType.jpegImage, data),
+    );
     switch (processingId) {
       case Ok(:final v):
         uploadDone.add(v);
@@ -91,19 +104,24 @@ class SendImageToSlotTask {
             }
           } else {
             switch (event) {
-              case Id(:final id): {
-                final latestIndex = eventHistory.lastIndexWhere((element) => element.id.id == id.id);
-                if (latestIndex != -1) {
-                  converted = _convertState(eventHistory[latestIndex].newState);
+              case Id(:final id):
+                {
+                  final latestIndex = eventHistory.lastIndexWhere(
+                    (element) => element.id.id == id.id,
+                  );
+                  if (latestIndex != -1) {
+                    converted = _convertState(eventHistory[latestIndex].newState);
+                  }
+                  receivedId = id;
                 }
-                receivedId = id;
-              }
-              case Event(:final value): {
-                eventHistory.add(value);
-              }
-              case Quit(): {
-                return;
-              }
+              case Event(:final value):
+                {
+                  eventHistory.add(value);
+                }
+              case Quit():
+                {
+                  return;
+                }
             }
           }
 
@@ -134,8 +152,7 @@ class SendImageToSlotTask {
   }
 
   Stream<IdOrEvent> _eventsAndContentProcessingIdWithTimeout() {
-    final e = account
-        .contentProcessingStateChanges;
+    final e = account.contentProcessingStateChanges;
     return Rx.merge([
       e.map((event) => Event(event)),
       uploadDone.mapNotNull((v) => v).map((id) => Id(id)),
@@ -155,32 +172,35 @@ class SendImageToSlotTask {
 
   SendToSlotEvent _convertState(ContentProcessingState state) {
     switch (state.state) {
-      case ContentProcessingStateType.processing: {
-        return Processing();
-      }
-      case ContentProcessingStateType.inQueue: {
-        final queueNumber = state.waitQueuePosition;
-        if (queueNumber != null) {
-          return InProcessingQueue(queueNumber);
-        } else {
-          return InProcessingQueue(0);
+      case ContentProcessingStateType.processing:
+        {
+          return Processing();
         }
-      }
+      case ContentProcessingStateType.inQueue:
+        {
+          final queueNumber = state.waitQueuePosition;
+          if (queueNumber != null) {
+            return InProcessingQueue(queueNumber);
+          } else {
+            return InProcessingQueue(0);
+          }
+        }
       case ContentProcessingStateType.nsfwDetected:
         return SendToSlotError(nsfwDetected: true);
       case ContentProcessingStateType.failed:
         return SendToSlotError();
       case ContentProcessingStateType.empty:
         return SendToSlotError();
-      case ContentProcessingStateType.completed: {
-        final contentId = state.cid;
-        final faceDetected = state.fd;
-        if (contentId == null || faceDetected == null) {
-          return SendToSlotError();
-        } else {
-          return ProcessingCompleted(contentId, faceDetected);
+      case ContentProcessingStateType.completed:
+        {
+          final contentId = state.cid;
+          final faceDetected = state.fd;
+          if (contentId == null || faceDetected == null) {
+            return SendToSlotError();
+          } else {
+            return ProcessingCompleted(contentId, faceDetected);
+          }
         }
-      }
     }
 
     return SendToSlotError();
@@ -193,8 +213,10 @@ class Id extends IdOrEvent {
   final ContentProcessingId id;
   Id(this.id);
 }
+
 class Event extends IdOrEvent {
   final ContentProcessingStateChanged value;
   Event(this.value);
 }
+
 class Quit extends IdOrEvent {}

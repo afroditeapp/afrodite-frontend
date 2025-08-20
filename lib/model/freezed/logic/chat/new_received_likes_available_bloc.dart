@@ -11,6 +11,7 @@ class NewReceivedLikesAvailableData with _$NewReceivedLikesAvailableData {
 
   factory NewReceivedLikesAvailableData({
     @Default(0) int newReceivedLikesCount,
+
     /// The debounced value exists to hide new received likes badge blink when
     /// - Likes bottom navigation tab is open,
     /// - scroll position is on top and

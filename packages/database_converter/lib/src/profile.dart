@@ -29,7 +29,6 @@ class AttributeHashConverter extends TypeConverter<AttributeHash, String> {
   }
 }
 
-
 class ProfileIteratorSessionIdConverter extends TypeConverter<ProfileIteratorSessionId, int> {
   const ProfileIteratorSessionIdConverter();
 
@@ -44,7 +43,8 @@ class ProfileIteratorSessionIdConverter extends TypeConverter<ProfileIteratorSes
   }
 }
 
-class AutomaticProfileSearchIteratorSessionIdConverter extends TypeConverter<AutomaticProfileSearchIteratorSessionId, int> {
+class AutomaticProfileSearchIteratorSessionIdConverter
+    extends TypeConverter<AutomaticProfileSearchIteratorSessionId, int> {
   const AutomaticProfileSearchIteratorSessionIdConverter();
 
   @override
@@ -58,7 +58,8 @@ class AutomaticProfileSearchIteratorSessionIdConverter extends TypeConverter<Aut
   }
 }
 
-class ProfileStringModerationRejectedReasonCategoryConverter extends TypeConverter<ProfileStringModerationRejectedReasonCategory, int> {
+class ProfileStringModerationRejectedReasonCategoryConverter
+    extends TypeConverter<ProfileStringModerationRejectedReasonCategory, int> {
   const ProfileStringModerationRejectedReasonCategoryConverter();
 
   @override
@@ -72,7 +73,8 @@ class ProfileStringModerationRejectedReasonCategoryConverter extends TypeConvert
   }
 }
 
-class ProfileTextModerationRejectedReasonDetailsConverter extends TypeConverter<ProfileStringModerationRejectedReasonDetails, String> {
+class ProfileTextModerationRejectedReasonDetailsConverter
+    extends TypeConverter<ProfileStringModerationRejectedReasonDetails, String> {
   const ProfileTextModerationRejectedReasonDetailsConverter();
 
   @override

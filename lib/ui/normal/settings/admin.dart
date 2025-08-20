@@ -1,4 +1,3 @@
-
 import 'package:app/ui/normal/settings/admin/edit_admin_notifications.dart';
 import 'package:app/ui/normal/settings/admin/moderator_tasks.dart';
 import 'package:app/ui/normal/settings/admin/open_account_admin_settings.dart';
@@ -31,70 +30,107 @@ class AdminSettingsPage extends StatelessWidget {
       builder: (context, state) {
         List<Setting> settings = settingsList(context, AdminSettingsPermissions(state.permissions));
         return SingleChildScrollView(
-          child: Column(
-            children: [
-              ...settings.map((setting) => setting.toListTile()),
-            ],
-          ),
+          child: Column(children: [...settings.map((setting) => setting.toListTile())]),
         );
-      }
+      },
     );
   }
 
   List<Setting> settingsList(BuildContext context, AdminSettingsPermissions permissions) {
     List<Setting> settings = [];
 
-    if (
-      permissions.adminModerateMediaContent ||
-      permissions.adminModerateProfileNames ||
-      permissions.adminModerateProfileTexts ||
-      permissions.adminProcessReports
-    ) {
-      settings.add(Setting.createSetting(Icons.task, "Moderator tasks (show todo list)", () =>
-        MyNavigator.push(context, const MaterialPage<void>(child: ModeratorTasksScreen()))
-      ));
-      settings.add(Setting.createSetting(Icons.task, "Moderator tasks (show all)", () =>
-        MyNavigator.push(context, const MaterialPage<void>(child: ModeratorTasksScreen(showAll: true)))
-      ));
+    if (permissions.adminModerateMediaContent ||
+        permissions.adminModerateProfileNames ||
+        permissions.adminModerateProfileTexts ||
+        permissions.adminProcessReports) {
+      settings.add(
+        Setting.createSetting(
+          Icons.task,
+          "Moderator tasks (show todo list)",
+          () => MyNavigator.push(context, const MaterialPage<void>(child: ModeratorTasksScreen())),
+        ),
+      );
+      settings.add(
+        Setting.createSetting(
+          Icons.task,
+          "Moderator tasks (show all)",
+          () => MyNavigator.push(
+            context,
+            const MaterialPage<void>(child: ModeratorTasksScreen(showAll: true)),
+          ),
+        ),
+      );
     }
     if (permissions.adminServerMaintenanceSaveBackendConfig ||
-      permissions.adminServerMaintenanceViewBackendConfig ||
-      permissions.adminServerMaintenanceViewInfo||
-      permissions.adminServerMaintenanceRebootBackend ||
-      permissions.adminServerMaintenanceResetData ||
-      permissions.adminServerMaintenanceUpdateSoftware ||
-      permissions.adminServerMaintenanceEditNotification
-      ) {
+        permissions.adminServerMaintenanceViewBackendConfig ||
+        permissions.adminServerMaintenanceViewInfo ||
+        permissions.adminServerMaintenanceRebootBackend ||
+        permissions.adminServerMaintenanceResetData ||
+        permissions.adminServerMaintenanceUpdateSoftware ||
+        permissions.adminServerMaintenanceEditNotification) {
       const title = "Server";
-      settings.add(Setting.createSetting(Icons.settings, title, () =>
-        MyNavigator.push(context, const MaterialPage<void>(child: ServerScreen(title: title)))
-      ));
+      settings.add(
+        Setting.createSetting(
+          Icons.settings,
+          title,
+          () => MyNavigator.push(
+            context,
+            const MaterialPage<void>(child: ServerScreen(title: title)),
+          ),
+        ),
+      );
     }
     if (permissions.adminServerMaintenanceViewInfo || permissions.adminProfileStatistics) {
       const title = "Metrics";
-      settings.add(Setting.createSetting(Icons.query_stats, title, () =>
-        MyNavigator.push(context, const MaterialPage<void>(child: MetricsScreen(title: title)))
-      ));
+      settings.add(
+        Setting.createSetting(
+          Icons.query_stats,
+          title,
+          () => MyNavigator.push(
+            context,
+            const MaterialPage<void>(child: MetricsScreen(title: title)),
+          ),
+        ),
+      );
     }
     if (permissions.adminFindAccountByEmail) {
-      settings.add(Setting.createSetting(Icons.account_box, "Open account admin tools", () =>
-        MyNavigator.push(context, const MaterialPage<void>(child: OpenAccountAdminSettings()),)
-      ));
+      settings.add(
+        Setting.createSetting(
+          Icons.account_box,
+          "Open account admin tools",
+          () => MyNavigator.push(
+            context,
+            const MaterialPage<void>(child: OpenAccountAdminSettings()),
+          ),
+        ),
+      );
     }
     if (permissions.adminViewPermissions) {
-      settings.add(Setting.createSetting(Icons.admin_panel_settings, "View admins", () =>
-        MyNavigator.push(context, const MaterialPage<void>(child: ViewAdminsScreen()),)
-      ));
+      settings.add(
+        Setting.createSetting(
+          Icons.admin_panel_settings,
+          "View admins",
+          () => MyNavigator.push(context, const MaterialPage<void>(child: ViewAdminsScreen())),
+        ),
+      );
     }
     if (permissions.adminViewAllProfiles) {
-      settings.add(Setting.createSetting(Icons.group, "View accounts", () =>
-        MyNavigator.push(context, const MaterialPage<void>(child: ViewAccountsScreen()),)
-      ));
+      settings.add(
+        Setting.createSetting(
+          Icons.group,
+          "View accounts",
+          () => MyNavigator.push(context, const MaterialPage<void>(child: ViewAccountsScreen())),
+        ),
+      );
     }
     if (permissions.adminSubscribeAdminNotifications) {
-      settings.add(Setting.createSetting(Icons.notifications, ADMIN_NOTIFICATIONS_TITLE, () =>
-        openAdminNotificationsScreen(context),
-      ));
+      settings.add(
+        Setting.createSetting(
+          Icons.notifications,
+          ADMIN_NOTIFICATIONS_TITLE,
+          () => openAdminNotificationsScreen(context),
+        ),
+      );
     }
     return settings;
   }
@@ -109,12 +145,16 @@ class AdminSettingsPermissions {
   bool get adminViewPermissions => _permissions.adminViewPermissions;
   bool get adminViewAllProfiles => _permissions.adminViewAllProfiles;
   bool get adminServerMaintenanceRebootBackend => _permissions.adminServerMaintenanceRestartBackend;
-  bool get adminServerMaintenanceSaveBackendConfig => _permissions.adminServerMaintenanceSaveBackendConfig;
-  bool get adminServerMaintenanceViewBackendConfig => _permissions.adminServerMaintenanceViewBackendConfig;
+  bool get adminServerMaintenanceSaveBackendConfig =>
+      _permissions.adminServerMaintenanceSaveBackendConfig;
+  bool get adminServerMaintenanceViewBackendConfig =>
+      _permissions.adminServerMaintenanceViewBackendConfig;
   bool get adminServerMaintenanceViewInfo => _permissions.adminServerMaintenanceViewInfo;
-  bool get adminServerMaintenanceUpdateSoftware => _permissions.adminServerMaintenanceUpdateSoftware;
+  bool get adminServerMaintenanceUpdateSoftware =>
+      _permissions.adminServerMaintenanceUpdateSoftware;
   bool get adminServerMaintenanceResetData => _permissions.adminServerMaintenanceResetData;
-  bool get adminServerMaintenanceEditNotification => _permissions.adminServerMaintenanceEditNotification;
+  bool get adminServerMaintenanceEditNotification =>
+      _permissions.adminServerMaintenanceEditNotification;
   bool get adminProfileStatistics => _permissions.adminProfileStatistics;
   bool get adminFindAccountByEmail => _permissions.adminFindAccountByEmail;
   bool get adminSubscribeAdminNotifications => _permissions.adminSubscribeAdminNotifications;
@@ -124,20 +164,20 @@ class AdminSettingsPermissions {
 
   bool somePermissionEnabled() {
     return adminModerateMediaContent ||
-      adminModerateProfileTexts ||
-      adminModerateProfileNames ||
-      adminProcessReports ||
-      adminViewPermissions ||
-      adminViewAllProfiles ||
-      adminServerMaintenanceRebootBackend ||
-      adminServerMaintenanceSaveBackendConfig ||
-      adminServerMaintenanceViewBackendConfig ||
-      adminServerMaintenanceViewInfo ||
-      adminServerMaintenanceUpdateSoftware ||
-      adminServerMaintenanceResetData ||
-      adminServerMaintenanceEditNotification ||
-      adminProfileStatistics ||
-      adminFindAccountByEmail ||
-      adminSubscribeAdminNotifications;
+        adminModerateProfileTexts ||
+        adminModerateProfileNames ||
+        adminProcessReports ||
+        adminViewPermissions ||
+        adminViewAllProfiles ||
+        adminServerMaintenanceRebootBackend ||
+        adminServerMaintenanceSaveBackendConfig ||
+        adminServerMaintenanceViewBackendConfig ||
+        adminServerMaintenanceViewInfo ||
+        adminServerMaintenanceUpdateSoftware ||
+        adminServerMaintenanceResetData ||
+        adminServerMaintenanceEditNotification ||
+        adminProfileStatistics ||
+        adminFindAccountByEmail ||
+        adminSubscribeAdminNotifications;
   }
 }

@@ -1,4 +1,3 @@
-
 import 'package:app/localizations.dart';
 import 'package:app/ui_utils/profile_thumbnail_image.dart';
 import 'package:app/ui_utils/snack_bar.dart';
@@ -12,6 +11,7 @@ import 'package:app/ui_utils/crop_image_screen.dart';
 class ProfileThumbnailImageOrError extends StatelessWidget {
   final ProfileEntry entry;
   final CropArea cropArea;
+
   /// 1.0 means square image, 0.0 means original aspect ratio
   final double squareFactor;
   final double? width;
@@ -29,8 +29,7 @@ class ProfileThumbnailImageOrError extends StatelessWidget {
     this.borderRadius = const BorderRadius.all(Radius.circular(PROFILE_PICTURE_BORDER_RADIUS)),
     required this.cacheSize,
     super.key,
-  }) :
-    cropArea = entry.primaryImageCropArea();
+  }) : cropArea = entry.primaryImageCropArea();
 
   @override
   Widget build(BuildContext context) {
@@ -63,10 +62,7 @@ class ProfileThumbnailImageOrError extends StatelessWidget {
         width: width,
         height: height,
         child: Center(
-          child: IconButton(
-            icon: const Icon(Icons.warning),
-            onPressed: () => showSnackBar(text),
-          ),
+          child: IconButton(icon: const Icon(Icons.warning), onPressed: () => showSnackBar(text)),
         ),
       ),
     );

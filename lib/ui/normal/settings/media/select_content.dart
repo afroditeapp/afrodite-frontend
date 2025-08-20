@@ -1,5 +1,3 @@
-
-
 import 'package:app/data/image_cache.dart';
 import 'package:app/data/login_repository.dart';
 import 'package:app/logic/media/image_processing.dart';
@@ -43,7 +41,6 @@ class SelectContentPage extends StatefulWidget {
 }
 
 class _SelectContentPageState extends State<SelectContentPage> {
-
   final cameraScreenOpener = CameraScreenOpener();
 
   @override
@@ -73,7 +70,7 @@ class _SelectContentPageState extends State<SelectContentPage> {
                     state.showAddNewContent,
                   );
                 }
-              }
+              },
             ),
           ),
 
@@ -89,7 +86,7 @@ class _SelectContentPageState extends State<SelectContentPage> {
             },
           ),
         ],
-      )
+      ),
     );
   }
 
@@ -113,9 +110,9 @@ class _SelectContentPageState extends State<SelectContentPage> {
               } else {
                 openSelectPictureDialog(context, serverSlotIndex: 0);
               }
-            }
-          )
-        )
+            },
+          ),
+        ),
       );
     }
 
@@ -127,14 +124,17 @@ class _SelectContentPageState extends State<SelectContentPage> {
     }
 
     gridWidgets.addAll(
-      iterContent.map((e) => buildAvailableImg(
-        context,
-        accountId,
-        e.cid,
-        e.fd,
-        onTap: () => MyNavigator.pop(context, AccountImageId(accountId, e.cid, e.fd, e.accepted())),
-        identifyFaceImages: widget.identifyFaceImages,
-      ))
+      iterContent.map(
+        (e) => buildAvailableImg(
+          context,
+          accountId,
+          e.cid,
+          e.fd,
+          onTap: () =>
+              MyNavigator.pop(context, AccountImageId(accountId, e.cid, e.fd, e.accepted())),
+          identifyFaceImages: widget.identifyFaceImages,
+        ),
+      ),
     );
 
     final grid = GridView.count(
@@ -158,26 +158,27 @@ class _SelectContentPageState extends State<SelectContentPage> {
     final List<Widget> widgets = [];
 
     widgets.add(const Padding(padding: EdgeInsets.only(top: COMMON_SCREEN_EDGE_PADDING)));
-    widgets.add(hPad(Text(context.strings.select_content_screen_count(visibleContentCount.toString(), visibleMaxContent.toString()))));
+    widgets.add(
+      hPad(
+        Text(
+          context.strings.select_content_screen_count(
+            visibleContentCount.toString(),
+            visibleMaxContent.toString(),
+          ),
+        ),
+      ),
+    );
     widgets.add(const Padding(padding: EdgeInsets.only(top: COMMON_SCREEN_EDGE_PADDING)));
     widgets.add(grid);
     widgets.add(const Padding(padding: EdgeInsets.only(top: COMMON_SCREEN_EDGE_PADDING)));
 
     return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: widgets,
-      ),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: widgets),
     );
   }
 }
 
-Widget buildAddNewButton(
-  BuildContext context,
-  {
-    required void Function() onTap,
-  }
-) {
+Widget buildAddNewButton(BuildContext context, {required void Function() onTap}) {
   return Center(
     child: SizedBox(
       width: SELECT_CONTENT_IMAGE_WIDTH,
@@ -207,12 +208,10 @@ Widget buildAvailableImg(
   BuildContext context,
   AccountId accountId,
   ContentId contentId,
-  bool faceImage,
-  {
-    required void Function() onTap,
-    required bool identifyFaceImages,
-  }
-) {
+  bool faceImage, {
+  required void Function() onTap,
+  required bool identifyFaceImages,
+}) {
   final img = Material(
     child: InkWell(
       onTap: onTap,

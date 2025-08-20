@@ -1,5 +1,3 @@
-
-
 import 'package:app/localizations.dart';
 import 'package:app/ui_utils/padding.dart';
 import 'package:app/utils/api.dart';
@@ -19,7 +17,8 @@ class EditMaintenanceNotificationScreen extends StatefulWidget {
   const EditMaintenanceNotificationScreen({super.key});
 
   @override
-  State<EditMaintenanceNotificationScreen> createState() => _EditMaintenanceNotificationScreenState();
+  State<EditMaintenanceNotificationScreen> createState() =>
+      _EditMaintenanceNotificationScreenState();
 }
 
 class _EditMaintenanceNotificationScreenState extends State<EditMaintenanceNotificationScreen> {
@@ -48,25 +47,17 @@ class _EditMaintenanceNotificationScreenState extends State<EditMaintenanceNotif
   @override
   Widget build(BuildContext context) {
     List<Widget> actions = [];
-    actions.add(IconButton(
-      onPressed: _refreshData,
-      icon: const Icon(Icons.refresh)
-    ));
+    actions.add(IconButton(onPressed: _refreshData, icon: const Icon(Icons.refresh)));
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Maintenance notification"),
-        actions: actions,
-      ),
+      appBar: AppBar(title: const Text("Maintenance notification"), actions: actions),
       body: displayState(context),
     );
   }
 
   Widget displayState(BuildContext context) {
     if (isLoading) {
-      return const Center(
-        child: CircularProgressIndicator(),
-      );
+      return const Center(child: CircularProgressIndicator());
     } else if (_currentConfig == null) {
       return Center(child: Text(context.strings.generic_error));
     } else {
@@ -99,7 +90,7 @@ class _EditMaintenanceNotificationScreenState extends State<EditMaintenanceNotif
             children: widgets,
           ),
         );
-      }
+      },
     );
   }
 
@@ -107,7 +98,11 @@ class _EditMaintenanceNotificationScreenState extends State<EditMaintenanceNotif
     final dateButton = ElevatedButton(
       onPressed: () async {
         final last = DateTime.now().add(const Duration(days: 30));
-        final selected = await showDatePicker(context: context, firstDate: DateTime.now(), lastDate: last);
+        final selected = await showDatePicker(
+          context: context,
+          firstDate: DateTime.now(),
+          lastDate: last,
+        );
         if (!context.mounted) {
           return;
         }
@@ -121,17 +116,19 @@ class _EditMaintenanceNotificationScreenState extends State<EditMaintenanceNotif
     );
 
     final timeButton = ElevatedButton(
-      onPressed: _selectedDate == null ? null : () async {
-        final selected = await showTimePicker(context: context, initialTime: TimeOfDay.now());
-        if (!context.mounted) {
-          return;
-        }
-        setState(() {
-          if (selected != null) {
-            _selectedTime = selected;
-          }
-        });
-      },
+      onPressed: _selectedDate == null
+          ? null
+          : () async {
+              final selected = await showTimePicker(context: context, initialTime: TimeOfDay.now());
+              if (!context.mounted) {
+                return;
+              }
+              setState(() {
+                if (selected != null) {
+                  _selectedTime = selected;
+                }
+              });
+            },
       child: const Text("Select time"),
     );
 
@@ -167,24 +164,26 @@ class _EditMaintenanceNotificationScreenState extends State<EditMaintenanceNotif
 
     final saveButton = ElevatedButton(
       onPressed: () {
-        showConfirmDialog(context, "Save selected time?", details: "New time: $currentDateSelectionText")
-          .then((value) async {
-            if (value == true) {
-              final result = await api
-                .commonAdminAction(
-                  (api) => api.postEditMaintenanceNotification(maintenanceStatus)
-                );
-              switch (result) {
-                case Ok():
-                  showSnackBar("Saved!");
-                case Err():
-                  showSnackBar("Save failed!");
-              }
+        showConfirmDialog(
+          context,
+          "Save selected time?",
+          details: "New time: $currentDateSelectionText",
+        ).then((value) async {
+          if (value == true) {
+            final result = await api.commonAdminAction(
+              (api) => api.postEditMaintenanceNotification(maintenanceStatus),
+            );
+            switch (result) {
+              case Ok():
+                showSnackBar("Saved!");
+              case Err():
+                showSnackBar("Save failed!");
             }
-            if (context.mounted) {
-              await _refreshData();
-            }
-          });
+          }
+          if (context.mounted) {
+            await _refreshData();
+          }
+        });
       },
       child: const Text("Save"),
     );
@@ -201,9 +200,6 @@ class _EditMaintenanceNotificationScreenState extends State<EditMaintenanceNotif
       saveButton,
     ];
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: widgets,
-    );
+    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: widgets);
   }
 }

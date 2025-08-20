@@ -36,26 +36,30 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
 
   final AccountId currentUser;
 
-  ProfileRepository(this.media, this.account, this.db, this.accountBackgroundDb, this.connectionManager, this.currentUser) :
-    syncHandler = ConnectedActionScheduler(connectionManager),
-    _api = connectionManager.api;
+  ProfileRepository(
+    this.media,
+    this.account,
+    this.db,
+    this.accountBackgroundDb,
+    this.connectionManager,
+    this.currentUser,
+  ) : syncHandler = ConnectedActionScheduler(connectionManager),
+      _api = connectionManager.api;
 
   final PublishSubject<ProfileChange> _profileChangesRelay = PublishSubject();
   void sendProfileChange(ProfileChange change) {
     _profileChangesRelay.add(change);
   }
+
   Stream<ProfileChange> get profileChanges => _profileChangesRelay;
 
-  Stream<Location> get location => db
-    .accountStreamOrDefault(
-      (db) => db.myProfile.watchProfileLocation(),
-      Location(latitude: 0.0, longitude: 0.0),
-    );
+  Stream<Location> get location => db.accountStreamOrDefault(
+    (db) => db.myProfile.watchProfileLocation(),
+    Location(latitude: 0.0, longitude: 0.0),
+  );
 
-  Stream<ProfileAttributes?> get profileAttributes => db
-    .accountStream(
-      (db) => db.config.watchAvailableProfileAttributes(),
-    );
+  Stream<ProfileAttributes?> get profileAttributes =>
+      db.accountStream((db) => db.config.watchAvailableProfileAttributes());
 
   @override
   Future<void> init() async {
@@ -75,17 +79,17 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
   @override
   Future<Result<(), ()>> onLoginDataSync() async {
     return await reloadLocation()
-      .andThen((_) => reloadProfileFilters())
-      .andThen((_) => reloadSearchAgeRange())
-      .andThen((_) => reloadSearchGroups())
-      .andThen((_) => reloadAutomaticProfileSearchSettings())
-      .andThen((_) async {
-        await downloadInitialSetupAgeInfoIfNull(skipIfAccountStateIsInitialSetup: true);
-        return const Ok(());
-      })
-      .andThen((_) => reloadFavoriteProfiles())
-      .andThen((_) => _reloadProfileNotificationSettings())
-      .andThenEmptyErr((_) => db.accountAction((db) => db.app.updateProfileSyncDone(true)));
+        .andThen((_) => reloadProfileFilters())
+        .andThen((_) => reloadSearchAgeRange())
+        .andThen((_) => reloadSearchGroups())
+        .andThen((_) => reloadAutomaticProfileSearchSettings())
+        .andThen((_) async {
+          await downloadInitialSetupAgeInfoIfNull(skipIfAccountStateIsInitialSetup: true);
+          return const Ok(());
+        })
+        .andThen((_) => reloadFavoriteProfiles())
+        .andThen((_) => _reloadProfileNotificationSettings())
+        .andThenEmptyErr((_) => db.accountAction((db) => db.app.updateProfileSyncDone(true)));
   }
 
   @override
@@ -96,13 +100,19 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
         await reloadLocation();
       }
 
-      final attributeFilters = await db.accountStreamSingle((db) => db.search.watchProfileFilters()).ok();
+      final attributeFilters = await db
+          .accountStreamSingle((db) => db.search.watchProfileFilters())
+          .ok();
       if (attributeFilters == null) {
         await reloadProfileFilters();
       }
 
-      final searchAgeRangeMin = await db.accountStreamSingle((db) => db.search.watchProfileSearchAgeRangeMin()).ok();
-      final searchAgeRangeMax = await db.accountStreamSingle((db) => db.search.watchProfileSearchAgeRangeMax()).ok();
+      final searchAgeRangeMin = await db
+          .accountStreamSingle((db) => db.search.watchProfileSearchAgeRangeMin())
+          .ok();
+      final searchAgeRangeMax = await db
+          .accountStreamSingle((db) => db.search.watchProfileSearchAgeRangeMax())
+          .ok();
       if (searchAgeRangeMin == null || searchAgeRangeMax == null) {
         await reloadSearchAgeRange();
       }
@@ -112,21 +122,26 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
         await reloadSearchGroups();
       }
 
-      final automaticProfileSearchSettings = await db.accountStreamSingle((db) => db.search.watchAutomaticProfileSearchSettings()).ok();
+      final automaticProfileSearchSettings = await db
+          .accountStreamSingle((db) => db.search.watchAutomaticProfileSearchSettings())
+          .ok();
       if (automaticProfileSearchSettings == null) {
         await reloadAutomaticProfileSearchSettings();
       }
 
-      final initialAgeInfo = await db.accountStreamSingle((db) => db.myProfile.watchInitialAgeInfo()).ok();
+      final initialAgeInfo = await db
+          .accountStreamSingle((db) => db.myProfile.watchInitialAgeInfo())
+          .ok();
       if (initialAgeInfo == null) {
         await downloadInitialSetupAgeInfoIfNull(skipIfAccountStateIsInitialSetup: false);
       }
 
-      final syncDone = await db.accountStreamSingle((db) => db.app.watchProfileSyncDone()).ok() ?? false;
+      final syncDone =
+          await db.accountStreamSingle((db) => db.app.watchProfileSyncDone()).ok() ?? false;
       if (!syncDone) {
         await reloadFavoriteProfiles()
-          .andThen((_) => _reloadProfileNotificationSettings())
-          .andThenEmptyErr((_) => db.accountAction((db) => db.app.updateProfileSyncDone(true)));
+            .andThen((_) => _reloadProfileNotificationSettings())
+            .andThenEmptyErr((_) => db.accountAction((db) => db.app.updateProfileSyncDone(true)));
       }
     });
   }
@@ -146,9 +161,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
 
   @override
   Future<void> onLogout() async {
-    await db.accountAction(
-      (db) => db.app.updateProfileFilterFavorites(false),
-    );
+    await db.accountAction((db) => db.app.updateProfileFilterFavorites(false));
   }
 
   Future<bool> updateLocation(Location location) async {
@@ -168,15 +181,26 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
   /// Waits connection before downloading starts.
   Future<ProfileEntry?> downloadProfile(AccountId id) async {
     await connectionManager.state.where((e) => e == ServerConnectionState.connected).firstOrNull;
-    final entry = await ProfileEntryDownloader(media, accountBackgroundDb, db, _api).download(id).ok();
+    final entry = await ProfileEntryDownloader(
+      media,
+      accountBackgroundDb,
+      db,
+      _api,
+    ).download(id).ok();
     return entry;
   }
 
   /// Get cached (if available), latest profile (if available and enough
   /// time has passed since last profile data refresh) and future profile
   /// updates.
-  Stream<GetProfileResultClient> getProfileStream(ChatRepository chat, AccountId id, ProfileRefreshPriority priority) async* {
-    final dbProfileIteator = StreamIterator(db.accountStream((db) => db.profile.watchProfileEntry(id)));
+  Stream<GetProfileResultClient> getProfileStream(
+    ChatRepository chat,
+    AccountId id,
+    ProfileRefreshPriority priority,
+  ) async* {
+    final dbProfileIteator = StreamIterator(
+      db.accountStream((db) => db.profile.watchProfileEntry(id)),
+    );
 
     final profile = await dbProfileIteator.next();
     if (profile != null) {
@@ -185,7 +209,9 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
 
     bool download = true;
 
-    final lastRefreshTime = await db.accountData((db) => db.profile.getProfileDataRefreshTime(id)).ok();
+    final lastRefreshTime = await db
+        .accountData((db) => db.profile.getProfileDataRefreshTime(id))
+        .ok();
     if (profile != null && lastRefreshTime != null) {
       final currentTime = UtcDateTime.now();
       final difference = currentTime.dateTime.difference(lastRefreshTime.dateTime);
@@ -200,7 +226,12 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
 
     if (download) {
       final isMatch = await chat.isInMatches(id);
-      final result = await ProfileEntryDownloader(media, accountBackgroundDb, db, _api).download(id, isMatch: isMatch);
+      final result = await ProfileEntryDownloader(
+        media,
+        accountBackgroundDb,
+        db,
+        _api,
+      ).download(id, isMatch: isMatch);
       switch (result) {
         case Ok():
           ();
@@ -212,9 +243,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
               await db.accountAction((db) => db.profile.setProfileGridStatus(id, false));
               // Favorites are not changed even if profile will become private
               yield GetProfileDoesNotExist();
-              _profileChangesRelay.add(
-                ProfileNowPrivate(id)
-              );
+              _profileChangesRelay.add(ProfileNowPrivate(id));
             case OtherProfileDownloadError():
               yield GetProfileFailed();
           }
@@ -233,7 +262,12 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
 
   Future<void> downloadProfileToDatabase(ChatRepository chat, AccountId id) async {
     final isMatch = await chat.isInMatches(id);
-    await ProfileEntryDownloader(media, accountBackgroundDb, db, _api).download(id, isMatch: isMatch);
+    await ProfileEntryDownloader(
+      media,
+      accountBackgroundDb,
+      db,
+      _api,
+    ).download(id, isMatch: isMatch);
   }
 
   /// Returns true if profile update was successful
@@ -270,17 +304,13 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
       return currentValue;
     } else {
       await db.accountAction((db) => db.profile.setFavoriteStatus(accountId, newValue));
-      _profileChangesRelay.add(
-        ProfileFavoriteStatusChange(accountId, newValue)
-      );
+      _profileChangesRelay.add(ProfileFavoriteStatusChange(accountId, newValue));
       return newValue;
     }
   }
 
   Future<void> changeProfileFilterFavorites(bool showOnlyFavorites) async {
-    await db.accountAction(
-      (db) => db.app.updateProfileFilterFavorites(showOnlyFavorites),
-    );
+    await db.accountAction((db) => db.app.updateProfileFilterFavorites(showOnlyFavorites));
   }
 
   Future<bool> getFilterFavoriteProfilesValue() async {
@@ -299,9 +329,9 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
     final latestAttributes = config.profileAttributes?.attributes ?? [];
     final attributeOrder = config.profileAttributes?.attributeOrder;
 
-    final attributeRefreshList = await db.accountData(
-      (db) => db.config.getAttributeRefreshList(latestAttributes),
-    ).ok();
+    final attributeRefreshList = await db
+        .accountData((db) => db.config.getAttributeRefreshList(latestAttributes))
+        .ok();
     if (attributeRefreshList == null) {
       return const Err(());
     }
@@ -310,7 +340,13 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
     if (attributeRefreshList.isEmpty) {
       updatedAttributes = [];
     } else {
-      final r = await _api.profile((api) => api.postGetQueryProfileAttributesConfig(ProfileAttributesConfigQuery(values: attributeRefreshList))).ok();
+      final r = await _api
+          .profile(
+            (api) => api.postGetQueryProfileAttributesConfig(
+              ProfileAttributesConfigQuery(values: attributeRefreshList),
+            ),
+          )
+          .ok();
       if (r == null) {
         return const Err(());
       }
@@ -352,15 +388,14 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
     return Ok(config);
   }
 
-  Future<Result<(CustomReportsConfigHash?, CustomReportsConfig?), ()>> _downloadCustomReportsIfNeeded(
-    CustomReportsConfigHash? latestHash,
-  ) async {
-    final currentHash = await db.accountStream(
-      (db) => db.config.watchCustomReportsConfigHash(),
-    ).firstOrNull;
-    final currentConfig = await db.accountStream(
-      (db) => db.config.watchCustomReportsConfig(),
-    ).firstOrNull;
+  Future<Result<(CustomReportsConfigHash?, CustomReportsConfig?), ()>>
+  _downloadCustomReportsIfNeeded(CustomReportsConfigHash? latestHash) async {
+    final currentHash = await db
+        .accountStream((db) => db.config.watchCustomReportsConfigHash())
+        .firstOrNull;
+    final currentConfig = await db
+        .accountStream((db) => db.config.watchCustomReportsConfig())
+        .firstOrNull;
 
     final CustomReportsConfigHash? hash;
     final CustomReportsConfig? config;
@@ -370,7 +405,9 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
         hash = currentHash;
         config = currentConfig;
       } else {
-        final latestConfig = await _api.account((api) => api.postGetCustomReportsConfig(latestHash)).ok();
+        final latestConfig = await _api
+            .account((api) => api.postGetCustomReportsConfig(latestHash))
+            .ok();
         if (latestConfig == null) {
           return const Err(());
         }
@@ -386,15 +423,14 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
     return Ok((hash, config));
   }
 
-  Future<Result<(ClientFeaturesConfigHash?, ClientFeaturesConfig?), ()>> _downloadClientFeaturesIfNeeded(
-    ClientFeaturesConfigHash? latestHash,
-  ) async {
-    final currentHash = await db.accountStream(
-      (db) => db.config.watchClientFeaturesConfigHash(),
-    ).firstOrNull;
-    final currentConfig = await db.accountStream(
-      (db) => db.config.watchClientFeaturesConfig(),
-    ).firstOrNull;
+  Future<Result<(ClientFeaturesConfigHash?, ClientFeaturesConfig?), ()>>
+  _downloadClientFeaturesIfNeeded(ClientFeaturesConfigHash? latestHash) async {
+    final currentHash = await db
+        .accountStream((db) => db.config.watchClientFeaturesConfigHash())
+        .firstOrNull;
+    final currentConfig = await db
+        .accountStream((db) => db.config.watchClientFeaturesConfig())
+        .firstOrNull;
 
     final ClientFeaturesConfigHash? hash;
     final ClientFeaturesConfig? config;
@@ -404,7 +440,9 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
         hash = currentHash;
         config = currentConfig;
       } else {
-        final latestConfig = await _api.account((api) => api.postGetClientFeaturesConfig(latestHash)).ok();
+        final latestConfig = await _api
+            .account((api) => api.postGetClientFeaturesConfig(latestHash))
+            .ok();
         if (latestConfig == null) {
           return const Err(());
         }
@@ -421,33 +459,36 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
   }
 
   Future<Result<(), ()>> reloadMyProfile() async {
-    return await _api.profile((api) => api.getMyProfile())
-      .andThenEmptyErr((info) {
-        return db.accountAction((db) => db.myProfile.setApiProfile(result: info))
-          .andThenEmptyErr((_) => db.accountAction((db) => db.common.updateSyncVersionProfile(info.sv)));
-      });
+    return await _api.profile((api) => api.getMyProfile()).andThenEmptyErr((info) {
+      return db
+          .accountAction((db) => db.myProfile.setApiProfile(result: info))
+          .andThenEmptyErr(
+            (_) => db.accountAction((db) => db.common.updateSyncVersionProfile(info.sv)),
+          );
+    });
   }
 
   Future<Result<(), ()>> reloadFavoriteProfiles() async {
-    return await _api.profile((api) => api.getFavoriteProfiles())
-      .andThenEmptyErr((f) => db.accountAction((db) => db.profile.replaceFavorites(f.profiles)));
+    return await _api
+        .profile((api) => api.getFavoriteProfiles())
+        .andThenEmptyErr((f) => db.accountAction((db) => db.profile.replaceFavorites(f.profiles)));
   }
 
   Future<Result<(), ()>> reloadLocation() async {
-    return await _api.profile((api) => api.getLocation())
-      .andThenEmptyErr((l) => db.accountAction(
-        (db) => db.myProfile.updateProfileLocation(
-          latitude: l.latitude,
-          longitude: l.longitude,
-        )
-      ));
+    return await _api
+        .profile((api) => api.getLocation())
+        .andThenEmptyErr(
+          (l) => db.accountAction(
+            (db) =>
+                db.myProfile.updateProfileLocation(latitude: l.latitude, longitude: l.longitude),
+          ),
+        );
   }
 
   Future<Result<(), ()>> reloadProfileFilters() async {
-    return await _api.profile((api) => api.getProfileFilters())
-      .andThenEmptyErr((f) => db.accountAction(
-        (db) => db.search.updateProfileFilters(f),
-      ));
+    return await _api
+        .profile((api) => api.getProfileFilters())
+        .andThenEmptyErr((f) => db.accountAction((db) => db.search.updateProfileFilters(f)));
   }
 
   Future<Result<(), ()>> updateProfileFilters(
@@ -474,80 +515,96 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
       profileTextMaxCharactersFilter: profileTextMaxCharactersFilter,
       randomProfileOrder: randomProfileOrder,
     );
-    return await _api.profileAction((api) => api.postProfileFilters(update))
-      .onOk(() => reloadProfileFilters())
-      .empty();
+    return await _api
+        .profileAction((api) => api.postProfileFilters(update))
+        .onOk(() => reloadProfileFilters())
+        .empty();
   }
 
   Future<void> resetMainProfileIterator({BehaviorSubject<bool>? eventHandlingTracking}) async {
     final showOnlyFavorites = await getFilterFavoriteProfilesValue();
-    sendProfileChange(ReloadMainProfileView.withEventHandlingTracking(
-      showOnlyFavorites: showOnlyFavorites,
-      eventHandlingTracking: eventHandlingTracking,
-    ));
+    sendProfileChange(
+      ReloadMainProfileView.withEventHandlingTracking(
+        showOnlyFavorites: showOnlyFavorites,
+        eventHandlingTracking: eventHandlingTracking,
+      ),
+    );
   }
 
   // Search settings
 
   Future<Result<(), ()>> reloadSearchAgeRange() async {
-    return await _api.profile((api) => api.getSearchAgeRange())
-      .andThenEmptyErr((r) => db.accountAction(
-        (db) => db.search.updateSearchAgeRange(r),
-      ));
+    return await _api
+        .profile((api) => api.getSearchAgeRange())
+        .andThenEmptyErr((r) => db.accountAction((db) => db.search.updateSearchAgeRange(r)));
   }
 
   Future<Result<(), ()>> reloadSearchGroups() async {
-    return await _api.profile((api) => api.getSearchGroups())
-      .andThenEmptyErr((v) => db.accountAction(
-        (db) => db.search.updateSearchGroups(v),
-      ));
+    return await _api
+        .profile((api) => api.getSearchGroups())
+        .andThenEmptyErr((v) => db.accountAction((db) => db.search.updateSearchGroups(v)));
   }
 
   Future<Result<(), ()>> reloadAutomaticProfileSearchSettings() async {
-    return await _api.profile((api) => api.getAutomaticProfileSearchSettings())
-      .andThenEmptyErr((v) => db.accountAction(
-        (db) => db.search.updateAutomaticProfileSearchSettings(v),
-      ));
+    return await _api
+        .profile((api) => api.getAutomaticProfileSearchSettings())
+        .andThenEmptyErr(
+          (v) => db.accountAction((db) => db.search.updateAutomaticProfileSearchSettings(v)),
+        );
   }
 
   Future<Result<(), ()>> updateSearchAgeRange(int minAge, int maxAge) async {
     final update = SearchAgeRange(min: minAge, max: maxAge);
-    return await _api.profileAction((api) => api.postSearchAgeRange(update))
-      .onOk(() => reloadSearchAgeRange())
-      .emptyErr();
+    return await _api
+        .profileAction((api) => api.postSearchAgeRange(update))
+        .onOk(() => reloadSearchAgeRange())
+        .emptyErr();
   }
 
   Future<Result<(), ()>> updateSearchGroups(SearchGroups groups) async {
-    return await _api.profileAction((api) => api.postSearchGroups(groups))
-      .onOk(() => reloadSearchGroups())
-      .emptyErr();
+    return await _api
+        .profileAction((api) => api.postSearchGroups(groups))
+        .onOk(() => reloadSearchGroups())
+        .emptyErr();
   }
 
-  Future<Result<(), ()>> updateAutomaticProfileSearchSettings(AutomaticProfileSearchSettings settings) async {
-    return await _api.profileAction((api) => api.postAutomaticProfileSearchSettings(settings))
-      .onOk(() => reloadAutomaticProfileSearchSettings())
-      .emptyErr();
+  Future<Result<(), ()>> updateAutomaticProfileSearchSettings(
+    AutomaticProfileSearchSettings settings,
+  ) async {
+    return await _api
+        .profileAction((api) => api.postAutomaticProfileSearchSettings(settings))
+        .onOk(() => reloadAutomaticProfileSearchSettings())
+        .emptyErr();
   }
 
   Future<Result<(), ()>> resetUnreadMessagesCount(AccountId accountId) async {
     // Hide notification
-    await NotificationMessageReceived.getInstance()
-      .updateMessageReceivedCount(accountId, 0, null, accountBackgroundDb);
-    return accountBackgroundDb.accountAction(
-      (db) => db.unreadMessagesCount.setUnreadMessagesCount(accountId, const UnreadMessagesCount(0)),
-    ).emptyErr();
+    await NotificationMessageReceived.getInstance().updateMessageReceivedCount(
+      accountId,
+      0,
+      null,
+      accountBackgroundDb,
+    );
+    return accountBackgroundDb
+        .accountAction(
+          (db) => db.unreadMessagesCount.setUnreadMessagesCount(
+            accountId,
+            const UnreadMessagesCount(0),
+          ),
+        )
+        .emptyErr();
   }
 
   /// If profile does not exist in DB, try download it when connection exists.
   /// After that emit only DB updates.
   Stream<ProfileEntry?> getProfileEntryUpdates(AccountId accountId) async* {
-    final stream = db.accountStream(
-      (db) => db.profile.watchProfileEntry(accountId),
-    );
+    final stream = db.accountStream((db) => db.profile.watchProfileEntry(accountId));
     bool downloaded = false;
     await for (final p in stream) {
       if (p == null && !downloaded) {
-        await connectionManager.state.where((e) => e == ServerConnectionState.connected).firstOrNull;
+        await connectionManager.state
+            .where((e) => e == ServerConnectionState.connected)
+            .firstOrNull;
         await ProfileEntryDownloader(media, accountBackgroundDb, db, _api).download(accountId);
         downloaded = true;
         continue;
@@ -570,7 +627,9 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
     );
   }
 
-  Future<void> downloadInitialSetupAgeInfoIfNull({required bool skipIfAccountStateIsInitialSetup}) async {
+  Future<void> downloadInitialSetupAgeInfoIfNull({
+    required bool skipIfAccountStateIsInitialSetup,
+  }) async {
     if (skipIfAccountStateIsInitialSetup) {
       final state = await account.accountState.firstOrNull;
       if (state == AccountState.initialSetup) {
@@ -580,9 +639,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
       }
     }
 
-    final value = await db.accountStreamSingle(
-      (db) => db.myProfile.watchInitialAgeInfo(),
-    ).ok();
+    final value = await db.accountStreamSingle((db) => db.myProfile.watchInitialAgeInfo()).ok();
     if (value != null) {
       // Already downloaded
       return;
@@ -602,28 +659,34 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
           // related account state stream, but extra API call does not matter
           // that much.
         } else {
-          await db.accountAction(
-            (db) => db.myProfile.setInitialAgeInfo(info: info),
-          );
+          await db.accountAction((db) => db.myProfile.setInitialAgeInfo(info: info));
         }
     }
   }
 
   Future<Result<(), ()>> _reloadProfileNotificationSettings() async {
-    return await _api.profile((api) => api.getProfileAppNotificationSettings())
-      .andThenEmptyErr((v) => accountBackgroundDb.accountAction(
-        (db) => db.appNotificationSettings.updateProfileNotificationSettings(v),
-      ));
+    return await _api
+        .profile((api) => api.getProfileAppNotificationSettings())
+        .andThenEmptyErr(
+          (v) => accountBackgroundDb.accountAction(
+            (db) => db.appNotificationSettings.updateProfileNotificationSettings(v),
+          ),
+        );
   }
 
   Future<void> handleProfileStringModerationCompletedEvent() async {
-    final notification = await _api.profile((api) => api.postGetProfileStringModerationCompletedNotification()).ok();
+    final notification = await _api
+        .profile((api) => api.postGetProfileStringModerationCompletedNotification())
+        .ok();
 
     if (notification == null) {
       return;
     }
 
-    await NotificationProfileStringModerationCompleted.handleProfileStringModerationCompleted(notification, accountBackgroundDb);
+    await NotificationProfileStringModerationCompleted.handleProfileStringModerationCompleted(
+      notification,
+      accountBackgroundDb,
+    );
 
     final viewed = ProfileStringModerationCompletedNotificationViewed(
       nameAccepted: notification.nameAccepted.id.toViewed(),
@@ -631,92 +694,114 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
       textAccepted: notification.textAccepted.id.toViewed(),
       textRejected: notification.textRejected.id.toViewed(),
     );
-    await _api.profileAction((api) => api.postMarkProfileStringModerationCompletedNotificationViewed(viewed))
-      .andThen((_) => accountBackgroundDb.accountAction(
-        (db) => db.notification.profileTextAccepted.updateViewedId(viewed.textAccepted)
-      ))
-      .andThen((_) => accountBackgroundDb.accountAction(
-        (db) => db.notification.profileTextRejected.updateViewedId(viewed.textRejected)
-      ));
+    await _api
+        .profileAction(
+          (api) => api.postMarkProfileStringModerationCompletedNotificationViewed(viewed),
+        )
+        .andThen(
+          (_) => accountBackgroundDb.accountAction(
+            (db) => db.notification.profileTextAccepted.updateViewedId(viewed.textAccepted),
+          ),
+        )
+        .andThen(
+          (_) => accountBackgroundDb.accountAction(
+            (db) => db.notification.profileTextRejected.updateViewedId(viewed.textRejected),
+          ),
+        );
   }
 
   Future<void> handleAutomaticProfileSearchCompletedEvent() async {
-    final notification = await _api.profile((api) => api.postGetAutomaticProfileSearchCompletedNotification()).ok();
+    final notification = await _api
+        .profile((api) => api.postGetAutomaticProfileSearchCompletedNotification())
+        .ok();
 
     if (notification == null) {
       return;
     }
 
-    await NotificationAutomaticProfileSearch.handleAutomaticProfileSearchCompleted(notification, accountBackgroundDb);
+    await NotificationAutomaticProfileSearch.handleAutomaticProfileSearchCompleted(
+      notification,
+      accountBackgroundDb,
+    );
 
     final viewed = AutomaticProfileSearchCompletedNotificationViewed(
       profilesFound: notification.profilesFound.id.toViewed(),
     );
-    await _api.profileAction((api) => api.postMarkAutomaticProfileSearchCompletedNotificationViewed(viewed))
-      .andThen((_) => accountBackgroundDb.accountAction(
-        (db) => db.notification.profilesFound.updateViewedId(viewed.profilesFound)
-      ));
+    await _api
+        .profileAction(
+          (api) => api.postMarkAutomaticProfileSearchCompletedNotificationViewed(viewed),
+        )
+        .andThen(
+          (_) => accountBackgroundDb.accountAction(
+            (db) => db.notification.profilesFound.updateViewedId(viewed.profilesFound),
+          ),
+        );
   }
 }
 
 sealed class GetProfileResultClient {}
+
 class GetProfileSuccess extends GetProfileResultClient {
   final ProfileEntry profile;
   GetProfileSuccess(this.profile);
 }
+
 /// Navigate out from view profile and reload profile list
 class GetProfileDoesNotExist extends GetProfileResultClient {
   GetProfileDoesNotExist();
 }
+
 /// Show error message
 class GetProfileFailed extends GetProfileResultClient {
   GetProfileFailed();
 }
 
 sealed class ProfileChange {}
+
 class ProfileNowPrivate extends ProfileChange {
   final AccountId profile;
   ProfileNowPrivate(this.profile);
 }
+
 class ProfileBlocked extends ProfileChange {
   final AccountId profile;
   ProfileBlocked(this.profile);
 }
+
 class ProfileUnblocked extends ProfileChange {
   final AccountId profile;
   ProfileUnblocked(this.profile);
 }
+
 class ConversationChanged extends ProfileChange {
   final AccountId conversationWith;
   final ConversationChangeType change;
   ConversationChanged(this.conversationWith, this.change);
 }
+
 class ProfileFavoriteStatusChange extends ProfileChange {
   final AccountId profile;
   final bool isFavorite;
   ProfileFavoriteStatusChange(this.profile, this.isFavorite);
 }
+
 class ReloadMainProfileView extends ProfileChange {
   final BehaviorSubject<bool> eventHandled;
   final bool showOnlyFavorites;
-  ReloadMainProfileView({required this.showOnlyFavorites}) :
-    eventHandled = BehaviorSubject.seeded(false);
+  ReloadMainProfileView({required this.showOnlyFavorites})
+    : eventHandled = BehaviorSubject.seeded(false);
   ReloadMainProfileView.withEventHandlingTracking({
     required this.showOnlyFavorites,
     BehaviorSubject<bool>? eventHandlingTracking,
   }) : eventHandled = eventHandlingTracking ?? BehaviorSubject.seeded(false);
 }
 
-enum ConversationChangeType {
-  messageSent,
-  messageReceived,
-  messageRemoved,
-  messageResent,
-}
+enum ConversationChangeType { messageSent, messageReceived, messageRemoved, messageResent }
 
 enum ProfileRefreshPriority {
   /// Refresh if 1 minute have passed since last refresh
   high,
+
   /// Refresh if 5 minutes have passed since last refresh
   low,
 }

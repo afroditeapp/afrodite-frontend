@@ -1,6 +1,3 @@
-
-
-
 import 'dart:async';
 
 import 'package:app/data/general/notification/state/media_content_moderation_completed.dart';
@@ -34,9 +31,14 @@ class MediaRepository extends DataRepositoryWithLifecycle {
 
   final AccountId currentUser;
 
-  MediaRepository(this.account, this.db, this.accountBackgroundDb, ServerConnectionManager connectionManager, this.currentUser) :
-    syncHandler = ConnectedActionScheduler(connectionManager),
-    api = connectionManager.api;
+  MediaRepository(
+    this.account,
+    this.db,
+    this.accountBackgroundDb,
+    ServerConnectionManager connectionManager,
+    this.currentUser,
+  ) : syncHandler = ConnectedActionScheduler(connectionManager),
+      api = connectionManager.api;
 
   @override
   Future<void> init() async {
@@ -56,18 +58,19 @@ class MediaRepository extends DataRepositoryWithLifecycle {
   @override
   Future<Result<(), ()>> onLoginDataSync() async {
     return await reloadMyMediaContent()
-      .andThen((_) => _reloadMediaNotificationSettings())
-      .andThenEmptyErr((_) => db.accountAction((db) => db.app.updateMediaSyncDone(true)));
+        .andThen((_) => _reloadMediaNotificationSettings())
+        .andThenEmptyErr((_) => db.accountAction((db) => db.app.updateMediaSyncDone(true)));
   }
 
   @override
   Future<void> onResumeAppUsage() async {
     syncHandler.onResumeAppUsageSync(() async {
-      final syncDone = await db.accountStreamSingle((db) => db.app.watchMediaSyncDone()).ok() ?? false;
+      final syncDone =
+          await db.accountStreamSingle((db) => db.app.watchMediaSyncDone()).ok() ?? false;
       if (!syncDone) {
         await reloadMyMediaContent()
-          .andThen((_) => _reloadMediaNotificationSettings())
-          .andThenEmptyErr((_) => db.accountAction((db) => db.app.updateMediaSyncDone(true)));
+            .andThen((_) => _reloadMediaNotificationSettings())
+            .andThenEmptyErr((_) => db.accountAction((db) => db.app.updateMediaSyncDone(true)));
       }
     });
   }
@@ -77,21 +80,16 @@ class MediaRepository extends DataRepositoryWithLifecycle {
     await reloadMyMediaContent();
   }
 
-  Future<Uint8List?> getImage(AccountId imageOwner, ContentId id, {bool isMatch = false}) =>
-    api.media((api) => api.getContentFixed(
-      imageOwner.aid,
-      id.cid,
-      isMatch,
-    ))
-    .onErr(() => log.error("Image loading error"))
-    .ok();
+  Future<Uint8List?> getImage(AccountId imageOwner, ContentId id, {bool isMatch = false}) => api
+      .media((api) => api.getContentFixed(imageOwner.aid, id.cid, isMatch))
+      .onErr(() => log.error("Image loading error"))
+      .ok();
 
   Future<MapTileResult> getMapTile(int z, int x, int y) async {
-    final data = await api.mediaWrapper().requestValue((api) => api.getMapTileFixed(
-      z,
-      x,
-      y.toString(),
-    ), logError: false);
+    final data = await api.mediaWrapper().requestValue(
+      (api) => api.getMapTileFixed(z, x, y.toString()),
+      logError: false,
+    );
 
     switch (data) {
       case Ok(:final v):
@@ -108,9 +106,7 @@ class MediaRepository extends DataRepositoryWithLifecycle {
   }
 
   Future<ContentId?> getSecuritySelfie(AccountId account) =>
-    api.media((api) => api.getSecurityContentInfo(account.aid))
-      .ok()
-      .map((img) => img.c?.cid);
+      api.media((api) => api.getSecurityContentInfo(account.aid)).ok().map((img) => img.c?.cid);
 
   /// Reload current profile and security content.
   Future<Result<(), ()>> reloadMyMediaContent() async {
@@ -119,57 +115,78 @@ class MediaRepository extends DataRepositoryWithLifecycle {
       return const Err(());
     }
 
-    return await db.accountAction((db) => db.myMedia.setMyMediaContent(info: infoResult)).emptyErr();
+    return await db
+        .accountAction((db) => db.myMedia.setMyMediaContent(info: infoResult))
+        .emptyErr();
   }
 
   /// Last event from stream is ProcessingCompleted or SendToSlotError.
-  Stream<SendToSlotEvent> sendImageToSlot(Uint8List imgBytes, int slot, {bool secureCapture = false}) async* {
+  Stream<SendToSlotEvent> sendImageToSlot(
+    Uint8List imgBytes,
+    int slot, {
+    bool secureCapture = false,
+  }) async* {
     final task = SendImageToSlotTask(account, api);
     yield* task.sendImageToSlot(imgBytes, slot, secureCapture: secureCapture);
   }
 
   Future<void> handleMediaContentModerationCompletedEvent() async {
-    final notification = await api.media((api) => api.postGetMediaContentModerationCompletedNotification()).ok();
+    final notification = await api
+        .media((api) => api.postGetMediaContentModerationCompletedNotification())
+        .ok();
 
     if (notification == null) {
       return;
     }
 
-    await NotificationMediaContentModerationCompleted.handleMediaContentModerationCompleted(notification, accountBackgroundDb);
+    await NotificationMediaContentModerationCompleted.handleMediaContentModerationCompleted(
+      notification,
+      accountBackgroundDb,
+    );
 
     final viewed = MediaContentModerationCompletedNotificationViewed(
       accepted: notification.accepted.id.toViewed(),
       rejected: notification.rejected.id.toViewed(),
       deleted: notification.deleted.id.toViewed(),
     );
-    await api.mediaAction((api) => api.postMarkMediaContentModerationCompletedNotificationViewed(viewed))
-      .andThen((_) => accountBackgroundDb.accountAction(
-        (db) => db.notification.mediaContentAccepted.updateViewedId(viewed.accepted)
-      ))
-      .andThen((_) => accountBackgroundDb.accountAction(
-        (db) => db.notification.mediaContentRejected.updateViewedId(viewed.rejected)
-      ));
+    await api
+        .mediaAction((api) => api.postMarkMediaContentModerationCompletedNotificationViewed(viewed))
+        .andThen(
+          (_) => accountBackgroundDb.accountAction(
+            (db) => db.notification.mediaContentAccepted.updateViewedId(viewed.accepted),
+          ),
+        )
+        .andThen(
+          (_) => accountBackgroundDb.accountAction(
+            (db) => db.notification.mediaContentRejected.updateViewedId(viewed.rejected),
+          ),
+        );
   }
 
-  Future<Result<(), ()>> setProfileContent(SetProfileContent imgInfo) =>
-    api.mediaAction((api) => api.putProfileContent(imgInfo))
+  Future<Result<(), ()>> setProfileContent(SetProfileContent imgInfo) => api
+      .mediaAction((api) => api.putProfileContent(imgInfo))
       .onOk(() => reloadMyMediaContent())
       .emptyErr();
 
   Future<Result<AccountContent, ()>> loadAllContent() =>
-    api.media((api) => api.getAllAccountMediaContent(currentUser.aid)).emptyErr();
+      api.media((api) => api.getAllAccountMediaContent(currentUser.aid)).emptyErr();
 
   Future<Result<(), ()>> retryInitialSetupImages(RetryInitialSetupImages content) async {
-    final result = await InitialSetupUtils(api).handleInitialSetupImages(content.securitySelfie, content.profileImgs);
+    final result = await InitialSetupUtils(
+      api,
+    ).handleInitialSetupImages(content.securitySelfie, content.profileImgs);
     await reloadMyMediaContent();
     return result;
   }
 
   Future<Result<(), ()>> _reloadMediaNotificationSettings() async {
-    return await api.media((api) => api.getMediaAppNotificationSettings())
-      .andThenEmptyErr((v) => accountBackgroundDb.accountAction(
-        (db) => db.appNotificationSettings.updateMediaNotificationSettings(v),
-      ));
+    return await api
+        .media((api) => api.getMediaAppNotificationSettings())
+        .andThenEmptyErr(
+          (v) => accountBackgroundDb.accountAction(
+            (db) => db.appNotificationSettings.updateMediaNotificationSettings(v),
+          ),
+        );
   }
 }
 
@@ -179,5 +196,7 @@ class MapTileSuccess extends MapTileResult {
   Uint8List pngData;
   MapTileSuccess(this.pngData);
 }
+
 class MapTileError extends MapTileResult {}
+
 class MapTileNotAvailable extends MapTileResult {}

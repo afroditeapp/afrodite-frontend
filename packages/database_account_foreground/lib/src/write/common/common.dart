@@ -1,4 +1,3 @@
-
 import 'package:database_account_foreground/src/database.dart';
 import 'package:database_utils/database_utils.dart';
 import 'package:drift/drift.dart';
@@ -17,12 +16,11 @@ part 'common.g.dart';
     schema.ClientLanguageOnServer,
   ],
 )
-class DaoWriteCommon extends DatabaseAccessor<AccountForegroundDatabase> with _$DaoWriteCommonMixin {
+class DaoWriteCommon extends DatabaseAccessor<AccountForegroundDatabase>
+    with _$DaoWriteCommonMixin {
   DaoWriteCommon(super.db);
 
-  Future<void> setMaintenanceTime({
-    required UtcDateTime? time,
-  }) async {
+  Future<void> setMaintenanceTime({required UtcDateTime? time}) async {
     await into(serverMaintenance).insertOnConflictUpdate(
       ServerMaintenanceCompanion.insert(
         id: SingleRowTable.ID,
@@ -31,9 +29,7 @@ class DaoWriteCommon extends DatabaseAccessor<AccountForegroundDatabase> with _$
     );
   }
 
-  Future<void> setMaintenanceTimeViewed({
-    required UtcDateTime time,
-  }) async {
+  Future<void> setMaintenanceTimeViewed({required UtcDateTime time}) async {
     await into(serverMaintenance).insertOnConflictUpdate(
       ServerMaintenanceCompanion.insert(
         id: SingleRowTable.ID,
@@ -44,19 +40,13 @@ class DaoWriteCommon extends DatabaseAccessor<AccountForegroundDatabase> with _$
 
   Future<void> updateSyncVersionAccount(api.AccountSyncVersion value) async {
     await into(syncVersion).insertOnConflictUpdate(
-      SyncVersionCompanion.insert(
-        id: SingleRowTable.ID,
-        syncVersionAccount: Value(value.version),
-      ),
+      SyncVersionCompanion.insert(id: SingleRowTable.ID, syncVersionAccount: Value(value.version)),
     );
   }
 
   Future<void> updateSyncVersionProfile(api.ProfileSyncVersion value) async {
     await into(syncVersion).insertOnConflictUpdate(
-      SyncVersionCompanion.insert(
-        id: SingleRowTable.ID,
-        syncVersionProfile: Value(value.version),
-      ),
+      SyncVersionCompanion.insert(id: SingleRowTable.ID, syncVersionProfile: Value(value.version)),
     );
   }
 
@@ -99,7 +89,9 @@ class DaoWriteCommon extends DatabaseAccessor<AccountForegroundDatabase> with _$
     );
   }
 
-  Future<void> updateAutomaticProfileSearchIteratorSessionId(api.AutomaticProfileSearchIteratorSessionId value) async {
+  Future<void> updateAutomaticProfileSearchIteratorSessionId(
+    api.AutomaticProfileSearchIteratorSessionId value,
+  ) async {
     await into(iteratorSessionId).insertOnConflictUpdate(
       IteratorSessionIdCompanion.insert(
         id: SingleRowTable.ID,
@@ -108,7 +100,9 @@ class DaoWriteCommon extends DatabaseAccessor<AccountForegroundDatabase> with _$
     );
   }
 
-  Future<void> updateReceivedLikesIteratorSessionId(api.ReceivedLikesIteratorSessionId value) async {
+  Future<void> updateReceivedLikesIteratorSessionId(
+    api.ReceivedLikesIteratorSessionId value,
+  ) async {
     await into(iteratorSessionId).insertOnConflictUpdate(
       IteratorSessionIdCompanion.insert(
         id: SingleRowTable.ID,

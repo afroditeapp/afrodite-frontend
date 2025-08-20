@@ -1,4 +1,3 @@
-
 import 'package:app/data/general/notification/utils/notification_category_group.dart';
 import 'package:database/database.dart';
 import 'package:app/data/notification_manager.dart';
@@ -38,85 +37,101 @@ sealed class NotificationCategory {
 }
 
 class NotificationCategoryMessages extends NotificationCategory {
-  const NotificationCategoryMessages() : super(
-    id: "notification_category_messages",
-    group: const NotificationCategoryGroupChat(),
-    headsUpNotification: true,
-  );
+  const NotificationCategoryMessages()
+    : super(
+        id: "notification_category_messages",
+        group: const NotificationCategoryGroupChat(),
+        headsUpNotification: true,
+      );
 
   @override
   String get title => R.strings.notification_category_messages;
 
   @override
-  IsEnabledGetter get _isEnabledValueLocation => (db) => db.appNotificationSettings.watchMessages();
+  IsEnabledGetter get _isEnabledValueLocation =>
+      (db) => db.appNotificationSettings.watchMessages();
 }
 
 class NotificationCategoryLikes extends NotificationCategory {
-  const NotificationCategoryLikes() : super(
-    id: "notification_category_likes",
-    group: const NotificationCategoryGroupChat(),
-    headsUpNotification: true,
-  );
+  const NotificationCategoryLikes()
+    : super(
+        id: "notification_category_likes",
+        group: const NotificationCategoryGroupChat(),
+        headsUpNotification: true,
+      );
 
   @override
   String get title => R.strings.notification_category_likes;
 
   @override
-  IsEnabledGetter get _isEnabledValueLocation => (db) => db.appNotificationSettings.watchLikes();
+  IsEnabledGetter get _isEnabledValueLocation =>
+      (db) => db.appNotificationSettings.watchLikes();
 }
 
 class NotificationCategoryMediaContentModerationCompleted extends NotificationCategory {
-  const NotificationCategoryMediaContentModerationCompleted() : super(
-    id: "notification_category_media_content_moderation_completed",
-    group: const NotificationCategoryGroupContentModeration(),
-    headsUpNotification: true,
-  );
+  const NotificationCategoryMediaContentModerationCompleted()
+    : super(
+        id: "notification_category_media_content_moderation_completed",
+        group: const NotificationCategoryGroupContentModeration(),
+        headsUpNotification: true,
+      );
 
   @override
   String get title => R.strings.notification_category_media_content_moderation_completed;
 
   @override
-  IsEnabledGetter get _isEnabledValueLocation => (db) => db.appNotificationSettings.watchMediaContentModerationCompleted();
+  IsEnabledGetter get _isEnabledValueLocation =>
+      (db) => db.appNotificationSettings.watchMediaContentModerationCompleted();
 }
 
 class NotificationCategoryProfileStringModerationCompleted extends NotificationCategory {
-  const NotificationCategoryProfileStringModerationCompleted() : super(
-    id: "notification_category_profile_string_moderation_completed",
-    group: const NotificationCategoryGroupContentModeration(),
-    headsUpNotification: true,
-  );
+  const NotificationCategoryProfileStringModerationCompleted()
+    : super(
+        id: "notification_category_profile_string_moderation_completed",
+        group: const NotificationCategoryGroupContentModeration(),
+        headsUpNotification: true,
+      );
 
   @override
   String get title => R.strings.notification_category_profile_string_moderation_completed;
 
   @override
-  IsEnabledGetter get _isEnabledValueLocation => (db) => db.appNotificationSettings.watchProfileAppNotificationSettings().map((v) => v?.profileStringModeration);
+  IsEnabledGetter get _isEnabledValueLocation =>
+      (db) => db.appNotificationSettings.watchProfileAppNotificationSettings().map(
+        (v) => v?.profileStringModeration,
+      );
 }
 
 class NotificationCategoryNewsItemAvailable extends NotificationCategory {
-  const NotificationCategoryNewsItemAvailable() : super(
-    id: "notification_category_news_item_available",
-    group: const NotificationCategoryGroupGeneral(),
-    headsUpNotification: true,
-  );
+  const NotificationCategoryNewsItemAvailable()
+    : super(
+        id: "notification_category_news_item_available",
+        group: const NotificationCategoryGroupGeneral(),
+        headsUpNotification: true,
+      );
 
   @override
   String get title => R.strings.notification_category_news_item_available;
 
   @override
-  IsEnabledGetter get _isEnabledValueLocation => (db) => db.appNotificationSettings.watchNews();
+  IsEnabledGetter get _isEnabledValueLocation =>
+      (db) => db.appNotificationSettings.watchNews();
 }
 
 class NotificationCategoryAutomaticProfileSearch extends NotificationCategory {
-  const NotificationCategoryAutomaticProfileSearch() : super(
-    id: "notification_category_automatic_profile_search",
-    group: const NotificationCategoryGroupGeneral(),
-    headsUpNotification: true,
-  );
+  const NotificationCategoryAutomaticProfileSearch()
+    : super(
+        id: "notification_category_automatic_profile_search",
+        group: const NotificationCategoryGroupGeneral(),
+        headsUpNotification: true,
+      );
 
   @override
   String get title => R.strings.notification_category_automatic_profile_search;
 
   @override
-  IsEnabledGetter get _isEnabledValueLocation => (db) => db.appNotificationSettings.watchProfileAppNotificationSettings().map((v) => v?.automaticProfileSearch);
+  IsEnabledGetter get _isEnabledValueLocation =>
+      (db) => db.appNotificationSettings.watchProfileAppNotificationSettings().map(
+        (v) => v?.automaticProfileSearch,
+      );
 }

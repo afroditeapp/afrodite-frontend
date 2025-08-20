@@ -71,12 +71,11 @@ class _MenuViewState extends State<MenuView> {
   }
 
   void updateIsScrolled(bool isScrolled) {
-    BottomNavigationStateBlocInstance.getInstance()
-      .updateIsScrolled(
-        isScrolled,
-        BottomNavigationScreenId.settings,
-        (state) => state.isScrolledSettings,
-      );
+    BottomNavigationStateBlocInstance.getInstance().updateIsScrolled(
+      isScrolled,
+      BottomNavigationScreenId.settings,
+      (state) => state.isScrolledSettings,
+    );
   }
 
   @override
@@ -93,10 +92,13 @@ class _MenuViewState extends State<MenuView> {
                 return true;
               },
               child: BlocListener<BottomNavigationStateBloc, BottomNavigationStateData>(
-                listenWhen: (previous, current) => previous.isTappedAgainSettings != current.isTappedAgainSettings,
+                listenWhen: (previous, current) =>
+                    previous.isTappedAgainSettings != current.isTappedAgainSettings,
                 listener: (context, state) {
                   if (state.isTappedAgainSettings) {
-                    context.read<BottomNavigationStateBloc>().add(SetIsTappedAgainValue(BottomNavigationScreenId.settings, false));
+                    context.read<BottomNavigationStateBloc>().add(
+                      SetIsTappedAgainValue(BottomNavigationScreenId.settings, false),
+                    );
                     _scrollController.bottomNavigationRelatedJumpToBeginningIfClientsConnected();
                   }
                 },
@@ -111,9 +113,9 @@ class _MenuViewState extends State<MenuView> {
                 ),
               ),
             );
-          }
+          },
         );
-      }
+      },
     );
   }
 
@@ -123,25 +125,31 @@ class _MenuViewState extends State<MenuView> {
     ClientFeaturesConfig clientFeatures,
   ) {
     List<Setting> settings = [
-      Setting.createSetting(Icons.account_box, context.strings.view_profile_screen_my_profile_title, () =>
-        openMyProfileScreen(context)
+      Setting.createSetting(
+        Icons.account_box,
+        context.strings.view_profile_screen_my_profile_title,
+        () => openMyProfileScreen(context),
       ),
-      if (clientFeatures.news != null) Setting.createSettingWithCustomIcon(
-        BlocBuilder<NewsCountBloc, NewsCountData>(
-          builder: (context, state) {
-            const icon = Icon(Icons.newspaper);
-            final count = state.newsCountForUi(clientFeatures);
-            if (count == 0) {
-              return icon;
-            } else {
-              return Badge.count(count: count, child: icon);
-            }
-          }
+      if (clientFeatures.news != null)
+        Setting.createSettingWithCustomIcon(
+          BlocBuilder<NewsCountBloc, NewsCountData>(
+            builder: (context, state) {
+              const icon = Icon(Icons.newspaper);
+              final count = state.newsCountForUi(clientFeatures);
+              if (count == 0) {
+                return icon;
+              } else {
+                return Badge.count(count: count, child: icon);
+              }
+            },
+          ),
+          context.strings.news_list_screen_title,
+          () => openNewsList(context),
         ),
-        context.strings.news_list_screen_title, () => openNewsList(context),
-      ),
-      Setting.createSetting(Icons.bar_chart, context.strings.statistics_screen_title, () =>
-        openStatisticsScreen(context)
+      Setting.createSetting(
+        Icons.bar_chart,
+        context.strings.statistics_screen_title,
+        () => openStatisticsScreen(context),
       ),
       Setting.createSettingWithCustomIcon(
         BlocBuilder<AutomaticProfileSearchBadgeBloc, AutomaticProfileSearchBadgeData>(
@@ -153,25 +161,36 @@ class _MenuViewState extends State<MenuView> {
             } else {
               return Badge.count(count: count, child: icon);
             }
-          }
+          },
         ),
-        context.strings.automatic_profile_search_results_screen_title, () => openAutomaticProfileSearchResultsScreen(context),
+        context.strings.automatic_profile_search_results_screen_title,
+        () => openAutomaticProfileSearchResultsScreen(context),
       ),
-      Setting.createSetting(Icons.settings, context.strings.settings_screen_title, () =>
-        openSettingsScreen(context)
+      Setting.createSetting(
+        Icons.settings,
+        context.strings.settings_screen_title,
+        () => openSettingsScreen(context),
       ),
     ];
 
     if (AdminSettingsPermissions(permissions).somePermissionEnabled()) {
-      settings.add(Setting.createSetting(Icons.admin_panel_settings, context.strings.admin_settings_title, () =>
-        MyNavigator.push(context, const MaterialPage<void>(child: AdminSettingsPage()))
-      ));
+      settings.add(
+        Setting.createSetting(
+          Icons.admin_panel_settings,
+          context.strings.admin_settings_title,
+          () => MyNavigator.push(context, const MaterialPage<void>(child: AdminSettingsPage())),
+        ),
+      );
     }
 
     if (!kReleaseMode) {
-      settings.add(Setting.createSetting(Icons.bug_report_rounded, "Debug", () =>
-        MyNavigator.push(context, const MaterialPage<void>(child: DebugSettingsPage()))
-      ));
+      settings.add(
+        Setting.createSetting(
+          Icons.bug_report_rounded,
+          "Debug",
+          () => MyNavigator.push(context, const MaterialPage<void>(child: DebugSettingsPage())),
+        ),
+      );
     }
 
     return settings;
@@ -182,10 +201,7 @@ class _MenuViewState extends State<MenuView> {
       controller: _scrollController,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          viewServerMaintenanceInfo(),
-          ...settings.map((setting) => setting.toListTile()),
-        ],
+        children: [viewServerMaintenanceInfo(), ...settings.map((setting) => setting.toListTile())],
       ),
     );
   }
@@ -198,7 +214,8 @@ class _MenuViewState extends State<MenuView> {
           return const SizedBox.shrink();
         }
 
-        if (context.read<BottomNavigationStateBloc>().state.screen == BottomNavigationScreenId.settings) {
+        if (context.read<BottomNavigationStateBloc>().state.screen ==
+            BottomNavigationScreenId.settings) {
           context.read<ServerMaintenanceBloc>().add(ViewServerMaintenanceInfo());
         }
 
@@ -218,7 +235,7 @@ class _MenuViewState extends State<MenuView> {
             ),
           ),
         );
-      }
+      },
     );
   }
 
@@ -237,19 +254,11 @@ class Setting {
   Setting(this._iconWidget, this._widget, this.action);
 
   factory Setting.createSetting(IconData icon, String text, void Function() action) {
-    return Setting(
-      Icon(icon),
-      Text(text),
-      action,
-    );
+    return Setting(Icon(icon), Text(text), action);
   }
 
   factory Setting.createSettingWithCustomIcon(Widget icon, String text, void Function() action) {
-    return Setting(
-      icon,
-      Text(text),
-      action,
-    );
+    return Setting(icon, Text(text), action);
   }
 
   Widget toListTile() {

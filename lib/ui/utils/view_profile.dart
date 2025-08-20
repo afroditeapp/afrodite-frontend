@@ -1,6 +1,3 @@
-
-
-
 import 'package:app/ui_utils/consts/colors.dart';
 import 'package:app/ui_utils/consts/icons.dart';
 import 'package:app/ui_utils/extensions/api.dart';
@@ -66,10 +63,10 @@ class _ViewProfileEntryState extends State<ViewProfileEntry> {
               if (showProfileText) const Padding(padding: EdgeInsets.only(top: 16)),
               attributes(),
               const Padding(padding: EdgeInsets.only(top: FLOATING_ACTION_BUTTON_EMPTY_AREA)),
-            ]
+            ],
           ),
         );
-      }
+      },
     );
   }
 
@@ -91,7 +88,7 @@ class _ViewProfileEntryState extends State<ViewProfileEntry> {
                   child: Text(
                     widget.profile.profileTitleWithAge(
                       context.read<UiSettingsBloc>().state.showNonAcceptedProfileNames ||
-                      isMyProfile(),
+                          isMyProfile(),
                     ),
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
@@ -103,12 +100,10 @@ class _ViewProfileEntryState extends State<ViewProfileEntry> {
           if ((myProfile?.unlimitedLikes ?? false) && widget.profile.unlimitedLikes)
             Padding(
               padding: const EdgeInsets.only(left: 8.0),
-              child: Icon(
-                UNLIMITED_LIKES_ICON,
-                color: getUnlimitedLikesColor(context),
-              ),
+              child: Icon(UNLIMITED_LIKES_ICON, color: getUnlimitedLikesColor(context)),
             ),
-          if (widget.profile.containsNonAcceptedContent()) profileContentNotAcceptedInfoButton(context),
+          if (widget.profile.containsNonAcceptedContent())
+            profileContentNotAcceptedInfoButton(context),
         ],
       ),
     );
@@ -117,14 +112,19 @@ class _ViewProfileEntryState extends State<ViewProfileEntry> {
   Widget nameNotAcceptedInfoButton(BuildContext context) {
     return IconButton(
       onPressed: () {
-        var infoText = context.strings.view_profile_screen_non_accepted_profile_name_info_dialog_text;
+        var infoText =
+            context.strings.view_profile_screen_non_accepted_profile_name_info_dialog_text;
         final profile = widget.profile;
         if (profile is MyProfileEntry) {
           final stateText = switch (profile.profileNameModerationState) {
-            ProfileStringModerationState.rejectedByBot => context.strings.moderation_state_rejected_by_bot,
-            ProfileStringModerationState.rejectedByHuman => context.strings.moderation_state_rejected_by_human,
-            ProfileStringModerationState.waitingBotOrHumanModeration => context.strings.moderation_state_waiting_bot_or_human_moderation,
-            ProfileStringModerationState.waitingHumanModeration => context.strings.moderation_state_waiting_human_moderation,
+            ProfileStringModerationState.rejectedByBot =>
+              context.strings.moderation_state_rejected_by_bot,
+            ProfileStringModerationState.rejectedByHuman =>
+              context.strings.moderation_state_rejected_by_human,
+            ProfileStringModerationState.waitingBotOrHumanModeration =>
+              context.strings.moderation_state_waiting_bot_or_human_moderation,
+            ProfileStringModerationState.waitingHumanModeration =>
+              context.strings.moderation_state_waiting_human_moderation,
             _ => null,
           };
           infoText = addModerationStateRow(context, infoText, stateText);
@@ -138,15 +138,21 @@ class _ViewProfileEntryState extends State<ViewProfileEntry> {
   Widget profileContentNotAcceptedInfoButton(BuildContext context) {
     return IconButton(
       onPressed: () {
-        var infoText = context.strings.view_profile_screen_non_accepted_profile_content_info_dialog_text;
+        var infoText =
+            context.strings.view_profile_screen_non_accepted_profile_content_info_dialog_text;
         final profile = widget.profile;
         if (profile is MyProfileEntry) {
           for (final (i, c) in profile.myContent.indexed) {
             if (c.accepted) {
               continue;
             }
-            infoText = "$infoText\n\n${context.strings.view_profile_screen_non_accepted_profile_content_info_dialog_text_picture_title((i + 1).toString())}";
-            infoText = addModerationStateRow(context, infoText, c.state.toUiString(context).toString());
+            infoText =
+                "$infoText\n\n${context.strings.view_profile_screen_non_accepted_profile_content_info_dialog_text_picture_title((i + 1).toString())}";
+            infoText = addModerationStateRow(
+              context,
+              infoText,
+              c.state.toUiString(context).toString(),
+            );
             infoText = addRejectedCategoryRow(context, infoText, c.rejectedCategory?.value);
             infoText = addRejectedDetailsRow(context, infoText, c.rejectedDetails?.value);
           }
@@ -170,10 +176,7 @@ class _ViewProfileEntryState extends State<ViewProfileEntry> {
     }
 
     return Padding(
-      padding: EdgeInsets.only(
-        left: COMMON_SCREEN_EDGE_PADDING,
-        right: rightPadding,
-      ),
+      padding: EdgeInsets.only(left: COMMON_SCREEN_EDGE_PADDING, right: rightPadding),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -183,26 +186,40 @@ class _ViewProfileEntryState extends State<ViewProfileEntry> {
               style: Theme.of(context).textTheme.bodyLarge,
             ),
           ),
-          if (!widget.profile.profileTextAccepted) IconButton(
-            onPressed: () {
-              var infoText = context.strings.view_profile_screen_non_accepted_profile_text_info_dialog_text;
-              final profile = widget.profile;
-              if (profile is MyProfileEntry) {
-                final stateText = switch (profile.profileTextModerationState) {
-                  ProfileStringModerationState.rejectedByBot => context.strings.moderation_state_rejected_by_bot,
-                  ProfileStringModerationState.rejectedByHuman => context.strings.moderation_state_rejected_by_human,
-                  ProfileStringModerationState.waitingBotOrHumanModeration => context.strings.moderation_state_waiting_bot_or_human_moderation,
-                  ProfileStringModerationState.waitingHumanModeration => context.strings.moderation_state_waiting_human_moderation,
-                  _ => null,
-                };
-                infoText = addModerationStateRow(context, infoText, stateText);
-                infoText = addRejectedCategoryRow(context, infoText, profile.profileTextModerationRejectedCategory?.value);
-                infoText = addRejectedDetailsRow(context, infoText, profile.profileTextModerationRejectedDetails?.value);
-              }
-              showInfoDialog(context, infoText);
-            },
-            icon: const Icon(Icons.info),
-          ),
+          if (!widget.profile.profileTextAccepted)
+            IconButton(
+              onPressed: () {
+                var infoText =
+                    context.strings.view_profile_screen_non_accepted_profile_text_info_dialog_text;
+                final profile = widget.profile;
+                if (profile is MyProfileEntry) {
+                  final stateText = switch (profile.profileTextModerationState) {
+                    ProfileStringModerationState.rejectedByBot =>
+                      context.strings.moderation_state_rejected_by_bot,
+                    ProfileStringModerationState.rejectedByHuman =>
+                      context.strings.moderation_state_rejected_by_human,
+                    ProfileStringModerationState.waitingBotOrHumanModeration =>
+                      context.strings.moderation_state_waiting_bot_or_human_moderation,
+                    ProfileStringModerationState.waitingHumanModeration =>
+                      context.strings.moderation_state_waiting_human_moderation,
+                    _ => null,
+                  };
+                  infoText = addModerationStateRow(context, infoText, stateText);
+                  infoText = addRejectedCategoryRow(
+                    context,
+                    infoText,
+                    profile.profileTextModerationRejectedCategory?.value,
+                  );
+                  infoText = addRejectedDetailsRow(
+                    context,
+                    infoText,
+                    profile.profileTextModerationRejectedDetails?.value,
+                  );
+                }
+                showInfoDialog(context, infoText);
+              },
+              icon: const Icon(Icons.info),
+            ),
         ],
       ),
     );
@@ -211,7 +228,7 @@ class _ViewProfileEntryState extends State<ViewProfileEntry> {
   Widget lastSeenTime(BuildContext context) {
     final lastSeenTime = widget.profile.lastSeenTimeValue;
     final List<Widget> widgets;
-    if (lastSeenTime == null || lastSeenTime < -1)  {
+    if (lastSeenTime == null || lastSeenTime < -1) {
       return const SizedBox.shrink();
     } else if (widget.profile.lastSeenTimeValue == -1) {
       widgets = [
@@ -238,38 +255,41 @@ class _ViewProfileEntryState extends State<ViewProfileEntry> {
       if (lastSeenDuration.inDays == 1) {
         text = context.strings.view_profile_screen_profile_last_seen_day(1.toString());
       } else if (lastSeenDuration.inDays > 1) {
-        text = context.strings.view_profile_screen_profile_last_seen_days(lastSeenDuration.inDays.toString());
+        text = context.strings.view_profile_screen_profile_last_seen_days(
+          lastSeenDuration.inDays.toString(),
+        );
       } else if (lastSeenDuration.inHours == 1) {
         text = context.strings.view_profile_screen_profile_last_seen_hour(1.toString());
       } else if (lastSeenDuration.inHours > 1) {
-        text = context.strings.view_profile_screen_profile_last_seen_hours(lastSeenDuration.inHours.toString());
+        text = context.strings.view_profile_screen_profile_last_seen_hours(
+          lastSeenDuration.inHours.toString(),
+        );
       } else if (lastSeenDuration.inMinutes == 1) {
         text = context.strings.view_profile_screen_profile_last_seen_minute(1.toString());
       } else if (lastSeenDuration.inMinutes > 1) {
-        text = context.strings.view_profile_screen_profile_last_seen_minutes(lastSeenDuration.inMinutes.toString());
+        text = context.strings.view_profile_screen_profile_last_seen_minutes(
+          lastSeenDuration.inMinutes.toString(),
+        );
       } else if (lastSeenDuration.inSeconds == 0) {
-        text = context.strings.view_profile_screen_profile_last_seen_seconds(lastSeenDuration.inSeconds.toString());
+        text = context.strings.view_profile_screen_profile_last_seen_seconds(
+          lastSeenDuration.inSeconds.toString(),
+        );
       } else if (lastSeenDuration.inSeconds == 1) {
         text = context.strings.view_profile_screen_profile_last_seen_second(1.toString());
       } else {
-        text = context.strings.view_profile_screen_profile_last_seen_seconds(lastSeenDuration.inSeconds.toString());
+        text = context.strings.view_profile_screen_profile_last_seen_seconds(
+          lastSeenDuration.inSeconds.toString(),
+        );
       }
 
-      widgets = [
-        Text(
-          text,
-          style: Theme.of(context).textTheme.titleSmall,
-        ),
-      ];
+      widgets = [Text(text, style: Theme.of(context).textTheme.titleSmall)];
     }
 
     return Align(
       alignment: Alignment.centerLeft,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: COMMON_SCREEN_EDGE_PADDING),
-        child: Row(
-          children: widgets,
-        ),
+        child: Row(children: widgets),
       ),
     );
   }
@@ -283,7 +303,7 @@ class _ViewProfileEntryState extends State<ViewProfileEntry> {
         } else {
           return AttributeList(manager: manager, attributes: widget.profile.attributeIdAndStateMap);
         }
-      }
+      },
     );
   }
 }
@@ -294,7 +314,7 @@ class ViewProfileImgViewer extends StatefulWidget {
   const ViewProfileImgViewer({
     required this.profile,
     required this.showNonAcceptedImages,
-    super.key
+    super.key,
   });
 
   @override
@@ -306,9 +326,7 @@ class _ViewProfileImgViewerState extends State<ViewProfileImgViewer> {
 
   List<ContentIdAndAccepted> contentList = [];
 
-  final PageController pageController = PageController(
-    keepPage: false,
-  );
+  final PageController pageController = PageController(keepPage: false);
 
   @override
   void initState() {
@@ -352,11 +370,7 @@ class _ViewProfileImgViewerState extends State<ViewProfileImgViewer> {
       children: [
         // Load all profile images to image cache to avoid flickering
         // when changing to the next image.
-        ...imgs.map((image) => Visibility(
-          visible: false,
-          maintainState: true,
-          child: image,
-        )),
+        ...imgs.map((image) => Visibility(visible: false, maintainState: true, child: image)),
         PageView(
           controller: pageController,
           onPageChanged: (int index) {
@@ -371,7 +385,7 @@ class _ViewProfileImgViewerState extends State<ViewProfileImgViewer> {
           child: SelectedImgIndicator(selectedImg: selectedImg, imgCount: imgs.length),
         ),
         touchArea(imgs.length),
-      ]
+      ],
     );
   }
 
@@ -406,7 +420,7 @@ class _ViewProfileImgViewerState extends State<ViewProfileImgViewer> {
             },
           ),
         ),
-      ]
+      ],
     );
   }
 
@@ -449,10 +463,7 @@ class SelectedImgIndicator extends StatelessWidget {
       indicators.add(oneIndicator);
     }
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: indicators,
-    );
+    return Row(mainAxisAlignment: MainAxisAlignment.center, children: indicators);
   }
 }
 
@@ -475,9 +486,7 @@ class AttributeList extends StatelessWidget {
       attributeWidgets.removeLast();
     }
 
-    return Column(
-      children: attributeWidgets,
-    );
+    return Column(children: attributeWidgets);
   }
 
   Widget attributeWidget(BuildContext context, AttributeAndState a) {
@@ -510,10 +519,8 @@ class AttributeValuesArea extends StatelessWidget {
 
   Widget attributeValuesArea(BuildContext c, AttributeValueAreaInfoProvider a) {
     final List<Widget> valueWidgets = [];
-      for (final v in a.valueAreaExtraValues()) {
-      final w = Chip(
-        label: Text(v),
-      );
+    for (final v in a.valueAreaExtraValues()) {
+      final w = Chip(label: Text(v));
       valueWidgets.add(w);
     }
 
@@ -529,7 +536,9 @@ class AttributeValuesArea extends StatelessWidget {
       final w = Chip(
         avatar: avatar,
         label: Text(text),
-        backgroundColor: a.valueAreaSelectedAlternativeColor() ? Theme.of(c).colorScheme.primaryContainer : null,
+        backgroundColor: a.valueAreaSelectedAlternativeColor()
+            ? Theme.of(c).colorScheme.primaryContainer
+            : null,
       );
       valueWidgets.add(w);
     }
@@ -558,10 +567,7 @@ class AttributeValuesArea extends StatelessWidget {
         return Text(c.strings.generic_empty);
       }
     } else {
-      return Wrap(
-        spacing: 8,
-        children: valueWidgets,
-      );
+      return Wrap(spacing: 8, children: valueWidgets);
     }
   }
 }

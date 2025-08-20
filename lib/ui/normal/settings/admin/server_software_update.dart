@@ -1,4 +1,3 @@
-
 import 'package:app/localizations.dart';
 import 'package:app/ui_utils/padding.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +15,6 @@ class ServerSoftwareUpdatePage extends StatefulWidget {
 }
 
 class _ServerSoftwareUpdatePageState extends State<ServerSoftwareUpdatePage> {
-
   BackendVersion? _runningVersion;
   ManagerInstanceNameList? _managers;
   List<ManagerInstanceRelatedState>? _currentData = [];
@@ -54,16 +52,10 @@ class _ServerSoftwareUpdatePageState extends State<ServerSoftwareUpdatePage> {
   @override
   Widget build(BuildContext context) {
     List<Widget> actions = [];
-    actions.add(IconButton(
-      onPressed: _refreshData,
-      icon: const Icon(Icons.refresh),
-    ));
+    actions.add(IconButton(onPressed: _refreshData, icon: const Icon(Icons.refresh)));
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Server software update"),
-        actions: actions,
-      ),
+      appBar: AppBar(title: const Text("Server software update"), actions: actions),
       body: displayState(),
     );
   }
@@ -72,9 +64,7 @@ class _ServerSoftwareUpdatePageState extends State<ServerSoftwareUpdatePage> {
     final runningVersion = _runningVersion;
     final data = _currentData;
     if (isLoading) {
-      return const Center(
-        child: CircularProgressIndicator(),
-      );
+      return const Center(child: CircularProgressIndicator());
     } else if (_managers == null || runningVersion == null || data == null) {
       return Center(child: Text(context.strings.generic_error));
     } else {
@@ -92,7 +82,9 @@ class _ServerSoftwareUpdatePageState extends State<ServerSoftwareUpdatePage> {
           if (i == 0) {
             return Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text("Running backend: ${runningVersion.backendVersion} ${runningVersion.backendCodeVersion}"),
+              child: Text(
+                "Running backend: ${runningVersion.backendVersion} ${runningVersion.backendCodeVersion}",
+              ),
             );
           } else {
             final data = statusList[i - 1];
@@ -202,23 +194,25 @@ class _ServerSoftwareUpdatePageState extends State<ServerSoftwareUpdatePage> {
           return;
         }
 
-        showConfirmDialog(context, "Request update?")
-          .then((value) async {
-            if (value == true) {
-              final result = await api
-                .commonAdminAction(
-                  (api) => api.postTriggerSoftwareUpdateInstall(state.manager, downloaded.name, downloaded.sha256)
-                );
-              if (result case Ok()) {
-                showSnackBar("Update requested!");
-              } else {
-                showSnackBar("Update request failed!");
-              }
-              if (context.mounted) {
-                await _refreshData();
-              }
+        showConfirmDialog(context, "Request update?").then((value) async {
+          if (value == true) {
+            final result = await api.commonAdminAction(
+              (api) => api.postTriggerSoftwareUpdateInstall(
+                state.manager,
+                downloaded.name,
+                downloaded.sha256,
+              ),
+            );
+            if (result case Ok()) {
+              showSnackBar("Update requested!");
+            } else {
+              showSnackBar("Update request failed!");
             }
-          });
+            if (context.mounted) {
+              await _refreshData();
+            }
+          }
+        });
       },
       child: const Text("Request update"),
     );
@@ -229,9 +223,7 @@ class _ServerSoftwareUpdatePageState extends State<ServerSoftwareUpdatePage> {
       children: [
         TextField(
           controller: state.sha256Controller,
-          decoration: const InputDecoration(
-            hintText: "sha256",
-          ),
+          decoration: const InputDecoration(hintText: "sha256"),
         ),
         const Padding(padding: EdgeInsets.all(8.0)),
         requestUpdateButton,
@@ -239,29 +231,24 @@ class _ServerSoftwareUpdatePageState extends State<ServerSoftwareUpdatePage> {
     );
   }
 
-  Widget displayDownload(
-    BuildContext context,
-    ManagerInstanceRelatedState state,
-  ) {
+  Widget displayDownload(BuildContext context, ManagerInstanceRelatedState state) {
     return ElevatedButton(
       onPressed: () {
-        showConfirmDialog(context, "Check updates?")
-          .then((value) async {
-            if (value == true) {
-              final result = await api
-                .commonAdminAction(
-                  (api) => api.postTriggerSoftwareUpdateDownload(state.manager)
-                );
-              if (result case Ok()) {
-                showSnackBar("Check updates requested!");
-              } else {
-                showSnackBar("Check updates failed!");
-              }
-              if (context.mounted) {
-                await _refreshData();
-              }
+        showConfirmDialog(context, "Check updates?").then((value) async {
+          if (value == true) {
+            final result = await api.commonAdminAction(
+              (api) => api.postTriggerSoftwareUpdateDownload(state.manager),
+            );
+            if (result case Ok()) {
+              showSnackBar("Check updates requested!");
+            } else {
+              showSnackBar("Check updates failed!");
             }
-          });
+            if (context.mounted) {
+              await _refreshData();
+            }
+          }
+        });
       },
       child: const Text("Check updates"),
     );

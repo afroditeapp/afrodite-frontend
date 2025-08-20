@@ -1,7 +1,3 @@
-
-
-
-
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
@@ -32,13 +28,16 @@ var log = Logger("ServerConnection");
 enum ServerConnectionError {
   /// Invalid token, so new login required.
   invalidToken,
+
   /// Server unreachable, server connection broke or protocol error.
   connectionFailure,
+
   /// Unsupported client version.
   unsupportedClientVersion,
 }
 
 sealed class ServerConnectionState {}
+
 /// No connection. Initial and after closing state.
 class ReadyToConnect implements ServerConnectionState {
   @override
@@ -49,6 +48,7 @@ class ReadyToConnect implements ServerConnectionState {
   @override
   int get hashCode => runtimeType.hashCode;
 }
+
 /// Connection exists. Connecting to server or getting new tokens.
 class Connecting implements ServerConnectionState {
   @override
@@ -59,6 +59,7 @@ class Connecting implements ServerConnectionState {
   @override
   int get hashCode => runtimeType.hashCode;
 }
+
 /// Connection exists. New tokens received and event listening started.
 class Ready implements ServerConnectionState {
   final AccessToken token;
@@ -106,10 +107,8 @@ class ServerConnection {
 
   WebSocketWrapper? _connection;
 
-  final BehaviorSubject<ServerConnectionState> _state =
-    BehaviorSubject.seeded(ReadyToConnect());
-  final PublishSubject<ServerWsEvent> _events =
-    PublishSubject();
+  final BehaviorSubject<ServerConnectionState> _state = BehaviorSubject.seeded(ReadyToConnect());
+  final PublishSubject<ServerWsEvent> _events = PublishSubject();
 
   Stream<ServerConnectionState> get state => _state;
   Stream<ServerWsEvent> get serverEvents => _events;
@@ -135,12 +134,13 @@ class ServerConnection {
     _state.add(Connecting());
     unawaited(_connect().then((value) => null)); // Connect in background.
 
-    _navigationSubscription ??= NavigationStateBlocInstance.getInstance().navigationStateStream.listen((navigationState) {
-      final ws = _connection;
-      if (ws != null) {
-        ws.updatePingInterval(navigationState);
-      }
-    });
+    _navigationSubscription ??= NavigationStateBlocInstance.getInstance().navigationStateStream
+        .listen((navigationState) {
+          final ws = _connection;
+          if (ws != null) {
+            ws.updatePingInterval(navigationState);
+          }
+        });
 
     _startInProgress = false;
   }
@@ -150,12 +150,16 @@ class ServerConnection {
 
     var protocolState = ConnectionProtocolState.receiveFirstMessage;
 
-    final accessToken = await db.accountStreamSingle((db) => db.loginSession.watchAccessToken()).ok();
+    final accessToken = await db
+        .accountStreamSingle((db) => db.loginSession.watchAccessToken())
+        .ok();
     if (accessToken == null) {
       _state.add(Error(ServerConnectionError.invalidToken));
       return;
     }
-    final refreshToken = await db.accountStreamSingle((db) => db.loginSession.watchRefreshToken()).ok();
+    final refreshToken = await db
+        .accountStreamSingle((db) => db.loginSession.watchRefreshToken())
+        .ok();
     if (refreshToken == null) {
       _state.add(Error(ServerConnectionError.invalidToken));
       return;
@@ -168,7 +172,9 @@ class ServerConnection {
       }
       final wsAddress = Uri.parse(_address.replaceFirst("http", "ws"));
       try {
-        ws = WebSocketWrapper(WebSocketChannel.connect(wsAddress, protocols: ["0", accessToken.token]));
+        ws = WebSocketWrapper(
+          WebSocketChannel.connect(wsAddress, protocols: ["0", accessToken.token]),
+        );
         _connection = ws;
       } catch (e) {
         log.error("Server connection: WebScocket connecting exception");
@@ -180,7 +186,9 @@ class ServerConnection {
       final bytes = generate128BitRandomValue();
       final key = base64.encode(bytes);
 
-      final client = IOClient(HttpClient(context: await createSecurityContextForBackendConnection()));
+      final client = IOClient(
+        HttpClient(context: await createSecurityContextForBackendConnection()),
+      );
       final headers = {
         HttpHeaders.connectionHeader: "upgrade",
         HttpHeaders.upgradeHeader: "websocket",
@@ -214,7 +222,10 @@ class ServerConnection {
         return;
       }
 
-      final webSocket = WebSocket.fromUpgradedSocket(await response.detachSocket(), serverSide: false);
+      final webSocket = WebSocket.fromUpgradedSocket(
+        await response.detachSocket(),
+        serverSide: false,
+      );
       ws = WebSocketWrapper(IOWebSocketChannel(webSocket));
       _connection = ws;
     }
@@ -230,99 +241,106 @@ class ServerConnection {
       await ws.updatePingInterval(NavigationStateBlocInstance.getInstance().navigationState);
     }
 
-    ws
-      .connection
-      .stream
-      .asyncMap((message) async {
-        switch (protocolState) {
-          case ConnectionProtocolState.receiveFirstMessage: {
-            if (message is List<int>) {
-              switch (message) {
-                case [0]:
-                  await handleConnectionIsReadyForDataSync(accessToken);
-                case [1]:
-                  final byteToken = base64Decode(refreshToken.token);
-                  ws.connection.sink.add(byteToken);
-                  protocolState = ConnectionProtocolState.receiveNewRefreshToken;
-                case [2]:
-                  await _endConnectionToGeneralError(error: ServerConnectionError.unsupportedClientVersion);
-                default:
+    ws.connection.stream
+        .asyncMap((message) async {
+          switch (protocolState) {
+            case ConnectionProtocolState.receiveFirstMessage:
+              {
+                if (message is List<int>) {
+                  switch (message) {
+                    case [0]:
+                      await handleConnectionIsReadyForDataSync(accessToken);
+                    case [1]:
+                      final byteToken = base64Decode(refreshToken.token);
+                      ws.connection.sink.add(byteToken);
+                      protocolState = ConnectionProtocolState.receiveNewRefreshToken;
+                    case [2]:
+                      await _endConnectionToGeneralError(
+                        error: ServerConnectionError.unsupportedClientVersion,
+                      );
+                    default:
+                      await _endConnectionToGeneralError();
+                  }
+                  final newRefreshToken = RefreshToken(token: base64Encode(message));
+                  await db.accountAction(
+                    (db) => db.loginSession.updateRefreshToken(newRefreshToken),
+                  );
+                } else {
                   await _endConnectionToGeneralError();
+                }
               }
-              final newRefreshToken = RefreshToken(token: base64Encode(message));
-              await db.accountAction((db) => db.loginSession.updateRefreshToken(newRefreshToken));
-
-            } else {
-              await _endConnectionToGeneralError();
-            }
-          }
-          case ConnectionProtocolState.receiveNewRefreshToken: {
-            if (message is List<int>) {
-              final newRefreshToken = RefreshToken(token: base64Encode(message));
-              await db.accountAction((db) => db.loginSession.updateRefreshToken(newRefreshToken));
-              protocolState = ConnectionProtocolState.receiveNewAccessToken;
-            } else {
-              await _endConnectionToGeneralError();
-            }
-          }
-          case ConnectionProtocolState.receiveNewAccessToken: {
-            if (message is List<int>) {
-              final newAccessToken = AccessToken(
-                token: base64Url
-                  .encode(message)
-                  .replaceAll("=", "")
-              );
-              await db.accountAction((db) => db.loginSession.updateAccessToken(newAccessToken));
-              await handleConnectionIsReadyForDataSync(newAccessToken);
-            } else {
-              await _endConnectionToGeneralError();
-            }
-          }
-          case ConnectionProtocolState.receiveEvents: {
-            if (message is String) {
-              final event = EventToClient.fromJson(jsonDecode(message));
-              if (event != null) {
-                _events.add(EventToClientContainer(event));
+            case ConnectionProtocolState.receiveNewRefreshToken:
+              {
+                if (message is List<int>) {
+                  final newRefreshToken = RefreshToken(token: base64Encode(message));
+                  await db.accountAction(
+                    (db) => db.loginSession.updateRefreshToken(newRefreshToken),
+                  );
+                  protocolState = ConnectionProtocolState.receiveNewAccessToken;
+                } else {
+                  await _endConnectionToGeneralError();
+                }
               }
+            case ConnectionProtocolState.receiveNewAccessToken:
+              {
+                if (message is List<int>) {
+                  final newAccessToken = AccessToken(
+                    token: base64Url.encode(message).replaceAll("=", ""),
+                  );
+                  await db.accountAction((db) => db.loginSession.updateAccessToken(newAccessToken));
+                  await handleConnectionIsReadyForDataSync(newAccessToken);
+                } else {
+                  await _endConnectionToGeneralError();
+                }
+              }
+            case ConnectionProtocolState.receiveEvents:
+              {
+                if (message is String) {
+                  final event = EventToClient.fromJson(jsonDecode(message));
+                  if (event != null) {
+                    _events.add(EventToClientContainer(event));
+                  }
+                }
+              }
+          }
+        })
+        .listen(
+          null,
+          onError: (Object error) {
+            log.error("Connection exception");
+            log.fine("$error");
+            _endConnectionToGeneralError();
+          },
+          onDone: () {
+            if (_connection == null) {
+              // Client closed the connection.
+              return;
             }
-          }
-        }
-      })
-      .listen(
-        null,
-        onError: (Object error) {
-          log.error("Connection exception");
-          log.fine("$error");
-          _endConnectionToGeneralError();
-        },
-        onDone: () {
-          if (_connection == null) {
-            // Client closed the connection.
-            return;
-          }
 
-          if (ws.connection.closeCode != null &&
-            ws.connection.closeCode == status.internalServerError) {
-            log.error("Invalid token");
-            _state.add(Error(ServerConnectionError.invalidToken));
-          } else {
-            log.error("Connection closed");
-            _state.add(Error(ServerConnectionError.connectionFailure));
-          }
-          ws.close();
-          _connection = null;
-        },
-        cancelOnError: true,
-      );
+            if (ws.connection.closeCode != null &&
+                ws.connection.closeCode == status.internalServerError) {
+              log.error("Invalid token");
+              _state.add(Error(ServerConnectionError.invalidToken));
+            } else {
+              log.error("Connection closed");
+              _state.add(Error(ServerConnectionError.connectionFailure));
+            }
+            ws.close();
+            _connection = null;
+          },
+          cancelOnError: true,
+        );
   }
 
-  Future<void> _endConnectionToGeneralError({ServerConnectionError error = ServerConnectionError.connectionFailure}) async {
+  Future<void> _endConnectionToGeneralError({
+    ServerConnectionError error = ServerConnectionError.connectionFailure,
+  }) async {
     // Nullify connection to make sure that onDone is called when
     // _connection is null. This order seems not required but, this style
     // feels safer.
     final c = _connection;
     _connection = null;
-    if (c != null)  {
+    if (c != null) {
       await c.close();
       _state.add(Error(error));
     }
@@ -398,32 +416,35 @@ const forceSync = 255;
     ServerMaintenanceIsScheduled = 255,
 */
 
-Future<Uint8List> syncDataBytes(AccountDatabaseManager db, AccountBackgroundDatabaseManager accountBackgroundDb) async {
-  final syncVersionAccount = await db.accountStreamSingle(
-    (db) => db.common.watchSyncVersionAccount()
-  ).ok() ?? forceSync;
-  final syncVersionReceivedLikes = await accountBackgroundDb.accountStreamSingle(
-    (db) => db.newReceivedLikesCount.watchSyncVersionReceivedLikes()
-  ).ok() ?? forceSync;
-  final syncVersionClientConfig = await db.accountStreamSingle(
-    (db) => db.common.watchSyncVersionClientConfig()
-  ).ok() ?? forceSync;
-  final syncVersionProfile = await db.accountStreamSingle(
-    (db) => db.common.watchSyncVersionProfile()
-  ).ok() ?? forceSync;
-  final syncVersionNews = await accountBackgroundDb.accountStreamSingle(
-    (db) => db.news.watchSyncVersionNews()
-  ).ok() ?? forceSync;
-  final syncVersionMediaContent = await db.accountStreamSingle(
-    (db) => db.common.watchSyncVersionMediaContent()
-  ).ok() ?? forceSync;
-  final syncVersionDailyLikesLeft = await db.accountStreamSingle(
-    (db) => db.like.watchDailyLikesLeftSyncVersion()
-  ).ok() ?? forceSync;
+Future<Uint8List> syncDataBytes(
+  AccountDatabaseManager db,
+  AccountBackgroundDatabaseManager accountBackgroundDb,
+) async {
+  final syncVersionAccount =
+      await db.accountStreamSingle((db) => db.common.watchSyncVersionAccount()).ok() ?? forceSync;
+  final syncVersionReceivedLikes =
+      await accountBackgroundDb
+          .accountStreamSingle((db) => db.newReceivedLikesCount.watchSyncVersionReceivedLikes())
+          .ok() ??
+      forceSync;
+  final syncVersionClientConfig =
+      await db.accountStreamSingle((db) => db.common.watchSyncVersionClientConfig()).ok() ??
+      forceSync;
+  final syncVersionProfile =
+      await db.accountStreamSingle((db) => db.common.watchSyncVersionProfile()).ok() ?? forceSync;
+  final syncVersionNews =
+      await accountBackgroundDb.accountStreamSingle((db) => db.news.watchSyncVersionNews()).ok() ??
+      forceSync;
+  final syncVersionMediaContent =
+      await db.accountStreamSingle((db) => db.common.watchSyncVersionMediaContent()).ok() ??
+      forceSync;
+  final syncVersionDailyLikesLeft =
+      await db.accountStreamSingle((db) => db.like.watchDailyLikesLeftSyncVersion()).ok() ??
+      forceSync;
 
-  final currentMaintenanceInfo = await db.accountStreamSingle(
-    (db) => db.common.watchServerMaintenanceInfo()
-  ).ok();
+  final currentMaintenanceInfo = await db
+      .accountStreamSingle((db) => db.common.watchServerMaintenanceInfo())
+      .ok();
   final sendMaintenanceSyncVersion = currentMaintenanceInfo?.maintenanceLatest != null;
 
   final bytes = <int>[

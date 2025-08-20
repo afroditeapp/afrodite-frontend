@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 import 'dart:typed_data';
 
@@ -31,11 +30,10 @@ sealed class Message {
       if (numberList.length < 3) {
         return UnsupportedMessage(bytes);
       }
-      final littleEndianBytes = [
-        numberList[1],
-        numberList[2],
-      ];
-      final utf8Lenght = ByteData.sublistView(Uint8List.fromList(littleEndianBytes)).getUint16(0, Endian.little);
+      final littleEndianBytes = [numberList[1], numberList[2]];
+      final utf8Lenght = ByteData.sublistView(
+        Uint8List.fromList(littleEndianBytes),
+      ).getUint16(0, Endian.little);
       final utf8Text = numberList.skip(3).take(utf8Lenght).toList();
       try {
         final textMessage = TextMessage.create(utf8.decode(utf8Text));
@@ -44,7 +42,7 @@ sealed class Message {
         } else {
           return textMessage;
         }
-      } on FormatException catch (_)  {
+      } on FormatException catch (_) {
         return UnsupportedMessage(bytes);
       }
     } else if (messageTypeNumber == _MessagePacketType.videoCallInvitation.number) {
@@ -74,11 +72,7 @@ class TextMessage extends Message {
 
     final textLenghtBytes = u16ToLittleEndianBytes(textBytes.length);
 
-    final bytes = [
-      _MessagePacketType.text.number,
-      ...textLenghtBytes,
-      ...textBytes,
-    ];
+    final bytes = [_MessagePacketType.text.number, ...textLenghtBytes, ...textBytes];
 
     return Uint8List.fromList(bytes);
   }

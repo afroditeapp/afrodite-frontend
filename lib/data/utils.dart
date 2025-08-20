@@ -1,6 +1,3 @@
-
-
-
 import 'dart:async';
 
 import 'package:app/api/api_manager.dart';
@@ -15,6 +12,7 @@ abstract class DataRepository extends AppSingleton implements DataRepositoryMeth
   Future<Result<(), ()>> onLoginDataSync() async {
     return const Ok(());
   }
+
   @override
   Future<void> onLogout() async {}
   @override
@@ -35,6 +33,7 @@ abstract class DataRepositoryWithLifecycle implements DataRepositoryMethods, Lif
   Future<Result<(), ()>> onLoginDataSync() async {
     return const Ok(());
   }
+
   @override
   Future<void> onLogout() async {}
   @override
@@ -113,48 +112,36 @@ class ConnectedActionScheduler {
     _onLoginScheduled = true;
 
     Future.any<ServerConnectionState?>([
-      connectionManager
-        .state
-        .firstWhere((element) => element == ServerConnectionState.connected),
-      _cancel
-        .firstWhere((v) => v)
-        .then((v) => null)
-    ])
-      .then((value) async {
-        if (value == null) {
-          return;
-        }
+      connectionManager.state.firstWhere((element) => element == ServerConnectionState.connected),
+      _cancel.firstWhere((v) => v).then((v) => null),
+    ]).then((value) async {
+      if (value == null) {
+        return;
+      }
 
-        if (count != _onLoginScheduledCount) {
-          // Only do latest requested sync
-          return;
-        }
-        await action();
+      if (count != _onLoginScheduledCount) {
+        // Only do latest requested sync
+        return;
+      }
+      await action();
 
-        _onLoginScheduled = false;
-      })
-      .ignore();
+      _onLoginScheduled = false;
+    }).ignore();
   }
 
   void onResumeAppUsageSync(Future<void> Function() action) {
     Future.any<ServerConnectionState?>([
-      connectionManager
-        .state
-        .firstWhere((element) => element == ServerConnectionState.connected),
-      _cancel
-        .firstWhere((v) => v)
-        .then((v) => null)
-    ])
-      .then((value) async {
-        if (value == null) {
-          return;
-        }
+      connectionManager.state.firstWhere((element) => element == ServerConnectionState.connected),
+      _cancel.firstWhere((v) => v).then((v) => null),
+    ]).then((value) async {
+      if (value == null) {
+        return;
+      }
 
-        if (_onLoginScheduled) {
-          return;
-        }
-        await action();
-      })
-      .ignore();
+      if (_onLoginScheduled) {
+        return;
+      }
+      await action();
+    }).ignore();
   }
 }

@@ -11,11 +11,14 @@ class NewId extends LikeGridInstanceMangerEvent {
   final int index;
   NewId(this.index);
 }
+
 class SetVisible extends LikeGridInstanceMangerEvent {
   final int index;
   SetVisible(this.index);
 }
-class LikeGridInstanceManagerBloc extends Bloc<LikeGridInstanceMangerEvent, LikeGridInstanceManagerData> {
+
+class LikeGridInstanceManagerBloc
+    extends Bloc<LikeGridInstanceMangerEvent, LikeGridInstanceManagerData> {
   final BehaviorSubject<int> _currentlyVisibleId = BehaviorSubject.seeded(0);
 
   LikeGridInstanceManagerBloc() : super((currentlyVisibleId: 0, visible: false)) {

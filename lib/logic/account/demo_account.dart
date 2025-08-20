@@ -9,13 +9,16 @@ import "package:app/utils.dart";
 import "package:app/utils/immutable_list.dart";
 import "package:app/utils/result.dart";
 
-
 var log = Logger("DemoAccountBloc");
 
 abstract class DemoAccountEvent {}
+
 class DoDemoAccountLogout extends DemoAccountEvent {}
+
 class DoDemoAccountRefreshAccountList extends DemoAccountEvent {}
+
 class DoDemoAccountCreateNewAccount extends DemoAccountEvent {}
+
 class DoDemoAccountLoginToAccount extends DemoAccountEvent {
   final AccountId id;
   DoDemoAccountLoginToAccount(this.id);
@@ -24,17 +27,12 @@ class DoDemoAccountLoginToAccount extends DemoAccountEvent {
 class DemoAccountBloc extends Bloc<DemoAccountEvent, DemoAccountBlocData> with ActionRunner {
   final LoginRepository login = LoginRepository.getInstance();
 
-  DemoAccountBloc() :
-    super(DemoAccountBlocData()) {
+  DemoAccountBloc() : super(DemoAccountBlocData()) {
     on<DoDemoAccountLogout>((_, emit) async {
       await runOnce(() async {
-        emit(state.copyWith(
-          logoutInProgress: true,
-        ));
+        emit(state.copyWith(logoutInProgress: true));
         await login.demoAccountLogout();
-        emit(state.copyWith(
-          logoutInProgress: false,
-        ));
+        emit(state.copyWith(logoutInProgress: false));
       });
     });
     on<DoDemoAccountRefreshAccountList>((_, emit) async {
@@ -55,16 +53,12 @@ class DemoAccountBloc extends Bloc<DemoAccountEvent, DemoAccountBlocData> with A
     });
     on<DoDemoAccountCreateNewAccount>((_, emit) async {
       await runOnce(() async {
-        handleErrors(
-          await login.demoAccountRegisterAndLogin()
-        );
+        handleErrors(await login.demoAccountRegisterAndLogin());
       });
     });
     on<DoDemoAccountLoginToAccount>((data, emit) async {
       await runOnce(() async {
-        handleErrors(
-          await login.demoAccountLoginToAccount(data.id)
-        );
+        handleErrors(await login.demoAccountLoginToAccount(data.id));
       });
     });
   }

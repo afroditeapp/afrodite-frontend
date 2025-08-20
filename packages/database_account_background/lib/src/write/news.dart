@@ -1,4 +1,3 @@
-
 import 'package:database_account_background/database_account_background.dart';
 import 'package:database_utils/database_utils.dart';
 import 'package:drift/drift.dart';
@@ -8,11 +7,7 @@ import '../schema.dart' as schema;
 
 part 'news.g.dart';
 
-@DriftAccessor(
-  tables: [
-    schema.News,
-  ]
-)
+@DriftAccessor(tables: [schema.News])
 class DaoWriteNews extends DatabaseAccessor<AccountBackgroundDatabase> with _$DaoWriteNewsMixin {
   DaoWriteNews(super.db);
 
@@ -25,7 +20,7 @@ class DaoWriteNews extends DatabaseAccessor<AccountBackgroundDatabase> with _$Da
         NewsCompanion.insert(
           id: SingleRowTable.ID,
           newsCount: Value(unreadNewsCount),
-          syncVersionNews: Value(version.version)
+          syncVersionNews: Value(version.version),
         ),
       );
     });
@@ -33,10 +28,7 @@ class DaoWriteNews extends DatabaseAccessor<AccountBackgroundDatabase> with _$Da
 
   Future<void> resetSyncVersion() async {
     await into(news).insertOnConflictUpdate(
-      NewsCompanion.insert(
-        id: SingleRowTable.ID,
-        syncVersionNews: Value(null)
-      ),
+      NewsCompanion.insert(id: SingleRowTable.ID, syncVersionNews: Value(null)),
     );
   }
 }

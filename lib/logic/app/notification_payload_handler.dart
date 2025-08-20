@@ -29,8 +29,10 @@ class AddNewPayload extends NotificationPayloadHandlerEvent {
   AddNewPayload(this.payload);
 }
 
-class NotificationPayloadHandlerBloc extends Bloc<NotificationPayloadHandlerEvent, NotificationPayloadHandlerData> {
-  final AccountBackgroundDatabaseManager accountBackgroundDb = LoginRepository.getInstance().repositories.accountBackgroundDb;
+class NotificationPayloadHandlerBloc
+    extends Bloc<NotificationPayloadHandlerEvent, NotificationPayloadHandlerData> {
+  final AccountBackgroundDatabaseManager accountBackgroundDb =
+      LoginRepository.getInstance().repositories.accountBackgroundDb;
   final AccountDatabaseManager accountDb = LoginRepository.getInstance().repositories.accountDb;
   StreamSubscription<NotificationPayload>? _payloadSubscription;
 
@@ -50,14 +52,10 @@ class NotificationPayloadHandlerBloc extends Bloc<NotificationPayloadHandlerEven
         await data.handlePayloadCallback(firstPayload);
       }
 
-      emit(state.copyWith(
-        toBeHandled: UnmodifiableList(otherPayloads),
-      ));
+      emit(state.copyWith(toBeHandled: UnmodifiableList(otherPayloads)));
     });
     on<AddNewPayload>((data, emit) async {
-      emit(state.copyWith(
-        toBeHandled: state.toBeHandled.add(data.payload)
-      ));
+      emit(state.copyWith(toBeHandled: state.toBeHandled.add(data.payload)));
     });
 
     _payloadSubscription = NotificationManager.getInstance().onReceivedPayload.listen((state) {

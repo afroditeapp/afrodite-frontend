@@ -1,4 +1,3 @@
-
 import 'package:app/localizations.dart';
 import 'package:app/logic/account/account.dart';
 import 'package:app/model/freezed/logic/account/account.dart';
@@ -22,7 +21,8 @@ class ModerateSingleProfileStringScreen extends StatefulWidget {
   });
 
   @override
-  State<ModerateSingleProfileStringScreen> createState() => _ModerateSingleProfileStringScreenState();
+  State<ModerateSingleProfileStringScreen> createState() =>
+      _ModerateSingleProfileStringScreenState();
 }
 
 class _ModerateSingleProfileStringScreenState extends State<ModerateSingleProfileStringScreen> {
@@ -39,11 +39,8 @@ class _ModerateSingleProfileStringScreenState extends State<ModerateSingleProfil
 
   Future<void> _getData() async {
     final result = await api
-      .profileAdmin(
-        (api) => api.getProfileStringState(
-          widget.contentType,
-          widget.accountId.aid,
-        )).ok();
+        .profileAdmin((api) => api.getProfileStringState(widget.contentType, widget.accountId.aid))
+        .ok();
 
     if (!context.mounted) {
       return;
@@ -72,9 +69,7 @@ class _ModerateSingleProfileStringScreenState extends State<ModerateSingleProfil
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Moderate ${widget.contentType.adminUiText()}"),
-      ),
+      appBar: AppBar(title: Text("Moderate ${widget.contentType.adminUiText()}")),
       body: screenContent(context),
     );
   }
@@ -82,16 +77,14 @@ class _ModerateSingleProfileStringScreenState extends State<ModerateSingleProfil
   Widget screenContent(BuildContext context) {
     final info = data;
     if (isLoading) {
-      return const Center(
-        child: CircularProgressIndicator(),
-      );
+      return const Center(child: CircularProgressIndicator());
     } else if (isError || info == null) {
       return Center(child: Text(context.strings.generic_error));
     } else {
       return BlocBuilder<AccountBloc, AccountBlocData>(
         builder: (context, state) {
           return showData(context, data, state.permissions);
-        }
+        },
       );
     }
   }
@@ -122,13 +115,16 @@ class _ModerateSingleProfileStringScreenState extends State<ModerateSingleProfil
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Padding(padding: EdgeInsets.all(8.0)),
-          if (profileString != null && state != null) hPad(profileStringModerating(
-            context,
-            profileString,
-            rejectionReason ?? "",
-            accepted,
-            state
-          )),
+          if (profileString != null && state != null)
+            hPad(
+              profileStringModerating(
+                context,
+                profileString,
+                rejectionReason ?? "",
+                accepted,
+                state,
+              ),
+            ),
           if (profileString == null) hPad(Text("No ${widget.contentType.adminUiText()}")),
           const Padding(padding: EdgeInsets.all(8.0)),
         ],
@@ -152,28 +148,33 @@ class _ModerateSingleProfileStringScreenState extends State<ModerateSingleProfil
         const Padding(padding: EdgeInsets.all(8.0)),
         Text(state.toString()),
         const Padding(padding: EdgeInsets.all(8.0)),
-        Text(widget.contentType.adminUiTextFirstLetterUppercase(), style: Theme.of(context).textTheme.titleSmall),
+        Text(
+          widget.contentType.adminUiTextFirstLetterUppercase(),
+          style: Theme.of(context).textTheme.titleSmall,
+        ),
         const Padding(padding: EdgeInsets.all(8.0)),
         Text(profileString),
         if (rejectionReason.isNotEmpty) const Padding(padding: EdgeInsets.all(8.0)),
-        if (rejectionReason.isNotEmpty) Text("Rejection reason", style: Theme.of(context).textTheme.titleSmall),
+        if (rejectionReason.isNotEmpty)
+          Text("Rejection reason", style: Theme.of(context).textTheme.titleSmall),
         if (rejectionReason.isNotEmpty) const Padding(padding: EdgeInsets.all(8.0)),
         if (rejectionReason.isNotEmpty) Text(rejectionReason),
         if (accepted == true) const Padding(padding: EdgeInsets.all(8.0)),
-        if (accepted == true) TextField(
-          controller: detailsController,
-          decoration: const InputDecoration(
-            hintText: "Rejection reason",
+        if (accepted == true)
+          TextField(
+            controller: detailsController,
+            decoration: const InputDecoration(hintText: "Rejection reason"),
           ),
-        ),
         const Padding(padding: EdgeInsets.all(8.0)),
-        if (accepted == true) ElevatedButton(
-          onPressed: () async {
-            final details = ProfileStringModerationRejectedReasonDetails(value: detailsController.text.trim());
-            final result = await showConfirmDialog(context, "Reject?", yesNoActions: true);
-            if (result == true && context.mounted) {
-              final result = await api
-                .profileAdminAction(
+        if (accepted == true)
+          ElevatedButton(
+            onPressed: () async {
+              final details = ProfileStringModerationRejectedReasonDetails(
+                value: detailsController.text.trim(),
+              );
+              final result = await showConfirmDialog(context, "Reject?", yesNoActions: true);
+              if (result == true && context.mounted) {
+                final result = await api.profileAdminAction(
                   (api) => api.postModerateProfileString(
                     PostModerateProfileString(
                       contentType: widget.contentType,
@@ -181,22 +182,23 @@ class _ModerateSingleProfileStringScreenState extends State<ModerateSingleProfil
                       accept: false,
                       value: profileString,
                       rejectedDetails: details,
-                    )
-                  ));
-              if (result.isErr()) {
-                showSnackBar(R.strings.generic_error);
+                    ),
+                  ),
+                );
+                if (result.isErr()) {
+                  showSnackBar(R.strings.generic_error);
+                }
+                await _refreshAfterAction();
               }
-              await _refreshAfterAction();
-            }
-          },
-          child: const Text("Reject"),
-        ),
-      if (accepted == false) ElevatedButton(
-          onPressed: () async {
-            final result = await showConfirmDialog(context, "Accept?", yesNoActions: true);
-            if (result == true && context.mounted) {
-              final result = await api
-                .profileAdminAction(
+            },
+            child: const Text("Reject"),
+          ),
+        if (accepted == false)
+          ElevatedButton(
+            onPressed: () async {
+              final result = await showConfirmDialog(context, "Accept?", yesNoActions: true);
+              if (result == true && context.mounted) {
+                final result = await api.profileAdminAction(
                   (api) => api.postModerateProfileString(
                     PostModerateProfileString(
                       contentType: widget.contentType,
@@ -204,16 +206,17 @@ class _ModerateSingleProfileStringScreenState extends State<ModerateSingleProfil
                       accept: true,
                       value: profileString,
                       rejectedDetails: ProfileStringModerationRejectedReasonDetails(value: ""),
-                    )
-                  ));
-              if (result.isErr()) {
-                showSnackBar(R.strings.generic_error);
+                    ),
+                  ),
+                );
+                if (result.isErr()) {
+                  showSnackBar(R.strings.generic_error);
+                }
+                await _refreshAfterAction();
               }
-              await _refreshAfterAction();
-            }
-          },
-          child: const Text("Accept"),
-        )
+            },
+            child: const Text("Accept"),
+          ),
       ],
     );
   }

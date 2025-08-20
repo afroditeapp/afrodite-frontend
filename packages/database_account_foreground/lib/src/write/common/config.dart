@@ -1,4 +1,3 @@
-
 import 'package:async/async.dart';
 import 'package:collection/collection.dart';
 import 'package:database_account_foreground/src/database.dart';
@@ -17,9 +16,10 @@ part 'config.g.dart';
     schema.CustomReportsConfig,
     schema.ProfileAttributesConfig,
     schema.ProfileAttributesConfigAttributes,
-  ]
+  ],
 )
-class DaoWriteConfig extends DatabaseAccessor<AccountForegroundDatabase> with _$DaoWriteConfigMixin {
+class DaoWriteConfig extends DatabaseAccessor<AccountForegroundDatabase>
+    with _$DaoWriteConfigMixin {
   DaoWriteConfig(super.db);
 
   Future<void> updateClientFeaturesConfig(
@@ -49,14 +49,10 @@ class DaoWriteConfig extends DatabaseAccessor<AccountForegroundDatabase> with _$
   }
 
   Future<void> deleteAttributeId(int id) async {
-    await (delete(profileAttributesConfigAttributes)..where((t) => t.id.equals(id)))
-      .go();
+    await (delete(profileAttributesConfigAttributes)..where((t) => t.id.equals(id))).go();
   }
 
-  Future<void> updateAttribute(
-    api.AttributeHash hash,
-    api.Attribute attribute,
-  ) async {
+  Future<void> updateAttribute(api.AttributeHash hash, api.Attribute attribute) async {
     await into(profileAttributesConfigAttributes).insertOnConflictUpdate(
       ProfileAttributesConfigAttributesCompanion.insert(
         id: Value(attribute.id),
@@ -103,7 +99,10 @@ class DaoWriteConfig extends DatabaseAccessor<AccountForegroundDatabase> with _$
       }
 
       await db.write.config.updateCustomReportsConfig(customReportsConfigHash, customReportsConfig);
-      await db.write.config.updateClientFeaturesConfig(clientFeaturesConfigHash, clientFeaturesConfig);
+      await db.write.config.updateClientFeaturesConfig(
+        clientFeaturesConfigHash,
+        clientFeaturesConfig,
+      );
     });
   }
 }

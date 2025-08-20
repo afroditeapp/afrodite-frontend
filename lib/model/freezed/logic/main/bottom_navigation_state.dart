@@ -1,4 +1,3 @@
-
 import "package:freezed_annotation/freezed_annotation.dart";
 import 'package:flutter/foundation.dart';
 import 'package:app/logic/app/bottom_navigation_state.dart';

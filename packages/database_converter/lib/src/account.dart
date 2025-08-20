@@ -1,4 +1,3 @@
-
 import 'package:drift/drift.dart';
 import 'package:openapi/api.dart';
 
@@ -58,7 +57,7 @@ class CustomReportsConfigHashConverter extends TypeConverter<CustomReportsConfig
   }
 }
 
-class ClientFeaturesConfigHashConverter  extends TypeConverter<ClientFeaturesConfigHash, String> {
+class ClientFeaturesConfigHashConverter extends TypeConverter<ClientFeaturesConfigHash, String> {
   const ClientFeaturesConfigHashConverter();
 
   @override

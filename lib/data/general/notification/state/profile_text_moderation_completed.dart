@@ -1,6 +1,3 @@
-
-
-
 import 'package:app/data/general/notification/utils/notification_category.dart';
 import 'package:app/data/general/notification/utils/notification_id.dart';
 import 'package:app/data/general/notification/utils/notification_payload.dart';
@@ -24,40 +21,71 @@ class NotificationProfileStringModerationCompleted extends AppSingletonNoInit {
     ProfileStringModerationCompletedNotification notification,
     AccountBackgroundDatabaseManager accountBackgroundDb,
   ) async {
-    final showNameAccepted = await accountBackgroundDb.accountDataWrite(
-      (db) => db.notification.profileNameAccepted.shouldBeShown(notification.nameAccepted)
-    ).ok() ?? false;
+    final showNameAccepted =
+        await accountBackgroundDb
+            .accountDataWrite(
+              (db) => db.notification.profileNameAccepted.shouldBeShown(notification.nameAccepted),
+            )
+            .ok() ??
+        false;
 
     if (showNameAccepted) {
-      await NotificationProfileStringModerationCompleted.getInstance()._showNameNotification(ModerationCompletedState.accepted, accountBackgroundDb);
+      await NotificationProfileStringModerationCompleted.getInstance()._showNameNotification(
+        ModerationCompletedState.accepted,
+        accountBackgroundDb,
+      );
     }
 
-    final showNameRejected = await accountBackgroundDb.accountDataWrite(
-      (db) => db.notification.profileNameRejected.shouldBeShown(notification.nameRejected)
-    ).ok() ?? false;
+    final showNameRejected =
+        await accountBackgroundDb
+            .accountDataWrite(
+              (db) => db.notification.profileNameRejected.shouldBeShown(notification.nameRejected),
+            )
+            .ok() ??
+        false;
 
     if (showNameRejected) {
-      await NotificationProfileStringModerationCompleted.getInstance()._showNameNotification(ModerationCompletedState.rejected, accountBackgroundDb);
+      await NotificationProfileStringModerationCompleted.getInstance()._showNameNotification(
+        ModerationCompletedState.rejected,
+        accountBackgroundDb,
+      );
     }
 
-    final showTextAccepted = await accountBackgroundDb.accountDataWrite(
-      (db) => db.notification.profileTextAccepted.shouldBeShown(notification.textAccepted)
-    ).ok() ?? false;
+    final showTextAccepted =
+        await accountBackgroundDb
+            .accountDataWrite(
+              (db) => db.notification.profileTextAccepted.shouldBeShown(notification.textAccepted),
+            )
+            .ok() ??
+        false;
 
     if (showTextAccepted) {
-      await NotificationProfileStringModerationCompleted.getInstance()._showTextNotification(ModerationCompletedState.accepted, accountBackgroundDb);
+      await NotificationProfileStringModerationCompleted.getInstance()._showTextNotification(
+        ModerationCompletedState.accepted,
+        accountBackgroundDb,
+      );
     }
 
-    final showTextRejected = await accountBackgroundDb.accountDataWrite(
-      (db) => db.notification.profileTextRejected.shouldBeShown(notification.textRejected)
-    ).ok() ?? false;
+    final showTextRejected =
+        await accountBackgroundDb
+            .accountDataWrite(
+              (db) => db.notification.profileTextRejected.shouldBeShown(notification.textRejected),
+            )
+            .ok() ??
+        false;
 
     if (showTextRejected) {
-      await NotificationProfileStringModerationCompleted.getInstance()._showTextNotification(ModerationCompletedState.rejected, accountBackgroundDb);
+      await NotificationProfileStringModerationCompleted.getInstance()._showTextNotification(
+        ModerationCompletedState.rejected,
+        accountBackgroundDb,
+      );
     }
   }
 
-  Future<void> _showNameNotification(ModerationCompletedState state, AccountBackgroundDatabaseManager accountBackgroundDb) async {
+  Future<void> _showNameNotification(
+    ModerationCompletedState state,
+    AccountBackgroundDatabaseManager accountBackgroundDb,
+  ) async {
     final LocalNotificationId id = switch (state) {
       ModerationCompletedState.accepted => NotificationIdStatic.profileNameModerationAccepted.id,
       ModerationCompletedState.rejected => NotificationIdStatic.profileNameModerationRejected.id,
@@ -82,7 +110,10 @@ class NotificationProfileStringModerationCompleted extends AppSingletonNoInit {
     );
   }
 
-  Future<void> _showTextNotification(ModerationCompletedState state, AccountBackgroundDatabaseManager accountBackgroundDb) async {
+  Future<void> _showTextNotification(
+    ModerationCompletedState state,
+    AccountBackgroundDatabaseManager accountBackgroundDb,
+  ) async {
     final LocalNotificationId id = switch (state) {
       ModerationCompletedState.accepted => NotificationIdStatic.profileTextModerationAccepted.id,
       ModerationCompletedState.rejected => NotificationIdStatic.profileTextModerationRejected.id,
@@ -108,7 +139,4 @@ class NotificationProfileStringModerationCompleted extends AppSingletonNoInit {
   }
 }
 
-enum ModerationCompletedState {
-  accepted,
-  rejected,
-}
+enum ModerationCompletedState { accepted, rejected }

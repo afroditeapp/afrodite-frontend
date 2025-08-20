@@ -1,4 +1,3 @@
-
 import 'dart:async';
 import 'dart:typed_data';
 
@@ -46,7 +45,9 @@ class WebSocketWrapper {
 
     final visiblePage = navigatorState.pages.lastOrNull;
 
-    if (visiblePage != null && visiblePage.pageInfo is ConversationPageInfo && _extraPingTimerInterval != _CONVERSATION_PING_INTERVAL) {
+    if (visiblePage != null &&
+        visiblePage.pageInfo is ConversationPageInfo &&
+        _extraPingTimerInterval != _CONVERSATION_PING_INTERVAL) {
       await _resetPingLogicForExtraTimer(_CONVERSATION_PING_INTERVAL);
     } else if (_extraPingTimerInterval != null) {
       await _resetPingLogicForExtraTimer(null);

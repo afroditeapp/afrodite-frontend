@@ -11,13 +11,8 @@ import 'package:app/localizations.dart';
 
 final log = Logger("SelectMatchScreen");
 
-Future<ProfileEntry?> openSelectMatchView(
-  BuildContext context,
-) {
-  return MyNavigator.push(
-    context,
-    const MaterialPage<ProfileEntry>(child: SelectMatchScreen()),
-  );
+Future<ProfileEntry?> openSelectMatchView(BuildContext context) {
+  return MyNavigator.push(context, const MaterialPage<ProfileEntry>(child: SelectMatchScreen()));
 }
 
 class SelectMatchScreen extends StatelessWidget {
@@ -26,22 +21,20 @@ class SelectMatchScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(context.strings.select_match_screen_title),
-      ),
+      appBar: AppBar(title: Text(context.strings.select_match_screen_title)),
       body: GenericProfileGrid(
-          buildIteratorManager: () {
-            return MatchesIteratorManager(
-              LoginRepository.getInstance().repositories.chat,
-              LoginRepository.getInstance().repositories.media,
-              LoginRepository.getInstance().repositories.accountBackgroundDb,
-              LoginRepository.getInstance().repositories.accountDb,
-              LoginRepository.getInstance().repositories.connectionManager,
-              LoginRepository.getInstance().repositories.chat.currentUser,
-            );
-          },
-          noProfilesText: context.strings.chat_list_screen_no_matches_found,
-        ),
+        buildIteratorManager: () {
+          return MatchesIteratorManager(
+            LoginRepository.getInstance().repositories.chat,
+            LoginRepository.getInstance().repositories.media,
+            LoginRepository.getInstance().repositories.accountBackgroundDb,
+            LoginRepository.getInstance().repositories.accountDb,
+            LoginRepository.getInstance().repositories.connectionManager,
+            LoginRepository.getInstance().repositories.chat.currentUser,
+          );
+        },
+        noProfilesText: context.strings.chat_list_screen_no_matches_found,
+      ),
     );
   }
 }

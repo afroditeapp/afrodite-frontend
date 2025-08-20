@@ -23,27 +23,30 @@ class ImageProcessingData with _$ImageProcessingData {
 }
 
 sealed class ProcessingState {}
+
 class UnconfirmedImage extends ProcessingState {
   final Uint8List imgBytes;
   final int slot;
   final bool secureCapture;
   UnconfirmedImage(this.imgBytes, this.slot, {required this.secureCapture});
 }
+
 class SendingInProgress extends ProcessingState {
   final ContentUploadState state;
   SendingInProgress(this.state);
 }
+
 class SendingFailed extends ProcessingState {
   final bool nsfwDetected;
   SendingFailed({this.nsfwDetected = false});
 }
-
 
 /// Image which server has processed.
 class ProcessedAccountImage {
   const ProcessedAccountImage(this.accountId, this.contentId, this.slot, this.faceDetected);
   final AccountId accountId;
   final ContentId contentId;
+
   /// Slot where the image was uploaded.
   final int slot;
   final bool faceDetected;
@@ -54,7 +57,9 @@ class ProcessedAccountImage {
 }
 
 sealed class ContentUploadState {}
+
 class DataUploadInProgress extends ContentUploadState {}
+
 class ServerDataProcessingInProgress extends ContentUploadState {
   final int? queueNumber;
   ServerDataProcessingInProgress(this.queueNumber);
@@ -63,7 +68,9 @@ class ServerDataProcessingInProgress extends ContentUploadState {
     if (queueNumber == null) {
       return context.strings.image_processing_ui_upload_processing_ongoing_description;
     } else {
-      return context.strings.image_processing_ui_upload_in_processing_queue_dialog_description(queueNumber.toString());
+      return context.strings.image_processing_ui_upload_in_processing_queue_dialog_description(
+        queueNumber.toString(),
+      );
     }
   }
 }

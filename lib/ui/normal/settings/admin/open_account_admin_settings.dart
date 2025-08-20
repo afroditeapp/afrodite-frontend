@@ -1,5 +1,3 @@
-
-
 import 'package:app/ui/normal/settings/admin/account_admin_settings.dart';
 import 'package:app/ui_utils/padding.dart';
 import 'package:flutter/material.dart';
@@ -26,9 +24,7 @@ class _OpenAccountAdminSettingsState extends State<OpenAccountAdminSettings> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Open account admin settings"),
-      ),
+      appBar: AppBar(title: const Text("Open account admin settings")),
       body: screenContent(context),
     );
   }
@@ -47,9 +43,8 @@ class _OpenAccountAdminSettingsState extends State<OpenAccountAdminSettings> {
         FocusScope.of(context).unfocus();
 
         final result = await api
-          .accountAdmin(
-            (api) => api.getAccountIdFromEmail(_emailController.text)
-          ).ok();
+            .accountAdmin((api) => api.getAccountIdFromEmail(_emailController.text))
+            .ok();
 
         if (!context.mounted) {
           return;

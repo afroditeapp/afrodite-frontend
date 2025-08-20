@@ -9,26 +9,25 @@ import "package:flutter_bloc/flutter_bloc.dart";
 import "package:app/data/login_repository.dart";
 
 sealed class AutomaticProfileSearchBadgeEvent {}
+
 class BadgeStateUpdate extends AutomaticProfileSearchBadgeEvent {
   final AutomaticProfileSearchBadgeState value;
   BadgeStateUpdate(this.value);
 }
+
 class HideBadge extends AutomaticProfileSearchBadgeEvent {}
 
-class AutomaticProfileSearchBadgeBloc extends Bloc<AutomaticProfileSearchBadgeEvent, AutomaticProfileSearchBadgeData> {
-  final AccountBackgroundDatabaseManager db = LoginRepository.getInstance().repositories.accountBackgroundDb;
+class AutomaticProfileSearchBadgeBloc
+    extends Bloc<AutomaticProfileSearchBadgeEvent, AutomaticProfileSearchBadgeData> {
+  final AccountBackgroundDatabaseManager db =
+      LoginRepository.getInstance().repositories.accountBackgroundDb;
 
   StreamSubscription<AutomaticProfileSearchBadgeState?>? _stateSubscription;
 
   AutomaticProfileSearchBadgeBloc() : super(AutomaticProfileSearchBadgeData()) {
     on<BadgeStateUpdate>((data, emit) {
-      emit(state.copyWith(
-        dataLoaded: true,
-        badgeState: data.value,
-      ));
-    },
-      transformer: sequential(),
-    );
+      emit(state.copyWith(dataLoaded: true, badgeState: data.value));
+    }, transformer: sequential());
     on<HideBadge>((data, emit) async {
       // Badge state might not be loaded yet if app process starts from
       // automatic profile search notification.
@@ -37,9 +36,11 @@ class AutomaticProfileSearchBadgeBloc extends Bloc<AutomaticProfileSearchBadgeEv
       }
     });
 
-    _stateSubscription = db.accountStream((db) => db.profile.watchAutomaticProfileSearchUiState()).listen((data) {
-      add(BadgeStateUpdate(data ?? AutomaticProfileSearchBadgeState.defaultValue));
-    });
+    _stateSubscription = db
+        .accountStream((db) => db.profile.watchAutomaticProfileSearchUiState())
+        .listen((data) {
+          add(BadgeStateUpdate(data ?? AutomaticProfileSearchBadgeState.defaultValue));
+        });
   }
 
   @override

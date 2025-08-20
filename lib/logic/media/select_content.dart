@@ -1,4 +1,3 @@
-
 import "package:app/api/api_manager.dart";
 import "package:app/localizations.dart";
 import "package:app/ui_utils/snack_bar.dart";
@@ -14,7 +13,9 @@ import "package:openapi/api.dart";
 final log = Logger("SelectContentBloc");
 
 sealed class SelectContentEvent {}
+
 class ReloadAvailableContent extends SelectContentEvent {}
+
 class DeleteContent extends SelectContentEvent {
   final AccountId account;
   final ContentId content;
@@ -33,7 +34,9 @@ class SelectContentBloc extends Bloc<SelectContentEvent, SelectContentData> with
     });
     on<DeleteContent>((data, emit) async {
       await runOnce(() async {
-        final value = await api.mediaAction((api) => api.deleteContent(data.account.aid, data.content.cid));
+        final value = await api.mediaAction(
+          (api) => api.deleteContent(data.account.aid, data.content.cid),
+        );
         if (value.isErr()) {
           showSnackBar(R.strings.generic_error_occurred);
         }
@@ -50,21 +53,20 @@ class SelectContentBloc extends Bloc<SelectContentEvent, SelectContentData> with
 
     final value = await api.media((api) => api.getAllAccountMediaContent(currentUser.aid)).ok();
     if (value == null) {
-      emit(state.copyWith(
-        isLoading: false,
-        isError: true,
-      ));
+      emit(state.copyWith(isLoading: false, isError: true));
       return;
     }
 
     final allContentList = UnmodifiableList(value.data);
 
-    emit(state.copyWith(
-      isLoading: false,
-      maxContent: value.maxContentCount,
-      accountContent: value,
-      showAddNewContent: value.data.length < value.maxContentCount,
-      availableContent: allContentList,
-    ));
+    emit(
+      state.copyWith(
+        isLoading: false,
+        maxContent: value.maxContentCount,
+        accountContent: value,
+        showAddNewContent: value.data.length < value.maxContentCount,
+        availableContent: allContentList,
+      ),
+    );
   }
 }

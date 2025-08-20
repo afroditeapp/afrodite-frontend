@@ -1,4 +1,3 @@
-
 import 'dart:io';
 
 import 'package:android_intent_plus/android_intent.dart';
@@ -24,7 +23,12 @@ import 'package:url_launcher/url_launcher_string.dart';
 
 const int _OPACITY_FOR_ON_SURFACE_CONTENT = 128;
 
-Align messageRowWidget(BuildContext context, MessageEntry entry, {Key? keyFromMessageRenderer, required TextStyle parentTextStyle}) {
+Align messageRowWidget(
+  BuildContext context,
+  MessageEntry entry, {
+  Key? keyFromMessageRenderer,
+  required TextStyle parentTextStyle,
+}) {
   final sentMessageState = entry.messageState.toSentState();
   final infoState = entry.messageState.toInfoState();
   final isSent = sentMessageState != null;
@@ -45,7 +49,7 @@ Align messageRowWidget(BuildContext context, MessageEntry entry, {Key? keyFromMe
                   entry,
                   sentMessageState,
                   entry.messageState.toReceivedState(),
-                  parentTextStyle: parentTextStyle
+                  parentTextStyle: parentTextStyle,
                 ),
               ),
             ),
@@ -73,11 +77,9 @@ Align messageRowWidget(BuildContext context, MessageEntry entry, {Key? keyFromMe
 
 List<Widget> infoMessage(
   BuildContext context,
-  InfoMessageState infoState,
-  {
-    required TextStyle parentTextStyle,
-  }
-) {
+  InfoMessageState infoState, {
+  required TextStyle parentTextStyle,
+}) {
   final String text;
   final IconData iconData;
   switch (infoState) {
@@ -89,10 +91,7 @@ List<Widget> infoMessage(
       iconData = Icons.key;
   }
   final color = Theme.of(context).colorScheme.onSurface.withAlpha(_OPACITY_FOR_ON_SURFACE_CONTENT);
-  final textStyle = parentTextStyle.merge(TextStyle(
-    color: color,
-    fontSize: 13.0,
-  ));
+  final textStyle = parentTextStyle.merge(TextStyle(color: color, fontSize: 13.0));
   return [
     Padding(
       padding: const EdgeInsets.symmetric(horizontal: 4.0),
@@ -133,20 +132,20 @@ Widget _messageWidget(
   BuildContext context,
   MessageEntry entry,
   SentMessageState? sentMessageState,
-  ReceivedMessageState? receivedMessageState,
-  {
-    required TextStyle parentTextStyle,
-  }
-) {
+  ReceivedMessageState? receivedMessageState, {
+  required TextStyle parentTextStyle,
+}) {
   final showErrorColor =
-    (sentMessageState?.isError() ?? false) ||
-    (receivedMessageState?.isError() ?? false) ||
-    (entry.message?.isError() ?? false);
+      (sentMessageState?.isError() ?? false) ||
+      (receivedMessageState?.isError() ?? false) ||
+      (entry.message?.isError() ?? false);
 
-  final messageTimeTextStyle = parentTextStyle.merge(TextStyle(
-    color: Theme.of(context).colorScheme.onSurface.withAlpha(_OPACITY_FOR_ON_SURFACE_CONTENT),
-    fontSize: 12.0,
-  ));
+  final messageTimeTextStyle = parentTextStyle.merge(
+    TextStyle(
+      color: Theme.of(context).colorScheme.onSurface.withAlpha(_OPACITY_FOR_ON_SURFACE_CONTENT),
+      fontSize: 12.0,
+    ),
+  );
 
   final mainContent = _messageWidgetMainContent(
     context,
@@ -167,25 +166,17 @@ Widget _messageWidget(
   return Padding(
     padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
     child: Column(
-      mainAxisAlignment: receivedMessageState != null ?
-        MainAxisAlignment.start :
-        MainAxisAlignment.end,
-      crossAxisAlignment: receivedMessageState != null ?
-        CrossAxisAlignment.start :
-        CrossAxisAlignment.end,
+      mainAxisAlignment: receivedMessageState != null
+          ? MainAxisAlignment.start
+          : MainAxisAlignment.end,
+      crossAxisAlignment: receivedMessageState != null
+          ? CrossAxisAlignment.start
+          : CrossAxisAlignment.end,
       mainAxisSize: MainAxisSize.min,
       children: [
-        showIconIfNeeded(
-          context,
-          mainContent,
-          sentMessageState,
-          receivedMessageState,
-          icon,
-        ),
+        showIconIfNeeded(context, mainContent, sentMessageState, receivedMessageState, icon),
         Align(
-          alignment: receivedMessageState != null ?
-            Alignment.centerLeft :
-            Alignment.centerRight,
+          alignment: receivedMessageState != null ? Alignment.centerLeft : Alignment.centerRight,
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 4.0),
             child: Text(_timeStringFromMessage(entry), style: messageTimeTextStyle),
@@ -201,19 +192,19 @@ Widget _messageWidgetMainContent(
   MessageEntry entry,
   SentMessageState? sentMessageState,
   ReceivedMessageState? receivedMessageState,
-  bool showErrorColor,
-  {
-    required TextStyle parentTextStyle,
-  }
-) {
-  final String text = messageWidgetText(context, entry.message, sentMessageState, receivedMessageState);
-  final textColor = showErrorColor ?
-      Theme.of(context).colorScheme.onErrorContainer :
-      Theme.of(context).colorScheme.onPrimaryContainer;
-  final messageTextStyle = parentTextStyle.merge(TextStyle(
-    color: textColor,
-    fontSize: 16.0,
-  ));
+  bool showErrorColor, {
+  required TextStyle parentTextStyle,
+}) {
+  final String text = messageWidgetText(
+    context,
+    entry.message,
+    sentMessageState,
+    receivedMessageState,
+  );
+  final textColor = showErrorColor
+      ? Theme.of(context).colorScheme.onErrorContainer
+      : Theme.of(context).colorScheme.onPrimaryContainer;
+  final messageTextStyle = parentTextStyle.merge(TextStyle(color: textColor, fontSize: 16.0));
 
   Widget messageContent;
   if (entry.message is VideoCallInvitation) {
@@ -229,9 +220,9 @@ Widget _messageWidgetMainContent(
   final widget = Container(
     padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
     decoration: BoxDecoration(
-      color: showErrorColor ?
-        Theme.of(context).colorScheme.errorContainer :
-        Theme.of(context).colorScheme.primaryContainer,
+      color: showErrorColor
+          ? Theme.of(context).colorScheme.errorContainer
+          : Theme.of(context).colorScheme.primaryContainer,
       borderRadius: BorderRadius.circular(10.0),
     ),
     child: messageContent,
@@ -260,16 +251,10 @@ Widget showIconIfNeeded(
             maintainSize: true,
             maintainAnimation: true,
             maintainState: true,
-            child: Padding(
-              padding: const EdgeInsets.only(right: 8.0),
-              child: icon,
-            ),
+            child: Padding(padding: const EdgeInsets.only(right: 8.0), child: icon),
           ),
         ),
-        Flexible(
-          flex: 10,
-          child: messageWidget,
-        ),
+        Flexible(flex: 10, child: messageWidget),
       ],
     );
   } else if (receivedMessageState != null) {
@@ -277,17 +262,12 @@ Widget showIconIfNeeded(
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        if (icon != null) Flexible(
+        if (icon != null)
+          Flexible(
             flex: 1,
-            child: Padding(
-              padding: const EdgeInsets.only(right: 8.0),
-              child: icon,
-            ),
+            child: Padding(padding: const EdgeInsets.only(right: 8.0), child: icon),
           ),
-        Flexible(
-          flex: 10,
-          child: messageWidget,
-        ),
+        Flexible(flex: 10, child: messageWidget),
       ],
     );
   } else {
@@ -321,55 +301,63 @@ void openMessageMenu(BuildContext screenContext, MessageEntry entry) {
             closeActionsAndOpenDetails(screenContext, entry, pageKey);
           },
         ),
-        if (message is TextMessage) ListTile(
-          title: Text(context.strings.generic_copy),
-          onTap: () {
-            Clipboard.setData(ClipboardData(text: message.text));
-            MyNavigator.removePage(context, pageKey, null);
-          }
-        ),
-        if (entry.messageState.toSentState() == SentMessageState.sendingError) ListTile(
-          title: Text(context.strings.generic_delete),
-          onTap: () async {
-            final bloc = screenContext.read<ConversationBloc>();
-            if (bloc.state.isActionsInProgress()) {
-              showSnackBar(context.strings.generic_previous_action_in_progress);
-            } else {
-              bloc.add(RemoveSendFailedMessage(entry.localId));
-            }
-            MyNavigator.removePage(context, pageKey, null);
-          },
-        ),
-        if (entry.messageState.toSentState() == SentMessageState.sendingError) ListTile(
-          title: Text(context.strings.generic_resend),
-          onTap: () async {
-            final bloc = screenContext.read<ConversationBloc>();
-            if (bloc.state.isActionsInProgress()) {
-              showSnackBar(context.strings.generic_previous_action_in_progress);
-            } else {
-              bloc.add(ResendSendFailedMessage(entry.localId));
-            }
-            MyNavigator.removePage(context, pageKey, null);
-          },
-        ),
-        if (entry.messageState.toReceivedState() == ReceivedMessageState.publicKeyDownloadFailed) ListTile(
-          title: Text(context.strings.generic_retry),
-          onTap: () async {
-            final bloc = screenContext.read<ConversationBloc>();
-            if (bloc.state.isActionsInProgress()) {
-              showSnackBar(context.strings.generic_previous_action_in_progress);
-            } else {
-              bloc.add(RetryPublicKeyDownload(entry.localId));
-            }
-            MyNavigator.removePage(context, pageKey, null);
-          },
-        ),
+        if (message is TextMessage)
+          ListTile(
+            title: Text(context.strings.generic_copy),
+            onTap: () {
+              Clipboard.setData(ClipboardData(text: message.text));
+              MyNavigator.removePage(context, pageKey, null);
+            },
+          ),
+        if (entry.messageState.toSentState() == SentMessageState.sendingError)
+          ListTile(
+            title: Text(context.strings.generic_delete),
+            onTap: () async {
+              final bloc = screenContext.read<ConversationBloc>();
+              if (bloc.state.isActionsInProgress()) {
+                showSnackBar(context.strings.generic_previous_action_in_progress);
+              } else {
+                bloc.add(RemoveSendFailedMessage(entry.localId));
+              }
+              MyNavigator.removePage(context, pageKey, null);
+            },
+          ),
+        if (entry.messageState.toSentState() == SentMessageState.sendingError)
+          ListTile(
+            title: Text(context.strings.generic_resend),
+            onTap: () async {
+              final bloc = screenContext.read<ConversationBloc>();
+              if (bloc.state.isActionsInProgress()) {
+                showSnackBar(context.strings.generic_previous_action_in_progress);
+              } else {
+                bloc.add(ResendSendFailedMessage(entry.localId));
+              }
+              MyNavigator.removePage(context, pageKey, null);
+            },
+          ),
+        if (entry.messageState.toReceivedState() == ReceivedMessageState.publicKeyDownloadFailed)
+          ListTile(
+            title: Text(context.strings.generic_retry),
+            onTap: () async {
+              final bloc = screenContext.read<ConversationBloc>();
+              if (bloc.state.isActionsInProgress()) {
+                showSnackBar(context.strings.generic_previous_action_in_progress);
+              } else {
+                bloc.add(RetryPublicKeyDownload(entry.localId));
+              }
+              MyNavigator.removePage(context, pageKey, null);
+            },
+          ),
       ],
-    )
+    ),
   );
 }
 
-void closeActionsAndOpenDetails(BuildContext screenContext, MessageEntry entry, PageKey existingPageKey) {
+void closeActionsAndOpenDetails(
+  BuildContext screenContext,
+  MessageEntry entry,
+  PageKey existingPageKey,
+) {
   if (!screenContext.mounted) {
     return;
   }
@@ -394,19 +382,21 @@ void closeActionsAndOpenDetails(BuildContext screenContext, MessageEntry entry, 
   }
 
   final time = entry.unixTime ?? entry.localUnixTime;
-  final messageText = messageWidgetText(screenContext, entry.message, sentMessageState, receivedMessageState);
+  final messageText = messageWidgetText(
+    screenContext,
+    entry.message,
+    sentMessageState,
+    receivedMessageState,
+  );
 
-  final infoText = """
+  final infoText =
+      """
 ${screenContext.strings.generic_message}: $messageText
 ${screenContext.strings.conversation_screen_message_details_message_id}: ${entry.messageId?.id}
 ${screenContext.strings.generic_time}: ${time.dateTime.toIso8601String()}
 ${screenContext.strings.generic_state}: $stateText""";
 
-  showInfoDialog(
-    screenContext,
-    infoText,
-    existingPageToBeRemoved: existingPageKey,
-  );
+  showInfoDialog(screenContext, infoText, existingPageToBeRemoved: existingPageKey);
 }
 
 void _joinVideoCall(BuildContext context, AccountId callee) async {
@@ -440,9 +430,7 @@ void _joinVideoCall(BuildContext context, AccountId callee) async {
   try {
     // TODO(web): If web chat support is implemented then
     //            test does this return false on web.
-    final jitsMeetAppLaunchSuccessful = await launchUrl(
-      url.replace(scheme: "org.jitsi.meet"),
-    );
+    final jitsMeetAppLaunchSuccessful = await launchUrl(url.replace(scheme: "org.jitsi.meet"));
     if (jitsMeetAppLaunchSuccessful) {
       return;
     }
@@ -489,8 +477,7 @@ Future<bool> isInstallingJitsiMeetAppPossible() async {
     IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
     final version = IosVersion.parse(iosInfo);
     if (version != null) {
-      return version.major >= 16 ||
-        (version.major == 15 && version.minor >= 1);
+      return version.major >= 16 || (version.major == 15 && version.minor >= 1);
     } else {
       return false;
     }
@@ -508,9 +495,7 @@ Future<bool> isJitsiMeetAppInstalled() {
 }
 
 /// The app offers better user experience
-void openJitsiMeetAppInstallDialogOnAndroidOrIos(
-  BuildContext context,
-) {
+void openJitsiMeetAppInstallDialogOnAndroidOrIos(BuildContext context) {
   if (Platform.isAndroid) {
     openJitsiMeetAppInstallDialog(
       context,
@@ -528,10 +513,10 @@ void openJitsiMeetAppInstallDialogOnAndroidOrIos(
             showSnackBar(context.strings.generic_error_occurred);
           }
         }
-      }
+      },
     );
   } else if (Platform.isIOS) {
-     openJitsiMeetAppInstallDialog(
+    openJitsiMeetAppInstallDialog(
       context,
       context.strings.conversation_screen_install_jitsi_meet_dialog_description_ios,
       (context) => launchUrlStringAndShowError(context, "https://apps.apple.com/app/id1165103905"),

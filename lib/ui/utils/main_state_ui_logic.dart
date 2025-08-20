@@ -1,6 +1,3 @@
-
-
-
 import 'package:app/data/general/notification/utils/notification_payload.dart';
 import 'package:app/database/account_background_database_manager.dart';
 import 'package:app/database/account_database_manager.dart';
@@ -95,7 +92,8 @@ class _MainStateUiLogicState extends State<MainStateUiLogic> {
           MainState.splashScreen => const SplashScreen(),
         };
 
-        var appLaunchPayloadNullable = NotificationManager.getInstance().getAndRemoveAppLaunchNotificationPayload();
+        var appLaunchPayloadNullable = NotificationManager.getInstance()
+            .getAndRemoveAppLaunchNotificationPayload();
         if (state != MainState.initialSetupComplete) {
           // Clear the app launch notification payload if it exists as
           // it should be handled only when state is
@@ -103,7 +101,8 @@ class _MainStateUiLogicState extends State<MainStateUiLogic> {
           appLaunchPayloadNullable = null;
         }
         final appLaunchPayload = appLaunchPayloadNullable;
-        final accountBackgroundDb = LoginRepository.getInstance().repositoriesOrNull?.accountBackgroundDb;
+        final accountBackgroundDb =
+            LoginRepository.getInstance().repositoriesOrNull?.accountBackgroundDb;
         final accountDb = LoginRepository.getInstance().repositoriesOrNull?.accountDb;
 
         final NotificationActionHandlerObjects? notficationRelatedObjects;
@@ -114,21 +113,17 @@ class _MainStateUiLogicState extends State<MainStateUiLogic> {
             appLaunchPayload,
             accountDb,
             accountBackgroundDb,
-            NewPageDetails(
-              MaterialPage<void>(child: screen),
-            ),
+            NewPageDetails(MaterialPage<void>(child: screen)),
           );
-          rootPage = NewPageDetails(
-            const MaterialPage<void>(child: SplashScreen()),
-          );
+          rootPage = NewPageDetails(const MaterialPage<void>(child: SplashScreen()));
         } else {
           notficationRelatedObjects = null;
-          rootPage = NewPageDetails(
-            MaterialPage<void>(child: screen),
-          );
+          rootPage = NewPageDetails(MaterialPage<void>(child: screen));
         }
 
-        final NavigatorStateData blocInitialState = ReplaceAllWith([rootPage], false).toInitialState();
+        final NavigatorStateData blocInitialState = ReplaceAllWith([
+          rootPage,
+        ], false).toInitialState();
         final navigator = AppNavigator();
 
         final blocProvider = switch (state) {
@@ -138,13 +133,11 @@ class _MainStateUiLogicState extends State<MainStateUiLogic> {
               BlocProvider(create: (_) => SignInWithBloc()),
               BlocProvider(create: (_) => DemoAccountLoginBloc()),
             ],
-            child: navigator
+            child: navigator,
           ),
           MainState.demoAccount => MultiBlocProvider(
-            providers: [
-              BlocProvider(create: (_) => DemoAccountBloc()),
-            ],
-            child: navigator
+            providers: [BlocProvider(create: (_) => DemoAccountBloc())],
+            child: navigator,
           ),
           MainState.initialSetup => MultiBlocProvider(
             providers: [
@@ -225,16 +218,13 @@ class _MainStateUiLogicState extends State<MainStateUiLogic> {
               BlocProvider(create: (_) => AccountDetailsBloc()),
               BlocProvider(create: (_) => DataExportBloc()),
             ],
-            child: navigator
+            child: navigator,
           ),
           MainState.pendingRemoval => MultiBlocProvider(
-            providers: [
-              BlocProvider(create: (_) => DataExportBloc()),
-            ],
-            child: navigator
+            providers: [BlocProvider(create: (_) => DataExportBloc())],
+            child: navigator,
           ),
-          MainState.unsupportedClientVersion ||
-          MainState.splashScreen => navigator,
+          MainState.unsupportedClientVersion || MainState.splashScreen => navigator,
         };
 
         final loggedInStateRelatedBlocs = switch (state) {
@@ -248,7 +238,7 @@ class _MainStateUiLogicState extends State<MainStateUiLogic> {
               // Logout action
               BlocProvider(create: (_) => LoginBloc()),
             ],
-            child: blocProvider
+            child: blocProvider,
           ),
           MainState.loginRequired ||
           MainState.demoAccount ||
@@ -265,7 +255,7 @@ class _MainStateUiLogicState extends State<MainStateUiLogic> {
           ],
           child: NavigationBlocUpdater(child: loggedInStateRelatedBlocs),
         );
-      }
+      },
     );
   }
 }
@@ -290,11 +280,20 @@ class NotificationActionHandlerObjects {
   final AccountDatabaseManager accountDb;
   final AccountBackgroundDatabaseManager accountBackgroundDb;
   final NewPageDetails rootPage;
-  NotificationActionHandlerObjects(this.payload, this.accountDb, this.accountBackgroundDb, this.rootPage);
+  NotificationActionHandlerObjects(
+    this.payload,
+    this.accountDb,
+    this.accountBackgroundDb,
+    this.rootPage,
+  );
 }
 
 class NotificationActionHandler extends StatefulWidget {
-  const NotificationActionHandler({required this.notificationNavigation, required this.child, super.key});
+  const NotificationActionHandler({
+    required this.notificationNavigation,
+    required this.child,
+    super.key,
+  });
   final NotificationActionHandlerObjects? notificationNavigation;
   final Widget child;
 
@@ -326,10 +325,7 @@ class _NotificationActionHandlerState extends State<NotificationActionHandler> {
           if (page != null) {
             pages.add(page);
           }
-          bloc.replaceAllWith(
-            pages,
-            disableAnimation: true,
-          );
+          bloc.replaceAllWith(pages, disableAnimation: true);
         },
       )(notificationNavigation.payload);
       navigationDone = true;
@@ -354,13 +350,14 @@ class AppNavigator extends StatelessWidget {
           },
           child: createNavigator(context, state),
         );
-      }
+      },
     );
   }
 
   Widget createNavigator(BuildContext context, NavigatorStateData state) {
-    final TransitionDelegate<void> transitionDelegate = state.disableAnimation ?
-      const ReplaceSplashScreenTransitionDelegate() : const DefaultTransitionDelegate();
+    final TransitionDelegate<void> transitionDelegate = state.disableAnimation
+        ? const ReplaceSplashScreenTransitionDelegate()
+        : const DefaultTransitionDelegate();
     return Navigator(
       key: navigatorKey,
       transitionDelegate: transitionDelegate,

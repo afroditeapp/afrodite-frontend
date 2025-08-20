@@ -37,7 +37,8 @@ class AdminNotificationConverter extends TypeConverter<JsonObject<AdminNotificat
   }
 }
 
-class AccountStateContainerConverter extends TypeConverter<JsonObject<AccountStateContainer>, String> {
+class AccountStateContainerConverter
+    extends TypeConverter<JsonObject<AccountStateContainer>, String> {
   const AccountStateContainerConverter();
 
   @override
@@ -121,7 +122,8 @@ class CustomReportsConfigConverter extends TypeConverter<JsonObject<CustomReport
   }
 }
 
-class ClientFeaturesConfigConverter extends TypeConverter<JsonObject<ClientFeaturesConfig>, String> {
+class ClientFeaturesConfigConverter
+    extends TypeConverter<JsonObject<ClientFeaturesConfig>, String> {
   const ClientFeaturesConfigConverter();
 
   @override
@@ -135,7 +137,8 @@ class ClientFeaturesConfigConverter extends TypeConverter<JsonObject<ClientFeatu
   }
 }
 
-class AutomaticProfileSearchSettingsConverter extends TypeConverter<JsonObject<AutomaticProfileSearchSettings>, String> {
+class AutomaticProfileSearchSettingsConverter
+    extends TypeConverter<JsonObject<AutomaticProfileSearchSettings>, String> {
   const AutomaticProfileSearchSettingsConverter();
 
   @override

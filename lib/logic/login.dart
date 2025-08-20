@@ -6,14 +6,14 @@ import "package:app/model/freezed/logic/login.dart";
 import "package:app/utils.dart";
 
 sealed class LoginEvent {}
+
 class DoLogout extends LoginEvent {}
 
 /// Do register/login operations
 class LoginBloc extends Bloc<LoginEvent, LoginBlocData> with ActionRunner {
   final LoginRepository login = LoginRepository.getInstance();
 
-  LoginBloc() :
-    super(LoginBlocData()) {
+  LoginBloc() : super(LoginBlocData()) {
     on<DoLogout>((_, emit) async {
       await runOnce(() async {
         emit(state.copyWith(logoutInProgress: true));

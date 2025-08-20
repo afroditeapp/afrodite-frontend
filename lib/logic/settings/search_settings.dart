@@ -18,30 +18,40 @@ import "package:app/utils/result.dart";
 import "package:app/utils/time.dart";
 
 sealed class SearchSettingsEvent {}
+
 class NewSearchGroups extends SearchSettingsEvent {
   final SearchGroups value;
   NewSearchGroups(this.value);
 }
+
 class NewAutomaticProfileSearchSettings extends SearchSettingsEvent {
   final AutomaticProfileSearchSettings value;
   NewAutomaticProfileSearchSettings(this.value);
 }
+
 class UpdateGender extends SearchSettingsEvent {
   final Gender value;
   UpdateGender(this.value);
 }
+
 class UpdateGenderSearchSettingsAll extends SearchSettingsEvent {
   final GenderSearchSettingsAll settings;
   UpdateGenderSearchSettingsAll(this.settings);
 }
+
 class ToggleSearchDistanceFilters extends SearchSettingsEvent {}
+
 class ToggleSearchAttributeFilters extends SearchSettingsEvent {}
+
 class ToggleSearchNewProfiles extends SearchSettingsEvent {}
+
 class UpdateSearchWeekday extends SearchSettingsEvent {
   final int value;
   UpdateSearchWeekday(this.value);
 }
+
 class ResetEditedValues extends SearchSettingsEvent {}
+
 class SaveSearchSettings extends SearchSettingsEvent {
   final SearchGroups searchGroups;
   SaveSearchSettings(this.searchGroups);
@@ -50,30 +60,30 @@ class SaveSearchSettings extends SearchSettingsEvent {
 class SearchSettingsBloc extends Bloc<SearchSettingsEvent, SearchSettingsData> with ActionRunner {
   final ProfileRepository profile = LoginRepository.getInstance().repositories.profile;
   final AccountDatabaseManager db = LoginRepository.getInstance().repositories.accountDb;
-  final AccountBackgroundDatabaseManager accountBackgroundDb = LoginRepository.getInstance().repositories.accountBackgroundDb;
+  final AccountBackgroundDatabaseManager accountBackgroundDb =
+      LoginRepository.getInstance().repositories.accountBackgroundDb;
   final ApiManager api = LoginRepository.getInstance().repositories.api;
 
   StreamSubscription<SearchGroups?>? _searchGroupsSubscription;
   StreamSubscription<AutomaticProfileSearchSettings?>? _automaticProfileSearchSettingsSubscription;
 
-  SearchSettingsBloc() : super(SearchSettingsData(
-    automaticProfileSearchSettings: AutomaticProfileSearchSettingsDefaults.defaultValue,
-  )) {
+  SearchSettingsBloc()
+    : super(
+        SearchSettingsData(
+          automaticProfileSearchSettings: AutomaticProfileSearchSettingsDefaults.defaultValue,
+        ),
+      ) {
     on<SaveSearchSettings>((data, emit) async {
       await runOnce(() async {
         final currentState = state;
 
-        emit(state.copyWith(
-          updateState: const UpdateStarted(),
-        ));
+        emit(state.copyWith(updateState: const UpdateStarted()));
 
         final waitTime = WantedWaitingTimeManager();
 
         var failureDetected = false;
 
-        emit(state.copyWith(
-          updateState: const UpdateInProgress(),
-        ));
+        emit(state.copyWith(updateState: const UpdateInProgress()));
 
         if (!await profile.updateSearchGroups(data.searchGroups).isOk()) {
           failureDetected = true;
@@ -99,9 +109,7 @@ class SearchSettingsBloc extends Bloc<SearchSettingsEvent, SearchSettingsData> w
           showSnackBar(R.strings.search_settings_screen_search_settings_update_failed);
         }
 
-        emit(state.copyWith(
-          updateState: const UpdateIdle(),
-        ));
+        emit(state.copyWith(updateState: const UpdateIdle()));
 
         _resetEditedValues(emit);
       });
@@ -110,15 +118,16 @@ class SearchSettingsBloc extends Bloc<SearchSettingsEvent, SearchSettingsData> w
       _resetEditedValues(emit);
     });
     on<NewSearchGroups>((data, emit) async {
-      emit(state.copyWith(
-        gender: data.value.toGender(),
-        genderSearchSettingsAll: data.value.toGenderSearchSettingsAll() ?? const GenderSearchSettingsAll(),
-      ));
+      emit(
+        state.copyWith(
+          gender: data.value.toGender(),
+          genderSearchSettingsAll:
+              data.value.toGenderSearchSettingsAll() ?? const GenderSearchSettingsAll(),
+        ),
+      );
     });
     on<NewAutomaticProfileSearchSettings>((data, emit) async {
-      emit(state.copyWith(
-        automaticProfileSearchSettings: data.value,
-      ));
+      emit(state.copyWith(automaticProfileSearchSettings: data.value));
     });
     on<UpdateGender>((data, emit) async {
       if (data.value == state.gender) {
@@ -136,56 +145,72 @@ class SearchSettingsBloc extends Bloc<SearchSettingsEvent, SearchSettingsData> w
     });
     on<ToggleSearchDistanceFilters>((data, emit) async {
       if (state.editedSearchDistanceFilters == null) {
-        emit(state.copyWith(editedSearchDistanceFilters: !state.automaticProfileSearchSettings.distanceFilters));
+        emit(
+          state.copyWith(
+            editedSearchDistanceFilters: !state.automaticProfileSearchSettings.distanceFilters,
+          ),
+        );
       } else {
         emit(state.copyWith(editedSearchDistanceFilters: null));
       }
     });
     on<ToggleSearchAttributeFilters>((data, emit) async {
       if (state.editedSearchAttributeFilters == null) {
-        emit(state.copyWith(editedSearchAttributeFilters: !state.automaticProfileSearchSettings.attributeFilters));
+        emit(
+          state.copyWith(
+            editedSearchAttributeFilters: !state.automaticProfileSearchSettings.attributeFilters,
+          ),
+        );
       } else {
         emit(state.copyWith(editedSearchAttributeFilters: null));
       }
     });
     on<ToggleSearchNewProfiles>((data, emit) async {
       if (state.editedSearchNewProfiles == null) {
-        emit(state.copyWith(editedSearchNewProfiles: !state.automaticProfileSearchSettings.newProfiles));
+        emit(
+          state.copyWith(
+            editedSearchNewProfiles: !state.automaticProfileSearchSettings.newProfiles,
+          ),
+        );
       } else {
         emit(state.copyWith(editedSearchNewProfiles: null));
       }
     });
     on<UpdateSearchWeekday>((data, emit) async {
       if (data.value == state.automaticProfileSearchSettings.weekdays) {
-        emit(state.copyWith(
-          editedSearchWeekdays: null,
-        ));
+        emit(state.copyWith(editedSearchWeekdays: null));
       } else {
-        emit(state.copyWith(
-          editedSearchWeekdays: data.value,
-        ));
+        emit(state.copyWith(editedSearchWeekdays: data.value));
       }
     });
 
-    _searchGroupsSubscription = db.accountStream((db) => db.search.watchSearchGroups()).listen((event) {
+    _searchGroupsSubscription = db.accountStream((db) => db.search.watchSearchGroups()).listen((
+      event,
+    ) {
       add(NewSearchGroups(event ?? SearchGroups()));
     });
     _automaticProfileSearchSettingsSubscription = db
-      .accountStream((db) => db.search.watchAutomaticProfileSearchSettings())
-      .listen((state) {
-        add(NewAutomaticProfileSearchSettings(state ?? AutomaticProfileSearchSettingsDefaults.defaultValue));
-      });
+        .accountStream((db) => db.search.watchAutomaticProfileSearchSettings())
+        .listen((state) {
+          add(
+            NewAutomaticProfileSearchSettings(
+              state ?? AutomaticProfileSearchSettingsDefaults.defaultValue,
+            ),
+          );
+        });
   }
 
   void _resetEditedValues(Emitter<SearchSettingsData> emit) {
-    emit(state.copyWith(
-      editedGenderSearchSettingsAll: null,
-      editedGender: null,
-      editedSearchDistanceFilters: null,
-      editedSearchAttributeFilters: null,
-      editedSearchNewProfiles: null,
-      editedSearchWeekdays: null,
-    ));
+    emit(
+      state.copyWith(
+        editedGenderSearchSettingsAll: null,
+        editedGender: null,
+        editedSearchDistanceFilters: null,
+        editedSearchAttributeFilters: null,
+        editedSearchNewProfiles: null,
+        editedSearchWeekdays: null,
+      ),
+    );
   }
 
   @override

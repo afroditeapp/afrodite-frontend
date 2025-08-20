@@ -1,4 +1,3 @@
-
 import 'package:flutter/foundation.dart';
 import 'package:logging/logging.dart';
 import 'package:native_utils/native_utils.dart';
@@ -66,12 +65,18 @@ class ImageEncryptionManager extends AppSingleton {
   Future<Uint8List> _getOrLoadOrGenerateImageEncryptionKey() async {
     final currentKey = _imageEncryptionKey;
     if (currentKey == null) {
-      final existingKey = await DatabaseManager.getInstance().commonStreamSingle((db) => db.app.watchImageEncryptionKey());
+      final existingKey = await DatabaseManager.getInstance().commonStreamSingle(
+        (db) => db.app.watchImageEncryptionKey(),
+      );
       if (existingKey == null) {
         log.info("Generating a new image encryption key");
         final newKey = _generateImageEncryptionKey();
-        await DatabaseManager.getInstance().commonAction((db) => db.app.updateImageEncryptionKey(newKey));
-        final dbKey = await DatabaseManager.getInstance().commonStreamSingle((db) => db.app.watchImageEncryptionKey());
+        await DatabaseManager.getInstance().commonAction(
+          (db) => db.app.updateImageEncryptionKey(newKey),
+        );
+        final dbKey = await DatabaseManager.getInstance().commonStreamSingle(
+          (db) => db.app.watchImageEncryptionKey(),
+        );
         if (!listEquals(newKey, dbKey)) {
           throw Exception("Failed to read the key that was just written");
         }

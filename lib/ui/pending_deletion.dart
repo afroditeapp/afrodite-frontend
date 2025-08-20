@@ -31,9 +31,8 @@ class _PendingDeletionPageState extends State<PendingDeletionPage> {
     await connectionManager.tryWaitUntilConnected(waitTimeoutSeconds: 5);
 
     final result = await api
-      .account(
-        (api) => api.getAccountDeletionRequestState(currentUser.aid),
-      ).ok();
+        .account((api) => api.getAccountDeletionRequestState(currentUser.aid))
+        .ok();
 
     if (context.mounted) {
       setState(() {
@@ -52,39 +51,36 @@ class _PendingDeletionPageState extends State<PendingDeletionPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(context.strings.account_deletion_pending_screen_title),
-          actions: [
-            menuActions([
-              MenuItemButton(
-                child: Text(context.strings.data_export_screen_title_export_type_user),
-                onPressed: () {
-                  openDataExportScreen(
-                    context,
-                    context.strings.data_export_screen_title_export_type_user,
-                    currentUser,
-                  );
-                }
-              ),
-              ...commonActionsWhenLoggedInAndAccountIsNotNormallyUsable(context),
-            ]),
-          ],
-        ),
-        body: LayoutBuilder(
-          builder: (context, constraints) {
-            return RefreshIndicator(
-              onRefresh: _refreshData,
-              child: SingleChildScrollView(
-                physics: const AlwaysScrollableScrollPhysics(),
-                child: ConstrainedBox(
-                  constraints: constraints,
-                  child: screenContent(context),
-                ),
-              ),
-            );
-          }
-        ),
-      );
+      appBar: AppBar(
+        title: Text(context.strings.account_deletion_pending_screen_title),
+        actions: [
+          menuActions([
+            MenuItemButton(
+              child: Text(context.strings.data_export_screen_title_export_type_user),
+              onPressed: () {
+                openDataExportScreen(
+                  context,
+                  context.strings.data_export_screen_title_export_type_user,
+                  currentUser,
+                );
+              },
+            ),
+            ...commonActionsWhenLoggedInAndAccountIsNotNormallyUsable(context),
+          ]),
+        ],
+      ),
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          return RefreshIndicator(
+            onRefresh: _refreshData,
+            child: SingleChildScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              child: ConstrainedBox(constraints: constraints, child: screenContent(context)),
+            ),
+          );
+        },
+      ),
+    );
   }
 
   Widget screenContent(BuildContext context) {
@@ -96,17 +92,13 @@ class _PendingDeletionPageState extends State<PendingDeletionPage> {
   }
 
   Widget buildProgressIndicator() {
-    return const Center(
-      child: CircularProgressIndicator(),
-    );
+    return const Center(child: CircularProgressIndicator());
   }
 
   Widget showData(BuildContext context, UnixTime? deletionAllowedTime) {
     List<Widget> widgets;
     if (deletionAllowedTime == null) {
-      widgets = [
-        Text(context.strings.generic_error_occurred),
-      ];
+      widgets = [Text(context.strings.generic_error_occurred)];
     } else {
       final localTime = fullTimeString(deletionAllowedTime.toUtcDateTime());
       widgets = [
@@ -115,12 +107,18 @@ class _PendingDeletionPageState extends State<PendingDeletionPage> {
         ElevatedButton(
           child: Text(context.strings.generic_cancel),
           onPressed: () async {
-            final result = await showConfirmDialog(context, context.strings.generic_cancel_question, yesNoActions: true);
+            final result = await showConfirmDialog(
+              context,
+              context.strings.generic_cancel_question,
+              yesNoActions: true,
+            );
             if (result == true) {
-              final result = await api
-                .accountAction(
-                  (api) => api.postSetAccountDeletionRequestState(currentUser.aid, BooleanSetting(value: false)),
-                );
+              final result = await api.accountAction(
+                (api) => api.postSetAccountDeletionRequestState(
+                  currentUser.aid,
+                  BooleanSetting(value: false),
+                ),
+              );
               if (result.isErr()) {
                 showSnackBar(R.strings.generic_error_occurred);
               }
@@ -134,7 +132,7 @@ class _PendingDeletionPageState extends State<PendingDeletionPage> {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: widgets,
-      )
+      ),
     );
   }
 }

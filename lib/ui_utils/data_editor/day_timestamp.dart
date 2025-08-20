@@ -1,4 +1,3 @@
-
 import 'package:app/ui_utils/data_editor/base.dart';
 import 'package:flutter/material.dart';
 
@@ -15,7 +14,8 @@ class DayTimestampDataViewer extends StatefulWidget {
   State<DayTimestampDataViewer> createState() => _DayTimestampDataViewerState();
 }
 
-class _DayTimestampDataViewerState extends State<DayTimestampDataViewer> with RefreshSupport<DayTimestampDataViewer> {
+class _DayTimestampDataViewerState extends State<DayTimestampDataViewer>
+    with RefreshSupport<DayTimestampDataViewer> {
   @override
   BaseDataManager get baseDataManager => widget.dataManager.baseDataManager;
 
@@ -44,8 +44,8 @@ class _DayTimestampDataViewerState extends State<DayTimestampDataViewer> with Re
             widget.dataManager.baseDataManager.triggerUiRefresh();
           },
           icon: const Icon(Icons.edit),
-        )
-      ]
+        ),
+      ],
     );
   }
 }
