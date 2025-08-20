@@ -61,19 +61,11 @@ rustup target add x86_64-linux-android
 
 1. Install [Rust](https://www.rust-lang.org/learn/get-started).
 
-2. Install iOS Rust targets.
-
-```
-rustup target add aarch64-apple-ios
-rustup target add aarch64-apple-ios-sim
-rustup target add x86_64-apple-ios
-```
-
-3. Install CocoaPods.
+2. Install CocoaPods.
 
    <https://guides.cocoapods.org/using/getting-started.html#sudo-less-installation>
 
-4. Install [Flutter](https://docs.flutter.dev/get-started/install).
+3. Install [Flutter](https://docs.flutter.dev/get-started/install).
 
 ### Development dependencies
 

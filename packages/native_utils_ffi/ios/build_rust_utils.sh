@@ -11,6 +11,10 @@ cd $PODS_TARGET_SRCROOT
 cd ..
 cd rust_utils
 
+rustup target add aarch64-apple-ios
+rustup target add aarch64-apple-ios-sim
+rustup target add x86_64-apple-ios
+
 # Build target/aarch64-apple-ios/release/librust_utils.a
 cargo build --release --target aarch64-apple-ios
 
