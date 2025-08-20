@@ -11,6 +11,12 @@ FetchContent_Declare(
     GIT_REPOSITORY https://github.com/corrosion-rs/corrosion.git
     GIT_TAG a1a1aaa057a5da656c06c3d8505b767a4e941709 # v0.5.2
 )
+
+# Make Rust version selection using rust-toolchain.toml work
+set(Rust_RESOLVE_RUSTUP_TOOLCHAINS FALSE)
+
+set(Rust_RUSTUP_INSTALL_MISSING_TARGET TRUE)
+
 FetchContent_MakeAvailable(Corrosion)
 
 corrosion_import_crate(MANIFEST_PATH ../rust_utils/Cargo.toml)

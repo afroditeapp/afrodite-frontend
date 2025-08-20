@@ -46,16 +46,7 @@ flutter run --release -d DEVICE
 
 1. Install [Rust](https://www.rust-lang.org/learn/get-started).
 
-2. Install Android Rust targets.
-
-```
-rustup target add aarch64-linux-android
-rustup target add armv7-linux-androideabi
-rustup target add i686-linux-android
-rustup target add x86_64-linux-android
-```
-
-3. Install [Flutter](https://docs.flutter.dev/get-started/install).
+2. Install [Flutter](https://docs.flutter.dev/get-started/install).
 
 #### iOS builds (on macOS)
 
