@@ -66,26 +66,23 @@ Widget genderRadioButtons(
   Gender? selected,
   void Function(Gender?) onChanged,
 ) {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: <Widget>[
-      genderListTile(context, selected, Gender.man, onChanged),
-      genderListTile(context, selected, Gender.woman, onChanged),
-      genderListTile(context, selected, Gender.nonBinary, onChanged),
-    ],
+  return RadioGroup<Gender>(
+    groupValue: selected,
+    onChanged: onChanged,
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        genderListTile(context, Gender.man),
+        genderListTile(context, Gender.woman),
+        genderListTile(context, Gender.nonBinary),
+      ],
+    ),
   );
 }
 
-Widget genderListTile(
-  BuildContext context,
-  Gender? selected,
-  Gender gender,
-  void Function(Gender?) onChanged,
-) {
-  return RadioListTile<Gender>(
+Widget genderListTile(BuildContext context, Gender gender) {
+  return ListTile(
     title: Text(gender.uiTextSingular(context)),
-    value: gender,
-    groupValue: selected,
-    onChanged: onChanged,
+    leading: Radio<Gender>(value: gender),
   );
 }

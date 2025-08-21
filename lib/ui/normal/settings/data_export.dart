@@ -104,29 +104,27 @@ class _DataExportScreenState extends State<DataExportScreen> {
   }
 
   Widget exportTypeSelection(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: RadioListTile<DataExportType>(
-            value: DataExportType.user,
-            groupValue: dataExportType,
-            onChanged: (_) => setState(() {
-              dataExportType = DataExportType.user;
-            }),
-            title: Text("User"),
+    return RadioGroup<DataExportType>(
+      groupValue: dataExportType,
+      onChanged: (_) => setState(() {
+        dataExportType = DataExportType.user;
+      }),
+      child: Row(
+        children: [
+          Expanded(
+            child: ListTile(
+              leading: Radio<DataExportType>(value: DataExportType.user),
+              title: Text("User"),
+            ),
           ),
-        ),
-        Expanded(
-          child: RadioListTile<DataExportType>(
-            value: DataExportType.admin,
-            groupValue: dataExportType,
-            onChanged: (_) => setState(() {
-              dataExportType = DataExportType.admin;
-            }),
-            title: Text("Admin"),
+          Expanded(
+            child: ListTile(
+              leading: Radio<DataExportType>(value: DataExportType.admin),
+              title: Text("Admin"),
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 

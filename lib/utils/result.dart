@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:app/utils/app_error.dart';
 
-sealed class Result<Success, Error> {
+sealed class Result<Success, E> {
   const Result();
 
   bool isErr() {
@@ -20,14 +20,14 @@ sealed class Result<Success, Error> {
     };
   }
 
-  Result<Success, NextErr> mapErr<NextErr>(NextErr Function(Error) errMap) {
+  Result<Success, NextErr> mapErr<NextErr>(NextErr Function(E) errMap) {
     return switch (this) {
       Ok(:final v) => Ok(v),
       Err(:final e) => Err(errMap(e)),
     };
   }
 
-  Result<NextSuccess, Error> mapOk<NextSuccess>(NextSuccess Function(Success) okMap) {
+  Result<NextSuccess, E> mapOk<NextSuccess>(NextSuccess Function(Success) okMap) {
     return switch (this) {
       Ok(:final v) => Ok(okMap(v)),
       Err(:final e) => Err(e),
@@ -35,13 +35,13 @@ sealed class Result<Success, Error> {
   }
 }
 
-final class Ok<Success, Err> extends Result<Success, Err> {
+final class Ok<Success, E> extends Result<Success, E> {
   final Success value;
   const Ok(this.value);
   Success get v => value;
 }
 
-final class Err<Ok, E> extends Result<Ok, E> {
+final class Err<Success, E> extends Result<Success, E> {
   final E error;
   const Err(this.error);
   E get e => error;

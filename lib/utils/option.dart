@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:app/utils/result.dart';
 
 extension NullableExt<T extends Object> on T? {
-  Result<T, Error> okOrDirect<Error>(Error error) {
+  Result<T, E> okOrDirect<E>(E error) {
     final value = this;
     if (value == null) {
       return Err(error);
@@ -23,7 +23,7 @@ extension NullableExt<T extends Object> on T? {
 }
 
 extension NullableFutureExt<T extends Object> on Future<T?> {
-  Future<Result<T, Error>> okOr<Error>(Error error) async {
+  Future<Result<T, E>> okOr<E>(E error) async {
     final value = await this;
     return value.okOrDirect(error);
   }

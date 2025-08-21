@@ -329,56 +329,56 @@ class ApiManager implements LifecycleMethods {
     return ApiWrapper(_mediaApiProvider().mediaAdmin, connection);
   }
 
-  Future<Result<R, ValueApiError>> account<R extends Object>(
-    Future<R?> Function(AccountApi) action,
+  Future<Result<T, ValueApiError>> account<T extends Object>(
+    Future<T?> Function(AccountApi) action,
   ) async {
     return await accountWrapper().requestValue(action);
   }
 
-  Future<Result<R, ValueApiError>> accountAdmin<R extends Object>(
-    Future<R?> Function(AccountAdminApi) action,
+  Future<Result<T, ValueApiError>> accountAdmin<T extends Object>(
+    Future<T?> Function(AccountAdminApi) action,
   ) async {
     return await _accountAdminWrapper().requestValue(action);
   }
 
-  Future<Result<R, ValueApiError>> common<R extends Object>(
-    Future<R?> Function(CommonApi) action,
+  Future<Result<T, ValueApiError>> common<T extends Object>(
+    Future<T?> Function(CommonApi) action,
   ) async {
     return await ApiWrapper(_account.common, connection).requestValue(action);
   }
 
-  Future<Result<R, ValueApiError>> commonAdmin<R extends Object>(
-    Future<R?> Function(CommonAdminApi) action,
+  Future<Result<T, ValueApiError>> commonAdmin<T extends Object>(
+    Future<T?> Function(CommonAdminApi) action,
   ) async {
     return await ApiWrapper(_account.commonAdmin, connection).requestValue(action);
   }
 
-  Future<Result<R, ValueApiError>> media<R extends Object>(
-    Future<R?> Function(MediaApi) action,
+  Future<Result<T, ValueApiError>> media<T extends Object>(
+    Future<T?> Function(MediaApi) action,
   ) async {
     return await mediaWrapper().requestValue(action);
   }
 
-  Future<Result<R, ValueApiError>> mediaAdmin<R extends Object>(
-    Future<R?> Function(MediaAdminApi) action,
+  Future<Result<T, ValueApiError>> mediaAdmin<T extends Object>(
+    Future<T?> Function(MediaAdminApi) action,
   ) async {
     return await _mediaAdminWrapper().requestValue(action);
   }
 
-  Future<Result<R, ValueApiError>> profile<R extends Object>(
-    Future<R?> Function(ProfileApi) action,
+  Future<Result<T, ValueApiError>> profile<T extends Object>(
+    Future<T?> Function(ProfileApi) action,
   ) async {
     return await profileWrapper().requestValue(action);
   }
 
-  Future<Result<R, ValueApiError>> profileAdmin<R extends Object>(
-    Future<R?> Function(ProfileAdminApi) action,
+  Future<Result<T, ValueApiError>> profileAdmin<T extends Object>(
+    Future<T?> Function(ProfileAdminApi) action,
   ) async {
     return await _profileAdminWrapper().requestValue(action);
   }
 
-  Future<Result<R, ValueApiError>> chat<R extends Object>(
-    Future<R?> Function(ChatApi) action,
+  Future<Result<T, ValueApiError>> chat<T extends Object>(
+    Future<T?> Function(ChatApi) action,
   ) async {
     return await _chatWrapper().requestValue(action);
   }
