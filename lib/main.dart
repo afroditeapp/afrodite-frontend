@@ -49,19 +49,18 @@ void initLogging() {
   }
 
   Logger.root.onRecord.listen((record) {
-    // TODO(prod): Remove print if logcat printing works somehow
-    // without print.
     if (kDebugMode) {
-      print('${record.level.name}: ${record.time}: ${record.message}');
+      developer.log(
+        record.message,
+        name: record.loggerName,
+        time: record.time,
+        sequenceNumber: record.sequenceNumber,
+        level: record.level.value,
+      );
+    } else {
+      // ignore: avoid_print
+      print('[${record.level.name}][${record.loggerName}] ${record.message}');
     }
-
-    developer.log(
-      record.message,
-      name: record.loggerName,
-      time: record.time,
-      sequenceNumber: record.sequenceNumber,
-      level: record.level.value,
-    );
   });
 }
 
