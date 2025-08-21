@@ -19,6 +19,3 @@ dependencies:
     path: "../database_common_foreground"
   database_model:
     path: "../database_model"
-
-dev_dependencies:
-  lints: ^6.0.0

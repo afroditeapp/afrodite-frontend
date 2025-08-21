@@ -19,6 +19,3 @@ dependencies:
     path: "../encryption_native"
   encryption_web:
     path: "../encryption_web"
-
-dev_dependencies:
-  lints: ^6.0.0

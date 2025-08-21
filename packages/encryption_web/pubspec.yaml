@@ -15,6 +15,3 @@ dependencies:
 
   encryption_common:
     path: "../encryption_common"
-
-dev_dependencies:
-  lints: ^6.0.0

@@ -18,6 +18,3 @@ dependencies:
     path: "../database_provider_web"
   database_utils:
     path: "../database_utils"
-
-dev_dependencies:
-  lints: ^6.0.0

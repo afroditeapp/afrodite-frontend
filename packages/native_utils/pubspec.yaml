@@ -14,6 +14,3 @@ dependencies:
     path: "../native_utils_ffi"
   native_utils_common:
     path: "../native_utils_common"
-
-dev_dependencies:
-  lints: ^6.0.0

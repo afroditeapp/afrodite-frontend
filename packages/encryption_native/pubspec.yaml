@@ -25,6 +25,3 @@ dependencies:
 
   encryption_common:
     path: "../encryption_common"
-
-dev_dependencies:
-  flutter_lints: ^6.0.0
