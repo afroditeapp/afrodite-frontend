@@ -114,7 +114,12 @@ dependencies:
   image: ^4.0.17
   path_provider: ^2.1.1
 
-  infinite_scroll_pagination: ^5.0.0
+  # 5.1.0 with state refreshing null exceptions fixed.
+  # The exceptions were an issue especially on iOS.
+  infinite_scroll_pagination:
+    git:
+      url: https://github.com/jutuon/infinite_scroll_pagination.git
+      ref: 840c03963a8bf20090f0d6f5f1f078128dabddd7
 
   flutter_map: ^8.2.1
   latlong2: ^0.9.1
