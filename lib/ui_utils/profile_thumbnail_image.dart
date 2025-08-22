@@ -12,8 +12,6 @@ class ProfileThumbnailImage extends StatelessWidget {
   final ContentId contentId;
   final CropArea cropArea;
 
-  /// 1.0 means square image, 0.0 means original aspect ratio
-  final double squareFactor;
   final double? width;
   final double? height;
   final Widget? child;
@@ -27,7 +25,6 @@ class ProfileThumbnailImage extends StatelessWidget {
     this.width,
     this.height,
     this.child,
-    this.squareFactor = 1.0,
     this.borderRadius = const BorderRadius.all(Radius.circular(PROFILE_PICTURE_BORDER_RADIUS)),
     required this.cacheSize,
     super.key,
@@ -81,14 +78,13 @@ class ProfileThumbnailImage extends StatelessWidget {
 class CroppedImagePainter {
   final ui.Image img;
   final CropArea cropArea;
-  final double squareFactor;
-  CroppedImagePainter(this.img, this.cropArea, this.squareFactor);
+  CroppedImagePainter(this.img, this.cropArea);
 
   Rect calculateSrcRect() {
     final squareRect = _calculateSquareSrcRect(img, cropArea);
     final fullImgRect = Rect.fromLTWH(0, 0, img.width.toDouble(), img.height.toDouble());
 
-    final animatedSrc = RectTween(begin: fullImgRect, end: squareRect).lerp(squareFactor);
+    final animatedSrc = RectTween(begin: fullImgRect, end: squareRect).lerp(1.0);
     final src = animatedSrc ?? fullImgRect;
 
     return src;

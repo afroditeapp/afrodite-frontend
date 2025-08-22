@@ -12,8 +12,6 @@ class ProfileThumbnailImageOrError extends StatelessWidget {
   final ProfileEntry entry;
   final CropArea cropArea;
 
-  /// 1.0 means square image, 0.0 means original aspect ratio
-  final double squareFactor;
   final double? width;
   final double? height;
   final Widget? child;
@@ -25,7 +23,6 @@ class ProfileThumbnailImageOrError extends StatelessWidget {
     this.width,
     this.height,
     this.child,
-    this.squareFactor = 1.0,
     this.borderRadius = const BorderRadius.all(Radius.circular(PROFILE_PICTURE_BORDER_RADIUS)),
     required this.cacheSize,
     super.key,
@@ -47,7 +44,6 @@ class ProfileThumbnailImageOrError extends StatelessWidget {
         cropArea: cropArea,
         width: width,
         height: height,
-        squareFactor: squareFactor,
         borderRadius: borderRadius,
         cacheSize: cacheSize,
         child: child,

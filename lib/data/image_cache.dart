@@ -197,7 +197,7 @@ class AccountImageProvider extends ImageProvider<AccountImgKey> {
 
       final pictureRecorder = PictureRecorder();
       final canvas = Canvas(pictureRecorder);
-      final painter = CroppedImagePainter(frame.image, cropArea, 1.0);
+      final painter = CroppedImagePainter(frame.image, cropArea);
       final srcRect = painter.calculateSrcRect();
       final dstRect = Rect.fromLTWH(0, 0, srcRect.width, srcRect.height);
       canvas.drawImageRect(frame.image, srcRect, dstRect, Paint());
