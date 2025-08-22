@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'dart:ui';
 
 import 'package:app/data/login_repository.dart';
@@ -199,12 +200,10 @@ class AccountImageProvider extends ImageProvider<AccountImgKey> {
       final canvas = Canvas(pictureRecorder);
       final painter = CroppedImagePainter(frame.image, cropArea);
       final srcRect = painter.calculateSrcRect();
-      final dstRect = Rect.fromLTWH(0, 0, srcRect.width, srcRect.height);
+      final dstSize = imgInfo.cacheSize.squareSize();
+      final dstRect = Rect.fromLTWH(0, 0, dstSize.toDouble(), dstSize.toDouble());
       canvas.drawImageRect(frame.image, srcRect, dstRect, Paint());
-      final image = await pictureRecorder.endRecording().toImage(
-        srcRect.width.round(),
-        srcRect.height.round(),
-      );
+      final image = await pictureRecorder.endRecording().toImage(dstSize, dstSize);
       return ImageInfo(image: image);
     }());
   }
@@ -227,20 +226,25 @@ class AccountImageProvider extends ImageProvider<AccountImgKey> {
       cropArea: cropArea,
     );
     final imgProvider = AccountImageProvider._(key, isMatch: isMatch, media: media);
-    return ResizeImage(
-      imgProvider,
-      width: cacheSize.width,
-      height: cacheSize.height,
-      allowUpscaling: false,
-      policy: ResizeImagePolicy.fit,
-    );
+    if (cropArea == null) {
+      return ResizeImage(
+        imgProvider,
+        width: cacheSize.width,
+        height: cacheSize.height,
+        allowUpscaling: false,
+        policy: ResizeImagePolicy.fit,
+      );
+    } else {
+      // AccountImageProvider handles resizing
+      return imgProvider;
+    }
   }
 }
 
 class ImageCacheSize {
-  final int? width;
-  final int? height;
-  ImageCacheSize._({this.width, this.height});
+  final int width;
+  final int height;
+  ImageCacheSize._({required this.width, required this.height});
 
   factory ImageCacheSize.fullScreen(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
@@ -264,14 +268,13 @@ class ImageCacheSize {
     return ImageCacheSize._divideFullScreen(context, 2);
   }
 
-  factory ImageCacheSize.width(BuildContext context, double width) {
-    final devicePixelRatio = MediaQuery.devicePixelRatioOf(context);
-    return ImageCacheSize._(width: (width * devicePixelRatio).round());
-  }
-
   factory ImageCacheSize.height(BuildContext context, double height) {
+    final size = MediaQuery.sizeOf(context);
     final devicePixelRatio = MediaQuery.devicePixelRatioOf(context);
-    return ImageCacheSize._(height: (height * devicePixelRatio).round());
+    return ImageCacheSize._(
+      width: (size.width * devicePixelRatio).round(),
+      height: (height * devicePixelRatio).round(),
+    );
   }
 
   static ImageCacheSize sizeForAppBarThumbnail(BuildContext context) {
@@ -293,6 +296,10 @@ class ImageCacheSize {
 
   @override
   int get hashCode => Object.hash(width, height);
+
+  int squareSize() {
+    return min(width, height);
+  }
 }
 
 class PrecacheImageForViewProfileScreen {
