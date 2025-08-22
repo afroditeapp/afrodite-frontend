@@ -204,9 +204,14 @@ class ProfileGridState extends State<ProfileGrid> {
           return BlocBuilder<ProfileFiltersBloc, ProfileFiltersData>(
             builder: (context, state) {
               if (state.updateState is UpdateIdle && !state.unsavedChanges()) {
-                return showGrid(context, uiSettings.gridSettings, pagingState);
+                return showGrid(context, uiSettings.gridSettings, pagingState, true);
               } else {
-                return showGrid(context, uiSettings.gridSettings, PagingState(isLoading: true));
+                return showGrid(
+                  context,
+                  uiSettings.gridSettings,
+                  PagingState(isLoading: true),
+                  false,
+                );
               }
             },
           );
@@ -219,6 +224,7 @@ class ProfileGridState extends State<ProfileGrid> {
     BuildContext context,
     GridSettings settings,
     PagingState<int, ProfileGridProfileEntry> pagingState,
+    bool fetchPages,
   ) {
     return NotificationListener<ScrollMetricsNotification>(
       onNotification: (notification) {
@@ -237,7 +243,7 @@ class ProfileGridState extends State<ProfileGrid> {
             _scrollController.bottomNavigationRelatedJumpToBeginningIfClientsConnected();
           }
         },
-        child: grid(context, settings, pagingState),
+        child: grid(context, settings, pagingState, fetchPages),
       ),
     );
   }
@@ -246,11 +252,14 @@ class ProfileGridState extends State<ProfileGrid> {
     BuildContext context,
     GridSettings settings,
     PagingState<int, ProfileGridProfileEntry> pagingState,
+    bool fetchPages,
   ) {
     return PagedGridView(
       state: pagingState,
       fetchNextPage: () {
-        _gridLogic.fetchPage(_fetchPage, _addPage);
+        if (fetchPages) {
+          _gridLogic.fetchPage(_fetchPage, _addPage);
+        }
       },
       physics: const AlwaysScrollableScrollPhysics(),
       scrollController: _scrollController,
