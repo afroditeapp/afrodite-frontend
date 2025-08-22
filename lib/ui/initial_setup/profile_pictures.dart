@@ -827,8 +827,9 @@ class VisibleThumbnailPicture extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ProfileThumbnailImage.fromAccountImageId(
-      img: img,
+    return ProfileThumbnailImage(
+      accountId: img.accountId,
+      contentId: img.contentId,
       cropArea: cropArea,
       width: THUMBNAIL_SIZE,
       height: THUMBNAIL_SIZE,

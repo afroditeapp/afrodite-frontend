@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:openapi/api.dart';
 import 'package:app/data/image_cache.dart';
 import 'package:app/data/login_repository.dart';
-import 'package:app/model/freezed/logic/media/profile_pictures.dart';
 import 'package:app/ui_utils/consts/corners.dart';
 import 'package:app/ui_utils/crop_image_screen.dart';
 
@@ -38,30 +37,6 @@ class ProfileThumbnailImage extends StatelessWidget {
          cacheSize: cacheSize,
          media: LoginRepository.getInstance().repositories.media,
          cropArea: cropArea,
-       );
-
-  ProfileThumbnailImage.fromAccountImageId({
-    required AccountImageId img,
-    required CropArea cropArea,
-    double? width,
-    double? height,
-    Widget? child,
-    double squareFactor = 1.0,
-    BorderRadius borderRadius = const BorderRadius.all(
-      Radius.circular(PROFILE_PICTURE_BORDER_RADIUS),
-    ),
-    required ImageCacheSize cacheSize,
-    Key? key,
-  }) : this(
-         accountId: img.accountId,
-         contentId: img.contentId,
-         width: width,
-         height: height,
-         child: child,
-         squareFactor: squareFactor,
-         borderRadius: borderRadius,
-         cacheSize: cacheSize,
-         key: key,
        );
 
   @override
