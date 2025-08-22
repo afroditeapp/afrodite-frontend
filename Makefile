@@ -11,6 +11,7 @@ fmt:
 	! -name "*.freezed.dart" \
 	! -path "./packages/api_client/*" \
 	! -path "./lib/l10n/*" \
+	! -path "*/.dart_tool/*" \
 	| \
 	xargs dart format \
 	--show none \
@@ -24,6 +25,7 @@ check-fmt:
 	! -name "*.freezed.dart" \
 	! -path "./packages/api_client/*" \
 	! -path "./lib/l10n/*" \
+	! -path "*/.dart_tool/*" \
 	| \
 	xargs dart format \
 	--show none \
