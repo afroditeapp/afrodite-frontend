@@ -8,6 +8,14 @@ part of 'account_img_key.dart';
 // **************************************************************************
 
 /// @nodoc
+class _DetectDefaultValueInCopyWith {
+  const _DetectDefaultValueInCopyWith();
+}
+
+/// @nodoc
+const _detectDefaultValueInCopyWith = _DetectDefaultValueInCopyWith();
+
+/// @nodoc
 final _privateConstructorErrorAccountImgKey = UnsupportedError(
     'Private constructor AccountImgKey._() was called. Please call factory constructor instead.');
 
@@ -16,7 +24,7 @@ mixin _$AccountImgKey {
   AccountId get accountId => throw _privateConstructorErrorAccountImgKey;
   ContentId get contentId => throw _privateConstructorErrorAccountImgKey;
   ImageCacheSize get cacheSize => throw _privateConstructorErrorAccountImgKey;
-  CropArea get cropArea => throw _privateConstructorErrorAccountImgKey;
+  CropArea? get cropArea => throw _privateConstructorErrorAccountImgKey;
 
   AccountImgKey copyWith({
     AccountId? accountId,
@@ -32,7 +40,7 @@ abstract class _AccountImgKey implements AccountImgKey {
     required AccountId accountId,
     required ContentId contentId,
     required ImageCacheSize cacheSize,
-    required CropArea cropArea,
+    required CropArea? cropArea,
   }) = _$AccountImgKeyImpl;
 }
 
@@ -52,7 +60,7 @@ class _$AccountImgKeyImpl with DiagnosticableTreeMixin implements _AccountImgKey
   @override
   final ImageCacheSize cacheSize;
   @override
-  final CropArea cropArea;
+  final CropArea? cropArea;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
@@ -100,11 +108,11 @@ class _$AccountImgKeyImpl with DiagnosticableTreeMixin implements _AccountImgKey
     Object? accountId,
     Object? contentId,
     Object? cacheSize,
-    Object? cropArea,
+    Object? cropArea = _detectDefaultValueInCopyWith,
   }) => _$AccountImgKeyImpl(
     accountId: (accountId ?? this.accountId) as AccountId,
     contentId: (contentId ?? this.contentId) as ContentId,
     cacheSize: (cacheSize ?? this.cacheSize) as ImageCacheSize,
-    cropArea: (cropArea ?? this.cropArea) as CropArea,
+    cropArea: (cropArea == _detectDefaultValueInCopyWith ? this.cropArea : cropArea) as CropArea?,
   );
 }

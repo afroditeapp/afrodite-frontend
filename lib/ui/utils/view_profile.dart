@@ -3,6 +3,7 @@ import 'package:app/ui_utils/consts/icons.dart';
 import 'package:app/ui_utils/extensions/api.dart';
 import 'package:app/ui_utils/attribute/attribute.dart';
 import 'package:app/ui_utils/attribute/state.dart';
+import 'package:app/ui_utils/image.dart';
 import 'package:app/ui_utils/moderation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,7 +22,6 @@ import 'package:app/model/freezed/logic/profile/attributes.dart';
 import 'package:app/ui/normal/settings/profile/edit_profile.dart';
 import 'package:app/ui_utils/consts/corners.dart';
 import 'package:app/ui_utils/consts/padding.dart';
-import 'package:app/ui_utils/profile_thumbnail_image.dart';
 
 const double VIEW_PROFILE_WIDGET_IMG_HEIGHT = 400;
 
@@ -425,11 +425,9 @@ class _ViewProfileImgViewerState extends State<ViewProfileImgViewer> {
   }
 
   Widget viewProifleImage(BuildContext context, AccountId accountId, ContentId contentId) {
-    return ProfileThumbnailImage(
-      accountId: accountId,
-      contentId: contentId,
-      borderRadius: null,
-      squareFactor: 0.0,
+    return accountImgWidget(
+      accountId,
+      contentId,
       cacheSize: ImageCacheSize.height(context, VIEW_PROFILE_WIDGET_IMG_HEIGHT),
     );
   }

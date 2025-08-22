@@ -12,6 +12,6 @@ class AccountImgKey with _$AccountImgKey {
     required AccountId accountId,
     required ContentId contentId,
     required ImageCacheSize cacheSize,
-    required CropArea cropArea,
+    required CropArea? cropArea,
   }) = _AccountImgKey;
 }

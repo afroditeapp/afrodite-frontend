@@ -190,13 +190,14 @@ class AccountImageProvider extends ImageProvider<AccountImgKey> {
       final codec = await decode(buffer);
       final frame = await codec.getNextFrame();
 
-      if (imgInfo.cropArea == CropArea.full) {
+      final cropArea = imgInfo.cropArea;
+      if (cropArea == null) {
         return ImageInfo(image: frame.image);
       }
 
       final pictureRecorder = PictureRecorder();
       final canvas = Canvas(pictureRecorder);
-      final painter = CroppedImagePainter(frame.image, imgInfo.cropArea, 1.0);
+      final painter = CroppedImagePainter(frame.image, cropArea, 1.0);
       final srcRect = painter.calculateSrcRect();
       final dstRect = Rect.fromLTWH(0, 0, srcRect.width, srcRect.height);
       canvas.drawImageRect(frame.image, srcRect, dstRect, Paint());
@@ -217,7 +218,7 @@ class AccountImageProvider extends ImageProvider<AccountImgKey> {
     bool isMatch = false,
     required ImageCacheSize cacheSize,
     required MediaRepository media,
-    required CropArea cropArea,
+    required CropArea? cropArea,
   }) {
     final key = AccountImgKey(
       accountId: accountId,
@@ -319,7 +320,7 @@ class PrecacheImageForViewProfileScreen {
       content,
       cacheSize: ImageCacheSize.height(context, VIEW_PROFILE_WIDGET_IMG_HEIGHT),
       media: LoginRepository.getInstance().repositories.media,
-      cropArea: CropArea.full,
+      cropArea: null,
     );
     await precacheImage(imageProvider, context);
   }
