@@ -320,6 +320,7 @@ class LikeViewContentState extends State<LikeViewContent> {
   }
 
   Widget grid(BuildContext context, GridSettings settings) {
+    final singleItemWidth = settings.singleItemWidth(context);
     return PagedGridView(
       state: _pagingState,
       fetchNextPage: () {
@@ -337,6 +338,7 @@ class LikeViewContentState extends State<LikeViewContent> {
             accountDb,
             settings,
             showNewLikeMarker: true,
+            maxItemWidth: singleItemWidth,
           );
         },
         noItemsFoundIndicatorBuilder: (context) {
@@ -364,7 +366,7 @@ class LikeViewContentState extends State<LikeViewContent> {
           );
         },
       ),
-      gridDelegate: settings.toSliverGridDelegate(),
+      gridDelegate: settings.toSliverGridDelegate(context, itemWidth: singleItemWidth),
     );
   }
 

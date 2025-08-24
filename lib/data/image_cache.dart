@@ -282,17 +282,12 @@ class ImageCacheSize {
     );
   }
 
-  // Value changes when window size changes
-  factory ImageCacheSize.dynamicSquare(BuildContext context, double widthAndHeight) {
-    return ImageCacheSize.constantSquare(context, widthAndHeight);
-  }
-
   static ImageCacheSize squareImageForAppBarThumbnail(BuildContext context, double widthAndHeight) {
     return ImageCacheSize.constantSquare(context, widthAndHeight);
   }
 
   static ImageCacheSize squareImageForGrid(BuildContext context, double widthAndHeight) {
-    return ImageCacheSize.dynamicSquare(context, widthAndHeight);
+    return ImageCacheSize.constantSquare(context, widthAndHeight);
   }
 
   static ImageCacheSize squareImageForListWithTextContent(

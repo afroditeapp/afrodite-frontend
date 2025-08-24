@@ -254,6 +254,7 @@ class ProfileGridState extends State<ProfileGrid> {
     PagingState<int, ProfileGridProfileEntry> pagingState,
     bool fetchPages,
   ) {
+    final singleItemWidth = settings.singleItemWidth(context);
     return PagedGridView(
       state: pagingState,
       fetchNextPage: () {
@@ -272,6 +273,7 @@ class ProfileGridState extends State<ProfileGrid> {
             item.initialProfileAction,
             accountDb,
             settings,
+            maxItemWidth: singleItemWidth,
           );
         },
         noItemsFoundIndicatorBuilder: (context) {
@@ -318,7 +320,7 @@ class ProfileGridState extends State<ProfileGrid> {
           );
         },
       ),
-      gridDelegate: settings.toSliverGridDelegate(),
+      gridDelegate: settings.toSliverGridDelegate(context, itemWidth: singleItemWidth),
     );
   }
 
@@ -370,6 +372,7 @@ Widget profileEntryWidgetStream(
   AccountDatabaseManager db,
   GridSettings settings, {
   bool showNewLikeMarker = false,
+  required double maxItemWidth,
 }) {
   return StreamBuilder(
     stream: db
@@ -377,37 +380,33 @@ Widget profileEntryWidgetStream(
         .whereNotNull(),
     builder: (context, data) {
       final e = data.data ?? profile;
-      return LayoutBuilder(
-        builder: (context, constraints) {
-          return ProfileThumbnailImageOrError.fromProfileEntry(
-            entry: e.entry,
-            borderRadius: BorderRadius.circular(settings.valueProfileThumbnailBorderRadius()),
-            cacheSize: ImageCacheSize.squareImageForGrid(context, constraints.maxHeight),
-            child: Stack(
-              children: [
-                _thumbnailStatusIndicatorsTop(
-                  showNewLikeMarker,
-                  e.entry.newLikeInfoReceivedTime,
-                  e.isFavorite,
-                ),
-                _thumbnailStatusIndicatorsBottom(context, e.entry),
-                Material(
-                  color: Colors.transparent,
-                  child: InkWell(
-                    onTap: () {
-                      openProfileView(
-                        context,
-                        e.entry,
-                        initialProfileAction,
-                        ProfileRefreshPriority.low,
-                      );
-                    },
-                  ),
-                ),
-              ],
+      return ProfileThumbnailImageOrError.fromProfileEntry(
+        entry: e.entry,
+        borderRadius: BorderRadius.circular(settings.valueProfileThumbnailBorderRadius()),
+        cacheSize: ImageCacheSize.squareImageForGrid(context, maxItemWidth),
+        child: Stack(
+          children: [
+            _thumbnailStatusIndicatorsTop(
+              showNewLikeMarker,
+              e.entry.newLikeInfoReceivedTime,
+              e.isFavorite,
             ),
-          );
-        },
+            _thumbnailStatusIndicatorsBottom(context, e.entry),
+            Material(
+              color: Colors.transparent,
+              child: InkWell(
+                onTap: () {
+                  openProfileView(
+                    context,
+                    e.entry,
+                    initialProfileAction,
+                    ProfileRefreshPriority.low,
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
       );
     },
   );

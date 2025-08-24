@@ -160,6 +160,7 @@ class _GenericProfileGridState extends State<GenericProfileGrid> {
   }
 
   Widget grid(BuildContext context, GridSettings settings) {
+    final singleItemWidth = settings.singleItemWidth(context);
     return PagedGridView(
       state: _pagingState,
       fetchNextPage: () {
@@ -177,6 +178,7 @@ class _GenericProfileGridState extends State<GenericProfileGrid> {
               item.initialProfileAction,
               accountDb,
               settings,
+              maxItemWidth: singleItemWidth,
             ),
           );
         },
@@ -200,7 +202,7 @@ class _GenericProfileGridState extends State<GenericProfileGrid> {
           );
         },
       ),
-      gridDelegate: settings.toSliverGridDelegate(),
+      gridDelegate: settings.toSliverGridDelegate(context, itemWidth: singleItemWidth),
     );
   }
 

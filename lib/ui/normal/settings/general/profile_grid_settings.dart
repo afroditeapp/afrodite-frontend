@@ -185,7 +185,7 @@ class _ProfileGridSettingsScreenState extends State<ProfileGridSettingsScreen> {
               );
             },
           ),
-          gridDelegate: gridSettings.toSliverGridDelegate(),
+          gridDelegate: gridSettings.toSliverGridDelegate(context, itemWidth: null),
         );
       },
     );
