@@ -157,9 +157,13 @@ class _AskSecuritySelfieState extends State<AskSecuritySelfie> {
                   child: accountImgWidgetInk(
                     image.accountId,
                     image.contentId,
-                    height: IMAGE_AREA_HEIGHT,
                     width: IMG_WIDTH,
-                    cacheSize: ImageCacheSize.halfScreen(context),
+                    height: IMAGE_AREA_HEIGHT,
+                    cacheSize: ImageCacheSize.constantWidthAndHeight(
+                      context,
+                      IMG_WIDTH,
+                      IMAGE_AREA_HEIGHT,
+                    ),
                   ),
                 ),
               ),

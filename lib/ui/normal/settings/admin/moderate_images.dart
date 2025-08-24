@@ -10,7 +10,7 @@ import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/ui_utils/image.dart';
 import 'package:app/ui_utils/view_image_screen.dart';
 
-const ROW_HEIGHT = 300.0;
+const IMAGE_MODERATION_ROW_HEIGHT = 300.0;
 
 class ModerateImagesScreen extends ContentDecicionScreen<WrappedMediaContentPendingModeration> {
   final ModerationQueueType queueType;
@@ -21,7 +21,7 @@ class ModerateImagesScreen extends ContentDecicionScreen<WrappedMediaContentPend
     super.key,
   }) : super(
          title: "Moderate profile images",
-         infoMessageRowHeight: ROW_HEIGHT,
+         infoMessageRowHeight: IMAGE_MODERATION_ROW_HEIGHT,
          io: MediaContentIo(showContentWhichBotsCanModerate, queueType),
          builder: MediaContentUiBuilder(),
        );
@@ -115,17 +115,11 @@ class MediaContentUiBuilder extends ContentUiBuilder<WrappedMediaContentPendingM
     final securitySelfie = content.securitySelfie;
     final Widget securitySelfieWidget;
     if (securitySelfie != null) {
-      securitySelfieWidget = buildImage(
-        context,
-        content.accountId,
-        securitySelfie,
-        maxWidth / 2,
-        ROW_HEIGHT,
-      );
+      securitySelfieWidget = buildImage(context, content.accountId, securitySelfie, maxWidth / 2);
     } else {
       securitySelfieWidget = SizedBox(
         width: maxWidth / 2,
-        height: ROW_HEIGHT,
+        height: IMAGE_MODERATION_ROW_HEIGHT,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [Text(context.strings.generic_empty)],
@@ -137,18 +131,12 @@ class MediaContentUiBuilder extends ContentUiBuilder<WrappedMediaContentPendingM
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         securitySelfieWidget,
-        buildImage(context, content.accountId, content.contentId, maxWidth / 2, ROW_HEIGHT),
+        buildImage(context, content.accountId, content.contentId, maxWidth / 2),
       ],
     );
   }
 
-  Widget buildImage(
-    BuildContext context,
-    AccountId imageOwner,
-    ContentId image,
-    double width,
-    double height,
-  ) {
+  Widget buildImage(BuildContext context, AccountId imageOwner, ContentId image, double width) {
     return InkWell(
       onTap: () {
         MyNavigator.push(
@@ -160,8 +148,8 @@ class MediaContentUiBuilder extends ContentUiBuilder<WrappedMediaContentPendingM
         imageOwner,
         image,
         width: width,
-        height: height,
-        cacheSize: ImageCacheSize.halfScreen(context),
+        height: IMAGE_MODERATION_ROW_HEIGHT,
+        cacheSize: ImageCacheSize.constantHeight(context, IMAGE_MODERATION_ROW_HEIGHT),
       ),
     );
   }

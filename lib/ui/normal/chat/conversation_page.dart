@@ -76,15 +76,14 @@ class ConversationPageState extends State<ConversationPage> {
 
   @override
   Widget build(BuildContext context) {
+    final double appBarHeight = AppBar().preferredSize.height;
+    const double IMG_HEIGHT = 40;
     return Scaffold(
       appBar: AppBar(
         title: LayoutBuilder(
           builder: (context, constraints) {
             return ConstrainedBox(
-              constraints: constraints.copyWith(
-                minHeight: AppBar().preferredSize.height,
-                maxHeight: AppBar().preferredSize.height,
-              ),
+              constraints: constraints.copyWith(minHeight: appBarHeight, maxHeight: appBarHeight),
               child: InkWell(
                 onTap: () {
                   openProfileView(
@@ -102,9 +101,12 @@ class ConversationPageState extends State<ConversationPage> {
                     children: [
                       ProfileThumbnailImageOrError.fromProfileEntry(
                         entry: widget.profileEntry,
-                        width: 40,
-                        height: 40,
-                        cacheSize: ImageCacheSize.sizeForAppBarThumbnail(context),
+                        width: IMG_HEIGHT,
+                        height: IMG_HEIGHT,
+                        cacheSize: ImageCacheSize.squareImageForAppBarThumbnail(
+                          context,
+                          IMG_HEIGHT,
+                        ),
                       ),
                       const Padding(padding: EdgeInsets.all(8.0)),
                       Flexible(

@@ -125,7 +125,7 @@ class _BlockedProfilesScreen extends State<BlockedProfilesScreen> {
               entry: profileEntry,
               width: _IMG_SIZE,
               height: _IMG_SIZE,
-              cacheSize: ImageCacheSize.sizeForListWithTextContent(context, _IMG_SIZE),
+              cacheSize: ImageCacheSize.squareImageForListWithTextContent(context, _IMG_SIZE),
             );
           } else {
             name = context.strings.blocked_profiles_screen_placeholder_for_private_profile;

@@ -236,7 +236,11 @@ Widget _buildAvailableImg(
               child: accountImgWidgetInk(
                 accountId,
                 content.cid,
-                cacheSize: ImageCacheSize.halfScreen(context),
+                cacheSize: ImageCacheSize.constantWidthAndHeight(
+                  context,
+                  SELECT_CONTENT_IMAGE_WIDTH,
+                  SELECT_CONTENT_IMAGE_HEIGHT,
+                ),
               ),
             ),
           ),
@@ -426,6 +430,8 @@ Future<bool?> _confirmDialogForImage(
   ContentId content,
   String dialogTitle,
 ) async {
+  const double IMG_WIDTH = 150;
+  const double IMG_HEIGHT = 200;
   Widget img = InkWell(
     onTap: () {
       MyNavigator.push(
@@ -437,9 +443,9 @@ Future<bool?> _confirmDialogForImage(
     child: accountImgWidget(
       account,
       content,
-      height: 200,
-      width: 150,
-      cacheSize: ImageCacheSize.halfScreen(context),
+      width: IMG_WIDTH,
+      height: IMG_HEIGHT,
+      cacheSize: ImageCacheSize.constantWidthAndHeight(context, IMG_WIDTH, IMG_HEIGHT),
     ),
   );
 

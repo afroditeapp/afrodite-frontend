@@ -428,7 +428,7 @@ class _ViewProfileImgViewerState extends State<ViewProfileImgViewer> {
     return accountImgWidget(
       accountId,
       contentId,
-      cacheSize: ImageCacheSize.height(context, VIEW_PROFILE_WIDGET_IMG_HEIGHT),
+      cacheSize: ImageCacheSize.constantHeight(context, VIEW_PROFILE_WIDGET_IMG_HEIGHT),
     );
   }
 }

@@ -198,9 +198,11 @@ class _CurrentSecuritySelfieState extends State<CurrentSecuritySelfie> {
   }
 
   Widget securitySelfieWidget(AccountId accountId, ContentId securitySelfie) {
+    const double IMG_WIDTH = 150;
+    const double IMG_HEIGHT = 200;
     return SizedBox(
-      width: 150.0,
-      height: 200.0,
+      width: IMG_WIDTH,
+      height: IMG_HEIGHT,
       child: Material(
         child: InkWell(
           onTap: () => MyNavigator.push(
@@ -212,7 +214,7 @@ class _CurrentSecuritySelfieState extends State<CurrentSecuritySelfie> {
           child: accountImgWidgetInk(
             accountId,
             securitySelfie,
-            cacheSize: ImageCacheSize.halfScreen(context),
+            cacheSize: ImageCacheSize.constantWidthAndHeight(context, IMG_WIDTH, IMG_HEIGHT),
           ),
         ),
       ),

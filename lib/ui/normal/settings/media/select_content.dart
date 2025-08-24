@@ -218,7 +218,13 @@ Widget buildAvailableImg(
       child: accountImgWidgetInk(
         accountId,
         contentId,
-        cacheSize: ImageCacheSize.halfScreen(context),
+        width: SELECT_CONTENT_IMAGE_WIDTH,
+        height: SELECT_CONTENT_IMAGE_HEIGHT,
+        cacheSize: ImageCacheSize.constantWidthAndHeight(
+          context,
+          SELECT_CONTENT_IMAGE_WIDTH,
+          SELECT_CONTENT_IMAGE_HEIGHT,
+        ),
       ),
     ),
   );

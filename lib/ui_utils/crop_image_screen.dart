@@ -86,7 +86,7 @@ class _CropImageScreenState extends State<CropImageScreen> {
           width: imgWidgetWidth,
           height: imgWidgetHeight,
           alignment: Alignment.topLeft,
-          cacheSize: ImageCacheSize.fullScreen(context),
+          cacheSize: ImageCacheSize.maxDisplaySize(),
         );
 
         log.fine("Constraints: $constraints");

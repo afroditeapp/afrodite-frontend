@@ -241,52 +241,65 @@ class AccountImageProvider extends ImageProvider<AccountImgKey> {
   }
 }
 
+/// Either width or height or both must be set
 class ImageCacheSize {
-  final int width;
-  final int height;
-  ImageCacheSize._({required this.width, required this.height});
+  final int? width;
+  final int? height;
+  ImageCacheSize._height({required int this.height}) : width = null;
+  ImageCacheSize._widthAndHeight({required int this.width, required int this.height});
 
-  factory ImageCacheSize.fullScreen(BuildContext context) {
-    final size = MediaQuery.sizeOf(context);
-    final devicePixelRatio = MediaQuery.devicePixelRatioOf(context);
-    return ImageCacheSize._(
-      width: (size.width * devicePixelRatio).round(),
-      height: (size.height * devicePixelRatio).round(),
-    );
+  /// Use this size if image size changes when app window size changes.
+  factory ImageCacheSize.maxDisplaySize() {
+    int? width;
+    int? height;
+    for (final d in PlatformDispatcher.instance.displays) {
+      width = max(width ?? 0, d.size.width.toInt());
+      height = max(height ?? 0, d.size.height.toInt());
+    }
+    final maxWidth = width ?? 1920;
+    final maxHeight = height ?? 1080;
+    return ImageCacheSize._widthAndHeight(width: maxWidth, height: maxHeight);
   }
 
-  factory ImageCacheSize._divideFullScreen(BuildContext context, int heightDivider) {
-    final size = MediaQuery.sizeOf(context);
+  factory ImageCacheSize.constantHeight(BuildContext context, double height) {
     final devicePixelRatio = MediaQuery.devicePixelRatioOf(context);
-    return ImageCacheSize._(
-      width: (size.width ~/ heightDivider * devicePixelRatio).round(),
-      height: (size.height ~/ heightDivider * devicePixelRatio).round(),
-    );
+    return ImageCacheSize._height(height: (height * devicePixelRatio).round());
   }
 
-  factory ImageCacheSize.halfScreen(BuildContext context) {
-    return ImageCacheSize._divideFullScreen(context, 2);
-  }
-
-  factory ImageCacheSize.height(BuildContext context, double height) {
-    final size = MediaQuery.sizeOf(context);
+  factory ImageCacheSize.constantWidthAndHeight(BuildContext context, double width, double height) {
     final devicePixelRatio = MediaQuery.devicePixelRatioOf(context);
-    return ImageCacheSize._(
-      width: (size.width * devicePixelRatio).round(),
+    return ImageCacheSize._widthAndHeight(
+      width: (width * devicePixelRatio).round(),
       height: (height * devicePixelRatio).round(),
     );
   }
 
-  static ImageCacheSize sizeForAppBarThumbnail(BuildContext context) {
-    return ImageCacheSize._divideFullScreen(context, 4);
+  factory ImageCacheSize.constantSquare(BuildContext context, double widthAndHeight) {
+    final devicePixelRatio = MediaQuery.devicePixelRatioOf(context);
+    return ImageCacheSize._widthAndHeight(
+      width: (widthAndHeight * devicePixelRatio).round(),
+      height: (widthAndHeight * devicePixelRatio).round(),
+    );
   }
 
-  static ImageCacheSize sizeForGrid(BuildContext context, double height) {
-    return ImageCacheSize.height(context, height);
+  // Value changes when window size changes
+  factory ImageCacheSize.dynamicSquare(BuildContext context, double widthAndHeight) {
+    return ImageCacheSize.constantSquare(context, widthAndHeight);
   }
 
-  static ImageCacheSize sizeForListWithTextContent(BuildContext context, double height) {
-    return ImageCacheSize.height(context, height);
+  static ImageCacheSize squareImageForAppBarThumbnail(BuildContext context, double widthAndHeight) {
+    return ImageCacheSize.constantSquare(context, widthAndHeight);
+  }
+
+  static ImageCacheSize squareImageForGrid(BuildContext context, double widthAndHeight) {
+    return ImageCacheSize.dynamicSquare(context, widthAndHeight);
+  }
+
+  static ImageCacheSize squareImageForListWithTextContent(
+    BuildContext context,
+    double widthAndHeight,
+  ) {
+    return ImageCacheSize.constantSquare(context, widthAndHeight);
   }
 
   @override
@@ -298,7 +311,13 @@ class ImageCacheSize {
   int get hashCode => Object.hash(width, height);
 
   int squareSize() {
-    return min(width, height);
+    final w = width;
+    final h = height;
+    if (w != null && h != null) {
+      return min(w, h);
+    } else {
+      return (w ?? h)!;
+    }
   }
 }
 
@@ -325,7 +344,7 @@ class PrecacheImageForViewProfileScreen {
     final imageProvider = AccountImageProvider.create(
       account,
       content,
-      cacheSize: ImageCacheSize.height(context, VIEW_PROFILE_WIDGET_IMG_HEIGHT),
+      cacheSize: ImageCacheSize.constantHeight(context, VIEW_PROFILE_WIDGET_IMG_HEIGHT),
       media: LoginRepository.getInstance().repositories.media,
       cropArea: null,
     );

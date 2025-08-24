@@ -496,7 +496,7 @@ class AddPicture extends StatelessWidget {
             child: accountImgWidget(
               securitySelfie.accountId,
               securitySelfie.contentId,
-              cacheSize: ImageCacheSize.halfScreen(context),
+              cacheSize: ImageCacheSize.constantSquare(context, iconSize),
             ),
           ),
         ),
@@ -700,7 +700,7 @@ class FilePicture extends StatelessWidget {
         img.contentId,
         width: imgWidth,
         height: imgHeight,
-        cacheSize: ImageCacheSize.halfScreen(context),
+        cacheSize: ImageCacheSize.constantWidthAndHeight(context, imgWidth, imgHeight),
       ),
       childWhenDragging: Container(
         width: imgWidth,
@@ -805,7 +805,7 @@ class ImgWithCloseButton extends StatelessWidget {
             width: imgWidth,
             height: imgHeight,
             alignment: Alignment.topRight,
-            cacheSize: ImageCacheSize.halfScreen(context),
+            cacheSize: ImageCacheSize.constantWidthAndHeight(context, imgWidth, imgHeight),
           ),
         ),
       ),
@@ -833,7 +833,7 @@ class VisibleThumbnailPicture extends StatelessWidget {
       cropArea: cropArea,
       width: THUMBNAIL_SIZE,
       height: THUMBNAIL_SIZE,
-      cacheSize: ImageCacheSize.halfScreen(context),
+      cacheSize: ImageCacheSize.constantSquare(context, THUMBNAIL_SIZE),
       child: Material(
         color: Colors.transparent,
         child: InkWell(

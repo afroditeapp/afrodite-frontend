@@ -9,6 +9,7 @@ import 'package:app/logic/admin/content_decicion_stream.dart';
 import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/ui/normal/chat/message_row.dart';
 import 'package:app/ui/normal/settings/admin/content_decicion_stream.dart';
+import 'package:app/ui/normal/settings/admin/moderate_images.dart';
 import 'package:app/ui_utils/extensions/api.dart';
 import 'package:app/ui_utils/image.dart';
 import 'package:app/ui_utils/view_image_screen.dart';
@@ -256,7 +257,8 @@ class ReportUiBuilder extends ContentUiBuilder<WrappedReportDetailed> {
         imageOwner,
         image,
         width: width,
-        cacheSize: ImageCacheSize.halfScreen(context),
+        height: IMAGE_MODERATION_ROW_HEIGHT,
+        cacheSize: ImageCacheSize.constantHeight(context, IMAGE_MODERATION_ROW_HEIGHT),
       ),
     );
   }
