@@ -1216,57 +1216,30 @@ class $GridSettingsTable extends schema.GridSettings
       'PRIMARY KEY AUTOINCREMENT',
     ),
   );
-  static const VerificationMeta _gridHorizontalPaddingMeta =
-      const VerificationMeta('gridHorizontalPadding');
+  static const VerificationMeta _gridItemSizeModeMeta = const VerificationMeta(
+    'gridItemSizeMode',
+  );
   @override
-  late final GeneratedColumn<double> gridHorizontalPadding =
-      GeneratedColumn<double>(
-        'grid_horizontal_padding',
-        aliasedName,
-        true,
-        type: DriftSqlType.double,
-        requiredDuringInsert: false,
-      );
-  static const VerificationMeta _gridInternalPaddingMeta =
-      const VerificationMeta('gridInternalPadding');
+  late final GeneratedColumn<int> gridItemSizeMode = GeneratedColumn<int>(
+    'grid_item_size_mode',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _gridPaddingModeMeta = const VerificationMeta(
+    'gridPaddingMode',
+  );
   @override
-  late final GeneratedColumn<double> gridInternalPadding =
-      GeneratedColumn<double>(
-        'grid_internal_padding',
-        aliasedName,
-        true,
-        type: DriftSqlType.double,
-        requiredDuringInsert: false,
-      );
-  static const VerificationMeta _gridProfileThumbnailBorderRadiusMeta =
-      const VerificationMeta('gridProfileThumbnailBorderRadius');
-  @override
-  late final GeneratedColumn<double> gridProfileThumbnailBorderRadius =
-      GeneratedColumn<double>(
-        'grid_profile_thumbnail_border_radius',
-        aliasedName,
-        true,
-        type: DriftSqlType.double,
-        requiredDuringInsert: false,
-      );
-  static const VerificationMeta _gridRowProfileCountMeta =
-      const VerificationMeta('gridRowProfileCount');
-  @override
-  late final GeneratedColumn<int> gridRowProfileCount = GeneratedColumn<int>(
-    'grid_row_profile_count',
+  late final GeneratedColumn<int> gridPaddingMode = GeneratedColumn<int>(
+    'grid_padding_mode',
     aliasedName,
     true,
     type: DriftSqlType.int,
     requiredDuringInsert: false,
   );
   @override
-  List<GeneratedColumn> get $columns => [
-    id,
-    gridHorizontalPadding,
-    gridInternalPadding,
-    gridProfileThumbnailBorderRadius,
-    gridRowProfileCount,
-  ];
+  List<GeneratedColumn> get $columns => [id, gridItemSizeMode, gridPaddingMode];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -1282,39 +1255,21 @@ class $GridSettingsTable extends schema.GridSettings
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
     }
-    if (data.containsKey('grid_horizontal_padding')) {
+    if (data.containsKey('grid_item_size_mode')) {
       context.handle(
-        _gridHorizontalPaddingMeta,
-        gridHorizontalPadding.isAcceptableOrUnknown(
-          data['grid_horizontal_padding']!,
-          _gridHorizontalPaddingMeta,
+        _gridItemSizeModeMeta,
+        gridItemSizeMode.isAcceptableOrUnknown(
+          data['grid_item_size_mode']!,
+          _gridItemSizeModeMeta,
         ),
       );
     }
-    if (data.containsKey('grid_internal_padding')) {
+    if (data.containsKey('grid_padding_mode')) {
       context.handle(
-        _gridInternalPaddingMeta,
-        gridInternalPadding.isAcceptableOrUnknown(
-          data['grid_internal_padding']!,
-          _gridInternalPaddingMeta,
-        ),
-      );
-    }
-    if (data.containsKey('grid_profile_thumbnail_border_radius')) {
-      context.handle(
-        _gridProfileThumbnailBorderRadiusMeta,
-        gridProfileThumbnailBorderRadius.isAcceptableOrUnknown(
-          data['grid_profile_thumbnail_border_radius']!,
-          _gridProfileThumbnailBorderRadiusMeta,
-        ),
-      );
-    }
-    if (data.containsKey('grid_row_profile_count')) {
-      context.handle(
-        _gridRowProfileCountMeta,
-        gridRowProfileCount.isAcceptableOrUnknown(
-          data['grid_row_profile_count']!,
-          _gridRowProfileCountMeta,
+        _gridPaddingModeMeta,
+        gridPaddingMode.isAcceptableOrUnknown(
+          data['grid_padding_mode']!,
+          _gridPaddingModeMeta,
         ),
       );
     }
@@ -1331,21 +1286,13 @@ class $GridSettingsTable extends schema.GridSettings
         DriftSqlType.int,
         data['${effectivePrefix}id'],
       )!,
-      gridHorizontalPadding: attachedDatabase.typeMapping.read(
-        DriftSqlType.double,
-        data['${effectivePrefix}grid_horizontal_padding'],
-      ),
-      gridInternalPadding: attachedDatabase.typeMapping.read(
-        DriftSqlType.double,
-        data['${effectivePrefix}grid_internal_padding'],
-      ),
-      gridProfileThumbnailBorderRadius: attachedDatabase.typeMapping.read(
-        DriftSqlType.double,
-        data['${effectivePrefix}grid_profile_thumbnail_border_radius'],
-      ),
-      gridRowProfileCount: attachedDatabase.typeMapping.read(
+      gridItemSizeMode: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
-        data['${effectivePrefix}grid_row_profile_count'],
+        data['${effectivePrefix}grid_item_size_mode'],
+      ),
+      gridPaddingMode: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}grid_padding_mode'],
       ),
     );
   }
@@ -1358,34 +1305,31 @@ class $GridSettingsTable extends schema.GridSettings
 
 class GridSetting extends DataClass implements Insertable<GridSetting> {
   final int id;
-  final double? gridHorizontalPadding;
-  final double? gridInternalPadding;
-  final double? gridProfileThumbnailBorderRadius;
-  final int? gridRowProfileCount;
+
+  /// - 0 = Small
+  /// - 1 = Medium
+  /// - 2 = Large
+  final int? gridItemSizeMode;
+
+  /// - 0 = Small
+  /// - 1 = Medium
+  /// - 2 = Large
+  /// - 3 = Disabled
+  final int? gridPaddingMode;
   const GridSetting({
     required this.id,
-    this.gridHorizontalPadding,
-    this.gridInternalPadding,
-    this.gridProfileThumbnailBorderRadius,
-    this.gridRowProfileCount,
+    this.gridItemSizeMode,
+    this.gridPaddingMode,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
-    if (!nullToAbsent || gridHorizontalPadding != null) {
-      map['grid_horizontal_padding'] = Variable<double>(gridHorizontalPadding);
+    if (!nullToAbsent || gridItemSizeMode != null) {
+      map['grid_item_size_mode'] = Variable<int>(gridItemSizeMode);
     }
-    if (!nullToAbsent || gridInternalPadding != null) {
-      map['grid_internal_padding'] = Variable<double>(gridInternalPadding);
-    }
-    if (!nullToAbsent || gridProfileThumbnailBorderRadius != null) {
-      map['grid_profile_thumbnail_border_radius'] = Variable<double>(
-        gridProfileThumbnailBorderRadius,
-      );
-    }
-    if (!nullToAbsent || gridRowProfileCount != null) {
-      map['grid_row_profile_count'] = Variable<int>(gridRowProfileCount);
+    if (!nullToAbsent || gridPaddingMode != null) {
+      map['grid_padding_mode'] = Variable<int>(gridPaddingMode);
     }
     return map;
   }
@@ -1393,19 +1337,12 @@ class GridSetting extends DataClass implements Insertable<GridSetting> {
   GridSettingsCompanion toCompanion(bool nullToAbsent) {
     return GridSettingsCompanion(
       id: Value(id),
-      gridHorizontalPadding: gridHorizontalPadding == null && nullToAbsent
+      gridItemSizeMode: gridItemSizeMode == null && nullToAbsent
           ? const Value.absent()
-          : Value(gridHorizontalPadding),
-      gridInternalPadding: gridInternalPadding == null && nullToAbsent
+          : Value(gridItemSizeMode),
+      gridPaddingMode: gridPaddingMode == null && nullToAbsent
           ? const Value.absent()
-          : Value(gridInternalPadding),
-      gridProfileThumbnailBorderRadius:
-          gridProfileThumbnailBorderRadius == null && nullToAbsent
-          ? const Value.absent()
-          : Value(gridProfileThumbnailBorderRadius),
-      gridRowProfileCount: gridRowProfileCount == null && nullToAbsent
-          ? const Value.absent()
-          : Value(gridRowProfileCount),
+          : Value(gridPaddingMode),
     );
   }
 
@@ -1416,18 +1353,8 @@ class GridSetting extends DataClass implements Insertable<GridSetting> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return GridSetting(
       id: serializer.fromJson<int>(json['id']),
-      gridHorizontalPadding: serializer.fromJson<double?>(
-        json['gridHorizontalPadding'],
-      ),
-      gridInternalPadding: serializer.fromJson<double?>(
-        json['gridInternalPadding'],
-      ),
-      gridProfileThumbnailBorderRadius: serializer.fromJson<double?>(
-        json['gridProfileThumbnailBorderRadius'],
-      ),
-      gridRowProfileCount: serializer.fromJson<int?>(
-        json['gridRowProfileCount'],
-      ),
+      gridItemSizeMode: serializer.fromJson<int?>(json['gridItemSizeMode']),
+      gridPaddingMode: serializer.fromJson<int?>(json['gridPaddingMode']),
     );
   }
   @override
@@ -1435,54 +1362,33 @@ class GridSetting extends DataClass implements Insertable<GridSetting> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
-      'gridHorizontalPadding': serializer.toJson<double?>(
-        gridHorizontalPadding,
-      ),
-      'gridInternalPadding': serializer.toJson<double?>(gridInternalPadding),
-      'gridProfileThumbnailBorderRadius': serializer.toJson<double?>(
-        gridProfileThumbnailBorderRadius,
-      ),
-      'gridRowProfileCount': serializer.toJson<int?>(gridRowProfileCount),
+      'gridItemSizeMode': serializer.toJson<int?>(gridItemSizeMode),
+      'gridPaddingMode': serializer.toJson<int?>(gridPaddingMode),
     };
   }
 
   GridSetting copyWith({
     int? id,
-    Value<double?> gridHorizontalPadding = const Value.absent(),
-    Value<double?> gridInternalPadding = const Value.absent(),
-    Value<double?> gridProfileThumbnailBorderRadius = const Value.absent(),
-    Value<int?> gridRowProfileCount = const Value.absent(),
+    Value<int?> gridItemSizeMode = const Value.absent(),
+    Value<int?> gridPaddingMode = const Value.absent(),
   }) => GridSetting(
     id: id ?? this.id,
-    gridHorizontalPadding: gridHorizontalPadding.present
-        ? gridHorizontalPadding.value
-        : this.gridHorizontalPadding,
-    gridInternalPadding: gridInternalPadding.present
-        ? gridInternalPadding.value
-        : this.gridInternalPadding,
-    gridProfileThumbnailBorderRadius: gridProfileThumbnailBorderRadius.present
-        ? gridProfileThumbnailBorderRadius.value
-        : this.gridProfileThumbnailBorderRadius,
-    gridRowProfileCount: gridRowProfileCount.present
-        ? gridRowProfileCount.value
-        : this.gridRowProfileCount,
+    gridItemSizeMode: gridItemSizeMode.present
+        ? gridItemSizeMode.value
+        : this.gridItemSizeMode,
+    gridPaddingMode: gridPaddingMode.present
+        ? gridPaddingMode.value
+        : this.gridPaddingMode,
   );
   GridSetting copyWithCompanion(GridSettingsCompanion data) {
     return GridSetting(
       id: data.id.present ? data.id.value : this.id,
-      gridHorizontalPadding: data.gridHorizontalPadding.present
-          ? data.gridHorizontalPadding.value
-          : this.gridHorizontalPadding,
-      gridInternalPadding: data.gridInternalPadding.present
-          ? data.gridInternalPadding.value
-          : this.gridInternalPadding,
-      gridProfileThumbnailBorderRadius:
-          data.gridProfileThumbnailBorderRadius.present
-          ? data.gridProfileThumbnailBorderRadius.value
-          : this.gridProfileThumbnailBorderRadius,
-      gridRowProfileCount: data.gridRowProfileCount.present
-          ? data.gridRowProfileCount.value
-          : this.gridRowProfileCount,
+      gridItemSizeMode: data.gridItemSizeMode.present
+          ? data.gridItemSizeMode.value
+          : this.gridItemSizeMode,
+      gridPaddingMode: data.gridPaddingMode.present
+          ? data.gridPaddingMode.value
+          : this.gridPaddingMode,
     );
   }
 
@@ -1490,93 +1396,58 @@ class GridSetting extends DataClass implements Insertable<GridSetting> {
   String toString() {
     return (StringBuffer('GridSetting(')
           ..write('id: $id, ')
-          ..write('gridHorizontalPadding: $gridHorizontalPadding, ')
-          ..write('gridInternalPadding: $gridInternalPadding, ')
-          ..write(
-            'gridProfileThumbnailBorderRadius: $gridProfileThumbnailBorderRadius, ',
-          )
-          ..write('gridRowProfileCount: $gridRowProfileCount')
+          ..write('gridItemSizeMode: $gridItemSizeMode, ')
+          ..write('gridPaddingMode: $gridPaddingMode')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(
-    id,
-    gridHorizontalPadding,
-    gridInternalPadding,
-    gridProfileThumbnailBorderRadius,
-    gridRowProfileCount,
-  );
+  int get hashCode => Object.hash(id, gridItemSizeMode, gridPaddingMode);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is GridSetting &&
           other.id == this.id &&
-          other.gridHorizontalPadding == this.gridHorizontalPadding &&
-          other.gridInternalPadding == this.gridInternalPadding &&
-          other.gridProfileThumbnailBorderRadius ==
-              this.gridProfileThumbnailBorderRadius &&
-          other.gridRowProfileCount == this.gridRowProfileCount);
+          other.gridItemSizeMode == this.gridItemSizeMode &&
+          other.gridPaddingMode == this.gridPaddingMode);
 }
 
 class GridSettingsCompanion extends UpdateCompanion<GridSetting> {
   final Value<int> id;
-  final Value<double?> gridHorizontalPadding;
-  final Value<double?> gridInternalPadding;
-  final Value<double?> gridProfileThumbnailBorderRadius;
-  final Value<int?> gridRowProfileCount;
+  final Value<int?> gridItemSizeMode;
+  final Value<int?> gridPaddingMode;
   const GridSettingsCompanion({
     this.id = const Value.absent(),
-    this.gridHorizontalPadding = const Value.absent(),
-    this.gridInternalPadding = const Value.absent(),
-    this.gridProfileThumbnailBorderRadius = const Value.absent(),
-    this.gridRowProfileCount = const Value.absent(),
+    this.gridItemSizeMode = const Value.absent(),
+    this.gridPaddingMode = const Value.absent(),
   });
   GridSettingsCompanion.insert({
     this.id = const Value.absent(),
-    this.gridHorizontalPadding = const Value.absent(),
-    this.gridInternalPadding = const Value.absent(),
-    this.gridProfileThumbnailBorderRadius = const Value.absent(),
-    this.gridRowProfileCount = const Value.absent(),
+    this.gridItemSizeMode = const Value.absent(),
+    this.gridPaddingMode = const Value.absent(),
   });
   static Insertable<GridSetting> custom({
     Expression<int>? id,
-    Expression<double>? gridHorizontalPadding,
-    Expression<double>? gridInternalPadding,
-    Expression<double>? gridProfileThumbnailBorderRadius,
-    Expression<int>? gridRowProfileCount,
+    Expression<int>? gridItemSizeMode,
+    Expression<int>? gridPaddingMode,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
-      if (gridHorizontalPadding != null)
-        'grid_horizontal_padding': gridHorizontalPadding,
-      if (gridInternalPadding != null)
-        'grid_internal_padding': gridInternalPadding,
-      if (gridProfileThumbnailBorderRadius != null)
-        'grid_profile_thumbnail_border_radius':
-            gridProfileThumbnailBorderRadius,
-      if (gridRowProfileCount != null)
-        'grid_row_profile_count': gridRowProfileCount,
+      if (gridItemSizeMode != null) 'grid_item_size_mode': gridItemSizeMode,
+      if (gridPaddingMode != null) 'grid_padding_mode': gridPaddingMode,
     });
   }
 
   GridSettingsCompanion copyWith({
     Value<int>? id,
-    Value<double?>? gridHorizontalPadding,
-    Value<double?>? gridInternalPadding,
-    Value<double?>? gridProfileThumbnailBorderRadius,
-    Value<int?>? gridRowProfileCount,
+    Value<int?>? gridItemSizeMode,
+    Value<int?>? gridPaddingMode,
   }) {
     return GridSettingsCompanion(
       id: id ?? this.id,
-      gridHorizontalPadding:
-          gridHorizontalPadding ?? this.gridHorizontalPadding,
-      gridInternalPadding: gridInternalPadding ?? this.gridInternalPadding,
-      gridProfileThumbnailBorderRadius:
-          gridProfileThumbnailBorderRadius ??
-          this.gridProfileThumbnailBorderRadius,
-      gridRowProfileCount: gridRowProfileCount ?? this.gridRowProfileCount,
+      gridItemSizeMode: gridItemSizeMode ?? this.gridItemSizeMode,
+      gridPaddingMode: gridPaddingMode ?? this.gridPaddingMode,
     );
   }
 
@@ -1586,23 +1457,11 @@ class GridSettingsCompanion extends UpdateCompanion<GridSetting> {
     if (id.present) {
       map['id'] = Variable<int>(id.value);
     }
-    if (gridHorizontalPadding.present) {
-      map['grid_horizontal_padding'] = Variable<double>(
-        gridHorizontalPadding.value,
-      );
+    if (gridItemSizeMode.present) {
+      map['grid_item_size_mode'] = Variable<int>(gridItemSizeMode.value);
     }
-    if (gridInternalPadding.present) {
-      map['grid_internal_padding'] = Variable<double>(
-        gridInternalPadding.value,
-      );
-    }
-    if (gridProfileThumbnailBorderRadius.present) {
-      map['grid_profile_thumbnail_border_radius'] = Variable<double>(
-        gridProfileThumbnailBorderRadius.value,
-      );
-    }
-    if (gridRowProfileCount.present) {
-      map['grid_row_profile_count'] = Variable<int>(gridRowProfileCount.value);
+    if (gridPaddingMode.present) {
+      map['grid_padding_mode'] = Variable<int>(gridPaddingMode.value);
     }
     return map;
   }
@@ -1611,12 +1470,8 @@ class GridSettingsCompanion extends UpdateCompanion<GridSetting> {
   String toString() {
     return (StringBuffer('GridSettingsCompanion(')
           ..write('id: $id, ')
-          ..write('gridHorizontalPadding: $gridHorizontalPadding, ')
-          ..write('gridInternalPadding: $gridInternalPadding, ')
-          ..write(
-            'gridProfileThumbnailBorderRadius: $gridProfileThumbnailBorderRadius, ',
-          )
-          ..write('gridRowProfileCount: $gridRowProfileCount')
+          ..write('gridItemSizeMode: $gridItemSizeMode, ')
+          ..write('gridPaddingMode: $gridPaddingMode')
           ..write(')'))
         .toString();
   }

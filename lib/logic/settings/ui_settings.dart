@@ -16,24 +16,14 @@ class NewGridSettings extends UiSettingsEvent {
 
 class ResetGridSettings extends UiSettingsEvent {}
 
-class UpdateHorizontalPadding extends UiSettingsEvent {
-  final double value;
-  UpdateHorizontalPadding(this.value);
-}
-
-class UpdateInternalPadding extends UiSettingsEvent {
-  final double value;
-  UpdateInternalPadding(this.value);
-}
-
-class UpdateProfileThumbnailBorderRadius extends UiSettingsEvent {
-  final double value;
-  UpdateProfileThumbnailBorderRadius(this.value);
-}
-
-class UpdateRowProfileCount extends UiSettingsEvent {
+class UpdateItemSizeMode extends UiSettingsEvent {
   final int value;
-  UpdateRowProfileCount(this.value);
+  UpdateItemSizeMode(this.value);
+}
+
+class UpdatePaddingMode extends UiSettingsEvent {
+  final int value;
+  UpdatePaddingMode(this.value);
 }
 
 class UiSettingsBloc extends Bloc<UiSettingsEvent, UiSettingsData> {
@@ -48,17 +38,11 @@ class UiSettingsBloc extends Bloc<UiSettingsEvent, UiSettingsData> {
     on<ResetGridSettings>((data, emit) {
       emit(state.copyWith(gridSettings: const GridSettings()));
     });
-    on<UpdateHorizontalPadding>((data, emit) {
-      saveGridSettings((s) => s.copyWith(horizontalPadding: data.value));
+    on<UpdateItemSizeMode>((data, emit) {
+      saveGridSettings((s) => s.copyWith(itemSizeMode: data.value));
     });
-    on<UpdateInternalPadding>((data, emit) {
-      saveGridSettings((s) => s.copyWith(internalPadding: data.value));
-    });
-    on<UpdateProfileThumbnailBorderRadius>((data, emit) {
-      saveGridSettings((s) => s.copyWith(profileThumbnailBorderRadius: data.value));
-    });
-    on<UpdateRowProfileCount>((data, emit) {
-      saveGridSettings((s) => s.copyWith(rowProfileCount: data.value));
+    on<UpdatePaddingMode>((data, emit) {
+      saveGridSettings((s) => s.copyWith(paddingMode: data.value));
     });
     _gridSettingsSubscription = db.accountStream((db) => db.app.watchGridSettings()).listen((
       value,

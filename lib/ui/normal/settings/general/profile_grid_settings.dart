@@ -69,31 +69,33 @@ class _ProfileGridSettingsScreenState extends State<ProfileGridSettingsScreen> {
               context.strings.profile_grid_settings_screen_all_grids_title,
             ),
             const Padding(padding: EdgeInsets.only(top: 8)),
-            ...intSlider(
-              context,
-              context.strings.profile_grid_settings_screen_row_profile_count,
-              (value) => context.read<UiSettingsBloc>().add(UpdateRowProfileCount(value)),
-              () => state.gridSettings.valueRowProfileCount(),
+            hPad(TitleWithValue(title: context.strings.generic_size)),
+            Padding(padding: const EdgeInsets.only(top: 8)),
+            hPad(
+              gridSettingModeListSettings(
+                context,
+                [GridSettingMode.large, GridSettingMode.medium, GridSettingMode.small],
+                (value) => context.read<UiSettingsBloc>().add(UpdateItemSizeMode(value.toInt())),
+                () => state.gridSettings.valueItemSizeMode(),
+              ),
             ),
-            ...doubleSlider(
-              context,
-              context.strings.profile_grid_settings_screen_horizontal_padding,
-              (value) => context.read<UiSettingsBloc>().add(UpdateHorizontalPadding(value)),
-              () => state.gridSettings.valueHorizontalPadding(),
+            Padding(padding: const EdgeInsets.only(top: 8)),
+            hPad(TitleWithValue(title: context.strings.generic_margin)),
+            Padding(padding: const EdgeInsets.only(top: 8)),
+            hPad(
+              gridSettingModeListSettings(
+                context,
+                [
+                  GridSettingMode.large,
+                  GridSettingMode.medium,
+                  GridSettingMode.small,
+                  GridSettingMode.disabled,
+                ],
+                (value) => context.read<UiSettingsBloc>().add(UpdatePaddingMode(value.toInt())),
+                () => state.gridSettings.valuePaddingMode(),
+              ),
             ),
-            ...doubleSlider(
-              context,
-              context.strings.profile_grid_settings_screen_internal_padding,
-              (value) => context.read<UiSettingsBloc>().add(UpdateInternalPadding(value)),
-              () => state.gridSettings.valueInternalPadding(),
-            ),
-            ...doubleSlider(
-              context,
-              context.strings.profile_grid_settings_screen_profile_thumbnail_border_radius,
-              (value) =>
-                  context.read<UiSettingsBloc>().add(UpdateProfileThumbnailBorderRadius(value)),
-              () => state.gridSettings.valueProfileThumbnailBorderRadius(),
-            ),
+            Padding(padding: const EdgeInsets.only(top: 8)),
             hPad(TitleWithValue(title: context.strings.generic_preview_noun)),
             Padding(padding: const EdgeInsets.only(top: 8)),
             gridSettingsPreview(context, state.gridSettings),
@@ -109,36 +111,33 @@ class _ProfileGridSettingsScreenState extends State<ProfileGridSettingsScreen> {
     );
   }
 
-  List<Widget> intSlider(
+  Widget gridSettingModeListSettings(
     BuildContext context,
-    String title,
-    void Function(int) onChanged,
-    int Function() getValue,
+    List<GridSettingMode> modes,
+    void Function(GridSettingMode) onChanged,
+    GridSettingMode Function() getValue,
   ) {
-    final value = getValue();
-    return [
-      hPad(TitleWithValue(title: title, value: value.toInt().toString())),
-      Slider(
-        min: 1,
-        max: 4,
-        divisions: 3,
-        value: value.toDouble(),
-        onChanged: (v) => onChanged(v.toInt()),
-      ),
-    ];
+    return Wrap(
+      spacing: 5.0,
+      children: modes.map((m) {
+        return ChoiceChip(
+          label: Text(gridSettingModeUiText(context, m)),
+          selected: getValue() == m,
+          onSelected: (value) {
+            onChanged(m);
+          },
+        );
+      }).toList(),
+    );
   }
 
-  List<Widget> doubleSlider(
-    BuildContext context,
-    String title,
-    void Function(double) onChanged,
-    double Function() getValue,
-  ) {
-    final value = getValue();
-    return [
-      hPad(TitleWithValue(title: title, value: value.toString())),
-      Slider(min: 0, max: 20, divisions: 20, value: value, onChanged: onChanged),
-    ];
+  String gridSettingModeUiText(BuildContext context, GridSettingMode mode) {
+    return switch (mode) {
+      GridSettingMode.small => context.strings.generic_small,
+      GridSettingMode.medium => context.strings.generic_medium,
+      GridSettingMode.large => context.strings.generic_large,
+      GridSettingMode.disabled => context.strings.generic_disabled,
+    };
   }
 
   Widget resetToDefaults(BuildContext context) {

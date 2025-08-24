@@ -95,10 +95,8 @@ class DaoWriteApp extends DatabaseAccessor<AccountForegroundDatabase> with _$Dao
     await into(gridSettings).insertOnConflictUpdate(
       GridSettingsCompanion.insert(
         id: SingleRowTable.ID,
-        gridHorizontalPadding: Value(value.horizontalPadding),
-        gridInternalPadding: Value(value.internalPadding),
-        gridProfileThumbnailBorderRadius: Value(value.profileThumbnailBorderRadius),
-        gridRowProfileCount: Value(value.rowProfileCount),
+        gridItemSizeMode: Value(value.itemSizeMode),
+        gridPaddingMode: Value(value.paddingMode),
       ),
     );
   }

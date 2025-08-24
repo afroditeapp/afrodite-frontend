@@ -865,6 +865,12 @@ abstract class AppLocalizations {
   /// **'Women'**
   String get generic_gender_woman_plural;
 
+  /// Generic large size text
+  ///
+  /// In en, this message translates to:
+  /// **'Large'**
+  String get generic_large;
+
   /// Generic login text
   ///
   /// In en, this message translates to:
@@ -895,11 +901,23 @@ abstract class AppLocalizations {
   /// **'Logout failed'**
   String get generic_logout_failed;
 
+  /// Generic margin text
+  ///
+  /// In en, this message translates to:
+  /// **'Margin'**
+  String get generic_margin;
+
   /// Generic max text
   ///
   /// In en, this message translates to:
   /// **'Max'**
   String get generic_max;
+
+  /// Generic medium size text
+  ///
+  /// In en, this message translates to:
+  /// **'Medium'**
+  String get generic_medium;
 
   /// Generic message text
   ///
@@ -1015,11 +1033,23 @@ abstract class AppLocalizations {
   /// **'Show only selected'**
   String get generic_show_only_selected;
 
+  /// Generic size text
+  ///
+  /// In en, this message translates to:
+  /// **'Size'**
+  String get generic_size;
+
   /// Generic skip text
   ///
   /// In en, this message translates to:
   /// **'Skip'**
   String get generic_skip;
+
+  /// Generic small size text
+  ///
+  /// In en, this message translates to:
+  /// **'Small'**
+  String get generic_small;
 
   /// Generic state text
   ///
@@ -1992,24 +2022,6 @@ abstract class AppLocalizations {
   /// **'All profile grids'**
   String get profile_grid_settings_screen_all_grids_title;
 
-  /// Title for horizontal padding setting
-  ///
-  /// In en, this message translates to:
-  /// **'Horizontal margin'**
-  String get profile_grid_settings_screen_horizontal_padding;
-
-  /// Title for internal padding setting
-  ///
-  /// In en, this message translates to:
-  /// **'Internal margin'**
-  String get profile_grid_settings_screen_internal_padding;
-
-  /// Title for profile thumbnail border radius setting
-  ///
-  /// In en, this message translates to:
-  /// **'Profile thumbnail border radius'**
-  String get profile_grid_settings_screen_profile_thumbnail_border_radius;
-
   /// Title for profiles screen settings category
   ///
   /// In en, this message translates to:
@@ -2035,12 +2047,6 @@ abstract class AppLocalizations {
   /// **'Start from random location'**
   String
   get profile_grid_settings_screen_random_profile_order_description_enabled;
-
-  /// Title for row profile count setting
-  ///
-  /// In en, this message translates to:
-  /// **'Row profile count'**
-  String get profile_grid_settings_screen_row_profile_count;
 
   /// Profile grid settings screen title
   ///

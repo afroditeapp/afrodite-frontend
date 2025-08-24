@@ -23,8 +23,14 @@ class InitialSetupSkipped extends SingleRowTable {
 }
 
 class GridSettings extends SingleRowTable {
-  RealColumn get gridHorizontalPadding => real().nullable()();
-  RealColumn get gridInternalPadding => real().nullable()();
-  RealColumn get gridProfileThumbnailBorderRadius => real().nullable()();
-  IntColumn get gridRowProfileCount => integer().nullable()();
+  /// - 0 = Small
+  /// - 1 = Medium
+  /// - 2 = Large
+  IntColumn get gridItemSizeMode => integer().nullable()();
+
+  /// - 0 = Small
+  /// - 1 = Medium
+  /// - 2 = Large
+  /// - 3 = Disabled
+  IntColumn get gridPaddingMode => integer().nullable()();
 }

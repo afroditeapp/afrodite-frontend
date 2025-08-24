@@ -70,12 +70,7 @@ class DaoReadApp extends DatabaseAccessor<AccountForegroundDatabase> with _$DaoR
     return (select(
       gridSettings,
     )..where((t) => t.id.equals(SingleRowTable.ID.value))).watchSingleOrNull().map((r) {
-      return GridSettings(
-        horizontalPadding: r?.gridHorizontalPadding,
-        internalPadding: r?.gridInternalPadding,
-        profileThumbnailBorderRadius: r?.gridProfileThumbnailBorderRadius,
-        rowProfileCount: r?.gridRowProfileCount,
-      );
+      return GridSettings(itemSizeMode: r?.gridItemSizeMode, paddingMode: r?.gridPaddingMode);
     });
   }
 }

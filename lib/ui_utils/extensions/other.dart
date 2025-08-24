@@ -11,18 +11,10 @@ extension GridSettingsExtensions on GridSettings {
     );
   }
 
-  GridSettings copyWith({
-    double? horizontalPadding,
-    double? internalPadding,
-    double? profileThumbnailBorderRadius,
-    int? rowProfileCount,
-  }) {
+  GridSettings copyWith({int? itemSizeMode, int? paddingMode}) {
     return GridSettings(
-      horizontalPadding: horizontalPadding ?? this.horizontalPadding,
-      internalPadding: internalPadding ?? this.internalPadding,
-      profileThumbnailBorderRadius:
-          profileThumbnailBorderRadius ?? this.profileThumbnailBorderRadius,
-      rowProfileCount: rowProfileCount ?? this.rowProfileCount,
+      itemSizeMode: itemSizeMode ?? this.itemSizeMode,
+      paddingMode: paddingMode ?? this.paddingMode,
     );
   }
 }

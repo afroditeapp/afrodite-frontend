@@ -474,6 +474,9 @@ class AppLocalizationsFi extends AppLocalizations {
   String get generic_gender_woman_plural => 'Women';
 
   @override
+  String get generic_large => 'Large';
+
+  @override
   String get generic_login => 'Login';
 
   @override
@@ -489,7 +492,13 @@ class AppLocalizationsFi extends AppLocalizations {
   String get generic_logout_failed => 'Logout failed';
 
   @override
+  String get generic_margin => 'Margin';
+
+  @override
   String get generic_max => 'Max';
+
+  @override
+  String get generic_medium => 'Medium';
 
   @override
   String get generic_message => 'Message';
@@ -551,7 +560,13 @@ class AppLocalizationsFi extends AppLocalizations {
   String get generic_show_only_selected => 'Show only selected';
 
   @override
+  String get generic_size => 'Size';
+
+  @override
   String get generic_skip => 'Skip';
+
+  @override
+  String get generic_small => 'Small';
 
   @override
   String get generic_state => 'State';
@@ -1159,17 +1174,6 @@ class AppLocalizationsFi extends AppLocalizations {
       'All profile grids';
 
   @override
-  String get profile_grid_settings_screen_horizontal_padding =>
-      'Horizontal margin';
-
-  @override
-  String get profile_grid_settings_screen_internal_padding => 'Internal margin';
-
-  @override
-  String get profile_grid_settings_screen_profile_thumbnail_border_radius =>
-      'Profile thumbnail border radius';
-
-  @override
   String get profile_grid_settings_screen_profiles_screen => 'Profiles screen';
 
   @override
@@ -1185,10 +1189,6 @@ class AppLocalizationsFi extends AppLocalizations {
   String
   get profile_grid_settings_screen_random_profile_order_description_enabled =>
       'Start from random location';
-
-  @override
-  String get profile_grid_settings_screen_row_profile_count =>
-      'Row profile count';
 
   @override
   String get profile_grid_settings_screen_title => 'Profile grid';

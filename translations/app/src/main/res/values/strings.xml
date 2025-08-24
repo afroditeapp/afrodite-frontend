@@ -64,6 +64,11 @@
     <string name="generic_login_progress_dialog_text" description="Generic login progress dialog text">Login…</string>
     <string name="generic_age" description="Generic age text">Age</string>
     <string name="generic_preview_noun" description="Generic preview noun text">Preview</string>
+    <string name="generic_small" description="Generic small size text">Small</string>
+    <string name="generic_medium" description="Generic medium size text">Medium</string>
+    <string name="generic_large" description="Generic large size text">Large</string>
+    <string name="generic_size" description="Generic size text">Size</string>
+    <string name="generic_margin" description="Generic margin text">Margin</string>
 
     <string name="generic_weekday_mon" description="Generic short text for Monday">Mon</string>
     <string name="generic_weekday_tue" description="Generic short text for Tuesday">Tue</string>
@@ -467,10 +472,6 @@
     <!-- Profile grid settings screen -->
     <string name="profile_grid_settings_screen_title" description="Profile grid settings screen title">Profile grid</string>
     <string name="profile_grid_settings_screen_all_grids_title" description="Title for common settings to all profile grids">All profile grids</string>
-    <string name="profile_grid_settings_screen_horizontal_padding" description="Title for horizontal padding setting">Horizontal margin</string>
-    <string name="profile_grid_settings_screen_internal_padding" description="Title for internal padding setting">Internal margin</string>
-    <string name="profile_grid_settings_screen_profile_thumbnail_border_radius" description="Title for profile thumbnail border radius setting">Profile thumbnail border radius</string>
-    <string name="profile_grid_settings_screen_row_profile_count" description="Title for row profile count setting">Row profile count</string>
     <string name="profile_grid_settings_screen_profiles_screen" description="Title for profiles screen settings category">Profiles screen</string>
     <string name="profile_grid_settings_screen_random_profile_order" description="Title for random profile order setting">Random profile order</string>
     <string name="profile_grid_settings_screen_random_profile_order_description_disabled" description="Description for random profile order setting when setting is disabled">Start from your location</string>
