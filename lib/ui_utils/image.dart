@@ -1,3 +1,4 @@
+import 'package:app/ui_utils/profile_thumbnail_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:openapi/api.dart';
@@ -34,6 +35,15 @@ Widget accountImgWidget(
     width: width,
     height: height,
     alignment: alignment,
+    frameBuilder: (context, image, frame, wasSynchronouslyLoaded) {
+      if (frame == null && wasSynchronouslyLoaded) {
+        return image;
+      } else if (frame == null) {
+        return AnimatedOpacity(opacity: 0, duration: IMAGE_FADE_IN, child: image);
+      } else {
+        return AnimatedOpacity(opacity: 1, duration: IMAGE_FADE_IN, child: image);
+      }
+    },
   );
 }
 
@@ -45,22 +55,20 @@ Widget accountImgWidgetInk(
   double? width,
   double? height,
   AlignmentGeometry alignment = Alignment.center,
-  BoxFit? fit,
   required ImageCacheSize cacheSize,
 }) {
-  return Ink.image(
-    image: AccountImageProvider.create(
+  return Ink(
+    width: width,
+    height: height,
+    child: accountImgWidget(
       accountId,
       contentId,
       isMatch: isMatch,
-      media: LoginRepository.getInstance().repositories.media,
+      width: width,
+      height: height,
+      alignment: alignment,
       cacheSize: cacheSize,
-      cropArea: null,
     ),
-    width: width,
-    height: height,
-    alignment: alignment,
-    fit: fit,
   );
 }
 

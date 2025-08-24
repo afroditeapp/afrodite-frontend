@@ -7,6 +7,8 @@ import 'package:app/data/login_repository.dart';
 import 'package:app/ui_utils/consts/corners.dart';
 import 'package:app/ui_utils/crop_image_screen.dart';
 
+const IMAGE_FADE_IN = Duration(milliseconds: 200);
+
 class ProfileThumbnailImage extends StatelessWidget {
   final AccountId accountId;
   final ContentId contentId;
@@ -55,17 +57,9 @@ class ProfileThumbnailImage extends StatelessWidget {
               if (frame == null && wasSynchronouslyLoaded) {
                 return loadingReady;
               } else if (frame == null) {
-                return AnimatedOpacity(
-                  opacity: 0,
-                  duration: Duration(milliseconds: 200),
-                  child: image,
-                );
+                return AnimatedOpacity(opacity: 0, duration: IMAGE_FADE_IN, child: image);
               } else {
-                return AnimatedOpacity(
-                  opacity: 1,
-                  duration: Duration(milliseconds: 200),
-                  child: loadingReady,
-                );
+                return AnimatedOpacity(opacity: 1, duration: IMAGE_FADE_IN, child: loadingReady);
               }
             },
           ),
