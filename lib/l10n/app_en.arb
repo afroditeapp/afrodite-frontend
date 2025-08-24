@@ -606,6 +606,10 @@
   "@generic_ok": {
     "description": "Generic OK text"
   },
+  "generic_preview_noun": "Preview",
+  "@generic_preview_noun": {
+    "description": "Generic preview noun text"
+  },
   "generic_previous_action_in_progress": "Previous action is still in progress",
   "@generic_previous_action_in_progress": {
     "description": "Generic previous action in progress text"

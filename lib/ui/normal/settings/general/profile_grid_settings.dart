@@ -1,10 +1,16 @@
+import 'package:app/data/image_cache.dart';
+import 'package:app/logic/profile/my_profile.dart';
 import 'package:app/logic/profile/profile_filters.dart';
+import 'package:app/model/freezed/logic/profile/my_profile.dart';
 import 'package:app/model/freezed/logic/profile/profile_filters.dart';
 import 'package:app/ui/normal/settings.dart';
 import 'package:app/ui_utils/common_update_logic.dart';
 import 'package:app/ui_utils/dialog.dart';
+import 'package:app/ui_utils/extensions/other.dart';
 import 'package:app/ui_utils/padding.dart';
+import 'package:app/ui_utils/profile_thumbnail_image_or_error.dart';
 import 'package:app/ui_utils/snack_bar.dart';
+import 'package:database/database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:app/localizations.dart';
@@ -12,6 +18,7 @@ import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/logic/settings/ui_settings.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/model/freezed/logic/settings/ui_settings.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 Future<void> openProfileGridSettingsScreen(BuildContext context) {
   final bloc = context.read<ProfileFiltersBloc>();
@@ -87,6 +94,9 @@ class _ProfileGridSettingsScreenState extends State<ProfileGridSettingsScreen> {
                   context.read<UiSettingsBloc>().add(UpdateProfileThumbnailBorderRadius(value)),
               () => state.gridSettings.valueProfileThumbnailBorderRadius(),
             ),
+            hPad(TitleWithValue(title: context.strings.generic_preview_noun)),
+            Padding(padding: const EdgeInsets.only(top: 8)),
+            gridSettingsPreview(context, state.gridSettings),
             resetToDefaults(context),
             settingsCategoryTitle(
               context,
@@ -142,6 +152,42 @@ class _ProfileGridSettingsScreenState extends State<ProfileGridSettingsScreen> {
         if (accepted == true && context.mounted) {
           context.read<UiSettingsBloc>().add(ResetGridSettings());
         }
+      },
+    );
+  }
+
+  Widget gridSettingsPreview(BuildContext context, GridSettings gridSettings) {
+    return BlocBuilder<MyProfileBloc, MyProfileData>(
+      builder: (context, myProfileState) {
+        final entry = myProfileState.profile;
+        if (entry == null) {
+          return SizedBox.shrink();
+        }
+        return PagedGridView(
+          state: PagingState<int, void>(
+            pages: [List.generate(gridSettings.valueRowProfileCount(), (i) => i)],
+            keys: [0],
+            hasNextPage: false,
+            isLoading: false,
+          ),
+          fetchNextPage: () => (),
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          padding: EdgeInsets.symmetric(horizontal: gridSettings.valueHorizontalPadding()),
+          builderDelegate: PagedChildBuilderDelegate<void>(
+            animateTransitions: true,
+            itemBuilder: (context, item, index) {
+              return ProfileThumbnailImageOrError.fromProfileEntry(
+                entry: entry,
+                borderRadius: BorderRadius.circular(
+                  gridSettings.valueProfileThumbnailBorderRadius(),
+                ),
+                cacheSize: ImageCacheSize.maxDisplaySize(),
+              );
+            },
+          ),
+          gridDelegate: gridSettings.toSliverGridDelegate(),
+        );
       },
     );
   }

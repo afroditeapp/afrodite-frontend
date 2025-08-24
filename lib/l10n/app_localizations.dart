@@ -937,6 +937,12 @@ abstract class AppLocalizations {
   /// **'OK'**
   String get generic_ok;
 
+  /// Generic preview noun text
+  ///
+  /// In en, this message translates to:
+  /// **'Preview'**
+  String get generic_preview_noun;
+
   /// Generic previous action in progress text
   ///
   /// In en, this message translates to:

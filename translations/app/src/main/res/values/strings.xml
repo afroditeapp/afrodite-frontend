@@ -63,6 +63,7 @@
     <string name="generic_average" description="Generic average text">Average</string>
     <string name="generic_login_progress_dialog_text" description="Generic login progress dialog text">Login…</string>
     <string name="generic_age" description="Generic age text">Age</string>
+    <string name="generic_preview_noun" description="Generic preview noun text">Preview</string>
 
     <string name="generic_weekday_mon" description="Generic short text for Monday">Mon</string>
     <string name="generic_weekday_tue" description="Generic short text for Tuesday">Tue</string>

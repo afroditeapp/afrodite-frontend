@@ -510,6 +510,9 @@ class AppLocalizationsFi extends AppLocalizations {
   String get generic_ok => 'OK';
 
   @override
+  String get generic_preview_noun => 'Preview';
+
+  @override
   String get generic_previous_action_in_progress =>
       'Previous action is still in progress';
 
