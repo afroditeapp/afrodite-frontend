@@ -1,5 +1,3 @@
-import 'dart:developer' as developer;
-
 import 'package:app/config.dart';
 import 'package:app/data/app_version.dart';
 import 'package:encryption/encryption.dart';
@@ -49,18 +47,8 @@ void initLogging() {
   }
 
   Logger.root.onRecord.listen((record) {
-    if (kDebugMode) {
-      developer.log(
-        record.message,
-        name: record.loggerName,
-        time: record.time,
-        sequenceNumber: record.sequenceNumber,
-        level: record.level.value,
-      );
-    } else {
-      // ignore: avoid_print
-      print('[${record.level.name}][${record.loggerName}] ${record.message}');
-    }
+    // ignore: avoid_print
+    print('[${record.level.name}][${record.loggerName}] ${record.message}');
   });
 }
 
