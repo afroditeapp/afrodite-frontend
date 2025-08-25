@@ -114,16 +114,10 @@ class _ContentDecicionScreenState<C extends ContentInfoGetter>
             case Loading<C>():
               return buildProgressIndicator(widget.infoMessageRowHeight);
             case ContentRow<C> r:
-              {
-                return LayoutBuilder(
-                  builder: (context, constraints) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 4.0),
-                      child: buildRow(context, r, index),
-                    );
-                  },
-                );
-              }
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 4.0),
+                child: buildRow(context, r, index),
+              );
           }
         } else {
           return buildProgressIndicator(widget.infoMessageRowHeight);
