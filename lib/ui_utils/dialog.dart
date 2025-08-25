@@ -31,9 +31,9 @@ void showAppAboutDialog(BuildContext context, ClientFeaturesConfigData? config) 
       ),
       applicationLegalese: R.strings.app_legalese,
       children: [
+        if (attributionText != null) Padding(padding: EdgeInsetsGeometry.only(top: 8)),
         if (attributionText != null) SelectableText(attributionText),
-        if (attributionText != null && commitId != null)
-          Padding(padding: EdgeInsetsGeometry.only(top: 8)),
+        if (commitId != null) Padding(padding: EdgeInsetsGeometry.only(top: 8)),
         if (commitId != null) SelectableText(R.strings.about_dialog_git_commit_id(commitId)),
       ],
     ),
