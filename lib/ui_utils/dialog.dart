@@ -29,7 +29,7 @@ void showAppAboutDialog(BuildContext context, ClientFeaturesConfigData? config) 
         height: ICON_SIZE,
         cacheHeight: calculateCachedImageSize(context, ICON_SIZE),
       ),
-      applicationLegalese: "© 2024 Afrodite",
+      applicationLegalese: null,
       children: [
         if (attributionText != null) SelectableText(attributionText),
         if (attributionText != null && commitId != null)
