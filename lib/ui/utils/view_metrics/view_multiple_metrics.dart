@@ -101,6 +101,7 @@ class ViewMultipleMetricsController extends BaseDataManager {
 
   void updateData(List<Metric> newData) {
     group.updateData(newData);
+    initialUpdateDone = false;
     _groupChangeRefresh();
   }
 
