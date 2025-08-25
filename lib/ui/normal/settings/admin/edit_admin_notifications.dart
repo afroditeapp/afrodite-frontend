@@ -51,7 +51,7 @@ class AdminNotificationDataApi extends EditDataApi<AdminNotificationDataManager>
       return const Err("subscriptions == null");
     }
 
-    if (values.editedSettings.dailyEnabledTimeEndSeconds >
+    if (values.editedSettings.dailyEnabledTimeEndSeconds <
         values.editedSettings.dailyEnabledTimeStartSeconds) {
       return const Err("end time is smaller than start time");
     }
