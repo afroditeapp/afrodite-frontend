@@ -1,5 +1,5 @@
 import 'package:app/data/login_repository.dart';
-import 'package:app/ui/normal/settings/admin/moderate_profile_texts.dart';
+import 'package:app/ui/normal/settings/admin/moderate_profile_string.dart';
 import 'package:app/ui/normal/settings/admin/report/process_reports.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/result.dart';
