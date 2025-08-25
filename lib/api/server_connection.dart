@@ -261,10 +261,6 @@ class ServerConnection {
                     default:
                       await _endConnectionToGeneralError();
                   }
-                  final newRefreshToken = RefreshToken(token: base64Encode(message));
-                  await db.accountAction(
-                    (db) => db.loginSession.updateRefreshToken(newRefreshToken),
-                  );
                 } else {
                   await _endConnectionToGeneralError();
                 }
