@@ -7,6 +7,7 @@
     <string name="app_name" description="Name for the app" translatable="false">Afrodite</string>
     <string name="app_slogan" description="Slogan for the app">Dating app</string>
     <string name="app_legalese" description="About dialog legalese" translatable="false"></string>
+    <string name="app_publisher" description="Publisher for the app" translatable="false"></string>
 
     <!-- Generic texts -->
     <string name="generic_error" description="Generic error message">Error</string>
@@ -163,6 +164,7 @@
     <string name="app_bar_action_about" description="Title for app bar action which opens about dialog">About</string>
 
     <!-- About dialog -->
+    <string name="about_dialog_app_publisher" description="Text for app publisher info">Publisher: %s</string>
     <string name="about_dialog_git_commit_id" description="Text for Git commit ID">Version ID: %s</string>
 
     <!-- Image processing UI -->

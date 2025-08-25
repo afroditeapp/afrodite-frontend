@@ -13,6 +13,7 @@ import 'package:app/ui_utils/loading_dialog.dart';
 void showAppAboutDialog(BuildContext context, ClientFeaturesConfigData? config) {
   const double ICON_SIZE = 80.0;
 
+  final publisher = context.strings.app_publisher;
   final attributionText = config?.aboutDialogAttribution(context);
   final commitId = GIT_COMMIT_ID;
 
@@ -31,6 +32,9 @@ void showAppAboutDialog(BuildContext context, ClientFeaturesConfigData? config) 
       ),
       applicationLegalese: R.strings.app_legalese,
       children: [
+        if (publisher.isNotEmpty) Padding(padding: EdgeInsetsGeometry.only(top: 8)),
+        if (publisher.isNotEmpty)
+          SelectableText(context.strings.about_dialog_app_publisher(publisher)),
         if (attributionText != null) Padding(padding: EdgeInsetsGeometry.only(top: 8)),
         if (attributionText != null) SelectableText(attributionText),
         if (commitId != null) Padding(padding: EdgeInsetsGeometry.only(top: 8)),

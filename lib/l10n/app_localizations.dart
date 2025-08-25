@@ -100,6 +100,12 @@ abstract class AppLocalizations {
     Locale('sv'),
   ];
 
+  /// Text for app publisher info
+  ///
+  /// In en, this message translates to:
+  /// **'Publisher: {p0}'**
+  String about_dialog_app_publisher(String p0);
+
   /// Text for Git commit ID
   ///
   /// In en, this message translates to:
@@ -189,6 +195,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Afrodite'**
   String get app_name;
+
+  /// Publisher for the app
+  ///
+  /// In en, this message translates to:
+  /// **''**
+  String get app_publisher;
 
   /// Slogan for the app
   ///

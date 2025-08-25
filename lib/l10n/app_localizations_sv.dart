@@ -9,6 +9,11 @@ class AppLocalizationsSv extends AppLocalizations {
   AppLocalizationsSv([String locale = 'sv']) : super(locale);
 
   @override
+  String about_dialog_app_publisher(String p0) {
+    return 'Publisher: $p0';
+  }
+
+  @override
   String about_dialog_git_commit_id(String p0) {
     return 'Version ID: $p0';
   }
@@ -64,6 +69,9 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String get app_name => 'Afrodite';
+
+  @override
+  String get app_publisher => '';
 
   @override
   String get app_slogan => 'Dating app';

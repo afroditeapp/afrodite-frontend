@@ -1,4 +1,13 @@
 {
+  "about_dialog_app_publisher": "Publisher: {p0}",
+  "@about_dialog_app_publisher": {
+    "description": "Text for app publisher info",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
   "about_dialog_git_commit_id": "Version ID: {p0}",
   "@about_dialog_git_commit_id": {
     "description": "Text for Git commit ID",
@@ -78,6 +87,10 @@
   "app_name": "Afrodite",
   "@app_name": {
     "description": "Name for the app"
+  },
+  "app_publisher": "",
+  "@app_publisher": {
+    "description": "Publisher for the app"
   },
   "app_slogan": "Dating app",
   "@app_slogan": {
