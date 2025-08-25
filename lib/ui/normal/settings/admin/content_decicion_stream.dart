@@ -35,6 +35,10 @@ class _ContentDecicionScreenState<C extends ContentInfoGetter>
   late final ContentDecicionStreamLogic<C> _logic;
   final api = LoginRepository.getInstance().repositories.api;
 
+  /// List item size changes cause issues when scrolling upwards, so
+  /// cache latest state for each row.
+  Map<int, RowState<C>> rowStateCache = {};
+
   @override
   void initState() {
     super.initState();
@@ -99,9 +103,11 @@ class _ContentDecicionScreenState<C extends ContentInfoGetter>
   Widget buildEntry(BuildContext context, int index) {
     return StreamBuilder(
       stream: _logic.getRow(index),
+      initialData: rowStateCache[index],
       builder: (context, snapshot) {
         final s = snapshot.data;
         if (s != null) {
+          rowStateCache[index] = s;
           switch (s) {
             case AllModerated<C>():
               return buildEmptyText(widget.infoMessageRowHeight);
