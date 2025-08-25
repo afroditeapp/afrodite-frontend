@@ -71,6 +71,10 @@
   "@app_bar_action_about": {
     "description": "Title for app bar action which opens about dialog"
   },
+  "app_legalese": "",
+  "@app_legalese": {
+    "description": "About dialog legalese"
+  },
   "app_name": "Afrodite",
   "@app_name": {
     "description": "Name for the app"

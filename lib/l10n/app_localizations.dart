@@ -178,6 +178,12 @@ abstract class AppLocalizations {
   /// **'About'**
   String get app_bar_action_about;
 
+  /// About dialog legalese
+  ///
+  /// In en, this message translates to:
+  /// **''**
+  String get app_legalese;
+
   /// Name for the app
   ///
   /// In en, this message translates to:

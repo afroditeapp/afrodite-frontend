@@ -29,7 +29,7 @@ void showAppAboutDialog(BuildContext context, ClientFeaturesConfigData? config) 
         height: ICON_SIZE,
         cacheHeight: calculateCachedImageSize(context, ICON_SIZE),
       ),
-      applicationLegalese: null,
+      applicationLegalese: R.strings.app_legalese,
       children: [
         if (attributionText != null) SelectableText(attributionText),
         if (attributionText != null && commitId != null)

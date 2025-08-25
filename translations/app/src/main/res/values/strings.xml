@@ -6,6 +6,7 @@
     <!-- App branding -->
     <string name="app_name" description="Name for the app" translatable="false">Afrodite</string>
     <string name="app_slogan" description="Slogan for the app">Dating app</string>
+    <string name="app_legalese" description="About dialog legalese" translatable="false"></string>
 
     <!-- Generic texts -->
     <string name="generic_error" description="Generic error message">Error</string>

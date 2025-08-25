@@ -60,6 +60,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get app_bar_action_about => 'About';
 
   @override
+  String get app_legalese => '';
+
+  @override
   String get app_name => 'Afrodite';
 
   @override
