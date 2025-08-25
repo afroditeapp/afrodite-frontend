@@ -1515,6 +1515,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get view_profile_screen_chat_action => 'Chat';
 
   @override
+  String view_profile_screen_details_dialog_account_id(String p0) {
+    return 'Account ID: $p0';
+  }
+
+  @override
   String get view_profile_screen_like_action => 'Send chat request';
 
   @override

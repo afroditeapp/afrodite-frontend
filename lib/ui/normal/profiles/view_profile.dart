@@ -86,6 +86,15 @@ class ViewProfilePage extends StatelessWidget {
                   context.read<ViewProfileBloc>().add(BlockProfile(initialProfile.accountId));
                 }),
                 showReportAction(context, state.profile),
+                MenuItemButton(
+                  onPressed: () => showInfoDialog(
+                    context,
+                    context.strings.view_profile_screen_details_dialog_account_id(
+                      state.profile.accountId.aid.substring(0, 5),
+                    ),
+                  ),
+                  child: Text(context.strings.generic_details),
+                ),
                 BlocBuilder<AccountBloc, AccountBlocData>(
                   builder: (_, state) {
                     final p = AccountAdminSettingsPermissions(state.permissions);

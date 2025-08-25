@@ -2571,6 +2571,12 @@ abstract class AppLocalizations {
   /// **'Chat'**
   String get view_profile_screen_chat_action;
 
+  /// Account ID text for profile details dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Account ID: {p0}'**
+  String view_profile_screen_details_dialog_account_id(String p0);
+
   /// Text for view profile screen like action
   ///
   /// In en, this message translates to:

@@ -304,6 +304,7 @@
     <string name="view_profile_screen_non_accepted_profile_text_info_dialog_text" description="View profile screen info dialog text about non-accepted profile text">Profile text is not yet moderated or it is moderated as rejected. Only the first letter is visible to users.</string>
     <string name="view_profile_screen_non_accepted_profile_content_info_dialog_text" description="View profile screen info dialog text about non-accepted profile content">All profile pictures are not yet moderated or some picture is moderated as rejected. Only accepted pictures are visible to users.</string>
     <string name="view_profile_screen_non_accepted_profile_content_info_dialog_text_picture_title" description="Picture title text for dialog about non-accepted profile content">Picture %s</string>
+    <string name="view_profile_screen_details_dialog_account_id" description="Account ID text for profile details dialog">Account ID: %s</string>
 
     <!-- Edit profile screen -->
     <string name="edit_profile_screen_title" description="Title for edit profile screen">Edit profile</string>

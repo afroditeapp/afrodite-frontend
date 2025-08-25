@@ -1863,6 +1863,15 @@
   "@view_profile_screen_chat_action": {
     "description": "Text for view profile screen chat action"
   },
+  "view_profile_screen_details_dialog_account_id": "Account ID: {p0}",
+  "@view_profile_screen_details_dialog_account_id": {
+    "description": "Account ID text for profile details dialog",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
   "view_profile_screen_like_action": "Send chat request",
   "@view_profile_screen_like_action": {
     "description": "Text for view profile screen like action"
