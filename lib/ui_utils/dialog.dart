@@ -14,8 +14,8 @@ void showAppAboutDialog(BuildContext context, ClientFeaturesConfigData? config) 
   const double ICON_SIZE = 80.0;
 
   final publisher = context.strings.app_publisher;
-  final attributionText = config?.aboutDialogAttribution(context);
   final commitId = GIT_COMMIT_ID;
+  final attributionText = config?.aboutDialogAttribution(context);
 
   // About dialog uses root navigator as there is navigation related to
   // viewing licenses.
@@ -35,10 +35,10 @@ void showAppAboutDialog(BuildContext context, ClientFeaturesConfigData? config) 
         if (publisher.isNotEmpty) Padding(padding: EdgeInsetsGeometry.only(top: 8)),
         if (publisher.isNotEmpty)
           SelectableText(context.strings.about_dialog_app_publisher(publisher)),
-        if (attributionText != null) Padding(padding: EdgeInsetsGeometry.only(top: 8)),
-        if (attributionText != null) SelectableText(attributionText),
         if (commitId != null) Padding(padding: EdgeInsetsGeometry.only(top: 8)),
         if (commitId != null) SelectableText(R.strings.about_dialog_git_commit_id(commitId)),
+        if (attributionText != null) Padding(padding: EdgeInsetsGeometry.only(top: 8)),
+        if (attributionText != null) SelectableText(attributionText),
       ],
     ),
   );
