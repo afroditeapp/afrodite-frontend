@@ -198,7 +198,11 @@ class _ViewMultipleMetricsState extends State<ViewMultipleMetrics>
       if (showValueListIfNull == null) {
         metricsViewer = getList(context, filteredMetrics);
       } else {
-        metricsViewer = getChart(context, filteredMetrics);
+        metricsViewer = LayoutBuilder(
+          builder: (context, constraints) {
+            return getChart(context, filteredMetrics, constraints.maxWidth);
+          },
+        );
       }
     }
 
@@ -306,7 +310,7 @@ class _ViewMultipleMetricsState extends State<ViewMultipleMetrics>
     );
   }
 
-  Widget getChart(BuildContext context, List<(int, Metric)> values) {
+  Widget getChart(BuildContext context, List<(int, Metric)> values, double maxWidth) {
     final data = values
         .map(
           (e) => LineChartBarData(
@@ -324,11 +328,14 @@ class _ViewMultipleMetricsState extends State<ViewMultipleMetrics>
     final xAxisCenterAreaMax = xMin + (diff / 3) * 2;
     final xAxisTitleInterval = diff / 3;
 
+    const double DEFAULT_TOOLTIP_WIDTH = 120;
     return LineChart(
       LineChartData(
         lineTouchData: LineTouchData(
           touchTooltipData: LineTouchTooltipData(
+            maxContentWidth: max(maxWidth - 80, DEFAULT_TOOLTIP_WIDTH),
             fitInsideHorizontally: true,
+            fitInsideVertically: true,
             getTooltipItems: (touchedSpots) {
               return touchedSpots.map((touchedSpot) {
                 final name = values[touchedSpot.barIndex].$2.name;
