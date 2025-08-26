@@ -112,16 +112,10 @@ class _DataExportScreenState extends State<DataExportScreen> {
       child: Row(
         children: [
           Expanded(
-            child: ListTile(
-              leading: Radio<DataExportType>(value: DataExportType.user),
-              title: Text("User"),
-            ),
+            child: RadioListTile<DataExportType>(value: DataExportType.user, title: Text("User")),
           ),
           Expanded(
-            child: ListTile(
-              leading: Radio<DataExportType>(value: DataExportType.admin),
-              title: Text("Admin"),
-            ),
+            child: RadioListTile<DataExportType>(value: DataExportType.admin, title: Text("Admin")),
           ),
         ],
       ),

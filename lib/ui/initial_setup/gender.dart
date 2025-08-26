@@ -81,8 +81,5 @@ Widget genderRadioButtons(
 }
 
 Widget genderListTile(BuildContext context, Gender gender) {
-  return ListTile(
-    title: Text(gender.uiTextSingular(context)),
-    leading: Radio<Gender>(value: gender),
-  );
+  return RadioListTile<Gender>(title: Text(gender.uiTextSingular(context)), value: gender);
 }
