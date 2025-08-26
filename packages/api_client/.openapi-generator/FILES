@@ -92,6 +92,7 @@ lib/model/custom_report_type.dart
 lib/model/custom_reports_config.dart
 lib/model/custom_reports_config_hash.dart
 lib/model/custom_reports_order_mode.dart
+lib/model/daily_likes_config.dart
 lib/model/daily_likes_left.dart
 lib/model/daily_likes_left_sync_version.dart
 lib/model/data_export_name.dart
@@ -153,7 +154,6 @@ lib/model/language.dart
 lib/model/last_seen_time_filter.dart
 lib/model/latest_birthdate.dart
 lib/model/like_limits_config.dart
-lib/model/like_sending_limit_config.dart
 lib/model/limited_action_status.dart
 lib/model/limits_config.dart
 lib/model/local_bots_config.dart

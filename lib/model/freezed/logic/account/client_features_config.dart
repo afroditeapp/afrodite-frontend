@@ -33,7 +33,7 @@ class ClientFeaturesConfigData with _$ClientFeaturesConfigData {
   }
 
   Time? dailyLikesResetTime() {
-    final limitConfig = config.limits.likes.likeSending;
+    final limitConfig = config.limits.likes.daily;
     if (limitConfig == null) {
       return null;
     }
@@ -51,7 +51,7 @@ class ClientFeaturesConfigData with _$ClientFeaturesConfigData {
   }
 
   bool dailyLikesLimitEnabled() {
-    return config.limits.likes.likeSending != null;
+    return config.limits.likes.daily != null;
   }
 
   List<String> newsLocales() {

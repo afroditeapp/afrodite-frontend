@@ -322,6 +322,8 @@ class ApiClient {
           return CustomReportsConfigHash.fromJson(value);
         case 'CustomReportsOrderMode':
           return CustomReportsOrderModeTypeTransformer().decode(value);
+        case 'DailyLikesConfig':
+          return DailyLikesConfig.fromJson(value);
         case 'DailyLikesLeft':
           return DailyLikesLeft.fromJson(value);
         case 'DailyLikesLeftSyncVersion':
@@ -444,8 +446,6 @@ class ApiClient {
           return LatestBirthdate.fromJson(value);
         case 'LikeLimitsConfig':
           return LikeLimitsConfig.fromJson(value);
-        case 'LikeSendingLimitConfig':
-          return LikeSendingLimitConfig.fromJson(value);
         case 'LimitedActionStatus':
           return LimitedActionStatusTypeTransformer().decode(value);
         case 'LimitsConfig':

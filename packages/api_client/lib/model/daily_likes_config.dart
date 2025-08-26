@@ -10,44 +10,44 @@
 
 part of openapi.api;
 
-class LikeSendingLimitConfig {
-  /// Returns a new [LikeSendingLimitConfig] instance.
-  LikeSendingLimitConfig({
-    required this.dailyLimit,
+class DailyLikesConfig {
+  /// Returns a new [DailyLikesConfig] instance.
+  DailyLikesConfig({
+    required this.dailyLikes,
     required this.resetTime,
   });
 
   /// Minimum value: 0
-  int dailyLimit;
+  int dailyLikes;
 
   /// UTC time value
   String resetTime;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is LikeSendingLimitConfig &&
-    other.dailyLimit == dailyLimit &&
+  bool operator ==(Object other) => identical(this, other) || other is DailyLikesConfig &&
+    other.dailyLikes == dailyLikes &&
     other.resetTime == resetTime;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (dailyLimit.hashCode) +
+    (dailyLikes.hashCode) +
     (resetTime.hashCode);
 
   @override
-  String toString() => 'LikeSendingLimitConfig[dailyLimit=$dailyLimit, resetTime=$resetTime]';
+  String toString() => 'DailyLikesConfig[dailyLikes=$dailyLikes, resetTime=$resetTime]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'daily_limit'] = this.dailyLimit;
+      json[r'daily_likes'] = this.dailyLikes;
       json[r'reset_time'] = this.resetTime;
     return json;
   }
 
-  /// Returns a new [LikeSendingLimitConfig] instance and imports its values from
+  /// Returns a new [DailyLikesConfig] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static LikeSendingLimitConfig? fromJson(dynamic value) {
+  static DailyLikesConfig? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -56,25 +56,25 @@ class LikeSendingLimitConfig {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "LikeSendingLimitConfig[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "LikeSendingLimitConfig[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "DailyLikesConfig[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "DailyLikesConfig[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return LikeSendingLimitConfig(
-        dailyLimit: mapValueOfType<int>(json, r'daily_limit')!,
+      return DailyLikesConfig(
+        dailyLikes: mapValueOfType<int>(json, r'daily_likes')!,
         resetTime: mapValueOfType<String>(json, r'reset_time')!,
       );
     }
     return null;
   }
 
-  static List<LikeSendingLimitConfig> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <LikeSendingLimitConfig>[];
+  static List<DailyLikesConfig> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <DailyLikesConfig>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = LikeSendingLimitConfig.fromJson(row);
+        final value = DailyLikesConfig.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -83,12 +83,12 @@ class LikeSendingLimitConfig {
     return result.toList(growable: growable);
   }
 
-  static Map<String, LikeSendingLimitConfig> mapFromJson(dynamic json) {
-    final map = <String, LikeSendingLimitConfig>{};
+  static Map<String, DailyLikesConfig> mapFromJson(dynamic json) {
+    final map = <String, DailyLikesConfig>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = LikeSendingLimitConfig.fromJson(entry.value);
+        final value = DailyLikesConfig.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -97,14 +97,14 @@ class LikeSendingLimitConfig {
     return map;
   }
 
-  // maps a json object with a list of LikeSendingLimitConfig-objects as value to a dart map
-  static Map<String, List<LikeSendingLimitConfig>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<LikeSendingLimitConfig>>{};
+  // maps a json object with a list of DailyLikesConfig-objects as value to a dart map
+  static Map<String, List<DailyLikesConfig>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<DailyLikesConfig>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = LikeSendingLimitConfig.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = DailyLikesConfig.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;
@@ -112,7 +112,7 @@ class LikeSendingLimitConfig {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'daily_limit',
+    'daily_likes',
     'reset_time',
   };
 }

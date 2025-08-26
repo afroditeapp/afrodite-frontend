@@ -81,9 +81,7 @@ ClientFeaturesConfig _emptyClientFeaturesConfig() {
       ),
       tileDataVersion: 0,
     ),
-    limits: LimitsConfig(
-      likes: LikeLimitsConfig(likeSending: null, unlimitedLikesDisablingTime: null),
-    ),
+    limits: LimitsConfig(likes: LikeLimitsConfig(daily: null, unlimitedLikesDisablingTime: null)),
     profile: ProfileConfig(),
   );
 }

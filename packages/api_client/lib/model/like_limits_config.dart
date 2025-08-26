@@ -13,11 +13,11 @@ part of openapi.api;
 class LikeLimitsConfig {
   /// Returns a new [LikeLimitsConfig] instance.
   LikeLimitsConfig({
-    this.likeSending,
+    this.daily,
     this.unlimitedLikesDisablingTime,
   });
 
-  LikeSendingLimitConfig? likeSending;
+  DailyLikesConfig? daily;
 
   /// UTC time value
   ///
@@ -30,24 +30,24 @@ class LikeLimitsConfig {
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is LikeLimitsConfig &&
-    other.likeSending == likeSending &&
+    other.daily == daily &&
     other.unlimitedLikesDisablingTime == unlimitedLikesDisablingTime;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (likeSending == null ? 0 : likeSending!.hashCode) +
+    (daily == null ? 0 : daily!.hashCode) +
     (unlimitedLikesDisablingTime == null ? 0 : unlimitedLikesDisablingTime!.hashCode);
 
   @override
-  String toString() => 'LikeLimitsConfig[likeSending=$likeSending, unlimitedLikesDisablingTime=$unlimitedLikesDisablingTime]';
+  String toString() => 'LikeLimitsConfig[daily=$daily, unlimitedLikesDisablingTime=$unlimitedLikesDisablingTime]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-    if (this.likeSending != null) {
-      json[r'like_sending'] = this.likeSending;
+    if (this.daily != null) {
+      json[r'daily'] = this.daily;
     } else {
-      json[r'like_sending'] = null;
+      json[r'daily'] = null;
     }
     if (this.unlimitedLikesDisablingTime != null) {
       json[r'unlimited_likes_disabling_time'] = this.unlimitedLikesDisablingTime;
@@ -76,7 +76,7 @@ class LikeLimitsConfig {
       }());
 
       return LikeLimitsConfig(
-        likeSending: LikeSendingLimitConfig.fromJson(json[r'like_sending']),
+        daily: DailyLikesConfig.fromJson(json[r'daily']),
         unlimitedLikesDisablingTime: mapValueOfType<String>(json, r'unlimited_likes_disabling_time'),
       );
     }
