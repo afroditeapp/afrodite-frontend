@@ -74,5 +74,5 @@ lib/service_config.dart
 
 # iOS development team
 ios/Runner.xcodeproj
-# iOS app group
+# iOS app entitlements
 ios/Runner/Runner.entitlements
