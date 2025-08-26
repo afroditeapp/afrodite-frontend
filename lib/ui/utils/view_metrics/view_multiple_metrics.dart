@@ -308,7 +308,13 @@ class _ViewMultipleMetricsState extends State<ViewMultipleMetrics>
 
   Widget getChart(BuildContext context, List<(int, Metric)> values) {
     final data = values
-        .map((e) => LineChartBarData(spots: e.$2.getValues(), isCurved: false, barWidth: 4))
+        .map(
+          (e) => LineChartBarData(
+            spots: e.$2.getValuesMax2SequentialValues(),
+            isCurved: false,
+            barWidth: 4,
+          ),
+        )
         .toList();
 
     final xMin = widget.controller.xMinFiltered;

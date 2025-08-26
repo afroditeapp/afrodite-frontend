@@ -1,5 +1,8 @@
+import 'dart:math';
+
 import 'package:app/ui/utils/view_metrics/view_multiple_metrics.dart';
 import 'package:app/ui/utils/view_metrics/view_single_metric.dart';
+import 'package:app/utils/list.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:app/utils/result.dart';
@@ -120,4 +123,22 @@ abstract class Metric {
 
   /// The values are sorted by X coordinate
   List<FlSpot> getValues();
+
+  List<FlSpot> getValuesMax2SequentialValues() {
+    final list = getValues();
+    final List<FlSpot> newList = [];
+    for (var i = 0; i < list.length; i++) {
+      final previous = list.getAtOrNull(max(0, i - 1));
+      final current = list[i];
+      final next = list.getAtOrNull(min(list.length - 1, i + 1));
+      if (previous != null && current.y == previous.y) {
+        if (next != null && current.y != next.y) {
+          newList.add(current);
+        }
+      } else {
+        newList.add(current);
+      }
+    }
+    return newList;
+  }
 }
