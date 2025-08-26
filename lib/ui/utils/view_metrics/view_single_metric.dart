@@ -138,8 +138,8 @@ class _ViewSingleMetricState extends State<ViewSingleMetric> {
             getTooltipItems: (touchedSpots) {
               return touchedSpots.map((touchedSpot) {
                 final utcTime = UnixTime(ut: touchedSpot.x.toInt()).toUtcDateTime();
-                final time = "${timeString(utcTime)}, ${touchedSpot.y.toInt()}";
-                return LineTooltipItem(time, Theme.of(context).textTheme.labelLarge!);
+                final text = "${fullTimeString(utcTime)}\n${touchedSpot.y.toInt()}";
+                return LineTooltipItem(text, Theme.of(context).textTheme.labelLarge!);
               }).toList();
             },
           ),
