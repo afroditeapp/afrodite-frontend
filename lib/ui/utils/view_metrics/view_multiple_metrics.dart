@@ -340,11 +340,17 @@ class _ViewMultipleMetricsState extends State<ViewMultipleMetrics>
             fitInsideHorizontally: true,
             fitInsideVertically: true,
             getTooltipItems: (touchedSpots) {
-              final items = touchedSpots.map((touchedSpot) {
+              final items = touchedSpots.indexed.map((v) {
+                final (index, touchedSpot) = v;
                 final name = values[touchedSpot.barIndex].$2.name;
                 final utcTime = UnixTime(ut: touchedSpot.x.toInt()).toUtcDateTime();
-                final time = "$name, ${timeString(utcTime)}, ${touchedSpot.y.toInt()}";
-                return LineTooltipItem(time, Theme.of(context).textTheme.labelLarge!);
+                final String text;
+                if (index == 0) {
+                  text = "${fullTimeString(utcTime)}\n$name ${touchedSpot.y.toInt()}";
+                } else {
+                  text = "$name ${touchedSpot.y.toInt()}";
+                }
+                return LineTooltipItem(text, Theme.of(context).textTheme.labelLarge!);
               }).toList();
               widget.controller.previousTooltip = items.map((v) => v.text).join("\n");
               return items;
