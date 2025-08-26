@@ -99,9 +99,12 @@ class ViewMultipleMetricsController extends BaseDataManager {
 
   bool showTextFieldControls = false;
 
+  String? previousTooltip;
+
   void updateData(List<Metric> newData) {
     group.updateData(newData);
     initialUpdateDone = false;
+    previousTooltip = null;
     _groupChangeRefresh();
   }
 
@@ -337,12 +340,14 @@ class _ViewMultipleMetricsState extends State<ViewMultipleMetrics>
             fitInsideHorizontally: true,
             fitInsideVertically: true,
             getTooltipItems: (touchedSpots) {
-              return touchedSpots.map((touchedSpot) {
+              final items = touchedSpots.map((touchedSpot) {
                 final name = values[touchedSpot.barIndex].$2.name;
                 final utcTime = UnixTime(ut: touchedSpot.x.toInt()).toUtcDateTime();
                 final time = "$name, ${timeString(utcTime)}, ${touchedSpot.y.toInt()}";
                 return LineTooltipItem(time, Theme.of(context).textTheme.labelLarge!);
               }).toList();
+              widget.controller.previousTooltip = items.map((v) => v.text).join("\n");
+              return items;
             },
           ),
         ),
@@ -393,8 +398,13 @@ class ViewMultipleMetricsActions extends StatelessWidget {
         ),
         IconButton(
           onPressed: () async {
-            final visibleMetrics = controller.filteredList.map((v) => v.$2.name).join("\n");
-            final text = "Visible metrics:\n$visibleMetrics";
+            final String text;
+            final previousTooltip = controller.previousTooltip;
+            if (previousTooltip != null) {
+              text = "Previous tooltip:\n$previousTooltip";
+            } else {
+              text = "No previous tooltip";
+            }
             await showInfoDialog(context, text, scrollable: true);
           },
           icon: const Icon(Icons.info),
