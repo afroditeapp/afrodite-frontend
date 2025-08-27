@@ -346,6 +346,7 @@ class LoginRepository extends DataRepository {
     final repository = _repositories;
 
     if (repository != null && !repository.logoutStarted) {
+      _repositories = null;
       repository.logoutStarted = true;
 
       final r = await repository.api.accountAction((api) => api.postLogout());
@@ -427,12 +428,18 @@ class LoginRepository extends DataRepository {
     }
   }
 
-  Future<void> setCurrentServerAddress(String serverAddress) async {
-    await BackgroundDatabaseManager.getInstance().commonAction(
-      (db) => db.app.updateServerUrl(serverAddress),
-    );
-    await _apiNoConnection.updateAddressFromConfigAndReturnIt();
-    await _repositories?.connectionManager.closeAndRefreshServerAddressAndLogout();
+  Future<Result<(), ()>> setCurrentServerAddress(String serverAddress) async {
+    if (_repositories != null) {
+      return Err(());
+    }
+
+    return await BackgroundDatabaseManager.getInstance()
+        .commonAction((db) => db.app.updateServerUrl(serverAddress))
+        .emptyErr()
+        .andThen((_) async {
+          await _apiNoConnection.updateAddressFromConfigAndReturnIt();
+          return Ok(());
+        });
   }
 
   Future<Result<(), DemoAccountLoginError>> demoAccountLogin(

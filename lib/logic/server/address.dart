@@ -1,4 +1,5 @@
 import "package:app/api/api_provider.dart";
+import "package:app/localizations.dart";
 import "package:app/ui_utils/snack_bar.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:app/config.dart";
@@ -33,8 +34,12 @@ class ServerAddressBloc extends Bloc<ServerAddressEvent, String> {
         return;
       }
 
-      await login.setCurrentServerAddress(data.value);
-      showSnackBar("Server address changed");
+      final r = await login.setCurrentServerAddress(data.value);
+      if (r.isErr()) {
+        showSnackBar(R.strings.generic_error);
+      } else {
+        showSnackBar("Server address changed");
+      }
       emit(data.value);
     });
 

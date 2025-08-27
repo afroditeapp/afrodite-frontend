@@ -185,13 +185,6 @@ class ServerConnectionManager implements LifecycleMethods, ServerConnectionInter
     _state.add(ServerConnectionState.waitingRefreshToken);
   }
 
-  Future<void> closeAndRefreshServerAddressAndLogout() async {
-    _reconnectInProgress = false;
-    await serverConnection.close(logoutClose: true);
-    await _loadAddressesFromConfig();
-    _state.add(ServerConnectionState.waitingRefreshToken);
-  }
-
   /// Returns true if connected, false if not connected within the timeout.
   Future<bool> tryWaitUntilConnected({required int waitTimeoutSeconds}) async {
     return await Future.any([
