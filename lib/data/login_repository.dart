@@ -127,9 +127,9 @@ class LoginRepository extends DataRepository {
       _loginInProgress,
       (a, b, c) => (a, b, c),
     ).listen((event) {
-      final (apiState, demoAccountToken, loginInProgress) = event;
+      final (serverConnectionState, demoAccountToken, loginInProgress) = event;
       log.finer(
-        "state changed. apiState: $apiState, demoAccountToken: ${demoAccountToken != null}, loginInProgress: $loginInProgress",
+        "state changed. serverConnectionState: $serverConnectionState, demoAccountToken: ${demoAccountToken != null}, loginInProgress: $loginInProgress",
       );
       if (loginInProgress) {
         if (demoAccountToken != null) {
@@ -140,7 +140,7 @@ class LoginRepository extends DataRepository {
         return;
       }
 
-      switch (apiState) {
+      switch (serverConnectionState) {
         case ServerConnectionState.waitingRefreshToken:
           if (demoAccountToken != null) {
             _loginState.add(LoginState.demoAccount);
