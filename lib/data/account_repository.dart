@@ -27,6 +27,7 @@ const ProfileVisibility PROFILE_VISIBILITY_DEFAULT = ProfileVisibility.pendingPr
 
 class AccountRepository extends DataRepositoryWithLifecycle {
   final ConnectedActionScheduler _syncHandler;
+  final ServerConnectionManager connectionManager;
   final ClientIdManager clientIdManager;
   final ApiManager api;
   final AccountDatabaseManager db;
@@ -37,12 +38,12 @@ class AccountRepository extends DataRepositoryWithLifecycle {
   AccountRepository({
     required this.db,
     required this.accountBackgroundDb,
-    required this.api,
-    required ServerConnectionManager connectionManager,
+    required this.connectionManager,
     required this.clientIdManager,
     required bool rememberToInitRepositoriesLateFinal,
     required this.currentUser,
-  }) : _syncHandler = ConnectedActionScheduler(connectionManager);
+  }) : _syncHandler = ConnectedActionScheduler(connectionManager),
+       api = connectionManager.api;
 
   final BehaviorSubject<AccountRepositoryState> _internalState = BehaviorSubject.seeded(
     AccountRepositoryState.initRequired,
@@ -65,6 +66,7 @@ class AccountRepository extends DataRepositoryWithLifecycle {
   final _contentProcessingStateChanges = PublishSubject<ContentProcessingStateChanged>();
   Stream<ContentProcessingStateChanged> get contentProcessingStateChanges =>
       _contentProcessingStateChanges.stream;
+  StreamSubscription<ServerWsEvent>? _serverEvents;
 
   @override
   Future<void> init() async {
@@ -74,12 +76,22 @@ class AccountRepository extends DataRepositoryWithLifecycle {
     _internalState.add(AccountRepositoryState.initComplete);
 
     _cachedValues._subscribe(db);
+    _serverEvents = connectionManager.serverEvents
+        .asyncMap((event) async {
+          switch (event) {
+            case EventToClientContainer e:
+              await handleEventToClient(e.event);
+          }
+          return event;
+        })
+        .listen((_) {});
   }
 
   @override
   Future<void> dispose() async {
     await _cachedValues._dispose();
     await _syncHandler.dispose();
+    await _serverEvents?.cancel();
   }
 
   @override

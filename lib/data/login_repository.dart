@@ -170,18 +170,6 @@ class LoginRepository extends DataRepository {
       _repositoryStateStreams._handleAppStartWithoutLoggedInAccount();
     }
 
-    _repositoryStateStreams.serverEvents
-        .asyncMap((event) async {
-          switch (event) {
-            case EventToClientContainer e:
-              {
-                await repositories.account.handleEventToClient(e.event);
-              }
-          }
-          return;
-        })
-        .listen((_) {});
-
     // Automatic connect based on app visibility
     AppVisibilityProvider.getInstance().isForegroundStream
         .asyncMap((isForeground) async {
@@ -256,7 +244,6 @@ class LoginRepository extends DataRepository {
     final account = AccountRepository(
       db: accountDb,
       accountBackgroundDb: accountBackgroundDb,
-      api: connectionManager.api,
       connectionManager: connectionManager,
       clientIdManager: clientIdManager,
       rememberToInitRepositoriesLateFinal: true,
@@ -791,10 +778,6 @@ class RepositoryStateStreams {
   StreamSubscription<bool>? _initialSetupSkippedSubscription;
   Stream<bool> get initialSetupSkipped => _initialSetupSkipped;
 
-  final PublishSubject<ServerWsEvent> _serverEvents = PublishSubject();
-  StreamSubscription<ServerWsEvent>? _serverEventsSubscription;
-  Stream<ServerWsEvent> get serverEvents => _serverEvents;
-
   final PublishSubject<ServerConnectionState> _serverConnectionManagerStateEvents =
       PublishSubject();
   StreamSubscription<ServerConnectionState>? _serverConnectionManagerStateEventsSubscription;
@@ -822,11 +805,6 @@ class RepositoryStateStreams {
         .listen((v) {
           _initialSetupSkipped.add(v);
         });
-
-    await _serverEventsSubscription?.cancel();
-    _serverEventsSubscription = connectionManager.serverEvents.listen((v) {
-      _serverEvents.add(v);
-    });
 
     await _serverConnectionManagerStateEventsSubscription?.cancel();
     _serverConnectionManagerStateEventsSubscription = connectionManager.state.listen((v) {
