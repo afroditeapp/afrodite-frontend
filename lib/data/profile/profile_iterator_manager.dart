@@ -66,7 +66,7 @@ class ProfileIteratorManager {
             _currentIterator = OnlineIterator(
               resetServerIterator: true,
               media: media,
-              io: ProfileListOnlineIteratorIo(db, connectionManager.api),
+              io: ProfileListOnlineIteratorIo(db, connectionManager),
               accountBackgroundDb: accountBackgroundDb,
               db: db,
               connectionManager: connectionManager,
@@ -75,7 +75,7 @@ class ProfileIteratorManager {
             if (_currentMode is ModeFavorites) {
               _currentIterator = OnlineIterator(
                 media: media,
-                io: ProfileListOnlineIteratorIo(db, connectionManager.api),
+                io: ProfileListOnlineIteratorIo(db, connectionManager),
                 accountBackgroundDb: accountBackgroundDb,
                 db: db,
                 connectionManager: connectionManager,

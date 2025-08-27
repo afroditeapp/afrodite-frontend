@@ -28,7 +28,7 @@ class AutomaticProfileSearchIteratorManager extends BaseIteratorManager {
     return OnlineIterator(
       resetServerIterator: true,
       media: media,
-      io: AutomaticProfileSearchOnlineIteratorIo(db, connectionManager.api),
+      io: AutomaticProfileSearchOnlineIteratorIo(db, connectionManager),
       accountBackgroundDb: accountBackgroundDb,
       db: db,
       connectionManager: connectionManager,

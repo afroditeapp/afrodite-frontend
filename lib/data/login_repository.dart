@@ -85,7 +85,7 @@ class LoginRepository extends DataRepository {
   RepositoryInstances get repositories => _repositories!;
   RepositoryInstances? get repositoriesOrNull => _repositories;
 
-  late ApiManager _apiNoConnection;
+  late ApiManagerNoConnection _apiNoConnection;
 
   final SignInWithGoogleManager _google = SignInWithGoogleManager();
 
@@ -126,7 +126,7 @@ class LoginRepository extends DataRepository {
       (db) => db.app.watchServerUrl(),
       defaultServerUrl(),
     );
-    _apiNoConnection = await ApiManager.createNoConnection(serverAddress);
+    _apiNoConnection = await ApiManagerNoConnection.create(serverAddress);
 
     initCmdHandling();
 
@@ -214,7 +214,7 @@ class LoginRepository extends DataRepository {
                     .commonAction((db) => db.app.updateServerUrl(cmd.address))
                     .emptyErr()
                     .andThen((_) async {
-                      _apiNoConnection = await ApiManager.createNoConnection(cmd.address);
+                      _apiNoConnection = await ApiManagerNoConnection.create(cmd.address);
                       return Ok(());
                     });
               }

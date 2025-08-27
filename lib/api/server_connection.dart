@@ -114,7 +114,7 @@ String _addWebSocketRoutePathToAddress(String baseUrl) {
 }
 
 class ServerConnection {
-  final String _address;
+  final String _serverAddress;
   final AccountDatabaseManager db;
   final AccountBackgroundDatabaseManager accountBackgroundDb;
 
@@ -130,8 +130,8 @@ class ServerConnection {
 
   bool _startInProgress = false;
 
-  ServerConnection(String address, this.db, this.accountBackgroundDb)
-    : _address = _addWebSocketRoutePathToAddress(address);
+  ServerConnection(String serverAddress, this.db, this.accountBackgroundDb)
+    : _serverAddress = _addWebSocketRoutePathToAddress(serverAddress);
 
   /// Starts new connection if it does not already exists.
   Future<void> start() async {
@@ -181,10 +181,10 @@ class ServerConnection {
 
     final WebSocketWrapper ws;
     if (kIsWeb) {
-      if (!_address.startsWith("http")) {
+      if (!_serverAddress.startsWith("http")) {
         throw UnsupportedError("Unsupported URI scheme");
       }
-      final wsAddress = Uri.parse(_address.replaceFirst("http", "ws"));
+      final wsAddress = Uri.parse(_serverAddress.replaceFirst("http", "ws"));
       try {
         ws = WebSocketWrapper(
           WebSocketChannel.connect(wsAddress, protocols: ["0", accessToken.token]),
@@ -210,7 +210,7 @@ class ServerConnection {
         "sec-websocket-key": key,
         "sec-websocket-protocol": "0,${accessToken.token}",
       };
-      final request = Request("GET", Uri.parse(_address));
+      final request = Request("GET", Uri.parse(_serverAddress));
       request.headers.addAll(headers);
 
       final IOStreamedResponse response;

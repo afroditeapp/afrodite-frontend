@@ -45,16 +45,21 @@ class EventToClientContainer implements ServerWsEvent {
   EventToClientContainer(this.event);
 }
 
-class ServerConnectionManager implements LifecycleMethods, ServerConnectionInterface {
-  final String address;
-  late final ApiManager _account;
+class ServerConnectionManager extends ApiManager
+    implements LifecycleMethods, ServerConnectionInterface {
   final AccountDatabaseManager accountDb;
   final AccountBackgroundDatabaseManager accountBackgroundDb;
   final AccountId currentUser;
+  final ApiProvider _apiProvider;
   final ServerConnection _serverConnection;
 
-  ServerConnectionManager(this.address, this.accountDb, this.accountBackgroundDb, this.currentUser)
-    : _serverConnection = ServerConnection(address, accountDb, accountBackgroundDb);
+  ServerConnectionManager(
+    String serverAddress,
+    this.accountDb,
+    this.accountBackgroundDb,
+    this.currentUser,
+  ) : _apiProvider = ApiProvider(serverAddress),
+      _serverConnection = ServerConnection(serverAddress, accountDb, accountBackgroundDb);
 
   final BehaviorSubject<ServerConnectionState> _state = BehaviorSubject.seeded(
     ServerConnectionState.connecting,
@@ -64,16 +69,21 @@ class ServerConnectionManager implements LifecycleMethods, ServerConnectionInter
 
   ServerConnectionState get currentState => _state.value;
   Stream<ServerWsEvent> get serverEvents => _serverConnection.serverEvents;
-  ApiManager get api => _account;
 
   @override
   Stream<ServerConnectionState> get state => _state.distinct();
+
+  @override
+  ApiProvider get _account => _apiProvider;
+
+  @override
+  ServerConnectionInterface get _connection => this;
 
   bool _reconnectInProgress = false;
 
   @override
   Future<void> init() async {
-    _account = await ApiManager.create(address, this);
+    await _apiProvider.init();
     _serverConnectionEventsSubscription = _listenServerConnectionEvents(accountDb);
   }
 
@@ -131,7 +141,7 @@ class ServerConnectionManager implements LifecycleMethods, ServerConnectionInter
                   showSnackBar(R.strings.snackbar_connected);
                   _reconnectInProgress = false;
                 }
-                await _account.setupAccessToken(token);
+                _apiProvider.setAccessToken(token);
                 _state.add(ServerConnectionState.connected);
               }
           }
@@ -204,33 +214,30 @@ class ServerConnectionManager implements LifecycleMethods, ServerConnectionInter
   }
 }
 
-class ApiManager {
-  final ApiProvider _account;
-  final ServerConnectionInterface _connection;
+class ApiManagerNoConnection extends ApiManager {
+  final ApiProvider _apiProvider;
 
+  ApiManagerNoConnection._(this._apiProvider);
+
+  @override
+  ApiProvider get _account => _apiProvider;
+
+  @override
+  ServerConnectionInterface get _connection => NoConnection();
+
+  static Future<ApiManagerNoConnection> create(String serverAddress) async {
+    final api = ApiProvider(serverAddress);
+    await api.init();
+    return ApiManagerNoConnection._(api);
+  }
+}
+
+abstract class ApiManager {
   String get serverAddress => _account.serverAddress;
 
-  ApiManager._(String address, ServerConnectionInterface connection)
-    : _account = ApiProvider(address),
-      _connection = connection;
+  ApiProvider get _account;
+  ServerConnectionInterface get _connection;
 
-  static Future<ApiManager> createNoConnection(String address) async {
-    final api = ApiManager._(address, NoConnection());
-    await api._account.init();
-    return api;
-  }
-
-  static Future<ApiManager> create(String address, ServerConnectionInterface connection) async {
-    final api = ApiManager._(address, NoConnection());
-    await api._account.init();
-    return api;
-  }
-
-  Future<void> setupAccessToken(AccessToken token) async {
-    _account.setAccessToken(token);
-  }
-
-  /// Provider for media and media admin API
   ApiProvider _mediaApiProvider() {
     return _account;
   }

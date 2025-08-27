@@ -44,7 +44,7 @@ class RepositoryInstances implements DataRepositoryMethods {
 
   bool _logoutStarted = false;
 
-  ApiManager get api => connectionManager.api;
+  ApiManager get api => connectionManager;
 
   RepositoryInstances._({
     required this.accountId,
@@ -156,7 +156,7 @@ class RepositoryInstances implements DataRepositoryMethods {
       accountBackgroundDb,
       accountId,
     );
-    final clientIdManager = ClientIdManager(accountDb, connectionManager.api);
+    final clientIdManager = ClientIdManager(accountDb, connectionManager);
 
     final account = AccountRepository(
       db: accountDb,
@@ -189,7 +189,7 @@ class RepositoryInstances implements DataRepositoryMethods {
       db: accountDb,
       connectionManager: connectionManager,
       clientIdManager: clientIdManager,
-      messageKeyManager: MessageKeyManager(accountDb, connectionManager.api, accountId),
+      messageKeyManager: MessageKeyManager(accountDb, connectionManager, accountId),
       currentUser: accountId,
     );
     final newRepositories = RepositoryInstances._(

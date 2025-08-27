@@ -44,17 +44,17 @@ class ChatRepository extends DataRepositoryWithLifecycle {
          media,
          accountBackgroundDb,
          db,
-         connectionManager.api,
+         connectionManager,
        ),
        sentBlocksIterator = AccountIdDatabaseIterator(
          (startIndex, limit) =>
              db.accountData((db) => db.conversationList.getSentBlocksList(startIndex, limit)).ok(),
        ),
-       api = connectionManager.api,
+       api = connectionManager,
        messageManager = MessageManager(
          messageKeyManager,
          clientIdManager,
-         connectionManager.api,
+         connectionManager,
          db,
          profile,
          accountBackgroundDb,

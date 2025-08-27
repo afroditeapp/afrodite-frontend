@@ -44,7 +44,7 @@ class AccountRepository extends DataRepositoryWithLifecycle {
     required bool rememberToInitRepositoriesLateFinal,
     required this.currentUser,
   }) : _syncHandler = ConnectedActionScheduler(connectionManager),
-       api = connectionManager.api;
+       api = connectionManager;
 
   final BehaviorSubject<AccountRepositoryState> _internalState = BehaviorSubject.seeded(
     AccountRepositoryState.initRequired,

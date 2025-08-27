@@ -28,7 +28,7 @@ class MatchesIteratorManager extends BaseIteratorManager {
     return OnlineIterator(
       resetServerIterator: true,
       media: media,
-      io: MatchesOnlineIteratorIo(db, connectionManager.api),
+      io: MatchesOnlineIteratorIo(db, connectionManager),
       accountBackgroundDb: accountBackgroundDb,
       db: db,
       connectionManager: connectionManager,

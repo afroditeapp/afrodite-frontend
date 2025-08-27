@@ -38,7 +38,7 @@ class MediaRepository extends DataRepositoryWithLifecycle {
     ServerConnectionManager connectionManager,
     this.currentUser,
   ) : syncHandler = ConnectedActionScheduler(connectionManager),
-      api = connectionManager.api;
+      api = connectionManager;
 
   @override
   Future<void> init() async {

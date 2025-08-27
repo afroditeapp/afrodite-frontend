@@ -28,7 +28,7 @@ class ReceivedLikesIteratorManager extends BaseIteratorManager {
     return OnlineIterator(
       resetServerIterator: true,
       media: media,
-      io: ReceivedLikesOnlineIteratorIo(db, accountBackgroundDb, connectionManager.api),
+      io: ReceivedLikesOnlineIteratorIo(db, accountBackgroundDb, connectionManager),
       accountBackgroundDb: accountBackgroundDb,
       db: db,
       connectionManager: connectionManager,

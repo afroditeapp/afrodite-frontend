@@ -37,8 +37,8 @@ class OnlineIterator extends IteratorType {
     required this.db,
     required this.connectionManager,
   }) : _resetServerIterator = resetServerIterator,
-       downloader = ProfileEntryDownloader(media, accountBackgroundDb, db, connectionManager.api),
-       api = connectionManager.api,
+       downloader = ProfileEntryDownloader(media, accountBackgroundDb, db, connectionManager),
+       api = connectionManager,
        super(true);
 
   @override

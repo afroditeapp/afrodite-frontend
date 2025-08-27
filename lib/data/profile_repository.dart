@@ -44,7 +44,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
     this.connectionManager,
     this.currentUser,
   ) : syncHandler = ConnectedActionScheduler(connectionManager),
-      _api = connectionManager.api;
+      _api = connectionManager;
 
   final PublishSubject<ProfileChange> _profileChangesRelay = PublishSubject();
   void sendProfileChange(ProfileChange change) {
