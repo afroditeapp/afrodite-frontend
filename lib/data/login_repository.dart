@@ -5,7 +5,6 @@ import 'dart:io';
 import 'package:app/data/app_version.dart';
 import 'package:app/data/utils/sign_in_with_apple.dart';
 import 'package:app/data/utils/sign_in_with_google.dart';
-import 'package:async/async.dart' show StreamExtensions;
 import 'package:crypto/crypto.dart';
 import 'package:database/database.dart';
 import 'package:flutter/foundation.dart';
@@ -26,8 +25,6 @@ import 'package:app/database/account_database_manager.dart';
 import 'package:app/database/background_database_manager.dart';
 import 'package:app/database/database_manager.dart';
 import 'package:app/localizations.dart';
-import 'package:app/logic/app/app_visibility_provider.dart';
-import 'package:app/main.dart';
 import 'package:app/service_config.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:utils/utils.dart';
@@ -74,8 +71,6 @@ class LoginRepository extends DataRepository {
   final BehaviorSubject<bool> _loginInProgress = BehaviorSubject.seeded(false);
 
   StreamSubscription<ServerConnectionState>? _repositorySpecificAutomaticLogoutSubscription;
-
-  DateTime? _backgroundedAt;
 
   // Main app state streams
   Stream<LoginState> get loginState => _loginState.distinct();
@@ -169,62 +164,6 @@ class LoginRepository extends DataRepository {
       // combineLatest3 starts working.
       _repositoryStateStreams._handleAppStartWithoutLoggedInAccount();
     }
-
-    // Automatic connect based on app visibility
-    AppVisibilityProvider.getInstance().isForegroundStream
-        .asyncMap((isForeground) async {
-          await GlobalInitManager.getInstance().globalInitCompletedStream.firstWhere(
-            (initCompleted) => initCompleted,
-          );
-
-          if (!isForeground) {
-            return;
-          }
-          if (await accountId.firstOrNull == null) {
-            // Not logged in
-            _backgroundedAt = null;
-            return;
-          }
-
-          final backgroundedAt = _backgroundedAt;
-          if (backgroundedAt != null) {
-            final now = DateTime.now();
-            if (now.difference(backgroundedAt) > const Duration(days: 1)) {
-              log.info("Refreshing profile grid automatically");
-              await repositories.profile.resetMainProfileIterator();
-            }
-          }
-          _backgroundedAt = null;
-
-          final connectionManager = repositoriesOrNull?.connectionManager;
-          final state = await connectionManager?.state.firstOrNull;
-          if (state == ServerConnectionState.noConnection) {
-            await connectionManager?.restart();
-          }
-        })
-        .listen(null);
-
-    // Automatic disconnect based on app visibility
-    AppVisibilityProvider.getInstance().isForegroundStream
-        .debounceTime(const Duration(seconds: 10))
-        .asyncMap((isForeground) async {
-          await GlobalInitManager.getInstance().globalInitCompletedStream.firstWhere(
-            (initCompleted) => initCompleted,
-          );
-
-          if (isForeground) {
-            return;
-          }
-          if (await accountId.firstOrNull == null) {
-            // Not logged in
-            _backgroundedAt = null;
-            return;
-          }
-          final connectionManager = repositoriesOrNull?.connectionManager;
-          await connectionManager?.close();
-          _backgroundedAt = DateTime.now();
-        })
-        .listen(null);
   }
 
   Future<RepositoryInstances> _createRepositories(
@@ -249,7 +188,6 @@ class LoginRepository extends DataRepository {
       rememberToInitRepositoriesLateFinal: true,
       currentUser: accountId,
     );
-    final common = CommonRepository(connectionManager);
     final media = MediaRepository(
       account,
       accountDb,
@@ -265,6 +203,7 @@ class LoginRepository extends DataRepository {
       connectionManager,
       accountId,
     );
+    final common = CommonRepository(connectionManager, profile);
     final chat = ChatRepository(
       media: media,
       profile: profile,
