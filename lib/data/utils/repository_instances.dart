@@ -144,12 +144,18 @@ class RepositoryInstances implements DataRepositoryMethods {
   static Future<RepositoryInstances> createAndInit(
     AccountId accountId, {
     bool accountLoginHappened = false,
+    required String serverAddress,
   }) async {
     final accountBackgroundDb = BackgroundDatabaseManager.getInstance()
         .getAccountBackgroundDatabaseManager(accountId);
     final accountDb = DatabaseManager.getInstance().getAccountDatabaseManager(accountId);
 
-    final connectionManager = ServerConnectionManager(accountDb, accountBackgroundDb, accountId);
+    final connectionManager = ServerConnectionManager(
+      serverAddress,
+      accountDb,
+      accountBackgroundDb,
+      accountId,
+    );
     final clientIdManager = ClientIdManager(accountDb, connectionManager.api);
 
     final account = AccountRepository(

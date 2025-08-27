@@ -6,7 +6,6 @@ import 'package:openapi/api.dart';
 import 'package:app/api/api_provider.dart';
 import 'package:app/api/api_wrapper.dart';
 import 'package:app/api/server_connection.dart';
-import 'package:app/config.dart';
 import 'package:app/data/utils.dart';
 import 'package:app/database/account_background_database_manager.dart';
 import 'package:app/database/account_database_manager.dart';
@@ -47,14 +46,15 @@ class EventToClientContainer implements ServerWsEvent {
 }
 
 class ServerConnectionManager implements LifecycleMethods, ServerConnectionInterface {
-  final ApiManager _account = ApiManager.withDefaultAddress();
+  final String address;
+  late final ApiManager _account;
   final AccountDatabaseManager accountDb;
   final AccountBackgroundDatabaseManager accountBackgroundDb;
   final AccountId currentUser;
-  final ServerConnection serverConnection;
+  final ServerConnection _serverConnection;
 
-  ServerConnectionManager(this.accountDb, this.accountBackgroundDb, this.currentUser)
-    : serverConnection = ServerConnection("", accountDb, accountBackgroundDb);
+  ServerConnectionManager(this.address, this.accountDb, this.accountBackgroundDb, this.currentUser)
+    : _serverConnection = ServerConnection(address, accountDb, accountBackgroundDb);
 
   final BehaviorSubject<ServerConnectionState> _state = BehaviorSubject.seeded(
     ServerConnectionState.connecting,
@@ -63,7 +63,7 @@ class ServerConnectionManager implements LifecycleMethods, ServerConnectionInter
   StreamSubscription<void>? _serverConnectionEventsSubscription;
 
   ServerConnectionState get currentState => _state.value;
-  Stream<ServerWsEvent> get serverEvents => serverConnection.serverEvents;
+  Stream<ServerWsEvent> get serverEvents => _serverConnection.serverEvents;
   ApiManager get api => _account;
 
   @override
@@ -73,22 +73,18 @@ class ServerConnectionManager implements LifecycleMethods, ServerConnectionInter
 
   @override
   Future<void> init() async {
-    _account.initConnection(this);
-    await _account.init();
-
+    _account = await ApiManager.create(address, this);
     _serverConnectionEventsSubscription = _listenServerConnectionEvents(accountDb);
-
-    await _loadAddressesFromConfig();
   }
 
   @override
   Future<void> dispose() async {
     await _serverConnectionEventsSubscription?.cancel();
-    await serverConnection.dispose();
+    await _serverConnection.dispose();
   }
 
   StreamSubscription<void> _listenServerConnectionEvents(AccountDatabaseManager accountDb) {
-    return serverConnection.state
+    return _serverConnection.state
         .distinct()
         .asyncMap((event) async {
           log.info(event);
@@ -107,7 +103,7 @@ class ServerConnectionManager implements LifecycleMethods, ServerConnectionInter
                       // TODO(prod): check that internet connectivity exists?
                       unawaited(
                         Future.delayed(const Duration(seconds: 5), () async {
-                          final currentState = await serverConnection.state.first;
+                          final currentState = await _serverConnection.state.first;
 
                           if (currentState is Error &&
                               currentState.error == ServerConnectionError.connectionFailure) {
@@ -143,11 +139,6 @@ class ServerConnectionManager implements LifecycleMethods, ServerConnectionInter
         .listen((_) {});
   }
 
-  Future<void> _loadAddressesFromConfig() async {
-    final accountAddress = await _account.updateAddressFromConfigAndReturnIt();
-    serverConnection.setAddress(addWebSocketRoutePathToAddress(accountAddress));
-  }
-
   Future<void> _connect() async {
     _state.add(ServerConnectionState.connecting);
 
@@ -163,25 +154,24 @@ class ServerConnectionManager implements LifecycleMethods, ServerConnectionInter
       return;
     }
 
-    await serverConnection.start();
+    await _serverConnection.start();
   }
 
   @override
   Future<void> restart() async {
-    await serverConnection.close();
-    await _loadAddressesFromConfig();
+    await _serverConnection.close();
     await _connect();
   }
 
   Future<void> close() async {
     _reconnectInProgress = false;
-    await serverConnection.close();
+    await _serverConnection.close();
     _state.add(ServerConnectionState.noConnection);
   }
 
   Future<void> closeAndLogout() async {
     _reconnectInProgress = false;
-    await serverConnection.close(logoutClose: true);
+    await _serverConnection.close(logoutClose: true);
     _state.add(ServerConnectionState.waitingRefreshToken);
   }
 
@@ -214,56 +204,26 @@ class ServerConnectionManager implements LifecycleMethods, ServerConnectionInter
   }
 }
 
-String addWebSocketRoutePathToAddress(String baseUrl) {
-  final base = Uri.parse(baseUrl);
+class ApiManager {
+  final ApiProvider _account;
+  final ServerConnectionInterface _connection;
 
-  final newAddress = Uri(
-    scheme: base.scheme,
-    host: base.host,
-    port: base.port,
-    path: "/common_api/connect",
-  ).toString();
+  String get serverAddress => _account.serverAddress;
 
-  return newAddress;
-}
+  ApiManager._(String address, ServerConnectionInterface connection)
+    : _account = ApiProvider(address),
+      _connection = connection;
 
-class ApiManager implements LifecycleMethods {
-  final ApiProvider _account = ApiProvider(defaultServerUrl());
-
-  /// If object is created with this constructor, call [initConnection] before
-  /// calling [init].
-  ApiManager.withDefaultAddress();
-  ApiManager.withDefaultAddressAndNoConnection() : _connection = NoConnection();
-
-  late final ServerConnectionInterface _connection;
-  ServerConnectionInterface get connection => _connection;
-
-  /// Can be called only once.
-  void initConnection(ServerConnectionInterface newConnection) {
-    _connection = newConnection;
+  static Future<ApiManager> createNoConnection(String address) async {
+    final api = ApiManager._(address, NoConnection());
+    await api._account.init();
+    return api;
   }
 
-  @override
-  Future<void> init() async {
-    await _account.init();
-    await updateAddressFromConfigAndReturnIt();
-  }
-
-  @override
-  Future<void> dispose() async {}
-
-  String currentServerAddress() => _account.serverAddress;
-
-  Future<String> updateAddressFromConfigAndReturnIt() async {
-    final backgroundDb = BackgroundDatabaseManager.getInstance();
-
-    final accountAddress = await backgroundDb.commonStreamSingleOrDefault(
-      (db) => db.app.watchServerUrl(),
-      defaultServerUrl(),
-    );
-    _account.updateServerAddress(accountAddress);
-
-    return accountAddress;
+  static Future<ApiManager> create(String address, ServerConnectionInterface connection) async {
+    final api = ApiManager._(address, NoConnection());
+    await api._account.init();
+    return api;
   }
 
   Future<void> setupAccessToken(AccessToken token) async {
@@ -284,35 +244,35 @@ class ApiManager implements LifecycleMethods {
   }
 
   ApiWrapper<CommonApi> commonWrapper() {
-    return ApiWrapper(_account.common, connection);
+    return ApiWrapper(_account.common, _connection);
   }
 
   ApiWrapper<AccountApi> accountWrapper() {
-    return ApiWrapper(_account.account, connection);
+    return ApiWrapper(_account.account, _connection);
   }
 
   ApiWrapper<AccountAdminApi> _accountAdminWrapper() {
-    return ApiWrapper(_account.accountAdmin, connection);
+    return ApiWrapper(_account.accountAdmin, _connection);
   }
 
   ApiWrapper<ProfileApi> profileWrapper() {
-    return ApiWrapper(_profileApiProvider().profile, connection);
+    return ApiWrapper(_profileApiProvider().profile, _connection);
   }
 
   ApiWrapper<ProfileAdminApi> _profileAdminWrapper() {
-    return ApiWrapper(_profileApiProvider().profileAdmin, connection);
+    return ApiWrapper(_profileApiProvider().profileAdmin, _connection);
   }
 
   ApiWrapper<ChatApi> _chatWrapper() {
-    return ApiWrapper(_chatApiProvider().chat, connection);
+    return ApiWrapper(_chatApiProvider().chat, _connection);
   }
 
   ApiWrapper<MediaApi> mediaWrapper() {
-    return ApiWrapper(_mediaApiProvider().media, connection);
+    return ApiWrapper(_mediaApiProvider().media, _connection);
   }
 
   ApiWrapper<MediaAdminApi> _mediaAdminWrapper() {
-    return ApiWrapper(_mediaApiProvider().mediaAdmin, connection);
+    return ApiWrapper(_mediaApiProvider().mediaAdmin, _connection);
   }
 
   Future<Result<T, ValueApiError>> account<T extends Object>(
@@ -330,13 +290,13 @@ class ApiManager implements LifecycleMethods {
   Future<Result<T, ValueApiError>> common<T extends Object>(
     Future<T?> Function(CommonApi) action,
   ) async {
-    return await ApiWrapper(_account.common, connection).requestValue(action);
+    return await ApiWrapper(_account.common, _connection).requestValue(action);
   }
 
   Future<Result<T, ValueApiError>> commonAdmin<T extends Object>(
     Future<T?> Function(CommonAdminApi) action,
   ) async {
-    return await ApiWrapper(_account.commonAdmin, connection).requestValue(action);
+    return await ApiWrapper(_account.commonAdmin, _connection).requestValue(action);
   }
 
   Future<Result<T, ValueApiError>> media<T extends Object>(
@@ -382,13 +342,13 @@ class ApiManager implements LifecycleMethods {
   }
 
   Future<Result<(), ActionApiError>> commonAction(Future<void> Function(CommonApi) action) async {
-    return await ApiWrapper(_account.common, connection).requestAction(action);
+    return await ApiWrapper(_account.common, _connection).requestAction(action);
   }
 
   Future<Result<(), ActionApiError>> commonAdminAction(
     Future<void> Function(CommonAdminApi) action,
   ) async {
-    return await ApiWrapper(_account.commonAdmin, connection).requestAction(action);
+    return await ApiWrapper(_account.commonAdmin, _connection).requestAction(action);
   }
 
   Future<Result<(), ActionApiError>> mediaAction(Future<void> Function(MediaApi) action) async {

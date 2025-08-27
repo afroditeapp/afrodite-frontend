@@ -100,8 +100,21 @@ enum ConnectionProtocolState {
   receiveEvents,
 }
 
+String _addWebSocketRoutePathToAddress(String baseUrl) {
+  final base = Uri.parse(baseUrl);
+
+  final newAddress = Uri(
+    scheme: base.scheme,
+    host: base.host,
+    port: base.port,
+    path: "/common_api/connect",
+  ).toString();
+
+  return newAddress;
+}
+
 class ServerConnection {
-  String _address;
+  final String _address;
   final AccountDatabaseManager db;
   final AccountBackgroundDatabaseManager accountBackgroundDb;
 
@@ -117,7 +130,8 @@ class ServerConnection {
 
   bool _startInProgress = false;
 
-  ServerConnection(this._address, this.db, this.accountBackgroundDb);
+  ServerConnection(String address, this.db, this.accountBackgroundDb)
+    : _address = _addWebSocketRoutePathToAddress(address);
 
   /// Starts new connection if it does not already exists.
   Future<void> start() async {
@@ -365,10 +379,6 @@ class ServerConnection {
     final c = _connection;
     _connection = null;
     await c?.close();
-  }
-
-  void setAddress(String address) {
-    _address = address;
   }
 
   bool inUse() {

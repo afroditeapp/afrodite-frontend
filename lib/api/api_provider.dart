@@ -20,7 +20,7 @@ class ApiProvider {
   CommonAdminApi _commonAdmin;
   ChatApi _chat;
 
-  String _serverAddress;
+  final String _serverAddress;
 
   late final Client httpClient;
 
@@ -53,16 +53,11 @@ class ApiProvider {
     var auth = ApiKeyAuth("header", accessTokenHeaderName);
     auth.apiKey = token.token;
     _apiKey = auth;
-    _refreshApiClient(serverAddress, auth);
+    _refreshApiClient(auth);
   }
 
-  void updateServerAddress(String serverAddress) {
-    _serverAddress = serverAddress;
-    _refreshApiClient(serverAddress, _apiKey);
-  }
-
-  void _refreshApiClient(String serverAddress, ApiKeyAuth? key) {
-    var client = ApiClient(basePath: serverAddress, authentication: key);
+  void _refreshApiClient(ApiKeyAuth? key) {
+    var client = ApiClient(basePath: _serverAddress, authentication: key);
     client.client = httpClient;
 
     _account = AccountApi(client);
@@ -84,6 +79,6 @@ class ApiProvider {
       client = IOClient(HttpClient(context: await createSecurityContextForBackendConnection()));
     }
     httpClient = client;
-    _refreshApiClient(_serverAddress, _apiKey);
+    _refreshApiClient(_apiKey);
   }
 }

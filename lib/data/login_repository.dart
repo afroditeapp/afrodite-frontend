@@ -81,7 +81,7 @@ class LoginRepository extends DataRepository {
   RepositoryInstances get repositories => _repositories!;
   RepositoryInstances? get repositoriesOrNull => _repositories;
 
-  final ApiManager _apiNoConnection = ApiManager.withDefaultAddressAndNoConnection();
+  late ApiManager _apiNoConnection;
 
   final SignInWithGoogleManager _google = SignInWithGoogleManager();
 
@@ -119,9 +119,13 @@ class LoginRepository extends DataRepository {
     }
     _initDone = true;
 
-    await _google.init();
+    final serverAddress = await BackgroundDatabaseManager.getInstance().commonStreamSingleOrDefault(
+      (db) => db.app.watchServerUrl(),
+      defaultServerUrl(),
+    );
+    _apiNoConnection = await ApiManager.createNoConnection(serverAddress);
 
-    await _apiNoConnection.init();
+    await _google.init();
 
     final currentAccountId = await accountId.first;
     if (currentAccountId != null) {
@@ -193,7 +197,7 @@ class LoginRepository extends DataRepository {
               await _logoutInternal();
               cmd.completed.add(());
             case GetServerAddress():
-              cmd.completed.add(_apiNoConnection.currentServerAddress());
+              cmd.completed.add(_apiNoConnection.serverAddress);
             case ChangeServerAddress():
               final Result<(), ()> result;
               if (_repositories != null) {
@@ -203,7 +207,7 @@ class LoginRepository extends DataRepository {
                     .commonAction((db) => db.app.updateServerUrl(cmd.address))
                     .emptyErr()
                     .andThen((_) async {
-                      await _apiNoConnection.updateAddressFromConfigAndReturnIt();
+                      _apiNoConnection = await ApiManager.createNoConnection(cmd.address);
                       return Ok(());
                     });
               }
@@ -258,6 +262,7 @@ class LoginRepository extends DataRepository {
     final newRepositories = await RepositoryInstances.createAndInit(
       accountId,
       accountLoginHappened: accountLoginHappened,
+      serverAddress: _apiNoConnection.serverAddress,
     );
 
     await _repositoryStateStreams._subscribe(
