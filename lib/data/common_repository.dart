@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:app/data/profile_repository.dart';
 import 'package:async/async.dart' show StreamExtensions;
 import 'package:logging/logging.dart';
-import 'package:app/api/api_manager.dart';
+import 'package:app/api/server_connection_manager.dart';
 import 'package:app/data/push_notification_manager.dart';
 import 'package:app/data/utils.dart';
 import 'package:app/database/background_database_manager.dart';

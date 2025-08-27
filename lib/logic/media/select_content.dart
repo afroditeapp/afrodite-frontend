@@ -1,4 +1,4 @@
-import "package:app/api/api_manager.dart";
+import "package:app/api/server_connection_manager.dart";
 import "package:app/localizations.dart";
 import "package:app/ui_utils/snack_bar.dart";
 import "package:flutter_bloc/flutter_bloc.dart";

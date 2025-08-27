@@ -5,7 +5,7 @@ import 'package:async/async.dart' show StreamExtensions;
 import 'package:logging/logging.dart';
 import 'package:native_utils/native_utils.dart';
 import 'package:openapi/api.dart';
-import 'package:app/api/api_manager.dart';
+import 'package:app/api/server_connection_manager.dart';
 import 'package:app/data/account/client_id_manager.dart';
 import 'package:app/data/chat/message_database_iterator.dart';
 import 'package:app/data/chat/message_manager.dart';

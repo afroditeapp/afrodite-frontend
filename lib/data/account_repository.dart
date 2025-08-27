@@ -7,7 +7,7 @@ import 'package:app/database/background_database_manager.dart';
 import 'package:database/database.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
-import 'package:app/api/api_manager.dart';
+import 'package:app/api/server_connection_manager.dart';
 import 'package:app/data/account/client_id_manager.dart';
 import 'package:app/data/account/initial_setup.dart';
 import 'package:app/data/login_repository.dart';

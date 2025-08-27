@@ -4,7 +4,7 @@ import 'package:database/database.dart';
 import 'package:flutter/foundation.dart';
 import 'package:openapi/api.dart';
 import 'package:openapi/manual_additions.dart';
-import 'package:app/api/api_manager.dart';
+import 'package:app/api/server_connection_manager.dart';
 import 'package:app/database/account_database_manager.dart';
 import 'package:app/utils/result.dart';
 

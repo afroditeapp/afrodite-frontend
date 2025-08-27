@@ -1,4 +1,4 @@
-import 'package:app/api/api_manager.dart';
+import 'package:app/api/server_connection_manager.dart';
 import 'package:app/localizations.dart';
 import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';

@@ -10,7 +10,7 @@ import 'package:database/database.dart';
 import 'package:flutter/foundation.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
-import 'package:app/api/api_manager.dart';
+import 'package:app/api/server_connection_manager.dart';
 import 'package:app/config.dart';
 import 'package:app/data/account/client_id_manager.dart';
 import 'package:app/data/account_repository.dart';

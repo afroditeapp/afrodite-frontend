@@ -9,7 +9,7 @@ import 'package:http/http.dart';
 import 'package:http/io_client.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
-import 'package:app/api/api_manager.dart';
+import 'package:app/api/server_connection_manager.dart';
 import 'package:app/api/websocket_wrapper.dart';
 import 'package:app/assets.dart';
 import 'package:app/database/account_background_database_manager.dart';

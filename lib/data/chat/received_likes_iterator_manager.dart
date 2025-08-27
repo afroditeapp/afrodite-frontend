@@ -1,5 +1,5 @@
 import 'package:openapi/api.dart';
-import 'package:app/api/api_manager.dart';
+import 'package:app/api/server_connection_manager.dart';
 import 'package:app/data/chat/received_likes_database_iterator.dart';
 import 'package:app/data/chat_repository.dart';
 import 'package:app/data/general/iterator/base_iterator_manager.dart';

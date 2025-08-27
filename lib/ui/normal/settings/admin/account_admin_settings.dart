@@ -1,4 +1,4 @@
-import 'package:app/api/api_manager.dart';
+import 'package:app/api/server_connection_manager.dart';
 import 'package:app/data/login_repository.dart';
 import 'package:app/data/profile_repository.dart';
 import 'package:app/localizations.dart';

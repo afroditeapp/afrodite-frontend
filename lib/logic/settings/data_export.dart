@@ -1,4 +1,4 @@
-import "package:app/api/api_manager.dart";
+import "package:app/api/server_connection_manager.dart";
 import "package:app/model/freezed/logic/settings/data_export.dart";
 import "package:app/utils/result.dart";
 import "package:flutter_bloc/flutter_bloc.dart";

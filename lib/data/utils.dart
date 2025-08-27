@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:app/api/api_manager.dart';
+import 'package:app/api/server_connection_manager.dart';
 import 'package:app/utils/result.dart';
 import 'package:utils/utils.dart';
 import 'package:rxdart/rxdart.dart';

@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:openapi/api.dart';
-import 'package:app/api/api_manager.dart';
+import 'package:app/api/server_connection_manager.dart';
 import 'package:app/data/chat_repository.dart';
 import 'package:app/data/media_repository.dart';
 import 'package:app/data/general/iterator/profile_iterator.dart';

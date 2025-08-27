@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
-import 'package:app/api/api_manager.dart';
+import 'package:app/api/server_connection_manager.dart';
 import 'package:app/data/image_cache.dart';
 import 'package:app/data/media_repository.dart';
 import 'package:database/database.dart';

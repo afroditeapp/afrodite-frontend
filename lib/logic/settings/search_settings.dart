@@ -1,6 +1,6 @@
 import "dart:async";
 
-import "package:app/api/api_manager.dart";
+import "package:app/api/server_connection_manager.dart";
 import "package:app/database/account_background_database_manager.dart";
 import "package:app/model/freezed/logic/account/initial_setup.dart";
 import "package:app/utils/api.dart";

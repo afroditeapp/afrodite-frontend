@@ -1,6 +1,6 @@
 import 'package:async/async.dart' show StreamExtensions;
 import 'package:openapi/api.dart';
-import 'package:app/api/api_manager.dart';
+import 'package:app/api/server_connection_manager.dart';
 import 'package:app/database/account_database_manager.dart';
 import 'package:app/utils/result.dart';
 import 'package:rxdart/rxdart.dart';

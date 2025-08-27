@@ -1,6 +1,6 @@
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:openapi/api.dart";
-import "package:app/api/api_manager.dart";
+import "package:app/api/server_connection_manager.dart";
 import "package:app/data/login_repository.dart";
 import "package:app/model/freezed/logic/account/news/view_news.dart";
 import "package:app/utils.dart";

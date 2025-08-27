@@ -1,4 +1,4 @@
-import 'package:app/api/api_manager.dart';
+import 'package:app/api/server_connection_manager.dart';
 import 'package:app/ui_utils/data_editor.dart';
 import 'package:app/ui_utils/data_editor/base.dart';
 import 'package:app/ui_utils/data_editor/boolean.dart';
