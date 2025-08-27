@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
 import 'package:openapi/api.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:utils/utils.dart';
@@ -26,5 +29,19 @@ class AppVersionManager extends AppSingleton {
     major = int.parse(numbers[0]);
     minor = int.parse(numbers[1]);
     patch = int.parse(numbers[2]);
+  }
+
+  ClientInfo clientInfo() {
+    final ClientType clientType;
+    if (kIsWeb) {
+      clientType = ClientType.web;
+    } else if (Platform.isAndroid) {
+      clientType = ClientType.android;
+    } else if (Platform.isIOS) {
+      clientType = ClientType.ios;
+    } else {
+      throw UnsupportedError("Unsupported platform");
+    }
+    return ClientInfo(clientType: clientType, clientVersion: clientVersion);
   }
 }

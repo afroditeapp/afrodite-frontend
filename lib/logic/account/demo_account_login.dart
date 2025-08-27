@@ -1,5 +1,6 @@
 import "dart:async";
 
+import "package:app/data/utils/demo_account_manager.dart";
 import "package:app/model/freezed/logic/account/demo_account_login.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:logging/logging.dart";

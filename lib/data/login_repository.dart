@@ -1,12 +1,11 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:app/data/app_version.dart';
+import 'package:app/data/utils/demo_account_manager.dart';
 import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/data/utils/sign_in_with_apple.dart';
 import 'package:app/data/utils/sign_in_with_google.dart';
 import 'package:database/database.dart';
-import 'package:flutter/foundation.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:app/api/server_connection_manager.dart';
@@ -41,9 +40,9 @@ sealed class LoginRepositoryCmd<T> {
   }
 }
 
-class LogoutAndLogin extends LoginRepositoryCmd<Result<(), CommonSignInError>> {
-  final LoginResult loginResult;
-  LogoutAndLogin(this.loginResult);
+class LogoutAndSignInWithLogin extends LoginRepositoryCmd<Result<(), SignInWithEvent>> {
+  final SignInWithLoginInfo info;
+  LogoutAndSignInWithLogin(this.info);
 }
 
 class Logout extends LoginRepositoryCmd<()> {}
@@ -51,6 +50,22 @@ class Logout extends LoginRepositoryCmd<()> {}
 class ChangeServerAddress extends LoginRepositoryCmd<Result<(), ()>> {
   final String address;
   ChangeServerAddress(this.address);
+}
+
+class DemoAccountLogin extends LoginRepositoryCmd<Result<(), DemoAccountLoginError>> {
+  final DemoAccountCredentials credentials;
+  DemoAccountLogin(this.credentials);
+}
+
+class DemoAccountLogout extends LoginRepositoryCmd<()> {}
+
+class DemoAccountGetAccounts
+    extends LoginRepositoryCmd<Result<List<AccessibleAccount>, SessionOrOtherError>> {}
+
+class DemoAccountRegisterIfNeededAndLoginToAccount
+    extends LoginRepositoryCmd<Result<(), SessionOrOtherError>> {
+  final AccountId? id;
+  DemoAccountRegisterIfNeededAndLoginToAccount(this.id);
 }
 
 class LoginRepository extends DataRepository {
@@ -76,7 +91,6 @@ class LoginRepository extends DataRepository {
   final BehaviorSubject<LoginRepositoryState> _internalState = BehaviorSubject.seeded(
     LoginRepositoryState.initRequired,
   );
-  final BehaviorSubject<bool> _demoAccountLoginProgress = BehaviorSubject.seeded(false);
   final BehaviorSubject<bool> _loginInProgress = BehaviorSubject.seeded(false);
 
   final PublishSubject<LoginRepositoryCmd<Object>> _cmds = PublishSubject();
@@ -89,15 +103,10 @@ class LoginRepository extends DataRepository {
       .distinct(); // Avoid loop in ServerAddressBloc
 
   // Demo account
-  Stream<String?> get demoAccountUsername =>
-      DatabaseManager.getInstance().commonStream((db) => db.demoAccount.watchDemoAccountUsername());
-
-  Stream<String?> get demoAccountPassword =>
-      DatabaseManager.getInstance().commonStream((db) => db.demoAccount.watchDemoAccountPassword());
-
-  Stream<String?> get demoAccountToken =>
-      DatabaseManager.getInstance().commonStream((db) => db.demoAccount.watchDemoAccountToken());
-  Stream<bool> get demoAccountLoginProgress => _demoAccountLoginProgress;
+  final DemoAccountManager _demoAccountManager = DemoAccountManager();
+  Stream<String?> get demoAccountUsername => _demoAccountManager.demoAccountUsername;
+  Stream<String?> get demoAccountPassword => _demoAccountManager.demoAccountPassword;
+  Stream<bool> get demoAccountLoginProgress => _demoAccountManager.demoAccountLoginProgress;
 
   // Account
   Stream<AccountId?> get accountId => BackgroundDatabaseManager.getInstance().commonStream(
@@ -133,7 +142,7 @@ class LoginRepository extends DataRepository {
 
     Rx.combineLatest3(
       _repositoryStateStreams._serverConnectionManagerStateEvents,
-      demoAccountToken,
+      _demoAccountManager.demoAccountToken,
       _loginInProgress,
       (a, b, c) => (a, b, c),
     ).listen((event) {
@@ -178,9 +187,9 @@ class LoginRepository extends DataRepository {
     _cmds
         .asyncMap((cmd) async {
           switch (cmd) {
-            case LogoutAndLogin():
+            case LogoutAndSignInWithLogin():
               await _logoutInternal();
-              cmd.completed.add(await _handleLoginResultInternal(cmd.loginResult));
+              cmd.completed.add(await _handleSignInWithLoginInfoInternal(cmd.info));
             case Logout():
               await _logoutInternal();
               cmd.completed.add(());
@@ -198,6 +207,41 @@ class LoginRepository extends DataRepository {
                     });
               }
               cmd.completed.add(result);
+            case DemoAccountLogin():
+              final r = await _demoAccountManager.demoAccountLogin(
+                cmd.credentials,
+                apiNoConnection: _apiNoConnection,
+              );
+              cmd.completed.add(r);
+            case DemoAccountLogout():
+              await _demoAccountManager.demoAccountLogout(apiNoConnection: _apiNoConnection);
+              cmd.completed.add(());
+            case DemoAccountGetAccounts():
+              final r = await _demoAccountManager.demoAccountGetAccounts(
+                apiNoConnection: _apiNoConnection,
+              );
+              cmd.completed.add(r);
+            case DemoAccountRegisterIfNeededAndLoginToAccount():
+              await _logoutInternal();
+              final Result<(), SessionOrOtherError> r;
+              final result = await _demoAccountManager.demoAccountRegisterIfNeededAndLogin(
+                id: cmd.id,
+                apiNoConnection: _apiNoConnection,
+              );
+              switch (result) {
+                case Ok():
+                  switch (await _handleLoginResultInternal(result.v)) {
+                    case Ok():
+                      r = Ok(());
+                    case Err(e: CommonSignInError.unsupportedClient):
+                      r = Err(UnsupportedClient());
+                    case Err(e: CommonSignInError.otherError):
+                      r = Err(OtherError());
+                  }
+                case Err():
+                  r = Err(result.e);
+              }
+              cmd.completed.add(r);
           }
         })
         .listen(null);
@@ -237,47 +281,14 @@ class LoginRepository extends DataRepository {
     return newRepositories;
   }
 
-  Stream<SignInWithEvent> signInWithGoogle() async* {
-    final info = await _google.login().ok();
-    if (info == null) {
-      yield SignInWithEvent.getTokenFailed;
-      return;
-    }
-
-    yield SignInWithEvent.getTokenCompleted;
-
-    switch (await handleSignInWithLoginInfo(info)) {
-      case Ok():
-        ();
-      case Err(:final e):
-        yield e;
-    }
-  }
-
-  ClientInfo clientInfo() {
-    final ClientType clientType;
-    if (kIsWeb) {
-      clientType = ClientType.web;
-    } else if (Platform.isAndroid) {
-      clientType = ClientType.android;
-    } else if (Platform.isIOS) {
-      clientType = ClientType.ios;
-    } else {
-      throw UnsupportedError("Unsupported platform");
-    }
-    return ClientInfo(
-      clientType: clientType,
-      clientVersion: AppVersionManager.getInstance().clientVersion,
-    );
-  }
-
-  Future<Result<(), SignInWithEvent>> handleSignInWithLoginInfo(SignInWithLoginInfo info) async {
+  Future<Result<(), SignInWithEvent>> _handleSignInWithLoginInfoInternal(
+    SignInWithLoginInfo info,
+  ) async {
     final login = await _apiNoConnection.account((api) => api.postSignInWithLogin(info)).ok();
     if (login == null) {
       return const Err(SignInWithEvent.serverRequestFailed);
     }
-
-    return await _sendLoginCmd(login).mapErr((e) {
+    return await _handleLoginResultInternal(login).mapErr((e) {
       switch (e) {
         case CommonSignInError.unsupportedClient:
           return SignInWithEvent.unsupportedClient;
@@ -285,12 +296,6 @@ class LoginRepository extends DataRepository {
           return SignInWithEvent.otherError;
       }
     });
-  }
-
-  Future<Result<(), CommonSignInError>> _sendLoginCmd(LoginResult loginResult) async {
-    final event = LogoutAndLogin(loginResult);
-    _cmds.add(event);
-    return await event.waitCompletion();
   }
 
   Future<Result<(), CommonSignInError>> _handleLoginResultInternal(LoginResult loginResult) async {
@@ -349,11 +354,27 @@ class LoginRepository extends DataRepository {
     }
   }
 
-  /// Logout back to login or demo account screen
-  Future<void> logout() async {
-    final event = Logout();
+  Future<Result<(), SignInWithEvent>> sendSignInWithLoginCmd(SignInWithLoginInfo info) async {
+    final event = LogoutAndSignInWithLogin(info);
     _cmds.add(event);
-    await event.waitCompletion();
+    return await event.waitCompletion();
+  }
+
+  Stream<SignInWithEvent> signInWithGoogle() async* {
+    final info = await _google.login().ok();
+    if (info == null) {
+      yield SignInWithEvent.getTokenFailed;
+      return;
+    }
+
+    yield SignInWithEvent.getTokenCompleted;
+
+    switch (await sendSignInWithLoginCmd(info)) {
+      case Ok():
+        ();
+      case Err(:final e):
+        yield e;
+    }
   }
 
   /// On Android this might not never complete
@@ -365,8 +386,11 @@ class LoginRepository extends DataRepository {
     switch (r) {
       case Ok():
         yield SignInWithEvent.getTokenCompleted;
-        final info = SignInWithLoginInfo(apple: r.v, clientInfo: clientInfo());
-        switch (await handleSignInWithLoginInfo(info)) {
+        final info = SignInWithLoginInfo(
+          apple: r.v,
+          clientInfo: AppVersionManager.getInstance().clientInfo(),
+        );
+        switch (await sendSignInWithLoginCmd(info)) {
           case Ok():
             ();
           case Err(:final e):
@@ -375,6 +399,13 @@ class LoginRepository extends DataRepository {
       case Err():
         yield r.e;
     }
+  }
+
+  /// Logout back to login or demo account screen
+  Future<void> logout() async {
+    final event = Logout();
+    _cmds.add(event);
+    await event.waitCompletion();
   }
 
   Future<Result<(), ()>> setCurrentServerAddress(String serverAddress) async {
@@ -386,150 +417,29 @@ class LoginRepository extends DataRepository {
   Future<Result<(), DemoAccountLoginError>> demoAccountLogin(
     DemoAccountCredentials credentials,
   ) async {
-    _demoAccountLoginProgress.add(true);
-    final loginResult = await _apiNoConnection
-        .account(
-          (api) => api.postDemoAccountLogin(
-            DemoAccountLoginCredentials(
-              username: credentials.username,
-              password: credentials.password,
-            ),
-          ),
-        )
-        .ok();
-    _demoAccountLoginProgress.add(false);
-
-    if (loginResult == null) {
-      return const Err(DemoAccountLoginError.otherError);
-    }
-
-    if (loginResult.locked) {
-      return const Err(DemoAccountLoginError.accountLocked);
-    }
-
-    final demoAccountToken = loginResult.token?.token;
-    if (demoAccountToken == null) {
-      return const Err(DemoAccountLoginError.otherError);
-    }
-
-    await DatabaseManager.getInstance().commonAction(
-      (db) => db.demoAccount.updateDemoAccountUsername(credentials.username),
-    );
-    await DatabaseManager.getInstance().commonAction(
-      (db) => db.demoAccount.updateDemoAccountPassword(credentials.password),
-    );
-    await DatabaseManager.getInstance().commonAction(
-      (db) => db.demoAccount.updateDemoAccountToken(demoAccountToken),
-    );
-
-    return const Ok(());
+    final event = DemoAccountLogin(credentials);
+    _cmds.add(event);
+    return await event.waitCompletion();
   }
 
   Future<void> demoAccountLogout() async {
-    log.info("demo account logout");
-
-    final token = await demoAccountToken.first;
-    if (token != null) {
-      final r = await _apiNoConnection.accountAction(
-        (api) => api.postDemoAccountLogout(DemoAccountToken(token: token)),
-      );
-      if (r.isErr()) {
-        showSnackBar(R.strings.generic_logout_failed);
-      }
-    }
-
-    await DatabaseManager.getInstance().commonAction(
-      (db) => db.demoAccount.updateDemoAccountToken(null),
-    );
-
-    log.info("demo account logout completed");
+    final event = DemoAccountLogout();
+    _cmds.add(event);
+    await event.waitCompletion();
   }
 
   Future<Result<List<AccessibleAccount>, SessionOrOtherError>> demoAccountGetAccounts() async {
-    final token = await demoAccountToken.first;
-    if (token == null) {
-      return Err(OtherError());
-    }
-    final accounts = await _apiNoConnection.accountWrapper().requestValue(
-      (api) => api.postDemoAccountAccessibleAccounts(DemoAccountToken(token: token)),
-    );
-    switch (accounts) {
-      case Ok(:final v):
-        return Ok(v);
-      case Err(:final e):
-        if (e.isUnauthorized()) {
-          await demoAccountLogout();
-          return Err(SessionExpired());
-        } else {
-          return Err(OtherError());
-        }
-    }
+    final event = DemoAccountGetAccounts();
+    _cmds.add(event);
+    return await event.waitCompletion();
   }
 
-  Future<Result<(), SessionOrOtherError>> demoAccountRegisterAndLogin() async {
-    final token = await demoAccountToken.first;
-    if (token == null) {
-      return Err(OtherError());
-    }
-    final demoToken = DemoAccountToken(token: token);
-    final id = await _apiNoConnection.accountWrapper().requestValue(
-      (api) => api.postDemoAccountRegisterAccount(demoToken),
-    );
-    switch (id) {
-      case Ok(:final v):
-        return await demoAccountLoginToAccount(v);
-      case Err(:final e):
-        if (e.isUnauthorized()) {
-          await demoAccountLogout();
-          return Err(SessionExpired());
-        } else {
-          return Err(OtherError());
-        }
-    }
-  }
-
-  Future<Result<(), SessionOrOtherError>> demoAccountLoginToAccount(AccountId id) async {
-    final token = await demoAccountToken.first;
-    if (token == null) {
-      return Err(OtherError());
-    }
-    final demoToken = DemoAccountToken(token: token);
-    final loginResult = await _apiNoConnection.accountWrapper().requestValue(
-      (api) => api.postDemoAccountLoginToAccount(
-        DemoAccountLoginToAccount(aid: id, token: demoToken, clientInfo: clientInfo()),
-      ),
-    );
-    switch (loginResult) {
-      case Ok(:final v):
-        switch (await _sendLoginCmd(v)) {
-          case Err(:final e):
-            switch (e) {
-              case CommonSignInError.unsupportedClient:
-                return Err(UnsupportedClient());
-              case CommonSignInError.otherError:
-                return Err(OtherError());
-            }
-          case Ok():
-            return const Ok(());
-        }
-      case Err(:final e):
-        if (e.isUnauthorized()) {
-          await demoAccountLogout();
-          return Err(SessionExpired());
-        } else {
-          return Err(OtherError());
-        }
-    }
+  Future<Result<(), SessionOrOtherError>> demoAccountRegisterIfNeededAndLogin(AccountId? id) async {
+    final event = DemoAccountRegisterIfNeededAndLoginToAccount(id);
+    _cmds.add(event);
+    return await event.waitCompletion();
   }
 }
-
-class DemoAccountCredentials {
-  final String username;
-  final String password;
-  DemoAccountCredentials(this.username, this.password);
-}
-
-enum DemoAccountLoginError { accountLocked, otherError }
 
 sealed class SessionOrOtherError {}
 

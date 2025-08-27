@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:app/data/app_version.dart';
 import 'package:app/data/login_repository.dart';
 import 'package:app/data/utils/sign_in_with_apple.dart';
 import 'package:app/logic/sign_in_with.dart';
@@ -61,9 +62,9 @@ class SignInWithGoogleManager {
 
             final info = SignInWithLoginInfo(
               google: SignInWithGoogleInfo(nonce: _nonceBase64Url, token: token),
-              clientInfo: LoginRepository.getInstance().clientInfo(),
+              clientInfo: AppVersionManager.getInstance().clientInfo(),
             );
-            switch (await LoginRepository.getInstance().handleSignInWithLoginInfo(info)) {
+            switch (await LoginRepository.getInstance().sendSignInWithLoginCmd(info)) {
               case Ok():
                 ();
               case Err(:final e):
@@ -100,7 +101,7 @@ class SignInWithGoogleManager {
     return Ok(
       SignInWithLoginInfo(
         google: SignInWithGoogleInfo(nonce: _nonceBase64Url, token: token),
-        clientInfo: LoginRepository.getInstance().clientInfo(),
+        clientInfo: AppVersionManager.getInstance().clientInfo(),
       ),
     );
   }

@@ -53,12 +53,12 @@ class DemoAccountBloc extends Bloc<DemoAccountEvent, DemoAccountBlocData> with A
     });
     on<DoDemoAccountCreateNewAccount>((_, emit) async {
       await runOnce(() async {
-        handleErrors(await login.demoAccountRegisterAndLogin());
+        handleErrors(await login.demoAccountRegisterIfNeededAndLogin(null));
       });
     });
     on<DoDemoAccountLoginToAccount>((data, emit) async {
       await runOnce(() async {
-        handleErrors(await login.demoAccountLoginToAccount(data.id));
+        handleErrors(await login.demoAccountRegisterIfNeededAndLogin(data.id));
       });
     });
   }

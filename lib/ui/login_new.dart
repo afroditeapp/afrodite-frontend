@@ -1,5 +1,6 @@
 import "dart:io";
 
+import "package:app/data/utils/demo_account_manager.dart";
 import "package:app/logic/account/demo_account_login.dart";
 import "package:app/model/freezed/logic/account/demo_account_login.dart";
 import "package:app/ui_utils/image.dart";
@@ -8,7 +9,6 @@ import "package:flutter/gestures.dart";
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:app/assets.dart";
-import "package:app/data/login_repository.dart";
 import "package:app/logic/app/navigator_state.dart";
 import "package:app/logic/sign_in_with.dart";
 import "package:app/model/freezed/logic/main/navigator_state.dart";
