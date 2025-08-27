@@ -51,7 +51,7 @@ class ServerConnectionManager implements LifecycleMethods, ServerConnectionInter
   final AccountDatabaseManager accountDb;
   final AccountBackgroundDatabaseManager accountBackgroundDb;
   final AccountId currentUser;
-  ServerConnection accountConnection;
+  final ServerConnection accountConnection;
 
   ServerConnectionManager(this.accountDb, this.accountBackgroundDb, this.currentUser)
     : accountConnection = ServerConnection("", accountDb, accountBackgroundDb);
@@ -60,13 +60,10 @@ class ServerConnectionManager implements LifecycleMethods, ServerConnectionInter
     ServerConnectionState.connecting,
   );
 
-  final PublishSubject<ServerWsEvent> _serverEvents = PublishSubject();
-  StreamSubscription<ServerWsEvent>? _serverEventsSubscription;
-
   StreamSubscription<void>? _serverConnectionEventsSubscription;
 
   ServerConnectionState get currentState => _state.value;
-  Stream<ServerWsEvent> get serverEvents => _serverEvents;
+  Stream<ServerWsEvent> get serverEvents => accountConnection.serverEvents;
   ApiManager get api => _account;
 
   @override
@@ -79,9 +76,6 @@ class ServerConnectionManager implements LifecycleMethods, ServerConnectionInter
     _account.initConnection(this);
     await _account.init();
 
-    _serverEventsSubscription = accountConnection.serverEvents.listen((event) {
-      _serverEvents.add(event);
-    });
     _serverConnectionEventsSubscription = _listenAccountConnectionEvents(accountDb);
 
     await _loadAddressesFromConfig();
@@ -89,7 +83,6 @@ class ServerConnectionManager implements LifecycleMethods, ServerConnectionInter
 
   @override
   Future<void> dispose() async {
-    await _serverEventsSubscription?.cancel();
     await _serverConnectionEventsSubscription?.cancel();
     await accountConnection.dispose();
   }
