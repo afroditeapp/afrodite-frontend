@@ -245,7 +245,7 @@ class ApiManager implements LifecycleMethods {
   late final ServerConnectionInterface _connection;
   ServerConnectionInterface get connection => _connection;
 
-  // Can be called only once.
+  /// Can be called only once.
   void initConnection(ServerConnectionInterface newConnection) {
     _connection = newConnection;
   }
