@@ -30,8 +30,6 @@ enum LoginState {
   viewAccountStateOnceItExists,
 }
 
-enum LoginRepositoryState { initRequired, initComplete }
-
 sealed class LoginRepositoryCmd<T> {
   final BehaviorSubject<T?> completed = BehaviorSubject.seeded(null);
 
@@ -46,6 +44,8 @@ class LogoutAndSignInWithLogin extends LoginRepositoryCmd<Result<(), SignInWithE
 }
 
 class Logout extends LoginRepositoryCmd<()> {}
+
+class GetServerAddress extends LoginRepositoryCmd<String> {}
 
 class ChangeServerAddress extends LoginRepositoryCmd<Result<(), ()>> {
   final String address;
@@ -75,22 +75,21 @@ class LoginRepository extends DataRepository {
     return _instance;
   }
 
+  bool _initDone = false;
+
   RepositoryInstances? _repositories;
   RepositoryInstances get repositories => _repositories!;
   RepositoryInstances? get repositoriesOrNull => _repositories;
 
   final ApiManager _apiNoConnection = ApiManager.withDefaultAddressAndNoConnection();
 
-  late final SignInWithGoogleManager _google;
+  final SignInWithGoogleManager _google = SignInWithGoogleManager();
 
   final RepositoryStateStreams _repositoryStateStreams = RepositoryStateStreams();
   Stream<AccountStateStreamValue> get accountState => _repositoryStateStreams.accountState;
   Stream<bool> get initialSetupSkipped => _repositoryStateStreams.initialSetupSkipped;
 
   final BehaviorSubject<LoginState> _loginState = BehaviorSubject.seeded(LoginState.splashScreen);
-  final BehaviorSubject<LoginRepositoryState> _internalState = BehaviorSubject.seeded(
-    LoginRepositoryState.initRequired,
-  );
   final BehaviorSubject<bool> _loginInProgress = BehaviorSubject.seeded(false);
 
   final PublishSubject<LoginRepositoryCmd<Object>> _cmds = PublishSubject();
@@ -115,12 +114,11 @@ class LoginRepository extends DataRepository {
 
   @override
   Future<void> init() async {
-    if (_internalState.value != LoginRepositoryState.initRequired) {
+    if (_initDone) {
       return;
     }
-    _internalState.add(LoginRepositoryState.initComplete);
+    _initDone = true;
 
-    _google = SignInWithGoogleManager();
     await _google.init();
 
     await _apiNoConnection.init();
@@ -194,6 +192,8 @@ class LoginRepository extends DataRepository {
             case Logout():
               await _logoutInternal();
               cmd.completed.add(());
+            case GetServerAddress():
+              cmd.completed.add(_apiNoConnection.currentServerAddress());
             case ChangeServerAddress():
               final Result<(), ()> result;
               if (_repositories != null) {
@@ -380,8 +380,10 @@ class LoginRepository extends DataRepository {
 
   /// On Android this might not never complete
   Stream<SignInWithEvent> signInWithApple() async* {
+    final event = GetServerAddress();
+    _cmds.add(event);
     final r = await SignInWithAppleManager.signInWithApple(
-      currentServerAddress: _apiNoConnection.currentServerAddress(),
+      currentServerAddress: await event.waitCompletion(),
     );
 
     switch (r) {
