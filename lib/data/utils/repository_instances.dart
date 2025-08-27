@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:app/localizations.dart';
+import 'package:app/ui_utils/snack_bar.dart';
 import 'package:openapi/api.dart';
 import 'package:app/api/server_connection_manager.dart';
 import 'package:app/data/account/client_id_manager.dart';
@@ -40,7 +42,7 @@ class RepositoryInstances implements DataRepositoryMethods {
   final AccountDatabaseManager accountDb;
   final ServerConnectionManager connectionManager;
 
-  bool logoutStarted = false;
+  bool _logoutStarted = false;
 
   ApiManager get api => connectionManager.api;
 
@@ -105,6 +107,24 @@ class RepositoryInstances implements DataRepositoryMethods {
 
   @override
   Future<void> onLogout() async {
+    if (_logoutStarted) {
+      return;
+    }
+    _logoutStarted = true;
+
+    if (connectionManager.currentState == ServerConnectionState.connected) {
+      final r = await api.accountAction((api) => api.postLogout());
+      if (r.isErr()) {
+        showSnackBar(R.strings.generic_logout_failed);
+      }
+    }
+
+    // Disconnect, so that server does not send events to client
+    await connectionManager.closeAndLogout();
+
+    await accountDb.accountAction((db) => db.loginSession.updateRefreshToken(null));
+    await accountDb.accountAction((db) => db.loginSession.updateAccessToken(null));
+
     await common.onLogout();
     await chat.onLogout();
     await media.onLogout();

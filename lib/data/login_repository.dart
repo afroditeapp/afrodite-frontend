@@ -1,12 +1,10 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:app/data/app_version.dart';
 import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/data/utils/sign_in_with_apple.dart';
 import 'package:app/data/utils/sign_in_with_google.dart';
-import 'package:crypto/crypto.dart';
 import 'package:database/database.dart';
 import 'package:flutter/foundation.dart';
 import 'package:logging/logging.dart';
@@ -19,11 +17,9 @@ import 'package:app/database/account_database_manager.dart';
 import 'package:app/database/background_database_manager.dart';
 import 'package:app/database/database_manager.dart';
 import 'package:app/localizations.dart';
-import 'package:app/service_config.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 var log = Logger("LoginRepository");
 
@@ -36,6 +32,26 @@ enum LoginState {
 }
 
 enum LoginRepositoryState { initRequired, initComplete }
+
+sealed class LoginRepositoryCmd<T> {
+  final BehaviorSubject<T?> completed = BehaviorSubject.seeded(null);
+
+  Future<T> waitCompletion() async {
+    return await completed.whereType<T>().first;
+  }
+}
+
+class LogoutAndLogin extends LoginRepositoryCmd<Result<(), CommonSignInError>> {
+  final LoginResult loginResult;
+  LogoutAndLogin(this.loginResult);
+}
+
+class Logout extends LoginRepositoryCmd<()> {}
+
+class ChangeServerAddress extends LoginRepositoryCmd<Result<(), ()>> {
+  final String address;
+  ChangeServerAddress(this.address);
+}
 
 class LoginRepository extends DataRepository {
   LoginRepository._private();
@@ -63,6 +79,7 @@ class LoginRepository extends DataRepository {
   final BehaviorSubject<bool> _demoAccountLoginProgress = BehaviorSubject.seeded(false);
   final BehaviorSubject<bool> _loginInProgress = BehaviorSubject.seeded(false);
 
+  final PublishSubject<LoginRepositoryCmd<Object>> _cmds = PublishSubject();
   StreamSubscription<ServerConnectionState>? _repositorySpecificAutomaticLogoutSubscription;
 
   // Main app state streams
@@ -157,6 +174,33 @@ class LoginRepository extends DataRepository {
       // combineLatest3 starts working.
       _repositoryStateStreams._handleAppStartWithoutLoggedInAccount();
     }
+
+    _cmds
+        .asyncMap((cmd) async {
+          switch (cmd) {
+            case LogoutAndLogin():
+              await _logoutInternal();
+              cmd.completed.add(await _handleLoginResultInternal(cmd.loginResult));
+            case Logout():
+              await _logoutInternal();
+              cmd.completed.add(());
+            case ChangeServerAddress():
+              final Result<(), ()> result;
+              if (_repositories != null) {
+                result = Err(());
+              } else {
+                result = await BackgroundDatabaseManager.getInstance()
+                    .commonAction((db) => db.app.updateServerUrl(cmd.address))
+                    .emptyErr()
+                    .andThen((_) async {
+                      await _apiNoConnection.updateAddressFromConfigAndReturnIt();
+                      return Ok(());
+                    });
+              }
+              cmd.completed.add(result);
+          }
+        })
+        .listen(null);
   }
 
   Future<RepositoryInstances> _createRepositories(
@@ -180,11 +224,10 @@ class LoginRepository extends DataRepository {
     await _repositorySpecificAutomaticLogoutSubscription?.cancel();
     _repositorySpecificAutomaticLogoutSubscription = newRepositories.connectionManager.state.listen(
       (v) {
-        if (v == ServerConnectionState.waitingRefreshToken && !newRepositories.logoutStarted) {
+        if (v == ServerConnectionState.waitingRefreshToken) {
           // Tokens are invalid. Logout is required.
-          newRepositories.logoutStarted = true;
           log.info("Automatic logout");
-          _logoutWithRepository(newRepositories);
+          logout();
         }
       },
     );
@@ -234,7 +277,7 @@ class LoginRepository extends DataRepository {
       return const Err(SignInWithEvent.serverRequestFailed);
     }
 
-    return await _handleLoginResult(login).mapErr((e) {
+    return await _sendLoginCmd(login).mapErr((e) {
       switch (e) {
         case CommonSignInError.unsupportedClient:
           return SignInWithEvent.unsupportedClient;
@@ -244,7 +287,13 @@ class LoginRepository extends DataRepository {
     });
   }
 
-  Future<Result<(), CommonSignInError>> _handleLoginResult(LoginResult loginResult) async {
+  Future<Result<(), CommonSignInError>> _sendLoginCmd(LoginResult loginResult) async {
+    final event = LogoutAndLogin(loginResult);
+    _cmds.add(event);
+    return await event.waitCompletion();
+  }
+
+  Future<Result<(), CommonSignInError>> _handleLoginResultInternal(LoginResult loginResult) async {
     if (loginResult.errorUnsupportedClient) {
       return const Err(CommonSignInError.unsupportedClient);
     }
@@ -289,105 +338,49 @@ class LoginRepository extends DataRepository {
     return const Ok(());
   }
 
-  /// Logout back to login or demo account screen
-  Future<void> logout() async {
-    final repository = _repositories;
-
-    if (repository != null && !repository.logoutStarted) {
+  Future<void> _logoutInternal() async {
+    final currentRepositories = _repositories;
+    if (currentRepositories != null) {
       _repositories = null;
-      repository.logoutStarted = true;
-
-      final r = await repository.api.accountAction((api) => api.postLogout());
-      if (r.isErr()) {
-        showSnackBar(R.strings.generic_logout_failed);
-      }
-
-      await _logoutWithRepository(repository);
+      log.info("Logout started");
+      await currentRepositories.onLogout();
+      await _google.logout();
+      log.info("Logout completed");
     }
   }
 
-  Future<void> _logoutWithRepository(RepositoryInstances repository) async {
-    log.info("Logout started");
-    // Disconnect, so that server does not send events to client
-    await repository.connectionManager.closeAndLogout();
-
-    // Login repository
-    await repository.accountDb.accountAction((db) => db.loginSession.updateRefreshToken(null));
-    await repository.accountDb.accountAction((db) => db.loginSession.updateAccessToken(null));
-    // await onLogout(); // Not used currently
-
-    // Other repositories
-    await repository.onLogout();
-
-    await _google.logout();
-
-    log.info("Logout completed");
+  /// Logout back to login or demo account screen
+  Future<void> logout() async {
+    final event = Logout();
+    _cmds.add(event);
+    await event.waitCompletion();
   }
 
   /// On Android this might not never complete
   Stream<SignInWithEvent> signInWithApple() async* {
-    final Uri serverUrl;
-    try {
-      serverUrl = Uri.parse(_apiNoConnection.currentServerAddress());
-    } catch (_) {
-      yield SignInWithEvent.otherError;
-      return;
-    }
-
-    final nonce = generateNonceBytes().toList();
-    final nonceBase64Url = base64UrlEncode(nonce);
-    final hashedNonceBase64Url = base64UrlEncode(sha256.convert(nonce).bytes);
-
-    AuthorizationCredentialAppleID signedIn;
-    try {
-      // On Android this might not never complete
-      signedIn = await SignInWithApple.getAppleIDCredential(
-        scopes: [AppleIDAuthorizationScopes.email],
-        webAuthenticationOptions: WebAuthenticationOptions(
-          clientId: signInWithAppleServiceIdForAndroidAndWebLogin(),
-          redirectUri: kIsWeb
-              ? signInWithAppleRedirectUrlForWeb()
-              : serverUrl.replace(path: "account_api/sign_in_with_apple_redirect_to_app"),
-        ),
-        nonce: hashedNonceBase64Url,
-      );
-    } on SignInWithAppleException catch (_) {
-      yield SignInWithEvent.getTokenFailed;
-      return;
-    }
-
-    final token = signedIn.identityToken;
-    if (token == null) {
-      yield SignInWithEvent.getTokenFailed;
-      return;
-    }
-
-    yield SignInWithEvent.getTokenCompleted;
-
-    final info = SignInWithLoginInfo(
-      apple: SignInWithAppleInfo(nonce: nonceBase64Url, token: token),
-      clientInfo: clientInfo(),
+    final r = await SignInWithAppleManager.signInWithApple(
+      currentServerAddress: _apiNoConnection.currentServerAddress(),
     );
-    switch (await handleSignInWithLoginInfo(info)) {
+
+    switch (r) {
       case Ok():
-        ();
-      case Err(:final e):
-        yield e;
+        yield SignInWithEvent.getTokenCompleted;
+        final info = SignInWithLoginInfo(apple: r.v, clientInfo: clientInfo());
+        switch (await handleSignInWithLoginInfo(info)) {
+          case Ok():
+            ();
+          case Err(:final e):
+            yield e;
+        }
+      case Err():
+        yield r.e;
     }
   }
 
   Future<Result<(), ()>> setCurrentServerAddress(String serverAddress) async {
-    if (_repositories != null) {
-      return Err(());
-    }
-
-    return await BackgroundDatabaseManager.getInstance()
-        .commonAction((db) => db.app.updateServerUrl(serverAddress))
-        .emptyErr()
-        .andThen((_) async {
-          await _apiNoConnection.updateAddressFromConfigAndReturnIt();
-          return Ok(());
-        });
+    final event = ChangeServerAddress(serverAddress);
+    _cmds.add(event);
+    return await event.waitCompletion();
   }
 
   Future<Result<(), DemoAccountLoginError>> demoAccountLogin(
@@ -508,7 +501,7 @@ class LoginRepository extends DataRepository {
     );
     switch (loginResult) {
       case Ok(:final v):
-        switch (await _handleLoginResult(v)) {
+        switch (await _sendLoginCmd(v)) {
           case Err(:final e):
             switch (e) {
               case CommonSignInError.unsupportedClient:
