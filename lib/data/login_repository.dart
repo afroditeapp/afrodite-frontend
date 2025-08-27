@@ -145,6 +145,11 @@ class LoginRepository extends DataRepository {
         await onResumeAppUsage();
         await _repositories?.onResumeAppUsage();
       }
+    } else {
+      // ServerConnectionManager is not yet created so init
+      // _serverConnectionManagerStateEvents manually so that previous
+      // combineLatest3 starts working.
+      _repositoryStateStreams._handleAppStartWithoutLoggedInAccount();
     }
 
     Rx.combineLatest3(
@@ -183,13 +188,6 @@ class LoginRepository extends DataRepository {
           _loginState.add(LoginState.unsupportedClientVersion);
       }
     });
-
-    if (currentAccountId == null) {
-      // ServerConnectionManager is not yet created so init
-      // _serverConnectionManagerStateEvents manually so that previous
-      // combineLatest3 starts working.
-      _repositoryStateStreams._handleAppStartWithoutLoggedInAccount();
-    }
   }
 
   void initCmdHandling() {
