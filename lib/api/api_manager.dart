@@ -51,10 +51,10 @@ class ServerConnectionManager implements LifecycleMethods, ServerConnectionInter
   final AccountDatabaseManager accountDb;
   final AccountBackgroundDatabaseManager accountBackgroundDb;
   final AccountId currentUser;
-  final ServerConnection accountConnection;
+  final ServerConnection serverConnection;
 
   ServerConnectionManager(this.accountDb, this.accountBackgroundDb, this.currentUser)
-    : accountConnection = ServerConnection("", accountDb, accountBackgroundDb);
+    : serverConnection = ServerConnection("", accountDb, accountBackgroundDb);
 
   final BehaviorSubject<ServerConnectionState> _state = BehaviorSubject.seeded(
     ServerConnectionState.connecting,
@@ -63,7 +63,7 @@ class ServerConnectionManager implements LifecycleMethods, ServerConnectionInter
   StreamSubscription<void>? _serverConnectionEventsSubscription;
 
   ServerConnectionState get currentState => _state.value;
-  Stream<ServerWsEvent> get serverEvents => accountConnection.serverEvents;
+  Stream<ServerWsEvent> get serverEvents => serverConnection.serverEvents;
   ApiManager get api => _account;
 
   @override
@@ -76,7 +76,7 @@ class ServerConnectionManager implements LifecycleMethods, ServerConnectionInter
     _account.initConnection(this);
     await _account.init();
 
-    _serverConnectionEventsSubscription = _listenAccountConnectionEvents(accountDb);
+    _serverConnectionEventsSubscription = _listenServerConnectionEvents(accountDb);
 
     await _loadAddressesFromConfig();
   }
@@ -84,11 +84,11 @@ class ServerConnectionManager implements LifecycleMethods, ServerConnectionInter
   @override
   Future<void> dispose() async {
     await _serverConnectionEventsSubscription?.cancel();
-    await accountConnection.dispose();
+    await serverConnection.dispose();
   }
 
-  StreamSubscription<void> _listenAccountConnectionEvents(AccountDatabaseManager accountDb) {
-    return accountConnection.state
+  StreamSubscription<void> _listenServerConnectionEvents(AccountDatabaseManager accountDb) {
+    return serverConnection.state
         .distinct()
         .asyncMap((event) async {
           log.info(event);
@@ -107,7 +107,7 @@ class ServerConnectionManager implements LifecycleMethods, ServerConnectionInter
                       // TODO(prod): check that internet connectivity exists?
                       unawaited(
                         Future.delayed(const Duration(seconds: 5), () async {
-                          final currentState = await accountConnection.state.first;
+                          final currentState = await serverConnection.state.first;
 
                           if (currentState is Error &&
                               currentState.error == ServerConnectionError.connectionFailure) {
@@ -145,7 +145,7 @@ class ServerConnectionManager implements LifecycleMethods, ServerConnectionInter
 
   Future<void> _loadAddressesFromConfig() async {
     final accountAddress = await _account.updateAddressFromConfigAndReturnIt();
-    accountConnection.setAddress(addWebSocketRoutePathToAddress(accountAddress));
+    serverConnection.setAddress(addWebSocketRoutePathToAddress(accountAddress));
   }
 
   Future<void> _connect() async {
@@ -163,31 +163,31 @@ class ServerConnectionManager implements LifecycleMethods, ServerConnectionInter
       return;
     }
 
-    await accountConnection.start();
+    await serverConnection.start();
   }
 
   @override
   Future<void> restart() async {
-    await accountConnection.close();
+    await serverConnection.close();
     await _loadAddressesFromConfig();
     await _connect();
   }
 
   Future<void> close() async {
     _reconnectInProgress = false;
-    await accountConnection.close();
+    await serverConnection.close();
     _state.add(ServerConnectionState.noConnection);
   }
 
   Future<void> closeAndLogout() async {
     _reconnectInProgress = false;
-    await accountConnection.close(logoutClose: true);
+    await serverConnection.close(logoutClose: true);
     _state.add(ServerConnectionState.waitingRefreshToken);
   }
 
   Future<void> closeAndRefreshServerAddressAndLogout() async {
     _reconnectInProgress = false;
-    await accountConnection.close(logoutClose: true);
+    await serverConnection.close(logoutClose: true);
     await _loadAddressesFromConfig();
     _state.add(ServerConnectionState.waitingRefreshToken);
   }
