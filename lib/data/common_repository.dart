@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:app/data/login_repository.dart';
 import 'package:app/data/profile_repository.dart';
 import 'package:async/async.dart' show StreamExtensions;
 import 'package:logging/logging.dart';
@@ -10,18 +11,20 @@ import 'package:app/database/background_database_manager.dart';
 import 'package:app/database/database_manager.dart';
 import 'package:app/utils/result.dart';
 import 'package:app/logic/app/app_visibility_provider.dart';
+import 'package:openapi/api.dart';
 
 var log = Logger("CommonRepository");
 
 class CommonRepository extends DataRepositoryWithLifecycle {
   final db = DatabaseManager.getInstance();
   final backgroundDb = BackgroundDatabaseManager.getInstance();
+  final AccountId currentUser;
   final ServerConnectionManager connectionManager;
   final ProfileRepository profile;
   final ConnectedActionScheduler syncHandler;
   bool initDone = false;
 
-  CommonRepository(this.connectionManager, this.profile)
+  CommonRepository(this.currentUser, this.connectionManager, this.profile)
     : syncHandler = ConnectedActionScheduler(connectionManager);
 
   Stream<bool> get notificationPermissionAsked =>
@@ -30,6 +33,8 @@ class CommonRepository extends DataRepositoryWithLifecycle {
   StreamSubscription<bool>? _isForegroundSubscription;
   DateTime? _backgroundedAt;
   Timer? _disconnectTimer;
+
+  StreamSubscription<ServerConnectionState>? _automaticLogoutSubscription;
 
   @override
   Future<void> init() async {
@@ -67,12 +72,21 @@ class CommonRepository extends DataRepositoryWithLifecycle {
           return isForeground;
         })
         .listen(null);
+
+    _automaticLogoutSubscription = connectionManager.state.listen((v) {
+      if (v == ServerConnectionState.waitingRefreshToken) {
+        // Tokens are invalid. Logout is required.
+        log.info("Automatic logout");
+        LoginRepository.getInstance().logout(currentUser);
+      }
+    });
   }
 
   @override
   Future<void> dispose() async {
     await syncHandler.dispose();
     await _isForegroundSubscription?.cancel();
+    await _automaticLogoutSubscription?.cancel();
   }
 
   Future<void> setNotificationPermissionAsked(bool value) async {

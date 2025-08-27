@@ -43,7 +43,11 @@ class LogoutAndSignInWithLogin extends LoginRepositoryCmd<Result<(), SignInWithE
   LogoutAndSignInWithLogin(this.info);
 }
 
-class Logout extends LoginRepositoryCmd<()> {}
+/// Logout from current or specific account
+class Logout extends LoginRepositoryCmd<()> {
+  final AccountId? id;
+  Logout(this.id);
+}
 
 class GetServerAddress extends LoginRepositoryCmd<String> {}
 
@@ -93,7 +97,6 @@ class LoginRepository extends DataRepository {
   final BehaviorSubject<bool> _loginInProgress = BehaviorSubject.seeded(false);
 
   final PublishSubject<LoginRepositoryCmd<Object>> _cmds = PublishSubject();
-  StreamSubscription<ServerConnectionState>? _repositorySpecificAutomaticLogoutSubscription;
 
   // Main app state streams
   Stream<LoginState> get loginState => _loginState.distinct();
@@ -124,6 +127,8 @@ class LoginRepository extends DataRepository {
       defaultServerUrl(),
     );
     _apiNoConnection = await ApiManager.createNoConnection(serverAddress);
+
+    initCmdHandling();
 
     await _google.init();
 
@@ -185,16 +190,18 @@ class LoginRepository extends DataRepository {
       // combineLatest3 starts working.
       _repositoryStateStreams._handleAppStartWithoutLoggedInAccount();
     }
+  }
 
+  void initCmdHandling() {
     _cmds
         .asyncMap((cmd) async {
           log.info(cmd.runtimeType);
           switch (cmd) {
             case LogoutAndSignInWithLogin():
-              await _logoutInternal();
+              await _logoutInternal(null);
               cmd.completed.add(await _handleSignInWithLoginInfoInternal(cmd.info));
             case Logout():
-              await _logoutInternal();
+              await _logoutInternal(cmd.id);
               cmd.completed.add(());
             case GetServerAddress():
               cmd.completed.add(_apiNoConnection.serverAddress);
@@ -227,7 +234,7 @@ class LoginRepository extends DataRepository {
               );
               cmd.completed.add(r);
             case DemoAccountRegisterIfNeededAndLoginToAccount():
-              await _logoutInternal();
+              await _logoutInternal(null);
               final Result<(), SessionOrOtherError> r;
               final result = await _demoAccountManager.demoAccountRegisterIfNeededAndLogin(
                 id: cmd.id,
@@ -269,17 +276,6 @@ class LoginRepository extends DataRepository {
       newRepositories.account,
       newRepositories.accountDb,
       newRepositories.connectionManager,
-    );
-
-    await _repositorySpecificAutomaticLogoutSubscription?.cancel();
-    _repositorySpecificAutomaticLogoutSubscription = newRepositories.connectionManager.state.listen(
-      (v) {
-        if (v == ServerConnectionState.waitingRefreshToken) {
-          // Tokens are invalid. Logout is required.
-          log.info("Automatic logout");
-          logout();
-        }
-      },
     );
 
     _repositories = newRepositories;
@@ -349,11 +345,13 @@ class LoginRepository extends DataRepository {
     return const Ok(());
   }
 
-  Future<void> _logoutInternal() async {
+  /// Logout from current or specific account
+  Future<void> _logoutInternal(AccountId? id) async {
     final currentRepositories = _repositories;
-    if (currentRepositories != null) {
+    if (currentRepositories != null && (id == null || id == currentRepositories.accountId)) {
       _repositories = null;
       log.info("Logout started");
+      await _repositoryStateStreams._logout();
       await currentRepositories.onLogout();
       await _google.logout();
       log.info("Logout completed");
@@ -410,8 +408,8 @@ class LoginRepository extends DataRepository {
   }
 
   /// Logout back to login or demo account screen
-  Future<void> logout() async {
-    final event = Logout();
+  Future<void> logout(AccountId? id) async {
+    final event = Logout(id);
     _cmds.add(event);
     await event.waitCompletion();
   }
@@ -510,6 +508,17 @@ class RepositoryStateStreams {
     _serverConnectionManagerStateEventsSubscription = connectionManager.state.listen((v) {
       _serverConnectionManagerStateEvents.add(v);
     });
+  }
+
+  Future<void> _logout() async {
+    await _accountStateSubscription?.cancel();
+    _accountState.add(AccountStateLoading());
+
+    await _initialSetupSkippedSubscription?.cancel();
+    _initialSetupSkipped.add(false);
+
+    await _serverConnectionManagerStateEventsSubscription?.cancel();
+    _serverConnectionManagerStateEvents.add(ServerConnectionState.waitingRefreshToken);
   }
 
   void _handleAppStartWithoutLoggedInAccount() {

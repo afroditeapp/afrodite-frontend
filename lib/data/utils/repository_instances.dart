@@ -181,7 +181,7 @@ class RepositoryInstances implements DataRepositoryMethods {
       connectionManager,
       accountId,
     );
-    final common = CommonRepository(connectionManager, profile);
+    final common = CommonRepository(accountId, connectionManager, profile);
     final chat = ChatRepository(
       media: media,
       profile: profile,
