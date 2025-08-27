@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:app/data/general/notification/state/news_item_available.dart';
+import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/database/account_background_database_manager.dart';
 import 'package:app/database/background_database_manager.dart';
 import 'package:database/database.dart';

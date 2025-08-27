@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:app/data/app_version.dart';
+import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/data/utils/sign_in_with_apple.dart';
 import 'package:app/data/utils/sign_in_with_google.dart';
 import 'package:crypto/crypto.dart';
@@ -12,22 +13,14 @@ import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:app/api/server_connection_manager.dart';
 import 'package:app/config.dart';
-import 'package:app/data/account/client_id_manager.dart';
 import 'package:app/data/account_repository.dart';
-import 'package:app/data/chat/message_key_generator.dart';
-import 'package:app/data/chat_repository.dart';
-import 'package:app/data/common_repository.dart';
-import 'package:app/data/media_repository.dart';
-import 'package:app/data/profile_repository.dart';
 import 'package:app/data/utils.dart';
-import 'package:app/database/account_background_database_manager.dart';
 import 'package:app/database/account_database_manager.dart';
 import 'package:app/database/background_database_manager.dart';
 import 'package:app/database/database_manager.dart';
 import 'package:app/localizations.dart';
 import 'package:app/service_config.dart';
 import 'package:app/ui_utils/snack_bar.dart';
-import 'package:utils/utils.dart';
 import 'package:app/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
@@ -173,73 +166,28 @@ class LoginRepository extends DataRepository {
     final currentRepositories = _repositories;
     await currentRepositories?.dispose();
 
-    final accountBackgroundDb = BackgroundDatabaseManager.getInstance()
-        .getAccountBackgroundDatabaseManager(accountId);
-    final accountDb = DatabaseManager.getInstance().getAccountDatabaseManager(accountId);
-
-    final connectionManager = ServerConnectionManager(accountDb, accountBackgroundDb, accountId);
-    final clientIdManager = ClientIdManager(accountDb, connectionManager.api);
-
-    final account = AccountRepository(
-      db: accountDb,
-      accountBackgroundDb: accountBackgroundDb,
-      connectionManager: connectionManager,
-      clientIdManager: clientIdManager,
-      rememberToInitRepositoriesLateFinal: true,
-      currentUser: accountId,
-    );
-    final media = MediaRepository(
-      account,
-      accountDb,
-      accountBackgroundDb,
-      connectionManager,
+    final newRepositories = await RepositoryInstances.createAndInit(
       accountId,
-    );
-    final profile = ProfileRepository(
-      media,
-      account,
-      accountDb,
-      accountBackgroundDb,
-      connectionManager,
-      accountId,
-    );
-    final common = CommonRepository(connectionManager, profile);
-    final chat = ChatRepository(
-      media: media,
-      profile: profile,
-      accountBackgroundDb: accountBackgroundDb,
-      db: accountDb,
-      connectionManager: connectionManager,
-      clientIdManager: clientIdManager,
-      messageKeyManager: MessageKeyManager(accountDb, connectionManager.api, accountId),
-      currentUser: accountId,
-    );
-    final newRepositories = RepositoryInstances(
-      accountId: accountId,
       accountLoginHappened: accountLoginHappened,
-      common: common,
-      chat: chat,
-      media: media,
-      profile: profile,
-      account: account,
-      accountBackgroundDb: accountBackgroundDb,
-      accountDb: accountDb,
-      connectionManager: connectionManager,
     );
-    account.repositories = newRepositories;
-    await newRepositories.init();
 
-    await _repositoryStateStreams._subscribe(account, accountDb, connectionManager);
+    await _repositoryStateStreams._subscribe(
+      newRepositories.account,
+      newRepositories.accountDb,
+      newRepositories.connectionManager,
+    );
 
     await _repositorySpecificAutomaticLogoutSubscription?.cancel();
-    _repositorySpecificAutomaticLogoutSubscription = connectionManager.state.listen((v) {
-      if (v == ServerConnectionState.waitingRefreshToken && !newRepositories.logoutStarted) {
-        // Tokens are invalid. Logout is required.
-        newRepositories.logoutStarted = true;
-        log.info("Automatic logout");
-        _logoutWithRepository(newRepositories);
-      }
-    });
+    _repositorySpecificAutomaticLogoutSubscription = newRepositories.connectionManager.state.listen(
+      (v) {
+        if (v == ServerConnectionState.waitingRefreshToken && !newRepositories.logoutStarted) {
+          // Tokens are invalid. Logout is required.
+          newRepositories.logoutStarted = true;
+          log.info("Automatic logout");
+          _logoutWithRepository(newRepositories);
+        }
+      },
+    );
 
     _repositories = newRepositories;
 
@@ -607,111 +555,6 @@ enum SignInWithEvent {
 }
 
 enum CommonSignInError { unsupportedClient, otherError }
-
-/// This should contain account specific logic so it is not possible
-/// the logic will touch another account's data if there is long running
-/// operations for example. When user logs in using an account the blocs will
-/// be created and the required repository instances will be get from this
-/// class.
-class RepositoryInstances implements DataRepositoryMethods {
-  final AccountId accountId;
-  final UtcDateTime creationTime = UtcDateTime.now();
-
-  /// True only if repository was created because of manual login action.
-  /// Usually this is false as usually the account is logged in when app starts.
-  final bool accountLoginHappened;
-  final CommonRepository common;
-  final ChatRepository chat;
-  final MediaRepository media;
-  final ProfileRepository profile;
-  final AccountRepository account;
-
-  // No lifecycle or other methods
-  final AccountBackgroundDatabaseManager accountBackgroundDb;
-  final AccountDatabaseManager accountDb;
-  final ServerConnectionManager connectionManager;
-
-  bool logoutStarted = false;
-
-  ApiManager get api => connectionManager.api;
-
-  RepositoryInstances({
-    required this.accountId,
-    required this.accountLoginHappened,
-    required this.common,
-    required this.chat,
-    required this.media,
-    required this.profile,
-    required this.account,
-    required this.accountBackgroundDb,
-    required this.accountDb,
-    required this.connectionManager,
-  });
-
-  Future<void> init() async {
-    await connectionManager.init();
-    await common.init();
-    await chat.init();
-    await media.init();
-    await profile.init();
-    await account.init();
-  }
-
-  Future<void> dispose() async {
-    await account.dispose();
-    await profile.dispose();
-    await media.dispose();
-    await chat.dispose();
-    await common.dispose();
-    await connectionManager.dispose();
-  }
-
-  @override
-  Future<void> onInitialSetupComplete() async {
-    await common.onInitialSetupComplete();
-    await chat.onInitialSetupComplete();
-    await media.onInitialSetupComplete();
-    await profile.onInitialSetupComplete();
-    await account.onInitialSetupComplete();
-  }
-
-  @override
-  Future<void> onLogin() async {
-    await common.onLogin();
-    await chat.onLogin();
-    await media.onLogin();
-    await profile.onLogin();
-    await account.onLogin();
-  }
-
-  @override
-  Future<Result<(), ()>> onLoginDataSync() async {
-    return await common
-        .onLoginDataSync()
-        .andThen((_) => chat.onLoginDataSync())
-        .andThen((_) => media.onLoginDataSync())
-        .andThen((_) => profile.onLoginDataSync())
-        .andThen((_) => account.onLoginDataSync());
-  }
-
-  @override
-  Future<void> onLogout() async {
-    await common.onLogout();
-    await chat.onLogout();
-    await media.onLogout();
-    await profile.onLogout();
-    await account.onLogout();
-  }
-
-  @override
-  Future<void> onResumeAppUsage() async {
-    await common.onResumeAppUsage();
-    await chat.onResumeAppUsage();
-    await media.onResumeAppUsage();
-    await profile.onResumeAppUsage();
-    await account.onResumeAppUsage();
-  }
-}
 
 class RepositoryStateStreams {
   final BehaviorSubject<AccountStateStreamValue> _accountState = BehaviorSubject.seeded(
