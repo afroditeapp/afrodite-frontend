@@ -120,7 +120,7 @@ class RepositoryInstances implements DataRepositoryMethods {
     }
 
     // Disconnect, so that server does not send events to client
-    await connectionManager.closeAndLogout();
+    await connectionManager.close();
 
     await accountDb.accountAction((db) => db.loginSession.updateRefreshToken(null));
     await accountDb.accountAction((db) => db.loginSession.updateAccessToken(null));

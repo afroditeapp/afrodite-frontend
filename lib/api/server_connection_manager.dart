@@ -45,30 +45,56 @@ class EventToClientContainer implements ServerWsEvent {
   EventToClientContainer(this.event);
 }
 
+sealed class ServerConnectionManagerCmd<T> {
+  final BehaviorSubject<T?> completed = BehaviorSubject.seeded(null);
+
+  Future<T> waitCompletion() async {
+    return await completed.whereType<T>().first;
+  }
+}
+
+class ConnectIfNotConnected extends ServerConnectionManagerCmd<()> {}
+
+class Restart extends ServerConnectionManagerCmd<()> {}
+
+/// Close specific or current connection
+class CloseConnection extends ServerConnectionManagerCmd<()> {
+  final ServerConnection? serverConnection;
+  CloseConnection(this.serverConnection);
+}
+
+class SaveConnection extends ServerConnectionManagerCmd<()> {
+  final ServerConnection serverConnection;
+  SaveConnection(this.serverConnection);
+}
+
 class ServerConnectionManager extends ApiManager
     implements LifecycleMethods, ServerConnectionInterface {
   final AccountDatabaseManager accountDb;
   final AccountBackgroundDatabaseManager accountBackgroundDb;
   final AccountId currentUser;
   final ApiProvider _apiProvider;
-  final ServerConnection _serverConnection;
+  ServerConnection? _serverConnection;
 
   ServerConnectionManager(
     String serverAddress,
     this.accountDb,
     this.accountBackgroundDb,
     this.currentUser,
-  ) : _apiProvider = ApiProvider(serverAddress),
-      _serverConnection = ServerConnection(serverAddress, accountDb, accountBackgroundDb);
+  ) : _apiProvider = ApiProvider(serverAddress);
+
+  final PublishSubject<ServerConnectionManagerCmd<Object>> _cmds = PublishSubject();
+  StreamSubscription<void>? _cmdsSubscription;
 
   final BehaviorSubject<ServerConnectionState> _state = BehaviorSubject.seeded(
     ServerConnectionState.connecting,
   );
+  ServerConnectionState get currentState => _state.value;
+
+  final PublishSubject<ServerWsEvent> _serverEvents = PublishSubject();
+  Stream<ServerWsEvent> get serverEvents => _serverEvents;
 
   StreamSubscription<void>? _serverConnectionEventsSubscription;
-
-  ServerConnectionState get currentState => _state.value;
-  Stream<ServerWsEvent> get serverEvents => _serverConnection.serverEvents;
 
   @override
   Stream<ServerConnectionState> get state => _state.distinct();
@@ -80,109 +106,146 @@ class ServerConnectionManager extends ApiManager
   ServerConnectionInterface get _connection => this;
 
   bool _reconnectInProgress = false;
+  Timer? _reconnectTimer;
 
   @override
   Future<void> init() async {
     await _apiProvider.init();
-    _serverConnectionEventsSubscription = _listenServerConnectionEvents(accountDb);
+    _cmdsSubscription = _listenServerConnectionCmds();
   }
 
   @override
   Future<void> dispose() async {
+    await _cmdsSubscription?.cancel();
+    await _serverConnection?.close();
+    _serverConnection = null;
     await _serverConnectionEventsSubscription?.cancel();
-    await _serverConnection.dispose();
+    _reconnectTimer?.cancel();
   }
 
-  StreamSubscription<void> _listenServerConnectionEvents(AccountDatabaseManager accountDb) {
-    return _serverConnection.state
+  StreamSubscription<void> _listenServerConnectionCmds() {
+    return _cmds
+        .asyncMap((event) async {
+          log.info(event.runtimeType);
+          switch (event) {
+            case ConnectIfNotConnected():
+              if (_serverConnection == null) {
+                await _connect();
+              }
+              event.completed.add(());
+            case Restart():
+              await _serverConnection?.close();
+              _serverConnection = null;
+              await _connect();
+              event.completed.add(());
+            case CloseConnection():
+              final currentConnection = _serverConnection;
+              if (currentConnection != null &&
+                  (event.serverConnection == null || currentConnection == event.serverConnection)) {
+                await currentConnection.close();
+                _serverConnection = null;
+              }
+            case SaveConnection():
+              _serverConnection = event.serverConnection;
+          }
+        })
+        .listen(null);
+  }
+
+  Future<Result<(), ()>> _connect() async {
+    _reconnectTimer?.cancel();
+    _state.add(ServerConnectionState.connecting);
+
+    final accessToken = await accountDb
+        .accountStreamSingle((db) => db.loginSession.watchAccessToken())
+        .ok();
+    final refreshToken = await accountDb
+        .accountStreamSingle((db) => db.loginSession.watchRefreshToken())
+        .ok();
+
+    if (accessToken == null || refreshToken == null) {
+      _state.add(ServerConnectionState.waitingRefreshToken);
+      return const Err(());
+    }
+
+    final connectionResult = await ServerConnection.connect(
+      serverAddress,
+      accessToken,
+      refreshToken,
+      accountDb,
+      accountBackgroundDb,
+      _serverEvents,
+    );
+    final ServerConnection serverConnection;
+    switch (connectionResult) {
+      case Ok():
+        serverConnection = connectionResult.v;
+      case Err():
+        await _handleConnectionError(connectionResult.e, null);
+        return Err(());
+    }
+
+    _cmds.add(SaveConnection(serverConnection));
+    await _serverConnectionEventsSubscription?.cancel();
+    _serverConnectionEventsSubscription = serverConnection.state
         .distinct()
         .asyncMap((event) async {
           log.info(event);
           switch (event) {
-            // No connection states.
-            case ReadyToConnect():
-              _state.add(ServerConnectionState.noConnection);
-            case Error e:
-              {
-                switch (e.error) {
-                  case ServerConnectionError.connectionFailure:
-                    {
-                      _state.add(ServerConnectionState.reconnectWaitTime);
-                      _reconnectInProgress = true;
-                      showSnackBar(R.strings.snackbar_reconnecting_in_5_seconds);
-                      // TODO(prod): check that internet connectivity exists?
-                      unawaited(
-                        Future.delayed(const Duration(seconds: 5), () async {
-                          final currentState = await _serverConnection.state.first;
-
-                          if (currentState is Error &&
-                              currentState.error == ServerConnectionError.connectionFailure) {
-                            await restart();
-                          }
-                        }),
-                      );
-                    }
-                  case ServerConnectionError.invalidToken:
-                    {
-                      _state.add(ServerConnectionState.waitingRefreshToken);
-                    }
-                  case ServerConnectionError.unsupportedClientVersion:
-                    {
-                      _state.add(ServerConnectionState.unsupportedClientVersion);
-                    }
-                }
-              }
-            // Ongoing connection states
             case Connecting():
               _state.add(ServerConnectionState.connecting);
+            case Closed e:
+              await _handleConnectionError(e.error, serverConnection);
             case Ready(:final token):
-              {
-                if (_reconnectInProgress) {
-                  showSnackBar(R.strings.snackbar_connected);
-                  _reconnectInProgress = false;
-                }
-                _apiProvider.setAccessToken(token);
-                _state.add(ServerConnectionState.connected);
+              if (_reconnectInProgress) {
+                showSnackBar(R.strings.snackbar_connected);
+                _reconnectInProgress = false;
               }
+              _apiProvider.setAccessToken(token);
+              _state.add(ServerConnectionState.connected);
           }
         })
-        .listen((_) {});
+        .listen(null);
+
+    return const Ok(());
   }
 
-  Future<void> _connect() async {
-    _state.add(ServerConnectionState.connecting);
-
-    final accountRefreshToken = await accountDb
-        .accountStreamSingle((db) => db.loginSession.watchRefreshToken())
-        .ok();
-    final accountAccessToken = await accountDb
-        .accountStreamSingle((db) => db.loginSession.watchAccessToken())
-        .ok();
-
-    if (accountRefreshToken == null || accountAccessToken == null) {
-      _state.add(ServerConnectionState.waitingRefreshToken);
-      return;
+  Future<void> _handleConnectionError(
+    ServerConnectionError? error,
+    ServerConnection? currentConnection,
+  ) async {
+    if (currentConnection != null) {
+      _cmds.add(CloseConnection(currentConnection));
     }
-
-    await _serverConnection.start();
+    switch (error) {
+      case ServerConnectionError.connectionFailure:
+        _state.add(ServerConnectionState.reconnectWaitTime);
+        showSnackBar(R.strings.snackbar_reconnecting_in_5_seconds);
+        // TODO(prod): check that internet connectivity exists?
+        _reconnectTimer = Timer(Duration(seconds: 5), () {
+          _cmds.add(ConnectIfNotConnected());
+        });
+        _reconnectInProgress = true;
+      case ServerConnectionError.invalidToken:
+        _state.add(ServerConnectionState.waitingRefreshToken);
+      case ServerConnectionError.unsupportedClientVersion:
+        _state.add(ServerConnectionState.unsupportedClientVersion);
+      case null:
+        _state.add(ServerConnectionState.noConnection);
+    }
   }
 
   @override
   Future<void> restart() async {
-    await _serverConnection.close();
-    await _connect();
+    final event = Restart();
+    _cmds.add(event);
+    await event.waitCompletion();
   }
 
   Future<void> close() async {
-    _reconnectInProgress = false;
-    await _serverConnection.close();
-    _state.add(ServerConnectionState.noConnection);
-  }
-
-  Future<void> closeAndLogout() async {
-    _reconnectInProgress = false;
-    await _serverConnection.close(logoutClose: true);
-    _state.add(ServerConnectionState.waitingRefreshToken);
+    final event = CloseConnection(null);
+    _cmds.add(event);
+    await event.waitCompletion();
   }
 
   /// Returns true if connected, false if not connected within the timeout.

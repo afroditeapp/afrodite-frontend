@@ -38,17 +38,6 @@ enum ServerConnectionError {
 
 sealed class ServerConnectionState {}
 
-/// No connection. Initial and after closing state.
-class ReadyToConnect implements ServerConnectionState {
-  @override
-  bool operator ==(Object other) {
-    return other is ReadyToConnect;
-  }
-
-  @override
-  int get hashCode => runtimeType.hashCode;
-}
-
 /// Connection exists. Connecting to server or getting new tokens.
 class Connecting implements ServerConnectionState {
   @override
@@ -74,19 +63,19 @@ class Ready implements ServerConnectionState {
   int get hashCode => Object.hash(runtimeType.hashCode, token);
 }
 
-/// No connection. Connection ended in error.
-class Error implements ServerConnectionState {
-  final ServerConnectionError error;
-  Error(this.error);
+/// Connection closed
+class Closed implements ServerConnectionState {
+  final ServerConnectionError? error;
+  Closed(this.error);
 
   @override
   String toString() {
-    return "Error: $error";
+    return "Closed, error: $error";
   }
 
   @override
   bool operator ==(Object other) {
-    return (other is Error && error == other.error);
+    return (other is Closed && error == other.error);
   }
 
   @override
@@ -114,87 +103,49 @@ String _addWebSocketRoutePathToAddress(String baseUrl) {
 }
 
 class ServerConnection {
-  final String _serverAddress;
+  final WebSocketWrapper _connection;
   final AccountDatabaseManager db;
   final AccountBackgroundDatabaseManager accountBackgroundDb;
+  final Sink<ServerWsEvent> _serverEvents;
 
-  WebSocketWrapper? _connection;
+  var _protocolState = ConnectionProtocolState.receiveFirstMessage;
 
-  final BehaviorSubject<ServerConnectionState> _state = BehaviorSubject.seeded(ReadyToConnect());
-  final PublishSubject<ServerWsEvent> _events = PublishSubject();
-
+  final BehaviorSubject<ServerConnectionState> _state = BehaviorSubject.seeded(Connecting());
   Stream<ServerConnectionState> get state => _state;
-  Stream<ServerWsEvent> get serverEvents => _events;
 
+  StreamSubscription<void>? _connectionSubscription;
   StreamSubscription<NavigatorStateData>? _navigationSubscription;
 
-  bool _startInProgress = false;
+  bool _isClosed = false;
 
-  ServerConnection(String serverAddress, this.db, this.accountBackgroundDb)
-    : _serverAddress = _addWebSocketRoutePathToAddress(serverAddress);
+  ServerConnection._(this._connection, this.db, this.accountBackgroundDb, this._serverEvents);
 
-  /// Starts new connection if it does not already exists.
-  Future<void> start() async {
-    if (_startInProgress) {
-      log.warning("Connection start already in progress");
-      return;
-    }
-    _startInProgress = true;
-
-    await close();
-    await _state.firstWhere((v) => _state.value is ReadyToConnect || _state.value is Error);
-    // Connection is now closed
-
-    _state.add(Connecting());
-    unawaited(_connect().then((value) => null)); // Connect in background.
-
-    _navigationSubscription ??= NavigationStateBlocInstance.getInstance().navigationStateStream
-        .listen((navigationState) {
-          final ws = _connection;
-          if (ws != null) {
-            ws.updatePingInterval(navigationState);
-          }
-        });
-
-    _startInProgress = false;
-  }
-
-  Future<void> _connect() async {
-    log.info("Starting to connect");
-
-    var protocolState = ConnectionProtocolState.receiveFirstMessage;
-
-    final accessToken = await db
-        .accountStreamSingle((db) => db.loginSession.watchAccessToken())
-        .ok();
-    if (accessToken == null) {
-      _state.add(Error(ServerConnectionError.invalidToken));
-      return;
-    }
-    final refreshToken = await db
-        .accountStreamSingle((db) => db.loginSession.watchRefreshToken())
-        .ok();
-    if (refreshToken == null) {
-      _state.add(Error(ServerConnectionError.invalidToken));
-      return;
-    }
+  static Future<Result<ServerConnection, ServerConnectionError>> connect(
+    String serverAddress,
+    AccessToken accessToken,
+    RefreshToken refreshToken,
+    AccountDatabaseManager db,
+    AccountBackgroundDatabaseManager accountBackgroundDb,
+    Sink<ServerWsEvent> serverEvents,
+  ) async {
+    final websocketAddress = _addWebSocketRoutePathToAddress(serverAddress);
 
     final WebSocketWrapper ws;
     if (kIsWeb) {
-      if (!_serverAddress.startsWith("http")) {
+      if (!websocketAddress.startsWith("http")) {
         throw UnsupportedError("Unsupported URI scheme");
       }
-      final wsAddress = Uri.parse(_serverAddress.replaceFirst("http", "ws"));
+      final wsAddress = Uri.parse(websocketAddress.replaceFirst("http", "ws"));
       try {
         ws = WebSocketWrapper(
           WebSocketChannel.connect(wsAddress, protocols: ["0", accessToken.token]),
         );
-        _connection = ws;
       } catch (e) {
+        // TODO(prod): Change so that it is possible to detect
+        //             ServerConnectionError.invalidToken.
         log.error("Server connection: WebScocket connecting exception");
         log.fine(e);
-        _state.add(Error(ServerConnectionError.connectionFailure));
-        return;
+        return const Err(ServerConnectionError.connectionFailure);
       }
     } else {
       final bytes = generate128BitRandomValue();
@@ -210,7 +161,7 @@ class ServerConnection {
         "sec-websocket-key": key,
         "sec-websocket-protocol": "0,${accessToken.token}",
       };
-      final request = Request("GET", Uri.parse(_serverAddress));
+      final request = Request("GET", Uri.parse(websocketAddress));
       request.headers.addAll(headers);
 
       final IOStreamedResponse response;
@@ -219,21 +170,17 @@ class ServerConnection {
       } on ClientException catch (e) {
         log.error("Server connection: client exception");
         log.fine(e);
-        _state.add(Error(ServerConnectionError.connectionFailure));
-        return;
+        return const Err(ServerConnectionError.connectionFailure);
       } on HandshakeException catch (e) {
         log.error("Server connection: handshake exception");
         log.fine(e);
-        _state.add(Error(ServerConnectionError.connectionFailure));
-        return;
+        return const Err(ServerConnectionError.connectionFailure);
       }
 
       if (response.statusCode == HttpStatus.unauthorized) {
-        _state.add(Error(ServerConnectionError.invalidToken));
-        return;
+        return const Err(ServerConnectionError.invalidToken);
       } else if (response.statusCode != HttpStatus.switchingProtocols) {
-        _state.add(Error(ServerConnectionError.connectionFailure));
-        return;
+        return const Err(ServerConnectionError.connectionFailure);
       }
 
       final webSocket = WebSocket.fromUpgradedSocket(
@@ -241,75 +188,62 @@ class ServerConnection {
         serverSide: false,
       );
       ws = WebSocketWrapper(IOWebSocketChannel(webSocket));
-      _connection = ws;
     }
 
+    final connection = ServerConnection._(ws, db, accountBackgroundDb, serverEvents);
+    connection._handleConnection(accessToken, refreshToken);
+    return Ok(connection);
+  }
+
+  void _handleConnection(AccessToken accessToken, RefreshToken refreshToken) {
     // Client starts the messaging
-    ws.connection.sink.add(clientVersionInfoBytes());
+    _connection.connection.sink.add(clientVersionInfoBytes());
 
-    Future<void> handleConnectionIsReadyForDataSync(AccessToken token) async {
-      ws.connection.sink.add(await syncDataBytes(db, accountBackgroundDb));
-      protocolState = ConnectionProtocolState.receiveEvents;
-      log.info("Connection ready");
-      _state.add(Ready(token));
-      await ws.updatePingInterval(NavigationStateBlocInstance.getInstance().navigationState);
-    }
-
-    ws.connection.stream
+    _connectionSubscription = _connection.connection.stream
         .asyncMap((message) async {
-          switch (protocolState) {
+          switch (_protocolState) {
             case ConnectionProtocolState.receiveFirstMessage:
-              {
-                if (message is List<int>) {
-                  switch (message) {
-                    case [0]:
-                      await handleConnectionIsReadyForDataSync(accessToken);
-                    case [1]:
-                      final byteToken = base64Decode(refreshToken.token);
-                      ws.connection.sink.add(byteToken);
-                      protocolState = ConnectionProtocolState.receiveNewRefreshToken;
-                    case [2]:
-                      await _endConnectionToGeneralError(
-                        error: ServerConnectionError.unsupportedClientVersion,
-                      );
-                    default:
-                      await _endConnectionToGeneralError();
-                  }
-                } else {
-                  await _endConnectionToGeneralError();
+              if (message is List<int>) {
+                switch (message) {
+                  case [0]:
+                    await handleConnectionIsReadyForDataSync(accessToken);
+                  case [1]:
+                    final byteToken = base64Decode(refreshToken.token);
+                    _connection.connection.sink.add(byteToken);
+                    _protocolState = ConnectionProtocolState.receiveNewRefreshToken;
+                  case [2]:
+                    await _endConnectionToGeneralError(
+                      error: ServerConnectionError.unsupportedClientVersion,
+                    );
+                  default:
+                    await _endConnectionToGeneralError();
                 }
+              } else {
+                await _endConnectionToGeneralError();
               }
             case ConnectionProtocolState.receiveNewRefreshToken:
-              {
-                if (message is List<int>) {
-                  final newRefreshToken = RefreshToken(token: base64Encode(message));
-                  await db.accountAction(
-                    (db) => db.loginSession.updateRefreshToken(newRefreshToken),
-                  );
-                  protocolState = ConnectionProtocolState.receiveNewAccessToken;
-                } else {
-                  await _endConnectionToGeneralError();
-                }
+              if (message is List<int>) {
+                final newRefreshToken = RefreshToken(token: base64Encode(message));
+                await db.accountAction((db) => db.loginSession.updateRefreshToken(newRefreshToken));
+                _protocolState = ConnectionProtocolState.receiveNewAccessToken;
+              } else {
+                await _endConnectionToGeneralError();
               }
             case ConnectionProtocolState.receiveNewAccessToken:
-              {
-                if (message is List<int>) {
-                  final newAccessToken = AccessToken(
-                    token: base64Url.encode(message).replaceAll("=", ""),
-                  );
-                  await db.accountAction((db) => db.loginSession.updateAccessToken(newAccessToken));
-                  await handleConnectionIsReadyForDataSync(newAccessToken);
-                } else {
-                  await _endConnectionToGeneralError();
-                }
+              if (message is List<int>) {
+                final newAccessToken = AccessToken(
+                  token: base64Url.encode(message).replaceAll("=", ""),
+                );
+                await db.accountAction((db) => db.loginSession.updateAccessToken(newAccessToken));
+                await handleConnectionIsReadyForDataSync(newAccessToken);
+              } else {
+                await _endConnectionToGeneralError();
               }
             case ConnectionProtocolState.receiveEvents:
-              {
-                if (message is String) {
-                  final event = EventToClient.fromJson(jsonDecode(message));
-                  if (event != null) {
-                    _events.add(EventToClientContainer(event));
-                  }
+              if (message is String) {
+                final event = EventToClient.fromJson(jsonDecode(message));
+                if (event != null) {
+                  _serverEvents.add(EventToClientContainer(event));
                 }
               }
           }
@@ -322,67 +256,53 @@ class ServerConnection {
             _endConnectionToGeneralError();
           },
           onDone: () {
-            if (_connection == null) {
-              // Client closed the connection.
-              return;
-            }
-
-            if (ws.connection.closeCode != null &&
-                ws.connection.closeCode == status.internalServerError) {
+            if (_connection.connection.closeCode != null &&
+                _connection.connection.closeCode == status.internalServerError) {
               log.error("Invalid token");
-              _state.add(Error(ServerConnectionError.invalidToken));
+              _state.add(Closed(ServerConnectionError.invalidToken));
             } else {
               log.error("Connection closed");
-              _state.add(Error(ServerConnectionError.connectionFailure));
+              _state.add(Closed(ServerConnectionError.connectionFailure));
             }
-            ws.close();
-            _connection = null;
+            _connection.close();
           },
           cancelOnError: true,
         );
   }
 
+  Future<void> handleConnectionIsReadyForDataSync(AccessToken token) async {
+    _connection.connection.sink.add(await syncDataBytes(db, accountBackgroundDb));
+    _protocolState = ConnectionProtocolState.receiveEvents;
+    log.info("Connection ready");
+    _state.add(Ready(token));
+    _navigationSubscription = NavigationStateBlocInstance.getInstance().navigationStateStream
+        .listen((navigationState) {
+          _connection.updatePingInterval(navigationState);
+        });
+  }
+
   Future<void> _endConnectionToGeneralError({
     ServerConnectionError error = ServerConnectionError.connectionFailure,
   }) async {
-    // Nullify connection to make sure that onDone is called when
-    // _connection is null. This order seems not required but, this style
-    // feels safer.
-    final c = _connection;
-    _connection = null;
-    if (c != null) {
-      await c.close();
-      _state.add(Error(error));
+    if (_isClosed) {
+      return;
     }
+    _isClosed = true;
+    await _connection.close();
+    _state.add(Closed(error));
+    await _connectionSubscription?.cancel();
+    await _navigationSubscription?.cancel();
   }
 
-  Future<void> close({bool logoutClose = false}) async {
-    // Nullify connection to make sure that onDone is called when
-    // _connection is null. This order seems not required but, this style
-    // feels safer.
-    final c = _connection;
-    _connection = null;
-    await c?.close();
-    // Run this even if null to make sure that state is overriden
-    if (logoutClose) {
-      _state.add(Error(ServerConnectionError.invalidToken));
-    } else {
-      _state.add(ReadyToConnect());
+  Future<void> close() async {
+    if (_isClosed) {
+      return;
     }
-  }
-
-  /// Just close connection and do not send events.
-  Future<void> dispose() async {
-    // Nullify connection to make sure that onDone is called when
-    // _connection is null. This order seems not required but, this style
-    // feels safer.
-    final c = _connection;
-    _connection = null;
-    await c?.close();
-  }
-
-  bool inUse() {
-    return !(_state.value is ReadyToConnect || _state.value is Error);
+    _isClosed = true;
+    await _connection.close();
+    _state.add(Closed(null));
+    await _connectionSubscription?.cancel();
+    await _navigationSubscription?.cancel();
   }
 }
 
