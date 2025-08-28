@@ -1,7 +1,11 @@
+import "package:app/main.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:app/data/login_repository.dart";
 import "package:database/database.dart";
+import "package:logging/logging.dart";
 import "package:rxdart/rxdart.dart";
+
+final _log = Logger("MainStateBloc");
 
 /// States for top level UI main states
 enum MainState {
@@ -38,6 +42,7 @@ class ToDemoAccountScreen extends MainStateEvent {}
 
 /// Get current main state of the account/app
 class MainStateBloc extends Bloc<MainStateEvent, MainState> {
+  final globalInitManager = GlobalInitManager.getInstance();
   final login = LoginRepository.getInstance();
 
   MainStateBloc() : super(MainState.splashScreen) {
@@ -51,14 +56,21 @@ class MainStateBloc extends Bloc<MainStateEvent, MainState> {
     on<ToUnsupportedClientScreen>((_, emit) => emit(MainState.unsupportedClientVersion));
     on<ToDemoAccountScreen>((_, emit) => emit(MainState.demoAccount));
 
-    Rx.combineLatest3(
+    Rx.combineLatest4(
       login.loginState,
       login.accountState,
       login.initialSetupSkipped,
-      (a, b, c) => (a, b, c),
+      globalInitManager.globalInitCompletedStream,
+      (a, b, c, d) => (a, b, c, d),
     ).listen((current) {
-      final (loginState, accountState, initialSetupSkipped) = current;
-      log.finer("$loginState, $accountState, initialSetupSkipped: $initialSetupSkipped");
+      final (loginState, accountState, initialSetupSkipped, globalInitCompleted) = current;
+
+      if (globalInitCompleted == false) {
+        return;
+      }
+
+      _log.finer("$loginState, $accountState, initialSetupSkipped: $initialSetupSkipped");
+
       final action = switch (loginState) {
         LoginState.loginRequired => ToLoginRequiredScreen(),
         LoginState.demoAccount => ToDemoAccountScreen(),
