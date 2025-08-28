@@ -132,12 +132,10 @@ class ServerConnectionManager extends ApiManager
               if (_serverConnection == null) {
                 await _connect();
               }
-              cmd.completed.add(());
             case Restart():
               await _serverConnection?.close();
               _serverConnection = null;
               await _connect();
-              cmd.completed.add(());
             case CloseConnection():
               final currentConnection = _serverConnection;
               if (currentConnection != null &&
@@ -148,6 +146,7 @@ class ServerConnectionManager extends ApiManager
             case SaveConnection():
               _serverConnection = cmd.serverConnection;
           }
+          cmd.completed.add(());
         })
         .listen(null);
   }
