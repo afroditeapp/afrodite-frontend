@@ -127,24 +127,28 @@ class ServerConnectionManager extends ApiManager
     return _cmds
         .asyncMap((cmd) async {
           _log.info("cmd: ${cmd.runtimeType}");
-          switch (cmd) {
-            case ConnectIfNotConnected():
-              if (_serverConnection == null) {
-                await _connect();
-              }
-            case Restart():
-              await _serverConnection?.close();
-              _serverConnection = null;
-              await _connect();
-            case CloseConnection():
-              final currentConnection = _serverConnection;
-              if (currentConnection != null &&
-                  (cmd.serverConnection == null || currentConnection == cmd.serverConnection)) {
-                await currentConnection.close();
+          try {
+            switch (cmd) {
+              case ConnectIfNotConnected():
+                if (_serverConnection == null) {
+                  await _connect();
+                }
+              case Restart():
+                await _serverConnection?.close();
                 _serverConnection = null;
-              }
-            case SaveConnection():
-              _serverConnection = cmd.serverConnection;
+                await _connect();
+              case CloseConnection():
+                final currentConnection = _serverConnection;
+                if (currentConnection != null &&
+                    (cmd.serverConnection == null || currentConnection == cmd.serverConnection)) {
+                  await currentConnection.close();
+                  _serverConnection = null;
+                }
+              case SaveConnection():
+                _serverConnection = cmd.serverConnection;
+            }
+          } catch (_) {
+            // Ignore exceptions
           }
           cmd.completed.add(());
         })
