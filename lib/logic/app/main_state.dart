@@ -1,4 +1,5 @@
 import "package:app/main.dart";
+import "package:bloc_concurrency/bloc_concurrency.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:app/data/login_repository.dart";
 import "package:database/database.dart";
@@ -22,23 +23,10 @@ enum MainState {
 
 abstract class MainStateEvent {}
 
-class ToSplashScreen extends MainStateEvent {}
-
-class ToLoginRequiredScreen extends MainStateEvent {}
-
-class ToInitialSetup extends MainStateEvent {}
-
-class ToMainScreenWhenInitialSetupIsSkipped extends MainStateEvent {}
-
-class ToMainScreen extends MainStateEvent {}
-
-class ToAccountBannedScreen extends MainStateEvent {}
-
-class ToPendingRemovalScreen extends MainStateEvent {}
-
-class ToUnsupportedClientScreen extends MainStateEvent {}
-
-class ToDemoAccountScreen extends MainStateEvent {}
+class UpdateMainState extends MainStateEvent {
+  final MainState value;
+  UpdateMainState(this.value);
+}
 
 /// Get current main state of the account/app
 class MainStateBloc extends Bloc<MainStateEvent, MainState> {
@@ -46,15 +34,7 @@ class MainStateBloc extends Bloc<MainStateEvent, MainState> {
   final login = LoginRepository.getInstance();
 
   MainStateBloc() : super(MainState.splashScreen) {
-    on<ToSplashScreen>((_, emit) => emit(MainState.splashScreen));
-    on<ToLoginRequiredScreen>((_, emit) => emit(MainState.loginRequired));
-    on<ToInitialSetup>((_, emit) => emit(MainState.initialSetup));
-    on<ToMainScreenWhenInitialSetupIsSkipped>((_, emit) => emit(MainState.initialSetupSkipped));
-    on<ToMainScreen>((_, emit) => emit(MainState.initialSetupComplete));
-    on<ToAccountBannedScreen>((_, emit) => emit(MainState.accountBanned));
-    on<ToPendingRemovalScreen>((_, emit) => emit(MainState.pendingRemoval));
-    on<ToUnsupportedClientScreen>((_, emit) => emit(MainState.unsupportedClientVersion));
-    on<ToDemoAccountScreen>((_, emit) => emit(MainState.demoAccount));
+    on<UpdateMainState>((data, emit) => emit(data.value), transformer: sequential());
 
     Rx.combineLatest4(
       login.loginState,
@@ -71,31 +51,31 @@ class MainStateBloc extends Bloc<MainStateEvent, MainState> {
 
       _log.finer("$loginState, $accountState, initialSetupSkipped: $initialSetupSkipped");
 
-      final action = switch (loginState) {
-        LoginState.loginRequired => ToLoginRequiredScreen(),
-        LoginState.demoAccount => ToDemoAccountScreen(),
-        LoginState.splashScreen => ToSplashScreen(),
-        LoginState.unsupportedClientVersion => ToUnsupportedClientScreen(),
+      final newMainState = switch (loginState) {
+        LoginState.loginRequired => MainState.loginRequired,
+        LoginState.demoAccount => MainState.demoAccount,
+        LoginState.splashScreen => MainState.splashScreen,
+        LoginState.unsupportedClientVersion => MainState.unsupportedClientVersion,
         LoginState.viewAccountStateOnceItExists => switch (accountState) {
           // Prevent client getting stuck on splash screen when app starts
           // and getting AccountState fails.
           AccountStateEmpty() =>
-            loginState == LoginState.demoAccount ? ToDemoAccountScreen() : ToLoginRequiredScreen(),
+            loginState == LoginState.demoAccount ? MainState.demoAccount : MainState.loginRequired,
           AccountStateLoading() => null,
           AccountStateExists(:final state) => switch (state) {
             AccountState.initialSetup => switch (initialSetupSkipped) {
-              true => ToMainScreenWhenInitialSetupIsSkipped(),
-              false => ToInitialSetup(),
+              true => MainState.initialSetupSkipped,
+              false => MainState.initialSetup,
             },
-            AccountState.banned => ToAccountBannedScreen(),
-            AccountState.pendingDeletion => ToPendingRemovalScreen(),
-            AccountState.normal => ToMainScreen(),
+            AccountState.banned => MainState.accountBanned,
+            AccountState.pendingDeletion => MainState.pendingRemoval,
+            AccountState.normal => MainState.initialSetupComplete,
           },
         },
       };
 
-      if (action != null) {
-        add(action);
+      if (newMainState != null) {
+        add(UpdateMainState(newMainState));
       }
     });
   }
