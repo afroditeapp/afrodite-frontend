@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:app/config.dart';
 import 'package:app/data/app_version.dart';
 import 'package:encryption/encryption.dart';
@@ -29,6 +31,7 @@ import 'package:app/ui/utils/main_state_ui_logic.dart';
 import 'package:app/utils/camera.dart';
 
 import 'package:rxdart/rxdart.dart';
+import 'package:utils/utils.dart';
 
 final log = Logger("main");
 
@@ -59,8 +62,6 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await SystemChrome.setPreferredOrientations(DEFAULT_ORIENTATIONS);
-
-  await GlobalInitManager.getInstance().init();
 
   // Locale saving needs database so init here
   await SecureStorageManager.getInstance().init();
@@ -170,23 +171,17 @@ class GlobalLocalizationsInitializer extends StatelessWidget {
   }
 }
 
-class GlobalInitManager {
+class GlobalInitManager extends AppSingletonNoInit {
   GlobalInitManager._private();
   static final _instance = GlobalInitManager._private();
   factory GlobalInitManager.getInstance() {
     return _instance;
   }
 
-  final PublishSubject<void> _startInit = PublishSubject();
   bool _globalInitDone = false;
 
   final BehaviorSubject<bool> _globalInitCompleted = BehaviorSubject.seeded(false);
   Stream<bool> get globalInitCompletedStream => _globalInitCompleted.stream;
-
-  /// Run this in app main function.
-  Future<void> init() async {
-    _startInit.stream.asyncMap((event) async => await _runInit()).listen((event) {});
-  }
 
   Future<void> _runInit() async {
     if (_globalInitDone) {
@@ -213,10 +208,10 @@ class GlobalInitManager {
     _globalInitCompleted.add(true);
   }
 
-  /// Global init should be triggerred after when splash screen
+  /// Global init should be triggerred after splash screen
   /// is visible.
   Future<void> triggerGlobalInit() async {
-    _startInit.add(null);
+    unawaited(_runInit());
   }
 }
 
