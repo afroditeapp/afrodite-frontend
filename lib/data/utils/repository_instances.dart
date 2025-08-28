@@ -112,6 +112,9 @@ class RepositoryInstances implements DataRepositoryMethods {
     }
     _logoutStarted = true;
 
+    // Server disconnects the WebSocket when logout API request happens
+    connectionManager.disableSnackBars();
+
     if (connectionManager.currentState == ServerConnectionState.connected) {
       final r = await api.accountAction((api) => api.postLogout());
       if (r.isErr()) {
@@ -119,7 +122,6 @@ class RepositoryInstances implements DataRepositoryMethods {
       }
     }
 
-    // Disconnect, so that server does not send events to client
     await connectionManager.close();
 
     await accountDb.accountAction((db) => db.loginSession.updateRefreshToken(null));

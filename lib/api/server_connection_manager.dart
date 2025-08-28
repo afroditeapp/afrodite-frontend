@@ -108,6 +108,8 @@ class ServerConnectionManager extends ApiManager
   bool _reconnectInProgress = false;
   Timer? _reconnectTimer;
 
+  bool _disableSnackBars = false;
+
   @override
   Future<void> init() async {
     await _apiProvider.init();
@@ -201,7 +203,9 @@ class ServerConnectionManager extends ApiManager
               await _handleConnectionError(e.error, serverConnection);
             case Ready(:final token):
               if (_reconnectInProgress) {
-                showSnackBar(R.strings.snackbar_connected);
+                if (!_disableSnackBars) {
+                  showSnackBar(R.strings.snackbar_connected);
+                }
                 _reconnectInProgress = false;
               }
               _apiProvider.setAccessToken(token);
@@ -223,7 +227,9 @@ class ServerConnectionManager extends ApiManager
     switch (error) {
       case ServerConnectionError.connectionFailure:
         _state.add(ServerConnectionState.reconnectWaitTime);
-        showSnackBar(R.strings.snackbar_reconnecting_in_5_seconds);
+        if (!_disableSnackBars) {
+          showSnackBar(R.strings.snackbar_reconnecting_in_5_seconds);
+        }
         // TODO(prod): check that internet connectivity exists?
         _reconnectTimer = Timer(Duration(seconds: 5), () {
           _cmds.add(ConnectIfNotConnected());
@@ -249,6 +255,10 @@ class ServerConnectionManager extends ApiManager
     final event = CloseConnection(null);
     _cmds.add(event);
     await event.waitCompletion();
+  }
+
+  void disableSnackBars() {
+    _disableSnackBars = true;
   }
 
   /// Returns true if connected, false if not connected within the timeout.
