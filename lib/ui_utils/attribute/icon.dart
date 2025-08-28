@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 
-final log = Logger("AttributeIcons");
+final _log = Logger("AttributeIcons");
 
 class AttributeIcons {
   static IconData? iconResourceToMaterialIcon(String? iconResouce) {
@@ -10,7 +10,7 @@ class AttributeIcons {
     }
     const PREFIX = "material:";
     if (!iconResouce.startsWith(PREFIX)) {
-      log.warning("Only material icons are supported");
+      _log.warning("Only material icons are supported");
       return null;
     }
 
@@ -30,7 +30,7 @@ class AttributeIcons {
     };
 
     if (iconObject == null) {
-      log.warning("Icon $identifier is not supported");
+      _log.warning("Icon $identifier is not supported");
     }
 
     return iconObject;

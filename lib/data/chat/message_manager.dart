@@ -6,7 +6,6 @@ import 'package:app/data/chat/message_manager/send.dart';
 import 'package:app/data/chat/message_manager/utils.dart';
 import 'package:database/database.dart';
 import 'package:flutter/foundation.dart';
-import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:app/api/server_connection_manager.dart';
 import 'package:app/data/account/client_id_manager.dart';
@@ -17,8 +16,6 @@ import 'package:app/database/account_background_database_manager.dart';
 import 'package:app/database/account_database_manager.dart';
 import 'package:app/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
-
-var log = Logger("MessageManager");
 
 sealed class MessageManagerCommand {}
 

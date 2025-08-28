@@ -30,7 +30,7 @@ import "package:app/ui_utils/snack_bar.dart";
 import "package:app/ui_utils/view_image_screen.dart";
 import 'package:image/image.dart' as img;
 
-final log = Logger("ProfilePictures");
+final _log = Logger("ProfilePictures");
 
 class AskProfilePicturesScreen extends StatelessWidget {
   const AskProfilePicturesScreen({super.key});
@@ -582,8 +582,8 @@ void openSelectPictureDialog(
                 imageProcessingBloc.add(SendImageToSlot(imageBytes, serverSlotIndex));
               }
             } catch (e) {
-              log.error("Picking image failed");
-              log.finest("$e");
+              _log.error("Picking image failed");
+              _log.finest("$e");
             }
           },
         ),
@@ -610,8 +610,8 @@ void openSelectPictureDialog(
                   imageProcessingBloc.add(ConfirmImage(imageBytes, serverSlotIndex));
                 }
               } catch (e) {
-                log.error("Taking image failed");
-                log.finest("$e");
+                _log.error("Taking image failed");
+                _log.finest("$e");
               }
             },
           ),

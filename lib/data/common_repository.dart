@@ -13,7 +13,7 @@ import 'package:app/utils/result.dart';
 import 'package:app/logic/app/app_visibility_provider.dart';
 import 'package:openapi/api.dart';
 
-var log = Logger("CommonRepository");
+final _log = Logger("CommonRepository");
 
 class CommonRepository extends DataRepositoryWithLifecycle {
   final db = DatabaseManager.getInstance();
@@ -52,7 +52,7 @@ class CommonRepository extends DataRepositoryWithLifecycle {
             if (backgroundedAt != null) {
               final now = DateTime.now();
               if (now.difference(backgroundedAt) > const Duration(days: 1)) {
-                log.info("Refreshing profile grid automatically");
+                _log.info("Refreshing profile grid automatically");
                 await profile.resetMainProfileIterator();
               }
             }
@@ -76,7 +76,7 @@ class CommonRepository extends DataRepositoryWithLifecycle {
     _automaticLogoutSubscription = connectionManager.state.listen((v) {
       if (v == ServerConnectionState.waitingRefreshToken) {
         // Tokens are invalid. Logout is required.
-        log.info("Automatic logout");
+        _log.info("Automatic logout");
         LoginRepository.getInstance().logout(currentUser);
       }
     });

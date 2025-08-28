@@ -33,7 +33,7 @@ import 'package:app/utils/camera.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:utils/utils.dart';
 
-final log = Logger("main");
+final _log = Logger("main");
 
 bool loggerInitDone = false;
 
@@ -204,7 +204,7 @@ class GlobalInitManager extends AppSingletonNoInit {
     // Initializes formatting for other locales as well
     await initializeDateFormatting("en_US", null);
 
-    log.fine("Global init completed");
+    _log.fine("Global init completed");
     _globalInitCompleted.add(true);
   }
 

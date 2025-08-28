@@ -6,12 +6,9 @@ import "package:app/ui_utils/consts/padding.dart";
 import "package:app/utils/list.dart";
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
-import "package:logging/logging.dart";
 import "package:app/localizations.dart";
 import "package:app/logic/account/initial_setup.dart";
 import "package:app/ui_utils/initial_setup_common.dart";
-
-final log = Logger("AskProfileAttributesScreen");
 
 class AskProfileAttributesScreen extends StatelessWidget {
   final int attributeIndex;

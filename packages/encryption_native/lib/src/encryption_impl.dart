@@ -7,7 +7,7 @@ import 'package:logging/logging.dart';
 import 'package:native_utils/native_utils.dart';
 import 'package:utils/utils.dart';
 
-final log = Logger("SecureStorageManager");
+final _log = Logger("SecureStorageManager");
 
 // The key is from this cmd: openssl rand -base64 12
 const RAW_STORAGE_KEY_FOR_DB_ENCRYPTION_KEY = "SxxccCgbFSMkdaho";
@@ -101,20 +101,20 @@ void _testEncryptionSupport() {
   final (encrypted, result) = encryptContentData(data, key);
   if (encrypted == null) {
     final msg = "Encryption test failed with error: $result";
-    log.error(msg);
+    _log.error(msg);
     throw Exception(msg);
   }
 
   final (decrypted, result2) = decryptContentData(encrypted, key);
   if (decrypted == null) {
     final msg = "Decryption test failed with error: $result2";
-    log.error(msg);
+    _log.error(msg);
     throw Exception(msg);
   }
 
   if (decrypted[0] != plaintext) {
     const msg = "Encryption support test failed: original data is not equal to decrypted data";
-    log.error(msg);
+    _log.error(msg);
     throw Exception(msg);
   }
 }

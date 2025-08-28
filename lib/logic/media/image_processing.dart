@@ -2,7 +2,6 @@ import "dart:typed_data";
 
 import "package:app/api/server_connection_manager.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
-import "package:logging/logging.dart";
 import "package:app/data/account_repository.dart";
 
 import "package:app/data/image_cache.dart";
@@ -10,8 +9,6 @@ import "package:app/data/login_repository.dart";
 import "package:app/data/media_repository.dart";
 import "package:app/data/media/send_to_slot.dart";
 import "package:app/model/freezed/logic/media/image_processing.dart";
-
-final log = Logger("ImageProcessingBloc");
 
 sealed class ImageProcessingEvent {}
 

@@ -12,7 +12,7 @@ import 'package:sqlcipher_flutter_libs/sqlcipher_flutter_libs.dart';
 import 'package:sqlite3/sqlite3.dart';
 import 'package:database_utils/database_utils.dart';
 
-final log = Logger("DbProviderNative");
+final _log = Logger("DbProviderNative");
 
 class DbProvider implements QueryExcecutorProvider {
   final DbFile _db;
@@ -73,7 +73,7 @@ LazyDatabase openDbConnection(
           // process can have main isolate started several times. That happens
           // with Android back button. That behavior is however currently prevented
           // by calling exit in AppLifecycleHandler class.
-          log.info("Initializing database library");
+          _log.info("Initializing database library");
           await applyWorkaroundToOpenSqlCipherOnOldAndroidVersions();
           open.overrideFor(OperatingSystem.android, openCipherOnAndroid);
 

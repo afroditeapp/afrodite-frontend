@@ -13,7 +13,7 @@ import "package:app/utils.dart";
 import "package:app/utils/immutable_list.dart";
 import "package:app/utils/iterator.dart";
 
-var log = Logger("ConversationListBloc");
+final _log = Logger("ConversationListBloc");
 
 sealed class ConversationListEvent {}
 
@@ -43,7 +43,7 @@ class ConversationListBloc extends Bloc<ConversationListEvent, ConversationListD
     }, transformer: sequential());
 
     _conversationListSubscription = profile.getConversationListUpdates().listen((data) {
-      log.finest(data);
+      _log.finest(data);
       add(HandleNewConversationList(data));
     });
   }
@@ -62,7 +62,7 @@ class ConversationListChangeCalculator {
 
   /// It is assumed that every item in newData is unique
   ChangeCalculationResult calculate(List<AccountId> newData) {
-    log.info("Conversation list change calculations start");
+    _log.info("Conversation list change calculations start");
 
     final LinkedHashSet<AccountId> newAccounts = LinkedHashSet.from(newData);
     final newIndexes = <AccountId, int>{};
@@ -87,7 +87,7 @@ class ConversationListChangeCalculator {
     currentIndexes = newIndexes;
     currentAccounts = newAccounts;
 
-    log.info("Conversation list change calculations done");
+    _log.info("Conversation list change calculations done");
 
     return ChangeCalculationResult(newData, changes);
   }
@@ -110,11 +110,11 @@ class CalculatorLogic {
         // Remove removed items from end of the current list
         final lastI = currentList.length - 1;
         final id = currentList.removeLast();
-        log.finest("calculator: remove item from end of the current list, remove: $lastI");
+        _log.finest("calculator: remove item from end of the current list, remove: $lastI");
         return [RemoveItem(lastI, id)];
       } else {
         // currentQueue has now equal content
-        log.finest("calculator: content is now equal");
+        _log.finest("calculator: content is now equal");
         return null;
       }
     }
@@ -122,20 +122,20 @@ class CalculatorLogic {
     final itemAtProgress = currentList.elementAtOrNull(progressIndex);
     final itemAtNextProgress = currentList.elementAtOrNull(progressIndex + 1);
     if (itemAtProgress != newNextFinal && itemAtNextProgress == newNextFinal) {
-      log.finest("calculator: single value removal detected, remove: $progressIndex");
+      _log.finest("calculator: single value removal detected, remove: $progressIndex");
       currentList.removeAt(progressIndex);
       final List<ListItemChange> changes = [RemoveItem(progressIndex, newNextFinal)];
       progressIndex++;
       return changes;
     } else if (itemAtProgress != newNextFinal) {
-      log.finest("calculator: items not equal at index $progressIndex");
+      _log.finest("calculator: items not equal at index $progressIndex");
       currentList.insert(progressIndex, newNextFinal);
       final List<ListItemChange> changes = [AddItem(progressIndex, newNextFinal)];
       progressIndex++;
 
       for (final (i, value) in currentList.indexed.skip(progressIndex)) {
         if (value == newNextFinal) {
-          log.finest("calculator: remove existing value from index $i");
+          _log.finest("calculator: remove existing value from index $i");
           currentList.removeAt(i);
           changes.add(RemoveItem(i, newNextFinal));
           // The items are unique, so only one removing is needed
@@ -146,7 +146,7 @@ class CalculatorLogic {
       return changes;
     } else {
       // The items were equal
-      log.finest("calculator: items equal at index $progressIndex");
+      _log.finest("calculator: items equal at index $progressIndex");
       progressIndex++;
       return [];
     }

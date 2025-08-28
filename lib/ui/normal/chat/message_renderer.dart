@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:logging/logging.dart';
 import 'package:app/logic/chat/conversation_bloc.dart';
 import 'package:app/model/freezed/logic/chat/conversation_bloc.dart';
 import 'package:app/ui/normal/chat/message_row.dart';
-
-var log = Logger("MessageRenderer");
 
 class MessageRenderer extends StatefulWidget {
   const MessageRenderer({super.key});

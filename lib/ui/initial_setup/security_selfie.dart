@@ -22,7 +22,7 @@ import "package:app/ui_utils/initial_setup_common.dart";
 import "package:app/ui_utils/snack_bar.dart";
 import "package:app/utils/camera.dart";
 
-var log = Logger("AskSecuritySelfieScreen");
+final _log = Logger("AskSecuritySelfieScreen");
 
 // There is several CameraManager.getInstance().sendCmd(CloseCmd());
 // calls in this file as the CameraController travels from screen to another
@@ -73,7 +73,7 @@ class _AskSecuritySelfieState extends State<AskSecuritySelfie> {
   @override
   void dispose() {
     super.dispose();
-    log.info("Disposing AskSecuritySelfie");
+    _log.info("Disposing AskSecuritySelfie");
     CameraManager.getInstance().sendCmd(CloseCmd());
   }
 

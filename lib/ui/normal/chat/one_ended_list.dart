@@ -7,7 +7,7 @@ import 'package:app/model/freezed/logic/chat/conversation_bloc.dart';
 import 'package:app/ui/normal/chat/message_row.dart';
 import 'package:rxdart/rxdart.dart';
 
-var log = Logger("OneEndedMessageListWidget");
+final _log = Logger("OneEndedMessageListWidget");
 
 /// Infinite list where adding to one end is possible.
 class OneEndedMessageListWidget extends StatefulWidget {
@@ -145,7 +145,7 @@ class SimpleChatScrollPhysics extends ScrollPhysics {
     );
 
     if (settings.jumpToLatest) {
-      log.info("Jump to latest message");
+      _log.info("Jump to latest message");
       settings.jumpToLatest = false;
       settings.newMessageHeight = null;
       return getNewPosition;
@@ -157,14 +157,14 @@ class SimpleChatScrollPhysics extends ScrollPhysics {
       settings.newMessageHeight = null;
       if (oldPosition.viewportDimension < availableArea &&
           newPosition.viewportDimension >= availableArea) {
-        log.info("Partial scroll");
+        _log.info("Partial scroll");
         final diff = newPosition.viewportDimension - oldPosition.viewportDimension;
         return getNewPosition + addedMessageHeight - diff;
       } else if (newPosition.viewportDimension >= availableArea) {
-        log.info("Full area");
+        _log.info("Full area");
         return getNewPosition + addedMessageHeight;
       } else {
-        log.info("Small area");
+        _log.info("Small area");
         return getNewPosition;
       }
     } else {

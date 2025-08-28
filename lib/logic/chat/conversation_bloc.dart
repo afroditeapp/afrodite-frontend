@@ -21,7 +21,7 @@ import "package:app/ui_utils/snack_bar.dart";
 import "package:app/utils.dart";
 import "package:app/utils/result.dart";
 
-var log = Logger("ConversationBloc");
+final _log = Logger("ConversationBloc");
 
 sealed class ConversationEvent {}
 
@@ -183,7 +183,7 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
   ConversationBloc(AccountId messageSenderAccountId, this.dataProvider)
     : super(ConversationData(accountId: messageSenderAccountId)) {
     on<InitEvent>((data, emit) async {
-      log.info("Set conversation bloc initial state");
+      _log.info("Set conversation bloc initial state");
 
       final isMatch = await dataProvider.isInMatches(state.accountId);
       final isBlocked = await dataProvider.isInSentBlocks(state.accountId);
@@ -334,17 +334,17 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
           ),
         );
         if (visibleMessages == null) {
-          log.info("Initial message list update done");
+          _log.info("Initial message list update done");
         } else if (data.changeInfo == ConversationChangeType.messageRemoved) {
-          log.info("Message removed and message list refreshed");
+          _log.info("Message removed and message list refreshed");
         } else if (data.changeInfo == ConversationChangeType.messageResent) {
-          log.info("Message resent and message list refreshed");
+          _log.info("Message resent and message list refreshed");
         }
         return;
       }
 
       if (data.newMessageCount <= renderingManager.currentMsgCount()) {
-        log.info("Skip message count change event");
+        _log.info("Skip message count change event");
         return;
       }
 
@@ -356,7 +356,7 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
       );
 
       if (state.rendererCurrentlyRendering == null) {
-        log.info("No in-progress rendering");
+        _log.info("No in-progress rendering");
         final msgForRendering = renderingManager.getAndRemoveNextToBeRendered();
         if (msgForRendering != null) {
           _renderingSynchronizer.add(false);
@@ -370,7 +370,7 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
     on<RenderingCompleted>((data, emit) {
       final renderedMsg = state.rendererCurrentlyRendering;
       if (renderedMsg == null) {
-        log.warning("Rendering completed event received but rendered message is missing");
+        _log.warning("Rendering completed event received but rendered message is missing");
         return;
       }
 
@@ -378,14 +378,14 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
       final nextMsg = renderingManager.getAndRemoveNextToBeRendered();
 
       if (nextMsg == null) {
-        log.info("Rendering completed");
+        _log.info("Rendering completed");
         final currentUpdate = renderingManager.resetCurrentMessageUpdateAndMoveToVisibleMessages();
         if (currentUpdate != null) {
           emit(state.copyWith(visibleMessages: currentUpdate, rendererCurrentlyRendering: null));
           _renderingSynchronizer.add(true);
         }
       } else {
-        log.info("Continue rendering");
+        _log.info("Continue rendering");
         emit(state.copyWith(rendererCurrentlyRendering: nextMsg));
       }
     }, transformer: sequential());
@@ -486,7 +486,7 @@ class RenderingManager {
   ReadyVisibleMessageListUpdate? resetCurrentMessageUpdateAndMoveToVisibleMessages() {
     final currentUpdate = currentMessagesUpdate;
     if (currentUpdate == null) {
-      log.error("Rendered messages not found");
+      _log.error("Rendered messages not found");
       return null;
     }
     currentMessagesUpdate = null;

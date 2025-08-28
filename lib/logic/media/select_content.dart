@@ -2,15 +2,12 @@ import "package:app/api/server_connection_manager.dart";
 import "package:app/localizations.dart";
 import "package:app/ui_utils/snack_bar.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
-import "package:logging/logging.dart";
 import "package:app/data/login_repository.dart";
 import "package:app/model/freezed/logic/media/select_content.dart";
 import "package:app/utils.dart";
 import "package:app/utils/immutable_list.dart";
 import "package:app/utils/result.dart";
 import "package:openapi/api.dart";
-
-final log = Logger("SelectContentBloc");
 
 sealed class SelectContentEvent {}
 

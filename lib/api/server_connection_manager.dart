@@ -16,7 +16,7 @@ import 'package:app/utils/app_error.dart';
 import 'package:app/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
 
-final log = Logger("ApiManager");
+final _log = Logger("ApiManager");
 
 enum ServerConnectionState {
   /// No valid refresh token available. UI should display login view.
@@ -126,7 +126,7 @@ class ServerConnectionManager extends ApiManager
   StreamSubscription<void> _listenServerConnectionCmds() {
     return _cmds
         .asyncMap((event) async {
-          log.info(event.runtimeType);
+          _log.info(event.runtimeType);
           switch (event) {
             case ConnectIfNotConnected():
               if (_serverConnection == null) {
@@ -190,7 +190,7 @@ class ServerConnectionManager extends ApiManager
     _serverConnectionEventsSubscription = serverConnection.state
         .distinct()
         .asyncMap((event) async {
-          log.info(event);
+          _log.info(event);
           switch (event) {
             case Connecting():
               _state.add(ServerConnectionState.connecting);
@@ -269,7 +269,7 @@ class ServerConnectionManager extends ApiManager
     );
 
     if (currentUser != accountAfterConnection) {
-      log.error("Account changed when waiting connected state");
+      _log.error("Account changed when waiting connected state");
       return const Err(());
     }
 

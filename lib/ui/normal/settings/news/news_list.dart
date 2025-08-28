@@ -5,7 +5,6 @@ import 'package:app/database/account_background_database_manager.dart';
 import 'package:app/ui_utils/extensions/other.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:app/api/server_connection_manager.dart';
@@ -22,8 +21,6 @@ import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/result.dart';
 import 'package:app/utils/api.dart';
 import 'package:app/utils/time.dart';
-
-final log = Logger("NewsListScreen");
 
 Future<void> openNewsList(BuildContext context) {
   return MyNavigator.push(context, const MaterialPage<void>(child: NewsListScreenOpener()));

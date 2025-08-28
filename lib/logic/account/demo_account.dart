@@ -9,7 +9,7 @@ import "package:app/utils.dart";
 import "package:app/utils/immutable_list.dart";
 import "package:app/utils/result.dart";
 
-var log = Logger("DemoAccountBloc");
+final _log = Logger("DemoAccountBloc");
 
 abstract class DemoAccountEvent {}
 
@@ -36,19 +36,19 @@ class DemoAccountBloc extends Bloc<DemoAccountEvent, DemoAccountBlocData> with A
       });
     });
     on<DoDemoAccountRefreshAccountList>((_, emit) async {
-      log.info("Refreshing demo account list");
+      _log.info("Refreshing demo account list");
       switch (await login.demoAccountGetAccounts()) {
         case Ok(:final v):
-          log.info("Demo account list received");
+          _log.info("Demo account list received");
           emit(state.copyWith(accounts: UnmodifiableList(v)));
         case Err(e: SessionExpired()):
-          log.info("Demo account session expired");
+          _log.info("Demo account session expired");
           showSnackBar(R.strings.login_screen_demo_account_login_session_expired);
         case Err(e: UnsupportedClient()):
-          log.info("Unsupported app version");
+          _log.info("Unsupported app version");
           showSnackBar(R.strings.generic_error_app_version_is_unsupported);
         case Err(e: OtherError()):
-          log.info("Demo account account list refresh other error");
+          _log.info("Demo account account list refresh other error");
       }
     });
     on<DoDemoAccountCreateNewAccount>((_, emit) async {

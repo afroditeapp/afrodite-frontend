@@ -6,18 +6,18 @@ import 'package:app/l10n/app_localizations_fi.dart';
 import 'package:app/l10n/app_localizations_sv.dart';
 import 'package:app/database/background_database_manager.dart';
 
-final log = Logger("localizations");
+final _log = Logger("localizations");
 
 AppLocalizations currentLocalizations = AppLocalizationsEn();
 
 AppLocalizations getStringsImplementation(BuildContext context) {
   var localizations = AppLocalizations.of(context);
   if (localizations == null) {
-    log.warning("AppLocalizations.of(context) returned null");
+    _log.warning("AppLocalizations.of(context) returned null");
     localizations = AppLocalizationsEn();
   }
   if (localizations != currentLocalizations) {
-    log.info("Localizations changed, saving current locale value");
+    _log.info("Localizations changed, saving current locale value");
     BackgroundDatabaseManager.getInstance().commonAction(
       (db) => db.app.updateCurrentLocale(localizations?.localeName),
     );
@@ -48,7 +48,7 @@ Future<void> loadLocalizationsFromBackgroundDatabaseIfNeeded() async {
     (db) => db.app.watchCurrentLocale(),
   );
   if (locale == null) {
-    log.warning("Locale not in database");
+    _log.warning("Locale not in database");
   }
   if (locale == "en") {
     currentLocalizations = AppLocalizationsEn();
@@ -57,7 +57,7 @@ Future<void> loadLocalizationsFromBackgroundDatabaseIfNeeded() async {
   } else if (locale == "sv") {
     currentLocalizations = AppLocalizationsSv();
   } else {
-    log.warning("Unknown locale: $locale");
+    _log.warning("Unknown locale: $locale");
     currentLocalizations = AppLocalizationsEn();
   }
 }

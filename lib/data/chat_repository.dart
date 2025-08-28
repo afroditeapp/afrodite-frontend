@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:app/data/chat/message_manager/utils.dart';
 import 'package:async/async.dart' show StreamExtensions;
-import 'package:logging/logging.dart';
 import 'package:native_utils/native_utils.dart';
 import 'package:openapi/api.dart';
 import 'package:app/api/server_connection_manager.dart';
@@ -20,8 +19,6 @@ import 'package:database/database.dart';
 import 'package:app/database/account_background_database_manager.dart';
 import 'package:app/database/account_database_manager.dart';
 import 'package:app/utils/result.dart';
-
-var log = Logger("ChatRepository");
 
 class ChatRepository extends DataRepositoryWithLifecycle {
   final AccountDatabaseManager db;

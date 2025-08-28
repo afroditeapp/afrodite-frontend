@@ -1,9 +1,6 @@
-import 'package:logging/logging.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:utils/utils.dart';
 import 'package:app/utils/app_error.dart';
-
-final log = Logger("ErrorManager");
 
 /// Show error message on UI
 class ErrorManager extends AppSingleton {

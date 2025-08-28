@@ -4,10 +4,7 @@ import 'package:app/ui_utils/attribute/state.dart';
 import 'package:app/ui_utils/attribute/translation.dart';
 import 'package:database/database.dart';
 import 'package:flutter/material.dart';
-import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
-
-final log = Logger("AttributeManager");
 
 class AttributeManager {
   AttributeManager._(this._list);

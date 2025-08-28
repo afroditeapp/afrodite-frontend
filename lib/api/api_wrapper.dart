@@ -5,7 +5,7 @@ import 'package:app/api/server_connection_manager.dart';
 import 'package:app/utils/app_error.dart';
 import 'package:app/utils/result.dart';
 
-final log = Logger("ApiWrapper");
+final _log = Logger("ApiWrapper");
 
 class ApiWrapper<T> {
   final T api;
@@ -24,7 +24,7 @@ class ApiWrapper<T> {
       if (value == null) {
         const err = NullError();
         if (logError) {
-          err.logError(log);
+          err.logError(_log);
         }
         return const Err(err);
       } else {
@@ -34,12 +34,12 @@ class ApiWrapper<T> {
       await restartConnectionIfNeeded(e);
       final err = ValueApiException(e);
       if (logError) {
-        err.logError(log);
+        err.logError(_log);
       }
       return Err(err);
     } catch (e) {
       const err = ValueApiUnknownException();
-      err.logError(log);
+      err.logError(_log);
       return const Err(err);
     }
   }
@@ -56,12 +56,12 @@ class ApiWrapper<T> {
       await restartConnectionIfNeeded(e);
       final err = ActionApiErrorException(e);
       if (logError) {
-        err.logError(log);
+        err.logError(_log);
       }
       return Err(err);
     } catch (e) {
       const err = ActionApiErrorUnknownException();
-      err.logError(log);
+      err.logError(_log);
       return const Err(err);
     }
   }
@@ -75,7 +75,7 @@ class ApiWrapper<T> {
       final currentState = await serverConnection.state.firstOrNull;
       if (!_connectionRestartInProgress && currentState == ServerConnectionState.connected) {
         _connectionRestartInProgress = true;
-        log.warning("Current connection might be broken");
+        _log.warning("Current connection might be broken");
         await serverConnection.restart();
         _connectionRestartInProgress = false;
       }

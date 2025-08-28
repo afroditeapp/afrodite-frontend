@@ -5,7 +5,7 @@ import 'package:meta/meta.dart';
 import 'package:openapi/api.dart';
 import 'package:utils/utils.dart';
 
-final log = Logger("NotificationPayload");
+final _log = Logger("NotificationPayload");
 
 @immutable
 sealed class NotificationPayload extends Immutable {
@@ -31,27 +31,27 @@ sealed class NotificationPayload extends Immutable {
   static NotificationPayload? parse(String jsonPayload) {
     final jsonObject = jsonDecode(jsonPayload);
     if (jsonObject is! Map<String, Object?>) {
-      log.error("Payload is not JSON object");
+      _log.error("Payload is not JSON object");
       return null;
     }
 
     if (!jsonObject.containsKey(_payloadTypeKey)) {
-      log.error("Payload type is missing from the payload");
+      _log.error("Payload type is missing from the payload");
       return null;
     }
     final payloadTypeValue = jsonObject[_payloadTypeKey];
     if (payloadTypeValue is! String) {
-      log.error("Payload type is not a string");
+      _log.error("Payload type is not a string");
       return null;
     }
 
     if (!jsonObject.containsKey(_receiverAccountId)) {
-      log.error("Notification session ID is missing from the payload");
+      _log.error("Notification session ID is missing from the payload");
       return null;
     }
     final receiverAccountIdString = jsonObject[_receiverAccountId];
     if (receiverAccountIdString is! String) {
-      log.error("Receiver Account ID is not a string");
+      _log.error("Receiver Account ID is not a string");
       return null;
     }
 
@@ -75,7 +75,7 @@ sealed class NotificationPayload extends Immutable {
       case NotificationPayloadTypeString.stringNavigateToModeratorTasks:
         return NavigateToModeratorTasks(receiverAccountId: receiverAccountId);
       default:
-        log.error("Payload type is unknown");
+        _log.error("Payload type is unknown");
         return null;
     }
   }
@@ -108,7 +108,7 @@ class NavigateToConversation extends NotificationPayload {
     AccountId receiverAccountId,
   ) {
     if (!jsonObject.containsKey(_conversationIdKey)) {
-      log.error("NavigateToConversation payload parsing error: conversation ID is missing");
+      _log.error("NavigateToConversation payload parsing error: conversation ID is missing");
       return null;
     }
     final idValue = jsonObject[_conversationIdKey];
@@ -116,7 +116,7 @@ class NavigateToConversation extends NotificationPayload {
     if (idValue is int) {
       id = ConversationId(id: idValue);
     } else {
-      log.error("NavigateToConversation payload parsing error: conversation ID is not an integer");
+      _log.error("NavigateToConversation payload parsing error: conversation ID is not an integer");
       return null;
     }
     return NavigateToConversation(conversationId: id, receiverAccountId: receiverAccountId);

@@ -13,7 +13,7 @@ import 'package:app/utils/app_error.dart';
 import 'package:app/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
 
-final log = Logger("BackgroundDatabaseManager");
+final _log = Logger("BackgroundDatabaseManager");
 
 class BackgroundDatabaseManager extends AppSingleton {
   BackgroundDatabaseManager._private();
@@ -156,6 +156,6 @@ Stream<T?> oneValueAndWaitForever<T>(T? value) async* {
 
 Result<Success, DatabaseException> _handleDbException<Success>(Exception e) {
   final dbException = DatabaseException(e);
-  dbException.logError(log);
+  dbException.logError(_log);
   return Err(dbException);
 }

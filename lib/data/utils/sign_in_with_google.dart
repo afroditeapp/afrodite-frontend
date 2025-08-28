@@ -14,7 +14,7 @@ import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:utils/utils.dart';
 
-final log = Logger("SignInWithGoogleManager");
+final _log = Logger("SignInWithGoogleManager");
 
 const String emailScope = "https://www.googleapis.com/auth/userinfo.email";
 
@@ -40,7 +40,7 @@ class SignInWithGoogleManager {
         await GoogleSignIn.instance.initialize(serverClientId: signInWithGoogleBackendClientId());
       }
     } catch (_) {
-      log.error("Init failed");
+      _log.error("Init failed");
       return;
     }
 
@@ -79,7 +79,7 @@ class SignInWithGoogleManager {
 
   Future<Result<SignInWithLoginInfo, ()>> login() async {
     if (!_initDone) {
-      log.error("Init is not done");
+      _log.error("Init is not done");
       return const Err(());
     }
 
@@ -89,12 +89,12 @@ class SignInWithGoogleManager {
       final session = await GoogleSignIn.instance.authenticate(scopeHint: [emailScope]);
       final possibleToken = session.authentication.idToken;
       if (possibleToken == null) {
-        log.error("Token is null");
+        _log.error("Token is null");
         return const Err(());
       }
       token = possibleToken;
     } catch (_) {
-      log.error("Authenticate method failed");
+      _log.error("Authenticate method failed");
       return const Err(());
     }
 
@@ -108,14 +108,14 @@ class SignInWithGoogleManager {
 
   Future<void> logout() async {
     if (!_initDone) {
-      log.error("Init is not done");
+      _log.error("Init is not done");
       return;
     }
 
     try {
       await GoogleSignIn.instance.signOut();
     } catch (_) {
-      log.error("Sign out failed");
+      _log.error("Sign out failed");
     }
   }
 }

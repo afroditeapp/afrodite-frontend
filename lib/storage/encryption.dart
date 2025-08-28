@@ -4,7 +4,7 @@ import 'package:native_utils/native_utils.dart';
 import 'package:app/database/database_manager.dart';
 import 'package:utils/utils.dart';
 
-final log = Logger("ImageEncryptionManager");
+final _log = Logger("ImageEncryptionManager");
 
 class ImageEncryptionManager extends AppSingleton {
   static final _instance = ImageEncryptionManager._private();
@@ -29,7 +29,7 @@ class ImageEncryptionManager extends AppSingleton {
     }
 
     if (data.isEmpty) {
-      log.warning("Empty data");
+      _log.warning("Empty data");
       return data;
     }
 
@@ -49,7 +49,7 @@ class ImageEncryptionManager extends AppSingleton {
     }
 
     if (data.isEmpty) {
-      log.warning("Empty data");
+      _log.warning("Empty data");
       return data;
     }
 
@@ -69,7 +69,7 @@ class ImageEncryptionManager extends AppSingleton {
         (db) => db.app.watchImageEncryptionKey(),
       );
       if (existingKey == null) {
-        log.info("Generating a new image encryption key");
+        _log.info("Generating a new image encryption key");
         final newKey = _generateImageEncryptionKey();
         await DatabaseManager.getInstance().commonAction(
           (db) => db.app.updateImageEncryptionKey(newKey),
@@ -83,7 +83,7 @@ class ImageEncryptionManager extends AppSingleton {
         _imageEncryptionKey = newKey;
         return newKey;
       } else {
-        log.info("Image encryption key already exists");
+        _log.info("Image encryption key already exists");
         _imageEncryptionKey = existingKey;
         return existingKey;
       }

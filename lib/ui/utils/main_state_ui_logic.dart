@@ -57,7 +57,7 @@ import 'package:app/ui/pending_deletion.dart';
 import 'package:app/ui/unsupported_client.dart';
 import 'package:app/ui/utils/notification_payload_handler.dart';
 
-final log = Logger("MainStateUiLogic");
+final _log = Logger("MainStateUiLogic");
 
 class MainStateUiLogic extends StatefulWidget {
   const MainStateUiLogic({super.key});
@@ -108,7 +108,7 @@ class _MainStateUiLogicState extends State<MainStateUiLogic> {
         final NotificationActionHandlerObjects? notficationRelatedObjects;
         final NewPageDetails rootPage;
         if (appLaunchPayload != null && accountBackgroundDb != null && accountDb != null) {
-          log.info("Handling app launch notification payload");
+          _log.info("Handling app launch notification payload");
           notficationRelatedObjects = NotificationActionHandlerObjects(
             appLaunchPayload,
             accountDb,

@@ -4,7 +4,6 @@ import 'package:app/logic/account/client_features_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:app/data/login_repository.dart';
 import 'package:app/logic/account/account.dart';
@@ -20,8 +19,6 @@ import 'package:app/ui_utils/list.dart';
 import 'package:app/utils/api.dart';
 import 'package:app/utils/time.dart';
 import 'package:url_launcher/url_launcher_string.dart';
-
-final log = Logger("ViewNewsScreen");
 
 Future<void> openViewNewsScreen(
   BuildContext context,

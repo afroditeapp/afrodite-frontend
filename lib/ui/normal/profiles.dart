@@ -15,7 +15,6 @@ import 'package:app/utils/list.dart';
 import 'package:database/database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:app/logic/account/account.dart';
 import 'package:app/logic/app/navigator_state.dart';
@@ -28,8 +27,6 @@ import 'package:app/ui_utils/bottom_navigation.dart';
 
 import 'package:app/localizations.dart';
 import 'package:app/ui_utils/list.dart';
-
-var log = Logger("ProfileView");
 
 class ProfileView extends BottomNavigationScreen {
   const ProfileView({super.key});

@@ -28,7 +28,7 @@ import 'package:encryption/encryption.dart';
 import 'package:app/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
 
-var log = Logger("PushNotificationManager");
+final _log = Logger("PushNotificationManager");
 
 class PushNotificationManager extends AppSingleton {
   PushNotificationManager._private();
@@ -82,7 +82,7 @@ class PushNotificationManager extends AppSingleton {
       try {
         await GoogleApiAvailability.instance.makeGooglePlayServicesAvailable();
       } catch (_) {
-        log.warning("Google Play Services are not available");
+        _log.warning("Google Play Services are not available");
         return;
       }
     }
@@ -94,7 +94,7 @@ class PushNotificationManager extends AppSingleton {
         _newFcmTokenReceived.add(token);
       });
       _tokenSubscription?.onError((_) {
-        log.error("FCM onTokenRefresh error");
+        _log.error("FCM onTokenRefresh error");
       });
     }
 
@@ -102,7 +102,7 @@ class PushNotificationManager extends AppSingleton {
     if (Platform.isIOS && apnsToken == null) {
       // iOS only. If apnsToken is null then getToken will throw exception.
       // The token is not available directly after initializing FirebaseApp.
-      log.error("Initing push notification support failed: APNS token is null");
+      _log.error("Initing push notification support failed: APNS token is null");
       unawaited(Future.delayed(Duration(seconds: initRetryWaitSeconds), initPushNotifications));
       initRetryWaitSeconds *= 2;
       return;
@@ -111,7 +111,7 @@ class PushNotificationManager extends AppSingleton {
     final fcmToken = await FirebaseMessaging.instance.getToken();
 
     if (fcmToken == null) {
-      log.error("FCM token is null");
+      _log.error("FCM token is null");
       return;
     }
 
@@ -123,7 +123,7 @@ class PushNotificationManager extends AppSingleton {
     if (_firebaseApp == null) {
       final app = await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
       if (app.isAutomaticDataCollectionEnabled) {
-        log.info("Disabling Firebase automatic data collection");
+        _log.info("Disabling Firebase automatic data collection");
         await app.setAutomaticDataCollectionEnabled(false);
       }
       _firebaseApp = app;
@@ -135,31 +135,31 @@ class PushNotificationManager extends AppSingleton {
       (db) => db.loginSession.watchFcmDeviceToken(),
     );
     if (savedToken?.token != fcmToken) {
-      log.info("FCM token changed, sending token to server");
+      _log.info("FCM token changed, sending token to server");
       final newToken = FcmDeviceToken(token: fcmToken);
       final api = LoginRepository.getInstance().repositoriesOrNull?.api;
       if (api == null) {
-        log.info(
+        _log.info(
           "FCM token changed, skipping FCM token update because server API is not available",
         );
         return;
       }
       final result = await api.common((api) => api.postSetDeviceToken(newToken)).ok();
       if (result != null) {
-        log.info("FCM token sending successful");
+        _log.info("FCM token sending successful");
         final dbResult = await BackgroundDatabaseManager.getInstance().commonAction(
           (db) => db.loginSession.updateFcmDeviceTokenAndPendingNotificationToken(newToken, result),
         );
         if (dbResult.isOk()) {
-          log.error("FCM token saving to local database successful");
+          _log.error("FCM token saving to local database successful");
         } else {
-          log.error("FCM token saving to local database failed");
+          _log.error("FCM token saving to local database failed");
         }
       } else {
-        log.error("Failed to send FCM token to server");
+        _log.error("Failed to send FCM token to server");
       }
     } else {
-      log.info("Current FCM token is already on server");
+      _log.info("Current FCM token is already on server");
     }
   }
 
@@ -171,8 +171,8 @@ class PushNotificationManager extends AppSingleton {
         // at least when APNS is not configured.
         await FirebaseMessaging.instance.deleteToken();
       } catch (e) {
-        log.error("Failed to delete FCM token");
-        log.finest("Exception: $e");
+        _log.error("Failed to delete FCM token");
+        _log.finest("Exception: $e");
       }
     }
   }
@@ -189,7 +189,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await db.init();
   await loadLocalizationsFromBackgroundDatabaseIfNeeded();
 
-  log.info("Handling FCM background message");
+  _log.info("Handling FCM background message");
 
   final accountUrl = await db.commonStreamSingleOrDefault(
     (db) => db.app.watchServerUrl(),
@@ -199,13 +199,13 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
     (db) => db.loginSession.watchPendingNotificationToken(),
   );
   if (pendingNotificationToken == null) {
-    log.error("Downloading pending notification failed: pending notification token is null");
+    _log.error("Downloading pending notification failed: pending notification token is null");
     return;
   }
 
   final currentAccountId = await db.commonStreamSingle((db) => db.loginSession.watchAccountId());
   if (currentAccountId == null) {
-    log.error("Downloading pending notification failed: AccountId is not available");
+    _log.error("Downloading pending notification failed: AccountId is not available");
     return;
   }
   final accountBackgroundDb = db.getAccountBackgroundDatabaseManager(currentAccountId);
@@ -259,7 +259,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
         await _handlePushNotificationAdminNotification(v.adminNotification, accountBackgroundDb);
       }
     case Err():
-      log.error("Downloading pending notification failed");
+      _log.error("Downloading pending notification failed");
   }
 }
 

@@ -20,7 +20,7 @@ import 'package:app/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:utils/utils.dart';
 
-var log = Logger("AccountRepository");
+final _log = Logger("AccountRepository");
 
 enum AccountRepositoryState { initRequired, initComplete }
 
@@ -136,7 +136,7 @@ class AccountRepository extends DataRepositoryWithLifecycle {
   }
 
   Future<void> handleEventToClient(EventToClient event) async {
-    log.finer("Event from server: $event");
+    _log.finer("Event from server: $event");
 
     final chat = repositories.chat;
     final profile = repositories.profile;
@@ -174,7 +174,7 @@ class AccountRepository extends DataRepositoryWithLifecycle {
     } else if (event.event == EventType.adminNotification) {
       await receiveAdminNotification();
     } else {
-      log.error("Unknown EventToClient");
+      _log.error("Unknown EventToClient");
     }
   }
 

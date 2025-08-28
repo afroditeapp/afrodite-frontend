@@ -9,7 +9,7 @@ import 'package:app/utils/result.dart';
 import 'package:openapi/api.dart';
 import 'package:rxdart/rxdart.dart';
 
-final log = Logger("AccountBackgroundDatabaseManager");
+final _log = Logger("AccountBackgroundDatabaseManager");
 
 class AccountBackgroundDatabaseManager {
   final AccountBackgroundDatabase db;
@@ -119,6 +119,6 @@ class AccountBackgroundDatabaseManager {
 
 Result<Success, DatabaseException> _handleDbException<Success>(Exception e) {
   final dbException = DatabaseException(e);
-  dbException.logError(log);
+  dbException.logError(_log);
   return Err(dbException);
 }

@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:app/logic/account/news/edit_news.dart';
 import 'package:app/logic/app/navigator_state.dart';
@@ -14,8 +13,6 @@ import 'package:app/ui/normal/settings/news/view_news.dart';
 import 'package:app/ui_utils/consts/animation.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/list.dart';
-
-final log = Logger("EditNewsScreen");
 
 Future<void> openEditNewsScreen(BuildContext context, NewsId id, List<String> supportedLocales) {
   final pageKey = PageKey();

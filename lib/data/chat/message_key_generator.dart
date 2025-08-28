@@ -13,7 +13,7 @@ import 'package:app/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:rxdart/subjects.dart';
 
-final log = Logger("MessageKeyManager");
+final _log = Logger("MessageKeyManager");
 
 enum KeyGeneratorState { idle, inProgress }
 
@@ -69,7 +69,7 @@ class MessageKeyManager {
     final currentUserString = currentUser.aid;
     final (newKeys, result) = await Isolate.run(() => generateMessageKeys(currentUserString));
     if (newKeys == null) {
-      log.error("Generating message keys failed, error: $result");
+      _log.error("Generating message keys failed, error: $result");
       return const Err(());
     }
 

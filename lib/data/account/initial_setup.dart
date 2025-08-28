@@ -11,7 +11,7 @@ import 'package:app/utils/api.dart';
 import 'package:app/utils/result.dart';
 import 'package:utils/utils.dart';
 
-var log = Logger("InitialSetupUtils");
+final _log = Logger("InitialSetupUtils");
 
 class InitialSetupUtils {
   final ApiManager _api;
@@ -275,7 +275,7 @@ ContentId getId(SelectedImageInfo info, ContentId securitySelfie) {
 }
 
 Result<T, ()> errAndLog<T>(String message) {
-  log.error(message);
+  _log.error(message);
   return const Err(());
 }
 

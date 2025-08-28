@@ -4,7 +4,6 @@ import 'package:app/ui_utils/extensions/other.dart';
 import 'package:app/ui_utils/profile_thumbnail_image_or_error.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:app/data/image_cache.dart';
 import 'package:app/data/login_repository.dart';
@@ -17,8 +16,6 @@ import 'package:app/logic/settings/ui_settings.dart';
 import 'package:app/ui_utils/consts/padding.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/list.dart';
-
-var log = Logger("BlockedProfilesScreen");
 
 class BlockedProfilesScreen extends StatefulWidget {
   const BlockedProfilesScreen({super.key});

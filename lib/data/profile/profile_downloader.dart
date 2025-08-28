@@ -11,7 +11,7 @@ import 'package:app/database/account_database_manager.dart';
 import 'package:utils/utils.dart';
 import 'package:app/utils/result.dart';
 
-final log = Logger("ProfileEntryDownloader");
+final _log = Logger("ProfileEntryDownloader");
 
 class ProfileEntryDownloader {
   final ApiManager api;
@@ -51,7 +51,7 @@ class ProfileEntryDownloader {
 
           final primaryContentId = contentInfo.c.firstOrNull?.cid;
           if (primaryContentId == null) {
-            log.warning("Profile content info is missing");
+            _log.warning("Profile content info is missing");
             return Err(OtherProfileDownloadError());
           }
 
@@ -62,7 +62,7 @@ class ProfileEntryDownloader {
             media: media,
           );
           if (bytes == null) {
-            log.warning("Skipping one profile because image loading failed");
+            _log.warning("Skipping one profile because image loading failed");
             return Err(OtherProfileDownloadError());
           }
         }
@@ -102,7 +102,7 @@ class ProfileEntryDownloader {
           );
         }
       case Err(:final e):
-        e.logError(log);
+        e.logError(_log);
         return Err(OtherProfileDownloadError());
     }
 
@@ -110,14 +110,14 @@ class ProfileEntryDownloader {
       (db) => db.profile.updateProfileDataRefreshTimeToCurrentTime(accountId),
     );
     if (refreshTimeUpdateResult.isErr()) {
-      log.error("Refresh time update failed");
+      _log.error("Refresh time update failed");
       return Err(OtherProfileDownloadError());
     }
 
     final dataEntry = await db.accountData((db) => db.profile.getProfileEntry(accountId)).ok();
 
     if (dataEntry == null) {
-      log.warning("Storing profile data to database failed");
+      _log.warning("Storing profile data to database failed");
       return Err(OtherProfileDownloadError());
     }
 

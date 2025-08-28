@@ -20,7 +20,7 @@ import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
 
-var log = Logger("LoginRepository");
+final _log = Logger("LoginRepository");
 
 enum LoginState {
   splashScreen,
@@ -156,7 +156,7 @@ class LoginRepository extends DataRepository {
       (a, b, c) => (a, b, c),
     ).listen((event) {
       final (serverConnectionState, demoAccountToken, loginInProgress) = event;
-      log.finer(
+      _log.finer(
         "$serverConnectionState, demoAccountToken: ${demoAccountToken != null}, loginInProgress: $loginInProgress",
       );
       if (loginInProgress) {
@@ -200,7 +200,7 @@ class LoginRepository extends DataRepository {
   void initCmdHandling() {
     _cmds
         .asyncMap((cmd) async {
-          log.info(cmd.runtimeType);
+          _log.info(cmd.runtimeType);
           switch (cmd) {
             case LogoutAndSignInWithLogin():
               await _logoutInternal(null);
@@ -355,11 +355,11 @@ class LoginRepository extends DataRepository {
     final currentRepositories = _repositories;
     if (currentRepositories != null && (id == null || id == currentRepositories.accountId)) {
       _repositories = null;
-      log.info("Logout started");
+      _log.info("Logout started");
       await _repositoryStateStreams._logout();
       await currentRepositories.onLogout();
       await _google.logout();
-      log.info("Logout completed");
+      _log.info("Logout completed");
     }
   }
 

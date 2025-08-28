@@ -34,7 +34,7 @@ import 'package:app/ui_utils/scroll_controller.dart';
 import 'package:app/utils/result.dart';
 import 'package:utils/utils.dart';
 
-var log = Logger("LikeView");
+final _log = Logger("LikeView");
 
 class LikeView extends BottomNavigationScreen {
   const LikeView({super.key});
@@ -463,13 +463,13 @@ class LikeViewContentState extends State<LikeViewContent> {
     // Refresh resets server side new likes count so it needs to be saved
     // to keep the count badge visible.
     if (navigationBlocState.screen != BottomNavigationScreenId.likes) {
-      log.info("Automatic like screen refresh on background");
+      _log.info("Automatic like screen refresh on background");
       final newReceivedLikesCountBeforeReload = bloc.state.newReceivedLikesCount;
       final event = UpdateReceivedLikesCountNotViewed(newReceivedLikesCountBeforeReload);
       bloc.add(event);
       await event.waitDone.firstWhere((v) => v);
     } else {
-      log.info("Automatic like screen refresh");
+      _log.info("Automatic like screen refresh");
     }
     await refreshProfileGrid();
   }

@@ -30,7 +30,7 @@ import 'package:app/utils/immutable_list.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:utils/utils.dart';
 
-var log = Logger("ChatView");
+final _log = Logger("ChatView");
 
 class ChatView extends BottomNavigationScreen {
   const ChatView({super.key});
@@ -184,10 +184,10 @@ class _ChatViewState extends State<ChatView> {
                 for (final change in state.changesBetweenCurrentAndPrevious) {
                   switch (change) {
                     case AddItem(:final i):
-                      log.finest("Add, i: $i");
+                      _log.finest("Add, i: $i");
                       listState.insertItem(i);
                     case RemoveItem(:final i, :final id):
-                      log.finest("Remove, i: $i");
+                      _log.finest("Remove, i: $i");
                       listState.removeItem(i, (context, animation) {
                         return SizeTransition(
                           sizeFactor: animation,

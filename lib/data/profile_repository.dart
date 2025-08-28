@@ -6,7 +6,6 @@ import 'package:app/data/general/notification/state/profile_text_moderation_comp
 import 'package:app/utils/api.dart';
 import 'package:app/utils/stream.dart';
 import 'package:async/async.dart' show StreamExtensions;
-import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:app/api/server_connection_manager.dart';
 import 'package:app/data/account_repository.dart';
@@ -21,8 +20,6 @@ import 'package:app/utils/app_error.dart';
 import 'package:app/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:utils/utils.dart';
-
-var log = Logger("ProfileRepository");
 
 class ProfileRepository extends DataRepositoryWithLifecycle {
   final ConnectedActionScheduler syncHandler;

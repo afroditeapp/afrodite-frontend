@@ -10,7 +10,7 @@ import 'package:app/localizations.dart';
 import "package:app/ui_utils/consts/corners.dart";
 import "package:app/ui_utils/image.dart";
 
-final log = Logger("CropImageScreen");
+final _log = Logger("CropImageScreen");
 
 class CropImageFileContent {
   CropImageFileContent(this.imageOwner, this.imageId, this.imgWidth, this.imgHeight, this.cropArea);
@@ -89,11 +89,11 @@ class _CropImageScreenState extends State<CropImageScreen> {
           cacheSize: ImageCacheSize.maxDisplaySize(),
         );
 
-        log.fine("Constraints: $constraints");
-        log.fine("Image width: $imgWidth");
-        log.fine("Image height: $imgHeight");
-        log.fine("Image widget width: $imgWidgetWidth");
-        log.fine("Image widget height: $imgWidgetHeight");
+        _log.fine("Constraints: $constraints");
+        _log.fine("Image width: $imgWidth");
+        _log.fine("Image height: $imgHeight");
+        _log.fine("Image widget width: $imgWidgetWidth");
+        _log.fine("Image widget height: $imgWidgetHeight");
 
         final selectionMaxSize = min(imgWidgetWidth, imgWidgetHeight);
 

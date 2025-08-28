@@ -24,7 +24,7 @@ import 'package:app/ui/normal/settings/media/content_management.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/result.dart';
 
-final log = Logger("NotificationPayloadHandler");
+final _log = Logger("NotificationPayloadHandler");
 
 class NotificationPayloadHandler extends StatefulWidget {
   const NotificationPayloadHandler({super.key});
@@ -110,7 +110,7 @@ Future<NewPageDetails?> handlePayload(
     (db) => db.loginSession.watchAccountId(),
   );
   if (currentAccountId == null || currentAccountId != payload.receiverAccountId) {
-    log.warning(
+    _log.warning(
       "Notification payload receiver account ID does not match current session account ID",
     );
     if (showError) {

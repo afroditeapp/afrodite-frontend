@@ -5,7 +5,7 @@ import 'package:logging/logging.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
 
-final log = Logger("DbDirUtils");
+final _log = Logger("DbDirUtils");
 
 /// TODO(quality): Error handling
 class DbDirUtils {
@@ -59,7 +59,7 @@ class DatabaseRemoverImpl extends DatabaseRemover {
     if (await dir.exists()) {
       await dir.delete(recursive: true);
       await DbDirUtils._dbDirPath(); // Recreate the directory
-      log.info("Databases directory recreated");
+      _log.info("Databases directory recreated");
     }
   }
 }

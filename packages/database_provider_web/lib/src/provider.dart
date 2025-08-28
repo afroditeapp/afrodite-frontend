@@ -4,7 +4,7 @@ import 'package:drift/wasm.dart';
 import 'package:logging/logging.dart';
 import 'package:utils/utils.dart';
 
-final log = Logger("DbProviderWeb");
+final _log = Logger("DbProviderWeb");
 
 class DbProvider implements QueryExcecutorProvider {
   final DbFile db;
@@ -22,9 +22,9 @@ class DbProvider implements QueryExcecutorProvider {
           driftWorkerUri: Uri.parse("drift_worker.js"),
         );
 
-        log.info("Drift database implementation: ${result.chosenImplementation.name}");
+        _log.info("Drift database implementation: ${result.chosenImplementation.name}");
         if (result.missingFeatures.isNotEmpty) {
-          log.error("Drift database missing features: ${result.missingFeatures}");
+          _log.error("Drift database missing features: ${result.missingFeatures}");
         }
 
         return result.resolvedExecutor;

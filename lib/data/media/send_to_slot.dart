@@ -10,7 +10,7 @@ import 'package:app/utils/cancellation_token.dart';
 import 'package:app/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
 
-var log = Logger("SendToSlotTask");
+final _log = Logger("SendToSlotTask");
 
 sealed class SendToSlotEvent {}
 
@@ -134,7 +134,7 @@ class SendImageToSlotTask {
           }
         }
       } on TimeoutException {
-        log.warning("Timeout while waiting for content processing state");
+        _log.warning("Timeout while waiting for content processing state");
         if (token.isCancelled) {
           return;
         }

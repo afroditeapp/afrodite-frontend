@@ -12,7 +12,6 @@ import 'package:app/ui_utils/profile_thumbnail_image_or_error.dart';
 import 'package:app/ui_utils/paged_grid_logic.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:app/data/image_cache.dart';
 import 'package:app/data/login_repository.dart';
@@ -35,8 +34,6 @@ import 'package:app/ui_utils/scroll_controller.dart';
 import 'package:app/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:utils/utils.dart';
-
-var log = Logger("ProfileGrid");
 
 class ProfileGrid extends StatefulWidget {
   final ProfileFiltersBloc profileFiltersBloc;

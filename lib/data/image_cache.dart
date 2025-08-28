@@ -10,7 +10,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
-import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:app/data/media_repository.dart';
 import 'package:app/storage/encryption.dart';
@@ -19,8 +18,6 @@ import 'package:utils/utils.dart';
 
 import 'package:image/image.dart' as img;
 import 'package:app/model/freezed/utils/account_img_key.dart';
-
-var log = Logger("ImageCacheData");
 
 class ImageCacheData extends AppSingleton {
   ImageCacheData._private()

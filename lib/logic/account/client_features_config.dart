@@ -8,7 +8,7 @@ import "package:logging/logging.dart";
 import "package:openapi/api.dart";
 import "package:utils/utils.dart";
 
-final log = Logger("ClientFeaturesConfigBloc");
+final _log = Logger("ClientFeaturesConfigBloc");
 
 sealed class ClientFeaturesConfigEvent {}
 
@@ -37,7 +37,7 @@ class ClientFeaturesConfigBloc extends Bloc<ClientFeaturesConfigEvent, ClientFea
         try {
           profileNameRegex = RegExp(regex);
         } catch (_) {
-          log.error("Invalid profile name regex");
+          _log.error("Invalid profile name regex");
         }
       }
       emit(state.copyWith(config: data.value, profileNameRegex: profileNameRegex));

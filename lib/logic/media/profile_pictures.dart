@@ -5,12 +5,9 @@ import "package:app/ui_utils/snack_bar.dart";
 import "package:app/utils/result.dart";
 import "package:collection/collection.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
-import "package:logging/logging.dart";
 import "package:app/model/freezed/logic/media/profile_pictures.dart";
 import "package:app/ui_utils/crop_image_screen.dart";
 import "package:openapi/api.dart";
-
-final log = Logger("ProfilePicturesBloc");
 
 sealed class ProfilePicturesEvent {}
 

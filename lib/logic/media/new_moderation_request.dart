@@ -1,10 +1,7 @@
 import "package:flutter_bloc/flutter_bloc.dart";
-import "package:logging/logging.dart";
 import "package:openapi/api.dart";
 import "package:app/model/freezed/logic/media/new_moderation_request.dart";
 import "package:app/utils.dart";
-
-final log = Logger("NewModerationRequestBloc");
 
 sealed class NewModerationRequestEvent {}
 

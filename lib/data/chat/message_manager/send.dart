@@ -19,7 +19,7 @@ import 'package:app/data/chat/message_manager/utils.dart';
 import 'package:utils/utils.dart';
 import 'package:app/utils/result.dart';
 
-final log = Logger("SendMessageUtils");
+final _log = Logger("SendMessageUtils");
 
 class SendMessageUtils {
   final MessageKeyManager messageKeyManager;
@@ -171,7 +171,7 @@ class SendMessageUtils {
     );
 
     if (encryptedMessage == null) {
-      log.error("Message encryption error: $encryptingResult");
+      _log.error("Message encryption error: $encryptingResult");
       yield ErrorAfterMessageSaving(localId);
       return;
     }
@@ -180,7 +180,7 @@ class SendMessageUtils {
       (db) => db.message.updateSymmetricMessageEncryptionKey(localId, encryptedMessage.sessionKey),
     );
     if (updateSymmetricEncryptionKeyResult.isErr()) {
-      log.error("Updating symmetric encryption key failed");
+      _log.error("Updating symmetric encryption key failed");
       yield ErrorAfterMessageSaving(localId);
       return;
     }
@@ -227,7 +227,7 @@ class SendMessageUtils {
         } else {
           messageSenderAcknowledgementTried = true;
 
-          log.error("Send message error: too many sender acknowledgements missing");
+          _log.error("Send message error: too many sender acknowledgements missing");
 
           final acknowledgeResult = await markSentMessagesAcknowledged(clientId);
           if (acknowledgeResult.isErr()) {
@@ -242,14 +242,14 @@ class SendMessageUtils {
         // This should not happen as client sends new public key to server
         // if needed on login.
 
-        log.error("Send message error: sender public key outdated");
+        _log.error("Send message error: sender public key outdated");
 
         yield ErrorAfterMessageSaving(localId);
         return;
       }
 
       if (result.errorReceiverPublicKeyOutdated) {
-        log.error("Send message error: receiver public key outdated");
+        _log.error("Send message error: receiver public key outdated");
 
         await publicKeyUtils.getLatestPublicKeyForForeignAccount(accountId);
         // Show possible key change info to user
@@ -274,7 +274,7 @@ class SendMessageUtils {
         backendSignedPgpMessage,
       );
       if (backendSignedMessage == null) {
-        log.error(
+        _log.error(
           "Send message error: get message content failed, error: $getMessageContentResult",
         );
         yield ErrorAfterMessageSaving(localId);

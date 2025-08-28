@@ -6,7 +6,7 @@ import 'package:app/localizations.dart';
 import 'package:utils/utils.dart';
 import 'package:rxdart/rxdart.dart';
 
-var log = Logger("CameraManager");
+final _log = Logger("CameraManager");
 
 sealed class CameraInitError {
   String get message {
@@ -104,12 +104,12 @@ class CameraManager extends AppSingleton {
     _cmds.stream.asyncMap((event) async => await _runCmd(event)).listen((event) {});
 
     _state.stream.listen((event) {
-      log.fine("CameraManagerState: $event");
+      _log.fine("CameraManagerState: $event");
     });
   }
 
   Future<void> _runCmd(CameraManagerCmd cmd) async {
-    log.fine("start CameraManagerCmd: $cmd");
+    _log.fine("start CameraManagerCmd: $cmd");
     switch (cmd) {
       case OpenCmd():
         await _openCameraCmd();
@@ -120,7 +120,7 @@ class CameraManager extends AppSingleton {
       case EventDisposeComplete():
         await _disposeCompleted();
     }
-    log.fine("end CameraManagerCmd: $cmd");
+    _log.fine("end CameraManagerCmd: $cmd");
   }
 
   Future<void> _initAvailableCameras() async {
@@ -130,7 +130,7 @@ class CameraManager extends AppSingleton {
     _availableCamerasInitComplete = true;
 
     final cameras = await availableCameras();
-    log.fine(cameras);
+    _log.fine(cameras);
     final frontCameras = cameras
         .where((element) => element.lensDirection == CameraLensDirection.front)
         .toList();
@@ -151,13 +151,13 @@ class CameraManager extends AppSingleton {
     switch (_currentState) {
       case DisposeOngoing():
         {
-          log.info("Open camera again after camera disposing is done");
+          _log.info("Open camera again after camera disposing is done");
           _action = ScheduledAction.openCameraAgain;
           return;
         }
       case Open():
         {
-          log.info("Camera already open");
+          _log.info("Camera already open");
           return;
         }
       case Closed():
@@ -185,12 +185,12 @@ class CameraManager extends AppSingleton {
       ]);
 
       if (timeout) {
-        log.error("Camera init timeout, deadlock debug value $_deadlockDebugValue");
+        _log.error("Camera init timeout, deadlock debug value $_deadlockDebugValue");
         error = InitFailedWithErrorCode(_deadlockDebugValue);
       }
     } on CameraException catch (e) {
-      log.error("Camera init failed");
-      log.fine(e);
+      _log.error("Camera init failed");
+      _log.fine(e);
       error = switch (e.code) {
         "CameraAccessDenied" => NoCameraPermissionTryAgainOrCheckSettings(),
         "CameraAccessDeniedWithoutPrompt" => NoCameraPermissionCheckSettings(),
@@ -202,7 +202,7 @@ class CameraManager extends AppSingleton {
     if (error == null) {
       _state.add(Open(CameraControllerWrapper(controller)));
     } else {
-      log.info("Camera init failed: $error");
+      _log.info("Camera init failed: $error");
       await controller.dispose();
       _state.add(Closed(error));
     }
@@ -289,7 +289,7 @@ class CameraManager extends AppSingleton {
   }
 
   Stream<CameraManagerState> openNewControllerAndThenEvents() async* {
-    log.info("openNewAndThenEvents");
+    _log.info("openNewAndThenEvents");
 
     sendCmd(CloseCmd());
     await _state.firstWhere((element) => element is Closed);
@@ -306,7 +306,7 @@ class CameraManager extends AppSingleton {
   }
 
   Stream<CameraManagerState> stateEvents() async* {
-    log.info("stateEvents");
+    _log.info("stateEvents");
     yield* _state;
   }
 }

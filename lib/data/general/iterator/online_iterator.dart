@@ -16,7 +16,7 @@ import 'package:app/database/account_database_manager.dart';
 import 'package:utils/utils.dart';
 import 'package:app/utils/result.dart';
 
-final log = Logger("OnlineIterator");
+final _log = Logger("OnlineIterator");
 
 class OnlineIterator extends IteratorType {
   int currentIndex = 0;
@@ -54,7 +54,7 @@ class OnlineIterator extends IteratorType {
   Future<Result<List<ProfileEntry>, ()>> nextList() async {
     if (_resetServerIterator) {
       if (await connectionManager.waitUntilCurrentSessionConnects().isErr()) {
-        log.error("Connection waiting failed");
+        _log.error("Connection waiting failed");
         return const Err(());
       }
 
@@ -62,7 +62,7 @@ class OnlineIterator extends IteratorType {
         case Ok():
           _resetServerIterator = false;
         case Err():
-          log.error("Profile paging reset failed");
+          _log.error("Profile paging reset failed");
           return const Err(());
       }
     }
@@ -79,26 +79,26 @@ class OnlineIterator extends IteratorType {
             io.setDatabaseIteratorToNull();
           }
         case Err():
-          log.error("Database iterator failed");
+          _log.error("Database iterator failed");
           return const Err(());
       }
     }
 
     if (!await io.loadIteratorSessionIdFromDbAndReturnTrueIfItExists()) {
-      log.error("No iterator session ID in database");
+      _log.error("No iterator session ID in database");
       return const Err(());
     }
 
     final List<ProfileEntry> list = List.empty(growable: true);
     while (true) {
       if (await connectionManager.waitUntilCurrentSessionConnects().isErr()) {
-        log.error("Connection waiting failed");
+        _log.error("Connection waiting failed");
         return const Err(());
       }
       switch (await io.nextServerPage()) {
         case Ok(value: final profiles):
           if (profiles.errorInvalidIteratorSessionId) {
-            log.error("Current iterator session ID is invalid");
+            _log.error("Current iterator session ID is invalid");
             return const Err(());
           }
 
@@ -145,7 +145,7 @@ class OnlineIterator extends IteratorType {
             continue;
           }
         case Err():
-          log.error("Profile page fetching failed");
+          _log.error("Profile page fetching failed");
           return const Err(());
       }
 

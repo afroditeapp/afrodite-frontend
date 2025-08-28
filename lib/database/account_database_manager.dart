@@ -8,7 +8,7 @@ import 'package:app/utils/app_error.dart';
 import 'package:app/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
 
-final log = Logger("AccountDatabaseManager");
+final _log = Logger("AccountDatabaseManager");
 
 class AccountDatabaseManager {
   final AccountForegroundDatabase db;
@@ -115,6 +115,6 @@ class AccountDatabaseManager {
 
 Result<Success, DatabaseException> _handleDbException<Success>(Exception e) {
   final dbException = DatabaseException(e);
-  dbException.logError(log);
+  dbException.logError(_log);
   return Err(dbException);
 }

@@ -5,7 +5,6 @@ import "package:app/ui_utils/snack_bar.dart";
 import "package:app/utils.dart";
 import "package:database/database.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
-import "package:logging/logging.dart";
 import "package:openapi/api.dart";
 import "package:app/api/server_connection_manager.dart";
 import "package:app/data/image_cache.dart";
@@ -14,8 +13,6 @@ import "package:app/data/login_repository.dart";
 import "package:app/data/media_repository.dart";
 import "package:app/database/account_database_manager.dart";
 import "package:app/model/freezed/logic/media/content.dart";
-
-final log = Logger("ContentBloc");
 
 sealed class ContentEvent {}
 

@@ -27,7 +27,7 @@ import 'package:app/ui_utils/app_bar/menu_actions.dart';
 import 'package:app/ui_utils/list.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 
-var log = Logger("ConversationPage");
+final _log = Logger("ConversationPage");
 
 void openConversationScreen(BuildContext context, ProfileEntry profile) {
   final details = newConversationPage(profile);
@@ -71,7 +71,7 @@ class ConversationPageState extends State<ConversationPage> {
   @override
   void initState() {
     super.initState();
-    log.finest("Opening conversation for account: ${widget.profileEntry.accountId}");
+    _log.finest("Opening conversation for account: ${widget.profileEntry.accountId}");
   }
 
   @override

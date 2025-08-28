@@ -15,7 +15,7 @@ import "package:app/utils/image.dart";
 
 import 'package:image/image.dart' as img;
 
-var log = Logger("CameraScreen");
+final _log = Logger("CameraScreen");
 
 sealed class CameraInitState {}
 
@@ -100,12 +100,12 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    log.fine(state);
+    _log.fine(state);
 
     final c = controller;
     final s = cameraInitState;
     if (state == AppLifecycleState.inactive) {
-      log.info("Inactive");
+      _log.info("Inactive");
       controller?.dispose();
       if (mounted) {
         setState(() {
@@ -113,7 +113,7 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
         });
       }
     } else if (state == AppLifecycleState.resumed && c == null && s is InitSuccessful) {
-      log.info("Resumed");
+      _log.info("Resumed");
       CameraManager.getInstance().sendCmd(OpenCmd());
     }
   }
@@ -138,10 +138,10 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
           });
         });
       }
-      log.info("Simulating camera preview");
+      _log.info("Simulating camera preview");
       preview = simulateCameraPreview(context);
     } else {
-      log.info("Camera preview possible");
+      _log.info("Camera preview possible");
       preview = cameraPreview(context, currentCamera);
     }
 
@@ -154,7 +154,7 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
   Widget cameraPreview(BuildContext context, CameraController currentCamera) {
     final size = currentCamera.value.previewSize;
     if (size == null) {
-      log.info("Preview size null, simulating camera preview");
+      _log.info("Preview size null, simulating camera preview");
       return simulateCameraPreview(context);
     }
 
@@ -276,8 +276,8 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
     try {
       file = await currentCamera.takePicture();
     } on CameraException catch (e) {
-      log.error("Take picture error");
-      log.fine(e);
+      _log.error("Take picture error");
+      _log.fine(e);
       if (mounted) {
         showSnackBar(R.strings.camera_screen_take_photo_error);
       }
@@ -316,8 +316,8 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
       logFinalImageFileSize(finalImgBytes.length);
       return finalImgBytes;
     } on img.ImageException catch (e) {
-      log.error("Image processing error");
-      log.fine(e);
+      _log.error("Image processing error");
+      _log.fine(e);
       return null;
     }
   }
@@ -325,11 +325,11 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
 
 void logFinalImageFileSize(int byteCount) {
   final kb = byteCount / 1024;
-  log.fine("Image size: $kb KB");
+  _log.fine("Image size: $kb KB");
 }
 
 void logImageSize(img.Image imgData, String info) {
-  log.fine("$info size: ${imgData.width}x${imgData.height}");
+  _log.fine("$info size: ${imgData.width}x${imgData.height}");
 }
 
 Future<img.Image> cropToAspectRatio43(img.Image imgData) async {
@@ -338,7 +338,7 @@ Future<img.Image> cropToAspectRatio43(img.Image imgData) async {
   final img.Image croppedImage;
   if (imgData.width > imgData.height) {
     final newWidth = imgData.width * factor;
-    log.fine("newWidth: $newWidth");
+    _log.fine("newWidth: $newWidth");
     croppedImage = img.copyCrop(
       imgData,
       x: 0,
@@ -348,7 +348,7 @@ Future<img.Image> cropToAspectRatio43(img.Image imgData) async {
     );
   } else {
     final newHeight = imgData.height * factor;
-    log.fine("newHeight: $newHeight");
+    _log.fine("newHeight: $newHeight");
     croppedImage = img.copyCrop(
       imgData,
       x: 0,

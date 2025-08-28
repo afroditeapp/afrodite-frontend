@@ -24,7 +24,7 @@ import "package:app/ui_utils/snack_bar.dart";
 import "package:app/utils.dart";
 import "package:app/utils/immutable_list.dart";
 
-final log = Logger("InitialSetupBloc");
+final _log = Logger("InitialSetupBloc");
 
 sealed class InitialSetupEvent {}
 
@@ -220,7 +220,7 @@ class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData> with Ac
       );
 
       if (error != null) {
-        log.error("Developer initial setup failed: $error");
+        _log.error("Developer initial setup failed: $error");
         showSnackBar(R.strings.generic_error_occurred);
       }
 

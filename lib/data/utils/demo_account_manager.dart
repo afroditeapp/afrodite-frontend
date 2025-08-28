@@ -11,7 +11,7 @@ import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
 
-final log = Logger("DemoAccountManager");
+final _log = Logger("DemoAccountManager");
 
 class DemoAccountManager {
   final BehaviorSubject<bool> _demoAccountLoginProgress = BehaviorSubject.seeded(false);
@@ -71,7 +71,7 @@ class DemoAccountManager {
   }
 
   Future<void> demoAccountLogout({required ApiManager apiNoConnection}) async {
-    log.info("demo account logout");
+    _log.info("demo account logout");
 
     final token = await demoAccountToken.first;
     if (token != null) {
@@ -87,7 +87,7 @@ class DemoAccountManager {
       (db) => db.demoAccount.updateDemoAccountToken(null),
     );
 
-    log.info("demo account logout completed");
+    _log.info("demo account logout completed");
   }
 
   Future<Result<List<AccessibleAccount>, SessionOrOtherError>> demoAccountGetAccounts({

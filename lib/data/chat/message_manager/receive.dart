@@ -19,7 +19,7 @@ import 'package:utils/utils.dart';
 import 'package:app/utils/iterator.dart';
 import 'package:app/utils/result.dart';
 
-final log = Logger("ReceiveMessgeUtils");
+final _log = Logger("ReceiveMessgeUtils");
 
 class ReceiveMessageUtils {
   final MessageKeyManager messageKeyManager;
@@ -169,7 +169,7 @@ class ReceiveMessageUtils {
       (api) => api.postAddReceiverAcknowledgement(toBeAcknowledgedList),
     );
     if (result.isErr()) {
-      log.error("Receive messages: acknowleding the server failed");
+      _log.error("Receive messages: acknowleding the server failed");
     }
   }
 
@@ -219,7 +219,7 @@ class ReceiveMessageUtils {
     );
 
     if (decryptResult == null) {
-      log.error("Received message decrypting failed, error: $decryptingResult");
+      _log.error("Received message decrypting failed, error: $decryptingResult");
       return const Err(ReceivedMessageError.decryptingFailed);
     }
 

@@ -12,7 +12,7 @@ import 'package:app/database/account_background_database_manager.dart';
 import 'package:utils/utils.dart';
 import 'package:rxdart/rxdart.dart';
 
-var log = Logger("NotificationManager");
+final _log = Logger("NotificationManager");
 
 const int _ANDROID_13_API_LEVEL = 33;
 const int ANDROID_8_API_LEVEL = 26;
@@ -68,9 +68,9 @@ class NotificationManager extends AppSingleton {
     );
 
     if (result == true) {
-      log.info("Local notifications initialized");
+      _log.info("Local notifications initialized");
     } else {
-      log.error("Failed to initialize local notifications");
+      _log.error("Failed to initialize local notifications");
     }
 
     _osSupportsNotificationPermission = await _notificationPermissionShouldBeAsked();
@@ -254,7 +254,7 @@ class NotificationManager extends AppSingleton {
           .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
           ?.getNotificationChannels();
       if (channels == null) {
-        log.error("Failed to get notification channels list");
+        _log.error("Failed to get notification channels list");
         return [];
       }
 

@@ -19,7 +19,7 @@ import 'package:app/utils/option.dart';
 import 'package:app/utils/result.dart';
 import 'package:utils/utils.dart';
 
-var log = Logger("MediaRepository");
+final _log = Logger("MediaRepository");
 
 class MediaRepository extends DataRepositoryWithLifecycle {
   final ConnectedActionScheduler syncHandler;
@@ -82,7 +82,7 @@ class MediaRepository extends DataRepositoryWithLifecycle {
 
   Future<Uint8List?> getImage(AccountId imageOwner, ContentId id, {bool isMatch = false}) => api
       .media((api) => api.getContentFixed(imageOwner.aid, id.cid, isMatch))
-      .onErr(() => log.error("Image loading error"))
+      .onErr(() => _log.error("Image loading error"))
       .ok();
 
   Future<MapTileResult> getMapTile(int z, int x, int y) async {

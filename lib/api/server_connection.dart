@@ -23,7 +23,7 @@ import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/status.dart' as status;
 
-var log = Logger("ServerConnection");
+final _log = Logger("ServerConnection");
 
 enum ServerConnectionError {
   /// Invalid token, so new login required.
@@ -143,8 +143,8 @@ class ServerConnection {
       } catch (e) {
         // TODO(prod): Change so that it is possible to detect
         //             ServerConnectionError.invalidToken.
-        log.error("Server connection: WebScocket connecting exception");
-        log.fine(e);
+        _log.error("Server connection: WebScocket connecting exception");
+        _log.fine(e);
         return const Err(ServerConnectionError.connectionFailure);
       }
     } else {
@@ -168,12 +168,12 @@ class ServerConnection {
       try {
         response = await client.send(request);
       } on ClientException catch (e) {
-        log.error("Server connection: client exception");
-        log.fine(e);
+        _log.error("Server connection: client exception");
+        _log.fine(e);
         return const Err(ServerConnectionError.connectionFailure);
       } on HandshakeException catch (e) {
-        log.error("Server connection: handshake exception");
-        log.fine(e);
+        _log.error("Server connection: handshake exception");
+        _log.fine(e);
         return const Err(ServerConnectionError.connectionFailure);
       }
 
@@ -251,17 +251,17 @@ class ServerConnection {
         .listen(
           null,
           onError: (Object error) {
-            log.error("Connection exception");
-            log.fine("$error");
+            _log.error("Connection exception");
+            _log.fine("$error");
             _endConnectionToGeneralError();
           },
           onDone: () {
             if (_connection.connection.closeCode != null &&
                 _connection.connection.closeCode == status.internalServerError) {
-              log.error("Invalid token");
+              _log.error("Invalid token");
               _state.add(Closed(ServerConnectionError.invalidToken));
             } else {
-              log.error("Connection closed");
+              _log.error("Connection closed");
               _state.add(Closed(ServerConnectionError.connectionFailure));
             }
             _connection.close();
@@ -273,7 +273,7 @@ class ServerConnection {
   Future<void> handleConnectionIsReadyForDataSync(AccessToken token) async {
     _connection.connection.sink.add(await syncDataBytes(db, accountBackgroundDb));
     _protocolState = ConnectionProtocolState.receiveEvents;
-    log.info("Connection ready");
+    _log.info("Connection ready");
     _state.add(Ready(token));
     _navigationSubscription = NavigationStateBlocInstance.getInstance().navigationStateStream
         .listen((navigationState) {

@@ -13,7 +13,7 @@ import "package:app/model/freezed/logic/profile/view_profiles.dart";
 import "package:app/utils.dart";
 import "package:app/utils/result.dart";
 
-final log = Logger("ViewProfilesBloc");
+final _log = Logger("ViewProfilesBloc");
 
 sealed class ViewProfileEvent {}
 
@@ -115,7 +115,7 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData> with Acti
           ();
         case GetProfileFailed():
           // No extra logic needed for errors as global error messages are enough.
-          log.warning("Received GetProfileFailed");
+          _log.warning("Received GetProfileFailed");
       }
     });
     on<HandleProfileChange>((data, emit) async {
