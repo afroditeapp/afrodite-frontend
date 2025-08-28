@@ -897,12 +897,11 @@ packages:
   infinite_scroll_pagination:
     dependency: "direct main"
     description:
-      path: "."
-      ref: "840c03963a8bf20090f0d6f5f1f078128dabddd7"
-      resolved-ref: "840c03963a8bf20090f0d6f5f1f078128dabddd7"
-      url: "https://github.com/jutuon/infinite_scroll_pagination.git"
-    source: git
-    version: "5.1.0"
+      name: infinite_scroll_pagination
+      sha256: b0d28e37cd8f62490ff6aef63f9db93d4c78b7f11b7c6b26f33c69d8476fda78
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.1.1"
   intl:
     dependency: "direct main"
     description:
