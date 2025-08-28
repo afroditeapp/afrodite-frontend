@@ -2,13 +2,13 @@ import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
-import 'package:web_socket_channel/web_socket_channel.dart';
+import 'package:web_socket/web_socket.dart' as ws;
 
 const _CONVERSATION_PING_INTERVAL = Duration(seconds: 10);
 const _DEFAULT_PING_INTERVAL = Duration(minutes: 5);
 
 class WebSocketWrapper {
-  final WebSocketChannel connection;
+  final ws.WebSocket connection;
   WebSocketWrapper(this.connection);
 
   bool _closed = false;
@@ -30,8 +30,10 @@ class WebSocketWrapper {
     _defaultPingTimer = null;
     await p?.cancel();
     await p2?.cancel();
-    if (connection.closeCode == null) {
-      await connection.sink.close();
+    try {
+      await connection.close();
+    } catch (_) {
+      // Ignore errors
     }
   }
 
@@ -54,8 +56,12 @@ class WebSocketWrapper {
     }
 
     _defaultPingTimer ??= Stream<void>.periodic(_DEFAULT_PING_INTERVAL, (_) {
-      if (!_closed && connection.closeCode == null) {
-        connection.sink.add(Uint8List(0)); // Server ignores empty binary messages
+      if (!_closed) {
+        try {
+          connection.sendBytes(Uint8List(0)); // Server ignores empty binary messages
+        } catch (_) {
+          // Ignore errors
+        }
       }
     }).listen((_) {});
   }
@@ -68,8 +74,12 @@ class WebSocketWrapper {
     _extraPingTimerInterval = interval;
     if (interval != null) {
       _extraPingTimer = Stream<void>.periodic(interval, (_) {
-        if (!_closed && connection.closeCode == null) {
-          connection.sink.add(Uint8List(0)); // Server ignores empty binary messages
+        if (!_closed) {
+          try {
+            connection.sendBytes(Uint8List(0)); // Server ignores empty binary messages
+          } catch (_) {
+            // Ignore errors
+          }
         }
       }).listen((_) {});
     }

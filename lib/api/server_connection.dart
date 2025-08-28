@@ -19,9 +19,8 @@ import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:utils/utils.dart';
 import 'package:app/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:web_socket_channel/web_socket_channel.dart';
-import 'package:web_socket_channel/io.dart';
-import 'package:web_socket_channel/status.dart' as status;
+import 'package:web_socket/web_socket.dart' as ws;
+import 'package:web_socket/io_web_socket.dart';
 
 final _log = Logger("ServerConnection");
 
@@ -130,15 +129,15 @@ class ServerConnection {
   ) async {
     final websocketAddress = _addWebSocketRoutePathToAddress(serverAddress);
 
-    final WebSocketWrapper ws;
+    final WebSocketWrapper webSocketWrapper;
     if (kIsWeb) {
       if (!websocketAddress.startsWith("http")) {
         throw UnsupportedError("Unsupported URI scheme");
       }
       final wsAddress = Uri.parse(websocketAddress.replaceFirst("http", "ws"));
       try {
-        ws = WebSocketWrapper(
-          WebSocketChannel.connect(wsAddress, protocols: ["0", accessToken.token]),
+        webSocketWrapper = WebSocketWrapper(
+          await ws.WebSocket.connect(wsAddress, protocols: ["0", accessToken.token]),
         );
       } catch (e) {
         // TODO(prod): Change so that it is possible to detect
@@ -187,29 +186,38 @@ class ServerConnection {
         await response.detachSocket(),
         serverSide: false,
       );
-      ws = WebSocketWrapper(IOWebSocketChannel(webSocket));
+      webSocketWrapper = WebSocketWrapper(IOWebSocket.fromWebSocket(webSocket));
     }
 
-    final connection = ServerConnection._(ws, db, accountBackgroundDb, serverEvents);
+    final connection = ServerConnection._(webSocketWrapper, db, accountBackgroundDb, serverEvents);
     connection._handleConnection(accessToken, refreshToken);
     return Ok(connection);
   }
 
   void _handleConnection(AccessToken accessToken, RefreshToken refreshToken) {
-    // Client starts the messaging
-    _connection.connection.sink.add(clientVersionInfoBytes());
+    try {
+      // Client starts the messaging
+      _connection.connection.sendBytes(clientVersionInfoBytes());
+    } catch (_) {
+      _endConnectionToGeneralError();
+      return;
+    }
 
-    _connectionSubscription = _connection.connection.stream
+    _connectionSubscription = _connection.connection.events
         .asyncMap((message) async {
+          if (message is ws.CloseReceived) {
+            await _endConnectionToGeneralError();
+            return;
+          }
           switch (_protocolState) {
             case ConnectionProtocolState.receiveFirstMessage:
-              if (message is List<int>) {
-                switch (message) {
+              if (message is ws.BinaryDataReceived) {
+                switch (message.data) {
                   case [0]:
                     await handleConnectionIsReadyForDataSync(accessToken);
                   case [1]:
                     final byteToken = base64Decode(refreshToken.token);
-                    _connection.connection.sink.add(byteToken);
+                    _connection.connection.sendBytes(byteToken);
                     _protocolState = ConnectionProtocolState.receiveNewRefreshToken;
                   case [2]:
                     await _endConnectionToGeneralError(
@@ -222,17 +230,17 @@ class ServerConnection {
                 await _endConnectionToGeneralError();
               }
             case ConnectionProtocolState.receiveNewRefreshToken:
-              if (message is List<int>) {
-                final newRefreshToken = RefreshToken(token: base64Encode(message));
+              if (message is ws.BinaryDataReceived) {
+                final newRefreshToken = RefreshToken(token: base64Encode(message.data));
                 await db.accountAction((db) => db.loginSession.updateRefreshToken(newRefreshToken));
                 _protocolState = ConnectionProtocolState.receiveNewAccessToken;
               } else {
                 await _endConnectionToGeneralError();
               }
             case ConnectionProtocolState.receiveNewAccessToken:
-              if (message is List<int>) {
+              if (message is ws.BinaryDataReceived) {
                 final newAccessToken = AccessToken(
-                  token: base64Url.encode(message).replaceAll("=", ""),
+                  token: base64Url.encode(message.data).replaceAll("=", ""),
                 );
                 await db.accountAction((db) => db.loginSession.updateAccessToken(newAccessToken));
                 await handleConnectionIsReadyForDataSync(newAccessToken);
@@ -240,8 +248,8 @@ class ServerConnection {
                 await _endConnectionToGeneralError();
               }
             case ConnectionProtocolState.receiveEvents:
-              if (message is String) {
-                final event = EventToClient.fromJson(jsonDecode(message));
+              if (message is ws.TextDataReceived) {
+                final event = EventToClient.fromJson(jsonDecode(message.text));
                 if (event != null) {
                   _serverEvents.add(EventToClientContainer(event));
                 }
@@ -251,27 +259,16 @@ class ServerConnection {
         .listen(
           null,
           onError: (Object error) {
-            _log.error("Connection exception");
+            _log.error("Connection message handling exception");
             _log.fine("$error");
             _endConnectionToGeneralError();
-          },
-          onDone: () {
-            if (_connection.connection.closeCode != null &&
-                _connection.connection.closeCode == status.internalServerError) {
-              _log.error("Invalid token");
-              _state.add(Closed(ServerConnectionError.invalidToken));
-            } else {
-              _log.error("Connection closed");
-              _state.add(Closed(ServerConnectionError.connectionFailure));
-            }
-            _connection.close();
           },
           cancelOnError: true,
         );
   }
 
   Future<void> handleConnectionIsReadyForDataSync(AccessToken token) async {
-    _connection.connection.sink.add(await syncDataBytes(db, accountBackgroundDb));
+    _connection.connection.sendBytes(await syncDataBytes(db, accountBackgroundDb));
     _protocolState = ConnectionProtocolState.receiveEvents;
     _log.info("Connection ready");
     _state.add(Ready(token));
@@ -288,10 +285,10 @@ class ServerConnection {
       return;
     }
     _isClosed = true;
-    await _connection.close();
-    _state.add(Closed(error));
     await _connectionSubscription?.cancel();
     await _navigationSubscription?.cancel();
+    await _connection.close();
+    _state.add(Closed(error));
   }
 
   Future<void> close() async {
@@ -299,10 +296,10 @@ class ServerConnection {
       return;
     }
     _isClosed = true;
-    await _connection.close();
-    _state.add(Closed(null));
     await _connectionSubscription?.cancel();
     await _navigationSubscription?.cancel();
+    await _connection.close();
+    _state.add(Closed(null));
   }
 }
 
