@@ -52,7 +52,7 @@ class SignInWithGoogleManager {
               case GoogleSignInAuthenticationEventSignIn():
                 final possibleToken = signedIn.user.authentication.idToken;
                 if (possibleToken == null) {
-                  showSnackBarTextsForSignInWithEvent(SignInWithEvent.getTokenFailed);
+                  showSnackBarTextsForSignInWithEvent(SignInWithGetTokenFailed());
                   return;
                 }
                 token = possibleToken;

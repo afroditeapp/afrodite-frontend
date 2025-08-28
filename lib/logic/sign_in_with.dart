@@ -31,17 +31,8 @@ class SignInWithBloc extends Bloc<SignInWithBlocEvent, SignInWithData> with Acti
     Stream<SignInWithEvent> stream,
   ) async {
     await for (final event in stream) {
-      switch (event) {
-        case SignInWithEvent.getTokenCompleted:
-          emit(state.copyWith(showProgress: true));
-        case SignInWithEvent.getTokenFailed:
-          ();
-        case SignInWithEvent.serverRequestFailed:
-          ();
-        case SignInWithEvent.unsupportedClient:
-          ();
-        case SignInWithEvent.otherError:
-          ();
+      if (event is SignInWithGetTokenCompleted) {
+        emit(state.copyWith(showProgress: true));
       }
       showSnackBarTextsForSignInWithEvent(event);
     }
@@ -52,15 +43,26 @@ class SignInWithBloc extends Bloc<SignInWithBlocEvent, SignInWithData> with Acti
 
 void showSnackBarTextsForSignInWithEvent(SignInWithEvent event) {
   switch (event) {
-    case SignInWithEvent.getTokenCompleted:
+    case SignInWithGetTokenCompleted():
       ();
-    case SignInWithEvent.getTokenFailed:
+    case SignInWithGetTokenFailed():
       showSnackBar(R.strings.login_screen_sign_in_with_error);
-    case SignInWithEvent.serverRequestFailed:
-      showSnackBar(R.strings.generic_error_occurred);
-    case SignInWithEvent.unsupportedClient:
+    case SignInWithSignInError(:final error):
+      showSnackBarTextsForSignInError(error);
+  }
+}
+
+void showSnackBarTextsForSignInError(CommonSignInError error) {
+  switch (error) {
+    case CommonSignInError.loginApiRequestFailed:
+      showSnackBar(R.strings.login_screen_login_api_request_failed);
+    case CommonSignInError.unsupportedClient:
       showSnackBar(R.strings.generic_error_app_version_is_unsupported);
-    case SignInWithEvent.otherError:
+    case CommonSignInError.creatingConnectingWebSocketFailed:
+      showSnackBar(R.strings.login_screen_connecting_websocket_failed);
+    case CommonSignInError.dataSyncFailed:
+      showSnackBar(R.strings.generic_data_sync_failed);
+    case CommonSignInError.otherError:
       showSnackBar(R.strings.generic_error);
   }
 }

@@ -29,7 +29,7 @@ class SignInWithAppleManager {
     try {
       serverUrl = Uri.parse(currentServerAddress);
     } catch (_) {
-      return const Err(SignInWithEvent.otherError);
+      return Err(SignInWithSignInError(CommonSignInError.otherError));
     }
 
     final nonce = generateNonceBytes().toList();
@@ -50,12 +50,12 @@ class SignInWithAppleManager {
         nonce: hashedNonceBase64Url,
       );
     } on SignInWithAppleException catch (_) {
-      return const Err(SignInWithEvent.getTokenFailed);
+      return Err(SignInWithGetTokenFailed());
     }
 
     final token = signedIn.identityToken;
     if (token == null) {
-      return const Err(SignInWithEvent.getTokenFailed);
+      return Err(SignInWithGetTokenFailed());
     }
 
     return Ok(SignInWithAppleInfo(nonce: nonceBase64Url, token: token));

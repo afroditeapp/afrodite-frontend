@@ -912,6 +912,10 @@
   "@likes_screen_title": {
     "description": "Title for likes screen"
   },
+  "login_screen_connecting_websocket_failed": "Connecting WebSocket failed. Try again later.",
+  "@login_screen_connecting_websocket_failed": {
+    "description": "Snackbar text for connecting WebSocket failed"
+  },
   "login_screen_demo_account_dialog_description": "Login to demo account on the demo account server.",
   "@login_screen_demo_account_dialog_description": {
     "description": "Description for demo account login dialog"
@@ -939,6 +943,10 @@
   "login_screen_demo_account_username": "Username",
   "@login_screen_demo_account_username": {
     "description": "Placeholder text for demo account username"
+  },
+  "login_screen_login_api_request_failed": "Login API request failed. Try again later.",
+  "@login_screen_login_api_request_failed": {
+    "description": "Snackbar text for login API request failed"
   },
   "login_screen_login_note_text_and": "and",
   "@login_screen_login_note_text_and": {

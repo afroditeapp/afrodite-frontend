@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:app/data/app_version.dart';
 import 'package:app/data/login_repository.dart';
+import 'package:app/utils/app_error.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:app/api/server_connection_manager.dart';
@@ -90,91 +91,76 @@ class DemoAccountManager {
     _log.info("demo account logout completed");
   }
 
-  Future<Result<List<AccessibleAccount>, SessionOrOtherError>> demoAccountGetAccounts({
-    required ApiManager apiNoConnection,
-  }) async {
+  Future<Result<DemoAccountToken, DemoAccountError>> _getCurrentToken() async {
     final token = await demoAccountToken.first;
     if (token == null) {
-      return Err(OtherError());
-    }
-    final accounts = await apiNoConnection.accountWrapper().requestValue(
-      (api) => api.postDemoAccountAccessibleAccounts(DemoAccountToken(token: token)),
-    );
-    switch (accounts) {
-      case Ok(:final v):
-        return Ok(v);
-      case Err(:final e):
-        if (e.isUnauthorized()) {
-          await demoAccountLogout(apiNoConnection: apiNoConnection);
-          return Err(SessionExpired());
-        } else {
-          return Err(OtherError());
-        }
+      return Err(DemoAccountLoggedOutFromDemoAccount());
+    } else {
+      return Ok(DemoAccountToken(token: token));
     }
   }
 
-  Future<Result<LoginResult, SessionOrOtherError>> demoAccountRegisterIfNeededAndLogin({
+  Future<DemoAccountError> handleError(
+    ValueApiError e, {
+    required ApiManager apiNoConnection,
+  }) async {
+    if (e.isUnauthorized()) {
+      await demoAccountLogout(apiNoConnection: apiNoConnection);
+      return DemoAccountSessionExpired();
+    } else {
+      return DemoAccountSignInError(CommonSignInError.otherError);
+    }
+  }
+
+  Future<Result<List<AccessibleAccount>, DemoAccountError>> demoAccountGetAccounts({
+    required ApiManager apiNoConnection,
+  }) async {
+    return await _getCurrentToken().andThen(
+      (t) => apiNoConnection
+          .accountWrapper()
+          .requestValue((api) => api.postDemoAccountAccessibleAccounts(t))
+          .mapErr((e) => handleError(e, apiNoConnection: apiNoConnection)),
+    );
+  }
+
+  Future<Result<LoginResult, DemoAccountError>> demoAccountRegisterIfNeededAndLogin({
     required AccountId? id,
     required ApiManager apiNoConnection,
   }) async {
-    final token = await demoAccountToken.first;
-    if (token == null) {
-      return Err(OtherError());
-    }
-    final demoToken = DemoAccountToken(token: token);
-
-    AccountId account;
-    if (id != null) {
-      account = id;
-    } else {
-      final r = await apiNoConnection.accountWrapper().requestValue(
-        (api) => api.postDemoAccountRegisterAccount(demoToken),
-      );
-      switch (r) {
-        case Ok(:final v):
-          account = v;
-        case Err(:final e):
-          if (e.isUnauthorized()) {
-            await demoAccountLogout(apiNoConnection: apiNoConnection);
-            return Err(SessionExpired());
+    return await _getCurrentToken()
+        .andThen((t) async {
+          if (id != null) {
+            return Ok(id);
           } else {
-            return Err(OtherError());
+            return await apiNoConnection
+                .accountWrapper()
+                .requestValue((api) => api.postDemoAccountRegisterAccount(t))
+                .mapErr((e) => handleError(e, apiNoConnection: apiNoConnection));
           }
-      }
-    }
-
-    return await _demoAccountLoginToAccount(account, apiNoConnection: apiNoConnection);
+        })
+        .andThen(
+          (account) => _demoAccountLoginToAccount(account, apiNoConnection: apiNoConnection),
+        );
   }
 
-  Future<Result<LoginResult, SessionOrOtherError>> _demoAccountLoginToAccount(
+  Future<Result<LoginResult, DemoAccountError>> _demoAccountLoginToAccount(
     AccountId id, {
     required ApiManager apiNoConnection,
   }) async {
-    final token = await demoAccountToken.first;
-    if (token == null) {
-      return Err(OtherError());
-    }
-    final demoToken = DemoAccountToken(token: token);
-    final loginResult = await apiNoConnection.accountWrapper().requestValue(
-      (api) => api.postDemoAccountLoginToAccount(
-        DemoAccountLoginToAccount(
-          aid: id,
-          token: demoToken,
-          clientInfo: AppVersionManager.getInstance().clientInfo(),
-        ),
-      ),
+    return await _getCurrentToken().andThen(
+      (t) => apiNoConnection
+          .accountWrapper()
+          .requestValue(
+            (api) => api.postDemoAccountLoginToAccount(
+              DemoAccountLoginToAccount(
+                aid: id,
+                token: t,
+                clientInfo: AppVersionManager.getInstance().clientInfo(),
+              ),
+            ),
+          )
+          .mapErr((e) => handleError(e, apiNoConnection: apiNoConnection)),
     );
-    switch (loginResult) {
-      case Ok(:final v):
-        return Ok(v);
-      case Err(:final e):
-        if (e.isUnauthorized()) {
-          await demoAccountLogout(apiNoConnection: apiNoConnection);
-          return Err(SessionExpired());
-        } else {
-          return Err(OtherError());
-        }
-    }
   }
 }
 

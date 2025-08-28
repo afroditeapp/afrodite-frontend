@@ -1388,6 +1388,12 @@ abstract class AppLocalizations {
   /// **'Requests'**
   String get likes_screen_title;
 
+  /// Snackbar text for connecting WebSocket failed
+  ///
+  /// In en, this message translates to:
+  /// **'Connecting WebSocket failed. Try again later.'**
+  String get login_screen_connecting_websocket_failed;
+
   /// Description for demo account login dialog
   ///
   /// In en, this message translates to:
@@ -1429,6 +1435,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Username'**
   String get login_screen_demo_account_username;
+
+  /// Snackbar text for login API request failed
+  ///
+  /// In en, this message translates to:
+  /// **'Login API request failed. Try again later.'**
+  String get login_screen_login_api_request_failed;
 
   /// Word 'and' between terms of service and privacy policy links
   ///

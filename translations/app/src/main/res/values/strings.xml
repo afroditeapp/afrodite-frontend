@@ -193,6 +193,8 @@
     <string name="login_screen_demo_account_locked" description="Snackbar text for demo account locked error">Account locked. Contact customer support.</string>
     <string name="login_screen_demo_account_login_session_expired" description="Snackbar text for demo account login session expiration">Demo account session expired</string>
     <string name="login_screen_sign_in_with_error" description="Snackbar text for sign in with error">Sign in with failed</string>
+    <string name="login_screen_login_api_request_failed" description="Snackbar text for login API request failed">Login API request failed. Try again later.</string>
+    <string name="login_screen_connecting_websocket_failed" description="Snackbar text for connecting WebSocket failed">Connecting WebSocket failed. Try again later.</string>
 
     <!-- Demo account screen -->
     <string name="demo_account_screen_no_accounts_available" description="Text displayed when available accounts list is empty">No accounts available</string>

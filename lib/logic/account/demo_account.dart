@@ -1,5 +1,5 @@
+import "package:app/logic/sign_in_with.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
-import "package:logging/logging.dart";
 import "package:openapi/api.dart";
 import "package:app/data/login_repository.dart";
 import "package:app/localizations.dart";
@@ -8,8 +8,6 @@ import "package:app/ui_utils/snack_bar.dart";
 import "package:app/utils.dart";
 import "package:app/utils/immutable_list.dart";
 import "package:app/utils/result.dart";
-
-final _log = Logger("DemoAccountBloc");
 
 abstract class DemoAccountEvent {}
 
@@ -36,43 +34,42 @@ class DemoAccountBloc extends Bloc<DemoAccountEvent, DemoAccountBlocData> with A
       });
     });
     on<DoDemoAccountRefreshAccountList>((_, emit) async {
-      _log.info("Refreshing demo account list");
       switch (await login.demoAccountGetAccounts()) {
         case Ok(:final v):
-          _log.info("Demo account list received");
           emit(state.copyWith(accounts: UnmodifiableList(v)));
-        case Err(e: SessionExpired()):
-          _log.info("Demo account session expired");
-          showSnackBar(R.strings.login_screen_demo_account_login_session_expired);
-        case Err(e: UnsupportedClient()):
-          _log.info("Unsupported app version");
-          showSnackBar(R.strings.generic_error_app_version_is_unsupported);
-        case Err(e: OtherError()):
-          _log.info("Demo account account list refresh other error");
+        case Err(:final e):
+          _handleError(e);
       }
     });
     on<DoDemoAccountCreateNewAccount>((_, emit) async {
       await runOnce(() async {
-        handleErrors(await login.demoAccountRegisterIfNeededAndLogin(null));
+        _handleResult(await login.demoAccountRegisterIfNeededAndLogin(null));
       });
     });
     on<DoDemoAccountLoginToAccount>((data, emit) async {
       await runOnce(() async {
-        handleErrors(await login.demoAccountRegisterIfNeededAndLogin(data.id));
+        _handleResult(await login.demoAccountRegisterIfNeededAndLogin(data.id));
       });
     });
   }
 }
 
-void handleErrors(Result<(), SessionOrOtherError> result) {
+void _handleResult(Result<(), DemoAccountError> result) {
   switch (result) {
     case Ok():
       null;
-    case Err(e: SessionExpired()):
-      showSnackBar(R.strings.login_screen_demo_account_login_session_expired);
-    case Err(e: UnsupportedClient()):
-      showSnackBar(R.strings.generic_error_app_version_is_unsupported);
-    case Err(e: OtherError()):
+    case Err():
+      _handleError(result.e);
+  }
+}
+
+void _handleError(DemoAccountError e) {
+  switch (e) {
+    case DemoAccountLoggedOutFromDemoAccount():
       showSnackBar(R.strings.generic_error_occurred);
+    case DemoAccountSessionExpired():
+      showSnackBar(R.strings.login_screen_demo_account_login_session_expired);
+    case DemoAccountSignInError(:final error):
+      showSnackBarTextsForSignInError(error);
   }
 }

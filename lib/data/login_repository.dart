@@ -14,8 +14,6 @@ import 'package:app/data/account_repository.dart';
 import 'package:app/database/account_database_manager.dart';
 import 'package:app/database/background_database_manager.dart';
 import 'package:app/database/database_manager.dart';
-import 'package:app/localizations.dart';
-import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:utils/utils.dart';
@@ -64,10 +62,10 @@ class DemoAccountLogin extends LoginRepositoryCmd<Result<(), DemoAccountLoginErr
 class DemoAccountLogout extends LoginRepositoryCmd<()> {}
 
 class DemoAccountGetAccounts
-    extends LoginRepositoryCmd<Result<List<AccessibleAccount>, SessionOrOtherError>> {}
+    extends LoginRepositoryCmd<Result<List<AccessibleAccount>, DemoAccountError>> {}
 
 class DemoAccountRegisterIfNeededAndLoginToAccount
-    extends LoginRepositoryCmd<Result<(), SessionOrOtherError>> {
+    extends LoginRepositoryCmd<Result<(), DemoAccountError>> {
   final AccountId? id;
   DemoAccountRegisterIfNeededAndLoginToAccount(this.id);
 }
@@ -232,7 +230,7 @@ class LoginRepository extends AppSingleton {
               cmd.completed.add(r);
             case DemoAccountRegisterIfNeededAndLoginToAccount():
               await _logoutInternal(null);
-              final Result<(), SessionOrOtherError> r;
+              final Result<(), DemoAccountError> r;
               final result = await _demoAccountManager.demoAccountRegisterIfNeededAndLogin(
                 id: cmd.id,
                 apiNoConnection: _apiNoConnection,
@@ -242,10 +240,8 @@ class LoginRepository extends AppSingleton {
                   switch (await _handleLoginResultInternal(result.v)) {
                     case Ok():
                       r = Ok(());
-                    case Err(e: CommonSignInError.unsupportedClient):
-                      r = Err(UnsupportedClient());
-                    case Err(e: CommonSignInError.otherError):
-                      r = Err(OtherError());
+                    case Err(:final e):
+                      r = Err(DemoAccountSignInError(e));
                   }
                 case Err():
                   r = Err(result.e);
@@ -263,21 +259,21 @@ class LoginRepository extends AppSingleton {
     final currentRepositories = _repositories;
     await currentRepositories?.dispose();
 
-    final newRepositories = await RepositoryInstances.createAndInit(
+    final createdRepositories = await RepositoryInstances.createAndInit(
       accountId,
       accountLoginHappened: accountLoginHappened,
       serverAddress: _apiNoConnection.serverAddress,
     );
 
     await _repositoryStateStreams._subscribe(
-      newRepositories.account,
-      newRepositories.accountDb,
-      newRepositories.connectionManager,
+      createdRepositories.account,
+      createdRepositories.accountDb,
+      createdRepositories.connectionManager,
     );
 
-    _repositories = newRepositories;
+    _repositories = createdRepositories;
 
-    return newRepositories;
+    return createdRepositories;
   }
 
   Future<Result<(), SignInWithEvent>> _handleSignInWithLoginInfoInternal(
@@ -285,15 +281,10 @@ class LoginRepository extends AppSingleton {
   ) async {
     final login = await _apiNoConnection.account((api) => api.postSignInWithLogin(info)).ok();
     if (login == null) {
-      return const Err(SignInWithEvent.serverRequestFailed);
+      return Err(SignInWithSignInError(CommonSignInError.loginApiRequestFailed));
     }
     return await _handleLoginResultInternal(login).mapErr((e) {
-      switch (e) {
-        case CommonSignInError.unsupportedClient:
-          return SignInWithEvent.unsupportedClient;
-        case CommonSignInError.otherError:
-          return SignInWithEvent.otherError;
-      }
+      return SignInWithSignInError(e);
     });
   }
 
@@ -304,6 +295,7 @@ class LoginRepository extends AppSingleton {
     final aid = loginResult.aid;
     final authPair = loginResult.account;
     if (aid == null || authPair == null) {
+      _log.error("LoginResult doesn't contain required info");
       return const Err(CommonSignInError.otherError);
     }
     final accountDb = DatabaseManager.getInstance().getAccountDatabaseManager(aid);
@@ -311,35 +303,52 @@ class LoginRepository extends AppSingleton {
         .setAccountId(aid)
         .andThen(
           (_) => accountDb.accountAction((db) => db.account.updateEmailAddress(loginResult.email)),
+        )
+        .andThen(
+          (_) =>
+              accountDb.accountAction((db) => db.loginSession.updateAccessToken(authPair.access)),
+        )
+        .andThen(
+          (_) =>
+              accountDb.accountAction((db) => db.loginSession.updateRefreshToken(authPair.refresh)),
         );
     if (r.isErr()) {
+      _log.error("Login failed: database error");
       return const Err(CommonSignInError.otherError);
     }
-
-    // Login repository
-    await accountDb.accountAction((db) => db.loginSession.updateRefreshToken(authPair.refresh));
-    await accountDb.accountAction((db) => db.loginSession.updateAccessToken(authPair.access));
 
     // The loginInProgress keeps the UI in login screen even if app
     // connects to server.
     _loginInProgress.add(true);
 
-    final theNewRepositories = await _createRepositories(aid, accountLoginHappened: true);
+    final createdRepositories = await _createRepositories(aid, accountLoginHappened: true);
+    await createdRepositories.onLogin();
+    await createdRepositories.connectionManager.restart();
 
-    // Other repostories
-    await theNewRepositories.onLogin();
-
-    await theNewRepositories.connectionManager.restart();
-    if (await theNewRepositories.connectionManager.tryWaitUntilConnected(waitTimeoutSeconds: 7)) {
-      final r = await theNewRepositories.onLoginDataSync();
+    final CommonSignInError? error;
+    if (await createdRepositories.connectionManager.tryWaitUntilConnected(waitTimeoutSeconds: 7)) {
+      final r = await createdRepositories.onLoginDataSync();
       if (r.isErr()) {
-        showSnackBar(R.strings.generic_data_sync_failed);
+        error = CommonSignInError.dataSyncFailed;
+      } else {
+        error = null;
       }
     } else {
-      showSnackBar(R.strings.generic_data_sync_failed);
+      error = CommonSignInError.creatingConnectingWebSocketFailed;
     }
+
+    Result<(), CommonSignInError> result;
+    if (error == null) {
+      result = Ok(());
+    } else {
+      result = Err(error);
+      _log.error("Starting logout because login failed: $error");
+      await _logoutInternal(createdRepositories.accountId);
+    }
+
     _loginInProgress.add(false);
-    return const Ok(());
+
+    return result;
   }
 
   /// Logout from current or specific account
@@ -364,11 +373,11 @@ class LoginRepository extends AppSingleton {
   Stream<SignInWithEvent> signInWithGoogle() async* {
     final info = await _google.login().ok();
     if (info == null) {
-      yield SignInWithEvent.getTokenFailed;
+      yield SignInWithGetTokenFailed();
       return;
     }
 
-    yield SignInWithEvent.getTokenCompleted;
+    yield SignInWithGetTokenCompleted();
 
     switch (await sendSignInWithLoginCmd(info)) {
       case Ok():
@@ -388,7 +397,7 @@ class LoginRepository extends AppSingleton {
 
     switch (r) {
       case Ok():
-        yield SignInWithEvent.getTokenCompleted;
+        yield SignInWithGetTokenCompleted();
         final info = SignInWithLoginInfo(
           apple: r.v,
           clientInfo: AppVersionManager.getInstance().clientInfo(),
@@ -431,36 +440,48 @@ class LoginRepository extends AppSingleton {
     await event.waitCompletion();
   }
 
-  Future<Result<List<AccessibleAccount>, SessionOrOtherError>> demoAccountGetAccounts() async {
+  Future<Result<List<AccessibleAccount>, DemoAccountError>> demoAccountGetAccounts() async {
     final event = DemoAccountGetAccounts();
     _cmds.add(event);
     return await event.waitCompletion();
   }
 
-  Future<Result<(), SessionOrOtherError>> demoAccountRegisterIfNeededAndLogin(AccountId? id) async {
+  Future<Result<(), DemoAccountError>> demoAccountRegisterIfNeededAndLogin(AccountId? id) async {
     final event = DemoAccountRegisterIfNeededAndLoginToAccount(id);
     _cmds.add(event);
     return await event.waitCompletion();
   }
 }
 
-sealed class SessionOrOtherError {}
+sealed class DemoAccountError {}
 
-class SessionExpired extends SessionOrOtherError {}
+class DemoAccountLoggedOutFromDemoAccount extends DemoAccountError {}
 
-class UnsupportedClient extends SessionOrOtherError {}
+class DemoAccountSessionExpired extends DemoAccountError {}
 
-class OtherError extends SessionOrOtherError {}
-
-enum SignInWithEvent {
-  getTokenCompleted,
-  getTokenFailed,
-  serverRequestFailed,
-  unsupportedClient,
-  otherError,
+class DemoAccountSignInError extends DemoAccountError {
+  final CommonSignInError error;
+  DemoAccountSignInError(this.error);
 }
 
-enum CommonSignInError { unsupportedClient, otherError }
+sealed class SignInWithEvent {}
+
+class SignInWithGetTokenCompleted extends SignInWithEvent {}
+
+class SignInWithGetTokenFailed extends SignInWithEvent {}
+
+class SignInWithSignInError extends SignInWithEvent {
+  final CommonSignInError error;
+  SignInWithSignInError(this.error);
+}
+
+enum CommonSignInError {
+  loginApiRequestFailed,
+  unsupportedClient,
+  creatingConnectingWebSocketFailed,
+  dataSyncFailed,
+  otherError,
+}
 
 class RepositoryStateStreams {
   final BehaviorSubject<AccountStateStreamValue> _accountState = BehaviorSubject.seeded(

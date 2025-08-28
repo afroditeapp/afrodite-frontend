@@ -774,6 +774,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get likes_screen_title => 'Requests';
 
   @override
+  String get login_screen_connecting_websocket_failed =>
+      'Connecting WebSocket failed. Try again later.';
+
+  @override
   String get login_screen_demo_account_dialog_description =>
       'Login to demo account on the demo account server.';
 
@@ -796,6 +800,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get login_screen_demo_account_username => 'Username';
+
+  @override
+  String get login_screen_login_api_request_failed =>
+      'Login API request failed. Try again later.';
 
   @override
   String get login_screen_login_note_text_and => 'and';
