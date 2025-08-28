@@ -327,14 +327,15 @@ class LoginRepository extends AppSingleton {
     await accountDb.accountAction((db) => db.loginSession.updateRefreshToken(authPair.refresh));
     await accountDb.accountAction((db) => db.loginSession.updateAccessToken(authPair.access));
 
+    // The loginInProgress keeps the UI in login screen even if app
+    // connects to server.
+    _loginInProgress.add(true);
+
     final theNewRepositories = await _createRepositories(aid, accountLoginHappened: true);
 
     // Other repostories
     await theNewRepositories.onLogin();
 
-    // The loginInProgress keeps the UI in login screen even if app
-    // connects to server.
-    _loginInProgress.add(true);
     await theNewRepositories.connectionManager.restart();
     if (await theNewRepositories.connectionManager.tryWaitUntilConnected(waitTimeoutSeconds: 7)) {
       final r = await theNewRepositories.onLoginDataSync();
