@@ -200,7 +200,7 @@ class LoginRepository extends DataRepository {
   void initCmdHandling() {
     _cmds
         .asyncMap((cmd) async {
-          _log.info(cmd.runtimeType);
+          _log.info("cmd: ${cmd.runtimeType}");
           switch (cmd) {
             case LogoutAndSignInWithLogin():
               await _logoutInternal(null);

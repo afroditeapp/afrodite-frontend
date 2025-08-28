@@ -125,28 +125,28 @@ class ServerConnectionManager extends ApiManager
 
   StreamSubscription<void> _listenServerConnectionCmds() {
     return _cmds
-        .asyncMap((event) async {
-          _log.info(event.runtimeType);
-          switch (event) {
+        .asyncMap((cmd) async {
+          _log.info("cmd: ${cmd.runtimeType}");
+          switch (cmd) {
             case ConnectIfNotConnected():
               if (_serverConnection == null) {
                 await _connect();
               }
-              event.completed.add(());
+              cmd.completed.add(());
             case Restart():
               await _serverConnection?.close();
               _serverConnection = null;
               await _connect();
-              event.completed.add(());
+              cmd.completed.add(());
             case CloseConnection():
               final currentConnection = _serverConnection;
               if (currentConnection != null &&
-                  (event.serverConnection == null || currentConnection == event.serverConnection)) {
+                  (cmd.serverConnection == null || currentConnection == cmd.serverConnection)) {
                 await currentConnection.close();
                 _serverConnection = null;
               }
             case SaveConnection():
-              _serverConnection = event.serverConnection;
+              _serverConnection = cmd.serverConnection;
           }
         })
         .listen(null);
