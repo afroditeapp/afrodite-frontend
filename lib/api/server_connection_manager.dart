@@ -16,7 +16,7 @@ import 'package:app/utils/app_error.dart';
 import 'package:app/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
 
-final _log = Logger("ApiManager");
+final _log = Logger("ServerConnectionManager");
 
 enum ServerConnectionState {
   /// No valid refresh token available. UI should display login view.
