@@ -31,7 +31,7 @@ class WebSocketWrapper {
     await p?.cancel();
     await p2?.cancel();
     try {
-      await connection.close();
+      unawaited(connection.close());
     } catch (_) {
       // Ignore errors
     }
