@@ -134,16 +134,9 @@ class LoginRepository extends AppSingleton {
 
     final currentAccountId = await accountId.first;
     if (currentAccountId != null) {
-      await _createRepositories(currentAccountId);
-
-      // Restore previous state
-      final previousState = await repositories.accountDb
-          .accountStreamSingle((db) => db.account.watchAccountState())
-          .ok();
-      if (previousState != null) {
-        _loginState.add(LoginState.viewAccountStateOnceItExists);
-        await _repositories?.onResumeAppUsage();
-      }
+      final createdRepositories = await _createRepositories(currentAccountId);
+      await createdRepositories.onResumeAppUsage();
+      unawaited(createdRepositories.connectionManager.restart());
     } else {
       await _repositoryStateStreams._logout();
     }
