@@ -11,7 +11,6 @@ import 'package:openapi/api.dart';
 import 'package:app/api/server_connection_manager.dart';
 import 'package:app/data/account/client_id_manager.dart';
 import 'package:app/data/account/initial_setup.dart';
-import 'package:app/data/login_repository.dart';
 import 'package:app/data/utils.dart';
 import 'package:app/database/account_database_manager.dart';
 import 'package:app/model/freezed/logic/account/initial_setup.dart';
@@ -193,7 +192,6 @@ class AccountRepository extends DataRepositoryWithLifecycle {
 
     if (resultString == null) {
       // Success
-      await LoginRepository.getInstance().onInitialSetupComplete();
       await repositories.onInitialSetupComplete();
     }
     return resultString;
@@ -202,7 +200,6 @@ class AccountRepository extends DataRepositoryWithLifecycle {
   Future<Result<(), ()>> doInitialSetup(InitialSetupData data) async {
     final result = await InitialSetupUtils(api).doInitialSetup(data);
     if (result.isOk()) {
-      await LoginRepository.getInstance().onInitialSetupComplete();
       await repositories.onInitialSetupComplete();
     }
     return result;

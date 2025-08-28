@@ -11,7 +11,6 @@ import 'package:openapi/api.dart';
 import 'package:app/api/server_connection_manager.dart';
 import 'package:app/config.dart';
 import 'package:app/data/account_repository.dart';
-import 'package:app/data/utils.dart';
 import 'package:app/database/account_database_manager.dart';
 import 'package:app/database/background_database_manager.dart';
 import 'package:app/database/database_manager.dart';
@@ -19,6 +18,7 @@ import 'package:app/localizations.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:utils/utils.dart';
 
 final _log = Logger("LoginRepository");
 
@@ -72,7 +72,7 @@ class DemoAccountRegisterIfNeededAndLoginToAccount
   DemoAccountRegisterIfNeededAndLoginToAccount(this.id);
 }
 
-class LoginRepository extends DataRepository {
+class LoginRepository extends AppSingleton {
   LoginRepository._private();
   static final _instance = LoginRepository._private();
   factory LoginRepository.getInstance() {
@@ -142,7 +142,6 @@ class LoginRepository extends DataRepository {
           .ok();
       if (previousState != null) {
         _loginState.add(LoginState.viewAccountStateOnceItExists);
-        await onResumeAppUsage();
         await _repositories?.onResumeAppUsage();
       }
     } else {
@@ -327,7 +326,6 @@ class LoginRepository extends DataRepository {
     // Login repository
     await accountDb.accountAction((db) => db.loginSession.updateRefreshToken(authPair.refresh));
     await accountDb.accountAction((db) => db.loginSession.updateAccessToken(authPair.access));
-    await onLogin();
 
     final theNewRepositories = await _createRepositories(aid, accountLoginHappened: true);
 
