@@ -146,10 +146,7 @@ class LoginRepository extends DataRepository {
         await _repositories?.onResumeAppUsage();
       }
     } else {
-      // ServerConnectionManager is not yet created so init
-      // _serverConnectionManagerStateEvents manually so that previous
-      // combineLatest3 starts working.
-      _repositoryStateStreams._handleAppStartWithoutLoggedInAccount();
+      await _repositoryStateStreams._logout();
     }
 
     Rx.combineLatest3(
@@ -160,7 +157,7 @@ class LoginRepository extends DataRepository {
     ).listen((event) {
       final (serverConnectionState, demoAccountToken, loginInProgress) = event;
       log.finer(
-        "state changed. serverConnectionState: $serverConnectionState, demoAccountToken: ${demoAccountToken != null}, loginInProgress: $loginInProgress",
+        "$serverConnectionState, demoAccountToken: ${demoAccountToken != null}, loginInProgress: $loginInProgress",
       );
       if (loginInProgress) {
         if (demoAccountToken != null) {
@@ -172,20 +169,30 @@ class LoginRepository extends DataRepository {
       }
 
       switch (serverConnectionState) {
-        case ServerConnectionState.waitingRefreshToken:
+        case ServerConnectionStateLoading():
+          _loginState.add(LoginState.splashScreen);
+        case ServerConnectionStateLoggedOut():
           if (demoAccountToken != null) {
             _loginState.add(LoginState.demoAccount);
           } else {
             _loginState.add(LoginState.loginRequired);
           }
-        case ServerConnectionState.connecting ||
-            ServerConnectionState.reconnectWaitTime ||
-            ServerConnectionState.noConnection:
-          {}
-        case ServerConnectionState.connected:
-          _loginState.add(LoginState.viewAccountStateOnceItExists);
-        case ServerConnectionState.unsupportedClientVersion:
-          _loginState.add(LoginState.unsupportedClientVersion);
+        case ServerConnectionStateExists():
+          switch (serverConnectionState.state) {
+            case ServerConnectionState.waitingRefreshToken:
+              if (demoAccountToken != null) {
+                _loginState.add(LoginState.demoAccount);
+              } else {
+                _loginState.add(LoginState.loginRequired);
+              }
+            case ServerConnectionState.connecting ||
+                ServerConnectionState.reconnectWaitTime ||
+                ServerConnectionState.noConnection ||
+                ServerConnectionState.connected:
+              _loginState.add(LoginState.viewAccountStateOnceItExists);
+            case ServerConnectionState.unsupportedClientVersion:
+              _loginState.add(LoginState.unsupportedClientVersion);
+          }
       }
     });
   }
@@ -474,10 +481,11 @@ class RepositoryStateStreams {
   StreamSubscription<bool>? _initialSetupSkippedSubscription;
   Stream<bool> get initialSetupSkipped => _initialSetupSkipped;
 
-  final PublishSubject<ServerConnectionState> _serverConnectionManagerStateEvents =
-      PublishSubject();
+  final BehaviorSubject<ServerConnectionStateStreamValue> _serverConnectionManagerStateEvents =
+      BehaviorSubject.seeded(ServerConnectionStateLoading());
   StreamSubscription<ServerConnectionState>? _serverConnectionManagerStateEventsSubscription;
-  Stream<ServerConnectionState> get serverConnectionState => _serverConnectionManagerStateEvents;
+  Stream<ServerConnectionStateStreamValue> get serverConnectionState =>
+      _serverConnectionManagerStateEvents;
 
   Future<void> _subscribe(
     AccountRepository account,
@@ -485,7 +493,6 @@ class RepositoryStateStreams {
     ServerConnectionManager connectionManager,
   ) async {
     await _accountStateSubscription?.cancel();
-    _accountState.add(AccountStateLoading());
     _accountStateSubscription = account.accountState.listen((v) {
       if (v == null) {
         _accountState.add(AccountStateEmpty());
@@ -504,7 +511,7 @@ class RepositoryStateStreams {
 
     await _serverConnectionManagerStateEventsSubscription?.cancel();
     _serverConnectionManagerStateEventsSubscription = connectionManager.state.listen((v) {
-      _serverConnectionManagerStateEvents.add(v);
+      _serverConnectionManagerStateEvents.add(ServerConnectionStateExists(v));
     });
   }
 
@@ -516,19 +523,25 @@ class RepositoryStateStreams {
     _initialSetupSkipped.add(false);
 
     await _serverConnectionManagerStateEventsSubscription?.cancel();
-    _serverConnectionManagerStateEvents.add(ServerConnectionState.waitingRefreshToken);
-  }
-
-  void _handleAppStartWithoutLoggedInAccount() {
-    _serverConnectionManagerStateEvents.add(ServerConnectionState.waitingRefreshToken);
+    _serverConnectionManagerStateEvents.add(ServerConnectionStateLoggedOut());
   }
 }
 
 sealed class AccountStateStreamValue {}
 
-class AccountStateLoading extends AccountStateStreamValue {}
+class AccountStateLoading extends AccountStateStreamValue {
+  @override
+  String toString() {
+    return "AccountStateLoading";
+  }
+}
 
-class AccountStateEmpty extends AccountStateStreamValue {}
+class AccountStateEmpty extends AccountStateStreamValue {
+  @override
+  String toString() {
+    return "AccountStateEmpty";
+  }
+}
 
 class AccountStateExists extends AccountStateStreamValue {
   final AccountState state;
@@ -536,6 +549,32 @@ class AccountStateExists extends AccountStateStreamValue {
 
   @override
   String toString() {
-    return "AccountStateExists($state)";
+    return "Exists($state)";
+  }
+}
+
+sealed class ServerConnectionStateStreamValue {}
+
+class ServerConnectionStateLoading extends ServerConnectionStateStreamValue {
+  @override
+  String toString() {
+    return "ServerConnectionStateLoading";
+  }
+}
+
+class ServerConnectionStateLoggedOut extends ServerConnectionStateStreamValue {
+  @override
+  String toString() {
+    return "ServerConnectionStateLoggedOut";
+  }
+}
+
+class ServerConnectionStateExists extends ServerConnectionStateStreamValue {
+  final ServerConnectionState state;
+  ServerConnectionStateExists(this.state);
+
+  @override
+  String toString() {
+    return "Exists($state)";
   }
 }

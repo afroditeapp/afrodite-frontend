@@ -58,9 +58,7 @@ class MainStateBloc extends Bloc<MainStateEvent, MainState> {
       (a, b, c) => (a, b, c),
     ).listen((current) {
       final (loginState, accountState, initialSetupSkipped) = current;
-      log.finer(
-        "loginState: $loginState, accountState: $accountState, initialSetupSkipped: $initialSetupSkipped",
-      );
+      log.finer("$loginState, $accountState, initialSetupSkipped: $initialSetupSkipped");
       final action = switch (loginState) {
         LoginState.loginRequired => ToLoginRequiredScreen(),
         LoginState.demoAccount => ToDemoAccountScreen(),
