@@ -1,3 +1,4 @@
+import "package:app/logic/app/main_state_types.dart";
 import "package:app/main.dart";
 import "package:bloc_concurrency/bloc_concurrency.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
@@ -8,19 +9,6 @@ import "package:logging/logging.dart";
 import "package:rxdart/rxdart.dart";
 
 final _log = Logger("MainStateBloc");
-
-/// States for top level UI main states
-enum MainState {
-  splashScreen,
-  loginRequired,
-  initialSetup,
-  initialSetupSkipped,
-  initialSetupComplete,
-  accountBanned,
-  pendingRemoval,
-  unsupportedClientVersion,
-  demoAccount,
-}
 
 abstract class MainStateEvent {}
 
@@ -34,7 +22,7 @@ class MainStateBloc extends Bloc<MainStateEvent, MainState> {
   final globalInitManager = GlobalInitManager.getInstance();
   final login = LoginRepository.getInstance();
 
-  MainStateBloc() : super(MainState.splashScreen) {
+  MainStateBloc() : super(MsSplashScreen()) {
     on<UpdateMainState>((data, emit) => emit(data.value), transformer: sequential());
 
     Rx.combineLatest4(
@@ -44,38 +32,40 @@ class MainStateBloc extends Bloc<MainStateEvent, MainState> {
       globalInitManager.globalInitCompletedStream,
       (a, b, c, d) => (a, b, c, d),
     ).listen((current) {
-      final (loginState, accountState, initialSetupSkipped, globalInitCompleted) = current;
+      final (ls, accountState, initialSetupSkipped, globalInitCompleted) = current;
 
       if (globalInitCompleted == false) {
         return;
       }
 
-      _log.finer("$loginState, $accountState, initialSetupSkipped: $initialSetupSkipped");
+      _log.finer("$ls, $accountState, initialSetupSkipped: $initialSetupSkipped");
 
-      final newMainState = switch (loginState) {
-        LsLoginRequired() => MainState.loginRequired,
-        LsDemoAccount() => MainState.demoAccount,
-        LsSplashScreen() => MainState.splashScreen,
-        LsLoggedIn() when loginState.unsupportedClientVersion => MainState.unsupportedClientVersion,
+      final ms = switch (ls) {
+        LsSplashScreen() => MsSplashScreen(),
+        LsLoginRequired() => MsLoginRequired(),
+        LsDemoAccount() => MsDemoAccount(),
+        LsLoggedIn() when ls.unsupportedClientVersion => ls.toMainState(
+          LoggedInScreen.unsupportedClientVersion,
+        ),
         LsLoggedIn() => switch (accountState) {
           AccountStateLoading() => null,
           // Prevent client getting stuck on splash screen when app starts
           // and getting AccountState fails.
-          AccountStateEmpty() => MainState.loginRequired,
+          AccountStateEmpty() => MsLoginRequired(),
           AccountStateExists(:final state) => switch (state) {
             AccountState.initialSetup => switch (initialSetupSkipped) {
-              true => MainState.initialSetupSkipped,
-              false => MainState.initialSetup,
+              true => ls.toMainState(LoggedInScreen.normal),
+              false => ls.toMainState(LoggedInScreen.initialSetup),
             },
-            AccountState.banned => MainState.accountBanned,
-            AccountState.pendingDeletion => MainState.pendingRemoval,
-            AccountState.normal => MainState.initialSetupComplete,
+            AccountState.banned => ls.toMainState(LoggedInScreen.accountBanned),
+            AccountState.pendingDeletion => ls.toMainState(LoggedInScreen.pendingRemoval),
+            AccountState.normal => ls.toMainState(LoggedInScreen.normal),
           },
         },
       };
 
-      if (newMainState != null) {
-        add(UpdateMainState(newMainState));
+      if (ms != null) {
+        add(UpdateMainState(ms));
       }
     });
   }

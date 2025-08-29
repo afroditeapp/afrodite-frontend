@@ -1,4 +1,5 @@
 import 'package:app/data/utils/repository_instances.dart';
+import 'package:app/logic/app/main_state_types.dart';
 
 sealed class LoginState {}
 
@@ -39,6 +40,8 @@ class LsLoggedIn extends LoginState {
   final bool unsupportedClientVersion;
 
   LsLoggedIn(this.repositories, {this.unsupportedClientVersion = false});
+
+  MsLoggedIn toMainState(LoggedInScreen screen) => MsLoggedIn(repositories, screen);
 
   @override
   bool operator ==(Object other) {

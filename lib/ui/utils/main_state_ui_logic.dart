@@ -7,6 +7,7 @@ import 'package:app/logic/account/demo_account.dart';
 import 'package:app/logic/account/demo_account_login.dart';
 import 'package:app/logic/app/info_dialog.dart';
 import 'package:app/logic/app/like_grid_instance_manager.dart';
+import 'package:app/logic/app/main_state_types.dart';
 import 'package:app/logic/login.dart';
 import 'package:app/logic/profile/automatic_profile_search_badge.dart';
 import 'package:app/logic/server/address.dart';
@@ -81,23 +82,21 @@ class _MainStateUiLogicState extends State<MainStateUiLogic> {
         }
 
         final screen = switch (state) {
-          MainState.loginRequired => const LoginScreen(),
-          MainState.demoAccount => const DemoAccountScreen(),
-          MainState.initialSetup => const InitialSetupScreen(),
-          MainState.initialSetupSkipped ||
-          MainState.initialSetupComplete => const NormalStateScreen(),
-          MainState.accountBanned => const AccountBannedScreen(),
-          MainState.pendingRemoval => const PendingDeletionPage(),
-          MainState.unsupportedClientVersion => const UnsupportedClientScreen(),
-          MainState.splashScreen => const SplashScreen(),
+          MsSplashScreen() => const SplashScreen(),
+          MsLoginRequired() => const LoginScreen(),
+          MsDemoAccount() => const DemoAccountScreen(),
+          MsLoggedIn() => switch (state.screen) {
+            LoggedInScreen.initialSetup => const InitialSetupScreen(),
+            LoggedInScreen.normal => const NormalStateScreen(),
+            LoggedInScreen.accountBanned => const AccountBannedScreen(),
+            LoggedInScreen.pendingRemoval => const PendingDeletionPage(),
+            LoggedInScreen.unsupportedClientVersion => const UnsupportedClientScreen(),
+          },
         };
 
         var appLaunchPayloadNullable = NotificationManager.getInstance()
             .getAndRemoveAppLaunchNotificationPayload();
-        if (state != MainState.initialSetupComplete) {
-          // Clear the app launch notification payload if it exists as
-          // it should be handled only when state is
-          // MainState.initialSetupComplete.
+        if (screen is! NormalStateScreen) {
           appLaunchPayloadNullable = null;
         }
         final appLaunchPayload = appLaunchPayloadNullable;
@@ -127,7 +126,7 @@ class _MainStateUiLogicState extends State<MainStateUiLogic> {
         final navigator = AppNavigator();
 
         final blocProvider = switch (state) {
-          MainState.loginRequired => MultiBlocProvider(
+          MsLoginRequired() => MultiBlocProvider(
             providers: [
               BlocProvider(create: (_) => ServerAddressBloc()),
               BlocProvider(create: (_) => SignInWithBloc()),
@@ -135,114 +134,110 @@ class _MainStateUiLogicState extends State<MainStateUiLogic> {
             ],
             child: navigator,
           ),
-          MainState.demoAccount => MultiBlocProvider(
+          MsDemoAccount() => MultiBlocProvider(
             providers: [BlocProvider(create: (_) => DemoAccountBloc())],
             child: navigator,
           ),
-          MainState.initialSetup => MultiBlocProvider(
-            providers: [
-              // Init AccountBloc so that the initial setup UI does not change from
-              // text field to only text when sign in with login is used.
-              BlocProvider(create: (_) => AccountBloc(), lazy: false),
-              BlocProvider(create: (_) => InitialSetupBloc()),
-              BlocProvider(create: (_) => SecuritySelfieImageProcessingBloc()),
-              BlocProvider(create: (_) => ProfilePicturesImageProcessingBloc()),
-              BlocProvider(create: (_) => ProfileAttributesBloc()),
-              BlocProvider(create: (_) => ContentBloc()),
-              BlocProvider(create: (_) => SelectContentBloc()),
-              BlocProvider(create: (_) => ProfilePicturesBloc()),
-              // Disable lazy init for ClientFeaturesConfigBloc so that
-              // location selection does not use the default map settings.
-              // Also profile name text field requires the bloc.
-              BlocProvider(create: (_) => ClientFeaturesConfigBloc(), lazy: false),
-            ],
-            child: navigator,
-          ),
-          MainState.initialSetupSkipped || MainState.initialSetupComplete => MultiBlocProvider(
-            providers: [
-              // Initial setup (MainState.initialSetupSkipped requires this)
-              BlocProvider(create: (_) => InitialSetupBloc()),
-
-              // General
-              BlocProvider(create: (_) => ProfilePicturesImageProcessingBloc()),
-              BlocProvider(create: (_) => SecuritySelfieImageProcessingBloc()),
-              BlocProvider(create: (_) => NotificationPermissionBloc()),
-              BlocProvider(create: (_) => NotificationPayloadHandlerBloc()),
-              BlocProvider(create: (_) => ProfileAttributesBloc()),
-              BlocProvider(create: (_) => ConversationListBloc()),
-              BlocProvider(create: (_) => UnreadConversationsCountBloc()),
-              BlocProvider(create: (_) => NewReceivedLikesAvailableBloc()),
-              BlocProvider(create: (_) => CustomReportsConfigBloc()),
-              BlocProvider(create: (_) => ClientFeaturesConfigBloc()),
-              BlocProvider(create: (_) => InfoDialogBloc()),
-
-              // Account data
-              BlocProvider(create: (_) => AccountBloc()),
-              BlocProvider(create: (_) => ContentBloc()),
-              BlocProvider(create: (_) => LocationBloc()),
-              BlocProvider(create: (_) => MyProfileBloc()),
-              BlocProvider(create: (_) => AccountDetailsBloc()),
-              BlocProvider(create: (_) => ProfileFiltersBloc()),
-
-              // Settings
-              BlocProvider(create: (_) => EditMyProfileBloc()),
-              BlocProvider(create: (_) => SelectContentBloc()),
-              BlocProvider(create: (_) => NewModerationRequestBloc()),
-              BlocProvider(create: (_) => ProfilePicturesBloc()),
-              BlocProvider(create: (_) => PrivacySettingsBloc()),
-              BlocProvider(create: (_) => BlockedProfilesBloc()),
-              BlocProvider(create: (_) => SearchSettingsBloc()),
-              BlocProvider(create: (_) => NotificationSettingsBloc()),
-              BlocProvider(create: (_) => UiSettingsBloc()),
-              BlocProvider(create: (_) => DataExportBloc()),
-
-              // News
-              BlocProvider(create: (_) => NewsCountBloc()),
-
-              // Server maintenance
-              BlocProvider(create: (_) => ServerMaintenanceBloc()),
-
-              // Likes
-              BlocProvider(create: (_) => LikeGridInstanceManagerBloc()),
-
-              // Automatic profile search
-              BlocProvider(create: (_) => AutomaticProfileSearchBadgeBloc()),
-            ],
-            child: NotificationActionHandler(
-              notificationNavigation: notficationRelatedObjects,
+          MsLoggedIn() => switch (state.screen) {
+            LoggedInScreen.initialSetup => MultiBlocProvider(
+              providers: [
+                // Init AccountBloc so that the initial setup UI does not change from
+                // text field to only text when sign in with login is used.
+                BlocProvider(create: (_) => AccountBloc(), lazy: false),
+                BlocProvider(create: (_) => InitialSetupBloc()),
+                BlocProvider(create: (_) => SecuritySelfieImageProcessingBloc()),
+                BlocProvider(create: (_) => ProfilePicturesImageProcessingBloc()),
+                BlocProvider(create: (_) => ProfileAttributesBloc()),
+                BlocProvider(create: (_) => ContentBloc()),
+                BlocProvider(create: (_) => SelectContentBloc()),
+                BlocProvider(create: (_) => ProfilePicturesBloc()),
+                // Disable lazy init for ClientFeaturesConfigBloc so that
+                // location selection does not use the default map settings.
+                // Also profile name text field requires the bloc.
+                BlocProvider(create: (_) => ClientFeaturesConfigBloc(), lazy: false),
+              ],
               child: navigator,
             ),
-          ),
-          MainState.accountBanned => MultiBlocProvider(
-            providers: [
-              BlocProvider(create: (_) => AccountDetailsBloc()),
-              BlocProvider(create: (_) => DataExportBloc()),
-            ],
-            child: navigator,
-          ),
-          MainState.pendingRemoval => MultiBlocProvider(
-            providers: [BlocProvider(create: (_) => DataExportBloc())],
-            child: navigator,
-          ),
-          MainState.unsupportedClientVersion || MainState.splashScreen => navigator,
+            LoggedInScreen.normal => MultiBlocProvider(
+              providers: [
+                // Initial setup (MainState.initialSetupSkipped requires this)
+                BlocProvider(create: (_) => InitialSetupBloc()),
+
+                // General
+                BlocProvider(create: (_) => ProfilePicturesImageProcessingBloc()),
+                BlocProvider(create: (_) => SecuritySelfieImageProcessingBloc()),
+                BlocProvider(create: (_) => NotificationPermissionBloc()),
+                BlocProvider(create: (_) => NotificationPayloadHandlerBloc()),
+                BlocProvider(create: (_) => ProfileAttributesBloc()),
+                BlocProvider(create: (_) => ConversationListBloc()),
+                BlocProvider(create: (_) => UnreadConversationsCountBloc()),
+                BlocProvider(create: (_) => NewReceivedLikesAvailableBloc()),
+                BlocProvider(create: (_) => CustomReportsConfigBloc()),
+                BlocProvider(create: (_) => ClientFeaturesConfigBloc()),
+                BlocProvider(create: (_) => InfoDialogBloc()),
+
+                // Account data
+                BlocProvider(create: (_) => AccountBloc()),
+                BlocProvider(create: (_) => ContentBloc()),
+                BlocProvider(create: (_) => LocationBloc()),
+                BlocProvider(create: (_) => MyProfileBloc()),
+                BlocProvider(create: (_) => AccountDetailsBloc()),
+                BlocProvider(create: (_) => ProfileFiltersBloc()),
+
+                // Settings
+                BlocProvider(create: (_) => EditMyProfileBloc()),
+                BlocProvider(create: (_) => SelectContentBloc()),
+                BlocProvider(create: (_) => NewModerationRequestBloc()),
+                BlocProvider(create: (_) => ProfilePicturesBloc()),
+                BlocProvider(create: (_) => PrivacySettingsBloc()),
+                BlocProvider(create: (_) => BlockedProfilesBloc()),
+                BlocProvider(create: (_) => SearchSettingsBloc()),
+                BlocProvider(create: (_) => NotificationSettingsBloc()),
+                BlocProvider(create: (_) => UiSettingsBloc()),
+                BlocProvider(create: (_) => DataExportBloc()),
+
+                // News
+                BlocProvider(create: (_) => NewsCountBloc()),
+
+                // Server maintenance
+                BlocProvider(create: (_) => ServerMaintenanceBloc()),
+
+                // Likes
+                BlocProvider(create: (_) => LikeGridInstanceManagerBloc()),
+
+                // Automatic profile search
+                BlocProvider(create: (_) => AutomaticProfileSearchBadgeBloc()),
+              ],
+              child: NotificationActionHandler(
+                notificationNavigation: notficationRelatedObjects,
+                child: navigator,
+              ),
+            ),
+            LoggedInScreen.accountBanned => MultiBlocProvider(
+              providers: [
+                BlocProvider(create: (_) => AccountDetailsBloc()),
+                BlocProvider(create: (_) => DataExportBloc()),
+              ],
+              child: navigator,
+            ),
+            LoggedInScreen.pendingRemoval => MultiBlocProvider(
+              providers: [BlocProvider(create: (_) => DataExportBloc())],
+              child: navigator,
+            ),
+            LoggedInScreen.unsupportedClientVersion => navigator,
+          },
+          MsSplashScreen() => navigator,
         };
 
         final loggedInStateRelatedBlocs = switch (state) {
-          MainState.initialSetup ||
-          MainState.initialSetupSkipped ||
-          MainState.initialSetupComplete ||
-          MainState.accountBanned ||
-          MainState.pendingRemoval ||
-          MainState.unsupportedClientVersion => MultiBlocProvider(
+          MsSplashScreen() || MsLoginRequired() || MsDemoAccount() => blocProvider,
+          MsLoggedIn() => MultiBlocProvider(
             providers: [
               // Logout action
               BlocProvider(create: (_) => LoginBloc()),
             ],
             child: blocProvider,
           ),
-          MainState.loginRequired ||
-          MainState.demoAccount ||
-          MainState.splashScreen => blocProvider,
         };
 
         return MultiBlocProvider(
