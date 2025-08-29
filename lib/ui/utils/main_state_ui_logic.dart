@@ -60,115 +60,79 @@ import 'package:app/ui/utils/notification_payload_handler.dart';
 
 final _log = Logger("MainStateUiLogic");
 
-class MainStateUiLogic extends StatefulWidget {
+class MainStateUiLogic extends StatelessWidget {
   const MainStateUiLogic({super.key});
-
-  @override
-  State<MainStateUiLogic> createState() => _MainStateUiLogicState();
-}
-
-class _MainStateUiLogicState extends State<MainStateUiLogic> {
-  UniqueKey navigationKey = UniqueKey();
-  MainState? previousState;
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<MainStateBloc, MainState>(
       builder: (context, state) {
-        // Generate new key only when needed
-        if (previousState != state) {
-          previousState = state;
-          navigationKey = UniqueKey();
+        if (state is! MsSplashScreen &&
+            !(state is MsLoggedIn && state.screen == LoggedInScreen.normal)) {
+          // Clear app launch notification payload when app
+          // does not start to main screen.
+          NotificationManager.getInstance().getAndRemoveAppLaunchNotificationPayload();
         }
 
-        final screen = switch (state) {
-          MsSplashScreen() => const SplashScreen(),
-          MsLoginRequired() => const LoginScreen(),
-          MsDemoAccount() => const DemoAccountScreen(),
+        return switch (state) {
+          MsSplashScreen() => NavigatorSplashScreen(),
+          MsLoginRequired() => NavigatorLoginScreen(),
+          MsDemoAccount() => NavigatorDemoAccount(),
           MsLoggedIn() => switch (state.screen) {
-            LoggedInScreen.initialSetup => const InitialSetupScreen(),
-            LoggedInScreen.normal => const NormalStateScreen(),
-            LoggedInScreen.accountBanned => const AccountBannedScreen(),
-            LoggedInScreen.pendingRemoval => const PendingDeletionPage(),
-            LoggedInScreen.unsupportedClientVersion => const UnsupportedClientScreen(),
+            LoggedInScreen.initialSetup => NavigatorInitialSetup(),
+            LoggedInScreen.normal => NavigatorNormal(),
+            LoggedInScreen.accountBanned => NavigatorAccountBanned(),
+            LoggedInScreen.pendingRemoval => NavigatorPendingRemoval(),
+            LoggedInScreen.unsupportedClientVersion => NavigatorUnsupportedClient(),
           },
         };
-
-        var appLaunchPayloadNullable = NotificationManager.getInstance()
-            .getAndRemoveAppLaunchNotificationPayload();
-        if (screen is! NormalStateScreen) {
-          appLaunchPayloadNullable = null;
-        }
-        final appLaunchPayload = appLaunchPayloadNullable;
-        final accountBackgroundDb =
-            LoginRepository.getInstance().repositoriesOrNull?.accountBackgroundDb;
-        final accountDb = LoginRepository.getInstance().repositoriesOrNull?.accountDb;
-
-        final NotificationActionHandlerObjects? notficationRelatedObjects;
-        final NewPageDetails rootPage;
-        if (appLaunchPayload != null && accountBackgroundDb != null && accountDb != null) {
-          _log.info("Handling app launch notification payload");
-          notficationRelatedObjects = NotificationActionHandlerObjects(
-            appLaunchPayload,
-            accountDb,
-            accountBackgroundDb,
-            NewPageDetails(MaterialPage<void>(child: screen)),
-          );
-          rootPage = NewPageDetails(const MaterialPage<void>(child: SplashScreen()));
-        } else {
-          notficationRelatedObjects = null;
-          rootPage = NewPageDetails(MaterialPage<void>(child: screen));
-        }
-
-        final NavigatorStateData blocInitialState = ReplaceAllWith([
-          rootPage,
-        ], false).toInitialState();
-        final navigator = AppNavigator();
-
-        final blocProvider = switch (state) {
-          MsLoginRequired() => _blocLoginRequired(navigator),
-          MsDemoAccount() => _blocDemoAccount(navigator),
-          MsLoggedIn() => switch (state.screen) {
-            LoggedInScreen.initialSetup => _blocInitialSetup(navigator),
-            LoggedInScreen.normal => _blocNormal(
-              NotificationActionHandler(
-                notificationNavigation: notficationRelatedObjects,
-                child: navigator,
-              ),
-            ),
-            LoggedInScreen.accountBanned => _blocAccountBanned(navigator),
-            LoggedInScreen.pendingRemoval => _blocPendingRemoval(navigator),
-            LoggedInScreen.unsupportedClientVersion => navigator,
-          },
-          MsSplashScreen() => navigator,
-        };
-
-        final loggedInStateRelatedBlocs = switch (state) {
-          MsSplashScreen() || MsLoginRequired() || MsDemoAccount() => blocProvider,
-          MsLoggedIn() => MultiBlocProvider(
-            providers: [
-              // Logout action
-              BlocProvider(create: (_) => LoginBloc()),
-            ],
-            child: blocProvider,
-          ),
-        };
-
-        return MultiBlocProvider(
-          // Create new Blocs when MainState changes
-          key: navigationKey,
-          providers: [
-            // Navigation
-            BlocProvider(create: (_) => NavigatorStateBloc(blocInitialState)),
-            BlocProvider(create: (_) => BottomNavigationStateBloc()),
-          ],
-          child: NavigationBlocUpdater(child: loggedInStateRelatedBlocs),
-        );
       },
     );
   }
+}
 
-  Widget _blocLoginRequired(Widget child) {
+abstract class BasicRootScreen extends StatelessWidget {
+  const BasicRootScreen({super.key});
+
+  Widget rootScreen();
+  Widget blocProvider(Widget child);
+
+  @override
+  Widget build(BuildContext context) {
+    final NavigatorStateData blocInitialState = NavigatorStateData.rootPage(
+      NewPageDetails(MaterialPage<void>(child: rootScreen())),
+    );
+    return MultiBlocProvider(
+      providers: [
+        // Navigation
+        BlocProvider(create: (_) => NavigatorStateBloc(blocInitialState)),
+        BlocProvider(create: (_) => BottomNavigationStateBloc()),
+      ],
+      child: NavigationBlocUpdater(child: blocProvider(AppNavigator())),
+    );
+  }
+}
+
+class NavigatorSplashScreen extends BasicRootScreen {
+  const NavigatorSplashScreen({super.key});
+
+  @override
+  Widget rootScreen() => SplashScreen();
+
+  @override
+  Widget blocProvider(Widget child) {
+    return child;
+  }
+}
+
+class NavigatorLoginScreen extends BasicRootScreen {
+  const NavigatorLoginScreen({super.key});
+
+  @override
+  Widget rootScreen() => LoginScreen();
+
+  @override
+  Widget blocProvider(Widget child) {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => ServerAddressBloc()),
@@ -178,17 +142,36 @@ class _MainStateUiLogicState extends State<MainStateUiLogic> {
       child: child,
     );
   }
+}
 
-  Widget _blocDemoAccount(Widget child) {
+class NavigatorDemoAccount extends BasicRootScreen {
+  const NavigatorDemoAccount({super.key});
+
+  @override
+  Widget rootScreen() => DemoAccountScreen();
+
+  @override
+  Widget blocProvider(Widget child) {
     return MultiBlocProvider(
       providers: [BlocProvider(create: (_) => DemoAccountBloc())],
       child: child,
     );
   }
+}
 
-  Widget _blocInitialSetup(Widget child) {
+class NavigatorInitialSetup extends BasicRootScreen {
+  const NavigatorInitialSetup({super.key});
+
+  @override
+  Widget rootScreen() => InitialSetupScreen();
+
+  @override
+  Widget blocProvider(Widget child) {
     return MultiBlocProvider(
       providers: [
+        // Logout action
+        BlocProvider(create: (_) => LoginBloc()),
+
         // Init AccountBloc so that the initial setup UI does not change from
         // text field to only text when sign in with login is used.
         BlocProvider(create: (_) => AccountBloc(), lazy: false),
@@ -207,11 +190,73 @@ class _MainStateUiLogicState extends State<MainStateUiLogic> {
       child: child,
     );
   }
+}
 
-  Widget _blocNormal(Widget child) {
+class NavigatorAccountBanned extends BasicRootScreen {
+  const NavigatorAccountBanned({super.key});
+
+  @override
+  Widget rootScreen() => AccountBannedScreen();
+
+  @override
+  Widget blocProvider(Widget child) {
     return MultiBlocProvider(
       providers: [
-        // Initial setup (MainState.initialSetupSkipped requires this)
+        // Logout action
+        BlocProvider(create: (_) => LoginBloc()),
+
+        BlocProvider(create: (_) => AccountDetailsBloc()),
+        BlocProvider(create: (_) => DataExportBloc()),
+      ],
+      child: child,
+    );
+  }
+}
+
+class NavigatorPendingRemoval extends BasicRootScreen {
+  const NavigatorPendingRemoval({super.key});
+
+  @override
+  Widget rootScreen() => PendingDeletionPage();
+
+  @override
+  Widget blocProvider(Widget child) {
+    return MultiBlocProvider(
+      providers: [
+        // Logout action
+        BlocProvider(create: (_) => LoginBloc()),
+
+        BlocProvider(create: (_) => DataExportBloc()),
+      ],
+      child: child,
+    );
+  }
+}
+
+class NavigatorUnsupportedClient extends BasicRootScreen {
+  const NavigatorUnsupportedClient({super.key});
+
+  @override
+  Widget rootScreen() => UnsupportedClientScreen();
+
+  @override
+  Widget blocProvider(Widget child) {
+    return child;
+  }
+}
+
+class NavigatorNormal extends StatelessWidget {
+  const NavigatorNormal({super.key});
+
+  Widget rootScreen() => NormalStateScreen();
+
+  Widget blocProvider(Widget child) {
+    return MultiBlocProvider(
+      providers: [
+        // Logout action
+        BlocProvider(create: (_) => LoginBloc()),
+
+        // Initial setup (it is possible to access it if it is skipped)
         BlocProvider(create: (_) => InitialSetupBloc()),
 
         // General
@@ -263,20 +308,43 @@ class _MainStateUiLogicState extends State<MainStateUiLogic> {
     );
   }
 
-  Widget _blocAccountBanned(Widget child) {
+  @override
+  Widget build(BuildContext context) {
+    final appLaunchPayload = NotificationManager.getInstance()
+        .getAndRemoveAppLaunchNotificationPayload();
+    final accountBackgroundDb =
+        LoginRepository.getInstance().repositoriesOrNull?.accountBackgroundDb;
+    final accountDb = LoginRepository.getInstance().repositoriesOrNull?.accountDb;
+
+    final NotificationActionHandlerObjects? notficationRelatedObjects;
+    final NewPageDetails rootPage = NewPageDetails(MaterialPage<void>(child: rootScreen()));
+    if (appLaunchPayload != null && accountBackgroundDb != null && accountDb != null) {
+      _log.info("Handling app launch notification payload");
+      notficationRelatedObjects = NotificationActionHandlerObjects(
+        appLaunchPayload,
+        accountDb,
+        accountBackgroundDb,
+        rootPage,
+      );
+    } else {
+      notficationRelatedObjects = null;
+    }
+
+    final NavigatorStateData blocInitialState = NavigatorStateData.rootPage(rootPage);
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (_) => AccountDetailsBloc()),
-        BlocProvider(create: (_) => DataExportBloc()),
+        // Navigation
+        BlocProvider(create: (_) => NavigatorStateBloc(blocInitialState)),
+        BlocProvider(create: (_) => BottomNavigationStateBloc()),
       ],
-      child: child,
-    );
-  }
-
-  Widget _blocPendingRemoval(Widget child) {
-    return MultiBlocProvider(
-      providers: [BlocProvider(create: (_) => DataExportBloc())],
-      child: child,
+      child: NavigationBlocUpdater(
+        child: blocProvider(
+          NotificationActionHandler(
+            notificationNavigation: notficationRelatedObjects,
+            child: AppNavigator(),
+          ),
+        ),
+      ),
     );
   }
 }

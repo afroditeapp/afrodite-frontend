@@ -40,22 +40,6 @@ class ReplaceAllWith extends NavigatorStateEvent {
   final List<NewPageDetails> pageList;
   final bool disableAnimation;
   ReplaceAllWith(this.pageList, this.disableAnimation);
-
-  NavigatorStateData toInitialState() {
-    return NavigatorStateData(
-      pages: UnmodifiableList(
-        pageList.map((newPageDetails) {
-          return PageAndChannel(
-            newPageDetails.pageKey ?? PageKey(),
-            newPageDetails.page,
-            BehaviorSubject.seeded(const WaitingPagePop()),
-            newPageDetails.pageInfo,
-          );
-        }),
-      ),
-      disableAnimation: disableAnimation,
-    );
-  }
 }
 
 class ReplaceSinglePage extends NavigatorStateEvent {

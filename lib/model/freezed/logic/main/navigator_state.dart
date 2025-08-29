@@ -1,3 +1,4 @@
+import 'package:app/logic/app/navigator_state.dart';
 import 'package:flutter/material.dart';
 
 import "package:freezed_annotation/freezed_annotation.dart";
@@ -23,6 +24,20 @@ class NavigatorStateData with _$NavigatorStateData {
 
   static NavigatorStateData defaultValue() {
     return NavigatorStateData(pages: UnmodifiableList(PageAndChannel.splashScreen()));
+  }
+
+  static NavigatorStateData rootPage(NewPageDetails newPageDetails) {
+    return NavigatorStateData(
+      pages: UnmodifiableList([
+        PageAndChannel(
+          newPageDetails.pageKey ?? PageKey(),
+          newPageDetails.page,
+          BehaviorSubject.seeded(const WaitingPagePop()),
+          newPageDetails.pageInfo,
+        ),
+      ]),
+      disableAnimation: false,
+    );
   }
 }
 
