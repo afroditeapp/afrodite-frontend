@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:app/data/login_repository.dart';
 import 'package:app/data/profile_repository.dart';
+import 'package:app/data/utils/ios_delay_app_suspend_task.dart';
 import 'package:async/async.dart' show StreamExtensions;
 import 'package:logging/logging.dart';
 import 'package:app/api/server_connection_manager.dart';
@@ -43,11 +44,15 @@ class CommonRepository extends DataRepositoryWithLifecycle {
     }
     initDone = true;
 
+    await IosDelayAppSuspendTask.allow();
+
     _isForegroundSubscription = AppVisibilityProvider.getInstance().isForegroundStream
         .asyncMap((isForeground) async {
           _disconnectTimer?.cancel();
 
           if (isForeground) {
+            await IosDelayAppSuspendTask.dispose();
+
             final backgroundedAt = _backgroundedAt;
             if (backgroundedAt != null) {
               final now = DateTime.now();
@@ -64,8 +69,9 @@ class CommonRepository extends DataRepositoryWithLifecycle {
             }
           } else {
             _backgroundedAt = DateTime.now();
-            _disconnectTimer = Timer(Duration(seconds: 10), () {
-              connectionManager.close();
+            _disconnectTimer = Timer(Duration(seconds: 10), () async {
+              await connectionManager.close();
+              await IosDelayAppSuspendTask.dispose();
             });
           }
 
@@ -87,6 +93,8 @@ class CommonRepository extends DataRepositoryWithLifecycle {
     await syncHandler.dispose();
     await _isForegroundSubscription?.cancel();
     await _automaticLogoutSubscription?.cancel();
+    await IosDelayAppSuspendTask.forbid();
+    await IosDelayAppSuspendTask.dispose();
   }
 
   Future<void> setNotificationPermissionAsked(bool value) async {
@@ -125,6 +133,8 @@ class CommonRepository extends DataRepositoryWithLifecycle {
   @override
   Future<void> onLogout() async {
     await PushNotificationManager.getInstance().logoutPushNotifications();
+    await IosDelayAppSuspendTask.forbid();
+    await IosDelayAppSuspendTask.dispose();
   }
 }
 

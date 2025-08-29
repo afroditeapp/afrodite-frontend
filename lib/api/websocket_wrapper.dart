@@ -2,10 +2,13 @@ import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
+import 'package:logging/logging.dart';
 import 'package:web_socket/web_socket.dart' as ws;
 
 const _CONVERSATION_PING_INTERVAL = Duration(seconds: 10);
 const _DEFAULT_PING_INTERVAL = Duration(minutes: 5);
+
+final _log = Logger("WebSocketWrapper");
 
 class WebSocketWrapper {
   final ws.WebSocket connection;
@@ -31,7 +34,18 @@ class WebSocketWrapper {
     await p?.cancel();
     await p2?.cancel();
     try {
-      unawaited(connection.close());
+      // Connection closing can't happen completely on background as
+      // iOS only prevent app suspend task is disposed as soon as possible.
+      final timeout = await Future.any<bool>([
+        () async {
+          await connection.close();
+          return false;
+        }(),
+        Future.delayed(Duration(seconds: 2), () => true),
+      ]);
+      if (timeout) {
+        _log.warning("WebSocket closing timeout");
+      }
     } catch (_) {
       // Ignore errors
     }
