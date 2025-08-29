@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/logic/account/client_features_config.dart';
 import 'package:app/ui/normal/chat/message_row.dart';
 import 'package:app/ui/normal/report/report.dart';
@@ -11,7 +12,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
 import 'package:app/data/image_cache.dart';
 import 'package:database/database.dart';
-import 'package:app/data/login_repository.dart';
 import 'package:app/data/profile_repository.dart';
 import 'package:app/localizations.dart';
 import 'package:app/logic/app/navigator_state.dart';
@@ -43,10 +43,10 @@ NewPageDetails newConversationPage(ProfileEntry profile) {
   return NewPageDetails(
     MaterialPage<void>(
       child: BlocProvider(
-        create: (_) => ConversationBloc(
-          profile.accountId,
-          DefaultConversationDataProvider(LoginRepository.getInstance().repositories.chat),
-        ),
+        create: (context) {
+          final r = context.read<RepositoryInstances>();
+          return ConversationBloc(r, profile.accountId, DefaultConversationDataProvider(r.chat));
+        },
         lazy: false,
         child: ConversationPage(pageKey, profile),
       ),

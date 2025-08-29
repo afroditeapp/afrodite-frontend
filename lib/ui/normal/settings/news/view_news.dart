@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/logic/account/client_features_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -31,7 +32,7 @@ Future<void> openViewNewsScreen(
     context,
     MaterialPage<void>(
       child: BlocProvider(
-        create: (_) => ViewNewsBloc(id, locale),
+        create: (context) => ViewNewsBloc(context.read<RepositoryInstances>(), id, locale),
         lazy: false,
         child: ViewNewsScreen(pageKey: pageKey, id: id, refreshNewsList: refreshNewsList),
       ),

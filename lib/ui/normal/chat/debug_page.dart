@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:app/data/chat/message_manager/utils.dart';
+import 'package:app/data/utils/repository_instances.dart';
 import 'package:database/database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -32,7 +33,8 @@ NewPageDetails _newDebugConversationPage(AccountId accountId, int initialMsgCoun
   return NewPageDetails(
     MaterialPage<void>(
       child: BlocProvider(
-        create: (_) => ConversationBloc(accountId, dataProvider),
+        create: (context) =>
+            ConversationBloc(context.read<RepositoryInstances>(), accountId, dataProvider),
         lazy: false,
         child: ChatViewDebuggerPage(initialMsgCount: initialMsgCount, dataProvider: dataProvider),
       ),

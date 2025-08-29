@@ -1,8 +1,8 @@
+import "package:app/data/utils/repository_instances.dart";
 import "package:bloc_concurrency/bloc_concurrency.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:openapi/api.dart";
 import "package:app/api/server_connection_manager.dart";
-import "package:app/data/login_repository.dart";
 import "package:app/localizations.dart";
 import "package:app/model/freezed/logic/profile/profile_statistics_history.dart";
 import "package:app/ui_utils/snack_bar.dart";
@@ -20,9 +20,11 @@ class Reload extends ProfileStatisticsHistoryEvent {
 class ProfileStatisticsHistoryBloc
     extends Bloc<ProfileStatisticsHistoryEvent, ProfileStatisticsHistoryData>
     with ActionRunner {
-  final ApiManager api = LoginRepository.getInstance().repositories.api;
+  final ApiManager api;
 
-  ProfileStatisticsHistoryBloc() : super(ProfileStatisticsHistoryData()) {
+  ProfileStatisticsHistoryBloc(RepositoryInstances r)
+    : api = r.api,
+      super(ProfileStatisticsHistoryData()) {
     on<Reload>((data, emit) async {
       if (!data.manualRefresh) {
         emit(state.copyWith(isLoading: true, isError: false));

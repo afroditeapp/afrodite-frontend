@@ -1,3 +1,4 @@
+import 'package:app/data/utils/repository_instances.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,7 +23,7 @@ Future<void> openProfileStatisticsHistoryScreen(BuildContext context) {
     context,
     MaterialPage<void>(
       child: BlocProvider(
-        create: (_) => ProfileStatisticsHistoryBloc(),
+        create: (context) => ProfileStatisticsHistoryBloc(context.read<RepositoryInstances>()),
         lazy: false,
         child: const ProfileStatisticsHistoryScreen(),
       ),

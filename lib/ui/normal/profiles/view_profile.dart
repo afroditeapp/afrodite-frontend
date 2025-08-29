@@ -1,6 +1,7 @@
 import 'package:app/api/server_connection_manager.dart';
 import 'package:app/data/image_cache.dart';
 import 'package:app/data/login_repository.dart';
+import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/logic/account/account.dart';
 import 'package:app/model/freezed/logic/account/account.dart';
 import 'package:app/ui/normal/report/report.dart';
@@ -44,7 +45,12 @@ Future<void> openProfileView(
     context,
     MaterialPage<void>(
       child: BlocProvider(
-        create: (_) => ViewProfileBloc(profile, initialProfileAction, priority),
+        create: (context) => ViewProfileBloc(
+          context.read<RepositoryInstances>(),
+          profile,
+          initialProfileAction,
+          priority,
+        ),
         lazy: false,
         child: ViewProfilePage(
           pageKey: pageKey,

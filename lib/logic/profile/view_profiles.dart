@@ -1,11 +1,11 @@
 import "dart:async";
 
+import "package:app/data/utils/repository_instances.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:logging/logging.dart";
 import "package:openapi/api.dart";
 import "package:app/data/account_repository.dart";
 import "package:app/data/chat_repository.dart";
-import "package:app/data/login_repository.dart";
 import "package:app/data/media_repository.dart";
 import "package:app/data/profile_repository.dart";
 import 'package:database/database.dart';
@@ -48,10 +48,10 @@ class BlockProfile extends ViewProfileEvent {
 class ResetShowMessages extends ViewProfileEvent {}
 
 class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData> with ActionRunner {
-  final AccountRepository account = LoginRepository.getInstance().repositories.account;
-  final ProfileRepository profile = LoginRepository.getInstance().repositories.profile;
-  final MediaRepository media = LoginRepository.getInstance().repositories.media;
-  final ChatRepository chat = LoginRepository.getInstance().repositories.chat;
+  final AccountRepository account;
+  final ProfileRepository profile;
+  final MediaRepository media;
+  final ChatRepository chat;
 
   StreamSubscription<GetProfileResultClient>? _getProfileDataSubscription;
   StreamSubscription<ProfileChange>? _profileChangeSubscription;
@@ -59,10 +59,15 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData> with Acti
   final ProfileRefreshPriority priority;
 
   ViewProfileBloc(
+    RepositoryInstances r,
     ProfileEntry currentProfile,
     ProfileActionState? initialProfileAction,
     this.priority,
-  ) : super(ViewProfilesData(profile: currentProfile, profileActionState: initialProfileAction)) {
+  ) : account = r.account,
+      profile = r.profile,
+      media = r.media,
+      chat = r.chat,
+      super(ViewProfilesData(profile: currentProfile, profileActionState: initialProfileAction)) {
     on<InitEvent>((data, emit) async {
       final isInFavorites = await profile.isInFavorites(state.profile.accountId);
       final isBlocked = await chat.isInSentBlocks(state.profile.accountId);

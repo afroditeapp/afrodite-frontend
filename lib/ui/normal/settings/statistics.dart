@@ -1,3 +1,4 @@
+import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/utils/list.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +23,7 @@ Future<void> openStatisticsScreen(BuildContext context) {
     context,
     MaterialPage<void>(
       child: BlocProvider(
-        create: (_) => StatisticsBloc(),
+        create: (context) => StatisticsBloc(context.read<RepositoryInstances>()),
         lazy: false,
         child: const StatisticsScreen(),
       ),

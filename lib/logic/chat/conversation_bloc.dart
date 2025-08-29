@@ -1,6 +1,7 @@
 import "dart:async";
 
 import "package:app/data/chat/message_manager/utils.dart";
+import "package:app/data/utils/repository_instances.dart";
 import 'package:bloc_concurrency/bloc_concurrency.dart' show sequential;
 
 import "package:async/async.dart" show StreamExtensions;
@@ -13,7 +14,6 @@ import 'package:utils/utils.dart';
 import "package:app/data/chat/message_database_iterator.dart";
 import "package:app/data/chat/message_manager.dart";
 import "package:app/data/chat_repository.dart";
-import "package:app/data/login_repository.dart";
 import "package:app/data/profile_repository.dart";
 import "package:app/localizations.dart";
 import "package:app/model/freezed/logic/chat/conversation_bloc.dart";
@@ -173,15 +173,16 @@ class DefaultConversationDataProvider extends ConversationDataProvider {
 class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with ActionRunner {
   final ConversationDataProvider dataProvider;
   final RenderingManager renderingManager = RenderingManager();
-  final ProfileRepository profile = LoginRepository.getInstance().repositories.profile;
+  final ProfileRepository profile;
 
   StreamSubscription<(int, ConversationChanged?)>? _messageCountSubscription;
   StreamSubscription<ProfileChange>? _profileChangeSubscription;
 
   final BehaviorSubject<bool> _renderingSynchronizer = BehaviorSubject<bool>.seeded(false);
 
-  ConversationBloc(AccountId messageSenderAccountId, this.dataProvider)
-    : super(ConversationData(accountId: messageSenderAccountId)) {
+  ConversationBloc(RepositoryInstances r, AccountId messageSenderAccountId, this.dataProvider)
+    : profile = r.profile,
+      super(ConversationData(accountId: messageSenderAccountId)) {
     on<InitEvent>((data, emit) async {
       _log.info("Set conversation bloc initial state");
 

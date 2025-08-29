@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:app/data/utils/repository_instances.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
@@ -20,7 +21,11 @@ Future<void> openEditNewsScreen(BuildContext context, NewsId id, List<String> su
     context,
     MaterialPage<void>(
       child: BlocProvider(
-        create: (_) => EditNewsBloc(id, supportedLocales: supportedLocales),
+        create: (context) => EditNewsBloc(
+          context.read<RepositoryInstances>(),
+          id,
+          supportedLocales: supportedLocales,
+        ),
         lazy: false,
         child: EditNewsScreen(pageKey: pageKey, supportedLocales: supportedLocales),
       ),

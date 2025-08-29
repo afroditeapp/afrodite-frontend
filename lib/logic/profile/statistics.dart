@@ -1,8 +1,8 @@
+import "package:app/data/utils/repository_instances.dart";
 import "package:bloc_concurrency/bloc_concurrency.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:openapi/api.dart";
 import "package:app/api/server_connection_manager.dart";
-import "package:app/data/login_repository.dart";
 import "package:app/localizations.dart";
 import "package:app/model/freezed/logic/profile/statistics.dart";
 import "package:app/ui_utils/snack_bar.dart";
@@ -18,9 +18,9 @@ class Reload extends StatisticsEvent {
 }
 
 class StatisticsBloc extends Bloc<StatisticsEvent, StatisticsData> with ActionRunner {
-  final ApiManager api = LoginRepository.getInstance().repositories.api;
+  final ApiManager api;
 
-  StatisticsBloc() : super(StatisticsData()) {
+  StatisticsBloc(RepositoryInstances r) : api = r.api, super(StatisticsData()) {
     on<Reload>((data, emit) async {
       if (!data.adminRefresh) {
         emit(state.copyWith(isLoading: true, isError: false));

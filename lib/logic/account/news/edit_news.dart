@@ -1,8 +1,8 @@
+import "package:app/data/utils/repository_instances.dart";
 import "package:bloc_concurrency/bloc_concurrency.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:openapi/api.dart";
 import "package:app/api/server_connection_manager.dart";
-import "package:app/data/login_repository.dart";
 import "package:app/model/freezed/logic/account/news/edit_news.dart";
 import "package:app/ui_utils/snack_bar.dart";
 import "package:app/utils.dart";
@@ -28,11 +28,12 @@ class SaveToServer extends EditNewsEvent {
 }
 
 class EditNewsBloc extends Bloc<EditNewsEvent, EditNewsData> with ActionRunner {
-  final ApiManager api = LoginRepository.getInstance().repositories.api;
+  final ApiManager api;
   final NewsId id;
   final List<String> supportedLocales;
-  EditNewsBloc(this.id, {required this.supportedLocales})
-    : super(EditNewsData(supportedLocales: supportedLocales)) {
+  EditNewsBloc(RepositoryInstances r, this.id, {required this.supportedLocales})
+    : api = r.api,
+      super(EditNewsData(supportedLocales: supportedLocales)) {
     on<Reload>((data, emit) async {
       emit(EditNewsData(supportedLocales: supportedLocales).copyWith(isLoading: true));
 
