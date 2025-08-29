@@ -8,6 +8,7 @@ part 'demo_account.freezed.dart';
 @freezed
 class DemoAccountBlocData with _$DemoAccountBlocData {
   factory DemoAccountBlocData({
+    @Default(true) bool isLoading,
     @Default(false) bool logoutInProgress,
     @Default(UnmodifiableList<AccessibleAccount>.empty())
     UnmodifiableList<AccessibleAccount> accounts,

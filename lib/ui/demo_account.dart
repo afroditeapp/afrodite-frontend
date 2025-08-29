@@ -80,38 +80,36 @@ void createDemoAccountAction(BuildContext context) {
 Widget content(BuildContext context) {
   return BlocBuilder<DemoAccountBloc, DemoAccountBlocData>(
     builder: (context, data) {
-      if (data.accounts.isEmpty) {
-        return RefreshIndicator(
-          onRefresh: () async {
-            context.read<DemoAccountBloc>().add(DoDemoAccountRefreshAccountList());
+      final Widget listView;
+      if (data.isLoading) {
+        listView = ListView.builder(
+          itemCount: 0,
+          itemBuilder: (context, index) {
+            return null;
           },
-          child: ListView.builder(
-            itemCount: 1,
-            itemBuilder: (context, index) {
-              return ListTile(
-                title: Center(
-                  child: Column(
-                    children: [
-                      Text(context.strings.demo_account_screen_no_accounts_available),
-                      Padding(padding: EdgeInsets.only(top: 8)),
-                      ElevatedButton(
-                        onPressed: () => createDemoAccountAction(context),
-                        child: Text(context.strings.demo_account_screen_new_account_action),
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            },
-          ),
         );
-      }
-
-      return RefreshIndicator(
-        onRefresh: () async {
-          context.read<DemoAccountBloc>().add(DoDemoAccountRefreshAccountList());
-        },
-        child: ListView.builder(
+      } else if (data.accounts.isEmpty) {
+        listView = ListView.builder(
+          itemCount: 1,
+          itemBuilder: (context, index) {
+            return ListTile(
+              title: Center(
+                child: Column(
+                  children: [
+                    Text(context.strings.demo_account_screen_no_accounts_available),
+                    Padding(padding: EdgeInsets.only(top: 8)),
+                    ElevatedButton(
+                      onPressed: () => createDemoAccountAction(context),
+                      child: Text(context.strings.demo_account_screen_new_account_action),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+      } else {
+        listView = ListView.builder(
           itemCount: data.accounts.length,
           itemBuilder: (context, index) {
             final account = data.accounts[index];
@@ -127,7 +125,13 @@ Widget content(BuildContext context) {
               ),
             );
           },
-        ),
+        );
+      }
+      return RefreshIndicator(
+        onRefresh: () async {
+          context.read<DemoAccountBloc>().add(DoDemoAccountRefreshAccountList());
+        },
+        child: listView,
       );
     },
   );

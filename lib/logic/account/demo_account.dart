@@ -36,7 +36,7 @@ class DemoAccountBloc extends Bloc<DemoAccountEvent, DemoAccountBlocData> with A
     on<DoDemoAccountRefreshAccountList>((_, emit) async {
       switch (await login.demoAccountGetAccounts()) {
         case Ok(:final v):
-          emit(state.copyWith(accounts: UnmodifiableList(v)));
+          emit(state.copyWith(accounts: UnmodifiableList(v), isLoading: false));
         case Err(:final e):
           _handleError(e);
       }

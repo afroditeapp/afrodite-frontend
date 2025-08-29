@@ -13,10 +13,12 @@ final _privateConstructorErrorDemoAccountBlocData = UnsupportedError(
 
 /// @nodoc
 mixin _$DemoAccountBlocData {
+  bool get isLoading => throw _privateConstructorErrorDemoAccountBlocData;
   bool get logoutInProgress => throw _privateConstructorErrorDemoAccountBlocData;
   UnmodifiableList<AccessibleAccount> get accounts => throw _privateConstructorErrorDemoAccountBlocData;
 
   DemoAccountBlocData copyWith({
+    bool? isLoading,
     bool? logoutInProgress,
     UnmodifiableList<AccessibleAccount>? accounts,
   }) => throw _privateConstructorErrorDemoAccountBlocData;
@@ -25,6 +27,7 @@ mixin _$DemoAccountBlocData {
 /// @nodoc
 abstract class _DemoAccountBlocData implements DemoAccountBlocData {
   factory _DemoAccountBlocData({
+    bool isLoading,
     bool logoutInProgress,
     UnmodifiableList<AccessibleAccount> accounts,
   }) = _$DemoAccountBlocDataImpl;
@@ -32,14 +35,18 @@ abstract class _DemoAccountBlocData implements DemoAccountBlocData {
 
 /// @nodoc
 class _$DemoAccountBlocDataImpl with DiagnosticableTreeMixin implements _DemoAccountBlocData {
+  static const bool _isLoadingDefaultValue = true;
   static const bool _logoutInProgressDefaultValue = false;
   static const UnmodifiableList<AccessibleAccount> _accountsDefaultValue = UnmodifiableList<AccessibleAccount>.empty();
   
   _$DemoAccountBlocDataImpl({
+    this.isLoading = _isLoadingDefaultValue,
     this.logoutInProgress = _logoutInProgressDefaultValue,
     this.accounts = _accountsDefaultValue,
   });
 
+  @override
+  final bool isLoading;
   @override
   final bool logoutInProgress;
   @override
@@ -47,7 +54,7 @@ class _$DemoAccountBlocDataImpl with DiagnosticableTreeMixin implements _DemoAcc
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'DemoAccountBlocData(logoutInProgress: $logoutInProgress, accounts: $accounts)';
+    return 'DemoAccountBlocData(isLoading: $isLoading, logoutInProgress: $logoutInProgress, accounts: $accounts)';
   }
 
   @override
@@ -55,6 +62,7 @@ class _$DemoAccountBlocDataImpl with DiagnosticableTreeMixin implements _DemoAcc
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'DemoAccountBlocData'))
+      ..add(DiagnosticsProperty('isLoading', isLoading))
       ..add(DiagnosticsProperty('logoutInProgress', logoutInProgress))
       ..add(DiagnosticsProperty('accounts', accounts));
   }
@@ -64,6 +72,8 @@ class _$DemoAccountBlocDataImpl with DiagnosticableTreeMixin implements _DemoAcc
     return identical(this, other) ||
       (other.runtimeType == runtimeType &&
         other is _$DemoAccountBlocDataImpl &&
+        (identical(other.isLoading, isLoading) ||
+          other.isLoading == isLoading) &&
         (identical(other.logoutInProgress, logoutInProgress) ||
           other.logoutInProgress == logoutInProgress) &&
         (identical(other.accounts, accounts) ||
@@ -74,15 +84,18 @@ class _$DemoAccountBlocDataImpl with DiagnosticableTreeMixin implements _DemoAcc
   @override
   int get hashCode => Object.hash(
     runtimeType,
+    isLoading,
     logoutInProgress,
     accounts,
   );
 
   @override
   DemoAccountBlocData copyWith({
+    Object? isLoading,
     Object? logoutInProgress,
     Object? accounts,
   }) => _$DemoAccountBlocDataImpl(
+    isLoading: (isLoading ?? this.isLoading) as bool,
     logoutInProgress: (logoutInProgress ?? this.logoutInProgress) as bool,
     accounts: (accounts ?? this.accounts) as UnmodifiableList<AccessibleAccount>,
   );
