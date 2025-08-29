@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:app/data/app_version.dart';
 import 'package:app/data/utils/demo_account_manager.dart';
+import 'package:app/data/utils/login_repository_types.dart';
 import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/data/utils/sign_in_with_apple.dart';
 import 'package:app/data/utils/sign_in_with_google.dart';
@@ -19,14 +20,6 @@ import 'package:rxdart/rxdart.dart';
 import 'package:utils/utils.dart';
 
 final _log = Logger("LoginRepository");
-
-enum LoginState {
-  splashScreen,
-  loginRequired,
-  unsupportedClientVersion,
-  demoAccount,
-  viewAccountStateOnceItExists,
-}
 
 sealed class LoginRepositoryCmd<T> {
   final BehaviorSubject<T?> completed = BehaviorSubject.seeded(null);
@@ -79,9 +72,11 @@ class LoginRepository extends AppSingleton {
 
   bool _initDone = false;
 
-  RepositoryInstances? _repositories;
-  RepositoryInstances get repositories => _repositories!;
-  RepositoryInstances? get repositoriesOrNull => _repositories;
+  final BehaviorSubject<RepositoriesStreamValue> _repositories = BehaviorSubject.seeded(
+    RepositoriesEmpty(),
+  );
+  RepositoryInstances get repositories => _repositories.value.repositoriesOrNull!;
+  RepositoryInstances? get repositoriesOrNull => _repositories.value.repositoriesOrNull;
 
   late ApiManagerNoConnection _apiNoConnection;
 
@@ -91,7 +86,7 @@ class LoginRepository extends AppSingleton {
   Stream<AccountStateStreamValue> get accountState => _repositoryStateStreams.accountState;
   Stream<bool> get initialSetupSkipped => _repositoryStateStreams.initialSetupSkipped;
 
-  final BehaviorSubject<LoginState> _loginState = BehaviorSubject.seeded(LoginState.splashScreen);
+  final BehaviorSubject<LoginState> _loginState = BehaviorSubject.seeded(LsSplashScreen());
   final BehaviorSubject<bool> _loginInProgress = BehaviorSubject.seeded(false);
 
   final PublishSubject<LoginRepositoryCmd<Object>> _cmds = PublishSubject();
@@ -136,52 +131,57 @@ class LoginRepository extends AppSingleton {
       await createdRepositories.onResumeAppUsage();
       unawaited(createdRepositories.connectionManager.restart());
     } else {
+      _repositories.add(RepositoriesEmpty());
       await _repositoryStateStreams._logout();
     }
 
-    Rx.combineLatest3(
+    Rx.combineLatest4(
+      _repositories,
       _repositoryStateStreams._serverConnectionManagerStateEvents,
       _demoAccountManager.demoAccountToken,
       _loginInProgress,
-      (a, b, c) => (a, b, c),
+      (a, b, c, d) => (a, b, c, d),
     ).listen((event) {
-      final (serverConnectionState, demoAccountToken, loginInProgress) = event;
+      final (repositories, serverConnectionState, demoAccountToken, loginInProgress) = event;
       _log.finer(
-        "$serverConnectionState, demoAccountToken: ${demoAccountToken != null}, loginInProgress: $loginInProgress",
+        "$repositories, $serverConnectionState, demoAccountToken: ${demoAccountToken != null}, loginInProgress: $loginInProgress",
       );
-      if (loginInProgress) {
+
+      void handleLoginRequired() {
         if (demoAccountToken != null) {
-          _loginState.add(LoginState.demoAccount);
+          _loginState.add(LsDemoAccount());
         } else {
-          _loginState.add(LoginState.loginRequired);
+          _loginState.add(LsLoginRequired());
         }
+      }
+
+      if (loginInProgress) {
+        handleLoginRequired();
         return;
       }
 
-      switch (serverConnectionState) {
-        case ServerConnectionStateLoading():
-          _loginState.add(LoginState.splashScreen);
-        case ServerConnectionStateLoggedOut():
-          if (demoAccountToken != null) {
-            _loginState.add(LoginState.demoAccount);
-          } else {
-            _loginState.add(LoginState.loginRequired);
-          }
-        case ServerConnectionStateExists():
-          switch (serverConnectionState.state) {
-            case ServerConnectionState.waitingRefreshToken:
-              if (demoAccountToken != null) {
-                _loginState.add(LoginState.demoAccount);
-              } else {
-                _loginState.add(LoginState.loginRequired);
+      switch (repositories) {
+        case RepositoriesLoading():
+          _loginState.add(LsSplashScreen());
+        case RepositoriesEmpty():
+          handleLoginRequired();
+        case RepositoriesExists():
+          switch (serverConnectionState) {
+            case ServerConnectionStateLoading():
+              _loginState.add(LsLoggedIn(repositories.repositories));
+            case ServerConnectionStateExists():
+              switch (serverConnectionState.state) {
+                case ServerConnectionState.waitingRefreshToken ||
+                    ServerConnectionState.connecting ||
+                    ServerConnectionState.reconnectWaitTime ||
+                    ServerConnectionState.noConnection ||
+                    ServerConnectionState.connected:
+                  _loginState.add(LsLoggedIn(repositories.repositories));
+                case ServerConnectionState.unsupportedClientVersion:
+                  _loginState.add(
+                    LsLoggedIn(repositories.repositories, unsupportedClientVersion: true),
+                  );
               }
-            case ServerConnectionState.connecting ||
-                ServerConnectionState.reconnectWaitTime ||
-                ServerConnectionState.noConnection ||
-                ServerConnectionState.connected:
-              _loginState.add(LoginState.viewAccountStateOnceItExists);
-            case ServerConnectionState.unsupportedClientVersion:
-              _loginState.add(LoginState.unsupportedClientVersion);
           }
       }
     });
@@ -202,7 +202,7 @@ class LoginRepository extends AppSingleton {
               cmd.completed.add(_apiNoConnection.serverAddress);
             case ChangeServerAddress():
               final Result<(), ()> result;
-              if (_repositories != null) {
+              if (repositoriesOrNull != null) {
                 result = Err(());
               } else {
                 result = await BackgroundDatabaseManager.getInstance()
@@ -268,8 +268,8 @@ class LoginRepository extends AppSingleton {
       createdRepositories.connectionManager,
     );
 
-    final currentRepositories = _repositories;
-    _repositories = createdRepositories;
+    final currentRepositories = repositoriesOrNull;
+    _repositories.add(RepositoriesExists(createdRepositories));
     await currentRepositories?.logoutAndDispose();
 
     return createdRepositories;
@@ -355,13 +355,13 @@ class LoginRepository extends AppSingleton {
 
   /// Logout from current or specific account
   Future<void> _logoutInternal(AccountId? id) async {
-    final currentRepositories = _repositories;
+    final currentRepositories = repositoriesOrNull;
     if (currentRepositories != null && (id == null || id == currentRepositories.accountId)) {
       _log.info("Logout started");
       await _repositoryStateStreams._logout();
       await currentRepositories.logoutAndDispose();
       await _google.logout();
-      _repositories = null;
+      _repositories.add(RepositoriesEmpty());
       _log.info("Logout completed");
     }
   }
@@ -538,7 +538,7 @@ class RepositoryStateStreams {
     _initialSetupSkipped.add(false);
 
     await _serverConnectionManagerStateEventsSubscription?.cancel();
-    _serverConnectionManagerStateEvents.add(ServerConnectionStateLoggedOut());
+    _serverConnectionManagerStateEvents.add(ServerConnectionStateLoading());
   }
 }
 
@@ -574,13 +574,6 @@ class ServerConnectionStateLoading extends ServerConnectionStateStreamValue {
   @override
   String toString() {
     return "ServerConnectionStateLoading";
-  }
-}
-
-class ServerConnectionStateLoggedOut extends ServerConnectionStateStreamValue {
-  @override
-  String toString() {
-    return "ServerConnectionStateLoggedOut";
   }
 }
 

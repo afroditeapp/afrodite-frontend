@@ -19,7 +19,7 @@ import 'package:rxdart/rxdart.dart';
 final _log = Logger("ServerConnectionManager");
 
 enum ServerConnectionState {
-  /// No valid refresh token available. UI should display login view.
+  /// No valid refresh token available. Automatic logout should happen.
   waitingRefreshToken,
 
   /// Reconnecting will happen in few seconds.

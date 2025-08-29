@@ -2,6 +2,7 @@ import "package:app/main.dart";
 import "package:bloc_concurrency/bloc_concurrency.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:app/data/login_repository.dart";
+import 'package:app/data/utils/login_repository_types.dart';
 import "package:database/database.dart";
 import "package:logging/logging.dart";
 import "package:rxdart/rxdart.dart";
@@ -52,16 +53,15 @@ class MainStateBloc extends Bloc<MainStateEvent, MainState> {
       _log.finer("$loginState, $accountState, initialSetupSkipped: $initialSetupSkipped");
 
       final newMainState = switch (loginState) {
-        LoginState.loginRequired => MainState.loginRequired,
-        LoginState.demoAccount => MainState.demoAccount,
-        LoginState.splashScreen => MainState.splashScreen,
-        LoginState.unsupportedClientVersion => MainState.unsupportedClientVersion,
-        LoginState.viewAccountStateOnceItExists => switch (accountState) {
+        LsLoginRequired() => MainState.loginRequired,
+        LsDemoAccount() => MainState.demoAccount,
+        LsSplashScreen() => MainState.splashScreen,
+        LsLoggedIn() when loginState.unsupportedClientVersion => MainState.unsupportedClientVersion,
+        LsLoggedIn() => switch (accountState) {
+          AccountStateLoading() => null,
           // Prevent client getting stuck on splash screen when app starts
           // and getting AccountState fails.
-          AccountStateEmpty() =>
-            loginState == LoginState.demoAccount ? MainState.demoAccount : MainState.loginRequired,
-          AccountStateLoading() => null,
+          AccountStateEmpty() => MainState.loginRequired,
           AccountStateExists(:final state) => switch (state) {
             AccountState.initialSetup => switch (initialSetupSkipped) {
               true => MainState.initialSetupSkipped,
