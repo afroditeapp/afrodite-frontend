@@ -133,8 +133,6 @@ class CommonRepository extends DataRepositoryWithLifecycle {
   @override
   Future<void> onLogout() async {
     await PushNotificationManager.getInstance().logoutPushNotifications();
-    await IosDelayAppSuspendTask.forbid();
-    await IosDelayAppSuspendTask.dispose();
   }
 }
 

@@ -132,7 +132,7 @@ class LoginRepository extends AppSingleton {
 
     final currentAccountId = await accountId.first;
     if (currentAccountId != null) {
-      final createdRepositories = await _createRepositories(currentAccountId);
+      final createdRepositories = await _createAndReplaceRepositories(currentAccountId);
       await createdRepositories.onResumeAppUsage();
       unawaited(createdRepositories.connectionManager.restart());
     } else {
@@ -252,13 +252,10 @@ class LoginRepository extends AppSingleton {
         .listen(null);
   }
 
-  Future<RepositoryInstances> _createRepositories(
+  Future<RepositoryInstances> _createAndReplaceRepositories(
     AccountId accountId, {
     bool accountLoginHappened = false,
   }) async {
-    final currentRepositories = _repositories;
-    await currentRepositories?.dispose();
-
     final createdRepositories = await RepositoryInstances.createAndInit(
       accountId,
       accountLoginHappened: accountLoginHappened,
@@ -271,7 +268,9 @@ class LoginRepository extends AppSingleton {
       createdRepositories.connectionManager,
     );
 
+    final currentRepositories = _repositories;
     _repositories = createdRepositories;
+    await currentRepositories?.logoutAndDispose();
 
     return createdRepositories;
   }
@@ -321,7 +320,10 @@ class LoginRepository extends AppSingleton {
     // connects to server.
     _loginInProgress.add(true);
 
-    final createdRepositories = await _createRepositories(aid, accountLoginHappened: true);
+    final createdRepositories = await _createAndReplaceRepositories(
+      aid,
+      accountLoginHappened: true,
+    );
     await createdRepositories.onLogin();
     await createdRepositories.connectionManager.restart();
 
@@ -355,11 +357,11 @@ class LoginRepository extends AppSingleton {
   Future<void> _logoutInternal(AccountId? id) async {
     final currentRepositories = _repositories;
     if (currentRepositories != null && (id == null || id == currentRepositories.accountId)) {
-      _repositories = null;
       _log.info("Logout started");
       await _repositoryStateStreams._logout();
-      await currentRepositories.onLogout();
+      await currentRepositories.logoutAndDispose();
       await _google.logout();
+      _repositories = null;
       _log.info("Logout completed");
     }
   }

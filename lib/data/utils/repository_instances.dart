@@ -24,7 +24,7 @@ import 'package:app/utils/result.dart';
 /// operations for example. When user logs in using an account the blocs will
 /// be created and the required repository instances will be get from this
 /// class.
-class RepositoryInstances implements DataRepositoryMethods {
+class RepositoryInstances {
   final AccountId accountId;
   final UtcDateTime creationTime = UtcDateTime.now();
 
@@ -32,10 +32,10 @@ class RepositoryInstances implements DataRepositoryMethods {
   /// Usually this is false as usually the account is logged in when app starts.
   final bool accountLoginHappened;
   final CommonRepository common;
-  final ChatRepository chat;
-  final MediaRepository media;
-  final ProfileRepository profile;
   final AccountRepository account;
+  final ProfileRepository profile;
+  final MediaRepository media;
+  final ChatRepository chat;
 
   // No lifecycle or other methods
   final AccountBackgroundDatabaseManager accountBackgroundDb;
@@ -50,63 +50,52 @@ class RepositoryInstances implements DataRepositoryMethods {
     required this.accountId,
     required this.accountLoginHappened,
     required this.common,
-    required this.chat,
-    required this.media,
-    required this.profile,
     required this.account,
+    required this.profile,
+    required this.media,
+    required this.chat,
     required this.accountBackgroundDb,
     required this.accountDb,
     required this.connectionManager,
   });
 
+  List<DataRepositoryWithLifecycle> get _repositories => [common, account, profile, media, chat];
+
   Future<void> init() async {
     await connectionManager.init();
-    await common.init();
-    await chat.init();
-    await media.init();
-    await profile.init();
-    await account.init();
+    for (final r in _repositories) {
+      await r.init();
+    }
   }
 
-  Future<void> dispose() async {
-    await account.dispose();
-    await profile.dispose();
-    await media.dispose();
-    await chat.dispose();
-    await common.dispose();
-    await connectionManager.dispose();
-  }
-
-  @override
   Future<void> onInitialSetupComplete() async {
-    await common.onInitialSetupComplete();
-    await chat.onInitialSetupComplete();
-    await media.onInitialSetupComplete();
-    await profile.onInitialSetupComplete();
-    await account.onInitialSetupComplete();
+    for (final r in _repositories) {
+      await r.onInitialSetupComplete();
+    }
   }
 
-  @override
   Future<void> onLogin() async {
-    await common.onLogin();
-    await chat.onLogin();
-    await media.onLogin();
-    await profile.onLogin();
-    await account.onLogin();
+    for (final r in _repositories) {
+      await r.onLogin();
+    }
   }
 
-  @override
   Future<Result<(), ()>> onLoginDataSync() async {
-    return await common
-        .onLoginDataSync()
-        .andThen((_) => chat.onLoginDataSync())
-        .andThen((_) => media.onLoginDataSync())
-        .andThen((_) => profile.onLoginDataSync())
-        .andThen((_) => account.onLoginDataSync());
+    for (final r in _repositories) {
+      if (await r.onLoginDataSync().isErr()) {
+        return Err(());
+      }
+    }
+    return Ok(());
   }
 
-  @override
-  Future<void> onLogout() async {
+  Future<void> onResumeAppUsage() async {
+    for (final r in _repositories) {
+      await r.onResumeAppUsage();
+    }
+  }
+
+  Future<void> logoutAndDispose() async {
     if (_logoutStarted) {
       return;
     }
@@ -127,20 +116,15 @@ class RepositoryInstances implements DataRepositoryMethods {
     await accountDb.accountAction((db) => db.loginSession.updateRefreshToken(null));
     await accountDb.accountAction((db) => db.loginSession.updateAccessToken(null));
 
-    await common.onLogout();
-    await chat.onLogout();
-    await media.onLogout();
-    await profile.onLogout();
-    await account.onLogout();
-  }
+    for (final r in _repositories) {
+      await r.onLogout();
+    }
 
-  @override
-  Future<void> onResumeAppUsage() async {
-    await common.onResumeAppUsage();
-    await chat.onResumeAppUsage();
-    await media.onResumeAppUsage();
-    await profile.onResumeAppUsage();
-    await account.onResumeAppUsage();
+    for (final r in _repositories) {
+      await r.dispose();
+    }
+
+    await connectionManager.dispose();
   }
 
   static Future<RepositoryInstances> createAndInit(
@@ -198,10 +182,10 @@ class RepositoryInstances implements DataRepositoryMethods {
       accountId: accountId,
       accountLoginHappened: accountLoginHappened,
       common: common,
-      chat: chat,
-      media: media,
-      profile: profile,
       account: account,
+      profile: profile,
+      media: media,
+      chat: chat,
       accountBackgroundDb: accountBackgroundDb,
       accountDb: accountDb,
       connectionManager: connectionManager,
