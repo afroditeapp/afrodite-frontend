@@ -1,9 +1,9 @@
 import "dart:async";
 
+import "package:app/data/utils/repository_instances.dart";
 import "package:app/database/account_database_manager.dart";
 import "package:app/model/freezed/logic/account/client_features_config.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
-import "package:app/data/login_repository.dart";
 import "package:logging/logging.dart";
 import "package:openapi/api.dart";
 import "package:utils/utils.dart";
@@ -23,13 +23,14 @@ class DailyLikesLeftChanged extends ClientFeaturesConfigEvent {
 }
 
 class ClientFeaturesConfigBloc extends Bloc<ClientFeaturesConfigEvent, ClientFeaturesConfigData> {
-  final AccountDatabaseManager db = LoginRepository.getInstance().repositories.accountDb;
+  final AccountDatabaseManager db;
 
   StreamSubscription<ClientFeaturesConfig?>? _configSubscription;
   StreamSubscription<int?>? _dailyLikesLeftSubscription;
 
-  ClientFeaturesConfigBloc()
-    : super(ClientFeaturesConfigData(config: _emptyClientFeaturesConfig())) {
+  ClientFeaturesConfigBloc(RepositoryInstances r)
+    : db = r.accountDb,
+      super(ClientFeaturesConfigData(config: _emptyClientFeaturesConfig())) {
     on<ConfigChanged>((data, emit) async {
       final regex = data.value.profile.profileNameRegex;
       RegExp? profileNameRegex;

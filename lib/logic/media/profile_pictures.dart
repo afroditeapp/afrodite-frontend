@@ -1,5 +1,5 @@
 import "package:app/api/server_connection_manager.dart";
-import "package:app/data/login_repository.dart";
+import "package:app/data/utils/repository_instances.dart";
 import "package:app/localizations.dart";
 import "package:app/ui_utils/snack_bar.dart";
 import "package:app/utils/result.dart";
@@ -44,10 +44,13 @@ class ResetProfilePicturesBloc extends ProfilePicturesEvent {}
 class RefreshProfilePicturesFaceDetectedValues extends ProfilePicturesEvent {}
 
 class ProfilePicturesBloc extends Bloc<ProfilePicturesEvent, ProfilePicturesData> {
-  final ApiManager api = LoginRepository.getInstance().repositories.api;
-  final AccountId currentAccount = LoginRepository.getInstance().repositories.accountId;
+  final ApiManager api;
+  final AccountId currentAccount;
 
-  ProfilePicturesBloc() : super(const ProfilePicturesData()) {
+  ProfilePicturesBloc(RepositoryInstances r)
+    : api = r.api,
+      currentAccount = r.accountId,
+      super(const ProfilePicturesData()) {
     on<ResetIfModeChanges>((data, emit) {
       if (state.mode.runtimeType != data.mode.runtimeType) {
         emit(ProfilePicturesData(mode: data.mode));

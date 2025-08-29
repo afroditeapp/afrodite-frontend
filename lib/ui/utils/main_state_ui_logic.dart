@@ -81,16 +81,12 @@ class MainStateUiLogic extends StatelessWidget {
           MsLoginRequired() => NavigatorLoginScreen(),
           MsDemoAccount() => NavigatorDemoAccount(),
           MsLoggedIn() => switch (state.screen) {
-            LoggedInScreen.initialSetup => NavigatorInitialSetup(repositories: state.repositories),
-            LoggedInScreen.normal => NavigatorNormal(repositories: state.repositories),
-            LoggedInScreen.accountBanned => NavigatorAccountBanned(
-              repositories: state.repositories,
-            ),
-            LoggedInScreen.pendingRemoval => NavigatorPendingRemoval(
-              repositories: state.repositories,
-            ),
+            LoggedInScreen.initialSetup => NavigatorInitialSetup(r: state.repositories),
+            LoggedInScreen.normal => NavigatorNormal(r: state.repositories),
+            LoggedInScreen.accountBanned => NavigatorAccountBanned(r: state.repositories),
+            LoggedInScreen.pendingRemoval => NavigatorPendingRemoval(r: state.repositories),
             LoggedInScreen.unsupportedClientVersion => NavigatorUnsupportedClient(
-              repositories: state.repositories,
+              r: state.repositories,
             ),
           },
         };
@@ -168,8 +164,8 @@ class NavigatorDemoAccount extends BasicRootScreen {
 }
 
 abstract class LoggedInRootScreen extends StatelessWidget {
-  final RepositoryInstances repositories;
-  const LoggedInRootScreen({required this.repositories, super.key});
+  final RepositoryInstances r;
+  const LoggedInRootScreen({required this.r, super.key});
 
   Widget rootScreen();
   Widget blocProvider(Widget child);
@@ -180,7 +176,7 @@ abstract class LoggedInRootScreen extends StatelessWidget {
       NewPageDetails(MaterialPage<void>(child: rootScreen())),
     );
     return Provider<RepositoryInstances>(
-      create: (_) => repositories,
+      create: (_) => r,
       child: MultiBlocProvider(
         providers: [
           // Navigation
@@ -194,7 +190,7 @@ abstract class LoggedInRootScreen extends StatelessWidget {
 }
 
 class NavigatorInitialSetup extends LoggedInRootScreen {
-  const NavigatorInitialSetup({required super.repositories, super.key});
+  const NavigatorInitialSetup({required super.r, super.key});
 
   @override
   Widget rootScreen() => InitialSetupScreen();
@@ -208,18 +204,18 @@ class NavigatorInitialSetup extends LoggedInRootScreen {
 
         // Init AccountBloc so that the initial setup UI does not change from
         // text field to only text when sign in with login is used.
-        BlocProvider(create: (_) => AccountBloc(), lazy: false),
-        BlocProvider(create: (_) => InitialSetupBloc()),
-        BlocProvider(create: (_) => SecuritySelfieImageProcessingBloc()),
-        BlocProvider(create: (_) => ProfilePicturesImageProcessingBloc()),
-        BlocProvider(create: (_) => ProfileAttributesBloc()),
-        BlocProvider(create: (_) => ContentBloc()),
-        BlocProvider(create: (_) => SelectContentBloc()),
-        BlocProvider(create: (_) => ProfilePicturesBloc()),
+        BlocProvider(create: (_) => AccountBloc(r), lazy: false),
+        BlocProvider(create: (_) => InitialSetupBloc(r)),
+        BlocProvider(create: (_) => SecuritySelfieImageProcessingBloc(r)),
+        BlocProvider(create: (_) => ProfilePicturesImageProcessingBloc(r)),
+        BlocProvider(create: (_) => ProfileAttributesBloc(r)),
+        BlocProvider(create: (_) => ContentBloc(r)),
+        BlocProvider(create: (_) => SelectContentBloc(r)),
+        BlocProvider(create: (_) => ProfilePicturesBloc(r)),
         // Disable lazy init for ClientFeaturesConfigBloc so that
         // location selection does not use the default map settings.
         // Also profile name text field requires the bloc.
-        BlocProvider(create: (_) => ClientFeaturesConfigBloc(), lazy: false),
+        BlocProvider(create: (_) => ClientFeaturesConfigBloc(r), lazy: false),
       ],
       child: child,
     );
@@ -227,7 +223,7 @@ class NavigatorInitialSetup extends LoggedInRootScreen {
 }
 
 class NavigatorAccountBanned extends LoggedInRootScreen {
-  const NavigatorAccountBanned({required super.repositories, super.key});
+  const NavigatorAccountBanned({required super.r, super.key});
 
   @override
   Widget rootScreen() => AccountBannedScreen();
@@ -248,7 +244,7 @@ class NavigatorAccountBanned extends LoggedInRootScreen {
 }
 
 class NavigatorPendingRemoval extends LoggedInRootScreen {
-  const NavigatorPendingRemoval({required super.repositories, super.key});
+  const NavigatorPendingRemoval({required super.r, super.key});
 
   @override
   Widget rootScreen() => PendingDeletionPage();
@@ -268,7 +264,7 @@ class NavigatorPendingRemoval extends LoggedInRootScreen {
 }
 
 class NavigatorUnsupportedClient extends LoggedInRootScreen {
-  const NavigatorUnsupportedClient({required super.repositories, super.key});
+  const NavigatorUnsupportedClient({required super.r, super.key});
 
   @override
   Widget rootScreen() => UnsupportedClientScreen();
@@ -280,8 +276,8 @@ class NavigatorUnsupportedClient extends LoggedInRootScreen {
 }
 
 class NavigatorNormal extends StatelessWidget {
-  final RepositoryInstances repositories;
-  const NavigatorNormal({required this.repositories, super.key});
+  final RepositoryInstances r;
+  const NavigatorNormal({required this.r, super.key});
 
   Widget rootScreen() => NormalStateScreen();
 
@@ -292,24 +288,24 @@ class NavigatorNormal extends StatelessWidget {
         BlocProvider(create: (_) => LoginBloc()),
 
         // Initial setup (it is possible to access it if it is skipped)
-        BlocProvider(create: (_) => InitialSetupBloc()),
+        BlocProvider(create: (_) => InitialSetupBloc(r)),
 
         // General
-        BlocProvider(create: (_) => ProfilePicturesImageProcessingBloc()),
-        BlocProvider(create: (_) => SecuritySelfieImageProcessingBloc()),
+        BlocProvider(create: (_) => ProfilePicturesImageProcessingBloc(r)),
+        BlocProvider(create: (_) => SecuritySelfieImageProcessingBloc(r)),
         BlocProvider(create: (_) => NotificationPermissionBloc()),
         BlocProvider(create: (_) => NotificationPayloadHandlerBloc()),
-        BlocProvider(create: (_) => ProfileAttributesBloc()),
+        BlocProvider(create: (_) => ProfileAttributesBloc(r)),
         BlocProvider(create: (_) => ConversationListBloc()),
         BlocProvider(create: (_) => UnreadConversationsCountBloc()),
         BlocProvider(create: (_) => NewReceivedLikesAvailableBloc()),
         BlocProvider(create: (_) => CustomReportsConfigBloc()),
-        BlocProvider(create: (_) => ClientFeaturesConfigBloc()),
+        BlocProvider(create: (_) => ClientFeaturesConfigBloc(r)),
         BlocProvider(create: (_) => InfoDialogBloc()),
 
         // Account data
-        BlocProvider(create: (_) => AccountBloc()),
-        BlocProvider(create: (_) => ContentBloc()),
+        BlocProvider(create: (_) => AccountBloc(r)),
+        BlocProvider(create: (_) => ContentBloc(r)),
         BlocProvider(create: (_) => LocationBloc()),
         BlocProvider(create: (_) => MyProfileBloc()),
         BlocProvider(create: (_) => AccountDetailsBloc()),
@@ -317,9 +313,9 @@ class NavigatorNormal extends StatelessWidget {
 
         // Settings
         BlocProvider(create: (_) => EditMyProfileBloc()),
-        BlocProvider(create: (_) => SelectContentBloc()),
+        BlocProvider(create: (_) => SelectContentBloc(r)),
         BlocProvider(create: (_) => NewModerationRequestBloc()),
-        BlocProvider(create: (_) => ProfilePicturesBloc()),
+        BlocProvider(create: (_) => ProfilePicturesBloc(r)),
         BlocProvider(create: (_) => PrivacySettingsBloc()),
         BlocProvider(create: (_) => BlockedProfilesBloc()),
         BlocProvider(create: (_) => SearchSettingsBloc()),
@@ -367,7 +363,7 @@ class NavigatorNormal extends StatelessWidget {
 
     final NavigatorStateData blocInitialState = NavigatorStateData.rootPage(rootPage);
     return Provider<RepositoryInstances>(
-      create: (_) => repositories,
+      create: (_) => r,
       child: MultiBlocProvider(
         providers: [
           // Navigation

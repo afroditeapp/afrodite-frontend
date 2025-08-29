@@ -2,6 +2,7 @@ import "dart:io";
 import "dart:typed_data";
 
 import "package:app/api/server_connection_manager.dart";
+import "package:app/data/utils/repository_instances.dart";
 import "package:app/database/account_database_manager.dart";
 import "package:app/utils/age.dart";
 import "package:app/utils/result.dart";
@@ -14,8 +15,6 @@ import 'package:image/image.dart' as img;
 import 'package:utils/utils.dart';
 
 import "package:app/data/account_repository.dart";
-import "package:app/data/login_repository.dart";
-import "package:app/data/media_repository.dart";
 import "package:app/localizations.dart";
 import "package:app/model/freezed/logic/account/initial_setup.dart";
 import "package:app/model/freezed/logic/media/image_processing.dart";
@@ -110,15 +109,19 @@ class SkipInitialSetup extends InitialSetupEvent {}
 class RefreshSecuritySelfieFaceDetectedValue extends InitialSetupEvent {}
 
 class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData> with ActionRunner {
-  final LoginRepository login = LoginRepository.getInstance();
-  final AccountRepository account = LoginRepository.getInstance().repositories.account;
-  final MediaRepository media = LoginRepository.getInstance().repositories.media;
-  final AccountId currentUser = LoginRepository.getInstance().repositories.accountId;
-  final AccountDatabaseManager db = LoginRepository.getInstance().repositories.accountDb;
-  final ApiManager api = LoginRepository.getInstance().repositories.api;
-  final AccountId currentAccount = LoginRepository.getInstance().repositories.accountId;
+  final AccountRepository account;
+  final AccountId currentUser;
+  final AccountDatabaseManager db;
+  final ApiManager api;
+  final AccountId currentAccount;
 
-  InitialSetupBloc() : super(InitialSetupData()) {
+  InitialSetupBloc(RepositoryInstances r)
+    : account = r.account,
+      currentUser = r.accountId,
+      db = r.accountDb,
+      api = r.api,
+      currentAccount = r.accountId,
+      super(InitialSetupData()) {
     on<ResetState>((data, emit) {
       emit(InitialSetupData());
     });

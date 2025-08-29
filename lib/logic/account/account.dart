@@ -1,10 +1,10 @@
 import "dart:async";
 
+import "package:app/data/utils/repository_instances.dart";
 import "package:database/database.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:openapi/api.dart";
 import "package:app/data/account_repository.dart";
-import "package:app/data/login_repository.dart";
 import "package:app/model/freezed/logic/account/account.dart";
 import "package:app/utils.dart";
 
@@ -32,26 +32,27 @@ class NewEmailAddressValue extends AccountEvent {
 
 /// Do register/login operations
 class AccountBloc extends Bloc<AccountEvent, AccountBlocData> with ActionRunner {
-  final AccountRepository account = LoginRepository.getInstance().repositories.account;
+  final AccountRepository account;
 
   StreamSubscription<Permissions>? _permissionsSubscription;
   StreamSubscription<ProfileVisibility>? _profileVisibilitySubscription;
   StreamSubscription<AccountState?>? _accountStateSubscription;
   StreamSubscription<String?>? _emailAddressSubscription;
 
-  AccountBloc()
-    : super(
+  AccountBloc(RepositoryInstances r)
+    : account = r.account,
+      super(
         AccountBlocData(
           // Use cached account state value to directly show start initial setup
           // button when initial setup is skipped.
-          accountState: LoginRepository.getInstance().repositories.account.accountStateValue,
+          accountState: r.account.accountStateValue,
           permissions: Permissions(),
           // Use cached profile visiblity to avoid profile grid UI changing quickly
           // from private profile info to profile grid after login.
-          visibility: LoginRepository.getInstance().repositories.account.profileVisibilityValue,
+          visibility: r.account.profileVisibilityValue,
           // Use cached email to avoid showing input field UI for email
           // when initial setup is displayed.
-          email: LoginRepository.getInstance().repositories.account.emailAddressValue,
+          email: r.account.emailAddressValue,
         ),
       ) {
     on<NewPermissionsValue>((key, emit) {

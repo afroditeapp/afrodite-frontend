@@ -1,11 +1,11 @@
 import "dart:typed_data";
 
 import "package:app/api/server_connection_manager.dart";
+import "package:app/data/utils/repository_instances.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:app/data/account_repository.dart";
 
 import "package:app/data/image_cache.dart";
-import "package:app/data/login_repository.dart";
 import "package:app/data/media_repository.dart";
 import "package:app/data/media/send_to_slot.dart";
 import "package:app/model/freezed/logic/media/image_processing.dart";
@@ -29,13 +29,16 @@ class SendImageToSlot extends ImageProcessingEvent {
 class ResetState extends ImageProcessingEvent {}
 
 class ImageProcessingBloc extends Bloc<ImageProcessingEvent, ImageProcessingData> {
-  final AccountRepository account = LoginRepository.getInstance().repositories.account;
-  final MediaRepository media = LoginRepository.getInstance().repositories.media;
-  final ServerConnectionManager connection =
-      LoginRepository.getInstance().repositories.connectionManager;
+  final AccountRepository account;
+  final MediaRepository media;
+  final ServerConnectionManager connection;
   final ImageCacheData imageCache = ImageCacheData.getInstance();
 
-  ImageProcessingBloc() : super(ImageProcessingData()) {
+  ImageProcessingBloc(RepositoryInstances r)
+    : account = r.account,
+      media = r.media,
+      connection = r.connectionManager,
+      super(ImageProcessingData()) {
     on<ResetState>((data, emit) {
       emit(ImageProcessingData());
     });
@@ -108,6 +111,10 @@ class ImageProcessingBloc extends Bloc<ImageProcessingEvent, ImageProcessingData
   }
 }
 
-class SecuritySelfieImageProcessingBloc extends ImageProcessingBloc {}
+class SecuritySelfieImageProcessingBloc extends ImageProcessingBloc {
+  SecuritySelfieImageProcessingBloc(super.r);
+}
 
-class ProfilePicturesImageProcessingBloc extends ImageProcessingBloc {}
+class ProfilePicturesImageProcessingBloc extends ImageProcessingBloc {
+  ProfilePicturesImageProcessingBloc(super.r);
+}

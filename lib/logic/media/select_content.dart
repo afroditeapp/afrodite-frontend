@@ -1,8 +1,8 @@
 import "package:app/api/server_connection_manager.dart";
+import "package:app/data/utils/repository_instances.dart";
 import "package:app/localizations.dart";
 import "package:app/ui_utils/snack_bar.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
-import "package:app/data/login_repository.dart";
 import "package:app/model/freezed/logic/media/select_content.dart";
 import "package:app/utils.dart";
 import "package:app/utils/immutable_list.dart";
@@ -20,10 +20,13 @@ class DeleteContent extends SelectContentEvent {
 }
 
 class SelectContentBloc extends Bloc<SelectContentEvent, SelectContentData> with ActionRunner {
-  final ApiManager api = LoginRepository.getInstance().repositories.api;
-  final AccountId currentUser = LoginRepository.getInstance().repositories.accountId;
+  final ApiManager api;
+  final AccountId currentUser;
 
-  SelectContentBloc() : super(SelectContentData()) {
+  SelectContentBloc(RepositoryInstances r)
+    : api = r.api,
+      currentUser = r.accountId,
+      super(SelectContentData()) {
     on<ReloadAvailableContent>((data, emit) async {
       await runOnce(() async {
         await reload(emit, true);

@@ -1,5 +1,6 @@
 import "dart:async";
 
+import "package:app/data/utils/repository_instances.dart";
 import "package:app/localizations.dart";
 import "package:app/ui_utils/snack_bar.dart";
 import "package:app/utils.dart";
@@ -8,7 +9,6 @@ import "package:flutter_bloc/flutter_bloc.dart";
 import "package:openapi/api.dart";
 import "package:app/api/server_connection_manager.dart";
 import "package:app/data/image_cache.dart";
-import "package:app/data/login_repository.dart";
 
 import "package:app/data/media_repository.dart";
 import "package:app/database/account_database_manager.dart";
@@ -37,19 +37,24 @@ class ChangeSecurityContent extends ContentEvent {
 }
 
 class ContentBloc extends Bloc<ContentEvent, ContentData> with ActionRunner {
-  final AccountDatabaseManager db = LoginRepository.getInstance().repositories.accountDb;
-  final MediaRepository media = LoginRepository.getInstance().repositories.media;
-  final ServerConnectionManager connection =
-      LoginRepository.getInstance().repositories.connectionManager;
+  final AccountDatabaseManager db;
+  final MediaRepository media;
+  final ServerConnectionManager connection;
+  final AccountId currentUser;
+  final ApiManager api;
   final ImageCacheData cache = ImageCacheData.getInstance();
-  final AccountId currentUser = LoginRepository.getInstance().repositories.accountId;
-  final ApiManager api = LoginRepository.getInstance().repositories.api;
 
   StreamSubscription<PrimaryProfileContent?>? _primaryContentSubscription;
   StreamSubscription<MyContent?>? _securityContentSubscription;
   StreamSubscription<void>? _primaryImageDataAvailable;
 
-  ContentBloc() : super(ContentData()) {
+  ContentBloc(RepositoryInstances r)
+    : db = r.accountDb,
+      media = r.media,
+      connection = r.connectionManager,
+      currentUser = r.accountId,
+      api = r.api,
+      super(ContentData()) {
     on<NewPrimaryContent>((data, emit) {
       emit(state.copyWith(primaryContent: data.content, isLoadingPrimaryContent: false));
     });

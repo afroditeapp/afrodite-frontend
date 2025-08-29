@@ -1,10 +1,10 @@
 import "dart:async";
 
+import "package:app/data/utils/repository_instances.dart";
 import "package:app/database/background_database_manager.dart";
 import "package:app/ui_utils/attribute/attribute.dart";
 import "package:database/database.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
-import "package:app/data/login_repository.dart";
 import "package:app/data/profile_repository.dart";
 import "package:app/model/freezed/logic/profile/attributes.dart";
 import "package:app/utils.dart";
@@ -23,12 +23,12 @@ class NewLocale extends AttributesEvent {
 
 class ProfileAttributesBloc extends Bloc<AttributesEvent, AttributesData> with ActionRunner {
   final BackgroundDatabaseManager backgroundDb = BackgroundDatabaseManager.getInstance();
-  final ProfileRepository profile = LoginRepository.getInstance().repositories.profile;
+  final ProfileRepository profile;
 
   StreamSubscription<String?>? _localeSubscription;
   StreamSubscription<ProfileAttributes?>? _attributesSubscription;
 
-  ProfileAttributesBloc() : super(AttributesData()) {
+  ProfileAttributesBloc(RepositoryInstances r) : profile = r.profile, super(AttributesData()) {
     on<NewLocale>((data, emit) async {
       final attributes = state.attributes;
       AttributeManager? manager;
