@@ -1,5 +1,8 @@
 import "dart:async";
 
+import "package:app/api/server_connection_manager.dart";
+import "package:app/data/utils/repository_instances.dart";
+import "package:app/database/account_background_database_manager.dart";
 import "package:app/localizations.dart";
 import "package:app/ui_utils/common_update_logic.dart";
 import "package:app/ui_utils/snack_bar.dart";
@@ -7,7 +10,6 @@ import "package:app/utils/result.dart";
 import "package:app/utils/time.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:app/data/general/notification/utils/notification_category.dart";
-import "package:app/data/login_repository.dart";
 import "package:app/data/notification_manager.dart";
 import "package:app/model/freezed/logic/settings/notification_settings.dart";
 import "package:openapi/api.dart";
@@ -58,8 +60,8 @@ class NewValueProfileSettings extends NotificationSettingsEvent {
 }
 
 class NotificationSettingsBloc extends Bloc<NotificationSettingsEvent, NotificationSettingsData> {
-  final api = LoginRepository.getInstance().repositories.api;
-  final db = LoginRepository.getInstance().repositories.accountBackgroundDb;
+  final ApiManager api;
+  final AccountBackgroundDatabaseManager db;
   final notifications = NotificationManager.getInstance();
 
   StreamSubscription<bool?>? _messagesSubscription;
@@ -67,8 +69,10 @@ class NotificationSettingsBloc extends Bloc<NotificationSettingsEvent, Notificat
   StreamSubscription<bool?>? _mediaContentModerationCompletedSubscription;
   StreamSubscription<bool?>? _newsSubscription;
 
-  NotificationSettingsBloc()
-    : super(
+  NotificationSettingsBloc(RepositoryInstances r)
+    : api = r.api,
+      db = r.accountBackgroundDb,
+      super(
         NotificationSettingsData(
           categories: NotificationCategoryData(),
           systemCategories: NotificationCategoryData(),

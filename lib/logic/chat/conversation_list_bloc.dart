@@ -1,12 +1,12 @@
 import "dart:async";
 import "dart:collection";
 
+import "package:app/data/utils/repository_instances.dart";
 import 'package:bloc_concurrency/bloc_concurrency.dart' show sequential;
 
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:logging/logging.dart";
 import "package:openapi/api.dart";
-import "package:app/data/login_repository.dart";
 import "package:app/data/profile_repository.dart";
 import "package:app/model/freezed/logic/chat/conversation_list_bloc.dart";
 import "package:app/utils.dart";
@@ -24,13 +24,13 @@ class HandleNewConversationList extends ConversationListEvent {
 
 class ConversationListBloc extends Bloc<ConversationListEvent, ConversationListData>
     with ActionRunner {
-  final ProfileRepository profile = LoginRepository.getInstance().repositories.profile;
+  final ProfileRepository profile;
 
   final ConversationListChangeCalculator calculator = ConversationListChangeCalculator();
 
   StreamSubscription<List<AccountId>>? _conversationListSubscription;
 
-  ConversationListBloc() : super(ConversationListData()) {
+  ConversationListBloc(RepositoryInstances r) : profile = r.profile, super(ConversationListData()) {
     on<HandleNewConversationList>((data, emit) async {
       final calculatorResult = calculator.calculate(data.data);
       emit(

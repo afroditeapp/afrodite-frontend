@@ -1,10 +1,10 @@
 import "dart:async";
 
+import "package:app/data/utils/repository_instances.dart";
 import "package:app/utils/api.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:openapi/api.dart";
 import "package:app/data/account_repository.dart";
-import "package:app/data/login_repository.dart";
 import "package:app/localizations.dart";
 import "package:app/model/freezed/logic/settings/privacy_settings.dart";
 import "package:app/ui_utils/common_update_logic.dart";
@@ -24,11 +24,11 @@ class ToggleVisibilityAndSaveSettings extends PrivacySettingsEvent {}
 
 class PrivacySettingsBloc extends Bloc<PrivacySettingsEvent, PrivacySettingsData>
     with ActionRunner {
-  final AccountRepository account = LoginRepository.getInstance().repositories.account;
+  final AccountRepository account;
 
   StreamSubscription<ProfileVisibility>? _visibilitySubscription;
 
-  PrivacySettingsBloc() : super(PrivacySettingsData()) {
+  PrivacySettingsBloc(RepositoryInstances r) : account = r.account, super(PrivacySettingsData()) {
     on<NewVisibility>((data, emit) {
       emit(state.copyWith(visiblity: data.value, editedVisibility: null));
     });

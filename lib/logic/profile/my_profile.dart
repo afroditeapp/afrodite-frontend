@@ -1,9 +1,9 @@
 import "dart:async";
 
+import "package:app/data/utils/repository_instances.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:openapi/api.dart";
 import "package:app/data/account_repository.dart";
-import "package:app/data/login_repository.dart";
 import "package:app/data/media_repository.dart";
 import "package:app/data/profile_repository.dart";
 import 'package:database/database.dart';
@@ -39,15 +39,20 @@ class NewInitialAgeInfo extends MyProfileEvent {
 class ReloadMyProfile extends MyProfileEvent {}
 
 class MyProfileBloc extends Bloc<MyProfileEvent, MyProfileData> with ActionRunner {
-  final AccountRepository account = LoginRepository.getInstance().repositories.account;
-  final ProfileRepository profile = LoginRepository.getInstance().repositories.profile;
-  final MediaRepository media = LoginRepository.getInstance().repositories.media;
-  final AccountDatabaseManager db = LoginRepository.getInstance().repositories.accountDb;
+  final AccountRepository account;
+  final ProfileRepository profile;
+  final MediaRepository media;
+  final AccountDatabaseManager db;
 
   StreamSubscription<ProfileEntry?>? _profileSubscription;
   StreamSubscription<InitialAgeInfo?>? _initialAgeInfoSubscription;
 
-  MyProfileBloc() : super(MyProfileData()) {
+  MyProfileBloc(RepositoryInstances r)
+    : account = r.account,
+      profile = r.profile,
+      media = r.media,
+      db = r.accountDb,
+      super(MyProfileData()) {
     on<SetProfile>((data, emit) async {
       await runOnce(() async {
         final current = state.profile;

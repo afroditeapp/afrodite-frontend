@@ -1,7 +1,7 @@
+import "package:app/data/utils/repository_instances.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:openapi/api.dart";
 import "package:app/data/chat_repository.dart";
-import "package:app/data/login_repository.dart";
 import "package:app/localizations.dart";
 import "package:app/model/freezed/logic/settings/blocked_profiles.dart";
 import "package:app/ui_utils/snack_bar.dart";
@@ -16,9 +16,9 @@ class UnblockProfile extends BlockedProfilesEvent {
 
 class BlockedProfilesBloc extends Bloc<BlockedProfilesEvent, BlockedProfilesData>
     with ActionRunner {
-  final ChatRepository chat = LoginRepository.getInstance().repositories.chat;
+  final ChatRepository chat;
 
-  BlockedProfilesBloc() : super(BlockedProfilesData()) {
+  BlockedProfilesBloc(RepositoryInstances r) : chat = r.chat, super(BlockedProfilesData()) {
     on<UnblockProfile>((data, emit) async {
       if (state.unblockOngoing) {
         showSnackBar(R.strings.blocked_profiles_screen_unblock_profile_in_progress);

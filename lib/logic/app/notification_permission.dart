@@ -1,7 +1,8 @@
 import "dart:async";
 
+import "package:app/data/common_repository.dart";
+import "package:app/data/utils/repository_instances.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
-import "package:app/data/login_repository.dart";
 import "package:app/data/notification_manager.dart";
 
 extension type NotificationPermissionAsked(bool? notificationPermissionAsked) {}
@@ -19,10 +20,12 @@ class AcceptPermissions extends NotificationPermissionEvent {}
 
 class NotificationPermissionBloc
     extends Bloc<NotificationPermissionEvent, NotificationPermissionAsked> {
-  final common = LoginRepository.getInstance().repositories.common;
+  final CommonRepository common;
   StreamSubscription<bool?>? _notificationPermissionAskedSubscription;
 
-  NotificationPermissionBloc() : super(NotificationPermissionAsked(null)) {
+  NotificationPermissionBloc(RepositoryInstances r)
+    : common = r.common,
+      super(NotificationPermissionAsked(null)) {
     on<SetNotificationPermissionAskedValue>(
       (data, emit) => emit(NotificationPermissionAsked(data.value)),
     );

@@ -1,6 +1,6 @@
+import "package:app/data/utils/repository_instances.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:app/data/account_repository.dart";
-import "package:app/data/login_repository.dart";
 import "package:app/localizations.dart";
 import "package:app/model/freezed/logic/account/account_details.dart";
 import "package:app/ui_utils/snack_bar.dart";
@@ -15,9 +15,9 @@ class MoveAccountToPendingDeletionState extends AccountDetailsEvent {}
 
 class AccountDetailsBloc extends Bloc<AccountDetailsEvent, AccountDetailsBlocData>
     with ActionRunner {
-  final AccountRepository account = LoginRepository.getInstance().repositories.account;
+  final AccountRepository account;
 
-  AccountDetailsBloc() : super(AccountDetailsBlocData()) {
+  AccountDetailsBloc(RepositoryInstances r) : account = r.account, super(AccountDetailsBlocData()) {
     on<Reload>((key, emit) async {
       await runOnce(() async {
         emit(AccountDetailsBlocData().copyWith(isLoading: true));

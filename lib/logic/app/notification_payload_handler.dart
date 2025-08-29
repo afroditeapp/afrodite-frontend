@@ -1,8 +1,8 @@
 import "dart:async";
 
+import "package:app/data/utils/repository_instances.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:app/data/general/notification/utils/notification_payload.dart";
-import "package:app/data/login_repository.dart";
 import "package:app/data/notification_manager.dart";
 import "package:app/database/account_background_database_manager.dart";
 import "package:app/database/account_database_manager.dart";
@@ -31,12 +31,14 @@ class AddNewPayload extends NotificationPayloadHandlerEvent {
 
 class NotificationPayloadHandlerBloc
     extends Bloc<NotificationPayloadHandlerEvent, NotificationPayloadHandlerData> {
-  final AccountBackgroundDatabaseManager accountBackgroundDb =
-      LoginRepository.getInstance().repositories.accountBackgroundDb;
-  final AccountDatabaseManager accountDb = LoginRepository.getInstance().repositories.accountDb;
+  final AccountBackgroundDatabaseManager accountBackgroundDb;
+  final AccountDatabaseManager accountDb;
   StreamSubscription<NotificationPayload>? _payloadSubscription;
 
-  NotificationPayloadHandlerBloc() : super(NotificationPayloadHandlerData()) {
+  NotificationPayloadHandlerBloc(RepositoryInstances r)
+    : accountBackgroundDb = r.accountBackgroundDb,
+      accountDb = r.accountDb,
+      super(NotificationPayloadHandlerData()) {
     on<HandleFirstPayload>((data, emit) async {
       NotificationPayload? firstPayload;
       final List<NotificationPayload> otherPayloads = [];

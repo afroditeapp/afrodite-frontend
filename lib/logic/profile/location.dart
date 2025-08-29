@@ -1,8 +1,8 @@
 import "dart:async";
 
+import "package:app/data/utils/repository_instances.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:openapi/api.dart";
-import "package:app/data/login_repository.dart";
 import "package:app/data/profile_repository.dart";
 import "package:app/utils.dart";
 
@@ -19,11 +19,11 @@ class NewLocation extends LocationEvent {
 }
 
 class LocationBloc extends Bloc<LocationEvent, Location?> with ActionRunner {
-  final ProfileRepository profile = LoginRepository.getInstance().repositories.profile;
+  final ProfileRepository profile;
 
   StreamSubscription<Location?>? _locationSubscription;
 
-  LocationBloc() : super(null) {
+  LocationBloc(RepositoryInstances r) : profile = r.profile, super(null) {
     on<SetLocation>((data, emit) async {
       await profile.updateLocation(data.location);
     });

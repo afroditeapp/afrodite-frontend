@@ -1,10 +1,10 @@
 import "dart:async";
 
+import "package:app/data/utils/repository_instances.dart";
 import "package:app/database/account_database_manager.dart";
 import "package:app/ui_utils/extensions/other.dart";
 import "package:database/database.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
-import "package:app/data/login_repository.dart";
 import "package:app/model/freezed/logic/settings/ui_settings.dart";
 
 sealed class UiSettingsEvent {}
@@ -27,11 +27,11 @@ class UpdatePaddingMode extends UiSettingsEvent {
 }
 
 class UiSettingsBloc extends Bloc<UiSettingsEvent, UiSettingsData> {
-  final AccountDatabaseManager db = LoginRepository.getInstance().repositories.accountDb;
+  final AccountDatabaseManager db;
 
   StreamSubscription<GridSettings?>? _gridSettingsSubscription;
 
-  UiSettingsBloc() : super(UiSettingsData()) {
+  UiSettingsBloc(RepositoryInstances r) : db = r.accountDb, super(UiSettingsData()) {
     on<NewGridSettings>((data, emit) {
       emit(state.copyWith(gridSettings: data.value));
     });

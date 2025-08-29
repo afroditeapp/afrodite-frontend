@@ -1,12 +1,12 @@
 import "dart:async";
 
+import "package:app/data/utils/repository_instances.dart";
 import "package:app/database/account_background_database_manager.dart";
 import "package:app/model/freezed/logic/profile/automatic_profile_search_badge.dart";
 import 'package:bloc_concurrency/bloc_concurrency.dart' show sequential;
 import "package:database/database.dart";
 
 import "package:flutter_bloc/flutter_bloc.dart";
-import "package:app/data/login_repository.dart";
 
 sealed class AutomaticProfileSearchBadgeEvent {}
 
@@ -19,12 +19,13 @@ class HideBadge extends AutomaticProfileSearchBadgeEvent {}
 
 class AutomaticProfileSearchBadgeBloc
     extends Bloc<AutomaticProfileSearchBadgeEvent, AutomaticProfileSearchBadgeData> {
-  final AccountBackgroundDatabaseManager db =
-      LoginRepository.getInstance().repositories.accountBackgroundDb;
+  final AccountBackgroundDatabaseManager db;
 
   StreamSubscription<AutomaticProfileSearchBadgeState?>? _stateSubscription;
 
-  AutomaticProfileSearchBadgeBloc() : super(AutomaticProfileSearchBadgeData()) {
+  AutomaticProfileSearchBadgeBloc(RepositoryInstances r)
+    : db = r.accountBackgroundDb,
+      super(AutomaticProfileSearchBadgeData()) {
     on<BadgeStateUpdate>((data, emit) {
       emit(state.copyWith(dataLoaded: true, badgeState: data.value));
     }, transformer: sequential());

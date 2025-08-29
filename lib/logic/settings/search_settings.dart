@@ -1,12 +1,12 @@
 import "dart:async";
 
 import "package:app/api/server_connection_manager.dart";
+import "package:app/data/utils/repository_instances.dart";
 import "package:app/database/account_background_database_manager.dart";
 import "package:app/model/freezed/logic/account/initial_setup.dart";
 import "package:app/utils/api.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:openapi/api.dart";
-import "package:app/data/login_repository.dart";
 import "package:app/data/profile_repository.dart";
 import "package:app/database/account_database_manager.dart";
 import "package:app/localizations.dart";
@@ -58,17 +58,20 @@ class SaveSearchSettings extends SearchSettingsEvent {
 }
 
 class SearchSettingsBloc extends Bloc<SearchSettingsEvent, SearchSettingsData> with ActionRunner {
-  final ProfileRepository profile = LoginRepository.getInstance().repositories.profile;
-  final AccountDatabaseManager db = LoginRepository.getInstance().repositories.accountDb;
-  final AccountBackgroundDatabaseManager accountBackgroundDb =
-      LoginRepository.getInstance().repositories.accountBackgroundDb;
-  final ApiManager api = LoginRepository.getInstance().repositories.api;
+  final ProfileRepository profile;
+  final AccountDatabaseManager db;
+  final AccountBackgroundDatabaseManager accountBackgroundDb;
+  final ApiManager api;
 
   StreamSubscription<SearchGroups?>? _searchGroupsSubscription;
   StreamSubscription<AutomaticProfileSearchSettings?>? _automaticProfileSearchSettingsSubscription;
 
-  SearchSettingsBloc()
-    : super(
+  SearchSettingsBloc(RepositoryInstances r)
+    : profile = r.profile,
+      db = r.accountDb,
+      accountBackgroundDb = r.accountBackgroundDb,
+      api = r.api,
+      super(
         SearchSettingsData(
           automaticProfileSearchSettings: AutomaticProfileSearchSettingsDefaults.defaultValue,
         ),

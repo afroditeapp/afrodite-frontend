@@ -235,8 +235,8 @@ class NavigatorAccountBanned extends LoggedInRootScreen {
         // Logout action
         BlocProvider(create: (_) => LoginBloc()),
 
-        BlocProvider(create: (_) => AccountDetailsBloc()),
-        BlocProvider(create: (_) => DataExportBloc()),
+        BlocProvider(create: (_) => AccountDetailsBloc(r)),
+        BlocProvider(create: (_) => DataExportBloc(r)),
       ],
       child: child,
     );
@@ -256,7 +256,7 @@ class NavigatorPendingRemoval extends LoggedInRootScreen {
         // Logout action
         BlocProvider(create: (_) => LoginBloc()),
 
-        BlocProvider(create: (_) => DataExportBloc()),
+        BlocProvider(create: (_) => DataExportBloc(r)),
       ],
       child: child,
     );
@@ -293,47 +293,47 @@ class NavigatorNormal extends StatelessWidget {
         // General
         BlocProvider(create: (_) => ProfilePicturesImageProcessingBloc(r)),
         BlocProvider(create: (_) => SecuritySelfieImageProcessingBloc(r)),
-        BlocProvider(create: (_) => NotificationPermissionBloc()),
-        BlocProvider(create: (_) => NotificationPayloadHandlerBloc()),
+        BlocProvider(create: (_) => NotificationPermissionBloc(r)),
+        BlocProvider(create: (_) => NotificationPayloadHandlerBloc(r)),
         BlocProvider(create: (_) => ProfileAttributesBloc(r)),
-        BlocProvider(create: (_) => ConversationListBloc()),
-        BlocProvider(create: (_) => UnreadConversationsCountBloc()),
-        BlocProvider(create: (_) => NewReceivedLikesAvailableBloc()),
-        BlocProvider(create: (_) => CustomReportsConfigBloc()),
+        BlocProvider(create: (_) => ConversationListBloc(r)),
+        BlocProvider(create: (_) => UnreadConversationsCountBloc(r)),
+        BlocProvider(create: (_) => NewReceivedLikesAvailableBloc(r)),
+        BlocProvider(create: (_) => CustomReportsConfigBloc(r)),
         BlocProvider(create: (_) => ClientFeaturesConfigBloc(r)),
         BlocProvider(create: (_) => InfoDialogBloc()),
 
         // Account data
         BlocProvider(create: (_) => AccountBloc(r)),
         BlocProvider(create: (_) => ContentBloc(r)),
-        BlocProvider(create: (_) => LocationBloc()),
-        BlocProvider(create: (_) => MyProfileBloc()),
-        BlocProvider(create: (_) => AccountDetailsBloc()),
-        BlocProvider(create: (_) => ProfileFiltersBloc()),
+        BlocProvider(create: (_) => LocationBloc(r)),
+        BlocProvider(create: (_) => MyProfileBloc(r)),
+        BlocProvider(create: (_) => AccountDetailsBloc(r)),
+        BlocProvider(create: (_) => ProfileFiltersBloc(r)),
 
         // Settings
-        BlocProvider(create: (_) => EditMyProfileBloc()),
+        BlocProvider(create: (_) => EditMyProfileBloc(r)),
         BlocProvider(create: (_) => SelectContentBloc(r)),
         BlocProvider(create: (_) => NewModerationRequestBloc()),
         BlocProvider(create: (_) => ProfilePicturesBloc(r)),
-        BlocProvider(create: (_) => PrivacySettingsBloc()),
-        BlocProvider(create: (_) => BlockedProfilesBloc()),
-        BlocProvider(create: (_) => SearchSettingsBloc()),
-        BlocProvider(create: (_) => NotificationSettingsBloc()),
-        BlocProvider(create: (_) => UiSettingsBloc()),
-        BlocProvider(create: (_) => DataExportBloc()),
+        BlocProvider(create: (_) => PrivacySettingsBloc(r)),
+        BlocProvider(create: (_) => BlockedProfilesBloc(r)),
+        BlocProvider(create: (_) => SearchSettingsBloc(r)),
+        BlocProvider(create: (_) => NotificationSettingsBloc(r)),
+        BlocProvider(create: (_) => UiSettingsBloc(r)),
+        BlocProvider(create: (_) => DataExportBloc(r)),
 
         // News
-        BlocProvider(create: (_) => NewsCountBloc()),
+        BlocProvider(create: (_) => NewsCountBloc(r)),
 
         // Server maintenance
-        BlocProvider(create: (_) => ServerMaintenanceBloc()),
+        BlocProvider(create: (_) => ServerMaintenanceBloc(r)),
 
         // Likes
         BlocProvider(create: (_) => LikeGridInstanceManagerBloc()),
 
         // Automatic profile search
-        BlocProvider(create: (_) => AutomaticProfileSearchBadgeBloc()),
+        BlocProvider(create: (_) => AutomaticProfileSearchBadgeBloc(r)),
       ],
       child: child,
     );

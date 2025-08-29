@@ -1,9 +1,9 @@
 import "dart:async";
 
+import "package:app/data/utils/repository_instances.dart";
 import "package:app/database/account_database_manager.dart";
 import "package:database/database.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
-import "package:app/data/login_repository.dart";
 
 sealed class ServerMaintenanceEvent {}
 
@@ -15,11 +15,13 @@ class MaintenanceInfoChanged extends ServerMaintenanceEvent {
 class ViewServerMaintenanceInfo extends ServerMaintenanceEvent {}
 
 class ServerMaintenanceBloc extends Bloc<ServerMaintenanceEvent, ServerMaintenanceInfo> {
-  final AccountDatabaseManager db = LoginRepository.getInstance().repositories.accountDb;
+  final AccountDatabaseManager db;
 
   StreamSubscription<ServerMaintenanceInfo?>? _maintenanceInfoSubscription;
 
-  ServerMaintenanceBloc() : super(ServerMaintenanceInfo.empty()) {
+  ServerMaintenanceBloc(RepositoryInstances r)
+    : db = r.accountDb,
+      super(ServerMaintenanceInfo.empty()) {
     on<MaintenanceInfoChanged>((data, emit) async {
       emit(data.value);
     });

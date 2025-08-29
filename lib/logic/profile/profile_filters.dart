@@ -1,5 +1,6 @@
 import "dart:async";
 
+import "package:app/data/utils/repository_instances.dart";
 import "package:app/ui_utils/attribute/attribute.dart";
 import "package:app/ui_utils/attribute/filter.dart";
 import "package:app/ui_utils/attribute/state.dart";
@@ -7,7 +8,6 @@ import "package:app/utils/age.dart";
 import "package:app/utils/api.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:openapi/api.dart";
-import "package:app/data/login_repository.dart";
 import "package:app/data/profile_repository.dart";
 import "package:app/database/account_database_manager.dart";
 import "package:app/localizations.dart";
@@ -120,8 +120,8 @@ class UpdateAgeRange extends ProfileFiltersEvent {
 }
 
 class ProfileFiltersBloc extends Bloc<ProfileFiltersEvent, ProfileFiltersData> with ActionRunner {
-  final ProfileRepository profile = LoginRepository.getInstance().repositories.profile;
-  final AccountDatabaseManager db = LoginRepository.getInstance().repositories.accountDb;
+  final ProfileRepository profile;
+  final AccountDatabaseManager db;
 
   StreamSubscription<bool?>? _showAdvancedFiltersSubscription;
   StreamSubscription<bool?>? _filterFavoritesSubscription;
@@ -129,7 +129,10 @@ class ProfileFiltersBloc extends Bloc<ProfileFiltersEvent, ProfileFiltersData> w
   StreamSubscription<int?>? _minAgeSubscription;
   StreamSubscription<int?>? _maxAgeSubscription;
 
-  ProfileFiltersBloc() : super(ProfileFiltersData(edited: EditedFiltersData())) {
+  ProfileFiltersBloc(RepositoryInstances r)
+    : profile = r.profile,
+      db = r.accountDb,
+      super(ProfileFiltersData(edited: EditedFiltersData())) {
     on<SaveNewFilterSettings>((data, emit) async {
       await runOnce(() async {
         final s = state;

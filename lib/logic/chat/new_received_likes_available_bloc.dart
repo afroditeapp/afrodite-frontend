@@ -1,10 +1,10 @@
 import "dart:async";
 
+import "package:app/data/utils/repository_instances.dart";
 import 'package:bloc_concurrency/bloc_concurrency.dart' show sequential;
 
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:openapi/api.dart";
-import "package:app/data/login_repository.dart";
 import "package:app/database/account_background_database_manager.dart";
 import "package:app/model/freezed/logic/chat/new_received_likes_available_bloc.dart";
 import "package:rxdart/rxdart.dart";
@@ -44,14 +44,15 @@ class _SetShowRefreshButton extends NewReceivedLikesAvailableEvent {
 
 class NewReceivedLikesAvailableBloc
     extends Bloc<NewReceivedLikesAvailableEvent, NewReceivedLikesAvailableData> {
-  final AccountBackgroundDatabaseManager db =
-      LoginRepository.getInstance().repositories.accountBackgroundDb;
+  final AccountBackgroundDatabaseManager db;
 
   StreamSubscription<NewReceivedLikesCount?>? _countSubscription;
   StreamSubscription<NewReceivedLikesCount?>? _countDebouncedSubscription;
   StreamSubscription<NewReceivedLikesCount?>? _countNotViewedSubscription;
 
-  NewReceivedLikesAvailableBloc() : super(NewReceivedLikesAvailableData()) {
+  NewReceivedLikesAvailableBloc(RepositoryInstances r)
+    : db = r.accountBackgroundDb,
+      super(NewReceivedLikesAvailableData()) {
     on<_CountUpdate>((data, emit) {
       if (data.value < state.newReceivedLikesCountPartiallyDebounced) {
         emit(

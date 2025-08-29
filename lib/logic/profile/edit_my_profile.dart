@@ -1,6 +1,6 @@
+import "package:app/data/utils/repository_instances.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:openapi/api.dart";
-import "package:app/data/login_repository.dart";
 import "package:app/data/media_repository.dart";
 import "package:app/data/profile_repository.dart";
 import 'package:database/database.dart';
@@ -41,11 +41,14 @@ class NewAttributeValue extends EditMyProfileEvent {
 }
 
 class EditMyProfileBloc extends Bloc<EditMyProfileEvent, EditMyProfileData> with ActionRunner {
-  final ProfileRepository profile = LoginRepository.getInstance().repositories.profile;
-  final MediaRepository media = LoginRepository.getInstance().repositories.media;
+  final ProfileRepository profile;
+  final MediaRepository media;
   final db = DatabaseManager.getInstance();
 
-  EditMyProfileBloc() : super(EditMyProfileData()) {
+  EditMyProfileBloc(RepositoryInstances r)
+    : profile = r.profile,
+      media = r.media,
+      super(EditMyProfileData()) {
     on<SetInitialValues>((data, emit) async {
       final attributes = data.profile.attributeIdAndStateMap;
       emit(

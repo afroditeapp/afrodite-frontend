@@ -1,10 +1,10 @@
 import "package:app/api/server_connection_manager.dart";
+import "package:app/data/utils/repository_instances.dart";
 import "package:app/model/freezed/logic/settings/data_export.dart";
 import "package:app/utils/result.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:flutter_file_saver/flutter_file_saver.dart";
 import "package:openapi/api.dart";
-import "package:app/data/login_repository.dart";
 import "package:app/localizations.dart";
 import "package:app/ui_utils/snack_bar.dart";
 import "package:app/utils.dart";
@@ -26,9 +26,9 @@ class SaveDataExport extends DataExportEvent {
 }
 
 class DataExportBloc extends Bloc<DataExportEvent, DataExportData> with ActionRunner {
-  final ApiManager api = LoginRepository.getInstance().repositories.api;
+  final ApiManager api;
 
-  DataExportBloc() : super(DataExportData()) {
+  DataExportBloc(RepositoryInstances r) : api = r.api, super(DataExportData()) {
     on<DownloadDataExport>((data, emit) async {
       await runOnce(() async {
         emit(DataExportData(isLoading: true));
