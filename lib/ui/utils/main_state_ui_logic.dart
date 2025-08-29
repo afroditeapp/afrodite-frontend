@@ -1,4 +1,5 @@
 import 'package:app/data/general/notification/utils/notification_payload.dart';
+import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/database/account_background_database_manager.dart';
 import 'package:app/database/account_database_manager.dart';
 import 'package:app/logic/account/client_features_config.dart';
@@ -57,6 +58,7 @@ import 'package:app/ui/normal.dart';
 import 'package:app/ui/pending_deletion.dart';
 import 'package:app/ui/unsupported_client.dart';
 import 'package:app/ui/utils/notification_payload_handler.dart';
+import 'package:provider/provider.dart';
 
 final _log = Logger("MainStateUiLogic");
 
@@ -79,11 +81,17 @@ class MainStateUiLogic extends StatelessWidget {
           MsLoginRequired() => NavigatorLoginScreen(),
           MsDemoAccount() => NavigatorDemoAccount(),
           MsLoggedIn() => switch (state.screen) {
-            LoggedInScreen.initialSetup => NavigatorInitialSetup(),
-            LoggedInScreen.normal => NavigatorNormal(),
-            LoggedInScreen.accountBanned => NavigatorAccountBanned(),
-            LoggedInScreen.pendingRemoval => NavigatorPendingRemoval(),
-            LoggedInScreen.unsupportedClientVersion => NavigatorUnsupportedClient(),
+            LoggedInScreen.initialSetup => NavigatorInitialSetup(repositories: state.repositories),
+            LoggedInScreen.normal => NavigatorNormal(repositories: state.repositories),
+            LoggedInScreen.accountBanned => NavigatorAccountBanned(
+              repositories: state.repositories,
+            ),
+            LoggedInScreen.pendingRemoval => NavigatorPendingRemoval(
+              repositories: state.repositories,
+            ),
+            LoggedInScreen.unsupportedClientVersion => NavigatorUnsupportedClient(
+              repositories: state.repositories,
+            ),
           },
         };
       },
@@ -159,8 +167,34 @@ class NavigatorDemoAccount extends BasicRootScreen {
   }
 }
 
-class NavigatorInitialSetup extends BasicRootScreen {
-  const NavigatorInitialSetup({super.key});
+abstract class LoggedInRootScreen extends StatelessWidget {
+  final RepositoryInstances repositories;
+  const LoggedInRootScreen({required this.repositories, super.key});
+
+  Widget rootScreen();
+  Widget blocProvider(Widget child);
+
+  @override
+  Widget build(BuildContext context) {
+    final NavigatorStateData blocInitialState = NavigatorStateData.rootPage(
+      NewPageDetails(MaterialPage<void>(child: rootScreen())),
+    );
+    return Provider<RepositoryInstances>(
+      create: (_) => repositories,
+      child: MultiBlocProvider(
+        providers: [
+          // Navigation
+          BlocProvider(create: (_) => NavigatorStateBloc(blocInitialState)),
+          BlocProvider(create: (_) => BottomNavigationStateBloc()),
+        ],
+        child: NavigationBlocUpdater(child: blocProvider(AppNavigator())),
+      ),
+    );
+  }
+}
+
+class NavigatorInitialSetup extends LoggedInRootScreen {
+  const NavigatorInitialSetup({required super.repositories, super.key});
 
   @override
   Widget rootScreen() => InitialSetupScreen();
@@ -192,8 +226,8 @@ class NavigatorInitialSetup extends BasicRootScreen {
   }
 }
 
-class NavigatorAccountBanned extends BasicRootScreen {
-  const NavigatorAccountBanned({super.key});
+class NavigatorAccountBanned extends LoggedInRootScreen {
+  const NavigatorAccountBanned({required super.repositories, super.key});
 
   @override
   Widget rootScreen() => AccountBannedScreen();
@@ -213,8 +247,8 @@ class NavigatorAccountBanned extends BasicRootScreen {
   }
 }
 
-class NavigatorPendingRemoval extends BasicRootScreen {
-  const NavigatorPendingRemoval({super.key});
+class NavigatorPendingRemoval extends LoggedInRootScreen {
+  const NavigatorPendingRemoval({required super.repositories, super.key});
 
   @override
   Widget rootScreen() => PendingDeletionPage();
@@ -233,8 +267,8 @@ class NavigatorPendingRemoval extends BasicRootScreen {
   }
 }
 
-class NavigatorUnsupportedClient extends BasicRootScreen {
-  const NavigatorUnsupportedClient({super.key});
+class NavigatorUnsupportedClient extends LoggedInRootScreen {
+  const NavigatorUnsupportedClient({required super.repositories, super.key});
 
   @override
   Widget rootScreen() => UnsupportedClientScreen();
@@ -246,7 +280,8 @@ class NavigatorUnsupportedClient extends BasicRootScreen {
 }
 
 class NavigatorNormal extends StatelessWidget {
-  const NavigatorNormal({super.key});
+  final RepositoryInstances repositories;
+  const NavigatorNormal({required this.repositories, super.key});
 
   Widget rootScreen() => NormalStateScreen();
 
@@ -331,17 +366,20 @@ class NavigatorNormal extends StatelessWidget {
     }
 
     final NavigatorStateData blocInitialState = NavigatorStateData.rootPage(rootPage);
-    return MultiBlocProvider(
-      providers: [
-        // Navigation
-        BlocProvider(create: (_) => NavigatorStateBloc(blocInitialState)),
-        BlocProvider(create: (_) => BottomNavigationStateBloc()),
-      ],
-      child: NavigationBlocUpdater(
-        child: blocProvider(
-          NotificationActionHandler(
-            notificationNavigation: notficationRelatedObjects,
-            child: AppNavigator(),
+    return Provider<RepositoryInstances>(
+      create: (_) => repositories,
+      child: MultiBlocProvider(
+        providers: [
+          // Navigation
+          BlocProvider(create: (_) => NavigatorStateBloc(blocInitialState)),
+          BlocProvider(create: (_) => BottomNavigationStateBloc()),
+        ],
+        child: NavigationBlocUpdater(
+          child: blocProvider(
+            NotificationActionHandler(
+              notificationNavigation: notficationRelatedObjects,
+              child: AppNavigator(),
+            ),
           ),
         ),
       ),
