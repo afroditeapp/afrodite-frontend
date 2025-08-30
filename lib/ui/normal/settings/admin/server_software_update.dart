@@ -1,14 +1,15 @@
+import 'package:app/api/server_connection_manager.dart';
 import 'package:app/localizations.dart';
 import 'package:app/ui_utils/padding.dart';
 import 'package:flutter/material.dart';
 import 'package:openapi/api.dart';
-import 'package:app/data/login_repository.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/result.dart';
 
 class ServerSoftwareUpdatePage extends StatefulWidget {
-  const ServerSoftwareUpdatePage({super.key});
+  final ApiManager api;
+  const ServerSoftwareUpdatePage(this.api, {super.key});
 
   @override
   State<ServerSoftwareUpdatePage> createState() => _ServerSoftwareUpdatePageState();
@@ -18,7 +19,6 @@ class _ServerSoftwareUpdatePageState extends State<ServerSoftwareUpdatePage> {
   BackendVersion? _runningVersion;
   ManagerInstanceNameList? _managers;
   List<ManagerInstanceRelatedState>? _currentData = [];
-  final api = LoginRepository.getInstance().repositories.api;
 
   bool isLoading = true;
 
@@ -29,13 +29,13 @@ class _ServerSoftwareUpdatePageState extends State<ServerSoftwareUpdatePage> {
   }
 
   Future<void> _refreshData() async {
-    _managers ??= await api.commonAdmin((api) => api.getManagerInstanceNames()).ok();
-    _runningVersion = await api.common((api) => api.getVersion()).ok();
+    _managers ??= await widget.api.commonAdmin((api) => api.getManagerInstanceNames()).ok();
+    _runningVersion = await widget.api.common((api) => api.getVersion()).ok();
 
     final managers = _managers?.names ?? [];
     final List<ManagerInstanceRelatedState> data = [];
     for (final m in managers) {
-      final status = await api.commonAdmin((api) => api.getSoftwareUpdateStatus(m)).ok();
+      final status = await widget.api.commonAdmin((api) => api.getSoftwareUpdateStatus(m)).ok();
       if (status != null) {
         data.add(ManagerInstanceRelatedState(m, status));
       } else {
@@ -196,7 +196,7 @@ class _ServerSoftwareUpdatePageState extends State<ServerSoftwareUpdatePage> {
 
         showConfirmDialog(context, "Request update?").then((value) async {
           if (value == true) {
-            final result = await api.commonAdminAction(
+            final result = await widget.api.commonAdminAction(
               (api) => api.postTriggerSoftwareUpdateInstall(
                 state.manager,
                 downloaded.name,
@@ -236,7 +236,7 @@ class _ServerSoftwareUpdatePageState extends State<ServerSoftwareUpdatePage> {
       onPressed: () {
         showConfirmDialog(context, "Check updates?").then((value) async {
           if (value == true) {
-            final result = await api.commonAdminAction(
+            final result = await widget.api.commonAdminAction(
               (api) => api.postTriggerSoftwareUpdateDownload(state.manager),
             );
             if (result case Ok()) {

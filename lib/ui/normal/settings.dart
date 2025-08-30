@@ -1,4 +1,3 @@
-import 'package:app/data/login_repository.dart';
 import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/logic/profile/profile_filters.dart';
 import 'package:app/model/freezed/logic/profile/profile_filters.dart';
@@ -43,8 +42,6 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  final AccountId currentUser = LoginRepository.getInstance().repositories.accountId;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -167,6 +164,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   List<Widget> dataSettings(BuildContext context) {
+    final RepositoryInstances r = context.read<RepositoryInstances>();
     return [
       Setting.createSetting(
         Icons.image_rounded,
@@ -182,7 +180,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           openDataExportScreen(
             context,
             context.strings.data_export_screen_title_export_type_user,
-            currentUser,
+            r.accountId,
           );
         },
       ).toListTile(),

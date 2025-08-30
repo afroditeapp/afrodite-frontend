@@ -1,4 +1,8 @@
+import 'package:app/api/server_connection_manager.dart';
+import 'package:app/data/chat_repository.dart';
 import 'package:app/data/image_cache.dart';
+import 'package:app/data/profile_repository.dart';
+import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/localizations.dart';
 import 'package:app/logic/account/account.dart';
 import 'package:app/logic/app/navigator_state.dart';
@@ -11,7 +15,6 @@ import 'package:app/ui_utils/image.dart';
 import 'package:app/ui_utils/moderation.dart';
 import 'package:app/ui_utils/view_image_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:app/data/login_repository.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/result.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -23,25 +26,27 @@ class RequiredData {
 }
 
 class AdminContentManagementScreen extends StatefulWidget {
+  final ApiManager api;
+  final ProfileRepository profile;
+  final ChatRepository chat;
   final AccountId accountId;
-  const AdminContentManagementScreen({required this.accountId, super.key});
+  AdminContentManagementScreen(RepositoryInstances r, {required this.accountId, super.key})
+    : api = r.api,
+      profile = r.profile,
+      chat = r.chat;
 
   @override
   State<AdminContentManagementScreen> createState() => _AdminContentManagementScreenState();
 }
 
 class _AdminContentManagementScreenState extends State<AdminContentManagementScreen> {
-  final api = LoginRepository.getInstance().repositories.api;
-  final profile = LoginRepository.getInstance().repositories.profile;
-  final chat = LoginRepository.getInstance().repositories.chat;
-
   RequiredData? data;
 
   bool isLoading = true;
   bool isError = false;
 
   Future<void> _getData() async {
-    final result = await api
+    final result = await widget.api
         .media((api) => api.getAllAccountMediaContent(widget.accountId.aid))
         .ok();
 
@@ -146,7 +151,9 @@ class _AdminContentManagementScreenState extends State<AdminContentManagementScr
   }
 
   void deleteAction(AccountId account, ContentId content) async {
-    final result = await api.mediaAction((api) => api.deleteContent(account.aid, content.cid));
+    final result = await widget.api.mediaAction(
+      (api) => api.deleteContent(account.aid, content.cid),
+    );
 
     if (!context.mounted) {
       return;
@@ -160,7 +167,7 @@ class _AdminContentManagementScreenState extends State<AdminContentManagementScr
   }
 
   void changeModerationStateAction(AccountId account, ContentId content, bool accepted) async {
-    final result = await api.mediaAdminAction(
+    final result = await widget.api.mediaAdminAction(
       (api) => api.postModerateMediaContent(
         PostModerateMediaContent(
           accept: accepted,
@@ -181,11 +188,11 @@ class _AdminContentManagementScreenState extends State<AdminContentManagementScr
 
     await _getData();
 
-    await profile.downloadProfileToDatabase(chat, account);
+    await widget.profile.downloadProfileToDatabase(widget.chat, account);
   }
 
   void changeFaceDetectedValue(AccountId account, ContentId content, bool value) async {
-    final result = await api.mediaAdminAction(
+    final result = await widget.api.mediaAdminAction(
       (api) => api.postMediaContentFaceDetectedValue(
         PostMediaContentFaceDetectedValue(accountId: account, contentId: content, value: value),
       ),

@@ -1,3 +1,4 @@
+import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/ui/normal/settings/admin/edit_admin_notifications.dart';
 import 'package:app/ui/normal/settings/admin/moderator_tasks.dart';
 import 'package:app/ui/normal/settings/admin/open_account_admin_settings.dart';
@@ -39,6 +40,8 @@ class AdminSettingsPage extends StatelessWidget {
   List<Setting> settingsList(BuildContext context, AdminSettingsPermissions permissions) {
     List<Setting> settings = [];
 
+    final r = context.read<RepositoryInstances>();
+
     if (permissions.adminModerateMediaContent ||
         permissions.adminModerateProfileNames ||
         permissions.adminModerateProfileTexts ||
@@ -47,7 +50,7 @@ class AdminSettingsPage extends StatelessWidget {
         Setting.createSetting(
           Icons.task,
           "Moderator tasks (show todo list)",
-          () => MyNavigator.push(context, const MaterialPage<void>(child: ModeratorTasksScreen())),
+          () => MyNavigator.push(context, MaterialPage<void>(child: ModeratorTasksScreen(r))),
         ),
       );
       settings.add(
@@ -56,7 +59,7 @@ class AdminSettingsPage extends StatelessWidget {
           "Moderator tasks (show all)",
           () => MyNavigator.push(
             context,
-            const MaterialPage<void>(child: ModeratorTasksScreen(showAll: true)),
+            MaterialPage<void>(child: ModeratorTasksScreen(r, showAll: true)),
           ),
         ),
       );
@@ -110,7 +113,7 @@ class AdminSettingsPage extends StatelessWidget {
         Setting.createSetting(
           Icons.admin_panel_settings,
           "View admins",
-          () => MyNavigator.push(context, const MaterialPage<void>(child: ViewAdminsScreen())),
+          () => MyNavigator.push(context, MaterialPage<void>(child: ViewAdminsScreen(r.api))),
         ),
       );
     }
@@ -119,7 +122,7 @@ class AdminSettingsPage extends StatelessWidget {
         Setting.createSetting(
           Icons.group,
           "View accounts",
-          () => MyNavigator.push(context, const MaterialPage<void>(child: ViewAccountsScreen())),
+          () => MyNavigator.push(context, MaterialPage<void>(child: ViewAccountsScreen(r.api))),
         ),
       );
     }

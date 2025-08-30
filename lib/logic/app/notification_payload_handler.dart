@@ -4,8 +4,6 @@ import "package:app/data/utils/repository_instances.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:app/data/general/notification/utils/notification_payload.dart";
 import "package:app/data/notification_manager.dart";
-import "package:app/database/account_background_database_manager.dart";
-import "package:app/database/account_database_manager.dart";
 import "package:app/model/freezed/logic/main/notification_payload_handler.dart";
 import "package:app/utils/immutable_list.dart";
 
@@ -31,14 +29,10 @@ class AddNewPayload extends NotificationPayloadHandlerEvent {
 
 class NotificationPayloadHandlerBloc
     extends Bloc<NotificationPayloadHandlerEvent, NotificationPayloadHandlerData> {
-  final AccountBackgroundDatabaseManager accountBackgroundDb;
-  final AccountDatabaseManager accountDb;
+  final RepositoryInstances r;
   StreamSubscription<NotificationPayload>? _payloadSubscription;
 
-  NotificationPayloadHandlerBloc(RepositoryInstances r)
-    : accountBackgroundDb = r.accountBackgroundDb,
-      accountDb = r.accountDb,
-      super(NotificationPayloadHandlerData()) {
+  NotificationPayloadHandlerBloc(this.r) : super(NotificationPayloadHandlerData()) {
     on<HandleFirstPayload>((data, emit) async {
       NotificationPayload? firstPayload;
       final List<NotificationPayload> otherPayloads = [];

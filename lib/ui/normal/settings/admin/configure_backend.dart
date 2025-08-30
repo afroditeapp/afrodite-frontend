@@ -1,9 +1,9 @@
+import 'package:app/api/server_connection_manager.dart';
 import 'package:app/localizations.dart';
 import 'package:app/ui_utils/padding.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
-import 'package:app/data/login_repository.dart';
 import 'package:app/logic/account/account.dart';
 import 'package:app/model/freezed/logic/account/account.dart';
 import 'package:app/ui_utils/dialog.dart';
@@ -11,7 +11,8 @@ import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/result.dart';
 
 class ConfigureBackendPage extends StatefulWidget {
-  const ConfigureBackendPage({super.key});
+  final ApiManager api;
+  const ConfigureBackendPage({required this.api, super.key});
 
   @override
   State<ConfigureBackendPage> createState() => _ConfigureBackendPageState();
@@ -24,7 +25,6 @@ class _ConfigureBackendPageState extends State<ConfigureBackendPage> {
   final TextEditingController _userBotsController = TextEditingController();
   final _configFormKey = GlobalKey<FormState>();
   BackendConfig? _currentConfig;
-  final api = LoginRepository.getInstance().repositories.api;
 
   bool isLoading = true;
 
@@ -35,7 +35,7 @@ class _ConfigureBackendPageState extends State<ConfigureBackendPage> {
   }
 
   Future<void> _refreshData() async {
-    final data = await api.commonAdmin((api) => api.getBackendConfig()).ok();
+    final data = await widget.api.commonAdmin((api) => api.getBackendConfig()).ok();
 
     setState(() {
       isLoading = false;
@@ -185,7 +185,9 @@ class _ConfigureBackendPageState extends State<ConfigureBackendPage> {
           details: "New config: ${config.toString()}",
         ).then((value) async {
           if (value == true) {
-            final result = await api.commonAdminAction((api) => api.postBackendConfig(config));
+            final result = await widget.api.commonAdminAction(
+              (api) => api.postBackendConfig(config),
+            );
             switch (result) {
               case Ok():
                 showSnackBar("Config saved!");

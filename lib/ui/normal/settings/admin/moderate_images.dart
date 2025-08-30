@@ -1,5 +1,6 @@
+import 'package:app/api/server_connection_manager.dart';
 import 'package:app/data/image_cache.dart';
-import 'package:app/data/login_repository.dart';
+import 'package:app/data/media_repository.dart';
 import 'package:app/logic/admin/content_decicion_stream.dart';
 import 'package:app/ui/normal/settings/admin/content_decicion_stream.dart';
 import 'package:app/utils/result.dart';
@@ -17,13 +18,14 @@ class ModerateImagesScreen extends ContentDecicionScreen<WrappedMediaContentPend
   final bool showContentWhichBotsCanModerate;
   ModerateImagesScreen({
     required super.api,
+    required MediaRepository media,
     required this.queueType,
     required this.showContentWhichBotsCanModerate,
     super.key,
   }) : super(
          title: "Moderate profile images",
          infoMessageRowHeight: IMAGE_MODERATION_ROW_HEIGHT,
-         io: MediaContentIo(showContentWhichBotsCanModerate, queueType),
+         io: MediaContentIo(api, media, showContentWhichBotsCanModerate, queueType),
          builder: MediaContentUiBuilder(),
        );
 }
@@ -45,12 +47,12 @@ class WrappedMediaContentPendingModeration extends MediaContentPendingModeration
 }
 
 class MediaContentIo extends ContentIo<WrappedMediaContentPendingModeration> {
-  final media = LoginRepository.getInstance().repositories.media;
-  final api = LoginRepository.getInstance().repositories.api;
+  final ApiManager api;
+  final MediaRepository media;
   final bool showContentWhichBotsCanModerate;
   final ModerationQueueType queue;
 
-  MediaContentIo(this.showContentWhichBotsCanModerate, this.queue);
+  MediaContentIo(this.api, this.media, this.showContentWhichBotsCanModerate, this.queue);
 
   @override
   Future<Result<List<WrappedMediaContentPendingModeration>, ()>> getNextContent() async {

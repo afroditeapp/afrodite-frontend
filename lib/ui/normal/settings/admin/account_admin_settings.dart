@@ -1,5 +1,4 @@
 import 'package:app/api/server_connection_manager.dart';
-import 'package:app/data/login_repository.dart';
 import 'package:app/data/profile_repository.dart';
 import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/localizations.dart';
@@ -68,9 +67,6 @@ class AccountAdminSettingsScreen extends StatefulWidget {
 }
 
 class _AccountAdminSettingsScreenState extends State<AccountAdminSettingsScreen> {
-  final profile = LoginRepository.getInstance().repositories.profile;
-  final api = LoginRepository.getInstance().repositories.api;
-
   late String name;
   late int age;
 
@@ -81,7 +77,7 @@ class _AccountAdminSettingsScreenState extends State<AccountAdminSettingsScreen>
     age = widget.initialAge;
   }
 
-  Future<void> updateProfileAgeAndName() async {
+  Future<void> updateProfileAgeAndName(ApiManager api) async {
     final ageAndName = await api
         .profileAdmin((api) => api.getProfileAgeAndName(widget.accountId.aid))
         .ok();
@@ -131,7 +127,7 @@ class _AccountAdminSettingsScreenState extends State<AccountAdminSettingsScreen>
     );
   }
 
-  Future<void> openProfile(BuildContext context) async {
+  Future<void> openProfile(BuildContext context, ProfileRepository profile) async {
     final entry = await profile.downloadProfile(widget.accountId);
 
     if (!context.mounted) {
@@ -157,7 +153,9 @@ class _AccountAdminSettingsScreenState extends State<AccountAdminSettingsScreen>
       showProfileTitle = "Show profile (if public)";
     }
 
-    settings.add(Setting.createSetting(Icons.person, showProfileTitle, () => openProfile(context)));
+    settings.add(
+      Setting.createSetting(Icons.person, showProfileTitle, () => openProfile(context, r.profile)),
+    );
 
     if (permissions.adminViewPrivateInfo) {
       settings.add(
@@ -173,7 +171,7 @@ class _AccountAdminSettingsScreenState extends State<AccountAdminSettingsScreen>
       const apiUsageStatistics = "API usage statistics";
       settings.add(
         Setting.createSetting(Icons.query_stats, apiUsageStatistics, () {
-          openViewApiUsageScreen(context, apiUsageStatistics, api, widget.accountId);
+          openViewApiUsageScreen(context, apiUsageStatistics, r.api, widget.accountId);
         }),
       );
       settings.add(
@@ -182,7 +180,7 @@ class _AccountAdminSettingsScreenState extends State<AccountAdminSettingsScreen>
           "IP address usage",
           () => MyNavigator.push(
             context,
-            MaterialPage<void>(child: ViewIpAddressUsageScreen(accountId: widget.accountId)),
+            MaterialPage<void>(child: ViewIpAddressUsageScreen(r, accountId: widget.accountId)),
           ),
         ),
       );
@@ -212,7 +210,7 @@ class _AccountAdminSettingsScreenState extends State<AccountAdminSettingsScreen>
               child: EditProfileNameScreen(accountId: widget.accountId, initialName: name),
             ),
           );
-          await updateProfileAgeAndName();
+          await updateProfileAgeAndName(r.api);
         }),
       );
     }
@@ -224,7 +222,7 @@ class _AccountAdminSettingsScreenState extends State<AccountAdminSettingsScreen>
           "Ban account",
           () => MyNavigator.push(
             context,
-            MaterialPage<void>(child: BanAccountScreen(accountId: widget.accountId)),
+            MaterialPage<void>(child: BanAccountScreen(r, accountId: widget.accountId)),
           ),
         ),
       );
@@ -237,7 +235,7 @@ class _AccountAdminSettingsScreenState extends State<AccountAdminSettingsScreen>
           "Delete account",
           () => MyNavigator.push(
             context,
-            MaterialPage<void>(child: DeleteAccountScreen(accountId: widget.accountId)),
+            MaterialPage<void>(child: DeleteAccountScreen(r, accountId: widget.accountId)),
           ),
         ),
       );
@@ -250,7 +248,7 @@ class _AccountAdminSettingsScreenState extends State<AccountAdminSettingsScreen>
           "Admin image management",
           () => MyNavigator.push(
             context,
-            MaterialPage<void>(child: AdminContentManagementScreen(accountId: widget.accountId)),
+            MaterialPage<void>(child: AdminContentManagementScreen(r, accountId: widget.accountId)),
           ),
         ),
       );
@@ -265,6 +263,7 @@ class _AccountAdminSettingsScreenState extends State<AccountAdminSettingsScreen>
             context,
             MaterialPage<void>(
               child: ModerateSingleProfileStringScreen(
+                r,
                 accountId: widget.accountId,
                 contentType: ProfileStringModerationContentType.profileText,
               ),
@@ -283,6 +282,7 @@ class _AccountAdminSettingsScreenState extends State<AccountAdminSettingsScreen>
             context,
             MaterialPage<void>(
               child: ModerateSingleProfileStringScreen(
+                r,
                 accountId: widget.accountId,
                 contentType: ProfileStringModerationContentType.profileName,
               ),

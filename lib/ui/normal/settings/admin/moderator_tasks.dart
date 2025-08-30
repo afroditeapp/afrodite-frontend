@@ -1,4 +1,5 @@
-import 'package:app/data/login_repository.dart';
+import 'package:app/api/server_connection_manager.dart';
+import 'package:app/data/account_repository.dart';
 import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/ui/normal/settings/admin/moderate_profile_string.dart';
 import 'package:app/ui/normal/settings/admin/report/process_reports.dart';
@@ -13,8 +14,8 @@ import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/ui/normal/settings.dart';
 import 'package:app/ui/normal/settings/admin/moderate_images.dart';
 
-NewPageDetails newModeratorTasksScreen() {
-  return NewPageDetails(const MaterialPage<void>(child: ModeratorTasksScreen()));
+NewPageDetails newModeratorTasksScreen(RepositoryInstances r) {
+  return NewPageDetails(MaterialPage<void>(child: ModeratorTasksScreen(r)));
 }
 
 class RequiredData {
@@ -42,18 +43,21 @@ class RequiredData {
 }
 
 class ModeratorTasksScreen extends StatefulWidget {
+  final ApiManager api;
+  final ServerConnectionManager connectionManager;
+  final AccountRepository account;
+
   final bool showAll;
-  const ModeratorTasksScreen({this.showAll = false, super.key});
+  ModeratorTasksScreen(RepositoryInstances r, {this.showAll = false, super.key})
+    : api = r.api,
+      connectionManager = r.connectionManager,
+      account = r.account;
 
   @override
   State<ModeratorTasksScreen> createState() => _ModeratorTasksScreenState();
 }
 
 class _ModeratorTasksScreenState extends State<ModeratorTasksScreen> {
-  final connectionManager = LoginRepository.getInstance().repositories.connectionManager;
-  final account = LoginRepository.getInstance().repositories.account;
-  final api = LoginRepository.getInstance().repositories.api;
-
   Permissions permissions = Permissions();
   RequiredData? data;
 
@@ -61,8 +65,8 @@ class _ModeratorTasksScreenState extends State<ModeratorTasksScreen> {
   bool isError = false;
 
   Future<void> _getData() async {
-    await connectionManager.waitUntilCurrentSessionConnects();
-    permissions = await account.permissions.firstOrNull ?? Permissions();
+    await widget.connectionManager.waitUntilCurrentSessionConnects();
+    permissions = await widget.account.permissions.firstOrNull ?? Permissions();
 
     if (widget.showAll) {
       if (!context.mounted) {
@@ -90,7 +94,7 @@ class _ModeratorTasksScreenState extends State<ModeratorTasksScreen> {
     final GetMediaContentPendingModerationList? contentBot;
     final GetMediaContentPendingModerationList? contentHuman;
     if (permissions.adminModerateMediaContent) {
-      contentBotInitial = await api
+      contentBotInitial = await widget.api
           .mediaAdmin(
             (api) => api.getMediaContentPendingModerationList(
               MediaContentType.jpegImage,
@@ -99,7 +103,7 @@ class _ModeratorTasksScreenState extends State<ModeratorTasksScreen> {
             ),
           )
           .ok();
-      contentHumanInitial = await api
+      contentHumanInitial = await widget.api
           .mediaAdmin(
             (api) => api.getMediaContentPendingModerationList(
               MediaContentType.jpegImage,
@@ -108,7 +112,7 @@ class _ModeratorTasksScreenState extends State<ModeratorTasksScreen> {
             ),
           )
           .ok();
-      contentBot = await api
+      contentBot = await widget.api
           .mediaAdmin(
             (api) => api.getMediaContentPendingModerationList(
               MediaContentType.jpegImage,
@@ -117,7 +121,7 @@ class _ModeratorTasksScreenState extends State<ModeratorTasksScreen> {
             ),
           )
           .ok();
-      contentHuman = await api
+      contentHuman = await widget.api
           .mediaAdmin(
             (api) => api.getMediaContentPendingModerationList(
               MediaContentType.jpegImage,
@@ -137,7 +141,7 @@ class _ModeratorTasksScreenState extends State<ModeratorTasksScreen> {
     final GetProfileStringPendingModerationList? profileNamesBot;
     final GetProfileStringPendingModerationList? profileNamesHuman;
     if (permissions.adminModerateProfileNames) {
-      profileNamesBot = await api
+      profileNamesBot = await widget.api
           .profileAdmin(
             (api) => api.getProfileStringPendingModerationList(
               ProfileStringModerationContentType.profileName,
@@ -145,7 +149,7 @@ class _ModeratorTasksScreenState extends State<ModeratorTasksScreen> {
             ),
           )
           .ok();
-      profileNamesHuman = await api
+      profileNamesHuman = await widget.api
           .profileAdmin(
             (api) => api.getProfileStringPendingModerationList(
               ProfileStringModerationContentType.profileName,
@@ -161,7 +165,7 @@ class _ModeratorTasksScreenState extends State<ModeratorTasksScreen> {
     final GetProfileStringPendingModerationList? profileTextsBot;
     final GetProfileStringPendingModerationList? profileTextsHuman;
     if (permissions.adminModerateProfileTexts) {
-      profileTextsBot = await api
+      profileTextsBot = await widget.api
           .profileAdmin(
             (api) => api.getProfileStringPendingModerationList(
               ProfileStringModerationContentType.profileText,
@@ -169,7 +173,7 @@ class _ModeratorTasksScreenState extends State<ModeratorTasksScreen> {
             ),
           )
           .ok();
-      profileTextsHuman = await api
+      profileTextsHuman = await widget.api
           .profileAdmin(
             (api) => api.getProfileStringPendingModerationList(
               ProfileStringModerationContentType.profileText,
@@ -184,7 +188,7 @@ class _ModeratorTasksScreenState extends State<ModeratorTasksScreen> {
 
     final GetReportList? reports;
     if (permissions.adminModerateProfileNames) {
-      reports = await api.commonAdmin((api) => api.getWaitingReportPage()).ok();
+      reports = await widget.api.commonAdmin((api) => api.getWaitingReportPage()).ok();
     } else {
       reports = GetReportList();
     }
@@ -266,6 +270,7 @@ class _ModeratorTasksScreenState extends State<ModeratorTasksScreen> {
             MaterialPage<void>(
               child: ModerateImagesScreen(
                 api: r.api,
+                media: r.media,
                 queueType: ModerationQueueType.initialMediaModeration,
                 showContentWhichBotsCanModerate: true,
               ),
@@ -281,6 +286,7 @@ class _ModeratorTasksScreenState extends State<ModeratorTasksScreen> {
             MaterialPage<void>(
               child: ModerateImagesScreen(
                 api: r.api,
+                media: r.media,
                 queueType: ModerationQueueType.initialMediaModeration,
                 showContentWhichBotsCanModerate: false,
               ),
@@ -296,6 +302,7 @@ class _ModeratorTasksScreenState extends State<ModeratorTasksScreen> {
             MaterialPage<void>(
               child: ModerateImagesScreen(
                 api: r.api,
+                media: r.media,
                 queueType: ModerationQueueType.mediaModeration,
                 showContentWhichBotsCanModerate: true,
               ),
@@ -311,6 +318,7 @@ class _ModeratorTasksScreenState extends State<ModeratorTasksScreen> {
             MaterialPage<void>(
               child: ModerateImagesScreen(
                 api: r.api,
+                media: r.media,
                 queueType: ModerationQueueType.mediaModeration,
                 showContentWhichBotsCanModerate: false,
               ),

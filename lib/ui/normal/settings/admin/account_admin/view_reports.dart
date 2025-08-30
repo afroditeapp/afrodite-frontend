@@ -1,4 +1,4 @@
-import 'package:app/data/login_repository.dart';
+import 'package:app/api/server_connection_manager.dart';
 import 'package:app/logic/admin/content_decicion_stream.dart';
 import 'package:app/ui/normal/settings/admin/content_decicion_stream.dart';
 import 'package:app/ui/normal/settings/admin/report/process_reports.dart';
@@ -17,14 +17,14 @@ class ViewReportsScreen extends ContentDecicionScreen<WrappedReportDetailed> {
   }) : super(
          infoMessageRowHeight: ROW_HEIGHT,
          screenInstructions: ReportUiBuilder.instructions,
-         io: ViewReportReportIo(account, mode),
+         io: ViewReportReportIo(api, account, mode),
          builder: ViewReportUiBuilder(),
        );
 }
 
 class ViewReportReportIo extends ContentIo<WrappedReportDetailed> {
-  final api = LoginRepository.getInstance().repositories.api;
-  ViewReportReportIo(this.account, this.mode);
+  final ApiManager api;
+  ViewReportReportIo(this.api, this.account, this.mode);
 
   AccountId account;
   ReportIteratorMode mode;

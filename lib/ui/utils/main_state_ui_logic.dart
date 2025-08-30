@@ -1,7 +1,5 @@
 import 'package:app/data/general/notification/utils/notification_payload.dart';
 import 'package:app/data/utils/repository_instances.dart';
-import 'package:app/database/account_background_database_manager.dart';
-import 'package:app/database/account_database_manager.dart';
 import 'package:app/logic/account/client_features_config.dart';
 import 'package:app/logic/account/custom_reports_config.dart';
 import 'package:app/logic/account/demo_account.dart';
@@ -226,7 +224,7 @@ class NavigatorAccountBanned extends LoggedInRootScreen {
   const NavigatorAccountBanned({required super.r, super.key});
 
   @override
-  Widget rootScreen() => AccountBannedScreen();
+  Widget rootScreen() => AccountBannedScreen(r);
 
   @override
   Widget blocProvider(Widget child) {
@@ -247,7 +245,7 @@ class NavigatorPendingRemoval extends LoggedInRootScreen {
   const NavigatorPendingRemoval({required super.r, super.key});
 
   @override
-  Widget rootScreen() => PendingDeletionPage();
+  Widget rootScreen() => PendingDeletionPage(r);
 
   @override
   Widget blocProvider(Widget child) {
@@ -351,12 +349,7 @@ class NavigatorNormal extends StatelessWidget {
     final NewPageDetails rootPage = NewPageDetails(MaterialPage<void>(child: rootScreen()));
     if (appLaunchPayload != null && accountBackgroundDb != null && accountDb != null) {
       _log.info("Handling app launch notification payload");
-      notficationRelatedObjects = NotificationActionHandlerObjects(
-        appLaunchPayload,
-        accountDb,
-        accountBackgroundDb,
-        rootPage,
-      );
+      notficationRelatedObjects = NotificationActionHandlerObjects(appLaunchPayload, r, rootPage);
     } else {
       notficationRelatedObjects = null;
     }
@@ -400,15 +393,9 @@ class NavigationBlocUpdater extends StatelessWidget {
 
 class NotificationActionHandlerObjects {
   final NotificationPayload payload;
-  final AccountDatabaseManager accountDb;
-  final AccountBackgroundDatabaseManager accountBackgroundDb;
+  final RepositoryInstances r;
   final NewPageDetails rootPage;
-  NotificationActionHandlerObjects(
-    this.payload,
-    this.accountDb,
-    this.accountBackgroundDb,
-    this.rootPage,
-  );
+  NotificationActionHandlerObjects(this.payload, this.r, this.rootPage);
 }
 
 class NotificationActionHandler extends StatefulWidget {
@@ -437,8 +424,7 @@ class _NotificationActionHandlerState extends State<NotificationActionHandler> {
     if (notificationNavigation != null && !navigationDone) {
       createHandlePayloadCallback(
         context,
-        notificationNavigation.accountBackgroundDb,
-        notificationNavigation.accountDb,
+        notificationNavigation.r,
         navigatorStateBloc,
         bottomNavigatorStateBloc,
         likeGridInstanceBloc,

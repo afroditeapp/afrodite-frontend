@@ -1,9 +1,10 @@
+import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/localizations.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/padding.dart';
 import 'package:flutter/material.dart';
-import 'package:app/data/login_repository.dart';
 import 'package:app/ui_utils/snack_bar.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 
 class EditProfileNameScreen extends StatefulWidget {
@@ -16,10 +17,6 @@ class EditProfileNameScreen extends StatefulWidget {
 }
 
 class _EditProfileNameScreenState extends State<EditProfileNameScreen> {
-  final api = LoginRepository.getInstance().repositories.api;
-  final profile = LoginRepository.getInstance().repositories.profile;
-  final chat = LoginRepository.getInstance().repositories.chat;
-
   final TextEditingController _controller = TextEditingController();
 
   @override
@@ -42,13 +39,15 @@ class _EditProfileNameScreenState extends State<EditProfileNameScreen> {
       controller: _controller,
     );
 
+    final r = context.read<RepositoryInstances>();
+
     final editButton = ElevatedButton(
       onPressed: () async {
         FocusScope.of(context).unfocus();
 
         final result = await showConfirmDialog(context, "Update?", yesNoActions: true);
         if (result == true && context.mounted) {
-          final result = await api.profileAdminAction(
+          final result = await r.api.profileAdminAction(
             (api) => api.postSetProfileName(
               SetProfileName(account: widget.accountId, name: _controller.text),
             ),
@@ -59,7 +58,7 @@ class _EditProfileNameScreenState extends State<EditProfileNameScreen> {
             showSnackBar(R.strings.generic_action_completed);
           }
 
-          await profile.downloadProfileToDatabase(chat, widget.accountId);
+          await r.profile.downloadProfileToDatabase(r.chat, widget.accountId);
         }
       },
       child: const Text("Edit"),

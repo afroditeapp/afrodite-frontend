@@ -1,3 +1,4 @@
+import 'package:app/api/server_connection_manager.dart';
 import 'package:app/config.dart';
 import 'package:app/localizations.dart';
 import 'package:flutter/material.dart';
@@ -5,11 +6,11 @@ import 'package:flutter/services.dart';
 import 'package:openapi/api.dart';
 
 import 'package:google_fonts/google_fonts.dart';
-import 'package:app/data/login_repository.dart';
 import 'package:app/utils/result.dart';
 
 class ServerSystemInfoPage extends StatefulWidget {
-  const ServerSystemInfoPage({super.key});
+  final ApiManager api;
+  const ServerSystemInfoPage(this.api, {super.key});
 
   @override
   State<ServerSystemInfoPage> createState() => _ServerSystemInfoPageState();
@@ -18,7 +19,6 @@ class ServerSystemInfoPage extends StatefulWidget {
 class _ServerSystemInfoPageState extends State<ServerSystemInfoPage> {
   ManagerInstanceNameList? _managers;
   List<ManagerSystemInfo>? _currentData = [];
-  final api = LoginRepository.getInstance().repositories.api;
 
   bool isLoading = true;
 
@@ -33,12 +33,12 @@ class _ServerSystemInfoPageState extends State<ServerSystemInfoPage> {
   }
 
   Future<void> _refreshData() async {
-    _managers ??= await api.commonAdmin((api) => api.getManagerInstanceNames()).ok();
+    _managers ??= await widget.api.commonAdmin((api) => api.getManagerInstanceNames()).ok();
 
     final managers = _managers?.names ?? [];
     final List<ManagerSystemInfo> data = [];
     for (final m in managers) {
-      final info = await api.commonAdmin((api) => api.getSystemInfo(m)).ok();
+      final info = await widget.api.commonAdmin((api) => api.getSystemInfo(m)).ok();
       if (info != null) {
         data.add(ManagerSystemInfo(m, info));
       } else {

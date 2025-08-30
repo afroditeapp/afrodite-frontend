@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/ui/normal/settings/admin/moderator_tasks.dart';
 import 'package:app/ui/normal/settings/my_profile.dart';
 import 'package:app/ui/normal/settings/news/news_list.dart';
@@ -8,8 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
 import 'package:app/data/general/notification/utils/notification_payload.dart';
-import 'package:app/database/account_background_database_manager.dart';
-import 'package:app/database/account_database_manager.dart';
 import 'package:app/database/background_database_manager.dart';
 import 'package:app/localizations.dart';
 import 'package:app/logic/app/bottom_navigation_state.dart';
@@ -49,8 +48,7 @@ class _NotificationPayloadHandlerState extends State<NotificationPayloadHandler>
             HandleFirstPayload(
               createHandlePayloadCallback(
                 context,
-                bloc.accountBackgroundDb,
-                bloc.accountDb,
+                bloc.r,
                 navigatorStateBloc,
                 bottomNavigationStateBloc,
                 likeGridInstanceBloc,
@@ -68,8 +66,7 @@ class _NotificationPayloadHandlerState extends State<NotificationPayloadHandler>
 
 Future<void> Function(NotificationPayload) createHandlePayloadCallback(
   BuildContext context,
-  AccountBackgroundDatabaseManager accountBackgroundDb,
-  AccountDatabaseManager accountDb,
+  RepositoryInstances r,
   NavigatorStateBloc navigatorStateBloc,
   BottomNavigationStateBloc bottomNavigatorStateBloc,
   LikeGridInstanceManagerBloc likeGridInstanceBloc, {
@@ -79,11 +76,10 @@ Future<void> Function(NotificationPayload) createHandlePayloadCallback(
   return (payload) async {
     final newPage = await handlePayload(
       payload,
+      r,
       navigatorStateBloc,
       bottomNavigatorStateBloc,
       likeGridInstanceBloc,
-      accountBackgroundDb,
-      accountDb,
       showError: showError,
     );
     navigateToAction(navigatorStateBloc, newPage);
@@ -99,11 +95,10 @@ void defaultNavigateToAction(NavigatorStateBloc bloc, NewPageDetails? newPage) {
 
 Future<NewPageDetails?> handlePayload(
   NotificationPayload payload,
+  RepositoryInstances r,
   NavigatorStateBloc navigatorStateBloc,
   BottomNavigationStateBloc bottomNavigationStateBloc,
-  LikeGridInstanceManagerBloc likeGridInstanceManagerBloc,
-  AccountBackgroundDatabaseManager accountBackgroundDb,
-  AccountDatabaseManager accountDb, {
+  LikeGridInstanceManagerBloc likeGridInstanceManagerBloc, {
   required bool showError,
 }) async {
   final currentAccountId = await BackgroundDatabaseManager.getInstance().commonStreamSingle(
@@ -121,7 +116,7 @@ Future<NewPageDetails?> handlePayload(
 
   switch (payload) {
     case NavigateToConversation():
-      final accountId = await accountBackgroundDb
+      final accountId = await r.accountBackgroundDb
           .accountData(
             (db) => db.notification.convertConversationIdToAccountId(payload.conversationId),
           )
@@ -130,7 +125,7 @@ Future<NewPageDetails?> handlePayload(
         return null;
       }
 
-      final profile = await accountDb
+      final profile = await r.accountDb
           .accountData((db) => db.profile.getProfileEntry(accountId))
           .ok();
       if (profile == null) {
@@ -178,7 +173,7 @@ Future<NewPageDetails?> handlePayload(
         return newAutomaticProfileSearchResultsScreen();
       }
     case NavigateToModeratorTasks():
-      return newModeratorTasksScreen();
+      return newModeratorTasksScreen(r);
   }
   return null;
 }

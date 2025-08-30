@@ -1,9 +1,9 @@
+import 'package:app/api/server_connection_manager.dart';
 import 'package:app/localizations.dart';
 import 'package:app/ui/normal/settings/admin/account_admin_settings.dart';
 import 'package:app/ui_utils/padding.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:app/data/login_repository.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/result.dart';
 import 'package:openapi/api.dart';
@@ -11,17 +11,16 @@ import 'package:openapi/api.dart';
 typedef ViewAdminsData = List<(AccountId, GetProfileAgeAndName, Permissions)>;
 
 class ViewAdminsScreen extends StatefulWidget {
-  const ViewAdminsScreen({super.key});
+  final ApiManager api;
+  const ViewAdminsScreen(this.api, {super.key});
 
   @override
   State<ViewAdminsScreen> createState() => _ViewAdminsScreenState();
 }
 
 class _ViewAdminsScreenState extends State<ViewAdminsScreen> {
-  final api = LoginRepository.getInstance().repositories.api;
-
   Future<ViewAdminsData> _getData() async {
-    final result = await api.accountAdmin((api) => api.getAllAdmins()).ok();
+    final result = await widget.api.accountAdmin((api) => api.getAllAdmins()).ok();
 
     final ViewAdminsData data = [];
 
@@ -30,7 +29,7 @@ class _ViewAdminsScreenState extends State<ViewAdminsScreen> {
       showSnackBar("Get admins failed");
     } else {
       for (final a in admins) {
-        final ageAndName = await api
+        final ageAndName = await widget.api
             .profileAdmin((api) => api.getProfileAgeAndName(a.aid.aid))
             .ok();
 
@@ -88,7 +87,7 @@ class _ViewAdminsScreenState extends State<ViewAdminsScreen> {
   ) {
     return ElevatedButton(
       onPressed: () {
-        getAgeAndNameAndShowAdminSettings(context, api, accountId);
+        getAgeAndNameAndShowAdminSettings(context, widget.api, accountId);
       },
       child: const Text("Open admin settings"),
     );

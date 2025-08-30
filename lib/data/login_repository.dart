@@ -75,7 +75,6 @@ class LoginRepository extends AppSingleton {
   final BehaviorSubject<RepositoriesStreamValue> _repositories = BehaviorSubject.seeded(
     RepositoriesEmpty(),
   );
-  RepositoryInstances get repositories => _repositories.value.repositoriesOrNull!;
   RepositoryInstances? get repositoriesOrNull => _repositories.value.repositoriesOrNull;
 
   late ApiManagerNoConnection _apiNoConnection;

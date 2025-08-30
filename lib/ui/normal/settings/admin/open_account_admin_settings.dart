@@ -1,9 +1,10 @@
+import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/ui/normal/settings/admin/account_admin_settings.dart';
 import 'package:app/ui_utils/padding.dart';
 import 'package:flutter/material.dart';
-import 'package:app/data/login_repository.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/result.dart';
+import 'package:provider/provider.dart';
 
 class OpenAccountAdminSettings extends StatefulWidget {
   const OpenAccountAdminSettings({super.key});
@@ -14,7 +15,6 @@ class OpenAccountAdminSettings extends StatefulWidget {
 
 class _OpenAccountAdminSettingsState extends State<OpenAccountAdminSettings> {
   final TextEditingController _emailController = TextEditingController();
-  final api = LoginRepository.getInstance().repositories.api;
 
   @override
   void initState() {
@@ -38,11 +38,13 @@ class _OpenAccountAdminSettingsState extends State<OpenAccountAdminSettings> {
       controller: _emailController,
     );
 
+    final r = context.read<RepositoryInstances>();
+
     final openProfileButton = ElevatedButton(
       onPressed: () async {
         FocusScope.of(context).unfocus();
 
-        final result = await api
+        final result = await r.api
             .accountAdmin((api) => api.getAccountIdFromEmail(_emailController.text))
             .ok();
 
@@ -56,7 +58,7 @@ class _OpenAccountAdminSettingsState extends State<OpenAccountAdminSettings> {
         } else if (aid == null) {
           showSnackBar("Email not found");
         } else {
-          await getAgeAndNameAndShowAdminSettings(context, api, aid);
+          await getAgeAndNameAndShowAdminSettings(context, r.api, aid);
         }
       },
       child: const Text("Open"),

@@ -1,3 +1,7 @@
+import 'package:app/api/server_connection_manager.dart';
+import 'package:app/data/chat_repository.dart';
+import 'package:app/data/profile_repository.dart';
+import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/localizations.dart';
 import 'package:app/logic/account/account.dart';
 import 'package:app/model/freezed/logic/account/account.dart';
@@ -6,19 +10,25 @@ import 'package:app/ui_utils/extensions/api.dart';
 import 'package:app/ui_utils/padding.dart';
 import 'package:app/utils/result.dart';
 import 'package:flutter/material.dart';
-import 'package:app/data/login_repository.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 
 class ModerateSingleProfileStringScreen extends StatefulWidget {
+  final ApiManager api;
+  final ProfileRepository profile;
+  final ChatRepository chat;
+
   final AccountId accountId;
   final ProfileStringModerationContentType contentType;
-  const ModerateSingleProfileStringScreen({
+  ModerateSingleProfileStringScreen(
+    RepositoryInstances r, {
     required this.accountId,
     required this.contentType,
     super.key,
-  });
+  }) : api = r.api,
+       profile = r.profile,
+       chat = r.chat;
 
   @override
   State<ModerateSingleProfileStringScreen> createState() =>
@@ -26,10 +36,6 @@ class ModerateSingleProfileStringScreen extends StatefulWidget {
 }
 
 class _ModerateSingleProfileStringScreenState extends State<ModerateSingleProfileStringScreen> {
-  final api = LoginRepository.getInstance().repositories.api;
-  final profile = LoginRepository.getInstance().repositories.profile;
-  final chat = LoginRepository.getInstance().repositories.chat;
-
   final detailsController = TextEditingController();
 
   GetProfileStringState? data;
@@ -38,7 +44,7 @@ class _ModerateSingleProfileStringScreenState extends State<ModerateSingleProfil
   bool isError = false;
 
   Future<void> _getData() async {
-    final result = await api
+    final result = await widget.api
         .profileAdmin((api) => api.getProfileStringState(widget.contentType, widget.accountId.aid))
         .ok();
 
@@ -174,7 +180,7 @@ class _ModerateSingleProfileStringScreenState extends State<ModerateSingleProfil
               );
               final result = await showConfirmDialog(context, "Reject?", yesNoActions: true);
               if (result == true && context.mounted) {
-                final result = await api.profileAdminAction(
+                final result = await widget.api.profileAdminAction(
                   (api) => api.postModerateProfileString(
                     PostModerateProfileString(
                       contentType: widget.contentType,
@@ -198,7 +204,7 @@ class _ModerateSingleProfileStringScreenState extends State<ModerateSingleProfil
             onPressed: () async {
               final result = await showConfirmDialog(context, "Accept?", yesNoActions: true);
               if (result == true && context.mounted) {
-                final result = await api.profileAdminAction(
+                final result = await widget.api.profileAdminAction(
                   (api) => api.postModerateProfileString(
                     PostModerateProfileString(
                       contentType: widget.contentType,
@@ -223,6 +229,6 @@ class _ModerateSingleProfileStringScreenState extends State<ModerateSingleProfil
 
   Future<void> _refreshAfterAction() async {
     await _getData();
-    await profile.downloadProfileToDatabase(chat, widget.accountId);
+    await widget.profile.downloadProfileToDatabase(widget.chat, widget.accountId);
   }
 }

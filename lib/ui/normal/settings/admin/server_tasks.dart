@@ -1,17 +1,18 @@
+import 'package:app/api/server_connection_manager.dart';
 import 'package:app/localizations.dart';
 import 'package:app/ui_utils/padding.dart';
 import 'package:app/utils/api.dart';
 import 'package:app/utils/time.dart';
 import 'package:flutter/material.dart';
 import 'package:openapi/api.dart';
-import 'package:app/data/login_repository.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/result.dart';
 
 class ServerTasksScreen extends StatefulWidget {
+  final ApiManager api;
   final Permissions permissions;
-  const ServerTasksScreen({required this.permissions, super.key});
+  const ServerTasksScreen(this.api, {required this.permissions, super.key});
 
   @override
   State<ServerTasksScreen> createState() => _ServerTasksScreenState();
@@ -20,7 +21,6 @@ class ServerTasksScreen extends StatefulWidget {
 class _ServerTasksScreenState extends State<ServerTasksScreen> {
   ManagerInstanceNameList? _managers;
   List<ManagerInstanceRelatedState>? _currentData = [];
-  final api = LoginRepository.getInstance().repositories.api;
 
   bool isLoading = true;
 
@@ -31,7 +31,7 @@ class _ServerTasksScreenState extends State<ServerTasksScreen> {
   }
 
   Future<void> _refreshData() async {
-    _managers ??= await api.commonAdmin((api) => api.getManagerInstanceNames()).ok();
+    _managers ??= await widget.api.commonAdmin((api) => api.getManagerInstanceNames()).ok();
 
     final managers = _managers?.names ?? [];
     final List<ManagerInstanceRelatedState> data = [];
@@ -40,7 +40,7 @@ class _ServerTasksScreenState extends State<ServerTasksScreen> {
         data.add(ManagerInstanceRelatedState(m, null));
         continue;
       }
-      final status = await api.commonAdmin((api) => api.getScheduledTasksStatus(m)).ok();
+      final status = await widget.api.commonAdmin((api) => api.getScheduledTasksStatus(m)).ok();
       if (status != null) {
         data.add(ManagerInstanceRelatedState(m, status));
       } else {
@@ -303,7 +303,7 @@ class _ServerTasksScreenState extends State<ServerTasksScreen> {
       onPressed: () {
         showConfirmDialog(context, buttonTitle).then((value) async {
           if (value == true) {
-            final result = await api.commonAdminAction(action);
+            final result = await widget.api.commonAdminAction(action);
             if (result case Ok()) {
               showSnackBar("Action successful");
             } else {

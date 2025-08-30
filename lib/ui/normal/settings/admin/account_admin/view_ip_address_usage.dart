@@ -1,33 +1,34 @@
+import 'package:app/api/server_connection_manager.dart';
+import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/localizations.dart';
 import 'package:app/logic/account/client_features_config.dart';
 import 'package:app/ui_utils/padding.dart';
 import 'package:app/utils/api.dart';
 import 'package:app/utils/time.dart';
 import 'package:flutter/material.dart';
-import 'package:app/data/login_repository.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/result.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 
 class ViewIpAddressUsageScreen extends StatefulWidget {
+  final ApiManager api;
   final AccountId accountId;
-  const ViewIpAddressUsageScreen({required this.accountId, super.key});
+  ViewIpAddressUsageScreen(RepositoryInstances r, {required this.accountId, super.key})
+    : api = r.api;
 
   @override
   State<ViewIpAddressUsageScreen> createState() => _ViewIpAddressUsageScreenState();
 }
 
 class _ViewIpAddressUsageScreenState extends State<ViewIpAddressUsageScreen> {
-  final api = LoginRepository.getInstance().repositories.api;
-
   GetIpAddressStatisticsResult? data;
 
   bool isLoading = true;
   bool isError = false;
 
   Future<void> _getData() async {
-    final result = await api
+    final result = await widget.api
         .commonAdmin(
           (api) => api.postGetIpAddressUsageData(
             GetIpAddressStatisticsSettings(account: widget.accountId),

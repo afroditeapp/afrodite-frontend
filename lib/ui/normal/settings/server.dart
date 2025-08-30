@@ -46,7 +46,10 @@ class ServerScreen extends StatelessWidget {
         Setting.createSetting(
           Icons.settings,
           "Configure backend",
-          () => MyNavigator.push(context, const MaterialPage<void>(child: ConfigureBackendPage())),
+          () => MyNavigator.push(
+            context,
+            MaterialPage<void>(child: ConfigureBackendPage(api: r.api)),
+          ),
         ),
       );
     }
@@ -55,7 +58,7 @@ class ServerScreen extends StatelessWidget {
         Setting.createSetting(
           Icons.info_outline,
           "Server system info",
-          () => MyNavigator.push(context, const MaterialPage<void>(child: ServerSystemInfoPage())),
+          () => MyNavigator.push(context, MaterialPage<void>(child: ServerSystemInfoPage(r.api))),
         ),
       );
     }
@@ -67,7 +70,9 @@ class ServerScreen extends StatelessWidget {
           "Server tasks",
           () => MyNavigator.push(
             context,
-            MaterialPage<void>(child: ServerTasksScreen(permissions: permissions.apiPermissions)),
+            MaterialPage<void>(
+              child: ServerTasksScreen(r.api, permissions: permissions.apiPermissions),
+            ),
           ),
         ),
       );
@@ -77,10 +82,8 @@ class ServerScreen extends StatelessWidget {
         Setting.createSetting(
           Icons.system_update_alt,
           "Server software update",
-          () => MyNavigator.push(
-            context,
-            const MaterialPage<void>(child: ServerSoftwareUpdatePage()),
-          ),
+          () =>
+              MyNavigator.push(context, MaterialPage<void>(child: ServerSoftwareUpdatePage(r.api))),
         ),
       );
     }

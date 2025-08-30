@@ -1,15 +1,16 @@
 import 'dart:async';
 
+import 'package:app/api/server_connection_manager.dart';
 import 'package:app/ui/normal/settings/admin/account_admin_settings.dart';
 import 'package:app/ui_utils/extensions/other.dart';
 import 'package:app/utils/result.dart';
 import 'package:flutter/material.dart';
 import 'package:openapi/api.dart';
-import 'package:app/data/login_repository.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 class ViewAccountsScreen extends StatefulWidget {
-  const ViewAccountsScreen({super.key});
+  final ApiManager api;
+  const ViewAccountsScreen(this.api, {super.key});
 
   @override
   State<ViewAccountsScreen> createState() => _BlockedProfilesScreen();
@@ -19,8 +20,6 @@ typedef AccountEntry = ProfileIteratorPageValue;
 
 class _BlockedProfilesScreen extends State<ViewAccountsScreen> {
   PagingState<int, AccountEntry> _pagingState = PagingState();
-
-  final api = LoginRepository.getInstance().repositories.api;
 
   AccountIdDbValue? iteratorStartPosition;
 
@@ -50,7 +49,7 @@ class _BlockedProfilesScreen extends State<ViewAccountsScreen> {
       iteratorStartPosition = null;
     }
 
-    iteratorStartPosition ??= await api
+    iteratorStartPosition ??= await widget.api
         .profileAdmin((api) => api.getLatestCreatedAccountIdDb())
         .ok();
 
@@ -61,7 +60,7 @@ class _BlockedProfilesScreen extends State<ViewAccountsScreen> {
     }
 
     final page = _pagingState.currentPageNumber();
-    final data = await api
+    final data = await widget.api
         .profileAdmin((api) => api.getAdminProfileIteratorPage(startPosition.accountDbId, page))
         .ok();
     if (data == null) {
@@ -104,7 +103,7 @@ class _BlockedProfilesScreen extends State<ViewAccountsScreen> {
               title: Text("${item.name}, ${item.age}"),
               subtitle: Text(item.accountId.aid),
               onTap: () {
-                getAgeAndNameAndShowAdminSettings(context, api, item.accountId);
+                getAgeAndNameAndShowAdminSettings(context, widget.api, item.accountId);
               },
             );
           },

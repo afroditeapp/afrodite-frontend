@@ -1,4 +1,4 @@
-import 'package:app/data/login_repository.dart';
+import 'package:app/api/server_connection_manager.dart';
 import 'package:app/logic/admin/content_decicion_stream.dart';
 import 'package:app/ui/normal/settings/admin/content_decicion_stream.dart';
 import 'package:app/ui_utils/extensions/api.dart';
@@ -17,7 +17,7 @@ class ModerateProfileStringsScreen extends ContentDecicionScreen<WrappedProfileS
   }) : super(
          title: "Moderate ${contentType.adminUiTextPlular()}",
          infoMessageRowHeight: ROW_HEIGHT,
-         io: ProfileStringIo(contentType, showTextsWhichBotsCanModerate),
+         io: ProfileStringIo(api, contentType, showTextsWhichBotsCanModerate),
          builder: ProfileTextUiBuilder(),
        );
 }
@@ -34,11 +34,11 @@ class WrappedProfileStringModeration extends ProfileStringPendingModeration
 }
 
 class ProfileStringIo extends ContentIo<WrappedProfileStringModeration> {
-  final api = LoginRepository.getInstance().repositories.api;
+  final ApiManager api;
   final ProfileStringModerationContentType contentType;
   final bool showTextsWhichBotsCanModerate;
 
-  ProfileStringIo(this.contentType, this.showTextsWhichBotsCanModerate);
+  ProfileStringIo(this.api, this.contentType, this.showTextsWhichBotsCanModerate);
 
   @override
   Future<Result<List<WrappedProfileStringModeration>, ()>> getNextContent() async {

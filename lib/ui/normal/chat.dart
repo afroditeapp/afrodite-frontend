@@ -1,3 +1,4 @@
+import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/logic/app/info_dialog.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/profile_thumbnail_image_or_error.dart';
@@ -7,11 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
-import 'package:app/data/chat_repository.dart';
 import 'package:app/data/image_cache.dart';
 import 'package:database/database.dart';
-import 'package:app/data/login_repository.dart';
-import 'package:app/data/profile_repository.dart';
 import 'package:app/logic/app/bottom_navigation_state.dart';
 import 'package:app/logic/chat/conversation_list_bloc.dart';
 import 'package:app/logic/settings/ui_settings.dart';
@@ -77,9 +75,6 @@ class ConversationData {
 class _ChatViewState extends State<ChatView> {
   final ScrollController _scrollController = ScrollController();
 
-  final ProfileRepository profile = LoginRepository.getInstance().repositories.profile;
-  final ChatRepository chat = LoginRepository.getInstance().repositories.chat;
-
   int? initialItemCount;
   UnmodifiableList<AccountId> conversations = const UnmodifiableList<AccountId>.empty();
 
@@ -112,11 +107,12 @@ class _ChatViewState extends State<ChatView> {
     );
   }
 
-  Stream<ConversationData> conversationData(AccountId id) {
+  Stream<ConversationData> conversationData(BuildContext context, AccountId id) {
+    final r = context.read<RepositoryInstances>();
     return Rx.combineLatest3(
-      profile.getProfileEntryUpdates(id),
-      profile.getUnreadMessagesCountStream(id),
-      chat.watchLatestMessage(id),
+      r.profile.getProfileEntryUpdates(id),
+      r.profile.getUnreadMessagesCountStream(id),
+      r.chat.watchLatestMessage(id),
       (a, b, c) {
         if (a != null) {
           return ConversationData(a, b ?? const UnreadMessagesCount(0), c);
@@ -277,7 +273,7 @@ class _ChatViewState extends State<ChatView> {
         // Avoid UI flickering. Probably Flutter tries to reuse
         // old widget in the widget tree and that causes the flickering.
         key: UniqueKey(),
-        stream: conversationData(id),
+        stream: conversationData(context, id),
         builder: (context, state) {
           final dataFromStream = state.data;
           final ConversationData? cData;

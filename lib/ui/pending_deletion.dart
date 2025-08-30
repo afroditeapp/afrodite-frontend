@@ -1,4 +1,5 @@
-import "package:app/data/login_repository.dart";
+import "package:app/api/server_connection_manager.dart";
+import "package:app/data/utils/repository_instances.dart";
 import "package:app/localizations.dart";
 import "package:app/ui/normal/settings/data_export.dart";
 import "package:app/ui_utils/app_bar/common_actions.dart";
@@ -13,25 +14,27 @@ import "package:flutter/material.dart";
 import "package:openapi/api.dart";
 
 class PendingDeletionPage extends StatefulWidget {
-  const PendingDeletionPage({super.key});
+  final ApiManager api;
+  final ServerConnectionManager connectionManager;
+  final AccountId currentUser;
+  PendingDeletionPage(RepositoryInstances r, {super.key})
+    : api = r.api,
+      connectionManager = r.connectionManager,
+      currentUser = r.accountId;
 
   @override
   State<PendingDeletionPage> createState() => _PendingDeletionPageState();
 }
 
 class _PendingDeletionPageState extends State<PendingDeletionPage> {
-  final api = LoginRepository.getInstance().repositories.api;
-  final connectionManager = LoginRepository.getInstance().repositories.connectionManager;
-  final currentUser = LoginRepository.getInstance().repositories.accountId;
-
   bool isLoading = true;
   UnixTime? data;
 
   Future<void> _refreshData() async {
-    await connectionManager.tryWaitUntilConnected(waitTimeoutSeconds: 5);
+    await widget.connectionManager.tryWaitUntilConnected(waitTimeoutSeconds: 5);
 
-    final result = await api
-        .account((api) => api.getAccountDeletionRequestState(currentUser.aid))
+    final result = await widget.api
+        .account((api) => api.getAccountDeletionRequestState(widget.currentUser.aid))
         .ok();
 
     if (context.mounted) {
@@ -61,7 +64,7 @@ class _PendingDeletionPageState extends State<PendingDeletionPage> {
                 openDataExportScreen(
                   context,
                   context.strings.data_export_screen_title_export_type_user,
-                  currentUser,
+                  widget.currentUser,
                 );
               },
             ),
@@ -113,9 +116,9 @@ class _PendingDeletionPageState extends State<PendingDeletionPage> {
               yesNoActions: true,
             );
             if (result == true) {
-              final result = await api.accountAction(
+              final result = await widget.api.accountAction(
                 (api) => api.postSetAccountDeletionRequestState(
-                  currentUser.aid,
+                  widget.currentUser.aid,
                   BooleanSetting(value: false),
                 ),
               );

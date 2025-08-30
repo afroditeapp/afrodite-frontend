@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:app/api/server_connection_manager.dart';
 import 'package:app/data/image_cache.dart';
-import 'package:app/data/login_repository.dart';
 import 'package:app/localizations.dart';
 import 'package:app/logic/account/custom_reports_config.dart';
 import 'package:app/logic/admin/content_decicion_stream.dart';
@@ -31,7 +30,7 @@ class ProcessReportsScreen extends ContentDecicionScreen<WrappedReportDetailed> 
         title: "Process reports",
         screenInstructions: ReportUiBuilder.instructions,
         infoMessageRowHeight: ROW_HEIGHT,
-        io: ReportIo(),
+        io: ReportIo(api),
         builder: ReportUiBuilder(),
       );
 }
@@ -53,8 +52,8 @@ class WrappedReportDetailed extends ReportDetailed implements ContentInfoGetter 
 }
 
 class ReportIo extends ContentIo<WrappedReportDetailed> {
-  final api = LoginRepository.getInstance().repositories.api;
-  ReportIo();
+  final ApiManager api;
+  ReportIo(this.api);
 
   Set<ReportId> addedReports = {};
 

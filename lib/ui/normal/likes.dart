@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:app/data/general/iterator/base_iterator_manager.dart';
+import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/logic/profile/view_profiles.dart';
 import 'package:app/logic/settings/ui_settings.dart';
 import 'package:app/model/freezed/logic/settings/ui_settings.dart';
@@ -12,11 +13,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:app/data/chat/received_likes_iterator_manager.dart';
-import 'package:app/data/chat_repository.dart';
 import 'package:app/data/login_repository.dart';
 import 'package:app/data/profile_repository.dart';
 import 'package:database/database.dart';
-import 'package:app/database/account_database_manager.dart';
 import 'package:app/logic/app/bottom_navigation_state.dart';
 import 'package:app/logic/app/like_grid_instance_manager.dart';
 import 'package:app/logic/app/navigator_state.dart';
@@ -66,6 +65,7 @@ class _LikeViewState extends State<LikeView> {
       builder: (context, state) {
         if (state.currentlyVisibleId == 0 && state.visible) {
           return LikeViewContent(
+            context.read<RepositoryInstances>(),
             receivedLikesBloc: context.read<NewReceivedLikesAvailableBloc>(),
             key: likeViewContentState,
           );
@@ -124,6 +124,7 @@ class _LikesScreenState extends State<LikesScreen> {
       builder: (context, state) {
         if (state.currentlyVisibleId == widget.gridInstanceId && state.visible) {
           return LikeViewContent(
+            context.read<RepositoryInstances>(),
             receivedLikesBloc: context.read<NewReceivedLikesAvailableBloc>(),
             key: likeViewContentState,
           );
@@ -148,8 +149,9 @@ class _LikesScreenState extends State<LikesScreen> {
 }
 
 class LikeViewContent extends StatefulWidget {
+  final RepositoryInstances r;
   final NewReceivedLikesAvailableBloc receivedLikesBloc;
-  const LikeViewContent({required this.receivedLikesBloc, super.key});
+  const LikeViewContent(this.r, {required this.receivedLikesBloc, super.key});
 
   @override
   State<LikeViewContent> createState() => LikeViewContentState();
@@ -160,19 +162,7 @@ class LikeViewContentState extends State<LikeViewContent> {
   PagingState<int, ProfileGridProfileEntry> _pagingState = PagingState();
   StreamSubscription<ProfileChange>? _profileChangesSubscription;
 
-  final ChatRepository chatRepository = LoginRepository.getInstance().repositories.chat;
-  final ProfileRepository profileRepository = LoginRepository.getInstance().repositories.profile;
-
-  final AccountDatabaseManager accountDb = LoginRepository.getInstance().repositories.accountDb;
-
-  final UiProfileIterator _mainProfilesViewIterator = ReceivedLikesIteratorManager(
-    LoginRepository.getInstance().repositories.chat,
-    LoginRepository.getInstance().repositories.media,
-    LoginRepository.getInstance().repositories.accountBackgroundDb,
-    LoginRepository.getInstance().repositories.accountDb,
-    LoginRepository.getInstance().repositories.connectionManager,
-    LoginRepository.getInstance().repositories.chat.currentUser,
-  );
+  late final UiProfileIterator _mainProfilesViewIterator;
   bool _onLoginReloadDoneOnce = false;
   UtcDateTime? _previousAutomaticReloadTime;
 
@@ -182,10 +172,20 @@ class LikeViewContentState extends State<LikeViewContent> {
   @override
   void initState() {
     super.initState();
+
+    _mainProfilesViewIterator = ReceivedLikesIteratorManager(
+      widget.r.chat,
+      widget.r.media,
+      widget.r.accountBackgroundDb,
+      widget.r.accountDb,
+      widget.r.connectionManager,
+      widget.r.chat.currentUser,
+    );
+
     _gridLogic.init();
     _mainProfilesViewIterator.reset(false);
     _profileChangesSubscription?.cancel();
-    _profileChangesSubscription = profileRepository.profileChanges.listen((event) {
+    _profileChangesSubscription = widget.r.profile.profileChanges.listen((event) {
       _handleProfileChange(event);
     });
     _scrollController.addListener(scrollEventListener);
@@ -260,8 +260,8 @@ class LikeViewContentState extends State<LikeViewContent> {
 
     final newList = List<ProfileGridProfileEntry>.empty(growable: true);
     for (final profile in profileList) {
-      final initialProfileAction = await resolveProfileAction(chatRepository, profile.accountId);
-      final isFavorite = await profileRepository.isInFavorites(profile.accountId);
+      final initialProfileAction = await resolveProfileAction(widget.r.chat, profile.accountId);
+      final isFavorite = await widget.r.profile.isInFavorites(profile.accountId);
       newList.add((
         profile: ProfileThumbnail(entry: profile, isFavorite: isFavorite),
         initialProfileAction: initialProfileAction,
@@ -335,7 +335,7 @@ class LikeViewContentState extends State<LikeViewContent> {
           return profileEntryWidgetStream(
             item.profile,
             item.initialProfileAction,
-            accountDb,
+            widget.r.accountDb,
             settings,
             showNewLikeMarker: true,
             maxItemWidth: singleItemWidth,

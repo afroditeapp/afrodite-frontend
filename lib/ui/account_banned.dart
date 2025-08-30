@@ -1,4 +1,5 @@
-import "package:app/data/login_repository.dart";
+import "package:app/api/server_connection_manager.dart";
+import "package:app/data/utils/repository_instances.dart";
 import "package:app/ui/normal/settings/account_settings.dart";
 import "package:app/ui/normal/settings/data_export.dart";
 import "package:app/ui_utils/app_bar/common_actions.dart";
@@ -12,24 +13,28 @@ import "package:app/localizations.dart";
 import "package:openapi/api.dart";
 
 class AccountBannedScreen extends StatefulWidget {
-  const AccountBannedScreen({super.key});
+  final ApiManager api;
+  final ServerConnectionManager connectionManager;
+  final AccountId currentUser;
+  AccountBannedScreen(RepositoryInstances r, {super.key})
+    : api = r.api,
+      connectionManager = r.connectionManager,
+      currentUser = r.accountId;
 
   @override
   State<AccountBannedScreen> createState() => _AccountBannedScreenState();
 }
 
 class _AccountBannedScreenState extends State<AccountBannedScreen> {
-  final api = LoginRepository.getInstance().repositories.api;
-  final connectionManager = LoginRepository.getInstance().repositories.connectionManager;
-  final currentUser = LoginRepository.getInstance().repositories.accountId;
-
   bool isLoading = true;
   GetAccountBanTimeResult? data;
 
   Future<void> _refreshData() async {
-    await connectionManager.tryWaitUntilConnected(waitTimeoutSeconds: 5);
+    await widget.connectionManager.tryWaitUntilConnected(waitTimeoutSeconds: 5);
 
-    final result = await api.account((api) => api.getAccountBanTime(currentUser.aid)).ok();
+    final result = await widget.api
+        .account((api) => api.getAccountBanTime(widget.currentUser.aid))
+        .ok();
 
     if (context.mounted) {
       setState(() {
@@ -63,7 +68,7 @@ class _AccountBannedScreenState extends State<AccountBannedScreen> {
                 openDataExportScreen(
                   context,
                   context.strings.data_export_screen_title_export_type_user,
-                  currentUser,
+                  widget.currentUser,
                 );
               },
             ),

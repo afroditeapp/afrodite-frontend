@@ -1,3 +1,5 @@
+import 'package:app/api/server_connection_manager.dart';
+import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/localizations.dart';
 import 'package:app/logic/account/account.dart';
 import 'package:app/model/freezed/logic/account/account.dart';
@@ -6,7 +8,6 @@ import 'package:app/ui_utils/padding.dart';
 import 'package:app/utils/api.dart';
 import 'package:app/utils/time.dart';
 import 'package:flutter/material.dart';
-import 'package:app/data/login_repository.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/result.dart';
 import 'package:flutter/services.dart';
@@ -15,17 +16,15 @@ import 'package:openapi/api.dart';
 import 'package:utils/utils.dart';
 
 class BanAccountScreen extends StatefulWidget {
+  final ApiManager api;
   final AccountId accountId;
-  const BanAccountScreen({required this.accountId, super.key});
+  BanAccountScreen(RepositoryInstances r, {required this.accountId, super.key}) : api = r.api;
 
   @override
   State<BanAccountScreen> createState() => _BanAccountScreenState();
 }
 
 class _BanAccountScreenState extends State<BanAccountScreen> {
-  final api = LoginRepository.getInstance().repositories.api;
-  final profile = LoginRepository.getInstance().repositories.profile;
-
   final banDaysTextController = TextEditingController();
   final banDetailsController = TextEditingController();
 
@@ -37,7 +36,9 @@ class _BanAccountScreenState extends State<BanAccountScreen> {
   int? selectedBanSeconds;
 
   Future<void> _getData() async {
-    final result = await api.account((api) => api.getAccountBanTime(widget.accountId.aid)).ok();
+    final result = await widget.api
+        .account((api) => api.getAccountBanTime(widget.accountId.aid))
+        .ok();
 
     if (!context.mounted) {
       return;
@@ -157,7 +158,7 @@ class _BanAccountScreenState extends State<BanAccountScreen> {
 
                   final result = await showConfirmDialog(context, "Ban?", yesNoActions: true);
                   if (result == true && context.mounted) {
-                    final result = await api.accountAdminAction(
+                    final result = await widget.api.accountAdminAction(
                       (api) => api.postSetBanState(
                         SetAccountBanState(
                           account: widget.accountId,
@@ -184,7 +185,7 @@ class _BanAccountScreenState extends State<BanAccountScreen> {
       onPressed: () async {
         final result = await showConfirmDialog(context, "Unban?", yesNoActions: true);
         if (result == true && context.mounted) {
-          final result = await api.accountAdminAction(
+          final result = await widget.api.accountAdminAction(
             (api) => api.postSetBanState(
               SetAccountBanState(
                 account: widget.accountId,
