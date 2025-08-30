@@ -12,7 +12,6 @@ import 'package:app/data/image_cache.dart';
 import 'package:database/database.dart';
 import 'package:app/logic/app/bottom_navigation_state.dart';
 import 'package:app/logic/chat/conversation_list_bloc.dart';
-import 'package:app/logic/settings/ui_settings.dart';
 import 'package:app/model/freezed/logic/chat/conversation_list_bloc.dart';
 import 'package:app/model/freezed/logic/main/bottom_navigation_state.dart';
 import 'package:app/ui/normal/chat/conversation_page.dart';
@@ -347,7 +346,7 @@ class _ChatViewState extends State<ChatView> {
     return Row(
       children: [
         Text(
-          data.entry.profileTitle(context.read<UiSettingsBloc>().state.showNonAcceptedProfileNames),
+          data.entry.profileTitle(),
           style: Theme.of(context).textTheme.titleMedium,
           overflow: TextOverflow.ellipsis,
           maxLines: 1,

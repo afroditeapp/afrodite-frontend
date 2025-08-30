@@ -10,7 +10,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 import 'package:database/database.dart';
 import 'package:app/logic/profile/my_profile.dart';
-import 'package:app/logic/settings/ui_settings.dart';
 import 'package:app/ui_utils/consts/size.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:utils/utils.dart';
@@ -81,8 +80,7 @@ class _ViewProfileEntryState extends State<ViewProfileEntry> {
                 Flexible(
                   child: Text(
                     widget.profile.profileTitleWithAge(
-                      context.read<UiSettingsBloc>().state.showNonAcceptedProfileNames ||
-                          widget.isMyProfile,
+                      showNonAcceptedProfileNames: widget.isMyProfile,
                     ),
                     style: Theme.of(context).textTheme.titleLarge,
                   ),

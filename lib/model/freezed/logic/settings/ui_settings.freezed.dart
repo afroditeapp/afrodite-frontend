@@ -13,11 +13,9 @@ final _privateConstructorErrorUiSettingsData = UnsupportedError(
 
 /// @nodoc
 mixin _$UiSettingsData {
-  bool get showNonAcceptedProfileNames => throw _privateConstructorErrorUiSettingsData;
   GridSettings get gridSettings => throw _privateConstructorErrorUiSettingsData;
 
   UiSettingsData copyWith({
-    bool? showNonAcceptedProfileNames,
     GridSettings? gridSettings,
   }) => throw _privateConstructorErrorUiSettingsData;
 }
@@ -25,7 +23,6 @@ mixin _$UiSettingsData {
 /// @nodoc
 abstract class _UiSettingsData extends UiSettingsData {
   factory _UiSettingsData({
-    bool showNonAcceptedProfileNames,
     GridSettings gridSettings,
   }) = _$UiSettingsDataImpl;
   _UiSettingsData._() : super._();
@@ -33,22 +30,18 @@ abstract class _UiSettingsData extends UiSettingsData {
 
 /// @nodoc
 class _$UiSettingsDataImpl extends _UiSettingsData with DiagnosticableTreeMixin {
-  static const bool _showNonAcceptedProfileNamesDefaultValue = false;
   static const GridSettings _gridSettingsDefaultValue = GridSettings();
   
   _$UiSettingsDataImpl({
-    this.showNonAcceptedProfileNames = _showNonAcceptedProfileNamesDefaultValue,
     this.gridSettings = _gridSettingsDefaultValue,
   }) : super._();
 
-  @override
-  final bool showNonAcceptedProfileNames;
   @override
   final GridSettings gridSettings;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'UiSettingsData(showNonAcceptedProfileNames: $showNonAcceptedProfileNames, gridSettings: $gridSettings)';
+    return 'UiSettingsData(gridSettings: $gridSettings)';
   }
 
   @override
@@ -56,7 +49,6 @@ class _$UiSettingsDataImpl extends _UiSettingsData with DiagnosticableTreeMixin 
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'UiSettingsData'))
-      ..add(DiagnosticsProperty('showNonAcceptedProfileNames', showNonAcceptedProfileNames))
       ..add(DiagnosticsProperty('gridSettings', gridSettings));
   }
 
@@ -65,8 +57,6 @@ class _$UiSettingsDataImpl extends _UiSettingsData with DiagnosticableTreeMixin 
     return identical(this, other) ||
       (other.runtimeType == runtimeType &&
         other is _$UiSettingsDataImpl &&
-        (identical(other.showNonAcceptedProfileNames, showNonAcceptedProfileNames) ||
-          other.showNonAcceptedProfileNames == showNonAcceptedProfileNames) &&
         (identical(other.gridSettings, gridSettings) ||
           other.gridSettings == gridSettings)
     );
@@ -75,16 +65,13 @@ class _$UiSettingsDataImpl extends _UiSettingsData with DiagnosticableTreeMixin 
   @override
   int get hashCode => Object.hash(
     runtimeType,
-    showNonAcceptedProfileNames,
     gridSettings,
   );
 
   @override
   UiSettingsData copyWith({
-    Object? showNonAcceptedProfileNames,
     Object? gridSettings,
   }) => _$UiSettingsDataImpl(
-    showNonAcceptedProfileNames: (showNonAcceptedProfileNames ?? this.showNonAcceptedProfileNames) as bool,
     gridSettings: (gridSettings ?? this.gridSettings) as GridSettings,
   );
 }

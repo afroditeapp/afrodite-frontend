@@ -16,7 +16,6 @@ import 'package:app/data/profile_repository.dart';
 import 'package:app/localizations.dart';
 import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/logic/chat/conversation_bloc.dart';
-import 'package:app/logic/settings/ui_settings.dart';
 import 'package:app/model/freezed/logic/chat/conversation_bloc.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui/normal/chat/message_renderer.dart';
@@ -111,9 +110,7 @@ class ConversationPageState extends State<ConversationPage> {
                       const Padding(padding: EdgeInsets.all(8.0)),
                       Flexible(
                         child: Text(
-                          widget.profileEntry.profileTitle(
-                            context.read<UiSettingsBloc>().state.showNonAcceptedProfileNames,
-                          ),
+                          widget.profileEntry.profileTitle(),
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),

@@ -59,12 +59,12 @@ class ProfileEntry implements PublicContentProvider {
     return content.any((v) => !v.accepted);
   }
 
-  String profileTitle(bool showNonAcceptedProfileNames) {
+  String profileTitle({bool showNonAcceptedProfileNames = false}) {
     return ProfileTitle(name, nameAccepted).profileTitle();
   }
 
-  String profileTitleWithAge(bool showNonAcceptedProfileNames) {
-    return "${profileTitle(showNonAcceptedProfileNames)}, $age";
+  String profileTitleWithAge({required bool showNonAcceptedProfileNames}) {
+    return "${profileTitle(showNonAcceptedProfileNames: showNonAcceptedProfileNames)}, $age";
   }
 
   String profileTextOrFirstCharacterProfileText() {
