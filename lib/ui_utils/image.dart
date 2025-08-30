@@ -10,9 +10,17 @@ Widget bytesImgWidget(
   Uint8List imageBytes, {
   double? width,
   double? height,
+  required ImageCacheSize cacheSize,
   AlignmentGeometry alignment = Alignment.center,
 }) {
-  return Image.memory(imageBytes, width: width, height: height, alignment: alignment);
+  return Image.memory(
+    imageBytes,
+    width: width,
+    height: height,
+    alignment: alignment,
+    cacheHeight: cacheSize.height,
+    cacheWidth: cacheSize.width,
+  );
 }
 
 Widget accountImgWidget(

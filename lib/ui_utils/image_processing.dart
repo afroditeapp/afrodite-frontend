@@ -1,6 +1,7 @@
 import "dart:async";
 import "dart:typed_data";
 
+import "package:app/data/image_cache.dart";
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:app/localizations.dart";
@@ -50,6 +51,8 @@ Widget confirmDialogOpener<B extends Bloc<ImageProcessingEvent, ImageProcessingD
 }
 
 Future<bool?> _confirmDialogForImage(BuildContext context, Uint8List imageBytes) async {
+  const IMG_WIDTH = 150.0;
+  const IMG_HEIGHT = 200.0;
   Widget img = InkWell(
     onTap: () {
       MyNavigator.push(
@@ -58,7 +61,12 @@ Future<bool?> _confirmDialogForImage(BuildContext context, Uint8List imageBytes)
       );
     },
     // Width seems to prevent the dialog from expanding horizontaly
-    child: bytesImgWidget(imageBytes, height: 200, width: 150),
+    child: bytesImgWidget(
+      imageBytes,
+      width: IMG_WIDTH,
+      height: IMG_HEIGHT,
+      cacheSize: ImageCacheSize.constantWidthAndHeight(context, IMG_WIDTH, IMG_HEIGHT),
+    ),
   );
 
   Widget dialog = AlertDialog(

@@ -54,7 +54,9 @@ class _ViewImageScreenState extends State<ViewImageScreen> {
         imageOwner,
         imageId,
       ),
-      ViewImageBytesContent(:final imageBytes) => viewerForWidget(bytesImgWidget(imageBytes)),
+      ViewImageBytesContent(:final imageBytes) => viewerForWidget(
+        bytesImgWidget(imageBytes, cacheSize: ImageCacheSize.maxDisplaySize()),
+      ),
     };
 
     return Scaffold(
