@@ -1,4 +1,6 @@
 import 'package:app/data/utils/repository_instances.dart';
+import 'package:app/model/freezed/logic/main/bottom_navigation_state.dart';
+import 'package:app/model/freezed/logic/main/navigator_state.dart';
 
 sealed class MainState {}
 
@@ -32,24 +34,43 @@ class MsDemoAccount extends MainState {
   int get hashCode => runtimeType.hashCode;
 }
 
-class MsLoggedIn extends MainState {
+class MsLoggedInBasicScreen extends MainState {
   final RepositoryInstances repositories;
-  final LoggedInScreen screen;
-  MsLoggedIn(this.repositories, this.screen);
+  final LoggedInBasicScreen screen;
+  MsLoggedInBasicScreen(this.repositories, this.screen);
 
   @override
   bool operator ==(Object other) {
-    return (other is MsLoggedIn && repositories == other.repositories && screen == other.screen);
+    return (other is MsLoggedInBasicScreen &&
+        repositories == other.repositories &&
+        screen == other.screen);
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, repositories, screen);
 }
 
-enum LoggedInScreen {
-  initialSetup,
-  normal,
-  accountBanned,
-  pendingRemoval,
-  unsupportedClientVersion,
+enum LoggedInBasicScreen { initialSetup, accountBanned, pendingRemoval, unsupportedClientVersion }
+
+class MsLoggedInMainScreen extends MainState {
+  final RepositoryInstances repositories;
+  final AppLaunchNotification? notification;
+  MsLoggedInMainScreen(this.repositories, this.notification);
+
+  @override
+  bool operator ==(Object other) {
+    return (other is MsLoggedInMainScreen &&
+        repositories == other.repositories &&
+        notification == other.notification);
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, repositories, notification);
+}
+
+/// Use this state when creating main screen
+class AppLaunchNotification {
+  final NavigatorStateData navigatorState;
+  final BottomNavigationStateData bottomNavigationState;
+  AppLaunchNotification(this.navigatorState, this.bottomNavigationState);
 }

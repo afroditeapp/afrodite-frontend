@@ -1,4 +1,3 @@
-import 'package:app/data/general/notification/utils/notification_payload.dart';
 import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/logic/account/client_features_config.dart';
 import 'package:app/logic/account/custom_reports_config.dart';
@@ -14,13 +13,11 @@ import 'package:app/logic/server/maintenance.dart';
 import 'package:app/logic/settings/data_export.dart';
 import 'package:app/logic/sign_in_with.dart';
 import 'package:app/main.dart';
+import 'package:app/model/freezed/logic/main/bottom_navigation_state.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:logging/logging.dart';
-import 'package:app/data/login_repository.dart';
-import 'package:app/data/notification_manager.dart';
 import 'package:app/logic/account/account.dart';
 import 'package:app/logic/account/account_details.dart';
 import 'package:app/logic/account/initial_setup.dart';
@@ -55,10 +52,7 @@ import 'package:app/ui/login_new.dart';
 import 'package:app/ui/normal.dart';
 import 'package:app/ui/pending_deletion.dart';
 import 'package:app/ui/unsupported_client.dart';
-import 'package:app/ui/utils/notification_payload_handler.dart';
 import 'package:provider/provider.dart';
-
-final _log = Logger("MainStateUiLogic");
 
 class MainStateUiLogic extends StatelessWidget {
   const MainStateUiLogic({super.key});
@@ -67,26 +61,22 @@ class MainStateUiLogic extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<MainStateBloc, MainState>(
       builder: (context, state) {
-        if (state is! MsSplashScreen &&
-            !(state is MsLoggedIn && state.screen == LoggedInScreen.normal)) {
-          // Clear app launch notification payload when app
-          // does not start to main screen.
-          NotificationManager.getInstance().getAndRemoveAppLaunchNotificationPayload();
-        }
-
         return switch (state) {
           MsSplashScreen() => NavigatorSplashScreen(),
           MsLoginRequired() => NavigatorLoginScreen(),
           MsDemoAccount() => NavigatorDemoAccount(),
-          MsLoggedIn() => switch (state.screen) {
-            LoggedInScreen.initialSetup => NavigatorInitialSetup(r: state.repositories),
-            LoggedInScreen.normal => NavigatorNormal(r: state.repositories),
-            LoggedInScreen.accountBanned => NavigatorAccountBanned(r: state.repositories),
-            LoggedInScreen.pendingRemoval => NavigatorPendingRemoval(r: state.repositories),
-            LoggedInScreen.unsupportedClientVersion => NavigatorUnsupportedClient(
+          MsLoggedInBasicScreen() => switch (state.screen) {
+            LoggedInBasicScreen.initialSetup => NavigatorInitialSetup(r: state.repositories),
+            LoggedInBasicScreen.accountBanned => NavigatorAccountBanned(r: state.repositories),
+            LoggedInBasicScreen.pendingRemoval => NavigatorPendingRemoval(r: state.repositories),
+            LoggedInBasicScreen.unsupportedClientVersion => NavigatorUnsupportedClient(
               r: state.repositories,
             ),
           },
+          MsLoggedInMainScreen() => NavigatorNormal(
+            r: state.repositories,
+            notification: state.notification,
+          ),
         };
       },
     );
@@ -108,7 +98,7 @@ abstract class BasicRootScreen extends StatelessWidget {
       providers: [
         // Navigation
         BlocProvider(create: (_) => NavigatorStateBloc(blocInitialState)),
-        BlocProvider(create: (_) => BottomNavigationStateBloc()),
+        BlocProvider(create: (_) => BottomNavigationStateBloc(BottomNavigationStateData())),
       ],
       child: NavigationBlocUpdater(child: blocProvider(AppNavigator())),
     );
@@ -163,23 +153,26 @@ class NavigatorDemoAccount extends BasicRootScreen {
 
 abstract class LoggedInRootScreen extends StatelessWidget {
   final RepositoryInstances r;
-  const LoggedInRootScreen({required this.r, super.key});
+  final AppLaunchNotification? notification;
+  const LoggedInRootScreen({required this.r, this.notification, super.key});
 
   Widget rootScreen();
   Widget blocProvider(Widget child);
 
   @override
   Widget build(BuildContext context) {
-    final NavigatorStateData blocInitialState = NavigatorStateData.rootPage(
-      NewPageDetails(MaterialPage<void>(child: rootScreen())),
-    );
+    final NavigatorStateData navigatorInitialState =
+        notification?.navigatorState ??
+        NavigatorStateData.rootPage(NewPageDetails(MaterialPage<void>(child: rootScreen())));
+    final bottomNavigationInitialState =
+        notification?.bottomNavigationState ?? BottomNavigationStateData();
     return Provider<RepositoryInstances>(
       create: (_) => r,
       child: MultiBlocProvider(
         providers: [
           // Navigation
-          BlocProvider(create: (_) => NavigatorStateBloc(blocInitialState)),
-          BlocProvider(create: (_) => BottomNavigationStateBloc()),
+          BlocProvider(create: (_) => NavigatorStateBloc(navigatorInitialState)),
+          BlocProvider(create: (_) => BottomNavigationStateBloc(bottomNavigationInitialState)),
         ],
         child: NavigationBlocUpdater(child: blocProvider(AppNavigator())),
       ),
@@ -273,12 +266,13 @@ class NavigatorUnsupportedClient extends LoggedInRootScreen {
   }
 }
 
-class NavigatorNormal extends StatelessWidget {
-  final RepositoryInstances r;
-  const NavigatorNormal({required this.r, super.key});
+class NavigatorNormal extends LoggedInRootScreen {
+  const NavigatorNormal({required super.r, required super.notification, super.key});
 
+  @override
   Widget rootScreen() => NormalStateScreen();
 
+  @override
   Widget blocProvider(Widget child) {
     return MultiBlocProvider(
       providers: [
@@ -336,44 +330,6 @@ class NavigatorNormal extends StatelessWidget {
       child: child,
     );
   }
-
-  @override
-  Widget build(BuildContext context) {
-    final appLaunchPayload = NotificationManager.getInstance()
-        .getAndRemoveAppLaunchNotificationPayload();
-    final accountBackgroundDb =
-        LoginRepository.getInstance().repositoriesOrNull?.accountBackgroundDb;
-    final accountDb = LoginRepository.getInstance().repositoriesOrNull?.accountDb;
-
-    final NotificationActionHandlerObjects? notficationRelatedObjects;
-    final NewPageDetails rootPage = NewPageDetails(MaterialPage<void>(child: rootScreen()));
-    if (appLaunchPayload != null && accountBackgroundDb != null && accountDb != null) {
-      _log.info("Handling app launch notification payload");
-      notficationRelatedObjects = NotificationActionHandlerObjects(appLaunchPayload, r, rootPage);
-    } else {
-      notficationRelatedObjects = null;
-    }
-
-    final NavigatorStateData blocInitialState = NavigatorStateData.rootPage(rootPage);
-    return Provider<RepositoryInstances>(
-      create: (_) => r,
-      child: MultiBlocProvider(
-        providers: [
-          // Navigation
-          BlocProvider(create: (_) => NavigatorStateBloc(blocInitialState)),
-          BlocProvider(create: (_) => BottomNavigationStateBloc()),
-        ],
-        child: NavigationBlocUpdater(
-          child: blocProvider(
-            NotificationActionHandler(
-              notificationNavigation: notficationRelatedObjects,
-              child: AppNavigator(),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
 }
 
 class NavigationBlocUpdater extends StatelessWidget {
@@ -388,59 +344,6 @@ class NavigationBlocUpdater extends StatelessWidget {
     BottomNavigationStateBlocInstance.getInstance().setLatestBloc(bottomNavigatorStateBloc);
 
     return child;
-  }
-}
-
-class NotificationActionHandlerObjects {
-  final NotificationPayload payload;
-  final RepositoryInstances r;
-  final NewPageDetails rootPage;
-  NotificationActionHandlerObjects(this.payload, this.r, this.rootPage);
-}
-
-class NotificationActionHandler extends StatefulWidget {
-  const NotificationActionHandler({
-    required this.notificationNavigation,
-    required this.child,
-    super.key,
-  });
-  final NotificationActionHandlerObjects? notificationNavigation;
-  final Widget child;
-
-  @override
-  State<NotificationActionHandler> createState() => _NotificationActionHandlerState();
-}
-
-class _NotificationActionHandlerState extends State<NotificationActionHandler> {
-  bool navigationDone = false;
-
-  @override
-  Widget build(BuildContext context) {
-    final navigatorStateBloc = context.read<NavigatorStateBloc>();
-    final bottomNavigatorStateBloc = context.read<BottomNavigationStateBloc>();
-    final likeGridInstanceBloc = context.read<LikeGridInstanceManagerBloc>();
-
-    final notificationNavigation = widget.notificationNavigation;
-    if (notificationNavigation != null && !navigationDone) {
-      createHandlePayloadCallback(
-        context,
-        notificationNavigation.r,
-        navigatorStateBloc,
-        bottomNavigatorStateBloc,
-        likeGridInstanceBloc,
-        showError: false,
-        navigateToAction: (bloc, page) {
-          final pages = [notificationNavigation.rootPage];
-          if (page != null) {
-            pages.add(page);
-          }
-          bloc.replaceAllWith(pages, disableAnimation: true);
-        },
-      )(notificationNavigation.payload);
-      navigationDone = true;
-    }
-
-    return widget.child;
   }
 }
 

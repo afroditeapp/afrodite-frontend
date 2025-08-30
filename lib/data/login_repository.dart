@@ -83,7 +83,8 @@ class LoginRepository extends AppSingleton {
 
   final RepositoryStateStreams _repositoryStateStreams = RepositoryStateStreams();
   Stream<AccountStateStreamValue> get accountState => _repositoryStateStreams.accountState;
-  Stream<bool> get initialSetupSkipped => _repositoryStateStreams.initialSetupSkipped;
+  Stream<InitialSetupSkippedStreamValue> get initialSetupSkipped =>
+      _repositoryStateStreams.initialSetupSkipped;
 
   final BehaviorSubject<LoginState> _loginState = BehaviorSubject.seeded(LsSplashScreen());
   final BehaviorSubject<bool> _loginInProgress = BehaviorSubject.seeded(false);
@@ -491,9 +492,10 @@ class RepositoryStateStreams {
   StreamSubscription<AccountState?>? _accountStateSubscription;
   Stream<AccountStateStreamValue> get accountState => _accountState;
 
-  final BehaviorSubject<bool> _initialSetupSkipped = BehaviorSubject.seeded(false);
+  final BehaviorSubject<InitialSetupSkippedStreamValue> _initialSetupSkipped =
+      BehaviorSubject.seeded(InitialSetupSkippedLoading());
   StreamSubscription<bool>? _initialSetupSkippedSubscription;
-  Stream<bool> get initialSetupSkipped => _initialSetupSkipped;
+  Stream<InitialSetupSkippedStreamValue> get initialSetupSkipped => _initialSetupSkipped;
 
   final BehaviorSubject<ServerConnectionStateStreamValue> _serverConnectionManagerStateEvents =
       BehaviorSubject.seeded(ServerConnectionStateLoading());
@@ -520,7 +522,7 @@ class RepositoryStateStreams {
         .accountStream((db) => db.app.watchInitialSetupSkipped())
         .map((v) => v ?? false)
         .listen((v) {
-          _initialSetupSkipped.add(v);
+          _initialSetupSkipped.add(InitialSetupSkippedExists(v));
         });
 
     await _serverConnectionManagerStateEventsSubscription?.cancel();
@@ -534,7 +536,7 @@ class RepositoryStateStreams {
     _accountState.add(AccountStateLoading());
 
     await _initialSetupSkippedSubscription?.cancel();
-    _initialSetupSkipped.add(false);
+    _initialSetupSkipped.add(InitialSetupSkippedLoading());
 
     await _serverConnectionManagerStateEventsSubscription?.cancel();
     _serverConnectionManagerStateEvents.add(ServerConnectionStateLoading());
@@ -564,6 +566,25 @@ class AccountStateExists extends AccountStateStreamValue {
   @override
   String toString() {
     return "Exists($state)";
+  }
+}
+
+sealed class InitialSetupSkippedStreamValue {}
+
+class InitialSetupSkippedLoading extends InitialSetupSkippedStreamValue {
+  @override
+  String toString() {
+    return "InitialSetupSkippedLoading";
+  }
+}
+
+class InitialSetupSkippedExists extends InitialSetupSkippedStreamValue {
+  final bool value;
+  InitialSetupSkippedExists(this.value);
+
+  @override
+  String toString() {
+    return "InitalSetupSkipped($value)";
   }
 }
 

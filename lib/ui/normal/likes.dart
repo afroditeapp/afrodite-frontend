@@ -83,14 +83,36 @@ class _LikeViewState extends State<LikeView> {
   }
 }
 
-NewPageDetails newLikesScreen(LikeGridInstanceManagerBloc likeGridInstanceManagerBloc) {
-  final newGridId = likeGridInstanceManagerBloc.newId();
+NewPageDetails newLikesScreen() {
   return NewPageDetails(
-    MaterialPage<void>(
-      child: LikesScreen(gridInstanceId: newGridId, bloc: likeGridInstanceManagerBloc),
-    ),
+    MaterialPage<void>(child: LikeScreenWithoutBlocDependency()),
     pageInfo: const LikesPageInfo(),
   );
+}
+
+class LikeScreenWithoutBlocDependency extends StatefulWidget {
+  const LikeScreenWithoutBlocDependency({super.key});
+
+  @override
+  State<LikeScreenWithoutBlocDependency> createState() => _LikeScreenWithoutBlocDependencyState();
+}
+
+class _LikeScreenWithoutBlocDependencyState extends State<LikeScreenWithoutBlocDependency> {
+  int? gridInstanceId;
+
+  @override
+  Widget build(BuildContext context) {
+    final bloc = context.read<LikeGridInstanceManagerBloc>();
+    final currentId = gridInstanceId;
+    final int id;
+    if (currentId == null) {
+      id = bloc.newId();
+      gridInstanceId = id;
+    } else {
+      id = currentId;
+    }
+    return LikesScreen(gridInstanceId: id, bloc: bloc);
+  }
 }
 
 class LikesScreen extends StatefulWidget {

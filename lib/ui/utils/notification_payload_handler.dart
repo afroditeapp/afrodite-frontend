@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:app/data/utils/repository_instances.dart';
+import 'package:app/model/freezed/logic/main/bottom_navigation_state.dart';
+import 'package:app/ui/normal.dart';
 import 'package:app/ui/normal/settings/admin/moderator_tasks.dart';
 import 'package:app/ui/normal/settings/my_profile.dart';
 import 'package:app/ui/normal/settings/news/news_list.dart';
@@ -9,10 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
 import 'package:app/data/general/notification/utils/notification_payload.dart';
-import 'package:app/database/background_database_manager.dart';
 import 'package:app/localizations.dart';
 import 'package:app/logic/app/bottom_navigation_state.dart';
-import 'package:app/logic/app/like_grid_instance_manager.dart';
 import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/logic/app/notification_payload_handler.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
@@ -22,6 +22,7 @@ import 'package:app/ui/normal/likes.dart';
 import 'package:app/ui/normal/settings/media/content_management.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/result.dart';
+import "package:app/logic/app/main_state_types.dart";
 
 final _log = Logger("NotificationPayloadHandler");
 
@@ -33,29 +34,20 @@ class NotificationPayloadHandler extends StatefulWidget {
 }
 
 class _NotificationPayloadHandlerState extends State<NotificationPayloadHandler> {
+  NotificationPayload? previous;
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<NotificationPayloadHandlerBloc, NotificationPayloadHandlerData>(
-      buildWhen: (previous, current) => previous.toBeHandled != current.toBeHandled,
       builder: (context, state) {
         final payload = state.toBeHandled.firstOrNull;
-        if (payload != null) {
-          final bloc = context.read<NotificationPayloadHandlerBloc>();
+        if (payload != null && (previous == null || previous != payload)) {
+          previous = payload;
+          context.read<NotificationPayloadHandlerBloc>().add(HandleFirstPayload(payload));
+          final r = context.read<RepositoryInstances>();
           final navigatorStateBloc = context.read<NavigatorStateBloc>();
           final bottomNavigationStateBloc = context.read<BottomNavigationStateBloc>();
-          final likeGridInstanceBloc = context.read<LikeGridInstanceManagerBloc>();
-          bloc.add(
-            HandleFirstPayload(
-              createHandlePayloadCallback(
-                context,
-                bloc.r,
-                navigatorStateBloc,
-                bottomNavigationStateBloc,
-                likeGridInstanceBloc,
-                showError: true,
-              ),
-            ),
-          );
+          _handlePayloadRunningApp(payload, r, navigatorStateBloc, bottomNavigationStateBloc);
         }
 
         return const SizedBox.shrink();
@@ -64,54 +56,43 @@ class _NotificationPayloadHandlerState extends State<NotificationPayloadHandler>
   }
 }
 
-Future<void> Function(NotificationPayload) createHandlePayloadCallback(
-  BuildContext context,
-  RepositoryInstances r,
-  NavigatorStateBloc navigatorStateBloc,
-  BottomNavigationStateBloc bottomNavigatorStateBloc,
-  LikeGridInstanceManagerBloc likeGridInstanceBloc, {
-  required bool showError,
-  void Function(NavigatorStateBloc, NewPageDetails?) navigateToAction = defaultNavigateToAction,
-}) {
-  return (payload) async {
-    final newPage = await handlePayload(
-      payload,
-      r,
-      navigatorStateBloc,
-      bottomNavigatorStateBloc,
-      likeGridInstanceBloc,
-      showError: showError,
-    );
-    navigateToAction(navigatorStateBloc, newPage);
-  };
-}
-
-void defaultNavigateToAction(NavigatorStateBloc bloc, NewPageDetails? newPage) {
-  if (newPage == null) {
-    return;
-  }
-  bloc.pushWithKey(newPage.page, newPage.pageKey ?? PageKey(), pageInfo: newPage.pageInfo);
-}
-
-Future<NewPageDetails?> handlePayload(
+void _handlePayloadRunningApp(
   NotificationPayload payload,
   RepositoryInstances r,
   NavigatorStateBloc navigatorStateBloc,
-  BottomNavigationStateBloc bottomNavigationStateBloc,
-  LikeGridInstanceManagerBloc likeGridInstanceManagerBloc, {
+  BottomNavigationStateBloc bottomNavigatorStateBloc,
+) async {
+  final action = await _handlePayload(payload, r, navigatorStateBloc.state, showError: true);
+
+  switch (action) {
+    case DoNothing():
+      ();
+    case NewScreen():
+      final newPage = action.screen;
+      await navigatorStateBloc.pushWithKey(
+        newPage.page,
+        newPage.pageKey ?? PageKey(),
+        pageInfo: newPage.pageInfo,
+      );
+    case BottomNavigationChange():
+      bottomNavigatorStateBloc.add(ChangeScreen(action.screen));
+  }
+}
+
+Future<NotificationNavigationAction> _handlePayload(
+  NotificationPayload payload,
+  RepositoryInstances r,
+  NavigatorStateData navigatorState, {
   required bool showError,
 }) async {
-  final currentAccountId = await BackgroundDatabaseManager.getInstance().commonStreamSingle(
-    (db) => db.loginSession.watchAccountId(),
-  );
-  if (currentAccountId == null || currentAccountId != payload.receiverAccountId) {
+  if (r.accountId != payload.receiverAccountId) {
     _log.warning(
       "Notification payload receiver account ID does not match current session account ID",
     );
     if (showError) {
       showSnackBar(R.strings.notification_action_ignored);
     }
-    return null;
+    return DoNothing();
   }
 
   switch (payload) {
@@ -122,58 +103,102 @@ Future<NewPageDetails?> handlePayload(
           )
           .ok();
       if (accountId == null) {
-        return null;
+        return DoNothing();
       }
 
       final profile = await r.accountDb
           .accountData((db) => db.profile.getProfileEntry(accountId))
           .ok();
       if (profile == null) {
-        return null;
+        return DoNothing();
       }
 
-      final lastPage = NavigationStateBlocInstance.getInstance().navigationState.pages.lastOrNull;
+      final lastPage = navigatorState.pages.lastOrNull;
       final info = lastPage?.pageInfo;
       final correctConversatinoAlreadyOpen =
           info is ConversationPageInfo && info.accountId == profile.accountId;
       if (!correctConversatinoAlreadyOpen) {
-        return newConversationPage(profile);
+        return NewScreen(newConversationPage(profile));
+      } else {
+        return DoNothing();
       }
     case NavigateToConversationList():
-      if (navigatorStateBloc.state.pages.length == 1) {
-        bottomNavigationStateBloc.add(ChangeScreen(BottomNavigationScreenId.chats));
+      if (navigatorState.pages.length == 1) {
+        return BottomNavigationChange(BottomNavigationScreenId.chats);
       } else {
-        // This action only happens using push notifications so extra screen is
-        // not needed.
+        // This action is for fallback conversation notification so
+        // it is not worth to implement a separate screen for conversations.
+        return DoNothing();
       }
     case NavigateToLikes():
-      if (navigatorStateBloc.state.pages.length == 1) {
-        bottomNavigationStateBloc.add(ChangeScreen(BottomNavigationScreenId.likes));
+      if (navigatorState.pages.length == 1) {
+        return BottomNavigationChange(BottomNavigationScreenId.likes);
       } else {
-        return newLikesScreen(likeGridInstanceManagerBloc);
+        return NewScreen(newLikesScreen());
       }
     case NavigateToNews():
-      return NewPageDetails(const MaterialPage<void>(child: NewsListScreenOpener()));
+      return NewScreen(NewPageDetails(const MaterialPage<void>(child: NewsListScreenOpener())));
     case NavigateToContentManagement():
-      final currentPageInfo =
-          NavigationStateBlocInstance.getInstance().navigationState.pages.lastOrNull?.pageInfo;
+      final currentPageInfo = navigatorState.pages.lastOrNull?.pageInfo;
       if (currentPageInfo is! ContentManagementPageInfo) {
-        return newContentManagementScreen();
+        return NewScreen(newContentManagementScreen());
+      } else {
+        return DoNothing();
       }
     case NavigateToMyProfile():
-      final currentPageInfo =
-          NavigationStateBlocInstance.getInstance().navigationState.pages.lastOrNull?.pageInfo;
+      final currentPageInfo = navigatorState.pages.lastOrNull?.pageInfo;
       if (currentPageInfo is! MyProfilePageInfo) {
-        return newMyProfileScreen();
+        return NewScreen(newMyProfileScreen());
+      } else {
+        return DoNothing();
       }
     case NavigateToAutomaticProfileSearchResults():
-      final currentPageInfo =
-          NavigationStateBlocInstance.getInstance().navigationState.pages.lastOrNull?.pageInfo;
+      final currentPageInfo = navigatorState.pages.lastOrNull?.pageInfo;
       if (currentPageInfo is! AutomaticProfileSearchResultsPageInfo) {
-        return newAutomaticProfileSearchResultsScreen();
+        return NewScreen(newAutomaticProfileSearchResultsScreen());
+      } else {
+        return DoNothing();
       }
     case NavigateToModeratorTasks():
-      return newModeratorTasksScreen(r);
+      return NewScreen(newModeratorTasksScreen(r));
   }
-  return null;
+}
+
+Future<AppLaunchNotification?> handleAppLaunchNotificationPayload(
+  NotificationPayload payload,
+  RepositoryInstances r,
+) async {
+  final rootScreen = NewPageDetails(MaterialPage<void>(child: NormalStateScreen()));
+  final navigationState = NavigatorStateData.rootPage(rootScreen);
+
+  final action = await _handlePayload(payload, r, navigationState, showError: false);
+
+  switch (action) {
+    case DoNothing():
+      return null;
+    case NewScreen():
+      return AppLaunchNotification(
+        NavigatorStateData.rootPageAndOtherPage(rootScreen, action.screen),
+        BottomNavigationStateData(),
+      );
+    case BottomNavigationChange():
+      return AppLaunchNotification(
+        navigationState,
+        BottomNavigationStateData(screen: action.screen),
+      );
+  }
+}
+
+sealed class NotificationNavigationAction {}
+
+class DoNothing extends NotificationNavigationAction {}
+
+class NewScreen extends NotificationNavigationAction {
+  final NewPageDetails screen;
+  NewScreen(this.screen);
+}
+
+class BottomNavigationChange extends NotificationNavigationAction {
+  final BottomNavigationScreenId screen;
+  BottomNavigationChange(this.screen);
 }

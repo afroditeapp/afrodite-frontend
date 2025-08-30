@@ -9,17 +9,9 @@ import "package:app/utils/immutable_list.dart";
 
 abstract class NotificationPayloadHandlerEvent {}
 
-/// UI navigation payloads require access to Blocs through BuildContext.
-/// To avoid making more Blocs global, UI side creates a callback which handles
-/// the payloads. It is assumed that the callback always succeeds, so make
-/// sure that there will not be errors. The payload is removed from the queue
-/// after the callback completes.
-///
-/// The handling is implemented like this to avoid handling payloads more than
-/// once.
 class HandleFirstPayload extends NotificationPayloadHandlerEvent {
-  final Future<void> Function(NotificationPayload) handlePayloadCallback;
-  HandleFirstPayload(this.handlePayloadCallback);
+  final NotificationPayload firstPayload;
+  HandleFirstPayload(this.firstPayload);
 }
 
 class AddNewPayload extends NotificationPayloadHandlerEvent {
@@ -33,24 +25,15 @@ class NotificationPayloadHandlerBloc
   StreamSubscription<NotificationPayload>? _payloadSubscription;
 
   NotificationPayloadHandlerBloc(this.r) : super(NotificationPayloadHandlerData()) {
-    on<HandleFirstPayload>((data, emit) async {
-      NotificationPayload? firstPayload;
-      final List<NotificationPayload> otherPayloads = [];
-      for (final payload in state.toBeHandled) {
-        if (firstPayload == null) {
-          firstPayload = payload;
-        } else {
-          otherPayloads.add(payload);
-        }
+    on<HandleFirstPayload>((data, emit) {
+      final currentList = state.toBeHandled;
+      final currentFirst = currentList.firstOrNull;
+      if (currentFirst == null || data.firstPayload != currentFirst) {
+        return;
       }
-
-      if (firstPayload != null) {
-        await data.handlePayloadCallback(firstPayload);
-      }
-
-      emit(state.copyWith(toBeHandled: UnmodifiableList(otherPayloads)));
+      emit(state.copyWith(toBeHandled: UnmodifiableList(currentList.skip(1).toList())));
     });
-    on<AddNewPayload>((data, emit) async {
+    on<AddNewPayload>((data, emit) {
       emit(state.copyWith(toBeHandled: state.toBeHandled.add(data.payload)));
     });
 

@@ -27,7 +27,7 @@ class SetIsTappedAgainValue extends BottomNavigationStateEvent {
 
 class BottomNavigationStateBloc
     extends Bloc<BottomNavigationStateEvent, BottomNavigationStateData> {
-  BottomNavigationStateBloc() : super(BottomNavigationStateData()) {
+  BottomNavigationStateBloc(super.initialState) {
     on<ChangeScreen>((data, emit) {
       final accountBackgroundDb =
           LoginRepository.getInstance().repositoriesOrNull?.accountBackgroundDb;
@@ -116,8 +116,9 @@ class BottomNavigationStateBlocInstance extends AppSingletonNoInit {
     return _instance;
   }
 
+  // TODO(quality): The initial bloc is not disposed
   final BehaviorSubject<BottomNavigationStateBloc> _latestBloc = BehaviorSubject.seeded(
-    BottomNavigationStateBloc(),
+    BottomNavigationStateBloc(BottomNavigationStateData()),
   );
 
   Stream<BottomNavigationStateData> get navigationStateStream =>

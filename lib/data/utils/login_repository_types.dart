@@ -41,7 +41,8 @@ class LsLoggedIn extends LoginState {
 
   LsLoggedIn(this.repositories, {this.unsupportedClientVersion = false});
 
-  MsLoggedIn toMainState(LoggedInScreen screen) => MsLoggedIn(repositories, screen);
+  MsLoggedInBasicScreen toMainState(LoggedInBasicScreen screen) =>
+      MsLoggedInBasicScreen(repositories, screen);
 
   @override
   bool operator ==(Object other) {

@@ -36,7 +36,25 @@ class NavigatorStateData with _$NavigatorStateData {
           newPageDetails.pageInfo,
         ),
       ]),
-      disableAnimation: false,
+    );
+  }
+
+  static NavigatorStateData rootPageAndOtherPage(NewPageDetails first, NewPageDetails second) {
+    return NavigatorStateData(
+      pages: UnmodifiableList([
+        PageAndChannel(
+          first.pageKey ?? PageKey(),
+          first.page,
+          BehaviorSubject.seeded(const WaitingPagePop()),
+          first.pageInfo,
+        ),
+        PageAndChannel(
+          second.pageKey ?? PageKey(),
+          second.page,
+          BehaviorSubject.seeded(const WaitingPagePop()),
+          second.pageInfo,
+        ),
+      ]),
     );
   }
 }
