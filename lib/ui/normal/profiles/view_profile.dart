@@ -22,9 +22,6 @@ import 'package:app/ui_utils/app_bar/menu_actions.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 
-// TODO(refactor): Consider making ApiManager available using
-//                 context.read<ApiManager>().
-
 Future<void> openProfileView(
   BuildContext context,
   ProfileEntry profile,

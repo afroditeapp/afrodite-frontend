@@ -135,5 +135,3 @@ class CommonRepository extends DataRepositoryWithLifecycle {
     await PushNotificationManager.getInstance().logoutPushNotifications();
   }
 }
-
-// TODO(prod): Fix onLogout to run when token invalidation is detected
