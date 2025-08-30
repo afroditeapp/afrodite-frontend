@@ -202,6 +202,19 @@ class DaoReadProfile extends DatabaseAccessor<AccountForegroundDatabase>
     return r != null;
   }
 
+  Stream<bool> isInMatchesStream(api.AccountId accountId) =>
+      _existenceCheckStream(accountId, (t) => t.isInMatches.isNotNull());
+
+  Stream<bool> _existenceCheckStream(
+    api.AccountId accountId,
+    Expression<bool> Function($ProfileStatesTable) additionalCheck,
+  ) {
+    return (select(profileStates)
+          ..where((t) => Expression.and([t.accountId.equals(accountId.aid), additionalCheck(t)])))
+        .watchSingleOrNull()
+        .map((v) => v != null);
+  }
+
   Stream<bool> watchFavoriteProfileStatus(api.AccountId accountId) {
     return (select(
       favoriteProfiles,

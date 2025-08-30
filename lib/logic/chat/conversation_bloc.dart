@@ -38,6 +38,11 @@ class HandleProfileChange extends ConversationEvent {
   HandleProfileChange(this.change);
 }
 
+class UpdateIsInMatches extends ConversationEvent {
+  final bool value;
+  UpdateIsInMatches(this.value);
+}
+
 class MessageCountChanged extends ConversationEvent {
   final int newMessageCount;
   final ConversationChangeType? changeInfo;
@@ -72,7 +77,7 @@ class RetryPublicKeyDownload extends ConversationEvent {
 }
 
 abstract class ConversationDataProvider {
-  Future<bool> isInMatches(AccountId accountId);
+  Stream<bool> isInMatchesStream(AccountId accountId);
   Future<bool> isInSentBlocks(AccountId accountId);
   Future<bool> sendBlockTo(AccountId accountId);
   Stream<MessageSendingEvent> sendMessageTo(AccountId accountId, Message message);
@@ -96,7 +101,7 @@ class DefaultConversationDataProvider extends ConversationDataProvider {
   DefaultConversationDataProvider(this.chat);
 
   @override
-  Future<bool> isInMatches(AccountId accountId) => chat.isInMatches(accountId);
+  Stream<bool> isInMatchesStream(AccountId accountId) => chat.isInMatchesStream(accountId);
 
   @override
   Future<bool> isInSentBlocks(AccountId accountId) => chat.isInSentBlocks(accountId);
@@ -177,6 +182,7 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
 
   StreamSubscription<(int, ConversationChanged?)>? _messageCountSubscription;
   StreamSubscription<ProfileChange>? _profileChangeSubscription;
+  StreamSubscription<bool>? _isInMatchesSubscription;
 
   final BehaviorSubject<bool> _renderingSynchronizer = BehaviorSubject<bool>.seeded(false);
 
@@ -186,12 +192,11 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
     on<InitEvent>((data, emit) async {
       _log.info("Set conversation bloc initial state");
 
-      final isMatch = await dataProvider.isInMatches(state.accountId);
       final isBlocked = await dataProvider.isInSentBlocks(state.accountId);
 
       await profile.resetUnreadMessagesCount(state.accountId);
 
-      emit(state.copyWith(isMatch: isMatch, isBlocked: isBlocked));
+      emit(state.copyWith(isBlocked: isBlocked));
     });
     on<HandleProfileChange>((data, emit) async {
       final change = data.change;
@@ -209,6 +214,9 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
             ProfileFavoriteStatusChange():
           {}
       }
+    });
+    on<UpdateIsInMatches>((data, emit) {
+      emit(state.copyWith(isMatch: data.value));
     });
     on<BlockProfile>((data, emit) async {
       await runOnce(() async {
@@ -242,8 +250,7 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
         }
       }
 
-      final isMatch = await dataProvider.isInMatches(state.accountId);
-      emit(state.copyWith(isMessageSendingInProgress: false, isMatch: isMatch));
+      emit(state.copyWith(isMessageSendingInProgress: false));
     }, transformer: sequential());
     on<RemoveSendFailedMessage>((data, emit) async {
       emit(state.copyWith(isMessageRemovingInProgress: true));
@@ -326,12 +333,6 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
               null,
               data.changeInfo == ConversationChangeType.messageResent,
             ),
-            // Fix issue where app is opened from push notification to
-            // conversation screen and the first message is received.
-            // The conversation screen would only displays
-            // context.strings.conversation_screen_make_match_instruction
-            // without updating isMatch.
-            isMatch: await dataProvider.isInMatches(state.accountId),
           ),
         );
         if (visibleMessages == null) {
@@ -402,6 +403,10 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
       add(MessageCountChanged(newMessageCount, event?.change));
     });
 
+    _isInMatchesSubscription = dataProvider.isInMatchesStream(state.accountId).listen((value) {
+      add(UpdateIsInMatches(value));
+    });
+
     add(InitEvent());
   }
 
@@ -409,6 +414,7 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
   Future<void> close() async {
     await _messageCountSubscription?.cancel();
     await _profileChangeSubscription?.cancel();
+    await _isInMatchesSubscription?.cancel();
     return super.close();
   }
 }

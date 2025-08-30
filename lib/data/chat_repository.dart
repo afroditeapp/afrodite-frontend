@@ -151,6 +151,10 @@ class ChatRepository extends DataRepositoryWithLifecycle {
         false;
   }
 
+  Stream<bool> isInMatchesStream(AccountId accountId) {
+    return db.accountStreamOrDefault((db) => db.profile.isInMatchesStream(accountId), false);
+  }
+
   Future<void> _updateAccountInteractionState(
     AccountId accountId,
     CurrentAccountInteractionState state,

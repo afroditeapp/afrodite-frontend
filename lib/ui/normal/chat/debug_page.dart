@@ -53,7 +53,7 @@ class DebugConversationDataProvider extends ConversationDataProvider {
   BehaviorSubject<(int, ConversationChanged?)> chatUpdates = BehaviorSubject();
 
   @override
-  Future<bool> isInMatches(AccountId accountId) async => false;
+  Stream<bool> isInMatchesStream(AccountId accountId) => Stream.value(false);
 
   @override
   Future<bool> isInSentBlocks(AccountId accountId) async => false;
