@@ -1,7 +1,10 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:app/api/server_connection_manager.dart';
+import 'package:app/data/profile_repository.dart';
 import 'package:app/data/utils/repository_instances.dart';
+import 'package:async/async.dart';
 import 'package:flutter/material.dart';
 import 'package:openapi/api.dart';
 import 'package:app/data/general/notification/state/like_received.dart';
@@ -13,11 +16,15 @@ import 'package:app/ui/normal/settings.dart';
 import 'package:app/utils/result.dart';
 
 class DebugSettingsPage extends StatefulWidget {
+  final ApiManager api;
+  final ProfileRepository profile;
   final AccountBackgroundDatabaseManager accountBackgroundDb;
   final AccountDatabaseManager accountDb;
 
   DebugSettingsPage(RepositoryInstances r, {super.key})
-    : accountBackgroundDb = r.accountBackgroundDb,
+    : api = r.api,
+      profile = r.profile,
+      accountBackgroundDb = r.accountBackgroundDb,
       accountDb = r.accountDb;
 
   @override
@@ -66,21 +73,7 @@ class _DebugSettingsPageState extends State<DebugSettingsPage> {
       Setting.createSetting(
         Icons.notification_add,
         "Notification: New message (first chat)",
-        () async {
-          final matchList = await widget.accountDb
-              .accountData((db) => db.conversationList.getConversationListNoBlocked(0, 1))
-              .ok();
-          final match = matchList?.firstOrNull;
-          if (match == null) {
-            return;
-          }
-          await NotificationMessageReceived.getInstance().updateMessageReceivedCount(
-            match,
-            1,
-            null,
-            widget.accountBackgroundDb,
-          );
-        },
+        () => showConversationNotifications(take: 1),
       ),
     );
 
@@ -88,21 +81,7 @@ class _DebugSettingsPageState extends State<DebugSettingsPage> {
       Setting.createSetting(
         Icons.notification_add,
         "Notification: New message (second chat)",
-        () async {
-          final matchList = await widget.accountDb
-              .accountData((db) => db.conversationList.getConversationListNoBlocked(0, 2))
-              .ok();
-          final match = matchList?.lastOrNull;
-          if (match == null) {
-            return;
-          }
-          await NotificationMessageReceived.getInstance().updateMessageReceivedCount(
-            match,
-            1,
-            null,
-            widget.accountBackgroundDb,
-          );
-        },
+        () => showConversationNotifications(skip: 1, take: 1),
       ),
     );
 
@@ -110,21 +89,7 @@ class _DebugSettingsPageState extends State<DebugSettingsPage> {
       Setting.createSetting(
         Icons.notification_add,
         "Notification: New message (chats 1-5)",
-        () async {
-          final List<AccountId> matchList =
-              await widget.accountDb
-                  .accountData((db) => db.conversationList.getConversationListNoBlocked(0, 5))
-                  .ok() ??
-              [];
-          for (final match in matchList) {
-            await NotificationMessageReceived.getInstance().updateMessageReceivedCount(
-              match,
-              1,
-              null,
-              widget.accountBackgroundDb,
-            );
-          }
-        },
+        () => showConversationNotifications(take: 5),
       ),
     );
 
@@ -147,6 +112,31 @@ class _DebugSettingsPageState extends State<DebugSettingsPage> {
     return SingleChildScrollView(
       child: Column(children: [...settings.map((setting) => setting.toListTile()), ...checkboxes]),
     );
+  }
+
+  Future<void> showConversationNotifications({int skip = 0, required int take}) async {
+    final List<AccountId> matchList =
+        await widget.profile.getConversationListUpdates().firstOrNull ?? [];
+    final match = matchList.firstOrNull;
+    if (match == null) {
+      return;
+    }
+
+    for (final a in matchList.skip(skip).take(take)) {
+      ConversationId? conversationId = await widget.accountBackgroundDb
+          .accountData((db) => db.notification.getConversationId(a))
+          .ok();
+      if (conversationId == null) {
+        final r = await widget.api.chat((api) => api.getConversationId(a.aid)).ok();
+        conversationId = r?.value;
+      }
+      await NotificationMessageReceived.getInstance().updateMessageReceivedCount(
+        a,
+        1,
+        conversationId,
+        widget.accountBackgroundDb,
+      );
+    }
   }
 }
 
