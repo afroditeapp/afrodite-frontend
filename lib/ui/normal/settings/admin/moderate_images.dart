@@ -16,6 +16,7 @@ class ModerateImagesScreen extends ContentDecicionScreen<WrappedMediaContentPend
   final ModerationQueueType queueType;
   final bool showContentWhichBotsCanModerate;
   ModerateImagesScreen({
+    required super.api,
     required this.queueType,
     required this.showContentWhichBotsCanModerate,
     super.key,
@@ -145,6 +146,7 @@ class MediaContentUiBuilder extends ContentUiBuilder<WrappedMediaContentPendingM
         );
       },
       child: accountImgWidget(
+        context,
         imageOwner,
         image,
         width: width,

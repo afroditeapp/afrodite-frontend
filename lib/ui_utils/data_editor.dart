@@ -6,7 +6,6 @@ import 'package:app/ui_utils/consts/padding.dart';
 import 'package:app/ui_utils/data_editor/base.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:app/data/login_repository.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/result.dart';
 
@@ -65,10 +64,12 @@ abstract class EditDataApi<T extends DataManager> {
 }
 
 class EditDataScreen<T extends DataManager> extends StatefulWidget {
+  final ApiManager api;
   final PageKey pageKey;
   final String title;
   final EditDataApi<T> dataApi;
   const EditDataScreen({
+    required this.api,
     required this.pageKey,
     required this.title,
     required this.dataApi,
@@ -80,8 +81,6 @@ class EditDataScreen<T extends DataManager> extends StatefulWidget {
 }
 
 class _EditDataScreenState extends State<EditDataScreen> {
-  final api = LoginRepository.getInstance().repositories.api;
-
   DataManager dataManager = EmptyDataManager();
   bool isLoading = true;
   bool isError = false;
@@ -89,7 +88,7 @@ class _EditDataScreenState extends State<EditDataScreen> {
   late final RefreshUiAction action;
 
   Future<void> _getData() async {
-    final result = await widget.dataApi.load(api).ok();
+    final result = await widget.dataApi.load(widget.api).ok();
 
     if (!context.mounted) {
       return;
@@ -112,7 +111,7 @@ class _EditDataScreenState extends State<EditDataScreen> {
   }
 
   Future<void> saveData() async {
-    final result = await widget.dataApi.save(api, dataManager);
+    final result = await widget.dataApi.save(widget.api, dataManager);
     if (result case Err()) {
       showSnackBar("Error: ${result.e}");
     }

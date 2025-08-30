@@ -1,8 +1,8 @@
 import "dart:collection";
 
+import "package:app/api/server_connection_manager.dart";
 import 'package:async/async.dart' show StreamExtensions;
 
-import "package:app/data/login_repository.dart";
 import "package:app/utils/result.dart";
 import "package:rxdart/rxdart.dart";
 
@@ -43,7 +43,7 @@ class ContentRow<C> implements RowState<C> {
 }
 
 class ContentDecicionStreamLogic<C> {
-  final api = LoginRepository.getInstance().repositories.api;
+  final ApiManager api;
 
   final BehaviorSubject<ContentDecicionStreamStatus> _moderationStatus = BehaviorSubject.seeded(
     ContentDecicionStreamStatus.loading,
@@ -51,18 +51,18 @@ class ContentDecicionStreamLogic<C> {
 
   final ContentIo<C> io;
 
-  var cacher = ModerationCacher<C>();
+  ModerationCacher<C> cacher;
   var showTextsWhichBotsCanModerate = false;
   var loadManager = LoadMoreManager<C>();
 
   Stream<ContentDecicionStreamStatus> get moderationStatus => _moderationStatus.stream;
 
-  ContentDecicionStreamLogic(this.io);
+  ContentDecicionStreamLogic(this.api, this.io) : cacher = ModerationCacher<C>(api);
 
   void reset() {
     _moderationStatus.add(ContentDecicionStreamStatus.loading);
     loadManager = LoadMoreManager();
-    cacher = ModerationCacher();
+    cacher = ModerationCacher(api);
     cacher.getMoreModerationRequests(io).then((value) {
       final firstState = value.firstOrNull;
       if (firstState == null || firstState is AllModerated) {
@@ -158,7 +158,9 @@ class LoadMoreManager<C> {
 
 class ModerationCacher<C> {
   final HashSet<C> alreadyStoredContent = HashSet();
-  final api = LoginRepository.getInstance().repositories.api;
+  final ApiManager api;
+
+  ModerationCacher(this.api);
 
   /// Return only new RowState
   Future<List<RowState<C>>> getMoreModerationRequests(ContentIo<C> io) async {

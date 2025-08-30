@@ -1,4 +1,4 @@
-import 'package:app/data/login_repository.dart';
+import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/localizations.dart';
 import 'package:app/logic/account/custom_reports_config.dart';
 import 'package:app/logic/app/navigator_state.dart';
@@ -16,7 +16,7 @@ import 'package:openapi/api.dart';
 Widget showReportAction(BuildContext context, ProfileEntry profile) {
   return MenuItemButton(
     onPressed: () async {
-      final chat = LoginRepository.getInstance().repositories.chat;
+      final chat = context.read<RepositoryInstances>().chat;
       final isMatch = await chat.isInMatches(profile.accountId);
       final messages = await chat.getAllMessages(profile.accountId);
       if (!context.mounted) {
@@ -49,10 +49,6 @@ class ReportScreen extends StatefulWidget {
 }
 
 class _ReportScreenState extends State<ReportScreen> {
-  final api = LoginRepository.getInstance().repositories.api;
-  final profile = LoginRepository.getInstance().repositories.profile;
-  final chat = LoginRepository.getInstance().repositories.chat;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,6 +71,8 @@ class _ReportScreenState extends State<ReportScreen> {
   List<Widget> reportList(BuildContext context, CustomReportsConfig config) {
     List<Widget> settings = [];
 
+    final repositories = context.read<RepositoryInstances>();
+
     if (widget.profile.name.isNotEmpty) {
       settings.add(
         reportListTile(context.strings.report_screen_profile_name_action, () async {
@@ -86,7 +84,7 @@ class _ReportScreenState extends State<ReportScreen> {
             scrollable: true,
           );
           if (context.mounted && r == true) {
-            final result = await api
+            final result = await repositories.api
                 .profile(
                   (api) => api.postReportProfileName(
                     UpdateProfileNameReport(
@@ -105,7 +103,10 @@ class _ReportScreenState extends State<ReportScreen> {
               showSnackBar(R.strings.report_screen_snackbar_too_many_reports_error);
             } else {
               showSnackBar(R.strings.report_screen_snackbar_report_successful);
-              await profile.downloadProfileToDatabase(chat, widget.profile.accountId);
+              await repositories.profile.downloadProfileToDatabase(
+                repositories.chat,
+                widget.profile.accountId,
+              );
             }
           }
         }),
@@ -123,7 +124,7 @@ class _ReportScreenState extends State<ReportScreen> {
             scrollable: true,
           );
           if (context.mounted && r == true) {
-            final result = await api
+            final result = await repositories.api
                 .profile(
                   (api) => api.postReportProfileText(
                     UpdateProfileTextReport(
@@ -142,7 +143,10 @@ class _ReportScreenState extends State<ReportScreen> {
               showSnackBar(R.strings.report_screen_snackbar_too_many_reports_error);
             } else {
               showSnackBar(R.strings.report_screen_snackbar_report_successful);
-              await profile.downloadProfileToDatabase(chat, widget.profile.accountId);
+              await repositories.profile.downloadProfileToDatabase(
+                repositories.chat,
+                widget.profile.accountId,
+              );
             }
           }
         }),
@@ -199,7 +203,7 @@ class _ReportScreenState extends State<ReportScreen> {
             yesNoActions: true,
           );
           if (context.mounted && r == true) {
-            final result = await api
+            final result = await repositories.api
                 .account(
                   (api) => api.postCustomReportEmpty(
                     UpdateCustomReportEmpty(

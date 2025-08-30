@@ -1,3 +1,4 @@
+import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/localizations.dart';
 import 'package:app/ui_utils/profile_thumbnail_image.dart';
 import 'package:app/ui_utils/snack_bar.dart';
@@ -7,6 +8,7 @@ import 'package:app/data/image_cache.dart';
 import 'package:database/database.dart';
 import 'package:app/ui_utils/consts/corners.dart';
 import 'package:app/ui_utils/crop_image_screen.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProfileThumbnailImageOrError extends StatelessWidget {
   final ProfileEntry entry;
@@ -39,6 +41,7 @@ class ProfileThumbnailImageOrError extends StatelessWidget {
       return error(context.strings.profile_image_error_image_not_accepted);
     } else {
       return ProfileThumbnailImage(
+        media: context.read<RepositoryInstances>().media,
         accountId: entry.accountId,
         contentId: img.id,
         cropArea: cropArea,

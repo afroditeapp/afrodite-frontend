@@ -1,4 +1,4 @@
-import "package:app/data/login_repository.dart";
+import "package:app/data/utils/repository_instances.dart";
 import "package:app/logic/account/client_features_config.dart";
 import "package:app/logic/profile/automatic_profile_search_badge.dart";
 import "package:app/logic/server/maintenance.dart";
@@ -96,8 +96,6 @@ class NormalStateContent extends StatefulWidget {
 
 class _NormalStateContentState extends State<NormalStateContent> {
   static const VIEWS = [ProfileView(), LikeView(), ChatView(), MenuView()];
-
-  final currentUser = LoginRepository.getInstance().repositories.accountId;
 
   @override
   Widget build(BuildContext context) {
@@ -237,8 +235,10 @@ class _NormalStateContentState extends State<NormalStateContent> {
         final cropInfo = state.primaryProfilePictureCropInfo;
         if (img != null && state.primaryImageDataAvailable) {
           const double IMG_HEIGHT = 40;
+          final r = context.read<RepositoryInstances>();
           return ProfileThumbnailImage(
-            accountId: currentUser,
+            media: r.media,
+            accountId: r.accountId,
             contentId: img,
             cropArea: cropInfo,
             width: IMG_HEIGHT,

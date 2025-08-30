@@ -7,8 +7,12 @@ import 'package:flutter/material.dart';
 import 'package:openapi/api.dart';
 
 class EditPermissionsScreen extends EditDataScreen<PermissionsDataManager> {
-  EditPermissionsScreen({required super.pageKey, required AccountId account, super.key})
-    : super(dataApi: PermissionsDataApi(account), title: "Edit permissions");
+  EditPermissionsScreen({
+    required super.api,
+    required super.pageKey,
+    required AccountId account,
+    super.key,
+  }) : super(dataApi: PermissionsDataApi(account), title: "Edit permissions");
 }
 
 class PermissionsDataApi extends EditDataApi<PermissionsDataManager> {

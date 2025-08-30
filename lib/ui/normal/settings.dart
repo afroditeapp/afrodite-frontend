@@ -1,4 +1,5 @@
 import 'package:app/data/login_repository.dart';
+import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/logic/profile/profile_filters.dart';
 import 'package:app/model/freezed/logic/profile/profile_filters.dart';
 import 'package:app/model/freezed/logic/settings/privacy_settings.dart';
@@ -77,10 +78,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   Widget blockedProfiles(BuildContext context) {
+    final r = context.read<RepositoryInstances>();
     return Setting.createSetting(
       Icons.block,
       context.strings.blocked_profiles_screen_title,
-      () => MyNavigator.push(context, const MaterialPage<void>(child: BlockedProfilesScreen())),
+      () => MyNavigator.push(context, MaterialPage<void>(child: BlockedProfilesScreen(r))),
     ).toListTile();
   }
 

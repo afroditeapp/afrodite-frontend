@@ -1,5 +1,7 @@
 import 'dart:ui';
 
+import 'package:app/data/media_repository.dart';
+import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/logic/account/client_features_config.dart';
 import 'package:app/utils/api.dart';
 import 'package:flutter/foundation.dart';
@@ -9,7 +11,6 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:openapi/api.dart';
 import 'package:app/data/image_cache.dart';
-import 'package:app/data/login_repository.dart';
 import 'package:app/data/profile_repository.dart';
 import 'package:app/logic/profile/location.dart';
 
@@ -189,7 +190,10 @@ class _LocationWidgetState extends State<LocationWidget> with SingleTickerProvid
       children: [
         TileLayer(
           maxNativeZoom: config.zoom.maxTileDownloading,
-          tileProvider: CustomTileProvider(config.tileDataVersion),
+          tileProvider: CustomTileProvider(
+            context.read<RepositoryInstances>().media,
+            config.tileDataVersion,
+          ),
         ),
         markerLayer(),
         attributionWidget(context),
@@ -525,20 +529,22 @@ Widget attributionWidget(BuildContext context) {
 }
 
 class CustomTileProvider extends TileProvider {
+  final MediaRepository media;
   final int mapTileDataVersion;
-  CustomTileProvider(this.mapTileDataVersion);
+  CustomTileProvider(this.media, this.mapTileDataVersion);
 
   @override
   ImageProvider getImage(TileCoordinates coordinates, TileLayer options) {
-    return CustomImageProvider(coordinates, mapTileDataVersion);
+    return CustomImageProvider(media, coordinates, mapTileDataVersion);
   }
 }
 
 class CustomImageProvider extends ImageProvider<(int, int, int, int)> {
+  final MediaRepository media;
   final TileCoordinates coordinates;
   final int mapTileDataVersion;
 
-  CustomImageProvider(this.coordinates, this.mapTileDataVersion);
+  CustomImageProvider(this.media, this.coordinates, this.mapTileDataVersion);
 
   @override
   ImageStreamCompleter loadImage((int, int, int, int) key, ImageDecoderCallback decode) {
@@ -548,7 +554,7 @@ class CustomImageProvider extends ImageProvider<(int, int, int, int)> {
         coordinates.x,
         coordinates.y,
         mapTileDataVersion,
-        media: LoginRepository.getInstance().repositories.media,
+        media: media,
       );
 
       if (pngBytes == null) {

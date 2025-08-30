@@ -1,5 +1,5 @@
 import 'package:app/data/image_cache.dart';
-import 'package:app/data/login_repository.dart';
+import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/logic/media/image_processing.dart';
 import 'package:app/logic/media/new_moderation_request.dart';
 import 'package:app/ui/initial_setup/profile_pictures.dart';
@@ -64,7 +64,7 @@ class _SelectContentPageState extends State<SelectContentPage> {
                 } else {
                   return selectContentPage(
                     context,
-                    LoginRepository.getInstance().repositories.accountId,
+                    context.read<RepositoryInstances>().accountId,
                     state.availableContent,
                     state.maxContent,
                     state.showAddNewContent,
@@ -216,6 +216,7 @@ Widget buildAvailableImg(
     child: InkWell(
       onTap: onTap,
       child: accountImgWidgetInk(
+        context,
         accountId,
         contentId,
         width: SELECT_CONTENT_IMAGE_WIDTH,

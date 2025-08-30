@@ -1,3 +1,4 @@
+import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/logic/account/client_features_config.dart';
 import 'package:app/logic/media/content.dart';
 import 'package:app/logic/profile/my_profile.dart';
@@ -125,6 +126,7 @@ class _ProfileViewState extends State<ProfileView> {
   Widget build(BuildContext context) {
     return PublicProfileViewingBlocker(
       child: ProfileGrid(
+        r: context.read<RepositoryInstances>(),
         key: _profileGridKey,
         profileFiltersBloc: context.read<ProfileFiltersBloc>(),
       ),

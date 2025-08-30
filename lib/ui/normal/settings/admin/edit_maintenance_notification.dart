@@ -1,3 +1,4 @@
+import 'package:app/api/server_connection_manager.dart';
 import 'package:app/localizations.dart';
 import 'package:app/ui_utils/padding.dart';
 import 'package:app/utils/api.dart';
@@ -5,7 +6,6 @@ import 'package:app/utils/time.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
-import 'package:app/data/login_repository.dart';
 import 'package:app/logic/account/account.dart';
 import 'package:app/model/freezed/logic/account/account.dart';
 import 'package:app/ui_utils/dialog.dart';
@@ -14,7 +14,8 @@ import 'package:app/utils/result.dart';
 import 'package:utils/utils.dart';
 
 class EditMaintenanceNotificationScreen extends StatefulWidget {
-  const EditMaintenanceNotificationScreen({super.key});
+  final ApiManager api;
+  const EditMaintenanceNotificationScreen({required this.api, super.key});
 
   @override
   State<EditMaintenanceNotificationScreen> createState() =>
@@ -25,7 +26,6 @@ class _EditMaintenanceNotificationScreenState extends State<EditMaintenanceNotif
   DateTime? _selectedDate;
   TimeOfDay? _selectedTime;
   ScheduledMaintenanceStatus? _currentConfig;
-  final api = LoginRepository.getInstance().repositories.api;
 
   bool isLoading = true;
 
@@ -36,7 +36,7 @@ class _EditMaintenanceNotificationScreenState extends State<EditMaintenanceNotif
   }
 
   Future<void> _refreshData() async {
-    final data = await api.commonAdmin((api) => api.getMaintenanceNotification()).ok();
+    final data = await widget.api.commonAdmin((api) => api.getMaintenanceNotification()).ok();
 
     setState(() {
       isLoading = false;
@@ -170,7 +170,7 @@ class _EditMaintenanceNotificationScreenState extends State<EditMaintenanceNotif
           details: "New time: $currentDateSelectionText",
         ).then((value) async {
           if (value == true) {
-            final result = await api.commonAdminAction(
+            final result = await widget.api.commonAdminAction(
               (api) => api.postEditMaintenanceNotification(maintenanceStatus),
             );
             switch (result) {

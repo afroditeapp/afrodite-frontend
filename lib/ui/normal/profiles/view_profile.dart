@@ -1,6 +1,5 @@
 import 'package:app/api/server_connection_manager.dart';
 import 'package:app/data/image_cache.dart';
-import 'package:app/data/login_repository.dart';
 import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/logic/account/account.dart';
 import 'package:app/model/freezed/logic/account/account.dart';
@@ -39,7 +38,7 @@ Future<void> openProfileView(
     return;
   }
 
-  final ApiManager api = LoginRepository.getInstance().repositories.api;
+  final ApiManager api = context.read<RepositoryInstances>().api;
   final pageKey = PageKey();
   await MyNavigator.pushWithKey(
     context,
@@ -197,7 +196,7 @@ class ViewProfilePage extends StatelessWidget {
       builder: (context, state) {
         handleStateAction(context, state);
 
-        return ViewProfileEntry(profile: state.profile);
+        return ViewProfileEntry(profile: state.profile, isMyProfile: false);
       },
     );
   }

@@ -1,6 +1,7 @@
 import 'package:app/api/server_connection_manager.dart';
 import 'package:app/data/login_repository.dart';
 import 'package:app/data/profile_repository.dart';
+import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/localizations.dart';
 import 'package:app/logic/account/account.dart';
 import 'package:app/logic/app/navigator_state.dart';
@@ -146,6 +147,7 @@ class _AccountAdminSettingsScreenState extends State<AccountAdminSettingsScreen>
   }
 
   List<Setting> settingsList(BuildContext context, AccountAdminSettingsPermissions permissions) {
+    final r = context.read<RepositoryInstances>();
     List<Setting> settings = [];
 
     String showProfileTitle;
@@ -164,7 +166,7 @@ class _AccountAdminSettingsScreenState extends State<AccountAdminSettingsScreen>
           "Account private info",
           () => MyNavigator.push(
             context,
-            MaterialPage<void>(child: AccountPrivateInfoScreen(accountId: widget.accountId)),
+            MaterialPage<void>(child: AccountPrivateInfoScreen(r, accountId: widget.accountId)),
           ),
         ),
       );
@@ -193,7 +195,7 @@ class _AccountAdminSettingsScreenState extends State<AccountAdminSettingsScreen>
           MyNavigator.pushWithKey(
             context,
             MaterialPage<void>(
-              child: EditPermissionsScreen(pageKey: pageKey, account: widget.accountId),
+              child: EditPermissionsScreen(api: r.api, pageKey: pageKey, account: widget.accountId),
             ),
             pageKey,
           );
@@ -300,6 +302,7 @@ class _AccountAdminSettingsScreenState extends State<AccountAdminSettingsScreen>
             context,
             MaterialPage<void>(
               child: ViewReportsScreen(
+                api: r.api,
                 account: widget.accountId,
                 mode: ReportIteratorMode.sent,
                 title: sentReports,
@@ -318,6 +321,7 @@ class _AccountAdminSettingsScreenState extends State<AccountAdminSettingsScreen>
             context,
             MaterialPage<void>(
               child: ViewReportsScreen(
+                api: r.api,
                 account: widget.accountId,
                 mode: ReportIteratorMode.received,
                 title: receivedReports,

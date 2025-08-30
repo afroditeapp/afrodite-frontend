@@ -10,6 +10,7 @@ const double ROW_HEIGHT = 100;
 
 class ModerateProfileStringsScreen extends ContentDecicionScreen<WrappedProfileStringModeration> {
   ModerateProfileStringsScreen({
+    required super.api,
     required ProfileStringModerationContentType contentType,
     required bool showTextsWhichBotsCanModerate,
     super.key,

@@ -234,6 +234,7 @@ Widget _buildAvailableImg(
                 );
               },
               child: accountImgWidgetInk(
+                context,
                 accountId,
                 content.cid,
                 cacheSize: ImageCacheSize.constantWidthAndHeight(
@@ -441,6 +442,7 @@ Future<bool?> _confirmDialogForImage(
     },
     // Width seems to prevent the dialog from expanding horizontaly
     child: accountImgWidget(
+      context,
       account,
       content,
       width: IMG_WIDTH,

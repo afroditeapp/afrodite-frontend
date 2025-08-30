@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:openapi/api.dart';
-import 'package:app/data/login_repository.dart';
 import 'package:app/logic/account/account.dart';
 import 'package:app/logic/account/news/view_news.dart';
 import 'package:app/logic/app/navigator_state.dart';
@@ -57,8 +56,6 @@ class ViewNewsScreen extends StatefulWidget {
 }
 
 class ViewNewsScreenState extends State<ViewNewsScreen> {
-  final AccountId currentUser = LoginRepository.getInstance().repositories.accountId;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,6 +68,7 @@ class ViewNewsScreenState extends State<ViewNewsScreen> {
               } else if (state.permissions.adminNewsCreate) {
                 return BlocBuilder<ViewNewsBloc, ViewNewsData>(
                   builder: (context, newsState) {
+                    final currentUser = context.read<RepositoryInstances>().accountId;
                     if (newsState.item?.aidCreator == currentUser) {
                       return editNewsActionButton(context);
                     } else {

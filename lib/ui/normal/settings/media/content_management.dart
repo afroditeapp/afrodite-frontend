@@ -1,5 +1,4 @@
 import 'package:app/data/image_cache.dart';
-import 'package:app/data/login_repository.dart';
 import 'package:app/logic/media/content.dart';
 import 'package:app/logic/media/select_content.dart';
 import 'package:app/logic/profile/my_profile.dart';
@@ -82,13 +81,7 @@ class _ContentManagementScreenState extends State<ContentManagementScreen> {
                   } else if (content == null || securityContent == null || myProfile == null) {
                     return Center(child: Text(context.strings.generic_error));
                   } else {
-                    return selectContentPage(
-                      context,
-                      LoginRepository.getInstance().repositories.accountId,
-                      content,
-                      securityContent,
-                      myProfile,
-                    );
+                    return selectContentPage(context, content, securityContent, myProfile);
                   }
                 },
               );
@@ -101,7 +94,6 @@ class _ContentManagementScreenState extends State<ContentManagementScreen> {
 
   Widget selectContentPage(
     BuildContext context,
-    AccountId accountId,
     AccountContent content,
     ContentId securityContent,
     MyProfileEntry myProfile,
@@ -112,7 +104,7 @@ class _ContentManagementScreenState extends State<ContentManagementScreen> {
       content.data.reversed.map(
         (e) => _buildAvailableImg(
           context,
-          accountId,
+          myProfile.accountId,
           e,
           content.unusedContentWaitSeconds,
           securityContent,
@@ -180,6 +172,7 @@ Widget _buildAvailableImg(
                 );
               },
               child: accountImgWidgetInk(
+                context,
                 accountId,
                 content.cid,
                 cacheSize: ImageCacheSize.constantWidthAndHeight(
@@ -320,6 +313,7 @@ Future<bool?> _confirmDialogForImage(
     },
     // Width seems to prevent the dialog from expanding horizontaly
     child: accountImgWidget(
+      context,
       account,
       content,
       width: IMG_WIDTH,

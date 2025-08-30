@@ -1,3 +1,4 @@
+import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/ui/normal/settings/admin.dart';
 import 'package:app/ui/normal/settings/admin/edit_maintenance_notification.dart';
 import 'package:app/ui/normal/settings/admin/server_tasks.dart';
@@ -36,6 +37,8 @@ class ServerScreen extends StatelessWidget {
 
   List<Setting> settingsList(BuildContext context, AdminSettingsPermissions permissions) {
     List<Setting> settings = [];
+
+    final r = context.read<RepositoryInstances>();
 
     if (permissions.adminServerMaintenanceSaveBackendConfig ||
         permissions.adminServerMaintenanceViewBackendConfig) {
@@ -88,7 +91,7 @@ class ServerScreen extends StatelessWidget {
           "Edit maintenance notification",
           () => MyNavigator.push(
             context,
-            const MaterialPage<void>(child: EditMaintenanceNotificationScreen()),
+            MaterialPage<void>(child: EditMaintenanceNotificationScreen(api: r.api)),
           ),
         ),
       );

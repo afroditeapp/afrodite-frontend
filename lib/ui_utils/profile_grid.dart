@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:app/data/general/iterator/base_iterator_manager.dart';
+import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/logic/profile/view_profiles.dart';
 import 'package:app/logic/settings/ui_settings.dart';
 import 'package:app/model/freezed/logic/profile/view_profiles.dart';
@@ -11,7 +12,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 import 'package:app/data/chat_repository.dart';
-import 'package:app/data/login_repository.dart';
 import 'package:app/data/profile_repository.dart';
 import 'package:database/database.dart';
 import 'package:app/database/account_database_manager.dart';
@@ -27,13 +27,20 @@ typedef ProfileGridProfileEntry = ({
 });
 
 class GenericProfileGrid extends StatefulWidget {
+  final ChatRepository chatRepository;
+  final ProfileRepository profileRepository;
+  final AccountDatabaseManager accountDb;
+
   final UiProfileIterator Function() buildIteratorManager;
   final String noProfilesText;
-  const GenericProfileGrid({
+  GenericProfileGrid(
+    RepositoryInstances r, {
     required this.buildIteratorManager,
     required this.noProfilesText,
     super.key,
-  });
+  }) : chatRepository = r.chat,
+       profileRepository = r.profile,
+       accountDb = r.accountDb;
 
   @override
   State<GenericProfileGrid> createState() => _GenericProfileGridState();
@@ -43,11 +50,6 @@ class _GenericProfileGridState extends State<GenericProfileGrid> {
   final ScrollController _scrollController = ScrollController();
   PagingState<int, ProfileGridProfileEntry> _pagingState = PagingState();
   StreamSubscription<ProfileChange>? _profileChangesSubscription;
-
-  final ChatRepository chatRepository = LoginRepository.getInstance().repositories.chat;
-  final ProfileRepository profileRepository = LoginRepository.getInstance().repositories.profile;
-
-  final AccountDatabaseManager accountDb = LoginRepository.getInstance().repositories.accountDb;
 
   late final UiProfileIterator _mainProfilesViewIterator;
 
@@ -64,7 +66,7 @@ class _GenericProfileGridState extends State<GenericProfileGrid> {
     _mainProfilesViewIterator.reset(true);
 
     _profileChangesSubscription?.cancel();
-    _profileChangesSubscription = profileRepository.profileChanges.listen((event) {
+    _profileChangesSubscription = widget.profileRepository.profileChanges.listen((event) {
       _handleProfileChange(event);
     });
   }
@@ -119,8 +121,11 @@ class _GenericProfileGridState extends State<GenericProfileGrid> {
 
     final newList = List<ProfileGridProfileEntry>.empty(growable: true);
     for (final profile in profileList) {
-      final initialProfileAction = await resolveProfileAction(chatRepository, profile.accountId);
-      final isFavorite = await profileRepository.isInFavorites(profile.accountId);
+      final initialProfileAction = await resolveProfileAction(
+        widget.chatRepository,
+        profile.accountId,
+      );
+      final isFavorite = await widget.profileRepository.isInFavorites(profile.accountId);
       newList.add((
         profile: ProfileThumbnail(entry: profile, isFavorite: isFavorite),
         initialProfileAction: initialProfileAction,
@@ -176,7 +181,7 @@ class _GenericProfileGridState extends State<GenericProfileGrid> {
             child: profileEntryWidgetStream(
               item.profile,
               item.initialProfileAction,
-              accountDb,
+              widget.accountDb,
               settings,
               maxItemWidth: singleItemWidth,
             ),

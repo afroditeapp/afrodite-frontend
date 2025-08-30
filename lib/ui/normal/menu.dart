@@ -1,3 +1,4 @@
+import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/logic/account/client_features_config.dart';
 import 'package:app/logic/profile/automatic_profile_search_badge.dart';
 import 'package:app/logic/server/maintenance.dart';
@@ -124,6 +125,7 @@ class _MenuViewState extends State<MenuView> {
     Permissions permissions,
     ClientFeaturesConfig clientFeatures,
   ) {
+    final r = context.read<RepositoryInstances>();
     List<Setting> settings = [
       Setting.createSetting(
         Icons.account_box,
@@ -188,7 +190,7 @@ class _MenuViewState extends State<MenuView> {
         Setting.createSetting(
           Icons.bug_report_rounded,
           "Debug",
-          () => MyNavigator.push(context, const MaterialPage<void>(child: DebugSettingsPage())),
+          () => MyNavigator.push(context, MaterialPage<void>(child: DebugSettingsPage(r))),
         ),
       );
     }

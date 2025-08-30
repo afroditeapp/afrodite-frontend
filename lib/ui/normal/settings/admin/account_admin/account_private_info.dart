@@ -1,3 +1,5 @@
+import 'package:app/api/server_connection_manager.dart';
+import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/localizations.dart';
 import 'package:app/logic/account/account.dart';
 import 'package:app/model/freezed/logic/account/account.dart';
@@ -5,31 +7,29 @@ import 'package:app/ui/normal/settings/admin/view_admins.dart';
 import 'package:app/ui_utils/padding.dart';
 import 'package:database/database.dart';
 import 'package:flutter/material.dart';
-import 'package:app/data/login_repository.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/result.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 
 class AccountPrivateInfoScreen extends StatefulWidget {
+  final ApiManager api;
   final AccountId accountId;
-  const AccountPrivateInfoScreen({required this.accountId, super.key});
+  AccountPrivateInfoScreen(RepositoryInstances r, {required this.accountId, super.key})
+    : api = r.api;
 
   @override
   State<AccountPrivateInfoScreen> createState() => _AccountPrivateInfoScreenState();
 }
 
 class _AccountPrivateInfoScreenState extends State<AccountPrivateInfoScreen> {
-  final api = LoginRepository.getInstance().repositories.api;
-  final profile = LoginRepository.getInstance().repositories.profile;
-
   Account? accountInfo;
 
   bool isLoading = true;
   bool isError = false;
 
   Future<void> _getData() async {
-    final result = await api
+    final result = await widget.api
         .accountAdmin((api) => api.getAccountStateAdmin(widget.accountId.aid))
         .ok();
 

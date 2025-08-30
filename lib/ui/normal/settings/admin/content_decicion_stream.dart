@@ -1,4 +1,4 @@
-import 'package:app/data/login_repository.dart';
+import 'package:app/api/server_connection_manager.dart';
 import 'package:app/logic/admin/content_decicion_stream.dart';
 import 'package:app/ui/normal/settings/admin/account_admin_settings.dart';
 import 'package:flutter/material.dart';
@@ -16,12 +16,14 @@ class ContentDecicionScreen<C extends ContentInfoGetter> extends StatefulWidget 
   final double infoMessageRowHeight;
   final ContentIo<C> io;
   final ContentUiBuilder<C> builder;
+  final ApiManager api;
   const ContentDecicionScreen({
     required this.title,
     this.screenInstructions,
     required this.infoMessageRowHeight,
     required this.io,
     required this.builder,
+    required this.api,
     super.key,
   });
 
@@ -33,7 +35,6 @@ class _ContentDecicionScreenState<C extends ContentInfoGetter>
     extends State<ContentDecicionScreen<C>> {
   final ItemPositionsListener _listener = ItemPositionsListener.create();
   late final ContentDecicionStreamLogic<C> _logic;
-  final api = LoginRepository.getInstance().repositories.api;
 
   /// List item size changes cause issues when scrolling upwards, so
   /// cache latest state for each row.
@@ -42,7 +43,7 @@ class _ContentDecicionScreenState<C extends ContentInfoGetter>
   @override
   void initState() {
     super.initState();
-    _logic = ContentDecicionStreamLogic<C>(widget.io);
+    _logic = ContentDecicionStreamLogic<C>(widget.api, widget.io);
     _logic.reset();
     _listener.itemPositions.addListener(positionListener);
   }
@@ -228,7 +229,7 @@ class _ContentDecicionScreenState<C extends ContentInfoGetter>
     return SimpleDialogOption(
       onPressed: () {
         MyNavigator.removePage(dialogContext, pageKey);
-        getAgeAndNameAndShowAdminSettings(context, api, account);
+        getAgeAndNameAndShowAdminSettings(context, widget.api, account);
       },
       child: Text(title),
     );

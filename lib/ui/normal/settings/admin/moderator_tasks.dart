@@ -1,10 +1,12 @@
 import 'package:app/data/login_repository.dart';
+import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/ui/normal/settings/admin/moderate_profile_string.dart';
 import 'package:app/ui/normal/settings/admin/report/process_reports.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/result.dart';
 import 'package:async/async.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 import 'package:app/localizations.dart';
 import 'package:app/logic/app/navigator_state.dart';
@@ -253,6 +255,7 @@ class _ModeratorTasksScreenState extends State<ModeratorTasksScreen> {
   }
 
   Iterable<Widget> tasks(BuildContext context, RequiredData data) {
+    final r = context.read<RepositoryInstances>();
     List<Setting> settings = [
       if (data.contentBotInitial)
         Setting.createSetting(
@@ -262,6 +265,7 @@ class _ModeratorTasksScreenState extends State<ModeratorTasksScreen> {
             context,
             MaterialPage<void>(
               child: ModerateImagesScreen(
+                api: r.api,
                 queueType: ModerationQueueType.initialMediaModeration,
                 showContentWhichBotsCanModerate: true,
               ),
@@ -276,6 +280,7 @@ class _ModeratorTasksScreenState extends State<ModeratorTasksScreen> {
             context,
             MaterialPage<void>(
               child: ModerateImagesScreen(
+                api: r.api,
                 queueType: ModerationQueueType.initialMediaModeration,
                 showContentWhichBotsCanModerate: false,
               ),
@@ -290,6 +295,7 @@ class _ModeratorTasksScreenState extends State<ModeratorTasksScreen> {
             context,
             MaterialPage<void>(
               child: ModerateImagesScreen(
+                api: r.api,
                 queueType: ModerationQueueType.mediaModeration,
                 showContentWhichBotsCanModerate: true,
               ),
@@ -304,6 +310,7 @@ class _ModeratorTasksScreenState extends State<ModeratorTasksScreen> {
             context,
             MaterialPage<void>(
               child: ModerateImagesScreen(
+                api: r.api,
                 queueType: ModerationQueueType.mediaModeration,
                 showContentWhichBotsCanModerate: false,
               ),
@@ -318,6 +325,7 @@ class _ModeratorTasksScreenState extends State<ModeratorTasksScreen> {
             context,
             MaterialPage<void>(
               child: ModerateProfileStringsScreen(
+                api: r.api,
                 contentType: ProfileStringModerationContentType.profileName,
                 showTextsWhichBotsCanModerate: true,
               ),
@@ -332,6 +340,7 @@ class _ModeratorTasksScreenState extends State<ModeratorTasksScreen> {
             context,
             MaterialPage<void>(
               child: ModerateProfileStringsScreen(
+                api: r.api,
                 contentType: ProfileStringModerationContentType.profileName,
                 showTextsWhichBotsCanModerate: false,
               ),
@@ -346,6 +355,7 @@ class _ModeratorTasksScreenState extends State<ModeratorTasksScreen> {
             context,
             MaterialPage<void>(
               child: ModerateProfileStringsScreen(
+                api: r.api,
                 contentType: ProfileStringModerationContentType.profileText,
                 showTextsWhichBotsCanModerate: true,
               ),
@@ -360,6 +370,7 @@ class _ModeratorTasksScreenState extends State<ModeratorTasksScreen> {
             context,
             MaterialPage<void>(
               child: ModerateProfileStringsScreen(
+                api: r.api,
                 contentType: ProfileStringModerationContentType.profileText,
                 showTextsWhichBotsCanModerate: false,
               ),
@@ -370,7 +381,10 @@ class _ModeratorTasksScreenState extends State<ModeratorTasksScreen> {
         Setting.createSetting(
           Icons.report,
           "Process reports",
-          () => MyNavigator.push(context, MaterialPage<void>(child: ProcessReportsScreen())),
+          () => MyNavigator.push(
+            context,
+            MaterialPage<void>(child: ProcessReportsScreen(api: r.api)),
+          ),
         ),
     ];
     return settings.map((v) => v.toListTile());

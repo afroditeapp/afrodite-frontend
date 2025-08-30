@@ -1,3 +1,4 @@
+import "package:app/data/utils/repository_instances.dart";
 import "package:app/logic/media/new_moderation_request.dart";
 import "package:app/ui_utils/consts/padding.dart";
 import "package:flutter/foundation.dart";
@@ -8,7 +9,6 @@ import "package:logging/logging.dart";
 import "package:openapi/api.dart";
 import "package:utils/utils.dart";
 import "package:app/data/image_cache.dart";
-import "package:app/data/login_repository.dart";
 import "package:app/localizations.dart";
 import "package:app/logic/account/initial_setup.dart";
 import "package:app/logic/app/navigator_state.dart";
@@ -387,7 +387,7 @@ Future<void> openEditThumbnail(
   final bytes = await ImageCacheData.getInstance().getImage(
     img.accountId,
     img.contentId,
-    media: LoginRepository.getInstance().repositories.media,
+    media: context.read<RepositoryInstances>().media,
   );
   if (!context.mounted) {
     return;
@@ -494,6 +494,7 @@ class AddPicture extends StatelessWidget {
           height: iconSize,
           child: FittedBox(
             child: accountImgWidget(
+              context,
               securitySelfie.accountId,
               securitySelfie.contentId,
               cacheSize: ImageCacheSize.constantSquare(context, iconSize),
@@ -696,6 +697,7 @@ class FilePicture extends StatelessWidget {
     return LongPressDraggable<int>(
       data: imgIndex,
       feedback: accountImgWidget(
+        context,
         img.accountId,
         img.contentId,
         width: imgWidth,
@@ -800,6 +802,7 @@ class ImgWithCloseButton extends StatelessWidget {
         child: InkWell(
           onTap: () => openViewImageScreenForAccountImage(context, accountId, contentId),
           child: accountImgWidgetInk(
+            context,
             accountId,
             contentId,
             width: imgWidth,
@@ -828,6 +831,7 @@ class VisibleThumbnailPicture extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ProfileThumbnailImage(
+      media: context.read<RepositoryInstances>().media,
       accountId: img.accountId,
       contentId: img.contentId,
       cropArea: cropArea,

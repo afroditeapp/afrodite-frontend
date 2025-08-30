@@ -9,6 +9,7 @@ const double ROW_HEIGHT = 100;
 
 class ViewReportsScreen extends ContentDecicionScreen<WrappedReportDetailed> {
   ViewReportsScreen({
+    required super.api,
     required AccountId account,
     required ReportIteratorMode mode,
     required super.title,

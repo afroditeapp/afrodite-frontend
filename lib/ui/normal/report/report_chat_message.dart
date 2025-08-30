@@ -1,12 +1,13 @@
 import 'dart:convert';
 
+import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/ui/normal/chat/message_row.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/result.dart';
 import 'package:app/utils/time.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
-import 'package:app/data/login_repository.dart';
 import 'package:database/database.dart';
 import 'package:app/localizations.dart';
 import 'package:app/ui_utils/dialog.dart';
@@ -21,9 +22,6 @@ class ReportChatMessageScreen extends StatefulWidget {
 }
 
 class _ReportChatMessageScreen extends State<ReportChatMessageScreen> {
-  final api = LoginRepository.getInstance().repositories.api;
-  final db = LoginRepository.getInstance().repositories.accountDb;
-
   late final List<MessageEntry> messages;
 
   @override
@@ -114,6 +112,7 @@ class _ReportChatMessageScreen extends State<ReportChatMessageScreen> {
 
     return ListTile(
       onTap: () async {
+        final repositories = context.read<RepositoryInstances>();
         final r = await showConfirmDialog(
           context,
           context.strings.report_chat_message_screen_confirm_dialog_title,
@@ -122,14 +121,14 @@ class _ReportChatMessageScreen extends State<ReportChatMessageScreen> {
           scrollable: true,
         );
         if (context.mounted && r == true) {
-          final backendSignedMessage = await db
+          final backendSignedMessage = await repositories.accountDb
               .accountData((db) => db.message.getBackendSignedPgpMessage(entry.localId))
               .ok();
           if (backendSignedMessage == null) {
             showSnackBar(R.strings.report_chat_message_screen_backend_signed_message_not_found);
             return;
           }
-          final symmetricKey = await db
+          final symmetricKey = await repositories.accountDb
               .accountData((db) => db.message.getSymmetricMessageEncryptionKey(entry.localId))
               .ok();
           if (symmetricKey == null) {
@@ -139,7 +138,7 @@ class _ReportChatMessageScreen extends State<ReportChatMessageScreen> {
             return;
           }
 
-          final result = await api
+          final result = await repositories.api
               .chat(
                 (api) => api.postChatMessageReport(
                   UpdateChatMessageReport(

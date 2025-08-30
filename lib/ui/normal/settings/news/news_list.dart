@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:app/data/general/notification/state/news_item_available.dart';
+import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/database/account_background_database_manager.dart';
 import 'package:app/ui_utils/extensions/other.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +9,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:app/api/server_connection_manager.dart';
-import 'package:app/data/login_repository.dart';
 import 'package:app/logic/account/account.dart';
 import 'package:app/logic/account/news/news_count.dart';
 import 'package:app/logic/app/navigator_state.dart';
@@ -39,15 +39,20 @@ class _NewsListScreenOpenerState extends State<NewsListScreenOpener> {
   @override
   Widget build(BuildContext context) {
     initialLocale ??= Localizations.localeOf(context).languageCode;
+    final r = context.read<RepositoryInstances>();
     final bloc = context.read<NewsCountBloc>();
-    return NewsListScreen(locale: initialLocale!, bloc: bloc);
+    return NewsListScreen(r, locale: initialLocale!, bloc: bloc);
   }
 }
 
 class NewsListScreen extends StatefulWidget {
+  final AccountBackgroundDatabaseManager accountBackgroundDb;
+  final ApiManager api;
   final String locale;
   final NewsCountBloc bloc;
-  const NewsListScreen({required this.locale, required this.bloc, super.key});
+  NewsListScreen(RepositoryInstances r, {required this.locale, required this.bloc, super.key})
+    : accountBackgroundDb = r.accountBackgroundDb,
+      api = r.api;
 
   @override
   State<NewsListScreen> createState() => NewsListScreenState();
@@ -59,10 +64,6 @@ class NewsListScreenState extends State<NewsListScreen> {
   final ScrollController _scrollController = ScrollController();
   PagingState<int, NewsViewEntry> _pagingState = PagingState();
 
-  final AccountBackgroundDatabaseManager accountBackgroundDb =
-      LoginRepository.getInstance().repositories.accountBackgroundDb;
-  final ApiManager api = LoginRepository.getInstance().repositories.api;
-
   NewsIteratorSessionId? _sessionId;
 
   bool isDisposed = false;
@@ -70,7 +71,7 @@ class NewsListScreenState extends State<NewsListScreen> {
   @override
   void initState() {
     super.initState();
-    NotificationNewsItemAvailable.getInstance().hide(accountBackgroundDb);
+    NotificationNewsItemAvailable.getInstance().hide(widget.accountBackgroundDb);
   }
 
   void updatePagingState(
@@ -98,13 +99,13 @@ class NewsListScreenState extends State<NewsListScreen> {
     updatePagingState((s) => s.copyAndShowLoading());
 
     if (_pagingState.isInitialPage()) {
-      final r = await api.account((api) => api.postResetNewsPaging()).ok();
+      final r = await widget.api.account((api) => api.postResetNewsPaging()).ok();
       if (r == null) {
         showLoadingError();
         return;
       }
       _sessionId = r.s;
-      final dbResult = await accountBackgroundDb.accountAction(
+      final dbResult = await widget.accountBackgroundDb.accountAction(
         (db) => db.news.setUnreadNewsCount(version: r.v, unreadNewsCount: r.c),
       );
       if (dbResult.isErr()) {
@@ -119,7 +120,9 @@ class NewsListScreenState extends State<NewsListScreen> {
       return;
     }
 
-    final news = await api.account((api) => api.postGetNextNewsPage(widget.locale, sessionId)).ok();
+    final news = await widget.api
+        .account((api) => api.postGetNextNewsPage(widget.locale, sessionId))
+        .ok();
     if (news == null || news.errorInvalidIteratorSessionId) {
       showLoadingError();
       return;
@@ -150,7 +153,9 @@ class NewsListScreenState extends State<NewsListScreen> {
                       yesNoActions: true,
                     );
                     if (r == true) {
-                      final id = await api.accountAdmin((api) => api.postCreateNewsItem()).ok();
+                      final id = await widget.api
+                          .accountAdmin((api) => api.postCreateNewsItem())
+                          .ok();
                       if (id == null) {
                         showSnackBar(R.strings.generic_error_occurred);
                       } else {

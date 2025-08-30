@@ -1,13 +1,14 @@
 import 'package:app/data/image_cache.dart';
+import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/ui_utils/image.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/result.dart';
 import 'package:flutter/material.dart';
 import 'package:openapi/api.dart';
-import 'package:app/data/login_repository.dart';
 import 'package:database/database.dart';
 import 'package:app/localizations.dart';
 import 'package:app/ui_utils/dialog.dart';
+import 'package:provider/provider.dart';
 
 class ReportProfileImageScreen extends StatefulWidget {
   final ProfileEntry profileEntry;
@@ -21,10 +22,6 @@ class ReportProfileImageScreen extends StatefulWidget {
 const _IMG_SIZE = 100.0;
 
 class _ReportProfileImageScreen extends State<ReportProfileImageScreen> {
-  final api = LoginRepository.getInstance().repositories.api;
-  final chat = LoginRepository.getInstance().repositories.chat;
-  final profile = LoginRepository.getInstance().repositories.profile;
-
   List<(int, ContentIdAndAccepted)> images = [];
 
   @override
@@ -58,6 +55,7 @@ class _ReportProfileImageScreen extends State<ReportProfileImageScreen> {
 
   Widget imageRow(BuildContext context, ContentId content, String imageName) {
     final Widget imageWidget = accountImgWidget(
+      context,
       widget.profileEntry.accountId,
       content,
       isMatch: widget.isMatch,
@@ -83,6 +81,7 @@ class _ReportProfileImageScreen extends State<ReportProfileImageScreen> {
 
     return InkWell(
       onTap: () async {
+        final repositories = context.read<RepositoryInstances>();
         final r = await showConfirmDialog(
           context,
           context.strings.report_profile_image_screen_confirm_dialog_title,
@@ -91,7 +90,7 @@ class _ReportProfileImageScreen extends State<ReportProfileImageScreen> {
           scrollable: true,
         );
         if (context.mounted && r == true) {
-          final result = await api
+          final result = await repositories.api
               .media(
                 (api) => api.postProfileContentReport(
                   UpdateProfileContentReport(
@@ -115,7 +114,10 @@ class _ReportProfileImageScreen extends State<ReportProfileImageScreen> {
               setState(() {
                 images = images.where((v) => v.$2.id != content).toList();
               });
-              await profile.downloadProfileToDatabase(chat, widget.profileEntry.accountId);
+              await repositories.profile.downloadProfileToDatabase(
+                repositories.chat,
+                widget.profileEntry.accountId,
+              );
             }
           }
         }

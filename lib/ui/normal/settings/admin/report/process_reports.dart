@@ -26,7 +26,7 @@ import 'package:openapi/api.dart';
 const double ROW_HEIGHT = 100;
 
 class ProcessReportsScreen extends ContentDecicionScreen<WrappedReportDetailed> {
-  ProcessReportsScreen({super.key})
+  ProcessReportsScreen({required super.api, super.key})
     : super(
         title: "Process reports",
         screenInstructions: ReportUiBuilder.instructions,
@@ -254,6 +254,7 @@ class ReportUiBuilder extends ContentUiBuilder<WrappedReportDetailed> {
         );
       },
       child: accountImgWidget(
+        context,
         imageOwner,
         image,
         width: width,

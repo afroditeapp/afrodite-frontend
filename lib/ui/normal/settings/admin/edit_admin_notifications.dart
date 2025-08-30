@@ -1,4 +1,5 @@
 import 'package:app/api/server_connection_manager.dart';
+import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui_utils/data_editor.dart';
@@ -9,21 +10,25 @@ import 'package:app/ui_utils/data_editor/weekday.dart';
 import 'package:app/ui_utils/padding.dart';
 import 'package:app/utils/result.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 
 const ADMIN_NOTIFICATIONS_TITLE = "Admin notifications";
 
 Future<void> openAdminNotificationsScreen(BuildContext context) {
+  final r = context.read<RepositoryInstances>();
   final pageKey = PageKey();
   return MyNavigator.pushWithKey(
     context,
-    MaterialPage<void>(child: AdminNotificationScreen(pageKey: pageKey)),
+    MaterialPage<void>(
+      child: AdminNotificationScreen(api: r.api, pageKey: pageKey),
+    ),
     pageKey,
   );
 }
 
 class AdminNotificationScreen extends EditDataScreen<AdminNotificationDataManager> {
-  const AdminNotificationScreen({required super.pageKey, super.key})
+  const AdminNotificationScreen({required super.api, required super.pageKey, super.key})
     : super(dataApi: const AdminNotificationDataApi(), title: ADMIN_NOTIFICATIONS_TITLE);
 }
 

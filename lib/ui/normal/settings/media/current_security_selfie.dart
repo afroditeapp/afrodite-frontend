@@ -1,5 +1,5 @@
 import 'package:app/data/image_cache.dart';
-import 'package:app/data/login_repository.dart';
+import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/logic/media/new_moderation_request.dart';
 import 'package:app/logic/media/select_content.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
@@ -30,8 +30,6 @@ class CurrentSecuritySelfie extends StatefulWidget {
 }
 
 class _CurrentSecuritySelfieState extends State<CurrentSecuritySelfie> {
-  final currentUser = LoginRepository.getInstance().repositories.accountId;
-
   MyContent? currentImg;
   AccountImageId? changedImg;
   bool backNavigationStarted = false;
@@ -149,6 +147,7 @@ class _CurrentSecuritySelfieState extends State<CurrentSecuritySelfie> {
   }
 
   Widget content(BuildContext context, ContentId? contentId, String infoText) {
+    final currentUser = context.read<RepositoryInstances>().accountId;
     return SingleChildScrollView(
       child: Row(
         children: [
@@ -158,7 +157,7 @@ class _CurrentSecuritySelfieState extends State<CurrentSecuritySelfie> {
               children: [
                 const Padding(padding: EdgeInsets.only(top: 8)),
                 if (contentId == null) Text(context.strings.generic_empty),
-                if (contentId != null) securitySelfieWidget(currentUser, contentId),
+                if (contentId != null) securitySelfieWidget(context, currentUser, contentId),
                 if (infoText.isNotEmpty) const Padding(padding: EdgeInsets.only(top: 8)),
                 if (infoText.isNotEmpty) hPad(Text(infoText)),
                 const Padding(padding: EdgeInsets.only(top: 8)),
@@ -197,7 +196,7 @@ class _CurrentSecuritySelfieState extends State<CurrentSecuritySelfie> {
     );
   }
 
-  Widget securitySelfieWidget(AccountId accountId, ContentId securitySelfie) {
+  Widget securitySelfieWidget(BuildContext context, AccountId accountId, ContentId securitySelfie) {
     const double IMG_WIDTH = 150;
     const double IMG_HEIGHT = 200;
     return SizedBox(
@@ -212,6 +211,7 @@ class _CurrentSecuritySelfieState extends State<CurrentSecuritySelfie> {
             ),
           ),
           child: accountImgWidgetInk(
+            context,
             accountId,
             securitySelfie,
             cacheSize: ImageCacheSize.constantWidthAndHeight(context, IMG_WIDTH, IMG_HEIGHT),

@@ -155,6 +155,7 @@ class _AskSecuritySelfieState extends State<AskSecuritySelfie> {
                     );
                   },
                   child: accountImgWidgetInk(
+                    context,
                     image.accountId,
                     image.contentId,
                     width: IMG_WIDTH,

@@ -1,7 +1,7 @@
 import 'dart:math';
 import 'dart:ui';
 
-import 'package:app/data/login_repository.dart';
+import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/ui/utils/view_profile.dart';
 import 'package:app/ui_utils/crop_image_screen.dart';
 import 'package:app/ui_utils/profile_thumbnail_image.dart';
@@ -9,6 +9,7 @@ import 'package:database/database.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:openapi/api.dart';
 import 'package:app/data/media_repository.dart';
@@ -337,7 +338,7 @@ class PrecacheImageForViewProfileScreen {
       account,
       content,
       cacheSize: ImageCacheSize.constantHeight(context, VIEW_PROFILE_WIDGET_IMG_HEIGHT),
-      media: LoginRepository.getInstance().repositories.media,
+      media: context.read<RepositoryInstances>().media,
       cropArea: null,
     );
     await precacheImage(imageProvider, context);

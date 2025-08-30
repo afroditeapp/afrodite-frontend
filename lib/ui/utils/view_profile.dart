@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 import 'package:database/database.dart';
-import 'package:app/data/login_repository.dart';
 import 'package:app/logic/profile/my_profile.dart';
 import 'package:app/logic/settings/ui_settings.dart';
 import 'package:app/ui_utils/consts/size.dart';
@@ -29,15 +28,14 @@ const double VIEW_PROFILE_WIDGET_IMG_HEIGHT = 400;
 
 class ViewProfileEntry extends StatefulWidget {
   final ProfileEntry profile;
-  const ViewProfileEntry({required this.profile, super.key});
+  final bool isMyProfile;
+  const ViewProfileEntry({required this.profile, required this.isMyProfile, super.key});
 
   @override
   State<ViewProfileEntry> createState() => _ViewProfileEntryState();
 }
 
 class _ViewProfileEntryState extends State<ViewProfileEntry> {
-  final currentUser = LoginRepository.getInstance().repositories.accountId;
-
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
@@ -56,8 +54,8 @@ class _ViewProfileEntryState extends State<ViewProfileEntry> {
               ),
               const Padding(padding: EdgeInsets.only(top: 16)),
               title(context),
-              if (!isMyProfile()) const Padding(padding: EdgeInsets.only(top: 8)),
-              if (!isMyProfile()) lastSeenTime(context),
+              if (!widget.isMyProfile) const Padding(padding: EdgeInsets.only(top: 8)),
+              if (!widget.isMyProfile) lastSeenTime(context),
               const Padding(padding: EdgeInsets.only(top: 16)),
               if (showProfileText) profileText(context),
               if (showProfileText) const Padding(padding: EdgeInsets.only(top: 16)),
@@ -68,10 +66,6 @@ class _ViewProfileEntryState extends State<ViewProfileEntry> {
         );
       },
     );
-  }
-
-  bool isMyProfile() {
-    return currentUser == widget.profile.accountId;
   }
 
   Widget title(BuildContext context) {
@@ -88,7 +82,7 @@ class _ViewProfileEntryState extends State<ViewProfileEntry> {
                   child: Text(
                     widget.profile.profileTitleWithAge(
                       context.read<UiSettingsBloc>().state.showNonAcceptedProfileNames ||
-                          isMyProfile(),
+                          widget.isMyProfile,
                     ),
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
@@ -426,6 +420,7 @@ class _ViewProfileImgViewerState extends State<ViewProfileImgViewer> {
 
   Widget viewProifleImage(BuildContext context, AccountId accountId, ContentId contentId) {
     return accountImgWidget(
+      context,
       accountId,
       contentId,
       cacheSize: ImageCacheSize.constantHeight(context, VIEW_PROFILE_WIDGET_IMG_HEIGHT),

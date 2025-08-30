@@ -1,4 +1,4 @@
-import 'package:app/data/login_repository.dart';
+import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/localizations.dart';
 import 'package:app/logic/account/client_features_config.dart';
 import 'package:app/ui/normal/settings/admin.dart';
@@ -36,7 +36,7 @@ class MetricsScreen extends StatelessWidget {
   }
 
   List<Setting> settingsList(BuildContext context, AdminSettingsPermissions permissions) {
-    final api = LoginRepository.getInstance().repositories.api;
+    final api = context.read<RepositoryInstances>().api;
     final ipCountryDataAttribution = context
         .read<ClientFeaturesConfigBloc>()
         .state

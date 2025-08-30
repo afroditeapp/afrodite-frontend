@@ -1,8 +1,8 @@
 import 'dart:io';
 
 import 'package:android_intent_plus/android_intent.dart';
-import 'package:app/data/login_repository.dart';
 import 'package:app/data/notification_manager.dart';
+import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/utils/result.dart';
 import 'package:app/utils/version.dart';
 import 'package:device_info_plus/device_info_plus.dart';
@@ -400,7 +400,7 @@ ${screenContext.strings.generic_state}: $stateText""";
 }
 
 void _joinVideoCall(BuildContext context, AccountId callee) async {
-  final api = LoginRepository.getInstance().repositories.api;
+  final api = context.read<RepositoryInstances>().api;
 
   final videoCallingUrls = await api.chat((api) => api.getVideoCallUrls(callee.aid)).ok();
 

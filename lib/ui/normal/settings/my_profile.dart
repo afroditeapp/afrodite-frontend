@@ -1,5 +1,5 @@
 import 'package:app/data/image_cache.dart';
-import 'package:app/data/login_repository.dart';
+import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/logic/account/account.dart';
 import 'package:app/logic/media/content.dart';
 import 'package:app/ui_utils/snack_bar.dart';
@@ -21,7 +21,7 @@ import 'package:app/localizations.dart';
 import 'package:app/ui_utils/loading_dialog.dart';
 
 Future<void> openMyProfileScreen(BuildContext context) async {
-  final account = LoginRepository.getInstance().repositories.accountId;
+  final account = context.read<RepositoryInstances>().accountId;
   final contentState = context.read<ContentBloc>().state;
   final content = contentState.primaryProfilePicture;
 
@@ -118,7 +118,7 @@ class MyProfileScreen extends StatelessWidget {
         if (profile != null) {
           wantedWidget = Align(
             alignment: Alignment.topCenter,
-            child: ViewProfileEntry(profile: profile),
+            child: ViewProfileEntry(profile: profile, isMyProfile: true),
           );
         } else {
           wantedWidget = Center(

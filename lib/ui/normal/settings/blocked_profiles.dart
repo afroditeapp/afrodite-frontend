@@ -1,12 +1,13 @@
 import 'dart:async';
 
+import 'package:app/data/chat_repository.dart';
+import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/ui_utils/extensions/other.dart';
 import 'package:app/ui_utils/profile_thumbnail_image_or_error.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 import 'package:app/data/image_cache.dart';
-import 'package:app/data/login_repository.dart';
 import 'package:app/data/profile_repository.dart';
 import 'package:database/database.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -18,7 +19,9 @@ import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/list.dart';
 
 class BlockedProfilesScreen extends StatefulWidget {
-  const BlockedProfilesScreen({super.key});
+  final ProfileRepository profile;
+  final ChatRepository chat;
+  BlockedProfilesScreen(RepositoryInstances r, {super.key}) : profile = r.profile, chat = r.chat;
 
   @override
   State<BlockedProfilesScreen> createState() => _BlockedProfilesScreen();
@@ -32,16 +35,13 @@ class _BlockedProfilesScreen extends State<BlockedProfilesScreen> {
   StreamSubscription<ProfileChange>? _profileChangesSubscription;
   PagingState<int, BlockedProfileEntry> _pagingState = PagingState();
 
-  final chat = LoginRepository.getInstance().repositories.chat;
-  final profile = LoginRepository.getInstance().repositories.profile;
-
   bool isDisposed = false;
 
   @override
   void initState() {
     super.initState();
     _profileChangesSubscription?.cancel();
-    _profileChangesSubscription = profile.profileChanges.listen((event) {
+    _profileChangesSubscription = widget.profile.profileChanges.listen((event) {
       handleProfileChange(event);
     });
   }
@@ -84,10 +84,10 @@ class _BlockedProfilesScreen extends State<BlockedProfilesScreen> {
     updatePagingState((s) => s.copyAndShowLoading());
 
     if (_pagingState.isInitialPage()) {
-      chat.sentBlocksIteratorReset();
+      widget.chat.sentBlocksIteratorReset();
     }
 
-    final profileList = await chat.sentBlocksIteratorNext();
+    final profileList = await widget.chat.sentBlocksIteratorNext();
 
     updatePagingState((s) => s.copyAndAdd(profileList));
   }

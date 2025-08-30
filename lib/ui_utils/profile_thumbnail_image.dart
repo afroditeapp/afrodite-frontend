@@ -1,15 +1,16 @@
 import 'dart:ui' as ui;
 
+import 'package:app/data/media_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:openapi/api.dart';
 import 'package:app/data/image_cache.dart';
-import 'package:app/data/login_repository.dart';
 import 'package:app/ui_utils/consts/corners.dart';
 import 'package:app/ui_utils/crop_image_screen.dart';
 
 const IMAGE_FADE_IN = Duration(milliseconds: 200);
 
 class ProfileThumbnailImage extends StatelessWidget {
+  final MediaRepository media;
   final AccountId accountId;
   final ContentId contentId;
   final CropArea cropArea;
@@ -21,6 +22,7 @@ class ProfileThumbnailImage extends StatelessWidget {
   final ImageCacheSize cacheSize;
   final ImageProvider<Object> _imageProvider;
   ProfileThumbnailImage({
+    required this.media,
     required this.accountId,
     required this.contentId,
     this.cropArea = CropArea.full,
@@ -34,7 +36,7 @@ class ProfileThumbnailImage extends StatelessWidget {
          accountId,
          contentId,
          cacheSize: cacheSize,
-         media: LoginRepository.getInstance().repositories.media,
+         media: media,
          cropArea: cropArea,
        );
 

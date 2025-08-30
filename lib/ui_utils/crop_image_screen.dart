@@ -81,6 +81,7 @@ class _CropImageScreenState extends State<CropImageScreen> {
         }
 
         final imgWidget = accountImgWidget(
+          context,
           imageOwner,
           imageId,
           width: imgWidgetWidth,

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/logic/profile/view_profiles.dart';
 import 'package:app/logic/settings/ui_settings.dart';
 import 'package:app/model/freezed/logic/profile/view_profiles.dart';
@@ -14,7 +15,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 import 'package:app/data/image_cache.dart';
-import 'package:app/data/login_repository.dart';
 import 'package:app/data/profile/profile_iterator_manager.dart';
 import 'package:app/data/profile_repository.dart';
 import 'package:database/database.dart';
@@ -36,8 +36,9 @@ import 'package:rxdart/rxdart.dart';
 import 'package:utils/utils.dart';
 
 class ProfileGrid extends StatefulWidget {
+  final RepositoryInstances r;
   final ProfileFiltersBloc profileFiltersBloc;
-  const ProfileGrid({required this.profileFiltersBloc, super.key});
+  const ProfileGrid({required this.r, required this.profileFiltersBloc, super.key});
 
   @override
   State<ProfileGrid> createState() => ProfileGridState();
@@ -48,19 +49,7 @@ class ProfileGridState extends State<ProfileGrid> {
   PagingState<int, ProfileGridProfileEntry> pagingState = PagingState();
   StreamSubscription<ProfileChange>? _profileChangesSubscription;
 
-  final AccountDatabaseManager accountDb = LoginRepository.getInstance().repositories.accountDb;
-
-  final ProfileIteratorManager _mainProfilesViewIterator = ProfileIteratorManager(
-    LoginRepository.getInstance().repositories.chat,
-    LoginRepository.getInstance().repositories.media,
-    LoginRepository.getInstance().repositories.accountBackgroundDb,
-    LoginRepository.getInstance().repositories.accountDb,
-    LoginRepository.getInstance().repositories.connectionManager,
-    LoginRepository.getInstance().repositories.chat.currentUser,
-  );
-
-  final profileRepository = LoginRepository.getInstance().repositories.profile;
-  final chatRepository = LoginRepository.getInstance().repositories.chat;
+  late final ProfileIteratorManager _mainProfilesViewIterator;
 
   final PagedGridLogic _gridLogic = PagedGridLogic();
   bool isDisposed = false;
@@ -71,6 +60,15 @@ class ProfileGridState extends State<ProfileGrid> {
   void initState() {
     super.initState();
 
+    _mainProfilesViewIterator = ProfileIteratorManager(
+      widget.r.chat,
+      widget.r.media,
+      widget.r.accountBackgroundDb,
+      widget.r.accountDb,
+      widget.r.connectionManager,
+      widget.r.chat.currentUser,
+    );
+
     _gridLogic.init();
 
     if (widget.profileFiltersBloc.state.showOnlyFavorites) {
@@ -80,7 +78,7 @@ class ProfileGridState extends State<ProfileGrid> {
     }
 
     _profileChangesSubscription?.cancel();
-    _profileChangesSubscription = profileRepository.profileChanges.listen((event) {
+    _profileChangesSubscription = widget.r.profile.profileChanges.listen((event) {
       handleProfileChange(event);
     });
     _scrollController.addListener(scrollEventListener);
@@ -170,8 +168,8 @@ class ProfileGridState extends State<ProfileGrid> {
 
     final newList = List<ProfileGridProfileEntry>.empty(growable: true);
     for (final profile in profileList) {
-      final initialProfileAction = await resolveProfileAction(chatRepository, profile.accountId);
-      final isFavorite = await profileRepository.isInFavorites(profile.accountId);
+      final initialProfileAction = await resolveProfileAction(widget.r.chat, profile.accountId);
+      final isFavorite = await widget.r.profile.isInFavorites(profile.accountId);
       newList.add((
         profile: ProfileThumbnail(entry: profile, isFavorite: isFavorite),
         initialProfileAction: initialProfileAction,
@@ -268,7 +266,7 @@ class ProfileGridState extends State<ProfileGrid> {
           return profileEntryWidgetStream(
             item.profile,
             item.initialProfileAction,
-            accountDb,
+            widget.r.accountDb,
             settings,
             maxItemWidth: singleItemWidth,
           );

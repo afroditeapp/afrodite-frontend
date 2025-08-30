@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:app/data/utils/repository_instances.dart';
 import 'package:flutter/material.dart';
 import 'package:openapi/api.dart';
 import 'package:app/data/general/notification/state/like_received.dart';
 import 'package:app/data/general/notification/state/message_received.dart';
-import 'package:app/data/login_repository.dart';
 import 'package:app/database/account_background_database_manager.dart';
 import 'package:app/database/account_database_manager.dart';
 import 'package:app/ui/normal/chat/debug_page.dart';
@@ -13,18 +13,18 @@ import 'package:app/ui/normal/settings.dart';
 import 'package:app/utils/result.dart';
 
 class DebugSettingsPage extends StatefulWidget {
-  const DebugSettingsPage({super.key});
+  final AccountBackgroundDatabaseManager accountBackgroundDb;
+  final AccountDatabaseManager accountDb;
+
+  DebugSettingsPage(RepositoryInstances r, {super.key})
+    : accountBackgroundDb = r.accountBackgroundDb,
+      accountDb = r.accountDb;
 
   @override
   State<DebugSettingsPage> createState() => _DebugSettingsPageState();
 }
 
 class _DebugSettingsPageState extends State<DebugSettingsPage> {
-  final AccountBackgroundDatabaseManager accountBackgroundDb =
-      LoginRepository.getInstance().repositories.accountBackgroundDb;
-
-  final AccountDatabaseManager accountDb = LoginRepository.getInstance().repositories.accountDb;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,8 +56,9 @@ class _DebugSettingsPageState extends State<DebugSettingsPage> {
       Setting.createSetting(
         Icons.notification_add,
         "Notification: Likes",
-        () =>
-            NotificationLikeReceived.getInstance().incrementReceivedLikesCount(accountBackgroundDb),
+        () => NotificationLikeReceived.getInstance().incrementReceivedLikesCount(
+          widget.accountBackgroundDb,
+        ),
       ),
     );
 
@@ -66,7 +67,7 @@ class _DebugSettingsPageState extends State<DebugSettingsPage> {
         Icons.notification_add,
         "Notification: New message (first chat)",
         () async {
-          final matchList = await accountDb
+          final matchList = await widget.accountDb
               .accountData((db) => db.conversationList.getConversationListNoBlocked(0, 1))
               .ok();
           final match = matchList?.firstOrNull;
@@ -77,7 +78,7 @@ class _DebugSettingsPageState extends State<DebugSettingsPage> {
             match,
             1,
             null,
-            accountBackgroundDb,
+            widget.accountBackgroundDb,
           );
         },
       ),
@@ -88,7 +89,7 @@ class _DebugSettingsPageState extends State<DebugSettingsPage> {
         Icons.notification_add,
         "Notification: New message (second chat)",
         () async {
-          final matchList = await accountDb
+          final matchList = await widget.accountDb
               .accountData((db) => db.conversationList.getConversationListNoBlocked(0, 2))
               .ok();
           final match = matchList?.lastOrNull;
@@ -99,7 +100,7 @@ class _DebugSettingsPageState extends State<DebugSettingsPage> {
             match,
             1,
             null,
-            accountBackgroundDb,
+            widget.accountBackgroundDb,
           );
         },
       ),
@@ -111,7 +112,7 @@ class _DebugSettingsPageState extends State<DebugSettingsPage> {
         "Notification: New message (chats 1-5)",
         () async {
           final List<AccountId> matchList =
-              await accountDb
+              await widget.accountDb
                   .accountData((db) => db.conversationList.getConversationListNoBlocked(0, 5))
                   .ok() ??
               [];
@@ -120,7 +121,7 @@ class _DebugSettingsPageState extends State<DebugSettingsPage> {
               match,
               1,
               null,
-              accountBackgroundDb,
+              widget.accountBackgroundDb,
             );
           }
         },
@@ -133,7 +134,7 @@ class _DebugSettingsPageState extends State<DebugSettingsPage> {
         onChanged: (value) {
           setState(() {
             if (value == true) {
-              _debugLogic.startConversationLastUpdateTimeChanger();
+              _debugLogic.startConversationLastUpdateTimeChanger(widget.accountDb);
             } else {
               _debugLogic.stopConversationLastUpdateTimeChanger();
             }
@@ -153,17 +154,15 @@ final _debugRandom = Random();
 final _debugLogic = DebugLogic();
 
 class DebugLogic {
-  final AccountDatabaseManager accountDb = LoginRepository.getInstance().repositories.accountDb;
-
   bool conversationLastUpdateTimeChanger = false;
   StreamSubscription<void>? _conversationLastUpdateTimeChangerSubscription;
 
-  void startConversationLastUpdateTimeChanger() {
+  void startConversationLastUpdateTimeChanger(AccountDatabaseManager accountDb) {
     conversationLastUpdateTimeChanger = true;
-    _startConversationLastUpdateTimeChanger();
+    _startConversationLastUpdateTimeChanger(accountDb);
   }
 
-  void _startConversationLastUpdateTimeChanger() async {
+  void _startConversationLastUpdateTimeChanger(AccountDatabaseManager accountDb) async {
     await _conversationLastUpdateTimeChangerSubscription?.cancel();
     _conversationLastUpdateTimeChangerSubscription = Stream.periodic(const Duration(seconds: 1), (
       _,
