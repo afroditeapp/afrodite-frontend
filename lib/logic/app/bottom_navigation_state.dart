@@ -116,22 +116,17 @@ class BottomNavigationStateBlocInstance extends AppSingletonNoInit {
     return _instance;
   }
 
-  // TODO(quality): The initial bloc is not disposed
-  final BehaviorSubject<BottomNavigationStateBloc> _latestBloc = BehaviorSubject.seeded(
-    BottomNavigationStateBloc(BottomNavigationStateData()),
-  );
+  final BehaviorSubject<BottomNavigationStateBloc?> _latestBloc = BehaviorSubject.seeded(null);
 
-  Stream<BottomNavigationStateData> get navigationStateStream =>
-      _latestBloc.switchMap((b) => b.stream);
-
-  BottomNavigationStateData get navigationState => _latestBloc.value.state;
+  BottomNavigationStateData get navigationState =>
+      _latestBloc.value?.state ?? BottomNavigationStateData();
 
   void updateIsScrolled(
     bool isScrolled,
     BottomNavigationScreenId screen,
     bool Function(BottomNavigationStateData) currentIsScrolledGetter,
   ) {
-    _latestBloc.value.updateIsScrolled(isScrolled, screen, currentIsScrolledGetter);
+    _latestBloc.value?.updateIsScrolled(isScrolled, screen, currentIsScrolledGetter);
   }
 
   void setLatestBloc(BottomNavigationStateBloc newBloc) {

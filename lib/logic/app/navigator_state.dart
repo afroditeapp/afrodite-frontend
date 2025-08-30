@@ -235,15 +235,14 @@ class NavigationStateBlocInstance extends AppSingletonNoInit {
     return _instance;
   }
 
-  final BehaviorSubject<NavigatorStateBloc> _latestBloc = BehaviorSubject.seeded(
-    NavigatorStateBloc(NavigatorStateData.defaultValue()),
-  );
+  final BehaviorSubject<NavigatorStateBloc?> _latestBloc = BehaviorSubject.seeded(null);
 
   Stream<NavigatorStateData> get navigationStateStream => _latestBloc.switchMap((b) {
-    return b.stream;
+    return b?.stream ?? Stream.value(NavigatorStateData.defaultValue());
   });
 
-  NavigatorStateData get navigationState => _latestBloc.value.state;
+  NavigatorStateData get navigationState =>
+      _latestBloc.value?.state ?? NavigatorStateData.defaultValue();
 
   void setLatestBloc(NavigatorStateBloc newBloc) {
     if (_latestBloc.value != newBloc) {
