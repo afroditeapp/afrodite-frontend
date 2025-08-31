@@ -109,6 +109,7 @@ class ServerConnectionManager extends ApiManager
   Timer? _reconnectTimer;
 
   bool _disableSnackBars = false;
+  bool _restartOngoing = false;
 
   @override
   Future<void> init() async {
@@ -245,10 +246,15 @@ class ServerConnectionManager extends ApiManager
   }
 
   @override
-  Future<void> restart() async {
+  Future<void> restartIfRestartNotOngoing() async {
+    if (_restartOngoing) {
+      return;
+    }
+    _restartOngoing = true;
     final event = Restart();
     _cmds.add(event);
     await event.waitCompletion();
+    _restartOngoing = false;
   }
 
   Future<void> close() async {

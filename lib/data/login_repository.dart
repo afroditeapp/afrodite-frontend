@@ -129,7 +129,7 @@ class LoginRepository extends AppSingleton {
     if (currentAccountId != null) {
       final createdRepositories = await _createAndReplaceRepositories(currentAccountId);
       await createdRepositories.onResumeAppUsage();
-      unawaited(createdRepositories.connectionManager.restart());
+      unawaited(createdRepositories.connectionManager.restartIfRestartNotOngoing());
     } else {
       _repositories.add(RepositoriesEmpty());
       await _repositoryStateStreams._logout();
@@ -325,7 +325,7 @@ class LoginRepository extends AppSingleton {
       accountLoginHappened: true,
     );
     await createdRepositories.onLogin();
-    await createdRepositories.connectionManager.restart();
+    await createdRepositories.connectionManager.restartIfRestartNotOngoing();
 
     final CommonSignInError? error;
     if (await createdRepositories.connectionManager.tryWaitUntilConnected(waitTimeoutSeconds: 7)) {

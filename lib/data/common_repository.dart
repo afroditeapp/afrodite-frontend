@@ -65,7 +65,7 @@ class CommonRepository extends DataRepositoryWithLifecycle {
 
             final state = await connectionManager.state.firstOrNull;
             if (state == ServerConnectionState.noConnection) {
-              await connectionManager.restart();
+              await connectionManager.restartIfRestartNotOngoing();
             }
           } else {
             _backgroundedAt = DateTime.now();
