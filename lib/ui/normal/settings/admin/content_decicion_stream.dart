@@ -36,6 +36,8 @@ class _ContentDecicionScreenState<C extends ContentInfoGetter>
   final ItemPositionsListener _listener = ItemPositionsListener.create();
   late final ContentDecicionStreamLogic<C> _logic;
 
+  late final Stream<ContentDecicionStreamStatus> _stream;
+
   /// List item size changes cause issues when scrolling upwards, so
   /// cache latest state for each row.
   Map<int, RowState<C>> rowStateCache = {};
@@ -46,6 +48,7 @@ class _ContentDecicionScreenState<C extends ContentInfoGetter>
     _logic = ContentDecicionStreamLogic<C>(widget.api, widget.io);
     _logic.reset();
     _listener.itemPositions.addListener(positionListener);
+    _stream = _logic.moderationStatus;
   }
 
   void positionListener() {
@@ -77,12 +80,12 @@ class _ContentDecicionScreenState<C extends ContentInfoGetter>
 
   Widget list(BuildContext context) {
     return StreamBuilder(
-      stream: _logic.moderationStatus,
+      stream: _stream,
       builder: (context, state) {
         final d = state.data;
         switch (d) {
           case ContentDecicionStreamStatus.allHandled:
-            return buildEmptyText(widget.infoMessageRowHeight);
+            return buildEmptyText(context, widget.infoMessageRowHeight);
           case ContentDecicionStreamStatus.handling:
             return ScrollablePositionedList.separated(
               itemCount: 1000000,
@@ -91,7 +94,14 @@ class _ContentDecicionScreenState<C extends ContentInfoGetter>
               },
               itemPositionsListener: _listener,
               itemBuilder: (context, index) {
-                return buildEntry(context, index);
+                return UpdatingContentDecicionListItem(
+                  logic: _logic,
+                  rowStateCache: rowStateCache,
+                  index: index,
+                  infoMessageRowHeight: widget.infoMessageRowHeight,
+                  builder: widget.builder,
+                  api: widget.api,
+                );
               },
             );
           case ContentDecicionStreamStatus.loading || null:
@@ -101,23 +111,63 @@ class _ContentDecicionScreenState<C extends ContentInfoGetter>
     );
   }
 
-  Widget buildEntry(BuildContext context, int index) {
+  @override
+  void dispose() {
+    _listener.itemPositions.removeListener(positionListener);
+    super.dispose();
+  }
+}
+
+class UpdatingContentDecicionListItem<C extends ContentInfoGetter> extends StatefulWidget {
+  final ContentDecicionStreamLogic<C> logic;
+  final Map<int, RowState<C>> rowStateCache;
+  final int index;
+  final double infoMessageRowHeight;
+  final ContentUiBuilder<C> builder;
+  final ApiManager api;
+  const UpdatingContentDecicionListItem({
+    required this.logic,
+    required this.rowStateCache,
+    required this.index,
+    required this.infoMessageRowHeight,
+    required this.builder,
+    required this.api,
+    super.key,
+  });
+
+  @override
+  State<UpdatingContentDecicionListItem<C>> createState() =>
+      _UpdatingContentDecicionListItemState();
+}
+
+class _UpdatingContentDecicionListItemState<C extends ContentInfoGetter>
+    extends State<UpdatingContentDecicionListItem<C>> {
+  late final Stream<RowState<C>> stream;
+
+  @override
+  void initState() {
+    super.initState();
+    stream = widget.logic.getRow(widget.index);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: _logic.getRow(index),
-      initialData: rowStateCache[index],
+      stream: stream,
+      initialData: widget.rowStateCache[widget.index],
       builder: (context, snapshot) {
         final s = snapshot.data;
         if (s != null) {
-          rowStateCache[index] = s;
+          widget.rowStateCache[widget.index] = s;
           switch (s) {
             case AllModerated<C>():
-              return buildEmptyText(widget.infoMessageRowHeight);
+              return buildEmptyText(context, widget.infoMessageRowHeight);
             case Loading<C>():
               return buildProgressIndicator(widget.infoMessageRowHeight);
             case ContentRow<C> r:
               return Padding(
                 padding: const EdgeInsets.symmetric(vertical: 4.0),
-                child: buildRow(context, r, index),
+                child: buildRow(context, r, widget.index),
               );
           }
         } else {
@@ -158,26 +208,6 @@ class _ContentDecicionScreenState<C extends ContentInfoGetter>
     );
   }
 
-  Widget buildProgressIndicator(double height) {
-    return SizedBox(
-      height: height,
-      child: const Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [CircularProgressIndicator()],
-      ),
-    );
-  }
-
-  Widget buildEmptyText(double height) {
-    return SizedBox(
-      height: height,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [Text(context.strings.generic_empty)],
-      ),
-    );
-  }
-
   Future<void> showActionDialog(BuildContext context, ContentInfoGetter info, int index) {
     final pageKey = PageKey();
 
@@ -186,7 +216,7 @@ class _ContentDecicionScreenState<C extends ContentInfoGetter>
         MyNavigator.removePage(context, pageKey);
         showConfirmDialog(context, context.strings.generic_reject_question).then((value) {
           if (value == true) {
-            _logic.moderateRow(index, false);
+            widget.logic.moderateRow(index, false);
           }
         });
       },
@@ -202,7 +232,8 @@ class _ContentDecicionScreenState<C extends ContentInfoGetter>
         return SimpleDialog(
           title: const Text("Select action"),
           children: <Widget>[
-            if (_logic.rejectingIsPossible(index) && widget.builder.allowRejecting) rejectAction,
+            if (widget.logic.rejectingIsPossible(index) && widget.builder.allowRejecting)
+              rejectAction,
             if (target == null)
               openAdminSettingsAction(dialogContext, pageKey, "Show admin settings", info.owner),
             if (target != null)
@@ -234,12 +265,26 @@ class _ContentDecicionScreenState<C extends ContentInfoGetter>
       child: Text(title),
     );
   }
+}
 
-  @override
-  void dispose() {
-    _listener.itemPositions.removeListener(positionListener);
-    super.dispose();
-  }
+Widget buildEmptyText(BuildContext context, double height) {
+  return SizedBox(
+    height: height,
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [Text(context.strings.generic_empty)],
+    ),
+  );
+}
+
+Widget buildProgressIndicator(double height) {
+  return SizedBox(
+    height: height,
+    child: const Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [CircularProgressIndicator()],
+    ),
+  );
 }
 
 abstract class ContentUiBuilder<C extends ContentInfoGetter> {
