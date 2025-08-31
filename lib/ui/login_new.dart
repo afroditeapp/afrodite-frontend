@@ -250,24 +250,28 @@ Widget logoAndAppNameAndSlogan(BuildContext context) {
   );
 }
 
-Future<DemoAccountCredentials?> openFirstDemoAccountLoginDialog(BuildContext context) {
+Future<DemoAccountCredentials?> openFirstDemoAccountLoginDialog(BuildContext context) async {
   final defaultUsername = kReleaseMode ? "" : "username";
   final defaultPassword = kReleaseMode ? "" : "password";
 
+  final usernameController = TextEditingController();
   final usernameField = SimpleTextField(
+    controller: usernameController,
     hintText: context.strings.login_screen_demo_account_username,
     // TODO(prod): After password login is implemented add boolean constant which
     //             can hide demo account login.
     getInitialValue: () => context.read<DemoAccountLoginBloc>().state.username ?? defaultUsername,
   );
+  final passwordController = TextEditingController();
   final passwordField = SimpleTextField(
+    controller: passwordController,
     hintText: context.strings.login_screen_demo_account_password,
     obscureText: true,
     getInitialValue: () => context.read<DemoAccountLoginBloc>().state.password ?? defaultPassword,
   );
 
   final pageKey = PageKey();
-  return MyNavigator.showDialog<DemoAccountCredentials?>(
+  final r = await MyNavigator.showDialog<DemoAccountCredentials?>(
     context: context,
     pageKey: pageKey,
     builder: (context) => AlertDialog(
@@ -291,7 +295,7 @@ Future<DemoAccountCredentials?> openFirstDemoAccountLoginDialog(BuildContext con
             MyNavigator.removePage(
               context,
               pageKey,
-              DemoAccountCredentials(usernameField.controller.text, passwordField.controller.text),
+              DemoAccountCredentials(usernameController.text, passwordController.text),
             );
           },
           child: Text(context.strings.generic_login),
@@ -300,4 +304,9 @@ Future<DemoAccountCredentials?> openFirstDemoAccountLoginDialog(BuildContext con
       scrollable: true,
     ),
   );
+
+  usernameController.dispose();
+  passwordController.dispose();
+
+  return r;
 }

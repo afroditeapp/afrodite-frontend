@@ -253,6 +253,14 @@ class _ServerSoftwareUpdatePageState extends State<ServerSoftwareUpdatePage> {
       child: const Text("Check updates"),
     );
   }
+
+  @override
+  void dispose() {
+    for (final state in _currentData ?? []) {
+      state.dispose();
+    }
+    super.dispose();
+  }
 }
 
 class ManagerInstanceRelatedState {
@@ -260,4 +268,8 @@ class ManagerInstanceRelatedState {
   SoftwareUpdateStatus? status;
   TextEditingController sha256Controller = TextEditingController();
   ManagerInstanceRelatedState(this.manager, this.status);
+
+  void dispose() {
+    sha256Controller.dispose();
+  }
 }

@@ -231,4 +231,10 @@ class _ModerateSingleProfileStringScreenState extends State<ModerateSingleProfil
     await _getData();
     await widget.profile.downloadProfileToDatabase(widget.chat, widget.accountId);
   }
+
+  @override
+  void dispose() {
+    detailsController.dispose();
+    super.dispose();
+  }
 }

@@ -39,6 +39,10 @@ class ViewSingleMetricController {
   String _currentlySelectedName(List<Metric>? currentData) {
     return currentData?[selectedIndexFromAllData ?? 0].name ?? "";
   }
+
+  void dispose() {
+    textEditingController.dispose();
+  }
 }
 
 class ViewSingleMetric extends StatefulWidget {

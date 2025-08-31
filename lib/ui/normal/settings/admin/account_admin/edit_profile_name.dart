@@ -73,4 +73,10 @@ class _EditProfileNameScreenState extends State<EditProfileNameScreen> {
       ],
     );
   }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 }

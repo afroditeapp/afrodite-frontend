@@ -11,14 +11,15 @@ void _defaultOnChanged(String value) {
 }
 
 class SimpleTextField extends StatefulWidget {
-  final controller = TextEditingController();
+  final TextEditingController controller;
 
   final String hintText;
   final bool obscureText;
   final String Function() getInitialValue;
   final void Function(String) onChanged;
 
-  SimpleTextField({
+  const SimpleTextField({
+    required this.controller,
     this.hintText = "",
     this.obscureText = false,
     this.getInitialValue = _defaultInitialValue,
@@ -53,8 +54,6 @@ class _SimpleTextFieldState extends State<SimpleTextField> {
 }
 
 class AgeTextField extends StatefulWidget {
-  final TextEditingController? controller;
-
   /// Called only once when the widget is initialized.
   final String Function() getInitialValue;
   final void Function(String) onChanged;
@@ -62,7 +61,6 @@ class AgeTextField extends StatefulWidget {
   const AgeTextField({
     this.getInitialValue = _defaultInitialValue,
     this.onChanged = _defaultOnChanged,
-    this.controller,
     super.key,
   });
 
@@ -71,27 +69,19 @@ class AgeTextField extends StatefulWidget {
 }
 
 class _AgeTextFieldState extends State<AgeTextField> {
-  late final TextEditingController controller;
+  late final String initialValue;
 
   @override
   void initState() {
     super.initState();
-
-    final providedController = widget.controller;
-    if (providedController == null) {
-      controller = TextEditingController();
-    } else {
-      controller = providedController;
-    }
-
-    controller.text = widget.getInitialValue();
+    initialValue = widget.getInitialValue();
   }
 
   @override
   Widget build(BuildContext context) {
     return Form(
       child: TextFormField(
-        controller: controller,
+        initialValue: initialValue,
         decoration: InputDecoration(hintText: context.strings.generic_text_field_age_hint_text),
         keyboardType: TextInputType.number,
         enableSuggestions: false,

@@ -99,6 +99,12 @@ class _EditProfileAttributeScreenState extends State<EditProfileAttributeScreen>
       filterText: filterValue,
     );
   }
+
+  @override
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
+  }
 }
 
 class EditAttributeTitle extends StatelessWidget {

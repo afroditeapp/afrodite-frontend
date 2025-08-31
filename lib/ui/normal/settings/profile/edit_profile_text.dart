@@ -82,4 +82,10 @@ class EditProfileTextScreenState extends State<EditProfileTextScreen> {
       ),
     );
   }
+
+  @override
+  void dispose() {
+    _profileTextController.dispose();
+    super.dispose();
+  }
 }

@@ -145,6 +145,13 @@ class EditNewsTranslationScreenState extends State<EditNewsTranslationScreen> {
       ),
     );
   }
+
+  @override
+  void dispose() {
+    _titleTextController.dispose();
+    _bodyTextController.dispose();
+    super.dispose();
+  }
 }
 
 class NewsTranslationLivePreview extends StatefulWidget {

@@ -6,6 +6,10 @@ class AppBarSearchController {
   void Function()? onChanged;
 
   AppBarSearchController({this.onChanged});
+
+  void dispose() {
+    searchController.dispose();
+  }
 }
 
 class AppBarWithSearch extends StatefulWidget implements PreferredSizeWidget {

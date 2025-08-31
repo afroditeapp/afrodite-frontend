@@ -12,8 +12,6 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:openapi/api.dart';
 
-// TODO(quality): Add dispose calling to all TextEditingControllers
-
 class MetricAndMinMaxValues {
   final Metric metric;
   final double minValue;

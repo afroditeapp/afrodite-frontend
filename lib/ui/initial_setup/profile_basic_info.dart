@@ -137,6 +137,13 @@ class _AskProfileBasicInfoState extends State<AskProfileBasicInfo> {
       ],
     );
   }
+
+  @override
+  void dispose() {
+    nameTextController.dispose();
+    ageTextController.dispose();
+    super.dispose();
+  }
 }
 
 Widget profileNameTextField(

@@ -86,6 +86,12 @@ class _LoginScreenOldState extends State<LoginScreenOld> {
       },
     );
   }
+
+  @override
+  void dispose() {
+    _serverAddressController.dispose();
+    super.dispose();
+  }
 }
 
 class ServerAddressField extends StatefulWidget {
@@ -98,18 +104,10 @@ class ServerAddressField extends StatefulWidget {
 }
 
 class _ServerAddressFieldState extends State<ServerAddressField> {
-  late TextEditingController _serverAddressController;
-
-  @override
-  void initState() {
-    super.initState();
-    _serverAddressController = widget.controller;
-  }
-
   @override
   Widget build(BuildContext context) {
-    if (_serverAddressController.text.isEmpty) {
-      _serverAddressController.text = context.read<ServerAddressBloc>().state;
+    if (widget.controller.text.isEmpty) {
+      widget.controller.text = context.read<ServerAddressBloc>().state;
     }
 
     final serverAddressFormWidget = Form(
@@ -119,7 +117,7 @@ class _ServerAddressFieldState extends State<ServerAddressField> {
         child: Padding(
           padding: const EdgeInsets.all(15.0),
           child: TextFormField(
-            controller: _serverAddressController,
+            controller: widget.controller,
             decoration: const InputDecoration(
               icon: Icon(Icons.computer),
               hintText: "Server address",
@@ -149,7 +147,7 @@ class _ServerAddressFieldState extends State<ServerAddressField> {
     final serverAddressForm = BlocListener<ServerAddressBloc, String>(
       listener: (context, state) {
         setState(() {
-          _serverAddressController.text = state;
+          widget.controller.text = state;
         });
       },
       child: serverAddressFormWidget,

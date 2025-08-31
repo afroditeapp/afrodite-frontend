@@ -285,7 +285,8 @@ class ChatViewDebuggerPageState extends State<ChatViewDebuggerPage> {
 
   @override
   void dispose() {
-    super.dispose();
     _subscription.cancel();
+    _textEditingController.dispose();
+    super.dispose();
   }
 }

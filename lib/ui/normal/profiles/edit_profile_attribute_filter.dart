@@ -115,6 +115,12 @@ class _EditProfileAttributeFilterScreenState extends State<EditProfileAttributeF
       },
     );
   }
+
+  @override
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
+  }
 }
 
 class EditAttributeFilterSettings extends StatefulWidget {

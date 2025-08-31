@@ -111,6 +111,12 @@ class _ViewMetricsScreenState extends State<ViewMetricsScreen> {
       return ViewMultipleMetrics(controller: _multipleController, metrics: data);
     }
   }
+
+  @override
+  void dispose() {
+    _singleController.dispose();
+    super.dispose();
+  }
 }
 
 abstract class GetMetrics {

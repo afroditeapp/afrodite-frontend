@@ -583,6 +583,12 @@ class _EditProfileBasicInfoState extends State<EditProfileBasicInfo> {
       },
     );
   }
+
+  @override
+  void dispose() {
+    nameTextController.dispose();
+    super.dispose();
+  }
 }
 
 class EditProfileText extends StatefulWidget {

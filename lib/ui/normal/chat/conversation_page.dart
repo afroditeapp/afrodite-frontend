@@ -275,4 +275,10 @@ class ConversationPageState extends State<ConversationPage> {
     }
     bloc.add(SendMessageTo(bloc.state.accountId, message));
   }
+
+  @override
+  void dispose() {
+    _textEditingController.dispose();
+    super.dispose();
+  }
 }

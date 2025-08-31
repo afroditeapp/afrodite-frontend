@@ -213,4 +213,11 @@ class _BanAccountScreenState extends State<BanAccountScreen> {
     final timeString = fullTimeString(time);
     return Text("Banned until: $timeString");
   }
+
+  @override
+  void dispose() {
+    banDaysTextController.dispose();
+    banDetailsController.dispose();
+    super.dispose();
+  }
 }

@@ -73,4 +73,10 @@ class _OpenAccountAdminSettingsState extends State<OpenAccountAdminSettings> {
       ],
     );
   }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    super.dispose();
+  }
 }
