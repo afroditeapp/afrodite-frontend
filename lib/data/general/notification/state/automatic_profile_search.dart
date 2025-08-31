@@ -30,6 +30,9 @@ class NotificationAutomaticProfileSearch extends AppSingletonNoInit {
         false;
 
     if (show) {
+      if (notification.profileCount <= 0) {
+        return;
+      }
       await accountBackgroundDb.accountAction(
         (db) => db.profile.showAutomaticProfileSearchBadge(notification.profileCount),
       );
