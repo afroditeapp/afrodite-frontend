@@ -48,11 +48,13 @@ class _NewsListScreenOpenerState extends State<NewsListScreenOpener> {
 class NewsListScreen extends StatefulWidget {
   final AccountBackgroundDatabaseManager accountBackgroundDb;
   final ApiManager api;
+  final ServerConnectionManager connectionManager;
   final String locale;
   final NewsCountBloc bloc;
   NewsListScreen(RepositoryInstances r, {required this.locale, required this.bloc, super.key})
     : accountBackgroundDb = r.accountBackgroundDb,
-      api = r.api;
+      api = r.api,
+      connectionManager = r.connectionManager;
 
   @override
   State<NewsListScreen> createState() => NewsListScreenState();
@@ -99,6 +101,11 @@ class NewsListScreenState extends State<NewsListScreen> {
     updatePagingState((s) => s.copyAndShowLoading());
 
     if (_pagingState.isInitialPage()) {
+      if (await widget.connectionManager.waitUntilCurrentSessionConnects().isErr()) {
+        showLoadingError();
+        return;
+      }
+
       final r = await widget.api.account((api) => api.postResetNewsPaging()).ok();
       if (r == null) {
         showLoadingError();

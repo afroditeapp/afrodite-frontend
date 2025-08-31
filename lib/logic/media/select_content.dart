@@ -21,10 +21,12 @@ class DeleteContent extends SelectContentEvent {
 
 class SelectContentBloc extends Bloc<SelectContentEvent, SelectContentData> with ActionRunner {
   final ApiManager api;
+  final ServerConnectionManager connectionManager;
   final AccountId currentUser;
 
   SelectContentBloc(RepositoryInstances r)
     : api = r.api,
+      connectionManager = r.connectionManager,
       currentUser = r.accountId,
       super(SelectContentData()) {
     on<ReloadAvailableContent>((data, emit) async {
@@ -49,6 +51,11 @@ class SelectContentBloc extends Bloc<SelectContentEvent, SelectContentData> with
     if (stateResetAndShowLoadingState) {
       // Reset to loading state
       emit(SelectContentData().copyWith(isLoading: true));
+
+      if (await connectionManager.waitUntilCurrentSessionConnects().isErr()) {
+        emit(state.copyWith(isLoading: false, isError: true));
+        return;
+      }
     }
 
     final value = await api.media((api) => api.getAllAccountMediaContent(currentUser.aid)).ok();
