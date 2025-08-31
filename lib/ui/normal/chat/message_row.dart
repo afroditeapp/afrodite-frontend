@@ -23,56 +23,64 @@ import 'package:url_launcher/url_launcher_string.dart';
 
 const int _OPACITY_FOR_ON_SURFACE_CONTENT = 128;
 
-Align messageRowWidget(
-  BuildContext context,
-  MessageEntry entry, {
-  Key? keyFromMessageRenderer,
-  required TextStyle parentTextStyle,
-}) {
-  final sentMessageState = entry.messageState.toSentState();
-  final infoState = entry.messageState.toInfoState();
-  final isSent = sentMessageState != null;
+class MessageListItem extends StatelessWidget {
+  final MessageEntry entry;
+  final Key? keyFromMessageRenderer;
+  final TextStyle parentTextStyle;
+  const MessageListItem({
+    required this.entry,
+    this.keyFromMessageRenderer,
+    required this.parentTextStyle,
+    super.key,
+  });
 
-  Widget rowContent;
-  if (infoState == null) {
-    rowContent = FractionallySizedBox(
-      widthFactor: 0.8,
-      child: Row(
-        children: [
-          Expanded(
-            child: Align(
-              alignment: isSent ? Alignment.centerRight : Alignment.centerLeft,
-              child: GestureDetector(
-                onLongPress: () => openMessageMenu(context, entry),
-                child: _messageWidget(
-                  context,
-                  entry,
-                  sentMessageState,
-                  entry.messageState.toReceivedState(),
-                  parentTextStyle: parentTextStyle,
+  @override
+  Widget build(BuildContext context) {
+    final sentMessageState = entry.messageState.toSentState();
+    final infoState = entry.messageState.toInfoState();
+    final isSent = sentMessageState != null;
+
+    Widget rowContent;
+    if (infoState == null) {
+      rowContent = FractionallySizedBox(
+        widthFactor: 0.8,
+        child: Row(
+          children: [
+            Expanded(
+              child: Align(
+                alignment: isSent ? Alignment.centerRight : Alignment.centerLeft,
+                child: GestureDetector(
+                  onLongPress: () => openMessageMenu(context, entry),
+                  child: _messageWidget(
+                    context,
+                    entry,
+                    sentMessageState,
+                    entry.messageState.toReceivedState(),
+                    parentTextStyle: parentTextStyle,
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
-      ),
-    );
-  } else {
-    // Info message
-    rowContent = Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: infoMessage(context, infoState, parentTextStyle: parentTextStyle),
-      ),
+          ],
+        ),
+      );
+    } else {
+      // Info message
+      rowContent = Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: infoMessage(context, infoState, parentTextStyle: parentTextStyle),
+        ),
+      );
+    }
+
+    return Align(
+      key: keyFromMessageRenderer,
+      alignment: isSent ? Alignment.centerRight : Alignment.centerLeft,
+      child: rowContent,
     );
   }
-
-  return Align(
-    key: keyFromMessageRenderer,
-    alignment: isSent ? Alignment.centerRight : Alignment.centerLeft,
-    child: rowContent,
-  );
 }
 
 List<Widget> infoMessage(

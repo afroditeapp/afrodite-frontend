@@ -92,24 +92,44 @@ class OneEndedMessageListWidgetState extends State<OneEndedMessageListWidget> {
       itemBuilder: (BuildContext context, int index) {
         final invertedIndex = visibleMessages.length - 1 - index;
         final entry = visibleMessages[invertedIndex];
-        final style = DefaultTextStyle.of(context);
         final sentMessageState = entry.messageState.toSentState();
         if (sentMessageState != null && sentMessageState != SentMessageState.sent) {
-          return StreamBuilder<MessageEntry?>(
-            stream: widget.conversationBloc.dataProvider
-                .getMessageWithLocalId(entry.localId)
-                .whereNotNull(),
-            builder: (context, snapshot) {
-              return messageRowWidget(
-                context,
-                snapshot.data ?? entry,
-                parentTextStyle: style.style,
-              );
-            },
-          );
+          return UpdatingMessageListItem(bloc: widget.conversationBloc, entry: entry);
         } else {
-          return messageRowWidget(context, entry, parentTextStyle: style.style);
+          final style = DefaultTextStyle.of(context);
+          return MessageListItem(entry: entry, parentTextStyle: style.style);
         }
+      },
+    );
+  }
+}
+
+class UpdatingMessageListItem extends StatefulWidget {
+  final ConversationBloc bloc;
+  final MessageEntry entry;
+
+  const UpdatingMessageListItem({required this.bloc, required this.entry, super.key});
+
+  @override
+  State<UpdatingMessageListItem> createState() => _UpdatingMessageListItemState();
+}
+
+class _UpdatingMessageListItemState extends State<UpdatingMessageListItem> {
+  late final Stream<MessageEntry?> stream;
+
+  @override
+  void initState() {
+    super.initState();
+    stream = widget.bloc.dataProvider.getMessageWithLocalId(widget.entry.localId).whereNotNull();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final style = DefaultTextStyle.of(context);
+    return StreamBuilder<MessageEntry?>(
+      stream: stream,
+      builder: (context, snapshot) {
+        return MessageListItem(entry: snapshot.data ?? widget.entry, parentTextStyle: style.style);
       },
     );
   }

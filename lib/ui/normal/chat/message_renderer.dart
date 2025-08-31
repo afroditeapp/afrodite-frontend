@@ -42,9 +42,8 @@ class MessageRendererState extends State<MessageRenderer> {
             builder: (context) {
               return Offstage(
                 child: SingleChildScrollView(
-                  child: messageRowWidget(
-                    context,
-                    message.entry,
+                  child: MessageListItem(
+                    entry: message.entry,
                     keyFromMessageRenderer: key,
                     parentTextStyle: style.style,
                   ),
