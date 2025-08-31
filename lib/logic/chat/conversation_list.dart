@@ -1,58 +1,29 @@
-import "dart:async";
 import "dart:collection";
 
-import "package:app/data/utils/repository_instances.dart";
-import 'package:bloc_concurrency/bloc_concurrency.dart' show sequential;
-
-import "package:flutter_bloc/flutter_bloc.dart";
 import "package:logging/logging.dart";
 import "package:openapi/api.dart";
-import "package:app/data/profile_repository.dart";
-import "package:app/model/freezed/logic/chat/conversation_list_bloc.dart";
-import "package:app/utils.dart";
-import "package:app/utils/immutable_list.dart";
 import "package:app/utils/iterator.dart";
 
 final _log = Logger("ConversationListBloc");
 
-sealed class ConversationListEvent {}
-
-class HandleNewConversationList extends ConversationListEvent {
-  final List<AccountId> data;
-  HandleNewConversationList(this.data);
+class ChangeCalculationResult {
+  final List<AccountId> current;
+  final List<ListItemChange> changes;
+  ChangeCalculationResult(this.current, this.changes);
 }
 
-class ConversationListBloc extends Bloc<ConversationListEvent, ConversationListData>
-    with ActionRunner {
-  final ProfileRepository profile;
+sealed class ListItemChange {}
 
-  final ConversationListChangeCalculator calculator = ConversationListChangeCalculator();
+class AddItem extends ListItemChange {
+  final int i;
+  final AccountId id;
+  AddItem(this.i, this.id);
+}
 
-  StreamSubscription<List<AccountId>>? _conversationListSubscription;
-
-  ConversationListBloc(RepositoryInstances r) : profile = r.profile, super(ConversationListData()) {
-    on<HandleNewConversationList>((data, emit) async {
-      final calculatorResult = calculator.calculate(data.data);
-      emit(
-        state.copyWith(
-          conversations: UnmodifiableList(calculatorResult.current),
-          changesBetweenCurrentAndPrevious: UnmodifiableList(calculatorResult.changes),
-          initialLoadDone: true,
-        ),
-      );
-    }, transformer: sequential());
-
-    _conversationListSubscription = profile.getConversationListUpdates().listen((data) {
-      _log.finest(data);
-      add(HandleNewConversationList(data));
-    });
-  }
-
-  @override
-  Future<void> close() async {
-    await _conversationListSubscription?.cancel();
-    return super.close();
-  }
+class RemoveItem extends ListItemChange {
+  final int i;
+  final AccountId id;
+  RemoveItem(this.i, this.id);
 }
 
 // TODO(test): Unit tests for the calculator would be nice
@@ -62,7 +33,7 @@ class ConversationListChangeCalculator {
 
   /// It is assumed that every item in newData is unique
   ChangeCalculationResult calculate(List<AccountId> newData) {
-    _log.info("Conversation list change calculations start");
+    _log.finest("Conversation list change calculations start");
 
     final LinkedHashSet<AccountId> newAccounts = LinkedHashSet.from(newData);
     final newIndexes = <AccountId, int>{};
@@ -87,7 +58,7 @@ class ConversationListChangeCalculator {
     currentIndexes = newIndexes;
     currentAccounts = newAccounts;
 
-    _log.info("Conversation list change calculations done");
+    _log.finest("Conversation list change calculations done");
 
     return ChangeCalculationResult(newData, changes);
   }
@@ -151,10 +122,4 @@ class CalculatorLogic {
       return [];
     }
   }
-}
-
-class ChangeCalculationResult {
-  final List<AccountId> current;
-  final List<ListItemChange> changes;
-  ChangeCalculationResult(this.current, this.changes);
 }

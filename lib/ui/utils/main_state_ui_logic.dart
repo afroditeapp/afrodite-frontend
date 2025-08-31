@@ -28,7 +28,6 @@ import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/logic/app/notification_payload_handler.dart';
 import 'package:app/logic/app/notification_permission.dart';
 import 'package:app/logic/app/notification_settings.dart';
-import 'package:app/logic/chat/conversation_list_bloc.dart';
 import 'package:app/logic/chat/new_received_likes_available_bloc.dart';
 import 'package:app/logic/chat/unread_conversations_bloc.dart';
 import 'package:app/logic/media/content.dart';
@@ -288,7 +287,6 @@ class NavigatorNormal extends LoggedInRootScreen {
         BlocProvider(create: (_) => NotificationPermissionBloc(r)),
         BlocProvider(create: (_) => NotificationPayloadHandlerBloc(r)),
         BlocProvider(create: (_) => ProfileAttributesBloc(r)),
-        BlocProvider(create: (_) => ConversationListBloc(r)),
         BlocProvider(create: (_) => UnreadConversationsCountBloc(r)),
         BlocProvider(create: (_) => NewReceivedLikesAvailableBloc(r)),
         BlocProvider(create: (_) => CustomReportsConfigBloc(r)),

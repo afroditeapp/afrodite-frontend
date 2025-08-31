@@ -1,3 +1,4 @@
+import "package:app/data/profile_repository.dart";
 import "package:app/data/utils/repository_instances.dart";
 import "package:app/logic/account/client_features_config.dart";
 import "package:app/logic/profile/automatic_profile_search_badge.dart";
@@ -72,6 +73,7 @@ class _NormalStateInitializerState extends State<NormalStateInitializer> {
   @override
   Widget build(BuildContext context) {
     return NormalStateContent(
+      profile: context.read<RepositoryInstances>().profile,
       // Init ProfileAttributesBloc here to avoid quick progress screen
       // displaying when opening view profile or view my profile screen.
       profileAttributesBloc: context.read<ProfileAttributesBloc>(),
@@ -82,9 +84,11 @@ class _NormalStateInitializerState extends State<NormalStateInitializer> {
 }
 
 class NormalStateContent extends StatefulWidget {
+  final ProfileRepository profile;
   final ProfileAttributesBloc profileAttributesBloc;
   final MyProfileBloc myProfileBloc;
   const NormalStateContent({
+    required this.profile,
     required this.profileAttributesBloc,
     required this.myProfileBloc,
     super.key,
@@ -95,7 +99,7 @@ class NormalStateContent extends StatefulWidget {
 }
 
 class _NormalStateContentState extends State<NormalStateContent> {
-  static const VIEWS = [ProfileView(), LikeView(), ChatView(), MenuView()];
+  late final views = [ProfileView(), LikeView(), ChatView(profile: widget.profile), MenuView()];
 
   @override
   Widget build(BuildContext context) {
@@ -128,14 +132,14 @@ class _NormalStateContentState extends State<NormalStateContent> {
           padding: const EdgeInsets.only(top: 8, bottom: 8, left: 8),
           child: primaryImageButton(),
         ),
-        title: Text(VIEWS[selectedView].title(context)),
-        actions: VIEWS[selectedView].actions(context),
+        title: Text(views[selectedView].title(context)),
+        actions: views[selectedView].actions(context),
         notificationPredicate: (scrollNotification) => false,
       ),
       body: Column(
         children: [
           Expanded(
-            child: IndexedStack(index: selectedView, children: VIEWS),
+            child: IndexedStack(index: selectedView, children: views),
           ),
           const NotificationPermissionDialogOpener(),
           const NotificationPayloadHandler(),
@@ -156,7 +160,7 @@ class _NormalStateContentState extends State<NormalStateContent> {
           }
         },
       ),
-      floatingActionButton: VIEWS[selectedView].floatingActionButton(context),
+      floatingActionButton: views[selectedView].floatingActionButton(context),
     );
   }
 
@@ -164,7 +168,7 @@ class _NormalStateContentState extends State<NormalStateContent> {
     return [
       BottomNavigationBarItem(
         icon: Icon(selectedView == 0 ? Icons.people : Icons.people_outline),
-        label: VIEWS[0].title(context),
+        label: views[0].title(context),
       ),
       BottomNavigationBarItem(
         icon: BlocBuilder<NewReceivedLikesAvailableBloc, NewReceivedLikesAvailableData>(
@@ -178,7 +182,7 @@ class _NormalStateContentState extends State<NormalStateContent> {
             }
           },
         ),
-        label: VIEWS[1].title(context),
+        label: views[1].title(context),
       ),
       BottomNavigationBarItem(
         icon: BlocBuilder<UnreadConversationsCountBloc, UnreadConversationsCountData>(
@@ -191,7 +195,7 @@ class _NormalStateContentState extends State<NormalStateContent> {
             }
           },
         ),
-        label: VIEWS[2].title(context),
+        label: views[2].title(context),
       ),
       BottomNavigationBarItem(
         icon: BlocBuilder<ClientFeaturesConfigBloc, ClientFeaturesConfigData>(
@@ -223,7 +227,7 @@ class _NormalStateContentState extends State<NormalStateContent> {
             );
           },
         ),
-        label: VIEWS[3].title(context),
+        label: views[3].title(context),
       ),
     ];
   }

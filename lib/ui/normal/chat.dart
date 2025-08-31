@@ -1,8 +1,12 @@
+import 'dart:async';
+
+import 'package:app/data/profile_repository.dart';
 import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/logic/app/info_dialog.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/profile_thumbnail_image_or_error.dart';
 import 'package:app/utils/time.dart';
+import 'package:async/async.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,8 +15,7 @@ import 'package:openapi/api.dart';
 import 'package:app/data/image_cache.dart';
 import 'package:database/database.dart';
 import 'package:app/logic/app/bottom_navigation_state.dart';
-import 'package:app/logic/chat/conversation_list_bloc.dart';
-import 'package:app/model/freezed/logic/chat/conversation_list_bloc.dart';
+import 'package:app/logic/chat/conversation_list.dart';
 import 'package:app/model/freezed/logic/main/bottom_navigation_state.dart';
 import 'package:app/ui/normal/chat/conversation_page.dart';
 import 'package:app/ui/normal/chat/message_row.dart';
@@ -23,14 +26,14 @@ import 'package:app/localizations.dart';
 import 'package:app/ui_utils/list.dart';
 import 'package:app/ui_utils/scroll_controller.dart';
 import 'package:app/utils/cache.dart';
-import 'package:app/utils/immutable_list.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:utils/utils.dart';
 
 final _log = Logger("ChatView");
 
 class ChatView extends BottomNavigationScreen {
-  const ChatView({super.key});
+  final ProfileRepository profile;
+  const ChatView({required this.profile, super.key});
 
   @override
   State<ChatView> createState() => _ChatViewState();
@@ -74,18 +77,66 @@ class ConversationData {
 class _ChatViewState extends State<ChatView> {
   final ScrollController _scrollController = ScrollController();
 
-  int? initialItemCount;
-  UnmodifiableList<AccountId> conversations = const UnmodifiableList<AccountId>.empty();
+  final ConversationListChangeCalculator calculator = ConversationListChangeCalculator();
+  int initialItemCount = 0;
+  List<AccountId>? items;
 
+  final BehaviorSubject<SliverAnimatedListState?> _listState = BehaviorSubject.seeded(null);
   final GlobalKey<SliverAnimatedListState> _listKey = GlobalKey<SliverAnimatedListState>();
 
   /// Avoid UI flickering when conversation animation runs
   final RemoveOldestCache<AccountId, ConversationData> dataCache = RemoveOldestCache(maxValues: 25);
 
+  StreamSubscription<void>? _conversationListSubscription;
+
   @override
   void initState() {
     super.initState();
     _scrollController.addListener(scrollEventListener);
+    _conversationListSubscription = widget.profile
+        .getConversationListUpdates()
+        .asyncMap((data) async {
+          final current = items;
+          final toBeProcessed = calculator.calculate(data);
+          if (current == null) {
+            setState(() {
+              initialItemCount = toBeProcessed.current.length;
+              items = toBeProcessed.current;
+            });
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              final listState = _listKey.currentState;
+              if (listState != null) {
+                _listState.add(_listKey.currentState);
+              }
+            });
+          } else {
+            final listState = await _listState.whereNotNull().firstOrNull;
+            if (listState == null) {
+              return;
+            }
+            for (final change in toBeProcessed.changes) {
+              switch (change) {
+                case AddItem(:final i):
+                  _log.finest("Add, i: $i");
+                  listState.insertItem(i);
+                case RemoveItem(:final i, :final id):
+                  _log.finest("Remove, i: $i");
+                  listState.removeItem(i, (context, animation) {
+                    return animatedItem(
+                      context,
+                      id: id,
+                      animation: animation,
+                      allowOpenConversation: false,
+                    );
+                  });
+              }
+            }
+            setState(() {
+              items = toBeProcessed.current;
+            });
+          }
+        })
+        .listen(null);
   }
 
   void scrollEventListener() {
@@ -170,82 +221,53 @@ class _ChatViewState extends State<ChatView> {
             _scrollController.bottomNavigationRelatedJumpToBeginningIfClientsConnected();
           }
         },
-        child: BlocBuilder<ConversationListBloc, ConversationListData>(
-          builder: (context, state) {
-            if (state.initialLoadDone) {
-              final listState = _listKey.currentState;
-              if (initialItemCount != null && listState != null) {
-                // Animations
-                for (final change in state.changesBetweenCurrentAndPrevious) {
-                  switch (change) {
-                    case AddItem(:final i):
-                      _log.finest("Add, i: $i");
-                      listState.insertItem(i);
-                    case RemoveItem(:final i, :final id):
-                      _log.finest("Remove, i: $i");
-                      listState.removeItem(i, (context, animation) {
-                        return SizeTransition(
-                          sizeFactor: animation,
-                          child: FadeTransition(
-                            opacity: animation,
-                            child: itemWidgetForAnimation(
-                              context,
-                              id,
-                              allowOpenConversation: false,
-                            ),
-                          ),
-                        );
-                      });
-                  }
-                }
-              }
-              initialItemCount ??= state.conversations.length;
-              conversations = state.conversations;
-              return Stack(
-                children: [
-                  grid(context),
-                  if (conversations.isEmpty)
-                    buildListReplacementMessage(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            context.strings.chat_list_screen_no_chats_found,
-                            style: Theme.of(context).textTheme.bodyLarge,
-                          ),
-                        ],
-                      ),
-                    ),
-                ],
-              );
-            } else {
-              return Container();
-            }
-          },
-        ),
+        child: listBloc(),
       ),
     );
   }
 
-  Widget grid(BuildContext context) {
+  Widget listBloc() {
+    final current = items;
+    if (current == null) {
+      return SizedBox.shrink();
+    } else {
+      return listAndEmptyListText(context, current);
+    }
+  }
+
+  Widget listAndEmptyListText(BuildContext context, List<AccountId> accounts) {
+    return Stack(
+      children: [
+        list(context, accounts),
+        if (accounts.isEmpty)
+          buildListReplacementMessage(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  context.strings.chat_list_screen_no_chats_found,
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+              ],
+            ),
+          ),
+      ],
+    );
+  }
+
+  Widget list(BuildContext context, List<AccountId> accounts) {
     return CustomScrollView(
       controller: _scrollController,
       slivers: [
         SliverAnimatedList(
           key: _listKey,
-          initialItemCount: initialItemCount!,
+          initialItemCount: initialItemCount,
           itemBuilder: (context, index, animation) {
-            return SizeTransition(
-              sizeFactor: animation,
-              child: FadeTransition(
-                opacity: animation,
-                child: itemWidgetForAnimation(
-                  context,
-                  // It is not sure is getAtOrNull needed or not
-                  conversations.getAtOrNull(index),
-                  allowOpenConversation: true,
-                ),
-              ),
+            return animatedItem(
+              context,
+              id: accounts[index],
+              animation: animation,
+              allowOpenConversation: true,
             );
           },
         ),
@@ -259,38 +281,48 @@ class _ChatViewState extends State<ChatView> {
     );
   }
 
-  Widget itemWidgetForAnimation(
-    BuildContext context,
-    AccountId? id, {
+  Widget animatedItem(
+    BuildContext context, {
+    required AccountId id,
+    required Animation<double> animation,
     required bool allowOpenConversation,
   }) {
-    Widget w;
-    if (id == null) {
-      w = errorWidget(context);
-    } else {
-      w = StreamBuilder(
-        // Avoid UI flickering. Probably Flutter tries to reuse
-        // old widget in the widget tree and that causes the flickering.
-        key: UniqueKey(),
-        stream: conversationData(context, id),
-        builder: (context, state) {
-          final dataFromStream = state.data;
-          final ConversationData? cData;
-          if (dataFromStream == null) {
-            cData = dataCache.get(id);
-          } else {
-            dataCache.update(id, dataFromStream);
-            cData = dataFromStream;
-          }
+    return SizeTransition(
+      sizeFactor: animation,
+      child: FadeTransition(
+        opacity: animation,
+        child: itemWidgetForAnimation(context, id, allowOpenConversation: allowOpenConversation),
+      ),
+    );
+  }
 
-          if (cData == null) {
-            return errorWidget(context);
-          } else {
-            return conversationItem(context, cData, allowOpenConversation: allowOpenConversation);
-          }
-        },
-      );
-    }
+  Widget itemWidgetForAnimation(
+    BuildContext context,
+    AccountId id, {
+    required bool allowOpenConversation,
+  }) {
+    Widget w = StreamBuilder(
+      // Avoid UI flickering. Probably Flutter tries to reuse
+      // old widget in the widget tree and that causes the flickering.
+      key: UniqueKey(),
+      stream: conversationData(context, id),
+      builder: (context, state) {
+        final dataFromStream = state.data;
+        final ConversationData? cData;
+        if (dataFromStream == null) {
+          cData = dataCache.get(id);
+        } else {
+          dataCache.update(id, dataFromStream);
+          cData = dataFromStream;
+        }
+
+        if (cData == null) {
+          return errorWidget(context);
+        } else {
+          return conversationItem(context, cData, allowOpenConversation: allowOpenConversation);
+        }
+      },
+    );
 
     return SizedBox(height: _IMG_SIZE + _ITEM_PADDING_SIZE * 2, child: w);
   }
@@ -393,6 +425,8 @@ class _ChatViewState extends State<ChatView> {
   void dispose() {
     _scrollController.removeListener(scrollEventListener);
     _scrollController.dispose();
+    _conversationListSubscription?.cancel();
+    _listState.close();
     super.dispose();
   }
 }
