@@ -128,8 +128,24 @@ class _EditDataScreenState extends State<EditDataScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final unsavedChanges = dataManager.unsavedChanges();
+    return PopScope(
+      canPop: !unsavedChanges,
+      onPopInvokedWithResult: (didPop, _) async {
+        if (!didPop) {
+          final r = await showConfirmDialog(context, "Discard changes?", yesNoActions: true);
+          if (r == true && context.mounted) {
+            MyNavigator.removePage(context, widget.pageKey);
+          }
+        }
+      },
+      child: screen(context, unsavedChanges),
+    );
+  }
+
+  Widget screen(BuildContext context, bool unsavedChanges) {
     Widget? saveButton;
-    if (dataManager.unsavedChanges()) {
+    if (unsavedChanges) {
       saveButton = FloatingActionButton(
         child: const Icon(Icons.save),
         onPressed: () async {
