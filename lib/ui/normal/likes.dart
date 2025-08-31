@@ -354,11 +354,11 @@ class LikeViewContentState extends State<LikeViewContent> {
       builderDelegate: PagedChildBuilderDelegate<ProfileGridProfileEntry>(
         animateTransitions: true,
         itemBuilder: (context, item, index) {
-          return profileEntryWidgetStream(
-            item.profile,
-            item.initialProfileAction,
-            widget.r.accountDb,
-            settings,
+          return UpdatingProfileThumbnailWithInfo(
+            initialData: item.profile,
+            initialProfileAction: item.initialProfileAction,
+            db: widget.r.accountDb,
+            settings: settings,
             showNewLikeMarker: true,
             maxItemWidth: singleItemWidth,
           );

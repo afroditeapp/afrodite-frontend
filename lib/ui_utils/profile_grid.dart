@@ -178,11 +178,11 @@ class _GenericProfileGridState extends State<GenericProfileGrid> {
         animateTransitions: true,
         itemBuilder: (context, item, index) {
           return GestureDetector(
-            child: profileEntryWidgetStream(
-              item.profile,
-              item.initialProfileAction,
-              widget.accountDb,
-              settings,
+            child: UpdatingProfileThumbnailWithInfo(
+              initialData: item.profile,
+              initialProfileAction: item.initialProfileAction,
+              db: widget.accountDb,
+              settings: settings,
               maxItemWidth: singleItemWidth,
             ),
           );

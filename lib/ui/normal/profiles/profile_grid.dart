@@ -263,11 +263,11 @@ class ProfileGridState extends State<ProfileGrid> {
       builderDelegate: PagedChildBuilderDelegate<ProfileGridProfileEntry>(
         animateTransitions: true,
         itemBuilder: (context, item, index) {
-          return profileEntryWidgetStream(
-            item.profile,
-            item.initialProfileAction,
-            widget.r.accountDb,
-            settings,
+          return UpdatingProfileThumbnailWithInfo(
+            initialData: item.profile,
+            initialProfileAction: item.initialProfileAction,
+            db: widget.r.accountDb,
+            settings: settings,
             maxItemWidth: singleItemWidth,
           );
         },
@@ -361,50 +361,75 @@ class ProfileGridState extends State<ProfileGrid> {
   }
 }
 
-Widget profileEntryWidgetStream(
-  ProfileThumbnail profile,
-  ProfileActionState? initialProfileAction,
-  AccountDatabaseManager db,
-  GridSettings settings, {
-  bool showNewLikeMarker = false,
-  required double maxItemWidth,
-}) {
-  return StreamBuilder(
-    stream: db
-        .accountStream((db) => db.profile.watchProfileThumbnail(profile.entry.accountId))
-        .whereNotNull(),
-    builder: (context, data) {
-      final e = data.data ?? profile;
-      return ProfileThumbnailImageOrError.fromProfileEntry(
-        entry: e.entry,
-        borderRadius: BorderRadius.circular(settings.valueProfileThumbnailBorderRadius()),
-        cacheSize: ImageCacheSize.squareImageForGrid(context, maxItemWidth),
-        child: Stack(
-          children: [
-            _thumbnailStatusIndicatorsTop(
-              showNewLikeMarker,
-              e.entry.newLikeInfoReceivedTime,
-              e.isFavorite,
-            ),
-            _thumbnailStatusIndicatorsBottom(context, e.entry),
-            Material(
-              color: Colors.transparent,
-              child: InkWell(
-                onTap: () {
-                  openProfileView(
-                    context,
-                    e.entry,
-                    initialProfileAction,
-                    ProfileRefreshPriority.low,
-                  );
-                },
+class UpdatingProfileThumbnailWithInfo extends StatefulWidget {
+  final AccountDatabaseManager db;
+  final ProfileThumbnail initialData;
+  final ProfileActionState? initialProfileAction;
+  final GridSettings settings;
+  final bool showNewLikeMarker;
+  final double maxItemWidth;
+  const UpdatingProfileThumbnailWithInfo({
+    required this.db,
+    required this.initialData,
+    required this.initialProfileAction,
+    required this.settings,
+    this.showNewLikeMarker = false,
+    required this.maxItemWidth,
+    super.key,
+  });
+
+  @override
+  State<UpdatingProfileThumbnailWithInfo> createState() => _UpdatingProfileThumbnailWithInfoState();
+}
+
+class _UpdatingProfileThumbnailWithInfoState extends State<UpdatingProfileThumbnailWithInfo> {
+  late final Stream<ProfileThumbnail> stream;
+
+  @override
+  void initState() {
+    super.initState();
+    stream = widget.db
+        .accountStream((db) => db.profile.watchProfileThumbnail(widget.initialData.entry.accountId))
+        .whereNotNull();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder(
+      stream: stream,
+      builder: (context, data) {
+        final e = data.data ?? widget.initialData;
+        return ProfileThumbnailImageOrError.fromProfileEntry(
+          entry: e.entry,
+          borderRadius: BorderRadius.circular(widget.settings.valueProfileThumbnailBorderRadius()),
+          cacheSize: ImageCacheSize.squareImageForGrid(context, widget.maxItemWidth),
+          child: Stack(
+            children: [
+              _thumbnailStatusIndicatorsTop(
+                widget.showNewLikeMarker,
+                e.entry.newLikeInfoReceivedTime,
+                e.isFavorite,
               ),
-            ),
-          ],
-        ),
-      );
-    },
-  );
+              _thumbnailStatusIndicatorsBottom(context, e.entry),
+              Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  onTap: () {
+                    openProfileView(
+                      context,
+                      e.entry,
+                      widget.initialProfileAction,
+                      ProfileRefreshPriority.low,
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
 }
 
 Widget _thumbnailStatusIndicatorsBottom(BuildContext context, ProfileEntry profile) {
