@@ -1,4 +1,3 @@
-import "package:app/data/profile_repository.dart";
 import "package:app/data/utils/repository_instances.dart";
 import "package:app/logic/account/client_features_config.dart";
 import "package:app/logic/profile/automatic_profile_search_badge.dart";
@@ -73,7 +72,7 @@ class _NormalStateInitializerState extends State<NormalStateInitializer> {
   @override
   Widget build(BuildContext context) {
     return NormalStateContent(
-      profile: context.read<RepositoryInstances>().profile,
+      r: context.read<RepositoryInstances>(),
       // Init ProfileAttributesBloc here to avoid quick progress screen
       // displaying when opening view profile or view my profile screen.
       profileAttributesBloc: context.read<ProfileAttributesBloc>(),
@@ -84,11 +83,11 @@ class _NormalStateInitializerState extends State<NormalStateInitializer> {
 }
 
 class NormalStateContent extends StatefulWidget {
-  final ProfileRepository profile;
+  final RepositoryInstances r;
   final ProfileAttributesBloc profileAttributesBloc;
   final MyProfileBloc myProfileBloc;
   const NormalStateContent({
-    required this.profile,
+    required this.r,
     required this.profileAttributesBloc,
     required this.myProfileBloc,
     super.key,
@@ -99,7 +98,7 @@ class NormalStateContent extends StatefulWidget {
 }
 
 class _NormalStateContentState extends State<NormalStateContent> {
-  late final views = [ProfileView(), LikeView(), ChatView(profile: widget.profile), MenuView()];
+  late final views = [ProfileView(), LikeView(), ChatView(widget.r), MenuView()];
 
   @override
   Widget build(BuildContext context) {

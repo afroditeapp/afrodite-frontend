@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:app/data/chat_repository.dart';
 import 'package:app/data/profile_repository.dart';
 import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/logic/app/info_dialog.dart';
@@ -33,7 +34,8 @@ final _log = Logger("ChatView");
 
 class ChatView extends BottomNavigationScreen {
   final ProfileRepository profile;
-  const ChatView({required this.profile, super.key});
+  final ChatRepository chat;
+  ChatView(RepositoryInstances r, {super.key}) : profile = r.profile, chat = r.chat;
 
   @override
   State<ChatView> createState() => _ChatViewState();
@@ -157,22 +159,6 @@ class _ChatViewState extends State<ChatView> {
     );
   }
 
-  Stream<ConversationData> conversationData(BuildContext context, AccountId id) {
-    final r = context.read<RepositoryInstances>();
-    return Rx.combineLatest3(
-      r.profile.getProfileEntryUpdates(id),
-      r.profile.getUnreadMessagesCountStream(id),
-      r.chat.watchLatestMessage(id),
-      (a, b, c) {
-        if (a != null) {
-          return ConversationData(a, b ?? const UnreadMessagesCount(0), c);
-        } else {
-          return null;
-        }
-      },
-    ).whereNotNull();
-  }
-
   @override
   Widget build(BuildContext context) {
     if (kIsWeb) {
@@ -221,12 +207,12 @@ class _ChatViewState extends State<ChatView> {
             _scrollController.bottomNavigationRelatedJumpToBeginningIfClientsConnected();
           }
         },
-        child: listBloc(),
+        child: currentItems(),
       ),
     );
   }
 
-  Widget listBloc() {
+  Widget currentItems() {
     final current = items;
     if (current == null) {
       return SizedBox.shrink();
@@ -275,12 +261,6 @@ class _ChatViewState extends State<ChatView> {
     );
   }
 
-  Widget errorWidget(BuildContext context) {
-    return Center(
-      child: Padding(padding: const EdgeInsets.all(8), child: Text(context.strings.generic_error)),
-    );
-  }
-
   Widget animatedItem(
     BuildContext context, {
     required AccountId id,
@@ -291,35 +271,90 @@ class _ChatViewState extends State<ChatView> {
       sizeFactor: animation,
       child: FadeTransition(
         opacity: animation,
-        child: itemWidgetForAnimation(context, id, allowOpenConversation: allowOpenConversation),
+        child: UpdatingConversationListItem(
+          // Avoid UI flickering. Probably Flutter tries to reuse
+          // old widget in the widget tree and that causes the flickering.
+          key: UniqueKey(),
+          profile: widget.profile,
+          chat: widget.chat,
+          dataCache: dataCache,
+          id: id,
+          allowOpenConversation: allowOpenConversation,
+        ),
       ),
     );
   }
 
-  Widget itemWidgetForAnimation(
-    BuildContext context,
-    AccountId id, {
-    required bool allowOpenConversation,
-  }) {
+  @override
+  void dispose() {
+    _scrollController.removeListener(scrollEventListener);
+    _scrollController.dispose();
+    _conversationListSubscription?.cancel();
+    _listState.close();
+    super.dispose();
+  }
+}
+
+class UpdatingConversationListItem extends StatefulWidget {
+  final ProfileRepository profile;
+  final ChatRepository chat;
+  final RemoveOldestCache<AccountId, ConversationData> dataCache;
+  final AccountId id;
+  final bool allowOpenConversation;
+  const UpdatingConversationListItem({
+    required this.profile,
+    required this.chat,
+    required this.dataCache,
+    required this.id,
+    required this.allowOpenConversation,
+    super.key,
+  });
+
+  @override
+  State<UpdatingConversationListItem> createState() => _UpdatingConversationListItemState();
+}
+
+class _UpdatingConversationListItemState extends State<UpdatingConversationListItem> {
+  late final Stream<ConversationData> stream;
+
+  @override
+  void initState() {
+    super.initState();
+    stream = Rx.combineLatest3(
+      widget.profile.getProfileEntryUpdates(widget.id),
+      widget.profile.getUnreadMessagesCountStream(widget.id),
+      widget.chat.watchLatestMessage(widget.id),
+      (a, b, c) {
+        if (a != null) {
+          return ConversationData(a, b ?? const UnreadMessagesCount(0), c);
+        } else {
+          return null;
+        }
+      },
+    ).whereNotNull();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     Widget w = StreamBuilder(
-      // Avoid UI flickering. Probably Flutter tries to reuse
-      // old widget in the widget tree and that causes the flickering.
-      key: UniqueKey(),
-      stream: conversationData(context, id),
+      stream: stream,
       builder: (context, state) {
         final dataFromStream = state.data;
         final ConversationData? cData;
         if (dataFromStream == null) {
-          cData = dataCache.get(id);
+          cData = widget.dataCache.get(widget.id);
         } else {
-          dataCache.update(id, dataFromStream);
+          widget.dataCache.update(widget.id, dataFromStream);
           cData = dataFromStream;
         }
 
         if (cData == null) {
           return errorWidget(context);
         } else {
-          return conversationItem(context, cData, allowOpenConversation: allowOpenConversation);
+          return ConversationListItem(
+            data: cData,
+            allowOpenConversation: widget.allowOpenConversation,
+          );
         }
       },
     );
@@ -327,11 +362,21 @@ class _ChatViewState extends State<ChatView> {
     return SizedBox(height: _IMG_SIZE + _ITEM_PADDING_SIZE * 2, child: w);
   }
 
-  Widget conversationItem(
-    BuildContext context,
-    ConversationData data, {
-    required bool allowOpenConversation,
-  }) {
+  Widget errorWidget(BuildContext context) {
+    return Center(
+      child: Padding(padding: const EdgeInsets.all(8), child: Text(context.strings.generic_error)),
+    );
+  }
+}
+
+class ConversationListItem extends StatelessWidget {
+  final ConversationData data;
+  final bool allowOpenConversation;
+
+  const ConversationListItem({required this.data, required this.allowOpenConversation, super.key});
+
+  @override
+  Widget build(BuildContext context) {
     final Widget imageWidget = ProfileThumbnailImageOrError.fromProfileEntry(
       entry: data.entry,
       width: _IMG_SIZE,
@@ -419,15 +464,6 @@ class _ChatViewState extends State<ChatView> {
       const Padding(padding: EdgeInsets.only(top: 8.0)),
       Text(text, style: textStyle, maxLines: 1, overflow: TextOverflow.ellipsis),
     ];
-  }
-
-  @override
-  void dispose() {
-    _scrollController.removeListener(scrollEventListener);
-    _scrollController.dispose();
-    _conversationListSubscription?.cancel();
-    _listState.close();
-    super.dispose();
   }
 }
 
