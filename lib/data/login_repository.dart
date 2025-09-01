@@ -299,7 +299,19 @@ class LoginRepository extends AppSingleton {
       _log.error("LoginResult doesn't contain required info");
       return const Err(CommonSignInError.otherError);
     }
-    final accountDb = DatabaseManager.getInstance().getAccountDatabaseManager(aid);
+
+    // The loginInProgress keeps the UI in login screen even if app
+    // connects to server.
+    _loginInProgress.add(true);
+
+    final createdRepositories = await _createAndReplaceRepositories(
+      aid,
+      accountLoginHappened: true,
+    );
+
+    final CommonSignInError? error;
+
+    final accountDb = createdRepositories.accountDb;
     final r = await DatabaseManager.getInstance()
         .setAccountId(aid)
         .andThen(
@@ -315,30 +327,23 @@ class LoginRepository extends AppSingleton {
         );
     if (r.isErr()) {
       _log.error("Login failed: database error");
-      return const Err(CommonSignInError.otherError);
-    }
-
-    // The loginInProgress keeps the UI in login screen even if app
-    // connects to server.
-    _loginInProgress.add(true);
-
-    final createdRepositories = await _createAndReplaceRepositories(
-      aid,
-      accountLoginHappened: true,
-    );
-    await createdRepositories.onLogin();
-    await createdRepositories.connectionManager.restartIfRestartNotOngoing();
-
-    final CommonSignInError? error;
-    if (await createdRepositories.connectionManager.tryWaitUntilConnected(waitTimeoutSeconds: 7)) {
-      final r = await createdRepositories.onLoginDataSync();
-      if (r.isErr()) {
-        error = CommonSignInError.dataSyncFailed;
-      } else {
-        error = null;
-      }
+      error = CommonSignInError.otherError;
     } else {
-      error = CommonSignInError.creatingConnectingWebSocketFailed;
+      await createdRepositories.onLogin();
+      await createdRepositories.connectionManager.restartIfRestartNotOngoing();
+
+      if (await createdRepositories.connectionManager.tryWaitUntilConnected(
+        waitTimeoutSeconds: 7,
+      )) {
+        final r = await createdRepositories.onLoginDataSync();
+        if (r.isErr()) {
+          error = CommonSignInError.dataSyncFailed;
+        } else {
+          error = null;
+        }
+      } else {
+        error = CommonSignInError.creatingConnectingWebSocketFailed;
+      }
     }
 
     Result<(), CommonSignInError> result;

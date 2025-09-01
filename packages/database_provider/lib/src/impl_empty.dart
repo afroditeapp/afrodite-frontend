@@ -6,6 +6,4 @@ class DbProvider implements QueryExcecutorProvider {
 
   @override
   QueryExecutor getQueryExcecutor() => throw UnsupportedError("Unsupported platform");
-
-  Future<void> close() async => throw UnsupportedError("Unsupported platform");
 }

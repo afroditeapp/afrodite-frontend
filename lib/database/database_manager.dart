@@ -28,7 +28,6 @@ class DatabaseManager extends AppSingleton {
   bool initDone = false;
   late final DbProvider commonLazyDatabase;
   late final CommonForegroundDatabase commonDatabase;
-  final accountDatabases = <AccountId, (DbProvider, AccountForegroundDatabase)>{};
 
   @override
   Future<void> init() async {
@@ -105,44 +104,19 @@ class DatabaseManager extends AppSingleton {
 
   // Access current account database
 
-  AccountDatabaseManager getAccountDatabaseManager(AccountId accountId) {
-    final db = _getAccountDatabaseUsingAccount(accountId);
-    return AccountDatabaseManager(db);
+  Future<AccountDatabaseManager> getAccountDatabaseManager(AccountId accountId) async {
+    final dbProvider = DbProvider(
+      AccountDbFile(accountId.aid),
+      doSqlchipherInit: false,
+      backgroundDb: false,
+    );
+    final newDb = AccountDatabaseManager(AccountForegroundDatabase(dbProvider));
+    await newDb.accountAction((db) => db.loginSession.setAccountIdIfNull(accountId));
+    return newDb;
   }
 
-  AccountForegroundDatabase _getAccountDatabaseUsingAccount(AccountId accountId) {
-    final db = accountDatabases[accountId];
-    if (db != null) {
-      return db.$2;
-    } else {
-      final dbProvider = DbProvider(
-        AccountDbFile(accountId.aid),
-        doSqlchipherInit: false,
-        backgroundDb: false,
-      );
-      final newDb = AccountForegroundDatabase(dbProvider);
-      accountDatabases[accountId] = (dbProvider, newDb);
-      return newDb;
-    }
-  }
-
-  Future<Result<(), AppError>> setAccountId(AccountId accountId) => backgroundDbManager
-      .setAccountId(accountId)
-      .andThen(
-        (_) => getAccountDatabaseManager(
-          accountId,
-        ).accountAction((db) => db.loginSession.setAccountIdIfNull(accountId)),
-      );
-
-  // NOTE: This is not used as there is no good location for calling this
-  Future<void> dispose() async {
-    await commonDatabase.close();
-    await commonLazyDatabase.close();
-    for (final db in accountDatabases.values) {
-      await db.$2.close();
-      await db.$1.close();
-    }
-  }
+  Future<Result<(), AppError>> setAccountId(AccountId accountId) =>
+      backgroundDbManager.setAccountId(accountId);
 }
 
 Stream<T?> oneValueAndWaitForever<T>(T? value) async* {

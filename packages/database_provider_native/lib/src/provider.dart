@@ -33,8 +33,6 @@ class DbProvider implements QueryExcecutorProvider {
     );
     return _dbConnection!;
   }
-
-  Future<void> close() async => await _dbConnection?.close();
 }
 
 Future<File> dbFileToFile(DbFile dbFile) async {

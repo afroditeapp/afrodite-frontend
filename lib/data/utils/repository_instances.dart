@@ -130,6 +130,9 @@ class RepositoryInstances {
     await connectionManager.dispose();
     await clientIdManager.dispose();
     await messageKeyManager.dispose();
+
+    await accountBackgroundDb.close();
+    await accountDb.close();
   }
 
   static Future<RepositoryInstances> createAndInit(
@@ -137,9 +140,9 @@ class RepositoryInstances {
     bool accountLoginHappened = false,
     required String serverAddress,
   }) async {
-    final accountBackgroundDb = BackgroundDatabaseManager.getInstance()
+    final accountBackgroundDb = await BackgroundDatabaseManager.getInstance()
         .getAccountBackgroundDatabaseManager(accountId);
-    final accountDb = DatabaseManager.getInstance().getAccountDatabaseManager(accountId);
+    final accountDb = await DatabaseManager.getInstance().getAccountDatabaseManager(accountId);
 
     final connectionManager = ServerConnectionManager(
       serverAddress,

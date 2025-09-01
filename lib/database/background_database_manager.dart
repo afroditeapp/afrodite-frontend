@@ -25,7 +25,6 @@ class BackgroundDatabaseManager extends AppSingleton {
   bool initDone = false;
   late final DbProvider commonLazyDatabase;
   late final CommonBackgroundDatabase commonDatabase;
-  final accountDatabases = <AccountId, (DbProvider, AccountBackgroundDatabase)>{};
 
   @override
   Future<void> init() async {
@@ -107,45 +106,24 @@ class BackgroundDatabaseManager extends AppSingleton {
     }
   }
 
-  AccountBackgroundDatabaseManager getAccountBackgroundDatabaseManager(AccountId accountId) {
-    final db = _getAccountDatabaseUsingAccount(accountId);
-    return AccountBackgroundDatabaseManager(accountId, db);
-  }
-
-  AccountBackgroundDatabase _getAccountDatabaseUsingAccount(AccountId accountId) {
-    final db = accountDatabases[accountId];
-    if (db != null) {
-      return db.$2;
-    } else {
-      final dbProvider = DbProvider(
-        AccountBackgroundDbFile(accountId.aid),
-        doSqlchipherInit: false,
-        backgroundDb: true,
-      );
-      final newDb = AccountBackgroundDatabase(dbProvider);
-      accountDatabases[accountId] = (dbProvider, newDb);
-      return newDb;
-    }
+  Future<AccountBackgroundDatabaseManager> getAccountBackgroundDatabaseManager(
+    AccountId accountId,
+  ) async {
+    final dbProvider = DbProvider(
+      AccountBackgroundDbFile(accountId.aid),
+      doSqlchipherInit: false,
+      backgroundDb: true,
+    );
+    final newDb = AccountBackgroundDatabaseManager(
+      accountId,
+      AccountBackgroundDatabase(dbProvider),
+    );
+    await newDb.accountAction((db) => db.loginSession.setAccountIdIfNull(accountId));
+    return newDb;
   }
 
   Future<Result<(), AppError>> setAccountId(AccountId accountId) =>
-      commonAction(
-        (db) => db.loginSession.updateAccountIdUseOnlyFromDatabaseManager(accountId),
-      ).andThen(
-        (_) => getAccountBackgroundDatabaseManager(
-          accountId,
-        ).accountAction((db) => db.loginSession.setAccountIdIfNull(accountId)),
-      );
-
-  // NOTE: This is not used as there is no good location for calling this
-  Future<void> dispose() async {
-    await commonDatabase.close();
-    await commonLazyDatabase.close();
-    for (final db in accountDatabases.values) {
-      await db.$2.close();
-      await db.$1.close();
-    }
-  }
+      commonAction((db) => db.loginSession.updateAccountIdUseOnlyFromDatabaseManager(accountId));
 }
 
 Stream<T?> oneValueAndWaitForever<T>(T? value) async* {

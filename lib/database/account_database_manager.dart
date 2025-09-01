@@ -111,6 +111,12 @@ class AccountDatabaseManager {
       return _handleDbException(e);
     }
   }
+
+  /// NOTE: The database isolate does not seem to close properly
+  ///       as it is on running isolates list after calling this.
+  Future<void> close() async {
+    await db.close();
+  }
 }
 
 Result<Success, DatabaseException> _handleDbException<Success>(Exception e) {

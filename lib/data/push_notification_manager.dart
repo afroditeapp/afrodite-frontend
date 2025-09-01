@@ -5,6 +5,7 @@ import 'package:app/data/general/notification/state/automatic_profile_search.dar
 import 'package:app/data/general/notification/state/profile_text_moderation_completed.dart';
 import 'package:app/data/general/notification/state/media_content_moderation_completed.dart';
 import 'package:app/data/general/notification/state/news_item_available.dart';
+import 'package:app/utils/app_error.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
@@ -195,6 +196,9 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
     (db) => db.app.watchServerUrl(),
     defaultServerUrl(),
   );
+  // TODO(prod): Single DB query should be used for getting
+  // pendingNotificationToken and currentAccountId.
+  // Or move pending notification token to account background DB?
   final pendingNotificationToken = await db.commonStreamSingle(
     (db) => db.loginSession.watchPendingNotificationToken(),
   );
@@ -208,7 +212,6 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
     _log.error("Downloading pending notification failed: AccountId is not available");
     return;
   }
-  final accountBackgroundDb = db.getAccountBackgroundDatabaseManager(currentAccountId);
 
   final apiProvider = ApiProvider(accountUrl);
   await apiProvider.init();
@@ -217,6 +220,28 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
     (api) => api.postGetPendingNotification(pendingNotificationToken),
     logError: false,
   );
+
+  final accountBackgroundDb = LoginRepository.getInstance().repositoriesOrNull?.accountBackgroundDb;
+  if (accountBackgroundDb != null &&
+      accountBackgroundDb.id == currentAccountId &&
+      !accountBackgroundDb.isClosed) {
+    accountBackgroundDb.pushNotificationHandlerIsUsingDb = true;
+    await _handlePendingNotification(result, accountBackgroundDb);
+    accountBackgroundDb.pushNotificationHandlerIsUsingDb = false;
+    if (accountBackgroundDb.pushNotificationHandlerShouldCloseDb) {
+      await accountBackgroundDb.close();
+    }
+  } else {
+    final accountBackgroundDb = await db.getAccountBackgroundDatabaseManager(currentAccountId);
+    await _handlePendingNotification(result, accountBackgroundDb);
+    await accountBackgroundDb.close();
+  }
+}
+
+Future<void> _handlePendingNotification(
+  Result<PendingNotificationWithData, ValueApiError> result,
+  AccountBackgroundDatabaseManager accountBackgroundDb,
+) async {
   switch (result) {
     case Ok(:final v):
       final manager = NotificationManager.getInstance();
