@@ -360,7 +360,6 @@ class ProfileGridState extends State<ProfileGrid> {
     _scrollController.dispose();
     _profileChangesSubscription?.cancel();
     _profileChangesSubscription = null;
-    _mainProfilesViewIterator.dispose();
     super.dispose();
   }
 }

@@ -12,7 +12,6 @@ import 'package:database/database.dart';
 import 'package:app/database/account_background_database_manager.dart';
 import 'package:app/database/account_database_manager.dart';
 import 'package:app/utils/result.dart';
-import 'package:rxdart/rxdart.dart';
 
 sealed class ProfileIteratorMode {}
 
@@ -44,17 +43,11 @@ class ProfileIteratorManager {
   ProfileIteratorMode _currentMode = ModePublicProfiles(clearDatabase: false);
   IteratorType _currentIterator;
 
-  BehaviorSubject<bool> loadingInProgress = BehaviorSubject.seeded(false);
-
   /// Server might return the same profile multiple times because
   /// the profile index data structure on server is not locked when modifying it
   /// or the profile iterator is waiting for next profile query and user
   /// moves profile location to a location from where the iterator can return it.
   final Set<AccountId> _duplicateAccountsPreventer = {};
-
-  Future<void> dispose() async {
-    await loadingInProgress.close();
-  }
 
   void reset(ProfileIteratorMode mode) async {
     _duplicateAccountsPreventer.clear();
@@ -170,11 +163,7 @@ class ProfileIteratorManager {
   }
 
   Future<Result<List<ProfileEntry>, ()>> nextList() async {
-    await loadingInProgress.firstWhere((e) => e == false);
-
-    loadingInProgress.add(true);
     final result = await _nextListImpl();
-    loadingInProgress.add(false);
     return result;
   }
 }

@@ -224,11 +224,6 @@ class AccountRepository extends DataRepositoryWithLifecycle {
     return result.isOk();
   }
 
-  Future<bool> isInitialModerationOngoing() async {
-    final visibility = await profileVisibility.first;
-    return visibility.isInitialModerationOngoing();
-  }
-
   Future<Result<AccountSetup, ()>> downloadAccountSetup() async {
     return await api.account((api) => api.getAccountSetup()).mapErr((_) => ());
   }

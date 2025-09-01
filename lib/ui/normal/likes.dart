@@ -515,7 +515,6 @@ class LikeViewContentState extends State<LikeViewContent> {
     _scrollController.dispose();
     _profileChangesSubscription?.cancel();
     _profileChangesSubscription = null;
-    _mainProfilesViewIterator.dispose();
     super.dispose();
   }
 }

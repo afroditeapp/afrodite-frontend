@@ -5,7 +5,6 @@ import 'package:app/data/chat_repository.dart';
 import 'package:app/data/general/iterator/profile_iterator.dart';
 import 'package:database/database.dart';
 import 'package:app/utils/result.dart';
-import 'package:rxdart/rxdart.dart';
 
 abstract class BaseIteratorManager implements UiProfileIterator {
   final ChatRepository _chat;
@@ -15,17 +14,8 @@ abstract class BaseIteratorManager implements UiProfileIterator {
 
   IteratorType _currentIterator;
 
-  final BehaviorSubject<bool> _loadingInProgress = BehaviorSubject.seeded(false);
-  @override
-  Stream<bool> get loadingInProgress => _loadingInProgress;
-
   IteratorType createClearDatabaseIterator();
   IteratorType createDatabaseIterator();
-
-  @override
-  Future<void> dispose() async {
-    await _loadingInProgress.close();
-  }
 
   @override
   void reset(bool clearDatabase) async {
@@ -92,19 +82,13 @@ abstract class BaseIteratorManager implements UiProfileIterator {
 
   @override
   Future<Result<List<ProfileEntry>, ()>> nextList() async {
-    await _loadingInProgress.firstWhere((e) => e == false);
-
-    _loadingInProgress.add(true);
     final result = await _nextListImpl();
-    _loadingInProgress.add(false);
     return result;
   }
 }
 
 abstract class UiProfileIterator {
-  Stream<bool> get loadingInProgress;
   void reset(bool clearDatabase);
   void resetToBeginning();
   Future<Result<List<ProfileEntry>, ()>> nextList();
-  Future<void> dispose();
 }

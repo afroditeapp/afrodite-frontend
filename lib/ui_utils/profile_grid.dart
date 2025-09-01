@@ -248,7 +248,6 @@ class _GenericProfileGridState extends State<GenericProfileGrid> {
     _scrollController.dispose();
     _profileChangesSubscription?.cancel();
     _profileChangesSubscription = null;
-    _mainProfilesViewIterator.dispose();
     super.dispose();
   }
 }

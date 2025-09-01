@@ -23,7 +23,12 @@ class ClientIdManager {
 
   Future<Result<ClientId, ()>> getClientId() async {
     if (_state.value == ClientIdManagerState.inProgress) {
-      await _state.where((v) => v == ClientIdManagerState.idle).first;
+      try {
+        await _state.where((v) => v == ClientIdManagerState.idle).first;
+      } catch (_) {
+        // Disposed
+        return Err(());
+      }
       final currentClientId = await db
           .accountStream((db) => db.loginSession.watchClientId())
           .firstOrNull;

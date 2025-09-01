@@ -24,6 +24,7 @@ final _log = Logger("LoginRepository");
 sealed class LoginRepositoryCmd<T> {
   final BehaviorSubject<T?> completed = BehaviorSubject.seeded(null);
 
+  /// Can be called only once
   Future<T> waitCompletionAndDispose() async {
     final value = await completed.whereType<T>().first;
     await completed.close();

@@ -40,7 +40,12 @@ class MessageKeyManager {
     }
 
     if (generation.value == KeyGeneratorState.inProgress) {
-      await generation.where((v) => v == KeyGeneratorState.idle).first;
+      try {
+        await generation.where((v) => v == KeyGeneratorState.idle).first;
+      } catch (_) {
+        // Disposed
+        return Err(());
+      }
       // Key generation is now complete and it should be in database
       final keys = await db.accountData((db) => db.key.getMessageKeys()).ok();
       if (keys == null) {
