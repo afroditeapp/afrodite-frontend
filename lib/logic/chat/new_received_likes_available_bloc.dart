@@ -28,8 +28,21 @@ class _CountNotViewedUpdate extends NewReceivedLikesAvailableEvent {
 
 class UpdateReceivedLikesCountNotViewed extends NewReceivedLikesAvailableEvent {
   final int value;
-  final BehaviorSubject<bool> waitDone = BehaviorSubject.seeded(false);
+  final BehaviorSubject<bool> _waitDone = BehaviorSubject.seeded(false);
   UpdateReceivedLikesCountNotViewed(this.value);
+
+  Future<void> completeAndDispose() async {
+    _waitDone.add(true);
+    await _waitDone.close();
+  }
+
+  Future<void> waitCompletion() async {
+    try {
+      await _waitDone.firstWhere((v) => v);
+    } catch (_) {
+      // Disposed
+    }
+  }
 }
 
 class SetTriggerReceivedLikesRefreshWithButton extends NewReceivedLikesAvailableEvent {
@@ -77,7 +90,7 @@ class NewReceivedLikesAvailableBloc
           NewReceivedLikesCount(c: data.value),
         ),
       );
-      data.waitDone.add(true);
+      await data.completeAndDispose();
     }, transformer: sequential());
     on<SetTriggerReceivedLikesRefreshWithButton>((data, emit) async {
       if (data.value) {

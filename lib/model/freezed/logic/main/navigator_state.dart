@@ -32,7 +32,7 @@ class NavigatorStateData with _$NavigatorStateData {
         PageAndChannel(
           newPageDetails.pageKey ?? PageKey(),
           newPageDetails.page,
-          BehaviorSubject.seeded(const WaitingPagePop()),
+          null,
           newPageDetails.pageInfo,
         ),
       ]),
@@ -42,18 +42,8 @@ class NavigatorStateData with _$NavigatorStateData {
   static NavigatorStateData rootPageAndOtherPage(NewPageDetails first, NewPageDetails second) {
     return NavigatorStateData(
       pages: UnmodifiableList([
-        PageAndChannel(
-          first.pageKey ?? PageKey(),
-          first.page,
-          BehaviorSubject.seeded(const WaitingPagePop()),
-          first.pageInfo,
-        ),
-        PageAndChannel(
-          second.pageKey ?? PageKey(),
-          second.page,
-          BehaviorSubject.seeded(const WaitingPagePop()),
-          second.pageInfo,
-        ),
+        PageAndChannel(first.pageKey ?? PageKey(), first.page, null, first.pageInfo),
+        PageAndChannel(second.pageKey ?? PageKey(), second.page, null, second.pageInfo),
       ]),
     );
   }
@@ -62,20 +52,13 @@ class NavigatorStateData with _$NavigatorStateData {
 class PageAndChannel {
   final PageKey key;
   final Page<Object?> page;
-  final BehaviorSubject<ReturnChannelValue> channel;
+  final BehaviorSubject<ReturnChannelValue>? channel;
   final PageInfo? pageInfo;
 
   const PageAndChannel(this.key, this.page, this.channel, this.pageInfo);
 
   static List<PageAndChannel> splashScreen() {
-    return [
-      PageAndChannel(
-        PageKey(),
-        const MaterialPage(child: SplashScreen()),
-        BehaviorSubject.seeded(const WaitingPagePop()),
-        null,
-      ),
-    ];
+    return [PageAndChannel(PageKey(), const MaterialPage(child: SplashScreen()), null, null)];
   }
 }
 

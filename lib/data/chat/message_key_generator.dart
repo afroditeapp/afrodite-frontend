@@ -29,6 +29,10 @@ class MessageKeyManager {
 
   MessageKeyManager(this.db, this.api, this.currentUser);
 
+  Future<void> dispose() async {
+    await generation.close();
+  }
+
   Future<Result<AllKeyData, ()>> generateOrLoadMessageKeys() async {
     if (kIsWeb) {
       // Messages are not supported on web

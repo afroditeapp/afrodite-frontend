@@ -102,6 +102,7 @@ class ConnectedActionScheduler {
 
   Future<void> dispose() async {
     _cancel.add(true);
+    await _cancel.close();
   }
 
   /// The onResumeAppUsageSync might be also still scheduled

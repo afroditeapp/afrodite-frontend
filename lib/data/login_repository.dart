@@ -24,8 +24,10 @@ final _log = Logger("LoginRepository");
 sealed class LoginRepositoryCmd<T> {
   final BehaviorSubject<T?> completed = BehaviorSubject.seeded(null);
 
-  Future<T> waitCompletion() async {
-    return await completed.whereType<T>().first;
+  Future<T> waitCompletionAndDispose() async {
+    final value = await completed.whereType<T>().first;
+    await completed.close();
+    return value;
   }
 }
 
@@ -369,7 +371,7 @@ class LoginRepository extends AppSingleton {
   Future<Result<(), SignInWithEvent>> sendSignInWithLoginCmd(SignInWithLoginInfo info) async {
     final event = LogoutAndSignInWithLogin(info);
     _cmds.add(event);
-    return await event.waitCompletion();
+    return await event.waitCompletionAndDispose();
   }
 
   Stream<SignInWithEvent> signInWithGoogle() async* {
@@ -394,7 +396,7 @@ class LoginRepository extends AppSingleton {
     final event = GetServerAddress();
     _cmds.add(event);
     final r = await SignInWithAppleManager.signInWithApple(
-      currentServerAddress: await event.waitCompletion(),
+      currentServerAddress: await event.waitCompletionAndDispose(),
     );
 
     switch (r) {
@@ -419,13 +421,13 @@ class LoginRepository extends AppSingleton {
   Future<void> logout(AccountId? id) async {
     final event = Logout(id);
     _cmds.add(event);
-    await event.waitCompletion();
+    await event.waitCompletionAndDispose();
   }
 
   Future<Result<(), ()>> setCurrentServerAddress(String serverAddress) async {
     final event = ChangeServerAddress(serverAddress);
     _cmds.add(event);
-    return await event.waitCompletion();
+    return await event.waitCompletionAndDispose();
   }
 
   Future<Result<(), DemoAccountLoginError>> demoAccountLogin(
@@ -433,25 +435,25 @@ class LoginRepository extends AppSingleton {
   ) async {
     final event = DemoAccountLogin(credentials);
     _cmds.add(event);
-    return await event.waitCompletion();
+    return await event.waitCompletionAndDispose();
   }
 
   Future<void> demoAccountLogout() async {
     final event = DemoAccountLogout();
     _cmds.add(event);
-    await event.waitCompletion();
+    await event.waitCompletionAndDispose();
   }
 
   Future<Result<List<AccessibleAccount>, DemoAccountError>> demoAccountGetAccounts() async {
     final event = DemoAccountGetAccounts();
     _cmds.add(event);
-    return await event.waitCompletion();
+    return await event.waitCompletionAndDispose();
   }
 
   Future<Result<(), DemoAccountError>> demoAccountRegisterIfNeededAndLogin(AccountId? id) async {
     final event = DemoAccountRegisterIfNeededAndLoginToAccount(id);
     _cmds.add(event);
-    return await event.waitCompletion();
+    return await event.waitCompletionAndDispose();
   }
 }
 

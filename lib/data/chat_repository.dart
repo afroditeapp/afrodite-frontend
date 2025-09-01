@@ -377,7 +377,7 @@ class ChatRepository extends DataRepositoryWithLifecycle {
   Future<void> receiveNewMessages() async {
     final cmd = ReceiveNewMessages();
     messageManager.queueCmd(cmd);
-    await cmd.waitUntilReady();
+    await cmd.waitCompletionAndDispose();
   }
 
   Stream<MessageSendingEvent> sendMessageTo(AccountId accountId, Message message) async* {
@@ -389,13 +389,13 @@ class ChatRepository extends DataRepositoryWithLifecycle {
   Future<Result<(), DeleteSendFailedError>> deleteSendFailedMessage(LocalMessageId localId) async {
     final cmd = DeleteSendFailedMessage(localId);
     messageManager.queueCmd(cmd);
-    return await cmd.waitUntilReady();
+    return await cmd.waitCompletionAndDispose();
   }
 
   Future<Result<(), ResendFailedError>> resendSendFailedMessage(LocalMessageId localId) async {
     final cmd = ResendSendFailedMessage(localId);
     messageManager.queueCmd(cmd);
-    return await cmd.waitUntilReady();
+    return await cmd.waitCompletionAndDispose();
   }
 
   Future<Result<(), RetryPublicKeyDownloadError>> retryPublicKeyDownload(
@@ -403,7 +403,7 @@ class ChatRepository extends DataRepositoryWithLifecycle {
   ) async {
     final cmd = RetryPublicKeyDownload(localId);
     messageManager.queueCmd(cmd);
-    return await cmd.waitUntilReady();
+    return await cmd.waitCompletionAndDispose();
   }
 }
 

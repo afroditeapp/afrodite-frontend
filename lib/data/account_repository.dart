@@ -93,6 +93,7 @@ class AccountRepository extends DataRepositoryWithLifecycle {
     await _syncHandler.dispose();
     await _serverEvents?.cancel();
     await _contentProcessingStateChanges.close();
+    await _internalState.close();
   }
 
   @override
@@ -369,5 +370,8 @@ class CachedValues {
     await _cachedEmailSubscription?.cancel();
     await _cachedProfileVisibilitySubscription?.cancel();
     await _cachedAccountStateSubscription?.cancel();
+    await _cachedEmailAddress.close();
+    await _cachedProfileVisibility.close();
+    await _cachedAccountState.close();
   }
 }

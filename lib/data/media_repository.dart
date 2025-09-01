@@ -128,6 +128,7 @@ class MediaRepository extends DataRepositoryWithLifecycle {
   }) async* {
     final task = SendImageToSlotTask(account, api);
     yield* task.sendImageToSlot(imgBytes, slot, secureCapture: secureCapture);
+    await task.dispose();
   }
 
   Future<void> handleMediaContentModerationCompletedEvent() async {

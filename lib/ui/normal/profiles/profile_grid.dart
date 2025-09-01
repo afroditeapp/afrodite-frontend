@@ -54,7 +54,7 @@ class ProfileGridState extends State<ProfileGrid> {
   final PagedGridLogic _gridLogic = PagedGridLogic();
   bool isDisposed = false;
 
-  List<BehaviorSubject<bool>> reloadEventDoneTrackers = [];
+  List<EventHandlingTracker> reloadEventDoneTrackers = [];
 
   @override
   void initState() {
@@ -133,7 +133,10 @@ class ProfileGridState extends State<ProfileGrid> {
           }
         }
       case ReloadMainProfileView():
-        reloadEventDoneTrackers.add(event.eventHandled);
+        final tracker = event.eventHandlingTracker;
+        if (tracker != null) {
+          reloadEventDoneTrackers.add(tracker);
+        }
         updatePagingState((_) {
           if (event.showOnlyFavorites) {
             _mainProfilesViewIterator.reset(ModeFavorites());
@@ -182,7 +185,7 @@ class ProfileGridState extends State<ProfileGrid> {
   void _addPage(List<ProfileGridProfileEntry> page) {
     updatePagingState((s) => s.copyAndAdd(page));
     reloadEventDoneTrackers.removeWhere((handle) {
-      handle.add(true);
+      handle.handleAndDispose();
       return true;
     });
   }
@@ -357,6 +360,7 @@ class ProfileGridState extends State<ProfileGrid> {
     _scrollController.dispose();
     _profileChangesSubscription?.cancel();
     _profileChangesSubscription = null;
+    _mainProfilesViewIterator.dispose();
     super.dispose();
   }
 }

@@ -62,7 +62,7 @@ class NavigatorStateBloc extends Bloc<NavigatorStateEvent, NavigatorStateData> {
       final newPages = state.pages.toList();
       if (state.pages.length > 1) {
         final removed = newPages.removeLast();
-        removed.channel.add(PagePopDone(data.pageReturnValue));
+        removed.channel?.add(PagePopDone(data.pageReturnValue));
       }
       emit(state.copyWith(pages: UnmodifiableList(newPages), disableAnimation: false));
     });
@@ -72,7 +72,7 @@ class NavigatorStateBloc extends Bloc<NavigatorStateEvent, NavigatorStateData> {
         if (p.key != data.pageKey) {
           newPages.add(p);
         } else {
-          p.channel.add(PagePopDone(data.pageReturnValue));
+          p.channel?.add(PagePopDone(data.pageReturnValue));
         }
       }
       emit(state.copyWith(pages: UnmodifiableList(newPages), disableAnimation: false));
@@ -83,7 +83,7 @@ class NavigatorStateBloc extends Bloc<NavigatorStateEvent, NavigatorStateData> {
         if (p.page != data.page) {
           newPages.add(p);
         } else {
-          p.channel.add(const PagePopDone(null));
+          p.channel?.add(const PagePopDone(null));
         }
       }
       emit(state.copyWith(pages: UnmodifiableList(newPages), disableAnimation: false));
@@ -94,7 +94,7 @@ class NavigatorStateBloc extends Bloc<NavigatorStateEvent, NavigatorStateData> {
         if (!data.pageKeys.contains(p.key)) {
           newPages.add(p);
         } else {
-          p.channel.add(const PagePopDone(null));
+          p.channel?.add(const PagePopDone(null));
         }
       }
       emit(state.copyWith(pages: UnmodifiableList(newPages), disableAnimation: false));
@@ -103,7 +103,7 @@ class NavigatorStateBloc extends Bloc<NavigatorStateEvent, NavigatorStateData> {
       final currentPages = state.pages.toList();
 
       for (final p in currentPages.reversed) {
-        p.channel.add(const PagePopDone(null));
+        p.channel?.add(const PagePopDone(null));
       }
 
       emit(
@@ -113,7 +113,7 @@ class NavigatorStateBloc extends Bloc<NavigatorStateEvent, NavigatorStateData> {
               return PageAndChannel(
                 newPageDetails.pageKey ?? PageKey(),
                 newPageDetails.page,
-                BehaviorSubject.seeded(const WaitingPagePop()),
+                null,
                 newPageDetails.pageInfo,
               );
             }),
@@ -128,7 +128,7 @@ class NavigatorStateBloc extends Bloc<NavigatorStateEvent, NavigatorStateData> {
         if (p.key != data.existingPage) {
           newPages.add(p);
         } else {
-          p.channel.add(const PagePopDone(null));
+          p.channel?.add(const PagePopDone(null));
           newPages.add(data.newPage);
         }
       }
@@ -148,6 +148,7 @@ class NavigatorStateBloc extends Bloc<NavigatorStateEvent, NavigatorStateData> {
     final newPage = PageAndChannel(pageKey, page, returnChannel, pageInfo);
     add(PushPage(newPage));
     final popDone = await returnChannel.whereType<PagePopDone>().first;
+    await returnChannel.close();
     final returnValue = popDone.returnValue;
     if (returnValue is T?) {
       return returnValue;
@@ -171,6 +172,7 @@ class NavigatorStateBloc extends Bloc<NavigatorStateEvent, NavigatorStateData> {
     final newPage = PageAndChannel(pageKey, page, returnChannel, pageInfo);
     add(ReplaceSinglePage(existingPage, newPage));
     final popDone = await returnChannel.whereType<PagePopDone>().first;
+    await returnChannel.close();
     final returnValue = popDone.returnValue;
     if (returnValue is T?) {
       return returnValue;

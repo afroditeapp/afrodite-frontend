@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:app/data/chat_repository.dart';
 import 'package:app/data/general/notification/state/automatic_profile_search.dart';
 import 'package:app/data/general/notification/state/profile_text_moderation_completed.dart';
+import 'package:app/logic/profile/profile_filters.dart';
 import 'package:app/utils/api.dart';
 import 'package:app/utils/stream.dart';
 import 'package:async/async.dart' show StreamExtensions;
@@ -519,12 +520,12 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
         .empty();
   }
 
-  Future<void> resetMainProfileIterator({BehaviorSubject<bool>? eventHandlingTracking}) async {
+  Future<void> resetMainProfileIterator({EventHandlingTracker? eventHandlingTracking}) async {
     final showOnlyFavorites = await getFilterFavoriteProfilesValue();
     sendProfileChange(
       ReloadMainProfileView.withEventHandlingTracking(
         showOnlyFavorites: showOnlyFavorites,
-        eventHandlingTracking: eventHandlingTracking,
+        eventHandlingTracker: eventHandlingTracking,
       ),
     );
   }
@@ -784,14 +785,13 @@ class ProfileFavoriteStatusChange extends ProfileChange {
 }
 
 class ReloadMainProfileView extends ProfileChange {
-  final BehaviorSubject<bool> eventHandled;
+  final EventHandlingTracker? eventHandlingTracker;
   final bool showOnlyFavorites;
-  ReloadMainProfileView({required this.showOnlyFavorites})
-    : eventHandled = BehaviorSubject.seeded(false);
+  ReloadMainProfileView({required this.showOnlyFavorites}) : eventHandlingTracker = null;
   ReloadMainProfileView.withEventHandlingTracking({
     required this.showOnlyFavorites,
-    BehaviorSubject<bool>? eventHandlingTracking,
-  }) : eventHandled = eventHandlingTracking ?? BehaviorSubject.seeded(false);
+    required this.eventHandlingTracker,
+  });
 }
 
 enum ConversationChangeType { messageSent, messageReceived, messageRemoved, messageResent }

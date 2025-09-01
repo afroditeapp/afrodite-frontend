@@ -59,9 +59,16 @@ class ContentDecicionStreamLogic<C> {
 
   ContentDecicionStreamLogic(this.api, this.io) : cacher = ModerationCacher<C>(api);
 
+  Future<void> dispose() async {
+    await _moderationStatus.close();
+    await loadManager.dispose();
+  }
+
   void reset() {
     _moderationStatus.add(ContentDecicionStreamStatus.loading);
+    final currentLoadManager = loadManager;
     loadManager = LoadMoreManager();
+    currentLoadManager.dispose();
     cacher = ModerationCacher(api);
     cacher.getMoreModerationRequests(io).then((value) {
       final firstState = value.firstOrNull;
@@ -111,17 +118,44 @@ class ContentDecicionStreamLogic<C> {
   }
 }
 
-sealed class LoadMoreState {}
+sealed class LoadMoreState {
+  Future<void> dispose() async {}
+}
 
 class Idle extends LoadMoreState {}
 
 class AlreadyLoading extends LoadMoreState {
-  final BehaviorSubject<bool> completed = BehaviorSubject.seeded(false);
+  final BehaviorSubject<bool> _completed = BehaviorSubject.seeded(false);
+
+  @override
+  Future<void> dispose() async {
+    await _completed.close();
+  }
+
+  Future<void> completeAndDispose() async {
+    _completed.add(true);
+    await _completed.close();
+  }
+
+  Future<void> waitCompletion() async {
+    try {
+      await _completed.where((event) => event).firstOrNull;
+    } catch (_) {
+      // Disposed
+    }
+  }
 }
 
 class LoadMoreManager<C> {
   LoadMoreState state = Idle();
   final LinkedHashMap<int, BehaviorSubject<RowState<C>>> rows = LinkedHashMap();
+
+  Future<void> dispose() async {
+    for (final v in rows.values) {
+      await v.close();
+    }
+    await state.dispose();
+  }
 
   Stream<RowState<C>> getRow(int i, ModerationCacher<C> cacher, ContentIo<C> logic) async* {
     while (true) {
@@ -140,10 +174,10 @@ class LoadMoreManager<C> {
           state = newState;
           final imgStates = await cacher.getMoreModerationRequests(logic);
           handleNewStates(imgStates);
-          newState.completed.add(true);
+          await newState.completeAndDispose();
           state = Idle();
-        case AlreadyLoading(:final completed):
-          await completed.where((event) => event).firstOrNull;
+        case AlreadyLoading state:
+          await state.waitCompletion();
       }
     }
   }

@@ -48,8 +48,10 @@ class EventToClientContainer implements ServerWsEvent {
 sealed class ServerConnectionManagerCmd<T> {
   final BehaviorSubject<T?> completed = BehaviorSubject.seeded(null);
 
-  Future<T> waitCompletion() async {
-    return await completed.whereType<T>().first;
+  Future<T> waitCompletionAndDispose() async {
+    final value = await completed.whereType<T>().first;
+    await completed.close();
+    return value;
   }
 }
 
@@ -126,6 +128,7 @@ class ServerConnectionManager extends ApiManager
     _reconnectTimer?.cancel();
     await _cmds.close();
     await _serverEvents.close();
+    await _state.close();
   }
 
   StreamSubscription<void> _listenServerConnectionCmds() {
@@ -255,14 +258,14 @@ class ServerConnectionManager extends ApiManager
     _restartOngoing = true;
     final event = Restart();
     _cmds.add(event);
-    await event.waitCompletion();
+    await event.waitCompletionAndDispose();
     _restartOngoing = false;
   }
 
   Future<void> close() async {
     final event = CloseConnection(null);
     _cmds.add(event);
-    await event.waitCompletion();
+    await event.waitCompletionAndDispose();
   }
 
   void disableSnackBars() {

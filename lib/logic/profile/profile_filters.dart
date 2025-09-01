@@ -236,18 +236,19 @@ class ProfileFiltersBloc extends Bloc<ProfileFiltersEvent, ProfileFiltersData> w
     on<SetFavoriteProfilesFilter>((data, emit) async {
       await runOnce(() async {
         await profile.changeProfileFilterFavorites(data.value);
-        final isHandled = BehaviorSubject.seeded(false);
+        final isHandled = EventHandlingTracker();
         await profile.resetMainProfileIterator(eventHandlingTracking: isHandled);
         // Prevent showing all profiles when favorites should be shown. That
         // can happen when toggling favorites filter fast enough.
         if (data.waitEventHandling) {
           await Future.any([
-            isHandled.firstWhere((v) => v == true),
+            isHandled._isHandled(),
             // Prevent favorites filter getting stuck as
             // ProfileGrid might not exist.
             Future<void>.delayed(Duration(seconds: 1)),
           ]);
         }
+        await isHandled._dispose();
       });
     });
     on<SetLastSeenTimeFilter>((data, emit) {
@@ -467,4 +468,29 @@ bool attributeValuesDiffer(
     }
   }
   return false;
+}
+
+class EventHandlingTracker {
+  final _subject = BehaviorSubject.seeded(false);
+
+  Future<void> handleAndDispose() async {
+    try {
+      _subject.add(true);
+    } catch (_) {
+      // Disposed
+    }
+    await _subject.close();
+  }
+
+  Future<void> _isHandled() async {
+    try {
+      await _subject.firstWhere((v) => v == true);
+    } catch (_) {
+      // Disposed
+    }
+  }
+
+  Future<void> _dispose() async {
+    await _subject.close();
+  }
 }

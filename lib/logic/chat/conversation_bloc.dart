@@ -415,6 +415,7 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
     await _messageCountSubscription?.cancel();
     await _profileChangeSubscription?.cancel();
     await _isInMatchesSubscription?.cancel();
+    await _renderingSynchronizer.close();
     return super.close();
   }
 }

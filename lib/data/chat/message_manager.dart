@@ -17,20 +17,21 @@ import 'package:app/database/account_database_manager.dart';
 import 'package:app/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
 
-sealed class MessageManagerCommand {}
+sealed class BaseMessageManagerCmd {}
 
-class ReceiveNewMessages extends MessageManagerCommand {
-  final BehaviorSubject<bool> _completed = BehaviorSubject.seeded(false);
+sealed class MessageManagerCmd<T> extends BaseMessageManagerCmd {
+  final BehaviorSubject<T?> completed = BehaviorSubject.seeded(null);
 
-  Future<void> waitUntilReady() async {
-    await _completed.where((v) {
-      return v;
-    }).first;
-    return;
+  Future<T> waitCompletionAndDispose() async {
+    final value = await completed.whereType<T>().first;
+    await completed.close();
+    return value;
   }
 }
 
-class SendMessage extends MessageManagerCommand {
+class ReceiveNewMessages extends MessageManagerCmd<()> {}
+
+class SendMessage extends BaseMessageManagerCmd {
   final ReplaySubject<MessageSendingEvent?> _events = ReplaySubject();
   final AccountId receiverAccount;
   final Message message;
@@ -46,37 +47,19 @@ class SendMessage extends MessageManagerCommand {
   }
 }
 
-class DeleteSendFailedMessage extends MessageManagerCommand {
-  final BehaviorSubject<Result<(), DeleteSendFailedError>?> _completed = BehaviorSubject.seeded(
-    null,
-  );
+class DeleteSendFailedMessage extends MessageManagerCmd<Result<(), DeleteSendFailedError>> {
   final LocalMessageId localId;
   DeleteSendFailedMessage(this.localId);
-
-  Future<Result<(), DeleteSendFailedError>> waitUntilReady() async {
-    return await _completed.whereNotNull().first;
-  }
 }
 
-class ResendSendFailedMessage extends MessageManagerCommand {
-  final BehaviorSubject<Result<(), ResendFailedError>?> _completed = BehaviorSubject.seeded(null);
+class ResendSendFailedMessage extends MessageManagerCmd<Result<(), ResendFailedError>> {
   final LocalMessageId localId;
   ResendSendFailedMessage(this.localId);
-
-  Future<Result<(), ResendFailedError>> waitUntilReady() async {
-    return await _completed.whereNotNull().first;
-  }
 }
 
-class RetryPublicKeyDownload extends MessageManagerCommand {
-  final BehaviorSubject<Result<(), RetryPublicKeyDownloadError>?> _completed =
-      BehaviorSubject.seeded(null);
+class RetryPublicKeyDownload extends MessageManagerCmd<Result<(), RetryPublicKeyDownloadError>> {
   final LocalMessageId localId;
   RetryPublicKeyDownload(this.localId);
-
-  Future<Result<(), RetryPublicKeyDownloadError>> waitUntilReady() async {
-    return await _completed.whereNotNull().first;
-  }
 }
 
 /// Synchronized message actions
@@ -117,7 +100,7 @@ class MessageManager extends LifecycleMethods {
         profile,
       );
 
-  final PublishSubject<MessageManagerCommand> _commands = PublishSubject();
+  final PublishSubject<BaseMessageManagerCmd> _commands = PublishSubject();
   StreamSubscription<void>? _commandsSubscription;
 
   @override
@@ -125,20 +108,20 @@ class MessageManager extends LifecycleMethods {
     _commandsSubscription = _commands
         .asyncMap((cmd) async {
           switch (cmd) {
-            case ReceiveNewMessages(:final _completed):
+            case ReceiveNewMessages():
               await receiveMessageUtils.receiveNewMessages();
-              _completed.add(true);
+              cmd.completed.add(());
             case SendMessage(:final _events, :final receiverAccount, :final message):
               await for (final event in sendMessageUtils.sendMessageTo(receiverAccount, message)) {
                 _events.add(event);
               }
               _events.add(null);
-            case DeleteSendFailedMessage(:final _completed, :final localId):
-              _completed.add(await _deleteSendFailedMessage(localId));
-            case ResendSendFailedMessage(:final _completed, :final localId):
-              _completed.add(await _resendSendFailedMessage(localId));
-            case RetryPublicKeyDownload(:final _completed, :final localId):
-              _completed.add(await _retryPublicKeyDownload(localId));
+            case DeleteSendFailedMessage():
+              cmd.completed.add(await _deleteSendFailedMessage(cmd.localId));
+            case ResendSendFailedMessage():
+              cmd.completed.add(await _resendSendFailedMessage(cmd.localId));
+            case RetryPublicKeyDownload():
+              cmd.completed.add(await _retryPublicKeyDownload(cmd.localId));
           }
         })
         .listen((_) {});
@@ -150,7 +133,7 @@ class MessageManager extends LifecycleMethods {
     await _commands.close();
   }
 
-  void queueCmd(MessageManagerCommand cmd) {
+  void queueCmd(BaseMessageManagerCmd cmd) {
     _commands.add(cmd);
   }
 

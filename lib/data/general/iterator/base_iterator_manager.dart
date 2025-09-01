@@ -23,6 +23,11 @@ abstract class BaseIteratorManager implements UiProfileIterator {
   IteratorType createDatabaseIterator();
 
   @override
+  Future<void> dispose() async {
+    await _loadingInProgress.close();
+  }
+
+  @override
   void reset(bool clearDatabase) async {
     if (clearDatabase) {
       _currentIterator = createClearDatabaseIterator();
@@ -101,4 +106,5 @@ abstract class UiProfileIterator {
   void reset(bool clearDatabase);
   void resetToBeginning();
   Future<Result<List<ProfileEntry>, ()>> nextList();
+  Future<void> dispose();
 }

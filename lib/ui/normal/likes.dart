@@ -489,7 +489,7 @@ class LikeViewContentState extends State<LikeViewContent> {
       final newReceivedLikesCountBeforeReload = bloc.state.newReceivedLikesCount;
       final event = UpdateReceivedLikesCountNotViewed(newReceivedLikesCountBeforeReload);
       bloc.add(event);
-      await event.waitDone.firstWhere((v) => v);
+      await event.waitCompletion();
     } else {
       _log.info("Automatic like screen refresh");
     }
@@ -515,6 +515,7 @@ class LikeViewContentState extends State<LikeViewContent> {
     _scrollController.dispose();
     _profileChangesSubscription?.cancel();
     _profileChangesSubscription = null;
+    _mainProfilesViewIterator.dispose();
     super.dispose();
   }
 }

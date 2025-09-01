@@ -47,4 +47,10 @@ class LikeGridInstanceManagerBloc
     _currentlyVisibleId.add(max(0, id));
     return id;
   }
+
+  @override
+  Future<void> close() async {
+    await _currentlyVisibleId.close();
+    await super.close();
+  }
 }

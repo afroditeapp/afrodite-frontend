@@ -37,10 +37,11 @@ class RepositoryInstances {
   final MediaRepository media;
   final ChatRepository chat;
 
-  // No lifecycle or other methods
   final AccountBackgroundDatabaseManager accountBackgroundDb;
   final AccountDatabaseManager accountDb;
   final ServerConnectionManager connectionManager;
+  final ClientIdManager clientIdManager;
+  final MessageKeyManager messageKeyManager;
 
   bool _logoutStarted = false;
 
@@ -57,6 +58,8 @@ class RepositoryInstances {
     required this.accountBackgroundDb,
     required this.accountDb,
     required this.connectionManager,
+    required this.clientIdManager,
+    required this.messageKeyManager,
   });
 
   List<DataRepositoryWithLifecycle> get _repositories => [common, account, profile, media, chat];
@@ -125,6 +128,8 @@ class RepositoryInstances {
     }
 
     await connectionManager.dispose();
+    await clientIdManager.dispose();
+    await messageKeyManager.dispose();
   }
 
   static Future<RepositoryInstances> createAndInit(
@@ -168,6 +173,7 @@ class RepositoryInstances {
       accountId,
     );
     final common = CommonRepository(accountId, connectionManager, profile);
+    final messageKeyManager = MessageKeyManager(accountDb, connectionManager, accountId);
     final chat = ChatRepository(
       media: media,
       profile: profile,
@@ -175,7 +181,7 @@ class RepositoryInstances {
       db: accountDb,
       connectionManager: connectionManager,
       clientIdManager: clientIdManager,
-      messageKeyManager: MessageKeyManager(accountDb, connectionManager, accountId),
+      messageKeyManager: messageKeyManager,
       currentUser: accountId,
     );
     final newRepositories = RepositoryInstances._(
@@ -189,6 +195,8 @@ class RepositoryInstances {
       accountBackgroundDb: accountBackgroundDb,
       accountDb: accountDb,
       connectionManager: connectionManager,
+      clientIdManager: clientIdManager,
+      messageKeyManager: messageKeyManager,
     );
     account.repositories = newRepositories;
     await newRepositories.init();

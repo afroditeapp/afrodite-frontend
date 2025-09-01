@@ -45,6 +45,10 @@ class SendImageToSlotTask {
   final AccountRepository account;
   SendImageToSlotTask(this.account, this.api);
 
+  Future<void> dispose() async {
+    await uploadDone.close();
+  }
+
   Stream<SendToSlotEvent> sendImageToSlot(
     Uint8List imgBytes,
     int slot, {

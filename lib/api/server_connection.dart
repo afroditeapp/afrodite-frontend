@@ -268,7 +268,11 @@ class ServerConnection {
   }
 
   Future<void> handleConnectionIsReadyForDataSync(AccessToken token) async {
-    _connection.connection.sendBytes(await syncDataBytes(db, accountBackgroundDb));
+    final bytes = await syncDataBytes(db, accountBackgroundDb);
+    if (_isClosed) {
+      return;
+    }
+    _connection.connection.sendBytes(bytes);
     _protocolState = ConnectionProtocolState.receiveEvents;
     _log.info("Connection ready");
     _state.add(Ready(token));
@@ -289,6 +293,7 @@ class ServerConnection {
     await _navigationSubscription?.cancel();
     await _connection.close();
     _state.add(Closed(error));
+    await _state.close();
   }
 
   Future<void> close() async {
@@ -300,6 +305,7 @@ class ServerConnection {
     await _navigationSubscription?.cancel();
     await _connection.close();
     _state.add(Closed(null));
+    await _state.close();
   }
 }
 

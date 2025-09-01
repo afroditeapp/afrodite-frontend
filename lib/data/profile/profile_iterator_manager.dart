@@ -52,6 +52,10 @@ class ProfileIteratorManager {
   /// moves profile location to a location from where the iterator can return it.
   final Set<AccountId> _duplicateAccountsPreventer = {};
 
+  Future<void> dispose() async {
+    await loadingInProgress.close();
+  }
+
   void reset(ProfileIteratorMode mode) async {
     _duplicateAccountsPreventer.clear();
 

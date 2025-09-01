@@ -17,6 +17,10 @@ class ClientIdManager {
     sync: true,
   );
 
+  Future<void> dispose() async {
+    await _state.close();
+  }
+
   Future<Result<ClientId, ()>> getClientId() async {
     if (_state.value == ClientIdManagerState.inProgress) {
       await _state.where((v) => v == ClientIdManagerState.idle).first;
