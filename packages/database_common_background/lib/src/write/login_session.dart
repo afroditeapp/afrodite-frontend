@@ -12,10 +12,34 @@ class DaoWriteLoginSession extends DatabaseAccessor<CommonBackgroundDatabase>
     with _$DaoWriteLoginSessionMixin {
   DaoWriteLoginSession(super.db);
 
-  Future<void> updateAccountIdUseOnlyFromDatabaseManager(AccountId? id) async {
-    await into(accountId).insertOnConflictUpdate(
-      AccountIdCompanion.insert(id: SingleRowTable.ID, accountId: Value(id)),
-    );
+  Future<void> login(AccountId id) async {
+    await transaction(() async {
+      await into(accountId).insertOnConflictUpdate(
+        AccountIdCompanion.insert(id: SingleRowTable.ID, accountId: Value(id)),
+      );
+      await into(pushNotification).insertOnConflictUpdate(
+        PushNotificationCompanion.insert(
+          id: SingleRowTable.ID,
+          fcmDeviceToken: Value(null),
+          pendingNotificationToken: Value(null),
+        ),
+      );
+    });
+  }
+
+  Future<void> logout() async {
+    await transaction(() async {
+      await into(accountId).insertOnConflictUpdate(
+        AccountIdCompanion.insert(id: SingleRowTable.ID, accountId: Value(null)),
+      );
+      await into(pushNotification).insertOnConflictUpdate(
+        PushNotificationCompanion.insert(
+          id: SingleRowTable.ID,
+          fcmDeviceToken: Value(null),
+          pendingNotificationToken: Value(null),
+        ),
+      );
+    });
   }
 
   Future<void> updateFcmDeviceTokenAndPendingNotificationToken(

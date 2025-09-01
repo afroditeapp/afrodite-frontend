@@ -14,7 +14,6 @@ import 'package:app/config.dart';
 import 'package:app/data/account_repository.dart';
 import 'package:app/database/account_database_manager.dart';
 import 'package:app/database/background_database_manager.dart';
-import 'package:app/database/database_manager.dart';
 import 'package:app/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:utils/utils.dart';
@@ -313,8 +312,8 @@ class LoginRepository extends AppSingleton {
     final CommonSignInError? error;
 
     final accountDb = createdRepositories.accountDb;
-    final r = await DatabaseManager.getInstance()
-        .setAccountId(aid)
+    final r = await BackgroundDatabaseManager.getInstance()
+        .commonAction((db) => db.loginSession.login(aid))
         .andThen(
           (_) => accountDb.accountAction((db) => db.account.updateEmailAddress(loginResult.email)),
         )
@@ -368,6 +367,7 @@ class LoginRepository extends AppSingleton {
       _log.info("Logout started");
       await _repositoryStateStreams._logout();
       await currentRepositories.logoutAndDispose();
+      await BackgroundDatabaseManager.getInstance().commonAction((db) => db.loginSession.logout());
       await _google.logout();
       _repositories.add(RepositoriesEmpty());
       _log.info("Logout completed");

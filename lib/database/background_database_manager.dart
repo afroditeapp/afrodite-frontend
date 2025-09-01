@@ -121,9 +121,6 @@ class BackgroundDatabaseManager extends AppSingleton {
     await newDb.accountAction((db) => db.loginSession.setAccountIdIfNull(accountId));
     return newDb;
   }
-
-  Future<Result<(), AppError>> setAccountId(AccountId accountId) =>
-      commonAction((db) => db.loginSession.updateAccountIdUseOnlyFromDatabaseManager(accountId));
 }
 
 Stream<T?> oneValueAndWaitForever<T>(T? value) async* {
