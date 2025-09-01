@@ -238,7 +238,9 @@ class NavigationStateBlocInstance extends AppSingletonNoInit {
   final BehaviorSubject<NavigatorStateBloc?> _latestBloc = BehaviorSubject.seeded(null);
 
   Stream<NavigatorStateData> get navigationStateStream => _latestBloc.switchMap((b) {
-    return b?.stream ?? Stream.value(NavigatorStateData.defaultValue());
+    return b != null
+        ? b.stream.startWith(b.state)
+        : Stream.value(NavigatorStateData.defaultValue());
   });
 
   NavigatorStateData get navigationState =>
