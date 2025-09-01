@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:app/data/login_repository.dart';
 import 'package:app/data/profile_repository.dart';
 import 'package:app/data/utils/ios_delay_app_suspend_task.dart';
-import 'package:async/async.dart' show StreamExtensions;
 import 'package:logging/logging.dart';
 import 'package:app/api/server_connection_manager.dart';
 import 'package:app/data/push_notification_manager.dart';
@@ -63,8 +62,7 @@ class CommonRepository extends DataRepositoryWithLifecycle {
             }
             _backgroundedAt = null;
 
-            final state = await connectionManager.state.firstOrNull;
-            if (state == ServerConnectionState.noConnection) {
+            if (connectionManager.currentState == ServerConnectionState.noConnection) {
               await connectionManager.restartIfRestartNotOngoing();
             }
           } else {

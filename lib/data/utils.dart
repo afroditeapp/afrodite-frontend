@@ -112,11 +112,11 @@ class ConnectedActionScheduler {
     final count = _onLoginScheduledCount;
     _onLoginScheduled = true;
 
-    Future.any<ServerConnectionState?>([
-      connectionManager.state.firstWhere((element) => element == ServerConnectionState.connected),
-      _cancel.firstWhere((v) => v).then((v) => null),
+    Future.any<bool>([
+      connectionManager.waitUntilCurrentSessionConnects().then((v) => v.isOk()),
+      _cancel.firstWhere((v) => v).then((v) => false),
     ]).then((value) async {
-      if (value == null) {
+      if (!value) {
         return;
       }
 
@@ -131,11 +131,11 @@ class ConnectedActionScheduler {
   }
 
   void onResumeAppUsageSync(Future<void> Function() action) {
-    Future.any<ServerConnectionState?>([
-      connectionManager.state.firstWhere((element) => element == ServerConnectionState.connected),
-      _cancel.firstWhere((v) => v).then((v) => null),
+    Future.any<bool>([
+      connectionManager.waitUntilCurrentSessionConnects().then((v) => v.isOk()),
+      _cancel.firstWhere((v) => v).then((v) => false),
     ]).then((value) async {
-      if (value == null) {
+      if (!value) {
         return;
       }
 

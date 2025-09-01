@@ -91,15 +91,15 @@ class ServerConnectionManager extends ApiManager
   final BehaviorSubject<ServerConnectionState> _state = BehaviorSubject.seeded(
     ServerConnectionState.connecting,
   );
+  Stream<ServerConnectionState> get state => _state.distinct();
   ServerConnectionState get currentState => _state.value;
+  @override
+  bool get isConnected => currentState == ServerConnectionState.connected;
 
   final PublishSubject<ServerWsEvent> _serverEvents = PublishSubject();
   Stream<ServerWsEvent> get serverEvents => _serverEvents;
 
   StreamSubscription<void>? _serverConnectionEventsSubscription;
-
-  @override
-  Stream<ServerConnectionState> get state => _state.distinct();
 
   @override
   ApiProvider get _account => _apiProvider;
@@ -277,16 +277,25 @@ class ServerConnectionManager extends ApiManager
     return await Future.any([
       Future.delayed(Duration(seconds: waitTimeoutSeconds), () => false),
       state
-          .firstWhere((element) => element == ServerConnectionState.connected)
-          .then((value) => true),
+          .map((v) => v == ServerConnectionState.connected)
+          .firstWhere((v) => v, orElse: () => false)
+          .then((v) => v),
     ]);
   }
 
   /// Wait until current login session connects to server.
   ///
   /// If current login session changes to different account then error is returned.
+  ///
+  /// Error is also returned after calling [dispose].
   Future<Result<(), ()>> waitUntilCurrentSessionConnects() async {
-    await state.firstWhere((element) => element == ServerConnectionState.connected);
+    final connected = await state
+        .map((v) => v == ServerConnectionState.connected)
+        .firstWhere((v) => v, orElse: () => false);
+
+    if (!connected) {
+      return Err(());
+    }
 
     final accountAfterConnection = await BackgroundDatabaseManager.getInstance().commonStreamSingle(
       (db) => db.loginSession.watchAccountId(),

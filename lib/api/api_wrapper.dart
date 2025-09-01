@@ -1,7 +1,5 @@
-import 'package:async/async.dart' show StreamExtensions;
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
-import 'package:app/api/server_connection_manager.dart';
 import 'package:app/utils/app_error.dart';
 import 'package:app/utils/result.dart';
 
@@ -72,8 +70,7 @@ class ApiWrapper<T> {
     e.code == 401 ||
         // Current HTTP connection broke (and perhaps some other errors also)
         (e.code == 400 && e.innerException != null)) {
-      final currentState = await serverConnection.state.firstOrNull;
-      if (currentState == ServerConnectionState.connected) {
+      if (serverConnection.isConnected) {
         _log.warning("Current connection might be broken");
         await serverConnection.restartIfRestartNotOngoing();
       }
@@ -82,13 +79,13 @@ class ApiWrapper<T> {
 }
 
 abstract class ServerConnectionInterface {
-  Stream<ServerConnectionState> get state;
+  bool get isConnected;
   Future<void> restartIfRestartNotOngoing();
 }
 
 class NoConnection implements ServerConnectionInterface {
   @override
-  Stream<ServerConnectionState> get state => const Stream.empty();
+  bool get isConnected => false;
 
   @override
   Future<void> restartIfRestartNotOngoing() async {}
