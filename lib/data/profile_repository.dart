@@ -66,6 +66,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
   @override
   Future<void> dispose() async {
     await syncHandler.dispose();
+    await _profileChangesRelay.close();
   }
 
   @override

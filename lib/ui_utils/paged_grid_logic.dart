@@ -79,5 +79,6 @@ class PagedGridLogic {
 
   Future<void> dispose() async {
     await subscription.cancel();
+    await _subject.close();
   }
 }

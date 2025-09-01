@@ -124,6 +124,8 @@ class ServerConnectionManager extends ApiManager
     _serverConnection = null;
     await _serverConnectionEventsSubscription?.cancel();
     _reconnectTimer?.cancel();
+    await _cmds.close();
+    await _serverEvents.close();
   }
 
   StreamSubscription<void> _listenServerConnectionCmds() {

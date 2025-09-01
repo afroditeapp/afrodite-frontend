@@ -147,6 +147,7 @@ class MessageManager extends LifecycleMethods {
   @override
   Future<void> dispose() async {
     await _commandsSubscription?.cancel();
+    await _commands.close();
   }
 
   void queueCmd(MessageManagerCommand cmd) {

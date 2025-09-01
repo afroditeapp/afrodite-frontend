@@ -92,6 +92,7 @@ class AccountRepository extends DataRepositoryWithLifecycle {
     await _cachedValues._dispose();
     await _syncHandler.dispose();
     await _serverEvents?.cancel();
+    await _contentProcessingStateChanges.close();
   }
 
   @override
