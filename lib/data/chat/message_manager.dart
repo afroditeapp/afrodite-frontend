@@ -37,6 +37,11 @@ class SendMessage extends BaseMessageManagerCmd {
   final Message message;
   SendMessage(this.receiverAccount, this.message);
 
+  Future<void> _sendNullAndDispose() async {
+    _events.add(null);
+    await _events.close();
+  }
+
   Stream<MessageSendingEvent> events() async* {
     await for (final event in _events) {
       if (event == null) {
@@ -115,7 +120,7 @@ class MessageManager extends LifecycleMethods {
               await for (final event in sendMessageUtils.sendMessageTo(receiverAccount, message)) {
                 _events.add(event);
               }
-              _events.add(null);
+              await cmd._sendNullAndDispose();
             case DeleteSendFailedMessage():
               cmd.completed.add(await _deleteSendFailedMessage(cmd.localId));
             case ResendSendFailedMessage():
