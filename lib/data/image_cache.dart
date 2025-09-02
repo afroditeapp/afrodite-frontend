@@ -63,7 +63,7 @@ class ImageCacheData extends AppSingleton {
     }
 
     final imageData = await media.getImage(imageOwner, id, isMatch: isMatch);
-    if (imageData == null) {
+    if (imageData == null || imageData.isEmpty) {
       return null;
     }
 
@@ -120,6 +120,9 @@ class ImageCacheData extends AppSingleton {
 
     if (mapTileCacheKey != null) {
       try {
+        if (tilePngData.isEmpty) {
+          return null;
+        }
         final encryptedImgBytes = await ImageEncryptionManager.getInstance().encryptImageData(
           tilePngData,
         );

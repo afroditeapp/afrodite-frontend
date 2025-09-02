@@ -23,14 +23,14 @@ class ImageEncryptionManager extends AppSingleton {
     }
   }
 
+  /// The data must not be empty
   Future<Uint8List> encryptImageData(Uint8List data) async {
     if (kIsWeb) {
       throw UnsupportedError("Image data encrypting is not supported on web");
     }
 
     if (data.isEmpty) {
-      _log.warning("Empty data");
-      return data;
+      throw Exception("Empty data");
     }
 
     final key = await _getOrLoadOrGenerateImageEncryptionKey();
