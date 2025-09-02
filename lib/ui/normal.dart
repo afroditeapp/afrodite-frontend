@@ -236,7 +236,9 @@ class _NormalStateContentState extends State<NormalStateContent> {
       builder: (context, state) {
         final img = state.primaryProfilePicture;
         final cropInfo = state.primaryProfilePictureCropInfo;
-        if (img != null && state.primaryImageDataAvailable) {
+        if (state.isLoadingPrimaryContent) {
+          return SizedBox.shrink();
+        } else if (img != null) {
           const double IMG_HEIGHT = 40;
           final r = context.read<RepositoryInstances>();
           return ProfileThumbnailImage(

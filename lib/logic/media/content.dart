@@ -26,11 +26,6 @@ class NewSecurityContent extends ContentEvent {
   NewSecurityContent(this.content);
 }
 
-class NewPrimaryImageDataAvailable extends ContentEvent {
-  final bool value;
-  NewPrimaryImageDataAvailable(this.value);
-}
-
 class ChangeSecurityContent extends ContentEvent {
   final ContentId content;
   ChangeSecurityContent(this.content);
@@ -46,7 +41,6 @@ class ContentBloc extends Bloc<ContentEvent, ContentData> with ActionRunner {
 
   StreamSubscription<PrimaryProfileContent?>? _primaryContentSubscription;
   StreamSubscription<MyContent?>? _securityContentSubscription;
-  StreamSubscription<void>? _primaryImageDataAvailable;
 
   ContentBloc(RepositoryInstances r)
     : db = r.accountDb,
@@ -60,9 +54,6 @@ class ContentBloc extends Bloc<ContentEvent, ContentData> with ActionRunner {
     });
     on<NewSecurityContent>((data, emit) {
       emit(state.copyWith(securityContent: data.content, isLoadingSecurityContent: false));
-    });
-    on<NewPrimaryImageDataAvailable>((data, emit) {
-      emit(state.copyWith(primaryImageDataAvailable: data.value));
     });
     on<ChangeSecurityContent>((data, emit) async {
       await runOnce(() async {
@@ -88,42 +79,12 @@ class ContentBloc extends Bloc<ContentEvent, ContentData> with ActionRunner {
         .listen((event) {
           add(NewSecurityContent(event));
         });
-
-    // Retry main screen my profile primary image thumbnail loading
-    // if it is not available at the first try.
-    _primaryImageDataAvailable = primaryImageDataAvailable().listen((event) {
-      add(NewPrimaryImageDataAvailable(event));
-    });
-  }
-
-  Stream<bool> primaryImageDataAvailable() async* {
-    ContentId? previousImg;
-    await for (final s in stream) {
-      final newImg = s.primaryProfilePicture;
-      if (newImg != null && previousImg != newImg) {
-        previousImg = newImg;
-        final imgData = await cache.getImage(currentUser, newImg, media: media);
-        if (imgData == null) {
-          yield false;
-        } else {
-          yield true;
-        }
-        await connection.tryWaitUntilConnected(waitTimeoutSeconds: 5);
-        final imgData2 = await cache.getImage(currentUser, newImg, media: media);
-        if (imgData2 == null) {
-          yield false;
-        } else {
-          yield true;
-        }
-      }
-    }
   }
 
   @override
   Future<void> close() async {
     await _primaryContentSubscription?.cancel();
     await _securityContentSubscription?.cancel();
-    await _primaryImageDataAvailable?.cancel();
     await super.close();
   }
 }

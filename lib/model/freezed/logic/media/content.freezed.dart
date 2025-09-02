@@ -23,14 +23,12 @@ final _privateConstructorErrorContentData = UnsupportedError(
 mixin _$ContentData {
   PrimaryProfileContent? get primaryContent => throw _privateConstructorErrorContentData;
   bool get isLoadingPrimaryContent => throw _privateConstructorErrorContentData;
-  bool get primaryImageDataAvailable => throw _privateConstructorErrorContentData;
   MyContent? get securityContent => throw _privateConstructorErrorContentData;
   bool get isLoadingSecurityContent => throw _privateConstructorErrorContentData;
 
   ContentData copyWith({
     PrimaryProfileContent? primaryContent,
     bool? isLoadingPrimaryContent,
-    bool? primaryImageDataAvailable,
     MyContent? securityContent,
     bool? isLoadingSecurityContent,
   }) => throw _privateConstructorErrorContentData;
@@ -41,7 +39,6 @@ abstract class _ContentData extends ContentData {
   factory _ContentData({
     PrimaryProfileContent? primaryContent,
     bool isLoadingPrimaryContent,
-    bool primaryImageDataAvailable,
     MyContent? securityContent,
     bool isLoadingSecurityContent,
   }) = _$ContentDataImpl;
@@ -51,13 +48,11 @@ abstract class _ContentData extends ContentData {
 /// @nodoc
 class _$ContentDataImpl extends _ContentData {
   static const bool _isLoadingPrimaryContentDefaultValue = true;
-  static const bool _primaryImageDataAvailableDefaultValue = false;
   static const bool _isLoadingSecurityContentDefaultValue = true;
   
   _$ContentDataImpl({
     this.primaryContent,
     this.isLoadingPrimaryContent = _isLoadingPrimaryContentDefaultValue,
-    this.primaryImageDataAvailable = _primaryImageDataAvailableDefaultValue,
     this.securityContent,
     this.isLoadingSecurityContent = _isLoadingSecurityContentDefaultValue,
   }) : super._();
@@ -67,15 +62,13 @@ class _$ContentDataImpl extends _ContentData {
   @override
   final bool isLoadingPrimaryContent;
   @override
-  final bool primaryImageDataAvailable;
-  @override
   final MyContent? securityContent;
   @override
   final bool isLoadingSecurityContent;
 
   @override
   String toString() {
-    return 'ContentData(primaryContent: $primaryContent, isLoadingPrimaryContent: $isLoadingPrimaryContent, primaryImageDataAvailable: $primaryImageDataAvailable, securityContent: $securityContent, isLoadingSecurityContent: $isLoadingSecurityContent)';
+    return 'ContentData(primaryContent: $primaryContent, isLoadingPrimaryContent: $isLoadingPrimaryContent, securityContent: $securityContent, isLoadingSecurityContent: $isLoadingSecurityContent)';
   }
 
   @override
@@ -87,8 +80,6 @@ class _$ContentDataImpl extends _ContentData {
           other.primaryContent == primaryContent) &&
         (identical(other.isLoadingPrimaryContent, isLoadingPrimaryContent) ||
           other.isLoadingPrimaryContent == isLoadingPrimaryContent) &&
-        (identical(other.primaryImageDataAvailable, primaryImageDataAvailable) ||
-          other.primaryImageDataAvailable == primaryImageDataAvailable) &&
         (identical(other.securityContent, securityContent) ||
           other.securityContent == securityContent) &&
         (identical(other.isLoadingSecurityContent, isLoadingSecurityContent) ||
@@ -101,7 +92,6 @@ class _$ContentDataImpl extends _ContentData {
     runtimeType,
     primaryContent,
     isLoadingPrimaryContent,
-    primaryImageDataAvailable,
     securityContent,
     isLoadingSecurityContent,
   );
@@ -110,13 +100,11 @@ class _$ContentDataImpl extends _ContentData {
   ContentData copyWith({
     Object? primaryContent = _detectDefaultValueInCopyWith,
     Object? isLoadingPrimaryContent,
-    Object? primaryImageDataAvailable,
     Object? securityContent = _detectDefaultValueInCopyWith,
     Object? isLoadingSecurityContent,
   }) => _$ContentDataImpl(
     primaryContent: (primaryContent == _detectDefaultValueInCopyWith ? this.primaryContent : primaryContent) as PrimaryProfileContent?,
     isLoadingPrimaryContent: (isLoadingPrimaryContent ?? this.isLoadingPrimaryContent) as bool,
-    primaryImageDataAvailable: (primaryImageDataAvailable ?? this.primaryImageDataAvailable) as bool,
     securityContent: (securityContent == _detectDefaultValueInCopyWith ? this.securityContent : securityContent) as MyContent?,
     isLoadingSecurityContent: (isLoadingSecurityContent ?? this.isLoadingSecurityContent) as bool,
   );
