@@ -87,7 +87,7 @@ class ViewProfilePage extends StatelessWidget {
                 commonActionBlockProfile(context, () {
                   context.read<ViewProfileBloc>().add(BlockProfile(initialProfile.accountId));
                 }),
-                showReportAction(context, state.profile),
+                showReportAction(context, state.profile.accountId, state.profile),
                 MenuItemButton(
                   onPressed: () => showInfoDialog(
                     context,
@@ -166,7 +166,7 @@ class ViewProfilePage extends StatelessWidget {
         );
       case ProfileActionState.makeMatch || ProfileActionState.chat:
         return FloatingActionButton(
-          onPressed: () => openConversationScreen(context, state.profile),
+          onPressed: () => openConversationScreen(context, state.profile.accountId, state.profile),
           tooltip: context.strings.view_profile_screen_chat_action,
           child: const Icon(Icons.chat_rounded),
         );

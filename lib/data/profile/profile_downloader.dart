@@ -13,6 +13,9 @@ import 'package:app/utils/result.dart';
 
 final _log = Logger("ProfileEntryDownloader");
 
+// TODO(prod): Save info is profile private and limit profile
+//             downloads to once per day for private proifles.
+
 class ProfileEntryDownloader {
   final ApiManager api;
   final AccountDatabaseManager db;

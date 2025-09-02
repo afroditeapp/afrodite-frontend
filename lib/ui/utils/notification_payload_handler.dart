@@ -118,7 +118,7 @@ Future<NotificationNavigationAction> _handlePayload(
       final correctConversatinoAlreadyOpen =
           info is ConversationPageInfo && info.accountId == profile.accountId;
       if (!correctConversatinoAlreadyOpen) {
-        return NewScreen(newConversationPage(profile));
+        return NewScreen(newConversationPage(profile.accountId, profile));
       } else {
         return DoNothing();
       }

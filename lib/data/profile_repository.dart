@@ -602,7 +602,12 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
     await for (final p in stream) {
       if (p == null && !downloaded) {
         await connectionManager.tryWaitUntilConnected(waitTimeoutSeconds: 5);
-        await ProfileEntryDownloader(media, accountBackgroundDb, db, _api).download(accountId, isMatch: isMatch);
+        await ProfileEntryDownloader(
+          media,
+          accountBackgroundDb,
+          db,
+          _api,
+        ).download(accountId, isMatch: isMatch);
         downloaded = true;
         continue;
       }

@@ -13,9 +13,9 @@ import 'package:app/localizations.dart';
 import 'package:app/ui_utils/dialog.dart';
 
 class ReportChatMessageScreen extends StatefulWidget {
-  final ProfileEntry profileEntry;
+  final AccountId accountId;
   final List<MessageEntry> messages;
-  const ReportChatMessageScreen({required this.profileEntry, required this.messages, super.key});
+  const ReportChatMessageScreen({required this.accountId, required this.messages, super.key});
 
   @override
   State<ReportChatMessageScreen> createState() => _ReportChatMessageScreen();
@@ -142,7 +142,7 @@ class _ReportChatMessageScreen extends State<ReportChatMessageScreen> {
               .chat(
                 (api) => api.postChatMessageReport(
                   UpdateChatMessageReport(
-                    target: widget.profileEntry.accountId,
+                    target: widget.accountId,
                     backendSignedMessageBase64: base64Encode(backendSignedMessage),
                     decryptionKeyBase64: base64Encode(symmetricKey),
                   ),

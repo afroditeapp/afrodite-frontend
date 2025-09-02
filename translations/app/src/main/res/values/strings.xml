@@ -400,6 +400,7 @@
     <string name="chat_list_screen_open_matches_screen_action" description="Title for action which opens matches screen">Accepted chat requests</string>
     <string name="chat_list_screen_sent_message_indicator" description="Text indicating that the message is a sent message.">You: %s</string>
     <string name="chat_list_screen_info_dialog_text" description="Text for info dialog which is displayed once">Chats are stored only on this device. Removing this app removes the chats.</string>
+    <string name="chat_list_screen_profile_not_available" description="Title for conversation item which does not have profile available">Profile not available</string>
 
     <!-- Select match screen -->
     <string name="select_match_screen_title" description="Title for select match screen">Accepted chat requests</string>

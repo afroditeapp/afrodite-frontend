@@ -52,7 +52,7 @@ class ChatView extends BottomNavigationScreen {
             if (entry == null || !context.mounted) {
               return;
             }
-            openConversationScreen(context, entry);
+            openConversationScreen(context, entry.accountId, entry);
           },
         ),
       ]),
@@ -347,7 +347,7 @@ class _UpdatingConversationListItemState extends State<UpdatingConversationListI
             widget.dataCache.update(widget.id, dataFromStream.v);
             cData = dataFromStream.v;
           case Err():
-            return errorWidget(context);
+            return profileNotAvailableWidget(context);
           case null:
             cData = widget.dataCache.get(widget.id);
         }
@@ -366,9 +366,15 @@ class _UpdatingConversationListItemState extends State<UpdatingConversationListI
     return SizedBox(height: _IMG_SIZE + _ITEM_PADDING_SIZE * 2, child: w);
   }
 
-  Widget errorWidget(BuildContext context) {
-    return Center(
-      child: Padding(padding: const EdgeInsets.all(8), child: Text(context.strings.generic_error)),
+  Widget profileNotAvailableWidget(BuildContext context) {
+    return InkWell(
+      onTap: () => openConversationScreen(context, widget.id, null),
+      child: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(8),
+          child: Text(context.strings.chat_list_screen_profile_not_available),
+        ),
+      ),
     );
   }
 
@@ -412,7 +418,7 @@ class ConversationListItem extends StatelessWidget {
 
     if (allowOpenConversation) {
       return InkWell(
-        onTap: () => openConversationScreen(context, data.entry),
+        onTap: () => openConversationScreen(context, data.entry.accountId, data.entry),
         child: rowAndPadding,
       );
     } else {

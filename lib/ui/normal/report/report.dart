@@ -13,19 +13,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 
-Widget showReportAction(BuildContext context, ProfileEntry profile) {
+Widget showReportAction(BuildContext context, AccountId accountId, ProfileEntry? profile) {
   return MenuItemButton(
     onPressed: () async {
       final chat = context.read<RepositoryInstances>().chat;
-      final isMatch = await chat.isInMatches(profile.accountId);
-      final messages = await chat.getAllMessages(profile.accountId);
+      final isMatch = await chat.isInMatches(accountId);
+      final messages = await chat.getAllMessages(accountId);
       if (!context.mounted) {
         return;
       }
       await MyNavigator.push(
         context,
         MaterialPage<void>(
-          child: ReportScreen(profile: profile, isMatch: isMatch, messages: messages),
+          child: ReportScreen(
+            accountId: accountId,
+            profile: profile,
+            isMatch: isMatch,
+            messages: messages,
+          ),
         ),
       );
     },
@@ -34,10 +39,12 @@ Widget showReportAction(BuildContext context, ProfileEntry profile) {
 }
 
 class ReportScreen extends StatefulWidget {
-  final ProfileEntry profile;
+  final AccountId accountId;
+  final ProfileEntry? profile;
   final bool isMatch;
   final List<MessageEntry> messages;
   const ReportScreen({
+    required this.accountId,
     required this.profile,
     required this.isMatch,
     required this.messages,
@@ -73,13 +80,15 @@ class _ReportScreenState extends State<ReportScreen> {
 
     final repositories = context.read<RepositoryInstances>();
 
-    if (widget.profile.name.isNotEmpty) {
+    final profileEntry = widget.profile;
+
+    if (profileEntry != null && profileEntry.name.isNotEmpty) {
       settings.add(
         reportListTile(context.strings.report_screen_profile_name_action, () async {
           final r = await showConfirmDialog(
             context,
             context.strings.report_screen_profile_name_dialog_title,
-            details: widget.profile.profileNameOrFirstCharacterProfileName(),
+            details: profileEntry.profileNameOrFirstCharacterProfileName(),
             yesNoActions: true,
             scrollable: true,
           );
@@ -88,8 +97,8 @@ class _ReportScreenState extends State<ReportScreen> {
                 .profile(
                   (api) => api.postReportProfileName(
                     UpdateProfileNameReport(
-                      target: widget.profile.accountId,
-                      profileName: widget.profile.name,
+                      target: profileEntry.accountId,
+                      profileName: profileEntry.name,
                     ),
                   ),
                 )
@@ -105,7 +114,7 @@ class _ReportScreenState extends State<ReportScreen> {
               showSnackBar(R.strings.report_screen_snackbar_report_successful);
               await repositories.profile.downloadProfileToDatabase(
                 repositories.chat,
-                widget.profile.accountId,
+                profileEntry.accountId,
               );
             }
           }
@@ -113,13 +122,13 @@ class _ReportScreenState extends State<ReportScreen> {
       );
     }
 
-    if (widget.profile.profileText.isNotEmpty) {
+    if (profileEntry != null && profileEntry.profileText.isNotEmpty) {
       settings.add(
         reportListTile(context.strings.report_screen_profile_text_action, () async {
           final r = await showConfirmDialog(
             context,
             context.strings.report_screen_profile_text_dialog_title,
-            details: widget.profile.profileTextOrFirstCharacterProfileText(),
+            details: profileEntry.profileTextOrFirstCharacterProfileText(),
             yesNoActions: true,
             scrollable: true,
           );
@@ -128,8 +137,8 @@ class _ReportScreenState extends State<ReportScreen> {
                 .profile(
                   (api) => api.postReportProfileText(
                     UpdateProfileTextReport(
-                      target: widget.profile.accountId,
-                      profileText: widget.profile.profileText,
+                      target: profileEntry.accountId,
+                      profileText: profileEntry.profileText,
                     ),
                   ),
                 )
@@ -145,7 +154,7 @@ class _ReportScreenState extends State<ReportScreen> {
               showSnackBar(R.strings.report_screen_snackbar_report_successful);
               await repositories.profile.downloadProfileToDatabase(
                 repositories.chat,
-                widget.profile.accountId,
+                profileEntry.accountId,
               );
             }
           }
@@ -153,21 +162,23 @@ class _ReportScreenState extends State<ReportScreen> {
       );
     }
 
-    final acceptedContent = widget.profile.content.where((v) => v.accepted);
-    if (acceptedContent.isNotEmpty) {
-      settings.add(
-        reportListTile(context.strings.report_screen_profile_image_action, () {
-          MyNavigator.push(
-            context,
-            MaterialPage<void>(
-              child: ReportProfileImageScreen(
-                profileEntry: widget.profile,
-                isMatch: widget.isMatch,
+    if (profileEntry != null) {
+      final acceptedContent = profileEntry.content.where((v) => v.accepted);
+      if (acceptedContent.isNotEmpty) {
+        settings.add(
+          reportListTile(context.strings.report_screen_profile_image_action, () {
+            MyNavigator.push(
+              context,
+              MaterialPage<void>(
+                child: ReportProfileImageScreen(
+                  profileEntry: profileEntry,
+                  isMatch: widget.isMatch,
+                ),
               ),
-            ),
-          );
-        }),
-      );
+            );
+          }),
+        );
+      }
     }
 
     if (widget.messages.isNotEmpty) {
@@ -177,7 +188,7 @@ class _ReportScreenState extends State<ReportScreen> {
             context,
             MaterialPage<void>(
               child: ReportChatMessageScreen(
-                profileEntry: widget.profile,
+                accountId: widget.accountId,
                 messages: widget.messages,
               ),
             ),
@@ -206,10 +217,7 @@ class _ReportScreenState extends State<ReportScreen> {
             final result = await repositories.api
                 .account(
                   (api) => api.postCustomReportEmpty(
-                    UpdateCustomReportEmpty(
-                      customReportId: report.id,
-                      target: widget.profile.accountId,
-                    ),
+                    UpdateCustomReportEmpty(customReportId: report.id, target: widget.accountId),
                   ),
                 )
                 .ok();

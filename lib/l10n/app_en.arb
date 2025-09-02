@@ -194,6 +194,10 @@
   "@chat_list_screen_open_matches_screen_action": {
     "description": "Title for action which opens matches screen"
   },
+  "chat_list_screen_profile_not_available": "Profile not available",
+  "@chat_list_screen_profile_not_available": {
+    "description": "Title for conversation item which does not have profile available"
+  },
   "chat_list_screen_sent_message_indicator": "You: {p0}",
   "@chat_list_screen_sent_message_indicator": {
     "description": "Text indicating that the message is a sent message.",

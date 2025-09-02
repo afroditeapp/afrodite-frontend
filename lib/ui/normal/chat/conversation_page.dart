@@ -25,11 +25,12 @@ import 'package:app/ui_utils/app_bar/common_actions.dart';
 import 'package:app/ui_utils/app_bar/menu_actions.dart';
 import 'package:app/ui_utils/list.dart';
 import 'package:app/ui_utils/snack_bar.dart';
+import 'package:openapi/api.dart';
 
 final _log = Logger("ConversationPage");
 
-void openConversationScreen(BuildContext context, ProfileEntry profile) {
-  final details = newConversationPage(profile);
+void openConversationScreen(BuildContext context, AccountId accountId, ProfileEntry? profile) {
+  final details = newConversationPage(accountId, profile);
   context.read<NavigatorStateBloc>().pushWithKey(
     details.page,
     details.pageKey!,
@@ -37,28 +38,29 @@ void openConversationScreen(BuildContext context, ProfileEntry profile) {
   );
 }
 
-NewPageDetails newConversationPage(ProfileEntry profile) {
+NewPageDetails newConversationPage(AccountId accountId, ProfileEntry? profile) {
   final pageKey = PageKey();
   return NewPageDetails(
     MaterialPage<void>(
       child: BlocProvider(
         create: (context) {
           final r = context.read<RepositoryInstances>();
-          return ConversationBloc(r, profile.accountId, DefaultConversationDataProvider(r.chat));
+          return ConversationBloc(r, accountId, DefaultConversationDataProvider(r.chat));
         },
         lazy: false,
-        child: ConversationPage(pageKey, profile),
+        child: ConversationPage(pageKey, accountId, profile),
       ),
     ),
     pageKey: pageKey,
-    pageInfo: ConversationPageInfo(profile.accountId),
+    pageInfo: ConversationPageInfo(accountId),
   );
 }
 
 class ConversationPage extends StatefulWidget {
   final PageKey pageKey;
-  final ProfileEntry profileEntry;
-  const ConversationPage(this.pageKey, this.profileEntry, {super.key});
+  final AccountId accountId;
+  final ProfileEntry? profileEntry;
+  const ConversationPage(this.pageKey, this.accountId, this.profileEntry, {super.key});
 
   @override
   ConversationPageState createState() => ConversationPageState();
@@ -70,57 +72,15 @@ class ConversationPageState extends State<ConversationPage> {
   @override
   void initState() {
     super.initState();
-    _log.finest("Opening conversation for account: ${widget.profileEntry.accountId}");
+    _log.finest("Opening conversation for account: ${widget.accountId}");
   }
 
   @override
   Widget build(BuildContext context) {
-    final double appBarHeight = AppBar().preferredSize.height;
-    const double IMG_HEIGHT = 40;
+    final profileEntry = widget.profileEntry;
     return Scaffold(
       appBar: AppBar(
-        title: LayoutBuilder(
-          builder: (context, constraints) {
-            return ConstrainedBox(
-              constraints: constraints.copyWith(minHeight: appBarHeight, maxHeight: appBarHeight),
-              child: InkWell(
-                onTap: () {
-                  openProfileView(
-                    context,
-                    widget.profileEntry,
-                    null,
-                    ProfileRefreshPriority.high,
-                    noAction: true,
-                  );
-                },
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      ProfileThumbnailImageOrError.fromProfileEntry(
-                        entry: widget.profileEntry,
-                        width: IMG_HEIGHT,
-                        height: IMG_HEIGHT,
-                        cacheSize: ImageCacheSize.squareImageForAppBarThumbnail(
-                          context,
-                          IMG_HEIGHT,
-                        ),
-                      ),
-                      const Padding(padding: EdgeInsets.all(8.0)),
-                      Flexible(
-                        child: Text(
-                          widget.profileEntry.profileTitle(),
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            );
-          },
-        ),
+        title: profileEntry != null ? appBarTitle(profileEntry) : null,
         actions: [
           if (context.read<ClientFeaturesConfigBloc>().state.config.features.videoCalls)
             IconButton(
@@ -130,13 +90,54 @@ class ConversationPageState extends State<ConversationPage> {
             ),
           menuActions([
             commonActionBlockProfile(context, () {
-              context.read<ConversationBloc>().add(BlockProfile(widget.profileEntry.accountId));
+              context.read<ConversationBloc>().add(BlockProfile(widget.accountId));
             }),
-            showReportAction(context, widget.profileEntry),
+            showReportAction(context, widget.accountId, profileEntry),
           ]),
         ],
       ),
       body: page(context),
+    );
+  }
+
+  Widget appBarTitle(ProfileEntry profileEntry) {
+    final double appBarHeight = AppBar().preferredSize.height;
+    const double IMG_HEIGHT = 40;
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return ConstrainedBox(
+          constraints: constraints.copyWith(minHeight: appBarHeight, maxHeight: appBarHeight),
+          child: InkWell(
+            onTap: () {
+              openProfileView(
+                context,
+                profileEntry,
+                null,
+                ProfileRefreshPriority.high,
+                noAction: true,
+              );
+            },
+            child: Padding(
+              padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  ProfileThumbnailImageOrError.fromProfileEntry(
+                    entry: profileEntry,
+                    width: IMG_HEIGHT,
+                    height: IMG_HEIGHT,
+                    cacheSize: ImageCacheSize.squareImageForAppBarThumbnail(context, IMG_HEIGHT),
+                  ),
+                  const Padding(padding: EdgeInsets.all(8.0)),
+                  Flexible(
+                    child: Text(profileEntry.profileTitle(), overflow: TextOverflow.ellipsis),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 

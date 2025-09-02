@@ -163,6 +163,9 @@ class AppLocalizationsSv extends AppLocalizations {
       'Accepted chat requests';
 
   @override
+  String get chat_list_screen_profile_not_available => 'Profile not available';
+
+  @override
   String chat_list_screen_sent_message_indicator(String p0) {
     return 'You: $p0';
   }

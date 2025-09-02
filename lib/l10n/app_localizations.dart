@@ -340,6 +340,12 @@ abstract class AppLocalizations {
   /// **'Accepted chat requests'**
   String get chat_list_screen_open_matches_screen_action;
 
+  /// Title for conversation item which does not have profile available
+  ///
+  /// In en, this message translates to:
+  /// **'Profile not available'**
+  String get chat_list_screen_profile_not_available;
+
   /// Text indicating that the message is a sent message.
   ///
   /// In en, this message translates to:
