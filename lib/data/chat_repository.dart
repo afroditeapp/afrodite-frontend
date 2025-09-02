@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:app/data/chat/message_manager/utils.dart';
 import 'package:async/async.dart' show StreamExtensions;
+import 'package:flutter/foundation.dart';
 import 'package:native_utils/native_utils.dart';
 import 'package:openapi/api.dart';
 import 'package:app/api/server_connection_manager.dart';
@@ -111,6 +112,11 @@ class ChatRepository extends DataRepositoryWithLifecycle {
   }
 
   Future<Result<(), ()>> _generateMessageKeyIfNeeded() async {
+    if (kIsWeb) {
+      // Fix login data sync error
+      return const Ok(());
+    }
+
     final keys = await messageKeyManager.generateOrLoadMessageKeys().ok();
     if (keys == null) {
       return const Err(());
