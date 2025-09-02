@@ -322,7 +322,7 @@ class _UpdatingConversationListItemState extends State<UpdatingConversationListI
   void initState() {
     super.initState();
     stream = Rx.combineLatest3(
-      widget.profile.getProfileEntryUpdates(widget.id),
+      widget.profile.getProfileEntryUpdates(widget.id, isMatch: true),
       widget.profile.getUnreadMessagesCountStream(widget.id),
       widget.chat.watchLatestMessage(widget.id),
       (a, b, c) {

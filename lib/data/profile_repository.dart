@@ -596,13 +596,13 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
 
   /// If profile does not exist in DB, try download it when connection exists.
   /// After that emit only DB updates.
-  Stream<ProfileEntry?> getProfileEntryUpdates(AccountId accountId) async* {
+  Stream<ProfileEntry?> getProfileEntryUpdates(AccountId accountId, {bool isMatch = false}) async* {
     final stream = db.accountStream((db) => db.profile.watchProfileEntry(accountId));
     bool downloaded = false;
     await for (final p in stream) {
       if (p == null && !downloaded) {
         await connectionManager.tryWaitUntilConnected(waitTimeoutSeconds: 5);
-        await ProfileEntryDownloader(media, accountBackgroundDb, db, _api).download(accountId);
+        await ProfileEntryDownloader(media, accountBackgroundDb, db, _api).download(accountId, isMatch: isMatch);
         downloaded = true;
         continue;
       }
