@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:logging/logging.dart';
 import 'package:utils/utils.dart';
@@ -19,7 +20,7 @@ class IosDelayAppSuspendTask {
   static Future<void> dispose() => _runMethod("dispose");
 
   static Future<void> _runMethod(String method) async {
-    if (!Platform.isIOS) {
+    if (kIsWeb || !Platform.isIOS) {
       return;
     }
     try {
