@@ -6,8 +6,9 @@ import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/logic/app/info_dialog.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/profile_thumbnail_image_or_error.dart';
+import 'package:app/utils/result.dart';
 import 'package:app/utils/time.dart';
-import 'package:async/async.dart';
+import 'package:async/async.dart' show StreamExtensions;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -315,7 +316,7 @@ class UpdatingConversationListItem extends StatefulWidget {
 }
 
 class _UpdatingConversationListItemState extends State<UpdatingConversationListItem> {
-  late final Stream<ConversationData> stream;
+  late final Stream<Result<ConversationData, ()>> stream;
 
   @override
   void initState() {
@@ -326,12 +327,12 @@ class _UpdatingConversationListItemState extends State<UpdatingConversationListI
       widget.chat.watchLatestMessage(widget.id),
       (a, b, c) {
         if (a != null) {
-          return ConversationData(a, b ?? const UnreadMessagesCount(0), c);
+          return Ok(ConversationData(a, b ?? const UnreadMessagesCount(0), c));
         } else {
-          return null;
+          return Err(());
         }
       },
-    ).whereNotNull();
+    );
   }
 
   @override
@@ -341,15 +342,18 @@ class _UpdatingConversationListItemState extends State<UpdatingConversationListI
       builder: (context, state) {
         final dataFromStream = state.data;
         final ConversationData? cData;
-        if (dataFromStream == null) {
-          cData = widget.dataCache.get(widget.id);
-        } else {
-          widget.dataCache.update(widget.id, dataFromStream);
-          cData = dataFromStream;
+        switch (dataFromStream) {
+          case Ok():
+            widget.dataCache.update(widget.id, dataFromStream.v);
+            cData = dataFromStream.v;
+          case Err():
+            return errorWidget(context);
+          case null:
+            cData = widget.dataCache.get(widget.id);
         }
 
         if (cData == null) {
-          return errorWidget(context);
+          return emptyWidget(context);
         } else {
           return ConversationListItem(
             data: cData,
@@ -366,6 +370,10 @@ class _UpdatingConversationListItemState extends State<UpdatingConversationListI
     return Center(
       child: Padding(padding: const EdgeInsets.all(8), child: Text(context.strings.generic_error)),
     );
+  }
+
+  Widget emptyWidget(BuildContext context) {
+    return SizedBox.shrink();
   }
 }
 
