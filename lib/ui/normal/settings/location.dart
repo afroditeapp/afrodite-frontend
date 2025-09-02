@@ -17,6 +17,7 @@ import 'package:app/logic/profile/location.dart';
 import 'package:app/localizations.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:utils/utils.dart';
 
 class LocationScreen extends StatelessWidget {
   const LocationScreen({super.key});
@@ -129,6 +130,8 @@ class _LocationWidgetState extends State<LocationWidget> with SingleTickerProvid
   LatLng? _profileLocationMarker;
   MapModeInternal _internalMode = MapModeInternal.selectLocationNoModeButton;
 
+  UtcDateTime? mapTileLoadingErrorShownTime;
+
   @override
   void initState() {
     super.initState();
@@ -194,6 +197,14 @@ class _LocationWidgetState extends State<LocationWidget> with SingleTickerProvid
             context.read<RepositoryInstances>().media,
             config.tileDataVersion,
           ),
+          errorTileCallback: (_, _, _) {
+            final previousErrorShown = mapTileLoadingErrorShownTime;
+            if (context.mounted &&
+                (previousErrorShown == null || previousErrorShown.elapsed(Duration(seconds: 3)))) {
+              mapTileLoadingErrorShownTime = UtcDateTime.now();
+              showSnackBar(R.strings.map_tile_error);
+            }
+          },
         ),
         markerLayer(),
         attributionWidget(context),

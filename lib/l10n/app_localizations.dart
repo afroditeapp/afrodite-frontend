@@ -1502,6 +1502,12 @@ abstract class AppLocalizations {
   /// **'Tap or long press the map to select a location.'**
   String get map_select_location_help_text;
 
+  /// Snackbar text about map tile error
+  ///
+  /// In en, this message translates to:
+  /// **'Map tile error'**
+  String get map_tile_error;
+
   /// Info text about server maintenance
   ///
   /// In en, this message translates to:

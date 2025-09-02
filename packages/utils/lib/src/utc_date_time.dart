@@ -35,4 +35,9 @@ class UtcDateTime {
   UtcDateTime substract(Duration duration) {
     return UtcDateTime._(dateTime.subtract(duration));
   }
+
+  bool elapsed(Duration duration) {
+    final diff = UtcDateTime.now().difference(this);
+    return diff >= duration;
+  }
 }

@@ -8,7 +8,6 @@ import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:openapi/manual_additions.dart';
 import 'package:app/api/server_connection_manager.dart';
-import 'package:app/api/error_manager.dart';
 import 'package:app/data/account/initial_setup.dart';
 import 'package:app/data/account_repository.dart';
 import 'package:app/data/media/send_to_slot.dart';
@@ -99,7 +98,6 @@ class MediaRepository extends DataRepositoryWithLifecycle {
           // No map tile available
           return MapTileNotAvailable();
         } else {
-          ErrorManager.getInstance().show(e);
           return MapTileError();
         }
     }

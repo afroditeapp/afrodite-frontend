@@ -988,6 +988,10 @@
   "@map_select_location_help_text": {
     "description": "Help text for selecting map location"
   },
+  "map_tile_error": "Map tile error",
+  "@map_tile_error": {
+    "description": "Snackbar text about map tile error"
+  },
   "menu_screen_server_maintenance_info": "Maintenance break: {p0}",
   "@menu_screen_server_maintenance_info": {
     "description": "Info text about server maintenance",

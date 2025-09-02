@@ -250,6 +250,7 @@
     <string name="map_select_location_help_text" description="Help text for selecting map location">Tap or long press the map to select a location.</string>
     <string name="map_location_update_successful" description="Snackbar text about successful location update">Location update successful</string>
     <string name="map_location_update_failed" description="Snackbar text about failed location update">Location update failed</string>
+    <string name="map_tile_error" description="Snackbar text about map tile error">Map tile error</string>
     <string name="map_openstreetmap_data_attribution_link_text" description="OpenStreetMap data attribution link text">OpenStreetMap contributors</string>
 
     <!-- Profile grid screen -->

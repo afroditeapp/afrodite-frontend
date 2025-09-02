@@ -839,6 +839,9 @@ class AppLocalizationsEn extends AppLocalizations {
       'Tap or long press the map to select a location.';
 
   @override
+  String get map_tile_error => 'Map tile error';
+
+  @override
   String menu_screen_server_maintenance_info(String p0) {
     return 'Maintenance break: $p0';
   }
