@@ -25,6 +25,7 @@ class MediaRepository extends DataRepositoryWithLifecycle {
   final ApiManager api;
   final AccountDatabaseManager db;
   final AccountBackgroundDatabaseManager accountBackgroundDb;
+  final ServerConnectionManager connectionManager;
 
   final AccountRepository account;
 
@@ -34,7 +35,7 @@ class MediaRepository extends DataRepositoryWithLifecycle {
     this.account,
     this.db,
     this.accountBackgroundDb,
-    ServerConnectionManager connectionManager,
+    this.connectionManager,
     this.currentUser,
   ) : syncHandler = ConnectedActionScheduler(connectionManager),
       api = connectionManager;
@@ -79,12 +80,22 @@ class MediaRepository extends DataRepositoryWithLifecycle {
     await reloadMyMediaContent();
   }
 
-  Future<Uint8List?> getImage(AccountId imageOwner, ContentId id, {bool isMatch = false}) => api
-      .media((api) => api.getContentFixed(imageOwner.aid, id.cid, isMatch))
-      .onErr(() => _log.error("Image loading error"))
-      .ok();
+  Future<Uint8List?> getImage(AccountId imageOwner, ContentId id, {bool isMatch = false}) async {
+    if (!await connectionManager.tryWaitUntilConnected(waitTimeoutSeconds: 2)) {
+      return null;
+    }
+
+    return await api
+        .media((api) => api.getContentFixed(imageOwner.aid, id.cid, isMatch))
+        .onErr(() => _log.error("Image loading error"))
+        .ok();
+  }
 
   Future<MapTileResult> getMapTile(int z, int x, int y) async {
+    if (!await connectionManager.tryWaitUntilConnected(waitTimeoutSeconds: 2)) {
+      return MapTileError();
+    }
+
     final data = await api.mediaWrapper().requestValue(
       (api) => api.getMapTileFixed(z, x, y.toString()),
       logError: false,
