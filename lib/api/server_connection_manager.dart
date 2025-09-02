@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:app/data/login_repository.dart';
 import 'package:app/localizations.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
@@ -9,7 +10,6 @@ import 'package:app/api/server_connection.dart';
 import 'package:app/data/utils.dart';
 import 'package:app/database/account_background_database_manager.dart';
 import 'package:app/database/account_database_manager.dart';
-import 'package:app/database/background_database_manager.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:utils/utils.dart';
 import 'package:app/utils/app_error.dart';
@@ -298,10 +298,7 @@ class ServerConnectionManager extends ApiManager
       return Err(());
     }
 
-    final accountAfterConnection = await BackgroundDatabaseManager.getInstance().commonStreamSingle(
-      (db) => db.loginSession.watchAccountId(),
-    );
-
+    final accountAfterConnection = LoginRepository.getInstance().repositoriesOrNull?.accountId;
     if (currentUser != accountAfterConnection) {
       _log.error("Account changed when waiting connected state");
       return const Err(());
