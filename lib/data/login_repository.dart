@@ -365,11 +365,18 @@ class LoginRepository extends AppSingleton {
     final currentRepositories = repositoriesOrNull;
     if (currentRepositories != null && (id == null || id == currentRepositories.accountId)) {
       _log.info("Logout started");
+
+      // Run first as Sign in with Google might be used right after logout
+      await _google.logout();
+      // Change to login screen
+      _repositories.add(RepositoriesEmpty());
+      // Avoid loading current account when app starts
+      await BackgroundDatabaseManager.getInstance().commonAction((db) => db.loginSession.logout());
+
+      // Low priority logout tasks
       await _repositoryStateStreams._logout();
       await currentRepositories.logoutAndDispose();
-      await BackgroundDatabaseManager.getInstance().commonAction((db) => db.loginSession.logout());
-      await _google.logout();
-      _repositories.add(RepositoriesEmpty());
+
       _log.info("Logout completed");
     }
   }
