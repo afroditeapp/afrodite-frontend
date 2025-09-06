@@ -129,6 +129,7 @@ clean:
 	cd packages/utils && flutter clean
 	cd packages/native_utils && flutter clean
 	cd packages/native_utils_common && flutter clean
+	cd packages/native_utils_web && flutter clean
 	cd packages/native_utils_ffi && flutter clean
 	rm -rf packages/native_utils_ffi/android/.cxx
 	cd packages/native_utils_ffi/rust_utils && cargo clean
@@ -156,6 +157,7 @@ code-stats:
 	packages/utils \
 	packages/native_utils \
 	packages/native_utils_common \
+	packages/native_utils_web \
 	packages/native_utils_ffi/rust_utils/src \
 	packages/native_utils_ffi/lib \
 	'(' \
