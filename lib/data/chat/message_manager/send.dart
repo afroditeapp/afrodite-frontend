@@ -164,7 +164,7 @@ class SendMessageUtils {
       return;
     }
 
-    final (encryptedMessage, encryptingResult) = encryptMessage(
+    final (encryptedMessage, encryptingResult) = await encryptMessage(
       currentUserKeys.private.data,
       receiverPublicKey.data,
       message.toMessagePacket(),
@@ -270,7 +270,7 @@ class SendMessageUtils {
 
       backendSignedPgpMessage = base64Decode(signedPgpMessageBase64);
 
-      final (backendSignedMessage, getMessageContentResult) = getMessageContent(
+      final (backendSignedMessage, getMessageContentResult) = await getMessageContent(
         backendSignedPgpMessage,
       );
       if (backendSignedMessage == null) {
@@ -347,7 +347,7 @@ class SendMessageUtils {
           return const Err(());
         }
         final decoded = base64Decode(base64EncodedMessage);
-        final backendSignedMessage = BackendSignedMessage.parseFromSignedPgpMessage(decoded);
+        final backendSignedMessage = await BackendSignedMessage.parseFromSignedPgpMessage(decoded);
         if (backendSignedMessage == null) {
           return const Err(());
         }

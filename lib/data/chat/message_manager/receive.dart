@@ -55,7 +55,7 @@ class ReceiveMessageUtils {
       return;
     }
 
-    final newMessages = _parsePendingMessagesResponse(newMessageBytes);
+    final newMessages = await _parsePendingMessagesResponse(newMessageBytes);
     if (newMessages == null) {
       return;
     }
@@ -173,7 +173,7 @@ class ReceiveMessageUtils {
     }
   }
 
-  List<PendingMessageData>? _parsePendingMessagesResponse(Uint8List bytes) {
+  Future<List<PendingMessageData>?> _parsePendingMessagesResponse(Uint8List bytes) async {
     final bytesIterator = bytes.iterator;
     final List<PendingMessageData> parsedData = [];
     if (bytes.isEmpty) {
@@ -191,7 +191,7 @@ class ReceiveMessageUtils {
       }
       final signedPgpMessageUint8 = Uint8List.fromList(signedPgpMessage);
 
-      final parsed = BackendSignedMessage.parseFromSignedPgpMessage(signedPgpMessageUint8);
+      final parsed = await BackendSignedMessage.parseFromSignedPgpMessage(signedPgpMessageUint8);
       if (parsed == null) {
         return null;
       }
@@ -212,7 +212,7 @@ class ReceiveMessageUtils {
       return const Err(ReceivedMessageError.publicKeyDonwloadingFailed);
     }
 
-    final (decryptResult, decryptingResult) = decryptMessage(
+    final (decryptResult, decryptingResult) = await decryptMessage(
       publicKey.data,
       allKeys.private.data,
       message.messageFromSender,

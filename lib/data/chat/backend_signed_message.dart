@@ -25,8 +25,8 @@ class BackendSignedMessage {
     required this.messageFromSender,
   });
 
-  static BackendSignedMessage? parseFromSignedPgpMessage(Uint8List uint8List) {
-    final (data, _) = getMessageContent(uint8List);
+  static Future<BackendSignedMessage?> parseFromSignedPgpMessage(Uint8List uint8List) async {
+    final (data, _) = await getMessageContent(uint8List);
     if (data == null) {
       return null;
     }

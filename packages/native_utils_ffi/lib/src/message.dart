@@ -7,7 +7,7 @@ import 'package:native_utils_ffi/src/bindings.dart';
 import 'package:native_utils_ffi/src/native_utils_ffi_bindings_generated.dart';
 
 /// If generation fails, null is returned.
-(GeneratedMessageKeys?, int) generateMessageKeys(String accountId) {
+Future<(GeneratedMessageKeys?, int)> generateMessageKeys(String accountId) async {
   final cAccountId = accountId.toNativeUtf8();
   final keyGenerationResult = getBindings().generate_message_keys(cAccountId.cast());
   malloc.free(cAccountId);
@@ -22,11 +22,11 @@ import 'package:native_utils_ffi/src/native_utils_ffi_bindings_generated.dart';
 }
 
 /// If encrypting fails, null is returned
-(EncryptResult?, int) encryptMessage(
+Future<(EncryptResult?, int)> encryptMessage(
   Uint8List senderPrivateKey,
   Uint8List receiverPublicKey,
   Uint8List data,
-) {
+) async {
   final Pointer<Uint8> cSender = malloc.allocate(senderPrivateKey.length);
   cSender.asTypedList(senderPrivateKey.length).setAll(0, senderPrivateKey);
   final Pointer<Uint8> cReceiver = malloc.allocate(receiverPublicKey.length);
@@ -56,11 +56,11 @@ import 'package:native_utils_ffi/src/native_utils_ffi_bindings_generated.dart';
 }
 
 /// If decrypting fails, null is returned
-(DecryptResult?, int) decryptMessage(
+Future<(DecryptResult?, int)> decryptMessage(
   Uint8List senderPublicKey,
   Uint8List receiverPrivateKey,
   Uint8List pgpMessage,
-) {
+) async {
   final Pointer<Uint8> cSenderPublicKey = malloc.allocate(senderPublicKey.length);
   cSenderPublicKey.asTypedList(senderPublicKey.length).setAll(0, senderPublicKey);
   final Pointer<Uint8> cReceiverPrivateKey = malloc.allocate(receiverPrivateKey.length);
@@ -90,7 +90,7 @@ import 'package:native_utils_ffi/src/native_utils_ffi_bindings_generated.dart';
 }
 
 /// When getting the PGP message content fails, null is returned
-(Uint8List?, int) getMessageContent(Uint8List pgpMessage) {
+Future<(Uint8List?, int)> getMessageContent(Uint8List pgpMessage) async {
   final Pointer<Uint8> cMessageData = malloc.allocate(pgpMessage.length);
   cMessageData.asTypedList(pgpMessage.length).setAll(0, pgpMessage);
 

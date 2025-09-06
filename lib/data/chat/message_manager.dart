@@ -289,7 +289,7 @@ class MessageManager extends LifecycleMethods {
     if (backendSignedPgpMessage == null) {
       return const Err(RetryPublicKeyDownloadError.unspecifiedError);
     }
-    final backendSignedMessage = BackendSignedMessage.parseFromSignedPgpMessage(
+    final backendSignedMessage = await BackendSignedMessage.parseFromSignedPgpMessage(
       backendSignedPgpMessage,
     );
     if (backendSignedMessage == null) {
