@@ -1,6 +1,6 @@
 use std::{ffi::{c_char, CStr}, ptr::null};
 
-use crate::message::{content, decrypt, encrypt, key, MessageEncryptionError};
+use crate::message::{content, decrypt::{self, DecryptingOutput}, encrypt::{self, EncryptingOutput}, key::{self, KeyPairBytes}, MessageEncryptionError};
 
 use super::API_OK;
 
@@ -60,9 +60,9 @@ pub unsafe extern "C" fn generate_message_keys(
             .expect("Account ID contains non UTF-8 data")
     };
 
-    match key::generate_keys(account_id.to_string()) {
-        Ok((public, private)) =>
-            BinaryDataResult2::success(public.value, private.value),
+    match key::generate_message_keys_rust(account_id.to_string()) {
+        Ok(KeyPairBytes { public, private }) =>
+            BinaryDataResult2::success(public, private),
         Err(e) => BinaryDataResult2::error(e)
     }
 }
@@ -190,8 +190,8 @@ pub unsafe extern "C" fn encrypt_message(
         std::slice::from_raw_parts(data, data_len as usize)
     };
 
-    match encrypt::encrypt_data(sender_private_key, receiver_public_key, data) {
-        Ok((message, session_key)) => {
+    match encrypt::encrypt_data_internal(sender_private_key, receiver_public_key, data) {
+        Ok(EncryptingOutput { message, session_key }) => {
             BinaryDataResult2::success(message, session_key)
         }
         Err(e) => BinaryDataResult2::error(e)
@@ -224,8 +224,8 @@ pub unsafe extern "C" fn decrypt_message(
         std::slice::from_raw_parts(pgp_message, pgp_message_len as usize)
     };
 
-    match decrypt::decrypt_data(sender_public_key, receiver_private_key, pgp_message) {
-        Ok((data, session_key)) => BinaryDataResult2::success(data, session_key),
+    match decrypt::decrypt_data_rust(sender_public_key, receiver_private_key, pgp_message) {
+        Ok(DecryptingOutput { data, session_key}) => BinaryDataResult2::success(data, session_key),
         Err(e) => BinaryDataResult2::error(e),
     }
 }
@@ -241,7 +241,7 @@ pub unsafe extern "C" fn get_message_content(
         std::slice::from_raw_parts(pgp_message, pgp_message_len as usize)
     };
 
-    match content::get_message_content(pgp_message) {
+    match content::get_message_content_rust(pgp_message) {
         Ok(data) => BinaryDataResult::success(data),
         Err(e) => BinaryDataResult::error(e),
     }

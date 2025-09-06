@@ -1,14 +1,16 @@
 //! Message encryption
 
+use wasm_bindgen::prelude::wasm_bindgen;
 
 pub mod key;
 pub mod decrypt;
 pub mod encrypt;
 pub mod content;
 
+#[wasm_bindgen]
 #[derive(Debug, Clone, Copy, PartialEq)]
 #[repr(u8)]
-pub(crate) enum MessageEncryptionError {
+pub enum MessageEncryptionError {
     // Generate keys
     GenerateKeysPrivateKeyParams = 1,
     GenerateKeysPrivateKeySubKeyParams = 2,

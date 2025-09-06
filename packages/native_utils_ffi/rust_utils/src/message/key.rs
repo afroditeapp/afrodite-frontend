@@ -5,20 +5,20 @@ use pgp::types::Password;
 use pgp::crypto::{sym::SymmetricKeyAlgorithm, hash::HashAlgorithm};
 use rand::rngs::OsRng;
 use smallvec::smallvec;
+use wasm_bindgen::prelude::wasm_bindgen;
 
 use super::MessageEncryptionError;
 
-pub struct PublicKeyBytes {
-    pub value: Vec<u8>,
+#[wasm_bindgen(getter_with_clone)]
+pub struct KeyPairBytes {
+    pub public: Vec<u8>,
+    pub private: Vec<u8>,
 }
 
-pub struct PrivateKeyBytes {
-    pub value: Vec<u8>,
-}
-
-pub fn generate_keys(
+#[wasm_bindgen]
+pub fn generate_message_keys_rust(
     account_id: String,
-) -> Result<(PublicKeyBytes, PrivateKeyBytes), MessageEncryptionError>  {
+) -> Result<KeyPairBytes, MessageEncryptionError>  {
     let params = SecretKeyParamsBuilder::default()
         .key_type(KeyType::Ed25519)
         .can_encrypt(false)
@@ -58,12 +58,10 @@ pub fn generate_keys(
         .to_bytes()
         .map_err(|_| MessageEncryptionError::GenerateKeysPublicKeyToBytes)?;
 
-    Ok((
-        PublicKeyBytes {
-            value: public_key,
-        },
-        PrivateKeyBytes {
-            value: private_key,
+    Ok(
+        KeyPairBytes {
+            public: public_key,
+            private: private_key,
         }
-    ))
+    )
 }
