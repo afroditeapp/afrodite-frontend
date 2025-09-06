@@ -82,6 +82,13 @@ remove-and-download-drift-web-dependencies:
 	# Download for sqlite3-2.7.5 does not exist so download older version
 	cd web && curl "https://github.com/simolus3/sqlite3.dart/releases/download/sqlite3-2.7.4/sqlite3.wasm" -L -o sqlite3.wasm
 
+build-rust-utils-for-web:
+	rm -f web/rust_utils_bg.wasm
+	rm -f web/rust_utils.js
+	cd packages/native_utils_ffi/rust_utils && wasm-pack build --target web --no-pack --out-dir target/pkg --release
+	cp packages/native_utils_ffi/rust_utils/target/pkg/rust_utils_bg.wasm web
+	cp packages/native_utils_ffi/rust_utils/target/pkg/rust_utils.js web
+
 build-android-release:
 	flutter build apk --release --dart-define=GIT_COMMIT_ID=`git rev-parse --short HEAD`
 

@@ -57,6 +57,10 @@ devtools_options.yaml
 doc
 tmp
 
+# Built rust_utils library for web
+web/rust_utils_bg.wasm
+web/rust_utils.js
+
 # Drift web dependencies
 web/drift_worker.js
 web/sqlite3.wasm
