@@ -21,3 +21,6 @@ aes-gcm = "0.10.3"
 pgp = { git = "https://github.com/jutuon/rpgp", rev = "220c63c8624cd0a8dc698778daa12eef7e21d08c" }
 smallvec = "1.13.2"
 rand = "0.8.5"
+
+[target.wasm32-unknown-unknown.dependencies]
+pgp = { git = "https://github.com/jutuon/rpgp", rev = "220c63c8624cd0a8dc698778daa12eef7e21d08c", features = ["wasm"]}
