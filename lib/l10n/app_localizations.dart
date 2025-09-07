@@ -967,12 +967,6 @@ abstract class AppLocalizations {
   /// **'Not found'**
   String get generic_not_found;
 
-  /// Generic not supported on web text
-  ///
-  /// In en, this message translates to:
-  /// **'Not supported on Web'**
-  String get generic_not_supported_on_web;
-
   /// Generic OK text
   ///
   /// In en, this message translates to:

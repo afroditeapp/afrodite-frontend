@@ -37,6 +37,20 @@
   <script type="text/javascript" src="https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js"></script>
 </head>
 <body>
+  <script type="module">
+    import __wbg_init, {
+      generate_message_keys_rust,
+      encrypt_data_rust,
+      decrypt_data_rust,
+      get_message_content_rust,
+    } from "./rust_utils.js";
+    window.rust_utils = __wbg_init().then(() => ({
+      generate_message_keys_rust,
+      encrypt_data_rust,
+      decrypt_data_rust,
+      get_message_content_rust,
+    }));
+  </script>
   <script src="flutter_bootstrap.js" async></script>
 </body>
 </html>

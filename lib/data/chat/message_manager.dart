@@ -148,11 +148,6 @@ class MessageManager extends LifecycleMethods {
     bool sendUiEvent = true,
     bool actuallySentMessageCheck = true,
   }) async {
-    if (kIsWeb) {
-      // Messages are not supported on web
-      return const Err(DeleteSendFailedError.unspecifiedError);
-    }
-
     if (actuallySentMessageCheck) {
       final clientId = await clientIdManager.getClientId().ok();
       if (clientId == null) {
@@ -191,11 +186,6 @@ class MessageManager extends LifecycleMethods {
   }
 
   Future<Result<(), ResendFailedError>> _resendSendFailedMessage(LocalMessageId localId) async {
-    if (kIsWeb) {
-      // Messages are not supported on web
-      return const Err(ResendFailedError.unspecifiedError);
-    }
-
     final clientId = await clientIdManager.getClientId().ok();
     if (clientId == null) {
       return const Err(ResendFailedError.unspecifiedError);
@@ -266,11 +256,6 @@ class MessageManager extends LifecycleMethods {
   Future<Result<(), RetryPublicKeyDownloadError>> _retryPublicKeyDownload(
     LocalMessageId localId,
   ) async {
-    if (kIsWeb) {
-      // Messages are not supported on web
-      return const Err(RetryPublicKeyDownloadError.unspecifiedError);
-    }
-
     final allKeys = await messageKeyManager.generateOrLoadMessageKeys().ok();
     if (allKeys == null) {
       return const Err(RetryPublicKeyDownloadError.unspecifiedError);

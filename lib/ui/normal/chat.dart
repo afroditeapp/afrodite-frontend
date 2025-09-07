@@ -9,7 +9,6 @@ import 'package:app/ui_utils/profile_thumbnail_image_or_error.dart';
 import 'package:app/utils/result.dart';
 import 'package:app/utils/time.dart';
 import 'package:async/async.dart' show StreamExtensions;
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
@@ -162,24 +161,6 @@ class _ChatViewState extends State<ChatView> {
 
   @override
   Widget build(BuildContext context) {
-    if (kIsWeb) {
-      return buildListReplacementMessage(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              context.strings.generic_not_supported_on_web,
-              style: Theme.of(context).textTheme.bodyLarge,
-            ),
-          ],
-        ),
-      );
-    } else {
-      return conversationsSupportedWithZeroSizedWidget(context);
-    }
-  }
-
-  Widget conversationsSupportedWithZeroSizedWidget(BuildContext context) {
     return Column(
       children: [
         Expanded(child: conversationsSupported(context)),

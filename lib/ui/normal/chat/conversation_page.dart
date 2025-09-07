@@ -6,7 +6,6 @@ import 'package:app/ui/normal/chat/message_row.dart';
 import 'package:app/ui/normal/report/report.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/profile_thumbnail_image_or_error.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
@@ -23,7 +22,6 @@ import 'package:app/ui/normal/chat/one_ended_list.dart';
 import 'package:app/ui/normal/profiles/view_profile.dart';
 import 'package:app/ui_utils/app_bar/common_actions.dart';
 import 'package:app/ui_utils/app_bar/menu_actions.dart';
-import 'package:app/ui_utils/list.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:openapi/api.dart';
 
@@ -142,24 +140,6 @@ class ConversationPageState extends State<ConversationPage> {
   }
 
   Widget page(BuildContext context) {
-    if (kIsWeb) {
-      return buildListReplacementMessage(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              context.strings.generic_not_supported_on_web,
-              style: Theme.of(context).textTheme.bodyLarge,
-            ),
-          ],
-        ),
-      );
-    } else {
-      return pageSupported(context);
-    }
-  }
-
-  Widget pageSupported(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [

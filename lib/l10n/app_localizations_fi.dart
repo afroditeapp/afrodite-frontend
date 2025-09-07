@@ -527,9 +527,6 @@ class AppLocalizationsFi extends AppLocalizations {
   String get generic_not_found => 'Not found';
 
   @override
-  String get generic_not_supported_on_web => 'Not supported on Web';
-
-  @override
   String get generic_ok => 'OK';
 
   @override

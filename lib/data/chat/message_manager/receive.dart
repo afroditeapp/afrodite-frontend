@@ -41,11 +41,6 @@ class ReceiveMessageUtils {
   ) : publicKeyUtils = PublicKeyUtils(db, api, currentUser);
 
   Future<void> receiveNewMessages() async {
-    if (kIsWeb) {
-      // Messages are not supported on web
-      return;
-    }
-
     final allKeys = await messageKeyManager.generateOrLoadMessageKeys().ok();
     if (allKeys == null) {
       return;

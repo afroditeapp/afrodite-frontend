@@ -34,11 +34,6 @@ class MessageKeyManager {
   }
 
   Future<Result<AllKeyData, ()>> generateOrLoadMessageKeys() async {
-    if (kIsWeb) {
-      // Messages are not supported on web
-      return const Err(());
-    }
-
     if (generation.value == KeyGeneratorState.inProgress) {
       try {
         await generation.where((v) => v == KeyGeneratorState.idle).first;
@@ -76,7 +71,13 @@ class MessageKeyManager {
     // For some reason passing the currentUser.accountId directly to closure
     // does not work.
     final currentUserString = currentUser.aid;
-    final (newKeys, result) = await Isolate.run(() => generateMessageKeys(currentUserString));
+    final (GeneratedMessageKeys?, int) generateKeysResult;
+    if (kIsWeb) {
+      generateKeysResult = await generateMessageKeys(currentUserString);
+    } else {
+      generateKeysResult = await Isolate.run(() => generateMessageKeys(currentUserString));
+    }
+    final (newKeys, result) = generateKeysResult;
     if (newKeys == null) {
       _log.error("Generating message keys failed, error: $result");
       return const Err(());

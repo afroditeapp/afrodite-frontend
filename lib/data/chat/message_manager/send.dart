@@ -47,11 +47,6 @@ class SendMessageUtils {
     Message message, {
     bool sendUiEvent = true,
   }) async* {
-    if (kIsWeb) {
-      // Messages are not supported on web
-      yield const ErrorBeforeMessageSaving();
-    }
-
     await for (final e in _sendMessageToInternal(accountId, message, sendUiEvent: sendUiEvent)) {
       switch (e) {
         case SavedToLocalDb():

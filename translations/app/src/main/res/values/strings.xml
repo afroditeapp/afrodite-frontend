@@ -47,7 +47,6 @@
     <string name="generic_gender_woman_plural" description="Generic woman gender text in plural form">Women</string>
     <string name="generic_gender_nonbinary_plural" description="Generic non-binary gender text in plural form">Non-binaries</string>
     <string name="generic_show_only_selected" description="Generic show only selected text">Show only selected</string>
-    <string name="generic_not_supported_on_web" description="Generic not supported on web text">Not supported on Web</string>
     <string name="generic_data_sync_failed" description="Generic data sync failed">Data sync failed</string>
     <string name="generic_reject_question" description="Generic reject question">Reject?</string>
     <string name="generic_delete_question" description="Generic delete question">Delete?</string>
