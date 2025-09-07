@@ -6,6 +6,7 @@ import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/utils/result.dart';
 import 'package:app/utils/version.dart';
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:database/database.dart';
 import 'package:flutter/services.dart';
@@ -435,14 +436,14 @@ void _joinVideoCall(BuildContext context, AccountId callee) async {
     return;
   }
 
-  try {
-    // TODO(web): If web chat support is implemented then
-    //            test does this return false on web.
-    final jitsMeetAppLaunchSuccessful = await launchUrl(url.replace(scheme: "org.jitsi.meet"));
-    if (jitsMeetAppLaunchSuccessful) {
-      return;
-    }
-  } catch (_) {}
+  if (!kIsWeb) {
+    try {
+      final jitsMeetAppLaunchSuccessful = await launchUrl(url.replace(scheme: "org.jitsi.meet"));
+      if (jitsMeetAppLaunchSuccessful) {
+        return;
+      }
+    } catch (_) {}
+  }
 
   // Jitsi Meet app is not installed
 
@@ -480,6 +481,10 @@ void _joinVideoCall(BuildContext context, AccountId callee) async {
 }
 
 Future<bool> isInstallingJitsiMeetAppPossible() async {
+  if (kIsWeb) {
+    return false;
+  }
+
   if (Platform.isIOS) {
     DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
     IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
