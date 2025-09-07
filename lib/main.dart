@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:app/config.dart';
 import 'package:app/data/app_version.dart';
+import 'package:app/utils/app_running_detector/app_running_detector.dart';
 import 'package:encryption/encryption.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -171,6 +172,8 @@ class GlobalLocalizationsInitializer extends StatelessWidget {
   }
 }
 
+enum GlobalInitState { inProgress, completed, appIsAlreadyRunning }
+
 class GlobalInitManager extends AppSingletonNoInit {
   GlobalInitManager._private();
   static final _instance = GlobalInitManager._private();
@@ -178,16 +181,24 @@ class GlobalInitManager extends AppSingletonNoInit {
     return _instance;
   }
 
-  bool _globalInitDone = false;
+  bool _initDone = false;
 
-  final BehaviorSubject<bool> _globalInitCompleted = BehaviorSubject.seeded(false);
-  Stream<bool> get globalInitCompletedStream => _globalInitCompleted.stream;
+  final BehaviorSubject<GlobalInitState> _globalInitState = BehaviorSubject.seeded(
+    GlobalInitState.inProgress,
+  );
+  Stream<GlobalInitState> get globalInitState => _globalInitState.stream;
 
-  Future<void> _runInit() async {
-    if (_globalInitDone) {
+  Future<void> _init() async {
+    if (_initDone) {
       return;
     }
-    _globalInitDone = true;
+    _initDone = true;
+
+    if (await isAppAlreadyRunning()) {
+      _log.fine("App is already running");
+      _globalInitState.add(GlobalInitState.appIsAlreadyRunning);
+      return;
+    }
 
     await DatabaseManager.getInstance().init();
     await ImageEncryptionManager.getInstance().init();
@@ -205,13 +216,13 @@ class GlobalInitManager extends AppSingletonNoInit {
     await initializeDateFormatting("en_US", null);
 
     _log.fine("Global init completed");
-    _globalInitCompleted.add(true);
+    _globalInitState.add(GlobalInitState.completed);
   }
 
   /// Global init should be triggerred after splash screen
   /// is visible.
   Future<void> triggerGlobalInit() async {
-    unawaited(_runInit());
+    unawaited(_init());
   }
 }
 

@@ -34,13 +34,13 @@ class MainStateBloc extends Bloc<MainStateEvent, MainState> {
           login.loginState,
           login.accountState,
           login.initialSetupSkipped,
-          globalInitManager.globalInitCompletedStream,
+          globalInitManager.globalInitState,
           (a, b, c, d) => (a, b, c, d),
         )
         .asyncMap((current) async {
           final (ls, accountState, initialSetupSkipped, globalInitCompleted) = current;
 
-          if (globalInitCompleted == false) {
+          if (globalInitCompleted != GlobalInitState.completed) {
             return;
           }
 

@@ -2421,6 +2421,12 @@ abstract class AppLocalizations {
   /// **'Connection error - reconnecting in 5 seconds'**
   String get snackbar_reconnecting_in_5_seconds;
 
+  /// Splash screen error text that app is already running
+  ///
+  /// In en, this message translates to:
+  /// **'App is already running'**
+  String get splash_screen_app_is_already_running;
+
   /// Text for age range
   ///
   /// In en, this message translates to:

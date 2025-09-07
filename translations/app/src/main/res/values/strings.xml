@@ -179,6 +179,9 @@
     <string name="profile_image_error_no_primary_image" description="Snackbar text for no primary profile image error">No primary profile image</string>
     <string name="profile_image_error_image_not_accepted" description="Snackbar text for profile image is not accepted error">Profile image is not accepted by moderators</string>
 
+    <!-- Splash screen -->
+    <string name="splash_screen_app_is_already_running" description="Splash screen error text that app is already running">App is already running</string>
+
     <!-- Login screen -->
     <string name="login_screen_login_note_text_beginning" description="Text about agreeing terms of service and privacy policy">By signing in, you agree to our</string>
     <string name="login_screen_login_note_text_tos" description="Text for terms of service link">Terms of Service</string>

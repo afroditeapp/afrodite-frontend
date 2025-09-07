@@ -1410,6 +1410,9 @@ class AppLocalizationsSv extends AppLocalizations {
       'Connection error - reconnecting in 5 seconds';
 
   @override
+  String get splash_screen_app_is_already_running => 'App is already running';
+
+  @override
   String statistics_screen_age_range(String p0) {
     return 'Ages: $p0';
   }
