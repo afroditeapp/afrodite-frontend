@@ -66,6 +66,14 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    packagingOptions {
+        jniLibs {
+            // Reduce APK file size
+            useLegacyPackaging true
+        }
+    }
+
     namespace 'com.example.afrodite'
 }
 
