@@ -38,6 +38,27 @@
 </head>
 <body>
   <script type="module">
+    var resolve_app_already_running = null;
+    window.app_already_running = new Promise((resolve) => {
+      resolve_app_already_running = resolve;
+    });
+    window.navigator.locks.request(
+      "app_already_running",
+      {
+        "mode": "exclusive",
+        "ifAvailable": true,
+      },
+      async (lock) => {
+        if (lock === null) {
+          resolve_app_already_running(true);
+        } else {
+          resolve_app_already_running(false);
+        }
+        await new Promise((_) => {});
+      }
+    );
+  </script>
+  <script type="module">
     import __wbg_init, {
       generate_message_keys_rust,
       encrypt_data_rust,
