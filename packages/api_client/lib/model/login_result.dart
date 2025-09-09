@@ -13,16 +13,11 @@ part of openapi.api;
 class LoginResult {
   /// Returns a new [LoginResult] instance.
   LoginResult({
-    this.account,
     this.aid,
     this.email,
     this.errorUnsupportedClient = false,
-    this.media,
-    this.profile,
+    this.tokens,
   });
-
-  /// If `None`, the client is unsupported.
-  AuthPair? account;
 
   /// Account ID of current account. If `None`, the client is unsupported.
   AccountId? aid;
@@ -37,41 +32,29 @@ class LoginResult {
 
   bool errorUnsupportedClient;
 
-  /// If `None`, media microservice is disabled or the client version is unsupported.
-  AuthPair? media;
-
-  /// If `None`, profile microservice is disabled or the version client is unsupported.
-  AuthPair? profile;
+  /// If `None`, the client is unsupported.
+  AuthPair? tokens;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is LoginResult &&
-    other.account == account &&
     other.aid == aid &&
     other.email == email &&
     other.errorUnsupportedClient == errorUnsupportedClient &&
-    other.media == media &&
-    other.profile == profile;
+    other.tokens == tokens;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (account == null ? 0 : account!.hashCode) +
     (aid == null ? 0 : aid!.hashCode) +
     (email == null ? 0 : email!.hashCode) +
     (errorUnsupportedClient.hashCode) +
-    (media == null ? 0 : media!.hashCode) +
-    (profile == null ? 0 : profile!.hashCode);
+    (tokens == null ? 0 : tokens!.hashCode);
 
   @override
-  String toString() => 'LoginResult[account=$account, aid=$aid, email=$email, errorUnsupportedClient=$errorUnsupportedClient, media=$media, profile=$profile]';
+  String toString() => 'LoginResult[aid=$aid, email=$email, errorUnsupportedClient=$errorUnsupportedClient, tokens=$tokens]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-    if (this.account != null) {
-      json[r'account'] = this.account;
-    } else {
-      json[r'account'] = null;
-    }
     if (this.aid != null) {
       json[r'aid'] = this.aid;
     } else {
@@ -83,15 +66,10 @@ class LoginResult {
       json[r'email'] = null;
     }
       json[r'error_unsupported_client'] = this.errorUnsupportedClient;
-    if (this.media != null) {
-      json[r'media'] = this.media;
+    if (this.tokens != null) {
+      json[r'tokens'] = this.tokens;
     } else {
-      json[r'media'] = null;
-    }
-    if (this.profile != null) {
-      json[r'profile'] = this.profile;
-    } else {
-      json[r'profile'] = null;
+      json[r'tokens'] = null;
     }
     return json;
   }
@@ -115,12 +93,10 @@ class LoginResult {
       }());
 
       return LoginResult(
-        account: AuthPair.fromJson(json[r'account']),
         aid: AccountId.fromJson(json[r'aid']),
         email: mapValueOfType<String>(json, r'email'),
         errorUnsupportedClient: mapValueOfType<bool>(json, r'error_unsupported_client') ?? false,
-        media: AuthPair.fromJson(json[r'media']),
-        profile: AuthPair.fromJson(json[r'profile']),
+        tokens: AuthPair.fromJson(json[r'tokens']),
       );
     }
     return null;

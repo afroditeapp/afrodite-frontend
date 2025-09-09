@@ -294,7 +294,7 @@ class LoginRepository extends AppSingleton {
       return const Err(CommonSignInError.unsupportedClient);
     }
     final aid = loginResult.aid;
-    final authPair = loginResult.account;
+    final authPair = loginResult.tokens;
     if (aid == null || authPair == null) {
       _log.error("LoginResult doesn't contain required info");
       return const Err(CommonSignInError.otherError);

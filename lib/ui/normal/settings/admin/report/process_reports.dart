@@ -174,13 +174,8 @@ class ReportUiBuilder extends ContentUiBuilder<WrappedReportDetailed> {
       targetDetails = "";
     }
 
-    final String infoText;
-    if (creatorInfo != null && targetInfo != null) {
-      infoText =
-          "${creatorInfo.name}, ${creatorInfo.age}$creatorDetails -> ${targetInfo.name}, ${targetInfo.age}$targetDetails";
-    } else {
-      infoText = "";
-    }
+    final String infoText =
+        "${creatorInfo.name}, ${creatorInfo.age}$creatorDetails -> ${targetInfo.name}, ${targetInfo.age}$targetDetails";
 
     const FIRST_CUSTOM_REPORT_TYPE_NUMBER = 64;
 
@@ -205,9 +200,9 @@ class ReportUiBuilder extends ContentUiBuilder<WrappedReportDetailed> {
     } else if (chatMessage != null) {
       final String senderReceiverInfo;
       if (chatMessage.sender == content.target) {
-        senderReceiverInfo = "${targetInfo?.name.toString()} -> ${creatorInfo?.name.toString()}";
+        senderReceiverInfo = "${targetInfo.name.toString()} -> ${creatorInfo.name.toString()}";
       } else {
-        senderReceiverInfo = "${creatorInfo?.name.toString()} -> ${targetInfo?.name.toString()}";
+        senderReceiverInfo = "${creatorInfo.name.toString()} -> ${targetInfo.name.toString()}";
       }
       final time = timeString(chatMessage.messageTime.toUtcDateTime());
       final message = Message.parseFromBytes(base64Decode(chatMessage.messageBase64));

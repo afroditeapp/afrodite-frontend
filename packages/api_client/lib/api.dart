@@ -76,7 +76,6 @@ part 'model/backend_version.dart';
 part 'model/boolean_setting.dart';
 part 'model/chat_app_notification_settings.dart';
 part 'model/chat_message_report.dart';
-part 'model/chat_profile_link.dart';
 part 'model/client_config.dart';
 part 'model/client_config_sync_version.dart';
 part 'model/client_features_config.dart';

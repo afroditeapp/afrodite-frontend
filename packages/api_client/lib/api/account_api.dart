@@ -543,7 +543,7 @@ class AccountApi {
 
   /// Complete initial setup.
   ///
-  /// Requirements:  - Account must be in `InitialSetup` state.  - Account must have a valid AccountSetup info set.  
+  /// Media content with InSlot state will be removed.  Requirements:  - Account must be in `InitialSetup` state.  - Account must have a valid AccountSetup info set.  
   ///
   /// Note: This method returns the HTTP [Response].
   Future<Response> postCompleteSetupWithHttpInfo() async {
@@ -573,7 +573,7 @@ class AccountApi {
 
   /// Complete initial setup.
   ///
-  /// Requirements:  - Account must be in `InitialSetup` state.  - Account must have a valid AccountSetup info set.  
+  /// Media content with InSlot state will be removed.  Requirements:  - Account must be in `InitialSetup` state.  - Account must have a valid AccountSetup info set.  
   Future<void> postCompleteSetup() async {
     final response = await postCompleteSetupWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {

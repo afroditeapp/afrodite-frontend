@@ -22,7 +22,7 @@ class ReceivedLikesPage {
 
   PageItemCountForNewLikes n;
 
-  List<ChatProfileLink> p;
+  List<ProfileLink> p;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is ReceivedLikesPage &&
@@ -69,7 +69,7 @@ class ReceivedLikesPage {
       return ReceivedLikesPage(
         errorInvalidIteratorSessionId: mapValueOfType<bool>(json, r'error_invalid_iterator_session_id') ?? false,
         n: PageItemCountForNewLikes.fromJson(json[r'n'])!,
-        p: ChatProfileLink.listFromJson(json[r'p']),
+        p: ProfileLink.listFromJson(json[r'p']),
       );
     }
     return null;

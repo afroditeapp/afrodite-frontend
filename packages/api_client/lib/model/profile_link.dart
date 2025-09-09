@@ -14,24 +14,17 @@ class ProfileLink {
   /// Returns a new [ProfileLink] instance.
   ProfileLink({
     required this.a,
-    this.c,
-    this.l,
+    required this.c,
+    required this.l,
     required this.p,
   });
 
   AccountId a;
 
-  /// This is optional because media component owns it.
-  ProfileContentVersion? c;
+  ProfileContentVersion c;
 
   /// Account's most recent disconnect time.  If the last seen time is not None, then it is Unix timestamp or -1 if the profile is currently online.
-  ///
-  /// Please note: This property should have been non-nullable! Since the specification file
-  /// does not include a default value (using the "default:" property), however, the generated
-  /// source code must fall back to having a nullable type.
-  /// Consider adding a "default:" property in the specification file to hide this note.
-  ///
-  int? l;
+  int l;
 
   ProfileVersion p;
 
@@ -46,8 +39,8 @@ class ProfileLink {
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (a.hashCode) +
-    (c == null ? 0 : c!.hashCode) +
-    (l == null ? 0 : l!.hashCode) +
+    (c.hashCode) +
+    (l.hashCode) +
     (p.hashCode);
 
   @override
@@ -56,16 +49,8 @@ class ProfileLink {
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'a'] = this.a;
-    if (this.c != null) {
       json[r'c'] = this.c;
-    } else {
-      json[r'c'] = null;
-    }
-    if (this.l != null) {
       json[r'l'] = this.l;
-    } else {
-      json[r'l'] = null;
-    }
       json[r'p'] = this.p;
     return json;
   }
@@ -90,8 +75,8 @@ class ProfileLink {
 
       return ProfileLink(
         a: AccountId.fromJson(json[r'a'])!,
-        c: ProfileContentVersion.fromJson(json[r'c']),
-        l: mapValueOfType<int>(json, r'l'),
+        c: ProfileContentVersion.fromJson(json[r'c'])!,
+        l: mapValueOfType<int>(json, r'l')!,
         p: ProfileVersion.fromJson(json[r'p'])!,
       );
     }
@@ -141,6 +126,8 @@ class ProfileLink {
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
     'a',
+    'c',
+    'l',
     'p',
   };
 }

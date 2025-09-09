@@ -19,13 +19,13 @@ class ClientConfig {
     required this.syncVersion,
   });
 
-  /// Account component specific config. It is also possible that client features are not configured.
+  /// None, if client features are not configured.
   ClientFeaturesConfigHash? clientFeatures;
 
-  /// Account component specific config. It is also possible that custom reports are not configured.
+  /// None, if custom reports are not configured.
   CustomReportsConfigHash? customReports;
 
-  /// Profile component specific config. It is also possible that attributes are not configured.
+  /// None, if attributes are not configured.
   PartialProfileAttributesConfig? profileAttributes;
 
   ClientConfigSyncVersion syncVersion;

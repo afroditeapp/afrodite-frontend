@@ -15,23 +15,21 @@ class ReportDetailed {
   ReportDetailed({
     this.chatInfo,
     required this.content,
-    this.creatorInfo,
+    required this.creatorInfo,
     required this.info,
-    this.targetInfo,
+    required this.targetInfo,
   });
 
-  /// Only available when chat component is enabled and account interaction exists.
+  /// Only available when account interaction exists.
   ReportChatInfo? chatInfo;
 
   ReportContent content;
 
-  /// Only available when profile component is enabled.
-  ReportAccountInfo? creatorInfo;
+  ReportAccountInfo creatorInfo;
 
   ReportDetailedInfo info;
 
-  /// Only available when profile component is enabled.
-  ReportAccountInfo? targetInfo;
+  ReportAccountInfo targetInfo;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is ReportDetailed &&
@@ -46,9 +44,9 @@ class ReportDetailed {
     // ignore: unnecessary_parenthesis
     (chatInfo == null ? 0 : chatInfo!.hashCode) +
     (content.hashCode) +
-    (creatorInfo == null ? 0 : creatorInfo!.hashCode) +
+    (creatorInfo.hashCode) +
     (info.hashCode) +
-    (targetInfo == null ? 0 : targetInfo!.hashCode);
+    (targetInfo.hashCode);
 
   @override
   String toString() => 'ReportDetailed[chatInfo=$chatInfo, content=$content, creatorInfo=$creatorInfo, info=$info, targetInfo=$targetInfo]';
@@ -61,17 +59,9 @@ class ReportDetailed {
       json[r'chat_info'] = null;
     }
       json[r'content'] = this.content;
-    if (this.creatorInfo != null) {
       json[r'creator_info'] = this.creatorInfo;
-    } else {
-      json[r'creator_info'] = null;
-    }
       json[r'info'] = this.info;
-    if (this.targetInfo != null) {
       json[r'target_info'] = this.targetInfo;
-    } else {
-      json[r'target_info'] = null;
-    }
     return json;
   }
 
@@ -96,9 +86,9 @@ class ReportDetailed {
       return ReportDetailed(
         chatInfo: ReportChatInfo.fromJson(json[r'chat_info']),
         content: ReportContent.fromJson(json[r'content'])!,
-        creatorInfo: ReportAccountInfo.fromJson(json[r'creator_info']),
+        creatorInfo: ReportAccountInfo.fromJson(json[r'creator_info'])!,
         info: ReportDetailedInfo.fromJson(json[r'info'])!,
-        targetInfo: ReportAccountInfo.fromJson(json[r'target_info']),
+        targetInfo: ReportAccountInfo.fromJson(json[r'target_info'])!,
       );
     }
     return null;
@@ -147,7 +137,9 @@ class ReportDetailed {
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
     'content',
+    'creator_info',
     'info',
+    'target_info',
   };
 }
 

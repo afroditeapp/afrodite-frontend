@@ -274,7 +274,6 @@ Class | Method | HTTP request | Description
  - [BooleanSetting](doc//BooleanSetting.md)
  - [ChatAppNotificationSettings](doc//ChatAppNotificationSettings.md)
  - [ChatMessageReport](doc//ChatMessageReport.md)
- - [ChatProfileLink](doc//ChatProfileLink.md)
  - [ClientConfig](doc//ClientConfig.md)
  - [ClientConfigSyncVersion](doc//ClientConfigSyncVersion.md)
  - [ClientFeaturesConfig](doc//ClientFeaturesConfig.md)

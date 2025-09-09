@@ -117,10 +117,7 @@ class OnlineIterator extends IteratorType {
             final currentVersion = entry?.version;
             final currentContentVersion = entry?.contentVersion;
 
-            if (p.p != null &&
-                currentVersion == p.p &&
-                p.c != null &&
-                currentContentVersion == p.c) {
+            if (currentVersion == p.p && currentContentVersion == p.c) {
               // No data changes, download can be skipped, but
               // update last seen time.
               await db.accountAction(
@@ -224,7 +221,7 @@ class ProfileListOnlineIteratorIo extends OnlineIteratorIo {
         .profile((api) => api.postGetNextProfilePage(sessionId))
         .mapOk(
           (value) => IteratorPage(
-            value.profiles.map((v) => ChatProfileLink(a: v.a, p: v.p, c: v.c, l: v.l)),
+            value.profiles.map((v) => ProfileLink(a: v.a, p: v.p, c: v.c, l: v.l)),
             errorInvalidIteratorSessionId: value.errorInvalidIteratorSessionId,
           ),
         )
@@ -239,7 +236,7 @@ class ProfileListOnlineIteratorIo extends OnlineIteratorIo {
 
 class IteratorPage {
   final bool errorInvalidIteratorSessionId;
-  final Iterable<ChatProfileLink> profiles;
+  final Iterable<ProfileLink> profiles;
   final int basicProfilesNewLikesCount;
 
   IteratorPage(
@@ -451,7 +448,7 @@ class AutomaticProfileSearchOnlineIteratorIo extends OnlineIteratorIo {
         .profile((api) => api.postAutomaticProfileSearchGetNextProfilePage(sessionId))
         .mapOk(
           (value) => IteratorPage(
-            value.profiles.map((v) => ChatProfileLink(a: v.a, p: v.p, c: v.c, l: v.l)),
+            value.profiles.map((v) => ProfileLink(a: v.a, p: v.p, c: v.c, l: v.l)),
             errorInvalidIteratorSessionId: value.errorInvalidIteratorSessionId,
           ),
         )

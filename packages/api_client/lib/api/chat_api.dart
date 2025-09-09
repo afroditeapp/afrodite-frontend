@@ -1192,7 +1192,7 @@ class ChatApi {
 
   /// Send message to a match.
   ///
-  /// Max pending message count is 50. Max message size is u16::MAX.  The sender message ID must be value which server expects.  Sending will fail if one or two way block exists.  Only the latest public key for sender and receiver can be used when sending a message.
+  /// Max pending message count is 50. Max message size is u16::MAX.  Sending will fail if one or two way block exists.  Only the latest public key for sender and receiver can be used when sending a message.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -1244,7 +1244,7 @@ class ChatApi {
 
   /// Send message to a match.
   ///
-  /// Max pending message count is 50. Max message size is u16::MAX.  The sender message ID must be value which server expects.  Sending will fail if one or two way block exists.  Only the latest public key for sender and receiver can be used when sending a message.
+  /// Max pending message count is 50. Max message size is u16::MAX.  Sending will fail if one or two way block exists.  Only the latest public key for sender and receiver can be used when sending a message.
   ///
   /// Parameters:
   ///

@@ -19,7 +19,7 @@ class MatchesPage {
 
   bool errorInvalidIteratorSessionId;
 
-  List<ChatProfileLink> p;
+  List<ProfileLink> p;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is MatchesPage &&
@@ -62,7 +62,7 @@ class MatchesPage {
 
       return MatchesPage(
         errorInvalidIteratorSessionId: mapValueOfType<bool>(json, r'error_invalid_iterator_session_id') ?? false,
-        p: ChatProfileLink.listFromJson(json[r'p']),
+        p: ProfileLink.listFromJson(json[r'p']),
       );
     }
     return null;
