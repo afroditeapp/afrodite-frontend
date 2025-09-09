@@ -36,7 +36,7 @@ check-fmt:
 
 update-api-bindings:
 	openapi-generator-cli generate \
-	-i http://localhost:3002/api-doc/app_api.json \
+	-i http://localhost:3001/api-doc/app_api.json \
 	-g dart \
 	-o packages/api_client \
 	--global-property apiTests=false,modelTests=false,apiDocs=false,modelDocs=false
