@@ -14,11 +14,9 @@ final _privateConstructorErrorNavigatorStateData = UnsupportedError(
 /// @nodoc
 mixin _$NavigatorStateData {
   UnmodifiableList<PageAndChannel> get pages => throw _privateConstructorErrorNavigatorStateData;
-  bool get disableAnimation => throw _privateConstructorErrorNavigatorStateData;
 
   NavigatorStateData copyWith({
     UnmodifiableList<PageAndChannel>? pages,
-    bool? disableAnimation,
   }) => throw _privateConstructorErrorNavigatorStateData;
 }
 
@@ -26,28 +24,22 @@ mixin _$NavigatorStateData {
 abstract class _NavigatorStateData extends NavigatorStateData {
   factory _NavigatorStateData({
     required UnmodifiableList<PageAndChannel> pages,
-    bool disableAnimation,
   }) = _$NavigatorStateDataImpl;
   _NavigatorStateData._() : super._();
 }
 
 /// @nodoc
 class _$NavigatorStateDataImpl extends _NavigatorStateData with DiagnosticableTreeMixin {
-  static const bool _disableAnimationDefaultValue = false;
-  
   _$NavigatorStateDataImpl({
     required this.pages,
-    this.disableAnimation = _disableAnimationDefaultValue,
   }) : super._();
 
   @override
   final UnmodifiableList<PageAndChannel> pages;
-  @override
-  final bool disableAnimation;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'NavigatorStateData(pages: $pages, disableAnimation: $disableAnimation)';
+    return 'NavigatorStateData(pages: $pages)';
   }
 
   @override
@@ -55,8 +47,7 @@ class _$NavigatorStateDataImpl extends _NavigatorStateData with DiagnosticableTr
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'NavigatorStateData'))
-      ..add(DiagnosticsProperty('pages', pages))
-      ..add(DiagnosticsProperty('disableAnimation', disableAnimation));
+      ..add(DiagnosticsProperty('pages', pages));
   }
 
   @override
@@ -65,9 +56,7 @@ class _$NavigatorStateDataImpl extends _NavigatorStateData with DiagnosticableTr
       (other.runtimeType == runtimeType &&
         other is _$NavigatorStateDataImpl &&
         (identical(other.pages, pages) ||
-          other.pages == pages) &&
-        (identical(other.disableAnimation, disableAnimation) ||
-          other.disableAnimation == disableAnimation)
+          other.pages == pages)
     );
   }
 
@@ -75,15 +64,12 @@ class _$NavigatorStateDataImpl extends _NavigatorStateData with DiagnosticableTr
   int get hashCode => Object.hash(
     runtimeType,
     pages,
-    disableAnimation,
   );
 
   @override
   NavigatorStateData copyWith({
     Object? pages,
-    Object? disableAnimation,
   }) => _$NavigatorStateDataImpl(
     pages: (pages ?? this.pages) as UnmodifiableList<PageAndChannel>,
-    disableAnimation: (disableAnimation ?? this.disableAnimation) as bool,
   );
 }

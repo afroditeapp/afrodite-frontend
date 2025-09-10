@@ -12,7 +12,6 @@ import 'package:app/logic/server/address.dart';
 import 'package:app/logic/server/maintenance.dart';
 import 'package:app/logic/settings/data_export.dart';
 import 'package:app/logic/sign_in_with.dart';
-import 'package:app/main.dart';
 import 'package:app/model/freezed/logic/main/bottom_navigation_state.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui/splash_screen.dart';
@@ -365,12 +364,8 @@ class AppNavigator extends StatelessWidget {
   }
 
   Widget createNavigator(BuildContext context, NavigatorStateData state) {
-    final TransitionDelegate<void> transitionDelegate = state.disableAnimation
-        ? const ReplaceSplashScreenTransitionDelegate()
-        : const DefaultTransitionDelegate();
     return Navigator(
       key: navigatorKey,
-      transitionDelegate: transitionDelegate,
       pages: state.getPages(),
       onDidRemovePage: (page) {
         context.read<NavigatorStateBloc>().add(RemovePageUsingFlutterObject(page));

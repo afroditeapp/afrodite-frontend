@@ -13,10 +13,8 @@ part 'navigator_state.freezed.dart';
 @freezed
 class NavigatorStateData with _$NavigatorStateData {
   NavigatorStateData._();
-  factory NavigatorStateData({
-    required UnmodifiableList<PageAndChannel> pages,
-    @Default(false) bool disableAnimation,
-  }) = _NavigatorStateData;
+  factory NavigatorStateData({required UnmodifiableList<PageAndChannel> pages}) =
+      _NavigatorStateData;
 
   List<Page<Object?>> getPages() {
     return pages.map((e) => e.page).toList();

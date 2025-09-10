@@ -36,12 +36,6 @@ class PushPage extends NavigatorStateEvent {
   PushPage(this.newPage);
 }
 
-class ReplaceAllWith extends NavigatorStateEvent {
-  final List<NewPageDetails> pageList;
-  final bool disableAnimation;
-  ReplaceAllWith(this.pageList, this.disableAnimation);
-}
-
 class ReplaceSinglePage extends NavigatorStateEvent {
   final PageKey existingPage;
   final PageAndChannel newPage;
@@ -51,12 +45,7 @@ class ReplaceSinglePage extends NavigatorStateEvent {
 class NavigatorStateBloc extends Bloc<NavigatorStateEvent, NavigatorStateData> {
   NavigatorStateBloc(super.initialState) {
     on<PushPage>((data, emit) {
-      emit(
-        state.copyWith(
-          pages: UnmodifiableList([...state.pages, data.newPage]),
-          disableAnimation: false,
-        ),
-      );
+      emit(state.copyWith(pages: UnmodifiableList([...state.pages, data.newPage])));
     });
     on<PopPage>((data, emit) {
       final newPages = state.pages.toList();
@@ -64,7 +53,7 @@ class NavigatorStateBloc extends Bloc<NavigatorStateEvent, NavigatorStateData> {
         final removed = newPages.removeLast();
         removed.channel?.add(PagePopDone(data.pageReturnValue));
       }
-      emit(state.copyWith(pages: UnmodifiableList(newPages), disableAnimation: false));
+      emit(state.copyWith(pages: UnmodifiableList(newPages)));
     });
     on<RemovePage>((data, emit) {
       final newPages = <PageAndChannel>[];
@@ -75,7 +64,7 @@ class NavigatorStateBloc extends Bloc<NavigatorStateEvent, NavigatorStateData> {
           p.channel?.add(PagePopDone(data.pageReturnValue));
         }
       }
-      emit(state.copyWith(pages: UnmodifiableList(newPages), disableAnimation: false));
+      emit(state.copyWith(pages: UnmodifiableList(newPages)));
     });
     on<RemovePageUsingFlutterObject>((data, emit) {
       final newPages = <PageAndChannel>[];
@@ -86,7 +75,7 @@ class NavigatorStateBloc extends Bloc<NavigatorStateEvent, NavigatorStateData> {
           p.channel?.add(const PagePopDone(null));
         }
       }
-      emit(state.copyWith(pages: UnmodifiableList(newPages), disableAnimation: false));
+      emit(state.copyWith(pages: UnmodifiableList(newPages)));
     });
     on<RemoveMultiplePages>((data, emit) {
       final newPages = <PageAndChannel>[];
@@ -97,30 +86,7 @@ class NavigatorStateBloc extends Bloc<NavigatorStateEvent, NavigatorStateData> {
           p.channel?.add(const PagePopDone(null));
         }
       }
-      emit(state.copyWith(pages: UnmodifiableList(newPages), disableAnimation: false));
-    });
-    on<ReplaceAllWith>((data, emit) {
-      final currentPages = state.pages.toList();
-
-      for (final p in currentPages.reversed) {
-        p.channel?.add(const PagePopDone(null));
-      }
-
-      emit(
-        state.copyWith(
-          pages: UnmodifiableList(
-            data.pageList.map((newPageDetails) {
-              return PageAndChannel(
-                newPageDetails.pageKey ?? PageKey(),
-                newPageDetails.page,
-                null,
-                newPageDetails.pageInfo,
-              );
-            }),
-          ),
-          disableAnimation: data.disableAnimation,
-        ),
-      );
+      emit(state.copyWith(pages: UnmodifiableList(newPages)));
     });
     on<ReplaceSinglePage>((data, emit) {
       final newPages = <PageAndChannel>[];
@@ -132,7 +98,7 @@ class NavigatorStateBloc extends Bloc<NavigatorStateEvent, NavigatorStateData> {
           newPages.add(data.newPage);
         }
       }
-      emit(state.copyWith(pages: UnmodifiableList(newPages), disableAnimation: false));
+      emit(state.copyWith(pages: UnmodifiableList(newPages)));
     });
   }
 
@@ -155,11 +121,6 @@ class NavigatorStateBloc extends Bloc<NavigatorStateEvent, NavigatorStateData> {
     } else {
       return null;
     }
-  }
-
-  /// Pop all current pages and make new stack with the new page list.
-  void replaceAllWith(List<NewPageDetails> page, {bool disableAnimation = false}) {
-    add(ReplaceAllWith(page, disableAnimation));
   }
 
   Future<T?> replaceSinglePage<T>(
@@ -269,11 +230,6 @@ class MyNavigator {
     PageInfo? pageInfo,
   }) async {
     return await context.read<NavigatorStateBloc>().pushWithKey(page, pageKey, pageInfo: pageInfo);
-  }
-
-  /// Pop all current pages and make new stack with the new page list.
-  static void replaceAllWith(BuildContext context, List<NewPageDetails> page) {
-    context.read<NavigatorStateBloc>().replaceAllWith(page);
   }
 
   static Future<T?> replaceSinglePage<T>(
