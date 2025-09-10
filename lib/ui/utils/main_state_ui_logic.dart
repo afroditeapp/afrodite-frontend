@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/logic/account/client_features_config.dart';
 import 'package:app/logic/account/custom_reports_config.dart';
@@ -15,6 +17,8 @@ import 'package:app/logic/sign_in_with.dart';
 import 'package:app/model/freezed/logic/main/bottom_navigation_state.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui/splash_screen.dart';
+import 'package:app/utils/result.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:app/logic/account/account.dart';
@@ -98,7 +102,7 @@ abstract class BasicRootScreen extends StatelessWidget {
         BlocProvider(create: (_) => NavigatorStateBloc(blocInitialState)),
         BlocProvider(create: (_) => BottomNavigationStateBloc(BottomNavigationStateData())),
       ],
-      child: NavigationBlocUpdater(child: blocProvider(AppNavigator())),
+      child: blocProvider(AppNavigatorAndUpdateNavigationBlocs()),
     );
   }
 }
@@ -172,7 +176,7 @@ abstract class LoggedInRootScreen extends StatelessWidget {
           BlocProvider(create: (_) => NavigatorStateBloc(navigatorInitialState)),
           BlocProvider(create: (_) => BottomNavigationStateBloc(bottomNavigationInitialState)),
         ],
-        child: NavigationBlocUpdater(child: blocProvider(AppNavigator())),
+        child: blocProvider(AppNavigatorAndUpdateNavigationBlocs()),
       ),
     );
   }
@@ -329,9 +333,8 @@ class NavigatorNormal extends LoggedInRootScreen {
   }
 }
 
-class NavigationBlocUpdater extends StatelessWidget {
-  const NavigationBlocUpdater({required this.child, super.key});
-  final Widget child;
+class AppNavigatorAndUpdateNavigationBlocs extends StatelessWidget {
+  const AppNavigatorAndUpdateNavigationBlocs({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -340,36 +343,118 @@ class NavigationBlocUpdater extends StatelessWidget {
     final bottomNavigatorStateBloc = context.read<BottomNavigationStateBloc>();
     BottomNavigationStateBlocInstance.getInstance().setLatestBloc(bottomNavigatorStateBloc);
 
-    return child;
+    return AppNavigator(bloc: navigatorStateBloc);
   }
 }
 
-class AppNavigator extends StatelessWidget {
-  AppNavigator({super.key});
+class AppNavigator extends StatefulWidget {
+  final NavigatorStateBloc bloc;
+  const AppNavigator({required this.bloc, super.key});
 
-  final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+  @override
+  State<AppNavigator> createState() => _AppNavigatorState();
+}
+
+class _AppNavigatorState extends State<AppNavigator> {
+  late final MyRouterDelegate routerDelegate;
+  late final PlatformRouteInformationProvider routeInfoProvider;
+
+  @override
+  void initState() {
+    super.initState();
+    routerDelegate = MyRouterDelegate(widget.bloc);
+    final parser = MyRouteInformationParser();
+    routeInfoProvider = PlatformRouteInformationProvider(
+      initialRouteInformation: parser.restoreRouteInformation(Ok(widget.bloc.state.pages.length))!,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<NavigatorStateBloc, NavigatorStateData>(
-      builder: (context, state) {
-        return NavigatorPopHandler(
-          onPopWithResult: (_) {
-            navigatorKey.currentState?.maybePop();
-          },
-          child: createNavigator(context, state),
-        );
+    return Router(
+      routerDelegate: routerDelegate,
+      routeInformationParser: MyRouteInformationParser(),
+      routeInformationProvider: routeInfoProvider,
+      backButtonDispatcher: RootBackButtonDispatcher(),
+    );
+  }
+}
+
+class MyRouterDelegate extends RouterDelegate<Result<int, Uri>>
+    with PopNavigatorRouterDelegateMixin<Result<int, Uri>> {
+  final NavigatorStateBloc bloc;
+  MyRouterDelegate(this.bloc);
+
+  final GlobalKey<NavigatorState> key = GlobalKey<NavigatorState>();
+  final Map<VoidCallback, StreamSubscription<NavigatorStateData>> subscriptions = {};
+
+  @override
+  void addListener(VoidCallback listener) {
+    if (subscriptions[listener] == null) {
+      subscriptions[listener] = bloc.stream.listen((event) => listener());
+    }
+  }
+
+  @override
+  void removeListener(VoidCallback listener) {
+    final subscription = subscriptions.remove(listener);
+    subscription?.cancel();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Navigator(
+      key: key,
+      pages: bloc.state.getPages(),
+      onDidRemovePage: (page) {
+        bloc.add(RemovePageUsingFlutterObject(page));
       },
     );
   }
 
-  Widget createNavigator(BuildContext context, NavigatorStateData state) {
-    return Navigator(
-      key: navigatorKey,
-      pages: state.getPages(),
-      onDidRemovePage: (page) {
-        context.read<NavigatorStateBloc>().add(RemovePageUsingFlutterObject(page));
-      },
-    );
+  @override
+  GlobalKey<NavigatorState>? get navigatorKey => key;
+
+  @override
+  Result<int, Uri>? get currentConfiguration {
+    final pages = NavigationStateBlocInstance.getInstance().navigationState.pages;
+    return Ok(pages.length);
+  }
+
+  @override
+  Future<void> setNewRoutePath(Result<int, Uri> configuration) {
+    if (configuration case Ok()) {
+      final event = PopUntilLenghtIs(configuration.v);
+      bloc.add(event);
+      return event.waitCompletionAndDispose();
+    }
+    return SynchronousFuture(null);
+  }
+}
+
+class MyRouteInformationParser extends RouteInformationParser<Result<int, Uri>> {
+  @override
+  Future<Result<int, Uri>> parseRouteInformation(RouteInformation routeInformation) {
+    final path = routeInformation.uri.path == "/" ? "1" : routeInformation.uri.path;
+    final number = int.tryParse(path);
+    if (number == null) {
+      return SynchronousFuture(Err(routeInformation.uri));
+    } else {
+      return SynchronousFuture(Ok(number));
+    }
+  }
+
+  @override
+  RouteInformation? restoreRouteInformation(Result<int, Uri> configuration) {
+    switch (configuration) {
+      case Ok():
+        if (configuration.value == 1) {
+          return RouteInformation(uri: Uri.parse("/"));
+        } else {
+          return RouteInformation(uri: Uri.parse(configuration.v.toString()));
+        }
+      case Err():
+        return RouteInformation(uri: configuration.e);
+    }
   }
 }

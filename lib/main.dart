@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:logging/logging.dart';
 import 'package:app/api/error_manager.dart';
 import 'package:app/data/login_repository.dart';
@@ -58,7 +57,6 @@ void initLogging() {
 
 Future<void> main() async {
   initLogging();
-  setUrlStrategy(null);
 
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -94,11 +92,13 @@ class MyApp extends StatelessWidget {
       theme: ThemeData.light().copyWith(pageTransitionsTheme: createPageTransitionsTheme()),
       darkTheme: ThemeData.dark().copyWith(pageTransitionsTheme: createPageTransitionsTheme()),
       themeMode: ThemeMode.system,
-      home: const GlobalLocalizationsInitializer(
-        child: AppLifecycleHandler(child: MainStateUiLogic()),
-      ),
       scaffoldMessengerKey: globalScaffoldMessengerKey,
       debugShowCheckedModeBanner: false,
+      builder: (context, child) {
+        return const GlobalLocalizationsInitializer(
+          child: AppLifecycleHandler(child: MainStateUiLogic()),
+        );
+      },
     );
   }
 }

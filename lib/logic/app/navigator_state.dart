@@ -42,6 +42,19 @@ class ReplaceSinglePage extends NavigatorStateEvent {
   ReplaceSinglePage(this.existingPage, this.newPage);
 }
 
+class PopUntilLenghtIs extends NavigatorStateEvent {
+  final int wantedLenght;
+  PopUntilLenghtIs(this.wantedLenght);
+
+  final BehaviorSubject<bool> completed = BehaviorSubject.seeded(false);
+
+  /// Can be called only once
+  Future<void> waitCompletionAndDispose() async {
+    await completed.where((v) => v).first;
+    await completed.close();
+  }
+}
+
 class NavigatorStateBloc extends Bloc<NavigatorStateEvent, NavigatorStateData> {
   NavigatorStateBloc(super.initialState) {
     on<PushPage>((data, emit) {
@@ -99,6 +112,22 @@ class NavigatorStateBloc extends Bloc<NavigatorStateEvent, NavigatorStateData> {
         }
       }
       emit(state.copyWith(pages: UnmodifiableList(newPages)));
+    });
+    on<PopUntilLenghtIs>((data, emit) {
+      if (data.wantedLenght < 1) {
+        return;
+      }
+
+      final newPages = <PageAndChannel>[];
+      for (final (i, p) in state.pages.indexed) {
+        if (i < data.wantedLenght) {
+          newPages.add(p);
+        } else {
+          p.channel?.add(const PagePopDone(null));
+        }
+      }
+      emit(state.copyWith(pages: UnmodifiableList(newPages)));
+      data.completed.add(true);
     });
   }
 
