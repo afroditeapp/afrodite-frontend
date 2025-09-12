@@ -68,6 +68,7 @@ class ProfileGridState extends State<ProfileGrid> {
       widget.r.connectionManager,
       widget.r.chat.currentUser,
     );
+    _mainProfilesViewIterator.init();
 
     _gridLogic.init();
 
@@ -360,6 +361,7 @@ class ProfileGridState extends State<ProfileGrid> {
     _scrollController.dispose();
     _profileChangesSubscription?.cancel();
     _profileChangesSubscription = null;
+    _mainProfilesViewIterator.dispose();
     super.dispose();
   }
 }

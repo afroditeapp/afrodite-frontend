@@ -12,6 +12,7 @@ import 'package:database/database.dart';
 import 'package:app/database/account_background_database_manager.dart';
 import 'package:app/database/account_database_manager.dart';
 import 'package:app/utils/result.dart';
+import 'package:rxdart/rxdart.dart';
 
 sealed class ProfileIteratorMode {}
 
@@ -21,6 +22,26 @@ class ModePublicProfiles extends ProfileIteratorMode {
   final bool clearDatabase;
   ModePublicProfiles({required this.clearDatabase});
 }
+
+sealed class ProfileIteratorManagerCmd<T> {
+  final BehaviorSubject<T?> completed = BehaviorSubject.seeded(null);
+
+  /// Can be called only once
+  Future<T> waitCompletionAndDispose() async {
+    final value = await completed.whereType<T>().first;
+    await completed.close();
+    return value;
+  }
+}
+
+class Reset extends ProfileIteratorManagerCmd<()> {
+  final ProfileIteratorMode mode;
+  Reset(this.mode);
+}
+
+class Refresh extends ProfileIteratorManagerCmd<()> {}
+
+class NextList extends ProfileIteratorManagerCmd<Result<List<ProfileEntry>, ()>> {}
 
 class ProfileIteratorManager {
   final AccountDatabaseManager db;
@@ -49,7 +70,36 @@ class ProfileIteratorManager {
   /// moves profile location to a location from where the iterator can return it.
   final Set<AccountId> _duplicateAccountsPreventer = {};
 
-  void reset(ProfileIteratorMode mode) async {
+  final PublishSubject<ProfileIteratorManagerCmd<Object>> _cmds = PublishSubject();
+  StreamSubscription<void>? _cmdsSubscription;
+
+  void init() {
+    _cmdsSubscription = _listenCmds();
+  }
+
+  void dispose() async {
+    await _cmdsSubscription?.cancel();
+    await _cmds.close();
+  }
+
+  StreamSubscription<void> _listenCmds() {
+    return _cmds
+        .asyncMap((cmd) async {
+          switch (cmd) {
+            case Reset():
+              _reset(cmd.mode);
+              cmd.completed.add(());
+            case Refresh():
+              _refresh();
+              cmd.completed.add(());
+            case NextList():
+              cmd.completed.add(await _nextListImpl());
+          }
+        })
+        .listen(null);
+  }
+
+  void _reset(ProfileIteratorMode mode) {
     _duplicateAccountsPreventer.clear();
 
     switch (mode) {
@@ -86,15 +136,15 @@ class ProfileIteratorManager {
     _currentMode = mode;
   }
 
-  void refresh() async {
+  void _refresh() {
     switch (_currentMode) {
       case ModeFavorites():
         {
-          reset(ModeFavorites());
+          _reset(ModeFavorites());
         }
       case ModePublicProfiles():
         {
-          reset(ModePublicProfiles(clearDatabase: true));
+          _reset(ModePublicProfiles(clearDatabase: true));
         }
     }
   }
@@ -162,8 +212,21 @@ class ProfileIteratorManager {
     }
   }
 
+  void reset(ProfileIteratorMode mode) async {
+    final cmd = Reset(mode);
+    _cmds.add(cmd);
+    await cmd.waitCompletionAndDispose();
+  }
+
+  void refresh() async {
+    final cmd = Refresh();
+    _cmds.add(cmd);
+    await cmd.waitCompletionAndDispose();
+  }
+
   Future<Result<List<ProfileEntry>, ()>> nextList() async {
-    final result = await _nextListImpl();
-    return result;
+    final cmd = NextList();
+    _cmds.add(cmd);
+    return await cmd.waitCompletionAndDispose();
   }
 }
