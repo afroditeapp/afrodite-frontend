@@ -306,7 +306,9 @@ class ReceivedLikesOnlineIteratorIo extends OnlineIteratorIo {
         .emptyErr();
     if (r.isOk()) {
       state.page += 1;
-      await db.accountAction((db) => db.common.updateReceivedLikesIteratorState(state));
+      await db.accountAction(
+        (db) => db.common.updateReceivedLikesIteratorStatePageValue(state.page),
+      );
     }
     return r;
   }

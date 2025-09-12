@@ -1,5 +1,4 @@
 import 'package:database_account_foreground/src/database.dart';
-import 'package:database_converter/database_converter.dart';
 import 'package:database_utils/database_utils.dart';
 import 'package:drift/drift.dart';
 import 'package:utils/utils.dart';
@@ -13,7 +12,7 @@ part 'common.g.dart';
   tables: [
     schema.ServerMaintenance,
     schema.SyncVersion,
-    schema.IteratorState,
+    schema.ReceivedLikesIteratorState,
     schema.ClientLanguageOnServer,
   ],
 )
@@ -82,11 +81,19 @@ class DaoWriteCommon extends DatabaseAccessor<AccountForegroundDatabase>
   }
 
   Future<void> updateReceivedLikesIteratorState(api.ReceivedLikesIteratorState value) async {
-    await into(iteratorState).insertOnConflictUpdate(
-      IteratorStateCompanion.insert(
+    await into(receivedLikesIteratorState).insertOnConflictUpdate(
+      ReceivedLikesIteratorStateCompanion.insert(
         id: SingleRowTable.ID,
-        receivedLikesIteratorState: Value(value.toJsonObject()),
+        idAtReset: Value(value.idAtReset),
+        previousIdAtReset: Value(value.previousIdAtReset),
+        page: Value(value.page),
       ),
+    );
+  }
+
+  Future<void> updateReceivedLikesIteratorStatePageValue(int value) async {
+    await into(receivedLikesIteratorState).insertOnConflictUpdate(
+      ReceivedLikesIteratorStateCompanion.insert(id: SingleRowTable.ID, page: Value(value)),
     );
   }
 

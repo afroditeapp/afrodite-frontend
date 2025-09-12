@@ -2205,12 +2205,16 @@ class SyncVersionCompanion extends UpdateCompanion<SyncVersionData> {
   }
 }
 
-class $IteratorStateTable extends schema.IteratorState
-    with TableInfo<$IteratorStateTable, IteratorStateData> {
+class $ReceivedLikesIteratorStateTable extends schema.ReceivedLikesIteratorState
+    with
+        TableInfo<
+          $ReceivedLikesIteratorStateTable,
+          ReceivedLikesIteratorStateData
+        > {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $IteratorStateTable(this.attachedDatabase, [this._alias]);
+  $ReceivedLikesIteratorStateTable(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
@@ -2225,30 +2229,53 @@ class $IteratorStateTable extends schema.IteratorState
     ),
   );
   @override
-  late final GeneratedColumnWithTypeConverter<
-    JsonObject<ReceivedLikesIteratorState>?,
-    String
-  >
-  receivedLikesIteratorState =
-      GeneratedColumn<String>(
-        'received_likes_iterator_state',
+  late final GeneratedColumnWithTypeConverter<ReceivedLikeId?, int> idAtReset =
+      GeneratedColumn<int>(
+        'id_at_reset',
         aliasedName,
         true,
-        type: DriftSqlType.string,
+        type: DriftSqlType.int,
         requiredDuringInsert: false,
-      ).withConverter<JsonObject<ReceivedLikesIteratorState>?>(
-        $IteratorStateTable.$converterreceivedLikesIteratorState,
+      ).withConverter<ReceivedLikeId?>(
+        $ReceivedLikesIteratorStateTable.$converteridAtReset,
       );
   @override
-  List<GeneratedColumn> get $columns => [id, receivedLikesIteratorState];
+  late final GeneratedColumnWithTypeConverter<ReceivedLikeId?, int>
+  previousIdAtReset =
+      GeneratedColumn<int>(
+        'previous_id_at_reset',
+        aliasedName,
+        true,
+        type: DriftSqlType.int,
+        requiredDuringInsert: false,
+      ).withConverter<ReceivedLikeId?>(
+        $ReceivedLikesIteratorStateTable.$converterpreviousIdAtReset,
+      );
+  static const VerificationMeta _pageMeta = const VerificationMeta('page');
+  @override
+  late final GeneratedColumn<int> page = GeneratedColumn<int>(
+    'page',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    idAtReset,
+    previousIdAtReset,
+    page,
+  ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
-  static const String $name = 'iterator_state';
+  static const String $name = 'received_likes_iterator_state';
   @override
   VerificationContext validateIntegrity(
-    Insertable<IteratorStateData> instance, {
+    Insertable<ReceivedLikesIteratorStateData> instance, {
     bool isInserting = false,
   }) {
     final context = VerificationContext();
@@ -2256,81 +2283,117 @@ class $IteratorStateTable extends schema.IteratorState
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
     }
+    if (data.containsKey('page')) {
+      context.handle(
+        _pageMeta,
+        page.isAcceptableOrUnknown(data['page']!, _pageMeta),
+      );
+    }
     return context;
   }
 
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  IteratorStateData map(Map<String, dynamic> data, {String? tablePrefix}) {
+  ReceivedLikesIteratorStateData map(
+    Map<String, dynamic> data, {
+    String? tablePrefix,
+  }) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return IteratorStateData(
+    return ReceivedLikesIteratorStateData(
       id: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
         data['${effectivePrefix}id'],
       )!,
-      receivedLikesIteratorState: $IteratorStateTable
-          .$converterreceivedLikesIteratorState
+      idAtReset: $ReceivedLikesIteratorStateTable.$converteridAtReset.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.int,
+          data['${effectivePrefix}id_at_reset'],
+        ),
+      ),
+      previousIdAtReset: $ReceivedLikesIteratorStateTable
+          .$converterpreviousIdAtReset
           .fromSql(
             attachedDatabase.typeMapping.read(
-              DriftSqlType.string,
-              data['${effectivePrefix}received_likes_iterator_state'],
+              DriftSqlType.int,
+              data['${effectivePrefix}previous_id_at_reset'],
             ),
           ),
+      page: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}page'],
+      )!,
     );
   }
 
   @override
-  $IteratorStateTable createAlias(String alias) {
-    return $IteratorStateTable(attachedDatabase, alias);
+  $ReceivedLikesIteratorStateTable createAlias(String alias) {
+    return $ReceivedLikesIteratorStateTable(attachedDatabase, alias);
   }
 
-  static TypeConverter<JsonObject<ReceivedLikesIteratorState>?, String?>
-  $converterreceivedLikesIteratorState = const NullAwareTypeConverter.wrap(
-    ReceivedLikesIteratorStateConverter(),
-  );
+  static TypeConverter<ReceivedLikeId?, int?> $converteridAtReset =
+      const NullAwareTypeConverter.wrap(ReceivedLikeIdConverter());
+  static TypeConverter<ReceivedLikeId?, int?> $converterpreviousIdAtReset =
+      const NullAwareTypeConverter.wrap(ReceivedLikeIdConverter());
 }
 
-class IteratorStateData extends DataClass
-    implements Insertable<IteratorStateData> {
+class ReceivedLikesIteratorStateData extends DataClass
+    implements Insertable<ReceivedLikesIteratorStateData> {
   final int id;
-  final JsonObject<ReceivedLikesIteratorState>? receivedLikesIteratorState;
-  const IteratorStateData({required this.id, this.receivedLikesIteratorState});
+  final ReceivedLikeId? idAtReset;
+  final ReceivedLikeId? previousIdAtReset;
+  final int page;
+  const ReceivedLikesIteratorStateData({
+    required this.id,
+    this.idAtReset,
+    this.previousIdAtReset,
+    required this.page,
+  });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
-    if (!nullToAbsent || receivedLikesIteratorState != null) {
-      map['received_likes_iterator_state'] = Variable<String>(
-        $IteratorStateTable.$converterreceivedLikesIteratorState.toSql(
-          receivedLikesIteratorState,
+    if (!nullToAbsent || idAtReset != null) {
+      map['id_at_reset'] = Variable<int>(
+        $ReceivedLikesIteratorStateTable.$converteridAtReset.toSql(idAtReset),
+      );
+    }
+    if (!nullToAbsent || previousIdAtReset != null) {
+      map['previous_id_at_reset'] = Variable<int>(
+        $ReceivedLikesIteratorStateTable.$converterpreviousIdAtReset.toSql(
+          previousIdAtReset,
         ),
       );
     }
+    map['page'] = Variable<int>(page);
     return map;
   }
 
-  IteratorStateCompanion toCompanion(bool nullToAbsent) {
-    return IteratorStateCompanion(
+  ReceivedLikesIteratorStateCompanion toCompanion(bool nullToAbsent) {
+    return ReceivedLikesIteratorStateCompanion(
       id: Value(id),
-      receivedLikesIteratorState:
-          receivedLikesIteratorState == null && nullToAbsent
+      idAtReset: idAtReset == null && nullToAbsent
           ? const Value.absent()
-          : Value(receivedLikesIteratorState),
+          : Value(idAtReset),
+      previousIdAtReset: previousIdAtReset == null && nullToAbsent
+          ? const Value.absent()
+          : Value(previousIdAtReset),
+      page: Value(page),
     );
   }
 
-  factory IteratorStateData.fromJson(
+  factory ReceivedLikesIteratorStateData.fromJson(
     Map<String, dynamic> json, {
     ValueSerializer? serializer,
   }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return IteratorStateData(
+    return ReceivedLikesIteratorStateData(
       id: serializer.fromJson<int>(json['id']),
-      receivedLikesIteratorState: serializer
-          .fromJson<JsonObject<ReceivedLikesIteratorState>?>(
-            json['receivedLikesIteratorState'],
-          ),
+      idAtReset: serializer.fromJson<ReceivedLikeId?>(json['idAtReset']),
+      previousIdAtReset: serializer.fromJson<ReceivedLikeId?>(
+        json['previousIdAtReset'],
+      ),
+      page: serializer.fromJson<int>(json['page']),
     );
   }
   @override
@@ -2338,82 +2401,106 @@ class IteratorStateData extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
-      'receivedLikesIteratorState': serializer
-          .toJson<JsonObject<ReceivedLikesIteratorState>?>(
-            receivedLikesIteratorState,
-          ),
+      'idAtReset': serializer.toJson<ReceivedLikeId?>(idAtReset),
+      'previousIdAtReset': serializer.toJson<ReceivedLikeId?>(
+        previousIdAtReset,
+      ),
+      'page': serializer.toJson<int>(page),
     };
   }
 
-  IteratorStateData copyWith({
+  ReceivedLikesIteratorStateData copyWith({
     int? id,
-    Value<JsonObject<ReceivedLikesIteratorState>?> receivedLikesIteratorState =
-        const Value.absent(),
-  }) => IteratorStateData(
+    Value<ReceivedLikeId?> idAtReset = const Value.absent(),
+    Value<ReceivedLikeId?> previousIdAtReset = const Value.absent(),
+    int? page,
+  }) => ReceivedLikesIteratorStateData(
     id: id ?? this.id,
-    receivedLikesIteratorState: receivedLikesIteratorState.present
-        ? receivedLikesIteratorState.value
-        : this.receivedLikesIteratorState,
+    idAtReset: idAtReset.present ? idAtReset.value : this.idAtReset,
+    previousIdAtReset: previousIdAtReset.present
+        ? previousIdAtReset.value
+        : this.previousIdAtReset,
+    page: page ?? this.page,
   );
-  IteratorStateData copyWithCompanion(IteratorStateCompanion data) {
-    return IteratorStateData(
+  ReceivedLikesIteratorStateData copyWithCompanion(
+    ReceivedLikesIteratorStateCompanion data,
+  ) {
+    return ReceivedLikesIteratorStateData(
       id: data.id.present ? data.id.value : this.id,
-      receivedLikesIteratorState: data.receivedLikesIteratorState.present
-          ? data.receivedLikesIteratorState.value
-          : this.receivedLikesIteratorState,
+      idAtReset: data.idAtReset.present ? data.idAtReset.value : this.idAtReset,
+      previousIdAtReset: data.previousIdAtReset.present
+          ? data.previousIdAtReset.value
+          : this.previousIdAtReset,
+      page: data.page.present ? data.page.value : this.page,
     );
   }
 
   @override
   String toString() {
-    return (StringBuffer('IteratorStateData(')
+    return (StringBuffer('ReceivedLikesIteratorStateData(')
           ..write('id: $id, ')
-          ..write('receivedLikesIteratorState: $receivedLikesIteratorState')
+          ..write('idAtReset: $idAtReset, ')
+          ..write('previousIdAtReset: $previousIdAtReset, ')
+          ..write('page: $page')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, receivedLikesIteratorState);
+  int get hashCode => Object.hash(id, idAtReset, previousIdAtReset, page);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is IteratorStateData &&
+      (other is ReceivedLikesIteratorStateData &&
           other.id == this.id &&
-          other.receivedLikesIteratorState == this.receivedLikesIteratorState);
+          other.idAtReset == this.idAtReset &&
+          other.previousIdAtReset == this.previousIdAtReset &&
+          other.page == this.page);
 }
 
-class IteratorStateCompanion extends UpdateCompanion<IteratorStateData> {
+class ReceivedLikesIteratorStateCompanion
+    extends UpdateCompanion<ReceivedLikesIteratorStateData> {
   final Value<int> id;
-  final Value<JsonObject<ReceivedLikesIteratorState>?>
-  receivedLikesIteratorState;
-  const IteratorStateCompanion({
+  final Value<ReceivedLikeId?> idAtReset;
+  final Value<ReceivedLikeId?> previousIdAtReset;
+  final Value<int> page;
+  const ReceivedLikesIteratorStateCompanion({
     this.id = const Value.absent(),
-    this.receivedLikesIteratorState = const Value.absent(),
+    this.idAtReset = const Value.absent(),
+    this.previousIdAtReset = const Value.absent(),
+    this.page = const Value.absent(),
   });
-  IteratorStateCompanion.insert({
+  ReceivedLikesIteratorStateCompanion.insert({
     this.id = const Value.absent(),
-    this.receivedLikesIteratorState = const Value.absent(),
+    this.idAtReset = const Value.absent(),
+    this.previousIdAtReset = const Value.absent(),
+    this.page = const Value.absent(),
   });
-  static Insertable<IteratorStateData> custom({
+  static Insertable<ReceivedLikesIteratorStateData> custom({
     Expression<int>? id,
-    Expression<String>? receivedLikesIteratorState,
+    Expression<int>? idAtReset,
+    Expression<int>? previousIdAtReset,
+    Expression<int>? page,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
-      if (receivedLikesIteratorState != null)
-        'received_likes_iterator_state': receivedLikesIteratorState,
+      if (idAtReset != null) 'id_at_reset': idAtReset,
+      if (previousIdAtReset != null) 'previous_id_at_reset': previousIdAtReset,
+      if (page != null) 'page': page,
     });
   }
 
-  IteratorStateCompanion copyWith({
+  ReceivedLikesIteratorStateCompanion copyWith({
     Value<int>? id,
-    Value<JsonObject<ReceivedLikesIteratorState>?>? receivedLikesIteratorState,
+    Value<ReceivedLikeId?>? idAtReset,
+    Value<ReceivedLikeId?>? previousIdAtReset,
+    Value<int>? page,
   }) {
-    return IteratorStateCompanion(
+    return ReceivedLikesIteratorStateCompanion(
       id: id ?? this.id,
-      receivedLikesIteratorState:
-          receivedLikesIteratorState ?? this.receivedLikesIteratorState,
+      idAtReset: idAtReset ?? this.idAtReset,
+      previousIdAtReset: previousIdAtReset ?? this.previousIdAtReset,
+      page: page ?? this.page,
     );
   }
 
@@ -2423,21 +2510,33 @@ class IteratorStateCompanion extends UpdateCompanion<IteratorStateData> {
     if (id.present) {
       map['id'] = Variable<int>(id.value);
     }
-    if (receivedLikesIteratorState.present) {
-      map['received_likes_iterator_state'] = Variable<String>(
-        $IteratorStateTable.$converterreceivedLikesIteratorState.toSql(
-          receivedLikesIteratorState.value,
+    if (idAtReset.present) {
+      map['id_at_reset'] = Variable<int>(
+        $ReceivedLikesIteratorStateTable.$converteridAtReset.toSql(
+          idAtReset.value,
         ),
       );
+    }
+    if (previousIdAtReset.present) {
+      map['previous_id_at_reset'] = Variable<int>(
+        $ReceivedLikesIteratorStateTable.$converterpreviousIdAtReset.toSql(
+          previousIdAtReset.value,
+        ),
+      );
+    }
+    if (page.present) {
+      map['page'] = Variable<int>(page.value);
     }
     return map;
   }
 
   @override
   String toString() {
-    return (StringBuffer('IteratorStateCompanion(')
+    return (StringBuffer('ReceivedLikesIteratorStateCompanion(')
           ..write('id: $id, ')
-          ..write('receivedLikesIteratorState: $receivedLikesIteratorState')
+          ..write('idAtReset: $idAtReset, ')
+          ..write('previousIdAtReset: $previousIdAtReset, ')
+          ..write('page: $page')
           ..write(')'))
         .toString();
   }
@@ -13036,7 +13135,8 @@ abstract class _$AccountForegroundDatabase extends GeneratedDatabase {
   late final $ServerMaintenanceTable serverMaintenance =
       $ServerMaintenanceTable(this);
   late final $SyncVersionTable syncVersion = $SyncVersionTable(this);
-  late final $IteratorStateTable iteratorState = $IteratorStateTable(this);
+  late final $ReceivedLikesIteratorStateTable receivedLikesIteratorState =
+      $ReceivedLikesIteratorStateTable(this);
   late final $ClientFeaturesConfigTable clientFeaturesConfig =
       $ClientFeaturesConfigTable(this);
   late final $CustomReportsConfigTable customReportsConfig =
@@ -13179,7 +13279,7 @@ abstract class _$AccountForegroundDatabase extends GeneratedDatabase {
     gridSettings,
     serverMaintenance,
     syncVersion,
-    iteratorState,
+    receivedLikesIteratorState,
     clientFeaturesConfig,
     customReportsConfig,
     profileAttributesConfig,

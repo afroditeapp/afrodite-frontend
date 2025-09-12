@@ -58,3 +58,17 @@ class ProfileTextModerationRejectedReasonDetailsConverter
     return value.value;
   }
 }
+
+class ReceivedLikeIdConverter extends TypeConverter<ReceivedLikeId, int> {
+  const ReceivedLikeIdConverter();
+
+  @override
+  ReceivedLikeId fromSql(fromDb) {
+    return ReceivedLikeId(id: fromDb);
+  }
+
+  @override
+  int toSql(value) {
+    return value.id;
+  }
+}

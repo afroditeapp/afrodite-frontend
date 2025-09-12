@@ -152,21 +152,6 @@ class AutomaticProfileSearchSettingsConverter
   }
 }
 
-class ReceivedLikesIteratorStateConverter
-    extends TypeConverter<JsonObject<ReceivedLikesIteratorState>, String> {
-  const ReceivedLikesIteratorStateConverter();
-
-  @override
-  JsonObject<ReceivedLikesIteratorState> fromSql(fromDb) {
-    return JsonObject._(ReceivedLikesIteratorState.fromJson(jsonDecode(fromDb)));
-  }
-
-  @override
-  String toSql(value) {
-    return jsonEncode(value.value?.toJson());
-  }
-}
-
 extension NotificationStatusJson on NotificationStatus {
   JsonObject<NotificationStatus> toJsonObject() {
     return JsonObject._(this);

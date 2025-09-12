@@ -7,7 +7,8 @@ mixin _$DaoWriteCommonMixin on DatabaseAccessor<AccountForegroundDatabase> {
   $ServerMaintenanceTable get serverMaintenance =>
       attachedDatabase.serverMaintenance;
   $SyncVersionTable get syncVersion => attachedDatabase.syncVersion;
-  $IteratorStateTable get iteratorState => attachedDatabase.iteratorState;
+  $ReceivedLikesIteratorStateTable get receivedLikesIteratorState =>
+      attachedDatabase.receivedLikesIteratorState;
   $ClientLanguageOnServerTable get clientLanguageOnServer =>
       attachedDatabase.clientLanguageOnServer;
 }

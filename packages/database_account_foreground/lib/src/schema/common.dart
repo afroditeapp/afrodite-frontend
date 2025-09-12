@@ -2,10 +2,12 @@ import 'package:database_converter/database_converter.dart';
 import 'package:database_utils/database_utils.dart';
 import 'package:drift/drift.dart';
 
-class IteratorState extends SingleRowTable {
-  TextColumn get receivedLikesIteratorState => text()
-      .map(const NullAwareTypeConverter.wrap(ReceivedLikesIteratorStateConverter()))
-      .nullable()();
+class ReceivedLikesIteratorState extends SingleRowTable {
+  IntColumn get idAtReset =>
+      integer().map(const NullAwareTypeConverter.wrap(ReceivedLikeIdConverter())).nullable()();
+  IntColumn get previousIdAtReset =>
+      integer().map(const NullAwareTypeConverter.wrap(ReceivedLikeIdConverter())).nullable()();
+  IntColumn get page => integer().withDefault(const Constant(0))();
 }
 
 class SyncVersion extends SingleRowTable {

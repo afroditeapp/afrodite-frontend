@@ -12,7 +12,7 @@ part 'common.g.dart';
   tables: [
     schema.ServerMaintenance,
     schema.SyncVersion,
-    schema.IteratorState,
+    schema.ReceivedLikesIteratorState,
     schema.ClientLanguageOnServer,
   ],
 )
@@ -42,13 +42,24 @@ class DaoReadCommon extends DatabaseAccessor<AccountForegroundDatabase> with _$D
   }
 
   Stream<api.ReceivedLikesIteratorState?> watchReceivedLikesIteratorState() =>
-      _watchColumnIteratorState((r) => r.receivedLikesIteratorState?.value);
+      _watchColumnIteratorState((r) {
+        final idAtReset = r.idAtReset;
+        if (idAtReset == null) {
+          return null;
+        } else {
+          return api.ReceivedLikesIteratorState(
+            previousIdAtReset: r.previousIdAtReset,
+            idAtReset: idAtReset,
+            page: r.page,
+          );
+        }
+      });
 
   Stream<T?> _watchColumnIteratorState<T extends Object>(
-    T? Function(IteratorStateData) extractColumn,
+    T? Function(ReceivedLikesIteratorStateData) extractColumn,
   ) {
     return (select(
-      iteratorState,
+      receivedLikesIteratorState,
     )..where((t) => t.id.equals(SingleRowTable.ID.value))).map(extractColumn).watchSingleOrNull();
   }
 

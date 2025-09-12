@@ -48,7 +48,7 @@ part 'database.g.dart';
     // Common
     schema.ServerMaintenance,
     schema.SyncVersion,
-    schema.IteratorState,
+    schema.ReceivedLikesIteratorState,
     schema.ClientFeaturesConfig,
     schema.CustomReportsConfig,
     schema.ProfileAttributesConfig,
