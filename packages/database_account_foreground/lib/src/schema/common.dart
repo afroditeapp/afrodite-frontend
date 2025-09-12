@@ -15,8 +15,6 @@ class IteratorState extends SingleRowTable {
   TextColumn get receivedLikesIteratorState => text()
       .map(const NullAwareTypeConverter.wrap(ReceivedLikesIteratorStateConverter()))
       .nullable()();
-  TextColumn get matchesIteratorState =>
-      text().map(const NullAwareTypeConverter.wrap(MatchesIteratorStateConverter())).nullable()();
 }
 
 class SyncVersion extends SingleRowTable {

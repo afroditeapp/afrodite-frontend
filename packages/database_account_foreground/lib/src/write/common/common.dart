@@ -111,15 +111,6 @@ class DaoWriteCommon extends DatabaseAccessor<AccountForegroundDatabase>
     );
   }
 
-  Future<void> updateMatchesIteratorState(api.MatchesIteratorState value) async {
-    await into(iteratorState).insertOnConflictUpdate(
-      IteratorStateCompanion.insert(
-        id: SingleRowTable.ID,
-        matchesIteratorState: Value(value.toJsonObject()),
-      ),
-    );
-  }
-
   Future<void> updateClientLanguageOnServer(api.ClientLanguage? value) async {
     await into(clientLanguageOnServer).insertOnConflictUpdate(
       ClientLanguageOnServerCompanion.insert(

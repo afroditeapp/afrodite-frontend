@@ -2571,26 +2571,7 @@ class $IteratorStateTable extends schema.IteratorState
         $IteratorStateTable.$converterreceivedLikesIteratorState,
       );
   @override
-  late final GeneratedColumnWithTypeConverter<
-    JsonObject<MatchesIteratorState>?,
-    String
-  >
-  matchesIteratorState =
-      GeneratedColumn<String>(
-        'matches_iterator_state',
-        aliasedName,
-        true,
-        type: DriftSqlType.string,
-        requiredDuringInsert: false,
-      ).withConverter<JsonObject<MatchesIteratorState>?>(
-        $IteratorStateTable.$convertermatchesIteratorState,
-      );
-  @override
-  List<GeneratedColumn> get $columns => [
-    id,
-    receivedLikesIteratorState,
-    matchesIteratorState,
-  ];
+  List<GeneratedColumn> get $columns => [id, receivedLikesIteratorState];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -2627,13 +2608,6 @@ class $IteratorStateTable extends schema.IteratorState
               data['${effectivePrefix}received_likes_iterator_state'],
             ),
           ),
-      matchesIteratorState: $IteratorStateTable.$convertermatchesIteratorState
-          .fromSql(
-            attachedDatabase.typeMapping.read(
-              DriftSqlType.string,
-              data['${effectivePrefix}matches_iterator_state'],
-            ),
-          ),
     );
   }
 
@@ -2646,22 +2620,13 @@ class $IteratorStateTable extends schema.IteratorState
   $converterreceivedLikesIteratorState = const NullAwareTypeConverter.wrap(
     ReceivedLikesIteratorStateConverter(),
   );
-  static TypeConverter<JsonObject<MatchesIteratorState>?, String?>
-  $convertermatchesIteratorState = const NullAwareTypeConverter.wrap(
-    MatchesIteratorStateConverter(),
-  );
 }
 
 class IteratorStateData extends DataClass
     implements Insertable<IteratorStateData> {
   final int id;
   final JsonObject<ReceivedLikesIteratorState>? receivedLikesIteratorState;
-  final JsonObject<MatchesIteratorState>? matchesIteratorState;
-  const IteratorStateData({
-    required this.id,
-    this.receivedLikesIteratorState,
-    this.matchesIteratorState,
-  });
+  const IteratorStateData({required this.id, this.receivedLikesIteratorState});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -2670,13 +2635,6 @@ class IteratorStateData extends DataClass
       map['received_likes_iterator_state'] = Variable<String>(
         $IteratorStateTable.$converterreceivedLikesIteratorState.toSql(
           receivedLikesIteratorState,
-        ),
-      );
-    }
-    if (!nullToAbsent || matchesIteratorState != null) {
-      map['matches_iterator_state'] = Variable<String>(
-        $IteratorStateTable.$convertermatchesIteratorState.toSql(
-          matchesIteratorState,
         ),
       );
     }
@@ -2690,9 +2648,6 @@ class IteratorStateData extends DataClass
           receivedLikesIteratorState == null && nullToAbsent
           ? const Value.absent()
           : Value(receivedLikesIteratorState),
-      matchesIteratorState: matchesIteratorState == null && nullToAbsent
-          ? const Value.absent()
-          : Value(matchesIteratorState),
     );
   }
 
@@ -2707,10 +2662,6 @@ class IteratorStateData extends DataClass
           .fromJson<JsonObject<ReceivedLikesIteratorState>?>(
             json['receivedLikesIteratorState'],
           ),
-      matchesIteratorState: serializer
-          .fromJson<JsonObject<MatchesIteratorState>?>(
-            json['matchesIteratorState'],
-          ),
     );
   }
   @override
@@ -2722,8 +2673,6 @@ class IteratorStateData extends DataClass
           .toJson<JsonObject<ReceivedLikesIteratorState>?>(
             receivedLikesIteratorState,
           ),
-      'matchesIteratorState': serializer
-          .toJson<JsonObject<MatchesIteratorState>?>(matchesIteratorState),
     };
   }
 
@@ -2731,16 +2680,11 @@ class IteratorStateData extends DataClass
     int? id,
     Value<JsonObject<ReceivedLikesIteratorState>?> receivedLikesIteratorState =
         const Value.absent(),
-    Value<JsonObject<MatchesIteratorState>?> matchesIteratorState =
-        const Value.absent(),
   }) => IteratorStateData(
     id: id ?? this.id,
     receivedLikesIteratorState: receivedLikesIteratorState.present
         ? receivedLikesIteratorState.value
         : this.receivedLikesIteratorState,
-    matchesIteratorState: matchesIteratorState.present
-        ? matchesIteratorState.value
-        : this.matchesIteratorState,
   );
   IteratorStateData copyWithCompanion(IteratorStateCompanion data) {
     return IteratorStateData(
@@ -2748,9 +2692,6 @@ class IteratorStateData extends DataClass
       receivedLikesIteratorState: data.receivedLikesIteratorState.present
           ? data.receivedLikesIteratorState.value
           : this.receivedLikesIteratorState,
-      matchesIteratorState: data.matchesIteratorState.present
-          ? data.matchesIteratorState.value
-          : this.matchesIteratorState,
     );
   }
 
@@ -2758,63 +2699,52 @@ class IteratorStateData extends DataClass
   String toString() {
     return (StringBuffer('IteratorStateData(')
           ..write('id: $id, ')
-          ..write('receivedLikesIteratorState: $receivedLikesIteratorState, ')
-          ..write('matchesIteratorState: $matchesIteratorState')
+          ..write('receivedLikesIteratorState: $receivedLikesIteratorState')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode =>
-      Object.hash(id, receivedLikesIteratorState, matchesIteratorState);
+  int get hashCode => Object.hash(id, receivedLikesIteratorState);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is IteratorStateData &&
           other.id == this.id &&
-          other.receivedLikesIteratorState == this.receivedLikesIteratorState &&
-          other.matchesIteratorState == this.matchesIteratorState);
+          other.receivedLikesIteratorState == this.receivedLikesIteratorState);
 }
 
 class IteratorStateCompanion extends UpdateCompanion<IteratorStateData> {
   final Value<int> id;
   final Value<JsonObject<ReceivedLikesIteratorState>?>
   receivedLikesIteratorState;
-  final Value<JsonObject<MatchesIteratorState>?> matchesIteratorState;
   const IteratorStateCompanion({
     this.id = const Value.absent(),
     this.receivedLikesIteratorState = const Value.absent(),
-    this.matchesIteratorState = const Value.absent(),
   });
   IteratorStateCompanion.insert({
     this.id = const Value.absent(),
     this.receivedLikesIteratorState = const Value.absent(),
-    this.matchesIteratorState = const Value.absent(),
   });
   static Insertable<IteratorStateData> custom({
     Expression<int>? id,
     Expression<String>? receivedLikesIteratorState,
-    Expression<String>? matchesIteratorState,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (receivedLikesIteratorState != null)
         'received_likes_iterator_state': receivedLikesIteratorState,
-      if (matchesIteratorState != null)
-        'matches_iterator_state': matchesIteratorState,
     });
   }
 
   IteratorStateCompanion copyWith({
     Value<int>? id,
     Value<JsonObject<ReceivedLikesIteratorState>?>? receivedLikesIteratorState,
-    Value<JsonObject<MatchesIteratorState>?>? matchesIteratorState,
   }) {
     return IteratorStateCompanion(
       id: id ?? this.id,
       receivedLikesIteratorState:
           receivedLikesIteratorState ?? this.receivedLikesIteratorState,
-      matchesIteratorState: matchesIteratorState ?? this.matchesIteratorState,
     );
   }
 
@@ -2831,13 +2761,6 @@ class IteratorStateCompanion extends UpdateCompanion<IteratorStateData> {
         ),
       );
     }
-    if (matchesIteratorState.present) {
-      map['matches_iterator_state'] = Variable<String>(
-        $IteratorStateTable.$convertermatchesIteratorState.toSql(
-          matchesIteratorState.value,
-        ),
-      );
-    }
     return map;
   }
 
@@ -2845,8 +2768,7 @@ class IteratorStateCompanion extends UpdateCompanion<IteratorStateData> {
   String toString() {
     return (StringBuffer('IteratorStateCompanion(')
           ..write('id: $id, ')
-          ..write('receivedLikesIteratorState: $receivedLikesIteratorState, ')
-          ..write('matchesIteratorState: $matchesIteratorState')
+          ..write('receivedLikesIteratorState: $receivedLikesIteratorState')
           ..write(')'))
         .toString();
   }

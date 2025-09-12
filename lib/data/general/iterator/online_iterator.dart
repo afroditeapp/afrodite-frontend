@@ -321,6 +321,8 @@ class ReceivedLikesOnlineIteratorIo extends OnlineIteratorIo {
   }
 }
 
+/// Saving iterator state to database is not needed the as matches
+/// are loaded from server every time when matches screen opens.
 class MatchesOnlineIteratorIo extends OnlineIteratorIo {
   final AccountDatabaseManager db;
   final ApiManager api;
@@ -349,7 +351,7 @@ class MatchesOnlineIteratorIo extends OnlineIteratorIo {
         await db.accountAction(
           (db) => db.profile.setMatchesGridStatusList(null, false, clear: true),
         );
-        await db.accountAction((db) => db.common.updateMatchesIteratorState(v));
+        currentState = v;
         return const Ok(());
       case Err():
         return const Err(());
@@ -358,12 +360,7 @@ class MatchesOnlineIteratorIo extends OnlineIteratorIo {
 
   @override
   Future<bool> loadIteratorSessionIdFromDbAndReturnTrueIfItExists() async {
-    currentState = await db.accountStreamSingle((db) => db.common.watchMatchesIteratorState()).ok();
-    if (currentState == null) {
-      return false;
-    } else {
-      return true;
-    }
+    return currentState != null;
   }
 
   @override
@@ -378,7 +375,6 @@ class MatchesOnlineIteratorIo extends OnlineIteratorIo {
         .emptyErr();
     if (r.isOk()) {
       state.page += 1;
-      await db.accountAction((db) => db.common.updateMatchesIteratorState(state));
     }
     return r;
   }

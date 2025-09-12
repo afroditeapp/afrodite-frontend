@@ -59,9 +59,6 @@ class DaoReadCommon extends DatabaseAccessor<AccountForegroundDatabase> with _$D
   Stream<api.ReceivedLikesIteratorState?> watchReceivedLikesIteratorState() =>
       _watchColumnIteratorState((r) => r.receivedLikesIteratorState?.value);
 
-  Stream<api.MatchesIteratorState?> watchMatchesIteratorState() =>
-      _watchColumnIteratorState((r) => r.matchesIteratorState?.value);
-
   Stream<T?> _watchColumnIteratorState<T extends Object>(
     T? Function(IteratorStateData) extractColumn,
   ) {
