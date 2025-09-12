@@ -7,6 +7,14 @@ import 'package:openapi/api.dart';
 class JsonList<T> {
   final List<T> value;
   JsonList._(this.value);
+
+  factory JsonList.create(List<T> Function() value) {
+    try {
+      return JsonList._(value());
+    } catch (_) {
+      return JsonList._([]);
+    }
+  }
 }
 
 class ProfileAttributeValueConverter
@@ -15,7 +23,7 @@ class ProfileAttributeValueConverter
 
   @override
   JsonList<ProfileAttributeValue> fromSql(fromDb) {
-    return JsonList._(ProfileAttributeValue.listFromJson(jsonDecode(fromDb)));
+    return JsonList.create(() => ProfileAttributeValue.listFromJson(jsonDecode(fromDb)));
   }
 
   @override
