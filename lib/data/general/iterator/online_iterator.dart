@@ -166,6 +166,8 @@ abstract class OnlineIteratorIo {
   Future<void> setDbVisibility(AccountId id, bool visibility);
 }
 
+/// Saving iterator session ID to database is not needed the as profiles
+/// are loaded from server every time when matches screen opens.
 class ProfileListOnlineIteratorIo extends OnlineIteratorIo {
   final AccountDatabaseManager db;
   final ApiManager api;
@@ -191,10 +193,10 @@ class ProfileListOnlineIteratorIo extends OnlineIteratorIo {
   Future<Result<(), ()>> resetServerPaging() async {
     switch (await api.profile((api) => api.postResetProfilePaging())) {
       case Ok(:final v):
-        await db.accountAction((db) => db.common.updateProfileIteratorSessionId(v));
         await db.accountAction(
           (db) => db.profile.setProfileGridStatusList(null, false, clear: true),
         );
+        currentSessionId = v;
         return const Ok(());
       case Err():
         return const Err(());
@@ -203,12 +205,7 @@ class ProfileListOnlineIteratorIo extends OnlineIteratorIo {
 
   @override
   Future<bool> loadIteratorSessionIdFromDbAndReturnTrueIfItExists() async {
-    currentSessionId = await db.accountStreamSingle((db) => db.common.watchProfileSessionId()).ok();
-    if (currentSessionId == null) {
-      return false;
-    } else {
-      return true;
-    }
+    return currentSessionId != null;
   }
 
   @override

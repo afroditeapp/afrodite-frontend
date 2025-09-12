@@ -12,7 +12,6 @@ part 'common.g.dart';
   tables: [
     schema.ServerMaintenance,
     schema.SyncVersion,
-    schema.IteratorSessionId,
     schema.IteratorState,
     schema.ClientLanguageOnServer,
   ],
@@ -39,17 +38,6 @@ class DaoReadCommon extends DatabaseAccessor<AccountForegroundDatabase> with _$D
   Stream<T?> _watchColumnSyncVersion<T extends Object>(T? Function(SyncVersionData) extractColumn) {
     return (select(
       syncVersion,
-    )..where((t) => t.id.equals(SingleRowTable.ID.value))).map(extractColumn).watchSingleOrNull();
-  }
-
-  Stream<api.ProfileIteratorSessionId?> watchProfileSessionId() =>
-      _watchColumnIteratorSessionId((r) => r.profileIteratorSessionId);
-
-  Stream<T?> _watchColumnIteratorSessionId<T extends Object>(
-    T? Function(IteratorSessionIdData) extractColumn,
-  ) {
-    return (select(
-      iteratorSessionId,
     )..where((t) => t.id.equals(SingleRowTable.ID.value))).map(extractColumn).watchSingleOrNull();
   }
 

@@ -29,20 +29,6 @@ class AttributeHashConverter extends TypeConverter<AttributeHash, String> {
   }
 }
 
-class ProfileIteratorSessionIdConverter extends TypeConverter<ProfileIteratorSessionId, int> {
-  const ProfileIteratorSessionIdConverter();
-
-  @override
-  ProfileIteratorSessionId fromSql(fromDb) {
-    return ProfileIteratorSessionId(id: fromDb);
-  }
-
-  @override
-  int toSql(value) {
-    return value.id;
-  }
-}
-
 class ProfileStringModerationRejectedReasonCategoryConverter
     extends TypeConverter<ProfileStringModerationRejectedReasonCategory, int> {
   const ProfileStringModerationRejectedReasonCategoryConverter();

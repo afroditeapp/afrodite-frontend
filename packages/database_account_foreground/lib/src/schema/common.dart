@@ -2,12 +2,6 @@ import 'package:database_converter/database_converter.dart';
 import 'package:database_utils/database_utils.dart';
 import 'package:drift/drift.dart';
 
-class IteratorSessionId extends SingleRowTable {
-  IntColumn get profileIteratorSessionId => integer()
-      .map(const NullAwareTypeConverter.wrap(ProfileIteratorSessionIdConverter()))
-      .nullable()();
-}
-
 class IteratorState extends SingleRowTable {
   TextColumn get receivedLikesIteratorState => text()
       .map(const NullAwareTypeConverter.wrap(ReceivedLikesIteratorStateConverter()))

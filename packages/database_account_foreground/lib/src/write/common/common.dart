@@ -13,7 +13,6 @@ part 'common.g.dart';
   tables: [
     schema.ServerMaintenance,
     schema.SyncVersion,
-    schema.IteratorSessionId,
     schema.IteratorState,
     schema.ClientLanguageOnServer,
   ],
@@ -78,15 +77,6 @@ class DaoWriteCommon extends DatabaseAccessor<AccountForegroundDatabase>
         syncVersionProfile: Value(null),
         syncVersionClientConfig: Value(null),
         syncVersionMediaContent: Value(null),
-      ),
-    );
-  }
-
-  Future<void> updateProfileIteratorSessionId(api.ProfileIteratorSessionId value) async {
-    await into(iteratorSessionId).insertOnConflictUpdate(
-      IteratorSessionIdCompanion.insert(
-        id: SingleRowTable.ID,
-        profileIteratorSessionId: Value(value),
       ),
     );
   }
