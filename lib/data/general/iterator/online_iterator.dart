@@ -386,6 +386,8 @@ class MatchesOnlineIteratorIo extends OnlineIteratorIo {
   }
 }
 
+/// Saving iterator session ID to database is not needed the as profiles
+/// are loaded from server every time when matches screen opens.
 class AutomaticProfileSearchOnlineIteratorIo extends OnlineIteratorIo {
   final AccountDatabaseManager db;
   final ApiManager api;
@@ -414,7 +416,7 @@ class AutomaticProfileSearchOnlineIteratorIo extends OnlineIteratorIo {
         await db.accountAction(
           (db) => db.profile.setAutomaticProfileSearchGridStatusList(null, false, clear: true),
         );
-        await db.accountAction((db) => db.common.updateAutomaticProfileSearchIteratorSessionId(v));
+        currentSessionId = v;
         return const Ok(());
       case Err():
         return const Err(());
@@ -423,14 +425,7 @@ class AutomaticProfileSearchOnlineIteratorIo extends OnlineIteratorIo {
 
   @override
   Future<bool> loadIteratorSessionIdFromDbAndReturnTrueIfItExists() async {
-    currentSessionId = await db
-        .accountStreamSingle((db) => db.common.watchAutomaticProfileSearchSessionId())
-        .ok();
-    if (currentSessionId == null) {
-      return false;
-    } else {
-      return true;
-    }
+    return currentSessionId != null;
   }
 
   @override

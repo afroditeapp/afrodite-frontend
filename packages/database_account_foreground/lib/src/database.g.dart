@@ -2237,27 +2237,7 @@ class $IteratorSessionIdTable extends schema.IteratorSessionId
         $IteratorSessionIdTable.$converterprofileIteratorSessionId,
       );
   @override
-  late final GeneratedColumnWithTypeConverter<
-    AutomaticProfileSearchIteratorSessionId?,
-    int
-  >
-  automatiProfileSearchIteratorSessionId =
-      GeneratedColumn<int>(
-        'automati_profile_search_iterator_session_id',
-        aliasedName,
-        true,
-        type: DriftSqlType.int,
-        requiredDuringInsert: false,
-      ).withConverter<AutomaticProfileSearchIteratorSessionId?>(
-        $IteratorSessionIdTable
-            .$converterautomatiProfileSearchIteratorSessionId,
-      );
-  @override
-  List<GeneratedColumn> get $columns => [
-    id,
-    profileIteratorSessionId,
-    automatiProfileSearchIteratorSessionId,
-  ];
+  List<GeneratedColumn> get $columns => [id, profileIteratorSessionId];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -2294,14 +2274,6 @@ class $IteratorSessionIdTable extends schema.IteratorSessionId
               data['${effectivePrefix}profile_iterator_session_id'],
             ),
           ),
-      automatiProfileSearchIteratorSessionId: $IteratorSessionIdTable
-          .$converterautomatiProfileSearchIteratorSessionId
-          .fromSql(
-            attachedDatabase.typeMapping.read(
-              DriftSqlType.int,
-              data['${effectivePrefix}automati_profile_search_iterator_session_id'],
-            ),
-          ),
     );
   }
 
@@ -2314,23 +2286,15 @@ class $IteratorSessionIdTable extends schema.IteratorSessionId
   $converterprofileIteratorSessionId = const NullAwareTypeConverter.wrap(
     ProfileIteratorSessionIdConverter(),
   );
-  static TypeConverter<AutomaticProfileSearchIteratorSessionId?, int?>
-  $converterautomatiProfileSearchIteratorSessionId =
-      const NullAwareTypeConverter.wrap(
-        AutomaticProfileSearchIteratorSessionIdConverter(),
-      );
 }
 
 class IteratorSessionIdData extends DataClass
     implements Insertable<IteratorSessionIdData> {
   final int id;
   final ProfileIteratorSessionId? profileIteratorSessionId;
-  final AutomaticProfileSearchIteratorSessionId?
-  automatiProfileSearchIteratorSessionId;
   const IteratorSessionIdData({
     required this.id,
     this.profileIteratorSessionId,
-    this.automatiProfileSearchIteratorSessionId,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -2343,12 +2307,6 @@ class IteratorSessionIdData extends DataClass
         ),
       );
     }
-    if (!nullToAbsent || automatiProfileSearchIteratorSessionId != null) {
-      map['automati_profile_search_iterator_session_id'] = Variable<int>(
-        $IteratorSessionIdTable.$converterautomatiProfileSearchIteratorSessionId
-            .toSql(automatiProfileSearchIteratorSessionId),
-      );
-    }
     return map;
   }
 
@@ -2358,10 +2316,6 @@ class IteratorSessionIdData extends DataClass
       profileIteratorSessionId: profileIteratorSessionId == null && nullToAbsent
           ? const Value.absent()
           : Value(profileIteratorSessionId),
-      automatiProfileSearchIteratorSessionId:
-          automatiProfileSearchIteratorSessionId == null && nullToAbsent
-          ? const Value.absent()
-          : Value(automatiProfileSearchIteratorSessionId),
     );
   }
 
@@ -2375,10 +2329,6 @@ class IteratorSessionIdData extends DataClass
       profileIteratorSessionId: serializer.fromJson<ProfileIteratorSessionId?>(
         json['profileIteratorSessionId'],
       ),
-      automatiProfileSearchIteratorSessionId: serializer
-          .fromJson<AutomaticProfileSearchIteratorSessionId?>(
-            json['automatiProfileSearchIteratorSessionId'],
-          ),
     );
   }
   @override
@@ -2389,10 +2339,6 @@ class IteratorSessionIdData extends DataClass
       'profileIteratorSessionId': serializer.toJson<ProfileIteratorSessionId?>(
         profileIteratorSessionId,
       ),
-      'automatiProfileSearchIteratorSessionId': serializer
-          .toJson<AutomaticProfileSearchIteratorSessionId?>(
-            automatiProfileSearchIteratorSessionId,
-          ),
     };
   }
 
@@ -2400,18 +2346,11 @@ class IteratorSessionIdData extends DataClass
     int? id,
     Value<ProfileIteratorSessionId?> profileIteratorSessionId =
         const Value.absent(),
-    Value<AutomaticProfileSearchIteratorSessionId?>
-        automatiProfileSearchIteratorSessionId =
-        const Value.absent(),
   }) => IteratorSessionIdData(
     id: id ?? this.id,
     profileIteratorSessionId: profileIteratorSessionId.present
         ? profileIteratorSessionId.value
         : this.profileIteratorSessionId,
-    automatiProfileSearchIteratorSessionId:
-        automatiProfileSearchIteratorSessionId.present
-        ? automatiProfileSearchIteratorSessionId.value
-        : this.automatiProfileSearchIteratorSessionId,
   );
   IteratorSessionIdData copyWithCompanion(IteratorSessionIdCompanion data) {
     return IteratorSessionIdData(
@@ -2419,10 +2358,6 @@ class IteratorSessionIdData extends DataClass
       profileIteratorSessionId: data.profileIteratorSessionId.present
           ? data.profileIteratorSessionId.value
           : this.profileIteratorSessionId,
-      automatiProfileSearchIteratorSessionId:
-          data.automatiProfileSearchIteratorSessionId.present
-          ? data.automatiProfileSearchIteratorSessionId.value
-          : this.automatiProfileSearchIteratorSessionId,
     );
   }
 
@@ -2430,74 +2365,52 @@ class IteratorSessionIdData extends DataClass
   String toString() {
     return (StringBuffer('IteratorSessionIdData(')
           ..write('id: $id, ')
-          ..write('profileIteratorSessionId: $profileIteratorSessionId, ')
-          ..write(
-            'automatiProfileSearchIteratorSessionId: $automatiProfileSearchIteratorSessionId',
-          )
+          ..write('profileIteratorSessionId: $profileIteratorSessionId')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(
-    id,
-    profileIteratorSessionId,
-    automatiProfileSearchIteratorSessionId,
-  );
+  int get hashCode => Object.hash(id, profileIteratorSessionId);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is IteratorSessionIdData &&
           other.id == this.id &&
-          other.profileIteratorSessionId == this.profileIteratorSessionId &&
-          other.automatiProfileSearchIteratorSessionId ==
-              this.automatiProfileSearchIteratorSessionId);
+          other.profileIteratorSessionId == this.profileIteratorSessionId);
 }
 
 class IteratorSessionIdCompanion
     extends UpdateCompanion<IteratorSessionIdData> {
   final Value<int> id;
   final Value<ProfileIteratorSessionId?> profileIteratorSessionId;
-  final Value<AutomaticProfileSearchIteratorSessionId?>
-  automatiProfileSearchIteratorSessionId;
   const IteratorSessionIdCompanion({
     this.id = const Value.absent(),
     this.profileIteratorSessionId = const Value.absent(),
-    this.automatiProfileSearchIteratorSessionId = const Value.absent(),
   });
   IteratorSessionIdCompanion.insert({
     this.id = const Value.absent(),
     this.profileIteratorSessionId = const Value.absent(),
-    this.automatiProfileSearchIteratorSessionId = const Value.absent(),
   });
   static Insertable<IteratorSessionIdData> custom({
     Expression<int>? id,
     Expression<int>? profileIteratorSessionId,
-    Expression<int>? automatiProfileSearchIteratorSessionId,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (profileIteratorSessionId != null)
         'profile_iterator_session_id': profileIteratorSessionId,
-      if (automatiProfileSearchIteratorSessionId != null)
-        'automati_profile_search_iterator_session_id':
-            automatiProfileSearchIteratorSessionId,
     });
   }
 
   IteratorSessionIdCompanion copyWith({
     Value<int>? id,
     Value<ProfileIteratorSessionId?>? profileIteratorSessionId,
-    Value<AutomaticProfileSearchIteratorSessionId?>?
-    automatiProfileSearchIteratorSessionId,
   }) {
     return IteratorSessionIdCompanion(
       id: id ?? this.id,
       profileIteratorSessionId:
           profileIteratorSessionId ?? this.profileIteratorSessionId,
-      automatiProfileSearchIteratorSessionId:
-          automatiProfileSearchIteratorSessionId ??
-          this.automatiProfileSearchIteratorSessionId,
     );
   }
 
@@ -2514,12 +2427,6 @@ class IteratorSessionIdCompanion
         ),
       );
     }
-    if (automatiProfileSearchIteratorSessionId.present) {
-      map['automati_profile_search_iterator_session_id'] = Variable<int>(
-        $IteratorSessionIdTable.$converterautomatiProfileSearchIteratorSessionId
-            .toSql(automatiProfileSearchIteratorSessionId.value),
-      );
-    }
     return map;
   }
 
@@ -2527,10 +2434,7 @@ class IteratorSessionIdCompanion
   String toString() {
     return (StringBuffer('IteratorSessionIdCompanion(')
           ..write('id: $id, ')
-          ..write('profileIteratorSessionId: $profileIteratorSessionId, ')
-          ..write(
-            'automatiProfileSearchIteratorSessionId: $automatiProfileSearchIteratorSessionId',
-          )
+          ..write('profileIteratorSessionId: $profileIteratorSessionId')
           ..write(')'))
         .toString();
   }

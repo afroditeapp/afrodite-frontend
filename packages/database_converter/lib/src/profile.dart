@@ -43,21 +43,6 @@ class ProfileIteratorSessionIdConverter extends TypeConverter<ProfileIteratorSes
   }
 }
 
-class AutomaticProfileSearchIteratorSessionIdConverter
-    extends TypeConverter<AutomaticProfileSearchIteratorSessionId, int> {
-  const AutomaticProfileSearchIteratorSessionIdConverter();
-
-  @override
-  AutomaticProfileSearchIteratorSessionId fromSql(fromDb) {
-    return AutomaticProfileSearchIteratorSessionId(id: fromDb);
-  }
-
-  @override
-  int toSql(value) {
-    return value.id;
-  }
-}
-
 class ProfileStringModerationRejectedReasonCategoryConverter
     extends TypeConverter<ProfileStringModerationRejectedReasonCategory, int> {
   const ProfileStringModerationRejectedReasonCategoryConverter();

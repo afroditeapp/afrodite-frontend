@@ -45,9 +45,6 @@ class DaoReadCommon extends DatabaseAccessor<AccountForegroundDatabase> with _$D
   Stream<api.ProfileIteratorSessionId?> watchProfileSessionId() =>
       _watchColumnIteratorSessionId((r) => r.profileIteratorSessionId);
 
-  Stream<api.AutomaticProfileSearchIteratorSessionId?> watchAutomaticProfileSearchSessionId() =>
-      _watchColumnIteratorSessionId((r) => r.automatiProfileSearchIteratorSessionId);
-
   Stream<T?> _watchColumnIteratorSessionId<T extends Object>(
     T? Function(IteratorSessionIdData) extractColumn,
   ) {

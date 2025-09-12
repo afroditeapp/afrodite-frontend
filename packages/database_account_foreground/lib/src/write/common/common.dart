@@ -91,17 +91,6 @@ class DaoWriteCommon extends DatabaseAccessor<AccountForegroundDatabase>
     );
   }
 
-  Future<void> updateAutomaticProfileSearchIteratorSessionId(
-    api.AutomaticProfileSearchIteratorSessionId value,
-  ) async {
-    await into(iteratorSessionId).insertOnConflictUpdate(
-      IteratorSessionIdCompanion.insert(
-        id: SingleRowTable.ID,
-        automatiProfileSearchIteratorSessionId: Value(value),
-      ),
-    );
-  }
-
   Future<void> updateReceivedLikesIteratorState(api.ReceivedLikesIteratorState value) async {
     await into(iteratorState).insertOnConflictUpdate(
       IteratorStateCompanion.insert(

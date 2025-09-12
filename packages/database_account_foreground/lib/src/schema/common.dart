@@ -6,9 +6,6 @@ class IteratorSessionId extends SingleRowTable {
   IntColumn get profileIteratorSessionId => integer()
       .map(const NullAwareTypeConverter.wrap(ProfileIteratorSessionIdConverter()))
       .nullable()();
-  IntColumn get automatiProfileSearchIteratorSessionId => integer()
-      .map(const NullAwareTypeConverter.wrap(AutomaticProfileSearchIteratorSessionIdConverter()))
-      .nullable()();
 }
 
 class IteratorState extends SingleRowTable {
