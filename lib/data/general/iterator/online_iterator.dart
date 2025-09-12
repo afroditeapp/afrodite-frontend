@@ -299,12 +299,19 @@ class ReceivedLikesOnlineIteratorIo extends OnlineIteratorIo {
     if (state == null) {
       return const Err(());
     }
+    if (state.page == -1) {
+      return Ok(IteratorPage([]));
+    }
     final r = await api
         .chat((api) => api.postGetReceivedLikesPage(state))
         .mapOk((value) => IteratorPage(value.p, basicProfilesNewLikesCount: value.n.c))
         .emptyErr();
-    if (r.isOk()) {
-      state.page += 1;
+    if (r case Ok()) {
+      if (r.v.profiles.isEmpty) {
+        state.page = -1;
+      } else {
+        state.page += 1;
+      }
       await db.accountAction(
         (db) => db.common.updateReceivedLikesIteratorStatePageValue(state.page),
       );
