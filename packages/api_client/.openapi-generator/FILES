@@ -164,7 +164,8 @@ lib/model/map_bounds.dart
 lib/model/map_config.dart
 lib/model/map_coordinate.dart
 lib/model/map_zoom.dart
-lib/model/matches_iterator_session_id.dart
+lib/model/match_id.dart
+lib/model/matches_iterator_state.dart
 lib/model/matches_page.dart
 lib/model/max_distance_km.dart
 lib/model/media_app_notification_settings.dart
@@ -187,7 +188,7 @@ lib/model/news_config.dart
 lib/model/news_id.dart
 lib/model/news_item.dart
 lib/model/news_item_simple.dart
-lib/model/news_iterator_session_id.dart
+lib/model/news_iterator_state.dart
 lib/model/news_page.dart
 lib/model/news_sync_version.dart
 lib/model/news_translation_version.dart
@@ -250,7 +251,9 @@ lib/model/profile_update.dart
 lib/model/profile_version.dart
 lib/model/profile_visibility.dart
 lib/model/public_key_id.dart
-lib/model/received_likes_iterator_session_id.dart
+lib/model/publication_id.dart
+lib/model/received_like_id.dart
+lib/model/received_likes_iterator_state.dart
 lib/model/received_likes_page.dart
 lib/model/received_likes_sync_version.dart
 lib/model/refresh_token.dart
@@ -266,7 +269,6 @@ lib/model/report_iterator_mode.dart
 lib/model/report_iterator_query.dart
 lib/model/report_processing_state.dart
 lib/model/report_type_number.dart
-lib/model/reset_matches_iterator_result.dart
 lib/model/reset_news_iterator_result.dart
 lib/model/reset_received_likes_iterator_result.dart
 lib/model/scheduled_maintenance_status.dart

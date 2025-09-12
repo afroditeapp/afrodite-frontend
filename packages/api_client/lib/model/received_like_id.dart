@@ -10,16 +10,16 @@
 
 part of openapi.api;
 
-class MatchesIteratorSessionId {
-  /// Returns a new [MatchesIteratorSessionId] instance.
-  MatchesIteratorSessionId({
+class ReceivedLikeId {
+  /// Returns a new [ReceivedLikeId] instance.
+  ReceivedLikeId({
     required this.id,
   });
 
   int id;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is MatchesIteratorSessionId &&
+  bool operator ==(Object other) => identical(this, other) || other is ReceivedLikeId &&
     other.id == id;
 
   @override
@@ -28,7 +28,7 @@ class MatchesIteratorSessionId {
     (id.hashCode);
 
   @override
-  String toString() => 'MatchesIteratorSessionId[id=$id]';
+  String toString() => 'ReceivedLikeId[id=$id]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -36,10 +36,10 @@ class MatchesIteratorSessionId {
     return json;
   }
 
-  /// Returns a new [MatchesIteratorSessionId] instance and imports its values from
+  /// Returns a new [ReceivedLikeId] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static MatchesIteratorSessionId? fromJson(dynamic value) {
+  static ReceivedLikeId? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -48,24 +48,24 @@ class MatchesIteratorSessionId {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "MatchesIteratorSessionId[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "MatchesIteratorSessionId[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "ReceivedLikeId[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "ReceivedLikeId[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return MatchesIteratorSessionId(
+      return ReceivedLikeId(
         id: mapValueOfType<int>(json, r'id')!,
       );
     }
     return null;
   }
 
-  static List<MatchesIteratorSessionId> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <MatchesIteratorSessionId>[];
+  static List<ReceivedLikeId> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <ReceivedLikeId>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = MatchesIteratorSessionId.fromJson(row);
+        final value = ReceivedLikeId.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -74,12 +74,12 @@ class MatchesIteratorSessionId {
     return result.toList(growable: growable);
   }
 
-  static Map<String, MatchesIteratorSessionId> mapFromJson(dynamic json) {
-    final map = <String, MatchesIteratorSessionId>{};
+  static Map<String, ReceivedLikeId> mapFromJson(dynamic json) {
+    final map = <String, ReceivedLikeId>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = MatchesIteratorSessionId.fromJson(entry.value);
+        final value = ReceivedLikeId.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -88,14 +88,14 @@ class MatchesIteratorSessionId {
     return map;
   }
 
-  // maps a json object with a list of MatchesIteratorSessionId-objects as value to a dart map
-  static Map<String, List<MatchesIteratorSessionId>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<MatchesIteratorSessionId>>{};
+  // maps a json object with a list of ReceivedLikeId-objects as value to a dart map
+  static Map<String, List<ReceivedLikeId>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<ReceivedLikeId>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = MatchesIteratorSessionId.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = ReceivedLikeId.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;

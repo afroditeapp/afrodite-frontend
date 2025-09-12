@@ -20,7 +20,7 @@ class ResetReceivedLikesIteratorResult {
 
   NewReceivedLikesCount c;
 
-  ReceivedLikesIteratorSessionId s;
+  ReceivedLikesIteratorState s;
 
   ReceivedLikesSyncVersion v;
 
@@ -68,7 +68,7 @@ class ResetReceivedLikesIteratorResult {
 
       return ResetReceivedLikesIteratorResult(
         c: NewReceivedLikesCount.fromJson(json[r'c'])!,
-        s: ReceivedLikesIteratorSessionId.fromJson(json[r's'])!,
+        s: ReceivedLikesIteratorState.fromJson(json[r's'])!,
         v: ReceivedLikesSyncVersion.fromJson(json[r'v'])!,
       );
     }

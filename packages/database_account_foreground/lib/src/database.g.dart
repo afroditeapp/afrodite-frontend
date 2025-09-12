@@ -2253,39 +2253,10 @@ class $IteratorSessionIdTable extends schema.IteratorSessionId
             .$converterautomatiProfileSearchIteratorSessionId,
       );
   @override
-  late final GeneratedColumnWithTypeConverter<
-    ReceivedLikesIteratorSessionId?,
-    int
-  >
-  receivedLikesIteratorSessionId =
-      GeneratedColumn<int>(
-        'received_likes_iterator_session_id',
-        aliasedName,
-        true,
-        type: DriftSqlType.int,
-        requiredDuringInsert: false,
-      ).withConverter<ReceivedLikesIteratorSessionId?>(
-        $IteratorSessionIdTable.$converterreceivedLikesIteratorSessionId,
-      );
-  @override
-  late final GeneratedColumnWithTypeConverter<MatchesIteratorSessionId?, int>
-  matchesIteratorSessionId =
-      GeneratedColumn<int>(
-        'matches_iterator_session_id',
-        aliasedName,
-        true,
-        type: DriftSqlType.int,
-        requiredDuringInsert: false,
-      ).withConverter<MatchesIteratorSessionId?>(
-        $IteratorSessionIdTable.$convertermatchesIteratorSessionId,
-      );
-  @override
   List<GeneratedColumn> get $columns => [
     id,
     profileIteratorSessionId,
     automatiProfileSearchIteratorSessionId,
-    receivedLikesIteratorSessionId,
-    matchesIteratorSessionId,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -2331,22 +2302,6 @@ class $IteratorSessionIdTable extends schema.IteratorSessionId
               data['${effectivePrefix}automati_profile_search_iterator_session_id'],
             ),
           ),
-      receivedLikesIteratorSessionId: $IteratorSessionIdTable
-          .$converterreceivedLikesIteratorSessionId
-          .fromSql(
-            attachedDatabase.typeMapping.read(
-              DriftSqlType.int,
-              data['${effectivePrefix}received_likes_iterator_session_id'],
-            ),
-          ),
-      matchesIteratorSessionId: $IteratorSessionIdTable
-          .$convertermatchesIteratorSessionId
-          .fromSql(
-            attachedDatabase.typeMapping.read(
-              DriftSqlType.int,
-              data['${effectivePrefix}matches_iterator_session_id'],
-            ),
-          ),
     );
   }
 
@@ -2364,14 +2319,6 @@ class $IteratorSessionIdTable extends schema.IteratorSessionId
       const NullAwareTypeConverter.wrap(
         AutomaticProfileSearchIteratorSessionIdConverter(),
       );
-  static TypeConverter<ReceivedLikesIteratorSessionId?, int?>
-  $converterreceivedLikesIteratorSessionId = const NullAwareTypeConverter.wrap(
-    ReceivedLikesIteratorSessionIdConverter(),
-  );
-  static TypeConverter<MatchesIteratorSessionId?, int?>
-  $convertermatchesIteratorSessionId = const NullAwareTypeConverter.wrap(
-    MatchesIteratorSessionIdConverter(),
-  );
 }
 
 class IteratorSessionIdData extends DataClass
@@ -2380,14 +2327,10 @@ class IteratorSessionIdData extends DataClass
   final ProfileIteratorSessionId? profileIteratorSessionId;
   final AutomaticProfileSearchIteratorSessionId?
   automatiProfileSearchIteratorSessionId;
-  final ReceivedLikesIteratorSessionId? receivedLikesIteratorSessionId;
-  final MatchesIteratorSessionId? matchesIteratorSessionId;
   const IteratorSessionIdData({
     required this.id,
     this.profileIteratorSessionId,
     this.automatiProfileSearchIteratorSessionId,
-    this.receivedLikesIteratorSessionId,
-    this.matchesIteratorSessionId,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -2406,20 +2349,6 @@ class IteratorSessionIdData extends DataClass
             .toSql(automatiProfileSearchIteratorSessionId),
       );
     }
-    if (!nullToAbsent || receivedLikesIteratorSessionId != null) {
-      map['received_likes_iterator_session_id'] = Variable<int>(
-        $IteratorSessionIdTable.$converterreceivedLikesIteratorSessionId.toSql(
-          receivedLikesIteratorSessionId,
-        ),
-      );
-    }
-    if (!nullToAbsent || matchesIteratorSessionId != null) {
-      map['matches_iterator_session_id'] = Variable<int>(
-        $IteratorSessionIdTable.$convertermatchesIteratorSessionId.toSql(
-          matchesIteratorSessionId,
-        ),
-      );
-    }
     return map;
   }
 
@@ -2433,13 +2362,6 @@ class IteratorSessionIdData extends DataClass
           automatiProfileSearchIteratorSessionId == null && nullToAbsent
           ? const Value.absent()
           : Value(automatiProfileSearchIteratorSessionId),
-      receivedLikesIteratorSessionId:
-          receivedLikesIteratorSessionId == null && nullToAbsent
-          ? const Value.absent()
-          : Value(receivedLikesIteratorSessionId),
-      matchesIteratorSessionId: matchesIteratorSessionId == null && nullToAbsent
-          ? const Value.absent()
-          : Value(matchesIteratorSessionId),
     );
   }
 
@@ -2457,13 +2379,6 @@ class IteratorSessionIdData extends DataClass
           .fromJson<AutomaticProfileSearchIteratorSessionId?>(
             json['automatiProfileSearchIteratorSessionId'],
           ),
-      receivedLikesIteratorSessionId: serializer
-          .fromJson<ReceivedLikesIteratorSessionId?>(
-            json['receivedLikesIteratorSessionId'],
-          ),
-      matchesIteratorSessionId: serializer.fromJson<MatchesIteratorSessionId?>(
-        json['matchesIteratorSessionId'],
-      ),
     );
   }
   @override
@@ -2478,13 +2393,6 @@ class IteratorSessionIdData extends DataClass
           .toJson<AutomaticProfileSearchIteratorSessionId?>(
             automatiProfileSearchIteratorSessionId,
           ),
-      'receivedLikesIteratorSessionId': serializer
-          .toJson<ReceivedLikesIteratorSessionId?>(
-            receivedLikesIteratorSessionId,
-          ),
-      'matchesIteratorSessionId': serializer.toJson<MatchesIteratorSessionId?>(
-        matchesIteratorSessionId,
-      ),
     };
   }
 
@@ -2495,10 +2403,6 @@ class IteratorSessionIdData extends DataClass
     Value<AutomaticProfileSearchIteratorSessionId?>
         automatiProfileSearchIteratorSessionId =
         const Value.absent(),
-    Value<ReceivedLikesIteratorSessionId?> receivedLikesIteratorSessionId =
-        const Value.absent(),
-    Value<MatchesIteratorSessionId?> matchesIteratorSessionId =
-        const Value.absent(),
   }) => IteratorSessionIdData(
     id: id ?? this.id,
     profileIteratorSessionId: profileIteratorSessionId.present
@@ -2508,12 +2412,6 @@ class IteratorSessionIdData extends DataClass
         automatiProfileSearchIteratorSessionId.present
         ? automatiProfileSearchIteratorSessionId.value
         : this.automatiProfileSearchIteratorSessionId,
-    receivedLikesIteratorSessionId: receivedLikesIteratorSessionId.present
-        ? receivedLikesIteratorSessionId.value
-        : this.receivedLikesIteratorSessionId,
-    matchesIteratorSessionId: matchesIteratorSessionId.present
-        ? matchesIteratorSessionId.value
-        : this.matchesIteratorSessionId,
   );
   IteratorSessionIdData copyWithCompanion(IteratorSessionIdCompanion data) {
     return IteratorSessionIdData(
@@ -2525,13 +2423,6 @@ class IteratorSessionIdData extends DataClass
           data.automatiProfileSearchIteratorSessionId.present
           ? data.automatiProfileSearchIteratorSessionId.value
           : this.automatiProfileSearchIteratorSessionId,
-      receivedLikesIteratorSessionId:
-          data.receivedLikesIteratorSessionId.present
-          ? data.receivedLikesIteratorSessionId.value
-          : this.receivedLikesIteratorSessionId,
-      matchesIteratorSessionId: data.matchesIteratorSessionId.present
-          ? data.matchesIteratorSessionId.value
-          : this.matchesIteratorSessionId,
     );
   }
 
@@ -2541,12 +2432,8 @@ class IteratorSessionIdData extends DataClass
           ..write('id: $id, ')
           ..write('profileIteratorSessionId: $profileIteratorSessionId, ')
           ..write(
-            'automatiProfileSearchIteratorSessionId: $automatiProfileSearchIteratorSessionId, ',
+            'automatiProfileSearchIteratorSessionId: $automatiProfileSearchIteratorSessionId',
           )
-          ..write(
-            'receivedLikesIteratorSessionId: $receivedLikesIteratorSessionId, ',
-          )
-          ..write('matchesIteratorSessionId: $matchesIteratorSessionId')
           ..write(')'))
         .toString();
   }
@@ -2556,8 +2443,6 @@ class IteratorSessionIdData extends DataClass
     id,
     profileIteratorSessionId,
     automatiProfileSearchIteratorSessionId,
-    receivedLikesIteratorSessionId,
-    matchesIteratorSessionId,
   );
   @override
   bool operator ==(Object other) =>
@@ -2566,10 +2451,7 @@ class IteratorSessionIdData extends DataClass
           other.id == this.id &&
           other.profileIteratorSessionId == this.profileIteratorSessionId &&
           other.automatiProfileSearchIteratorSessionId ==
-              this.automatiProfileSearchIteratorSessionId &&
-          other.receivedLikesIteratorSessionId ==
-              this.receivedLikesIteratorSessionId &&
-          other.matchesIteratorSessionId == this.matchesIteratorSessionId);
+              this.automatiProfileSearchIteratorSessionId);
 }
 
 class IteratorSessionIdCompanion
@@ -2578,28 +2460,20 @@ class IteratorSessionIdCompanion
   final Value<ProfileIteratorSessionId?> profileIteratorSessionId;
   final Value<AutomaticProfileSearchIteratorSessionId?>
   automatiProfileSearchIteratorSessionId;
-  final Value<ReceivedLikesIteratorSessionId?> receivedLikesIteratorSessionId;
-  final Value<MatchesIteratorSessionId?> matchesIteratorSessionId;
   const IteratorSessionIdCompanion({
     this.id = const Value.absent(),
     this.profileIteratorSessionId = const Value.absent(),
     this.automatiProfileSearchIteratorSessionId = const Value.absent(),
-    this.receivedLikesIteratorSessionId = const Value.absent(),
-    this.matchesIteratorSessionId = const Value.absent(),
   });
   IteratorSessionIdCompanion.insert({
     this.id = const Value.absent(),
     this.profileIteratorSessionId = const Value.absent(),
     this.automatiProfileSearchIteratorSessionId = const Value.absent(),
-    this.receivedLikesIteratorSessionId = const Value.absent(),
-    this.matchesIteratorSessionId = const Value.absent(),
   });
   static Insertable<IteratorSessionIdData> custom({
     Expression<int>? id,
     Expression<int>? profileIteratorSessionId,
     Expression<int>? automatiProfileSearchIteratorSessionId,
-    Expression<int>? receivedLikesIteratorSessionId,
-    Expression<int>? matchesIteratorSessionId,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -2608,10 +2482,6 @@ class IteratorSessionIdCompanion
       if (automatiProfileSearchIteratorSessionId != null)
         'automati_profile_search_iterator_session_id':
             automatiProfileSearchIteratorSessionId,
-      if (receivedLikesIteratorSessionId != null)
-        'received_likes_iterator_session_id': receivedLikesIteratorSessionId,
-      if (matchesIteratorSessionId != null)
-        'matches_iterator_session_id': matchesIteratorSessionId,
     });
   }
 
@@ -2620,8 +2490,6 @@ class IteratorSessionIdCompanion
     Value<ProfileIteratorSessionId?>? profileIteratorSessionId,
     Value<AutomaticProfileSearchIteratorSessionId?>?
     automatiProfileSearchIteratorSessionId,
-    Value<ReceivedLikesIteratorSessionId?>? receivedLikesIteratorSessionId,
-    Value<MatchesIteratorSessionId?>? matchesIteratorSessionId,
   }) {
     return IteratorSessionIdCompanion(
       id: id ?? this.id,
@@ -2630,10 +2498,6 @@ class IteratorSessionIdCompanion
       automatiProfileSearchIteratorSessionId:
           automatiProfileSearchIteratorSessionId ??
           this.automatiProfileSearchIteratorSessionId,
-      receivedLikesIteratorSessionId:
-          receivedLikesIteratorSessionId ?? this.receivedLikesIteratorSessionId,
-      matchesIteratorSessionId:
-          matchesIteratorSessionId ?? this.matchesIteratorSessionId,
     );
   }
 
@@ -2656,20 +2520,6 @@ class IteratorSessionIdCompanion
             .toSql(automatiProfileSearchIteratorSessionId.value),
       );
     }
-    if (receivedLikesIteratorSessionId.present) {
-      map['received_likes_iterator_session_id'] = Variable<int>(
-        $IteratorSessionIdTable.$converterreceivedLikesIteratorSessionId.toSql(
-          receivedLikesIteratorSessionId.value,
-        ),
-      );
-    }
-    if (matchesIteratorSessionId.present) {
-      map['matches_iterator_session_id'] = Variable<int>(
-        $IteratorSessionIdTable.$convertermatchesIteratorSessionId.toSql(
-          matchesIteratorSessionId.value,
-        ),
-      );
-    }
     return map;
   }
 
@@ -2679,12 +2529,324 @@ class IteratorSessionIdCompanion
           ..write('id: $id, ')
           ..write('profileIteratorSessionId: $profileIteratorSessionId, ')
           ..write(
-            'automatiProfileSearchIteratorSessionId: $automatiProfileSearchIteratorSessionId, ',
+            'automatiProfileSearchIteratorSessionId: $automatiProfileSearchIteratorSessionId',
           )
-          ..write(
-            'receivedLikesIteratorSessionId: $receivedLikesIteratorSessionId, ',
-          )
-          ..write('matchesIteratorSessionId: $matchesIteratorSessionId')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $IteratorStateTable extends schema.IteratorState
+    with TableInfo<$IteratorStateTable, IteratorStateData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $IteratorStateTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<
+    JsonObject<ReceivedLikesIteratorState>?,
+    String
+  >
+  receivedLikesIteratorState =
+      GeneratedColumn<String>(
+        'received_likes_iterator_state',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      ).withConverter<JsonObject<ReceivedLikesIteratorState>?>(
+        $IteratorStateTable.$converterreceivedLikesIteratorState,
+      );
+  @override
+  late final GeneratedColumnWithTypeConverter<
+    JsonObject<MatchesIteratorState>?,
+    String
+  >
+  matchesIteratorState =
+      GeneratedColumn<String>(
+        'matches_iterator_state',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      ).withConverter<JsonObject<MatchesIteratorState>?>(
+        $IteratorStateTable.$convertermatchesIteratorState,
+      );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    receivedLikesIteratorState,
+    matchesIteratorState,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'iterator_state';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<IteratorStateData> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  IteratorStateData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return IteratorStateData(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      receivedLikesIteratorState: $IteratorStateTable
+          .$converterreceivedLikesIteratorState
+          .fromSql(
+            attachedDatabase.typeMapping.read(
+              DriftSqlType.string,
+              data['${effectivePrefix}received_likes_iterator_state'],
+            ),
+          ),
+      matchesIteratorState: $IteratorStateTable.$convertermatchesIteratorState
+          .fromSql(
+            attachedDatabase.typeMapping.read(
+              DriftSqlType.string,
+              data['${effectivePrefix}matches_iterator_state'],
+            ),
+          ),
+    );
+  }
+
+  @override
+  $IteratorStateTable createAlias(String alias) {
+    return $IteratorStateTable(attachedDatabase, alias);
+  }
+
+  static TypeConverter<JsonObject<ReceivedLikesIteratorState>?, String?>
+  $converterreceivedLikesIteratorState = const NullAwareTypeConverter.wrap(
+    ReceivedLikesIteratorStateConverter(),
+  );
+  static TypeConverter<JsonObject<MatchesIteratorState>?, String?>
+  $convertermatchesIteratorState = const NullAwareTypeConverter.wrap(
+    MatchesIteratorStateConverter(),
+  );
+}
+
+class IteratorStateData extends DataClass
+    implements Insertable<IteratorStateData> {
+  final int id;
+  final JsonObject<ReceivedLikesIteratorState>? receivedLikesIteratorState;
+  final JsonObject<MatchesIteratorState>? matchesIteratorState;
+  const IteratorStateData({
+    required this.id,
+    this.receivedLikesIteratorState,
+    this.matchesIteratorState,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    if (!nullToAbsent || receivedLikesIteratorState != null) {
+      map['received_likes_iterator_state'] = Variable<String>(
+        $IteratorStateTable.$converterreceivedLikesIteratorState.toSql(
+          receivedLikesIteratorState,
+        ),
+      );
+    }
+    if (!nullToAbsent || matchesIteratorState != null) {
+      map['matches_iterator_state'] = Variable<String>(
+        $IteratorStateTable.$convertermatchesIteratorState.toSql(
+          matchesIteratorState,
+        ),
+      );
+    }
+    return map;
+  }
+
+  IteratorStateCompanion toCompanion(bool nullToAbsent) {
+    return IteratorStateCompanion(
+      id: Value(id),
+      receivedLikesIteratorState:
+          receivedLikesIteratorState == null && nullToAbsent
+          ? const Value.absent()
+          : Value(receivedLikesIteratorState),
+      matchesIteratorState: matchesIteratorState == null && nullToAbsent
+          ? const Value.absent()
+          : Value(matchesIteratorState),
+    );
+  }
+
+  factory IteratorStateData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return IteratorStateData(
+      id: serializer.fromJson<int>(json['id']),
+      receivedLikesIteratorState: serializer
+          .fromJson<JsonObject<ReceivedLikesIteratorState>?>(
+            json['receivedLikesIteratorState'],
+          ),
+      matchesIteratorState: serializer
+          .fromJson<JsonObject<MatchesIteratorState>?>(
+            json['matchesIteratorState'],
+          ),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'receivedLikesIteratorState': serializer
+          .toJson<JsonObject<ReceivedLikesIteratorState>?>(
+            receivedLikesIteratorState,
+          ),
+      'matchesIteratorState': serializer
+          .toJson<JsonObject<MatchesIteratorState>?>(matchesIteratorState),
+    };
+  }
+
+  IteratorStateData copyWith({
+    int? id,
+    Value<JsonObject<ReceivedLikesIteratorState>?> receivedLikesIteratorState =
+        const Value.absent(),
+    Value<JsonObject<MatchesIteratorState>?> matchesIteratorState =
+        const Value.absent(),
+  }) => IteratorStateData(
+    id: id ?? this.id,
+    receivedLikesIteratorState: receivedLikesIteratorState.present
+        ? receivedLikesIteratorState.value
+        : this.receivedLikesIteratorState,
+    matchesIteratorState: matchesIteratorState.present
+        ? matchesIteratorState.value
+        : this.matchesIteratorState,
+  );
+  IteratorStateData copyWithCompanion(IteratorStateCompanion data) {
+    return IteratorStateData(
+      id: data.id.present ? data.id.value : this.id,
+      receivedLikesIteratorState: data.receivedLikesIteratorState.present
+          ? data.receivedLikesIteratorState.value
+          : this.receivedLikesIteratorState,
+      matchesIteratorState: data.matchesIteratorState.present
+          ? data.matchesIteratorState.value
+          : this.matchesIteratorState,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('IteratorStateData(')
+          ..write('id: $id, ')
+          ..write('receivedLikesIteratorState: $receivedLikesIteratorState, ')
+          ..write('matchesIteratorState: $matchesIteratorState')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(id, receivedLikesIteratorState, matchesIteratorState);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is IteratorStateData &&
+          other.id == this.id &&
+          other.receivedLikesIteratorState == this.receivedLikesIteratorState &&
+          other.matchesIteratorState == this.matchesIteratorState);
+}
+
+class IteratorStateCompanion extends UpdateCompanion<IteratorStateData> {
+  final Value<int> id;
+  final Value<JsonObject<ReceivedLikesIteratorState>?>
+  receivedLikesIteratorState;
+  final Value<JsonObject<MatchesIteratorState>?> matchesIteratorState;
+  const IteratorStateCompanion({
+    this.id = const Value.absent(),
+    this.receivedLikesIteratorState = const Value.absent(),
+    this.matchesIteratorState = const Value.absent(),
+  });
+  IteratorStateCompanion.insert({
+    this.id = const Value.absent(),
+    this.receivedLikesIteratorState = const Value.absent(),
+    this.matchesIteratorState = const Value.absent(),
+  });
+  static Insertable<IteratorStateData> custom({
+    Expression<int>? id,
+    Expression<String>? receivedLikesIteratorState,
+    Expression<String>? matchesIteratorState,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (receivedLikesIteratorState != null)
+        'received_likes_iterator_state': receivedLikesIteratorState,
+      if (matchesIteratorState != null)
+        'matches_iterator_state': matchesIteratorState,
+    });
+  }
+
+  IteratorStateCompanion copyWith({
+    Value<int>? id,
+    Value<JsonObject<ReceivedLikesIteratorState>?>? receivedLikesIteratorState,
+    Value<JsonObject<MatchesIteratorState>?>? matchesIteratorState,
+  }) {
+    return IteratorStateCompanion(
+      id: id ?? this.id,
+      receivedLikesIteratorState:
+          receivedLikesIteratorState ?? this.receivedLikesIteratorState,
+      matchesIteratorState: matchesIteratorState ?? this.matchesIteratorState,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (receivedLikesIteratorState.present) {
+      map['received_likes_iterator_state'] = Variable<String>(
+        $IteratorStateTable.$converterreceivedLikesIteratorState.toSql(
+          receivedLikesIteratorState.value,
+        ),
+      );
+    }
+    if (matchesIteratorState.present) {
+      map['matches_iterator_state'] = Variable<String>(
+        $IteratorStateTable.$convertermatchesIteratorState.toSql(
+          matchesIteratorState.value,
+        ),
+      );
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('IteratorStateCompanion(')
+          ..write('id: $id, ')
+          ..write('receivedLikesIteratorState: $receivedLikesIteratorState, ')
+          ..write('matchesIteratorState: $matchesIteratorState')
           ..write(')'))
         .toString();
   }
@@ -13285,6 +13447,7 @@ abstract class _$AccountForegroundDatabase extends GeneratedDatabase {
   late final $SyncVersionTable syncVersion = $SyncVersionTable(this);
   late final $IteratorSessionIdTable iteratorSessionId =
       $IteratorSessionIdTable(this);
+  late final $IteratorStateTable iteratorState = $IteratorStateTable(this);
   late final $ClientFeaturesConfigTable clientFeaturesConfig =
       $ClientFeaturesConfigTable(this);
   late final $CustomReportsConfigTable customReportsConfig =
@@ -13428,6 +13591,7 @@ abstract class _$AccountForegroundDatabase extends GeneratedDatabase {
     serverMaintenance,
     syncVersion,
     iteratorSessionId,
+    iteratorState,
     clientFeaturesConfig,
     customReportsConfig,
     profileAttributesConfig,

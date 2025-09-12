@@ -251,7 +251,7 @@ class ReceivedLikesOnlineIteratorIo extends OnlineIteratorIo {
   final AccountBackgroundDatabaseManager accountBackgroundDb;
   final ApiManager api;
   IteratorType? iteratorValue;
-  ReceivedLikesIteratorSessionId? currentSessionId;
+  ReceivedLikesIteratorState? currentState;
 
   ReceivedLikesOnlineIteratorIo(this.db, this.accountBackgroundDb, this.api);
 
@@ -278,7 +278,7 @@ class ReceivedLikesOnlineIteratorIo extends OnlineIteratorIo {
         await db.accountAction(
           (db) => db.profile.setReceivedLikeGridStatusList(null, false, clear: true),
         );
-        await db.accountAction((db) => db.common.updateReceivedLikesIteratorSessionId(v.s));
+        await db.accountAction((db) => db.common.updateReceivedLikesIteratorState(v.s));
         return const Ok(());
       case Err():
         return const Err(());
@@ -287,10 +287,10 @@ class ReceivedLikesOnlineIteratorIo extends OnlineIteratorIo {
 
   @override
   Future<bool> loadIteratorSessionIdFromDbAndReturnTrueIfItExists() async {
-    currentSessionId = await db
-        .accountStreamSingle((db) => db.common.watchReceivedLikesSessionId())
+    currentState = await db
+        .accountStreamSingle((db) => db.common.watchReceivedLikesIteratorState())
         .ok();
-    if (currentSessionId == null) {
+    if (currentState == null) {
       return false;
     } else {
       return true;
@@ -299,20 +299,19 @@ class ReceivedLikesOnlineIteratorIo extends OnlineIteratorIo {
 
   @override
   Future<Result<IteratorPage, ()>> nextServerPage() async {
-    final sessionId = currentSessionId;
-    if (sessionId == null) {
+    final state = currentState;
+    if (state == null) {
       return const Err(());
     }
-    return await api
-        .chat((api) => api.postGetNextReceivedLikesPage(sessionId))
-        .mapOk(
-          (value) => IteratorPage(
-            value.p,
-            errorInvalidIteratorSessionId: value.errorInvalidIteratorSessionId,
-            basicProfilesNewLikesCount: value.n.c,
-          ),
-        )
+    final r = await api
+        .chat((api) => api.postGetReceivedLikesPage(state))
+        .mapOk((value) => IteratorPage(value.p, basicProfilesNewLikesCount: value.n.c))
         .emptyErr();
+    if (r.isOk()) {
+      state.page += 1;
+      await db.accountAction((db) => db.common.updateReceivedLikesIteratorState(state));
+    }
+    return r;
   }
 
   @override
@@ -326,7 +325,7 @@ class MatchesOnlineIteratorIo extends OnlineIteratorIo {
   final AccountDatabaseManager db;
   final ApiManager api;
   IteratorType? iteratorValue;
-  MatchesIteratorSessionId? currentSessionId;
+  MatchesIteratorState? currentState;
 
   MatchesOnlineIteratorIo(this.db, this.api);
 
@@ -345,12 +344,12 @@ class MatchesOnlineIteratorIo extends OnlineIteratorIo {
 
   @override
   Future<Result<(), ()>> resetServerPaging() async {
-    switch (await api.chat((api) => api.postResetMatchesPaging())) {
+    switch (await api.chat((api) => api.getInitialMatchesIteratorState())) {
       case Ok(:final v):
         await db.accountAction(
           (db) => db.profile.setMatchesGridStatusList(null, false, clear: true),
         );
-        await db.accountAction((db) => db.common.updateMatchesIteratorSessionId(v.s));
+        await db.accountAction((db) => db.common.updateMatchesIteratorState(v));
         return const Ok(());
       case Err():
         return const Err(());
@@ -359,8 +358,8 @@ class MatchesOnlineIteratorIo extends OnlineIteratorIo {
 
   @override
   Future<bool> loadIteratorSessionIdFromDbAndReturnTrueIfItExists() async {
-    currentSessionId = await db.accountStreamSingle((db) => db.common.watchMatchesSessionId()).ok();
-    if (currentSessionId == null) {
+    currentState = await db.accountStreamSingle((db) => db.common.watchMatchesIteratorState()).ok();
+    if (currentState == null) {
       return false;
     } else {
       return true;
@@ -369,19 +368,19 @@ class MatchesOnlineIteratorIo extends OnlineIteratorIo {
 
   @override
   Future<Result<IteratorPage, ()>> nextServerPage() async {
-    final sessionId = currentSessionId;
-    if (sessionId == null) {
+    final state = currentState;
+    if (state == null) {
       return const Err(());
     }
-    return await api
-        .chat((api) => api.postGetNextMatchesPage(sessionId))
-        .mapOk(
-          (value) => IteratorPage(
-            value.p,
-            errorInvalidIteratorSessionId: value.errorInvalidIteratorSessionId,
-          ),
-        )
+    final r = await api
+        .chat((api) => api.postGetMatchesIteratorPage(state))
+        .mapOk((value) => IteratorPage(value.p))
         .emptyErr();
+    if (r.isOk()) {
+      state.page += 1;
+      await db.accountAction((db) => db.common.updateMatchesIteratorState(state));
+    }
+    return r;
   }
 
   @override

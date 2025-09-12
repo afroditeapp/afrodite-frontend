@@ -276,16 +276,8 @@ class AccountRepository extends DataRepositoryWithLifecycle {
   }
 
   Future<Result<(), ()>> handleServerMaintenanceStatusEvent(ScheduledMaintenanceStatus event) {
-    // Workaroud OpenAPI generator bug
-    final UnixTime? time;
-    final timeRaw = event.scheduledMaintenance?.ut;
-    if (timeRaw != null) {
-      time = UnixTime(ut: timeRaw);
-    } else {
-      time = null;
-    }
     return db
-        .accountAction((db) => db.common.setMaintenanceTime(time: time?.toUtcDateTime()))
+        .accountAction((db) => db.common.setMaintenanceTime(time: event.start?.toUtcDateTime()))
         .emptyErr();
   }
 

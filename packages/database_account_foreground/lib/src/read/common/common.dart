@@ -13,6 +13,7 @@ part 'common.g.dart';
     schema.ServerMaintenance,
     schema.SyncVersion,
     schema.IteratorSessionId,
+    schema.IteratorState,
     schema.ClientLanguageOnServer,
   ],
 )
@@ -47,17 +48,25 @@ class DaoReadCommon extends DatabaseAccessor<AccountForegroundDatabase> with _$D
   Stream<api.AutomaticProfileSearchIteratorSessionId?> watchAutomaticProfileSearchSessionId() =>
       _watchColumnIteratorSessionId((r) => r.automatiProfileSearchIteratorSessionId);
 
-  Stream<api.ReceivedLikesIteratorSessionId?> watchReceivedLikesSessionId() =>
-      _watchColumnIteratorSessionId((r) => r.receivedLikesIteratorSessionId);
-
-  Stream<api.MatchesIteratorSessionId?> watchMatchesSessionId() =>
-      _watchColumnIteratorSessionId((r) => r.matchesIteratorSessionId);
-
   Stream<T?> _watchColumnIteratorSessionId<T extends Object>(
     T? Function(IteratorSessionIdData) extractColumn,
   ) {
     return (select(
       iteratorSessionId,
+    )..where((t) => t.id.equals(SingleRowTable.ID.value))).map(extractColumn).watchSingleOrNull();
+  }
+
+  Stream<api.ReceivedLikesIteratorState?> watchReceivedLikesIteratorState() =>
+      _watchColumnIteratorState((r) => r.receivedLikesIteratorState?.value);
+
+  Stream<api.MatchesIteratorState?> watchMatchesIteratorState() =>
+      _watchColumnIteratorState((r) => r.matchesIteratorState?.value);
+
+  Stream<T?> _watchColumnIteratorState<T extends Object>(
+    T? Function(IteratorStateData) extractColumn,
+  ) {
+    return (select(
+      iteratorState,
     )..where((t) => t.id.equals(SingleRowTable.ID.value))).map(extractColumn).watchSingleOrNull();
   }
 

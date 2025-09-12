@@ -152,6 +152,36 @@ class AutomaticProfileSearchSettingsConverter
   }
 }
 
+class ReceivedLikesIteratorStateConverter
+    extends TypeConverter<JsonObject<ReceivedLikesIteratorState>, String> {
+  const ReceivedLikesIteratorStateConverter();
+
+  @override
+  JsonObject<ReceivedLikesIteratorState> fromSql(fromDb) {
+    return JsonObject._(ReceivedLikesIteratorState.fromJson(jsonDecode(fromDb)));
+  }
+
+  @override
+  String toSql(value) {
+    return jsonEncode(value.value?.toJson());
+  }
+}
+
+class MatchesIteratorStateConverter
+    extends TypeConverter<JsonObject<MatchesIteratorState>, String> {
+  const MatchesIteratorStateConverter();
+
+  @override
+  JsonObject<MatchesIteratorState> fromSql(fromDb) {
+    return JsonObject._(MatchesIteratorState.fromJson(jsonDecode(fromDb)));
+  }
+
+  @override
+  String toSql(value) {
+    return jsonEncode(value.value?.toJson());
+  }
+}
+
 extension NotificationStatusJson on NotificationStatus {
   JsonObject<NotificationStatus> toJsonObject() {
     return JsonObject._(this);
@@ -208,6 +238,18 @@ extension ClientFeaturesConfigJson on ClientFeaturesConfig {
 
 extension AutomaticProfileSearchSettingsJson on AutomaticProfileSearchSettings {
   JsonObject<AutomaticProfileSearchSettings> toJsonObject() {
+    return JsonObject._(this);
+  }
+}
+
+extension ReceivedLikesIteratorStateJson on ReceivedLikesIteratorState {
+  JsonObject<ReceivedLikesIteratorState> toJsonObject() {
+    return JsonObject._(this);
+  }
+}
+
+extension MatchesIteratorStateJson on MatchesIteratorState {
+  JsonObject<MatchesIteratorState> toJsonObject() {
     return JsonObject._(this);
   }
 }

@@ -66,7 +66,7 @@ class NewsListScreenState extends State<NewsListScreen> {
   final ScrollController _scrollController = ScrollController();
   PagingState<int, NewsViewEntry> _pagingState = PagingState();
 
-  NewsIteratorSessionId? _sessionId;
+  NewsIteratorState? _state;
 
   bool isDisposed = false;
 
@@ -111,7 +111,7 @@ class NewsListScreenState extends State<NewsListScreen> {
         showLoadingError();
         return;
       }
-      _sessionId = r.s;
+      _state = r.s;
       final dbResult = await widget.accountBackgroundDb.accountAction(
         (db) => db.news.setUnreadNewsCount(version: r.v, unreadNewsCount: r.c),
       );
@@ -121,19 +121,18 @@ class NewsListScreenState extends State<NewsListScreen> {
       }
     }
 
-    final sessionId = _sessionId;
-    if (sessionId == null) {
+    final state = _state;
+    if (state == null) {
       showLoadingError();
       return;
     }
 
-    final news = await widget.api
-        .account((api) => api.postGetNextNewsPage(widget.locale, sessionId))
-        .ok();
-    if (news == null || news.errorInvalidIteratorSessionId) {
+    final news = await widget.api.account((api) => api.postGetNewsPage(widget.locale, state)).ok();
+    if (news == null) {
       showLoadingError();
       return;
     }
+    state.page += 1;
 
     final newList = List<NewsViewEntry>.empty(growable: true);
     for (final newsItem in news.news) {

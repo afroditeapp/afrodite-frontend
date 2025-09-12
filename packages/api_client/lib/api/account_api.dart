@@ -975,6 +975,59 @@ class AccountApi {
     return null;
   }
 
+  /// Performs an HTTP 'POST /account_api/news_page' operation and returns the [Response].
+  /// Parameters:
+  ///
+  /// * [String] locale (required):
+  ///
+  /// * [NewsIteratorState] newsIteratorState (required):
+  Future<Response> postGetNewsPageWithHttpInfo(String locale, NewsIteratorState newsIteratorState,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/account_api/news_page';
+
+    // ignore: prefer_final_locals
+    Object? postBody = newsIteratorState;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+      queryParams.addAll(_queryParams('', 'locale', locale));
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Parameters:
+  ///
+  /// * [String] locale (required):
+  ///
+  /// * [NewsIteratorState] newsIteratorState (required):
+  Future<NewsPage?> postGetNewsPage(String locale, NewsIteratorState newsIteratorState,) async {
+    final response = await postGetNewsPageWithHttpInfo(locale, newsIteratorState,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'NewsPage',) as NewsPage;
+    
+    }
+    return null;
+  }
+
   /// Performs an HTTP 'POST /account_api/next_client_id' operation and returns the [Response].
   Future<Response> postGetNextClientIdWithHttpInfo() async {
     // ignore: prefer_const_declarations
@@ -1011,59 +1064,6 @@ class AccountApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'ClientId',) as ClientId;
-    
-    }
-    return null;
-  }
-
-  /// Performs an HTTP 'POST /account_api/next_news_page' operation and returns the [Response].
-  /// Parameters:
-  ///
-  /// * [String] locale (required):
-  ///
-  /// * [NewsIteratorSessionId] newsIteratorSessionId (required):
-  Future<Response> postGetNextNewsPageWithHttpInfo(String locale, NewsIteratorSessionId newsIteratorSessionId,) async {
-    // ignore: prefer_const_declarations
-    final path = r'/account_api/next_news_page';
-
-    // ignore: prefer_final_locals
-    Object? postBody = newsIteratorSessionId;
-
-    final queryParams = <QueryParam>[];
-    final headerParams = <String, String>{};
-    final formParams = <String, String>{};
-
-      queryParams.addAll(_queryParams('', 'locale', locale));
-
-    const contentTypes = <String>['application/json'];
-
-
-    return apiClient.invokeAPI(
-      path,
-      'POST',
-      queryParams,
-      postBody,
-      headerParams,
-      formParams,
-      contentTypes.isEmpty ? null : contentTypes.first,
-    );
-  }
-
-  /// Parameters:
-  ///
-  /// * [String] locale (required):
-  ///
-  /// * [NewsIteratorSessionId] newsIteratorSessionId (required):
-  Future<NewsPage?> postGetNextNewsPage(String locale, NewsIteratorSessionId newsIteratorSessionId,) async {
-    final response = await postGetNextNewsPageWithHttpInfo(locale, newsIteratorSessionId,);
-    if (response.statusCode >= HttpStatus.badRequest) {
-      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
-    }
-    // When a remote server returns no body with a status of 204, we shall not decode it.
-    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
-    // FormatException when trying to decode an empty string.
-    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'NewsPage',) as NewsPage;
     
     }
     return null;
@@ -1240,7 +1240,9 @@ class AccountApi {
     }
   }
 
-  /// Start new session with sign in with Apple or Google. Creates new account if it does not exists.
+  /// Start new session with sign in with Apple or Google.
+  ///
+  /// Registers new account if it does not exists. That can be disabled using [SignInWithLoginInfo::disable_registering].
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -1272,7 +1274,9 @@ class AccountApi {
     );
   }
 
-  /// Start new session with sign in with Apple or Google. Creates new account if it does not exists.
+  /// Start new session with sign in with Apple or Google.
+  ///
+  /// Registers new account if it does not exists. That can be disabled using [SignInWithLoginInfo::disable_registering].
   ///
   /// Parameters:
   ///

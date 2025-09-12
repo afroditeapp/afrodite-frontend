@@ -16,35 +16,6 @@ class MessageIdConverter extends TypeConverter<MessageId, int> {
   }
 }
 
-class ReceivedLikesIteratorSessionIdConverter
-    extends TypeConverter<ReceivedLikesIteratorSessionId, int> {
-  const ReceivedLikesIteratorSessionIdConverter();
-
-  @override
-  ReceivedLikesIteratorSessionId fromSql(fromDb) {
-    return ReceivedLikesIteratorSessionId(id: fromDb);
-  }
-
-  @override
-  int toSql(value) {
-    return value.id;
-  }
-}
-
-class MatchesIteratorSessionIdConverter extends TypeConverter<MatchesIteratorSessionId, int> {
-  const MatchesIteratorSessionIdConverter();
-
-  @override
-  MatchesIteratorSessionId fromSql(fromDb) {
-    return MatchesIteratorSessionId(id: fromDb);
-  }
-
-  @override
-  int toSql(value) {
-    return value.id;
-  }
-}
-
 class PublicKeyIdConverter extends TypeConverter<PublicKeyId, int> {
   const PublicKeyIdConverter();
 

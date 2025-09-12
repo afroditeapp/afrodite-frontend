@@ -466,8 +466,10 @@ class ApiClient {
           return MapCoordinate.fromJson(value);
         case 'MapZoom':
           return MapZoom.fromJson(value);
-        case 'MatchesIteratorSessionId':
-          return MatchesIteratorSessionId.fromJson(value);
+        case 'MatchId':
+          return MatchId.fromJson(value);
+        case 'MatchesIteratorState':
+          return MatchesIteratorState.fromJson(value);
         case 'MatchesPage':
           return MatchesPage.fromJson(value);
         case 'MaxDistanceKm':
@@ -512,8 +514,8 @@ class ApiClient {
           return NewsItem.fromJson(value);
         case 'NewsItemSimple':
           return NewsItemSimple.fromJson(value);
-        case 'NewsIteratorSessionId':
-          return NewsIteratorSessionId.fromJson(value);
+        case 'NewsIteratorState':
+          return NewsIteratorState.fromJson(value);
         case 'NewsPage':
           return NewsPage.fromJson(value);
         case 'NewsSyncVersion':
@@ -638,8 +640,12 @@ class ApiClient {
           return ProfileVisibilityTypeTransformer().decode(value);
         case 'PublicKeyId':
           return PublicKeyId.fromJson(value);
-        case 'ReceivedLikesIteratorSessionId':
-          return ReceivedLikesIteratorSessionId.fromJson(value);
+        case 'PublicationId':
+          return PublicationId.fromJson(value);
+        case 'ReceivedLikeId':
+          return ReceivedLikeId.fromJson(value);
+        case 'ReceivedLikesIteratorState':
+          return ReceivedLikesIteratorState.fromJson(value);
         case 'ReceivedLikesPage':
           return ReceivedLikesPage.fromJson(value);
         case 'ReceivedLikesSyncVersion':
@@ -670,8 +676,6 @@ class ApiClient {
           return ReportProcessingStateTypeTransformer().decode(value);
         case 'ReportTypeNumber':
           return ReportTypeNumber.fromJson(value);
-        case 'ResetMatchesIteratorResult':
-          return ResetMatchesIteratorResult.fromJson(value);
         case 'ResetNewsIteratorResult':
           return ResetNewsIteratorResult.fromJson(value);
         case 'ResetReceivedLikesIteratorResult':

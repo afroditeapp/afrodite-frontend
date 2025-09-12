@@ -13,29 +13,40 @@ part of openapi.api;
 class ScheduledMaintenanceStatus {
   /// Returns a new [ScheduledMaintenanceStatus] instance.
   ScheduledMaintenanceStatus({
-    this.scheduledMaintenance,
+    this.end,
+    this.start,
   });
 
-  UnixTime? scheduledMaintenance;
+  UnixTime? end;
+
+  /// If None, ignore [Self::end].
+  UnixTime? start;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is ScheduledMaintenanceStatus &&
-    other.scheduledMaintenance == scheduledMaintenance;
+    other.end == end &&
+    other.start == start;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (scheduledMaintenance == null ? 0 : scheduledMaintenance!.hashCode);
+    (end == null ? 0 : end!.hashCode) +
+    (start == null ? 0 : start!.hashCode);
 
   @override
-  String toString() => 'ScheduledMaintenanceStatus[scheduledMaintenance=$scheduledMaintenance]';
+  String toString() => 'ScheduledMaintenanceStatus[end=$end, start=$start]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-    if (this.scheduledMaintenance != null) {
-      json[r'scheduled_maintenance'] = this.scheduledMaintenance;
+    if (this.end != null) {
+      json[r'end'] = this.end;
     } else {
-      json[r'scheduled_maintenance'] = null;
+      json[r'end'] = null;
+    }
+    if (this.start != null) {
+      json[r'start'] = this.start;
+    } else {
+      json[r'start'] = null;
     }
     return json;
   }
@@ -59,7 +70,8 @@ class ScheduledMaintenanceStatus {
       }());
 
       return ScheduledMaintenanceStatus(
-        scheduledMaintenance: UnixTime.fromJson(json[r'scheduled_maintenance']),
+        end: UnixTime.fromJson(json[r'end']),
+        start: UnixTime.fromJson(json[r'start']),
       );
     }
     return null;

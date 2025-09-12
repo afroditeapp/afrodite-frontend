@@ -214,6 +214,47 @@ class ChatApi {
     return null;
   }
 
+  /// Performs an HTTP 'GET /chat_api/matches/initial_state' operation and returns the [Response].
+  Future<Response> getInitialMatchesIteratorStateWithHttpInfo() async {
+    // ignore: prefer_const_declarations
+    final path = r'/chat_api/matches/initial_state';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  Future<MatchesIteratorState?> getInitialMatchesIteratorState() async {
+    final response = await getInitialMatchesIteratorStateWithHttpInfo();
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'MatchesIteratorState',) as MatchesIteratorState;
+    
+    }
+    return null;
+  }
+
   /// Get latest public key ID for some account
   ///
   /// Note: This method returns the HTTP [Response].
@@ -847,6 +888,58 @@ class ChatApi {
     return null;
   }
 
+  /// Get requested page of matches iterator page. If the page is empty there is no more matches available.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [MatchesIteratorState] matchesIteratorState (required):
+  Future<Response> postGetMatchesIteratorPageWithHttpInfo(MatchesIteratorState matchesIteratorState,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/chat_api/matches';
+
+    // ignore: prefer_final_locals
+    Object? postBody = matchesIteratorState;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Get requested page of matches iterator page. If the page is empty there is no more matches available.
+  ///
+  /// Parameters:
+  ///
+  /// * [MatchesIteratorState] matchesIteratorState (required):
+  Future<MatchesPage?> postGetMatchesIteratorPage(MatchesIteratorState matchesIteratorState,) async {
+    final response = await postGetMatchesIteratorPageWithHttpInfo(matchesIteratorState,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'MatchesPage',) as MatchesPage;
+    
+    }
+    return null;
+  }
+
   /// Performs an HTTP 'POST /chat_api/new_received_likes_count' operation and returns the [Response].
   Future<Response> postGetNewReceivedLikesCountWithHttpInfo() async {
     // ignore: prefer_const_declarations
@@ -888,59 +981,7 @@ class ChatApi {
     return null;
   }
 
-  /// Update matches iterator and get next page of matches. If the page is empty there is no more matches available.
-  ///
-  /// Note: This method returns the HTTP [Response].
-  ///
-  /// Parameters:
-  ///
-  /// * [MatchesIteratorSessionId] matchesIteratorSessionId (required):
-  Future<Response> postGetNextMatchesPageWithHttpInfo(MatchesIteratorSessionId matchesIteratorSessionId,) async {
-    // ignore: prefer_const_declarations
-    final path = r'/chat_api/matches_page';
-
-    // ignore: prefer_final_locals
-    Object? postBody = matchesIteratorSessionId;
-
-    final queryParams = <QueryParam>[];
-    final headerParams = <String, String>{};
-    final formParams = <String, String>{};
-
-    const contentTypes = <String>['application/json'];
-
-
-    return apiClient.invokeAPI(
-      path,
-      'POST',
-      queryParams,
-      postBody,
-      headerParams,
-      formParams,
-      contentTypes.isEmpty ? null : contentTypes.first,
-    );
-  }
-
-  /// Update matches iterator and get next page of matches. If the page is empty there is no more matches available.
-  ///
-  /// Parameters:
-  ///
-  /// * [MatchesIteratorSessionId] matchesIteratorSessionId (required):
-  Future<MatchesPage?> postGetNextMatchesPage(MatchesIteratorSessionId matchesIteratorSessionId,) async {
-    final response = await postGetNextMatchesPageWithHttpInfo(matchesIteratorSessionId,);
-    if (response.statusCode >= HttpStatus.badRequest) {
-      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
-    }
-    // When a remote server returns no body with a status of 204, we shall not decode it.
-    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
-    // FormatException when trying to decode an empty string.
-    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'MatchesPage',) as MatchesPage;
-    
-    }
-    return null;
-  }
-
-  /// Update received likes iterator and get next page of received likes. If the page is empty there is no more received likes available.
+  /// Get next page of received likes. If the page is empty there is no more received likes available.
   ///
   /// Profile will not be returned if: - Profile is blocked - Profile is a match
   ///
@@ -948,13 +989,13 @@ class ChatApi {
   ///
   /// Parameters:
   ///
-  /// * [ReceivedLikesIteratorSessionId] receivedLikesIteratorSessionId (required):
-  Future<Response> postGetNextReceivedLikesPageWithHttpInfo(ReceivedLikesIteratorSessionId receivedLikesIteratorSessionId,) async {
+  /// * [ReceivedLikesIteratorState] receivedLikesIteratorState (required):
+  Future<Response> postGetReceivedLikesPageWithHttpInfo(ReceivedLikesIteratorState receivedLikesIteratorState,) async {
     // ignore: prefer_const_declarations
     final path = r'/chat_api/received_likes';
 
     // ignore: prefer_final_locals
-    Object? postBody = receivedLikesIteratorSessionId;
+    Object? postBody = receivedLikesIteratorState;
 
     final queryParams = <QueryParam>[];
     final headerParams = <String, String>{};
@@ -974,15 +1015,15 @@ class ChatApi {
     );
   }
 
-  /// Update received likes iterator and get next page of received likes. If the page is empty there is no more received likes available.
+  /// Get next page of received likes. If the page is empty there is no more received likes available.
   ///
   /// Profile will not be returned if: - Profile is blocked - Profile is a match
   ///
   /// Parameters:
   ///
-  /// * [ReceivedLikesIteratorSessionId] receivedLikesIteratorSessionId (required):
-  Future<ReceivedLikesPage?> postGetNextReceivedLikesPage(ReceivedLikesIteratorSessionId receivedLikesIteratorSessionId,) async {
-    final response = await postGetNextReceivedLikesPageWithHttpInfo(receivedLikesIteratorSessionId,);
+  /// * [ReceivedLikesIteratorState] receivedLikesIteratorState (required):
+  Future<ReceivedLikesPage?> postGetReceivedLikesPage(ReceivedLikesIteratorState receivedLikesIteratorState,) async {
+    final response = await postGetReceivedLikesPageWithHttpInfo(receivedLikesIteratorState,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -1047,47 +1088,6 @@ class ChatApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetSentMessage',) as GetSentMessage;
-    
-    }
-    return null;
-  }
-
-  /// Performs an HTTP 'POST /chat_api/matches/reset' operation and returns the [Response].
-  Future<Response> postResetMatchesPagingWithHttpInfo() async {
-    // ignore: prefer_const_declarations
-    final path = r'/chat_api/matches/reset';
-
-    // ignore: prefer_final_locals
-    Object? postBody;
-
-    final queryParams = <QueryParam>[];
-    final headerParams = <String, String>{};
-    final formParams = <String, String>{};
-
-    const contentTypes = <String>[];
-
-
-    return apiClient.invokeAPI(
-      path,
-      'POST',
-      queryParams,
-      postBody,
-      headerParams,
-      formParams,
-      contentTypes.isEmpty ? null : contentTypes.first,
-    );
-  }
-
-  Future<ResetMatchesIteratorResult?> postResetMatchesPaging() async {
-    final response = await postResetMatchesPagingWithHttpInfo();
-    if (response.statusCode >= HttpStatus.badRequest) {
-      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
-    }
-    // When a remote server returns no body with a status of 204, we shall not decode it.
-    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
-    // FormatException when trying to decode an empty string.
-    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'ResetMatchesIteratorResult',) as ResetMatchesIteratorResult;
     
     }
     return null;

@@ -9,12 +9,14 @@ class IteratorSessionId extends SingleRowTable {
   IntColumn get automatiProfileSearchIteratorSessionId => integer()
       .map(const NullAwareTypeConverter.wrap(AutomaticProfileSearchIteratorSessionIdConverter()))
       .nullable()();
-  IntColumn get receivedLikesIteratorSessionId => integer()
-      .map(const NullAwareTypeConverter.wrap(ReceivedLikesIteratorSessionIdConverter()))
+}
+
+class IteratorState extends SingleRowTable {
+  TextColumn get receivedLikesIteratorState => text()
+      .map(const NullAwareTypeConverter.wrap(ReceivedLikesIteratorStateConverter()))
       .nullable()();
-  IntColumn get matchesIteratorSessionId => integer()
-      .map(const NullAwareTypeConverter.wrap(MatchesIteratorSessionIdConverter()))
-      .nullable()();
+  TextColumn get matchesIteratorState =>
+      text().map(const NullAwareTypeConverter.wrap(MatchesIteratorStateConverter())).nullable()();
 }
 
 class SyncVersion extends SingleRowTable {

@@ -20,7 +20,7 @@ class ResetNewsIteratorResult {
 
   UnreadNewsCount c;
 
-  NewsIteratorSessionId s;
+  NewsIteratorState s;
 
   NewsSyncVersion v;
 
@@ -68,7 +68,7 @@ class ResetNewsIteratorResult {
 
       return ResetNewsIteratorResult(
         c: UnreadNewsCount.fromJson(json[r'c'])!,
-        s: NewsIteratorSessionId.fromJson(json[r's'])!,
+        s: NewsIteratorState.fromJson(json[r's'])!,
         v: NewsSyncVersion.fromJson(json[r'v'])!,
       );
     }

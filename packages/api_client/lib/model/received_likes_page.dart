@@ -13,12 +13,9 @@ part of openapi.api;
 class ReceivedLikesPage {
   /// Returns a new [ReceivedLikesPage] instance.
   ReceivedLikesPage({
-    this.errorInvalidIteratorSessionId = false,
     required this.n,
     this.p = const [],
   });
-
-  bool errorInvalidIteratorSessionId;
 
   PageItemCountForNewLikes n;
 
@@ -26,23 +23,20 @@ class ReceivedLikesPage {
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is ReceivedLikesPage &&
-    other.errorInvalidIteratorSessionId == errorInvalidIteratorSessionId &&
     other.n == n &&
     _deepEquality.equals(other.p, p);
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (errorInvalidIteratorSessionId.hashCode) +
     (n.hashCode) +
     (p.hashCode);
 
   @override
-  String toString() => 'ReceivedLikesPage[errorInvalidIteratorSessionId=$errorInvalidIteratorSessionId, n=$n, p=$p]';
+  String toString() => 'ReceivedLikesPage[n=$n, p=$p]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'error_invalid_iterator_session_id'] = this.errorInvalidIteratorSessionId;
       json[r'n'] = this.n;
       json[r'p'] = this.p;
     return json;
@@ -67,7 +61,6 @@ class ReceivedLikesPage {
       }());
 
       return ReceivedLikesPage(
-        errorInvalidIteratorSessionId: mapValueOfType<bool>(json, r'error_invalid_iterator_session_id') ?? false,
         n: PageItemCountForNewLikes.fromJson(json[r'n'])!,
         p: ProfileLink.listFromJson(json[r'p']),
       );

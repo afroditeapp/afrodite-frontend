@@ -68,7 +68,7 @@ class _EditMaintenanceNotificationScreenState extends State<EditMaintenanceNotif
   Widget showContent(BuildContext context) {
     return BlocBuilder<AccountBloc, AccountBlocData>(
       builder: (context, state) {
-        final ut = _currentConfig?.scheduledMaintenance?.ut;
+        final ut = _currentConfig?.start?.ut;
         final String? text;
         if (ut == null) {
           text = null;
@@ -144,10 +144,10 @@ class _EditMaintenanceNotificationScreenState extends State<EditMaintenanceNotif
         currentDateSelection = currentDateSelection.add(Duration(hours: hour, minutes: minute));
       }
       final UnixTime ut = currentDateSelection.toUnixTime();
-      maintenanceStatus = ScheduledMaintenanceStatus(scheduledMaintenance: ut);
+      maintenanceStatus = ScheduledMaintenanceStatus(start: ut);
       currentDateSelectionText = fullTimeString(currentDateSelection);
     } else {
-      maintenanceStatus = ScheduledMaintenanceStatus(scheduledMaintenance: null);
+      maintenanceStatus = ScheduledMaintenanceStatus(start: null);
       currentDateSelection = null;
       currentDateSelectionText = "null";
     }

@@ -10,36 +10,36 @@
 
 part of openapi.api;
 
-class ResetMatchesIteratorResult {
-  /// Returns a new [ResetMatchesIteratorResult] instance.
-  ResetMatchesIteratorResult({
-    required this.s,
+class MatchId {
+  /// Returns a new [MatchId] instance.
+  MatchId({
+    required this.id,
   });
 
-  MatchesIteratorSessionId s;
+  int id;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is ResetMatchesIteratorResult &&
-    other.s == s;
+  bool operator ==(Object other) => identical(this, other) || other is MatchId &&
+    other.id == id;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (s.hashCode);
+    (id.hashCode);
 
   @override
-  String toString() => 'ResetMatchesIteratorResult[s=$s]';
+  String toString() => 'MatchId[id=$id]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r's'] = this.s;
+      json[r'id'] = this.id;
     return json;
   }
 
-  /// Returns a new [ResetMatchesIteratorResult] instance and imports its values from
+  /// Returns a new [MatchId] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static ResetMatchesIteratorResult? fromJson(dynamic value) {
+  static MatchId? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -48,24 +48,24 @@ class ResetMatchesIteratorResult {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "ResetMatchesIteratorResult[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "ResetMatchesIteratorResult[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "MatchId[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "MatchId[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return ResetMatchesIteratorResult(
-        s: MatchesIteratorSessionId.fromJson(json[r's'])!,
+      return MatchId(
+        id: mapValueOfType<int>(json, r'id')!,
       );
     }
     return null;
   }
 
-  static List<ResetMatchesIteratorResult> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <ResetMatchesIteratorResult>[];
+  static List<MatchId> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <MatchId>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = ResetMatchesIteratorResult.fromJson(row);
+        final value = MatchId.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -74,12 +74,12 @@ class ResetMatchesIteratorResult {
     return result.toList(growable: growable);
   }
 
-  static Map<String, ResetMatchesIteratorResult> mapFromJson(dynamic json) {
-    final map = <String, ResetMatchesIteratorResult>{};
+  static Map<String, MatchId> mapFromJson(dynamic json) {
+    final map = <String, MatchId>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = ResetMatchesIteratorResult.fromJson(entry.value);
+        final value = MatchId.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -88,14 +88,14 @@ class ResetMatchesIteratorResult {
     return map;
   }
 
-  // maps a json object with a list of ResetMatchesIteratorResult-objects as value to a dart map
-  static Map<String, List<ResetMatchesIteratorResult>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<ResetMatchesIteratorResult>>{};
+  // maps a json object with a list of MatchId-objects as value to a dart map
+  static Map<String, List<MatchId>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<MatchId>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = ResetMatchesIteratorResult.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = MatchId.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;
@@ -103,7 +103,7 @@ class ResetMatchesIteratorResult {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    's',
+    'id',
   };
 }
 

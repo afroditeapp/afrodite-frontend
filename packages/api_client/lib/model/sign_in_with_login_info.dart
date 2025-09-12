@@ -15,6 +15,7 @@ class SignInWithLoginInfo {
   SignInWithLoginInfo({
     this.apple,
     required this.clientInfo,
+    this.disableRegistering = false,
     this.google,
   });
 
@@ -22,12 +23,15 @@ class SignInWithLoginInfo {
 
   ClientInfo clientInfo;
 
+  bool disableRegistering;
+
   SignInWithGoogleInfo? google;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is SignInWithLoginInfo &&
     other.apple == apple &&
     other.clientInfo == clientInfo &&
+    other.disableRegistering == disableRegistering &&
     other.google == google;
 
   @override
@@ -35,10 +39,11 @@ class SignInWithLoginInfo {
     // ignore: unnecessary_parenthesis
     (apple == null ? 0 : apple!.hashCode) +
     (clientInfo.hashCode) +
+    (disableRegistering.hashCode) +
     (google == null ? 0 : google!.hashCode);
 
   @override
-  String toString() => 'SignInWithLoginInfo[apple=$apple, clientInfo=$clientInfo, google=$google]';
+  String toString() => 'SignInWithLoginInfo[apple=$apple, clientInfo=$clientInfo, disableRegistering=$disableRegistering, google=$google]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -48,6 +53,7 @@ class SignInWithLoginInfo {
       json[r'apple'] = null;
     }
       json[r'client_info'] = this.clientInfo;
+      json[r'disable_registering'] = this.disableRegistering;
     if (this.google != null) {
       json[r'google'] = this.google;
     } else {
@@ -77,6 +83,7 @@ class SignInWithLoginInfo {
       return SignInWithLoginInfo(
         apple: SignInWithAppleInfo.fromJson(json[r'apple']),
         clientInfo: ClientInfo.fromJson(json[r'client_info'])!,
+        disableRegistering: mapValueOfType<bool>(json, r'disable_registering') ?? false,
         google: SignInWithGoogleInfo.fromJson(json[r'google']),
       );
     }

@@ -13,12 +13,9 @@ part of openapi.api;
 class NewsPage {
   /// Returns a new [NewsPage] instance.
   NewsPage({
-    this.errorInvalidIteratorSessionId = false,
     required this.n,
     this.news = const [],
   });
-
-  bool errorInvalidIteratorSessionId;
 
   PageItemCountForNewPublicNews n;
 
@@ -26,23 +23,20 @@ class NewsPage {
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is NewsPage &&
-    other.errorInvalidIteratorSessionId == errorInvalidIteratorSessionId &&
     other.n == n &&
     _deepEquality.equals(other.news, news);
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (errorInvalidIteratorSessionId.hashCode) +
     (n.hashCode) +
     (news.hashCode);
 
   @override
-  String toString() => 'NewsPage[errorInvalidIteratorSessionId=$errorInvalidIteratorSessionId, n=$n, news=$news]';
+  String toString() => 'NewsPage[n=$n, news=$news]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'error_invalid_iterator_session_id'] = this.errorInvalidIteratorSessionId;
       json[r'n'] = this.n;
       json[r'news'] = this.news;
     return json;
@@ -67,7 +61,6 @@ class NewsPage {
       }());
 
       return NewsPage(
-        errorInvalidIteratorSessionId: mapValueOfType<bool>(json, r'error_invalid_iterator_session_id') ?? false,
         n: PageItemCountForNewPublicNews.fromJson(json[r'n'])!,
         news: NewsItemSimple.listFromJson(json[r'news']),
       );

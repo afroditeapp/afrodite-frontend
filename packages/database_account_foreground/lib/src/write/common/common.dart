@@ -1,4 +1,5 @@
 import 'package:database_account_foreground/src/database.dart';
+import 'package:database_converter/database_converter.dart';
 import 'package:database_utils/database_utils.dart';
 import 'package:drift/drift.dart';
 import 'package:utils/utils.dart';
@@ -13,6 +14,7 @@ part 'common.g.dart';
     schema.ServerMaintenance,
     schema.SyncVersion,
     schema.IteratorSessionId,
+    schema.IteratorState,
     schema.ClientLanguageOnServer,
   ],
 )
@@ -100,22 +102,20 @@ class DaoWriteCommon extends DatabaseAccessor<AccountForegroundDatabase>
     );
   }
 
-  Future<void> updateReceivedLikesIteratorSessionId(
-    api.ReceivedLikesIteratorSessionId value,
-  ) async {
-    await into(iteratorSessionId).insertOnConflictUpdate(
-      IteratorSessionIdCompanion.insert(
+  Future<void> updateReceivedLikesIteratorState(api.ReceivedLikesIteratorState value) async {
+    await into(iteratorState).insertOnConflictUpdate(
+      IteratorStateCompanion.insert(
         id: SingleRowTable.ID,
-        receivedLikesIteratorSessionId: Value(value),
+        receivedLikesIteratorState: Value(value.toJsonObject()),
       ),
     );
   }
 
-  Future<void> updateMatchesIteratorSessionId(api.MatchesIteratorSessionId value) async {
-    await into(iteratorSessionId).insertOnConflictUpdate(
-      IteratorSessionIdCompanion.insert(
+  Future<void> updateMatchesIteratorState(api.MatchesIteratorState value) async {
+    await into(iteratorState).insertOnConflictUpdate(
+      IteratorStateCompanion.insert(
         id: SingleRowTable.ID,
-        matchesIteratorSessionId: Value(value),
+        matchesIteratorState: Value(value.toJsonObject()),
       ),
     );
   }
