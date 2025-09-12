@@ -26,11 +26,6 @@ abstract class BaseIteratorManager implements UiProfileIterator {
     }
   }
 
-  @override
-  void resetToBeginning() {
-    _currentIterator.reset();
-  }
-
   Future<Result<List<ProfileEntry>, ()>> _nextListRaw() async {
     final List<ProfileEntry> nextList;
     switch (await _currentIterator.nextList()) {
@@ -85,6 +80,5 @@ abstract class BaseIteratorManager implements UiProfileIterator {
 
 abstract class UiProfileIterator {
   void reset(bool clearDatabase);
-  void resetToBeginning();
   Future<Result<List<ProfileEntry>, ()>> nextList();
 }

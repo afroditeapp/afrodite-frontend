@@ -109,10 +109,6 @@ class _GenericProfileGridState extends State<GenericProfileGrid> {
 
     updatePagingState((s) => s.copyAndShowLoading());
 
-    if (_pagingState.isInitialPage()) {
-      _mainProfilesViewIterator.resetToBeginning();
-    }
-
     final profileList = await _mainProfilesViewIterator.nextList().ok();
     if (profileList == null) {
       updatePagingState((s) => s.copyAndShowError());
