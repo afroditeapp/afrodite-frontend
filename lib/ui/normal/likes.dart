@@ -203,6 +203,7 @@ class LikeViewContentState extends State<LikeViewContent> {
       widget.r.connectionManager,
       widget.r.chat.currentUser,
     );
+    _mainProfilesViewIterator.init();
 
     _gridLogic.init();
     _mainProfilesViewIterator.reset(false);
@@ -511,6 +512,7 @@ class LikeViewContentState extends State<LikeViewContent> {
     _scrollController.dispose();
     _profileChangesSubscription?.cancel();
     _profileChangesSubscription = null;
+    _mainProfilesViewIterator.dispose();
     super.dispose();
   }
 }
