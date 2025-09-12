@@ -86,3 +86,9 @@ extension ProfileStringModerationContentTypeExtensions on ProfileStringModeratio
     return toBeginningOfSentenceCase(adminUiText());
   }
 }
+
+extension AccountIdUiExtensions on AccountId {
+  String shortAccountIdString() {
+    return aid.substring(0, 5);
+  }
+}

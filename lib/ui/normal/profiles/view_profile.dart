@@ -5,6 +5,7 @@ import 'package:app/logic/account/account.dart';
 import 'package:app/model/freezed/logic/account/account.dart';
 import 'package:app/ui/normal/report/report.dart';
 import 'package:app/ui/normal/settings/admin/account_admin_settings.dart';
+import 'package:app/ui_utils/extensions/api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:database/database.dart';
@@ -91,8 +92,8 @@ class ViewProfilePage extends StatelessWidget {
                 MenuItemButton(
                   onPressed: () => showInfoDialog(
                     context,
-                    context.strings.view_profile_screen_details_dialog_account_id(
-                      state.profile.accountId.aid.substring(0, 5),
+                    context.strings.generic_account_id_text_with_value(
+                      state.profile.accountId.shortAccountIdString(),
                     ),
                   ),
                   child: Text(context.strings.generic_details),

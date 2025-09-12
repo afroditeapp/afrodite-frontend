@@ -409,6 +409,11 @@ class AppLocalizationsFi extends AppLocalizations {
       'Profile text byte count is more than 2000 bytes';
 
   @override
+  String generic_account_id_text_with_value(String p0) {
+    return 'Account ID: $p0';
+  }
+
+  @override
   String get generic_action_completed => 'Action completed';
 
   @override
@@ -1527,11 +1532,6 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get view_profile_screen_chat_action => 'Chat';
-
-  @override
-  String view_profile_screen_details_dialog_account_id(String p0) {
-    return 'Account ID: $p0';
-  }
 
   @override
   String get view_profile_screen_like_action => 'Send chat request';

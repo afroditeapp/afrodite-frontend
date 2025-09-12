@@ -733,6 +733,12 @@ abstract class AppLocalizations {
   /// **'Profile text byte count is more than 2000 bytes'**
   String get edit_profile_text_screen_text_lenght_too_long;
 
+  /// Account ID text with value
+  ///
+  /// In en, this message translates to:
+  /// **'Account ID: {p0}'**
+  String generic_account_id_text_with_value(String p0);
+
   /// Generic action completed text
   ///
   /// In en, this message translates to:
@@ -2594,12 +2600,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Chat'**
   String get view_profile_screen_chat_action;
-
-  /// Account ID text for profile details dialog
-  ///
-  /// In en, this message translates to:
-  /// **'Account ID: {p0}'**
-  String view_profile_screen_details_dialog_account_id(String p0);
 
   /// Text for view profile screen like action
   ///

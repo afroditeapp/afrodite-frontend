@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:android_intent_plus/android_intent.dart';
 import 'package:app/data/notification_manager.dart';
 import 'package:app/data/utils/repository_instances.dart';
+import 'package:app/ui_utils/extensions/api.dart';
 import 'package:app/utils/result.dart';
 import 'package:app/utils/version.dart';
 import 'package:device_info_plus/device_info_plus.dart';
@@ -397,10 +398,12 @@ void closeActionsAndOpenDetails(
     sentMessageState,
     receivedMessageState,
   );
+  final sender = receivedMessageState != null ? entry.remoteAccountId : entry.localAccountId;
 
   final infoText =
       """
 ${screenContext.strings.generic_message}: $messageText
+${screenContext.strings.generic_account_id_text_with_value(sender.shortAccountIdString())}
 ${screenContext.strings.conversation_screen_message_details_message_id}: ${entry.messageId?.id}
 ${screenContext.strings.generic_time}: ${time.dateTime.toIso8601String()}
 ${screenContext.strings.generic_state}: $stateText""";

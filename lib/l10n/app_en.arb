@@ -478,6 +478,15 @@
   "@edit_profile_text_screen_text_lenght_too_long": {
     "description": "Dialog text for notifying user when profile text is too long"
   },
+  "generic_account_id_text_with_value": "Account ID: {p0}",
+  "@generic_account_id_text_with_value": {
+    "description": "Account ID text with value",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
   "generic_action_completed": "Action completed",
   "@generic_action_completed": {
     "description": "Generic action completed text"
@@ -1878,15 +1887,6 @@
   "view_profile_screen_chat_action": "Chat",
   "@view_profile_screen_chat_action": {
     "description": "Text for view profile screen chat action"
-  },
-  "view_profile_screen_details_dialog_account_id": "Account ID: {p0}",
-  "@view_profile_screen_details_dialog_account_id": {
-    "description": "Account ID text for profile details dialog",
-    "placeholders": {
-      "p0": {
-        "type": "String"
-      }
-    }
   },
   "view_profile_screen_like_action": "Send chat request",
   "@view_profile_screen_like_action": {
