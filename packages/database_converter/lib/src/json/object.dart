@@ -7,6 +7,14 @@ import 'package:openapi/api.dart';
 class JsonObject<T> {
   final T? value;
   JsonObject._(this.value);
+
+  factory JsonObject.create(T? Function() value) {
+    try {
+      return JsonObject._(value());
+    } catch (_) {
+      return JsonObject._(null);
+    }
+  }
 }
 
 class NotificationStatusConverter extends TypeConverter<JsonObject<NotificationStatus>, String> {
@@ -14,7 +22,7 @@ class NotificationStatusConverter extends TypeConverter<JsonObject<NotificationS
 
   @override
   JsonObject<NotificationStatus> fromSql(fromDb) {
-    return JsonObject._(NotificationStatus.fromJson(jsonDecode(fromDb)));
+    return JsonObject.create(() => NotificationStatus.fromJson(jsonDecode(fromDb)));
   }
 
   @override
@@ -28,7 +36,7 @@ class AdminNotificationConverter extends TypeConverter<JsonObject<AdminNotificat
 
   @override
   JsonObject<AdminNotification> fromSql(fromDb) {
-    return JsonObject._(AdminNotification.fromJson(jsonDecode(fromDb)));
+    return JsonObject.create(() => AdminNotification.fromJson(jsonDecode(fromDb)));
   }
 
   @override
@@ -43,7 +51,7 @@ class AccountStateContainerConverter
 
   @override
   JsonObject<AccountStateContainer> fromSql(fromDb) {
-    return JsonObject._(AccountStateContainer.fromJson(jsonDecode(fromDb)));
+    return JsonObject.create(() => AccountStateContainer.fromJson(jsonDecode(fromDb)));
   }
 
   @override
@@ -57,7 +65,7 @@ class PermissionsConverter extends TypeConverter<JsonObject<Permissions>, String
 
   @override
   JsonObject<Permissions> fromSql(fromDb) {
-    return JsonObject._(Permissions.fromJson(jsonDecode(fromDb)));
+    return JsonObject.create(() => Permissions.fromJson(jsonDecode(fromDb)));
   }
 
   @override
@@ -71,7 +79,7 @@ class GetProfileFiltersConverter extends TypeConverter<JsonObject<GetProfileFilt
 
   @override
   JsonObject<GetProfileFilters> fromSql(fromDb) {
-    return JsonObject._(GetProfileFilters.fromJson(jsonDecode(fromDb)));
+    return JsonObject.create(() => GetProfileFilters.fromJson(jsonDecode(fromDb)));
   }
 
   @override
@@ -85,7 +93,7 @@ class SearchGroupsConverter extends TypeConverter<JsonObject<SearchGroups>, Stri
 
   @override
   JsonObject<SearchGroups> fromSql(fromDb) {
-    return JsonObject._(SearchGroups.fromJson(jsonDecode(fromDb)));
+    return JsonObject.create(() => SearchGroups.fromJson(jsonDecode(fromDb)));
   }
 
   @override
@@ -99,7 +107,7 @@ class AttributeConverter extends TypeConverter<JsonObject<Attribute>, String> {
 
   @override
   JsonObject<Attribute> fromSql(fromDb) {
-    return JsonObject._(Attribute.fromJson(jsonDecode(fromDb)));
+    return JsonObject.create(() => Attribute.fromJson(jsonDecode(fromDb)));
   }
 
   @override
@@ -113,7 +121,7 @@ class CustomReportsConfigConverter extends TypeConverter<JsonObject<CustomReport
 
   @override
   JsonObject<CustomReportsConfig> fromSql(fromDb) {
-    return JsonObject._(CustomReportsConfig.fromJson(jsonDecode(fromDb)));
+    return JsonObject.create(() => CustomReportsConfig.fromJson(jsonDecode(fromDb)));
   }
 
   @override
@@ -128,7 +136,7 @@ class ClientFeaturesConfigConverter
 
   @override
   JsonObject<ClientFeaturesConfig> fromSql(fromDb) {
-    return JsonObject._(ClientFeaturesConfig.fromJson(jsonDecode(fromDb)));
+    return JsonObject.create(() => ClientFeaturesConfig.fromJson(jsonDecode(fromDb)));
   }
 
   @override
@@ -143,7 +151,7 @@ class AutomaticProfileSearchSettingsConverter
 
   @override
   JsonObject<AutomaticProfileSearchSettings> fromSql(fromDb) {
-    return JsonObject._(AutomaticProfileSearchSettings.fromJson(jsonDecode(fromDb)));
+    return JsonObject.create(() => AutomaticProfileSearchSettings.fromJson(jsonDecode(fromDb)));
   }
 
   @override
