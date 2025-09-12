@@ -2,9 +2,6 @@ import 'package:database/database.dart';
 import 'package:app/utils/result.dart';
 
 class IteratorType {
-  bool clearsDatabase;
-  IteratorType(this.clearsDatabase);
-
   /// Resets the iterator to the beginning
   void reset() {}
 

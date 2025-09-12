@@ -1,6 +1,5 @@
 import 'package:openapi/api.dart';
 import 'package:app/api/server_connection_manager.dart';
-import 'package:app/data/chat/received_likes_database_iterator.dart';
 import 'package:app/data/chat_repository.dart';
 import 'package:app/data/general/iterator/base_iterator_manager.dart';
 import 'package:app/data/media_repository.dart';
@@ -21,12 +20,12 @@ class ReceivedLikesIteratorManager extends BaseIteratorManager {
     this.db,
     this.connectionManager,
     AccountId currentUser,
-  ) : super(chat, currentUser, initialIterator: ReceivedLikesDatabaseIterator(db: db));
+  ) : super(chat, currentUser, clearDatabase: false);
 
   @override
-  OnlineIterator createClearDatabaseIterator() {
+  OnlineIterator createNewIterator(bool clearDatabase) {
     return OnlineIterator(
-      resetServerIterator: true,
+      resetServerIterator: clearDatabase,
       media: media,
       io: ReceivedLikesOnlineIteratorIo(db, accountBackgroundDb, connectionManager),
       accountBackgroundDb: accountBackgroundDb,
@@ -34,7 +33,4 @@ class ReceivedLikesIteratorManager extends BaseIteratorManager {
       connectionManager: connectionManager,
     );
   }
-
-  @override
-  ReceivedLikesDatabaseIterator createDatabaseIterator() => ReceivedLikesDatabaseIterator(db: db);
 }

@@ -1,26 +1,26 @@
 import 'dart:async';
 
+import 'package:app/data/general/iterator/online_iterator.dart';
 import 'package:openapi/api.dart';
 import 'package:app/data/chat_repository.dart';
-import 'package:app/data/general/iterator/profile_iterator.dart';
 import 'package:database/database.dart';
 import 'package:app/utils/result.dart';
 
 abstract class BaseIteratorManager implements UiProfileIterator {
   final ChatRepository _chat;
   final AccountId _currentUser;
-  BaseIteratorManager(this._chat, this._currentUser, {required IteratorType initialIterator})
-    : _currentIterator = initialIterator;
+  BaseIteratorManager(this._chat, this._currentUser, {required bool clearDatabase}) {
+    _currentIterator = createNewIterator(clearDatabase);
+  }
 
-  IteratorType _currentIterator;
+  late OnlineIterator _currentIterator;
 
-  IteratorType createClearDatabaseIterator();
-  IteratorType createDatabaseIterator();
+  OnlineIterator createNewIterator(bool clearDatabase);
 
   @override
   void reset(bool clearDatabase) async {
     if (clearDatabase) {
-      _currentIterator = createClearDatabaseIterator();
+      _currentIterator = createNewIterator(clearDatabase);
     } else {
       _currentIterator.reset();
     }
@@ -43,10 +43,6 @@ abstract class BaseIteratorManager implements UiProfileIterator {
         {
           return const Err(());
         }
-    }
-
-    if (nextList.isEmpty && _currentIterator.clearsDatabase) {
-      _currentIterator = createDatabaseIterator();
     }
     return Ok(nextList);
   }

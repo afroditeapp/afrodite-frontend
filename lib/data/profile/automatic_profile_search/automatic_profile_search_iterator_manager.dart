@@ -1,4 +1,3 @@
-import 'package:app/data/profile/automatic_profile_search/automatic_profile_search_database_iterator.dart';
 import 'package:openapi/api.dart';
 import 'package:app/api/server_connection_manager.dart';
 import 'package:app/data/chat_repository.dart';
@@ -21,12 +20,12 @@ class AutomaticProfileSearchIteratorManager extends BaseIteratorManager {
     this.db,
     this.connectionManager,
     AccountId currentUser,
-  ) : super(chat, currentUser, initialIterator: AutomaticProfileSearchDatabaseIterator(db: db));
+  ) : super(chat, currentUser, clearDatabase: true);
 
   @override
-  OnlineIterator createClearDatabaseIterator() {
+  OnlineIterator createNewIterator(bool clearDatabase) {
     return OnlineIterator(
-      resetServerIterator: true,
+      resetServerIterator: clearDatabase,
       media: media,
       io: AutomaticProfileSearchOnlineIteratorIo(db, connectionManager),
       accountBackgroundDb: accountBackgroundDb,
@@ -34,8 +33,4 @@ class AutomaticProfileSearchIteratorManager extends BaseIteratorManager {
       connectionManager: connectionManager,
     );
   }
-
-  @override
-  AutomaticProfileSearchDatabaseIterator createDatabaseIterator() =>
-      AutomaticProfileSearchDatabaseIterator(db: db);
 }
