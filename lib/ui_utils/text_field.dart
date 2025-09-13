@@ -11,15 +11,12 @@ void _defaultOnChanged(String value) {
 }
 
 class SimpleTextField extends StatefulWidget {
-  final TextEditingController controller;
-
   final String hintText;
   final bool obscureText;
   final String Function() getInitialValue;
   final void Function(String) onChanged;
 
   const SimpleTextField({
-    required this.controller,
     this.hintText = "",
     this.obscureText = false,
     this.getInitialValue = _defaultInitialValue,
@@ -32,17 +29,20 @@ class SimpleTextField extends StatefulWidget {
 }
 
 class _SimpleTextFieldState extends State<SimpleTextField> {
+  late final String initialValue;
+
   @override
   void initState() {
     super.initState();
-    widget.controller.text = widget.getInitialValue();
+    initialValue = widget.getInitialValue();
+    widget.onChanged(initialValue);
   }
 
   @override
   Widget build(BuildContext context) {
     return Form(
       child: TextFormField(
-        controller: widget.controller,
+        initialValue: initialValue,
         obscureText: widget.obscureText,
         decoration: InputDecoration(icon: null, hintText: widget.hintText),
         onChanged: (newValue) {

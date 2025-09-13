@@ -254,20 +254,20 @@ Future<DemoAccountCredentials?> openFirstDemoAccountLoginDialog(BuildContext con
   final defaultUsername = kReleaseMode ? "" : "username";
   final defaultPassword = kReleaseMode ? "" : "password";
 
-  final usernameController = TextEditingController();
+  String username = "";
   final usernameField = SimpleTextField(
-    controller: usernameController,
     hintText: context.strings.login_screen_demo_account_username,
     // TODO(prod): After password login is implemented add boolean constant which
     //             can hide demo account login.
     getInitialValue: () => context.read<DemoAccountLoginBloc>().state.username ?? defaultUsername,
+    onChanged: (v) => username = v,
   );
-  final passwordController = TextEditingController();
+  String password = "";
   final passwordField = SimpleTextField(
-    controller: passwordController,
     hintText: context.strings.login_screen_demo_account_password,
     obscureText: true,
     getInitialValue: () => context.read<DemoAccountLoginBloc>().state.password ?? defaultPassword,
+    onChanged: (v) => password = v,
   );
 
   final pageKey = PageKey();
@@ -292,11 +292,7 @@ Future<DemoAccountCredentials?> openFirstDemoAccountLoginDialog(BuildContext con
         ),
         TextButton(
           onPressed: () {
-            MyNavigator.removePage(
-              context,
-              pageKey,
-              DemoAccountCredentials(usernameController.text, passwordController.text),
-            );
+            MyNavigator.removePage(context, pageKey, DemoAccountCredentials(username, password));
           },
           child: Text(context.strings.generic_login),
         ),
@@ -304,9 +300,6 @@ Future<DemoAccountCredentials?> openFirstDemoAccountLoginDialog(BuildContext con
       scrollable: true,
     ),
   );
-
-  usernameController.dispose();
-  passwordController.dispose();
 
   return r;
 }
