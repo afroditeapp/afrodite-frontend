@@ -13,38 +13,26 @@ part of openapi.api;
 class ResetReceivedLikesIteratorResult {
   /// Returns a new [ResetReceivedLikesIteratorResult] instance.
   ResetReceivedLikesIteratorResult({
-    required this.c,
     required this.s,
-    required this.v,
   });
-
-  NewReceivedLikesCount c;
 
   ReceivedLikesIteratorState s;
 
-  ReceivedLikesSyncVersion v;
-
   @override
   bool operator ==(Object other) => identical(this, other) || other is ResetReceivedLikesIteratorResult &&
-    other.c == c &&
-    other.s == s &&
-    other.v == v;
+    other.s == s;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (c.hashCode) +
-    (s.hashCode) +
-    (v.hashCode);
+    (s.hashCode);
 
   @override
-  String toString() => 'ResetReceivedLikesIteratorResult[c=$c, s=$s, v=$v]';
+  String toString() => 'ResetReceivedLikesIteratorResult[s=$s]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'c'] = this.c;
       json[r's'] = this.s;
-      json[r'v'] = this.v;
     return json;
   }
 
@@ -67,9 +55,7 @@ class ResetReceivedLikesIteratorResult {
       }());
 
       return ResetReceivedLikesIteratorResult(
-        c: NewReceivedLikesCount.fromJson(json[r'c'])!,
         s: ReceivedLikesIteratorState.fromJson(json[r's'])!,
-        v: ReceivedLikesSyncVersion.fromJson(json[r'v'])!,
       );
     }
     return null;
@@ -117,9 +103,6 @@ class ResetReceivedLikesIteratorResult {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'c',
     's',
-    'v',
   };
 }
-

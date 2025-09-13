@@ -173,7 +173,7 @@ class _NormalStateContentState extends State<NormalStateContent> {
         icon: BlocBuilder<NewReceivedLikesAvailableBloc, NewReceivedLikesAvailableData>(
           builder: (context, state) {
             final icon = Icon(selectedView == 1 ? Icons.waving_hand : Icons.waving_hand_outlined);
-            final count = state.receivedLikesCountForUi();
+            final count = state.newReceivedLikesCount;
             if (count == 0) {
               return icon;
             } else {

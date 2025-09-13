@@ -25,15 +25,6 @@ class DaoWriteNewReceivedLikesCount extends DatabaseAccessor<AccountBackgroundDa
     );
   }
 
-  Future<void> updateReceivedLikesCountNotViewed(api.NewReceivedLikesCount count) async {
-    await into(newReceivedLikesCount).insertOnConflictUpdate(
-      NewReceivedLikesCountCompanion.insert(
-        id: SingleRowTable.ID,
-        newReceivedLikesCountNotViewed: Value(count),
-      ),
-    );
-  }
-
   Future<void> resetReceivedLikesSyncVersion() async {
     await into(newReceivedLikesCount).insertOnConflictUpdate(
       NewReceivedLikesCountCompanion.insert(

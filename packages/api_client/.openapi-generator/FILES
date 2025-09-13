@@ -98,7 +98,6 @@ lib/model/data_export_name.dart
 lib/model/data_export_state.dart
 lib/model/data_export_state_type.dart
 lib/model/data_export_type.dart
-lib/model/delete_like_result.dart
 lib/model/demo_account_login_credentials.dart
 lib/model/demo_account_login_result.dart
 lib/model/demo_account_login_to_account.dart

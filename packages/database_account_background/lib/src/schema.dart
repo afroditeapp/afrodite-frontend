@@ -64,11 +64,6 @@ class NewReceivedLikesCount extends SingleRowTable {
   IntColumn get newReceivedLikesCount => integer()
       .map(const NullAwareTypeConverter.wrap(NewReceivedLikesCountConverter()))
       .nullable()();
-
-  /// Count which will be reset once user views received likes screen
-  IntColumn get newReceivedLikesCountNotViewed => integer()
-      .map(const NullAwareTypeConverter.wrap(NewReceivedLikesCountConverter()))
-      .nullable()();
 }
 
 class News extends SingleRowTable {

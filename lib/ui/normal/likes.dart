@@ -10,7 +10,6 @@ import 'package:app/ui_utils/paged_grid_logic.dart';
 import 'package:app/ui_utils/profile_grid.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:app/data/chat/received_likes_iterator_manager.dart';
 import 'package:app/data/login_repository.dart';
@@ -32,8 +31,6 @@ import 'package:app/ui_utils/list.dart';
 import 'package:app/ui_utils/scroll_controller.dart';
 import 'package:app/utils/result.dart';
 import 'package:utils/utils.dart';
-
-final _log = Logger("LikeView");
 
 class LikeView extends BottomNavigationScreen {
   const LikeView({super.key});
@@ -139,7 +136,7 @@ class _LikesScreenState extends State<LikesScreen> {
   Widget content() {
     if (!likesBadgeResetDone) {
       likesBadgeResetDone = true;
-      context.read<NewReceivedLikesAvailableBloc>().add(UpdateReceivedLikesCountNotViewed(0));
+      context.read<NewReceivedLikesAvailableBloc>().add(ResetReceivedLikesCount());
     }
 
     return BlocBuilder<LikeGridInstanceManagerBloc, LikeGridInstanceManagerData>(
@@ -298,7 +295,7 @@ class LikeViewContentState extends State<LikeViewContent> {
   Widget build(BuildContext context) {
     return RefreshIndicator(
       onRefresh: () async {
-        widget.receivedLikesBloc.add(UpdateReceivedLikesCountNotViewed(0));
+        widget.receivedLikesBloc.add(ResetReceivedLikesCount());
         await refreshProfileGrid();
       },
       child: NotificationListener<ScrollMetricsNotification>(
@@ -398,9 +395,7 @@ class LikeViewContentState extends State<LikeViewContent> {
           const Padding(padding: EdgeInsets.all(8)),
           ElevatedButton(
             onPressed: () {
-              context.read<NewReceivedLikesAvailableBloc>().add(
-                UpdateReceivedLikesCountNotViewed(0),
-              );
+              context.read<NewReceivedLikesAvailableBloc>().add(ResetReceivedLikesCount());
               refreshProfileGrid();
             },
             child: Text(context.strings.generic_try_again),
@@ -418,7 +413,7 @@ class LikeViewContentState extends State<LikeViewContent> {
       builder: (context, state) {
         if (state.triggerReceivedLikesRefresh) {
           final bloc = context.read<NewReceivedLikesAvailableBloc>();
-          bloc.add(UpdateReceivedLikesCountNotViewed(0));
+          bloc.add(ResetReceivedLikesCount());
           bloc.add(SetTriggerReceivedLikesRefreshWithButton(false));
           refreshProfileGrid();
         }
@@ -433,7 +428,7 @@ class LikeViewContentState extends State<LikeViewContent> {
       builder: (context, state) {
         if (state.screen == BottomNavigationScreenId.likes) {
           final bloc = context.read<NewReceivedLikesAvailableBloc>();
-          bloc.add(UpdateReceivedLikesCountNotViewed(0));
+          bloc.add(ResetReceivedLikesCount());
         }
         return const SizedBox.shrink();
       },
@@ -461,12 +456,12 @@ class LikeViewContentState extends State<LikeViewContent> {
             !_onLoginReloadDoneOnce) {
           // This exits to get current received likes from the server after
           // login.
-          automaticReloadLogic(state);
+          refreshProfileGrid();
           _onLoginReloadDoneOnce = true;
           _previousAutomaticReloadTime = currentTime;
         } else if (state.newReceivedLikesCount > 0 &&
             !context.read<BottomNavigationStateBloc>().state.isScrolledLikes) {
-          automaticReloadLogic(state);
+          refreshProfileGrid();
           _onLoginReloadDoneOnce = true;
           _previousAutomaticReloadTime = currentTime;
         }
@@ -474,23 +469,6 @@ class LikeViewContentState extends State<LikeViewContent> {
         return const SizedBox.shrink();
       },
     );
-  }
-
-  Future<void> automaticReloadLogic(NewReceivedLikesAvailableData state) async {
-    final bloc = widget.receivedLikesBloc;
-    final navigationBlocState = BottomNavigationStateBlocInstance.getInstance().navigationState;
-    // Refresh resets server side new likes count so it needs to be saved
-    // to keep the count badge visible.
-    if (navigationBlocState.screen != BottomNavigationScreenId.likes) {
-      _log.info("Automatic like screen refresh on background");
-      final newReceivedLikesCountBeforeReload = bloc.state.newReceivedLikesCount;
-      final event = UpdateReceivedLikesCountNotViewed(newReceivedLikesCountBeforeReload);
-      bloc.add(event);
-      await event.waitCompletion();
-    } else {
-      _log.info("Automatic like screen refresh");
-    }
-    await refreshProfileGrid();
   }
 
   Future<void> refreshProfileGrid() async {

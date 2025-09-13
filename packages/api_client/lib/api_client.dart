@@ -334,8 +334,6 @@ class ApiClient {
           return DataExportStateTypeTypeTransformer().decode(value);
         case 'DataExportType':
           return DataExportTypeTypeTransformer().decode(value);
-        case 'DeleteLikeResult':
-          return DeleteLikeResult.fromJson(value);
         case 'DemoAccountLoginCredentials':
           return DemoAccountLoginCredentials.fromJson(value);
         case 'DemoAccountLoginResult':

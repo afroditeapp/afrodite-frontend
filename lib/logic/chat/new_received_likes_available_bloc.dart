@@ -1,6 +1,8 @@
 import "dart:async";
 
+import "package:app/api/server_connection_manager.dart";
 import "package:app/data/utils/repository_instances.dart";
+import "package:app/utils/result.dart";
 import 'package:bloc_concurrency/bloc_concurrency.dart' show sequential;
 
 import "package:flutter_bloc/flutter_bloc.dart";
@@ -16,34 +18,7 @@ class _CountUpdate extends NewReceivedLikesAvailableEvent {
   _CountUpdate(this.value);
 }
 
-class _CountUpdateDebounced extends NewReceivedLikesAvailableEvent {
-  final int value;
-  _CountUpdateDebounced(this.value);
-}
-
-class _CountNotViewedUpdate extends NewReceivedLikesAvailableEvent {
-  final int value;
-  _CountNotViewedUpdate(this.value);
-}
-
-class UpdateReceivedLikesCountNotViewed extends NewReceivedLikesAvailableEvent {
-  final int value;
-  final BehaviorSubject<bool> _waitDone = BehaviorSubject.seeded(false);
-  UpdateReceivedLikesCountNotViewed(this.value);
-
-  Future<void> completeAndDispose() async {
-    _waitDone.add(true);
-    await _waitDone.close();
-  }
-
-  Future<void> waitCompletion() async {
-    try {
-      await _waitDone.firstWhere((v) => v);
-    } catch (_) {
-      // Disposed
-    }
-  }
-}
+class ResetReceivedLikesCount extends NewReceivedLikesAvailableEvent {}
 
 class SetTriggerReceivedLikesRefreshWithButton extends NewReceivedLikesAvailableEvent {
   final bool value;
@@ -57,40 +32,29 @@ class _SetShowRefreshButton extends NewReceivedLikesAvailableEvent {
 
 class NewReceivedLikesAvailableBloc
     extends Bloc<NewReceivedLikesAvailableEvent, NewReceivedLikesAvailableData> {
+  final ApiManager api;
   final AccountBackgroundDatabaseManager db;
 
   StreamSubscription<NewReceivedLikesCount?>? _countSubscription;
   StreamSubscription<NewReceivedLikesCount?>? _countDebouncedSubscription;
-  StreamSubscription<NewReceivedLikesCount?>? _countNotViewedSubscription;
 
   NewReceivedLikesAvailableBloc(RepositoryInstances r)
-    : db = r.accountBackgroundDb,
+    : api = r.api,
+      db = r.accountBackgroundDb,
       super(NewReceivedLikesAvailableData()) {
     on<_CountUpdate>((data, emit) {
-      if (data.value < state.newReceivedLikesCountPartiallyDebounced) {
-        emit(
-          state.copyWith(
-            newReceivedLikesCount: data.value,
-            newReceivedLikesCountPartiallyDebounced: data.value,
-          ),
-        );
-      } else {
-        emit(state.copyWith(newReceivedLikesCount: data.value));
+      emit(state.copyWith(newReceivedLikesCount: data.value));
+    }, transformer: sequential());
+    on<ResetReceivedLikesCount>((data, emit) async {
+      if (state.newReceivedLikesCount != 0) {
+        final r = await api.chat((api) => api.postResetNewReceivedLikesCount());
+        if (r case Ok(:final v)) {
+          await db.accountAction(
+            (db) => db.newReceivedLikesCount.updateSyncVersionReceivedLikes(v.v, v.c),
+          );
+          emit(state.copyWith(showRefreshButton: false));
+        }
       }
-    }, transformer: sequential());
-    on<_CountUpdateDebounced>((data, emit) {
-      emit(state.copyWith(newReceivedLikesCountPartiallyDebounced: data.value));
-    }, transformer: sequential());
-    on<_CountNotViewedUpdate>((data, emit) {
-      emit(state.copyWith(newReceivedLikesCountNotViewed: data.value));
-    }, transformer: sequential());
-    on<UpdateReceivedLikesCountNotViewed>((data, emit) async {
-      await db.accountAction(
-        (db) => db.newReceivedLikesCount.updateReceivedLikesCountNotViewed(
-          NewReceivedLikesCount(c: data.value),
-        ),
-      );
-      await data.completeAndDispose();
     }, transformer: sequential());
     on<SetTriggerReceivedLikesRefreshWithButton>((data, emit) async {
       if (data.value) {
@@ -111,15 +75,10 @@ class NewReceivedLikesAvailableBloc
     _countDebouncedSubscription = db
         .accountStream((db) => db.newReceivedLikesCount.watchReceivedLikesCount())
         .debounceTime(const Duration(milliseconds: 1500))
-        .listen((data) {
-          final count = data?.c ?? 0;
-          add(_SetShowRefreshButton(count > 0));
-          add(_CountUpdateDebounced(count));
-        });
-    _countNotViewedSubscription = db
-        .accountStream((db) => db.newReceivedLikesCount.watchReceivedLikesCountNotViewed())
-        .listen((data) {
-          add(_CountNotViewedUpdate(data?.c ?? 0));
+        .listen((_) {
+          // Debounce is needed as button should not be shown
+          // when automatic refresh happens.
+          add(_SetShowRefreshButton(state.newReceivedLikesCount > 0));
         });
   }
 
@@ -127,7 +86,6 @@ class NewReceivedLikesAvailableBloc
   Future<void> close() async {
     await _countSubscription?.cancel();
     await _countDebouncedSubscription?.cancel();
-    await _countNotViewedSubscription?.cancel();
     return super.close();
   }
 }

@@ -25,12 +25,4 @@ class DaoReadNewReceivedLikesCount extends DatabaseAccessor<AccountBackgroundDat
       return value.newReceivedLikesCount;
     }).watchSingleOrNull();
   }
-
-  Stream<api.NewReceivedLikesCount?> watchReceivedLikesCountNotViewed() {
-    return (select(newReceivedLikesCount)..where((t) => t.id.equals(SingleRowTable.ID.value))).map((
-      value,
-    ) {
-      return value.newReceivedLikesCountNotViewed;
-    }).watchSingleOrNull();
-  }
 }
