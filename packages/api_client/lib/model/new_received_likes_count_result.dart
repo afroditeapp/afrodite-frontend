@@ -14,30 +14,37 @@ class NewReceivedLikesCountResult {
   /// Returns a new [NewReceivedLikesCountResult] instance.
   NewReceivedLikesCountResult({
     required this.c,
+    required this.l,
     required this.v,
   });
 
   NewReceivedLikesCount c;
+
+  /// Latest received like in use. Client can use this to check should received likes be refreshed.
+  ReceivedLikeId l;
 
   ReceivedLikesSyncVersion v;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is NewReceivedLikesCountResult &&
     other.c == c &&
+    other.l == l &&
     other.v == v;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (c.hashCode) +
+    (l.hashCode) +
     (v.hashCode);
 
   @override
-  String toString() => 'NewReceivedLikesCountResult[c=$c, v=$v]';
+  String toString() => 'NewReceivedLikesCountResult[c=$c, l=$l, v=$v]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'c'] = this.c;
+      json[r'l'] = this.l;
       json[r'v'] = this.v;
     return json;
   }
@@ -62,6 +69,7 @@ class NewReceivedLikesCountResult {
 
       return NewReceivedLikesCountResult(
         c: NewReceivedLikesCount.fromJson(json[r'c'])!,
+        l: ReceivedLikeId.fromJson(json[r'l'])!,
         v: ReceivedLikesSyncVersion.fromJson(json[r'v'])!,
       );
     }
@@ -111,6 +119,7 @@ class NewReceivedLikesCountResult {
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
     'c',
+    'l',
     'v',
   };
 }

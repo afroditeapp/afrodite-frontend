@@ -62,99 +62,99 @@ All URIs are relative to *http://localhost*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
-*AccountApi* | [**getAccountAppNotificationSettings**](doc//AccountApi.md#getaccountappnotificationsettings) | **GET** /account_api/get_account_app_notification_settings |
+*AccountApi* | [**getAccountAppNotificationSettings**](doc//AccountApi.md#getaccountappnotificationsettings) | **GET** /account_api/get_account_app_notification_settings | 
 *AccountApi* | [**getAccountBanTime**](doc//AccountApi.md#getaccountbantime) | **GET** /account_api/account_ban_time/{aid} | Get account ban time
 *AccountApi* | [**getAccountData**](doc//AccountApi.md#getaccountdata) | **GET** /account_api/account_data | Get changeable user information to account.
 *AccountApi* | [**getAccountDeletionRequestState**](doc//AccountApi.md#getaccountdeletionrequeststate) | **GET** /account_api/get_account_deletion_request_state/{aid} | Get account deletion request state
 *AccountApi* | [**getAccountSetup**](doc//AccountApi.md#getaccountsetup) | **GET** /account_api/account_setup | Get non-changeable user information to account.
 *AccountApi* | [**getAccountState**](doc//AccountApi.md#getaccountstate) | **GET** /account_api/state | Get current account state.
-*AccountApi* | [**getLatestBirthdate**](doc//AccountApi.md#getlatestbirthdate) | **GET** /account_api/latest_birthdate |
+*AccountApi* | [**getLatestBirthdate**](doc//AccountApi.md#getlatestbirthdate) | **GET** /account_api/latest_birthdate | 
 *AccountApi* | [**getNewsItem**](doc//AccountApi.md#getnewsitem) | **GET** /account_api/news_item/{nid} | Get news item content using specific locale and fallback to locale \"en\" if news translation is not found.
-*AccountApi* | [**postAccountAppNotificationSettings**](doc//AccountApi.md#postaccountappnotificationsettings) | **POST** /account_api/post_account_app_notification_settings |
+*AccountApi* | [**postAccountAppNotificationSettings**](doc//AccountApi.md#postaccountappnotificationsettings) | **POST** /account_api/post_account_app_notification_settings | 
 *AccountApi* | [**postAccountData**](doc//AccountApi.md#postaccountdata) | **POST** /account_api/account_data | Set changeable user information to account.
 *AccountApi* | [**postAccountSetup**](doc//AccountApi.md#postaccountsetup) | **POST** /account_api/account_setup | Setup non-changeable user information during `initial setup` state.
 *AccountApi* | [**postCompleteSetup**](doc//AccountApi.md#postcompletesetup) | **POST** /account_api/complete_setup | Complete initial setup.
 *AccountApi* | [**postCustomReportEmpty**](doc//AccountApi.md#postcustomreportempty) | **POST** /account_api/custom_report_empty | Send custom report without any content
 *AccountApi* | [**postDemoAccountAccessibleAccounts**](doc//AccountApi.md#postdemoaccountaccessibleaccounts) | **POST** /account_api/demo_account_accessible_accounts | Get demo account's available accounts.
 *AccountApi* | [**postDemoAccountLogin**](doc//AccountApi.md#postdemoaccountlogin) | **POST** /account_api/demo_account_login | Access demo account, which allows accessing all or specific accounts depending on the server configuration.
-*AccountApi* | [**postDemoAccountLoginToAccount**](doc//AccountApi.md#postdemoaccountlogintoaccount) | **POST** /account_api/demo_account_login_to_account |
-*AccountApi* | [**postDemoAccountLogout**](doc//AccountApi.md#postdemoaccountlogout) | **POST** /account_api/demo_account_logout |
-*AccountApi* | [**postDemoAccountRegisterAccount**](doc//AccountApi.md#postdemoaccountregisteraccount) | **POST** /account_api/demo_account_register_account |
-*AccountApi* | [**postGetClientFeaturesConfig**](doc//AccountApi.md#postgetclientfeaturesconfig) | **POST** /account_api/client_features_config |
-*AccountApi* | [**postGetCustomReportsConfig**](doc//AccountApi.md#postgetcustomreportsconfig) | **POST** /account_api/custom_reports_config |
-*AccountApi* | [**postGetNewsPage**](doc//AccountApi.md#postgetnewspage) | **POST** /account_api/news_page |
-*AccountApi* | [**postGetNextClientId**](doc//AccountApi.md#postgetnextclientid) | **POST** /account_api/next_client_id |
+*AccountApi* | [**postDemoAccountLoginToAccount**](doc//AccountApi.md#postdemoaccountlogintoaccount) | **POST** /account_api/demo_account_login_to_account | 
+*AccountApi* | [**postDemoAccountLogout**](doc//AccountApi.md#postdemoaccountlogout) | **POST** /account_api/demo_account_logout | 
+*AccountApi* | [**postDemoAccountRegisterAccount**](doc//AccountApi.md#postdemoaccountregisteraccount) | **POST** /account_api/demo_account_register_account | 
+*AccountApi* | [**postGetClientFeaturesConfig**](doc//AccountApi.md#postgetclientfeaturesconfig) | **POST** /account_api/client_features_config | 
+*AccountApi* | [**postGetCustomReportsConfig**](doc//AccountApi.md#postgetcustomreportsconfig) | **POST** /account_api/custom_reports_config | 
+*AccountApi* | [**postGetNewsPage**](doc//AccountApi.md#postgetnewspage) | **POST** /account_api/news_page | 
+*AccountApi* | [**postGetNextClientId**](doc//AccountApi.md#postgetnextclientid) | **POST** /account_api/next_client_id | 
 *AccountApi* | [**postGetUnreadNewsCount**](doc//AccountApi.md#postgetunreadnewscount) | **POST** /account_api/news_count | The unread news count for public news.
-*AccountApi* | [**postLogout**](doc//AccountApi.md#postlogout) | **POST** /account_api/logout |
-*AccountApi* | [**postResetNewsPaging**](doc//AccountApi.md#postresetnewspaging) | **POST** /account_api/reset_news_paging |
+*AccountApi* | [**postLogout**](doc//AccountApi.md#postlogout) | **POST** /account_api/logout | 
+*AccountApi* | [**postResetNewsPaging**](doc//AccountApi.md#postresetnewspaging) | **POST** /account_api/reset_news_paging | 
 *AccountApi* | [**postSetAccountDeletionRequestState**](doc//AccountApi.md#postsetaccountdeletionrequeststate) | **POST** /account_api/set_account_deletion_request_state/{aid} | Request account deletion or cancel the deletion
 *AccountApi* | [**postSignInWithLogin**](doc//AccountApi.md#postsigninwithlogin) | **POST** /account_api/sign_in_with_login | Start new session with sign in with Apple or Google.
 *AccountApi* | [**putSettingProfileVisiblity**](doc//AccountApi.md#putsettingprofilevisiblity) | **PUT** /account_api/settings/profile_visibility | Update current or pending profile visiblity value.
-*AccountApi* | [**putSettingUnlimitedLikes**](doc//AccountApi.md#putsettingunlimitedlikes) | **PUT** /account_api/settings/unlimited_likes |
-*AccountAdminApi* | [**deleteNewsItem**](doc//AccountAdminApi.md#deletenewsitem) | **DELETE** /account_api/delete_news/{nid} |
-*AccountAdminApi* | [**deleteNewsTranslation**](doc//AccountAdminApi.md#deletenewstranslation) | **DELETE** /account_api/delete_news_translation/{nid}/{locale} |
+*AccountApi* | [**putSettingUnlimitedLikes**](doc//AccountApi.md#putsettingunlimitedlikes) | **PUT** /account_api/settings/unlimited_likes | 
+*AccountAdminApi* | [**deleteNewsItem**](doc//AccountAdminApi.md#deletenewsitem) | **DELETE** /account_api/delete_news/{nid} | 
+*AccountAdminApi* | [**deleteNewsTranslation**](doc//AccountAdminApi.md#deletenewstranslation) | **DELETE** /account_api/delete_news_translation/{nid}/{locale} | 
 *AccountAdminApi* | [**getAccountIdFromEmail**](doc//AccountAdminApi.md#getaccountidfromemail) | **GET** /account_api/get_account_id_from_email/{email} | Get account ID from email
 *AccountAdminApi* | [**getAccountStateAdmin**](doc//AccountAdminApi.md#getaccountstateadmin) | **GET** /account_api/get_account_state_admin/{aid} | Get [model::Account] for specific account.
 *AccountAdminApi* | [**getAllAdmins**](doc//AccountAdminApi.md#getalladmins) | **GET** /account_api/get_all_admins | Get all admins
 *AccountAdminApi* | [**getPermissions**](doc//AccountAdminApi.md#getpermissions) | **GET** /account_api/get_permissions/{aid} | Get [model::Permissions] for specific account.
-*AccountAdminApi* | [**postCreateNewsItem**](doc//AccountAdminApi.md#postcreatenewsitem) | **POST** /account_api/create_news_item |
+*AccountAdminApi* | [**postCreateNewsItem**](doc//AccountAdminApi.md#postcreatenewsitem) | **POST** /account_api/create_news_item | 
 *AccountAdminApi* | [**postDeleteAccount**](doc//AccountAdminApi.md#postdeleteaccount) | **POST** /account_api/delete_account/{aid} | Delete account instantly
 *AccountAdminApi* | [**postGetClientVersionStatistics**](doc//AccountAdminApi.md#postgetclientversionstatistics) | **POST** /account_api/client_version_statistics | Get client version statistics.
 *AccountAdminApi* | [**postSetBanState**](doc//AccountAdminApi.md#postsetbanstate) | **POST** /account_api/set_ban_state | Ban or unban account
-*AccountAdminApi* | [**postSetNewsPublicity**](doc//AccountAdminApi.md#postsetnewspublicity) | **DELETE** /account_api/set_news_publicity/{nid} |
+*AccountAdminApi* | [**postSetNewsPublicity**](doc//AccountAdminApi.md#postsetnewspublicity) | **DELETE** /account_api/set_news_publicity/{nid} | 
 *AccountAdminApi* | [**postSetPermissions**](doc//AccountAdminApi.md#postsetpermissions) | **POST** /account_api/set_permissions/{aid} | Set permissions for account
-*AccountAdminApi* | [**postUpdateNewsTranslation**](doc//AccountAdminApi.md#postupdatenewstranslation) | **POST** /account_api/update_news_translation/{nid}/{locale} |
+*AccountAdminApi* | [**postUpdateNewsTranslation**](doc//AccountAdminApi.md#postupdatenewstranslation) | **POST** /account_api/update_news_translation/{nid}/{locale} | 
 *AccountBotApi* | [**postBotLogin**](doc//AccountBotApi.md#postbotlogin) | **POST** /account_api/bot_login | Get new AccessToken for a bot account. If the account is not registered as a bot account, then the request will fail.
 *AccountBotApi* | [**postBotRegister**](doc//AccountBotApi.md#postbotregister) | **POST** /account_api/bot_register | Register a new bot account. Returns new account ID which is UUID.
 *AccountBotApi* | [**postRemoteBotLogin**](doc//AccountBotApi.md#postremotebotlogin) | **POST** /account_api/remote_bot_login | Login for remote bots which are listed in server config file.
-*ChatApi* | [**getChatAppNotificationSettings**](doc//ChatApi.md#getchatappnotificationsettings) | **GET** /chat_api/get_chat_app_notification_settings |
+*ChatApi* | [**getChatAppNotificationSettings**](doc//ChatApi.md#getchatappnotificationsettings) | **GET** /chat_api/get_chat_app_notification_settings | 
 *ChatApi* | [**getConversationId**](doc//ChatApi.md#getconversationid) | **GET** /chat_api/conversation_id/{aid} | Get account specific conversation ID which can be used to display new message received notifications.
 *ChatApi* | [**getDailyLikesLeft**](doc//ChatApi.md#getdailylikesleft) | **GET** /chat_api/daily_likes_left | Get daily likes left value.
-*ChatApi* | [**getInitialMatchesIteratorState**](doc//ChatApi.md#getinitialmatchesiteratorstate) | **GET** /chat_api/matches/initial_state |
+*ChatApi* | [**getInitialMatchesIteratorState**](doc//ChatApi.md#getinitialmatchesiteratorstate) | **GET** /chat_api/matches/initial_state | 
 *ChatApi* | [**getLatestPublicKeyId**](doc//ChatApi.md#getlatestpublickeyid) | **GET** /chat_api/latest_public_key_id/{aid} | Get latest public key ID for some account
 *ChatApi* | [**getPendingMessages**](doc//ChatApi.md#getpendingmessages) | **GET** /chat_api/pending_messages | Get list of pending messages.
 *ChatApi* | [**getPrivatePublicKeyInfo**](doc//ChatApi.md#getprivatepublickeyinfo) | **GET** /chat_api/private_public_key_info/{aid} | Get private public key info
 *ChatApi* | [**getPublicKey**](doc//ChatApi.md#getpublickey) | **GET** /chat_api/public_key/{aid} | Get current public key of some account
 *ChatApi* | [**getSentBlocks**](doc//ChatApi.md#getsentblocks) | **GET** /chat_api/sent_blocks | Get list of sent blocks
-*ChatApi* | [**getSentMessageIds**](doc//ChatApi.md#getsentmessageids) | **GET** /chat_api/sent_message_ids |
+*ChatApi* | [**getSentMessageIds**](doc//ChatApi.md#getsentmessageids) | **GET** /chat_api/sent_message_ids | 
 *ChatApi* | [**getVideoCallUrls**](doc//ChatApi.md#getvideocallurls) | **GET** /chat_api/get_video_call_urls | Create Jitsi Meet video call URLs to a meeting with an user.
 *ChatApi* | [**postAddPublicKey**](doc//ChatApi.md#postaddpublickey) | **POST** /chat_api/add_public_key | Add new public key.
-*ChatApi* | [**postAddReceiverAcknowledgement**](doc//ChatApi.md#postaddreceiveracknowledgement) | **POST** /chat_api/add_receiver_acknowledgement |
-*ChatApi* | [**postAddSenderAcknowledgement**](doc//ChatApi.md#postaddsenderacknowledgement) | **POST** /chat_api/add_sender_acknowledgement |
+*ChatApi* | [**postAddReceiverAcknowledgement**](doc//ChatApi.md#postaddreceiveracknowledgement) | **POST** /chat_api/add_receiver_acknowledgement | 
+*ChatApi* | [**postAddSenderAcknowledgement**](doc//ChatApi.md#postaddsenderacknowledgement) | **POST** /chat_api/add_sender_acknowledgement | 
 *ChatApi* | [**postBlockProfile**](doc//ChatApi.md#postblockprofile) | **POST** /chat_api/block_profile | Block profile
-*ChatApi* | [**postChatAppNotificationSettings**](doc//ChatApi.md#postchatappnotificationsettings) | **POST** /chat_api/post_chat_app_notification_settings |
+*ChatApi* | [**postChatAppNotificationSettings**](doc//ChatApi.md#postchatappnotificationsettings) | **POST** /chat_api/post_chat_app_notification_settings | 
 *ChatApi* | [**postChatMessageReport**](doc//ChatApi.md#postchatmessagereport) | **POST** /chat_api/chat_message_report | Report chat message.
 *ChatApi* | [**postGetMatchesIteratorPage**](doc//ChatApi.md#postgetmatchesiteratorpage) | **POST** /chat_api/matches | Get requested page of matches iterator page. If the page is empty there is no more matches available.
-*ChatApi* | [**postGetNewReceivedLikesCount**](doc//ChatApi.md#postgetnewreceivedlikescount) | **POST** /chat_api/new_received_likes_count |
+*ChatApi* | [**postGetNewReceivedLikesCount**](doc//ChatApi.md#postgetnewreceivedlikescount) | **POST** /chat_api/new_received_likes_count | 
 *ChatApi* | [**postGetReceivedLikesPage**](doc//ChatApi.md#postgetreceivedlikespage) | **POST** /chat_api/received_likes | Get next page of received likes. If the page is empty there is no more received likes available.
 *ChatApi* | [**postGetSentMessage**](doc//ChatApi.md#postgetsentmessage) | **POST** /chat_api/sent_message | Receive unreceived [model_chat::SignedMessageData] for sent message.
-*ChatApi* | [**postResetNewReceivedLikesCount**](doc//ChatApi.md#postresetnewreceivedlikescount) | **POST** /chat_api/reset_new_received_likes_count |
-*ChatApi* | [**postResetReceivedLikesPaging**](doc//ChatApi.md#postresetreceivedlikespaging) | **POST** /chat_api/received_likes/reset |
+*ChatApi* | [**postResetNewReceivedLikesCount**](doc//ChatApi.md#postresetnewreceivedlikescount) | **POST** /chat_api/reset_new_received_likes_count | 
+*ChatApi* | [**postResetReceivedLikesPaging**](doc//ChatApi.md#postresetreceivedlikespaging) | **POST** /chat_api/received_likes/reset | 
 *ChatApi* | [**postSendLike**](doc//ChatApi.md#postsendlike) | **POST** /chat_api/send_like | Send a like to some account. If both will like each other, then the accounts will be a match.
 *ChatApi* | [**postSendMessage**](doc//ChatApi.md#postsendmessage) | **POST** /chat_api/send_message | Send message to a match.
 *ChatApi* | [**postUnblockProfile**](doc//ChatApi.md#postunblockprofile) | **POST** /chat_api/unblock_profile | Unblock profile
 *ChatAdminApi* | [**postSetMaxPublicKeyCount**](doc//ChatAdminApi.md#postsetmaxpublickeycount) | **POST** /chat_api/set_max_public_key_count | Set max public key count
 *CommonApi* | [**deleteDataExport**](doc//CommonApi.md#deletedataexport) | **DELETE** /common_api/delete_data_export | Delete current data export
-*CommonApi* | [**getClientConfig**](doc//CommonApi.md#getclientconfig) | **GET** /common_api/client_config |
-*CommonApi* | [**getClientLanguage**](doc//CommonApi.md#getclientlanguage) | **GET** /common_api/client_language |
+*CommonApi* | [**getClientConfig**](doc//CommonApi.md#getclientconfig) | **GET** /common_api/client_config | 
+*CommonApi* | [**getClientLanguage**](doc//CommonApi.md#getclientlanguage) | **GET** /common_api/client_language | 
 *CommonApi* | [**getConnectWebsocket**](doc//CommonApi.md#getconnectwebsocket) | **GET** /common_api/connect | Connect to server using WebSocket after getting refresh and access tokens. Connection is required as API access is allowed for connected clients.
 *CommonApi* | [**getDataExportArchive**](doc//CommonApi.md#getdataexportarchive) | **GET** /common_api/data_export_archive | Download current data export archive
-*CommonApi* | [**getDataExportState**](doc//CommonApi.md#getdataexportstate) | **GET** /common_api/data_export_state |
+*CommonApi* | [**getDataExportState**](doc//CommonApi.md#getdataexportstate) | **GET** /common_api/data_export_state | 
 *CommonApi* | [**getVersion**](doc//CommonApi.md#getversion) | **GET** /common_api/version | Get backend version.
-*CommonApi* | [**postClientLanguage**](doc//CommonApi.md#postclientlanguage) | **POST** /common_api/client_language |
+*CommonApi* | [**postClientLanguage**](doc//CommonApi.md#postclientlanguage) | **POST** /common_api/client_language | 
 *CommonApi* | [**postGetPendingNotification**](doc//CommonApi.md#postgetpendingnotification) | **POST** /common_api/get_pending_notification | Get pending notification and reset pending notification.
-*CommonApi* | [**postSetDeviceToken**](doc//CommonApi.md#postsetdevicetoken) | **POST** /common_api/set_device_token |
+*CommonApi* | [**postSetDeviceToken**](doc//CommonApi.md#postsetdevicetoken) | **POST** /common_api/set_device_token | 
 *CommonApi* | [**postStartDataExport**](doc//CommonApi.md#poststartdataexport) | **POST** /common_api/start_data_export | Start data export
 *CommonAdminApi* | [**getAdminNotificationSettings**](doc//CommonAdminApi.md#getadminnotificationsettings) | **GET** /common_api/admin_notification_settings | Get admin notification settings.
 *CommonAdminApi* | [**getAdminNotificationSubscriptions**](doc//CommonAdminApi.md#getadminnotificationsubscriptions) | **GET** /common_api/admin_notification_subscriptions | Get admin notification subscriptions.
 *CommonAdminApi* | [**getBackendConfig**](doc//CommonAdminApi.md#getbackendconfig) | **GET** /common_api/backend_config | Get dynamic backend config.
-*CommonAdminApi* | [**getLatestReportIteratorStartPosition**](doc//CommonAdminApi.md#getlatestreportiteratorstartposition) | **GET** /common_api/latest_report_iterator_start_position |
+*CommonAdminApi* | [**getLatestReportIteratorStartPosition**](doc//CommonAdminApi.md#getlatestreportiteratorstartposition) | **GET** /common_api/latest_report_iterator_start_position | 
 *CommonAdminApi* | [**getMaintenanceNotification**](doc//CommonAdminApi.md#getmaintenancenotification) | **GET** /common_api/maintenance_notification | Get maintenance notification.
 *CommonAdminApi* | [**getManagerInstanceNames**](doc//CommonAdminApi.md#getmanagerinstancenames) | **GET** /common_api/manager_instance_names | Get available manager instances.
 *CommonAdminApi* | [**getScheduledTasksStatus**](doc//CommonAdminApi.md#getscheduledtasksstatus) | **GET** /common_api/scheduled_tasks_status | Get scheduled tasks status from manager instance.
 *CommonAdminApi* | [**getSoftwareUpdateStatus**](doc//CommonAdminApi.md#getsoftwareupdatestatus) | **GET** /common_api/software_info | Get software version information from manager instance.
 *CommonAdminApi* | [**getSystemInfo**](doc//CommonAdminApi.md#getsysteminfo) | **GET** /common_api/system_info | Get system information from manager instance.
-*CommonAdminApi* | [**getWaitingReportPage**](doc//CommonAdminApi.md#getwaitingreportpage) | **GET** /common_api/waiting_report_page |
+*CommonAdminApi* | [**getWaitingReportPage**](doc//CommonAdminApi.md#getwaitingreportpage) | **GET** /common_api/waiting_report_page | 
 *CommonAdminApi* | [**postAdminNotificationSettings**](doc//CommonAdminApi.md#postadminnotificationsettings) | **POST** /common_api/admin_notification_settings | Save admin notification settings.
 *CommonAdminApi* | [**postAdminNotificationSubscriptions**](doc//CommonAdminApi.md#postadminnotificationsubscriptions) | **POST** /common_api/admin_notification_subscriptions | Save admin notification subscriptions.
 *CommonAdminApi* | [**postBackendConfig**](doc//CommonAdminApi.md#postbackendconfig) | **POST** /common_api/backend_config | Save dynamic backend config.
@@ -166,7 +166,7 @@ Class | Method | HTTP request | Description
 *CommonAdminApi* | [**postGetIpCountryStatistics**](doc//CommonAdminApi.md#postgetipcountrystatistics) | **POST** /common_api/ip_country_statistics | Get IP country statistics.
 *CommonAdminApi* | [**postGetPerfData**](doc//CommonAdminApi.md#postgetperfdata) | **POST** /common_api/perf_data | Get performance data
 *CommonAdminApi* | [**postGetReportIteratorPage**](doc//CommonAdminApi.md#postgetreportiteratorpage) | **POST** /common_api/report_iterator_page | Get report iterator page.
-*CommonAdminApi* | [**postProcessReport**](doc//CommonAdminApi.md#postprocessreport) | **POST** /common_api/process_report |
+*CommonAdminApi* | [**postProcessReport**](doc//CommonAdminApi.md#postprocessreport) | **POST** /common_api/process_report | 
 *CommonAdminApi* | [**postScheduleTask**](doc//CommonAdminApi.md#postscheduletask) | **POST** /common_api/schedule_task | Schedule task.
 *CommonAdminApi* | [**postTriggerBackendDataReset**](doc//CommonAdminApi.md#posttriggerbackenddatareset) | **POST** /common_api/trigger_backend_data_reset | Trigger backend data reset
 *CommonAdminApi* | [**postTriggerBackendRestart**](doc//CommonAdminApi.md#posttriggerbackendrestart) | **POST** /common_api/trigger_backend_restart | Trigger backend restart.
@@ -179,13 +179,13 @@ Class | Method | HTTP request | Description
 *MediaApi* | [**getContent**](doc//MediaApi.md#getcontent) | **GET** /media_api/content/{aid}/{cid} | Get content data
 *MediaApi* | [**getContentSlotState**](doc//MediaApi.md#getcontentslotstate) | **GET** /media_api/content_slot/{slot_id} | Get state of content slot.
 *MediaApi* | [**getMapTile**](doc//MediaApi.md#getmaptile) | **GET** /media_api/map_tile/{z}/{x}/{y} | Get map tile PNG file.
-*MediaApi* | [**getMediaAppNotificationSettings**](doc//MediaApi.md#getmediaappnotificationsettings) | **GET** /media_api/get_media_app_notification_settings |
+*MediaApi* | [**getMediaAppNotificationSettings**](doc//MediaApi.md#getmediaappnotificationsettings) | **GET** /media_api/get_media_app_notification_settings | 
 *MediaApi* | [**getMediaContentInfo**](doc//MediaApi.md#getmediacontentinfo) | **GET** /media_api/media_content_info | Get my profile and security content
 *MediaApi* | [**getProfileContentInfo**](doc//MediaApi.md#getprofilecontentinfo) | **GET** /media_api/profile_content_info/{aid} | Get current profile content for selected profile.
 *MediaApi* | [**getSecurityContentInfo**](doc//MediaApi.md#getsecuritycontentinfo) | **GET** /media_api/security_content_info/{aid} | Get current security content for selected profile.
 *MediaApi* | [**postGetMediaContentModerationCompletedNotification**](doc//MediaApi.md#postgetmediacontentmoderationcompletednotification) | **POST** /media_api/media_content_moderation_completed_notification | Get media content moderation completed notification.
 *MediaApi* | [**postMarkMediaContentModerationCompletedNotificationViewed**](doc//MediaApi.md#postmarkmediacontentmoderationcompletednotificationviewed) | **POST** /media_api/mark_media_content_moderation_completed_notification_viewed | The viewed values must be updated to prevent WebSocket code from sending unnecessary event about new notification.
-*MediaApi* | [**postMediaAppNotificationSettings**](doc//MediaApi.md#postmediaappnotificationsettings) | **POST** /media_api/post_media_app_notification_settings |
+*MediaApi* | [**postMediaAppNotificationSettings**](doc//MediaApi.md#postmediaappnotificationsettings) | **POST** /media_api/post_media_app_notification_settings | 
 *MediaApi* | [**postProfileContentReport**](doc//MediaApi.md#postprofilecontentreport) | **POST** /media_api/profile_content_report | Report profile content.
 *MediaApi* | [**putContentToContentSlot**](doc//MediaApi.md#putcontenttocontentslot) | **PUT** /media_api/content_slot/{slot_id} | Upload content to server. The content is saved to content processing slot when account state is [model::AccountState::InitialSetup]. In other states the slot number is ignored and content goes directly to moderation.
 *MediaApi* | [**putProfileContent**](doc//MediaApi.md#putprofilecontent) | **PUT** /media_api/profile_content | Set new profile content for current account.
@@ -194,13 +194,13 @@ Class | Method | HTTP request | Description
 *MediaAdminApi* | [**postMediaContentFaceDetectedValue**](doc//MediaAdminApi.md#postmediacontentfacedetectedvalue) | **POST** /media_api/media_content_face_detected_value | Change media content face detected value
 *MediaAdminApi* | [**postModerateMediaContent**](doc//MediaAdminApi.md#postmoderatemediacontent) | **POST** /media_api/moderate_media_content | Rejected category and details can be set only when the content is rejected.
 *ProfileApi* | [**deleteFavoriteProfile**](doc//ProfileApi.md#deletefavoriteprofile) | **DELETE** /profile_api/favorite_profile | Delete favorite profile
-*ProfileApi* | [**getAutomaticProfileSearchSettings**](doc//ProfileApi.md#getautomaticprofilesearchsettings) | **GET** /profile_api/automatic_profile_search_settings |
+*ProfileApi* | [**getAutomaticProfileSearchSettings**](doc//ProfileApi.md#getautomaticprofilesearchsettings) | **GET** /profile_api/automatic_profile_search_settings | 
 *ProfileApi* | [**getFavoriteProfiles**](doc//ProfileApi.md#getfavoriteprofiles) | **GET** /profile_api/favorite_profiles | Get list of all favorite profiles.
 *ProfileApi* | [**getInitialProfileAge**](doc//ProfileApi.md#getinitialprofileage) | **GET** /profile_api/initial_profile_age | Get initial profile age which can be used for calculating current accepted profile ages.
 *ProfileApi* | [**getLocation**](doc//ProfileApi.md#getlocation) | **GET** /profile_api/location | Get location for account which makes this request.
 *ProfileApi* | [**getMyProfile**](doc//ProfileApi.md#getmyprofile) | **GET** /profile_api/my_profile | Get my profile
 *ProfileApi* | [**getProfile**](doc//ProfileApi.md#getprofile) | **GET** /profile_api/profile/{aid} | Get account's current profile.
-*ProfileApi* | [**getProfileAppNotificationSettings**](doc//ProfileApi.md#getprofileappnotificationsettings) | **GET** /profile_api/get_profile_app_notification_settings |
+*ProfileApi* | [**getProfileAppNotificationSettings**](doc//ProfileApi.md#getprofileappnotificationsettings) | **GET** /profile_api/get_profile_app_notification_settings | 
 *ProfileApi* | [**getProfileFilters**](doc//ProfileApi.md#getprofilefilters) | **GET** /profile_api/profile_filters | Get current profile filters.
 *ProfileApi* | [**getProfileFromDatabaseDebugModeBenchmark**](doc//ProfileApi.md#getprofilefromdatabasedebugmodebenchmark) | **GET** /profile_api/benchmark/profile/{aid} | Get account's current profile from database. Debug mode must be enabled that route can be used.
 *ProfileApi* | [**getProfileStatistics**](doc//ProfileApi.md#getprofilestatistics) | **GET** /profile_api/profile_statistics | Non default values for [model::GetProfileStatisticsParams] requires [model::Permissions::admin_profile_statistics].
@@ -208,16 +208,16 @@ Class | Method | HTTP request | Description
 *ProfileApi* | [**getSearchGroups**](doc//ProfileApi.md#getsearchgroups) | **GET** /profile_api/search_groups | Get account's current search groups (gender and what gender user is looking for)
 *ProfileApi* | [**postAutomaticProfileSearchGetNextProfilePage**](doc//ProfileApi.md#postautomaticprofilesearchgetnextprofilepage) | **POST** /profile_api/automatic_profile_search/next | Post (updates iterator) to get next page of automatic profile search profile list.
 *ProfileApi* | [**postAutomaticProfileSearchResetProfilePaging**](doc//ProfileApi.md#postautomaticprofilesearchresetprofilepaging) | **POST** /profile_api/automatic_profile_search/reset | Reset automatic profile search profile paging.
-*ProfileApi* | [**postAutomaticProfileSearchSettings**](doc//ProfileApi.md#postautomaticprofilesearchsettings) | **POST** /profile_api/automatic_profile_search_settings |
+*ProfileApi* | [**postAutomaticProfileSearchSettings**](doc//ProfileApi.md#postautomaticprofilesearchsettings) | **POST** /profile_api/automatic_profile_search_settings | 
 *ProfileApi* | [**postFavoriteProfile**](doc//ProfileApi.md#postfavoriteprofile) | **POST** /profile_api/favorite_profile | Add new favorite profile
-*ProfileApi* | [**postGetAutomaticProfileSearchCompletedNotification**](doc//ProfileApi.md#postgetautomaticprofilesearchcompletednotification) | **POST** /profile_api/automatic_profile_search_completed_notification |
+*ProfileApi* | [**postGetAutomaticProfileSearchCompletedNotification**](doc//ProfileApi.md#postgetautomaticprofilesearchcompletednotification) | **POST** /profile_api/automatic_profile_search_completed_notification | 
 *ProfileApi* | [**postGetNextProfilePage**](doc//ProfileApi.md#postgetnextprofilepage) | **POST** /profile_api/page/next | Post (updates iterator) to get next page of profile list.
 *ProfileApi* | [**postGetProfileStringModerationCompletedNotification**](doc//ProfileApi.md#postgetprofilestringmoderationcompletednotification) | **POST** /profile_api/profile_string_moderation_completed_notification | Get profile string moderation completed notification.
 *ProfileApi* | [**postGetQueryProfileAttributesConfig**](doc//ProfileApi.md#postgetqueryprofileattributesconfig) | **POST** /profile_api/query_profile_attributes_config | Query profile attributes from profile attributes config using profile attribute ID list.
 *ProfileApi* | [**postMarkAutomaticProfileSearchCompletedNotificationViewed**](doc//ProfileApi.md#postmarkautomaticprofilesearchcompletednotificationviewed) | **POST** /profile_api/mark_automatic_profile_search_completed_notification_viewed | The viewed values must be updated to prevent WebSocket code from sending unnecessary event about new notification.
 *ProfileApi* | [**postMarkProfileStringModerationCompletedNotificationViewed**](doc//ProfileApi.md#postmarkprofilestringmoderationcompletednotificationviewed) | **POST** /profile_api/mark_profile_string_moderation_completed_notification_viewed | The viewed values must be updated to prevent WebSocket code from sending unnecessary event about new notification.
 *ProfileApi* | [**postProfile**](doc//ProfileApi.md#postprofile) | **POST** /profile_api/profile | Update profile information.
-*ProfileApi* | [**postProfileAppNotificationSettings**](doc//ProfileApi.md#postprofileappnotificationsettings) | **POST** /profile_api/post_profile_app_notification_settings |
+*ProfileApi* | [**postProfileAppNotificationSettings**](doc//ProfileApi.md#postprofileappnotificationsettings) | **POST** /profile_api/post_profile_app_notification_settings | 
 *ProfileApi* | [**postProfileFilters**](doc//ProfileApi.md#postprofilefilters) | **POST** /profile_api/profile_filters | Set profile filters.
 *ProfileApi* | [**postProfileToDatabaseDebugModeBenchmark**](doc//ProfileApi.md#postprofiletodatabasedebugmodebenchmark) | **POST** /profile_api/benchmark/profile | Post account's current profile directly to database. Debug mode must be enabled that route can be used.
 *ProfileApi* | [**postReportProfileName**](doc//ProfileApi.md#postreportprofilename) | **POST** /profile_api/report_profile_name | Report profile name
@@ -229,7 +229,7 @@ Class | Method | HTTP request | Description
 *ProfileAdminApi* | [**getAdminProfileIteratorPage**](doc//ProfileAdminApi.md#getadminprofileiteratorpage) | **GET** /profile_api/get_admin_profile_iterator_page | Get admin profile iterator page
 *ProfileAdminApi* | [**getLatestCreatedAccountIdDb**](doc//ProfileAdminApi.md#getlatestcreatedaccountiddb) | **GET** /profile_api/get_latest_created_account_id_db | Get latest created account ID DB
 *ProfileAdminApi* | [**getProfileAgeAndName**](doc//ProfileAdminApi.md#getprofileageandname) | **GET** /profile_api/get_profile_age_and_name/{aid} | Get profile age and name
-*ProfileAdminApi* | [**getProfileStatisticsHistory**](doc//ProfileAdminApi.md#getprofilestatisticshistory) | **GET** /profile_api/profile_statistics_history |
+*ProfileAdminApi* | [**getProfileStatisticsHistory**](doc//ProfileAdminApi.md#getprofilestatisticshistory) | **GET** /profile_api/profile_statistics_history | 
 *ProfileAdminApi* | [**getProfileStringPendingModerationList**](doc//ProfileAdminApi.md#getprofilestringpendingmoderationlist) | **GET** /profile_api/profile_string_pending_moderation | Get first page of pending profile string moderations. Oldest item is first and count 25.
 *ProfileAdminApi* | [**getProfileStringState**](doc//ProfileAdminApi.md#getprofilestringstate) | **GET** /profile_api/get_profile_string_state/{aid} | Get profile string state
 *ProfileAdminApi* | [**postModerateProfileString**](doc//ProfileAdminApi.md#postmoderateprofilestring) | **POST** /profile_api/moderate_profile_string | Rejected category and details can be set only when [PostModerateProfileString::value] is rejected.
@@ -540,3 +540,6 @@ Authentication schemes defined for the API:
 
 
 ## Author
+
+
+
