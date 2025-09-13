@@ -322,7 +322,7 @@ Future<void> _handlePushNotificationReceivedLikesChanged(
 
   await NotificationLikeReceived.getInstance().incrementReceivedLikesCount(accountBackgroundDb);
   await accountBackgroundDb.accountAction(
-    (db) => db.newReceivedLikesCount.updateSyncVersionReceivedLikes(r.v, r.c),
+    (db) => db.newReceivedLikesCount.updateSyncVersionReceivedLikes(r),
   );
 }
 

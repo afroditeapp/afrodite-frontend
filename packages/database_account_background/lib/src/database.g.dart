@@ -2334,10 +2334,23 @@ class $NewReceivedLikesCountTable extends schema.NewReceivedLikesCount
         $NewReceivedLikesCountTable.$converternewReceivedLikesCount,
       );
   @override
+  late final GeneratedColumnWithTypeConverter<ReceivedLikeId?, int>
+  latestReceivedLikeId =
+      GeneratedColumn<int>(
+        'latest_received_like_id',
+        aliasedName,
+        true,
+        type: DriftSqlType.int,
+        requiredDuringInsert: false,
+      ).withConverter<ReceivedLikeId?>(
+        $NewReceivedLikesCountTable.$converterlatestReceivedLikeId,
+      );
+  @override
   List<GeneratedColumn> get $columns => [
     id,
     syncVersionReceivedLikes,
     newReceivedLikesCount,
+    latestReceivedLikeId,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -2391,6 +2404,14 @@ class $NewReceivedLikesCountTable extends schema.NewReceivedLikesCount
               data['${effectivePrefix}new_received_likes_count'],
             ),
           ),
+      latestReceivedLikeId: $NewReceivedLikesCountTable
+          .$converterlatestReceivedLikeId
+          .fromSql(
+            attachedDatabase.typeMapping.read(
+              DriftSqlType.int,
+              data['${effectivePrefix}latest_received_like_id'],
+            ),
+          ),
     );
   }
 
@@ -2403,6 +2424,8 @@ class $NewReceivedLikesCountTable extends schema.NewReceivedLikesCount
   $converternewReceivedLikesCount = const NullAwareTypeConverter.wrap(
     NewReceivedLikesCountConverter(),
   );
+  static TypeConverter<ReceivedLikeId?, int?> $converterlatestReceivedLikeId =
+      const NullAwareTypeConverter.wrap(ReceivedLikeIdConverter());
 }
 
 class NewReceivedLikesCountData extends DataClass
@@ -2410,10 +2433,12 @@ class NewReceivedLikesCountData extends DataClass
   final int id;
   final int? syncVersionReceivedLikes;
   final NewReceivedLikesCount? newReceivedLikesCount;
+  final ReceivedLikeId? latestReceivedLikeId;
   const NewReceivedLikesCountData({
     required this.id,
     this.syncVersionReceivedLikes,
     this.newReceivedLikesCount,
+    this.latestReceivedLikeId,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -2431,6 +2456,13 @@ class NewReceivedLikesCountData extends DataClass
         ),
       );
     }
+    if (!nullToAbsent || latestReceivedLikeId != null) {
+      map['latest_received_like_id'] = Variable<int>(
+        $NewReceivedLikesCountTable.$converterlatestReceivedLikeId.toSql(
+          latestReceivedLikeId,
+        ),
+      );
+    }
     return map;
   }
 
@@ -2443,6 +2475,9 @@ class NewReceivedLikesCountData extends DataClass
       newReceivedLikesCount: newReceivedLikesCount == null && nullToAbsent
           ? const Value.absent()
           : Value(newReceivedLikesCount),
+      latestReceivedLikeId: latestReceivedLikeId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(latestReceivedLikeId),
     );
   }
 
@@ -2459,6 +2494,9 @@ class NewReceivedLikesCountData extends DataClass
       newReceivedLikesCount: serializer.fromJson<NewReceivedLikesCount?>(
         json['newReceivedLikesCount'],
       ),
+      latestReceivedLikeId: serializer.fromJson<ReceivedLikeId?>(
+        json['latestReceivedLikeId'],
+      ),
     );
   }
   @override
@@ -2472,6 +2510,9 @@ class NewReceivedLikesCountData extends DataClass
       'newReceivedLikesCount': serializer.toJson<NewReceivedLikesCount?>(
         newReceivedLikesCount,
       ),
+      'latestReceivedLikeId': serializer.toJson<ReceivedLikeId?>(
+        latestReceivedLikeId,
+      ),
     };
   }
 
@@ -2479,6 +2520,7 @@ class NewReceivedLikesCountData extends DataClass
     int? id,
     Value<int?> syncVersionReceivedLikes = const Value.absent(),
     Value<NewReceivedLikesCount?> newReceivedLikesCount = const Value.absent(),
+    Value<ReceivedLikeId?> latestReceivedLikeId = const Value.absent(),
   }) => NewReceivedLikesCountData(
     id: id ?? this.id,
     syncVersionReceivedLikes: syncVersionReceivedLikes.present
@@ -2487,6 +2529,9 @@ class NewReceivedLikesCountData extends DataClass
     newReceivedLikesCount: newReceivedLikesCount.present
         ? newReceivedLikesCount.value
         : this.newReceivedLikesCount,
+    latestReceivedLikeId: latestReceivedLikeId.present
+        ? latestReceivedLikeId.value
+        : this.latestReceivedLikeId,
   );
   NewReceivedLikesCountData copyWithCompanion(
     NewReceivedLikesCountCompanion data,
@@ -2499,6 +2544,9 @@ class NewReceivedLikesCountData extends DataClass
       newReceivedLikesCount: data.newReceivedLikesCount.present
           ? data.newReceivedLikesCount.value
           : this.newReceivedLikesCount,
+      latestReceivedLikeId: data.latestReceivedLikeId.present
+          ? data.latestReceivedLikeId.value
+          : this.latestReceivedLikeId,
     );
   }
 
@@ -2507,21 +2555,27 @@ class NewReceivedLikesCountData extends DataClass
     return (StringBuffer('NewReceivedLikesCountData(')
           ..write('id: $id, ')
           ..write('syncVersionReceivedLikes: $syncVersionReceivedLikes, ')
-          ..write('newReceivedLikesCount: $newReceivedLikesCount')
+          ..write('newReceivedLikesCount: $newReceivedLikesCount, ')
+          ..write('latestReceivedLikeId: $latestReceivedLikeId')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode =>
-      Object.hash(id, syncVersionReceivedLikes, newReceivedLikesCount);
+  int get hashCode => Object.hash(
+    id,
+    syncVersionReceivedLikes,
+    newReceivedLikesCount,
+    latestReceivedLikeId,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is NewReceivedLikesCountData &&
           other.id == this.id &&
           other.syncVersionReceivedLikes == this.syncVersionReceivedLikes &&
-          other.newReceivedLikesCount == this.newReceivedLikesCount);
+          other.newReceivedLikesCount == this.newReceivedLikesCount &&
+          other.latestReceivedLikeId == this.latestReceivedLikeId);
 }
 
 class NewReceivedLikesCountCompanion
@@ -2529,20 +2583,24 @@ class NewReceivedLikesCountCompanion
   final Value<int> id;
   final Value<int?> syncVersionReceivedLikes;
   final Value<NewReceivedLikesCount?> newReceivedLikesCount;
+  final Value<ReceivedLikeId?> latestReceivedLikeId;
   const NewReceivedLikesCountCompanion({
     this.id = const Value.absent(),
     this.syncVersionReceivedLikes = const Value.absent(),
     this.newReceivedLikesCount = const Value.absent(),
+    this.latestReceivedLikeId = const Value.absent(),
   });
   NewReceivedLikesCountCompanion.insert({
     this.id = const Value.absent(),
     this.syncVersionReceivedLikes = const Value.absent(),
     this.newReceivedLikesCount = const Value.absent(),
+    this.latestReceivedLikeId = const Value.absent(),
   });
   static Insertable<NewReceivedLikesCountData> custom({
     Expression<int>? id,
     Expression<int>? syncVersionReceivedLikes,
     Expression<int>? newReceivedLikesCount,
+    Expression<int>? latestReceivedLikeId,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -2550,6 +2608,8 @@ class NewReceivedLikesCountCompanion
         'sync_version_received_likes': syncVersionReceivedLikes,
       if (newReceivedLikesCount != null)
         'new_received_likes_count': newReceivedLikesCount,
+      if (latestReceivedLikeId != null)
+        'latest_received_like_id': latestReceivedLikeId,
     });
   }
 
@@ -2557,6 +2617,7 @@ class NewReceivedLikesCountCompanion
     Value<int>? id,
     Value<int?>? syncVersionReceivedLikes,
     Value<NewReceivedLikesCount?>? newReceivedLikesCount,
+    Value<ReceivedLikeId?>? latestReceivedLikeId,
   }) {
     return NewReceivedLikesCountCompanion(
       id: id ?? this.id,
@@ -2564,6 +2625,7 @@ class NewReceivedLikesCountCompanion
           syncVersionReceivedLikes ?? this.syncVersionReceivedLikes,
       newReceivedLikesCount:
           newReceivedLikesCount ?? this.newReceivedLikesCount,
+      latestReceivedLikeId: latestReceivedLikeId ?? this.latestReceivedLikeId,
     );
   }
 
@@ -2585,6 +2647,13 @@ class NewReceivedLikesCountCompanion
         ),
       );
     }
+    if (latestReceivedLikeId.present) {
+      map['latest_received_like_id'] = Variable<int>(
+        $NewReceivedLikesCountTable.$converterlatestReceivedLikeId.toSql(
+          latestReceivedLikeId.value,
+        ),
+      );
+    }
     return map;
   }
 
@@ -2593,7 +2662,8 @@ class NewReceivedLikesCountCompanion
     return (StringBuffer('NewReceivedLikesCountCompanion(')
           ..write('id: $id, ')
           ..write('syncVersionReceivedLikes: $syncVersionReceivedLikes, ')
-          ..write('newReceivedLikesCount: $newReceivedLikesCount')
+          ..write('newReceivedLikesCount: $newReceivedLikesCount, ')
+          ..write('latestReceivedLikeId: $latestReceivedLikeId')
           ..write(')'))
         .toString();
   }

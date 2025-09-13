@@ -12,15 +12,13 @@ class DaoWriteNewReceivedLikesCount extends DatabaseAccessor<AccountBackgroundDa
     with _$DaoWriteNewReceivedLikesCountMixin {
   DaoWriteNewReceivedLikesCount(super.db);
 
-  Future<void> updateSyncVersionReceivedLikes(
-    api.ReceivedLikesSyncVersion value,
-    api.NewReceivedLikesCount count,
-  ) async {
+  Future<void> updateSyncVersionReceivedLikes(api.NewReceivedLikesCountResult value) async {
     await into(newReceivedLikesCount).insertOnConflictUpdate(
       NewReceivedLikesCountCompanion.insert(
         id: SingleRowTable.ID,
-        syncVersionReceivedLikes: Value(value.version),
-        newReceivedLikesCount: Value(count),
+        syncVersionReceivedLikes: Value(value.v.version),
+        newReceivedLikesCount: Value(value.c),
+        latestReceivedLikeId: Value(value.l),
       ),
     );
   }

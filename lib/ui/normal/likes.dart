@@ -12,7 +12,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 import 'package:app/data/chat/received_likes_iterator_manager.dart';
-import 'package:app/data/login_repository.dart';
 import 'package:app/data/profile_repository.dart';
 import 'package:database/database.dart';
 import 'package:app/logic/app/bottom_navigation_state.dart';
@@ -25,12 +24,10 @@ import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui/normal/profiles/profile_grid.dart';
 import 'package:app/ui_utils/bottom_navigation.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-
 import 'package:app/localizations.dart';
 import 'package:app/ui_utils/list.dart';
 import 'package:app/ui_utils/scroll_controller.dart';
 import 'package:app/utils/result.dart';
-import 'package:utils/utils.dart';
 
 class LikeView extends BottomNavigationScreen {
   const LikeView({super.key});
@@ -122,7 +119,7 @@ class LikesScreen extends StatefulWidget {
 }
 
 class _LikesScreenState extends State<LikesScreen> {
-  bool likesBadgeResetDone = false;
+  bool notifyBlocThatLikesScreenIsVisible = false;
 
   @override
   Widget build(BuildContext context) {
@@ -134,9 +131,9 @@ class _LikesScreenState extends State<LikesScreen> {
   }
 
   Widget content() {
-    if (!likesBadgeResetDone) {
-      likesBadgeResetDone = true;
-      context.read<NewReceivedLikesAvailableBloc>().add(ResetReceivedLikesCount());
+    if (!notifyBlocThatLikesScreenIsVisible) {
+      notifyBlocThatLikesScreenIsVisible = true;
+      context.read<NewReceivedLikesAvailableBloc>().add(LikesScreenNowVisible());
     }
 
     return BlocBuilder<LikeGridInstanceManagerBloc, LikeGridInstanceManagerData>(
@@ -182,8 +179,6 @@ class LikeViewContentState extends State<LikeViewContent> {
   StreamSubscription<ProfileChange>? _profileChangesSubscription;
 
   late final UiProfileIterator _mainProfilesViewIterator;
-  bool _onLoginReloadDoneOnce = false;
-  UtcDateTime? _previousAutomaticReloadTime;
 
   final PagedGridLogic _gridLogic = PagedGridLogic();
   bool isDisposed = false;
@@ -295,8 +290,7 @@ class LikeViewContentState extends State<LikeViewContent> {
   Widget build(BuildContext context) {
     return RefreshIndicator(
       onRefresh: () async {
-        widget.receivedLikesBloc.add(ResetReceivedLikesCount());
-        await refreshProfileGrid();
+        widget.receivedLikesBloc.add(RefreshReceivedLikes());
       },
       child: NotificationListener<ScrollMetricsNotification>(
         onNotification: (notification) {
@@ -325,9 +319,8 @@ class LikeViewContentState extends State<LikeViewContent> {
                   },
                 ),
               ),
-              logicRefreshLikesCommandFromFloatingActionButton(),
-              logicResetLikesCountWhenLikesScreenOpens(),
-              logicAutomaticReload(),
+              logicHandleRefreshFromBloc(),
+              logicNotifyBlocAboutBottomNavigation(),
             ],
           ),
         ),
@@ -394,10 +387,7 @@ class LikeViewContentState extends State<LikeViewContent> {
           Text(context.strings.likes_screen_like_loading_failed),
           const Padding(padding: EdgeInsets.all(8)),
           ElevatedButton(
-            onPressed: () {
-              context.read<NewReceivedLikesAvailableBloc>().add(ResetReceivedLikesCount());
-              refreshProfileGrid();
-            },
+            onPressed: () => widget.receivedLikesBloc.add(RefreshReceivedLikes()),
             child: Text(context.strings.generic_try_again),
           ),
           const Spacer(flex: 3),
@@ -406,15 +396,13 @@ class LikeViewContentState extends State<LikeViewContent> {
     );
   }
 
-  Widget logicRefreshLikesCommandFromFloatingActionButton() {
+  Widget logicHandleRefreshFromBloc() {
     return BlocBuilder<NewReceivedLikesAvailableBloc, NewReceivedLikesAvailableData>(
       buildWhen: (previous, current) =>
           previous.triggerReceivedLikesRefresh != current.triggerReceivedLikesRefresh,
       builder: (context, state) {
         if (state.triggerReceivedLikesRefresh) {
-          final bloc = context.read<NewReceivedLikesAvailableBloc>();
-          bloc.add(ResetReceivedLikesCount());
-          bloc.add(SetTriggerReceivedLikesRefreshWithButton(false));
+          widget.receivedLikesBloc.add(MarkReceivedLikesRefreshDone());
           refreshProfileGrid();
         }
         return const SizedBox.shrink();
@@ -422,50 +410,13 @@ class LikeViewContentState extends State<LikeViewContent> {
     );
   }
 
-  Widget logicResetLikesCountWhenLikesScreenOpens() {
+  Widget logicNotifyBlocAboutBottomNavigation() {
     return BlocBuilder<BottomNavigationStateBloc, BottomNavigationStateData>(
       buildWhen: (previous, current) => previous.screen != current.screen,
       builder: (context, state) {
         if (state.screen == BottomNavigationScreenId.likes) {
-          final bloc = context.read<NewReceivedLikesAvailableBloc>();
-          bloc.add(ResetReceivedLikesCount());
+          widget.receivedLikesBloc.add(LikesScreenNowVisible());
         }
-        return const SizedBox.shrink();
-      },
-    );
-  }
-
-  Widget logicAutomaticReload() {
-    return BlocBuilder<NewReceivedLikesAvailableBloc, NewReceivedLikesAvailableData>(
-      buildWhen: (previous, current) =>
-          previous.newReceivedLikesCount != current.newReceivedLikesCount,
-      builder: (context, state) {
-        final currentTime = UtcDateTime.now();
-        final previousTime = _previousAutomaticReloadTime;
-        final enoughTimeElapsedFromPreviousReload =
-            previousTime == null || currentTime.difference(previousTime).inSeconds > 5;
-
-        if (!enoughTimeElapsedFromPreviousReload) {
-          return const SizedBox.shrink();
-        }
-
-        final repositories = LoginRepository.getInstance().repositoriesOrNull;
-        if (state.newReceivedLikesCount == 0 &&
-            repositories != null &&
-            repositories.accountLoginHappened &&
-            !_onLoginReloadDoneOnce) {
-          // This exits to get current received likes from the server after
-          // login.
-          refreshProfileGrid();
-          _onLoginReloadDoneOnce = true;
-          _previousAutomaticReloadTime = currentTime;
-        } else if (state.newReceivedLikesCount > 0 &&
-            !context.read<BottomNavigationStateBloc>().state.isScrolledLikes) {
-          refreshProfileGrid();
-          _onLoginReloadDoneOnce = true;
-          _previousAutomaticReloadTime = currentTime;
-        }
-
         return const SizedBox.shrink();
       },
     );
@@ -501,7 +452,7 @@ Widget refreshLikesFloatingActionButton() {
       if (state.showRefreshButton) {
         final bloc = context.read<NewReceivedLikesAvailableBloc>();
         return FloatingActionButton.extended(
-          onPressed: () => bloc.add(SetTriggerReceivedLikesRefreshWithButton(true)),
+          onPressed: () => bloc.add(RefreshReceivedLikes()),
           label: Text(context.strings.likes_screen_refresh_action),
           icon: const Icon(Icons.refresh),
         );
