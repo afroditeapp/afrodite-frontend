@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:app/logic/app/navigator_state.dart';
 import 'package:flutter/material.dart';
 
@@ -6,70 +8,103 @@ import 'package:flutter/foundation.dart';
 import 'package:openapi/api.dart';
 import 'package:app/ui/splash_screen.dart';
 import 'package:app/utils/immutable_list.dart';
-import 'package:rxdart/rxdart.dart';
 
 part 'navigator_state.freezed.dart';
 
 @freezed
 class NavigatorStateData with _$NavigatorStateData {
   NavigatorStateData._();
-  factory NavigatorStateData({required UnmodifiableList<MyPage> pages}) = _NavigatorStateData;
+  factory NavigatorStateData({required UnmodifiableList<MyPage<Object>> pages}) =
+      _NavigatorStateData;
 
   List<Page<Object?>> getPages() {
     return pages.map((e) => e.page).toList();
   }
 
   static NavigatorStateData defaultValue() {
-    return NavigatorStateData(pages: UnmodifiableList(MyPage.splashScreen()));
+    return rootPage(SplashPage());
   }
 
-  static NavigatorStateData rootPage(NewPageDetails newPageDetails) {
-    return NavigatorStateData(
-      pages: UnmodifiableList([
-        MyPage(
-          newPageDetails.pageKey ?? PageKey(),
-          newPageDetails.page,
-          null,
-          newPageDetails.pageInfo,
-        ),
-      ]),
-    );
+  static NavigatorStateData rootPage(MyPage<Object> page) {
+    return NavigatorStateData(pages: UnmodifiableList([page]));
   }
 
-  static NavigatorStateData rootPageAndOtherPage(NewPageDetails first, NewPageDetails second) {
-    return NavigatorStateData(
-      pages: UnmodifiableList([
-        MyPage(first.pageKey ?? PageKey(), first.page, null, first.pageInfo),
-        MyPage(second.pageKey ?? PageKey(), second.page, null, second.pageInfo),
-      ]),
-    );
+  static NavigatorStateData rootPageAndOtherPage(MyPage<Object> first, MyPage<Object> second) {
+    return NavigatorStateData(pages: UnmodifiableList([first, second]));
   }
 }
 
-class MyPage {
+abstract class MyPage<T> {
+  PageKey get key;
+  Page<T> get page;
+  Completer<T?> get completer;
+  PageInfo? get pageInfo;
+}
+
+abstract class MyScreenPage<T> extends MyPage<T> {
+  final PageKey _key;
+  final Page<T> _page;
+  final Completer<T?> _completer;
+  final PageInfo? _pageInfo;
+
+  MyScreenPage({PageKey? key, required Widget child, Completer<T?>? completer, PageInfo? pageInfo})
+    : _key = key ?? PageKey(),
+      _page = MaterialPage<T>(child: child),
+      _completer = completer ?? Completer(),
+      _pageInfo = pageInfo;
+
+  @override
+  PageKey get key => _key;
+  @override
+  Page<T> get page => _page;
+  @override
+  Completer<T?> get completer => _completer;
+  @override
+  PageInfo? get pageInfo => _pageInfo;
+}
+
+abstract class MyDialogPage<T> extends MyPage<T> {
+  final _MyDialogPageImpl<T> _impl;
+  MyDialogPage({
+    required Widget Function(BuildContext, PageCloser<T>) builder,
+    bool barrierDismissable = true,
+  }) : _impl = _MyDialogPageImpl(
+         builder: builder,
+         closer: PageCloser(PageKey()),
+         barrierDismissable: barrierDismissable,
+       );
+
+  @override
+  PageKey get key => _impl.closer.key;
+  @override
+  Page<T> get page => _impl.page;
+  @override
+  Completer<T?> get completer => _impl.completer;
+  @override
+  PageInfo? get pageInfo => null;
+}
+
+class _MyDialogPageImpl<T> {
+  final Page<T> page;
+  final Completer<T?> completer;
+  final PageCloser<T> closer;
+  _MyDialogPageImpl({
+    required Widget Function(BuildContext, PageCloser<T>) builder,
+    required this.closer,
+    required bool barrierDismissable,
+  }) : completer = Completer(),
+       page = MaterialDialogPage<T>(
+         (context) => builder(context, closer),
+         barrierDismissable: barrierDismissable,
+       );
+}
+
+class PageCloser<T> {
   final PageKey key;
-  final Page<Object?> page;
-  final BehaviorSubject<ReturnChannelValue>? channel;
-  final PageInfo? pageInfo;
-
-  const MyPage(this.key, this.page, this.channel, this.pageInfo);
-
-  static List<MyPage> splashScreen() {
-    return [MyPage(PageKey(), const MaterialPage(child: SplashScreen()), null, null)];
+  PageCloser(this.key);
+  void close(BuildContext context, T close) {
+    MyNavigator.removePage(context, key, close);
   }
-}
-
-sealed class ReturnChannelValue {
-  const ReturnChannelValue();
-}
-
-class WaitingPagePop extends ReturnChannelValue {
-  const WaitingPagePop();
-}
-
-class PagePopDone extends ReturnChannelValue {
-  final Object? returnValue;
-  const PagePopDone(this.returnValue);
 }
 
 class PageKey extends UniqueKey {}

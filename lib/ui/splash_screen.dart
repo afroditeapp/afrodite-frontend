@@ -1,8 +1,13 @@
 import "package:app/localizations.dart";
+import "package:app/model/freezed/logic/main/navigator_state.dart";
 import "package:app/ui_utils/image.dart";
 import "package:flutter/material.dart";
 import "package:app/assets.dart";
 import "package:app/main.dart";
+
+class SplashPage extends MyScreenPage<()> {
+  SplashPage() : super(child: SplashScreen());
+}
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});

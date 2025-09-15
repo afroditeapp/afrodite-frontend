@@ -44,6 +44,10 @@ void showAppAboutDialog(BuildContext context, ClientFeaturesConfigData? config) 
   );
 }
 
+class ConfirmDialogPage extends MyDialogPage<bool> {
+  ConfirmDialogPage({required super.builder});
+}
+
 Future<bool?> showConfirmDialog(
   BuildContext context,
   String titleText, {
@@ -51,40 +55,42 @@ Future<bool?> showConfirmDialog(
   bool yesNoActions = false,
   bool scrollable = false,
 }) {
-  final String negativeActionText;
-  final String positiveActionText;
-  if (yesNoActions) {
-    negativeActionText = context.strings.generic_no;
-    positiveActionText = context.strings.generic_yes;
-  } else {
-    negativeActionText = context.strings.generic_cancel;
-    positiveActionText = context.strings.generic_ok;
-  }
-
-  final pageKey = PageKey();
   return MyNavigator.showDialog<bool>(
     context: context,
-    pageKey: pageKey,
-    builder: (context) => AlertDialog(
-      title: Text(titleText),
-      content: details != null ? Text(details) : null,
-      scrollable: scrollable,
-      actions: <Widget>[
-        TextButton(
-          onPressed: () {
-            MyNavigator.removePage(context, pageKey, false);
-          },
-          child: Text(negativeActionText),
-        ),
-        TextButton(
-          onPressed: () {
-            MyNavigator.removePage(context, pageKey, true);
-          },
-          child: Text(positiveActionText),
-        ),
-      ],
+    page: ConfirmDialogPage(
+      builder: (context, closer) {
+        final String negativeActionText;
+        final String positiveActionText;
+        if (yesNoActions) {
+          negativeActionText = context.strings.generic_no;
+          positiveActionText = context.strings.generic_yes;
+        } else {
+          negativeActionText = context.strings.generic_cancel;
+          positiveActionText = context.strings.generic_ok;
+        }
+
+        return AlertDialog(
+          title: Text(titleText),
+          content: details != null ? Text(details) : null,
+          scrollable: scrollable,
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => closer.close(context, false),
+              child: Text(negativeActionText),
+            ),
+            TextButton(
+              onPressed: () => closer.close(context, true),
+              child: Text(positiveActionText),
+            ),
+          ],
+        );
+      },
     ),
   );
+}
+
+class ConfirmDialogAdvancedPage extends MyDialogPage<()> {
+  ConfirmDialogAdvancedPage({required super.builder});
 }
 
 Future<void> showConfirmDialogAdvanced({
@@ -93,87 +99,89 @@ Future<void> showConfirmDialogAdvanced({
   String? details,
   void Function()? onSuccess,
 }) {
-  final pageKey = PageKey();
-  return MyNavigator.showDialog<void>(
+  return MyNavigator.showDialog<()>(
     context: context,
-    pageKey: pageKey,
-    builder: (context) => AlertDialog(
-      title: Text(title),
-      content: details != null ? Text(details) : null,
-      actions: <Widget>[
-        TextButton(
-          onPressed: () {
-            MyNavigator.removePage(context, pageKey);
-          },
-          child: Text(context.strings.generic_cancel),
-        ),
-        TextButton(
-          onPressed: () {
-            MyNavigator.removePage(context, pageKey);
-            if (onSuccess != null) {
-              onSuccess();
-            }
-          },
-          child: Text(context.strings.generic_ok),
-        ),
-      ],
+    page: ConfirmDialogAdvancedPage(
+      builder: (context, closer) {
+        return AlertDialog(
+          title: Text(title),
+          content: details != null ? Text(details) : null,
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => closer.close(context, ()),
+              child: Text(context.strings.generic_cancel),
+            ),
+            TextButton(
+              onPressed: () {
+                closer.close(context, ());
+                if (onSuccess != null) {
+                  onSuccess();
+                }
+              },
+              child: Text(context.strings.generic_ok),
+            ),
+          ],
+        );
+      },
     ),
   );
 }
 
-Future<bool?> showInfoDialog(
+class InfoDialogPage extends MyDialogPage<()> {
+  InfoDialogPage({required super.builder});
+}
+
+Future<()?> showInfoDialog(
   BuildContext context,
   String text, {
   PageKey? existingPageToBeRemoved,
   bool scrollable = false,
 }) {
-  final pageKey = PageKey();
-
-  dialogBuilder(BuildContext context) => AlertDialog(
+  Widget dialogBuilder(BuildContext context, PageCloser<()> closer) => AlertDialog(
     content: SelectableText(text),
     actions: <Widget>[
       TextButton(
-        onPressed: () {
-          MyNavigator.removePage(context, pageKey, false);
-        },
+        onPressed: () => closer.close(context, ()),
         child: Text(context.strings.generic_close),
       ),
     ],
     scrollable: scrollable,
   );
 
+  final page = InfoDialogPage(builder: dialogBuilder);
+
   if (existingPageToBeRemoved == null) {
-    return MyNavigator.showDialog<bool>(context: context, pageKey: pageKey, builder: dialogBuilder);
+    return MyNavigator.showDialog<()>(context: context, page: page);
   } else {
-    return MyNavigator.removeAndShowDialog<bool>(
+    return MyNavigator.removeAndShowDialog<()>(
       context: context,
-      existingPageKey: existingPageToBeRemoved,
-      newPageKey: pageKey,
-      builder: dialogBuilder,
+      toBeRemoved: existingPageToBeRemoved,
+      page: page,
     );
   }
 }
 
+class LoadingDialogPage extends MyDialogPage<()> {
+  LoadingDialogPage({required super.builder}) : super(barrierDismissable: false);
+}
+
 /// When dismiss action runs the dialog is already dismissed.
-Future<void> showLoadingDialogWithAutoDismiss<B extends StateStreamable<S>, S>(
+Future<()?> showLoadingDialogWithAutoDismiss<B extends StateStreamable<S>, S>(
   BuildContext context, {
   required bool Function(S) dialogVisibilityGetter,
   required PageKey removeAlsoThisPage,
 }) async {
-  final pageKey = PageKey();
-  return await MyNavigator.showDialog<void>(
-    context: context,
-    pageKey: pageKey,
-    barrierDismissable: false,
-    builder: (context) {
+  final page = LoadingDialogPage(
+    builder: (context, closer) {
       return _loadingDialogContent<B, S>(
         context,
-        pageKey: pageKey,
+        pageKey: closer.key,
         dialogVisibilityGetter: dialogVisibilityGetter,
         removeAlsoThisPage: removeAlsoThisPage,
       );
     },
   );
+  return await MyNavigator.showDialog<()>(context: context, page: page);
 }
 
 Widget _loadingDialogContent<B extends StateStreamable<S>, S>(

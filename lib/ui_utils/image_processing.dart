@@ -50,16 +50,15 @@ Widget confirmDialogOpener<B extends Bloc<ImageProcessingEvent, ImageProcessingD
   );
 }
 
+class ConfirmImageDialog extends MyDialogPage<bool> {
+  ConfirmImageDialog({required super.builder});
+}
+
 Future<bool?> _confirmDialogForImage(BuildContext context, Uint8List imageBytes) async {
   const IMG_WIDTH = 150.0;
   const IMG_HEIGHT = 200.0;
   Widget img = InkWell(
-    onTap: () {
-      MyNavigator.push(
-        context,
-        MaterialPage<void>(child: ViewImageScreen(ViewImageBytesContent(imageBytes))),
-      );
-    },
+    onTap: () => openViewImageScreenWithImageData(context, imageBytes),
     // Width seems to prevent the dialog from expanding horizontaly
     child: bytesImgWidget(
       imageBytes,
@@ -69,31 +68,26 @@ Future<bool?> _confirmDialogForImage(BuildContext context, Uint8List imageBytes)
     ),
   );
 
-  Widget dialog = AlertDialog(
-    title: Text(context.strings.image_processing_ui_confirm_photo_dialog_title),
-    content: img,
-    actions: [
-      TextButton(
-        onPressed: () {
-          MyNavigator.pop(context, false);
-        },
-        child: Text(context.strings.generic_cancel),
-      ),
-      TextButton(
-        onPressed: () {
-          MyNavigator.pop(context, true);
-        },
-        child: Text(context.strings.generic_continue),
-      ),
-    ],
+  final page = ConfirmImageDialog(
+    builder: (context, closer) {
+      return AlertDialog(
+        title: Text(context.strings.image_processing_ui_confirm_photo_dialog_title),
+        content: img,
+        actions: [
+          TextButton(
+            onPressed: () => closer.close(context, false),
+            child: Text(context.strings.generic_cancel),
+          ),
+          TextButton(
+            onPressed: () => closer.close(context, true),
+            child: Text(context.strings.generic_continue),
+          ),
+        ],
+      );
+    },
   );
 
-  final pageKey = PageKey();
-  return await MyNavigator.showDialog<bool?>(
-    context: context,
-    builder: (context) => dialog,
-    pageKey: pageKey,
-  );
+  return await MyNavigator.showDialog<bool>(context: context, page: page);
 }
 
 Widget

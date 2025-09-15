@@ -1,6 +1,7 @@
 import "dart:typed_data";
 
 import "package:app/data/image_cache.dart";
+import "package:app/model/freezed/logic/main/navigator_state.dart";
 import "package:flutter/material.dart";
 import "package:openapi/api.dart";
 
@@ -21,15 +22,20 @@ class ViewImageBytesContent extends ViewImageScreenMode {
   final Uint8List imageBytes;
 }
 
+class ViewImagePage extends MyScreenPage<()> {
+  ViewImagePage(ViewImageScreenMode mode) : super(child: ViewImageScreen(mode));
+}
+
 void openViewImageScreenForAccountImage(
   BuildContext context,
   AccountId accountId,
   ContentId contentId,
 ) {
-  MyNavigator.push(
-    context,
-    MaterialPage<void>(child: ViewImageScreen(ViewImageAccountContent(accountId, contentId))),
-  );
+  MyNavigator.push(context, ViewImagePage(ViewImageAccountContent(accountId, contentId)));
+}
+
+void openViewImageScreenWithImageData(BuildContext context, Uint8List data) {
+  MyNavigator.push(context, ViewImagePage(ViewImageBytesContent(data)));
 }
 
 class ViewImageScreen extends StatefulWidget {

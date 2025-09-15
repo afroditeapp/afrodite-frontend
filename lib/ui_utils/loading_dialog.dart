@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:app/ui_utils/dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:app/logic/app/navigator_state.dart';
@@ -63,20 +64,19 @@ void _showLoadingDialog<B extends StateStreamable<S>, S>(
   Widget loadingInfo,
   bool Function(S) dialogVisibilityGetter,
 ) {
-  final PageKey pageKey = PageKey();
-  MyNavigator.showDialog<void>(
+  MyNavigator.showDialog<()>(
     context: context,
-    pageKey: pageKey,
-    barrierDismissable: false,
-    builder: (context) {
-      return _loadingDialogContent<B, S>(loadingInfo, pageKey, dialogVisibilityGetter, context);
-    },
+    page: LoadingDialogPage(
+      builder: (context, closer) {
+        return _loadingDialogContent<B, S>(loadingInfo, closer, dialogVisibilityGetter, context);
+      },
+    ),
   );
 }
 
 Widget _loadingDialogContent<B extends StateStreamable<S>, S>(
   Widget loadingInfo,
-  PageKey pageKey,
+  PageCloser<()> closer,
   bool Function(S) dialogVisibilityGetter,
   BuildContext context,
 ) {
@@ -96,7 +96,7 @@ Widget _loadingDialogContent<B extends StateStreamable<S>, S>(
               if (!dialogVisibilityGetter(state)) {
                 Future.delayed(Duration.zero, () {
                   if (context.mounted) {
-                    MyNavigator.removePage(context, pageKey);
+                    closer.close(context, ());
                   }
                 });
               }

@@ -32,14 +32,8 @@ class RemoveMultiplePages extends NavigatorStateEvent {
 }
 
 class PushPage extends NavigatorStateEvent {
-  final MyPage newPage;
+  final MyPage<Object> newPage;
   PushPage(this.newPage);
-}
-
-class ReplaceSinglePage extends NavigatorStateEvent {
-  final PageKey existingPage;
-  final MyPage newPage;
-  ReplaceSinglePage(this.existingPage, this.newPage);
 }
 
 class PopUntilLenghtIs extends NavigatorStateEvent {
@@ -64,51 +58,39 @@ class NavigatorStateBloc extends Bloc<NavigatorStateEvent, NavigatorStateData> {
       final newPages = state.pages.toList();
       if (state.pages.length > 1) {
         final removed = newPages.removeLast();
-        removed.channel?.add(PagePopDone(data.pageReturnValue));
+        removed.completer.complete(data.pageReturnValue);
       }
       emit(state.copyWith(pages: UnmodifiableList(newPages)));
     });
     on<RemovePage>((data, emit) {
-      final newPages = <MyPage>[];
+      final newPages = <MyPage<Object>>[];
       for (final p in state.pages) {
         if (p.key != data.pageKey) {
           newPages.add(p);
         } else {
-          p.channel?.add(PagePopDone(data.pageReturnValue));
+          p.completer.complete(data.pageReturnValue);
         }
       }
       emit(state.copyWith(pages: UnmodifiableList(newPages)));
     });
     on<RemovePageUsingFlutterObject>((data, emit) {
-      final newPages = <MyPage>[];
+      final newPages = <MyPage<Object>>[];
       for (final p in state.pages) {
         if (p.page != data.page) {
           newPages.add(p);
         } else {
-          p.channel?.add(const PagePopDone(null));
+          p.completer.complete(null);
         }
       }
       emit(state.copyWith(pages: UnmodifiableList(newPages)));
     });
     on<RemoveMultiplePages>((data, emit) {
-      final newPages = <MyPage>[];
+      final newPages = <MyPage<Object>>[];
       for (final p in state.pages) {
         if (!data.pageKeys.contains(p.key)) {
           newPages.add(p);
         } else {
-          p.channel?.add(const PagePopDone(null));
-        }
-      }
-      emit(state.copyWith(pages: UnmodifiableList(newPages)));
-    });
-    on<ReplaceSinglePage>((data, emit) {
-      final newPages = <MyPage>[];
-      for (final p in state.pages) {
-        if (p.key != data.existingPage) {
-          newPages.add(p);
-        } else {
-          p.channel?.add(const PagePopDone(null));
-          newPages.add(data.newPage);
+          p.completer.complete(null);
         }
       }
       emit(state.copyWith(pages: UnmodifiableList(newPages)));
@@ -118,12 +100,12 @@ class NavigatorStateBloc extends Bloc<NavigatorStateEvent, NavigatorStateData> {
         return;
       }
 
-      final newPages = <MyPage>[];
+      final newPages = <MyPage<Object>>[];
       for (final (i, p) in state.pages.indexed) {
         if (i < data.wantedLenght) {
           newPages.add(p);
         } else {
-          p.channel?.add(const PagePopDone(null));
+          p.completer.complete(null);
         }
       }
       emit(state.copyWith(pages: UnmodifiableList(newPages)));
@@ -132,43 +114,10 @@ class NavigatorStateBloc extends Bloc<NavigatorStateEvent, NavigatorStateData> {
   }
 
   /// Push new page to the navigator stack and wait for it to be popped.
-  Future<T?> push<T>(Page<T> page, {PageInfo? pageInfo}) async {
-    final key = PageKey();
-    return await pushWithKey(page, key, pageInfo: pageInfo);
-  }
-
-  /// Push new page to the navigator stack with specific key and wait for it to be popped.
-  Future<T?> pushWithKey<T>(Page<T> page, PageKey pageKey, {PageInfo? pageInfo}) async {
-    final returnChannel = BehaviorSubject<ReturnChannelValue>.seeded(const WaitingPagePop());
-    final newPage = MyPage(pageKey, page, returnChannel, pageInfo);
-    add(PushPage(newPage));
-    final popDone = await returnChannel.whereType<PagePopDone>().first;
-    await returnChannel.close();
-    final returnValue = popDone.returnValue;
-    if (returnValue is T?) {
-      return returnValue;
-    } else {
-      return null;
-    }
-  }
-
-  Future<T?> replaceSinglePage<T>(
-    PageKey existingPage,
-    Page<T> page,
-    PageKey pageKey, {
-    PageInfo? pageInfo,
-  }) async {
-    final returnChannel = BehaviorSubject<ReturnChannelValue>.seeded(const WaitingPagePop());
-    final newPage = MyPage(pageKey, page, returnChannel, pageInfo);
-    add(ReplaceSinglePage(existingPage, newPage));
-    final popDone = await returnChannel.whereType<PagePopDone>().first;
-    await returnChannel.close();
-    final returnValue = popDone.returnValue;
-    if (returnValue is T?) {
-      return returnValue;
-    } else {
-      return null;
-    }
+  Future<T?> push<T extends Object>(MyScreenPage<T> page) async {
+    final completer = page.completer;
+    add(PushPage(page));
+    return await completer.future;
   }
 
   /// Pops the top page from the navigator stack if possible.
@@ -192,31 +141,21 @@ class NavigatorStateBloc extends Bloc<NavigatorStateEvent, NavigatorStateData> {
     return state.pages.length > 1;
   }
 
-  Future<T?> showDialog<T>({
-    required PageKey pageKey,
-    required Widget Function(BuildContext) builder,
-    bool barrierDismissable = true,
-  }) async {
-    return await pushWithKey(
-      MaterialDialogPage<T>(builder, barrierDismissable: barrierDismissable),
-      pageKey,
-    );
+  Future<T?> showDialog<T extends Object>({required MyDialogPage<T> page}) async {
+    final completer = page.completer;
+    add(PushPage(page));
+    return await completer.future;
   }
 
-  Future<T?> removeAndShowDialog<T>({
-    required PageKey existingPageKey,
-    required PageKey newPageKey,
-    required Widget Function(BuildContext) builder,
-    bool barrierDismissable = true,
+  Future<T?> removeAndShowDialog<T extends Object>({
+    required PageKey toBeRemoved,
+    required MyDialogPage<T> page,
   }) async {
-    removePage(existingPageKey);
+    removePage(toBeRemoved);
     if (!WidgetsBinding.instance.platformDispatcher.accessibilityFeatures.disableAnimations) {
       await Future<void>.delayed(const Duration(milliseconds: WAIT_BETWEEN_DIALOGS_MILLISECONDS));
     }
-    return await pushWithKey(
-      MaterialDialogPage<T>(builder, barrierDismissable: barrierDismissable),
-      newPageKey,
-    );
+    return await showDialog(page: page);
   }
 }
 
@@ -247,33 +186,8 @@ class NavigationStateBlocInstance extends AppSingletonNoInit {
 
 class MyNavigator {
   /// Push new page to the navigator stack and wait for it to be popped.
-  static Future<T?> push<T>(BuildContext context, Page<T> page, {PageInfo? pageInfo}) async {
-    return await context.read<NavigatorStateBloc>().push(page, pageInfo: pageInfo);
-  }
-
-  /// Push new page to the navigator stack with specific key and wait for it to be popped.
-  static Future<T?> pushWithKey<T>(
-    BuildContext context,
-    Page<T> page,
-    PageKey pageKey, {
-    PageInfo? pageInfo,
-  }) async {
-    return await context.read<NavigatorStateBloc>().pushWithKey(page, pageKey, pageInfo: pageInfo);
-  }
-
-  static Future<T?> replaceSinglePage<T>(
-    BuildContext context,
-    PageKey existingPage,
-    Page<T> page,
-    PageKey pageKey, {
-    PageInfo? pageInfo,
-  }) async {
-    return await context.read<NavigatorStateBloc>().replaceSinglePage(
-      existingPage,
-      page,
-      pageKey,
-      pageInfo: pageInfo,
-    );
+  static Future<T?> push<T>(BuildContext context, MyScreenPage<T> page) async {
+    return await context.read<NavigatorStateBloc>().push(page);
   }
 
   /// Pops the top page from the navigator stack if possible.
@@ -297,31 +211,21 @@ class MyNavigator {
     return context.read<NavigatorStateBloc>().canPop();
   }
 
-  static Future<T?> showDialog<T>({
+  static Future<T?> showDialog<T extends Object>({
     required BuildContext context,
-    required PageKey pageKey,
-    required Widget Function(BuildContext) builder,
-    bool barrierDismissable = true,
+    required MyDialogPage<T> page,
   }) async {
-    return await context.read<NavigatorStateBloc>().showDialog(
-      pageKey: pageKey,
-      builder: builder,
-      barrierDismissable: barrierDismissable,
-    );
+    return await context.read<NavigatorStateBloc>().showDialog(page: page);
   }
 
   static Future<T?> removeAndShowDialog<T>({
     required BuildContext context,
-    required PageKey existingPageKey,
-    required PageKey newPageKey,
-    required Widget Function(BuildContext) builder,
-    bool barrierDismissable = true,
+    required PageKey toBeRemoved,
+    required MyDialogPage<T> page,
   }) async {
     return await context.read<NavigatorStateBloc>().removeAndShowDialog(
-      existingPageKey: existingPageKey,
-      newPageKey: newPageKey,
-      builder: builder,
-      barrierDismissable: barrierDismissable,
+      toBeRemoved: toBeRemoved,
+      page: page,
     );
   }
 }
@@ -340,11 +244,4 @@ class MaterialDialogPage<T> extends Page<T> {
       builder: (context) => builder(context),
     );
   }
-}
-
-class NewPageDetails {
-  final Page<Object?> page;
-  final PageKey? pageKey;
-  final PageInfo? pageInfo;
-  NewPageDetails(this.page, {this.pageKey, this.pageInfo});
 }
