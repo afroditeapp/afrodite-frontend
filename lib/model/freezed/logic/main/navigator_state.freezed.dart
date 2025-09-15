@@ -13,17 +13,17 @@ final _privateConstructorErrorNavigatorStateData = UnsupportedError(
 
 /// @nodoc
 mixin _$NavigatorStateData {
-  UnmodifiableList<PageAndChannel> get pages => throw _privateConstructorErrorNavigatorStateData;
+  UnmodifiableList<MyPage> get pages => throw _privateConstructorErrorNavigatorStateData;
 
   NavigatorStateData copyWith({
-    UnmodifiableList<PageAndChannel>? pages,
+    UnmodifiableList<MyPage>? pages,
   }) => throw _privateConstructorErrorNavigatorStateData;
 }
 
 /// @nodoc
 abstract class _NavigatorStateData extends NavigatorStateData {
   factory _NavigatorStateData({
-    required UnmodifiableList<PageAndChannel> pages,
+    required UnmodifiableList<MyPage> pages,
   }) = _$NavigatorStateDataImpl;
   _NavigatorStateData._() : super._();
 }
@@ -35,7 +35,7 @@ class _$NavigatorStateDataImpl extends _NavigatorStateData with DiagnosticableTr
   }) : super._();
 
   @override
-  final UnmodifiableList<PageAndChannel> pages;
+  final UnmodifiableList<MyPage> pages;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
@@ -70,6 +70,6 @@ class _$NavigatorStateDataImpl extends _NavigatorStateData with DiagnosticableTr
   NavigatorStateData copyWith({
     Object? pages,
   }) => _$NavigatorStateDataImpl(
-    pages: (pages ?? this.pages) as UnmodifiableList<PageAndChannel>,
+    pages: (pages ?? this.pages) as UnmodifiableList<MyPage>,
   );
 }

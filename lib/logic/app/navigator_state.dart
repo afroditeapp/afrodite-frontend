@@ -32,13 +32,13 @@ class RemoveMultiplePages extends NavigatorStateEvent {
 }
 
 class PushPage extends NavigatorStateEvent {
-  final PageAndChannel newPage;
+  final MyPage newPage;
   PushPage(this.newPage);
 }
 
 class ReplaceSinglePage extends NavigatorStateEvent {
   final PageKey existingPage;
-  final PageAndChannel newPage;
+  final MyPage newPage;
   ReplaceSinglePage(this.existingPage, this.newPage);
 }
 
@@ -69,7 +69,7 @@ class NavigatorStateBloc extends Bloc<NavigatorStateEvent, NavigatorStateData> {
       emit(state.copyWith(pages: UnmodifiableList(newPages)));
     });
     on<RemovePage>((data, emit) {
-      final newPages = <PageAndChannel>[];
+      final newPages = <MyPage>[];
       for (final p in state.pages) {
         if (p.key != data.pageKey) {
           newPages.add(p);
@@ -80,7 +80,7 @@ class NavigatorStateBloc extends Bloc<NavigatorStateEvent, NavigatorStateData> {
       emit(state.copyWith(pages: UnmodifiableList(newPages)));
     });
     on<RemovePageUsingFlutterObject>((data, emit) {
-      final newPages = <PageAndChannel>[];
+      final newPages = <MyPage>[];
       for (final p in state.pages) {
         if (p.page != data.page) {
           newPages.add(p);
@@ -91,7 +91,7 @@ class NavigatorStateBloc extends Bloc<NavigatorStateEvent, NavigatorStateData> {
       emit(state.copyWith(pages: UnmodifiableList(newPages)));
     });
     on<RemoveMultiplePages>((data, emit) {
-      final newPages = <PageAndChannel>[];
+      final newPages = <MyPage>[];
       for (final p in state.pages) {
         if (!data.pageKeys.contains(p.key)) {
           newPages.add(p);
@@ -102,7 +102,7 @@ class NavigatorStateBloc extends Bloc<NavigatorStateEvent, NavigatorStateData> {
       emit(state.copyWith(pages: UnmodifiableList(newPages)));
     });
     on<ReplaceSinglePage>((data, emit) {
-      final newPages = <PageAndChannel>[];
+      final newPages = <MyPage>[];
       for (final p in state.pages) {
         if (p.key != data.existingPage) {
           newPages.add(p);
@@ -118,7 +118,7 @@ class NavigatorStateBloc extends Bloc<NavigatorStateEvent, NavigatorStateData> {
         return;
       }
 
-      final newPages = <PageAndChannel>[];
+      final newPages = <MyPage>[];
       for (final (i, p) in state.pages.indexed) {
         if (i < data.wantedLenght) {
           newPages.add(p);
@@ -140,7 +140,7 @@ class NavigatorStateBloc extends Bloc<NavigatorStateEvent, NavigatorStateData> {
   /// Push new page to the navigator stack with specific key and wait for it to be popped.
   Future<T?> pushWithKey<T>(Page<T> page, PageKey pageKey, {PageInfo? pageInfo}) async {
     final returnChannel = BehaviorSubject<ReturnChannelValue>.seeded(const WaitingPagePop());
-    final newPage = PageAndChannel(pageKey, page, returnChannel, pageInfo);
+    final newPage = MyPage(pageKey, page, returnChannel, pageInfo);
     add(PushPage(newPage));
     final popDone = await returnChannel.whereType<PagePopDone>().first;
     await returnChannel.close();
@@ -159,7 +159,7 @@ class NavigatorStateBloc extends Bloc<NavigatorStateEvent, NavigatorStateData> {
     PageInfo? pageInfo,
   }) async {
     final returnChannel = BehaviorSubject<ReturnChannelValue>.seeded(const WaitingPagePop());
-    final newPage = PageAndChannel(pageKey, page, returnChannel, pageInfo);
+    final newPage = MyPage(pageKey, page, returnChannel, pageInfo);
     add(ReplaceSinglePage(existingPage, newPage));
     final popDone = await returnChannel.whereType<PagePopDone>().first;
     await returnChannel.close();
