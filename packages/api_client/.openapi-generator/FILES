@@ -163,6 +163,7 @@ lib/model/map_bounds.dart
 lib/model/map_config.dart
 lib/model/map_coordinate.dart
 lib/model/map_zoom.dart
+lib/model/mark_received_likes_viewed.dart
 lib/model/match_id.dart
 lib/model/matches_iterator_state.dart
 lib/model/matches_page.dart
@@ -194,7 +195,6 @@ lib/model/news_translation_version.dart
 lib/model/notification_id.dart
 lib/model/notification_id_viewed.dart
 lib/model/notification_status.dart
-lib/model/page_item_count_for_new_likes.dart
 lib/model/page_item_count_for_new_public_news.dart
 lib/model/partial_profile_attributes_config.dart
 lib/model/pending_message_acknowledgement_list.dart
@@ -254,6 +254,7 @@ lib/model/publication_id.dart
 lib/model/received_like_id.dart
 lib/model/received_likes_iterator_state.dart
 lib/model/received_likes_page.dart
+lib/model/received_likes_page_item.dart
 lib/model/received_likes_sync_version.dart
 lib/model/refresh_token.dart
 lib/model/remote_bot_login.dart

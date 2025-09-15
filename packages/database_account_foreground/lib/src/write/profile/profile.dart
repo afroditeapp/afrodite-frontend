@@ -77,11 +77,17 @@ class DaoWriteProfile extends DatabaseAccessor<AccountForegroundDatabase>
     }
   }
 
-  Future<void> updateNewLikeInfoReceivedTimeToCurrentTime(api.AccountId accountId) async {
+  Future<void> updateNewLikeInfoReceivedTimeToCurrentTime(
+    Iterable<api.AccountId> accountIds,
+  ) async {
     final currentTime = UtcDateTime.now();
-    await into(profile).insertOnConflictUpdate(
-      ProfileCompanion.insert(accountId: accountId, newLikeInfoReceivedTime: Value(currentTime)),
-    );
+    await transaction(() async {
+      for (final a in accountIds) {
+        await into(profile).insertOnConflictUpdate(
+          ProfileCompanion.insert(accountId: a, newLikeInfoReceivedTime: Value(currentTime)),
+        );
+      }
+    });
   }
 
   Future<void> updateProfileContent(

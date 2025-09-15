@@ -47,11 +47,7 @@ class DaoReadCommon extends DatabaseAccessor<AccountForegroundDatabase> with _$D
         if (idAtReset == null) {
           return null;
         } else {
-          return api.ReceivedLikesIteratorState(
-            previousIdAtReset: r.previousIdAtReset,
-            idAtReset: idAtReset,
-            page: r.page,
-          );
+          return api.ReceivedLikesIteratorState(idAtReset: idAtReset, page: r.page);
         }
       });
 

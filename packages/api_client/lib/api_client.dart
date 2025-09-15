@@ -464,6 +464,8 @@ class ApiClient {
           return MapCoordinate.fromJson(value);
         case 'MapZoom':
           return MapZoom.fromJson(value);
+        case 'MarkReceivedLikesViewed':
+          return MarkReceivedLikesViewed.fromJson(value);
         case 'MatchId':
           return MatchId.fromJson(value);
         case 'MatchesIteratorState':
@@ -526,8 +528,6 @@ class ApiClient {
           return NotificationIdViewed.fromJson(value);
         case 'NotificationStatus':
           return NotificationStatus.fromJson(value);
-        case 'PageItemCountForNewLikes':
-          return PageItemCountForNewLikes.fromJson(value);
         case 'PageItemCountForNewPublicNews':
           return PageItemCountForNewPublicNews.fromJson(value);
         case 'PartialProfileAttributesConfig':
@@ -646,6 +646,8 @@ class ApiClient {
           return ReceivedLikesIteratorState.fromJson(value);
         case 'ReceivedLikesPage':
           return ReceivedLikesPage.fromJson(value);
+        case 'ReceivedLikesPageItem':
+          return ReceivedLikesPageItem.fromJson(value);
         case 'ReceivedLikesSyncVersion':
           return ReceivedLikesSyncVersion.fromJson(value);
         case 'RefreshToken':

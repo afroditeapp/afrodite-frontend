@@ -13,32 +13,26 @@ part of openapi.api;
 class ReceivedLikesPage {
   /// Returns a new [ReceivedLikesPage] instance.
   ReceivedLikesPage({
-    required this.n,
-    this.p = const [],
+    this.l = const [],
   });
 
-  PageItemCountForNewLikes n;
-
-  List<ProfileLink> p;
+  List<ReceivedLikesPageItem> l;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is ReceivedLikesPage &&
-    other.n == n &&
-    _deepEquality.equals(other.p, p);
+    _deepEquality.equals(other.l, l);
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (n.hashCode) +
-    (p.hashCode);
+    (l.hashCode);
 
   @override
-  String toString() => 'ReceivedLikesPage[n=$n, p=$p]';
+  String toString() => 'ReceivedLikesPage[l=$l]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'n'] = this.n;
-      json[r'p'] = this.p;
+      json[r'l'] = this.l;
     return json;
   }
 
@@ -61,8 +55,7 @@ class ReceivedLikesPage {
       }());
 
       return ReceivedLikesPage(
-        n: PageItemCountForNewLikes.fromJson(json[r'n'])!,
-        p: ProfileLink.listFromJson(json[r'p']),
+        l: ReceivedLikesPageItem.listFromJson(json[r'l']),
       );
     }
     return null;
@@ -110,8 +103,7 @@ class ReceivedLikesPage {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'n',
-    'p',
+    'l',
   };
 }
 

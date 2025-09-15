@@ -1037,6 +1037,45 @@ class ChatApi {
     return null;
   }
 
+  /// Performs an HTTP 'POST /chat_api/mark_received_likes_viewed' operation and returns the [Response].
+  /// Parameters:
+  ///
+  /// * [MarkReceivedLikesViewed] markReceivedLikesViewed (required):
+  Future<Response> postMarkReceivedLikesViewedWithHttpInfo(MarkReceivedLikesViewed markReceivedLikesViewed,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/chat_api/mark_received_likes_viewed';
+
+    // ignore: prefer_final_locals
+    Object? postBody = markReceivedLikesViewed;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Parameters:
+  ///
+  /// * [MarkReceivedLikesViewed] markReceivedLikesViewed (required):
+  Future<void> postMarkReceivedLikesViewed(MarkReceivedLikesViewed markReceivedLikesViewed,) async {
+    final response = await postMarkReceivedLikesViewedWithHttpInfo(markReceivedLikesViewed,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+  }
+
   /// Performs an HTTP 'POST /chat_api/reset_new_received_likes_count' operation and returns the [Response].
   Future<Response> postResetNewReceivedLikesCountWithHttpInfo() async {
     // ignore: prefer_const_declarations

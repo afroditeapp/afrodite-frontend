@@ -10,36 +10,36 @@
 
 part of openapi.api;
 
-class PageItemCountForNewLikes {
-  /// Returns a new [PageItemCountForNewLikes] instance.
-  PageItemCountForNewLikes({
-    required this.c,
+class MarkReceivedLikesViewed {
+  /// Returns a new [MarkReceivedLikesViewed] instance.
+  MarkReceivedLikesViewed({
+    this.v = const [],
   });
 
-  int c;
+  List<ReceivedLikeId> v;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is PageItemCountForNewLikes &&
-    other.c == c;
+  bool operator ==(Object other) => identical(this, other) || other is MarkReceivedLikesViewed &&
+    _deepEquality.equals(other.v, v);
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (c.hashCode);
+    (v.hashCode);
 
   @override
-  String toString() => 'PageItemCountForNewLikes[c=$c]';
+  String toString() => 'MarkReceivedLikesViewed[v=$v]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'c'] = this.c;
+      json[r'v'] = this.v;
     return json;
   }
 
-  /// Returns a new [PageItemCountForNewLikes] instance and imports its values from
+  /// Returns a new [MarkReceivedLikesViewed] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static PageItemCountForNewLikes? fromJson(dynamic value) {
+  static MarkReceivedLikesViewed? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -48,24 +48,24 @@ class PageItemCountForNewLikes {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "PageItemCountForNewLikes[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "PageItemCountForNewLikes[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "MarkReceivedLikesViewed[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "MarkReceivedLikesViewed[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return PageItemCountForNewLikes(
-        c: mapValueOfType<int>(json, r'c')!,
+      return MarkReceivedLikesViewed(
+        v: ReceivedLikeId.listFromJson(json[r'v']),
       );
     }
     return null;
   }
 
-  static List<PageItemCountForNewLikes> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <PageItemCountForNewLikes>[];
+  static List<MarkReceivedLikesViewed> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <MarkReceivedLikesViewed>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = PageItemCountForNewLikes.fromJson(row);
+        final value = MarkReceivedLikesViewed.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -74,12 +74,12 @@ class PageItemCountForNewLikes {
     return result.toList(growable: growable);
   }
 
-  static Map<String, PageItemCountForNewLikes> mapFromJson(dynamic json) {
-    final map = <String, PageItemCountForNewLikes>{};
+  static Map<String, MarkReceivedLikesViewed> mapFromJson(dynamic json) {
+    final map = <String, MarkReceivedLikesViewed>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = PageItemCountForNewLikes.fromJson(entry.value);
+        final value = MarkReceivedLikesViewed.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -88,14 +88,14 @@ class PageItemCountForNewLikes {
     return map;
   }
 
-  // maps a json object with a list of PageItemCountForNewLikes-objects as value to a dart map
-  static Map<String, List<PageItemCountForNewLikes>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<PageItemCountForNewLikes>>{};
+  // maps a json object with a list of MarkReceivedLikesViewed-objects as value to a dart map
+  static Map<String, List<MarkReceivedLikesViewed>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<MarkReceivedLikesViewed>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = PageItemCountForNewLikes.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = MarkReceivedLikesViewed.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;
@@ -103,7 +103,7 @@ class PageItemCountForNewLikes {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'c',
+    'v',
   };
 }
 

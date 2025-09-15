@@ -2239,18 +2239,6 @@ class $ReceivedLikesIteratorStateTable extends schema.ReceivedLikesIteratorState
       ).withConverter<ReceivedLikeId?>(
         $ReceivedLikesIteratorStateTable.$converteridAtReset,
       );
-  @override
-  late final GeneratedColumnWithTypeConverter<ReceivedLikeId?, int>
-  previousIdAtReset =
-      GeneratedColumn<int>(
-        'previous_id_at_reset',
-        aliasedName,
-        true,
-        type: DriftSqlType.int,
-        requiredDuringInsert: false,
-      ).withConverter<ReceivedLikeId?>(
-        $ReceivedLikesIteratorStateTable.$converterpreviousIdAtReset,
-      );
   static const VerificationMeta _pageMeta = const VerificationMeta('page');
   @override
   late final GeneratedColumn<int> page = GeneratedColumn<int>(
@@ -2262,12 +2250,7 @@ class $ReceivedLikesIteratorStateTable extends schema.ReceivedLikesIteratorState
     defaultValue: const Constant(0),
   );
   @override
-  List<GeneratedColumn> get $columns => [
-    id,
-    idAtReset,
-    previousIdAtReset,
-    page,
-  ];
+  List<GeneratedColumn> get $columns => [id, idAtReset, page];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -2311,14 +2294,6 @@ class $ReceivedLikesIteratorStateTable extends schema.ReceivedLikesIteratorState
           data['${effectivePrefix}id_at_reset'],
         ),
       ),
-      previousIdAtReset: $ReceivedLikesIteratorStateTable
-          .$converterpreviousIdAtReset
-          .fromSql(
-            attachedDatabase.typeMapping.read(
-              DriftSqlType.int,
-              data['${effectivePrefix}previous_id_at_reset'],
-            ),
-          ),
       page: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
         data['${effectivePrefix}page'],
@@ -2333,20 +2308,16 @@ class $ReceivedLikesIteratorStateTable extends schema.ReceivedLikesIteratorState
 
   static TypeConverter<ReceivedLikeId?, int?> $converteridAtReset =
       const NullAwareTypeConverter.wrap(ReceivedLikeIdConverter());
-  static TypeConverter<ReceivedLikeId?, int?> $converterpreviousIdAtReset =
-      const NullAwareTypeConverter.wrap(ReceivedLikeIdConverter());
 }
 
 class ReceivedLikesIteratorStateData extends DataClass
     implements Insertable<ReceivedLikesIteratorStateData> {
   final int id;
   final ReceivedLikeId? idAtReset;
-  final ReceivedLikeId? previousIdAtReset;
   final int page;
   const ReceivedLikesIteratorStateData({
     required this.id,
     this.idAtReset,
-    this.previousIdAtReset,
     required this.page,
   });
   @override
@@ -2356,13 +2327,6 @@ class ReceivedLikesIteratorStateData extends DataClass
     if (!nullToAbsent || idAtReset != null) {
       map['id_at_reset'] = Variable<int>(
         $ReceivedLikesIteratorStateTable.$converteridAtReset.toSql(idAtReset),
-      );
-    }
-    if (!nullToAbsent || previousIdAtReset != null) {
-      map['previous_id_at_reset'] = Variable<int>(
-        $ReceivedLikesIteratorStateTable.$converterpreviousIdAtReset.toSql(
-          previousIdAtReset,
-        ),
       );
     }
     map['page'] = Variable<int>(page);
@@ -2375,9 +2339,6 @@ class ReceivedLikesIteratorStateData extends DataClass
       idAtReset: idAtReset == null && nullToAbsent
           ? const Value.absent()
           : Value(idAtReset),
-      previousIdAtReset: previousIdAtReset == null && nullToAbsent
-          ? const Value.absent()
-          : Value(previousIdAtReset),
       page: Value(page),
     );
   }
@@ -2390,9 +2351,6 @@ class ReceivedLikesIteratorStateData extends DataClass
     return ReceivedLikesIteratorStateData(
       id: serializer.fromJson<int>(json['id']),
       idAtReset: serializer.fromJson<ReceivedLikeId?>(json['idAtReset']),
-      previousIdAtReset: serializer.fromJson<ReceivedLikeId?>(
-        json['previousIdAtReset'],
-      ),
       page: serializer.fromJson<int>(json['page']),
     );
   }
@@ -2402,9 +2360,6 @@ class ReceivedLikesIteratorStateData extends DataClass
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'idAtReset': serializer.toJson<ReceivedLikeId?>(idAtReset),
-      'previousIdAtReset': serializer.toJson<ReceivedLikeId?>(
-        previousIdAtReset,
-      ),
       'page': serializer.toJson<int>(page),
     };
   }
@@ -2412,14 +2367,10 @@ class ReceivedLikesIteratorStateData extends DataClass
   ReceivedLikesIteratorStateData copyWith({
     int? id,
     Value<ReceivedLikeId?> idAtReset = const Value.absent(),
-    Value<ReceivedLikeId?> previousIdAtReset = const Value.absent(),
     int? page,
   }) => ReceivedLikesIteratorStateData(
     id: id ?? this.id,
     idAtReset: idAtReset.present ? idAtReset.value : this.idAtReset,
-    previousIdAtReset: previousIdAtReset.present
-        ? previousIdAtReset.value
-        : this.previousIdAtReset,
     page: page ?? this.page,
   );
   ReceivedLikesIteratorStateData copyWithCompanion(
@@ -2428,9 +2379,6 @@ class ReceivedLikesIteratorStateData extends DataClass
     return ReceivedLikesIteratorStateData(
       id: data.id.present ? data.id.value : this.id,
       idAtReset: data.idAtReset.present ? data.idAtReset.value : this.idAtReset,
-      previousIdAtReset: data.previousIdAtReset.present
-          ? data.previousIdAtReset.value
-          : this.previousIdAtReset,
       page: data.page.present ? data.page.value : this.page,
     );
   }
@@ -2440,21 +2388,19 @@ class ReceivedLikesIteratorStateData extends DataClass
     return (StringBuffer('ReceivedLikesIteratorStateData(')
           ..write('id: $id, ')
           ..write('idAtReset: $idAtReset, ')
-          ..write('previousIdAtReset: $previousIdAtReset, ')
           ..write('page: $page')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, idAtReset, previousIdAtReset, page);
+  int get hashCode => Object.hash(id, idAtReset, page);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is ReceivedLikesIteratorStateData &&
           other.id == this.id &&
           other.idAtReset == this.idAtReset &&
-          other.previousIdAtReset == this.previousIdAtReset &&
           other.page == this.page);
 }
 
@@ -2462,30 +2408,25 @@ class ReceivedLikesIteratorStateCompanion
     extends UpdateCompanion<ReceivedLikesIteratorStateData> {
   final Value<int> id;
   final Value<ReceivedLikeId?> idAtReset;
-  final Value<ReceivedLikeId?> previousIdAtReset;
   final Value<int> page;
   const ReceivedLikesIteratorStateCompanion({
     this.id = const Value.absent(),
     this.idAtReset = const Value.absent(),
-    this.previousIdAtReset = const Value.absent(),
     this.page = const Value.absent(),
   });
   ReceivedLikesIteratorStateCompanion.insert({
     this.id = const Value.absent(),
     this.idAtReset = const Value.absent(),
-    this.previousIdAtReset = const Value.absent(),
     this.page = const Value.absent(),
   });
   static Insertable<ReceivedLikesIteratorStateData> custom({
     Expression<int>? id,
     Expression<int>? idAtReset,
-    Expression<int>? previousIdAtReset,
     Expression<int>? page,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (idAtReset != null) 'id_at_reset': idAtReset,
-      if (previousIdAtReset != null) 'previous_id_at_reset': previousIdAtReset,
       if (page != null) 'page': page,
     });
   }
@@ -2493,13 +2434,11 @@ class ReceivedLikesIteratorStateCompanion
   ReceivedLikesIteratorStateCompanion copyWith({
     Value<int>? id,
     Value<ReceivedLikeId?>? idAtReset,
-    Value<ReceivedLikeId?>? previousIdAtReset,
     Value<int>? page,
   }) {
     return ReceivedLikesIteratorStateCompanion(
       id: id ?? this.id,
       idAtReset: idAtReset ?? this.idAtReset,
-      previousIdAtReset: previousIdAtReset ?? this.previousIdAtReset,
       page: page ?? this.page,
     );
   }
@@ -2517,13 +2456,6 @@ class ReceivedLikesIteratorStateCompanion
         ),
       );
     }
-    if (previousIdAtReset.present) {
-      map['previous_id_at_reset'] = Variable<int>(
-        $ReceivedLikesIteratorStateTable.$converterpreviousIdAtReset.toSql(
-          previousIdAtReset.value,
-        ),
-      );
-    }
     if (page.present) {
       map['page'] = Variable<int>(page.value);
     }
@@ -2535,7 +2467,6 @@ class ReceivedLikesIteratorStateCompanion
     return (StringBuffer('ReceivedLikesIteratorStateCompanion(')
           ..write('id: $id, ')
           ..write('idAtReset: $idAtReset, ')
-          ..write('previousIdAtReset: $previousIdAtReset, ')
           ..write('page: $page')
           ..write(')'))
         .toString();

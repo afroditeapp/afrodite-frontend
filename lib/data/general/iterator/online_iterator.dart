@@ -105,13 +105,7 @@ class OnlineIterator extends IteratorType {
             return const Ok([]);
           }
 
-          for (final (i, p) in profiles.profiles.indexed) {
-            if (i + 1 <= profiles.basicProfilesNewLikesCount) {
-              await db.accountDataWrite(
-                (db) => db.profile.updateNewLikeInfoReceivedTimeToCurrentTime(p.a),
-              );
-            }
-
+          for (final p in profiles.profiles) {
             var entry = await db.accountData((db) => db.profile.getProfileEntry(p.a)).ok();
             final currentVersion = entry?.version;
             final currentContentVersion = entry?.contentVersion;
@@ -233,13 +227,8 @@ class ProfileListOnlineIteratorIo extends OnlineIteratorIo {
 class IteratorPage {
   final bool errorInvalidIteratorSessionId;
   final Iterable<ProfileLink> profiles;
-  final int basicProfilesNewLikesCount;
 
-  IteratorPage(
-    this.profiles, {
-    this.errorInvalidIteratorSessionId = false,
-    this.basicProfilesNewLikesCount = 0,
-  });
+  IteratorPage(this.profiles, {this.errorInvalidIteratorSessionId = false});
 }
 
 class ReceivedLikesOnlineIteratorIo extends OnlineIteratorIo {
@@ -299,21 +288,46 @@ class ReceivedLikesOnlineIteratorIo extends OnlineIteratorIo {
     if (state.page == -1) {
       return Ok(IteratorPage([]));
     }
-    final r = await api
-        .chat((api) => api.postGetReceivedLikesPage(state))
-        .mapOk((value) => IteratorPage(value.p, basicProfilesNewLikesCount: value.n.c))
-        .emptyErr();
-    if (r case Ok()) {
-      if (r.v.profiles.isEmpty) {
-        state.page = -1;
-      } else {
-        state.page += 1;
-      }
-      await db.accountAction(
-        (db) => db.common.updateReceivedLikesIteratorStatePageValue(state.page),
-      );
+    final r = await api.chat((api) => api.postGetReceivedLikesPage(state)).emptyErr();
+
+    switch (r) {
+      case Ok():
+        final List<(AccountId, ReceivedLikeId)> newLikes = [];
+        for (final l in r.v.l) {
+          final receivedLikeId = l.notViewed;
+          if (receivedLikeId != null) {
+            newLikes.add((l.p.a, receivedLikeId));
+          }
+        }
+        if (newLikes.isNotEmpty) {
+          await db
+              .accountDataWrite(
+                (db) => db.profile.updateNewLikeInfoReceivedTimeToCurrentTime(
+                  newLikes.map((v) => v.$1),
+                ),
+              )
+              .andThen(
+                (_) => api.chat(
+                  (api) => api.postMarkReceivedLikesViewed(
+                    MarkReceivedLikesViewed(v: newLikes.map((v) => v.$2).toList()),
+                  ),
+                ),
+              );
+        }
+
+        if (r.v.l.isEmpty) {
+          state.page = -1;
+        } else {
+          state.page += 1;
+        }
+        await db.accountAction(
+          (db) => db.common.updateReceivedLikesIteratorStatePageValue(state.page),
+        );
+
+        return Ok(IteratorPage(r.v.l.map((v) => v.p)));
+      case Err():
+        return Err(());
     }
-    return r;
   }
 
   @override

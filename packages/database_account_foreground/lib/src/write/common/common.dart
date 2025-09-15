@@ -85,7 +85,6 @@ class DaoWriteCommon extends DatabaseAccessor<AccountForegroundDatabase>
       ReceivedLikesIteratorStateCompanion.insert(
         id: SingleRowTable.ID,
         idAtReset: Value(value.idAtReset),
-        previousIdAtReset: Value(value.previousIdAtReset),
         page: Value(value.page),
       ),
     );

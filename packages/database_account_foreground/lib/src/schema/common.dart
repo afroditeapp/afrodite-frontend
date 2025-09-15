@@ -5,8 +5,6 @@ import 'package:drift/drift.dart';
 class ReceivedLikesIteratorState extends SingleRowTable {
   IntColumn get idAtReset =>
       integer().map(const NullAwareTypeConverter.wrap(ReceivedLikeIdConverter())).nullable()();
-  IntColumn get previousIdAtReset =>
-      integer().map(const NullAwareTypeConverter.wrap(ReceivedLikeIdConverter())).nullable()();
   IntColumn get page => integer().withDefault(const Constant(0))();
 }
 

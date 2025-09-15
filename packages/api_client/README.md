@@ -128,6 +128,7 @@ Class | Method | HTTP request | Description
 *ChatApi* | [**postGetNewReceivedLikesCount**](doc//ChatApi.md#postgetnewreceivedlikescount) | **POST** /chat_api/new_received_likes_count | 
 *ChatApi* | [**postGetReceivedLikesPage**](doc//ChatApi.md#postgetreceivedlikespage) | **POST** /chat_api/received_likes | Get next page of received likes. If the page is empty there is no more received likes available.
 *ChatApi* | [**postGetSentMessage**](doc//ChatApi.md#postgetsentmessage) | **POST** /chat_api/sent_message | Receive unreceived [model_chat::SignedMessageData] for sent message.
+*ChatApi* | [**postMarkReceivedLikesViewed**](doc//ChatApi.md#postmarkreceivedlikesviewed) | **POST** /chat_api/mark_received_likes_viewed | 
 *ChatApi* | [**postResetNewReceivedLikesCount**](doc//ChatApi.md#postresetnewreceivedlikescount) | **POST** /chat_api/reset_new_received_likes_count | 
 *ChatApi* | [**postResetReceivedLikesPaging**](doc//ChatApi.md#postresetreceivedlikespaging) | **POST** /chat_api/received_likes/reset | 
 *ChatApi* | [**postSendLike**](doc//ChatApi.md#postsendlike) | **POST** /chat_api/send_like | Send a like to some account. If both will like each other, then the accounts will be a match.
@@ -379,6 +380,7 @@ Class | Method | HTTP request | Description
  - [MapConfig](doc//MapConfig.md)
  - [MapCoordinate](doc//MapCoordinate.md)
  - [MapZoom](doc//MapZoom.md)
+ - [MarkReceivedLikesViewed](doc//MarkReceivedLikesViewed.md)
  - [MatchId](doc//MatchId.md)
  - [MatchesIteratorState](doc//MatchesIteratorState.md)
  - [MatchesPage](doc//MatchesPage.md)
@@ -410,7 +412,6 @@ Class | Method | HTTP request | Description
  - [NotificationId](doc//NotificationId.md)
  - [NotificationIdViewed](doc//NotificationIdViewed.md)
  - [NotificationStatus](doc//NotificationStatus.md)
- - [PageItemCountForNewLikes](doc//PageItemCountForNewLikes.md)
  - [PageItemCountForNewPublicNews](doc//PageItemCountForNewPublicNews.md)
  - [PartialProfileAttributesConfig](doc//PartialProfileAttributesConfig.md)
  - [PendingMessageAcknowledgementList](doc//PendingMessageAcknowledgementList.md)
@@ -470,6 +471,7 @@ Class | Method | HTTP request | Description
  - [ReceivedLikeId](doc//ReceivedLikeId.md)
  - [ReceivedLikesIteratorState](doc//ReceivedLikesIteratorState.md)
  - [ReceivedLikesPage](doc//ReceivedLikesPage.md)
+ - [ReceivedLikesPageItem](doc//ReceivedLikesPageItem.md)
  - [ReceivedLikesSyncVersion](doc//ReceivedLikesSyncVersion.md)
  - [RefreshToken](doc//RefreshToken.md)
  - [RemoteBotLogin](doc//RemoteBotLogin.md)
