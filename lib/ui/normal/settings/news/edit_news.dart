@@ -16,28 +16,30 @@ import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/list.dart';
 
 Future<void> openEditNewsScreen(BuildContext context, NewsId id, List<String> supportedLocales) {
-  final pageKey = PageKey();
-  return MyNavigator.pushWithKey(
-    context,
-    MaterialPage<void>(
-      child: BlocProvider(
-        create: (context) => EditNewsBloc(
-          context.read<RepositoryInstances>(),
-          id,
-          supportedLocales: supportedLocales,
-        ),
-        lazy: false,
-        child: EditNewsScreen(pageKey: pageKey, supportedLocales: supportedLocales),
-      ),
-    ),
-    pageKey,
-  );
+  return MyNavigator.pushLimited(context, EditNewsPage(id, supportedLocales));
+}
+
+class EditNewsPage extends MyScreenPageLimited<()> {
+  EditNewsPage(NewsId id, List<String> supportedLocales)
+    : super(
+        builder: (closer) {
+          return BlocProvider(
+            create: (context) => EditNewsBloc(
+              context.read<RepositoryInstances>(),
+              id,
+              supportedLocales: supportedLocales,
+            ),
+            lazy: false,
+            child: EditNewsScreen(closer: closer, supportedLocales: supportedLocales),
+          );
+        },
+      );
 }
 
 class EditNewsScreen extends StatefulWidget {
-  final PageKey pageKey;
+  final PageCloser<()> closer;
   final List<String> supportedLocales;
-  const EditNewsScreen({required this.pageKey, required this.supportedLocales, super.key});
+  const EditNewsScreen({required this.closer, required this.supportedLocales, super.key});
 
   @override
   State<EditNewsScreen> createState() => EditNewsScreenState();
@@ -54,7 +56,7 @@ class EditNewsScreenState extends State<EditNewsScreen> {
             if (!didPop) {
               final r = await showConfirmDialog(context, "Discard changes?", yesNoActions: true);
               if (r == true && context.mounted) {
-                MyNavigator.removePage(context, widget.pageKey);
+                widget.closer.close(context, ());
               }
             }
           },
@@ -168,9 +170,7 @@ class EditNewsScreenState extends State<EditNewsScreen> {
           Text(locale),
           const Spacer(),
           IconButton(
-            onPressed: () {
-              openEditNewsTranslationScreen(context, c, locale, context.read<EditNewsBloc>());
-            },
+            onPressed: () => openEditNewsTranslationScreen(context, c, locale),
             icon: const Icon(Icons.edit),
           ),
         ],

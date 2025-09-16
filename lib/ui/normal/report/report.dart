@@ -2,6 +2,7 @@ import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/localizations.dart';
 import 'package:app/logic/account/custom_reports_config.dart';
 import 'package:app/logic/app/navigator_state.dart';
+import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui/normal/report/report_chat_message.dart';
 import 'package:app/ui/normal/report/report_profile_image.dart';
 import 'package:app/ui_utils/extensions/api.dart';
@@ -22,20 +23,34 @@ Widget showReportAction(BuildContext context, AccountId accountId, ProfileEntry?
       if (!context.mounted) {
         return;
       }
-      await MyNavigator.push(
+      await MyNavigator.pushLimited(
         context,
-        MaterialPage<void>(
-          child: ReportScreen(
-            accountId: accountId,
-            profile: profile,
-            isMatch: isMatch,
-            messages: messages,
-          ),
+        ReportScreenPage(
+          accountId: accountId,
+          profile: profile,
+          isMatch: isMatch,
+          messages: messages,
         ),
       );
     },
     child: Text(context.strings.report_screen_title),
   );
+}
+
+class ReportScreenPage extends MyScreenPageLimited<()> {
+  ReportScreenPage({
+    required AccountId accountId,
+    required ProfileEntry? profile,
+    required bool isMatch,
+    required List<MessageEntry> messages,
+  }) : super(
+         builder: (_) => ReportScreen(
+           accountId: accountId,
+           profile: profile,
+           isMatch: isMatch,
+           messages: messages,
+         ),
+       );
 }
 
 class ReportScreen extends StatefulWidget {
@@ -167,14 +182,9 @@ class _ReportScreenState extends State<ReportScreen> {
       if (acceptedContent.isNotEmpty) {
         settings.add(
           reportListTile(context.strings.report_screen_profile_image_action, () {
-            MyNavigator.push(
-              context,
-              MaterialPage<void>(
-                child: ReportProfileImageScreen(
-                  profileEntry: profileEntry,
-                  isMatch: widget.isMatch,
-                ),
-              ),
+            MyNavigator.showFullScreenDialog(
+              context: context,
+              page: ReportProfileImagePage(profileEntry: profileEntry, isMatch: widget.isMatch),
             );
           }),
         );
@@ -184,14 +194,9 @@ class _ReportScreenState extends State<ReportScreen> {
     if (widget.messages.isNotEmpty) {
       settings.add(
         reportListTile(context.strings.report_screen_chat_message_action, () {
-          MyNavigator.push(
-            context,
-            MaterialPage<void>(
-              child: ReportChatMessageScreen(
-                accountId: widget.accountId,
-                messages: widget.messages,
-              ),
-            ),
+          MyNavigator.showFullScreenDialog(
+            context: context,
+            page: ReportChatMessagePage(accountId: widget.accountId, messages: widget.messages),
           );
         }),
       );

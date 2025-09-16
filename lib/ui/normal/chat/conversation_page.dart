@@ -28,43 +28,37 @@ import 'package:openapi/api.dart';
 final _log = Logger("ConversationPage");
 
 void openConversationScreen(BuildContext context, AccountId accountId, ProfileEntry? profile) {
-  final details = newConversationPage(accountId, profile);
-  context.read<NavigatorStateBloc>().pushWithKey(
-    details.page,
-    details.pageKey!,
-    pageInfo: details.pageInfo,
-  );
+  context.read<NavigatorStateBloc>().push(ConversationPage(accountId, profile));
 }
 
-NewPageDetails newConversationPage(AccountId accountId, ProfileEntry? profile) {
-  final pageKey = PageKey();
-  return NewPageDetails(
-    MaterialPage<void>(
-      child: BlocProvider(
-        create: (context) {
-          final r = context.read<RepositoryInstances>();
-          return ConversationBloc(r, accountId, DefaultConversationDataProvider(r.chat));
+class ConversationPage extends MyScreenPage<()> {
+  ConversationPage(AccountId accountId, ProfileEntry? profile)
+    : super(
+        builder: (closer) {
+          return BlocProvider(
+            create: (context) {
+              final r = context.read<RepositoryInstances>();
+              return ConversationBloc(r, accountId, DefaultConversationDataProvider(r.chat));
+            },
+            lazy: false,
+            child: ConversationScreen(closer, accountId, profile),
+          );
         },
-        lazy: false,
-        child: ConversationPage(pageKey, accountId, profile),
-      ),
-    ),
-    pageKey: pageKey,
-    pageInfo: ConversationPageInfo(accountId),
-  );
+        pageInfo: ConversationPageInfo(accountId),
+      );
 }
 
-class ConversationPage extends StatefulWidget {
-  final PageKey pageKey;
+class ConversationScreen extends StatefulWidget {
+  final PageCloser<()> closer;
   final AccountId accountId;
   final ProfileEntry? profileEntry;
-  const ConversationPage(this.pageKey, this.accountId, this.profileEntry, {super.key});
+  const ConversationScreen(this.closer, this.accountId, this.profileEntry, {super.key});
 
   @override
-  ConversationPageState createState() => ConversationPageState();
+  ConversationScreenState createState() => ConversationScreenState();
 }
 
-class ConversationPageState extends State<ConversationPage> {
+class ConversationScreenState extends State<ConversationScreen> {
   final TextEditingController _textEditingController = TextEditingController();
 
   @override
@@ -158,7 +152,7 @@ class ConversationPageState extends State<ConversationPage> {
                     Future.delayed(Duration.zero, () {
                       showSnackBar(R.strings.conversation_screen_profile_blocked);
                       if (context.mounted) {
-                        MyNavigator.removePage(context, widget.pageKey);
+                        widget.closer.close(context, ());
                       }
                     });
                     return Container();

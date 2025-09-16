@@ -32,26 +32,36 @@ void openProfileFilters(BuildContext context) {
     showSnackBar(context.strings.profile_grid_screen_profile_filter_settings_update_ongoing);
     return;
   }
-  final pageKey = PageKey();
-  MyNavigator.pushWithKey(
-    context,
-    MaterialPage<void>(
-      child: ProfileFiltersPage(pageKey: pageKey, profileFiltersBloc: profileFiltersBloc),
-    ),
-    pageKey,
-  );
+  MyNavigator.push(context, ProfileFiltersPage());
 }
 
-class ProfileFiltersPage extends StatefulWidget {
-  final PageKey pageKey;
-  final ProfileFiltersBloc profileFiltersBloc;
-  const ProfileFiltersPage({required this.pageKey, required this.profileFiltersBloc, super.key});
+class ProfileFiltersPage extends MyScreenPage<()> {
+  ProfileFiltersPage() : super(builder: (closer) => ProfileFiltersScreenOpener(closer: closer));
+}
+
+class ProfileFiltersScreenOpener extends StatelessWidget {
+  final PageCloser<()> closer;
+  const ProfileFiltersScreenOpener({required this.closer, super.key});
 
   @override
-  State<ProfileFiltersPage> createState() => _ProfileFiltersPageState();
+  Widget build(BuildContext context) {
+    return ProfileFiltersScreen(
+      closer: closer,
+      profileFiltersBloc: context.read<ProfileFiltersBloc>(),
+    );
+  }
 }
 
-class _ProfileFiltersPageState extends State<ProfileFiltersPage> {
+class ProfileFiltersScreen extends StatefulWidget {
+  final PageCloser<()> closer;
+  final ProfileFiltersBloc profileFiltersBloc;
+  const ProfileFiltersScreen({required this.closer, required this.profileFiltersBloc, super.key});
+
+  @override
+  State<ProfileFiltersScreen> createState() => _ProfileFiltersScreenState();
+}
+
+class _ProfileFiltersScreenState extends State<ProfileFiltersScreen> {
   int initialMinAge = MIN_AGE;
   int initialMaxAge = MAX_AGE;
 
@@ -639,9 +649,9 @@ class EditAttributeFilters extends StatelessWidget {
           a: a,
           isEnabled: isEnabled,
           onStartEditor: () {
-            MyNavigator.push(
-              context,
-              MaterialPage<void>(child: EditProfileAttributeFilterScreen(a: a)),
+            MyNavigator.showFullScreenDialog(
+              context: context,
+              page: EditProfileAttributeFilterPage(a),
             );
           },
         ),

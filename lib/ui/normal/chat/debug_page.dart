@@ -18,30 +18,32 @@ import 'package:rxdart/rxdart.dart';
 import 'package:utils/utils.dart';
 
 void openConversationDebugScreen(BuildContext context, int initialMsgCount) {
-  final details = _newDebugConversationPage(AccountId(aid: ""), initialMsgCount);
-  context.read<NavigatorStateBloc>().pushWithKey(
-    details.page,
-    details.pageKey!,
-    pageInfo: details.pageInfo,
+  final accountId = AccountId(aid: "");
+  final dataProvider = DebugConversationDataProvider();
+  dataProvider.sendInitialMessages(accountId, initialMsgCount);
+  context.read<NavigatorStateBloc>().pushLimited(
+    DebugConversationPage(accountId, dataProvider, initialMsgCount),
   );
 }
 
-NewPageDetails _newDebugConversationPage(AccountId accountId, int initialMsgCount) {
-  final dataProvider = DebugConversationDataProvider();
-  dataProvider.sendInitialMessages(accountId, initialMsgCount);
-  final pageKey = PageKey();
-  return NewPageDetails(
-    MaterialPage<void>(
-      child: BlocProvider(
-        create: (context) =>
-            ConversationBloc(context.read<RepositoryInstances>(), accountId, dataProvider),
-        lazy: false,
-        child: ChatViewDebuggerPage(initialMsgCount: initialMsgCount, dataProvider: dataProvider),
-      ),
-    ),
-    pageKey: pageKey,
-    pageInfo: ConversationPageInfo(accountId),
-  );
+class DebugConversationPage extends MyScreenPageLimited<()> {
+  DebugConversationPage(
+    AccountId accountId,
+    DebugConversationDataProvider dataProvider,
+    int initialMsgCount,
+  ) : super(
+        builder: (_) {
+          return BlocProvider(
+            create: (context) =>
+                ConversationBloc(context.read<RepositoryInstances>(), accountId, dataProvider),
+            lazy: false,
+            child: ChatViewDebuggerPage(
+              initialMsgCount: initialMsgCount,
+              dataProvider: dataProvider,
+            ),
+          );
+        },
+      );
 }
 
 class DebugConversationDataProvider extends ConversationDataProvider {

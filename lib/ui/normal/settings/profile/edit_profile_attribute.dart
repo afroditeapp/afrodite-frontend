@@ -1,3 +1,4 @@
+import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui_utils/attribute/attribute.dart';
 import 'package:app/ui_utils/attribute/state.dart';
 import 'package:app/ui_utils/attribute/widgets/select_value.dart';
@@ -10,6 +11,11 @@ import 'package:app/model/freezed/logic/profile/edit_my_profile.dart';
 import 'package:app/ui_utils/app_bar/search.dart';
 import 'package:app/ui_utils/consts/padding.dart';
 import 'package:app/ui_utils/snack_bar.dart';
+
+class EditProfileAttributePage extends MyFullScreenDialogPage<()> {
+  EditProfileAttributePage(AttributeAndState a)
+    : super(builder: (_) => EditProfileAttributeScreen(a: a));
+}
 
 class EditProfileAttributeScreen extends StatefulWidget {
   final AttributeAndState a;

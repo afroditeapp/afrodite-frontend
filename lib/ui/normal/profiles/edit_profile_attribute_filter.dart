@@ -1,4 +1,5 @@
 import 'package:app/logic/profile/profile_filters.dart';
+import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/model/freezed/logic/profile/profile_filters.dart';
 import 'package:app/ui_utils/app_bar/menu_actions.dart';
 import 'package:app/ui_utils/attribute/filter.dart';
@@ -9,6 +10,11 @@ import 'package:openapi/api.dart';
 import 'package:app/localizations.dart';
 import 'package:app/ui/normal/settings/profile/edit_profile_attribute.dart';
 import 'package:app/ui_utils/app_bar/search.dart';
+
+class EditProfileAttributeFilterPage extends MyFullScreenDialogPage<()> {
+  EditProfileAttributeFilterPage(AttributeAndFilterState a)
+    : super(builder: (_) => EditProfileAttributeFilterScreen(a: a));
+}
 
 class EditProfileAttributeFilterScreen extends StatefulWidget {
   final AttributeAndFilterState a;

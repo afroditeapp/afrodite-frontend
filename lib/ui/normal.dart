@@ -311,31 +311,31 @@ class _NotificationPermissionDialogOpenerState extends State<NotificationPermiss
 
   void openNotificationPermissionDialog(BuildContext context) {
     final bloc = context.read<NotificationPermissionBloc>();
-    final pageKey = PageKey();
     Future.delayed(Duration.zero, () {
       if (!context.mounted) {
         return;
       }
-      MyNavigator.showDialog<bool>(
-        context: context,
-        pageKey: pageKey,
-        builder: (context) {
-          return NotificationPermissionDialog(pageKey: pageKey);
+      MyNavigator.showDialog<bool>(context: context, page: NotificationPermissionDialogPage()).then(
+        (value) {
+          if (value == true) {
+            bloc.add(AcceptPermissions());
+          } else {
+            bloc.add(DenyPermissions());
+          }
         },
-      ).then((value) {
-        if (value == true) {
-          bloc.add(AcceptPermissions());
-        } else {
-          bloc.add(DenyPermissions());
-        }
-      });
+      );
     });
   }
 }
 
+class NotificationPermissionDialogPage extends MyDialogPage<bool> {
+  NotificationPermissionDialogPage()
+    : super(builder: (_, closer) => NotificationPermissionDialog(closer: closer));
+}
+
 class NotificationPermissionDialog extends StatelessWidget {
-  final PageKey pageKey;
-  const NotificationPermissionDialog({required this.pageKey, super.key});
+  final PageCloser<bool> closer;
+  const NotificationPermissionDialog({required this.closer, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -357,15 +357,11 @@ class NotificationPermissionDialog extends StatelessWidget {
       content: dialogContent,
       actions: [
         TextButton(
-          onPressed: () {
-            MyNavigator.removePage(context, pageKey, false);
-          },
+          onPressed: () => closer.close(context, false),
           child: Text(context.strings.generic_no),
         ),
         TextButton(
-          onPressed: () {
-            MyNavigator.removePage(context, pageKey, true);
-          },
+          onPressed: () => closer.close(context, true),
           child: Text(context.strings.generic_yes),
         ),
       ],

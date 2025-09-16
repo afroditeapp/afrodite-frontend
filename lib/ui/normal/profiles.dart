@@ -251,55 +251,58 @@ class PublicProfileViewingBlocker extends StatelessWidget {
   Widget startInitialSetupButton(BuildContext context) {
     return Center(
       child: ElevatedButton(
-        onPressed: () {
-          MyNavigator.push(context, const MaterialPage<void>(child: InitialSetupScreen()));
-        },
+        onPressed: () => MyNavigator.push(context, InitialSetupPage()),
         child: Text(context.strings.profile_grid_screen_start_initial_setup_button),
       ),
     );
   }
 }
 
-Future<bool?> showDailyLikesInfoDialog(BuildContext context, ClientFeaturesConfigData state) {
-  final pageKey = PageKey();
+class DailyLikesDialog extends MyDialogPage<()> {
+  DailyLikesDialog({required super.builder});
+}
 
-  final dailyLikesText = context.strings.profile_grid_screen_daily_likes_dialog_text(
-    state.valueDailyLikesLeft().toString(),
-    state.dailyLikesResetTime()?.uiString() ?? context.strings.generic_error,
-  );
+Future<void> showDailyLikesInfoDialog(BuildContext context, ClientFeaturesConfigData state) {
+  Widget dialogBuilder(BuildContext context, PageCloser<()> closer) {
+    final dailyLikesText = context.strings.profile_grid_screen_daily_likes_dialog_text(
+      state.valueDailyLikesLeft().toString(),
+      state.dailyLikesResetTime()?.uiString() ?? context.strings.generic_error,
+    );
 
-  final showUnlimitedLikesInfo = state.unlimitedLikesResetTime() != null;
+    final showUnlimitedLikesInfo = state.unlimitedLikesResetTime() != null;
 
-  dialogBuilder(BuildContext context) => AlertDialog(
-    content: Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(dailyLikesText),
-        if (showUnlimitedLikesInfo) const Padding(padding: EdgeInsets.only(top: 8)),
-        if (showUnlimitedLikesInfo)
-          Row(
-            children: [
-              Expanded(
-                child: Text(
-                  context.strings.profile_grid_screen_daily_likes_dialog_unlimited_likes_text,
+    return AlertDialog(
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(dailyLikesText),
+          if (showUnlimitedLikesInfo) const Padding(padding: EdgeInsets.only(top: 8)),
+          if (showUnlimitedLikesInfo)
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    context.strings.profile_grid_screen_daily_likes_dialog_unlimited_likes_text,
+                  ),
                 ),
-              ),
-              const Padding(padding: EdgeInsets.only(left: 8)),
-              Icon(UNLIMITED_LIKES_ICON, color: getUnlimitedLikesColor(context)),
-            ],
-          ),
-      ],
-    ),
-    actions: <Widget>[
-      TextButton(
-        onPressed: () {
-          MyNavigator.removePage(context, pageKey, false);
-        },
-        child: Text(context.strings.generic_close),
+                const Padding(padding: EdgeInsets.only(left: 8)),
+                Icon(UNLIMITED_LIKES_ICON, color: getUnlimitedLikesColor(context)),
+              ],
+            ),
+        ],
       ),
-    ],
-  );
+      actions: <Widget>[
+        TextButton(
+          onPressed: () => closer.close(context, ()),
+          child: Text(context.strings.generic_close),
+        ),
+      ],
+    );
+  }
 
-  return MyNavigator.showDialog<bool>(context: context, pageKey: pageKey, builder: dialogBuilder);
+  return MyNavigator.showDialog(
+    context: context,
+    page: DailyLikesDialog(builder: dialogBuilder),
+  );
 }

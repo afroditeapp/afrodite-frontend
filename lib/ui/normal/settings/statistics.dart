@@ -17,18 +17,7 @@ import 'package:app/utils/time.dart';
 import 'package:utils/utils.dart';
 
 Future<void> openStatisticsScreen(BuildContext context) {
-  final pageKey = PageKey();
-  return MyNavigator.pushWithKey(
-    context,
-    MaterialPage<void>(
-      child: BlocProvider(
-        create: (context) => StatisticsBloc(context.read<RepositoryInstances>()),
-        lazy: false,
-        child: const StatisticsScreen(),
-      ),
-    ),
-    pageKey,
-  );
+  return MyNavigator.push(context, StatisticsPage());
 }
 
 enum SelectedConnectionStatistics { min, max, average }
@@ -62,6 +51,19 @@ enum HourGroup {
     }
     return HourGroup.fourth;
   }
+}
+
+class StatisticsPage extends MyScreenPage<()> {
+  StatisticsPage()
+    : super(
+        builder: (_) {
+          return BlocProvider(
+            create: (context) => StatisticsBloc(context.read<RepositoryInstances>()),
+            lazy: false,
+            child: const StatisticsScreen(),
+          );
+        },
+      );
 }
 
 class StatisticsScreen extends StatefulWidget {

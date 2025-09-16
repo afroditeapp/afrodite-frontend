@@ -36,45 +36,56 @@ Future<void> openProfileView(
     return;
   }
 
-  final ApiManager api = context.read<RepositoryInstances>().api;
-  final pageKey = PageKey();
-  await MyNavigator.pushWithKey(
+  await MyNavigator.push(
     context,
-    MaterialPage<void>(
-      child: BlocProvider(
-        create: (context) => ViewProfileBloc(
-          context.read<RepositoryInstances>(),
-          profile,
-          initialProfileAction,
-          priority,
-        ),
-        lazy: false,
-        child: ViewProfilePage(
-          pageKey: pageKey,
-          initialProfile: profile,
-          api: api,
-          noAction: noAction,
-        ),
-      ),
+    ViewProfilePage(
+      context.read<RepositoryInstances>(),
+      initialProfile: profile,
+      initialProfileAction: initialProfileAction,
+      priority: priority,
+      noAction: noAction,
     ),
-    pageKey,
   );
 }
 
-class ViewProfilePage extends StatelessWidget {
-  final PageKey pageKey;
-  final bool noAction;
+class ViewProfilePage extends MyScreenPage<()> {
+  ViewProfilePage(
+    RepositoryInstances r, {
+    required ProfileEntry initialProfile,
+    required ProfileActionState? initialProfileAction,
+    required ProfileRefreshPriority priority,
+    required bool noAction,
+  }) : super(
+         builder: (closer) {
+           return BlocProvider(
+             create: (context) =>
+                 ViewProfileBloc(r, initialProfile, initialProfileAction, priority),
+             lazy: false,
+             child: ViewProfileScreen(
+               r,
+               closer: closer,
+               initialProfile: initialProfile,
+               noAction: noAction,
+             ),
+           );
+         },
+       );
+}
+
+class ViewProfileScreen extends StatelessWidget {
+  final PageCloser<()> closer;
   final ProfileEntry initialProfile;
+  final bool noAction;
 
   final ApiManager api;
 
-  const ViewProfilePage({
-    required this.pageKey,
+  ViewProfileScreen(
+    RepositoryInstances r, {
+    required this.closer,
     required this.initialProfile,
-    required this.api,
-    this.noAction = false,
+    required this.noAction,
     super.key,
-  });
+  }) : api = r.api;
 
   @override
   Widget build(BuildContext context) {
@@ -239,7 +250,7 @@ class ViewProfilePage extends StatelessWidget {
       if (state.isBlocked) {
         showSnackBar(context.strings.view_profile_screen_block_action_successful);
         if (context.mounted) {
-          MyNavigator.removePage(context, pageKey);
+          closer.close(context, ());
         }
       }
     });

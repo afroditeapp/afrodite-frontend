@@ -290,6 +290,10 @@ String _timeStringFromMessage(MessageEntry entry) {
   return timeString(messageTime);
 }
 
+class MessageActionsDialog extends MyDialogPage<()> {
+  MessageActionsDialog({required super.builder});
+}
+
 void openMessageMenu(BuildContext screenContext, MessageEntry entry) {
   if (!screenContext.mounted) {
     return;
@@ -298,17 +302,14 @@ void openMessageMenu(BuildContext screenContext, MessageEntry entry) {
 
   final message = entry.message;
 
-  final pageKey = PageKey();
-  MyNavigator.showDialog<void>(
-    context: screenContext,
-    pageKey: pageKey,
-    builder: (context) => SimpleDialog(
+  Widget builder(BuildContext context, PageCloser<()> closer) {
+    return SimpleDialog(
       children: [
         ListTile(
           title: Text(context.strings.generic_details),
           subtitle: Text(context.strings.conversation_screen_open_details_action_subtitle),
           onTap: () async {
-            closeActionsAndOpenDetails(screenContext, entry, pageKey);
+            closeActionsAndOpenDetails(screenContext, entry, closer.key);
           },
         ),
         if (message is TextMessage)
@@ -316,7 +317,7 @@ void openMessageMenu(BuildContext screenContext, MessageEntry entry) {
             title: Text(context.strings.generic_copy),
             onTap: () {
               Clipboard.setData(ClipboardData(text: message.text));
-              MyNavigator.removePage(context, pageKey, null);
+              closer.close(context, ());
             },
           ),
         if (entry.messageState.toSentState() == SentMessageState.sendingError)
@@ -329,7 +330,7 @@ void openMessageMenu(BuildContext screenContext, MessageEntry entry) {
               } else {
                 bloc.add(RemoveSendFailedMessage(entry.localId));
               }
-              MyNavigator.removePage(context, pageKey, null);
+              closer.close(context, ());
             },
           ),
         if (entry.messageState.toSentState() == SentMessageState.sendingError)
@@ -342,7 +343,7 @@ void openMessageMenu(BuildContext screenContext, MessageEntry entry) {
               } else {
                 bloc.add(ResendSendFailedMessage(entry.localId));
               }
-              MyNavigator.removePage(context, pageKey, null);
+              closer.close(context, ());
             },
           ),
         if (entry.messageState.toReceivedState() == ReceivedMessageState.publicKeyDownloadFailed)
@@ -355,11 +356,16 @@ void openMessageMenu(BuildContext screenContext, MessageEntry entry) {
               } else {
                 bloc.add(RetryPublicKeyDownload(entry.localId));
               }
-              MyNavigator.removePage(context, pageKey, null);
+              closer.close(context, ());
             },
           ),
       ],
-    ),
+    );
+  }
+
+  MyNavigator.showDialog(
+    context: screenContext,
+    page: MessageActionsDialog(builder: builder),
   );
 }
 

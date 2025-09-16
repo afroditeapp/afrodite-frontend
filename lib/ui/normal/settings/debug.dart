@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:app/api/server_connection_manager.dart';
 import 'package:app/data/profile_repository.dart';
 import 'package:app/data/utils/repository_instances.dart';
+import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:async/async.dart';
 import 'package:flutter/material.dart';
 import 'package:openapi/api.dart';
@@ -15,23 +16,27 @@ import 'package:app/ui/normal/chat/debug_page.dart';
 import 'package:app/ui/normal/settings.dart';
 import 'package:app/utils/result.dart';
 
-class DebugSettingsPage extends StatefulWidget {
+class DebugSettingsPage extends MyScreenPageLimited<()> {
+  DebugSettingsPage(RepositoryInstances r) : super(builder: (_) => DebugSettingsScreen(r));
+}
+
+class DebugSettingsScreen extends StatefulWidget {
   final ApiManager api;
   final ProfileRepository profile;
   final AccountBackgroundDatabaseManager accountBackgroundDb;
   final AccountDatabaseManager accountDb;
 
-  DebugSettingsPage(RepositoryInstances r, {super.key})
+  DebugSettingsScreen(RepositoryInstances r, {super.key})
     : api = r.api,
       profile = r.profile,
       accountBackgroundDb = r.accountBackgroundDb,
       accountDb = r.accountDb;
 
   @override
-  State<DebugSettingsPage> createState() => _DebugSettingsPageState();
+  State<DebugSettingsScreen> createState() => _DebugSettingsScreenState();
 }
 
-class _DebugSettingsPageState extends State<DebugSettingsPage> {
+class _DebugSettingsScreenState extends State<DebugSettingsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

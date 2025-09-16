@@ -6,38 +6,34 @@ import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/model/freezed/logic/account/news/edit_news.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui/normal/settings/news/view_news.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-Future<void> openEditNewsTranslationScreen(
-  BuildContext context,
-  NewsContent c,
-  String locale,
-  EditNewsBloc bloc,
-) {
-  final pageKey = PageKey();
-  return MyNavigator.pushWithKey(
-    context,
-    MaterialPage<void>(
-      child: EditNewsTranslationScreen(
-        pageKey: pageKey,
-        initialContent: c,
-        locale: locale,
-        bloc: bloc,
-      ),
-    ),
-    pageKey,
+Future<void> openEditNewsTranslationScreen(BuildContext context, NewsContent c, String locale) {
+  return MyNavigator.showFullScreenDialog(
+    context: context,
+    page: EditNewsTranslationPage(initialContent: c, locale: locale),
   );
 }
 
+class EditNewsTranslationPage extends MyFullScreenDialogPage<()> {
+  EditNewsTranslationPage({required NewsContent initialContent, required String locale})
+    : super(
+        builder: (closer) => EditNewsTranslationScreen(
+          closer: closer,
+          initialContent: initialContent,
+          locale: locale,
+        ),
+      );
+}
+
 class EditNewsTranslationScreen extends StatefulWidget {
-  final PageKey pageKey;
+  final PageCloser<()> closer;
   final NewsContent initialContent;
   final String locale;
-  final EditNewsBloc bloc;
   const EditNewsTranslationScreen({
-    required this.pageKey,
+    required this.closer,
     required this.initialContent,
     required this.locale,
-    required this.bloc,
     super.key,
   });
 
@@ -59,11 +55,12 @@ class EditNewsTranslationScreenState extends State<EditNewsTranslationScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final bloc = context.read<EditNewsBloc>();
     return PopScope(
       canPop: true,
       onPopInvokedWithResult: (didPop, _) {
-        if (didPop && mounted && !widget.bloc.isClosed) {
-          widget.bloc.add(
+        if (didPop && mounted && !bloc.isClosed) {
+          bloc.add(
             SaveTranslation(widget.locale, (
               title: _titleTextController.text,
               body: _bodyTextController.text,

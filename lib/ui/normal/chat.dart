@@ -46,13 +46,7 @@ class ChatView extends BottomNavigationScreen {
       menuActions([
         MenuItemButton(
           child: Text(context.strings.chat_list_screen_open_matches_screen_action),
-          onPressed: () async {
-            final entry = await openSelectMatchView(context);
-            if (entry == null || !context.mounted) {
-              return;
-            }
-            openConversationScreen(context, entry.accountId, entry);
-          },
+          onPressed: () => openSelectMatchView(context),
         ),
       ]),
     ];

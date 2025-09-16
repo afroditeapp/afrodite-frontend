@@ -1,16 +1,20 @@
 import 'dart:async';
 
 import 'package:app/data/utils/repository_instances.dart';
+import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui_utils/profile_grid.dart';
 import 'package:flutter/material.dart';
 import 'package:app/data/chat/matches_iterator_manager.dart';
-import 'package:database/database.dart';
 import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-Future<ProfileEntry?> openSelectMatchView(BuildContext context) {
-  return MyNavigator.push(context, const MaterialPage<ProfileEntry>(child: SelectMatchScreen()));
+Future<void> openSelectMatchView(BuildContext context) {
+  return MyNavigator.push(context, SelectMatchPage());
+}
+
+class SelectMatchPage extends MyScreenPage<()> {
+  SelectMatchPage() : super(builder: (_) => SelectMatchScreen());
 }
 
 class SelectMatchScreen extends StatelessWidget {

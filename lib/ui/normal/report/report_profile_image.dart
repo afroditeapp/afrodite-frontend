@@ -1,5 +1,6 @@
 import 'package:app/data/image_cache.dart';
 import 'package:app/data/utils/repository_instances.dart';
+import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui_utils/image.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/result.dart';
@@ -9,6 +10,13 @@ import 'package:database/database.dart';
 import 'package:app/localizations.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:provider/provider.dart';
+
+class ReportProfileImagePage extends MyFullScreenDialogPage<()> {
+  ReportProfileImagePage({required ProfileEntry profileEntry, required bool isMatch})
+    : super(
+        builder: (_) => ReportProfileImageScreen(profileEntry: profileEntry, isMatch: isMatch),
+      );
+}
 
 class ReportProfileImageScreen extends StatefulWidget {
   final ProfileEntry profileEntry;

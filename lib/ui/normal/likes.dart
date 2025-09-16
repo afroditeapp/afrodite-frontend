@@ -16,7 +16,6 @@ import 'package:app/data/profile_repository.dart';
 import 'package:database/database.dart';
 import 'package:app/logic/app/bottom_navigation_state.dart';
 import 'package:app/logic/app/like_grid_instance_manager.dart';
-import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/logic/chat/new_received_likes_available_bloc.dart';
 import 'package:app/model/freezed/logic/chat/new_received_likes_available_bloc.dart';
 import 'package:app/model/freezed/logic/main/bottom_navigation_state.dart';
@@ -77,11 +76,9 @@ class _LikeViewState extends State<LikeView> {
   }
 }
 
-NewPageDetails newLikesScreen() {
-  return NewPageDetails(
-    MaterialPage<void>(child: LikeScreenWithoutBlocDependency()),
-    pageInfo: const LikesPageInfo(),
-  );
+class LikesPage extends MyScreenPage<()> {
+  LikesPage()
+    : super(builder: (_) => LikeScreenWithoutBlocDependency(), pageInfo: const LikesPageInfo());
 }
 
 class LikeScreenWithoutBlocDependency extends StatefulWidget {

@@ -7,9 +7,6 @@ import 'package:database/database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:app/logic/app/navigator_state.dart';
-import 'package:app/logic/media/profile_pictures.dart';
-import 'package:app/logic/profile/attributes.dart';
-import 'package:app/logic/profile/edit_my_profile.dart';
 import 'package:app/logic/profile/my_profile.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/model/freezed/logic/profile/my_profile.dart';
@@ -36,19 +33,12 @@ Future<void> openMyProfileScreen(BuildContext context) async {
   if (context.read<AccountBloc>().state.accountState == AccountState.initialSetup) {
     showSnackBar(context.strings.view_profile_screen_my_profile_initial_setup_not_done);
   } else {
-    await MyNavigator.push(
-      context,
-      const MaterialPage<void>(child: MyProfileScreen()),
-      pageInfo: const MyProfilePageInfo(),
-    );
+    await MyNavigator.push(context, MyProfilePage());
   }
 }
 
-NewPageDetails newMyProfileScreen() {
-  return NewPageDetails(
-    const MaterialPage<void>(child: MyProfileScreen()),
-    pageInfo: const MyProfilePageInfo(),
-  );
+class MyProfilePage extends MyScreenPage<()> {
+  MyProfilePage() : super(builder: (_) => MyProfileScreen(), pageInfo: const MyProfilePageInfo());
 }
 
 class MyProfileScreen extends StatelessWidget {
@@ -61,8 +51,7 @@ class MyProfileScreen extends StatelessWidget {
         title: Text(context.strings.view_profile_screen_my_profile_title),
         actions: [
           IconButton(
-            onPressed: () =>
-                MyNavigator.push(context, const MaterialPage<void>(child: LocationScreen())),
+            onPressed: () => MyNavigator.push(context, LocationPage()),
             icon: const Icon(Icons.location_on),
             tooltip: context.strings.profile_location_screen_title,
           ),
@@ -82,20 +71,7 @@ class MyProfileScreen extends StatelessWidget {
           void Function()? onPressed;
           if (profile != null) {
             onPressed = () {
-              final pageKey = PageKey();
-              MyNavigator.pushWithKey(
-                context,
-                MaterialPage<void>(
-                  child: EditProfilePage(
-                    pageKey: pageKey,
-                    initialProfile: profile,
-                    profilePicturesBloc: context.read<ProfilePicturesBloc>(),
-                    editMyProfileBloc: context.read<EditMyProfileBloc>(),
-                    profileAttributesBloc: context.read<ProfileAttributesBloc>(),
-                  ),
-                ),
-                pageKey,
-              );
+              MyNavigator.push(context, EditProfilePage(profile));
             };
           }
 

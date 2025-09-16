@@ -35,14 +35,39 @@ import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/age.dart';
 import 'package:app/utils/profile_entry.dart';
 
-class EditProfilePage extends StatefulWidget {
-  final PageKey pageKey;
+class EditProfilePage extends MyScreenPage<()> {
+  EditProfilePage(MyProfileEntry initialProfile)
+    : super(
+        builder: (closer) =>
+            EditProfileScreenOpener(closer: closer, initialProfile: initialProfile),
+      );
+}
+
+class EditProfileScreenOpener extends StatelessWidget {
+  final PageCloser<()> closer;
+  final MyProfileEntry initialProfile;
+  const EditProfileScreenOpener({required this.closer, required this.initialProfile, super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return EditProfileScreen(
+      closer: closer,
+      initialProfile: initialProfile,
+      profilePicturesBloc: context.read<ProfilePicturesBloc>(),
+      editMyProfileBloc: context.read<EditMyProfileBloc>(),
+      profileAttributesBloc: context.read<ProfileAttributesBloc>(),
+    );
+  }
+}
+
+class EditProfileScreen extends StatefulWidget {
+  final PageCloser<()> closer;
   final MyProfileEntry initialProfile;
   final ProfilePicturesBloc profilePicturesBloc;
   final EditMyProfileBloc editMyProfileBloc;
   final ProfileAttributesBloc profileAttributesBloc;
-  const EditProfilePage({
-    required this.pageKey,
+  const EditProfileScreen({
+    required this.closer,
     required this.initialProfile,
     required this.profilePicturesBloc,
     required this.editMyProfileBloc,
@@ -51,10 +76,10 @@ class EditProfilePage extends StatefulWidget {
   });
 
   @override
-  State<EditProfilePage> createState() => _EditProfilePageState();
+  State<EditProfileScreen> createState() => _EditProfileScreenState();
 }
 
-class _EditProfilePageState extends State<EditProfilePage> {
+class _EditProfileScreenState extends State<EditProfileScreen> {
   @override
   void initState() {
     super.initState();
@@ -179,7 +204,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   Widget build(BuildContext context) {
     return updateStateHandler<MyProfileBloc, MyProfileData>(
       context: context,
-      pageKey: widget.pageKey,
+      pageKey: widget.closer.key,
       child: BlocBuilder<EditMyProfileBloc, EditMyProfileData>(
         builder: (context, data) {
           return BlocBuilder<ProfilePicturesBloc, ProfilePicturesData>(
@@ -329,9 +354,8 @@ class EditAttributes extends StatelessWidget {
       attributeWidgets.add(
         EditAttributeRow(
           a: a,
-          onStartEditor: () {
-            MyNavigator.push(context, MaterialPage<void>(child: EditProfileAttributeScreen(a: a)));
-          },
+          onStartEditor: () =>
+              MyNavigator.showFullScreenDialog(context: context, page: EditProfileAttributePage(a)),
         ),
       );
       attributeWidgets.add(const Divider());

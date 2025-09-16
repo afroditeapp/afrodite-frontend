@@ -12,18 +12,15 @@ import 'package:app/localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 Future<void> openAutomaticProfileSearchResultsScreen(BuildContext context) {
-  return MyNavigator.push(
-    context,
-    const MaterialPage<void>(child: AutomaticProfileSearchResultsScreen()),
-    pageInfo: const AutomaticProfileSearchResultsPageInfo(),
-  );
+  return MyNavigator.push(context, AutomaticProfileSearchResultsPage());
 }
 
-NewPageDetails newAutomaticProfileSearchResultsScreen() {
-  return NewPageDetails(
-    const MaterialPage<void>(child: AutomaticProfileSearchResultsScreen()),
-    pageInfo: const AutomaticProfileSearchResultsPageInfo(),
-  );
+class AutomaticProfileSearchResultsPage extends MyScreenPage<()> {
+  AutomaticProfileSearchResultsPage()
+    : super(
+        builder: (_) => AutomaticProfileSearchResultsScreen(),
+        pageInfo: const AutomaticProfileSearchResultsPageInfo(),
+      );
 }
 
 class AutomaticProfileSearchResultsScreen extends StatefulWidget {

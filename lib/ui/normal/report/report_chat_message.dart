@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:app/data/utils/repository_instances.dart';
+import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui/normal/chat/message_row.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/result.dart';
@@ -11,6 +12,13 @@ import 'package:openapi/api.dart';
 import 'package:database/database.dart';
 import 'package:app/localizations.dart';
 import 'package:app/ui_utils/dialog.dart';
+
+class ReportChatMessagePage extends MyFullScreenDialogPage<()> {
+  ReportChatMessagePage({required AccountId accountId, required List<MessageEntry> messages})
+    : super(
+        builder: (_) => ReportChatMessageScreen(accountId: accountId, messages: messages),
+      );
+}
 
 class ReportChatMessageScreen extends StatefulWidget {
   final AccountId accountId;

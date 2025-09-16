@@ -20,36 +20,33 @@ import 'package:app/utils/api.dart';
 import 'package:app/utils/time.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
-Future<void> openViewNewsScreen(
-  BuildContext context,
-  String locale,
-  NewsId id,
-  void Function() refreshNewsList,
-) {
-  final pageKey = PageKey();
-  return MyNavigator.pushWithKey(
-    context,
-    MaterialPage<void>(
-      child: BlocProvider(
-        create: (context) => ViewNewsBloc(context.read<RepositoryInstances>(), id, locale),
-        lazy: false,
-        child: ViewNewsScreen(pageKey: pageKey, id: id, refreshNewsList: refreshNewsList),
-      ),
-    ),
-    pageKey,
-  );
+Future<void> openViewNewsScreen(BuildContext context, NewsId id, void Function() refreshNewsList) {
+  return MyNavigator.push(context, ViewNewsPage(id));
+}
+
+void _emptyCallback() {}
+
+class ViewNewsPage extends MyScreenPage<()> {
+  ViewNewsPage(NewsId id, {void Function() refreshNewsList = _emptyCallback})
+    : super(
+        builder: (_) {
+          return BlocProvider(
+            create: (context) => ViewNewsBloc(
+              context.read<RepositoryInstances>(),
+              id,
+              Localizations.localeOf(context).languageCode,
+            ),
+            lazy: false,
+            child: ViewNewsScreen(id: id, refreshNewsList: refreshNewsList),
+          );
+        },
+      );
 }
 
 class ViewNewsScreen extends StatefulWidget {
-  final PageKey pageKey;
   final NewsId id;
   final void Function() refreshNewsList;
-  const ViewNewsScreen({
-    required this.pageKey,
-    required this.id,
-    required this.refreshNewsList,
-    super.key,
-  });
+  const ViewNewsScreen({required this.id, required this.refreshNewsList, super.key});
 
   @override
   State<ViewNewsScreen> createState() => ViewNewsScreenState();

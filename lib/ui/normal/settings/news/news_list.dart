@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:app/data/general/notification/state/news_item_available.dart';
 import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/database/account_background_database_manager.dart';
+import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui_utils/extensions/other.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -23,7 +24,11 @@ import 'package:app/utils/api.dart';
 import 'package:app/utils/time.dart';
 
 Future<void> openNewsList(BuildContext context) {
-  return MyNavigator.push(context, const MaterialPage<void>(child: NewsListScreenOpener()));
+  return MyNavigator.push(context, NewsListPage());
+}
+
+class NewsListPage extends MyScreenPage<()> {
+  NewsListPage() : super(builder: (_) => NewsListScreenOpener());
 }
 
 class NewsListScreenOpener extends StatefulWidget {
@@ -222,7 +227,7 @@ class NewsListScreenState extends State<NewsListScreen> {
             title: Text(title),
             subtitle: Text(subtitle),
             onTap: () {
-              openViewNewsScreen(context, widget.locale, item.newsItem.id, () {
+              openViewNewsScreen(context, item.newsItem.id, () {
                 if (context.mounted) {
                   refresh();
                 }

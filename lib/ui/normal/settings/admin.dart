@@ -1,4 +1,5 @@
 import 'package:app/data/utils/repository_instances.dart';
+import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui/normal/settings/admin/edit_admin_notifications.dart';
 import 'package:app/ui/normal/settings/admin/moderator_tasks.dart';
 import 'package:app/ui/normal/settings/admin/open_account_admin_settings.dart';
@@ -15,8 +16,12 @@ import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/model/freezed/logic/account/account.dart';
 import 'package:app/ui/normal/settings.dart';
 
-class AdminSettingsPage extends StatelessWidget {
-  const AdminSettingsPage({super.key});
+class AdminSettingsPage extends MyScreenPageLimited<()> {
+  AdminSettingsPage() : super(builder: (_) => AdminSettingsScreen());
+}
+
+class AdminSettingsScreen extends StatelessWidget {
+  const AdminSettingsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
