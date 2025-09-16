@@ -1,5 +1,7 @@
 import 'package:app/api/server_connection_manager.dart';
+import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/logic/admin/content_decicion_stream.dart';
+import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui/normal/settings/admin/content_decicion_stream.dart';
 import 'package:app/ui_utils/extensions/api.dart';
 import 'package:app/utils/result.dart';
@@ -8,16 +10,31 @@ import 'package:openapi/api.dart';
 
 const double ROW_HEIGHT = 100;
 
+class ModerateProfileStringsPage extends MyScreenPageLimited<()> {
+  ModerateProfileStringsPage(
+    RepositoryInstances r, {
+    required ProfileStringModerationContentType contentType,
+    required bool showTextsWhichBotsCanModerate,
+  }) : super(
+         builder: (_) => ModerateProfileStringsScreen(
+           r,
+           contentType: contentType,
+           showTextsWhichBotsCanModerate: showTextsWhichBotsCanModerate,
+         ),
+       );
+}
+
 class ModerateProfileStringsScreen extends ContentDecicionScreen<WrappedProfileStringModeration> {
-  ModerateProfileStringsScreen({
-    required super.api,
+  ModerateProfileStringsScreen(
+    RepositoryInstances r, {
     required ProfileStringModerationContentType contentType,
     required bool showTextsWhichBotsCanModerate,
     super.key,
   }) : super(
+         api: r.api,
          title: "Moderate ${contentType.adminUiTextPlular()}",
          infoMessageRowHeight: ROW_HEIGHT,
-         io: ProfileStringIo(api, contentType, showTextsWhichBotsCanModerate),
+         io: ProfileStringIo(r.api, contentType, showTextsWhichBotsCanModerate),
          builder: ProfileTextUiBuilder(),
        );
 }

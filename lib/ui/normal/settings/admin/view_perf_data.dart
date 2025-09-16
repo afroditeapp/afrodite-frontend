@@ -8,12 +8,7 @@ import 'package:app/api/server_connection_manager.dart';
 import 'package:app/utils/result.dart';
 
 void openViewPerfDataScreen(BuildContext context, String title, ApiManager api) {
-  MyNavigator.push(
-    context,
-    MaterialPage<void>(
-      child: ViewMetricsScreen(title: title, metrics: GetPerfData(api)),
-    ),
-  );
+  MyNavigator.pushLimited(context, ViewMetricsPage(title: title, metrics: GetPerfData(api)));
 }
 
 class GetPerfData extends GetMetrics {

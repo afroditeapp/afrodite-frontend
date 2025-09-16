@@ -1,31 +1,46 @@
 import 'package:app/api/server_connection_manager.dart';
 import 'package:app/data/image_cache.dart';
 import 'package:app/data/media_repository.dart';
+import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/logic/admin/content_decicion_stream.dart';
+import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui/normal/settings/admin/content_decicion_stream.dart';
 import 'package:app/utils/result.dart';
 import 'package:flutter/material.dart';
 import 'package:openapi/api.dart';
 import 'package:app/localizations.dart';
-import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/ui_utils/image.dart';
 import 'package:app/ui_utils/view_image_screen.dart';
 
 const IMAGE_MODERATION_ROW_HEIGHT = 300.0;
 
+class ModerateImagesPage extends MyScreenPageLimited<()> {
+  ModerateImagesPage(
+    RepositoryInstances r, {
+    required ModerationQueueType queueType,
+    required bool showContentWhichBotsCanModerate,
+  }) : super(
+         builder: (_) => ModerateImagesScreen(
+           r,
+           queueType: queueType,
+           showContentWhichBotsCanModerate: showContentWhichBotsCanModerate,
+         ),
+       );
+}
+
 class ModerateImagesScreen extends ContentDecicionScreen<WrappedMediaContentPendingModeration> {
   final ModerationQueueType queueType;
   final bool showContentWhichBotsCanModerate;
-  ModerateImagesScreen({
-    required super.api,
-    required MediaRepository media,
+  ModerateImagesScreen(
+    RepositoryInstances r, {
     required this.queueType,
     required this.showContentWhichBotsCanModerate,
     super.key,
   }) : super(
+         api: r.api,
          title: "Moderate profile images",
          infoMessageRowHeight: IMAGE_MODERATION_ROW_HEIGHT,
-         io: MediaContentIo(api, media, showContentWhichBotsCanModerate, queueType),
+         io: MediaContentIo(r.api, r.media, showContentWhichBotsCanModerate, queueType),
          builder: MediaContentUiBuilder(),
        );
 }
@@ -141,12 +156,7 @@ class MediaContentUiBuilder extends ContentUiBuilder<WrappedMediaContentPendingM
 
   Widget buildImage(BuildContext context, AccountId imageOwner, ContentId image, double width) {
     return InkWell(
-      onTap: () {
-        MyNavigator.push(
-          context,
-          MaterialPage<void>(child: ViewImageScreen(ViewImageAccountContent(imageOwner, image))),
-        );
-      },
+      onTap: () => openViewImageScreenForAccountImage(context, imageOwner, image),
       child: accountImgWidget(
         context,
         imageOwner,

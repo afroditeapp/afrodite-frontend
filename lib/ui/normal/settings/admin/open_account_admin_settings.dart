@@ -1,4 +1,5 @@
 import 'package:app/data/utils/repository_instances.dart';
+import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui/normal/settings/admin/account_admin_settings.dart';
 import 'package:app/ui_utils/padding.dart';
 import 'package:flutter/material.dart';
@@ -6,14 +7,18 @@ import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/result.dart';
 import 'package:provider/provider.dart';
 
-class OpenAccountAdminSettings extends StatefulWidget {
-  const OpenAccountAdminSettings({super.key});
-
-  @override
-  State<OpenAccountAdminSettings> createState() => _OpenAccountAdminSettingsState();
+class OpenAccountAdminSettingsPage extends MyScreenPageLimited<()> {
+  OpenAccountAdminSettingsPage() : super(builder: (_) => OpenAccountAdminSettingsScreen());
 }
 
-class _OpenAccountAdminSettingsState extends State<OpenAccountAdminSettings> {
+class OpenAccountAdminSettingsScreen extends StatefulWidget {
+  const OpenAccountAdminSettingsScreen({super.key});
+
+  @override
+  State<OpenAccountAdminSettingsScreen> createState() => _OpenAccountAdminSettingsScreenState();
+}
+
+class _OpenAccountAdminSettingsScreenState extends State<OpenAccountAdminSettingsScreen> {
   final TextEditingController _emailController = TextEditingController();
 
   @override

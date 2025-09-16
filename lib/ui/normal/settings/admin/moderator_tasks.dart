@@ -1,6 +1,7 @@
 import 'package:app/api/server_connection_manager.dart';
 import 'package:app/data/account_repository.dart';
 import 'package:app/data/utils/repository_instances.dart';
+import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui/normal/settings/admin/moderate_profile_string.dart';
 import 'package:app/ui/normal/settings/admin/report/process_reports.dart';
 import 'package:app/ui_utils/snack_bar.dart';
@@ -14,8 +15,9 @@ import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/ui/normal/settings.dart';
 import 'package:app/ui/normal/settings/admin/moderate_images.dart';
 
-NewPageDetails newModeratorTasksScreen(RepositoryInstances r) {
-  return NewPageDetails(MaterialPage<void>(child: ModeratorTasksScreen(r)));
+class ModeratorTasksPage extends MyScreenPageLimited<()> {
+  ModeratorTasksPage(RepositoryInstances r, {bool showAll = false})
+    : super(builder: (_) => ModeratorTasksScreen(r, showAll: showAll));
 }
 
 class RequiredData {
@@ -48,7 +50,7 @@ class ModeratorTasksScreen extends StatefulWidget {
   final AccountRepository account;
 
   final bool showAll;
-  ModeratorTasksScreen(RepositoryInstances r, {this.showAll = false, super.key})
+  ModeratorTasksScreen(RepositoryInstances r, {required this.showAll, super.key})
     : api = r.api,
       connectionManager = r.connectionManager,
       account = r.account;
@@ -265,15 +267,12 @@ class _ModeratorTasksScreenState extends State<ModeratorTasksScreen> {
         Setting.createSetting(
           Icons.image,
           "Moderate images (initial moderation, bot and human)",
-          () => MyNavigator.push(
+          () => MyNavigator.pushLimited(
             context,
-            MaterialPage<void>(
-              child: ModerateImagesScreen(
-                api: r.api,
-                media: r.media,
-                queueType: ModerationQueueType.initialMediaModeration,
-                showContentWhichBotsCanModerate: true,
-              ),
+            ModerateImagesPage(
+              r,
+              queueType: ModerationQueueType.initialMediaModeration,
+              showContentWhichBotsCanModerate: true,
             ),
           ),
         ),
@@ -281,15 +280,12 @@ class _ModeratorTasksScreenState extends State<ModeratorTasksScreen> {
         Setting.createSetting(
           Icons.image,
           "Moderate images (initial moderation, human)",
-          () => MyNavigator.push(
+          () => MyNavigator.pushLimited(
             context,
-            MaterialPage<void>(
-              child: ModerateImagesScreen(
-                api: r.api,
-                media: r.media,
-                queueType: ModerationQueueType.initialMediaModeration,
-                showContentWhichBotsCanModerate: false,
-              ),
+            ModerateImagesPage(
+              r,
+              queueType: ModerationQueueType.initialMediaModeration,
+              showContentWhichBotsCanModerate: false,
             ),
           ),
         ),
@@ -297,15 +293,12 @@ class _ModeratorTasksScreenState extends State<ModeratorTasksScreen> {
         Setting.createSetting(
           Icons.image,
           "Moderate images (normal, bot and human)",
-          () => MyNavigator.push(
+          () => MyNavigator.pushLimited(
             context,
-            MaterialPage<void>(
-              child: ModerateImagesScreen(
-                api: r.api,
-                media: r.media,
-                queueType: ModerationQueueType.mediaModeration,
-                showContentWhichBotsCanModerate: true,
-              ),
+            ModerateImagesPage(
+              r,
+              queueType: ModerationQueueType.mediaModeration,
+              showContentWhichBotsCanModerate: true,
             ),
           ),
         ),
@@ -313,15 +306,12 @@ class _ModeratorTasksScreenState extends State<ModeratorTasksScreen> {
         Setting.createSetting(
           Icons.image,
           "Moderate images (normal, human)",
-          () => MyNavigator.push(
+          () => MyNavigator.pushLimited(
             context,
-            MaterialPage<void>(
-              child: ModerateImagesScreen(
-                api: r.api,
-                media: r.media,
-                queueType: ModerationQueueType.mediaModeration,
-                showContentWhichBotsCanModerate: false,
-              ),
+            ModerateImagesPage(
+              r,
+              queueType: ModerationQueueType.mediaModeration,
+              showContentWhichBotsCanModerate: false,
             ),
           ),
         ),
@@ -329,14 +319,12 @@ class _ModeratorTasksScreenState extends State<ModeratorTasksScreen> {
         Setting.createSetting(
           Icons.text_fields,
           "Moderate profile names (bot and human)",
-          () => MyNavigator.push(
+          () => MyNavigator.pushLimited(
             context,
-            MaterialPage<void>(
-              child: ModerateProfileStringsScreen(
-                api: r.api,
-                contentType: ProfileStringModerationContentType.profileName,
-                showTextsWhichBotsCanModerate: true,
-              ),
+            ModerateProfileStringsPage(
+              r,
+              contentType: ProfileStringModerationContentType.profileName,
+              showTextsWhichBotsCanModerate: true,
             ),
           ),
         ),
@@ -344,14 +332,12 @@ class _ModeratorTasksScreenState extends State<ModeratorTasksScreen> {
         Setting.createSetting(
           Icons.text_fields,
           "Moderate profile names (human)",
-          () => MyNavigator.push(
+          () => MyNavigator.pushLimited(
             context,
-            MaterialPage<void>(
-              child: ModerateProfileStringsScreen(
-                api: r.api,
-                contentType: ProfileStringModerationContentType.profileName,
-                showTextsWhichBotsCanModerate: false,
-              ),
+            ModerateProfileStringsPage(
+              r,
+              contentType: ProfileStringModerationContentType.profileName,
+              showTextsWhichBotsCanModerate: false,
             ),
           ),
         ),
@@ -359,14 +345,12 @@ class _ModeratorTasksScreenState extends State<ModeratorTasksScreen> {
         Setting.createSetting(
           Icons.text_fields,
           "Moderate profile texts (bot and human)",
-          () => MyNavigator.push(
+          () => MyNavigator.pushLimited(
             context,
-            MaterialPage<void>(
-              child: ModerateProfileStringsScreen(
-                api: r.api,
-                contentType: ProfileStringModerationContentType.profileText,
-                showTextsWhichBotsCanModerate: true,
-              ),
+            ModerateProfileStringsPage(
+              r,
+              contentType: ProfileStringModerationContentType.profileText,
+              showTextsWhichBotsCanModerate: true,
             ),
           ),
         ),
@@ -374,14 +358,12 @@ class _ModeratorTasksScreenState extends State<ModeratorTasksScreen> {
         Setting.createSetting(
           Icons.text_fields,
           "Moderate profile texts (human)",
-          () => MyNavigator.push(
+          () => MyNavigator.pushLimited(
             context,
-            MaterialPage<void>(
-              child: ModerateProfileStringsScreen(
-                api: r.api,
-                contentType: ProfileStringModerationContentType.profileText,
-                showTextsWhichBotsCanModerate: false,
-              ),
+            ModerateProfileStringsPage(
+              r,
+              contentType: ProfileStringModerationContentType.profileText,
+              showTextsWhichBotsCanModerate: false,
             ),
           ),
         ),
@@ -389,10 +371,7 @@ class _ModeratorTasksScreenState extends State<ModeratorTasksScreen> {
         Setting.createSetting(
           Icons.report,
           "Process reports",
-          () => MyNavigator.push(
-            context,
-            MaterialPage<void>(child: ProcessReportsScreen(api: r.api)),
-          ),
+          () => MyNavigator.pushLimited(context, ProcessReportsPage(r)),
         ),
     ];
     return settings.map((v) => v.toListTile());

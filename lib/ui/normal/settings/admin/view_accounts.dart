@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:app/api/server_connection_manager.dart';
+import 'package:app/data/utils/repository_instances.dart';
+import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui/normal/settings/admin/account_admin_settings.dart';
 import 'package:app/ui_utils/extensions/other.dart';
 import 'package:app/utils/result.dart';
@@ -8,9 +10,13 @@ import 'package:flutter/material.dart';
 import 'package:openapi/api.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
+class ViewAccountsPage extends MyScreenPageLimited<()> {
+  ViewAccountsPage(RepositoryInstances r) : super(builder: (_) => ViewAccountsScreen(r));
+}
+
 class ViewAccountsScreen extends StatefulWidget {
   final ApiManager api;
-  const ViewAccountsScreen(this.api, {super.key});
+  ViewAccountsScreen(RepositoryInstances r, {super.key}) : api = r.api;
 
   @override
   State<ViewAccountsScreen> createState() => _BlockedProfilesScreen();

@@ -1,5 +1,7 @@
 import 'package:app/api/server_connection_manager.dart';
+import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/localizations.dart';
+import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui/normal/settings/admin/account_admin_settings.dart';
 import 'package:app/ui_utils/padding.dart';
 import 'package:collection/collection.dart';
@@ -10,9 +12,13 @@ import 'package:openapi/api.dart';
 
 typedef ViewAdminsData = List<(AccountId, GetProfileAgeAndName, Permissions)>;
 
+class ViewAdminsPage extends MyScreenPageLimited<()> {
+  ViewAdminsPage(RepositoryInstances r) : super(builder: (_) => ViewAdminsScreen(r));
+}
+
 class ViewAdminsScreen extends StatefulWidget {
   final ApiManager api;
-  const ViewAdminsScreen(this.api, {super.key});
+  ViewAdminsScreen(RepositoryInstances r, {super.key}) : api = r.api;
 
   @override
   State<ViewAdminsScreen> createState() => _ViewAdminsScreenState();

@@ -1,6 +1,8 @@
 import 'package:app/api/server_connection_manager.dart';
 import 'package:app/config.dart';
+import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/localizations.dart';
+import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:openapi/api.dart';
@@ -8,15 +10,19 @@ import 'package:openapi/api.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:app/utils/result.dart';
 
-class ServerSystemInfoPage extends StatefulWidget {
-  final ApiManager api;
-  const ServerSystemInfoPage(this.api, {super.key});
-
-  @override
-  State<ServerSystemInfoPage> createState() => _ServerSystemInfoPageState();
+class ServerSystemInfoPage extends MyScreenPageLimited<()> {
+  ServerSystemInfoPage(RepositoryInstances r) : super(builder: (_) => ServerSystemInfoScreen(r));
 }
 
-class _ServerSystemInfoPageState extends State<ServerSystemInfoPage> {
+class ServerSystemInfoScreen extends StatefulWidget {
+  final ApiManager api;
+  ServerSystemInfoScreen(RepositoryInstances r, {super.key}) : api = r.api;
+
+  @override
+  State<ServerSystemInfoScreen> createState() => _ServerSystemInfoScreenState();
+}
+
+class _ServerSystemInfoScreenState extends State<ServerSystemInfoScreen> {
   ManagerInstanceNameList? _managers;
   List<ManagerSystemInfo>? _currentData = [];
 

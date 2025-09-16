@@ -1,4 +1,5 @@
 import 'package:app/data/utils/repository_instances.dart';
+import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui/normal/settings/admin.dart';
 import 'package:app/ui/normal/settings/admin/edit_maintenance_notification.dart';
 import 'package:app/ui/normal/settings/admin/server_tasks.dart';
@@ -11,6 +12,10 @@ import 'package:app/ui/normal/settings.dart';
 import 'package:app/ui/normal/settings/admin/configure_backend.dart';
 import 'package:app/ui/normal/settings/admin/server_software_update.dart';
 import 'package:app/ui/normal/settings/admin/server_system_info.dart';
+
+class ServerPage extends MyScreenPageLimited<()> {
+  ServerPage({required String title}) : super(builder: (_) => ServerScreen(title: title));
+}
 
 class ServerScreen extends StatelessWidget {
   final String title;
@@ -46,10 +51,7 @@ class ServerScreen extends StatelessWidget {
         Setting.createSetting(
           Icons.settings,
           "Configure backend",
-          () => MyNavigator.push(
-            context,
-            MaterialPage<void>(child: ConfigureBackendPage(api: r.api)),
-          ),
+          () => MyNavigator.pushLimited(context, ConfigureBackendPage(r)),
         ),
       );
     }
@@ -58,7 +60,7 @@ class ServerScreen extends StatelessWidget {
         Setting.createSetting(
           Icons.info_outline,
           "Server system info",
-          () => MyNavigator.push(context, MaterialPage<void>(child: ServerSystemInfoPage(r.api))),
+          () => MyNavigator.pushLimited(context, ServerSystemInfoPage(r)),
         ),
       );
     }
@@ -68,11 +70,9 @@ class ServerScreen extends StatelessWidget {
         Setting.createSetting(
           Icons.schedule,
           "Server tasks",
-          () => MyNavigator.push(
+          () => MyNavigator.pushLimited(
             context,
-            MaterialPage<void>(
-              child: ServerTasksScreen(r.api, permissions: permissions.apiPermissions),
-            ),
+            ServerTasksPage(r, permissions: permissions.apiPermissions),
           ),
         ),
       );
@@ -82,8 +82,7 @@ class ServerScreen extends StatelessWidget {
         Setting.createSetting(
           Icons.system_update_alt,
           "Server software update",
-          () =>
-              MyNavigator.push(context, MaterialPage<void>(child: ServerSoftwareUpdatePage(r.api))),
+          () => MyNavigator.pushLimited(context, ServerSoftwareUpdatePage(r)),
         ),
       );
     }
@@ -92,10 +91,7 @@ class ServerScreen extends StatelessWidget {
         Setting.createSetting(
           Icons.settings,
           "Edit maintenance notification",
-          () => MyNavigator.push(
-            context,
-            MaterialPage<void>(child: EditMaintenanceNotificationScreen(api: r.api)),
-          ),
+          () => MyNavigator.pushLimited(context, EditMaintenanceNotificationPage(r)),
         ),
       );
     }

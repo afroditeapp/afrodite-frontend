@@ -17,19 +17,21 @@ const ADMIN_NOTIFICATIONS_TITLE = "Admin notifications";
 
 Future<void> openAdminNotificationsScreen(BuildContext context) {
   final r = context.read<RepositoryInstances>();
-  final pageKey = PageKey();
-  return MyNavigator.pushWithKey(
-    context,
-    MaterialPage<void>(
-      child: AdminNotificationScreen(api: r.api, pageKey: pageKey),
-    ),
-    pageKey,
-  );
+  return MyNavigator.pushLimited(context, AdminNotificationPage(r));
+}
+
+class AdminNotificationPage extends MyScreenPageLimited<()> {
+  AdminNotificationPage(RepositoryInstances r)
+    : super(builder: (closer) => AdminNotificationScreen(r, closer: closer));
 }
 
 class AdminNotificationScreen extends EditDataScreen<AdminNotificationDataManager> {
-  const AdminNotificationScreen({required super.api, required super.pageKey, super.key})
-    : super(dataApi: const AdminNotificationDataApi(), title: ADMIN_NOTIFICATIONS_TITLE);
+  AdminNotificationScreen(RepositoryInstances r, {required super.closer, super.key})
+    : super(
+        api: r.api,
+        dataApi: const AdminNotificationDataApi(),
+        title: ADMIN_NOTIFICATIONS_TITLE,
+      );
 }
 
 class AdminNotificationDataApi extends EditDataApi<AdminNotificationDataManager> {

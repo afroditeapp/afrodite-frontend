@@ -18,14 +18,12 @@ void openViewIpCountryStatisticsScreen(
   bool fromRam = false,
   String? dataAttribution,
 }) {
-  MyNavigator.push(
+  MyNavigator.pushLimited(
     context,
-    MaterialPage<void>(
-      child: ViewMetricsScreen(
-        title: title,
-        metrics: GetIpCountryHistory(api, daily: daily, fromRam: fromRam),
-        dataAttribution: dataAttribution,
-      ),
+    ViewMetricsPage(
+      title: title,
+      metrics: GetIpCountryHistory(api, daily: daily, fromRam: fromRam),
+      dataAttribution: dataAttribution,
     ),
   );
 }

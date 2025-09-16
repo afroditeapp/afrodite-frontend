@@ -17,18 +17,18 @@ import 'package:app/utils/api.dart';
 import 'package:app/utils/time.dart';
 
 Future<void> openProfileStatisticsHistoryScreen(BuildContext context) {
-  final pageKey = PageKey();
-  return MyNavigator.pushWithKey(
-    context,
-    MaterialPage<void>(
-      child: BlocProvider(
-        create: (context) => ProfileStatisticsHistoryBloc(context.read<RepositoryInstances>()),
-        lazy: false,
-        child: const ProfileStatisticsHistoryScreen(),
-      ),
-    ),
-    pageKey,
-  );
+  return MyNavigator.pushLimited(context, ProfileStatisticsHistoryPage());
+}
+
+class ProfileStatisticsHistoryPage extends MyScreenPageLimited<()> {
+  ProfileStatisticsHistoryPage()
+    : super(
+        builder: (_) => BlocProvider(
+          create: (context) => ProfileStatisticsHistoryBloc(context.read<RepositoryInstances>()),
+          lazy: false,
+          child: const ProfileStatisticsHistoryScreen(),
+        ),
+      );
 }
 
 class ProfileStatisticsHistoryScreen extends StatefulWidget {

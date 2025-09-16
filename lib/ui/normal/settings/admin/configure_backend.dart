@@ -1,5 +1,7 @@
 import 'package:app/api/server_connection_manager.dart';
+import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/localizations.dart';
+import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui_utils/padding.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,15 +12,19 @@ import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/result.dart';
 
-class ConfigureBackendPage extends StatefulWidget {
-  final ApiManager api;
-  const ConfigureBackendPage({required this.api, super.key});
-
-  @override
-  State<ConfigureBackendPage> createState() => _ConfigureBackendPageState();
+class ConfigureBackendPage extends MyScreenPageLimited<()> {
+  ConfigureBackendPage(RepositoryInstances r) : super(builder: (_) => ConfigureBackendScreen(r));
 }
 
-class _ConfigureBackendPageState extends State<ConfigureBackendPage> {
+class ConfigureBackendScreen extends StatefulWidget {
+  final ApiManager api;
+  ConfigureBackendScreen(RepositoryInstances r, {super.key}) : api = r.api;
+
+  @override
+  State<ConfigureBackendScreen> createState() => _ConfigureBackendScreenState();
+}
+
+class _ConfigureBackendScreenState extends State<ConfigureBackendScreen> {
   bool? _remoteBotLogin;
   int? _userBots;
   bool? _adminBotEnabled;

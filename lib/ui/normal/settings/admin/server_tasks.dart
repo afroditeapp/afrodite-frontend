@@ -1,5 +1,7 @@
 import 'package:app/api/server_connection_manager.dart';
+import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/localizations.dart';
+import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui_utils/padding.dart';
 import 'package:app/utils/api.dart';
 import 'package:app/utils/time.dart';
@@ -9,10 +11,15 @@ import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/result.dart';
 
+class ServerTasksPage extends MyScreenPageLimited<()> {
+  ServerTasksPage(RepositoryInstances r, {required Permissions permissions})
+    : super(builder: (_) => ServerTasksScreen(r, permissions: permissions));
+}
+
 class ServerTasksScreen extends StatefulWidget {
   final ApiManager api;
   final Permissions permissions;
-  const ServerTasksScreen(this.api, {required this.permissions, super.key});
+  ServerTasksScreen(RepositoryInstances r, {required this.permissions, super.key}) : api = r.api;
 
   @override
   State<ServerTasksScreen> createState() => _ServerTasksScreenState();

@@ -50,17 +50,14 @@ class AdminSettingsPage extends StatelessWidget {
         Setting.createSetting(
           Icons.task,
           "Moderator tasks (show todo list)",
-          () => MyNavigator.push(context, MaterialPage<void>(child: ModeratorTasksScreen(r))),
+          () => MyNavigator.pushLimited(context, ModeratorTasksPage(r)),
         ),
       );
       settings.add(
         Setting.createSetting(
           Icons.task,
           "Moderator tasks (show all)",
-          () => MyNavigator.push(
-            context,
-            MaterialPage<void>(child: ModeratorTasksScreen(r, showAll: true)),
-          ),
+          () => MyNavigator.pushLimited(context, ModeratorTasksPage(r, showAll: true)),
         ),
       );
     }
@@ -76,10 +73,7 @@ class AdminSettingsPage extends StatelessWidget {
         Setting.createSetting(
           Icons.settings,
           title,
-          () => MyNavigator.push(
-            context,
-            const MaterialPage<void>(child: ServerScreen(title: title)),
-          ),
+          () => MyNavigator.pushLimited(context, ServerPage(title: title)),
         ),
       );
     }
@@ -89,10 +83,7 @@ class AdminSettingsPage extends StatelessWidget {
         Setting.createSetting(
           Icons.query_stats,
           title,
-          () => MyNavigator.push(
-            context,
-            const MaterialPage<void>(child: MetricsScreen(title: title)),
-          ),
+          () => MyNavigator.pushLimited(context, MetricsPage(title: title)),
         ),
       );
     }
@@ -101,10 +92,7 @@ class AdminSettingsPage extends StatelessWidget {
         Setting.createSetting(
           Icons.account_box,
           "Open account admin tools",
-          () => MyNavigator.push(
-            context,
-            const MaterialPage<void>(child: OpenAccountAdminSettings()),
-          ),
+          () => MyNavigator.pushLimited(context, OpenAccountAdminSettingsPage()),
         ),
       );
     }
@@ -113,7 +101,7 @@ class AdminSettingsPage extends StatelessWidget {
         Setting.createSetting(
           Icons.admin_panel_settings,
           "View admins",
-          () => MyNavigator.push(context, MaterialPage<void>(child: ViewAdminsScreen(r.api))),
+          () => MyNavigator.pushLimited(context, ViewAdminsPage(r)),
         ),
       );
     }
@@ -122,7 +110,7 @@ class AdminSettingsPage extends StatelessWidget {
         Setting.createSetting(
           Icons.group,
           "View accounts",
-          () => MyNavigator.push(context, MaterialPage<void>(child: ViewAccountsScreen(r.api))),
+          () => MyNavigator.pushLimited(context, ViewAccountsPage(r)),
         ),
       );
     }

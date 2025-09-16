@@ -1,5 +1,7 @@
 import 'package:app/api/server_connection_manager.dart';
+import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/localizations.dart';
+import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui_utils/padding.dart';
 import 'package:flutter/material.dart';
 import 'package:openapi/api.dart';
@@ -7,15 +9,20 @@ import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/result.dart';
 
-class ServerSoftwareUpdatePage extends StatefulWidget {
-  final ApiManager api;
-  const ServerSoftwareUpdatePage(this.api, {super.key});
-
-  @override
-  State<ServerSoftwareUpdatePage> createState() => _ServerSoftwareUpdatePageState();
+class ServerSoftwareUpdatePage extends MyScreenPageLimited<()> {
+  ServerSoftwareUpdatePage(RepositoryInstances r)
+    : super(builder: (_) => ServerSoftwareUpdateScreen(r));
 }
 
-class _ServerSoftwareUpdatePageState extends State<ServerSoftwareUpdatePage> {
+class ServerSoftwareUpdateScreen extends StatefulWidget {
+  final ApiManager api;
+  ServerSoftwareUpdateScreen(RepositoryInstances r, {super.key}) : api = r.api;
+
+  @override
+  State<ServerSoftwareUpdateScreen> createState() => _ServerSoftwareUpdateScreenState();
+}
+
+class _ServerSoftwareUpdateScreenState extends State<ServerSoftwareUpdateScreen> {
   BackendVersion? _runningVersion;
   ManagerInstanceNameList? _managers;
   List<ManagerInstanceRelatedState>? _currentData = [];

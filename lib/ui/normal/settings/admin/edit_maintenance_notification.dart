@@ -1,5 +1,7 @@
 import 'package:app/api/server_connection_manager.dart';
+import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/localizations.dart';
+import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui_utils/padding.dart';
 import 'package:app/utils/api.dart';
 import 'package:app/utils/time.dart';
@@ -13,9 +15,14 @@ import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/result.dart';
 import 'package:utils/utils.dart';
 
+class EditMaintenanceNotificationPage extends MyScreenPageLimited<()> {
+  EditMaintenanceNotificationPage(RepositoryInstances r)
+    : super(builder: (_) => EditMaintenanceNotificationScreen(r));
+}
+
 class EditMaintenanceNotificationScreen extends StatefulWidget {
   final ApiManager api;
-  const EditMaintenanceNotificationScreen({required this.api, super.key});
+  EditMaintenanceNotificationScreen(RepositoryInstances r, {super.key}) : api = r.api;
 
   @override
   State<EditMaintenanceNotificationScreen> createState() =>

@@ -16,13 +16,11 @@ void openViewClientVersionStatisticsScreen(
   ApiManager api, {
   bool daily = false,
 }) {
-  MyNavigator.push(
+  MyNavigator.pushLimited(
     context,
-    MaterialPage<void>(
-      child: ViewMetricsScreen(
-        title: title,
-        metrics: GetClientVersions(api, daily: daily),
-      ),
+    ViewMetricsPage(
+      title: title,
+      metrics: GetClientVersions(api, daily: daily),
     ),
   );
 }

@@ -2,10 +2,11 @@ import 'dart:convert';
 
 import 'package:app/api/server_connection_manager.dart';
 import 'package:app/data/image_cache.dart';
+import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/localizations.dart';
 import 'package:app/logic/account/custom_reports_config.dart';
 import 'package:app/logic/admin/content_decicion_stream.dart';
-import 'package:app/logic/app/navigator_state.dart';
+import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui/normal/chat/message_row.dart';
 import 'package:app/ui/normal/settings/admin/content_decicion_stream.dart';
 import 'package:app/ui/normal/settings/admin/moderate_images.dart';
@@ -24,13 +25,18 @@ import 'package:openapi/api.dart';
 
 const double ROW_HEIGHT = 100;
 
+class ProcessReportsPage extends MyScreenPageLimited<()> {
+  ProcessReportsPage(RepositoryInstances r) : super(builder: (_) => ProcessReportsScreen(r));
+}
+
 class ProcessReportsScreen extends ContentDecicionScreen<WrappedReportDetailed> {
-  ProcessReportsScreen({required super.api, super.key})
+  ProcessReportsScreen(RepositoryInstances r, {super.key})
     : super(
+        api: r.api,
         title: "Process reports",
         screenInstructions: ReportUiBuilder.instructions,
         infoMessageRowHeight: ROW_HEIGHT,
-        io: ReportIo(api),
+        io: ReportIo(r.api),
         builder: ReportUiBuilder(),
       );
 }
@@ -241,12 +247,7 @@ class ReportUiBuilder extends ContentUiBuilder<WrappedReportDetailed> {
 
   Widget buildImage(BuildContext context, AccountId imageOwner, ContentId image, double width) {
     return InkWell(
-      onTap: () {
-        MyNavigator.push(
-          context,
-          MaterialPage<void>(child: ViewImageScreen(ViewImageAccountContent(imageOwner, image))),
-        );
-      },
+      onTap: () => openViewImageScreenForAccountImage(context, imageOwner, image),
       child: accountImgWidget(
         context,
         imageOwner,

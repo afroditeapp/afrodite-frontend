@@ -1,6 +1,7 @@
 import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/localizations.dart';
 import 'package:app/logic/account/client_features_config.dart';
+import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui/normal/settings/admin.dart';
 import 'package:app/ui/normal/settings/admin/profile_statistics_history.dart';
 import 'package:app/ui/normal/settings/admin/view_client_version_statistics.dart';
@@ -11,6 +12,10 @@ import 'package:app/logic/account/account.dart';
 import 'package:app/model/freezed/logic/account/account.dart';
 import 'package:app/ui/normal/settings.dart';
 import 'package:app/ui/normal/settings/admin/view_perf_data.dart';
+
+class MetricsPage extends MyScreenPageLimited<()> {
+  MetricsPage({required String title}) : super(builder: (_) => MetricsScreen(title: title));
+}
 
 class MetricsScreen extends StatelessWidget {
   final String title;

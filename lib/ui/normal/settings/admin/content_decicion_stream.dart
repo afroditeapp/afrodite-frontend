@@ -209,62 +209,79 @@ class _UpdatingContentDecicionListItemState<C extends ContentInfoGetter>
   }
 
   Future<void> showActionDialog(BuildContext context, ContentInfoGetter info, int index) {
-    final pageKey = PageKey();
+    Widget builder(BuildContext dialogContext, PageCloser<()> closer) {
+      final rejectAction = SimpleDialogOption(
+        onPressed: () {
+          closer.close(dialogContext, ());
+          showConfirmDialog(context, dialogContext.strings.generic_reject_question).then((value) {
+            if (value == true) {
+              widget.logic.moderateRow(index, false);
+            }
+          });
+        },
+        child: const Text("Reject"),
+      );
 
-    final rejectAction = SimpleDialogOption(
-      onPressed: () {
-        MyNavigator.removePage(context, pageKey);
-        showConfirmDialog(context, context.strings.generic_reject_question).then((value) {
-          if (value == true) {
-            widget.logic.moderateRow(index, false);
-          }
-        });
-      },
-      child: const Text("Reject"),
-    );
+      final target = info.target;
 
-    final target = info.target;
+      return SimpleDialog(
+        title: const Text("Select action"),
+        children: <Widget>[
+          if (widget.logic.rejectingIsPossible(index) && widget.builder.allowRejecting)
+            rejectAction,
+          if (target == null)
+            openAdminSettingsAction(
+              context,
+              dialogContext,
+              closer,
+              "Show admin settings",
+              info.owner,
+            ),
+          if (target != null)
+            openAdminSettingsAction(
+              context,
+              dialogContext,
+              closer,
+              "Show creator admin settings",
+              info.owner,
+            ),
+          if (target != null)
+            openAdminSettingsAction(
+              context,
+              dialogContext,
+              closer,
+              "Show target admin settings",
+              target,
+            ),
+        ],
+      );
+    }
 
     return MyNavigator.showDialog(
       context: context,
-      pageKey: pageKey,
-      builder: (BuildContext dialogContext) {
-        return SimpleDialog(
-          title: const Text("Select action"),
-          children: <Widget>[
-            if (widget.logic.rejectingIsPossible(index) && widget.builder.allowRejecting)
-              rejectAction,
-            if (target == null)
-              openAdminSettingsAction(dialogContext, pageKey, "Show admin settings", info.owner),
-            if (target != null)
-              openAdminSettingsAction(
-                dialogContext,
-                pageKey,
-                "Show creator admin settings",
-                info.owner,
-              ),
-            if (target != null)
-              openAdminSettingsAction(dialogContext, pageKey, "Show target admin settings", target),
-          ],
-        );
-      },
+      page: ContentDecicionDialog(builder: builder),
     );
   }
 
   Widget openAdminSettingsAction(
+    BuildContext context,
     BuildContext dialogContext,
-    PageKey pageKey,
+    PageCloser<()> closer,
     String title,
     AccountId account,
   ) {
     return SimpleDialogOption(
       onPressed: () {
-        MyNavigator.removePage(dialogContext, pageKey);
+        closer.close(dialogContext, ());
         getAgeAndNameAndShowAdminSettings(context, widget.api, account);
       },
       child: Text(title),
     );
   }
+}
+
+class ContentDecicionDialog extends MyDialogPage<()> {
+  ContentDecicionDialog({required super.builder});
 }
 
 Widget buildEmptyText(BuildContext context, double height) {
