@@ -28,11 +28,7 @@ void openContentManagementScreen(BuildContext context) {
 }
 
 class ContentManagementPage extends MyScreenPage<()> {
-  ContentManagementPage()
-    : super(
-        builder: (_) => ContentManagementScreenOpener(),
-        pageInfo: const ContentManagementPageInfo(),
-      );
+  ContentManagementPage() : super(builder: (_) => ContentManagementScreenOpener());
 }
 
 class ContentManagementScreenOpener extends StatelessWidget {

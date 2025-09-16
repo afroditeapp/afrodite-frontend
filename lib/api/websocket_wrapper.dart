@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
+import 'package:app/ui/normal/chat/conversation_page.dart';
 import 'package:logging/logging.dart';
 import 'package:web_socket/web_socket.dart' as ws;
 
@@ -62,7 +63,7 @@ class WebSocketWrapper {
     final visiblePage = navigatorState.pages.lastOrNull;
 
     if (visiblePage != null &&
-        visiblePage.pageInfo is ConversationPageInfo &&
+        visiblePage is ConversationPage &&
         _extraPingTimerInterval != _CONVERSATION_PING_INTERVAL) {
       await _resetPingLogicForExtraTimer(_CONVERSATION_PING_INTERVAL);
     } else if (_extraPingTimerInterval != null) {

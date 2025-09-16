@@ -90,6 +90,8 @@ Future<NotificationNavigationAction> _handlePayload(
     return DoNothing();
   }
 
+  final lastPage = navigatorState.pages.lastOrNull;
+
   switch (payload) {
     case NavigateToConversation():
       final accountId = await r.accountBackgroundDb
@@ -108,11 +110,7 @@ Future<NotificationNavigationAction> _handlePayload(
         return DoNothing();
       }
 
-      final lastPage = navigatorState.pages.lastOrNull;
-      final info = lastPage?.pageInfo;
-      final correctConversatinoAlreadyOpen =
-          info is ConversationPageInfo && info.accountId == profile.accountId;
-      if (correctConversatinoAlreadyOpen) {
+      if (lastPage is ConversationPage && lastPage.accountId == profile.accountId) {
         return DoNothing();
       } else {
         return NewScreen(ConversationPage(profile.accountId, profile));
@@ -132,34 +130,31 @@ Future<NotificationNavigationAction> _handlePayload(
         return NewScreen(LikesPage());
       }
     case NavigateToNews():
-      if (navigatorState.pages.lastOrNull is NewsListPage) {
+      if (lastPage is NewsListPage) {
         return DoNothing();
       } else {
         return NewScreen(NewsListPage());
       }
     case NavigateToContentManagement():
-      final currentPageInfo = navigatorState.pages.lastOrNull?.pageInfo;
-      if (currentPageInfo is ContentManagementPageInfo) {
+      if (lastPage is ContentManagementPage) {
         return DoNothing();
       } else {
         return NewScreen(ContentManagementPage());
       }
     case NavigateToMyProfile():
-      final currentPageInfo = navigatorState.pages.lastOrNull?.pageInfo;
-      if (currentPageInfo is MyProfilePageInfo) {
+      if (lastPage is MyProfilePage) {
         return DoNothing();
       } else {
         return NewScreen(MyProfilePage());
       }
     case NavigateToAutomaticProfileSearchResults():
-      final currentPageInfo = navigatorState.pages.lastOrNull?.pageInfo;
-      if (currentPageInfo is AutomaticProfileSearchResultsPageInfo) {
+      if (lastPage is AutomaticProfileSearchResultsPage) {
         return DoNothing();
       } else {
         return NewScreen(AutomaticProfileSearchResultsPage());
       }
     case NavigateToModeratorTasks():
-      if (navigatorState.pages.lastOrNull is ModeratorTasksPage) {
+      if (lastPage is ModeratorTasksPage) {
         return DoNothing();
       } else {
         return NewScreen(ModeratorTasksPage(r));

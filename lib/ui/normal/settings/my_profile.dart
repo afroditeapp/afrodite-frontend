@@ -38,7 +38,7 @@ Future<void> openMyProfileScreen(BuildContext context) async {
 }
 
 class MyProfilePage extends MyScreenPage<()> {
-  MyProfilePage() : super(builder: (_) => MyProfileScreen(), pageInfo: const MyProfilePageInfo());
+  MyProfilePage() : super(builder: (_) => MyProfileScreen());
 }
 
 class MyProfileScreen extends StatelessWidget {

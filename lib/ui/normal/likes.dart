@@ -77,8 +77,7 @@ class _LikeViewState extends State<LikeView> {
 }
 
 class LikesPage extends MyScreenPage<()> {
-  LikesPage()
-    : super(builder: (_) => LikeScreenWithoutBlocDependency(), pageInfo: const LikesPageInfo());
+  LikesPage() : super(builder: (_) => LikeScreenWithoutBlocDependency());
 }
 
 class LikeScreenWithoutBlocDependency extends StatefulWidget {

@@ -17,10 +17,7 @@ Future<void> openAutomaticProfileSearchResultsScreen(BuildContext context) {
 
 class AutomaticProfileSearchResultsPage extends MyScreenPage<()> {
   AutomaticProfileSearchResultsPage()
-    : super(
-        builder: (_) => AutomaticProfileSearchResultsScreen(),
-        pageInfo: const AutomaticProfileSearchResultsPageInfo(),
-      );
+    : super(builder: (_) => AutomaticProfileSearchResultsScreen());
 }
 
 class AutomaticProfileSearchResultsScreen extends StatefulWidget {

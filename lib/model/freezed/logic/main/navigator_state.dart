@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 
 import "package:freezed_annotation/freezed_annotation.dart";
 import 'package:flutter/foundation.dart';
-import 'package:openapi/api.dart';
 import 'package:app/ui/splash_screen.dart';
 import 'package:app/utils/immutable_list.dart';
 
@@ -38,15 +37,12 @@ abstract class MyPage<T> {
   PageKey get key;
   Page<T> get page;
   Completer<T?> get completer;
-  PageInfo? get pageInfo;
 }
 
 abstract class MyScreenPage<T> extends MyPage<T> {
   final _MyScreenPageLimitedImpl<T> _impl;
-  final PageInfo? _pageInfo;
-  MyScreenPage({required Widget Function(PageCloser<T>) builder, PageInfo? pageInfo})
-    : _impl = _MyScreenPageLimitedImpl(builder: builder, closer: PageCloser(PageKey())),
-      _pageInfo = pageInfo;
+  MyScreenPage({required Widget Function(PageCloser<T>) builder})
+    : _impl = _MyScreenPageLimitedImpl(builder: builder, closer: PageCloser(PageKey()));
 
   @override
   PageKey get key => _impl.closer.key;
@@ -54,8 +50,6 @@ abstract class MyScreenPage<T> extends MyPage<T> {
   Page<T> get page => _impl.page;
   @override
   Completer<T?> get completer => _impl.completer;
-  @override
-  PageInfo? get pageInfo => _pageInfo;
 }
 
 /// Creating page using URL is not supported
@@ -69,8 +63,6 @@ abstract class MyScreenPageLimited<T> extends MyPage<T> {
   Page<T> get page => _impl.page;
   @override
   Completer<T?> get completer => _impl.completer;
-  @override
-  PageInfo? get pageInfo => null;
 }
 
 class _MyScreenPageLimitedImpl<T> {
@@ -99,8 +91,6 @@ abstract class MyDialogPage<T> extends MyPage<T> {
   Page<T> get page => _impl.page;
   @override
   Completer<T?> get completer => _impl.completer;
-  @override
-  PageInfo? get pageInfo => null;
 }
 
 class _MyDialogPageImpl<T> {
@@ -129,8 +119,6 @@ abstract class MyFullScreenDialogPage<T> extends MyPage<T> {
   Page<T> get page => _impl.page;
   @override
   Completer<T?> get completer => _impl.completer;
-  @override
-  PageInfo? get pageInfo => null;
 }
 
 class _MyFullScreenDialogPageImpl<T> {
@@ -153,28 +141,3 @@ class PageCloser<T> {
 }
 
 class PageKey extends UniqueKey {}
-
-sealed class PageInfo {
-  const PageInfo();
-}
-
-class ConversationPageInfo extends PageInfo {
-  final AccountId accountId;
-  const ConversationPageInfo(this.accountId);
-}
-
-class LikesPageInfo extends PageInfo {
-  const LikesPageInfo();
-}
-
-class ContentManagementPageInfo extends PageInfo {
-  const ContentManagementPageInfo();
-}
-
-class MyProfilePageInfo extends PageInfo {
-  const MyProfilePageInfo();
-}
-
-class AutomaticProfileSearchResultsPageInfo extends PageInfo {
-  const AutomaticProfileSearchResultsPageInfo();
-}

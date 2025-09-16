@@ -8,7 +8,7 @@ import 'package:app/localizations.dart';
 import 'package:app/logic/app/app_visibility_provider.dart';
 import 'package:app/logic/app/bottom_navigation_state.dart';
 import 'package:app/logic/app/navigator_state.dart';
-import 'package:app/model/freezed/logic/main/navigator_state.dart';
+import 'package:app/ui/normal/likes.dart';
 import 'package:utils/utils.dart';
 
 class NotificationLikeReceived extends AppSingletonNoInit {
@@ -65,8 +65,7 @@ class NotificationLikeReceived extends AppSingletonNoInit {
         (NavigationStateBlocInstance.getInstance().navigationState.pages.length == 1 &&
             BottomNavigationStateBlocInstance.getInstance().navigationState.screen ==
                 BottomNavigationScreenId.likes) ||
-        (NavigationStateBlocInstance.getInstance().navigationState.pages.lastOrNull?.pageInfo
-            is LikesPageInfo);
+        (NavigationStateBlocInstance.getInstance().navigationState.pages.lastOrNull is LikesPage);
     return likesScreenOpen && AppVisibilityProvider.getInstance().isForeground;
   }
 }

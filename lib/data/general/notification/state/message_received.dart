@@ -1,3 +1,4 @@
+import 'package:app/ui/normal/chat/conversation_page.dart';
 import 'package:openapi/api.dart';
 import 'package:app/data/general/notification/utils/notification_category.dart';
 import 'package:app/data/general/notification/utils/notification_id.dart';
@@ -7,7 +8,6 @@ import 'package:app/database/account_background_database_manager.dart';
 import 'package:app/localizations.dart';
 import 'package:app/logic/app/app_visibility_provider.dart';
 import 'package:app/logic/app/navigator_state.dart';
-import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:utils/utils.dart';
 import 'package:app/utils/result.dart';
 
@@ -102,9 +102,8 @@ class NotificationMessageReceived extends AppSingletonNoInit {
 
   bool _isConversationUiOpen(AccountId accountId) {
     final lastPage = NavigationStateBlocInstance.getInstance().navigationState.pages.lastOrNull;
-    final info = lastPage?.pageInfo;
-    return info is ConversationPageInfo &&
-        info.accountId == accountId &&
+    return lastPage is ConversationPage &&
+        lastPage.accountId == accountId &&
         AppVisibilityProvider.getInstance().isForeground;
   }
 

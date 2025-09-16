@@ -32,7 +32,8 @@ void openConversationScreen(BuildContext context, AccountId accountId, ProfileEn
 }
 
 class ConversationPage extends MyScreenPage<()> {
-  ConversationPage(AccountId accountId, ProfileEntry? profile)
+  final AccountId accountId;
+  ConversationPage(this.accountId, ProfileEntry? profile)
     : super(
         builder: (closer) {
           return BlocProvider(
@@ -44,7 +45,6 @@ class ConversationPage extends MyScreenPage<()> {
             child: ConversationScreen(closer, accountId, profile),
           );
         },
-        pageInfo: ConversationPageInfo(accountId),
       );
 }
 
