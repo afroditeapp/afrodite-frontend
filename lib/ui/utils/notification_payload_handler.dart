@@ -68,12 +68,7 @@ void _handlePayloadRunningApp(
     case DoNothing():
       ();
     case NewScreen():
-      final newPage = action.screen;
-      await navigatorStateBloc.pushWithKey(
-        newPage.page,
-        newPage.pageKey ?? PageKey(),
-        pageInfo: newPage.pageInfo,
-      );
+      await navigatorStateBloc.push(action.screen);
     case BottomNavigationChange():
       bottomNavigatorStateBloc.add(ChangeScreen(action.screen));
   }
@@ -117,10 +112,10 @@ Future<NotificationNavigationAction> _handlePayload(
       final info = lastPage?.pageInfo;
       final correctConversatinoAlreadyOpen =
           info is ConversationPageInfo && info.accountId == profile.accountId;
-      if (!correctConversatinoAlreadyOpen) {
-        return NewScreen(newConversationPage(profile.accountId, profile));
-      } else {
+      if (correctConversatinoAlreadyOpen) {
         return DoNothing();
+      } else {
+        return NewScreen(ConversationPage(profile.accountId, profile));
       }
     case NavigateToConversationList():
       if (navigatorState.pages.length == 1) {
@@ -134,33 +129,41 @@ Future<NotificationNavigationAction> _handlePayload(
       if (navigatorState.pages.length == 1) {
         return BottomNavigationChange(BottomNavigationScreenId.likes);
       } else {
-        return NewScreen(newLikesScreen());
+        return NewScreen(LikesPage());
       }
     case NavigateToNews():
-      return NewScreen(NewPageDetails(const MaterialPage<void>(child: NewsListScreenOpener())));
+      if (navigatorState.pages.lastOrNull is NewsListPage) {
+        return DoNothing();
+      } else {
+        return NewScreen(NewsListPage());
+      }
     case NavigateToContentManagement():
       final currentPageInfo = navigatorState.pages.lastOrNull?.pageInfo;
-      if (currentPageInfo is! ContentManagementPageInfo) {
-        return NewScreen(newContentManagementScreen());
-      } else {
+      if (currentPageInfo is ContentManagementPageInfo) {
         return DoNothing();
+      } else {
+        return NewScreen(ContentManagementPage());
       }
     case NavigateToMyProfile():
       final currentPageInfo = navigatorState.pages.lastOrNull?.pageInfo;
-      if (currentPageInfo is! MyProfilePageInfo) {
-        return NewScreen(newMyProfileScreen());
-      } else {
+      if (currentPageInfo is MyProfilePageInfo) {
         return DoNothing();
+      } else {
+        return NewScreen(MyProfilePage());
       }
     case NavigateToAutomaticProfileSearchResults():
       final currentPageInfo = navigatorState.pages.lastOrNull?.pageInfo;
-      if (currentPageInfo is! AutomaticProfileSearchResultsPageInfo) {
-        return NewScreen(newAutomaticProfileSearchResultsScreen());
-      } else {
+      if (currentPageInfo is AutomaticProfileSearchResultsPageInfo) {
         return DoNothing();
+      } else {
+        return NewScreen(AutomaticProfileSearchResultsPage());
       }
     case NavigateToModeratorTasks():
-      return NewScreen(newModeratorTasksScreen(r));
+      if (navigatorState.pages.lastOrNull is ModeratorTasksPage) {
+        return DoNothing();
+      } else {
+        return NewScreen(ModeratorTasksPage(r));
+      }
   }
 }
 
@@ -168,7 +171,7 @@ Future<AppLaunchNotification?> handleAppLaunchNotificationPayload(
   NotificationPayload payload,
   RepositoryInstances r,
 ) async {
-  final rootScreen = NewPageDetails(MaterialPage<void>(child: NormalStateScreen()));
+  final rootScreen = NormalStatePage();
   final navigationState = NavigatorStateData.rootPage(rootScreen);
 
   final action = await _handlePayload(payload, r, navigationState, showError: false);
@@ -194,7 +197,7 @@ sealed class NotificationNavigationAction {}
 class DoNothing extends NotificationNavigationAction {}
 
 class NewScreen extends NotificationNavigationAction {
-  final NewPageDetails screen;
+  final MyScreenPage<Object> screen;
   NewScreen(this.screen);
 }
 

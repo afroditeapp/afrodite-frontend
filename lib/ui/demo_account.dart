@@ -1,3 +1,4 @@
+import "package:app/model/freezed/logic/main/navigator_state.dart";
 import "package:app/ui_utils/snack_bar.dart";
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
@@ -7,6 +8,10 @@ import "package:app/ui_utils/dialog.dart";
 import "package:app/ui_utils/app_bar/common_actions.dart";
 import "package:app/ui_utils/app_bar/menu_actions.dart";
 import 'package:app/localizations.dart';
+
+class DemoAccountPage extends MyScreenPage<()> {
+  DemoAccountPage() : super(builder: (_) => DemoAccountScreen());
+}
 
 class DemoAccountScreen extends StatelessWidget {
   const DemoAccountScreen({super.key});

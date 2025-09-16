@@ -200,11 +200,14 @@ class NavigationStateBlocInstance extends AppSingletonNoInit {
 
 class MyNavigator {
   /// Push new page to the navigator stack and wait for it to be popped.
-  static Future<T?> push<T>(BuildContext context, MyScreenPage<T> page) async {
+  static Future<T?> push<T extends Object>(BuildContext context, MyScreenPage<T> page) async {
     return await context.read<NavigatorStateBloc>().push(page);
   }
 
-  static Future<T?> pushLimited<T>(BuildContext context, MyScreenPageLimited<T> page) async {
+  static Future<T?> pushLimited<T extends Object>(
+    BuildContext context,
+    MyScreenPageLimited<T> page,
+  ) async {
     return await context.read<NavigatorStateBloc>().pushLimited(page);
   }
 
@@ -236,7 +239,7 @@ class MyNavigator {
     return await context.read<NavigatorStateBloc>().showDialog(page: page);
   }
 
-  static Future<T?> removeAndShowDialog<T>({
+  static Future<T?> removeAndShowDialog<T extends Object>({
     required BuildContext context,
     required PageKey toBeRemoved,
     required MyDialogPage<T> page,

@@ -1,3 +1,4 @@
+import "package:app/model/freezed/logic/main/navigator_state.dart";
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:app/config.dart";
@@ -6,6 +7,10 @@ import "package:app/logic/server/address.dart";
 import 'package:app/localizations.dart';
 
 const commonPadding = 5.0;
+
+class LoginPageOld extends MyScreenPageLimited<()> {
+  LoginPageOld() : super(builder: (_) => LoginScreenOld());
+}
 
 class LoginScreenOld extends StatefulWidget {
   const LoginScreenOld({super.key});

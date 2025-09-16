@@ -15,7 +15,7 @@ import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/ui/normal/settings.dart';
 import 'package:app/ui/normal/settings/admin/moderate_images.dart';
 
-class ModeratorTasksPage extends MyScreenPageLimited<()> {
+class ModeratorTasksPage extends MyScreenPage<()> {
   ModeratorTasksPage(RepositoryInstances r, {bool showAll = false})
     : super(builder: (_) => ModeratorTasksScreen(r, showAll: showAll));
 }

@@ -4,6 +4,7 @@ import "package:app/data/utils/demo_account_manager.dart";
 import "package:app/logic/account/demo_account_login.dart";
 import "package:app/model/freezed/logic/account/demo_account_login.dart";
 import "package:app/ui_utils/image.dart";
+import "package:app/utils/result.dart";
 import "package:flutter/foundation.dart";
 import "package:flutter/gestures.dart";
 import "package:flutter/material.dart";
@@ -25,6 +26,10 @@ import "package:sign_in_with_apple/sign_in_with_apple.dart";
 
 import 'package:app/localizations.dart';
 import "package:url_launcher/url_launcher_string.dart";
+
+class LoginPage extends MyScreenPage<()> {
+  LoginPage() : super(builder: (_) => LoginScreen());
+}
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -67,9 +72,7 @@ class LoginScreen extends StatelessWidget {
             if (kDebugMode || kProfileMode)
               MenuItemButton(
                 child: const Text("Old login"),
-                onPressed: () {
-                  MyNavigator.push(context, const MaterialPage<void>(child: LoginScreenOld()));
-                },
+                onPressed: () => MyNavigator.pushLimited(context, LoginPageOld()),
               ),
             ...commonActionsWhenLoggedOut(context),
           ]),
@@ -250,31 +253,39 @@ Widget logoAndAppNameAndSlogan(BuildContext context) {
   );
 }
 
+class DemoAccountLoginDialog extends MyDialogPage<Result<DemoAccountCredentials, ()>> {
+  DemoAccountLoginDialog({required super.builder});
+}
+
 Future<DemoAccountCredentials?> openFirstDemoAccountLoginDialog(BuildContext context) async {
   final defaultUsername = kReleaseMode ? "" : "username";
   final defaultPassword = kReleaseMode ? "" : "password";
 
   String username = "";
-  final usernameField = SimpleTextField(
-    hintText: context.strings.login_screen_demo_account_username,
-    // TODO(prod): After password login is implemented add boolean constant which
-    //             can hide demo account login.
-    getInitialValue: () => context.read<DemoAccountLoginBloc>().state.username ?? defaultUsername,
-    onChanged: (v) => username = v,
-  );
-  String password = "";
-  final passwordField = SimpleTextField(
-    hintText: context.strings.login_screen_demo_account_password,
-    obscureText: true,
-    getInitialValue: () => context.read<DemoAccountLoginBloc>().state.password ?? defaultPassword,
-    onChanged: (v) => password = v,
-  );
+  void usernameChangedCallback(String v) {
+    username = v;
+  }
 
-  final pageKey = PageKey();
-  final r = await MyNavigator.showDialog<DemoAccountCredentials?>(
-    context: context,
-    pageKey: pageKey,
-    builder: (context) => AlertDialog(
+  String password = "";
+  void passwordChangedCallback(String v) {
+    password = v;
+  }
+
+  Widget builder(BuildContext context, PageCloser<Result<DemoAccountCredentials, ()>> closer) {
+    final usernameField = SimpleTextField(
+      hintText: context.strings.login_screen_demo_account_username,
+      // TODO(prod): After password login is implemented add boolean constant which
+      //             can hide demo account login.
+      getInitialValue: () => context.read<DemoAccountLoginBloc>().state.username ?? defaultUsername,
+      onChanged: usernameChangedCallback,
+    );
+    final passwordField = SimpleTextField(
+      hintText: context.strings.login_screen_demo_account_password,
+      obscureText: true,
+      getInitialValue: () => context.read<DemoAccountLoginBloc>().state.password ?? defaultPassword,
+      onChanged: passwordChangedCallback,
+    );
+    return AlertDialog(
       title: Text(context.strings.login_screen_demo_account_dialog_title),
       content: Column(
         children: [
@@ -285,21 +296,22 @@ Future<DemoAccountCredentials?> openFirstDemoAccountLoginDialog(BuildContext con
       ),
       actions: <Widget>[
         TextButton(
-          onPressed: () {
-            MyNavigator.removePage(context, pageKey);
-          },
+          onPressed: () => closer.close(context, Err(())),
           child: Text(context.strings.generic_cancel),
         ),
         TextButton(
-          onPressed: () {
-            MyNavigator.removePage(context, pageKey, DemoAccountCredentials(username, password));
-          },
+          onPressed: () => closer.close(context, Ok(DemoAccountCredentials(username, password))),
           child: Text(context.strings.generic_login),
         ),
       ],
       scrollable: true,
-    ),
+    );
+  }
+
+  final r = await MyNavigator.showDialog<Result<DemoAccountCredentials, ()>>(
+    context: context,
+    page: DemoAccountLoginDialog(builder: builder),
   );
 
-  return r;
+  return r?.ok();
 }

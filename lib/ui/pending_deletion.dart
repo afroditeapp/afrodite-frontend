@@ -1,6 +1,7 @@
 import "package:app/api/server_connection_manager.dart";
 import "package:app/data/utils/repository_instances.dart";
 import "package:app/localizations.dart";
+import "package:app/model/freezed/logic/main/navigator_state.dart";
 import "package:app/ui/normal/settings/data_export.dart";
 import "package:app/ui_utils/app_bar/common_actions.dart";
 import "package:app/ui_utils/app_bar/menu_actions.dart";
@@ -13,20 +14,24 @@ import "package:app/utils/time.dart";
 import "package:flutter/material.dart";
 import "package:openapi/api.dart";
 
-class PendingDeletionPage extends StatefulWidget {
+class PendingDeletionPage extends MyScreenPage<()> {
+  PendingDeletionPage(RepositoryInstances r) : super(builder: (_) => PendingDeletionScreen(r));
+}
+
+class PendingDeletionScreen extends StatefulWidget {
   final ApiManager api;
   final ServerConnectionManager connectionManager;
   final AccountId currentUser;
-  PendingDeletionPage(RepositoryInstances r, {super.key})
+  PendingDeletionScreen(RepositoryInstances r, {super.key})
     : api = r.api,
       connectionManager = r.connectionManager,
       currentUser = r.accountId;
 
   @override
-  State<PendingDeletionPage> createState() => _PendingDeletionPageState();
+  State<PendingDeletionScreen> createState() => _PendingDeletionScreenState();
 }
 
-class _PendingDeletionPageState extends State<PendingDeletionPage> {
+class _PendingDeletionScreenState extends State<PendingDeletionScreen> {
   bool isLoading = true;
   UnixTime? data;
 
@@ -61,11 +66,7 @@ class _PendingDeletionPageState extends State<PendingDeletionPage> {
             MenuItemButton(
               child: Text(context.strings.data_export_screen_title_export_type_user),
               onPressed: () {
-                openDataExportScreenMyData(
-                  context,
-                  context.strings.data_export_screen_title_export_type_user,
-                  widget.currentUser,
-                );
+                openDataExportScreenMyData(context);
               },
             ),
             ...commonActionsWhenLoggedInAndAccountIsNotNormallyUsable(context),

@@ -88,14 +88,12 @@ class MainStateUiLogic extends StatelessWidget {
 abstract class BasicRootScreen extends StatelessWidget {
   const BasicRootScreen({super.key});
 
-  Widget rootScreen();
+  MyScreenPage<Object> rootScreen();
   Widget blocProvider(Widget child);
 
   @override
   Widget build(BuildContext context) {
-    final NavigatorStateData blocInitialState = NavigatorStateData.rootPage(
-      NewPageDetails(MaterialPage<void>(child: rootScreen())),
-    );
+    final NavigatorStateData blocInitialState = NavigatorStateData.rootPage(rootScreen());
     return MultiBlocProvider(
       providers: [
         // Navigation
@@ -111,7 +109,7 @@ class NavigatorSplashScreen extends BasicRootScreen {
   const NavigatorSplashScreen({super.key});
 
   @override
-  Widget rootScreen() => SplashScreen();
+  MyScreenPage<Object> rootScreen() => SplashPage();
 
   @override
   Widget blocProvider(Widget child) {
@@ -123,7 +121,7 @@ class NavigatorLoginScreen extends BasicRootScreen {
   const NavigatorLoginScreen({super.key});
 
   @override
-  Widget rootScreen() => LoginScreen();
+  MyScreenPage<Object> rootScreen() => LoginPage();
 
   @override
   Widget blocProvider(Widget child) {
@@ -142,7 +140,7 @@ class NavigatorDemoAccount extends BasicRootScreen {
   const NavigatorDemoAccount({super.key});
 
   @override
-  Widget rootScreen() => DemoAccountScreen();
+  MyScreenPage<Object> rootScreen() => DemoAccountPage();
 
   @override
   Widget blocProvider(Widget child) {
@@ -158,14 +156,13 @@ abstract class LoggedInRootScreen extends StatelessWidget {
   final AppLaunchNotification? notification;
   const LoggedInRootScreen({required this.r, this.notification, super.key});
 
-  Widget rootScreen();
+  MyScreenPage<Object> rootScreen();
   Widget blocProvider(Widget child);
 
   @override
   Widget build(BuildContext context) {
     final NavigatorStateData navigatorInitialState =
-        notification?.navigatorState ??
-        NavigatorStateData.rootPage(NewPageDetails(MaterialPage<void>(child: rootScreen())));
+        notification?.navigatorState ?? NavigatorStateData.rootPage(rootScreen());
     final bottomNavigationInitialState =
         notification?.bottomNavigationState ?? BottomNavigationStateData();
     return Provider<RepositoryInstances>(
@@ -186,7 +183,7 @@ class NavigatorInitialSetup extends LoggedInRootScreen {
   const NavigatorInitialSetup({required super.r, super.key});
 
   @override
-  Widget rootScreen() => InitialSetupScreen();
+  MyScreenPage<Object> rootScreen() => InitialSetupPage();
 
   @override
   Widget blocProvider(Widget child) {
@@ -219,7 +216,7 @@ class NavigatorAccountBanned extends LoggedInRootScreen {
   const NavigatorAccountBanned({required super.r, super.key});
 
   @override
-  Widget rootScreen() => AccountBannedScreen(r);
+  MyScreenPage<Object> rootScreen() => AccountBannedPage(r);
 
   @override
   Widget blocProvider(Widget child) {
@@ -240,7 +237,7 @@ class NavigatorPendingRemoval extends LoggedInRootScreen {
   const NavigatorPendingRemoval({required super.r, super.key});
 
   @override
-  Widget rootScreen() => PendingDeletionPage(r);
+  MyScreenPage<Object> rootScreen() => PendingDeletionPage(r);
 
   @override
   Widget blocProvider(Widget child) {
@@ -260,7 +257,7 @@ class NavigatorUnsupportedClient extends LoggedInRootScreen {
   const NavigatorUnsupportedClient({required super.r, super.key});
 
   @override
-  Widget rootScreen() => UnsupportedClientScreen();
+  MyScreenPage<Object> rootScreen() => UnsupportedClientPage();
 
   @override
   Widget blocProvider(Widget child) {
@@ -272,7 +269,7 @@ class NavigatorNormal extends LoggedInRootScreen {
   const NavigatorNormal({required super.r, required super.notification, super.key});
 
   @override
-  Widget rootScreen() => NormalStateScreen();
+  MyScreenPage<Object> rootScreen() => NormalStatePage();
 
   @override
   Widget blocProvider(Widget child) {
