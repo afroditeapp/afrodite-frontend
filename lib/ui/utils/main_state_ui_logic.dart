@@ -35,7 +35,6 @@ import 'package:app/logic/chat/new_received_likes_available_bloc.dart';
 import 'package:app/logic/chat/unread_conversations_bloc.dart';
 import 'package:app/logic/media/content.dart';
 import 'package:app/logic/media/image_processing.dart';
-import 'package:app/logic/media/new_moderation_request.dart';
 import 'package:app/logic/media/profile_pictures.dart';
 import 'package:app/logic/media/select_content.dart';
 import 'package:app/logic/profile/attributes.dart';
@@ -304,7 +303,6 @@ class NavigatorNormal extends LoggedInRootScreen {
         // Settings
         BlocProvider(create: (_) => EditMyProfileBloc(r)),
         BlocProvider(create: (_) => SelectContentBloc(r)),
-        BlocProvider(create: (_) => NewModerationRequestBloc()),
         BlocProvider(create: (_) => ProfilePicturesBloc(r)),
         BlocProvider(create: (_) => PrivacySettingsBloc(r)),
         BlocProvider(create: (_) => BlockedProfilesBloc(r)),

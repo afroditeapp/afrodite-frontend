@@ -1,7 +1,6 @@
 import 'package:app/data/image_cache.dart';
 import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/logic/media/image_processing.dart';
-import 'package:app/logic/media/new_moderation_request.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui/initial_setup/profile_pictures.dart';
 import 'package:app/ui/initial_setup/security_selfie.dart';
@@ -50,7 +49,6 @@ class SelectContentScreenOpener extends StatelessWidget {
     return SelectContentScreen(
       closer: closer,
       selectContentBloc: context.read<SelectContentBloc>(),
-      newModerationRequestBloc: context.read<NewModerationRequestBloc>(),
       identifyFaceImages: identifyFaceImages,
       securitySelfieMode: securitySelfieMode,
     );
@@ -60,13 +58,11 @@ class SelectContentScreenOpener extends StatelessWidget {
 class SelectContentScreen extends StatefulWidget {
   final PageCloser<AccountImageId> closer;
   final SelectContentBloc selectContentBloc;
-  final NewModerationRequestBloc newModerationRequestBloc;
   final bool identifyFaceImages;
   final bool securitySelfieMode;
   const SelectContentScreen({
     required this.closer,
     required this.selectContentBloc,
-    required this.newModerationRequestBloc,
     required this.identifyFaceImages,
     required this.securitySelfieMode,
     super.key,
@@ -83,7 +79,6 @@ class _SelectContentScreenState extends State<SelectContentScreen> {
   void initState() {
     super.initState();
     widget.selectContentBloc.add(ReloadAvailableContent());
-    widget.newModerationRequestBloc.add(Reset());
   }
 
   @override
