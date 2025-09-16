@@ -2,6 +2,7 @@ import 'package:app/api/server_connection_manager.dart';
 import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/localizations.dart';
 import 'package:app/logic/account/client_features_config.dart';
+import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui_utils/padding.dart';
 import 'package:app/utils/api.dart';
 import 'package:app/utils/time.dart';
@@ -11,11 +12,15 @@ import 'package:app/utils/result.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 
+class ViewIpAddressUsagePage extends MyScreenPageLimited<()> {
+  ViewIpAddressUsagePage(RepositoryInstances r, AccountId accountId)
+    : super(builder: (_) => ViewIpAddressUsageScreen(r, accountId));
+}
+
 class ViewIpAddressUsageScreen extends StatefulWidget {
   final ApiManager api;
   final AccountId accountId;
-  ViewIpAddressUsageScreen(RepositoryInstances r, {required this.accountId, super.key})
-    : api = r.api;
+  ViewIpAddressUsageScreen(RepositoryInstances r, this.accountId, {super.key}) : api = r.api;
 
   @override
   State<ViewIpAddressUsageScreen> createState() => _ViewIpAddressUsageScreenState();

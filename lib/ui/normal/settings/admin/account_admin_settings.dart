@@ -34,19 +34,31 @@ Future<void> getAgeAndNameAndShowAdminSettings(
   final ageAndName = await api.profileAdmin((api) => api.getProfileAgeAndName(account.aid)).ok();
 
   if (ageAndName != null && context.mounted) {
-    await MyNavigator.push(
+    await MyNavigator.pushLimited(
       context,
-      MaterialPage<void>(
-        child: AccountAdminSettingsScreen(
-          accountId: account,
-          initialAge: ageAndName.age,
-          initialName: ageAndName.name,
-        ),
+      AccountAdminSettingsPage(
+        accountId: account,
+        initialAge: ageAndName.age,
+        initialName: ageAndName.name,
       ),
     );
   } else if (ageAndName == null) {
     showSnackBar("Get profile age and name failed");
   }
+}
+
+class AccountAdminSettingsPage extends MyScreenPageLimited<()> {
+  AccountAdminSettingsPage({
+    required AccountId accountId,
+    required String initialName,
+    required int initialAge,
+  }) : super(
+         builder: (_) => AccountAdminSettingsScreen(
+           accountId: accountId,
+           initialName: initialName,
+           initialAge: initialAge,
+         ),
+       );
 }
 
 /// This screen should be opened using getAgeAndNameAndShowAdminSettings
@@ -162,10 +174,7 @@ class _AccountAdminSettingsScreenState extends State<AccountAdminSettingsScreen>
         Setting.createSetting(
           Icons.person,
           "Account private info",
-          () => MyNavigator.push(
-            context,
-            MaterialPage<void>(child: AccountPrivateInfoScreen(r, accountId: widget.accountId)),
-          ),
+          () => MyNavigator.pushLimited(context, AccountPrivateInfoPage(r, widget.accountId)),
         ),
       );
       const apiUsageStatistics = "API usage statistics";
@@ -178,10 +187,7 @@ class _AccountAdminSettingsScreenState extends State<AccountAdminSettingsScreen>
         Setting.createSetting(
           Icons.public,
           "IP address usage",
-          () => MyNavigator.push(
-            context,
-            MaterialPage<void>(child: ViewIpAddressUsageScreen(r, accountId: widget.accountId)),
-          ),
+          () => MyNavigator.pushLimited(context, ViewIpAddressUsagePage(r, widget.accountId)),
         ),
       );
     }
@@ -189,14 +195,7 @@ class _AccountAdminSettingsScreenState extends State<AccountAdminSettingsScreen>
     if (permissions.adminViewPermissions && permissions.adminModifyPermissions) {
       settings.add(
         Setting.createSetting(Icons.admin_panel_settings, "Edit permissions", () {
-          final pageKey = PageKey();
-          MyNavigator.pushWithKey(
-            context,
-            MaterialPage<void>(
-              child: EditPermissionsScreen(api: r.api, pageKey: pageKey, account: widget.accountId),
-            ),
-            pageKey,
-          );
+          MyNavigator.pushLimited(context, EditPermissionsPage(r, widget.accountId));
         }),
       );
     }
@@ -204,11 +203,9 @@ class _AccountAdminSettingsScreenState extends State<AccountAdminSettingsScreen>
     if (permissions.adminEditProfileName) {
       settings.add(
         Setting.createSetting(Icons.edit, "Edit profile name", () async {
-          await MyNavigator.push(
+          await MyNavigator.pushLimited(
             context,
-            MaterialPage<void>(
-              child: EditProfileNameScreen(accountId: widget.accountId, initialName: name),
-            ),
+            EditProfileNamePage(r, widget.accountId, initialName: name),
           );
           await updateProfileAgeAndName(r.api);
         }),
@@ -220,10 +217,7 @@ class _AccountAdminSettingsScreenState extends State<AccountAdminSettingsScreen>
         Setting.createSetting(
           Icons.block,
           "Ban account",
-          () => MyNavigator.push(
-            context,
-            MaterialPage<void>(child: BanAccountScreen(r, accountId: widget.accountId)),
-          ),
+          () => MyNavigator.pushLimited(context, BanAccountPage(r, widget.accountId)),
         ),
       );
     }
@@ -233,10 +227,7 @@ class _AccountAdminSettingsScreenState extends State<AccountAdminSettingsScreen>
         Setting.createSetting(
           Icons.delete,
           "Delete account",
-          () => MyNavigator.push(
-            context,
-            MaterialPage<void>(child: DeleteAccountScreen(r, accountId: widget.accountId)),
-          ),
+          () => MyNavigator.pushLimited(context, DeleteAccountPage(r, widget.accountId)),
         ),
       );
     }
@@ -246,10 +237,7 @@ class _AccountAdminSettingsScreenState extends State<AccountAdminSettingsScreen>
         Setting.createSetting(
           Icons.image,
           "Admin image management",
-          () => MyNavigator.push(
-            context,
-            MaterialPage<void>(child: AdminContentManagementScreen(r, accountId: widget.accountId)),
-          ),
+          () => MyNavigator.pushLimited(context, AdminContentManagementPage(r, widget.accountId)),
         ),
       );
     }
@@ -259,14 +247,12 @@ class _AccountAdminSettingsScreenState extends State<AccountAdminSettingsScreen>
         Setting.createSetting(
           Icons.text_fields,
           "Moderate profile text",
-          () => MyNavigator.push(
+          () => MyNavigator.pushLimited(
             context,
-            MaterialPage<void>(
-              child: ModerateSingleProfileStringScreen(
-                r,
-                accountId: widget.accountId,
-                contentType: ProfileStringModerationContentType.profileText,
-              ),
+            ModerateSingleProfileStringPage(
+              r,
+              widget.accountId,
+              contentType: ProfileStringModerationContentType.profileText,
             ),
           ),
         ),
@@ -278,14 +264,12 @@ class _AccountAdminSettingsScreenState extends State<AccountAdminSettingsScreen>
         Setting.createSetting(
           Icons.text_fields,
           "Moderate profile name",
-          () => MyNavigator.push(
+          () => MyNavigator.pushLimited(
             context,
-            MaterialPage<void>(
-              child: ModerateSingleProfileStringScreen(
-                r,
-                accountId: widget.accountId,
-                contentType: ProfileStringModerationContentType.profileName,
-              ),
+            ModerateSingleProfileStringPage(
+              r,
+              widget.accountId,
+              contentType: ProfileStringModerationContentType.profileName,
             ),
           ),
         ),
@@ -298,16 +282,9 @@ class _AccountAdminSettingsScreenState extends State<AccountAdminSettingsScreen>
         Setting.createSetting(
           Icons.report,
           sentReports,
-          () => MyNavigator.push(
+          () => MyNavigator.pushLimited(
             context,
-            MaterialPage<void>(
-              child: ViewReportsScreen(
-                api: r.api,
-                account: widget.accountId,
-                mode: ReportIteratorMode.sent,
-                title: sentReports,
-              ),
-            ),
+            ViewReportsPage(r, widget.accountId, mode: ReportIteratorMode.sent, title: sentReports),
           ),
         ),
       );
@@ -317,15 +294,13 @@ class _AccountAdminSettingsScreenState extends State<AccountAdminSettingsScreen>
         Setting.createSetting(
           Icons.report,
           receivedReports,
-          () => MyNavigator.push(
+          () => MyNavigator.pushLimited(
             context,
-            MaterialPage<void>(
-              child: ViewReportsScreen(
-                api: r.api,
-                account: widget.accountId,
-                mode: ReportIteratorMode.received,
-                title: receivedReports,
-              ),
+            ViewReportsPage(
+              r,
+              widget.accountId,
+              mode: ReportIteratorMode.received,
+              title: receivedReports,
             ),
           ),
         ),

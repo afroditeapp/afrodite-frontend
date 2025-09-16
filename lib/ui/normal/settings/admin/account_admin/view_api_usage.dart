@@ -10,11 +10,9 @@ import 'package:app/utils/result.dart';
 import 'package:utils/utils.dart';
 
 void openViewApiUsageScreen(BuildContext context, String title, ApiManager api, AccountId account) {
-  MyNavigator.push(
+  MyNavigator.pushLimited(
     context,
-    MaterialPage<void>(
-      child: ViewMetricsScreen(title: title, metrics: GetApiUsage(api, account)),
-    ),
+    ViewMetricsPage(title: title, metrics: GetApiUsage(api, account)),
   );
 }
 

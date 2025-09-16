@@ -1,4 +1,6 @@
 import 'package:app/api/server_connection_manager.dart';
+import 'package:app/data/utils/repository_instances.dart';
+import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui_utils/data_editor.dart';
 import 'package:app/ui_utils/data_editor/base.dart';
 import 'package:app/ui_utils/data_editor/boolean.dart';
@@ -6,13 +8,23 @@ import 'package:app/utils/result.dart';
 import 'package:flutter/material.dart';
 import 'package:openapi/api.dart';
 
+class EditPermissionsPage extends MyScreenPageLimited<()> {
+  EditPermissionsPage(RepositoryInstances r, AccountId accountId)
+    : super(builder: (closer) => EditPermissionsScreen(r, accountId, closer));
+}
+
 class EditPermissionsScreen extends EditDataScreen<PermissionsDataManager> {
-  EditPermissionsScreen({
-    required super.api,
-    required super.pageKey,
-    required AccountId account,
+  EditPermissionsScreen(
+    RepositoryInstances r,
+    AccountId account,
+    PageCloser<()> closer, {
     super.key,
-  }) : super(dataApi: PermissionsDataApi(account), title: "Edit permissions");
+  }) : super(
+         closer: closer,
+         api: r.api,
+         dataApi: PermissionsDataApi(account),
+         title: "Edit permissions",
+       );
 }
 
 class PermissionsDataApi extends EditDataApi<PermissionsDataManager> {

@@ -1,5 +1,7 @@
 import 'package:app/api/server_connection_manager.dart';
+import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/logic/admin/content_decicion_stream.dart';
+import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui/normal/settings/admin/content_decicion_stream.dart';
 import 'package:app/ui/normal/settings/admin/report/process_reports.dart';
 import 'package:app/utils/result.dart';
@@ -7,17 +9,29 @@ import 'package:openapi/api.dart';
 
 const double ROW_HEIGHT = 100;
 
+class ViewReportsPage extends MyScreenPageLimited<()> {
+  ViewReportsPage(
+    RepositoryInstances r,
+    AccountId accountId, {
+    required ReportIteratorMode mode,
+    required String title,
+  }) : super(
+         builder: (_) => ViewReportsScreen(r, accountId, mode: mode, title: title),
+       );
+}
+
 class ViewReportsScreen extends ContentDecicionScreen<WrappedReportDetailed> {
-  ViewReportsScreen({
-    required super.api,
-    required AccountId account,
+  ViewReportsScreen(
+    RepositoryInstances r,
+    AccountId account, {
     required ReportIteratorMode mode,
     required super.title,
     super.key,
   }) : super(
+         api: r.api,
          infoMessageRowHeight: ROW_HEIGHT,
          screenInstructions: ReportUiBuilder.instructions,
-         io: ViewReportReportIo(api, account, mode),
+         io: ViewReportReportIo(r.api, account, mode),
          builder: ViewReportUiBuilder(),
        );
 }

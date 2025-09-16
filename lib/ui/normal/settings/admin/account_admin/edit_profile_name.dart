@@ -1,16 +1,34 @@
+import 'package:app/api/server_connection_manager.dart';
+import 'package:app/data/chat_repository.dart';
+import 'package:app/data/profile_repository.dart';
 import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/localizations.dart';
+import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/padding.dart';
 import 'package:flutter/material.dart';
 import 'package:app/ui_utils/snack_bar.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
+
+class EditProfileNamePage extends MyScreenPageLimited<()> {
+  EditProfileNamePage(RepositoryInstances r, AccountId accountId, {required String initialName})
+    : super(builder: (_) => EditProfileNameScreen(r, accountId, initialName: initialName));
+}
 
 class EditProfileNameScreen extends StatefulWidget {
   final AccountId accountId;
   final String initialName;
-  const EditProfileNameScreen({required this.accountId, required this.initialName, super.key});
+  final ApiManager api;
+  final ProfileRepository profile;
+  final ChatRepository chat;
+  EditProfileNameScreen(
+    RepositoryInstances r,
+    this.accountId, {
+    required this.initialName,
+    super.key,
+  }) : api = r.api,
+       profile = r.profile,
+       chat = r.chat;
 
   @override
   State<EditProfileNameScreen> createState() => _EditProfileNameScreenState();
@@ -39,15 +57,13 @@ class _EditProfileNameScreenState extends State<EditProfileNameScreen> {
       controller: _controller,
     );
 
-    final r = context.read<RepositoryInstances>();
-
     final editButton = ElevatedButton(
       onPressed: () async {
         FocusScope.of(context).unfocus();
 
         final result = await showConfirmDialog(context, "Update?", yesNoActions: true);
         if (result == true && context.mounted) {
-          final result = await r.api.profileAdminAction(
+          final result = await widget.api.profileAdminAction(
             (api) => api.postSetProfileName(
               SetProfileName(account: widget.accountId, name: _controller.text),
             ),
@@ -58,7 +74,7 @@ class _EditProfileNameScreenState extends State<EditProfileNameScreen> {
             showSnackBar(R.strings.generic_action_completed);
           }
 
-          await r.profile.downloadProfileToDatabase(r.chat, widget.accountId);
+          await widget.profile.downloadProfileToDatabase(widget.chat, widget.accountId);
         }
       },
       child: const Text("Edit"),

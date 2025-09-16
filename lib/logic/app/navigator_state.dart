@@ -120,6 +120,12 @@ class NavigatorStateBloc extends Bloc<NavigatorStateEvent, NavigatorStateData> {
     return await completer.future;
   }
 
+  Future<T?> pushLimited<T extends Object>(MyScreenPageLimited<T> page) async {
+    final completer = page.completer;
+    add(PushPage(page));
+    return await completer.future;
+  }
+
   /// Pops the top page from the navigator stack if possible.
   @optionalTypeArgs
   void pop<T>([T? popValue]) {
@@ -196,6 +202,10 @@ class MyNavigator {
   /// Push new page to the navigator stack and wait for it to be popped.
   static Future<T?> push<T>(BuildContext context, MyScreenPage<T> page) async {
     return await context.read<NavigatorStateBloc>().push(page);
+  }
+
+  static Future<T?> pushLimited<T>(BuildContext context, MyScreenPageLimited<T> page) async {
+    return await context.read<NavigatorStateBloc>().pushLimited(page);
   }
 
   /// Pops the top page from the navigator stack if possible.

@@ -3,6 +3,7 @@ import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/localizations.dart';
 import 'package:app/logic/account/account.dart';
 import 'package:app/model/freezed/logic/account/account.dart';
+import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/padding.dart';
 import 'package:flutter/material.dart';
@@ -11,10 +12,15 @@ import 'package:app/utils/result.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 
+class DeleteAccountPage extends MyScreenPageLimited<()> {
+  DeleteAccountPage(RepositoryInstances r, AccountId accountId)
+    : super(builder: (_) => DeleteAccountScreen(r, accountId));
+}
+
 class DeleteAccountScreen extends StatefulWidget {
   final ApiManager api;
   final AccountId accountId;
-  DeleteAccountScreen(RepositoryInstances r, {required this.accountId, super.key}) : api = r.api;
+  DeleteAccountScreen(RepositoryInstances r, this.accountId, {super.key}) : api = r.api;
 
   @override
   State<DeleteAccountScreen> createState() => _DeleteAccountScreenState();

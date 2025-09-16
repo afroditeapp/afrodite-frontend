@@ -63,6 +63,30 @@ abstract class MyScreenPage<T> extends MyPage<T> {
   PageInfo? get pageInfo => _pageInfo;
 }
 
+/// Creating page using URL is not supported
+abstract class MyScreenPageLimited<T> extends MyPage<T> {
+  final _MyScreenPageLimitedImpl<T> _impl;
+  MyScreenPageLimited({required Widget Function(PageCloser<T>) builder})
+    : _impl = _MyScreenPageLimitedImpl(builder: builder, closer: PageCloser(PageKey()));
+  @override
+  PageKey get key => _impl.closer.key;
+  @override
+  Page<T> get page => _impl.page;
+  @override
+  Completer<T?> get completer => _impl.completer;
+  @override
+  PageInfo? get pageInfo => null;
+}
+
+class _MyScreenPageLimitedImpl<T> {
+  final Page<T> page;
+  final Completer<T?> completer;
+  final PageCloser<T> closer;
+  _MyScreenPageLimitedImpl({required Widget Function(PageCloser<T>) builder, required this.closer})
+    : completer = Completer(),
+      page = MaterialPage<T>(child: builder(closer));
+}
+
 abstract class MyDialogPage<T> extends MyPage<T> {
   final _MyDialogPageImpl<T> _impl;
   MyDialogPage({

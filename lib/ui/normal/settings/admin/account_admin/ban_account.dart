@@ -3,6 +3,7 @@ import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/localizations.dart';
 import 'package:app/logic/account/account.dart';
 import 'package:app/model/freezed/logic/account/account.dart';
+import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/padding.dart';
 import 'package:app/utils/api.dart';
@@ -15,10 +16,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 import 'package:utils/utils.dart';
 
+class BanAccountPage extends MyScreenPageLimited<()> {
+  BanAccountPage(RepositoryInstances r, AccountId accountId)
+    : super(builder: (_) => BanAccountScreen(r, accountId));
+}
+
 class BanAccountScreen extends StatefulWidget {
   final ApiManager api;
   final AccountId accountId;
-  BanAccountScreen(RepositoryInstances r, {required this.accountId, super.key}) : api = r.api;
+  BanAccountScreen(RepositoryInstances r, this.accountId, {super.key}) : api = r.api;
 
   @override
   State<BanAccountScreen> createState() => _BanAccountScreenState();

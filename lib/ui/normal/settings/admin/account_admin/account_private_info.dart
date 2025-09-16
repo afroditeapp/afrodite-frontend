@@ -3,6 +3,7 @@ import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/localizations.dart';
 import 'package:app/logic/account/account.dart';
 import 'package:app/model/freezed/logic/account/account.dart';
+import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui/normal/settings/admin/view_admins.dart';
 import 'package:app/ui_utils/padding.dart';
 import 'package:database/database.dart';
@@ -12,11 +13,15 @@ import 'package:app/utils/result.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 
+class AccountPrivateInfoPage extends MyScreenPageLimited<()> {
+  AccountPrivateInfoPage(RepositoryInstances r, AccountId accountId)
+    : super(builder: (_) => AccountPrivateInfoScreen(r, accountId));
+}
+
 class AccountPrivateInfoScreen extends StatefulWidget {
   final ApiManager api;
   final AccountId accountId;
-  AccountPrivateInfoScreen(RepositoryInstances r, {required this.accountId, super.key})
-    : api = r.api;
+  AccountPrivateInfoScreen(RepositoryInstances r, this.accountId, {super.key}) : api = r.api;
 
   @override
   State<AccountPrivateInfoScreen> createState() => _AccountPrivateInfoScreenState();

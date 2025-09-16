@@ -1,11 +1,20 @@
 import 'dart:math';
 
+import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui/utils/view_metrics/view_multiple_metrics.dart';
 import 'package:app/ui/utils/view_metrics/view_single_metric.dart';
 import 'package:app/utils/list.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:app/utils/result.dart';
+
+class ViewMetricsPage extends MyScreenPageLimited<()> {
+  ViewMetricsPage({required String title, required GetMetrics metrics, String? dataAttribution})
+    : super(
+        builder: (_) =>
+            ViewMetricsScreen(title: title, metrics: metrics, dataAttribution: dataAttribution),
+      );
+}
 
 class ViewMetricsScreen extends StatefulWidget {
   final String title;
@@ -14,7 +23,7 @@ class ViewMetricsScreen extends StatefulWidget {
   const ViewMetricsScreen({
     required this.title,
     required this.metrics,
-    this.dataAttribution,
+    required this.dataAttribution,
     super.key,
   });
 

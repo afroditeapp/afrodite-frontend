@@ -1,6 +1,5 @@
 import 'package:app/api/server_connection_manager.dart';
 import 'package:app/localizations.dart';
-import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui_utils/consts/padding.dart';
 import 'package:app/ui_utils/data_editor/base.dart';
@@ -65,12 +64,12 @@ abstract class EditDataApi<T extends DataManager> {
 
 class EditDataScreen<T extends DataManager> extends StatefulWidget {
   final ApiManager api;
-  final PageKey pageKey;
+  final PageCloser<()> closer;
   final String title;
   final EditDataApi<T> dataApi;
   const EditDataScreen({
     required this.api,
-    required this.pageKey,
+    required this.closer,
     required this.title,
     required this.dataApi,
     super.key,
@@ -135,7 +134,7 @@ class _EditDataScreenState extends State<EditDataScreen> {
         if (!didPop) {
           final r = await showConfirmDialog(context, "Discard changes?", yesNoActions: true);
           if (r == true && context.mounted) {
-            MyNavigator.removePage(context, widget.pageKey);
+            widget.closer.close(context, ());
           }
         }
       },
@@ -159,7 +158,7 @@ class _EditDataScreenState extends State<EditDataScreen> {
           if (r == true && context.mounted) {
             await saveData();
             if (context.mounted) {
-              MyNavigator.removePage(context, widget.pageKey);
+              widget.closer.close(context, ());
             }
           }
         },

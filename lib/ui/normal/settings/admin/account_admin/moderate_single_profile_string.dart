@@ -5,6 +5,7 @@ import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/localizations.dart';
 import 'package:app/logic/account/account.dart';
 import 'package:app/model/freezed/logic/account/account.dart';
+import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/extensions/api.dart';
 import 'package:app/ui_utils/padding.dart';
@@ -14,6 +15,16 @@ import 'package:app/ui_utils/snack_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 
+class ModerateSingleProfileStringPage extends MyScreenPageLimited<()> {
+  ModerateSingleProfileStringPage(
+    RepositoryInstances r,
+    AccountId accountId, {
+    required ProfileStringModerationContentType contentType,
+  }) : super(
+         builder: (_) => ModerateSingleProfileStringScreen(r, accountId, contentType: contentType),
+       );
+}
+
 class ModerateSingleProfileStringScreen extends StatefulWidget {
   final ApiManager api;
   final ProfileRepository profile;
@@ -22,8 +33,8 @@ class ModerateSingleProfileStringScreen extends StatefulWidget {
   final AccountId accountId;
   final ProfileStringModerationContentType contentType;
   ModerateSingleProfileStringScreen(
-    RepositoryInstances r, {
-    required this.accountId,
+    RepositoryInstances r,
+    this.accountId, {
     required this.contentType,
     super.key,
   }) : api = r.api,

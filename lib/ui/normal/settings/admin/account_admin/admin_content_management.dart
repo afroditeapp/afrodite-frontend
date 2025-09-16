@@ -25,12 +25,17 @@ class RequiredData {
   RequiredData(this.accountContent);
 }
 
+class AdminContentManagementPage extends MyScreenPageLimited<()> {
+  AdminContentManagementPage(RepositoryInstances r, AccountId accountId)
+    : super(builder: (_) => AdminContentManagementScreen(r, accountId));
+}
+
 class AdminContentManagementScreen extends StatefulWidget {
   final ApiManager api;
   final ProfileRepository profile;
   final ChatRepository chat;
   final AccountId accountId;
-  AdminContentManagementScreen(RepositoryInstances r, {required this.accountId, super.key})
+  AdminContentManagementScreen(RepositoryInstances r, this.accountId, {super.key})
     : api = r.api,
       profile = r.profile,
       chat = r.chat;
@@ -232,14 +237,7 @@ Widget _buildAvailableImg(
           height: SELECT_CONTENT_IMAGE_HEIGHT,
           child: Material(
             child: InkWell(
-              onTap: () {
-                MyNavigator.push(
-                  context,
-                  MaterialPage<void>(
-                    child: ViewImageScreen(ViewImageAccountContent(accountId, content.cid)),
-                  ),
-                );
-              },
+              onTap: () => openViewImageScreenForAccountImage(context, accountId, content.cid),
               child: accountImgWidgetInk(
                 context,
                 accountId,
@@ -432,55 +430,50 @@ Widget _createModerationStateChangeButton(
   );
 }
 
+class ConfirmDialogForImage extends MyDialogPage<bool> {
+  ConfirmDialogForImage({required super.builder});
+}
+
 Future<bool?> _confirmDialogForImage(
   BuildContext context,
   AccountId account,
   ContentId content,
   String dialogTitle,
 ) async {
-  const double IMG_WIDTH = 150;
-  const double IMG_HEIGHT = 200;
-  Widget img = InkWell(
-    onTap: () {
-      MyNavigator.push(
+  Widget builder(BuildContext context, PageCloser<bool> closer) {
+    const double IMG_WIDTH = 150;
+    const double IMG_HEIGHT = 200;
+    Widget img = InkWell(
+      onTap: () => openViewImageScreenForAccountImage(context, account, content),
+      // Width seems to prevent the dialog from expanding horizontaly
+      child: accountImgWidget(
         context,
-        MaterialPage<void>(child: ViewImageScreen(ViewImageAccountContent(account, content))),
-      );
-    },
-    // Width seems to prevent the dialog from expanding horizontaly
-    child: accountImgWidget(
-      context,
-      account,
-      content,
-      width: IMG_WIDTH,
-      height: IMG_HEIGHT,
-      cacheSize: ImageCacheSize.constantWidthAndHeight(context, IMG_WIDTH, IMG_HEIGHT),
-    ),
-  );
-
-  Widget dialog = AlertDialog(
-    title: Text(dialogTitle),
-    content: img,
-    actions: [
-      TextButton(
-        onPressed: () {
-          MyNavigator.pop(context, false);
-        },
-        child: Text(context.strings.generic_cancel),
+        account,
+        content,
+        width: IMG_WIDTH,
+        height: IMG_HEIGHT,
+        cacheSize: ImageCacheSize.constantWidthAndHeight(context, IMG_WIDTH, IMG_HEIGHT),
       ),
-      TextButton(
-        onPressed: () {
-          MyNavigator.pop(context, true);
-        },
-        child: Text(context.strings.generic_continue),
-      ),
-    ],
-  );
+    );
 
-  final pageKey = PageKey();
-  return await MyNavigator.showDialog<bool?>(
+    return AlertDialog(
+      title: Text(dialogTitle),
+      content: img,
+      actions: [
+        TextButton(
+          onPressed: () => closer.close(context, false),
+          child: Text(context.strings.generic_cancel),
+        ),
+        TextButton(
+          onPressed: () => closer.close(context, true),
+          child: Text(context.strings.generic_continue),
+        ),
+      ],
+    );
+  }
+
+  return await MyNavigator.showDialog(
     context: context,
-    builder: (context) => dialog,
-    pageKey: pageKey,
+    page: ConfirmDialogForImage(builder: builder),
   );
 }
