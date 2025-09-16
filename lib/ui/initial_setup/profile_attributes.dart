@@ -1,4 +1,5 @@
 import "package:app/logic/app/navigator_state.dart";
+import "package:app/model/freezed/logic/main/navigator_state.dart";
 import "package:app/ui_utils/attribute/attribute.dart";
 import "package:app/ui_utils/attribute/state.dart";
 import "package:app/ui_utils/attribute/widgets/select_value.dart";
@@ -9,6 +10,20 @@ import "package:flutter_bloc/flutter_bloc.dart";
 import "package:app/localizations.dart";
 import "package:app/logic/account/initial_setup.dart";
 import "package:app/ui_utils/initial_setup_common.dart";
+
+class AskProfileAttributesPage extends MyScreenPage<()> {
+  AskProfileAttributesPage({
+    required int attributeIndex,
+    required UiAttribute currentAttribute,
+    required List<UiAttribute> attributes,
+  }) : super(
+         child: AskProfileAttributesScreen(
+           attributeIndex: attributeIndex,
+           currentAttribute: currentAttribute,
+           attributes: attributes,
+         ),
+       );
+}
 
 class AskProfileAttributesScreen extends StatelessWidget {
   final int attributeIndex;
@@ -38,12 +53,10 @@ class AskProfileAttributesScreen extends StatelessWidget {
               } else {
                 MyNavigator.push(
                   context,
-                  MaterialPage<void>(
-                    child: AskProfileAttributesScreen(
-                      attributeIndex: nextAttributeIndex,
-                      currentAttribute: nextAttribute,
-                      attributes: attributes,
-                    ),
+                  AskProfileAttributesPage(
+                    attributeIndex: nextAttributeIndex,
+                    currentAttribute: nextAttribute,
+                    attributes: attributes,
                   ),
                 );
               }

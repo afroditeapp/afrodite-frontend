@@ -1,6 +1,7 @@
 import "dart:math";
 
 import "package:app/data/image_cache.dart";
+import "package:app/model/freezed/logic/main/navigator_state.dart";
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 import "package:logging/logging.dart";
@@ -22,6 +23,15 @@ class CropImageFileContent {
 }
 
 const MIN_CROP_ALLOWED_FACTOR = 0.75;
+
+class CropImagePage extends MyFullScreenDialogPage<()> {
+  CropImagePage({
+    required CropImageFileContent info,
+    required void Function(CropArea?) onCropAreaChanged,
+  }) : super(
+         builder: (_) => CropImageScreen(info: info, onCropAreaChanged: onCropAreaChanged),
+       );
+}
 
 class CropImageScreen extends StatefulWidget {
   final CropImageFileContent info;

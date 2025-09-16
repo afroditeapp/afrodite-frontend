@@ -22,8 +22,8 @@ class ViewImageBytesContent extends ViewImageScreenMode {
   final Uint8List imageBytes;
 }
 
-class ViewImagePage extends MyScreenPage<()> {
-  ViewImagePage(ViewImageScreenMode mode) : super(child: ViewImageScreen(mode));
+class ViewImagePage extends MyFullScreenDialogPage<()> {
+  ViewImagePage(ViewImageScreenMode mode) : super(builder: (_) => ViewImageScreen(mode));
 }
 
 void openViewImageScreenForAccountImage(
@@ -31,11 +31,17 @@ void openViewImageScreenForAccountImage(
   AccountId accountId,
   ContentId contentId,
 ) {
-  MyNavigator.push(context, ViewImagePage(ViewImageAccountContent(accountId, contentId)));
+  MyNavigator.showFullScreenDialog(
+    context: context,
+    page: ViewImagePage(ViewImageAccountContent(accountId, contentId)),
+  );
 }
 
 void openViewImageScreenWithImageData(BuildContext context, Uint8List data) {
-  MyNavigator.push(context, ViewImagePage(ViewImageBytesContent(data)));
+  MyNavigator.showFullScreenDialog(
+    context: context,
+    page: ViewImagePage(ViewImageBytesContent(data)),
+  );
 }
 
 class ViewImageScreen extends StatefulWidget {

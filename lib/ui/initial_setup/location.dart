@@ -1,3 +1,4 @@
+import "package:app/model/freezed/logic/main/navigator_state.dart";
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:latlong2/latlong.dart";
@@ -9,6 +10,10 @@ import "package:app/ui/initial_setup/profile_attributes.dart";
 import "package:app/ui/normal/settings/location.dart";
 import "package:app/ui_utils/dialog.dart";
 import "package:app/ui_utils/initial_setup_common.dart";
+
+class AskLocationPage extends MyScreenPage<()> {
+  AskLocationPage() : super(child: AskLocationScreen());
+}
 
 class AskLocationScreen extends StatelessWidget {
   const AskLocationScreen({super.key});
@@ -32,12 +37,10 @@ class AskLocationScreen extends StatelessWidget {
               } else {
                 MyNavigator.push(
                   context,
-                  MaterialPage<void>(
-                    child: AskProfileAttributesScreen(
-                      attributeIndex: 0,
-                      currentAttribute: nextAttribute,
-                      attributes: attributes,
-                    ),
+                  AskProfileAttributesPage(
+                    attributeIndex: 0,
+                    currentAttribute: nextAttribute,
+                    attributes: attributes,
                   ),
                 );
               }

@@ -1,5 +1,6 @@
 import "dart:math";
 
+import "package:app/model/freezed/logic/main/navigator_state.dart";
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:app/localizations.dart";
@@ -11,6 +12,10 @@ import "package:app/ui_utils/consts/padding.dart";
 import "package:app/ui_utils/dropdown_menu.dart";
 import "package:app/ui_utils/initial_setup_common.dart";
 import "package:app/utils/age.dart";
+
+class AskSearchSettingsPage extends MyScreenPage<()> {
+  AskSearchSettingsPage() : super(child: AskSearchSettingsScreen());
+}
 
 class AskSearchSettingsScreen extends StatelessWidget {
   const AskSearchSettingsScreen({super.key});
@@ -43,7 +48,7 @@ class AskSearchSettingsScreen extends StatelessWidget {
           if (state.genderSearchSetting.notEmpty() &&
               ageRangeIsValid(state.searchAgeRangeMin, state.searchAgeRangeMax)) {
             return () {
-              MyNavigator.push(context, const MaterialPage<void>(child: AskLocationScreen()));
+              MyNavigator.push(context, AskLocationPage());
             };
           } else {
             return null;

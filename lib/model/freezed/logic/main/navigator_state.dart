@@ -99,6 +99,32 @@ class _MyDialogPageImpl<T> {
        );
 }
 
+abstract class MyFullScreenDialogPage<T> extends MyPage<T> {
+  final _MyFullScreenDialogPageImpl<T> _impl;
+  MyFullScreenDialogPage({required Widget Function(PageCloser<T>) builder})
+    : _impl = _MyFullScreenDialogPageImpl(builder: builder, closer: PageCloser(PageKey()));
+
+  @override
+  PageKey get key => _impl.closer.key;
+  @override
+  Page<T> get page => _impl.page;
+  @override
+  Completer<T?> get completer => _impl.completer;
+  @override
+  PageInfo? get pageInfo => null;
+}
+
+class _MyFullScreenDialogPageImpl<T> {
+  final Page<T> page;
+  final Completer<T?> completer;
+  final PageCloser<T> closer;
+  _MyFullScreenDialogPageImpl({
+    required Widget Function(PageCloser<T>) builder,
+    required this.closer,
+  }) : completer = Completer(),
+       page = MaterialPage<T>(child: builder(closer), fullscreenDialog: true);
+}
+
 class PageCloser<T> {
   final PageKey key;
   PageCloser(this.key);

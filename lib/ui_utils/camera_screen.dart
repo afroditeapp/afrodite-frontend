@@ -1,12 +1,13 @@
 import "dart:async";
 
 import "package:app/config.dart";
+import "package:app/model/freezed/logic/main/navigator_state.dart";
+import "package:app/utils/result.dart";
 import "package:camera/camera.dart";
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 import "package:logging/logging.dart";
 import "package:app/localizations.dart";
-import "package:app/logic/app/navigator_state.dart";
 import "package:app/ui_utils/dialog.dart";
 import "package:app/ui_utils/snack_bar.dart";
 import 'package:utils/utils.dart';
@@ -26,9 +27,17 @@ class InitFailed extends CameraInitState {
   InitFailed(this.error);
 }
 
+class CameraPage extends MyFullScreenDialogPage<Result<Uint8List, ()>> {
+  CameraPage({required CameraControllerWrapper? controller})
+    : super(
+        builder: (closer) => CameraScreen(controller: controller, closer: closer),
+      );
+}
+
 class CameraScreen extends StatefulWidget {
   final CameraControllerWrapper? controller;
-  const CameraScreen({this.controller, super.key});
+  final PageCloser<Result<Uint8List, ()>> closer;
+  const CameraScreen({this.controller, required this.closer, super.key});
 
   @override
   State<CameraScreen> createState() => _CameraScreenState();
@@ -133,7 +142,7 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
           }
           showInfoDialog(context, initState.error.message).then((_) {
             if (context.mounted) {
-              MyNavigator.pop(context, null);
+              widget.closer.close(context, Err(()));
             }
           });
         });
@@ -246,7 +255,7 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
           if (!context.mounted) {
             return;
           }
-          MyNavigator.pop(context, file);
+          widget.closer.close(context, file != null ? Ok(file) : Err(()));
         });
       };
     }

@@ -1,5 +1,4 @@
 import "package:app/data/utils/repository_instances.dart";
-import "package:app/logic/media/new_moderation_request.dart";
 import "package:app/ui_utils/consts/padding.dart";
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
@@ -14,7 +13,6 @@ import "package:app/logic/account/initial_setup.dart";
 import "package:app/logic/app/navigator_state.dart";
 import "package:app/logic/media/image_processing.dart";
 import "package:app/logic/media/profile_pictures.dart";
-import "package:app/logic/media/select_content.dart";
 import "package:app/model/freezed/logic/main/navigator_state.dart";
 import "package:app/model/freezed/logic/media/profile_pictures.dart";
 import "package:app/ui/initial_setup/profile_basic_info.dart";
@@ -31,6 +29,10 @@ import "package:app/ui_utils/view_image_screen.dart";
 import 'package:image/image.dart' as img;
 
 final _log = Logger("ProfilePictures");
+
+class AskProfilePicturesPage extends MyScreenPage<()> {
+  AskProfilePicturesPage() : super(child: AskProfilePicturesScreen());
+}
 
 class AskProfilePicturesScreen extends StatelessWidget {
   const AskProfilePicturesScreen({super.key});
@@ -49,10 +51,7 @@ class AskProfilePicturesScreen extends StatelessWidget {
               if (primaryPicture is ImageSelected && primaryPicture.img.isFaceDetected()) {
                 onPressed = () {
                   context.read<InitialSetupBloc>().add(SetProfileImages(pictures));
-                  MyNavigator.push(
-                    context,
-                    const MaterialPage<void>(child: AskProfileBasicInfoScreen()),
-                  );
+                  MyNavigator.push(context, AskProfileBasicInfoPage());
                 };
               }
 
@@ -400,23 +399,21 @@ Future<void> openEditThumbnail(
   if (!context.mounted) {
     return;
   }
-  await MyNavigator.push<CropArea>(
-    context,
-    MaterialPage<CropArea>(
-      child: CropImageScreen(
-        info: CropImageFileContent(
-          img.accountId,
-          img.contentId,
-          flutterImg.width,
-          flutterImg.height,
-          currentCrop,
-        ),
-        onCropAreaChanged: (cropArea) {
-          if (cropArea != null && context.mounted) {
-            context.read<ProfilePicturesBloc>().add(UpdateCropArea(cropArea, imgStateIndex));
-          }
-        },
+  await MyNavigator.showFullScreenDialog(
+    context: context,
+    page: CropImagePage(
+      info: CropImageFileContent(
+        img.accountId,
+        img.contentId,
+        flutterImg.width,
+        flutterImg.height,
+        currentCrop,
       ),
+      onCropAreaChanged: (cropArea) {
+        if (cropArea != null && context.mounted) {
+          context.read<ProfilePicturesBloc>().add(UpdateCropArea(cropArea, imgStateIndex));
+        }
+      },
     ),
   );
 }
@@ -522,17 +519,9 @@ class AddPicture extends StatelessWidget {
 
   void openActionDialog(BuildContext context) async {
     final bloc = context.read<ProfilePicturesBloc>();
-    final selectContentBloc = context.read<SelectContentBloc>();
-    final newModerationRequestBloc = context.read<NewModerationRequestBloc>();
-    final selectedImg = await MyNavigator.push(
-      context,
-      MaterialPage<AccountImageId?>(
-        child: SelectContentPage(
-          selectContentBloc: selectContentBloc,
-          newModerationRequestBloc: newModerationRequestBloc,
-          identifyFaceImages: imgIndex == 0,
-        ),
-      ),
+    final selectedImg = await MyNavigator.showFullScreenDialog(
+      context: context,
+      page: SelectContentPage(identifyFaceImages: imgIndex == 0),
     );
     if (selectedImg != null) {
       bloc.add(AddProcessedImage(ProfileImage(selectedImg, null), imgIndex));
@@ -540,16 +529,17 @@ class AddPicture extends StatelessWidget {
   }
 }
 
+class SelectPictureDialog extends MyDialogPage<()> {
+  SelectPictureDialog({required super.builder});
+}
+
 void openSelectPictureDialog(
   BuildContext context, {
   Widget lastOption = const SizedBox.shrink(),
   required int serverSlotIndex,
 }) {
-  final pageKey = PageKey();
-  MyNavigator.showDialog<void>(
-    context: context,
-    pageKey: pageKey,
-    builder: (context) => SimpleDialog(
+  Widget builder(BuildContext context, PageCloser<()> closer) {
+    return SimpleDialog(
       title: Text(
         context.strings.initial_setup_screen_profile_pictures_select_picture_dialog_title,
       ),
@@ -561,7 +551,7 @@ void openSelectPictureDialog(
           ),
           onTap: () async {
             final imageProcessingBloc = context.read<ProfilePicturesImageProcessingBloc>();
-            MyNavigator.removePage(context, pageKey, null);
+            closer.close(context, ());
 
             try {
               final image = await ImagePicker().pickImage(
@@ -598,7 +588,7 @@ void openSelectPictureDialog(
             ),
             onTap: () async {
               final imageProcessingBloc = context.read<ProfilePicturesImageProcessingBloc>();
-              MyNavigator.removePage(context, pageKey, null);
+              closer.close(context, ());
 
               try {
                 final image = await ImagePicker().pickImage(
@@ -618,7 +608,12 @@ void openSelectPictureDialog(
           ),
         lastOption,
       ],
-    ),
+    );
+  }
+
+  MyNavigator.showDialog(
+    context: context,
+    page: SelectPictureDialog(builder: builder),
   );
 }
 

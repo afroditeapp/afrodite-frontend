@@ -157,6 +157,14 @@ class NavigatorStateBloc extends Bloc<NavigatorStateEvent, NavigatorStateData> {
     }
     return await showDialog(page: page);
   }
+
+  Future<T?> showFullScreenDialog<T extends Object>({
+    required MyFullScreenDialogPage<T> page,
+  }) async {
+    final completer = page.completer;
+    add(PushPage(page));
+    return await completer.future;
+  }
 }
 
 class NavigationStateBlocInstance extends AppSingletonNoInit {
@@ -227,6 +235,13 @@ class MyNavigator {
       toBeRemoved: toBeRemoved,
       page: page,
     );
+  }
+
+  static Future<T?> showFullScreenDialog<T extends Object>({
+    required BuildContext context,
+    required MyFullScreenDialogPage<T> page,
+  }) async {
+    return await context.read<NavigatorStateBloc>().showFullScreenDialog(page: page);
   }
 }
 

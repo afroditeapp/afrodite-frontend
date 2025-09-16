@@ -1,7 +1,5 @@
 import 'package:app/data/image_cache.dart';
 import 'package:app/data/utils/repository_instances.dart';
-import 'package:app/logic/media/new_moderation_request.dart';
-import 'package:app/logic/media/select_content.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/model/freezed/logic/media/profile_pictures.dart';
 import 'package:app/ui/normal/settings/media/select_content.dart';
@@ -172,18 +170,9 @@ class _CurrentSecuritySelfieState extends State<CurrentSecuritySelfie> {
   Widget editSecuritySelfieButton(BuildContext context) {
     return IconButton(
       onPressed: () async {
-        final selectContentBloc = context.read<SelectContentBloc>();
-        final newModerationRequestBloc = context.read<NewModerationRequestBloc>();
-        final selectedImg = await MyNavigator.push(
-          context,
-          MaterialPage<AccountImageId?>(
-            child: SelectContentPage(
-              selectContentBloc: selectContentBloc,
-              newModerationRequestBloc: newModerationRequestBloc,
-              identifyFaceImages: true,
-              securitySelfieMode: true,
-            ),
-          ),
+        final selectedImg = await MyNavigator.showFullScreenDialog(
+          context: context,
+          page: SelectContentPage(identifyFaceImages: true, securitySelfieMode: true),
         );
         if (selectedImg != null && context.mounted) {
           setState(() {
@@ -204,12 +193,7 @@ class _CurrentSecuritySelfieState extends State<CurrentSecuritySelfie> {
       height: IMG_HEIGHT,
       child: Material(
         child: InkWell(
-          onTap: () => MyNavigator.push(
-            context,
-            MaterialPage<void>(
-              child: ViewImageScreen(ViewImageAccountContent(accountId, securitySelfie)),
-            ),
-          ),
+          onTap: () => openViewImageScreenForAccountImage(context, accountId, securitySelfie),
           child: accountImgWidgetInk(
             context,
             accountId,

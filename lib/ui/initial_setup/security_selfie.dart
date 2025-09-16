@@ -2,6 +2,8 @@ import "dart:async";
 import "dart:typed_data";
 
 import "package:app/data/image_cache.dart";
+import "package:app/model/freezed/logic/main/navigator_state.dart";
+import "package:app/utils/result.dart";
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:logging/logging.dart";
@@ -24,6 +26,10 @@ import "package:app/utils/camera.dart";
 
 final _log = Logger("AskSecuritySelfieScreen");
 
+class AskSecuritySelfiePage extends MyScreenPage<()> {
+  AskSecuritySelfiePage() : super(child: AskSecuritySelfieScreen());
+}
+
 // There is several CameraManager.getInstance().sendCmd(CloseCmd());
 // calls in this file as the CameraController travels from screen to another
 // I'm not sure does that always work, so just to make sure that camera will be
@@ -42,10 +48,7 @@ class AskSecuritySelfieScreen extends StatelessWidget {
           if (selfie != null && selfie.faceDetected) {
             return () {
               CameraManager.getInstance().sendCmd(CloseCmd());
-              MyNavigator.push(
-                context,
-                const MaterialPage<void>(child: AskProfilePicturesScreen()),
-              );
+              MyNavigator.push(context, AskProfilePicturesPage());
             };
           } else {
             return null;
@@ -144,16 +147,8 @@ class _AskSecuritySelfieState extends State<AskSecuritySelfie> {
             children: [
               Material(
                 child: InkWell(
-                  onTap: () {
-                    MyNavigator.push(
-                      context,
-                      MaterialPage<void>(
-                        child: ViewImageScreen(
-                          ViewImageAccountContent(image.accountId, image.contentId),
-                        ),
-                      ),
-                    );
-                  },
+                  onTap: () =>
+                      openViewImageScreenForAccountImage(context, image.accountId, image.contentId),
                   child: accountImgWidgetInk(
                     context,
                     image.accountId,
@@ -236,16 +231,16 @@ class CameraScreenOpener {
             return;
           }
 
-          final image = await MyNavigator.push<Uint8List?>(
-            context,
-            MaterialPage<Uint8List?>(child: CameraScreen(controller: controller)),
+          final image = await MyNavigator.showFullScreenDialog<Result<Uint8List, ()>>(
+            context: context,
+            page: CameraPage(controller: controller),
           );
 
-          if (image != null) {
-            bloc.add(ConfirmImage(image, SECURITY_SELFIE_SLOT, secureCapture: true));
+          if (image case Ok()) {
+            bloc.add(ConfirmImage(image.v, SECURITY_SELFIE_SLOT, secureCapture: true));
           }
 
-          // Assume that CameraScreens will close the camera.
+          // Assume that CameraScreen will close the camera.
         }
       case Closed(:final error):
         {

@@ -2,6 +2,7 @@ import 'package:app/data/image_cache.dart';
 import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/logic/media/image_processing.dart';
 import 'package:app/logic/media/new_moderation_request.dart';
+import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui/initial_setup/profile_pictures.dart';
 import 'package:app/ui/initial_setup/security_selfie.dart';
 import 'package:app/ui_utils/image_processing.dart';
@@ -12,7 +13,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 import 'package:app/localizations.dart';
-import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/logic/media/select_content.dart';
 import 'package:app/model/freezed/logic/media/profile_pictures.dart';
 import 'package:app/model/freezed/logic/media/select_content.dart';
@@ -22,25 +22,61 @@ import 'package:app/ui_utils/image.dart';
 const SELECT_CONTENT_IMAGE_HEIGHT = 200.0;
 const SELECT_CONTENT_IMAGE_WIDTH = 150.0;
 
-/// Returns [AccountImageId?]
-class SelectContentPage extends StatefulWidget {
-  final SelectContentBloc selectContentBloc;
-  final NewModerationRequestBloc newModerationRequestBloc;
+class SelectContentPage extends MyFullScreenDialogPage<AccountImageId> {
+  SelectContentPage({bool identifyFaceImages = false, bool securitySelfieMode = false})
+    : super(
+        builder: (closer) => SelectContentScreenOpener(
+          closer: closer,
+          identifyFaceImages: identifyFaceImages,
+          securitySelfieMode: securitySelfieMode,
+        ),
+      );
+}
+
+class SelectContentScreenOpener extends StatelessWidget {
+  final PageCloser<AccountImageId> closer;
   final bool identifyFaceImages;
   final bool securitySelfieMode;
-  const SelectContentPage({
-    required this.selectContentBloc,
-    required this.newModerationRequestBloc,
-    this.identifyFaceImages = false,
-    this.securitySelfieMode = false,
+
+  const SelectContentScreenOpener({
+    required this.closer,
+    required this.identifyFaceImages,
+    required this.securitySelfieMode,
     super.key,
   });
 
   @override
-  State<SelectContentPage> createState() => _SelectContentPageState();
+  Widget build(BuildContext context) {
+    return SelectContentScreen(
+      closer: closer,
+      selectContentBloc: context.read<SelectContentBloc>(),
+      newModerationRequestBloc: context.read<NewModerationRequestBloc>(),
+      identifyFaceImages: identifyFaceImages,
+      securitySelfieMode: securitySelfieMode,
+    );
+  }
 }
 
-class _SelectContentPageState extends State<SelectContentPage> {
+class SelectContentScreen extends StatefulWidget {
+  final PageCloser<AccountImageId> closer;
+  final SelectContentBloc selectContentBloc;
+  final NewModerationRequestBloc newModerationRequestBloc;
+  final bool identifyFaceImages;
+  final bool securitySelfieMode;
+  const SelectContentScreen({
+    required this.closer,
+    required this.selectContentBloc,
+    required this.newModerationRequestBloc,
+    required this.identifyFaceImages,
+    required this.securitySelfieMode,
+    super.key,
+  });
+
+  @override
+  State<SelectContentScreen> createState() => _SelectContentScreenState();
+}
+
+class _SelectContentScreenState extends State<SelectContentScreen> {
   final cameraScreenOpener = CameraScreenOpener();
 
   @override
@@ -131,7 +167,7 @@ class _SelectContentPageState extends State<SelectContentPage> {
           e.cid,
           e.fd,
           onTap: () =>
-              MyNavigator.pop(context, AccountImageId(accountId, e.cid, e.fd, e.accepted())),
+              widget.closer.close(context, AccountImageId(accountId, e.cid, e.fd, e.accepted())),
           identifyFaceImages: widget.identifyFaceImages,
         ),
       ),

@@ -1,3 +1,4 @@
+import "package:app/model/freezed/logic/main/navigator_state.dart";
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:app/localizations.dart";
@@ -7,6 +8,10 @@ import "package:app/logic/app/navigator_state.dart";
 import "package:app/model/freezed/logic/account/account.dart";
 import "package:app/ui/initial_setup/age_confirmation.dart";
 import "package:app/ui_utils/initial_setup_common.dart";
+
+class AskEmailPage extends MyScreenPage<()> {
+  AskEmailPage() : super(child: AskEmailScreen());
+}
 
 class AskEmailScreen extends StatelessWidget {
   const AskEmailScreen({super.key});
@@ -24,10 +29,7 @@ class AskEmailScreen extends StatelessWidget {
               final email = state.email;
               if ((email != null && isValidEmail(email)) || currentAccountEmail != null) {
                 return () {
-                  MyNavigator.push(
-                    context,
-                    const MaterialPage<void>(child: AgeConfirmationScreen()),
-                  );
+                  MyNavigator.push(context, AgeConfirmationPage());
                 };
               } else {
                 return null;

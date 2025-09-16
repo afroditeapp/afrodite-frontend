@@ -1,5 +1,6 @@
 import "package:app/logic/account/client_features_config.dart";
 import "package:app/model/freezed/logic/account/client_features_config.dart";
+import "package:app/model/freezed/logic/main/navigator_state.dart";
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
@@ -12,6 +13,10 @@ import "package:app/ui_utils/initial_setup_common.dart";
 import "package:app/ui_utils/text_field.dart";
 import "package:app/utils/age.dart";
 import "package:intl/intl.dart";
+
+class AskProfileBasicInfoPage extends MyScreenPage<()> {
+  AskProfileBasicInfoPage() : super(child: AskProfileBasicInfoScreen());
+}
 
 class AskProfileBasicInfoScreen extends StatelessWidget {
   const AskProfileBasicInfoScreen({super.key});
@@ -35,7 +40,7 @@ class AskProfileBasicInfoScreen extends StatelessWidget {
           final name = state.profileName;
           if (ageIsValid(age) && nameIsValid(context, name)) {
             return () {
-              MyNavigator.push(context, const MaterialPage<void>(child: AskGenderScreen()));
+              MyNavigator.push(context, AskGenderPage());
             };
           } else {
             return null;
