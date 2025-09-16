@@ -11,7 +11,6 @@ import 'package:app_settings/app_settings.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:app/data/notification_manager.dart';
 import 'package:app/localizations.dart';
 import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/logic/app/notification_settings.dart';
@@ -20,11 +19,7 @@ import 'package:app/ui_utils/padding.dart';
 import 'package:openapi/api.dart';
 
 void openNotificationSettings(BuildContext context) {
-  if (NotificationManager.getInstance().osProvidesNotificationSettingsUi) {
-    AppSettings.openAppSettings(type: AppSettingsType.notification);
-  } else {
-    MyNavigator.push(context, NotificationSettingsPage());
-  }
+  MyNavigator.push(context, NotificationSettingsPage());
 }
 
 class NotificationSettingsPage extends MyScreenPage<()> {
