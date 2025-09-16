@@ -9,7 +9,7 @@ import "package:app/ui/initial_setup/search_settings.dart";
 import "package:app/ui_utils/initial_setup_common.dart";
 
 class AskGenderPage extends MyScreenPage<()> {
-  AskGenderPage() : super(child: AskGenderScreen());
+  AskGenderPage() : super(builder: (_) => AskGenderScreen());
 }
 
 class AskGenderScreen extends StatelessWidget {

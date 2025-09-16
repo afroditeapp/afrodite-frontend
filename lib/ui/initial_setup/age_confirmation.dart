@@ -9,7 +9,7 @@ import "package:app/ui/initial_setup/security_selfie.dart";
 import "package:app/ui_utils/initial_setup_common.dart";
 
 class AgeConfirmationPage extends MyScreenPage<()> {
-  AgeConfirmationPage() : super(child: AgeConfirmationScreen());
+  AgeConfirmationPage() : super(builder: (_) => AgeConfirmationScreen());
 }
 
 class AgeConfirmationScreen extends StatelessWidget {

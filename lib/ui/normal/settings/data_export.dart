@@ -1,5 +1,7 @@
+import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/logic/settings/data_export.dart';
+import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/model/freezed/logic/settings/data_export.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/padding.dart';
@@ -8,34 +10,24 @@ import 'package:app/localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 
-void openDataExportScreen(
-  BuildContext context,
-  String title,
-  AccountId account, {
-  bool allowAdminDataExport = false,
-}) {
-  MyNavigator.push(
-    context,
-    MaterialPage<void>(
-      child: DataExportScreen(
-        title: title,
-        account: account,
-        allowAdminDataExport: allowAdminDataExport,
-      ),
-    ),
-  );
+void openDataExportScreenMyData(BuildContext context) {
+  MyNavigator.push(context, DataExportPageMyData(context.read<RepositoryInstances>()));
+}
+
+class DataExportPageMyData extends MyScreenPage<()> {
+  DataExportPageMyData(RepositoryInstances r)
+    : super(builder: (_) => DataExportScreen(account: r.accountId, allowAdminDataExport: false));
+}
+
+class DataExportPageAdmin extends MyScreenPageLimited<()> {
+  DataExportPageAdmin(AccountId accountId)
+    : super(builder: (_) => DataExportScreen(account: accountId, allowAdminDataExport: true));
 }
 
 class DataExportScreen extends StatefulWidget {
-  final String title;
   final AccountId account;
   final bool allowAdminDataExport;
-  const DataExportScreen({
-    required this.title,
-    required this.account,
-    required this.allowAdminDataExport,
-    super.key,
-  });
+  const DataExportScreen({required this.account, required this.allowAdminDataExport, super.key});
 
   @override
   State<DataExportScreen> createState() => _DataExportScreenState();
@@ -48,7 +40,11 @@ class _DataExportScreenState extends State<DataExportScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text(
+          widget.allowAdminDataExport
+              ? context.strings.data_export_screen_title_export_type_admin
+              : context.strings.data_export_screen_title_export_type_user,
+        ),
         actions: [
           BlocBuilder<DataExportBloc, DataExportData>(
             builder: (context, state) {

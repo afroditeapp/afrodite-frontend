@@ -1,7 +1,9 @@
 import 'package:app/config.dart';
 import 'package:app/data/app_version.dart';
+import 'package:app/data/image_cache.dart';
 import 'package:app/model/freezed/logic/account/client_features_config.dart';
 import 'package:app/ui_utils/image.dart';
+import 'package:app/ui_utils/view_image_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:app/assets.dart';
@@ -9,6 +11,7 @@ import 'package:app/localizations.dart';
 import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui_utils/loading_dialog.dart';
+import 'package:openapi/api.dart';
 
 void showAppAboutDialog(BuildContext context, ClientFeaturesConfigData? config) {
   const double ICON_SIZE = 80.0;
@@ -209,5 +212,53 @@ Widget _loadingDialogContent<B extends StateStreamable<S>, S>(
         ],
       ),
     ),
+  );
+}
+
+class ConfirmDialogForImage extends MyDialogPage<bool> {
+  ConfirmDialogForImage({required super.builder});
+}
+
+Future<bool?> confirmDialogForImage(
+  BuildContext context,
+  AccountId account,
+  ContentId content,
+  String dialogTitle,
+) async {
+  Widget builder(BuildContext context, PageCloser<bool> closer) {
+    const double IMG_WIDTH = 150;
+    const double IMG_HEIGHT = 200;
+    Widget img = InkWell(
+      onTap: () => openViewImageScreenForAccountImage(context, account, content),
+      // Width seems to prevent the dialog from expanding horizontaly
+      child: accountImgWidget(
+        context,
+        account,
+        content,
+        width: IMG_WIDTH,
+        height: IMG_HEIGHT,
+        cacheSize: ImageCacheSize.constantWidthAndHeight(context, IMG_WIDTH, IMG_HEIGHT),
+      ),
+    );
+
+    return AlertDialog(
+      title: Text(dialogTitle),
+      content: img,
+      actions: [
+        TextButton(
+          onPressed: () => closer.close(context, false),
+          child: Text(context.strings.generic_cancel),
+        ),
+        TextButton(
+          onPressed: () => closer.close(context, true),
+          child: Text(context.strings.generic_continue),
+        ),
+      ],
+    );
+  }
+
+  return await MyNavigator.showDialog(
+    context: context,
+    page: ConfirmDialogForImage(builder: builder),
   );
 }

@@ -42,23 +42,18 @@ abstract class MyPage<T> {
 }
 
 abstract class MyScreenPage<T> extends MyPage<T> {
-  final PageKey _key;
-  final Page<T> _page;
-  final Completer<T?> _completer;
+  final _MyScreenPageLimitedImpl<T> _impl;
   final PageInfo? _pageInfo;
-
-  MyScreenPage({PageKey? key, required Widget child, Completer<T?>? completer, PageInfo? pageInfo})
-    : _key = key ?? PageKey(),
-      _page = MaterialPage<T>(child: child),
-      _completer = completer ?? Completer(),
+  MyScreenPage({required Widget Function(PageCloser<T>) builder, PageInfo? pageInfo})
+    : _impl = _MyScreenPageLimitedImpl(builder: builder, closer: PageCloser(PageKey())),
       _pageInfo = pageInfo;
 
   @override
-  PageKey get key => _key;
+  PageKey get key => _impl.closer.key;
   @override
-  Page<T> get page => _page;
+  Page<T> get page => _impl.page;
   @override
-  Completer<T?> get completer => _completer;
+  Completer<T?> get completer => _impl.completer;
   @override
   PageInfo? get pageInfo => _pageInfo;
 }

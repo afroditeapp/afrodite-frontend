@@ -24,12 +24,15 @@ import 'package:app/utils/api.dart';
 import 'package:utils/utils.dart';
 
 void openContentManagementScreen(BuildContext context) {
-  final bloc = context.read<SelectContentBloc>();
-  MyNavigator.push(
-    context,
-    MaterialPage<void>(child: ContentManagementScreen(selectContentBloc: bloc)),
-    pageInfo: const ContentManagementPageInfo(),
-  );
+  MyNavigator.push(context, ContentManagementPage());
+}
+
+class ContentManagementPage extends MyScreenPage<()> {
+  ContentManagementPage()
+    : super(
+        builder: (_) => ContentManagementScreenOpener(),
+        pageInfo: const ContentManagementPageInfo(),
+      );
 }
 
 class ContentManagementScreenOpener extends StatelessWidget {
@@ -39,13 +42,6 @@ class ContentManagementScreenOpener extends StatelessWidget {
   Widget build(BuildContext context) {
     return ContentManagementScreen(selectContentBloc: context.read<SelectContentBloc>());
   }
-}
-
-NewPageDetails newContentManagementScreen() {
-  return NewPageDetails(
-    const MaterialPage<void>(child: ContentManagementScreenOpener()),
-    pageInfo: const ContentManagementPageInfo(),
-  );
 }
 
 class ContentManagementScreen extends StatefulWidget {
@@ -163,14 +159,7 @@ Widget _buildAvailableImg(
           height: SELECT_CONTENT_IMAGE_HEIGHT,
           child: Material(
             child: InkWell(
-              onTap: () {
-                MyNavigator.push(
-                  context,
-                  MaterialPage<void>(
-                    child: ViewImageScreen(ViewImageAccountContent(accountId, content.cid)),
-                  ),
-                );
-              },
+              onTap: () => openViewImageScreenForAccountImage(context, accountId, content.cid),
               child: accountImgWidgetInk(
                 context,
                 accountId,
@@ -289,62 +278,15 @@ Widget _createDeleteButton(BuildContext context, AccountId accountId, ContentId 
     child: Text(context.strings.generic_delete),
     onPressed: () async {
       final bloc = context.read<SelectContentBloc>();
-      final result = await _confirmDialogForImage(context, accountId, content);
+      final result = await confirmDialogForImage(
+        context,
+        accountId,
+        content,
+        context.strings.generic_delete_question,
+      );
       if (result == true && !bloc.isClosed) {
         bloc.add(DeleteContent(accountId, content));
       }
     },
-  );
-}
-
-Future<bool?> _confirmDialogForImage(
-  BuildContext context,
-  AccountId account,
-  ContentId content,
-) async {
-  const double IMG_WIDTH = 150;
-  const double IMG_HEIGHT = 200;
-  Widget img = InkWell(
-    onTap: () {
-      MyNavigator.push(
-        context,
-        MaterialPage<void>(child: ViewImageScreen(ViewImageAccountContent(account, content))),
-      );
-    },
-    // Width seems to prevent the dialog from expanding horizontaly
-    child: accountImgWidget(
-      context,
-      account,
-      content,
-      width: IMG_WIDTH,
-      height: IMG_HEIGHT,
-      cacheSize: ImageCacheSize.constantWidthAndHeight(context, IMG_WIDTH, IMG_HEIGHT),
-    ),
-  );
-
-  Widget dialog = AlertDialog(
-    title: Text(context.strings.generic_delete_question),
-    content: img,
-    actions: [
-      TextButton(
-        onPressed: () {
-          MyNavigator.pop(context, false);
-        },
-        child: Text(context.strings.generic_cancel),
-      ),
-      TextButton(
-        onPressed: () {
-          MyNavigator.pop(context, true);
-        },
-        child: Text(context.strings.generic_continue),
-      ),
-    ],
-  );
-
-  final pageKey = PageKey();
-  return await MyNavigator.showDialog<bool?>(
-    context: context,
-    builder: (context) => dialog,
-    pageKey: pageKey,
   );
 }

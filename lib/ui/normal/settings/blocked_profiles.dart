@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:app/data/chat_repository.dart';
 import 'package:app/data/utils/repository_instances.dart';
+import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui_utils/extensions/other.dart';
 import 'package:app/ui_utils/profile_thumbnail_image_or_error.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +17,10 @@ import 'package:app/logic/settings/blocked_profiles.dart';
 import 'package:app/ui_utils/consts/padding.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/list.dart';
+
+class BlockedProfilesPage extends MyScreenPage<()> {
+  BlockedProfilesPage(RepositoryInstances r) : super(builder: (_) => BlockedProfilesScreen(r));
+}
 
 class BlockedProfilesScreen extends StatefulWidget {
   final ProfileRepository profile;

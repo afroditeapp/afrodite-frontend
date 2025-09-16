@@ -19,15 +19,20 @@ import 'package:app/model/freezed/logic/media/content.dart';
 import 'package:app/ui_utils/image.dart';
 import 'package:app/ui_utils/view_image_screen.dart';
 
-class CurrentSecuritySelfie extends StatefulWidget {
-  final PageKey pageKey;
-  const CurrentSecuritySelfie({required this.pageKey, super.key});
-
-  @override
-  State<CurrentSecuritySelfie> createState() => _CurrentSecuritySelfieState();
+class CurrentSecuritySelfiePage extends MyScreenPage<()> {
+  CurrentSecuritySelfiePage()
+    : super(builder: (closer) => CurrentSecuritySelfieScreen(closer: closer));
 }
 
-class _CurrentSecuritySelfieState extends State<CurrentSecuritySelfie> {
+class CurrentSecuritySelfieScreen extends StatefulWidget {
+  final PageCloser<()> closer;
+  const CurrentSecuritySelfieScreen({required this.closer, super.key});
+
+  @override
+  State<CurrentSecuritySelfieScreen> createState() => _CurrentSecuritySelfieScreenState();
+}
+
+class _CurrentSecuritySelfieScreenState extends State<CurrentSecuritySelfieScreen> {
   MyContent? currentImg;
   AccountImageId? changedImg;
   bool backNavigationStarted = false;
@@ -105,7 +110,7 @@ class _CurrentSecuritySelfieState extends State<CurrentSecuritySelfie> {
           if (value == true) {
             validateAndSaveData(context);
           } else if (value == false) {
-            MyNavigator.removePage(context, widget.pageKey);
+            widget.closer.close(context, ());
           }
         });
       },
@@ -130,7 +135,7 @@ class _CurrentSecuritySelfieState extends State<CurrentSecuritySelfie> {
 
     if (editedContent == null) {
       // Should not happen
-      Navigator.pop(context);
+      widget.closer.close(context, ());
       return;
     }
 
@@ -139,7 +144,7 @@ class _CurrentSecuritySelfieState extends State<CurrentSecuritySelfie> {
       return;
     }
 
-    MyNavigator.removePage(context, widget.pageKey);
+    widget.closer.close(context, ());
     backNavigationStarted = true;
     context.read<ContentBloc>().add(ChangeSecurityContent(editedContent.contentId));
   }

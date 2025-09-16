@@ -6,7 +6,7 @@ import "package:app/assets.dart";
 import "package:app/main.dart";
 
 class SplashPage extends MyScreenPage<()> {
-  SplashPage() : super(child: SplashScreen());
+  SplashPage() : super(builder: (_) => SplashScreen());
 }
 
 class SplashScreen extends StatefulWidget {

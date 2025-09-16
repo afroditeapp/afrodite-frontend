@@ -65,11 +65,7 @@ class _AccountBannedScreenState extends State<AccountBannedScreen> {
             MenuItemButton(
               child: Text(context.strings.data_export_screen_title_export_type_user),
               onPressed: () {
-                openDataExportScreen(
-                  context,
-                  context.strings.data_export_screen_title_export_type_user,
-                  widget.currentUser,
-                );
+                openDataExportScreenMyData(context);
               },
             ),
             ...commonActionsWhenLoggedInAndAccountIsNotNormallyUsable(context),

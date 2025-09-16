@@ -312,14 +312,7 @@ class _AccountAdminSettingsScreenState extends State<AccountAdminSettingsScreen>
         Setting.createSetting(
           Icons.cloud_download,
           context.strings.data_export_screen_title_export_type_admin,
-          () {
-            openDataExportScreen(
-              context,
-              context.strings.data_export_screen_title_export_type_admin,
-              widget.accountId,
-              allowAdminDataExport: true,
-            );
-          },
+          () => MyNavigator.pushLimited(context, DataExportPageAdmin(widget.accountId)),
         ),
       );
     }

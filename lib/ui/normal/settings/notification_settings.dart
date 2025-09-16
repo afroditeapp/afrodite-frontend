@@ -23,27 +23,34 @@ void openNotificationSettings(BuildContext context) {
   if (NotificationManager.getInstance().osProvidesNotificationSettingsUi) {
     AppSettings.openAppSettings(type: AppSettingsType.notification);
   } else {
-    final notificationSettingsBloc = context.read<NotificationSettingsBloc>();
-    final pageKey = PageKey();
-    MyNavigator.pushWithKey(
-      context,
-      MaterialPage<void>(
-        child: NotificationSettingsScreen(
-          notificationSettingsBloc: notificationSettingsBloc,
-          pageKey: pageKey,
-        ),
-      ),
-      pageKey,
+    MyNavigator.push(context, NotificationSettingsPage());
+  }
+}
+
+class NotificationSettingsPage extends MyScreenPage<()> {
+  NotificationSettingsPage()
+    : super(builder: (closer) => NotificationSettingsScreenOpener(closer: closer));
+}
+
+class NotificationSettingsScreenOpener extends StatelessWidget {
+  final PageCloser<()> closer;
+  const NotificationSettingsScreenOpener({required this.closer, super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return NotificationSettingsScreen(
+      notificationSettingsBloc: context.read<NotificationSettingsBloc>(),
+      closer: closer,
     );
   }
 }
 
 class NotificationSettingsScreen extends StatefulWidget {
   final NotificationSettingsBloc notificationSettingsBloc;
-  final PageKey pageKey;
+  final PageCloser<()> closer;
   const NotificationSettingsScreen({
     required this.notificationSettingsBloc,
-    required this.pageKey,
+    required this.closer,
     super.key,
   });
 
@@ -70,7 +77,7 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
   Widget build(BuildContext context) {
     return updateStateHandler<NotificationSettingsBloc, NotificationSettingsData>(
       context: context,
-      pageKey: widget.pageKey,
+      pageKey: widget.closer.key,
       child: BlocBuilder<NotificationSettingsBloc, NotificationSettingsData>(
         builder: (context, data) {
           final dataEditingDetected = data.unsavedChanges();

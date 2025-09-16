@@ -1,4 +1,5 @@
 import 'package:app/logic/settings/search_settings.dart';
+import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/model/freezed/logic/settings/search_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,6 +7,10 @@ import 'package:app/localizations.dart';
 import 'package:app/ui/initial_setup/gender.dart';
 import 'package:app/ui/normal/settings/profile/search_settings/edit_gender_filter.dart';
 import 'package:app/ui_utils/padding.dart';
+
+class EditMyGenderPage extends MyScreenPage<()> {
+  EditMyGenderPage() : super(builder: (_) => EditMyGenderScreen());
+}
 
 class EditMyGenderScreen extends StatelessWidget {
   const EditMyGenderScreen({super.key});

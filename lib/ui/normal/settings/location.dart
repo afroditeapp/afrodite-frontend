@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:app/data/media_repository.dart';
 import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/logic/account/client_features_config.dart';
+import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/utils/api.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +19,10 @@ import 'package:app/localizations.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:utils/utils.dart';
+
+class LocationPage extends MyScreenPage<()> {
+  LocationPage() : super(builder: (_) => LocationScreen());
+}
 
 class LocationScreen extends StatelessWidget {
   const LocationScreen({super.key});

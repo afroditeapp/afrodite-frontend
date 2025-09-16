@@ -20,10 +20,27 @@ import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/age.dart';
 import 'package:app/utils/api.dart';
 
+class SearchSettingsPage extends MyScreenPage<()> {
+  SearchSettingsPage() : super(builder: (closer) => SearchSettingsScreenOpener(closer: closer));
+}
+
+class SearchSettingsScreenOpener extends StatelessWidget {
+  final PageCloser<()> closer;
+  const SearchSettingsScreenOpener({required this.closer, super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SearchSettingsScreen(
+      closer: closer,
+      searchSettingsBloc: context.read<SearchSettingsBloc>(),
+    );
+  }
+}
+
 class SearchSettingsScreen extends StatefulWidget {
-  final PageKey pageKey;
+  final PageCloser<()> closer;
   final SearchSettingsBloc searchSettingsBloc;
-  const SearchSettingsScreen({required this.pageKey, required this.searchSettingsBloc, super.key});
+  const SearchSettingsScreen({required this.closer, required this.searchSettingsBloc, super.key});
 
   @override
   State<SearchSettingsScreen> createState() => _SearchSettingsScreenState();
@@ -67,7 +84,7 @@ class _SearchSettingsScreenState extends State<SearchSettingsScreen> {
   Widget build(BuildContext context) {
     return updateStateHandler<SearchSettingsBloc, SearchSettingsData>(
       context: context,
-      pageKey: widget.pageKey,
+      pageKey: widget.closer.key,
       child: BlocBuilder<SearchSettingsBloc, SearchSettingsData>(
         builder: (context, data) {
           final settingsChanged = data.unsavedChanges();
@@ -103,10 +120,7 @@ class _SearchSettingsScreenState extends State<SearchSettingsScreen> {
                       child: Text(
                         context.strings.search_settings_screen_change_my_gender_action_title,
                       ),
-                      onPressed: () => MyNavigator.push(
-                        context,
-                        const MaterialPage<void>(child: EditMyGenderScreen()),
-                      ),
+                      onPressed: () => MyNavigator.push(context, EditMyGenderPage()),
                     ),
                   ]),
                 ],
@@ -157,8 +171,7 @@ class _SearchSettingsScreenState extends State<SearchSettingsScreen> {
 
   Widget editGenderFilter(SearchSettingsData state) {
     return EditGenderFilter(
-      onStartEditor: () =>
-          MyNavigator.push(context, const MaterialPage<void>(child: EditGenderFilterScreen())),
+      onStartEditor: () => MyNavigator.push(context, EditGenderFilterPage()),
       genderSearchSetting: state.valueGenderSearchSettingsAll(),
       gender: state.valueGender(),
     );

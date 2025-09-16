@@ -27,7 +27,7 @@ import "package:app/utils/camera.dart";
 final _log = Logger("AskSecuritySelfieScreen");
 
 class AskSecuritySelfiePage extends MyScreenPage<()> {
-  AskSecuritySelfiePage() : super(child: AskSecuritySelfieScreen());
+  AskSecuritySelfiePage() : super(builder: (_) => AskSecuritySelfieScreen());
 }
 
 // There is several CameraManager.getInstance().sendCmd(CloseCmd());

@@ -5,7 +5,6 @@ import 'package:app/data/profile_repository.dart';
 import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/localizations.dart';
 import 'package:app/logic/account/account.dart';
-import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/model/freezed/logic/account/account.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui/normal/settings/media/select_content.dart';
@@ -397,7 +396,7 @@ Widget _createDeleteButton(
   return ElevatedButton(
     child: Text(context.strings.generic_delete),
     onPressed: () async {
-      final result = await _confirmDialogForImage(
+      final result = await confirmDialogForImage(
         context,
         accountId,
         content,
@@ -422,58 +421,10 @@ Widget _createModerationStateChangeButton(
   return ElevatedButton(
     child: Text(buttonText),
     onPressed: () async {
-      final result = await _confirmDialogForImage(context, accountId, content, dialogTitle);
+      final result = await confirmDialogForImage(context, accountId, content, dialogTitle);
       if (result == true) {
         action(accountId, content, accept);
       }
     },
-  );
-}
-
-class ConfirmDialogForImage extends MyDialogPage<bool> {
-  ConfirmDialogForImage({required super.builder});
-}
-
-Future<bool?> _confirmDialogForImage(
-  BuildContext context,
-  AccountId account,
-  ContentId content,
-  String dialogTitle,
-) async {
-  Widget builder(BuildContext context, PageCloser<bool> closer) {
-    const double IMG_WIDTH = 150;
-    const double IMG_HEIGHT = 200;
-    Widget img = InkWell(
-      onTap: () => openViewImageScreenForAccountImage(context, account, content),
-      // Width seems to prevent the dialog from expanding horizontaly
-      child: accountImgWidget(
-        context,
-        account,
-        content,
-        width: IMG_WIDTH,
-        height: IMG_HEIGHT,
-        cacheSize: ImageCacheSize.constantWidthAndHeight(context, IMG_WIDTH, IMG_HEIGHT),
-      ),
-    );
-
-    return AlertDialog(
-      title: Text(dialogTitle),
-      content: img,
-      actions: [
-        TextButton(
-          onPressed: () => closer.close(context, false),
-          child: Text(context.strings.generic_cancel),
-        ),
-        TextButton(
-          onPressed: () => closer.close(context, true),
-          child: Text(context.strings.generic_continue),
-        ),
-      ],
-    );
-  }
-
-  return await MyNavigator.showDialog(
-    context: context,
-    page: ConfirmDialogForImage(builder: builder),
   );
 }

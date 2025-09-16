@@ -1,9 +1,14 @@
 import 'package:app/logic/settings/search_settings.dart';
+import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/model/freezed/logic/settings/search_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:app/localizations.dart';
 import 'package:app/ui/initial_setup/search_settings.dart';
+
+class EditGenderFilterPage extends MyScreenPage<()> {
+  EditGenderFilterPage() : super(builder: (_) => EditGenderFilterScreen());
+}
 
 class EditGenderFilterScreen extends StatelessWidget {
   const EditGenderFilterScreen({super.key});

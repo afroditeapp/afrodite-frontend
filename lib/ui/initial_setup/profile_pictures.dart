@@ -31,7 +31,7 @@ import 'package:image/image.dart' as img;
 final _log = Logger("ProfilePictures");
 
 class AskProfilePicturesPage extends MyScreenPage<()> {
-  AskProfilePicturesPage() : super(child: AskProfilePicturesScreen());
+  AskProfilePicturesPage() : super(builder: (_) => AskProfilePicturesScreen());
 }
 
 class AskProfilePicturesScreen extends StatelessWidget {

@@ -15,7 +15,7 @@ import "package:app/utils/age.dart";
 import "package:intl/intl.dart";
 
 class AskProfileBasicInfoPage extends MyScreenPage<()> {
-  AskProfileBasicInfoPage() : super(child: AskProfileBasicInfoScreen());
+  AskProfileBasicInfoPage() : super(builder: (_) => AskProfileBasicInfoScreen());
 }
 
 class AskProfileBasicInfoScreen extends StatelessWidget {

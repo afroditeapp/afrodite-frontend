@@ -14,7 +14,7 @@ import "package:app/ui_utils/initial_setup_common.dart";
 import "package:app/utils/age.dart";
 
 class AskSearchSettingsPage extends MyScreenPage<()> {
-  AskSearchSettingsPage() : super(child: AskSearchSettingsScreen());
+  AskSearchSettingsPage() : super(builder: (_) => AskSearchSettingsScreen());
 }
 
 class AskSearchSettingsScreen extends StatelessWidget {

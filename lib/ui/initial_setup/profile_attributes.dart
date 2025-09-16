@@ -17,7 +17,7 @@ class AskProfileAttributesPage extends MyScreenPage<()> {
     required UiAttribute currentAttribute,
     required List<UiAttribute> attributes,
   }) : super(
-         child: AskProfileAttributesScreen(
+         builder: (_) => AskProfileAttributesScreen(
            attributeIndex: attributeIndex,
            currentAttribute: currentAttribute,
            attributes: attributes,

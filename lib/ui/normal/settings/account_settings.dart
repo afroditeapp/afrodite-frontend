@@ -1,4 +1,5 @@
 import 'package:app/logic/app/navigator_state.dart';
+import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:app/localizations.dart';
@@ -9,11 +10,20 @@ import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/padding.dart';
 
 void openAccountSettings(BuildContext context) {
-  final accountDetailsBloc = context.read<AccountDetailsBloc>();
-  MyNavigator.push(
-    context,
-    MaterialPage<void>(child: AccountSettingsScreen(accountDetailsBloc: accountDetailsBloc)),
-  );
+  MyNavigator.push(context, AccountSettingsPage());
+}
+
+class AccountSettingsPage extends MyScreenPage<()> {
+  AccountSettingsPage() : super(builder: (_) => AccountSettingsScreenOpener());
+}
+
+class AccountSettingsScreenOpener extends StatelessWidget {
+  const AccountSettingsScreenOpener({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return AccountSettingsScreen(accountDetailsBloc: context.read<AccountDetailsBloc>());
+  }
 }
 
 class AccountSettingsScreen extends StatefulWidget {

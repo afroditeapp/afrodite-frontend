@@ -10,7 +10,7 @@ import "package:app/ui/initial_setup/age_confirmation.dart";
 import "package:app/ui_utils/initial_setup_common.dart";
 
 class AskEmailPage extends MyScreenPage<()> {
-  AskEmailPage() : super(child: AskEmailScreen());
+  AskEmailPage() : super(builder: (_) => AskEmailScreen());
 }
 
 class AskEmailScreen extends StatelessWidget {

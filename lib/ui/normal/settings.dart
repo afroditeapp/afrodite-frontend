@@ -26,22 +26,41 @@ import 'package:app/localizations.dart';
 import 'package:openapi/api.dart';
 
 void openSettingsScreen(BuildContext context) {
-  // Settings screen is open some seconds before user
-  // opens another screen, so this is good location
-  // to init some blocs which load data from DB.
-  context.read<SearchSettingsBloc>();
-  context.read<PrivacySettingsBloc>().add(ResetEdited());
-  MyNavigator.push(context, const MaterialPage<void>(child: SettingsScreen()));
+  MyNavigator.push(context, SettingsPage());
+}
+
+class SettingsPage extends MyScreenPage<()> {
+  SettingsPage() : super(builder: (_) => SettingsScreenOpener());
+}
+
+class SettingsScreenOpener extends StatelessWidget {
+  const SettingsScreenOpener({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    // Settings screen is open some seconds before user
+    // opens another screen, so this is good location
+    // to init some blocs which load data from DB.
+    context.read<SearchSettingsBloc>();
+    return SettingsScreen(privacySettingsBloc: context.read<PrivacySettingsBloc>());
+  }
 }
 
 class SettingsScreen extends StatefulWidget {
-  const SettingsScreen({super.key});
+  final PrivacySettingsBloc privacySettingsBloc;
+  const SettingsScreen({required this.privacySettingsBloc, super.key});
 
   @override
   State<SettingsScreen> createState() => _SettingsScreenState();
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
+  @override
+  void initState() {
+    super.initState();
+    widget.privacySettingsBloc.add(ResetEdited());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -79,7 +98,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return Setting.createSetting(
       Icons.block,
       context.strings.blocked_profiles_screen_title,
-      () => MyNavigator.push(context, MaterialPage<void>(child: BlockedProfilesScreen(r))),
+      () => MyNavigator.push(context, BlockedProfilesPage(r)),
     ).toListTile();
   }
 
@@ -88,12 +107,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       Icons.image_rounded,
       context.strings.current_security_selfie_screen_title,
       () {
-        final pageKey = PageKey();
-        MyNavigator.pushWithKey(
-          context,
-          MaterialPage<void>(child: CurrentSecuritySelfie(pageKey: pageKey)),
-          pageKey,
-        );
+        MyNavigator.push(context, CurrentSecuritySelfiePage());
       },
     ).toListTile();
   }
@@ -101,15 +115,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   List<Widget> profileSettings(BuildContext context) {
     return [
       Setting.createSetting(Icons.search, context.strings.search_settings_screen_title, () {
-        final pageKey = PageKey();
-        final searchSettingsBloc = context.read<SearchSettingsBloc>();
-        MyNavigator.pushWithKey(
-          context,
-          MaterialPage<void>(
-            child: SearchSettingsScreen(pageKey: pageKey, searchSettingsBloc: searchSettingsBloc),
-          ),
-          pageKey,
-        );
+        MyNavigator.push(context, SearchSettingsPage());
       }).toListTile(),
       Setting.createSettingWithCustomIcon(
         BlocBuilder<ProfileFiltersBloc, ProfileFiltersData>(
@@ -119,7 +125,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         () => openProfileFilters(context),
       ).toListTile(),
       Setting.createSetting(Icons.location_on, context.strings.profile_location_screen_title, () {
-        MyNavigator.push(context, const MaterialPage<void>(child: LocationScreen()));
+        MyNavigator.push(context, LocationPage());
       }).toListTile(),
     ];
   }
@@ -164,7 +170,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   List<Widget> dataSettings(BuildContext context) {
-    final RepositoryInstances r = context.read<RepositoryInstances>();
     return [
       Setting.createSetting(
         Icons.image_rounded,
@@ -177,11 +182,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         Icons.cloud_download,
         context.strings.data_export_screen_title_export_type_user,
         () {
-          openDataExportScreen(
-            context,
-            context.strings.data_export_screen_title_export_type_user,
-            r.accountId,
-          );
+          openDataExportScreenMyData(context);
         },
       ).toListTile(),
     ];

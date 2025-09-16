@@ -61,7 +61,7 @@ class _PendingDeletionPageState extends State<PendingDeletionPage> {
             MenuItemButton(
               child: Text(context.strings.data_export_screen_title_export_type_user),
               onPressed: () {
-                openDataExportScreen(
+                openDataExportScreenMyData(
                   context,
                   context.strings.data_export_screen_title_export_type_user,
                   widget.currentUser,

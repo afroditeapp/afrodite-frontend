@@ -12,7 +12,7 @@ import "package:app/ui_utils/dialog.dart";
 import "package:app/ui_utils/initial_setup_common.dart";
 
 class AskLocationPage extends MyScreenPage<()> {
-  AskLocationPage() : super(child: AskLocationScreen());
+  AskLocationPage() : super(builder: (_) => AskLocationScreen());
 }
 
 class AskLocationScreen extends StatelessWidget {

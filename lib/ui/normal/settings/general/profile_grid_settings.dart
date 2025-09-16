@@ -21,21 +21,25 @@ import 'package:app/model/freezed/logic/settings/ui_settings.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 Future<void> openProfileGridSettingsScreen(BuildContext context) {
-  final bloc = context.read<ProfileFiltersBloc>();
-  bloc.add(ResetEditedValues());
-  final pageKey = PageKey();
-  return MyNavigator.pushWithKey(
-    context,
-    MaterialPage<void>(
-      child: ProfileGridSettingsScreen(initialProfileFiltersUpdateState: bloc.state.updateState),
-    ),
-    pageKey,
-  );
+  return MyNavigator.push(context, ProfileGridSettingsPage());
+}
+
+class ProfileGridSettingsPage extends MyScreenPage<()> {
+  ProfileGridSettingsPage() : super(builder: (_) => ProfileGridSettingsScreenOpener());
+}
+
+class ProfileGridSettingsScreenOpener extends StatelessWidget {
+  const ProfileGridSettingsScreenOpener({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ProfileGridSettingsScreen(bloc: context.read<ProfileFiltersBloc>());
+  }
 }
 
 class ProfileGridSettingsScreen extends StatefulWidget {
-  final UpdateState initialProfileFiltersUpdateState;
-  const ProfileGridSettingsScreen({required this.initialProfileFiltersUpdateState, super.key});
+  final ProfileFiltersBloc bloc;
+  const ProfileGridSettingsScreen({required this.bloc, super.key});
 
   @override
   State<ProfileGridSettingsScreen> createState() => _ProfileGridSettingsScreenState();
@@ -47,7 +51,8 @@ class _ProfileGridSettingsScreenState extends State<ProfileGridSettingsScreen> {
   @override
   void initState() {
     super.initState();
-    previousProfileFiltersUpdateState = widget.initialProfileFiltersUpdateState;
+    widget.bloc.add(ResetEditedValues());
+    previousProfileFiltersUpdateState = widget.bloc.state.updateState;
   }
 
   @override
