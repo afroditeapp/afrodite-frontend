@@ -191,7 +191,10 @@ class InitialSetupUtils {
 
     // Images
     {
-      final r1 = await handleInitialSetupImages(data.securitySelfie?.contentId, data.profileImages);
+      final r1 = await _handleInitialSetupImages(
+        data.securitySelfie?.contentId,
+        data.profileImages,
+      );
       if (r1.isErr()) return errAndLog("Image related error detected");
     }
 
@@ -203,7 +206,7 @@ class InitialSetupUtils {
     return const Ok(());
   }
 
-  Future<Result<(), ()>> handleInitialSetupImages(
+  Future<Result<(), ()>> _handleInitialSetupImages(
     ContentId? securitySelfie,
     Iterable<ImgState>? profileImages,
   ) async {

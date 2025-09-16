@@ -8,12 +8,10 @@ import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:openapi/manual_additions.dart';
 import 'package:app/api/server_connection_manager.dart';
-import 'package:app/data/account/initial_setup.dart';
 import 'package:app/data/account_repository.dart';
 import 'package:app/data/media/send_to_slot.dart';
 import 'package:app/data/utils.dart';
 import 'package:app/database/account_database_manager.dart';
-import 'package:app/ui/normal/settings/media/retry_initial_setup_images.dart';
 import 'package:app/utils/option.dart';
 import 'package:app/utils/result.dart';
 import 'package:utils/utils.dart';
@@ -180,14 +178,6 @@ class MediaRepository extends DataRepositoryWithLifecycle {
 
   Future<Result<AccountContent, ()>> loadAllContent() =>
       api.media((api) => api.getAllAccountMediaContent(currentUser.aid)).emptyErr();
-
-  Future<Result<(), ()>> retryInitialSetupImages(RetryInitialSetupImages content) async {
-    final result = await InitialSetupUtils(
-      api,
-    ).handleInitialSetupImages(content.securitySelfie, content.profileImgs);
-    await reloadMyMediaContent();
-    return result;
-  }
 
   Future<Result<(), ()>> _reloadMediaNotificationSettings() async {
     return await api
