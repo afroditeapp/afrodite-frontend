@@ -6,6 +6,8 @@ import 'package:app/model/freezed/logic/account/account.dart';
 import 'package:app/ui/normal/report/report.dart';
 import 'package:app/ui/normal/settings/admin/account_admin_settings.dart';
 import 'package:app/ui_utils/extensions/api.dart';
+import 'package:app/utils/result.dart';
+import 'package:database_utils/database_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:database/database.dart';
@@ -22,6 +24,7 @@ import 'package:app/ui_utils/app_bar/menu_actions.dart';
 
 import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/snack_bar.dart';
+import 'package:openapi/api.dart';
 
 Future<void> openProfileView(
   BuildContext context,
@@ -48,14 +51,52 @@ Future<void> openProfileView(
   );
 }
 
+class ViewProfilePageUrlParser extends UrlParser<ViewProfilePage> {
+  final RepositoryInstances r;
+  ViewProfilePageUrlParser(this.r);
+
+  @override
+  Future<Result<(ViewProfilePage, List<String>), ()>> parseFromSegments(
+    List<String> urlSegements,
+  ) async {
+    final accountIdString = urlSegements.getAtOrNull(1);
+    if (accountIdString == null) {
+      return Err(());
+    }
+    final accountId = AccountId(aid: accountIdString);
+
+    final profile = await r.accountDb
+        .accountData((db) => db.profile.getProfileEntry(accountId))
+        .ok();
+    if (profile == null) {
+      return Err(());
+    }
+
+    final initialProfileAction = await resolveProfileAction(r.chat, profile.accountId);
+
+    return Ok((
+      ViewProfilePage(
+        r,
+        initialProfile: profile,
+        initialProfileAction: initialProfileAction,
+        priority: ProfileRefreshPriority.low,
+        noAction: false,
+      ),
+      urlSegements.skip(2).toList(),
+    ));
+  }
+}
+
 class ViewProfilePage extends MyScreenPage<()> {
+  final AccountId accountId;
   ViewProfilePage(
     RepositoryInstances r, {
     required ProfileEntry initialProfile,
     required ProfileActionState? initialProfileAction,
     required ProfileRefreshPriority priority,
     required bool noAction,
-  }) : super(
+  }) : accountId = initialProfile.accountId,
+       super(
          builder: (closer) {
            return BlocProvider(
              create: (context) =>
@@ -70,6 +111,13 @@ class ViewProfilePage extends MyScreenPage<()> {
            );
          },
        );
+
+  @override
+  String get urlPath => "/$urlName/${accountId.aid}";
+
+  @override
+  bool checkEquality(MyPageWithUrlNavigation<Object> other) =>
+      other is ViewProfilePage && other.accountId == accountId;
 }
 
 class ViewProfileScreen extends StatelessWidget {

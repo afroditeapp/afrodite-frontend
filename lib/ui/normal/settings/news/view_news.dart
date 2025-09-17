@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/logic/account/client_features_config.dart';
+import 'package:app/utils/result.dart';
+import 'package:database_utils/database_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
@@ -24,10 +26,30 @@ Future<void> openViewNewsScreen(BuildContext context, NewsId id, void Function()
   return MyNavigator.push(context, ViewNewsPage(id));
 }
 
+class ViewNewsPageUrlParser extends UrlParser<ViewNewsPage> {
+  ViewNewsPageUrlParser();
+
+  @override
+  Future<Result<(ViewNewsPage, List<String>), ()>> parseFromSegments(
+    List<String> urlSegements,
+  ) async {
+    final newsIdString = urlSegements.getAtOrNull(1);
+    if (newsIdString == null) {
+      return Err(());
+    }
+    final newsIdInt = int.tryParse(newsIdString);
+    if (newsIdInt == null) {
+      return Err(());
+    }
+    return Ok((ViewNewsPage(NewsId(nid: newsIdInt)), urlSegements.skip(2).toList()));
+  }
+}
+
 void _emptyCallback() {}
 
 class ViewNewsPage extends MyScreenPage<()> {
-  ViewNewsPage(NewsId id, {void Function() refreshNewsList = _emptyCallback})
+  final NewsId id;
+  ViewNewsPage(this.id, {void Function() refreshNewsList = _emptyCallback})
     : super(
         builder: (_) {
           return BlocProvider(
@@ -41,6 +63,13 @@ class ViewNewsPage extends MyScreenPage<()> {
           );
         },
       );
+
+  @override
+  String get urlPath => "/$urlName/${id.nid}";
+
+  @override
+  bool checkEquality(MyPageWithUrlNavigation<Object> other) =>
+      other is ViewNewsPage && other.id == id;
 }
 
 class ViewNewsScreen extends StatefulWidget {

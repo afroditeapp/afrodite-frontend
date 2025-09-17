@@ -10,6 +10,7 @@ import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/result.dart';
 import 'package:database/database.dart';
+import 'package:database_utils/database_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
@@ -23,23 +24,46 @@ Widget showReportAction(BuildContext context, AccountId accountId, ProfileEntry?
       if (!context.mounted) {
         return;
       }
-      await MyNavigator.pushLimited(
+      await MyNavigator.push(
         context,
-        ReportScreenPage(
-          accountId: accountId,
-          profile: profile,
-          isMatch: isMatch,
-          messages: messages,
-        ),
+        ReportPage(accountId: accountId, profile: profile, isMatch: isMatch, messages: messages),
       );
     },
     child: Text(context.strings.report_screen_title),
   );
 }
 
-class ReportScreenPage extends MyScreenPageLimited<()> {
-  ReportScreenPage({
-    required AccountId accountId,
+class ReportPageUrlParser extends UrlParser<ReportPage> {
+  final RepositoryInstances r;
+  ReportPageUrlParser(this.r);
+
+  @override
+  Future<Result<(ReportPage, List<String>), ()>> parseFromSegments(
+    List<String> urlSegements,
+  ) async {
+    final accountIdString = urlSegements.getAtOrNull(1);
+    if (accountIdString == null) {
+      return Err(());
+    }
+    final accountId = AccountId(aid: accountIdString);
+
+    final profile = await r.accountDb
+        .accountData((db) => db.profile.getProfileEntry(accountId))
+        .ok();
+    final isMatch = await r.chat.isInMatches(accountId);
+    final messages = await r.chat.getAllMessages(accountId);
+
+    return Ok((
+      ReportPage(accountId: accountId, profile: profile, isMatch: isMatch, messages: messages),
+      urlSegements.skip(2).toList(),
+    ));
+  }
+}
+
+class ReportPage extends MyScreenPage<()> {
+  final AccountId accountId;
+  ReportPage({
+    required this.accountId,
     required ProfileEntry? profile,
     required bool isMatch,
     required List<MessageEntry> messages,
@@ -51,6 +75,13 @@ class ReportScreenPage extends MyScreenPageLimited<()> {
            messages: messages,
          ),
        );
+
+  @override
+  String get urlPath => "/$urlName/${accountId.aid}";
+
+  @override
+  bool checkEquality(MyPageWithUrlNavigation<Object> other) =>
+      other is ReportPage && other.accountId == accountId;
 }
 
 class ReportScreen extends StatefulWidget {

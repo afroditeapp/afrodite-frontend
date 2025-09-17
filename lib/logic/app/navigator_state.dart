@@ -1,5 +1,7 @@
 import "dart:async";
 
+import "package:app/ui/utils/url_navigation.dart";
+import "package:app/utils/iterator.dart";
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:app/model/freezed/logic/main/navigator_state.dart";
@@ -36,9 +38,9 @@ class PushPage extends NavigatorStateEvent {
   PushPage(this.newPage);
 }
 
-class PopUntilLenghtIs extends NavigatorStateEvent {
-  final int wantedLenght;
-  PopUntilLenghtIs(this.wantedLenght);
+class UpdateUrlNavigation extends NavigatorStateEvent {
+  final UrlNavigationState urlNavigation;
+  UpdateUrlNavigation(this.urlNavigation);
 
   final BehaviorSubject<bool> completed = BehaviorSubject.seeded(false);
 
@@ -95,19 +97,52 @@ class NavigatorStateBloc extends Bloc<NavigatorStateEvent, NavigatorStateData> {
       }
       emit(state.copyWith(pages: UnmodifiableList(newPages)));
     });
-    on<PopUntilLenghtIs>((data, emit) {
-      if (data.wantedLenght < 1) {
+    on<UpdateUrlNavigation>((data, emit) {
+      if (data.urlNavigation.list.isEmpty) {
         return;
       }
 
+      final urlPagesExceptFirst = data.urlNavigation.list.skip(1).iterator;
+
       final newPages = <MyPage<Object>>[];
       for (final (i, p) in state.pages.indexed) {
-        if (i < data.wantedLenght) {
+        if (i == 0) {
+          if (data.urlNavigation.list.first.runtimeType == p.runtimeType) {
+            newPages.add(p);
+          } else {
+            data.completed.add(true);
+            return;
+          }
+          continue;
+        }
+
+        if (p is! MyPageWithUrlNavigation<Object>) {
+          p.completer.complete(null);
+          continue;
+        }
+
+        final wantedPage = urlPagesExceptFirst.next();
+        if (wantedPage == null) {
+          p.completer.complete(null);
+          continue;
+        }
+
+        if (p.checkEquality(wantedPage)) {
           newPages.add(p);
         } else {
           p.completer.complete(null);
+          newPages.add(wantedPage);
         }
       }
+
+      while (true) {
+        final wantedPage = urlPagesExceptFirst.next();
+        if (wantedPage == null) {
+          break;
+        }
+        newPages.add(wantedPage);
+      }
+
       emit(state.copyWith(pages: UnmodifiableList(newPages)));
       data.completed.add(true);
     });

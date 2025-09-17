@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:app/logic/app/navigator_state.dart';
+import 'package:app/utils/result.dart';
 import 'package:flutter/material.dart';
 
 import "package:freezed_annotation/freezed_annotation.dart";
@@ -33,13 +34,40 @@ class NavigatorStateData with _$NavigatorStateData {
   }
 }
 
+abstract class UrlParser<T extends MyPageWithUrlNavigation<Object>> {
+  String get urlName {
+    final Type p = T;
+    return p.toString();
+  }
+
+  Future<Result<(T, List<String>), ()>> parseFromSegments(List<String> urlSegements);
+}
+
 abstract class MyPage<T> {
   PageKey get key;
   Page<T> get page;
   Completer<T?> get completer;
 }
 
-abstract class MyScreenPage<T> extends MyPage<T> {
+abstract class MyPageWithUrlNavigation<T extends Object> extends MyPage<T>
+    implements UrlParser<MyPageWithUrlNavigation<T>> {
+  /// This must start with '/' character
+  String get urlPath => "/$urlName";
+
+  @override
+  String get urlName => runtimeType.toString();
+
+  @override
+  Future<Result<(MyPageWithUrlNavigation<T>, List<String>), ()>> parseFromSegments(
+    List<String> urlSegements,
+  ) async {
+    return Ok((this, urlSegements.skip(1).toList()));
+  }
+
+  bool checkEquality(MyPageWithUrlNavigation<Object> other) => runtimeType == other.runtimeType;
+}
+
+abstract class MyScreenPage<T extends Object> extends MyPageWithUrlNavigation<T> {
   final _MyScreenPageLimitedImpl<T> _impl;
   MyScreenPage({required Widget Function(PageCloser<T>) builder})
     : _impl = _MyScreenPageLimitedImpl(builder: builder, closer: PageCloser(PageKey()));
@@ -53,7 +81,7 @@ abstract class MyScreenPage<T> extends MyPage<T> {
 }
 
 /// Creating page using URL is not supported
-abstract class MyScreenPageLimited<T> extends MyPage<T> {
+abstract class MyScreenPageLimited<T extends Object> extends MyPageWithUrlNavigation<T> {
   final _MyScreenPageLimitedImpl<T> _impl;
   MyScreenPageLimited({required Widget Function(PageCloser<T>) builder})
     : _impl = _MyScreenPageLimitedImpl(builder: builder, closer: PageCloser(PageKey()));

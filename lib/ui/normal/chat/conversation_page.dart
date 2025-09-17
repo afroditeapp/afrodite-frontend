@@ -6,6 +6,8 @@ import 'package:app/ui/normal/chat/message_row.dart';
 import 'package:app/ui/normal/report/report.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/profile_thumbnail_image_or_error.dart';
+import 'package:app/utils/list.dart';
+import 'package:app/utils/result.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
@@ -31,6 +33,28 @@ void openConversationScreen(BuildContext context, AccountId accountId, ProfileEn
   context.read<NavigatorStateBloc>().push(ConversationPage(accountId, profile));
 }
 
+class ConversationPageUrlParser extends UrlParser<ConversationPage> {
+  final RepositoryInstances r;
+  ConversationPageUrlParser(this.r);
+
+  @override
+  Future<Result<(ConversationPage, List<String>), ()>> parseFromSegments(
+    List<String> urlSegements,
+  ) async {
+    final accountIdString = urlSegements.getAtOrNull(1);
+    if (accountIdString == null) {
+      return Err(());
+    }
+    final accountId = AccountId(aid: accountIdString);
+
+    final profile = await r.accountDb
+        .accountData((db) => db.profile.getProfileEntry(accountId))
+        .ok();
+
+    return Ok((ConversationPage(accountId, profile), urlSegements.skip(2).toList()));
+  }
+}
+
 class ConversationPage extends MyScreenPage<()> {
   final AccountId accountId;
   ConversationPage(this.accountId, ProfileEntry? profile)
@@ -46,6 +70,13 @@ class ConversationPage extends MyScreenPage<()> {
           );
         },
       );
+
+  @override
+  String get urlPath => "/$urlName/${accountId.aid}";
+
+  @override
+  bool checkEquality(MyPageWithUrlNavigation<Object> other) =>
+      other is ConversationPage && other.accountId == accountId;
 }
 
 class ConversationScreen extends StatefulWidget {

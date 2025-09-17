@@ -1,3 +1,4 @@
+import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/logic/account/client_features_config.dart';
 import 'package:app/model/freezed/logic/account/client_features_config.dart';
 import 'package:app/ui/normal/settings/profile/edit_profile_text.dart';
@@ -5,6 +6,7 @@ import 'package:app/ui_utils/attribute/attribute.dart';
 import 'package:app/ui_utils/consts/icons.dart';
 import 'package:app/ui_utils/padding.dart';
 import 'package:app/utils/list.dart';
+import 'package:app/utils/result.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -34,6 +36,24 @@ import 'package:app/ui_utils/icon_button.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/age.dart';
 import 'package:app/utils/profile_entry.dart';
+
+class EditProfilePageUrlParser extends UrlParser<EditProfilePage> {
+  final RepositoryInstances r;
+  EditProfilePageUrlParser(this.r);
+
+  @override
+  Future<Result<(EditProfilePage, List<String>), ()>> parseFromSegments(
+    List<String> urlSegements,
+  ) async {
+    final myProfile = await r.accountDb
+        .accountStreamSingle((db) => db.myProfile.getProfileEntryForMyProfile())
+        .ok();
+    if (myProfile == null) {
+      return Err(());
+    }
+    return Ok((EditProfilePage(myProfile), urlSegements.skip(1).toList()));
+  }
+}
 
 class EditProfilePage extends MyScreenPage<()> {
   EditProfilePage(MyProfileEntry initialProfile)

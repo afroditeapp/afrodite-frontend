@@ -17,8 +17,7 @@ import 'package:app/logic/sign_in_with.dart';
 import 'package:app/model/freezed/logic/main/bottom_navigation_state.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui/splash_screen.dart';
-import 'package:app/utils/result.dart';
-import 'package:flutter/foundation.dart';
+import 'package:app/ui/utils/url_navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:app/logic/account/account.dart';
@@ -172,7 +171,7 @@ abstract class LoggedInRootScreen extends StatelessWidget {
           BlocProvider(create: (_) => NavigatorStateBloc(navigatorInitialState)),
           BlocProvider(create: (_) => BottomNavigationStateBloc(bottomNavigationInitialState)),
         ],
-        child: blocProvider(AppNavigatorAndUpdateNavigationBlocs()),
+        child: blocProvider(AppNavigatorAndUpdateNavigationBlocs(r: r)),
       ),
     );
   }
@@ -329,7 +328,8 @@ class NavigatorNormal extends LoggedInRootScreen {
 }
 
 class AppNavigatorAndUpdateNavigationBlocs extends StatelessWidget {
-  const AppNavigatorAndUpdateNavigationBlocs({super.key});
+  final RepositoryInstances? r;
+  const AppNavigatorAndUpdateNavigationBlocs({this.r, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -338,13 +338,14 @@ class AppNavigatorAndUpdateNavigationBlocs extends StatelessWidget {
     final bottomNavigatorStateBloc = context.read<BottomNavigationStateBloc>();
     BottomNavigationStateBlocInstance.getInstance().setLatestBloc(bottomNavigatorStateBloc);
 
-    return AppNavigator(bloc: navigatorStateBloc);
+    return AppNavigator(navigatorStateBloc: navigatorStateBloc, r: r);
   }
 }
 
 class AppNavigator extends StatefulWidget {
-  final NavigatorStateBloc bloc;
-  const AppNavigator({required this.bloc, super.key});
+  final NavigatorStateBloc navigatorStateBloc;
+  final RepositoryInstances? r;
+  const AppNavigator({required this.navigatorStateBloc, this.r, super.key});
 
   @override
   State<AppNavigator> createState() => _AppNavigatorState();
@@ -352,15 +353,18 @@ class AppNavigator extends StatefulWidget {
 
 class _AppNavigatorState extends State<AppNavigator> {
   late final MyRouterDelegate routerDelegate;
+  late final MyRouteInformationParser routeInfoParser;
   late final PlatformRouteInformationProvider routeInfoProvider;
 
   @override
   void initState() {
     super.initState();
-    routerDelegate = MyRouterDelegate(widget.bloc);
-    final parser = MyRouteInformationParser();
+    routerDelegate = MyRouterDelegate(widget.navigatorStateBloc);
+    routeInfoParser = MyRouteInformationParser(widget.r);
     routeInfoProvider = PlatformRouteInformationProvider(
-      initialRouteInformation: parser.restoreRouteInformation(Ok(widget.bloc.state.pages.length))!,
+      initialRouteInformation: routeInfoParser.restoreRouteInformation(
+        UrlNavigationState.convert(widget.navigatorStateBloc.state),
+      )!,
     );
   }
 
@@ -368,31 +372,31 @@ class _AppNavigatorState extends State<AppNavigator> {
   Widget build(BuildContext context) {
     return Router(
       routerDelegate: routerDelegate,
-      routeInformationParser: MyRouteInformationParser(),
+      routeInformationParser: routeInfoParser,
       routeInformationProvider: routeInfoProvider,
       backButtonDispatcher: RootBackButtonDispatcher(),
     );
   }
 }
 
-class MyRouterDelegate extends RouterDelegate<Result<int, Uri>>
-    with PopNavigatorRouterDelegateMixin<Result<int, Uri>> {
+class MyRouterDelegate extends RouterDelegate<UrlNavigationState>
+    with PopNavigatorRouterDelegateMixin<UrlNavigationState> {
   final NavigatorStateBloc bloc;
   MyRouterDelegate(this.bloc);
 
   final GlobalKey<NavigatorState> key = GlobalKey<NavigatorState>();
-  final Map<VoidCallback, StreamSubscription<NavigatorStateData>> subscriptions = {};
+  final Map<VoidCallback, StreamSubscription<NavigatorStateData>> navigatorStateSubscriptions = {};
 
   @override
   void addListener(VoidCallback listener) {
-    if (subscriptions[listener] == null) {
-      subscriptions[listener] = bloc.stream.listen((event) => listener());
+    if (navigatorStateSubscriptions[listener] == null) {
+      navigatorStateSubscriptions[listener] = bloc.stream.listen((event) => listener());
     }
   }
 
   @override
   void removeListener(VoidCallback listener) {
-    final subscription = subscriptions.remove(listener);
+    final subscription = navigatorStateSubscriptions.remove(listener);
     subscription?.cancel();
   }
 
@@ -411,45 +415,14 @@ class MyRouterDelegate extends RouterDelegate<Result<int, Uri>>
   GlobalKey<NavigatorState>? get navigatorKey => key;
 
   @override
-  Result<int, Uri>? get currentConfiguration {
-    final pages = NavigationStateBlocInstance.getInstance().navigationState.pages;
-    return Ok(pages.length);
+  UrlNavigationState? get currentConfiguration {
+    return UrlNavigationState.convert(bloc.state);
   }
 
   @override
-  Future<void> setNewRoutePath(Result<int, Uri> configuration) {
-    if (configuration case Ok()) {
-      final event = PopUntilLenghtIs(configuration.v);
-      bloc.add(event);
-      return event.waitCompletionAndDispose();
-    }
-    return SynchronousFuture(null);
-  }
-}
-
-class MyRouteInformationParser extends RouteInformationParser<Result<int, Uri>> {
-  @override
-  Future<Result<int, Uri>> parseRouteInformation(RouteInformation routeInformation) {
-    final path = routeInformation.uri.path == "/" ? "1" : routeInformation.uri.path;
-    final number = int.tryParse(path);
-    if (number == null) {
-      return SynchronousFuture(Err(routeInformation.uri));
-    } else {
-      return SynchronousFuture(Ok(number));
-    }
-  }
-
-  @override
-  RouteInformation? restoreRouteInformation(Result<int, Uri> configuration) {
-    switch (configuration) {
-      case Ok():
-        if (configuration.value == 1) {
-          return RouteInformation(uri: Uri.parse("/"));
-        } else {
-          return RouteInformation(uri: Uri.parse(configuration.v.toString()));
-        }
-      case Err():
-        return RouteInformation(uri: configuration.e);
-    }
+  Future<void> setNewRoutePath(UrlNavigationState configuration) {
+    final event = UpdateUrlNavigation(configuration);
+    bloc.add(event);
+    return event.waitCompletionAndDispose();
   }
 }
