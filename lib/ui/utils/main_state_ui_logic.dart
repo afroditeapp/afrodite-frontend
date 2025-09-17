@@ -62,7 +62,7 @@ class MainStateUiLogic extends StatelessWidget {
     return BlocBuilder<MainStateBloc, MainState>(
       builder: (context, state) {
         return switch (state) {
-          MsSplashScreen() => NavigatorSplashScreen(),
+          MsSplashScreen() => SplashScreen(),
           MsLoginRequired() => NavigatorLoginScreen(),
           MsDemoAccount() => NavigatorDemoAccount(),
           MsLoggedInBasicScreen() => switch (state.screen) {
@@ -100,18 +100,6 @@ abstract class BasicRootScreen extends StatelessWidget {
       ],
       child: blocProvider(AppNavigatorAndUpdateNavigationBlocs()),
     );
-  }
-}
-
-class NavigatorSplashScreen extends BasicRootScreen {
-  const NavigatorSplashScreen({super.key});
-
-  @override
-  MyScreenPage<Object> rootScreen() => SplashPage();
-
-  @override
-  Widget blocProvider(Widget child) {
-    return child;
   }
 }
 
