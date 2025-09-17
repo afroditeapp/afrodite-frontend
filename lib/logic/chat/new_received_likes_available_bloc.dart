@@ -103,6 +103,7 @@ class NewReceivedLikesAvailableBloc
       if (!state.showRefreshButton) {
         add(_ResetBadgeCount());
       }
+      await NotificationLikeReceived.getInstance().hideReceivedLikesNotification(dbBackground);
     }, transformer: sequential());
     on<_ResetBadgeCount>((data, emit) async {
       if (state.newReceivedLikesCount != 0) {

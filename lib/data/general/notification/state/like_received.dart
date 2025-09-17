@@ -33,7 +33,9 @@ class NotificationLikeReceived extends AppSingletonNoInit {
     }
   }
 
-  Future<void> resetReceivedLikesCount(AccountBackgroundDatabaseManager accountBackgroundDb) async {
+  Future<void> hideReceivedLikesNotification(
+    AccountBackgroundDatabaseManager accountBackgroundDb,
+  ) async {
     _receivedCount = 0;
     await _updateNotification(accountBackgroundDb);
   }

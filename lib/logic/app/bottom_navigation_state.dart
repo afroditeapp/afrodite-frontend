@@ -1,6 +1,4 @@
 import "package:flutter_bloc/flutter_bloc.dart";
-import "package:app/data/general/notification/state/like_received.dart";
-import "package:app/data/login_repository.dart";
 import "package:app/model/freezed/logic/main/bottom_navigation_state.dart";
 import "package:rxdart/rxdart.dart";
 import 'package:utils/utils.dart';
@@ -29,12 +27,6 @@ class BottomNavigationStateBloc
     extends Bloc<BottomNavigationStateEvent, BottomNavigationStateData> {
   BottomNavigationStateBloc(super.initialState) {
     on<ChangeScreen>((data, emit) {
-      final accountBackgroundDb =
-          LoginRepository.getInstance().repositoriesOrNull?.accountBackgroundDb;
-      if (data.value == BottomNavigationScreenId.likes && accountBackgroundDb != null) {
-        NotificationLikeReceived.getInstance().resetReceivedLikesCount(accountBackgroundDb);
-      }
-
       final bool? resetIsTappedAgainValue = data.value != state.screen ? false : null;
 
       if (data.resetIsScrolledValues) {
