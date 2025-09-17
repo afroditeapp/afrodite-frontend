@@ -90,9 +90,10 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
               ).then((value) {
                 if (value == true) {
                   widget.notificationSettingsBloc.add(SaveSettings());
+                  // updateStateHandler closes NotificationSettingsScreen
                 } else if (value == false && context.mounted) {
+                  widget.closer.close(context, ());
                   widget.notificationSettingsBloc.add(ResetEditedValues());
-                  MyNavigator.pop(context);
                 }
               });
             },

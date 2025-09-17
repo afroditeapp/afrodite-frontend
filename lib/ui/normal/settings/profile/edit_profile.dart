@@ -247,8 +247,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     }
                     if (value == true) {
                       validateAndSaveData(context);
+                      // updateStateHandler closes EditProfileScreen
                     } else if (value == false) {
-                      MyNavigator.pop(context);
+                      widget.closer.close(context, ());
                     }
                   });
                 },

@@ -482,39 +482,44 @@ class AddPicture extends StatelessWidget {
 
   void openInitialSetupActionDialog(BuildContext context, int nextSlotIndex) {
     final securitySelfie = context.read<InitialSetupBloc>().state.securitySelfie;
-    final Widget lastOption;
     if (securitySelfie != null) {
-      final iconSize = IconTheme.of(context).size ?? 24.0;
-      lastOption = ListTile(
-        leading: SizedBox(
-          width: iconSize,
-          height: iconSize,
-          child: FittedBox(
-            child: accountImgWidget(
-              context,
-              securitySelfie.accountId,
-              securitySelfie.contentId,
-              cacheSize: ImageCacheSize.constantSquare(context, iconSize),
+      Widget securitySelfieOptionBuilder(BuildContext context, PageCloser<()> closer) {
+        final iconSize = IconTheme.of(context).size ?? 24.0;
+        return ListTile(
+          leading: SizedBox(
+            width: iconSize,
+            height: iconSize,
+            child: FittedBox(
+              child: accountImgWidget(
+                context,
+                securitySelfie.accountId,
+                securitySelfie.contentId,
+                cacheSize: ImageCacheSize.constantSquare(context, iconSize),
+              ),
             ),
           ),
-        ),
-        title: Text(
-          context
-              .strings
-              .initial_setup_screen_profile_pictures_select_picture_security_selfie_title,
-        ),
-        onTap: () {
-          context.read<ProfilePicturesBloc>().add(
-            AddProcessedImage(InitialSetupSecuritySelfie(), imgIndex),
-          );
-          MyNavigator.pop(context, null);
-        },
+          title: Text(
+            context
+                .strings
+                .initial_setup_screen_profile_pictures_select_picture_security_selfie_title,
+          ),
+          onTap: () {
+            context.read<ProfilePicturesBloc>().add(
+              AddProcessedImage(InitialSetupSecuritySelfie(), imgIndex),
+            );
+            closer.close(context, ());
+          },
+        );
+      }
+
+      openSelectPictureDialog(
+        context,
+        lastOptionBuilder: securitySelfieOptionBuilder,
+        serverSlotIndex: nextSlotIndex,
       );
     } else {
-      lastOption = const SizedBox.shrink();
+      openSelectPictureDialog(context, serverSlotIndex: nextSlotIndex);
     }
-
-    openSelectPictureDialog(context, lastOption: lastOption, serverSlotIndex: nextSlotIndex);
   }
 
   void openActionDialog(BuildContext context) async {
@@ -533,9 +538,11 @@ class SelectPictureDialog extends MyDialogPage<()> {
   SelectPictureDialog({required super.builder});
 }
 
+Widget _emptyLastOption(BuildContext context, PageCloser<()> closer) => SizedBox.shrink();
+
 void openSelectPictureDialog(
   BuildContext context, {
-  Widget lastOption = const SizedBox.shrink(),
+  Widget Function(BuildContext, PageCloser<()>) lastOptionBuilder = _emptyLastOption,
   required int serverSlotIndex,
 }) {
   Widget builder(BuildContext context, PageCloser<()> closer) {
@@ -606,7 +613,7 @@ void openSelectPictureDialog(
               }
             },
           ),
-        lastOption,
+        lastOptionBuilder(context, closer),
       ],
     );
   }

@@ -105,8 +105,9 @@ class _SearchSettingsScreenState extends State<SearchSettingsScreen> {
               ).then((value) {
                 if (value == true && context.mounted) {
                   validateAndSaveData(context);
+                  // updateStateHandler closes SearchSettingsScreen
                 } else if (value == false && context.mounted) {
-                  MyNavigator.pop(context);
+                  widget.closer.close(context, ());
                   widget.searchSettingsBloc.add(ResetEditedValues());
                 }
               });

@@ -12,11 +12,6 @@ import "package:rxdart/rxdart.dart";
 
 abstract class NavigatorStateEvent {}
 
-class PopPage extends NavigatorStateEvent {
-  final Object? pageReturnValue;
-  PopPage(this.pageReturnValue);
-}
-
 class RemovePage extends NavigatorStateEvent {
   final PageKey pageKey;
   final Object? pageReturnValue;
@@ -55,14 +50,6 @@ class NavigatorStateBloc extends Bloc<NavigatorStateEvent, NavigatorStateData> {
   NavigatorStateBloc(super.initialState) {
     on<PushPage>((data, emit) {
       emit(state.copyWith(pages: UnmodifiableList([...state.pages, data.newPage])));
-    });
-    on<PopPage>((data, emit) {
-      final newPages = state.pages.toList();
-      if (state.pages.length > 1) {
-        final removed = newPages.removeLast();
-        removed.completer.complete(data.pageReturnValue);
-      }
-      emit(state.copyWith(pages: UnmodifiableList(newPages)));
     });
     on<RemovePage>((data, emit) {
       final newPages = <MyPage<Object>>[];
@@ -161,12 +148,6 @@ class NavigatorStateBloc extends Bloc<NavigatorStateEvent, NavigatorStateData> {
     return await completer.future;
   }
 
-  /// Pops the top page from the navigator stack if possible.
-  @optionalTypeArgs
-  void pop<T>([T? popValue]) {
-    add(PopPage(popValue));
-  }
-
   /// Remove page with specific key from the navigator stack if possible.
   @optionalTypeArgs
   void removePage<T>(PageKey pageKey, [T? pageReturnValue]) {
@@ -244,12 +225,6 @@ class MyNavigator {
     MyScreenPageLimited<T> page,
   ) async {
     return await context.read<NavigatorStateBloc>().pushLimited(page);
-  }
-
-  /// Pops the top page from the navigator stack if possible.
-  @optionalTypeArgs
-  static void pop<T>(BuildContext context, [T? popValue]) {
-    context.read<NavigatorStateBloc>().pop(popValue);
   }
 
   /// Remove page with specific key from the navigator stack if possible.
