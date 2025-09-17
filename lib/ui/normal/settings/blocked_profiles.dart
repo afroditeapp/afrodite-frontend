@@ -18,8 +18,12 @@ import 'package:app/ui_utils/consts/padding.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/list.dart';
 
-class BlockedProfilesPage extends MyScreenPage<()> {
-  BlockedProfilesPage(RepositoryInstances r) : super(builder: (_) => BlockedProfilesScreen(r));
+class BlockedProfilesPage extends MyScreenPage<()> with SimpleUrlParser<BlockedProfilesPage> {
+  final RepositoryInstances r;
+  BlockedProfilesPage(this.r) : super(builder: (_) => BlockedProfilesScreen(r));
+
+  @override
+  BlockedProfilesPage create() => BlockedProfilesPage(r);
 }
 
 class BlockedProfilesScreen extends StatefulWidget {

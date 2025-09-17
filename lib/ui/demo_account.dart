@@ -9,8 +9,11 @@ import "package:app/ui_utils/app_bar/common_actions.dart";
 import "package:app/ui_utils/app_bar/menu_actions.dart";
 import 'package:app/localizations.dart';
 
-class DemoAccountPage extends MyScreenPage<()> {
+class DemoAccountPage extends MyScreenPage<()> with SimpleUrlParser<DemoAccountPage> {
   DemoAccountPage() : super(builder: (_) => DemoAccountScreen());
+
+  @override
+  DemoAccountPage create() => DemoAccountPage();
 }
 
 class DemoAccountScreen extends StatelessWidget {

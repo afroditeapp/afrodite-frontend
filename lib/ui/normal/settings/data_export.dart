@@ -14,9 +14,13 @@ void openDataExportScreenMyData(BuildContext context) {
   MyNavigator.push(context, DataExportPageMyData(context.read<RepositoryInstances>()));
 }
 
-class DataExportPageMyData extends MyScreenPage<()> {
-  DataExportPageMyData(RepositoryInstances r)
+class DataExportPageMyData extends MyScreenPage<()> with SimpleUrlParser<DataExportPageMyData> {
+  final RepositoryInstances r;
+  DataExportPageMyData(this.r)
     : super(builder: (_) => DataExportScreen(account: r.accountId, allowAdminDataExport: false));
+
+  @override
+  DataExportPageMyData create() => DataExportPageMyData(r);
 }
 
 class DataExportPageAdmin extends MyScreenPageLimited<()> {

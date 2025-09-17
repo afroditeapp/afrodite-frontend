@@ -13,8 +13,11 @@ Future<void> openSelectMatchView(BuildContext context) {
   return MyNavigator.push(context, SelectMatchPage());
 }
 
-class SelectMatchPage extends MyScreenPage<()> {
+class SelectMatchPage extends MyScreenPage<()> with SimpleUrlParser<SelectMatchPage> {
   SelectMatchPage() : super(builder: (_) => SelectMatchScreen());
+
+  @override
+  SelectMatchPage create() => SelectMatchPage();
 }
 
 class SelectMatchScreen extends StatelessWidget {

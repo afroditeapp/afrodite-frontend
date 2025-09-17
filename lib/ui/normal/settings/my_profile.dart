@@ -37,8 +37,11 @@ Future<void> openMyProfileScreen(BuildContext context) async {
   }
 }
 
-class MyProfilePage extends MyScreenPage<()> {
+class MyProfilePage extends MyScreenPage<()> with SimpleUrlParser<MyProfilePage> {
   MyProfilePage() : super(builder: (_) => MyProfileScreen());
+
+  @override
+  MyProfilePage create() => MyProfilePage();
 }
 
 class MyProfileScreen extends StatelessWidget {

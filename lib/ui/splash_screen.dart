@@ -5,8 +5,11 @@ import "package:flutter/material.dart";
 import "package:app/assets.dart";
 import "package:app/main.dart";
 
-class SplashPage extends MyScreenPage<()> {
+class SplashPage extends MyScreenPage<()> with SimpleUrlParser<SplashPage> {
   SplashPage() : super(builder: (_) => SplashScreen());
+
+  @override
+  SplashPage create() => SplashPage();
 }
 
 class SplashScreen extends StatefulWidget {

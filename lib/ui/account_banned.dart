@@ -13,8 +13,12 @@ import "package:flutter/material.dart";
 import "package:app/localizations.dart";
 import "package:openapi/api.dart";
 
-class AccountBannedPage extends MyScreenPage<()> {
-  AccountBannedPage(RepositoryInstances r) : super(builder: (_) => AccountBannedScreen(r));
+class AccountBannedPage extends MyScreenPage<()> with SimpleUrlParser<AccountBannedPage> {
+  final RepositoryInstances r;
+  AccountBannedPage(this.r) : super(builder: (_) => AccountBannedScreen(r));
+
+  @override
+  AccountBannedPage create() => AccountBannedPage(r);
 }
 
 class AccountBannedScreen extends StatefulWidget {

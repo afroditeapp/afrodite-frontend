@@ -16,8 +16,11 @@ import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/model/freezed/logic/account/account.dart';
 import 'package:app/ui/normal/settings.dart';
 
-class AdminSettingsPage extends MyScreenPageLimited<()> {
+class AdminSettingsPage extends MyScreenPage<()> with SimpleUrlParser<AdminSettingsPage> {
   AdminSettingsPage() : super(builder: (_) => AdminSettingsScreen());
+
+  @override
+  AdminSettingsPage create() => AdminSettingsPage();
 }
 
 class AdminSettingsScreen extends StatelessWidget {

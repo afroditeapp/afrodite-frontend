@@ -36,8 +36,11 @@ import "package:app/ui/normal/settings/my_profile.dart";
 import "package:app/ui/utils/notification_payload_handler.dart";
 import "package:app/ui_utils/profile_thumbnail_image.dart";
 
-class NormalStatePage extends MyScreenPage<()> {
+class NormalStatePage extends MyScreenPage<()> with SimpleUrlParser<NormalStatePage> {
   NormalStatePage() : super(builder: (_) => NormalStateScreen());
+
+  @override
+  NormalStatePage create() => NormalStatePage();
 }
 
 /// Main screen

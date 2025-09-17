@@ -27,8 +27,11 @@ void openContentManagementScreen(BuildContext context) {
   MyNavigator.push(context, ContentManagementPage());
 }
 
-class ContentManagementPage extends MyScreenPage<()> {
+class ContentManagementPage extends MyScreenPage<()> with SimpleUrlParser<ContentManagementPage> {
   ContentManagementPage() : super(builder: (_) => ContentManagementScreenOpener());
+
+  @override
+  ContentManagementPage create() => ContentManagementPage();
 }
 
 class ContentManagementScreenOpener extends StatelessWidget {

@@ -20,8 +20,11 @@ import 'package:app/ui_utils/snack_bar.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:utils/utils.dart';
 
-class LocationPage extends MyScreenPage<()> {
+class LocationPage extends MyScreenPage<()> with SimpleUrlParser<LocationPage> {
   LocationPage() : super(builder: (_) => LocationScreen());
+
+  @override
+  LocationPage create() => LocationPage();
 }
 
 class LocationScreen extends StatelessWidget {

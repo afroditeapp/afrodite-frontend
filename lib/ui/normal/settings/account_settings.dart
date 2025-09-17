@@ -13,8 +13,11 @@ void openAccountSettings(BuildContext context) {
   MyNavigator.push(context, AccountSettingsPage());
 }
 
-class AccountSettingsPage extends MyScreenPage<()> {
+class AccountSettingsPage extends MyScreenPage<()> with SimpleUrlParser<AccountSettingsPage> {
   AccountSettingsPage() : super(builder: (_) => AccountSettingsScreenOpener());
+
+  @override
+  AccountSettingsPage create() => AccountSettingsPage();
 }
 
 class AccountSettingsScreenOpener extends StatelessWidget {

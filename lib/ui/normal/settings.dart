@@ -29,8 +29,11 @@ void openSettingsScreen(BuildContext context) {
   MyNavigator.push(context, SettingsPage());
 }
 
-class SettingsPage extends MyScreenPage<()> {
+class SettingsPage extends MyScreenPage<()> with SimpleUrlParser<SettingsPage> {
   SettingsPage() : super(builder: (_) => SettingsScreenOpener());
+
+  @override
+  SettingsPage create() => SettingsPage();
 }
 
 class SettingsScreenOpener extends StatelessWidget {

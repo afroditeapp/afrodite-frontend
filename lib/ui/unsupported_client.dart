@@ -5,8 +5,11 @@ import "package:app/ui_utils/app_bar/menu_actions.dart";
 import "package:app/ui_utils/list.dart";
 import "package:flutter/material.dart";
 
-class UnsupportedClientPage extends MyScreenPage<()> {
+class UnsupportedClientPage extends MyScreenPage<()> with SimpleUrlParser<UnsupportedClientPage> {
   UnsupportedClientPage() : super(builder: (_) => UnsupportedClientScreen());
+
+  @override
+  UnsupportedClientPage create() => UnsupportedClientPage();
 }
 
 class UnsupportedClientScreen extends StatelessWidget {

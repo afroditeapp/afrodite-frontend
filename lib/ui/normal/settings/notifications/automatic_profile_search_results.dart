@@ -15,9 +15,13 @@ Future<void> openAutomaticProfileSearchResultsScreen(BuildContext context) {
   return MyNavigator.push(context, AutomaticProfileSearchResultsPage());
 }
 
-class AutomaticProfileSearchResultsPage extends MyScreenPage<()> {
+class AutomaticProfileSearchResultsPage extends MyScreenPage<()>
+    with SimpleUrlParser<AutomaticProfileSearchResultsPage> {
   AutomaticProfileSearchResultsPage()
     : super(builder: (_) => AutomaticProfileSearchResultsScreen());
+
+  @override
+  AutomaticProfileSearchResultsPage create() => AutomaticProfileSearchResultsPage();
 }
 
 class AutomaticProfileSearchResultsScreen extends StatefulWidget {

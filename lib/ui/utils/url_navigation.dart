@@ -56,7 +56,7 @@ class UrlNavigationState {
 }
 
 class MyRouteInformationParser extends RouteInformationParser<UrlNavigationState> {
-  final Map<String, UrlParser<MyPageWithUrlNavigation<Object>>> _pageNames = {};
+  final Map<String, UrlParser<MyScreenPage<Object>>> _pageNames = {};
   MyRouteInformationParser(RepositoryInstances? r) {
     for (final p in loggedOutPages()) {
       _pageNames[p.urlName] = p;
@@ -100,14 +100,14 @@ class MyRouteInformationParser extends RouteInformationParser<UrlNavigationState
   }
 }
 
-List<UrlParser<MyPageWithUrlNavigation<Object>>> loggedOutPages() => [
+List<UrlParser<MyScreenPage<Object>>> loggedOutPages() => [
   // Root
   SplashPage(),
   LoginPage(),
   DemoAccountPage(),
 ];
 
-List<UrlParser<MyPageWithUrlNavigation<Object>>> loggedInPages(RepositoryInstances r) => [
+List<UrlParser<MyScreenPage<Object>>> loggedInPages(RepositoryInstances r) => [
   // Root
   InitialSetupPage(),
   AccountBannedPage(r),

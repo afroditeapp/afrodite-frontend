@@ -19,9 +19,13 @@ import 'package:app/model/freezed/logic/media/content.dart';
 import 'package:app/ui_utils/image.dart';
 import 'package:app/ui_utils/view_image_screen.dart';
 
-class CurrentSecuritySelfiePage extends MyScreenPage<()> {
+class CurrentSecuritySelfiePage extends MyScreenPage<()>
+    with SimpleUrlParser<CurrentSecuritySelfiePage> {
   CurrentSecuritySelfiePage()
     : super(builder: (closer) => CurrentSecuritySelfieScreen(closer: closer));
+
+  @override
+  CurrentSecuritySelfiePage create() => CurrentSecuritySelfiePage();
 }
 
 class CurrentSecuritySelfieScreen extends StatefulWidget {

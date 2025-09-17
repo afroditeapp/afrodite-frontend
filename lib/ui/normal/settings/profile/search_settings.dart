@@ -20,8 +20,11 @@ import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/age.dart';
 import 'package:app/utils/api.dart';
 
-class SearchSettingsPage extends MyScreenPage<()> {
+class SearchSettingsPage extends MyScreenPage<()> with SimpleUrlParser<SearchSettingsPage> {
   SearchSettingsPage() : super(builder: (closer) => SearchSettingsScreenOpener(closer: closer));
+
+  @override
+  SearchSettingsPage create() => SearchSettingsPage();
 }
 
 class SearchSettingsScreenOpener extends StatelessWidget {

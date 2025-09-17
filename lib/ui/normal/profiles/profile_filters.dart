@@ -35,8 +35,11 @@ void openProfileFilters(BuildContext context) {
   MyNavigator.push(context, ProfileFiltersPage());
 }
 
-class ProfileFiltersPage extends MyScreenPage<()> {
+class ProfileFiltersPage extends MyScreenPage<()> with SimpleUrlParser<ProfileFiltersPage> {
   ProfileFiltersPage() : super(builder: (closer) => ProfileFiltersScreenOpener(closer: closer));
+
+  @override
+  ProfileFiltersPage create() => ProfileFiltersPage();
 }
 
 class ProfileFiltersScreenOpener extends StatelessWidget {

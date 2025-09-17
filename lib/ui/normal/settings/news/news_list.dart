@@ -27,8 +27,11 @@ Future<void> openNewsList(BuildContext context) {
   return MyNavigator.push(context, NewsListPage());
 }
 
-class NewsListPage extends MyScreenPage<()> {
+class NewsListPage extends MyScreenPage<()> with SimpleUrlParser<NewsListPage> {
   NewsListPage() : super(builder: (_) => NewsListScreenOpener());
+
+  @override
+  NewsListPage create() => NewsListPage();
 }
 
 class NewsListScreenOpener extends StatefulWidget {

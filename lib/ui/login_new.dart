@@ -27,8 +27,11 @@ import "package:sign_in_with_apple/sign_in_with_apple.dart";
 import 'package:app/localizations.dart';
 import "package:url_launcher/url_launcher_string.dart";
 
-class LoginPage extends MyScreenPage<()> {
+class LoginPage extends MyScreenPage<()> with SimpleUrlParser<LoginPage> {
   LoginPage() : super(builder: (_) => LoginScreen());
+
+  @override
+  LoginPage create() => LoginPage();
 }
 
 class LoginScreen extends StatelessWidget {

@@ -180,7 +180,7 @@ class _MenuViewState extends State<MenuView> {
         Setting.createSetting(
           Icons.admin_panel_settings,
           context.strings.admin_settings_title,
-          () => MyNavigator.pushLimited(context, AdminSettingsPage()),
+          () => MyNavigator.push(context, AdminSettingsPage()),
         ),
       );
     }
@@ -190,7 +190,7 @@ class _MenuViewState extends State<MenuView> {
         Setting.createSetting(
           Icons.bug_report_rounded,
           "Debug",
-          () => MyNavigator.pushLimited(context, DebugSettingsPage(r)),
+          () => MyNavigator.push(context, DebugSettingsPage(r)),
         ),
       );
     }

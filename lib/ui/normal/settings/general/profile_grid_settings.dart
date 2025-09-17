@@ -24,8 +24,12 @@ Future<void> openProfileGridSettingsScreen(BuildContext context) {
   return MyNavigator.push(context, ProfileGridSettingsPage());
 }
 
-class ProfileGridSettingsPage extends MyScreenPage<()> {
+class ProfileGridSettingsPage extends MyScreenPage<()>
+    with SimpleUrlParser<ProfileGridSettingsPage> {
   ProfileGridSettingsPage() : super(builder: (_) => ProfileGridSettingsScreenOpener());
+
+  @override
+  ProfileGridSettingsPage create() => ProfileGridSettingsPage();
 }
 
 class ProfileGridSettingsScreenOpener extends StatelessWidget {

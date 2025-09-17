@@ -34,7 +34,7 @@ class NavigatorStateData with _$NavigatorStateData {
   }
 }
 
-abstract class UrlParser<T extends MyPageWithUrlNavigation<Object>> {
+abstract class UrlParser<T extends MyScreenPage<Object>> {
   String get urlName {
     final Type p = T;
     return p.toString();
@@ -43,26 +43,26 @@ abstract class UrlParser<T extends MyPageWithUrlNavigation<Object>> {
   Future<Result<(T, List<String>), ()>> parseFromSegments(List<String> urlSegements);
 }
 
+mixin SimpleUrlParser<T extends MyScreenPage<Object>> implements UrlParser<T> {
+  T create();
+
+  @override
+  Future<Result<(T, List<String>), ()>> parseFromSegments(List<String> urlSegements) async {
+    return Ok((create(), urlSegements.skip(1).toList()));
+  }
+}
+
 abstract class MyPage<T> {
   PageKey get key;
   Page<T> get page;
   Completer<T?> get completer;
 }
 
-abstract class MyPageWithUrlNavigation<T extends Object> extends MyPage<T>
-    implements UrlParser<MyPageWithUrlNavigation<T>> {
-  /// This must start with '/' character
-  String get urlPath => "/$urlName";
-
-  @override
+abstract class MyPageWithUrlNavigation<T extends Object> extends MyPage<T> {
   String get urlName => runtimeType.toString();
 
-  @override
-  Future<Result<(MyPageWithUrlNavigation<T>, List<String>), ()>> parseFromSegments(
-    List<String> urlSegements,
-  ) async {
-    return Ok((this, urlSegements.skip(1).toList()));
-  }
+  /// This must start with '/' character
+  String get urlPath => "/$urlName";
 
   bool checkEquality(MyPageWithUrlNavigation<Object> other) => runtimeType == other.runtimeType;
 }

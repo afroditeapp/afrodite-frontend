@@ -53,7 +53,7 @@ enum HourGroup {
   }
 }
 
-class StatisticsPage extends MyScreenPage<()> {
+class StatisticsPage extends MyScreenPage<()> with SimpleUrlParser<StatisticsPage> {
   StatisticsPage()
     : super(
         builder: (_) {
@@ -64,6 +64,9 @@ class StatisticsPage extends MyScreenPage<()> {
           );
         },
       );
+
+  @override
+  StatisticsPage create() => StatisticsPage();
 }
 
 class StatisticsScreen extends StatefulWidget {

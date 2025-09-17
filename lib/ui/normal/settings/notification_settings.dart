@@ -22,9 +22,13 @@ void openNotificationSettings(BuildContext context) {
   MyNavigator.push(context, NotificationSettingsPage());
 }
 
-class NotificationSettingsPage extends MyScreenPage<()> {
+class NotificationSettingsPage extends MyScreenPage<()>
+    with SimpleUrlParser<NotificationSettingsPage> {
   NotificationSettingsPage()
     : super(builder: (closer) => NotificationSettingsScreenOpener(closer: closer));
+
+  @override
+  NotificationSettingsPage create() => NotificationSettingsPage();
 }
 
 class NotificationSettingsScreenOpener extends StatelessWidget {

@@ -14,8 +14,12 @@ import "package:app/utils/time.dart";
 import "package:flutter/material.dart";
 import "package:openapi/api.dart";
 
-class PendingDeletionPage extends MyScreenPage<()> {
-  PendingDeletionPage(RepositoryInstances r) : super(builder: (_) => PendingDeletionScreen(r));
+class PendingDeletionPage extends MyScreenPage<()> with SimpleUrlParser<PendingDeletionPage> {
+  final RepositoryInstances r;
+  PendingDeletionPage(this.r) : super(builder: (_) => PendingDeletionScreen(r));
+
+  @override
+  PendingDeletionPage create() => PendingDeletionPage(r);
 }
 
 class PendingDeletionScreen extends StatefulWidget {

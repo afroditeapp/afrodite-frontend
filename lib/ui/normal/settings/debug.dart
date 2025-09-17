@@ -16,8 +16,12 @@ import 'package:app/ui/normal/chat/debug_page.dart';
 import 'package:app/ui/normal/settings.dart';
 import 'package:app/utils/result.dart';
 
-class DebugSettingsPage extends MyScreenPageLimited<()> {
-  DebugSettingsPage(RepositoryInstances r) : super(builder: (_) => DebugSettingsScreen(r));
+class DebugSettingsPage extends MyScreenPage<()> with SimpleUrlParser<DebugSettingsPage> {
+  final RepositoryInstances r;
+  DebugSettingsPage(this.r) : super(builder: (_) => DebugSettingsScreen(r));
+
+  @override
+  DebugSettingsPage create() => DebugSettingsPage(r);
 }
 
 class DebugSettingsScreen extends StatefulWidget {
