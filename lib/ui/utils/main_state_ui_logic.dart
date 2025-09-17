@@ -18,6 +18,7 @@ import 'package:app/model/freezed/logic/main/bottom_navigation_state.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui/splash_screen.dart';
 import 'package:app/ui/utils/url_navigation.dart';
+import 'package:app/ui/utils/web_navigation/web_navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:app/logic/account/account.dart';
@@ -349,11 +350,11 @@ class _AppNavigatorState extends State<AppNavigator> {
     super.initState();
     routerDelegate = MyRouterDelegate(widget.navigatorStateBloc);
     routeInfoParser = MyRouteInformationParser(widget.r);
-    routeInfoProvider = PlatformRouteInformationProvider(
-      initialRouteInformation: routeInfoParser.restoreRouteInformation(
-        UrlNavigationState.convert(widget.navigatorStateBloc.state),
-      )!,
-    );
+    final info = routeInfoParser.restoreRouteInformation(
+      UrlNavigationState.convert(widget.navigatorStateBloc.state),
+    )!;
+    replaceInitialWebBrowserUrl(info);
+    routeInfoProvider = PlatformRouteInformationProvider(initialRouteInformation: info);
   }
 
   @override
