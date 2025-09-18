@@ -85,54 +85,60 @@ class NavigatorStateBloc extends Bloc<NavigatorStateEvent, NavigatorStateData> {
       emit(state.copyWith(pages: UnmodifiableList(newPages)));
     });
     on<UpdateUrlNavigation>((data, emit) {
-      if (data.urlNavigation.list.isEmpty) {
-        return;
+      final newPages = _updateUrlNavigation(data.urlNavigation);
+      if (newPages != null) {
+        emit(state.copyWith(pages: newPages));
       }
-
-      final urlPagesExceptFirst = data.urlNavigation.list.skip(1).iterator;
-
-      final newPages = <MyPage<Object>>[];
-      for (final (i, p) in state.pages.indexed) {
-        if (i == 0) {
-          if (data.urlNavigation.list.first.runtimeType == p.runtimeType) {
-            newPages.add(p);
-          } else {
-            data.completed.add(true);
-            return;
-          }
-          continue;
-        }
-
-        if (p is! MyPageWithUrlNavigation<Object>) {
-          p.completer.complete(null);
-          continue;
-        }
-
-        final wantedPage = urlPagesExceptFirst.next();
-        if (wantedPage == null) {
-          p.completer.complete(null);
-          continue;
-        }
-
-        if (p.checkEquality(wantedPage)) {
-          newPages.add(p);
-        } else {
-          p.completer.complete(null);
-          newPages.add(wantedPage);
-        }
-      }
-
-      while (true) {
-        final wantedPage = urlPagesExceptFirst.next();
-        if (wantedPage == null) {
-          break;
-        }
-        newPages.add(wantedPage);
-      }
-
-      emit(state.copyWith(pages: UnmodifiableList(newPages)));
       data.completed.add(true);
     });
+  }
+
+  UnmodifiableList<MyPage<Object>>? _updateUrlNavigation(UrlNavigationState urlNavigation) {
+    if (urlNavigation.list.isEmpty) {
+      return null;
+    }
+
+    final urlPagesExceptFirst = urlNavigation.list.skip(1).iterator;
+
+    final newPages = <MyPage<Object>>[];
+    for (final (i, p) in state.pages.indexed) {
+      if (i == 0) {
+        if (urlNavigation.list.first.runtimeType == p.runtimeType) {
+          newPages.add(p);
+        } else {
+          return null;
+        }
+        continue;
+      }
+
+      if (p is! MyPageWithUrlNavigation<Object>) {
+        p.completer.complete(null);
+        continue;
+      }
+
+      final wantedPage = urlPagesExceptFirst.next();
+      if (wantedPage == null) {
+        p.completer.complete(null);
+        continue;
+      }
+
+      if (p.checkEquality(wantedPage)) {
+        newPages.add(p);
+      } else {
+        p.completer.complete(null);
+        newPages.add(wantedPage);
+      }
+    }
+
+    while (true) {
+      final wantedPage = urlPagesExceptFirst.next();
+      if (wantedPage == null) {
+        break;
+      }
+      newPages.add(wantedPage);
+    }
+
+    return UnmodifiableList(newPages);
   }
 
   /// Push new page to the navigator stack and wait for it to be popped.
