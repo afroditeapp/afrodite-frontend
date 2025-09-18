@@ -30,8 +30,9 @@ class _AppLifecycleHandlerState extends State<AppLifecycleHandler> {
         // There seems to not be any reliable way to close resources
         // properly so close the process. Without this on Android, system
         // back button navigation away from the app and closes second main
-        // isolate but database isolates are not closed. (Most likely
-        // only one main isolate should exist but that is an another issue.)
+        // isolate but database isolates are not closed.
+        // (FirebaseMessaging.onBackgroundMessage creates the another main
+        // isolate.)
         exit(0);
       },
     );

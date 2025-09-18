@@ -53,6 +53,8 @@ class PushNotificationManager extends AppSingleton {
     }
     _initDone = true;
 
+    // NOTE: Creates another main isolate which prevents Drift
+    //       isolates from closing properly.
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
     _newFcmTokenReceived
