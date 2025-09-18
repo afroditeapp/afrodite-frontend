@@ -40,14 +40,8 @@ class BackgroundDatabaseManager extends AppSingleton {
     // in: https://github.com/simolus3/drift/discussions/2596
     driftRuntimeOptions.dontWarnAboutMultipleDatabases = true;
 
-    commonDbProvider = DbProvider(
-      CommonBackgroundDbFile(),
-      doSqlchipherInit: true,
-      backgroundDb: true,
-    );
+    commonDbProvider = DbProvider(CommonBackgroundDbFile(), backgroundDb: true);
     commonDatabase = CommonBackgroundDatabase(commonDbProvider);
-    // Database must be opened during this method as other databases
-    // require that SQLCipher is initialized (if current platform uses it).
     final ensureOpenResult = await commonDbProvider.getQueryExcecutor().ensureOpen(commonDatabase);
     _log.info("CommonBackgroundDatabase ensureOpen result: $ensureOpenResult");
     // Test query
@@ -118,11 +112,7 @@ class BackgroundDatabaseManager extends AppSingleton {
     AccountId accountId,
   ) async {
     _log.info("AccountBackgroundDatabase init started");
-    final dbProvider = DbProvider(
-      AccountBackgroundDbFile(accountId.aid),
-      doSqlchipherInit: false,
-      backgroundDb: true,
-    );
+    final dbProvider = DbProvider(AccountBackgroundDbFile(accountId.aid), backgroundDb: true);
     final db = AccountBackgroundDatabase(dbProvider);
     final ensureOpenResult = await dbProvider.getQueryExcecutor().ensureOpen(db);
     _log.info("AccountBackgroundDatabase ensureOpen result: $ensureOpenResult");
