@@ -24,7 +24,7 @@ class NativeUtilsBindings {
     ffi.Pointer<T> Function<T extends ffi.NativeType>(String symbolName) lookup,
   ) : _lookup = lookup;
 
-  /// Replace plaintext with chiphertext and nonce.
+  /// Replace plaintext with ciphertext and nonce.
   ///
   /// Data buffer needs to have 28 bytes empty space at the end.
   ///
@@ -58,7 +58,7 @@ class NativeUtilsBindings {
         isLeaf: true,
       );
 
-  /// Replace chiphertext and nonce with plaintext data.
+  /// Replace ciphertext and nonce with plaintext data.
   ///
   /// The plaintext data is 28 bytes shorter than the data buffer size.
   ///

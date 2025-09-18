@@ -21,7 +21,7 @@ pub enum ContentEncryptionError {
 const NONCE_SIZE_IN_BYTES: usize = 12;
 const AUTHENTICATION_TAG_SIZE_IN_BYTES: usize = 16;
 
-/// Replace plaintext with chiphertext and nonce.
+/// Replace plaintext with ciphertext and nonce.
 ///
 /// The buffer needs to have 28 bytes empty space at the end.
 ///
@@ -51,7 +51,7 @@ fn encrypt_content_with_nonce_provider(
     let mut buf = SliceBuffer::buffer_with_empty_space(working_area, AUTHENTICATION_TAG_SIZE_IN_BYTES)
         .map_err(|_| ContentEncryptionError::BufferInitFailed)?;
 
-    let mut chipher = Aes128Gcm::new_from_slice(key)
+    let mut cipher = Aes128Gcm::new_from_slice(key)
         .map_err(|_| ContentEncryptionError::InvalidKeyBufferSize)?;
 
     let nonce = nonce_provider();
@@ -59,14 +59,14 @@ fn encrypt_content_with_nonce_provider(
         return Err(ContentEncryptionError::UnexpectedNonceSize);
     }
 
-    chipher.encrypt_in_place(&nonce, &[], &mut buf)
+    cipher.encrypt_in_place(&nonce, &[], &mut buf)
         .map_err(|_| ContentEncryptionError::EncryptionError)?;
     nonce_area.copy_from_slice(nonce.as_ref());
 
     Ok(())
 }
 
-/// Replace chiphertext and nonce with plaintext data.
+/// Replace ciphertext and nonce with plaintext data.
 ///
 /// The plaintext data is 28 bytes shorter than the buffer size.
 pub fn decrypt_content(data: &mut [u8], key: &[u8]) -> Result<(), ContentEncryptionError> {
@@ -75,18 +75,18 @@ pub fn decrypt_content(data: &mut [u8], key: &[u8]) -> Result<(), ContentEncrypt
         return Err(ContentEncryptionError::EmptyPlaintextData);
     }
 
-    let (chiphertext, nonce) = data.split_at_mut(data.len() - NONCE_SIZE_IN_BYTES);
+    let (ciphertext, nonce) = data.split_at_mut(data.len() - NONCE_SIZE_IN_BYTES);
 
     let nonce: [u8; NONCE_SIZE_IN_BYTES] = nonce.try_into()
         .map_err(|_| ContentEncryptionError::UnexpectedNonceSize)?;
     let nonce = GenericArray::from(nonce);
 
-    let mut buf = SliceBuffer::buffer_with_empty_space(chiphertext, 0)
+    let mut buf = SliceBuffer::buffer_with_empty_space(ciphertext, 0)
         .map_err(|_| ContentEncryptionError::BufferInitFailed)?;
 
-    let mut chipher = Aes128Gcm::new_from_slice(key)
+    let mut cipher = Aes128Gcm::new_from_slice(key)
         .map_err(|_| ContentEncryptionError::InvalidKeyBufferSize)?;
-    chipher.decrypt_in_place(&nonce, &[], &mut buf)
+    cipher.decrypt_in_place(&nonce, &[], &mut buf)
         .map_err(|_| ContentEncryptionError::DecryptionError)?;
 
     Ok(())

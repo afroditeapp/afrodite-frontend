@@ -242,6 +242,6 @@ SPEC CHECKSUMS:
   sqlcipher_flutter_libs: 8aa5c729f2afb3bf5993d6deeec04ddbbd2ba3d5
   url_launcher_ios: 5334b05cef931de560670eeae103fd3e431ac3fe
 
-PODFILE CHECKSUM: fa8a1d62904bd2ffcd6dbbf03f98847bde8e146e
+PODFILE CHECKSUM: 60eddf3c5411640979fb3599c1480ea116a7112b
 
 COCOAPODS: 1.16.2

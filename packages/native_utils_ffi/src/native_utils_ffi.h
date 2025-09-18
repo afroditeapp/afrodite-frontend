@@ -8,7 +8,7 @@
 
 // Content encryption API
 
-// Replace plaintext with chiphertext and nonce.
+// Replace plaintext with ciphertext and nonce.
 //
 // Data buffer needs to have 28 bytes empty space at the end.
 //
@@ -24,7 +24,7 @@ FFI_PLUGIN_EXPORT intptr_t encrypt_content(
   intptr_t key_len
 );
 
-// Replace chiphertext and nonce with plaintext data.
+// Replace ciphertext and nonce with plaintext data.
 //
 // The plaintext data is 28 bytes shorter than the data buffer size.
 //
