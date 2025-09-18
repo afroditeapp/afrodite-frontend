@@ -23,7 +23,7 @@ class BackgroundDatabaseManager extends AppSingleton {
   }
 
   bool initDone = false;
-  late final DbProvider commonLazyDatabase;
+  late final DbProvider commonDbProvider;
   late final CommonBackgroundDatabase commonDatabase;
 
   @override
@@ -33,19 +33,27 @@ class BackgroundDatabaseManager extends AppSingleton {
     }
     initDone = true;
 
+    _log.info("Init started");
+
     // DatabaseManager handles one instance per database file, so disable
     // warning. This should be safe to do as told by
     // in: https://github.com/simolus3/drift/discussions/2596
     driftRuntimeOptions.dontWarnAboutMultipleDatabases = true;
 
-    commonLazyDatabase = DbProvider(
+    commonDbProvider = DbProvider(
       CommonBackgroundDbFile(),
       doSqlchipherInit: true,
       backgroundDb: true,
     );
-    commonDatabase = CommonBackgroundDatabase(commonLazyDatabase);
-    // Make sure that the database libraries are initialized
+    commonDatabase = CommonBackgroundDatabase(commonDbProvider);
+    // Database must be opened during this method as other databases
+    // require that SQLCipher is initialized (if current platform uses it).
+    final ensureOpenResult = await commonDbProvider.getQueryExcecutor().ensureOpen(commonDatabase);
+    _log.info("CommonBackgroundDatabase ensureOpen result: $ensureOpenResult");
+    // Test query
     await commonStream((db) => db.loginSession.watchAccountId()).first;
+
+    _log.info("Init completed");
   }
 
   // Common database
@@ -109,17 +117,19 @@ class BackgroundDatabaseManager extends AppSingleton {
   Future<AccountBackgroundDatabaseManager> getAccountBackgroundDatabaseManager(
     AccountId accountId,
   ) async {
+    _log.info("AccountBackgroundDatabase init started");
     final dbProvider = DbProvider(
       AccountBackgroundDbFile(accountId.aid),
       doSqlchipherInit: false,
       backgroundDb: true,
     );
-    final newDb = AccountBackgroundDatabaseManager(
-      accountId,
-      AccountBackgroundDatabase(dbProvider),
-    );
-    await newDb.accountAction((db) => db.loginSession.setAccountIdIfNull(accountId));
-    return newDb;
+    final db = AccountBackgroundDatabase(dbProvider);
+    final ensureOpenResult = await dbProvider.getQueryExcecutor().ensureOpen(db);
+    _log.info("AccountBackgroundDatabase ensureOpen result: $ensureOpenResult");
+    final manager = AccountBackgroundDatabaseManager(accountId, db);
+    await manager.accountAction((db) => db.loginSession.setAccountIdIfNull(accountId));
+    _log.info("AccountBackgroundDatabase init completed");
+    return manager;
   }
 }
 

@@ -26,7 +26,7 @@ class DatabaseManager extends AppSingleton {
   final backgroundDbManager = BackgroundDatabaseManager.getInstance();
 
   bool initDone = false;
-  late final DbProvider commonLazyDatabase;
+  late final DbProvider commonDatabaseProvider;
   late final CommonForegroundDatabase commonDatabase;
 
   @override
@@ -36,12 +36,26 @@ class DatabaseManager extends AppSingleton {
     }
     initDone = true;
 
+    _log.info("Init started");
+
     // Background DB init has doSqlchipherInit: true and other init
     // related things.
     await backgroundDbManager.init();
 
-    commonLazyDatabase = DbProvider(CommonDbFile(), doSqlchipherInit: false, backgroundDb: false);
-    commonDatabase = CommonForegroundDatabase(commonLazyDatabase);
+    commonDatabaseProvider = DbProvider(
+      CommonDbFile(),
+      doSqlchipherInit: false,
+      backgroundDb: false,
+    );
+    commonDatabase = CommonForegroundDatabase(commonDatabaseProvider);
+    final ensureOpenResult = await commonDatabaseProvider.getQueryExcecutor().ensureOpen(
+      commonDatabase,
+    );
+    _log.info("CommonForegroundDatabase ensureOpen result: $ensureOpenResult");
+    // Test query
+    await commonStream((db) => db.app.watchNotificationPermissionAsked()).first;
+
+    _log.info("Init completed");
   }
 
   // Common database
@@ -105,14 +119,19 @@ class DatabaseManager extends AppSingleton {
   // Access current account database
 
   Future<AccountDatabaseManager> getAccountDatabaseManager(AccountId accountId) async {
+    _log.info("AccountForegroundDatabase init");
     final dbProvider = DbProvider(
       AccountDbFile(accountId.aid),
       doSqlchipherInit: false,
       backgroundDb: false,
     );
-    final newDb = AccountDatabaseManager(AccountForegroundDatabase(dbProvider));
-    await newDb.accountAction((db) => db.loginSession.setAccountIdIfNull(accountId));
-    return newDb;
+    final db = AccountForegroundDatabase(dbProvider);
+    final ensureOpenResult = await dbProvider.getQueryExcecutor().ensureOpen(db);
+    _log.info("AccountForegroundDatabase ensureOpen result: $ensureOpenResult");
+    final manager = AccountDatabaseManager(db);
+    await manager.accountAction((db) => db.loginSession.setAccountIdIfNull(accountId));
+    _log.info("AccountForegroundDatabase init completed");
+    return manager;
   }
 }
 
