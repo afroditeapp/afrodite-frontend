@@ -18,8 +18,9 @@ Widget bytesImgWidget(
     width: width,
     height: height,
     alignment: alignment,
+    // Don't specify cacheWidth so that image aspect ratio
+    // doesn't change (at least on web).
     cacheHeight: cacheSize.height,
-    cacheWidth: cacheSize.width,
   );
 }
 
