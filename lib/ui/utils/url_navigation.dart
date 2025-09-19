@@ -3,6 +3,15 @@ import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui/account_banned.dart';
 import 'package:app/ui/demo_account.dart';
 import 'package:app/ui/initial_setup.dart';
+import 'package:app/ui/initial_setup/age_confirmation.dart';
+import 'package:app/ui/initial_setup/email.dart';
+import 'package:app/ui/initial_setup/gender.dart';
+import 'package:app/ui/initial_setup/location.dart';
+import 'package:app/ui/initial_setup/profile_attributes.dart';
+import 'package:app/ui/initial_setup/profile_basic_info.dart';
+import 'package:app/ui/initial_setup/profile_pictures.dart';
+import 'package:app/ui/initial_setup/search_settings.dart';
+import 'package:app/ui/initial_setup/security_selfie.dart';
 import 'package:app/ui/login_new.dart';
 import 'package:app/ui/normal.dart';
 import 'package:app/ui/normal/chat/conversation_page.dart';
@@ -114,6 +123,17 @@ List<UrlParser<MyScreenPage<Object>>> loggedInPages(RepositoryInstances r) => [
   PendingDeletionPage(r),
   UnsupportedClientPage(),
   NormalStatePage(),
+
+  // Initial setup
+  AskEmailPage(),
+  AgeConfirmationPage(),
+  AskSecuritySelfiePage(),
+  AskProfilePicturesPage(),
+  AskProfileBasicInfoPage(),
+  AskGenderPage(),
+  AskSearchSettingsPage(),
+  AskLocationPage(),
+  AskProfileAttributesPageUrlParser(),
 
   // Profile
   ProfileFiltersPage(),

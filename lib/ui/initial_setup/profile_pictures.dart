@@ -30,8 +30,11 @@ import 'package:image/image.dart' as img;
 
 final _log = Logger("ProfilePictures");
 
-class AskProfilePicturesPage extends MyScreenPage<()> {
+class AskProfilePicturesPage extends MyScreenPage<()> with SimpleUrlParser<AskProfilePicturesPage> {
   AskProfilePicturesPage() : super(builder: (_) => AskProfilePicturesScreen());
+
+  @override
+  AskProfilePicturesPage create() => AskProfilePicturesPage();
 }
 
 class AskProfilePicturesScreen extends StatelessWidget {

@@ -9,8 +9,11 @@ import "package:app/model/freezed/logic/account/account.dart";
 import "package:app/ui/initial_setup/age_confirmation.dart";
 import "package:app/ui_utils/initial_setup_common.dart";
 
-class AskEmailPage extends MyScreenPage<()> {
+class AskEmailPage extends MyScreenPage<()> with SimpleUrlParser<AskEmailPage> {
   AskEmailPage() : super(builder: (_) => AskEmailScreen());
+
+  @override
+  AskEmailPage create() => AskEmailPage();
 }
 
 class AskEmailScreen extends StatelessWidget {

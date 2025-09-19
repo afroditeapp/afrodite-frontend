@@ -11,8 +11,11 @@ import "package:app/ui/normal/settings/location.dart";
 import "package:app/ui_utils/dialog.dart";
 import "package:app/ui_utils/initial_setup_common.dart";
 
-class AskLocationPage extends MyScreenPage<()> {
+class AskLocationPage extends MyScreenPage<()> with SimpleUrlParser<AskLocationPage> {
   AskLocationPage() : super(builder: (_) => AskLocationScreen());
+
+  @override
+  AskLocationPage create() => AskLocationPage();
 }
 
 class AskLocationScreen extends StatelessWidget {
@@ -35,14 +38,7 @@ class AskLocationScreen extends StatelessWidget {
               if (nextAttribute == null) {
                 context.read<InitialSetupBloc>().add(CompleteInitialSetup());
               } else {
-                MyNavigator.push(
-                  context,
-                  AskProfileAttributesPage(
-                    attributeIndex: 0,
-                    currentAttribute: nextAttribute,
-                    attributes: attributes,
-                  ),
-                );
+                MyNavigator.push(context, AskProfileAttributesPage(attributeIndex: 0));
               }
             };
           } else {

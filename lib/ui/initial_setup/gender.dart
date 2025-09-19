@@ -8,8 +8,11 @@ import "package:app/model/freezed/logic/account/initial_setup.dart";
 import "package:app/ui/initial_setup/search_settings.dart";
 import "package:app/ui_utils/initial_setup_common.dart";
 
-class AskGenderPage extends MyScreenPage<()> {
+class AskGenderPage extends MyScreenPage<()> with SimpleUrlParser<AskGenderPage> {
   AskGenderPage() : super(builder: (_) => AskGenderScreen());
+
+  @override
+  AskGenderPage create() => AskGenderPage();
 }
 
 class AskGenderScreen extends StatelessWidget {

@@ -1,47 +1,68 @@
 import "package:app/logic/app/navigator_state.dart";
+import "package:app/logic/profile/attributes.dart";
 import "package:app/model/freezed/logic/main/navigator_state.dart";
 import "package:app/ui_utils/attribute/attribute.dart";
 import "package:app/ui_utils/attribute/state.dart";
 import "package:app/ui_utils/attribute/widgets/select_value.dart";
 import "package:app/ui_utils/consts/padding.dart";
 import "package:app/utils/list.dart";
+import "package:app/utils/result.dart";
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:app/localizations.dart";
 import "package:app/logic/account/initial_setup.dart";
 import "package:app/ui_utils/initial_setup_common.dart";
 
+class AskProfileAttributesPageUrlParser extends UrlParser<AskProfileAttributesPage> {
+  @override
+  Future<Result<(AskProfileAttributesPage, List<String>), ()>> parseFromSegments(
+    List<String> urlSegements,
+  ) async {
+    final attributeIndexString = urlSegements.getAtOrNull(1);
+    if (attributeIndexString == null) {
+      return Err(());
+    }
+    final attributeIndex = int.tryParse(attributeIndexString);
+    if (attributeIndex == null) {
+      return Err(());
+    }
+    return Ok((
+      AskProfileAttributesPage(attributeIndex: attributeIndex),
+      urlSegements.skip(2).toList(),
+    ));
+  }
+}
+
 class AskProfileAttributesPage extends MyScreenPage<()> {
-  AskProfileAttributesPage({
-    required int attributeIndex,
-    required UiAttribute currentAttribute,
-    required List<UiAttribute> attributes,
-  }) : super(
-         builder: (_) => AskProfileAttributesScreen(
-           attributeIndex: attributeIndex,
-           currentAttribute: currentAttribute,
-           attributes: attributes,
-         ),
-       );
+  final int attributeIndex;
+  AskProfileAttributesPage({required this.attributeIndex})
+    : super(builder: (_) => AskProfileAttributesScreen(attributeIndex: attributeIndex));
+
+  @override
+  String get urlPath => "/$urlName/$attributeIndex";
+
+  @override
+  bool checkEquality(MyPageWithUrlNavigation<Object> other) =>
+      other is AskProfileAttributesPage && other.attributeIndex == attributeIndex;
 }
 
 class AskProfileAttributesScreen extends StatelessWidget {
   final int attributeIndex;
-  final UiAttribute currentAttribute;
-  final List<UiAttribute> attributes;
-  const AskProfileAttributesScreen({
-    required this.attributeIndex,
-    required this.currentAttribute,
-    required this.attributes,
-    super.key,
-  });
+  const AskProfileAttributesScreen({required this.attributeIndex, super.key});
 
   @override
   Widget build(BuildContext context) {
+    final attributes =
+        context.read<ProfileAttributesBloc>().state.manager?.requiredAttributes() ?? [];
+    final currentAttribute = attributes.getAtOrNull(attributeIndex);
     return commonInitialSetupScreenContent(
       context: context,
       child: QuestionAsker(
         getContinueButtonCallback: (context, state) {
+          if (currentAttribute == null) {
+            return null;
+          }
+
           if (state.profileAttributes.answerForRequiredAttributeExists(
             currentAttribute.apiAttribute().id,
           )) {
@@ -53,11 +74,7 @@ class AskProfileAttributesScreen extends StatelessWidget {
               } else {
                 MyNavigator.push(
                   context,
-                  AskProfileAttributesPage(
-                    attributeIndex: nextAttributeIndex,
-                    currentAttribute: nextAttribute,
-                    attributes: attributes,
-                  ),
+                  AskProfileAttributesPage(attributeIndex: nextAttributeIndex),
                 );
               }
             };
@@ -65,7 +82,9 @@ class AskProfileAttributesScreen extends StatelessWidget {
             return null;
           }
         },
-        question: AskProfileAttributes(currentAttribute: currentAttribute),
+        question: currentAttribute == null
+            ? Center(child: Text(context.strings.generic_error))
+            : AskProfileAttributes(currentAttribute: currentAttribute),
         expandQuestion: true,
       ),
     );

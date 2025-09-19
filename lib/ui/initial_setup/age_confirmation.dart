@@ -8,8 +8,11 @@ import "package:app/model/freezed/logic/account/initial_setup.dart";
 import "package:app/ui/initial_setup/security_selfie.dart";
 import "package:app/ui_utils/initial_setup_common.dart";
 
-class AgeConfirmationPage extends MyScreenPage<()> {
+class AgeConfirmationPage extends MyScreenPage<()> with SimpleUrlParser<AgeConfirmationPage> {
   AgeConfirmationPage() : super(builder: (_) => AgeConfirmationScreen());
+
+  @override
+  AgeConfirmationPage create() => AgeConfirmationPage();
 }
 
 class AgeConfirmationScreen extends StatelessWidget {

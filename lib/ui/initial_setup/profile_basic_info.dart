@@ -14,8 +14,12 @@ import "package:app/ui_utils/text_field.dart";
 import "package:app/utils/age.dart";
 import "package:intl/intl.dart";
 
-class AskProfileBasicInfoPage extends MyScreenPage<()> {
+class AskProfileBasicInfoPage extends MyScreenPage<()>
+    with SimpleUrlParser<AskProfileBasicInfoPage> {
   AskProfileBasicInfoPage() : super(builder: (_) => AskProfileBasicInfoScreen());
+
+  @override
+  AskProfileBasicInfoPage create() => AskProfileBasicInfoPage();
 }
 
 class AskProfileBasicInfoScreen extends StatelessWidget {

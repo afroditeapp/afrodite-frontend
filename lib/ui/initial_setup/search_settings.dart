@@ -13,8 +13,11 @@ import "package:app/ui_utils/dropdown_menu.dart";
 import "package:app/ui_utils/initial_setup_common.dart";
 import "package:app/utils/age.dart";
 
-class AskSearchSettingsPage extends MyScreenPage<()> {
+class AskSearchSettingsPage extends MyScreenPage<()> with SimpleUrlParser<AskSearchSettingsPage> {
   AskSearchSettingsPage() : super(builder: (_) => AskSearchSettingsScreen());
+
+  @override
+  AskSearchSettingsPage create() => AskSearchSettingsPage();
 }
 
 class AskSearchSettingsScreen extends StatelessWidget {
