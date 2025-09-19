@@ -302,22 +302,18 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
     return processedImgBytes;
   }
 
-  // TODO(web): Support landscape images when cropping image
-
   Future<Uint8List?> processImage(XFile file) async {
     try {
       final decodedImg = img.decodeJpg(await file.readAsBytes());
       if (decodedImg == null) {
         return null;
       }
-
       logImageSize(decodedImg, "decodedImg");
 
-      // Maybe orientation should be baked? It should turn the image pixels
-      // to portrait.
       final orientationBakedImage = img.bakeOrientation(decodedImg);
       logImageSize(orientationBakedImage, "orientationBakedImage");
-      final croppedImage = await cropToAspectRatio43(orientationBakedImage);
+
+      final croppedImage = cropToAspectRatio43(orientationBakedImage);
       logImageSize(croppedImage, "croppedImage");
 
       final finalImg = img.copyFlip(croppedImage, direction: img.FlipDirection.horizontal);
@@ -341,33 +337,31 @@ void logImageSize(img.Image imgData, String info) {
   _log.fine("$info size: ${imgData.width}x${imgData.height}");
 }
 
-Future<img.Image> cropToAspectRatio43(img.Image imgData) async {
-  final s = Size(imgData.width.toDouble(), imgData.height.toDouble());
-  final factor = cropFactorToAspectRatioAtLeast43(s);
-  final img.Image croppedImage;
-  if (imgData.width > imgData.height) {
-    final newWidth = imgData.width * factor;
+img.Image cropToAspectRatio43(img.Image imgData) {
+  final newHeight = 4 / 3 * imgData.width;
+  if (newHeight > imgData.height) {
+    // Height not large enough - use available height as max value
+    final newWidth = 3 / 4 * imgData.height;
     _log.fine("newWidth: $newWidth");
-    croppedImage = img.copyCrop(
+    final xOffset = (imgData.width.toDouble() - newWidth) / 2.0;
+    return img.copyCrop(
       imgData,
-      x: 0,
+      x: xOffset.toInt(),
       y: 0,
       width: newWidth.toInt(),
       height: imgData.height,
     );
   } else {
-    final newHeight = imgData.height * factor;
     _log.fine("newHeight: $newHeight");
-    croppedImage = img.copyCrop(
+    final yOffset = (imgData.height.toDouble() - newHeight) / 2.0;
+    return img.copyCrop(
       imgData,
       x: 0,
-      y: 0,
+      y: yOffset.toInt(),
       width: imgData.width,
       height: newHeight.toInt(),
     );
   }
-
-  return croppedImage;
 }
 
 class ShutterController {
