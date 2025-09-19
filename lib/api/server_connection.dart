@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:app/data/app_version.dart';
-import 'package:database/database.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart';
 import 'package:http/io_client.dart';
@@ -129,6 +128,8 @@ class ServerConnection {
   ) async {
     final websocketAddress = _addWebSocketRoutePathToAddress(serverAddress);
 
+    final protocols = ["v1", "t${accessToken.token}", clientVersionInfoString()];
+
     final WebSocketWrapper webSocketWrapper;
     if (kIsWeb) {
       if (!websocketAddress.startsWith("http")) {
@@ -137,11 +138,9 @@ class ServerConnection {
       final wsAddress = Uri.parse(websocketAddress.replaceFirst("http", "ws"));
       try {
         webSocketWrapper = WebSocketWrapper(
-          await ws.WebSocket.connect(wsAddress, protocols: ["0", accessToken.token]),
+          await ws.WebSocket.connect(wsAddress, protocols: protocols),
         );
       } catch (e) {
-        // TODO(prod): Change so that it is possible to detect
-        //             ServerConnectionError.invalidToken.
         _log.error("Server connection: WebScocket connecting exception");
         _log.fine(e);
         return const Err(ServerConnectionError.connectionFailure);
@@ -158,7 +157,7 @@ class ServerConnection {
         HttpHeaders.upgradeHeader: "websocket",
         "sec-websocket-version": "13",
         "sec-websocket-key": key,
-        "sec-websocket-protocol": "0,${accessToken.token}",
+        "sec-websocket-protocol": protocols.join(","),
       };
       final request = Request("GET", Uri.parse(websocketAddress));
       request.headers.addAll(headers);
@@ -176,9 +175,7 @@ class ServerConnection {
         return const Err(ServerConnectionError.connectionFailure);
       }
 
-      if (response.statusCode == HttpStatus.unauthorized) {
-        return const Err(ServerConnectionError.invalidToken);
-      } else if (response.statusCode != HttpStatus.switchingProtocols) {
+      if (response.statusCode != HttpStatus.switchingProtocols) {
         return const Err(ServerConnectionError.connectionFailure);
       }
 
@@ -195,14 +192,6 @@ class ServerConnection {
   }
 
   void _handleConnection(AccessToken accessToken, RefreshToken refreshToken) {
-    try {
-      // Client starts the messaging
-      _connection.connection.sendBytes(clientVersionInfoBytes());
-    } catch (_) {
-      _endConnectionToGeneralError();
-      return;
-    }
-
     _connectionSubscription = _connection.connection.events
         .asyncMap((message) async {
           if (message is ws.CloseReceived) {
@@ -223,6 +212,8 @@ class ServerConnection {
                     await _endConnectionToGeneralError(
                       error: ServerConnectionError.unsupportedClientVersion,
                     );
+                  case [3]:
+                    await _endConnectionToGeneralError(error: ServerConnectionError.invalidToken);
                   default:
                     await _endConnectionToGeneralError();
                 }
@@ -309,8 +300,7 @@ class ServerConnection {
   }
 }
 
-Uint8List clientVersionInfoBytes() {
-  const protocolVersion = 1;
+String clientVersionInfoString() {
   final int platform;
   if (kIsWeb) {
     platform = 2;
@@ -321,14 +311,10 @@ Uint8List clientVersionInfoBytes() {
   } else {
     throw UnimplementedError("Platform not supported");
   }
-  final protocolBytes = <int>[protocolVersion, platform];
   final major = AppVersionManager.getInstance().major;
   final minor = AppVersionManager.getInstance().minor;
   final patch = AppVersionManager.getInstance().patch;
-  protocolBytes.addAll(u16ToLittleEndianBytes(major));
-  protocolBytes.addAll(u16ToLittleEndianBytes(minor));
-  protocolBytes.addAll(u16ToLittleEndianBytes(patch));
-  return Uint8List.fromList(protocolBytes);
+  return "c${platform}_${major}_${minor}_$patch";
 }
 
 const forceSync = 255;
