@@ -409,9 +409,21 @@ class MyRouterDelegate extends RouterDelegate<UrlNavigationState>
   }
 
   @override
-  Future<void> setNewRoutePath(UrlNavigationState configuration) {
+  Future<void> setNewRoutePath(UrlNavigationState configuration) async {
+    // Detect pop
+    final current = currentConfiguration;
+    final secondLast = current?.list.reversed.skip(1).firstOrNull;
+    final newLast = configuration.list.lastOrNull;
+    if (secondLast != null && newLast != null && secondLast.checkEquality(newLast)) {
+      // Browser URL might flicker if pop is prevented as
+      // browser pops current URL from browser navigation history
+      // and app adds it back.
+      await navigatorKey?.currentState?.maybePop(null);
+      return;
+    }
+
     final event = UpdateUrlNavigation(configuration);
     bloc.add(event);
-    return event.waitCompletionAndDispose();
+    return await event.waitCompletionAndDispose();
   }
 }
