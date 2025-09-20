@@ -1,3 +1,4 @@
+import "package:app/model/freezed/logic/main/navigator_state.dart";
 import "package:freezed_annotation/freezed_annotation.dart";
 import "package:openapi/api.dart";
 import "package:app/ui_utils/crop_image_screen.dart";
@@ -14,6 +15,7 @@ class ProfilePicturesData with _$ProfilePicturesData {
     @Default(Hidden()) ImgState picture1,
     @Default(Hidden()) ImgState picture2,
     @Default(Hidden()) ImgState picture3,
+    PageKey? pageKey,
   }) = _ProfilePicturesData;
 
   List<ImgState> pictures() {

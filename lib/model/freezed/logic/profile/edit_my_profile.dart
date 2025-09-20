@@ -1,3 +1,4 @@
+import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import "package:freezed_annotation/freezed_annotation.dart";
 import 'package:flutter/foundation.dart';
 import 'package:openapi/api.dart';
@@ -13,6 +14,7 @@ class EditMyProfileData with _$EditMyProfileData {
     String? profileText,
     @Default({}) Map<int, ProfileAttributeValueUpdate> attributeIdAndStateMap,
     @Default(false) bool unlimitedLikes,
+    PageKey? pageKey,
   }) = _EditMyProfileData;
 
   bool profileTextByteLenghtLessOrMaxValue() {

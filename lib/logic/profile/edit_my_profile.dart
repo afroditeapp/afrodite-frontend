@@ -1,4 +1,5 @@
 import "package:app/data/utils/repository_instances.dart";
+import "package:app/model/freezed/logic/main/navigator_state.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:openapi/api.dart";
 import "package:app/data/media_repository.dart";
@@ -38,6 +39,11 @@ class NewUnlimitedLikesValue extends EditMyProfileEvent {
 class NewAttributeValue extends EditMyProfileEvent {
   final ProfileAttributeValueUpdate value;
   NewAttributeValue(this.value);
+}
+
+class NewPageKeyForEditMyProfile extends EditMyProfileEvent {
+  final PageKey value;
+  NewPageKeyForEditMyProfile(this.value);
 }
 
 class EditMyProfileBloc extends Bloc<EditMyProfileEvent, EditMyProfileData> with ActionRunner {
@@ -88,6 +94,9 @@ class EditMyProfileBloc extends Bloc<EditMyProfileEvent, EditMyProfileData> with
         newAttributes[data.value.id] = data.value;
       }
       emit(state.copyWith(attributeIdAndStateMap: newAttributes));
+    });
+    on<NewPageKeyForEditMyProfile>((data, emit) async {
+      emit(state.copyWith(pageKey: data.value));
     });
   }
 }

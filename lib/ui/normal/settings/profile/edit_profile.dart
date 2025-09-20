@@ -108,6 +108,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
     // Profile data
     widget.editMyProfileBloc.add(SetInitialValues(p));
+    widget.editMyProfileBloc.add(NewPageKeyForEditMyProfile(widget.closer.key));
 
     // Profile pictures
 
@@ -119,6 +120,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     setImgToBloc(p.myContent.getAtOrNull(1), 1);
     setImgToBloc(p.myContent.getAtOrNull(2), 2);
     setImgToBloc(p.myContent.getAtOrNull(3), 3);
+    widget.profilePicturesBloc.add(NewPageKeyForProfilePicturesBloc(widget.closer.key));
   }
 
   void setImgToBloc(MyContent? c, int index) {
@@ -229,7 +231,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         builder: (context, data) {
           return BlocBuilder<ProfilePicturesBloc, ProfilePicturesData>(
             builder: (context, profilePicturesData) {
-              final dataEditingDetected = dataChanged(data, profilePicturesData);
+              // PageKey checks prevent Flutter from hiding
+              // my profile screen's floating action button after
+              // pressing this screen's save changes floating action button
+              // the first time after app launch.
+              final dataEditingDetected =
+                  data.pageKey == widget.closer.key &&
+                  profilePicturesData.pageKey == widget.closer.key &&
+                  dataChanged(data, profilePicturesData);
 
               return PopScope(
                 canPop: !dataEditingDetected,

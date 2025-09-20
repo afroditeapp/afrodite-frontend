@@ -8,6 +8,14 @@ part of 'profile_pictures.dart';
 // **************************************************************************
 
 /// @nodoc
+class _DetectDefaultValueInCopyWith {
+  const _DetectDefaultValueInCopyWith();
+}
+
+/// @nodoc
+const _detectDefaultValueInCopyWith = _DetectDefaultValueInCopyWith();
+
+/// @nodoc
 final _privateConstructorErrorProfilePicturesData = UnsupportedError(
     'Private constructor ProfilePicturesData._() was called. Please call factory constructor instead.');
 
@@ -18,6 +26,7 @@ mixin _$ProfilePicturesData {
   ImgState get picture1 => throw _privateConstructorErrorProfilePicturesData;
   ImgState get picture2 => throw _privateConstructorErrorProfilePicturesData;
   ImgState get picture3 => throw _privateConstructorErrorProfilePicturesData;
+  PageKey? get pageKey => throw _privateConstructorErrorProfilePicturesData;
 
   ProfilePicturesData copyWith({
     PictureSelectionMode? mode,
@@ -25,6 +34,7 @@ mixin _$ProfilePicturesData {
     ImgState? picture1,
     ImgState? picture2,
     ImgState? picture3,
+    PageKey? pageKey,
   }) => throw _privateConstructorErrorProfilePicturesData;
 }
 
@@ -36,6 +46,7 @@ abstract class _ProfilePicturesData extends ProfilePicturesData {
     ImgState picture1,
     ImgState picture2,
     ImgState picture3,
+    PageKey? pageKey,
   }) = _$ProfilePicturesDataImpl;
   const _ProfilePicturesData._() : super._();
 }
@@ -54,6 +65,7 @@ class _$ProfilePicturesDataImpl extends _ProfilePicturesData {
     this.picture1 = _picture1DefaultValue,
     this.picture2 = _picture2DefaultValue,
     this.picture3 = _picture3DefaultValue,
+    this.pageKey,
   }) : super._();
 
   @override
@@ -66,10 +78,12 @@ class _$ProfilePicturesDataImpl extends _ProfilePicturesData {
   final ImgState picture2;
   @override
   final ImgState picture3;
+  @override
+  final PageKey? pageKey;
 
   @override
   String toString() {
-    return 'ProfilePicturesData(mode: $mode, picture0: $picture0, picture1: $picture1, picture2: $picture2, picture3: $picture3)';
+    return 'ProfilePicturesData(mode: $mode, picture0: $picture0, picture1: $picture1, picture2: $picture2, picture3: $picture3, pageKey: $pageKey)';
   }
 
   @override
@@ -86,7 +100,9 @@ class _$ProfilePicturesDataImpl extends _ProfilePicturesData {
         (identical(other.picture2, picture2) ||
           other.picture2 == picture2) &&
         (identical(other.picture3, picture3) ||
-          other.picture3 == picture3)
+          other.picture3 == picture3) &&
+        (identical(other.pageKey, pageKey) ||
+          other.pageKey == pageKey)
     );
   }
 
@@ -98,6 +114,7 @@ class _$ProfilePicturesDataImpl extends _ProfilePicturesData {
     picture1,
     picture2,
     picture3,
+    pageKey,
   );
 
   @override
@@ -107,11 +124,13 @@ class _$ProfilePicturesDataImpl extends _ProfilePicturesData {
     Object? picture1,
     Object? picture2,
     Object? picture3,
+    Object? pageKey = _detectDefaultValueInCopyWith,
   }) => _$ProfilePicturesDataImpl(
     mode: (mode ?? this.mode) as PictureSelectionMode,
     picture0: (picture0 ?? this.picture0) as ImgState,
     picture1: (picture1 ?? this.picture1) as ImgState,
     picture2: (picture2 ?? this.picture2) as ImgState,
     picture3: (picture3 ?? this.picture3) as ImgState,
+    pageKey: (pageKey == _detectDefaultValueInCopyWith ? this.pageKey : pageKey) as PageKey?,
   );
 }

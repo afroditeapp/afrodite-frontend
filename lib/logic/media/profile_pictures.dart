@@ -1,6 +1,7 @@
 import "package:app/api/server_connection_manager.dart";
 import "package:app/data/utils/repository_instances.dart";
 import "package:app/localizations.dart";
+import "package:app/model/freezed/logic/main/navigator_state.dart";
 import "package:app/ui_utils/snack_bar.dart";
 import "package:app/utils/result.dart";
 import "package:collection/collection.dart";
@@ -42,6 +43,11 @@ class MoveImageTo extends ProfilePicturesEvent {
 class ResetProfilePicturesBloc extends ProfilePicturesEvent {}
 
 class RefreshProfilePicturesFaceDetectedValues extends ProfilePicturesEvent {}
+
+class NewPageKeyForProfilePicturesBloc extends ProfilePicturesEvent {
+  final PageKey value;
+  NewPageKeyForProfilePicturesBloc(this.value);
+}
 
 class ProfilePicturesBloc extends Bloc<ProfilePicturesEvent, ProfilePicturesData> {
   final ApiManager api;
@@ -124,6 +130,9 @@ class ProfilePicturesBloc extends Bloc<ProfilePicturesEvent, ProfilePicturesData
       );
 
       showSnackBar(R.strings.generic_action_completed);
+    });
+    on<NewPageKeyForProfilePicturesBloc>((data, emit) async {
+      emit(state.copyWith(pageKey: data.value));
     });
   }
 
