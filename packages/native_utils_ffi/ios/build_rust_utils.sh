@@ -16,10 +16,10 @@ rustup target add aarch64-apple-ios-sim
 rustup target add x86_64-apple-ios
 
 # Build target/aarch64-apple-ios/release/librust_utils.a
-cargo build --release --target aarch64-apple-ios
+cargo rustc --release --crate-type staticlib --target aarch64-apple-ios
 
 # Build target/aarch64-apple-ios-sim/release/librust_utils.a
-cargo build --release --target aarch64-apple-ios-sim
+cargo rustc --release --crate-type staticlib --target aarch64-apple-ios-sim
 
 # Build target/x86_64-apple-ios/release/librust_utils.a
-cargo build --release --target x86_64-apple-ios
+cargo rustc --release --crate-type staticlib --target x86_64-apple-ios
