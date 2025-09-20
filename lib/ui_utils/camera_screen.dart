@@ -4,6 +4,7 @@ import "package:app/config.dart";
 import "package:app/model/freezed/logic/main/navigator_state.dart";
 import "package:app/utils/result.dart";
 import "package:camera/camera.dart";
+import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 import "package:logging/logging.dart";
@@ -12,7 +13,6 @@ import "package:app/ui_utils/dialog.dart";
 import "package:app/ui_utils/snack_bar.dart";
 import 'package:utils/utils.dart';
 import "package:app/utils/camera.dart";
-import "package:app/utils/image.dart";
 
 import 'package:image/image.dart' as img;
 
@@ -167,31 +167,42 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
       return simulateCameraPreview(context);
     }
 
+    final Widget cameraWidget;
+    final double? heightFactor;
+    if (kIsWeb) {
+      // Show the initial camera preview correctly. Device orientation changes
+      // are unsupported and after a one, the preview changes to show an image
+      // area which will not match with the captured image.
+      // TODO(future): Support device orientation changes. Reset camera preview
+      //               when device orientation changes?
+      cameraWidget = AspectRatio(
+        aspectRatio: currentCamera.value.aspectRatio,
+        child: currentCamera.buildPreview(),
+      );
+      heightFactor = _calculateHeightFactor(size.width, size.height);
+    } else {
+      cameraWidget = CameraPreview(currentCamera);
+      // Camera is locked to portrait mode, so using shortestSide as width
+      // and longestSide as height works and would work even if library update
+      // swaps width and height.
+      heightFactor = _calculateHeightFactor(size.shortestSide, size.longestSide);
+    }
+
     return Expanded(
       child: LayoutBuilder(
         builder: (context, constraints) {
           final croppedImg = ClipRect(
             child: Align(
-              alignment: Alignment.topCenter,
-              heightFactor: cropFactorToAspectRatioAtLeast43(size),
-              child: SizedBox(width: constraints.maxWidth, child: CameraPreview(currentCamera)),
+              heightFactor: heightFactor,
+              child: SizedBox(width: constraints.maxWidth, child: cameraWidget),
             ),
           );
 
-          final img = SizedBox(
-            width: constraints.maxWidth,
-            height: constraints.maxHeight,
-            child: FittedBox(
-              alignment: Alignment.topCenter,
-              clipBehavior: Clip.hardEdge,
-              fit: BoxFit.contain,
-              child: croppedImg,
-            ),
-          );
+          final img = Center(child: FittedBox(child: croppedImg));
 
           return Stack(
             children: [
-              emptyCameraPreviewArea(context, constraints.maxWidth, constraints.maxHeight),
+              emptyCameraPreviewArea(context),
               img,
               AnimatedShutter(controller: shutterController),
             ],
@@ -201,23 +212,23 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
     );
   }
 
-  Widget simulateCameraPreview(BuildContext context) {
-    return Expanded(
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          return emptyCameraPreviewArea(context, constraints.maxWidth, constraints.maxHeight);
-        },
-      ),
-    );
+  double? _calculateHeightFactor(double width, double height) {
+    final newHeight = 4 / 3 * width;
+    if (newHeight >= height) {
+      // Use full height
+      return null;
+    } else {
+      // Make preview height match cropped image height
+      return newHeight / height;
+    }
   }
 
-  Widget emptyCameraPreviewArea(BuildContext context, double maxWidth, double maxHeight) {
-    final cropSize = Size(maxWidth, maxHeight);
-    return Container(
-      width: maxWidth,
-      height: maxHeight * cropFactorToAspectRatioAtLeast43(cropSize),
-      color: Colors.black,
-    );
+  Widget simulateCameraPreview(BuildContext context) {
+    return Expanded(child: emptyCameraPreviewArea(context));
+  }
+
+  Widget emptyCameraPreviewArea(BuildContext context) {
+    return Container(color: Colors.black);
   }
 
   Widget controlRow(BuildContext context, CameraController? currentCamera) {

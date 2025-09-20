@@ -210,7 +210,9 @@ class CameraManager extends AppSingleton {
 
   Future<void> setControllerSettingsAfterInit(CameraController controller) async {
     if (kIsWeb) {
-      // Camera settings are not supported on web
+      // lockCaptureOrientation is supported on web but that can't
+      // be used as it changes browser to full screen mode.
+      // Other camera settings are not supported on web.
       _deadlockDebugValue = 5;
       return;
     }
