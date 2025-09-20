@@ -7,7 +7,7 @@ publish = false
 name = "rust_utils"
 path = "src/lib.rs"
 # iOS building overrides this to staticlib.
-crate-type = ["cdylib", "staticlib"]
+crate-type = ["cdylib"]
 
 [profile.dev]
 panic = "abort"

@@ -19,7 +19,10 @@ set(Rust_RUSTUP_INSTALL_MISSING_TARGET TRUE)
 
 FetchContent_MakeAvailable(Corrosion)
 
-corrosion_import_crate(MANIFEST_PATH ../rust_utils/Cargo.toml)
+corrosion_import_crate(
+  MANIFEST_PATH ../rust_utils/Cargo.toml
+  CRATE_TYPES cdylib
+)
 
 add_library(native_utils_ffi SHARED
   "native_utils_ffi.c"
