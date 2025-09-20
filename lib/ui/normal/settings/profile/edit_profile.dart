@@ -375,8 +375,7 @@ class EditAttributes extends StatelessWidget {
       attributeWidgets.add(
         EditAttributeRow(
           a: a,
-          onStartEditor: () =>
-              MyNavigator.showFullScreenDialog(context: context, page: EditProfileAttributePage(a)),
+          onStartEditor: () => MyNavigator.pushLimited(context, EditProfileAttributePage(a)),
         ),
       );
       attributeWidgets.add(const Divider());

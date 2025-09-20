@@ -213,9 +213,9 @@ class _ReportScreenState extends State<ReportScreen> {
       if (acceptedContent.isNotEmpty) {
         settings.add(
           reportListTile(context.strings.report_screen_profile_image_action, () {
-            MyNavigator.showFullScreenDialog(
-              context: context,
-              page: ReportProfileImagePage(profileEntry: profileEntry, isMatch: widget.isMatch),
+            MyNavigator.pushLimited(
+              context,
+              ReportProfileImagePage(profileEntry: profileEntry, isMatch: widget.isMatch),
             );
           }),
         );
@@ -225,9 +225,9 @@ class _ReportScreenState extends State<ReportScreen> {
     if (widget.messages.isNotEmpty) {
       settings.add(
         reportListTile(context.strings.report_screen_chat_message_action, () {
-          MyNavigator.showFullScreenDialog(
-            context: context,
-            page: ReportChatMessagePage(accountId: widget.accountId, messages: widget.messages),
+          MyNavigator.pushLimited(
+            context,
+            ReportChatMessagePage(accountId: widget.accountId, messages: widget.messages),
           );
         }),
       );

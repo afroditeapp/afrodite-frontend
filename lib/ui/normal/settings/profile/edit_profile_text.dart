@@ -10,10 +10,10 @@ import 'package:app/localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 Future<void> openEditProfileText(BuildContext context, EditMyProfileBloc bloc) {
-  return MyNavigator.showFullScreenDialog(context: context, page: EditProfileTextPage(bloc));
+  return MyNavigator.pushLimited(context, EditProfileTextPage(bloc));
 }
 
-class EditProfileTextPage extends MyFullScreenDialogPage<()> {
+class EditProfileTextPage extends MyScreenPageLimited<()> {
   EditProfileTextPage(EditMyProfileBloc bloc)
     : super(builder: (_) => EditProfileTextScreen(bloc: bloc));
 }

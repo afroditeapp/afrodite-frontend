@@ -136,6 +136,7 @@ class _MyDialogPageImpl<T> {
        );
 }
 
+/// Use this page only when task completion navigates back to previous page.
 abstract class MyFullScreenDialogPage<T> extends MyPage<T> {
   final _MyFullScreenDialogPageImpl<T> _impl;
   MyFullScreenDialogPage({required Widget Function(PageCloser<T>) builder})

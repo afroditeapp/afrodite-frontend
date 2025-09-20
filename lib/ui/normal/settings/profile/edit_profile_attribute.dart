@@ -12,7 +12,7 @@ import 'package:app/ui_utils/app_bar/search.dart';
 import 'package:app/ui_utils/consts/padding.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 
-class EditProfileAttributePage extends MyFullScreenDialogPage<()> {
+class EditProfileAttributePage extends MyScreenPageLimited<()> {
   EditProfileAttributePage(AttributeAndState a)
     : super(builder: (_) => EditProfileAttributeScreen(a: a));
 }

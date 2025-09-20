@@ -11,7 +11,7 @@ import 'package:app/localizations.dart';
 import 'package:app/ui/normal/settings/profile/edit_profile_attribute.dart';
 import 'package:app/ui_utils/app_bar/search.dart';
 
-class EditProfileAttributeFilterPage extends MyFullScreenDialogPage<()> {
+class EditProfileAttributeFilterPage extends MyScreenPageLimited<()> {
   EditProfileAttributeFilterPage(AttributeAndFilterState a)
     : super(builder: (_) => EditProfileAttributeFilterScreen(a: a));
 }

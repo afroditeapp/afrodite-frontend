@@ -9,13 +9,13 @@ import 'package:app/ui/normal/settings/news/view_news.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 Future<void> openEditNewsTranslationScreen(BuildContext context, NewsContent c, String locale) {
-  return MyNavigator.showFullScreenDialog(
-    context: context,
-    page: EditNewsTranslationPage(initialContent: c, locale: locale),
+  return MyNavigator.pushLimited(
+    context,
+    EditNewsTranslationPage(initialContent: c, locale: locale),
   );
 }
 
-class EditNewsTranslationPage extends MyFullScreenDialogPage<()> {
+class EditNewsTranslationPage extends MyScreenPageLimited<()> {
   EditNewsTranslationPage({required NewsContent initialContent, required String locale})
     : super(
         builder: (closer) => EditNewsTranslationScreen(

@@ -652,10 +652,7 @@ class EditAttributeFilters extends StatelessWidget {
           a: a,
           isEnabled: isEnabled,
           onStartEditor: () {
-            MyNavigator.showFullScreenDialog(
-              context: context,
-              page: EditProfileAttributeFilterPage(a),
-            );
+            MyNavigator.pushLimited(context, EditProfileAttributeFilterPage(a));
           },
         ),
       );

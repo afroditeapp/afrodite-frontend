@@ -11,7 +11,7 @@ import 'package:app/localizations.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:provider/provider.dart';
 
-class ReportProfileImagePage extends MyFullScreenDialogPage<()> {
+class ReportProfileImagePage extends MyScreenPageLimited<()> {
   ReportProfileImagePage({required ProfileEntry profileEntry, required bool isMatch})
     : super(
         builder: (_) => ReportProfileImageScreen(profileEntry: profileEntry, isMatch: isMatch),

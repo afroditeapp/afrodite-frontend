@@ -402,9 +402,9 @@ Future<void> openEditThumbnail(
   if (!context.mounted) {
     return;
   }
-  await MyNavigator.showFullScreenDialog(
-    context: context,
-    page: CropImagePage(
+  await MyNavigator.pushLimited(
+    context,
+    CropImagePage(
       info: CropImageFileContent(
         img.accountId,
         img.contentId,

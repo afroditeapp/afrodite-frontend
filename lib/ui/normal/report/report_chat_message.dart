@@ -13,7 +13,7 @@ import 'package:database/database.dart';
 import 'package:app/localizations.dart';
 import 'package:app/ui_utils/dialog.dart';
 
-class ReportChatMessagePage extends MyFullScreenDialogPage<()> {
+class ReportChatMessagePage extends MyScreenPageLimited<()> {
   ReportChatMessagePage({required AccountId accountId, required List<MessageEntry> messages})
     : super(
         builder: (_) => ReportChatMessageScreen(accountId: accountId, messages: messages),

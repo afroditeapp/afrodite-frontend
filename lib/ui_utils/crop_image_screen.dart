@@ -24,7 +24,7 @@ class CropImageFileContent {
 
 const MIN_CROP_ALLOWED_FACTOR = 0.75;
 
-class CropImagePage extends MyFullScreenDialogPage<()> {
+class CropImagePage extends MyScreenPageLimited<()> {
   CropImagePage({
     required CropImageFileContent info,
     required void Function(CropArea?) onCropAreaChanged,
