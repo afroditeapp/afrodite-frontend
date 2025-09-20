@@ -96,7 +96,7 @@ build-ios-release:
 	flutter build ios --release --dart-define=GIT_COMMIT_ID=`git rev-parse --short HEAD`
 
 build-web-release-tar:
-	flutter build web --release --wasm
+	flutter build web --release --dart-define=GIT_COMMIT_ID=`git rev-parse --short HEAD` --wasm
 	cd build && tar --owner=0 --group=0 -czf web-release.tar.gz web
 	@echo "Packaged build/web-release.tar.gz"
 
