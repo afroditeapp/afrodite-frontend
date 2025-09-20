@@ -327,7 +327,10 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
       final croppedImage = cropToAspectRatio43(orientationBakedImage);
       logImageSize(croppedImage, "croppedImage");
 
-      final finalImg = img.copyFlip(croppedImage, direction: img.FlipDirection.horizontal);
+      final finalImg = kIsWeb
+          ? croppedImage
+          : img.copyFlip(croppedImage, direction: img.FlipDirection.horizontal);
+
       final finalImgBytes = img.encodeJpg(finalImg);
       logFinalImageFileSize(finalImgBytes.length);
       return finalImgBytes;
