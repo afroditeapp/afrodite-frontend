@@ -85,7 +85,7 @@ remove-and-download-drift-web-dependencies:
 build-rust-utils-for-web:
 	rm -f web/rust_utils_bg.wasm
 	rm -f web/rust_utils.js
-	cd packages/native_utils_ffi/rust_utils && wasm-pack build --target web --no-pack --out-dir target/pkg --release
+	cd packages/native_utils_ffi/rust_utils && wasm-pack build --target web --no-typescript --no-pack --out-dir target/pkg --release
 	cp packages/native_utils_ffi/rust_utils/target/pkg/rust_utils_bg.wasm web
 	cp packages/native_utils_ffi/rust_utils/target/pkg/rust_utils.js web
 
