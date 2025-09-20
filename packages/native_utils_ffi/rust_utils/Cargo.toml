@@ -6,7 +6,11 @@ publish = false
 [lib]
 name = "rust_utils"
 path = "src/lib.rs"
+
+# Android building uses cdylib instead of staticlib
+# because that creates lower APK file size.
 # iOS building overrides this to staticlib.
+# Wasm building requires cdylib.
 crate-type = ["cdylib"]
 
 [profile.dev]
