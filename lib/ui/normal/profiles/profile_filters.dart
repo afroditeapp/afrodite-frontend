@@ -6,6 +6,7 @@ import 'package:app/ui_utils/consts/corners.dart';
 import 'package:app/ui_utils/consts/icons.dart';
 import 'package:app/ui_utils/consts/size.dart';
 import 'package:app/ui_utils/dialog.dart';
+import 'package:app/ui_utils/slider.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/age.dart';
 import 'package:app/utils/list.dart';
@@ -187,7 +188,7 @@ class _ProfileFiltersScreenState extends State<ProfileFiltersScreen> {
               valueText: stateText,
             ),
             const Padding(padding: EdgeInsets.all(4)),
-            RangeSlider(
+            RangeSliderWithPadding(
               values: RangeValues(min.toDouble(), max.toDouble()),
               min: MIN_AGE.toDouble(),
               max: MAX_AGE.toDouble(),
@@ -285,7 +286,7 @@ class _ProfileFiltersScreenState extends State<ProfileFiltersScreen> {
               valueText: stateText,
             ),
             const Padding(padding: EdgeInsets.all(4)),
-            Slider(
+            SliderWithPadding(
               value: days,
               min: VALUE_MIN,
               max: VALUE_MAX,
@@ -386,7 +387,7 @@ class _ProfileFiltersScreenState extends State<ProfileFiltersScreen> {
             const Padding(padding: EdgeInsets.all(4)),
             ViewAttributeTitle(title, icon: icon, valueText: stateText),
             const Padding(padding: EdgeInsets.all(4)),
-            Slider(
+            SliderWithPadding(
               value: days,
               min: VALUE_MIN,
               max: VALUE_MAX,
@@ -460,7 +461,7 @@ class _ProfileFiltersScreenState extends State<ProfileFiltersScreen> {
               valueText: stateText,
             ),
             const Padding(padding: EdgeInsets.all(4)),
-            RangeSlider(
+            RangeSliderWithPadding(
               values: RangeValues(minValue, maxValue),
               min: VALUE_MIN.toDouble(),
               max: valueMax.toDouble(),
@@ -557,7 +558,7 @@ class _ProfileFiltersScreenState extends State<ProfileFiltersScreen> {
               valueText: stateText,
             ),
             const Padding(padding: EdgeInsets.all(4)),
-            RangeSlider(
+            RangeSliderWithPadding(
               values: RangeValues(min, max),
               min: LIMIT_MIN,
               max: limitMax,

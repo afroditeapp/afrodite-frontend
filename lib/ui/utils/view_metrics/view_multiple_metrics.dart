@@ -5,6 +5,7 @@ import 'package:app/ui/utils/view_metrics.dart';
 import 'package:app/ui_utils/data_editor/base.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/padding.dart';
+import 'package:app/ui_utils/slider.dart';
 import 'package:app/utils/api.dart';
 import 'package:app/utils/time.dart';
 import 'package:collection/collection.dart';
@@ -231,7 +232,7 @@ class _ViewMultipleMetricsState extends State<ViewMultipleMetrics>
                   .toList(),
             ),
           ),
-        RangeSlider(
+        RangeSliderWithPadding(
           values: RangeValues(widget.controller.selectedMin, widget.controller.selectedMax),
           min: widget.controller.minDataValue,
           max: widget.controller.maxDataValue,
