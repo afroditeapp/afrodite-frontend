@@ -308,7 +308,8 @@ class ImageCacheSize {
   }
 
   static ImageCacheSize squareImageForAppBarThumbnail(BuildContext context, double widthAndHeight) {
-    return ImageCacheSize.constantSquare(context, widthAndHeight);
+    // Multiply size by 2 to make images more smoother on iPhone SE (2020)
+    return ImageCacheSize.constantSquare(context, widthAndHeight * 2);
   }
 
   static ImageCacheSize squareImageForGrid(BuildContext context, double widthAndHeight) {
