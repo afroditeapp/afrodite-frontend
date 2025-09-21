@@ -56,6 +56,8 @@ class ProfileGridState extends State<ProfileGrid> {
 
   List<EventHandlingTracker> reloadEventDoneTrackers = [];
 
+  final animationResetLogic = AnimationResetLogic();
+
   @override
   void initState() {
     super.initState();
@@ -203,8 +205,14 @@ class ProfileGridState extends State<ProfileGrid> {
           return BlocBuilder<ProfileFiltersBloc, ProfileFiltersData>(
             builder: (context, state) {
               if (state.updateState is UpdateIdle && !state.unsavedChanges()) {
+                animationResetLogic.disable();
                 return showGrid(context, uiSettings.gridSettings, pagingState, true);
               } else {
+                animationResetLogic.enable(() {
+                  if (context.mounted) {
+                    setState(() {});
+                  }
+                });
                 return showGrid(
                   context,
                   uiSettings.gridSettings,
@@ -265,7 +273,7 @@ class ProfileGridState extends State<ProfileGrid> {
       scrollController: _scrollController,
       padding: EdgeInsets.symmetric(horizontal: settings.valueHorizontalPadding()),
       builderDelegate: PagedChildBuilderDelegate<ProfileGridProfileEntry>(
-        animateTransitions: true,
+        animateTransitions: animationResetLogic.animateTransitions,
         itemBuilder: (context, item, index) {
           return UpdatingProfileThumbnailWithInfo(
             initialData: item.profile,
@@ -497,4 +505,32 @@ Widget _thumbnailStatusIndicatorsTop(
       ],
     ),
   );
+}
+
+/// Avoid showing old profile grid state when profile filters are edited and
+/// navigating back from profile filters screen using iOS back navigation
+/// gesture.
+class AnimationResetLogic {
+  bool showProgress = false;
+  bool resetAnimationsOnce = false;
+  bool resetAnimationsDone = false;
+
+  void disable() {
+    showProgress = false;
+    resetAnimationsOnce = false;
+    resetAnimationsDone = false;
+  }
+
+  void enable(void Function() rebuildCallback) {
+    showProgress = true;
+    if (!resetAnimationsOnce) {
+      Future.delayed(Duration.zero, () {
+        resetAnimationsDone = true;
+        rebuildCallback();
+      });
+      resetAnimationsOnce = true;
+    }
+  }
+
+  bool get animateTransitions => !showProgress || resetAnimationsDone;
 }
