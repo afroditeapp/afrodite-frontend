@@ -440,28 +440,31 @@ class _UpdatingProfileThumbnailWithInfoState extends State<UpdatingProfileThumbn
 Widget _thumbnailStatusIndicatorsBottom(BuildContext context, ProfileEntry profile) {
   return Align(
     alignment: Alignment.bottomCenter,
-    child: Row(
-      children: [
-        if (profile.lastSeenTimeValue == -1)
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              width: PROFILE_CURRENTLY_ONLINE_SIZE,
-              height: PROFILE_CURRENTLY_ONLINE_SIZE,
-              decoration: BoxDecoration(
-                color: Colors.green,
-                borderRadius: BorderRadius.circular(PROFILE_CURRENTLY_ONLINE_RADIUS),
+    child: SizedBox(
+      height: PROFILE_CURRENTLY_ONLINE_SIZE + 16,
+      child: Row(
+        children: [
+          if (profile.lastSeenTimeValue == -1)
+            Padding(
+              padding: const EdgeInsets.only(left: 8.0),
+              child: Container(
+                width: PROFILE_CURRENTLY_ONLINE_SIZE,
+                height: PROFILE_CURRENTLY_ONLINE_SIZE,
+                decoration: BoxDecoration(
+                  color: Colors.green,
+                  borderRadius: BorderRadius.circular(PROFILE_CURRENTLY_ONLINE_RADIUS),
+                ),
               ),
             ),
-          ),
-        const Spacer(),
-        profile.unlimitedLikes
-            ? Padding(
-                padding: const EdgeInsets.only(right: 8.0),
-                child: Icon(UNLIMITED_LIKES_ICON, color: getUnlimitedLikesColor(context)),
-              )
-            : const SizedBox.shrink(),
-      ],
+          const Spacer(),
+          profile.unlimitedLikes
+              ? Padding(
+                  padding: const EdgeInsets.only(right: 7.0),
+                  child: Icon(UNLIMITED_LIKES_ICON, color: getUnlimitedLikesColor(context)),
+                )
+              : const SizedBox.shrink(),
+        ],
+      ),
     ),
   );
 }
