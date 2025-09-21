@@ -228,18 +228,33 @@ class AccountImageProvider extends ImageProvider<AccountImgKey> {
     required MediaRepository media,
     required CropArea? cropArea,
   }) {
+    final ImageCacheSize size;
+    if (!kIsWeb &&
+        Platform.isIOS &&
+        cropArea == null &&
+        cacheSize != ImageCacheSize.useImageResolution()) {
+      // Downscaling with ResizeImage seems to create blurry images
+      // at least with iPhone SE (2020), so increase image resolution
+      // as a workaround on iOS. Alternative solution could be
+      // resizing images using AccountImageProvider as that seems
+      // to create sharper looking images.
+      size = ImageCacheSize.maxDisplaySize();
+    } else {
+      size = cacheSize;
+    }
+
     final key = AccountImgKey(
       accountId: accountId,
       contentId: contentId,
-      cacheSize: cacheSize,
+      cacheSize: size,
       cropArea: cropArea,
     );
     final imgProvider = AccountImageProvider._(key, isMatch: isMatch, media: media);
-    if (cropArea == null && cacheSize != ImageCacheSize.useImageResolution()) {
+    if (cropArea == null && size != ImageCacheSize.useImageResolution()) {
       return ResizeImage(
         imgProvider,
-        width: cacheSize.width,
-        height: cacheSize.height,
+        width: size.width,
+        height: size.height,
         allowUpscaling: false,
         policy: ResizeImagePolicy.fit,
       );
