@@ -19,6 +19,7 @@ import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui/splash_screen.dart';
 import 'package:app/ui/utils/url_navigation.dart';
 import 'package:app/ui/utils/web_navigation/web_navigation.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:app/logic/account/account.dart';
@@ -342,18 +343,25 @@ class AppNavigator extends StatefulWidget {
 
 class _AppNavigatorState extends State<AppNavigator> {
   late final MyRouterDelegate routerDelegate;
-  late final MyRouteInformationParser routeInfoParser;
-  late final PlatformRouteInformationProvider routeInfoProvider;
+  MyRouteInformationParser? routeInfoParser;
+  PlatformRouteInformationProvider? routeInfoProvider;
 
   @override
   void initState() {
     super.initState();
     routerDelegate = MyRouterDelegate(widget.navigatorStateBloc);
-    routeInfoParser = MyRouteInformationParser(widget.r);
-    final info = routeInfoParser.restoreRouteInformation(
+    if (kIsWeb && defaultTargetPlatform == TargetPlatform.iOS) {
+      // Browser URL navigation is not needed as gesture
+      // back navigation works with iOS Safari.
+      return;
+    }
+
+    final newRouteInfoParser = MyRouteInformationParser(widget.r);
+    final info = newRouteInfoParser.restoreRouteInformation(
       UrlNavigationState.convert(widget.navigatorStateBloc.state),
     )!;
     replaceInitialWebBrowserUrl(info);
+    routeInfoParser = newRouteInfoParser;
     routeInfoProvider = PlatformRouteInformationProvider(initialRouteInformation: info);
   }
 
