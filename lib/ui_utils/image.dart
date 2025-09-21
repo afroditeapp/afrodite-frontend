@@ -33,6 +33,7 @@ Widget accountImgWidget(
   double? height,
   AlignmentGeometry alignment = Alignment.center,
   required ImageCacheSize cacheSize,
+  BoxFit? fit,
 }) {
   return Image(
     image: AccountImageProvider.create(
@@ -55,6 +56,7 @@ Widget accountImgWidget(
         return AnimatedOpacity(opacity: 1, duration: IMAGE_FADE_IN, child: image);
       }
     },
+    fit: fit,
   );
 }
 
