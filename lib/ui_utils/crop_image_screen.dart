@@ -126,19 +126,23 @@ class _CropImageScreenState extends State<CropImageScreen> {
         }
 
         return Center(
-          child: CropImageOverlay(
-            cropState: c,
-            selectionMaxSize: selectionMaxSize,
-            areaWidth: imgWidgetWidth,
-            areaHeight: imgWidgetHeight,
-            imageWidget: Align(alignment: Alignment.topLeft, child: imgWidget),
-            onBuildCalled: (cropState) {
-              final cropArea = _calculateCropArea(cropState, areaWidth, areaHeight);
-              if (cropArea != cropAreaCache) {
-                cropAreaCache = cropArea;
-                widget.onCropAreaChanged(cropArea);
-              }
-            },
+          child: SizedBox(
+            width: imgWidgetWidth,
+            height: imgWidgetHeight,
+            child: CropImageOverlay(
+              cropState: c,
+              selectionMaxSize: selectionMaxSize,
+              areaWidth: imgWidgetWidth,
+              areaHeight: imgWidgetHeight,
+              imageWidget: Align(alignment: Alignment.topLeft, child: imgWidget),
+              onBuildCalled: (cropState) {
+                final cropArea = _calculateCropArea(cropState, areaWidth, areaHeight);
+                if (cropArea != cropAreaCache) {
+                  cropAreaCache = cropArea;
+                  widget.onCropAreaChanged(cropArea);
+                }
+              },
+            ),
           ),
         );
       },
