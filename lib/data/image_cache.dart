@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math';
 import 'dart:ui';
 
@@ -201,8 +202,15 @@ class AccountImageProvider extends ImageProvider<AccountImgKey> {
       final canvas = Canvas(pictureRecorder);
       final painter = CroppedImagePainter(frame.image, cropArea);
       final srcRect = painter.calculateSrcRect();
-      final dstSize = imgInfo.cacheSize.squareSize();
-      final dstRect = Rect.fromLTWH(0, 0, dstSize.toDouble(), dstSize.toDouble());
+      final int dstSize;
+      final Rect dstRect;
+      if (imgInfo.cacheSize == ImageCacheSize.useImageResolution()) {
+        dstSize = srcRect.width.toInt();
+        dstRect = Rect.fromLTWH(0, 0, srcRect.width, srcRect.width);
+      } else {
+        dstSize = imgInfo.cacheSize.squareSize();
+        dstRect = Rect.fromLTWH(0, 0, dstSize.toDouble(), dstSize.toDouble());
+      }
       canvas.drawImageRect(frame.image, srcRect, dstRect, Paint());
       final image = await pictureRecorder.endRecording().toImage(dstSize, dstSize);
       return ImageInfo(image: image);
@@ -227,7 +235,7 @@ class AccountImageProvider extends ImageProvider<AccountImgKey> {
       cropArea: cropArea,
     );
     final imgProvider = AccountImageProvider._(key, isMatch: isMatch, media: media);
-    if (cropArea == null) {
+    if (cropArea == null && cacheSize != ImageCacheSize.useImageResolution()) {
       return ResizeImage(
         imgProvider,
         width: cacheSize.width,
@@ -246,6 +254,7 @@ class AccountImageProvider extends ImageProvider<AccountImgKey> {
 class ImageCacheSize {
   final int? width;
   final int? height;
+  ImageCacheSize.useImageResolution() : width = null, height = null;
   ImageCacheSize._height({required int this.height}) : width = null;
   ImageCacheSize._widthAndHeight({required int this.width, required int this.height});
 
@@ -340,10 +349,22 @@ class PrecacheImageForViewProfileScreen {
     final imageProvider = AccountImageProvider.create(
       account,
       content,
-      cacheSize: ImageCacheSize.constantHeight(context, VIEW_PROFILE_WIDGET_IMG_HEIGHT),
+      cacheSize: PrecacheImageForViewProfileScreen.cacheSizeForViewProfileScreenImages(context),
       media: context.read<RepositoryInstances>().media,
       cropArea: null,
     );
     await precacheImage(imageProvider, context);
+  }
+
+  static ImageCacheSize cacheSizeForViewProfileScreenImages(BuildContext context) {
+    if (kIsWeb || !Platform.isIOS) {
+      return ImageCacheSize.constantHeight(context, VIEW_PROFILE_WIDGET_IMG_HEIGHT);
+    } else {
+      // Downscaling with ResizeImage seems to create blurry images
+      // at least with iPhone SE (2020), so don't downscale images
+      // on iOS. If image resizing is needed consider using
+      // AccountImageProvider as that seems to create sharper looking images.
+      return ImageCacheSize.useImageResolution();
+    }
   }
 }

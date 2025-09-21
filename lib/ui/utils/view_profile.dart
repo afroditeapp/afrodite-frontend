@@ -421,7 +421,7 @@ class _ViewProfileImgViewerState extends State<ViewProfileImgViewer> {
       context,
       accountId,
       contentId,
-      cacheSize: ImageCacheSize.constantHeight(context, VIEW_PROFILE_WIDGET_IMG_HEIGHT),
+      cacheSize: PrecacheImageForViewProfileScreen.cacheSizeForViewProfileScreenImages(context),
     );
   }
 }
