@@ -185,12 +185,16 @@ class _ProfileGridSettingsScreenState extends State<ProfileGridSettingsScreen> {
           builderDelegate: PagedChildBuilderDelegate<void>(
             animateTransitions: true,
             itemBuilder: (context, item, index) {
-              return ProfileThumbnailImageOrError.fromProfileEntry(
-                entry: entry,
-                borderRadius: BorderRadius.circular(
-                  gridSettings.valueProfileThumbnailBorderRadius(),
-                ),
-                cacheSize: ImageCacheSize.maxDisplaySize(),
+              return LayoutBuilder(
+                builder: (context, constraints) {
+                  return ProfileThumbnailImageOrError.fromProfileEntry(
+                    entry: entry,
+                    borderRadius: BorderRadius.circular(
+                      gridSettings.valueProfileThumbnailBorderRadius(),
+                    ),
+                    cacheSize: ImageCacheSize.squareImageForGrid(context, constraints.maxWidth),
+                  );
+                },
               );
             },
           ),
