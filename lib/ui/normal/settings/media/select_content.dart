@@ -93,12 +93,15 @@ class _SelectContentScreenState extends State<SelectContentScreen> {
                 if (state.isLoading) {
                   return const Center(child: CircularProgressIndicator());
                 } else {
-                  return selectContentPage(
-                    context,
-                    context.read<RepositoryInstances>().accountId,
-                    state.availableContent,
-                    state.maxContent,
-                    state.showAddNewContent,
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: selectContentPage(
+                      context,
+                      context.read<RepositoryInstances>().accountId,
+                      state.availableContent,
+                      state.maxContent,
+                      state.showAddNewContent,
+                    ),
                   );
                 }
               },
@@ -172,6 +175,8 @@ class _SelectContentScreenState extends State<SelectContentScreen> {
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       crossAxisCount: 2,
+      crossAxisSpacing: 8,
+      mainAxisSpacing: 8,
       children: gridWidgets,
     );
 
