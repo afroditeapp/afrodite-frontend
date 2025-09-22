@@ -193,7 +193,7 @@ class AppLocalizationsSv extends AppLocalizations {
       'Security selfie';
 
   @override
-  String get content_management_screen_title => 'Image management';
+  String get content_management_screen_title => 'My images';
 
   @override
   String get conversation_screen_chat_box_placeholder_text => 'Type a message…';

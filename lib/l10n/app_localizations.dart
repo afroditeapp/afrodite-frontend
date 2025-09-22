@@ -387,7 +387,7 @@ abstract class AppLocalizations {
   /// Title for content management screen
   ///
   /// In en, this message translates to:
-  /// **'Image management'**
+  /// **'My images'**
   String get content_management_screen_title;
 
   /// Message input text field placeholder text

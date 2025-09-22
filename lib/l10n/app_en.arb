@@ -237,7 +237,7 @@
   "@content_management_screen_content_security_content": {
     "description": "Text for security content"
   },
-  "content_management_screen_title": "Image management",
+  "content_management_screen_title": "My images",
   "@content_management_screen_title": {
     "description": "Title for content management screen"
   },
