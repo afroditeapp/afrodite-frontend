@@ -12,8 +12,12 @@ extension GridSettingsExtensions on GridSettings {
     final widthPixels = currentDisplay?.size.width.toInt() ?? 1920;
     final heightPixels = currentDisplay?.size.height.toInt() ?? 1080;
     final portraitAvailablePixels = min(widthPixels, heightPixels);
-    final pixelRatio = MediaQuery.devicePixelRatioOf(context);
-    final portraitAvailableSize = portraitAvailablePixels / pixelRatio;
+    final double portraitAvailableSize;
+    if (kIsWeb) {
+      portraitAvailableSize = portraitAvailablePixels.toDouble();
+    } else {
+      portraitAvailableSize = portraitAvailablePixels / MediaQuery.devicePixelRatioOf(context);
+    }
     final itemAreaWidth = portraitAvailableSize - (valueHorizontalPadding() * 2);
     final itemAreaWidthWithoutInternalPadding =
         itemAreaWidth - (valueInternalPadding() * (valueRowProfileCount() - 1));
