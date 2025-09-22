@@ -437,6 +437,27 @@ void _joinVideoCall(BuildContext context, AccountId callee) async {
     return;
   }
 
+  if (kIsWeb) {
+    // This dialog is required to make sure that launchUrlString works
+    final r = await showConfirmDialog(
+      context,
+      context.strings.conversation_screen_join_video_call_dialog_title,
+      yesNoActions: true,
+    );
+    if (r == true && context.mounted) {
+      await _openJitsiMeetToWebBrowser(context, jitsiMeetUrls);
+    }
+  } else {
+    await _openJitsiMeetOnAndroidOrIos(context, jitsiMeetUrls);
+  }
+}
+
+Future<void> _openJitsiMeetOnAndroidOrIos(BuildContext context, JitsiMeetUrls jitsiMeetUrls) async {
+  if (!(Platform.isAndroid || Platform.isIOS)) {
+    showSnackBar(context.strings.generic_error);
+    return;
+  }
+
   final Uri url;
   try {
     url = Uri.parse(jitsiMeetUrls.url);
@@ -445,14 +466,12 @@ void _joinVideoCall(BuildContext context, AccountId callee) async {
     return;
   }
 
-  if (!kIsWeb) {
-    try {
-      final jitsMeetAppLaunchSuccessful = await launchUrl(url.replace(scheme: "org.jitsi.meet"));
-      if (jitsMeetAppLaunchSuccessful) {
-        return;
-      }
-    } catch (_) {}
-  }
+  try {
+    final jitsMeetAppLaunchSuccessful = await launchUrl(url.replace(scheme: "org.jitsi.meet"));
+    if (jitsMeetAppLaunchSuccessful) {
+      return;
+    }
+  } catch (_) {}
 
   // Jitsi Meet app is not installed
 
@@ -480,12 +499,16 @@ void _joinVideoCall(BuildContext context, AccountId callee) async {
     if (!context.mounted) {
       return;
     }
-    final customUrl = jitsiMeetUrls.customUrl;
-    if (customUrl != null) {
-      await launchUrlStringAndShowError(context, customUrl);
-    } else {
-      await launchUrlAndShowError(context, url);
-    }
+    await _openJitsiMeetToWebBrowser(context, jitsiMeetUrls);
+  }
+}
+
+Future<void> _openJitsiMeetToWebBrowser(BuildContext context, JitsiMeetUrls jitsiMeetUrls) async {
+  final customUrl = jitsiMeetUrls.customUrl;
+  if (customUrl != null) {
+    await launchUrlStringAndShowError(context, customUrl);
+  } else {
+    await launchUrlStringAndShowError(context, jitsiMeetUrls.url);
   }
 }
 
@@ -565,13 +588,6 @@ void openJitsiMeetAppInstallDialog(
 
 Future<void> launchUrlStringAndShowError(BuildContext context, String url) async {
   final launchSuccessful = await launchUrlString(url);
-  if (!launchSuccessful && context.mounted) {
-    showSnackBar(context.strings.generic_error_occurred);
-  }
-}
-
-Future<void> launchUrlAndShowError(BuildContext context, Uri url) async {
-  final launchSuccessful = await launchUrl(url);
   if (!launchSuccessful && context.mounted) {
     showSnackBar(context.strings.generic_error_occurred);
   }

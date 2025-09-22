@@ -261,6 +261,10 @@
   "@conversation_screen_join_video_call_button": {
     "description": "Button text for joining a video call"
   },
+  "conversation_screen_join_video_call_dialog_title": "Join video call?",
+  "@conversation_screen_join_video_call_dialog_title": {
+    "description": "Title text for join video call confirm dialog"
+  },
   "conversation_screen_make_match_instruction": "Send a message to accept the chat request!",
   "@conversation_screen_make_match_instruction": {
     "description": "Instruction text how to make a match"

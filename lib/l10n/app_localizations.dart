@@ -420,6 +420,12 @@ abstract class AppLocalizations {
   /// **'Join video call'**
   String get conversation_screen_join_video_call_button;
 
+  /// Title text for join video call confirm dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Join video call?'**
+  String get conversation_screen_join_video_call_dialog_title;
+
   /// Instruction text how to make a match
   ///
   /// In en, this message translates to:

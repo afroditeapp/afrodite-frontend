@@ -215,6 +215,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get conversation_screen_join_video_call_button => 'Join video call';
 
   @override
+  String get conversation_screen_join_video_call_dialog_title =>
+      'Join video call?';
+
+  @override
   String get conversation_screen_make_match_instruction =>
       'Send a message to accept the chat request!';
 
