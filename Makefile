@@ -95,15 +95,30 @@ build-android-release:
 build-ios-release:
 	flutter build ios --release --dart-define=GIT_COMMIT_ID=`git rev-parse --short HEAD`
 
-build-web-release-tar:
-	flutter build web --release --dart-define=GIT_COMMIT_ID=`git rev-parse --short HEAD` --wasm
-	cd build && tar --owner=0 --group=0 -czf web-release.tar.gz web
-	@echo "Packaged build/web-release.tar.gz"
+build-web-release:
+	make _build-web BUILD_ARGS="--release --wasm --dart-define=GIT_COMMIT_ID=`git rev-parse --short HEAD`" OUTPUT=web-release.tar.gz
 
-build-web-profile-tar:
-	flutter build web --profile --wasm
-	cd build && tar --owner=0 --group=0 -czf web-profile.tar.gz web
-	@echo "Packaged build/web-profile.tar.gz"
+build-web-profile:
+	make _build-web BUILD_ARGS="--profile --wasm" OUTPUT=web-profile.tar.gz
+
+build-web-debug:
+	make _build-web BUILD_ARGS="--debug" OUTPUT=web-debug.tar.gz
+
+_build-web: APP_VERSION := $(shell grep -m1 ^version: pubspec.yaml | cut -d' ' -f2 | tr '+' '_')
+_build-web:
+ifndef BUILD_ARGS
+	$(error BUILD_ARGS is not set)
+endif
+ifndef OUTPUT
+	$(error OUTPUT is not set)
+endif
+	rm -rf build/tmp
+	mkdir build/tmp
+	flutter build web $(BUILD_ARGS) --pwa-strategy none --base-href=/$(APP_VERSION)/
+	cp -r build/web build/tmp/$(APP_VERSION)
+	find build/tmp -type f ! -name "*.png" | xargs -n 1 -P 0 gzip -9
+	cd build/tmp && tar --owner=0 --group=0 -czf ../$(OUTPUT) $(APP_VERSION)
+	@echo "Packaged build/$(OUTPUT)"
 
 clean:
 	flutter clean
