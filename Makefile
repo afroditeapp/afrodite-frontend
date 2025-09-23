@@ -99,12 +99,13 @@ build-web-release:
 	make _build-web BUILD_ARGS="--release --wasm --dart-define=GIT_COMMIT_ID=`git rev-parse --short HEAD`" OUTPUT=web-release.tar.gz
 
 build-web-profile:
-	make _build-web BUILD_ARGS="--profile --wasm" OUTPUT=web-profile.tar.gz
+	make _build-web BUILD_ARGS="--profile --wasm" OUTPUT=web-profile.tar.gz BUILD_TIME=`date +%s`
 
 build-web-debug:
-	make _build-web BUILD_ARGS="--debug" OUTPUT=web-debug.tar.gz
+	make _build-web BUILD_ARGS="--debug" OUTPUT=web-debug.tar.gz BUILD_TIME=`date +%s`
 
 _build-web: APP_VERSION := $(shell grep -m1 ^version: pubspec.yaml | cut -d' ' -f2 | tr '+' '_')
+_build-web: APP_VERSION := $(if $(BUILD_TIME),$(APP_VERSION)_$(BUILD_TIME),$(APP_VERSION))
 _build-web:
 ifndef BUILD_ARGS
 	$(error BUILD_ARGS is not set)
