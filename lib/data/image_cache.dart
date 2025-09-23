@@ -108,7 +108,7 @@ class ImageCacheData extends AppSingleton {
       }
     }
 
-    final tileResult = await media.getMapTile(z, x, y);
+    final tileResult = await media.getMapTile(z, x, y, version);
     final Uint8List tilePngData;
     switch (tileResult) {
       case MapTileSuccess tileResult:

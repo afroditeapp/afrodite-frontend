@@ -213,7 +213,6 @@ part 'model/news_translation_version.dart';
 part 'model/notification_id.dart';
 part 'model/notification_id_viewed.dart';
 part 'model/notification_status.dart';
-part 'model/page_item_count_for_new_public_news.dart';
 part 'model/partial_profile_attributes_config.dart';
 part 'model/pending_message_acknowledgement_list.dart';
 part 'model/pending_message_id.dart';

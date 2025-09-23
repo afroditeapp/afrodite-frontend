@@ -40,10 +40,12 @@ Please follow the [installation procedure](#installation--usage) and then run th
 ```dart
 import 'package:openapi/api.dart';
 
-// TODO Configure API key authorization: access_token
-//defaultApiClient.getAuthentication<ApiKeyAuth>('access_token').apiKey = 'YOUR_API_KEY';
-// uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-//defaultApiClient.getAuthentication<ApiKeyAuth>('access_token').apiKeyPrefix = 'Bearer';
+// TODO Configure HTTP Bearer authorization: access_token
+// Case 1. Use String Token
+//defaultApiClient.getAuthentication<HttpBearerAuth>('access_token').setAccessToken('YOUR_ACCESS_TOKEN');
+// Case 2. Use Function which generate token.
+// String yourTokenGeneratorFunction() { ... }
+//defaultApiClient.getAuthentication<HttpBearerAuth>('access_token').setAccessToken(yourTokenGeneratorFunction);
 
 final api_instance = AccountApi();
 
@@ -412,7 +414,6 @@ Class | Method | HTTP request | Description
  - [NotificationId](doc//NotificationId.md)
  - [NotificationIdViewed](doc//NotificationIdViewed.md)
  - [NotificationStatus](doc//NotificationStatus.md)
- - [PageItemCountForNewPublicNews](doc//PageItemCountForNewPublicNews.md)
  - [PartialProfileAttributesConfig](doc//PartialProfileAttributesConfig.md)
  - [PendingMessageAcknowledgementList](doc//PendingMessageAcknowledgementList.md)
  - [PendingMessageId](doc//PendingMessageId.md)
@@ -536,9 +537,7 @@ Class | Method | HTTP request | Description
 Authentication schemes defined for the API:
 ### access_token
 
-- **Type**: API key
-- **API key parameter name**: x-access-token
-- **Location**: HTTP header
+- **Type**: HTTP Bearer authentication
 
 
 ## Author

@@ -269,7 +269,9 @@ class MediaApi {
   /// * [int] x (required):
   ///
   /// * [String] y (required):
-  Future<Response> getMapTileWithHttpInfo(int z, int x, String y,) async {
+  ///
+  /// * [int] v (required):
+  Future<Response> getMapTileWithHttpInfo(int z, int x, String y, int v,) async {
     // ignore: prefer_const_declarations
     final path = r'/media_api/map_tile/{z}/{x}/{y}'
       .replaceAll('{z}', z.toString())
@@ -282,6 +284,8 @@ class MediaApi {
     final queryParams = <QueryParam>[];
     final headerParams = <String, String>{};
     final formParams = <String, String>{};
+
+      queryParams.addAll(_queryParams('', 'v', v));
 
     const contentTypes = <String>[];
 
@@ -308,8 +312,10 @@ class MediaApi {
   /// * [int] x (required):
   ///
   /// * [String] y (required):
-  Future<MultipartFile?> getMapTile(int z, int x, String y,) async {
-    final response = await getMapTileWithHttpInfo(z, x, y,);
+  ///
+  /// * [int] v (required):
+  Future<MultipartFile?> getMapTile(int z, int x, String y, int v,) async {
+    final response = await getMapTileWithHttpInfo(z, x, y, v,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

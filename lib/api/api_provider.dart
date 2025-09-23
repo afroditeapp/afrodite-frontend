@@ -6,10 +6,8 @@ import 'package:http/io_client.dart';
 import 'package:openapi/api.dart';
 import 'package:app/assets.dart';
 
-const accessTokenHeaderName = "x-access-token";
-
 class ApiProvider {
-  ApiKeyAuth? _apiKey;
+  HttpBearerAuth? _auth;
   AccountApi _account;
   AccountAdminApi _accountAdmin;
   ProfileApi _profile;
@@ -50,14 +48,14 @@ class ApiProvider {
       _chat = ChatApi(client);
 
   void setAccessToken(AccessToken token) {
-    var auth = ApiKeyAuth("header", accessTokenHeaderName);
-    auth.apiKey = token.token;
-    _apiKey = auth;
+    final auth = HttpBearerAuth();
+    auth.accessToken = token.token;
+    _auth = auth;
     _refreshApiClient(auth);
   }
 
-  void _refreshApiClient(ApiKeyAuth? key) {
-    var client = ApiClient(basePath: _serverAddress, authentication: key);
+  void _refreshApiClient(HttpBearerAuth? auth) {
+    final client = ApiClient(basePath: _serverAddress, authentication: auth);
     client.client = httpClient;
 
     _account = AccountApi(client);
@@ -79,6 +77,6 @@ class ApiProvider {
       client = IOClient(HttpClient(context: await createSecurityContextForBackendConnection()));
     }
     httpClient = client;
-    _refreshApiClient(_apiKey);
+    _refreshApiClient(_auth);
   }
 }

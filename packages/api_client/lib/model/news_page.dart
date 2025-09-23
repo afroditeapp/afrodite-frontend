@@ -13,31 +13,25 @@ part of openapi.api;
 class NewsPage {
   /// Returns a new [NewsPage] instance.
   NewsPage({
-    required this.n,
     this.news = const [],
   });
-
-  PageItemCountForNewPublicNews n;
 
   List<NewsItemSimple> news;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is NewsPage &&
-    other.n == n &&
     _deepEquality.equals(other.news, news);
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (n.hashCode) +
     (news.hashCode);
 
   @override
-  String toString() => 'NewsPage[n=$n, news=$news]';
+  String toString() => 'NewsPage[news=$news]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'n'] = this.n;
       json[r'news'] = this.news;
     return json;
   }
@@ -61,7 +55,6 @@ class NewsPage {
       }());
 
       return NewsPage(
-        n: PageItemCountForNewPublicNews.fromJson(json[r'n'])!,
         news: NewsItemSimple.listFromJson(json[r'news']),
       );
     }
@@ -110,7 +103,6 @@ class NewsPage {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'n',
     'news',
   };
 }

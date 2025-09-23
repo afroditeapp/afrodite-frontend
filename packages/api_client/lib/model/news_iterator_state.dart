@@ -15,40 +15,30 @@ class NewsIteratorState {
   NewsIteratorState({
     required this.idAtReset,
     required this.page,
-    this.previousIdAtReset,
   });
 
   PublicationId idAtReset;
 
   int page;
 
-  PublicationId? previousIdAtReset;
-
   @override
   bool operator ==(Object other) => identical(this, other) || other is NewsIteratorState &&
     other.idAtReset == idAtReset &&
-    other.page == page &&
-    other.previousIdAtReset == previousIdAtReset;
+    other.page == page;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (idAtReset.hashCode) +
-    (page.hashCode) +
-    (previousIdAtReset == null ? 0 : previousIdAtReset!.hashCode);
+    (page.hashCode);
 
   @override
-  String toString() => 'NewsIteratorState[idAtReset=$idAtReset, page=$page, previousIdAtReset=$previousIdAtReset]';
+  String toString() => 'NewsIteratorState[idAtReset=$idAtReset, page=$page]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'id_at_reset'] = this.idAtReset;
       json[r'page'] = this.page;
-    if (this.previousIdAtReset != null) {
-      json[r'previous_id_at_reset'] = this.previousIdAtReset;
-    } else {
-      json[r'previous_id_at_reset'] = null;
-    }
     return json;
   }
 
@@ -73,7 +63,6 @@ class NewsIteratorState {
       return NewsIteratorState(
         idAtReset: PublicationId.fromJson(json[r'id_at_reset'])!,
         page: mapValueOfType<int>(json, r'page')!,
-        previousIdAtReset: PublicationId.fromJson(json[r'previous_id_at_reset']),
       );
     }
     return null;

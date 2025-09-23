@@ -528,8 +528,6 @@ class ApiClient {
           return NotificationIdViewed.fromJson(value);
         case 'NotificationStatus':
           return NotificationStatus.fromJson(value);
-        case 'PageItemCountForNewPublicNews':
-          return PageItemCountForNewPublicNews.fromJson(value);
         case 'PartialProfileAttributesConfig':
           return PartialProfileAttributesConfig.fromJson(value);
         case 'PendingMessageAcknowledgementList':

@@ -89,13 +89,13 @@ class MediaRepository extends DataRepositoryWithLifecycle {
         .ok();
   }
 
-  Future<MapTileResult> getMapTile(int z, int x, int y) async {
+  Future<MapTileResult> getMapTile(int z, int x, int y, int version) async {
     if (!await connectionManager.tryWaitUntilConnected(waitTimeoutSeconds: 2)) {
       return MapTileError();
     }
 
     final data = await api.mediaWrapper().requestValue(
-      (api) => api.getMapTileFixed(z, x, y.toString()),
+      (api) => api.getMapTileFixed(z, x, y.toString(), version),
       logError: false,
     );
 

@@ -195,7 +195,6 @@ lib/model/news_translation_version.dart
 lib/model/notification_id.dart
 lib/model/notification_id_viewed.dart
 lib/model/notification_status.dart
-lib/model/page_item_count_for_new_public_news.dart
 lib/model/partial_profile_attributes_config.dart
 lib/model/pending_message_acknowledgement_list.dart
 lib/model/pending_message_id.dart

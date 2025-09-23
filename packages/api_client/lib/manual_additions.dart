@@ -66,8 +66,8 @@ extension MediaManualAdditions on MediaApi {
   /// * [int] x (required):
   ///
   /// * [String] y (required):
-  Future<Uint8List?> getMapTileFixed(int z, int x, String y,) async {
-    final response = await getMapTileWithHttpInfo(z, x, y,);
+  Future<Uint8List?> getMapTileFixed(int z, int x, String y, int version) async {
+    final response = await getMapTileWithHttpInfo(z, x, y, version);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, "Image loading failed");
     }
