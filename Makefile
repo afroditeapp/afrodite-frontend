@@ -114,7 +114,7 @@ ifndef OUTPUT
 endif
 	rm -rf build/tmp
 	mkdir build/tmp
-	flutter build web $(BUILD_ARGS) --pwa-strategy none --base-href=/$(APP_VERSION)/
+	flutter build web $(BUILD_ARGS) --pwa-strategy none --base-href=/app/$(APP_VERSION)/
 	cp -r build/web build/tmp/$(APP_VERSION)
 	find build/tmp -type f ! -name "*.png" | xargs -n 1 -P 0 gzip -9
 	cd build/tmp && tar --owner=0 --group=0 -czf ../$(OUTPUT) $(APP_VERSION)

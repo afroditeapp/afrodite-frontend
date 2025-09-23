@@ -1,7 +1,7 @@
 {
     "name": "Afrodite",
     "short_name": "Afrodite",
-    "start_url": ".",
+    "start_url": "/app/index.html",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
