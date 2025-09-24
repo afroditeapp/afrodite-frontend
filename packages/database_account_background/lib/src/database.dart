@@ -34,6 +34,7 @@ part 'database.g.dart';
     schema.News,
     schema.Profile,
     schema.AutomaticProfileSearchBadgeState,
+    schema.PushNotification,
   ],
   daos: [
     // Read

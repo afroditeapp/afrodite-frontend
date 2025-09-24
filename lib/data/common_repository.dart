@@ -3,11 +3,11 @@ import 'dart:async';
 import 'package:app/data/login_repository.dart';
 import 'package:app/data/profile_repository.dart';
 import 'package:app/data/utils/ios_delay_app_suspend_task.dart';
+import 'package:app/database/account_background_database_manager.dart';
 import 'package:logging/logging.dart';
 import 'package:app/api/server_connection_manager.dart';
 import 'package:app/data/push_notification_manager.dart';
 import 'package:app/data/utils.dart';
-import 'package:app/database/background_database_manager.dart';
 import 'package:app/database/database_manager.dart';
 import 'package:app/utils/result.dart';
 import 'package:app/logic/app/app_visibility_provider.dart';
@@ -17,14 +17,14 @@ final _log = Logger("CommonRepository");
 
 class CommonRepository extends DataRepositoryWithLifecycle {
   final db = DatabaseManager.getInstance();
-  final backgroundDb = BackgroundDatabaseManager.getInstance();
   final AccountId currentUser;
+  final AccountBackgroundDatabaseManager accountBackgroundDb;
   final ServerConnectionManager connectionManager;
   final ProfileRepository profile;
   final ConnectedActionScheduler syncHandler;
   bool initDone = false;
 
-  CommonRepository(this.currentUser, this.connectionManager, this.profile)
+  CommonRepository(this.currentUser, this.accountBackgroundDb, this.connectionManager, this.profile)
     : syncHandler = ConnectedActionScheduler(connectionManager);
 
   Stream<bool> get notificationPermissionAsked =>
@@ -105,7 +105,7 @@ class CommonRepository extends DataRepositoryWithLifecycle {
   Future<void> onLogin() async {
     // Force sending the FCM token to server. This is needed if this login
     // is for different account than previously.
-    await BackgroundDatabaseManager.getInstance().commonAction(
+    await accountBackgroundDb.accountAction(
       (db) => db.loginSession.updateFcmDeviceTokenAndPendingNotificationToken(null, null),
     );
   }

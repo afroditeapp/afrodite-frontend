@@ -87,3 +87,11 @@ class Profile extends Table {
   @override
   Set<Column<Object>> get primaryKey => {accountId};
 }
+
+class PushNotification extends SingleRowTable {
+  TextColumn get fcmDeviceToken =>
+      text().map(const NullAwareTypeConverter.wrap(FcmDeviceTokenConverter())).nullable()();
+  TextColumn get pendingNotificationToken => text()
+      .map(const NullAwareTypeConverter.wrap(PendingNotificationTokenConverter()))
+      .nullable()();
+}

@@ -12,7 +12,7 @@ part 'database.g.dart';
 
 /// Common app data which can be accessed when app is in background
 @DriftDatabase(
-  tables: [schema.AccountId, schema.ServerUrl, schema.PushNotification, schema.CurrentLocale],
+  tables: [schema.AccountId, schema.ServerUrl, schema.CurrentLocale],
   daos: [
     // Read
     DaoReadApp,

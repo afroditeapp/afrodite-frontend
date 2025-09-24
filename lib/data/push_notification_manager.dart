@@ -134,9 +134,16 @@ class PushNotificationManager extends AppSingleton {
   }
 
   Future<void> _refreshTokenToServer(String fcmToken) async {
-    final savedToken = await BackgroundDatabaseManager.getInstance().commonStreamSingle(
-      (db) => db.loginSession.watchFcmDeviceToken(),
-    );
+    // TODO(future): Improve code so that repositoriesOrNull access
+    // is not needed.
+    final accountBackgroundDb =
+        LoginRepository.getInstance().repositoriesOrNull?.accountBackgroundDb;
+    if (accountBackgroundDb == null) {
+      return;
+    }
+    final savedToken = await accountBackgroundDb
+        .accountStreamSingle((db) => db.loginSession.watchFcmDeviceToken())
+        .ok();
     if (savedToken?.token != fcmToken) {
       _log.info("FCM token changed, sending token to server");
       final newToken = FcmDeviceToken(token: fcmToken);
@@ -150,7 +157,7 @@ class PushNotificationManager extends AppSingleton {
       final result = await api.common((api) => api.postSetDeviceToken(newToken)).ok();
       if (result != null) {
         _log.info("FCM token sending successful");
-        final dbResult = await BackgroundDatabaseManager.getInstance().commonAction(
+        final dbResult = await accountBackgroundDb.accountAction(
           (db) => db.loginSession.updateFcmDeviceTokenAndPendingNotificationToken(newToken, result),
         );
         if (dbResult.isOk()) {
@@ -194,50 +201,55 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
   _log.info("Handling FCM background message");
 
-  final accountUrl = await db.commonStreamSingleOrDefault(
+  final serverUrl = await db.commonStreamSingleOrDefault(
     (db) => db.app.watchServerUrl(),
     defaultServerUrl(),
   );
-  // TODO(prod): Single DB query should be used for getting
-  // pendingNotificationToken and currentAccountId.
-  // Or move pending notification token to account background DB?
-  final pendingNotificationToken = await db.commonStreamSingle(
-    (db) => db.loginSession.watchPendingNotificationToken(),
-  );
-  if (pendingNotificationToken == null) {
-    _log.error("Downloading pending notification failed: pending notification token is null");
-    return;
-  }
-
   final currentAccountId = await db.commonStreamSingle((db) => db.loginSession.watchAccountId());
   if (currentAccountId == null) {
     _log.error("Downloading pending notification failed: AccountId is not available");
     return;
   }
 
-  final apiProvider = ApiProvider(accountUrl);
-  await apiProvider.init();
-  final ApiWrapper<CommonApi> commonApi = ApiWrapper(apiProvider.common, NoConnection());
-  final result = await commonApi.requestValue(
-    (api) => api.postGetPendingNotification(pendingNotificationToken),
-    logError: false,
-  );
-
   final accountBackgroundDb = LoginRepository.getInstance().repositoriesOrNull?.accountBackgroundDb;
   if (accountBackgroundDb != null &&
       accountBackgroundDb.id == currentAccountId &&
       !accountBackgroundDb.isClosed) {
+    // This is main isolate and database is already open
     accountBackgroundDb.pushNotificationHandlerIsUsingDb = true;
-    await _handlePendingNotification(result, accountBackgroundDb);
+    await _handleWithAccountBackgroundDb(serverUrl, currentAccountId, accountBackgroundDb);
     accountBackgroundDb.pushNotificationHandlerIsUsingDb = false;
     if (accountBackgroundDb.pushNotificationHandlerShouldCloseDb) {
       await accountBackgroundDb.close();
     }
   } else {
     final accountBackgroundDb = await db.getAccountBackgroundDatabaseManager(currentAccountId);
-    await _handlePendingNotification(result, accountBackgroundDb);
+    await _handleWithAccountBackgroundDb(serverUrl, currentAccountId, accountBackgroundDb);
     await accountBackgroundDb.close();
   }
+}
+
+Future<void> _handleWithAccountBackgroundDb(
+  String serverUrl,
+  AccountId currentAccountId,
+  AccountBackgroundDatabaseManager accountBackgroundDb,
+) async {
+  final pendingNotificationToken = await accountBackgroundDb
+      .accountStreamSingle((db) => db.loginSession.watchPendingNotificationToken())
+      .ok();
+  if (pendingNotificationToken == null) {
+    _log.error("Downloading pending notification failed: pending notification token is null");
+    return;
+  }
+
+  final apiProvider = ApiProvider(serverUrl);
+  await apiProvider.init();
+  final ApiWrapper<CommonApi> commonApi = ApiWrapper(apiProvider.common, NoConnection());
+  final result = await commonApi.requestValue(
+    (api) => api.postGetPendingNotification(pendingNotificationToken),
+    logError: false,
+  );
+  await _handlePendingNotification(result, accountBackgroundDb);
 }
 
 Future<void> _handlePendingNotification(

@@ -7,7 +7,7 @@ import '../schema.dart' as schema;
 
 part 'login_session.g.dart';
 
-@DriftAccessor(tables: [schema.AccountId])
+@DriftAccessor(tables: [schema.AccountId, schema.PushNotification])
 class DaoReadLoginSession extends DatabaseAccessor<AccountBackgroundDatabase>
     with _$DaoReadLoginSessionMixin {
   DaoReadLoginSession(super.db);
@@ -17,6 +17,20 @@ class DaoReadLoginSession extends DatabaseAccessor<AccountBackgroundDatabase>
   Stream<T?> _watchAccountIdColumn<T extends Object>(T? Function(AccountIdData) extractColumn) {
     return (select(
       accountId,
+    )..where((t) => t.id.equals(SingleRowTable.ID.value))).map(extractColumn).watchSingleOrNull();
+  }
+
+  Stream<FcmDeviceToken?> watchFcmDeviceToken() =>
+      _watchPushNotificationColumn((r) => r.fcmDeviceToken);
+
+  Stream<PendingNotificationToken?> watchPendingNotificationToken() =>
+      _watchPushNotificationColumn((r) => r.pendingNotificationToken);
+
+  Stream<T?> _watchPushNotificationColumn<T extends Object>(
+    T? Function(PushNotificationData) extractColumn,
+  ) {
+    return (select(
+      pushNotification,
     )..where((t) => t.id.equals(SingleRowTable.ID.value))).map(extractColumn).watchSingleOrNull();
   }
 }

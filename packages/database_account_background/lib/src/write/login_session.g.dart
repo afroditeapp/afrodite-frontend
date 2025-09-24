@@ -6,4 +6,6 @@ part of 'login_session.dart';
 mixin _$DaoWriteLoginSessionMixin
     on DatabaseAccessor<AccountBackgroundDatabase> {
   $AccountIdTable get accountId => attachedDatabase.accountId;
+  $PushNotificationTable get pushNotification =>
+      attachedDatabase.pushNotification;
 }

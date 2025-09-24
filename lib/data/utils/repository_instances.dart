@@ -175,7 +175,7 @@ class RepositoryInstances {
       connectionManager,
       accountId,
     );
-    final common = CommonRepository(accountId, connectionManager, profile);
+    final common = CommonRepository(accountId, accountBackgroundDb, connectionManager, profile);
     final messageKeyManager = MessageKeyManager(accountDb, connectionManager, accountId);
     final chat = ChatRepository(
       media: media,

@@ -8,7 +8,7 @@ import '../schema.dart' as schema;
 
 part 'login_session.g.dart';
 
-@DriftAccessor(tables: [schema.AccountId])
+@DriftAccessor(tables: [schema.AccountId, schema.PushNotification])
 class DaoWriteLoginSession extends DatabaseAccessor<AccountBackgroundDatabase>
     with _$DaoWriteLoginSessionMixin {
   DaoWriteLoginSession(super.db);
@@ -22,5 +22,18 @@ class DaoWriteLoginSession extends DatabaseAccessor<AccountBackgroundDatabase>
         ).insertOnConflictUpdate(AccountIdCompanion.insert(id: SingleRowTable.ID, accountId: id));
       }
     });
+  }
+
+  Future<void> updateFcmDeviceTokenAndPendingNotificationToken(
+    FcmDeviceToken? token,
+    PendingNotificationToken? notificationToken,
+  ) async {
+    await into(pushNotification).insertOnConflictUpdate(
+      PushNotificationCompanion.insert(
+        id: SingleRowTable.ID,
+        fcmDeviceToken: Value(token),
+        pendingNotificationToken: Value(notificationToken),
+      ),
+    );
   }
 }
