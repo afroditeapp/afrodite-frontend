@@ -3891,6 +3891,198 @@ class ClientLanguageOnServerCompanion
   }
 }
 
+class $LocalAccountIdTable extends schema.LocalAccountId
+    with TableInfo<$LocalAccountIdTable, LocalAccountIdData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $LocalAccountIdTable(this.attachedDatabase, [this._alias]);
+  @override
+  late final GeneratedColumnWithTypeConverter<LocalAccountId, int> id =
+      GeneratedColumn<int>(
+        'id',
+        aliasedName,
+        false,
+        hasAutoIncrement: true,
+        type: DriftSqlType.int,
+        requiredDuringInsert: false,
+        defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'PRIMARY KEY AUTOINCREMENT',
+        ),
+      ).withConverter<LocalAccountId>($LocalAccountIdTable.$converterid);
+  @override
+  late final GeneratedColumnWithTypeConverter<AccountId, String> uuid =
+      GeneratedColumn<String>(
+        'uuid',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+        defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'),
+      ).withConverter<AccountId>($LocalAccountIdTable.$converteruuid);
+  @override
+  List<GeneratedColumn> get $columns => [id, uuid];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'local_account_id';
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  LocalAccountIdData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return LocalAccountIdData(
+      id: $LocalAccountIdTable.$converterid.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.int,
+          data['${effectivePrefix}id'],
+        )!,
+      ),
+      uuid: $LocalAccountIdTable.$converteruuid.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}uuid'],
+        )!,
+      ),
+    );
+  }
+
+  @override
+  $LocalAccountIdTable createAlias(String alias) {
+    return $LocalAccountIdTable(attachedDatabase, alias);
+  }
+
+  static TypeConverter<LocalAccountId, int> $converterid =
+      const LocalAccountIdConverter();
+  static TypeConverter<AccountId, String> $converteruuid =
+      const AccountIdConverter();
+}
+
+class LocalAccountIdData extends DataClass
+    implements Insertable<LocalAccountIdData> {
+  final LocalAccountId id;
+  final AccountId uuid;
+  const LocalAccountIdData({required this.id, required this.uuid});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    {
+      map['id'] = Variable<int>($LocalAccountIdTable.$converterid.toSql(id));
+    }
+    {
+      map['uuid'] = Variable<String>(
+        $LocalAccountIdTable.$converteruuid.toSql(uuid),
+      );
+    }
+    return map;
+  }
+
+  LocalAccountIdCompanion toCompanion(bool nullToAbsent) {
+    return LocalAccountIdCompanion(id: Value(id), uuid: Value(uuid));
+  }
+
+  factory LocalAccountIdData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return LocalAccountIdData(
+      id: serializer.fromJson<LocalAccountId>(json['id']),
+      uuid: serializer.fromJson<AccountId>(json['uuid']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<LocalAccountId>(id),
+      'uuid': serializer.toJson<AccountId>(uuid),
+    };
+  }
+
+  LocalAccountIdData copyWith({LocalAccountId? id, AccountId? uuid}) =>
+      LocalAccountIdData(id: id ?? this.id, uuid: uuid ?? this.uuid);
+  LocalAccountIdData copyWithCompanion(LocalAccountIdCompanion data) {
+    return LocalAccountIdData(
+      id: data.id.present ? data.id.value : this.id,
+      uuid: data.uuid.present ? data.uuid.value : this.uuid,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('LocalAccountIdData(')
+          ..write('id: $id, ')
+          ..write('uuid: $uuid')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, uuid);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is LocalAccountIdData &&
+          other.id == this.id &&
+          other.uuid == this.uuid);
+}
+
+class LocalAccountIdCompanion extends UpdateCompanion<LocalAccountIdData> {
+  final Value<LocalAccountId> id;
+  final Value<AccountId> uuid;
+  const LocalAccountIdCompanion({
+    this.id = const Value.absent(),
+    this.uuid = const Value.absent(),
+  });
+  LocalAccountIdCompanion.insert({
+    this.id = const Value.absent(),
+    required AccountId uuid,
+  }) : uuid = Value(uuid);
+  static Insertable<LocalAccountIdData> custom({
+    Expression<int>? id,
+    Expression<String>? uuid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (uuid != null) 'uuid': uuid,
+    });
+  }
+
+  LocalAccountIdCompanion copyWith({
+    Value<LocalAccountId>? id,
+    Value<AccountId>? uuid,
+  }) {
+    return LocalAccountIdCompanion(id: id ?? this.id, uuid: uuid ?? this.uuid);
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(
+        $LocalAccountIdTable.$converterid.toSql(id.value),
+      );
+    }
+    if (uuid.present) {
+      map['uuid'] = Variable<String>(
+        $LocalAccountIdTable.$converteruuid.toSql(uuid.value),
+      );
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('LocalAccountIdCompanion(')
+          ..write('id: $id, ')
+          ..write('uuid: $uuid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $AccountStateTable extends schema.AccountState
     with TableInfo<$AccountStateTable, AccountStateData> {
   @override
@@ -13080,6 +13272,7 @@ abstract class _$AccountForegroundDatabase extends GeneratedDatabase {
   );
   late final $ClientLanguageOnServerTable clientLanguageOnServer =
       $ClientLanguageOnServerTable(this);
+  late final $LocalAccountIdTable localAccountId = $LocalAccountIdTable(this);
   late final $AccountStateTable accountState = $AccountStateTable(this);
   late final $PermissionsTable permissions = $PermissionsTable(this);
   late final $ProfileVisibilityTable profileVisibility =
@@ -13216,6 +13409,7 @@ abstract class _$AccountForegroundDatabase extends GeneratedDatabase {
     profileAttributesConfig,
     profileAttributesConfigAttributes,
     clientLanguageOnServer,
+    localAccountId,
     accountState,
     permissions,
     profileVisibility,

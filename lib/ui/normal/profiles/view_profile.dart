@@ -39,10 +39,21 @@ Future<void> openProfileView(
     return;
   }
 
+  final localAccountId = await context
+      .read<RepositoryInstances>()
+      .accountDb
+      .accountDataWrite((db) => db.account.createLocalAccountIdIfNeeded(profile.accountId))
+      .ok();
+  if (localAccountId == null || !context.mounted) {
+    showSnackBar(R.strings.generic_error);
+    return;
+  }
+
   await MyNavigator.push(
     context,
     ViewProfilePage(
       context.read<RepositoryInstances>(),
+      localAccountId: localAccountId,
       initialProfile: profile,
       initialProfileAction: initialProfileAction,
       priority: priority,
@@ -59,11 +70,23 @@ class ViewProfilePageUrlParser extends UrlParser<ViewProfilePage> {
   Future<Result<(ViewProfilePage, List<String>), ()>> parseFromSegments(
     List<String> urlSegements,
   ) async {
-    final accountIdString = urlSegements.getAtOrNull(1);
-    if (accountIdString == null) {
+    final localAccountIdString = urlSegements.getAtOrNull(1);
+    if (localAccountIdString == null) {
       return Err(());
     }
-    final accountId = AccountId(aid: accountIdString);
+    final localAccountIdInt = int.tryParse(localAccountIdString);
+    if (localAccountIdInt == null) {
+      return Err(());
+    }
+
+    final localAccountId = LocalAccountId(localAccountIdInt);
+
+    final accountId = await r.accountDb
+        .accountData((db) => db.account.localAccountIdToAccountId(localAccountId))
+        .ok();
+    if (accountId == null) {
+      return Err(());
+    }
 
     final profile = await r.accountDb
         .accountData((db) => db.profile.getProfileEntry(accountId))
@@ -77,6 +100,7 @@ class ViewProfilePageUrlParser extends UrlParser<ViewProfilePage> {
     return Ok((
       ViewProfilePage(
         r,
+        localAccountId: localAccountId,
         initialProfile: profile,
         initialProfileAction: initialProfileAction,
         priority: ProfileRefreshPriority.low,
@@ -89,8 +113,10 @@ class ViewProfilePageUrlParser extends UrlParser<ViewProfilePage> {
 
 class ViewProfilePage extends MyScreenPage<()> {
   final AccountId accountId;
+  final LocalAccountId localAccountId;
   ViewProfilePage(
     RepositoryInstances r, {
+    required this.localAccountId,
     required ProfileEntry initialProfile,
     required ProfileActionState? initialProfileAction,
     required ProfileRefreshPriority priority,
@@ -113,7 +139,7 @@ class ViewProfilePage extends MyScreenPage<()> {
        );
 
   @override
-  String get urlPath => "/$urlName/${accountId.aid}";
+  String get urlPath => "/$urlName/${localAccountId.id}";
 
   @override
   bool checkEquality(MyPageWithUrlNavigation<Object> other) =>

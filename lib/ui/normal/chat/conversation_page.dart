@@ -29,8 +29,23 @@ import 'package:openapi/api.dart';
 
 final _log = Logger("ConversationPage");
 
-void openConversationScreen(BuildContext context, AccountId accountId, ProfileEntry? profile) {
-  context.read<NavigatorStateBloc>().push(ConversationPage(accountId, profile));
+Future<void> openConversationScreen(
+  BuildContext context,
+  AccountId accountId,
+  ProfileEntry? profile,
+) async {
+  final localAccountId = await context
+      .read<RepositoryInstances>()
+      .accountDb
+      .accountDataWrite((db) => db.account.createLocalAccountIdIfNeeded(accountId))
+      .ok();
+  if (localAccountId == null || !context.mounted) {
+    showSnackBar(R.strings.generic_error);
+    return;
+  }
+  await context.read<NavigatorStateBloc>().push(
+    ConversationPage(accountId, localAccountId, profile),
+  );
 }
 
 class ConversationPageUrlParser extends UrlParser<ConversationPage> {
@@ -41,23 +56,39 @@ class ConversationPageUrlParser extends UrlParser<ConversationPage> {
   Future<Result<(ConversationPage, List<String>), ()>> parseFromSegments(
     List<String> urlSegements,
   ) async {
-    final accountIdString = urlSegements.getAtOrNull(1);
-    if (accountIdString == null) {
+    final localAccountIdString = urlSegements.getAtOrNull(1);
+    if (localAccountIdString == null) {
       return Err(());
     }
-    final accountId = AccountId(aid: accountIdString);
+    final localAccountIdInt = int.tryParse(localAccountIdString);
+    if (localAccountIdInt == null) {
+      return Err(());
+    }
+
+    final localAccountId = LocalAccountId(localAccountIdInt);
+
+    final accountId = await r.accountDb
+        .accountData((db) => db.account.localAccountIdToAccountId(localAccountId))
+        .ok();
+    if (accountId == null) {
+      return Err(());
+    }
 
     final profile = await r.accountDb
         .accountData((db) => db.profile.getProfileEntry(accountId))
         .ok();
 
-    return Ok((ConversationPage(accountId, profile), urlSegements.skip(2).toList()));
+    return Ok((
+      ConversationPage(accountId, localAccountId, profile),
+      urlSegements.skip(2).toList(),
+    ));
   }
 }
 
 class ConversationPage extends MyScreenPage<()> {
   final AccountId accountId;
-  ConversationPage(this.accountId, ProfileEntry? profile)
+  final LocalAccountId localAccountId;
+  ConversationPage(this.accountId, this.localAccountId, ProfileEntry? profile)
     : super(
         builder: (closer) {
           return BlocProvider(
@@ -72,7 +103,7 @@ class ConversationPage extends MyScreenPage<()> {
       );
 
   @override
-  String get urlPath => "/$urlName/${accountId.aid}";
+  String get urlPath => "/$urlName/${localAccountId.id}";
 
   @override
   bool checkEquality(MyPageWithUrlNavigation<Object> other) =>

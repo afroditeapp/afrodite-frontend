@@ -1,5 +1,10 @@
 import 'package:openapi/api.dart';
 
+class LocalAccountId {
+  final int id;
+  LocalAccountId(this.id);
+}
+
 enum AccountState { initialSetup, normal, banned, pendingDeletion }
 
 extension AccountStateContainerToAccountState on AccountStateContainer {

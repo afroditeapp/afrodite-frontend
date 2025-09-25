@@ -55,6 +55,7 @@ part 'database.g.dart';
     schema.ProfileAttributesConfigAttributes,
     schema.ClientLanguageOnServer,
     // Account
+    schema.LocalAccountId,
     schema.AccountState,
     schema.Permissions,
     schema.ProfileVisibility,

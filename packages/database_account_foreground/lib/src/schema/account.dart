@@ -2,6 +2,11 @@ import 'package:database_converter/database_converter.dart';
 import 'package:database_utils/database_utils.dart';
 import 'package:drift/drift.dart';
 
+class LocalAccountId extends Table {
+  IntColumn get id => integer().map(const LocalAccountIdConverter()).autoIncrement()();
+  TextColumn get uuid => text().map(const AccountIdConverter()).unique()();
+}
+
 class AccountId extends SingleRowTable {
   TextColumn get accountId => text().map(const AccountIdConverter())();
 }

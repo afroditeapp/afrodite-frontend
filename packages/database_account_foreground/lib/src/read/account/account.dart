@@ -9,7 +9,13 @@ import '../../schema.dart' as schema;
 part 'account.g.dart';
 
 @DriftAccessor(
-  tables: [schema.AccountState, schema.Permissions, schema.ProfileVisibility, schema.EmailAddress],
+  tables: [
+    schema.LocalAccountId,
+    schema.AccountState,
+    schema.Permissions,
+    schema.ProfileVisibility,
+    schema.EmailAddress,
+  ],
 )
 class DaoReadAccount extends DatabaseAccessor<AccountForegroundDatabase>
     with _$DaoReadAccountMixin {
@@ -34,4 +40,10 @@ class DaoReadAccount extends DatabaseAccessor<AccountForegroundDatabase>
       (select(emailAddress)..where((t) => t.id.equals(SingleRowTable.ID.value)))
           .map((r) => r.emailAddress)
           .watchSingleOrNull();
+
+  Future<api.AccountId?> localAccountIdToAccountId(dbm.LocalAccountId id) async {
+    return (select(
+      localAccountId,
+    )..where((t) => t.id.equals(id.id))).map((r) => r.uuid).getSingleOrNull();
+  }
 }

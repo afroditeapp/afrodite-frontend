@@ -18,15 +18,25 @@ import 'package:openapi/api.dart';
 Widget showReportAction(BuildContext context, AccountId accountId, ProfileEntry? profile) {
   return MenuItemButton(
     onPressed: () async {
-      final chat = context.read<RepositoryInstances>().chat;
-      final isMatch = await chat.isInMatches(accountId);
-      final messages = await chat.getAllMessages(accountId);
-      if (!context.mounted) {
+      final r = context.read<RepositoryInstances>();
+      final isMatch = await r.chat.isInMatches(accountId);
+      final messages = await r.chat.getAllMessages(accountId);
+      final localAccountId = await r.accountDb
+          .accountDataWrite((db) => db.account.createLocalAccountIdIfNeeded(accountId))
+          .ok();
+      if (localAccountId == null || !context.mounted) {
+        showSnackBar(R.strings.generic_error);
         return;
       }
       await MyNavigator.push(
         context,
-        ReportPage(accountId: accountId, profile: profile, isMatch: isMatch, messages: messages),
+        ReportPage(
+          accountId: accountId,
+          localAccountId: localAccountId,
+          profile: profile,
+          isMatch: isMatch,
+          messages: messages,
+        ),
       );
     },
     child: Text(context.strings.report_screen_title),
@@ -41,11 +51,23 @@ class ReportPageUrlParser extends UrlParser<ReportPage> {
   Future<Result<(ReportPage, List<String>), ()>> parseFromSegments(
     List<String> urlSegements,
   ) async {
-    final accountIdString = urlSegements.getAtOrNull(1);
-    if (accountIdString == null) {
+    final localAccountIdString = urlSegements.getAtOrNull(1);
+    if (localAccountIdString == null) {
       return Err(());
     }
-    final accountId = AccountId(aid: accountIdString);
+    final localAccountIdInt = int.tryParse(localAccountIdString);
+    if (localAccountIdInt == null) {
+      return Err(());
+    }
+
+    final localAccountId = LocalAccountId(localAccountIdInt);
+
+    final accountId = await r.accountDb
+        .accountData((db) => db.account.localAccountIdToAccountId(localAccountId))
+        .ok();
+    if (accountId == null) {
+      return Err(());
+    }
 
     final profile = await r.accountDb
         .accountData((db) => db.profile.getProfileEntry(accountId))
@@ -54,7 +76,13 @@ class ReportPageUrlParser extends UrlParser<ReportPage> {
     final messages = await r.chat.getAllMessages(accountId);
 
     return Ok((
-      ReportPage(accountId: accountId, profile: profile, isMatch: isMatch, messages: messages),
+      ReportPage(
+        accountId: accountId,
+        localAccountId: localAccountId,
+        profile: profile,
+        isMatch: isMatch,
+        messages: messages,
+      ),
       urlSegements.skip(2).toList(),
     ));
   }
@@ -62,8 +90,10 @@ class ReportPageUrlParser extends UrlParser<ReportPage> {
 
 class ReportPage extends MyScreenPage<()> {
   final AccountId accountId;
+  final LocalAccountId localAccountId;
   ReportPage({
     required this.accountId,
+    required this.localAccountId,
     required ProfileEntry? profile,
     required bool isMatch,
     required List<MessageEntry> messages,
@@ -77,7 +107,7 @@ class ReportPage extends MyScreenPage<()> {
        );
 
   @override
-  String get urlPath => "/$urlName/${accountId.aid}";
+  String get urlPath => "/$urlName/${localAccountId.id}";
 
   @override
   bool checkEquality(MyPageWithUrlNavigation<Object> other) =>

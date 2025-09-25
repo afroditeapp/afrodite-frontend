@@ -1,3 +1,4 @@
+import 'package:database_model/database_model.dart';
 import 'package:drift/drift.dart';
 import 'package:openapi/api.dart';
 
@@ -12,6 +13,20 @@ class AccountIdConverter extends TypeConverter<AccountId, String> {
   @override
   String toSql(value) {
     return value.aid;
+  }
+}
+
+class LocalAccountIdConverter extends TypeConverter<LocalAccountId, int> {
+  const LocalAccountIdConverter();
+
+  @override
+  LocalAccountId fromSql(fromDb) {
+    return LocalAccountId(fromDb);
+  }
+
+  @override
+  int toSql(value) {
+    return value.id;
   }
 }
 

@@ -103,6 +103,13 @@ Future<NotificationNavigationAction> _handlePayload(
         return DoNothing();
       }
 
+      final localAccountId = await r.accountDb
+          .accountDataWrite((db) => db.account.createLocalAccountIdIfNeeded(accountId))
+          .ok();
+      if (localAccountId == null) {
+        return DoNothing();
+      }
+
       final profile = await r.accountDb
           .accountData((db) => db.profile.getProfileEntry(accountId))
           .ok();
@@ -113,7 +120,7 @@ Future<NotificationNavigationAction> _handlePayload(
       if (lastPage is ConversationPage && lastPage.accountId == profile.accountId) {
         return DoNothing();
       } else {
-        return NewScreen(ConversationPage(profile.accountId, profile));
+        return NewScreen(ConversationPage(profile.accountId, localAccountId, profile));
       }
     case NavigateToConversationList():
       if (navigatorState.pages.length == 1) {
