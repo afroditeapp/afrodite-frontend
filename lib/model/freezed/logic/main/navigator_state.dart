@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:app/logic/app/navigator_state.dart';
+import 'package:app/ui_utils/navigation/url.dart';
 import 'package:app/utils/result.dart';
 import 'package:flutter/material.dart';
 
@@ -40,15 +41,15 @@ abstract class UrlParser<T extends MyScreenPage<Object>> {
     return p.toString();
   }
 
-  Future<Result<(T, List<String>), ()>> parseFromSegments(List<String> urlSegements);
+  Future<Result<(T, UrlSegments), ()>> parseFromSegments(UrlSegments urlSegments);
 }
 
 mixin SimpleUrlParser<T extends MyScreenPage<Object>> implements UrlParser<T> {
   T create();
 
   @override
-  Future<Result<(T, List<String>), ()>> parseFromSegments(List<String> urlSegements) async {
-    return Ok((create(), urlSegements.skip(1).toList()));
+  Future<Result<(T, UrlSegments), ()>> parseFromSegments(UrlSegments urlSegments) async {
+    return Ok((create(), urlSegments.noArguments()));
   }
 }
 

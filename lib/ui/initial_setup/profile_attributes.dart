@@ -5,6 +5,7 @@ import "package:app/ui_utils/attribute/attribute.dart";
 import "package:app/ui_utils/attribute/state.dart";
 import "package:app/ui_utils/attribute/widgets/select_value.dart";
 import "package:app/ui_utils/consts/padding.dart";
+import "package:app/ui_utils/navigation/url.dart";
 import "package:app/utils/list.dart";
 import "package:app/utils/result.dart";
 import "package:flutter/material.dart";
@@ -15,21 +16,12 @@ import "package:app/ui_utils/initial_setup_common.dart";
 
 class AskProfileAttributesPageUrlParser extends UrlParser<AskProfileAttributesPage> {
   @override
-  Future<Result<(AskProfileAttributesPage, List<String>), ()>> parseFromSegments(
-    List<String> urlSegements,
+  Future<Result<(AskProfileAttributesPage, UrlSegments), ()>> parseFromSegments(
+    UrlSegments urlSegments,
   ) async {
-    final attributeIndexString = urlSegements.getAtOrNull(1);
-    if (attributeIndexString == null) {
-      return Err(());
-    }
-    final attributeIndex = int.tryParse(attributeIndexString);
-    if (attributeIndex == null) {
-      return Err(());
-    }
-    return Ok((
-      AskProfileAttributesPage(attributeIndex: attributeIndex),
-      urlSegements.skip(2).toList(),
-    ));
+    return urlSegments.intValue().mapOk(
+      (v) => (AskProfileAttributesPage(attributeIndex: v.$1), v.$2),
+    );
   }
 }
 

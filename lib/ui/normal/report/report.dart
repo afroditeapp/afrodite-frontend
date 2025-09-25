@@ -7,10 +7,10 @@ import 'package:app/ui/normal/report/report_chat_message.dart';
 import 'package:app/ui/normal/report/report_profile_image.dart';
 import 'package:app/ui_utils/extensions/api.dart';
 import 'package:app/ui_utils/dialog.dart';
+import 'package:app/ui_utils/navigation/url.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/result.dart';
 import 'package:database/database.dart';
-import 'package:database_utils/database_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
@@ -48,42 +48,28 @@ class ReportPageUrlParser extends UrlParser<ReportPage> {
   ReportPageUrlParser(this.r);
 
   @override
-  Future<Result<(ReportPage, List<String>), ()>> parseFromSegments(
-    List<String> urlSegements,
-  ) async {
-    final localAccountIdString = urlSegements.getAtOrNull(1);
-    if (localAccountIdString == null) {
+  Future<Result<(ReportPage, UrlSegments), ()>> parseFromSegments(UrlSegments urlSegments) async {
+    final output = await urlSegments.accountId(r.accountDb).ok();
+    if (output == null) {
       return Err(());
     }
-    final localAccountIdInt = int.tryParse(localAccountIdString);
-    if (localAccountIdInt == null) {
-      return Err(());
-    }
-
-    final localAccountId = LocalAccountId(localAccountIdInt);
-
-    final accountId = await r.accountDb
-        .accountData((db) => db.account.localAccountIdToAccountId(localAccountId))
-        .ok();
-    if (accountId == null) {
-      return Err(());
-    }
+    final (ids, nextSegments) = output;
 
     final profile = await r.accountDb
-        .accountData((db) => db.profile.getProfileEntry(accountId))
+        .accountData((db) => db.profile.getProfileEntry(ids.accountId))
         .ok();
-    final isMatch = await r.chat.isInMatches(accountId);
-    final messages = await r.chat.getAllMessages(accountId);
+    final isMatch = await r.chat.isInMatches(ids.accountId);
+    final messages = await r.chat.getAllMessages(ids.accountId);
 
     return Ok((
       ReportPage(
-        accountId: accountId,
-        localAccountId: localAccountId,
+        accountId: ids.accountId,
+        localAccountId: ids.localAccountId,
         profile: profile,
         isMatch: isMatch,
         messages: messages,
       ),
-      urlSegements.skip(2).toList(),
+      nextSegments,
     ));
   }
 }

@@ -6,8 +6,8 @@ import 'package:app/model/freezed/logic/account/account.dart';
 import 'package:app/ui/normal/report/report.dart';
 import 'package:app/ui/normal/settings/admin/account_admin_settings.dart';
 import 'package:app/ui_utils/extensions/api.dart';
+import 'package:app/ui_utils/navigation/url.dart';
 import 'package:app/utils/result.dart';
-import 'package:database_utils/database_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:database/database.dart';
@@ -67,29 +67,17 @@ class ViewProfilePageUrlParser extends UrlParser<ViewProfilePage> {
   ViewProfilePageUrlParser(this.r);
 
   @override
-  Future<Result<(ViewProfilePage, List<String>), ()>> parseFromSegments(
-    List<String> urlSegements,
+  Future<Result<(ViewProfilePage, UrlSegments), ()>> parseFromSegments(
+    UrlSegments urlSegments,
   ) async {
-    final localAccountIdString = urlSegements.getAtOrNull(1);
-    if (localAccountIdString == null) {
+    final output = await urlSegments.accountId(r.accountDb).ok();
+    if (output == null) {
       return Err(());
     }
-    final localAccountIdInt = int.tryParse(localAccountIdString);
-    if (localAccountIdInt == null) {
-      return Err(());
-    }
-
-    final localAccountId = LocalAccountId(localAccountIdInt);
-
-    final accountId = await r.accountDb
-        .accountData((db) => db.account.localAccountIdToAccountId(localAccountId))
-        .ok();
-    if (accountId == null) {
-      return Err(());
-    }
+    final (ids, nextSegments) = output;
 
     final profile = await r.accountDb
-        .accountData((db) => db.profile.getProfileEntry(accountId))
+        .accountData((db) => db.profile.getProfileEntry(ids.accountId))
         .ok();
     if (profile == null) {
       return Err(());
@@ -100,13 +88,13 @@ class ViewProfilePageUrlParser extends UrlParser<ViewProfilePage> {
     return Ok((
       ViewProfilePage(
         r,
-        localAccountId: localAccountId,
+        localAccountId: ids.localAccountId,
         initialProfile: profile,
         initialProfileAction: initialProfileAction,
         priority: ProfileRefreshPriority.low,
         noAction: false,
       ),
-      urlSegements.skip(2).toList(),
+      nextSegments,
     ));
   }
 }

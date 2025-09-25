@@ -40,6 +40,7 @@ import 'package:app/ui/normal/settings/statistics.dart';
 import 'package:app/ui/pending_deletion.dart';
 import 'package:app/ui/splash_screen.dart';
 import 'package:app/ui/unsupported_client.dart';
+import 'package:app/ui_utils/navigation/url.dart';
 import 'package:app/utils/result.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
@@ -79,7 +80,7 @@ class MyRouteInformationParser extends RouteInformationParser<UrlNavigationState
 
   @override
   Future<UrlNavigationState> parseRouteInformation(RouteInformation routeInformation) async {
-    var segments = [...routeInformation.uri.pathSegments];
+    var segments = UrlSegments.fromRouteInformation(routeInformation);
     final List<MyPageWithUrlNavigation<Object>> list = [];
 
     while (segments.isNotEmpty) {

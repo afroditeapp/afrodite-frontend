@@ -5,8 +5,8 @@ import 'package:app/logic/account/client_features_config.dart';
 import 'package:app/ui/normal/chat/message_row.dart';
 import 'package:app/ui/normal/report/report.dart';
 import 'package:app/ui_utils/dialog.dart';
+import 'package:app/ui_utils/navigation/url.dart';
 import 'package:app/ui_utils/profile_thumbnail_image_or_error.dart';
-import 'package:app/utils/list.dart';
 import 'package:app/utils/result.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -53,35 +53,20 @@ class ConversationPageUrlParser extends UrlParser<ConversationPage> {
   ConversationPageUrlParser(this.r);
 
   @override
-  Future<Result<(ConversationPage, List<String>), ()>> parseFromSegments(
-    List<String> urlSegements,
+  Future<Result<(ConversationPage, UrlSegments), ()>> parseFromSegments(
+    UrlSegments urlSegments,
   ) async {
-    final localAccountIdString = urlSegements.getAtOrNull(1);
-    if (localAccountIdString == null) {
+    final output = await urlSegments.accountId(r.accountDb).ok();
+    if (output == null) {
       return Err(());
     }
-    final localAccountIdInt = int.tryParse(localAccountIdString);
-    if (localAccountIdInt == null) {
-      return Err(());
-    }
-
-    final localAccountId = LocalAccountId(localAccountIdInt);
-
-    final accountId = await r.accountDb
-        .accountData((db) => db.account.localAccountIdToAccountId(localAccountId))
-        .ok();
-    if (accountId == null) {
-      return Err(());
-    }
+    final (ids, nextSegments) = output;
 
     final profile = await r.accountDb
-        .accountData((db) => db.profile.getProfileEntry(accountId))
+        .accountData((db) => db.profile.getProfileEntry(ids.accountId))
         .ok();
 
-    return Ok((
-      ConversationPage(accountId, localAccountId, profile),
-      urlSegements.skip(2).toList(),
-    ));
+    return Ok((ConversationPage(ids.accountId, ids.localAccountId, profile), nextSegments));
   }
 }
 

@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/logic/account/client_features_config.dart';
+import 'package:app/ui_utils/navigation/url.dart';
 import 'package:app/utils/result.dart';
-import 'package:database_utils/database_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
@@ -30,18 +30,8 @@ class ViewNewsPageUrlParser extends UrlParser<ViewNewsPage> {
   ViewNewsPageUrlParser();
 
   @override
-  Future<Result<(ViewNewsPage, List<String>), ()>> parseFromSegments(
-    List<String> urlSegements,
-  ) async {
-    final newsIdString = urlSegements.getAtOrNull(1);
-    if (newsIdString == null) {
-      return Err(());
-    }
-    final newsIdInt = int.tryParse(newsIdString);
-    if (newsIdInt == null) {
-      return Err(());
-    }
-    return Ok((ViewNewsPage(NewsId(nid: newsIdInt)), urlSegements.skip(2).toList()));
+  Future<Result<(ViewNewsPage, UrlSegments), ()>> parseFromSegments(UrlSegments urlSegments) async {
+    return urlSegments.intValue().mapOk((v) => (ViewNewsPage(NewsId(nid: v.$1)), v.$2));
   }
 }
 
