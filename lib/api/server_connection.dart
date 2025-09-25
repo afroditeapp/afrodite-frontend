@@ -360,7 +360,7 @@ Future<Uint8List> syncDataBytes(
   final currentMaintenanceInfo = await db
       .accountStreamSingle((db) => db.common.watchServerMaintenanceInfo())
       .ok();
-  final sendMaintenanceSyncVersion = currentMaintenanceInfo?.maintenanceLatest != null;
+  final sendMaintenanceSyncVersion = currentMaintenanceInfo?.startTime != null;
 
   final bytes = <int>[
     0, // Account

@@ -1,16 +1,21 @@
 import 'package:utils/utils.dart';
 
 class ServerMaintenanceInfo {
-  final UtcDateTime? maintenanceLatest;
-  final UtcDateTime? maintenanceViewed;
+  final UtcDateTime? startTime;
+  final UtcDateTime? endTime;
+  final UtcDateTime? infoViewed;
 
-  const ServerMaintenanceInfo({required this.maintenanceLatest, required this.maintenanceViewed});
+  const ServerMaintenanceInfo({
+    required this.startTime,
+    required this.endTime,
+    required this.infoViewed,
+  });
 
-  ServerMaintenanceInfo.empty() : maintenanceLatest = null, maintenanceViewed = null;
+  ServerMaintenanceInfo.empty() : startTime = null, endTime = null, infoViewed = null;
 
   int uiBadgeCount() {
-    final latest = maintenanceLatest?.toUnixEpochMilliseconds();
-    final viewed = maintenanceViewed?.toUnixEpochMilliseconds() ?? 0;
+    final latest = startTime?.toUnixEpochMilliseconds();
+    final viewed = infoViewed?.toUnixEpochMilliseconds() ?? 0;
     if (latest != null && latest > viewed) {
       return 1;
     } else {
@@ -21,10 +26,11 @@ class ServerMaintenanceInfo {
   @override
   bool operator ==(Object other) {
     return other is ServerMaintenanceInfo &&
-        maintenanceLatest == other.maintenanceLatest &&
-        maintenanceViewed == other.maintenanceViewed;
+        startTime == other.startTime &&
+        endTime == other.endTime &&
+        infoViewed == other.infoViewed;
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, maintenanceLatest, maintenanceViewed);
+  int get hashCode => Object.hash(runtimeType, startTime, endTime, infoViewed);
 }

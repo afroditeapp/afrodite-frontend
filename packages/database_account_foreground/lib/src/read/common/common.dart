@@ -22,8 +22,9 @@ class DaoReadCommon extends DatabaseAccessor<AccountForegroundDatabase> with _$D
   Stream<ServerMaintenanceInfo?> watchServerMaintenanceInfo() {
     return (select(serverMaintenance)..where((t) => t.id.equals(SingleRowTable.ID.value))).map((r) {
       return ServerMaintenanceInfo(
-        maintenanceLatest: r.serverMaintenanceUnixTime,
-        maintenanceViewed: r.serverMaintenanceUnixTimeViewed,
+        startTime: r.startTime,
+        endTime: r.endTime,
+        infoViewed: r.infoViewed,
       );
     }).watchSingleOrNull();
   }

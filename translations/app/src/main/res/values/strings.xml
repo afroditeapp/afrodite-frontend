@@ -439,7 +439,7 @@
 
     <!-- Menu screen -->
     <string name="menu_screen_title" description="Title for menu screen">Menu</string>
-    <string name="menu_screen_server_maintenance_info" description="Info text about server maintenance">Maintenance break: %s</string>
+    <string name="menu_screen_server_maintenance_title" description="Title text for server maintenance info">Maintenance break</string>
 
     <!-- Settings -->
     <string name="settings_screen_title" description="Title for settings screen">Settings</string>

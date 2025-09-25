@@ -22,7 +22,10 @@ class EditMaintenanceNotificationPage extends MyScreenPageLimited<()> {
 
 class EditMaintenanceNotificationScreen extends StatefulWidget {
   final ApiManager api;
-  EditMaintenanceNotificationScreen(RepositoryInstances r, {super.key}) : api = r.api;
+  final ServerConnectionManager connectionManager;
+  EditMaintenanceNotificationScreen(RepositoryInstances r, {super.key})
+    : api = r.api,
+      connectionManager = r.connectionManager;
 
   @override
   State<EditMaintenanceNotificationScreen> createState() =>
@@ -30,10 +33,11 @@ class EditMaintenanceNotificationScreen extends StatefulWidget {
 }
 
 class _EditMaintenanceNotificationScreenState extends State<EditMaintenanceNotificationScreen> {
-  DateTime? _selectedDate;
-  TimeOfDay? _selectedTime;
-  ScheduledMaintenanceStatus? _currentConfig;
+  final EditDateAndTimeController _startTime = EditDateAndTimeController();
+  final EditDateAndTimeController _endTime = EditDateAndTimeController();
+  ScheduledMaintenanceStatus? _currentState;
 
+  bool saveInProgress = false;
   bool isLoading = true;
 
   @override
@@ -47,7 +51,7 @@ class _EditMaintenanceNotificationScreenState extends State<EditMaintenanceNotif
 
     setState(() {
       isLoading = false;
-      _currentConfig = data;
+      _currentState = data;
     });
   }
 
@@ -65,7 +69,7 @@ class _EditMaintenanceNotificationScreenState extends State<EditMaintenanceNotif
   Widget displayState(BuildContext context) {
     if (isLoading) {
       return const Center(child: CircularProgressIndicator());
-    } else if (_currentConfig == null) {
+    } else if (_currentState == null) {
       return Center(child: Text(context.strings.generic_error));
     } else {
       return showContent(context);
@@ -75,17 +79,23 @@ class _EditMaintenanceNotificationScreenState extends State<EditMaintenanceNotif
   Widget showContent(BuildContext context) {
     return BlocBuilder<AccountBloc, AccountBlocData>(
       builder: (context, state) {
-        final ut = _currentConfig?.start?.ut;
-        final String? text;
-        if (ut == null) {
-          text = null;
+        final startTime = _currentState?.start?.toUtcDateTime();
+        final String start;
+        if (startTime == null) {
+          start = "null";
         } else {
-          final unixTime = UnixTime(ut: ut).toUtcDateTime();
-          text = fullTimeString(unixTime);
+          start = fullTimeString(startTime);
+        }
+        final endTime = _currentState?.end?.toUtcDateTime();
+        final String end;
+        if (endTime == null) {
+          end = "null";
+        } else {
+          end = fullTimeString(endTime);
         }
 
         final widgets = [
-          hPad(Text("Current value: ${text.toString()}")),
+          hPad(Text("Start: $start\nEnd: $end")),
           const Padding(padding: EdgeInsets.all(8.0)),
           hPad(displayMaintenanceNotification(context)),
         ];
@@ -102,6 +112,130 @@ class _EditMaintenanceNotificationScreenState extends State<EditMaintenanceNotif
   }
 
   Widget displayMaintenanceNotification(BuildContext context) {
+    final clearButton = ElevatedButton(
+      onPressed: () {
+        setState(() {
+          _startTime.clear();
+          _endTime.clear();
+        });
+      },
+      child: const Text("Clear"),
+    );
+
+    final saveButton = ElevatedButton(
+      onPressed: () {
+        if (saveInProgress) {
+          showSnackBar(context.strings.generic_previous_action_in_progress);
+          return;
+        }
+
+        final startTime = _startTime.timeInfo();
+        final endTime = _endTime.timeInfo();
+        final maintenanceStatus = ScheduledMaintenanceStatus(
+          start: startTime?.$1,
+          end: endTime?.$1,
+        );
+        final startTimeText = startTime?.$2 ?? "null";
+        final endTimeText = endTime?.$2 ?? "null";
+        showConfirmDialog(
+          context,
+          "Save selected times?",
+          details: "New start: $startTimeText\nNew end: $endTimeText",
+        ).then((value) async {
+          if (value != true) {
+            return;
+          }
+          saveInProgress = true;
+          final result = await widget.api.commonAdminAction(
+            (api) => api.postEditMaintenanceNotification(maintenanceStatus),
+          );
+          if (context.mounted) {
+            await widget.connectionManager.restartIfRestartNotOngoing();
+            await widget.connectionManager.tryWaitUntilConnected(waitTimeoutSeconds: 5);
+            await _refreshData();
+          }
+          switch (result) {
+            case Ok():
+              showSnackBar("Saved!");
+            case Err():
+              showSnackBar("Save failed!");
+          }
+          saveInProgress = false;
+        });
+      },
+      child: const Text("Save"),
+    );
+
+    final widgets = [
+      Text("Start time", style: Theme.of(context).textTheme.titleMedium),
+      const Padding(padding: EdgeInsets.all(8.0)),
+      EditDateAndTime(controller: _startTime),
+      const Padding(padding: EdgeInsets.all(8.0)),
+      Text("End time", style: Theme.of(context).textTheme.titleMedium),
+      const Padding(padding: EdgeInsets.all(8.0)),
+      EditDateAndTime(controller: _endTime),
+      const Padding(padding: EdgeInsets.all(8.0)),
+      clearButton,
+      const Padding(padding: EdgeInsets.all(8.0)),
+      saveButton,
+    ];
+
+    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: widgets);
+  }
+}
+
+class EditDateAndTimeController with ChangeNotifier {
+  DateTime? _selectedDate;
+  TimeOfDay? _selectedTime;
+
+  void clear() {
+    _selectedDate = null;
+    _selectedTime = null;
+    notifyListeners();
+  }
+
+  (UnixTime, String)? timeInfo() {
+    final currentSelection = _selectedDate;
+    if (currentSelection != null) {
+      var currentDateSelection = UtcDateTime.fromDateTime(currentSelection);
+      final hour = _selectedTime?.hour;
+      final minute = _selectedTime?.minute;
+      if (hour != null && minute != null) {
+        currentDateSelection = currentDateSelection.add(Duration(hours: hour, minutes: minute));
+      }
+      return (currentDateSelection.toUnixTime(), fullTimeString(currentDateSelection));
+    } else {
+      return null;
+    }
+  }
+
+  @override
+  String toString() {
+    return timeInfo()?.$2.toString() ?? "null";
+  }
+}
+
+class EditDateAndTime extends StatefulWidget {
+  final EditDateAndTimeController controller;
+  const EditDateAndTime({required this.controller, super.key});
+
+  @override
+  State<EditDateAndTime> createState() => _EditDateAndTimeState();
+}
+
+class _EditDateAndTimeState extends State<EditDateAndTime> {
+  @override
+  void initState() {
+    super.initState();
+    widget.controller.addListener(controllerChanged);
+  }
+
+  void controllerChanged() {
+    setState(() {});
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final dateButton = ElevatedButton(
       onPressed: () async {
         final last = DateTime.now().add(const Duration(days: 30));
@@ -115,7 +249,7 @@ class _EditMaintenanceNotificationScreenState extends State<EditMaintenanceNotif
         }
         setState(() {
           if (selected != null) {
-            _selectedDate = selected;
+            widget.controller._selectedDate = selected;
           }
         });
       },
@@ -123,7 +257,7 @@ class _EditMaintenanceNotificationScreenState extends State<EditMaintenanceNotif
     );
 
     final timeButton = ElevatedButton(
-      onPressed: _selectedDate == null
+      onPressed: widget.controller._selectedDate == null
           ? null
           : () async {
               final selected = await showTimePicker(context: context, initialTime: TimeOfDay.now());
@@ -132,67 +266,11 @@ class _EditMaintenanceNotificationScreenState extends State<EditMaintenanceNotif
               }
               setState(() {
                 if (selected != null) {
-                  _selectedTime = selected;
+                  widget.controller._selectedTime = selected;
                 }
               });
             },
       child: const Text("Select time"),
-    );
-
-    final currentSelection = _selectedDate;
-    UtcDateTime? currentDateSelection;
-    final ScheduledMaintenanceStatus maintenanceStatus;
-    final String currentDateSelectionText;
-    if (currentSelection != null) {
-      currentDateSelection = UtcDateTime.fromDateTime(currentSelection);
-      final hour = _selectedTime?.hour;
-      final minute = _selectedTime?.minute;
-      if (hour != null && minute != null) {
-        currentDateSelection = currentDateSelection.add(Duration(hours: hour, minutes: minute));
-      }
-      final UnixTime ut = currentDateSelection.toUnixTime();
-      maintenanceStatus = ScheduledMaintenanceStatus(start: ut);
-      currentDateSelectionText = fullTimeString(currentDateSelection);
-    } else {
-      maintenanceStatus = ScheduledMaintenanceStatus(start: null);
-      currentDateSelection = null;
-      currentDateSelectionText = "null";
-    }
-
-    final clearButton = ElevatedButton(
-      onPressed: () {
-        setState(() {
-          _selectedDate = null;
-          _selectedTime = null;
-        });
-      },
-      child: const Text("Clear"),
-    );
-
-    final saveButton = ElevatedButton(
-      onPressed: () {
-        showConfirmDialog(
-          context,
-          "Save selected time?",
-          details: "New time: $currentDateSelectionText",
-        ).then((value) async {
-          if (value == true) {
-            final result = await widget.api.commonAdminAction(
-              (api) => api.postEditMaintenanceNotification(maintenanceStatus),
-            );
-            switch (result) {
-              case Ok():
-                showSnackBar("Saved!");
-              case Err():
-                showSnackBar("Save failed!");
-            }
-          }
-          if (context.mounted) {
-            await _refreshData();
-          }
-        });
-      },
-      child: const Text("Save"),
     );
 
     final widgets = [
@@ -200,13 +278,19 @@ class _EditMaintenanceNotificationScreenState extends State<EditMaintenanceNotif
       const Padding(padding: EdgeInsets.all(8.0)),
       timeButton,
       const Padding(padding: EdgeInsets.all(8.0)),
-      Text(currentDateSelectionText),
-      const Padding(padding: EdgeInsets.all(8.0)),
-      clearButton,
-      const Padding(padding: EdgeInsets.all(8.0)),
-      saveButton,
+      Text(widget.controller.toString()),
     ];
 
-    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: widgets);
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: widgets,
+    );
+  }
+
+  @override
+  void dispose() {
+    widget.controller.removeListener(controllerChanged);
+    super.dispose();
   }
 }

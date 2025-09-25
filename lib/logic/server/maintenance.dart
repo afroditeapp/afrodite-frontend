@@ -26,7 +26,7 @@ class ServerMaintenanceBloc extends Bloc<ServerMaintenanceEvent, ServerMaintenan
       emit(data.value);
     });
     on<ViewServerMaintenanceInfo>((data, emit) async {
-      final latest = state.maintenanceLatest;
+      final latest = state.startTime;
       if (latest != null && state.uiBadgeCount() == 1) {
         await db.accountAction((db) => db.common.setMaintenanceTimeViewed(time: latest));
       }

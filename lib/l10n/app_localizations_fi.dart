@@ -852,9 +852,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get map_tile_error => 'Map tile error';
 
   @override
-  String menu_screen_server_maintenance_info(String p0) {
-    return 'Maintenance break: $p0';
-  }
+  String get menu_screen_server_maintenance_title => 'Maintenance break';
 
   @override
   String get menu_screen_title => 'Menu';

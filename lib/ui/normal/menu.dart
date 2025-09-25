@@ -211,8 +211,8 @@ class _MenuViewState extends State<MenuView> {
   Widget viewServerMaintenanceInfo() {
     return BlocBuilder<ServerMaintenanceBloc, ServerMaintenanceInfo>(
       builder: (context, state) {
-        final latest = state.maintenanceLatest;
-        if (latest == null) {
+        final startTime = state.startTime;
+        if (startTime == null) {
           return const SizedBox.shrink();
         }
 
@@ -221,7 +221,19 @@ class _MenuViewState extends State<MenuView> {
           context.read<ServerMaintenanceBloc>().add(ViewServerMaintenanceInfo());
         }
 
-        final time = fullTimeString(latest);
+        final startTimeString = fullTimeString(startTime);
+        final endTime = state.endTime;
+        String endTimeString;
+        if (endTime == null) {
+          endTimeString = "";
+        } else {
+          endTimeString = fullTimeString(endTime);
+          final startDate = startTimeString.split(" ").firstOrNull;
+          if (startDate != null && endTimeString.startsWith(startDate)) {
+            endTimeString = endTimeString.replaceFirst(startDate, "").trimLeft();
+          }
+          endTimeString = " - $endTimeString";
+        }
         return Container(
           color: Theme.of(context).colorScheme.primaryContainer,
           child: Padding(
@@ -230,8 +242,16 @@ class _MenuViewState extends State<MenuView> {
               children: [
                 const Padding(padding: EdgeInsets.only(right: 16)),
                 Icon(Icons.info, color: Theme.of(context).colorScheme.onPrimaryContainer),
-                const Padding(padding: EdgeInsets.only(right: 8)),
-                Text(context.strings.menu_screen_server_maintenance_info(time)),
+                const Padding(padding: EdgeInsets.only(right: 16)),
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(context.strings.menu_screen_server_maintenance_title),
+                    const Padding(padding: EdgeInsets.only(right: 8)),
+                    Text("$startTimeString$endTimeString"),
+                  ],
+                ),
                 const Padding(padding: EdgeInsets.only(right: 16)),
               ],
             ),

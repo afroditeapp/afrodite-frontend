@@ -20,21 +20,19 @@ class DaoWriteCommon extends DatabaseAccessor<AccountForegroundDatabase>
     with _$DaoWriteCommonMixin {
   DaoWriteCommon(super.db);
 
-  Future<void> setMaintenanceTime({required UtcDateTime? time}) async {
+  Future<void> setMaintenanceTime({required UtcDateTime? start, required UtcDateTime? end}) async {
     await into(serverMaintenance).insertOnConflictUpdate(
       ServerMaintenanceCompanion.insert(
         id: SingleRowTable.ID,
-        serverMaintenanceUnixTime: Value(time),
+        startTime: Value(start),
+        endTime: Value(end),
       ),
     );
   }
 
   Future<void> setMaintenanceTimeViewed({required UtcDateTime time}) async {
     await into(serverMaintenance).insertOnConflictUpdate(
-      ServerMaintenanceCompanion.insert(
-        id: SingleRowTable.ID,
-        serverMaintenanceUnixTimeViewed: Value(time),
-      ),
+      ServerMaintenanceCompanion.insert(id: SingleRowTable.ID, infoViewed: Value(time)),
     );
   }
 

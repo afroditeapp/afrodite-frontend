@@ -277,7 +277,12 @@ class AccountRepository extends DataRepositoryWithLifecycle {
 
   Future<Result<(), ()>> handleServerMaintenanceStatusEvent(ScheduledMaintenanceStatus event) {
     return db
-        .accountAction((db) => db.common.setMaintenanceTime(time: event.start?.toUtcDateTime()))
+        .accountAction(
+          (db) => db.common.setMaintenanceTime(
+            start: event.start?.toUtcDateTime(),
+            end: event.end?.toUtcDateTime(),
+          ),
+        )
         .emptyErr();
   }
 

@@ -1005,14 +1005,9 @@
   "@map_tile_error": {
     "description": "Snackbar text about map tile error"
   },
-  "menu_screen_server_maintenance_info": "Maintenance break: {p0}",
-  "@menu_screen_server_maintenance_info": {
-    "description": "Info text about server maintenance",
-    "placeholders": {
-      "p0": {
-        "type": "String"
-      }
-    }
+  "menu_screen_server_maintenance_title": "Maintenance break",
+  "@menu_screen_server_maintenance_title": {
+    "description": "Title text for server maintenance info"
   },
   "menu_screen_title": "Menu",
   "@menu_screen_title": {

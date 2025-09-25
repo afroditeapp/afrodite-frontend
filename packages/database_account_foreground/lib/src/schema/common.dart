@@ -16,9 +16,11 @@ class SyncVersion extends SingleRowTable {
 }
 
 class ServerMaintenance extends SingleRowTable {
-  IntColumn get serverMaintenanceUnixTime =>
+  IntColumn get startTime =>
       integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
-  IntColumn get serverMaintenanceUnixTimeViewed =>
+  IntColumn get endTime =>
+      integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
+  IntColumn get infoViewed =>
       integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
 }
 

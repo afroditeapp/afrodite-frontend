@@ -1497,35 +1497,38 @@ class $ServerMaintenanceTable extends schema.ServerMaintenance
     ),
   );
   @override
-  late final GeneratedColumnWithTypeConverter<UtcDateTime?, int>
-  serverMaintenanceUnixTime =
+  late final GeneratedColumnWithTypeConverter<UtcDateTime?, int> startTime =
       GeneratedColumn<int>(
-        'server_maintenance_unix_time',
+        'start_time',
         aliasedName,
         true,
         type: DriftSqlType.int,
         requiredDuringInsert: false,
       ).withConverter<UtcDateTime?>(
-        $ServerMaintenanceTable.$converterserverMaintenanceUnixTime,
+        $ServerMaintenanceTable.$converterstartTime,
       );
   @override
-  late final GeneratedColumnWithTypeConverter<UtcDateTime?, int>
-  serverMaintenanceUnixTimeViewed =
+  late final GeneratedColumnWithTypeConverter<UtcDateTime?, int> endTime =
       GeneratedColumn<int>(
-        'server_maintenance_unix_time_viewed',
+        'end_time',
+        aliasedName,
+        true,
+        type: DriftSqlType.int,
+        requiredDuringInsert: false,
+      ).withConverter<UtcDateTime?>($ServerMaintenanceTable.$converterendTime);
+  @override
+  late final GeneratedColumnWithTypeConverter<UtcDateTime?, int> infoViewed =
+      GeneratedColumn<int>(
+        'info_viewed',
         aliasedName,
         true,
         type: DriftSqlType.int,
         requiredDuringInsert: false,
       ).withConverter<UtcDateTime?>(
-        $ServerMaintenanceTable.$converterserverMaintenanceUnixTimeViewed,
+        $ServerMaintenanceTable.$converterinfoViewed,
       );
   @override
-  List<GeneratedColumn> get $columns => [
-    id,
-    serverMaintenanceUnixTime,
-    serverMaintenanceUnixTimeViewed,
-  ];
+  List<GeneratedColumn> get $columns => [id, startTime, endTime, infoViewed];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -1554,22 +1557,24 @@ class $ServerMaintenanceTable extends schema.ServerMaintenance
         DriftSqlType.int,
         data['${effectivePrefix}id'],
       )!,
-      serverMaintenanceUnixTime: $ServerMaintenanceTable
-          .$converterserverMaintenanceUnixTime
-          .fromSql(
-            attachedDatabase.typeMapping.read(
-              DriftSqlType.int,
-              data['${effectivePrefix}server_maintenance_unix_time'],
-            ),
-          ),
-      serverMaintenanceUnixTimeViewed: $ServerMaintenanceTable
-          .$converterserverMaintenanceUnixTimeViewed
-          .fromSql(
-            attachedDatabase.typeMapping.read(
-              DriftSqlType.int,
-              data['${effectivePrefix}server_maintenance_unix_time_viewed'],
-            ),
-          ),
+      startTime: $ServerMaintenanceTable.$converterstartTime.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.int,
+          data['${effectivePrefix}start_time'],
+        ),
+      ),
+      endTime: $ServerMaintenanceTable.$converterendTime.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.int,
+          data['${effectivePrefix}end_time'],
+        ),
+      ),
+      infoViewed: $ServerMaintenanceTable.$converterinfoViewed.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.int,
+          data['${effectivePrefix}info_viewed'],
+        ),
+      ),
     );
   }
 
@@ -1578,40 +1583,43 @@ class $ServerMaintenanceTable extends schema.ServerMaintenance
     return $ServerMaintenanceTable(attachedDatabase, alias);
   }
 
-  static TypeConverter<UtcDateTime?, int?> $converterserverMaintenanceUnixTime =
+  static TypeConverter<UtcDateTime?, int?> $converterstartTime =
       const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
-  static TypeConverter<UtcDateTime?, int?>
-  $converterserverMaintenanceUnixTimeViewed = const NullAwareTypeConverter.wrap(
-    UtcDateTimeConverter(),
-  );
+  static TypeConverter<UtcDateTime?, int?> $converterendTime =
+      const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
+  static TypeConverter<UtcDateTime?, int?> $converterinfoViewed =
+      const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
 }
 
 class ServerMaintenanceData extends DataClass
     implements Insertable<ServerMaintenanceData> {
   final int id;
-  final UtcDateTime? serverMaintenanceUnixTime;
-  final UtcDateTime? serverMaintenanceUnixTimeViewed;
+  final UtcDateTime? startTime;
+  final UtcDateTime? endTime;
+  final UtcDateTime? infoViewed;
   const ServerMaintenanceData({
     required this.id,
-    this.serverMaintenanceUnixTime,
-    this.serverMaintenanceUnixTimeViewed,
+    this.startTime,
+    this.endTime,
+    this.infoViewed,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
-    if (!nullToAbsent || serverMaintenanceUnixTime != null) {
-      map['server_maintenance_unix_time'] = Variable<int>(
-        $ServerMaintenanceTable.$converterserverMaintenanceUnixTime.toSql(
-          serverMaintenanceUnixTime,
-        ),
+    if (!nullToAbsent || startTime != null) {
+      map['start_time'] = Variable<int>(
+        $ServerMaintenanceTable.$converterstartTime.toSql(startTime),
       );
     }
-    if (!nullToAbsent || serverMaintenanceUnixTimeViewed != null) {
-      map['server_maintenance_unix_time_viewed'] = Variable<int>(
-        $ServerMaintenanceTable.$converterserverMaintenanceUnixTimeViewed.toSql(
-          serverMaintenanceUnixTimeViewed,
-        ),
+    if (!nullToAbsent || endTime != null) {
+      map['end_time'] = Variable<int>(
+        $ServerMaintenanceTable.$converterendTime.toSql(endTime),
+      );
+    }
+    if (!nullToAbsent || infoViewed != null) {
+      map['info_viewed'] = Variable<int>(
+        $ServerMaintenanceTable.$converterinfoViewed.toSql(infoViewed),
       );
     }
     return map;
@@ -1620,14 +1628,15 @@ class ServerMaintenanceData extends DataClass
   ServerMaintenanceCompanion toCompanion(bool nullToAbsent) {
     return ServerMaintenanceCompanion(
       id: Value(id),
-      serverMaintenanceUnixTime:
-          serverMaintenanceUnixTime == null && nullToAbsent
+      startTime: startTime == null && nullToAbsent
           ? const Value.absent()
-          : Value(serverMaintenanceUnixTime),
-      serverMaintenanceUnixTimeViewed:
-          serverMaintenanceUnixTimeViewed == null && nullToAbsent
+          : Value(startTime),
+      endTime: endTime == null && nullToAbsent
           ? const Value.absent()
-          : Value(serverMaintenanceUnixTimeViewed),
+          : Value(endTime),
+      infoViewed: infoViewed == null && nullToAbsent
+          ? const Value.absent()
+          : Value(infoViewed),
     );
   }
 
@@ -1638,12 +1647,9 @@ class ServerMaintenanceData extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return ServerMaintenanceData(
       id: serializer.fromJson<int>(json['id']),
-      serverMaintenanceUnixTime: serializer.fromJson<UtcDateTime?>(
-        json['serverMaintenanceUnixTime'],
-      ),
-      serverMaintenanceUnixTimeViewed: serializer.fromJson<UtcDateTime?>(
-        json['serverMaintenanceUnixTimeViewed'],
-      ),
+      startTime: serializer.fromJson<UtcDateTime?>(json['startTime']),
+      endTime: serializer.fromJson<UtcDateTime?>(json['endTime']),
+      infoViewed: serializer.fromJson<UtcDateTime?>(json['infoViewed']),
     );
   }
   @override
@@ -1651,38 +1657,31 @@ class ServerMaintenanceData extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
-      'serverMaintenanceUnixTime': serializer.toJson<UtcDateTime?>(
-        serverMaintenanceUnixTime,
-      ),
-      'serverMaintenanceUnixTimeViewed': serializer.toJson<UtcDateTime?>(
-        serverMaintenanceUnixTimeViewed,
-      ),
+      'startTime': serializer.toJson<UtcDateTime?>(startTime),
+      'endTime': serializer.toJson<UtcDateTime?>(endTime),
+      'infoViewed': serializer.toJson<UtcDateTime?>(infoViewed),
     };
   }
 
   ServerMaintenanceData copyWith({
     int? id,
-    Value<UtcDateTime?> serverMaintenanceUnixTime = const Value.absent(),
-    Value<UtcDateTime?> serverMaintenanceUnixTimeViewed = const Value.absent(),
+    Value<UtcDateTime?> startTime = const Value.absent(),
+    Value<UtcDateTime?> endTime = const Value.absent(),
+    Value<UtcDateTime?> infoViewed = const Value.absent(),
   }) => ServerMaintenanceData(
     id: id ?? this.id,
-    serverMaintenanceUnixTime: serverMaintenanceUnixTime.present
-        ? serverMaintenanceUnixTime.value
-        : this.serverMaintenanceUnixTime,
-    serverMaintenanceUnixTimeViewed: serverMaintenanceUnixTimeViewed.present
-        ? serverMaintenanceUnixTimeViewed.value
-        : this.serverMaintenanceUnixTimeViewed,
+    startTime: startTime.present ? startTime.value : this.startTime,
+    endTime: endTime.present ? endTime.value : this.endTime,
+    infoViewed: infoViewed.present ? infoViewed.value : this.infoViewed,
   );
   ServerMaintenanceData copyWithCompanion(ServerMaintenanceCompanion data) {
     return ServerMaintenanceData(
       id: data.id.present ? data.id.value : this.id,
-      serverMaintenanceUnixTime: data.serverMaintenanceUnixTime.present
-          ? data.serverMaintenanceUnixTime.value
-          : this.serverMaintenanceUnixTime,
-      serverMaintenanceUnixTimeViewed:
-          data.serverMaintenanceUnixTimeViewed.present
-          ? data.serverMaintenanceUnixTimeViewed.value
-          : this.serverMaintenanceUnixTimeViewed,
+      startTime: data.startTime.present ? data.startTime.value : this.startTime,
+      endTime: data.endTime.present ? data.endTime.value : this.endTime,
+      infoViewed: data.infoViewed.present
+          ? data.infoViewed.value
+          : this.infoViewed,
     );
   }
 
@@ -1690,71 +1689,68 @@ class ServerMaintenanceData extends DataClass
   String toString() {
     return (StringBuffer('ServerMaintenanceData(')
           ..write('id: $id, ')
-          ..write('serverMaintenanceUnixTime: $serverMaintenanceUnixTime, ')
-          ..write(
-            'serverMaintenanceUnixTimeViewed: $serverMaintenanceUnixTimeViewed',
-          )
+          ..write('startTime: $startTime, ')
+          ..write('endTime: $endTime, ')
+          ..write('infoViewed: $infoViewed')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(
-    id,
-    serverMaintenanceUnixTime,
-    serverMaintenanceUnixTimeViewed,
-  );
+  int get hashCode => Object.hash(id, startTime, endTime, infoViewed);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is ServerMaintenanceData &&
           other.id == this.id &&
-          other.serverMaintenanceUnixTime == this.serverMaintenanceUnixTime &&
-          other.serverMaintenanceUnixTimeViewed ==
-              this.serverMaintenanceUnixTimeViewed);
+          other.startTime == this.startTime &&
+          other.endTime == this.endTime &&
+          other.infoViewed == this.infoViewed);
 }
 
 class ServerMaintenanceCompanion
     extends UpdateCompanion<ServerMaintenanceData> {
   final Value<int> id;
-  final Value<UtcDateTime?> serverMaintenanceUnixTime;
-  final Value<UtcDateTime?> serverMaintenanceUnixTimeViewed;
+  final Value<UtcDateTime?> startTime;
+  final Value<UtcDateTime?> endTime;
+  final Value<UtcDateTime?> infoViewed;
   const ServerMaintenanceCompanion({
     this.id = const Value.absent(),
-    this.serverMaintenanceUnixTime = const Value.absent(),
-    this.serverMaintenanceUnixTimeViewed = const Value.absent(),
+    this.startTime = const Value.absent(),
+    this.endTime = const Value.absent(),
+    this.infoViewed = const Value.absent(),
   });
   ServerMaintenanceCompanion.insert({
     this.id = const Value.absent(),
-    this.serverMaintenanceUnixTime = const Value.absent(),
-    this.serverMaintenanceUnixTimeViewed = const Value.absent(),
+    this.startTime = const Value.absent(),
+    this.endTime = const Value.absent(),
+    this.infoViewed = const Value.absent(),
   });
   static Insertable<ServerMaintenanceData> custom({
     Expression<int>? id,
-    Expression<int>? serverMaintenanceUnixTime,
-    Expression<int>? serverMaintenanceUnixTimeViewed,
+    Expression<int>? startTime,
+    Expression<int>? endTime,
+    Expression<int>? infoViewed,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
-      if (serverMaintenanceUnixTime != null)
-        'server_maintenance_unix_time': serverMaintenanceUnixTime,
-      if (serverMaintenanceUnixTimeViewed != null)
-        'server_maintenance_unix_time_viewed': serverMaintenanceUnixTimeViewed,
+      if (startTime != null) 'start_time': startTime,
+      if (endTime != null) 'end_time': endTime,
+      if (infoViewed != null) 'info_viewed': infoViewed,
     });
   }
 
   ServerMaintenanceCompanion copyWith({
     Value<int>? id,
-    Value<UtcDateTime?>? serverMaintenanceUnixTime,
-    Value<UtcDateTime?>? serverMaintenanceUnixTimeViewed,
+    Value<UtcDateTime?>? startTime,
+    Value<UtcDateTime?>? endTime,
+    Value<UtcDateTime?>? infoViewed,
   }) {
     return ServerMaintenanceCompanion(
       id: id ?? this.id,
-      serverMaintenanceUnixTime:
-          serverMaintenanceUnixTime ?? this.serverMaintenanceUnixTime,
-      serverMaintenanceUnixTimeViewed:
-          serverMaintenanceUnixTimeViewed ??
-          this.serverMaintenanceUnixTimeViewed,
+      startTime: startTime ?? this.startTime,
+      endTime: endTime ?? this.endTime,
+      infoViewed: infoViewed ?? this.infoViewed,
     );
   }
 
@@ -1764,18 +1760,19 @@ class ServerMaintenanceCompanion
     if (id.present) {
       map['id'] = Variable<int>(id.value);
     }
-    if (serverMaintenanceUnixTime.present) {
-      map['server_maintenance_unix_time'] = Variable<int>(
-        $ServerMaintenanceTable.$converterserverMaintenanceUnixTime.toSql(
-          serverMaintenanceUnixTime.value,
-        ),
+    if (startTime.present) {
+      map['start_time'] = Variable<int>(
+        $ServerMaintenanceTable.$converterstartTime.toSql(startTime.value),
       );
     }
-    if (serverMaintenanceUnixTimeViewed.present) {
-      map['server_maintenance_unix_time_viewed'] = Variable<int>(
-        $ServerMaintenanceTable.$converterserverMaintenanceUnixTimeViewed.toSql(
-          serverMaintenanceUnixTimeViewed.value,
-        ),
+    if (endTime.present) {
+      map['end_time'] = Variable<int>(
+        $ServerMaintenanceTable.$converterendTime.toSql(endTime.value),
+      );
+    }
+    if (infoViewed.present) {
+      map['info_viewed'] = Variable<int>(
+        $ServerMaintenanceTable.$converterinfoViewed.toSql(infoViewed.value),
       );
     }
     return map;
@@ -1785,10 +1782,9 @@ class ServerMaintenanceCompanion
   String toString() {
     return (StringBuffer('ServerMaintenanceCompanion(')
           ..write('id: $id, ')
-          ..write('serverMaintenanceUnixTime: $serverMaintenanceUnixTime, ')
-          ..write(
-            'serverMaintenanceUnixTimeViewed: $serverMaintenanceUnixTimeViewed',
-          )
+          ..write('startTime: $startTime, ')
+          ..write('endTime: $endTime, ')
+          ..write('infoViewed: $infoViewed')
           ..write(')'))
         .toString();
   }

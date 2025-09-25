@@ -1520,11 +1520,11 @@ abstract class AppLocalizations {
   /// **'Map tile error'**
   String get map_tile_error;
 
-  /// Info text about server maintenance
+  /// Title text for server maintenance info
   ///
   /// In en, this message translates to:
-  /// **'Maintenance break: {p0}'**
-  String menu_screen_server_maintenance_info(String p0);
+  /// **'Maintenance break'**
+  String get menu_screen_server_maintenance_title;
 
   /// Title for menu screen
   ///
