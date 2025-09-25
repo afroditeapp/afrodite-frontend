@@ -113,6 +113,17 @@ Widget signInButtonArea(BuildContext context) {
   return Column(
     children: [
       const Padding(padding: EdgeInsets.symmetric(vertical: COMMON_PADDING)),
+      if (kIsWeb)
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(
+              width: 300,
+              child: Text(context.strings.login_screen_registering_disabled_on_web),
+            ),
+          ],
+        ),
+      if (kIsWeb) const Padding(padding: EdgeInsets.symmetric(vertical: COMMON_PADDING)),
       // MYSTERY: Without this Row, there is overflow warning if screen is rotated
       // for some reason. Content height is larger than screen height in
       // this case.

@@ -977,6 +977,10 @@
   "@login_screen_login_note_text_tos": {
     "description": "Text for terms of service link"
   },
+  "login_screen_registering_disabled_on_web": "Registering new accounts is not possible using a web browser.",
+  "@login_screen_registering_disabled_on_web": {
+    "description": "Text that registering new accounts is disabled on web"
+  },
   "login_screen_sign_in_with_error": "Sign in with failed",
   "@login_screen_sign_in_with_error": {
     "description": "Snackbar text for sign in with error"

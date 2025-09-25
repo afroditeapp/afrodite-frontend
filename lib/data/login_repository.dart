@@ -7,6 +7,7 @@ import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/data/utils/sign_in_with_apple.dart';
 import 'package:app/data/utils/sign_in_with_google.dart';
 import 'package:database/database.dart';
+import 'package:flutter/foundation.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:app/api/server_connection_manager.dart';
@@ -280,6 +281,7 @@ class LoginRepository extends AppSingleton {
   Future<Result<(), SignInWithEvent>> _handleSignInWithLoginInfoInternal(
     SignInWithLoginInfo info,
   ) async {
+    info.disableRegistering = kIsWeb;
     final login = await _apiNoConnection.account((api) => api.postSignInWithLogin(info)).ok();
     if (login == null) {
       return Err(SignInWithSignInError(CommonSignInError.loginApiRequestFailed));
