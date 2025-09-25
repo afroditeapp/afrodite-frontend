@@ -58,11 +58,6 @@ class AdminNotificationDataApi extends EditDataApi<AdminNotificationDataManager>
       return const Err("subscriptions == null");
     }
 
-    if (values.editedSettings.dailyEnabledTimeEndSeconds <
-        values.editedSettings.dailyEnabledTimeStartSeconds) {
-      return const Err("end time is smaller than start time");
-    }
-
     return await api
         .commonAdminAction((api) => api.postAdminNotificationSettings(values.editedSettings))
         .andThenEmptyErr(
@@ -106,16 +101,10 @@ class AdminNotificationDataManager extends BaseDataManager
           Padding(padding: EdgeInsetsGeometry.only(top: 8)),
           hPad(WeekdayDataViewer(dataManager: this)),
           Padding(padding: EdgeInsetsGeometry.only(top: 8)),
-          hPad(Text("Notification sending daily start and end time (UTC+0)")),
-          hPad(
-            Row(
-              spacing: 8,
-              children: [
-                DayTimestampDataViewer(dataManager: StartTimeManager(this)),
-                DayTimestampDataViewer(dataManager: EndTimeManager(this)),
-              ],
-            ),
-          ),
+          hPad(Text("Notification sending daily start and end time")),
+          Padding(padding: EdgeInsetsGeometry.only(top: 8)),
+          DayTimestampDataViewer(start: StartTimeManager(this), end: EndTimeManager(this)),
+          Padding(padding: EdgeInsetsGeometry.only(top: 8)),
         ],
       ),
     ),
