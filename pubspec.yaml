@@ -146,8 +146,8 @@ dependencies:
       url: https://github.com/jutuon/app_settings.git
       ref: e1d39e4ea052e9dd9a47fbab49737846d9b43264
 
-  firebase_core: ^3.8.0
-  firebase_messaging: ^15.1.5
+  native_push:
+    path: "../native_push"
   google_api_availability: ^5.0.0
 
   # Code reviewed 2025-08-14

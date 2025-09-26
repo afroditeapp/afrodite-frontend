@@ -6,11 +6,10 @@ import 'package:app/data/general/notification/state/profile_text_moderation_comp
 import 'package:app/data/general/notification/state/media_content_moderation_completed.dart';
 import 'package:app/data/general/notification/state/news_item_available.dart';
 import 'package:app/utils/app_error.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:google_api_availability/google_api_availability.dart';
 import 'package:logging/logging.dart';
+import 'package:native_push/native_push.dart';
 import 'package:openapi/api.dart';
 import 'package:app/api/api_provider.dart';
 import 'package:app/api/api_wrapper.dart';
@@ -39,8 +38,9 @@ class PushNotificationManager extends AppSingleton {
   }
 
   bool _initDone = false;
-  FirebaseApp? _firebaseApp;
-  StreamSubscription<String>? _tokenSubscription;
+  bool _nativePushInitialized = false;
+  StreamSubscription<(NotificationService, String?)>? _tokenSubscription;
+  StreamSubscription<Map<String, String>>? _notificationSubscription;
 
   final PublishSubject<String> _newFcmTokenReceived = PublishSubject();
 
@@ -53,9 +53,10 @@ class PushNotificationManager extends AppSingleton {
     }
     _initDone = true;
 
-    // NOTE: Creates another main isolate which prevents Drift
-    //       isolates from closing properly.
-    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+    // Set up background notification handler
+    _notificationSubscription = NativePush().notificationStream.listen((notificationData) {
+      _handleBackgroundNotification(notificationData);
+    });
 
     _newFcmTokenReceived
         .asyncMap((fcmToken) async {
@@ -68,11 +69,6 @@ class PushNotificationManager extends AppSingleton {
   Future<void> initPushNotifications() async {
     if (kIsWeb) {
       // Push notifications are not supported on web.
-      return;
-    }
-
-    if (DefaultFirebaseOptions.currentPlatform.apiKey.isEmpty) {
-      // Firebase configuration is missing
       return;
     }
 
@@ -90,46 +86,59 @@ class PushNotificationManager extends AppSingleton {
       }
     }
 
-    await _initFirebaseIfNeeded();
+    await _initNativePushIfNeeded();
 
     if (_tokenSubscription == null) {
-      _tokenSubscription = FirebaseMessaging.instance.onTokenRefresh.listen((token) {
-        _newFcmTokenReceived.add(token);
+      _tokenSubscription = NativePush().notificationTokenStream.listen((tokenTuple) {
+        final (service, token) = tokenTuple;
+        if (token != null) {
+          _newFcmTokenReceived.add(token);
+        }
       });
       _tokenSubscription?.onError((_) {
-        _log.error("FCM onTokenRefresh error");
+        _log.error("NativePush token refresh error");
       });
     }
 
-    final apnsToken = await FirebaseMessaging.instance.getAPNSToken();
-    if (Platform.isIOS && apnsToken == null) {
-      // iOS only. If apnsToken is null then getToken will throw exception.
-      // The token is not available directly after initializing FirebaseApp.
-      _log.error("Initing push notification support failed: APNS token is null");
-      unawaited(Future.delayed(Duration(seconds: initRetryWaitSeconds), initPushNotifications));
-      initRetryWaitSeconds *= 2;
+    final (service, token) = await NativePush().notificationToken;
+    if (token == null) {
+      _log.error("Notification token is null");
       return;
     }
 
-    final fcmToken = await FirebaseMessaging.instance.getToken();
-
-    if (fcmToken == null) {
-      _log.error("FCM token is null");
-      return;
-    }
-
-    _newFcmTokenReceived.add(fcmToken);
+    _newFcmTokenReceived.add(token);
   }
 
   /// Can be called multiple times
-  Future<void> _initFirebaseIfNeeded() async {
-    if (_firebaseApp == null) {
-      final app = await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-      if (app.isAutomaticDataCollectionEnabled) {
-        _log.info("Disabling Firebase automatic data collection");
-        await app.setAutomaticDataCollectionEnabled(false);
+  Future<void> _initNativePushIfNeeded() async {
+    if (!_nativePushInitialized) {
+      final Map<String, String>? firebaseOptions;
+      if (!kIsWeb && Platform.isAndroid) {
+        firebaseOptions = DefaultFirebaseOptions.android.toMapForNativePush();
+      } else {
+        firebaseOptions = null;
       }
-      _firebaseApp = app;
+
+      await NativePush().initialize(firebaseOptions: firebaseOptions);
+
+      // Register for remote notifications with all available options
+      final options = [
+        NotificationOption.alert,
+        NotificationOption.badge,
+        NotificationOption.sound,
+        NotificationOption.criticalAlert,
+        NotificationOption.carPlay,
+        NotificationOption.providesAppNotificationSettings,
+        NotificationOption.provisional,
+      ];
+
+      final registered = await NativePush().registerForRemoteNotification(options: options);
+      if (!registered) {
+        _log.error("Failed to register for remote notifications");
+        return;
+      }
+
+      _nativePushInitialized = true;
     }
   }
 
@@ -175,31 +184,19 @@ class PushNotificationManager extends AppSingleton {
 
   Future<void> logoutPushNotifications() async {
     await _tokenSubscription?.cancel();
-    if (_firebaseApp != null) {
-      try {
-        // On iOS this seems to throw exception about APNS token
-        // at least when APNS is not configured.
-        await FirebaseMessaging.instance.deleteToken();
-      } catch (e) {
-        _log.error("Failed to delete FCM token");
-        _log.finest("Exception: $e");
-      }
-    }
+    await _notificationSubscription?.cancel();
+    // TODO: Invalidate token?
   }
 }
 
-@pragma('vm:entry-point')
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  // This might run on a separate isolate than main isolate, so nothing is
-  // initialized in that case.
-
+Future<void> _handleBackgroundNotification(Map<String, String> _) async {
   initLogging();
   await SecureStorageManager.getInstance().init();
   final db = BackgroundDatabaseManager.getInstance();
   await db.init();
   await loadLocalizationsFromBackgroundDatabaseIfNeeded();
 
-  _log.info("Handling FCM background message");
+  _log.info("Handling background notification");
 
   final serverUrl = await db.commonStreamSingleOrDefault(
     (db) => db.app.watchServerUrl(),
@@ -400,4 +397,18 @@ Future<void> _handlePushNotificationAdminNotification(
     notification,
     accountBackgroundDb,
   );
+}
+
+class FirebaseOptions {
+  final String apiKey;
+  final String appId;
+  final String projectId;
+
+  const FirebaseOptions({required this.apiKey, required this.appId, required this.projectId});
+
+  Map<String, String> toMapForNativePush() => {
+    'apiKey': DefaultFirebaseOptions.currentPlatform.apiKey,
+    'applicationId': DefaultFirebaseOptions.currentPlatform.appId,
+    'projectId': DefaultFirebaseOptions.currentPlatform.projectId,
+  };
 }
