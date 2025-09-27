@@ -307,7 +307,7 @@ class ReceivedLikesOnlineIteratorIo extends OnlineIteratorIo {
                 ),
               )
               .andThen(
-                (_) => api.chat(
+                (_) => api.chatAction(
                   (api) => api.postMarkReceivedLikesViewed(
                     MarkReceivedLikesViewed(v: newLikes.map((v) => v.$2).toList()),
                   ),
