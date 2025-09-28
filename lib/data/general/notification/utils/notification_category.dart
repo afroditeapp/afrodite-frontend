@@ -39,7 +39,7 @@ sealed class NotificationCategory {
 class NotificationCategoryMessages extends NotificationCategory {
   const NotificationCategoryMessages()
     : super(
-        id: "notification_category_messages",
+        id: "messages",
         group: const NotificationCategoryGroupChat(),
         headsUpNotification: true,
       );
@@ -54,11 +54,7 @@ class NotificationCategoryMessages extends NotificationCategory {
 
 class NotificationCategoryLikes extends NotificationCategory {
   const NotificationCategoryLikes()
-    : super(
-        id: "notification_category_likes",
-        group: const NotificationCategoryGroupChat(),
-        headsUpNotification: true,
-      );
+    : super(id: "likes", group: const NotificationCategoryGroupChat(), headsUpNotification: true);
 
   @override
   String get title => R.strings.notification_category_likes;
@@ -71,7 +67,7 @@ class NotificationCategoryLikes extends NotificationCategory {
 class NotificationCategoryMediaContentModerationCompleted extends NotificationCategory {
   const NotificationCategoryMediaContentModerationCompleted()
     : super(
-        id: "notification_category_media_content_moderation_completed",
+        id: "media_content_moderation_completed",
         group: const NotificationCategoryGroupContentModeration(),
         headsUpNotification: true,
       );
@@ -87,7 +83,7 @@ class NotificationCategoryMediaContentModerationCompleted extends NotificationCa
 class NotificationCategoryProfileStringModerationCompleted extends NotificationCategory {
   const NotificationCategoryProfileStringModerationCompleted()
     : super(
-        id: "notification_category_profile_string_moderation_completed",
+        id: "profile_string_moderation_completed",
         group: const NotificationCategoryGroupContentModeration(),
         headsUpNotification: true,
       );
@@ -105,7 +101,7 @@ class NotificationCategoryProfileStringModerationCompleted extends NotificationC
 class NotificationCategoryNewsItemAvailable extends NotificationCategory {
   const NotificationCategoryNewsItemAvailable()
     : super(
-        id: "notification_category_news_item_available",
+        id: "news_item_available",
         group: const NotificationCategoryGroupGeneral(),
         headsUpNotification: true,
       );
@@ -121,7 +117,7 @@ class NotificationCategoryNewsItemAvailable extends NotificationCategory {
 class NotificationCategoryAutomaticProfileSearch extends NotificationCategory {
   const NotificationCategoryAutomaticProfileSearch()
     : super(
-        id: "notification_category_automatic_profile_search",
+        id: "automatic_profile_search",
         group: const NotificationCategoryGroupGeneral(),
         headsUpNotification: true,
       );
