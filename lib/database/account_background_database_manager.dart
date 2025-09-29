@@ -16,14 +16,6 @@ class AccountBackgroundDatabaseManager {
   final AccountId id;
   AccountBackgroundDatabaseManager(this.id, this.db);
 
-  bool _isClosed = false;
-  bool get isClosed => _isClosed;
-
-  bool _pushNotificationHandlerShouldCloseDb = false;
-  bool get pushNotificationHandlerShouldCloseDb => _pushNotificationHandlerShouldCloseDb;
-
-  bool pushNotificationHandlerIsUsingDb = false;
-
   // Access current account database
 
   Stream<T?> accountStream<T extends Object>(
@@ -127,12 +119,7 @@ class AccountBackgroundDatabaseManager {
   /// NOTE: The database isolate does not seem to close properly
   ///       as it is on running isolates list after calling this.
   Future<void> close() async {
-    if (pushNotificationHandlerIsUsingDb) {
-      _pushNotificationHandlerShouldCloseDb = true;
-    } else {
-      _isClosed = true;
-      await db.close();
-    }
+    await db.close();
   }
 }
 

@@ -37,7 +37,7 @@ final _log = Logger("main");
 
 bool loggerInitDone = false;
 
-void initLogging() {
+void _initLogging() {
   if (loggerInitDone) {
     return;
   }
@@ -56,7 +56,7 @@ void initLogging() {
 }
 
 Future<void> main() async {
-  initLogging();
+  _initLogging();
 
   WidgetsFlutterBinding.ensureInitialized();
 

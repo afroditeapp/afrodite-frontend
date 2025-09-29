@@ -7,15 +7,11 @@ import 'package:app/data/general/notification/state/profile_text_moderation_comp
 import 'package:app/data/general/notification/state/media_content_moderation_completed.dart';
 import 'package:app/data/general/notification/state/news_item_available.dart';
 import 'package:app/data/general/notification/utils/notification_payload.dart';
-import 'package:app/utils/app_error.dart';
 import 'package:flutter/foundation.dart';
 import 'package:google_api_availability/google_api_availability.dart';
 import 'package:logging/logging.dart';
 import 'package:native_push/native_push.dart';
 import 'package:openapi/api.dart';
-import 'package:app/api/api_provider.dart';
-import 'package:app/api/api_wrapper.dart';
-import 'package:app/config.dart';
 import 'package:app/data/general/notification/state/like_received.dart';
 import 'package:app/data/general/notification/state/message_received.dart';
 import 'package:app/data/login_repository.dart';
@@ -23,10 +19,7 @@ import 'package:app/data/notification_manager.dart';
 import 'package:app/database/account_background_database_manager.dart';
 import 'package:app/database/background_database_manager.dart';
 import 'package:app/firebase_options.dart';
-import 'package:app/localizations.dart';
-import 'package:app/main.dart';
 import 'package:utils/utils.dart';
-import 'package:encryption/encryption.dart';
 import 'package:app/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -246,152 +239,79 @@ class PushNotificationManager extends AppSingleton {
     }
 
     final accountBackgroundDb = await db.getAccountBackgroundDatabaseManager(currentAccountId);
-    await _handlePendingNotification(Ok(data), accountBackgroundDb);
+    await _handlePendingNotification(data, accountBackgroundDb);
     await accountBackgroundDb.close();
   }
-}
-
-Future<void> _handleBackgroundNotification(Map<String, String> _) async {
-  initLogging();
-  await SecureStorageManager.getInstance().init();
-  final db = BackgroundDatabaseManager.getInstance();
-  await db.init();
-  await loadLocalizationsFromBackgroundDatabaseIfNeeded();
-
-  _log.info("Handling background notification");
-
-  final serverUrl = await db.commonStreamSingleOrDefault(
-    (db) => db.app.watchServerUrl(),
-    defaultServerUrl(),
-  );
-  final currentAccountId = await db.commonStreamSingle((db) => db.loginSession.watchAccountId());
-  if (currentAccountId == null) {
-    _log.error("Downloading pending notification failed: AccountId is not available");
-    return;
-  }
-
-  final accountBackgroundDb = LoginRepository.getInstance().repositoriesOrNull?.accountBackgroundDb;
-  if (accountBackgroundDb != null &&
-      accountBackgroundDb.id == currentAccountId &&
-      !accountBackgroundDb.isClosed) {
-    // This is main isolate and database is already open
-    accountBackgroundDb.pushNotificationHandlerIsUsingDb = true;
-    await _handleWithAccountBackgroundDb(serverUrl, currentAccountId, accountBackgroundDb);
-    accountBackgroundDb.pushNotificationHandlerIsUsingDb = false;
-    if (accountBackgroundDb.pushNotificationHandlerShouldCloseDb) {
-      await accountBackgroundDb.close();
-    }
-  } else {
-    final accountBackgroundDb = await db.getAccountBackgroundDatabaseManager(currentAccountId);
-    await _handleWithAccountBackgroundDb(serverUrl, currentAccountId, accountBackgroundDb);
-    await accountBackgroundDb.close();
-  }
-}
-
-Future<void> _handleWithAccountBackgroundDb(
-  String serverUrl,
-  AccountId currentAccountId,
-  AccountBackgroundDatabaseManager accountBackgroundDb,
-) async {
-  final pendingNotificationToken = await accountBackgroundDb
-      .accountStreamSingle((db) => db.loginSession.watchPendingNotificationToken())
-      .ok();
-  if (pendingNotificationToken == null) {
-    _log.error("Downloading pending notification failed: pending notification token is null");
-    return;
-  }
-
-  final apiProvider = ApiProvider(serverUrl);
-  await apiProvider.init();
-  final ApiWrapper<CommonApi> commonApi = ApiWrapper(apiProvider.common, NoConnection());
-  final result = await commonApi.requestValue(
-    (api) => api.postGetPendingNotification(pendingNotificationToken),
-    logError: false,
-  );
-  await _handlePendingNotification(result, accountBackgroundDb);
 }
 
 Future<void> _handlePendingNotification(
-  Result<PendingNotificationWithData, ValueApiError> result,
+  PendingNotificationWithData v,
   AccountBackgroundDatabaseManager accountBackgroundDb,
 ) async {
-  switch (result) {
-    case Ok(:final v):
-      final manager = NotificationManager.getInstance();
-      await manager.init();
-      if (!await manager.areNotificationsEnabled()) {
-        return;
-      }
-      await _handlePushNotificationNewMessageReceived(v.newMessage, accountBackgroundDb);
-      await _handlePushNotificationReceivedLikesChanged(
-        v.receivedLikesChanged,
-        accountBackgroundDb,
-      );
-      final mediaContentAccepted = v.mediaContentAccepted;
-      if (mediaContentAccepted != null) {
-        await NotificationMediaContentModerationCompleted.handleAccepted(
-          mediaContentAccepted,
-          accountBackgroundDb,
-          onlyDbUpdate: true,
-        );
-      }
-      final mediaContentRejected = v.mediaContentRejected;
-      if (mediaContentRejected != null) {
-        await NotificationMediaContentModerationCompleted.handleRejected(
-          mediaContentRejected,
-          accountBackgroundDb,
-          onlyDbUpdate: true,
-        );
-      }
-      final mediaContentDeleted = v.mediaContentDeleted;
-      if (mediaContentDeleted != null) {
-        await NotificationMediaContentModerationCompleted.handleDeleted(
-          mediaContentDeleted,
-          accountBackgroundDb,
-          onlyDbUpdate: true,
-        );
-      }
-      await _handlePushNotificationNewsChanged(v.newsChanged, accountBackgroundDb);
-      final nameAccepted = v.profileNameAccepted;
-      if (nameAccepted != null) {
-        await NotificationProfileStringModerationCompleted.handleNameAccepted(
-          nameAccepted,
-          accountBackgroundDb,
-          onlyDbUpdate: true,
-        );
-      }
-      final nameRejected = v.profileNameRejected;
-      if (nameRejected != null) {
-        await NotificationProfileStringModerationCompleted.handleNameRejected(
-          nameRejected,
-          accountBackgroundDb,
-          onlyDbUpdate: true,
-        );
-      }
-      final textAccepted = v.profileTextAccepted;
-      if (textAccepted != null) {
-        await NotificationProfileStringModerationCompleted.handleTextAccepted(
-          textAccepted,
-          accountBackgroundDb,
-          onlyDbUpdate: true,
-        );
-      }
-      final textRejected = v.profileTextRejected;
-      if (textRejected != null) {
-        await NotificationProfileStringModerationCompleted.handleTextRejected(
-          textRejected,
-          accountBackgroundDb,
-          onlyDbUpdate: true,
-        );
-      }
-      await _handlePushNotificationAutomaticProfileSearchCompleted(
-        v.automaticProfileSearchCompleted,
-        accountBackgroundDb,
-      );
-      await _handlePushNotificationAdminNotification(v.adminNotification, accountBackgroundDb);
-    case Err():
-      _log.error("Downloading pending notification failed");
+  await _handlePushNotificationNewMessageReceived(v.newMessage, accountBackgroundDb);
+  await _handlePushNotificationReceivedLikesChanged(v.receivedLikesChanged, accountBackgroundDb);
+  final mediaContentAccepted = v.mediaContentAccepted;
+  if (mediaContentAccepted != null) {
+    await NotificationMediaContentModerationCompleted.handleAccepted(
+      mediaContentAccepted,
+      accountBackgroundDb,
+      onlyDbUpdate: true,
+    );
   }
+  final mediaContentRejected = v.mediaContentRejected;
+  if (mediaContentRejected != null) {
+    await NotificationMediaContentModerationCompleted.handleRejected(
+      mediaContentRejected,
+      accountBackgroundDb,
+      onlyDbUpdate: true,
+    );
+  }
+  final mediaContentDeleted = v.mediaContentDeleted;
+  if (mediaContentDeleted != null) {
+    await NotificationMediaContentModerationCompleted.handleDeleted(
+      mediaContentDeleted,
+      accountBackgroundDb,
+      onlyDbUpdate: true,
+    );
+  }
+  await _handlePushNotificationNewsChanged(v.newsChanged, accountBackgroundDb);
+  final nameAccepted = v.profileNameAccepted;
+  if (nameAccepted != null) {
+    await NotificationProfileStringModerationCompleted.handleNameAccepted(
+      nameAccepted,
+      accountBackgroundDb,
+      onlyDbUpdate: true,
+    );
+  }
+  final nameRejected = v.profileNameRejected;
+  if (nameRejected != null) {
+    await NotificationProfileStringModerationCompleted.handleNameRejected(
+      nameRejected,
+      accountBackgroundDb,
+      onlyDbUpdate: true,
+    );
+  }
+  final textAccepted = v.profileTextAccepted;
+  if (textAccepted != null) {
+    await NotificationProfileStringModerationCompleted.handleTextAccepted(
+      textAccepted,
+      accountBackgroundDb,
+      onlyDbUpdate: true,
+    );
+  }
+  final textRejected = v.profileTextRejected;
+  if (textRejected != null) {
+    await NotificationProfileStringModerationCompleted.handleTextRejected(
+      textRejected,
+      accountBackgroundDb,
+      onlyDbUpdate: true,
+    );
+  }
+  await _handlePushNotificationAutomaticProfileSearchCompleted(
+    v.automaticProfileSearchCompleted,
+    accountBackgroundDb,
+  );
+  await _handlePushNotificationAdminNotification(v.adminNotification, accountBackgroundDb);
 }
 
 Future<void> _handlePushNotificationNewMessageReceived(
