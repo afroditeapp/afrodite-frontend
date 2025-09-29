@@ -15,63 +15,75 @@ class PendingNotificationWithData {
   PendingNotificationWithData({
     this.adminNotification,
     this.automaticProfileSearchCompleted,
-    this.mediaContentModerationCompleted,
+    this.mediaContentAccepted,
+    this.mediaContentDeleted,
+    this.mediaContentRejected,
     this.newMessage,
     this.newsChanged,
-    this.profileStringModerationCompleted,
+    this.profileNameAccepted,
+    this.profileNameRejected,
+    this.profileTextAccepted,
+    this.profileTextRejected,
     this.receivedLikesChanged,
-    required this.value,
   });
 
-  /// Data for ADMIN_NOTIFICATION notification.
   AdminNotification? adminNotification;
 
-  /// Data for AUTOMATIC_PROFILE_SEARCH_COMPLETED notification.
   AutomaticProfileSearchCompletedNotification? automaticProfileSearchCompleted;
 
-  /// Data for MEDIA_CONTENT_MODERATION_COMPLETED notification.
-  MediaContentModerationCompletedNotification? mediaContentModerationCompleted;
+  NotificationStatus? mediaContentAccepted;
 
-  /// Data for NEW_MESSAGE notification.
+  NotificationStatus? mediaContentDeleted;
+
+  NotificationStatus? mediaContentRejected;
+
   NewMessageNotificationList? newMessage;
 
-  /// Data for NEWS_CHANGED notification.
   UnreadNewsCountResult? newsChanged;
 
-  /// Data for PROFILE_STRING_MODERATION_COMPLETED notification.
-  ProfileStringModerationCompletedNotification? profileStringModerationCompleted;
+  NotificationStatus? profileNameAccepted;
 
-  /// Data for RECEIVED_LIKES_CHANGED notification.
+  NotificationStatus? profileNameRejected;
+
+  NotificationStatus? profileTextAccepted;
+
+  NotificationStatus? profileTextRejected;
+
   NewReceivedLikesCountResult? receivedLikesChanged;
-
-  /// Pending notification (or multiple notifications which each have different type) not yet received notifications which push notification requests client to download.  The integer is a bitflag.  - const NEW_MESSAGE = 0x1; - const RECEIVED_LIKES_CHANGED = 0x2; - const MEDIA_CONTENT_MODERATION_COMPLETED = 0x4; - const NEWS_CHANGED = 0x8; - const PROFILE_STRING_MODERATION_COMPLETED = 0x10; - const AUTOMATIC_PROFILE_SEARCH_COMPLETED = 0x20; - const ADMIN_NOTIFICATION = 0x40; 
-  int value;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is PendingNotificationWithData &&
     other.adminNotification == adminNotification &&
     other.automaticProfileSearchCompleted == automaticProfileSearchCompleted &&
-    other.mediaContentModerationCompleted == mediaContentModerationCompleted &&
+    other.mediaContentAccepted == mediaContentAccepted &&
+    other.mediaContentDeleted == mediaContentDeleted &&
+    other.mediaContentRejected == mediaContentRejected &&
     other.newMessage == newMessage &&
     other.newsChanged == newsChanged &&
-    other.profileStringModerationCompleted == profileStringModerationCompleted &&
-    other.receivedLikesChanged == receivedLikesChanged &&
-    other.value == value;
+    other.profileNameAccepted == profileNameAccepted &&
+    other.profileNameRejected == profileNameRejected &&
+    other.profileTextAccepted == profileTextAccepted &&
+    other.profileTextRejected == profileTextRejected &&
+    other.receivedLikesChanged == receivedLikesChanged;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (adminNotification == null ? 0 : adminNotification!.hashCode) +
     (automaticProfileSearchCompleted == null ? 0 : automaticProfileSearchCompleted!.hashCode) +
-    (mediaContentModerationCompleted == null ? 0 : mediaContentModerationCompleted!.hashCode) +
+    (mediaContentAccepted == null ? 0 : mediaContentAccepted!.hashCode) +
+    (mediaContentDeleted == null ? 0 : mediaContentDeleted!.hashCode) +
+    (mediaContentRejected == null ? 0 : mediaContentRejected!.hashCode) +
     (newMessage == null ? 0 : newMessage!.hashCode) +
     (newsChanged == null ? 0 : newsChanged!.hashCode) +
-    (profileStringModerationCompleted == null ? 0 : profileStringModerationCompleted!.hashCode) +
-    (receivedLikesChanged == null ? 0 : receivedLikesChanged!.hashCode) +
-    (value.hashCode);
+    (profileNameAccepted == null ? 0 : profileNameAccepted!.hashCode) +
+    (profileNameRejected == null ? 0 : profileNameRejected!.hashCode) +
+    (profileTextAccepted == null ? 0 : profileTextAccepted!.hashCode) +
+    (profileTextRejected == null ? 0 : profileTextRejected!.hashCode) +
+    (receivedLikesChanged == null ? 0 : receivedLikesChanged!.hashCode);
 
   @override
-  String toString() => 'PendingNotificationWithData[adminNotification=$adminNotification, automaticProfileSearchCompleted=$automaticProfileSearchCompleted, mediaContentModerationCompleted=$mediaContentModerationCompleted, newMessage=$newMessage, newsChanged=$newsChanged, profileStringModerationCompleted=$profileStringModerationCompleted, receivedLikesChanged=$receivedLikesChanged, value=$value]';
+  String toString() => 'PendingNotificationWithData[adminNotification=$adminNotification, automaticProfileSearchCompleted=$automaticProfileSearchCompleted, mediaContentAccepted=$mediaContentAccepted, mediaContentDeleted=$mediaContentDeleted, mediaContentRejected=$mediaContentRejected, newMessage=$newMessage, newsChanged=$newsChanged, profileNameAccepted=$profileNameAccepted, profileNameRejected=$profileNameRejected, profileTextAccepted=$profileTextAccepted, profileTextRejected=$profileTextRejected, receivedLikesChanged=$receivedLikesChanged]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -85,10 +97,20 @@ class PendingNotificationWithData {
     } else {
       json[r'automatic_profile_search_completed'] = null;
     }
-    if (this.mediaContentModerationCompleted != null) {
-      json[r'media_content_moderation_completed'] = this.mediaContentModerationCompleted;
+    if (this.mediaContentAccepted != null) {
+      json[r'media_content_accepted'] = this.mediaContentAccepted;
     } else {
-      json[r'media_content_moderation_completed'] = null;
+      json[r'media_content_accepted'] = null;
+    }
+    if (this.mediaContentDeleted != null) {
+      json[r'media_content_deleted'] = this.mediaContentDeleted;
+    } else {
+      json[r'media_content_deleted'] = null;
+    }
+    if (this.mediaContentRejected != null) {
+      json[r'media_content_rejected'] = this.mediaContentRejected;
+    } else {
+      json[r'media_content_rejected'] = null;
     }
     if (this.newMessage != null) {
       json[r'new_message'] = this.newMessage;
@@ -100,17 +122,31 @@ class PendingNotificationWithData {
     } else {
       json[r'news_changed'] = null;
     }
-    if (this.profileStringModerationCompleted != null) {
-      json[r'profile_string_moderation_completed'] = this.profileStringModerationCompleted;
+    if (this.profileNameAccepted != null) {
+      json[r'profile_name_accepted'] = this.profileNameAccepted;
     } else {
-      json[r'profile_string_moderation_completed'] = null;
+      json[r'profile_name_accepted'] = null;
+    }
+    if (this.profileNameRejected != null) {
+      json[r'profile_name_rejected'] = this.profileNameRejected;
+    } else {
+      json[r'profile_name_rejected'] = null;
+    }
+    if (this.profileTextAccepted != null) {
+      json[r'profile_text_accepted'] = this.profileTextAccepted;
+    } else {
+      json[r'profile_text_accepted'] = null;
+    }
+    if (this.profileTextRejected != null) {
+      json[r'profile_text_rejected'] = this.profileTextRejected;
+    } else {
+      json[r'profile_text_rejected'] = null;
     }
     if (this.receivedLikesChanged != null) {
       json[r'received_likes_changed'] = this.receivedLikesChanged;
     } else {
       json[r'received_likes_changed'] = null;
     }
-      json[r'value'] = this.value;
     return json;
   }
 
@@ -135,12 +171,16 @@ class PendingNotificationWithData {
       return PendingNotificationWithData(
         adminNotification: AdminNotification.fromJson(json[r'admin_notification']),
         automaticProfileSearchCompleted: AutomaticProfileSearchCompletedNotification.fromJson(json[r'automatic_profile_search_completed']),
-        mediaContentModerationCompleted: MediaContentModerationCompletedNotification.fromJson(json[r'media_content_moderation_completed']),
+        mediaContentAccepted: NotificationStatus.fromJson(json[r'media_content_accepted']),
+        mediaContentDeleted: NotificationStatus.fromJson(json[r'media_content_deleted']),
+        mediaContentRejected: NotificationStatus.fromJson(json[r'media_content_rejected']),
         newMessage: NewMessageNotificationList.fromJson(json[r'new_message']),
         newsChanged: UnreadNewsCountResult.fromJson(json[r'news_changed']),
-        profileStringModerationCompleted: ProfileStringModerationCompletedNotification.fromJson(json[r'profile_string_moderation_completed']),
+        profileNameAccepted: NotificationStatus.fromJson(json[r'profile_name_accepted']),
+        profileNameRejected: NotificationStatus.fromJson(json[r'profile_name_rejected']),
+        profileTextAccepted: NotificationStatus.fromJson(json[r'profile_text_accepted']),
+        profileTextRejected: NotificationStatus.fromJson(json[r'profile_text_rejected']),
         receivedLikesChanged: NewReceivedLikesCountResult.fromJson(json[r'received_likes_changed']),
-        value: mapValueOfType<int>(json, r'value')!,
       );
     }
     return null;
@@ -188,7 +228,6 @@ class PendingNotificationWithData {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'value',
   };
 }
 

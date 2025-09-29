@@ -9,6 +9,7 @@ import 'package:app/logic/app/app_visibility_provider.dart';
 import 'package:app/logic/app/bottom_navigation_state.dart';
 import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/ui/normal/likes.dart';
+import 'package:openapi/api.dart';
 import 'package:utils/utils.dart';
 
 class NotificationLikeReceived extends AppSingletonNoInit {
@@ -23,14 +24,25 @@ class NotificationLikeReceived extends AppSingletonNoInit {
 
   int _receivedCount = 0;
 
+  Future<void> handleNewReceivedLikesCount(
+    NewReceivedLikesCountResult notification,
+    AccountBackgroundDatabaseManager accountBackgroundDb, {
+    bool onlyDbUpdate = false,
+  }) async {
+    await accountBackgroundDb.accountAction(
+      (db) => db.newReceivedLikesCount.updateSyncVersionReceivedLikes(notification),
+    );
+    if (!onlyDbUpdate) {
+      _receivedCount = notification.c.c;
+      await _updateNotification(accountBackgroundDb);
+    }
+  }
+
   Future<void> incrementReceivedLikesCount(
     AccountBackgroundDatabaseManager accountBackgroundDb,
   ) async {
     _receivedCount++;
-
-    if (!isLikesUiOpen()) {
-      await _updateNotification(accountBackgroundDb);
-    }
+    await _updateNotification(accountBackgroundDb);
   }
 
   Future<void> hideReceivedLikesNotification(
@@ -43,6 +55,10 @@ class NotificationLikeReceived extends AppSingletonNoInit {
   Future<void> _updateNotification(AccountBackgroundDatabaseManager accountBackgroundDb) async {
     if (_receivedCount <= 0) {
       await notifications.hideNotification(NotificationIdStatic.likeReceived.id);
+      return;
+    }
+
+    if (isLikesUiOpen()) {
       return;
     }
 

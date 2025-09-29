@@ -24,8 +24,9 @@ class NotificationMessageReceived extends AppSingletonNoInit {
     AccountId accountId,
     int count,
     ConversationId? conversation,
-    AccountBackgroundDatabaseManager accountBackgroundDb,
-  ) async {
+    AccountBackgroundDatabaseManager accountBackgroundDb, {
+    bool onlyDbUpdate = false,
+  }) async {
     final dbConversationId = await accountBackgroundDb
         .accountData((db) => db.notification.getConversationId(accountId))
         .ok();
@@ -53,7 +54,7 @@ class NotificationMessageReceived extends AppSingletonNoInit {
 
     if (count <= 0 || _isConversationUiOpen(accountId) || notificationShown) {
       await notifications.hideNotification(notificationId);
-    } else {
+    } else if (!onlyDbUpdate) {
       await _showNotification(
         accountId,
         notificationId,

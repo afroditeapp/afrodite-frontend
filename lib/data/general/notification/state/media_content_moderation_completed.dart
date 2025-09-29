@@ -17,49 +17,62 @@ class NotificationMediaContentModerationCompleted extends AppSingletonNoInit {
 
   final notifications = NotificationManager.getInstance();
 
-  static Future<void> handleMediaContentModerationCompleted(
-    MediaContentModerationCompletedNotification notification,
-    AccountBackgroundDatabaseManager accountBackgroundDb,
-  ) async {
+  static Future<void> handleAccepted(
+    NotificationStatus notification,
+    AccountBackgroundDatabaseManager accountBackgroundDb, {
+    bool onlyDbUpdate = false,
+  }) async {
     final showAccepted =
         await accountBackgroundDb
             .accountDataWrite(
-              (db) => db.notification.mediaContentAccepted.shouldBeShown(notification.accepted),
+              (db) => db.notification.mediaContentAccepted.shouldBeShown(notification),
             )
             .ok() ??
         false;
 
-    if (showAccepted) {
+    if (!onlyDbUpdate && showAccepted) {
       await NotificationMediaContentModerationCompleted.getInstance().show(
         ModerationCompletedState.accepted,
         accountBackgroundDb,
       );
     }
+  }
 
+  static Future<void> handleRejected(
+    NotificationStatus notification,
+    AccountBackgroundDatabaseManager accountBackgroundDb, {
+    bool onlyDbUpdate = false,
+  }) async {
     final showRejected =
         await accountBackgroundDb
             .accountDataWrite(
-              (db) => db.notification.mediaContentRejected.shouldBeShown(notification.rejected),
+              (db) => db.notification.mediaContentRejected.shouldBeShown(notification),
             )
             .ok() ??
         false;
 
-    if (showRejected) {
+    if (!onlyDbUpdate && showRejected) {
       await NotificationMediaContentModerationCompleted.getInstance().show(
         ModerationCompletedState.rejected,
         accountBackgroundDb,
       );
     }
+  }
 
+  static Future<void> handleDeleted(
+    NotificationStatus notification,
+    AccountBackgroundDatabaseManager accountBackgroundDb, {
+    bool onlyDbUpdate = false,
+  }) async {
     final showDeleted =
         await accountBackgroundDb
             .accountDataWrite(
-              (db) => db.notification.mediaContentDeleted.shouldBeShown(notification.deleted),
+              (db) => db.notification.mediaContentDeleted.shouldBeShown(notification),
             )
             .ok() ??
         false;
 
-    if (showDeleted) {
+    if (!onlyDbUpdate && showDeleted) {
       await NotificationMediaContentModerationCompleted.getInstance().show(
         ModerationCompletedState.deleted,
         accountBackgroundDb,

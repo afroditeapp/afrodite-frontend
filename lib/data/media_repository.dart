@@ -147,8 +147,16 @@ class MediaRepository extends DataRepositoryWithLifecycle {
       return;
     }
 
-    await NotificationMediaContentModerationCompleted.handleMediaContentModerationCompleted(
-      notification,
+    await NotificationMediaContentModerationCompleted.handleAccepted(
+      notification.accepted,
+      accountBackgroundDb,
+    );
+    await NotificationMediaContentModerationCompleted.handleRejected(
+      notification.rejected,
+      accountBackgroundDb,
+    );
+    await NotificationMediaContentModerationCompleted.handleDeleted(
+      notification.deleted,
       accountBackgroundDb,
     );
 

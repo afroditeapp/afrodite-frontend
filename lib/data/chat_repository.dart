@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:app/data/chat/message_manager/utils.dart';
-import 'package:async/async.dart' show StreamExtensions;
 import 'package:native_utils/native_utils.dart';
 import 'package:openapi/api.dart';
 import 'package:app/api/server_connection_manager.dart';
@@ -262,22 +261,14 @@ class ChatRepository extends DataRepositoryWithLifecycle {
   }
 
   Future<void> receivedLikesCountRefresh() async {
-    final currentCount = await accountBackgroundDb
-        .accountStream((db) => db.newReceivedLikesCount.watchReceivedLikesCount())
-        .firstOrNull;
-    final currentCountInt = currentCount?.c ?? 0;
-
     final r = await api.chat((api) => api.postGetNewReceivedLikesCount()).ok();
     if (r == null) {
       return;
     }
-    await accountBackgroundDb.accountAction(
-      (db) => db.newReceivedLikesCount.updateSyncVersionReceivedLikes(r),
+    await NotificationLikeReceived.getInstance().handleNewReceivedLikesCount(
+      r,
+      accountBackgroundDb,
     );
-
-    if (currentCountInt == 0 && r.c.c > 0) {
-      await NotificationLikeReceived.getInstance().incrementReceivedLikesCount(accountBackgroundDb);
-    }
   }
 
   // Local messages

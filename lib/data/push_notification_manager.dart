@@ -260,40 +260,73 @@ Future<void> _handlePendingNotification(
       if (!await manager.areNotificationsEnabled()) {
         return;
       }
-
-      if ((v.value & 0x1) == 0x1) {
-        await _handlePushNotificationNewMessageReceived(v.newMessage, accountBackgroundDb);
-      }
-      if ((v.value & 0x2) == 0x2) {
-        await _handlePushNotificationReceivedLikesChanged(
-          v.receivedLikesChanged,
+      await _handlePushNotificationNewMessageReceived(v.newMessage, accountBackgroundDb);
+      await _handlePushNotificationReceivedLikesChanged(
+        v.receivedLikesChanged,
+        accountBackgroundDb,
+      );
+      final mediaContentAccepted = v.mediaContentAccepted;
+      if (mediaContentAccepted != null) {
+        await NotificationMediaContentModerationCompleted.handleAccepted(
+          mediaContentAccepted,
           accountBackgroundDb,
+          onlyDbUpdate: true,
         );
       }
-      if ((v.value & 0x4) == 0x4) {
-        await _handlePushNotificationMediaContentModerationCompleted(
-          v.mediaContentModerationCompleted,
+      final mediaContentRejected = v.mediaContentRejected;
+      if (mediaContentRejected != null) {
+        await NotificationMediaContentModerationCompleted.handleRejected(
+          mediaContentRejected,
           accountBackgroundDb,
+          onlyDbUpdate: true,
         );
       }
-      if ((v.value & 0x8) == 0x8) {
-        await _handlePushNotificationNewsChanged(v.newsChanged, accountBackgroundDb);
-      }
-      if ((v.value & 0x10) == 0x10) {
-        await _handlePushNotificationProfileStringModerationCompleted(
-          v.profileStringModerationCompleted,
+      final mediaContentDeleted = v.mediaContentDeleted;
+      if (mediaContentDeleted != null) {
+        await NotificationMediaContentModerationCompleted.handleDeleted(
+          mediaContentDeleted,
           accountBackgroundDb,
+          onlyDbUpdate: true,
         );
       }
-      if ((v.value & 0x20) == 0x20) {
-        await _handlePushNotificationAutomaticProfileSearchCompleted(
-          v.automaticProfileSearchCompleted,
+      await _handlePushNotificationNewsChanged(v.newsChanged, accountBackgroundDb);
+      final nameAccepted = v.profileNameAccepted;
+      if (nameAccepted != null) {
+        await NotificationProfileStringModerationCompleted.handleNameAccepted(
+          nameAccepted,
           accountBackgroundDb,
+          onlyDbUpdate: true,
         );
       }
-      if ((v.value & 0x40) == 0x40) {
-        await _handlePushNotificationAdminNotification(v.adminNotification, accountBackgroundDb);
+      final nameRejected = v.profileNameRejected;
+      if (nameRejected != null) {
+        await NotificationProfileStringModerationCompleted.handleNameRejected(
+          nameRejected,
+          accountBackgroundDb,
+          onlyDbUpdate: true,
+        );
       }
+      final textAccepted = v.profileTextAccepted;
+      if (textAccepted != null) {
+        await NotificationProfileStringModerationCompleted.handleTextAccepted(
+          textAccepted,
+          accountBackgroundDb,
+          onlyDbUpdate: true,
+        );
+      }
+      final textRejected = v.profileTextRejected;
+      if (textRejected != null) {
+        await NotificationProfileStringModerationCompleted.handleTextRejected(
+          textRejected,
+          accountBackgroundDb,
+          onlyDbUpdate: true,
+        );
+      }
+      await _handlePushNotificationAutomaticProfileSearchCompleted(
+        v.automaticProfileSearchCompleted,
+        accountBackgroundDb,
+      );
+      await _handlePushNotificationAdminNotification(v.adminNotification, accountBackgroundDb);
     case Err():
       _log.error("Downloading pending notification failed");
   }
@@ -306,13 +339,13 @@ Future<void> _handlePushNotificationNewMessageReceived(
   if (messageSenders == null) {
     return;
   }
-
   for (final sender in messageSenders.v) {
     await NotificationMessageReceived.getInstance().updateMessageReceivedCount(
       sender.a,
       sender.m,
       sender.c,
       accountBackgroundDb,
+      onlyDbUpdate: true,
     );
     // Prevent showing the notification again if it is dismissed, another
     // message push notfication for the same sender arives and app is not
@@ -330,36 +363,10 @@ Future<void> _handlePushNotificationReceivedLikesChanged(
   if (r == null) {
     return;
   }
-
-  await NotificationLikeReceived.getInstance().incrementReceivedLikesCount(accountBackgroundDb);
-  await accountBackgroundDb.accountAction(
-    (db) => db.newReceivedLikesCount.updateSyncVersionReceivedLikes(r),
-  );
-}
-
-Future<void> _handlePushNotificationMediaContentModerationCompleted(
-  MediaContentModerationCompletedNotification? notification,
-  AccountBackgroundDatabaseManager accountBackgroundDb,
-) async {
-  if (notification == null) {
-    return;
-  }
-  await NotificationMediaContentModerationCompleted.handleMediaContentModerationCompleted(
-    notification,
+  await NotificationLikeReceived.getInstance().handleNewReceivedLikesCount(
+    r,
     accountBackgroundDb,
-  );
-}
-
-Future<void> _handlePushNotificationProfileStringModerationCompleted(
-  ProfileStringModerationCompletedNotification? notification,
-  AccountBackgroundDatabaseManager accountBackgroundDb,
-) async {
-  if (notification == null) {
-    return;
-  }
-  await NotificationProfileStringModerationCompleted.handleProfileStringModerationCompleted(
-    notification,
-    accountBackgroundDb,
+    onlyDbUpdate: true,
   );
 }
 
@@ -370,7 +377,11 @@ Future<void> _handlePushNotificationNewsChanged(
   if (r == null) {
     return;
   }
-  await NotificationNewsItemAvailable.getInstance().handleNewsCountUpdate(r, accountBackgroundDb);
+  await NotificationNewsItemAvailable.getInstance().handleNewsCountUpdate(
+    r,
+    accountBackgroundDb,
+    onlyDbUpdate: true,
+  );
 }
 
 Future<void> _handlePushNotificationAutomaticProfileSearchCompleted(
@@ -383,6 +394,7 @@ Future<void> _handlePushNotificationAutomaticProfileSearchCompleted(
   await NotificationAutomaticProfileSearch.handleAutomaticProfileSearchCompleted(
     notification,
     accountBackgroundDb,
+    onlyDbUpdate: true,
   );
 }
 
@@ -396,6 +408,7 @@ Future<void> _handlePushNotificationAdminNotification(
   await NotificationNewsItemAvailable.getInstance().showAdminNotification(
     notification,
     accountBackgroundDb,
+    onlyDbUpdate: true,
   );
 }
 

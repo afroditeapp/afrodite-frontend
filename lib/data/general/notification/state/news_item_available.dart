@@ -20,15 +20,16 @@ class NotificationNewsItemAvailable extends AppSingletonNoInit {
 
   Future<Result<(), ()>> handleNewsCountUpdate(
     UnreadNewsCountResult r,
-    AccountBackgroundDatabaseManager accountBackgroundDb,
-  ) async {
+    AccountBackgroundDatabaseManager accountBackgroundDb, {
+    bool onlyDbUpdate = false,
+  }) async {
     final currentCount = await accountBackgroundDb
         .accountStream((db) => db.news.watchUnreadNewsCount())
         .firstOrNull;
     final currentCountInt = currentCount?.c ?? 0;
-    if (currentCountInt < r.c.c) {
+    if (!onlyDbUpdate && currentCountInt < r.c.c) {
       await _updateNotification(true, accountBackgroundDb);
-    } else if (r.c.c == 0) {
+    } else if (!onlyDbUpdate && r.c.c == 0) {
       await _updateNotification(false, accountBackgroundDb);
     }
 
@@ -60,8 +61,9 @@ class NotificationNewsItemAvailable extends AppSingletonNoInit {
 
   Future<Result<(), ()>> showAdminNotification(
     AdminNotification notificationContent,
-    AccountBackgroundDatabaseManager accountBackgroundDb,
-  ) async {
+    AccountBackgroundDatabaseManager accountBackgroundDb, {
+    bool onlyDbUpdate = false,
+  }) async {
     Map<String, dynamic> booleanValues = notificationContent.toJson();
     List<String> trueValues = [];
     for (final e in booleanValues.entries) {
@@ -69,16 +71,18 @@ class NotificationNewsItemAvailable extends AppSingletonNoInit {
         trueValues.add(e.key);
       }
     }
-    await notifications.sendNotification(
-      id: NotificationIdStatic.adminNotification.id,
-      title: "Admin notification",
-      body: trueValues.join("\n"),
-      category: const NotificationCategoryNewsItemAvailable(),
-      notificationPayload: NavigateToModeratorTasks(
-        receiverAccountId: accountBackgroundDb.accountId(),
-      ),
-      accountBackgroundDb: accountBackgroundDb,
-    );
+    if (!onlyDbUpdate) {
+      await notifications.sendNotification(
+        id: NotificationIdStatic.adminNotification.id,
+        title: "Admin notification",
+        body: trueValues.join("\n"),
+        category: const NotificationCategoryNewsItemAvailable(),
+        notificationPayload: NavigateToModeratorTasks(
+          receiverAccountId: accountBackgroundDb.accountId(),
+        ),
+        accountBackgroundDb: accountBackgroundDb,
+      );
+    }
 
     return await accountBackgroundDb
         .accountAction((db) => db.notification.updateAdminNotification(notificationContent))

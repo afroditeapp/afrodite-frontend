@@ -17,64 +17,83 @@ class NotificationProfileStringModerationCompleted extends AppSingletonNoInit {
 
   final notifications = NotificationManager.getInstance();
 
-  static Future<void> handleProfileStringModerationCompleted(
-    ProfileStringModerationCompletedNotification notification,
-    AccountBackgroundDatabaseManager accountBackgroundDb,
-  ) async {
+  static Future<void> handleNameAccepted(
+    NotificationStatus notification,
+    AccountBackgroundDatabaseManager accountBackgroundDb, {
+    bool onlyDbUpdate = false,
+  }) async {
     final showNameAccepted =
         await accountBackgroundDb
             .accountDataWrite(
-              (db) => db.notification.profileNameAccepted.shouldBeShown(notification.nameAccepted),
+              (db) => db.notification.profileNameAccepted.shouldBeShown(notification),
             )
             .ok() ??
         false;
 
-    if (showNameAccepted) {
+    if (!onlyDbUpdate && showNameAccepted) {
       await NotificationProfileStringModerationCompleted.getInstance()._showNameNotification(
         ModerationCompletedState.accepted,
         accountBackgroundDb,
       );
     }
+  }
 
+  static Future<void> handleNameRejected(
+    NotificationStatus notification,
+    AccountBackgroundDatabaseManager accountBackgroundDb, {
+    bool onlyDbUpdate = false,
+  }) async {
     final showNameRejected =
         await accountBackgroundDb
             .accountDataWrite(
-              (db) => db.notification.profileNameRejected.shouldBeShown(notification.nameRejected),
+              (db) => db.notification.profileNameRejected.shouldBeShown(notification),
             )
             .ok() ??
         false;
 
-    if (showNameRejected) {
+    if (!onlyDbUpdate && showNameRejected) {
       await NotificationProfileStringModerationCompleted.getInstance()._showNameNotification(
         ModerationCompletedState.rejected,
         accountBackgroundDb,
       );
     }
+  }
 
+  static Future<void> handleTextAccepted(
+    NotificationStatus notification,
+    AccountBackgroundDatabaseManager accountBackgroundDb, {
+    bool onlyDbUpdate = false,
+  }) async {
     final showTextAccepted =
         await accountBackgroundDb
             .accountDataWrite(
-              (db) => db.notification.profileTextAccepted.shouldBeShown(notification.textAccepted),
+              (db) => db.notification.profileTextAccepted.shouldBeShown(notification),
             )
             .ok() ??
         false;
 
-    if (showTextAccepted) {
+    if (!onlyDbUpdate && showTextAccepted) {
       await NotificationProfileStringModerationCompleted.getInstance()._showTextNotification(
         ModerationCompletedState.accepted,
         accountBackgroundDb,
       );
     }
+  }
 
+  static Future<void> handleTextRejected(
+    NotificationStatus notification,
+    AccountBackgroundDatabaseManager accountBackgroundDb, {
+    bool onlyDbUpdate = false,
+  }) async {
     final showTextRejected =
         await accountBackgroundDb
             .accountDataWrite(
-              (db) => db.notification.profileTextRejected.shouldBeShown(notification.textRejected),
+              (db) => db.notification.profileTextRejected.shouldBeShown(notification),
             )
             .ok() ??
         false;
 
-    if (showTextRejected) {
+    if (!onlyDbUpdate && showTextRejected) {
       await NotificationProfileStringModerationCompleted.getInstance()._showTextNotification(
         ModerationCompletedState.rejected,
         accountBackgroundDb,

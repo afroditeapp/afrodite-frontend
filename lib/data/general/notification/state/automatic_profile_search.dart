@@ -19,8 +19,9 @@ class NotificationAutomaticProfileSearch extends AppSingletonNoInit {
 
   static Future<void> handleAutomaticProfileSearchCompleted(
     AutomaticProfileSearchCompletedNotification notification,
-    AccountBackgroundDatabaseManager accountBackgroundDb,
-  ) async {
+    AccountBackgroundDatabaseManager accountBackgroundDb, {
+    bool onlyDbUpdate = false,
+  }) async {
     final show =
         await accountBackgroundDb
             .accountDataWrite(
@@ -36,10 +37,12 @@ class NotificationAutomaticProfileSearch extends AppSingletonNoInit {
       await accountBackgroundDb.accountAction(
         (db) => db.profile.showAutomaticProfileSearchBadge(notification.profileCount),
       );
-      await NotificationAutomaticProfileSearch.getInstance().show(
-        accountBackgroundDb,
-        notification.profileCount,
-      );
+      if (!onlyDbUpdate) {
+        await NotificationAutomaticProfileSearch.getInstance().show(
+          accountBackgroundDb,
+          notification.profileCount,
+        );
+      }
     }
   }
 

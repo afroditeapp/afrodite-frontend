@@ -685,8 +685,20 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
       return;
     }
 
-    await NotificationProfileStringModerationCompleted.handleProfileStringModerationCompleted(
-      notification,
+    await NotificationProfileStringModerationCompleted.handleNameAccepted(
+      notification.nameAccepted,
+      accountBackgroundDb,
+    );
+    await NotificationProfileStringModerationCompleted.handleNameRejected(
+      notification.nameRejected,
+      accountBackgroundDb,
+    );
+    await NotificationProfileStringModerationCompleted.handleTextAccepted(
+      notification.textAccepted,
+      accountBackgroundDb,
+    );
+    await NotificationProfileStringModerationCompleted.handleTextRejected(
+      notification.textRejected,
       accountBackgroundDb,
     );
 
