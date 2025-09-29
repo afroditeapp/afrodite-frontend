@@ -210,6 +210,9 @@ class GlobalInitManager extends AppSingletonNoInit {
     await PushNotificationManager.getInstance().init();
     await AppVersionManager.getInstance().init();
 
+    // Prevent showing launch notification again
+    await PushNotificationManager.getInstance().updateDbWithLaunchNotificationData();
+
     await LoginRepository.getInstance().init();
 
     // Initializes formatting for other locales as well

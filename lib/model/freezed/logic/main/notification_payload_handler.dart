@@ -8,7 +8,6 @@ part 'notification_payload_handler.freezed.dart';
 @freezed
 class NotificationPayloadHandlerData with _$NotificationPayloadHandlerData {
   factory NotificationPayloadHandlerData({
-    @Default(UnmodifiableList<NotificationPayload>.empty())
-    UnmodifiableList<NotificationPayload> toBeHandled,
+    @Default(UnmodifiableList<ParsedPayload>.empty()) UnmodifiableList<ParsedPayload> toBeHandled,
   }) = _NotificationPayloadHandlerData;
 }

@@ -10,19 +10,19 @@ import "package:app/utils/immutable_list.dart";
 abstract class NotificationPayloadHandlerEvent {}
 
 class HandleFirstPayload extends NotificationPayloadHandlerEvent {
-  final NotificationPayload firstPayload;
+  final ParsedPayload firstPayload;
   HandleFirstPayload(this.firstPayload);
 }
 
 class AddNewPayload extends NotificationPayloadHandlerEvent {
-  final NotificationPayload payload;
+  final ParsedPayload payload;
   AddNewPayload(this.payload);
 }
 
 class NotificationPayloadHandlerBloc
     extends Bloc<NotificationPayloadHandlerEvent, NotificationPayloadHandlerData> {
   final RepositoryInstances r;
-  StreamSubscription<NotificationPayload>? _payloadSubscription;
+  StreamSubscription<ParsedPayload>? _payloadSubscription;
 
   NotificationPayloadHandlerBloc(this.r) : super(NotificationPayloadHandlerData()) {
     on<HandleFirstPayload>((data, emit) {

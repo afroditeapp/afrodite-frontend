@@ -34,7 +34,7 @@ class NotificationPayloadHandler extends StatefulWidget {
 }
 
 class _NotificationPayloadHandlerState extends State<NotificationPayloadHandler> {
-  NotificationPayload? previous;
+  ParsedPayload? previous;
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +57,7 @@ class _NotificationPayloadHandlerState extends State<NotificationPayloadHandler>
 }
 
 void _handlePayloadRunningApp(
-  NotificationPayload payload,
+  ParsedPayload payload,
   RepositoryInstances r,
   NavigatorStateBloc navigatorStateBloc,
   BottomNavigationStateBloc bottomNavigatorStateBloc,
@@ -75,7 +75,7 @@ void _handlePayloadRunningApp(
 }
 
 Future<NotificationNavigationAction> _handlePayload(
-  NotificationPayload payload,
+  ParsedPayload payload,
   RepositoryInstances r,
   NavigatorStateData navigatorState, {
   required bool showError,
@@ -92,11 +92,12 @@ Future<NotificationNavigationAction> _handlePayload(
 
   final lastPage = navigatorState.pages.lastOrNull;
 
-  switch (payload) {
+  final action = payload.action;
+  switch (action) {
     case NavigateToConversation():
       final accountId = await r.accountBackgroundDb
           .accountData(
-            (db) => db.notification.convertConversationIdToAccountId(payload.conversationId),
+            (db) => db.notification.convertConversationIdToAccountId(action.conversationId),
           )
           .ok();
       if (accountId == null) {
@@ -170,7 +171,7 @@ Future<NotificationNavigationAction> _handlePayload(
 }
 
 Future<AppLaunchNotification?> handleAppLaunchNotificationPayload(
-  NotificationPayload payload,
+  ParsedPayload payload,
   RepositoryInstances r,
 ) async {
   final rootScreen = NormalStatePage();

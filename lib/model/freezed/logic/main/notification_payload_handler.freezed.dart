@@ -13,30 +13,30 @@ final _privateConstructorErrorNotificationPayloadHandlerData = UnsupportedError(
 
 /// @nodoc
 mixin _$NotificationPayloadHandlerData {
-  UnmodifiableList<NotificationPayload> get toBeHandled => throw _privateConstructorErrorNotificationPayloadHandlerData;
+  UnmodifiableList<ParsedPayload> get toBeHandled => throw _privateConstructorErrorNotificationPayloadHandlerData;
 
   NotificationPayloadHandlerData copyWith({
-    UnmodifiableList<NotificationPayload>? toBeHandled,
+    UnmodifiableList<ParsedPayload>? toBeHandled,
   }) => throw _privateConstructorErrorNotificationPayloadHandlerData;
 }
 
 /// @nodoc
 abstract class _NotificationPayloadHandlerData implements NotificationPayloadHandlerData {
   factory _NotificationPayloadHandlerData({
-    UnmodifiableList<NotificationPayload> toBeHandled,
+    UnmodifiableList<ParsedPayload> toBeHandled,
   }) = _$NotificationPayloadHandlerDataImpl;
 }
 
 /// @nodoc
 class _$NotificationPayloadHandlerDataImpl with DiagnosticableTreeMixin implements _NotificationPayloadHandlerData {
-  static const UnmodifiableList<NotificationPayload> _toBeHandledDefaultValue = UnmodifiableList<NotificationPayload>.empty();
+  static const UnmodifiableList<ParsedPayload> _toBeHandledDefaultValue = UnmodifiableList<ParsedPayload>.empty();
   
   _$NotificationPayloadHandlerDataImpl({
     this.toBeHandled = _toBeHandledDefaultValue,
   });
 
   @override
-  final UnmodifiableList<NotificationPayload> toBeHandled;
+  final UnmodifiableList<ParsedPayload> toBeHandled;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
@@ -71,6 +71,6 @@ class _$NotificationPayloadHandlerDataImpl with DiagnosticableTreeMixin implemen
   NotificationPayloadHandlerData copyWith({
     Object? toBeHandled,
   }) => _$NotificationPayloadHandlerDataImpl(
-    toBeHandled: (toBeHandled ?? this.toBeHandled) as UnmodifiableList<NotificationPayload>,
+    toBeHandled: (toBeHandled ?? this.toBeHandled) as UnmodifiableList<ParsedPayload>,
   );
 }

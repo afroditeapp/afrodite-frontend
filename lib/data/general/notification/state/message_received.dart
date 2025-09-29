@@ -2,7 +2,6 @@ import 'package:app/ui/normal/chat/conversation_page.dart';
 import 'package:openapi/api.dart';
 import 'package:app/data/general/notification/utils/notification_category.dart';
 import 'package:app/data/general/notification/utils/notification_id.dart';
-import 'package:app/data/general/notification/utils/notification_payload.dart';
 import 'package:app/data/notification_manager.dart';
 import 'package:app/database/account_background_database_manager.dart';
 import 'package:app/localizations.dart';
@@ -55,13 +54,7 @@ class NotificationMessageReceived extends AppSingletonNoInit {
     if (count <= 0 || _isConversationUiOpen(accountId) || notificationShown) {
       await notifications.hideNotification(notificationId);
     } else if (!onlyDbUpdate) {
-      await _showNotification(
-        accountId,
-        notificationId,
-        count,
-        conversationId,
-        accountBackgroundDb,
-      );
+      await _showNotification(accountId, notificationId, count, accountBackgroundDb);
     }
   }
 
@@ -69,7 +62,6 @@ class NotificationMessageReceived extends AppSingletonNoInit {
     AccountId account,
     LocalNotificationId id,
     int count,
-    ConversationId conversationId,
     AccountBackgroundDatabaseManager accountBackgroundDb,
   ) async {
     final profileTitle = await accountBackgroundDb
@@ -93,10 +85,6 @@ class NotificationMessageReceived extends AppSingletonNoInit {
       id: id,
       title: title,
       category: const NotificationCategoryMessages(),
-      notificationPayload: NavigateToConversation(
-        conversationId: conversationId,
-        receiverAccountId: accountBackgroundDb.accountId(),
-      ),
       accountBackgroundDb: accountBackgroundDb,
     );
   }
@@ -116,9 +104,6 @@ class NotificationMessageReceived extends AppSingletonNoInit {
       id: NotificationIdStatic.genericMessageReceived.id,
       title: R.strings.notification_message_received_single_generic,
       category: const NotificationCategoryMessages(),
-      notificationPayload: NavigateToConversationList(
-        receiverAccountId: accountBackgroundDb.accountId(),
-      ),
       accountBackgroundDb: accountBackgroundDb,
     );
   }

@@ -1,6 +1,5 @@
 import 'package:app/data/general/notification/utils/notification_category.dart';
 import 'package:app/data/general/notification/utils/notification_id.dart';
-import 'package:app/data/general/notification/utils/notification_payload.dart';
 import 'package:app/data/notification_manager.dart';
 import 'package:app/database/account_background_database_manager.dart';
 import 'package:app/localizations.dart';
@@ -61,9 +60,6 @@ class NotificationAutomaticProfileSearch extends AppSingletonNoInit {
       id: id,
       title: title,
       category: const NotificationCategoryAutomaticProfileSearch(),
-      notificationPayload: NavigateToAutomaticProfileSearchResults(
-        receiverAccountId: accountBackgroundDb.accountId(),
-      ),
       accountBackgroundDb: accountBackgroundDb,
     );
   }

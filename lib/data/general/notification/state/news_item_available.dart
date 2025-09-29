@@ -2,7 +2,6 @@ import 'package:app/utils/result.dart';
 import 'package:async/async.dart' show StreamExtensions;
 import 'package:app/data/general/notification/utils/notification_category.dart';
 import 'package:app/data/general/notification/utils/notification_id.dart';
-import 'package:app/data/general/notification/utils/notification_payload.dart';
 import 'package:app/data/notification_manager.dart';
 import 'package:app/database/account_background_database_manager.dart';
 import 'package:app/localizations.dart';
@@ -54,7 +53,6 @@ class NotificationNewsItemAvailable extends AppSingletonNoInit {
       id: NotificationIdStatic.newsItemAvailable.id,
       title: R.strings.notification_news_item_available,
       category: const NotificationCategoryNewsItemAvailable(),
-      notificationPayload: NavigateToNews(receiverAccountId: accountBackgroundDb.accountId()),
       accountBackgroundDb: accountBackgroundDb,
     );
   }
@@ -77,9 +75,6 @@ class NotificationNewsItemAvailable extends AppSingletonNoInit {
         title: "Admin notification",
         body: trueValues.join("\n"),
         category: const NotificationCategoryNewsItemAvailable(),
-        notificationPayload: NavigateToModeratorTasks(
-          receiverAccountId: accountBackgroundDb.accountId(),
-        ),
         accountBackgroundDb: accountBackgroundDb,
       );
     }

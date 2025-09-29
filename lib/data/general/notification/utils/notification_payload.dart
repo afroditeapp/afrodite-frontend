@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:app/data/general/notification/utils/notification_id.dart';
 import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
 import 'package:openapi/api.dart';
@@ -8,45 +9,48 @@ import 'package:utils/utils.dart';
 final _log = Logger("NotificationPayload");
 
 @immutable
-sealed class NotificationPayload extends Immutable {
-  final NotificationPayloadTypeString payloadType;
+class NotificationPayload extends Immutable {
+  final LocalNotificationId notificationId;
   final AccountId receiverAccountId;
-  const NotificationPayload({required this.payloadType, required this.receiverAccountId});
+  const NotificationPayload({required this.notificationId, required this.receiverAccountId});
 
-  Map<String, Object?> additionalData() {
-    return {};
-  }
-
-  static const String _payloadTypeKey = "t";
-  static const String _receiverAccountId = "r";
+  static const String _notificationId = "id";
+  static const String _receiverAccountId = "a";
 
   String toJson() {
-    final Map<String, Object?> map = {};
-    map.addEntries(additionalData().entries);
-    map[_payloadTypeKey] = payloadType.value;
+    final Map<String, String> map = {};
+    map[_notificationId] = notificationId.value.toString();
     map[_receiverAccountId] = receiverAccountId.aid;
     return jsonEncode(map);
   }
 
-  static NotificationPayload? parse(String jsonPayload) {
+  static ParsedPayload? parse(String jsonPayload) {
     final jsonObject = jsonDecode(jsonPayload);
     if (jsonObject is! Map<String, Object?>) {
       _log.error("Payload is not JSON object");
       return null;
     }
+    return parseMap(jsonObject);
+  }
 
-    if (!jsonObject.containsKey(_payloadTypeKey)) {
-      _log.error("Payload type is missing from the payload");
+  static ParsedPayload? parseMap(Map<String, Object?> jsonObject) {
+    if (!jsonObject.containsKey(_notificationId)) {
+      _log.error("Notification ID is missing from the payload");
       return null;
     }
-    final payloadTypeValue = jsonObject[_payloadTypeKey];
-    if (payloadTypeValue is! String) {
-      _log.error("Payload type is not a string");
+    final notificationIdValue = jsonObject[_notificationId];
+    if (notificationIdValue is! String) {
+      _log.error("Notification ID is not a string");
+      return null;
+    }
+    final notificationIdInt = int.tryParse(notificationIdValue);
+    if (notificationIdInt == null) {
+      _log.error("Notification ID is not an int");
       return null;
     }
 
     if (!jsonObject.containsKey(_receiverAccountId)) {
-      _log.error("Notification session ID is missing from the payload");
+      _log.error("Receiver Account ID is missing from the payload");
       return null;
     }
     final receiverAccountIdString = jsonObject[_receiverAccountId];
@@ -55,86 +59,66 @@ sealed class NotificationPayload extends Immutable {
       return null;
     }
 
+    final LocalNotificationId notificationId = LocalNotificationId(notificationIdInt);
     final AccountId receiverAccountId = AccountId(aid: receiverAccountIdString);
 
-    switch (payloadTypeValue) {
-      case NotificationPayloadTypeString.stringNavigateToLikes:
-        return NavigateToLikes(receiverAccountId: receiverAccountId);
-      case NotificationPayloadTypeString.stringNavigateToNews:
-        return NavigateToNews(receiverAccountId: receiverAccountId);
-      case NotificationPayloadTypeString.stringNavigateToConversationList:
-        return NavigateToConversationList(receiverAccountId: receiverAccountId);
-      case NotificationPayloadTypeString.stringNavigateToConversation:
-        return NavigateToConversation.parseFromJsonObject(jsonObject, receiverAccountId);
-      case NotificationPayloadTypeString.stringNavigateToContentManagement:
-        return NavigateToContentManagement(receiverAccountId: receiverAccountId);
-      case NotificationPayloadTypeString.stringNavigateToMyProfile:
-        return NavigateToMyProfile(receiverAccountId: receiverAccountId);
-      case NotificationPayloadTypeString.stringNavigateToAutomaticProfileSearchResults:
-        return NavigateToAutomaticProfileSearchResults(receiverAccountId: receiverAccountId);
-      case NotificationPayloadTypeString.stringNavigateToModeratorTasks:
-        return NavigateToModeratorTasks(receiverAccountId: receiverAccountId);
-      default:
-        _log.error("Payload type is unknown");
-        return null;
-    }
-  }
-}
-
-class NavigateToLikes extends NotificationPayload {
-  const NavigateToLikes({required super.receiverAccountId})
-    : super(payloadType: NotificationPayloadTypeString.navigateToLikes);
-}
-
-class NavigateToNews extends NotificationPayload {
-  const NavigateToNews({required super.receiverAccountId})
-    : super(payloadType: NotificationPayloadTypeString.navigateToNews);
-}
-
-class NavigateToConversationList extends NotificationPayload {
-  const NavigateToConversationList({required super.receiverAccountId})
-    : super(payloadType: NotificationPayloadTypeString.navigateToConversationList);
-}
-
-class NavigateToConversation extends NotificationPayload {
-  final ConversationId conversationId;
-
-  const NavigateToConversation({required this.conversationId, required super.receiverAccountId})
-    : super(payloadType: NotificationPayloadTypeString.navigateToConversation);
-
-  static const String _conversationIdKey = "c";
-  static NotificationPayload? parseFromJsonObject(
-    Map<String, Object?> jsonObject,
-    AccountId receiverAccountId,
-  ) {
-    if (!jsonObject.containsKey(_conversationIdKey)) {
-      _log.error("NavigateToConversation payload parsing error: conversation ID is missing");
-      return null;
-    }
-    final idValue = jsonObject[_conversationIdKey];
-    final ConversationId id;
-    if (idValue is int) {
-      id = ConversationId(id: idValue);
+    final NavigationAction action;
+    if (notificationId == NotificationIdStatic.likeReceived.id) {
+      action = NavigateToLikes();
+    } else if (notificationId == NotificationIdStatic.newsItemAvailable.id) {
+      action = NavigateToNews();
+    } else if (notificationId == NotificationIdStatic.genericMessageReceived.id) {
+      action = NavigateToConversationList();
+    } else if (notificationId.value >=
+        NotificationIdStatic.firstNewMessageNotificationId.id.value) {
+      final conversationId = NotificationIdStatic.revertNewMessageNotificationIdCalculation(
+        notificationId,
+      );
+      action = NavigateToConversation(conversationId: conversationId);
+    } else if (notificationId == NotificationIdStatic.mediaContentModerationAccepted.id ||
+        notificationId == NotificationIdStatic.mediaContentModerationRejected.id ||
+        notificationId == NotificationIdStatic.mediaContentModerationDeleted.id) {
+      action = NavigateToContentManagement();
+    } else if (notificationId == NotificationIdStatic.profileNameModerationAccepted.id ||
+        notificationId == NotificationIdStatic.profileNameModerationRejected.id ||
+        notificationId == NotificationIdStatic.profileTextModerationAccepted.id ||
+        notificationId == NotificationIdStatic.profileTextModerationRejected.id) {
+      action = NavigateToMyProfile();
+    } else if (notificationId == NotificationIdStatic.automaticProfileSearchCompleted.id) {
+      action = NavigateToAutomaticProfileSearchResults();
+    } else if (notificationId == NotificationIdStatic.adminNotification.id) {
+      action = NavigateToModeratorTasks();
     } else {
-      _log.error("NavigateToConversation payload parsing error: conversation ID is not an integer");
+      _log.error("Unknown notification ID");
       return null;
     }
-    return NavigateToConversation(conversationId: id, receiverAccountId: receiverAccountId);
+
+    return ParsedPayload(receiverAccountId, action);
   }
-
-  @override
-  Map<String, Object?> additionalData() => {_conversationIdKey: conversationId.id};
 }
 
-class NavigateToContentManagement extends NotificationPayload {
-  const NavigateToContentManagement({required super.receiverAccountId})
-    : super(payloadType: NotificationPayloadTypeString.navigateToContentManagement);
+class ParsedPayload {
+  final AccountId receiverAccountId;
+  final NavigationAction action;
+  ParsedPayload(this.receiverAccountId, this.action);
 }
 
-class NavigateToMyProfile extends NotificationPayload {
-  const NavigateToMyProfile({required super.receiverAccountId})
-    : super(payloadType: NotificationPayloadTypeString.navigateToMyProfile);
+sealed class NavigationAction {}
+
+class NavigateToLikes extends NavigationAction {}
+
+class NavigateToNews extends NavigationAction {}
+
+class NavigateToConversationList extends NavigationAction {}
+
+class NavigateToConversation extends NavigationAction {
+  final ConversationId conversationId;
+  NavigateToConversation({required this.conversationId});
 }
+
+class NavigateToContentManagement extends NavigationAction {}
+
+class NavigateToMyProfile extends NavigationAction {}
 
 // TODO(quality): Opening another automatic profile search result screen
 //                is possible and that breaks the first's iterator state
@@ -143,36 +127,6 @@ class NavigateToMyProfile extends NotificationPayload {
 //                and displaying it on every screen which is how
 //                received likes screen works.
 
-class NavigateToAutomaticProfileSearchResults extends NotificationPayload {
-  const NavigateToAutomaticProfileSearchResults({required super.receiverAccountId})
-    : super(payloadType: NotificationPayloadTypeString.navigateToAutomaticProfileSearchResults);
-}
+class NavigateToAutomaticProfileSearchResults extends NavigationAction {}
 
-class NavigateToModeratorTasks extends NotificationPayload {
-  const NavigateToModeratorTasks({required super.receiverAccountId})
-    : super(payloadType: NotificationPayloadTypeString.navigateToModeratorTasks);
-}
-
-enum NotificationPayloadTypeString {
-  navigateToLikes(value: stringNavigateToLikes),
-  navigateToNews(value: stringNavigateToNews),
-  navigateToConversation(value: stringNavigateToConversation),
-  navigateToConversationList(value: stringNavigateToConversationList),
-  navigateToContentManagement(value: stringNavigateToContentManagement),
-  navigateToMyProfile(value: stringNavigateToMyProfile),
-  navigateToAutomaticProfileSearchResults(value: stringNavigateToAutomaticProfileSearchResults),
-  navigateToModeratorTasks(value: stringNavigateToModeratorTasks);
-
-  final String value;
-  const NotificationPayloadTypeString({required this.value});
-
-  static const String stringNavigateToLikes = "navigate_to_likes";
-  static const String stringNavigateToNews = "navigate_to_news";
-  static const String stringNavigateToConversation = "navigate_to_conversation";
-  static const String stringNavigateToConversationList = "navigate_to_conversation_list";
-  static const String stringNavigateToContentManagement = "navigate_to_content_management";
-  static const String stringNavigateToMyProfile = "navigate_to_my_profile";
-  static const String stringNavigateToAutomaticProfileSearchResults =
-      "navigate_to_automatic_profile_search_results";
-  static const String stringNavigateToModeratorTasks = "navigate_to_moderator_tasks";
-}
+class NavigateToModeratorTasks extends NavigationAction {}

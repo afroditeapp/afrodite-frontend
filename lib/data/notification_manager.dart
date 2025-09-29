@@ -31,10 +31,10 @@ class NotificationManager extends AppSingleton {
 
   final _pluginHandle = FlutterLocalNotificationsPlugin();
   late final bool _osSupportsNotificationPermission;
-  NotificationPayload? _appLaunchNotificationPayload;
+  ParsedPayload? _appLaunchNotificationPayload;
 
   bool get osSupportsNotificationPermission => _osSupportsNotificationPermission;
-  PublishSubject<NotificationPayload> onReceivedPayload = PublishSubject();
+  PublishSubject<ParsedPayload> onReceivedPayload = PublishSubject();
 
   @override
   Future<void> init() async {
@@ -145,7 +145,6 @@ class NotificationManager extends AppSingleton {
     required String title,
     String? body,
     required NotificationCategory category,
-    NotificationPayload? notificationPayload,
     required AccountBackgroundDatabaseManager accountBackgroundDb,
   }) async {
     if (!await category.isEnabled(accountBackgroundDb)) {
@@ -174,7 +173,10 @@ class NotificationManager extends AppSingleton {
       title,
       body,
       NotificationDetails(android: androidDetails),
-      payload: notificationPayload?.toJson(),
+      payload: NotificationPayload(
+        notificationId: id,
+        receiverAccountId: accountBackgroundDb.accountId(),
+      ).toJson(),
     );
   }
 
@@ -216,7 +218,7 @@ class NotificationManager extends AppSingleton {
     }
   }
 
-  NotificationPayload? getAndRemoveAppLaunchNotificationPayload() {
+  ParsedPayload? getAndRemoveAppLaunchNotificationPayload() {
     final payload = _appLaunchNotificationPayload;
     _appLaunchNotificationPayload = null;
     return payload;

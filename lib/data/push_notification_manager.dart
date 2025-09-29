@@ -1,10 +1,12 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:app/data/general/notification/state/automatic_profile_search.dart';
 import 'package:app/data/general/notification/state/profile_text_moderation_completed.dart';
 import 'package:app/data/general/notification/state/media_content_moderation_completed.dart';
 import 'package:app/data/general/notification/state/news_item_available.dart';
+import 'package:app/data/general/notification/utils/notification_payload.dart';
 import 'package:app/utils/app_error.dart';
 import 'package:flutter/foundation.dart';
 import 'package:google_api_availability/google_api_availability.dart';
@@ -40,7 +42,7 @@ class PushNotificationManager extends AppSingleton {
   bool _initDone = false;
   bool _nativePushInitialized = false;
   StreamSubscription<(NotificationService, String?)>? _tokenSubscription;
-  StreamSubscription<Map<String, String>>? _notificationSubscription;
+  Map<String, String>? _appLaunchNotificationPayload;
 
   final PublishSubject<String> _newFcmTokenReceived = PublishSubject();
 
@@ -53,10 +55,18 @@ class PushNotificationManager extends AppSingleton {
     }
     _initDone = true;
 
-    // Set up background notification handler
-    _notificationSubscription = NativePush().notificationStream.listen((notificationData) {
-      _handleBackgroundNotification(notificationData);
+    NativePush().notificationStream.listen((notificationData) {
+      final parsedPayload = NotificationPayload.parseMap(notificationData);
+      if (parsedPayload == null) {
+        return;
+      }
+      NotificationManager.getInstance().onReceivedPayload.add(parsedPayload);
     });
+
+    final payload = await NativePush().initialNotification();
+    if (payload != null) {
+      _appLaunchNotificationPayload = payload;
+    }
 
     _newFcmTokenReceived
         .asyncMap((fcmToken) async {
@@ -184,8 +194,60 @@ class PushNotificationManager extends AppSingleton {
 
   Future<void> logoutPushNotifications() async {
     await _tokenSubscription?.cancel();
-    await _notificationSubscription?.cancel();
-    // TODO: Invalidate token?
+  }
+
+  ParsedPayload? getAndRemoveAppLaunchNotificationPayload() {
+    final payload = _appLaunchNotificationPayload;
+    _appLaunchNotificationPayload = null;
+    if (payload != null) {
+      final parsedPayload = NotificationPayload.parseMap(payload);
+      if (parsedPayload != null) {
+        return parsedPayload;
+      }
+    }
+    return null;
+  }
+
+  // NOTE: If push notication is dismissed and
+  // app is opened it appears again. One way to prevent
+  // that would be to store all received push
+  // notifications in a file and handle all notifications
+  // before WebSocket is connected.
+
+  // Prevent showing launch notification again
+  Future<void> updateDbWithLaunchNotificationData() async {
+    final payload = _appLaunchNotificationPayload;
+    if (payload == null) {
+      return;
+    }
+
+    final accountIdString = payload["a"];
+    final dataString = payload["data"];
+    if (dataString == null) {
+      _log.error("DB update failed: data field not found from notification payload");
+      return;
+    }
+    final data = PendingNotificationWithData.fromJson(jsonDecode(dataString));
+    if (data == null) {
+      _log.error("DB update failed: data field is invalid");
+      return;
+    }
+
+    final db = BackgroundDatabaseManager.getInstance();
+    final currentAccountId = await db.commonStreamSingle((db) => db.loginSession.watchAccountId());
+    if (currentAccountId == null) {
+      _log.error("DB update failed: AccountId is not available");
+      return;
+    }
+
+    if (currentAccountId.aid != accountIdString) {
+      _log.error("DB update failed: notification is for other account");
+      return;
+    }
+
+    final accountBackgroundDb = await db.getAccountBackgroundDatabaseManager(currentAccountId);
+    await _handlePendingNotification(Ok(data), accountBackgroundDb);
+    await accountBackgroundDb.close();
   }
 }
 

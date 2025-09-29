@@ -1,6 +1,5 @@
 import 'package:app/data/general/notification/utils/notification_category.dart';
 import 'package:app/data/general/notification/utils/notification_id.dart';
-import 'package:app/data/general/notification/utils/notification_payload.dart';
 import 'package:app/data/notification_manager.dart';
 import 'package:app/database/account_background_database_manager.dart';
 import 'package:app/database/database_manager.dart';
@@ -73,7 +72,6 @@ class NotificationLikeReceived extends AppSingletonNoInit {
       id: NotificationIdStatic.likeReceived.id,
       title: title,
       category: const NotificationCategoryLikes(),
-      notificationPayload: NavigateToLikes(receiverAccountId: accountBackgroundDb.accountId()),
       accountBackgroundDb: accountBackgroundDb,
     );
   }

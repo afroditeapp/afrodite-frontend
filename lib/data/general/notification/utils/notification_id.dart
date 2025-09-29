@@ -3,6 +3,14 @@ import 'package:openapi/api.dart';
 class LocalNotificationId {
   final int value;
   const LocalNotificationId(this.value);
+
+  @override
+  bool operator ==(Object other) {
+    return other is LocalNotificationId && other.value == value;
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, value);
 }
 
 enum NotificationIdStatic {
@@ -41,7 +49,9 @@ enum NotificationIdStatic {
     return LocalNotificationId(firstNewMessageNotificationId.id.value + idStartingFromZero.id);
   }
 
-  static ConversationId revertNewMessageNotificationIdCalcualtion(ConversationId notificationId) {
-    return ConversationId(id: notificationId.id - firstNewMessageNotificationId.id.value);
+  static ConversationId revertNewMessageNotificationIdCalculation(
+    LocalNotificationId notificationId,
+  ) {
+    return ConversationId(id: notificationId.value - firstNewMessageNotificationId.id.value);
   }
 }

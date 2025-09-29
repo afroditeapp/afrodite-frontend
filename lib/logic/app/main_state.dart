@@ -1,4 +1,5 @@
 import "package:app/data/notification_manager.dart";
+import "package:app/data/push_notification_manager.dart";
 import "package:app/data/utils/repository_instances.dart";
 import "package:app/logic/app/main_state_types.dart";
 import "package:app/main.dart";
@@ -92,11 +93,16 @@ class MainStateBloc extends Bloc<MainStateEvent, MainState> {
 
     final appLaunchPayload = NotificationManager.getInstance()
         .getAndRemoveAppLaunchNotificationPayload();
+    final appLaunchPayloadOther = PushNotificationManager.getInstance()
+        .getAndRemoveAppLaunchNotificationPayload();
 
     final AppLaunchNotification? notification;
     if (appLaunchPayload != null) {
       _log.info("Handling app launch notification payload");
       notification = await handleAppLaunchNotificationPayload(appLaunchPayload, r);
+    } else if (appLaunchPayloadOther != null) {
+      _log.info("Handling app launch push notification payload");
+      notification = await handleAppLaunchNotificationPayload(appLaunchPayloadOther, r);
     } else {
       notification = null;
     }
