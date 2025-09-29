@@ -112,8 +112,6 @@ class AccountDatabaseManager {
     }
   }
 
-  /// NOTE: The database isolate does not seem to close properly
-  ///       as it is on running isolates list after calling this.
   Future<void> close() async {
     await db.close();
   }
