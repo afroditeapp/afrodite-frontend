@@ -75,11 +75,6 @@ class PushNotificationManager extends AppSingleton {
       return;
     }
 
-    final enabled = await NotificationManager.getInstance().areNotificationsEnabled();
-    if (!enabled) {
-      return;
-    }
-
     if (Platform.isAndroid) {
       try {
         await GoogleApiAvailability.instance.makeGooglePlayServicesAvailable();
