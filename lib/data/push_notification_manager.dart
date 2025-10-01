@@ -119,18 +119,7 @@ class PushNotificationManager extends AppSingleton {
 
       await NativePush().initialize(firebaseOptions: firebaseOptions);
 
-      // Register for remote notifications with all available options
-      final options = [
-        NotificationOption.alert,
-        NotificationOption.badge,
-        NotificationOption.sound,
-        NotificationOption.criticalAlert,
-        NotificationOption.carPlay,
-        NotificationOption.providesAppNotificationSettings,
-        NotificationOption.provisional,
-      ];
-
-      final registered = await NativePush().registerForRemoteNotification(options: options);
+      final registered = await NativePush().registerForRemoteNotification(options: []);
       if (!registered) {
         _log.error("Failed to register for remote notifications");
         return;
