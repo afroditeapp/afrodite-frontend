@@ -89,9 +89,13 @@ class Profile extends Table {
 }
 
 class PushNotification extends SingleRowTable {
-  TextColumn get fcmDeviceToken =>
-      text().map(const NullAwareTypeConverter.wrap(FcmDeviceTokenConverter())).nullable()();
+  TextColumn get pushNotificationDeviceToken => text()
+      .map(const NullAwareTypeConverter.wrap(PushNotificationDeviceTokenConverter()))
+      .nullable()();
+  TextColumn get vapidPublicKey =>
+      text().map(const NullAwareTypeConverter.wrap(VapidPublicKeyConverter())).nullable()();
   TextColumn get pendingNotificationToken => text()
       .map(const NullAwareTypeConverter.wrap(PendingNotificationTokenConverter()))
       .nullable()();
+  IntColumn get syncVersionPushNotificationInfo => integer().nullable()();
 }

@@ -37,7 +37,7 @@ class PushNotificationManager extends AppSingleton {
   StreamSubscription<(NotificationService, String?)>? _tokenSubscription;
   Map<String, String>? _appLaunchNotificationPayload;
 
-  final PublishSubject<String> _newFcmTokenReceived = PublishSubject();
+  final PublishSubject<String> _newDeviceTokenReceived = PublishSubject();
 
   int initRetryWaitSeconds = 5;
 
@@ -61,7 +61,7 @@ class PushNotificationManager extends AppSingleton {
       _appLaunchNotificationPayload = payload;
     }
 
-    _newFcmTokenReceived
+    _newDeviceTokenReceived
         .asyncMap((fcmToken) async {
           await _refreshTokenToServer(fcmToken);
         })
@@ -90,7 +90,7 @@ class PushNotificationManager extends AppSingleton {
       _tokenSubscription = NativePush().notificationTokenStream.listen((tokenTuple) {
         final (service, token) = tokenTuple;
         if (token != null) {
-          _newFcmTokenReceived.add(token);
+          _newDeviceTokenReceived.add(token);
         }
       });
       _tokenSubscription?.onError((_) {
@@ -98,13 +98,7 @@ class PushNotificationManager extends AppSingleton {
       });
     }
 
-    final (service, token) = await NativePush().notificationToken;
-    if (token == null) {
-      _log.error("Notification token is null");
-      return;
-    }
-
-    _newFcmTokenReceived.add(token);
+    await triggerTokenRefresh();
   }
 
   /// Can be called multiple times
@@ -129,7 +123,7 @@ class PushNotificationManager extends AppSingleton {
     }
   }
 
-  Future<void> _refreshTokenToServer(String fcmToken) async {
+  Future<void> _refreshTokenToServer(String deviceToken) async {
     // TODO(future): Improve code so that repositoriesOrNull access
     // is not needed.
     final accountBackgroundDb =
@@ -138,35 +132,47 @@ class PushNotificationManager extends AppSingleton {
       return;
     }
     final savedToken = await accountBackgroundDb
-        .accountStreamSingle((db) => db.loginSession.watchFcmDeviceToken())
+        .accountStreamSingle((db) => db.loginSession.watchPushNotificationDeviceToken())
         .ok();
-    if (savedToken?.token != fcmToken) {
-      _log.info("FCM token changed, sending token to server");
-      final newToken = FcmDeviceToken(token: fcmToken);
+    if (savedToken?.token != deviceToken) {
+      _log.info("Push notification device token changed, sending token to server");
+      final newToken = PushNotificationDeviceToken(token: deviceToken);
       final api = LoginRepository.getInstance().repositoriesOrNull?.api;
       if (api == null) {
         _log.info(
-          "FCM token changed, skipping FCM token update because server API is not available",
+          "Push notification device token changed, skipping token update because server API is not available",
         );
         return;
       }
       final result = await api.common((api) => api.postSetDeviceToken(newToken)).ok();
       if (result != null) {
-        _log.info("FCM token sending successful");
+        _log.info("Push notification device token sending successful");
         final dbResult = await accountBackgroundDb.accountAction(
           (db) => db.loginSession.updateFcmDeviceTokenAndPendingNotificationToken(newToken, result),
         );
         if (dbResult.isOk()) {
-          _log.error("FCM token saving to local database successful");
+          _log.error("Push notification device token saving to local database successful");
         } else {
-          _log.error("FCM token saving to local database failed");
+          _log.error("Push notification device token saving to local database failed");
         }
       } else {
-        _log.error("Failed to send FCM token to server");
+        _log.error("Failed to send push notification device token to server");
       }
     } else {
-      _log.info("Current FCM token is already on server");
+      _log.info("Current push notification device token is already on server");
     }
+  }
+
+  Future<void> triggerTokenRefresh() async {
+    if (!_nativePushInitialized) {
+      return;
+    }
+    final (_, token) = await NativePush().notificationToken;
+    if (token == null) {
+      _log.error("Notification token is null");
+      return;
+    }
+    _newDeviceTokenReceived.add(token);
   }
 
   Future<void> logoutPushNotifications() async {

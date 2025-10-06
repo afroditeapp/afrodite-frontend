@@ -123,7 +123,6 @@ part 'model/demo_account_token.dart';
 part 'model/event_to_client.dart';
 part 'model/event_type.dart';
 part 'model/favorite_profiles_page.dart';
-part 'model/fcm_device_token.dart';
 part 'model/features_config.dart';
 part 'model/get_account_ban_time_result.dart';
 part 'model/get_account_deletion_request_result.dart';
@@ -156,6 +155,7 @@ part 'model/get_profile_statistics_history_result.dart';
 part 'model/get_profile_statistics_result.dart';
 part 'model/get_profile_string_pending_moderation_list.dart';
 part 'model/get_profile_string_state.dart';
+part 'model/get_push_notification_info.dart';
 part 'model/get_report_list.dart';
 part 'model/get_sent_message.dart';
 part 'model/get_video_call_urls_result.dart';
@@ -268,6 +268,8 @@ part 'model/profile_version.dart';
 part 'model/profile_visibility.dart';
 part 'model/public_key_id.dart';
 part 'model/publication_id.dart';
+part 'model/push_notification_device_token.dart';
+part 'model/push_notification_info_sync_version.dart';
 part 'model/received_like_id.dart';
 part 'model/received_likes_iterator_state.dart';
 part 'model/received_likes_page.dart';
@@ -328,6 +330,7 @@ part 'model/update_profile_content_report.dart';
 part 'model/update_profile_name_report.dart';
 part 'model/update_profile_text_report.dart';
 part 'model/update_report_result.dart';
+part 'model/vapid_public_key.dart';
 
 
 /// An [ApiClient] instance that uses the default values obtained from

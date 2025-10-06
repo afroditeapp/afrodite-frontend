@@ -143,6 +143,7 @@ Class | Method | HTTP request | Description
 *CommonApi* | [**getConnectWebsocket**](doc//CommonApi.md#getconnectwebsocket) | **GET** /common_api/connect | Connect to server using WebSocket after getting refresh and access tokens. Connection is required as API access is allowed for connected clients.
 *CommonApi* | [**getDataExportArchive**](doc//CommonApi.md#getdataexportarchive) | **GET** /common_api/data_export_archive | Download current data export archive
 *CommonApi* | [**getDataExportState**](doc//CommonApi.md#getdataexportstate) | **GET** /common_api/data_export_state | 
+*CommonApi* | [**getPushNotificationInfo**](doc//CommonApi.md#getpushnotificationinfo) | **GET** /common_api/get_push_notification_info | 
 *CommonApi* | [**getVersion**](doc//CommonApi.md#getversion) | **GET** /common_api/version | Get backend version.
 *CommonApi* | [**postClientLanguage**](doc//CommonApi.md#postclientlanguage) | **POST** /common_api/client_language | 
 *CommonApi* | [**postGetPendingNotification**](doc//CommonApi.md#postgetpendingnotification) | **POST** /common_api/get_pending_notification | Get pending notification and reset pending notification.
@@ -324,7 +325,6 @@ Class | Method | HTTP request | Description
  - [EventToClient](doc//EventToClient.md)
  - [EventType](doc//EventType.md)
  - [FavoriteProfilesPage](doc//FavoriteProfilesPage.md)
- - [FcmDeviceToken](doc//FcmDeviceToken.md)
  - [FeaturesConfig](doc//FeaturesConfig.md)
  - [GetAccountBanTimeResult](doc//GetAccountBanTimeResult.md)
  - [GetAccountDeletionRequestResult](doc//GetAccountDeletionRequestResult.md)
@@ -357,6 +357,7 @@ Class | Method | HTTP request | Description
  - [GetProfileStatisticsResult](doc//GetProfileStatisticsResult.md)
  - [GetProfileStringPendingModerationList](doc//GetProfileStringPendingModerationList.md)
  - [GetProfileStringState](doc//GetProfileStringState.md)
+ - [GetPushNotificationInfo](doc//GetPushNotificationInfo.md)
  - [GetReportList](doc//GetReportList.md)
  - [GetSentMessage](doc//GetSentMessage.md)
  - [GetVideoCallUrlsResult](doc//GetVideoCallUrlsResult.md)
@@ -469,6 +470,8 @@ Class | Method | HTTP request | Description
  - [ProfileVisibility](doc//ProfileVisibility.md)
  - [PublicKeyId](doc//PublicKeyId.md)
  - [PublicationId](doc//PublicationId.md)
+ - [PushNotificationDeviceToken](doc//PushNotificationDeviceToken.md)
+ - [PushNotificationInfoSyncVersion](doc//PushNotificationInfoSyncVersion.md)
  - [ReceivedLikeId](doc//ReceivedLikeId.md)
  - [ReceivedLikesIteratorState](doc//ReceivedLikesIteratorState.md)
  - [ReceivedLikesPage](doc//ReceivedLikesPage.md)
@@ -529,6 +532,7 @@ Class | Method | HTTP request | Description
  - [UpdateProfileNameReport](doc//UpdateProfileNameReport.md)
  - [UpdateProfileTextReport](doc//UpdateProfileTextReport.md)
  - [UpdateReportResult](doc//UpdateReportResult.md)
+ - [VapidPublicKey](doc//VapidPublicKey.md)
 
 
 ## Documentation For Authorization

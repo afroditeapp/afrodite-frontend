@@ -3513,16 +3513,31 @@ class $PushNotificationTable extends schema.PushNotification
     ),
   );
   @override
-  late final GeneratedColumnWithTypeConverter<FcmDeviceToken?, String>
-  fcmDeviceToken =
+  late final GeneratedColumnWithTypeConverter<
+    PushNotificationDeviceToken?,
+    String
+  >
+  pushNotificationDeviceToken =
       GeneratedColumn<String>(
-        'fcm_device_token',
+        'push_notification_device_token',
         aliasedName,
         true,
         type: DriftSqlType.string,
         requiredDuringInsert: false,
-      ).withConverter<FcmDeviceToken?>(
-        $PushNotificationTable.$converterfcmDeviceToken,
+      ).withConverter<PushNotificationDeviceToken?>(
+        $PushNotificationTable.$converterpushNotificationDeviceToken,
+      );
+  @override
+  late final GeneratedColumnWithTypeConverter<VapidPublicKey?, String>
+  vapidPublicKey =
+      GeneratedColumn<String>(
+        'vapid_public_key',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      ).withConverter<VapidPublicKey?>(
+        $PushNotificationTable.$convertervapidPublicKey,
       );
   @override
   late final GeneratedColumnWithTypeConverter<PendingNotificationToken?, String>
@@ -3536,11 +3551,24 @@ class $PushNotificationTable extends schema.PushNotification
       ).withConverter<PendingNotificationToken?>(
         $PushNotificationTable.$converterpendingNotificationToken,
       );
+  static const VerificationMeta _syncVersionPushNotificationInfoMeta =
+      const VerificationMeta('syncVersionPushNotificationInfo');
+  @override
+  late final GeneratedColumn<int> syncVersionPushNotificationInfo =
+      GeneratedColumn<int>(
+        'sync_version_push_notification_info',
+        aliasedName,
+        true,
+        type: DriftSqlType.int,
+        requiredDuringInsert: false,
+      );
   @override
   List<GeneratedColumn> get $columns => [
     id,
-    fcmDeviceToken,
+    pushNotificationDeviceToken,
+    vapidPublicKey,
     pendingNotificationToken,
+    syncVersionPushNotificationInfo,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -3557,6 +3585,15 @@ class $PushNotificationTable extends schema.PushNotification
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
     }
+    if (data.containsKey('sync_version_push_notification_info')) {
+      context.handle(
+        _syncVersionPushNotificationInfoMeta,
+        syncVersionPushNotificationInfo.isAcceptableOrUnknown(
+          data['sync_version_push_notification_info']!,
+          _syncVersionPushNotificationInfoMeta,
+        ),
+      );
+    }
     return context;
   }
 
@@ -3570,10 +3607,18 @@ class $PushNotificationTable extends schema.PushNotification
         DriftSqlType.int,
         data['${effectivePrefix}id'],
       )!,
-      fcmDeviceToken: $PushNotificationTable.$converterfcmDeviceToken.fromSql(
+      pushNotificationDeviceToken: $PushNotificationTable
+          .$converterpushNotificationDeviceToken
+          .fromSql(
+            attachedDatabase.typeMapping.read(
+              DriftSqlType.string,
+              data['${effectivePrefix}push_notification_device_token'],
+            ),
+          ),
+      vapidPublicKey: $PushNotificationTable.$convertervapidPublicKey.fromSql(
         attachedDatabase.typeMapping.read(
           DriftSqlType.string,
-          data['${effectivePrefix}fcm_device_token'],
+          data['${effectivePrefix}vapid_public_key'],
         ),
       ),
       pendingNotificationToken: $PushNotificationTable
@@ -3584,6 +3629,10 @@ class $PushNotificationTable extends schema.PushNotification
               data['${effectivePrefix}pending_notification_token'],
             ),
           ),
+      syncVersionPushNotificationInfo: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}sync_version_push_notification_info'],
+      ),
     );
   }
 
@@ -3592,8 +3641,12 @@ class $PushNotificationTable extends schema.PushNotification
     return $PushNotificationTable(attachedDatabase, alias);
   }
 
-  static TypeConverter<FcmDeviceToken?, String?> $converterfcmDeviceToken =
-      const NullAwareTypeConverter.wrap(FcmDeviceTokenConverter());
+  static TypeConverter<PushNotificationDeviceToken?, String?>
+  $converterpushNotificationDeviceToken = const NullAwareTypeConverter.wrap(
+    PushNotificationDeviceTokenConverter(),
+  );
+  static TypeConverter<VapidPublicKey?, String?> $convertervapidPublicKey =
+      const NullAwareTypeConverter.wrap(VapidPublicKeyConverter());
   static TypeConverter<PendingNotificationToken?, String?>
   $converterpendingNotificationToken = const NullAwareTypeConverter.wrap(
     PendingNotificationTokenConverter(),
@@ -3603,20 +3656,31 @@ class $PushNotificationTable extends schema.PushNotification
 class PushNotificationData extends DataClass
     implements Insertable<PushNotificationData> {
   final int id;
-  final FcmDeviceToken? fcmDeviceToken;
+  final PushNotificationDeviceToken? pushNotificationDeviceToken;
+  final VapidPublicKey? vapidPublicKey;
   final PendingNotificationToken? pendingNotificationToken;
+  final int? syncVersionPushNotificationInfo;
   const PushNotificationData({
     required this.id,
-    this.fcmDeviceToken,
+    this.pushNotificationDeviceToken,
+    this.vapidPublicKey,
     this.pendingNotificationToken,
+    this.syncVersionPushNotificationInfo,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
-    if (!nullToAbsent || fcmDeviceToken != null) {
-      map['fcm_device_token'] = Variable<String>(
-        $PushNotificationTable.$converterfcmDeviceToken.toSql(fcmDeviceToken),
+    if (!nullToAbsent || pushNotificationDeviceToken != null) {
+      map['push_notification_device_token'] = Variable<String>(
+        $PushNotificationTable.$converterpushNotificationDeviceToken.toSql(
+          pushNotificationDeviceToken,
+        ),
+      );
+    }
+    if (!nullToAbsent || vapidPublicKey != null) {
+      map['vapid_public_key'] = Variable<String>(
+        $PushNotificationTable.$convertervapidPublicKey.toSql(vapidPublicKey),
       );
     }
     if (!nullToAbsent || pendingNotificationToken != null) {
@@ -3626,18 +3690,31 @@ class PushNotificationData extends DataClass
         ),
       );
     }
+    if (!nullToAbsent || syncVersionPushNotificationInfo != null) {
+      map['sync_version_push_notification_info'] = Variable<int>(
+        syncVersionPushNotificationInfo,
+      );
+    }
     return map;
   }
 
   PushNotificationCompanion toCompanion(bool nullToAbsent) {
     return PushNotificationCompanion(
       id: Value(id),
-      fcmDeviceToken: fcmDeviceToken == null && nullToAbsent
+      pushNotificationDeviceToken:
+          pushNotificationDeviceToken == null && nullToAbsent
           ? const Value.absent()
-          : Value(fcmDeviceToken),
+          : Value(pushNotificationDeviceToken),
+      vapidPublicKey: vapidPublicKey == null && nullToAbsent
+          ? const Value.absent()
+          : Value(vapidPublicKey),
       pendingNotificationToken: pendingNotificationToken == null && nullToAbsent
           ? const Value.absent()
           : Value(pendingNotificationToken),
+      syncVersionPushNotificationInfo:
+          syncVersionPushNotificationInfo == null && nullToAbsent
+          ? const Value.absent()
+          : Value(syncVersionPushNotificationInfo),
     );
   }
 
@@ -3648,11 +3725,18 @@ class PushNotificationData extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return PushNotificationData(
       id: serializer.fromJson<int>(json['id']),
-      fcmDeviceToken: serializer.fromJson<FcmDeviceToken?>(
-        json['fcmDeviceToken'],
+      pushNotificationDeviceToken: serializer
+          .fromJson<PushNotificationDeviceToken?>(
+            json['pushNotificationDeviceToken'],
+          ),
+      vapidPublicKey: serializer.fromJson<VapidPublicKey?>(
+        json['vapidPublicKey'],
       ),
       pendingNotificationToken: serializer.fromJson<PendingNotificationToken?>(
         json['pendingNotificationToken'],
+      ),
+      syncVersionPushNotificationInfo: serializer.fromJson<int?>(
+        json['syncVersionPushNotificationInfo'],
       ),
     );
   }
@@ -3661,36 +3745,57 @@ class PushNotificationData extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
-      'fcmDeviceToken': serializer.toJson<FcmDeviceToken?>(fcmDeviceToken),
+      'pushNotificationDeviceToken': serializer
+          .toJson<PushNotificationDeviceToken?>(pushNotificationDeviceToken),
+      'vapidPublicKey': serializer.toJson<VapidPublicKey?>(vapidPublicKey),
       'pendingNotificationToken': serializer.toJson<PendingNotificationToken?>(
         pendingNotificationToken,
+      ),
+      'syncVersionPushNotificationInfo': serializer.toJson<int?>(
+        syncVersionPushNotificationInfo,
       ),
     };
   }
 
   PushNotificationData copyWith({
     int? id,
-    Value<FcmDeviceToken?> fcmDeviceToken = const Value.absent(),
+    Value<PushNotificationDeviceToken?> pushNotificationDeviceToken =
+        const Value.absent(),
+    Value<VapidPublicKey?> vapidPublicKey = const Value.absent(),
     Value<PendingNotificationToken?> pendingNotificationToken =
         const Value.absent(),
+    Value<int?> syncVersionPushNotificationInfo = const Value.absent(),
   }) => PushNotificationData(
     id: id ?? this.id,
-    fcmDeviceToken: fcmDeviceToken.present
-        ? fcmDeviceToken.value
-        : this.fcmDeviceToken,
+    pushNotificationDeviceToken: pushNotificationDeviceToken.present
+        ? pushNotificationDeviceToken.value
+        : this.pushNotificationDeviceToken,
+    vapidPublicKey: vapidPublicKey.present
+        ? vapidPublicKey.value
+        : this.vapidPublicKey,
     pendingNotificationToken: pendingNotificationToken.present
         ? pendingNotificationToken.value
         : this.pendingNotificationToken,
+    syncVersionPushNotificationInfo: syncVersionPushNotificationInfo.present
+        ? syncVersionPushNotificationInfo.value
+        : this.syncVersionPushNotificationInfo,
   );
   PushNotificationData copyWithCompanion(PushNotificationCompanion data) {
     return PushNotificationData(
       id: data.id.present ? data.id.value : this.id,
-      fcmDeviceToken: data.fcmDeviceToken.present
-          ? data.fcmDeviceToken.value
-          : this.fcmDeviceToken,
+      pushNotificationDeviceToken: data.pushNotificationDeviceToken.present
+          ? data.pushNotificationDeviceToken.value
+          : this.pushNotificationDeviceToken,
+      vapidPublicKey: data.vapidPublicKey.present
+          ? data.vapidPublicKey.value
+          : this.vapidPublicKey,
       pendingNotificationToken: data.pendingNotificationToken.present
           ? data.pendingNotificationToken.value
           : this.pendingNotificationToken,
+      syncVersionPushNotificationInfo:
+          data.syncVersionPushNotificationInfo.present
+          ? data.syncVersionPushNotificationInfo.value
+          : this.syncVersionPushNotificationInfo,
     );
   }
 
@@ -3698,60 +3803,93 @@ class PushNotificationData extends DataClass
   String toString() {
     return (StringBuffer('PushNotificationData(')
           ..write('id: $id, ')
-          ..write('fcmDeviceToken: $fcmDeviceToken, ')
-          ..write('pendingNotificationToken: $pendingNotificationToken')
+          ..write('pushNotificationDeviceToken: $pushNotificationDeviceToken, ')
+          ..write('vapidPublicKey: $vapidPublicKey, ')
+          ..write('pendingNotificationToken: $pendingNotificationToken, ')
+          ..write(
+            'syncVersionPushNotificationInfo: $syncVersionPushNotificationInfo',
+          )
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, fcmDeviceToken, pendingNotificationToken);
+  int get hashCode => Object.hash(
+    id,
+    pushNotificationDeviceToken,
+    vapidPublicKey,
+    pendingNotificationToken,
+    syncVersionPushNotificationInfo,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is PushNotificationData &&
           other.id == this.id &&
-          other.fcmDeviceToken == this.fcmDeviceToken &&
-          other.pendingNotificationToken == this.pendingNotificationToken);
+          other.pushNotificationDeviceToken ==
+              this.pushNotificationDeviceToken &&
+          other.vapidPublicKey == this.vapidPublicKey &&
+          other.pendingNotificationToken == this.pendingNotificationToken &&
+          other.syncVersionPushNotificationInfo ==
+              this.syncVersionPushNotificationInfo);
 }
 
 class PushNotificationCompanion extends UpdateCompanion<PushNotificationData> {
   final Value<int> id;
-  final Value<FcmDeviceToken?> fcmDeviceToken;
+  final Value<PushNotificationDeviceToken?> pushNotificationDeviceToken;
+  final Value<VapidPublicKey?> vapidPublicKey;
   final Value<PendingNotificationToken?> pendingNotificationToken;
+  final Value<int?> syncVersionPushNotificationInfo;
   const PushNotificationCompanion({
     this.id = const Value.absent(),
-    this.fcmDeviceToken = const Value.absent(),
+    this.pushNotificationDeviceToken = const Value.absent(),
+    this.vapidPublicKey = const Value.absent(),
     this.pendingNotificationToken = const Value.absent(),
+    this.syncVersionPushNotificationInfo = const Value.absent(),
   });
   PushNotificationCompanion.insert({
     this.id = const Value.absent(),
-    this.fcmDeviceToken = const Value.absent(),
+    this.pushNotificationDeviceToken = const Value.absent(),
+    this.vapidPublicKey = const Value.absent(),
     this.pendingNotificationToken = const Value.absent(),
+    this.syncVersionPushNotificationInfo = const Value.absent(),
   });
   static Insertable<PushNotificationData> custom({
     Expression<int>? id,
-    Expression<String>? fcmDeviceToken,
+    Expression<String>? pushNotificationDeviceToken,
+    Expression<String>? vapidPublicKey,
     Expression<String>? pendingNotificationToken,
+    Expression<int>? syncVersionPushNotificationInfo,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
-      if (fcmDeviceToken != null) 'fcm_device_token': fcmDeviceToken,
+      if (pushNotificationDeviceToken != null)
+        'push_notification_device_token': pushNotificationDeviceToken,
+      if (vapidPublicKey != null) 'vapid_public_key': vapidPublicKey,
       if (pendingNotificationToken != null)
         'pending_notification_token': pendingNotificationToken,
+      if (syncVersionPushNotificationInfo != null)
+        'sync_version_push_notification_info': syncVersionPushNotificationInfo,
     });
   }
 
   PushNotificationCompanion copyWith({
     Value<int>? id,
-    Value<FcmDeviceToken?>? fcmDeviceToken,
+    Value<PushNotificationDeviceToken?>? pushNotificationDeviceToken,
+    Value<VapidPublicKey?>? vapidPublicKey,
     Value<PendingNotificationToken?>? pendingNotificationToken,
+    Value<int?>? syncVersionPushNotificationInfo,
   }) {
     return PushNotificationCompanion(
       id: id ?? this.id,
-      fcmDeviceToken: fcmDeviceToken ?? this.fcmDeviceToken,
+      pushNotificationDeviceToken:
+          pushNotificationDeviceToken ?? this.pushNotificationDeviceToken,
+      vapidPublicKey: vapidPublicKey ?? this.vapidPublicKey,
       pendingNotificationToken:
           pendingNotificationToken ?? this.pendingNotificationToken,
+      syncVersionPushNotificationInfo:
+          syncVersionPushNotificationInfo ??
+          this.syncVersionPushNotificationInfo,
     );
   }
 
@@ -3761,10 +3899,17 @@ class PushNotificationCompanion extends UpdateCompanion<PushNotificationData> {
     if (id.present) {
       map['id'] = Variable<int>(id.value);
     }
-    if (fcmDeviceToken.present) {
-      map['fcm_device_token'] = Variable<String>(
-        $PushNotificationTable.$converterfcmDeviceToken.toSql(
-          fcmDeviceToken.value,
+    if (pushNotificationDeviceToken.present) {
+      map['push_notification_device_token'] = Variable<String>(
+        $PushNotificationTable.$converterpushNotificationDeviceToken.toSql(
+          pushNotificationDeviceToken.value,
+        ),
+      );
+    }
+    if (vapidPublicKey.present) {
+      map['vapid_public_key'] = Variable<String>(
+        $PushNotificationTable.$convertervapidPublicKey.toSql(
+          vapidPublicKey.value,
         ),
       );
     }
@@ -3775,6 +3920,11 @@ class PushNotificationCompanion extends UpdateCompanion<PushNotificationData> {
         ),
       );
     }
+    if (syncVersionPushNotificationInfo.present) {
+      map['sync_version_push_notification_info'] = Variable<int>(
+        syncVersionPushNotificationInfo.value,
+      );
+    }
     return map;
   }
 
@@ -3782,8 +3932,12 @@ class PushNotificationCompanion extends UpdateCompanion<PushNotificationData> {
   String toString() {
     return (StringBuffer('PushNotificationCompanion(')
           ..write('id: $id, ')
-          ..write('fcmDeviceToken: $fcmDeviceToken, ')
-          ..write('pendingNotificationToken: $pendingNotificationToken')
+          ..write('pushNotificationDeviceToken: $pushNotificationDeviceToken, ')
+          ..write('vapidPublicKey: $vapidPublicKey, ')
+          ..write('pendingNotificationToken: $pendingNotificationToken, ')
+          ..write(
+            'syncVersionPushNotificationInfo: $syncVersionPushNotificationInfo',
+          )
           ..write(')'))
         .toString();
   }

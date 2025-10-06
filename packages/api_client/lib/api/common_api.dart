@@ -277,6 +277,47 @@ class CommonApi {
     return null;
   }
 
+  /// Performs an HTTP 'GET /common_api/get_push_notification_info' operation and returns the [Response].
+  Future<Response> getPushNotificationInfoWithHttpInfo() async {
+    // ignore: prefer_const_declarations
+    final path = r'/common_api/get_push_notification_info';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  Future<GetPushNotificationInfo?> getPushNotificationInfo() async {
+    final response = await getPushNotificationInfoWithHttpInfo();
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetPushNotificationInfo',) as GetPushNotificationInfo;
+    
+    }
+    return null;
+  }
+
   /// Get backend version.
   ///
   /// Note: This method returns the HTTP [Response].
@@ -419,13 +460,13 @@ class CommonApi {
   /// Performs an HTTP 'POST /common_api/set_device_token' operation and returns the [Response].
   /// Parameters:
   ///
-  /// * [FcmDeviceToken] fcmDeviceToken (required):
-  Future<Response> postSetDeviceTokenWithHttpInfo(FcmDeviceToken fcmDeviceToken,) async {
+  /// * [PushNotificationDeviceToken] pushNotificationDeviceToken (required):
+  Future<Response> postSetDeviceTokenWithHttpInfo(PushNotificationDeviceToken pushNotificationDeviceToken,) async {
     // ignore: prefer_const_declarations
     final path = r'/common_api/set_device_token';
 
     // ignore: prefer_final_locals
-    Object? postBody = fcmDeviceToken;
+    Object? postBody = pushNotificationDeviceToken;
 
     final queryParams = <QueryParam>[];
     final headerParams = <String, String>{};
@@ -447,9 +488,9 @@ class CommonApi {
 
   /// Parameters:
   ///
-  /// * [FcmDeviceToken] fcmDeviceToken (required):
-  Future<PendingNotificationToken?> postSetDeviceToken(FcmDeviceToken fcmDeviceToken,) async {
-    final response = await postSetDeviceTokenWithHttpInfo(fcmDeviceToken,);
+  /// * [PushNotificationDeviceToken] pushNotificationDeviceToken (required):
+  Future<PendingNotificationToken?> postSetDeviceToken(PushNotificationDeviceToken pushNotificationDeviceToken,) async {
+    final response = await postSetDeviceTokenWithHttpInfo(pushNotificationDeviceToken,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

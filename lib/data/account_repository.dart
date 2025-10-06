@@ -172,6 +172,8 @@ class AccountRepository extends DataRepositoryWithLifecycle {
       await media.reloadMyMediaContent();
     } else if (event.event == EventType.dailyLikesLeftChanged) {
       await chat.reloadDailyLikesLimit();
+    } else if (event.event == EventType.pushNotificationInfoChanged) {
+      await repositories.common.receivePushNotificationInfo();
     } else if (event.event == EventType.adminNotification) {
       await receiveAdminNotification();
     } else {

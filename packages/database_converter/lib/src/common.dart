@@ -1,17 +1,32 @@
 import 'package:drift/drift.dart';
 import 'package:openapi/api.dart';
 
-class FcmDeviceTokenConverter extends TypeConverter<FcmDeviceToken, String> {
-  const FcmDeviceTokenConverter();
+class PushNotificationDeviceTokenConverter
+    extends TypeConverter<PushNotificationDeviceToken, String> {
+  const PushNotificationDeviceTokenConverter();
 
   @override
-  FcmDeviceToken fromSql(fromDb) {
-    return FcmDeviceToken(token: fromDb);
+  PushNotificationDeviceToken fromSql(fromDb) {
+    return PushNotificationDeviceToken(token: fromDb);
   }
 
   @override
   String toSql(value) {
     return value.token;
+  }
+}
+
+class VapidPublicKeyConverter extends TypeConverter<VapidPublicKey, String> {
+  const VapidPublicKeyConverter();
+
+  @override
+  VapidPublicKey fromSql(fromDb) {
+    return VapidPublicKey(key: fromDb);
+  }
+
+  @override
+  String toSql(value) {
+    return value.key;
   }
 }
 

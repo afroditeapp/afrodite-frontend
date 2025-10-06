@@ -105,7 +105,6 @@ lib/model/demo_account_token.dart
 lib/model/event_to_client.dart
 lib/model/event_type.dart
 lib/model/favorite_profiles_page.dart
-lib/model/fcm_device_token.dart
 lib/model/features_config.dart
 lib/model/get_account_ban_time_result.dart
 lib/model/get_account_deletion_request_result.dart
@@ -138,6 +137,7 @@ lib/model/get_profile_statistics_history_result.dart
 lib/model/get_profile_statistics_result.dart
 lib/model/get_profile_string_pending_moderation_list.dart
 lib/model/get_profile_string_state.dart
+lib/model/get_push_notification_info.dart
 lib/model/get_report_list.dart
 lib/model/get_sent_message.dart
 lib/model/get_video_call_urls_result.dart
@@ -250,6 +250,8 @@ lib/model/profile_version.dart
 lib/model/profile_visibility.dart
 lib/model/public_key_id.dart
 lib/model/publication_id.dart
+lib/model/push_notification_device_token.dart
+lib/model/push_notification_info_sync_version.dart
 lib/model/received_like_id.dart
 lib/model/received_likes_iterator_state.dart
 lib/model/received_likes_page.dart
@@ -310,3 +312,4 @@ lib/model/update_profile_content_report.dart
 lib/model/update_profile_name_report.dart
 lib/model/update_profile_text_report.dart
 lib/model/update_report_result.dart
+lib/model/vapid_public_key.dart

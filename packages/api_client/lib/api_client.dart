@@ -348,8 +348,6 @@ class ApiClient {
           return EventTypeTypeTransformer().decode(value);
         case 'FavoriteProfilesPage':
           return FavoriteProfilesPage.fromJson(value);
-        case 'FcmDeviceToken':
-          return FcmDeviceToken.fromJson(value);
         case 'FeaturesConfig':
           return FeaturesConfig.fromJson(value);
         case 'GetAccountBanTimeResult':
@@ -414,6 +412,8 @@ class ApiClient {
           return GetProfileStringPendingModerationList.fromJson(value);
         case 'GetProfileStringState':
           return GetProfileStringState.fromJson(value);
+        case 'GetPushNotificationInfo':
+          return GetPushNotificationInfo.fromJson(value);
         case 'GetReportList':
           return GetReportList.fromJson(value);
         case 'GetSentMessage':
@@ -638,6 +638,10 @@ class ApiClient {
           return PublicKeyId.fromJson(value);
         case 'PublicationId':
           return PublicationId.fromJson(value);
+        case 'PushNotificationDeviceToken':
+          return PushNotificationDeviceToken.fromJson(value);
+        case 'PushNotificationInfoSyncVersion':
+          return PushNotificationInfoSyncVersion.fromJson(value);
         case 'ReceivedLikeId':
           return ReceivedLikeId.fromJson(value);
         case 'ReceivedLikesIteratorState':
@@ -758,6 +762,8 @@ class ApiClient {
           return UpdateProfileTextReport.fromJson(value);
         case 'UpdateReportResult':
           return UpdateReportResult.fromJson(value);
+        case 'VapidPublicKey':
+          return VapidPublicKey.fromJson(value);
         default:
           dynamic match;
           if (value is List && (match = _regList.firstMatch(targetType)?.group(1)) != null) {

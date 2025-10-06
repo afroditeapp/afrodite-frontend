@@ -20,11 +20,17 @@ class DaoReadLoginSession extends DatabaseAccessor<AccountBackgroundDatabase>
     )..where((t) => t.id.equals(SingleRowTable.ID.value))).map(extractColumn).watchSingleOrNull();
   }
 
-  Stream<FcmDeviceToken?> watchFcmDeviceToken() =>
-      _watchPushNotificationColumn((r) => r.fcmDeviceToken);
+  Stream<PushNotificationDeviceToken?> watchPushNotificationDeviceToken() =>
+      _watchPushNotificationColumn((r) => r.pushNotificationDeviceToken);
+
+  Stream<VapidPublicKey?> watchVapidPublicKey() =>
+      _watchPushNotificationColumn((r) => r.vapidPublicKey);
 
   Stream<PendingNotificationToken?> watchPendingNotificationToken() =>
       _watchPushNotificationColumn((r) => r.pendingNotificationToken);
+
+  Stream<int?> watchPushNotificationInfoSyncVersion() =>
+      _watchPushNotificationColumn((r) => r.syncVersionPushNotificationInfo);
 
   Stream<T?> _watchPushNotificationColumn<T extends Object>(
     T? Function(PushNotificationData) extractColumn,

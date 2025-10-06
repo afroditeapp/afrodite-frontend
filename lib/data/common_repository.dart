@@ -20,12 +20,14 @@ class CommonRepository extends DataRepositoryWithLifecycle {
   final AccountId currentUser;
   final AccountBackgroundDatabaseManager accountBackgroundDb;
   final ServerConnectionManager connectionManager;
+  final ApiManager api;
   final ProfileRepository profile;
   final ConnectedActionScheduler syncHandler;
   bool initDone = false;
 
   CommonRepository(this.currentUser, this.accountBackgroundDb, this.connectionManager, this.profile)
-    : syncHandler = ConnectedActionScheduler(connectionManager);
+    : syncHandler = ConnectedActionScheduler(connectionManager),
+      api = connectionManager;
 
   Stream<bool> get notificationPermissionAsked =>
       db.commonStreamOrDefault((db) => db.app.watchNotificationPermissionAsked(), false);
@@ -131,5 +133,17 @@ class CommonRepository extends DataRepositoryWithLifecycle {
   @override
   Future<void> onLogout() async {
     await PushNotificationManager.getInstance().logoutPushNotifications();
+  }
+
+  Future<Result<(), ()>> receivePushNotificationInfo() async {
+    final r = await api.common((api) => api.getPushNotificationInfo()).ok();
+    if (r != null) {
+      final dbResult = await accountBackgroundDb
+          .accountAction((db) => db.loginSession.updatePushNotificationInfo(r))
+          .emptyErr();
+      await PushNotificationManager.getInstance().triggerTokenRefresh();
+      return dbResult;
+    }
+    return const Err(());
   }
 }

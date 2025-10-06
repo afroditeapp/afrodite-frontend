@@ -326,6 +326,7 @@ const forceSync = 255;
     News = 4,
     MediaContent = 5,
     DailyLikesLeft = 6,
+    PushNotificationInfo = 7,
     /// Special value without valid [SyncVersionFromClient] informing
     /// the server that client has info that server maintenance is scheduled.
     ServerMaintenanceIsScheduled = 255,
@@ -356,6 +357,11 @@ Future<Uint8List> syncDataBytes(
   final syncVersionDailyLikesLeft =
       await db.accountStreamSingle((db) => db.like.watchDailyLikesLeftSyncVersion()).ok() ??
       forceSync;
+  final syncVersionPushNotificationInfo =
+      await accountBackgroundDb
+          .accountStreamSingle((db) => db.loginSession.watchPushNotificationInfoSyncVersion())
+          .ok() ??
+      forceSync;
 
   final currentMaintenanceInfo = await db
       .accountStreamSingle((db) => db.common.watchServerMaintenanceInfo())
@@ -377,6 +383,8 @@ Future<Uint8List> syncDataBytes(
     syncVersionMediaContent,
     6, // Daily likes left
     syncVersionDailyLikesLeft,
+    7, // Push notification info
+    syncVersionPushNotificationInfo,
     if (sendMaintenanceSyncVersion) 255,
     if (sendMaintenanceSyncVersion) 0,
   ];

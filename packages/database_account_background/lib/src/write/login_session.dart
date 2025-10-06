@@ -25,14 +25,34 @@ class DaoWriteLoginSession extends DatabaseAccessor<AccountBackgroundDatabase>
   }
 
   Future<void> updateFcmDeviceTokenAndPendingNotificationToken(
-    FcmDeviceToken? token,
+    PushNotificationDeviceToken? token,
     PendingNotificationToken? notificationToken,
   ) async {
     await into(pushNotification).insertOnConflictUpdate(
       PushNotificationCompanion.insert(
         id: SingleRowTable.ID,
-        fcmDeviceToken: Value(token),
+        pushNotificationDeviceToken: Value(token),
         pendingNotificationToken: Value(notificationToken),
+      ),
+    );
+  }
+
+  Future<void> updatePushNotificationInfo(GetPushNotificationInfo info) async {
+    await into(pushNotification).insertOnConflictUpdate(
+      PushNotificationCompanion.insert(
+        id: SingleRowTable.ID,
+        pushNotificationDeviceToken: Value(info.deviceToken),
+        vapidPublicKey: Value(info.vapidPublicKey),
+        syncVersionPushNotificationInfo: Value(info.syncVersion.version),
+      ),
+    );
+  }
+
+  Future<void> resetSyncVersion() async {
+    await into(pushNotification).insertOnConflictUpdate(
+      PushNotificationCompanion.insert(
+        id: SingleRowTable.ID,
+        syncVersionPushNotificationInfo: Value(null),
       ),
     );
   }

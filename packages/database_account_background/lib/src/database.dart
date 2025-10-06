@@ -69,6 +69,7 @@ class AccountBackgroundDatabase extends _$AccountBackgroundDatabase {
     await transaction(() async {
       await daoWriteNewReceivedLikesCount.resetReceivedLikesSyncVersion();
       await daoWriteNews.resetSyncVersion();
+      await daoWriteLoginSession.resetSyncVersion();
     });
   }
 }
