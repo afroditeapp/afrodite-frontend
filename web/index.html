@@ -80,6 +80,18 @@
       get_message_content_rust,
     }));
   </script>
+  <script>
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("sw.js", { scope: "/" })
+        .then((registration) => {
+          console.log("Service worker registered:", registration);
+        })
+        .catch((error) => {
+          console.error("Service worker registration failed:", error);
+        });
+    }
+  </script>
+  <script src="native_push.js"></script>
   <script src="flutter_bootstrap.js" async></script>
 </body>
 </html>

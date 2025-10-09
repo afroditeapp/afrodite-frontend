@@ -9,6 +9,7 @@ import 'package:app/ui_utils/common_update_logic.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:app_settings/app_settings.dart';
 import 'package:collection/collection.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:app/localizations.dart';
@@ -141,7 +142,7 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
         [if (features.news != null) news(context, state), automaticProfileSearch(context, state)],
       ];
       for (final group in settings) {
-        if (Platform.isAndroid) {
+        if (!kIsWeb && Platform.isAndroid) {
           // Use same order as in system notification settings
           group.sortBy<String>((v) => v.$1.id);
         } else {
@@ -149,7 +150,7 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
         }
       }
 
-      if (Platform.isAndroid) {
+      if (!kIsWeb && Platform.isAndroid) {
         // Use same order as in system notification settings
         settings.sortBy<String>((v) => v.first.$1.group.id);
       } else {
@@ -176,7 +177,7 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
     }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [...settingsList, actionOpenSystemNotificationSettings()],
+      children: [...settingsList, if (!kIsWeb) actionOpenSystemNotificationSettings()],
     );
   }
 

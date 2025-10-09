@@ -65,6 +65,10 @@ web/rust_utils.js
 web/drift_worker.js
 web/sqlite3.wasm
 
+# Native push web dependencies
+web/native_push.js
+web/native_push_sw.js
+
 # Firebase and Sign in with Google
 android/app/google-services.json
 ios/Runner/GoogleService-Info.plist

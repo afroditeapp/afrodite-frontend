@@ -993,9 +993,11 @@ packages:
   native_push:
     dependency: "direct main"
     description:
-      path: "../native_push"
-      relative: true
-    source: path
+      path: "."
+      ref: db7a018cca3930efa7113e93f77c81dabe03f590
+      resolved-ref: db7a018cca3930efa7113e93f77c81dabe03f590
+      url: "https://github.com/jutuon/native_push.git"
+    source: git
     version: "1.0.5"
   nested:
     dependency: transitive

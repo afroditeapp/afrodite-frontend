@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:app/ui/utils/web_notifications/web_notifications.dart';
+import 'package:app/ui_utils/snack_bar.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -89,9 +91,10 @@ class NotificationManager extends AppSingleton {
 
   Future<void> askPermissions() async {
     if (kIsWeb) {
-      return;
-    }
-    if (Platform.isAndroid) {
+      if (webNotificationsSupported()) {
+        await requestWebNotificationPermission();
+      }
+    } else if (Platform.isAndroid) {
       await _pluginHandle
           .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
           ?.requestNotificationsPermission();
@@ -108,7 +111,7 @@ class NotificationManager extends AppSingleton {
 
   Future<bool> _notificationPermissionShouldBeAsked() async {
     if (kIsWeb) {
-      return false;
+      return webNotificationsSupported();
     } else if (Platform.isAndroid) {
       DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
       AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
@@ -168,16 +171,30 @@ class NotificationManager extends AppSingleton {
       importance: importance,
       enableLights: true,
     );
-    await _pluginHandle.show(
-      id.value,
-      title,
-      body,
-      NotificationDetails(android: androidDetails),
-      payload: NotificationPayload(
-        notificationId: id,
-        receiverAccountId: accountBackgroundDb.accountId(),
-      ).toJson(),
-    );
+    if (kIsWeb) {
+      final String bodyText;
+      if (body != null) {
+        if (body.endsWith(".")) {
+          bodyText = ". $body";
+        } else {
+          bodyText = ". $body.";
+        }
+      } else {
+        bodyText = "";
+      }
+      showSnackBar("$title$bodyText");
+    } else {
+      await _pluginHandle.show(
+        id.value,
+        title,
+        body,
+        NotificationDetails(android: androidDetails),
+        payload: NotificationPayload(
+          notificationId: id,
+          receiverAccountId: accountBackgroundDb.accountId(),
+        ).toJson(),
+      );
+    }
   }
 
   Future<void> hideNotification(LocalNotificationId id) async {
@@ -226,7 +243,8 @@ class NotificationManager extends AppSingleton {
 
   Future<bool> areNotificationsEnabled() async {
     if (kIsWeb) {
-      return false;
+      return webNotificationsSupported() &&
+          getWebNotificationPermission() == NotificationPermissionStatus.granted;
     } else if (Platform.isAndroid) {
       return await _pluginHandle
               .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()

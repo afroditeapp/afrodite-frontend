@@ -82,6 +82,12 @@ remove-and-download-drift-web-dependencies:
 	# Download for sqlite3-2.7.5 does not exist so download older version
 	cd web && curl "https://github.com/simolus3/sqlite3.dart/releases/download/sqlite3-2.7.4/sqlite3.wasm" -L -o sqlite3.wasm
 
+remove-and-download-native-push-web-dependencies:
+	rm -f web/native_push.js
+	rm -f web/native_push_sw.js
+	cd web && curl "https://github.com/jutuon/native_push/raw/db7a018cca3930efa7113e93f77c81dabe03f590/example/web/native_push.js" -L -o native_push.js
+	cd web && curl "https://github.com/jutuon/native_push/raw/db7a018cca3930efa7113e93f77c81dabe03f590/example/web/native_push_sw.js" -L -o native_push_sw.js
+
 build-rust-utils-for-web:
 	rm -f web/rust_utils_bg.wasm
 	rm -f web/rust_utils.js

@@ -70,12 +70,7 @@ class PushNotificationManager extends AppSingleton {
 
   /// Initializes push notifications. Can be called multiple times.
   Future<void> initPushNotifications() async {
-    if (kIsWeb) {
-      // Push notifications are not supported on web.
-      return;
-    }
-
-    if (Platform.isAndroid) {
+    if (!kIsWeb && Platform.isAndroid) {
       try {
         await GoogleApiAvailability.instance.makeGooglePlayServicesAvailable();
       } catch (_) {
@@ -111,15 +106,26 @@ class PushNotificationManager extends AppSingleton {
         firebaseOptions = null;
       }
 
-      await NativePush().initialize(firebaseOptions: firebaseOptions);
+      try {
+        _log.fine("Running native push initialize function");
+        await NativePush().initialize(firebaseOptions: firebaseOptions);
+      } catch (e) {
+        _log.error("Native push initialization failed, error: $e");
+        return;
+      }
 
-      final registered = await NativePush().registerForRemoteNotification(options: []);
+      _log.fine("Running native push registerForRemoteNotification function");
+      final registered = await NativePush().registerForRemoteNotification(
+        options: [],
+        vapidKey: await getVapidKey(),
+      );
       if (!registered) {
         _log.error("Failed to register for remote notifications");
         return;
       }
 
       _nativePushInitialized = true;
+      _log.fine("Native push init completed");
     }
   }
 
@@ -163,10 +169,37 @@ class PushNotificationManager extends AppSingleton {
     }
   }
 
+  Future<String?> getVapidKey() async {
+    if (kIsWeb) {
+      final repositories = LoginRepository.getInstance().repositoriesOrNull;
+      if (repositories != null) {
+        final dbVapidKey = await repositories.accountBackgroundDb
+            .accountStreamSingle((db) => db.loginSession.watchVapidPublicKey())
+            .ok();
+        if (dbVapidKey != null) {
+          return dbVapidKey.key;
+        }
+
+        await repositories.common.receivePushNotificationInfo();
+
+        final dbVapidKeySecond = await repositories.accountBackgroundDb
+            .accountStreamSingle((db) => db.loginSession.watchVapidPublicKey())
+            .ok();
+        if (dbVapidKeySecond != null) {
+          return dbVapidKeySecond.key;
+        }
+
+        _log.error("Getting VAPID public key failed");
+      }
+    }
+    return null;
+  }
+
   Future<void> triggerTokenRefresh() async {
     if (!_nativePushInitialized) {
       return;
     }
+    _log.fine("Trigger token refresh");
     final (_, token) = await NativePush().notificationToken;
     if (token == null) {
       _log.error("Notification token is null");

@@ -7,6 +7,7 @@ import 'package:app/ui/normal/settings/blocked_profiles.dart';
 import 'package:app/ui/normal/settings/general/profile_grid_settings.dart';
 import 'package:app/ui/normal/settings/location.dart';
 import 'package:app/ui/normal/settings/media/current_security_selfie.dart';
+import 'package:app/ui/utils/web_notifications/web_notifications.dart';
 import 'package:app/ui_utils/common_update_logic.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/api.dart';
@@ -193,7 +194,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   List<Widget> generalSettings(BuildContext context) {
     return [
-      if (!kIsWeb)
+      if (!kIsWeb || (kIsWeb && webNotificationsSupported()))
         Setting.createSetting(
           Icons.notifications,
           context.strings.notification_settings_screen_title,
