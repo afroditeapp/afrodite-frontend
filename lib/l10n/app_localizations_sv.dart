@@ -811,6 +811,25 @@ class AppLocalizationsSv extends AppLocalizations {
   String get login_screen_demo_account_username => 'Username';
 
   @override
+  String get login_screen_ios_pwa_install_description =>
+      'To use this app on iOS, please add it to your home screen:';
+
+  @override
+  String get login_screen_ios_pwa_install_step1 => '1. Tap the Share button';
+
+  @override
+  String get login_screen_ios_pwa_install_step2 =>
+      '2. Scroll down and tap \"Add to Home Screen\"';
+
+  @override
+  String get login_screen_ios_pwa_install_step3 =>
+      '3. Tap \"Add\" in the top right corner';
+
+  @override
+  String get login_screen_ios_pwa_install_step4 =>
+      '4. Open the app from your home screen';
+
+  @override
   String get login_screen_login_api_request_failed =>
       'Login API request failed. Try again later.';
 

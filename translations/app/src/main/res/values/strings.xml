@@ -199,6 +199,11 @@
     <string name="login_screen_sign_in_with_error" description="Snackbar text for sign in with error">Sign in with failed</string>
     <string name="login_screen_login_api_request_failed" description="Snackbar text for login API request failed">Login API request failed. Try again later.</string>
     <string name="login_screen_connecting_websocket_failed" description="Snackbar text for connecting WebSocket failed">Connecting WebSocket failed. Try again later.</string>
+    <string name="login_screen_ios_pwa_install_description" description="Description text for iOS PWA installation guide">To use this app on iOS, please add it to your home screen:</string>
+    <string name="login_screen_ios_pwa_install_step1" description="First step for iOS PWA installation">1. Tap the Share button</string>
+    <string name="login_screen_ios_pwa_install_step2" description="Second step for iOS PWA installation">2. Scroll down and tap \"Add to Home Screen\"</string>
+    <string name="login_screen_ios_pwa_install_step3" description="Third step for iOS PWA installation">3. Tap \"Add\" in the top right corner</string>
+    <string name="login_screen_ios_pwa_install_step4" description="Fourth step for iOS PWA installation">4. Open the app from your home screen</string>
 
     <!-- Demo account screen -->
     <string name="demo_account_screen_no_accounts_available" description="Text displayed when available accounts list is empty">No accounts available</string>

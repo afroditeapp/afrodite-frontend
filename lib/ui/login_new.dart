@@ -2,6 +2,7 @@ import "package:app/data/utils/demo_account_manager.dart";
 import "package:app/logic/account/demo_account_login.dart";
 import "package:app/model/freezed/logic/account/demo_account_login.dart";
 import "package:app/ui/login/widgets.dart";
+import "package:app/ui/utils/web_pwa/web_pwa.dart";
 import "package:app/utils/result.dart";
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
@@ -86,6 +87,10 @@ class LoginScreen extends StatelessWidget {
   }
 
   Widget loginScreen(BuildContext context) {
+    if (isIosWeb() && !isRunningInPwaMode()) {
+      return iosPwaInstallationGuide(context);
+    }
+
     return Column(
       children: [
         const Spacer(flex: 2),

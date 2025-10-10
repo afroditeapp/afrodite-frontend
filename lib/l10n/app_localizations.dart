@@ -1448,6 +1448,36 @@ abstract class AppLocalizations {
   /// **'Username'**
   String get login_screen_demo_account_username;
 
+  /// Description text for iOS PWA installation guide
+  ///
+  /// In en, this message translates to:
+  /// **'To use this app on iOS, please add it to your home screen:'**
+  String get login_screen_ios_pwa_install_description;
+
+  /// First step for iOS PWA installation
+  ///
+  /// In en, this message translates to:
+  /// **'1. Tap the Share button'**
+  String get login_screen_ios_pwa_install_step1;
+
+  /// Second step for iOS PWA installation
+  ///
+  /// In en, this message translates to:
+  /// **'2. Scroll down and tap \"Add to Home Screen\"'**
+  String get login_screen_ios_pwa_install_step2;
+
+  /// Third step for iOS PWA installation
+  ///
+  /// In en, this message translates to:
+  /// **'3. Tap \"Add\" in the top right corner'**
+  String get login_screen_ios_pwa_install_step3;
+
+  /// Fourth step for iOS PWA installation
+  ///
+  /// In en, this message translates to:
+  /// **'4. Open the app from your home screen'**
+  String get login_screen_ios_pwa_install_step4;
+
   /// Snackbar text for login API request failed
   ///
   /// In en, this message translates to:

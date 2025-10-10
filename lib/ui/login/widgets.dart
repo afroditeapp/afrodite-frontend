@@ -171,3 +171,52 @@ Widget logoAndAppNameAndSlogan(BuildContext context) {
     ],
   );
 }
+
+Widget iosPwaInstallationGuide(BuildContext context) {
+  return Column(
+    children: [
+      const Spacer(flex: 2),
+      logoAndAppNameAndSlogan(context),
+      const Spacer(flex: 3),
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 32.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              context.strings.login_screen_ios_pwa_install_description,
+              style: Theme.of(context).textTheme.bodyLarge,
+            ),
+            const SizedBox(height: 24),
+            _installStepWithIcon(
+              context,
+              context.strings.login_screen_ios_pwa_install_step1,
+              Icons.ios_share,
+            ),
+            const SizedBox(height: 12),
+            _installStep(context, context.strings.login_screen_ios_pwa_install_step2),
+            const SizedBox(height: 12),
+            _installStep(context, context.strings.login_screen_ios_pwa_install_step3),
+            const SizedBox(height: 12),
+            _installStep(context, context.strings.login_screen_ios_pwa_install_step4),
+          ],
+        ),
+      ),
+      const Spacer(flex: 7),
+    ],
+  );
+}
+
+Widget _installStep(BuildContext context, String text) {
+  return Text(text, style: Theme.of(context).textTheme.bodyMedium);
+}
+
+Widget _installStepWithIcon(BuildContext context, String text, IconData icon) {
+  return Row(
+    children: [
+      Flexible(child: Text(text, style: Theme.of(context).textTheme.bodyMedium)),
+      const SizedBox(width: 8),
+      Icon(icon, size: 24),
+    ],
+  );
+}
