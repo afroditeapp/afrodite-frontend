@@ -1816,6 +1816,12 @@ abstract class AppLocalizations {
   /// **'Profile text rejected'**
   String get notification_profile_text_rejected;
 
+  /// Info text when iOS PWA notification permission is denied
+  ///
+  /// In en, this message translates to:
+  /// **'Permission not granted. Try again or grant permission from iOS system settings.'**
+  String get notification_settings_screen_ios_pwa_permission_denied;
+
   /// Info text that notification category is disabled from system settings
   ///
   /// In en, this message translates to:
@@ -1841,6 +1847,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Notifications'**
   String get notification_settings_screen_title;
+
+  /// Info text when web notification permission is denied
+  ///
+  /// In en, this message translates to:
+  /// **'Permission not granted. Try again or grant permission from browser settings.'**
+  String get notification_settings_screen_web_permission_denied;
+
+  /// Info text for web that notification permission is not enabled
+  ///
+  /// In en, this message translates to:
+  /// **'Notification permission is not enabled'**
+  String get notification_settings_screen_web_permission_not_enabled;
+
+  /// Action title for requesting web notification permission
+  ///
+  /// In en, this message translates to:
+  /// **'Enable notifications'**
+  String get notification_settings_screen_web_request_permission;
 
   /// Title for disable filters action
   ///

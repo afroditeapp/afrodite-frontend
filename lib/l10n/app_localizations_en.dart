@@ -1029,6 +1029,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get notification_profile_text_rejected => 'Profile text rejected';
 
   @override
+  String get notification_settings_screen_ios_pwa_permission_denied =>
+      'Permission not granted. Try again or grant permission from iOS system settings.';
+
+  @override
   String
   get notification_settings_screen_notification_category_disabled_from_system_settings_text =>
       'Disabled from system notification settings';
@@ -1044,6 +1048,18 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get notification_settings_screen_title => 'Notifications';
+
+  @override
+  String get notification_settings_screen_web_permission_denied =>
+      'Permission not granted. Try again or grant permission from browser settings.';
+
+  @override
+  String get notification_settings_screen_web_permission_not_enabled =>
+      'Notification permission is not enabled';
+
+  @override
+  String get notification_settings_screen_web_request_permission =>
+      'Enable notifications';
 
   @override
   String get profile_filters_screen_disable_filters_action => 'Disable filters';

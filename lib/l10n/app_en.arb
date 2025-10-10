@@ -1231,6 +1231,10 @@
   "@notification_profile_text_rejected": {
     "description": "Title for profile text rejected notification"
   },
+  "notification_settings_screen_ios_pwa_permission_denied": "Permission not granted. Try again or grant permission from iOS system settings.",
+  "@notification_settings_screen_ios_pwa_permission_denied": {
+    "description": "Info text when iOS PWA notification permission is denied"
+  },
   "notification_settings_screen_notification_category_disabled_from_system_settings_text": "Disabled from system notification settings",
   "@notification_settings_screen_notification_category_disabled_from_system_settings_text": {
     "description": "Info text that notification category is disabled from system settings"
@@ -1246,6 +1250,18 @@
   "notification_settings_screen_title": "Notifications",
   "@notification_settings_screen_title": {
     "description": "Title for notification settings screen"
+  },
+  "notification_settings_screen_web_permission_denied": "Permission not granted. Try again or grant permission from browser settings.",
+  "@notification_settings_screen_web_permission_denied": {
+    "description": "Info text when web notification permission is denied"
+  },
+  "notification_settings_screen_web_permission_not_enabled": "Notification permission is not enabled",
+  "@notification_settings_screen_web_permission_not_enabled": {
+    "description": "Info text for web that notification permission is not enabled"
+  },
+  "notification_settings_screen_web_request_permission": "Enable notifications",
+  "@notification_settings_screen_web_request_permission": {
+    "description": "Action title for requesting web notification permission"
   },
   "profile_filters_screen_disable_filters_action": "Disable filters",
   "@profile_filters_screen_disable_filters_action": {

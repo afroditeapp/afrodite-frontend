@@ -5,9 +5,12 @@ import 'package:app/logic/account/client_features_config.dart';
 import 'package:app/model/freezed/logic/account/client_features_config.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui/normal/settings.dart';
+import 'package:app/ui/utils/web_notifications/web_notifications.dart';
+import 'package:app/ui/utils/web_pwa/web_pwa.dart';
 import 'package:app/ui_utils/common_update_logic.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/padding.dart';
+import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app_settings/app_settings.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
@@ -136,13 +139,18 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
               const Padding(padding: EdgeInsets.all(4)),
               hPad(
                 Text(
-                  context
-                      .strings
-                      .notification_settings_screen_notifications_disabled_from_system_settings_text,
+                  kIsWeb
+                      ? context.strings.notification_settings_screen_web_permission_not_enabled
+                      : context
+                            .strings
+                            .notification_settings_screen_notifications_disabled_from_system_settings_text,
                 ),
               ),
               const Padding(padding: EdgeInsets.all(4)),
-              if (!kIsWeb) actionOpenSystemNotificationSettings(),
+              if (kIsWeb)
+                actionRequestWebNotificationPermission(context)
+              else
+                actionOpenSystemNotificationSettings(),
             ],
           );
         }
@@ -283,6 +291,28 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
         AppSettings.openAppSettings(type: AppSettingsType.notification);
       },
       leading: const Icon(Icons.settings),
+    );
+  }
+
+  Widget actionRequestWebNotificationPermission(BuildContext context) {
+    return ListTile(
+      title: Text(context.strings.notification_settings_screen_web_request_permission),
+      onTap: () async {
+        final result = await requestWebNotificationPermission();
+
+        if (!context.mounted) return;
+
+        if (result == NotificationPermissionStatus.granted) {
+          widget.notificationSettingsBloc.add(ReloadNotificationsEnabledStatus());
+        } else {
+          if (isIosWeb() && isRunningInPwaMode()) {
+            showSnackBar(context.strings.notification_settings_screen_ios_pwa_permission_denied);
+          } else {
+            showSnackBar(context.strings.notification_settings_screen_web_permission_denied);
+          }
+        }
+      },
+      leading: const Icon(Icons.notifications),
     );
   }
 
