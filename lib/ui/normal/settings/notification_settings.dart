@@ -7,6 +7,7 @@ import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui/normal/settings.dart';
 import 'package:app/ui_utils/common_update_logic.dart';
 import 'package:app/ui_utils/dialog.dart';
+import 'package:app/ui_utils/padding.dart';
 import 'package:app_settings/app_settings.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
@@ -16,7 +17,6 @@ import 'package:app/localizations.dart';
 import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/logic/app/notification_settings.dart';
 import 'package:app/model/freezed/logic/settings/notification_settings.dart';
-import 'package:app/ui_utils/padding.dart';
 import 'package:openapi/api.dart';
 
 void openNotificationSettings(BuildContext context) {
@@ -121,64 +121,72 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
   Widget content(BuildContext context, NotificationSettingsData state) {
     return BlocBuilder<ClientFeaturesConfigBloc, ClientFeaturesConfigData>(
       builder: (context, features) {
-        return contentWidget(context, features.config, state);
+        if (state.areNotificationsEnabled) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ...settingsWhenNotificationsEnabled(context, features.config, state),
+              if (!kIsWeb) actionOpenSystemNotificationSettings(),
+            ],
+          );
+        } else {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Padding(padding: EdgeInsets.all(4)),
+              hPad(
+                Text(
+                  context
+                      .strings
+                      .notification_settings_screen_notifications_disabled_from_system_settings_text,
+                ),
+              ),
+              const Padding(padding: EdgeInsets.all(4)),
+              if (!kIsWeb) actionOpenSystemNotificationSettings(),
+            ],
+          );
+        }
       },
     );
   }
 
-  Widget contentWidget(
+  List<Widget> settingsWhenNotificationsEnabled(
     BuildContext context,
     ClientFeaturesConfig features,
     NotificationSettingsData state,
   ) {
     final List<Widget> settingsList;
-    if (state.areNotificationsEnabled) {
-      final settings = [
-        [messages(context, state), likes(context, state)],
-        [
-          mediaContentModerationCompleted(context, state),
-          profileStringModerationCompleted(context, state),
-        ],
-        [if (features.news != null) news(context, state), automaticProfileSearch(context, state)],
-      ];
-      for (final group in settings) {
-        if (!kIsWeb && Platform.isAndroid) {
-          // Use same order as in system notification settings
-          group.sortBy<String>((v) => v.$1.id);
-        } else {
-          group.sortBy<String>((v) => v.$1.title);
-        }
-      }
 
+    final settings = [
+      [messages(context, state), likes(context, state)],
+      [
+        mediaContentModerationCompleted(context, state),
+        profileStringModerationCompleted(context, state),
+      ],
+      [if (features.news != null) news(context, state), automaticProfileSearch(context, state)],
+    ];
+    for (final group in settings) {
       if (!kIsWeb && Platform.isAndroid) {
         // Use same order as in system notification settings
-        settings.sortBy<String>((v) => v.first.$1.group.id);
+        group.sortBy<String>((v) => v.$1.id);
       } else {
-        settings.sortBy<String>((v) => v.first.$1.title);
+        group.sortBy<String>((v) => v.$1.title);
       }
-
-      settingsList = [];
-      for (final group in settings) {
-        settingsList.add(settingsCategoryTitle(context, group.first.$1.group.title));
-        settingsList.addAll(group.map((v) => v.$2));
-      }
-    } else {
-      settingsList = [
-        const Padding(padding: EdgeInsets.all(4)),
-        hPad(
-          Text(
-            context
-                .strings
-                .notification_settings_screen_notifications_disabled_from_system_settings_text,
-          ),
-        ),
-        const Padding(padding: EdgeInsets.all(4)),
-      ];
     }
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [...settingsList, if (!kIsWeb) actionOpenSystemNotificationSettings()],
-    );
+
+    if (!kIsWeb && Platform.isAndroid) {
+      // Use same order as in system notification settings
+      settings.sortBy<String>((v) => v.first.$1.group.id);
+    } else {
+      settings.sortBy<String>((v) => v.first.$1.title);
+    }
+
+    settingsList = [];
+    for (final group in settings) {
+      settingsList.add(settingsCategoryTitle(context, group.first.$1.group.title));
+      settingsList.addAll(group.map((v) => v.$2));
+    }
+    return settingsList;
   }
 
   (NotificationCategory, Widget) messages(BuildContext context, NotificationSettingsData state) {
