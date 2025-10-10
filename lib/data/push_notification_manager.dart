@@ -12,6 +12,7 @@ import 'package:google_api_availability/google_api_availability.dart';
 import 'package:logging/logging.dart';
 import 'package:native_push/native_push.dart';
 import 'package:openapi/api.dart';
+import 'package:app/ui/utils/web_notifications/web_notifications.dart';
 import 'package:app/data/general/notification/state/like_received.dart';
 import 'package:app/data/general/notification/state/message_received.dart';
 import 'package:app/data/login_repository.dart';
@@ -66,6 +67,16 @@ class PushNotificationManager extends AppSingleton {
           await _refreshTokenToServer(fcmToken);
         })
         .listen((value) {});
+
+    if (kIsWeb) {
+      watchWebNotificationPermission().listen((status) {
+        if (status == NotificationPermissionStatus.granted &&
+            LoginRepository.getInstance().repositoriesOrNull != null) {
+          _log.info("Web notification permission granted, initializing push notifications");
+          initPushNotifications();
+        }
+      });
+    }
   }
 
   /// Initializes push notifications. Can be called multiple times.
