@@ -202,17 +202,7 @@ class _ChatViewState extends State<ChatView> {
       children: [
         list(context, accounts),
         if (accounts.isEmpty)
-          buildListReplacementMessage(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  context.strings.chat_list_screen_no_chats_found,
-                  style: Theme.of(context).textTheme.bodyLarge,
-                ),
-              ],
-            ),
-          ),
+          ListReplacementMessage(title: context.strings.chat_list_screen_no_chats_found),
       ],
     );
   }

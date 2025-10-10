@@ -296,20 +296,11 @@ class ProfileGridState extends State<ProfileGrid> {
             descriptionText =
                 context.strings.profile_grid_screen_no_profiles_found_description_filters_disabled;
           }
-          return buildListReplacementMessage(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  filterState.showOnlyFavorites
-                      ? context.strings.profile_grid_screen_no_favorite_profiles_found_title
-                      : context.strings.profile_grid_screen_no_profiles_found_title,
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
-                const Padding(padding: EdgeInsets.all(8)),
-                Text(descriptionText),
-              ],
-            ),
+          return ListReplacementMessage(
+            title: filterState.showOnlyFavorites
+                ? context.strings.profile_grid_screen_no_favorite_profiles_found_title
+                : context.strings.profile_grid_screen_no_profiles_found_title,
+            body: descriptionText,
           );
         },
         firstPageProgressIndicatorBuilder: (context) {

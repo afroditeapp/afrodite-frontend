@@ -347,16 +347,8 @@ class LikeViewContentState extends State<LikeViewContent> {
           );
         },
         noItemsFoundIndicatorBuilder: (context) {
-          return buildListReplacementMessage(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  context.strings.likes_screen_no_received_likes_found,
-                  style: Theme.of(context).textTheme.bodyLarge,
-                ),
-              ],
-            ),
+          return ListReplacementMessage(
+            title: context.strings.likes_screen_no_received_likes_found,
           );
         },
         firstPageErrorIndicatorBuilder: (context) {
