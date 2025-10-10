@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:js_interop';
 import 'package:web/web.dart';
 
@@ -52,4 +53,17 @@ Future<NotificationPermissionStatus> requestWebNotificationPermission() async {
   } catch (e) {
     return NotificationPermissionStatus.denied;
   }
+}
+
+Stream<NotificationPermissionStatus> watchWebNotificationPermission() async* {
+  final descriptor = {'name': 'notifications'.toJS}.jsify() as JSObject;
+  final permissionsResult = await window.navigator.permissions.query(descriptor).toDart;
+  final controller = StreamController<NotificationPermissionStatus>();
+  permissionsResult.addEventListener(
+    'change',
+    (Event _) {
+      controller.add(getWebNotificationPermission());
+    }.toJS,
+  );
+  yield* controller.stream;
 }

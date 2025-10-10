@@ -11,3 +11,7 @@ NotificationPermissionStatus getWebNotificationPermission() {
 Future<NotificationPermissionStatus> requestWebNotificationPermission() async {
   return NotificationPermissionStatus.denied;
 }
+
+Stream<NotificationPermissionStatus> watchWebNotificationPermission() {
+  return Stream.empty();
+}
