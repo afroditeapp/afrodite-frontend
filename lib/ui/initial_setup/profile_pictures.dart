@@ -26,7 +26,6 @@ import "package:app/ui_utils/initial_setup_common.dart";
 import "package:app/ui_utils/profile_thumbnail_image.dart";
 import "package:app/ui_utils/snack_bar.dart";
 import "package:app/ui_utils/view_image_screen.dart";
-import 'package:image/image.dart' as img;
 
 final _log = Logger("ProfilePictures");
 
@@ -572,8 +571,11 @@ void openSelectPictureDialog(
               if (image != null) {
                 final imageBytes = await image.readAsBytes();
 
-                final decodedImg = img.decodeJpg(imageBytes);
-                if (decodedImg == null) {
+                // Check that image is an JPEG image
+                if (imageBytes.length < 3 ||
+                    imageBytes[0] != 0xFF ||
+                    imageBytes[1] != 0xD8 ||
+                    imageBytes[2] != 0xFF) {
                   showSnackBar(
                     R.strings.initial_setup_screen_profile_pictures_unsupported_image_error,
                   );
