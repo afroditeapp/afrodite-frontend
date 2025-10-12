@@ -146,10 +146,11 @@ dependencies:
       url: https://github.com/jutuon/app_settings.git
       ref: e1d39e4ea052e9dd9a47fbab49737846d9b43264
 
+  # If version is changed, update also Makefile JS file versions
   native_push:
     git:
       url: https://github.com/jutuon/native_push.git
-      ref: db7a018cca3930efa7113e93f77c81dabe03f590
+      ref: 80ecd56dcbf3ff1b2519b22bbf71324cb783e45e
 
   google_api_availability: ^5.0.0
 

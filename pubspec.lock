@@ -994,8 +994,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: db7a018cca3930efa7113e93f77c81dabe03f590
-      resolved-ref: db7a018cca3930efa7113e93f77c81dabe03f590
+      ref: "80ecd56dcbf3ff1b2519b22bbf71324cb783e45e"
+      resolved-ref: "80ecd56dcbf3ff1b2519b22bbf71324cb783e45e"
       url: "https://github.com/jutuon/native_push.git"
     source: git
     version: "1.0.5"
