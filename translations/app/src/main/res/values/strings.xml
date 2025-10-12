@@ -399,13 +399,15 @@
 
     <!-- Likes -->
     <string name="likes_screen_title" description="Title for likes screen">Requests</string>
-    <string name="likes_screen_no_received_likes_found" description="Info text displayed when there is no received likes">No received chat requests found</string>
+    <string name="likes_screen_no_received_likes_found" description="Info text displayed when there is no received likes">No received chat requests</string>
+    <string name="likes_screen_no_received_likes_found_description" description="Description text displayed when there is no received likes">Spread the word about the app in social media</string>
     <string name="likes_screen_like_loading_failed" description="Text displayed when like loading fails">Chat request loading failed</string>
     <string name="likes_screen_refresh_action" description="Title for likes screen refresh action">Refresh</string>
 
     <!-- Chat list -->
     <string name="chat_list_screen_title" description="Title for chat list screen">Chats</string>
     <string name="chat_list_screen_no_chats_found" description="Info text displayed when there is no chats">No chats found</string>
+    <string name="chat_list_screen_no_chats_found_description" description="Description text displayed when there is no chats">Accepted chat requests are available from upper right menu button</string>
     <string name="chat_list_screen_unread_message" description="Conversation status text for unread message">New message</string>
     <string name="chat_list_screen_open_matches_screen_action" description="Title for action which opens matches screen">Accepted chat requests</string>
     <string name="chat_list_screen_sent_message_indicator" description="Text indicating that the message is a sent message.">You: %s</string>

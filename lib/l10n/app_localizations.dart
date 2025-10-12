@@ -328,6 +328,12 @@ abstract class AppLocalizations {
   /// **'No chats found'**
   String get chat_list_screen_no_chats_found;
 
+  /// Description text displayed when there is no chats
+  ///
+  /// In en, this message translates to:
+  /// **'Accepted chat requests are available from upper right menu button'**
+  String get chat_list_screen_no_chats_found_description;
+
   /// Info text displayed when no matches are found
   ///
   /// In en, this message translates to:
@@ -1385,8 +1391,14 @@ abstract class AppLocalizations {
   /// Info text displayed when there is no received likes
   ///
   /// In en, this message translates to:
-  /// **'No received chat requests found'**
+  /// **'No received chat requests'**
   String get likes_screen_no_received_likes_found;
+
+  /// Description text displayed when there is no received likes
+  ///
+  /// In en, this message translates to:
+  /// **'Spread the word about the app in social media'**
+  String get likes_screen_no_received_likes_found_description;
 
   /// Title for likes screen refresh action
   ///

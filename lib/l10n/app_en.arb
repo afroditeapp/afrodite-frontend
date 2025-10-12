@@ -186,6 +186,10 @@
   "@chat_list_screen_no_chats_found": {
     "description": "Info text displayed when there is no chats"
   },
+  "chat_list_screen_no_chats_found_description": "Accepted chat requests are available from upper right menu button",
+  "@chat_list_screen_no_chats_found_description": {
+    "description": "Description text displayed when there is no chats"
+  },
   "chat_list_screen_no_matches_found": "No accepted chat requests found",
   "@chat_list_screen_no_matches_found": {
     "description": "Info text displayed when no matches are found"
@@ -913,9 +917,13 @@
   "@likes_screen_like_loading_failed": {
     "description": "Text displayed when like loading fails"
   },
-  "likes_screen_no_received_likes_found": "No received chat requests found",
+  "likes_screen_no_received_likes_found": "No received chat requests",
   "@likes_screen_no_received_likes_found": {
     "description": "Info text displayed when there is no received likes"
+  },
+  "likes_screen_no_received_likes_found_description": "Spread the word about the app in social media",
+  "@likes_screen_no_received_likes_found_description": {
+    "description": "Description text displayed when there is no received likes"
   },
   "likes_screen_refresh_action": "Refresh",
   "@likes_screen_refresh_action": {

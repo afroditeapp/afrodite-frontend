@@ -349,6 +349,7 @@ class LikeViewContentState extends State<LikeViewContent> {
         noItemsFoundIndicatorBuilder: (context) {
           return ListReplacementMessage(
             title: context.strings.likes_screen_no_received_likes_found,
+            body: context.strings.likes_screen_no_received_likes_found_description,
           );
         },
         firstPageErrorIndicatorBuilder: (context) {

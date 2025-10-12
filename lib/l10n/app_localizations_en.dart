@@ -155,6 +155,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get chat_list_screen_no_chats_found => 'No chats found';
 
   @override
+  String get chat_list_screen_no_chats_found_description =>
+      'Accepted chat requests are available from upper right menu button';
+
+  @override
   String get chat_list_screen_no_matches_found =>
       'No accepted chat requests found';
 
@@ -774,7 +778,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get likes_screen_no_received_likes_found =>
-      'No received chat requests found';
+      'No received chat requests';
+
+  @override
+  String get likes_screen_no_received_likes_found_description =>
+      'Spread the word about the app in social media';
 
   @override
   String get likes_screen_refresh_action => 'Refresh';
