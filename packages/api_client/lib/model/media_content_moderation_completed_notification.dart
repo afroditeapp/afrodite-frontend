@@ -15,6 +15,7 @@ class MediaContentModerationCompletedNotification {
   MediaContentModerationCompletedNotification({
     required this.accepted,
     required this.deleted,
+    this.hidden = false,
     required this.rejected,
   });
 
@@ -22,12 +23,16 @@ class MediaContentModerationCompletedNotification {
 
   NotificationStatus deleted;
 
+  /// If true, client should not show notifications
+  bool hidden;
+
   NotificationStatus rejected;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is MediaContentModerationCompletedNotification &&
     other.accepted == accepted &&
     other.deleted == deleted &&
+    other.hidden == hidden &&
     other.rejected == rejected;
 
   @override
@@ -35,15 +40,17 @@ class MediaContentModerationCompletedNotification {
     // ignore: unnecessary_parenthesis
     (accepted.hashCode) +
     (deleted.hashCode) +
+    (hidden.hashCode) +
     (rejected.hashCode);
 
   @override
-  String toString() => 'MediaContentModerationCompletedNotification[accepted=$accepted, deleted=$deleted, rejected=$rejected]';
+  String toString() => 'MediaContentModerationCompletedNotification[accepted=$accepted, deleted=$deleted, hidden=$hidden, rejected=$rejected]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'accepted'] = this.accepted;
       json[r'deleted'] = this.deleted;
+      json[r'hidden'] = this.hidden;
       json[r'rejected'] = this.rejected;
     return json;
   }
@@ -69,6 +76,7 @@ class MediaContentModerationCompletedNotification {
       return MediaContentModerationCompletedNotification(
         accepted: NotificationStatus.fromJson(json[r'accepted'])!,
         deleted: NotificationStatus.fromJson(json[r'deleted'])!,
+        hidden: mapValueOfType<bool>(json, r'hidden') ?? false,
         rejected: NotificationStatus.fromJson(json[r'rejected'])!,
       );
     }

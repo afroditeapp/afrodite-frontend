@@ -146,7 +146,6 @@ Class | Method | HTTP request | Description
 *CommonApi* | [**getPushNotificationInfo**](doc//CommonApi.md#getpushnotificationinfo) | **GET** /common_api/get_push_notification_info | 
 *CommonApi* | [**getVersion**](doc//CommonApi.md#getversion) | **GET** /common_api/version | Get backend version.
 *CommonApi* | [**postClientLanguage**](doc//CommonApi.md#postclientlanguage) | **POST** /common_api/client_language | 
-*CommonApi* | [**postGetPendingNotification**](doc//CommonApi.md#postgetpendingnotification) | **POST** /common_api/get_pending_notification | Get pending notification and reset pending notification.
 *CommonApi* | [**postSetDeviceToken**](doc//CommonApi.md#postsetdevicetoken) | **POST** /common_api/set_device_token | 
 *CommonApi* | [**postStartDataExport**](doc//CommonApi.md#poststartdataexport) | **POST** /common_api/start_data_export | Start data export
 *CommonAdminApi* | [**getAdminNotificationSettings**](doc//CommonAdminApi.md#getadminnotificationsettings) | **GET** /common_api/admin_notification_settings | Get admin notification settings.
@@ -329,6 +328,7 @@ Class | Method | HTTP request | Description
  - [GetAccountBanTimeResult](doc//GetAccountBanTimeResult.md)
  - [GetAccountDeletionRequestResult](doc//GetAccountDeletionRequestResult.md)
  - [GetAccountIdFromEmailResult](doc//GetAccountIdFromEmailResult.md)
+ - [GetAdminNotification](doc//GetAdminNotification.md)
  - [GetAllAdminsResult](doc//GetAllAdminsResult.md)
  - [GetApiUsageStatisticsResult](doc//GetApiUsageStatisticsResult.md)
  - [GetApiUsageStatisticsSettings](doc//GetApiUsageStatisticsSettings.md)
@@ -400,8 +400,6 @@ Class | Method | HTTP request | Description
  - [MinDistanceKm](doc//MinDistanceKm.md)
  - [ModerationQueueType](doc//ModerationQueueType.md)
  - [MyProfileContent](doc//MyProfileContent.md)
- - [NewMessageNotification](doc//NewMessageNotification.md)
- - [NewMessageNotificationList](doc//NewMessageNotificationList.md)
  - [NewReceivedLikesCount](doc//NewReceivedLikesCount.md)
  - [NewReceivedLikesCountResult](doc//NewReceivedLikesCountResult.md)
  - [NewsConfig](doc//NewsConfig.md)
@@ -419,7 +417,6 @@ Class | Method | HTTP request | Description
  - [PendingMessageAcknowledgementList](doc//PendingMessageAcknowledgementList.md)
  - [PendingMessageId](doc//PendingMessageId.md)
  - [PendingNotificationToken](doc//PendingNotificationToken.md)
- - [PendingNotificationWithData](doc//PendingNotificationWithData.md)
  - [PerfMetricQuery](doc//PerfMetricQuery.md)
  - [PerfMetricQueryResult](doc//PerfMetricQueryResult.md)
  - [PerfMetricValueArea](doc//PerfMetricValueArea.md)

@@ -13,11 +13,15 @@ part of openapi.api;
 class ProfileStringModerationCompletedNotification {
   /// Returns a new [ProfileStringModerationCompletedNotification] instance.
   ProfileStringModerationCompletedNotification({
+    this.hidden = false,
     required this.nameAccepted,
     required this.nameRejected,
     required this.textAccepted,
     required this.textRejected,
   });
+
+  /// If true, client should not show the notifications
+  bool hidden;
 
   NotificationStatus nameAccepted;
 
@@ -29,6 +33,7 @@ class ProfileStringModerationCompletedNotification {
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is ProfileStringModerationCompletedNotification &&
+    other.hidden == hidden &&
     other.nameAccepted == nameAccepted &&
     other.nameRejected == nameRejected &&
     other.textAccepted == textAccepted &&
@@ -37,16 +42,18 @@ class ProfileStringModerationCompletedNotification {
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
+    (hidden.hashCode) +
     (nameAccepted.hashCode) +
     (nameRejected.hashCode) +
     (textAccepted.hashCode) +
     (textRejected.hashCode);
 
   @override
-  String toString() => 'ProfileStringModerationCompletedNotification[nameAccepted=$nameAccepted, nameRejected=$nameRejected, textAccepted=$textAccepted, textRejected=$textRejected]';
+  String toString() => 'ProfileStringModerationCompletedNotification[hidden=$hidden, nameAccepted=$nameAccepted, nameRejected=$nameRejected, textAccepted=$textAccepted, textRejected=$textRejected]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
+      json[r'hidden'] = this.hidden;
       json[r'name_accepted'] = this.nameAccepted;
       json[r'name_rejected'] = this.nameRejected;
       json[r'text_accepted'] = this.textAccepted;
@@ -73,6 +80,7 @@ class ProfileStringModerationCompletedNotification {
       }());
 
       return ProfileStringModerationCompletedNotification(
+        hidden: mapValueOfType<bool>(json, r'hidden') ?? false,
         nameAccepted: NotificationStatus.fromJson(json[r'name_accepted'])!,
         nameRejected: NotificationStatus.fromJson(json[r'name_rejected'])!,
         textAccepted: NotificationStatus.fromJson(json[r'text_accepted'])!,

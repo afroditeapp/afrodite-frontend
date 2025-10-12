@@ -9,9 +9,7 @@ import 'package:app/ui/normal/settings/news/news_list.dart';
 import 'package:app/ui/normal/settings/notifications/automatic_profile_search_results.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:logging/logging.dart';
 import 'package:app/data/general/notification/utils/notification_payload.dart';
-import 'package:app/localizations.dart';
 import 'package:app/logic/app/bottom_navigation_state.dart';
 import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/logic/app/notification_payload_handler.dart';
@@ -20,11 +18,8 @@ import 'package:app/model/freezed/logic/main/notification_payload_handler.dart';
 import 'package:app/ui/normal/chat/conversation_page.dart';
 import 'package:app/ui/normal/likes.dart';
 import 'package:app/ui/normal/settings/media/content_management.dart';
-import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/result.dart';
 import "package:app/logic/app/main_state_types.dart";
-
-final _log = Logger("NotificationPayloadHandler");
 
 class NotificationPayloadHandler extends StatefulWidget {
   const NotificationPayloadHandler({super.key});
@@ -80,16 +75,6 @@ Future<NotificationNavigationAction> _handlePayload(
   NavigatorStateData navigatorState, {
   required bool showError,
 }) async {
-  if (r.accountId != payload.receiverAccountId) {
-    _log.warning(
-      "Notification payload receiver account ID does not match current session account ID",
-    );
-    if (showError) {
-      showSnackBar(R.strings.notification_action_ignored);
-    }
-    return DoNothing();
-  }
-
   final lastPage = navigatorState.pages.lastOrNull;
 
   final action = payload.action;

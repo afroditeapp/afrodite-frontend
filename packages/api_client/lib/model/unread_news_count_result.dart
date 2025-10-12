@@ -14,30 +14,37 @@ class UnreadNewsCountResult {
   /// Returns a new [UnreadNewsCountResult] instance.
   UnreadNewsCountResult({
     required this.c,
+    this.h = false,
     required this.v,
   });
 
   UnreadNewsCount c;
+
+  /// If true, client should not show the notification
+  bool h;
 
   NewsSyncVersion v;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is UnreadNewsCountResult &&
     other.c == c &&
+    other.h == h &&
     other.v == v;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (c.hashCode) +
+    (h.hashCode) +
     (v.hashCode);
 
   @override
-  String toString() => 'UnreadNewsCountResult[c=$c, v=$v]';
+  String toString() => 'UnreadNewsCountResult[c=$c, h=$h, v=$v]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'c'] = this.c;
+      json[r'h'] = this.h;
       json[r'v'] = this.v;
     return json;
   }
@@ -62,6 +69,7 @@ class UnreadNewsCountResult {
 
       return UnreadNewsCountResult(
         c: UnreadNewsCount.fromJson(json[r'c'])!,
+        h: mapValueOfType<bool>(json, r'h') ?? false,
         v: NewsSyncVersion.fromJson(json[r'v'])!,
       );
     }

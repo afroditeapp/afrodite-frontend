@@ -737,7 +737,7 @@ class CommonAdminApi {
   /// Get admin notification data.
   ///
   /// Getting notification data is required when notification event is received from WebSocket. This prevents resending the notification as push notification when WebSocket connection closes.  # Access Requires [Permissions::admin_subscribe_admin_notifications].
-  Future<AdminNotification?> postGetAdminNotification() async {
+  Future<GetAdminNotification?> postGetAdminNotification() async {
     final response = await postGetAdminNotificationWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
@@ -746,7 +746,7 @@ class CommonAdminApi {
     // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'AdminNotification',) as AdminNotification;
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetAdminNotification',) as GetAdminNotification;
     
     }
     return null;

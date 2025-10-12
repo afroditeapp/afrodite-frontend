@@ -268,6 +268,7 @@ class ChatRepository extends DataRepositoryWithLifecycle {
     await NotificationLikeReceived.getInstance().handleNewReceivedLikesCount(
       r,
       accountBackgroundDb,
+      onlyDbUpdate: r.h,
     );
   }
 

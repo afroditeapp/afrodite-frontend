@@ -924,10 +924,6 @@ class AppLocalizationsFi extends AppLocalizations {
   String get news_list_screen_title => 'News';
 
   @override
-  String get notification_action_ignored =>
-      'Notification action ignored because it is for another account';
-
-  @override
   String notification_automatic_profile_search_found_profiles_multiple(
     String p0,
   ) {

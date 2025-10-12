@@ -14,11 +14,15 @@ class NewReceivedLikesCountResult {
   /// Returns a new [NewReceivedLikesCountResult] instance.
   NewReceivedLikesCountResult({
     required this.c,
+    this.h = false,
     required this.l,
     required this.v,
   });
 
   NewReceivedLikesCount c;
+
+  /// If true, client should not show the notification
+  bool h;
 
   /// Latest received like in use. Client can use this to check should received likes be refreshed.
   ReceivedLikeId l;
@@ -28,6 +32,7 @@ class NewReceivedLikesCountResult {
   @override
   bool operator ==(Object other) => identical(this, other) || other is NewReceivedLikesCountResult &&
     other.c == c &&
+    other.h == h &&
     other.l == l &&
     other.v == v;
 
@@ -35,15 +40,17 @@ class NewReceivedLikesCountResult {
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (c.hashCode) +
+    (h.hashCode) +
     (l.hashCode) +
     (v.hashCode);
 
   @override
-  String toString() => 'NewReceivedLikesCountResult[c=$c, l=$l, v=$v]';
+  String toString() => 'NewReceivedLikesCountResult[c=$c, h=$h, l=$l, v=$v]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'c'] = this.c;
+      json[r'h'] = this.h;
       json[r'l'] = this.l;
       json[r'v'] = this.v;
     return json;
@@ -69,6 +76,7 @@ class NewReceivedLikesCountResult {
 
       return NewReceivedLikesCountResult(
         c: NewReceivedLikesCount.fromJson(json[r'c'])!,
+        h: mapValueOfType<bool>(json, r'h') ?? false,
         l: ReceivedLikeId.fromJson(json[r'l'])!,
         v: ReceivedLikesSyncVersion.fromJson(json[r'v'])!,
       );

@@ -189,10 +189,7 @@ class NotificationManager extends AppSingleton {
         title,
         body,
         NotificationDetails(android: androidDetails),
-        payload: NotificationPayload(
-          notificationId: id,
-          receiverAccountId: accountBackgroundDb.accountId(),
-        ).toJson(),
+        payload: NotificationPayload(notificationId: id).toJson(),
       );
     }
   }

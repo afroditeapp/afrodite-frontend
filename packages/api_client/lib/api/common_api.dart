@@ -401,62 +401,6 @@ class CommonApi {
     }
   }
 
-  /// Get pending notification and reset pending notification.
-  ///
-  /// When client receives a FCM data notification use this API route to download the notification.  Requesting this route is always valid to avoid figuring out device token values more easily.
-  ///
-  /// Note: This method returns the HTTP [Response].
-  ///
-  /// Parameters:
-  ///
-  /// * [PendingNotificationToken] pendingNotificationToken (required):
-  Future<Response> postGetPendingNotificationWithHttpInfo(PendingNotificationToken pendingNotificationToken,) async {
-    // ignore: prefer_const_declarations
-    final path = r'/common_api/get_pending_notification';
-
-    // ignore: prefer_final_locals
-    Object? postBody = pendingNotificationToken;
-
-    final queryParams = <QueryParam>[];
-    final headerParams = <String, String>{};
-    final formParams = <String, String>{};
-
-    const contentTypes = <String>['application/json'];
-
-
-    return apiClient.invokeAPI(
-      path,
-      'POST',
-      queryParams,
-      postBody,
-      headerParams,
-      formParams,
-      contentTypes.isEmpty ? null : contentTypes.first,
-    );
-  }
-
-  /// Get pending notification and reset pending notification.
-  ///
-  /// When client receives a FCM data notification use this API route to download the notification.  Requesting this route is always valid to avoid figuring out device token values more easily.
-  ///
-  /// Parameters:
-  ///
-  /// * [PendingNotificationToken] pendingNotificationToken (required):
-  Future<PendingNotificationWithData?> postGetPendingNotification(PendingNotificationToken pendingNotificationToken,) async {
-    final response = await postGetPendingNotificationWithHttpInfo(pendingNotificationToken,);
-    if (response.statusCode >= HttpStatus.badRequest) {
-      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
-    }
-    // When a remote server returns no body with a status of 204, we shall not decode it.
-    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
-    // FormatException when trying to decode an empty string.
-    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'PendingNotificationWithData',) as PendingNotificationWithData;
-    
-    }
-    return null;
-  }
-
   /// Performs an HTTP 'POST /common_api/set_device_token' operation and returns the [Response].
   /// Parameters:
   ///

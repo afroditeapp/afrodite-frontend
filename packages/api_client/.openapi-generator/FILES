@@ -109,6 +109,7 @@ lib/model/features_config.dart
 lib/model/get_account_ban_time_result.dart
 lib/model/get_account_deletion_request_result.dart
 lib/model/get_account_id_from_email_result.dart
+lib/model/get_admin_notification.dart
 lib/model/get_all_admins_result.dart
 lib/model/get_api_usage_statistics_result.dart
 lib/model/get_api_usage_statistics_settings.dart
@@ -180,8 +181,6 @@ lib/model/message_id.dart
 lib/model/min_distance_km.dart
 lib/model/moderation_queue_type.dart
 lib/model/my_profile_content.dart
-lib/model/new_message_notification.dart
-lib/model/new_message_notification_list.dart
 lib/model/new_received_likes_count.dart
 lib/model/new_received_likes_count_result.dart
 lib/model/news_config.dart
@@ -199,7 +198,6 @@ lib/model/partial_profile_attributes_config.dart
 lib/model/pending_message_acknowledgement_list.dart
 lib/model/pending_message_id.dart
 lib/model/pending_notification_token.dart
-lib/model/pending_notification_with_data.dart
 lib/model/perf_metric_query.dart
 lib/model/perf_metric_query_result.dart
 lib/model/perf_metric_value_area.dart

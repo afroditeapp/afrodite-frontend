@@ -13,9 +13,13 @@ part of openapi.api;
 class AutomaticProfileSearchCompletedNotification {
   /// Returns a new [AutomaticProfileSearchCompletedNotification] instance.
   AutomaticProfileSearchCompletedNotification({
+    this.hidden = false,
     required this.profileCount,
     required this.profilesFound,
   });
+
+  /// If true, client should not show the notification
+  bool hidden;
 
   int profileCount;
 
@@ -23,20 +27,23 @@ class AutomaticProfileSearchCompletedNotification {
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is AutomaticProfileSearchCompletedNotification &&
+    other.hidden == hidden &&
     other.profileCount == profileCount &&
     other.profilesFound == profilesFound;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
+    (hidden.hashCode) +
     (profileCount.hashCode) +
     (profilesFound.hashCode);
 
   @override
-  String toString() => 'AutomaticProfileSearchCompletedNotification[profileCount=$profileCount, profilesFound=$profilesFound]';
+  String toString() => 'AutomaticProfileSearchCompletedNotification[hidden=$hidden, profileCount=$profileCount, profilesFound=$profilesFound]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
+      json[r'hidden'] = this.hidden;
       json[r'profile_count'] = this.profileCount;
       json[r'profiles_found'] = this.profilesFound;
     return json;
@@ -61,6 +68,7 @@ class AutomaticProfileSearchCompletedNotification {
       }());
 
       return AutomaticProfileSearchCompletedNotification(
+        hidden: mapValueOfType<bool>(json, r'hidden') ?? false,
         profileCount: mapValueOfType<int>(json, r'profile_count')!,
         profilesFound: NotificationStatus.fromJson(json[r'profiles_found'])!,
       );

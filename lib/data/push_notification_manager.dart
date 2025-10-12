@@ -1,11 +1,6 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
 
-import 'package:app/data/general/notification/state/automatic_profile_search.dart';
-import 'package:app/data/general/notification/state/profile_text_moderation_completed.dart';
-import 'package:app/data/general/notification/state/media_content_moderation_completed.dart';
-import 'package:app/data/general/notification/state/news_item_available.dart';
 import 'package:app/data/general/notification/utils/notification_payload.dart';
 import 'package:flutter/foundation.dart';
 import 'package:google_api_availability/google_api_availability.dart';
@@ -13,12 +8,8 @@ import 'package:logging/logging.dart';
 import 'package:native_push/native_push.dart';
 import 'package:openapi/api.dart';
 import 'package:app/ui/utils/web_notifications/web_notifications.dart';
-import 'package:app/data/general/notification/state/like_received.dart';
-import 'package:app/data/general/notification/state/message_received.dart';
 import 'package:app/data/login_repository.dart';
 import 'package:app/data/notification_manager.dart';
-import 'package:app/database/account_background_database_manager.dart';
-import 'package:app/database/background_database_manager.dart';
 import 'package:app/firebase_options.dart';
 import 'package:utils/utils.dart';
 import 'package:app/utils/result.dart';
@@ -234,198 +225,6 @@ class PushNotificationManager extends AppSingleton {
     }
     return null;
   }
-
-  // NOTE: If push notication is dismissed and
-  // app is opened it appears again. One way to prevent
-  // that would be to store all received push
-  // notifications in a file and handle all notifications
-  // before WebSocket is connected.
-
-  // Prevent showing launch notification again
-  Future<void> updateDbWithLaunchNotificationData() async {
-    final payload = _appLaunchNotificationPayload;
-    if (payload == null) {
-      return;
-    }
-
-    final accountIdString = payload["a"];
-    final dataString = payload["data"];
-    if (dataString == null) {
-      _log.error("DB update failed: data field not found from notification payload");
-      return;
-    }
-    final data = PendingNotificationWithData.fromJson(jsonDecode(dataString));
-    if (data == null) {
-      _log.error("DB update failed: data field is invalid");
-      return;
-    }
-
-    final db = BackgroundDatabaseManager.getInstance();
-    final currentAccountId = await db.commonStreamSingle((db) => db.loginSession.watchAccountId());
-    if (currentAccountId == null) {
-      _log.error("DB update failed: AccountId is not available");
-      return;
-    }
-
-    if (currentAccountId.aid != accountIdString) {
-      _log.error("DB update failed: notification is for other account");
-      return;
-    }
-
-    final accountBackgroundDb = await db.getAccountBackgroundDatabaseManager(currentAccountId);
-    await _handlePendingNotification(data, accountBackgroundDb);
-    await accountBackgroundDb.close();
-  }
-}
-
-Future<void> _handlePendingNotification(
-  PendingNotificationWithData v,
-  AccountBackgroundDatabaseManager accountBackgroundDb,
-) async {
-  await _handlePushNotificationNewMessageReceived(v.newMessage, accountBackgroundDb);
-  await _handlePushNotificationReceivedLikesChanged(v.receivedLikesChanged, accountBackgroundDb);
-  final mediaContentAccepted = v.mediaContentAccepted;
-  if (mediaContentAccepted != null) {
-    await NotificationMediaContentModerationCompleted.handleAccepted(
-      mediaContentAccepted,
-      accountBackgroundDb,
-      onlyDbUpdate: true,
-    );
-  }
-  final mediaContentRejected = v.mediaContentRejected;
-  if (mediaContentRejected != null) {
-    await NotificationMediaContentModerationCompleted.handleRejected(
-      mediaContentRejected,
-      accountBackgroundDb,
-      onlyDbUpdate: true,
-    );
-  }
-  final mediaContentDeleted = v.mediaContentDeleted;
-  if (mediaContentDeleted != null) {
-    await NotificationMediaContentModerationCompleted.handleDeleted(
-      mediaContentDeleted,
-      accountBackgroundDb,
-      onlyDbUpdate: true,
-    );
-  }
-  await _handlePushNotificationNewsChanged(v.newsChanged, accountBackgroundDb);
-  final nameAccepted = v.profileNameAccepted;
-  if (nameAccepted != null) {
-    await NotificationProfileStringModerationCompleted.handleNameAccepted(
-      nameAccepted,
-      accountBackgroundDb,
-      onlyDbUpdate: true,
-    );
-  }
-  final nameRejected = v.profileNameRejected;
-  if (nameRejected != null) {
-    await NotificationProfileStringModerationCompleted.handleNameRejected(
-      nameRejected,
-      accountBackgroundDb,
-      onlyDbUpdate: true,
-    );
-  }
-  final textAccepted = v.profileTextAccepted;
-  if (textAccepted != null) {
-    await NotificationProfileStringModerationCompleted.handleTextAccepted(
-      textAccepted,
-      accountBackgroundDb,
-      onlyDbUpdate: true,
-    );
-  }
-  final textRejected = v.profileTextRejected;
-  if (textRejected != null) {
-    await NotificationProfileStringModerationCompleted.handleTextRejected(
-      textRejected,
-      accountBackgroundDb,
-      onlyDbUpdate: true,
-    );
-  }
-  await _handlePushNotificationAutomaticProfileSearchCompleted(
-    v.automaticProfileSearchCompleted,
-    accountBackgroundDb,
-  );
-  await _handlePushNotificationAdminNotification(v.adminNotification, accountBackgroundDb);
-}
-
-Future<void> _handlePushNotificationNewMessageReceived(
-  NewMessageNotificationList? messageSenders,
-  AccountBackgroundDatabaseManager accountBackgroundDb,
-) async {
-  if (messageSenders == null) {
-    return;
-  }
-  for (final sender in messageSenders.v) {
-    await NotificationMessageReceived.getInstance().updateMessageReceivedCount(
-      sender.a,
-      sender.m,
-      sender.c,
-      accountBackgroundDb,
-      onlyDbUpdate: true,
-    );
-    // Prevent showing the notification again if it is dismissed, another
-    // message push notfication for the same sender arives and app is not
-    // opened (retrieving pending messages from the server resets this value)
-    await accountBackgroundDb.accountAction(
-      (db) => db.notification.setNewMessageNotificationShown(sender.a, true),
-    );
-  }
-}
-
-Future<void> _handlePushNotificationReceivedLikesChanged(
-  NewReceivedLikesCountResult? r,
-  AccountBackgroundDatabaseManager accountBackgroundDb,
-) async {
-  if (r == null) {
-    return;
-  }
-  await NotificationLikeReceived.getInstance().handleNewReceivedLikesCount(
-    r,
-    accountBackgroundDb,
-    onlyDbUpdate: true,
-  );
-}
-
-Future<void> _handlePushNotificationNewsChanged(
-  UnreadNewsCountResult? r,
-  AccountBackgroundDatabaseManager accountBackgroundDb,
-) async {
-  if (r == null) {
-    return;
-  }
-  await NotificationNewsItemAvailable.getInstance().handleNewsCountUpdate(
-    r,
-    accountBackgroundDb,
-    onlyDbUpdate: true,
-  );
-}
-
-Future<void> _handlePushNotificationAutomaticProfileSearchCompleted(
-  AutomaticProfileSearchCompletedNotification? notification,
-  AccountBackgroundDatabaseManager accountBackgroundDb,
-) async {
-  if (notification == null) {
-    return;
-  }
-  await NotificationAutomaticProfileSearch.handleAutomaticProfileSearchCompleted(
-    notification,
-    accountBackgroundDb,
-    onlyDbUpdate: true,
-  );
-}
-
-Future<void> _handlePushNotificationAdminNotification(
-  AdminNotification? notification,
-  AccountBackgroundDatabaseManager accountBackgroundDb,
-) async {
-  if (notification == null) {
-    return;
-  }
-  await NotificationNewsItemAvailable.getInstance().showAdminNotification(
-    notification,
-    accountBackgroundDb,
-    onlyDbUpdate: true,
-  );
 }
 
 class FirebaseOptions {

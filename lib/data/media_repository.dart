@@ -150,14 +150,17 @@ class MediaRepository extends DataRepositoryWithLifecycle {
     await NotificationMediaContentModerationCompleted.handleAccepted(
       notification.accepted,
       accountBackgroundDb,
+      onlyDbUpdate: notification.hidden,
     );
     await NotificationMediaContentModerationCompleted.handleRejected(
       notification.rejected,
       accountBackgroundDb,
+      onlyDbUpdate: notification.hidden,
     );
     await NotificationMediaContentModerationCompleted.handleDeleted(
       notification.deleted,
       accountBackgroundDb,
+      onlyDbUpdate: notification.hidden,
     );
 
     final viewed = MediaContentModerationCompletedNotificationViewed(

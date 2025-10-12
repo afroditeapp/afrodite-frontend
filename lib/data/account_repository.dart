@@ -250,6 +250,7 @@ class AccountRepository extends DataRepositoryWithLifecycle {
       return await NotificationNewsItemAvailable.getInstance().handleNewsCountUpdate(
         r,
         accountBackgroundDb,
+        onlyDbUpdate: r.h,
       );
     }
     return const Err(());
@@ -261,13 +262,14 @@ class AccountRepository extends DataRepositoryWithLifecycle {
       final viewedNotification = await accountBackgroundDb
           .accountData((db) => db.notification.getAdminNotification())
           .ok();
-      if (viewedNotification != null && r == viewedNotification) {
+      if (viewedNotification != null && r.state == viewedNotification) {
         // Prevent showing the same notification again when the notification
         // is already received as push notification.
       } else {
         await NotificationNewsItemAvailable.getInstance().showAdminNotification(
-          r,
+          r.state,
           accountBackgroundDb,
+          onlyDbUpdate: r.hidden,
         );
       }
       return await accountBackgroundDb

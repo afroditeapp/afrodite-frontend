@@ -1640,12 +1640,6 @@ abstract class AppLocalizations {
   /// **'News'**
   String get news_list_screen_title;
 
-  /// Snackbar text for notifying that notification action was ignored
-  ///
-  /// In en, this message translates to:
-  /// **'Notification action ignored because it is for another account'**
-  String get notification_action_ignored;
-
   /// Title for automatic profile search found multiple profiles notification
   ///
   /// In en, this message translates to:

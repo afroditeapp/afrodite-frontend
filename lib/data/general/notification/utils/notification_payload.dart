@@ -11,16 +11,13 @@ final _log = Logger("NotificationPayload");
 @immutable
 class NotificationPayload extends Immutable {
   final LocalNotificationId notificationId;
-  final AccountId receiverAccountId;
-  const NotificationPayload({required this.notificationId, required this.receiverAccountId});
+  const NotificationPayload({required this.notificationId});
 
   static const String _notificationId = "id";
-  static const String _receiverAccountId = "a";
 
   String toJson() {
     final Map<String, String> map = {};
     map[_notificationId] = notificationId.value.toString();
-    map[_receiverAccountId] = receiverAccountId.aid;
     return jsonEncode(map);
   }
 
@@ -49,18 +46,7 @@ class NotificationPayload extends Immutable {
       return null;
     }
 
-    if (!jsonObject.containsKey(_receiverAccountId)) {
-      _log.error("Receiver Account ID is missing from the payload");
-      return null;
-    }
-    final receiverAccountIdString = jsonObject[_receiverAccountId];
-    if (receiverAccountIdString is! String) {
-      _log.error("Receiver Account ID is not a string");
-      return null;
-    }
-
     final LocalNotificationId notificationId = LocalNotificationId(notificationIdInt);
-    final AccountId receiverAccountId = AccountId(aid: receiverAccountIdString);
 
     final NavigationAction action;
     if (notificationId == NotificationIdStatic.likeReceived.id) {
@@ -93,14 +79,13 @@ class NotificationPayload extends Immutable {
       return null;
     }
 
-    return ParsedPayload(receiverAccountId, action);
+    return ParsedPayload(action);
   }
 }
 
 class ParsedPayload {
-  final AccountId receiverAccountId;
   final NavigationAction action;
-  ParsedPayload(this.receiverAccountId, this.action);
+  ParsedPayload(this.action);
 }
 
 sealed class NavigationAction {}

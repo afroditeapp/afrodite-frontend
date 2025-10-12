@@ -356,6 +356,8 @@ class ApiClient {
           return GetAccountDeletionRequestResult.fromJson(value);
         case 'GetAccountIdFromEmailResult':
           return GetAccountIdFromEmailResult.fromJson(value);
+        case 'GetAdminNotification':
+          return GetAdminNotification.fromJson(value);
         case 'GetAllAdminsResult':
           return GetAllAdminsResult.fromJson(value);
         case 'GetApiUsageStatisticsResult':
@@ -498,10 +500,6 @@ class ApiClient {
           return ModerationQueueTypeTypeTransformer().decode(value);
         case 'MyProfileContent':
           return MyProfileContent.fromJson(value);
-        case 'NewMessageNotification':
-          return NewMessageNotification.fromJson(value);
-        case 'NewMessageNotificationList':
-          return NewMessageNotificationList.fromJson(value);
         case 'NewReceivedLikesCount':
           return NewReceivedLikesCount.fromJson(value);
         case 'NewReceivedLikesCountResult':
@@ -536,8 +534,6 @@ class ApiClient {
           return PendingMessageId.fromJson(value);
         case 'PendingNotificationToken':
           return PendingNotificationToken.fromJson(value);
-        case 'PendingNotificationWithData':
-          return PendingNotificationWithData.fromJson(value);
         case 'PerfMetricQuery':
           return PerfMetricQuery.fromJson(value);
         case 'PerfMetricQueryResult':

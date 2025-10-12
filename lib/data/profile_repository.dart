@@ -688,18 +688,22 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
     await NotificationProfileStringModerationCompleted.handleNameAccepted(
       notification.nameAccepted,
       accountBackgroundDb,
+      onlyDbUpdate: notification.hidden,
     );
     await NotificationProfileStringModerationCompleted.handleNameRejected(
       notification.nameRejected,
       accountBackgroundDb,
+      onlyDbUpdate: notification.hidden,
     );
     await NotificationProfileStringModerationCompleted.handleTextAccepted(
       notification.textAccepted,
       accountBackgroundDb,
+      onlyDbUpdate: notification.hidden,
     );
     await NotificationProfileStringModerationCompleted.handleTextRejected(
       notification.textRejected,
       accountBackgroundDb,
+      onlyDbUpdate: notification.hidden,
     );
 
     final viewed = ProfileStringModerationCompletedNotificationViewed(
@@ -736,6 +740,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
     await NotificationAutomaticProfileSearch.handleAutomaticProfileSearchCompleted(
       notification,
       accountBackgroundDb,
+      onlyDbUpdate: notification.hidden,
     );
 
     final viewed = AutomaticProfileSearchCompletedNotificationViewed(

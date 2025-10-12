@@ -50,7 +50,11 @@ class ReceiveMessageUtils {
       return;
     }
 
-    final newMessages = await _parsePendingMessagesResponse(newMessageBytes);
+    final notificationHidden = newMessageBytes[0] == 1;
+
+    final newMessages = await _parsePendingMessagesResponse(
+      Uint8List.sublistView(newMessageBytes, 1),
+    );
     if (newMessages == null) {
       return;
     }
@@ -148,6 +152,7 @@ class ReceiveMessageUtils {
             unreadMessagesCount.count,
             conversationId,
             accountBackgroundDb,
+            onlyDbUpdate: notificationHidden,
           );
         }
       }
