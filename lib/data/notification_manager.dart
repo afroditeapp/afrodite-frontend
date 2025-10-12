@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:app/ui/utils/web_notifications/web_notifications.dart';
-import 'package:app/ui_utils/snack_bar.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -172,17 +171,8 @@ class NotificationManager extends AppSingleton {
       enableLights: true,
     );
     if (kIsWeb) {
-      final String bodyText;
-      if (body != null) {
-        if (body.endsWith(".")) {
-          bodyText = ". $body";
-        } else {
-          bodyText = ". $body.";
-        }
-      } else {
-        bodyText = "";
-      }
-      showSnackBar("$title$bodyText");
+      // Native push library handles this notification
+      await displayWebNotification(title: title, body: body, tag: id.value.toString());
     } else {
       await _pluginHandle.show(
         id.value,

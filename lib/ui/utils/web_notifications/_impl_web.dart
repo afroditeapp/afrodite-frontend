@@ -67,3 +67,41 @@ Stream<NotificationPermissionStatus> watchWebNotificationPermission() async* {
   );
   yield* controller.stream;
 }
+
+/// Displays a web notification through the service worker if permission has been granted.
+///
+/// Parameters:
+/// - [title]: The title of the notification
+/// - [body]: The body text of the notification (optional)
+/// - [tag]: A tag to identify the notification (notifications with the same tag replace each other)
+///
+/// Returns true if the notification was displayed, false otherwise.
+Future<bool> displayWebNotification({
+  required String title,
+  String? body,
+  required String tag,
+}) async {
+  // Check if notifications are supported
+  if (!webNotificationsSupported()) {
+    return false;
+  }
+
+  // Check if permission is granted
+  if (getWebNotificationPermission() != NotificationPermissionStatus.granted) {
+    return false;
+  }
+
+  try {
+    // Get the service worker registration
+    final registration = await window.navigator.serviceWorker.ready.toDart;
+
+    // Create notification options
+    final options = NotificationOptions(body: body ?? '', tag: tag, requireInteraction: true);
+
+    // Display notification through service worker
+    await registration.showNotification(title, options).toDart;
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
