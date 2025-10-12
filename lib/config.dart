@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:app/ui/utils/web_navigation/web_navigation.dart';
 
 const String _debugServerUrlAndroid = "http://10.0.2.2:3000"; // Android emulator host
 const String _debugServerUrlIosAndWeb =
@@ -14,7 +15,9 @@ String defaultServerUrl() {
     return _serverUrl;
   }
 
-  if (kIsWeb || Platform.isIOS) {
+  if (kIsWeb) {
+    return getServerAddressFromBrowserAddressBar();
+  } else if (Platform.isIOS) {
     return _debugServerUrlIosAndWeb;
   } else if (Platform.isAndroid) {
     return _debugServerUrlAndroid;
