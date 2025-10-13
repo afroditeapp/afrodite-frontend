@@ -159,7 +159,7 @@ class PushNotificationManager extends AppSingleton {
           (db) => db.loginSession.updateDeviceTokenAndEncryptionKey(newToken, result),
         );
         if (dbResult.isOk()) {
-          _log.error("Push notification device token saving to local database successful");
+          _log.info("Push notification device token saving to local database successful");
         } else {
           _log.error("Push notification device token saving to local database failed");
         }
