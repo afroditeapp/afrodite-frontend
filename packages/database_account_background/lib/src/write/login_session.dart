@@ -24,15 +24,15 @@ class DaoWriteLoginSession extends DatabaseAccessor<AccountBackgroundDatabase>
     });
   }
 
-  Future<void> updateFcmDeviceTokenAndPendingNotificationToken(
+  Future<void> updateDeviceTokenAndEncryptionKey(
     PushNotificationDeviceToken? token,
-    PendingNotificationToken? notificationToken,
+    PushNotificationEncryptionKey? encryptionKey,
   ) async {
     await into(pushNotification).insertOnConflictUpdate(
       PushNotificationCompanion.insert(
         id: SingleRowTable.ID,
         pushNotificationDeviceToken: Value(token),
-        pendingNotificationToken: Value(notificationToken),
+        pushNotificationEncryptionKey: Value(encryptionKey),
       ),
     );
   }

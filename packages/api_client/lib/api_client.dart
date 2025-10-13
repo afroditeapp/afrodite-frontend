@@ -532,8 +532,6 @@ class ApiClient {
           return PendingMessageAcknowledgementList.fromJson(value);
         case 'PendingMessageId':
           return PendingMessageId.fromJson(value);
-        case 'PendingNotificationToken':
-          return PendingNotificationToken.fromJson(value);
         case 'PerfMetricQuery':
           return PerfMetricQuery.fromJson(value);
         case 'PerfMetricQueryResult':
@@ -636,6 +634,8 @@ class ApiClient {
           return PublicationId.fromJson(value);
         case 'PushNotificationDeviceToken':
           return PushNotificationDeviceToken.fromJson(value);
+        case 'PushNotificationEncryptionKey':
+          return PushNotificationEncryptionKey.fromJson(value);
         case 'PushNotificationInfoSyncVersion':
           return PushNotificationInfoSyncVersion.fromJson(value);
         case 'ReceivedLikeId':

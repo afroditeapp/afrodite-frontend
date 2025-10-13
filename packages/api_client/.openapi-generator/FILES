@@ -197,7 +197,6 @@ lib/model/notification_status.dart
 lib/model/partial_profile_attributes_config.dart
 lib/model/pending_message_acknowledgement_list.dart
 lib/model/pending_message_id.dart
-lib/model/pending_notification_token.dart
 lib/model/perf_metric_query.dart
 lib/model/perf_metric_query_result.dart
 lib/model/perf_metric_value_area.dart
@@ -249,6 +248,7 @@ lib/model/profile_visibility.dart
 lib/model/public_key_id.dart
 lib/model/publication_id.dart
 lib/model/push_notification_device_token.dart
+lib/model/push_notification_encryption_key.dart
 lib/model/push_notification_info_sync_version.dart
 lib/model/received_like_id.dart
 lib/model/received_likes_iterator_state.dart

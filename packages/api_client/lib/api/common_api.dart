@@ -433,7 +433,7 @@ class CommonApi {
   /// Parameters:
   ///
   /// * [PushNotificationDeviceToken] pushNotificationDeviceToken (required):
-  Future<PendingNotificationToken?> postSetDeviceToken(PushNotificationDeviceToken pushNotificationDeviceToken,) async {
+  Future<PushNotificationEncryptionKey?> postSetDeviceToken(PushNotificationDeviceToken pushNotificationDeviceToken,) async {
     final response = await postSetDeviceTokenWithHttpInfo(pushNotificationDeviceToken,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
@@ -442,7 +442,7 @@ class CommonApi {
     // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'PendingNotificationToken',) as PendingNotificationToken;
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'PushNotificationEncryptionKey',) as PushNotificationEncryptionKey;
     
     }
     return null;

@@ -30,17 +30,18 @@ class VapidPublicKeyConverter extends TypeConverter<VapidPublicKey, String> {
   }
 }
 
-class PendingNotificationTokenConverter extends TypeConverter<PendingNotificationToken, String> {
-  const PendingNotificationTokenConverter();
+class PushNotificationEncryptionKeyConverter
+    extends TypeConverter<PushNotificationEncryptionKey, String> {
+  const PushNotificationEncryptionKeyConverter();
 
   @override
-  PendingNotificationToken fromSql(fromDb) {
-    return PendingNotificationToken(token: fromDb);
+  PushNotificationEncryptionKey fromSql(fromDb) {
+    return PushNotificationEncryptionKey(key: fromDb);
   }
 
   @override
   String toSql(value) {
-    return value.token;
+    return value.key;
   }
 }
 
