@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:app/data/general/notification/utils/notification_payload.dart';
+import 'package:app/service_config.dart';
 import 'package:flutter/foundation.dart';
 import 'package:google_api_availability/google_api_availability.dart';
 import 'package:logging/logging.dart';
@@ -155,6 +156,13 @@ class PushNotificationManager extends AppSingleton {
       final result = await api.common((api) => api.postSetDeviceToken(newToken)).ok();
       if (result != null) {
         _log.info("Push notification device token sending successful");
+
+        final fileSavingResult = await _saveEncryptionKeyToFile(result.key);
+        if (fileSavingResult.isErr()) {
+          _log.error("Push notification encryption key saving to file failed");
+          return;
+        }
+
         final dbResult = await accountBackgroundDb.accountAction(
           (db) => db.loginSession.updateDeviceTokenAndEncryptionKey(newToken, result),
         );
@@ -224,6 +232,23 @@ class PushNotificationManager extends AppSingleton {
       }
     }
     return null;
+  }
+
+  Future<Result<(), ()>> _saveEncryptionKeyToFile(String base64Key) async {
+    if (kIsWeb) {
+      // Not needed on web
+      return Ok(());
+    }
+
+    final r = await NativePush().saveEncryptionKey(
+      base64Key,
+      appGroupIdentifier: iosAppGroupIdentifier(),
+    );
+    if (r) {
+      return Ok(());
+    } else {
+      return Err(());
+    }
   }
 }
 

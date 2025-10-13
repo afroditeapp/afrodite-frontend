@@ -150,7 +150,7 @@ dependencies:
   native_push:
     git:
       url: https://github.com/jutuon/native_push.git
-      ref: 80ecd56dcbf3ff1b2519b22bbf71324cb783e45e
+      ref: 8a2cea6f705b3ecb6b979dd98cdb2dec0628ef8c
 
   google_api_availability: ^5.0.0
 

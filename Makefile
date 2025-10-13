@@ -85,8 +85,8 @@ remove-and-download-drift-web-dependencies:
 remove-and-download-native-push-web-dependencies:
 	rm -f web/native_push.js
 	rm -f web/native_push_sw.js
-	cd web && curl "https://github.com/jutuon/native_push/raw/80ecd56dcbf3ff1b2519b22bbf71324cb783e45e/example/web/native_push.js" -L -o native_push.js
-	cd web && curl "https://github.com/jutuon/native_push/raw/80ecd56dcbf3ff1b2519b22bbf71324cb783e45e/example/web/native_push_sw.js" -L -o native_push_sw.js
+	cd web && curl "https://github.com/jutuon/native_push/raw/8a2cea6f705b3ecb6b979dd98cdb2dec0628ef8c/example/web/native_push.js" -L -o native_push.js
+	cd web && curl "https://github.com/jutuon/native_push/raw/8a2cea6f705b3ecb6b979dd98cdb2dec0628ef8c/example/web/native_push_sw.js" -L -o native_push_sw.js
 
 build-rust-utils-for-web:
 	rm -f web/rust_utils_bg.wasm

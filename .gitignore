@@ -84,3 +84,4 @@ lib/service_config.dart
 ios/Runner.xcodeproj
 # iOS app entitlements
 ios/Runner/Runner.entitlements
+ios/NotificationService/NotificationService.entitlements

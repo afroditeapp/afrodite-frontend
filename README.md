@@ -116,6 +116,7 @@ lib/service_config.dart
 ```dart
 String signInWithGoogleBackendClientId() => "";
 String signInWithAppleServiceIdForAndroidAndWebLogin() => "";
+String iosAppGroupIdentifier() => "";
 ```
 
 ### Add missing iOS project files
@@ -134,6 +135,21 @@ removed.
 App capabilities for Sign in with Apple and App Group should be added
 to the app. That creates file `ios/Runner/Runner.entitlements`. The
 App Group is used for push notification handling.
+
+Make sure that Xcode shows NotificationService named
+target. Add the same App Group entitlement to NotificationService.
+File `ios/NotificationService/NotificationService.entitlements`
+should now exist.
+
+If notification service extension does not work check these:
+- Check that Runner and NotficationService targets have same minimum
+  iOS version
+- Check logs for "Error was encountered trying to find service extension"
+- <https://docs.flutter.dev/platform-integration/ios/app-extensions>
+
+APNs notifications require that NotificationService is working
+and `lib/service_config.dart` iosAppGroupIdentifier function
+returns a valid value.
 
 ## About Assets
 
