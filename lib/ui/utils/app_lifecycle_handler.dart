@@ -29,10 +29,9 @@ class _AppLifecycleHandlerState extends State<AppLifecycleHandler> {
       onDetach: () {
         // There seems to not be any reliable way to close resources
         // properly so close the process. Without this on Android, system
-        // back button navigation away from the app and closes second main
-        // isolate but database isolates are not closed.
-        // (FirebaseMessaging.onBackgroundMessage creates the another main
-        // isolate.)
+        // back button navigation away from the app and closes main
+        // isolate but database isolates are not closed. This
+        // function is not async so those can't be closed here.
         exit(0);
       },
     );
