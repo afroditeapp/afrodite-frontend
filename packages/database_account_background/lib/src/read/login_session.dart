@@ -26,9 +26,6 @@ class DaoReadLoginSession extends DatabaseAccessor<AccountBackgroundDatabase>
   Stream<VapidPublicKey?> watchVapidPublicKey() =>
       _watchPushNotificationColumn((r) => r.vapidPublicKey);
 
-  Stream<PushNotificationEncryptionKey?> watchPushNotificationEncryptionKey() =>
-      _watchPushNotificationColumn((r) => r.pushNotificationEncryptionKey);
-
   Stream<int?> watchPushNotificationInfoSyncVersion() =>
       _watchPushNotificationColumn((r) => r.syncVersionPushNotificationInfo);
 

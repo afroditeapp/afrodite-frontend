@@ -3539,21 +3539,6 @@ class $PushNotificationTable extends schema.PushNotification
       ).withConverter<VapidPublicKey?>(
         $PushNotificationTable.$convertervapidPublicKey,
       );
-  @override
-  late final GeneratedColumnWithTypeConverter<
-    PushNotificationEncryptionKey?,
-    String
-  >
-  pushNotificationEncryptionKey =
-      GeneratedColumn<String>(
-        'push_notification_encryption_key',
-        aliasedName,
-        true,
-        type: DriftSqlType.string,
-        requiredDuringInsert: false,
-      ).withConverter<PushNotificationEncryptionKey?>(
-        $PushNotificationTable.$converterpushNotificationEncryptionKey,
-      );
   static const VerificationMeta _syncVersionPushNotificationInfoMeta =
       const VerificationMeta('syncVersionPushNotificationInfo');
   @override
@@ -3570,7 +3555,6 @@ class $PushNotificationTable extends schema.PushNotification
     id,
     pushNotificationDeviceToken,
     vapidPublicKey,
-    pushNotificationEncryptionKey,
     syncVersionPushNotificationInfo,
   ];
   @override
@@ -3624,14 +3608,6 @@ class $PushNotificationTable extends schema.PushNotification
           data['${effectivePrefix}vapid_public_key'],
         ),
       ),
-      pushNotificationEncryptionKey: $PushNotificationTable
-          .$converterpushNotificationEncryptionKey
-          .fromSql(
-            attachedDatabase.typeMapping.read(
-              DriftSqlType.string,
-              data['${effectivePrefix}push_notification_encryption_key'],
-            ),
-          ),
       syncVersionPushNotificationInfo: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
         data['${effectivePrefix}sync_version_push_notification_info'],
@@ -3650,10 +3626,6 @@ class $PushNotificationTable extends schema.PushNotification
   );
   static TypeConverter<VapidPublicKey?, String?> $convertervapidPublicKey =
       const NullAwareTypeConverter.wrap(VapidPublicKeyConverter());
-  static TypeConverter<PushNotificationEncryptionKey?, String?>
-  $converterpushNotificationEncryptionKey = const NullAwareTypeConverter.wrap(
-    PushNotificationEncryptionKeyConverter(),
-  );
 }
 
 class PushNotificationData extends DataClass
@@ -3661,13 +3633,11 @@ class PushNotificationData extends DataClass
   final int id;
   final PushNotificationDeviceToken? pushNotificationDeviceToken;
   final VapidPublicKey? vapidPublicKey;
-  final PushNotificationEncryptionKey? pushNotificationEncryptionKey;
   final int? syncVersionPushNotificationInfo;
   const PushNotificationData({
     required this.id,
     this.pushNotificationDeviceToken,
     this.vapidPublicKey,
-    this.pushNotificationEncryptionKey,
     this.syncVersionPushNotificationInfo,
   });
   @override
@@ -3684,13 +3654,6 @@ class PushNotificationData extends DataClass
     if (!nullToAbsent || vapidPublicKey != null) {
       map['vapid_public_key'] = Variable<String>(
         $PushNotificationTable.$convertervapidPublicKey.toSql(vapidPublicKey),
-      );
-    }
-    if (!nullToAbsent || pushNotificationEncryptionKey != null) {
-      map['push_notification_encryption_key'] = Variable<String>(
-        $PushNotificationTable.$converterpushNotificationEncryptionKey.toSql(
-          pushNotificationEncryptionKey,
-        ),
       );
     }
     if (!nullToAbsent || syncVersionPushNotificationInfo != null) {
@@ -3711,10 +3674,6 @@ class PushNotificationData extends DataClass
       vapidPublicKey: vapidPublicKey == null && nullToAbsent
           ? const Value.absent()
           : Value(vapidPublicKey),
-      pushNotificationEncryptionKey:
-          pushNotificationEncryptionKey == null && nullToAbsent
-          ? const Value.absent()
-          : Value(pushNotificationEncryptionKey),
       syncVersionPushNotificationInfo:
           syncVersionPushNotificationInfo == null && nullToAbsent
           ? const Value.absent()
@@ -3736,10 +3695,6 @@ class PushNotificationData extends DataClass
       vapidPublicKey: serializer.fromJson<VapidPublicKey?>(
         json['vapidPublicKey'],
       ),
-      pushNotificationEncryptionKey: serializer
-          .fromJson<PushNotificationEncryptionKey?>(
-            json['pushNotificationEncryptionKey'],
-          ),
       syncVersionPushNotificationInfo: serializer.fromJson<int?>(
         json['syncVersionPushNotificationInfo'],
       ),
@@ -3753,10 +3708,6 @@ class PushNotificationData extends DataClass
       'pushNotificationDeviceToken': serializer
           .toJson<PushNotificationDeviceToken?>(pushNotificationDeviceToken),
       'vapidPublicKey': serializer.toJson<VapidPublicKey?>(vapidPublicKey),
-      'pushNotificationEncryptionKey': serializer
-          .toJson<PushNotificationEncryptionKey?>(
-            pushNotificationEncryptionKey,
-          ),
       'syncVersionPushNotificationInfo': serializer.toJson<int?>(
         syncVersionPushNotificationInfo,
       ),
@@ -3768,8 +3719,6 @@ class PushNotificationData extends DataClass
     Value<PushNotificationDeviceToken?> pushNotificationDeviceToken =
         const Value.absent(),
     Value<VapidPublicKey?> vapidPublicKey = const Value.absent(),
-    Value<PushNotificationEncryptionKey?> pushNotificationEncryptionKey =
-        const Value.absent(),
     Value<int?> syncVersionPushNotificationInfo = const Value.absent(),
   }) => PushNotificationData(
     id: id ?? this.id,
@@ -3779,9 +3728,6 @@ class PushNotificationData extends DataClass
     vapidPublicKey: vapidPublicKey.present
         ? vapidPublicKey.value
         : this.vapidPublicKey,
-    pushNotificationEncryptionKey: pushNotificationEncryptionKey.present
-        ? pushNotificationEncryptionKey.value
-        : this.pushNotificationEncryptionKey,
     syncVersionPushNotificationInfo: syncVersionPushNotificationInfo.present
         ? syncVersionPushNotificationInfo.value
         : this.syncVersionPushNotificationInfo,
@@ -3795,9 +3741,6 @@ class PushNotificationData extends DataClass
       vapidPublicKey: data.vapidPublicKey.present
           ? data.vapidPublicKey.value
           : this.vapidPublicKey,
-      pushNotificationEncryptionKey: data.pushNotificationEncryptionKey.present
-          ? data.pushNotificationEncryptionKey.value
-          : this.pushNotificationEncryptionKey,
       syncVersionPushNotificationInfo:
           data.syncVersionPushNotificationInfo.present
           ? data.syncVersionPushNotificationInfo.value
@@ -3812,9 +3755,6 @@ class PushNotificationData extends DataClass
           ..write('pushNotificationDeviceToken: $pushNotificationDeviceToken, ')
           ..write('vapidPublicKey: $vapidPublicKey, ')
           ..write(
-            'pushNotificationEncryptionKey: $pushNotificationEncryptionKey, ',
-          )
-          ..write(
             'syncVersionPushNotificationInfo: $syncVersionPushNotificationInfo',
           )
           ..write(')'))
@@ -3826,7 +3766,6 @@ class PushNotificationData extends DataClass
     id,
     pushNotificationDeviceToken,
     vapidPublicKey,
-    pushNotificationEncryptionKey,
     syncVersionPushNotificationInfo,
   );
   @override
@@ -3837,8 +3776,6 @@ class PushNotificationData extends DataClass
           other.pushNotificationDeviceToken ==
               this.pushNotificationDeviceToken &&
           other.vapidPublicKey == this.vapidPublicKey &&
-          other.pushNotificationEncryptionKey ==
-              this.pushNotificationEncryptionKey &&
           other.syncVersionPushNotificationInfo ==
               this.syncVersionPushNotificationInfo);
 }
@@ -3847,27 +3784,23 @@ class PushNotificationCompanion extends UpdateCompanion<PushNotificationData> {
   final Value<int> id;
   final Value<PushNotificationDeviceToken?> pushNotificationDeviceToken;
   final Value<VapidPublicKey?> vapidPublicKey;
-  final Value<PushNotificationEncryptionKey?> pushNotificationEncryptionKey;
   final Value<int?> syncVersionPushNotificationInfo;
   const PushNotificationCompanion({
     this.id = const Value.absent(),
     this.pushNotificationDeviceToken = const Value.absent(),
     this.vapidPublicKey = const Value.absent(),
-    this.pushNotificationEncryptionKey = const Value.absent(),
     this.syncVersionPushNotificationInfo = const Value.absent(),
   });
   PushNotificationCompanion.insert({
     this.id = const Value.absent(),
     this.pushNotificationDeviceToken = const Value.absent(),
     this.vapidPublicKey = const Value.absent(),
-    this.pushNotificationEncryptionKey = const Value.absent(),
     this.syncVersionPushNotificationInfo = const Value.absent(),
   });
   static Insertable<PushNotificationData> custom({
     Expression<int>? id,
     Expression<String>? pushNotificationDeviceToken,
     Expression<String>? vapidPublicKey,
-    Expression<String>? pushNotificationEncryptionKey,
     Expression<int>? syncVersionPushNotificationInfo,
   }) {
     return RawValuesInsertable({
@@ -3875,8 +3808,6 @@ class PushNotificationCompanion extends UpdateCompanion<PushNotificationData> {
       if (pushNotificationDeviceToken != null)
         'push_notification_device_token': pushNotificationDeviceToken,
       if (vapidPublicKey != null) 'vapid_public_key': vapidPublicKey,
-      if (pushNotificationEncryptionKey != null)
-        'push_notification_encryption_key': pushNotificationEncryptionKey,
       if (syncVersionPushNotificationInfo != null)
         'sync_version_push_notification_info': syncVersionPushNotificationInfo,
     });
@@ -3886,7 +3817,6 @@ class PushNotificationCompanion extends UpdateCompanion<PushNotificationData> {
     Value<int>? id,
     Value<PushNotificationDeviceToken?>? pushNotificationDeviceToken,
     Value<VapidPublicKey?>? vapidPublicKey,
-    Value<PushNotificationEncryptionKey?>? pushNotificationEncryptionKey,
     Value<int?>? syncVersionPushNotificationInfo,
   }) {
     return PushNotificationCompanion(
@@ -3894,8 +3824,6 @@ class PushNotificationCompanion extends UpdateCompanion<PushNotificationData> {
       pushNotificationDeviceToken:
           pushNotificationDeviceToken ?? this.pushNotificationDeviceToken,
       vapidPublicKey: vapidPublicKey ?? this.vapidPublicKey,
-      pushNotificationEncryptionKey:
-          pushNotificationEncryptionKey ?? this.pushNotificationEncryptionKey,
       syncVersionPushNotificationInfo:
           syncVersionPushNotificationInfo ??
           this.syncVersionPushNotificationInfo,
@@ -3922,13 +3850,6 @@ class PushNotificationCompanion extends UpdateCompanion<PushNotificationData> {
         ),
       );
     }
-    if (pushNotificationEncryptionKey.present) {
-      map['push_notification_encryption_key'] = Variable<String>(
-        $PushNotificationTable.$converterpushNotificationEncryptionKey.toSql(
-          pushNotificationEncryptionKey.value,
-        ),
-      );
-    }
     if (syncVersionPushNotificationInfo.present) {
       map['sync_version_push_notification_info'] = Variable<int>(
         syncVersionPushNotificationInfo.value,
@@ -3943,9 +3864,6 @@ class PushNotificationCompanion extends UpdateCompanion<PushNotificationData> {
           ..write('id: $id, ')
           ..write('pushNotificationDeviceToken: $pushNotificationDeviceToken, ')
           ..write('vapidPublicKey: $vapidPublicKey, ')
-          ..write(
-            'pushNotificationEncryptionKey: $pushNotificationEncryptionKey, ',
-          )
           ..write(
             'syncVersionPushNotificationInfo: $syncVersionPushNotificationInfo',
           )

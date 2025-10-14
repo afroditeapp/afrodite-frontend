@@ -30,21 +30,6 @@ class VapidPublicKeyConverter extends TypeConverter<VapidPublicKey, String> {
   }
 }
 
-class PushNotificationEncryptionKeyConverter
-    extends TypeConverter<PushNotificationEncryptionKey, String> {
-  const PushNotificationEncryptionKeyConverter();
-
-  @override
-  PushNotificationEncryptionKey fromSql(fromDb) {
-    return PushNotificationEncryptionKey(key: fromDb);
-  }
-
-  @override
-  String toSql(value) {
-    return value.key;
-  }
-}
-
 class ClientLanguageConverter extends TypeConverter<ClientLanguage, String> {
   const ClientLanguageConverter();
 

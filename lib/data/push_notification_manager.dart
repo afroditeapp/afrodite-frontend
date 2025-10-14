@@ -163,7 +163,7 @@ class PushNotificationManager extends AppSingleton {
         }
 
         final dbResult = await accountBackgroundDb.accountAction(
-          (db) => db.loginSession.updateDeviceTokenAndEncryptionKey(newToken, result),
+          (db) => db.loginSession.updateDeviceToken(newToken),
         );
         if (dbResult.isOk()) {
           _log.info("Push notification device token saving to local database successful");

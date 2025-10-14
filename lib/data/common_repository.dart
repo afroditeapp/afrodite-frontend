@@ -107,9 +107,7 @@ class CommonRepository extends DataRepositoryWithLifecycle {
   Future<void> onLogin() async {
     // Force sending the push notification device token to server.
     // This is needed if this login is for different account than previously.
-    await accountBackgroundDb.accountAction(
-      (db) => db.loginSession.updateDeviceTokenAndEncryptionKey(null, null),
-    );
+    await accountBackgroundDb.accountAction((db) => db.loginSession.updateDeviceToken(null));
   }
 
   @override

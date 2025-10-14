@@ -94,8 +94,5 @@ class PushNotification extends SingleRowTable {
       .nullable()();
   TextColumn get vapidPublicKey =>
       text().map(const NullAwareTypeConverter.wrap(VapidPublicKeyConverter())).nullable()();
-  TextColumn get pushNotificationEncryptionKey => text()
-      .map(const NullAwareTypeConverter.wrap(PushNotificationEncryptionKeyConverter()))
-      .nullable()();
   IntColumn get syncVersionPushNotificationInfo => integer().nullable()();
 }
