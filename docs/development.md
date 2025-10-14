@@ -13,18 +13,6 @@ LICENSE file of native_utils_ffi Dart package with
 make update-licenses-for-native-utils
 ```
 
-# Firebase
-
-If you modify the Firebase projects from Firebase web UI, you
-can update Firebase related config using command
-```
-flutterfire configure
-```
-
-Install instructions for that tool is at
-<https://firebase.google.com/docs/flutter/setup?platform=android>
-
-
 ## Local web build development
 
 Create Visual Studio Code launch configuration like this:

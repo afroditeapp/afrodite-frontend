@@ -172,23 +172,11 @@ Add iOS client ID by modifying ios/Runner/Info.plist location
 <string>TODO</string>
 ```
 
-Enable gradle plugin for Google Services from android/app/build.gradle
-
-```gradle
-    // START: FlutterFire Configuration
-    // Uncomment the following line if you have google-services.json added
-    // id 'com.google.gms.google-services'
-    // END: FlutterFire Configuration
-```
-
 Also add files
 
 ```
-android/app/google-services.json
-ios/Runner/GoogleService-Info.plist
 lib/firebase_options.dart
 lib/service_config.dart
-firebase.json
 ```
 
 ## Add Sign in with Apple support
