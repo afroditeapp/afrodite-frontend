@@ -4,7 +4,7 @@ import 'package:app/data/login_repository.dart';
 import 'package:app/data/utils/web_api_empty.dart'
     if (dart.library.js_interop) 'package:web/web.dart'
     show window;
-import 'package:app/service_config.dart';
+import 'package:app/config_services.dart';
 import 'package:app/utils/result.dart';
 import 'package:crypto/crypto.dart';
 import 'package:flutter/foundation.dart';

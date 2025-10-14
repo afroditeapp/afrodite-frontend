@@ -69,10 +69,8 @@ web/sqlite3.wasm
 web/native_push.js
 web/native_push_sw.js
 
-# App specific config
-lib/firebase_options.dart
-lib/service_config.dart
-
+# IDs and keys for services
+lib/config_services.dart
 # iOS development team
 ios/Runner.xcodeproj
 # iOS app entitlements

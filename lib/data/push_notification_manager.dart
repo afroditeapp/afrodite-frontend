@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:app/data/general/notification/utils/notification_payload.dart';
-import 'package:app/service_config.dart';
+import 'package:app/config_services.dart';
 import 'package:flutter/foundation.dart';
 import 'package:google_api_availability/google_api_availability.dart';
 import 'package:logging/logging.dart';
@@ -11,7 +11,6 @@ import 'package:openapi/api.dart';
 import 'package:app/ui/utils/web_notifications/web_notifications.dart';
 import 'package:app/data/login_repository.dart';
 import 'package:app/data/notification_manager.dart';
-import 'package:app/firebase_options.dart';
 import 'package:utils/utils.dart';
 import 'package:app/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
@@ -260,8 +259,8 @@ class FirebaseOptions {
   const FirebaseOptions({required this.apiKey, required this.appId, required this.projectId});
 
   Map<String, String> toMapForNativePush() => {
-    'apiKey': DefaultFirebaseOptions.currentPlatform.apiKey,
-    'applicationId': DefaultFirebaseOptions.currentPlatform.appId,
-    'projectId': DefaultFirebaseOptions.currentPlatform.projectId,
+    'apiKey': apiKey,
+    'applicationId': appId,
+    'projectId': projectId,
   };
 }

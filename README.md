@@ -98,25 +98,22 @@ Command `make update-licenses-for-native-utils` requires
 
 ### Placeholder files needed for compiling the project
 
-lib/firebase_options.dart
+lib/config_services.dart
 ```dart
-import 'package:firebase_core/firebase_core.dart';
+import 'package:app/data/push_notification_manager.dart';
 
-class DefaultFirebaseOptions {
-  static const FirebaseOptions currentPlatform = FirebaseOptions(
-    apiKey: '',
-    appId: '',
-    messagingSenderId: '',
-    projectId: '',
-  );
-}
-```
-
-lib/service_config.dart
-```dart
 String signInWithGoogleBackendClientId() => "";
 String signInWithAppleServiceIdForAndroidAndWebLogin() => "";
 String iosAppGroupIdentifier() => "";
+
+class DefaultFirebaseOptions {
+  static const FirebaseOptions android = FirebaseOptions(
+    apiKey: "",
+    appId: "",
+    projectId: "",
+  );
+}
+
 ```
 
 ### Add missing iOS project files
@@ -148,7 +145,7 @@ If notification service extension does not work check these:
 - <https://docs.flutter.dev/platform-integration/ios/app-extensions>
 
 APNs notifications require that NotificationService is working
-and `lib/service_config.dart` iosAppGroupIdentifier function
+and `lib/config_services.dart` iosAppGroupIdentifier function
 returns a valid value.
 
 ## About Assets
@@ -172,11 +169,10 @@ Add iOS client ID by modifying ios/Runner/Info.plist location
 <string>TODO</string>
 ```
 
-Also add files
+Also add file
 
 ```
-lib/firebase_options.dart
-lib/service_config.dart
+lib/config_services.dart
 ```
 
 ## Add Sign in with Apple support
@@ -196,7 +192,7 @@ Android redirect URL example:
 https://backend.example.com/account_api/sign_in_with_apple_redirect_to_app
 ```
 
-Also modify correct Service ID to `lib/service_config.dart`.
+Also modify correct Service ID to `lib/config_services.dart`.
 
 ## iOS
 

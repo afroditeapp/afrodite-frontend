@@ -5,7 +5,7 @@ import 'package:app/data/app_version.dart';
 import 'package:app/data/login_repository.dart';
 import 'package:app/data/utils/sign_in_with_apple.dart';
 import 'package:app/logic/sign_in_with.dart';
-import 'package:app/service_config.dart';
+import 'package:app/config_services.dart';
 import 'package:app/utils/result.dart';
 import 'package:crypto/crypto.dart';
 import 'package:flutter/foundation.dart';
