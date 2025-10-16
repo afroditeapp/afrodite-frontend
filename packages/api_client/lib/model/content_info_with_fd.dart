@@ -17,7 +17,7 @@ class ContentInfoWithFd {
     required this.ctype,
     required this.fd,
     this.rejectedReasonCategory,
-    required this.rejectedReasonDetails,
+    this.rejectedReasonDetails,
     required this.state,
   });
 
@@ -30,7 +30,7 @@ class ContentInfoWithFd {
 
   MediaContentModerationRejectedReasonCategory? rejectedReasonCategory;
 
-  MediaContentModerationRejectedReasonDetails rejectedReasonDetails;
+  MediaContentModerationRejectedReasonDetails? rejectedReasonDetails;
 
   ContentModerationState state;
 
@@ -50,7 +50,7 @@ class ContentInfoWithFd {
     (ctype.hashCode) +
     (fd.hashCode) +
     (rejectedReasonCategory == null ? 0 : rejectedReasonCategory!.hashCode) +
-    (rejectedReasonDetails.hashCode) +
+    (rejectedReasonDetails == null ? 0 : rejectedReasonDetails!.hashCode) +
     (state.hashCode);
 
   @override
@@ -66,7 +66,11 @@ class ContentInfoWithFd {
     } else {
       json[r'rejected_reason_category'] = null;
     }
+    if (this.rejectedReasonDetails != null) {
       json[r'rejected_reason_details'] = this.rejectedReasonDetails;
+    } else {
+      json[r'rejected_reason_details'] = null;
+    }
       json[r'state'] = this.state;
     return json;
   }
@@ -94,7 +98,7 @@ class ContentInfoWithFd {
         ctype: MediaContentType.fromJson(json[r'ctype'])!,
         fd: mapValueOfType<bool>(json, r'fd')!,
         rejectedReasonCategory: MediaContentModerationRejectedReasonCategory.fromJson(json[r'rejected_reason_category']),
-        rejectedReasonDetails: MediaContentModerationRejectedReasonDetails.fromJson(json[r'rejected_reason_details'])!,
+        rejectedReasonDetails: MediaContentModerationRejectedReasonDetails.fromJson(json[r'rejected_reason_details']),
         state: ContentModerationState.fromJson(json[r'state'])!,
       );
     }
@@ -146,7 +150,6 @@ class ContentInfoWithFd {
     'cid',
     'ctype',
     'fd',
-    'rejected_reason_details',
     'state',
   };
 }

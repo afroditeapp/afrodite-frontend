@@ -218,7 +218,7 @@ class ReportUiBuilder extends ContentUiBuilder<WrappedReportDetailed> {
       report = BlocBuilder<CustomReportsConfigBloc, CustomReportsConfig>(
         builder: (context, config) {
           final reportId = content.info.reportType.n - FIRST_CUSTOM_REPORT_TYPE_NUMBER;
-          final customReportInfo = config.report.getAtOrNull(reportId);
+          final customReportInfo = config.reports.getAtOrNull(reportId);
           if (customReportInfo != null) {
             final text = customReportInfo.translatedName(context);
             return Text("C: $text");

@@ -15,14 +15,21 @@ class ProfileIteratorPageValue {
   ProfileIteratorPageValue({
     required this.accountId,
     required this.age,
-    required this.name,
+    this.name,
   });
 
   AccountId accountId;
 
   int age;
 
-  String name;
+  /// A string wrapper that ensures the string is not empty. This type is used for TEXT columns that should not allow empty strings. In the database, these columns are NULL when there is no value, and this type represents non-NULL values that must be non-empty.
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  String? name;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is ProfileIteratorPageValue &&
@@ -35,7 +42,7 @@ class ProfileIteratorPageValue {
     // ignore: unnecessary_parenthesis
     (accountId.hashCode) +
     (age.hashCode) +
-    (name.hashCode);
+    (name == null ? 0 : name!.hashCode);
 
   @override
   String toString() => 'ProfileIteratorPageValue[accountId=$accountId, age=$age, name=$name]';
@@ -44,7 +51,11 @@ class ProfileIteratorPageValue {
     final json = <String, dynamic>{};
       json[r'account_id'] = this.accountId;
       json[r'age'] = this.age;
+    if (this.name != null) {
       json[r'name'] = this.name;
+    } else {
+      json[r'name'] = null;
+    }
     return json;
   }
 
@@ -69,7 +80,7 @@ class ProfileIteratorPageValue {
       return ProfileIteratorPageValue(
         accountId: AccountId.fromJson(json[r'account_id'])!,
         age: mapValueOfType<int>(json, r'age')!,
-        name: mapValueOfType<String>(json, r'name')!,
+        name: mapValueOfType<String>(json, r'name'),
       );
     }
     return null;
@@ -119,7 +130,6 @@ class ProfileIteratorPageValue {
   static const requiredKeys = <String>{
     'account_id',
     'age',
-    'name',
   };
 }
 

@@ -304,7 +304,7 @@ class AccountRepository extends DataRepositoryWithLifecycle {
     return await api
         .common((api) => api.getClientLanguage())
         .andThenEmptyErr(
-          (v) => db.accountAction((db) => db.common.updateClientLanguageOnServer(v)),
+          (v) => db.accountAction((db) => db.common.updateClientLanguageOnServer(v.l)),
         );
   }
 

@@ -116,12 +116,12 @@ class _AccountBannedScreenState extends State<AccountBannedScreen> {
     } else if (bannedUntil == null) {
       widgets = [Text(context.strings.generic_error)];
     } else {
-      final String banReason = result.reasonDetails.value;
+      final String? banReason = result.reasonDetails?.value;
       final localTime = fullTimeString(bannedUntil.toUtcDateTime());
       widgets = [
         Text(context.strings.account_banned_screen_time_text(localTime)),
         const Padding(padding: EdgeInsets.only(top: 8)),
-        if (banReason.isNotEmpty) Text(context.strings.account_banned_screen_ban_reason(banReason)),
+        if (banReason != null) Text(context.strings.account_banned_screen_ban_reason(banReason)),
       ];
     }
     return buildListReplacementMessage(

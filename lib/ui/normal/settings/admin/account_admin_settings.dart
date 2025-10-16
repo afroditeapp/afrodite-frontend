@@ -39,7 +39,7 @@ Future<void> getAgeAndNameAndShowAdminSettings(
       AccountAdminSettingsPage(
         accountId: account,
         initialAge: ageAndName.age,
-        initialName: ageAndName.name,
+        initialName: ageAndName.name ?? "",
       ),
     );
   } else if (ageAndName == null) {
@@ -96,7 +96,7 @@ class _AccountAdminSettingsScreenState extends State<AccountAdminSettingsScreen>
     if (ageAndName != null && context.mounted) {
       setState(() {
         age = ageAndName.age;
-        name = ageAndName.name;
+        name = ageAndName.name ?? "";
       });
     }
   }

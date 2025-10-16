@@ -123,7 +123,7 @@ class CommonApi {
     );
   }
 
-  Future<ClientLanguage?> getClientLanguage() async {
+  Future<GetClientLanguage?> getClientLanguage() async {
     final response = await getClientLanguageWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
@@ -132,7 +132,7 @@ class CommonApi {
     // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'ClientLanguage',) as ClientLanguage;
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetClientLanguage',) as GetClientLanguage;
     
     }
     return null;

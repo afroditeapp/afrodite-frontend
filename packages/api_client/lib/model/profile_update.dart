@@ -16,16 +16,24 @@ class ProfileUpdate {
     required this.age,
     this.attributes = const [],
     required this.name,
-    required this.ptext,
+    this.ptext,
   });
 
   int age;
 
   List<ProfileAttributeValueUpdate> attributes;
 
+  /// A string wrapper that ensures the string is not empty. This type is used for TEXT columns that should not allow empty strings. In the database, these columns are NULL when there is no value, and this type represents non-NULL values that must be non-empty.
   String name;
 
-  String ptext;
+  /// A string wrapper that ensures the string is not empty. This type is used for TEXT columns that should not allow empty strings. In the database, these columns are NULL when there is no value, and this type represents non-NULL values that must be non-empty.
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  String? ptext;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is ProfileUpdate &&
@@ -40,7 +48,7 @@ class ProfileUpdate {
     (age.hashCode) +
     (attributes.hashCode) +
     (name.hashCode) +
-    (ptext.hashCode);
+    (ptext == null ? 0 : ptext!.hashCode);
 
   @override
   String toString() => 'ProfileUpdate[age=$age, attributes=$attributes, name=$name, ptext=$ptext]';
@@ -50,7 +58,11 @@ class ProfileUpdate {
       json[r'age'] = this.age;
       json[r'attributes'] = this.attributes;
       json[r'name'] = this.name;
+    if (this.ptext != null) {
       json[r'ptext'] = this.ptext;
+    } else {
+      json[r'ptext'] = null;
+    }
     return json;
   }
 
@@ -76,7 +88,7 @@ class ProfileUpdate {
         age: mapValueOfType<int>(json, r'age')!,
         attributes: ProfileAttributeValueUpdate.listFromJson(json[r'attributes']),
         name: mapValueOfType<String>(json, r'name')!,
-        ptext: mapValueOfType<String>(json, r'ptext')!,
+        ptext: mapValueOfType<String>(json, r'ptext'),
       );
     }
     return null;
@@ -127,7 +139,6 @@ class ProfileUpdate {
     'age',
     'attributes',
     'name',
-    'ptext',
   };
 }
 

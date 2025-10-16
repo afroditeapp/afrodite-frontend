@@ -368,6 +368,8 @@ class ApiClient {
           return GetChatMessageReports.fromJson(value);
         case 'GetClientFeaturesConfigResult':
           return GetClientFeaturesConfigResult.fromJson(value);
+        case 'GetClientLanguage':
+          return GetClientLanguage.fromJson(value);
         case 'GetClientVersionStatisticsResult':
           return GetClientVersionStatisticsResult.fromJson(value);
         case 'GetClientVersionStatisticsSettings':

@@ -13,32 +13,32 @@ part of openapi.api;
 class CustomReportsConfig {
   /// Returns a new [CustomReportsConfig] instance.
   CustomReportsConfig({
-    this.report = const [],
     required this.reportOrder,
+    this.reports = const [],
   });
-
-  List<CustomReport> report;
 
   CustomReportsOrderMode reportOrder;
 
+  List<CustomReport> reports;
+
   @override
   bool operator ==(Object other) => identical(this, other) || other is CustomReportsConfig &&
-    _deepEquality.equals(other.report, report) &&
-    other.reportOrder == reportOrder;
+    other.reportOrder == reportOrder &&
+    _deepEquality.equals(other.reports, reports);
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (report.hashCode) +
-    (reportOrder.hashCode);
+    (reportOrder.hashCode) +
+    (reports.hashCode);
 
   @override
-  String toString() => 'CustomReportsConfig[report=$report, reportOrder=$reportOrder]';
+  String toString() => 'CustomReportsConfig[reportOrder=$reportOrder, reports=$reports]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'report'] = this.report;
       json[r'report_order'] = this.reportOrder;
+      json[r'reports'] = this.reports;
     return json;
   }
 
@@ -61,8 +61,8 @@ class CustomReportsConfig {
       }());
 
       return CustomReportsConfig(
-        report: CustomReport.listFromJson(json[r'report']),
         reportOrder: CustomReportsOrderMode.fromJson(json[r'report_order'])!,
+        reports: CustomReport.listFromJson(json[r'reports']),
       );
     }
     return null;
@@ -110,8 +110,8 @@ class CustomReportsConfig {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'report',
     'report_order',
+    'reports',
   };
 }
 

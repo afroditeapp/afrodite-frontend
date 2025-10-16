@@ -133,6 +133,7 @@ part 'model/get_api_usage_statistics_result.dart';
 part 'model/get_api_usage_statistics_settings.dart';
 part 'model/get_chat_message_reports.dart';
 part 'model/get_client_features_config_result.dart';
+part 'model/get_client_language.dart';
 part 'model/get_client_version_statistics_result.dart';
 part 'model/get_client_version_statistics_settings.dart';
 part 'model/get_conversation_id.dart';

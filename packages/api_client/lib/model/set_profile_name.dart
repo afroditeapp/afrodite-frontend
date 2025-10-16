@@ -14,12 +14,19 @@ class SetProfileName {
   /// Returns a new [SetProfileName] instance.
   SetProfileName({
     required this.account,
-    required this.name,
+    this.name,
   });
 
   AccountId account;
 
-  String name;
+  /// A string wrapper that ensures the string is not empty. This type is used for TEXT columns that should not allow empty strings. In the database, these columns are NULL when there is no value, and this type represents non-NULL values that must be non-empty.
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  String? name;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is SetProfileName &&
@@ -30,7 +37,7 @@ class SetProfileName {
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (account.hashCode) +
-    (name.hashCode);
+    (name == null ? 0 : name!.hashCode);
 
   @override
   String toString() => 'SetProfileName[account=$account, name=$name]';
@@ -38,7 +45,11 @@ class SetProfileName {
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'account'] = this.account;
+    if (this.name != null) {
       json[r'name'] = this.name;
+    } else {
+      json[r'name'] = null;
+    }
     return json;
   }
 
@@ -62,7 +73,7 @@ class SetProfileName {
 
       return SetProfileName(
         account: AccountId.fromJson(json[r'account'])!,
-        name: mapValueOfType<String>(json, r'name')!,
+        name: mapValueOfType<String>(json, r'name'),
       );
     }
     return null;
@@ -111,7 +122,6 @@ class SetProfileName {
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
     'account',
-    'name',
   };
 }
 

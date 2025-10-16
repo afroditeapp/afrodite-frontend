@@ -250,7 +250,7 @@ class _ReportScreenState extends State<ReportScreen> {
     }
 
     final availableReports = [
-      ...config.report.where((v) => v.reportType == CustomReportType.empty && v.visible),
+      ...config.reports.where((v) => v.reportType == CustomReportType.empty && v.visible),
     ];
 
     availableReports.sort((a, b) => a.orderNumber.compareTo(b.orderNumber));

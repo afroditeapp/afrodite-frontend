@@ -114,7 +114,6 @@ class _ModerateSingleProfileStringScreenState extends State<ModerateSingleProfil
     } else {
       profileString = null;
     }
-    final rejectionReason = data?.moderationInfo?.rejectedReasonDetails.value;
     final state = data?.moderationInfo?.state;
     final accepted = switch (state) {
       ProfileStringModerationState.waitingBotOrHumanModeration ||
@@ -137,7 +136,7 @@ class _ModerateSingleProfileStringScreenState extends State<ModerateSingleProfil
               profileStringModerating(
                 context,
                 profileString,
-                rejectionReason ?? "",
+                data?.moderationInfo?.rejectedReasonDetails?.value,
                 accepted,
                 state,
               ),
@@ -152,7 +151,7 @@ class _ModerateSingleProfileStringScreenState extends State<ModerateSingleProfil
   Widget profileStringModerating(
     BuildContext context,
     String profileString,
-    String rejectionReason,
+    String? rejectionReason,
     bool? accepted,
     ProfileStringModerationState state,
   ) {
@@ -171,11 +170,11 @@ class _ModerateSingleProfileStringScreenState extends State<ModerateSingleProfil
         ),
         const Padding(padding: EdgeInsets.all(8.0)),
         Text(profileString),
-        if (rejectionReason.isNotEmpty) const Padding(padding: EdgeInsets.all(8.0)),
-        if (rejectionReason.isNotEmpty)
+        if (rejectionReason != null) const Padding(padding: EdgeInsets.all(8.0)),
+        if (rejectionReason != null)
           Text("Rejection reason", style: Theme.of(context).textTheme.titleSmall),
-        if (rejectionReason.isNotEmpty) const Padding(padding: EdgeInsets.all(8.0)),
-        if (rejectionReason.isNotEmpty) Text(rejectionReason),
+        if (rejectionReason != null) const Padding(padding: EdgeInsets.all(8.0)),
+        if (rejectionReason != null) Text(rejectionReason),
         if (accepted == true) const Padding(padding: EdgeInsets.all(8.0)),
         if (accepted == true)
           TextField(

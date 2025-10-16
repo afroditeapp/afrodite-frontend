@@ -15,7 +15,7 @@ class GetAccountBanTimeResult {
   GetAccountBanTimeResult({
     this.bannedUntil,
     this.reasonCategory,
-    required this.reasonDetails,
+    this.reasonDetails,
   });
 
   /// If `None` the account is not banned.
@@ -23,7 +23,7 @@ class GetAccountBanTimeResult {
 
   AccountBanReasonCategory? reasonCategory;
 
-  AccountBanReasonDetails reasonDetails;
+  AccountBanReasonDetails? reasonDetails;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is GetAccountBanTimeResult &&
@@ -36,7 +36,7 @@ class GetAccountBanTimeResult {
     // ignore: unnecessary_parenthesis
     (bannedUntil == null ? 0 : bannedUntil!.hashCode) +
     (reasonCategory == null ? 0 : reasonCategory!.hashCode) +
-    (reasonDetails.hashCode);
+    (reasonDetails == null ? 0 : reasonDetails!.hashCode);
 
   @override
   String toString() => 'GetAccountBanTimeResult[bannedUntil=$bannedUntil, reasonCategory=$reasonCategory, reasonDetails=$reasonDetails]';
@@ -53,7 +53,11 @@ class GetAccountBanTimeResult {
     } else {
       json[r'reason_category'] = null;
     }
+    if (this.reasonDetails != null) {
       json[r'reason_details'] = this.reasonDetails;
+    } else {
+      json[r'reason_details'] = null;
+    }
     return json;
   }
 
@@ -78,7 +82,7 @@ class GetAccountBanTimeResult {
       return GetAccountBanTimeResult(
         bannedUntil: UnixTime.fromJson(json[r'banned_until']),
         reasonCategory: AccountBanReasonCategory.fromJson(json[r'reason_category']),
-        reasonDetails: AccountBanReasonDetails.fromJson(json[r'reason_details'])!,
+        reasonDetails: AccountBanReasonDetails.fromJson(json[r'reason_details']),
       );
     }
     return null;
@@ -126,7 +130,6 @@ class GetAccountBanTimeResult {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'reason_details',
   };
 }
 

@@ -18,7 +18,7 @@ class PostModerateProfileString {
     required this.id,
     this.moveToHuman,
     this.rejectedCategory,
-    required this.rejectedDetails,
+    this.rejectedDetails,
     required this.value,
   });
 
@@ -33,8 +33,9 @@ class PostModerateProfileString {
 
   ProfileStringModerationRejectedReasonCategory? rejectedCategory;
 
-  ProfileStringModerationRejectedReasonDetails rejectedDetails;
+  ProfileStringModerationRejectedReasonDetails? rejectedDetails;
 
+  /// A string wrapper that ensures the string is not empty. This type is used for TEXT columns that should not allow empty strings. In the database, these columns are NULL when there is no value, and this type represents non-NULL values that must be non-empty.
   String value;
 
   @override
@@ -55,7 +56,7 @@ class PostModerateProfileString {
     (id.hashCode) +
     (moveToHuman == null ? 0 : moveToHuman!.hashCode) +
     (rejectedCategory == null ? 0 : rejectedCategory!.hashCode) +
-    (rejectedDetails.hashCode) +
+    (rejectedDetails == null ? 0 : rejectedDetails!.hashCode) +
     (value.hashCode);
 
   @override
@@ -76,7 +77,11 @@ class PostModerateProfileString {
     } else {
       json[r'rejected_category'] = null;
     }
+    if (this.rejectedDetails != null) {
       json[r'rejected_details'] = this.rejectedDetails;
+    } else {
+      json[r'rejected_details'] = null;
+    }
       json[r'value'] = this.value;
     return json;
   }
@@ -105,7 +110,7 @@ class PostModerateProfileString {
         id: AccountId.fromJson(json[r'id'])!,
         moveToHuman: mapValueOfType<bool>(json, r'move_to_human'),
         rejectedCategory: ProfileStringModerationRejectedReasonCategory.fromJson(json[r'rejected_category']),
-        rejectedDetails: ProfileStringModerationRejectedReasonDetails.fromJson(json[r'rejected_details'])!,
+        rejectedDetails: ProfileStringModerationRejectedReasonDetails.fromJson(json[r'rejected_details']),
         value: mapValueOfType<String>(json, r'value')!,
       );
     }
@@ -157,7 +162,6 @@ class PostModerateProfileString {
     'accept',
     'content_type',
     'id',
-    'rejected_details',
     'value',
   };
 }

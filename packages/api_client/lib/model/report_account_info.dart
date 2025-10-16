@@ -14,12 +14,19 @@ class ReportAccountInfo {
   /// Returns a new [ReportAccountInfo] instance.
   ReportAccountInfo({
     required this.age,
-    required this.name,
+    this.name,
   });
 
   int age;
 
-  String name;
+  /// A string wrapper that ensures the string is not empty. This type is used for TEXT columns that should not allow empty strings. In the database, these columns are NULL when there is no value, and this type represents non-NULL values that must be non-empty.
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  String? name;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is ReportAccountInfo &&
@@ -30,7 +37,7 @@ class ReportAccountInfo {
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (age.hashCode) +
-    (name.hashCode);
+    (name == null ? 0 : name!.hashCode);
 
   @override
   String toString() => 'ReportAccountInfo[age=$age, name=$name]';
@@ -38,7 +45,11 @@ class ReportAccountInfo {
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'age'] = this.age;
+    if (this.name != null) {
       json[r'name'] = this.name;
+    } else {
+      json[r'name'] = null;
+    }
     return json;
   }
 
@@ -62,7 +73,7 @@ class ReportAccountInfo {
 
       return ReportAccountInfo(
         age: mapValueOfType<int>(json, r'age')!,
-        name: mapValueOfType<String>(json, r'name')!,
+        name: mapValueOfType<String>(json, r'name'),
       );
     }
     return null;
@@ -111,7 +122,6 @@ class ReportAccountInfo {
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
     'age',
-    'name',
   };
 }
 

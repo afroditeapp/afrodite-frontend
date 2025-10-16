@@ -14,13 +14,19 @@ class GetProfileStringState {
   /// Returns a new [GetProfileStringState] instance.
   GetProfileStringState({
     this.moderationInfo,
-    required this.value,
+    this.value,
   });
 
   ProfileStringModerationInfo? moderationInfo;
 
-  /// If empty, the `moderation_info` is `None`.
-  String value;
+  /// A string wrapper that ensures the string is not empty. This type is used for TEXT columns that should not allow empty strings. In the database, these columns are NULL when there is no value, and this type represents non-NULL values that must be non-empty.
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  String? value;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is GetProfileStringState &&
@@ -31,7 +37,7 @@ class GetProfileStringState {
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (moderationInfo == null ? 0 : moderationInfo!.hashCode) +
-    (value.hashCode);
+    (value == null ? 0 : value!.hashCode);
 
   @override
   String toString() => 'GetProfileStringState[moderationInfo=$moderationInfo, value=$value]';
@@ -43,7 +49,11 @@ class GetProfileStringState {
     } else {
       json[r'moderation_info'] = null;
     }
+    if (this.value != null) {
       json[r'value'] = this.value;
+    } else {
+      json[r'value'] = null;
+    }
     return json;
   }
 
@@ -67,7 +77,7 @@ class GetProfileStringState {
 
       return GetProfileStringState(
         moderationInfo: ProfileStringModerationInfo.fromJson(json[r'moderation_info']),
-        value: mapValueOfType<String>(json, r'value')!,
+        value: mapValueOfType<String>(json, r'value'),
       );
     }
     return null;
@@ -115,7 +125,6 @@ class GetProfileStringState {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'value',
   };
 }
 

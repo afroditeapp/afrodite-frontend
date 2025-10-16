@@ -17,7 +17,7 @@ class ContentInfoDetailed {
     required this.ctype,
     required this.fd,
     this.rejectedReasonCategory,
-    required this.rejectedReasonDetails,
+    this.rejectedReasonDetails,
     required this.secureCapture,
     this.slot,
     required this.state,
@@ -34,7 +34,7 @@ class ContentInfoDetailed {
 
   MediaContentModerationRejectedReasonCategory? rejectedReasonCategory;
 
-  MediaContentModerationRejectedReasonDetails rejectedReasonDetails;
+  MediaContentModerationRejectedReasonDetails? rejectedReasonDetails;
 
   bool secureCapture;
 
@@ -66,7 +66,7 @@ class ContentInfoDetailed {
     (ctype.hashCode) +
     (fd.hashCode) +
     (rejectedReasonCategory == null ? 0 : rejectedReasonCategory!.hashCode) +
-    (rejectedReasonDetails.hashCode) +
+    (rejectedReasonDetails == null ? 0 : rejectedReasonDetails!.hashCode) +
     (secureCapture.hashCode) +
     (slot == null ? 0 : slot!.hashCode) +
     (state.hashCode) +
@@ -86,7 +86,11 @@ class ContentInfoDetailed {
     } else {
       json[r'rejected_reason_category'] = null;
     }
+    if (this.rejectedReasonDetails != null) {
       json[r'rejected_reason_details'] = this.rejectedReasonDetails;
+    } else {
+      json[r'rejected_reason_details'] = null;
+    }
       json[r'secure_capture'] = this.secureCapture;
     if (this.slot != null) {
       json[r'slot'] = this.slot;
@@ -130,7 +134,7 @@ class ContentInfoDetailed {
         ctype: MediaContentType.fromJson(json[r'ctype'])!,
         fd: mapValueOfType<bool>(json, r'fd')!,
         rejectedReasonCategory: MediaContentModerationRejectedReasonCategory.fromJson(json[r'rejected_reason_category']),
-        rejectedReasonDetails: MediaContentModerationRejectedReasonDetails.fromJson(json[r'rejected_reason_details'])!,
+        rejectedReasonDetails: MediaContentModerationRejectedReasonDetails.fromJson(json[r'rejected_reason_details']),
         secureCapture: mapValueOfType<bool>(json, r'secure_capture')!,
         slot: ContentSlot.fromJson(json[r'slot']),
         state: ContentModerationState.fromJson(json[r'state'])!,
@@ -186,7 +190,6 @@ class ContentInfoDetailed {
     'cid',
     'ctype',
     'fd',
-    'rejected_reason_details',
     'secure_capture',
     'state',
   };

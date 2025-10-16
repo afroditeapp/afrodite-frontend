@@ -334,6 +334,7 @@ Class | Method | HTTP request | Description
  - [GetApiUsageStatisticsSettings](doc//GetApiUsageStatisticsSettings.md)
  - [GetChatMessageReports](doc//GetChatMessageReports.md)
  - [GetClientFeaturesConfigResult](doc//GetClientFeaturesConfigResult.md)
+ - [GetClientLanguage](doc//GetClientLanguage.md)
  - [GetClientVersionStatisticsResult](doc//GetClientVersionStatisticsResult.md)
  - [GetClientVersionStatisticsSettings](doc//GetClientVersionStatisticsSettings.md)
  - [GetConversationId](doc//GetConversationId.md)

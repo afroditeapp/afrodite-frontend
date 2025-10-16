@@ -14,13 +14,13 @@ class ProfileStringModerationInfo {
   /// Returns a new [ProfileStringModerationInfo] instance.
   ProfileStringModerationInfo({
     this.rejectedReasonCategory,
-    required this.rejectedReasonDetails,
+    this.rejectedReasonDetails,
     required this.state,
   });
 
   ProfileStringModerationRejectedReasonCategory? rejectedReasonCategory;
 
-  ProfileStringModerationRejectedReasonDetails rejectedReasonDetails;
+  ProfileStringModerationRejectedReasonDetails? rejectedReasonDetails;
 
   ProfileStringModerationState state;
 
@@ -34,7 +34,7 @@ class ProfileStringModerationInfo {
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (rejectedReasonCategory == null ? 0 : rejectedReasonCategory!.hashCode) +
-    (rejectedReasonDetails.hashCode) +
+    (rejectedReasonDetails == null ? 0 : rejectedReasonDetails!.hashCode) +
     (state.hashCode);
 
   @override
@@ -47,7 +47,11 @@ class ProfileStringModerationInfo {
     } else {
       json[r'rejected_reason_category'] = null;
     }
+    if (this.rejectedReasonDetails != null) {
       json[r'rejected_reason_details'] = this.rejectedReasonDetails;
+    } else {
+      json[r'rejected_reason_details'] = null;
+    }
       json[r'state'] = this.state;
     return json;
   }
@@ -72,7 +76,7 @@ class ProfileStringModerationInfo {
 
       return ProfileStringModerationInfo(
         rejectedReasonCategory: ProfileStringModerationRejectedReasonCategory.fromJson(json[r'rejected_reason_category']),
-        rejectedReasonDetails: ProfileStringModerationRejectedReasonDetails.fromJson(json[r'rejected_reason_details'])!,
+        rejectedReasonDetails: ProfileStringModerationRejectedReasonDetails.fromJson(json[r'rejected_reason_details']),
         state: ProfileStringModerationState.fromJson(json[r'state'])!,
       );
     }
@@ -121,7 +125,6 @@ class ProfileStringModerationInfo {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'rejected_reason_details',
     'state',
   };
 }

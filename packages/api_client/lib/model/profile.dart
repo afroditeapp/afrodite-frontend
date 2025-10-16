@@ -15,9 +15,9 @@ class Profile {
   Profile({
     required this.age,
     this.attributes = const [],
-    required this.name,
+    this.name,
     this.nameAccepted = true,
-    this.ptext = '',
+    this.ptext,
     this.ptextAccepted = true,
     this.unlimitedLikes = false,
   });
@@ -26,13 +26,26 @@ class Profile {
 
   List<ProfileAttributeValue> attributes;
 
-  String name;
+  /// A string wrapper that ensures the string is not empty. This type is used for TEXT columns that should not allow empty strings. In the database, these columns are NULL when there is no value, and this type represents non-NULL values that must be non-empty.
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  String? name;
 
   /// The name has been accepted using allowlist or manual moderation.
   bool nameAccepted;
 
-  /// Profile text support is disabled for now.
-  String ptext;
+  /// A string wrapper that ensures the string is not empty. This type is used for TEXT columns that should not allow empty strings. In the database, these columns are NULL when there is no value, and this type represents non-NULL values that must be non-empty.
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  String? ptext;
 
   /// The profile text has been accepted by bot or human moderator.
   bool ptextAccepted;
@@ -54,9 +67,9 @@ class Profile {
     // ignore: unnecessary_parenthesis
     (age.hashCode) +
     (attributes.hashCode) +
-    (name.hashCode) +
+    (name == null ? 0 : name!.hashCode) +
     (nameAccepted.hashCode) +
-    (ptext.hashCode) +
+    (ptext == null ? 0 : ptext!.hashCode) +
     (ptextAccepted.hashCode) +
     (unlimitedLikes.hashCode);
 
@@ -67,9 +80,17 @@ class Profile {
     final json = <String, dynamic>{};
       json[r'age'] = this.age;
       json[r'attributes'] = this.attributes;
+    if (this.name != null) {
       json[r'name'] = this.name;
+    } else {
+      json[r'name'] = null;
+    }
       json[r'name_accepted'] = this.nameAccepted;
+    if (this.ptext != null) {
       json[r'ptext'] = this.ptext;
+    } else {
+      json[r'ptext'] = null;
+    }
       json[r'ptext_accepted'] = this.ptextAccepted;
       json[r'unlimited_likes'] = this.unlimitedLikes;
     return json;
@@ -96,9 +117,9 @@ class Profile {
       return Profile(
         age: mapValueOfType<int>(json, r'age')!,
         attributes: ProfileAttributeValue.listFromJson(json[r'attributes']),
-        name: mapValueOfType<String>(json, r'name')!,
+        name: mapValueOfType<String>(json, r'name'),
         nameAccepted: mapValueOfType<bool>(json, r'name_accepted') ?? true,
-        ptext: mapValueOfType<String>(json, r'ptext') ?? '',
+        ptext: mapValueOfType<String>(json, r'ptext'),
         ptextAccepted: mapValueOfType<bool>(json, r'ptext_accepted') ?? true,
         unlimitedLikes: mapValueOfType<bool>(json, r'unlimited_likes') ?? false,
       );
@@ -149,7 +170,6 @@ class Profile {
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
     'age',
-    'name',
   };
 }
 

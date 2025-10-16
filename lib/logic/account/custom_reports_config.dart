@@ -36,5 +36,5 @@ class CustomReportsConfigBloc extends Bloc<CustomReportsConfigEvent, CustomRepor
 }
 
 CustomReportsConfig emptyCustomReportConfig() {
-  return CustomReportsConfig(reportOrder: CustomReportsOrderMode.orderNumber, report: []);
+  return CustomReportsConfig(reportOrder: CustomReportsOrderMode.orderNumber, reports: []);
 }

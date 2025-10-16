@@ -115,6 +115,7 @@ lib/model/get_api_usage_statistics_result.dart
 lib/model/get_api_usage_statistics_settings.dart
 lib/model/get_chat_message_reports.dart
 lib/model/get_client_features_config_result.dart
+lib/model/get_client_language.dart
 lib/model/get_client_version_statistics_result.dart
 lib/model/get_client_version_statistics_settings.dart
 lib/model/get_conversation_id.dart

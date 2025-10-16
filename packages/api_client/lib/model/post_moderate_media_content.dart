@@ -18,7 +18,7 @@ class PostModerateMediaContent {
     required this.contentId,
     this.moveToHuman,
     this.rejectedCategory,
-    required this.rejectedDetails,
+    this.rejectedDetails,
   });
 
   bool accept;
@@ -32,7 +32,7 @@ class PostModerateMediaContent {
 
   MediaContentModerationRejectedReasonCategory? rejectedCategory;
 
-  MediaContentModerationRejectedReasonDetails rejectedDetails;
+  MediaContentModerationRejectedReasonDetails? rejectedDetails;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is PostModerateMediaContent &&
@@ -51,7 +51,7 @@ class PostModerateMediaContent {
     (contentId.hashCode) +
     (moveToHuman == null ? 0 : moveToHuman!.hashCode) +
     (rejectedCategory == null ? 0 : rejectedCategory!.hashCode) +
-    (rejectedDetails.hashCode);
+    (rejectedDetails == null ? 0 : rejectedDetails!.hashCode);
 
   @override
   String toString() => 'PostModerateMediaContent[accept=$accept, accountId=$accountId, contentId=$contentId, moveToHuman=$moveToHuman, rejectedCategory=$rejectedCategory, rejectedDetails=$rejectedDetails]';
@@ -71,7 +71,11 @@ class PostModerateMediaContent {
     } else {
       json[r'rejected_category'] = null;
     }
+    if (this.rejectedDetails != null) {
       json[r'rejected_details'] = this.rejectedDetails;
+    } else {
+      json[r'rejected_details'] = null;
+    }
     return json;
   }
 
@@ -99,7 +103,7 @@ class PostModerateMediaContent {
         contentId: ContentId.fromJson(json[r'content_id'])!,
         moveToHuman: mapValueOfType<bool>(json, r'move_to_human'),
         rejectedCategory: MediaContentModerationRejectedReasonCategory.fromJson(json[r'rejected_category']),
-        rejectedDetails: MediaContentModerationRejectedReasonDetails.fromJson(json[r'rejected_details'])!,
+        rejectedDetails: MediaContentModerationRejectedReasonDetails.fromJson(json[r'rejected_details']),
       );
     }
     return null;
@@ -150,7 +154,6 @@ class PostModerateMediaContent {
     'accept',
     'account_id',
     'content_id',
-    'rejected_details',
   };
 }
 
