@@ -63,6 +63,7 @@ class Ready implements ServerConnectionState {
 
 /// Connection closed
 class Closed implements ServerConnectionState {
+  /// If null, connection is closed manually
   final ServerConnectionError? error;
   Closed(this.error);
 

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:app/data/login_repository.dart';
 import 'package:app/localizations.dart';
@@ -19,6 +20,43 @@ import 'package:app/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
 
 final _log = Logger("ServerConnectionManager");
+
+class ConnectionRetryManager {
+  static const int maxRetries = 2;
+  static const List<int> baseWaitSeconds = [0, 20];
+  static const int minJitterSeconds = 1;
+  static const int maxJitterSeconds = 10;
+
+  int _retryCount = 0;
+  final Random _random = Random();
+
+  /// Returns true if more retries are available
+  bool get canRetry => _retryCount < maxRetries;
+
+  /// Calculates the wait time for the next retry with jitter.
+  /// Returns null if no more retries available.
+  int? getNextRetryDelaySeconds() {
+    if (!canRetry) {
+      return null;
+    }
+
+    final baseDelay = baseWaitSeconds[_retryCount];
+    final jitter = minJitterSeconds + _random.nextInt(maxJitterSeconds - minJitterSeconds + 1);
+    return baseDelay + jitter;
+  }
+
+  /// Records a retry attempt
+  void recordRetry() {
+    if (canRetry) {
+      _retryCount++;
+    }
+  }
+
+  /// Resets the retry counter (call when connection succeeds)
+  void reset() {
+    _retryCount = 0;
+  }
+}
 
 /// Manages reconnection timing with countdown updates
 class ReconnectionTimer {
@@ -75,7 +113,20 @@ class ReconnectWaitTime extends ServerConnectionManagerState {
 }
 
 /// No connection to server.
-class NoServerConnection extends ServerConnectionManagerState {}
+class NoServerConnection extends ServerConnectionManagerState {
+  final bool maxRetriesReached;
+  NoServerConnection({required this.maxRetriesReached});
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is NoServerConnection &&
+          runtimeType == other.runtimeType &&
+          maxRetriesReached == other.maxRetriesReached;
+
+  @override
+  int get hashCode => maxRetriesReached.hashCode;
+}
 
 /// Making connection to server.
 class ConnectingToServer extends ServerConnectionManagerState {}
@@ -157,6 +208,7 @@ class ServerConnectionManager extends ApiManager
   ServerConnectionInterface get _connection => this;
 
   late final ReconnectionTimer _reconnectionTimer;
+  late final ConnectionRetryManager _retryManager;
 
   bool _disableSnackBars = false;
   bool _restartOngoing = false;
@@ -164,6 +216,7 @@ class ServerConnectionManager extends ApiManager
   @override
   Future<void> init() async {
     await _apiProvider.init();
+    _retryManager = ConnectionRetryManager();
     _reconnectionTimer = ReconnectionTimer(
       onTick: (remainingSeconds) {
         _state.add(ReconnectWaitTime(remainingSeconds));
@@ -270,6 +323,8 @@ class ServerConnectionManager extends ApiManager
                 }
                 _reconnectionTimer.cancel();
               }
+              // Reset retry counter on successful connection
+              _retryManager.reset();
               _apiProvider.setAccessToken(token);
               _state.add(ConnectedToServer());
           }
@@ -288,17 +343,22 @@ class ServerConnectionManager extends ApiManager
     }
     switch (error) {
       case ServerConnectionError.connectionFailure:
-        if (!_disableSnackBars && !_isNormalStatePageVisible()) {
-          showSnackBar(R.strings.snackbar_reconnecting_in_5_seconds);
+        final retryDelay = _retryManager.getNextRetryDelaySeconds();
+        if (retryDelay != null) {
+          if (!_disableSnackBars && !_isNormalStatePageVisible()) {
+            showSnackBar(R.strings.snackbar_reconnecting_in_5_seconds);
+          }
+          _retryManager.recordRetry();
+          _reconnectionTimer.start(retryDelay);
+        } else {
+          _state.add(NoServerConnection(maxRetriesReached: true));
         }
-        // TODO(prod): check that internet connectivity exists?
-        _reconnectionTimer.start(5);
       case ServerConnectionError.invalidToken:
         _state.add(WaitingRefreshToken());
       case ServerConnectionError.unsupportedClientVersion:
         _state.add(UnsupportedClientVersion());
       case null:
-        _state.add(NoServerConnection());
+        _state.add(NoServerConnection(maxRetriesReached: false));
     }
   }
 
@@ -308,6 +368,7 @@ class ServerConnectionManager extends ApiManager
       return;
     }
     _restartOngoing = true;
+    _retryManager.reset();
     final event = Restart();
     _cmds.add(event);
     await event.waitCompletionAndDispose();
@@ -315,6 +376,7 @@ class ServerConnectionManager extends ApiManager
   }
 
   Future<void> close() async {
+    _retryManager.reset();
     final event = CloseConnection(null);
     _cmds.add(event);
     await event.waitCompletionAndDispose();
