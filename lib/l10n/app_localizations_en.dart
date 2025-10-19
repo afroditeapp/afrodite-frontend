@@ -156,7 +156,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get chat_list_screen_no_chats_found_description =>
-      'Accepted chat requests are available from upper right menu button';
+      'Spread the word about the app in social media';
 
   @override
   String get chat_list_screen_no_matches_found =>

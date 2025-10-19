@@ -331,7 +331,7 @@ abstract class AppLocalizations {
   /// Description text displayed when there is no chats
   ///
   /// In en, this message translates to:
-  /// **'Accepted chat requests are available from upper right menu button'**
+  /// **'Spread the word about the app in social media'**
   String get chat_list_screen_no_chats_found_description;
 
   /// Info text displayed when no matches are found

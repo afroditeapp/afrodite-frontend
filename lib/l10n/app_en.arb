@@ -186,7 +186,7 @@
   "@chat_list_screen_no_chats_found": {
     "description": "Info text displayed when there is no chats"
   },
-  "chat_list_screen_no_chats_found_description": "Accepted chat requests are available from upper right menu button",
+  "chat_list_screen_no_chats_found_description": "Spread the word about the app in social media",
   "@chat_list_screen_no_chats_found_description": {
     "description": "Description text displayed when there is no chats"
   },
