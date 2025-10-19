@@ -1009,6 +1009,10 @@
   "@login_screen_registering_disabled_on_web": {
     "description": "Text that registering new accounts is disabled on web"
   },
+  "login_screen_sign_in_with_email_unverified": "Email address of the selected account is not verified",
+  "@login_screen_sign_in_with_email_unverified": {
+    "description": "Snackbar error message when sign in with account email is not verified"
+  },
   "login_screen_sign_in_with_error": "Sign in with failed",
   "@login_screen_sign_in_with_error": {
     "description": "Snackbar text for sign in with error"

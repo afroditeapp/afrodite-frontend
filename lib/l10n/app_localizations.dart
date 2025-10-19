@@ -1526,6 +1526,12 @@ abstract class AppLocalizations {
   /// **'Registering new accounts is not possible using a web browser.'**
   String get login_screen_registering_disabled_on_web;
 
+  /// Snackbar error message when sign in with account email is not verified
+  ///
+  /// In en, this message translates to:
+  /// **'Email address of the selected account is not verified'**
+  String get login_screen_sign_in_with_email_unverified;
+
   /// Snackbar text for sign in with error
   ///
   /// In en, this message translates to:

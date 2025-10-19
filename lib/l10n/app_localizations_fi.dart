@@ -859,6 +859,10 @@ class AppLocalizationsFi extends AppLocalizations {
       'Registering new accounts is not possible using a web browser.';
 
   @override
+  String get login_screen_sign_in_with_email_unverified =>
+      'Email address of the selected account is not verified';
+
+  @override
   String get login_screen_sign_in_with_error => 'Sign in with failed';
 
   @override
