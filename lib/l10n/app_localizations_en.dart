@@ -1410,6 +1410,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get select_match_screen_title => 'Accepted chat requests';
 
   @override
+  String get server_connection_indicator_connection_failed =>
+      'Connection failed';
+
+  @override
   String server_connection_indicator_reconnecting_in_seconds(String p0) {
     return 'Reconnecting in ${p0}s';
   }

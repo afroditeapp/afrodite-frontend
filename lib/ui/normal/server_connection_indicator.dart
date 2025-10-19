@@ -50,6 +50,8 @@ class _ServerConnectionIndicatorState extends State<ServerConnectionIndicator> {
             context,
             remainingSeconds,
           ),
+          NoServerConnection(:final maxRetriesReached) when maxRetriesReached =>
+            _buildConnectionFailedIndicator(context),
           _ => const SizedBox.shrink(),
         };
       },
@@ -89,6 +91,58 @@ class _ServerConnectionIndicatorState extends State<ServerConnectionIndicator> {
             style: Theme.of(
               context,
             ).textTheme.bodySmall?.copyWith(color: Theme.of(context).colorScheme.onSurface),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildConnectionFailedIndicator(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.errorContainer,
+        borderRadius: BorderRadius.circular(8),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.1),
+            blurRadius: 4,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            Icons.error_outline,
+            size: 16,
+            color: Theme.of(context).colorScheme.onErrorContainer,
+          ),
+          const SizedBox(width: 8),
+          Text(
+            context.strings.server_connection_indicator_connection_failed,
+            style: Theme.of(
+              context,
+            ).textTheme.bodySmall?.copyWith(color: Theme.of(context).colorScheme.onErrorContainer),
+          ),
+          const SizedBox(width: 8),
+          SizedBox(
+            height: 28,
+            child: FilledButton.tonal(
+              onPressed: () {
+                widget.r.connectionManager.restartIfRestartNotOngoing();
+              },
+              style: FilledButton.styleFrom(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                minimumSize: const Size(0, 28),
+                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              ),
+              child: Text(
+                context.strings.generic_retry,
+                style: Theme.of(context).textTheme.labelSmall,
+              ),
+            ),
           ),
         ],
       ),

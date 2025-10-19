@@ -2409,6 +2409,12 @@ abstract class AppLocalizations {
   /// **'Accepted chat requests'**
   String get select_match_screen_title;
 
+  /// Server connection indicator text when connection failed after max retries
+  ///
+  /// In en, this message translates to:
+  /// **'Connection failed'**
+  String get server_connection_indicator_connection_failed;
+
   /// Server connection indicator text showing countdown
   ///
   /// In en, this message translates to:
