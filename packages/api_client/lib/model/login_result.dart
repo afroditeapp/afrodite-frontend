@@ -15,6 +15,7 @@ class LoginResult {
   LoginResult({
     this.aid,
     this.email,
+    this.errorSignInWithEmailUnverified = false,
     this.errorUnsupportedClient = false,
     this.tokens,
   });
@@ -30,6 +31,8 @@ class LoginResult {
   ///
   String? email;
 
+  bool errorSignInWithEmailUnverified;
+
   bool errorUnsupportedClient;
 
   /// If `None`, the client is unsupported.
@@ -39,6 +42,7 @@ class LoginResult {
   bool operator ==(Object other) => identical(this, other) || other is LoginResult &&
     other.aid == aid &&
     other.email == email &&
+    other.errorSignInWithEmailUnverified == errorSignInWithEmailUnverified &&
     other.errorUnsupportedClient == errorUnsupportedClient &&
     other.tokens == tokens;
 
@@ -47,11 +51,12 @@ class LoginResult {
     // ignore: unnecessary_parenthesis
     (aid == null ? 0 : aid!.hashCode) +
     (email == null ? 0 : email!.hashCode) +
+    (errorSignInWithEmailUnverified.hashCode) +
     (errorUnsupportedClient.hashCode) +
     (tokens == null ? 0 : tokens!.hashCode);
 
   @override
-  String toString() => 'LoginResult[aid=$aid, email=$email, errorUnsupportedClient=$errorUnsupportedClient, tokens=$tokens]';
+  String toString() => 'LoginResult[aid=$aid, email=$email, errorSignInWithEmailUnverified=$errorSignInWithEmailUnverified, errorUnsupportedClient=$errorUnsupportedClient, tokens=$tokens]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -65,6 +70,7 @@ class LoginResult {
     } else {
       json[r'email'] = null;
     }
+      json[r'error_sign_in_with_email_unverified'] = this.errorSignInWithEmailUnverified;
       json[r'error_unsupported_client'] = this.errorUnsupportedClient;
     if (this.tokens != null) {
       json[r'tokens'] = this.tokens;
@@ -95,6 +101,7 @@ class LoginResult {
       return LoginResult(
         aid: AccountId.fromJson(json[r'aid']),
         email: mapValueOfType<String>(json, r'email'),
+        errorSignInWithEmailUnverified: mapValueOfType<bool>(json, r'error_sign_in_with_email_unverified') ?? false,
         errorUnsupportedClient: mapValueOfType<bool>(json, r'error_unsupported_client') ?? false,
         tokens: AuthPair.fromJson(json[r'tokens']),
       );

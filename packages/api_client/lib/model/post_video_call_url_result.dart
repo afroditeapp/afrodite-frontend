@@ -10,16 +10,16 @@
 
 part of openapi.api;
 
-class GetVideoCallUrlsResult {
-  /// Returns a new [GetVideoCallUrlsResult] instance.
-  GetVideoCallUrlsResult({
+class PostVideoCallUrlResult {
+  /// Returns a new [PostVideoCallUrlResult] instance.
+  PostVideoCallUrlResult({
     this.jitsiMeet,
   });
 
-  JitsiMeetUrls? jitsiMeet;
+  JitsiMeetUrl? jitsiMeet;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is GetVideoCallUrlsResult &&
+  bool operator ==(Object other) => identical(this, other) || other is PostVideoCallUrlResult &&
     other.jitsiMeet == jitsiMeet;
 
   @override
@@ -28,7 +28,7 @@ class GetVideoCallUrlsResult {
     (jitsiMeet == null ? 0 : jitsiMeet!.hashCode);
 
   @override
-  String toString() => 'GetVideoCallUrlsResult[jitsiMeet=$jitsiMeet]';
+  String toString() => 'PostVideoCallUrlResult[jitsiMeet=$jitsiMeet]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -40,10 +40,10 @@ class GetVideoCallUrlsResult {
     return json;
   }
 
-  /// Returns a new [GetVideoCallUrlsResult] instance and imports its values from
+  /// Returns a new [PostVideoCallUrlResult] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static GetVideoCallUrlsResult? fromJson(dynamic value) {
+  static PostVideoCallUrlResult? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -52,24 +52,24 @@ class GetVideoCallUrlsResult {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "GetVideoCallUrlsResult[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "GetVideoCallUrlsResult[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "PostVideoCallUrlResult[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "PostVideoCallUrlResult[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return GetVideoCallUrlsResult(
-        jitsiMeet: JitsiMeetUrls.fromJson(json[r'jitsi_meet']),
+      return PostVideoCallUrlResult(
+        jitsiMeet: JitsiMeetUrl.fromJson(json[r'jitsi_meet']),
       );
     }
     return null;
   }
 
-  static List<GetVideoCallUrlsResult> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <GetVideoCallUrlsResult>[];
+  static List<PostVideoCallUrlResult> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <PostVideoCallUrlResult>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = GetVideoCallUrlsResult.fromJson(row);
+        final value = PostVideoCallUrlResult.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -78,12 +78,12 @@ class GetVideoCallUrlsResult {
     return result.toList(growable: growable);
   }
 
-  static Map<String, GetVideoCallUrlsResult> mapFromJson(dynamic json) {
-    final map = <String, GetVideoCallUrlsResult>{};
+  static Map<String, PostVideoCallUrlResult> mapFromJson(dynamic json) {
+    final map = <String, PostVideoCallUrlResult>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = GetVideoCallUrlsResult.fromJson(entry.value);
+        final value = PostVideoCallUrlResult.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -92,14 +92,14 @@ class GetVideoCallUrlsResult {
     return map;
   }
 
-  // maps a json object with a list of GetVideoCallUrlsResult-objects as value to a dart map
-  static Map<String, List<GetVideoCallUrlsResult>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<GetVideoCallUrlsResult>>{};
+  // maps a json object with a list of PostVideoCallUrlResult-objects as value to a dart map
+  static Map<String, List<PostVideoCallUrlResult>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<PostVideoCallUrlResult>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = GetVideoCallUrlsResult.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = PostVideoCallUrlResult.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;

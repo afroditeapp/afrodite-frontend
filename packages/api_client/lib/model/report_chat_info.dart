@@ -14,13 +14,17 @@ class ReportChatInfo {
   /// Returns a new [ReportChatInfo] instance.
   ReportChatInfo({
     this.creatorBlockedTarget = false,
+    this.creatorCreatedVideoCallUrl = false,
     this.creatorSentMessagesCount = 0,
     required this.state,
     this.targetBlockedCreator = false,
+    this.targetCreatedVideoCallUrl = false,
     this.targetSentMessagesCount = 0,
   });
 
   bool creatorBlockedTarget;
+
+  bool creatorCreatedVideoCallUrl;
 
   int creatorSentMessagesCount;
 
@@ -28,34 +32,42 @@ class ReportChatInfo {
 
   bool targetBlockedCreator;
 
+  bool targetCreatedVideoCallUrl;
+
   int targetSentMessagesCount;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is ReportChatInfo &&
     other.creatorBlockedTarget == creatorBlockedTarget &&
+    other.creatorCreatedVideoCallUrl == creatorCreatedVideoCallUrl &&
     other.creatorSentMessagesCount == creatorSentMessagesCount &&
     other.state == state &&
     other.targetBlockedCreator == targetBlockedCreator &&
+    other.targetCreatedVideoCallUrl == targetCreatedVideoCallUrl &&
     other.targetSentMessagesCount == targetSentMessagesCount;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (creatorBlockedTarget.hashCode) +
+    (creatorCreatedVideoCallUrl.hashCode) +
     (creatorSentMessagesCount.hashCode) +
     (state.hashCode) +
     (targetBlockedCreator.hashCode) +
+    (targetCreatedVideoCallUrl.hashCode) +
     (targetSentMessagesCount.hashCode);
 
   @override
-  String toString() => 'ReportChatInfo[creatorBlockedTarget=$creatorBlockedTarget, creatorSentMessagesCount=$creatorSentMessagesCount, state=$state, targetBlockedCreator=$targetBlockedCreator, targetSentMessagesCount=$targetSentMessagesCount]';
+  String toString() => 'ReportChatInfo[creatorBlockedTarget=$creatorBlockedTarget, creatorCreatedVideoCallUrl=$creatorCreatedVideoCallUrl, creatorSentMessagesCount=$creatorSentMessagesCount, state=$state, targetBlockedCreator=$targetBlockedCreator, targetCreatedVideoCallUrl=$targetCreatedVideoCallUrl, targetSentMessagesCount=$targetSentMessagesCount]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'creator_blocked_target'] = this.creatorBlockedTarget;
+      json[r'creator_created_video_call_url'] = this.creatorCreatedVideoCallUrl;
       json[r'creator_sent_messages_count'] = this.creatorSentMessagesCount;
       json[r'state'] = this.state;
       json[r'target_blocked_creator'] = this.targetBlockedCreator;
+      json[r'target_created_video_call_url'] = this.targetCreatedVideoCallUrl;
       json[r'target_sent_messages_count'] = this.targetSentMessagesCount;
     return json;
   }
@@ -80,9 +92,11 @@ class ReportChatInfo {
 
       return ReportChatInfo(
         creatorBlockedTarget: mapValueOfType<bool>(json, r'creator_blocked_target') ?? false,
+        creatorCreatedVideoCallUrl: mapValueOfType<bool>(json, r'creator_created_video_call_url') ?? false,
         creatorSentMessagesCount: mapValueOfType<int>(json, r'creator_sent_messages_count') ?? 0,
         state: ReportChatInfoInteractionState.fromJson(json[r'state'])!,
         targetBlockedCreator: mapValueOfType<bool>(json, r'target_blocked_creator') ?? false,
+        targetCreatedVideoCallUrl: mapValueOfType<bool>(json, r'target_created_video_call_url') ?? false,
         targetSentMessagesCount: mapValueOfType<int>(json, r'target_sent_messages_count') ?? 0,
       );
     }

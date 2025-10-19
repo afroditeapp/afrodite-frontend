@@ -422,8 +422,6 @@ class ApiClient {
           return GetReportList.fromJson(value);
         case 'GetSentMessage':
           return GetSentMessage.fromJson(value);
-        case 'GetVideoCallUrlsResult':
-          return GetVideoCallUrlsResult.fromJson(value);
         case 'GroupValues':
           return GroupValues.fromJson(value);
         case 'InitialProfileAge':
@@ -436,8 +434,8 @@ class ApiClient {
           return IpCountryStatisticsTypeTypeTransformer().decode(value);
         case 'IpCountryStatisticsValue':
           return IpCountryStatisticsValue.fromJson(value);
-        case 'JitsiMeetUrls':
-          return JitsiMeetUrls.fromJson(value);
+        case 'JitsiMeetUrl':
+          return JitsiMeetUrl.fromJson(value);
         case 'Language':
           return Language.fromJson(value);
         case 'LastSeenTimeFilter':
@@ -552,6 +550,8 @@ class ApiClient {
           return PostModerateProfileString.fromJson(value);
         case 'PostStartDataExport':
           return PostStartDataExport.fromJson(value);
+        case 'PostVideoCallUrlResult':
+          return PostVideoCallUrlResult.fromJson(value);
         case 'ProcessReport':
           return ProcessReport.fromJson(value);
         case 'Profile':

@@ -142,14 +142,13 @@ lib/model/get_profile_string_state.dart
 lib/model/get_push_notification_info.dart
 lib/model/get_report_list.dart
 lib/model/get_sent_message.dart
-lib/model/get_video_call_urls_result.dart
 lib/model/group_values.dart
 lib/model/initial_profile_age.dart
 lib/model/ip_address_info.dart
 lib/model/ip_country_statistics.dart
 lib/model/ip_country_statistics_type.dart
 lib/model/ip_country_statistics_value.dart
-lib/model/jitsi_meet_urls.dart
+lib/model/jitsi_meet_url.dart
 lib/model/language.dart
 lib/model/last_seen_time_filter.dart
 lib/model/latest_birthdate.dart
@@ -207,6 +206,7 @@ lib/model/post_media_content_face_detected_value.dart
 lib/model/post_moderate_media_content.dart
 lib/model/post_moderate_profile_string.dart
 lib/model/post_start_data_export.dart
+lib/model/post_video_call_url_result.dart
 lib/model/process_report.dart
 lib/model/profile.dart
 lib/model/profile_age_counts.dart

@@ -501,64 +501,6 @@ class ChatApi {
     return null;
   }
 
-  /// Create Jitsi Meet video call URLs to a meeting with an user.
-  ///
-  /// The user must be a match.  If result value is empty then video calling is disabled.
-  ///
-  /// Note: This method returns the HTTP [Response].
-  ///
-  /// Parameters:
-  ///
-  /// * [String] aid (required):
-  Future<Response> getVideoCallUrlsWithHttpInfo(String aid,) async {
-    // ignore: prefer_const_declarations
-    final path = r'/chat_api/get_video_call_urls';
-
-    // ignore: prefer_final_locals
-    Object? postBody;
-
-    final queryParams = <QueryParam>[];
-    final headerParams = <String, String>{};
-    final formParams = <String, String>{};
-
-      queryParams.addAll(_queryParams('', 'aid', aid));
-
-    const contentTypes = <String>[];
-
-
-    return apiClient.invokeAPI(
-      path,
-      'GET',
-      queryParams,
-      postBody,
-      headerParams,
-      formParams,
-      contentTypes.isEmpty ? null : contentTypes.first,
-    );
-  }
-
-  /// Create Jitsi Meet video call URLs to a meeting with an user.
-  ///
-  /// The user must be a match.  If result value is empty then video calling is disabled.
-  ///
-  /// Parameters:
-  ///
-  /// * [String] aid (required):
-  Future<GetVideoCallUrlsResult?> getVideoCallUrls(String aid,) async {
-    final response = await getVideoCallUrlsWithHttpInfo(aid,);
-    if (response.statusCode >= HttpStatus.badRequest) {
-      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
-    }
-    // When a remote server returns no body with a status of 204, we shall not decode it.
-    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
-    // FormatException when trying to decode an empty string.
-    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetVideoCallUrlsResult',) as GetVideoCallUrlsResult;
-    
-    }
-    return null;
-  }
-
   /// Add new public key.
   ///
   /// Returns next public key ID number.  # Limits  Server can store limited amount of public keys. The limit is configurable from server config file and also user specific config exists. Max value between the two previous values is used to check is adding the key allowed.  Max key size is 8192 bytes.  The key must be OpenPGP public key with one signed user which ID is [model::AccountId] string.  
@@ -827,6 +769,64 @@ class ChatApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'UpdateReportResult',) as UpdateReportResult;
+    
+    }
+    return null;
+  }
+
+  /// Create video call URL to a meeting with an user.
+  ///
+  /// The user must be a match.  If result value is empty then video calling is disabled.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [String] aid (required):
+  Future<Response> postCreateVideoCallUrlWithHttpInfo(String aid,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/chat_api/post_create_video_call_url';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+      queryParams.addAll(_queryParams('', 'aid', aid));
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Create video call URL to a meeting with an user.
+  ///
+  /// The user must be a match.  If result value is empty then video calling is disabled.
+  ///
+  /// Parameters:
+  ///
+  /// * [String] aid (required):
+  Future<PostVideoCallUrlResult?> postCreateVideoCallUrl(String aid,) async {
+    final response = await postCreateVideoCallUrlWithHttpInfo(aid,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'PostVideoCallUrlResult',) as PostVideoCallUrlResult;
     
     }
     return null;

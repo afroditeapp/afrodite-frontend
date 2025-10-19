@@ -10,9 +10,9 @@
 
 part of openapi.api;
 
-class JitsiMeetUrls {
-  /// Returns a new [JitsiMeetUrls] instance.
-  JitsiMeetUrls({
+class JitsiMeetUrl {
+  /// Returns a new [JitsiMeetUrl] instance.
+  JitsiMeetUrl({
     this.customUrl,
     required this.url,
   });
@@ -24,7 +24,7 @@ class JitsiMeetUrls {
   String url;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is JitsiMeetUrls &&
+  bool operator ==(Object other) => identical(this, other) || other is JitsiMeetUrl &&
     other.customUrl == customUrl &&
     other.url == url;
 
@@ -35,7 +35,7 @@ class JitsiMeetUrls {
     (url.hashCode);
 
   @override
-  String toString() => 'JitsiMeetUrls[customUrl=$customUrl, url=$url]';
+  String toString() => 'JitsiMeetUrl[customUrl=$customUrl, url=$url]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -48,10 +48,10 @@ class JitsiMeetUrls {
     return json;
   }
 
-  /// Returns a new [JitsiMeetUrls] instance and imports its values from
+  /// Returns a new [JitsiMeetUrl] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static JitsiMeetUrls? fromJson(dynamic value) {
+  static JitsiMeetUrl? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -60,13 +60,13 @@ class JitsiMeetUrls {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "JitsiMeetUrls[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "JitsiMeetUrls[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "JitsiMeetUrl[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "JitsiMeetUrl[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return JitsiMeetUrls(
+      return JitsiMeetUrl(
         customUrl: mapValueOfType<String>(json, r'custom_url'),
         url: mapValueOfType<String>(json, r'url')!,
       );
@@ -74,11 +74,11 @@ class JitsiMeetUrls {
     return null;
   }
 
-  static List<JitsiMeetUrls> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <JitsiMeetUrls>[];
+  static List<JitsiMeetUrl> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <JitsiMeetUrl>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = JitsiMeetUrls.fromJson(row);
+        final value = JitsiMeetUrl.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -87,12 +87,12 @@ class JitsiMeetUrls {
     return result.toList(growable: growable);
   }
 
-  static Map<String, JitsiMeetUrls> mapFromJson(dynamic json) {
-    final map = <String, JitsiMeetUrls>{};
+  static Map<String, JitsiMeetUrl> mapFromJson(dynamic json) {
+    final map = <String, JitsiMeetUrl>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = JitsiMeetUrls.fromJson(entry.value);
+        final value = JitsiMeetUrl.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -101,14 +101,14 @@ class JitsiMeetUrls {
     return map;
   }
 
-  // maps a json object with a list of JitsiMeetUrls-objects as value to a dart map
-  static Map<String, List<JitsiMeetUrls>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<JitsiMeetUrls>>{};
+  // maps a json object with a list of JitsiMeetUrl-objects as value to a dart map
+  static Map<String, List<JitsiMeetUrl>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<JitsiMeetUrl>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = JitsiMeetUrls.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = JitsiMeetUrl.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;

@@ -420,19 +420,19 @@ ${screenContext.strings.generic_state}: $stateText""";
 void _joinVideoCall(BuildContext context, AccountId callee) async {
   final api = context.read<RepositoryInstances>().api;
 
-  final videoCallingUrls = await api.chat((api) => api.getVideoCallUrls(callee.aid)).ok();
+  final videoCallingUrl = await api.chat((api) => api.postCreateVideoCallUrl(callee.aid)).ok();
 
   if (!context.mounted) {
     return;
   }
 
-  if (videoCallingUrls == null) {
+  if (videoCallingUrl == null) {
     showSnackBar(context.strings.generic_error_occurred);
     return;
   }
 
-  final jitsiMeetUrls = videoCallingUrls.jitsiMeet;
-  if (jitsiMeetUrls == null) {
+  final jitsiMeetUrl = videoCallingUrl.jitsiMeet;
+  if (jitsiMeetUrl == null) {
     showSnackBar(context.strings.generic_this_feature_is_disabled);
     return;
   }
@@ -445,14 +445,14 @@ void _joinVideoCall(BuildContext context, AccountId callee) async {
       yesNoActions: true,
     );
     if (r == true && context.mounted) {
-      await _openJitsiMeetToWebBrowser(context, jitsiMeetUrls);
+      await _openJitsiMeetToWebBrowser(context, jitsiMeetUrl);
     }
   } else {
-    await _openJitsiMeetOnAndroidOrIos(context, jitsiMeetUrls);
+    await _openJitsiMeetOnAndroidOrIos(context, jitsiMeetUrl);
   }
 }
 
-Future<void> _openJitsiMeetOnAndroidOrIos(BuildContext context, JitsiMeetUrls jitsiMeetUrls) async {
+Future<void> _openJitsiMeetOnAndroidOrIos(BuildContext context, JitsiMeetUrl jitsiMeetUrl) async {
   if (!(Platform.isAndroid || Platform.isIOS)) {
     showSnackBar(context.strings.generic_error);
     return;
@@ -460,7 +460,7 @@ Future<void> _openJitsiMeetOnAndroidOrIos(BuildContext context, JitsiMeetUrls ji
 
   final Uri url;
   try {
-    url = Uri.parse(jitsiMeetUrls.url);
+    url = Uri.parse(jitsiMeetUrl.url);
   } catch (_) {
     showSnackBar(context.strings.generic_error_occurred);
     return;
@@ -499,16 +499,16 @@ Future<void> _openJitsiMeetOnAndroidOrIos(BuildContext context, JitsiMeetUrls ji
     if (!context.mounted) {
       return;
     }
-    await _openJitsiMeetToWebBrowser(context, jitsiMeetUrls);
+    await _openJitsiMeetToWebBrowser(context, jitsiMeetUrl);
   }
 }
 
-Future<void> _openJitsiMeetToWebBrowser(BuildContext context, JitsiMeetUrls jitsiMeetUrls) async {
-  final customUrl = jitsiMeetUrls.customUrl;
+Future<void> _openJitsiMeetToWebBrowser(BuildContext context, JitsiMeetUrl jitsiMeetUrl) async {
+  final customUrl = jitsiMeetUrl.customUrl;
   if (customUrl != null) {
     await launchUrlStringAndShowError(context, customUrl);
   } else {
-    await launchUrlStringAndShowError(context, jitsiMeetUrls.url);
+    await launchUrlStringAndShowError(context, jitsiMeetUrl.url);
   }
 }
 

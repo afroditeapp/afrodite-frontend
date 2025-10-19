@@ -119,13 +119,13 @@ Class | Method | HTTP request | Description
 *ChatApi* | [**getPublicKey**](doc//ChatApi.md#getpublickey) | **GET** /chat_api/public_key/{aid} | Get current public key of some account
 *ChatApi* | [**getSentBlocks**](doc//ChatApi.md#getsentblocks) | **GET** /chat_api/sent_blocks | Get list of sent blocks
 *ChatApi* | [**getSentMessageIds**](doc//ChatApi.md#getsentmessageids) | **GET** /chat_api/sent_message_ids | 
-*ChatApi* | [**getVideoCallUrls**](doc//ChatApi.md#getvideocallurls) | **GET** /chat_api/get_video_call_urls | Create Jitsi Meet video call URLs to a meeting with an user.
 *ChatApi* | [**postAddPublicKey**](doc//ChatApi.md#postaddpublickey) | **POST** /chat_api/add_public_key | Add new public key.
 *ChatApi* | [**postAddReceiverAcknowledgement**](doc//ChatApi.md#postaddreceiveracknowledgement) | **POST** /chat_api/add_receiver_acknowledgement | 
 *ChatApi* | [**postAddSenderAcknowledgement**](doc//ChatApi.md#postaddsenderacknowledgement) | **POST** /chat_api/add_sender_acknowledgement | 
 *ChatApi* | [**postBlockProfile**](doc//ChatApi.md#postblockprofile) | **POST** /chat_api/block_profile | Block profile
 *ChatApi* | [**postChatAppNotificationSettings**](doc//ChatApi.md#postchatappnotificationsettings) | **POST** /chat_api/post_chat_app_notification_settings | 
 *ChatApi* | [**postChatMessageReport**](doc//ChatApi.md#postchatmessagereport) | **POST** /chat_api/chat_message_report | Report chat message.
+*ChatApi* | [**postCreateVideoCallUrl**](doc//ChatApi.md#postcreatevideocallurl) | **POST** /chat_api/post_create_video_call_url | Create video call URL to a meeting with an user.
 *ChatApi* | [**postGetMatchesIteratorPage**](doc//ChatApi.md#postgetmatchesiteratorpage) | **POST** /chat_api/matches | Get requested page of matches iterator page. If the page is empty there is no more matches available.
 *ChatApi* | [**postGetNewReceivedLikesCount**](doc//ChatApi.md#postgetnewreceivedlikescount) | **POST** /chat_api/new_received_likes_count | 
 *ChatApi* | [**postGetReceivedLikesPage**](doc//ChatApi.md#postgetreceivedlikespage) | **POST** /chat_api/received_likes | Get next page of received likes. If the page is empty there is no more received likes available.
@@ -361,14 +361,13 @@ Class | Method | HTTP request | Description
  - [GetPushNotificationInfo](doc//GetPushNotificationInfo.md)
  - [GetReportList](doc//GetReportList.md)
  - [GetSentMessage](doc//GetSentMessage.md)
- - [GetVideoCallUrlsResult](doc//GetVideoCallUrlsResult.md)
  - [GroupValues](doc//GroupValues.md)
  - [InitialProfileAge](doc//InitialProfileAge.md)
  - [IpAddressInfo](doc//IpAddressInfo.md)
  - [IpCountryStatistics](doc//IpCountryStatistics.md)
  - [IpCountryStatisticsType](doc//IpCountryStatisticsType.md)
  - [IpCountryStatisticsValue](doc//IpCountryStatisticsValue.md)
- - [JitsiMeetUrls](doc//JitsiMeetUrls.md)
+ - [JitsiMeetUrl](doc//JitsiMeetUrl.md)
  - [Language](doc//Language.md)
  - [LastSeenTimeFilter](doc//LastSeenTimeFilter.md)
  - [LatestBirthdate](doc//LatestBirthdate.md)
@@ -426,6 +425,7 @@ Class | Method | HTTP request | Description
  - [PostModerateMediaContent](doc//PostModerateMediaContent.md)
  - [PostModerateProfileString](doc//PostModerateProfileString.md)
  - [PostStartDataExport](doc//PostStartDataExport.md)
+ - [PostVideoCallUrlResult](doc//PostVideoCallUrlResult.md)
  - [ProcessReport](doc//ProcessReport.md)
  - [Profile](doc//Profile.md)
  - [ProfileAgeCounts](doc//ProfileAgeCounts.md)
