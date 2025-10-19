@@ -2409,6 +2409,12 @@ abstract class AppLocalizations {
   /// **'Accepted chat requests'**
   String get select_match_screen_title;
 
+  /// Server connection indicator text showing countdown
+  ///
+  /// In en, this message translates to:
+  /// **'Reconnecting in {p0}s'**
+  String server_connection_indicator_reconnecting_in_seconds(String p0);
+
   /// Title for data settings category
   ///
   /// In en, this message translates to:

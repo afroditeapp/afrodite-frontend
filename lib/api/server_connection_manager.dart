@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:app/data/login_repository.dart';
 import 'package:app/localizations.dart';
+import 'package:app/logic/app/navigator_state.dart';
+import 'package:app/ui/normal.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:app/api/api_provider.dart';
@@ -286,7 +288,7 @@ class ServerConnectionManager extends ApiManager
     }
     switch (error) {
       case ServerConnectionError.connectionFailure:
-        if (!_disableSnackBars) {
+        if (!_disableSnackBars && !_isNormalStatePageVisible()) {
           showSnackBar(R.strings.snackbar_reconnecting_in_5_seconds);
         }
         // TODO(prod): check that internet connectivity exists?
@@ -320,6 +322,16 @@ class ServerConnectionManager extends ApiManager
 
   void disableSnackBars() {
     _disableSnackBars = true;
+  }
+
+  /// Check if NormalStatePage is currently visible
+  bool _isNormalStatePageVisible() {
+    final navigationState = NavigationStateBlocInstance.getInstance().navigationState;
+    final pages = navigationState.pages;
+    if (pages.isEmpty) {
+      return false;
+    }
+    return pages.last is NormalStatePage;
   }
 
   /// Returns true if connected, false if not connected within the timeout.

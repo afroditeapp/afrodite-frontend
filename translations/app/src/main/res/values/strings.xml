@@ -95,6 +95,9 @@
     <string name="snackbar_reconnecting_in_5_seconds" description="Snackbar info text that reconnecting to server happens in 5 seconds">Connection error - reconnecting in 5 seconds</string>
     <string name="snackbar_api_usage_limit_reached" description="Snackbar info text that API usage limit is reached">API usage limit is reached. Try again tomorrow.</string>
 
+    <!-- Server connection indicator -->
+    <string name="server_connection_indicator_reconnecting_in_seconds" description="Server connection indicator text showing countdown">Reconnecting in %ss</string>
+
     <!-- Moderation states -->
     <string name="moderation_state" description="Beginning of moderation state text">Moderation state: %s</string>
     <string name="moderation_rejected_category" description="Beginning of moderation rejected reason category text">Rejected reason category: %s</string>

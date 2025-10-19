@@ -1691,6 +1691,15 @@
   "@select_match_screen_title": {
     "description": "Title for select match screen"
   },
+  "server_connection_indicator_reconnecting_in_seconds": "Reconnecting in {p0}s",
+  "@server_connection_indicator_reconnecting_in_seconds": {
+    "description": "Server connection indicator text showing countdown",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
   "settings_screen_data_category": "Data",
   "@settings_screen_data_category": {
     "description": "Title for data settings category"
