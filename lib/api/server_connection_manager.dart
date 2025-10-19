@@ -18,13 +18,59 @@ import 'package:rxdart/rxdart.dart';
 
 final _log = Logger("ServerConnectionManager");
 
+/// Manages reconnection timing with countdown updates
+class ReconnectionTimer {
+  Timer? _timer;
+  final void Function(int remainingSeconds) onTick;
+  final void Function() onComplete;
+  int _remainingSeconds = 0;
+
+  ReconnectionTimer({required this.onTick, required this.onComplete});
+
+  void start(int durationSeconds) {
+    cancel();
+    _remainingSeconds = durationSeconds;
+    onTick(_remainingSeconds);
+
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      _remainingSeconds--;
+      if (_remainingSeconds > 0) {
+        onTick(_remainingSeconds);
+      } else {
+        cancel();
+        onComplete();
+      }
+    });
+  }
+
+  void cancel() {
+    _timer?.cancel();
+    _timer = null;
+  }
+
+  bool get isActive => _timer?.isActive ?? false;
+}
+
 sealed class ServerConnectionManagerState {}
 
 /// No valid refresh token available. Automatic logout should happen.
 class WaitingRefreshToken extends ServerConnectionManagerState {}
 
 /// Reconnecting will happen in few seconds.
-class ReconnectWaitTime extends ServerConnectionManagerState {}
+class ReconnectWaitTime extends ServerConnectionManagerState {
+  final int remainingSeconds;
+  ReconnectWaitTime(this.remainingSeconds);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ReconnectWaitTime &&
+          runtimeType == other.runtimeType &&
+          remainingSeconds == other.remainingSeconds;
+
+  @override
+  int get hashCode => remainingSeconds.hashCode;
+}
 
 /// No connection to server.
 class NoServerConnection extends ServerConnectionManagerState {}
@@ -108,8 +154,7 @@ class ServerConnectionManager extends ApiManager
   @override
   ServerConnectionInterface get _connection => this;
 
-  bool _reconnectInProgress = false;
-  Timer? _reconnectTimer;
+  late final ReconnectionTimer _reconnectionTimer;
 
   bool _disableSnackBars = false;
   bool _restartOngoing = false;
@@ -117,6 +162,14 @@ class ServerConnectionManager extends ApiManager
   @override
   Future<void> init() async {
     await _apiProvider.init();
+    _reconnectionTimer = ReconnectionTimer(
+      onTick: (remainingSeconds) {
+        _state.add(ReconnectWaitTime(remainingSeconds));
+      },
+      onComplete: () {
+        _cmds.add(ConnectIfNotConnected());
+      },
+    );
     _cmdsSubscription = _listenServerConnectionCmds();
   }
 
@@ -126,7 +179,7 @@ class ServerConnectionManager extends ApiManager
     await _serverConnection?.close();
     _serverConnection = null;
     await _serverConnectionEventsSubscription?.cancel();
-    _reconnectTimer?.cancel();
+    _reconnectionTimer.cancel();
     await _cmds.close();
     await _serverEvents.close();
     await _state.close();
@@ -165,7 +218,7 @@ class ServerConnectionManager extends ApiManager
   }
 
   Future<Result<(), ()>> _connect() async {
-    _reconnectTimer?.cancel();
+    _reconnectionTimer.cancel();
     _state.add(ConnectingToServer());
 
     final accessToken = await accountDb
@@ -209,11 +262,11 @@ class ServerConnectionManager extends ApiManager
             case Closed e:
               await _handleConnectionError(e.error, serverConnection);
             case Ready(:final token):
-              if (_reconnectInProgress) {
+              if (_reconnectionTimer.isActive) {
                 if (!_disableSnackBars) {
                   showSnackBar(R.strings.snackbar_connected);
                 }
-                _reconnectInProgress = false;
+                _reconnectionTimer.cancel();
               }
               _apiProvider.setAccessToken(token);
               _state.add(ConnectedToServer());
@@ -233,15 +286,11 @@ class ServerConnectionManager extends ApiManager
     }
     switch (error) {
       case ServerConnectionError.connectionFailure:
-        _state.add(ReconnectWaitTime());
         if (!_disableSnackBars) {
           showSnackBar(R.strings.snackbar_reconnecting_in_5_seconds);
         }
         // TODO(prod): check that internet connectivity exists?
-        _reconnectTimer = Timer(Duration(seconds: 5), () {
-          _cmds.add(ConnectIfNotConnected());
-        });
-        _reconnectInProgress = true;
+        _reconnectionTimer.start(5);
       case ServerConnectionError.invalidToken:
         _state.add(WaitingRefreshToken());
       case ServerConnectionError.unsupportedClientVersion:
