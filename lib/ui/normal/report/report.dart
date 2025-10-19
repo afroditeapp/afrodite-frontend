@@ -184,7 +184,8 @@ class _ReportScreenState extends State<ReportScreen> {
       );
     }
 
-    if (profileEntry != null && profileEntry.profileText.isNotEmpty) {
+    final profileText = profileEntry?.profileText;
+    if (profileEntry != null && profileText != null) {
       settings.add(
         reportListTile(context.strings.report_screen_profile_text_action, () async {
           final r = await showConfirmDialog(
@@ -200,7 +201,7 @@ class _ReportScreenState extends State<ReportScreen> {
                   (api) => api.postReportProfileText(
                     UpdateProfileTextReport(
                       target: profileEntry.accountId,
-                      profileText: profileEntry.profileText,
+                      profileText: profileText,
                     ),
                   ),
                 )

@@ -19,7 +19,7 @@ class ProfileEntry implements PublicContentProvider {
   final double primaryContentGridCropY;
   final String name;
   final bool nameAccepted;
-  final String profileText;
+  final String? profileText;
   final bool profileTextAccepted;
   final int age;
   final bool unlimitedLikes;
@@ -44,7 +44,7 @@ class ProfileEntry implements PublicContentProvider {
     required this.primaryContentGridCropY,
     required this.name,
     required this.nameAccepted,
-    required this.profileText,
+    this.profileText,
     required this.profileTextAccepted,
     required this.age,
     required this.unlimitedLikes,
@@ -69,9 +69,9 @@ class ProfileEntry implements PublicContentProvider {
 
   String profileTextOrFirstCharacterProfileText() {
     if (profileTextAccepted) {
-      return profileText;
+      return profileText ?? "";
     } else {
-      return hideOtherCharactersThanTheFirst(profileText);
+      return hideOtherCharactersThanTheFirst(profileText ?? "");
     }
   }
 

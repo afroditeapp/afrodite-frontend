@@ -147,7 +147,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       return;
     }
 
-    final profileText = s.profileText ?? "";
+    final editedProfileText = s.profileText?.trim() ?? "";
+    final String? newProfileText;
+    if (editedProfileText.isEmpty) {
+      newProfileText = null;
+    } else {
+      newProfileText = editedProfileText;
+    }
 
     final imgUpdateState = widget.profilePicturesBloc.state;
     final imgUpdate = imgUpdateState.toSetProfileContent();
@@ -168,7 +174,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         ProfileUpdate(
           age: age,
           name: name,
-          ptext: profileText,
+          ptext: newProfileText,
           attributes: s.attributeIdAndStateMap.values.toList(),
         ),
         imgUpdate,

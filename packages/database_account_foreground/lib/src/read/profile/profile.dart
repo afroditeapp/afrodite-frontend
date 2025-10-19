@@ -66,7 +66,6 @@ class DaoReadProfile extends DatabaseAccessor<AccountForegroundDatabase>
 
     if (profileName != null &&
         profileNameAccepted != null &&
-        profileText != null &&
         profileTextAccepted != null &&
         profileAge != null &&
         profileVersion != null &&

@@ -101,7 +101,7 @@ class InitialSetupUtils {
     await _api.accountAction((api) => api.postAccountData(AccountData(email: email)));
     await _api.accountAction((api) => api.postAccountSetup(SetAccountSetup(isAdult: true)));
 
-    final update = ProfileUpdate(age: 30, name: "X", ptext: "", attributes: []);
+    final update = ProfileUpdate(age: 30, name: "X", ptext: null, attributes: []);
     await _api.profileAction((api) => api.postProfile(update));
     final location = Location(latitude: 61, longitude: 24.5);
     await _api.profileAction((api) => api.putLocation(location));
@@ -149,7 +149,7 @@ class InitialSetupUtils {
       final update = ProfileUpdate(
         age: age,
         name: name,
-        ptext: "",
+        ptext: null,
         attributes: data.profileAttributes.answers,
       );
       final r = await _api.profileAction((api) => api.postProfile(update));

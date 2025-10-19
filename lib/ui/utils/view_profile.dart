@@ -39,7 +39,7 @@ class _ViewProfileEntryState extends State<ViewProfileEntry> {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        final showProfileText = widget.profile.profileText.trim().isNotEmpty;
+        final profileText = widget.profile.profileText;
         return SingleChildScrollView(
           child: Column(
             children: [
@@ -56,8 +56,8 @@ class _ViewProfileEntryState extends State<ViewProfileEntry> {
               if (!widget.isMyProfile) const Padding(padding: EdgeInsets.only(top: 8)),
               if (!widget.isMyProfile) lastSeenTime(context),
               const Padding(padding: EdgeInsets.only(top: 16)),
-              if (showProfileText) profileText(context),
-              if (showProfileText) const Padding(padding: EdgeInsets.only(top: 16)),
+              if (profileText != null) profileTextWidget(context, profileText),
+              if (profileText != null) const Padding(padding: EdgeInsets.only(top: 16)),
               attributes(),
               const Padding(padding: EdgeInsets.only(top: FLOATING_ACTION_BUTTON_EMPTY_AREA)),
             ],
@@ -155,11 +155,7 @@ class _ViewProfileEntryState extends State<ViewProfileEntry> {
     );
   }
 
-  Widget profileText(BuildContext context) {
-    if (widget.profile.profileText.trim().isEmpty) {
-      return const SizedBox.shrink();
-    }
-
+  Widget profileTextWidget(BuildContext context, String profileText) {
     final double rightPadding;
     if (widget.profile.profileTextAccepted) {
       rightPadding = COMMON_SCREEN_EDGE_PADDING;
