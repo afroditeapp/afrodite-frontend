@@ -170,17 +170,17 @@ class LoginRepository extends AppSingleton {
           handleLoginRequired();
         case RepositoriesExists():
           switch (serverConnectionState) {
-            case ServerConnectionStateLoading():
+            case ServerConnectionManagerStateLoading():
               _loginState.add(LsLoggedIn(repositories.repositories));
-            case ServerConnectionStateExists():
+            case ServerConnectionManagerStateExists():
               switch (serverConnectionState.state) {
-                case ServerConnectionState.waitingRefreshToken ||
-                    ServerConnectionState.connecting ||
-                    ServerConnectionState.reconnectWaitTime ||
-                    ServerConnectionState.noConnection ||
-                    ServerConnectionState.connected:
+                case WaitingRefreshToken() ||
+                    ConnectingToServer() ||
+                    ReconnectWaitTime() ||
+                    NoServerConnection() ||
+                    ConnectedToServer():
                   _loginState.add(LsLoggedIn(repositories.repositories));
-                case ServerConnectionState.unsupportedClientVersion:
+                case UnsupportedClientVersion():
                   _loginState.add(
                     LsLoggedIn(repositories.repositories, unsupportedClientVersion: true),
                   );
@@ -518,10 +518,12 @@ class RepositoryStateStreams {
   StreamSubscription<bool>? _initialSetupSkippedSubscription;
   Stream<InitialSetupSkippedStreamValue> get initialSetupSkipped => _initialSetupSkipped;
 
-  final BehaviorSubject<ServerConnectionStateStreamValue> _serverConnectionManagerStateEvents =
-      BehaviorSubject.seeded(ServerConnectionStateLoading());
-  StreamSubscription<ServerConnectionState>? _serverConnectionManagerStateEventsSubscription;
-  Stream<ServerConnectionStateStreamValue> get serverConnectionState =>
+  final BehaviorSubject<ServerConnectionManagerStateStreamValue>
+  _serverConnectionManagerStateEvents = BehaviorSubject.seeded(
+    ServerConnectionManagerStateLoading(),
+  );
+  StreamSubscription<ServerConnectionManagerState>? _serverConnectionManagerStateEventsSubscription;
+  Stream<ServerConnectionManagerStateStreamValue> get serverConnectionManagerState =>
       _serverConnectionManagerStateEvents;
 
   Future<void> _subscribe(
@@ -548,7 +550,7 @@ class RepositoryStateStreams {
 
     await _serverConnectionManagerStateEventsSubscription?.cancel();
     _serverConnectionManagerStateEventsSubscription = connectionManager.state.listen((v) {
-      _serverConnectionManagerStateEvents.add(ServerConnectionStateExists(v));
+      _serverConnectionManagerStateEvents.add(ServerConnectionManagerStateExists(v));
     });
   }
 
@@ -560,7 +562,7 @@ class RepositoryStateStreams {
     _initialSetupSkipped.add(InitialSetupSkippedLoading());
 
     await _serverConnectionManagerStateEventsSubscription?.cancel();
-    _serverConnectionManagerStateEvents.add(ServerConnectionStateLoading());
+    _serverConnectionManagerStateEvents.add(ServerConnectionManagerStateLoading());
   }
 }
 
@@ -609,18 +611,18 @@ class InitialSetupSkippedExists extends InitialSetupSkippedStreamValue {
   }
 }
 
-sealed class ServerConnectionStateStreamValue {}
+sealed class ServerConnectionManagerStateStreamValue {}
 
-class ServerConnectionStateLoading extends ServerConnectionStateStreamValue {
+class ServerConnectionManagerStateLoading extends ServerConnectionManagerStateStreamValue {
   @override
   String toString() {
-    return "ServerConnectionStateLoading";
+    return "ServerConnectionManagerStateLoading";
   }
 }
 
-class ServerConnectionStateExists extends ServerConnectionStateStreamValue {
-  final ServerConnectionState state;
-  ServerConnectionStateExists(this.state);
+class ServerConnectionManagerStateExists extends ServerConnectionManagerStateStreamValue {
+  final ServerConnectionManagerState state;
+  ServerConnectionManagerStateExists(this.state);
 
   @override
   String toString() {

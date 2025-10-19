@@ -36,7 +36,7 @@ class CommonRepository extends DataRepositoryWithLifecycle {
   DateTime? _backgroundedAt;
   Timer? _disconnectTimer;
 
-  StreamSubscription<ServerConnectionState>? _automaticLogoutSubscription;
+  StreamSubscription<ServerConnectionManagerState>? _automaticLogoutSubscription;
 
   @override
   Future<void> init() async {
@@ -64,7 +64,7 @@ class CommonRepository extends DataRepositoryWithLifecycle {
             }
             _backgroundedAt = null;
 
-            if (connectionManager.currentState == ServerConnectionState.noConnection) {
+            if (connectionManager.currentState is NoServerConnection) {
               await connectionManager.restartIfRestartNotOngoing();
             }
           } else {
@@ -80,7 +80,7 @@ class CommonRepository extends DataRepositoryWithLifecycle {
         .listen(null);
 
     _automaticLogoutSubscription = connectionManager.state.listen((v) {
-      if (v == ServerConnectionState.waitingRefreshToken) {
+      if (v is WaitingRefreshToken) {
         // Tokens are invalid. Logout is required.
         _log.info("Automatic logout");
         LoginRepository.getInstance().logout(currentUser);

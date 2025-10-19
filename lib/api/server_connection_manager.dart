@@ -18,25 +18,25 @@ import 'package:rxdart/rxdart.dart';
 
 final _log = Logger("ServerConnectionManager");
 
-enum ServerConnectionState {
-  /// No valid refresh token available. Automatic logout should happen.
-  waitingRefreshToken,
+sealed class ServerConnectionManagerState {}
 
-  /// Reconnecting will happen in few seconds.
-  reconnectWaitTime,
+/// No valid refresh token available. Automatic logout should happen.
+class WaitingRefreshToken extends ServerConnectionManagerState {}
 
-  /// No connection to server.
-  noConnection,
+/// Reconnecting will happen in few seconds.
+class ReconnectWaitTime extends ServerConnectionManagerState {}
 
-  /// Making connections to servers.
-  connecting,
+/// No connection to server.
+class NoServerConnection extends ServerConnectionManagerState {}
 
-  /// Connection to servers established.
-  connected,
+/// Making connection to server.
+class ConnectingToServer extends ServerConnectionManagerState {}
 
-  /// Server does not support this client version.
-  unsupportedClientVersion,
-}
+/// Connection to server established.
+class ConnectedToServer extends ServerConnectionManagerState {}
+
+/// Server does not support this client version.
+class UnsupportedClientVersion extends ServerConnectionManagerState {}
 
 sealed class ServerWsEvent {}
 
@@ -89,13 +89,13 @@ class ServerConnectionManager extends ApiManager
   final PublishSubject<ServerConnectionManagerCmd<Object>> _cmds = PublishSubject();
   StreamSubscription<void>? _cmdsSubscription;
 
-  final BehaviorSubject<ServerConnectionState> _state = BehaviorSubject.seeded(
-    ServerConnectionState.connecting,
+  final BehaviorSubject<ServerConnectionManagerState> _state = BehaviorSubject.seeded(
+    ConnectingToServer(),
   );
-  Stream<ServerConnectionState> get state => _state.distinct();
-  ServerConnectionState get currentState => _state.value;
+  Stream<ServerConnectionManagerState> get state => _state.distinct();
+  ServerConnectionManagerState get currentState => _state.value;
   @override
-  bool get isConnected => currentState == ServerConnectionState.connected;
+  bool get isConnected => currentState is ConnectedToServer;
 
   final PublishSubject<ServerWsEvent> _serverEvents = PublishSubject();
   Stream<ServerWsEvent> get serverEvents => _serverEvents;
@@ -166,7 +166,7 @@ class ServerConnectionManager extends ApiManager
 
   Future<Result<(), ()>> _connect() async {
     _reconnectTimer?.cancel();
-    _state.add(ServerConnectionState.connecting);
+    _state.add(ConnectingToServer());
 
     final accessToken = await accountDb
         .accountStreamSingle((db) => db.loginSession.watchAccessToken())
@@ -176,7 +176,7 @@ class ServerConnectionManager extends ApiManager
         .ok();
 
     if (accessToken == null || refreshToken == null) {
-      _state.add(ServerConnectionState.waitingRefreshToken);
+      _state.add(WaitingRefreshToken());
       return const Err(());
     }
 
@@ -205,7 +205,7 @@ class ServerConnectionManager extends ApiManager
           _log.info(event);
           switch (event) {
             case Connecting():
-              _state.add(ServerConnectionState.connecting);
+              _state.add(ConnectingToServer());
             case Closed e:
               await _handleConnectionError(e.error, serverConnection);
             case Ready(:final token):
@@ -216,7 +216,7 @@ class ServerConnectionManager extends ApiManager
                 _reconnectInProgress = false;
               }
               _apiProvider.setAccessToken(token);
-              _state.add(ServerConnectionState.connected);
+              _state.add(ConnectedToServer());
           }
         })
         .listen(null);
@@ -233,7 +233,7 @@ class ServerConnectionManager extends ApiManager
     }
     switch (error) {
       case ServerConnectionError.connectionFailure:
-        _state.add(ServerConnectionState.reconnectWaitTime);
+        _state.add(ReconnectWaitTime());
         if (!_disableSnackBars) {
           showSnackBar(R.strings.snackbar_reconnecting_in_5_seconds);
         }
@@ -243,11 +243,11 @@ class ServerConnectionManager extends ApiManager
         });
         _reconnectInProgress = true;
       case ServerConnectionError.invalidToken:
-        _state.add(ServerConnectionState.waitingRefreshToken);
+        _state.add(WaitingRefreshToken());
       case ServerConnectionError.unsupportedClientVersion:
-        _state.add(ServerConnectionState.unsupportedClientVersion);
+        _state.add(UnsupportedClientVersion());
       case null:
-        _state.add(ServerConnectionState.noConnection);
+        _state.add(NoServerConnection());
     }
   }
 
@@ -278,7 +278,7 @@ class ServerConnectionManager extends ApiManager
     return await Future.any([
       Future.delayed(Duration(seconds: waitTimeoutSeconds), () => false),
       state
-          .map((v) => v == ServerConnectionState.connected)
+          .map((v) => v is ConnectedToServer)
           .firstWhere((v) => v, orElse: () => false)
           .then((v) => v),
     ]);
@@ -291,7 +291,7 @@ class ServerConnectionManager extends ApiManager
   /// Error is also returned after calling [dispose].
   Future<Result<(), ()>> waitUntilCurrentSessionConnects() async {
     final connected = await state
-        .map((v) => v == ServerConnectionState.connected)
+        .map((v) => v is ConnectedToServer)
         .firstWhere((v) => v, orElse: () => false);
 
     if (!connected) {
