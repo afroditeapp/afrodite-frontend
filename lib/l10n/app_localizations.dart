@@ -2415,6 +2415,12 @@ abstract class AppLocalizations {
   /// **'Connection failed'**
   String get server_connection_indicator_connection_failed;
 
+  /// Info dialog message when connection failed after max retries
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to connect to the server. Please check your internet connection and try again later. If the problem persists, the server may be temporarily unavailable.'**
+  String get server_connection_indicator_connection_failed_dialog_text;
+
   /// Server connection indicator text showing countdown
   ///
   /// In en, this message translates to:

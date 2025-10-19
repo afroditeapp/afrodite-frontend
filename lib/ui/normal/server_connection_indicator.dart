@@ -1,6 +1,7 @@
 import 'package:app/api/server_connection_manager.dart';
 import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/localizations.dart';
+import 'package:app/ui_utils/dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -15,6 +16,7 @@ class ServerConnectionIndicator extends StatefulWidget {
 
 class _ServerConnectionIndicatorState extends State<ServerConnectionIndicator> {
   late final Stream<List<ServerConnectionManagerState>> _stateStream;
+  bool _dialogShown = false;
 
   @override
   void initState() {
@@ -38,6 +40,23 @@ class _ServerConnectionIndicatorState extends State<ServerConnectionIndicator> {
 
         final previousState = states[0];
         final currentState = states[1];
+
+        final maxRetriesReached =
+            currentState is NoServerConnection && currentState.maxRetriesReached;
+        if (maxRetriesReached && !_dialogShown) {
+          _dialogShown = true;
+          // Show dialog after the current build cycle completes
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (mounted) {
+              showInfoDialog(
+                context,
+                context.strings.server_connection_indicator_connection_failed_dialog_text,
+              );
+            }
+          });
+        } else if (!maxRetriesReached) {
+          _dialogShown = false;
+        }
 
         // If transitioning from ReconnectWaitTime to ConnectingToServer,
         // keep showing the previous reconnect indicator to avoid flicker

@@ -1414,6 +1414,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'Connection failed';
 
   @override
+  String get server_connection_indicator_connection_failed_dialog_text =>
+      'Unable to connect to the server. Please check your internet connection and try again later. If the problem persists, the server may be temporarily unavailable.';
+
+  @override
   String server_connection_indicator_reconnecting_in_seconds(String p0) {
     return 'Reconnecting in ${p0}s';
   }

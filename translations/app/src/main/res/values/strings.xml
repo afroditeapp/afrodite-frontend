@@ -98,6 +98,7 @@
     <!-- Server connection indicator -->
     <string name="server_connection_indicator_reconnecting_in_seconds" description="Server connection indicator text showing countdown">Reconnecting in %ss</string>
     <string name="server_connection_indicator_connection_failed" description="Server connection indicator text when connection failed after max retries">Connection failed</string>
+    <string name="server_connection_indicator_connection_failed_dialog_text" description="Info dialog message when connection failed after max retries">Unable to connect to the server. Please check your internet connection and try again later. If the problem persists, the server may be temporarily unavailable.</string>
 
     <!-- Moderation states -->
     <string name="moderation_state" description="Beginning of moderation state text">Moderation state: %s</string>
