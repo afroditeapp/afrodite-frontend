@@ -131,8 +131,16 @@ class ReportUiBuilder extends ContentUiBuilder<WrappedReportDetailed> {
   @override
   bool get allowRejecting => false;
 
-  static String instructions =
-      "B = block received\nL = like received\nMnumber = match and sent messages count\n\nN = profile name\nT = profile text\nM = chat message\nC = custom report";
+  static String instructions = """
+B = block received
+L = like received
+Mnumber = match and sent messages count
+V = video call URL created
+
+N = profile name
+T = profile text
+M = chat message
+C = custom report""";
 
   @override
   Widget buildRowContent(BuildContext context, WrappedReportDetailed content) {
@@ -153,6 +161,7 @@ class ReportUiBuilder extends ContentUiBuilder<WrappedReportDetailed> {
         if (chatInfo.targetBlockedCreator) "B",
         if (chatInfo.state == ReportChatInfoInteractionState.targetLiked) "L",
         if (chatInfo.state == ReportChatInfoInteractionState.match) "M$creatorMessages",
+        if (chatInfo.creatorCreatedVideoCallUrl) "V",
       ];
       if (infoCreator.isNotEmpty) {
         creatorDetails = ", ${infoCreator.join("")}";
@@ -169,6 +178,7 @@ class ReportUiBuilder extends ContentUiBuilder<WrappedReportDetailed> {
         if (chatInfo.creatorBlockedTarget) "B",
         if (chatInfo.state == ReportChatInfoInteractionState.creatorLiked) "L",
         if (chatInfo.state == ReportChatInfoInteractionState.match) "M$targetMessages",
+        if (chatInfo.targetCreatedVideoCallUrl) "V",
       ];
       if (infoTarget.isNotEmpty) {
         targetDetails = ", ${infoTarget.join("")}";
