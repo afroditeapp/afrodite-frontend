@@ -54,6 +54,7 @@ import 'package:app/ui/login_new.dart';
 import 'package:app/ui/normal.dart';
 import 'package:app/ui/pending_deletion.dart';
 import 'package:app/ui/unsupported_client.dart';
+import 'package:app/ui/utils/server_connection_indicator.dart';
 import 'package:provider/provider.dart';
 
 class MainStateUiLogic extends StatelessWidget {
@@ -328,7 +329,19 @@ class AppNavigatorAndUpdateNavigationBlocs extends StatelessWidget {
     final bottomNavigatorStateBloc = context.read<BottomNavigationStateBloc>();
     BottomNavigationStateBlocInstance.getInstance().setLatestBloc(bottomNavigatorStateBloc);
 
-    return AppNavigator(navigatorStateBloc: navigatorStateBloc, r: r);
+    final navigator = AppNavigator(navigatorStateBloc: navigatorStateBloc, r: r);
+
+    final repositorires = r;
+    if (repositorires == null) {
+      return navigator;
+    } else {
+      return Stack(
+        children: [
+          navigator,
+          ServerConnectionErrorDialogOpener(manager: repositorires.connectionManager),
+        ],
+      );
+    }
   }
 }
 

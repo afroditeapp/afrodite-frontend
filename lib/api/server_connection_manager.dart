@@ -5,6 +5,7 @@ import 'package:app/data/login_repository.dart';
 import 'package:app/localizations.dart';
 import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/ui/normal.dart';
+import 'package:app/ui/utils/server_connection_indicator.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:app/api/api_provider.dart';
@@ -209,6 +210,7 @@ class ServerConnectionManager extends ApiManager
 
   late final ReconnectionTimer _reconnectionTimer;
   late final ConnectionRetryManager _retryManager;
+  late final ServerConnectionBannerLogic _bannerLogic;
 
   bool _disableSnackBars = false;
   bool _restartOngoing = false;
@@ -226,6 +228,8 @@ class ServerConnectionManager extends ApiManager
       },
     );
     _cmdsSubscription = _listenServerConnectionCmds();
+    _bannerLogic = ServerConnectionBannerLogic();
+    await _bannerLogic.init(this);
   }
 
   @override
@@ -234,6 +238,7 @@ class ServerConnectionManager extends ApiManager
     await _serverConnection?.close();
     _serverConnection = null;
     await _serverConnectionEventsSubscription?.cancel();
+    await _bannerLogic.dispose();
     _reconnectionTimer.cancel();
     await _cmds.close();
     await _serverEvents.close();
