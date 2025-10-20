@@ -32,7 +32,7 @@ import "package:app/model/freezed/logic/media/content.dart";
 import "package:app/ui/normal/chat.dart";
 import "package:app/ui/normal/likes.dart";
 import "package:app/ui/normal/profiles.dart";
-import "package:app/ui/normal/server_connection_indicator.dart";
+import "package:app/ui/utils/server_connection_indicator.dart";
 import "package:app/ui/normal/settings/my_profile.dart";
 import "package:app/ui/utils/notification_payload_handler.dart";
 import "package:app/ui_utils/profile_thumbnail_image.dart";
