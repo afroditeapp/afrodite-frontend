@@ -346,7 +346,7 @@ class ServerConnectionManager extends ApiManager
         final retryDelay = _retryManager.getNextRetryDelaySeconds();
         if (retryDelay != null) {
           if (!_disableSnackBars && !_isNormalStatePageVisible()) {
-            showSnackBar(R.strings.snackbar_reconnecting_in_5_seconds);
+            showSnackBar(R.strings.snackbar_connection_error(retryDelay.toString()));
           }
           _retryManager.recordRetry();
           _reconnectionTimer.start(retryDelay);

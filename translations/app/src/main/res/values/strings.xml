@@ -92,7 +92,7 @@
     <string name="snackbar_error_file" description="Snackbar error text for file errors">File error</string>
     <string name="snackbar_error_logic" description="Snackbar error text for logic errors">Logic error</string>
     <string name="snackbar_connected" description="Snackbar info text that connection to server is established">Connected</string>
-    <string name="snackbar_reconnecting_in_5_seconds" description="Snackbar info text that reconnecting to server happens in 5 seconds">Connection error - reconnecting in 5 seconds</string>
+    <string name="snackbar_connection_error" description="Snackbar info text that connection error happened and reconnecting happens after waiting some seconds">Connection error - reconnecting in %s seconds</string>
     <string name="snackbar_api_usage_limit_reached" description="Snackbar info text that API usage limit is reached">API usage limit is reached. Try again tomorrow.</string>
 
     <!-- Server connection indicator -->

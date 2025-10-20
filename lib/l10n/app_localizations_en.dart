@@ -1461,6 +1461,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get snackbar_connected => 'Connected';
 
   @override
+  String snackbar_connection_error(String p0) {
+    return 'Connection error - reconnecting in $p0 seconds';
+  }
+
+  @override
   String get snackbar_error_api => 'API error';
 
   @override
@@ -1471,10 +1476,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get snackbar_error_logic => 'Logic error';
-
-  @override
-  String get snackbar_reconnecting_in_5_seconds =>
-      'Connection error - reconnecting in 5 seconds';
 
   @override
   String get splash_screen_app_is_already_running => 'App is already running';

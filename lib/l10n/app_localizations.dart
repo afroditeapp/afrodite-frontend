@@ -2493,6 +2493,12 @@ abstract class AppLocalizations {
   /// **'Connected'**
   String get snackbar_connected;
 
+  /// Snackbar info text that connection error happened and reconnecting happens after waiting some seconds
+  ///
+  /// In en, this message translates to:
+  /// **'Connection error - reconnecting in {p0} seconds'**
+  String snackbar_connection_error(String p0);
+
   /// Snackbar error text for API errors
   ///
   /// In en, this message translates to:
@@ -2516,12 +2522,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Logic error'**
   String get snackbar_error_logic;
-
-  /// Snackbar info text that reconnecting to server happens in 5 seconds
-  ///
-  /// In en, this message translates to:
-  /// **'Connection error - reconnecting in 5 seconds'**
-  String get snackbar_reconnecting_in_5_seconds;
 
   /// Splash screen error text that app is already running
   ///

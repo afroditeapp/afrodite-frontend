@@ -1752,6 +1752,15 @@
   "@snackbar_connected": {
     "description": "Snackbar info text that connection to server is established"
   },
+  "snackbar_connection_error": "Connection error - reconnecting in {p0} seconds",
+  "@snackbar_connection_error": {
+    "description": "Snackbar info text that connection error happened and reconnecting happens after waiting some seconds",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
   "snackbar_error_api": "API error",
   "@snackbar_error_api": {
     "description": "Snackbar error text for API errors"
@@ -1767,10 +1776,6 @@
   "snackbar_error_logic": "Logic error",
   "@snackbar_error_logic": {
     "description": "Snackbar error text for logic errors"
-  },
-  "snackbar_reconnecting_in_5_seconds": "Connection error - reconnecting in 5 seconds",
-  "@snackbar_reconnecting_in_5_seconds": {
-    "description": "Snackbar info text that reconnecting to server happens in 5 seconds"
   },
   "splash_screen_app_is_already_running": "App is already running",
   "@splash_screen_app_is_already_running": {
