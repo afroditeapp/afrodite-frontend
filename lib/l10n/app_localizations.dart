@@ -2487,18 +2487,6 @@ abstract class AppLocalizations {
   /// **'API usage limit is reached. Try again tomorrow.'**
   String get snackbar_api_usage_limit_reached;
 
-  /// Snackbar info text that connection to server is established
-  ///
-  /// In en, this message translates to:
-  /// **'Connected'**
-  String get snackbar_connected;
-
-  /// Snackbar info text that connection error happened and reconnecting happens after waiting some seconds
-  ///
-  /// In en, this message translates to:
-  /// **'Connection error - reconnecting in {p0} seconds'**
-  String snackbar_connection_error(String p0);
-
   /// Snackbar error text for API errors
   ///
   /// In en, this message translates to:

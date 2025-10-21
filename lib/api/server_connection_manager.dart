@@ -2,9 +2,6 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:app/data/login_repository.dart';
-import 'package:app/localizations.dart';
-import 'package:app/logic/app/navigator_state.dart';
-import 'package:app/ui/normal.dart';
 import 'package:app/ui/utils/server_connection_indicator.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
@@ -14,7 +11,6 @@ import 'package:app/api/server_connection.dart';
 import 'package:app/data/utils.dart';
 import 'package:app/database/account_background_database_manager.dart';
 import 'package:app/database/account_database_manager.dart';
-import 'package:app/ui_utils/snack_bar.dart';
 import 'package:utils/utils.dart';
 import 'package:app/utils/app_error.dart';
 import 'package:app/utils/result.dart';
@@ -212,7 +208,6 @@ class ServerConnectionManager extends ApiManager
   late final ConnectionRetryManager _retryManager;
   late final ServerConnectionBannerLogic _bannerLogic;
 
-  bool _disableSnackBars = false;
   bool _restartOngoing = false;
 
   @override
@@ -323,9 +318,6 @@ class ServerConnectionManager extends ApiManager
               await _handleConnectionError(e.error, serverConnection);
             case Ready(:final token):
               if (_reconnectionTimer.isActive) {
-                if (!_disableSnackBars) {
-                  showSnackBar(R.strings.snackbar_connected);
-                }
                 _reconnectionTimer.cancel();
               }
               // Reset retry counter on successful connection
@@ -350,9 +342,6 @@ class ServerConnectionManager extends ApiManager
       case ServerConnectionError.connectionFailure:
         final retryDelay = _retryManager.getNextRetryDelaySeconds();
         if (retryDelay != null) {
-          if (!_disableSnackBars && !_isNormalStatePageVisible()) {
-            showSnackBar(R.strings.snackbar_connection_error(retryDelay.toString()));
-          }
           _retryManager.recordRetry();
           _reconnectionTimer.start(retryDelay);
         } else {
@@ -385,20 +374,6 @@ class ServerConnectionManager extends ApiManager
     final event = CloseConnection(null);
     _cmds.add(event);
     await event.waitCompletionAndDispose();
-  }
-
-  void disableSnackBars() {
-    _disableSnackBars = true;
-  }
-
-  /// Check if NormalStatePage is currently visible
-  bool _isNormalStatePageVisible() {
-    final navigationState = NavigationStateBlocInstance.getInstance().navigationState;
-    final pages = navigationState.pages;
-    if (pages.isEmpty) {
-      return false;
-    }
-    return pages.last is NormalStatePage;
   }
 
   /// Returns true if connected, false if not connected within the timeout.

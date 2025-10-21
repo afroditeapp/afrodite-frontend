@@ -104,9 +104,6 @@ class RepositoryInstances {
     }
     _logoutStarted = true;
 
-    // Server disconnects the WebSocket when logout API request happens
-    connectionManager.disableSnackBars();
-
     if (connectionManager.currentState is ConnectedToServer) {
       final r = await api.accountAction((api) => api.postLogout());
       if (r.isErr()) {

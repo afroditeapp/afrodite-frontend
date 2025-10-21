@@ -1748,19 +1748,6 @@
   "@snackbar_api_usage_limit_reached": {
     "description": "Snackbar info text that API usage limit is reached"
   },
-  "snackbar_connected": "Connected",
-  "@snackbar_connected": {
-    "description": "Snackbar info text that connection to server is established"
-  },
-  "snackbar_connection_error": "Connection error - reconnecting in {p0} seconds",
-  "@snackbar_connection_error": {
-    "description": "Snackbar info text that connection error happened and reconnecting happens after waiting some seconds",
-    "placeholders": {
-      "p0": {
-        "type": "String"
-      }
-    }
-  },
   "snackbar_error_api": "API error",
   "@snackbar_error_api": {
     "description": "Snackbar error text for API errors"
