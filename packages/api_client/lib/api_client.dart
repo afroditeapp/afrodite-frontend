@@ -252,6 +252,8 @@ class ApiClient {
           return BooleanSetting.fromJson(value);
         case 'ChatAppNotificationSettings':
           return ChatAppNotificationSettings.fromJson(value);
+        case 'ChatEmailNotificationSettings':
+          return ChatEmailNotificationSettings.fromJson(value);
         case 'ChatMessageReport':
           return ChatMessageReport.fromJson(value);
         case 'ClientConfig':

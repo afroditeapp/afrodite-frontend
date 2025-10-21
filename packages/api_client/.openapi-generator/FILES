@@ -57,6 +57,7 @@ lib/model/backend_config.dart
 lib/model/backend_version.dart
 lib/model/boolean_setting.dart
 lib/model/chat_app_notification_settings.dart
+lib/model/chat_email_notification_settings.dart
 lib/model/chat_message_report.dart
 lib/model/client_config.dart
 lib/model/client_config_sync_version.dart

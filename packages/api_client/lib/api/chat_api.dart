@@ -57,6 +57,47 @@ class ChatApi {
     return null;
   }
 
+  /// Performs an HTTP 'GET /chat_api/get_chat_email_notification_settings' operation and returns the [Response].
+  Future<Response> getChatEmailNotificationSettingsWithHttpInfo() async {
+    // ignore: prefer_const_declarations
+    final path = r'/chat_api/get_chat_email_notification_settings';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  Future<ChatEmailNotificationSettings?> getChatEmailNotificationSettings() async {
+    final response = await getChatEmailNotificationSettingsWithHttpInfo();
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'ChatEmailNotificationSettings',) as ChatEmailNotificationSettings;
+    
+    }
+    return null;
+  }
+
   /// Get account specific conversation ID which can be used to display new message received notifications.
   ///
   /// The ID is available only for accounts which are a match.
@@ -713,6 +754,45 @@ class ChatApi {
   /// * [ChatAppNotificationSettings] chatAppNotificationSettings (required):
   Future<void> postChatAppNotificationSettings(ChatAppNotificationSettings chatAppNotificationSettings,) async {
     final response = await postChatAppNotificationSettingsWithHttpInfo(chatAppNotificationSettings,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+  }
+
+  /// Performs an HTTP 'POST /chat_api/post_chat_email_notification_settings' operation and returns the [Response].
+  /// Parameters:
+  ///
+  /// * [ChatEmailNotificationSettings] chatEmailNotificationSettings (required):
+  Future<Response> postChatEmailNotificationSettingsWithHttpInfo(ChatEmailNotificationSettings chatEmailNotificationSettings,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/chat_api/post_chat_email_notification_settings';
+
+    // ignore: prefer_final_locals
+    Object? postBody = chatEmailNotificationSettings;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Parameters:
+  ///
+  /// * [ChatEmailNotificationSettings] chatEmailNotificationSettings (required):
+  Future<void> postChatEmailNotificationSettings(ChatEmailNotificationSettings chatEmailNotificationSettings,) async {
+    final response = await postChatEmailNotificationSettingsWithHttpInfo(chatEmailNotificationSettings,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
