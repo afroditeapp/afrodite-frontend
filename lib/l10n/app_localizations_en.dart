@@ -417,6 +417,9 @@ class AppLocalizationsEn extends AppLocalizations {
       'Profile text byte count is more than 2000 bytes';
 
   @override
+  String get email_notification_settings_screen_title => 'Email notifications';
+
+  @override
   String generic_account_id_text_with_value(String p0) {
     return 'Account ID: $p0';
   }

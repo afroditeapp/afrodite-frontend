@@ -21,6 +21,7 @@ import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui/normal/settings/account_settings.dart';
 import 'package:app/ui/normal/settings/data_export.dart';
 import 'package:app/ui/normal/settings/media/content_management.dart';
+import 'package:app/ui/normal/settings/email_notification_settings.dart';
 import 'package:app/ui/normal/settings/notification_settings.dart';
 import 'package:app/ui/normal/settings/profile/search_settings.dart';
 import 'package:app/localizations.dart';
@@ -202,6 +203,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
             openNotificationSettings(context);
           },
         ).toListTile(),
+      Setting.createSetting(
+        Icons.email,
+        context.strings.email_notification_settings_screen_title,
+        () {
+          openEmailNotificationSettings(context);
+        },
+      ).toListTile(),
       Setting.createSetting(
         Icons.grid_view_rounded,
         context.strings.profile_grid_settings_screen_title,

@@ -160,6 +160,9 @@
     <string name="notification_settings_screen_web_permission_denied" description="Info text when web notification permission is denied">Permission not granted. Try again or grant permission from browser settings.</string>
     <string name="notification_settings_screen_ios_pwa_permission_denied" description="Info text when iOS PWA notification permission is denied">Permission not granted. Try again or grant permission from iOS system settings.</string>
 
+    <!-- Email notification settings screen -->
+    <string name="email_notification_settings_screen_title" description="Title for email notification settings screen">Email notifications</string>
+
     <!-- Automatic profile search results screen -->
     <string name="automatic_profile_search_results_screen_title" description="Title for automatic profile search results screen">Automatic profile search results</string>
     <string name="automatic_profile_search_results_screen_no_profiles_found" description="Info text displayed when no profiles are found">No profiles found</string>

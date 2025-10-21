@@ -5,6 +5,7 @@ import 'package:app/logic/account/client_features_config.dart';
 import 'package:app/logic/account/custom_reports_config.dart';
 import 'package:app/logic/account/demo_account.dart';
 import 'package:app/logic/account/demo_account_login.dart';
+import 'package:app/logic/app/email_notification_settings.dart';
 import 'package:app/logic/app/info_dialog.dart';
 import 'package:app/logic/app/like_grid_instance_manager.dart';
 import 'package:app/logic/app/main_state_types.dart';
@@ -298,6 +299,7 @@ class NavigatorNormal extends LoggedInRootScreen {
         BlocProvider(create: (_) => BlockedProfilesBloc(r)),
         BlocProvider(create: (_) => SearchSettingsBloc(r)),
         BlocProvider(create: (_) => NotificationSettingsBloc(r)),
+        BlocProvider(create: (_) => EmailNotificationSettingsBloc(r)),
         BlocProvider(create: (_) => UiSettingsBloc(r)),
         BlocProvider(create: (_) => DataExportBloc(r)),
 

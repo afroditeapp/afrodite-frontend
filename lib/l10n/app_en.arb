@@ -486,6 +486,10 @@
   "@edit_profile_text_screen_text_lenght_too_long": {
     "description": "Dialog text for notifying user when profile text is too long"
   },
+  "email_notification_settings_screen_title": "Email notifications",
+  "@email_notification_settings_screen_title": {
+    "description": "Title for email notification settings screen"
+  },
   "generic_account_id_text_with_value": "Account ID: {p0}",
   "@generic_account_id_text_with_value": {
     "description": "Account ID text with value",

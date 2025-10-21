@@ -745,6 +745,12 @@ abstract class AppLocalizations {
   /// **'Profile text byte count is more than 2000 bytes'**
   String get edit_profile_text_screen_text_lenght_too_long;
 
+  /// Title for email notification settings screen
+  ///
+  /// In en, this message translates to:
+  /// **'Email notifications'**
+  String get email_notification_settings_screen_title;
+
   /// Account ID text with value
   ///
   /// In en, this message translates to:
