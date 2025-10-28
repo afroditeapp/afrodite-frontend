@@ -16,7 +16,6 @@ class ProfileTextMaxCharactersFilter {
     required this.value,
   });
 
-  /// Minimum value: 0
   int value;
 
   @override

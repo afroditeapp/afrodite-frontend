@@ -696,6 +696,8 @@ class ApiClient {
           return SearchGroups.fromJson(value);
         case 'SecurityContent':
           return SecurityContent.fromJson(value);
+        case 'SendConfirmEmailMessageResult':
+          return SendConfirmEmailMessageResult.fromJson(value);
         case 'SendLikeResult':
           return SendLikeResult.fromJson(value);
         case 'SendMessageResult':

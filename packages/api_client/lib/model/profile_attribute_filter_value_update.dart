@@ -27,7 +27,6 @@ class ProfileAttributeFilterValueUpdate {
   /// Value `false` ignores the settings in this object and removes current filter settings for this attribute.
   bool enabled;
 
-  /// Minimum value: 0
   int id;
 
   /// Same as [Self::wanted] but for unwanted values.  The unwanted values are checked always with AND operator.

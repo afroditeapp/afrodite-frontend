@@ -22,7 +22,6 @@ class ProfileAttributeFilterValue {
 
   bool acceptMissingAttribute;
 
-  /// Minimum value: 0
   int id;
 
   /// Same as [Self::wanted] but for unwanted values.  The unwanted values are checked always with AND operator.

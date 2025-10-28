@@ -70,6 +70,7 @@ Class | Method | HTTP request | Description
 *AccountApi* | [**getAccountDeletionRequestState**](doc//AccountApi.md#getaccountdeletionrequeststate) | **GET** /account_api/get_account_deletion_request_state/{aid} | Get account deletion request state
 *AccountApi* | [**getAccountSetup**](doc//AccountApi.md#getaccountsetup) | **GET** /account_api/account_setup | Get non-changeable user information to account.
 *AccountApi* | [**getAccountState**](doc//AccountApi.md#getaccountstate) | **GET** /account_api/state | Get current account state.
+*AccountApi* | [**getConfirmEmail**](doc//AccountApi.md#getconfirmemail) | **GET** /account_api/confirm_email/{token} | Confirm email address using the token sent via email. This endpoint is meant to be accessed via a link in the confirmation email.
 *AccountApi* | [**getLatestBirthdate**](doc//AccountApi.md#getlatestbirthdate) | **GET** /account_api/latest_birthdate | 
 *AccountApi* | [**getNewsItem**](doc//AccountApi.md#getnewsitem) | **GET** /account_api/news_item/{nid} | Get news item content using specific locale and fallback to locale \"en\" if news translation is not found.
 *AccountApi* | [**postAccountAppNotificationSettings**](doc//AccountApi.md#postaccountappnotificationsettings) | **POST** /account_api/post_account_app_notification_settings | 
@@ -89,6 +90,7 @@ Class | Method | HTTP request | Description
 *AccountApi* | [**postGetUnreadNewsCount**](doc//AccountApi.md#postgetunreadnewscount) | **POST** /account_api/news_count | The unread news count for public news.
 *AccountApi* | [**postLogout**](doc//AccountApi.md#postlogout) | **POST** /account_api/logout | 
 *AccountApi* | [**postResetNewsPaging**](doc//AccountApi.md#postresetnewspaging) | **POST** /account_api/reset_news_paging | 
+*AccountApi* | [**postSendConfirmEmailMessage**](doc//AccountApi.md#postsendconfirmemailmessage) | **POST** /account_api/send_confirm_email_message | 
 *AccountApi* | [**postSetAccountDeletionRequestState**](doc//AccountApi.md#postsetaccountdeletionrequeststate) | **POST** /account_api/set_account_deletion_request_state/{aid} | Request account deletion or cancel the deletion
 *AccountApi* | [**postSignInWithLogin**](doc//AccountApi.md#postsigninwithlogin) | **POST** /account_api/sign_in_with_login | Start new session with sign in with Apple or Google.
 *AccountApi* | [**putSettingProfileVisiblity**](doc//AccountApi.md#putsettingprofilevisiblity) | **PUT** /account_api/settings/profile_visibility | Update current or pending profile visiblity value.
@@ -500,6 +502,7 @@ Class | Method | HTTP request | Description
  - [SearchAgeRange](doc//SearchAgeRange.md)
  - [SearchGroups](doc//SearchGroups.md)
  - [SecurityContent](doc//SecurityContent.md)
+ - [SendConfirmEmailMessageResult](doc//SendConfirmEmailMessageResult.md)
  - [SendLikeResult](doc//SendLikeResult.md)
  - [SendMessageResult](doc//SendMessageResult.md)
  - [SentBlocksPage](doc//SentBlocksPage.md)

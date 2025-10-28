@@ -19,7 +19,6 @@ class ProfileAttributeInfo {
 
   AttributeHash h;
 
-  /// Minimum value: 0
   int id;
 
   @override

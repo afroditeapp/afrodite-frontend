@@ -35,7 +35,6 @@ class Attribute {
   /// Icon for the attribute.
   String? icon;
 
-  /// Minimum value: 0
   int id;
 
   /// String unique identifier for the attribute.

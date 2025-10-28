@@ -13,11 +13,14 @@ part of openapi.api;
 class Account {
   /// Returns a new [Account] instance.
   Account({
+    this.emailVerified = true,
     required this.permissions,
     required this.state,
     required this.syncVersion,
     required this.visibility,
   });
+
+  bool emailVerified;
 
   Permissions permissions;
 
@@ -29,6 +32,7 @@ class Account {
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is Account &&
+    other.emailVerified == emailVerified &&
     other.permissions == permissions &&
     other.state == state &&
     other.syncVersion == syncVersion &&
@@ -37,16 +41,18 @@ class Account {
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
+    (emailVerified.hashCode) +
     (permissions.hashCode) +
     (state.hashCode) +
     (syncVersion.hashCode) +
     (visibility.hashCode);
 
   @override
-  String toString() => 'Account[permissions=$permissions, state=$state, syncVersion=$syncVersion, visibility=$visibility]';
+  String toString() => 'Account[emailVerified=$emailVerified, permissions=$permissions, state=$state, syncVersion=$syncVersion, visibility=$visibility]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
+      json[r'email_verified'] = this.emailVerified;
       json[r'permissions'] = this.permissions;
       json[r'state'] = this.state;
       json[r'sync_version'] = this.syncVersion;
@@ -73,6 +79,7 @@ class Account {
       }());
 
       return Account(
+        emailVerified: mapValueOfType<bool>(json, r'email_verified') ?? true,
         permissions: Permissions.fromJson(json[r'permissions'])!,
         state: AccountStateContainer.fromJson(json[r'state'])!,
         syncVersion: AccountSyncVersion.fromJson(json[r'sync_version'])!,

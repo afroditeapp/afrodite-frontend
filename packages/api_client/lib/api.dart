@@ -297,6 +297,7 @@ part 'model/scheduled_task_type_value.dart';
 part 'model/search_age_range.dart';
 part 'model/search_groups.dart';
 part 'model/security_content.dart';
+part 'model/send_confirm_email_message_result.dart';
 part 'model/send_like_result.dart';
 part 'model/send_message_result.dart';
 part 'model/sent_blocks_page.dart';

@@ -17,7 +17,6 @@ class ProfileAttributeValue {
     this.v = const [],
   });
 
-  /// Minimum value: 0
   int id;
 
   /// For bitflag filters the list only has one u16 value.  For one level attributes the values are u16 attribute value IDs.  For two level attributes the values are u32 values with most significant u16 containing attribute value ID and least significant u16 containing group value ID.  Values are in ascending order.

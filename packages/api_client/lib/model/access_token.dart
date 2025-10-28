@@ -16,7 +16,7 @@ class AccessToken {
     required this.token,
   });
 
-  /// API token which server generates.
+  /// Base64 URL safe without padding
   String token;
 
   @override
