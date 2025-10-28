@@ -16,6 +16,7 @@ part 'account.g.dart';
     schema.Permissions,
     schema.ProfileVisibility,
     schema.EmailAddress,
+    schema.EmailVerified,
   ],
 )
 class DaoWriteAccount extends DatabaseAccessor<AccountForegroundDatabase>
@@ -40,6 +41,12 @@ class DaoWriteAccount extends DatabaseAccessor<AccountForegroundDatabase>
         ProfileVisibilityCompanion.insert(
           id: SingleRowTable.ID,
           jsonProfileVisibility: Value(value.visibility.toEnumString()),
+        ),
+      );
+      await into(emailVerified).insertOnConflictUpdate(
+        EmailVerifiedCompanion.insert(
+          id: SingleRowTable.ID,
+          emailVerified: Value(value.emailVerified),
         ),
       );
       await db.write.common.updateSyncVersionAccount(value.syncVersion);

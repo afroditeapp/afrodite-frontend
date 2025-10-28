@@ -35,6 +35,10 @@ class EmailAddress extends SingleRowTable {
   TextColumn get emailAddress => text().nullable()();
 }
 
+class EmailVerified extends SingleRowTable {
+  BoolColumn get emailVerified => boolean().withDefault(const Constant(false))();
+}
+
 class LoginSessionTokens extends SingleRowTable {
   TextColumn get refreshToken =>
       text().map(NullAwareTypeConverter.wrap(RefreshTokenConverter())).nullable()();

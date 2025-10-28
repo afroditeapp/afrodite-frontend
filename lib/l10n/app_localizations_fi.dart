@@ -53,7 +53,13 @@ class AppLocalizationsFi extends AppLocalizations {
       'Request account deletion?';
 
   @override
+  String get account_settings_screen_email_not_verified => 'Email not verified';
+
+  @override
   String get account_settings_screen_email_title => 'Email address';
+
+  @override
+  String get account_settings_screen_email_verified => 'Email verified';
 
   @override
   String get account_settings_screen_title => 'Account';
@@ -1175,6 +1181,14 @@ class AppLocalizationsFi extends AppLocalizations {
   @override
   String get profile_grid_screen_daily_likes_dialog_unlimited_likes_text =>
       'Sending chat requests to those who are up for a date today does not decrease daily chat requests.';
+
+  @override
+  String get profile_grid_screen_email_not_verified =>
+      'To view profiles, verify your email address.';
+
+  @override
+  String get profile_grid_screen_email_not_verified_button =>
+      'Account settings';
 
   @override
   String get profile_grid_screen_filtering_favorite_profiles_is_not_supported =>

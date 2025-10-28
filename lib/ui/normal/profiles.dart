@@ -24,6 +24,7 @@ import 'package:app/model/freezed/logic/account/account.dart';
 import 'package:app/model/freezed/logic/profile/profile_filters.dart';
 import 'package:app/ui/normal/profiles/profile_filters.dart';
 import 'package:app/ui/normal/profiles/profile_grid.dart';
+import 'package:app/ui/normal/settings/account_settings.dart';
 import 'package:app/ui_utils/bottom_navigation.dart';
 
 import 'package:app/localizations.dart';
@@ -147,40 +148,63 @@ class PublicProfileViewingBlocker extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<AccountBloc, AccountBlocData>(
       builder: (context, data) {
-        if (data.accountState == AccountState.initialSetup) {
+        if (!data.emailVerified) {
+          return _handleBlocked(emailNotVerified(context));
+        } else if (data.accountState == AccountState.initialSetup) {
           return _handleBlocked(startInitialSetupButton(context));
         } else if (data.visibility == ProfileVisibility.public) {
-          return BlocBuilder<ContentBloc, ContentData>(
-            builder: (context, contentState) {
-              if (contentState.isLoadingSecurityContent || contentState.isLoadingPrimaryContent) {
-                return _handleBlocked(const SizedBox.shrink());
-              }
-
-              final securityContent = contentState.securityContent;
-              if (securityContent?.accepted == true && securityContent?.faceDetected == true) {
-                return BlocBuilder<MyProfileBloc, MyProfileData>(
-                  builder: (context, myProfileState) {
-                    final primaryContent = myProfileState.profile?.myContent.getAtOrNull(0);
-                    if (primaryContent?.accepted == true) {
-                      return child;
-                    } else {
-                      return _handleBlocked(
-                        primaryProfileContentIsNotAccepted(context, primaryContent),
-                      );
-                    }
-                  },
-                );
-              } else {
-                return _handleBlocked(securityContentIsNotAccepted(context, securityContent));
-              }
-            },
-          );
+          return checkMyContent();
         } else if (data.visibility == ProfileVisibility.pendingPublic) {
           return _handleBlocked(profileIsInModerationInfo(context));
         } else {
           return _handleBlocked(profileIsSetToPrivateInfo(context));
         }
       },
+    );
+  }
+
+  Widget checkMyContent() {
+    return BlocBuilder<ContentBloc, ContentData>(
+      builder: (context, contentState) {
+        if (contentState.isLoadingSecurityContent || contentState.isLoadingPrimaryContent) {
+          return _handleBlocked(const SizedBox.shrink());
+        }
+
+        final securityContent = contentState.securityContent;
+        if (securityContent?.accepted == true && securityContent?.faceDetected == true) {
+          return BlocBuilder<MyProfileBloc, MyProfileData>(
+            builder: (context, myProfileState) {
+              final primaryContent = myProfileState.profile?.myContent.getAtOrNull(0);
+              if (primaryContent?.accepted == true) {
+                return child;
+              } else {
+                return _handleBlocked(primaryProfileContentIsNotAccepted(context, primaryContent));
+              }
+            },
+          );
+        } else {
+          return _handleBlocked(securityContentIsNotAccepted(context, securityContent));
+        }
+      },
+    );
+  }
+
+  Widget emailNotVerified(BuildContext context) {
+    return buildListReplacementMessage(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Padding(padding: EdgeInsets.all(16)),
+          const Icon(Icons.email, size: 48),
+          const Padding(padding: EdgeInsets.all(16)),
+          Text(context.strings.profile_grid_screen_email_not_verified),
+          const Padding(padding: EdgeInsets.all(16)),
+          ElevatedButton(
+            onPressed: () => openAccountSettings(context),
+            child: Text(context.strings.profile_grid_screen_email_not_verified_button),
+          ),
+        ],
+      ),
     );
   }
 

@@ -1,6 +1,7 @@
 import "dart:async";
 
 import "package:app/data/utils/repository_instances.dart";
+import "package:app/database/account_database_manager.dart";
 import "package:database/database.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:openapi/api.dart";
@@ -30,17 +31,25 @@ class NewEmailAddressValue extends AccountEvent {
   NewEmailAddressValue(this.value);
 }
 
+class NewEmailVerifiedValue extends AccountEvent {
+  final bool value;
+  NewEmailVerifiedValue(this.value);
+}
+
 /// Do register/login operations
 class AccountBloc extends Bloc<AccountEvent, AccountBlocData> with ActionRunner {
   final AccountRepository account;
+  final AccountDatabaseManager db;
 
   StreamSubscription<Permissions>? _permissionsSubscription;
   StreamSubscription<ProfileVisibility>? _profileVisibilitySubscription;
   StreamSubscription<AccountState?>? _accountStateSubscription;
   StreamSubscription<String?>? _emailAddressSubscription;
+  StreamSubscription<bool?>? _emailVerifiedSubscription;
 
   AccountBloc(RepositoryInstances r)
     : account = r.account,
+      db = r.accountDb,
       super(
         AccountBlocData(
           // Use cached account state value to directly show start initial setup
@@ -67,6 +76,9 @@ class AccountBloc extends Bloc<AccountEvent, AccountBlocData> with ActionRunner 
     on<NewEmailAddressValue>((key, emit) {
       emit(state.copyWith(email: key.value));
     });
+    on<NewEmailVerifiedValue>((key, emit) {
+      emit(state.copyWith(emailVerified: key.value));
+    });
 
     _permissionsSubscription = account.permissions.listen((event) {
       add(NewPermissionsValue(event));
@@ -80,6 +92,11 @@ class AccountBloc extends Bloc<AccountEvent, AccountBlocData> with ActionRunner 
     _emailAddressSubscription = account.emailAddress.listen((event) {
       add(NewEmailAddressValue(event));
     });
+    _emailVerifiedSubscription = db.accountStream((db) => db.account.watchEmailVerified()).listen((
+      event,
+    ) {
+      add(NewEmailVerifiedValue(event ?? false));
+    });
   }
 
   @override
@@ -88,6 +105,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountBlocData> with ActionRunner 
     await _profileVisibilitySubscription?.cancel();
     await _accountStateSubscription?.cancel();
     await _emailAddressSubscription?.cancel();
+    await _emailVerifiedSubscription?.cancel();
     await super.close();
   }
 }

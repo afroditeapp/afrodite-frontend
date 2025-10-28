@@ -64,9 +64,17 @@
   "@account_settings_screen_delete_account_confirm_dialog_title": {
     "description": "Title for delete account confirm dialog title"
   },
+  "account_settings_screen_email_not_verified": "Email not verified",
+  "@account_settings_screen_email_not_verified": {
+    "description": "Text for not verified email status"
+  },
   "account_settings_screen_email_title": "Email address",
   "@account_settings_screen_email_title": {
     "description": "Title for email text"
+  },
+  "account_settings_screen_email_verified": "Email verified",
+  "@account_settings_screen_email_verified": {
+    "description": "Text for verified email status"
   },
   "account_settings_screen_title": "Account",
   "@account_settings_screen_title": {
@@ -1424,6 +1432,14 @@
   "profile_grid_screen_daily_likes_dialog_unlimited_likes_text": "Sending chat requests to those who are up for a date today does not decrease daily chat requests.",
   "@profile_grid_screen_daily_likes_dialog_unlimited_likes_text": {
     "description": "Dialog text for unlimited likes specific text in daily likes info dialog"
+  },
+  "profile_grid_screen_email_not_verified": "To view profiles, verify your email address.",
+  "@profile_grid_screen_email_not_verified": {
+    "description": "Info text which is shown when email is not verified"
+  },
+  "profile_grid_screen_email_not_verified_button": "Account settings",
+  "@profile_grid_screen_email_not_verified_button": {
+    "description": "Button text for account settings action when email is not verified"
   },
   "profile_grid_screen_filtering_favorite_profiles_is_not_supported": "Filtering favorite profiles is not supported",
   "@profile_grid_screen_filtering_favorite_profiles_is_not_supported": {

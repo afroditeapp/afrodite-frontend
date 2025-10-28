@@ -22,12 +22,14 @@ final _privateConstructorErrorAccountBlocData = UnsupportedError(
 /// @nodoc
 mixin _$AccountBlocData {
   String? get email => throw _privateConstructorErrorAccountBlocData;
+  bool get emailVerified => throw _privateConstructorErrorAccountBlocData;
   AccountState? get accountState => throw _privateConstructorErrorAccountBlocData;
   Permissions get permissions => throw _privateConstructorErrorAccountBlocData;
   ProfileVisibility get visibility => throw _privateConstructorErrorAccountBlocData;
 
   AccountBlocData copyWith({
     String? email,
+    bool? emailVerified,
     AccountState? accountState,
     Permissions? permissions,
     ProfileVisibility? visibility,
@@ -38,6 +40,7 @@ mixin _$AccountBlocData {
 abstract class _AccountBlocData extends AccountBlocData {
   factory _AccountBlocData({
     String? email,
+    bool emailVerified,
     required AccountState? accountState,
     required Permissions permissions,
     required ProfileVisibility visibility,
@@ -47,8 +50,11 @@ abstract class _AccountBlocData extends AccountBlocData {
 
 /// @nodoc
 class _$AccountBlocDataImpl extends _AccountBlocData with DiagnosticableTreeMixin {
+  static const bool _emailVerifiedDefaultValue = true;
+  
   _$AccountBlocDataImpl({
     this.email,
+    this.emailVerified = _emailVerifiedDefaultValue,
     required this.accountState,
     required this.permissions,
     required this.visibility,
@@ -56,6 +62,8 @@ class _$AccountBlocDataImpl extends _AccountBlocData with DiagnosticableTreeMixi
 
   @override
   final String? email;
+  @override
+  final bool emailVerified;
   @override
   final AccountState? accountState;
   @override
@@ -65,7 +73,7 @@ class _$AccountBlocDataImpl extends _AccountBlocData with DiagnosticableTreeMixi
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'AccountBlocData(email: $email, accountState: $accountState, permissions: $permissions, visibility: $visibility)';
+    return 'AccountBlocData(email: $email, emailVerified: $emailVerified, accountState: $accountState, permissions: $permissions, visibility: $visibility)';
   }
 
   @override
@@ -74,6 +82,7 @@ class _$AccountBlocDataImpl extends _AccountBlocData with DiagnosticableTreeMixi
     properties
       ..add(DiagnosticsProperty('type', 'AccountBlocData'))
       ..add(DiagnosticsProperty('email', email))
+      ..add(DiagnosticsProperty('emailVerified', emailVerified))
       ..add(DiagnosticsProperty('accountState', accountState))
       ..add(DiagnosticsProperty('permissions', permissions))
       ..add(DiagnosticsProperty('visibility', visibility));
@@ -86,6 +95,8 @@ class _$AccountBlocDataImpl extends _AccountBlocData with DiagnosticableTreeMixi
         other is _$AccountBlocDataImpl &&
         (identical(other.email, email) ||
           other.email == email) &&
+        (identical(other.emailVerified, emailVerified) ||
+          other.emailVerified == emailVerified) &&
         (identical(other.accountState, accountState) ||
           other.accountState == accountState) &&
         (identical(other.permissions, permissions) ||
@@ -99,6 +110,7 @@ class _$AccountBlocDataImpl extends _AccountBlocData with DiagnosticableTreeMixi
   int get hashCode => Object.hash(
     runtimeType,
     email,
+    emailVerified,
     accountState,
     permissions,
     visibility,
@@ -107,11 +119,13 @@ class _$AccountBlocDataImpl extends _AccountBlocData with DiagnosticableTreeMixi
   @override
   AccountBlocData copyWith({
     Object? email = _detectDefaultValueInCopyWith,
+    Object? emailVerified,
     Object? accountState = _detectDefaultValueInCopyWith,
     Object? permissions,
     Object? visibility,
   }) => _$AccountBlocDataImpl(
     email: (email == _detectDefaultValueInCopyWith ? this.email : email) as String?,
+    emailVerified: (emailVerified ?? this.emailVerified) as bool,
     accountState: (accountState == _detectDefaultValueInCopyWith ? this.accountState : accountState) as AccountState?,
     permissions: (permissions ?? this.permissions) as Permissions,
     visibility: (visibility ?? this.visibility) as ProfileVisibility,

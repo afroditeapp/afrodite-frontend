@@ -4978,6 +4978,217 @@ class EmailAddressCompanion extends UpdateCompanion<EmailAddressData> {
   }
 }
 
+class $EmailVerifiedTable extends schema.EmailVerified
+    with TableInfo<$EmailVerifiedTable, EmailVerifiedData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $EmailVerifiedTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _emailVerifiedMeta = const VerificationMeta(
+    'emailVerified',
+  );
+  @override
+  late final GeneratedColumn<bool> emailVerified = GeneratedColumn<bool>(
+    'email_verified',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("email_verified" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  @override
+  List<GeneratedColumn> get $columns => [id, emailVerified];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'email_verified';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<EmailVerifiedData> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('email_verified')) {
+      context.handle(
+        _emailVerifiedMeta,
+        emailVerified.isAcceptableOrUnknown(
+          data['email_verified']!,
+          _emailVerifiedMeta,
+        ),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  EmailVerifiedData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return EmailVerifiedData(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      emailVerified: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}email_verified'],
+      )!,
+    );
+  }
+
+  @override
+  $EmailVerifiedTable createAlias(String alias) {
+    return $EmailVerifiedTable(attachedDatabase, alias);
+  }
+}
+
+class EmailVerifiedData extends DataClass
+    implements Insertable<EmailVerifiedData> {
+  final int id;
+  final bool emailVerified;
+  const EmailVerifiedData({required this.id, required this.emailVerified});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['email_verified'] = Variable<bool>(emailVerified);
+    return map;
+  }
+
+  EmailVerifiedCompanion toCompanion(bool nullToAbsent) {
+    return EmailVerifiedCompanion(
+      id: Value(id),
+      emailVerified: Value(emailVerified),
+    );
+  }
+
+  factory EmailVerifiedData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return EmailVerifiedData(
+      id: serializer.fromJson<int>(json['id']),
+      emailVerified: serializer.fromJson<bool>(json['emailVerified']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'emailVerified': serializer.toJson<bool>(emailVerified),
+    };
+  }
+
+  EmailVerifiedData copyWith({int? id, bool? emailVerified}) =>
+      EmailVerifiedData(
+        id: id ?? this.id,
+        emailVerified: emailVerified ?? this.emailVerified,
+      );
+  EmailVerifiedData copyWithCompanion(EmailVerifiedCompanion data) {
+    return EmailVerifiedData(
+      id: data.id.present ? data.id.value : this.id,
+      emailVerified: data.emailVerified.present
+          ? data.emailVerified.value
+          : this.emailVerified,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('EmailVerifiedData(')
+          ..write('id: $id, ')
+          ..write('emailVerified: $emailVerified')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, emailVerified);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is EmailVerifiedData &&
+          other.id == this.id &&
+          other.emailVerified == this.emailVerified);
+}
+
+class EmailVerifiedCompanion extends UpdateCompanion<EmailVerifiedData> {
+  final Value<int> id;
+  final Value<bool> emailVerified;
+  const EmailVerifiedCompanion({
+    this.id = const Value.absent(),
+    this.emailVerified = const Value.absent(),
+  });
+  EmailVerifiedCompanion.insert({
+    this.id = const Value.absent(),
+    this.emailVerified = const Value.absent(),
+  });
+  static Insertable<EmailVerifiedData> custom({
+    Expression<int>? id,
+    Expression<bool>? emailVerified,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (emailVerified != null) 'email_verified': emailVerified,
+    });
+  }
+
+  EmailVerifiedCompanion copyWith({
+    Value<int>? id,
+    Value<bool>? emailVerified,
+  }) {
+    return EmailVerifiedCompanion(
+      id: id ?? this.id,
+      emailVerified: emailVerified ?? this.emailVerified,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (emailVerified.present) {
+      map['email_verified'] = Variable<bool>(emailVerified.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('EmailVerifiedCompanion(')
+          ..write('id: $id, ')
+          ..write('emailVerified: $emailVerified')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $AccountIdTable extends schema.AccountId
     with TableInfo<$AccountIdTable, AccountIdData> {
   @override
@@ -13274,6 +13485,7 @@ abstract class _$AccountForegroundDatabase extends GeneratedDatabase {
   late final $ProfileVisibilityTable profileVisibility =
       $ProfileVisibilityTable(this);
   late final $EmailAddressTable emailAddress = $EmailAddressTable(this);
+  late final $EmailVerifiedTable emailVerified = $EmailVerifiedTable(this);
   late final $AccountIdTable accountId = $AccountIdTable(this);
   late final $ClientIdTable clientId = $ClientIdTable(this);
   late final $LoginSessionTokensTable loginSessionTokens =
@@ -13410,6 +13622,7 @@ abstract class _$AccountForegroundDatabase extends GeneratedDatabase {
     permissions,
     profileVisibility,
     emailAddress,
+    emailVerified,
     accountId,
     clientId,
     loginSessionTokens,

@@ -15,6 +15,7 @@ part 'account.g.dart';
     schema.Permissions,
     schema.ProfileVisibility,
     schema.EmailAddress,
+    schema.EmailVerified,
   ],
 )
 class DaoReadAccount extends DatabaseAccessor<AccountForegroundDatabase>
@@ -40,6 +41,12 @@ class DaoReadAccount extends DatabaseAccessor<AccountForegroundDatabase>
       (select(emailAddress)..where((t) => t.id.equals(SingleRowTable.ID.value)))
           .map((r) => r.emailAddress)
           .watchSingleOrNull();
+
+  Stream<bool> watchEmailVerified() =>
+      (select(emailVerified)..where((t) => t.id.equals(SingleRowTable.ID.value)))
+          .map((r) => r.emailVerified)
+          .watchSingleOrNull()
+          .map((value) => value ?? true);
 
   Future<api.AccountId?> localAccountIdToAccountId(dbm.LocalAccountId id) async {
     return (select(

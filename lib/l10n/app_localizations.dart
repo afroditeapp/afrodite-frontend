@@ -160,11 +160,23 @@ abstract class AppLocalizations {
   /// **'Request account deletion?'**
   String get account_settings_screen_delete_account_confirm_dialog_title;
 
+  /// Text for not verified email status
+  ///
+  /// In en, this message translates to:
+  /// **'Email not verified'**
+  String get account_settings_screen_email_not_verified;
+
   /// Title for email text
   ///
   /// In en, this message translates to:
   /// **'Email address'**
   String get account_settings_screen_email_title;
+
+  /// Text for verified email status
+  ///
+  /// In en, this message translates to:
+  /// **'Email verified'**
+  String get account_settings_screen_email_verified;
 
   /// Title for account settings
   ///
@@ -2033,6 +2045,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Sending chat requests to those who are up for a date today does not decrease daily chat requests.'**
   String get profile_grid_screen_daily_likes_dialog_unlimited_likes_text;
+
+  /// Info text which is shown when email is not verified
+  ///
+  /// In en, this message translates to:
+  /// **'To view profiles, verify your email address.'**
+  String get profile_grid_screen_email_not_verified;
+
+  /// Button text for account settings action when email is not verified
+  ///
+  /// In en, this message translates to:
+  /// **'Account settings'**
+  String get profile_grid_screen_email_not_verified_button;
 
   /// Snackbar text that filtering favorite profiles is not supported
   ///

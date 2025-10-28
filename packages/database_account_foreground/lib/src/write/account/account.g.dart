@@ -10,4 +10,5 @@ mixin _$DaoWriteAccountMixin on DatabaseAccessor<AccountForegroundDatabase> {
   $ProfileVisibilityTable get profileVisibility =>
       attachedDatabase.profileVisibility;
   $EmailAddressTable get emailAddress => attachedDatabase.emailAddress;
+  $EmailVerifiedTable get emailVerified => attachedDatabase.emailVerified;
 }

@@ -273,6 +273,8 @@
     <!-- Profile grid screen -->
     <string name="profile_grid_screen_title" description="Title for profile grid screen">Profiles</string>
     <string name="profile_grid_screen_start_initial_setup_button" description="Button text for start initial setup button">Start account initial setup</string>
+    <string name="profile_grid_screen_email_not_verified" description="Info text which is shown when email is not verified">To view profiles, verify your email address.</string>
+    <string name="profile_grid_screen_email_not_verified_button" description="Button text for account settings action when email is not verified">Account settings</string>
     <string name="profile_grid_screen_profile_is_private_info" description="Info text which is shown when profile visibility is set to private">To view profiles, set your profile visibility to public from app settings.</string>
     <string name="profile_grid_screen_initial_moderation_ongoing" description="Info text that initial moderation is ongoing">You can view profiles and others can see your profile after your profile images are moderated.</string>
     <string name="profile_grid_screen_no_profiles_found_title" description="Title that no profiles were found">No profiles found</string>
@@ -492,6 +494,8 @@
     <!-- Account settings selfie -->
     <string name="account_settings_screen_title" description="Title for account settings">Account</string>
     <string name="account_settings_screen_email_title" description="Title for email text">Email address</string>
+    <string name="account_settings_screen_email_verified" description="Text for verified email status">Email verified</string>
+    <string name="account_settings_screen_email_not_verified" description="Text for not verified email status">Email not verified</string>
     <string name="account_settings_screen_delete_account_action" description="Title for delete account action">Request account deletion</string>
     <string name="account_settings_screen_delete_account_action_error" description="Snackbar text about delete account action failure">Requesting account deletion failed</string>
     <string name="account_settings_screen_delete_account_confirm_dialog_title" description="Title for delete account confirm dialog title">Request account deletion?</string>

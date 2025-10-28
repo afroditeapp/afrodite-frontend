@@ -60,6 +60,7 @@ part 'database.g.dart';
     schema.Permissions,
     schema.ProfileVisibility,
     schema.EmailAddress,
+    schema.EmailVerified,
     schema.AccountId,
     schema.ClientId,
     schema.LoginSessionTokens,
