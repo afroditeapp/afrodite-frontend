@@ -32,6 +32,7 @@ import 'package:app/utils/camera.dart';
 
 import 'package:rxdart/rxdart.dart';
 import 'package:utils/utils.dart';
+import 'package:database_provider/database_provider.dart';
 
 final _log = Logger("main");
 
@@ -200,6 +201,15 @@ class GlobalInitManager extends AppSingletonNoInit {
       return;
     }
 
+    await AppVersionManager.getInstance().init();
+
+    // Remove databases if this is a development preview version (0.x.x)
+    // and the minor version has changed
+    if (AppVersionManager.getInstance().developmentPreviewMinorVersionChanged()) {
+      _log.info("Development preview minor version changed, removing databases");
+      await _removeAllDatabases();
+    }
+
     await DatabaseManager.getInstance().init();
     await ImageEncryptionManager.getInstance().init();
 
@@ -208,7 +218,6 @@ class GlobalInitManager extends AppSingletonNoInit {
     await CameraManager.getInstance().init();
     await NotificationManager.getInstance().init();
     await PushNotificationManager.getInstance().init();
-    await AppVersionManager.getInstance().init();
 
     await LoginRepository.getInstance().init();
 
@@ -223,5 +232,16 @@ class GlobalInitManager extends AppSingletonNoInit {
   /// is visible.
   Future<void> triggerGlobalInit() async {
     unawaited(_init());
+  }
+
+  /// Removes all database files (both foreground and background databases)
+  Future<void> _removeAllDatabases() async {
+    try {
+      final remover = DatabaseRemoverImpl();
+      await remover.deleteAllDatabases();
+      _log.info("Removed all databases");
+    } catch (e, stackTrace) {
+      _log.severe("Error removing databases", e, stackTrace);
+    }
   }
 }

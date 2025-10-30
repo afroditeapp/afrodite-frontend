@@ -62,4 +62,20 @@ class DatabaseRemoverImpl extends DatabaseRemover {
       _log.info("Databases directory recreated");
     }
   }
+
+  @override
+  Future<void> deleteAllDatabases() async {
+    try {
+      // Delete foreground databases
+      await recreateDatabasesDir(backgroundDb: false);
+      _log.info("Deleted foreground databases");
+
+      // Delete background databases
+      await recreateDatabasesDir(backgroundDb: true);
+      _log.info("Deleted background databases");
+    } catch (e, stackTrace) {
+      _log.severe("Error deleting all databases", e, stackTrace);
+      rethrow;
+    }
+  }
 }
