@@ -8,6 +8,7 @@ import 'package:app/logic/account/account_details.dart';
 import 'package:app/model/freezed/logic/account/account.dart';
 import 'package:app/model/freezed/logic/account/account_details.dart';
 import 'package:app/ui/normal/settings.dart';
+import 'package:app/ui_utils/common_update_logic.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/padding.dart';
 
@@ -56,9 +57,13 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text(context.strings.account_settings_screen_title)),
-      body: content(),
+    return updateStateHandler<AccountDetailsBloc, AccountDetailsBlocData>(
+      context: context,
+      pageKey: null,
+      child: Scaffold(
+        appBar: AppBar(title: Text(context.strings.account_settings_screen_title)),
+        body: content(),
+      ),
     );
   }
 
@@ -113,6 +118,17 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
             ],
           ),
         ),
+        if (!emailVerified) ...[
+          const Padding(padding: EdgeInsets.all(8)),
+          hPad(
+            ElevatedButton(
+              onPressed: () {
+                widget.accountDetailsBloc.add(SendVerificationEmail());
+              },
+              child: Text(context.strings.account_settings_screen_verify_email_button),
+            ),
+          ),
+        ],
         const Padding(padding: EdgeInsets.all(4)),
         deleteAccount(),
       ],

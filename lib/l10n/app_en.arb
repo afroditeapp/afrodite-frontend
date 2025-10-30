@@ -80,6 +80,35 @@
   "@account_settings_screen_title": {
     "description": "Title for account settings"
   },
+  "account_settings_screen_verify_email_already_verified": "Email is already verified",
+  "@account_settings_screen_verify_email_already_verified": {
+    "description": "Snackbar text when email is already verified"
+  },
+  "account_settings_screen_verify_email_button": "Verify email",
+  "@account_settings_screen_verify_email_button": {
+    "description": "Button text for verify email action"
+  },
+  "account_settings_screen_verify_email_sending_failed": "Email sending failed",
+  "@account_settings_screen_verify_email_sending_failed": {
+    "description": "Snackbar text when email sending failed"
+  },
+  "account_settings_screen_verify_email_sending_timeout": "Email sending timeout",
+  "@account_settings_screen_verify_email_sending_timeout": {
+    "description": "Snackbar text when email sending timeout"
+  },
+  "account_settings_screen_verify_email_sent_successfully": "Verification email sent successfully",
+  "@account_settings_screen_verify_email_sent_successfully": {
+    "description": "Snackbar text for successful email verification sending"
+  },
+  "account_settings_screen_verify_email_try_again_later": "Try again after {p0} seconds",
+  "@account_settings_screen_verify_email_try_again_later": {
+    "description": "Snackbar text when user needs to try again later with seconds",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
   "admin_settings_title": "Admin",
   "@admin_settings_title": {
     "description": "Title for admin settings screen"

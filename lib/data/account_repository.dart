@@ -244,6 +244,10 @@ class AccountRepository extends DataRepositoryWithLifecycle {
         .mapOk((_) => ());
   }
 
+  Future<Result<SendConfirmEmailMessageResult, ()>> sendVerificationEmail() async {
+    return await api.account((api) => api.postSendConfirmEmailMessage()).mapErr((_) => ());
+  }
+
   Future<Result<(), ()>> receiveNewsCount() async {
     final r = await api.account((api) => api.postGetUnreadNewsCount()).ok();
     if (r != null) {

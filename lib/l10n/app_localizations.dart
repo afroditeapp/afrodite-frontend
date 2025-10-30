@@ -184,6 +184,42 @@ abstract class AppLocalizations {
   /// **'Account'**
   String get account_settings_screen_title;
 
+  /// Snackbar text when email is already verified
+  ///
+  /// In en, this message translates to:
+  /// **'Email is already verified'**
+  String get account_settings_screen_verify_email_already_verified;
+
+  /// Button text for verify email action
+  ///
+  /// In en, this message translates to:
+  /// **'Verify email'**
+  String get account_settings_screen_verify_email_button;
+
+  /// Snackbar text when email sending failed
+  ///
+  /// In en, this message translates to:
+  /// **'Email sending failed'**
+  String get account_settings_screen_verify_email_sending_failed;
+
+  /// Snackbar text when email sending timeout
+  ///
+  /// In en, this message translates to:
+  /// **'Email sending timeout'**
+  String get account_settings_screen_verify_email_sending_timeout;
+
+  /// Snackbar text for successful email verification sending
+  ///
+  /// In en, this message translates to:
+  /// **'Verification email sent successfully'**
+  String get account_settings_screen_verify_email_sent_successfully;
+
+  /// Snackbar text when user needs to try again later with seconds
+  ///
+  /// In en, this message translates to:
+  /// **'Try again after {p0} seconds'**
+  String account_settings_screen_verify_email_try_again_later(String p0);
+
   /// Title for admin settings screen
   ///
   /// In en, this message translates to:

@@ -24,11 +24,13 @@ mixin _$AccountDetailsBlocData {
   bool get isLoading => throw _privateConstructorErrorAccountDetailsBlocData;
   bool get isError => throw _privateConstructorErrorAccountDetailsBlocData;
   String? get email => throw _privateConstructorErrorAccountDetailsBlocData;
+  UpdateState get updateState => throw _privateConstructorErrorAccountDetailsBlocData;
 
   AccountDetailsBlocData copyWith({
     bool? isLoading,
     bool? isError,
     String? email,
+    UpdateState? updateState,
   }) => throw _privateConstructorErrorAccountDetailsBlocData;
 }
 
@@ -38,6 +40,7 @@ abstract class _AccountDetailsBlocData implements AccountDetailsBlocData {
     bool isLoading,
     bool isError,
     String? email,
+    UpdateState updateState,
   }) = _$AccountDetailsBlocDataImpl;
 }
 
@@ -45,11 +48,13 @@ abstract class _AccountDetailsBlocData implements AccountDetailsBlocData {
 class _$AccountDetailsBlocDataImpl with DiagnosticableTreeMixin implements _AccountDetailsBlocData {
   static const bool _isLoadingDefaultValue = false;
   static const bool _isErrorDefaultValue = false;
+  static const UpdateState _updateStateDefaultValue = UpdateIdle();
   
   _$AccountDetailsBlocDataImpl({
     this.isLoading = _isLoadingDefaultValue,
     this.isError = _isErrorDefaultValue,
     this.email,
+    this.updateState = _updateStateDefaultValue,
   });
 
   @override
@@ -58,10 +63,12 @@ class _$AccountDetailsBlocDataImpl with DiagnosticableTreeMixin implements _Acco
   final bool isError;
   @override
   final String? email;
+  @override
+  final UpdateState updateState;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'AccountDetailsBlocData(isLoading: $isLoading, isError: $isError, email: $email)';
+    return 'AccountDetailsBlocData(isLoading: $isLoading, isError: $isError, email: $email, updateState: $updateState)';
   }
 
   @override
@@ -71,7 +78,8 @@ class _$AccountDetailsBlocDataImpl with DiagnosticableTreeMixin implements _Acco
       ..add(DiagnosticsProperty('type', 'AccountDetailsBlocData'))
       ..add(DiagnosticsProperty('isLoading', isLoading))
       ..add(DiagnosticsProperty('isError', isError))
-      ..add(DiagnosticsProperty('email', email));
+      ..add(DiagnosticsProperty('email', email))
+      ..add(DiagnosticsProperty('updateState', updateState));
   }
 
   @override
@@ -84,7 +92,9 @@ class _$AccountDetailsBlocDataImpl with DiagnosticableTreeMixin implements _Acco
         (identical(other.isError, isError) ||
           other.isError == isError) &&
         (identical(other.email, email) ||
-          other.email == email)
+          other.email == email) &&
+        (identical(other.updateState, updateState) ||
+          other.updateState == updateState)
     );
   }
 
@@ -94,6 +104,7 @@ class _$AccountDetailsBlocDataImpl with DiagnosticableTreeMixin implements _Acco
     isLoading,
     isError,
     email,
+    updateState,
   );
 
   @override
@@ -101,9 +112,11 @@ class _$AccountDetailsBlocDataImpl with DiagnosticableTreeMixin implements _Acco
     Object? isLoading,
     Object? isError,
     Object? email = _detectDefaultValueInCopyWith,
+    Object? updateState,
   }) => _$AccountDetailsBlocDataImpl(
     isLoading: (isLoading ?? this.isLoading) as bool,
     isError: (isError ?? this.isError) as bool,
     email: (email == _detectDefaultValueInCopyWith ? this.email : email) as String?,
+    updateState: (updateState ?? this.updateState) as UpdateState,
   );
 }

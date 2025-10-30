@@ -34,9 +34,10 @@ abstract mixin class UpdateStateProvider {
   UpdateState get updateState;
 }
 
+/// If pageKey is not null, that page is removed when dialog is removed.
 Widget updateStateHandler<B extends StateStreamable<S>, S extends UpdateStateProvider>({
   required BuildContext context,
-  required PageKey pageKey,
+  required PageKey? pageKey,
   required Widget child,
 }) {
   return BlocListener<B, S>(

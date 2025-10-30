@@ -65,6 +65,30 @@ class AppLocalizationsSv extends AppLocalizations {
   String get account_settings_screen_title => 'Account';
 
   @override
+  String get account_settings_screen_verify_email_already_verified =>
+      'Email is already verified';
+
+  @override
+  String get account_settings_screen_verify_email_button => 'Verify email';
+
+  @override
+  String get account_settings_screen_verify_email_sending_failed =>
+      'Email sending failed';
+
+  @override
+  String get account_settings_screen_verify_email_sending_timeout =>
+      'Email sending timeout';
+
+  @override
+  String get account_settings_screen_verify_email_sent_successfully =>
+      'Verification email sent successfully';
+
+  @override
+  String account_settings_screen_verify_email_try_again_later(String p0) {
+    return 'Try again after $p0 seconds';
+  }
+
+  @override
   String get admin_settings_title => 'Admin';
 
   @override
