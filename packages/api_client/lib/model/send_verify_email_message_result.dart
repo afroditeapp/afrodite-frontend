@@ -10,9 +10,9 @@
 
 part of openapi.api;
 
-class SendConfirmEmailMessageResult {
-  /// Returns a new [SendConfirmEmailMessageResult] instance.
-  SendConfirmEmailMessageResult({
+class SendVerifyEmailMessageResult {
+  /// Returns a new [SendVerifyEmailMessageResult] instance.
+  SendVerifyEmailMessageResult({
     this.errorEmailAlreadyVerified = false,
     this.errorEmailSendingFailed = false,
     this.errorEmailSendingTimeout = false,
@@ -29,7 +29,7 @@ class SendConfirmEmailMessageResult {
   int? errorTryAgainLaterAfterSeconds;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is SendConfirmEmailMessageResult &&
+  bool operator ==(Object other) => identical(this, other) || other is SendVerifyEmailMessageResult &&
     other.errorEmailAlreadyVerified == errorEmailAlreadyVerified &&
     other.errorEmailSendingFailed == errorEmailSendingFailed &&
     other.errorEmailSendingTimeout == errorEmailSendingTimeout &&
@@ -44,7 +44,7 @@ class SendConfirmEmailMessageResult {
     (errorTryAgainLaterAfterSeconds == null ? 0 : errorTryAgainLaterAfterSeconds!.hashCode);
 
   @override
-  String toString() => 'SendConfirmEmailMessageResult[errorEmailAlreadyVerified=$errorEmailAlreadyVerified, errorEmailSendingFailed=$errorEmailSendingFailed, errorEmailSendingTimeout=$errorEmailSendingTimeout, errorTryAgainLaterAfterSeconds=$errorTryAgainLaterAfterSeconds]';
+  String toString() => 'SendVerifyEmailMessageResult[errorEmailAlreadyVerified=$errorEmailAlreadyVerified, errorEmailSendingFailed=$errorEmailSendingFailed, errorEmailSendingTimeout=$errorEmailSendingTimeout, errorTryAgainLaterAfterSeconds=$errorTryAgainLaterAfterSeconds]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -59,10 +59,10 @@ class SendConfirmEmailMessageResult {
     return json;
   }
 
-  /// Returns a new [SendConfirmEmailMessageResult] instance and imports its values from
+  /// Returns a new [SendVerifyEmailMessageResult] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static SendConfirmEmailMessageResult? fromJson(dynamic value) {
+  static SendVerifyEmailMessageResult? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -71,13 +71,13 @@ class SendConfirmEmailMessageResult {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "SendConfirmEmailMessageResult[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "SendConfirmEmailMessageResult[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "SendVerifyEmailMessageResult[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "SendVerifyEmailMessageResult[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return SendConfirmEmailMessageResult(
+      return SendVerifyEmailMessageResult(
         errorEmailAlreadyVerified: mapValueOfType<bool>(json, r'error_email_already_verified') ?? false,
         errorEmailSendingFailed: mapValueOfType<bool>(json, r'error_email_sending_failed') ?? false,
         errorEmailSendingTimeout: mapValueOfType<bool>(json, r'error_email_sending_timeout') ?? false,
@@ -87,11 +87,11 @@ class SendConfirmEmailMessageResult {
     return null;
   }
 
-  static List<SendConfirmEmailMessageResult> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <SendConfirmEmailMessageResult>[];
+  static List<SendVerifyEmailMessageResult> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <SendVerifyEmailMessageResult>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = SendConfirmEmailMessageResult.fromJson(row);
+        final value = SendVerifyEmailMessageResult.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -100,12 +100,12 @@ class SendConfirmEmailMessageResult {
     return result.toList(growable: growable);
   }
 
-  static Map<String, SendConfirmEmailMessageResult> mapFromJson(dynamic json) {
-    final map = <String, SendConfirmEmailMessageResult>{};
+  static Map<String, SendVerifyEmailMessageResult> mapFromJson(dynamic json) {
+    final map = <String, SendVerifyEmailMessageResult>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = SendConfirmEmailMessageResult.fromJson(entry.value);
+        final value = SendVerifyEmailMessageResult.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -114,14 +114,14 @@ class SendConfirmEmailMessageResult {
     return map;
   }
 
-  // maps a json object with a list of SendConfirmEmailMessageResult-objects as value to a dart map
-  static Map<String, List<SendConfirmEmailMessageResult>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<SendConfirmEmailMessageResult>>{};
+  // maps a json object with a list of SendVerifyEmailMessageResult-objects as value to a dart map
+  static Map<String, List<SendVerifyEmailMessageResult>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<SendVerifyEmailMessageResult>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = SendConfirmEmailMessageResult.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = SendVerifyEmailMessageResult.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;

@@ -279,9 +279,9 @@ lib/model/scheduled_task_type_value.dart
 lib/model/search_age_range.dart
 lib/model/search_groups.dart
 lib/model/security_content.dart
-lib/model/send_confirm_email_message_result.dart
 lib/model/send_like_result.dart
 lib/model/send_message_result.dart
+lib/model/send_verify_email_message_result.dart
 lib/model/sent_blocks_page.dart
 lib/model/sent_message_id.dart
 lib/model/sent_message_id_list.dart

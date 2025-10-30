@@ -67,7 +67,7 @@ class AccountDetailsBloc extends Bloc<AccountDetailsEvent, AccountDetailsBlocDat
   }
 }
 
-void showSnackBarTextsForSendVerificationEmailResult(SendConfirmEmailMessageResult result) {
+void showSnackBarTextsForSendVerificationEmailResult(SendVerifyEmailMessageResult result) {
   if (result.errorEmailAlreadyVerified) {
     showSnackBar(R.strings.account_settings_screen_verify_email_already_verified);
   } else if (result.errorEmailSendingFailed) {

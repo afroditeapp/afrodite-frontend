@@ -303,57 +303,6 @@ class AccountApi {
     return null;
   }
 
-  /// Confirm email address using the token sent via email. This endpoint is meant to be accessed via a link in the confirmation email.
-  ///
-  /// This modifies server state even if the HTTP method is GET.  Returns plain text response indicating success or failure.
-  ///
-  /// Note: This method returns the HTTP [Response].
-  ///
-  /// Parameters:
-  ///
-  /// * [String] token (required):
-  ///   Base64 URL safe without padding
-  Future<Response> getConfirmEmailWithHttpInfo(String token,) async {
-    // ignore: prefer_const_declarations
-    final path = r'/account_api/confirm_email/{token}'
-      .replaceAll('{token}', token);
-
-    // ignore: prefer_final_locals
-    Object? postBody;
-
-    final queryParams = <QueryParam>[];
-    final headerParams = <String, String>{};
-    final formParams = <String, String>{};
-
-    const contentTypes = <String>[];
-
-
-    return apiClient.invokeAPI(
-      path,
-      'GET',
-      queryParams,
-      postBody,
-      headerParams,
-      formParams,
-      contentTypes.isEmpty ? null : contentTypes.first,
-    );
-  }
-
-  /// Confirm email address using the token sent via email. This endpoint is meant to be accessed via a link in the confirmation email.
-  ///
-  /// This modifies server state even if the HTTP method is GET.  Returns plain text response indicating success or failure.
-  ///
-  /// Parameters:
-  ///
-  /// * [String] token (required):
-  ///   Base64 URL safe without padding
-  Future<void> getConfirmEmail(String token,) async {
-    final response = await getConfirmEmailWithHttpInfo(token,);
-    if (response.statusCode >= HttpStatus.badRequest) {
-      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
-    }
-  }
-
   /// Performs an HTTP 'GET /account_api/latest_birthdate' operation and returns the [Response].
   Future<Response> getLatestBirthdateWithHttpInfo() async {
     // ignore: prefer_const_declarations
@@ -463,6 +412,57 @@ class AccountApi {
     
     }
     return null;
+  }
+
+  /// Verify email address using the token sent via email. This endpoint is meant to be accessed via a link in the verification email.
+  ///
+  /// This modifies server state even if the HTTP method is GET.  Returns plain text response indicating success or failure.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [String] token (required):
+  ///   Base64 URL safe without padding
+  Future<Response> getVerifyEmailWithHttpInfo(String token,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/account_api/verify_email/{token}'
+      .replaceAll('{token}', token);
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Verify email address using the token sent via email. This endpoint is meant to be accessed via a link in the verification email.
+  ///
+  /// This modifies server state even if the HTTP method is GET.  Returns plain text response indicating success or failure.
+  ///
+  /// Parameters:
+  ///
+  /// * [String] token (required):
+  ///   Base64 URL safe without padding
+  Future<void> getVerifyEmail(String token,) async {
+    final response = await getVerifyEmailWithHttpInfo(token,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
   }
 
   /// Performs an HTTP 'POST /account_api/post_account_app_notification_settings' operation and returns the [Response].
@@ -1238,10 +1238,10 @@ class AccountApi {
     return null;
   }
 
-  /// Performs an HTTP 'POST /account_api/send_confirm_email_message' operation and returns the [Response].
-  Future<Response> postSendConfirmEmailMessageWithHttpInfo() async {
+  /// Performs an HTTP 'POST /account_api/send_verify_email_message' operation and returns the [Response].
+  Future<Response> postSendVerifyEmailMessageWithHttpInfo() async {
     // ignore: prefer_const_declarations
-    final path = r'/account_api/send_confirm_email_message';
+    final path = r'/account_api/send_verify_email_message';
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -1264,8 +1264,8 @@ class AccountApi {
     );
   }
 
-  Future<SendConfirmEmailMessageResult?> postSendConfirmEmailMessage() async {
-    final response = await postSendConfirmEmailMessageWithHttpInfo();
+  Future<SendVerifyEmailMessageResult?> postSendVerifyEmailMessage() async {
+    final response = await postSendVerifyEmailMessageWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -1273,7 +1273,7 @@ class AccountApi {
     // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'SendConfirmEmailMessageResult',) as SendConfirmEmailMessageResult;
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'SendVerifyEmailMessageResult',) as SendVerifyEmailMessageResult;
     
     }
     return null;
