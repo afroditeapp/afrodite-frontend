@@ -72,10 +72,11 @@ Class | Method | HTTP request | Description
 *AccountApi* | [**getAccountState**](doc//AccountApi.md#getaccountstate) | **GET** /account_api/state | Get current account state.
 *AccountApi* | [**getLatestBirthdate**](doc//AccountApi.md#getlatestbirthdate) | **GET** /account_api/latest_birthdate | 
 *AccountApi* | [**getNewsItem**](doc//AccountApi.md#getnewsitem) | **GET** /account_api/news_item/{nid} | Get news item content using specific locale and fallback to locale \"en\" if news translation is not found.
-*AccountApi* | [**getVerifyEmail**](doc//AccountApi.md#getverifyemail) | **GET** /account_api/verify_email/{token} | Verify email address using the token sent via email. This endpoint is meant to be accessed via a link in the verification email.
+*AccountApi* | [**getVerifyEmail**](doc//AccountApi.md#getverifyemail) | **GET** /account_api/verify_email/{token} | Verify email address using the token sent via email. This endpoint is meant to be accessed via a link in the verification email. To workaround email security scanning related link accessing, the link can be opened multiple times.
+*AccountApi* | [**getVerifyNewEmail**](doc//AccountApi.md#getverifynewemail) | **GET** /account_api/verify_new_email/{token} | Verify new email address using the token sent via email. This endpoint is meant to be accessed via a link in the verification email. To workaround email security scanning related link accessing, the link can be opened multiple times.
 *AccountApi* | [**postAccountAppNotificationSettings**](doc//AccountApi.md#postaccountappnotificationsettings) | **POST** /account_api/post_account_app_notification_settings | 
-*AccountApi* | [**postAccountData**](doc//AccountApi.md#postaccountdata) | **POST** /account_api/account_data | Set changeable user information to account.
 *AccountApi* | [**postAccountSetup**](doc//AccountApi.md#postaccountsetup) | **POST** /account_api/account_setup | Setup non-changeable user information during `initial setup` state.
+*AccountApi* | [**postCancelEmailChange**](doc//AccountApi.md#postcancelemailchange) | **POST** /account_api/cancel_email_change | Cancel email changing process
 *AccountApi* | [**postCompleteSetup**](doc//AccountApi.md#postcompletesetup) | **POST** /account_api/complete_setup | Complete initial setup.
 *AccountApi* | [**postCustomReportEmpty**](doc//AccountApi.md#postcustomreportempty) | **POST** /account_api/custom_report_empty | Send custom report without any content
 *AccountApi* | [**postDemoAccountAccessibleAccounts**](doc//AccountApi.md#postdemoaccountaccessibleaccounts) | **POST** /account_api/demo_account_accessible_accounts | Get demo account's available accounts.
@@ -88,6 +89,8 @@ Class | Method | HTTP request | Description
 *AccountApi* | [**postGetNewsPage**](doc//AccountApi.md#postgetnewspage) | **POST** /account_api/news_page | 
 *AccountApi* | [**postGetNextClientId**](doc//AccountApi.md#postgetnextclientid) | **POST** /account_api/next_client_id | 
 *AccountApi* | [**postGetUnreadNewsCount**](doc//AccountApi.md#postgetunreadnewscount) | **POST** /account_api/news_count | The unread news count for public news.
+*AccountApi* | [**postInitEmailChange**](doc//AccountApi.md#postinitemailchange) | **POST** /account_api/init_email_change | Initiate email change process by providing a new email address.
+*AccountApi* | [**postInitialEmail**](doc//AccountApi.md#postinitialemail) | **POST** /account_api/initial_email | Set initial email when initial setup is ongoing
 *AccountApi* | [**postLogout**](doc//AccountApi.md#postlogout) | **POST** /account_api/logout | 
 *AccountApi* | [**postResetNewsPaging**](doc//AccountApi.md#postresetnewspaging) | **POST** /account_api/reset_news_paging | 
 *AccountApi* | [**postSendVerifyEmailMessage**](doc//AccountApi.md#postsendverifyemailmessage) | **POST** /account_api/send_verify_email_message | 
@@ -367,6 +370,8 @@ Class | Method | HTTP request | Description
  - [GetReportList](doc//GetReportList.md)
  - [GetSentMessage](doc//GetSentMessage.md)
  - [GroupValues](doc//GroupValues.md)
+ - [InitEmailChange](doc//InitEmailChange.md)
+ - [InitEmailChangeResult](doc//InitEmailChangeResult.md)
  - [InitialProfileAge](doc//InitialProfileAge.md)
  - [IpAddressInfo](doc//IpAddressInfo.md)
  - [IpCountryStatistics](doc//IpCountryStatistics.md)
@@ -510,6 +515,7 @@ Class | Method | HTTP request | Description
  - [SentMessageIdList](doc//SentMessageIdList.md)
  - [SetAccountBanState](doc//SetAccountBanState.md)
  - [SetAccountSetup](doc//SetAccountSetup.md)
+ - [SetInitialEmail](doc//SetInitialEmail.md)
  - [SetMaxPublicKeyCount](doc//SetMaxPublicKeyCount.md)
  - [SetProfileContent](doc//SetProfileContent.md)
  - [SetProfileName](doc//SetProfileName.md)

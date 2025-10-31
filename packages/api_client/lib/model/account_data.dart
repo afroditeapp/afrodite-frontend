@@ -14,6 +14,9 @@ class AccountData {
   /// Returns a new [AccountData] instance.
   AccountData({
     this.email,
+    this.emailChange,
+    this.emailChangeCompletionTime,
+    this.emailChangeVerified = false,
   });
 
   ///
@@ -24,17 +27,36 @@ class AccountData {
   ///
   String? email;
 
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  String? emailChange;
+
+  /// API route handler sets this value
+  UnixTime? emailChangeCompletionTime;
+
+  bool emailChangeVerified;
+
   @override
   bool operator ==(Object other) => identical(this, other) || other is AccountData &&
-    other.email == email;
+    other.email == email &&
+    other.emailChange == emailChange &&
+    other.emailChangeCompletionTime == emailChangeCompletionTime &&
+    other.emailChangeVerified == emailChangeVerified;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (email == null ? 0 : email!.hashCode);
+    (email == null ? 0 : email!.hashCode) +
+    (emailChange == null ? 0 : emailChange!.hashCode) +
+    (emailChangeCompletionTime == null ? 0 : emailChangeCompletionTime!.hashCode) +
+    (emailChangeVerified.hashCode);
 
   @override
-  String toString() => 'AccountData[email=$email]';
+  String toString() => 'AccountData[email=$email, emailChange=$emailChange, emailChangeCompletionTime=$emailChangeCompletionTime, emailChangeVerified=$emailChangeVerified]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -43,6 +65,17 @@ class AccountData {
     } else {
       json[r'email'] = null;
     }
+    if (this.emailChange != null) {
+      json[r'email_change'] = this.emailChange;
+    } else {
+      json[r'email_change'] = null;
+    }
+    if (this.emailChangeCompletionTime != null) {
+      json[r'email_change_completion_time'] = this.emailChangeCompletionTime;
+    } else {
+      json[r'email_change_completion_time'] = null;
+    }
+      json[r'email_change_verified'] = this.emailChangeVerified;
     return json;
   }
 
@@ -66,6 +99,9 @@ class AccountData {
 
       return AccountData(
         email: mapValueOfType<String>(json, r'email'),
+        emailChange: mapValueOfType<String>(json, r'email_change'),
+        emailChangeCompletionTime: UnixTime.fromJson(json[r'email_change_completion_time']),
+        emailChangeVerified: mapValueOfType<bool>(json, r'email_change_verified') ?? false,
       );
     }
     return null;

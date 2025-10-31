@@ -414,7 +414,7 @@ class AccountApi {
     return null;
   }
 
-  /// Verify email address using the token sent via email. This endpoint is meant to be accessed via a link in the verification email.
+  /// Verify email address using the token sent via email. This endpoint is meant to be accessed via a link in the verification email. To workaround email security scanning related link accessing, the link can be opened multiple times.
   ///
   /// This modifies server state even if the HTTP method is GET.  Returns plain text response indicating success or failure.
   ///
@@ -450,7 +450,7 @@ class AccountApi {
     );
   }
 
-  /// Verify email address using the token sent via email. This endpoint is meant to be accessed via a link in the verification email.
+  /// Verify email address using the token sent via email. This endpoint is meant to be accessed via a link in the verification email. To workaround email security scanning related link accessing, the link can be opened multiple times.
   ///
   /// This modifies server state even if the HTTP method is GET.  Returns plain text response indicating success or failure.
   ///
@@ -460,6 +460,57 @@ class AccountApi {
   ///   Base64 URL safe without padding
   Future<void> getVerifyEmail(String token,) async {
     final response = await getVerifyEmailWithHttpInfo(token,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+  }
+
+  /// Verify new email address using the token sent via email. This endpoint is meant to be accessed via a link in the verification email. To workaround email security scanning related link accessing, the link can be opened multiple times.
+  ///
+  /// This modifies server state even if the HTTP method is GET.  Returns plain text response indicating success or failure.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [String] token (required):
+  ///   Base64 URL safe without padding
+  Future<Response> getVerifyNewEmailWithHttpInfo(String token,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/account_api/verify_new_email/{token}'
+      .replaceAll('{token}', token);
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Verify new email address using the token sent via email. This endpoint is meant to be accessed via a link in the verification email. To workaround email security scanning related link accessing, the link can be opened multiple times.
+  ///
+  /// This modifies server state even if the HTTP method is GET.  Returns plain text response indicating success or failure.
+  ///
+  /// Parameters:
+  ///
+  /// * [String] token (required):
+  ///   Base64 URL safe without padding
+  Future<void> getVerifyNewEmail(String token,) async {
+    final response = await getVerifyNewEmailWithHttpInfo(token,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -504,50 +555,6 @@ class AccountApi {
     }
   }
 
-  /// Set changeable user information to account.
-  ///
-  /// Note: This method returns the HTTP [Response].
-  ///
-  /// Parameters:
-  ///
-  /// * [AccountData] accountData (required):
-  Future<Response> postAccountDataWithHttpInfo(AccountData accountData,) async {
-    // ignore: prefer_const_declarations
-    final path = r'/account_api/account_data';
-
-    // ignore: prefer_final_locals
-    Object? postBody = accountData;
-
-    final queryParams = <QueryParam>[];
-    final headerParams = <String, String>{};
-    final formParams = <String, String>{};
-
-    const contentTypes = <String>['application/json'];
-
-
-    return apiClient.invokeAPI(
-      path,
-      'POST',
-      queryParams,
-      postBody,
-      headerParams,
-      formParams,
-      contentTypes.isEmpty ? null : contentTypes.first,
-    );
-  }
-
-  /// Set changeable user information to account.
-  ///
-  /// Parameters:
-  ///
-  /// * [AccountData] accountData (required):
-  Future<void> postAccountData(AccountData accountData,) async {
-    final response = await postAccountDataWithHttpInfo(accountData,);
-    if (response.statusCode >= HttpStatus.badRequest) {
-      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
-    }
-  }
-
   /// Setup non-changeable user information during `initial setup` state.
   ///
   /// Note: This method returns the HTTP [Response].
@@ -587,6 +594,42 @@ class AccountApi {
   /// * [SetAccountSetup] setAccountSetup (required):
   Future<void> postAccountSetup(SetAccountSetup setAccountSetup,) async {
     final response = await postAccountSetupWithHttpInfo(setAccountSetup,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+  }
+
+  /// Cancel email changing process
+  ///
+  /// Note: This method returns the HTTP [Response].
+  Future<Response> postCancelEmailChangeWithHttpInfo() async {
+    // ignore: prefer_const_declarations
+    final path = r'/account_api/cancel_email_change';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Cancel email changing process
+  Future<void> postCancelEmailChange() async {
+    final response = await postCancelEmailChangeWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -1162,6 +1205,106 @@ class AccountApi {
     
     }
     return null;
+  }
+
+  /// Initiate email change process by providing a new email address.
+  ///
+  /// The process: 1. User provides new email address 2. Verification email sent to new address 3. Notification email sent to current address 4. After configured time elapses and new email is verified, email changes  Error is returned when  - account does not already have email address set,  - the new email is the current email or  - email address change is already in progress.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [InitEmailChange] initEmailChange (required):
+  Future<Response> postInitEmailChangeWithHttpInfo(InitEmailChange initEmailChange,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/account_api/init_email_change';
+
+    // ignore: prefer_final_locals
+    Object? postBody = initEmailChange;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Initiate email change process by providing a new email address.
+  ///
+  /// The process: 1. User provides new email address 2. Verification email sent to new address 3. Notification email sent to current address 4. After configured time elapses and new email is verified, email changes  Error is returned when  - account does not already have email address set,  - the new email is the current email or  - email address change is already in progress.
+  ///
+  /// Parameters:
+  ///
+  /// * [InitEmailChange] initEmailChange (required):
+  Future<InitEmailChangeResult?> postInitEmailChange(InitEmailChange initEmailChange,) async {
+    final response = await postInitEmailChangeWithHttpInfo(initEmailChange,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'InitEmailChangeResult',) as InitEmailChangeResult;
+    
+    }
+    return null;
+  }
+
+  /// Set initial email when initial setup is ongoing
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [SetInitialEmail] setInitialEmail (required):
+  Future<Response> postInitialEmailWithHttpInfo(SetInitialEmail setInitialEmail,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/account_api/initial_email';
+
+    // ignore: prefer_final_locals
+    Object? postBody = setInitialEmail;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Set initial email when initial setup is ongoing
+  ///
+  /// Parameters:
+  ///
+  /// * [SetInitialEmail] setInitialEmail (required):
+  Future<void> postInitialEmail(SetInitialEmail setInitialEmail,) async {
+    final response = await postInitialEmailWithHttpInfo(setInitialEmail,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
   }
 
   /// Performs an HTTP 'POST /account_api/logout' operation and returns the [Response].

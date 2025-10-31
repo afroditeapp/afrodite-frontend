@@ -144,6 +144,8 @@ lib/model/get_push_notification_info.dart
 lib/model/get_report_list.dart
 lib/model/get_sent_message.dart
 lib/model/group_values.dart
+lib/model/init_email_change.dart
+lib/model/init_email_change_result.dart
 lib/model/initial_profile_age.dart
 lib/model/ip_address_info.dart
 lib/model/ip_country_statistics.dart
@@ -287,6 +289,7 @@ lib/model/sent_message_id.dart
 lib/model/sent_message_id_list.dart
 lib/model/set_account_ban_state.dart
 lib/model/set_account_setup.dart
+lib/model/set_initial_email.dart
 lib/model/set_max_public_key_count.dart
 lib/model/set_profile_content.dart
 lib/model/set_profile_name.dart

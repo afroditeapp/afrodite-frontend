@@ -426,6 +426,10 @@ class ApiClient {
           return GetSentMessage.fromJson(value);
         case 'GroupValues':
           return GroupValues.fromJson(value);
+        case 'InitEmailChange':
+          return InitEmailChange.fromJson(value);
+        case 'InitEmailChangeResult':
+          return InitEmailChangeResult.fromJson(value);
         case 'InitialProfileAge':
           return InitialProfileAge.fromJson(value);
         case 'IpAddressInfo':
@@ -712,6 +716,8 @@ class ApiClient {
           return SetAccountBanState.fromJson(value);
         case 'SetAccountSetup':
           return SetAccountSetup.fromJson(value);
+        case 'SetInitialEmail':
+          return SetInitialEmail.fromJson(value);
         case 'SetMaxPublicKeyCount':
           return SetMaxPublicKeyCount.fromJson(value);
         case 'SetProfileContent':

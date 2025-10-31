@@ -98,7 +98,7 @@ class InitialSetupUtils {
 
     // Other setup
 
-    await _api.accountAction((api) => api.postAccountData(AccountData(email: email)));
+    await _api.accountAction((api) => api.postInitialEmail(SetInitialEmail(email: email)));
     await _api.accountAction((api) => api.postAccountSetup(SetAccountSetup(isAdult: true)));
 
     final update = ProfileUpdate(age: 30, name: "X", ptext: null, attributes: []);
@@ -127,7 +127,9 @@ class InitialSetupUtils {
       // Email can be null if Apple or Google login was used.
       final email = data.email;
       if (email != null) {
-        final r = await _api.accountAction((api) => api.postAccountData(AccountData(email: email)));
+        final r = await _api.accountAction(
+          (api) => api.postInitialEmail(SetInitialEmail(email: email)),
+        );
         if (r.isErr()) return errAndLog("Setting email address failed");
       }
     }
