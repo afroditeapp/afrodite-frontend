@@ -48,6 +48,9 @@
     <string name="generic_gender_nonbinary_plural" description="Generic non-binary gender text in plural form">Non-binaries</string>
     <string name="generic_show_only_selected" description="Generic show only selected text">Show only selected</string>
     <string name="generic_data_sync_failed" description="Generic data sync failed">Data sync failed</string>
+    <string name="generic_email_sending_failed" description="Generic email sending failed text">Email sending failed</string>
+    <string name="generic_email_sending_timeout" description="Generic email sending timeout text">Email sending timeout</string>
+    <string name="generic_try_again_later_seconds" description="Generic try again later with seconds text">Try again after %s seconds</string>
     <string name="generic_reject_question" description="Generic reject question">Reject?</string>
     <string name="generic_delete_question" description="Generic delete question">Delete?</string>
     <string name="generic_cancel_question" description="Generic cancel question">Cancel?</string>
@@ -499,12 +502,20 @@
     <string name="account_settings_screen_verify_email_button" description="Button text for verify email action">Verify email</string>
     <string name="account_settings_screen_verify_email_sent_successfully" description="Snackbar text for successful email verification sending">Verification email sent successfully</string>
     <string name="account_settings_screen_verify_email_already_verified" description="Snackbar text when email is already verified">Email is already verified</string>
-    <string name="account_settings_screen_verify_email_sending_failed" description="Snackbar text when email sending failed">Email sending failed</string>
-    <string name="account_settings_screen_verify_email_sending_timeout" description="Snackbar text when email sending timeout">Email sending timeout</string>
-    <string name="account_settings_screen_verify_email_try_again_later" description="Snackbar text when user needs to try again later with seconds">Try again after %s seconds</string>
     <string name="account_settings_screen_delete_account_action" description="Title for delete account action">Request account deletion</string>
     <string name="account_settings_screen_delete_account_action_error" description="Snackbar text about delete account action failure">Requesting account deletion failed</string>
     <string name="account_settings_screen_delete_account_confirm_dialog_title" description="Title for delete account confirm dialog title">Request account deletion?</string>
+    <string name="account_settings_screen_change_email_button" description="Button text for change email action">Change email</string>
+    <string name="account_settings_screen_change_email_dialog_title" description="Title for change email dialog">Change email address</string>
+    <string name="account_settings_screen_change_email_dialog_hint" description="Hint text for new email input">Enter new email address</string>
+    <string name="account_settings_screen_pending_email_title" description="Title for pending new email text">Pending new email address</string>
+    <string name="account_settings_screen_pending_email_verified" description="Text for verified pending email status">Pending email verified</string>
+    <string name="account_settings_screen_pending_email_not_verified" description="Text for not verified pending email status">Pending email not verified</string>
+    <string name="account_settings_screen_pending_email_completion_time" description="Text for email change completion time">Email change completes at: %s</string>
+    <string name="account_settings_screen_cancel_email_change_button" description="Button text for cancel email change action">Cancel email change</string>
+    <string name="account_settings_screen_email_change_initiated" description="Snackbar text for successful email change initiation">Email change initiated. Please check your email.</string>
+    <string name="account_settings_screen_email_change_cancelled" description="Snackbar text for successful email change cancellation">Email change cancelled</string>
+    <string name="account_settings_screen_cancel_email_change_confirm_dialog_title" description="Title for cancel email change confirm dialog">Cancel email change?</string>
 
     <!-- Profile grid settings screen -->
     <string name="profile_grid_settings_screen_title" description="Profile grid settings screen title">Profile grid</string>

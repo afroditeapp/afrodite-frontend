@@ -142,6 +142,36 @@ abstract class AppLocalizations {
   /// **'Account deletion pending'**
   String get account_deletion_pending_screen_title;
 
+  /// Button text for cancel email change action
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel email change'**
+  String get account_settings_screen_cancel_email_change_button;
+
+  /// Title for cancel email change confirm dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel email change?'**
+  String get account_settings_screen_cancel_email_change_confirm_dialog_title;
+
+  /// Button text for change email action
+  ///
+  /// In en, this message translates to:
+  /// **'Change email'**
+  String get account_settings_screen_change_email_button;
+
+  /// Hint text for new email input
+  ///
+  /// In en, this message translates to:
+  /// **'Enter new email address'**
+  String get account_settings_screen_change_email_dialog_hint;
+
+  /// Title for change email dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Change email address'**
+  String get account_settings_screen_change_email_dialog_title;
+
   /// Title for delete account action
   ///
   /// In en, this message translates to:
@@ -159,6 +189,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Request account deletion?'**
   String get account_settings_screen_delete_account_confirm_dialog_title;
+
+  /// Snackbar text for successful email change cancellation
+  ///
+  /// In en, this message translates to:
+  /// **'Email change cancelled'**
+  String get account_settings_screen_email_change_cancelled;
+
+  /// Snackbar text for successful email change initiation
+  ///
+  /// In en, this message translates to:
+  /// **'Email change initiated. Please check your email.'**
+  String get account_settings_screen_email_change_initiated;
 
   /// Text for not verified email status
   ///
@@ -178,6 +220,30 @@ abstract class AppLocalizations {
   /// **'Email verified'**
   String get account_settings_screen_email_verified;
 
+  /// Text for email change completion time
+  ///
+  /// In en, this message translates to:
+  /// **'Email change completes at: {p0}'**
+  String account_settings_screen_pending_email_completion_time(String p0);
+
+  /// Text for not verified pending email status
+  ///
+  /// In en, this message translates to:
+  /// **'Pending email not verified'**
+  String get account_settings_screen_pending_email_not_verified;
+
+  /// Title for pending new email text
+  ///
+  /// In en, this message translates to:
+  /// **'Pending new email address'**
+  String get account_settings_screen_pending_email_title;
+
+  /// Text for verified pending email status
+  ///
+  /// In en, this message translates to:
+  /// **'Pending email verified'**
+  String get account_settings_screen_pending_email_verified;
+
   /// Title for account settings
   ///
   /// In en, this message translates to:
@@ -196,29 +262,11 @@ abstract class AppLocalizations {
   /// **'Verify email'**
   String get account_settings_screen_verify_email_button;
 
-  /// Snackbar text when email sending failed
-  ///
-  /// In en, this message translates to:
-  /// **'Email sending failed'**
-  String get account_settings_screen_verify_email_sending_failed;
-
-  /// Snackbar text when email sending timeout
-  ///
-  /// In en, this message translates to:
-  /// **'Email sending timeout'**
-  String get account_settings_screen_verify_email_sending_timeout;
-
   /// Snackbar text for successful email verification sending
   ///
   /// In en, this message translates to:
   /// **'Verification email sent successfully'**
   String get account_settings_screen_verify_email_sent_successfully;
-
-  /// Snackbar text when user needs to try again later with seconds
-  ///
-  /// In en, this message translates to:
-  /// **'Try again after {p0} seconds'**
-  String account_settings_screen_verify_email_try_again_later(String p0);
 
   /// Title for admin settings screen
   ///
@@ -901,6 +949,18 @@ abstract class AppLocalizations {
   /// **'Edit'**
   String get generic_edit;
 
+  /// Generic email sending failed text
+  ///
+  /// In en, this message translates to:
+  /// **'Email sending failed'**
+  String get generic_email_sending_failed;
+
+  /// Generic email sending timeout text
+  ///
+  /// In en, this message translates to:
+  /// **'Email sending timeout'**
+  String get generic_email_sending_timeout;
+
   /// Generic empty text
   ///
   /// In en, this message translates to:
@@ -1176,6 +1236,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Try again'**
   String get generic_try_again;
+
+  /// Generic try again later with seconds text
+  ///
+  /// In en, this message translates to:
+  /// **'Try again after {p0} seconds'**
+  String generic_try_again_later_seconds(String p0);
 
   /// Generic unlimited text
   ///

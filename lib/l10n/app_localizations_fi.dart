@@ -41,6 +41,25 @@ class AppLocalizationsFi extends AppLocalizations {
       'Account deletion pending';
 
   @override
+  String get account_settings_screen_cancel_email_change_button =>
+      'Cancel email change';
+
+  @override
+  String get account_settings_screen_cancel_email_change_confirm_dialog_title =>
+      'Cancel email change?';
+
+  @override
+  String get account_settings_screen_change_email_button => 'Change email';
+
+  @override
+  String get account_settings_screen_change_email_dialog_hint =>
+      'Enter new email address';
+
+  @override
+  String get account_settings_screen_change_email_dialog_title =>
+      'Change email address';
+
+  @override
   String get account_settings_screen_delete_account_action =>
       'Request account deletion';
 
@@ -53,6 +72,14 @@ class AppLocalizationsFi extends AppLocalizations {
       'Request account deletion?';
 
   @override
+  String get account_settings_screen_email_change_cancelled =>
+      'Email change cancelled';
+
+  @override
+  String get account_settings_screen_email_change_initiated =>
+      'Email change initiated. Please check your email.';
+
+  @override
   String get account_settings_screen_email_not_verified => 'Email not verified';
 
   @override
@@ -60,6 +87,23 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get account_settings_screen_email_verified => 'Email verified';
+
+  @override
+  String account_settings_screen_pending_email_completion_time(String p0) {
+    return 'Email change completes at: $p0';
+  }
+
+  @override
+  String get account_settings_screen_pending_email_not_verified =>
+      'Pending email not verified';
+
+  @override
+  String get account_settings_screen_pending_email_title =>
+      'Pending new email address';
+
+  @override
+  String get account_settings_screen_pending_email_verified =>
+      'Pending email verified';
 
   @override
   String get account_settings_screen_title => 'Account';
@@ -72,21 +116,8 @@ class AppLocalizationsFi extends AppLocalizations {
   String get account_settings_screen_verify_email_button => 'Verify email';
 
   @override
-  String get account_settings_screen_verify_email_sending_failed =>
-      'Email sending failed';
-
-  @override
-  String get account_settings_screen_verify_email_sending_timeout =>
-      'Email sending timeout';
-
-  @override
   String get account_settings_screen_verify_email_sent_successfully =>
       'Verification email sent successfully';
-
-  @override
-  String account_settings_screen_verify_email_try_again_later(String p0) {
-    return 'Try again after $p0 seconds';
-  }
 
   @override
   String get admin_settings_title => 'Admin';
@@ -503,6 +534,12 @@ class AppLocalizationsFi extends AppLocalizations {
   String get generic_edit => 'Edit';
 
   @override
+  String get generic_email_sending_failed => 'Email sending failed';
+
+  @override
+  String get generic_email_sending_timeout => 'Email sending timeout';
+
+  @override
   String get generic_empty => 'Tyhjä';
 
   @override
@@ -642,6 +679,11 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get generic_try_again => 'Try again';
+
+  @override
+  String generic_try_again_later_seconds(String p0) {
+    return 'Try again after $p0 seconds';
+  }
 
   @override
   String get generic_unlimited => 'Unlimited';

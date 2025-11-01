@@ -24,12 +24,18 @@ mixin _$AccountDetailsBlocData {
   bool get isLoading => throw _privateConstructorErrorAccountDetailsBlocData;
   bool get isError => throw _privateConstructorErrorAccountDetailsBlocData;
   String? get email => throw _privateConstructorErrorAccountDetailsBlocData;
+  String? get emailChange => throw _privateConstructorErrorAccountDetailsBlocData;
+  bool? get emailChangeVerified => throw _privateConstructorErrorAccountDetailsBlocData;
+  UtcDateTime? get emailChangeCompletionTime => throw _privateConstructorErrorAccountDetailsBlocData;
   UpdateState get updateState => throw _privateConstructorErrorAccountDetailsBlocData;
 
   AccountDetailsBlocData copyWith({
     bool? isLoading,
     bool? isError,
     String? email,
+    String? emailChange,
+    bool? emailChangeVerified,
+    UtcDateTime? emailChangeCompletionTime,
     UpdateState? updateState,
   }) => throw _privateConstructorErrorAccountDetailsBlocData;
 }
@@ -40,6 +46,9 @@ abstract class _AccountDetailsBlocData implements AccountDetailsBlocData {
     bool isLoading,
     bool isError,
     String? email,
+    String? emailChange,
+    bool? emailChangeVerified,
+    UtcDateTime? emailChangeCompletionTime,
     UpdateState updateState,
   }) = _$AccountDetailsBlocDataImpl;
 }
@@ -54,6 +63,9 @@ class _$AccountDetailsBlocDataImpl with DiagnosticableTreeMixin implements _Acco
     this.isLoading = _isLoadingDefaultValue,
     this.isError = _isErrorDefaultValue,
     this.email,
+    this.emailChange,
+    this.emailChangeVerified,
+    this.emailChangeCompletionTime,
     this.updateState = _updateStateDefaultValue,
   });
 
@@ -64,11 +76,17 @@ class _$AccountDetailsBlocDataImpl with DiagnosticableTreeMixin implements _Acco
   @override
   final String? email;
   @override
+  final String? emailChange;
+  @override
+  final bool? emailChangeVerified;
+  @override
+  final UtcDateTime? emailChangeCompletionTime;
+  @override
   final UpdateState updateState;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'AccountDetailsBlocData(isLoading: $isLoading, isError: $isError, email: $email, updateState: $updateState)';
+    return 'AccountDetailsBlocData(isLoading: $isLoading, isError: $isError, email: $email, emailChange: $emailChange, emailChangeVerified: $emailChangeVerified, emailChangeCompletionTime: $emailChangeCompletionTime, updateState: $updateState)';
   }
 
   @override
@@ -79,6 +97,9 @@ class _$AccountDetailsBlocDataImpl with DiagnosticableTreeMixin implements _Acco
       ..add(DiagnosticsProperty('isLoading', isLoading))
       ..add(DiagnosticsProperty('isError', isError))
       ..add(DiagnosticsProperty('email', email))
+      ..add(DiagnosticsProperty('emailChange', emailChange))
+      ..add(DiagnosticsProperty('emailChangeVerified', emailChangeVerified))
+      ..add(DiagnosticsProperty('emailChangeCompletionTime', emailChangeCompletionTime))
       ..add(DiagnosticsProperty('updateState', updateState));
   }
 
@@ -93,6 +114,12 @@ class _$AccountDetailsBlocDataImpl with DiagnosticableTreeMixin implements _Acco
           other.isError == isError) &&
         (identical(other.email, email) ||
           other.email == email) &&
+        (identical(other.emailChange, emailChange) ||
+          other.emailChange == emailChange) &&
+        (identical(other.emailChangeVerified, emailChangeVerified) ||
+          other.emailChangeVerified == emailChangeVerified) &&
+        (identical(other.emailChangeCompletionTime, emailChangeCompletionTime) ||
+          other.emailChangeCompletionTime == emailChangeCompletionTime) &&
         (identical(other.updateState, updateState) ||
           other.updateState == updateState)
     );
@@ -104,6 +131,9 @@ class _$AccountDetailsBlocDataImpl with DiagnosticableTreeMixin implements _Acco
     isLoading,
     isError,
     email,
+    emailChange,
+    emailChangeVerified,
+    emailChangeCompletionTime,
     updateState,
   );
 
@@ -112,11 +142,17 @@ class _$AccountDetailsBlocDataImpl with DiagnosticableTreeMixin implements _Acco
     Object? isLoading,
     Object? isError,
     Object? email = _detectDefaultValueInCopyWith,
+    Object? emailChange = _detectDefaultValueInCopyWith,
+    Object? emailChangeVerified = _detectDefaultValueInCopyWith,
+    Object? emailChangeCompletionTime = _detectDefaultValueInCopyWith,
     Object? updateState,
   }) => _$AccountDetailsBlocDataImpl(
     isLoading: (isLoading ?? this.isLoading) as bool,
     isError: (isError ?? this.isError) as bool,
     email: (email == _detectDefaultValueInCopyWith ? this.email : email) as String?,
+    emailChange: (emailChange == _detectDefaultValueInCopyWith ? this.emailChange : emailChange) as String?,
+    emailChangeVerified: (emailChangeVerified == _detectDefaultValueInCopyWith ? this.emailChangeVerified : emailChangeVerified) as bool?,
+    emailChangeCompletionTime: (emailChangeCompletionTime == _detectDefaultValueInCopyWith ? this.emailChangeCompletionTime : emailChangeCompletionTime) as UtcDateTime?,
     updateState: (updateState ?? this.updateState) as UpdateState,
   );
 }

@@ -52,6 +52,26 @@
   "@account_deletion_pending_screen_title": {
     "description": "Title for account deletion pending screen"
   },
+  "account_settings_screen_cancel_email_change_button": "Cancel email change",
+  "@account_settings_screen_cancel_email_change_button": {
+    "description": "Button text for cancel email change action"
+  },
+  "account_settings_screen_cancel_email_change_confirm_dialog_title": "Cancel email change?",
+  "@account_settings_screen_cancel_email_change_confirm_dialog_title": {
+    "description": "Title for cancel email change confirm dialog"
+  },
+  "account_settings_screen_change_email_button": "Change email",
+  "@account_settings_screen_change_email_button": {
+    "description": "Button text for change email action"
+  },
+  "account_settings_screen_change_email_dialog_hint": "Enter new email address",
+  "@account_settings_screen_change_email_dialog_hint": {
+    "description": "Hint text for new email input"
+  },
+  "account_settings_screen_change_email_dialog_title": "Change email address",
+  "@account_settings_screen_change_email_dialog_title": {
+    "description": "Title for change email dialog"
+  },
   "account_settings_screen_delete_account_action": "Request account deletion",
   "@account_settings_screen_delete_account_action": {
     "description": "Title for delete account action"
@@ -63,6 +83,14 @@
   "account_settings_screen_delete_account_confirm_dialog_title": "Request account deletion?",
   "@account_settings_screen_delete_account_confirm_dialog_title": {
     "description": "Title for delete account confirm dialog title"
+  },
+  "account_settings_screen_email_change_cancelled": "Email change cancelled",
+  "@account_settings_screen_email_change_cancelled": {
+    "description": "Snackbar text for successful email change cancellation"
+  },
+  "account_settings_screen_email_change_initiated": "Email change initiated. Please check your email.",
+  "@account_settings_screen_email_change_initiated": {
+    "description": "Snackbar text for successful email change initiation"
   },
   "account_settings_screen_email_not_verified": "Email not verified",
   "@account_settings_screen_email_not_verified": {
@@ -76,6 +104,27 @@
   "@account_settings_screen_email_verified": {
     "description": "Text for verified email status"
   },
+  "account_settings_screen_pending_email_completion_time": "Email change completes at: {p0}",
+  "@account_settings_screen_pending_email_completion_time": {
+    "description": "Text for email change completion time",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
+  "account_settings_screen_pending_email_not_verified": "Pending email not verified",
+  "@account_settings_screen_pending_email_not_verified": {
+    "description": "Text for not verified pending email status"
+  },
+  "account_settings_screen_pending_email_title": "Pending new email address",
+  "@account_settings_screen_pending_email_title": {
+    "description": "Title for pending new email text"
+  },
+  "account_settings_screen_pending_email_verified": "Pending email verified",
+  "@account_settings_screen_pending_email_verified": {
+    "description": "Text for verified pending email status"
+  },
   "account_settings_screen_title": "Account",
   "@account_settings_screen_title": {
     "description": "Title for account settings"
@@ -88,26 +137,9 @@
   "@account_settings_screen_verify_email_button": {
     "description": "Button text for verify email action"
   },
-  "account_settings_screen_verify_email_sending_failed": "Email sending failed",
-  "@account_settings_screen_verify_email_sending_failed": {
-    "description": "Snackbar text when email sending failed"
-  },
-  "account_settings_screen_verify_email_sending_timeout": "Email sending timeout",
-  "@account_settings_screen_verify_email_sending_timeout": {
-    "description": "Snackbar text when email sending timeout"
-  },
   "account_settings_screen_verify_email_sent_successfully": "Verification email sent successfully",
   "@account_settings_screen_verify_email_sent_successfully": {
     "description": "Snackbar text for successful email verification sending"
-  },
-  "account_settings_screen_verify_email_try_again_later": "Try again after {p0} seconds",
-  "@account_settings_screen_verify_email_try_again_later": {
-    "description": "Snackbar text when user needs to try again later with seconds",
-    "placeholders": {
-      "p0": {
-        "type": "String"
-      }
-    }
   },
   "admin_settings_title": "Admin",
   "@admin_settings_title": {
@@ -600,6 +632,14 @@
   "@generic_edit": {
     "description": "Generic edit text"
   },
+  "generic_email_sending_failed": "Email sending failed",
+  "@generic_email_sending_failed": {
+    "description": "Generic email sending failed text"
+  },
+  "generic_email_sending_timeout": "Email sending timeout",
+  "@generic_email_sending_timeout": {
+    "description": "Generic email sending timeout text"
+  },
   "generic_empty": "Empty",
   "@generic_empty": {
     "description": "Generic empty text"
@@ -780,6 +820,15 @@
   "generic_try_again": "Try again",
   "@generic_try_again": {
     "description": "Generic try again text"
+  },
+  "generic_try_again_later_seconds": "Try again after {p0} seconds",
+  "@generic_try_again_later_seconds": {
+    "description": "Generic try again later with seconds text",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
   },
   "generic_unlimited": "Unlimited",
   "@generic_unlimited": {

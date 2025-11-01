@@ -151,4 +151,3 @@ class AccountData {
   static const requiredKeys = <String>{
   };
 }
-
