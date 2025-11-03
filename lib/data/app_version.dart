@@ -1,10 +1,13 @@
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
+import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:utils/utils.dart';
+
+final _log = Logger("AppVersionManager");
 
 class AppVersionManager extends AppSingleton {
   static final _instance = AppVersionManager._();
@@ -44,13 +47,10 @@ class AppVersionManager extends AppSingleton {
   }
 
   /// Returns true if the app major version is 0 and the minor version has changed
-  /// since the last run. This is useful for development/preview versions where
-  /// breaking changes may require database resets.
-  bool developmentPreviewMinorVersionChanged() {
-    if (major != 0) {
-      return false;
-    }
-
+  /// since the last run, or if the app transitioned from major version 0 to 1+.
+  /// This is useful for preview versions where breaking changes may
+  /// require database resets.
+  bool previewVersionMinorVersionChangedOrTransitionToStableVersionsHappened() {
     final previousVersion = _previousVersion;
     if (previousVersion == null) {
       return false;
@@ -61,12 +61,31 @@ class AppVersionManager extends AppSingleton {
       return false;
     }
 
+    final previousMajor = int.tryParse(previousNumbers[0]);
+    if (previousMajor == null) {
+      return false;
+    }
+
+    if (previousMajor == 0 && major >= 1) {
+      _log.info("App version changed, previous: $previousVersion, current: $appVersion");
+      return true;
+    }
+
+    if (major != 0) {
+      return false;
+    }
+
     final previousMinor = int.tryParse(previousNumbers[1]);
     if (previousMinor == null) {
       return false;
     }
 
-    return previousMinor != minor;
+    if (previousMinor != minor) {
+      _log.info("App version changed, previous: $previousVersion, current: $appVersion");
+      return true;
+    } else {
+      return false;
+    }
   }
 
   ClientInfo clientInfo() {

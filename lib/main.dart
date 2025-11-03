@@ -203,10 +203,9 @@ class GlobalInitManager extends AppSingletonNoInit {
 
     await AppVersionManager.getInstance().init();
 
-    // Remove databases if this is a development preview version (0.x.x)
-    // and the minor version has changed
-    if (AppVersionManager.getInstance().developmentPreviewMinorVersionChanged()) {
-      _log.info("Development preview minor version changed, removing databases");
+    if (AppVersionManager.getInstance()
+        .previewVersionMinorVersionChangedOrTransitionToStableVersionsHappened()) {
+      _log.info("Running preview version related automatic database removal");
       await _removeAllDatabases();
     }
 
