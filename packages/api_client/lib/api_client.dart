@@ -342,8 +342,12 @@ class ApiClient {
           return DemoAccountLoginResult.fromJson(value);
         case 'DemoAccountLoginToAccount':
           return DemoAccountLoginToAccount.fromJson(value);
+        case 'DemoAccountRegisterAccountResult':
+          return DemoAccountRegisterAccountResult.fromJson(value);
         case 'DemoAccountToken':
           return DemoAccountToken.fromJson(value);
+        case 'EmailLoginToken':
+          return EmailLoginToken.fromJson(value);
         case 'EventToClient':
           return EventToClient.fromJson(value);
         case 'EventType':
@@ -682,6 +686,10 @@ class ApiClient {
           return ReportProcessingStateTypeTransformer().decode(value);
         case 'ReportTypeNumber':
           return ReportTypeNumber.fromJson(value);
+        case 'RequestEmailLoginToken':
+          return RequestEmailLoginToken.fromJson(value);
+        case 'RequestEmailLoginTokenResult':
+          return RequestEmailLoginTokenResult.fromJson(value);
         case 'ResetNewsIteratorResult':
           return ResetNewsIteratorResult.fromJson(value);
         case 'ResetReceivedLikesIteratorResult':

@@ -960,7 +960,7 @@ class AccountApi {
   /// Parameters:
   ///
   /// * [DemoAccountToken] demoAccountToken (required):
-  Future<AccountId?> postDemoAccountRegisterAccount(DemoAccountToken demoAccountToken,) async {
+  Future<DemoAccountRegisterAccountResult?> postDemoAccountRegisterAccount(DemoAccountToken demoAccountToken,) async {
     final response = await postDemoAccountRegisterAccountWithHttpInfo(demoAccountToken,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
@@ -969,7 +969,59 @@ class AccountApi {
     // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'AccountId',) as AccountId;
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'DemoAccountRegisterAccountResult',) as DemoAccountRegisterAccountResult;
+    
+    }
+    return null;
+  }
+
+  /// Login using email login token (single use, max 1 guess).
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [EmailLoginToken] emailLoginToken (required):
+  Future<Response> postEmailLoginWithTokenWithHttpInfo(EmailLoginToken emailLoginToken,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/account_api/email_login_with_token';
+
+    // ignore: prefer_final_locals
+    Object? postBody = emailLoginToken;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Login using email login token (single use, max 1 guess).
+  ///
+  /// Parameters:
+  ///
+  /// * [EmailLoginToken] emailLoginToken (required):
+  Future<LoginResult?> postEmailLoginWithToken(EmailLoginToken emailLoginToken,) async {
+    final response = await postEmailLoginWithTokenWithHttpInfo(emailLoginToken,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'LoginResult',) as LoginResult;
     
     }
     return null;
@@ -1338,6 +1390,62 @@ class AccountApi {
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
+  }
+
+  /// Request email login token to be sent via email.
+  ///
+  /// The route always takes at least 5 seconds to complete to prevent timing attacks that could be used to enumerate existing email addresses.  No error is returned to prevent attackers from discovering which email addresses exist in the system.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [RequestEmailLoginToken] requestEmailLoginToken (required):
+  Future<Response> postRequestEmailLoginTokenWithHttpInfo(RequestEmailLoginToken requestEmailLoginToken,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/account_api/request_email_login_token';
+
+    // ignore: prefer_final_locals
+    Object? postBody = requestEmailLoginToken;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Request email login token to be sent via email.
+  ///
+  /// The route always takes at least 5 seconds to complete to prevent timing attacks that could be used to enumerate existing email addresses.  No error is returned to prevent attackers from discovering which email addresses exist in the system.
+  ///
+  /// Parameters:
+  ///
+  /// * [RequestEmailLoginToken] requestEmailLoginToken (required):
+  Future<RequestEmailLoginTokenResult?> postRequestEmailLoginToken(RequestEmailLoginToken requestEmailLoginToken,) async {
+    final response = await postRequestEmailLoginTokenWithHttpInfo(requestEmailLoginToken,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'RequestEmailLoginTokenResult',) as RequestEmailLoginTokenResult;
+    
+    }
+    return null;
   }
 
   /// Performs an HTTP 'POST /account_api/reset_news_paging' operation and returns the [Response].

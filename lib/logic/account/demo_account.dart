@@ -71,5 +71,9 @@ void _handleError(DemoAccountError e) {
       showSnackBar(R.strings.login_screen_demo_account_login_session_expired);
     case DemoAccountSignInError(:final error):
       showSnackBarTextsForSignInError(error);
+    case DemoAccountMaxAccountCountError():
+      showSnackBar(R.strings.demo_account_screen_max_account_count_error);
+    case DemoAccountGeneralError():
+      showSnackBar(R.strings.generic_error);
   }
 }

@@ -446,6 +446,10 @@
   "@demo_account_screen_login_to_account_dialog_title": {
     "description": "Dialog title text for confirming login to some account"
   },
+  "demo_account_screen_max_account_count_error": "Error: max account count",
+  "@demo_account_screen_max_account_count_error": {
+    "description": "Snackbar text for max account count error"
+  },
   "demo_account_screen_new_account_action": "New account",
   "@demo_account_screen_new_account_action": {
     "description": "Text for action which creates a new account"

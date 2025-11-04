@@ -102,7 +102,9 @@ lib/model/data_export_type.dart
 lib/model/demo_account_login_credentials.dart
 lib/model/demo_account_login_result.dart
 lib/model/demo_account_login_to_account.dart
+lib/model/demo_account_register_account_result.dart
 lib/model/demo_account_token.dart
+lib/model/email_login_token.dart
 lib/model/event_to_client.dart
 lib/model/event_type.dart
 lib/model/favorite_profiles_page.dart
@@ -272,6 +274,8 @@ lib/model/report_iterator_mode.dart
 lib/model/report_iterator_query.dart
 lib/model/report_processing_state.dart
 lib/model/report_type_number.dart
+lib/model/request_email_login_token.dart
+lib/model/request_email_login_token_result.dart
 lib/model/reset_news_iterator_result.dart
 lib/model/reset_received_likes_iterator_result.dart
 lib/model/scheduled_maintenance_status.dart

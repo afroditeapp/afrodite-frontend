@@ -383,6 +383,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'Login to account?';
 
   @override
+  String get demo_account_screen_max_account_count_error =>
+      'Error: max account count';
+
+  @override
   String get demo_account_screen_new_account_action => 'New account';
 
   @override

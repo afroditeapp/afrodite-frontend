@@ -135,7 +135,17 @@ class DemoAccountManager {
             return await apiNoConnection
                 .accountWrapper()
                 .requestValue((api) => api.postDemoAccountRegisterAccount(t))
-                .mapErr((e) => handleError(e, apiNoConnection: apiNoConnection));
+                .mapErr((e) => handleError(e, apiNoConnection: apiNoConnection))
+                .andThen((r) {
+                  final aid = r.aid;
+                  if (r.errorMaxAccountCount) {
+                    return Err<AccountId, DemoAccountError>(DemoAccountMaxAccountCountError());
+                  } else if (aid == null) {
+                    return Err<AccountId, DemoAccountError>(DemoAccountGeneralError());
+                  } else {
+                    return Ok(aid);
+                  }
+                });
           }
         })
         .andThen(

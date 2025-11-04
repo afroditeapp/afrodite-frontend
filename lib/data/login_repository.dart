@@ -486,6 +486,10 @@ class DemoAccountSignInError extends DemoAccountError {
   DemoAccountSignInError(this.error);
 }
 
+class DemoAccountMaxAccountCountError extends DemoAccountError {}
+
+class DemoAccountGeneralError extends DemoAccountError {}
+
 sealed class SignInWithEvent {}
 
 class SignInWithGetTokenCompleted extends SignInWithEvent {}

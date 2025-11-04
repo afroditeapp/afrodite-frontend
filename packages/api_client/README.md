@@ -84,6 +84,7 @@ Class | Method | HTTP request | Description
 *AccountApi* | [**postDemoAccountLoginToAccount**](doc//AccountApi.md#postdemoaccountlogintoaccount) | **POST** /account_api/demo_account_login_to_account | 
 *AccountApi* | [**postDemoAccountLogout**](doc//AccountApi.md#postdemoaccountlogout) | **POST** /account_api/demo_account_logout | 
 *AccountApi* | [**postDemoAccountRegisterAccount**](doc//AccountApi.md#postdemoaccountregisteraccount) | **POST** /account_api/demo_account_register_account | 
+*AccountApi* | [**postEmailLoginWithToken**](doc//AccountApi.md#postemailloginwithtoken) | **POST** /account_api/email_login_with_token | Login using email login token (single use, max 1 guess).
 *AccountApi* | [**postGetClientFeaturesConfig**](doc//AccountApi.md#postgetclientfeaturesconfig) | **POST** /account_api/client_features_config | 
 *AccountApi* | [**postGetCustomReportsConfig**](doc//AccountApi.md#postgetcustomreportsconfig) | **POST** /account_api/custom_reports_config | 
 *AccountApi* | [**postGetNewsPage**](doc//AccountApi.md#postgetnewspage) | **POST** /account_api/news_page | 
@@ -92,6 +93,7 @@ Class | Method | HTTP request | Description
 *AccountApi* | [**postInitEmailChange**](doc//AccountApi.md#postinitemailchange) | **POST** /account_api/init_email_change | Initiate email change process by providing a new email address.
 *AccountApi* | [**postInitialEmail**](doc//AccountApi.md#postinitialemail) | **POST** /account_api/initial_email | Set initial email when initial setup is ongoing
 *AccountApi* | [**postLogout**](doc//AccountApi.md#postlogout) | **POST** /account_api/logout | 
+*AccountApi* | [**postRequestEmailLoginToken**](doc//AccountApi.md#postrequestemaillogintoken) | **POST** /account_api/request_email_login_token | Request email login token to be sent via email.
 *AccountApi* | [**postResetNewsPaging**](doc//AccountApi.md#postresetnewspaging) | **POST** /account_api/reset_news_paging | 
 *AccountApi* | [**postSendVerifyEmailMessage**](doc//AccountApi.md#postsendverifyemailmessage) | **POST** /account_api/send_verify_email_message | 
 *AccountApi* | [**postSetAccountDeletionRequestState**](doc//AccountApi.md#postsetaccountdeletionrequeststate) | **POST** /account_api/set_account_deletion_request_state/{aid} | Request account deletion or cancel the deletion
@@ -328,7 +330,9 @@ Class | Method | HTTP request | Description
  - [DemoAccountLoginCredentials](doc//DemoAccountLoginCredentials.md)
  - [DemoAccountLoginResult](doc//DemoAccountLoginResult.md)
  - [DemoAccountLoginToAccount](doc//DemoAccountLoginToAccount.md)
+ - [DemoAccountRegisterAccountResult](doc//DemoAccountRegisterAccountResult.md)
  - [DemoAccountToken](doc//DemoAccountToken.md)
+ - [EmailLoginToken](doc//EmailLoginToken.md)
  - [EventToClient](doc//EventToClient.md)
  - [EventType](doc//EventType.md)
  - [FavoriteProfilesPage](doc//FavoriteProfilesPage.md)
@@ -498,6 +502,8 @@ Class | Method | HTTP request | Description
  - [ReportIteratorQuery](doc//ReportIteratorQuery.md)
  - [ReportProcessingState](doc//ReportProcessingState.md)
  - [ReportTypeNumber](doc//ReportTypeNumber.md)
+ - [RequestEmailLoginToken](doc//RequestEmailLoginToken.md)
+ - [RequestEmailLoginTokenResult](doc//RequestEmailLoginTokenResult.md)
  - [ResetNewsIteratorResult](doc//ResetNewsIteratorResult.md)
  - [ResetReceivedLikesIteratorResult](doc//ResetReceivedLikesIteratorResult.md)
  - [ScheduledMaintenanceStatus](doc//ScheduledMaintenanceStatus.md)

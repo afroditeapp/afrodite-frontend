@@ -222,6 +222,7 @@
     <string name="demo_account_screen_new_account_dialog_description" description="">Create new account and login to it?</string>
     <string name="demo_account_screen_login_to_account_dialog_title" description="Dialog title text for confirming login to some account">Login to account?</string>
     <string name="demo_account_screen_confirm_logout_dialog_title" description="Dialog title text for confirming logout from demo account">Logout?</string>
+    <string name="demo_account_screen_max_account_count_error" description="Snackbar text for max account count error">Error: max account count</string>
 
     <!-- Initial setup -->
     <string name="initial_setup_screen_skip_dialog_title" description="Title for skip initial setup confirm dialog">Skip account initial setup?</string>

@@ -691,6 +691,12 @@ abstract class AppLocalizations {
   /// **'Login to account?'**
   String get demo_account_screen_login_to_account_dialog_title;
 
+  /// Snackbar text for max account count error
+  ///
+  /// In en, this message translates to:
+  /// **'Error: max account count'**
+  String get demo_account_screen_max_account_count_error;
+
   /// Text for action which creates a new account
   ///
   /// In en, this message translates to:
