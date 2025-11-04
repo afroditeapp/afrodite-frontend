@@ -898,6 +898,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get login_screen_demo_account_username => 'Username';
 
   @override
+  String get login_screen_email_already_used =>
+      'Email address is already in use by another account';
+
+  @override
   String get login_screen_ios_pwa_install_description =>
       'To use this app on iOS, please add it to your home screen:';
 

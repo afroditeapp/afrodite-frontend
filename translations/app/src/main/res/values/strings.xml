@@ -197,6 +197,7 @@
     <string name="login_screen_registering_disabled_on_web" description="Text that registering new accounts is disabled on web">Registering new accounts is not possible using a web browser.</string>
     <string name="login_screen_login_note_text_beginning" description="Text about agreeing terms of service and privacy policy">By signing in, you agree to our</string>
     <string name="login_screen_sign_in_with_email_unverified" description="Snackbar error message when sign in with account email is not verified">Email address of the selected account is not verified</string>
+    <string name="login_screen_email_already_used" description="Snackbar error message when email is already used by another account">Email address is already in use by another account</string>
     <string name="login_screen_login_note_text_tos" description="Text for terms of service link">Terms of Service</string>
     <string name="login_screen_login_note_text_and" description="Word 'and' between terms of service and privacy policy links">and</string>
     <string name="login_screen_login_note_text_privacy_policy" description="Text for privacy policy link">Privacy Policy</string>

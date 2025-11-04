@@ -60,6 +60,8 @@ void showSnackBarTextsForSignInError(CommonSignInError error) {
       showSnackBar(R.strings.generic_error_app_version_is_unsupported);
     case CommonSignInError.signInWithEmailUnverified:
       showSnackBar(R.strings.login_screen_sign_in_with_email_unverified);
+    case CommonSignInError.emailAlreadyUsed:
+      showSnackBar(R.strings.login_screen_email_already_used);
     case CommonSignInError.creatingConnectingWebSocketFailed:
       showSnackBar(R.strings.login_screen_connecting_websocket_failed);
     case CommonSignInError.dataSyncFailed:

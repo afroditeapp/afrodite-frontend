@@ -1586,6 +1586,12 @@ abstract class AppLocalizations {
   /// **'Username'**
   String get login_screen_demo_account_username;
 
+  /// Snackbar error message when email is already used by another account
+  ///
+  /// In en, this message translates to:
+  /// **'Email address is already in use by another account'**
+  String get login_screen_email_already_used;
+
   /// Description text for iOS PWA installation guide
   ///
   /// In en, this message translates to:

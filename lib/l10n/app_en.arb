@@ -1059,6 +1059,10 @@
   "@login_screen_demo_account_username": {
     "description": "Placeholder text for demo account username"
   },
+  "login_screen_email_already_used": "Email address is already in use by another account",
+  "@login_screen_email_already_used": {
+    "description": "Snackbar error message when email is already used by another account"
+  },
   "login_screen_ios_pwa_install_description": "To use this app on iOS, please add it to your home screen:",
   "@login_screen_ios_pwa_install_description": {
     "description": "Description text for iOS PWA installation guide"
