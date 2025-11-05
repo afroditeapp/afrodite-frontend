@@ -2,6 +2,7 @@ import "package:app/data/utils/demo_account_manager.dart";
 import "package:app/logic/account/demo_account_login.dart";
 import "package:app/model/freezed/logic/account/demo_account_login.dart";
 import "package:app/ui/login/widgets.dart";
+import "package:app/ui/login/email_login.dart";
 import "package:app/ui/utils/web_pwa/web_pwa.dart";
 import "package:app/utils/result.dart";
 import "package:flutter/foundation.dart";
@@ -50,6 +51,12 @@ class LoginScreen extends StatelessWidget {
         title: null,
         actions: [
           menuActions([
+            MenuItemButton(
+              child: Text(context.strings.email_login_screen_title),
+              onPressed: () {
+                openEmailLoginScreen(context);
+              },
+            ),
             MenuItemButton(
               child: Text(context.strings.login_screen_demo_account_dialog_title),
               onPressed: () {

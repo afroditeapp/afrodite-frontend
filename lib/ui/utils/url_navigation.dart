@@ -25,6 +25,7 @@ import 'package:app/ui/normal/settings/admin.dart';
 import 'package:app/ui/normal/settings/blocked_profiles.dart';
 import 'package:app/ui/normal/settings/data_export.dart';
 import 'package:app/ui/normal/settings/debug.dart';
+import 'package:app/ui/login/email_login.dart';
 import 'package:app/ui/normal/settings/general/profile_grid_settings.dart';
 import 'package:app/ui/normal/settings/location.dart';
 import 'package:app/ui/normal/settings/media/content_management.dart';
@@ -115,6 +116,10 @@ List<UrlParser<MyScreenPage<Object>>> loggedOutPages() => [
   SplashPage(),
   LoginPage(),
   DemoAccountPage(),
+
+  // Other
+  EmailLoginPage(),
+  EmailLoginCodePage(),
 ];
 
 List<UrlParser<MyScreenPage<Object>>> loggedInPages(RepositoryInstances r) => [

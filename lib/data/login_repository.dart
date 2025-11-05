@@ -438,6 +438,35 @@ class LoginRepository extends AppSingleton {
     }
   }
 
+  /// Request email login token to be sent via email
+  Future<Result<RequestEmailLoginTokenResult, ()>> emailLoginRequestToken(String email) async {
+    return await _apiNoConnection
+        .account((api) => api.postRequestEmailLoginToken(RequestEmailLoginToken(email: email)))
+        .mapErr((_) => ());
+  }
+
+  /// Login using email login token
+  Future<Result<LoginResult, ()>> emailLoginWithToken(String token) async {
+    final result = await _apiNoConnection
+        .account(
+          (api) => api.postEmailLoginWithToken(
+            EmailLoginToken(
+              token: AccessToken(token: token),
+              clientInfo: AppVersionManager.getInstance().clientInfo(),
+            ),
+          ),
+        )
+        .ok();
+
+    if (result == null) {
+      return const Err(());
+    }
+
+    // Handle the login result similar to sign in with
+    await _handleLoginResultInternal(result);
+    return Ok(result);
+  }
+
   /// Logout back to login or demo account screen
   Future<void> logout(AccountId? id) async {
     final event = Logout(id);

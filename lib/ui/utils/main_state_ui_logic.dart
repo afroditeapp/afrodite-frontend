@@ -5,6 +5,7 @@ import 'package:app/logic/account/client_features_config.dart';
 import 'package:app/logic/account/custom_reports_config.dart';
 import 'package:app/logic/account/demo_account.dart';
 import 'package:app/logic/account/demo_account_login.dart';
+import 'package:app/logic/account/email_login.dart';
 import 'package:app/logic/app/email_notification_settings.dart';
 import 'package:app/logic/app/info_dialog.dart';
 import 'package:app/logic/app/like_grid_instance_manager.dart';
@@ -120,6 +121,7 @@ class NavigatorLoginScreen extends BasicRootScreen {
         BlocProvider(create: (_) => ServerAddressBloc()),
         BlocProvider(create: (_) => SignInWithBloc()),
         BlocProvider(create: (_) => DemoAccountLoginBloc()),
+        BlocProvider(create: (_) => EmailLoginBloc()),
       ],
       child: child,
     );

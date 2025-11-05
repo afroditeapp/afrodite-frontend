@@ -482,6 +482,41 @@ class AppLocalizationsFi extends AppLocalizations {
       'Profile text byte count is more than 2000 bytes';
 
   @override
+  String get email_login_screen_code_hint => 'Login code';
+
+  @override
+  String email_login_screen_didnt_receive_code(String p0) {
+    return 'If you didn\'t receive the code:\n• Check your spam folder\n• Verify the email address is correct\n• Wait $p0 before requesting a new code\n• Make sure you have an existing account with this email';
+  }
+
+  @override
+  String get email_login_screen_email_hint => 'Email address';
+
+  @override
+  String get email_login_screen_email_login_failed =>
+      'Invalid login code or other error';
+
+  @override
+  String email_login_screen_input_code_description(String p0) {
+    return 'Enter the login code sent to $p0';
+  }
+
+  @override
+  String get email_login_screen_input_email_description =>
+      'Enter your email address to receive a login code. This works only for already existing accounts.';
+
+  @override
+  String get email_login_screen_send_code_button => 'Send login code';
+
+  @override
+  String get email_login_screen_title => 'Email login';
+
+  @override
+  String email_login_screen_token_validity(String p0) {
+    return 'Code expires in: $p0';
+  }
+
+  @override
   String get email_notification_settings_screen_title => 'Email notifications';
 
   @override

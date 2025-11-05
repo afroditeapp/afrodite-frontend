@@ -847,6 +847,60 @@ abstract class AppLocalizations {
   /// **'Profile text byte count is more than 2000 bytes'**
   String get edit_profile_text_screen_text_lenght_too_long;
 
+  /// Hint text for login code input field
+  ///
+  /// In en, this message translates to:
+  /// **'Login code'**
+  String get email_login_screen_code_hint;
+
+  /// Help text for not receiving code
+  ///
+  /// In en, this message translates to:
+  /// **'If you didn\'t receive the code:\n• Check your spam folder\n• Verify the email address is correct\n• Wait {p0} before requesting a new code\n• Make sure you have an existing account with this email'**
+  String email_login_screen_didnt_receive_code(String p0);
+
+  /// Hint text for email input field
+  ///
+  /// In en, this message translates to:
+  /// **'Email address'**
+  String get email_login_screen_email_hint;
+
+  /// Error text when login with email login token fails
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid login code or other error'**
+  String get email_login_screen_email_login_failed;
+
+  /// Description for inputting login code
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the login code sent to {p0}'**
+  String email_login_screen_input_code_description(String p0);
+
+  /// Description for inputting email
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your email address to receive a login code. This works only for already existing accounts.'**
+  String get email_login_screen_input_email_description;
+
+  /// Button text for sending login code
+  ///
+  /// In en, this message translates to:
+  /// **'Send login code'**
+  String get email_login_screen_send_code_button;
+
+  /// Title for email login screen
+  ///
+  /// In en, this message translates to:
+  /// **'Email login'**
+  String get email_login_screen_title;
+
+  /// Text showing token validity time
+  ///
+  /// In en, this message translates to:
+  /// **'Code expires in: {p0}'**
+  String email_login_screen_token_validity(String p0);
+
   /// Title for email notification settings screen
   ///
   /// In en, this message translates to:

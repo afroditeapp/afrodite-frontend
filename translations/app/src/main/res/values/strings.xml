@@ -217,6 +217,17 @@
     <string name="login_screen_ios_pwa_install_step3" description="Third step for iOS PWA installation">3. Tap \"Add\" in the top right corner</string>
     <string name="login_screen_ios_pwa_install_step4" description="Fourth step for iOS PWA installation">4. Open the app from your home screen</string>
 
+    <!-- Email login screen -->
+    <string name="email_login_screen_title" description="Title for email login screen">Email login</string>
+    <string name="email_login_screen_input_email_description" description="Description for inputting email">Enter your email address to receive a login code. This works only for already existing accounts.</string>
+    <string name="email_login_screen_email_hint" description="Hint text for email input field">Email address</string>
+    <string name="email_login_screen_send_code_button" description="Button text for sending login code">Send login code</string>
+    <string name="email_login_screen_input_code_description" description="Description for inputting login code">Enter the login code sent to %s</string>
+    <string name="email_login_screen_didnt_receive_code" description="Help text for not receiving code">If you didn\'t receive the code:\n• Check your spam folder\n• Verify the email address is correct\n• Wait %s before requesting a new code\n• Make sure you have an existing account with this email</string>
+    <string name="email_login_screen_code_hint" description="Hint text for login code input field">Login code</string>
+    <string name="email_login_screen_token_validity" description="Text showing token validity time">Code expires in: %s</string>
+    <string name="email_login_screen_email_login_failed" description="Error text when login with email login token fails">Invalid login code or other error</string>
+
     <!-- Demo account screen -->
     <string name="demo_account_screen_no_accounts_available" description="Text displayed when available accounts list is empty">No accounts available</string>
     <string name="demo_account_screen_new_account_action" description="Text for action which creates a new account">New account</string>
