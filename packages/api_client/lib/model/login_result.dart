@@ -15,6 +15,7 @@ class LoginResult {
   LoginResult({
     this.aid,
     this.email,
+    this.errorAccountLocked = false,
     this.errorEmailAlreadyUsed = false,
     this.errorSignInWithEmailUnverified = false,
     this.errorUnsupportedClient = false,
@@ -32,6 +33,8 @@ class LoginResult {
   ///
   String? email;
 
+  bool errorAccountLocked;
+
   /// This might be true, when registering new account using sign in with login method.
   bool errorEmailAlreadyUsed;
 
@@ -46,6 +49,7 @@ class LoginResult {
   bool operator ==(Object other) => identical(this, other) || other is LoginResult &&
     other.aid == aid &&
     other.email == email &&
+    other.errorAccountLocked == errorAccountLocked &&
     other.errorEmailAlreadyUsed == errorEmailAlreadyUsed &&
     other.errorSignInWithEmailUnverified == errorSignInWithEmailUnverified &&
     other.errorUnsupportedClient == errorUnsupportedClient &&
@@ -56,13 +60,14 @@ class LoginResult {
     // ignore: unnecessary_parenthesis
     (aid == null ? 0 : aid!.hashCode) +
     (email == null ? 0 : email!.hashCode) +
+    (errorAccountLocked.hashCode) +
     (errorEmailAlreadyUsed.hashCode) +
     (errorSignInWithEmailUnverified.hashCode) +
     (errorUnsupportedClient.hashCode) +
     (tokens == null ? 0 : tokens!.hashCode);
 
   @override
-  String toString() => 'LoginResult[aid=$aid, email=$email, errorEmailAlreadyUsed=$errorEmailAlreadyUsed, errorSignInWithEmailUnverified=$errorSignInWithEmailUnverified, errorUnsupportedClient=$errorUnsupportedClient, tokens=$tokens]';
+  String toString() => 'LoginResult[aid=$aid, email=$email, errorAccountLocked=$errorAccountLocked, errorEmailAlreadyUsed=$errorEmailAlreadyUsed, errorSignInWithEmailUnverified=$errorSignInWithEmailUnverified, errorUnsupportedClient=$errorUnsupportedClient, tokens=$tokens]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -76,6 +81,7 @@ class LoginResult {
     } else {
       json[r'email'] = null;
     }
+      json[r'error_account_locked'] = this.errorAccountLocked;
       json[r'error_email_already_used'] = this.errorEmailAlreadyUsed;
       json[r'error_sign_in_with_email_unverified'] = this.errorSignInWithEmailUnverified;
       json[r'error_unsupported_client'] = this.errorUnsupportedClient;
@@ -108,6 +114,7 @@ class LoginResult {
       return LoginResult(
         aid: AccountId.fromJson(json[r'aid']),
         email: mapValueOfType<String>(json, r'email'),
+        errorAccountLocked: mapValueOfType<bool>(json, r'error_account_locked') ?? false,
         errorEmailAlreadyUsed: mapValueOfType<bool>(json, r'error_email_already_used') ?? false,
         errorSignInWithEmailUnverified: mapValueOfType<bool>(json, r'error_sign_in_with_email_unverified') ?? false,
         errorUnsupportedClient: mapValueOfType<bool>(json, r'error_unsupported_client') ?? false,

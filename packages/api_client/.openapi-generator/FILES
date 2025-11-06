@@ -32,6 +32,7 @@ lib/model/account_content.dart
 lib/model/account_data.dart
 lib/model/account_id.dart
 lib/model/account_id_db_value.dart
+lib/model/account_locked_state.dart
 lib/model/account_setup.dart
 lib/model/account_state_container.dart
 lib/model/account_sync_version.dart
@@ -104,6 +105,7 @@ lib/model/demo_account_login_result.dart
 lib/model/demo_account_login_to_account.dart
 lib/model/demo_account_register_account_result.dart
 lib/model/demo_account_token.dart
+lib/model/email_address_state_for_admin.dart
 lib/model/email_login_token.dart
 lib/model/event_to_client.dart
 lib/model/event_type.dart
@@ -147,6 +149,7 @@ lib/model/get_report_list.dart
 lib/model/get_sent_message.dart
 lib/model/group_values.dart
 lib/model/init_email_change.dart
+lib/model/init_email_change_admin.dart
 lib/model/init_email_change_result.dart
 lib/model/initial_profile_age.dart
 lib/model/ip_address_info.dart
@@ -293,6 +296,7 @@ lib/model/sent_message_id.dart
 lib/model/sent_message_id_list.dart
 lib/model/set_account_ban_state.dart
 lib/model/set_account_setup.dart
+lib/model/set_email_login_enabled.dart
 lib/model/set_initial_email.dart
 lib/model/set_max_public_key_count.dart
 lib/model/set_profile_content.dart

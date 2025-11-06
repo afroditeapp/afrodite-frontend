@@ -158,6 +158,63 @@ class AccountAdminApi {
     return null;
   }
 
+  /// Get account locked state
+  ///
+  /// # Access  Permission [model::Permissions::admin_edit_login] is required.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [String] aid (required):
+  Future<Response> getAccountLockedStateWithHttpInfo(String aid,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/account_api/get_account_locked_state/{aid}'
+      .replaceAll('{aid}', aid);
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Get account locked state
+  ///
+  /// # Access  Permission [model::Permissions::admin_edit_login] is required.
+  ///
+  /// Parameters:
+  ///
+  /// * [String] aid (required):
+  Future<AccountLockedState?> getAccountLockedState(String aid,) async {
+    final response = await getAccountLockedStateWithHttpInfo(aid,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'AccountLockedState',) as AccountLockedState;
+    
+    }
+    return null;
+  }
+
   /// Get [model::Account] for specific account.
   ///
   /// # Access  Permission [model::Permissions::admin_view_private_info] is required.
@@ -263,6 +320,63 @@ class AccountAdminApi {
     return null;
   }
 
+  /// Get email address state for admin.
+  ///
+  /// Requires `admin_view_email_address` permission.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [String] aid (required):
+  Future<Response> getEmailAddressStateWithHttpInfo(String aid,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/account_api/get_email_address_state/{aid}'
+      .replaceAll('{aid}', aid);
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Get email address state for admin.
+  ///
+  /// Requires `admin_view_email_address` permission.
+  ///
+  /// Parameters:
+  ///
+  /// * [String] aid (required):
+  Future<EmailAddressStateForAdmin?> getEmailAddressState(String aid,) async {
+    final response = await getEmailAddressStateWithHttpInfo(aid,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'EmailAddressStateForAdmin',) as EmailAddressStateForAdmin;
+    
+    }
+    return null;
+  }
+
   /// Get [model::Permissions] for specific account.
   ///
   /// # Access  Permission [model::Permissions::admin_view_permissions] is required.
@@ -318,6 +432,160 @@ class AccountAdminApi {
     
     }
     return null;
+  }
+
+  /// Cancel email changing process for any account.
+  ///
+  /// # Access  Permission [model::Permissions::admin_change_email_address] is required.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [String] aid (required):
+  Future<Response> postAdminCancelEmailChangeWithHttpInfo(String aid,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/account_api/admin_cancel_email_change/{aid}'
+      .replaceAll('{aid}', aid);
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Cancel email changing process for any account.
+  ///
+  /// # Access  Permission [model::Permissions::admin_change_email_address] is required.
+  ///
+  /// Parameters:
+  ///
+  /// * [String] aid (required):
+  Future<void> postAdminCancelEmailChange(String aid,) async {
+    final response = await postAdminCancelEmailChangeWithHttpInfo(aid,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+  }
+
+  /// Initiate email change process for any account by providing a new email address.
+  ///
+  /// This is the admin version of the email change endpoint.  # Access  Permission [model::Permissions::admin_change_email_address] is required.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [InitEmailChangeAdmin] initEmailChangeAdmin (required):
+  Future<Response> postAdminInitEmailChangeWithHttpInfo(InitEmailChangeAdmin initEmailChangeAdmin,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/account_api/admin_init_email_change';
+
+    // ignore: prefer_final_locals
+    Object? postBody = initEmailChangeAdmin;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Initiate email change process for any account by providing a new email address.
+  ///
+  /// This is the admin version of the email change endpoint.  # Access  Permission [model::Permissions::admin_change_email_address] is required.
+  ///
+  /// Parameters:
+  ///
+  /// * [InitEmailChangeAdmin] initEmailChangeAdmin (required):
+  Future<InitEmailChangeResult?> postAdminInitEmailChange(InitEmailChangeAdmin initEmailChangeAdmin,) async {
+    final response = await postAdminInitEmailChangeWithHttpInfo(initEmailChangeAdmin,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'InitEmailChangeResult',) as InitEmailChangeResult;
+    
+    }
+    return null;
+  }
+
+  /// Logout any account
+  ///
+  /// # Access  Permission [model::Permissions::admin_edit_login] is required.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [String] aid (required):
+  Future<Response> postAdminLogoutWithHttpInfo(String aid,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/account_api/admin_logout/{aid}'
+      .replaceAll('{aid}', aid);
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Logout any account
+  ///
+  /// # Access  Permission [model::Permissions::admin_edit_login] is required.
+  ///
+  /// Parameters:
+  ///
+  /// * [String] aid (required):
+  Future<void> postAdminLogout(String aid,) async {
+    final response = await postAdminLogoutWithHttpInfo(aid,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
   }
 
   /// Performs an HTTP 'POST /account_api/create_news_item' operation and returns the [Response].
@@ -464,6 +732,59 @@ class AccountAdminApi {
     
     }
     return null;
+  }
+
+  /// Set account locked state
+  ///
+  /// # Access  Permission [model::Permissions::admin_edit_login] is required.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [String] aid (required):
+  ///
+  /// * [AccountLockedState] accountLockedState (required):
+  Future<Response> postSetAccountLockedStateWithHttpInfo(String aid, AccountLockedState accountLockedState,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/account_api/set_account_locked_state/{aid}'
+      .replaceAll('{aid}', aid);
+
+    // ignore: prefer_final_locals
+    Object? postBody = accountLockedState;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Set account locked state
+  ///
+  /// # Access  Permission [model::Permissions::admin_edit_login] is required.
+  ///
+  /// Parameters:
+  ///
+  /// * [String] aid (required):
+  ///
+  /// * [AccountLockedState] accountLockedState (required):
+  Future<void> postSetAccountLockedState(String aid, AccountLockedState accountLockedState,) async {
+    final response = await postSetAccountLockedStateWithHttpInfo(aid, accountLockedState,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
   }
 
   /// Ban or unban account

@@ -10,12 +10,11 @@
 
 part of openapi.api;
 
-class AccountData {
-  /// Returns a new [AccountData] instance.
-  AccountData({
+class EmailAddressStateForAdmin {
+  /// Returns a new [EmailAddressStateForAdmin] instance.
+  EmailAddressStateForAdmin({
     this.email,
     this.emailChange,
-    this.emailChangeCompletionTime,
     this.emailChangeVerified = false,
     this.emailLoginEnabled = true,
   });
@@ -36,18 +35,14 @@ class AccountData {
   ///
   String? emailChange;
 
-  /// API route handler sets this value
-  UnixTime? emailChangeCompletionTime;
-
   bool emailChangeVerified;
 
   bool emailLoginEnabled;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is AccountData &&
+  bool operator ==(Object other) => identical(this, other) || other is EmailAddressStateForAdmin &&
     other.email == email &&
     other.emailChange == emailChange &&
-    other.emailChangeCompletionTime == emailChangeCompletionTime &&
     other.emailChangeVerified == emailChangeVerified &&
     other.emailLoginEnabled == emailLoginEnabled;
 
@@ -56,12 +51,11 @@ class AccountData {
     // ignore: unnecessary_parenthesis
     (email == null ? 0 : email!.hashCode) +
     (emailChange == null ? 0 : emailChange!.hashCode) +
-    (emailChangeCompletionTime == null ? 0 : emailChangeCompletionTime!.hashCode) +
     (emailChangeVerified.hashCode) +
     (emailLoginEnabled.hashCode);
 
   @override
-  String toString() => 'AccountData[email=$email, emailChange=$emailChange, emailChangeCompletionTime=$emailChangeCompletionTime, emailChangeVerified=$emailChangeVerified, emailLoginEnabled=$emailLoginEnabled]';
+  String toString() => 'EmailAddressStateForAdmin[email=$email, emailChange=$emailChange, emailChangeVerified=$emailChangeVerified, emailLoginEnabled=$emailLoginEnabled]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -75,20 +69,15 @@ class AccountData {
     } else {
       json[r'email_change'] = null;
     }
-    if (this.emailChangeCompletionTime != null) {
-      json[r'email_change_completion_time'] = this.emailChangeCompletionTime;
-    } else {
-      json[r'email_change_completion_time'] = null;
-    }
       json[r'email_change_verified'] = this.emailChangeVerified;
       json[r'email_login_enabled'] = this.emailLoginEnabled;
     return json;
   }
 
-  /// Returns a new [AccountData] instance and imports its values from
+  /// Returns a new [EmailAddressStateForAdmin] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static AccountData? fromJson(dynamic value) {
+  static EmailAddressStateForAdmin? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -97,16 +86,15 @@ class AccountData {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "AccountData[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "AccountData[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "EmailAddressStateForAdmin[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "EmailAddressStateForAdmin[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return AccountData(
+      return EmailAddressStateForAdmin(
         email: mapValueOfType<String>(json, r'email'),
         emailChange: mapValueOfType<String>(json, r'email_change'),
-        emailChangeCompletionTime: UnixTime.fromJson(json[r'email_change_completion_time']),
         emailChangeVerified: mapValueOfType<bool>(json, r'email_change_verified') ?? false,
         emailLoginEnabled: mapValueOfType<bool>(json, r'email_login_enabled') ?? true,
       );
@@ -114,11 +102,11 @@ class AccountData {
     return null;
   }
 
-  static List<AccountData> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <AccountData>[];
+  static List<EmailAddressStateForAdmin> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <EmailAddressStateForAdmin>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = AccountData.fromJson(row);
+        final value = EmailAddressStateForAdmin.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -127,12 +115,12 @@ class AccountData {
     return result.toList(growable: growable);
   }
 
-  static Map<String, AccountData> mapFromJson(dynamic json) {
-    final map = <String, AccountData>{};
+  static Map<String, EmailAddressStateForAdmin> mapFromJson(dynamic json) {
+    final map = <String, EmailAddressStateForAdmin>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = AccountData.fromJson(entry.value);
+        final value = EmailAddressStateForAdmin.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -141,14 +129,14 @@ class AccountData {
     return map;
   }
 
-  // maps a json object with a list of AccountData-objects as value to a dart map
-  static Map<String, List<AccountData>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<AccountData>>{};
+  // maps a json object with a list of EmailAddressStateForAdmin-objects as value to a dart map
+  static Map<String, List<EmailAddressStateForAdmin>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<EmailAddressStateForAdmin>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = AccountData.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = EmailAddressStateForAdmin.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;

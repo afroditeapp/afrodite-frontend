@@ -975,7 +975,9 @@ class AccountApi {
     return null;
   }
 
-  /// Login using email login token (single use, max 1 guess).
+  /// Login using email login token (single use).
+  ///
+  /// The route always takes at least 5 seconds to complete to make token guessing slower.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -1007,7 +1009,9 @@ class AccountApi {
     );
   }
 
-  /// Login using email login token (single use, max 1 guess).
+  /// Login using email login token (single use).
+  ///
+  /// The route always takes at least 5 seconds to complete to make token guessing slower.
   ///
   /// Parameters:
   ///
@@ -1578,6 +1582,54 @@ class AccountApi {
   /// * [BooleanSetting] booleanSetting (required):
   Future<void> postSetAccountDeletionRequestState(String aid, BooleanSetting booleanSetting,) async {
     final response = await postSetAccountDeletionRequestStateWithHttpInfo(aid, booleanSetting,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+  }
+
+  /// Enable or disable email login for an account.
+  ///
+  /// Users can set this for their own account. Admins with `admin_edit_login` permission can set this for any account.  This is useful to prevent email login spam attacks.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [SetEmailLoginEnabled] setEmailLoginEnabled (required):
+  Future<Response> postSetEmailLoginEnabledWithHttpInfo(SetEmailLoginEnabled setEmailLoginEnabled,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/account_api/set_email_login_enabled';
+
+    // ignore: prefer_final_locals
+    Object? postBody = setEmailLoginEnabled;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Enable or disable email login for an account.
+  ///
+  /// Users can set this for their own account. Admins with `admin_edit_login` permission can set this for any account.  This is useful to prevent email login spam attacks.
+  ///
+  /// Parameters:
+  ///
+  /// * [SetEmailLoginEnabled] setEmailLoginEnabled (required):
+  Future<void> postSetEmailLoginEnabled(SetEmailLoginEnabled setEmailLoginEnabled,) async {
+    final response = await postSetEmailLoginEnabledWithHttpInfo(setEmailLoginEnabled,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

@@ -202,6 +202,8 @@ class ApiClient {
           return AccountId.fromJson(value);
         case 'AccountIdDbValue':
           return AccountIdDbValue.fromJson(value);
+        case 'AccountLockedState':
+          return AccountLockedState.fromJson(value);
         case 'AccountSetup':
           return AccountSetup.fromJson(value);
         case 'AccountStateContainer':
@@ -346,6 +348,8 @@ class ApiClient {
           return DemoAccountRegisterAccountResult.fromJson(value);
         case 'DemoAccountToken':
           return DemoAccountToken.fromJson(value);
+        case 'EmailAddressStateForAdmin':
+          return EmailAddressStateForAdmin.fromJson(value);
         case 'EmailLoginToken':
           return EmailLoginToken.fromJson(value);
         case 'EventToClient':
@@ -432,6 +436,8 @@ class ApiClient {
           return GroupValues.fromJson(value);
         case 'InitEmailChange':
           return InitEmailChange.fromJson(value);
+        case 'InitEmailChangeAdmin':
+          return InitEmailChangeAdmin.fromJson(value);
         case 'InitEmailChangeResult':
           return InitEmailChangeResult.fromJson(value);
         case 'InitialProfileAge':
@@ -724,6 +730,8 @@ class ApiClient {
           return SetAccountBanState.fromJson(value);
         case 'SetAccountSetup':
           return SetAccountSetup.fromJson(value);
+        case 'SetEmailLoginEnabled':
+          return SetEmailLoginEnabled.fromJson(value);
         case 'SetInitialEmail':
           return SetInitialEmail.fromJson(value);
         case 'SetMaxPublicKeyCount':

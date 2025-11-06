@@ -14,8 +14,10 @@ class Permissions {
   /// Returns a new [Permissions] instance.
   Permissions({
     this.adminBanAccount = false,
+    this.adminChangeEmailAddress = false,
     this.adminDeleteAccount = false,
     this.adminDeleteMediaContent = false,
+    this.adminEditLogin = false,
     this.adminEditMaxPublicKeyCount = false,
     this.adminEditMediaContentFaceDetectedValue = false,
     this.adminEditPermissions = false,
@@ -39,6 +41,7 @@ class Permissions {
     this.adminServerMaintenanceViewInfo = false,
     this.adminSubscribeAdminNotifications = false,
     this.adminViewAllProfiles = false,
+    this.adminViewEmailAddress = false,
     this.adminViewPermissions = false,
     this.adminViewPrivateInfo = false,
     this.adminViewProfileHistory = false,
@@ -46,9 +49,13 @@ class Permissions {
 
   bool adminBanAccount;
 
+  bool adminChangeEmailAddress;
+
   bool adminDeleteAccount;
 
   bool adminDeleteMediaContent;
+
+  bool adminEditLogin;
 
   bool adminEditMaxPublicKeyCount;
 
@@ -98,6 +105,8 @@ class Permissions {
   /// View public and private profiles.
   bool adminViewAllProfiles;
 
+  bool adminViewEmailAddress;
+
   bool adminViewPermissions;
 
   bool adminViewPrivateInfo;
@@ -107,8 +116,10 @@ class Permissions {
   @override
   bool operator ==(Object other) => identical(this, other) || other is Permissions &&
     other.adminBanAccount == adminBanAccount &&
+    other.adminChangeEmailAddress == adminChangeEmailAddress &&
     other.adminDeleteAccount == adminDeleteAccount &&
     other.adminDeleteMediaContent == adminDeleteMediaContent &&
+    other.adminEditLogin == adminEditLogin &&
     other.adminEditMaxPublicKeyCount == adminEditMaxPublicKeyCount &&
     other.adminEditMediaContentFaceDetectedValue == adminEditMediaContentFaceDetectedValue &&
     other.adminEditPermissions == adminEditPermissions &&
@@ -132,6 +143,7 @@ class Permissions {
     other.adminServerMaintenanceViewInfo == adminServerMaintenanceViewInfo &&
     other.adminSubscribeAdminNotifications == adminSubscribeAdminNotifications &&
     other.adminViewAllProfiles == adminViewAllProfiles &&
+    other.adminViewEmailAddress == adminViewEmailAddress &&
     other.adminViewPermissions == adminViewPermissions &&
     other.adminViewPrivateInfo == adminViewPrivateInfo &&
     other.adminViewProfileHistory == adminViewProfileHistory;
@@ -140,8 +152,10 @@ class Permissions {
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (adminBanAccount.hashCode) +
+    (adminChangeEmailAddress.hashCode) +
     (adminDeleteAccount.hashCode) +
     (adminDeleteMediaContent.hashCode) +
+    (adminEditLogin.hashCode) +
     (adminEditMaxPublicKeyCount.hashCode) +
     (adminEditMediaContentFaceDetectedValue.hashCode) +
     (adminEditPermissions.hashCode) +
@@ -165,18 +179,21 @@ class Permissions {
     (adminServerMaintenanceViewInfo.hashCode) +
     (adminSubscribeAdminNotifications.hashCode) +
     (adminViewAllProfiles.hashCode) +
+    (adminViewEmailAddress.hashCode) +
     (adminViewPermissions.hashCode) +
     (adminViewPrivateInfo.hashCode) +
     (adminViewProfileHistory.hashCode);
 
   @override
-  String toString() => 'Permissions[adminBanAccount=$adminBanAccount, adminDeleteAccount=$adminDeleteAccount, adminDeleteMediaContent=$adminDeleteMediaContent, adminEditMaxPublicKeyCount=$adminEditMaxPublicKeyCount, adminEditMediaContentFaceDetectedValue=$adminEditMediaContentFaceDetectedValue, adminEditPermissions=$adminEditPermissions, adminEditProfileName=$adminEditProfileName, adminExportData=$adminExportData, adminFindAccountByEmail=$adminFindAccountByEmail, adminModerateMediaContent=$adminModerateMediaContent, adminModerateProfileNames=$adminModerateProfileNames, adminModerateProfileTexts=$adminModerateProfileTexts, adminNewsCreate=$adminNewsCreate, adminNewsEditAll=$adminNewsEditAll, adminProcessReports=$adminProcessReports, adminProfileStatistics=$adminProfileStatistics, adminRequestAccountDeletion=$adminRequestAccountDeletion, adminServerMaintenanceEditNotification=$adminServerMaintenanceEditNotification, adminServerMaintenanceResetData=$adminServerMaintenanceResetData, adminServerMaintenanceRestartBackend=$adminServerMaintenanceRestartBackend, adminServerMaintenanceSaveBackendConfig=$adminServerMaintenanceSaveBackendConfig, adminServerMaintenanceUpdateSoftware=$adminServerMaintenanceUpdateSoftware, adminServerMaintenanceViewBackendConfig=$adminServerMaintenanceViewBackendConfig, adminServerMaintenanceViewInfo=$adminServerMaintenanceViewInfo, adminSubscribeAdminNotifications=$adminSubscribeAdminNotifications, adminViewAllProfiles=$adminViewAllProfiles, adminViewPermissions=$adminViewPermissions, adminViewPrivateInfo=$adminViewPrivateInfo, adminViewProfileHistory=$adminViewProfileHistory]';
+  String toString() => 'Permissions[adminBanAccount=$adminBanAccount, adminChangeEmailAddress=$adminChangeEmailAddress, adminDeleteAccount=$adminDeleteAccount, adminDeleteMediaContent=$adminDeleteMediaContent, adminEditLogin=$adminEditLogin, adminEditMaxPublicKeyCount=$adminEditMaxPublicKeyCount, adminEditMediaContentFaceDetectedValue=$adminEditMediaContentFaceDetectedValue, adminEditPermissions=$adminEditPermissions, adminEditProfileName=$adminEditProfileName, adminExportData=$adminExportData, adminFindAccountByEmail=$adminFindAccountByEmail, adminModerateMediaContent=$adminModerateMediaContent, adminModerateProfileNames=$adminModerateProfileNames, adminModerateProfileTexts=$adminModerateProfileTexts, adminNewsCreate=$adminNewsCreate, adminNewsEditAll=$adminNewsEditAll, adminProcessReports=$adminProcessReports, adminProfileStatistics=$adminProfileStatistics, adminRequestAccountDeletion=$adminRequestAccountDeletion, adminServerMaintenanceEditNotification=$adminServerMaintenanceEditNotification, adminServerMaintenanceResetData=$adminServerMaintenanceResetData, adminServerMaintenanceRestartBackend=$adminServerMaintenanceRestartBackend, adminServerMaintenanceSaveBackendConfig=$adminServerMaintenanceSaveBackendConfig, adminServerMaintenanceUpdateSoftware=$adminServerMaintenanceUpdateSoftware, adminServerMaintenanceViewBackendConfig=$adminServerMaintenanceViewBackendConfig, adminServerMaintenanceViewInfo=$adminServerMaintenanceViewInfo, adminSubscribeAdminNotifications=$adminSubscribeAdminNotifications, adminViewAllProfiles=$adminViewAllProfiles, adminViewEmailAddress=$adminViewEmailAddress, adminViewPermissions=$adminViewPermissions, adminViewPrivateInfo=$adminViewPrivateInfo, adminViewProfileHistory=$adminViewProfileHistory]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'admin_ban_account'] = this.adminBanAccount;
+      json[r'admin_change_email_address'] = this.adminChangeEmailAddress;
       json[r'admin_delete_account'] = this.adminDeleteAccount;
       json[r'admin_delete_media_content'] = this.adminDeleteMediaContent;
+      json[r'admin_edit_login'] = this.adminEditLogin;
       json[r'admin_edit_max_public_key_count'] = this.adminEditMaxPublicKeyCount;
       json[r'admin_edit_media_content_face_detected_value'] = this.adminEditMediaContentFaceDetectedValue;
       json[r'admin_edit_permissions'] = this.adminEditPermissions;
@@ -200,6 +217,7 @@ class Permissions {
       json[r'admin_server_maintenance_view_info'] = this.adminServerMaintenanceViewInfo;
       json[r'admin_subscribe_admin_notifications'] = this.adminSubscribeAdminNotifications;
       json[r'admin_view_all_profiles'] = this.adminViewAllProfiles;
+      json[r'admin_view_email_address'] = this.adminViewEmailAddress;
       json[r'admin_view_permissions'] = this.adminViewPermissions;
       json[r'admin_view_private_info'] = this.adminViewPrivateInfo;
       json[r'admin_view_profile_history'] = this.adminViewProfileHistory;
@@ -226,8 +244,10 @@ class Permissions {
 
       return Permissions(
         adminBanAccount: mapValueOfType<bool>(json, r'admin_ban_account') ?? false,
+        adminChangeEmailAddress: mapValueOfType<bool>(json, r'admin_change_email_address') ?? false,
         adminDeleteAccount: mapValueOfType<bool>(json, r'admin_delete_account') ?? false,
         adminDeleteMediaContent: mapValueOfType<bool>(json, r'admin_delete_media_content') ?? false,
+        adminEditLogin: mapValueOfType<bool>(json, r'admin_edit_login') ?? false,
         adminEditMaxPublicKeyCount: mapValueOfType<bool>(json, r'admin_edit_max_public_key_count') ?? false,
         adminEditMediaContentFaceDetectedValue: mapValueOfType<bool>(json, r'admin_edit_media_content_face_detected_value') ?? false,
         adminEditPermissions: mapValueOfType<bool>(json, r'admin_edit_permissions') ?? false,
@@ -251,6 +271,7 @@ class Permissions {
         adminServerMaintenanceViewInfo: mapValueOfType<bool>(json, r'admin_server_maintenance_view_info') ?? false,
         adminSubscribeAdminNotifications: mapValueOfType<bool>(json, r'admin_subscribe_admin_notifications') ?? false,
         adminViewAllProfiles: mapValueOfType<bool>(json, r'admin_view_all_profiles') ?? false,
+        adminViewEmailAddress: mapValueOfType<bool>(json, r'admin_view_email_address') ?? false,
         adminViewPermissions: mapValueOfType<bool>(json, r'admin_view_permissions') ?? false,
         adminViewPrivateInfo: mapValueOfType<bool>(json, r'admin_view_private_info') ?? false,
         adminViewProfileHistory: mapValueOfType<bool>(json, r'admin_view_profile_history') ?? false,
