@@ -115,33 +115,81 @@ class DemoAccountLoginDialog extends MyDialogPage<Result<DemoAccountCredentials,
 }
 
 Future<DemoAccountCredentials?> openFirstDemoAccountLoginDialog(BuildContext context) async {
+  final demoAccountBloc = context.read<DemoAccountLoginBloc>();
+  final r = await MyNavigator.showDialog<Result<DemoAccountCredentials, ()>>(
+    context: context,
+    page: DemoAccountLoginDialog(
+      builder: (context, closer) =>
+          _DemoAccountLoginDialogContent(closer: closer, demoAccountBloc: demoAccountBloc),
+    ),
+  );
+
+  return r?.ok();
+}
+
+class _DemoAccountLoginDialogContent extends StatefulWidget {
+  final PageCloser<Result<DemoAccountCredentials, ()>> closer;
+  final DemoAccountLoginBloc demoAccountBloc;
+
+  const _DemoAccountLoginDialogContent({required this.closer, required this.demoAccountBloc});
+
+  @override
+  State<_DemoAccountLoginDialogContent> createState() => _DemoAccountLoginDialogContentState();
+}
+
+class _DemoAccountLoginDialogContentState extends State<_DemoAccountLoginDialogContent> {
   final defaultUsername = kReleaseMode ? "" : "username";
   final defaultPassword = kReleaseMode ? "" : "password";
 
   String username = "";
+  String password = "";
+  bool _obscurePassword = true;
+
+  @override
+  void initState() {
+    super.initState();
+    username = widget.demoAccountBloc.state.username ?? defaultUsername;
+    password = widget.demoAccountBloc.state.password ?? defaultPassword;
+  }
+
   void usernameChangedCallback(String v) {
     username = v;
   }
 
-  String password = "";
   void passwordChangedCallback(String v) {
     password = v;
   }
 
-  Widget builder(BuildContext context, PageCloser<Result<DemoAccountCredentials, ()>> closer) {
+  @override
+  Widget build(BuildContext context) {
     final usernameField = SimpleTextField(
       hintText: context.strings.login_screen_demo_account_username,
       // TODO(prod): After password login is implemented add boolean constant which
       //             can hide demo account login.
-      getInitialValue: () => context.read<DemoAccountLoginBloc>().state.username ?? defaultUsername,
+      getInitialValue: () => username,
       onChanged: usernameChangedCallback,
     );
-    final passwordField = SimpleTextField(
-      hintText: context.strings.login_screen_demo_account_password,
-      obscureText: true,
-      getInitialValue: () => context.read<DemoAccountLoginBloc>().state.password ?? defaultPassword,
-      onChanged: passwordChangedCallback,
+
+    final passwordField = Form(
+      child: TextFormField(
+        initialValue: password,
+        obscureText: _obscurePassword,
+        decoration: InputDecoration(
+          icon: null,
+          hintText: context.strings.login_screen_demo_account_password,
+          suffixIcon: IconButton(
+            icon: Icon(_obscurePassword ? Icons.visibility : Icons.visibility_off),
+            onPressed: () {
+              setState(() {
+                _obscurePassword = !_obscurePassword;
+              });
+            },
+          ),
+        ),
+        onChanged: passwordChangedCallback,
+      ),
     );
+
     return AlertDialog(
       title: Text(context.strings.login_screen_demo_account_dialog_title),
       content: Column(
@@ -153,22 +201,16 @@ Future<DemoAccountCredentials?> openFirstDemoAccountLoginDialog(BuildContext con
       ),
       actions: <Widget>[
         TextButton(
-          onPressed: () => closer.close(context, Err(())),
+          onPressed: () => widget.closer.close(context, Err(())),
           child: Text(context.strings.generic_cancel),
         ),
         TextButton(
-          onPressed: () => closer.close(context, Ok(DemoAccountCredentials(username, password))),
+          onPressed: () =>
+              widget.closer.close(context, Ok(DemoAccountCredentials(username, password))),
           child: Text(context.strings.generic_login),
         ),
       ],
       scrollable: true,
     );
   }
-
-  final r = await MyNavigator.showDialog<Result<DemoAccountCredentials, ()>>(
-    context: context,
-    page: DemoAccountLoginDialog(builder: builder),
-  );
-
-  return r?.ok();
 }
