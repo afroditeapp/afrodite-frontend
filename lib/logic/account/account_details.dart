@@ -136,7 +136,7 @@ class AccountDetailsBloc extends Bloc<AccountDetailsEvent, AccountDetailsBlocDat
 
 void showSnackBarTextsForSendVerificationEmailResult(SendVerifyEmailMessageResult result) {
   if (result.errorEmailAlreadyVerified) {
-    showSnackBar(R.strings.account_settings_screen_verify_email_already_verified);
+    showSnackBar(R.strings.account_settings_screen_send_verification_email_already_verified);
   } else if (result.errorEmailSendingFailed) {
     showSnackBar(R.strings.generic_email_sending_failed);
   } else if (result.errorEmailSendingTimeout) {
@@ -146,7 +146,7 @@ void showSnackBarTextsForSendVerificationEmailResult(SendVerifyEmailMessageResul
       R.strings.generic_try_again_later_seconds(result.errorTryAgainLaterAfterSeconds.toString()),
     );
   } else {
-    showSnackBar(R.strings.account_settings_screen_verify_email_sent_successfully);
+    showSnackBar(R.strings.account_settings_screen_send_verification_email_sent_successfully);
   }
 }
 

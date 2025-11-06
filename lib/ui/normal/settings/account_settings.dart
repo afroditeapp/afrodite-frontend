@@ -144,7 +144,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
               onPressed: () {
                 widget.accountDetailsBloc.add(SendVerificationEmail());
               },
-              child: Text(context.strings.account_settings_screen_verify_email_button),
+              child: Text(context.strings.account_settings_screen_send_verification_email_button),
             ),
           ),
         ],

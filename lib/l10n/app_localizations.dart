@@ -244,29 +244,29 @@ abstract class AppLocalizations {
   /// **'Pending email verified'**
   String get account_settings_screen_pending_email_verified;
 
-  /// Title for account settings
-  ///
-  /// In en, this message translates to:
-  /// **'Account'**
-  String get account_settings_screen_title;
-
   /// Snackbar text when email is already verified
   ///
   /// In en, this message translates to:
   /// **'Email is already verified'**
-  String get account_settings_screen_verify_email_already_verified;
+  String get account_settings_screen_send_verification_email_already_verified;
 
-  /// Button text for verify email action
+  /// Button text for send verification email action
   ///
   /// In en, this message translates to:
-  /// **'Verify email'**
-  String get account_settings_screen_verify_email_button;
+  /// **'Send verification email'**
+  String get account_settings_screen_send_verification_email_button;
 
   /// Snackbar text for successful email verification sending
   ///
   /// In en, this message translates to:
   /// **'Verification email sent successfully'**
-  String get account_settings_screen_verify_email_sent_successfully;
+  String get account_settings_screen_send_verification_email_sent_successfully;
+
+  /// Title for account settings
+  ///
+  /// In en, this message translates to:
+  /// **'Account'**
+  String get account_settings_screen_title;
 
   /// Title for admin settings screen
   ///

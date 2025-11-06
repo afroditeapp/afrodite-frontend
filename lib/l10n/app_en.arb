@@ -125,21 +125,21 @@
   "@account_settings_screen_pending_email_verified": {
     "description": "Text for verified pending email status"
   },
+  "account_settings_screen_send_verification_email_already_verified": "Email is already verified",
+  "@account_settings_screen_send_verification_email_already_verified": {
+    "description": "Snackbar text when email is already verified"
+  },
+  "account_settings_screen_send_verification_email_button": "Send verification email",
+  "@account_settings_screen_send_verification_email_button": {
+    "description": "Button text for send verification email action"
+  },
+  "account_settings_screen_send_verification_email_sent_successfully": "Verification email sent successfully",
+  "@account_settings_screen_send_verification_email_sent_successfully": {
+    "description": "Snackbar text for successful email verification sending"
+  },
   "account_settings_screen_title": "Account",
   "@account_settings_screen_title": {
     "description": "Title for account settings"
-  },
-  "account_settings_screen_verify_email_already_verified": "Email is already verified",
-  "@account_settings_screen_verify_email_already_verified": {
-    "description": "Snackbar text when email is already verified"
-  },
-  "account_settings_screen_verify_email_button": "Verify email",
-  "@account_settings_screen_verify_email_button": {
-    "description": "Button text for verify email action"
-  },
-  "account_settings_screen_verify_email_sent_successfully": "Verification email sent successfully",
-  "@account_settings_screen_verify_email_sent_successfully": {
-    "description": "Snackbar text for successful email verification sending"
   },
   "admin_settings_title": "Admin",
   "@admin_settings_title": {

@@ -512,9 +512,9 @@
     <string name="account_settings_screen_email_title" description="Title for email text">Email address</string>
     <string name="account_settings_screen_email_verified" description="Text for verified email status">Email verified</string>
     <string name="account_settings_screen_email_not_verified" description="Text for not verified email status">Email not verified</string>
-    <string name="account_settings_screen_verify_email_button" description="Button text for verify email action">Verify email</string>
-    <string name="account_settings_screen_verify_email_sent_successfully" description="Snackbar text for successful email verification sending">Verification email sent successfully</string>
-    <string name="account_settings_screen_verify_email_already_verified" description="Snackbar text when email is already verified">Email is already verified</string>
+    <string name="account_settings_screen_send_verification_email_button" description="Button text for send verification email action">Send verification email</string>
+    <string name="account_settings_screen_send_verification_email_sent_successfully" description="Snackbar text for successful email verification sending">Verification email sent successfully</string>
+    <string name="account_settings_screen_send_verification_email_already_verified" description="Snackbar text when email is already verified">Email is already verified</string>
     <string name="account_settings_screen_delete_account_action" description="Title for delete account action">Request account deletion</string>
     <string name="account_settings_screen_delete_account_action_error" description="Snackbar text about delete account action failure">Requesting account deletion failed</string>
     <string name="account_settings_screen_delete_account_confirm_dialog_title" description="Title for delete account confirm dialog title">Request account deletion?</string>

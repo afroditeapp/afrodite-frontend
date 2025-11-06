@@ -106,18 +106,20 @@ class AppLocalizationsEn extends AppLocalizations {
       'Pending email verified';
 
   @override
-  String get account_settings_screen_title => 'Account';
-
-  @override
-  String get account_settings_screen_verify_email_already_verified =>
+  String get account_settings_screen_send_verification_email_already_verified =>
       'Email is already verified';
 
   @override
-  String get account_settings_screen_verify_email_button => 'Verify email';
+  String get account_settings_screen_send_verification_email_button =>
+      'Send verification email';
 
   @override
-  String get account_settings_screen_verify_email_sent_successfully =>
+  String
+  get account_settings_screen_send_verification_email_sent_successfully =>
       'Verification email sent successfully';
+
+  @override
+  String get account_settings_screen_title => 'Account';
 
   @override
   String get admin_settings_title => 'Admin';
