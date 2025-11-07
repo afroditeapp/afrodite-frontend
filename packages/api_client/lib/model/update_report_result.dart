@@ -13,9 +13,12 @@ part of openapi.api;
 class UpdateReportResult {
   /// Returns a new [UpdateReportResult] instance.
   UpdateReportResult({
+    this.error = false,
     this.errorOutdatedReportContent = false,
     this.errorTooManyReports = false,
   });
+
+  bool error;
 
   bool errorOutdatedReportContent;
 
@@ -23,20 +26,23 @@ class UpdateReportResult {
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is UpdateReportResult &&
+    other.error == error &&
     other.errorOutdatedReportContent == errorOutdatedReportContent &&
     other.errorTooManyReports == errorTooManyReports;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
+    (error.hashCode) +
     (errorOutdatedReportContent.hashCode) +
     (errorTooManyReports.hashCode);
 
   @override
-  String toString() => 'UpdateReportResult[errorOutdatedReportContent=$errorOutdatedReportContent, errorTooManyReports=$errorTooManyReports]';
+  String toString() => 'UpdateReportResult[error=$error, errorOutdatedReportContent=$errorOutdatedReportContent, errorTooManyReports=$errorTooManyReports]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
+      json[r'error'] = this.error;
       json[r'error_outdated_report_content'] = this.errorOutdatedReportContent;
       json[r'error_too_many_reports'] = this.errorTooManyReports;
     return json;
@@ -61,6 +67,7 @@ class UpdateReportResult {
       }());
 
       return UpdateReportResult(
+        error: mapValueOfType<bool>(json, r'error') ?? false,
         errorOutdatedReportContent: mapValueOfType<bool>(json, r'error_outdated_report_content') ?? false,
         errorTooManyReports: mapValueOfType<bool>(json, r'error_too_many_reports') ?? false,
       );

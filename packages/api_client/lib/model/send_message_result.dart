@@ -14,6 +14,7 @@ class SendMessageResult {
   /// Returns a new [SendMessageResult] instance.
   SendMessageResult({
     this.d,
+    this.error = false,
     this.errorReceiverBlockedSenderOrReceiverNotFound = false,
     this.errorReceiverPublicKeyOutdated = false,
     this.errorSenderPublicKeyOutdated = false,
@@ -23,6 +24,8 @@ class SendMessageResult {
 
   /// Base64 encoded PGP signed message containing [SignedMessageData].
   String? d;
+
+  bool error;
 
   bool errorReceiverBlockedSenderOrReceiverNotFound;
 
@@ -37,6 +40,7 @@ class SendMessageResult {
   @override
   bool operator ==(Object other) => identical(this, other) || other is SendMessageResult &&
     other.d == d &&
+    other.error == error &&
     other.errorReceiverBlockedSenderOrReceiverNotFound == errorReceiverBlockedSenderOrReceiverNotFound &&
     other.errorReceiverPublicKeyOutdated == errorReceiverPublicKeyOutdated &&
     other.errorSenderPublicKeyOutdated == errorSenderPublicKeyOutdated &&
@@ -47,6 +51,7 @@ class SendMessageResult {
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (d == null ? 0 : d!.hashCode) +
+    (error.hashCode) +
     (errorReceiverBlockedSenderOrReceiverNotFound.hashCode) +
     (errorReceiverPublicKeyOutdated.hashCode) +
     (errorSenderPublicKeyOutdated.hashCode) +
@@ -54,7 +59,7 @@ class SendMessageResult {
     (errorTooManySenderAcknowledgementsMissing.hashCode);
 
   @override
-  String toString() => 'SendMessageResult[d=$d, errorReceiverBlockedSenderOrReceiverNotFound=$errorReceiverBlockedSenderOrReceiverNotFound, errorReceiverPublicKeyOutdated=$errorReceiverPublicKeyOutdated, errorSenderPublicKeyOutdated=$errorSenderPublicKeyOutdated, errorTooManyReceiverAcknowledgementsMissing=$errorTooManyReceiverAcknowledgementsMissing, errorTooManySenderAcknowledgementsMissing=$errorTooManySenderAcknowledgementsMissing]';
+  String toString() => 'SendMessageResult[d=$d, error=$error, errorReceiverBlockedSenderOrReceiverNotFound=$errorReceiverBlockedSenderOrReceiverNotFound, errorReceiverPublicKeyOutdated=$errorReceiverPublicKeyOutdated, errorSenderPublicKeyOutdated=$errorSenderPublicKeyOutdated, errorTooManyReceiverAcknowledgementsMissing=$errorTooManyReceiverAcknowledgementsMissing, errorTooManySenderAcknowledgementsMissing=$errorTooManySenderAcknowledgementsMissing]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -63,6 +68,7 @@ class SendMessageResult {
     } else {
       json[r'd'] = null;
     }
+      json[r'error'] = this.error;
       json[r'error_receiver_blocked_sender_or_receiver_not_found'] = this.errorReceiverBlockedSenderOrReceiverNotFound;
       json[r'error_receiver_public_key_outdated'] = this.errorReceiverPublicKeyOutdated;
       json[r'error_sender_public_key_outdated'] = this.errorSenderPublicKeyOutdated;
@@ -91,6 +97,7 @@ class SendMessageResult {
 
       return SendMessageResult(
         d: mapValueOfType<String>(json, r'd'),
+        error: mapValueOfType<bool>(json, r'error') ?? false,
         errorReceiverBlockedSenderOrReceiverNotFound: mapValueOfType<bool>(json, r'error_receiver_blocked_sender_or_receiver_not_found') ?? false,
         errorReceiverPublicKeyOutdated: mapValueOfType<bool>(json, r'error_receiver_public_key_outdated') ?? false,
         errorSenderPublicKeyOutdated: mapValueOfType<bool>(json, r'error_sender_public_key_outdated') ?? false,

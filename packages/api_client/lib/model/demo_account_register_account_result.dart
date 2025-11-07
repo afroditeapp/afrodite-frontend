@@ -14,11 +14,14 @@ class DemoAccountRegisterAccountResult {
   /// Returns a new [DemoAccountRegisterAccountResult] instance.
   DemoAccountRegisterAccountResult({
     this.aid,
+    this.error = false,
     this.errorMaxAccountCount = false,
   });
 
   /// Account ID if registration was successful
   AccountId? aid;
+
+  bool error;
 
   /// True when the demo account has reached its maximum account limit
   bool errorMaxAccountCount;
@@ -26,16 +29,18 @@ class DemoAccountRegisterAccountResult {
   @override
   bool operator ==(Object other) => identical(this, other) || other is DemoAccountRegisterAccountResult &&
     other.aid == aid &&
+    other.error == error &&
     other.errorMaxAccountCount == errorMaxAccountCount;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (aid == null ? 0 : aid!.hashCode) +
+    (error.hashCode) +
     (errorMaxAccountCount.hashCode);
 
   @override
-  String toString() => 'DemoAccountRegisterAccountResult[aid=$aid, errorMaxAccountCount=$errorMaxAccountCount]';
+  String toString() => 'DemoAccountRegisterAccountResult[aid=$aid, error=$error, errorMaxAccountCount=$errorMaxAccountCount]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -44,6 +49,7 @@ class DemoAccountRegisterAccountResult {
     } else {
       json[r'aid'] = null;
     }
+      json[r'error'] = this.error;
       json[r'error_max_account_count'] = this.errorMaxAccountCount;
     return json;
   }
@@ -68,6 +74,7 @@ class DemoAccountRegisterAccountResult {
 
       return DemoAccountRegisterAccountResult(
         aid: AccountId.fromJson(json[r'aid']),
+        error: mapValueOfType<bool>(json, r'error') ?? false,
         errorMaxAccountCount: mapValueOfType<bool>(json, r'error_max_account_count') ?? false,
       );
     }

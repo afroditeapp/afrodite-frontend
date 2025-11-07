@@ -13,10 +13,13 @@ part of openapi.api;
 class InitEmailChangeResult {
   /// Returns a new [InitEmailChangeResult] instance.
   InitEmailChangeResult({
+    this.error = false,
     this.errorEmailSendingFailed = false,
     this.errorEmailSendingTimeout = false,
     this.errorTryAgainLaterAfterSeconds,
   });
+
+  bool error;
 
   bool errorEmailSendingFailed;
 
@@ -27,6 +30,7 @@ class InitEmailChangeResult {
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is InitEmailChangeResult &&
+    other.error == error &&
     other.errorEmailSendingFailed == errorEmailSendingFailed &&
     other.errorEmailSendingTimeout == errorEmailSendingTimeout &&
     other.errorTryAgainLaterAfterSeconds == errorTryAgainLaterAfterSeconds;
@@ -34,15 +38,17 @@ class InitEmailChangeResult {
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
+    (error.hashCode) +
     (errorEmailSendingFailed.hashCode) +
     (errorEmailSendingTimeout.hashCode) +
     (errorTryAgainLaterAfterSeconds == null ? 0 : errorTryAgainLaterAfterSeconds!.hashCode);
 
   @override
-  String toString() => 'InitEmailChangeResult[errorEmailSendingFailed=$errorEmailSendingFailed, errorEmailSendingTimeout=$errorEmailSendingTimeout, errorTryAgainLaterAfterSeconds=$errorTryAgainLaterAfterSeconds]';
+  String toString() => 'InitEmailChangeResult[error=$error, errorEmailSendingFailed=$errorEmailSendingFailed, errorEmailSendingTimeout=$errorEmailSendingTimeout, errorTryAgainLaterAfterSeconds=$errorTryAgainLaterAfterSeconds]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
+      json[r'error'] = this.error;
       json[r'error_email_sending_failed'] = this.errorEmailSendingFailed;
       json[r'error_email_sending_timeout'] = this.errorEmailSendingTimeout;
     if (this.errorTryAgainLaterAfterSeconds != null) {
@@ -72,6 +78,7 @@ class InitEmailChangeResult {
       }());
 
       return InitEmailChangeResult(
+        error: mapValueOfType<bool>(json, r'error') ?? false,
         errorEmailSendingFailed: mapValueOfType<bool>(json, r'error_email_sending_failed') ?? false,
         errorEmailSendingTimeout: mapValueOfType<bool>(json, r'error_email_sending_timeout') ?? false,
         errorTryAgainLaterAfterSeconds: mapValueOfType<int>(json, r'error_try_again_later_after_seconds'),

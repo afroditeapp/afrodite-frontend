@@ -13,11 +13,14 @@ part of openapi.api;
 class SendVerifyEmailMessageResult {
   /// Returns a new [SendVerifyEmailMessageResult] instance.
   SendVerifyEmailMessageResult({
+    this.error = false,
     this.errorEmailAlreadyVerified = false,
     this.errorEmailSendingFailed = false,
     this.errorEmailSendingTimeout = false,
     this.errorTryAgainLaterAfterSeconds,
   });
+
+  bool error;
 
   bool errorEmailAlreadyVerified;
 
@@ -30,6 +33,7 @@ class SendVerifyEmailMessageResult {
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is SendVerifyEmailMessageResult &&
+    other.error == error &&
     other.errorEmailAlreadyVerified == errorEmailAlreadyVerified &&
     other.errorEmailSendingFailed == errorEmailSendingFailed &&
     other.errorEmailSendingTimeout == errorEmailSendingTimeout &&
@@ -38,16 +42,18 @@ class SendVerifyEmailMessageResult {
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
+    (error.hashCode) +
     (errorEmailAlreadyVerified.hashCode) +
     (errorEmailSendingFailed.hashCode) +
     (errorEmailSendingTimeout.hashCode) +
     (errorTryAgainLaterAfterSeconds == null ? 0 : errorTryAgainLaterAfterSeconds!.hashCode);
 
   @override
-  String toString() => 'SendVerifyEmailMessageResult[errorEmailAlreadyVerified=$errorEmailAlreadyVerified, errorEmailSendingFailed=$errorEmailSendingFailed, errorEmailSendingTimeout=$errorEmailSendingTimeout, errorTryAgainLaterAfterSeconds=$errorTryAgainLaterAfterSeconds]';
+  String toString() => 'SendVerifyEmailMessageResult[error=$error, errorEmailAlreadyVerified=$errorEmailAlreadyVerified, errorEmailSendingFailed=$errorEmailSendingFailed, errorEmailSendingTimeout=$errorEmailSendingTimeout, errorTryAgainLaterAfterSeconds=$errorTryAgainLaterAfterSeconds]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
+      json[r'error'] = this.error;
       json[r'error_email_already_verified'] = this.errorEmailAlreadyVerified;
       json[r'error_email_sending_failed'] = this.errorEmailSendingFailed;
       json[r'error_email_sending_timeout'] = this.errorEmailSendingTimeout;
@@ -78,6 +84,7 @@ class SendVerifyEmailMessageResult {
       }());
 
       return SendVerifyEmailMessageResult(
+        error: mapValueOfType<bool>(json, r'error') ?? false,
         errorEmailAlreadyVerified: mapValueOfType<bool>(json, r'error_email_already_verified') ?? false,
         errorEmailSendingFailed: mapValueOfType<bool>(json, r'error_email_sending_failed') ?? false,
         errorEmailSendingTimeout: mapValueOfType<bool>(json, r'error_email_sending_timeout') ?? false,

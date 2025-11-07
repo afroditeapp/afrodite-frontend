@@ -13,9 +13,12 @@ part of openapi.api;
 class AddPublicKeyResult {
   /// Returns a new [AddPublicKeyResult] instance.
   AddPublicKeyResult({
-    required this.errorTooManyPublicKeys,
+    this.error = false,
+    this.errorTooManyPublicKeys = false,
     this.keyId,
   });
+
+  bool error;
 
   bool errorTooManyPublicKeys;
 
@@ -23,20 +26,23 @@ class AddPublicKeyResult {
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is AddPublicKeyResult &&
+    other.error == error &&
     other.errorTooManyPublicKeys == errorTooManyPublicKeys &&
     other.keyId == keyId;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
+    (error.hashCode) +
     (errorTooManyPublicKeys.hashCode) +
     (keyId == null ? 0 : keyId!.hashCode);
 
   @override
-  String toString() => 'AddPublicKeyResult[errorTooManyPublicKeys=$errorTooManyPublicKeys, keyId=$keyId]';
+  String toString() => 'AddPublicKeyResult[error=$error, errorTooManyPublicKeys=$errorTooManyPublicKeys, keyId=$keyId]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
+      json[r'error'] = this.error;
       json[r'error_too_many_public_keys'] = this.errorTooManyPublicKeys;
     if (this.keyId != null) {
       json[r'key_id'] = this.keyId;
@@ -65,7 +71,8 @@ class AddPublicKeyResult {
       }());
 
       return AddPublicKeyResult(
-        errorTooManyPublicKeys: mapValueOfType<bool>(json, r'error_too_many_public_keys')!,
+        error: mapValueOfType<bool>(json, r'error') ?? false,
+        errorTooManyPublicKeys: mapValueOfType<bool>(json, r'error_too_many_public_keys') ?? false,
         keyId: PublicKeyId.fromJson(json[r'key_id']),
       );
     }
@@ -114,7 +121,6 @@ class AddPublicKeyResult {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'error_too_many_public_keys',
   };
 }
 

@@ -13,9 +13,12 @@ part of openapi.api;
 class ProfilePage {
   /// Returns a new [ProfilePage] instance.
   ProfilePage({
+    this.error = false,
     this.errorInvalidIteratorSessionId = false,
     this.profiles = const [],
   });
+
+  bool error;
 
   bool errorInvalidIteratorSessionId;
 
@@ -23,20 +26,23 @@ class ProfilePage {
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is ProfilePage &&
+    other.error == error &&
     other.errorInvalidIteratorSessionId == errorInvalidIteratorSessionId &&
     _deepEquality.equals(other.profiles, profiles);
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
+    (error.hashCode) +
     (errorInvalidIteratorSessionId.hashCode) +
     (profiles.hashCode);
 
   @override
-  String toString() => 'ProfilePage[errorInvalidIteratorSessionId=$errorInvalidIteratorSessionId, profiles=$profiles]';
+  String toString() => 'ProfilePage[error=$error, errorInvalidIteratorSessionId=$errorInvalidIteratorSessionId, profiles=$profiles]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
+      json[r'error'] = this.error;
       json[r'error_invalid_iterator_session_id'] = this.errorInvalidIteratorSessionId;
       json[r'profiles'] = this.profiles;
     return json;
@@ -61,6 +67,7 @@ class ProfilePage {
       }());
 
       return ProfilePage(
+        error: mapValueOfType<bool>(json, r'error') ?? false,
         errorInvalidIteratorSessionId: mapValueOfType<bool>(json, r'error_invalid_iterator_session_id') ?? false,
         profiles: ProfileLink.listFromJson(json[r'profiles']),
       );

@@ -13,25 +13,31 @@ part of openapi.api;
 class UpdateNewsTranslationResult {
   /// Returns a new [UpdateNewsTranslationResult] instance.
   UpdateNewsTranslationResult({
+    this.error = false,
     this.errorAlreadyChanged = false,
   });
+
+  bool error;
 
   bool errorAlreadyChanged;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is UpdateNewsTranslationResult &&
+    other.error == error &&
     other.errorAlreadyChanged == errorAlreadyChanged;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
+    (error.hashCode) +
     (errorAlreadyChanged.hashCode);
 
   @override
-  String toString() => 'UpdateNewsTranslationResult[errorAlreadyChanged=$errorAlreadyChanged]';
+  String toString() => 'UpdateNewsTranslationResult[error=$error, errorAlreadyChanged=$errorAlreadyChanged]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
+      json[r'error'] = this.error;
       json[r'error_already_changed'] = this.errorAlreadyChanged;
     return json;
   }
@@ -55,6 +61,7 @@ class UpdateNewsTranslationResult {
       }());
 
       return UpdateNewsTranslationResult(
+        error: mapValueOfType<bool>(json, r'error') ?? false,
         errorAlreadyChanged: mapValueOfType<bool>(json, r'error_already_changed') ?? false,
       );
     }
