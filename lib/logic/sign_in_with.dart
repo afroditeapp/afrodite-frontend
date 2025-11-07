@@ -64,6 +64,8 @@ String signInErrorToString(CommonSignInError error) {
       return R.strings.login_screen_email_already_used;
     case CommonSignInError.accountLocked:
       return R.strings.generic_account_locked_error;
+    case CommonSignInError.invalidEmailLoginToken:
+      return R.strings.login_screen_invalid_email_login_token;
     case CommonSignInError.creatingConnectingWebSocketFailed:
       return R.strings.login_screen_connecting_websocket_failed;
     case CommonSignInError.dataSyncFailed:

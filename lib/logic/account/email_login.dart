@@ -1,5 +1,4 @@
 import "dart:async";
-import "package:app/localizations.dart";
 import "package:app/logic/sign_in_with.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:app/data/login_repository.dart";
@@ -71,14 +70,12 @@ class EmailLoginBloc extends Bloc<EmailLoginEvent, EmailLoginBlocData> with Acti
           case Ok():
             emit(state.copyWith(error: null, updateState: const UpdateIdle()));
           case Err(:final e):
-            String error;
-            if (e == CommonSignInError.loginApiRequestFailed) {
-              error = R.strings.email_login_screen_email_login_failed;
-            } else {
-              error = signInErrorToString(e);
-            }
-
-            emit(state.copyWith(error: LoginFailed(error), updateState: const UpdateIdle()));
+            emit(
+              state.copyWith(
+                error: LoginFailed(signInErrorToString(e)),
+                updateState: const UpdateIdle(),
+              ),
+            );
         }
       });
     });

@@ -865,12 +865,6 @@ abstract class AppLocalizations {
   /// **'Email address'**
   String get email_login_screen_email_hint;
 
-  /// Error text when login with email login token fails
-  ///
-  /// In en, this message translates to:
-  /// **'Invalid login code or other error'**
-  String get email_login_screen_email_login_failed;
-
   /// Description for inputting login code
   ///
   /// In en, this message translates to:
@@ -1645,6 +1639,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Email address is already in use by another account'**
   String get login_screen_email_already_used;
+
+  /// Snackbar text for invalid email login token error
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid email login code'**
+  String get login_screen_invalid_email_login_token;
 
   /// Description text for iOS PWA installation guide
   ///

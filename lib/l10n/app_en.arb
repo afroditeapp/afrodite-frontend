@@ -576,10 +576,6 @@
   "@email_login_screen_email_hint": {
     "description": "Hint text for email input field"
   },
-  "email_login_screen_email_login_failed": "Invalid login code or other error",
-  "@email_login_screen_email_login_failed": {
-    "description": "Error text when login with email login token fails"
-  },
   "email_login_screen_input_code_description": "Enter the login code sent to {p0}",
   "@email_login_screen_input_code_description": {
     "description": "Description for inputting login code",
@@ -1113,6 +1109,10 @@
   "login_screen_email_already_used": "Email address is already in use by another account",
   "@login_screen_email_already_used": {
     "description": "Snackbar error message when email is already used by another account"
+  },
+  "login_screen_invalid_email_login_token": "Invalid email login code",
+  "@login_screen_invalid_email_login_token": {
+    "description": "Snackbar text for invalid email login token error"
   },
   "login_screen_ios_pwa_install_description": "To use this app on iOS, please add it to your home screen:",
   "@login_screen_ios_pwa_install_description": {

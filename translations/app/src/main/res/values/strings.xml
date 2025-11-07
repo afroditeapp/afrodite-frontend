@@ -210,6 +210,7 @@
     <string name="login_screen_demo_account_login_session_expired" description="Snackbar text for demo account login session expiration">Demo account session expired</string>
     <string name="login_screen_sign_in_with_error" description="Snackbar text for sign in with error">Sign in with failed</string>
     <string name="login_screen_login_api_request_failed" description="Snackbar text for login API request failed">Login API request failed. Try again later.</string>
+    <string name="login_screen_invalid_email_login_token" description="Snackbar text for invalid email login token error">Invalid email login code</string>
     <string name="login_screen_connecting_websocket_failed" description="Snackbar text for connecting WebSocket failed">Connecting WebSocket failed. Try again later.</string>
     <string name="login_screen_ios_pwa_install_description" description="Description text for iOS PWA installation guide">To use this app on iOS, please add it to your home screen:</string>
     <string name="login_screen_ios_pwa_install_step1" description="First step for iOS PWA installation">1. Tap the Share button</string>
@@ -226,7 +227,6 @@
     <string name="email_login_screen_didnt_receive_code" description="Help text for not receiving code">If you didn\'t receive the code:\n• Check your spam folder\n• Verify the email address is correct\n• Wait %s before requesting a new code\n• Make sure you have an existing account with this email</string>
     <string name="email_login_screen_code_hint" description="Hint text for login code input field">Login code</string>
     <string name="email_login_screen_token_validity" description="Text showing token validity time">Code expires in: %s</string>
-    <string name="email_login_screen_email_login_failed" description="Error text when login with email login token fails">Invalid login code or other error</string>
 
     <!-- Demo account screen -->
     <string name="demo_account_screen_no_accounts_available" description="Text displayed when available accounts list is empty">No accounts available</string>

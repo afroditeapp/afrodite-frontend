@@ -495,10 +495,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get email_login_screen_email_hint => 'Email address';
 
   @override
-  String get email_login_screen_email_login_failed =>
-      'Invalid login code or other error';
-
-  @override
   String email_login_screen_input_code_description(String p0) {
     return 'Enter the login code sent to $p0';
   }
@@ -936,6 +932,10 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get login_screen_email_already_used =>
       'Email address is already in use by another account';
+
+  @override
+  String get login_screen_invalid_email_login_token =>
+      'Invalid email login code';
 
   @override
   String get login_screen_ios_pwa_install_description =>
