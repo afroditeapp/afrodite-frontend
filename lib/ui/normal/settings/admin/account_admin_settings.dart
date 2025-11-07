@@ -14,6 +14,7 @@ import 'package:app/ui/normal/settings/admin/account_admin/ban_account.dart';
 import 'package:app/ui/normal/settings/admin/account_admin/delete_account.dart';
 import 'package:app/ui/normal/settings/admin/account_admin/edit_permissions.dart';
 import 'package:app/ui/normal/settings/admin/account_admin/edit_profile_name.dart';
+import 'package:app/ui/normal/settings/admin/account_admin/login_management.dart';
 import 'package:app/ui/normal/settings/admin/account_admin/moderate_single_profile_string.dart';
 import 'package:app/ui/normal/settings/admin/account_admin/view_api_usage.dart';
 import 'package:app/ui/normal/settings/admin/account_admin/view_ip_address_usage.dart';
@@ -218,6 +219,16 @@ class _AccountAdminSettingsScreenState extends State<AccountAdminSettingsScreen>
       );
     }
 
+    if (permissions.adminEditLogin) {
+      settings.add(
+        Setting.createSetting(
+          Icons.login,
+          "Login management",
+          () => MyNavigator.pushLimited(context, LoginManagementPage(r, widget.accountId)),
+        ),
+      );
+    }
+
     if (permissions.adminBanAccount) {
       settings.add(
         Setting.createSetting(
@@ -332,6 +343,7 @@ class AccountAdminSettingsPermissions {
   bool get adminModifyPermissions => _permissions.adminEditPermissions;
   bool get adminExportData => _permissions.adminExportData;
   bool get adminEditProfileName => _permissions.adminEditProfileName;
+  bool get adminEditLogin => _permissions.adminEditLogin;
   bool get adminModerateMediaContent => _permissions.adminModerateMediaContent;
   bool get adminModerateProfileTexts => _permissions.adminModerateProfileTexts;
   bool get adminModerateProfileNames => _permissions.adminModerateProfileNames;
@@ -349,6 +361,7 @@ class AccountAdminSettingsPermissions {
   bool somePermissionEnabled() {
     return adminModifyPermissions ||
         adminEditProfileName ||
+        adminEditLogin ||
         adminExportData ||
         adminModerateMediaContent ||
         adminModerateProfileTexts ||
