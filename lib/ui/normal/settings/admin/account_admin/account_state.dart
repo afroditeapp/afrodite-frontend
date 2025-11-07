@@ -13,21 +13,21 @@ import 'package:app/utils/result.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 
-class AccountPrivateInfoPage extends MyScreenPageLimited<()> {
-  AccountPrivateInfoPage(RepositoryInstances r, AccountId accountId)
-    : super(builder: (_) => AccountPrivateInfoScreen(r, accountId));
+class AccountStatePage extends MyScreenPageLimited<()> {
+  AccountStatePage(RepositoryInstances r, AccountId accountId)
+    : super(builder: (_) => AccountStateScreen(r, accountId));
 }
 
-class AccountPrivateInfoScreen extends StatefulWidget {
+class AccountStateScreen extends StatefulWidget {
   final ApiManager api;
   final AccountId accountId;
-  AccountPrivateInfoScreen(RepositoryInstances r, this.accountId, {super.key}) : api = r.api;
+  AccountStateScreen(RepositoryInstances r, this.accountId, {super.key}) : api = r.api;
 
   @override
-  State<AccountPrivateInfoScreen> createState() => _AccountPrivateInfoScreenState();
+  State<AccountStateScreen> createState() => _AccountStateScreenState();
 }
 
-class _AccountPrivateInfoScreenState extends State<AccountPrivateInfoScreen> {
+class _AccountStateScreenState extends State<AccountStateScreen> {
   Account? accountInfo;
 
   bool isLoading = true;
@@ -65,7 +65,7 @@ class _AccountPrivateInfoScreenState extends State<AccountPrivateInfoScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Account private info")),
+      appBar: AppBar(title: const Text("Account state")),
       body: screenContent(context),
     );
   }

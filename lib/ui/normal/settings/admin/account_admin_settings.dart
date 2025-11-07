@@ -8,7 +8,7 @@ import 'package:app/model/freezed/logic/account/account.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui/normal/menu.dart';
 import 'package:app/ui/normal/profiles/view_profile.dart';
-import 'package:app/ui/normal/settings/admin/account_admin/account_private_info.dart';
+import 'package:app/ui/normal/settings/admin/account_admin/account_state.dart';
 import 'package:app/ui/normal/settings/admin/account_admin/admin_content_management.dart';
 import 'package:app/ui/normal/settings/admin/account_admin/ban_account.dart';
 import 'package:app/ui/normal/settings/admin/account_admin/delete_account.dart';
@@ -173,8 +173,8 @@ class _AccountAdminSettingsScreenState extends State<AccountAdminSettingsScreen>
       settings.add(
         Setting.createSetting(
           Icons.person,
-          "Account private info",
-          () => MyNavigator.pushLimited(context, AccountPrivateInfoPage(r, widget.accountId)),
+          "Account state",
+          () => MyNavigator.pushLimited(context, AccountStatePage(r, widget.accountId)),
         ),
       );
     }
