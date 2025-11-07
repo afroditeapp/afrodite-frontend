@@ -48,27 +48,27 @@ void showSnackBarTextsForSignInWithEvent(SignInWithEvent event) {
     case SignInWithGetTokenFailed():
       showSnackBar(R.strings.login_screen_sign_in_with_error);
     case SignInWithSignInError(:final error):
-      showSnackBarTextsForSignInError(error);
+      showSnackBar(signInErrorToString(error));
   }
 }
 
-void showSnackBarTextsForSignInError(CommonSignInError error) {
+String signInErrorToString(CommonSignInError error) {
   switch (error) {
     case CommonSignInError.loginApiRequestFailed:
-      showSnackBar(R.strings.login_screen_login_api_request_failed);
+      return R.strings.login_screen_login_api_request_failed;
     case CommonSignInError.unsupportedClient:
-      showSnackBar(R.strings.generic_error_app_version_is_unsupported);
+      return R.strings.generic_error_app_version_is_unsupported;
     case CommonSignInError.signInWithEmailUnverified:
-      showSnackBar(R.strings.login_screen_sign_in_with_email_unverified);
+      return R.strings.login_screen_sign_in_with_email_unverified;
     case CommonSignInError.emailAlreadyUsed:
-      showSnackBar(R.strings.login_screen_email_already_used);
+      return R.strings.login_screen_email_already_used;
     case CommonSignInError.accountLocked:
-      showSnackBar(R.strings.generic_account_locked_error);
+      return R.strings.generic_account_locked_error;
     case CommonSignInError.creatingConnectingWebSocketFailed:
-      showSnackBar(R.strings.login_screen_connecting_websocket_failed);
+      return R.strings.login_screen_connecting_websocket_failed;
     case CommonSignInError.dataSyncFailed:
-      showSnackBar(R.strings.generic_data_sync_failed);
+      return R.strings.generic_data_sync_failed;
     case CommonSignInError.otherError:
-      showSnackBar(R.strings.generic_error);
+      return R.strings.generic_error;
   }
 }

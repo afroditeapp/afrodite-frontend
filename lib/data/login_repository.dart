@@ -449,7 +449,7 @@ class LoginRepository extends AppSingleton {
   }
 
   /// Login using email login token
-  Future<Result<LoginResult, ()>> emailLoginWithToken(String token) async {
+  Future<Result<(), CommonSignInError>> emailLoginWithToken(String token) async {
     final result = await _apiNoConnection
         .account(
           (api) => api.postEmailLoginWithToken(
@@ -462,12 +462,10 @@ class LoginRepository extends AppSingleton {
         .ok();
 
     if (result == null) {
-      return const Err(());
+      return const Err(CommonSignInError.loginApiRequestFailed);
     }
 
-    // Handle the login result similar to sign in with
-    await _handleLoginResultInternal(result);
-    return Ok(result);
+    return await _handleLoginResultInternal(result);
   }
 
   /// Logout back to login or demo account screen

@@ -1,4 +1,6 @@
 import "dart:async";
+import "package:app/localizations.dart";
+import "package:app/logic/sign_in_with.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:app/data/login_repository.dart";
 import "package:app/model/freezed/logic/account/email_login.dart";
@@ -48,7 +50,7 @@ class EmailLoginBloc extends Bloc<EmailLoginEvent, EmailLoginBlocData> with Acti
               ),
             );
           case Err():
-            emit(state.copyWith(isLoading: false, error: EmailLoginError.requestTokenFailed));
+            emit(state.copyWith(isLoading: false, error: RequestTokenFailed()));
         }
       });
     });
@@ -66,27 +68,17 @@ class EmailLoginBloc extends Bloc<EmailLoginEvent, EmailLoginBlocData> with Acti
         await waitTime.waitIfNeeded();
 
         switch (result) {
-          case Ok(:final v):
-            // Other LoginResult errors are not related to email login
-            if (v.errorUnsupportedClient) {
-              emit(
-                state.copyWith(
-                  error: EmailLoginError.unsupportedClient,
-                  updateState: const UpdateIdle(),
-                ),
-              );
-            } else if (v.tokens != null && v.aid != null) {
-              // Login successful - the login repository will handle the session
-              emit(state.copyWith(error: null, updateState: const UpdateIdle()));
+          case Ok():
+            emit(state.copyWith(error: null, updateState: const UpdateIdle()));
+          case Err(:final e):
+            String error;
+            if (e == CommonSignInError.loginApiRequestFailed) {
+              error = R.strings.email_login_screen_email_login_failed;
             } else {
-              emit(
-                state.copyWith(error: EmailLoginError.loginFailed, updateState: const UpdateIdle()),
-              );
+              error = signInErrorToString(e);
             }
-          case Err():
-            emit(
-              state.copyWith(error: EmailLoginError.loginFailed, updateState: const UpdateIdle()),
-            );
+
+            emit(state.copyWith(error: LoginFailed(error), updateState: const UpdateIdle()));
         }
       });
     });

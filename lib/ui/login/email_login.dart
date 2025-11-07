@@ -172,7 +172,7 @@ class _EmailLoginCodeScreenState extends State<EmailLoginCodeScreen> {
         } else {
           final error = state.error;
 
-          if (error == EmailLoginError.requestTokenFailed) {
+          if (error is RequestTokenFailed) {
             return Center(
               child: Padding(
                 padding: const EdgeInsets.all(16),
@@ -195,14 +195,14 @@ class _EmailLoginCodeScreenState extends State<EmailLoginCodeScreen> {
                   style: Theme.of(context).textTheme.bodyLarge,
                 ),
                 const Padding(padding: EdgeInsets.only(top: 16)),
-                if (error != null)
+                if (error is LoginFailed)
                   Text(
-                    _getErrorMessage(context, error),
+                    error.error,
                     style: Theme.of(
                       context,
                     ).textTheme.bodyLarge?.copyWith(color: Theme.of(context).colorScheme.error),
                   ),
-                if (error != null) const Padding(padding: EdgeInsets.all(8)),
+                if (error is LoginFailed) const Padding(padding: EdgeInsets.all(8)),
                 if (state.tokenValiditySeconds != null)
                   Text(
                     context.strings.email_login_screen_token_validity(
@@ -248,17 +248,6 @@ class _EmailLoginCodeScreenState extends State<EmailLoginCodeScreen> {
         }
       },
     );
-  }
-
-  String _getErrorMessage(BuildContext context, EmailLoginError error) {
-    switch (error) {
-      case EmailLoginError.requestTokenFailed:
-        return context.strings.generic_error_occurred;
-      case EmailLoginError.unsupportedClient:
-        return context.strings.generic_error_app_version_is_unsupported;
-      case EmailLoginError.loginFailed:
-        return context.strings.email_login_screen_email_login_failed;
-    }
   }
 
   String _formatSeconds(int seconds) {

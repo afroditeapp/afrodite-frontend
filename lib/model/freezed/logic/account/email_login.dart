@@ -4,7 +4,18 @@ import 'package:app/ui_utils/common_update_logic.dart';
 
 part 'email_login.freezed.dart';
 
-enum EmailLoginError { requestTokenFailed, unsupportedClient, loginFailed }
+sealed class EmailLoginError {
+  const EmailLoginError();
+}
+
+class RequestTokenFailed extends EmailLoginError {
+  const RequestTokenFailed();
+}
+
+class LoginFailed extends EmailLoginError {
+  final String error;
+  const LoginFailed(this.error);
+}
 
 @freezed
 class EmailLoginBlocData with _$EmailLoginBlocData, UpdateStateProvider {
