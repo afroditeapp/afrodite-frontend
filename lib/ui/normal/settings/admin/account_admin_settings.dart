@@ -14,6 +14,7 @@ import 'package:app/ui/normal/settings/admin/account_admin/ban_account.dart';
 import 'package:app/ui/normal/settings/admin/account_admin/delete_account.dart';
 import 'package:app/ui/normal/settings/admin/account_admin/edit_permissions.dart';
 import 'package:app/ui/normal/settings/admin/account_admin/edit_profile_name.dart';
+import 'package:app/ui/normal/settings/admin/account_admin/email_address_management.dart';
 import 'package:app/ui/normal/settings/admin/account_admin/login_management.dart';
 import 'package:app/ui/normal/settings/admin/account_admin/moderate_single_profile_string.dart';
 import 'package:app/ui/normal/settings/admin/account_admin/view_api_usage.dart';
@@ -229,6 +230,16 @@ class _AccountAdminSettingsScreenState extends State<AccountAdminSettingsScreen>
       );
     }
 
+    if (permissions.adminViewEmailAddress || permissions.adminChangeEmailAddress) {
+      settings.add(
+        Setting.createSetting(
+          Icons.email,
+          "Email address management",
+          () => MyNavigator.pushLimited(context, EmailAddressManagementPage(r, widget.accountId)),
+        ),
+      );
+    }
+
     if (permissions.adminBanAccount) {
       settings.add(
         Setting.createSetting(
@@ -344,6 +355,8 @@ class AccountAdminSettingsPermissions {
   bool get adminExportData => _permissions.adminExportData;
   bool get adminEditProfileName => _permissions.adminEditProfileName;
   bool get adminEditLogin => _permissions.adminEditLogin;
+  bool get adminViewEmailAddress => _permissions.adminViewEmailAddress;
+  bool get adminChangeEmailAddress => _permissions.adminChangeEmailAddress;
   bool get adminModerateMediaContent => _permissions.adminModerateMediaContent;
   bool get adminModerateProfileTexts => _permissions.adminModerateProfileTexts;
   bool get adminModerateProfileNames => _permissions.adminModerateProfileNames;
@@ -362,6 +375,8 @@ class AccountAdminSettingsPermissions {
     return adminModifyPermissions ||
         adminEditProfileName ||
         adminEditLogin ||
+        adminViewEmailAddress ||
+        adminChangeEmailAddress ||
         adminExportData ||
         adminModerateMediaContent ||
         adminModerateProfileTexts ||
