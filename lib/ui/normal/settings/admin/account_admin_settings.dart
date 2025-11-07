@@ -169,7 +169,7 @@ class _AccountAdminSettingsScreenState extends State<AccountAdminSettingsScreen>
       Setting.createSetting(Icons.person, showProfileTitle, () => openProfile(context, r.profile)),
     );
 
-    if (permissions.adminViewPrivateInfo) {
+    if (permissions.adminViewAccountState) {
       settings.add(
         Setting.createSetting(
           Icons.person,
@@ -177,12 +177,18 @@ class _AccountAdminSettingsScreenState extends State<AccountAdminSettingsScreen>
           () => MyNavigator.pushLimited(context, AccountPrivateInfoPage(r, widget.accountId)),
         ),
       );
+    }
+
+    if (permissions.adminViewAccountApiUsage) {
       const apiUsageStatistics = "API usage statistics";
       settings.add(
         Setting.createSetting(Icons.query_stats, apiUsageStatistics, () {
           openViewApiUsageScreen(context, apiUsageStatistics, r.api, widget.accountId);
         }),
       );
+    }
+
+    if (permissions.adminViewAccountIpAddressUsage) {
       settings.add(
         Setting.createSetting(
           Icons.public,
@@ -335,7 +341,9 @@ class AccountAdminSettingsPermissions {
   bool get adminBanAccount => _permissions.adminBanAccount;
   bool get adminViewAllProfiles => _permissions.adminViewAllProfiles;
   bool get adminViewPermissions => _permissions.adminViewPermissions;
-  bool get adminViewPrivateInfo => _permissions.adminViewPrivateInfo;
+  bool get adminViewAccountState => _permissions.adminViewAccountState;
+  bool get adminViewAccountApiUsage => _permissions.adminViewAccountApiUsage;
+  bool get adminViewAccountIpAddressUsage => _permissions.adminViewAccountIpAddressUsage;
   AccountAdminSettingsPermissions(this._permissions);
 
   bool somePermissionEnabled() {
@@ -351,6 +359,8 @@ class AccountAdminSettingsPermissions {
         adminBanAccount ||
         adminViewAllProfiles ||
         adminViewPermissions ||
-        adminViewPrivateInfo;
+        adminViewAccountState ||
+        adminViewAccountApiUsage ||
+        adminViewAccountIpAddressUsage;
   }
 }

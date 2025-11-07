@@ -10,9 +10,9 @@
 
 part of openapi.api;
 
-class EmailAddressStateForAdmin {
-  /// Returns a new [EmailAddressStateForAdmin] instance.
-  EmailAddressStateForAdmin({
+class EmailAddressStateAdmin {
+  /// Returns a new [EmailAddressStateAdmin] instance.
+  EmailAddressStateAdmin({
     this.email,
     this.emailChange,
     this.emailChangeVerified = false,
@@ -40,7 +40,7 @@ class EmailAddressStateForAdmin {
   bool emailLoginEnabled;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is EmailAddressStateForAdmin &&
+  bool operator ==(Object other) => identical(this, other) || other is EmailAddressStateAdmin &&
     other.email == email &&
     other.emailChange == emailChange &&
     other.emailChangeVerified == emailChangeVerified &&
@@ -55,7 +55,7 @@ class EmailAddressStateForAdmin {
     (emailLoginEnabled.hashCode);
 
   @override
-  String toString() => 'EmailAddressStateForAdmin[email=$email, emailChange=$emailChange, emailChangeVerified=$emailChangeVerified, emailLoginEnabled=$emailLoginEnabled]';
+  String toString() => 'EmailAddressStateAdmin[email=$email, emailChange=$emailChange, emailChangeVerified=$emailChangeVerified, emailLoginEnabled=$emailLoginEnabled]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -74,10 +74,10 @@ class EmailAddressStateForAdmin {
     return json;
   }
 
-  /// Returns a new [EmailAddressStateForAdmin] instance and imports its values from
+  /// Returns a new [EmailAddressStateAdmin] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static EmailAddressStateForAdmin? fromJson(dynamic value) {
+  static EmailAddressStateAdmin? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -86,13 +86,13 @@ class EmailAddressStateForAdmin {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "EmailAddressStateForAdmin[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "EmailAddressStateForAdmin[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "EmailAddressStateAdmin[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "EmailAddressStateAdmin[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return EmailAddressStateForAdmin(
+      return EmailAddressStateAdmin(
         email: mapValueOfType<String>(json, r'email'),
         emailChange: mapValueOfType<String>(json, r'email_change'),
         emailChangeVerified: mapValueOfType<bool>(json, r'email_change_verified') ?? false,
@@ -102,11 +102,11 @@ class EmailAddressStateForAdmin {
     return null;
   }
 
-  static List<EmailAddressStateForAdmin> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <EmailAddressStateForAdmin>[];
+  static List<EmailAddressStateAdmin> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <EmailAddressStateAdmin>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = EmailAddressStateForAdmin.fromJson(row);
+        final value = EmailAddressStateAdmin.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -115,12 +115,12 @@ class EmailAddressStateForAdmin {
     return result.toList(growable: growable);
   }
 
-  static Map<String, EmailAddressStateForAdmin> mapFromJson(dynamic json) {
-    final map = <String, EmailAddressStateForAdmin>{};
+  static Map<String, EmailAddressStateAdmin> mapFromJson(dynamic json) {
+    final map = <String, EmailAddressStateAdmin>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = EmailAddressStateForAdmin.fromJson(entry.value);
+        final value = EmailAddressStateAdmin.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -129,14 +129,14 @@ class EmailAddressStateForAdmin {
     return map;
   }
 
-  // maps a json object with a list of EmailAddressStateForAdmin-objects as value to a dart map
-  static Map<String, List<EmailAddressStateForAdmin>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<EmailAddressStateForAdmin>>{};
+  // maps a json object with a list of EmailAddressStateAdmin-objects as value to a dart map
+  static Map<String, List<EmailAddressStateAdmin>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<EmailAddressStateAdmin>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = EmailAddressStateForAdmin.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = EmailAddressStateAdmin.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;

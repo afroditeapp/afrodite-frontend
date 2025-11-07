@@ -196,8 +196,6 @@ class ApiClient {
           return AccountBanReasonDetails.fromJson(value);
         case 'AccountContent':
           return AccountContent.fromJson(value);
-        case 'AccountData':
-          return AccountData.fromJson(value);
         case 'AccountId':
           return AccountId.fromJson(value);
         case 'AccountIdDbValue':
@@ -348,8 +346,10 @@ class ApiClient {
           return DemoAccountRegisterAccountResult.fromJson(value);
         case 'DemoAccountToken':
           return DemoAccountToken.fromJson(value);
-        case 'EmailAddressStateForAdmin':
-          return EmailAddressStateForAdmin.fromJson(value);
+        case 'EmailAddressState':
+          return EmailAddressState.fromJson(value);
+        case 'EmailAddressStateAdmin':
+          return EmailAddressStateAdmin.fromJson(value);
         case 'EmailLoginToken':
           return EmailLoginToken.fromJson(value);
         case 'EventToClient':

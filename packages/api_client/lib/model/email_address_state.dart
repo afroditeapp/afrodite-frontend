@@ -10,9 +10,9 @@
 
 part of openapi.api;
 
-class AccountData {
-  /// Returns a new [AccountData] instance.
-  AccountData({
+class EmailAddressState {
+  /// Returns a new [EmailAddressState] instance.
+  EmailAddressState({
     this.email,
     this.emailChange,
     this.emailChangeCompletionTime,
@@ -44,7 +44,7 @@ class AccountData {
   bool emailLoginEnabled;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is AccountData &&
+  bool operator ==(Object other) => identical(this, other) || other is EmailAddressState &&
     other.email == email &&
     other.emailChange == emailChange &&
     other.emailChangeCompletionTime == emailChangeCompletionTime &&
@@ -61,7 +61,7 @@ class AccountData {
     (emailLoginEnabled.hashCode);
 
   @override
-  String toString() => 'AccountData[email=$email, emailChange=$emailChange, emailChangeCompletionTime=$emailChangeCompletionTime, emailChangeVerified=$emailChangeVerified, emailLoginEnabled=$emailLoginEnabled]';
+  String toString() => 'EmailAddressState[email=$email, emailChange=$emailChange, emailChangeCompletionTime=$emailChangeCompletionTime, emailChangeVerified=$emailChangeVerified, emailLoginEnabled=$emailLoginEnabled]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -85,10 +85,10 @@ class AccountData {
     return json;
   }
 
-  /// Returns a new [AccountData] instance and imports its values from
+  /// Returns a new [EmailAddressState] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static AccountData? fromJson(dynamic value) {
+  static EmailAddressState? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -97,13 +97,13 @@ class AccountData {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "AccountData[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "AccountData[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "EmailAddressState[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "EmailAddressState[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return AccountData(
+      return EmailAddressState(
         email: mapValueOfType<String>(json, r'email'),
         emailChange: mapValueOfType<String>(json, r'email_change'),
         emailChangeCompletionTime: UnixTime.fromJson(json[r'email_change_completion_time']),
@@ -114,11 +114,11 @@ class AccountData {
     return null;
   }
 
-  static List<AccountData> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <AccountData>[];
+  static List<EmailAddressState> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <EmailAddressState>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = AccountData.fromJson(row);
+        final value = EmailAddressState.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -127,12 +127,12 @@ class AccountData {
     return result.toList(growable: growable);
   }
 
-  static Map<String, AccountData> mapFromJson(dynamic json) {
-    final map = <String, AccountData>{};
+  static Map<String, EmailAddressState> mapFromJson(dynamic json) {
+    final map = <String, EmailAddressState>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = AccountData.fromJson(entry.value);
+        final value = EmailAddressState.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -141,14 +141,14 @@ class AccountData {
     return map;
   }
 
-  // maps a json object with a list of AccountData-objects as value to a dart map
-  static Map<String, List<AccountData>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<AccountData>>{};
+  // maps a json object with a list of EmailAddressState-objects as value to a dart map
+  static Map<String, List<EmailAddressState>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<EmailAddressState>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = AccountData.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = EmailAddressState.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;

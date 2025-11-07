@@ -103,7 +103,7 @@ class AccountAdminApi {
 
   /// Get account ID from email
   ///
-  /// # Access  Permission [model_account::Permissions::admin_find_account_by_email] is required.
+  /// # Access  Permission [model_account::Permissions::admin_find_account_by_email_address] is required.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -138,7 +138,7 @@ class AccountAdminApi {
 
   /// Get account ID from email
   ///
-  /// # Access  Permission [model_account::Permissions::admin_find_account_by_email] is required.
+  /// # Access  Permission [model_account::Permissions::admin_find_account_by_email_address] is required.
   ///
   /// Parameters:
   ///
@@ -217,7 +217,7 @@ class AccountAdminApi {
 
   /// Get [model::Account] for specific account.
   ///
-  /// # Access  Permission [model::Permissions::admin_view_private_info] is required.
+  /// # Access  Permission [model::Permissions::admin_view_account_state] is required.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -252,7 +252,7 @@ class AccountAdminApi {
 
   /// Get [model::Account] for specific account.
   ///
-  /// # Access  Permission [model::Permissions::admin_view_private_info] is required.
+  /// # Access  Permission [model::Permissions::admin_view_account_state] is required.
   ///
   /// Parameters:
   ///
@@ -329,9 +329,9 @@ class AccountAdminApi {
   /// Parameters:
   ///
   /// * [String] aid (required):
-  Future<Response> getEmailAddressStateWithHttpInfo(String aid,) async {
+  Future<Response> getEmailAddressStateAdminWithHttpInfo(String aid,) async {
     // ignore: prefer_const_declarations
-    final path = r'/account_api/get_email_address_state/{aid}'
+    final path = r'/account_api/email_address_state_admin/{aid}'
       .replaceAll('{aid}', aid);
 
     // ignore: prefer_final_locals
@@ -362,8 +362,8 @@ class AccountAdminApi {
   /// Parameters:
   ///
   /// * [String] aid (required):
-  Future<EmailAddressStateForAdmin?> getEmailAddressState(String aid,) async {
-    final response = await getEmailAddressStateWithHttpInfo(aid,);
+  Future<EmailAddressStateAdmin?> getEmailAddressStateAdmin(String aid,) async {
+    final response = await getEmailAddressStateAdminWithHttpInfo(aid,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -371,7 +371,7 @@ class AccountAdminApi {
     // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'EmailAddressStateForAdmin',) as EmailAddressStateForAdmin;
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'EmailAddressStateAdmin',) as EmailAddressStateAdmin;
     
     }
     return null;

@@ -114,50 +114,6 @@ class AccountApi {
     return null;
   }
 
-  /// Get changeable user information to account.
-  ///
-  /// Note: This method returns the HTTP [Response].
-  Future<Response> getAccountDataWithHttpInfo() async {
-    // ignore: prefer_const_declarations
-    final path = r'/account_api/account_data';
-
-    // ignore: prefer_final_locals
-    Object? postBody;
-
-    final queryParams = <QueryParam>[];
-    final headerParams = <String, String>{};
-    final formParams = <String, String>{};
-
-    const contentTypes = <String>[];
-
-
-    return apiClient.invokeAPI(
-      path,
-      'GET',
-      queryParams,
-      postBody,
-      headerParams,
-      formParams,
-      contentTypes.isEmpty ? null : contentTypes.first,
-    );
-  }
-
-  /// Get changeable user information to account.
-  Future<AccountData?> getAccountData() async {
-    final response = await getAccountDataWithHttpInfo();
-    if (response.statusCode >= HttpStatus.badRequest) {
-      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
-    }
-    // When a remote server returns no body with a status of 204, we shall not decode it.
-    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
-    // FormatException when trying to decode an empty string.
-    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'AccountData',) as AccountData;
-    
-    }
-    return null;
-  }
-
   /// Get account deletion request state
   ///
   /// # Access - Account owner - Permission [model_account::Permissions::admin_request_account_deletion]
@@ -298,6 +254,47 @@ class AccountApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'Account',) as Account;
+    
+    }
+    return null;
+  }
+
+  /// Performs an HTTP 'GET /account_api/email_address_state' operation and returns the [Response].
+  Future<Response> getEmailAddressStateWithHttpInfo() async {
+    // ignore: prefer_const_declarations
+    final path = r'/account_api/email_address_state';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  Future<EmailAddressState?> getEmailAddressState() async {
+    final response = await getEmailAddressStateWithHttpInfo();
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'EmailAddressState',) as EmailAddressState;
     
     }
     return null;

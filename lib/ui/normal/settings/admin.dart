@@ -95,7 +95,7 @@ class AdminSettingsScreen extends StatelessWidget {
         ),
       );
     }
-    if (permissions.adminFindAccountByEmail) {
+    if (permissions.adminFindAccountByEmailAddress) {
       settings.add(
         Setting.createSetting(
           Icons.account_box,
@@ -155,7 +155,7 @@ class AdminSettingsPermissions {
   bool get adminServerMaintenanceEditNotification =>
       _permissions.adminServerMaintenanceEditNotification;
   bool get adminProfileStatistics => _permissions.adminProfileStatistics;
-  bool get adminFindAccountByEmail => _permissions.adminFindAccountByEmail;
+  bool get adminFindAccountByEmailAddress => _permissions.adminFindAccountByEmailAddress;
   bool get adminSubscribeAdminNotifications => _permissions.adminSubscribeAdminNotifications;
   AdminSettingsPermissions(this._permissions);
 
@@ -176,7 +176,7 @@ class AdminSettingsPermissions {
         adminServerMaintenanceResetData ||
         adminServerMaintenanceEditNotification ||
         adminProfileStatistics ||
-        adminFindAccountByEmail ||
+        adminFindAccountByEmailAddress ||
         adminSubscribeAdminNotifications;
   }
 }

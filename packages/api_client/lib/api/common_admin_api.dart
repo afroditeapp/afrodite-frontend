@@ -754,7 +754,7 @@ class CommonAdminApi {
 
   /// Get API usage data for account
   ///
-  /// HTTP method is POST because JSON request body requires it.  # Permissions Requires [Permissions::admin_view_private_info].
+  /// HTTP method is POST because JSON request body requires it.  # Permissions Requires [Permissions::admin_view_account_api_usage].
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -788,7 +788,7 @@ class CommonAdminApi {
 
   /// Get API usage data for account
   ///
-  /// HTTP method is POST because JSON request body requires it.  # Permissions Requires [Permissions::admin_view_private_info].
+  /// HTTP method is POST because JSON request body requires it.  # Permissions Requires [Permissions::admin_view_account_api_usage].
   ///
   /// Parameters:
   ///
@@ -862,7 +862,7 @@ class CommonAdminApi {
 
   /// Get IP address usage data for account
   ///
-  /// HTTP method is POST because JSON request body requires it.  # Permissions Requires [Permissions::admin_view_private_info].
+  /// HTTP method is POST because JSON request body requires it.  # Permissions Requires [Permissions::admin_view_account_ip_address_usage].
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -896,7 +896,7 @@ class CommonAdminApi {
 
   /// Get IP address usage data for account
   ///
-  /// HTTP method is POST because JSON request body requires it.  # Permissions Requires [Permissions::admin_view_private_info].
+  /// HTTP method is POST because JSON request body requires it.  # Permissions Requires [Permissions::admin_view_account_ip_address_usage].
   ///
   /// Parameters:
   ///

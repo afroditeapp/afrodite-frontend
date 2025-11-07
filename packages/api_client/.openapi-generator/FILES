@@ -29,7 +29,6 @@ lib/model/account_app_notification_settings.dart
 lib/model/account_ban_reason_category.dart
 lib/model/account_ban_reason_details.dart
 lib/model/account_content.dart
-lib/model/account_data.dart
 lib/model/account_id.dart
 lib/model/account_id_db_value.dart
 lib/model/account_locked_state.dart
@@ -105,7 +104,8 @@ lib/model/demo_account_login_result.dart
 lib/model/demo_account_login_to_account.dart
 lib/model/demo_account_register_account_result.dart
 lib/model/demo_account_token.dart
-lib/model/email_address_state_for_admin.dart
+lib/model/email_address_state.dart
+lib/model/email_address_state_admin.dart
 lib/model/email_login_token.dart
 lib/model/event_to_client.dart
 lib/model/event_type.dart

@@ -66,10 +66,10 @@ Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
 *AccountApi* | [**getAccountAppNotificationSettings**](doc//AccountApi.md#getaccountappnotificationsettings) | **GET** /account_api/get_account_app_notification_settings | 
 *AccountApi* | [**getAccountBanTime**](doc//AccountApi.md#getaccountbantime) | **GET** /account_api/account_ban_time/{aid} | Get account ban time
-*AccountApi* | [**getAccountData**](doc//AccountApi.md#getaccountdata) | **GET** /account_api/account_data | Get changeable user information to account.
 *AccountApi* | [**getAccountDeletionRequestState**](doc//AccountApi.md#getaccountdeletionrequeststate) | **GET** /account_api/get_account_deletion_request_state/{aid} | Get account deletion request state
 *AccountApi* | [**getAccountSetup**](doc//AccountApi.md#getaccountsetup) | **GET** /account_api/account_setup | Get non-changeable user information to account.
 *AccountApi* | [**getAccountState**](doc//AccountApi.md#getaccountstate) | **GET** /account_api/state | Get current account state.
+*AccountApi* | [**getEmailAddressState**](doc//AccountApi.md#getemailaddressstate) | **GET** /account_api/email_address_state | 
 *AccountApi* | [**getLatestBirthdate**](doc//AccountApi.md#getlatestbirthdate) | **GET** /account_api/latest_birthdate | 
 *AccountApi* | [**getNewsItem**](doc//AccountApi.md#getnewsitem) | **GET** /account_api/news_item/{nid} | Get news item content using specific locale and fallback to locale \"en\" if news translation is not found.
 *AccountApi* | [**getVerifyEmail**](doc//AccountApi.md#getverifyemail) | **GET** /account_api/verify_email/{token} | Verify email address using the token sent via email. This endpoint is meant to be accessed via a link in the verification email. To workaround email security scanning related link accessing, the link can be opened multiple times.
@@ -107,7 +107,7 @@ Class | Method | HTTP request | Description
 *AccountAdminApi* | [**getAccountLockedState**](doc//AccountAdminApi.md#getaccountlockedstate) | **GET** /account_api/get_account_locked_state/{aid} | Get account locked state
 *AccountAdminApi* | [**getAccountStateAdmin**](doc//AccountAdminApi.md#getaccountstateadmin) | **GET** /account_api/get_account_state_admin/{aid} | Get [model::Account] for specific account.
 *AccountAdminApi* | [**getAllAdmins**](doc//AccountAdminApi.md#getalladmins) | **GET** /account_api/get_all_admins | Get all admins
-*AccountAdminApi* | [**getEmailAddressState**](doc//AccountAdminApi.md#getemailaddressstate) | **GET** /account_api/get_email_address_state/{aid} | Get email address state for admin.
+*AccountAdminApi* | [**getEmailAddressStateAdmin**](doc//AccountAdminApi.md#getemailaddressstateadmin) | **GET** /account_api/email_address_state_admin/{aid} | Get email address state for admin.
 *AccountAdminApi* | [**getPermissions**](doc//AccountAdminApi.md#getpermissions) | **GET** /account_api/get_permissions/{aid} | Get [model::Permissions] for specific account.
 *AccountAdminApi* | [**postAdminCancelEmailChange**](doc//AccountAdminApi.md#postadmincancelemailchange) | **POST** /account_api/admin_cancel_email_change/{aid} | Cancel email changing process for any account.
 *AccountAdminApi* | [**postAdminInitEmailChange**](doc//AccountAdminApi.md#postadmininitemailchange) | **POST** /account_api/admin_init_email_change | Initiate email change process for any account by providing a new email address.
@@ -264,7 +264,6 @@ Class | Method | HTTP request | Description
  - [AccountBanReasonCategory](doc//AccountBanReasonCategory.md)
  - [AccountBanReasonDetails](doc//AccountBanReasonDetails.md)
  - [AccountContent](doc//AccountContent.md)
- - [AccountData](doc//AccountData.md)
  - [AccountId](doc//AccountId.md)
  - [AccountIdDbValue](doc//AccountIdDbValue.md)
  - [AccountLockedState](doc//AccountLockedState.md)
@@ -340,7 +339,8 @@ Class | Method | HTTP request | Description
  - [DemoAccountLoginToAccount](doc//DemoAccountLoginToAccount.md)
  - [DemoAccountRegisterAccountResult](doc//DemoAccountRegisterAccountResult.md)
  - [DemoAccountToken](doc//DemoAccountToken.md)
- - [EmailAddressStateForAdmin](doc//EmailAddressStateForAdmin.md)
+ - [EmailAddressState](doc//EmailAddressState.md)
+ - [EmailAddressStateAdmin](doc//EmailAddressStateAdmin.md)
  - [EmailLoginToken](doc//EmailLoginToken.md)
  - [EventToClient](doc//EventToClient.md)
  - [EventType](doc//EventType.md)

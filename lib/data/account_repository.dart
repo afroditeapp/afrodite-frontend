@@ -230,8 +230,8 @@ class AccountRepository extends DataRepositoryWithLifecycle {
     return await api.account((api) => api.getAccountSetup()).mapErr((_) => ());
   }
 
-  Future<Result<AccountData, ()>> downloadAccountData() async {
-    return await api.account((api) => api.getAccountData()).mapErr((_) => ());
+  Future<Result<EmailAddressState, ()>> downloadEmailAddressState() async {
+    return await api.account((api) => api.getEmailAddressState()).mapErr((_) => ());
   }
 
   Future<Result<(), ()>> moveAccountToPendingDeletionState() async {

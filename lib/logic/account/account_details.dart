@@ -36,8 +36,8 @@ class AccountDetailsBloc extends Bloc<AccountDetailsEvent, AccountDetailsBlocDat
       await runOnce(() async {
         emit(AccountDetailsBlocData().copyWith(isLoading: true));
 
-        final accountData = await account.downloadAccountData().ok();
-        if (accountData == null) {
+        final data = await account.downloadEmailAddressState().ok();
+        if (data == null) {
           emit(state.copyWith(isLoading: false, isError: true));
           return;
         }
@@ -46,10 +46,10 @@ class AccountDetailsBloc extends Bloc<AccountDetailsEvent, AccountDetailsBlocDat
           state.copyWith(
             isLoading: false,
             isError: false,
-            email: accountData.email,
-            emailChange: accountData.emailChange,
-            emailChangeVerified: accountData.emailChangeVerified,
-            emailChangeCompletionTime: accountData.emailChangeCompletionTime?.toUtcDateTime(),
+            email: data.email,
+            emailChange: data.emailChange,
+            emailChangeVerified: data.emailChangeVerified,
+            emailChangeCompletionTime: data.emailChangeCompletionTime?.toUtcDateTime(),
           ),
         );
       });
