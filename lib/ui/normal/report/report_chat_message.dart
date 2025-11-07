@@ -165,6 +165,8 @@ class _ReportChatMessageScreen extends State<ReportChatMessageScreen> {
             showSnackBar(R.strings.generic_error);
           } else if (result.errorTooManyReports) {
             showSnackBar(R.strings.report_screen_snackbar_too_many_reports_error);
+          } else if (result.error) {
+            showSnackBar(R.strings.generic_error_occurred);
           } else {
             showSnackBar(R.strings.report_screen_snackbar_report_successful);
           }

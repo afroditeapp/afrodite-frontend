@@ -140,7 +140,7 @@ class DemoAccountManager {
                   final aid = r.aid;
                   if (r.errorMaxAccountCount) {
                     return Err<AccountId, DemoAccountError>(DemoAccountMaxAccountCountError());
-                  } else if (aid == null) {
+                  } else if (r.error || aid == null) {
                     return Err<AccountId, DemoAccountError>(DemoAccountGeneralError());
                   } else {
                     return Ok(aid);

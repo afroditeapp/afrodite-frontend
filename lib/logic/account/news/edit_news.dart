@@ -151,6 +151,10 @@ class EditNewsBloc extends Bloc<EditNewsEvent, EditNewsData> with ActionRunner {
           return const Err(_SaveError.saveFailedAlreadyChanged);
         }
 
+        if (r.value.error) {
+          return const Err(_SaveError.saveFailed);
+        }
+
         final loadResult = await loadTranslation(emit, locale);
         if (loadResult.isErr()) {
           return const Err(_SaveError.reloadFailed);

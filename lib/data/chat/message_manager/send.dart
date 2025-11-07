@@ -257,6 +257,11 @@ class SendMessageUtils {
         return;
       }
 
+      if (result.error) {
+        yield ErrorAfterMessageSaving(localId);
+        return;
+      }
+
       final signedPgpMessageBase64 = result.d;
       if (signedPgpMessageBase64 == null) {
         yield ErrorAfterMessageSaving(localId);

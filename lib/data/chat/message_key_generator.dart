@@ -93,7 +93,7 @@ class MessageKeyManager {
 
     // TODO(prod): Handle errorTooManyPublicKeys properly
     final keyId = r?.keyId;
-    if (r == null || keyId == null || r.errorTooManyPublicKeys) {
+    if (r == null || keyId == null || r.error || r.errorTooManyPublicKeys) {
       return const Err(());
     }
 

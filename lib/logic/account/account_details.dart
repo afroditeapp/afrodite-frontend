@@ -145,6 +145,8 @@ void showSnackBarTextsForSendVerificationEmailResult(SendVerifyEmailMessageResul
     showSnackBar(
       R.strings.generic_try_again_later_seconds(result.errorTryAgainLaterAfterSeconds.toString()),
     );
+  } else if (result.error) {
+    showSnackBar(R.strings.generic_error_occurred);
   } else {
     showSnackBar(R.strings.account_settings_screen_send_verification_email_sent_successfully);
   }
@@ -159,6 +161,8 @@ void showSnackBarTextsForInitEmailChangeResult(InitEmailChangeResult result) {
     showSnackBar(
       R.strings.generic_try_again_later_seconds(result.errorTryAgainLaterAfterSeconds.toString()),
     );
+  } else if (result.error) {
+    showSnackBar(R.strings.generic_error_occurred);
   } else {
     showSnackBar(R.strings.account_settings_screen_email_change_initiated);
   }

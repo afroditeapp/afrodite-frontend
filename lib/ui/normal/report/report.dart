@@ -172,6 +172,8 @@ class _ReportScreenState extends State<ReportScreen> {
               showSnackBar(R.strings.report_screen_profile_name_changed_error);
             } else if (result.errorTooManyReports) {
               showSnackBar(R.strings.report_screen_snackbar_too_many_reports_error);
+            } else if (result.error) {
+              showSnackBar(R.strings.generic_error_occurred);
             } else {
               showSnackBar(R.strings.report_screen_snackbar_report_successful);
               await repositories.profile.downloadProfileToDatabase(
@@ -213,6 +215,8 @@ class _ReportScreenState extends State<ReportScreen> {
               showSnackBar(R.strings.report_screen_profile_text_changed_error);
             } else if (result.errorTooManyReports) {
               showSnackBar(R.strings.report_screen_snackbar_too_many_reports_error);
+            } else if (result.error) {
+              showSnackBar(R.strings.generic_error_occurred);
             } else {
               showSnackBar(R.strings.report_screen_snackbar_report_successful);
               await repositories.profile.downloadProfileToDatabase(
@@ -284,6 +288,8 @@ class _ReportScreenState extends State<ReportScreen> {
               // Should not happen as the report is ignored when sending
               // again the same boolean report with the same value.
               showSnackBar(R.strings.report_screen_snackbar_too_many_reports_error);
+            } else if (result.error) {
+              showSnackBar(R.strings.generic_error_occurred);
             } else {
               showSnackBar(R.strings.report_screen_snackbar_report_successful);
             }

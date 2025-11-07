@@ -101,6 +101,11 @@ class OnlineIterator extends IteratorType {
             return const Err(());
           }
 
+          if (profiles.otherError) {
+            _log.error("Error detected");
+            return const Err(());
+          }
+
           if (profiles.profiles.isEmpty) {
             return const Ok([]);
           }
@@ -212,6 +217,7 @@ class ProfileListOnlineIteratorIo extends OnlineIteratorIo {
         .mapOk(
           (value) => IteratorPage(
             value.profiles.map((v) => ProfileLink(a: v.a, p: v.p, c: v.c, l: v.l)),
+            otherError: value.error,
             errorInvalidIteratorSessionId: value.errorInvalidIteratorSessionId,
           ),
         )
@@ -225,10 +231,15 @@ class ProfileListOnlineIteratorIo extends OnlineIteratorIo {
 }
 
 class IteratorPage {
+  final bool otherError;
   final bool errorInvalidIteratorSessionId;
   final Iterable<ProfileLink> profiles;
 
-  IteratorPage(this.profiles, {this.errorInvalidIteratorSessionId = false});
+  IteratorPage(
+    this.profiles, {
+    this.otherError = false,
+    this.errorInvalidIteratorSessionId = false,
+  });
 }
 
 class ReceivedLikesOnlineIteratorIo extends OnlineIteratorIo {
@@ -455,6 +466,7 @@ class AutomaticProfileSearchOnlineIteratorIo extends OnlineIteratorIo {
         .mapOk(
           (value) => IteratorPage(
             value.profiles.map((v) => ProfileLink(a: v.a, p: v.p, c: v.c, l: v.l)),
+            otherError: value.error,
             errorInvalidIteratorSessionId: value.errorInvalidIteratorSessionId,
           ),
         )

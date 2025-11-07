@@ -307,6 +307,9 @@ class LoginRepository extends AppSingleton {
     if (loginResult.errorInvalidEmailLoginToken) {
       return const Err(CommonSignInError.invalidEmailLoginToken);
     }
+    if (loginResult.error) {
+      return const Err(CommonSignInError.otherError);
+    }
     final aid = loginResult.aid;
     final authPair = loginResult.tokens;
     if (aid == null || authPair == null) {
