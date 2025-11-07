@@ -301,6 +301,9 @@ class LoginRepository extends AppSingleton {
     if (loginResult.errorEmailAlreadyUsed) {
       return const Err(CommonSignInError.emailAlreadyUsed);
     }
+    if (loginResult.errorAccountLocked) {
+      return const Err(CommonSignInError.accountLocked);
+    }
     final aid = loginResult.aid;
     final authPair = loginResult.tokens;
     if (aid == null || authPair == null) {
@@ -538,6 +541,7 @@ enum CommonSignInError {
   unsupportedClient,
   signInWithEmailUnverified,
   emailAlreadyUsed,
+  accountLocked,
   creatingConnectingWebSocketFailed,
   dataSyncFailed,
   otherError,

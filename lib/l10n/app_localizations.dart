@@ -913,6 +913,12 @@ abstract class AppLocalizations {
   /// **'Account ID: {p0}'**
   String generic_account_id_text_with_value(String p0);
 
+  /// Snackbar text for account locked error
+  ///
+  /// In en, this message translates to:
+  /// **'Account locked'**
+  String get generic_account_locked_error;
+
   /// Generic action completed text
   ///
   /// In en, this message translates to:
@@ -1609,12 +1615,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Demo account login'**
   String get login_screen_demo_account_dialog_title;
-
-  /// Snackbar text for demo account locked error
-  ///
-  /// In en, this message translates to:
-  /// **'Account locked. Contact customer support.'**
-  String get login_screen_demo_account_locked;
 
   /// Snackbar text for demo account login failed
   ///

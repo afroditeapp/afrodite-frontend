@@ -527,6 +527,9 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get generic_account_locked_error => 'Account locked';
+
+  @override
   String get generic_action_completed => 'Action completed';
 
   @override
@@ -916,10 +919,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get login_screen_demo_account_dialog_title => 'Demo account login';
-
-  @override
-  String get login_screen_demo_account_locked =>
-      'Account locked. Contact customer support.';
 
   @override
   String get login_screen_demo_account_login_failed => 'Login failed';

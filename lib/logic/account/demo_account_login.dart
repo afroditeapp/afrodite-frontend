@@ -47,7 +47,7 @@ class DemoAccountLoginBloc extends Bloc<DemoAccountLoginEvent, DemoAccountLoginD
         case Err(e: DemoAccountLoginError.otherError):
           showSnackBar(R.strings.login_screen_demo_account_login_failed);
         case Err(e: DemoAccountLoginError.accountLocked):
-          showSnackBar(R.strings.login_screen_demo_account_locked);
+          showSnackBar(R.strings.generic_account_locked_error);
       }
     });
     on<NewDemoAccountUsernameValue>((id, emit) {

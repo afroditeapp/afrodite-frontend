@@ -623,6 +623,10 @@
       }
     }
   },
+  "generic_account_locked_error": "Account locked",
+  "@generic_account_locked_error": {
+    "description": "Snackbar text for account locked error"
+  },
   "generic_action_completed": "Action completed",
   "@generic_action_completed": {
     "description": "Generic action completed text"
@@ -1089,10 +1093,6 @@
   "login_screen_demo_account_dialog_title": "Demo account login",
   "@login_screen_demo_account_dialog_title": {
     "description": "Title for demo account login dialog"
-  },
-  "login_screen_demo_account_locked": "Account locked. Contact customer support.",
-  "@login_screen_demo_account_locked": {
-    "description": "Snackbar text for demo account locked error"
   },
   "login_screen_demo_account_login_failed": "Login failed",
   "@login_screen_demo_account_login_failed": {

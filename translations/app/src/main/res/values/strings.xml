@@ -74,6 +74,7 @@
     <string name="generic_size" description="Generic size text">Size</string>
     <string name="generic_margin" description="Generic margin text">Margin</string>
     <string name="generic_account_id_text_with_value" description="Account ID text with value">Account ID: %s</string>
+    <string name="generic_account_locked_error" description="Snackbar text for account locked error">Account locked</string>
 
     <string name="generic_weekday_mon" description="Generic short text for Monday">Mon</string>
     <string name="generic_weekday_tue" description="Generic short text for Tuesday">Tue</string>
@@ -206,7 +207,6 @@
     <string name="login_screen_demo_account_username" description="Placeholder text for demo account username">Username</string>
     <string name="login_screen_demo_account_password" description="Placeholder text for demo account password">Password</string>
     <string name="login_screen_demo_account_login_failed" description="Snackbar text for demo account login failed">Login failed</string>
-    <string name="login_screen_demo_account_locked" description="Snackbar text for demo account locked error">Account locked. Contact customer support.</string>
     <string name="login_screen_demo_account_login_session_expired" description="Snackbar text for demo account login session expiration">Demo account session expired</string>
     <string name="login_screen_sign_in_with_error" description="Snackbar text for sign in with error">Sign in with failed</string>
     <string name="login_screen_login_api_request_failed" description="Snackbar text for login API request failed">Login API request failed. Try again later.</string>
