@@ -106,9 +106,13 @@ class _DataExportScreenState extends State<DataExportScreen> {
   Widget exportTypeSelection(BuildContext context) {
     return RadioGroup<DataExportType>(
       groupValue: dataExportType,
-      onChanged: (_) => setState(() {
-        dataExportType = DataExportType.user;
-      }),
+      onChanged: (newValue) {
+        if (newValue != null) {
+          setState(() {
+            dataExportType = newValue;
+          });
+        }
+      },
       child: Row(
         children: [
           Expanded(
