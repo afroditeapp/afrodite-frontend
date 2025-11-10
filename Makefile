@@ -119,6 +119,7 @@ endif
 ifndef OUTPUT
 	$(error OUTPUT is not set)
 endif
+	mkdir -p build
 	rm -rf build/tmp
 	mkdir build/tmp
 	flutter build web $(BUILD_ARGS) --pwa-strategy none --base-href=/app/$(APP_VERSION)/
