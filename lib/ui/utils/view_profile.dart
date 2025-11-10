@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 import 'package:database/database.dart';
-import 'package:app/logic/profile/my_profile.dart';
 import 'package:app/ui_utils/consts/size.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:utils/utils.dart';
@@ -68,7 +67,6 @@ class _ViewProfileEntryState extends State<ViewProfileEntry> {
   }
 
   Widget title(BuildContext context) {
-    final myProfile = context.read<MyProfileBloc>().state.profile;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: COMMON_SCREEN_EDGE_PADDING),
       child: Row(
@@ -89,7 +87,7 @@ class _ViewProfileEntryState extends State<ViewProfileEntry> {
               ],
             ),
           ),
-          if ((myProfile?.unlimitedLikes ?? false) && widget.profile.unlimitedLikes)
+          if (widget.profile.unlimitedLikes)
             Padding(
               padding: const EdgeInsets.only(left: 8.0),
               child: Icon(UNLIMITED_LIKES_ICON, color: getUnlimitedLikesColor(context)),
