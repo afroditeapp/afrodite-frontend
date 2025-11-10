@@ -47,9 +47,8 @@ class ProfileThumbnailImage extends StatelessWidget {
       child: SizedBox(
         width: width,
         height: height,
-        child: Container(
-          decoration: BoxDecoration(borderRadius: borderRadius),
-          clipBehavior: Clip.hardEdge,
+        child: ClipRRect(
+          borderRadius: borderRadius ?? BorderRadius.zero,
           child: Image(
             image: _imageProvider,
             frameBuilder: (context, image, frame, wasSynchronouslyLoaded) {
