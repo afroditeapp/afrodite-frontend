@@ -158,9 +158,14 @@ class _BanAccountScreenState extends State<BanAccountScreen> {
           onPressed: selectedBanSeconds != null
               ? () async {
                   final seconds = selectedBanSeconds!;
-                  final banDetails = AccountBanReasonDetails(
-                    value: banDetailsController.text.trim(),
-                  );
+
+                  final banDetailsString = banDetailsController.text.trim();
+                  final AccountBanReasonDetails? banDetails;
+                  if (banDetailsString.isEmpty) {
+                    banDetails = null;
+                  } else {
+                    banDetails = AccountBanReasonDetails(value: banDetailsString);
+                  }
 
                   final result = await showConfirmDialog(context, "Ban?", yesNoActions: true);
                   if (result == true && context.mounted) {
@@ -193,10 +198,7 @@ class _BanAccountScreenState extends State<BanAccountScreen> {
         if (result == true && context.mounted) {
           final result = await widget.api.accountAdminAction(
             (api) => api.postSetBanState(
-              SetAccountBanState(
-                account: widget.accountId,
-                reasonDetails: AccountBanReasonDetails(value: ""),
-              ),
+              SetAccountBanState(account: widget.accountId, reasonDetails: null),
             ),
           );
           if (result.isErr()) {

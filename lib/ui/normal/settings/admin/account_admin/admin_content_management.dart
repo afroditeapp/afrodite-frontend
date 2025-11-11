@@ -177,7 +177,7 @@ class _AdminContentManagementScreenState extends State<AdminContentManagementScr
           accept: accepted,
           accountId: account,
           contentId: content,
-          rejectedDetails: MediaContentModerationRejectedReasonDetails(value: ""),
+          rejectedDetails: null,
         ),
       ),
     );

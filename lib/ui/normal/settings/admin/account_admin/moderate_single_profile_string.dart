@@ -185,9 +185,13 @@ class _ModerateSingleProfileStringScreenState extends State<ModerateSingleProfil
         if (accepted == true)
           ElevatedButton(
             onPressed: () async {
-              final details = ProfileStringModerationRejectedReasonDetails(
-                value: detailsController.text.trim(),
-              );
+              final detailsString = detailsController.text.trim();
+              final ProfileStringModerationRejectedReasonDetails? details;
+              if (detailsString.isEmpty) {
+                details = null;
+              } else {
+                details = ProfileStringModerationRejectedReasonDetails(value: detailsString);
+              }
               final result = await showConfirmDialog(context, "Reject?", yesNoActions: true);
               if (result == true && context.mounted) {
                 final result = await widget.api.profileAdminAction(
@@ -221,7 +225,7 @@ class _ModerateSingleProfileStringScreenState extends State<ModerateSingleProfil
                       id: widget.accountId,
                       accept: true,
                       value: profileString,
-                      rejectedDetails: ProfileStringModerationRejectedReasonDetails(value: ""),
+                      rejectedDetails: null,
                     ),
                   ),
                 );

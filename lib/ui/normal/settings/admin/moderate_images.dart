@@ -109,7 +109,7 @@ class MediaContentIo extends ContentIo<WrappedMediaContentPendingModeration> {
       accept: accept,
       accountId: content.accountId,
       contentId: content.contentId,
-      rejectedDetails: MediaContentModerationRejectedReasonDetails(value: ""),
+      rejectedDetails: null,
     );
     await api.mediaAdminAction((api) => api.postModerateMediaContent(info));
   }

@@ -79,7 +79,7 @@ class ProfileStringIo extends ContentIo<WrappedProfileStringModeration> {
       accept: accept,
       id: content.id,
       value: content.value,
-      rejectedDetails: ProfileStringModerationRejectedReasonDetails(value: ""),
+      rejectedDetails: null,
     );
     await api.profileAdminAction((api) => api.postModerateProfileString(info));
   }
