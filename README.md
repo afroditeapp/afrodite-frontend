@@ -4,7 +4,7 @@ Afrodite is an open source dating app aiming to change dating app market to offe
 ethical, private and secure dating apps. Written using modern technologies,
 Flutter and Rust, the app offers ethical profile browsing centered UI together
 with private and secure end-to-end encrypted chat messaging. The app supports
-Android and iOS platforms.
+Android, iOS and Web platforms.
 
 This repository contains the frontend part. [Backend repository](https://github.com/afroditeapp/afrodite-backend)
 
@@ -19,7 +19,7 @@ Check [features.md](docs/features.md).
 
 ## Building and running
 
-Tagged development preview versions (0.x) of frontend and backend
+Tagged preview versions (0.x) of frontend and backend
 with the same minor version number are compatible with each other.
 Main branch might be broken or incompatible with the backend.
 
@@ -28,6 +28,8 @@ Main branch might be broken or incompatible with the backend.
 2. Add [placeholder files](#placeholder-files-needed-for-compiling-the-project).
    If building for iOS then also add missing
    [iOS project files](#add-missing-ios-project-files).
+   If building for Web then also run
+   [Web build required commands](#web-build-required-commands) once.
 
 3. Build and run the frontend.
 
@@ -38,7 +40,8 @@ flutter run --release -d DEVICE
 
 4. Optionally install [development dependencies](#development-dependencies).
 
-4. Optionally add [push notification and Sign in with Google support](#adding-push-notification-and-sign-in-with-google-support).
+5. Optionally add push notification, Sign in with Apple and Sign in with Google
+   support using instructions in this file.
 
 ### Dependencies
 
@@ -57,6 +60,14 @@ flutter run --release -d DEVICE
    <https://guides.cocoapods.org/using/getting-started.html#sudo-less-installation>
 
 3. Install [Flutter](https://docs.flutter.dev/get-started/install).
+
+#### Web builds (on Ubuntu 22.04 and macOS)
+
+1. Install [Rust](https://www.rust-lang.org/learn/get-started).
+
+2. Install [Flutter](https://docs.flutter.dev/get-started/install).
+
+3. Install [wasm-pack](https://github.com/drager/wasm-pack).
 
 ### Development dependencies
 
@@ -148,6 +159,18 @@ APNs notifications require that NotificationService is working
 and `lib/config_services.dart` iosAppGroupIdentifier function
 returns a valid value.
 
+
+### Web build required commands
+
+Run these once so that required files will be available.
+
+```sh
+cd afrodite-frontend
+make remove-and-download-drift-web-dependencies
+make remove-and-download-native-push-web-dependencies
+make build-rust-utils-for-web
+```
+
 ## About Assets
 
 Sign in with Google buttons are from
@@ -177,7 +200,7 @@ lib/config_services.dart
 
 ## Add Sign in with Apple support
 
-## Android and web
+### Android and web
 
 Login HTTP redirect URLs and related domains must be added to Service ID config.
 <https://developer.apple.com/help/account/capabilities/configure-sign-in-with-apple-for-the-web>
@@ -194,7 +217,7 @@ https://backend.example.com/account_api/sign_in_with_apple_redirect_to_app
 
 Also modify correct Service ID to `lib/config_services.dart`.
 
-## iOS
+### iOS
 
 The app must have Sign in with Apple capability enabled.
 
