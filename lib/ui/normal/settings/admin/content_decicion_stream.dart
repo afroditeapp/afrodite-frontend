@@ -177,13 +177,13 @@ class _UpdatingContentDecicionListItemState<C extends ContentInfoGetter>
     );
   }
 
-  Widget buildRow(BuildContext contex, ContentRow<C> r, int index) {
+  Widget buildRow(BuildContext context, ContentRow<C> r, int index) {
     final Color? color;
     switch (r.status) {
       case RowStatus.accepted:
-        color = Colors.green.shade200;
+        color = Theme.of(context).colorScheme.primaryContainer;
       case RowStatus.rejected:
-        color = Colors.red.shade200;
+        color = Theme.of(context).colorScheme.errorContainer;
       case RowStatus.decicionNeeded:
         color = null;
     }
