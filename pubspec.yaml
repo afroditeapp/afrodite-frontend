@@ -125,6 +125,9 @@ dependencies:
   fl_chart: ^1.0.0
   flutter_markdown: ^0.7.7+1
 
+  flutter_chat_core: ^2.8.0
+  flutter_chat_ui: ^2.9.1
+
   flutter_local_notifications: ^19.3.0
   device_info_plus: ^11.5.0
   package_info_plus: ^8.1.3

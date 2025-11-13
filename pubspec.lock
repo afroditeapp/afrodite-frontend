@@ -250,6 +250,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.1.2"
+  cross_cache:
+    dependency: transitive
+    description:
+      name: cross_cache
+      sha256: ddf99059e2174d141efa03bea6d51eb7c8983f4a4af43ddee7556bbc43399522
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.5"
   cross_file:
     dependency: transitive
     description:
@@ -314,6 +322,30 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "7.0.3"
+  diffutil_dart:
+    dependency: transitive
+    description:
+      name: diffutil_dart
+      sha256: "5e74883aedf87f3b703cb85e815bdc1ed9208b33501556e4a8a5572af9845c81"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.0.1"
+  dio:
+    dependency: transitive
+    description:
+      name: dio
+      sha256: d90ee57923d1828ac14e492ca49440f65477f4bb1263575900be731a3dac66a9
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.9.0"
+  dio_web_adapter:
+    dependency: transitive
+    description:
+      name: dio_web_adapter
+      sha256: "7586e476d70caecaf1686d21eee7247ea43ef5c345eab9e0cc3583ff13378d78"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.1"
   drift:
     dependency: "direct main"
     description:
@@ -439,6 +471,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.4.1"
+  flutter_chat_core:
+    dependency: "direct main"
+    description:
+      name: flutter_chat_core
+      sha256: "113f9b0c2c9f8fb77a40d298084d99b28ff4876f99598ad01bea8b731f1acc20"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.8.0"
+  flutter_chat_ui:
+    dependency: "direct main"
+    description:
+      name: flutter_chat_ui
+      sha256: "08a13577ea943d7965e3b1766d3a2119b07b56aced5336900ab7fb4c377d4ca0"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.9.1"
   flutter_file_manager_android:
     dependency: "direct overridden"
     description:
@@ -766,6 +814,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.1.2"
+  idb_shim:
+    dependency: transitive
+    description:
+      name: idb_shim
+      sha256: "071f3b05032fa62e60ca15db9939f8afbaf403b37e67747ac88f858c3e999228"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.6.7+1"
   image:
     dependency: "direct main"
     description:
@@ -1139,10 +1195,10 @@ packages:
     dependency: "direct main"
     description:
       name: provider
-      sha256: "4abbd070a04e9ddc287673bf5a030c7ca8b685ff70218720abab8b092f53dd84"
+      sha256: "4e82183fa20e5ca25703ead7e05de9e4cceed1fbd1eadc1ac3cb6f565a09f272"
       url: "https://pub.dev"
     source: hosted
-    version: "6.1.5"
+    version: "6.1.5+1"
   pub_semver:
     dependency: transitive
     description:
@@ -1191,6 +1247,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.3.8"
+  scrollview_observer:
+    dependency: transitive
+    description:
+      name: scrollview_observer
+      sha256: c2f713509f18f88f637b2084b47a90c91fb1ef066d5d82d2cf3194d8509dc6ab
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.26.2"
+  sembast:
+    dependency: transitive
+    description:
+      name: sembast
+      sha256: c8063c3146c3c8d5f5b04230de7682c768440a575fbda2634f14d22f263197c3
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.8.5+2"
   shared_preferences:
     dependency: "direct main"
     description:

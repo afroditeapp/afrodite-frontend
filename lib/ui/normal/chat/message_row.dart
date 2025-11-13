@@ -219,7 +219,7 @@ Widget _messageWidgetMainContent(
   Widget messageContent;
   if (entry.message is VideoCallInvitation) {
     messageContent = ElevatedButton.icon(
-      onPressed: () => _joinVideoCall(context, entry.remoteAccountId),
+      onPressed: () => joinVideoCall(context, entry.remoteAccountId),
       label: Text(text, style: messageTextStyle),
       icon: const Icon(Icons.videocam),
     );
@@ -417,7 +417,7 @@ ${screenContext.strings.generic_state}: $stateText""";
   showInfoDialog(screenContext, infoText, existingPageToBeRemoved: existingPageKey);
 }
 
-void _joinVideoCall(BuildContext context, AccountId callee) async {
+void joinVideoCall(BuildContext context, AccountId callee) async {
   final api = context.read<RepositoryInstances>().api;
 
   final videoCallingUrl = await api.chat((api) => api.postCreateVideoCallUrl(callee.aid)).ok();

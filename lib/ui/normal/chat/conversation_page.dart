@@ -1,7 +1,9 @@
 import 'dart:async';
 
+import 'package:app/data/chat/message_database_iterator.dart';
 import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/logic/account/client_features_config.dart';
+import 'package:app/ui/normal/chat/chat_list.dart';
 import 'package:app/ui/normal/chat/message_row.dart';
 import 'package:app/ui/normal/report/report.dart';
 import 'package:app/ui_utils/dialog.dart';
@@ -10,7 +12,6 @@ import 'package:app/ui_utils/profile_thumbnail_image_or_error.dart';
 import 'package:app/utils/result.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:logging/logging.dart';
 import 'package:app/data/image_cache.dart';
 import 'package:database/database.dart';
 import 'package:app/data/profile_repository.dart';
@@ -19,33 +20,56 @@ import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/logic/chat/conversation_bloc.dart';
 import 'package:app/model/freezed/logic/chat/conversation_bloc.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
-import 'package:app/ui/normal/chat/message_renderer.dart';
-import 'package:app/ui/normal/chat/one_ended_list.dart';
 import 'package:app/ui/normal/profiles/view_profile.dart';
 import 'package:app/ui_utils/app_bar/common_actions.dart';
 import 'package:app/ui_utils/app_bar/menu_actions.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:openapi/api.dart';
 
-final _log = Logger("ConversationPage");
+/// Creates a ConversationPage with initial messages loaded from the database.
+///
+/// Returns null if localAccountId cannot be created.
+Future<ConversationPage?> createConversationPage(
+  RepositoryInstances r,
+  AccountId accountId,
+  ProfileEntry? profile,
+) async {
+  final localAccountId = await r.accountDb
+      .accountDataWrite((db) => db.account.createLocalAccountIdIfNeeded(accountId))
+      .ok();
+  if (localAccountId == null) {
+    return null;
+  }
+
+  // Load initial messages for the conversation
+  final messageIterator = MessageDatabaseIterator(r.accountDb);
+  await messageIterator.switchConversation(r.chat.currentUser, accountId);
+  final initialMessages = await messageIterator.nextList();
+  initialMessages.addAll(await messageIterator.nextList());
+
+  return ConversationPage(
+    accountId,
+    localAccountId,
+    profile,
+    initialMessages.reversed.toList(),
+    messageIterator,
+  );
+}
 
 Future<void> openConversationScreen(
   BuildContext context,
   AccountId accountId,
   ProfileEntry? profile,
 ) async {
-  final localAccountId = await context
-      .read<RepositoryInstances>()
-      .accountDb
-      .accountDataWrite((db) => db.account.createLocalAccountIdIfNeeded(accountId))
-      .ok();
-  if (localAccountId == null || !context.mounted) {
+  final r = context.read<RepositoryInstances>();
+  final page = await createConversationPage(r, accountId, profile);
+
+  if (page == null || !context.mounted) {
     showSnackBar(R.strings.generic_error);
     return;
   }
-  await context.read<NavigatorStateBloc>().push(
-    ConversationPage(accountId, localAccountId, profile),
-  );
+
+  await context.read<NavigatorStateBloc>().push(page);
 }
 
 class ConversationPageUrlParser extends UrlParser<ConversationPage> {
@@ -66,15 +90,27 @@ class ConversationPageUrlParser extends UrlParser<ConversationPage> {
         .accountData((db) => db.profile.getProfileEntry(ids.accountId))
         .ok();
 
-    return Ok((ConversationPage(ids.accountId, ids.localAccountId, profile), nextSegments));
+    final page = await createConversationPage(r, ids.accountId, profile);
+    if (page == null) {
+      return Err(());
+    }
+
+    return Ok((page, nextSegments));
   }
 }
 
 class ConversationPage extends MyScreenPage<()> {
   final AccountId accountId;
   final LocalAccountId localAccountId;
-  ConversationPage(this.accountId, this.localAccountId, ProfileEntry? profile)
-    : super(
+  final List<MessageEntry> initialMessages;
+  final MessageDatabaseIterator oldMessagesIterator;
+  ConversationPage(
+    this.accountId,
+    this.localAccountId,
+    ProfileEntry? profile,
+    this.initialMessages,
+    this.oldMessagesIterator,
+  ) : super(
         builder: (closer) {
           return BlocProvider(
             create: (context) {
@@ -82,7 +118,13 @@ class ConversationPage extends MyScreenPage<()> {
               return ConversationBloc(r, accountId, DefaultConversationDataProvider(r.chat));
             },
             lazy: false,
-            child: ConversationScreen(closer, accountId, profile),
+            child: ConversationScreen(
+              closer,
+              accountId,
+              profile,
+              initialMessages,
+              oldMessagesIterator,
+            ),
           );
         },
       );
@@ -99,21 +141,22 @@ class ConversationScreen extends StatefulWidget {
   final PageCloser<()> closer;
   final AccountId accountId;
   final ProfileEntry? profileEntry;
-  const ConversationScreen(this.closer, this.accountId, this.profileEntry, {super.key});
+  final List<MessageEntry> initialMessages;
+  final MessageDatabaseIterator oldMessagesIterator;
+  const ConversationScreen(
+    this.closer,
+    this.accountId,
+    this.profileEntry,
+    this.initialMessages,
+    this.oldMessagesIterator, {
+    super.key,
+  });
 
   @override
   ConversationScreenState createState() => ConversationScreenState();
 }
 
 class ConversationScreenState extends State<ConversationScreen> {
-  final TextEditingController _textEditingController = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-    _log.finest("Opening conversation for account: ${widget.accountId}");
-  }
-
   @override
   Widget build(BuildContext context) {
     final profileEntry = widget.profileEntry;
@@ -181,88 +224,31 @@ class ConversationScreenState extends State<ConversationScreen> {
   }
 
   Widget page(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        Expanded(
-          child: GestureDetector(
-            onTap: () {
-              FocusScope.of(context).unfocus();
-            },
-            child: Align(
-              alignment: Alignment.topCenter,
-              child: BlocBuilder<ConversationBloc, ConversationData>(
-                buildWhen: (previous, current) =>
-                    previous.isMatch != current.isMatch || previous.isBlocked != current.isBlocked,
-                builder: (context, state) {
-                  if (state.isBlocked) {
-                    Future.delayed(Duration.zero, () {
-                      showSnackBar(R.strings.conversation_screen_profile_blocked);
-                      if (context.mounted) {
-                        widget.closer.close(context, ());
-                      }
-                    });
-                    return Container();
-                  } else if (!state.isMatch) {
-                    return Center(
-                      child: Text(context.strings.conversation_screen_make_match_instruction),
-                    );
-                  } else {
-                    return OneEndedMessageListWidget(context.read<ConversationBloc>());
-                  }
-                },
-              ),
-            ),
-          ),
-        ),
-        SafeArea(child: newMessageArea(context)),
-        const MessageRenderer(),
-      ],
-    );
-  }
-
-  Widget newMessageArea(BuildContext context) {
     return BlocBuilder<ConversationBloc, ConversationData>(
       buildWhen: (previous, current) =>
-          previous.resetMessageInputField != current.resetMessageInputField,
+          previous.isMatch != current.isMatch || previous.isBlocked != current.isBlocked,
       builder: (context, state) {
-        if (state.resetMessageInputField) {
-          _textEditingController.clear();
-          context.read<ConversationBloc>().add(NotifyMessageInputFieldCleared());
+        if (state.isBlocked) {
+          Future.delayed(Duration.zero, () {
+            showSnackBar(R.strings.conversation_screen_profile_blocked);
+            if (context.mounted) {
+              widget.closer.close(context, ());
+            }
+          });
+          return Container();
+        } else if (!state.isMatch) {
+          return Center(child: Text(context.strings.conversation_screen_make_match_instruction));
+        } else {
+          final r = context.read<RepositoryInstances>();
+          return ChatList(
+            widget.profileEntry,
+            widget.initialMessages,
+            widget.oldMessagesIterator,
+            currentUser: r.accountId,
+            messageReceiver: widget.accountId,
+            db: r.accountDb,
+          );
         }
-
-        return Container(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-          child: Row(
-            children: [
-              Expanded(
-                child: TextField(
-                  controller: _textEditingController,
-                  decoration: InputDecoration(
-                    hintText: context.strings.conversation_screen_chat_box_placeholder_text,
-                  ),
-                  keyboardType: TextInputType.multiline,
-                  maxLines: 4,
-                  minLines: 1,
-                ),
-              ),
-              IconButton(
-                icon: const Icon(Icons.send),
-                onPressed: () {
-                  final message = _textEditingController.text.trim();
-                  if (message.isNotEmpty) {
-                    final textMessage = TextMessage.create(message);
-                    if (message.characters.length > 4000 || textMessage == null) {
-                      showSnackBar(context.strings.conversation_screen_message_too_long);
-                      return;
-                    }
-                    sendMessage(context, textMessage);
-                  }
-                },
-              ),
-            ],
-          ),
-        );
       },
     );
   }
@@ -288,19 +274,13 @@ class ConversationScreenState extends State<ConversationScreen> {
       sendMessage(context, VideoCallInvitation());
     }
   }
+}
 
-  void sendMessage(BuildContext context, Message message) {
-    final bloc = context.read<ConversationBloc>();
-    if (bloc.state.isMessageSendingInProgress) {
-      showSnackBar(context.strings.generic_previous_action_in_progress);
-      return;
-    }
-    bloc.add(SendMessageTo(bloc.state.accountId, message));
+void sendMessage(BuildContext context, Message message) {
+  final bloc = context.read<ConversationBloc>();
+  if (bloc.state.isMessageSendingInProgress) {
+    showSnackBar(context.strings.generic_previous_action_in_progress);
+    return;
   }
-
-  @override
-  void dispose() {
-    _textEditingController.dispose();
-    super.dispose();
-  }
+  bloc.add(SendMessageTo(bloc.state.accountId, message));
 }

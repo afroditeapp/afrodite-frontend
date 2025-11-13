@@ -89,25 +89,20 @@ Future<NotificationNavigationAction> _handlePayload(
         return DoNothing();
       }
 
-      final localAccountId = await r.accountDb
-          .accountDataWrite((db) => db.account.createLocalAccountIdIfNeeded(accountId))
-          .ok();
-      if (localAccountId == null) {
-        return DoNothing();
-      }
-
       final profile = await r.accountDb
           .accountData((db) => db.profile.getProfileEntry(accountId))
           .ok();
-      if (profile == null) {
+
+      if (lastPage is ConversationPage && lastPage.accountId == accountId) {
         return DoNothing();
       }
 
-      if (lastPage is ConversationPage && lastPage.accountId == profile.accountId) {
+      final page = await createConversationPage(r, accountId, profile);
+      if (page == null) {
         return DoNothing();
-      } else {
-        return NewScreen(ConversationPage(profile.accountId, localAccountId, profile));
       }
+
+      return NewScreen(page);
     case NavigateToConversationList():
       if (navigatorState.pages.length == 1) {
         return BottomNavigationChange(BottomNavigationScreenId.chats);

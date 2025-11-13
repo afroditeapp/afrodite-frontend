@@ -16,6 +16,11 @@ class WantedWaitingTimeManager {
   }
 }
 
+String timeOnlyString(UtcDateTime messageTime) {
+  final localTime = messageTime.dateTime.toLocal();
+  return DateFormat.Hm().format(localTime);
+}
+
 String timeString(UtcDateTime messageTime) {
   final currentLocalTime = UtcDateTime.now().dateTime.toLocal();
   final localTime = messageTime.dateTime.toLocal();
