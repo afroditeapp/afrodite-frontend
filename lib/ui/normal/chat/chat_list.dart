@@ -45,6 +45,7 @@ class ChatList extends StatefulWidget {
 
 class _ChatListState extends State<ChatList> {
   late chat_core.InMemoryChatController _chatController;
+  late TextEditingController _textEditingController;
 
   bool _reversed = false;
   bool _loadingOldMessages = false;
@@ -64,6 +65,7 @@ class _ChatListState extends State<ChatList> {
     );
 
     _chatController = chat_core.InMemoryChatController(messages: initialMessages);
+    _textEditingController = TextEditingController();
 
     // Use reversed mode only when there is enough
     // messages as otherwise there would be empty space
@@ -137,13 +139,16 @@ class _ChatListState extends State<ChatList> {
       currentUserId: widget.currentUser.aid,
       chatController: _chatController,
       resolveUser: (_) => Future<chat_core.User?>.value(null),
-      onMessageSend: (String text) {
+      onMessageSend: (String text) async {
         final textMessage = TextMessage.create(text);
         if (text.characters.length > 4000 || textMessage == null) {
           showSnackBar(context.strings.conversation_screen_message_too_long);
           return;
         }
-        sendMessage(context, textMessage);
+        final saved = await sendMessage(context, textMessage);
+        if (saved) {
+          _textEditingController.clear();
+        }
       },
       onMessageLongPress:
           (
@@ -431,6 +436,12 @@ class _ChatListState extends State<ChatList> {
                 child: wrappedMessage,
               );
             },
+        composerBuilder: (BuildContext ctx) {
+          return chat_ui.Composer(
+            textEditingController: _textEditingController,
+            inputClearMode: chat_ui.InputClearMode.never,
+          );
+        },
       ),
     );
   }
@@ -445,6 +456,7 @@ class _ChatListState extends State<ChatList> {
   void dispose() {
     _messageCountSubscription?.cancel();
     _chatController.dispose();
+    _textEditingController.dispose();
     super.dispose();
   }
 }

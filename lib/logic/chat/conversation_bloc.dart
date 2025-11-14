@@ -26,7 +26,8 @@ class InitEvent extends ConversationEvent {}
 class SendMessageTo extends ConversationEvent {
   final AccountId accountId;
   final Message message;
-  SendMessageTo(this.accountId, this.message);
+  final Completer<bool> completer;
+  SendMessageTo(this.accountId, this.message, this.completer);
 }
 
 class HandleProfileChange extends ConversationEvent {
@@ -166,10 +167,12 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
     on<SendMessageTo>((data, emit) async {
       emit(state.copyWith(isMessageSendingInProgress: true));
 
+      var savedToDb = false;
+
       await for (final e in dataProvider.sendMessageTo(data.accountId, data.message)) {
         switch (e) {
           case SavedToLocalDb():
-            ();
+            savedToDb = true;
           case ErrorBeforeMessageSaving():
             showSnackBar(R.strings.generic_error);
           case ErrorAfterMessageSaving(:final details):
@@ -188,6 +191,7 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
         }
       }
 
+      data.completer.complete(savedToDb);
       emit(state.copyWith(isMessageSendingInProgress: false));
     }, transformer: sequential());
     on<RemoveSendFailedMessage>((data, emit) async {

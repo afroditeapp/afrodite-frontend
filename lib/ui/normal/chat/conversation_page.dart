@@ -275,16 +275,18 @@ class ConversationScreenState extends State<ConversationScreen> {
       yesNoActions: true,
     );
     if (r == true && context.mounted) {
-      sendMessage(context, VideoCallInvitation());
+      await sendMessage(context, VideoCallInvitation());
     }
   }
 }
 
-void sendMessage(BuildContext context, Message message) {
+Future<bool> sendMessage(BuildContext context, Message message) {
   final bloc = context.read<ConversationBloc>();
   if (bloc.state.isMessageSendingInProgress) {
     showSnackBar(context.strings.generic_previous_action_in_progress);
-    return;
+    return Future.value(false);
   }
-  bloc.add(SendMessageTo(bloc.state.accountId, message));
+  final completer = Completer<bool>();
+  bloc.add(SendMessageTo(bloc.state.accountId, message, completer));
+  return completer.future;
 }
