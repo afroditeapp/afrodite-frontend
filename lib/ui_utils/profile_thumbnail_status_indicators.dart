@@ -17,13 +17,18 @@ class UpdatingProfileThumbnailWithInfo extends StatefulWidget {
   final bool showNewLikeMarker;
   final double maxItemWidth;
   final void Function(BuildContext, ProfileThumbnail)? onTap;
+
+  /// Show only profile thumbnail with smaller online indicator
+  final bool appBarMode;
+
   const UpdatingProfileThumbnailWithInfo({
     required this.db,
     required this.initialData,
-    required this.settings,
+    this.settings = const GridSettings(),
     this.showNewLikeMarker = false,
     required this.maxItemWidth,
-    required this.onTap,
+    this.onTap,
+    this.appBarMode = false,
     super.key,
   });
 
@@ -55,12 +60,16 @@ class _UpdatingProfileThumbnailWithInfoState extends State<UpdatingProfileThumbn
           cacheSize: ImageCacheSize.squareImageForGrid(context, widget.maxItemWidth),
           child: Stack(
             children: [
-              ProfileThumbnailStatusIndicatorsTop(
-                showNewLikeMarker: widget.showNewLikeMarker,
-                newLikeInfoReceivedTime: e.entry.newLikeInfoReceivedTime,
-                isFavorite: e.isFavorite,
+              if (!widget.appBarMode)
+                ProfileThumbnailStatusIndicatorsTop(
+                  showNewLikeMarker: widget.showNewLikeMarker,
+                  newLikeInfoReceivedTime: e.entry.newLikeInfoReceivedTime,
+                  isFavorite: e.isFavorite,
+                ),
+              ProfileThumbnailStatusIndicatorsBottom(
+                profile: e.entry,
+                appBarMode: widget.appBarMode,
               ),
-              ProfileThumbnailStatusIndicatorsBottom(profile: e.entry),
               if (onTap != null)
                 Material(
                   color: Colors.transparent,
@@ -80,31 +89,45 @@ class _UpdatingProfileThumbnailWithInfoState extends State<UpdatingProfileThumbn
 
 class ProfileThumbnailStatusIndicatorsBottom extends StatelessWidget {
   final ProfileEntry profile;
+  final bool appBarMode;
 
-  const ProfileThumbnailStatusIndicatorsBottom({required this.profile, super.key});
+  const ProfileThumbnailStatusIndicatorsBottom({
+    required this.profile,
+    this.appBarMode = false,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final onlineIndicatorSize = appBarMode
+        ? PROFILE_CURRENTLY_ONLINE_SIZE / 2
+        : PROFILE_CURRENTLY_ONLINE_SIZE;
+    final onlineIndicatorRadius = appBarMode
+        ? PROFILE_CURRENTLY_ONLINE_RADIUS / 2
+        : PROFILE_CURRENTLY_ONLINE_RADIUS;
+    final containerHeight = appBarMode ? onlineIndicatorSize + 8 : onlineIndicatorSize + 16;
+    final padding = appBarMode ? 4.0 : 8.0;
+
     return Align(
       alignment: Alignment.bottomCenter,
       child: SizedBox(
-        height: PROFILE_CURRENTLY_ONLINE_SIZE + 16,
+        height: containerHeight,
         child: Row(
           children: [
             if (profile.lastSeenTimeValue == -1)
               Padding(
-                padding: const EdgeInsets.only(left: 8.0),
+                padding: EdgeInsets.only(left: padding),
                 child: Container(
-                  width: PROFILE_CURRENTLY_ONLINE_SIZE,
-                  height: PROFILE_CURRENTLY_ONLINE_SIZE,
+                  width: onlineIndicatorSize,
+                  height: onlineIndicatorSize,
                   decoration: BoxDecoration(
                     color: Colors.green,
-                    borderRadius: BorderRadius.circular(PROFILE_CURRENTLY_ONLINE_RADIUS),
+                    borderRadius: BorderRadius.circular(onlineIndicatorRadius),
                   ),
                 ),
               ),
-            const Spacer(),
-            if (profile.unlimitedLikes)
+            if (!appBarMode && profile.unlimitedLikes) const Spacer(),
+            if (!appBarMode && profile.unlimitedLikes)
               Padding(
                 padding: const EdgeInsets.only(right: 7.0),
                 child: Icon(UNLIMITED_LIKES_ICON, color: getUnlimitedLikesColor(context)),

@@ -5,7 +5,7 @@ import 'package:app/data/profile_repository.dart';
 import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/logic/app/info_dialog.dart';
 import 'package:app/ui_utils/dialog.dart';
-import 'package:app/ui_utils/profile_thumbnail_image_or_error.dart';
+import 'package:app/ui_utils/profile_thumbnail_status_indicators.dart';
 import 'package:app/utils/result.dart';
 import 'package:app/utils/time.dart';
 import 'package:async/async.dart' show StreamExtensions;
@@ -13,7 +13,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
-import 'package:app/data/image_cache.dart';
 import 'package:database/database.dart';
 import 'package:app/logic/app/bottom_navigation_state.dart';
 import 'package:app/logic/chat/conversation_list.dart';
@@ -67,7 +66,8 @@ class ConversationData {
   final ProfileEntry entry;
   final UnreadMessagesCount count;
   final MessageEntry? message;
-  ConversationData(this.entry, this.count, this.message);
+  final bool isFavorite;
+  ConversationData(this.entry, this.count, this.message, this.isFavorite);
 }
 
 class _ChatViewState extends State<ChatView> {
@@ -289,13 +289,16 @@ class _UpdatingConversationListItemState extends State<UpdatingConversationListI
   @override
   void initState() {
     super.initState();
-    stream = Rx.combineLatest3(
+    stream = Rx.combineLatest4(
       widget.profile.getProfileEntryUpdates(widget.id, isMatch: true),
       widget.profile.getUnreadMessagesCountStream(widget.id),
       widget.chat.watchLatestMessage(widget.id),
-      (a, b, c) {
+      context.read<RepositoryInstances>().accountDb.accountStream(
+        (db) => db.profile.watchFavoriteProfileStatus(widget.id),
+      ),
+      (a, b, c, d) {
         if (a != null) {
-          return Ok(ConversationData(a, b ?? const UnreadMessagesCount(0), c));
+          return Ok(ConversationData(a, b ?? const UnreadMessagesCount(0), c, d ?? false));
         } else {
           return Err(());
         }
@@ -359,11 +362,15 @@ class ConversationListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Widget imageWidget = ProfileThumbnailImageOrError.fromProfileEntry(
-      entry: data.entry,
+    final r = context.read<RepositoryInstances>();
+    final Widget imageWidget = SizedBox(
       width: _IMG_SIZE,
       height: _IMG_SIZE,
-      cacheSize: ImageCacheSize.squareImageForListWithTextContent(context, _IMG_SIZE),
+      child: UpdatingProfileThumbnailWithInfo(
+        initialData: ProfileThumbnail(entry: data.entry, isFavorite: data.isFavorite),
+        db: r.accountDb,
+        maxItemWidth: _IMG_SIZE,
+      ),
     );
     final Widget textColumn = Column(
       mainAxisSize: MainAxisSize.min,

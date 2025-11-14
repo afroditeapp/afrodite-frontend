@@ -8,11 +8,10 @@ import 'package:app/ui/normal/chat/utils.dart';
 import 'package:app/ui/normal/report/report.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/navigation/url.dart';
-import 'package:app/ui_utils/profile_thumbnail_image_or_error.dart';
+import 'package:app/ui_utils/profile_thumbnail_status_indicators.dart';
 import 'package:app/utils/result.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:app/data/image_cache.dart';
 import 'package:database/database.dart';
 import 'package:app/data/profile_repository.dart';
 import 'package:app/localizations.dart';
@@ -185,6 +184,7 @@ class ConversationScreenState extends State<ConversationScreen> {
   Widget appBarTitle(ProfileEntry profileEntry) {
     final double appBarHeight = AppBar().preferredSize.height;
     const double IMG_HEIGHT = 40;
+    final r = context.read<RepositoryInstances>();
     return LayoutBuilder(
       builder: (context, constraints) {
         return ConstrainedBox(
@@ -204,11 +204,15 @@ class ConversationScreenState extends State<ConversationScreen> {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  ProfileThumbnailImageOrError.fromProfileEntry(
-                    entry: profileEntry,
+                  SizedBox(
                     width: IMG_HEIGHT,
                     height: IMG_HEIGHT,
-                    cacheSize: ImageCacheSize.squareImageForAppBarThumbnail(context, IMG_HEIGHT),
+                    child: UpdatingProfileThumbnailWithInfo(
+                      initialData: ProfileThumbnail(entry: profileEntry, isFavorite: false),
+                      db: r.accountDb,
+                      maxItemWidth: IMG_HEIGHT,
+                      appBarMode: true,
+                    ),
                   ),
                   const Padding(padding: EdgeInsets.all(8.0)),
                   Flexible(
