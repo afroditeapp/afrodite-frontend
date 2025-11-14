@@ -264,15 +264,20 @@ class _ChatListState extends State<ChatList> {
               final messageType = metadata?['type'] as String?;
 
               if (messageType == 'video_call_invitation') {
-                final timeTextStyle = TextStyle(
-                  color: Theme.of(context).colorScheme.onPrimaryContainer,
-                  fontSize: 12.0,
-                );
+                final isError = message.status == chat_core.MessageStatus.error;
+                final backgroundColor = isError
+                    ? Theme.of(context).colorScheme.errorContainer
+                    : Theme.of(context).colorScheme.primaryContainer;
+                final foregroundColor = isError
+                    ? Theme.of(context).colorScheme.onErrorContainer
+                    : Theme.of(context).colorScheme.onPrimaryContainer;
+
+                final timeTextStyle = TextStyle(color: foregroundColor, fontSize: 12.0);
 
                 return Container(
                   padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
                   decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.primaryContainer,
+                    color: backgroundColor,
                     borderRadius: BorderRadius.circular(10.0),
                   ),
                   child: Column(
@@ -290,7 +295,13 @@ class _ChatListState extends State<ChatList> {
                         ),
                       ),
                       const SizedBox(height: 4),
-                      Text(_formatTimestamp(message.createdAt), style: timeTextStyle),
+                      chat_ui.TimeAndStatus(
+                        time: message.createdAt,
+                        status: message.status,
+                        showTime: true,
+                        showStatus: isSentByMe,
+                        textStyle: timeTextStyle,
+                      ),
                     ],
                   ),
                 );
