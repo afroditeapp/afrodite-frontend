@@ -440,6 +440,7 @@ class _ChatListState extends State<ChatList> {
           return chat_ui.Composer(
             textEditingController: _textEditingController,
             inputClearMode: chat_ui.InputClearMode.never,
+            hintText: ctx.strings.conversation_screen_chat_box_placeholder_text,
           );
         },
       ),
