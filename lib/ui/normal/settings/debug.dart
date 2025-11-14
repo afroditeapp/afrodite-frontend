@@ -99,6 +99,15 @@ class _DebugSettingsScreenState extends State<DebugSettingsScreen> {
         },
         title: const Text("Update conversation last updated time automatically"),
       ),
+      CheckboxListTile(
+        value: _debugLogic.openVideoCallsToBrowser,
+        onChanged: (value) {
+          setState(() {
+            _debugLogic.openVideoCallsToBrowser = value ?? false;
+          });
+        },
+        title: const Text("Open video calls to browser"),
+      ),
     ];
 
     return SingleChildScrollView(
@@ -135,8 +144,11 @@ class _DebugSettingsScreenState extends State<DebugSettingsScreen> {
 final _debugRandom = Random();
 final _debugLogic = DebugLogic();
 
+DebugLogic getDebugLogic() => _debugLogic;
+
 class DebugLogic {
   bool conversationLastUpdateTimeChanger = false;
+  bool openVideoCallsToBrowser = false;
   StreamSubscription<void>? _conversationLastUpdateTimeChangerSubscription;
 
   void startConversationLastUpdateTimeChanger(AccountDatabaseManager accountDb) {

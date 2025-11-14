@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:android_intent_plus/android_intent.dart';
 import 'package:app/data/notification_manager.dart';
 import 'package:app/data/utils/repository_instances.dart';
+import 'package:app/ui/normal/settings/debug.dart';
 import 'package:app/ui_utils/extensions/api.dart';
 import 'package:app/utils/result.dart';
 import 'package:app/utils/version.dart';
@@ -272,7 +273,7 @@ Future<void> _openJitsiMeetToWebBrowser(BuildContext context, JitsiMeetUrl jitsi
 }
 
 Future<bool> isInstallingJitsiMeetAppPossible() async {
-  if (kIsWeb) {
+  if (kIsWeb || getDebugLogic().openVideoCallsToBrowser) {
     return false;
   }
 
