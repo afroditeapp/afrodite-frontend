@@ -5,9 +5,11 @@ import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/logic/profile/view_profiles.dart';
 import 'package:app/logic/settings/ui_settings.dart';
 import 'package:app/model/freezed/logic/settings/ui_settings.dart';
+import 'package:app/ui/normal/profiles/view_profile.dart';
 import 'package:app/ui_utils/extensions/other.dart';
 import 'package:app/ui_utils/paged_grid_logic.dart';
 import 'package:app/ui_utils/profile_grid.dart';
+import 'package:app/ui_utils/profile_thumbnail_status_indicators.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
@@ -20,7 +22,6 @@ import 'package:app/logic/chat/new_received_likes_available_bloc.dart';
 import 'package:app/model/freezed/logic/chat/new_received_likes_available_bloc.dart';
 import 'package:app/model/freezed/logic/main/bottom_navigation_state.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
-import 'package:app/ui/normal/profiles/profile_grid.dart';
 import 'package:app/ui_utils/bottom_navigation.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:app/localizations.dart';
@@ -339,11 +340,18 @@ class LikeViewContentState extends State<LikeViewContent> {
         itemBuilder: (context, item, index) {
           return UpdatingProfileThumbnailWithInfo(
             initialData: item.profile,
-            initialProfileAction: item.initialProfileAction,
             db: widget.r.accountDb,
             settings: settings,
             showNewLikeMarker: true,
             maxItemWidth: singleItemWidth,
+            onTap: (context, thumbnail) {
+              openProfileView(
+                context,
+                thumbnail.entry,
+                item.initialProfileAction,
+                ProfileRefreshPriority.low,
+              );
+            },
           );
         },
         noItemsFoundIndicatorBuilder: (context) {

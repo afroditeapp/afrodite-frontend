@@ -6,8 +6,10 @@ import 'package:app/logic/profile/view_profiles.dart';
 import 'package:app/logic/settings/ui_settings.dart';
 import 'package:app/model/freezed/logic/profile/view_profiles.dart';
 import 'package:app/model/freezed/logic/settings/ui_settings.dart';
+import 'package:app/ui/normal/profiles/view_profile.dart';
 import 'package:app/ui_utils/extensions/other.dart';
 import 'package:app/ui_utils/paged_grid_logic.dart';
+import 'package:app/ui_utils/profile_thumbnail_status_indicators.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
@@ -15,7 +17,6 @@ import 'package:app/data/chat_repository.dart';
 import 'package:app/data/profile_repository.dart';
 import 'package:database/database.dart';
 import 'package:app/database/account_database_manager.dart';
-import 'package:app/ui/normal/profiles/profile_grid.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:app/localizations.dart';
 import 'package:app/ui_utils/list.dart';
@@ -177,10 +178,17 @@ class _GenericProfileGridState extends State<GenericProfileGrid> {
           return GestureDetector(
             child: UpdatingProfileThumbnailWithInfo(
               initialData: item.profile,
-              initialProfileAction: item.initialProfileAction,
               db: widget.accountDb,
               settings: settings,
               maxItemWidth: singleItemWidth,
+              onTap: (context, thumbnail) {
+                openProfileView(
+                  context,
+                  thumbnail.entry,
+                  item.initialProfileAction,
+                  ProfileRefreshPriority.low,
+                );
+              },
             ),
           );
         },

@@ -3,22 +3,17 @@ import 'dart:async';
 import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/logic/profile/view_profiles.dart';
 import 'package:app/logic/settings/ui_settings.dart';
-import 'package:app/model/freezed/logic/profile/view_profiles.dart';
 import 'package:app/model/freezed/logic/settings/ui_settings.dart';
-import 'package:app/ui_utils/consts/colors.dart';
-import 'package:app/ui_utils/consts/icons.dart';
 import 'package:app/ui_utils/extensions/other.dart';
 import 'package:app/ui_utils/profile_grid.dart';
-import 'package:app/ui_utils/profile_thumbnail_image_or_error.dart';
+import 'package:app/ui_utils/profile_thumbnail_status_indicators.dart';
 import 'package:app/ui_utils/paged_grid_logic.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
-import 'package:app/data/image_cache.dart';
 import 'package:app/data/profile/profile_iterator_manager.dart';
 import 'package:app/data/profile_repository.dart';
 import 'package:database/database.dart';
-import 'package:app/database/account_database_manager.dart';
 import 'package:app/localizations.dart';
 import 'package:app/logic/app/bottom_navigation_state.dart';
 import 'package:app/logic/profile/profile_filters.dart';
@@ -27,13 +22,9 @@ import 'package:app/model/freezed/logic/profile/profile_filters.dart';
 import 'package:app/ui/normal/profiles/view_profile.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:app/ui_utils/common_update_logic.dart';
-import 'package:app/ui_utils/consts/corners.dart';
-import 'package:app/ui_utils/consts/size.dart';
 import 'package:app/ui_utils/list.dart';
 import 'package:app/ui_utils/scroll_controller.dart';
 import 'package:app/utils/result.dart';
-import 'package:rxdart/rxdart.dart';
-import 'package:utils/utils.dart';
 
 class ProfileGrid extends StatefulWidget {
   final RepositoryInstances r;
@@ -277,10 +268,17 @@ class ProfileGridState extends State<ProfileGrid> {
         itemBuilder: (context, item, index) {
           return UpdatingProfileThumbnailWithInfo(
             initialData: item.profile,
-            initialProfileAction: item.initialProfileAction,
             db: widget.r.accountDb,
             settings: settings,
             maxItemWidth: singleItemWidth,
+            onTap: (context, thumbnail) {
+              openProfileView(
+                context,
+                thumbnail.entry,
+                item.initialProfileAction,
+                ProfileRefreshPriority.low,
+              );
+            },
           );
         },
         noItemsFoundIndicatorBuilder: (context) {
@@ -363,139 +361,6 @@ class ProfileGridState extends State<ProfileGrid> {
     _mainProfilesViewIterator.dispose();
     super.dispose();
   }
-}
-
-class UpdatingProfileThumbnailWithInfo extends StatefulWidget {
-  final AccountDatabaseManager db;
-  final ProfileThumbnail initialData;
-  final ProfileActionState? initialProfileAction;
-  final GridSettings settings;
-  final bool showNewLikeMarker;
-  final double maxItemWidth;
-  const UpdatingProfileThumbnailWithInfo({
-    required this.db,
-    required this.initialData,
-    required this.initialProfileAction,
-    required this.settings,
-    this.showNewLikeMarker = false,
-    required this.maxItemWidth,
-    super.key,
-  });
-
-  @override
-  State<UpdatingProfileThumbnailWithInfo> createState() => _UpdatingProfileThumbnailWithInfoState();
-}
-
-class _UpdatingProfileThumbnailWithInfoState extends State<UpdatingProfileThumbnailWithInfo> {
-  late final Stream<ProfileThumbnail> stream;
-
-  @override
-  void initState() {
-    super.initState();
-    stream = widget.db
-        .accountStream((db) => db.profile.watchProfileThumbnail(widget.initialData.entry.accountId))
-        .whereNotNull();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return StreamBuilder(
-      stream: stream,
-      builder: (context, data) {
-        final e = data.data ?? widget.initialData;
-        return ProfileThumbnailImageOrError.fromProfileEntry(
-          entry: e.entry,
-          borderRadius: BorderRadius.circular(widget.settings.valueProfileThumbnailBorderRadius()),
-          cacheSize: ImageCacheSize.squareImageForGrid(context, widget.maxItemWidth),
-          child: Stack(
-            children: [
-              _thumbnailStatusIndicatorsTop(
-                widget.showNewLikeMarker,
-                e.entry.newLikeInfoReceivedTime,
-                e.isFavorite,
-              ),
-              _thumbnailStatusIndicatorsBottom(context, e.entry),
-              Material(
-                color: Colors.transparent,
-                child: InkWell(
-                  onTap: () {
-                    openProfileView(
-                      context,
-                      e.entry,
-                      widget.initialProfileAction,
-                      ProfileRefreshPriority.low,
-                    );
-                  },
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-}
-
-Widget _thumbnailStatusIndicatorsBottom(BuildContext context, ProfileEntry profile) {
-  return Align(
-    alignment: Alignment.bottomCenter,
-    child: SizedBox(
-      height: PROFILE_CURRENTLY_ONLINE_SIZE + 16,
-      child: Row(
-        children: [
-          if (profile.lastSeenTimeValue == -1)
-            Padding(
-              padding: const EdgeInsets.only(left: 8.0),
-              child: Container(
-                width: PROFILE_CURRENTLY_ONLINE_SIZE,
-                height: PROFILE_CURRENTLY_ONLINE_SIZE,
-                decoration: BoxDecoration(
-                  color: Colors.green,
-                  borderRadius: BorderRadius.circular(PROFILE_CURRENTLY_ONLINE_RADIUS),
-                ),
-              ),
-            ),
-          const Spacer(),
-          profile.unlimitedLikes
-              ? Padding(
-                  padding: const EdgeInsets.only(right: 7.0),
-                  child: Icon(UNLIMITED_LIKES_ICON, color: getUnlimitedLikesColor(context)),
-                )
-              : const SizedBox.shrink(),
-        ],
-      ),
-    ),
-  );
-}
-
-Widget _thumbnailStatusIndicatorsTop(
-  bool showNewLikeMarker,
-  UtcDateTime? newLikeInfoReceivedTime,
-  bool isFavorite,
-) {
-  final currentTime = UtcDateTime.now();
-  final showNewLikeIcon =
-      showNewLikeMarker &&
-      newLikeInfoReceivedTime != null &&
-      currentTime.difference(newLikeInfoReceivedTime).inHours < 24;
-  return Align(
-    alignment: Alignment.topLeft,
-    child: Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        if (showNewLikeIcon)
-          const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Icon(Icons.auto_awesome, color: Colors.amber),
-          ),
-        if (isFavorite)
-          Padding(
-            padding: showNewLikeIcon ? const EdgeInsets.all(0) : const EdgeInsets.all(4.0),
-            child: const Icon(Icons.star_rounded, color: Colors.orange),
-          ),
-      ],
-    ),
-  );
 }
 
 /// Avoid showing old profile grid state when profile filters are edited and
