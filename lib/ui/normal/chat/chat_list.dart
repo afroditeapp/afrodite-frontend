@@ -263,6 +263,8 @@ class _ChatListState extends State<ChatList> {
               final metadata = message.metadata;
               final messageType = metadata?['type'] as String?;
 
+              Widget messageWidget;
+
               if (messageType == 'video_call_invitation') {
                 final isError = message.status == chat_core.MessageStatus.error;
                 final backgroundColor = isError
@@ -274,7 +276,7 @@ class _ChatListState extends State<ChatList> {
 
                 final timeTextStyle = TextStyle(color: foregroundColor, fontSize: 12.0);
 
-                return Container(
+                messageWidget = Container(
                   padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
                   decoration: BoxDecoration(
                     color: backgroundColor,
@@ -305,9 +307,7 @@ class _ChatListState extends State<ChatList> {
                     ],
                   ),
                 );
-              }
-
-              if (messageType == 'error_message') {
+              } else {
                 final errorType = metadata?['errorType'] as String?;
                 final String errorText;
 
@@ -329,7 +329,7 @@ class _ChatListState extends State<ChatList> {
                   fontSize: 16.0,
                 );
 
-                return Container(
+                messageWidget = Container(
                   padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
                   decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.errorContainer,
@@ -368,7 +368,16 @@ class _ChatListState extends State<ChatList> {
                 );
               }
 
-              return const SizedBox.shrink();
+              final localMessageId = LocalMessageId(int.parse(message.id));
+              final r = context.read<RepositoryInstances>();
+              return _MessageStateWatcher(
+                localMessageId: localMessageId,
+                messageId: message.id,
+                chatController: _chatController,
+                chatRepository: r.chat,
+                currentUserId: r.chat.currentUser.aid,
+                child: messageWidget,
+              );
             },
         textMessageBuilder:
             (
