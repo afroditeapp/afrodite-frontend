@@ -4,7 +4,7 @@ import 'package:app/data/chat/message_database_iterator.dart';
 import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/logic/account/client_features_config.dart';
 import 'package:app/ui/normal/chat/chat_list.dart';
-import 'package:app/ui/normal/chat/message_row.dart';
+import 'package:app/ui/normal/chat/utils.dart';
 import 'package:app/ui/normal/report/report.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/navigation/url.dart';

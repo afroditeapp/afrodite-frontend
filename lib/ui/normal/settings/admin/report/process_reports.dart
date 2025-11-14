@@ -7,7 +7,7 @@ import 'package:app/localizations.dart';
 import 'package:app/logic/account/custom_reports_config.dart';
 import 'package:app/logic/admin/content_decicion_stream.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
-import 'package:app/ui/normal/chat/message_row.dart';
+import 'package:app/ui/normal/chat/utils.dart';
 import 'package:app/ui/normal/settings/admin/content_decicion_stream.dart';
 import 'package:app/ui/normal/settings/admin/moderate_images.dart';
 import 'package:app/ui_utils/extensions/api.dart';

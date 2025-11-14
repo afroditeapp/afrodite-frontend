@@ -12,7 +12,6 @@ import 'package:app/data/general/notification/state/like_received.dart';
 import 'package:app/data/general/notification/state/message_received.dart';
 import 'package:app/database/account_background_database_manager.dart';
 import 'package:app/database/account_database_manager.dart';
-import 'package:app/ui/normal/chat/debug_page.dart';
 import 'package:app/ui/normal/settings.dart';
 import 'package:app/utils/result.dart';
 
@@ -51,22 +50,6 @@ class _DebugSettingsScreenState extends State<DebugSettingsScreen> {
 
   Widget settingsList(BuildContext context) {
     List<Setting> settings = [];
-
-    settings.add(
-      Setting.createSetting(
-        Icons.chat_bubble_outline_rounded,
-        "Chat without messages",
-        () => openConversationDebugScreen(context, 0),
-      ),
-    );
-
-    settings.add(
-      Setting.createSetting(
-        Icons.chat_bubble_rounded,
-        "Chat with messages",
-        () => openConversationDebugScreen(context, 5),
-      ),
-    );
 
     settings.add(
       Setting.createSetting(

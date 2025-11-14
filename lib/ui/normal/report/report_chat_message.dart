@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
-import 'package:app/ui/normal/chat/message_row.dart';
+import 'package:app/ui/normal/chat/utils.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/result.dart';
 import 'package:app/utils/time.dart';

@@ -19,7 +19,7 @@ import 'package:app/logic/app/bottom_navigation_state.dart';
 import 'package:app/logic/chat/conversation_list.dart';
 import 'package:app/model/freezed/logic/main/bottom_navigation_state.dart';
 import 'package:app/ui/normal/chat/conversation_page.dart';
-import 'package:app/ui/normal/chat/message_row.dart';
+import 'package:app/ui/normal/chat/utils.dart';
 import 'package:app/ui/normal/chat/select_match.dart';
 import 'package:app/ui_utils/app_bar/menu_actions.dart';
 import 'package:app/ui_utils/bottom_navigation.dart';

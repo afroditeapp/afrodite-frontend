@@ -5,7 +5,7 @@ import 'package:app/database/account_database_manager.dart';
 import 'package:app/localizations.dart';
 import 'package:app/ui/normal/chat/conversation_page.dart';
 import 'package:app/ui/normal/chat/message_adapter.dart';
-import 'package:app/ui/normal/chat/message_row.dart';
+import 'package:app/ui/normal/chat/utils.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/time.dart';
 import 'package:database/database.dart';

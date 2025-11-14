@@ -4,14 +4,10 @@ import "package:app/data/chat/message_manager/utils.dart";
 import "package:app/data/utils/repository_instances.dart";
 import 'package:bloc_concurrency/bloc_concurrency.dart' show sequential;
 
-import "package:async/async.dart" show StreamExtensions;
 import "package:database/database.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:logging/logging.dart";
 import "package:openapi/api.dart";
-import "package:rxdart/rxdart.dart";
-import 'package:utils/utils.dart';
-import "package:app/data/chat/message_database_iterator.dart";
 import "package:app/data/chat/message_manager.dart";
 import "package:app/data/chat_repository.dart";
 import "package:app/data/profile_repository.dart";
@@ -54,13 +50,6 @@ class BlockProfile extends ConversationEvent {
   BlockProfile(this.accountId);
 }
 
-class NotifyMessageInputFieldCleared extends ConversationEvent {}
-
-class RenderingCompleted extends ConversationEvent {
-  final double height;
-  RenderingCompleted(this.height);
-}
-
 class RemoveSendFailedMessage extends ConversationEvent {
   final LocalMessageId id;
   RemoveSendFailedMessage(this.id);
@@ -81,15 +70,7 @@ abstract class ConversationDataProvider {
   Future<bool> isInSentBlocks(AccountId accountId);
   Future<bool> sendBlockTo(AccountId accountId);
   Stream<MessageSendingEvent> sendMessageTo(AccountId accountId, Message message);
-  Future<List<MessageEntry>> getAllMessages(AccountId accountId);
   Stream<(int, ConversationChanged?)> getMessageCountAndChanges(AccountId match);
-  Stream<MessageEntry?> getMessageWithLocalId(LocalMessageId localId);
-
-  /// First message is the latest new message
-  Future<List<MessageEntry>> getNewMessages(
-    AccountId senderAccountId,
-    LocalMessageId? latestCurrentMessageLocalId,
-  );
 
   Future<Result<(), DeleteSendFailedError>> deleteSendFailedMessage(LocalMessageId localId);
   Future<Result<(), ResendFailedError>> resendSendFailedMessage(LocalMessageId localId);
@@ -115,48 +96,8 @@ class DefaultConversationDataProvider extends ConversationDataProvider {
   }
 
   @override
-  Future<List<MessageEntry>> getAllMessages(AccountId accountId) async {
-    return await chat.getAllMessages(accountId);
-  }
-
-  @override
   Stream<(int, ConversationChanged?)> getMessageCountAndChanges(AccountId match) {
     return chat.getMessageCountAndChanges(match);
-  }
-
-  @override
-  Stream<MessageEntry?> getMessageWithLocalId(LocalMessageId localId) {
-    return chat.getMessageWithLocalId(localId);
-  }
-
-  @override
-  Future<List<MessageEntry>> getNewMessages(
-    AccountId senderAccountId,
-    LocalMessageId? latestCurrentMessageLocalId,
-  ) async {
-    MessageDatabaseIterator messageIterator = MessageDatabaseIterator(chat.db);
-    await messageIterator.switchConversation(chat.currentUser, senderAccountId);
-
-    // Read latest messages until all new messages are read
-    List<MessageEntry> newMessages = [];
-    bool readMessages = true;
-    while (readMessages) {
-      final messages = await messageIterator.nextList();
-      if (messages.isEmpty) {
-        break;
-      }
-
-      for (final message in messages) {
-        if (message.localId == latestCurrentMessageLocalId) {
-          readMessages = false;
-          break;
-        } else {
-          newMessages.add(message);
-        }
-      }
-    }
-
-    return newMessages;
   }
 
   @override
@@ -177,14 +118,11 @@ class DefaultConversationDataProvider extends ConversationDataProvider {
 
 class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with ActionRunner {
   final ConversationDataProvider dataProvider;
-  final RenderingManager renderingManager = RenderingManager();
   final ProfileRepository profile;
 
   StreamSubscription<(int, ConversationChanged?)>? _messageCountSubscription;
   StreamSubscription<ProfileChange>? _profileChangeSubscription;
   StreamSubscription<bool>? _isInMatchesSubscription;
-
-  final BehaviorSubject<bool> _renderingSynchronizer = BehaviorSubject<bool>.seeded(false);
 
   ConversationBloc(RepositoryInstances r, AccountId messageSenderAccountId, this.dataProvider)
     : profile = r.profile,
@@ -231,7 +169,7 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
       await for (final e in dataProvider.sendMessageTo(data.accountId, data.message)) {
         switch (e) {
           case SavedToLocalDb():
-            emit(state.copyWith(resetMessageInputField: true));
+            ();
           case ErrorBeforeMessageSaving():
             showSnackBar(R.strings.generic_error);
           case ErrorAfterMessageSaving(:final details):
@@ -313,83 +251,8 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
 
       emit(state.copyWith(isRetryPublicKeyDownloadInProgress: false));
     }, transformer: sequential());
-    on<NotifyMessageInputFieldCleared>((data, emit) async {
-      emit(state.copyWith(resetMessageInputField: false));
-    });
     on<MessageCountChanged>((data, emit) async {
       await profile.resetUnreadMessagesCount(state.accountId);
-
-      final visibleMessages = state.visibleMessages;
-      if (visibleMessages == null ||
-          data.changeInfo == ConversationChangeType.messageRemoved ||
-          data.changeInfo == ConversationChangeType.messageResent) {
-        final initialMessages = await dataProvider.getAllMessages(state.accountId);
-        final fromOldestToNewest = initialMessages.reversed.toList();
-        renderingManager.initWithMessages(fromOldestToNewest);
-        emit(
-          state.copyWith(
-            visibleMessages: ReadyVisibleMessageListUpdate(
-              MessageList(fromOldestToNewest),
-              null,
-              data.changeInfo == ConversationChangeType.messageResent,
-            ),
-          ),
-        );
-        if (visibleMessages == null) {
-          _log.info("Initial message list update done");
-        } else if (data.changeInfo == ConversationChangeType.messageRemoved) {
-          _log.info("Message removed and message list refreshed");
-        } else if (data.changeInfo == ConversationChangeType.messageResent) {
-          _log.info("Message resent and message list refreshed");
-        }
-        return;
-      }
-
-      if (data.newMessageCount <= renderingManager.currentMsgCount()) {
-        _log.info("Skip message count change event");
-        return;
-      }
-
-      final lastMsg = renderingManager.getLastMessage();
-      final newMessages = await dataProvider.getNewMessages(state.accountId, lastMsg?.localId);
-      renderingManager.addToBeRendered(
-        newMessages.reversed,
-        data.changeInfo == ConversationChangeType.messageSent,
-      );
-
-      if (state.rendererCurrentlyRendering == null) {
-        _log.info("No in-progress rendering");
-        final msgForRendering = renderingManager.getAndRemoveNextToBeRendered();
-        if (msgForRendering != null) {
-          _renderingSynchronizer.add(false);
-          emit(state.copyWith(rendererCurrentlyRendering: msgForRendering));
-          // Wait that rendering completes to avoid sending the same
-          // messages to renderer.
-          await _renderingSynchronizer.where((v) => v).firstOrNull;
-        }
-      }
-    }, transformer: sequential());
-    on<RenderingCompleted>((data, emit) {
-      final renderedMsg = state.rendererCurrentlyRendering;
-      if (renderedMsg == null) {
-        _log.warning("Rendering completed event received but rendered message is missing");
-        return;
-      }
-
-      renderingManager.appendToCurrentMessageUpdate(data.height, renderedMsg);
-      final nextMsg = renderingManager.getAndRemoveNextToBeRendered();
-
-      if (nextMsg == null) {
-        _log.info("Rendering completed");
-        final currentUpdate = renderingManager.resetCurrentMessageUpdateAndMoveToVisibleMessages();
-        if (currentUpdate != null) {
-          emit(state.copyWith(visibleMessages: currentUpdate, rendererCurrentlyRendering: null));
-          _renderingSynchronizer.add(true);
-        }
-      } else {
-        _log.info("Continue rendering");
-        emit(state.copyWith(rendererCurrentlyRendering: nextMsg));
-      }
     }, transformer: sequential());
 
     _profileChangeSubscription = profile.profileChanges.listen((event) {
@@ -415,106 +278,6 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
     await _messageCountSubscription?.cancel();
     await _profileChangeSubscription?.cancel();
     await _isInMatchesSubscription?.cancel();
-    await _renderingSynchronizer.close();
     return super.close();
-  }
-}
-
-class RenderingManager {
-  final List<MessageEntry> visibleMessages = [];
-
-  /// Rendered messages are gathered here before they are moved to
-  /// visible messages.
-  ReadyVisibleMessageListUpdate? currentMessagesUpdate;
-
-  final List<EntryAndJumpInfo> toBeRendered = [];
-
-  void initWithMessages(Iterable<MessageEntry> messages) {
-    visibleMessages.clear();
-    visibleMessages.addAll(messages);
-  }
-
-  /// Sets last message's jumpToLatestMessage value to `jumpToLatestMessage`.
-  void addToBeRendered(Iterable<MessageEntry> toBeRendered, bool jumpToLatestMessage) {
-    final messages = [...toBeRendered].map((msg) {
-      return EntryAndJumpInfo(msg, false);
-    }).toList();
-
-    if (messages.isNotEmpty) {
-      final lastI = messages.length - 1;
-      messages[lastI] = EntryAndJumpInfo(messages[lastI].entry, jumpToLatestMessage);
-    }
-
-    this.toBeRendered.addAll(messages);
-  }
-
-  EntryAndJumpInfo? getAndRemoveNextToBeRendered() {
-    if (toBeRendered.isEmpty) {
-      return null;
-    }
-    return toBeRendered.removeAt(0);
-  }
-
-  MessageEntry? getLastMessage() {
-    if (toBeRendered.isEmpty) {
-      final currentUpdate = currentMessagesUpdate;
-      if (currentUpdate != null && currentUpdate.messages.messages.isNotEmpty) {
-        return currentUpdate.messages.messages.lastOrNull;
-      } else {
-        return visibleMessages.lastOrNull;
-      }
-    } else {
-      return toBeRendered.lastOrNull?.entry;
-    }
-  }
-
-  void appendToCurrentMessageUpdate(double height, EntryAndJumpInfo renderedMsg) {
-    final currentUpdate = currentMessagesUpdate;
-    if (currentUpdate == null) {
-      currentMessagesUpdate = ReadyVisibleMessageListUpdate(
-        MessageList([renderedMsg.entry]),
-        height,
-        renderedMsg.jumpToLatestMessage,
-      );
-    } else {
-      final bool jmp;
-      if (currentUpdate.jumpToLatestMessage) {
-        jmp = true;
-      } else {
-        jmp = renderedMsg.jumpToLatestMessage;
-      }
-      currentMessagesUpdate = ReadyVisibleMessageListUpdate(
-        MessageList([...currentUpdate.messages.messages, renderedMsg.entry]),
-        (currentUpdate.addedHeight ?? 0) + height,
-        jmp,
-      );
-    }
-  }
-
-  ReadyVisibleMessageListUpdate? resetCurrentMessageUpdateAndMoveToVisibleMessages() {
-    final currentUpdate = currentMessagesUpdate;
-    if (currentUpdate == null) {
-      _log.error("Rendered messages not found");
-      return null;
-    }
-    currentMessagesUpdate = null;
-
-    visibleMessages.addAll(currentUpdate.messages.messages);
-
-    return ReadyVisibleMessageListUpdate(
-      MessageList([...visibleMessages]),
-      currentUpdate.addedHeight,
-      currentUpdate.jumpToLatestMessage,
-    );
-  }
-
-  ReadyVisibleMessageListUpdate? getCurrentMessageUpdate() {
-    return currentMessagesUpdate;
-  }
-
-  int currentMsgCount() {
-    return visibleMessages.length +
-        (currentMessagesUpdate?.messages.messages.length ?? 0) +
-        toBeRendered.length;
   }
 }
