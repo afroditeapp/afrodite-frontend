@@ -175,21 +175,19 @@ class _GenericProfileGridState extends State<GenericProfileGrid> {
       builderDelegate: PagedChildBuilderDelegate<ProfileGridProfileEntry>(
         animateTransitions: true,
         itemBuilder: (context, item, index) {
-          return GestureDetector(
-            child: UpdatingProfileThumbnailWithInfo(
-              initialData: item.profile,
-              db: widget.accountDb,
-              settings: settings,
-              maxItemWidth: singleItemWidth,
-              onTap: (context, thumbnail) {
-                openProfileView(
-                  context,
-                  thumbnail.entry,
-                  item.initialProfileAction,
-                  ProfileRefreshPriority.low,
-                );
-              },
-            ),
+          return UpdatingProfileThumbnailWithInfo(
+            initialData: item.profile,
+            db: widget.accountDb,
+            settings: settings,
+            maxItemWidth: singleItemWidth,
+            onTap: (context, thumbnail) {
+              openProfileView(
+                context,
+                thumbnail.entry,
+                item.initialProfileAction,
+                ProfileRefreshPriority.low,
+              );
+            },
           );
         },
         noItemsFoundIndicatorBuilder: (context) {
