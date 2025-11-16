@@ -26,7 +26,7 @@ class ChatList extends StatefulWidget {
   final AccountId currentUser;
   final AccountId messageReceiver;
   final ProfileEntry? profileEntry;
-  final List<MessageEntry> initialMessages;
+  final List<IteratorMessage> initialMessages;
   final MessageDatabaseIterator oldMessagesIterator;
   final AccountDatabaseManager db;
   const ChatList(
@@ -523,7 +523,7 @@ class _MessageStateWatcherState extends State<_MessageStateWatcher> {
         if (data != null) {
           switch (data) {
             case _MessageExists(:final entry):
-              final updatedMessage = MessageAdapter.toFlutterChatMessage(
+              final updatedMessage = MessageAdapter.messageEntryToFlutterChatMessage(
                 entry,
                 widget.currentUserId,
               );
@@ -557,7 +557,7 @@ class _MessageStateWatcherState extends State<_MessageStateWatcher> {
 
 /// Get all messages or new messages until latestCurrentMessageLocalId. The
 /// latest message is the last message.
-Future<List<MessageEntry>> _getNewMessages(
+Future<List<IteratorMessage>> _getNewMessages(
   LocalMessageId? latestCurrentMessageLocalId, {
   required AccountDatabaseManager db,
   required AccountId currentUser,
@@ -566,7 +566,7 @@ Future<List<MessageEntry>> _getNewMessages(
   final messageIterator = MessageDatabaseIterator(db);
   await messageIterator.switchConversation(currentUser, messageReceiver);
 
-  final List<MessageEntry> newMessages = [];
+  final List<IteratorMessage> newMessages = [];
   bool readMessages = true;
   while (readMessages) {
     final messages = await messageIterator.nextList();
@@ -574,15 +574,23 @@ Future<List<MessageEntry>> _getNewMessages(
       break;
     }
 
-    for (final message in messages) {
-      if (message.localId == latestCurrentMessageLocalId) {
+    for (final iteratorMessage in messages) {
+      if (iteratorMessage case IteratorMessageEntry(
+        :final entry,
+      ) when entry.localId == latestCurrentMessageLocalId) {
         readMessages = false;
         break;
       } else {
-        newMessages.add(message);
+        newMessages.add(iteratorMessage);
       }
     }
   }
 
-  return newMessages.reversed.toList();
+  if (newMessages.any((v) => v is IteratorMessageEntry)) {
+    // MessageDatabaseIterator must only create new system message
+    // IteratorMessages together with new MessageEntries.
+    return newMessages.reversed.toList();
+  } else {
+    return [];
+  }
 }

@@ -1,9 +1,16 @@
+import 'package:app/data/chat/message_database_iterator.dart';
 import 'package:database/database.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart' as chat;
 
-/// Adapter to convert app's MessageEntry to flutter_chat_core messages
+/// Adapter to convert app's IteratorMessage to flutter_chat_core messages
 class MessageAdapter {
-  static chat.Message toFlutterChatMessage(MessageEntry entry, String currentUserId) {
+  static chat.Message toFlutterChatMessage(IteratorMessage message, String currentUserId) {
+    return switch (message) {
+      IteratorMessageEntry(:final entry) => messageEntryToFlutterChatMessage(entry, currentUserId),
+    };
+  }
+
+  static chat.Message messageEntryToFlutterChatMessage(MessageEntry entry, String currentUserId) {
     final isCurrentUser = entry.messageState.toSentState() != null;
     final authorId = isCurrentUser ? currentUserId : entry.remoteAccountId.aid;
     final createdAt = entry.unixTime?.dateTime ?? entry.localUnixTime.dateTime;
@@ -107,9 +114,9 @@ class MessageAdapter {
   }
 
   static List<chat.Message> toFlutterChatMessages(
-    List<MessageEntry> entries,
+    List<IteratorMessage> messages,
     String currentUserId,
   ) {
-    return entries.map((entry) => toFlutterChatMessage(entry, currentUserId)).toList();
+    return messages.map((entry) => toFlutterChatMessage(entry, currentUserId)).toList();
   }
 }

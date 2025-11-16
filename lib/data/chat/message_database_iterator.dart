@@ -5,6 +5,15 @@ import 'package:database/database.dart';
 import 'package:app/database/account_database_manager.dart';
 import 'package:app/utils/result.dart';
 
+sealed class IteratorMessage {}
+
+final class IteratorMessageEntry extends IteratorMessage {
+  final MessageEntry entry;
+  IteratorMessageEntry(this.entry);
+}
+
+/// MessageDatabaseIterator must only create new system message
+/// IteratorMessages together with new MessageEntries.
 class MessageDatabaseIterator {
   int startLocalKey = 0;
   int nextLocalKey = 0;
@@ -49,7 +58,7 @@ class MessageDatabaseIterator {
   }
 
   // Get max 10 next messages.
-  Future<List<MessageEntry>> nextList() async {
+  Future<List<IteratorMessage>> nextList() async {
     if (nextLocalKey < 0) {
       return [];
     }
@@ -72,6 +81,6 @@ class MessageDatabaseIterator {
     if (id != null) {
       nextLocalKey = id.id - 1;
     }
-    return messages;
+    return messages.map((e) => IteratorMessageEntry(e)).toList();
   }
 }

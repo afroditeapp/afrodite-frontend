@@ -101,7 +101,7 @@ class ConversationPageUrlParser extends UrlParser<ConversationPage> {
 class ConversationPage extends MyScreenPage<()> {
   final AccountId accountId;
   final LocalAccountId localAccountId;
-  final List<MessageEntry> initialMessages;
+  final List<IteratorMessage> initialMessages;
   final MessageDatabaseIterator oldMessagesIterator;
   ConversationPage(
     this.accountId,
@@ -140,7 +140,7 @@ class ConversationScreen extends StatefulWidget {
   final PageCloser<()> closer;
   final AccountId accountId;
   final ProfileEntry? profileEntry;
-  final List<MessageEntry> initialMessages;
+  final List<IteratorMessage> initialMessages;
   final MessageDatabaseIterator oldMessagesIterator;
   const ConversationScreen(
     this.closer,
