@@ -12,7 +12,7 @@ class MessageAdapter {
         authorId: currentUserId,
         text: "",
         createdAt: date,
-        metadata: {'type': 'date_change'},
+        metadata: {'type': 'date_change', 'generated': true},
       ),
     };
   }
@@ -71,6 +71,7 @@ class MessageAdapter {
         seenAt: seenAt,
         failedAt: failedAt,
         status: status,
+        metadata: {'type': 'text_message'},
       );
     } else if (message is VideoCallInvitation) {
       return chat.Message.custom(

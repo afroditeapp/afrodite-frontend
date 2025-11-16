@@ -94,7 +94,9 @@ class _ChatListState extends State<ChatList> {
     _log.fine("Loading newer messages");
 
     try {
-      final latestMessage = _chatController.messages.lastOrNull;
+      final latestMessage = _chatController.messages
+          .where((element) => element.metadata?["generated"] != true)
+          .lastOrNull;
       final LocalMessageId? latestMessageId;
       if (latestMessage != null) {
         latestMessageId = LocalMessageId(int.parse(latestMessage.id));
