@@ -6,6 +6,7 @@ import 'package:app/localizations.dart';
 import 'package:app/ui/normal/chat/conversation_page.dart';
 import 'package:app/ui/normal/chat/message_adapter.dart';
 import 'package:app/ui/normal/chat/utils.dart';
+import 'package:app/ui_utils/list.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/time.dart';
 import 'package:database/database.dart';
@@ -482,6 +483,12 @@ class _ChatListState extends State<ChatList> {
                 child: wrappedMessage,
               );
             },
+        emptyChatListBuilder: (BuildContext ctx) {
+          return buildListReplacementMessageSimple(
+            context,
+            context.strings.conversation_screen_message_list_empty,
+          );
+        },
         composerBuilder: (BuildContext ctx) {
           return chat_ui.Composer(
             textEditingController: _textEditingController,

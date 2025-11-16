@@ -310,6 +310,9 @@ class AppLocalizationsEn extends AppLocalizations {
       'Messages are end-to-end encrypted';
 
   @override
+  String get conversation_screen_message_list_empty => 'No messages';
+
+  @override
   String get conversation_screen_message_state_decrypting_failed =>
       'Decrypting failed';
 

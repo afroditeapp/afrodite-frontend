@@ -362,6 +362,10 @@
   "@conversation_screen_message_info_encryption_started": {
     "description": "Info text that messages in this conversation are end-to-end encrypted"
   },
+  "conversation_screen_message_list_empty": "No messages",
+  "@conversation_screen_message_list_empty": {
+    "description": "Info text that message list is empty"
+  },
   "conversation_screen_message_state_decrypting_failed": "Decrypting failed",
   "@conversation_screen_message_state_decrypting_failed": {
     "description": "Message state text that message decrypting failed"

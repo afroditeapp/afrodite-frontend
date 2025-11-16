@@ -448,6 +448,7 @@
 
     <!-- Conversation screen -->
     <string name="conversation_screen_profile_blocked" description="Snackbar text displayed when profile blocking is successful">Profile was blocked</string>
+    <string name="conversation_screen_message_list_empty" description="Info text that message list is empty">No messages</string>
     <string name="conversation_screen_make_match_instruction" description="Instruction text how to make a match">Send a message to accept the chat request!</string>
     <string name="conversation_screen_chat_box_placeholder_text" description="Message input text field placeholder text">Type a message…</string>
     <string name="conversation_screen_message_too_long" description="Snackbar text that message is too long">Message is too long</string>

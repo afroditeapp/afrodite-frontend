@@ -565,6 +565,12 @@ abstract class AppLocalizations {
   /// **'Messages are end-to-end encrypted'**
   String get conversation_screen_message_info_encryption_started;
 
+  /// Info text that message list is empty
+  ///
+  /// In en, this message translates to:
+  /// **'No messages'**
+  String get conversation_screen_message_list_empty;
+
   /// Message state text that message decrypting failed
   ///
   /// In en, this message translates to:
