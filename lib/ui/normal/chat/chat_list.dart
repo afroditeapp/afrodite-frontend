@@ -10,6 +10,7 @@ import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/time.dart';
 import 'package:database/database.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart' as chat_core;
@@ -222,6 +223,49 @@ class _ChatListState extends State<ChatList> {
               required bool isSentByMe,
               chat_core.MessageGroupStatus? groupStatus,
             }) {
+              final messageType = message.metadata?['type'] as String?;
+
+              // Handle date change messages
+              if (messageType == 'date_change') {
+                final dateTime = message.createdAt;
+                if (dateTime == null) {
+                  return const SizedBox.shrink();
+                }
+
+                final now = DateTime.now();
+                final today = DateTime(now.year, now.month, now.day);
+                final yesterday = today.subtract(const Duration(days: 1));
+                final messageDate = DateTime(dateTime.year, dateTime.month, dateTime.day);
+
+                final String formattedDate;
+                if (messageDate.isAtSameMomentAs(today)) {
+                  formattedDate = context.strings.generic_today;
+                } else if (messageDate.isAtSameMomentAs(yesterday)) {
+                  formattedDate = context.strings.generic_yesterday;
+                } else if (messageDate.year == now.year) {
+                  final locale = Localizations.localeOf(ctx).toString();
+                  final formatter = DateFormat.MMMd(locale);
+                  formattedDate = formatter.format(dateTime);
+                } else {
+                  final locale = Localizations.localeOf(ctx).toString();
+                  final formatter = DateFormat.yMMMd(locale);
+                  formattedDate = formatter.format(dateTime);
+                }
+
+                final color = Theme.of(context).colorScheme.onSurface.withAlpha(128);
+                final textStyle = TextStyle(
+                  color: color,
+                  fontSize: 13.0,
+                  fontWeight: FontWeight.w500,
+                );
+
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                  child: Center(child: Text(formattedDate, style: textStyle)),
+                );
+              }
+
+              // Handle info messages
               final IconData iconData;
               final String text;
               final infoType = message.metadata?['infoMessageType'] as String?;

@@ -872,6 +872,10 @@
   "@generic_time": {
     "description": "Generic time text"
   },
+  "generic_today": "Today",
+  "@generic_today": {
+    "description": "Generic today text"
+  },
   "generic_try_again": "Try again",
   "@generic_try_again": {
     "description": "Generic try again text"
@@ -920,6 +924,10 @@
   "generic_yes": "Yes",
   "@generic_yes": {
     "description": "Generic yes text"
+  },
+  "generic_yesterday": "Yesterday",
+  "@generic_yesterday": {
+    "description": "Generic yesterday text"
   },
   "image_processing_ui_confirm_photo_dialog_title": "Continue with this photo?",
   "@image_processing_ui_confirm_photo_dialog_title": {

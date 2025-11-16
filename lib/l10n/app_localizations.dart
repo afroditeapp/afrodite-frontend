@@ -1291,6 +1291,12 @@ abstract class AppLocalizations {
   /// **'Time'**
   String get generic_time;
 
+  /// Generic today text
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get generic_today;
+
   /// Generic try again text
   ///
   /// In en, this message translates to:
@@ -1356,6 +1362,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Yes'**
   String get generic_yes;
+
+  /// Generic yesterday text
+  ///
+  /// In en, this message translates to:
+  /// **'Yesterday'**
+  String get generic_yesterday;
 
   /// Dialog title for confirming new image
   ///

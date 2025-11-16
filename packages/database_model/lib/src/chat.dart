@@ -36,6 +36,8 @@ class MessageEntry {
     this.unixTime,
   });
 
+  UtcDateTime userVisibleTime() => unixTime ?? localUnixTime;
+
   @override
   String toString() {
     return "MessageEntry(localId: $localId, localAccountId: $localAccountId, remoteAccountId: $remoteAccountId, message: $message, messageState: $messageState, messageId: $messageId, unixTime: $unixTime)";

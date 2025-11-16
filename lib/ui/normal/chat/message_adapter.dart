@@ -7,6 +7,13 @@ class MessageAdapter {
   static chat.Message toFlutterChatMessage(IteratorMessage message, String currentUserId) {
     return switch (message) {
       IteratorMessageEntry(:final entry) => messageEntryToFlutterChatMessage(entry, currentUserId),
+      MessageDateChange(:final date) => chat.Message.system(
+        id: 'date_${date.millisecondsSinceEpoch}',
+        authorId: currentUserId,
+        text: "",
+        createdAt: date,
+        metadata: {'type': 'date_change'},
+      ),
     };
   }
 

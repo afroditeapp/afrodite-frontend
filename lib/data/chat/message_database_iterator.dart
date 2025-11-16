@@ -12,6 +12,11 @@ final class IteratorMessageEntry extends IteratorMessage {
   IteratorMessageEntry(this.entry);
 }
 
+final class MessageDateChange extends IteratorMessage {
+  final DateTime date;
+  MessageDateChange(this.date);
+}
+
 /// MessageDatabaseIterator must only create new system message
 /// IteratorMessages together with new MessageEntries.
 class MessageDatabaseIterator {
@@ -19,6 +24,7 @@ class MessageDatabaseIterator {
   int nextLocalKey = 0;
   AccountId localAccountId = AccountId(aid: "");
   AccountId remoteAccountId = AccountId(aid: "");
+  MessageEntry? previousMessage;
   final AccountDatabaseManager db;
   MessageDatabaseIterator(this.db);
 
@@ -26,6 +32,7 @@ class MessageDatabaseIterator {
   Future<void> switchConversation(AccountId local, AccountId remote) async {
     localAccountId = local;
     remoteAccountId = remote;
+    previousMessage = null;
     await resetToLatest();
   }
 
@@ -46,6 +53,7 @@ class MessageDatabaseIterator {
   /// (same position as the previous resetToLatest or switchConversation)
   void reset() {
     nextLocalKey = startLocalKey;
+    previousMessage = null;
   }
 
   /// Clear all iterator state.
@@ -55,6 +63,7 @@ class MessageDatabaseIterator {
     nextLocalKey = 0;
     localAccountId = AccountId(aid: "");
     remoteAccountId = AccountId(aid: "");
+    previousMessage = null;
   }
 
   // Get max 10 next messages.
@@ -81,6 +90,25 @@ class MessageDatabaseIterator {
     if (id != null) {
       nextLocalKey = id.id - 1;
     }
-    return messages.map((e) => IteratorMessageEntry(e)).toList();
+
+    // Insert date change markers
+    final List<IteratorMessage> result = [];
+    for (final message in messages) {
+      final messageDate = message.userVisibleTime().dateTime;
+      final messageDateOnly = DateTime(messageDate.year, messageDate.month, messageDate.day);
+
+      final prevDate = previousMessage?.userVisibleTime().dateTime;
+      if (prevDate != null) {
+        final prevDateOnly = DateTime(prevDate.year, prevDate.month, prevDate.day);
+        if (!messageDateOnly.isAtSameMomentAs(prevDateOnly)) {
+          result.add(MessageDateChange(messageDateOnly));
+        }
+      }
+
+      result.add(IteratorMessageEntry(message));
+      previousMessage = message;
+    }
+
+    return result;
   }
 }

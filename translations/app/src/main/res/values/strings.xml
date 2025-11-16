@@ -84,6 +84,9 @@
     <string name="generic_weekday_sat" description="Generic short text for Saturday">Sat</string>
     <string name="generic_weekday_sun" description="Generic short text for Sunday">Sun</string>
 
+    <string name="generic_today" description="Generic today text">Today</string>
+    <string name="generic_yesterday" description="Generic yesterday text">Yesterday</string>
+
     <string name="generic_text_field_age_hint_text" description="Text field hint text for age">Insert an age between 18–99</string>
     <string name="generic_error_app_version_is_unsupported" desctiption="Snackbar text that client version is unsupported">Current app version is unsupported</string>
 

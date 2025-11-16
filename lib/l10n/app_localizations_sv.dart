@@ -718,6 +718,9 @@ class AppLocalizationsSv extends AppLocalizations {
   String get generic_time => 'Time';
 
   @override
+  String get generic_today => 'Today';
+
+  @override
   String get generic_try_again => 'Try again';
 
   @override
@@ -751,6 +754,9 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String get generic_yes => 'Yes';
+
+  @override
+  String get generic_yesterday => 'Yesterday';
 
   @override
   String get image_processing_ui_confirm_photo_dialog_title =>
