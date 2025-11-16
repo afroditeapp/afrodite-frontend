@@ -5,7 +5,6 @@ import 'package:native_utils/native_utils.dart';
 import 'package:openapi/api.dart';
 import 'package:app/api/server_connection_manager.dart';
 import 'package:app/data/account/client_id_manager.dart';
-import 'package:app/data/chat/message_database_iterator.dart';
 import 'package:app/data/chat/message_manager.dart';
 import 'package:app/data/chat/message_key_generator.dart';
 import 'package:app/data/general/notification/state/like_received.dart';
@@ -331,19 +330,10 @@ class ChatRepository extends DataRepositoryWithLifecycle {
   }
 
   /// First message is the latest message.
-  Future<List<MessageEntry>> getAllMessages(AccountId accountId) async {
-    final messageIterator = MessageDatabaseIterator(db);
-    await messageIterator.switchConversation(currentUser, accountId);
-
-    List<MessageEntry> allMessages = [];
-    while (true) {
-      final messages = await messageIterator.nextList();
-      if (messages.isEmpty) {
-        break;
-      }
-      allMessages.addAll(messages);
-    }
-    return allMessages;
+  Future<Result<List<MessageEntry>, ()>> getAllMessages(AccountId accountId) async {
+    return await db
+        .accountData((db) => db.message.getAllMessages(currentUser, accountId))
+        .emptyErr();
   }
 
   Future<Result<(), ()>> _reloadChatNotificationSettings() async {

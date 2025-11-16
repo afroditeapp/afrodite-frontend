@@ -20,11 +20,11 @@ Widget showReportAction(BuildContext context, AccountId accountId, ProfileEntry?
     onPressed: () async {
       final r = context.read<RepositoryInstances>();
       final isMatch = await r.chat.isInMatches(accountId);
-      final messages = await r.chat.getAllMessages(accountId);
+      final messages = await r.chat.getAllMessages(accountId).ok();
       final localAccountId = await r.accountDb
           .accountDataWrite((db) => db.account.createLocalAccountIdIfNeeded(accountId))
           .ok();
-      if (localAccountId == null || !context.mounted) {
+      if (messages == null || localAccountId == null || !context.mounted) {
         showSnackBar(R.strings.generic_error);
         return;
       }
@@ -59,7 +59,10 @@ class ReportPageUrlParser extends UrlParser<ReportPage> {
         .accountData((db) => db.profile.getProfileEntry(ids.accountId))
         .ok();
     final isMatch = await r.chat.isInMatches(ids.accountId);
-    final messages = await r.chat.getAllMessages(ids.accountId);
+    final messages = await r.chat.getAllMessages(ids.accountId).ok();
+    if (messages == null) {
+      return Err(());
+    }
 
     return Ok((
       ReportPage(

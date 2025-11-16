@@ -125,6 +125,29 @@ class DaoReadMessage extends DatabaseAccessor<AccountForegroundDatabase>
         .getSingleOrNull();
   }
 
+  /// First message is the latest message.
+  Future<List<dbm.MessageEntry>> getAllMessages(
+    api.AccountId localAccountId,
+    api.AccountId remoteAccountId,
+  ) async {
+    final int startLocalKey;
+    final latestMessage = await getMessage(localAccountId, remoteAccountId, 0);
+    if (latestMessage != null) {
+      startLocalKey = latestMessage.localId.id;
+    } else {
+      startLocalKey = 0;
+    }
+    final messages =
+        await (select(message)
+              ..where((t) => t.localAccountId.equals(localAccountId.aid))
+              ..where((t) => t.remoteAccountId.equals(remoteAccountId.aid))
+              ..where((t) => t.id.isSmallerOrEqualValue(startLocalKey))
+              ..orderBy([(t) => OrderingTerm(expression: t.id, mode: OrderingMode.desc)]))
+            .map((m) => _fromMessage(m))
+            .get();
+    return messages.nonNulls.toList();
+  }
+
   Future<dbm.MessageEntry?> getMessageUsingMessageId(
     api.AccountId localAccountId,
     api.AccountId remoteAccountId,
