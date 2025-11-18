@@ -57,6 +57,7 @@ lib/model/backend_config.dart
 lib/model/backend_version.dart
 lib/model/boolean_setting.dart
 lib/model/chat_app_notification_settings.dart
+lib/model/chat_config.dart
 lib/model/chat_email_notification_settings.dart
 lib/model/chat_message_report.dart
 lib/model/client_config.dart
@@ -108,6 +109,8 @@ lib/model/email_address_state.dart
 lib/model/email_address_state_admin.dart
 lib/model/email_login_token.dart
 lib/model/event_to_client.dart
+lib/model/event_to_server.dart
+lib/model/event_to_server_type.dart
 lib/model/event_type.dart
 lib/model/favorite_profiles_page.dart
 lib/model/features_config.dart
@@ -313,6 +316,7 @@ lib/model/sync_version.dart
 lib/model/system_info.dart
 lib/model/time_granularity.dart
 lib/model/translation.dart
+lib/model/typing_indicator_config.dart
 lib/model/unix_time.dart
 lib/model/unread_news_count.dart
 lib/model/unread_news_count_result.dart

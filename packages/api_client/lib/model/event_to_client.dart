@@ -16,6 +16,8 @@ class EventToClient {
     this.contentProcessingStateChanged,
     required this.event,
     this.scheduledMaintenanceStatus,
+    this.typingStart,
+    this.typingStop,
   });
 
   /// Data for event ContentProcessingStateChanged
@@ -26,21 +28,31 @@ class EventToClient {
   /// Data for event ScheduledMaintenanceStatus
   ScheduledMaintenanceStatus? scheduledMaintenanceStatus;
 
+  /// Data for event TypingStart
+  AccountId? typingStart;
+
+  /// Data for event TypingStop
+  AccountId? typingStop;
+
   @override
   bool operator ==(Object other) => identical(this, other) || other is EventToClient &&
     other.contentProcessingStateChanged == contentProcessingStateChanged &&
     other.event == event &&
-    other.scheduledMaintenanceStatus == scheduledMaintenanceStatus;
+    other.scheduledMaintenanceStatus == scheduledMaintenanceStatus &&
+    other.typingStart == typingStart &&
+    other.typingStop == typingStop;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (contentProcessingStateChanged == null ? 0 : contentProcessingStateChanged!.hashCode) +
     (event.hashCode) +
-    (scheduledMaintenanceStatus == null ? 0 : scheduledMaintenanceStatus!.hashCode);
+    (scheduledMaintenanceStatus == null ? 0 : scheduledMaintenanceStatus!.hashCode) +
+    (typingStart == null ? 0 : typingStart!.hashCode) +
+    (typingStop == null ? 0 : typingStop!.hashCode);
 
   @override
-  String toString() => 'EventToClient[contentProcessingStateChanged=$contentProcessingStateChanged, event=$event, scheduledMaintenanceStatus=$scheduledMaintenanceStatus]';
+  String toString() => 'EventToClient[contentProcessingStateChanged=$contentProcessingStateChanged, event=$event, scheduledMaintenanceStatus=$scheduledMaintenanceStatus, typingStart=$typingStart, typingStop=$typingStop]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -54,6 +66,16 @@ class EventToClient {
       json[r'scheduled_maintenance_status'] = this.scheduledMaintenanceStatus;
     } else {
       json[r'scheduled_maintenance_status'] = null;
+    }
+    if (this.typingStart != null) {
+      json[r'typing_start'] = this.typingStart;
+    } else {
+      json[r'typing_start'] = null;
+    }
+    if (this.typingStop != null) {
+      json[r'typing_stop'] = this.typingStop;
+    } else {
+      json[r'typing_stop'] = null;
     }
     return json;
   }
@@ -80,6 +102,8 @@ class EventToClient {
         contentProcessingStateChanged: ContentProcessingStateChanged.fromJson(json[r'content_processing_state_changed']),
         event: EventType.fromJson(json[r'event'])!,
         scheduledMaintenanceStatus: ScheduledMaintenanceStatus.fromJson(json[r'scheduled_maintenance_status']),
+        typingStart: AccountId.fromJson(json[r'typing_start']),
+        typingStop: AccountId.fromJson(json[r'typing_stop']),
       );
     }
     return null;

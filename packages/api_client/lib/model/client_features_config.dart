@@ -14,6 +14,7 @@ class ClientFeaturesConfig {
   /// Returns a new [ClientFeaturesConfig] instance.
   ClientFeaturesConfig({
     required this.attribution,
+    required this.chat,
     required this.features,
     required this.limits,
     required this.map,
@@ -22,6 +23,8 @@ class ClientFeaturesConfig {
   });
 
   AttributionConfig attribution;
+
+  ChatConfig chat;
 
   FeaturesConfig features;
 
@@ -37,6 +40,7 @@ class ClientFeaturesConfig {
   @override
   bool operator ==(Object other) => identical(this, other) || other is ClientFeaturesConfig &&
     other.attribution == attribution &&
+    other.chat == chat &&
     other.features == features &&
     other.limits == limits &&
     other.map == map &&
@@ -47,6 +51,7 @@ class ClientFeaturesConfig {
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (attribution.hashCode) +
+    (chat.hashCode) +
     (features.hashCode) +
     (limits.hashCode) +
     (map.hashCode) +
@@ -54,11 +59,12 @@ class ClientFeaturesConfig {
     (profile.hashCode);
 
   @override
-  String toString() => 'ClientFeaturesConfig[attribution=$attribution, features=$features, limits=$limits, map=$map, news=$news, profile=$profile]';
+  String toString() => 'ClientFeaturesConfig[attribution=$attribution, chat=$chat, features=$features, limits=$limits, map=$map, news=$news, profile=$profile]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'attribution'] = this.attribution;
+      json[r'chat'] = this.chat;
       json[r'features'] = this.features;
       json[r'limits'] = this.limits;
       json[r'map'] = this.map;
@@ -91,6 +97,7 @@ class ClientFeaturesConfig {
 
       return ClientFeaturesConfig(
         attribution: AttributionConfig.fromJson(json[r'attribution'])!,
+        chat: ChatConfig.fromJson(json[r'chat'])!,
         features: FeaturesConfig.fromJson(json[r'features'])!,
         limits: LimitsConfig.fromJson(json[r'limits'])!,
         map: MapConfig.fromJson(json[r'map'])!,
@@ -144,6 +151,7 @@ class ClientFeaturesConfig {
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
     'attribution',
+    'chat',
     'features',
     'limits',
     'map',

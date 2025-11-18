@@ -84,5 +84,6 @@ ClientFeaturesConfig _emptyClientFeaturesConfig() {
     ),
     limits: LimitsConfig(likes: LikeLimitsConfig(daily: null, unlimitedLikesDisablingTime: null)),
     profile: ProfileConfig(),
+    chat: ChatConfig(),
   );
 }

@@ -252,6 +252,8 @@ class ApiClient {
           return BooleanSetting.fromJson(value);
         case 'ChatAppNotificationSettings':
           return ChatAppNotificationSettings.fromJson(value);
+        case 'ChatConfig':
+          return ChatConfig.fromJson(value);
         case 'ChatEmailNotificationSettings':
           return ChatEmailNotificationSettings.fromJson(value);
         case 'ChatMessageReport':
@@ -354,6 +356,10 @@ class ApiClient {
           return EmailLoginToken.fromJson(value);
         case 'EventToClient':
           return EventToClient.fromJson(value);
+        case 'EventToServer':
+          return EventToServer.fromJson(value);
+        case 'EventToServerType':
+          return EventToServerTypeTypeTransformer().decode(value);
         case 'EventType':
           return EventTypeTypeTransformer().decode(value);
         case 'FavoriteProfilesPage':
@@ -764,6 +770,8 @@ class ApiClient {
           return TimeGranularityTypeTransformer().decode(value);
         case 'Translation':
           return Translation.fromJson(value);
+        case 'TypingIndicatorConfig':
+          return TypingIndicatorConfig.fromJson(value);
         case 'UnixTime':
           return UnixTime.fromJson(value);
         case 'UnreadNewsCount':
