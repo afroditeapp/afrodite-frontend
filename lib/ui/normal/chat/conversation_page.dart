@@ -251,6 +251,7 @@ class ConversationScreenState extends State<ConversationScreen> {
             currentUser: r.accountId,
             messageReceiver: widget.accountId,
             db: r.accountDb,
+            typingIndicatorManager: r.chat.typingIndicatorManager,
           );
         }
       },

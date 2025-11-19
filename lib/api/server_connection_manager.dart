@@ -409,6 +409,15 @@ class ServerConnectionManager extends ApiManager
 
     return const Ok(());
   }
+
+  Future<void> sendEventToServer(EventToServer event) async {
+    final connection = _serverConnection;
+    if (connection != null) {
+      connection.sendEventToServer(event);
+    } else {
+      _log.warning("Cannot send event: no active connection");
+    }
+  }
 }
 
 class ApiManagerNoConnection extends ApiManager {

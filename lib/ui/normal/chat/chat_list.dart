@@ -1,8 +1,10 @@
 import 'package:app/data/chat/message_database_iterator.dart';
+import 'package:app/data/chat/typing_indicator_manager.dart';
 import 'package:app/data/chat_repository.dart';
 import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/database/account_database_manager.dart';
 import 'package:app/localizations.dart';
+import 'package:app/ui/normal/chat/chat_list_logic.dart';
 import 'package:app/ui/normal/chat/conversation_page.dart';
 import 'package:app/ui/normal/chat/message_adapter.dart';
 import 'package:app/ui/normal/chat/utils.dart';
@@ -31,6 +33,8 @@ class ChatList extends StatefulWidget {
   final List<IteratorMessage> initialMessages;
   final MessageDatabaseIterator oldMessagesIterator;
   final AccountDatabaseManager db;
+  final TypingIndicatorManager typingIndicatorManager;
+
   const ChatList(
     this.profileEntry,
     this.initialMessages,
@@ -38,6 +42,7 @@ class ChatList extends StatefulWidget {
     required this.currentUser,
     required this.messageReceiver,
     required this.db,
+    required this.typingIndicatorManager,
     super.key,
   });
 
@@ -48,13 +53,10 @@ class ChatList extends StatefulWidget {
 class _ChatListState extends State<ChatList> {
   late chat_core.InMemoryChatController _chatController;
   late TextEditingController _textEditingController;
+  late ChatListLogic _chatListLogic;
 
   bool _reversed = false;
-  bool _loadingOldMessages = false;
   bool _endReached = false;
-
-  StreamSubscription<void>? _messageCountSubscription;
-  bool _loadingNewMessages = false;
 
   @override
   void initState() {
@@ -68,6 +70,7 @@ class _ChatListState extends State<ChatList> {
 
     _chatController = chat_core.InMemoryChatController(messages: initialMessages);
     _textEditingController = TextEditingController();
+    _textEditingController.addListener(_onTextChanged);
 
     // Use reversed mode only when there is enough
     // messages as otherwise there would be empty space
@@ -78,60 +81,25 @@ class _ChatListState extends State<ChatList> {
     _reversed = initialMessages.length >= 20;
 
     final r = context.read<RepositoryInstances>();
-    _messageCountSubscription = r.chat
-        .getMessageCountAndChanges(widget.messageReceiver)
-        .asyncMap((_) async {
-          await _loadNewMessages();
-        })
-        .listen((_) {});
+    _chatListLogic = ChatListLogic(
+      chatController: _chatController,
+      chatRepository: r.chat,
+      typingIndicatorManager: widget.typingIndicatorManager,
+      oldMessagesIterator: widget.oldMessagesIterator,
+      currentUser: widget.currentUser,
+      messageReceiver: widget.messageReceiver,
+      db: widget.db,
+    );
   }
 
-  Future<void> _loadNewMessages() async {
-    if (!context.mounted || _loadingNewMessages) {
-      return;
-    }
+  void _onTextChanged() {
+    final text = _textEditingController.text;
 
-    _loadingNewMessages = true;
-    _log.fine("Loading newer messages");
-
-    try {
-      final latestMessage = _chatController.messages
-          .where((element) => element.metadata?["generated"] != true)
-          .lastOrNull;
-      final LocalMessageId? latestMessageId;
-      if (latestMessage != null) {
-        latestMessageId = LocalMessageId(int.parse(latestMessage.id));
-      } else {
-        latestMessageId = null;
-      }
-
-      final newMessages = await _getNewMessages(
-        latestMessageId,
-        currentUser: widget.currentUser,
-        messageReceiver: widget.messageReceiver,
-        db: widget.db,
-      );
-
-      if (!context.mounted) {
-        return;
-      }
-
-      if (newMessages.isNotEmpty) {
-        final chatMessages = MessageAdapter.toFlutterChatMessages(
-          newMessages,
-          widget.currentUser.aid,
-        );
-
-        await _chatController.insertAllMessages(
-          chatMessages,
-          index: _chatController.messages.length,
-          animated: true,
-        );
-
-        _log.fine("Loaded ${newMessages.length} newer messages");
-      }
-    } finally {
-      _loadingNewMessages = false;
+    // Send typing event through relay
+    if (text.isNotEmpty) {
+      widget.typingIndicatorManager.typingEventsRelay.add((widget.messageReceiver, true));
+    } else {
+      widget.typingIndicatorManager.typingEventsRelay.add((widget.messageReceiver, false));
     }
   }
 
@@ -182,39 +150,12 @@ class _ChatListState extends State<ChatList> {
             onEndReached: !_reversed || (_reversed && _endReached)
                 ? null
                 : () async {
-                    if (_loadingOldMessages) return;
-                    _loadingOldMessages = true;
-
-                    await Future<void>.delayed(Duration(seconds: 1));
-
-                    final oldMessages = await widget.oldMessagesIterator.nextList();
-                    oldMessages.addAll(await widget.oldMessagesIterator.nextList());
-                    oldMessages.addAll(await widget.oldMessagesIterator.nextList());
-                    oldMessages.addAll(await widget.oldMessagesIterator.nextList());
-                    oldMessages.addAll(await widget.oldMessagesIterator.nextList());
-                    if (oldMessages.isEmpty) {
+                    final endReached = await _chatListLogic.requestLoadOldMessages();
+                    if (endReached && mounted) {
                       setState(() {
                         _endReached = true;
                       });
-                      return;
                     }
-
-                    final chatMessages = MessageAdapter.toFlutterChatMessages(
-                      oldMessages.reversed.toList(),
-                      widget.currentUser.aid,
-                    );
-
-                    if (!context.mounted) {
-                      return;
-                    }
-
-                    await _chatController.insertAllMessages(
-                      chatMessages,
-                      index: 0,
-                      animated: false,
-                    );
-
-                    _loadingOldMessages = false;
                   },
           );
         },
@@ -314,6 +255,19 @@ class _ChatListState extends State<ChatList> {
             }) {
               final metadata = message.metadata;
               final messageType = metadata?['type'] as String?;
+
+              if (messageType == 'typing_indicator') {
+                return Container(
+                  padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.primaryContainer,
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  child: chat_ui.IsTypingIndicator(
+                    color: Theme.of(context).colorScheme.onPrimaryContainer,
+                  ),
+                );
+              }
 
               Widget messageWidget;
 
@@ -508,7 +462,11 @@ class _ChatListState extends State<ChatList> {
 
   @override
   void dispose() {
-    _messageCountSubscription?.cancel();
+    // Send typing stop event when leaving the chat
+    widget.typingIndicatorManager.typingEventsRelay.add((widget.messageReceiver, false));
+
+    _chatListLogic.dispose();
+    _textEditingController.removeListener(_onTextChanged);
     _chatController.dispose();
     _textEditingController.dispose();
     super.dispose();
@@ -605,45 +563,5 @@ class _MessageStateWatcherState extends State<_MessageStateWatcher> {
         return widget.child;
       },
     );
-  }
-}
-
-/// Get all messages or new messages until latestCurrentMessageLocalId. The
-/// latest message is the last message.
-Future<List<IteratorMessage>> _getNewMessages(
-  LocalMessageId? latestCurrentMessageLocalId, {
-  required AccountDatabaseManager db,
-  required AccountId currentUser,
-  required AccountId messageReceiver,
-}) async {
-  final messageIterator = MessageDatabaseIterator(db);
-  await messageIterator.switchConversation(currentUser, messageReceiver);
-
-  final List<IteratorMessage> newMessages = [];
-  bool readMessages = true;
-  while (readMessages) {
-    final messages = await messageIterator.nextList();
-    if (messages.isEmpty) {
-      break;
-    }
-
-    for (final iteratorMessage in messages) {
-      if (iteratorMessage case IteratorMessageEntry(
-        :final entry,
-      ) when entry.localId == latestCurrentMessageLocalId) {
-        readMessages = false;
-        break;
-      } else {
-        newMessages.add(iteratorMessage);
-      }
-    }
-  }
-
-  if (newMessages.any((v) => v is IteratorMessageEntry)) {
-    // MessageDatabaseIterator must only create new system message
-    // IteratorMessages together with new MessageEntries.
-    return newMessages.reversed.toList();
-  } else {
-    return [];
   }
 }

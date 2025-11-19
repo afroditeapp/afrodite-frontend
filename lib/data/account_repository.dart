@@ -57,6 +57,8 @@ class AccountRepository extends DataRepositoryWithLifecycle {
   Stream<Permissions> get permissions =>
       db.accountStreamOrDefault((db) => db.account.watchPermissions(), Permissions());
   Stream<ProfileVisibility> get profileVisibility => _cachedValues._cachedProfileVisibility;
+  Stream<ClientFeaturesConfig> get clientFeaturesConfig =>
+      _cachedValues._cachedClientFeaturesConfig;
 
   ProfileVisibility get profileVisibilityValue => _cachedValues._cachedProfileVisibility.value;
   String? get emailAddressValue => _cachedValues._cachedEmailAddress.value;
@@ -145,6 +147,8 @@ class AccountRepository extends DataRepositoryWithLifecycle {
 
     final contentProcessingEvent = event.contentProcessingStateChanged;
     final maintenanceEvent = event.scheduledMaintenanceStatus;
+    final typingStart = event.typingStart;
+    final typingStop = event.typingStop;
     if (event.event == EventType.accountStateChanged) {
       await _receiveAccountState();
     } else if (event.event == EventType.contentProcessingStateChanged &&
@@ -176,6 +180,10 @@ class AccountRepository extends DataRepositoryWithLifecycle {
       await repositories.common.receivePushNotificationInfo();
     } else if (event.event == EventType.adminNotification) {
       await receiveAdminNotification();
+    } else if (event.event == EventType.typingStart && typingStart != null) {
+      repositories.chat.typingIndicatorManager.handleReceivedTypingStart(typingStart);
+    } else if (event.event == EventType.typingStop && typingStop != null) {
+      repositories.chat.typingIndicatorManager.handleReceivedTypingStop(typingStop);
     } else {
       _log.error("Unknown EventToClient");
     }
@@ -335,6 +343,32 @@ class AccountRepository extends DataRepositoryWithLifecycle {
   }
 }
 
+ClientFeaturesConfig emptyClientFeaturesConfig() {
+  return ClientFeaturesConfig(
+    attribution: AttributionConfig(),
+    features: FeaturesConfig(videoCalls: false),
+    news: NewsConfig(),
+    map: MapConfig(
+      bounds: MapBounds(
+        topLeft: MapCoordinate(lat: 90, lon: -180),
+        bottomRight: MapCoordinate(lat: -90, lon: 180),
+      ),
+      initialLocation: MapCoordinate(lat: 0, lon: 0),
+      zoom: MapZoom(
+        locationNotSelected: 0,
+        locationSelected: 0,
+        max: 19,
+        maxTileDownloading: 19,
+        min: 0,
+      ),
+      tileDataVersion: 0,
+    ),
+    limits: LimitsConfig(likes: LikeLimitsConfig(daily: null, unlimitedLikesDisablingTime: null)),
+    profile: ProfileConfig(),
+    chat: ChatConfig(),
+  );
+}
+
 class CachedValues {
   final BehaviorSubject<String?> _cachedEmailAddress = BehaviorSubject.seeded(null);
   StreamSubscription<String?>? _cachedEmailSubscription;
@@ -344,6 +378,10 @@ class CachedValues {
   StreamSubscription<ProfileVisibility>? _cachedProfileVisibilitySubscription;
   final BehaviorSubject<AccountState?> _cachedAccountState = BehaviorSubject.seeded(null);
   StreamSubscription<AccountState?>? _cachedAccountStateSubscription;
+  final BehaviorSubject<ClientFeaturesConfig> _cachedClientFeaturesConfig = BehaviorSubject.seeded(
+    emptyClientFeaturesConfig(),
+  );
+  StreamSubscription<ClientFeaturesConfig?>? _cachedClientFeaturesConfigSubscription;
 
   void _subscribe(AccountDatabaseManager db) {
     _cachedEmailSubscription = db.accountStream((db) => db.account.watchEmailAddress()).listen((v) {
@@ -364,14 +402,25 @@ class CachedValues {
         .listen((v) {
           _cachedAccountState.add(v);
         });
+
+    _cachedClientFeaturesConfigSubscription = db
+        .accountStreamOrDefault(
+          (db) => db.config.watchClientFeaturesConfig(),
+          emptyClientFeaturesConfig(),
+        )
+        .listen((v) {
+          _cachedClientFeaturesConfig.add(v);
+        });
   }
 
   Future<void> _dispose() async {
     await _cachedEmailSubscription?.cancel();
     await _cachedProfileVisibilitySubscription?.cancel();
     await _cachedAccountStateSubscription?.cancel();
+    await _cachedClientFeaturesConfigSubscription?.cancel();
     await _cachedEmailAddress.close();
     await _cachedProfileVisibility.close();
     await _cachedAccountState.close();
+    await _cachedClientFeaturesConfig.close();
   }
 }

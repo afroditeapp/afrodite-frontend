@@ -299,6 +299,19 @@ class ServerConnection {
     _state.add(Closed(null));
     await _state.close();
   }
+
+  void sendEventToServer(EventToServer event) {
+    if (_isClosed) {
+      _log.warning("Cannot send event: connection is closed");
+      return;
+    }
+    try {
+      final jsonString = jsonEncode(event.toJson());
+      _connection.connection.sendText(jsonString);
+    } catch (e) {
+      _log.warning("Failed to send event: $e");
+    }
+  }
 }
 
 String clientVersionInfoString() {

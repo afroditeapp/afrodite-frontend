@@ -1,6 +1,8 @@
 import 'dart:async';
 
+import 'package:app/data/account_repository.dart';
 import 'package:app/data/chat/message_manager/utils.dart';
+import 'package:app/data/chat/typing_indicator_manager.dart';
 import 'package:native_utils/native_utils.dart';
 import 'package:openapi/api.dart';
 import 'package:app/api/server_connection_manager.dart';
@@ -26,6 +28,7 @@ class ChatRepository extends DataRepositoryWithLifecycle {
   final AccountId currentUser;
 
   ChatRepository({
+    required AccountRepository account,
     required MediaRepository media,
     required this.profile,
     required this.accountBackgroundDb,
@@ -54,7 +57,8 @@ class ChatRepository extends DataRepositoryWithLifecycle {
          profile,
          accountBackgroundDb,
          currentUser,
-       );
+       ),
+       typingIndicatorManager = TypingIndicatorManager(connectionManager, account);
 
   final ConnectedActionScheduler syncHandler;
 
@@ -63,6 +67,7 @@ class ChatRepository extends DataRepositoryWithLifecycle {
   final ApiManager api;
 
   final MessageManager messageManager;
+  final TypingIndicatorManager typingIndicatorManager;
 
   @override
   Future<void> init() async {
@@ -73,6 +78,7 @@ class ChatRepository extends DataRepositoryWithLifecycle {
   Future<void> dispose() async {
     await syncHandler.dispose();
     await messageManager.dispose();
+    await typingIndicatorManager.dispose();
   }
 
   @override

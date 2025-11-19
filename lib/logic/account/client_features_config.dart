@@ -1,7 +1,7 @@
 import "dart:async";
 
+import "package:app/data/account_repository.dart";
 import "package:app/data/utils/repository_instances.dart";
-import "package:app/database/account_database_manager.dart";
 import "package:app/model/freezed/logic/account/client_features_config.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:logging/logging.dart";
@@ -23,14 +23,14 @@ class DailyLikesLeftChanged extends ClientFeaturesConfigEvent {
 }
 
 class ClientFeaturesConfigBloc extends Bloc<ClientFeaturesConfigEvent, ClientFeaturesConfigData> {
-  final AccountDatabaseManager db;
+  final AccountRepository accountRepository;
 
-  StreamSubscription<ClientFeaturesConfig?>? _configSubscription;
+  StreamSubscription<ClientFeaturesConfig>? _configSubscription;
   StreamSubscription<int?>? _dailyLikesLeftSubscription;
 
   ClientFeaturesConfigBloc(RepositoryInstances r)
-    : db = r.accountDb,
-      super(ClientFeaturesConfigData(config: _emptyClientFeaturesConfig())) {
+    : accountRepository = r.account,
+      super(ClientFeaturesConfigData(config: emptyClientFeaturesConfig())) {
     on<ConfigChanged>((data, emit) async {
       final regex = data.value.profile.profileNameRegex;
       RegExp? profileNameRegex;
@@ -46,10 +46,10 @@ class ClientFeaturesConfigBloc extends Bloc<ClientFeaturesConfigEvent, ClientFea
     on<DailyLikesLeftChanged>((data, emit) {
       emit(state.copyWith(dailyLikesLeft: data.value));
     });
-    _configSubscription = db
-        .accountStream((db) => db.config.watchClientFeaturesConfig())
-        .listen((value) => add(ConfigChanged(value ?? _emptyClientFeaturesConfig())));
-    _dailyLikesLeftSubscription = db
+    _configSubscription = accountRepository.clientFeaturesConfig.listen(
+      (value) => add(ConfigChanged(value)),
+    );
+    _dailyLikesLeftSubscription = r.accountDb
         .accountStream((db) => db.like.watchDailyLikesLeft())
         .listen((value) => add(DailyLikesLeftChanged(value)));
   }
@@ -60,30 +60,4 @@ class ClientFeaturesConfigBloc extends Bloc<ClientFeaturesConfigEvent, ClientFea
     await _dailyLikesLeftSubscription?.cancel();
     return super.close();
   }
-}
-
-ClientFeaturesConfig _emptyClientFeaturesConfig() {
-  return ClientFeaturesConfig(
-    attribution: AttributionConfig(),
-    features: FeaturesConfig(videoCalls: false),
-    news: NewsConfig(),
-    map: MapConfig(
-      bounds: MapBounds(
-        topLeft: MapCoordinate(lat: 90, lon: -180),
-        bottomRight: MapCoordinate(lat: -90, lon: 180),
-      ),
-      initialLocation: MapCoordinate(lat: 0, lon: 0),
-      zoom: MapZoom(
-        locationNotSelected: 0,
-        locationSelected: 0,
-        max: 19,
-        maxTileDownloading: 19,
-        min: 0,
-      ),
-      tileDataVersion: 0,
-    ),
-    limits: LimitsConfig(likes: LikeLimitsConfig(daily: null, unlimitedLikesDisablingTime: null)),
-    profile: ProfileConfig(),
-    chat: ChatConfig(),
-  );
 }
