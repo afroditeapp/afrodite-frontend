@@ -19,7 +19,7 @@ class ClientFeaturesConfigData with _$ClientFeaturesConfigData {
   }) = _ClientFeaturesConfigData;
 
   Time? unlimitedLikesResetTime() {
-    final timeString = config.limits.likes.unlimitedLikesDisablingTime;
+    final timeString = config.likes?.unlimitedLikesDisablingTime;
     if (timeString == null) {
       return null;
     }
@@ -33,7 +33,7 @@ class ClientFeaturesConfigData with _$ClientFeaturesConfigData {
   }
 
   Time? dailyLikesResetTime() {
-    final limitConfig = config.limits.likes.daily;
+    final limitConfig = config.likes?.daily;
     if (limitConfig == null) {
       return null;
     }
@@ -51,7 +51,7 @@ class ClientFeaturesConfigData with _$ClientFeaturesConfigData {
   }
 
   bool dailyLikesLimitEnabled() {
-    return config.limits.likes.daily != null;
+    return config.likes?.daily != null;
   }
 
   List<String> newsLocales() {
@@ -67,13 +67,14 @@ class ClientFeaturesConfigData with _$ClientFeaturesConfigData {
 
   String? aboutDialogAttribution(BuildContext context) {
     final locale = context.strings.localeName;
-    return config.attribution.generic?.translations[locale] ?? config.attribution.generic?.default_;
+    return config.attribution?.generic?.translations[locale] ??
+        config.attribution?.generic?.default_;
   }
 
   String? ipCountryDataAttribution(BuildContext context) {
     final locale = context.strings.localeName;
-    return config.attribution.ipCountry?.translations[locale] ??
-        config.attribution.ipCountry?.default_;
+    return config.attribution?.ipCountry?.translations[locale] ??
+        config.attribution?.ipCountry?.default_;
   }
 }
 

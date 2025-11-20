@@ -34,9 +34,14 @@ class TypingIndicatorManager {
     });
 
     _configSubscription = _accountRepository.clientFeaturesConfig.listen((config) {
-      _typingIndicatorEnabled = config.chat.typingIndicator?.enabled ?? false;
-      _sendingLogic.updateConfig(config.chat.typingIndicator?.minWaitSecondsBetweenSendingMessages);
-      _receivingLogic.updateConfig(config.chat.typingIndicator?.startEventTtlSeconds);
+      final typingIndicatorConfig = config.chat?.typingIndicator;
+      if (typingIndicatorConfig != null) {
+        _typingIndicatorEnabled = true;
+        _sendingLogic.updateConfig(typingIndicatorConfig.minWaitSecondsBetweenRequestsClient);
+        _receivingLogic.updateConfig(typingIndicatorConfig.startEventTtlSeconds);
+      } else {
+        _typingIndicatorEnabled = false;
+      }
     });
   }
 

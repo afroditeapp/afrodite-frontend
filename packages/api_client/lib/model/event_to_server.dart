@@ -14,26 +14,32 @@ class EventToServer {
   /// Returns a new [EventToServer] instance.
   EventToServer({
     this.a,
+    this.o,
     required this.t,
   });
 
   AccountId? a;
+
+  /// Online status (None value is false)
+  bool? o;
 
   EventToServerType t;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is EventToServer &&
     other.a == a &&
+    other.o == o &&
     other.t == t;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (a == null ? 0 : a!.hashCode) +
+    (o == null ? 0 : o!.hashCode) +
     (t.hashCode);
 
   @override
-  String toString() => 'EventToServer[a=$a, t=$t]';
+  String toString() => 'EventToServer[a=$a, o=$o, t=$t]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -41,6 +47,11 @@ class EventToServer {
       json[r'a'] = this.a;
     } else {
       json[r'a'] = null;
+    }
+    if (this.o != null) {
+      json[r'o'] = this.o;
+    } else {
+      json[r'o'] = null;
     }
       json[r't'] = this.t;
     return json;
@@ -66,6 +77,7 @@ class EventToServer {
 
       return EventToServer(
         a: AccountId.fromJson(json[r'a']),
+        o: mapValueOfType<bool>(json, r'o'),
         t: EventToServerType.fromJson(json[r't'])!,
       );
     }

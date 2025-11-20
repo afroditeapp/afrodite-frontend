@@ -13,12 +13,16 @@ part of openapi.api;
 class EventToClient {
   /// Returns a new [EventToClient] instance.
   EventToClient({
+    this.checkOnlineStatusResponse,
     this.contentProcessingStateChanged,
     required this.event,
     this.scheduledMaintenanceStatus,
     this.typingStart,
     this.typingStop,
   });
+
+  /// Data for event CheckOnlineStatusResponse
+  CheckOnlineStatusResponse? checkOnlineStatusResponse;
 
   /// Data for event ContentProcessingStateChanged
   ContentProcessingStateChanged? contentProcessingStateChanged;
@@ -36,6 +40,7 @@ class EventToClient {
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is EventToClient &&
+    other.checkOnlineStatusResponse == checkOnlineStatusResponse &&
     other.contentProcessingStateChanged == contentProcessingStateChanged &&
     other.event == event &&
     other.scheduledMaintenanceStatus == scheduledMaintenanceStatus &&
@@ -45,6 +50,7 @@ class EventToClient {
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
+    (checkOnlineStatusResponse == null ? 0 : checkOnlineStatusResponse!.hashCode) +
     (contentProcessingStateChanged == null ? 0 : contentProcessingStateChanged!.hashCode) +
     (event.hashCode) +
     (scheduledMaintenanceStatus == null ? 0 : scheduledMaintenanceStatus!.hashCode) +
@@ -52,10 +58,15 @@ class EventToClient {
     (typingStop == null ? 0 : typingStop!.hashCode);
 
   @override
-  String toString() => 'EventToClient[contentProcessingStateChanged=$contentProcessingStateChanged, event=$event, scheduledMaintenanceStatus=$scheduledMaintenanceStatus, typingStart=$typingStart, typingStop=$typingStop]';
+  String toString() => 'EventToClient[checkOnlineStatusResponse=$checkOnlineStatusResponse, contentProcessingStateChanged=$contentProcessingStateChanged, event=$event, scheduledMaintenanceStatus=$scheduledMaintenanceStatus, typingStart=$typingStart, typingStop=$typingStop]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
+    if (this.checkOnlineStatusResponse != null) {
+      json[r'check_online_status_response'] = this.checkOnlineStatusResponse;
+    } else {
+      json[r'check_online_status_response'] = null;
+    }
     if (this.contentProcessingStateChanged != null) {
       json[r'content_processing_state_changed'] = this.contentProcessingStateChanged;
     } else {
@@ -99,6 +110,7 @@ class EventToClient {
       }());
 
       return EventToClient(
+        checkOnlineStatusResponse: CheckOnlineStatusResponse.fromJson(json[r'check_online_status_response']),
         contentProcessingStateChanged: ContentProcessingStateChanged.fromJson(json[r'content_processing_state_changed']),
         event: EventType.fromJson(json[r'event'])!,
         scheduledMaintenanceStatus: ScheduledMaintenanceStatus.fromJson(json[r'scheduled_maintenance_status']),

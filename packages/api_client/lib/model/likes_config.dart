@@ -10,9 +10,9 @@
 
 part of openapi.api;
 
-class LikeLimitsConfig {
-  /// Returns a new [LikeLimitsConfig] instance.
-  LikeLimitsConfig({
+class LikesConfig {
+  /// Returns a new [LikesConfig] instance.
+  LikesConfig({
     this.daily,
     this.unlimitedLikesDisablingTime,
   });
@@ -29,7 +29,7 @@ class LikeLimitsConfig {
   String? unlimitedLikesDisablingTime;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is LikeLimitsConfig &&
+  bool operator ==(Object other) => identical(this, other) || other is LikesConfig &&
     other.daily == daily &&
     other.unlimitedLikesDisablingTime == unlimitedLikesDisablingTime;
 
@@ -40,7 +40,7 @@ class LikeLimitsConfig {
     (unlimitedLikesDisablingTime == null ? 0 : unlimitedLikesDisablingTime!.hashCode);
 
   @override
-  String toString() => 'LikeLimitsConfig[daily=$daily, unlimitedLikesDisablingTime=$unlimitedLikesDisablingTime]';
+  String toString() => 'LikesConfig[daily=$daily, unlimitedLikesDisablingTime=$unlimitedLikesDisablingTime]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -57,10 +57,10 @@ class LikeLimitsConfig {
     return json;
   }
 
-  /// Returns a new [LikeLimitsConfig] instance and imports its values from
+  /// Returns a new [LikesConfig] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static LikeLimitsConfig? fromJson(dynamic value) {
+  static LikesConfig? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -69,13 +69,13 @@ class LikeLimitsConfig {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "LikeLimitsConfig[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "LikeLimitsConfig[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "LikesConfig[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "LikesConfig[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return LikeLimitsConfig(
+      return LikesConfig(
         daily: DailyLikesConfig.fromJson(json[r'daily']),
         unlimitedLikesDisablingTime: mapValueOfType<String>(json, r'unlimited_likes_disabling_time'),
       );
@@ -83,11 +83,11 @@ class LikeLimitsConfig {
     return null;
   }
 
-  static List<LikeLimitsConfig> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <LikeLimitsConfig>[];
+  static List<LikesConfig> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <LikesConfig>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = LikeLimitsConfig.fromJson(row);
+        final value = LikesConfig.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -96,12 +96,12 @@ class LikeLimitsConfig {
     return result.toList(growable: growable);
   }
 
-  static Map<String, LikeLimitsConfig> mapFromJson(dynamic json) {
-    final map = <String, LikeLimitsConfig>{};
+  static Map<String, LikesConfig> mapFromJson(dynamic json) {
+    final map = <String, LikesConfig>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = LikeLimitsConfig.fromJson(entry.value);
+        final value = LikesConfig.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -110,14 +110,14 @@ class LikeLimitsConfig {
     return map;
   }
 
-  // maps a json object with a list of LikeLimitsConfig-objects as value to a dart map
-  static Map<String, List<LikeLimitsConfig>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<LikeLimitsConfig>>{};
+  // maps a json object with a list of LikesConfig-objects as value to a dart map
+  static Map<String, List<LikesConfig>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<LikesConfig>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = LikeLimitsConfig.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = LikesConfig.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;

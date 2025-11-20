@@ -10,57 +10,48 @@
 
 part of openapi.api;
 
-class TypingIndicatorConfig {
-  /// Returns a new [TypingIndicatorConfig] instance.
-  TypingIndicatorConfig({
+class CheckOnlineStatusConfig {
+  /// Returns a new [CheckOnlineStatusConfig] instance.
+  CheckOnlineStatusConfig({
     required this.minWaitSecondsBetweenRequestsClient,
     required this.minWaitSecondsBetweenRequestsServer,
-    required this.startEventTtlSeconds,
   });
 
-  /// Client should wait at least this time before sending another typing indicator message.
+  /// Client should wait at least this time before sending another check online status request.
   ///
   /// Minimum value: 0
   int minWaitSecondsBetweenRequestsClient;
 
-  /// Server ignores messages that are received before wait time elapses.
+  /// Server ignores check online status requests that are received before wait time elapses.
   ///
   /// Minimum value: 0
   int minWaitSecondsBetweenRequestsServer;
 
-  /// Client should hide typing indicator after this time elapses from [crate::EventType::TypingStart].
-  ///
-  /// Minimum value: 0
-  int startEventTtlSeconds;
-
   @override
-  bool operator ==(Object other) => identical(this, other) || other is TypingIndicatorConfig &&
+  bool operator ==(Object other) => identical(this, other) || other is CheckOnlineStatusConfig &&
     other.minWaitSecondsBetweenRequestsClient == minWaitSecondsBetweenRequestsClient &&
-    other.minWaitSecondsBetweenRequestsServer == minWaitSecondsBetweenRequestsServer &&
-    other.startEventTtlSeconds == startEventTtlSeconds;
+    other.minWaitSecondsBetweenRequestsServer == minWaitSecondsBetweenRequestsServer;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (minWaitSecondsBetweenRequestsClient.hashCode) +
-    (minWaitSecondsBetweenRequestsServer.hashCode) +
-    (startEventTtlSeconds.hashCode);
+    (minWaitSecondsBetweenRequestsServer.hashCode);
 
   @override
-  String toString() => 'TypingIndicatorConfig[minWaitSecondsBetweenRequestsClient=$minWaitSecondsBetweenRequestsClient, minWaitSecondsBetweenRequestsServer=$minWaitSecondsBetweenRequestsServer, startEventTtlSeconds=$startEventTtlSeconds]';
+  String toString() => 'CheckOnlineStatusConfig[minWaitSecondsBetweenRequestsClient=$minWaitSecondsBetweenRequestsClient, minWaitSecondsBetweenRequestsServer=$minWaitSecondsBetweenRequestsServer]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'min_wait_seconds_between_requests_client'] = this.minWaitSecondsBetweenRequestsClient;
       json[r'min_wait_seconds_between_requests_server'] = this.minWaitSecondsBetweenRequestsServer;
-      json[r'start_event_ttl_seconds'] = this.startEventTtlSeconds;
     return json;
   }
 
-  /// Returns a new [TypingIndicatorConfig] instance and imports its values from
+  /// Returns a new [CheckOnlineStatusConfig] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static TypingIndicatorConfig? fromJson(dynamic value) {
+  static CheckOnlineStatusConfig? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -69,26 +60,25 @@ class TypingIndicatorConfig {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "TypingIndicatorConfig[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "TypingIndicatorConfig[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "CheckOnlineStatusConfig[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "CheckOnlineStatusConfig[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return TypingIndicatorConfig(
+      return CheckOnlineStatusConfig(
         minWaitSecondsBetweenRequestsClient: mapValueOfType<int>(json, r'min_wait_seconds_between_requests_client')!,
         minWaitSecondsBetweenRequestsServer: mapValueOfType<int>(json, r'min_wait_seconds_between_requests_server')!,
-        startEventTtlSeconds: mapValueOfType<int>(json, r'start_event_ttl_seconds')!,
       );
     }
     return null;
   }
 
-  static List<TypingIndicatorConfig> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <TypingIndicatorConfig>[];
+  static List<CheckOnlineStatusConfig> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <CheckOnlineStatusConfig>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = TypingIndicatorConfig.fromJson(row);
+        final value = CheckOnlineStatusConfig.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -97,12 +87,12 @@ class TypingIndicatorConfig {
     return result.toList(growable: growable);
   }
 
-  static Map<String, TypingIndicatorConfig> mapFromJson(dynamic json) {
-    final map = <String, TypingIndicatorConfig>{};
+  static Map<String, CheckOnlineStatusConfig> mapFromJson(dynamic json) {
+    final map = <String, CheckOnlineStatusConfig>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = TypingIndicatorConfig.fromJson(entry.value);
+        final value = CheckOnlineStatusConfig.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -111,14 +101,14 @@ class TypingIndicatorConfig {
     return map;
   }
 
-  // maps a json object with a list of TypingIndicatorConfig-objects as value to a dart map
-  static Map<String, List<TypingIndicatorConfig>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<TypingIndicatorConfig>>{};
+  // maps a json object with a list of CheckOnlineStatusConfig-objects as value to a dart map
+  static Map<String, List<CheckOnlineStatusConfig>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<CheckOnlineStatusConfig>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = TypingIndicatorConfig.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = CheckOnlineStatusConfig.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;
@@ -128,7 +118,6 @@ class TypingIndicatorConfig {
   static const requiredKeys = <String>{
     'min_wait_seconds_between_requests_client',
     'min_wait_seconds_between_requests_server',
-    'start_event_ttl_seconds',
   };
 }
 

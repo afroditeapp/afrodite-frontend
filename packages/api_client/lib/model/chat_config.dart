@@ -13,31 +13,35 @@ part of openapi.api;
 class ChatConfig {
   /// Returns a new [ChatConfig] instance.
   ChatConfig({
+    this.checkOnlineStatus,
     this.typingIndicator,
   });
 
-  ///
-  /// Please note: This property should have been non-nullable! Since the specification file
-  /// does not include a default value (using the "default:" property), however, the generated
-  /// source code must fall back to having a nullable type.
-  /// Consider adding a "default:" property in the specification file to hide this note.
-  ///
+  CheckOnlineStatusConfig? checkOnlineStatus;
+
   TypingIndicatorConfig? typingIndicator;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is ChatConfig &&
+    other.checkOnlineStatus == checkOnlineStatus &&
     other.typingIndicator == typingIndicator;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
+    (checkOnlineStatus == null ? 0 : checkOnlineStatus!.hashCode) +
     (typingIndicator == null ? 0 : typingIndicator!.hashCode);
 
   @override
-  String toString() => 'ChatConfig[typingIndicator=$typingIndicator]';
+  String toString() => 'ChatConfig[checkOnlineStatus=$checkOnlineStatus, typingIndicator=$typingIndicator]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
+    if (this.checkOnlineStatus != null) {
+      json[r'check_online_status'] = this.checkOnlineStatus;
+    } else {
+      json[r'check_online_status'] = null;
+    }
     if (this.typingIndicator != null) {
       json[r'typing_indicator'] = this.typingIndicator;
     } else {
@@ -65,6 +69,7 @@ class ChatConfig {
       }());
 
       return ChatConfig(
+        checkOnlineStatus: CheckOnlineStatusConfig.fromJson(json[r'check_online_status']),
         typingIndicator: TypingIndicatorConfig.fromJson(json[r'typing_indicator']),
       );
     }

@@ -258,6 +258,10 @@ class ApiClient {
           return ChatEmailNotificationSettings.fromJson(value);
         case 'ChatMessageReport':
           return ChatMessageReport.fromJson(value);
+        case 'CheckOnlineStatusConfig':
+          return CheckOnlineStatusConfig.fromJson(value);
+        case 'CheckOnlineStatusResponse':
+          return CheckOnlineStatusResponse.fromJson(value);
         case 'ClientConfig':
           return ClientConfig.fromJson(value);
         case 'ClientConfigSyncVersion':
@@ -464,12 +468,10 @@ class ApiClient {
           return LastSeenTimeFilter.fromJson(value);
         case 'LatestBirthdate':
           return LatestBirthdate.fromJson(value);
-        case 'LikeLimitsConfig':
-          return LikeLimitsConfig.fromJson(value);
+        case 'LikesConfig':
+          return LikesConfig.fromJson(value);
         case 'LimitedActionStatus':
           return LimitedActionStatusTypeTransformer().decode(value);
-        case 'LimitsConfig':
-          return LimitsConfig.fromJson(value);
         case 'LocalBotsConfig':
           return LocalBotsConfig.fromJson(value);
         case 'Location':
@@ -714,6 +716,8 @@ class ApiClient {
           return ScheduledTaskTypeTypeTransformer().decode(value);
         case 'ScheduledTaskTypeValue':
           return ScheduledTaskTypeValue.fromJson(value);
+        case 'ScheduledTasksConfig':
+          return ScheduledTasksConfig.fromJson(value);
         case 'SearchAgeRange':
           return SearchAgeRange.fromJson(value);
         case 'SearchGroups':
@@ -732,6 +736,8 @@ class ApiClient {
           return SentMessageId.fromJson(value);
         case 'SentMessageIdList':
           return SentMessageIdList.fromJson(value);
+        case 'ServerConfig':
+          return ServerConfig.fromJson(value);
         case 'SetAccountBanState':
           return SetAccountBanState.fromJson(value);
         case 'SetAccountSetup':

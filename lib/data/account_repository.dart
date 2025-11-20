@@ -344,29 +344,7 @@ class AccountRepository extends DataRepositoryWithLifecycle {
 }
 
 ClientFeaturesConfig emptyClientFeaturesConfig() {
-  return ClientFeaturesConfig(
-    attribution: AttributionConfig(),
-    features: FeaturesConfig(videoCalls: false),
-    news: NewsConfig(),
-    map: MapConfig(
-      bounds: MapBounds(
-        topLeft: MapCoordinate(lat: 90, lon: -180),
-        bottomRight: MapCoordinate(lat: -90, lon: 180),
-      ),
-      initialLocation: MapCoordinate(lat: 0, lon: 0),
-      zoom: MapZoom(
-        locationNotSelected: 0,
-        locationSelected: 0,
-        max: 19,
-        maxTileDownloading: 19,
-        min: 0,
-      ),
-      tileDataVersion: 0,
-    ),
-    limits: LimitsConfig(likes: LikeLimitsConfig(daily: null, unlimitedLikesDisablingTime: null)),
-    profile: ProfileConfig(),
-    chat: ChatConfig(),
-  );
+  return ClientFeaturesConfig();
 }
 
 class CachedValues {

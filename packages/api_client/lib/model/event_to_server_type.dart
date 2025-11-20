@@ -25,11 +25,13 @@ class EventToServerType {
 
   static const typingStart = EventToServerType._(r'TypingStart');
   static const typingStop = EventToServerType._(r'TypingStop');
+  static const checkOnlineStatus = EventToServerType._(r'CheckOnlineStatus');
 
   /// List of all possible values in this [enum][EventToServerType].
   static const values = <EventToServerType>[
     typingStart,
     typingStop,
+    checkOnlineStatus,
   ];
 
   static EventToServerType? fromJson(dynamic value) => EventToServerTypeTypeTransformer().decode(value);
@@ -70,6 +72,7 @@ class EventToServerTypeTypeTransformer {
       switch (data) {
         case r'TypingStart': return EventToServerType.typingStart;
         case r'TypingStop': return EventToServerType.typingStop;
+        case r'CheckOnlineStatus': return EventToServerType.checkOnlineStatus;
         default:
           if (!allowNull) {
             throw ArgumentError('Unknown enum value to decode: $data');

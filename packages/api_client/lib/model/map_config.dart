@@ -13,23 +13,23 @@ part of openapi.api;
 class MapConfig {
   /// Returns a new [MapConfig] instance.
   MapConfig({
-    required this.bounds,
-    required this.initialLocation,
-    required this.tileDataVersion,
-    required this.zoom,
+    this.bounds,
+    this.initialLocation,
+    this.tileDataVersion = 0,
+    this.zoom,
   });
 
   /// Limit viewable map area
-  MapBounds bounds;
+  MapBounds? bounds;
 
-  MapCoordinate initialLocation;
+  MapCoordinate? initialLocation;
 
   /// Increase this version number to make client to redownload cached map tiles.
   ///
   /// Minimum value: 0
   int tileDataVersion;
 
-  MapZoom zoom;
+  MapZoom? zoom;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is MapConfig &&
@@ -41,20 +41,32 @@ class MapConfig {
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (bounds.hashCode) +
-    (initialLocation.hashCode) +
+    (bounds == null ? 0 : bounds!.hashCode) +
+    (initialLocation == null ? 0 : initialLocation!.hashCode) +
     (tileDataVersion.hashCode) +
-    (zoom.hashCode);
+    (zoom == null ? 0 : zoom!.hashCode);
 
   @override
   String toString() => 'MapConfig[bounds=$bounds, initialLocation=$initialLocation, tileDataVersion=$tileDataVersion, zoom=$zoom]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
+    if (this.bounds != null) {
       json[r'bounds'] = this.bounds;
+    } else {
+      json[r'bounds'] = null;
+    }
+    if (this.initialLocation != null) {
       json[r'initial_location'] = this.initialLocation;
+    } else {
+      json[r'initial_location'] = null;
+    }
       json[r'tile_data_version'] = this.tileDataVersion;
+    if (this.zoom != null) {
       json[r'zoom'] = this.zoom;
+    } else {
+      json[r'zoom'] = null;
+    }
     return json;
   }
 
@@ -77,10 +89,10 @@ class MapConfig {
       }());
 
       return MapConfig(
-        bounds: MapBounds.fromJson(json[r'bounds'])!,
-        initialLocation: MapCoordinate.fromJson(json[r'initial_location'])!,
-        tileDataVersion: mapValueOfType<int>(json, r'tile_data_version')!,
-        zoom: MapZoom.fromJson(json[r'zoom'])!,
+        bounds: MapBounds.fromJson(json[r'bounds']),
+        initialLocation: MapCoordinate.fromJson(json[r'initial_location']),
+        tileDataVersion: mapValueOfType<int>(json, r'tile_data_version') ?? 0,
+        zoom: MapZoom.fromJson(json[r'zoom']),
       );
     }
     return null;
@@ -128,10 +140,6 @@ class MapConfig {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'bounds',
-    'initial_location',
-    'tile_data_version',
-    'zoom',
   };
 }
 

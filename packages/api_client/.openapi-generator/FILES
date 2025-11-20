@@ -60,6 +60,8 @@ lib/model/chat_app_notification_settings.dart
 lib/model/chat_config.dart
 lib/model/chat_email_notification_settings.dart
 lib/model/chat_message_report.dart
+lib/model/check_online_status_config.dart
+lib/model/check_online_status_response.dart
 lib/model/client_config.dart
 lib/model/client_config_sync_version.dart
 lib/model/client_features_config.dart
@@ -163,9 +165,8 @@ lib/model/jitsi_meet_url.dart
 lib/model/language.dart
 lib/model/last_seen_time_filter.dart
 lib/model/latest_birthdate.dart
-lib/model/like_limits_config.dart
+lib/model/likes_config.dart
 lib/model/limited_action_status.dart
-lib/model/limits_config.dart
 lib/model/local_bots_config.dart
 lib/model/location.dart
 lib/model/login_result.dart
@@ -288,6 +289,7 @@ lib/model/scheduled_maintenance_status.dart
 lib/model/scheduled_task_status.dart
 lib/model/scheduled_task_type.dart
 lib/model/scheduled_task_type_value.dart
+lib/model/scheduled_tasks_config.dart
 lib/model/search_age_range.dart
 lib/model/search_groups.dart
 lib/model/security_content.dart
@@ -297,6 +299,7 @@ lib/model/send_verify_email_message_result.dart
 lib/model/sent_blocks_page.dart
 lib/model/sent_message_id.dart
 lib/model/sent_message_id_list.dart
+lib/model/server_config.dart
 lib/model/set_account_ban_state.dart
 lib/model/set_account_setup.dart
 lib/model/set_email_login_enabled.dart

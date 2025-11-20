@@ -166,3 +166,36 @@ extension NotificationIdExtension on NotificationId {
     return NotificationIdViewed(id: id);
   }
 }
+
+extension ClientFeaturesConfigExtensions on ClientFeaturesConfig {
+  MapBounds mapBounds() {
+    return map?.bounds ??
+        MapBounds(
+          topLeft: MapCoordinate(lat: 90, lon: -180),
+          bottomRight: MapCoordinate(lat: -90, lon: 180),
+        );
+  }
+
+  MapCoordinate mapInitialLocation() {
+    return map?.initialLocation ?? MapCoordinate(lat: 0, lon: 0);
+  }
+
+  MapZoom mapZoom() {
+    return map?.zoom ??
+        MapZoom(
+          locationNotSelected: 0,
+          locationSelected: 0,
+          max: 19,
+          maxTileDownloading: 19,
+          min: 0,
+        );
+  }
+
+  int mapTileDataVersion() {
+    return map?.tileDataVersion ?? MapConfig().tileDataVersion;
+  }
+
+  FeaturesConfig featuresConfig() {
+    return features ?? FeaturesConfig();
+  }
+}

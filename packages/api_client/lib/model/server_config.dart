@@ -10,36 +10,40 @@
 
 part of openapi.api;
 
-class LimitsConfig {
-  /// Returns a new [LimitsConfig] instance.
-  LimitsConfig({
-    required this.likes,
+class ServerConfig {
+  /// Returns a new [ServerConfig] instance.
+  ServerConfig({
+    this.scheduledTasks,
   });
 
-  LikeLimitsConfig likes;
+  ScheduledTasksConfig? scheduledTasks;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is LimitsConfig &&
-    other.likes == likes;
+  bool operator ==(Object other) => identical(this, other) || other is ServerConfig &&
+    other.scheduledTasks == scheduledTasks;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (likes.hashCode);
+    (scheduledTasks == null ? 0 : scheduledTasks!.hashCode);
 
   @override
-  String toString() => 'LimitsConfig[likes=$likes]';
+  String toString() => 'ServerConfig[scheduledTasks=$scheduledTasks]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'likes'] = this.likes;
+    if (this.scheduledTasks != null) {
+      json[r'scheduled_tasks'] = this.scheduledTasks;
+    } else {
+      json[r'scheduled_tasks'] = null;
+    }
     return json;
   }
 
-  /// Returns a new [LimitsConfig] instance and imports its values from
+  /// Returns a new [ServerConfig] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static LimitsConfig? fromJson(dynamic value) {
+  static ServerConfig? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -48,24 +52,24 @@ class LimitsConfig {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "LimitsConfig[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "LimitsConfig[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "ServerConfig[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "ServerConfig[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return LimitsConfig(
-        likes: LikeLimitsConfig.fromJson(json[r'likes'])!,
+      return ServerConfig(
+        scheduledTasks: ScheduledTasksConfig.fromJson(json[r'scheduled_tasks']),
       );
     }
     return null;
   }
 
-  static List<LimitsConfig> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <LimitsConfig>[];
+  static List<ServerConfig> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <ServerConfig>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = LimitsConfig.fromJson(row);
+        final value = ServerConfig.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -74,12 +78,12 @@ class LimitsConfig {
     return result.toList(growable: growable);
   }
 
-  static Map<String, LimitsConfig> mapFromJson(dynamic json) {
-    final map = <String, LimitsConfig>{};
+  static Map<String, ServerConfig> mapFromJson(dynamic json) {
+    final map = <String, ServerConfig>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = LimitsConfig.fromJson(entry.value);
+        final value = ServerConfig.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -88,14 +92,14 @@ class LimitsConfig {
     return map;
   }
 
-  // maps a json object with a list of LimitsConfig-objects as value to a dart map
-  static Map<String, List<LimitsConfig>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<LimitsConfig>>{};
+  // maps a json object with a list of ServerConfig-objects as value to a dart map
+  static Map<String, List<ServerConfig>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<ServerConfig>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = LimitsConfig.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = ServerConfig.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;
@@ -103,7 +107,6 @@ class LimitsConfig {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'likes',
   };
 }
 

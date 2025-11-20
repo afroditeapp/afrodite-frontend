@@ -15,8 +15,8 @@ class TypingEventSendingLogic {
 
   TypingEventSendingLogic(this._sendEvent);
 
-  void updateConfig(int? minWaitSecondsBetweenSendingMessages) {
-    _waitTimeSeconds = (minWaitSecondsBetweenSendingMessages ?? 0) + 2;
+  void updateConfig(int minWaitSecondsBetweenSendingMessages) {
+    _waitTimeSeconds = minWaitSecondsBetweenSendingMessages;
   }
 
   void handleTypingEvent(AccountId accountId, bool isTyping) {

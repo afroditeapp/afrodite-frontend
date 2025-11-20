@@ -10,37 +10,37 @@
 
 part of openapi.api;
 
-class FeaturesConfig {
-  /// Returns a new [FeaturesConfig] instance.
-  FeaturesConfig({
-    this.videoCalls = false,
+class ScheduledTasksConfig {
+  /// Returns a new [ScheduledTasksConfig] instance.
+  ScheduledTasksConfig({
+    required this.dailyStartTime,
   });
 
-  /// Enable video calls
-  bool videoCalls;
+  /// UTC time value
+  String dailyStartTime;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is FeaturesConfig &&
-    other.videoCalls == videoCalls;
+  bool operator ==(Object other) => identical(this, other) || other is ScheduledTasksConfig &&
+    other.dailyStartTime == dailyStartTime;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (videoCalls.hashCode);
+    (dailyStartTime.hashCode);
 
   @override
-  String toString() => 'FeaturesConfig[videoCalls=$videoCalls]';
+  String toString() => 'ScheduledTasksConfig[dailyStartTime=$dailyStartTime]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'video_calls'] = this.videoCalls;
+      json[r'daily_start_time'] = this.dailyStartTime;
     return json;
   }
 
-  /// Returns a new [FeaturesConfig] instance and imports its values from
+  /// Returns a new [ScheduledTasksConfig] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static FeaturesConfig? fromJson(dynamic value) {
+  static ScheduledTasksConfig? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -49,24 +49,24 @@ class FeaturesConfig {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "FeaturesConfig[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "FeaturesConfig[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "ScheduledTasksConfig[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "ScheduledTasksConfig[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return FeaturesConfig(
-        videoCalls: mapValueOfType<bool>(json, r'video_calls') ?? false,
+      return ScheduledTasksConfig(
+        dailyStartTime: mapValueOfType<String>(json, r'daily_start_time')!,
       );
     }
     return null;
   }
 
-  static List<FeaturesConfig> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <FeaturesConfig>[];
+  static List<ScheduledTasksConfig> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <ScheduledTasksConfig>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = FeaturesConfig.fromJson(row);
+        final value = ScheduledTasksConfig.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -75,12 +75,12 @@ class FeaturesConfig {
     return result.toList(growable: growable);
   }
 
-  static Map<String, FeaturesConfig> mapFromJson(dynamic json) {
-    final map = <String, FeaturesConfig>{};
+  static Map<String, ScheduledTasksConfig> mapFromJson(dynamic json) {
+    final map = <String, ScheduledTasksConfig>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = FeaturesConfig.fromJson(entry.value);
+        final value = ScheduledTasksConfig.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -89,14 +89,14 @@ class FeaturesConfig {
     return map;
   }
 
-  // maps a json object with a list of FeaturesConfig-objects as value to a dart map
-  static Map<String, List<FeaturesConfig>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<FeaturesConfig>>{};
+  // maps a json object with a list of ScheduledTasksConfig-objects as value to a dart map
+  static Map<String, List<ScheduledTasksConfig>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<ScheduledTasksConfig>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = FeaturesConfig.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = ScheduledTasksConfig.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;
@@ -104,6 +104,7 @@ class FeaturesConfig {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
+    'daily_start_time',
   };
 }
 

@@ -160,11 +160,11 @@ class _LocationWidgetState extends State<LocationWidget> with SingleTickerProvid
 
   @override
   Widget build(BuildContext context) {
-    final config = context.read<ClientFeaturesConfigBloc>().state.config.map;
+    final config = context.read<ClientFeaturesConfigBloc>().state.config;
 
     final bounds = LatLngBounds(
-      config.bounds.topLeft.toLatLng(),
-      config.bounds.bottomRight.toLatLng(),
+      config.mapBounds().topLeft.toLatLng(),
+      config.mapBounds().bottomRight.toLatLng(),
     );
 
     final LatLng initialLocation;
@@ -173,10 +173,10 @@ class _LocationWidgetState extends State<LocationWidget> with SingleTickerProvid
     final locationLatLng = _profileLocationMarker;
     if (locationLatLng != null && bounds.contains(locationLatLng)) {
       initialLocation = locationLatLng;
-      initialZoom = config.zoom.locationSelected.toDouble();
+      initialZoom = config.mapZoom().locationSelected.toDouble();
     } else {
-      initialLocation = config.initialLocation.toLatLng();
-      initialZoom = config.zoom.locationNotSelected.toDouble();
+      initialLocation = config.mapInitialLocation().toLatLng();
+      initialZoom = config.mapZoom().locationNotSelected.toDouble();
     }
 
     final initialMap = FlutterMap(
@@ -184,8 +184,8 @@ class _LocationWidgetState extends State<LocationWidget> with SingleTickerProvid
       options: MapOptions(
         initialCenter: initialLocation,
         initialZoom: initialZoom,
-        minZoom: config.zoom.min.toDouble(),
-        maxZoom: config.zoom.max.toDouble(),
+        minZoom: config.mapZoom().min.toDouble(),
+        maxZoom: config.mapZoom().max.toDouble(),
         cameraConstraint: CameraConstraint.contain(bounds: bounds),
         interactionOptions: const InteractionOptions(
           flags: InteractiveFlag.all & ~InteractiveFlag.rotate,
@@ -200,10 +200,10 @@ class _LocationWidgetState extends State<LocationWidget> with SingleTickerProvid
       ),
       children: [
         TileLayer(
-          maxNativeZoom: config.zoom.maxTileDownloading,
+          maxNativeZoom: config.mapZoom().maxTileDownloading,
           tileProvider: CustomTileProvider(
             context.read<RepositoryInstances>().media,
-            config.tileDataVersion,
+            config.mapTileDataVersion(),
           ),
           errorTileCallback: (_, _, _) {
             final previousErrorShown = mapTileLoadingErrorShownTime;

@@ -12,8 +12,8 @@ class TypingEventReceivingLogic {
 
   int _startEventTtlSeconds = 5; // Default TTL
 
-  void updateConfig(int? startEventTtlSeconds) {
-    if (startEventTtlSeconds != null && startEventTtlSeconds > 0) {
+  void updateConfig(int startEventTtlSeconds) {
+    if (startEventTtlSeconds > 0) {
       _startEventTtlSeconds = startEventTtlSeconds;
     }
   }

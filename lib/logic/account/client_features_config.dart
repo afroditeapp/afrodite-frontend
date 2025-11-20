@@ -32,7 +32,7 @@ class ClientFeaturesConfigBloc extends Bloc<ClientFeaturesConfigEvent, ClientFea
     : accountRepository = r.account,
       super(ClientFeaturesConfigData(config: emptyClientFeaturesConfig())) {
     on<ConfigChanged>((data, emit) async {
-      final regex = data.value.profile.profileNameRegex;
+      final regex = data.value.profile?.profileNameRegex;
       RegExp? profileNameRegex;
       if (regex != null) {
         try {

@@ -9,6 +9,7 @@ import 'package:app/ui/normal/report/report.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/navigation/url.dart';
 import 'package:app/ui_utils/profile_thumbnail_status_indicators.dart';
+import 'package:app/utils/api.dart';
 import 'package:app/utils/result.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -163,7 +164,7 @@ class ConversationScreenState extends State<ConversationScreen> {
       appBar: AppBar(
         title: profileEntry != null ? appBarTitle(profileEntry) : null,
         actions: [
-          if (context.read<ClientFeaturesConfigBloc>().state.config.features.videoCalls)
+          if (context.read<ClientFeaturesConfigBloc>().state.config.featuresConfig().videoCalls)
             IconButton(
               onPressed: () => sendVideoCallInviteDialog(context),
               icon: const Icon(Icons.videocam),

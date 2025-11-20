@@ -13,67 +13,100 @@ part of openapi.api;
 class ClientFeaturesConfig {
   /// Returns a new [ClientFeaturesConfig] instance.
   ClientFeaturesConfig({
-    required this.attribution,
-    required this.chat,
-    required this.features,
-    required this.limits,
-    required this.map,
+    this.attribution,
+    this.chat,
+    this.features,
+    this.likes,
+    this.map,
     this.news,
-    required this.profile,
+    this.profile,
+    this.server,
   });
 
-  AttributionConfig attribution;
+  AttributionConfig? attribution;
 
-  ChatConfig chat;
+  ChatConfig? chat;
 
-  FeaturesConfig features;
+  FeaturesConfig? features;
 
-  LimitsConfig limits;
+  LikesConfig? likes;
 
-  MapConfig map;
+  MapConfig? map;
 
-  /// Enable news UI
   NewsConfig? news;
 
-  ProfileConfig profile;
+  ProfileConfig? profile;
+
+  ServerConfig? server;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is ClientFeaturesConfig &&
     other.attribution == attribution &&
     other.chat == chat &&
     other.features == features &&
-    other.limits == limits &&
+    other.likes == likes &&
     other.map == map &&
     other.news == news &&
-    other.profile == profile;
+    other.profile == profile &&
+    other.server == server;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (attribution.hashCode) +
-    (chat.hashCode) +
-    (features.hashCode) +
-    (limits.hashCode) +
-    (map.hashCode) +
+    (attribution == null ? 0 : attribution!.hashCode) +
+    (chat == null ? 0 : chat!.hashCode) +
+    (features == null ? 0 : features!.hashCode) +
+    (likes == null ? 0 : likes!.hashCode) +
+    (map == null ? 0 : map!.hashCode) +
     (news == null ? 0 : news!.hashCode) +
-    (profile.hashCode);
+    (profile == null ? 0 : profile!.hashCode) +
+    (server == null ? 0 : server!.hashCode);
 
   @override
-  String toString() => 'ClientFeaturesConfig[attribution=$attribution, chat=$chat, features=$features, limits=$limits, map=$map, news=$news, profile=$profile]';
+  String toString() => 'ClientFeaturesConfig[attribution=$attribution, chat=$chat, features=$features, likes=$likes, map=$map, news=$news, profile=$profile, server=$server]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
+    if (this.attribution != null) {
       json[r'attribution'] = this.attribution;
+    } else {
+      json[r'attribution'] = null;
+    }
+    if (this.chat != null) {
       json[r'chat'] = this.chat;
+    } else {
+      json[r'chat'] = null;
+    }
+    if (this.features != null) {
       json[r'features'] = this.features;
-      json[r'limits'] = this.limits;
+    } else {
+      json[r'features'] = null;
+    }
+    if (this.likes != null) {
+      json[r'likes'] = this.likes;
+    } else {
+      json[r'likes'] = null;
+    }
+    if (this.map != null) {
       json[r'map'] = this.map;
+    } else {
+      json[r'map'] = null;
+    }
     if (this.news != null) {
       json[r'news'] = this.news;
     } else {
       json[r'news'] = null;
     }
+    if (this.profile != null) {
       json[r'profile'] = this.profile;
+    } else {
+      json[r'profile'] = null;
+    }
+    if (this.server != null) {
+      json[r'server'] = this.server;
+    } else {
+      json[r'server'] = null;
+    }
     return json;
   }
 
@@ -96,13 +129,14 @@ class ClientFeaturesConfig {
       }());
 
       return ClientFeaturesConfig(
-        attribution: AttributionConfig.fromJson(json[r'attribution'])!,
-        chat: ChatConfig.fromJson(json[r'chat'])!,
-        features: FeaturesConfig.fromJson(json[r'features'])!,
-        limits: LimitsConfig.fromJson(json[r'limits'])!,
-        map: MapConfig.fromJson(json[r'map'])!,
+        attribution: AttributionConfig.fromJson(json[r'attribution']),
+        chat: ChatConfig.fromJson(json[r'chat']),
+        features: FeaturesConfig.fromJson(json[r'features']),
+        likes: LikesConfig.fromJson(json[r'likes']),
+        map: MapConfig.fromJson(json[r'map']),
         news: NewsConfig.fromJson(json[r'news']),
-        profile: ProfileConfig.fromJson(json[r'profile'])!,
+        profile: ProfileConfig.fromJson(json[r'profile']),
+        server: ServerConfig.fromJson(json[r'server']),
       );
     }
     return null;
@@ -150,12 +184,6 @@ class ClientFeaturesConfig {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'attribution',
-    'chat',
-    'features',
-    'limits',
-    'map',
-    'profile',
   };
 }
 
