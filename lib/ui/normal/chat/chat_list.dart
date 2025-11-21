@@ -94,12 +94,10 @@ class _ChatListState extends State<ChatList> {
 
   void _onTextChanged() {
     final text = _textEditingController.text;
-
-    // Send typing event through relay
     if (text.isNotEmpty) {
-      widget.typingIndicatorManager.typingEventsRelay.add((widget.messageReceiver, true));
+      widget.typingIndicatorManager.handleTypingEvent(widget.messageReceiver, true);
     } else {
-      widget.typingIndicatorManager.typingEventsRelay.add((widget.messageReceiver, false));
+      widget.typingIndicatorManager.handleTypingEvent(widget.messageReceiver, false);
     }
   }
 
@@ -463,7 +461,7 @@ class _ChatListState extends State<ChatList> {
   @override
   void dispose() {
     // Send typing stop event when leaving the chat
-    widget.typingIndicatorManager.typingEventsRelay.add((widget.messageReceiver, false));
+    widget.typingIndicatorManager.handleTypingEvent(widget.messageReceiver, false);
 
     _chatListLogic.dispose();
     _textEditingController.removeListener(_onTextChanged);
