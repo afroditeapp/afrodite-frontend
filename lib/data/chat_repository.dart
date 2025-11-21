@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:app/data/account_repository.dart';
+import 'package:app/data/chat/check_online_status_manager.dart';
 import 'package:app/data/chat/message_manager/utils.dart';
 import 'package:app/data/chat/typing_indicator_manager.dart';
 import 'package:native_utils/native_utils.dart';
@@ -58,7 +59,8 @@ class ChatRepository extends DataRepositoryWithLifecycle {
          accountBackgroundDb,
          currentUser,
        ),
-       typingIndicatorManager = TypingIndicatorManager(connectionManager, account);
+       typingIndicatorManager = TypingIndicatorManager(connectionManager, account),
+       checkOnlineStatusManager = CheckOnlineStatusManager(connectionManager, account, db);
 
   final ConnectedActionScheduler syncHandler;
 
@@ -68,6 +70,7 @@ class ChatRepository extends DataRepositoryWithLifecycle {
 
   final MessageManager messageManager;
   final TypingIndicatorManager typingIndicatorManager;
+  final CheckOnlineStatusManager checkOnlineStatusManager;
 
   @override
   Future<void> init() async {
@@ -79,6 +82,7 @@ class ChatRepository extends DataRepositoryWithLifecycle {
     await syncHandler.dispose();
     await messageManager.dispose();
     await typingIndicatorManager.dispose();
+    await checkOnlineStatusManager.dispose();
   }
 
   @override

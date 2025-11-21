@@ -120,6 +120,7 @@ class DefaultConversationDataProvider extends ConversationDataProvider {
 class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with ActionRunner {
   final ConversationDataProvider dataProvider;
   final ProfileRepository profile;
+  final ChatRepository chat;
 
   StreamSubscription<(int, ConversationChanged?)>? _messageCountSubscription;
   StreamSubscription<ProfileChange>? _profileChangeSubscription;
@@ -127,6 +128,7 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
 
   ConversationBloc(RepositoryInstances r, AccountId messageSenderAccountId, this.dataProvider)
     : profile = r.profile,
+      chat = r.chat,
       super(ConversationData(accountId: messageSenderAccountId)) {
     on<InitEvent>((data, emit) async {
       _log.info("Set conversation bloc initial state");
@@ -134,6 +136,9 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
       final isBlocked = await dataProvider.isInSentBlocks(state.accountId);
 
       await profile.resetUnreadMessagesCount(state.accountId);
+
+      // Send check online status request when conversation is opened
+      chat.checkOnlineStatusManager.handleCheckOnlineStatusRequest(state.accountId);
 
       emit(state.copyWith(isBlocked: isBlocked));
     });

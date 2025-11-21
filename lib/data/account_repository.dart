@@ -149,6 +149,7 @@ class AccountRepository extends DataRepositoryWithLifecycle {
     final maintenanceEvent = event.scheduledMaintenanceStatus;
     final typingStart = event.typingStart;
     final typingStop = event.typingStop;
+    final checkOnlineStatusResponse = event.checkOnlineStatusResponse;
     if (event.event == EventType.accountStateChanged) {
       await _receiveAccountState();
     } else if (event.event == EventType.contentProcessingStateChanged &&
@@ -184,6 +185,12 @@ class AccountRepository extends DataRepositoryWithLifecycle {
       repositories.chat.typingIndicatorManager.handleReceivedTypingStart(typingStart);
     } else if (event.event == EventType.typingStop && typingStop != null) {
       repositories.chat.typingIndicatorManager.handleReceivedTypingStop(typingStop);
+    } else if (event.event == EventType.checkOnlineStatusResponse &&
+        checkOnlineStatusResponse != null) {
+      await repositories.chat.checkOnlineStatusManager.handleCheckOnlineStatusResponse(
+        checkOnlineStatusResponse.a,
+        checkOnlineStatusResponse.l,
+      );
     } else {
       _log.error("Unknown EventToClient");
     }
