@@ -191,6 +191,8 @@ class AccountRepository extends DataRepositoryWithLifecycle {
         checkOnlineStatusResponse.a,
         checkOnlineStatusResponse.l,
       );
+    } else if (event.event == EventType.messageDeliveryInfoChanged) {
+      await repositories.chat.receiveMessageDeliveryInfo();
     } else {
       _log.error("Unknown EventToClient");
     }

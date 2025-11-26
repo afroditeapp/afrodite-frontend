@@ -4,6 +4,7 @@ import 'package:app/data/account_repository.dart';
 import 'package:app/data/chat/check_online_status_manager.dart';
 import 'package:app/data/chat/message_manager/utils.dart';
 import 'package:app/data/chat/typing_indicator_manager.dart';
+import 'package:app/utils/api.dart';
 import 'package:native_utils/native_utils.dart';
 import 'package:openapi/api.dart';
 import 'package:app/api/server_connection_manager.dart';
@@ -20,6 +21,7 @@ import 'package:database/database.dart';
 import 'package:app/database/account_background_database_manager.dart';
 import 'package:app/database/account_database_manager.dart';
 import 'package:app/utils/result.dart';
+import 'package:utils/utils.dart';
 
 class ChatRepository extends DataRepositoryWithLifecycle {
   final AccountDatabaseManager db;
@@ -279,6 +281,74 @@ class ChatRepository extends DataRepositoryWithLifecycle {
       accountBackgroundDb,
       onlyDbUpdate: r.h,
     );
+  }
+
+  Future<void> receiveMessageDeliveryInfo() async {
+    final deliveryInfoList = await api.chat((api) => api.getMessageDeliveryInfo()).ok();
+    if (deliveryInfoList == null) {
+      return;
+    }
+
+    final List<int> processedIds = [];
+
+    for (final deliveryInfo in deliveryInfoList.info) {
+      final message = await db
+          .accountData(
+            (db) => db.message.getMessageUsingMessageId(
+              currentUser,
+              deliveryInfo.receiver,
+              deliveryInfo.messageId,
+            ),
+          )
+          .ok();
+
+      if (message == null) {
+        // Message not found in DB
+        processedIds.add(deliveryInfo.id);
+        continue;
+      }
+
+      final currentState = message.messageState.toSentState();
+      if (currentState == null) {
+        // Not a sent message
+        processedIds.add(deliveryInfo.id);
+        continue;
+      }
+
+      SentMessageState? newState;
+      UtcDateTime? deliveredTime;
+      if (deliveryInfo.deliveryType == DeliveryInfoType.delivered) {
+        // TODO: Only if state is not seen
+        newState = SentMessageState.delivered;
+        deliveredTime = deliveryInfo.unixTime.toUtcDateTime();
+      } else if (deliveryInfo.deliveryType == DeliveryInfoType.seen) {
+        // TODO: newState = SentMessageState.seen;
+      }
+
+      if (newState != null) {
+        final result = await db.accountAction(
+          (db) => db.message.updateSentMessageState(
+            message.localId,
+            sentState: newState,
+            deliveredUnixTime: deliveredTime,
+          ),
+        );
+
+        if (result.isOk()) {
+          // Only mark as processed if successfully saved to DB
+          processedIds.add(deliveryInfo.id);
+        }
+      } else {
+        // If no state change needed, still mark as processed
+        processedIds.add(deliveryInfo.id);
+      }
+    }
+
+    if (processedIds.isNotEmpty) {
+      await api.chatAction(
+        (api) => api.postDeleteMessageDeliveryInfo(MessageDeliveryInfoIdList(ids: processedIds)),
+      );
+    }
   }
 
   // Local messages

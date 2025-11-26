@@ -20,7 +20,7 @@ class MessageAdapter {
   static chat.Message messageEntryToFlutterChatMessage(MessageEntry entry, String currentUserId) {
     final isCurrentUser = entry.messageState.toSentState() != null;
     final authorId = isCurrentUser ? currentUserId : entry.remoteAccountId.aid;
-    final createdAt = entry.unixTime?.dateTime ?? entry.localUnixTime.dateTime;
+    final createdAt = entry.userVisibleTime().dateTime;
 
     final infoMessageState = entry.messageState.toInfoState();
     if (infoMessageState != null) {
@@ -51,6 +51,9 @@ class MessageAdapter {
         case SentMessageState.sent:
           sentAt = createdAt;
           status = chat.MessageStatus.sent;
+        case SentMessageState.delivered:
+          deliveredAt = createdAt;
+          status = chat.MessageStatus.delivered;
         case SentMessageState.sendingError:
           failedAt = createdAt;
           status = chat.MessageStatus.error;

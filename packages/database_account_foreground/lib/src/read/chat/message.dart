@@ -103,6 +103,7 @@ class DaoReadMessage extends DatabaseAccessor<AccountForegroundDatabase>
       messageState: messageState,
       messageId: m.messageId,
       unixTime: m.unixTime,
+      deliveredUnixTime: m.deliveredUnixTime,
     );
   }
 

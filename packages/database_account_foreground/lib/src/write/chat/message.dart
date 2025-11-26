@@ -58,6 +58,7 @@ class DaoWriteMessage extends DatabaseAccessor<AccountForegroundDatabase>
     api.UnixTime? unixTimeFromServer,
     api.MessageId? messageIdFromServer,
     Uint8List? backendSignePgpMessage,
+    UtcDateTime? deliveredUnixTime,
   }) async {
     final UtcDateTime? unixTime;
     if (unixTimeFromServer != null) {
@@ -71,6 +72,7 @@ class DaoWriteMessage extends DatabaseAccessor<AccountForegroundDatabase>
         unixTime: Value.absentIfNull(unixTime),
         messageId: Value.absentIfNull(messageIdFromServer),
         backendSignedPgpMessage: Value.absentIfNull(backendSignePgpMessage),
+        deliveredUnixTime: Value.absentIfNull(deliveredUnixTime),
       ),
     );
   }
