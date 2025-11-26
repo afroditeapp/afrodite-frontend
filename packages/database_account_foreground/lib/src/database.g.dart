@@ -12907,6 +12907,15 @@ class $MessageTable extends schema.Message
     requiredDuringInsert: false,
   ).withConverter<UtcDateTime?>($MessageTable.$converterdeliveredUnixTime);
   @override
+  late final GeneratedColumnWithTypeConverter<UtcDateTime?, int> seenUnixTime =
+      GeneratedColumn<int>(
+        'seen_unix_time',
+        aliasedName,
+        true,
+        type: DriftSqlType.int,
+        requiredDuringInsert: false,
+      ).withConverter<UtcDateTime?>($MessageTable.$converterseenUnixTime);
+  @override
   List<GeneratedColumn> get $columns => [
     id,
     localAccountId,
@@ -12919,6 +12928,7 @@ class $MessageTable extends schema.Message
     unixTime,
     backendSignedPgpMessage,
     deliveredUnixTime,
+    seenUnixTime,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -13031,6 +13041,12 @@ class $MessageTable extends schema.Message
           data['${effectivePrefix}delivered_unix_time'],
         ),
       ),
+      seenUnixTime: $MessageTable.$converterseenUnixTime.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.int,
+          data['${effectivePrefix}seen_unix_time'],
+        ),
+      ),
     );
   }
 
@@ -13053,6 +13069,8 @@ class $MessageTable extends schema.Message
       const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
   static TypeConverter<UtcDateTime?, int?> $converterdeliveredUnixTime =
       const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
+  static TypeConverter<UtcDateTime?, int?> $converterseenUnixTime =
+      const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
 }
 
 class MessageData extends DataClass implements Insertable<MessageData> {
@@ -13068,6 +13086,7 @@ class MessageData extends DataClass implements Insertable<MessageData> {
   final UtcDateTime? unixTime;
   final Uint8List? backendSignedPgpMessage;
   final UtcDateTime? deliveredUnixTime;
+  final UtcDateTime? seenUnixTime;
   const MessageData({
     required this.id,
     required this.localAccountId,
@@ -13080,6 +13099,7 @@ class MessageData extends DataClass implements Insertable<MessageData> {
     this.unixTime,
     this.backendSignedPgpMessage,
     this.deliveredUnixTime,
+    this.seenUnixTime,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -13131,6 +13151,11 @@ class MessageData extends DataClass implements Insertable<MessageData> {
         $MessageTable.$converterdeliveredUnixTime.toSql(deliveredUnixTime),
       );
     }
+    if (!nullToAbsent || seenUnixTime != null) {
+      map['seen_unix_time'] = Variable<int>(
+        $MessageTable.$converterseenUnixTime.toSql(seenUnixTime),
+      );
+    }
     return map;
   }
 
@@ -13160,6 +13185,9 @@ class MessageData extends DataClass implements Insertable<MessageData> {
       deliveredUnixTime: deliveredUnixTime == null && nullToAbsent
           ? const Value.absent()
           : Value(deliveredUnixTime),
+      seenUnixTime: seenUnixTime == null && nullToAbsent
+          ? const Value.absent()
+          : Value(seenUnixTime),
     );
   }
 
@@ -13186,6 +13214,7 @@ class MessageData extends DataClass implements Insertable<MessageData> {
       deliveredUnixTime: serializer.fromJson<UtcDateTime?>(
         json['deliveredUnixTime'],
       ),
+      seenUnixTime: serializer.fromJson<UtcDateTime?>(json['seenUnixTime']),
     );
   }
   @override
@@ -13207,6 +13236,7 @@ class MessageData extends DataClass implements Insertable<MessageData> {
         backendSignedPgpMessage,
       ),
       'deliveredUnixTime': serializer.toJson<UtcDateTime?>(deliveredUnixTime),
+      'seenUnixTime': serializer.toJson<UtcDateTime?>(seenUnixTime),
     };
   }
 
@@ -13222,6 +13252,7 @@ class MessageData extends DataClass implements Insertable<MessageData> {
     Value<UtcDateTime?> unixTime = const Value.absent(),
     Value<Uint8List?> backendSignedPgpMessage = const Value.absent(),
     Value<UtcDateTime?> deliveredUnixTime = const Value.absent(),
+    Value<UtcDateTime?> seenUnixTime = const Value.absent(),
   }) => MessageData(
     id: id ?? this.id,
     localAccountId: localAccountId ?? this.localAccountId,
@@ -13240,6 +13271,7 @@ class MessageData extends DataClass implements Insertable<MessageData> {
     deliveredUnixTime: deliveredUnixTime.present
         ? deliveredUnixTime.value
         : this.deliveredUnixTime,
+    seenUnixTime: seenUnixTime.present ? seenUnixTime.value : this.seenUnixTime,
   );
   MessageData copyWithCompanion(MessageCompanion data) {
     return MessageData(
@@ -13268,6 +13300,9 @@ class MessageData extends DataClass implements Insertable<MessageData> {
       deliveredUnixTime: data.deliveredUnixTime.present
           ? data.deliveredUnixTime.value
           : this.deliveredUnixTime,
+      seenUnixTime: data.seenUnixTime.present
+          ? data.seenUnixTime.value
+          : this.seenUnixTime,
     );
   }
 
@@ -13286,7 +13321,8 @@ class MessageData extends DataClass implements Insertable<MessageData> {
           ..write('messageId: $messageId, ')
           ..write('unixTime: $unixTime, ')
           ..write('backendSignedPgpMessage: $backendSignedPgpMessage, ')
-          ..write('deliveredUnixTime: $deliveredUnixTime')
+          ..write('deliveredUnixTime: $deliveredUnixTime, ')
+          ..write('seenUnixTime: $seenUnixTime')
           ..write(')'))
         .toString();
   }
@@ -13304,6 +13340,7 @@ class MessageData extends DataClass implements Insertable<MessageData> {
     unixTime,
     $driftBlobEquality.hash(backendSignedPgpMessage),
     deliveredUnixTime,
+    seenUnixTime,
   );
   @override
   bool operator ==(Object other) =>
@@ -13325,7 +13362,8 @@ class MessageData extends DataClass implements Insertable<MessageData> {
             other.backendSignedPgpMessage,
             this.backendSignedPgpMessage,
           ) &&
-          other.deliveredUnixTime == this.deliveredUnixTime);
+          other.deliveredUnixTime == this.deliveredUnixTime &&
+          other.seenUnixTime == this.seenUnixTime);
 }
 
 class MessageCompanion extends UpdateCompanion<MessageData> {
@@ -13340,6 +13378,7 @@ class MessageCompanion extends UpdateCompanion<MessageData> {
   final Value<UtcDateTime?> unixTime;
   final Value<Uint8List?> backendSignedPgpMessage;
   final Value<UtcDateTime?> deliveredUnixTime;
+  final Value<UtcDateTime?> seenUnixTime;
   const MessageCompanion({
     this.id = const Value.absent(),
     this.localAccountId = const Value.absent(),
@@ -13352,6 +13391,7 @@ class MessageCompanion extends UpdateCompanion<MessageData> {
     this.unixTime = const Value.absent(),
     this.backendSignedPgpMessage = const Value.absent(),
     this.deliveredUnixTime = const Value.absent(),
+    this.seenUnixTime = const Value.absent(),
   });
   MessageCompanion.insert({
     this.id = const Value.absent(),
@@ -13365,6 +13405,7 @@ class MessageCompanion extends UpdateCompanion<MessageData> {
     this.unixTime = const Value.absent(),
     this.backendSignedPgpMessage = const Value.absent(),
     this.deliveredUnixTime = const Value.absent(),
+    this.seenUnixTime = const Value.absent(),
   }) : localAccountId = Value(localAccountId),
        remoteAccountId = Value(remoteAccountId),
        localUnixTime = Value(localUnixTime),
@@ -13381,6 +13422,7 @@ class MessageCompanion extends UpdateCompanion<MessageData> {
     Expression<int>? unixTime,
     Expression<Uint8List>? backendSignedPgpMessage,
     Expression<int>? deliveredUnixTime,
+    Expression<int>? seenUnixTime,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -13396,6 +13438,7 @@ class MessageCompanion extends UpdateCompanion<MessageData> {
       if (backendSignedPgpMessage != null)
         'backend_signed_pgp_message': backendSignedPgpMessage,
       if (deliveredUnixTime != null) 'delivered_unix_time': deliveredUnixTime,
+      if (seenUnixTime != null) 'seen_unix_time': seenUnixTime,
     });
   }
 
@@ -13411,6 +13454,7 @@ class MessageCompanion extends UpdateCompanion<MessageData> {
     Value<UtcDateTime?>? unixTime,
     Value<Uint8List?>? backendSignedPgpMessage,
     Value<UtcDateTime?>? deliveredUnixTime,
+    Value<UtcDateTime?>? seenUnixTime,
   }) {
     return MessageCompanion(
       id: id ?? this.id,
@@ -13426,6 +13470,7 @@ class MessageCompanion extends UpdateCompanion<MessageData> {
       backendSignedPgpMessage:
           backendSignedPgpMessage ?? this.backendSignedPgpMessage,
       deliveredUnixTime: deliveredUnixTime ?? this.deliveredUnixTime,
+      seenUnixTime: seenUnixTime ?? this.seenUnixTime,
     );
   }
 
@@ -13485,6 +13530,11 @@ class MessageCompanion extends UpdateCompanion<MessageData> {
         ),
       );
     }
+    if (seenUnixTime.present) {
+      map['seen_unix_time'] = Variable<int>(
+        $MessageTable.$converterseenUnixTime.toSql(seenUnixTime.value),
+      );
+    }
     return map;
   }
 
@@ -13503,7 +13553,8 @@ class MessageCompanion extends UpdateCompanion<MessageData> {
           ..write('messageId: $messageId, ')
           ..write('unixTime: $unixTime, ')
           ..write('backendSignedPgpMessage: $backendSignedPgpMessage, ')
-          ..write('deliveredUnixTime: $deliveredUnixTime')
+          ..write('deliveredUnixTime: $deliveredUnixTime, ')
+          ..write('seenUnixTime: $seenUnixTime')
           ..write(')'))
         .toString();
   }

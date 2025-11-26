@@ -317,12 +317,16 @@ class ChatRepository extends DataRepositoryWithLifecycle {
 
       SentMessageState? newState;
       UtcDateTime? deliveredTime;
+      UtcDateTime? seenTime;
+
       if (deliveryInfo.deliveryType == DeliveryInfoType.delivered) {
-        // TODO: Only if state is not seen
-        newState = SentMessageState.delivered;
-        deliveredTime = deliveryInfo.unixTime.toUtcDateTime();
+        if (currentState != SentMessageState.seen) {
+          newState = SentMessageState.delivered;
+          deliveredTime = deliveryInfo.unixTime.toUtcDateTime();
+        }
       } else if (deliveryInfo.deliveryType == DeliveryInfoType.seen) {
-        // TODO: newState = SentMessageState.seen;
+        newState = SentMessageState.seen;
+        seenTime = deliveryInfo.unixTime.toUtcDateTime();
       }
 
       if (newState != null) {
@@ -331,6 +335,7 @@ class ChatRepository extends DataRepositoryWithLifecycle {
             message.localId,
             sentState: newState,
             deliveredUnixTime: deliveredTime,
+            seenUnixTime: seenTime,
           ),
         );
 

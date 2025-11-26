@@ -65,4 +65,6 @@ class Message extends Table {
   BlobColumn get backendSignedPgpMessage => blob().nullable()();
   IntColumn get deliveredUnixTime =>
       integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
+  IntColumn get seenUnixTime =>
+      integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
 }

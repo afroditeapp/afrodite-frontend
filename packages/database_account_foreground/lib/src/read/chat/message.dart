@@ -104,6 +104,7 @@ class DaoReadMessage extends DatabaseAccessor<AccountForegroundDatabase>
       messageId: m.messageId,
       unixTime: m.unixTime,
       deliveredUnixTime: m.deliveredUnixTime,
+      seenUnixTime: m.seenUnixTime,
     );
   }
 
