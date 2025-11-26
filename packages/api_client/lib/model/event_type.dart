@@ -41,6 +41,7 @@ class EventType {
   static const typingStart = EventType._(r'TypingStart');
   static const typingStop = EventType._(r'TypingStop');
   static const checkOnlineStatusResponse = EventType._(r'CheckOnlineStatusResponse');
+  static const messageDeliveryInfoChanged = EventType._(r'MessageDeliveryInfoChanged');
 
   /// List of all possible values in this [enum][EventType].
   static const values = <EventType>[
@@ -62,6 +63,7 @@ class EventType {
     typingStart,
     typingStop,
     checkOnlineStatusResponse,
+    messageDeliveryInfoChanged,
   ];
 
   static EventType? fromJson(dynamic value) => EventTypeTypeTransformer().decode(value);
@@ -118,6 +120,7 @@ class EventTypeTypeTransformer {
         case r'TypingStart': return EventType.typingStart;
         case r'TypingStop': return EventType.typingStop;
         case r'CheckOnlineStatusResponse': return EventType.checkOnlineStatusResponse;
+        case r'MessageDeliveryInfoChanged': return EventType.messageDeliveryInfoChanged;
         default:
           if (!allowNull) {
             throw ArgumentError('Unknown enum value to decode: $data');

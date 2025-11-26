@@ -13,25 +13,32 @@ part of openapi.api;
 class PendingMessageAcknowledgementList {
   /// Returns a new [PendingMessageAcknowledgementList] instance.
   PendingMessageAcknowledgementList({
+    this.changeToDelivered = true,
     this.ids = const [],
   });
+
+  /// Change sender's messages to delivered state
+  bool changeToDelivered;
 
   List<PendingMessageId> ids;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is PendingMessageAcknowledgementList &&
+    other.changeToDelivered == changeToDelivered &&
     _deepEquality.equals(other.ids, ids);
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
+    (changeToDelivered.hashCode) +
     (ids.hashCode);
 
   @override
-  String toString() => 'PendingMessageAcknowledgementList[ids=$ids]';
+  String toString() => 'PendingMessageAcknowledgementList[changeToDelivered=$changeToDelivered, ids=$ids]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
+      json[r'change_to_delivered'] = this.changeToDelivered;
       json[r'ids'] = this.ids;
     return json;
   }
@@ -55,6 +62,7 @@ class PendingMessageAcknowledgementList {
       }());
 
       return PendingMessageAcknowledgementList(
+        changeToDelivered: mapValueOfType<bool>(json, r'change_to_delivered') ?? true,
         ids: PendingMessageId.listFromJson(json[r'ids']),
       );
     }

@@ -342,6 +342,8 @@ class ApiClient {
           return DataExportStateTypeTypeTransformer().decode(value);
         case 'DataExportType':
           return DataExportTypeTypeTransformer().decode(value);
+        case 'DeliveryInfoType':
+          return DeliveryInfoTypeTypeTransformer().decode(value);
         case 'DemoAccountLoginCredentials':
           return DemoAccountLoginCredentials.fromJson(value);
         case 'DemoAccountLoginResult':
@@ -516,8 +518,16 @@ class ApiClient {
           return MediaContentSyncVersion.fromJson(value);
         case 'MediaContentType':
           return MediaContentTypeTypeTransformer().decode(value);
+        case 'MessageDeliveryInfo':
+          return MessageDeliveryInfo.fromJson(value);
+        case 'MessageDeliveryInfoIdList':
+          return MessageDeliveryInfoIdList.fromJson(value);
+        case 'MessageDeliveryInfoList':
+          return MessageDeliveryInfoList.fromJson(value);
         case 'MessageId':
           return MessageId.fromJson(value);
+        case 'MessageSeenList':
+          return MessageSeenList.fromJson(value);
         case 'MinDistanceKm':
           return MinDistanceKm.fromJson(value);
         case 'ModerationQueueType':

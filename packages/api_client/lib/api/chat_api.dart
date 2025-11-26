@@ -293,6 +293,54 @@ class ChatApi {
     return null;
   }
 
+  /// Get all message delivery info where the API caller is the message sender.
+  ///
+  /// This endpoint returns delivery information (delivered/seen status) for all messages sent by the authenticated user.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  Future<Response> getMessageDeliveryInfoWithHttpInfo() async {
+    // ignore: prefer_const_declarations
+    final path = r'/chat_api/message_delivery_info';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Get all message delivery info where the API caller is the message sender.
+  ///
+  /// This endpoint returns delivery information (delivered/seen status) for all messages sent by the authenticated user.
+  Future<MessageDeliveryInfoList?> getMessageDeliveryInfo() async {
+    final response = await getMessageDeliveryInfoWithHttpInfo();
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'MessageDeliveryInfoList',) as MessageDeliveryInfoList;
+    
+    }
+    return null;
+  }
+
   /// Get list of pending messages.
   ///
   /// The returned bytes is - Hide notifications (u8, values: 0 or 1) - List of objects  Data for single object: - Binary data length as minimal i64 - Binary data  Minimal i64 has this format: - i64 byte count (u8, values: 1, 2, 4, 8) - i64 bytes (little-endian)  Binary data is binary PGP message which contains backend signed binary data. The binary data contains: - Version (u8, values: 1) - Sender AccountId UUID big-endian bytes (16 bytes) - Receiver AccountId UUID big-endian bytes (16 bytes) - Sender public key ID (minimal i64) - Receiver public key ID (minimal i64) - Message ID (minimal i64) - Unix time (minimal i64) - Message data
@@ -912,6 +960,54 @@ class ChatApi {
     return null;
   }
 
+  /// Delete message delivery info entries by their database IDs.
+  ///
+  /// This endpoint allows message senders to remove delivery info entries that they have already processed.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [MessageDeliveryInfoIdList] messageDeliveryInfoIdList (required):
+  Future<Response> postDeleteMessageDeliveryInfoWithHttpInfo(MessageDeliveryInfoIdList messageDeliveryInfoIdList,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/chat_api/delete_message_delivery_info';
+
+    // ignore: prefer_final_locals
+    Object? postBody = messageDeliveryInfoIdList;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Delete message delivery info entries by their database IDs.
+  ///
+  /// This endpoint allows message senders to remove delivery info entries that they have already processed.
+  ///
+  /// Parameters:
+  ///
+  /// * [MessageDeliveryInfoIdList] messageDeliveryInfoIdList (required):
+  Future<void> postDeleteMessageDeliveryInfo(MessageDeliveryInfoIdList messageDeliveryInfoIdList,) async {
+    final response = await postDeleteMessageDeliveryInfoWithHttpInfo(messageDeliveryInfoIdList,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+  }
+
   /// Get requested page of matches iterator page. If the page is empty there is no more matches available.
   ///
   /// Note: This method returns the HTTP [Response].
@@ -1115,6 +1211,54 @@ class ChatApi {
     
     }
     return null;
+  }
+
+  /// Mark received messages as seen.
+  ///
+  /// This endpoint allows message receivers to mark messages as seen. The seen status is saved to the message_delivery_info table and an event is sent to each message sender to notify them of the state change.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [MessageSeenList] messageSeenList (required):
+  Future<Response> postMarkMessagesAsSeenWithHttpInfo(MessageSeenList messageSeenList,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/chat_api/mark_messages_as_seen';
+
+    // ignore: prefer_final_locals
+    Object? postBody = messageSeenList;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Mark received messages as seen.
+  ///
+  /// This endpoint allows message receivers to mark messages as seen. The seen status is saved to the message_delivery_info table and an event is sent to each message sender to notify them of the state change.
+  ///
+  /// Parameters:
+  ///
+  /// * [MessageSeenList] messageSeenList (required):
+  Future<void> postMarkMessagesAsSeen(MessageSeenList messageSeenList,) async {
+    final response = await postMarkMessagesAsSeenWithHttpInfo(messageSeenList,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
   }
 
   /// Performs an HTTP 'POST /chat_api/mark_received_likes_viewed' operation and returns the [Response].

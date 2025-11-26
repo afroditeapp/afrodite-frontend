@@ -129,6 +129,7 @@ Class | Method | HTTP request | Description
 *ChatApi* | [**getDailyLikesLeft**](doc//ChatApi.md#getdailylikesleft) | **GET** /chat_api/daily_likes_left | Get daily likes left value.
 *ChatApi* | [**getInitialMatchesIteratorState**](doc//ChatApi.md#getinitialmatchesiteratorstate) | **GET** /chat_api/matches/initial_state | 
 *ChatApi* | [**getLatestPublicKeyId**](doc//ChatApi.md#getlatestpublickeyid) | **GET** /chat_api/latest_public_key_id/{aid} | Get latest public key ID for some account
+*ChatApi* | [**getMessageDeliveryInfo**](doc//ChatApi.md#getmessagedeliveryinfo) | **GET** /chat_api/message_delivery_info | Get all message delivery info where the API caller is the message sender.
 *ChatApi* | [**getPendingMessages**](doc//ChatApi.md#getpendingmessages) | **GET** /chat_api/pending_messages | Get list of pending messages.
 *ChatApi* | [**getPrivatePublicKeyInfo**](doc//ChatApi.md#getprivatepublickeyinfo) | **GET** /chat_api/private_public_key_info/{aid} | Get private public key info
 *ChatApi* | [**getPublicKey**](doc//ChatApi.md#getpublickey) | **GET** /chat_api/public_key/{aid} | Get current public key of some account
@@ -142,10 +143,12 @@ Class | Method | HTTP request | Description
 *ChatApi* | [**postChatEmailNotificationSettings**](doc//ChatApi.md#postchatemailnotificationsettings) | **POST** /chat_api/post_chat_email_notification_settings | 
 *ChatApi* | [**postChatMessageReport**](doc//ChatApi.md#postchatmessagereport) | **POST** /chat_api/chat_message_report | Report chat message.
 *ChatApi* | [**postCreateVideoCallUrl**](doc//ChatApi.md#postcreatevideocallurl) | **POST** /chat_api/post_create_video_call_url | Create video call URL to a meeting with an user.
+*ChatApi* | [**postDeleteMessageDeliveryInfo**](doc//ChatApi.md#postdeletemessagedeliveryinfo) | **POST** /chat_api/delete_message_delivery_info | Delete message delivery info entries by their database IDs.
 *ChatApi* | [**postGetMatchesIteratorPage**](doc//ChatApi.md#postgetmatchesiteratorpage) | **POST** /chat_api/matches | Get requested page of matches iterator page. If the page is empty there is no more matches available.
 *ChatApi* | [**postGetNewReceivedLikesCount**](doc//ChatApi.md#postgetnewreceivedlikescount) | **POST** /chat_api/new_received_likes_count | 
 *ChatApi* | [**postGetReceivedLikesPage**](doc//ChatApi.md#postgetreceivedlikespage) | **POST** /chat_api/received_likes | Get next page of received likes. If the page is empty there is no more received likes available.
 *ChatApi* | [**postGetSentMessage**](doc//ChatApi.md#postgetsentmessage) | **POST** /chat_api/sent_message | Receive unreceived [model_chat::SignedMessageData] for sent message.
+*ChatApi* | [**postMarkMessagesAsSeen**](doc//ChatApi.md#postmarkmessagesasseen) | **POST** /chat_api/mark_messages_as_seen | Mark received messages as seen.
 *ChatApi* | [**postMarkReceivedLikesViewed**](doc//ChatApi.md#postmarkreceivedlikesviewed) | **POST** /chat_api/mark_received_likes_viewed | 
 *ChatApi* | [**postResetNewReceivedLikesCount**](doc//ChatApi.md#postresetnewreceivedlikescount) | **POST** /chat_api/reset_new_received_likes_count | 
 *ChatApi* | [**postResetReceivedLikesPaging**](doc//ChatApi.md#postresetreceivedlikespaging) | **POST** /chat_api/received_likes/reset | 
@@ -337,6 +340,7 @@ Class | Method | HTTP request | Description
  - [DataExportState](doc//DataExportState.md)
  - [DataExportStateType](doc//DataExportStateType.md)
  - [DataExportType](doc//DataExportType.md)
+ - [DeliveryInfoType](doc//DeliveryInfoType.md)
  - [DemoAccountLoginCredentials](doc//DemoAccountLoginCredentials.md)
  - [DemoAccountLoginResult](doc//DemoAccountLoginResult.md)
  - [DemoAccountLoginToAccount](doc//DemoAccountLoginToAccount.md)
@@ -424,7 +428,11 @@ Class | Method | HTTP request | Description
  - [MediaContentPendingModeration](doc//MediaContentPendingModeration.md)
  - [MediaContentSyncVersion](doc//MediaContentSyncVersion.md)
  - [MediaContentType](doc//MediaContentType.md)
+ - [MessageDeliveryInfo](doc//MessageDeliveryInfo.md)
+ - [MessageDeliveryInfoIdList](doc//MessageDeliveryInfoIdList.md)
+ - [MessageDeliveryInfoList](doc//MessageDeliveryInfoList.md)
  - [MessageId](doc//MessageId.md)
+ - [MessageSeenList](doc//MessageSeenList.md)
  - [MinDistanceKm](doc//MinDistanceKm.md)
  - [ModerationQueueType](doc//ModerationQueueType.md)
  - [MyProfileContent](doc//MyProfileContent.md)

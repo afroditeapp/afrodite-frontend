@@ -102,6 +102,7 @@ lib/model/data_export_name.dart
 lib/model/data_export_state.dart
 lib/model/data_export_state_type.dart
 lib/model/data_export_type.dart
+lib/model/delivery_info_type.dart
 lib/model/demo_account_login_credentials.dart
 lib/model/demo_account_login_result.dart
 lib/model/demo_account_login_to_account.dart
@@ -189,7 +190,11 @@ lib/model/media_content_moderation_rejected_reason_details.dart
 lib/model/media_content_pending_moderation.dart
 lib/model/media_content_sync_version.dart
 lib/model/media_content_type.dart
+lib/model/message_delivery_info.dart
+lib/model/message_delivery_info_id_list.dart
+lib/model/message_delivery_info_list.dart
 lib/model/message_id.dart
+lib/model/message_seen_list.dart
 lib/model/min_distance_km.dart
 lib/model/moderation_queue_type.dart
 lib/model/my_profile_content.dart

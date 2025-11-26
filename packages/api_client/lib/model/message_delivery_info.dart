@@ -1,0 +1,146 @@
+//
+// AUTO-GENERATED FILE, DO NOT MODIFY!
+//
+// @dart=2.18
+
+// ignore_for_file: unused_element, unused_import
+// ignore_for_file: always_put_required_named_parameters_first
+// ignore_for_file: constant_identifier_names
+// ignore_for_file: lines_longer_than_80_chars
+
+part of openapi.api;
+
+class MessageDeliveryInfo {
+  /// Returns a new [MessageDeliveryInfo] instance.
+  MessageDeliveryInfo({
+    required this.deliveryType,
+    required this.id,
+    required this.messageId,
+    required this.receiver,
+    required this.unixTime,
+  });
+
+  /// Delivery info type (Delivered or Seen)
+  DeliveryInfoType deliveryType;
+
+  /// Database ID for the delivery info entry
+  int id;
+
+  /// Conversation specific ID for the message
+  MessageId messageId;
+
+  /// Receiver of the message
+  AccountId receiver;
+
+  /// Unix time when the delivery info was created
+  UnixTime unixTime;
+
+  @override
+  bool operator ==(Object other) => identical(this, other) || other is MessageDeliveryInfo &&
+    other.deliveryType == deliveryType &&
+    other.id == id &&
+    other.messageId == messageId &&
+    other.receiver == receiver &&
+    other.unixTime == unixTime;
+
+  @override
+  int get hashCode =>
+    // ignore: unnecessary_parenthesis
+    (deliveryType.hashCode) +
+    (id.hashCode) +
+    (messageId.hashCode) +
+    (receiver.hashCode) +
+    (unixTime.hashCode);
+
+  @override
+  String toString() => 'MessageDeliveryInfo[deliveryType=$deliveryType, id=$id, messageId=$messageId, receiver=$receiver, unixTime=$unixTime]';
+
+  Map<String, dynamic> toJson() {
+    final json = <String, dynamic>{};
+      json[r'delivery_type'] = this.deliveryType;
+      json[r'id'] = this.id;
+      json[r'message_id'] = this.messageId;
+      json[r'receiver'] = this.receiver;
+      json[r'unix_time'] = this.unixTime;
+    return json;
+  }
+
+  /// Returns a new [MessageDeliveryInfo] instance and imports its values from
+  /// [value] if it's a [Map], null otherwise.
+  // ignore: prefer_constructors_over_static_methods
+  static MessageDeliveryInfo? fromJson(dynamic value) {
+    if (value is Map) {
+      final json = value.cast<String, dynamic>();
+
+      // Ensure that the map contains the required keys.
+      // Note 1: the values aren't checked for validity beyond being non-null.
+      // Note 2: this code is stripped in release mode!
+      assert(() {
+        requiredKeys.forEach((key) {
+          assert(json.containsKey(key), 'Required key "MessageDeliveryInfo[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "MessageDeliveryInfo[$key]" has a null value in JSON.');
+        });
+        return true;
+      }());
+
+      return MessageDeliveryInfo(
+        deliveryType: DeliveryInfoType.fromJson(json[r'delivery_type'])!,
+        id: mapValueOfType<int>(json, r'id')!,
+        messageId: MessageId.fromJson(json[r'message_id'])!,
+        receiver: AccountId.fromJson(json[r'receiver'])!,
+        unixTime: UnixTime.fromJson(json[r'unix_time'])!,
+      );
+    }
+    return null;
+  }
+
+  static List<MessageDeliveryInfo> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <MessageDeliveryInfo>[];
+    if (json is List && json.isNotEmpty) {
+      for (final row in json) {
+        final value = MessageDeliveryInfo.fromJson(row);
+        if (value != null) {
+          result.add(value);
+        }
+      }
+    }
+    return result.toList(growable: growable);
+  }
+
+  static Map<String, MessageDeliveryInfo> mapFromJson(dynamic json) {
+    final map = <String, MessageDeliveryInfo>{};
+    if (json is Map && json.isNotEmpty) {
+      json = json.cast<String, dynamic>(); // ignore: parameter_assignments
+      for (final entry in json.entries) {
+        final value = MessageDeliveryInfo.fromJson(entry.value);
+        if (value != null) {
+          map[entry.key] = value;
+        }
+      }
+    }
+    return map;
+  }
+
+  // maps a json object with a list of MessageDeliveryInfo-objects as value to a dart map
+  static Map<String, List<MessageDeliveryInfo>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<MessageDeliveryInfo>>{};
+    if (json is Map && json.isNotEmpty) {
+      // ignore: parameter_assignments
+      json = json.cast<String, dynamic>();
+      for (final entry in json.entries) {
+        map[entry.key] = MessageDeliveryInfo.listFromJson(entry.value, growable: growable,);
+      }
+    }
+    return map;
+  }
+
+  /// The list of required keys that must be present in a JSON.
+  static const requiredKeys = <String>{
+    'delivery_type',
+    'id',
+    'message_id',
+    'receiver',
+    'unix_time',
+  };
+}
+

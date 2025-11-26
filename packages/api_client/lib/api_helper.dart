@@ -91,6 +91,9 @@ String parameterToString(dynamic value) {
   if (value is DataExportType) {
     return DataExportTypeTypeTransformer().encode(value).toString();
   }
+  if (value is DeliveryInfoType) {
+    return DeliveryInfoTypeTypeTransformer().encode(value).toString();
+  }
   if (value is EventToServerType) {
     return EventToServerTypeTypeTransformer().encode(value).toString();
   }
