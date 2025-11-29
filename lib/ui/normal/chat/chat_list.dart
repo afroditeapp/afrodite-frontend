@@ -4,6 +4,8 @@ import 'package:app/data/chat_repository.dart';
 import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/database/account_database_manager.dart';
 import 'package:app/localizations.dart';
+import 'package:app/logic/chat/conversation_bloc.dart';
+import 'package:app/model/freezed/logic/chat/conversation_bloc.dart';
 import 'package:app/ui/normal/chat/chat_list_logic.dart';
 import 'package:app/ui/normal/chat/conversation_page.dart';
 import 'package:app/ui/normal/chat/message_adapter.dart';
@@ -13,6 +15,7 @@ import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/time.dart';
 import 'package:database/database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
@@ -57,6 +60,7 @@ class _ChatListState extends State<ChatList> {
 
   bool _reversed = false;
   bool _endReached = false;
+  bool _showMakeMatchInstruction = false;
 
   @override
   void initState() {
@@ -437,9 +441,28 @@ class _ChatListState extends State<ChatList> {
               );
             },
         emptyChatListBuilder: (BuildContext ctx) {
-          return buildListReplacementMessageSimple(
-            context,
-            context.strings.conversation_screen_message_list_empty,
+          return BlocBuilder<ConversationBloc, ConversationData>(
+            buildWhen: (previous, current) => previous.isMatch != current.isMatch,
+            builder: (context, state) {
+              if (!state.isMatch) {
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  if (mounted) {
+                    setState(() {
+                      _showMakeMatchInstruction = true;
+                    });
+                  }
+                });
+              }
+              if (_showMakeMatchInstruction || !state.isMatch) {
+                return Center(
+                  child: Text(context.strings.conversation_screen_make_match_instruction),
+                );
+              }
+              return buildListReplacementMessageSimple(
+                context,
+                context.strings.conversation_screen_message_list_empty,
+              );
+            },
           );
         },
         composerBuilder: (BuildContext ctx) {

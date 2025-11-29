@@ -230,8 +230,7 @@ class ConversationScreenState extends State<ConversationScreen> {
 
   Widget page(BuildContext context) {
     return BlocBuilder<ConversationBloc, ConversationData>(
-      buildWhen: (previous, current) =>
-          previous.isMatch != current.isMatch || previous.isBlocked != current.isBlocked,
+      buildWhen: (previous, current) => previous.isBlocked != current.isBlocked,
       builder: (context, state) {
         if (state.isBlocked) {
           Future.delayed(Duration.zero, () {
@@ -241,8 +240,6 @@ class ConversationScreenState extends State<ConversationScreen> {
             }
           });
           return Container();
-        } else if (!state.isMatch) {
-          return Center(child: Text(context.strings.conversation_screen_make_match_instruction));
         } else {
           final r = context.read<RepositoryInstances>();
           return ChatList(
