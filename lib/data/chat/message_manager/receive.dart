@@ -113,6 +113,7 @@ class ReceiveMessageUtils {
         (db) => db.message.insertReceivedMessage(
           currentUser,
           message.parsed.sender,
+          message.parsed.messageNumber,
           message.parsed.messageId,
           message.parsed.serverTime.toUtcDateTime(),
           message.backendPgpMessage,

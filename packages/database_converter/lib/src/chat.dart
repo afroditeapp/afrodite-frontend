@@ -2,7 +2,7 @@ import 'package:database_model/database_model.dart';
 import 'package:drift/drift.dart';
 import 'package:openapi/api.dart';
 
-class MessageIdConverter extends TypeConverter<MessageId, int> {
+class MessageIdConverter extends TypeConverter<MessageId, String> {
   const MessageIdConverter();
 
   @override
@@ -11,8 +11,22 @@ class MessageIdConverter extends TypeConverter<MessageId, int> {
   }
 
   @override
-  int toSql(value) {
+  String toSql(value) {
     return value.id;
+  }
+}
+
+class MessageNumberConverter extends TypeConverter<MessageNumber, int> {
+  const MessageNumberConverter();
+
+  @override
+  MessageNumber fromSql(fromDb) {
+    return MessageNumber(mn: fromDb);
+  }
+
+  @override
+  int toSql(value) {
+    return value.mn;
   }
 }
 

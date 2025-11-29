@@ -16,7 +16,7 @@ class SentMessageIdList {
     this.ids = const [],
   });
 
-  List<SentMessageId> ids;
+  List<MessageId> ids;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is SentMessageIdList &&
@@ -55,7 +55,7 @@ class SentMessageIdList {
       }());
 
       return SentMessageIdList(
-        ids: SentMessageId.listFromJson(json[r'ids']),
+        ids: MessageId.listFromJson(json[r'ids']),
       );
     }
     return null;

@@ -7,7 +7,7 @@ import '../../schema.dart' as schema;
 
 part 'login_session.g.dart';
 
-@DriftAccessor(tables: [schema.AccountId, schema.ClientId, schema.LoginSessionTokens])
+@DriftAccessor(tables: [schema.AccountId, schema.LoginSessionTokens])
 class DaoReadLoginSession extends DatabaseAccessor<AccountForegroundDatabase>
     with _$DaoReadLoginSessionMixin {
   DaoReadLoginSession(super.db);
@@ -16,10 +16,6 @@ class DaoReadLoginSession extends DatabaseAccessor<AccountForegroundDatabase>
       (select(accountId)..where((t) => t.id.equals(SingleRowTable.ID.value)))
           .map((r) => r.accountId)
           .watchSingleOrNull();
-
-  Stream<api.ClientId?> watchClientId() => (select(
-    clientId,
-  )..where((t) => t.id.equals(SingleRowTable.ID.value))).map((r) => r.clientId).watchSingleOrNull();
 
   Stream<api.RefreshToken?> watchRefreshToken() =>
       _watchColumnLoginSessionTokens((r) => r.refreshToken);

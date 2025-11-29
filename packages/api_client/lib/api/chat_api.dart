@@ -343,7 +343,7 @@ class ChatApi {
 
   /// Get list of pending messages.
   ///
-  /// The returned bytes is - Hide notifications (u8, values: 0 or 1) - List of objects  Data for single object: - Binary data length as minimal i64 - Binary data  Minimal i64 has this format: - i64 byte count (u8, values: 1, 2, 4, 8) - i64 bytes (little-endian)  Binary data is binary PGP message which contains backend signed binary data. The binary data contains: - Version (u8, values: 1) - Sender AccountId UUID big-endian bytes (16 bytes) - Receiver AccountId UUID big-endian bytes (16 bytes) - Sender public key ID (minimal i64) - Receiver public key ID (minimal i64) - Message ID (minimal i64) - Unix time (minimal i64) - Message data
+  /// The returned bytes is - Hide notifications (u8, values: 0 or 1) - List of objects  Data for single object: - Binary data length as minimal i64 - Binary data  Minimal i64 has this format: - i64 byte count (u8, values: 1, 2, 4, 8) - i64 bytes (little-endian)  Binary data is binary PGP message which contains backend signed binary data. The binary data contains: - Version (u8, values: 1) - Sender AccountId UUID big-endian bytes (16 bytes) - Receiver AccountId UUID big-endian bytes (16 bytes) - Message UUID big-endian bytes (16 bytes) - Sender public key ID (minimal i64) - Receiver public key ID (minimal i64) - Message ID (minimal i64) - Unix time (minimal i64) - Message data
   ///
   /// Note: This method returns the HTTP [Response].
   Future<Response> getPendingMessagesWithHttpInfo() async {
@@ -373,7 +373,7 @@ class ChatApi {
 
   /// Get list of pending messages.
   ///
-  /// The returned bytes is - Hide notifications (u8, values: 0 or 1) - List of objects  Data for single object: - Binary data length as minimal i64 - Binary data  Minimal i64 has this format: - i64 byte count (u8, values: 1, 2, 4, 8) - i64 bytes (little-endian)  Binary data is binary PGP message which contains backend signed binary data. The binary data contains: - Version (u8, values: 1) - Sender AccountId UUID big-endian bytes (16 bytes) - Receiver AccountId UUID big-endian bytes (16 bytes) - Sender public key ID (minimal i64) - Receiver public key ID (minimal i64) - Message ID (minimal i64) - Unix time (minimal i64) - Message data
+  /// The returned bytes is - Hide notifications (u8, values: 0 or 1) - List of objects  Data for single object: - Binary data length as minimal i64 - Binary data  Minimal i64 has this format: - i64 byte count (u8, values: 1, 2, 4, 8) - i64 bytes (little-endian)  Binary data is binary PGP message which contains backend signed binary data. The binary data contains: - Version (u8, values: 1) - Sender AccountId UUID big-endian bytes (16 bytes) - Receiver AccountId UUID big-endian bytes (16 bytes) - Message UUID big-endian bytes (16 bytes) - Sender public key ID (minimal i64) - Receiver public key ID (minimal i64) - Message ID (minimal i64) - Unix time (minimal i64) - Message data
   Future<MultipartFile?> getPendingMessages() async {
     final response = await getPendingMessagesWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
@@ -1165,13 +1165,13 @@ class ChatApi {
   ///
   /// Parameters:
   ///
-  /// * [SentMessageId] sentMessageId (required):
-  Future<Response> postGetSentMessageWithHttpInfo(SentMessageId sentMessageId,) async {
+  /// * [MessageId] messageId (required):
+  Future<Response> postGetSentMessageWithHttpInfo(MessageId messageId,) async {
     // ignore: prefer_const_declarations
     final path = r'/chat_api/sent_message';
 
     // ignore: prefer_final_locals
-    Object? postBody = sentMessageId;
+    Object? postBody = messageId;
 
     final queryParams = <QueryParam>[];
     final headerParams = <String, String>{};
@@ -1197,9 +1197,9 @@ class ChatApi {
   ///
   /// Parameters:
   ///
-  /// * [SentMessageId] sentMessageId (required):
-  Future<GetSentMessage?> postGetSentMessage(SentMessageId sentMessageId,) async {
-    final response = await postGetSentMessageWithHttpInfo(sentMessageId,);
+  /// * [MessageId] messageId (required):
+  Future<GetSentMessage?> postGetSentMessage(MessageId messageId,) async {
+    final response = await postGetSentMessageWithHttpInfo(messageId,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -1454,12 +1454,10 @@ class ChatApi {
   /// * [int] receiverPublicKeyId (required):
   ///   Message receiver's public key ID for check to prevent sending message encrypted with outdated public key.
   ///
-  /// * [int] clientId (required):
-  ///
-  /// * [int] clientLocalId (required):
+  /// * [String] messageId (required):
   ///
   /// * [MultipartFile] body (required):
-  Future<Response> postSendMessageWithHttpInfo(int senderPublicKeyId, String receiver, int receiverPublicKeyId, int clientId, int clientLocalId, MultipartFile body,) async {
+  Future<Response> postSendMessageWithHttpInfo(int senderPublicKeyId, String receiver, int receiverPublicKeyId, String messageId, MultipartFile body,) async {
     // ignore: prefer_const_declarations
     final path = r'/chat_api/send_message';
 
@@ -1473,8 +1471,7 @@ class ChatApi {
       queryParams.addAll(_queryParams('', 'sender_public_key_id', senderPublicKeyId));
       queryParams.addAll(_queryParams('', 'receiver', receiver));
       queryParams.addAll(_queryParams('', 'receiver_public_key_id', receiverPublicKeyId));
-      queryParams.addAll(_queryParams('', 'client_id', clientId));
-      queryParams.addAll(_queryParams('', 'client_local_id', clientLocalId));
+      queryParams.addAll(_queryParams('', 'message_id', messageId));
 
     const contentTypes = <String>['application/octet-stream'];
 
@@ -1504,13 +1501,11 @@ class ChatApi {
   /// * [int] receiverPublicKeyId (required):
   ///   Message receiver's public key ID for check to prevent sending message encrypted with outdated public key.
   ///
-  /// * [int] clientId (required):
-  ///
-  /// * [int] clientLocalId (required):
+  /// * [String] messageId (required):
   ///
   /// * [MultipartFile] body (required):
-  Future<SendMessageResult?> postSendMessage(int senderPublicKeyId, String receiver, int receiverPublicKeyId, int clientId, int clientLocalId, MultipartFile body,) async {
-    final response = await postSendMessageWithHttpInfo(senderPublicKeyId, receiver, receiverPublicKeyId, clientId, clientLocalId, body,);
+  Future<SendMessageResult?> postSendMessage(int senderPublicKeyId, String receiver, int receiverPublicKeyId, String messageId, MultipartFile body,) async {
+    final response = await postSendMessageWithHttpInfo(senderPublicKeyId, receiver, receiverPublicKeyId, messageId, body,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

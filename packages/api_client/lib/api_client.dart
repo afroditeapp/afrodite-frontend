@@ -270,14 +270,10 @@ class ApiClient {
           return ClientFeaturesConfig.fromJson(value);
         case 'ClientFeaturesConfigHash':
           return ClientFeaturesConfigHash.fromJson(value);
-        case 'ClientId':
-          return ClientId.fromJson(value);
         case 'ClientInfo':
           return ClientInfo.fromJson(value);
         case 'ClientLanguage':
           return ClientLanguage.fromJson(value);
-        case 'ClientLocalId':
-          return ClientLocalId.fromJson(value);
         case 'ClientType':
           return ClientTypeTypeTransformer().decode(value);
         case 'ClientVersion':
@@ -526,6 +522,8 @@ class ApiClient {
           return MessageDeliveryInfoList.fromJson(value);
         case 'MessageId':
           return MessageId.fromJson(value);
+        case 'MessageNumber':
+          return MessageNumber.fromJson(value);
         case 'MessageSeenList':
           return MessageSeenList.fromJson(value);
         case 'MinDistanceKm':
@@ -742,8 +740,6 @@ class ApiClient {
           return SendVerifyEmailMessageResult.fromJson(value);
         case 'SentBlocksPage':
           return SentBlocksPage.fromJson(value);
-        case 'SentMessageId':
-          return SentMessageId.fromJson(value);
         case 'SentMessageIdList':
           return SentMessageIdList.fromJson(value);
         case 'ServerConfig':

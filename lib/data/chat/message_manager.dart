@@ -8,7 +8,6 @@ import 'package:database/database.dart';
 import 'package:flutter/foundation.dart';
 import 'package:openapi/api.dart';
 import 'package:app/api/server_connection_manager.dart';
-import 'package:app/data/account/client_id_manager.dart';
 import 'package:app/data/chat/message_key_generator.dart';
 import 'package:app/data/profile_repository.dart';
 import 'package:app/data/utils.dart';
@@ -71,7 +70,6 @@ class RetryPublicKeyDownload extends MessageManagerCmd<Result<(), RetryPublicKey
 /// Synchronized message actions
 class MessageManager extends LifecycleMethods {
   final MessageKeyManager messageKeyManager;
-  final ClientIdManager clientIdManager;
   final ApiManager api;
   final AccountDatabaseManager db;
   final ProfileRepository profile;
@@ -83,7 +81,6 @@ class MessageManager extends LifecycleMethods {
 
   MessageManager(
     this.messageKeyManager,
-    this.clientIdManager,
     this.api,
     this.db,
     this.profile,
@@ -97,14 +94,7 @@ class MessageManager extends LifecycleMethods {
         currentUser,
         profile,
       ),
-      sendMessageUtils = SendMessageUtils(
-        messageKeyManager,
-        clientIdManager,
-        api,
-        db,
-        currentUser,
-        profile,
-      );
+      sendMessageUtils = SendMessageUtils(messageKeyManager, api, db, currentUser, profile);
 
   final PublishSubject<BaseMessageManagerCmd> _commands = PublishSubject();
   StreamSubscription<void>? _commandsSubscription;
@@ -149,14 +139,9 @@ class MessageManager extends LifecycleMethods {
     bool actuallySentMessageCheck = true,
   }) async {
     if (actuallySentMessageCheck) {
-      final clientId = await clientIdManager.getClientId().ok();
-      if (clientId == null) {
-        return const Err(DeleteSendFailedError.unspecifiedError);
-      }
-
       // Try to move failed messages to correct state if message sending
       // HTTP response receiving failed.
-      final acknowledgeResult = await sendMessageUtils.markSentMessagesAcknowledged(clientId);
+      final acknowledgeResult = await sendMessageUtils.markSentMessagesAcknowledged();
       if (acknowledgeResult.isErr()) {
         return const Err(DeleteSendFailedError.unspecifiedError);
       }
@@ -186,14 +171,9 @@ class MessageManager extends LifecycleMethods {
   }
 
   Future<Result<(), ResendFailedError>> _resendSendFailedMessage(LocalMessageId localId) async {
-    final clientId = await clientIdManager.getClientId().ok();
-    if (clientId == null) {
-      return const Err(ResendFailedError.unspecifiedError);
-    }
-
     // Try to move failed messages to correct state if message sending
     // HTTP response receiving failed.
-    final acknowledgeResult = await sendMessageUtils.markSentMessagesAcknowledged(clientId);
+    final acknowledgeResult = await sendMessageUtils.markSentMessagesAcknowledged();
     if (acknowledgeResult.isErr()) {
       return const Err(ResendFailedError.unspecifiedError);
     }

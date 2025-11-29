@@ -19,7 +19,10 @@ class MessageEntry {
   final UtcDateTime localUnixTime;
   final MessageState messageState;
 
-  /// Conversation specific identifier for the message. Server sets this value.
+  /// Conversation specific number for the message. Server sets this value.
+  final MessageNumber? messageNumber;
+
+  /// Message sender generated UUID for the message.
   final MessageId? messageId;
 
   /// Time since Unix epoch. Server sets this falue.
@@ -38,6 +41,7 @@ class MessageEntry {
     required this.message,
     required this.localUnixTime,
     required this.messageState,
+    this.messageNumber,
     this.messageId,
     this.unixTime,
     this.deliveredUnixTime,
@@ -48,7 +52,7 @@ class MessageEntry {
 
   @override
   String toString() {
-    return "MessageEntry(localId: $localId, localAccountId: $localAccountId, remoteAccountId: $remoteAccountId, message: $message, messageState: $messageState, messageId: $messageId, unixTime: $unixTime)";
+    return "MessageEntry(localId: $localId, localAccountId: $localAccountId, remoteAccountId: $remoteAccountId, message: $message, messageState: $messageState, messageNumber: $messageNumber, messageId: $messageId, unixTime: $unixTime)";
   }
 }
 
@@ -281,7 +285,10 @@ class NewMessageEntry {
   /// Null if message was sent.
   final ReceivedMessageState? receivedMessageState;
 
-  /// Conversation specific ID for the message. Server sets this value.
+  /// Conversation specific number for the message. Server sets this value.
+  final MessageNumber? messageNumber;
+
+  /// Message sender generated UUID for the message.
   final MessageId? messageId;
 
   /// Time since Unix epoch. Server sets this falue.
@@ -300,6 +307,7 @@ class NewMessageEntry {
     required this.localUnixTime,
     required this.messageState,
     this.receivedMessageState,
+    this.messageNumber,
     this.messageId,
     this.unixTime,
     this.backendSignedPgpMessage,
@@ -308,7 +316,7 @@ class NewMessageEntry {
 
   @override
   String toString() {
-    return "NewMessageEntry(localAccountId: $localAccountId, remoteAccountId: $remoteAccountId, message: $message, messageState: $messageState, receivedMessageState: $receivedMessageState, messageId: $messageId, unixTime: $unixTime, backendSignedPgpMessage: $backendSignedPgpMessage)";
+    return "NewMessageEntry(localAccountId: $localAccountId, remoteAccountId: $remoteAccountId, message: $message, messageState: $messageState, receivedMessageState: $receivedMessageState, messageNumber: $messageNumber, messageId: $messageId, unixTime: $unixTime, backendSignedPgpMessage: $backendSignedPgpMessage)";
   }
 }
 

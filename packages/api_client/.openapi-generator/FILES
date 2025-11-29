@@ -66,10 +66,8 @@ lib/model/client_config.dart
 lib/model/client_config_sync_version.dart
 lib/model/client_features_config.dart
 lib/model/client_features_config_hash.dart
-lib/model/client_id.dart
 lib/model/client_info.dart
 lib/model/client_language.dart
-lib/model/client_local_id.dart
 lib/model/client_type.dart
 lib/model/client_version.dart
 lib/model/client_version_count.dart
@@ -194,6 +192,7 @@ lib/model/message_delivery_info.dart
 lib/model/message_delivery_info_id_list.dart
 lib/model/message_delivery_info_list.dart
 lib/model/message_id.dart
+lib/model/message_number.dart
 lib/model/message_seen_list.dart
 lib/model/min_distance_km.dart
 lib/model/moderation_queue_type.dart
@@ -302,7 +301,6 @@ lib/model/send_like_result.dart
 lib/model/send_message_result.dart
 lib/model/send_verify_email_message_result.dart
 lib/model/sent_blocks_page.dart
-lib/model/sent_message_id.dart
 lib/model/sent_message_id_list.dart
 lib/model/server_config.dart
 lib/model/set_account_ban_state.dart

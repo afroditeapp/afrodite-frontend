@@ -58,8 +58,8 @@ class Message extends Table {
   BlobColumn get symmetricMessageEncryptionKey => blob().nullable()();
 
   // Server sends valid values for the next colums.
-  IntColumn get messageId =>
-      integer().map(const NullAwareTypeConverter.wrap(MessageIdConverter())).nullable()();
+  IntColumn get messageNumber =>
+      integer().map(const NullAwareTypeConverter.wrap(MessageNumberConverter())).nullable()();
   IntColumn get unixTime =>
       integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
   BlobColumn get backendSignedPgpMessage => blob().nullable()();
@@ -67,4 +67,9 @@ class Message extends Table {
       integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
   IntColumn get seenUnixTime =>
       integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
+
+  // Message sender creates this locally. Message receiver gets this with
+  // the message.
+  TextColumn get messageId =>
+      text().map(const NullAwareTypeConverter.wrap(MessageIdConverter())).nullable()();
 }

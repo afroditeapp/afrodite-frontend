@@ -143,6 +143,7 @@ dependencies:
   web: ^1.1.1
 
   crypto: ^3.0.6
+  uuid: ^4.4.2
 
   # Code reviewed 2024-05-04
   app_settings:

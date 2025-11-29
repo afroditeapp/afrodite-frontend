@@ -5384,211 +5384,6 @@ class AccountIdCompanion extends UpdateCompanion<AccountIdData> {
   }
 }
 
-class $ClientIdTable extends schema.ClientId
-    with TableInfo<$ClientIdTable, ClientIdData> {
-  @override
-  final GeneratedDatabase attachedDatabase;
-  final String? _alias;
-  $ClientIdTable(this.attachedDatabase, [this._alias]);
-  static const VerificationMeta _idMeta = const VerificationMeta('id');
-  @override
-  late final GeneratedColumn<int> id = GeneratedColumn<int>(
-    'id',
-    aliasedName,
-    false,
-    hasAutoIncrement: true,
-    type: DriftSqlType.int,
-    requiredDuringInsert: false,
-    defaultConstraints: GeneratedColumn.constraintIsAlways(
-      'PRIMARY KEY AUTOINCREMENT',
-    ),
-  );
-  @override
-  late final GeneratedColumnWithTypeConverter<ClientId?, int> clientId =
-      GeneratedColumn<int>(
-        'client_id',
-        aliasedName,
-        true,
-        type: DriftSqlType.int,
-        requiredDuringInsert: false,
-      ).withConverter<ClientId?>($ClientIdTable.$converterclientId);
-  @override
-  List<GeneratedColumn> get $columns => [id, clientId];
-  @override
-  String get aliasedName => _alias ?? actualTableName;
-  @override
-  String get actualTableName => $name;
-  static const String $name = 'client_id';
-  @override
-  VerificationContext validateIntegrity(
-    Insertable<ClientIdData> instance, {
-    bool isInserting = false,
-  }) {
-    final context = VerificationContext();
-    final data = instance.toColumns(true);
-    if (data.containsKey('id')) {
-      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
-    }
-    return context;
-  }
-
-  @override
-  Set<GeneratedColumn> get $primaryKey => {id};
-  @override
-  ClientIdData map(Map<String, dynamic> data, {String? tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return ClientIdData(
-      id: attachedDatabase.typeMapping.read(
-        DriftSqlType.int,
-        data['${effectivePrefix}id'],
-      )!,
-      clientId: $ClientIdTable.$converterclientId.fromSql(
-        attachedDatabase.typeMapping.read(
-          DriftSqlType.int,
-          data['${effectivePrefix}client_id'],
-        ),
-      ),
-    );
-  }
-
-  @override
-  $ClientIdTable createAlias(String alias) {
-    return $ClientIdTable(attachedDatabase, alias);
-  }
-
-  static TypeConverter<ClientId?, int?> $converterclientId =
-      const NullAwareTypeConverter.wrap(ClientIdConverter());
-}
-
-class ClientIdData extends DataClass implements Insertable<ClientIdData> {
-  final int id;
-  final ClientId? clientId;
-  const ClientIdData({required this.id, this.clientId});
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    map['id'] = Variable<int>(id);
-    if (!nullToAbsent || clientId != null) {
-      map['client_id'] = Variable<int>(
-        $ClientIdTable.$converterclientId.toSql(clientId),
-      );
-    }
-    return map;
-  }
-
-  ClientIdCompanion toCompanion(bool nullToAbsent) {
-    return ClientIdCompanion(
-      id: Value(id),
-      clientId: clientId == null && nullToAbsent
-          ? const Value.absent()
-          : Value(clientId),
-    );
-  }
-
-  factory ClientIdData.fromJson(
-    Map<String, dynamic> json, {
-    ValueSerializer? serializer,
-  }) {
-    serializer ??= driftRuntimeOptions.defaultSerializer;
-    return ClientIdData(
-      id: serializer.fromJson<int>(json['id']),
-      clientId: serializer.fromJson<ClientId?>(json['clientId']),
-    );
-  }
-  @override
-  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
-    serializer ??= driftRuntimeOptions.defaultSerializer;
-    return <String, dynamic>{
-      'id': serializer.toJson<int>(id),
-      'clientId': serializer.toJson<ClientId?>(clientId),
-    };
-  }
-
-  ClientIdData copyWith({
-    int? id,
-    Value<ClientId?> clientId = const Value.absent(),
-  }) => ClientIdData(
-    id: id ?? this.id,
-    clientId: clientId.present ? clientId.value : this.clientId,
-  );
-  ClientIdData copyWithCompanion(ClientIdCompanion data) {
-    return ClientIdData(
-      id: data.id.present ? data.id.value : this.id,
-      clientId: data.clientId.present ? data.clientId.value : this.clientId,
-    );
-  }
-
-  @override
-  String toString() {
-    return (StringBuffer('ClientIdData(')
-          ..write('id: $id, ')
-          ..write('clientId: $clientId')
-          ..write(')'))
-        .toString();
-  }
-
-  @override
-  int get hashCode => Object.hash(id, clientId);
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      (other is ClientIdData &&
-          other.id == this.id &&
-          other.clientId == this.clientId);
-}
-
-class ClientIdCompanion extends UpdateCompanion<ClientIdData> {
-  final Value<int> id;
-  final Value<ClientId?> clientId;
-  const ClientIdCompanion({
-    this.id = const Value.absent(),
-    this.clientId = const Value.absent(),
-  });
-  ClientIdCompanion.insert({
-    this.id = const Value.absent(),
-    this.clientId = const Value.absent(),
-  });
-  static Insertable<ClientIdData> custom({
-    Expression<int>? id,
-    Expression<int>? clientId,
-  }) {
-    return RawValuesInsertable({
-      if (id != null) 'id': id,
-      if (clientId != null) 'client_id': clientId,
-    });
-  }
-
-  ClientIdCompanion copyWith({Value<int>? id, Value<ClientId?>? clientId}) {
-    return ClientIdCompanion(
-      id: id ?? this.id,
-      clientId: clientId ?? this.clientId,
-    );
-  }
-
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    if (id.present) {
-      map['id'] = Variable<int>(id.value);
-    }
-    if (clientId.present) {
-      map['client_id'] = Variable<int>(
-        $ClientIdTable.$converterclientId.toSql(clientId.value),
-      );
-    }
-    return map;
-  }
-
-  @override
-  String toString() {
-    return (StringBuffer('ClientIdCompanion(')
-          ..write('id: $id, ')
-          ..write('clientId: $clientId')
-          ..write(')'))
-        .toString();
-  }
-}
-
 class $LoginSessionTokensTable extends schema.LoginSessionTokens
     with TableInfo<$LoginSessionTokensTable, LoginSessionToken> {
   @override
@@ -12869,14 +12664,14 @@ class $MessageTable extends schema.Message
         requiredDuringInsert: false,
       );
   @override
-  late final GeneratedColumnWithTypeConverter<MessageId?, int> messageId =
-      GeneratedColumn<int>(
-        'message_id',
-        aliasedName,
-        true,
-        type: DriftSqlType.int,
-        requiredDuringInsert: false,
-      ).withConverter<MessageId?>($MessageTable.$convertermessageId);
+  late final GeneratedColumnWithTypeConverter<MessageNumber?, int>
+  messageNumber = GeneratedColumn<int>(
+    'message_number',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  ).withConverter<MessageNumber?>($MessageTable.$convertermessageNumber);
   @override
   late final GeneratedColumnWithTypeConverter<UtcDateTime?, int> unixTime =
       GeneratedColumn<int>(
@@ -12916,6 +12711,15 @@ class $MessageTable extends schema.Message
         requiredDuringInsert: false,
       ).withConverter<UtcDateTime?>($MessageTable.$converterseenUnixTime);
   @override
+  late final GeneratedColumnWithTypeConverter<MessageId?, String> messageId =
+      GeneratedColumn<String>(
+        'message_id',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      ).withConverter<MessageId?>($MessageTable.$convertermessageId);
+  @override
   List<GeneratedColumn> get $columns => [
     id,
     localAccountId,
@@ -12924,11 +12728,12 @@ class $MessageTable extends schema.Message
     localUnixTime,
     messageState,
     symmetricMessageEncryptionKey,
-    messageId,
+    messageNumber,
     unixTime,
     backendSignedPgpMessage,
     deliveredUnixTime,
     seenUnixTime,
+    messageId,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -13019,10 +12824,10 @@ class $MessageTable extends schema.Message
         DriftSqlType.blob,
         data['${effectivePrefix}symmetric_message_encryption_key'],
       ),
-      messageId: $MessageTable.$convertermessageId.fromSql(
+      messageNumber: $MessageTable.$convertermessageNumber.fromSql(
         attachedDatabase.typeMapping.read(
           DriftSqlType.int,
-          data['${effectivePrefix}message_id'],
+          data['${effectivePrefix}message_number'],
         ),
       ),
       unixTime: $MessageTable.$converterunixTime.fromSql(
@@ -13047,6 +12852,12 @@ class $MessageTable extends schema.Message
           data['${effectivePrefix}seen_unix_time'],
         ),
       ),
+      messageId: $MessageTable.$convertermessageId.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}message_id'],
+        ),
+      ),
     );
   }
 
@@ -13063,14 +12874,16 @@ class $MessageTable extends schema.Message
       const NullAwareTypeConverter.wrap(MessageConverter());
   static TypeConverter<UtcDateTime, int> $converterlocalUnixTime =
       const UtcDateTimeConverter();
-  static TypeConverter<MessageId?, int?> $convertermessageId =
-      const NullAwareTypeConverter.wrap(MessageIdConverter());
+  static TypeConverter<MessageNumber?, int?> $convertermessageNumber =
+      const NullAwareTypeConverter.wrap(MessageNumberConverter());
   static TypeConverter<UtcDateTime?, int?> $converterunixTime =
       const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
   static TypeConverter<UtcDateTime?, int?> $converterdeliveredUnixTime =
       const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
   static TypeConverter<UtcDateTime?, int?> $converterseenUnixTime =
       const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
+  static TypeConverter<MessageId?, String?> $convertermessageId =
+      const NullAwareTypeConverter.wrap(MessageIdConverter());
 }
 
 class MessageData extends DataClass implements Insertable<MessageData> {
@@ -13082,11 +12895,12 @@ class MessageData extends DataClass implements Insertable<MessageData> {
   final UtcDateTime localUnixTime;
   final int messageState;
   final Uint8List? symmetricMessageEncryptionKey;
-  final MessageId? messageId;
+  final MessageNumber? messageNumber;
   final UtcDateTime? unixTime;
   final Uint8List? backendSignedPgpMessage;
   final UtcDateTime? deliveredUnixTime;
   final UtcDateTime? seenUnixTime;
+  final MessageId? messageId;
   const MessageData({
     required this.id,
     required this.localAccountId,
@@ -13095,11 +12909,12 @@ class MessageData extends DataClass implements Insertable<MessageData> {
     required this.localUnixTime,
     required this.messageState,
     this.symmetricMessageEncryptionKey,
-    this.messageId,
+    this.messageNumber,
     this.unixTime,
     this.backendSignedPgpMessage,
     this.deliveredUnixTime,
     this.seenUnixTime,
+    this.messageId,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -13131,9 +12946,9 @@ class MessageData extends DataClass implements Insertable<MessageData> {
         symmetricMessageEncryptionKey,
       );
     }
-    if (!nullToAbsent || messageId != null) {
-      map['message_id'] = Variable<int>(
-        $MessageTable.$convertermessageId.toSql(messageId),
+    if (!nullToAbsent || messageNumber != null) {
+      map['message_number'] = Variable<int>(
+        $MessageTable.$convertermessageNumber.toSql(messageNumber),
       );
     }
     if (!nullToAbsent || unixTime != null) {
@@ -13156,6 +12971,11 @@ class MessageData extends DataClass implements Insertable<MessageData> {
         $MessageTable.$converterseenUnixTime.toSql(seenUnixTime),
       );
     }
+    if (!nullToAbsent || messageId != null) {
+      map['message_id'] = Variable<String>(
+        $MessageTable.$convertermessageId.toSql(messageId),
+      );
+    }
     return map;
   }
 
@@ -13173,9 +12993,9 @@ class MessageData extends DataClass implements Insertable<MessageData> {
           symmetricMessageEncryptionKey == null && nullToAbsent
           ? const Value.absent()
           : Value(symmetricMessageEncryptionKey),
-      messageId: messageId == null && nullToAbsent
+      messageNumber: messageNumber == null && nullToAbsent
           ? const Value.absent()
-          : Value(messageId),
+          : Value(messageNumber),
       unixTime: unixTime == null && nullToAbsent
           ? const Value.absent()
           : Value(unixTime),
@@ -13188,6 +13008,9 @@ class MessageData extends DataClass implements Insertable<MessageData> {
       seenUnixTime: seenUnixTime == null && nullToAbsent
           ? const Value.absent()
           : Value(seenUnixTime),
+      messageId: messageId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(messageId),
     );
   }
 
@@ -13206,7 +13029,7 @@ class MessageData extends DataClass implements Insertable<MessageData> {
       symmetricMessageEncryptionKey: serializer.fromJson<Uint8List?>(
         json['symmetricMessageEncryptionKey'],
       ),
-      messageId: serializer.fromJson<MessageId?>(json['messageId']),
+      messageNumber: serializer.fromJson<MessageNumber?>(json['messageNumber']),
       unixTime: serializer.fromJson<UtcDateTime?>(json['unixTime']),
       backendSignedPgpMessage: serializer.fromJson<Uint8List?>(
         json['backendSignedPgpMessage'],
@@ -13215,6 +13038,7 @@ class MessageData extends DataClass implements Insertable<MessageData> {
         json['deliveredUnixTime'],
       ),
       seenUnixTime: serializer.fromJson<UtcDateTime?>(json['seenUnixTime']),
+      messageId: serializer.fromJson<MessageId?>(json['messageId']),
     );
   }
   @override
@@ -13230,13 +13054,14 @@ class MessageData extends DataClass implements Insertable<MessageData> {
       'symmetricMessageEncryptionKey': serializer.toJson<Uint8List?>(
         symmetricMessageEncryptionKey,
       ),
-      'messageId': serializer.toJson<MessageId?>(messageId),
+      'messageNumber': serializer.toJson<MessageNumber?>(messageNumber),
       'unixTime': serializer.toJson<UtcDateTime?>(unixTime),
       'backendSignedPgpMessage': serializer.toJson<Uint8List?>(
         backendSignedPgpMessage,
       ),
       'deliveredUnixTime': serializer.toJson<UtcDateTime?>(deliveredUnixTime),
       'seenUnixTime': serializer.toJson<UtcDateTime?>(seenUnixTime),
+      'messageId': serializer.toJson<MessageId?>(messageId),
     };
   }
 
@@ -13248,11 +13073,12 @@ class MessageData extends DataClass implements Insertable<MessageData> {
     UtcDateTime? localUnixTime,
     int? messageState,
     Value<Uint8List?> symmetricMessageEncryptionKey = const Value.absent(),
-    Value<MessageId?> messageId = const Value.absent(),
+    Value<MessageNumber?> messageNumber = const Value.absent(),
     Value<UtcDateTime?> unixTime = const Value.absent(),
     Value<Uint8List?> backendSignedPgpMessage = const Value.absent(),
     Value<UtcDateTime?> deliveredUnixTime = const Value.absent(),
     Value<UtcDateTime?> seenUnixTime = const Value.absent(),
+    Value<MessageId?> messageId = const Value.absent(),
   }) => MessageData(
     id: id ?? this.id,
     localAccountId: localAccountId ?? this.localAccountId,
@@ -13263,7 +13089,9 @@ class MessageData extends DataClass implements Insertable<MessageData> {
     symmetricMessageEncryptionKey: symmetricMessageEncryptionKey.present
         ? symmetricMessageEncryptionKey.value
         : this.symmetricMessageEncryptionKey,
-    messageId: messageId.present ? messageId.value : this.messageId,
+    messageNumber: messageNumber.present
+        ? messageNumber.value
+        : this.messageNumber,
     unixTime: unixTime.present ? unixTime.value : this.unixTime,
     backendSignedPgpMessage: backendSignedPgpMessage.present
         ? backendSignedPgpMessage.value
@@ -13272,6 +13100,7 @@ class MessageData extends DataClass implements Insertable<MessageData> {
         ? deliveredUnixTime.value
         : this.deliveredUnixTime,
     seenUnixTime: seenUnixTime.present ? seenUnixTime.value : this.seenUnixTime,
+    messageId: messageId.present ? messageId.value : this.messageId,
   );
   MessageData copyWithCompanion(MessageCompanion data) {
     return MessageData(
@@ -13292,7 +13121,9 @@ class MessageData extends DataClass implements Insertable<MessageData> {
       symmetricMessageEncryptionKey: data.symmetricMessageEncryptionKey.present
           ? data.symmetricMessageEncryptionKey.value
           : this.symmetricMessageEncryptionKey,
-      messageId: data.messageId.present ? data.messageId.value : this.messageId,
+      messageNumber: data.messageNumber.present
+          ? data.messageNumber.value
+          : this.messageNumber,
       unixTime: data.unixTime.present ? data.unixTime.value : this.unixTime,
       backendSignedPgpMessage: data.backendSignedPgpMessage.present
           ? data.backendSignedPgpMessage.value
@@ -13303,6 +13134,7 @@ class MessageData extends DataClass implements Insertable<MessageData> {
       seenUnixTime: data.seenUnixTime.present
           ? data.seenUnixTime.value
           : this.seenUnixTime,
+      messageId: data.messageId.present ? data.messageId.value : this.messageId,
     );
   }
 
@@ -13318,11 +13150,12 @@ class MessageData extends DataClass implements Insertable<MessageData> {
           ..write(
             'symmetricMessageEncryptionKey: $symmetricMessageEncryptionKey, ',
           )
-          ..write('messageId: $messageId, ')
+          ..write('messageNumber: $messageNumber, ')
           ..write('unixTime: $unixTime, ')
           ..write('backendSignedPgpMessage: $backendSignedPgpMessage, ')
           ..write('deliveredUnixTime: $deliveredUnixTime, ')
-          ..write('seenUnixTime: $seenUnixTime')
+          ..write('seenUnixTime: $seenUnixTime, ')
+          ..write('messageId: $messageId')
           ..write(')'))
         .toString();
   }
@@ -13336,11 +13169,12 @@ class MessageData extends DataClass implements Insertable<MessageData> {
     localUnixTime,
     messageState,
     $driftBlobEquality.hash(symmetricMessageEncryptionKey),
-    messageId,
+    messageNumber,
     unixTime,
     $driftBlobEquality.hash(backendSignedPgpMessage),
     deliveredUnixTime,
     seenUnixTime,
+    messageId,
   );
   @override
   bool operator ==(Object other) =>
@@ -13356,14 +13190,15 @@ class MessageData extends DataClass implements Insertable<MessageData> {
             other.symmetricMessageEncryptionKey,
             this.symmetricMessageEncryptionKey,
           ) &&
-          other.messageId == this.messageId &&
+          other.messageNumber == this.messageNumber &&
           other.unixTime == this.unixTime &&
           $driftBlobEquality.equals(
             other.backendSignedPgpMessage,
             this.backendSignedPgpMessage,
           ) &&
           other.deliveredUnixTime == this.deliveredUnixTime &&
-          other.seenUnixTime == this.seenUnixTime);
+          other.seenUnixTime == this.seenUnixTime &&
+          other.messageId == this.messageId);
 }
 
 class MessageCompanion extends UpdateCompanion<MessageData> {
@@ -13374,11 +13209,12 @@ class MessageCompanion extends UpdateCompanion<MessageData> {
   final Value<UtcDateTime> localUnixTime;
   final Value<int> messageState;
   final Value<Uint8List?> symmetricMessageEncryptionKey;
-  final Value<MessageId?> messageId;
+  final Value<MessageNumber?> messageNumber;
   final Value<UtcDateTime?> unixTime;
   final Value<Uint8List?> backendSignedPgpMessage;
   final Value<UtcDateTime?> deliveredUnixTime;
   final Value<UtcDateTime?> seenUnixTime;
+  final Value<MessageId?> messageId;
   const MessageCompanion({
     this.id = const Value.absent(),
     this.localAccountId = const Value.absent(),
@@ -13387,11 +13223,12 @@ class MessageCompanion extends UpdateCompanion<MessageData> {
     this.localUnixTime = const Value.absent(),
     this.messageState = const Value.absent(),
     this.symmetricMessageEncryptionKey = const Value.absent(),
-    this.messageId = const Value.absent(),
+    this.messageNumber = const Value.absent(),
     this.unixTime = const Value.absent(),
     this.backendSignedPgpMessage = const Value.absent(),
     this.deliveredUnixTime = const Value.absent(),
     this.seenUnixTime = const Value.absent(),
+    this.messageId = const Value.absent(),
   });
   MessageCompanion.insert({
     this.id = const Value.absent(),
@@ -13401,11 +13238,12 @@ class MessageCompanion extends UpdateCompanion<MessageData> {
     required UtcDateTime localUnixTime,
     required int messageState,
     this.symmetricMessageEncryptionKey = const Value.absent(),
-    this.messageId = const Value.absent(),
+    this.messageNumber = const Value.absent(),
     this.unixTime = const Value.absent(),
     this.backendSignedPgpMessage = const Value.absent(),
     this.deliveredUnixTime = const Value.absent(),
     this.seenUnixTime = const Value.absent(),
+    this.messageId = const Value.absent(),
   }) : localAccountId = Value(localAccountId),
        remoteAccountId = Value(remoteAccountId),
        localUnixTime = Value(localUnixTime),
@@ -13418,11 +13256,12 @@ class MessageCompanion extends UpdateCompanion<MessageData> {
     Expression<int>? localUnixTime,
     Expression<int>? messageState,
     Expression<Uint8List>? symmetricMessageEncryptionKey,
-    Expression<int>? messageId,
+    Expression<int>? messageNumber,
     Expression<int>? unixTime,
     Expression<Uint8List>? backendSignedPgpMessage,
     Expression<int>? deliveredUnixTime,
     Expression<int>? seenUnixTime,
+    Expression<String>? messageId,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -13433,12 +13272,13 @@ class MessageCompanion extends UpdateCompanion<MessageData> {
       if (messageState != null) 'message_state': messageState,
       if (symmetricMessageEncryptionKey != null)
         'symmetric_message_encryption_key': symmetricMessageEncryptionKey,
-      if (messageId != null) 'message_id': messageId,
+      if (messageNumber != null) 'message_number': messageNumber,
       if (unixTime != null) 'unix_time': unixTime,
       if (backendSignedPgpMessage != null)
         'backend_signed_pgp_message': backendSignedPgpMessage,
       if (deliveredUnixTime != null) 'delivered_unix_time': deliveredUnixTime,
       if (seenUnixTime != null) 'seen_unix_time': seenUnixTime,
+      if (messageId != null) 'message_id': messageId,
     });
   }
 
@@ -13450,11 +13290,12 @@ class MessageCompanion extends UpdateCompanion<MessageData> {
     Value<UtcDateTime>? localUnixTime,
     Value<int>? messageState,
     Value<Uint8List?>? symmetricMessageEncryptionKey,
-    Value<MessageId?>? messageId,
+    Value<MessageNumber?>? messageNumber,
     Value<UtcDateTime?>? unixTime,
     Value<Uint8List?>? backendSignedPgpMessage,
     Value<UtcDateTime?>? deliveredUnixTime,
     Value<UtcDateTime?>? seenUnixTime,
+    Value<MessageId?>? messageId,
   }) {
     return MessageCompanion(
       id: id ?? this.id,
@@ -13465,12 +13306,13 @@ class MessageCompanion extends UpdateCompanion<MessageData> {
       messageState: messageState ?? this.messageState,
       symmetricMessageEncryptionKey:
           symmetricMessageEncryptionKey ?? this.symmetricMessageEncryptionKey,
-      messageId: messageId ?? this.messageId,
+      messageNumber: messageNumber ?? this.messageNumber,
       unixTime: unixTime ?? this.unixTime,
       backendSignedPgpMessage:
           backendSignedPgpMessage ?? this.backendSignedPgpMessage,
       deliveredUnixTime: deliveredUnixTime ?? this.deliveredUnixTime,
       seenUnixTime: seenUnixTime ?? this.seenUnixTime,
+      messageId: messageId ?? this.messageId,
     );
   }
 
@@ -13508,9 +13350,9 @@ class MessageCompanion extends UpdateCompanion<MessageData> {
         symmetricMessageEncryptionKey.value,
       );
     }
-    if (messageId.present) {
-      map['message_id'] = Variable<int>(
-        $MessageTable.$convertermessageId.toSql(messageId.value),
+    if (messageNumber.present) {
+      map['message_number'] = Variable<int>(
+        $MessageTable.$convertermessageNumber.toSql(messageNumber.value),
       );
     }
     if (unixTime.present) {
@@ -13535,6 +13377,11 @@ class MessageCompanion extends UpdateCompanion<MessageData> {
         $MessageTable.$converterseenUnixTime.toSql(seenUnixTime.value),
       );
     }
+    if (messageId.present) {
+      map['message_id'] = Variable<String>(
+        $MessageTable.$convertermessageId.toSql(messageId.value),
+      );
+    }
     return map;
   }
 
@@ -13550,11 +13397,12 @@ class MessageCompanion extends UpdateCompanion<MessageData> {
           ..write(
             'symmetricMessageEncryptionKey: $symmetricMessageEncryptionKey, ',
           )
-          ..write('messageId: $messageId, ')
+          ..write('messageNumber: $messageNumber, ')
           ..write('unixTime: $unixTime, ')
           ..write('backendSignedPgpMessage: $backendSignedPgpMessage, ')
           ..write('deliveredUnixTime: $deliveredUnixTime, ')
-          ..write('seenUnixTime: $seenUnixTime')
+          ..write('seenUnixTime: $seenUnixTime, ')
+          ..write('messageId: $messageId')
           ..write(')'))
         .toString();
   }
@@ -13595,7 +13443,6 @@ abstract class _$AccountForegroundDatabase extends GeneratedDatabase {
   late final $EmailAddressTable emailAddress = $EmailAddressTable(this);
   late final $EmailVerifiedTable emailVerified = $EmailVerifiedTable(this);
   late final $AccountIdTable accountId = $AccountIdTable(this);
-  late final $ClientIdTable clientId = $ClientIdTable(this);
   late final $LoginSessionTokensTable loginSessionTokens =
       $LoginSessionTokensTable(this);
   late final $MyMediaContentTable myMediaContent = $MyMediaContentTable(this);
@@ -13732,7 +13579,6 @@ abstract class _$AccountForegroundDatabase extends GeneratedDatabase {
     emailAddress,
     emailVerified,
     accountId,
-    clientId,
     loginSessionTokens,
     myMediaContent,
     profileContent,

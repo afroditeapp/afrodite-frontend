@@ -8,7 +8,6 @@ import 'package:app/utils/api.dart';
 import 'package:native_utils/native_utils.dart';
 import 'package:openapi/api.dart';
 import 'package:app/api/server_connection_manager.dart';
-import 'package:app/data/account/client_id_manager.dart';
 import 'package:app/data/chat/message_manager.dart';
 import 'package:app/data/chat/message_key_generator.dart';
 import 'package:app/data/general/notification/state/like_received.dart';
@@ -37,7 +36,6 @@ class ChatRepository extends DataRepositoryWithLifecycle {
     required this.accountBackgroundDb,
     required this.db,
     required this.messageKeyManager,
-    required ClientIdManager clientIdManager,
     required ServerConnectionManager connectionManager,
     required this.currentUser,
   }) : syncHandler = ConnectedActionScheduler(connectionManager),
@@ -54,7 +52,6 @@ class ChatRepository extends DataRepositoryWithLifecycle {
        api = connectionManager,
        messageManager = MessageManager(
          messageKeyManager,
-         clientIdManager,
          connectionManager,
          db,
          profile,

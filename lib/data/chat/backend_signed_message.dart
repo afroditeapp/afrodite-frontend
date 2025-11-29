@@ -9,18 +9,20 @@ import 'package:openapi/api.dart';
 class BackendSignedMessage {
   final AccountId sender;
   final AccountId receiver;
+  final MessageId messageId;
   final PublicKeyId senderPublicKeyId;
   final PublicKeyId receiverPublicKeyId;
-  final MessageId messageId;
+  final MessageNumber messageNumber;
   final UnixTime serverTime;
   final Uint8List messageFromSender;
 
   BackendSignedMessage._({
     required this.sender,
     required this.receiver,
+    required this.messageId,
     required this.senderPublicKeyId,
     required this.receiverPublicKeyId,
-    required this.messageId,
+    required this.messageNumber,
     required this.serverTime,
     required this.messageFromSender,
   });
@@ -40,18 +42,20 @@ class BackendSignedMessage {
     final version = parseVersion(iterator).ok();
     final sender = parseAccountId(iterator).ok();
     final receiver = parseAccountId(iterator).ok();
+    final messageId = parseMessageId(iterator).ok();
     final senderPublicKeyId = parseMinimalI64(iterator).mapOk((v) => PublicKeyId(id: v)).ok();
     final receiverPublicKeyId = parseMinimalI64(iterator).mapOk((v) => PublicKeyId(id: v)).ok();
-    final messageId = parseMinimalI64(iterator).mapOk((v) => MessageId(id: v)).ok();
+    final messageNumber = parseMinimalI64(iterator).mapOk((v) => MessageNumber(mn: v)).ok();
     final serverTime = parseMinimalI64(iterator).mapOk((v) => UnixTime(ut: v)).ok();
     final messageFromSender = iterator.takeAllAsBytes();
 
     if (version != 1 ||
         sender == null ||
         receiver == null ||
+        messageId == null ||
         senderPublicKeyId == null ||
         receiverPublicKeyId == null ||
-        messageId == null ||
+        messageNumber == null ||
         serverTime == null) {
       return null;
     }
@@ -59,15 +63,16 @@ class BackendSignedMessage {
     return BackendSignedMessage._(
       sender: sender,
       receiver: receiver,
+      messageId: messageId,
       senderPublicKeyId: senderPublicKeyId,
       receiverPublicKeyId: receiverPublicKeyId,
-      messageId: messageId,
+      messageNumber: messageNumber,
       serverTime: serverTime,
       messageFromSender: messageFromSender,
     );
   }
 
-  PendingMessageId toPendingMessageId() => PendingMessageId(sender: sender, m: messageId);
+  PendingMessageId toPendingMessageId() => PendingMessageId(sender: sender, id: messageId);
 }
 
 Result<int, ()> parseVersion(Iterator<int> data) {
@@ -86,6 +91,15 @@ Result<AccountId, ()> parseAccountId(Iterator<int> data) {
   }
   final base64UrlsNoPadding = base64UrlEncode(uuidBytes).replaceAll("=", "");
   return Ok(AccountId(aid: base64UrlsNoPadding));
+}
+
+Result<MessageId, ()> parseMessageId(Iterator<int> data) {
+  final uuidBytes = data.takeAndAdvance(16);
+  if (uuidBytes == null) {
+    return const Err(());
+  }
+  final base64UrlsNoPadding = base64UrlEncode(uuidBytes).replaceAll("=", "");
+  return Ok(MessageId(id: base64UrlsNoPadding));
 }
 
 Result<int, ()> parseMinimalI64(Iterator<int> data) {

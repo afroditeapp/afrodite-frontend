@@ -13,32 +13,32 @@ part of openapi.api;
 class PendingMessageId {
   /// Returns a new [PendingMessageId] instance.
   PendingMessageId({
-    required this.m,
+    required this.id,
     required this.sender,
   });
 
-  MessageId m;
+  MessageId id;
 
   /// Sender of the message.
   AccountId sender;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is PendingMessageId &&
-    other.m == m &&
+    other.id == id &&
     other.sender == sender;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (m.hashCode) +
+    (id.hashCode) +
     (sender.hashCode);
 
   @override
-  String toString() => 'PendingMessageId[m=$m, sender=$sender]';
+  String toString() => 'PendingMessageId[id=$id, sender=$sender]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'm'] = this.m;
+      json[r'id'] = this.id;
       json[r'sender'] = this.sender;
     return json;
   }
@@ -62,7 +62,7 @@ class PendingMessageId {
       }());
 
       return PendingMessageId(
-        m: MessageId.fromJson(json[r'm'])!,
+        id: MessageId.fromJson(json[r'id'])!,
         sender: AccountId.fromJson(json[r'sender'])!,
       );
     }
@@ -111,7 +111,7 @@ class PendingMessageId {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'm',
+    'id',
     'sender',
   };
 }

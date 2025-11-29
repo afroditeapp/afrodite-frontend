@@ -10,20 +10,18 @@ import 'package:logging/logging.dart';
 import 'package:native_utils/native_utils.dart';
 import 'package:openapi/api.dart';
 import 'package:app/api/server_connection_manager.dart';
-import 'package:app/data/account/client_id_manager.dart';
 import 'package:app/data/chat/message_key_generator.dart';
 import 'package:app/data/profile_repository.dart';
 import 'package:app/database/account_database_manager.dart';
-import 'package:app/utils/api.dart';
 import 'package:app/data/chat/message_manager/utils.dart';
 import 'package:utils/utils.dart';
 import 'package:app/utils/result.dart';
+import 'package:uuid/uuid.dart';
 
 final _log = Logger("SendMessageUtils");
 
 class SendMessageUtils {
   final MessageKeyManager messageKeyManager;
-  final ClientIdManager clientIdManager;
   final ApiManager api;
   final AccountDatabaseManager db;
   final AccountId currentUser;
@@ -31,14 +29,8 @@ class SendMessageUtils {
 
   final PublicKeyUtils publicKeyUtils;
 
-  SendMessageUtils(
-    this.messageKeyManager,
-    this.clientIdManager,
-    this.api,
-    this.db,
-    this.currentUser,
-    this.profile,
-  ) : publicKeyUtils = PublicKeyUtils(db, api, currentUser);
+  SendMessageUtils(this.messageKeyManager, this.api, this.db, this.currentUser, this.profile)
+    : publicKeyUtils = PublicKeyUtils(db, api, currentUser);
 
   bool allSentMessagesAcknowledgedOnce = false;
 
@@ -130,8 +122,10 @@ class SendMessageUtils {
     }
     receiverPublicKey = receiverPublicKeyOrNull;
 
+    final messageId = MessageId(id: base64UrlEncode(Uuid().v4obj().toBytes()).replaceAll("=", ""));
+
     final saveMessageResult = await db.accountDataWrite(
-      (db) => db.message.insertToBeSentMessage(currentUser, accountId, message),
+      (db) => db.message.insertToBeSentMessage(currentUser, accountId, messageId, message),
     );
     final LocalMessageId localId;
     switch (saveMessageResult) {
@@ -145,12 +139,6 @@ class SendMessageUtils {
 
     if (sendUiEvent) {
       profile.sendProfileChange(ConversationChanged(accountId, ConversationChangeType.messageSent));
-    }
-
-    final clientId = await clientIdManager.getClientId().ok();
-    if (clientId == null) {
-      yield ErrorAfterMessageSaving(localId);
-      return;
     }
 
     final currentUserKeys = await messageKeyManager.generateOrLoadMessageKeys().ok();
@@ -191,8 +179,7 @@ class SendMessageUtils {
               currentUserKeys.id.id,
               accountId.aid,
               receiverPublicKey.id.id,
-              clientId.id,
-              localId.id,
+              messageId.id,
               MultipartFile.fromBytes("", encryptedMessage.pgpMessage),
             ),
           )
@@ -224,7 +211,7 @@ class SendMessageUtils {
 
           _log.error("Send message error: too many sender acknowledgements missing");
 
-          final acknowledgeResult = await markSentMessagesAcknowledged(clientId);
+          final acknowledgeResult = await markSentMessagesAcknowledged();
           if (acknowledgeResult.isErr()) {
             yield ErrorAfterMessageSaving(localId);
             return;
@@ -306,40 +293,35 @@ class SendMessageUtils {
     }
 
     if (!allSentMessagesAcknowledgedOnce) {
-      await markSentMessagesAcknowledged(clientId);
+      await markSentMessagesAcknowledged();
     } else {
       await api.chatAction(
-        (api) => api.postAddSenderAcknowledgement(
-          SentMessageIdList(
-            ids: [
-              SentMessageId(
-                c: clientId,
-                l: ClientLocalId(id: localId.id),
-              ),
-            ],
-          ),
-        ),
+        (api) => api.postAddSenderAcknowledgement(SentMessageIdList(ids: [messageId])),
       );
     }
   }
 
-  Future<Result<(), ()>> markSentMessagesAcknowledged(ClientId clientId) async {
+  Future<Result<(), ()>> markSentMessagesAcknowledged() async {
     final sentMessages = await api.chat((api) => api.getSentMessageIds()).ok();
     if (sentMessages == null) {
       return const Err(());
     }
     for (final sentMessageId in sentMessages.ids) {
-      if (clientId != sentMessageId.c) {
+      final currentMessage = await db
+          .accountData((db) => db.message.getMessageUsingMessageIdSimple(sentMessageId))
+          .ok();
+
+      if (currentMessage == null) {
+        // Sent messages are saved to DB before sending, so most likely
+        // this message is sent from another device.
         continue;
       }
-      final sentMessageLocalId = sentMessageId.l.toLocalMessageId();
-      final currentMessage = await db
-          .accountData((db) => db.message.getMessageUsingLocalMessageId(sentMessageLocalId))
-          .ok();
+
       final currentBackendSignedPgpMessage = await db
-          .accountData((db) => db.message.getBackendSignedPgpMessage(sentMessageLocalId))
+          .accountData((db) => db.message.getBackendSignedPgpMessage(currentMessage.localId))
           .ok();
-      if (currentMessage?.messageState.toSentState() == SentMessageState.sendingError ||
+
+      if (currentMessage.messageState.toSentState() == SentMessageState.sendingError ||
           currentBackendSignedPgpMessage == null) {
         final r = await api.chat((api) => api.postGetSentMessage(sentMessageId)).ok();
         final base64EncodedMessage = r?.data;
@@ -353,7 +335,7 @@ class SendMessageUtils {
         }
         final updateSentState = await db.accountAction(
           (db) => db.message.updateSentMessageState(
-            sentMessageLocalId,
+            currentMessage.localId,
             sentState: SentMessageState.sent,
             messageIdFromServer: backendSignedMessage.messageId,
             unixTimeFromServer: backendSignedMessage.serverTime,

@@ -16,7 +16,7 @@ class MessageId {
     required this.id,
   });
 
-  int id;
+  String id;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is MessageId &&
@@ -55,7 +55,7 @@ class MessageId {
       }());
 
       return MessageId(
-        id: mapValueOfType<int>(json, r'id')!,
+        id: mapValueOfType<String>(json, r'id')!,
       );
     }
     return null;

@@ -88,7 +88,6 @@ Class | Method | HTTP request | Description
 *AccountApi* | [**postGetClientFeaturesConfig**](doc//AccountApi.md#postgetclientfeaturesconfig) | **POST** /account_api/client_features_config | 
 *AccountApi* | [**postGetCustomReportsConfig**](doc//AccountApi.md#postgetcustomreportsconfig) | **POST** /account_api/custom_reports_config | 
 *AccountApi* | [**postGetNewsPage**](doc//AccountApi.md#postgetnewspage) | **POST** /account_api/news_page | 
-*AccountApi* | [**postGetNextClientId**](doc//AccountApi.md#postgetnextclientid) | **POST** /account_api/next_client_id | 
 *AccountApi* | [**postGetUnreadNewsCount**](doc//AccountApi.md#postgetunreadnewscount) | **POST** /account_api/news_count | The unread news count for public news.
 *AccountApi* | [**postInitEmailChange**](doc//AccountApi.md#postinitemailchange) | **POST** /account_api/init_email_change | Initiate email change process by providing a new email address.
 *AccountApi* | [**postInitialEmail**](doc//AccountApi.md#postinitialemail) | **POST** /account_api/initial_email | Set initial email when initial setup is ongoing
@@ -304,10 +303,8 @@ Class | Method | HTTP request | Description
  - [ClientConfigSyncVersion](doc//ClientConfigSyncVersion.md)
  - [ClientFeaturesConfig](doc//ClientFeaturesConfig.md)
  - [ClientFeaturesConfigHash](doc//ClientFeaturesConfigHash.md)
- - [ClientId](doc//ClientId.md)
  - [ClientInfo](doc//ClientInfo.md)
  - [ClientLanguage](doc//ClientLanguage.md)
- - [ClientLocalId](doc//ClientLocalId.md)
  - [ClientType](doc//ClientType.md)
  - [ClientVersion](doc//ClientVersion.md)
  - [ClientVersionCount](doc//ClientVersionCount.md)
@@ -432,6 +429,7 @@ Class | Method | HTTP request | Description
  - [MessageDeliveryInfoIdList](doc//MessageDeliveryInfoIdList.md)
  - [MessageDeliveryInfoList](doc//MessageDeliveryInfoList.md)
  - [MessageId](doc//MessageId.md)
+ - [MessageNumber](doc//MessageNumber.md)
  - [MessageSeenList](doc//MessageSeenList.md)
  - [MinDistanceKm](doc//MinDistanceKm.md)
  - [ModerationQueueType](doc//ModerationQueueType.md)
@@ -540,7 +538,6 @@ Class | Method | HTTP request | Description
  - [SendMessageResult](doc//SendMessageResult.md)
  - [SendVerifyEmailMessageResult](doc//SendVerifyEmailMessageResult.md)
  - [SentBlocksPage](doc//SentBlocksPage.md)
- - [SentMessageId](doc//SentMessageId.md)
  - [SentMessageIdList](doc//SentMessageIdList.md)
  - [ServerConfig](doc//ServerConfig.md)
  - [SetAccountBanState](doc//SetAccountBanState.md)

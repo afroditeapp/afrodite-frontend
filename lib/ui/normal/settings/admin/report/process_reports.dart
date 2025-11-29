@@ -223,7 +223,9 @@ C = custom report""";
       final time = timeString(chatMessage.messageTime.toUtcDateTime());
       final message = Message.parseFromBytes(base64Decode(chatMessage.messageBase64));
       final String messageText = "\n${messageToText(context, message)}";
-      report = Text("M: $senderReceiverInfo, ID: ${chatMessage.messageId.id}, $time$messageText");
+      report = Text(
+        "M: $senderReceiverInfo, MN: ${chatMessage.messageNumber.mn}, $time$messageText",
+      );
     } else if (customReport) {
       report = BlocBuilder<CustomReportsConfigBloc, CustomReportsConfig>(
         builder: (context, config) {

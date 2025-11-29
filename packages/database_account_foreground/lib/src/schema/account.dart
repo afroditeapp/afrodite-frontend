@@ -26,11 +26,6 @@ class ProfileVisibility extends SingleRowTable {
       text().map(NullAwareTypeConverter.wrap(const ProfileVisibilityConverter())).nullable()();
 }
 
-class ClientId extends SingleRowTable {
-  IntColumn get clientId =>
-      integer().map(const NullAwareTypeConverter.wrap(ClientIdConverter())).nullable()();
-}
-
 class EmailAddress extends SingleRowTable {
   TextColumn get emailAddress => text().nullable()();
 }

@@ -1,4 +1,3 @@
-import 'package:database/database.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:openapi/api.dart';
 import 'package:app/model/freezed/logic/account/initial_setup.dart';
@@ -92,12 +91,6 @@ extension SearchGroupsExtensions on SearchGroups {
           nonBinaryForNonBinary: genderSearchSetting.nonBinary,
         );
     }
-  }
-}
-
-extension ClientLocalIdExtensions on ClientLocalId {
-  LocalMessageId toLocalMessageId() {
-    return LocalMessageId(id);
   }
 }
 

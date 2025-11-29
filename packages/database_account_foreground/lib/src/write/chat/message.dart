@@ -22,6 +22,7 @@ class DaoWriteMessage extends DatabaseAccessor<AccountForegroundDatabase>
         message: Value(entry.message),
         localUnixTime: entry.localUnixTime,
         messageState: entry.messageState.number,
+        messageNumber: Value(entry.messageNumber),
         messageId: Value(entry.messageId),
         unixTime: Value(entry.unixTime),
         backendSignedPgpMessage: Value(entry.backendSignedPgpMessage),
@@ -35,11 +36,13 @@ class DaoWriteMessage extends DatabaseAccessor<AccountForegroundDatabase>
   Future<dbm.LocalMessageId> insertToBeSentMessage(
     api.AccountId localAccountId,
     api.AccountId remoteAccountId,
+    api.MessageId messageId,
     dbm.Message message,
   ) async {
     final newMessageEntry = dbm.NewMessageEntry(
       localAccountId: localAccountId,
       remoteAccountId: remoteAccountId,
+      messageId: messageId,
       message: message,
       localUnixTime: UtcDateTime.now(),
       messageState: dbm.SentMessageState.pending.toDbState(),
@@ -82,6 +85,7 @@ class DaoWriteMessage extends DatabaseAccessor<AccountForegroundDatabase>
   Future<void> insertReceivedMessage(
     api.AccountId localAccountId,
     api.AccountId senderAccountId,
+    api.MessageNumber messageNumber,
     api.MessageId messageId,
     UtcDateTime serverTime,
     Uint8List backendSignedPgpMessage,
@@ -95,6 +99,7 @@ class DaoWriteMessage extends DatabaseAccessor<AccountForegroundDatabase>
       localUnixTime: UtcDateTime.now(),
       message: decryptedMessage,
       messageState: state.toDbState(),
+      messageNumber: messageNumber,
       messageId: messageId,
       unixTime: serverTime,
       backendSignedPgpMessage: backendSignedPgpMessage,

@@ -62,7 +62,6 @@ part 'database.g.dart';
     schema.EmailAddress,
     schema.EmailVerified,
     schema.AccountId,
-    schema.ClientId,
     schema.LoginSessionTokens,
     // Media
     schema.MyMediaContent,

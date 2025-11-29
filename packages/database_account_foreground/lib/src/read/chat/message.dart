@@ -101,6 +101,7 @@ class DaoReadMessage extends DatabaseAccessor<AccountForegroundDatabase>
       message: m.message,
       localUnixTime: m.localUnixTime,
       messageState: messageState,
+      messageNumber: m.messageNumber,
       messageId: m.messageId,
       unixTime: m.unixTime,
       deliveredUnixTime: m.deliveredUnixTime,
@@ -158,6 +159,16 @@ class DaoReadMessage extends DatabaseAccessor<AccountForegroundDatabase>
     return (select(message)
           ..where((t) => t.localAccountId.equals(localAccountId.aid))
           ..where((t) => t.remoteAccountId.equals(remoteAccountId.aid))
+          ..where((t) => t.messageId.equals(messageId.id))
+          ..limit(1))
+        .map((m) => _fromMessage(m))
+        .getSingleOrNull();
+  }
+
+  /// UUID collisions are more probable with this method
+  /// when compared to [getMessageUsingMessageId].
+  Future<dbm.MessageEntry?> getMessageUsingMessageIdSimple(api.MessageId messageId) {
+    return (select(message)
           ..where((t) => t.messageId.equals(messageId.id))
           ..limit(1))
         .map((m) => _fromMessage(m))

@@ -9,7 +9,6 @@ import 'package:database/database.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:app/api/server_connection_manager.dart';
-import 'package:app/data/account/client_id_manager.dart';
 import 'package:app/data/account/initial_setup.dart';
 import 'package:app/data/utils.dart';
 import 'package:app/database/account_database_manager.dart';
@@ -28,7 +27,6 @@ const ProfileVisibility PROFILE_VISIBILITY_DEFAULT = ProfileVisibility.pendingPr
 class AccountRepository extends DataRepositoryWithLifecycle {
   final ConnectedActionScheduler _syncHandler;
   final ServerConnectionManager connectionManager;
-  final ClientIdManager clientIdManager;
   final ApiManager api;
   final AccountDatabaseManager db;
   final AccountBackgroundDatabaseManager accountBackgroundDb;
@@ -39,7 +37,6 @@ class AccountRepository extends DataRepositoryWithLifecycle {
     required this.db,
     required this.accountBackgroundDb,
     required this.connectionManager,
-    required this.clientIdManager,
     required bool rememberToInitRepositoriesLateFinal,
     required this.currentUser,
   }) : _syncHandler = ConnectedActionScheduler(connectionManager),
@@ -108,9 +105,7 @@ class AccountRepository extends DataRepositoryWithLifecycle {
 
   @override
   Future<Result<(), ()>> onLoginDataSync() async {
-    return await clientIdManager
-        .getClientId()
-        .andThen((_) => _reloadAccountNotificationSettings())
+    return await _reloadAccountNotificationSettings()
         .andThen((_) => _reloadClientLanguageOnServer())
         .andThenEmptyErr((_) => db.accountAction((db) => db.app.updateAccountSyncDone(true)));
   }
@@ -118,7 +113,6 @@ class AccountRepository extends DataRepositoryWithLifecycle {
   @override
   Future<void> onResumeAppUsage() async {
     _syncHandler.onResumeAppUsageSync(() async {
-      await clientIdManager.getClientId();
       await _updateClientLanguageIfNeeded();
 
       final syncDone =

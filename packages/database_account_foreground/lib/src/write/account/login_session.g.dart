@@ -6,7 +6,6 @@ part of 'login_session.dart';
 mixin _$DaoWriteLoginSessionMixin
     on DatabaseAccessor<AccountForegroundDatabase> {
   $AccountIdTable get accountId => attachedDatabase.accountId;
-  $ClientIdTable get clientId => attachedDatabase.clientId;
   $LoginSessionTokensTable get loginSessionTokens =>
       attachedDatabase.loginSessionTokens;
 }

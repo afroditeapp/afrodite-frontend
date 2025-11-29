@@ -4,7 +4,6 @@ import 'package:app/localizations.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:openapi/api.dart';
 import 'package:app/api/server_connection_manager.dart';
-import 'package:app/data/account/client_id_manager.dart';
 import 'package:app/data/account_repository.dart';
 import 'package:app/data/chat/message_key_generator.dart';
 import 'package:app/data/chat_repository.dart';
@@ -40,7 +39,6 @@ class RepositoryInstances {
   final AccountBackgroundDatabaseManager accountBackgroundDb;
   final AccountDatabaseManager accountDb;
   final ServerConnectionManager connectionManager;
-  final ClientIdManager clientIdManager;
   final MessageKeyManager messageKeyManager;
 
   bool _logoutStarted = false;
@@ -58,7 +56,6 @@ class RepositoryInstances {
     required this.accountBackgroundDb,
     required this.accountDb,
     required this.connectionManager,
-    required this.clientIdManager,
     required this.messageKeyManager,
   });
 
@@ -125,7 +122,6 @@ class RepositoryInstances {
     }
 
     await connectionManager.dispose();
-    await clientIdManager.dispose();
     await messageKeyManager.dispose();
 
     await accountBackgroundDb.close();
@@ -147,13 +143,11 @@ class RepositoryInstances {
       accountBackgroundDb,
       accountId,
     );
-    final clientIdManager = ClientIdManager(accountDb, connectionManager);
 
     final account = AccountRepository(
       db: accountDb,
       accountBackgroundDb: accountBackgroundDb,
       connectionManager: connectionManager,
-      clientIdManager: clientIdManager,
       rememberToInitRepositoriesLateFinal: true,
       currentUser: accountId,
     );
@@ -181,7 +175,6 @@ class RepositoryInstances {
       accountBackgroundDb: accountBackgroundDb,
       db: accountDb,
       connectionManager: connectionManager,
-      clientIdManager: clientIdManager,
       messageKeyManager: messageKeyManager,
       currentUser: accountId,
     );
@@ -196,7 +189,6 @@ class RepositoryInstances {
       accountBackgroundDb: accountBackgroundDb,
       accountDb: accountDb,
       connectionManager: connectionManager,
-      clientIdManager: clientIdManager,
       messageKeyManager: messageKeyManager,
     );
     account.repositories = newRepositories;

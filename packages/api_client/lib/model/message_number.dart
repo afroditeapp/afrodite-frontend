@@ -10,36 +10,36 @@
 
 part of openapi.api;
 
-class ClientLocalId {
-  /// Returns a new [ClientLocalId] instance.
-  ClientLocalId({
-    required this.id,
+class MessageNumber {
+  /// Returns a new [MessageNumber] instance.
+  MessageNumber({
+    required this.mn,
   });
 
-  int id;
+  int mn;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is ClientLocalId &&
-    other.id == id;
+  bool operator ==(Object other) => identical(this, other) || other is MessageNumber &&
+    other.mn == mn;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (id.hashCode);
+    (mn.hashCode);
 
   @override
-  String toString() => 'ClientLocalId[id=$id]';
+  String toString() => 'MessageNumber[mn=$mn]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'id'] = this.id;
+      json[r'mn'] = this.mn;
     return json;
   }
 
-  /// Returns a new [ClientLocalId] instance and imports its values from
+  /// Returns a new [MessageNumber] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static ClientLocalId? fromJson(dynamic value) {
+  static MessageNumber? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -48,24 +48,24 @@ class ClientLocalId {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "ClientLocalId[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "ClientLocalId[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "MessageNumber[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "MessageNumber[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return ClientLocalId(
-        id: mapValueOfType<int>(json, r'id')!,
+      return MessageNumber(
+        mn: mapValueOfType<int>(json, r'mn')!,
       );
     }
     return null;
   }
 
-  static List<ClientLocalId> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <ClientLocalId>[];
+  static List<MessageNumber> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <MessageNumber>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = ClientLocalId.fromJson(row);
+        final value = MessageNumber.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -74,12 +74,12 @@ class ClientLocalId {
     return result.toList(growable: growable);
   }
 
-  static Map<String, ClientLocalId> mapFromJson(dynamic json) {
-    final map = <String, ClientLocalId>{};
+  static Map<String, MessageNumber> mapFromJson(dynamic json) {
+    final map = <String, MessageNumber>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = ClientLocalId.fromJson(entry.value);
+        final value = MessageNumber.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -88,14 +88,14 @@ class ClientLocalId {
     return map;
   }
 
-  // maps a json object with a list of ClientLocalId-objects as value to a dart map
-  static Map<String, List<ClientLocalId>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<ClientLocalId>>{};
+  // maps a json object with a list of MessageNumber-objects as value to a dart map
+  static Map<String, List<MessageNumber>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<MessageNumber>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = ClientLocalId.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = MessageNumber.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;
@@ -103,7 +103,7 @@ class ClientLocalId {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'id',
+    'mn',
   };
 }
 
