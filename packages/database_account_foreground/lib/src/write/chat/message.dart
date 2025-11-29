@@ -156,4 +156,20 @@ class DaoWriteMessage extends DatabaseAccessor<AccountForegroundDatabase>
   Future<void> deleteMessage(dbm.LocalMessageId localId) async {
     await (delete(message)..where((t) => t.id.equals(localId.id))).go();
   }
+
+  Future<void> updateStateToReceivedAndSeenLocally(dbm.LocalMessageId localId) async {
+    await (update(message)..where((t) => t.id.equals(localId.id))).write(
+      MessageCompanion(
+        messageState: Value(dbm.ReceivedMessageState.receivedAndSeenLocally.toDbState().number),
+      ),
+    );
+  }
+
+  Future<void> updateStateToReceivedAndSeen(dbm.LocalMessageId localId) async {
+    await (update(message)..where((t) => t.id.equals(localId.id))).write(
+      MessageCompanion(
+        messageState: Value(dbm.ReceivedMessageState.receivedAndSeen.toDbState().number),
+      ),
+    );
+  }
 }

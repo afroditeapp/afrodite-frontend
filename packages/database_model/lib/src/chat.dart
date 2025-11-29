@@ -85,6 +85,12 @@ enum MessageState {
   /// Message received, but public key download failed.
   receivedAndPublicKeyDownloadFailed(_VALUE_RECEIVED_AND_PUBLIC_KEY_DOWNLOAD_FAILED),
 
+  /// Message received and marked as seen locally (before API call).
+  receivedAndSeenLocally(_VALUE_RECEIVED_AND_SEEN_LOCALLY),
+
+  /// Message received and marked as seen (after API call).
+  receivedAndSeen(_VALUE_RECEIVED_AND_SEEN),
+
   // Info messages which client automatically adds
 
   /// Initial public key for match received
@@ -100,6 +106,8 @@ enum MessageState {
   static const int _VALUE_RECEIVED = 20;
   static const int _VALUE_RECEIVED_AND_DECRYPTING_FAILED = 21;
   static const int _VALUE_RECEIVED_AND_PUBLIC_KEY_DOWNLOAD_FAILED = 22;
+  static const int _VALUE_RECEIVED_AND_SEEN_LOCALLY = 23;
+  static const int _VALUE_RECEIVED_AND_SEEN = 24;
 
   static const int _VALUE_INFO_MATCH_FIRST_PUBLIC_KEY_RECEIVED = 40;
   static const int _VALUE_INFO_MATCH_PUBLIC_KEY_CHANGED = 41;
@@ -120,6 +128,8 @@ enum MessageState {
       _VALUE_RECEIVED => received,
       _VALUE_RECEIVED_AND_DECRYPTING_FAILED => receivedAndDecryptingFailed,
       _VALUE_RECEIVED_AND_PUBLIC_KEY_DOWNLOAD_FAILED => receivedAndPublicKeyDownloadFailed,
+      _VALUE_RECEIVED_AND_SEEN_LOCALLY => receivedAndSeenLocally,
+      _VALUE_RECEIVED_AND_SEEN => receivedAndSeen,
       _VALUE_INFO_MATCH_FIRST_PUBLIC_KEY_RECEIVED => infoMatchFirstPublicKeyReceived,
       _VALUE_INFO_MATCH_PUBLIC_KEY_CHANGED => infoMatchPublicKeyChanged,
       _ => null,
@@ -145,6 +155,8 @@ enum MessageState {
       case received ||
           receivedAndDecryptingFailed ||
           receivedAndPublicKeyDownloadFailed ||
+          receivedAndSeenLocally ||
+          receivedAndSeen ||
           infoMatchFirstPublicKeyReceived ||
           infoMatchPublicKeyChanged:
         return null;
@@ -163,6 +175,10 @@ enum MessageState {
         return ReceivedMessageState.decryptingFailed;
       case receivedAndPublicKeyDownloadFailed:
         return ReceivedMessageState.publicKeyDownloadFailed;
+      case receivedAndSeenLocally:
+        return ReceivedMessageState.receivedAndSeenLocally;
+      case receivedAndSeen:
+        return ReceivedMessageState.receivedAndSeen;
       case pendingSending ||
           sent ||
           delivered ||
@@ -183,6 +199,8 @@ enum MessageState {
       case received ||
           receivedAndDecryptingFailed ||
           receivedAndPublicKeyDownloadFailed ||
+          receivedAndSeenLocally ||
+          receivedAndSeen ||
           pendingSending ||
           sent ||
           delivered ||
@@ -237,7 +255,13 @@ enum ReceivedMessageState {
   decryptingFailed,
 
   /// Received, but public key download failed.
-  publicKeyDownloadFailed;
+  publicKeyDownloadFailed,
+
+  /// Received and marked as seen locally (before API call).
+  receivedAndSeenLocally,
+
+  /// Received and marked as seen (after API call).
+  receivedAndSeen;
 
   bool isError() {
     return this == decryptingFailed || this == publicKeyDownloadFailed;
@@ -253,6 +277,10 @@ enum ReceivedMessageState {
         return MessageState.receivedAndDecryptingFailed;
       case publicKeyDownloadFailed:
         return MessageState.receivedAndPublicKeyDownloadFailed;
+      case receivedAndSeenLocally:
+        return MessageState.receivedAndSeenLocally;
+      case receivedAndSeen:
+        return MessageState.receivedAndSeen;
     }
   }
 }

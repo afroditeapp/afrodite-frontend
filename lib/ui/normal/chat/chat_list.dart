@@ -84,6 +84,7 @@ class _ChatListState extends State<ChatList> {
     _chatListLogic = ChatListLogic(
       chatController: _chatController,
       chatRepository: r.chat,
+      accountRepository: r.account,
       typingIndicatorManager: widget.typingIndicatorManager,
       oldMessagesIterator: widget.oldMessagesIterator,
       currentUser: widget.currentUser,

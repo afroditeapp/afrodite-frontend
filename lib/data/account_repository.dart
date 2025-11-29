@@ -60,6 +60,8 @@ class AccountRepository extends DataRepositoryWithLifecycle {
   ProfileVisibility get profileVisibilityValue => _cachedValues._cachedProfileVisibility.value;
   String? get emailAddressValue => _cachedValues._cachedEmailAddress.value;
   AccountState? get accountStateValue => _cachedValues._cachedAccountState.value;
+  ClientFeaturesConfig get clientFeaturesConfigValue =>
+      _cachedValues._cachedClientFeaturesConfig.value;
 
   // WebSocket related event streams
   final _contentProcessingStateChanges = PublishSubject<ContentProcessingStateChanged>();

@@ -1,7 +1,10 @@
 import "dart:async";
 
+import "package:app/api/server_connection_manager.dart";
+import "package:app/data/account_repository.dart";
 import "package:app/data/chat/message_manager/utils.dart";
 import "package:app/data/utils/repository_instances.dart";
+import "package:app/database/account_database_manager.dart";
 import 'package:bloc_concurrency/bloc_concurrency.dart' show sequential;
 
 import "package:database/database.dart";
@@ -119,16 +122,24 @@ class DefaultConversationDataProvider extends ConversationDataProvider {
 
 class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with ActionRunner {
   final ConversationDataProvider dataProvider;
+  final AccountId currentUser;
   final ProfileRepository profile;
   final ChatRepository chat;
+  final AccountDatabaseManager db;
+  final ApiManager api;
+  final AccountRepository account;
 
   StreamSubscription<(int, ConversationChanged?)>? _messageCountSubscription;
   StreamSubscription<ProfileChange>? _profileChangeSubscription;
   StreamSubscription<bool>? _isInMatchesSubscription;
 
   ConversationBloc(RepositoryInstances r, AccountId messageSenderAccountId, this.dataProvider)
-    : profile = r.profile,
+    : currentUser = r.accountId,
+      profile = r.profile,
       chat = r.chat,
+      db = r.accountDb,
+      api = r.api,
+      account = r.account,
       super(ConversationData(accountId: messageSenderAccountId)) {
     on<InitEvent>((data, emit) async {
       _log.info("Set conversation bloc initial state");
@@ -139,6 +150,8 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
 
       // Send check online status request when conversation is opened
       chat.checkOnlineStatusManager.handleCheckOnlineStatusRequest(state.accountId);
+
+      await markMessagesAsSeen();
 
       emit(state.copyWith(isBlocked: isBlocked));
     });
@@ -280,6 +293,77 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
     });
 
     add(InitEvent());
+  }
+
+  Future<void> markMessagesAsSeen() async {
+    final messageSeenEnabled = account.clientFeaturesConfigValue.chat?.messageStateSeen ?? false;
+    if (!messageSeenEnabled) {
+      final allMessages = await db
+          .accountData(
+            (db) => db.message.getSuccessfullyReceivedAndNotSeen(currentUser, state.accountId),
+          )
+          .ok();
+
+      if (allMessages == null || allMessages.isEmpty) {
+        return;
+      }
+
+      for (final message in allMessages) {
+        if (message.messageState == MessageState.received) {
+          await db.accountAction(
+            (db) => db.message.updateStateToReceivedAndSeenLocally(message.localId),
+          );
+        }
+      }
+
+      return;
+    }
+
+    final allMessages = await db
+        .accountData(
+          (db) => db.message.getSuccessfullyReceivedAndSeenStateChangeToServerNotYetDone(
+            currentUser,
+            state.accountId,
+          ),
+        )
+        .ok();
+
+    if (allMessages == null || allMessages.isEmpty) {
+      return;
+    }
+
+    for (final message in allMessages) {
+      if (message.messageState == MessageState.received) {
+        await db.accountAction(
+          (db) => db.message.updateStateToReceivedAndSeenLocally(message.localId),
+        );
+      }
+    }
+
+    final messageIds = allMessages
+        .map((m) {
+          final id = m.messageId;
+          if (id == null) {
+            return null;
+          }
+          return PendingMessageId(id: id, sender: state.accountId);
+        })
+        .whereType<PendingMessageId>()
+        .toList();
+
+    if (messageIds.isEmpty) {
+      return;
+    }
+
+    final result = await api.chatAction(
+      (api) => api.postMarkMessagesAsSeen(MessageSeenList(ids: messageIds)),
+    );
+
+    if (result.isOk()) {
+      for (final message in allMessages) {
+        await db.accountAction((db) => db.message.updateStateToReceivedAndSeen(message.localId));
+      }
+    }
   }
 
   @override

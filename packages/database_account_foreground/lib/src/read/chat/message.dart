@@ -190,4 +190,36 @@ class DaoReadMessage extends DatabaseAccessor<AccountForegroundDatabase>
         .map((m) => m.symmetricMessageEncryptionKey)
         .getSingleOrNull();
   }
+
+  Future<List<dbm.MessageEntry>> getSuccessfullyReceivedAndSeenStateChangeToServerNotYetDone(
+    api.AccountId localAccountId,
+    api.AccountId remoteAccountId,
+  ) async {
+    final messages =
+        await (select(message)
+              ..where((t) => t.localAccountId.equals(localAccountId.aid))
+              ..where((t) => t.remoteAccountId.equals(remoteAccountId.aid))
+              ..where(
+                (t) =>
+                    t.messageState.equals(dbm.MessageState.received.number) |
+                    t.messageState.equals(dbm.MessageState.receivedAndSeenLocally.number),
+              ))
+            .map((m) => _fromMessage(m))
+            .get();
+    return messages.nonNulls.toList();
+  }
+
+  Future<List<dbm.MessageEntry>> getSuccessfullyReceivedAndNotSeen(
+    api.AccountId localAccountId,
+    api.AccountId remoteAccountId,
+  ) async {
+    final messages =
+        await (select(message)
+              ..where((t) => t.localAccountId.equals(localAccountId.aid))
+              ..where((t) => t.remoteAccountId.equals(remoteAccountId.aid))
+              ..where((t) => t.messageState.equals(dbm.MessageState.received.number)))
+            .map((m) => _fromMessage(m))
+            .get();
+    return messages.nonNulls.toList();
+  }
 }

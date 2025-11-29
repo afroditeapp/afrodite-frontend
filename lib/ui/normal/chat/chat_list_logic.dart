@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:app/data/account_repository.dart';
 import 'package:app/data/chat/message_database_iterator.dart';
 import 'package:app/data/chat/typing_indicator_manager.dart';
 import 'package:app/data/chat_repository.dart';
@@ -30,6 +31,7 @@ class _LoadOldMessagesRequested extends _ChatEvent {
 class ChatListLogic {
   final chat_core.InMemoryChatController chatController;
   final ChatRepository chatRepository;
+  final AccountRepository accountRepository;
   final TypingIndicatorManager typingIndicatorManager;
   final MessageDatabaseIterator oldMessagesIterator;
   final AccountId currentUser;
@@ -44,6 +46,7 @@ class ChatListLogic {
   ChatListLogic({
     required this.chatController,
     required this.chatRepository,
+    required this.accountRepository,
     required this.typingIndicatorManager,
     required this.oldMessagesIterator,
     required this.currentUser,
@@ -120,6 +123,12 @@ class ChatListLogic {
         await chatController.removeMessage(lastMessage);
       }
 
+      final messageEntries = newMessages
+          .whereType<IteratorMessageEntry>()
+          .map((e) => e.entry)
+          .toList();
+      await _markMessagesAsSeenIfNeeded(messageEntries);
+
       _log.fine("Loaded ${newMessages.length} newer messages");
     }
   }
@@ -167,6 +176,46 @@ class ChatListLogic {
     final completer = Completer<bool>();
     _loadOldMessagesRelay.add(_LoadOldMessagesRequested(completer));
     return completer.future;
+  }
+
+  Future<void> _markMessagesAsSeenIfNeeded(List<MessageEntry> entries) async {
+    final messageSeenEnabled =
+        accountRepository.clientFeaturesConfigValue.chat?.messageStateSeen ?? false;
+    if (!messageSeenEnabled) {
+      return;
+    }
+
+    final entriesToMark = entries
+        .where((entry) => entry.messageState == MessageState.received)
+        .toList();
+
+    if (entriesToMark.isEmpty) {
+      return;
+    }
+
+    for (final entry in entriesToMark) {
+      await db.accountAction((db) => db.message.updateStateToReceivedAndSeenLocally(entry.localId));
+    }
+
+    final messageIds = entriesToMark
+        .map((entry) => entry.messageId)
+        .whereType<MessageId>()
+        .map((id) => PendingMessageId(id: id, sender: messageReceiver))
+        .toList();
+
+    if (messageIds.isEmpty) {
+      return;
+    }
+
+    final result = await chatRepository.api.chatAction(
+      (api) => api.postMarkMessagesAsSeen(MessageSeenList(ids: messageIds)),
+    );
+
+    if (result.isOk()) {
+      for (final entry in entriesToMark) {
+        await db.accountAction((db) => db.message.updateStateToReceivedAndSeen(entry.localId));
+      }
+    }
   }
 
   Future<void> dispose() async {
