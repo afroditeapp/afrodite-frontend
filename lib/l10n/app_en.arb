@@ -1598,7 +1598,7 @@
   "@profile_grid_screen_daily_likes_dialog_unlimited_likes_text": {
     "description": "Dialog text for unlimited likes specific text in daily likes info dialog"
   },
-  "profile_grid_screen_email_not_verified": "To view profiles, verify your email address.",
+  "profile_grid_screen_email_not_verified": "Please verify your email address. A verification link has been sent to your email. If you don't see it, check your spam folder.",
   "@profile_grid_screen_email_not_verified": {
     "description": "Info text which is shown when email is not verified"
   },

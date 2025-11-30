@@ -1317,7 +1317,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get profile_grid_screen_email_not_verified =>
-      'To view profiles, verify your email address.';
+      'Please verify your email address. A verification link has been sent to your email. If you don\'t see it, check your spam folder.';
 
   @override
   String get profile_grid_screen_email_not_verified_button =>

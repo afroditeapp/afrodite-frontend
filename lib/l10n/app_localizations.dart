@@ -2259,7 +2259,7 @@ abstract class AppLocalizations {
   /// Info text which is shown when email is not verified
   ///
   /// In en, this message translates to:
-  /// **'To view profiles, verify your email address.'**
+  /// **'Please verify your email address. A verification link has been sent to your email. If you don\'t see it, check your spam folder.'**
   String get profile_grid_screen_email_not_verified;
 
   /// Button text for account settings action when email is not verified
