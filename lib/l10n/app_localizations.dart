@@ -577,17 +577,41 @@ abstract class AppLocalizations {
   /// **'Decrypting failed'**
   String get conversation_screen_message_state_decrypting_failed;
 
+  /// Message state text that message was delivered to receiver
+  ///
+  /// In en, this message translates to:
+  /// **'Delivered'**
+  String get conversation_screen_message_state_delivered;
+
   /// Message state text that public key download failed
   ///
   /// In en, this message translates to:
   /// **'Public key download failed'**
   String get conversation_screen_message_state_public_key_download_failed;
 
+  /// Message state text that message was received and marked as seen
+  ///
+  /// In en, this message translates to:
+  /// **'Received and seen'**
+  String get conversation_screen_message_state_received_and_seen;
+
+  /// Message state text that message was received and marked as seen locally
+  ///
+  /// In en, this message translates to:
+  /// **'Received and seen locally'**
+  String get conversation_screen_message_state_received_and_seen_locally;
+
   /// Message state text that message was received successfully
   ///
   /// In en, this message translates to:
   /// **'Received successfully'**
   String get conversation_screen_message_state_received_successfully;
+
+  /// Message state text that message was seen by receiver
+  ///
+  /// In en, this message translates to:
+  /// **'Seen'**
+  String get conversation_screen_message_state_seen;
 
   /// Message state text that message sending failed
   ///

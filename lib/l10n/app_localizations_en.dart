@@ -317,12 +317,26 @@ class AppLocalizationsEn extends AppLocalizations {
       'Decrypting failed';
 
   @override
+  String get conversation_screen_message_state_delivered => 'Delivered';
+
+  @override
   String get conversation_screen_message_state_public_key_download_failed =>
       'Public key download failed';
 
   @override
+  String get conversation_screen_message_state_received_and_seen =>
+      'Received and seen';
+
+  @override
+  String get conversation_screen_message_state_received_and_seen_locally =>
+      'Received and seen locally';
+
+  @override
   String get conversation_screen_message_state_received_successfully =>
       'Received successfully';
+
+  @override
+  String get conversation_screen_message_state_seen => 'Seen';
 
   @override
   String get conversation_screen_message_state_sending_failed =>

@@ -370,13 +370,29 @@
   "@conversation_screen_message_state_decrypting_failed": {
     "description": "Message state text that message decrypting failed"
   },
+  "conversation_screen_message_state_delivered": "Delivered",
+  "@conversation_screen_message_state_delivered": {
+    "description": "Message state text that message was delivered to receiver"
+  },
   "conversation_screen_message_state_public_key_download_failed": "Public key download failed",
   "@conversation_screen_message_state_public_key_download_failed": {
     "description": "Message state text that public key download failed"
   },
+  "conversation_screen_message_state_received_and_seen": "Received and seen",
+  "@conversation_screen_message_state_received_and_seen": {
+    "description": "Message state text that message was received and marked as seen"
+  },
+  "conversation_screen_message_state_received_and_seen_locally": "Received and seen locally",
+  "@conversation_screen_message_state_received_and_seen_locally": {
+    "description": "Message state text that message was received and marked as seen locally"
+  },
   "conversation_screen_message_state_received_successfully": "Received successfully",
   "@conversation_screen_message_state_received_successfully": {
     "description": "Message state text that message was received successfully"
+  },
+  "conversation_screen_message_state_seen": "Seen",
+  "@conversation_screen_message_state_seen": {
+    "description": "Message state text that message was seen by receiver"
   },
   "conversation_screen_message_state_sending_failed": "Sending failed",
   "@conversation_screen_message_state_sending_failed": {

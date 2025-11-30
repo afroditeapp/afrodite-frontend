@@ -147,8 +147,16 @@ void closeActionsAndOpenDetails(
     stateText = screenContext.strings.conversation_screen_message_state_sending_failed;
   } else if (sentMessageState == SentMessageState.sent) {
     stateText = screenContext.strings.conversation_screen_message_state_sent_successfully;
+  } else if (sentMessageState == SentMessageState.delivered) {
+    stateText = screenContext.strings.conversation_screen_message_state_delivered;
+  } else if (sentMessageState == SentMessageState.seen) {
+    stateText = screenContext.strings.conversation_screen_message_state_seen;
   } else if (receivedMessageState == ReceivedMessageState.received) {
     stateText = screenContext.strings.conversation_screen_message_state_received_successfully;
+  } else if (receivedMessageState == ReceivedMessageState.receivedAndSeenLocally) {
+    stateText = screenContext.strings.conversation_screen_message_state_received_and_seen_locally;
+  } else if (receivedMessageState == ReceivedMessageState.receivedAndSeen) {
+    stateText = screenContext.strings.conversation_screen_message_state_received_and_seen;
   } else if (receivedMessageState == ReceivedMessageState.decryptingFailed) {
     stateText = screenContext.strings.conversation_screen_message_state_decrypting_failed;
   } else if (receivedMessageState == ReceivedMessageState.publicKeyDownloadFailed) {

@@ -455,10 +455,14 @@
     <string name="conversation_screen_message_too_many_pending_messages" description="Snackbar text that server is full of pending messages">Server pending message storage is full</string>
     <string name="conversation_screen_message_state_sending_in_progress" description="Message state text that message sending is in progress">Sending in progress</string>
     <string name="conversation_screen_message_state_sent_successfully" description="Message state text that message was sent successfully">Sent successfully</string>
+    <string name="conversation_screen_message_state_delivered" description="Message state text that message was delivered to receiver">Delivered</string>
+    <string name="conversation_screen_message_state_seen" description="Message state text that message was seen by receiver">Seen</string>
     <string name="conversation_screen_message_state_sending_failed" description="Message state text that message sending failed">Sending failed</string>
     <string name="conversation_screen_message_state_decrypting_failed" description="Message state text that message decrypting failed">Decrypting failed</string>
     <string name="conversation_screen_message_state_public_key_download_failed" description="Message state text that public key download failed">Public key download failed</string>
     <string name="conversation_screen_message_state_received_successfully" description="Message state text that message was received successfully">Received successfully</string>
+    <string name="conversation_screen_message_state_received_and_seen_locally" description="Message state text that message was received and marked as seen locally">Received and seen locally</string>
+    <string name="conversation_screen_message_state_received_and_seen" description="Message state text that message was received and marked as seen">Received and seen</string>
     <string name="conversation_screen_message_unsupported" description="Message text that message is unsupported">Unsupported message</string>
     <string name="conversation_screen_message_details_message_id" description="Title text for message ID value">Message ID</string>
     <string name="conversation_screen_message_error_is_actually_sent_successfully" description="Message remove or resend error that message is actually sent successfully">The message is actually sent successfully</string>
