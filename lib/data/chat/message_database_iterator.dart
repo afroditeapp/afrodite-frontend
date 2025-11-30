@@ -94,10 +94,10 @@ class MessageDatabaseIterator {
     // Insert date change markers
     final List<IteratorMessage> result = [];
     for (final message in messages) {
-      final messageDate = message.userVisibleTime().dateTime;
+      final messageDate = message.userVisibleTime().dateTime.toLocal();
       final messageDateOnly = DateTime(messageDate.year, messageDate.month, messageDate.day);
 
-      final prevDate = previousMessage?.userVisibleTime().dateTime;
+      final prevDate = previousMessage?.userVisibleTime().dateTime.toLocal();
       if (prevDate != null) {
         final prevDateOnly = DateTime(prevDate.year, prevDate.month, prevDate.day);
         if (!messageDateOnly.isAtSameMomentAs(prevDateOnly)) {
