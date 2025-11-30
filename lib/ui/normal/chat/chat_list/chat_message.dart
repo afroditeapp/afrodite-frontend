@@ -46,6 +46,9 @@ class ChatMessage extends StatelessWidget {
         : Theme.of(context).colorScheme.onPrimaryContainer;
 
     final timeTextStyle = TextStyle(color: foregroundColor, fontSize: 12.0);
+    final statusTextStyle = status == chat_core.MessageStatus.seen
+        ? TextStyle(color: Colors.lightBlue, fontSize: 12.0)
+        : timeTextStyle;
 
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
@@ -59,12 +62,27 @@ class ChatMessage extends StatelessWidget {
             const SizedBox(height: 4),
             Align(
               alignment: isSentByMe ? Alignment.centerRight : Alignment.centerLeft,
-              child: chat_ui.TimeAndStatus(
-                time: createdAt,
-                status: status,
-                showTime: true,
-                showStatus: isSentByMe && showStatus,
-                textStyle: timeTextStyle,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  chat_ui.TimeAndStatus(
+                    time: createdAt,
+                    status: status,
+                    showTime: true,
+                    showStatus: false,
+                    textStyle: timeTextStyle,
+                  ),
+                  if (isSentByMe && showStatus) ...[
+                    const SizedBox(width: 4),
+                    chat_ui.TimeAndStatus(
+                      time: createdAt,
+                      status: status,
+                      showTime: false,
+                      showStatus: true,
+                      textStyle: statusTextStyle,
+                    ),
+                  ],
+                ],
               ),
             ),
           ],
