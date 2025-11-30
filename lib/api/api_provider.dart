@@ -7,6 +7,7 @@ import 'package:http/io_client.dart';
 import 'package:openapi/api.dart';
 import 'package:app/assets.dart';
 import 'package:cronet_http/cronet_http.dart';
+import 'package:cupertino_http/cupertino_http.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:google_api_availability/google_api_availability.dart';
 
@@ -104,6 +105,10 @@ class ApiProvider {
         // Let's Encrypt certificate must be added in that case.
         client = IOClient(HttpClient(context: await createSecurityContextForBackendConnection()));
       }
+    } else if (Platform.isIOS) {
+      final config = URLSessionConfiguration.ephemeralSessionConfiguration()
+        ..cache = URLCache.withCapacity(memoryCapacity: 2 * 1024 * 1024);
+      client = CupertinoClient.fromSessionConfiguration(config);
     } else {
       client = IOClient(HttpClient(context: await createSecurityContextForBackendConnection()));
     }
