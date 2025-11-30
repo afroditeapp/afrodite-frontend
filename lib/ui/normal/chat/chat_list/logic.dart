@@ -5,7 +5,7 @@ import 'package:app/data/chat/message_database_iterator.dart';
 import 'package:app/data/chat/typing_indicator_manager.dart';
 import 'package:app/data/chat_repository.dart';
 import 'package:app/database/account_database_manager.dart';
-import 'package:app/ui/normal/chat/message_adapter.dart';
+import 'package:app/ui/normal/chat/chat_list/message_adapter.dart';
 import 'package:database/database.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart' as chat_core;
 import 'package:logging/logging.dart';
