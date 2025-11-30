@@ -6,13 +6,13 @@ import 'package:app/database/account_database_manager.dart';
 import 'package:app/localizations.dart';
 import 'package:app/logic/chat/conversation_bloc.dart';
 import 'package:app/model/freezed/logic/chat/conversation_bloc.dart';
+import 'package:app/ui/normal/chat/chat_list/chat_message.dart';
 import 'package:app/ui/normal/chat/chat_list_logic.dart';
 import 'package:app/ui/normal/chat/conversation_page.dart';
 import 'package:app/ui/normal/chat/message_adapter.dart';
 import 'package:app/ui/normal/chat/utils.dart';
 import 'package:app/ui_utils/list.dart';
 import 'package:app/ui_utils/snack_bar.dart';
-import 'package:app/utils/time.dart';
 import 'package:database/database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,8 +21,6 @@ import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart' as chat_core;
 import 'package:flutter_chat_ui/flutter_chat_ui.dart' as chat_ui;
-import 'package:provider/provider.dart';
-import 'package:utils/utils.dart';
 import 'dart:async';
 
 final _log = Logger("ChatList");
@@ -275,45 +273,15 @@ class _ChatListState extends State<ChatList> {
               Widget messageWidget;
 
               if (messageType == 'video_call_invitation') {
-                final isError = message.status == chat_core.MessageStatus.error;
-                final backgroundColor = isError
-                    ? Theme.of(context).colorScheme.errorContainer
-                    : Theme.of(context).colorScheme.primaryContainer;
-                final foregroundColor = isError
-                    ? Theme.of(context).colorScheme.onErrorContainer
-                    : Theme.of(context).colorScheme.onPrimaryContainer;
-
-                final timeTextStyle = TextStyle(color: foregroundColor, fontSize: 12.0);
-
-                messageWidget = Container(
-                  padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
-                  decoration: BoxDecoration(
-                    color: backgroundColor,
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: isSentByMe
-                        ? CrossAxisAlignment.end
-                        : CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      ElevatedButton.icon(
-                        onPressed: () => joinVideoCall(ctx, widget.messageReceiver),
-                        icon: const Icon(Icons.videocam),
-                        label: Text(
-                          context.strings.conversation_screen_join_video_call_button,
-                          style: TextStyle(fontSize: 16.0),
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      chat_ui.TimeAndStatus(
-                        time: message.createdAt,
-                        status: message.status,
-                        showTime: true,
-                        showStatus: isSentByMe,
-                        textStyle: timeTextStyle,
-                      ),
-                    ],
+                messageWidget = ChatMessage(
+                  createdAt: message.createdAt,
+                  status: message.status,
+                  isSentByMe: isSentByMe,
+                  isError: message.status == chat_core.MessageStatus.error,
+                  child: ElevatedButton.icon(
+                    onPressed: () => joinVideoCall(ctx, widget.messageReceiver),
+                    icon: const Icon(Icons.videocam),
+                    label: Text(context.strings.conversation_screen_join_video_call_button),
                   ),
                 );
               } else {
@@ -333,45 +301,24 @@ class _ChatListState extends State<ChatList> {
                     errorText = context.strings.generic_error;
                 }
 
-                final textStyle = TextStyle(
-                  color: Theme.of(context).colorScheme.onErrorContainer,
-                  fontSize: 16.0,
-                );
+                final textStyle = TextStyle(color: Theme.of(context).colorScheme.onErrorContainer);
 
-                messageWidget = Container(
-                  padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.errorContainer,
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: isSentByMe
-                        ? CrossAxisAlignment.end
-                        : CrossAxisAlignment.start,
+                messageWidget = ChatMessage(
+                  createdAt: message.createdAt,
+                  status: message.status,
+                  isSentByMe: isSentByMe,
+                  isError: true,
+                  showStatus: false,
+                  child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(
-                            Icons.error_outline,
-                            color: Theme.of(context).colorScheme.onErrorContainer,
-                            size: 20.0,
-                          ),
-                          const SizedBox(width: 8.0),
-                          Flexible(child: Text(errorText, style: textStyle)),
-                        ],
+                      Icon(
+                        Icons.error_outline,
+                        color: Theme.of(context).colorScheme.onErrorContainer,
+                        size: 20.0,
                       ),
-                      const SizedBox(height: 4.0),
-                      Text(
-                        _formatTimestamp(message.createdAt),
-                        style: TextStyle(
-                          color: Theme.of(
-                            context,
-                          ).colorScheme.onErrorContainer.withValues(alpha: 0.7),
-                          fontSize: 12.0,
-                        ),
-                      ),
+                      const SizedBox(width: 8.0),
+                      Flexible(child: Text(errorText, style: textStyle)),
                     ],
                   ),
                 );
@@ -399,37 +346,18 @@ class _ChatListState extends State<ChatList> {
               final localMessageId = LocalMessageId(int.parse(message.id));
               final r = context.read<RepositoryInstances>();
 
-              final messageWidget = chat_ui.SimpleTextMessage(
-                message: message,
-                index: index,
-                timeAndStatusPosition: isSentByMe
-                    ? chat_core.TimeAndStatusPosition.end
-                    : chat_core.TimeAndStatusPosition.start,
-              );
+              final isError = message.status == chat_core.MessageStatus.error;
+              final textColor = isError
+                  ? Theme.of(context).colorScheme.onErrorContainer
+                  : Theme.of(context).colorScheme.onPrimaryContainer;
 
-              final wrappedMessage = message.status == chat_core.MessageStatus.error
-                  ? Provider<chat_core.ChatTheme>.value(
-                      value: baseTheme.copyWith(
-                        colors: baseTheme.colors.copyWith(
-                          surfaceContainer: Theme.of(context).colorScheme.errorContainer,
-                          onSurface: Theme.of(context).colorScheme.onErrorContainer,
-                          primary: Theme.of(context).colorScheme.errorContainer,
-                          onPrimary: Theme.of(context).colorScheme.onErrorContainer,
-                        ),
-                      ),
-                      child: messageWidget,
-                    )
-                  : Provider<chat_core.ChatTheme>.value(
-                      value: baseTheme.copyWith(
-                        colors: baseTheme.colors.copyWith(
-                          surfaceContainer: Theme.of(context).colorScheme.primaryContainer,
-                          onSurface: Theme.of(context).colorScheme.onPrimaryContainer,
-                          primary: Theme.of(context).colorScheme.primaryContainer,
-                          onPrimary: Theme.of(context).colorScheme.onPrimaryContainer,
-                        ),
-                      ),
-                      child: messageWidget,
-                    );
+              final messageWidget = ChatMessage(
+                createdAt: message.createdAt,
+                status: message.status,
+                isSentByMe: isSentByMe,
+                isError: isError,
+                child: Text(message.text, style: TextStyle(color: textColor)),
+              );
 
               return _MessageStateWatcher(
                 localMessageId: localMessageId,
@@ -437,7 +365,7 @@ class _ChatListState extends State<ChatList> {
                 chatController: _chatController,
                 chatRepository: r.chat,
                 currentUserId: r.chat.currentUser.aid,
-                child: wrappedMessage,
+                child: messageWidget,
               );
             },
         emptyChatListBuilder: (BuildContext ctx) {
@@ -474,12 +402,6 @@ class _ChatListState extends State<ChatList> {
         },
       ),
     );
-  }
-
-  String _formatTimestamp(DateTime? timestamp) {
-    if (timestamp == null) return '';
-    final utcDateTime = UtcDateTime.fromDateTime(timestamp);
-    return timeOnlyString(utcDateTime);
   }
 
   @override
