@@ -124,6 +124,7 @@ Class | Method | HTTP request | Description
 *AccountBotApi* | [**postRemoteBotLogin**](doc//AccountBotApi.md#postremotebotlogin) | **POST** /account_api/remote_bot_login | Login for remote bots which are listed in server config file.
 *ChatApi* | [**getChatAppNotificationSettings**](doc//ChatApi.md#getchatappnotificationsettings) | **GET** /chat_api/get_chat_app_notification_settings | 
 *ChatApi* | [**getChatEmailNotificationSettings**](doc//ChatApi.md#getchatemailnotificationsettings) | **GET** /chat_api/get_chat_email_notification_settings | 
+*ChatApi* | [**getChatPrivacySettings**](doc//ChatApi.md#getchatprivacysettings) | **GET** /chat_api/get_chat_privacy_settings | 
 *ChatApi* | [**getConversationId**](doc//ChatApi.md#getconversationid) | **GET** /chat_api/conversation_id/{aid} | Get account specific conversation ID which can be used to display new message received notifications.
 *ChatApi* | [**getDailyLikesLeft**](doc//ChatApi.md#getdailylikesleft) | **GET** /chat_api/daily_likes_left | Get daily likes left value.
 *ChatApi* | [**getInitialMatchesIteratorState**](doc//ChatApi.md#getinitialmatchesiteratorstate) | **GET** /chat_api/matches/initial_state | 
@@ -141,6 +142,7 @@ Class | Method | HTTP request | Description
 *ChatApi* | [**postChatAppNotificationSettings**](doc//ChatApi.md#postchatappnotificationsettings) | **POST** /chat_api/post_chat_app_notification_settings | 
 *ChatApi* | [**postChatEmailNotificationSettings**](doc//ChatApi.md#postchatemailnotificationsettings) | **POST** /chat_api/post_chat_email_notification_settings | 
 *ChatApi* | [**postChatMessageReport**](doc//ChatApi.md#postchatmessagereport) | **POST** /chat_api/chat_message_report | Report chat message.
+*ChatApi* | [**postChatPrivacySettings**](doc//ChatApi.md#postchatprivacysettings) | **POST** /chat_api/post_chat_privacy_settings | 
 *ChatApi* | [**postCreateVideoCallUrl**](doc//ChatApi.md#postcreatevideocallurl) | **POST** /chat_api/post_create_video_call_url | Create video call URL to a meeting with an user.
 *ChatApi* | [**postDeleteMessageDeliveryInfo**](doc//ChatApi.md#postdeletemessagedeliveryinfo) | **POST** /chat_api/delete_message_delivery_info | Delete message delivery info entries by their database IDs.
 *ChatApi* | [**postGetMatchesIteratorPage**](doc//ChatApi.md#postgetmatchesiteratorpage) | **POST** /chat_api/matches | Get requested page of matches iterator page. If the page is empty there is no more matches available.
@@ -297,6 +299,7 @@ Class | Method | HTTP request | Description
  - [ChatConfig](doc//ChatConfig.md)
  - [ChatEmailNotificationSettings](doc//ChatEmailNotificationSettings.md)
  - [ChatMessageReport](doc//ChatMessageReport.md)
+ - [ChatPrivacySettings](doc//ChatPrivacySettings.md)
  - [CheckOnlineStatusConfig](doc//CheckOnlineStatusConfig.md)
  - [CheckOnlineStatusResponse](doc//CheckOnlineStatusResponse.md)
  - [ClientConfig](doc//ClientConfig.md)
@@ -430,7 +433,6 @@ Class | Method | HTTP request | Description
  - [MessageDeliveryInfoList](doc//MessageDeliveryInfoList.md)
  - [MessageId](doc//MessageId.md)
  - [MessageNumber](doc//MessageNumber.md)
- - [MessageSeenList](doc//MessageSeenList.md)
  - [MinDistanceKm](doc//MinDistanceKm.md)
  - [ModerationQueueType](doc//ModerationQueueType.md)
  - [MyProfileContent](doc//MyProfileContent.md)
@@ -534,6 +536,8 @@ Class | Method | HTTP request | Description
  - [SearchAgeRange](doc//SearchAgeRange.md)
  - [SearchGroups](doc//SearchGroups.md)
  - [SecurityContent](doc//SecurityContent.md)
+ - [SeenMessage](doc//SeenMessage.md)
+ - [SeenMessageList](doc//SeenMessageList.md)
  - [SendLikeResult](doc//SendLikeResult.md)
  - [SendMessageResult](doc//SendMessageResult.md)
  - [SendVerifyEmailMessageResult](doc//SendVerifyEmailMessageResult.md)

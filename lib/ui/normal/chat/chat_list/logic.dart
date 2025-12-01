@@ -5,6 +5,7 @@ import 'package:app/data/chat/message_database_iterator.dart';
 import 'package:app/data/chat/typing_indicator_manager.dart';
 import 'package:app/data/chat_repository.dart';
 import 'package:app/database/account_database_manager.dart';
+import 'package:app/logic/chat/conversation_bloc.dart';
 import 'package:app/ui/normal/chat/chat_list/message_adapter.dart';
 import 'package:database/database.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart' as chat_core;
@@ -197,25 +198,7 @@ class ChatListLogic {
       await db.accountAction((db) => db.message.updateStateToReceivedAndSeenLocally(entry.localId));
     }
 
-    final messageIds = entriesToMark
-        .map((entry) => entry.messageId)
-        .whereType<MessageId>()
-        .map((id) => PendingMessageId(id: id, sender: messageReceiver))
-        .toList();
-
-    if (messageIds.isEmpty) {
-      return;
-    }
-
-    final result = await chatRepository.api.chatAction(
-      (api) => api.postMarkMessagesAsSeen(MessageSeenList(ids: messageIds)),
-    );
-
-    if (result.isOk()) {
-      for (final entry in entriesToMark) {
-        await db.accountAction((db) => db.message.updateStateToReceivedAndSeen(entry.localId));
-      }
-    }
+    await markMessageEntryListSeen(chatRepository.api, db, entriesToMark);
   }
 
   Future<void> dispose() async {

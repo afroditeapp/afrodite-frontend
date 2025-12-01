@@ -98,6 +98,47 @@ class ChatApi {
     return null;
   }
 
+  /// Performs an HTTP 'GET /chat_api/get_chat_privacy_settings' operation and returns the [Response].
+  Future<Response> getChatPrivacySettingsWithHttpInfo() async {
+    // ignore: prefer_const_declarations
+    final path = r'/chat_api/get_chat_privacy_settings';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  Future<ChatPrivacySettings?> getChatPrivacySettings() async {
+    final response = await getChatPrivacySettingsWithHttpInfo();
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'ChatPrivacySettings',) as ChatPrivacySettings;
+    
+    }
+    return null;
+  }
+
   /// Get account specific conversation ID which can be used to display new message received notifications.
   ///
   /// The ID is available only for accounts which are a match.
@@ -902,6 +943,45 @@ class ChatApi {
     return null;
   }
 
+  /// Performs an HTTP 'POST /chat_api/post_chat_privacy_settings' operation and returns the [Response].
+  /// Parameters:
+  ///
+  /// * [ChatPrivacySettings] chatPrivacySettings (required):
+  Future<Response> postChatPrivacySettingsWithHttpInfo(ChatPrivacySettings chatPrivacySettings,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/chat_api/post_chat_privacy_settings';
+
+    // ignore: prefer_final_locals
+    Object? postBody = chatPrivacySettings;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Parameters:
+  ///
+  /// * [ChatPrivacySettings] chatPrivacySettings (required):
+  Future<void> postChatPrivacySettings(ChatPrivacySettings chatPrivacySettings,) async {
+    final response = await postChatPrivacySettingsWithHttpInfo(chatPrivacySettings,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+  }
+
   /// Create video call URL to a meeting with an user.
   ///
   /// The user must be a match.  If result value is empty then video calling is disabled.
@@ -1221,13 +1301,13 @@ class ChatApi {
   ///
   /// Parameters:
   ///
-  /// * [MessageSeenList] messageSeenList (required):
-  Future<Response> postMarkMessagesAsSeenWithHttpInfo(MessageSeenList messageSeenList,) async {
+  /// * [SeenMessageList] seenMessageList (required):
+  Future<Response> postMarkMessagesAsSeenWithHttpInfo(SeenMessageList seenMessageList,) async {
     // ignore: prefer_const_declarations
     final path = r'/chat_api/mark_messages_as_seen';
 
     // ignore: prefer_final_locals
-    Object? postBody = messageSeenList;
+    Object? postBody = seenMessageList;
 
     final queryParams = <QueryParam>[];
     final headerParams = <String, String>{};
@@ -1253,9 +1333,9 @@ class ChatApi {
   ///
   /// Parameters:
   ///
-  /// * [MessageSeenList] messageSeenList (required):
-  Future<void> postMarkMessagesAsSeen(MessageSeenList messageSeenList,) async {
-    final response = await postMarkMessagesAsSeenWithHttpInfo(messageSeenList,);
+  /// * [SeenMessageList] seenMessageList (required):
+  Future<void> postMarkMessagesAsSeen(SeenMessageList seenMessageList,) async {
+    final response = await postMarkMessagesAsSeenWithHttpInfo(seenMessageList,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

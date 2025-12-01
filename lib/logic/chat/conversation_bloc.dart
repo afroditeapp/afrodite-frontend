@@ -340,30 +340,7 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
       }
     }
 
-    final messageIds = allMessages
-        .map((m) {
-          final id = m.messageId;
-          if (id == null) {
-            return null;
-          }
-          return PendingMessageId(id: id, sender: state.accountId);
-        })
-        .whereType<PendingMessageId>()
-        .toList();
-
-    if (messageIds.isEmpty) {
-      return;
-    }
-
-    final result = await api.chatAction(
-      (api) => api.postMarkMessagesAsSeen(MessageSeenList(ids: messageIds)),
-    );
-
-    if (result.isOk()) {
-      for (final message in allMessages) {
-        await db.accountAction((db) => db.message.updateStateToReceivedAndSeen(message.localId));
-      }
-    }
+    await markMessageEntryListSeen(api, db, allMessages);
   }
 
   @override
@@ -372,5 +349,38 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
     await _profileChangeSubscription?.cancel();
     await _isInMatchesSubscription?.cancel();
     return super.close();
+  }
+}
+
+Future<void> markMessageEntryListSeen(
+  ApiManager api,
+  AccountDatabaseManager db,
+  List<MessageEntry> allMessages,
+) async {
+  final messageIds = allMessages
+      .map((m) {
+        final id = m.messageId;
+        final mn = m.messageNumber;
+        final sender = m.remoteAccountId;
+        if (id == null || mn == null) {
+          return null;
+        }
+        return SeenMessage(id: id, sender: sender, mn: mn);
+      })
+      .whereType<SeenMessage>()
+      .toList();
+
+  if (messageIds.isEmpty) {
+    return;
+  }
+
+  final result = await api.chatAction(
+    (api) => api.postMarkMessagesAsSeen(SeenMessageList(messages: messageIds)),
+  );
+
+  if (result.isOk()) {
+    for (final message in allMessages) {
+      await db.accountAction((db) => db.message.updateStateToReceivedAndSeen(message.localId));
+    }
   }
 }

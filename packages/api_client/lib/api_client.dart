@@ -258,6 +258,8 @@ class ApiClient {
           return ChatEmailNotificationSettings.fromJson(value);
         case 'ChatMessageReport':
           return ChatMessageReport.fromJson(value);
+        case 'ChatPrivacySettings':
+          return ChatPrivacySettings.fromJson(value);
         case 'CheckOnlineStatusConfig':
           return CheckOnlineStatusConfig.fromJson(value);
         case 'CheckOnlineStatusResponse':
@@ -524,8 +526,6 @@ class ApiClient {
           return MessageId.fromJson(value);
         case 'MessageNumber':
           return MessageNumber.fromJson(value);
-        case 'MessageSeenList':
-          return MessageSeenList.fromJson(value);
         case 'MinDistanceKm':
           return MinDistanceKm.fromJson(value);
         case 'ModerationQueueType':
@@ -732,6 +732,10 @@ class ApiClient {
           return SearchGroups.fromJson(value);
         case 'SecurityContent':
           return SecurityContent.fromJson(value);
+        case 'SeenMessage':
+          return SeenMessage.fromJson(value);
+        case 'SeenMessageList':
+          return SeenMessageList.fromJson(value);
         case 'SendLikeResult':
           return SendLikeResult.fromJson(value);
         case 'SendMessageResult':

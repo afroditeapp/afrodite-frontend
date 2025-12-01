@@ -60,6 +60,7 @@ lib/model/chat_app_notification_settings.dart
 lib/model/chat_config.dart
 lib/model/chat_email_notification_settings.dart
 lib/model/chat_message_report.dart
+lib/model/chat_privacy_settings.dart
 lib/model/check_online_status_config.dart
 lib/model/check_online_status_response.dart
 lib/model/client_config.dart
@@ -193,7 +194,6 @@ lib/model/message_delivery_info_id_list.dart
 lib/model/message_delivery_info_list.dart
 lib/model/message_id.dart
 lib/model/message_number.dart
-lib/model/message_seen_list.dart
 lib/model/min_distance_km.dart
 lib/model/moderation_queue_type.dart
 lib/model/my_profile_content.dart
@@ -297,6 +297,8 @@ lib/model/scheduled_tasks_config.dart
 lib/model/search_age_range.dart
 lib/model/search_groups.dart
 lib/model/security_content.dart
+lib/model/seen_message.dart
+lib/model/seen_message_list.dart
 lib/model/send_like_result.dart
 lib/model/send_message_result.dart
 lib/model/send_verify_email_message_result.dart
