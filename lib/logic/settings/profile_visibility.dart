@@ -6,29 +6,31 @@ import "package:flutter_bloc/flutter_bloc.dart";
 import "package:openapi/api.dart";
 import "package:app/data/account_repository.dart";
 import "package:app/localizations.dart";
-import "package:app/model/freezed/logic/settings/privacy_settings.dart";
+import "package:app/model/freezed/logic/settings/profile_visibility.dart";
 import "package:app/ui_utils/common_update_logic.dart";
 import "package:app/ui_utils/snack_bar.dart";
 import "package:app/utils.dart";
 
-sealed class PrivacySettingsEvent {}
+sealed class ProfileVisibilityEvent {}
 
-class NewVisibility extends PrivacySettingsEvent {
+class NewVisibility extends ProfileVisibilityEvent {
   final ProfileVisibility value;
   NewVisibility(this.value);
 }
 
-class ResetEdited extends PrivacySettingsEvent {}
+class ResetEdited extends ProfileVisibilityEvent {}
 
-class ToggleVisibilityAndSaveSettings extends PrivacySettingsEvent {}
+class ToggleVisibilityAndSaveSettings extends ProfileVisibilityEvent {}
 
-class PrivacySettingsBloc extends Bloc<PrivacySettingsEvent, PrivacySettingsData>
+class ProfileVisibilityBloc extends Bloc<ProfileVisibilityEvent, ProfileVisibilityData>
     with ActionRunner {
   final AccountRepository account;
 
   StreamSubscription<ProfileVisibility>? _visibilitySubscription;
 
-  PrivacySettingsBloc(RepositoryInstances r) : account = r.account, super(PrivacySettingsData()) {
+  ProfileVisibilityBloc(RepositoryInstances r)
+    : account = r.account,
+      super(ProfileVisibilityData()) {
     on<NewVisibility>((data, emit) {
       emit(state.copyWith(visiblity: data.value, editedVisibility: null));
     });

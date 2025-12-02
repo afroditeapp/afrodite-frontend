@@ -1,7 +1,7 @@
 import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/logic/profile/profile_filters.dart';
 import 'package:app/model/freezed/logic/profile/profile_filters.dart';
-import 'package:app/model/freezed/logic/settings/privacy_settings.dart';
+import 'package:app/model/freezed/logic/settings/profile_visibility.dart';
 import 'package:app/ui/normal/profiles/profile_filters.dart';
 import 'package:app/ui/normal/settings/blocked_profiles.dart';
 import 'package:app/ui/normal/settings/general/profile_grid_settings.dart';
@@ -15,7 +15,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:app/logic/app/navigator_state.dart';
-import 'package:app/logic/settings/privacy_settings.dart';
+import 'package:app/logic/settings/profile_visibility.dart';
 import 'package:app/logic/settings/search_settings.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui/normal/settings/account_settings.dart';
@@ -47,13 +47,13 @@ class SettingsScreenOpener extends StatelessWidget {
     // opens another screen, so this is good location
     // to init some blocs which load data from DB.
     context.read<SearchSettingsBloc>();
-    return SettingsScreen(privacySettingsBloc: context.read<PrivacySettingsBloc>());
+    return SettingsScreen(profileVisibilityBloc: context.read<ProfileVisibilityBloc>());
   }
 }
 
 class SettingsScreen extends StatefulWidget {
-  final PrivacySettingsBloc privacySettingsBloc;
-  const SettingsScreen({required this.privacySettingsBloc, super.key});
+  final ProfileVisibilityBloc profileVisibilityBloc;
+  const SettingsScreen({required this.profileVisibilityBloc, super.key});
 
   @override
   State<SettingsScreen> createState() => _SettingsScreenState();
@@ -63,7 +63,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   void initState() {
     super.initState();
-    widget.privacySettingsBloc.add(ResetEdited());
+    widget.profileVisibilityBloc.add(ResetEdited());
   }
 
   @override
@@ -135,7 +135,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     ];
   }
 
-  Widget profileVisibilitySetting(BuildContext context, PrivacySettingsData state) {
+  Widget profileVisibilitySetting(BuildContext context, ProfileVisibilityData state) {
     final ProfileVisibility visibility = state.valueVisibility();
     final String descriptionForVisibility = switch (visibility) {
       ProfileVisibility.pendingPrivate || ProfileVisibility.private =>
@@ -155,7 +155,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         if (state.updateState is! UpdateIdle) {
           showSnackBar(context.strings.generic_previous_action_in_progress);
         } else {
-          context.read<PrivacySettingsBloc>().add(ToggleVisibilityAndSaveSettings());
+          context.read<ProfileVisibilityBloc>().add(ToggleVisibilityAndSaveSettings());
         }
       },
       secondary: const Icon(Icons.public),
@@ -164,7 +164,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   List<Widget> securityAndPrivacySettings(BuildContext context) {
     return [
-      BlocBuilder<PrivacySettingsBloc, PrivacySettingsData>(
+      BlocBuilder<ProfileVisibilityBloc, ProfileVisibilityData>(
         builder: (context, state) {
           return profileVisibilitySetting(context, state);
         },
