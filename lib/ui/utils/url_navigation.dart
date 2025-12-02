@@ -35,6 +35,7 @@ import 'package:app/ui/normal/settings/news/news_list.dart';
 import 'package:app/ui/normal/settings/news/view_news.dart';
 import 'package:app/ui/normal/settings/notification_settings.dart';
 import 'package:app/ui/normal/settings/notifications/automatic_profile_search_results.dart';
+import 'package:app/ui/normal/settings/privacy_settings.dart';
 import 'package:app/ui/normal/settings/profile/edit_profile.dart';
 import 'package:app/ui/normal/settings/profile/search_settings.dart';
 import 'package:app/ui/normal/settings/statistics.dart';
@@ -167,6 +168,7 @@ List<UrlParser<MyScreenPage<Object>>> loggedInPages(RepositoryInstances r) => [
   AccountSettingsPage(),
   SearchSettingsPage(),
   LocationPage(),
+  PrivacySettingsPage(),
   BlockedProfilesPage(r),
   CurrentSecuritySelfiePage(),
   ContentManagementPage(),

@@ -1,16 +1,12 @@
 import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/logic/profile/profile_filters.dart';
 import 'package:app/model/freezed/logic/profile/profile_filters.dart';
-import 'package:app/model/freezed/logic/settings/profile_visibility.dart';
 import 'package:app/ui/normal/profiles/profile_filters.dart';
 import 'package:app/ui/normal/settings/blocked_profiles.dart';
 import 'package:app/ui/normal/settings/general/profile_grid_settings.dart';
 import 'package:app/ui/normal/settings/location.dart';
 import 'package:app/ui/normal/settings/media/current_security_selfie.dart';
 import 'package:app/ui/utils/web_notifications/web_notifications.dart';
-import 'package:app/ui_utils/common_update_logic.dart';
-import 'package:app/ui_utils/snack_bar.dart';
-import 'package:app/utils/api.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,9 +18,14 @@ import 'package:app/ui/normal/settings/account_settings.dart';
 import 'package:app/ui/normal/settings/data_export.dart';
 import 'package:app/ui/normal/settings/media/content_management.dart';
 import 'package:app/ui/normal/settings/email_notification_settings.dart';
+import 'package:app/ui/normal/settings/privacy_settings.dart';
 import 'package:app/ui/normal/settings/notification_settings.dart';
 import 'package:app/ui/normal/settings/profile/search_settings.dart';
 import 'package:app/localizations.dart';
+import 'package:app/model/freezed/logic/settings/profile_visibility.dart';
+import 'package:app/ui_utils/common_update_logic.dart';
+import 'package:app/ui_utils/snack_bar.dart';
+import 'package:app/utils/api.dart';
 import 'package:openapi/api.dart';
 
 void openSettingsScreen(BuildContext context) {
@@ -169,6 +170,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
           return profileVisibilitySetting(context, state);
         },
       ),
+      Setting.createSetting(Icons.lock, context.strings.privacy_settings_screen_title, () {
+        openPrivacySettings(context);
+      }).toListTile(),
       blockedProfiles(context),
       securitySelfie(context),
     ];

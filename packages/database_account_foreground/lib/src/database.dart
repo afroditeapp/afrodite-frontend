@@ -3,6 +3,7 @@ import 'package:database_account_foreground/src/read/chat/conversation_list.dart
 import 'package:database_account_foreground/src/read/chat/key.dart';
 import 'package:database_account_foreground/src/read/chat/like.dart';
 import 'package:database_account_foreground/src/read/chat/message.dart';
+import 'package:database_account_foreground/src/read/chat/privacy.dart';
 import 'package:database_account_foreground/src/read/common/config.dart';
 import 'package:database_account_foreground/src/read/account/login_session.dart';
 import 'package:database_account_foreground/src/read/app.dart';
@@ -17,6 +18,7 @@ import 'package:database_account_foreground/src/write/chat/conversation_list.dar
 import 'package:database_account_foreground/src/write/chat/key.dart';
 import 'package:database_account_foreground/src/write/chat/like.dart';
 import 'package:database_account_foreground/src/write/chat/message.dart';
+import 'package:database_account_foreground/src/write/chat/privacy.dart';
 import 'package:database_account_foreground/src/write/common/config.dart';
 import 'package:database_account_foreground/src/write/account/login_session.dart';
 import 'package:database_account_foreground/src/write/app.dart';
@@ -82,6 +84,7 @@ part 'database.g.dart';
     schema.PublicKey,
     schema.ConversationList,
     schema.DailyLikesLeft,
+    schema.ChatPrivacySettings,
     schema.Message,
   ],
   daos: [
@@ -107,6 +110,7 @@ part 'database.g.dart';
     DaoReadKey,
     DaoReadLike,
     DaoReadMessage,
+    DaoReadPrivacy,
 
     // Write
 
@@ -130,6 +134,7 @@ part 'database.g.dart';
     DaoWriteKey,
     DaoWriteLike,
     DaoWriteMessage,
+    DaoWritePrivacy,
   ],
 )
 class AccountForegroundDatabase extends _$AccountForegroundDatabase {
@@ -166,6 +171,7 @@ class AccountForegroundDatabaseRead {
   DaoReadKey get key => db.daoReadKey;
   DaoReadLike get like => db.daoReadLike;
   DaoReadMessage get message => db.daoReadMessage;
+  DaoReadPrivacy get privacy => db.daoReadPrivacy;
 }
 
 class AccountForegroundDatabaseWrite {
@@ -191,4 +197,5 @@ class AccountForegroundDatabaseWrite {
   DaoWriteKey get key => db.daoWriteKey;
   DaoWriteLike get like => db.daoWriteLike;
   DaoWriteMessage get message => db.daoWriteMessage;
+  DaoWritePrivacy get privacy => db.daoWritePrivacy;
 }

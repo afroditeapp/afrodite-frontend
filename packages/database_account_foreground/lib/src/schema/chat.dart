@@ -46,6 +46,12 @@ class DailyLikesLeft extends SingleRowTable {
   IntColumn get dailyLikesLeftSyncVersion => integer().nullable()();
 }
 
+class ChatPrivacySettings extends SingleRowTable {
+  BoolColumn get messageStateDelivered => boolean().withDefault(const Constant(false))();
+  BoolColumn get messageStateSent => boolean().withDefault(const Constant(false))();
+  BoolColumn get typingIndicator => boolean().withDefault(const Constant(false))();
+}
+
 class Message extends Table {
   /// Local message ID
   IntColumn get id => integer().autoIncrement()();

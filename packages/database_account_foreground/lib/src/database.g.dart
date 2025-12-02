@@ -12586,6 +12586,338 @@ class DailyLikesLeftCompanion extends UpdateCompanion<DailyLikesLeftData> {
   }
 }
 
+class $ChatPrivacySettingsTable extends schema.ChatPrivacySettings
+    with TableInfo<$ChatPrivacySettingsTable, ChatPrivacySetting> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $ChatPrivacySettingsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _messageStateDeliveredMeta =
+      const VerificationMeta('messageStateDelivered');
+  @override
+  late final GeneratedColumn<bool> messageStateDelivered =
+      GeneratedColumn<bool>(
+        'message_state_delivered',
+        aliasedName,
+        false,
+        type: DriftSqlType.bool,
+        requiredDuringInsert: false,
+        defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'CHECK ("message_state_delivered" IN (0, 1))',
+        ),
+        defaultValue: const Constant(false),
+      );
+  static const VerificationMeta _messageStateSentMeta = const VerificationMeta(
+    'messageStateSent',
+  );
+  @override
+  late final GeneratedColumn<bool> messageStateSent = GeneratedColumn<bool>(
+    'message_state_sent',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("message_state_sent" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _typingIndicatorMeta = const VerificationMeta(
+    'typingIndicator',
+  );
+  @override
+  late final GeneratedColumn<bool> typingIndicator = GeneratedColumn<bool>(
+    'typing_indicator',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("typing_indicator" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    messageStateDelivered,
+    messageStateSent,
+    typingIndicator,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'chat_privacy_settings';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<ChatPrivacySetting> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('message_state_delivered')) {
+      context.handle(
+        _messageStateDeliveredMeta,
+        messageStateDelivered.isAcceptableOrUnknown(
+          data['message_state_delivered']!,
+          _messageStateDeliveredMeta,
+        ),
+      );
+    }
+    if (data.containsKey('message_state_sent')) {
+      context.handle(
+        _messageStateSentMeta,
+        messageStateSent.isAcceptableOrUnknown(
+          data['message_state_sent']!,
+          _messageStateSentMeta,
+        ),
+      );
+    }
+    if (data.containsKey('typing_indicator')) {
+      context.handle(
+        _typingIndicatorMeta,
+        typingIndicator.isAcceptableOrUnknown(
+          data['typing_indicator']!,
+          _typingIndicatorMeta,
+        ),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  ChatPrivacySetting map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return ChatPrivacySetting(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      messageStateDelivered: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}message_state_delivered'],
+      )!,
+      messageStateSent: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}message_state_sent'],
+      )!,
+      typingIndicator: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}typing_indicator'],
+      )!,
+    );
+  }
+
+  @override
+  $ChatPrivacySettingsTable createAlias(String alias) {
+    return $ChatPrivacySettingsTable(attachedDatabase, alias);
+  }
+}
+
+class ChatPrivacySetting extends DataClass
+    implements Insertable<ChatPrivacySetting> {
+  final int id;
+  final bool messageStateDelivered;
+  final bool messageStateSent;
+  final bool typingIndicator;
+  const ChatPrivacySetting({
+    required this.id,
+    required this.messageStateDelivered,
+    required this.messageStateSent,
+    required this.typingIndicator,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['message_state_delivered'] = Variable<bool>(messageStateDelivered);
+    map['message_state_sent'] = Variable<bool>(messageStateSent);
+    map['typing_indicator'] = Variable<bool>(typingIndicator);
+    return map;
+  }
+
+  ChatPrivacySettingsCompanion toCompanion(bool nullToAbsent) {
+    return ChatPrivacySettingsCompanion(
+      id: Value(id),
+      messageStateDelivered: Value(messageStateDelivered),
+      messageStateSent: Value(messageStateSent),
+      typingIndicator: Value(typingIndicator),
+    );
+  }
+
+  factory ChatPrivacySetting.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return ChatPrivacySetting(
+      id: serializer.fromJson<int>(json['id']),
+      messageStateDelivered: serializer.fromJson<bool>(
+        json['messageStateDelivered'],
+      ),
+      messageStateSent: serializer.fromJson<bool>(json['messageStateSent']),
+      typingIndicator: serializer.fromJson<bool>(json['typingIndicator']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'messageStateDelivered': serializer.toJson<bool>(messageStateDelivered),
+      'messageStateSent': serializer.toJson<bool>(messageStateSent),
+      'typingIndicator': serializer.toJson<bool>(typingIndicator),
+    };
+  }
+
+  ChatPrivacySetting copyWith({
+    int? id,
+    bool? messageStateDelivered,
+    bool? messageStateSent,
+    bool? typingIndicator,
+  }) => ChatPrivacySetting(
+    id: id ?? this.id,
+    messageStateDelivered: messageStateDelivered ?? this.messageStateDelivered,
+    messageStateSent: messageStateSent ?? this.messageStateSent,
+    typingIndicator: typingIndicator ?? this.typingIndicator,
+  );
+  ChatPrivacySetting copyWithCompanion(ChatPrivacySettingsCompanion data) {
+    return ChatPrivacySetting(
+      id: data.id.present ? data.id.value : this.id,
+      messageStateDelivered: data.messageStateDelivered.present
+          ? data.messageStateDelivered.value
+          : this.messageStateDelivered,
+      messageStateSent: data.messageStateSent.present
+          ? data.messageStateSent.value
+          : this.messageStateSent,
+      typingIndicator: data.typingIndicator.present
+          ? data.typingIndicator.value
+          : this.typingIndicator,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ChatPrivacySetting(')
+          ..write('id: $id, ')
+          ..write('messageStateDelivered: $messageStateDelivered, ')
+          ..write('messageStateSent: $messageStateSent, ')
+          ..write('typingIndicator: $typingIndicator')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(id, messageStateDelivered, messageStateSent, typingIndicator);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is ChatPrivacySetting &&
+          other.id == this.id &&
+          other.messageStateDelivered == this.messageStateDelivered &&
+          other.messageStateSent == this.messageStateSent &&
+          other.typingIndicator == this.typingIndicator);
+}
+
+class ChatPrivacySettingsCompanion extends UpdateCompanion<ChatPrivacySetting> {
+  final Value<int> id;
+  final Value<bool> messageStateDelivered;
+  final Value<bool> messageStateSent;
+  final Value<bool> typingIndicator;
+  const ChatPrivacySettingsCompanion({
+    this.id = const Value.absent(),
+    this.messageStateDelivered = const Value.absent(),
+    this.messageStateSent = const Value.absent(),
+    this.typingIndicator = const Value.absent(),
+  });
+  ChatPrivacySettingsCompanion.insert({
+    this.id = const Value.absent(),
+    this.messageStateDelivered = const Value.absent(),
+    this.messageStateSent = const Value.absent(),
+    this.typingIndicator = const Value.absent(),
+  });
+  static Insertable<ChatPrivacySetting> custom({
+    Expression<int>? id,
+    Expression<bool>? messageStateDelivered,
+    Expression<bool>? messageStateSent,
+    Expression<bool>? typingIndicator,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (messageStateDelivered != null)
+        'message_state_delivered': messageStateDelivered,
+      if (messageStateSent != null) 'message_state_sent': messageStateSent,
+      if (typingIndicator != null) 'typing_indicator': typingIndicator,
+    });
+  }
+
+  ChatPrivacySettingsCompanion copyWith({
+    Value<int>? id,
+    Value<bool>? messageStateDelivered,
+    Value<bool>? messageStateSent,
+    Value<bool>? typingIndicator,
+  }) {
+    return ChatPrivacySettingsCompanion(
+      id: id ?? this.id,
+      messageStateDelivered:
+          messageStateDelivered ?? this.messageStateDelivered,
+      messageStateSent: messageStateSent ?? this.messageStateSent,
+      typingIndicator: typingIndicator ?? this.typingIndicator,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (messageStateDelivered.present) {
+      map['message_state_delivered'] = Variable<bool>(
+        messageStateDelivered.value,
+      );
+    }
+    if (messageStateSent.present) {
+      map['message_state_sent'] = Variable<bool>(messageStateSent.value);
+    }
+    if (typingIndicator.present) {
+      map['typing_indicator'] = Variable<bool>(typingIndicator.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ChatPrivacySettingsCompanion(')
+          ..write('id: $id, ')
+          ..write('messageStateDelivered: $messageStateDelivered, ')
+          ..write('messageStateSent: $messageStateSent, ')
+          ..write('typingIndicator: $typingIndicator')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $MessageTable extends schema.Message
     with TableInfo<$MessageTable, MessageData> {
   @override
@@ -13471,6 +13803,8 @@ abstract class _$AccountForegroundDatabase extends GeneratedDatabase {
     this,
   );
   late final $DailyLikesLeftTable dailyLikesLeft = $DailyLikesLeftTable(this);
+  late final $ChatPrivacySettingsTable chatPrivacySettings =
+      $ChatPrivacySettingsTable(this);
   late final $MessageTable message = $MessageTable(this);
   late final DaoReadApp daoReadApp = DaoReadApp(
     this as AccountForegroundDatabase,
@@ -13513,6 +13847,9 @@ abstract class _$AccountForegroundDatabase extends GeneratedDatabase {
   late final DaoReadMessage daoReadMessage = DaoReadMessage(
     this as AccountForegroundDatabase,
   );
+  late final DaoReadPrivacy daoReadPrivacy = DaoReadPrivacy(
+    this as AccountForegroundDatabase,
+  );
   late final DaoWriteApp daoWriteApp = DaoWriteApp(
     this as AccountForegroundDatabase,
   );
@@ -13552,6 +13889,9 @@ abstract class _$AccountForegroundDatabase extends GeneratedDatabase {
     this as AccountForegroundDatabase,
   );
   late final DaoWriteMessage daoWriteMessage = DaoWriteMessage(
+    this as AccountForegroundDatabase,
+  );
+  late final DaoWritePrivacy daoWritePrivacy = DaoWritePrivacy(
     this as AccountForegroundDatabase,
   );
   @override
@@ -13596,6 +13936,7 @@ abstract class _$AccountForegroundDatabase extends GeneratedDatabase {
     publicKey,
     conversationList,
     dailyLikesLeft,
+    chatPrivacySettings,
     message,
   ];
 }

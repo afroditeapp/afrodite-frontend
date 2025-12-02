@@ -46,6 +46,7 @@ import 'package:app/logic/profile/location.dart';
 import 'package:app/logic/profile/my_profile.dart';
 import 'package:app/logic/profile/profile_filters.dart';
 import 'package:app/logic/settings/blocked_profiles.dart';
+import 'package:app/logic/settings/privacy_settings.dart';
 import 'package:app/logic/settings/profile_visibility.dart';
 import 'package:app/logic/settings/search_settings.dart';
 import 'package:app/logic/settings/ui_settings.dart';
@@ -297,6 +298,7 @@ class NavigatorNormal extends LoggedInRootScreen {
         BlocProvider(create: (_) => EditMyProfileBloc(r)),
         BlocProvider(create: (_) => SelectContentBloc(r)),
         BlocProvider(create: (_) => ProfilePicturesBloc(r)),
+        BlocProvider(create: (_) => PrivacySettingsBloc(r)),
         BlocProvider(create: (_) => ProfileVisibilityBloc(r)),
         BlocProvider(create: (_) => BlockedProfilesBloc(r)),
         BlocProvider(create: (_) => SearchSettingsBloc(r)),

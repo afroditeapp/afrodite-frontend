@@ -2106,6 +2106,36 @@ abstract class AppLocalizations {
   /// **'Enable notifications'**
   String get notification_settings_screen_web_request_permission;
 
+  /// Setting for message delivered state
+  ///
+  /// In en, this message translates to:
+  /// **'Message delivery receipts'**
+  String get privacy_settings_message_state_delivered;
+
+  /// Setting for message sent state
+  ///
+  /// In en, this message translates to:
+  /// **'Message read receipts'**
+  String get privacy_settings_message_state_sent;
+
+  /// Title for chat privacy settings category
+  ///
+  /// In en, this message translates to:
+  /// **'Chat'**
+  String get privacy_settings_screen_chat_category;
+
+  /// Title for privacy settings screen
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy'**
+  String get privacy_settings_screen_title;
+
+  /// Setting for typing indicator
+  ///
+  /// In en, this message translates to:
+  /// **'Typing indicator'**
+  String get privacy_settings_typing_indicator;
+
   /// Title for disable filters action
   ///
   /// In en, this message translates to:

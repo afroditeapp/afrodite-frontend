@@ -96,6 +96,7 @@ class ChatRepository extends DataRepositoryWithLifecycle {
     return await _sentBlocksRefresh()
         .andThen((_) => _generateMessageKeyIfNeeded())
         .andThen((_) => _reloadChatNotificationSettings())
+        .andThen((_) => reloadChatPrivacySettings())
         .andThen((_) => reloadDailyLikesLimit())
         .andThenEmptyErr((_) => db.accountAction((db) => db.app.updateChatSyncDone(true)));
   }
@@ -112,6 +113,7 @@ class ChatRepository extends DataRepositoryWithLifecycle {
       await _sentBlocksRefresh()
           .andThen((_) => _generateMessageKeyIfNeeded())
           .andThen((_) => _reloadChatNotificationSettings())
+          .andThen((_) => reloadChatPrivacySettings())
           .andThen((_) => reloadDailyLikesLimit())
           .andThenEmptyErr((_) => db.accountAction((db) => db.app.updateChatSyncDone(true)));
     });
@@ -426,6 +428,16 @@ class ChatRepository extends DataRepositoryWithLifecycle {
             (db) => db.appNotificationSettings.updateChatNotificationSettings(v),
           ),
         );
+  }
+
+  Future<Result<(), ()>> reloadChatPrivacySettings() async {
+    final settings = await api.chat((api) => api.getChatPrivacySettings()).ok();
+    if (settings == null) {
+      return const Err(());
+    }
+    return await db
+        .accountAction((db) => db.privacy.updateChatPrivacySettings(settings))
+        .emptyErr();
   }
 
   Future<Result<(), ()>> reloadDailyLikesLimit() async {

@@ -1212,6 +1212,22 @@ class AppLocalizationsEn extends AppLocalizations {
       'Enable notifications';
 
   @override
+  String get privacy_settings_message_state_delivered =>
+      'Message delivery receipts';
+
+  @override
+  String get privacy_settings_message_state_sent => 'Message read receipts';
+
+  @override
+  String get privacy_settings_screen_chat_category => 'Chat';
+
+  @override
+  String get privacy_settings_screen_title => 'Privacy';
+
+  @override
+  String get privacy_settings_typing_indicator => 'Typing indicator';
+
+  @override
   String get profile_filters_screen_disable_filters_action => 'Disable filters';
 
   @override
