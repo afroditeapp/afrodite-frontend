@@ -4,9 +4,17 @@ import 'package:flutter_chat_core/flutter_chat_core.dart' as chat;
 
 /// Adapter to convert app's IteratorMessage to flutter_chat_core messages
 class MessageAdapter {
-  static chat.Message toFlutterChatMessage(IteratorMessage message, String currentUserId) {
+  static chat.Message toFlutterChatMessage(
+    IteratorMessage message,
+    String currentUserId, {
+    required bool messageStateDeliveredEnabled,
+  }) {
     return switch (message) {
-      IteratorMessageEntry(:final entry) => messageEntryToFlutterChatMessage(entry, currentUserId),
+      IteratorMessageEntry(:final entry) => messageEntryToFlutterChatMessage(
+        entry,
+        currentUserId,
+        messageStateDeliveredEnabled: messageStateDeliveredEnabled,
+      ),
       MessageDateChange(:final date) => chat.Message.system(
         id: 'date_${date.millisecondsSinceEpoch}',
         authorId: currentUserId,
@@ -17,7 +25,11 @@ class MessageAdapter {
     };
   }
 
-  static chat.Message messageEntryToFlutterChatMessage(MessageEntry entry, String currentUserId) {
+  static chat.Message messageEntryToFlutterChatMessage(
+    MessageEntry entry,
+    String currentUserId, {
+    required bool messageStateDeliveredEnabled,
+  }) {
     final isCurrentUser = entry.messageState.toSentState() != null;
     final authorId = isCurrentUser ? currentUserId : entry.remoteAccountId.aid;
     final createdAt = entry.userVisibleTime().dateTime;
@@ -52,8 +64,13 @@ class MessageAdapter {
           sentAt = createdAt;
           status = chat.MessageStatus.sent;
         case SentMessageState.delivered:
-          deliveredAt = entry.deliveredUnixTime?.dateTime ?? createdAt;
-          status = chat.MessageStatus.delivered;
+          if (messageStateDeliveredEnabled) {
+            deliveredAt = entry.deliveredUnixTime?.dateTime ?? createdAt;
+            status = chat.MessageStatus.delivered;
+          } else {
+            sentAt = createdAt;
+            status = chat.MessageStatus.sent;
+          }
         case SentMessageState.seen:
           seenAt = entry.seenUnixTime?.dateTime ?? createdAt;
           status = chat.MessageStatus.seen;
@@ -129,8 +146,17 @@ class MessageAdapter {
 
   static List<chat.Message> toFlutterChatMessages(
     List<IteratorMessage> messages,
-    String currentUserId,
-  ) {
-    return messages.map((entry) => toFlutterChatMessage(entry, currentUserId)).toList();
+    String currentUserId, {
+    required bool messageStateDeliveredEnabled,
+  }) {
+    return messages
+        .map(
+          (entry) => toFlutterChatMessage(
+            entry,
+            currentUserId,
+            messageStateDeliveredEnabled: messageStateDeliveredEnabled,
+          ),
+        )
+        .toList();
   }
 }

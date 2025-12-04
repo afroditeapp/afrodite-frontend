@@ -36,6 +36,7 @@ class ChatList extends StatefulWidget {
   final AccountDatabaseManager db;
   final TypingIndicatorManager typingIndicatorManager;
   final bool typingIndicatorEnabled;
+  final bool messageStateDeliveredEnabled;
 
   const ChatList(
     this.profileEntry,
@@ -46,6 +47,7 @@ class ChatList extends StatefulWidget {
     required this.db,
     required this.typingIndicatorManager,
     required this.typingIndicatorEnabled,
+    required this.messageStateDeliveredEnabled,
     super.key,
   });
 
@@ -70,6 +72,7 @@ class _ChatListState extends State<ChatList> {
     final initialMessages = MessageAdapter.toFlutterChatMessages(
       widget.initialMessages,
       widget.currentUser.aid,
+      messageStateDeliveredEnabled: widget.messageStateDeliveredEnabled,
     );
 
     _chatController = chat_core.InMemoryChatController(messages: initialMessages);
@@ -95,6 +98,7 @@ class _ChatListState extends State<ChatList> {
       messageReceiver: widget.messageReceiver,
       db: widget.db,
       typingIndicatorEnabled: widget.typingIndicatorEnabled,
+      messageStateDeliveredEnabled: widget.messageStateDeliveredEnabled,
     );
   }
 
@@ -338,6 +342,7 @@ class _ChatListState extends State<ChatList> {
                 chatController: _chatController,
                 chatRepository: r.chat,
                 currentUserId: r.chat.currentUser.aid,
+                messageStateDeliveredEnabled: widget.messageStateDeliveredEnabled,
                 child: messageWidget,
               );
             },
@@ -371,6 +376,7 @@ class _ChatListState extends State<ChatList> {
                 chatController: _chatController,
                 chatRepository: r.chat,
                 currentUserId: r.chat.currentUser.aid,
+                messageStateDeliveredEnabled: widget.messageStateDeliveredEnabled,
                 child: messageWidget,
               );
             },
@@ -443,6 +449,7 @@ class _MessageStateWatcher extends StatefulWidget {
   final chat_core.InMemoryChatController chatController;
   final ChatRepository chatRepository;
   final String currentUserId;
+  final bool messageStateDeliveredEnabled;
   final Widget child;
 
   const _MessageStateWatcher({
@@ -451,6 +458,7 @@ class _MessageStateWatcher extends StatefulWidget {
     required this.chatController,
     required this.chatRepository,
     required this.currentUserId,
+    required this.messageStateDeliveredEnabled,
     required this.child,
   });
 
@@ -489,6 +497,7 @@ class _MessageStateWatcherState extends State<_MessageStateWatcher> {
               final updatedMessage = MessageAdapter.messageEntryToFlutterChatMessage(
                 entry,
                 widget.currentUserId,
+                messageStateDeliveredEnabled: widget.messageStateDeliveredEnabled,
               );
               WidgetsBinding.instance.addPostFrameCallback((_) {
                 final index = widget.chatController.messages.indexWhere(

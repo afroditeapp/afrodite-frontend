@@ -39,6 +39,7 @@ class ChatListLogic {
   final AccountId messageReceiver;
   final AccountDatabaseManager db;
   final bool typingIndicatorEnabled;
+  final bool messageStateDeliveredEnabled;
 
   static const String _typingIndicatorMessageId = 'typing_indicator_message';
 
@@ -55,6 +56,7 @@ class ChatListLogic {
     required this.messageReceiver,
     required this.db,
     required this.typingIndicatorEnabled,
+    required this.messageStateDeliveredEnabled,
   }) {
     _setupEventSubscription();
   }
@@ -114,7 +116,11 @@ class ChatListLogic {
     );
 
     if (newMessages.isNotEmpty) {
-      final chatMessages = MessageAdapter.toFlutterChatMessages(newMessages, currentUser.aid);
+      final chatMessages = MessageAdapter.toFlutterChatMessages(
+        newMessages,
+        currentUser.aid,
+        messageStateDeliveredEnabled: messageStateDeliveredEnabled,
+      );
 
       final lastMessage = chatController.messages.lastOrNull;
       final hasTypingIndicator = lastMessage?.id == _typingIndicatorMessageId;
@@ -153,6 +159,7 @@ class ChatListLogic {
     final chatMessages = MessageAdapter.toFlutterChatMessages(
       oldMessages.reversed.toList(),
       currentUser.aid,
+      messageStateDeliveredEnabled: messageStateDeliveredEnabled,
     );
 
     await chatController.insertAllMessages(chatMessages, index: 0, animated: false);

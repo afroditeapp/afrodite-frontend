@@ -243,7 +243,7 @@ class ConversationScreenState extends State<ConversationScreen> {
           return Container();
         } else {
           final r = context.read<RepositoryInstances>();
-          final typingIndicatorEnabled = context.read<PrivacySettingsBloc>().state.typingIndicator;
+          final privacySettings = context.read<PrivacySettingsBloc>().state;
           final clientFeaturesChat = r.account.clientFeaturesConfigValue.chat;
           return ChatList(
             widget.profileEntry,
@@ -254,7 +254,10 @@ class ConversationScreenState extends State<ConversationScreen> {
             db: r.accountDb,
             typingIndicatorManager: r.chat.typingIndicatorManager,
             typingIndicatorEnabled:
-                typingIndicatorEnabled && clientFeaturesChat?.typingIndicator != null,
+                privacySettings.typingIndicator && clientFeaturesChat?.typingIndicator != null,
+            messageStateDeliveredEnabled:
+                privacySettings.messageStateDelivered &&
+                clientFeaturesChat?.messageStateDelivered == true,
           );
         }
       },
