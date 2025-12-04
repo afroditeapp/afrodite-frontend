@@ -1,3 +1,5 @@
+import 'package:app/logic/account/client_features_config.dart';
+import 'package:app/model/freezed/logic/account/client_features_config.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui_utils/common_update_logic.dart';
 import 'package:app/ui_utils/dialog.dart';
@@ -95,16 +97,30 @@ class _PrivacySettingsScreenState extends State<PrivacySettingsScreen> {
   }
 
   Widget content(BuildContext context, PrivacySettingsData state) {
-    return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          settingsCategoryTitle(context, context.strings.privacy_settings_screen_chat_category),
-          messageStateDelivered(context, state),
-          messageStateSent(context, state),
-          typingIndicator(context, state),
-        ],
-      ),
+    return BlocBuilder<ClientFeaturesConfigBloc, ClientFeaturesConfigData>(
+      builder: (context, configData) {
+        final chatConfig = configData.config.chat;
+        final showMessageStateDelivered = chatConfig?.messageStateDelivered ?? false;
+        final showMessageStateSent = chatConfig?.messageStateSeen ?? false;
+        final showTypingIndicator = chatConfig?.typingIndicator != null;
+        final chatSettingsHidden =
+            !showMessageStateDelivered && !showMessageStateSent && !showTypingIndicator;
+        return SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (!chatSettingsHidden)
+                settingsCategoryTitle(
+                  context,
+                  context.strings.privacy_settings_screen_chat_category,
+                ),
+              if (showMessageStateDelivered) messageStateDelivered(context, state),
+              if (showMessageStateSent) messageStateSent(context, state),
+              if (showTypingIndicator) typingIndicator(context, state),
+            ],
+          ),
+        );
+      },
     );
   }
 
