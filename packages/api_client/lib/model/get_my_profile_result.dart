@@ -13,22 +13,12 @@ part of openapi.api;
 class GetMyProfileResult {
   /// Returns a new [GetMyProfileResult] instance.
   GetMyProfileResult({
-    this.lst,
     this.nameModerationInfo,
     required this.p,
     required this.sv,
     this.textModerationInfo,
     required this.v,
   });
-
-  /// Account's most recent disconnect time.  If the last seen time is not None, then it is Unix timestamp or -1 if the profile is currently online.
-  ///
-  /// Please note: This property should have been non-nullable! Since the specification file
-  /// does not include a default value (using the "default:" property), however, the generated
-  /// source code must fall back to having a nullable type.
-  /// Consider adding a "default:" property in the specification file to hide this note.
-  ///
-  int? lst;
 
   ProfileStringModerationInfo? nameModerationInfo;
 
@@ -42,7 +32,6 @@ class GetMyProfileResult {
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is GetMyProfileResult &&
-    other.lst == lst &&
     other.nameModerationInfo == nameModerationInfo &&
     other.p == p &&
     other.sv == sv &&
@@ -52,7 +41,6 @@ class GetMyProfileResult {
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (lst == null ? 0 : lst!.hashCode) +
     (nameModerationInfo == null ? 0 : nameModerationInfo!.hashCode) +
     (p.hashCode) +
     (sv.hashCode) +
@@ -60,15 +48,10 @@ class GetMyProfileResult {
     (v.hashCode);
 
   @override
-  String toString() => 'GetMyProfileResult[lst=$lst, nameModerationInfo=$nameModerationInfo, p=$p, sv=$sv, textModerationInfo=$textModerationInfo, v=$v]';
+  String toString() => 'GetMyProfileResult[nameModerationInfo=$nameModerationInfo, p=$p, sv=$sv, textModerationInfo=$textModerationInfo, v=$v]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-    if (this.lst != null) {
-      json[r'lst'] = this.lst;
-    } else {
-      json[r'lst'] = null;
-    }
     if (this.nameModerationInfo != null) {
       json[r'name_moderation_info'] = this.nameModerationInfo;
     } else {
@@ -104,7 +87,6 @@ class GetMyProfileResult {
       }());
 
       return GetMyProfileResult(
-        lst: mapValueOfType<int>(json, r'lst'),
         nameModerationInfo: ProfileStringModerationInfo.fromJson(json[r'name_moderation_info']),
         p: Profile.fromJson(json[r'p'])!,
         sv: ProfileSyncVersion.fromJson(json[r'sv'])!,

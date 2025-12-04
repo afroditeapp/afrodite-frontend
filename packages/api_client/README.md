@@ -226,6 +226,7 @@ Class | Method | HTTP request | Description
 *ProfileApi* | [**getProfileAppNotificationSettings**](doc//ProfileApi.md#getprofileappnotificationsettings) | **GET** /profile_api/get_profile_app_notification_settings | 
 *ProfileApi* | [**getProfileFilters**](doc//ProfileApi.md#getprofilefilters) | **GET** /profile_api/profile_filters | Get current profile filters.
 *ProfileApi* | [**getProfileFromDatabaseDebugModeBenchmark**](doc//ProfileApi.md#getprofilefromdatabasedebugmodebenchmark) | **GET** /profile_api/benchmark/profile/{aid} | Get account's current profile from database. Debug mode must be enabled that route can be used.
+*ProfileApi* | [**getProfilePrivacySettings**](doc//ProfileApi.md#getprofileprivacysettings) | **GET** /profile_api/get_profile_privacy_settings | 
 *ProfileApi* | [**getProfileStatistics**](doc//ProfileApi.md#getprofilestatistics) | **GET** /profile_api/profile_statistics | Non default values for [model::GetProfileStatisticsParams] requires [model::Permissions::admin_profile_statistics].
 *ProfileApi* | [**getSearchAgeRange**](doc//ProfileApi.md#getsearchagerange) | **GET** /profile_api/search_age_range | Get account's current search age range
 *ProfileApi* | [**getSearchGroups**](doc//ProfileApi.md#getsearchgroups) | **GET** /profile_api/search_groups | Get account's current search groups (gender and what gender user is looking for)
@@ -242,6 +243,7 @@ Class | Method | HTTP request | Description
 *ProfileApi* | [**postProfile**](doc//ProfileApi.md#postprofile) | **POST** /profile_api/profile | Update profile information.
 *ProfileApi* | [**postProfileAppNotificationSettings**](doc//ProfileApi.md#postprofileappnotificationsettings) | **POST** /profile_api/post_profile_app_notification_settings | 
 *ProfileApi* | [**postProfileFilters**](doc//ProfileApi.md#postprofilefilters) | **POST** /profile_api/profile_filters | Set profile filters.
+*ProfileApi* | [**postProfilePrivacySettings**](doc//ProfileApi.md#postprofileprivacysettings) | **POST** /profile_api/post_profile_privacy_settings | 
 *ProfileApi* | [**postProfileToDatabaseDebugModeBenchmark**](doc//ProfileApi.md#postprofiletodatabasedebugmodebenchmark) | **POST** /profile_api/benchmark/profile | Post account's current profile directly to database. Debug mode must be enabled that route can be used.
 *ProfileApi* | [**postReportProfileName**](doc//ProfileApi.md#postreportprofilename) | **POST** /profile_api/report_profile_name | Report profile name
 *ProfileApi* | [**postReportProfileText**](doc//ProfileApi.md#postreportprofiletext) | **POST** /profile_api/report_profile_text | Report profile text
@@ -485,6 +487,7 @@ Class | Method | HTTP request | Description
  - [ProfileIteratorSessionId](doc//ProfileIteratorSessionId.md)
  - [ProfileLink](doc//ProfileLink.md)
  - [ProfilePage](doc//ProfilePage.md)
+ - [ProfilePrivacySettings](doc//ProfilePrivacySettings.md)
  - [ProfileStatisticsHistoryValue](doc//ProfileStatisticsHistoryValue.md)
  - [ProfileStatisticsHistoryValueType](doc//ProfileStatisticsHistoryValueType.md)
  - [ProfileStringModerationCompletedNotification](doc//ProfileStringModerationCompletedNotification.md)

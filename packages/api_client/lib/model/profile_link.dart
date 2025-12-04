@@ -15,7 +15,7 @@ class ProfileLink {
   ProfileLink({
     required this.a,
     required this.c,
-    required this.l,
+    this.l,
     required this.p,
   });
 
@@ -24,7 +24,13 @@ class ProfileLink {
   ProfileContentVersion c;
 
   /// Account's most recent disconnect time.  If the last seen time is not None, then it is Unix timestamp or -1 if the profile is currently online.
-  int l;
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  int? l;
 
   ProfileVersion p;
 
@@ -40,7 +46,7 @@ class ProfileLink {
     // ignore: unnecessary_parenthesis
     (a.hashCode) +
     (c.hashCode) +
-    (l.hashCode) +
+    (l == null ? 0 : l!.hashCode) +
     (p.hashCode);
 
   @override
@@ -50,7 +56,11 @@ class ProfileLink {
     final json = <String, dynamic>{};
       json[r'a'] = this.a;
       json[r'c'] = this.c;
+    if (this.l != null) {
       json[r'l'] = this.l;
+    } else {
+      json[r'l'] = null;
+    }
       json[r'p'] = this.p;
     return json;
   }
@@ -76,7 +86,7 @@ class ProfileLink {
       return ProfileLink(
         a: AccountId.fromJson(json[r'a'])!,
         c: ProfileContentVersion.fromJson(json[r'c'])!,
-        l: mapValueOfType<int>(json, r'l')!,
+        l: mapValueOfType<int>(json, r'l'),
         p: ProfileVersion.fromJson(json[r'p'])!,
       );
     }
@@ -127,7 +137,6 @@ class ProfileLink {
   static const requiredKeys = <String>{
     'a',
     'c',
-    'l',
     'p',
   };
 }

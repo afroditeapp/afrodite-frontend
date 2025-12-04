@@ -264,6 +264,7 @@ part 'model/profile_iterator_page_value.dart';
 part 'model/profile_iterator_session_id.dart';
 part 'model/profile_link.dart';
 part 'model/profile_page.dart';
+part 'model/profile_privacy_settings.dart';
 part 'model/profile_statistics_history_value.dart';
 part 'model/profile_statistics_history_value_type.dart';
 part 'model/profile_string_moderation_completed_notification.dart';

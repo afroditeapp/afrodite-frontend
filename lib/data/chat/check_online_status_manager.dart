@@ -44,7 +44,7 @@ class CheckOnlineStatusManager {
     _sendingLogic.dispose();
   }
 
-  Future<void> handleCheckOnlineStatusResponse(AccountId accountId, int lastSeenTime) async {
+  Future<void> handleCheckOnlineStatusResponse(AccountId accountId, int? lastSeenTime) async {
     _log.fine(
       "Received check online status response for ${accountId.aid}, last seen time: $lastSeenTime",
     );

@@ -246,6 +246,7 @@ lib/model/profile_iterator_page_value.dart
 lib/model/profile_iterator_session_id.dart
 lib/model/profile_link.dart
 lib/model/profile_page.dart
+lib/model/profile_privacy_settings.dart
 lib/model/profile_statistics_history_value.dart
 lib/model/profile_statistics_history_value_type.dart
 lib/model/profile_string_moderation_completed_notification.dart

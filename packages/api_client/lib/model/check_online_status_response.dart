@@ -14,13 +14,19 @@ class CheckOnlineStatusResponse {
   /// Returns a new [CheckOnlineStatusResponse] instance.
   CheckOnlineStatusResponse({
     required this.a,
-    required this.l,
+    this.l,
   });
 
   AccountId a;
 
   /// Account's most recent disconnect time.  If the last seen time is not None, then it is Unix timestamp or -1 if the profile is currently online.
-  int l;
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  int? l;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is CheckOnlineStatusResponse &&
@@ -31,7 +37,7 @@ class CheckOnlineStatusResponse {
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (a.hashCode) +
-    (l.hashCode);
+    (l == null ? 0 : l!.hashCode);
 
   @override
   String toString() => 'CheckOnlineStatusResponse[a=$a, l=$l]';
@@ -39,7 +45,11 @@ class CheckOnlineStatusResponse {
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'a'] = this.a;
+    if (this.l != null) {
       json[r'l'] = this.l;
+    } else {
+      json[r'l'] = null;
+    }
     return json;
   }
 
@@ -63,7 +73,7 @@ class CheckOnlineStatusResponse {
 
       return CheckOnlineStatusResponse(
         a: AccountId.fromJson(json[r'a'])!,
-        l: mapValueOfType<int>(json, r'l')!,
+        l: mapValueOfType<int>(json, r'l'),
       );
     }
     return null;
@@ -112,7 +122,6 @@ class CheckOnlineStatusResponse {
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
     'a',
-    'l',
   };
 }
 

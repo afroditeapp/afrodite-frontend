@@ -630,6 +630,8 @@ class ApiClient {
           return ProfileLink.fromJson(value);
         case 'ProfilePage':
           return ProfilePage.fromJson(value);
+        case 'ProfilePrivacySettings':
+          return ProfilePrivacySettings.fromJson(value);
         case 'ProfileStatisticsHistoryValue':
           return ProfileStatisticsHistoryValue.fromJson(value);
         case 'ProfileStatisticsHistoryValueType':
