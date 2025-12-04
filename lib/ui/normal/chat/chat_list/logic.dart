@@ -38,6 +38,7 @@ class ChatListLogic {
   final AccountId currentUser;
   final AccountId messageReceiver;
   final AccountDatabaseManager db;
+  final bool typingIndicatorEnabled;
 
   static const String _typingIndicatorMessageId = 'typing_indicator_message';
 
@@ -53,6 +54,7 @@ class ChatListLogic {
     required this.currentUser,
     required this.messageReceiver,
     required this.db,
+    required this.typingIndicatorEnabled,
   }) {
     _setupEventSubscription();
   }
@@ -62,9 +64,11 @@ class ChatListLogic {
         .getMessageCountAndChanges(messageReceiver)
         .map((_) => _MessageCountChanged());
 
-    final typingEvents = typingIndicatorManager
-        .getTypingState(messageReceiver)
-        .map((isTyping) => _TypingStateChanged(isTyping));
+    final typingEvents = typingIndicatorEnabled
+        ? typingIndicatorManager
+              .getTypingState(messageReceiver)
+              .map((isTyping) => _TypingStateChanged(isTyping))
+        : Stream<_TypingStateChanged>.empty();
 
     final loadOldMessagesEvents = _loadOldMessagesRelay.stream;
 

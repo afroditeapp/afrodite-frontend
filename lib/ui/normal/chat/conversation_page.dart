@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:app/data/chat/message_database_iterator.dart';
 import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/logic/account/client_features_config.dart';
+import 'package:app/logic/settings/privacy_settings.dart';
 import 'package:app/ui/normal/chat/chat_list.dart';
 import 'package:app/ui/normal/chat/utils.dart';
 import 'package:app/ui/normal/report/report.dart';
@@ -242,6 +243,8 @@ class ConversationScreenState extends State<ConversationScreen> {
           return Container();
         } else {
           final r = context.read<RepositoryInstances>();
+          final typingIndicatorEnabled = context.read<PrivacySettingsBloc>().state.typingIndicator;
+          final clientFeaturesChat = r.account.clientFeaturesConfigValue.chat;
           return ChatList(
             widget.profileEntry,
             widget.initialMessages,
@@ -250,6 +253,8 @@ class ConversationScreenState extends State<ConversationScreen> {
             messageReceiver: widget.accountId,
             db: r.accountDb,
             typingIndicatorManager: r.chat.typingIndicatorManager,
+            typingIndicatorEnabled:
+                typingIndicatorEnabled && clientFeaturesChat?.typingIndicator != null,
           );
         }
       },

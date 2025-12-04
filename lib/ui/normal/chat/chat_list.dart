@@ -35,6 +35,7 @@ class ChatList extends StatefulWidget {
   final MessageDatabaseIterator oldMessagesIterator;
   final AccountDatabaseManager db;
   final TypingIndicatorManager typingIndicatorManager;
+  final bool typingIndicatorEnabled;
 
   const ChatList(
     this.profileEntry,
@@ -44,6 +45,7 @@ class ChatList extends StatefulWidget {
     required this.messageReceiver,
     required this.db,
     required this.typingIndicatorManager,
+    required this.typingIndicatorEnabled,
     super.key,
   });
 
@@ -92,10 +94,14 @@ class _ChatListState extends State<ChatList> {
       currentUser: widget.currentUser,
       messageReceiver: widget.messageReceiver,
       db: widget.db,
+      typingIndicatorEnabled: widget.typingIndicatorEnabled,
     );
   }
 
   void _onTextChanged() {
+    if (!widget.typingIndicatorEnabled) {
+      return;
+    }
     final text = _textEditingController.text;
     if (text.isNotEmpty) {
       widget.typingIndicatorManager.handleTypingEvent(widget.messageReceiver, true);
@@ -407,7 +413,9 @@ class _ChatListState extends State<ChatList> {
   @override
   void dispose() {
     // Send typing stop event when leaving the chat
-    widget.typingIndicatorManager.handleTypingEvent(widget.messageReceiver, false);
+    if (widget.typingIndicatorEnabled) {
+      widget.typingIndicatorManager.handleTypingEvent(widget.messageReceiver, false);
+    }
 
     _chatListLogic.dispose();
     _textEditingController.removeListener(_onTextChanged);
