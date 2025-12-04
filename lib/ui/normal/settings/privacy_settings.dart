@@ -49,6 +49,7 @@ class _PrivacySettingsScreenState extends State<PrivacySettingsScreen> {
   void initState() {
     super.initState();
     widget.privacySettingsBloc.add(ResetEdited());
+    widget.privacySettingsBloc.add(LoadProfilePrivacySettings());
   }
 
   @override
@@ -97,6 +98,19 @@ class _PrivacySettingsScreenState extends State<PrivacySettingsScreen> {
   }
 
   Widget content(BuildContext context, PrivacySettingsData state) {
+    if (state.profilePrivacyLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    if (state.profilePrivacyLoadError) {
+      return Center(
+        child: Text(
+          context.strings.generic_error_occurred,
+          style: Theme.of(context).textTheme.bodyLarge,
+        ),
+      );
+    }
+
     return BlocBuilder<ClientFeaturesConfigBloc, ClientFeaturesConfigData>(
       builder: (context, configData) {
         final chatConfig = configData.config.chat;
@@ -117,6 +131,12 @@ class _PrivacySettingsScreenState extends State<PrivacySettingsScreen> {
               if (showMessageStateDelivered) messageStateDelivered(context, state),
               if (showMessageStateSent) messageStateSent(context, state),
               if (showTypingIndicator) typingIndicator(context, state),
+              settingsCategoryTitle(
+                context,
+                context.strings.privacy_settings_screen_profile_category,
+              ),
+              lastSeenTime(context, state),
+              onlineStatus(context, state),
             ],
           ),
         );
@@ -150,6 +170,26 @@ class _PrivacySettingsScreenState extends State<PrivacySettingsScreen> {
       value: state.valueTypingIndicator(),
       onChanged: (value) {
         context.read<PrivacySettingsBloc>().add(ToggleTypingIndicator());
+      },
+    );
+  }
+
+  Widget lastSeenTime(BuildContext context, PrivacySettingsData state) {
+    return SwitchListTile(
+      title: Text(context.strings.privacy_settings_last_seen_time),
+      value: state.valueLastSeenTime(),
+      onChanged: (value) {
+        context.read<PrivacySettingsBloc>().add(ToggleLastSeenTime());
+      },
+    );
+  }
+
+  Widget onlineStatus(BuildContext context, PrivacySettingsData state) {
+    return SwitchListTile(
+      title: Text(context.strings.privacy_settings_online_status),
+      value: state.valueOnlineStatus(),
+      onChanged: (value) {
+        context.read<PrivacySettingsBloc>().add(ToggleOnlineStatus());
       },
     );
   }

@@ -1212,6 +1212,9 @@ class AppLocalizationsSv extends AppLocalizations {
       'Enable notifications';
 
   @override
+  String get privacy_settings_last_seen_time => 'Last seen time';
+
+  @override
   String get privacy_settings_message_state_delivered =>
       'Message delivery receipts';
 
@@ -1219,7 +1222,13 @@ class AppLocalizationsSv extends AppLocalizations {
   String get privacy_settings_message_state_sent => 'Message read receipts';
 
   @override
+  String get privacy_settings_online_status => 'Online status';
+
+  @override
   String get privacy_settings_screen_chat_category => 'Chat';
+
+  @override
+  String get privacy_settings_screen_profile_category => 'Profile';
 
   @override
   String get privacy_settings_screen_title => 'Privacy';

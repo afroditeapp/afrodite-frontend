@@ -25,6 +25,10 @@ mixin _$PrivacySettingsData {
   bool get messageStateDelivered => throw _privateConstructorErrorPrivacySettingsData;
   bool get messageStateSent => throw _privateConstructorErrorPrivacySettingsData;
   bool get typingIndicator => throw _privateConstructorErrorPrivacySettingsData;
+  bool get lastSeenTime => throw _privateConstructorErrorPrivacySettingsData;
+  bool get onlineStatus => throw _privateConstructorErrorPrivacySettingsData;
+  bool get profilePrivacyLoading => throw _privateConstructorErrorPrivacySettingsData;
+  bool get profilePrivacyLoadError => throw _privateConstructorErrorPrivacySettingsData;
   EditedPrivacySettingsData get edited => throw _privateConstructorErrorPrivacySettingsData;
 
   PrivacySettingsData copyWith({
@@ -32,6 +36,10 @@ mixin _$PrivacySettingsData {
     bool? messageStateDelivered,
     bool? messageStateSent,
     bool? typingIndicator,
+    bool? lastSeenTime,
+    bool? onlineStatus,
+    bool? profilePrivacyLoading,
+    bool? profilePrivacyLoadError,
     EditedPrivacySettingsData? edited,
   }) => throw _privateConstructorErrorPrivacySettingsData;
 }
@@ -43,6 +51,10 @@ abstract class _PrivacySettingsData extends PrivacySettingsData {
     bool messageStateDelivered,
     bool messageStateSent,
     bool typingIndicator,
+    bool lastSeenTime,
+    bool onlineStatus,
+    bool profilePrivacyLoading,
+    bool profilePrivacyLoadError,
     required EditedPrivacySettingsData edited,
   }) = _$PrivacySettingsDataImpl;
   _PrivacySettingsData._() : super._();
@@ -54,12 +66,20 @@ class _$PrivacySettingsDataImpl extends _PrivacySettingsData with Diagnosticable
   static const bool _messageStateDeliveredDefaultValue = false;
   static const bool _messageStateSentDefaultValue = false;
   static const bool _typingIndicatorDefaultValue = false;
+  static const bool _lastSeenTimeDefaultValue = false;
+  static const bool _onlineStatusDefaultValue = false;
+  static const bool _profilePrivacyLoadingDefaultValue = false;
+  static const bool _profilePrivacyLoadErrorDefaultValue = false;
   
   _$PrivacySettingsDataImpl({
     this.updateState = _updateStateDefaultValue,
     this.messageStateDelivered = _messageStateDeliveredDefaultValue,
     this.messageStateSent = _messageStateSentDefaultValue,
     this.typingIndicator = _typingIndicatorDefaultValue,
+    this.lastSeenTime = _lastSeenTimeDefaultValue,
+    this.onlineStatus = _onlineStatusDefaultValue,
+    this.profilePrivacyLoading = _profilePrivacyLoadingDefaultValue,
+    this.profilePrivacyLoadError = _profilePrivacyLoadErrorDefaultValue,
     required this.edited,
   }) : super._();
 
@@ -72,11 +92,19 @@ class _$PrivacySettingsDataImpl extends _PrivacySettingsData with Diagnosticable
   @override
   final bool typingIndicator;
   @override
+  final bool lastSeenTime;
+  @override
+  final bool onlineStatus;
+  @override
+  final bool profilePrivacyLoading;
+  @override
+  final bool profilePrivacyLoadError;
+  @override
   final EditedPrivacySettingsData edited;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'PrivacySettingsData(updateState: $updateState, messageStateDelivered: $messageStateDelivered, messageStateSent: $messageStateSent, typingIndicator: $typingIndicator, edited: $edited)';
+    return 'PrivacySettingsData(updateState: $updateState, messageStateDelivered: $messageStateDelivered, messageStateSent: $messageStateSent, typingIndicator: $typingIndicator, lastSeenTime: $lastSeenTime, onlineStatus: $onlineStatus, profilePrivacyLoading: $profilePrivacyLoading, profilePrivacyLoadError: $profilePrivacyLoadError, edited: $edited)';
   }
 
   @override
@@ -88,6 +116,10 @@ class _$PrivacySettingsDataImpl extends _PrivacySettingsData with Diagnosticable
       ..add(DiagnosticsProperty('messageStateDelivered', messageStateDelivered))
       ..add(DiagnosticsProperty('messageStateSent', messageStateSent))
       ..add(DiagnosticsProperty('typingIndicator', typingIndicator))
+      ..add(DiagnosticsProperty('lastSeenTime', lastSeenTime))
+      ..add(DiagnosticsProperty('onlineStatus', onlineStatus))
+      ..add(DiagnosticsProperty('profilePrivacyLoading', profilePrivacyLoading))
+      ..add(DiagnosticsProperty('profilePrivacyLoadError', profilePrivacyLoadError))
       ..add(DiagnosticsProperty('edited', edited));
   }
 
@@ -104,6 +136,14 @@ class _$PrivacySettingsDataImpl extends _PrivacySettingsData with Diagnosticable
           other.messageStateSent == messageStateSent) &&
         (identical(other.typingIndicator, typingIndicator) ||
           other.typingIndicator == typingIndicator) &&
+        (identical(other.lastSeenTime, lastSeenTime) ||
+          other.lastSeenTime == lastSeenTime) &&
+        (identical(other.onlineStatus, onlineStatus) ||
+          other.onlineStatus == onlineStatus) &&
+        (identical(other.profilePrivacyLoading, profilePrivacyLoading) ||
+          other.profilePrivacyLoading == profilePrivacyLoading) &&
+        (identical(other.profilePrivacyLoadError, profilePrivacyLoadError) ||
+          other.profilePrivacyLoadError == profilePrivacyLoadError) &&
         (identical(other.edited, edited) ||
           other.edited == edited)
     );
@@ -116,6 +156,10 @@ class _$PrivacySettingsDataImpl extends _PrivacySettingsData with Diagnosticable
     messageStateDelivered,
     messageStateSent,
     typingIndicator,
+    lastSeenTime,
+    onlineStatus,
+    profilePrivacyLoading,
+    profilePrivacyLoadError,
     edited,
   );
 
@@ -125,12 +169,20 @@ class _$PrivacySettingsDataImpl extends _PrivacySettingsData with Diagnosticable
     Object? messageStateDelivered,
     Object? messageStateSent,
     Object? typingIndicator,
+    Object? lastSeenTime,
+    Object? onlineStatus,
+    Object? profilePrivacyLoading,
+    Object? profilePrivacyLoadError,
     Object? edited,
   }) => _$PrivacySettingsDataImpl(
     updateState: (updateState ?? this.updateState) as UpdateState,
     messageStateDelivered: (messageStateDelivered ?? this.messageStateDelivered) as bool,
     messageStateSent: (messageStateSent ?? this.messageStateSent) as bool,
     typingIndicator: (typingIndicator ?? this.typingIndicator) as bool,
+    lastSeenTime: (lastSeenTime ?? this.lastSeenTime) as bool,
+    onlineStatus: (onlineStatus ?? this.onlineStatus) as bool,
+    profilePrivacyLoading: (profilePrivacyLoading ?? this.profilePrivacyLoading) as bool,
+    profilePrivacyLoadError: (profilePrivacyLoadError ?? this.profilePrivacyLoadError) as bool,
     edited: (edited ?? this.edited) as EditedPrivacySettingsData,
   );
 }
@@ -144,11 +196,15 @@ mixin _$EditedPrivacySettingsData {
   bool? get messageStateDelivered => throw _privateConstructorErrorEditedPrivacySettingsData;
   bool? get messageStateSent => throw _privateConstructorErrorEditedPrivacySettingsData;
   bool? get typingIndicator => throw _privateConstructorErrorEditedPrivacySettingsData;
+  bool? get lastSeenTime => throw _privateConstructorErrorEditedPrivacySettingsData;
+  bool? get onlineStatus => throw _privateConstructorErrorEditedPrivacySettingsData;
 
   EditedPrivacySettingsData copyWith({
     bool? messageStateDelivered,
     bool? messageStateSent,
     bool? typingIndicator,
+    bool? lastSeenTime,
+    bool? onlineStatus,
   }) => throw _privateConstructorErrorEditedPrivacySettingsData;
 }
 
@@ -158,6 +214,8 @@ abstract class _EditedPrivacySettingsData extends EditedPrivacySettingsData {
     bool? messageStateDelivered,
     bool? messageStateSent,
     bool? typingIndicator,
+    bool? lastSeenTime,
+    bool? onlineStatus,
   }) = _$EditedPrivacySettingsDataImpl;
   _EditedPrivacySettingsData._() : super._();
 }
@@ -168,6 +226,8 @@ class _$EditedPrivacySettingsDataImpl extends _EditedPrivacySettingsData with Di
     this.messageStateDelivered,
     this.messageStateSent,
     this.typingIndicator,
+    this.lastSeenTime,
+    this.onlineStatus,
   }) : super._();
 
   @override
@@ -176,10 +236,14 @@ class _$EditedPrivacySettingsDataImpl extends _EditedPrivacySettingsData with Di
   final bool? messageStateSent;
   @override
   final bool? typingIndicator;
+  @override
+  final bool? lastSeenTime;
+  @override
+  final bool? onlineStatus;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'EditedPrivacySettingsData(messageStateDelivered: $messageStateDelivered, messageStateSent: $messageStateSent, typingIndicator: $typingIndicator)';
+    return 'EditedPrivacySettingsData(messageStateDelivered: $messageStateDelivered, messageStateSent: $messageStateSent, typingIndicator: $typingIndicator, lastSeenTime: $lastSeenTime, onlineStatus: $onlineStatus)';
   }
 
   @override
@@ -189,7 +253,9 @@ class _$EditedPrivacySettingsDataImpl extends _EditedPrivacySettingsData with Di
       ..add(DiagnosticsProperty('type', 'EditedPrivacySettingsData'))
       ..add(DiagnosticsProperty('messageStateDelivered', messageStateDelivered))
       ..add(DiagnosticsProperty('messageStateSent', messageStateSent))
-      ..add(DiagnosticsProperty('typingIndicator', typingIndicator));
+      ..add(DiagnosticsProperty('typingIndicator', typingIndicator))
+      ..add(DiagnosticsProperty('lastSeenTime', lastSeenTime))
+      ..add(DiagnosticsProperty('onlineStatus', onlineStatus));
   }
 
   @override
@@ -202,7 +268,11 @@ class _$EditedPrivacySettingsDataImpl extends _EditedPrivacySettingsData with Di
         (identical(other.messageStateSent, messageStateSent) ||
           other.messageStateSent == messageStateSent) &&
         (identical(other.typingIndicator, typingIndicator) ||
-          other.typingIndicator == typingIndicator)
+          other.typingIndicator == typingIndicator) &&
+        (identical(other.lastSeenTime, lastSeenTime) ||
+          other.lastSeenTime == lastSeenTime) &&
+        (identical(other.onlineStatus, onlineStatus) ||
+          other.onlineStatus == onlineStatus)
     );
   }
 
@@ -212,6 +282,8 @@ class _$EditedPrivacySettingsDataImpl extends _EditedPrivacySettingsData with Di
     messageStateDelivered,
     messageStateSent,
     typingIndicator,
+    lastSeenTime,
+    onlineStatus,
   );
 
   @override
@@ -219,9 +291,13 @@ class _$EditedPrivacySettingsDataImpl extends _EditedPrivacySettingsData with Di
     Object? messageStateDelivered = _detectDefaultValueInCopyWith,
     Object? messageStateSent = _detectDefaultValueInCopyWith,
     Object? typingIndicator = _detectDefaultValueInCopyWith,
+    Object? lastSeenTime = _detectDefaultValueInCopyWith,
+    Object? onlineStatus = _detectDefaultValueInCopyWith,
   }) => _$EditedPrivacySettingsDataImpl(
     messageStateDelivered: (messageStateDelivered == _detectDefaultValueInCopyWith ? this.messageStateDelivered : messageStateDelivered) as bool?,
     messageStateSent: (messageStateSent == _detectDefaultValueInCopyWith ? this.messageStateSent : messageStateSent) as bool?,
     typingIndicator: (typingIndicator == _detectDefaultValueInCopyWith ? this.typingIndicator : typingIndicator) as bool?,
+    lastSeenTime: (lastSeenTime == _detectDefaultValueInCopyWith ? this.lastSeenTime : lastSeenTime) as bool?,
+    onlineStatus: (onlineStatus == _detectDefaultValueInCopyWith ? this.onlineStatus : onlineStatus) as bool?,
   );
 }

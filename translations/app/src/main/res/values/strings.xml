@@ -176,6 +176,9 @@
     <string name="privacy_settings_message_state_delivered" description="Setting for message delivered state">Message delivery receipts</string>
     <string name="privacy_settings_message_state_sent" description="Setting for message sent state">Message read receipts</string>
     <string name="privacy_settings_typing_indicator" description="Setting for typing indicator">Typing indicator</string>
+    <string name="privacy_settings_screen_profile_category" description="Title for profile privacy settings category">Profile</string>
+    <string name="privacy_settings_last_seen_time" description="Setting for last seen time visibility">Last seen time</string>
+    <string name="privacy_settings_online_status" description="Setting for online status visibility">Online status</string>
 
     <!-- Automatic profile search results screen -->
     <string name="automatic_profile_search_results_screen_title" description="Title for automatic profile search results screen">Automatic profile search results</string>

@@ -12,17 +12,25 @@ class PrivacySettingsData with _$PrivacySettingsData, UpdateStateProvider {
     @Default(false) bool messageStateDelivered,
     @Default(false) bool messageStateSent,
     @Default(false) bool typingIndicator,
+    @Default(false) bool lastSeenTime,
+    @Default(false) bool onlineStatus,
+    @Default(false) bool profilePrivacyLoading,
+    @Default(false) bool profilePrivacyLoadError,
     required EditedPrivacySettingsData edited,
   }) = _PrivacySettingsData;
 
   bool valueMessageStateDelivered() => edited.messageStateDelivered ?? messageStateDelivered;
   bool valueMessageStateSent() => edited.messageStateSent ?? messageStateSent;
   bool valueTypingIndicator() => edited.typingIndicator ?? typingIndicator;
+  bool valueLastSeenTime() => edited.lastSeenTime ?? lastSeenTime;
+  bool valueOnlineStatus() => edited.onlineStatus ?? onlineStatus;
 
   bool unsavedChanges() =>
       edited.messageStateDelivered != null ||
       edited.messageStateSent != null ||
-      edited.typingIndicator != null;
+      edited.typingIndicator != null ||
+      edited.lastSeenTime != null ||
+      edited.onlineStatus != null;
 }
 
 @freezed
@@ -32,5 +40,7 @@ class EditedPrivacySettingsData with _$EditedPrivacySettingsData {
     bool? messageStateDelivered,
     bool? messageStateSent,
     bool? typingIndicator,
+    bool? lastSeenTime,
+    bool? onlineStatus,
   }) = _EditedPrivacySettingsData;
 }

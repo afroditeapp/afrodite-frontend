@@ -1448,6 +1448,10 @@
   "@notification_settings_screen_web_request_permission": {
     "description": "Action title for requesting web notification permission"
   },
+  "privacy_settings_last_seen_time": "Last seen time",
+  "@privacy_settings_last_seen_time": {
+    "description": "Setting for last seen time visibility"
+  },
   "privacy_settings_message_state_delivered": "Message delivery receipts",
   "@privacy_settings_message_state_delivered": {
     "description": "Setting for message delivered state"
@@ -1456,9 +1460,17 @@
   "@privacy_settings_message_state_sent": {
     "description": "Setting for message sent state"
   },
+  "privacy_settings_online_status": "Online status",
+  "@privacy_settings_online_status": {
+    "description": "Setting for online status visibility"
+  },
   "privacy_settings_screen_chat_category": "Chat",
   "@privacy_settings_screen_chat_category": {
     "description": "Title for chat privacy settings category"
+  },
+  "privacy_settings_screen_profile_category": "Profile",
+  "@privacy_settings_screen_profile_category": {
+    "description": "Title for profile privacy settings category"
   },
   "privacy_settings_screen_title": "Privacy",
   "@privacy_settings_screen_title": {

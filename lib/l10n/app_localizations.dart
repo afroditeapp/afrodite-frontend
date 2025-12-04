@@ -2106,6 +2106,12 @@ abstract class AppLocalizations {
   /// **'Enable notifications'**
   String get notification_settings_screen_web_request_permission;
 
+  /// Setting for last seen time visibility
+  ///
+  /// In en, this message translates to:
+  /// **'Last seen time'**
+  String get privacy_settings_last_seen_time;
+
   /// Setting for message delivered state
   ///
   /// In en, this message translates to:
@@ -2118,11 +2124,23 @@ abstract class AppLocalizations {
   /// **'Message read receipts'**
   String get privacy_settings_message_state_sent;
 
+  /// Setting for online status visibility
+  ///
+  /// In en, this message translates to:
+  /// **'Online status'**
+  String get privacy_settings_online_status;
+
   /// Title for chat privacy settings category
   ///
   /// In en, this message translates to:
   /// **'Chat'**
   String get privacy_settings_screen_chat_category;
+
+  /// Title for profile privacy settings category
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get privacy_settings_screen_profile_category;
 
   /// Title for privacy settings screen
   ///

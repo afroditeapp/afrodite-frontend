@@ -17,6 +17,8 @@ sealed class PrivacySettingsEvent {}
 
 class ResetEdited extends PrivacySettingsEvent {}
 
+class LoadProfilePrivacySettings extends PrivacySettingsEvent {}
+
 class SavePrivacySettings extends PrivacySettingsEvent {}
 
 class ToggleMessageStateDelivered extends PrivacySettingsEvent {}
@@ -24,6 +26,10 @@ class ToggleMessageStateDelivered extends PrivacySettingsEvent {}
 class ToggleMessageStateSent extends PrivacySettingsEvent {}
 
 class ToggleTypingIndicator extends PrivacySettingsEvent {}
+
+class ToggleLastSeenTime extends PrivacySettingsEvent {}
+
+class ToggleOnlineStatus extends PrivacySettingsEvent {}
 
 class _NewChatPrivacySettings extends PrivacySettingsEvent {
   final ChatPrivacySettings? settings;
@@ -46,6 +52,23 @@ class PrivacySettingsBloc extends Bloc<PrivacySettingsEvent, PrivacySettingsData
     on<ResetEdited>((data, emit) {
       emit(state.copyWith(edited: EditedPrivacySettingsData()));
     });
+    on<LoadProfilePrivacySettings>((data, emit) async {
+      emit(state.copyWith(profilePrivacyLoading: true));
+      final result = await api.profile((api) => api.getProfilePrivacySettings());
+      final settings = result.ok();
+      if (settings != null) {
+        emit(
+          state.copyWith(
+            lastSeenTime: settings.lastSeenTime,
+            onlineStatus: settings.onlineStatus,
+            profilePrivacyLoadError: false,
+            profilePrivacyLoading: false,
+          ),
+        );
+      } else {
+        emit(state.copyWith(profilePrivacyLoadError: true, profilePrivacyLoading: false));
+      }
+    });
     on<_NewChatPrivacySettings>((data, emit) async {
       final settings = data.settings;
       if (settings != null) {
@@ -54,7 +77,6 @@ class PrivacySettingsBloc extends Bloc<PrivacySettingsEvent, PrivacySettingsData
             messageStateDelivered: settings.messageStateDelivered,
             messageStateSent: settings.messageStateSent,
             typingIndicator: settings.typingIndicator,
-            edited: EditedPrivacySettingsData(),
           ),
         );
       }
@@ -68,15 +90,23 @@ class PrivacySettingsBloc extends Bloc<PrivacySettingsEvent, PrivacySettingsData
 
       emit(state.copyWith(updateState: const UpdateInProgress()));
 
-      final settings = ChatPrivacySettings(
+      final chatSettings = ChatPrivacySettings(
         messageStateDelivered: currentState.valueMessageStateDelivered(),
         messageStateSent: currentState.valueMessageStateSent(),
         typingIndicator: currentState.valueTypingIndicator(),
       );
-      final r = await api.chatAction((api) => api.postChatPrivacySettings(settings));
-      if (r.isOk()) {
-        await db.accountAction((db) => db.privacy.updateChatPrivacySettings(settings));
-      } else {
+      final profileSettings = ProfilePrivacySettings(
+        lastSeenTime: currentState.valueLastSeenTime(),
+        onlineStatus: currentState.valueOnlineStatus(),
+      );
+      final chatResult = await api.chatAction((api) => api.postChatPrivacySettings(chatSettings));
+      final profileResult = await api.profileAction(
+        (api) => api.postProfilePrivacySettings(profileSettings),
+      );
+      if (chatResult.isOk()) {
+        await db.accountAction((db) => db.privacy.updateChatPrivacySettings(chatSettings));
+      }
+      if (chatResult.isErr() || profileResult.isErr()) {
         showSnackBar(R.strings.generic_error_occurred);
       }
 
@@ -84,8 +114,14 @@ class PrivacySettingsBloc extends Bloc<PrivacySettingsEvent, PrivacySettingsData
 
       emit(state.copyWith(updateState: const UpdateIdle()));
 
-      if (r.isOk()) {
-        emit(state.copyWith(edited: EditedPrivacySettingsData()));
+      if (chatResult.isOk() && profileResult.isOk()) {
+        emit(
+          state.copyWith(
+            lastSeenTime: profileSettings.lastSeenTime,
+            onlineStatus: profileSettings.onlineStatus,
+            edited: EditedPrivacySettingsData(),
+          ),
+        );
       }
     });
     on<ToggleMessageStateDelivered>((data, emit) async {
@@ -110,6 +146,22 @@ class PrivacySettingsBloc extends Bloc<PrivacySettingsEvent, PrivacySettingsData
         () => state.edited.typingIndicator == null,
         () => state.edited.copyWith(typingIndicator: !state.typingIndicator),
         () => state.edited.copyWith(typingIndicator: null),
+      );
+    });
+    on<ToggleLastSeenTime>((data, emit) async {
+      _updateEditedValue(
+        emit,
+        () => state.edited.lastSeenTime == null,
+        () => state.edited.copyWith(lastSeenTime: !state.lastSeenTime),
+        () => state.edited.copyWith(lastSeenTime: null),
+      );
+    });
+    on<ToggleOnlineStatus>((data, emit) async {
+      _updateEditedValue(
+        emit,
+        () => state.edited.onlineStatus == null,
+        () => state.edited.copyWith(onlineStatus: !state.onlineStatus),
+        () => state.edited.copyWith(onlineStatus: null),
       );
     });
 
