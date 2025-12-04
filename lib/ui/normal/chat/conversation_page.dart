@@ -258,6 +258,8 @@ class ConversationScreenState extends State<ConversationScreen> {
             messageStateDeliveredEnabled:
                 privacySettings.messageStateDelivered &&
                 clientFeaturesChat?.messageStateDelivered == true,
+            messageStateSeenEnabled:
+                privacySettings.messageStateSent && clientFeaturesChat?.messageStateSeen == true,
           );
         }
       },

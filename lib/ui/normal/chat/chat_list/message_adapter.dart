@@ -8,12 +8,14 @@ class MessageAdapter {
     IteratorMessage message,
     String currentUserId, {
     required bool messageStateDeliveredEnabled,
+    required bool messageStateSeenEnabled,
   }) {
     return switch (message) {
       IteratorMessageEntry(:final entry) => messageEntryToFlutterChatMessage(
         entry,
         currentUserId,
         messageStateDeliveredEnabled: messageStateDeliveredEnabled,
+        messageStateSeenEnabled: messageStateSeenEnabled,
       ),
       MessageDateChange(:final date) => chat.Message.system(
         id: 'date_${date.millisecondsSinceEpoch}',
@@ -29,6 +31,7 @@ class MessageAdapter {
     MessageEntry entry,
     String currentUserId, {
     required bool messageStateDeliveredEnabled,
+    required bool messageStateSeenEnabled,
   }) {
     final isCurrentUser = entry.messageState.toSentState() != null;
     final authorId = isCurrentUser ? currentUserId : entry.remoteAccountId.aid;
@@ -72,8 +75,16 @@ class MessageAdapter {
             status = chat.MessageStatus.sent;
           }
         case SentMessageState.seen:
-          seenAt = entry.seenUnixTime?.dateTime ?? createdAt;
-          status = chat.MessageStatus.seen;
+          if (messageStateSeenEnabled) {
+            seenAt = entry.seenUnixTime?.dateTime ?? createdAt;
+            status = chat.MessageStatus.seen;
+          } else if (messageStateDeliveredEnabled) {
+            deliveredAt = entry.deliveredUnixTime?.dateTime ?? createdAt;
+            status = chat.MessageStatus.delivered;
+          } else {
+            sentAt = createdAt;
+            status = chat.MessageStatus.sent;
+          }
         case SentMessageState.sendingError:
           failedAt = createdAt;
           status = chat.MessageStatus.error;
@@ -148,6 +159,7 @@ class MessageAdapter {
     List<IteratorMessage> messages,
     String currentUserId, {
     required bool messageStateDeliveredEnabled,
+    required bool messageStateSeenEnabled,
   }) {
     return messages
         .map(
@@ -155,6 +167,7 @@ class MessageAdapter {
             entry,
             currentUserId,
             messageStateDeliveredEnabled: messageStateDeliveredEnabled,
+            messageStateSeenEnabled: messageStateSeenEnabled,
           ),
         )
         .toList();

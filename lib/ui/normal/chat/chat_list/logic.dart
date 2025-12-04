@@ -40,6 +40,7 @@ class ChatListLogic {
   final AccountDatabaseManager db;
   final bool typingIndicatorEnabled;
   final bool messageStateDeliveredEnabled;
+  final bool messageStateSeenEnabled;
 
   static const String _typingIndicatorMessageId = 'typing_indicator_message';
 
@@ -57,6 +58,7 @@ class ChatListLogic {
     required this.db,
     required this.typingIndicatorEnabled,
     required this.messageStateDeliveredEnabled,
+    required this.messageStateSeenEnabled,
   }) {
     _setupEventSubscription();
   }
@@ -120,6 +122,7 @@ class ChatListLogic {
         newMessages,
         currentUser.aid,
         messageStateDeliveredEnabled: messageStateDeliveredEnabled,
+        messageStateSeenEnabled: messageStateSeenEnabled,
       );
 
       final lastMessage = chatController.messages.lastOrNull;
@@ -160,6 +163,7 @@ class ChatListLogic {
       oldMessages.reversed.toList(),
       currentUser.aid,
       messageStateDeliveredEnabled: messageStateDeliveredEnabled,
+      messageStateSeenEnabled: messageStateSeenEnabled,
     );
 
     await chatController.insertAllMessages(chatMessages, index: 0, animated: false);
@@ -191,9 +195,7 @@ class ChatListLogic {
   }
 
   Future<void> _markMessagesAsSeenIfNeeded(List<MessageEntry> entries) async {
-    final messageSeenEnabled =
-        accountRepository.clientFeaturesConfigValue.chat?.messageStateSeen ?? false;
-    if (!messageSeenEnabled) {
+    if (!messageStateSeenEnabled) {
       return;
     }
 

@@ -296,7 +296,10 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
   }
 
   Future<void> markMessagesAsSeen() async {
-    final messageSeenEnabled = account.clientFeaturesConfigValue.chat?.messageStateSeen ?? false;
+    final privacySettings = await db.accountData((db) => db.privacy.getChatPrivacySettings()).ok();
+    final messageSeenEnabled =
+        (account.clientFeaturesConfigValue.chat?.messageStateSeen ?? false) &&
+        (privacySettings?.messageStateSent ?? false);
     if (!messageSeenEnabled) {
       final allMessages = await db
           .accountData(

@@ -37,6 +37,7 @@ class ChatList extends StatefulWidget {
   final TypingIndicatorManager typingIndicatorManager;
   final bool typingIndicatorEnabled;
   final bool messageStateDeliveredEnabled;
+  final bool messageStateSeenEnabled;
 
   const ChatList(
     this.profileEntry,
@@ -48,6 +49,7 @@ class ChatList extends StatefulWidget {
     required this.typingIndicatorManager,
     required this.typingIndicatorEnabled,
     required this.messageStateDeliveredEnabled,
+    required this.messageStateSeenEnabled,
     super.key,
   });
 
@@ -73,6 +75,7 @@ class _ChatListState extends State<ChatList> {
       widget.initialMessages,
       widget.currentUser.aid,
       messageStateDeliveredEnabled: widget.messageStateDeliveredEnabled,
+      messageStateSeenEnabled: widget.messageStateSeenEnabled,
     );
 
     _chatController = chat_core.InMemoryChatController(messages: initialMessages);
@@ -99,6 +102,7 @@ class _ChatListState extends State<ChatList> {
       db: widget.db,
       typingIndicatorEnabled: widget.typingIndicatorEnabled,
       messageStateDeliveredEnabled: widget.messageStateDeliveredEnabled,
+      messageStateSeenEnabled: widget.messageStateSeenEnabled,
     );
   }
 
@@ -343,6 +347,7 @@ class _ChatListState extends State<ChatList> {
                 chatRepository: r.chat,
                 currentUserId: r.chat.currentUser.aid,
                 messageStateDeliveredEnabled: widget.messageStateDeliveredEnabled,
+                messageStateSeenEnabled: widget.messageStateSeenEnabled,
                 child: messageWidget,
               );
             },
@@ -377,6 +382,7 @@ class _ChatListState extends State<ChatList> {
                 chatRepository: r.chat,
                 currentUserId: r.chat.currentUser.aid,
                 messageStateDeliveredEnabled: widget.messageStateDeliveredEnabled,
+                messageStateSeenEnabled: widget.messageStateSeenEnabled,
                 child: messageWidget,
               );
             },
@@ -450,6 +456,7 @@ class _MessageStateWatcher extends StatefulWidget {
   final ChatRepository chatRepository;
   final String currentUserId;
   final bool messageStateDeliveredEnabled;
+  final bool messageStateSeenEnabled;
   final Widget child;
 
   const _MessageStateWatcher({
@@ -459,6 +466,7 @@ class _MessageStateWatcher extends StatefulWidget {
     required this.chatRepository,
     required this.currentUserId,
     required this.messageStateDeliveredEnabled,
+    required this.messageStateSeenEnabled,
     required this.child,
   });
 
@@ -498,6 +506,7 @@ class _MessageStateWatcherState extends State<_MessageStateWatcher> {
                 entry,
                 widget.currentUserId,
                 messageStateDeliveredEnabled: widget.messageStateDeliveredEnabled,
+                messageStateSeenEnabled: widget.messageStateSeenEnabled,
               );
               WidgetsBinding.instance.addPostFrameCallback((_) {
                 final index = widget.chatController.messages.indexWhere(
