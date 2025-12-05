@@ -5,3 +5,6 @@ export 'src/common.dart';
 export 'src/profile.dart';
 export 'src/media.dart';
 export 'src/chat/message.dart';
+export 'src/chat/backup.dart';
+export 'src/chat/backup/blob.dart';
+export 'src/chat/backup/json.dart';

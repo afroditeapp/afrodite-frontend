@@ -14,3 +14,6 @@ dependencies:
 
   utils:
     path: "../utils"
+
+dev_dependencies:
+  test: ^1.26.0

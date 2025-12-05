@@ -30,6 +30,8 @@
 .pub-cache/
 .pub/
 /build/
+# For all packages
+build
 
 # Web related
 
