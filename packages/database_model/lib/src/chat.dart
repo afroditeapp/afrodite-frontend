@@ -8,7 +8,6 @@ class MessageEntry {
   /// Local database ID of the message.
   final LocalMessageId localId;
 
-  final AccountId localAccountId;
   final AccountId remoteAccountId;
 
   /// For sent messages this is Message. For received messages this can
@@ -36,7 +35,6 @@ class MessageEntry {
 
   MessageEntry({
     required this.localId,
-    required this.localAccountId,
     required this.remoteAccountId,
     required this.message,
     required this.localUnixTime,
@@ -52,7 +50,7 @@ class MessageEntry {
 
   @override
   String toString() {
-    return "MessageEntry(localId: $localId, localAccountId: $localAccountId, remoteAccountId: $remoteAccountId, message: $message, messageState: $messageState, messageNumber: $messageNumber, messageId: $messageId, unixTime: $unixTime)";
+    return "MessageEntry(localId: $localId, remoteAccountId: $remoteAccountId, message: $message, messageState: $messageState, messageNumber: $messageNumber, messageId: $messageId, unixTime: $unixTime)";
   }
 }
 
@@ -302,7 +300,6 @@ enum InfoMessageState {
 }
 
 class NewMessageEntry {
-  final AccountId localAccountId;
   final AccountId remoteAccountId;
   final Message? message;
 
@@ -329,7 +326,6 @@ class NewMessageEntry {
   final Uint8List? symmetricMessageEncryptionKey;
 
   NewMessageEntry({
-    required this.localAccountId,
     required this.remoteAccountId,
     required this.message,
     required this.localUnixTime,
@@ -344,7 +340,7 @@ class NewMessageEntry {
 
   @override
   String toString() {
-    return "NewMessageEntry(localAccountId: $localAccountId, remoteAccountId: $remoteAccountId, message: $message, messageState: $messageState, receivedMessageState: $receivedMessageState, messageNumber: $messageNumber, messageId: $messageId, unixTime: $unixTime, backendSignedPgpMessage: $backendSignedPgpMessage)";
+    return "NewMessageEntry(remoteAccountId: $remoteAccountId, message: $message, messageState: $messageState, receivedMessageState: $receivedMessageState, messageNumber: $messageNumber, messageId: $messageId, unixTime: $unixTime, backendSignedPgpMessage: $backendSignedPgpMessage)";
   }
 }
 

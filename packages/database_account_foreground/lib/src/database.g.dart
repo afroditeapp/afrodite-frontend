@@ -12939,15 +12939,6 @@ class $MessageTable extends schema.Message
   );
   @override
   late final GeneratedColumnWithTypeConverter<AccountId, String>
-  localAccountId = GeneratedColumn<String>(
-    'local_account_id',
-    aliasedName,
-    false,
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-  ).withConverter<AccountId>($MessageTable.$converterlocalAccountId);
-  @override
-  late final GeneratedColumnWithTypeConverter<AccountId, String>
   remoteAccountId = GeneratedColumn<String>(
     'remote_account_id',
     aliasedName,
@@ -13054,7 +13045,6 @@ class $MessageTable extends schema.Message
   @override
   List<GeneratedColumn> get $columns => [
     id,
-    localAccountId,
     remoteAccountId,
     message,
     localUnixTime,
@@ -13124,12 +13114,6 @@ class $MessageTable extends schema.Message
         DriftSqlType.int,
         data['${effectivePrefix}id'],
       )!,
-      localAccountId: $MessageTable.$converterlocalAccountId.fromSql(
-        attachedDatabase.typeMapping.read(
-          DriftSqlType.string,
-          data['${effectivePrefix}local_account_id'],
-        )!,
-      ),
       remoteAccountId: $MessageTable.$converterremoteAccountId.fromSql(
         attachedDatabase.typeMapping.read(
           DriftSqlType.string,
@@ -13198,8 +13182,6 @@ class $MessageTable extends schema.Message
     return $MessageTable(attachedDatabase, alias);
   }
 
-  static TypeConverter<AccountId, String> $converterlocalAccountId =
-      const AccountIdConverter();
   static TypeConverter<AccountId, String> $converterremoteAccountId =
       const AccountIdConverter();
   static TypeConverter<Message?, Uint8List?> $convertermessage =
@@ -13221,7 +13203,6 @@ class $MessageTable extends schema.Message
 class MessageData extends DataClass implements Insertable<MessageData> {
   /// Local message ID
   final int id;
-  final AccountId localAccountId;
   final AccountId remoteAccountId;
   final Message? message;
   final UtcDateTime localUnixTime;
@@ -13235,7 +13216,6 @@ class MessageData extends DataClass implements Insertable<MessageData> {
   final MessageId? messageId;
   const MessageData({
     required this.id,
-    required this.localAccountId,
     required this.remoteAccountId,
     this.message,
     required this.localUnixTime,
@@ -13252,11 +13232,6 @@ class MessageData extends DataClass implements Insertable<MessageData> {
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
-    {
-      map['local_account_id'] = Variable<String>(
-        $MessageTable.$converterlocalAccountId.toSql(localAccountId),
-      );
-    }
     {
       map['remote_account_id'] = Variable<String>(
         $MessageTable.$converterremoteAccountId.toSql(remoteAccountId),
@@ -13314,7 +13289,6 @@ class MessageData extends DataClass implements Insertable<MessageData> {
   MessageCompanion toCompanion(bool nullToAbsent) {
     return MessageCompanion(
       id: Value(id),
-      localAccountId: Value(localAccountId),
       remoteAccountId: Value(remoteAccountId),
       message: message == null && nullToAbsent
           ? const Value.absent()
@@ -13353,7 +13327,6 @@ class MessageData extends DataClass implements Insertable<MessageData> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return MessageData(
       id: serializer.fromJson<int>(json['id']),
-      localAccountId: serializer.fromJson<AccountId>(json['localAccountId']),
       remoteAccountId: serializer.fromJson<AccountId>(json['remoteAccountId']),
       message: serializer.fromJson<Message?>(json['message']),
       localUnixTime: serializer.fromJson<UtcDateTime>(json['localUnixTime']),
@@ -13378,7 +13351,6 @@ class MessageData extends DataClass implements Insertable<MessageData> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
-      'localAccountId': serializer.toJson<AccountId>(localAccountId),
       'remoteAccountId': serializer.toJson<AccountId>(remoteAccountId),
       'message': serializer.toJson<Message?>(message),
       'localUnixTime': serializer.toJson<UtcDateTime>(localUnixTime),
@@ -13399,7 +13371,6 @@ class MessageData extends DataClass implements Insertable<MessageData> {
 
   MessageData copyWith({
     int? id,
-    AccountId? localAccountId,
     AccountId? remoteAccountId,
     Value<Message?> message = const Value.absent(),
     UtcDateTime? localUnixTime,
@@ -13413,7 +13384,6 @@ class MessageData extends DataClass implements Insertable<MessageData> {
     Value<MessageId?> messageId = const Value.absent(),
   }) => MessageData(
     id: id ?? this.id,
-    localAccountId: localAccountId ?? this.localAccountId,
     remoteAccountId: remoteAccountId ?? this.remoteAccountId,
     message: message.present ? message.value : this.message,
     localUnixTime: localUnixTime ?? this.localUnixTime,
@@ -13437,9 +13407,6 @@ class MessageData extends DataClass implements Insertable<MessageData> {
   MessageData copyWithCompanion(MessageCompanion data) {
     return MessageData(
       id: data.id.present ? data.id.value : this.id,
-      localAccountId: data.localAccountId.present
-          ? data.localAccountId.value
-          : this.localAccountId,
       remoteAccountId: data.remoteAccountId.present
           ? data.remoteAccountId.value
           : this.remoteAccountId,
@@ -13474,7 +13441,6 @@ class MessageData extends DataClass implements Insertable<MessageData> {
   String toString() {
     return (StringBuffer('MessageData(')
           ..write('id: $id, ')
-          ..write('localAccountId: $localAccountId, ')
           ..write('remoteAccountId: $remoteAccountId, ')
           ..write('message: $message, ')
           ..write('localUnixTime: $localUnixTime, ')
@@ -13495,7 +13461,6 @@ class MessageData extends DataClass implements Insertable<MessageData> {
   @override
   int get hashCode => Object.hash(
     id,
-    localAccountId,
     remoteAccountId,
     message,
     localUnixTime,
@@ -13513,7 +13478,6 @@ class MessageData extends DataClass implements Insertable<MessageData> {
       identical(this, other) ||
       (other is MessageData &&
           other.id == this.id &&
-          other.localAccountId == this.localAccountId &&
           other.remoteAccountId == this.remoteAccountId &&
           other.message == this.message &&
           other.localUnixTime == this.localUnixTime &&
@@ -13535,7 +13499,6 @@ class MessageData extends DataClass implements Insertable<MessageData> {
 
 class MessageCompanion extends UpdateCompanion<MessageData> {
   final Value<int> id;
-  final Value<AccountId> localAccountId;
   final Value<AccountId> remoteAccountId;
   final Value<Message?> message;
   final Value<UtcDateTime> localUnixTime;
@@ -13549,7 +13512,6 @@ class MessageCompanion extends UpdateCompanion<MessageData> {
   final Value<MessageId?> messageId;
   const MessageCompanion({
     this.id = const Value.absent(),
-    this.localAccountId = const Value.absent(),
     this.remoteAccountId = const Value.absent(),
     this.message = const Value.absent(),
     this.localUnixTime = const Value.absent(),
@@ -13564,7 +13526,6 @@ class MessageCompanion extends UpdateCompanion<MessageData> {
   });
   MessageCompanion.insert({
     this.id = const Value.absent(),
-    required AccountId localAccountId,
     required AccountId remoteAccountId,
     this.message = const Value.absent(),
     required UtcDateTime localUnixTime,
@@ -13576,13 +13537,11 @@ class MessageCompanion extends UpdateCompanion<MessageData> {
     this.deliveredUnixTime = const Value.absent(),
     this.seenUnixTime = const Value.absent(),
     this.messageId = const Value.absent(),
-  }) : localAccountId = Value(localAccountId),
-       remoteAccountId = Value(remoteAccountId),
+  }) : remoteAccountId = Value(remoteAccountId),
        localUnixTime = Value(localUnixTime),
        messageState = Value(messageState);
   static Insertable<MessageData> custom({
     Expression<int>? id,
-    Expression<String>? localAccountId,
     Expression<String>? remoteAccountId,
     Expression<Uint8List>? message,
     Expression<int>? localUnixTime,
@@ -13597,7 +13556,6 @@ class MessageCompanion extends UpdateCompanion<MessageData> {
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
-      if (localAccountId != null) 'local_account_id': localAccountId,
       if (remoteAccountId != null) 'remote_account_id': remoteAccountId,
       if (message != null) 'message': message,
       if (localUnixTime != null) 'local_unix_time': localUnixTime,
@@ -13616,7 +13574,6 @@ class MessageCompanion extends UpdateCompanion<MessageData> {
 
   MessageCompanion copyWith({
     Value<int>? id,
-    Value<AccountId>? localAccountId,
     Value<AccountId>? remoteAccountId,
     Value<Message?>? message,
     Value<UtcDateTime>? localUnixTime,
@@ -13631,7 +13588,6 @@ class MessageCompanion extends UpdateCompanion<MessageData> {
   }) {
     return MessageCompanion(
       id: id ?? this.id,
-      localAccountId: localAccountId ?? this.localAccountId,
       remoteAccountId: remoteAccountId ?? this.remoteAccountId,
       message: message ?? this.message,
       localUnixTime: localUnixTime ?? this.localUnixTime,
@@ -13653,11 +13609,6 @@ class MessageCompanion extends UpdateCompanion<MessageData> {
     final map = <String, Expression>{};
     if (id.present) {
       map['id'] = Variable<int>(id.value);
-    }
-    if (localAccountId.present) {
-      map['local_account_id'] = Variable<String>(
-        $MessageTable.$converterlocalAccountId.toSql(localAccountId.value),
-      );
     }
     if (remoteAccountId.present) {
       map['remote_account_id'] = Variable<String>(
@@ -13721,7 +13672,6 @@ class MessageCompanion extends UpdateCompanion<MessageData> {
   String toString() {
     return (StringBuffer('MessageCompanion(')
           ..write('id: $id, ')
-          ..write('localAccountId: $localAccountId, ')
           ..write('remoteAccountId: $remoteAccountId, ')
           ..write('message: $message, ')
           ..write('localUnixTime: $localUnixTime, ')

@@ -172,7 +172,8 @@ void closeActionsAndOpenDetails(
     sentMessageState,
     receivedMessageState,
   );
-  final sender = receivedMessageState != null ? entry.remoteAccountId : entry.localAccountId;
+  final localAccountId = screenContext.read<RepositoryInstances>().accountId;
+  final sender = receivedMessageState != null ? entry.remoteAccountId : localAccountId;
 
   final infoText =
       """

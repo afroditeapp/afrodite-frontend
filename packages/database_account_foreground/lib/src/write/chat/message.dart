@@ -17,7 +17,6 @@ class DaoWriteMessage extends DatabaseAccessor<AccountForegroundDatabase>
   Future<dbm.LocalMessageId> _insert(dbm.NewMessageEntry entry) async {
     final localId = await into(message).insert(
       MessageCompanion.insert(
-        localAccountId: entry.localAccountId,
         remoteAccountId: entry.remoteAccountId,
         message: Value(entry.message),
         localUnixTime: entry.localUnixTime,
@@ -40,7 +39,6 @@ class DaoWriteMessage extends DatabaseAccessor<AccountForegroundDatabase>
     dbm.Message message,
   ) async {
     final newMessageEntry = dbm.NewMessageEntry(
-      localAccountId: localAccountId,
       remoteAccountId: remoteAccountId,
       messageId: messageId,
       message: message,
@@ -94,7 +92,6 @@ class DaoWriteMessage extends DatabaseAccessor<AccountForegroundDatabase>
     dbm.ReceivedMessageState state,
   ) async {
     final message = dbm.NewMessageEntry(
-      localAccountId: localAccountId,
       remoteAccountId: senderAccountId,
       localUnixTime: UtcDateTime.now(),
       message: decryptedMessage,
@@ -117,7 +114,6 @@ class DaoWriteMessage extends DatabaseAccessor<AccountForegroundDatabase>
     dbm.InfoMessageState state,
   ) async {
     final message = dbm.NewMessageEntry(
-      localAccountId: localAccountId,
       remoteAccountId: remoteAccountId,
       localUnixTime: UtcDateTime.now(),
       message: null,
