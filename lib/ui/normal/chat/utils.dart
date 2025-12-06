@@ -165,7 +165,7 @@ void closeActionsAndOpenDetails(
     stateText = "";
   }
 
-  final time = entry.unixTime ?? entry.localUnixTime;
+  final time = entry.userVisibleTime();
   final messageText = messageWidgetText(
     screenContext,
     entry.message,

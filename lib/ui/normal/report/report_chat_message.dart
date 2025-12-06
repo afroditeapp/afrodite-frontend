@@ -84,7 +84,7 @@ class _ReportChatMessageScreen extends State<ReportChatMessageScreen> {
     final timeTextWidget = Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: Text(
-        timeString(entry.unixTime ?? entry.localUnixTime),
+        timeString(entry.userVisibleTime()),
         style: Theme.of(context).textTheme.bodySmall,
         overflow: TextOverflow.ellipsis,
       ),

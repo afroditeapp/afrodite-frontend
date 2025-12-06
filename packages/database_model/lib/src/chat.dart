@@ -24,8 +24,8 @@ class MessageEntry {
   /// Message sender generated UUID for the message.
   final MessageId? messageId;
 
-  /// Time since Unix epoch. Server sets this falue.
-  final UtcDateTime? unixTime;
+  /// Time when the message was sent. Server sets this falue.
+  final UtcDateTime? sentUnixTime;
 
   /// Time when the message was delivered. Only set for sent messages.
   final UtcDateTime? deliveredUnixTime;
@@ -41,16 +41,16 @@ class MessageEntry {
     required this.messageState,
     this.messageNumber,
     this.messageId,
-    this.unixTime,
+    this.sentUnixTime,
     this.deliveredUnixTime,
     this.seenUnixTime,
   });
 
-  UtcDateTime userVisibleTime() => unixTime ?? localUnixTime;
+  UtcDateTime userVisibleTime() => sentUnixTime ?? localUnixTime;
 
   @override
   String toString() {
-    return "MessageEntry(localId: $localId, remoteAccountId: $remoteAccountId, message: $message, messageState: $messageState, messageNumber: $messageNumber, messageId: $messageId, unixTime: $unixTime)";
+    return "MessageEntry(localId: $localId, remoteAccountId: $remoteAccountId, message: $message, messageState: $messageState, messageNumber: $messageNumber, messageId: $messageId, sentUnixTime: $sentUnixTime)";
   }
 }
 
@@ -316,8 +316,8 @@ class NewMessageEntry {
   /// Message sender generated UUID for the message.
   final MessageId? messageId;
 
-  /// Time since Unix epoch. Server sets this falue.
-  final UtcDateTime? unixTime;
+  /// Time when the message was sent. Server sets this falue.
+  final UtcDateTime? sentUnixTime;
 
   /// Backend signed PGP message. Server sets this falue.
   final Uint8List? backendSignedPgpMessage;
@@ -333,14 +333,14 @@ class NewMessageEntry {
     this.receivedMessageState,
     this.messageNumber,
     this.messageId,
-    this.unixTime,
+    this.sentUnixTime,
     this.backendSignedPgpMessage,
     this.symmetricMessageEncryptionKey,
   });
 
   @override
   String toString() {
-    return "NewMessageEntry(remoteAccountId: $remoteAccountId, message: $message, messageState: $messageState, receivedMessageState: $receivedMessageState, messageNumber: $messageNumber, messageId: $messageId, unixTime: $unixTime, backendSignedPgpMessage: $backendSignedPgpMessage)";
+    return "NewMessageEntry(remoteAccountId: $remoteAccountId, message: $message, messageState: $messageState, receivedMessageState: $receivedMessageState, messageNumber: $messageNumber, messageId: $messageId, sentUnixTime: $sentUnixTime, backendSignedPgpMessage: $backendSignedPgpMessage)";
   }
 }
 

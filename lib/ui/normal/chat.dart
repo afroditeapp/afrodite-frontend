@@ -402,7 +402,7 @@ class ConversationListItem extends StatelessWidget {
   }
 
   Widget conversationTitle(BuildContext context, ConversationData data) {
-    final UtcDateTime? messageTime = data.message?.unixTime ?? data.message?.localUnixTime;
+    final UtcDateTime? messageTime = data.message?.userVisibleTime();
     final TextStyle? textStyle;
     if (data.count.count > 0) {
       textStyle = Theme.of(context).textTheme.titleMedium;

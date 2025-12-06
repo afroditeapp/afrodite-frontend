@@ -23,7 +23,7 @@ class DaoWriteMessage extends DatabaseAccessor<AccountForegroundDatabase>
         messageState: entry.messageState.number,
         messageNumber: Value(entry.messageNumber),
         messageId: Value(entry.messageId),
-        unixTime: Value(entry.unixTime),
+        sentUnixTime: Value(entry.sentUnixTime),
         backendSignedPgpMessage: Value(entry.backendSignedPgpMessage),
         symmetricMessageEncryptionKey: Value(entry.symmetricMessageEncryptionKey),
       ),
@@ -71,7 +71,7 @@ class DaoWriteMessage extends DatabaseAccessor<AccountForegroundDatabase>
     await (update(message)..where((t) => t.id.equals(localId.id))).write(
       MessageCompanion(
         messageState: Value.absentIfNull(sentState?.toDbState().number),
-        unixTime: Value.absentIfNull(unixTime),
+        sentUnixTime: Value.absentIfNull(unixTime),
         messageId: Value.absentIfNull(messageIdFromServer),
         backendSignedPgpMessage: Value.absentIfNull(backendSignePgpMessage),
         deliveredUnixTime: Value.absentIfNull(deliveredUnixTime),
@@ -98,7 +98,7 @@ class DaoWriteMessage extends DatabaseAccessor<AccountForegroundDatabase>
       messageState: state.toDbState(),
       messageNumber: messageNumber,
       messageId: messageId,
-      unixTime: serverTime,
+      sentUnixTime: serverTime,
       backendSignedPgpMessage: backendSignedPgpMessage,
       symmetricMessageEncryptionKey: symmetricMessageEncryptionKey,
     );
