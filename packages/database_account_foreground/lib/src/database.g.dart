@@ -3371,10 +3371,12 @@ class $ProfileAttributesConfigAttributesTable
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   $ProfileAttributesConfigAttributesTable(this.attachedDatabase, [this._alias]);
-  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  static const VerificationMeta _attributeIdMeta = const VerificationMeta(
+    'attributeId',
+  );
   @override
-  late final GeneratedColumn<int> id = GeneratedColumn<int>(
-    'id',
+  late final GeneratedColumn<int> attributeId = GeneratedColumn<int>(
+    'attribute_id',
     aliasedName,
     false,
     type: DriftSqlType.int,
@@ -3405,7 +3407,11 @@ class $ProfileAttributesConfigAttributesTable
         $ProfileAttributesConfigAttributesTable.$converterattributeHash,
       );
   @override
-  List<GeneratedColumn> get $columns => [id, jsonAttribute, attributeHash];
+  List<GeneratedColumn> get $columns => [
+    attributeId,
+    jsonAttribute,
+    attributeHash,
+  ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -3418,14 +3424,20 @@ class $ProfileAttributesConfigAttributesTable
   }) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
-    if (data.containsKey('id')) {
-      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    if (data.containsKey('attribute_id')) {
+      context.handle(
+        _attributeIdMeta,
+        attributeId.isAcceptableOrUnknown(
+          data['attribute_id']!,
+          _attributeIdMeta,
+        ),
+      );
     }
     return context;
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => {id};
+  Set<GeneratedColumn> get $primaryKey => {attributeId};
   @override
   ProfileAttributesConfigAttribute map(
     Map<String, dynamic> data, {
@@ -3433,9 +3445,9 @@ class $ProfileAttributesConfigAttributesTable
   }) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return ProfileAttributesConfigAttribute(
-      id: attachedDatabase.typeMapping.read(
+      attributeId: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
-        data['${effectivePrefix}id'],
+        data['${effectivePrefix}attribute_id'],
       )!,
       jsonAttribute: $ProfileAttributesConfigAttributesTable
           .$converterjsonAttribute
@@ -3470,18 +3482,18 @@ class $ProfileAttributesConfigAttributesTable
 class ProfileAttributesConfigAttribute extends DataClass
     implements Insertable<ProfileAttributesConfigAttribute> {
   /// Attribute ID
-  final int id;
+  final int attributeId;
   final JsonObject<Attribute> jsonAttribute;
   final AttributeHash attributeHash;
   const ProfileAttributesConfigAttribute({
-    required this.id,
+    required this.attributeId,
     required this.jsonAttribute,
     required this.attributeHash,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    map['id'] = Variable<int>(id);
+    map['attribute_id'] = Variable<int>(attributeId);
     {
       map['json_attribute'] = Variable<String>(
         $ProfileAttributesConfigAttributesTable.$converterjsonAttribute.toSql(
@@ -3501,7 +3513,7 @@ class ProfileAttributesConfigAttribute extends DataClass
 
   ProfileAttributesConfigAttributesCompanion toCompanion(bool nullToAbsent) {
     return ProfileAttributesConfigAttributesCompanion(
-      id: Value(id),
+      attributeId: Value(attributeId),
       jsonAttribute: Value(jsonAttribute),
       attributeHash: Value(attributeHash),
     );
@@ -3513,7 +3525,7 @@ class ProfileAttributesConfigAttribute extends DataClass
   }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return ProfileAttributesConfigAttribute(
-      id: serializer.fromJson<int>(json['id']),
+      attributeId: serializer.fromJson<int>(json['attributeId']),
       jsonAttribute: serializer.fromJson<JsonObject<Attribute>>(
         json['jsonAttribute'],
       ),
@@ -3524,18 +3536,18 @@ class ProfileAttributesConfigAttribute extends DataClass
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'id': serializer.toJson<int>(id),
+      'attributeId': serializer.toJson<int>(attributeId),
       'jsonAttribute': serializer.toJson<JsonObject<Attribute>>(jsonAttribute),
       'attributeHash': serializer.toJson<AttributeHash>(attributeHash),
     };
   }
 
   ProfileAttributesConfigAttribute copyWith({
-    int? id,
+    int? attributeId,
     JsonObject<Attribute>? jsonAttribute,
     AttributeHash? attributeHash,
   }) => ProfileAttributesConfigAttribute(
-    id: id ?? this.id,
+    attributeId: attributeId ?? this.attributeId,
     jsonAttribute: jsonAttribute ?? this.jsonAttribute,
     attributeHash: attributeHash ?? this.attributeHash,
   );
@@ -3543,7 +3555,9 @@ class ProfileAttributesConfigAttribute extends DataClass
     ProfileAttributesConfigAttributesCompanion data,
   ) {
     return ProfileAttributesConfigAttribute(
-      id: data.id.present ? data.id.value : this.id,
+      attributeId: data.attributeId.present
+          ? data.attributeId.value
+          : this.attributeId,
       jsonAttribute: data.jsonAttribute.present
           ? data.jsonAttribute.value
           : this.jsonAttribute,
@@ -3556,7 +3570,7 @@ class ProfileAttributesConfigAttribute extends DataClass
   @override
   String toString() {
     return (StringBuffer('ProfileAttributesConfigAttribute(')
-          ..write('id: $id, ')
+          ..write('attributeId: $attributeId, ')
           ..write('jsonAttribute: $jsonAttribute, ')
           ..write('attributeHash: $attributeHash')
           ..write(')'))
@@ -3564,51 +3578,51 @@ class ProfileAttributesConfigAttribute extends DataClass
   }
 
   @override
-  int get hashCode => Object.hash(id, jsonAttribute, attributeHash);
+  int get hashCode => Object.hash(attributeId, jsonAttribute, attributeHash);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is ProfileAttributesConfigAttribute &&
-          other.id == this.id &&
+          other.attributeId == this.attributeId &&
           other.jsonAttribute == this.jsonAttribute &&
           other.attributeHash == this.attributeHash);
 }
 
 class ProfileAttributesConfigAttributesCompanion
     extends UpdateCompanion<ProfileAttributesConfigAttribute> {
-  final Value<int> id;
+  final Value<int> attributeId;
   final Value<JsonObject<Attribute>> jsonAttribute;
   final Value<AttributeHash> attributeHash;
   const ProfileAttributesConfigAttributesCompanion({
-    this.id = const Value.absent(),
+    this.attributeId = const Value.absent(),
     this.jsonAttribute = const Value.absent(),
     this.attributeHash = const Value.absent(),
   });
   ProfileAttributesConfigAttributesCompanion.insert({
-    this.id = const Value.absent(),
+    this.attributeId = const Value.absent(),
     required JsonObject<Attribute> jsonAttribute,
     required AttributeHash attributeHash,
   }) : jsonAttribute = Value(jsonAttribute),
        attributeHash = Value(attributeHash);
   static Insertable<ProfileAttributesConfigAttribute> custom({
-    Expression<int>? id,
+    Expression<int>? attributeId,
     Expression<String>? jsonAttribute,
     Expression<String>? attributeHash,
   }) {
     return RawValuesInsertable({
-      if (id != null) 'id': id,
+      if (attributeId != null) 'attribute_id': attributeId,
       if (jsonAttribute != null) 'json_attribute': jsonAttribute,
       if (attributeHash != null) 'attribute_hash': attributeHash,
     });
   }
 
   ProfileAttributesConfigAttributesCompanion copyWith({
-    Value<int>? id,
+    Value<int>? attributeId,
     Value<JsonObject<Attribute>>? jsonAttribute,
     Value<AttributeHash>? attributeHash,
   }) {
     return ProfileAttributesConfigAttributesCompanion(
-      id: id ?? this.id,
+      attributeId: attributeId ?? this.attributeId,
       jsonAttribute: jsonAttribute ?? this.jsonAttribute,
       attributeHash: attributeHash ?? this.attributeHash,
     );
@@ -3617,8 +3631,8 @@ class ProfileAttributesConfigAttributesCompanion
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    if (id.present) {
-      map['id'] = Variable<int>(id.value);
+    if (attributeId.present) {
+      map['attribute_id'] = Variable<int>(attributeId.value);
     }
     if (jsonAttribute.present) {
       map['json_attribute'] = Variable<String>(
@@ -3640,7 +3654,7 @@ class ProfileAttributesConfigAttributesCompanion
   @override
   String toString() {
     return (StringBuffer('ProfileAttributesConfigAttributesCompanion(')
-          ..write('id: $id, ')
+          ..write('attributeId: $attributeId, ')
           ..write('jsonAttribute: $jsonAttribute, ')
           ..write('attributeHash: $attributeHash')
           ..write(')'))

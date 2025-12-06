@@ -70,20 +70,21 @@ class DaoReadConfig extends DatabaseAccessor<AccountForegroundDatabase> with _$D
 
   /// Attributes are sorted by attribute ID
   Stream<List<ProfileAttributeAndHash>?> watchAttributes() {
-    return (select(
-      profileAttributesConfigAttributes,
-    )..orderBy([(t) => OrderingTerm(expression: t.id, mode: OrderingMode.asc)])).watch().map((r) {
-      final List<ProfileAttributeAndHash> attributes = [];
-      for (final item in r) {
-        final attribute = item.jsonAttribute.value;
-        if (attribute == null) {
-          return null;
-        }
-        attributes.add(ProfileAttributeAndHash(item.attributeHash, attribute));
-      }
+    return (select(profileAttributesConfigAttributes)
+          ..orderBy([(t) => OrderingTerm(expression: t.attributeId, mode: OrderingMode.asc)]))
+        .watch()
+        .map((r) {
+          final List<ProfileAttributeAndHash> attributes = [];
+          for (final item in r) {
+            final attribute = item.jsonAttribute.value;
+            if (attribute == null) {
+              return null;
+            }
+            attributes.add(ProfileAttributeAndHash(item.attributeHash, attribute));
+          }
 
-      return attributes;
-    });
+          return attributes;
+        });
   }
 
   Stream<ProfileAttributes?> watchAvailableProfileAttributes() => Rx.combineLatest2(

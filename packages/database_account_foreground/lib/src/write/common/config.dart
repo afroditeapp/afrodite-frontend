@@ -49,13 +49,13 @@ class DaoWriteConfig extends DatabaseAccessor<AccountForegroundDatabase>
   }
 
   Future<void> deleteAttributeId(int id) async {
-    await (delete(profileAttributesConfigAttributes)..where((t) => t.id.equals(id))).go();
+    await (delete(profileAttributesConfigAttributes)..where((t) => t.attributeId.equals(id))).go();
   }
 
   Future<void> updateAttribute(api.AttributeHash hash, api.Attribute attribute) async {
     await into(profileAttributesConfigAttributes).insertOnConflictUpdate(
       ProfileAttributesConfigAttributesCompanion.insert(
-        id: Value(attribute.id),
+        attributeId: Value(attribute.id),
         attributeHash: hash,
         jsonAttribute: attribute.toJsonObject(),
       ),

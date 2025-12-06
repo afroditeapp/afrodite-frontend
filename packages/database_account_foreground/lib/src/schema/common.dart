@@ -47,12 +47,12 @@ class ProfileAttributesConfig extends SingleRowTable {
 
 class ProfileAttributesConfigAttributes extends Table {
   /// Attribute ID
-  IntColumn get id => integer()();
+  IntColumn get attributeId => integer()();
   TextColumn get jsonAttribute => text().map(const AttributeConverter())();
   TextColumn get attributeHash => text().map(const AttributeHashConverter())();
 
   @override
-  Set<Column<Object>> get primaryKey => {id};
+  Set<Column<Object>> get primaryKey => {attributeId};
 }
 
 class ClientLanguageOnServer extends SingleRowTable {
