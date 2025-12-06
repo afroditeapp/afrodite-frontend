@@ -293,11 +293,8 @@ class ChatRepository extends DataRepositoryWithLifecycle {
     for (final deliveryInfo in deliveryInfoList.info) {
       final message = await db
           .accountData(
-            (db) => db.message.getMessageUsingMessageId(
-              currentUser,
-              deliveryInfo.receiver,
-              deliveryInfo.messageId,
-            ),
+            (db) =>
+                db.message.getMessageUsingMessageId(deliveryInfo.receiver, deliveryInfo.messageId),
           )
           .ok();
 
@@ -357,7 +354,7 @@ class ChatRepository extends DataRepositoryWithLifecycle {
 
   // Local messages
   Stream<MessageEntry?> watchLatestMessage(AccountId match) {
-    return db.accountStream((db) => db.message.watchLatestMessage(currentUser, match));
+    return db.accountStream((db) => db.message.watchLatestMessage(match));
   }
 
   /// Get message and updates to it.
@@ -368,9 +365,7 @@ class ChatRepository extends DataRepositoryWithLifecycle {
   /// Get message and updates to it.
   /// Index 0 is the latest message.
   Stream<MessageEntry?> getMessageWithIndex(AccountId match, int index) async* {
-    final message = await db
-        .accountData((db) => db.message.getMessage(currentUser, match, index))
-        .ok();
+    final message = await db.accountData((db) => db.message.getMessage(match, index)).ok();
     final localId = message?.localId;
     if (message == null || localId == null) {
       yield null;
@@ -382,8 +377,7 @@ class ChatRepository extends DataRepositoryWithLifecycle {
         final messageList =
             await db
                 .accountData(
-                  (db) =>
-                      db.message.getMessageListUsingLocalMessageId(currentUser, match, localId, 1),
+                  (db) => db.message.getMessageListUsingLocalMessageId(match, localId, 1),
                 )
                 .ok() ??
             [];
@@ -399,14 +393,14 @@ class ChatRepository extends DataRepositoryWithLifecycle {
   /// Also receive updates to both.
   Stream<(int, ConversationChanged?)> getMessageCountAndChanges(AccountId match) async* {
     final messageNumber = await db
-        .accountData((db) => db.message.countMessagesInConversation(currentUser, match))
+        .accountData((db) => db.message.countMessagesInConversation(match))
         .ok();
     yield (messageNumber ?? 0, null);
 
     await for (final event in profile.profileChanges) {
       if (event is ConversationChanged && event.conversationWith == match) {
         final messageNumber = await db
-            .accountData((db) => db.message.countMessagesInConversation(currentUser, match))
+            .accountData((db) => db.message.countMessagesInConversation(match))
             .ok();
         yield (messageNumber ?? 0, event);
       }
@@ -415,9 +409,7 @@ class ChatRepository extends DataRepositoryWithLifecycle {
 
   /// First message is the latest message.
   Future<Result<List<MessageEntry>, ()>> getAllMessages(AccountId accountId) async {
-    return await db
-        .accountData((db) => db.message.getAllMessages(currentUser, accountId))
-        .emptyErr();
+    return await db.accountData((db) => db.message.getAllMessages(accountId)).emptyErr();
   }
 
   Future<Result<(), ()>> _reloadChatNotificationSettings() async {

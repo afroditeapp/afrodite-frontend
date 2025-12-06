@@ -44,7 +44,7 @@ class DaoWriteKey extends DatabaseAccessor<AccountForegroundDatabase> with _$Dao
       );
 
       if (infoState != null) {
-        await db.write.message.insertInfoMessage(localAccountId, remoteAccountId, infoState);
+        await db.write.message.insertInfoMessage(remoteAccountId, infoState);
       }
     });
   }

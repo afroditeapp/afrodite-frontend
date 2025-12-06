@@ -33,7 +33,6 @@ class DaoWriteMessage extends DatabaseAccessor<AccountForegroundDatabase>
   }
 
   Future<dbm.LocalMessageId> insertToBeSentMessage(
-    api.AccountId localAccountId,
     api.AccountId remoteAccountId,
     api.MessageId messageId,
     dbm.Message message,
@@ -81,7 +80,6 @@ class DaoWriteMessage extends DatabaseAccessor<AccountForegroundDatabase>
   }
 
   Future<void> insertReceivedMessage(
-    api.AccountId localAccountId,
     api.AccountId senderAccountId,
     api.MessageNumber messageNumber,
     api.MessageId messageId,
@@ -108,11 +106,7 @@ class DaoWriteMessage extends DatabaseAccessor<AccountForegroundDatabase>
     });
   }
 
-  Future<void> insertInfoMessage(
-    api.AccountId localAccountId,
-    api.AccountId remoteAccountId,
-    dbm.InfoMessageState state,
-  ) async {
+  Future<void> insertInfoMessage(api.AccountId remoteAccountId, dbm.InfoMessageState state) async {
     final message = dbm.NewMessageEntry(
       remoteAccountId: remoteAccountId,
       localUnixTime: UtcDateTime.now(),

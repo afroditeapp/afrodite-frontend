@@ -302,9 +302,7 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
         (privacySettings?.messageStateSent ?? false);
     if (!messageSeenEnabled) {
       final allMessages = await db
-          .accountData(
-            (db) => db.message.getSuccessfullyReceivedAndNotSeen(currentUser, state.accountId),
-          )
+          .accountData((db) => db.message.getSuccessfullyReceivedAndNotSeen(state.accountId))
           .ok();
 
       if (allMessages == null || allMessages.isEmpty) {
@@ -325,7 +323,6 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
     final allMessages = await db
         .accountData(
           (db) => db.message.getSuccessfullyReceivedAndSeenStateChangeToServerNotYetDone(
-            currentUser,
             state.accountId,
           ),
         )

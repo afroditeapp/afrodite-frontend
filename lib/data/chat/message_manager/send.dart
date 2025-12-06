@@ -88,7 +88,7 @@ class SendMessageUtils {
     }
 
     final lastSentMessageResult = await db.accountData(
-      (db) => db.message.getLatestSentMessage(currentUser, accountId),
+      (db) => db.message.getLatestSentMessage(accountId),
     );
     switch (lastSentMessageResult) {
       case Err():
@@ -125,7 +125,7 @@ class SendMessageUtils {
     final messageId = MessageId(id: base64UrlEncode(Uuid().v4obj().toBytes()).replaceAll("=", ""));
 
     final saveMessageResult = await db.accountDataWrite(
-      (db) => db.message.insertToBeSentMessage(currentUser, accountId, messageId, message),
+      (db) => db.message.insertToBeSentMessage(accountId, messageId, message),
     );
     final LocalMessageId localId;
     switch (saveMessageResult) {

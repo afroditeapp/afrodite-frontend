@@ -39,7 +39,7 @@ class MessageDatabaseIterator {
   /// Resets the iterator to the latest message of the current conversation
   Future<void> resetToLatest() async {
     final latestMessage = await db
-        .accountData((db) => db.message.getMessage(localAccountId, remoteAccountId, 0))
+        .accountData((db) => db.message.getMessage(remoteAccountId, 0))
         .ok();
     if (latestMessage != null) {
       startLocalKey = latestMessage.localId.id;
@@ -77,7 +77,6 @@ class MessageDatabaseIterator {
         await db
             .accountData(
               (db) => db.message.getMessageListUsingLocalMessageId(
-                localAccountId,
                 remoteAccountId,
                 LocalMessageId(nextLocalKey),
                 queryCount,

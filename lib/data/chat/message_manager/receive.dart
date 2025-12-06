@@ -74,11 +74,8 @@ class ReceiveMessageUtils {
       }
 
       final alreadyExistingMessageResult = await db.accountData(
-        (db) => db.message.getMessageUsingMessageId(
-          currentUser,
-          message.parsed.sender,
-          message.parsed.messageId,
-        ),
+        (db) =>
+            db.message.getMessageUsingMessageId(message.parsed.sender, message.parsed.messageId),
       );
       switch (alreadyExistingMessageResult) {
         case Err():
@@ -111,7 +108,6 @@ class ReceiveMessageUtils {
 
       final r = await db.accountAction(
         (db) => db.message.insertReceivedMessage(
-          currentUser,
           message.parsed.sender,
           message.parsed.messageNumber,
           message.parsed.messageId,

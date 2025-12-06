@@ -37,7 +37,6 @@ void main() {
 
       // Insert messages for account 1
       final localId1 = await db.write.message.insertToBeSentMessage(
-        testAccountId,
         remoteAccount1,
         api.MessageId(id: 'msg-1'),
         dbm.TextMessage.create('Hello 1')!,
@@ -55,7 +54,6 @@ void main() {
       );
 
       final localId2 = await db.write.message.insertToBeSentMessage(
-        testAccountId,
         remoteAccount1,
         api.MessageId(id: 'msg-2'),
         dbm.TextMessage.create('Hello 2')!,
@@ -71,7 +69,6 @@ void main() {
 
       // Insert messages for account 2
       final localId3 = await db.write.message.insertToBeSentMessage(
-        testAccountId,
         remoteAccount2,
         api.MessageId(id: 'msg-3'),
         dbm.TextMessage.create('Hello 3')!,
@@ -82,8 +79,8 @@ void main() {
       );
 
       // Verify initial messages
-      final initialMessages1 = await db.read.message.getAllMessages(testAccountId, remoteAccount1);
-      final initialMessages2 = await db.read.message.getAllMessages(testAccountId, remoteAccount2);
+      final initialMessages1 = await db.read.message.getAllMessages(remoteAccount1);
+      final initialMessages2 = await db.read.message.getAllMessages(remoteAccount2);
       expect(initialMessages1.length, equals(2));
       expect(initialMessages2.length, equals(1));
 
@@ -115,20 +112,13 @@ void main() {
       await db.delete(db.message).go();
 
       // Verify all messages are deleted
-      final afterDeleteMessages1 = await db.read.message.getAllMessages(
-        testAccountId,
-        remoteAccount1,
-      );
-      final afterDeleteMessages2 = await db.read.message.getAllMessages(
-        testAccountId,
-        remoteAccount2,
-      );
+      final afterDeleteMessages1 = await db.read.message.getAllMessages(remoteAccount1);
+      final afterDeleteMessages2 = await db.read.message.getAllMessages(remoteAccount2);
       expect(afterDeleteMessages1.length, equals(0));
       expect(afterDeleteMessages2.length, equals(0));
 
       // Step 4: Add new messages to DB (with different times)
       final localId4 = await db.write.message.insertToBeSentMessage(
-        testAccountId,
         remoteAccount1,
         api.MessageId(id: 'msg-4'),
         dbm.TextMessage.create('New message')!,
@@ -139,10 +129,7 @@ void main() {
       );
 
       // Verify new message is there
-      final beforeRestoreMessages = await db.read.message.getAllMessages(
-        testAccountId,
-        remoteAccount1,
-      );
+      final beforeRestoreMessages = await db.read.message.getAllMessages(remoteAccount1);
       expect(beforeRestoreMessages.length, equals(1));
       expect((beforeRestoreMessages[0].message as dbm.TextMessage?)?.text, equals('New message'));
 
@@ -150,8 +137,8 @@ void main() {
       await db.write.backup.restoreBackup(backup);
 
       // Step 6: Check the order of messages
-      final restoredMessages1 = await db.read.message.getAllMessages(testAccountId, remoteAccount1);
-      final restoredMessages2 = await db.read.message.getAllMessages(testAccountId, remoteAccount2);
+      final restoredMessages1 = await db.read.message.getAllMessages(remoteAccount1);
+      final restoredMessages2 = await db.read.message.getAllMessages(remoteAccount2);
 
       // Should have 3 messages for account 1 (2 from backup + 1 new)
       expect(restoredMessages1.length, equals(3));
@@ -182,7 +169,6 @@ void main() {
       // Add a message
       final messageId = api.MessageId(id: 'msg-unique-1');
       await db.write.message.insertToBeSentMessage(
-        testAccountId,
         remoteAccount1,
         messageId,
         dbm.TextMessage.create('Original message')!,
@@ -195,7 +181,7 @@ void main() {
       await db.write.backup.restoreBackup(backup);
 
       // Verify we still have only 1 message
-      final messages = await db.read.message.getAllMessages(testAccountId, remoteAccount1);
+      final messages = await db.read.message.getAllMessages(remoteAccount1);
       expect(messages.length, equals(1));
     });
 
@@ -269,7 +255,6 @@ void main() {
 
       // Insert first message
       final localId1 = await db.write.message.insertToBeSentMessage(
-        testAccountId,
         remoteAccount1,
         api.MessageId(id: 'msg-same-time-1'),
         dbm.TextMessage.create('Message 1')!,
@@ -281,7 +266,6 @@ void main() {
 
       // Insert second message
       final localId2 = await db.write.message.insertToBeSentMessage(
-        testAccountId,
         remoteAccount1,
         api.MessageId(id: 'msg-same-time-2'),
         dbm.TextMessage.create('Message 2')!,
@@ -293,7 +277,6 @@ void main() {
 
       // Insert third message
       final localId3 = await db.write.message.insertToBeSentMessage(
-        testAccountId,
         remoteAccount1,
         api.MessageId(id: 'msg-same-time-3'),
         dbm.TextMessage.create('Message 3')!,
@@ -309,7 +292,7 @@ void main() {
       await db.write.backup.restoreBackup(backup);
 
       // Get restored messages
-      final restoredMessages = await db.read.message.getAllMessages(testAccountId, remoteAccount1);
+      final restoredMessages = await db.read.message.getAllMessages(remoteAccount1);
 
       // Verify we have all 3 messages
       expect(restoredMessages.length, equals(3));

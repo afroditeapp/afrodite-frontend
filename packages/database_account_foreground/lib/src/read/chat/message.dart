@@ -13,10 +13,7 @@ class DaoReadMessage extends DatabaseAccessor<AccountForegroundDatabase>
   DaoReadMessage(super.db);
 
   /// Number of all messages in the database
-  Future<int?> countMessagesInConversation(
-    api.AccountId localAccountId,
-    api.AccountId remoteAccountId,
-  ) async {
+  Future<int?> countMessagesInConversation(api.AccountId remoteAccountId) async {
     final messageCount = message.id.count();
     final q = (selectOnly(message)
       ..where(message.remoteAccountId.equals(remoteAccountId.aid))
@@ -26,11 +23,7 @@ class DaoReadMessage extends DatabaseAccessor<AccountForegroundDatabase>
 
   /// Get message with given index in a conversation.
   /// The index 0 is the latest message.
-  Future<dbm.MessageEntry?> getMessage(
-    api.AccountId localAccountId,
-    api.AccountId remoteAccountId,
-    int index,
-  ) async {
+  Future<dbm.MessageEntry?> getMessage(api.AccountId remoteAccountId, int index) async {
     return await (select(message)
           ..where((t) => t.remoteAccountId.equals(remoteAccountId.aid))
           ..limit(1, offset: index)
@@ -39,10 +32,7 @@ class DaoReadMessage extends DatabaseAccessor<AccountForegroundDatabase>
         .getSingleOrNull();
   }
 
-  Stream<dbm.MessageEntry?> watchLatestMessage(
-    api.AccountId localAccountId,
-    api.AccountId remoteAccountId,
-  ) {
+  Stream<dbm.MessageEntry?> watchLatestMessage(api.AccountId remoteAccountId) {
     return (select(message)
           ..where((t) => t.remoteAccountId.equals(remoteAccountId.aid))
           ..limit(1)
@@ -53,7 +43,6 @@ class DaoReadMessage extends DatabaseAccessor<AccountForegroundDatabase>
 
   /// Get list of messages starting from startId. The next ID is smaller.
   Future<List<dbm.MessageEntry>> getMessageListUsingLocalMessageId(
-    api.AccountId localAccountId,
     api.AccountId remoteAccountId,
     dbm.LocalMessageId startId,
     int limit,
@@ -104,10 +93,7 @@ class DaoReadMessage extends DatabaseAccessor<AccountForegroundDatabase>
     );
   }
 
-  Future<dbm.MessageEntry?> getLatestSentMessage(
-    api.AccountId localAccountId,
-    api.AccountId remoteAccountId,
-  ) {
+  Future<dbm.MessageEntry?> getLatestSentMessage(api.AccountId remoteAccountId) {
     return (select(message)
           ..where((t) => t.remoteAccountId.equals(remoteAccountId.aid))
           ..where(
@@ -123,12 +109,9 @@ class DaoReadMessage extends DatabaseAccessor<AccountForegroundDatabase>
   }
 
   /// First message is the latest message.
-  Future<List<dbm.MessageEntry>> getAllMessages(
-    api.AccountId localAccountId,
-    api.AccountId remoteAccountId,
-  ) async {
+  Future<List<dbm.MessageEntry>> getAllMessages(api.AccountId remoteAccountId) async {
     final int startLocalKey;
-    final latestMessage = await getMessage(localAccountId, remoteAccountId, 0);
+    final latestMessage = await getMessage(remoteAccountId, 0);
     if (latestMessage != null) {
       startLocalKey = latestMessage.localId.id;
     } else {
@@ -145,7 +128,6 @@ class DaoReadMessage extends DatabaseAccessor<AccountForegroundDatabase>
   }
 
   Future<dbm.MessageEntry?> getMessageUsingMessageId(
-    api.AccountId localAccountId,
     api.AccountId remoteAccountId,
     api.MessageId messageId,
   ) {
@@ -184,7 +166,6 @@ class DaoReadMessage extends DatabaseAccessor<AccountForegroundDatabase>
   }
 
   Future<List<dbm.MessageEntry>> getSuccessfullyReceivedAndSeenStateChangeToServerNotYetDone(
-    api.AccountId localAccountId,
     api.AccountId remoteAccountId,
   ) async {
     final messages =
@@ -201,7 +182,6 @@ class DaoReadMessage extends DatabaseAccessor<AccountForegroundDatabase>
   }
 
   Future<List<dbm.MessageEntry>> getSuccessfullyReceivedAndNotSeen(
-    api.AccountId localAccountId,
     api.AccountId remoteAccountId,
   ) async {
     final messages =
