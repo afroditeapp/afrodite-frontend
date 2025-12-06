@@ -1,4 +1,5 @@
 import 'package:database_account_foreground/src/read/account/account.dart';
+import 'package:database_account_foreground/src/read/chat/backup.dart';
 import 'package:database_account_foreground/src/read/chat/conversation_list.dart';
 import 'package:database_account_foreground/src/read/chat/key.dart';
 import 'package:database_account_foreground/src/read/chat/like.dart';
@@ -14,6 +15,7 @@ import 'package:database_account_foreground/src/read/profile/my_profile.dart';
 import 'package:database_account_foreground/src/read/profile/profile.dart';
 import 'package:database_account_foreground/src/read/profile/search.dart';
 import 'package:database_account_foreground/src/write/account/account.dart';
+import 'package:database_account_foreground/src/write/chat/backup.dart';
 import 'package:database_account_foreground/src/write/chat/conversation_list.dart';
 import 'package:database_account_foreground/src/write/chat/key.dart';
 import 'package:database_account_foreground/src/write/chat/like.dart';
@@ -106,6 +108,7 @@ part 'database.g.dart';
     DaoReadMyProfile,
     DaoReadSearch,
     // Chat
+    DaoReadBackup,
     DaoReadConversationList,
     DaoReadKey,
     DaoReadLike,
@@ -130,6 +133,7 @@ part 'database.g.dart';
     DaoWriteMyProfile,
     DaoWriteSearch,
     // Chat
+    DaoWriteBackup,
     DaoWriteConversationList,
     DaoWriteKey,
     DaoWriteLike,
@@ -167,6 +171,7 @@ class AccountForegroundDatabaseRead {
   DaoReadMyProfile get myProfile => db.daoReadMyProfile;
   DaoReadSearch get search => db.daoReadSearch;
   // Chat
+  DaoReadBackup get backup => db.daoReadBackup;
   DaoReadConversationList get conversationList => db.daoReadConversationList;
   DaoReadKey get key => db.daoReadKey;
   DaoReadLike get like => db.daoReadLike;
@@ -193,6 +198,7 @@ class AccountForegroundDatabaseWrite {
   DaoWriteMyProfile get myProfile => db.daoWriteMyProfile;
   DaoWriteSearch get search => db.daoWriteSearch;
   // Chat
+  DaoWriteBackup get backup => db.daoWriteBackup;
   DaoWriteConversationList get conversationList => db.daoWriteConversationList;
   DaoWriteKey get key => db.daoWriteKey;
   DaoWriteLike get like => db.daoWriteLike;

@@ -13788,6 +13788,9 @@ abstract class _$AccountForegroundDatabase extends GeneratedDatabase {
   late final DaoReadSearch daoReadSearch = DaoReadSearch(
     this as AccountForegroundDatabase,
   );
+  late final DaoReadBackup daoReadBackup = DaoReadBackup(
+    this as AccountForegroundDatabase,
+  );
   late final DaoReadConversationList daoReadConversationList =
       DaoReadConversationList(this as AccountForegroundDatabase);
   late final DaoReadKey daoReadKey = DaoReadKey(
@@ -13830,6 +13833,9 @@ abstract class _$AccountForegroundDatabase extends GeneratedDatabase {
     this as AccountForegroundDatabase,
   );
   late final DaoWriteSearch daoWriteSearch = DaoWriteSearch(
+    this as AccountForegroundDatabase,
+  );
+  late final DaoWriteBackup daoWriteBackup = DaoWriteBackup(
     this as AccountForegroundDatabase,
   );
   late final DaoWriteConversationList daoWriteConversationList =
