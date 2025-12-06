@@ -67,7 +67,7 @@ class DaoWriteMessage extends DatabaseAccessor<AccountForegroundDatabase>
     } else {
       unixTime = null;
     }
-    await (update(message)..where((t) => t.id.equals(localId.id))).write(
+    await (update(message)..where((t) => t.localId.equals(localId.id))).write(
       MessageCompanion(
         messageState: Value.absentIfNull(sentState?.toDbState().number),
         sentUnixTime: Value.absentIfNull(unixTime),
@@ -125,7 +125,7 @@ class DaoWriteMessage extends DatabaseAccessor<AccountForegroundDatabase>
     dbm.Message? messageValue,
     Uint8List? symmetricMessageEncryptionKey,
   }) async {
-    await (update(message)..where((t) => t.id.equals(localId.id))).write(
+    await (update(message)..where((t) => t.localId.equals(localId.id))).write(
       MessageCompanion(
         messageState: Value(receivedMessageState.toDbState().number),
         message: Value.absentIfNull(messageValue),
@@ -138,17 +138,17 @@ class DaoWriteMessage extends DatabaseAccessor<AccountForegroundDatabase>
     dbm.LocalMessageId localId,
     Uint8List symmetricMessageEncryptionKey,
   ) async {
-    await (update(message)..where((t) => t.id.equals(localId.id))).write(
+    await (update(message)..where((t) => t.localId.equals(localId.id))).write(
       MessageCompanion(symmetricMessageEncryptionKey: Value(symmetricMessageEncryptionKey)),
     );
   }
 
   Future<void> deleteMessage(dbm.LocalMessageId localId) async {
-    await (delete(message)..where((t) => t.id.equals(localId.id))).go();
+    await (delete(message)..where((t) => t.localId.equals(localId.id))).go();
   }
 
   Future<void> updateStateToReceivedAndSeenLocally(dbm.LocalMessageId localId) async {
-    await (update(message)..where((t) => t.id.equals(localId.id))).write(
+    await (update(message)..where((t) => t.localId.equals(localId.id))).write(
       MessageCompanion(
         messageState: Value(dbm.ReceivedMessageState.receivedAndSeenLocally.toDbState().number),
       ),
@@ -156,7 +156,7 @@ class DaoWriteMessage extends DatabaseAccessor<AccountForegroundDatabase>
   }
 
   Future<void> updateStateToReceivedAndSeen(dbm.LocalMessageId localId) async {
-    await (update(message)..where((t) => t.id.equals(localId.id))).write(
+    await (update(message)..where((t) => t.localId.equals(localId.id))).write(
       MessageCompanion(
         messageState: Value(dbm.ReceivedMessageState.receivedAndSeen.toDbState().number),
       ),

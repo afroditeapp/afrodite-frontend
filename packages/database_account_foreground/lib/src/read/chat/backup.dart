@@ -66,7 +66,7 @@ class DaoReadBackup extends DatabaseAccessor<AccountForegroundDatabase> with _$D
 
         messages.add(
           dbm.BackupMessageJson(
-            localId: msg.id,
+            localId: msg.localId,
             localUnixTime: msg.localUnixTime,
             messageState: msg.messageState,
             symmetricKeyBlobIndex: symmetricKeyBlobIndex,

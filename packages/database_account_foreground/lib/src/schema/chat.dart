@@ -54,7 +54,7 @@ class ChatPrivacySettings extends SingleRowTable {
 
 class Message extends Table {
   /// Local message ID
-  IntColumn get id => integer().autoIncrement()();
+  IntColumn get localId => integer().autoIncrement()();
   TextColumn get remoteAccountId => text().map(const AccountIdConverter())();
   BlobColumn get message =>
       blob().map(const NullAwareTypeConverter.wrap(MessageConverter())).nullable()();

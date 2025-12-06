@@ -108,7 +108,7 @@ class DaoWriteBackup extends DatabaseAccessor<AccountForegroundDatabase>
         // Create MessageData (we need to reconstruct this from backup data)
         backupMessages.add(
           MessageData(
-            id: backupMsg.localId,
+            localId: backupMsg.localId,
             remoteAccountId: account.accountId,
             message: message,
             localUnixTime: backupMsg.localUnixTime,
@@ -133,7 +133,7 @@ class DaoWriteBackup extends DatabaseAccessor<AccountForegroundDatabase>
           b.localUnixTime.toUnixEpochMilliseconds(),
         );
         if (timeCompare != 0) return timeCompare;
-        return a.id.compareTo(b.id);
+        return a.localId.compareTo(b.localId);
       });
 
       // Delete all existing messages for this account

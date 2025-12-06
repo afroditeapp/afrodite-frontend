@@ -12924,10 +12924,12 @@ class $MessageTable extends schema.Message
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   $MessageTable(this.attachedDatabase, [this._alias]);
-  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  static const VerificationMeta _localIdMeta = const VerificationMeta(
+    'localId',
+  );
   @override
-  late final GeneratedColumn<int> id = GeneratedColumn<int>(
-    'id',
+  late final GeneratedColumn<int> localId = GeneratedColumn<int>(
+    'local_id',
     aliasedName,
     false,
     hasAutoIncrement: true,
@@ -13044,7 +13046,7 @@ class $MessageTable extends schema.Message
       ).withConverter<MessageId?>($MessageTable.$convertermessageId);
   @override
   List<GeneratedColumn> get $columns => [
-    id,
+    localId,
     remoteAccountId,
     message,
     localUnixTime,
@@ -13069,8 +13071,11 @@ class $MessageTable extends schema.Message
   }) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
-    if (data.containsKey('id')) {
-      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    if (data.containsKey('local_id')) {
+      context.handle(
+        _localIdMeta,
+        localId.isAcceptableOrUnknown(data['local_id']!, _localIdMeta),
+      );
     }
     if (data.containsKey('message_state')) {
       context.handle(
@@ -13105,14 +13110,14 @@ class $MessageTable extends schema.Message
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => {id};
+  Set<GeneratedColumn> get $primaryKey => {localId};
   @override
   MessageData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return MessageData(
-      id: attachedDatabase.typeMapping.read(
+      localId: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
-        data['${effectivePrefix}id'],
+        data['${effectivePrefix}local_id'],
       )!,
       remoteAccountId: $MessageTable.$converterremoteAccountId.fromSql(
         attachedDatabase.typeMapping.read(
@@ -13202,7 +13207,7 @@ class $MessageTable extends schema.Message
 
 class MessageData extends DataClass implements Insertable<MessageData> {
   /// Local message ID
-  final int id;
+  final int localId;
   final AccountId remoteAccountId;
   final Message? message;
   final UtcDateTime localUnixTime;
@@ -13215,7 +13220,7 @@ class MessageData extends DataClass implements Insertable<MessageData> {
   final UtcDateTime? seenUnixTime;
   final MessageId? messageId;
   const MessageData({
-    required this.id,
+    required this.localId,
     required this.remoteAccountId,
     this.message,
     required this.localUnixTime,
@@ -13231,7 +13236,7 @@ class MessageData extends DataClass implements Insertable<MessageData> {
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    map['id'] = Variable<int>(id);
+    map['local_id'] = Variable<int>(localId);
     {
       map['remote_account_id'] = Variable<String>(
         $MessageTable.$converterremoteAccountId.toSql(remoteAccountId),
@@ -13288,7 +13293,7 @@ class MessageData extends DataClass implements Insertable<MessageData> {
 
   MessageCompanion toCompanion(bool nullToAbsent) {
     return MessageCompanion(
-      id: Value(id),
+      localId: Value(localId),
       remoteAccountId: Value(remoteAccountId),
       message: message == null && nullToAbsent
           ? const Value.absent()
@@ -13326,7 +13331,7 @@ class MessageData extends DataClass implements Insertable<MessageData> {
   }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return MessageData(
-      id: serializer.fromJson<int>(json['id']),
+      localId: serializer.fromJson<int>(json['localId']),
       remoteAccountId: serializer.fromJson<AccountId>(json['remoteAccountId']),
       message: serializer.fromJson<Message?>(json['message']),
       localUnixTime: serializer.fromJson<UtcDateTime>(json['localUnixTime']),
@@ -13350,7 +13355,7 @@ class MessageData extends DataClass implements Insertable<MessageData> {
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'id': serializer.toJson<int>(id),
+      'localId': serializer.toJson<int>(localId),
       'remoteAccountId': serializer.toJson<AccountId>(remoteAccountId),
       'message': serializer.toJson<Message?>(message),
       'localUnixTime': serializer.toJson<UtcDateTime>(localUnixTime),
@@ -13370,7 +13375,7 @@ class MessageData extends DataClass implements Insertable<MessageData> {
   }
 
   MessageData copyWith({
-    int? id,
+    int? localId,
     AccountId? remoteAccountId,
     Value<Message?> message = const Value.absent(),
     UtcDateTime? localUnixTime,
@@ -13383,7 +13388,7 @@ class MessageData extends DataClass implements Insertable<MessageData> {
     Value<UtcDateTime?> seenUnixTime = const Value.absent(),
     Value<MessageId?> messageId = const Value.absent(),
   }) => MessageData(
-    id: id ?? this.id,
+    localId: localId ?? this.localId,
     remoteAccountId: remoteAccountId ?? this.remoteAccountId,
     message: message.present ? message.value : this.message,
     localUnixTime: localUnixTime ?? this.localUnixTime,
@@ -13406,7 +13411,7 @@ class MessageData extends DataClass implements Insertable<MessageData> {
   );
   MessageData copyWithCompanion(MessageCompanion data) {
     return MessageData(
-      id: data.id.present ? data.id.value : this.id,
+      localId: data.localId.present ? data.localId.value : this.localId,
       remoteAccountId: data.remoteAccountId.present
           ? data.remoteAccountId.value
           : this.remoteAccountId,
@@ -13442,7 +13447,7 @@ class MessageData extends DataClass implements Insertable<MessageData> {
   @override
   String toString() {
     return (StringBuffer('MessageData(')
-          ..write('id: $id, ')
+          ..write('localId: $localId, ')
           ..write('remoteAccountId: $remoteAccountId, ')
           ..write('message: $message, ')
           ..write('localUnixTime: $localUnixTime, ')
@@ -13462,7 +13467,7 @@ class MessageData extends DataClass implements Insertable<MessageData> {
 
   @override
   int get hashCode => Object.hash(
-    id,
+    localId,
     remoteAccountId,
     message,
     localUnixTime,
@@ -13479,7 +13484,7 @@ class MessageData extends DataClass implements Insertable<MessageData> {
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is MessageData &&
-          other.id == this.id &&
+          other.localId == this.localId &&
           other.remoteAccountId == this.remoteAccountId &&
           other.message == this.message &&
           other.localUnixTime == this.localUnixTime &&
@@ -13500,7 +13505,7 @@ class MessageData extends DataClass implements Insertable<MessageData> {
 }
 
 class MessageCompanion extends UpdateCompanion<MessageData> {
-  final Value<int> id;
+  final Value<int> localId;
   final Value<AccountId> remoteAccountId;
   final Value<Message?> message;
   final Value<UtcDateTime> localUnixTime;
@@ -13513,7 +13518,7 @@ class MessageCompanion extends UpdateCompanion<MessageData> {
   final Value<UtcDateTime?> seenUnixTime;
   final Value<MessageId?> messageId;
   const MessageCompanion({
-    this.id = const Value.absent(),
+    this.localId = const Value.absent(),
     this.remoteAccountId = const Value.absent(),
     this.message = const Value.absent(),
     this.localUnixTime = const Value.absent(),
@@ -13527,7 +13532,7 @@ class MessageCompanion extends UpdateCompanion<MessageData> {
     this.messageId = const Value.absent(),
   });
   MessageCompanion.insert({
-    this.id = const Value.absent(),
+    this.localId = const Value.absent(),
     required AccountId remoteAccountId,
     this.message = const Value.absent(),
     required UtcDateTime localUnixTime,
@@ -13543,7 +13548,7 @@ class MessageCompanion extends UpdateCompanion<MessageData> {
        localUnixTime = Value(localUnixTime),
        messageState = Value(messageState);
   static Insertable<MessageData> custom({
-    Expression<int>? id,
+    Expression<int>? localId,
     Expression<String>? remoteAccountId,
     Expression<Uint8List>? message,
     Expression<int>? localUnixTime,
@@ -13557,7 +13562,7 @@ class MessageCompanion extends UpdateCompanion<MessageData> {
     Expression<String>? messageId,
   }) {
     return RawValuesInsertable({
-      if (id != null) 'id': id,
+      if (localId != null) 'local_id': localId,
       if (remoteAccountId != null) 'remote_account_id': remoteAccountId,
       if (message != null) 'message': message,
       if (localUnixTime != null) 'local_unix_time': localUnixTime,
@@ -13575,7 +13580,7 @@ class MessageCompanion extends UpdateCompanion<MessageData> {
   }
 
   MessageCompanion copyWith({
-    Value<int>? id,
+    Value<int>? localId,
     Value<AccountId>? remoteAccountId,
     Value<Message?>? message,
     Value<UtcDateTime>? localUnixTime,
@@ -13589,7 +13594,7 @@ class MessageCompanion extends UpdateCompanion<MessageData> {
     Value<MessageId?>? messageId,
   }) {
     return MessageCompanion(
-      id: id ?? this.id,
+      localId: localId ?? this.localId,
       remoteAccountId: remoteAccountId ?? this.remoteAccountId,
       message: message ?? this.message,
       localUnixTime: localUnixTime ?? this.localUnixTime,
@@ -13609,8 +13614,8 @@ class MessageCompanion extends UpdateCompanion<MessageData> {
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    if (id.present) {
-      map['id'] = Variable<int>(id.value);
+    if (localId.present) {
+      map['local_id'] = Variable<int>(localId.value);
     }
     if (remoteAccountId.present) {
       map['remote_account_id'] = Variable<String>(
@@ -13673,7 +13678,7 @@ class MessageCompanion extends UpdateCompanion<MessageData> {
   @override
   String toString() {
     return (StringBuffer('MessageCompanion(')
-          ..write('id: $id, ')
+          ..write('localId: $localId, ')
           ..write('remoteAccountId: $remoteAccountId, ')
           ..write('message: $message, ')
           ..write('localUnixTime: $localUnixTime, ')

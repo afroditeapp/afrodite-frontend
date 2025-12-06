@@ -43,7 +43,7 @@ void main() {
       );
 
       // Manually update the local time and other fields to test ordering and backup
-      await (db.update(db.message)..where((t) => t.id.equals(localId1.id))).write(
+      await (db.update(db.message)..where((t) => t.localId.equals(localId1.id))).write(
         MessageCompanion(
           localUnixTime: Value(message1Time),
           sentUnixTime: Value(sentTime1),
@@ -59,7 +59,7 @@ void main() {
         dbm.TextMessage.create('Hello 2')!,
       );
 
-      await (db.update(db.message)..where((t) => t.id.equals(localId2.id))).write(
+      await (db.update(db.message)..where((t) => t.localId.equals(localId2.id))).write(
         MessageCompanion(
           localUnixTime: Value(message2Time),
           sentUnixTime: Value(sentTime2),
@@ -74,7 +74,7 @@ void main() {
         dbm.TextMessage.create('Hello 3')!,
       );
 
-      await (db.update(db.message)..where((t) => t.id.equals(localId3.id))).write(
+      await (db.update(db.message)..where((t) => t.localId.equals(localId3.id))).write(
         MessageCompanion(localUnixTime: Value(message3Time)),
       );
 
@@ -124,7 +124,7 @@ void main() {
         dbm.TextMessage.create('New message')!,
       );
 
-      await (db.update(db.message)..where((t) => t.id.equals(localId4.id))).write(
+      await (db.update(db.message)..where((t) => t.localId.equals(localId4.id))).write(
         MessageCompanion(localUnixTime: Value(message4Time)),
       );
 
@@ -260,7 +260,7 @@ void main() {
         dbm.TextMessage.create('Message 1')!,
       );
 
-      await (db.update(db.message)..where((t) => t.id.equals(localId1.id))).write(
+      await (db.update(db.message)..where((t) => t.localId.equals(localId1.id))).write(
         MessageCompanion(localUnixTime: Value(sameTime)),
       );
 
@@ -271,7 +271,7 @@ void main() {
         dbm.TextMessage.create('Message 2')!,
       );
 
-      await (db.update(db.message)..where((t) => t.id.equals(localId2.id))).write(
+      await (db.update(db.message)..where((t) => t.localId.equals(localId2.id))).write(
         MessageCompanion(localUnixTime: Value(sameTime)),
       );
 
@@ -282,7 +282,7 @@ void main() {
         dbm.TextMessage.create('Message 3')!,
       );
 
-      await (db.update(db.message)..where((t) => t.id.equals(localId3.id))).write(
+      await (db.update(db.message)..where((t) => t.localId.equals(localId3.id))).write(
         MessageCompanion(localUnixTime: Value(sameTime)),
       );
 

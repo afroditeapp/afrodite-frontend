@@ -14,7 +14,7 @@ class DaoReadMessage extends DatabaseAccessor<AccountForegroundDatabase>
 
   /// Number of all messages in the database
   Future<int?> countMessagesInConversation(api.AccountId remoteAccountId) async {
-    final messageCount = message.id.count();
+    final messageCount = message.localId.count();
     final q = (selectOnly(message)
       ..where(message.remoteAccountId.equals(remoteAccountId.aid))
       ..addColumns([messageCount]));
@@ -27,7 +27,7 @@ class DaoReadMessage extends DatabaseAccessor<AccountForegroundDatabase>
     return await (select(message)
           ..where((t) => t.remoteAccountId.equals(remoteAccountId.aid))
           ..limit(1, offset: index)
-          ..orderBy([(t) => OrderingTerm(expression: t.id, mode: OrderingMode.desc)]))
+          ..orderBy([(t) => OrderingTerm(expression: t.localId, mode: OrderingMode.desc)]))
         .map((m) => _fromMessage(m))
         .getSingleOrNull();
   }
@@ -36,7 +36,7 @@ class DaoReadMessage extends DatabaseAccessor<AccountForegroundDatabase>
     return (select(message)
           ..where((t) => t.remoteAccountId.equals(remoteAccountId.aid))
           ..limit(1)
-          ..orderBy([(t) => OrderingTerm(expression: t.id, mode: OrderingMode.desc)]))
+          ..orderBy([(t) => OrderingTerm(expression: t.localId, mode: OrderingMode.desc)]))
         .map((m) => _fromMessage(m))
         .watchSingleOrNull();
   }
@@ -50,9 +50,9 @@ class DaoReadMessage extends DatabaseAccessor<AccountForegroundDatabase>
     final list =
         await (select(message)
               ..where((t) => t.remoteAccountId.equals(remoteAccountId.aid))
-              ..where((t) => t.id.isSmallerOrEqualValue(startId.id))
+              ..where((t) => t.localId.isSmallerOrEqualValue(startId.id))
               ..limit(limit)
-              ..orderBy([(t) => OrderingTerm(expression: t.id, mode: OrderingMode.desc)]))
+              ..orderBy([(t) => OrderingTerm(expression: t.localId, mode: OrderingMode.desc)]))
             .map((m) => _fromMessage(m))
             .get();
 
@@ -61,7 +61,7 @@ class DaoReadMessage extends DatabaseAccessor<AccountForegroundDatabase>
 
   Future<dbm.MessageEntry?> getMessageUsingLocalMessageId(dbm.LocalMessageId localId) {
     return (select(message)
-          ..where((t) => t.id.equals(localId.id))
+          ..where((t) => t.localId.equals(localId.id))
           ..limit(1))
         .map((m) => _fromMessage(m))
         .getSingleOrNull();
@@ -70,7 +70,7 @@ class DaoReadMessage extends DatabaseAccessor<AccountForegroundDatabase>
   Stream<dbm.MessageEntry?> getMessageUpdatesUsingLocalMessageId(dbm.LocalMessageId localId) {
     return (select(
       message,
-    )..where((t) => t.id.equals(localId.id))).map((m) => _fromMessage(m)).watchSingleOrNull();
+    )..where((t) => t.localId.equals(localId.id))).map((m) => _fromMessage(m)).watchSingleOrNull();
   }
 
   dbm.MessageEntry? _fromMessage(MessageData m) {
@@ -80,7 +80,7 @@ class DaoReadMessage extends DatabaseAccessor<AccountForegroundDatabase>
     }
 
     return dbm.MessageEntry(
-      localId: dbm.LocalMessageId(m.id),
+      localId: dbm.LocalMessageId(m.localId),
       remoteAccountId: m.remoteAccountId,
       message: m.message,
       localUnixTime: m.localUnixTime,
@@ -103,7 +103,7 @@ class DaoReadMessage extends DatabaseAccessor<AccountForegroundDatabase>
             ),
           )
           ..limit(1)
-          ..orderBy([(t) => OrderingTerm(expression: t.id, mode: OrderingMode.desc)]))
+          ..orderBy([(t) => OrderingTerm(expression: t.localId, mode: OrderingMode.desc)]))
         .map((m) => _fromMessage(m))
         .getSingleOrNull();
   }
@@ -120,8 +120,8 @@ class DaoReadMessage extends DatabaseAccessor<AccountForegroundDatabase>
     final messages =
         await (select(message)
               ..where((t) => t.remoteAccountId.equals(remoteAccountId.aid))
-              ..where((t) => t.id.isSmallerOrEqualValue(startLocalKey))
-              ..orderBy([(t) => OrderingTerm(expression: t.id, mode: OrderingMode.desc)]))
+              ..where((t) => t.localId.isSmallerOrEqualValue(startLocalKey))
+              ..orderBy([(t) => OrderingTerm(expression: t.localId, mode: OrderingMode.desc)]))
             .map((m) => _fromMessage(m))
             .get();
     return messages.nonNulls.toList();
@@ -151,7 +151,7 @@ class DaoReadMessage extends DatabaseAccessor<AccountForegroundDatabase>
 
   Future<Uint8List?> getBackendSignedPgpMessage(dbm.LocalMessageId localId) {
     return (select(message)
-          ..where((t) => t.id.equals(localId.id))
+          ..where((t) => t.localId.equals(localId.id))
           ..limit(1))
         .map((m) => m.backendSignedPgpMessage)
         .getSingleOrNull();
@@ -159,7 +159,7 @@ class DaoReadMessage extends DatabaseAccessor<AccountForegroundDatabase>
 
   Future<Uint8List?> getSymmetricMessageEncryptionKey(dbm.LocalMessageId localId) {
     return (select(message)
-          ..where((t) => t.id.equals(localId.id))
+          ..where((t) => t.localId.equals(localId.id))
           ..limit(1))
         .map((m) => m.symmetricMessageEncryptionKey)
         .getSingleOrNull();
