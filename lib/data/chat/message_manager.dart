@@ -68,11 +68,31 @@ class RetryPublicKeyDownload extends MessageManagerCmd<Result<(), RetryPublicKey
   RetryPublicKeyDownload(this.localId);
 }
 
+sealed class ImportChatBackupError {
+  const ImportChatBackupError();
+}
+
+class InvalidBackupFile extends ImportChatBackupError {
+  const InvalidBackupFile();
+}
+
+class UnsupportedBackupVersion extends ImportChatBackupError {
+  const UnsupportedBackupVersion();
+}
+
+class WrongAccount extends ImportChatBackupError {
+  const WrongAccount();
+}
+
+class OtherImportError extends ImportChatBackupError {
+  const OtherImportError();
+}
+
 class CreateChatBackupCmd extends MessageManagerCmd<Result<ChatBackupData, DatabaseError>> {}
 
-class ImportChatBackupCmd extends MessageManagerCmd<Result<(), DatabaseError>> {
-  final ChatBackupData backupData;
-  ImportChatBackupCmd(this.backupData);
+class ImportChatBackupCmd extends MessageManagerCmd<Result<(), ImportChatBackupError>> {
+  final Uint8List bytes;
+  ImportChatBackupCmd(this.bytes);
 }
 
 /// Synchronized message actions
@@ -129,9 +149,37 @@ class MessageManager extends LifecycleMethods {
             case CreateChatBackupCmd():
               final result = await db.accountData((db) => db.backup.createBackup(currentUser));
               cmd.completed.add(result);
-            case ImportChatBackupCmd(:final backupData):
-              final result = await db.accountAction((db) => db.backup.restoreBackup(backupData));
-              cmd.completed.add(result);
+            case ImportChatBackupCmd(:final bytes):
+              // Parse backup file
+              final parseResult = ChatBackupFile.fromBytes(bytes);
+              switch (parseResult) {
+                case BackupFileParseSuccess(:final file):
+                  try {
+                    final backupData = file.decompress();
+
+                    // Validate that backup was created by the current account
+                    if (backupData.json.metadata.accountId != currentUser) {
+                      cmd.completed.add(const Err(WrongAccount()));
+                      break;
+                    }
+
+                    final result = await db.accountAction(
+                      (db) => db.backup.restoreBackup(backupData),
+                    );
+                    if (result.isErr()) {
+                      cmd.completed.add(const Err(OtherImportError()));
+                    } else {
+                      cmd.completed.add(const Ok(()));
+                    }
+                  } catch (e) {
+                    cmd.completed.add(const Err(OtherImportError()));
+                  }
+                case InvalidBackupHeader():
+                case FileTooShort():
+                  cmd.completed.add(const Err(InvalidBackupFile()));
+                case UnsupportedBackupFileVersion():
+                  cmd.completed.add(const Err(UnsupportedBackupVersion()));
+              }
           }
         })
         .listen((_) {});

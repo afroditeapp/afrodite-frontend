@@ -276,6 +276,18 @@
       }
     }
   },
+  "chat_data_screen_import_error_invalid_backup_file": "Invalid backup file",
+  "@chat_data_screen_import_error_invalid_backup_file": {
+    "description": "Error message when backup file is invalid"
+  },
+  "chat_data_screen_import_error_unsupported_version": "Unsupported backup version",
+  "@chat_data_screen_import_error_unsupported_version": {
+    "description": "Error message when backup file version is unsupported"
+  },
+  "chat_data_screen_import_error_wrong_account": "Backup created by different account",
+  "@chat_data_screen_import_error_wrong_account": {
+    "description": "Error message when backup was created by different account"
+  },
   "chat_data_screen_title": "Chat data",
   "@chat_data_screen_title": {
     "description": "Title for chat data backup/restore screen"

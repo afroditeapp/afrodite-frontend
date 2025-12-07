@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:typed_data';
 
 import 'package:app/data/account_repository.dart';
 import 'package:app/data/chat/check_online_status_manager.dart';
@@ -479,8 +480,8 @@ class ChatRepository extends DataRepositoryWithLifecycle {
     return await cmd.waitCompletionAndDispose();
   }
 
-  Future<Result<(), DatabaseError>> importChatBackup(ChatBackupData backupData) async {
-    final cmd = ImportChatBackupCmd(backupData);
+  Future<Result<(), ImportChatBackupError>> importChatBackup(Uint8List bytes) async {
+    final cmd = ImportChatBackupCmd(bytes);
     messageManager.queueCmd(cmd);
     return await cmd.waitCompletionAndDispose();
   }

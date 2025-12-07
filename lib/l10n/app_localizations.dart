@@ -448,6 +448,24 @@ abstract class AppLocalizations {
   /// **'File: {p0}\n\nCurrent and backup messages will be merged. Current encryption key will be replaced if the one included in the backup is newer.'**
   String chat_data_screen_import_backup_question_details(String p0);
 
+  /// Error message when backup file is invalid
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid backup file'**
+  String get chat_data_screen_import_error_invalid_backup_file;
+
+  /// Error message when backup file version is unsupported
+  ///
+  /// In en, this message translates to:
+  /// **'Unsupported backup version'**
+  String get chat_data_screen_import_error_unsupported_version;
+
+  /// Error message when backup was created by different account
+  ///
+  /// In en, this message translates to:
+  /// **'Backup created by different account'**
+  String get chat_data_screen_import_error_wrong_account;
+
   /// Title for chat data backup/restore screen
   ///
   /// In en, this message translates to:

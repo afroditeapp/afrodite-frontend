@@ -103,7 +103,9 @@ void main() {
       expect(bytes[7], equals(backupVersion1));
 
       // Deserialize and decompress
-      final restoredFile = ChatBackupFile.fromBytes(bytes);
+      final parseResult = ChatBackupFile.fromBytes(bytes);
+      expect(parseResult, isA<BackupFileParseSuccess>());
+      final restoredFile = (parseResult as BackupFileParseSuccess).file;
       final restoredData = restoredFile.decompress();
 
       // Verify metadata
@@ -188,7 +190,9 @@ void main() {
       );
 
       final bytes = backupData.compress().toBytes();
-      final restored = ChatBackupFile.fromBytes(bytes).decompress();
+      final parseResult = ChatBackupFile.fromBytes(bytes);
+      expect(parseResult, isA<BackupFileParseSuccess>());
+      final restored = (parseResult as BackupFileParseSuccess).file.decompress();
 
       expect(restored.json.accounts.length, equals(0));
       expect(restored.blobStore.blobs.length, equals(0));
@@ -220,7 +224,9 @@ void main() {
       );
 
       final bytes = backupData.compress().toBytes();
-      final restored = ChatBackupFile.fromBytes(bytes).decompress();
+      final parseResult = ChatBackupFile.fromBytes(bytes);
+      expect(parseResult, isA<BackupFileParseSuccess>());
+      final restored = (parseResult as BackupFileParseSuccess).file.decompress();
 
       expect(restored.json.accounts.length, equals(1));
       expect(restored.json.accounts[0].messages.length, equals(1));

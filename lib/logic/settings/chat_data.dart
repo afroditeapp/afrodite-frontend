@@ -1,8 +1,9 @@
 import "dart:io";
+import "package:app/data/chat/message_manager.dart";
 import "package:app/data/chat_repository.dart";
 import "package:app/data/utils/repository_instances.dart";
 import "package:app/model/freezed/logic/settings/chat_data.dart";
-import "package:database/database.dart";
+import "package:app/utils/result.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:flutter_file_saver/flutter_file_saver.dart";
 import "package:app/localizations.dart";
@@ -86,17 +87,26 @@ class ChatDataBloc extends Bloc<ChatDataEvent, ChatDataData> with ActionRunner {
         emit(state.copyWith(isLoading: true));
 
         try {
-          // Read file and decompress
           final file = File(data.filePath);
           final bytes = await file.readAsBytes();
-          final backupFile = ChatBackupFile.fromBytes(bytes);
-          final backupData = backupFile.decompress();
-
-          // Restore backup using ChatRepository
-          await chat.importChatBackup(backupData);
-
-          showSnackBar(R.strings.generic_action_completed);
-          emit(ChatDataData());
+          final result = await chat.importChatBackup(bytes);
+          switch (result) {
+            case Ok():
+              showSnackBar(R.strings.generic_action_completed);
+              emit(ChatDataData());
+            case Err(:final e):
+              emit(state.copyWith(isError: true, isLoading: false));
+              switch (e) {
+                case InvalidBackupFile():
+                  showSnackBar(R.strings.chat_data_screen_import_error_invalid_backup_file);
+                case UnsupportedBackupVersion():
+                  showSnackBar(R.strings.chat_data_screen_import_error_unsupported_version);
+                case WrongAccount():
+                  showSnackBar(R.strings.chat_data_screen_import_error_wrong_account);
+                case OtherImportError():
+                  showSnackBar(R.strings.generic_error);
+              }
+          }
         } catch (e) {
           emit(state.copyWith(isError: true, isLoading: false));
           showSnackBar(R.strings.generic_error);

@@ -232,6 +232,18 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get chat_data_screen_import_error_invalid_backup_file =>
+      'Invalid backup file';
+
+  @override
+  String get chat_data_screen_import_error_unsupported_version =>
+      'Unsupported backup version';
+
+  @override
+  String get chat_data_screen_import_error_wrong_account =>
+      'Backup created by different account';
+
+  @override
   String get chat_data_screen_title => 'Chat data';
 
   @override

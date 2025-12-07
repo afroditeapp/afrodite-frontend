@@ -4,6 +4,28 @@ import 'dart:typed_data';
 import 'backup/blob.dart';
 import 'backup/json.dart';
 
+sealed class BackupFileParseResult {
+  const BackupFileParseResult();
+}
+
+class BackupFileParseSuccess extends BackupFileParseResult {
+  final ChatBackupFile file;
+  const BackupFileParseSuccess(this.file);
+}
+
+class InvalidBackupHeader extends BackupFileParseResult {
+  const InvalidBackupHeader();
+}
+
+class UnsupportedBackupFileVersion extends BackupFileParseResult {
+  final int version;
+  const UnsupportedBackupFileVersion(this.version);
+}
+
+class FileTooShort extends BackupFileParseResult {
+  const FileTooShort();
+}
+
 /// Chat backup file format specification:
 ///
 /// 1. Header: 7 bytes ASCII "abackup"
@@ -61,6 +83,8 @@ class ChatBackupFile {
   ChatBackupFile({required this.compressedData});
 
   /// Decompress and get ChatBackupData
+  ///
+  /// This might throw exceptions.
   ChatBackupData decompress() {
     // Decompress the payload
     final uncompressedData = Uint8List.fromList(gzip.decode(compressedData));
@@ -97,17 +121,17 @@ class ChatBackupFile {
   }
 
   /// Deserialize backup from binary format
-  static ChatBackupFile fromBytes(Uint8List bytes) {
+  static BackupFileParseResult fromBytes(Uint8List bytes) {
     int pos = 0;
 
     // Validate header
     if (bytes.length < backupHeader.length + 1) {
-      throw FormatException('File too short to be a valid backup');
+      return const FileTooShort();
     }
 
     for (int i = 0; i < backupHeader.length; i++) {
       if (bytes[i] != backupHeader[i]) {
-        throw FormatException('Invalid backup header');
+        return const InvalidBackupHeader();
       }
     }
     pos += backupHeader.length;
@@ -116,13 +140,13 @@ class ChatBackupFile {
     final version = bytes[pos];
     pos += 1;
     if (version != backupVersion1) {
-      throw FormatException('Unsupported backup version: $version');
+      return UnsupportedBackupFileVersion(version);
     }
 
     // Read compressed data (all remaining bytes)
     final compressedData = bytes.sublist(pos);
 
-    return ChatBackupFile(compressedData: compressedData);
+    return BackupFileParseSuccess(ChatBackupFile(compressedData: compressedData));
   }
 }
 
