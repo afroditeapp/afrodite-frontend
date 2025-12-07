@@ -1,6 +1,6 @@
-import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:archive/archive.dart';
 import 'backup/blob.dart';
 import 'backup/json.dart';
 
@@ -70,7 +70,7 @@ class ChatBackupData {
 
     // Compress the entire payload
     final uncompressedData = buffer.toBytes();
-    final compressedData = gzip.encode(uncompressedData);
+    final compressedData = GZipEncoder().encodeBytes(uncompressedData);
 
     return ChatBackupFile(compressedData: compressedData);
   }
@@ -78,7 +78,7 @@ class ChatBackupData {
 
 /// Complete compressed backup file structure
 class ChatBackupFile {
-  final List<int> compressedData;
+  final Uint8List compressedData;
 
   ChatBackupFile({required this.compressedData});
 
@@ -87,17 +87,17 @@ class ChatBackupFile {
   /// This might throw exceptions.
   ChatBackupData decompress() {
     // Decompress the payload
-    final uncompressedData = Uint8List.fromList(gzip.decode(compressedData));
+    final data = GZipDecoder().decodeBytes(compressedData, verify: true);
     int pos = 0;
 
     // Read JSON length and data
-    final jsonLength = _readU32(uncompressedData, pos);
+    final jsonLength = _readU32(data, pos);
     pos += 4;
-    final jsonBytes = uncompressedData.sublist(pos, pos + jsonLength);
+    final jsonBytes = data.sublist(pos, pos + jsonLength);
     pos += jsonLength;
 
     // Read blob store
-    final (blobStore, _) = BackupBlobStore.fromBytes(uncompressedData, pos);
+    final (blobStore, _) = BackupBlobStore.fromBytes(data, pos);
 
     final json = BackupJson.fromBytes(jsonBytes);
 

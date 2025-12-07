@@ -9,6 +9,7 @@ environment:
 resolution: workspace
 
 dependencies:
+  archive: ^4.0.7
   openapi:
     path: "../api_client"
 
