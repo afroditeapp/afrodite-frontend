@@ -8,6 +8,7 @@ lib/api/account_api.dart
 lib/api/account_bot_api.dart
 lib/api/chat_admin_api.dart
 lib/api/chat_api.dart
+lib/api/chat_transfer_api.dart
 lib/api/common_admin_api.dart
 lib/api/common_api.dart
 lib/api/media_admin_api.dart
@@ -69,6 +70,7 @@ lib/model/client_features_config.dart
 lib/model/client_features_config_hash.dart
 lib/model/client_info.dart
 lib/model/client_language.dart
+lib/model/client_role.dart
 lib/model/client_type.dart
 lib/model/client_version.dart
 lib/model/client_version_count.dart
@@ -101,6 +103,9 @@ lib/model/data_export_name.dart
 lib/model/data_export_state.dart
 lib/model/data_export_state_type.dart
 lib/model/data_export_type.dart
+lib/model/data_transfer_byte_count.dart
+lib/model/data_transfer_initial_message.dart
+lib/model/data_transfer_public_key.dart
 lib/model/delivery_info_type.dart
 lib/model/demo_account_login_credentials.dart
 lib/model/demo_account_login_result.dart

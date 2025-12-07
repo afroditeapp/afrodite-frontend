@@ -64,6 +64,9 @@ String parameterToString(dynamic value) {
   if (value is AttributeValueOrderMode) {
     return AttributeValueOrderModeTypeTransformer().encode(value).toString();
   }
+  if (value is ClientRole) {
+    return ClientRoleTypeTransformer().encode(value).toString();
+  }
   if (value is ClientType) {
     return ClientTypeTypeTransformer().encode(value).toString();
   }
