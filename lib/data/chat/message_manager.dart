@@ -4,6 +4,7 @@ import 'package:app/data/chat/backend_signed_message.dart';
 import 'package:app/data/chat/message_manager/receive.dart';
 import 'package:app/data/chat/message_manager/send.dart';
 import 'package:app/data/chat/message_manager/utils.dart';
+import 'package:app/utils/app_error.dart';
 import 'package:database/database.dart';
 import 'package:flutter/foundation.dart';
 import 'package:openapi/api.dart';
@@ -67,6 +68,13 @@ class RetryPublicKeyDownload extends MessageManagerCmd<Result<(), RetryPublicKey
   RetryPublicKeyDownload(this.localId);
 }
 
+class CreateChatBackupCmd extends MessageManagerCmd<Result<ChatBackupData, DatabaseError>> {}
+
+class ImportChatBackupCmd extends MessageManagerCmd<Result<(), DatabaseError>> {
+  final ChatBackupData backupData;
+  ImportChatBackupCmd(this.backupData);
+}
+
 /// Synchronized message actions
 class MessageManager extends LifecycleMethods {
   final MessageKeyManager messageKeyManager;
@@ -118,6 +126,12 @@ class MessageManager extends LifecycleMethods {
               cmd.completed.add(await _resendSendFailedMessage(cmd.localId));
             case RetryPublicKeyDownload():
               cmd.completed.add(await _retryPublicKeyDownload(cmd.localId));
+            case CreateChatBackupCmd():
+              final result = await db.accountData((db) => db.backup.createBackup(currentUser));
+              cmd.completed.add(result);
+            case ImportChatBackupCmd(:final backupData):
+              final result = await db.accountAction((db) => db.backup.restoreBackup(backupData));
+              cmd.completed.add(result);
           }
         })
         .listen((_) {});

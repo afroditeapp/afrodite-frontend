@@ -5,6 +5,7 @@ import 'package:app/data/chat/check_online_status_manager.dart';
 import 'package:app/data/chat/message_manager/utils.dart';
 import 'package:app/data/chat/typing_indicator_manager.dart';
 import 'package:app/utils/api.dart';
+import 'package:app/utils/app_error.dart';
 import 'package:native_utils/native_utils.dart';
 import 'package:openapi/api.dart';
 import 'package:app/api/server_connection_manager.dart';
@@ -468,6 +469,18 @@ class ChatRepository extends DataRepositoryWithLifecycle {
     LocalMessageId localId,
   ) async {
     final cmd = RetryPublicKeyDownload(localId);
+    messageManager.queueCmd(cmd);
+    return await cmd.waitCompletionAndDispose();
+  }
+
+  Future<Result<ChatBackupData, DatabaseError>> createChatBackup() async {
+    final cmd = CreateChatBackupCmd();
+    messageManager.queueCmd(cmd);
+    return await cmd.waitCompletionAndDispose();
+  }
+
+  Future<Result<(), DatabaseError>> importChatBackup(ChatBackupData backupData) async {
+    final cmd = ImportChatBackupCmd(backupData);
     messageManager.queueCmd(cmd);
     return await cmd.waitCompletionAndDispose();
   }

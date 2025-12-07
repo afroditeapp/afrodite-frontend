@@ -247,6 +247,39 @@
   "@camera_screen_take_photo_error": {
     "description": "Snackbar error text displayed when taking photo fails"
   },
+  "chat_data_screen_create_backup": "Create backup",
+  "@chat_data_screen_create_backup": {
+    "description": "Button text for creating chat backup"
+  },
+  "chat_data_screen_create_backup_question": "Create chat backup?",
+  "@chat_data_screen_create_backup_question": {
+    "description": "Confirmation dialog for creating chat backup"
+  },
+  "chat_data_screen_create_backup_question_details": "Backup includes current messages and encryption key.",
+  "@chat_data_screen_create_backup_question_details": {
+    "description": "Details for create backup confirmation dialog"
+  },
+  "chat_data_screen_import_backup": "Import backup",
+  "@chat_data_screen_import_backup": {
+    "description": "Button text for importing chat backup"
+  },
+  "chat_data_screen_import_backup_question": "Import chat backup?",
+  "@chat_data_screen_import_backup_question": {
+    "description": "Confirmation dialog for importing chat backup"
+  },
+  "chat_data_screen_import_backup_question_details": "File: {p0}\n\nCurrent and backup messages will be merged. Current encryption key will be replaced if the one included in the backup is newer.",
+  "@chat_data_screen_import_backup_question_details": {
+    "description": "Details for import backup confirmation dialog",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
+  "chat_data_screen_title": "Chat data",
+  "@chat_data_screen_title": {
+    "description": "Title for chat data backup/restore screen"
+  },
   "chat_list_screen_info_dialog_text": "Chats are stored only on this device. Removing this app removes the chats.",
   "@chat_list_screen_info_dialog_text": {
     "description": "Text for info dialog which is displayed once"

@@ -211,6 +211,30 @@ class AppLocalizationsSv extends AppLocalizations {
   String get camera_screen_take_photo_error => 'Taking photo failed';
 
   @override
+  String get chat_data_screen_create_backup => 'Create backup';
+
+  @override
+  String get chat_data_screen_create_backup_question => 'Create chat backup?';
+
+  @override
+  String get chat_data_screen_create_backup_question_details =>
+      'Backup includes current messages and encryption key.';
+
+  @override
+  String get chat_data_screen_import_backup => 'Import backup';
+
+  @override
+  String get chat_data_screen_import_backup_question => 'Import chat backup?';
+
+  @override
+  String chat_data_screen_import_backup_question_details(String p0) {
+    return 'File: $p0\n\nCurrent and backup messages will be merged. Current encryption key will be replaced if the one included in the backup is newer.';
+  }
+
+  @override
+  String get chat_data_screen_title => 'Chat data';
+
+  @override
   String get chat_list_screen_info_dialog_text =>
       'Chats are stored only on this device. Removing this app removes the chats.';
 

@@ -412,6 +412,48 @@ abstract class AppLocalizations {
   /// **'Taking photo failed'**
   String get camera_screen_take_photo_error;
 
+  /// Button text for creating chat backup
+  ///
+  /// In en, this message translates to:
+  /// **'Create backup'**
+  String get chat_data_screen_create_backup;
+
+  /// Confirmation dialog for creating chat backup
+  ///
+  /// In en, this message translates to:
+  /// **'Create chat backup?'**
+  String get chat_data_screen_create_backup_question;
+
+  /// Details for create backup confirmation dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Backup includes current messages and encryption key.'**
+  String get chat_data_screen_create_backup_question_details;
+
+  /// Button text for importing chat backup
+  ///
+  /// In en, this message translates to:
+  /// **'Import backup'**
+  String get chat_data_screen_import_backup;
+
+  /// Confirmation dialog for importing chat backup
+  ///
+  /// In en, this message translates to:
+  /// **'Import chat backup?'**
+  String get chat_data_screen_import_backup_question;
+
+  /// Details for import backup confirmation dialog
+  ///
+  /// In en, this message translates to:
+  /// **'File: {p0}\n\nCurrent and backup messages will be merged. Current encryption key will be replaced if the one included in the backup is newer.'**
+  String chat_data_screen_import_backup_question_details(String p0);
+
+  /// Title for chat data backup/restore screen
+  ///
+  /// In en, this message translates to:
+  /// **'Chat data'**
+  String get chat_data_screen_title;
+
   /// Text for info dialog which is displayed once
   ///
   /// In en, this message translates to:

@@ -118,6 +118,8 @@ dependencies:
 
   infinite_scroll_pagination: ^5.1.1
 
+  file_selector: ^1.1.0
+
   flutter_map: ^8.2.1
   latlong2: ^0.9.1
 

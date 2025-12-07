@@ -14,6 +14,7 @@ import 'package:app/logic/login.dart';
 import 'package:app/logic/profile/automatic_profile_search_badge.dart';
 import 'package:app/logic/server/address.dart';
 import 'package:app/logic/server/maintenance.dart';
+import 'package:app/logic/settings/chat_data.dart';
 import 'package:app/logic/settings/data_export.dart';
 import 'package:app/logic/sign_in_with.dart';
 import 'package:app/model/freezed/logic/main/bottom_navigation_state.dart';
@@ -220,6 +221,7 @@ class NavigatorAccountBanned extends LoggedInRootScreen {
 
         BlocProvider(create: (_) => AccountDetailsBloc(r)),
         BlocProvider(create: (_) => DataExportBloc(r)),
+        BlocProvider(create: (_) => ChatDataBloc(r)),
       ],
       child: child,
     );
@@ -240,6 +242,7 @@ class NavigatorPendingRemoval extends LoggedInRootScreen {
         BlocProvider(create: (_) => LoginBloc()),
 
         BlocProvider(create: (_) => DataExportBloc(r)),
+        BlocProvider(create: (_) => ChatDataBloc(r)),
       ],
       child: child,
     );
@@ -306,6 +309,7 @@ class NavigatorNormal extends LoggedInRootScreen {
         BlocProvider(create: (_) => EmailNotificationSettingsBloc(r)),
         BlocProvider(create: (_) => UiSettingsBloc(r)),
         BlocProvider(create: (_) => DataExportBloc(r)),
+        BlocProvider(create: (_) => ChatDataBloc(r)),
 
         // News
         BlocProvider(create: (_) => NewsCountBloc(r)),

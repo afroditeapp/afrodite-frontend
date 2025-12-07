@@ -23,6 +23,7 @@ import 'package:app/ui/normal/settings.dart';
 import 'package:app/ui/normal/settings/account_settings.dart';
 import 'package:app/ui/normal/settings/admin.dart';
 import 'package:app/ui/normal/settings/blocked_profiles.dart';
+import 'package:app/ui/normal/settings/chat_data.dart';
 import 'package:app/ui/normal/settings/data_export.dart';
 import 'package:app/ui/normal/settings/debug.dart';
 import 'package:app/ui/login/email_login.dart';
@@ -175,4 +176,5 @@ List<UrlParser<MyScreenPage<Object>>> loggedInPages(RepositoryInstances r) => [
   DataExportPageMyData(r),
   NotificationSettingsPage(),
   ProfileGridSettingsPage(),
+  ChatDataPage(),
 ];
