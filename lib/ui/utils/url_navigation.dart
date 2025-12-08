@@ -39,6 +39,8 @@ import 'package:app/ui/normal/settings/notifications/automatic_profile_search_re
 import 'package:app/ui/normal/settings/privacy_settings.dart';
 import 'package:app/ui/normal/settings/profile/edit_profile.dart';
 import 'package:app/ui/normal/settings/profile/search_settings.dart';
+import 'package:app/ui/normal/settings/receive_chat_backup.dart';
+import 'package:app/ui/normal/settings/send_chat_backup.dart';
 import 'package:app/ui/normal/settings/statistics.dart';
 import 'package:app/ui/pending_deletion.dart';
 import 'package:app/ui/splash_screen.dart';
@@ -122,6 +124,7 @@ List<UrlParser<MyScreenPage<Object>>> loggedOutPages() => [
   // Other
   EmailLoginPage(),
   EmailLoginCodePage(),
+  SendChatBackupPage(),
 ];
 
 List<UrlParser<MyScreenPage<Object>>> loggedInPages(RepositoryInstances r) => [
@@ -177,4 +180,5 @@ List<UrlParser<MyScreenPage<Object>>> loggedInPages(RepositoryInstances r) => [
   NotificationSettingsPage(),
   ProfileGridSettingsPage(),
   ChatDataPage(),
+  ReceiveChatBackupPage(),
 ];

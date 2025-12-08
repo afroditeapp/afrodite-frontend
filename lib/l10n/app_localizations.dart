@@ -412,6 +412,24 @@ abstract class AppLocalizations {
   /// **'Taking photo failed'**
   String get camera_screen_take_photo_error;
 
+  /// Status text when connecting to transfer API
+  ///
+  /// In en, this message translates to:
+  /// **'Connecting…'**
+  String get chat_backup_connecting;
+
+  /// Label for pairing code
+  ///
+  /// In en, this message translates to:
+  /// **'Device pairing code'**
+  String get chat_backup_pairing_code_label;
+
+  /// Error message when transfer budget is exceeded
+  ///
+  /// In en, this message translates to:
+  /// **'Yearly chat backup transfer budget exceeded. Please create a backup and transfer it manually.'**
+  String get chat_backup_transfer_budget_exceeded;
+
   /// Button text for creating chat backup
   ///
   /// In en, this message translates to:
@@ -1044,6 +1062,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Continue'**
   String get generic_continue;
+
+  /// Generic message when text is copied to clipboard
+  ///
+  /// In en, this message translates to:
+  /// **'Copied to clipboard'**
+  String get generic_copied_to_clipboard;
 
   /// Generic copy text
   ///
@@ -2552,6 +2576,72 @@ abstract class AppLocalizations {
   /// **'Profile statistics history'**
   String get profile_statistics_history_screen_title;
 
+  /// Success message after backup import
+  ///
+  /// In en, this message translates to:
+  /// **'Backup imported successfully'**
+  String get receive_chat_backup_import_success;
+
+  /// Status text when importing backup
+  ///
+  /// In en, this message translates to:
+  /// **'Importing backup…'**
+  String get receive_chat_backup_importing;
+
+  /// Instruction for using pairing code
+  ///
+  /// In en, this message translates to:
+  /// **'On the source device:'**
+  String get receive_chat_backup_pairing_code_instruction;
+
+  /// First step for using pairing code
+  ///
+  /// In en, this message translates to:
+  /// **'1. Open {p0}'**
+  String receive_chat_backup_pairing_code_step1(String p0);
+
+  /// Second step for using pairing code
+  ///
+  /// In en, this message translates to:
+  /// **'2. Logout if login screen is not visible'**
+  String get receive_chat_backup_pairing_code_step2;
+
+  /// Third step for using pairing code
+  ///
+  /// In en, this message translates to:
+  /// **'3. Tap the three dots in the top right corner'**
+  String get receive_chat_backup_pairing_code_step3;
+
+  /// Fourth step for using pairing code
+  ///
+  /// In en, this message translates to:
+  /// **'4. Select \"Send chat backup\"'**
+  String get receive_chat_backup_pairing_code_step4;
+
+  /// Fifth step for using pairing code
+  ///
+  /// In en, this message translates to:
+  /// **'5. Enter the code to start the transfer'**
+  String get receive_chat_backup_pairing_code_step5;
+
+  /// Title for receive chat backup screen
+  ///
+  /// In en, this message translates to:
+  /// **'Receive chat backup'**
+  String get receive_chat_backup_screen_title;
+
+  /// Status text when transferring backup data
+  ///
+  /// In en, this message translates to:
+  /// **'Receiving backup…'**
+  String get receive_chat_backup_transferring;
+
+  /// Status text when waiting for source device
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for source device'**
+  String get receive_chat_backup_waiting_for_source;
+
   /// Snackbar text for backend signed message not found error
   ///
   /// In en, this message translates to:
@@ -2756,6 +2846,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Accepted chat requests'**
   String get select_match_screen_title;
+
+  /// Status text when creating backup
+  ///
+  /// In en, this message translates to:
+  /// **'Creating backup…'**
+  String get send_chat_backup_creating_backup;
+
+  /// Status text when idle and ready to send
+  ///
+  /// In en, this message translates to:
+  /// **'Ready to send backup'**
+  String get send_chat_backup_idle;
+
+  /// Hint text for pairing code input
+  ///
+  /// In en, this message translates to:
+  /// **'Enter code from receiving device'**
+  String get send_chat_backup_pairing_code_hint;
+
+  /// Instruction for entering pairing code
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the pairing code shown on the receiving device'**
+  String get send_chat_backup_pairing_code_instruction;
+
+  /// Title for send chat backup screen
+  ///
+  /// In en, this message translates to:
+  /// **'Send chat backup'**
+  String get send_chat_backup_screen_title;
+
+  /// Button text to send another backup
+  ///
+  /// In en, this message translates to:
+  /// **'Send another backup'**
+  String get send_chat_backup_send_another_button;
+
+  /// Button text to start sending backup
+  ///
+  /// In en, this message translates to:
+  /// **'Start transfer'**
+  String get send_chat_backup_start_button;
+
+  /// Status text when backup sent successfully
+  ///
+  /// In en, this message translates to:
+  /// **'Backup sent successfully'**
+  String get send_chat_backup_success;
+
+  /// Status text when transferring backup
+  ///
+  /// In en, this message translates to:
+  /// **'Sending backup…'**
+  String get send_chat_backup_transferring;
 
   /// Server connection indicator text when connection failed after max retries
   ///

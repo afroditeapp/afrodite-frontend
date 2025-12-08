@@ -10,6 +10,8 @@ import 'package:app/logic/app/email_notification_settings.dart';
 import 'package:app/logic/app/info_dialog.dart';
 import 'package:app/logic/app/like_grid_instance_manager.dart';
 import 'package:app/logic/app/main_state_types.dart';
+import 'package:app/logic/chat/receive_chat_backup.dart';
+import 'package:app/logic/chat/send_chat_backup.dart';
 import 'package:app/logic/login.dart';
 import 'package:app/logic/profile/automatic_profile_search_badge.dart';
 import 'package:app/logic/server/address.dart';
@@ -124,6 +126,7 @@ class NavigatorLoginScreen extends BasicRootScreen {
         BlocProvider(create: (_) => SignInWithBloc()),
         BlocProvider(create: (_) => DemoAccountLoginBloc()),
         BlocProvider(create: (_) => EmailLoginBloc()),
+        BlocProvider(create: (_) => SendChatBackupBloc()),
       ],
       child: child,
     );
@@ -310,6 +313,7 @@ class NavigatorNormal extends LoggedInRootScreen {
         BlocProvider(create: (_) => UiSettingsBloc(r)),
         BlocProvider(create: (_) => DataExportBloc(r)),
         BlocProvider(create: (_) => ChatDataBloc(r)),
+        BlocProvider(create: (_) => ReceiveChatBackupBloc(r)),
 
         // News
         BlocProvider(create: (_) => NewsCountBloc(r)),

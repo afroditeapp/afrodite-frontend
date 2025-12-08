@@ -3,6 +3,7 @@ import "package:app/logic/account/demo_account_login.dart";
 import "package:app/model/freezed/logic/account/demo_account_login.dart";
 import "package:app/ui/login/widgets.dart";
 import "package:app/ui/login/email_login.dart";
+import "package:app/ui/normal/settings/send_chat_backup.dart";
 import "package:app/ui/utils/web_pwa/web_pwa.dart";
 import "package:app/utils/result.dart";
 import "package:flutter/foundation.dart";
@@ -66,6 +67,12 @@ class LoginScreen extends StatelessWidget {
                     demoAccountBloc.add(DoDemoAccountLogin(value));
                   }
                 });
+              },
+            ),
+            MenuItemButton(
+              child: Text(context.strings.send_chat_backup_screen_title),
+              onPressed: () {
+                openSendChatBackupScreen(context);
               },
             ),
             if (kDebugMode || kProfileMode)

@@ -211,6 +211,16 @@ class AppLocalizationsSv extends AppLocalizations {
   String get camera_screen_take_photo_error => 'Taking photo failed';
 
   @override
+  String get chat_backup_connecting => 'Connecting…';
+
+  @override
+  String get chat_backup_pairing_code_label => 'Device pairing code';
+
+  @override
+  String get chat_backup_transfer_budget_exceeded =>
+      'Yearly chat backup transfer budget exceeded. Please create a backup and transfer it manually.';
+
+  @override
   String get chat_data_screen_create_backup => 'Create backup';
 
   @override
@@ -598,6 +608,9 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String get generic_continue => 'Continue';
+
+  @override
+  String get generic_copied_to_clipboard => 'Copied to clipboard';
 
   @override
   String get generic_copy => 'Copy';
@@ -1498,6 +1511,48 @@ class AppLocalizationsSv extends AppLocalizations {
       'Profile statistics history';
 
   @override
+  String get receive_chat_backup_import_success =>
+      'Backup imported successfully';
+
+  @override
+  String get receive_chat_backup_importing => 'Importing backup…';
+
+  @override
+  String get receive_chat_backup_pairing_code_instruction =>
+      'On the source device:';
+
+  @override
+  String receive_chat_backup_pairing_code_step1(String p0) {
+    return '1. Open $p0';
+  }
+
+  @override
+  String get receive_chat_backup_pairing_code_step2 =>
+      '2. Logout if login screen is not visible';
+
+  @override
+  String get receive_chat_backup_pairing_code_step3 =>
+      '3. Tap the three dots in the top right corner';
+
+  @override
+  String get receive_chat_backup_pairing_code_step4 =>
+      '4. Select \"Send chat backup\"';
+
+  @override
+  String get receive_chat_backup_pairing_code_step5 =>
+      '5. Enter the code to start the transfer';
+
+  @override
+  String get receive_chat_backup_screen_title => 'Receive chat backup';
+
+  @override
+  String get receive_chat_backup_transferring => 'Receiving backup…';
+
+  @override
+  String get receive_chat_backup_waiting_for_source =>
+      'Waiting for source device';
+
+  @override
   String get report_chat_message_screen_backend_signed_message_not_found =>
       'Backend signed message not found';
 
@@ -1619,6 +1674,35 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String get select_match_screen_title => 'Accepted chat requests';
+
+  @override
+  String get send_chat_backup_creating_backup => 'Creating backup…';
+
+  @override
+  String get send_chat_backup_idle => 'Ready to send backup';
+
+  @override
+  String get send_chat_backup_pairing_code_hint =>
+      'Enter code from receiving device';
+
+  @override
+  String get send_chat_backup_pairing_code_instruction =>
+      'Enter the pairing code shown on the receiving device';
+
+  @override
+  String get send_chat_backup_screen_title => 'Send chat backup';
+
+  @override
+  String get send_chat_backup_send_another_button => 'Send another backup';
+
+  @override
+  String get send_chat_backup_start_button => 'Start transfer';
+
+  @override
+  String get send_chat_backup_success => 'Backup sent successfully';
+
+  @override
+  String get send_chat_backup_transferring => 'Sending backup…';
 
   @override
   String get server_connection_indicator_connection_failed =>

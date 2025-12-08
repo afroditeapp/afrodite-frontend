@@ -2,24 +2,21 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:app/api/websocket_builder.dart';
 import 'package:app/data/app_version.dart';
 import 'package:flutter/foundation.dart';
-import 'package:http/http.dart';
-import 'package:http/io_client.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:app/api/server_connection_manager.dart';
 import 'package:app/api/websocket_wrapper.dart';
-import 'package:app/assets.dart';
 import 'package:app/database/account_background_database_manager.dart';
 import 'package:app/database/account_database_manager.dart';
 import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
-import 'package:utils/utils.dart';
 import 'package:app/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:utils/utils.dart';
 import 'package:web_socket/web_socket.dart' as ws;
-import 'package:web_socket/io_web_socket.dart';
 
 final _log = Logger("ServerConnection");
 
@@ -131,65 +128,27 @@ class ServerConnection {
 
     final protocols = ["v1", "t${accessToken.token}", clientVersionInfoString()];
 
-    final WebSocketWrapper webSocketWrapper;
-    if (kIsWeb) {
-      if (!websocketAddress.startsWith("http")) {
-        throw UnsupportedError("Unsupported URI scheme");
-      }
-      final wsAddress = Uri.parse(websocketAddress.replaceFirst("http", "ws"));
-      try {
-        webSocketWrapper = WebSocketWrapper(
-          await ws.WebSocket.connect(wsAddress, protocols: protocols),
-        );
-      } catch (e) {
-        _log.error("Server connection: WebScocket connecting exception");
-        _log.fine(e);
+    try {
+      final webSocket = await WebSocketBuilder.connect(websocketAddress, protocols);
+
+      if (webSocket == null) {
         return const Err(ServerConnectionError.connectionFailure);
       }
-    } else {
-      final bytes = generate128BitRandomValue();
-      final key = base64.encode(bytes);
 
-      final client = IOClient(
-        HttpClient(context: await createSecurityContextForBackendConnection()),
+      final webSocketWrapper = WebSocketWrapper(webSocket);
+      final connection = ServerConnection._(
+        webSocketWrapper,
+        db,
+        accountBackgroundDb,
+        serverEvents,
       );
-      final headers = {
-        HttpHeaders.connectionHeader: "upgrade",
-        HttpHeaders.upgradeHeader: "websocket",
-        "sec-websocket-version": "13",
-        "sec-websocket-key": key,
-        "sec-websocket-protocol": protocols.join(","),
-      };
-      final request = Request("GET", Uri.parse(websocketAddress));
-      request.headers.addAll(headers);
-
-      final IOStreamedResponse response;
-      try {
-        response = await client.send(request);
-      } on ClientException catch (e) {
-        _log.error("Server connection: client exception");
-        _log.fine(e);
-        return const Err(ServerConnectionError.connectionFailure);
-      } on HandshakeException catch (e) {
-        _log.error("Server connection: handshake exception");
-        _log.fine(e);
-        return const Err(ServerConnectionError.connectionFailure);
-      }
-
-      if (response.statusCode != HttpStatus.switchingProtocols) {
-        return const Err(ServerConnectionError.connectionFailure);
-      }
-
-      final webSocket = WebSocket.fromUpgradedSocket(
-        await response.detachSocket(),
-        serverSide: false,
-      );
-      webSocketWrapper = WebSocketWrapper(IOWebSocket.fromWebSocket(webSocket));
+      connection._handleConnection(accessToken, refreshToken);
+      return Ok(connection);
+    } catch (e) {
+      _log.error("Server connection: WebSocket connecting exception");
+      _log.fine(e);
+      return const Err(ServerConnectionError.connectionFailure);
     }
-
-    final connection = ServerConnection._(webSocketWrapper, db, accountBackgroundDb, serverEvents);
-    connection._handleConnection(accessToken, refreshToken);
-    return Ok(connection);
   }
 
   void _handleConnection(AccessToken accessToken, RefreshToken refreshToken) {

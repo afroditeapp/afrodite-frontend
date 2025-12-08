@@ -38,6 +38,11 @@ Future<File> dbFileToFile(DbFile dbFile) async {
   }
 }
 
+Future<bool> databaseExists(DbFile db) async {
+  final dbFile = await dbFileToFile(db);
+  return await dbFile.exists();
+}
+
 LazyDatabase openDbConnection(DbFile db, {required bool backgroundDb}) {
   return LazyDatabase(() async {
     final encryptionKey = await SecureStorageManager.getInstance()

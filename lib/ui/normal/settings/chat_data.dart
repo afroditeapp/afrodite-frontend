@@ -1,7 +1,9 @@
 import 'package:app/logic/app/navigator_state.dart';
+import 'package:app/logic/chat/receive_chat_backup.dart';
 import 'package:app/logic/settings/chat_data.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/model/freezed/logic/settings/chat_data.dart';
+import 'package:app/ui/normal/settings/receive_chat_backup.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/padding.dart';
 import 'package:flutter/material.dart';
@@ -82,6 +84,8 @@ class _ChatDataScreenState extends State<ChatDataScreen> {
             ),
             Padding(padding: EdgeInsetsGeometry.only(top: 16)),
             hPad(importButton(context, state)),
+            Padding(padding: EdgeInsetsGeometry.only(top: 16)),
+            hPad(receiveBackupButton(context, state)),
           ],
         );
       },
@@ -158,6 +162,21 @@ class _ChatDataScreenState extends State<ChatDataScreen> {
             }
           : null,
       child: Text(context.strings.chat_data_screen_import_backup),
+    );
+  }
+
+  Widget receiveBackupButton(BuildContext context, ChatDataData state) {
+    // Bloc might not be available as this screen can be opened
+    // when account is banned or pending deletion.
+    if (context.read<ReceiveChatBackupBloc?>() == null) {
+      return SizedBox.shrink();
+    }
+
+    return ElevatedButton(
+      onPressed: () {
+        openReceiveChatBackupScreen(context);
+      },
+      child: Text(context.strings.receive_chat_backup_screen_title),
     );
   }
 }

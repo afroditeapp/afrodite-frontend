@@ -75,6 +75,7 @@
     <string name="generic_margin" description="Generic margin text">Margin</string>
     <string name="generic_account_id_text_with_value" description="Account ID text with value">Account ID: %s</string>
     <string name="generic_account_locked_error" description="Snackbar text for account locked error">Account locked</string>
+    <string name="generic_copied_to_clipboard" description="Generic message when text is copied to clipboard">Copied to clipboard</string>
 
     <string name="generic_weekday_mon" description="Generic short text for Monday">Mon</string>
     <string name="generic_weekday_tue" description="Generic short text for Tuesday">Tue</string>
@@ -646,5 +647,34 @@
 
     <!-- Profile statistics history screen -->
     <string name="profile_statistics_history_screen_title" description="Title for profile statistics history screen">Profile statistics history</string>
+
+    <!-- Receive chat backup screen -->
+    <string name="receive_chat_backup_screen_title" description="Title for receive chat backup screen">Receive chat backup</string>
+    <string name="receive_chat_backup_waiting_for_source" description="Status text when waiting for source device">Waiting for source device</string>
+    <string name="receive_chat_backup_transferring" description="Status text when transferring backup data">Receiving backup…</string>
+    <string name="receive_chat_backup_importing" description="Status text when importing backup">Importing backup…</string>
+    <string name="receive_chat_backup_pairing_code_instruction" description="Instruction for using pairing code">On the source device:</string>
+    <string name="receive_chat_backup_pairing_code_step1" description="First step for using pairing code">1. Open %s</string>
+    <string name="receive_chat_backup_pairing_code_step2" description="Second step for using pairing code">2. Logout if login screen is not visible</string>
+    <string name="receive_chat_backup_pairing_code_step3" description="Third step for using pairing code">3. Tap the three dots in the top right corner</string>
+    <string name="receive_chat_backup_pairing_code_step4" description="Fourth step for using pairing code">4. Select "Send chat backup"</string>
+    <string name="receive_chat_backup_pairing_code_step5" description="Fifth step for using pairing code">5. Enter the code to start the transfer</string>
+    <string name="receive_chat_backup_import_success" description="Success message after backup import">Backup imported successfully</string>
+
+    <!-- Send chat backup screen -->
+    <string name="send_chat_backup_screen_title" description="Title for send chat backup screen">Send chat backup</string>
+    <string name="send_chat_backup_idle" description="Status text when idle and ready to send">Ready to send backup</string>
+    <string name="send_chat_backup_creating_backup" description="Status text when creating backup">Creating backup…</string>
+    <string name="send_chat_backup_transferring" description="Status text when transferring backup">Sending backup…</string>
+    <string name="send_chat_backup_success" description="Status text when backup sent successfully">Backup sent successfully</string>
+    <string name="send_chat_backup_pairing_code_hint" description="Hint text for pairing code input">Enter code from receiving device</string>
+    <string name="send_chat_backup_pairing_code_instruction" description="Instruction for entering pairing code">Enter the pairing code shown on the receiving device</string>
+    <string name="send_chat_backup_start_button" description="Button text to start sending backup">Start transfer</string>
+    <string name="send_chat_backup_send_another_button" description="Button text to send another backup">Send another backup</string>
+
+    <!-- Chat backup shared -->
+    <string name="chat_backup_connecting" description="Status text when connecting to transfer API">Connecting…</string>
+    <string name="chat_backup_pairing_code_label" description="Label for pairing code">Device pairing code</string>
+    <string name="chat_backup_transfer_budget_exceeded" description="Error message when transfer budget is exceeded">Yearly chat backup transfer budget exceeded. Please create a backup and transfer it manually.</string>
 
 </resources>

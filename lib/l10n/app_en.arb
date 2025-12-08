@@ -247,6 +247,18 @@
   "@camera_screen_take_photo_error": {
     "description": "Snackbar error text displayed when taking photo fails"
   },
+  "chat_backup_connecting": "Connecting…",
+  "@chat_backup_connecting": {
+    "description": "Status text when connecting to transfer API"
+  },
+  "chat_backup_pairing_code_label": "Device pairing code",
+  "@chat_backup_pairing_code_label": {
+    "description": "Label for pairing code"
+  },
+  "chat_backup_transfer_budget_exceeded": "Yearly chat backup transfer budget exceeded. Please create a backup and transfer it manually.",
+  "@chat_backup_transfer_budget_exceeded": {
+    "description": "Error message when transfer budget is exceeded"
+  },
   "chat_data_screen_create_backup": "Create backup",
   "@chat_data_screen_create_backup": {
     "description": "Button text for creating chat backup"
@@ -715,6 +727,10 @@
   "generic_continue": "Continue",
   "@generic_continue": {
     "description": "Generic continue text"
+  },
+  "generic_copied_to_clipboard": "Copied to clipboard",
+  "@generic_copied_to_clipboard": {
+    "description": "Generic message when text is copied to clipboard"
   },
   "generic_copy": "Copy",
   "@generic_copy": {
@@ -1799,6 +1815,55 @@
   "@profile_statistics_history_screen_title": {
     "description": "Title for profile statistics history screen"
   },
+  "receive_chat_backup_import_success": "Backup imported successfully",
+  "@receive_chat_backup_import_success": {
+    "description": "Success message after backup import"
+  },
+  "receive_chat_backup_importing": "Importing backup…",
+  "@receive_chat_backup_importing": {
+    "description": "Status text when importing backup"
+  },
+  "receive_chat_backup_pairing_code_instruction": "On the source device:",
+  "@receive_chat_backup_pairing_code_instruction": {
+    "description": "Instruction for using pairing code"
+  },
+  "receive_chat_backup_pairing_code_step1": "1. Open {p0}",
+  "@receive_chat_backup_pairing_code_step1": {
+    "description": "First step for using pairing code",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
+  "receive_chat_backup_pairing_code_step2": "2. Logout if login screen is not visible",
+  "@receive_chat_backup_pairing_code_step2": {
+    "description": "Second step for using pairing code"
+  },
+  "receive_chat_backup_pairing_code_step3": "3. Tap the three dots in the top right corner",
+  "@receive_chat_backup_pairing_code_step3": {
+    "description": "Third step for using pairing code"
+  },
+  "receive_chat_backup_pairing_code_step4": "4. Select \"Send chat backup\"",
+  "@receive_chat_backup_pairing_code_step4": {
+    "description": "Fourth step for using pairing code"
+  },
+  "receive_chat_backup_pairing_code_step5": "5. Enter the code to start the transfer",
+  "@receive_chat_backup_pairing_code_step5": {
+    "description": "Fifth step for using pairing code"
+  },
+  "receive_chat_backup_screen_title": "Receive chat backup",
+  "@receive_chat_backup_screen_title": {
+    "description": "Title for receive chat backup screen"
+  },
+  "receive_chat_backup_transferring": "Receiving backup…",
+  "@receive_chat_backup_transferring": {
+    "description": "Status text when transferring backup data"
+  },
+  "receive_chat_backup_waiting_for_source": "Waiting for source device",
+  "@receive_chat_backup_waiting_for_source": {
+    "description": "Status text when waiting for source device"
+  },
   "report_chat_message_screen_backend_signed_message_not_found": "Backend signed message not found",
   "@report_chat_message_screen_backend_signed_message_not_found": {
     "description": "Snackbar text for backend signed message not found error"
@@ -1952,6 +2017,42 @@
   "select_match_screen_title": "Accepted chat requests",
   "@select_match_screen_title": {
     "description": "Title for select match screen"
+  },
+  "send_chat_backup_creating_backup": "Creating backup…",
+  "@send_chat_backup_creating_backup": {
+    "description": "Status text when creating backup"
+  },
+  "send_chat_backup_idle": "Ready to send backup",
+  "@send_chat_backup_idle": {
+    "description": "Status text when idle and ready to send"
+  },
+  "send_chat_backup_pairing_code_hint": "Enter code from receiving device",
+  "@send_chat_backup_pairing_code_hint": {
+    "description": "Hint text for pairing code input"
+  },
+  "send_chat_backup_pairing_code_instruction": "Enter the pairing code shown on the receiving device",
+  "@send_chat_backup_pairing_code_instruction": {
+    "description": "Instruction for entering pairing code"
+  },
+  "send_chat_backup_screen_title": "Send chat backup",
+  "@send_chat_backup_screen_title": {
+    "description": "Title for send chat backup screen"
+  },
+  "send_chat_backup_send_another_button": "Send another backup",
+  "@send_chat_backup_send_another_button": {
+    "description": "Button text to send another backup"
+  },
+  "send_chat_backup_start_button": "Start transfer",
+  "@send_chat_backup_start_button": {
+    "description": "Button text to start sending backup"
+  },
+  "send_chat_backup_success": "Backup sent successfully",
+  "@send_chat_backup_success": {
+    "description": "Status text when backup sent successfully"
+  },
+  "send_chat_backup_transferring": "Sending backup…",
+  "@send_chat_backup_transferring": {
+    "description": "Status text when transferring backup"
   },
   "server_connection_indicator_connection_failed": "Connection failed",
   "@server_connection_indicator_connection_failed": {

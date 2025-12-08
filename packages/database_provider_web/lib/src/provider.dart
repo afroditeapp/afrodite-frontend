@@ -47,3 +47,18 @@ String dbFileToDbName(DbFile dbFile) {
       return "account_background_${dbFile.accountId}.db";
   }
 }
+
+Future<bool> databaseExists(DbFile db) async {
+  try {
+    final dbName = dbFileToDbName(db);
+    final probe = await WasmDatabase.probe(
+      databaseName: dbName,
+      sqlite3Uri: Uri.parse("sqlite3.wasm"),
+      driftWorkerUri: Uri.parse("drift_worker.js"),
+    );
+    return probe.existingDatabases.any((db) => db.$2 == dbName);
+  } catch (e) {
+    _log.warning("Error checking database existence: $e");
+    return false;
+  }
+}
