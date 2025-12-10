@@ -8,7 +8,7 @@ import '../../schema.dart' as schema;
 
 part 'backup.g.dart';
 
-@DriftAccessor(tables: [schema.Message, schema.MyKeyPair])
+@DriftAccessor(tables: [schema.Message, schema.MyKeyPair, schema.ConversationList])
 class DaoWriteBackup extends DatabaseAccessor<AccountForegroundDatabase>
     with _$DaoWriteBackupMixin {
   DaoWriteBackup(super.db);
@@ -156,6 +156,16 @@ class DaoWriteBackup extends DatabaseAccessor<AccountForegroundDatabase>
             backendSignedPgpMessage: Value(msg.backendSignedPgpMessage),
             deliveredUnixTime: Value(msg.deliveredUnixTime),
             seenUnixTime: Value(msg.seenUnixTime),
+          ),
+        );
+      }
+
+      final latestMessage = allMessages.lastOrNull;
+      if (latestMessage != null) {
+        await into(conversationList).insertOnConflictUpdate(
+          ConversationListCompanion.insert(
+            accountId: latestMessage.remoteAccountId,
+            conversationLastChangedTime: Value(latestMessage.sentUnixTime),
           ),
         );
       }

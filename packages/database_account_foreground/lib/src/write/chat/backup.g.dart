@@ -6,4 +6,6 @@ part of 'backup.dart';
 mixin _$DaoWriteBackupMixin on DatabaseAccessor<AccountForegroundDatabase> {
   $MessageTable get message => attachedDatabase.message;
   $MyKeyPairTable get myKeyPair => attachedDatabase.myKeyPair;
+  $ConversationListTable get conversationList =>
+      attachedDatabase.conversationList;
 }
