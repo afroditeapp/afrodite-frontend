@@ -255,9 +255,17 @@
   "@chat_backup_database_not_found": {
     "description": "Error message when database for requested account does not exist"
   },
+  "chat_backup_pairing_code_invalid": "Invalid pairing code",
+  "@chat_backup_pairing_code_invalid": {
+    "description": "Error message when pairing code format is invalid"
+  },
   "chat_backup_pairing_code_label": "Device pairing code",
   "@chat_backup_pairing_code_label": {
     "description": "Label for pairing code"
+  },
+  "chat_backup_pairing_code_unsupported": "Unsupported pairing code version",
+  "@chat_backup_pairing_code_unsupported": {
+    "description": "Error message when pairing code version is not supported"
   },
   "chat_backup_transfer_budget_exceeded": "Yearly chat backup transfer budget exceeded. Please create a backup and transfer it manually.",
   "@chat_backup_transfer_budget_exceeded": {

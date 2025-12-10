@@ -424,11 +424,23 @@ abstract class AppLocalizations {
   /// **'Database for requested account does not exist'**
   String get chat_backup_database_not_found;
 
+  /// Error message when pairing code format is invalid
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid pairing code'**
+  String get chat_backup_pairing_code_invalid;
+
   /// Label for pairing code
   ///
   /// In en, this message translates to:
   /// **'Device pairing code'**
   String get chat_backup_pairing_code_label;
+
+  /// Error message when pairing code version is not supported
+  ///
+  /// In en, this message translates to:
+  /// **'Unsupported pairing code version'**
+  String get chat_backup_pairing_code_unsupported;
 
   /// Error message when transfer budget is exceeded
   ///

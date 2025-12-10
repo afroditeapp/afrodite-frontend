@@ -218,7 +218,14 @@ class AppLocalizationsEn extends AppLocalizations {
       'Database for requested account does not exist';
 
   @override
+  String get chat_backup_pairing_code_invalid => 'Invalid pairing code';
+
+  @override
   String get chat_backup_pairing_code_label => 'Device pairing code';
+
+  @override
+  String get chat_backup_pairing_code_unsupported =>
+      'Unsupported pairing code version';
 
   @override
   String get chat_backup_transfer_budget_exceeded =>

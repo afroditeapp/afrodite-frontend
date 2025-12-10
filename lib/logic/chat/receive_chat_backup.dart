@@ -124,8 +124,10 @@ class ReceiveChatBackupBloc extends Bloc<ReceiveChatBackupEvent, ReceiveBackupDa
     final targetDataBytes = utf8.encode(targetData);
     final hash = sha256.convert(targetDataBytes);
     final pairingCodeSha256 = base64Url.encode(hash.bytes);
+    // Add version identifier ("1") as prefix
+    final pairingCodeWithVersion = "1$pairingCodeSha256";
 
-    emit(state.copyWith(state: const Connecting(), pairingCode: pairingCodeSha256));
+    emit(state.copyWith(state: const Connecting(), pairingCode: pairingCodeWithVersion));
 
     // Query access token from database
     final accessTokenResult = await accountDb.accountStreamSingle(
