@@ -25,14 +25,12 @@ mixin _$ReceiveBackupData {
   String? get pairingCode => throw _privateConstructorErrorReceiveBackupData;
   int? get totalBytes => throw _privateConstructorErrorReceiveBackupData;
   int get transferredBytes => throw _privateConstructorErrorReceiveBackupData;
-  String? get errorMessage => throw _privateConstructorErrorReceiveBackupData;
 
   ReceiveBackupData copyWith({
     ReceiveBackupConnectionState? state,
     String? pairingCode,
     int? totalBytes,
     int? transferredBytes,
-    String? errorMessage,
   }) => throw _privateConstructorErrorReceiveBackupData;
 }
 
@@ -43,13 +41,12 @@ abstract class _ReceiveBackupData implements ReceiveBackupData {
     String? pairingCode,
     int? totalBytes,
     int transferredBytes,
-    String? errorMessage,
   }) = _$ReceiveBackupDataImpl;
 }
 
 /// @nodoc
 class _$ReceiveBackupDataImpl with DiagnosticableTreeMixin implements _ReceiveBackupData {
-  static const ReceiveBackupConnectionState _stateDefaultValue = ReceiveBackupConnectionState.connecting;
+  static const ReceiveBackupConnectionState _stateDefaultValue = Connecting();
   static const int _transferredBytesDefaultValue = 0;
   
   _$ReceiveBackupDataImpl({
@@ -57,7 +54,6 @@ class _$ReceiveBackupDataImpl with DiagnosticableTreeMixin implements _ReceiveBa
     this.pairingCode,
     this.totalBytes,
     this.transferredBytes = _transferredBytesDefaultValue,
-    this.errorMessage,
   });
 
   @override
@@ -68,12 +64,10 @@ class _$ReceiveBackupDataImpl with DiagnosticableTreeMixin implements _ReceiveBa
   final int? totalBytes;
   @override
   final int transferredBytes;
-  @override
-  final String? errorMessage;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ReceiveBackupData(state: $state, pairingCode: $pairingCode, totalBytes: $totalBytes, transferredBytes: $transferredBytes, errorMessage: $errorMessage)';
+    return 'ReceiveBackupData(state: $state, pairingCode: $pairingCode, totalBytes: $totalBytes, transferredBytes: $transferredBytes)';
   }
 
   @override
@@ -84,8 +78,7 @@ class _$ReceiveBackupDataImpl with DiagnosticableTreeMixin implements _ReceiveBa
       ..add(DiagnosticsProperty('state', state))
       ..add(DiagnosticsProperty('pairingCode', pairingCode))
       ..add(DiagnosticsProperty('totalBytes', totalBytes))
-      ..add(DiagnosticsProperty('transferredBytes', transferredBytes))
-      ..add(DiagnosticsProperty('errorMessage', errorMessage));
+      ..add(DiagnosticsProperty('transferredBytes', transferredBytes));
   }
 
   @override
@@ -100,9 +93,7 @@ class _$ReceiveBackupDataImpl with DiagnosticableTreeMixin implements _ReceiveBa
         (identical(other.totalBytes, totalBytes) ||
           other.totalBytes == totalBytes) &&
         (identical(other.transferredBytes, transferredBytes) ||
-          other.transferredBytes == transferredBytes) &&
-        (identical(other.errorMessage, errorMessage) ||
-          other.errorMessage == errorMessage)
+          other.transferredBytes == transferredBytes)
     );
   }
 
@@ -113,7 +104,6 @@ class _$ReceiveBackupDataImpl with DiagnosticableTreeMixin implements _ReceiveBa
     pairingCode,
     totalBytes,
     transferredBytes,
-    errorMessage,
   );
 
   @override
@@ -122,12 +112,10 @@ class _$ReceiveBackupDataImpl with DiagnosticableTreeMixin implements _ReceiveBa
     Object? pairingCode = _detectDefaultValueInCopyWith,
     Object? totalBytes = _detectDefaultValueInCopyWith,
     Object? transferredBytes,
-    Object? errorMessage = _detectDefaultValueInCopyWith,
   }) => _$ReceiveBackupDataImpl(
     state: (state ?? this.state) as ReceiveBackupConnectionState,
     pairingCode: (pairingCode == _detectDefaultValueInCopyWith ? this.pairingCode : pairingCode) as String?,
     totalBytes: (totalBytes == _detectDefaultValueInCopyWith ? this.totalBytes : totalBytes) as int?,
     transferredBytes: (transferredBytes ?? this.transferredBytes) as int,
-    errorMessage: (errorMessage == _detectDefaultValueInCopyWith ? this.errorMessage : errorMessage) as String?,
   );
 }

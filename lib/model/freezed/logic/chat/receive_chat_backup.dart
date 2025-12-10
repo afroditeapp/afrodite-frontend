@@ -3,15 +3,41 @@ import 'package:flutter/foundation.dart';
 
 part 'receive_chat_backup.freezed.dart';
 
-enum ReceiveBackupConnectionState { connecting, waitingForSource, transferring, importing, success }
+sealed class ReceiveBackupConnectionState {
+  const ReceiveBackupConnectionState();
+}
+
+class Connecting extends ReceiveBackupConnectionState {
+  const Connecting();
+}
+
+class WaitingForSource extends ReceiveBackupConnectionState {
+  const WaitingForSource();
+}
+
+class Transferring extends ReceiveBackupConnectionState {
+  const Transferring();
+}
+
+class Importing extends ReceiveBackupConnectionState {
+  const Importing();
+}
+
+class Success extends ReceiveBackupConnectionState {
+  const Success();
+}
+
+class ErrorState extends ReceiveBackupConnectionState {
+  final String message;
+  const ErrorState(this.message);
+}
 
 @freezed
 class ReceiveBackupData with _$ReceiveBackupData {
   factory ReceiveBackupData({
-    @Default(ReceiveBackupConnectionState.connecting) ReceiveBackupConnectionState state,
+    @Default(Connecting()) ReceiveBackupConnectionState state,
     String? pairingCode,
     int? totalBytes,
     @Default(0) int transferredBytes,
-    String? errorMessage,
   }) = _ReceiveBackupData;
 }

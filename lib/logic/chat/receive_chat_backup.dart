@@ -50,7 +50,7 @@ class ReceiveChatBackupBloc extends Bloc<ReceiveChatBackupEvent, ReceiveBackupDa
       super(ReceiveBackupData()) {
     on<ConnectIfIdleOrConnecting>((event, emit) async {
       await runOnce(() async {
-        if (_isIdle() || state.state == ReceiveBackupConnectionState.connecting) {
+        if (_isIdle() || state.state is Connecting) {
           await _connectToTransferApi(emit);
         }
       });
@@ -66,11 +66,7 @@ class ReceiveChatBackupBloc extends Bloc<ReceiveChatBackupEvent, ReceiveBackupDa
       switch (event.event) {
         case ByteCountReceived(:final byteCount):
           emit(
-            state.copyWith(
-              state: ReceiveBackupConnectionState.transferring,
-              totalBytes: byteCount,
-              transferredBytes: 0,
-            ),
+            state.copyWith(state: const Transferring(), totalBytes: byteCount, transferredBytes: 0),
           );
         case BinaryDataReceived(:final data):
           _receivedData.add(data);
@@ -78,7 +74,7 @@ class ReceiveChatBackupBloc extends Bloc<ReceiveChatBackupEvent, ReceiveBackupDa
 
           // Check if transfer is complete
           if (state.totalBytes != null && _receivedData.length >= state.totalBytes!) {
-            emit(state.copyWith(state: ReceiveBackupConnectionState.importing));
+            emit(state.copyWith(state: const Importing()));
             await _importBackup(_receivedData.toBytes());
           }
         case WebSocketConnectionClosed(:final closeCode):
@@ -87,11 +83,11 @@ class ReceiveChatBackupBloc extends Bloc<ReceiveChatBackupEvent, ReceiveBackupDa
             final errorMessage = closeCode == 1008
                 ? R.strings.chat_backup_transfer_budget_exceeded
                 : R.strings.generic_error;
-            emit(state.copyWith(errorMessage: errorMessage));
+            emit(state.copyWith(state: ErrorState(errorMessage)));
           }
           await _cleanup();
         case WebSocketConnectionError():
-          emit(state.copyWith(errorMessage: R.strings.generic_error_occurred));
+          emit(state.copyWith(state: ErrorState(R.strings.generic_error)));
           await _cleanup();
       }
     });
@@ -99,7 +95,7 @@ class ReceiveChatBackupBloc extends Bloc<ReceiveChatBackupEvent, ReceiveBackupDa
     on<_ImportComplete>((event, emit) {
       switch (event.result) {
         case Ok():
-          emit(state.copyWith(state: ReceiveBackupConnectionState.success, errorMessage: null));
+          emit(state.copyWith(state: const Success()));
         case Err(:final e):
           String errorMessage;
           switch (e) {
@@ -112,15 +108,13 @@ class ReceiveChatBackupBloc extends Bloc<ReceiveChatBackupEvent, ReceiveBackupDa
             case OtherImportError():
               errorMessage = R.strings.generic_error;
           }
-          emit(state.copyWith(errorMessage: errorMessage));
+          emit(state.copyWith(state: ErrorState(errorMessage)));
       }
     });
   }
 
   bool _isIdle() =>
-      state.state == ReceiveBackupConnectionState.waitingForSource ||
-      state.state == ReceiveBackupConnectionState.success ||
-      state.errorMessage == null;
+      state.state is WaitingForSource || state.state is Success || state.state is ErrorState;
 
   Future<void> _connectToTransferApi(Emitter<ReceiveBackupData> emit) async {
     await _cleanup();
@@ -131,13 +125,7 @@ class ReceiveChatBackupBloc extends Bloc<ReceiveChatBackupEvent, ReceiveBackupDa
     final hash = sha256.convert(targetDataBytes);
     final pairingCodeSha256 = hash.toString();
 
-    emit(
-      state.copyWith(
-        state: ReceiveBackupConnectionState.connecting,
-        pairingCode: pairingCodeSha256,
-        errorMessage: null,
-      ),
-    );
+    emit(state.copyWith(state: const Connecting(), pairingCode: pairingCodeSha256));
 
     // Query access token from database
     final accessTokenResult = await accountDb.accountStreamSingle(
@@ -150,7 +138,7 @@ class ReceiveChatBackupBloc extends Bloc<ReceiveChatBackupEvent, ReceiveBackupDa
         accessToken = v;
       case Err(:final e):
         _log.severe("Failed to get access token: $e");
-        emit(state.copyWith(errorMessage: R.strings.generic_error_occurred));
+        emit(state.copyWith(state: ErrorState(R.strings.generic_error)));
         await _cleanup();
         return;
     }
@@ -161,12 +149,12 @@ class ReceiveChatBackupBloc extends Bloc<ReceiveChatBackupEvent, ReceiveBackupDa
     final connected = await webSocket.connect(accessToken, targetData);
 
     if (!connected) {
-      emit(state.copyWith(errorMessage: R.strings.generic_error_occurred));
+      emit(state.copyWith(state: ErrorState(R.strings.generic_error)));
       await _cleanup();
       return;
     }
 
-    emit(state.copyWith(state: ReceiveBackupConnectionState.waitingForSource));
+    emit(state.copyWith(state: const WaitingForSource()));
 
     // Subscribe to WebSocket events
     _webSocketSubscription = webSocket.events.listen((event) {

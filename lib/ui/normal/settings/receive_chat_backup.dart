@@ -57,7 +57,7 @@ class _ReceiveChatBackupScreenState extends State<ReceiveChatBackupScreen> {
   }
 
   Widget _buildContent(BuildContext context, ReceiveBackupData state) {
-    if (state.state == ReceiveBackupConnectionState.success) {
+    if (state.state is Success) {
       return _buildSuccessView(context);
     }
 
@@ -71,20 +71,16 @@ class _ReceiveChatBackupScreenState extends State<ReceiveChatBackupScreen> {
           _buildStateIcon(context, state),
           const SizedBox(height: 32),
           _buildStateText(context, state),
-          if (state.errorMessage != null) ...[
+          if (state.state case ErrorState(message: final errorMsg)) ...[
             const SizedBox(height: 24),
-            _buildErrorMessage(context, state.errorMessage!),
+            _buildErrorMessage(context, errorMsg),
           ],
           const SizedBox(height: 24),
-          if (state.state == ReceiveBackupConnectionState.waitingForSource &&
-              state.pairingCode != null &&
-              state.errorMessage == null)
+          if (state.state is WaitingForSource && state.pairingCode != null)
             _buildPairingCodeSection(context, state.pairingCode!),
-          if (state.state == ReceiveBackupConnectionState.transferring)
-            _buildProgressSection(context, state),
-          if (state.state == ReceiveBackupConnectionState.importing)
-            _buildImportingSection(context),
-          if (state.errorMessage != null) ...[_buildRetryButton(context)],
+          if (state.state is Transferring) _buildProgressSection(context, state),
+          if (state.state is Importing) _buildImportingSection(context),
+          if (state.state is ErrorState) ...[_buildRetryButton(context)],
         ],
       ),
     );
@@ -94,27 +90,25 @@ class _ReceiveChatBackupScreenState extends State<ReceiveChatBackupScreen> {
     IconData icon;
     Color? color;
 
-    if (state.errorMessage != null) {
-      icon = Icons.error_outline;
-      color = Theme.of(context).colorScheme.error;
-    } else {
-      switch (state.state) {
-        case ReceiveBackupConnectionState.connecting:
-          icon = Icons.cloud_upload_outlined;
-          color = Colors.blue;
-        case ReceiveBackupConnectionState.waitingForSource:
-          icon = Icons.devices;
-          color = Colors.orange;
-        case ReceiveBackupConnectionState.transferring:
-          icon = Icons.download;
-          color = Colors.green;
-        case ReceiveBackupConnectionState.importing:
-          icon = Icons.import_export;
-          color = Colors.purple;
-        case ReceiveBackupConnectionState.success:
-          icon = Icons.check_circle;
-          color = Colors.green;
-      }
+    switch (state.state) {
+      case ErrorState():
+        icon = Icons.error_outline;
+        color = Theme.of(context).colorScheme.error;
+      case Connecting():
+        icon = Icons.cloud_upload_outlined;
+        color = Colors.blue;
+      case WaitingForSource():
+        icon = Icons.devices;
+        color = Colors.orange;
+      case Transferring():
+        icon = Icons.download;
+        color = Colors.green;
+      case Importing():
+        icon = Icons.import_export;
+        color = Colors.purple;
+      case Success():
+        icon = Icons.check_circle;
+        color = Colors.green;
     }
 
     return Icon(icon, size: 80, color: color);
@@ -123,21 +117,19 @@ class _ReceiveChatBackupScreenState extends State<ReceiveChatBackupScreen> {
   Widget _buildStateText(BuildContext context, ReceiveBackupData state) {
     String text;
 
-    if (state.errorMessage != null) {
-      text = context.strings.generic_error_occurred;
-    } else {
-      switch (state.state) {
-        case ReceiveBackupConnectionState.connecting:
-          text = context.strings.chat_backup_connecting;
-        case ReceiveBackupConnectionState.waitingForSource:
-          text = context.strings.receive_chat_backup_waiting_for_source;
-        case ReceiveBackupConnectionState.transferring:
-          text = context.strings.receive_chat_backup_transferring;
-        case ReceiveBackupConnectionState.importing:
-          text = context.strings.receive_chat_backup_importing;
-        case ReceiveBackupConnectionState.success:
-          text = context.strings.receive_chat_backup_import_success;
-      }
+    switch (state.state) {
+      case ErrorState():
+        text = context.strings.generic_error_occurred;
+      case Connecting():
+        text = context.strings.chat_backup_connecting;
+      case WaitingForSource():
+        text = context.strings.receive_chat_backup_waiting_for_source;
+      case Transferring():
+        text = context.strings.receive_chat_backup_transferring;
+      case Importing():
+        text = context.strings.receive_chat_backup_importing;
+      case Success():
+        text = context.strings.receive_chat_backup_import_success;
     }
 
     return Text(text, style: Theme.of(context).textTheme.titleLarge, textAlign: TextAlign.center);
