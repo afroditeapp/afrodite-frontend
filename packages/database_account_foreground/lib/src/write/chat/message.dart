@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:database_account_foreground/src/database.dart';
 import 'package:database_model/database_model.dart' as dbm;
 import 'package:drift/drift.dart';
 import 'package:openapi/api.dart' as api;
 import 'package:utils/utils.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../schema.dart' as schema;
 
@@ -107,11 +110,17 @@ class DaoWriteMessage extends DatabaseAccessor<AccountForegroundDatabase>
   }
 
   Future<void> insertInfoMessage(api.AccountId remoteAccountId, dbm.InfoMessageState state) async {
+    // Generate a message ID to prevent duplicate
+    // messages when restoring a chat backup multiple times.
+    final messageId = api.MessageId(
+      id: base64UrlEncode(const Uuid().v4obj().toBytes()).replaceAll("=", ""),
+    );
     final message = dbm.NewMessageEntry(
       remoteAccountId: remoteAccountId,
       localUnixTime: UtcDateTime.now(),
       message: null,
       messageState: state.toDbState(),
+      messageId: messageId,
     );
     await transaction(() async {
       await _insert(message);
