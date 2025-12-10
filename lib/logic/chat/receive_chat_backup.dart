@@ -123,7 +123,7 @@ class ReceiveChatBackupBloc extends Bloc<ReceiveChatBackupEvent, ReceiveBackupDa
     final targetData = jsonEncode({"account_id": currentUser.aid});
     final targetDataBytes = utf8.encode(targetData);
     final hash = sha256.convert(targetDataBytes);
-    final pairingCodeSha256 = hash.toString();
+    final pairingCodeSha256 = base64Url.encode(hash.bytes);
 
     emit(state.copyWith(state: const Connecting(), pairingCode: pairingCodeSha256));
 

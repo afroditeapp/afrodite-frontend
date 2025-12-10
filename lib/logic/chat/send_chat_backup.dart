@@ -77,8 +77,19 @@ class SendChatBackupBloc extends Bloc<SendChatBackupEvent, SendBackupData> with 
     // Connect to transfer API
     emit(state.copyWith(state: const Connecting()));
 
+    // Convert base64url pairing code to hex for server
+    final String pairingCodeHex;
+    try {
+      final bytes = base64Url.decode(pairingCode);
+      pairingCodeHex = bytes.map((b) => b.toRadixString(16).padLeft(2, '0')).join();
+    } catch (e) {
+      _log.warning("Invalid pairing code format: $e");
+      emit(state.copyWith(state: ErrorState(R.strings.generic_error)));
+      return;
+    }
+
     _webSocket = SendChatBackupWebSocket();
-    final connected = await _webSocket!.connect(pairingCode);
+    final connected = await _webSocket!.connect(pairingCodeHex);
 
     if (!connected) {
       emit(state.copyWith(state: ErrorState(R.strings.generic_error)));
