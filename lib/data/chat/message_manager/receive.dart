@@ -67,12 +67,6 @@ class ReceiveMessageUtils {
         await db.accountAction((db) => db.profile.setMatchStatus(message.parsed.sender, true));
       }
 
-      if (!await _isInConversationList(message.parsed.sender)) {
-        await db.accountAction(
-          (db) => db.conversationList.setConversationListVisibility(message.parsed.sender, true),
-        );
-      }
-
       final alreadyExistingMessageResult = await db.accountData(
         (db) =>
             db.message.getMessageUsingMessageId(message.parsed.sender, message.parsed.messageId),
@@ -225,11 +219,6 @@ class ReceiveMessageUtils {
 
   Future<bool> _isInMatches(AccountId accountId) async {
     return await db.accountData((db) => db.profile.isInMatches(accountId)).ok() ?? false;
-  }
-
-  Future<bool> _isInConversationList(AccountId accountId) async {
-    return await db.accountData((db) => db.conversationList.isInConversationList(accountId)).ok() ??
-        false;
   }
 }
 

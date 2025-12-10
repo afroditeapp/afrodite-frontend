@@ -11971,18 +11971,6 @@ class $ConversationListTable extends schema.ConversationList
       );
   @override
   late final GeneratedColumnWithTypeConverter<UtcDateTime?, int>
-  isInConversationList =
-      GeneratedColumn<int>(
-        'is_in_conversation_list',
-        aliasedName,
-        true,
-        type: DriftSqlType.int,
-        requiredDuringInsert: false,
-      ).withConverter<UtcDateTime?>(
-        $ConversationListTable.$converterisInConversationList,
-      );
-  @override
-  late final GeneratedColumnWithTypeConverter<UtcDateTime?, int>
   isInSentBlocks =
       GeneratedColumn<int>(
         'is_in_sent_blocks',
@@ -11997,7 +11985,6 @@ class $ConversationListTable extends schema.ConversationList
   List<GeneratedColumn> get $columns => [
     accountId,
     conversationLastChangedTime,
-    isInConversationList,
     isInSentBlocks,
   ];
   @override
@@ -12025,14 +12012,6 @@ class $ConversationListTable extends schema.ConversationList
               data['${effectivePrefix}conversation_last_changed_time'],
             ),
           ),
-      isInConversationList: $ConversationListTable
-          .$converterisInConversationList
-          .fromSql(
-            attachedDatabase.typeMapping.read(
-              DriftSqlType.int,
-              data['${effectivePrefix}is_in_conversation_list'],
-            ),
-          ),
       isInSentBlocks: $ConversationListTable.$converterisInSentBlocks.fromSql(
         attachedDatabase.typeMapping.read(
           DriftSqlType.int,
@@ -12053,8 +12032,6 @@ class $ConversationListTable extends schema.ConversationList
   $converterconversationLastChangedTime = const NullAwareTypeConverter.wrap(
     UtcDateTimeConverter(),
   );
-  static TypeConverter<UtcDateTime?, int?> $converterisInConversationList =
-      const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
   static TypeConverter<UtcDateTime?, int?> $converterisInSentBlocks =
       const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
 }
@@ -12063,12 +12040,16 @@ class ConversationListData extends DataClass
     implements Insertable<ConversationListData> {
   final AccountId accountId;
   final UtcDateTime? conversationLastChangedTime;
-  final UtcDateTime? isInConversationList;
+
+  /// Sent blocks is here to make conversation list updates faster.
+  ///
+  /// Values:
+  /// * null - Not in local sent blocks
+  /// * non-null - Time when added to local sent blocks
   final UtcDateTime? isInSentBlocks;
   const ConversationListData({
     required this.accountId,
     this.conversationLastChangedTime,
-    this.isInConversationList,
     this.isInSentBlocks,
   });
   @override
@@ -12083,13 +12064,6 @@ class ConversationListData extends DataClass
       map['conversation_last_changed_time'] = Variable<int>(
         $ConversationListTable.$converterconversationLastChangedTime.toSql(
           conversationLastChangedTime,
-        ),
-      );
-    }
-    if (!nullToAbsent || isInConversationList != null) {
-      map['is_in_conversation_list'] = Variable<int>(
-        $ConversationListTable.$converterisInConversationList.toSql(
-          isInConversationList,
         ),
       );
     }
@@ -12108,9 +12082,6 @@ class ConversationListData extends DataClass
           conversationLastChangedTime == null && nullToAbsent
           ? const Value.absent()
           : Value(conversationLastChangedTime),
-      isInConversationList: isInConversationList == null && nullToAbsent
-          ? const Value.absent()
-          : Value(isInConversationList),
       isInSentBlocks: isInSentBlocks == null && nullToAbsent
           ? const Value.absent()
           : Value(isInSentBlocks),
@@ -12127,9 +12098,6 @@ class ConversationListData extends DataClass
       conversationLastChangedTime: serializer.fromJson<UtcDateTime?>(
         json['conversationLastChangedTime'],
       ),
-      isInConversationList: serializer.fromJson<UtcDateTime?>(
-        json['isInConversationList'],
-      ),
       isInSentBlocks: serializer.fromJson<UtcDateTime?>(json['isInSentBlocks']),
     );
   }
@@ -12141,9 +12109,6 @@ class ConversationListData extends DataClass
       'conversationLastChangedTime': serializer.toJson<UtcDateTime?>(
         conversationLastChangedTime,
       ),
-      'isInConversationList': serializer.toJson<UtcDateTime?>(
-        isInConversationList,
-      ),
       'isInSentBlocks': serializer.toJson<UtcDateTime?>(isInSentBlocks),
     };
   }
@@ -12151,16 +12116,12 @@ class ConversationListData extends DataClass
   ConversationListData copyWith({
     AccountId? accountId,
     Value<UtcDateTime?> conversationLastChangedTime = const Value.absent(),
-    Value<UtcDateTime?> isInConversationList = const Value.absent(),
     Value<UtcDateTime?> isInSentBlocks = const Value.absent(),
   }) => ConversationListData(
     accountId: accountId ?? this.accountId,
     conversationLastChangedTime: conversationLastChangedTime.present
         ? conversationLastChangedTime.value
         : this.conversationLastChangedTime,
-    isInConversationList: isInConversationList.present
-        ? isInConversationList.value
-        : this.isInConversationList,
     isInSentBlocks: isInSentBlocks.present
         ? isInSentBlocks.value
         : this.isInSentBlocks,
@@ -12171,9 +12132,6 @@ class ConversationListData extends DataClass
       conversationLastChangedTime: data.conversationLastChangedTime.present
           ? data.conversationLastChangedTime.value
           : this.conversationLastChangedTime,
-      isInConversationList: data.isInConversationList.present
-          ? data.isInConversationList.value
-          : this.isInConversationList,
       isInSentBlocks: data.isInSentBlocks.present
           ? data.isInSentBlocks.value
           : this.isInSentBlocks,
@@ -12185,19 +12143,14 @@ class ConversationListData extends DataClass
     return (StringBuffer('ConversationListData(')
           ..write('accountId: $accountId, ')
           ..write('conversationLastChangedTime: $conversationLastChangedTime, ')
-          ..write('isInConversationList: $isInConversationList, ')
           ..write('isInSentBlocks: $isInSentBlocks')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(
-    accountId,
-    conversationLastChangedTime,
-    isInConversationList,
-    isInSentBlocks,
-  );
+  int get hashCode =>
+      Object.hash(accountId, conversationLastChangedTime, isInSentBlocks);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -12205,34 +12158,29 @@ class ConversationListData extends DataClass
           other.accountId == this.accountId &&
           other.conversationLastChangedTime ==
               this.conversationLastChangedTime &&
-          other.isInConversationList == this.isInConversationList &&
           other.isInSentBlocks == this.isInSentBlocks);
 }
 
 class ConversationListCompanion extends UpdateCompanion<ConversationListData> {
   final Value<AccountId> accountId;
   final Value<UtcDateTime?> conversationLastChangedTime;
-  final Value<UtcDateTime?> isInConversationList;
   final Value<UtcDateTime?> isInSentBlocks;
   final Value<int> rowid;
   const ConversationListCompanion({
     this.accountId = const Value.absent(),
     this.conversationLastChangedTime = const Value.absent(),
-    this.isInConversationList = const Value.absent(),
     this.isInSentBlocks = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   ConversationListCompanion.insert({
     required AccountId accountId,
     this.conversationLastChangedTime = const Value.absent(),
-    this.isInConversationList = const Value.absent(),
     this.isInSentBlocks = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : accountId = Value(accountId);
   static Insertable<ConversationListData> custom({
     Expression<String>? accountId,
     Expression<int>? conversationLastChangedTime,
-    Expression<int>? isInConversationList,
     Expression<int>? isInSentBlocks,
     Expression<int>? rowid,
   }) {
@@ -12240,8 +12188,6 @@ class ConversationListCompanion extends UpdateCompanion<ConversationListData> {
       if (accountId != null) 'account_id': accountId,
       if (conversationLastChangedTime != null)
         'conversation_last_changed_time': conversationLastChangedTime,
-      if (isInConversationList != null)
-        'is_in_conversation_list': isInConversationList,
       if (isInSentBlocks != null) 'is_in_sent_blocks': isInSentBlocks,
       if (rowid != null) 'rowid': rowid,
     });
@@ -12250,7 +12196,6 @@ class ConversationListCompanion extends UpdateCompanion<ConversationListData> {
   ConversationListCompanion copyWith({
     Value<AccountId>? accountId,
     Value<UtcDateTime?>? conversationLastChangedTime,
-    Value<UtcDateTime?>? isInConversationList,
     Value<UtcDateTime?>? isInSentBlocks,
     Value<int>? rowid,
   }) {
@@ -12258,7 +12203,6 @@ class ConversationListCompanion extends UpdateCompanion<ConversationListData> {
       accountId: accountId ?? this.accountId,
       conversationLastChangedTime:
           conversationLastChangedTime ?? this.conversationLastChangedTime,
-      isInConversationList: isInConversationList ?? this.isInConversationList,
       isInSentBlocks: isInSentBlocks ?? this.isInSentBlocks,
       rowid: rowid ?? this.rowid,
     );
@@ -12276,13 +12220,6 @@ class ConversationListCompanion extends UpdateCompanion<ConversationListData> {
       map['conversation_last_changed_time'] = Variable<int>(
         $ConversationListTable.$converterconversationLastChangedTime.toSql(
           conversationLastChangedTime.value,
-        ),
-      );
-    }
-    if (isInConversationList.present) {
-      map['is_in_conversation_list'] = Variable<int>(
-        $ConversationListTable.$converterisInConversationList.toSql(
-          isInConversationList.value,
         ),
       );
     }
@@ -12304,7 +12241,6 @@ class ConversationListCompanion extends UpdateCompanion<ConversationListData> {
     return (StringBuffer('ConversationListCompanion(')
           ..write('accountId: $accountId, ')
           ..write('conversationLastChangedTime: $conversationLastChangedTime, ')
-          ..write('isInConversationList: $isInConversationList, ')
           ..write('isInSentBlocks: $isInSentBlocks, ')
           ..write('rowid: $rowid')
           ..write(')'))

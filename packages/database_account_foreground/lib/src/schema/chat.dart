@@ -29,11 +29,11 @@ class ConversationList extends Table {
   IntColumn get conversationLastChangedTime =>
       integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
 
-  // If column is not null, then it is in the specific group.
-  // The time is the time when the profile was added to the group.
-  IntColumn get isInConversationList =>
-      integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
-  // Sent blocks is here to make conversation list updates faster.
+  /// Sent blocks is here to make conversation list updates faster.
+  ///
+  /// Values:
+  /// * null - Not in local sent blocks
+  /// * non-null - Time when added to local sent blocks
   IntColumn get isInSentBlocks =>
       integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
 

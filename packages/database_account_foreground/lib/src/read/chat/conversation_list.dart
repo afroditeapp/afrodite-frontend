@@ -12,9 +12,6 @@ class DaoReadConversationList extends DatabaseAccessor<AccountForegroundDatabase
     with _$DaoReadConversationListMixin {
   DaoReadConversationList(super.db);
 
-  Future<bool> isInConversationList(api.AccountId accountId) =>
-      _existenceCheck(accountId, (t) => t.isInConversationList.isNotNull());
-
   Future<bool> isInSentBlocks(api.AccountId accountId) =>
       _existenceCheck(accountId, (t) => t.isInSentBlocks.isNotNull());
 
@@ -32,9 +29,9 @@ class DaoReadConversationList extends DatabaseAccessor<AccountForegroundDatabase
 
   Future<List<api.AccountId>> getConversationListNoBlocked(int? startIndex, int? limit) async {
     final q = select(conversationList)
-      ..where((t) => t.isInConversationList.isNotNull() & t.isInSentBlocks.isNull())
+      ..where((t) => t.conversationLastChangedTime.isNotNull() & t.isInSentBlocks.isNull())
       ..orderBy([
-        (t) => OrderingTerm(expression: t.isInConversationList),
+        (t) => OrderingTerm(expression: t.conversationLastChangedTime),
         // If list is added, the time values can have same value, so
         // order by AccountId to make the order deterministic.
         (t) => OrderingTerm(expression: t.accountId),
@@ -88,7 +85,7 @@ class DaoReadConversationList extends DatabaseAccessor<AccountForegroundDatabase
     return (selectOnly(conversationList)
           ..addColumns([conversationList.accountId])
           ..where(
-            conversationList.isInConversationList.isNotNull() &
+            conversationList.conversationLastChangedTime.isNotNull() &
                 conversationList.isInSentBlocks.isNull(),
           )
           ..orderBy([

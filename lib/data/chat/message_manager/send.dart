@@ -77,16 +77,6 @@ class SendMessageUtils {
       }
     }
 
-    if (!await _isInConversationList(accountId)) {
-      final r = await db.accountAction(
-        (db) => db.conversationList.setConversationListVisibility(accountId, true),
-      );
-      if (r.isErr()) {
-        yield const ErrorBeforeMessageSaving();
-        return;
-      }
-    }
-
     final lastSentMessageResult = await db.accountData(
       (db) => db.message.getLatestSentMessage(accountId),
     );
@@ -361,10 +351,5 @@ class SendMessageUtils {
 
   Future<bool> _isInMatches(AccountId accountId) async {
     return await db.accountData((db) => db.profile.isInMatches(accountId)).ok() ?? false;
-  }
-
-  Future<bool> _isInConversationList(AccountId accountId) async {
-    return await db.accountData((db) => db.conversationList.isInConversationList(accountId)).ok() ??
-        false;
   }
 }

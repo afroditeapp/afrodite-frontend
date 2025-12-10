@@ -12,15 +12,6 @@ class DaoWriteConversationList extends DatabaseAccessor<AccountForegroundDatabas
     with _$DaoWriteConversationListMixin {
   DaoWriteConversationList(super.db);
 
-  Future<void> setConversationListVisibility(api.AccountId accountId, bool value) async {
-    await into(conversationList).insertOnConflictUpdate(
-      ConversationListCompanion.insert(
-        accountId: accountId,
-        isInConversationList: _toGroupValue(value),
-      ),
-    );
-  }
-
   Future<void> setSentBlockStatus(api.AccountId accountId, bool value) async {
     await into(conversationList).insertOnConflictUpdate(
       ConversationListCompanion.insert(accountId: accountId, isInSentBlocks: _toGroupValue(value)),

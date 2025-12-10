@@ -124,6 +124,7 @@ class DaoWriteMessage extends DatabaseAccessor<AccountForegroundDatabase>
     );
     await transaction(() async {
       await _insert(message);
+      await db.write.conversationList.setCurrentTimeToConversationLastChanged(remoteAccountId);
     });
   }
 
