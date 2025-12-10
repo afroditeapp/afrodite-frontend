@@ -173,6 +173,7 @@ class ReceiveChatBackupBloc extends Bloc<ReceiveChatBackupEvent, ReceiveBackupDa
     _webSocketSubscription = null;
     await _webSocket?.close();
     _webSocket = null;
+    _receivedData.clear();
   }
 
   @override
