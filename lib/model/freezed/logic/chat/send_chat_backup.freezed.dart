@@ -8,25 +8,15 @@ part of 'send_chat_backup.dart';
 // **************************************************************************
 
 /// @nodoc
-class _DetectDefaultValueInCopyWith {
-  const _DetectDefaultValueInCopyWith();
-}
-
-/// @nodoc
-const _detectDefaultValueInCopyWith = _DetectDefaultValueInCopyWith();
-
-/// @nodoc
 final _privateConstructorErrorSendBackupData = UnsupportedError(
     'Private constructor SendBackupData._() was called. Please call factory constructor instead.');
 
 /// @nodoc
 mixin _$SendBackupData {
   SendBackupState get state => throw _privateConstructorErrorSendBackupData;
-  String? get errorMessage => throw _privateConstructorErrorSendBackupData;
 
   SendBackupData copyWith({
     SendBackupState? state,
-    String? errorMessage,
   }) => throw _privateConstructorErrorSendBackupData;
 }
 
@@ -34,27 +24,23 @@ mixin _$SendBackupData {
 abstract class _SendBackupData implements SendBackupData {
   factory _SendBackupData({
     SendBackupState state,
-    String? errorMessage,
   }) = _$SendBackupDataImpl;
 }
 
 /// @nodoc
 class _$SendBackupDataImpl with DiagnosticableTreeMixin implements _SendBackupData {
-  static const SendBackupState _stateDefaultValue = SendBackupState.idle;
+  static const SendBackupState _stateDefaultValue = Idle();
   
   _$SendBackupDataImpl({
     this.state = _stateDefaultValue,
-    this.errorMessage,
   });
 
   @override
   final SendBackupState state;
-  @override
-  final String? errorMessage;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'SendBackupData(state: $state, errorMessage: $errorMessage)';
+    return 'SendBackupData(state: $state)';
   }
 
   @override
@@ -62,8 +48,7 @@ class _$SendBackupDataImpl with DiagnosticableTreeMixin implements _SendBackupDa
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'SendBackupData'))
-      ..add(DiagnosticsProperty('state', state))
-      ..add(DiagnosticsProperty('errorMessage', errorMessage));
+      ..add(DiagnosticsProperty('state', state));
   }
 
   @override
@@ -72,9 +57,7 @@ class _$SendBackupDataImpl with DiagnosticableTreeMixin implements _SendBackupDa
       (other.runtimeType == runtimeType &&
         other is _$SendBackupDataImpl &&
         (identical(other.state, state) ||
-          other.state == state) &&
-        (identical(other.errorMessage, errorMessage) ||
-          other.errorMessage == errorMessage)
+          other.state == state)
     );
   }
 
@@ -82,15 +65,12 @@ class _$SendBackupDataImpl with DiagnosticableTreeMixin implements _SendBackupDa
   int get hashCode => Object.hash(
     runtimeType,
     state,
-    errorMessage,
   );
 
   @override
   SendBackupData copyWith({
     Object? state,
-    Object? errorMessage = _detectDefaultValueInCopyWith,
   }) => _$SendBackupDataImpl(
     state: (state ?? this.state) as SendBackupState,
-    errorMessage: (errorMessage == _detectDefaultValueInCopyWith ? this.errorMessage : errorMessage) as String?,
   );
 }

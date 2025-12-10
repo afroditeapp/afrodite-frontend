@@ -251,6 +251,10 @@
   "@chat_backup_connecting": {
     "description": "Status text when connecting to transfer API"
   },
+  "chat_backup_database_not_found": "Database for requested account does not exist",
+  "@chat_backup_database_not_found": {
+    "description": "Error message when database for requested account does not exist"
+  },
   "chat_backup_pairing_code_label": "Device pairing code",
   "@chat_backup_pairing_code_label": {
     "description": "Label for pairing code"

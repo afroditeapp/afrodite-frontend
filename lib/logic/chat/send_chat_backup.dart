@@ -56,28 +56,16 @@ class SendChatBackupBloc extends Bloc<SendChatBackupEvent, SendBackupData> with 
         case WebSocketConnectionClosed(:final closeCode):
           // Close code 1000 means normal closure (transfer completed successfully)
           if (closeCode == 1000) {
-            emit(state.copyWith(state: SendBackupState.success));
+            emit(state.copyWith(state: const Success()));
           } else if (closeCode == 1008) {
             // Close code 1008 means policy violation (transfer budget exceeded)
-            emit(
-              state.copyWith(
-                state: SendBackupState.idle,
-                errorMessage: R.strings.chat_backup_transfer_budget_exceeded,
-              ),
-            );
+            emit(state.copyWith(state: ErrorState(R.strings.chat_backup_transfer_budget_exceeded)));
           } else {
-            emit(
-              state.copyWith(state: SendBackupState.idle, errorMessage: R.strings.generic_error),
-            );
+            emit(state.copyWith(state: ErrorState(R.strings.generic_error)));
           }
           await _cleanup();
         case WebSocketConnectionError():
-          emit(
-            state.copyWith(
-              state: SendBackupState.idle,
-              errorMessage: R.strings.generic_error_occurred,
-            ),
-          );
+          emit(state.copyWith(state: ErrorState(R.strings.generic_error)));
           await _cleanup();
       }
     });
@@ -87,13 +75,13 @@ class SendChatBackupBloc extends Bloc<SendChatBackupEvent, SendBackupData> with 
     await _cleanup();
 
     // Connect to transfer API
-    emit(state.copyWith(state: SendBackupState.connecting));
+    emit(state.copyWith(state: const Connecting()));
 
     _webSocket = SendChatBackupWebSocket();
     final connected = await _webSocket!.connect(pairingCode);
 
     if (!connected) {
-      emit(state.copyWith(state: SendBackupState.idle, errorMessage: R.strings.generic_error));
+      emit(state.copyWith(state: ErrorState(R.strings.generic_error)));
       return;
     }
 
@@ -113,14 +101,14 @@ class SendChatBackupBloc extends Bloc<SendChatBackupEvent, SendBackupData> with 
       // Check if database exists before trying to open it
       final dbFile = AccountDbFile(accountId.aid);
       if (!await databaseExists(dbFile)) {
-        _log.error("Database does not exist for account ID: ${accountId.aid}");
-        emit(state.copyWith(state: SendBackupState.idle, errorMessage: R.strings.generic_error));
+        _log.fine("Database does not exist for account ID: ${accountId.aid}");
+        emit(state.copyWith(state: ErrorState(R.strings.chat_backup_database_not_found)));
         await _cleanup();
         return;
       }
 
       // Create backup
-      emit(state.copyWith(state: SendBackupState.creatingBackup));
+      emit(state.copyWith(state: const CreatingBackup()));
 
       // Manually open database for the account ID
       final databaseManager = DatabaseManager.getInstance();
@@ -136,7 +124,7 @@ class SendChatBackupBloc extends Bloc<SendChatBackupEvent, SendBackupData> with 
         case Ok(:final v):
           backupData = v;
         case Err():
-          emit(state.copyWith(state: SendBackupState.idle, errorMessage: R.strings.generic_error));
+          emit(state.copyWith(state: ErrorState(R.strings.generic_error)));
           await _cleanup();
           return;
       }
@@ -146,11 +134,11 @@ class SendChatBackupBloc extends Bloc<SendChatBackupEvent, SendBackupData> with 
       final backupBytes = backupFile.toBytes();
 
       // Send data in chunks
-      emit(state.copyWith(state: SendBackupState.transferring));
+      emit(state.copyWith(state: const Transferring()));
       await _webSocket!.sendData(backupBytes);
     } catch (e) {
       _log.error("Failed to create and send backup: $e");
-      emit(state.copyWith(state: SendBackupState.idle, errorMessage: R.strings.generic_error));
+      emit(state.copyWith(state: ErrorState(R.strings.generic_error)));
       await _cleanup();
     }
   }

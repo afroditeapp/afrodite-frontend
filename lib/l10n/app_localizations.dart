@@ -418,6 +418,12 @@ abstract class AppLocalizations {
   /// **'Connecting…'**
   String get chat_backup_connecting;
 
+  /// Error message when database for requested account does not exist
+  ///
+  /// In en, this message translates to:
+  /// **'Database for requested account does not exist'**
+  String get chat_backup_database_not_found;
+
   /// Label for pairing code
   ///
   /// In en, this message translates to:

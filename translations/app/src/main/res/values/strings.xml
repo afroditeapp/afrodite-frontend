@@ -676,5 +676,6 @@
     <string name="chat_backup_connecting" description="Status text when connecting to transfer API">Connecting…</string>
     <string name="chat_backup_pairing_code_label" description="Label for pairing code">Device pairing code</string>
     <string name="chat_backup_transfer_budget_exceeded" description="Error message when transfer budget is exceeded">Yearly chat backup transfer budget exceeded. Please create a backup and transfer it manually.</string>
+    <string name="chat_backup_database_not_found" description="Error message when database for requested account does not exist">Database for requested account does not exist</string>
 
 </resources>

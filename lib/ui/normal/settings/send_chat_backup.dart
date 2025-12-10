@@ -46,7 +46,7 @@ class _SendChatBackupScreenState extends State<SendChatBackupScreen> {
   }
 
   Widget _buildContent(BuildContext context, SendBackupData state) {
-    if (state.state == SendBackupState.success) {
+    if (state.state is Success) {
       return _buildSuccessView(context);
     }
 
@@ -59,16 +59,15 @@ class _SendChatBackupScreenState extends State<SendChatBackupScreen> {
           _buildStateIcon(context, state),
           const SizedBox(height: 32),
           _buildStateText(context, state),
-          if (state.errorMessage != null) ...[
+          if (state.state case ErrorState(message: final errorMsg)) ...[
             const SizedBox(height: 24),
-            _buildErrorMessage(context, state.errorMessage!),
+            _buildErrorMessage(context, errorMsg),
           ],
           const SizedBox(height: 24),
-          if (state.state == SendBackupState.idle && state.errorMessage == null)
-            _buildInputSection(context, state),
-          if (state.state != SendBackupState.idle && state.errorMessage == null)
+          if (state.state is Idle) _buildInputSection(context, state),
+          if (state.state is! Idle && state.state is! ErrorState)
             _buildProgressSection(context, state),
-          if (state.errorMessage != null) ...[_buildRetryButton(context)],
+          if (state.state is ErrorState) ...[_buildRetryButton(context)],
         ],
       ),
     );
@@ -78,27 +77,25 @@ class _SendChatBackupScreenState extends State<SendChatBackupScreen> {
     IconData icon;
     Color? color;
 
-    if (state.errorMessage != null) {
-      icon = Icons.error_outline;
-      color = Theme.of(context).colorScheme.error;
-    } else {
-      switch (state.state) {
-        case SendBackupState.idle:
-          icon = Icons.send;
-          color = Colors.blue;
-        case SendBackupState.connecting:
-          icon = Icons.cloud_upload_outlined;
-          color = Colors.orange;
-        case SendBackupState.creatingBackup:
-          icon = Icons.archive;
-          color = Colors.purple;
-        case SendBackupState.transferring:
-          icon = Icons.upload;
-          color = Colors.green;
-        case SendBackupState.success:
-          icon = Icons.check_circle;
-          color = Colors.green;
-      }
+    switch (state.state) {
+      case ErrorState():
+        icon = Icons.error_outline;
+        color = Theme.of(context).colorScheme.error;
+      case Idle():
+        icon = Icons.send;
+        color = Colors.blue;
+      case Connecting():
+        icon = Icons.cloud_upload_outlined;
+        color = Colors.orange;
+      case CreatingBackup():
+        icon = Icons.archive;
+        color = Colors.purple;
+      case Transferring():
+        icon = Icons.upload;
+        color = Colors.green;
+      case Success():
+        icon = Icons.check_circle;
+        color = Colors.green;
     }
 
     return Icon(icon, size: 80, color: color);
@@ -107,21 +104,19 @@ class _SendChatBackupScreenState extends State<SendChatBackupScreen> {
   Widget _buildStateText(BuildContext context, SendBackupData state) {
     String text;
 
-    if (state.errorMessage != null) {
-      text = context.strings.generic_error_occurred;
-    } else {
-      switch (state.state) {
-        case SendBackupState.idle:
-          text = context.strings.send_chat_backup_idle;
-        case SendBackupState.connecting:
-          text = context.strings.chat_backup_connecting;
-        case SendBackupState.creatingBackup:
-          text = context.strings.send_chat_backup_creating_backup;
-        case SendBackupState.transferring:
-          text = context.strings.send_chat_backup_transferring;
-        case SendBackupState.success:
-          text = context.strings.send_chat_backup_success;
-      }
+    switch (state.state) {
+      case ErrorState():
+        text = context.strings.generic_error_occurred;
+      case Idle():
+        text = context.strings.send_chat_backup_idle;
+      case Connecting():
+        text = context.strings.chat_backup_connecting;
+      case CreatingBackup():
+        text = context.strings.send_chat_backup_creating_backup;
+      case Transferring():
+        text = context.strings.send_chat_backup_transferring;
+      case Success():
+        text = context.strings.send_chat_backup_success;
     }
 
     return Text(text, style: Theme.of(context).textTheme.titleLarge, textAlign: TextAlign.center);
