@@ -10,9 +10,9 @@
 
 part of openapi.api;
 
-class DataTransferByteCount {
-  /// Returns a new [DataTransferByteCount] instance.
-  DataTransferByteCount({
+class BackupTransferByteCount {
+  /// Returns a new [BackupTransferByteCount] instance.
+  BackupTransferByteCount({
     required this.byteCount,
   });
 
@@ -22,7 +22,7 @@ class DataTransferByteCount {
   int byteCount;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is DataTransferByteCount &&
+  bool operator ==(Object other) => identical(this, other) || other is BackupTransferByteCount &&
     other.byteCount == byteCount;
 
   @override
@@ -31,7 +31,7 @@ class DataTransferByteCount {
     (byteCount.hashCode);
 
   @override
-  String toString() => 'DataTransferByteCount[byteCount=$byteCount]';
+  String toString() => 'BackupTransferByteCount[byteCount=$byteCount]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -39,10 +39,10 @@ class DataTransferByteCount {
     return json;
   }
 
-  /// Returns a new [DataTransferByteCount] instance and imports its values from
+  /// Returns a new [BackupTransferByteCount] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static DataTransferByteCount? fromJson(dynamic value) {
+  static BackupTransferByteCount? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -51,24 +51,24 @@ class DataTransferByteCount {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "DataTransferByteCount[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "DataTransferByteCount[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "BackupTransferByteCount[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "BackupTransferByteCount[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return DataTransferByteCount(
+      return BackupTransferByteCount(
         byteCount: mapValueOfType<int>(json, r'byte_count')!,
       );
     }
     return null;
   }
 
-  static List<DataTransferByteCount> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <DataTransferByteCount>[];
+  static List<BackupTransferByteCount> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <BackupTransferByteCount>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = DataTransferByteCount.fromJson(row);
+        final value = BackupTransferByteCount.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -77,12 +77,12 @@ class DataTransferByteCount {
     return result.toList(growable: growable);
   }
 
-  static Map<String, DataTransferByteCount> mapFromJson(dynamic json) {
-    final map = <String, DataTransferByteCount>{};
+  static Map<String, BackupTransferByteCount> mapFromJson(dynamic json) {
+    final map = <String, BackupTransferByteCount>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = DataTransferByteCount.fromJson(entry.value);
+        final value = BackupTransferByteCount.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -91,14 +91,14 @@ class DataTransferByteCount {
     return map;
   }
 
-  // maps a json object with a list of DataTransferByteCount-objects as value to a dart map
-  static Map<String, List<DataTransferByteCount>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<DataTransferByteCount>>{};
+  // maps a json object with a list of BackupTransferByteCount-objects as value to a dart map
+  static Map<String, List<BackupTransferByteCount>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<BackupTransferByteCount>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = DataTransferByteCount.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = BackupTransferByteCount.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;

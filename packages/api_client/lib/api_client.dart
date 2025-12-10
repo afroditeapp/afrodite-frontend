@@ -248,6 +248,14 @@ class ApiClient {
           return BackendConfig.fromJson(value);
         case 'BackendVersion':
           return BackendVersion.fromJson(value);
+        case 'BackupTransferByteCount':
+          return BackupTransferByteCount.fromJson(value);
+        case 'BackupTransferClientRole':
+          return BackupTransferClientRoleTypeTransformer().decode(value);
+        case 'BackupTransferInitialMessage':
+          return BackupTransferInitialMessage.fromJson(value);
+        case 'BackupTransferTargetData':
+          return BackupTransferTargetData.fromJson(value);
         case 'BooleanSetting':
           return BooleanSetting.fromJson(value);
         case 'ChatAppNotificationSettings':
@@ -276,8 +284,6 @@ class ApiClient {
           return ClientInfo.fromJson(value);
         case 'ClientLanguage':
           return ClientLanguage.fromJson(value);
-        case 'ClientRole':
-          return ClientRoleTypeTransformer().decode(value);
         case 'ClientType':
           return ClientTypeTypeTransformer().decode(value);
         case 'ClientVersion':
@@ -342,12 +348,6 @@ class ApiClient {
           return DataExportStateTypeTypeTransformer().decode(value);
         case 'DataExportType':
           return DataExportTypeTypeTransformer().decode(value);
-        case 'DataTransferByteCount':
-          return DataTransferByteCount.fromJson(value);
-        case 'DataTransferInitialMessage':
-          return DataTransferInitialMessage.fromJson(value);
-        case 'DataTransferPublicKey':
-          return DataTransferPublicKey.fromJson(value);
         case 'DeliveryInfoType':
           return DeliveryInfoTypeTypeTransformer().decode(value);
         case 'DemoAccountLoginCredentials':

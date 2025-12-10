@@ -1,4 +1,5 @@
 import "dart:async";
+import "dart:convert";
 import "dart:typed_data";
 
 import "package:app/data/chat/message_manager.dart";
@@ -10,6 +11,7 @@ import "package:app/logic/chat/receive_chat_backup/websocket.dart";
 import "package:app/model/freezed/logic/chat/receive_chat_backup.dart";
 import "package:app/utils.dart";
 import "package:app/utils/result.dart";
+import "package:crypto/crypto.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:logging/logging.dart";
 import "package:openapi/api.dart";
@@ -122,10 +124,17 @@ class ReceiveChatBackupBloc extends Bloc<ReceiveChatBackupEvent, ReceiveBackupDa
 
   Future<void> _connectToTransferApi(Emitter<ReceiveBackupData> emit) async {
     await _cleanup();
+
+    // Calculate SHA256 of target data JSON to use as pairing code
+    final targetData = jsonEncode({"account_id": currentUser.aid});
+    final targetDataBytes = utf8.encode(targetData);
+    final hash = sha256.convert(targetDataBytes);
+    final pairingCodeSha256 = hash.toString();
+
     emit(
       state.copyWith(
         state: ReceiveBackupConnectionState.connecting,
-        pairingCode: currentUser.aid,
+        pairingCode: pairingCodeSha256,
         errorMessage: null,
       ),
     );
@@ -149,8 +158,7 @@ class ReceiveChatBackupBloc extends Bloc<ReceiveChatBackupEvent, ReceiveBackupDa
     final webSocket = ReceiveChatBackupWebSocket();
     _webSocket = webSocket;
 
-    final publicKey = "dummy_public_key"; // TODO: Replace with actual public key
-    final connected = await webSocket.connect(accessToken, publicKey);
+    final connected = await webSocket.connect(accessToken, targetData);
 
     if (!connected) {
       emit(state.copyWith(errorMessage: R.strings.generic_error_occurred));

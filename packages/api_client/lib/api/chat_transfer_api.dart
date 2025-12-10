@@ -16,14 +16,14 @@ class ChatTransferApi {
 
   final ApiClient apiClient;
 
-  /// Transfer data between clients using WebSocket.
+  /// Transfer chat backup between clients using WebSocket.
   ///
-  /// This WebSocket connection facilitates secure data transfer between two clients: a target client (receiving data) and a source client (sending data).  Header `Sec-WebSocket-Protocol` must have `v1` as the first value.  ## Target Client Flow: 1. Connect and send initial message:    ```json    {        \"role\": \"target\",        \"access_token\": \"ACCESS_TOKEN\",        \"public_key\": \"PUBLIC_KEY\",        \"password\": \"PASSWORD\"    }    ``` 2. Wait for source to connect (timeout: 1 hour) 3. Receive byte count:    ```json    {        \"byte_count\": BYTE_COUNT    }    ``` 4. Receive binary messages until all bytes transferred  ## Source Client Flow: 1. Connect and send initial message (must connect after target):    ```json    {        \"role\": \"source\",        \"account_id\": \"ACCOUNT_ID\",        \"password\": \"PASSWORD\"    }    ```    Note: Response has constant 1-second delay. Connection closes if password is invalid    or target is not connected. 2. Send byte count:    ```json    {        \"byte_count\": BYTE_COUNT    }    ``` 3. Send binary messages containing the data until all bytes transferred.    Max size for a binary message is 64 KiB. Server will stop the data    transfer if binary message size is larger than the max size.  ## Transfer Budget Enforcement: When the yearly transfer budget is exceeded, both WebSockets (source and target) are closed with status code 4000.
+  /// This WebSocket connection facilitates secure backup transfer between two clients: a target client (receiving data) and a source client (sending data).  Header `Sec-WebSocket-Protocol` must have `v1` as the first value.  ## Target Client Flow: 1. Connect and send initial JSON message [BackupTransferInitialMessage] with [ClientRole::Target] 2. Wait for source to connect (timeout: 1 hour). Sending empty    binary messages is possible to test connectivity. 3. Receive byte count JSON message [model_chat::BackupTransferByteCount] 4. Receive binary messages until all bytes transferred  ## Source Client Flow: 1. Connect and send initial JSON message [BackupTransferInitialMessage] with    [ClientRole::Source] (must connect after target).    Note: Response has constant 1-second delay.    Connection closes if [BackupTransferInitialMessage::data_sha256] is invalid    or target is not connected. 2. Receive data JSON message [BackupTransferData] 3. Send byte count JSON message [model_chat::BackupTransferByteCount] 4. Send binary messages containing the data until all bytes transferred.    Max size for a binary message is 64 KiB. Server will stop the data    transfer if binary message size is larger than the max size.  ## WebSocket Close Status Codes: - 1000 (Normal Closure): Transfer completed successfully - 1008 (Policy Violation): Yearly transfer budget exceeded - No close status code: Other error
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> getTransferDataWithHttpInfo() async {
+  Future<Response> getBackupTransferWithHttpInfo() async {
     // ignore: prefer_const_declarations
-    final path = r'/chat_api/transfer_data';
+    final path = r'/chat_api/backup_transfer';
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -46,11 +46,11 @@ class ChatTransferApi {
     );
   }
 
-  /// Transfer data between clients using WebSocket.
+  /// Transfer chat backup between clients using WebSocket.
   ///
-  /// This WebSocket connection facilitates secure data transfer between two clients: a target client (receiving data) and a source client (sending data).  Header `Sec-WebSocket-Protocol` must have `v1` as the first value.  ## Target Client Flow: 1. Connect and send initial message:    ```json    {        \"role\": \"target\",        \"access_token\": \"ACCESS_TOKEN\",        \"public_key\": \"PUBLIC_KEY\",        \"password\": \"PASSWORD\"    }    ``` 2. Wait for source to connect (timeout: 1 hour) 3. Receive byte count:    ```json    {        \"byte_count\": BYTE_COUNT    }    ``` 4. Receive binary messages until all bytes transferred  ## Source Client Flow: 1. Connect and send initial message (must connect after target):    ```json    {        \"role\": \"source\",        \"account_id\": \"ACCOUNT_ID\",        \"password\": \"PASSWORD\"    }    ```    Note: Response has constant 1-second delay. Connection closes if password is invalid    or target is not connected. 2. Send byte count:    ```json    {        \"byte_count\": BYTE_COUNT    }    ``` 3. Send binary messages containing the data until all bytes transferred.    Max size for a binary message is 64 KiB. Server will stop the data    transfer if binary message size is larger than the max size.  ## Transfer Budget Enforcement: When the yearly transfer budget is exceeded, both WebSockets (source and target) are closed with status code 4000.
-  Future<void> getTransferData() async {
-    final response = await getTransferDataWithHttpInfo();
+  /// This WebSocket connection facilitates secure backup transfer between two clients: a target client (receiving data) and a source client (sending data).  Header `Sec-WebSocket-Protocol` must have `v1` as the first value.  ## Target Client Flow: 1. Connect and send initial JSON message [BackupTransferInitialMessage] with [ClientRole::Target] 2. Wait for source to connect (timeout: 1 hour). Sending empty    binary messages is possible to test connectivity. 3. Receive byte count JSON message [model_chat::BackupTransferByteCount] 4. Receive binary messages until all bytes transferred  ## Source Client Flow: 1. Connect and send initial JSON message [BackupTransferInitialMessage] with    [ClientRole::Source] (must connect after target).    Note: Response has constant 1-second delay.    Connection closes if [BackupTransferInitialMessage::data_sha256] is invalid    or target is not connected. 2. Receive data JSON message [BackupTransferData] 3. Send byte count JSON message [model_chat::BackupTransferByteCount] 4. Send binary messages containing the data until all bytes transferred.    Max size for a binary message is 64 KiB. Server will stop the data    transfer if binary message size is larger than the max size.  ## WebSocket Close Status Codes: - 1000 (Normal Closure): Transfer completed successfully - 1008 (Policy Violation): Yearly transfer budget exceeded - No close status code: Other error
+  Future<void> getBackupTransfer() async {
+    final response = await getBackupTransferWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

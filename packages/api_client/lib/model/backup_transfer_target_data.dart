@@ -10,36 +10,36 @@
 
 part of openapi.api;
 
-class DataTransferPublicKey {
-  /// Returns a new [DataTransferPublicKey] instance.
-  DataTransferPublicKey({
-    required this.publicKey,
+class BackupTransferTargetData {
+  /// Returns a new [BackupTransferTargetData] instance.
+  BackupTransferTargetData({
+    required this.targetData,
   });
 
-  String publicKey;
+  String targetData;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is DataTransferPublicKey &&
-    other.publicKey == publicKey;
+  bool operator ==(Object other) => identical(this, other) || other is BackupTransferTargetData &&
+    other.targetData == targetData;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (publicKey.hashCode);
+    (targetData.hashCode);
 
   @override
-  String toString() => 'DataTransferPublicKey[publicKey=$publicKey]';
+  String toString() => 'BackupTransferTargetData[targetData=$targetData]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'public_key'] = this.publicKey;
+      json[r'target_data'] = this.targetData;
     return json;
   }
 
-  /// Returns a new [DataTransferPublicKey] instance and imports its values from
+  /// Returns a new [BackupTransferTargetData] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static DataTransferPublicKey? fromJson(dynamic value) {
+  static BackupTransferTargetData? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -48,24 +48,24 @@ class DataTransferPublicKey {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "DataTransferPublicKey[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "DataTransferPublicKey[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "BackupTransferTargetData[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "BackupTransferTargetData[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return DataTransferPublicKey(
-        publicKey: mapValueOfType<String>(json, r'public_key')!,
+      return BackupTransferTargetData(
+        targetData: mapValueOfType<String>(json, r'target_data')!,
       );
     }
     return null;
   }
 
-  static List<DataTransferPublicKey> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <DataTransferPublicKey>[];
+  static List<BackupTransferTargetData> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <BackupTransferTargetData>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = DataTransferPublicKey.fromJson(row);
+        final value = BackupTransferTargetData.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -74,12 +74,12 @@ class DataTransferPublicKey {
     return result.toList(growable: growable);
   }
 
-  static Map<String, DataTransferPublicKey> mapFromJson(dynamic json) {
-    final map = <String, DataTransferPublicKey>{};
+  static Map<String, BackupTransferTargetData> mapFromJson(dynamic json) {
+    final map = <String, BackupTransferTargetData>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = DataTransferPublicKey.fromJson(entry.value);
+        final value = BackupTransferTargetData.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -88,14 +88,14 @@ class DataTransferPublicKey {
     return map;
   }
 
-  // maps a json object with a list of DataTransferPublicKey-objects as value to a dart map
-  static Map<String, List<DataTransferPublicKey>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<DataTransferPublicKey>>{};
+  // maps a json object with a list of BackupTransferTargetData-objects as value to a dart map
+  static Map<String, List<BackupTransferTargetData>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<BackupTransferTargetData>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = DataTransferPublicKey.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = BackupTransferTargetData.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;
@@ -103,7 +103,7 @@ class DataTransferPublicKey {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'public_key',
+    'target_data',
   };
 }
 

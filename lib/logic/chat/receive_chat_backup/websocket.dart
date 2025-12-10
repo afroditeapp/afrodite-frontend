@@ -12,9 +12,6 @@ import "package:web_socket/web_socket.dart" as ws;
 
 final _log = Logger("ReceiveChatBackupWebSocket");
 
-// TODO: Remove
-const String HARDCODED_PASSWORD = "backup123";
-
 sealed class ReceiveChatBackupWebSocketEvent {}
 
 class ByteCountReceived extends ReceiveChatBackupWebSocketEvent {
@@ -44,7 +41,7 @@ class ReceiveChatBackupWebSocket {
 
   Stream<ReceiveChatBackupWebSocketEvent> get events => _eventController.stream;
 
-  Future<bool> connect(AccessToken accessToken, String publicKey) async {
+  Future<bool> connect(AccessToken accessToken, String targetData) async {
     final serverAddress = defaultServerUrl();
     final websocketAddress = _addWebSocketRoutePathToAddress(serverAddress);
 
@@ -58,11 +55,10 @@ class ReceiveChatBackupWebSocket {
       _webSocket = webSocket;
 
       // Send initial message for target client
-      final initialMessage = DataTransferInitialMessage(
-        role: ClientRole.target,
+      final initialMessage = BackupTransferInitialMessage(
+        role: BackupTransferClientRole.target,
         accessToken: accessToken.token,
-        publicKey: publicKey,
-        password: HARDCODED_PASSWORD,
+        targetData: targetData,
       );
       webSocket.sendText(jsonEncode(initialMessage.toJson()));
 
@@ -74,7 +70,7 @@ class ReceiveChatBackupWebSocket {
           } else if (message is ws.TextDataReceived) {
             try {
               final data = jsonDecode(message.text);
-              final byteCountMessage = DataTransferByteCount.fromJson(data);
+              final byteCountMessage = BackupTransferByteCount.fromJson(data);
               if (byteCountMessage != null) {
                 _eventController.add(ByteCountReceived(byteCountMessage.byteCount));
               }
@@ -106,7 +102,7 @@ class ReceiveChatBackupWebSocket {
       scheme: base.scheme,
       host: base.host,
       port: base.port,
-      path: "/chat_api/transfer_data",
+      path: "/chat_api/backup_transfer",
     ).toString();
   }
 

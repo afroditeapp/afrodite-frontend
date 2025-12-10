@@ -1,4 +1,5 @@
 import "dart:async";
+import "dart:convert";
 
 import "package:app/database/database_manager.dart";
 import "package:app/localizations.dart";
@@ -37,7 +38,7 @@ class SendChatBackupBloc extends Bloc<SendChatBackupEvent, SendBackupData> with 
   SendChatBackupBloc() : super(SendBackupData()) {
     on<StartSendBackup>((event, emit) async {
       await runOnce(() async {
-        await _startBackupAndSend(emit, event.pairingCode);
+        await _connectToServer(emit, event.pairingCode);
       });
     });
 
@@ -48,6 +49,10 @@ class SendChatBackupBloc extends Bloc<SendChatBackupEvent, SendBackupData> with 
 
     on<_WebSocketEvent>((event, emit) async {
       switch (event.event) {
+        case TargetDataReceived(:final targetData):
+          // Target data received from server, start backup creation
+          _log.info("Received target data: $targetData");
+          await _createAndSendBackup(emit, targetData);
         case WebSocketConnectionClosed(:final closeCode):
           // Close code 1000 means normal closure (transfer completed successfully)
           if (closeCode == 1000) {
@@ -78,24 +83,45 @@ class SendChatBackupBloc extends Bloc<SendChatBackupEvent, SendBackupData> with 
     });
   }
 
-  Future<void> _startBackupAndSend(Emitter<SendBackupData> emit, String pairingCode) async {
+  Future<void> _connectToServer(Emitter<SendBackupData> emit, String pairingCode) async {
     await _cleanup();
 
-    // Parse account ID from pairing code
-    final accountId = AccountId(aid: pairingCode);
+    // Connect to transfer API
+    emit(state.copyWith(state: SendBackupState.connecting));
 
-    // Check if database exists before trying to open it
-    final dbFile = AccountDbFile(accountId.aid);
-    if (!await databaseExists(dbFile)) {
-      _log.error("Database does not exist for account ID: ${accountId.aid}");
+    _webSocket = SendChatBackupWebSocket();
+    final connected = await _webSocket!.connect(pairingCode);
+
+    if (!connected) {
       emit(state.copyWith(state: SendBackupState.idle, errorMessage: R.strings.generic_error));
       return;
     }
 
-    // Create backup
-    emit(state.copyWith(state: SendBackupState.creatingBackup));
+    // Subscribe to WebSocket events
+    _webSocketSubscription = _webSocket!.events.listen((event) {
+      add(_WebSocketEvent(event));
+    });
+  }
 
+  Future<void> _createAndSendBackup(Emitter<SendBackupData> emit, String targetData) async {
     try {
+      // Parse target data to get account ID
+      final targetJson = jsonDecode(targetData) as Map<String, dynamic>;
+      final accountIdStr = targetJson['account_id'] as String;
+      final accountId = AccountId(aid: accountIdStr);
+
+      // Check if database exists before trying to open it
+      final dbFile = AccountDbFile(accountId.aid);
+      if (!await databaseExists(dbFile)) {
+        _log.error("Database does not exist for account ID: ${accountId.aid}");
+        emit(state.copyWith(state: SendBackupState.idle, errorMessage: R.strings.generic_error));
+        await _cleanup();
+        return;
+      }
+
+      // Create backup
+      emit(state.copyWith(state: SendBackupState.creatingBackup));
+
       // Manually open database for the account ID
       final databaseManager = DatabaseManager.getInstance();
       final accountDbManager = await databaseManager.getAccountDatabaseManager(accountId);
@@ -111,6 +137,7 @@ class SendChatBackupBloc extends Bloc<SendChatBackupEvent, SendBackupData> with 
           backupData = v;
         case Err():
           emit(state.copyWith(state: SendBackupState.idle, errorMessage: R.strings.generic_error));
+          await _cleanup();
           return;
       }
 
@@ -118,26 +145,11 @@ class SendChatBackupBloc extends Bloc<SendChatBackupEvent, SendBackupData> with 
       final backupFile = backupData.compress();
       final backupBytes = backupFile.toBytes();
 
-      // Connect to transfer API
-      emit(state.copyWith(state: SendBackupState.connecting));
-
-      _webSocket = SendChatBackupWebSocket();
-      final connected = await _webSocket!.connect(pairingCode);
-
-      if (!connected) {
-        emit(state.copyWith(state: SendBackupState.idle, errorMessage: R.strings.generic_error));
-        return;
-      }
-
-      // Subscribe to WebSocket events
-      _webSocketSubscription = _webSocket!.events.listen((event) {
-        add(_WebSocketEvent(event));
-      });
-
       // Send data in chunks
       emit(state.copyWith(state: SendBackupState.transferring));
       await _webSocket!.sendData(backupBytes);
     } catch (e) {
+      _log.error("Failed to create and send backup: $e");
       emit(state.copyWith(state: SendBackupState.idle, errorMessage: R.strings.generic_error));
       await _cleanup();
     }

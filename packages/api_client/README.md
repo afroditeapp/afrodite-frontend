@@ -157,7 +157,7 @@ Class | Method | HTTP request | Description
 *ChatApi* | [**postSendMessage**](doc//ChatApi.md#postsendmessage) | **POST** /chat_api/send_message | Send message to a match.
 *ChatApi* | [**postUnblockProfile**](doc//ChatApi.md#postunblockprofile) | **POST** /chat_api/unblock_profile | Unblock profile
 *ChatAdminApi* | [**postSetMaxPublicKeyCount**](doc//ChatAdminApi.md#postsetmaxpublickeycount) | **POST** /chat_api/set_max_public_key_count | Set max public key count
-*ChatTransferApi* | [**getTransferData**](doc//ChatTransferApi.md#gettransferdata) | **GET** /chat_api/transfer_data | Transfer data between clients using WebSocket.
+*ChatTransferApi* | [**getBackupTransfer**](doc//ChatTransferApi.md#getbackuptransfer) | **GET** /chat_api/backup_transfer | Transfer chat backup between clients using WebSocket.
 *CommonApi* | [**deleteDataExport**](doc//CommonApi.md#deletedataexport) | **DELETE** /common_api/delete_data_export | Delete current data export
 *CommonApi* | [**getClientConfig**](doc//CommonApi.md#getclientconfig) | **GET** /common_api/client_config | 
 *CommonApi* | [**getClientLanguage**](doc//CommonApi.md#getclientlanguage) | **GET** /common_api/client_language | 
@@ -297,6 +297,10 @@ Class | Method | HTTP request | Description
  - [AutomaticProfileSearchSettings](doc//AutomaticProfileSearchSettings.md)
  - [BackendConfig](doc//BackendConfig.md)
  - [BackendVersion](doc//BackendVersion.md)
+ - [BackupTransferByteCount](doc//BackupTransferByteCount.md)
+ - [BackupTransferClientRole](doc//BackupTransferClientRole.md)
+ - [BackupTransferInitialMessage](doc//BackupTransferInitialMessage.md)
+ - [BackupTransferTargetData](doc//BackupTransferTargetData.md)
  - [BooleanSetting](doc//BooleanSetting.md)
  - [ChatAppNotificationSettings](doc//ChatAppNotificationSettings.md)
  - [ChatConfig](doc//ChatConfig.md)
@@ -311,7 +315,6 @@ Class | Method | HTTP request | Description
  - [ClientFeaturesConfigHash](doc//ClientFeaturesConfigHash.md)
  - [ClientInfo](doc//ClientInfo.md)
  - [ClientLanguage](doc//ClientLanguage.md)
- - [ClientRole](doc//ClientRole.md)
  - [ClientType](doc//ClientType.md)
  - [ClientVersion](doc//ClientVersion.md)
  - [ClientVersionCount](doc//ClientVersionCount.md)
@@ -344,9 +347,6 @@ Class | Method | HTTP request | Description
  - [DataExportState](doc//DataExportState.md)
  - [DataExportStateType](doc//DataExportStateType.md)
  - [DataExportType](doc//DataExportType.md)
- - [DataTransferByteCount](doc//DataTransferByteCount.md)
- - [DataTransferInitialMessage](doc//DataTransferInitialMessage.md)
- - [DataTransferPublicKey](doc//DataTransferPublicKey.md)
  - [DeliveryInfoType](doc//DeliveryInfoType.md)
  - [DemoAccountLoginCredentials](doc//DemoAccountLoginCredentials.md)
  - [DemoAccountLoginResult](doc//DemoAccountLoginResult.md)

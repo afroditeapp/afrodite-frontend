@@ -4,6 +4,7 @@ import "dart:typed_data";
 
 import "package:app/api/websocket_builder.dart";
 import "package:app/config.dart";
+import "package:crypto/crypto.dart";
 import "package:logging/logging.dart";
 import "package:openapi/api.dart";
 import "package:rxdart/rxdart.dart";
@@ -12,11 +13,14 @@ import "package:web_socket/web_socket.dart" as ws;
 
 final _log = Logger("SendChatBackupWebSocket");
 
-// TODO: Remove
-const String HARDCODED_PASSWORD = "backup123";
 const int MAX_CHUNK_SIZE = 64 * 1024; // 64 KiB
 
 sealed class SendChatBackupWebSocketEvent {}
+
+class TargetDataReceived extends SendChatBackupWebSocketEvent {
+  final String targetData;
+  TargetDataReceived(this.targetData);
+}
 
 class WebSocketConnectionClosed extends SendChatBackupWebSocketEvent {
   final int? closeCode;
@@ -35,7 +39,7 @@ class SendChatBackupWebSocket {
 
   Stream<SendChatBackupWebSocketEvent> get events => _eventController.stream;
 
-  Future<bool> connect(String accountId) async {
+  Future<bool> connect(String targetDataSha256) async {
     final serverAddress = defaultServerUrl();
     final websocketAddress = _addWebSocketRoutePathToAddress(serverAddress);
 
@@ -49,10 +53,9 @@ class SendChatBackupWebSocket {
       _webSocket = webSocket;
 
       // Send initial message for source client
-      final initialMessage = DataTransferInitialMessage(
-        role: ClientRole.source_,
-        accountId: accountId,
-        password: HARDCODED_PASSWORD,
+      final initialMessage = BackupTransferInitialMessage(
+        role: BackupTransferClientRole.source_,
+        targetDataSha256: targetDataSha256,
       );
       webSocket.sendText(jsonEncode(initialMessage.toJson()));
 
@@ -64,6 +67,29 @@ class SendChatBackupWebSocket {
         (message) {
           if (message is ws.CloseReceived) {
             _eventController.add(WebSocketConnectionClosed(message.code));
+          } else if (message is ws.TextDataReceived) {
+            try {
+              final data = jsonDecode(message.text);
+              final targetDataMessage = BackupTransferTargetData.fromJson(data);
+              if (targetDataMessage != null) {
+                // Calculate SHA256 of received message and verify it matches expected hash
+                final messageBytes = utf8.encode(targetDataMessage.targetData);
+                final calculatedHash = sha256.convert(messageBytes);
+                final calculatedHashHex = calculatedHash.toString();
+
+                if (calculatedHashHex != targetDataSha256) {
+                  _log.error(
+                    "Target data SHA256 mismatch: expected $targetDataSha256, got $calculatedHashHex",
+                  );
+                  _eventController.add(WebSocketConnectionError());
+                  return;
+                }
+
+                _eventController.add(TargetDataReceived(targetDataMessage.targetData));
+              }
+            } catch (e) {
+              _log.warning("Failed to parse target data message: $e");
+            }
           }
         },
         onError: (Object error) {
@@ -90,7 +116,7 @@ class SendChatBackupWebSocket {
 
     try {
       // Send byte count
-      final byteCountMessage = DataTransferByteCount(byteCount: data.length);
+      final byteCountMessage = BackupTransferByteCount(byteCount: data.length);
       webSocket.sendText(jsonEncode(byteCountMessage.toJson()));
 
       // Send data in chunks
@@ -115,7 +141,7 @@ class SendChatBackupWebSocket {
       scheme: base.scheme,
       host: base.host,
       port: base.port,
-      path: "/chat_api/transfer_data",
+      path: "/chat_api/backup_transfer",
     ).toString();
   }
 
