@@ -14,6 +14,7 @@ import "package:app/utils/result.dart";
 import "package:crypto/crypto.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:logging/logging.dart";
+import "package:native_utils/native_utils.dart";
 import "package:openapi/api.dart";
 
 final _log = Logger("ReceiveChatBackupBloc");
@@ -53,6 +54,7 @@ class ReceiveChatBackupBloc extends Bloc<ReceiveChatBackupEvent, ReceiveBackupDa
   StreamSubscription<ReceiveChatBackupWebSocketEvent>? _webSocketSubscription;
   ReceiveChatBackupWebSocket? _webSocket;
   final BytesBuilder _receivedData = BytesBuilder();
+  GeneratedMessageKeys? _targetKeys;
 
   ReceiveChatBackupBloc(RepositoryInstances r)
     : currentUser = r.accountId,
@@ -86,7 +88,7 @@ class ReceiveChatBackupBloc extends Bloc<ReceiveChatBackupEvent, ReceiveBackupDa
           // Check if transfer is complete
           if (state.totalBytes != null && _receivedData.length >= state.totalBytes!) {
             emit(state.copyWith(state: const Importing()));
-            final parseResult = _parseReceivedData(_receivedData.toBytes());
+            final parseResult = await _parseReceivedData(_receivedData.toBytes());
             switch (parseResult) {
               case _ParseSuccess(:final data):
                 await _importBackup(data);
@@ -142,8 +144,21 @@ class ReceiveChatBackupBloc extends Bloc<ReceiveChatBackupEvent, ReceiveBackupDa
   Future<void> _connectToTransferApi(Emitter<ReceiveBackupData> emit) async {
     await _cleanup();
 
+    // Generate keypair for E2EE
+    final (keys, keyGenResult) = await generateMessageKeys(currentUser.aid);
+    if (keys == null) {
+      _log.severe("Failed to generate keypair: $keyGenResult");
+      emit(state.copyWith(state: ErrorState(R.strings.generic_error)));
+      await _cleanup();
+      return;
+    }
+    _targetKeys = keys;
+
     // Calculate SHA256 of target data JSON to use as pairing code
-    final targetData = jsonEncode({"account_id": currentUser.aid});
+    final targetData = jsonEncode({
+      "account_id": currentUser.aid,
+      "public_key": base64Url.encode(keys.public),
+    });
     final targetDataBytes = utf8.encode(targetData);
     final hash = sha256.convert(targetDataBytes);
     final pairingCodeSha256 = base64Url.encode(hash.bytes);
@@ -187,35 +202,89 @@ class ReceiveChatBackupBloc extends Bloc<ReceiveChatBackupEvent, ReceiveBackupDa
     });
   }
 
-  /// Parse received data: validate version byte and extract actual backup data
-  _ParseReceivedDataResult _parseReceivedData(Uint8List data) {
-    // Minimum size: 1 byte (version) + 4 bytes (length)
-    if (data.length < 5) {
+  /// Parse received data: validate version byte, extract source's public key,
+  /// decrypt backup data, and return decrypted backup
+  Future<_ParseReceivedDataResult> _parseReceivedData(Uint8List data) async {
+    // Minimum size: 1 byte (version) + 4 bytes (public key length) + public key + 4 bytes (encrypted data length)
+    if (data.length < 9) {
       _log.severe("Received data too short: ${data.length} bytes");
       return _ParseErrorOther();
     }
 
+    int offset = 0;
+
     // Validate version byte (must be 1)
-    final version = data[0];
+    final version = data[offset];
+    offset += 1;
     if (version != 1) {
       _log.severe("Unsupported backup transfer version: $version");
       return _ParseErrorVersion();
     }
 
-    // Parse 32-bit little endian unsigned integer for data length
-    final lengthBytes = data.sublist(1, 5);
-    final byteData = ByteData.view(lengthBytes.buffer, lengthBytes.offsetInBytes);
-    final expectedLength = byteData.getUint32(0, Endian.little);
+    // Parse 32-bit little endian unsigned integer for source public key length
+    final publicKeyLengthBytes = data.sublist(offset, offset + 4);
+    final publicKeyByteData = ByteData.view(
+      publicKeyLengthBytes.buffer,
+      publicKeyLengthBytes.offsetInBytes,
+    );
+    final publicKeyLength = publicKeyByteData.getUint32(0, Endian.little);
+    offset += 4;
 
-    // Validate that we received the expected amount of data
-    final actualDataLength = data.length - 5;
-    if (actualDataLength != expectedLength) {
-      _log.severe("Data length mismatch: expected $expectedLength, got $actualDataLength");
+    // Validate public key length is reasonable
+    if (publicKeyLength == 0 || publicKeyLength > 10000 || offset + publicKeyLength > data.length) {
+      _log.severe("Invalid public key length: $publicKeyLength");
       return _ParseErrorOther();
     }
 
-    // Extract and return the actual backup data
-    return _ParseSuccess(data.sublist(5));
+    // Extract source's public key
+    final sourcePublicKey = data.sublist(offset, offset + publicKeyLength);
+    offset += publicKeyLength;
+
+    // Parse 32-bit little endian unsigned integer for encrypted data length
+    if (offset + 4 > data.length) {
+      _log.severe("Data too short for encrypted data length");
+      return _ParseErrorOther();
+    }
+    final encryptedDataLengthBytes = data.sublist(offset, offset + 4);
+    final encryptedDataByteData = ByteData.view(
+      encryptedDataLengthBytes.buffer,
+      encryptedDataLengthBytes.offsetInBytes,
+    );
+    final encryptedDataLength = encryptedDataByteData.getUint32(0, Endian.little);
+    offset += 4;
+
+    // Validate that we received the expected amount of encrypted data
+    final actualEncryptedDataLength = data.length - offset;
+    if (actualEncryptedDataLength != encryptedDataLength) {
+      _log.severe(
+        "Encrypted data length mismatch: expected $encryptedDataLength, got $actualEncryptedDataLength",
+      );
+      return _ParseErrorOther();
+    }
+
+    // Extract encrypted backup data
+    final encryptedBackupData = data.sublist(offset);
+
+    // Decrypt the backup data
+    final targetKeys = _targetKeys;
+    if (targetKeys == null) {
+      _log.severe("Target keys not available for decryption");
+      return _ParseErrorOther();
+    }
+
+    final (decryptResult, decryptStatus) = await decryptMessage(
+      sourcePublicKey,
+      targetKeys.private,
+      encryptedBackupData,
+    );
+
+    if (decryptResult == null) {
+      _log.severe("Failed to decrypt backup data: $decryptStatus");
+      return _ParseErrorOther();
+    }
+
+    // Return the decrypted backup data
+    return _ParseSuccess(decryptResult.messageData);
   }
 
   Future<void> _importBackup(Uint8List data) async {
@@ -230,6 +299,7 @@ class ReceiveChatBackupBloc extends Bloc<ReceiveChatBackupEvent, ReceiveBackupDa
     await _webSocket?.close();
     _webSocket = null;
     _receivedData.clear();
+    _targetKeys = null;
   }
 
   @override

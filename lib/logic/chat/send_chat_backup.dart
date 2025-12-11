@@ -12,6 +12,7 @@ import "package:database_provider/database_provider.dart";
 import "package:database_utils/database_utils.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:logging/logging.dart";
+import "package:native_utils/native_utils.dart";
 import "package:openapi/api.dart";
 import "package:utils/utils.dart";
 
@@ -111,10 +112,21 @@ class SendChatBackupBloc extends Bloc<SendChatBackupEvent, SendBackupData> with 
 
   Future<void> _createAndSendBackup(Emitter<SendBackupData> emit, String targetData) async {
     try {
-      // Parse target data to get account ID
+      // Parse target data to get account ID and public key
       final targetJson = jsonDecode(targetData) as Map<String, dynamic>;
       final accountIdStr = targetJson['account_id'] as String;
       final accountId = AccountId(aid: accountIdStr);
+
+      // Extract target's public key for encryption
+      final targetPublicKeyBase64 = targetJson['public_key'] as String?;
+      if (targetPublicKeyBase64 == null) {
+        _log.severe("Target public key not found in target data");
+        emit(state.copyWith(state: ErrorState(R.strings.generic_error)));
+        await _cleanup();
+        return;
+      }
+
+      final targetPublicKey = base64Url.decode(targetPublicKeyBase64);
 
       // Check if database exists before trying to open it
       final dbFile = AccountDbFile(accountId.aid);
@@ -151,9 +163,32 @@ class SendChatBackupBloc extends Bloc<SendChatBackupEvent, SendBackupData> with 
       final backupFile = backupData.compress();
       final backupBytes = backupFile.toBytes();
 
-      // Send data in chunks
+      // Generate keypair for source
+      final (sourceKeys, keyGenResult) = await generateMessageKeys(accountId.aid);
+      if (sourceKeys == null) {
+        _log.severe("Failed to generate source keypair: $keyGenResult");
+        emit(state.copyWith(state: ErrorState(R.strings.generic_error)));
+        await _cleanup();
+        return;
+      }
+
+      // Encrypt backup data for target
+      final (encryptResult, encryptStatus) = await encryptMessage(
+        sourceKeys.private,
+        targetPublicKey,
+        backupBytes,
+      );
+
+      if (encryptResult == null) {
+        _log.severe("Failed to encrypt backup data: $encryptStatus");
+        emit(state.copyWith(state: ErrorState(R.strings.generic_error)));
+        await _cleanup();
+        return;
+      }
+
+      // Send encrypted data with source public key
       emit(state.copyWith(state: const Transferring()));
-      await _webSocket!.sendData(backupBytes);
+      await _webSocket!.sendData(sourceKeys.public, encryptResult.pgpMessage);
     } catch (e) {
       _log.error("Failed to create and send backup: $e");
       emit(state.copyWith(state: ErrorState(R.strings.generic_error)));

@@ -107,7 +107,7 @@ class SendChatBackupWebSocket {
     }
   }
 
-  Future<void> sendData(Uint8List data) async {
+  Future<void> sendData(Uint8List sourcePublicKey, Uint8List encryptedData) async {
     final webSocket = _webSocket;
     if (webSocket == null) {
       _eventController.add(WebSocketConnectionError());
@@ -115,8 +115,9 @@ class SendChatBackupWebSocket {
     }
 
     try {
-      // Calculate total transfer size: 1 byte (version) + 4 bytes (length) + data
-      final totalBytes = 1 + 4 + data.length;
+      // Calculate total transfer size:
+      // 1 byte (version) + 4 bytes (public key length) + public key + 4 bytes (encrypted data length) + encrypted data
+      final totalBytes = 1 + 4 + sourcePublicKey.length + 4 + encryptedData.length;
 
       // Send byte count (total transfer size)
       final byteCountMessage = BackupTransferByteCount(byteCount: totalBytes);
@@ -126,18 +127,27 @@ class SendChatBackupWebSocket {
       final versionByte = Uint8List.fromList([1]);
       webSocket.sendBytes(versionByte);
 
-      // Send data length as 32-bit little endian unsigned integer
-      final lengthBytes = Uint8List(4);
-      final byteData = ByteData.view(lengthBytes.buffer);
-      byteData.setUint32(0, data.length, Endian.little);
-      webSocket.sendBytes(lengthBytes);
+      // Send source public key length as 32-bit little endian unsigned integer
+      final publicKeyLengthBytes = Uint8List(4);
+      final publicKeyByteData = ByteData.view(publicKeyLengthBytes.buffer);
+      publicKeyByteData.setUint32(0, sourcePublicKey.length, Endian.little);
+      webSocket.sendBytes(publicKeyLengthBytes);
 
-      // Send data in chunks
+      // Send source public key
+      webSocket.sendBytes(sourcePublicKey);
+
+      // Send encrypted data length as 32-bit little endian unsigned integer
+      final encryptedDataLengthBytes = Uint8List(4);
+      final encryptedDataByteData = ByteData.view(encryptedDataLengthBytes.buffer);
+      encryptedDataByteData.setUint32(0, encryptedData.length, Endian.little);
+      webSocket.sendBytes(encryptedDataLengthBytes);
+
+      // Send encrypted data in chunks
       int offset = 0;
-      while (offset < data.length) {
-        final remainingBytes = data.length - offset;
+      while (offset < encryptedData.length) {
+        final remainingBytes = encryptedData.length - offset;
         final chunkSize = remainingBytes > MAX_CHUNK_SIZE ? MAX_CHUNK_SIZE : remainingBytes;
-        final chunk = data.sublist(offset, offset + chunkSize);
+        final chunk = encryptedData.sublist(offset, offset + chunkSize);
 
         webSocket.sendBytes(chunk);
         offset += chunkSize;
