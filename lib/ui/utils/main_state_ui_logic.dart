@@ -372,6 +372,7 @@ class _AppNavigatorState extends State<AppNavigator> {
   late final MyRouterDelegate routerDelegate;
   MyRouteInformationParser? routeInfoParser;
   PlatformRouteInformationProvider? routeInfoProvider;
+  final backButtonDispatcher = RootBackButtonDispatcher();
 
   @override
   void initState() {
@@ -398,7 +399,7 @@ class _AppNavigatorState extends State<AppNavigator> {
       routerDelegate: routerDelegate,
       routeInformationParser: routeInfoParser,
       routeInformationProvider: routeInfoProvider,
-      backButtonDispatcher: RootBackButtonDispatcher(),
+      backButtonDispatcher: backButtonDispatcher,
     );
   }
 }
