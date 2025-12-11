@@ -25,6 +25,7 @@ import 'package:app/ui/splash_screen.dart';
 import 'package:app/ui/utils/url_navigation.dart';
 import 'package:app/ui/utils/web_navigation/web_navigation.dart';
 import 'package:app/ui/utils/web_pwa/web_pwa.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:app/logic/account/account.dart';
@@ -378,19 +379,20 @@ class _AppNavigatorState extends State<AppNavigator> {
   void initState() {
     super.initState();
     routerDelegate = MyRouterDelegate(widget.navigatorStateBloc);
-    if (isIosWeb()) {
-      // Browser URL navigation is not needed as gesture
-      // back navigation works with iOS Safari.
-      return;
+    if (kIsWeb) {
+      if (isIosWeb()) {
+        // Browser URL navigation is not needed as gesture
+        // back navigation works with iOS Safari.
+        return;
+      }
+      final newRouteInfoParser = MyRouteInformationParser(widget.r);
+      final info = newRouteInfoParser.restoreRouteInformation(
+        UrlNavigationState.convert(widget.navigatorStateBloc.state),
+      )!;
+      replaceInitialWebBrowserUrl(info);
+      routeInfoParser = newRouteInfoParser;
+      routeInfoProvider = PlatformRouteInformationProvider(initialRouteInformation: info);
     }
-
-    final newRouteInfoParser = MyRouteInformationParser(widget.r);
-    final info = newRouteInfoParser.restoreRouteInformation(
-      UrlNavigationState.convert(widget.navigatorStateBloc.state),
-    )!;
-    replaceInitialWebBrowserUrl(info);
-    routeInfoParser = newRouteInfoParser;
-    routeInfoProvider = PlatformRouteInformationProvider(initialRouteInformation: info);
   }
 
   @override
