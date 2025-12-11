@@ -115,9 +115,22 @@ class SendChatBackupWebSocket {
     }
 
     try {
-      // Send byte count
-      final byteCountMessage = BackupTransferByteCount(byteCount: data.length);
+      // Calculate total transfer size: 1 byte (version) + 4 bytes (length) + data
+      final totalBytes = 1 + 4 + data.length;
+
+      // Send byte count (total transfer size)
+      final byteCountMessage = BackupTransferByteCount(byteCount: totalBytes);
       webSocket.sendText(jsonEncode(byteCountMessage.toJson()));
+
+      // Send version byte (1)
+      final versionByte = Uint8List.fromList([1]);
+      webSocket.sendBytes(versionByte);
+
+      // Send data length as 32-bit little endian unsigned integer
+      final lengthBytes = Uint8List(4);
+      final byteData = ByteData.view(lengthBytes.buffer);
+      byteData.setUint32(0, data.length, Endian.little);
+      webSocket.sendBytes(lengthBytes);
 
       // Send data in chunks
       int offset = 0;

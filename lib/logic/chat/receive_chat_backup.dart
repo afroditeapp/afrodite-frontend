@@ -18,6 +18,17 @@ import "package:openapi/api.dart";
 
 final _log = Logger("ReceiveChatBackupBloc");
 
+sealed class _ParseReceivedDataResult {}
+
+class _ParseSuccess extends _ParseReceivedDataResult {
+  final Uint8List data;
+  _ParseSuccess(this.data);
+}
+
+class _ParseErrorVersion extends _ParseReceivedDataResult {}
+
+class _ParseErrorOther extends _ParseReceivedDataResult {}
+
 abstract class ReceiveChatBackupEvent {}
 
 class ConnectIfIdleOrConnecting extends ReceiveChatBackupEvent {}
@@ -75,7 +86,19 @@ class ReceiveChatBackupBloc extends Bloc<ReceiveChatBackupEvent, ReceiveBackupDa
           // Check if transfer is complete
           if (state.totalBytes != null && _receivedData.length >= state.totalBytes!) {
             emit(state.copyWith(state: const Importing()));
-            await _importBackup(_receivedData.toBytes());
+            final parseResult = _parseReceivedData(_receivedData.toBytes());
+            switch (parseResult) {
+              case _ParseSuccess(:final data):
+                await _importBackup(data);
+              case _ParseErrorVersion():
+                emit(
+                  state.copyWith(state: ErrorState(R.strings.chat_backup_data_stream_unsupported)),
+                );
+                await _cleanup();
+              case _ParseErrorOther():
+                emit(state.copyWith(state: ErrorState(R.strings.generic_error)));
+                await _cleanup();
+            }
           }
         case WebSocketConnectionClosed(:final closeCode):
           if (closeCode != 1000) {
@@ -162,6 +185,37 @@ class ReceiveChatBackupBloc extends Bloc<ReceiveChatBackupEvent, ReceiveBackupDa
     _webSocketSubscription = webSocket.events.listen((event) {
       add(_WebSocketEvent(event));
     });
+  }
+
+  /// Parse received data: validate version byte and extract actual backup data
+  _ParseReceivedDataResult _parseReceivedData(Uint8List data) {
+    // Minimum size: 1 byte (version) + 4 bytes (length)
+    if (data.length < 5) {
+      _log.severe("Received data too short: ${data.length} bytes");
+      return _ParseErrorOther();
+    }
+
+    // Validate version byte (must be 1)
+    final version = data[0];
+    if (version != 1) {
+      _log.severe("Unsupported backup transfer version: $version");
+      return _ParseErrorVersion();
+    }
+
+    // Parse 32-bit little endian unsigned integer for data length
+    final lengthBytes = data.sublist(1, 5);
+    final byteData = ByteData.view(lengthBytes.buffer, lengthBytes.offsetInBytes);
+    final expectedLength = byteData.getUint32(0, Endian.little);
+
+    // Validate that we received the expected amount of data
+    final actualDataLength = data.length - 5;
+    if (actualDataLength != expectedLength) {
+      _log.severe("Data length mismatch: expected $expectedLength, got $actualDataLength");
+      return _ParseErrorOther();
+    }
+
+    // Extract and return the actual backup data
+    return _ParseSuccess(data.sublist(5));
   }
 
   Future<void> _importBackup(Uint8List data) async {

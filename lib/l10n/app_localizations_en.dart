@@ -214,6 +214,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get chat_backup_connecting => 'Connecting…';
 
   @override
+  String get chat_backup_data_stream_unsupported => 'Unsupported data stream';
+
+  @override
   String get chat_backup_database_not_found =>
       'Database for requested account does not exist';
 

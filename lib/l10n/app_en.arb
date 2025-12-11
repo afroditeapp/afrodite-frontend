@@ -251,6 +251,10 @@
   "@chat_backup_connecting": {
     "description": "Status text when connecting to transfer API"
   },
+  "chat_backup_data_stream_unsupported": "Unsupported data stream",
+  "@chat_backup_data_stream_unsupported": {
+    "description": "Error message when data stream version is not supported"
+  },
   "chat_backup_database_not_found": "Database for requested account does not exist",
   "@chat_backup_database_not_found": {
     "description": "Error message when database for requested account does not exist"

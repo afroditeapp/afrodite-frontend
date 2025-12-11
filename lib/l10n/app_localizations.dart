@@ -418,6 +418,12 @@ abstract class AppLocalizations {
   /// **'Connecting…'**
   String get chat_backup_connecting;
 
+  /// Error message when data stream version is not supported
+  ///
+  /// In en, this message translates to:
+  /// **'Unsupported data stream'**
+  String get chat_backup_data_stream_unsupported;
+
   /// Error message when database for requested account does not exist
   ///
   /// In en, this message translates to:
