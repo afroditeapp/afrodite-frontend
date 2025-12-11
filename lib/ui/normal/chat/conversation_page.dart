@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:app/data/chat/message_database_iterator.dart';
 import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/logic/account/client_features_config.dart';
-import 'package:app/logic/settings/privacy_settings.dart';
 import 'package:app/ui/normal/chat/chat_list.dart';
 import 'package:app/ui/normal/chat/utils.dart';
 import 'package:app/ui/normal/report/report.dart';
@@ -48,12 +47,23 @@ Future<ConversationPage?> createConversationPage(
   final initialMessages = await messageIterator.nextList();
   initialMessages.addAll(await messageIterator.nextList());
 
+  // Load chat privacy settings from database because PrivacySettingsBloc
+  // might not be initialized yet.
+  final chatPrivacySettings =
+      await r.accountDb.accountData((db) => db.privacy.getChatPrivacySettings()).ok() ??
+      ChatPrivacySettings(
+        messageStateDelivered: false,
+        messageStateSent: false,
+        typingIndicator: false,
+      );
+
   return ConversationPage(
     accountId,
     localAccountId,
     profile,
     initialMessages.reversed.toList(),
     messageIterator,
+    chatPrivacySettings,
   );
 }
 
@@ -105,12 +115,14 @@ class ConversationPage extends MyScreenPage<()> {
   final LocalAccountId localAccountId;
   final List<IteratorMessage> initialMessages;
   final MessageDatabaseIterator oldMessagesIterator;
+  final ChatPrivacySettings chatPrivacySettings;
   ConversationPage(
     this.accountId,
     this.localAccountId,
     ProfileEntry? profile,
     this.initialMessages,
     this.oldMessagesIterator,
+    this.chatPrivacySettings,
   ) : super(
         builder: (closer) {
           return BlocProvider(
@@ -125,6 +137,7 @@ class ConversationPage extends MyScreenPage<()> {
               profile,
               initialMessages,
               oldMessagesIterator,
+              chatPrivacySettings,
             ),
           );
         },
@@ -144,12 +157,14 @@ class ConversationScreen extends StatefulWidget {
   final ProfileEntry? profileEntry;
   final List<IteratorMessage> initialMessages;
   final MessageDatabaseIterator oldMessagesIterator;
+  final ChatPrivacySettings chatPrivacySettings;
   const ConversationScreen(
     this.closer,
     this.accountId,
     this.profileEntry,
     this.initialMessages,
-    this.oldMessagesIterator, {
+    this.oldMessagesIterator,
+    this.chatPrivacySettings, {
     super.key,
   });
 
@@ -243,7 +258,6 @@ class ConversationScreenState extends State<ConversationScreen> {
           return Container();
         } else {
           final r = context.read<RepositoryInstances>();
-          final privacySettings = context.read<PrivacySettingsBloc>().state;
           final clientFeaturesChat = r.account.clientFeaturesConfigValue.chat;
           return ChatList(
             widget.profileEntry,
@@ -254,12 +268,14 @@ class ConversationScreenState extends State<ConversationScreen> {
             db: r.accountDb,
             typingIndicatorManager: r.chat.typingIndicatorManager,
             typingIndicatorEnabled:
-                privacySettings.typingIndicator && clientFeaturesChat?.typingIndicator != null,
+                widget.chatPrivacySettings.typingIndicator &&
+                clientFeaturesChat?.typingIndicator != null,
             messageStateDeliveredEnabled:
-                privacySettings.messageStateDelivered &&
+                widget.chatPrivacySettings.messageStateDelivered &&
                 clientFeaturesChat?.messageStateDelivered == true,
             messageStateSeenEnabled:
-                privacySettings.messageStateSent && clientFeaturesChat?.messageStateSeen == true,
+                widget.chatPrivacySettings.messageStateSent &&
+                clientFeaturesChat?.messageStateSeen == true,
           );
         }
       },
