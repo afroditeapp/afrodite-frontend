@@ -37,6 +37,7 @@ class ReceiveBackupData with _$ReceiveBackupData {
   factory ReceiveBackupData({
     @Default(Connecting()) ReceiveBackupConnectionState state,
     String? pairingCode,
+    Uint8List? qrCodeData,
     int? totalBytes,
     @Default(0) int transferredBytes,
   }) = _ReceiveBackupData;

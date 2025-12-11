@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:app/localizations.dart';
 import 'package:app/ui_utils/snack_bar.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 void openReceiveChatBackupScreen(BuildContext context) {
   MyNavigator.push(context, ReceiveChatBackupPage());
@@ -38,6 +39,8 @@ class ReceiveChatBackupScreen extends StatefulWidget {
 }
 
 class _ReceiveChatBackupScreenState extends State<ReceiveChatBackupScreen> {
+  bool _showQrCode = true;
+
   @override
   void initState() {
     super.initState();
@@ -77,7 +80,7 @@ class _ReceiveChatBackupScreenState extends State<ReceiveChatBackupScreen> {
           ],
           const SizedBox(height: 24),
           if (state.state is WaitingForSource && state.pairingCode != null)
-            _buildPairingCodeSection(context, state.pairingCode!),
+            _buildPairingCodeSection(context, state),
           if (state.state is Transferring) _buildProgressSection(context, state),
           if (state.state is Importing) _buildImportingSection(context),
           if (state.state is ErrorState) ...[_buildRetryButton(context)],
@@ -135,7 +138,10 @@ class _ReceiveChatBackupScreenState extends State<ReceiveChatBackupScreen> {
     return Text(text, style: Theme.of(context).textTheme.titleLarge, textAlign: TextAlign.center);
   }
 
-  Widget _buildPairingCodeSection(BuildContext context, String pairingCode) {
+  Widget _buildPairingCodeSection(BuildContext context, ReceiveBackupData state) {
+    final pairingCode = state.pairingCode!;
+    final qrData = state.qrCodeData;
+
     return Column(
       children: [
         Text(
@@ -144,35 +150,59 @@ class _ReceiveChatBackupScreenState extends State<ReceiveChatBackupScreen> {
           textAlign: TextAlign.center,
         ),
         const SizedBox(height: 12),
-        Container(
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.surfaceContainerHighest,
-            borderRadius: BorderRadius.circular(8),
+        if (_showQrCode && qrData != null) ...[
+          Container(
+            decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(8)),
+            child: QrImageView.withQr(
+              qr: QrCode.fromUint8List(data: qrData, errorCorrectLevel: QrErrorCorrectLevel.L),
+              size: 200,
+            ),
           ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: Text(
-                  pairingCode,
-                  style: Theme.of(
-                    context,
-                  ).textTheme.headlineSmall?.copyWith(fontFamily: 'monospace'),
-                  textAlign: TextAlign.center,
+        ] else ...[
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surfaceContainerHighest,
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Text(
+                    pairingCode,
+                    style: Theme.of(
+                      context,
+                    ).textTheme.bodyMedium?.copyWith(fontFamily: 'monospace'),
+                    textAlign: TextAlign.center,
+                  ),
                 ),
-              ),
-              IconButton(
-                icon: const Icon(Icons.copy),
-                onPressed: () {
-                  Clipboard.setData(ClipboardData(text: pairingCode));
-                  showSnackBar(context.strings.generic_copied_to_clipboard);
-                },
-              ),
-            ],
+                IconButton(
+                  icon: const Icon(Icons.copy),
+                  onPressed: () {
+                    Clipboard.setData(ClipboardData(text: pairingCode));
+                    showSnackBar(context.strings.generic_copied_to_clipboard);
+                  },
+                ),
+              ],
+            ),
+          ),
+        ],
+        const SizedBox(height: 12),
+        TextButton.icon(
+          onPressed: () {
+            setState(() {
+              _showQrCode = !_showQrCode;
+            });
+          },
+          icon: Icon(_showQrCode ? Icons.text_fields : Icons.qr_code),
+          label: Text(
+            _showQrCode
+                ? context.strings.receive_chat_backup_show_text_code
+                : context.strings.receive_chat_backup_show_qr_code,
           ),
         ),
-        const SizedBox(height: 24),
+        const SizedBox(height: 12),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Column(
@@ -199,6 +229,7 @@ class _ReceiveChatBackupScreenState extends State<ReceiveChatBackupScreen> {
               _instructionStep(context, context.strings.receive_chat_backup_pairing_code_step4),
               const SizedBox(height: 12),
               _instructionStep(context, context.strings.receive_chat_backup_pairing_code_step5),
+              const SizedBox(height: 12),
             ],
           ),
         ),

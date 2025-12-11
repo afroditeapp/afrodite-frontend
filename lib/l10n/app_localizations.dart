@@ -2645,7 +2645,7 @@ abstract class AppLocalizations {
   /// Fifth step for using pairing code
   ///
   /// In en, this message translates to:
-  /// **'5. Enter the code to start the transfer'**
+  /// **'5. Scan the QR code and start transfer'**
   String get receive_chat_backup_pairing_code_step5;
 
   /// Title for receive chat backup screen
@@ -2653,6 +2653,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Receive chat backup'**
   String get receive_chat_backup_screen_title;
+
+  /// Button text to show QR code
+  ///
+  /// In en, this message translates to:
+  /// **'Show QR code'**
+  String get receive_chat_backup_show_qr_code;
+
+  /// Button text to show textual pairing code
+  ///
+  /// In en, this message translates to:
+  /// **'Show text code'**
+  String get receive_chat_backup_show_text_code;
 
   /// Status text when transferring backup data
   ///

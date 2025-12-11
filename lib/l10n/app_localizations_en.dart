@@ -1554,10 +1554,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get receive_chat_backup_pairing_code_step5 =>
-      '5. Enter the code to start the transfer';
+      '5. Scan the QR code and start transfer';
 
   @override
   String get receive_chat_backup_screen_title => 'Receive chat backup';
+
+  @override
+  String get receive_chat_backup_show_qr_code => 'Show QR code';
+
+  @override
+  String get receive_chat_backup_show_text_code => 'Show text code';
 
   @override
   String get receive_chat_backup_transferring => 'Receiving backup…';

@@ -1864,13 +1864,21 @@
   "@receive_chat_backup_pairing_code_step4": {
     "description": "Fourth step for using pairing code"
   },
-  "receive_chat_backup_pairing_code_step5": "5. Enter the code to start the transfer",
+  "receive_chat_backup_pairing_code_step5": "5. Scan the QR code and start transfer",
   "@receive_chat_backup_pairing_code_step5": {
     "description": "Fifth step for using pairing code"
   },
   "receive_chat_backup_screen_title": "Receive chat backup",
   "@receive_chat_backup_screen_title": {
     "description": "Title for receive chat backup screen"
+  },
+  "receive_chat_backup_show_qr_code": "Show QR code",
+  "@receive_chat_backup_show_qr_code": {
+    "description": "Button text to show QR code"
+  },
+  "receive_chat_backup_show_text_code": "Show text code",
+  "@receive_chat_backup_show_text_code": {
+    "description": "Button text to show textual pairing code"
   },
   "receive_chat_backup_transferring": "Receiving backup…",
   "@receive_chat_backup_transferring": {
