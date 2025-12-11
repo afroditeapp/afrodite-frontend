@@ -78,10 +78,12 @@ class ApiProvider {
   }
 
   Future<void> init() async {
+    // Allow HTTP connections on Android and iOS
+    final isHttps = _serverAddress.startsWith("https");
     final Client client;
     if (kIsWeb) {
       client = Client();
-    } else if (Platform.isAndroid) {
+    } else if (Platform.isAndroid && isHttps) {
       final androidInfo = await DeviceInfoPlugin().androidInfo;
       final androidVersion = androidInfo.version.sdkInt;
       if (androidVersion >= ANDROID_8_API_LEVEL) {
@@ -105,7 +107,7 @@ class ApiProvider {
         // Let's Encrypt certificate must be added in that case.
         client = IOClient(HttpClient(context: await createSecurityContextForBackendConnection()));
       }
-    } else if (Platform.isIOS) {
+    } else if (Platform.isIOS && isHttps) {
       final config = URLSessionConfiguration.ephemeralSessionConfiguration()
         ..cache = URLCache.withCapacity(memoryCapacity: 2 * 1024 * 1024);
       client = CupertinoClient.fromSessionConfiguration(config);
