@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/logic/account/client_features_config.dart';
@@ -429,13 +430,32 @@ class MyRouterDelegate extends RouterDelegate<UrlNavigationState>
 
   @override
   Widget build(BuildContext context) {
-    return Navigator(
-      key: key,
-      pages: bloc.state.getPages(),
-      onDidRemovePage: (page) {
-        bloc.add(RemovePageUsingFlutterObject(page));
-      },
-    );
+    if (kIsWeb || !Platform.isAndroid) {
+      return Navigator(
+        key: key,
+        pages: bloc.state.getPages(),
+        onDidRemovePage: (page) {
+          bloc.add(RemovePageUsingFlutterObject(page));
+        },
+      );
+    } else {
+      // Workaround Android specific Flutter 3.38 issue where Router's
+      // Navigator rebuilds before onDidRemovePage causing transition
+      // to be cancelled.
+      return Navigator(
+        key: key,
+        pages: bloc.state.getPages(),
+        // ignore: deprecated_member_use
+        onPopPage: (route, result) {
+          final didPop = route.didPop(result);
+          if (didPop) {
+            final page = route.settings as Page;
+            bloc.add(RemovePageUsingFlutterObject(page));
+          }
+          return didPop;
+        },
+      );
+    }
   }
 
   @override
