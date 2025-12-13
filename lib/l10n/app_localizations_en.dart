@@ -868,6 +868,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get initial_setup_screen_age_confirmation_title => 'Age confirmation';
 
   @override
+  String get initial_setup_screen_chat_info_checkbox =>
+      'I understand that chat backups are important';
+
+  @override
+  String get initial_setup_screen_chat_info_item1 =>
+      'If app is removed your chats will be gone unless you have created a chat backup';
+
+  @override
+  String get initial_setup_screen_chat_info_item2 =>
+      'If app is removed you can\'t view received messages unless you have created a chat backup';
+
+  @override
+  String get initial_setup_screen_chat_info_title => 'Chat info';
+
+  @override
   String get initial_setup_screen_email_hint_text => 'Insert email address';
 
   @override

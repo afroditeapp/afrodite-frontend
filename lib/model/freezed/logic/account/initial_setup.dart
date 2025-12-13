@@ -27,6 +27,7 @@ class InitialSetupData with _$InitialSetupData {
     int? searchAgeRangeMax,
     LatLng? profileLocation,
     @Default(ProfileAttributesState([])) ProfileAttributesState profileAttributes,
+    @Default(false) bool chatInfoUnderstood,
     @Default(false) bool sendingInProgress,
   }) = _InitialSetupData;
 }

@@ -278,6 +278,10 @@
     <string name="initial_setup_screen_search_settings_max_age_subtitle" description="Subtitle for max age search setting">…with max age…</string>
     <string name="initial_setup_screen_location_title" description="Title for initial setup location screen">My profile\'s location is…</string>
     <string name="initial_setup_screen_location_help_dialog_text" description="Text for initial setup location help dialog">Select a location for your profile by tapping or long pressing the map.</string>
+    <string name="initial_setup_screen_chat_info_title" description="Title for initial setup chat info screen">Chat info</string>
+    <string name="initial_setup_screen_chat_info_item1" description="First info item about chat backups">If app is removed your chats will be gone unless you have created a chat backup</string>
+    <string name="initial_setup_screen_chat_info_item2" description="Second info item about chat backups">If app is removed you can\'t view received messages unless you have created a chat backup</string>
+    <string name="initial_setup_screen_chat_info_checkbox" description="Checkbox text for understanding chat info">I understand that chat backups are important</string>
 
     <!-- Notification permission -->
     <string name="notification_permission_dialog_title" description="Title for notification permission dialog">Allow notifications?</string>

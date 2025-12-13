@@ -6,7 +6,7 @@ import "package:app/localizations.dart";
 import "package:app/logic/account/initial_setup.dart";
 import "package:app/logic/app/navigator_state.dart";
 import "package:app/logic/profile/attributes.dart";
-import "package:app/ui/initial_setup/profile_attributes.dart";
+import "package:app/ui/initial_setup/chat_info.dart";
 import "package:app/ui/normal/settings/location.dart";
 import "package:app/ui_utils/dialog.dart";
 import "package:app/ui_utils/initial_setup_common.dart";
@@ -32,14 +32,7 @@ class AskLocationScreen extends StatelessWidget {
         getContinueButtonCallback: (context, state) {
           if (state.profileLocation != null) {
             return () {
-              final attributes =
-                  context.read<ProfileAttributesBloc>().state.manager?.requiredAttributes() ?? [];
-              final nextAttribute = attributes.firstOrNull;
-              if (nextAttribute == null) {
-                context.read<InitialSetupBloc>().add(CompleteInitialSetup());
-              } else {
-                MyNavigator.push(context, AskProfileAttributesPage(attributeIndex: 0));
-              }
+              MyNavigator.push(context, ChatInfoPage());
             };
           } else {
             return null;

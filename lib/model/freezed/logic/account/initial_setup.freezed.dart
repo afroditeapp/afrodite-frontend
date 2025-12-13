@@ -34,6 +34,7 @@ mixin _$InitialSetupData {
   int? get searchAgeRangeMax => throw _privateConstructorErrorInitialSetupData;
   LatLng? get profileLocation => throw _privateConstructorErrorInitialSetupData;
   ProfileAttributesState get profileAttributes => throw _privateConstructorErrorInitialSetupData;
+  bool get chatInfoUnderstood => throw _privateConstructorErrorInitialSetupData;
   bool get sendingInProgress => throw _privateConstructorErrorInitialSetupData;
 
   InitialSetupData copyWith({
@@ -50,6 +51,7 @@ mixin _$InitialSetupData {
     int? searchAgeRangeMax,
     LatLng? profileLocation,
     ProfileAttributesState? profileAttributes,
+    bool? chatInfoUnderstood,
     bool? sendingInProgress,
   }) => throw _privateConstructorErrorInitialSetupData;
 }
@@ -70,6 +72,7 @@ abstract class _InitialSetupData implements InitialSetupData {
     int? searchAgeRangeMax,
     LatLng? profileLocation,
     ProfileAttributesState profileAttributes,
+    bool chatInfoUnderstood,
     bool sendingInProgress,
   }) = _$InitialSetupDataImpl;
 }
@@ -79,6 +82,7 @@ class _$InitialSetupDataImpl implements _InitialSetupData {
   static const GenderSearchSettingsAll _genderSearchSettingDefaultValue = GenderSearchSettingsAll();
   static const bool _searchAgeRangeInitDoneDefaultValue = false;
   static const ProfileAttributesState _profileAttributesDefaultValue = ProfileAttributesState([]);
+  static const bool _chatInfoUnderstoodDefaultValue = false;
   static const bool _sendingInProgressDefaultValue = false;
   
   _$InitialSetupDataImpl({
@@ -95,6 +99,7 @@ class _$InitialSetupDataImpl implements _InitialSetupData {
     this.searchAgeRangeMax,
     this.profileLocation,
     this.profileAttributes = _profileAttributesDefaultValue,
+    this.chatInfoUnderstood = _chatInfoUnderstoodDefaultValue,
     this.sendingInProgress = _sendingInProgressDefaultValue,
   });
 
@@ -125,11 +130,13 @@ class _$InitialSetupDataImpl implements _InitialSetupData {
   @override
   final ProfileAttributesState profileAttributes;
   @override
+  final bool chatInfoUnderstood;
+  @override
   final bool sendingInProgress;
 
   @override
   String toString() {
-    return 'InitialSetupData(email: $email, isAdult: $isAdult, profileName: $profileName, profileAge: $profileAge, securitySelfie: $securitySelfie, profileImages: $profileImages, gender: $gender, genderSearchSetting: $genderSearchSetting, searchAgeRangeInitDone: $searchAgeRangeInitDone, searchAgeRangeMin: $searchAgeRangeMin, searchAgeRangeMax: $searchAgeRangeMax, profileLocation: $profileLocation, profileAttributes: $profileAttributes, sendingInProgress: $sendingInProgress)';
+    return 'InitialSetupData(email: $email, isAdult: $isAdult, profileName: $profileName, profileAge: $profileAge, securitySelfie: $securitySelfie, profileImages: $profileImages, gender: $gender, genderSearchSetting: $genderSearchSetting, searchAgeRangeInitDone: $searchAgeRangeInitDone, searchAgeRangeMin: $searchAgeRangeMin, searchAgeRangeMax: $searchAgeRangeMax, profileLocation: $profileLocation, profileAttributes: $profileAttributes, chatInfoUnderstood: $chatInfoUnderstood, sendingInProgress: $sendingInProgress)';
   }
 
   @override
@@ -163,6 +170,8 @@ class _$InitialSetupDataImpl implements _InitialSetupData {
           other.profileLocation == profileLocation) &&
         (identical(other.profileAttributes, profileAttributes) ||
           other.profileAttributes == profileAttributes) &&
+        (identical(other.chatInfoUnderstood, chatInfoUnderstood) ||
+          other.chatInfoUnderstood == chatInfoUnderstood) &&
         (identical(other.sendingInProgress, sendingInProgress) ||
           other.sendingInProgress == sendingInProgress)
     );
@@ -184,6 +193,7 @@ class _$InitialSetupDataImpl implements _InitialSetupData {
     searchAgeRangeMax,
     profileLocation,
     profileAttributes,
+    chatInfoUnderstood,
     sendingInProgress,
   );
 
@@ -202,6 +212,7 @@ class _$InitialSetupDataImpl implements _InitialSetupData {
     Object? searchAgeRangeMax = _detectDefaultValueInCopyWith,
     Object? profileLocation = _detectDefaultValueInCopyWith,
     Object? profileAttributes,
+    Object? chatInfoUnderstood,
     Object? sendingInProgress,
   }) => _$InitialSetupDataImpl(
     email: (email == _detectDefaultValueInCopyWith ? this.email : email) as String?,
@@ -217,6 +228,7 @@ class _$InitialSetupDataImpl implements _InitialSetupData {
     searchAgeRangeMax: (searchAgeRangeMax == _detectDefaultValueInCopyWith ? this.searchAgeRangeMax : searchAgeRangeMax) as int?,
     profileLocation: (profileLocation == _detectDefaultValueInCopyWith ? this.profileLocation : profileLocation) as LatLng?,
     profileAttributes: (profileAttributes ?? this.profileAttributes) as ProfileAttributesState,
+    chatInfoUnderstood: (chatInfoUnderstood ?? this.chatInfoUnderstood) as bool,
     sendingInProgress: (sendingInProgress ?? this.sendingInProgress) as bool,
   );
 }

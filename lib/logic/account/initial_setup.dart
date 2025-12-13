@@ -93,6 +93,11 @@ class SetLocation extends InitialSetupEvent {
   SetLocation(this.location);
 }
 
+class SetChatInfoUnderstood extends InitialSetupEvent {
+  final bool understood;
+  SetChatInfoUnderstood(this.understood);
+}
+
 class UpdateAttributeValue extends InitialSetupEvent {
   final ProfileAttributeValueUpdate update;
   UpdateAttributeValue(this.update);
@@ -180,6 +185,9 @@ class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData> with Ac
     });
     on<SetLocation>((data, emit) async {
       emit(state.copyWith(profileLocation: data.location));
+    });
+    on<SetChatInfoUnderstood>((data, emit) async {
+      emit(state.copyWith(chatInfoUnderstood: data.understood));
     });
     on<UpdateAttributeValue>((data, emit) async {
       emit(state.copyWith(profileAttributes: state.profileAttributes.addOrReplace(data.update)));

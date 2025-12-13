@@ -1059,6 +1059,22 @@
   "@initial_setup_screen_age_confirmation_title": {
     "description": "Title for age confirmation screen"
   },
+  "initial_setup_screen_chat_info_checkbox": "I understand that chat backups are important",
+  "@initial_setup_screen_chat_info_checkbox": {
+    "description": "Checkbox text for understanding chat info"
+  },
+  "initial_setup_screen_chat_info_item1": "If app is removed your chats will be gone unless you have created a chat backup",
+  "@initial_setup_screen_chat_info_item1": {
+    "description": "First info item about chat backups"
+  },
+  "initial_setup_screen_chat_info_item2": "If app is removed you can't view received messages unless you have created a chat backup",
+  "@initial_setup_screen_chat_info_item2": {
+    "description": "Second info item about chat backups"
+  },
+  "initial_setup_screen_chat_info_title": "Chat info",
+  "@initial_setup_screen_chat_info_title": {
+    "description": "Title for initial setup chat info screen"
+  },
   "initial_setup_screen_email_hint_text": "Insert email address",
   "@initial_setup_screen_email_hint_text": {
     "description": "Hint text for inserting email address to text field"

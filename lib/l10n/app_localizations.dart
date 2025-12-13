@@ -1551,6 +1551,30 @@ abstract class AppLocalizations {
   /// **'Age confirmation'**
   String get initial_setup_screen_age_confirmation_title;
 
+  /// Checkbox text for understanding chat info
+  ///
+  /// In en, this message translates to:
+  /// **'I understand that chat backups are important'**
+  String get initial_setup_screen_chat_info_checkbox;
+
+  /// First info item about chat backups
+  ///
+  /// In en, this message translates to:
+  /// **'If app is removed your chats will be gone unless you have created a chat backup'**
+  String get initial_setup_screen_chat_info_item1;
+
+  /// Second info item about chat backups
+  ///
+  /// In en, this message translates to:
+  /// **'If app is removed you can\'t view received messages unless you have created a chat backup'**
+  String get initial_setup_screen_chat_info_item2;
+
+  /// Title for initial setup chat info screen
+  ///
+  /// In en, this message translates to:
+  /// **'Chat info'**
+  String get initial_setup_screen_chat_info_title;
+
   /// Hint text for inserting email address to text field
   ///
   /// In en, this message translates to:
