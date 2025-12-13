@@ -80,7 +80,7 @@ class _ReceiveChatBackupScreenState extends State<ReceiveChatBackupScreen> {
           ],
           const SizedBox(height: 24),
           if (state.state is WaitingForSource && state.pairingCode != null)
-            _buildPairingCodeSection(context, state),
+            _buildPairingCodeSection(context, state.pairingCode!),
           if (state.state is Transferring) _buildProgressSection(context, state),
           if (state.state is Importing) _buildImportingSection(context),
           if (state.state is ErrorState) ...[_buildRetryButton(context)],
@@ -138,10 +138,7 @@ class _ReceiveChatBackupScreenState extends State<ReceiveChatBackupScreen> {
     return Text(text, style: Theme.of(context).textTheme.titleLarge, textAlign: TextAlign.center);
   }
 
-  Widget _buildPairingCodeSection(BuildContext context, ReceiveBackupData state) {
-    final pairingCode = state.pairingCode!;
-    final qrData = state.qrCodeData;
-
+  Widget _buildPairingCodeSection(BuildContext context, String pairingCode) {
     return Column(
       children: [
         Text(
@@ -150,12 +147,13 @@ class _ReceiveChatBackupScreenState extends State<ReceiveChatBackupScreen> {
           textAlign: TextAlign.center,
         ),
         const SizedBox(height: 12),
-        if (_showQrCode && qrData != null) ...[
+        if (_showQrCode) ...[
           Container(
             decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(8)),
-            child: QrImageView.withQr(
-              qr: QrCode.fromUint8List(data: qrData, errorCorrectLevel: QrErrorCorrectLevel.L),
+            child: QrImageView(
+              data: pairingCode,
               size: 200,
+              errorCorrectionLevel: QrErrorCorrectLevel.L,
             ),
           ),
         ] else ...[

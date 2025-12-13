@@ -23,14 +23,12 @@ final _privateConstructorErrorReceiveBackupData = UnsupportedError(
 mixin _$ReceiveBackupData {
   ReceiveBackupConnectionState get state => throw _privateConstructorErrorReceiveBackupData;
   String? get pairingCode => throw _privateConstructorErrorReceiveBackupData;
-  Uint8List? get qrCodeData => throw _privateConstructorErrorReceiveBackupData;
   int? get totalBytes => throw _privateConstructorErrorReceiveBackupData;
   int get transferredBytes => throw _privateConstructorErrorReceiveBackupData;
 
   ReceiveBackupData copyWith({
     ReceiveBackupConnectionState? state,
     String? pairingCode,
-    Uint8List? qrCodeData,
     int? totalBytes,
     int? transferredBytes,
   }) => throw _privateConstructorErrorReceiveBackupData;
@@ -41,7 +39,6 @@ abstract class _ReceiveBackupData implements ReceiveBackupData {
   factory _ReceiveBackupData({
     ReceiveBackupConnectionState state,
     String? pairingCode,
-    Uint8List? qrCodeData,
     int? totalBytes,
     int transferredBytes,
   }) = _$ReceiveBackupDataImpl;
@@ -55,7 +52,6 @@ class _$ReceiveBackupDataImpl with DiagnosticableTreeMixin implements _ReceiveBa
   _$ReceiveBackupDataImpl({
     this.state = _stateDefaultValue,
     this.pairingCode,
-    this.qrCodeData,
     this.totalBytes,
     this.transferredBytes = _transferredBytesDefaultValue,
   });
@@ -65,15 +61,13 @@ class _$ReceiveBackupDataImpl with DiagnosticableTreeMixin implements _ReceiveBa
   @override
   final String? pairingCode;
   @override
-  final Uint8List? qrCodeData;
-  @override
   final int? totalBytes;
   @override
   final int transferredBytes;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ReceiveBackupData(state: $state, pairingCode: $pairingCode, qrCodeData: $qrCodeData, totalBytes: $totalBytes, transferredBytes: $transferredBytes)';
+    return 'ReceiveBackupData(state: $state, pairingCode: $pairingCode, totalBytes: $totalBytes, transferredBytes: $transferredBytes)';
   }
 
   @override
@@ -83,7 +77,6 @@ class _$ReceiveBackupDataImpl with DiagnosticableTreeMixin implements _ReceiveBa
       ..add(DiagnosticsProperty('type', 'ReceiveBackupData'))
       ..add(DiagnosticsProperty('state', state))
       ..add(DiagnosticsProperty('pairingCode', pairingCode))
-      ..add(DiagnosticsProperty('qrCodeData', qrCodeData))
       ..add(DiagnosticsProperty('totalBytes', totalBytes))
       ..add(DiagnosticsProperty('transferredBytes', transferredBytes));
   }
@@ -97,8 +90,6 @@ class _$ReceiveBackupDataImpl with DiagnosticableTreeMixin implements _ReceiveBa
           other.state == state) &&
         (identical(other.pairingCode, pairingCode) ||
           other.pairingCode == pairingCode) &&
-        (identical(other.qrCodeData, qrCodeData) ||
-          other.qrCodeData == qrCodeData) &&
         (identical(other.totalBytes, totalBytes) ||
           other.totalBytes == totalBytes) &&
         (identical(other.transferredBytes, transferredBytes) ||
@@ -111,7 +102,6 @@ class _$ReceiveBackupDataImpl with DiagnosticableTreeMixin implements _ReceiveBa
     runtimeType,
     state,
     pairingCode,
-    qrCodeData,
     totalBytes,
     transferredBytes,
   );
@@ -120,13 +110,11 @@ class _$ReceiveBackupDataImpl with DiagnosticableTreeMixin implements _ReceiveBa
   ReceiveBackupData copyWith({
     Object? state,
     Object? pairingCode = _detectDefaultValueInCopyWith,
-    Object? qrCodeData = _detectDefaultValueInCopyWith,
     Object? totalBytes = _detectDefaultValueInCopyWith,
     Object? transferredBytes,
   }) => _$ReceiveBackupDataImpl(
     state: (state ?? this.state) as ReceiveBackupConnectionState,
     pairingCode: (pairingCode == _detectDefaultValueInCopyWith ? this.pairingCode : pairingCode) as String?,
-    qrCodeData: (qrCodeData == _detectDefaultValueInCopyWith ? this.qrCodeData : qrCodeData) as Uint8List?,
     totalBytes: (totalBytes == _detectDefaultValueInCopyWith ? this.totalBytes : totalBytes) as int?,
     transferredBytes: (transferredBytes ?? this.transferredBytes) as int,
   );

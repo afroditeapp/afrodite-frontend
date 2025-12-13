@@ -165,18 +165,7 @@ class ReceiveChatBackupBloc extends Bloc<ReceiveChatBackupEvent, ReceiveBackupDa
     // Add version identifier ("1") as prefix
     final pairingCodeWithVersion = "1$pairingCodeSha256";
 
-    // Create binary QR code data: version (1 byte) + SHA256 hash (32 bytes)
-    final qrData = Uint8List(33);
-    qrData[0] = 1; // version
-    qrData.setRange(1, 33, hash.bytes);
-
-    emit(
-      state.copyWith(
-        state: const Connecting(),
-        pairingCode: pairingCodeWithVersion,
-        qrCodeData: qrData,
-      ),
-    );
+    emit(state.copyWith(state: const Connecting(), pairingCode: pairingCodeWithVersion));
 
     // Query access token from database
     final accessTokenResult = await accountDb.accountStreamSingle(

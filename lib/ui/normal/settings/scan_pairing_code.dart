@@ -1,5 +1,3 @@
-import 'dart:convert';
-import 'dart:typed_data';
 import 'package:app/localizations.dart';
 import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
@@ -40,26 +38,18 @@ class _ScanPairingCodeScreenState extends State<ScanPairingCodeScreen> {
     super.dispose();
   }
 
-  String? _parsePairingCode(Uint8List rawBytes) {
+  String? _parsePairingCode(String? rawValue) {
     try {
-      // QR code format: version (1 byte) + SHA256 hash (32 bytes) = 33 bytes total
-      if (rawBytes.length != 33) {
+      if (rawValue == null || rawValue.isEmpty) {
         return null;
       }
 
-      // Check version
-      final version = rawBytes[0];
-      if (version != 1) {
+      // Check if it starts with version "1"
+      if (!rawValue.startsWith('1')) {
         return null;
       }
 
-      // Extract hash bytes (bytes 1-32)
-      final hashBytes = rawBytes.sublist(1, 33);
-
-      // Convert to base64url string
-      final base64UrlString = base64UrlEncode(hashBytes);
-
-      return "1$base64UrlString";
+      return rawValue;
     } catch (e) {
       return null;
     }
@@ -71,16 +61,14 @@ class _ScanPairingCodeScreenState extends State<ScanPairingCodeScreen> {
     final List<Barcode> barcodes = capture.barcodes;
 
     for (final barcode in barcodes) {
-      final rawBytes = barcode.rawBytes;
-      if (rawBytes != null) {
-        final pairingCode = _parsePairingCode(rawBytes);
-        if (pairingCode != null) {
-          _qrCodeDetected = true;
+      final rawValue = barcode.rawValue;
+      final pairingCode = _parsePairingCode(rawValue);
+      if (pairingCode != null) {
+        _qrCodeDetected = true;
 
-          // Return the pairing code to the previous screen
-          widget.closer.close(context, pairingCode);
-          return;
-        }
+        // Return the pairing code to the previous screen
+        widget.closer.close(context, pairingCode);
+        return;
       }
     }
   }
