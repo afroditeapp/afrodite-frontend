@@ -51,8 +51,6 @@ class SendChatBackupBloc extends Bloc<SendChatBackupEvent, SendBackupData> with 
     on<_WebSocketEvent>((event, emit) async {
       switch (event.event) {
         case TargetDataReceived(:final targetData):
-          // Target data received from server, start backup creation
-          _log.info("Received target data: $targetData");
           await _createAndSendBackup(emit, targetData);
         case WebSocketConnectionClosed(:final closeCode):
           // Close code 1000 means normal closure (transfer completed successfully)
