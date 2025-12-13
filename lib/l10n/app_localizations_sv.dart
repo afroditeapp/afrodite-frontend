@@ -231,44 +231,44 @@ class AppLocalizationsSv extends AppLocalizations {
       'Unsupported pairing code version';
 
   @override
-  String get chat_backup_transfer_budget_exceeded =>
-      'Yearly chat backup transfer budget exceeded. Please create a backup and transfer it manually.';
+  String get chat_backup_screen_create_backup => 'Create backup';
 
   @override
-  String get chat_data_screen_create_backup => 'Create backup';
+  String get chat_backup_screen_create_backup_question => 'Create chat backup?';
 
   @override
-  String get chat_data_screen_create_backup_question => 'Create chat backup?';
-
-  @override
-  String get chat_data_screen_create_backup_question_details =>
+  String get chat_backup_screen_create_backup_question_details =>
       'Backup includes current messages and encryption key.';
 
   @override
-  String get chat_data_screen_import_backup => 'Import backup';
+  String get chat_backup_screen_import_backup => 'Import backup';
 
   @override
-  String get chat_data_screen_import_backup_question => 'Import chat backup?';
+  String get chat_backup_screen_import_backup_question => 'Import chat backup?';
 
   @override
-  String chat_data_screen_import_backup_question_details(String p0) {
+  String chat_backup_screen_import_backup_question_details(String p0) {
     return 'File: $p0\n\nCurrent and backup messages will be merged. Current encryption key will be replaced if the one included in the backup is newer.';
   }
 
   @override
-  String get chat_data_screen_import_error_invalid_backup_file =>
+  String get chat_backup_screen_import_error_invalid_backup_file =>
       'Invalid backup file';
 
   @override
-  String get chat_data_screen_import_error_unsupported_version =>
+  String get chat_backup_screen_import_error_unsupported_version =>
       'Unsupported backup version';
 
   @override
-  String get chat_data_screen_import_error_wrong_account =>
+  String get chat_backup_screen_import_error_wrong_account =>
       'Backup created by different account';
 
   @override
-  String get chat_data_screen_title => 'Chat data';
+  String get chat_backup_screen_title => 'Chat backup';
+
+  @override
+  String get chat_backup_transfer_budget_exceeded =>
+      'Yearly chat backup transfer budget exceeded. Please create a backup and transfer it manually.';
 
   @override
   String get chat_list_screen_no_chats_found => 'No chats found';

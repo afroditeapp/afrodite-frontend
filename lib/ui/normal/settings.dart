@@ -15,7 +15,7 @@ import 'package:app/logic/settings/profile_visibility.dart';
 import 'package:app/logic/settings/search_settings.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui/normal/settings/account_settings.dart';
-import 'package:app/ui/normal/settings/chat/chat_data.dart';
+import 'package:app/ui/normal/settings/chat/chat_backup.dart';
 import 'package:app/ui/normal/settings/data_export.dart';
 import 'package:app/ui/normal/settings/media/content_management.dart';
 import 'package:app/ui/normal/settings/email_notification_settings.dart';
@@ -188,8 +188,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
           openContentManagementScreen(context);
         },
       ).toListTile(),
-      Setting.createSetting(Icons.chat, context.strings.chat_data_screen_title, () {
-        openChatDataScreen(context);
+      Setting.createSetting(Icons.chat, context.strings.chat_backup_screen_title, () {
+        openChatBackupScreen(context);
       }).toListTile(),
       Setting.createSetting(
         Icons.cloud_download,

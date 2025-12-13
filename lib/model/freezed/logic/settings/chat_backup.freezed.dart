@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'chat_data.dart';
+part of 'chat_backup.dart';
 
 // **************************************************************************
 // Generated with Icegen
@@ -16,38 +16,38 @@ class _DetectDefaultValueInCopyWith {
 const _detectDefaultValueInCopyWith = _DetectDefaultValueInCopyWith();
 
 /// @nodoc
-final _privateConstructorErrorChatDataData = UnsupportedError(
-    'Private constructor ChatDataData._() was called. Please call factory constructor instead.');
+final _privateConstructorErrorChatBackupData = UnsupportedError(
+    'Private constructor ChatBackupData._() was called. Please call factory constructor instead.');
 
 /// @nodoc
-mixin _$ChatDataData {
-  bool get isLoading => throw _privateConstructorErrorChatDataData;
-  bool get isError => throw _privateConstructorErrorChatDataData;
-  ChatDataBackup? get backup => throw _privateConstructorErrorChatDataData;
+mixin _$ChatBackupData {
+  bool get isLoading => throw _privateConstructorErrorChatBackupData;
+  bool get isError => throw _privateConstructorErrorChatBackupData;
+  ChatBackupInfo? get backup => throw _privateConstructorErrorChatBackupData;
 
-  ChatDataData copyWith({
+  ChatBackupData copyWith({
     bool? isLoading,
     bool? isError,
-    ChatDataBackup? backup,
-  }) => throw _privateConstructorErrorChatDataData;
+    ChatBackupInfo? backup,
+  }) => throw _privateConstructorErrorChatBackupData;
 }
 
 /// @nodoc
-abstract class _ChatDataData extends ChatDataData {
-  factory _ChatDataData({
+abstract class _ChatBackupData extends ChatBackupData {
+  factory _ChatBackupData({
     bool isLoading,
     bool isError,
-    ChatDataBackup? backup,
-  }) = _$ChatDataDataImpl;
-  _ChatDataData._() : super._();
+    ChatBackupInfo? backup,
+  }) = _$ChatBackupDataImpl;
+  _ChatBackupData._() : super._();
 }
 
 /// @nodoc
-class _$ChatDataDataImpl extends _ChatDataData with DiagnosticableTreeMixin {
+class _$ChatBackupDataImpl extends _ChatBackupData with DiagnosticableTreeMixin {
   static const bool _isLoadingDefaultValue = false;
   static const bool _isErrorDefaultValue = false;
   
-  _$ChatDataDataImpl({
+  _$ChatBackupDataImpl({
     this.isLoading = _isLoadingDefaultValue,
     this.isError = _isErrorDefaultValue,
     this.backup,
@@ -58,18 +58,18 @@ class _$ChatDataDataImpl extends _ChatDataData with DiagnosticableTreeMixin {
   @override
   final bool isError;
   @override
-  final ChatDataBackup? backup;
+  final ChatBackupInfo? backup;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ChatDataData(isLoading: $isLoading, isError: $isError, backup: $backup)';
+    return 'ChatBackupData(isLoading: $isLoading, isError: $isError, backup: $backup)';
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
-      ..add(DiagnosticsProperty('type', 'ChatDataData'))
+      ..add(DiagnosticsProperty('type', 'ChatBackupData'))
       ..add(DiagnosticsProperty('isLoading', isLoading))
       ..add(DiagnosticsProperty('isError', isError))
       ..add(DiagnosticsProperty('backup', backup));
@@ -79,7 +79,7 @@ class _$ChatDataDataImpl extends _ChatDataData with DiagnosticableTreeMixin {
   bool operator ==(Object other) {
     return identical(this, other) ||
       (other.runtimeType == runtimeType &&
-        other is _$ChatDataDataImpl &&
+        other is _$ChatBackupDataImpl &&
         (identical(other.isLoading, isLoading) ||
           other.isLoading == isLoading) &&
         (identical(other.isError, isError) ||
@@ -98,13 +98,13 @@ class _$ChatDataDataImpl extends _ChatDataData with DiagnosticableTreeMixin {
   );
 
   @override
-  ChatDataData copyWith({
+  ChatBackupData copyWith({
     Object? isLoading,
     Object? isError,
     Object? backup = _detectDefaultValueInCopyWith,
-  }) => _$ChatDataDataImpl(
+  }) => _$ChatBackupDataImpl(
     isLoading: (isLoading ?? this.isLoading) as bool,
     isError: (isError ?? this.isError) as bool,
-    backup: (backup == _detectDefaultValueInCopyWith ? this.backup : backup) as ChatDataBackup?,
+    backup: (backup == _detectDefaultValueInCopyWith ? this.backup : backup) as ChatBackupInfo?,
   );
 }

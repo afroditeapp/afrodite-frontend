@@ -1,8 +1,8 @@
 import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/logic/chat/receive_chat_backup.dart';
-import 'package:app/logic/settings/chat_data.dart';
+import 'package:app/logic/settings/chat_backup.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
-import 'package:app/model/freezed/logic/settings/chat_data.dart';
+import 'package:app/model/freezed/logic/settings/chat_backup.dart';
 import 'package:app/ui/normal/settings/chat/receive_chat_backup.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/padding.dart';
@@ -11,32 +11,32 @@ import 'package:app/localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:file_selector/file_selector.dart';
 
-void openChatDataScreen(BuildContext context) {
-  MyNavigator.push(context, ChatDataPage());
+void openChatBackupScreen(BuildContext context) {
+  MyNavigator.push(context, ChatBackupPage());
 }
 
-class ChatDataPage extends MyScreenPage<()> with SimpleUrlParser<ChatDataPage> {
-  ChatDataPage() : super(builder: (_) => ChatDataScreen());
+class ChatBackupPage extends MyScreenPage<()> with SimpleUrlParser<ChatBackupPage> {
+  ChatBackupPage() : super(builder: (_) => ChatBackupScreen());
 
   @override
-  ChatDataPage create() => ChatDataPage();
+  ChatBackupPage create() => ChatBackupPage();
 }
 
-class ChatDataScreen extends StatefulWidget {
-  const ChatDataScreen({super.key});
+class ChatBackupScreen extends StatefulWidget {
+  const ChatBackupScreen({super.key});
 
   @override
-  State<ChatDataScreen> createState() => _ChatDataScreenState();
+  State<ChatBackupScreen> createState() => _ChatBackupScreenState();
 }
 
-class _ChatDataScreenState extends State<ChatDataScreen> {
+class _ChatBackupScreenState extends State<ChatBackupScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(context.strings.chat_data_screen_title),
+        title: Text(context.strings.chat_backup_screen_title),
         actions: [
-          BlocBuilder<ChatDataBloc, ChatDataData>(
+          BlocBuilder<ChatBackupBloc, ChatBackupData>(
             builder: (context, state) {
               if (state.backup == null) {
                 return const SizedBox.shrink();
@@ -44,7 +44,7 @@ class _ChatDataScreenState extends State<ChatDataScreen> {
                 return IconButton(
                   icon: Icon(Icons.delete),
                   onPressed: () {
-                    context.read<ChatDataBloc>().add(DeleteCurrentChatBackup());
+                    context.read<ChatBackupBloc>().add(DeleteCurrentChatBackup());
                   },
                 );
               }
@@ -57,7 +57,7 @@ class _ChatDataScreenState extends State<ChatDataScreen> {
   }
 
   Widget screenContent(BuildContext context) {
-    return BlocBuilder<ChatDataBloc, ChatDataData>(
+    return BlocBuilder<ChatBackupBloc, ChatBackupData>(
       builder: (context, state) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -92,7 +92,7 @@ class _ChatDataScreenState extends State<ChatDataScreen> {
     );
   }
 
-  Widget statusText(BuildContext context, ChatDataData state) {
+  Widget statusText(BuildContext context, ChatBackupData state) {
     final backup = state.backup;
     if (state.isError) {
       return Text(context.strings.generic_error);
@@ -103,38 +103,38 @@ class _ChatDataScreenState extends State<ChatDataScreen> {
     }
   }
 
-  Widget createBackupButton(BuildContext context, ChatDataData state) {
+  Widget createBackupButton(BuildContext context, ChatBackupData state) {
     return ElevatedButton(
       onPressed: state.backup == null
           ? () async {
               final r = await showConfirmDialog(
                 context,
-                context.strings.chat_data_screen_create_backup_question,
-                details: context.strings.chat_data_screen_create_backup_question_details,
+                context.strings.chat_backup_screen_create_backup_question,
+                details: context.strings.chat_backup_screen_create_backup_question_details,
                 yesNoActions: true,
               );
               if (r == true && context.mounted) {
-                context.read<ChatDataBloc>().add(CreateChatBackup());
+                context.read<ChatBackupBloc>().add(CreateChatBackup());
               }
             }
           : null,
-      child: Text(context.strings.chat_data_screen_create_backup),
+      child: Text(context.strings.chat_backup_screen_create_backup),
     );
   }
 
-  Widget saveButton(BuildContext context, ChatDataData state) {
+  Widget saveButton(BuildContext context, ChatBackupData state) {
     final backup = state.backup;
     return ElevatedButton(
       onPressed: backup != null && !state.isLoading
           ? () async {
-              context.read<ChatDataBloc>().add(SaveChatBackup(backup));
+              context.read<ChatBackupBloc>().add(SaveChatBackup(backup));
             }
           : null,
       child: Text(context.strings.generic_save),
     );
   }
 
-  Widget importButton(BuildContext context, ChatDataData state) {
+  Widget importButton(BuildContext context, ChatBackupData state) {
     return ElevatedButton(
       onPressed: !state.isLoading
           ? () async {
@@ -145,27 +145,27 @@ class _ChatDataScreenState extends State<ChatDataScreen> {
               final XFile? file = await openFile(acceptedTypeGroups: <XTypeGroup>[typeGroup]);
               if (file != null && context.mounted) {
                 final fileName = file.name;
-                final details = context.strings.chat_data_screen_import_backup_question_details(
+                final details = context.strings.chat_backup_screen_import_backup_question_details(
                   fileName,
                 );
                 final confirm = await showConfirmDialog(
                   context,
-                  context.strings.chat_data_screen_import_backup_question,
+                  context.strings.chat_backup_screen_import_backup_question,
                   details: details,
                   yesNoActions: true,
                   scrollable: true,
                 );
                 if (confirm == true && context.mounted) {
-                  context.read<ChatDataBloc>().add(ImportChatBackup(file.path));
+                  context.read<ChatBackupBloc>().add(ImportChatBackup(file.path));
                 }
               }
             }
           : null,
-      child: Text(context.strings.chat_data_screen_import_backup),
+      child: Text(context.strings.chat_backup_screen_import_backup),
     );
   }
 
-  Widget receiveBackupButton(BuildContext context, ChatDataData state) {
+  Widget receiveBackupButton(BuildContext context, ChatBackupData state) {
     // Bloc might not be available as this screen can be opened
     // when account is banned or pending deletion.
     if (context.read<ReceiveChatBackupBloc?>() == null) {

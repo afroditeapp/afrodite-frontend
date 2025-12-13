@@ -271,32 +271,28 @@
   "@chat_backup_pairing_code_unsupported": {
     "description": "Error message when pairing code version is not supported"
   },
-  "chat_backup_transfer_budget_exceeded": "Yearly chat backup transfer budget exceeded. Please create a backup and transfer it manually.",
-  "@chat_backup_transfer_budget_exceeded": {
-    "description": "Error message when transfer budget is exceeded"
-  },
-  "chat_data_screen_create_backup": "Create backup",
-  "@chat_data_screen_create_backup": {
+  "chat_backup_screen_create_backup": "Create backup",
+  "@chat_backup_screen_create_backup": {
     "description": "Button text for creating chat backup"
   },
-  "chat_data_screen_create_backup_question": "Create chat backup?",
-  "@chat_data_screen_create_backup_question": {
+  "chat_backup_screen_create_backup_question": "Create chat backup?",
+  "@chat_backup_screen_create_backup_question": {
     "description": "Confirmation dialog for creating chat backup"
   },
-  "chat_data_screen_create_backup_question_details": "Backup includes current messages and encryption key.",
-  "@chat_data_screen_create_backup_question_details": {
+  "chat_backup_screen_create_backup_question_details": "Backup includes current messages and encryption key.",
+  "@chat_backup_screen_create_backup_question_details": {
     "description": "Details for create backup confirmation dialog"
   },
-  "chat_data_screen_import_backup": "Import backup",
-  "@chat_data_screen_import_backup": {
+  "chat_backup_screen_import_backup": "Import backup",
+  "@chat_backup_screen_import_backup": {
     "description": "Button text for importing chat backup"
   },
-  "chat_data_screen_import_backup_question": "Import chat backup?",
-  "@chat_data_screen_import_backup_question": {
+  "chat_backup_screen_import_backup_question": "Import chat backup?",
+  "@chat_backup_screen_import_backup_question": {
     "description": "Confirmation dialog for importing chat backup"
   },
-  "chat_data_screen_import_backup_question_details": "File: {p0}\n\nCurrent and backup messages will be merged. Current encryption key will be replaced if the one included in the backup is newer.",
-  "@chat_data_screen_import_backup_question_details": {
+  "chat_backup_screen_import_backup_question_details": "File: {p0}\n\nCurrent and backup messages will be merged. Current encryption key will be replaced if the one included in the backup is newer.",
+  "@chat_backup_screen_import_backup_question_details": {
     "description": "Details for import backup confirmation dialog",
     "placeholders": {
       "p0": {
@@ -304,21 +300,25 @@
       }
     }
   },
-  "chat_data_screen_import_error_invalid_backup_file": "Invalid backup file",
-  "@chat_data_screen_import_error_invalid_backup_file": {
+  "chat_backup_screen_import_error_invalid_backup_file": "Invalid backup file",
+  "@chat_backup_screen_import_error_invalid_backup_file": {
     "description": "Error message when backup file is invalid"
   },
-  "chat_data_screen_import_error_unsupported_version": "Unsupported backup version",
-  "@chat_data_screen_import_error_unsupported_version": {
+  "chat_backup_screen_import_error_unsupported_version": "Unsupported backup version",
+  "@chat_backup_screen_import_error_unsupported_version": {
     "description": "Error message when backup file version is unsupported"
   },
-  "chat_data_screen_import_error_wrong_account": "Backup created by different account",
-  "@chat_data_screen_import_error_wrong_account": {
+  "chat_backup_screen_import_error_wrong_account": "Backup created by different account",
+  "@chat_backup_screen_import_error_wrong_account": {
     "description": "Error message when backup was created by different account"
   },
-  "chat_data_screen_title": "Chat data",
-  "@chat_data_screen_title": {
-    "description": "Title for chat data backup/restore screen"
+  "chat_backup_screen_title": "Chat backup",
+  "@chat_backup_screen_title": {
+    "description": "Title for chat backup screen"
+  },
+  "chat_backup_transfer_budget_exceeded": "Yearly chat backup transfer budget exceeded. Please create a backup and transfer it manually.",
+  "@chat_backup_transfer_budget_exceeded": {
+    "description": "Error message when transfer budget is exceeded"
   },
   "chat_list_screen_no_chats_found": "No chats found",
   "@chat_list_screen_no_chats_found": {

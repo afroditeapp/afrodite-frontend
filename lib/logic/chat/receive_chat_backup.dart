@@ -125,11 +125,11 @@ class ReceiveChatBackupBloc extends Bloc<ReceiveChatBackupEvent, ReceiveBackupDa
           String errorMessage;
           switch (e) {
             case InvalidBackupFile():
-              errorMessage = R.strings.chat_data_screen_import_error_invalid_backup_file;
+              errorMessage = R.strings.chat_backup_screen_import_error_invalid_backup_file;
             case UnsupportedBackupVersion():
-              errorMessage = R.strings.chat_data_screen_import_error_unsupported_version;
+              errorMessage = R.strings.chat_backup_screen_import_error_unsupported_version;
             case WrongAccount():
-              errorMessage = R.strings.chat_data_screen_import_error_wrong_account;
+              errorMessage = R.strings.chat_backup_screen_import_error_wrong_account;
             case OtherImportError():
               errorMessage = R.strings.generic_error;
           }

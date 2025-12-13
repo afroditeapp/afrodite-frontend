@@ -2,7 +2,7 @@ import "dart:io";
 import "package:app/data/chat/message_manager.dart";
 import "package:app/data/chat_repository.dart";
 import "package:app/data/utils/repository_instances.dart";
-import "package:app/model/freezed/logic/settings/chat_data.dart";
+import "package:app/model/freezed/logic/settings/chat_backup.dart";
 import "package:app/utils/result.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:flutter_file_saver/flutter_file_saver.dart";
@@ -11,29 +11,29 @@ import "package:app/ui_utils/snack_bar.dart";
 import "package:app/utils.dart";
 import "package:intl/intl.dart";
 
-sealed class ChatDataEvent {}
+sealed class ChatBackupEvent {}
 
-class CreateChatBackup extends ChatDataEvent {}
+class CreateChatBackup extends ChatBackupEvent {}
 
-class DeleteCurrentChatBackup extends ChatDataEvent {}
+class DeleteCurrentChatBackup extends ChatBackupEvent {}
 
-class SaveChatBackup extends ChatDataEvent {
-  final ChatDataBackup data;
+class SaveChatBackup extends ChatBackupEvent {
+  final ChatBackupInfo data;
   SaveChatBackup(this.data);
 }
 
-class ImportChatBackup extends ChatDataEvent {
+class ImportChatBackup extends ChatBackupEvent {
   final String filePath;
   ImportChatBackup(this.filePath);
 }
 
-class ChatDataBloc extends Bloc<ChatDataEvent, ChatDataData> with ActionRunner {
+class ChatBackupBloc extends Bloc<ChatBackupEvent, ChatBackupData> with ActionRunner {
   final ChatRepository chat;
 
-  ChatDataBloc(RepositoryInstances r) : chat = r.chat, super(ChatDataData()) {
+  ChatBackupBloc(RepositoryInstances r) : chat = r.chat, super(ChatBackupData()) {
     on<CreateChatBackup>((data, emit) async {
       await runOnce(() async {
-        emit(ChatDataData(isLoading: true));
+        emit(ChatBackupData(isLoading: true));
 
         try {
           // Create backup using ChatRepository
@@ -51,9 +51,9 @@ class ChatDataBloc extends Bloc<ChatDataEvent, ChatDataData> with ActionRunner {
           // Generate filename with timestamp
           final appName = R.strings.app_name.toLowerCase();
           final timestamp = DateFormat('yyyy-MM-dd_HH-mm').format(DateTime.now());
-          final fileName = "${appName}_chat_data_$timestamp.backup";
+          final fileName = "${appName}_chat_backup_$timestamp.backup";
 
-          emit(state.copyWith(isLoading: false, backup: ChatDataBackup(fileName, bytes)));
+          emit(state.copyWith(isLoading: false, backup: ChatBackupInfo(fileName, bytes)));
         } catch (e) {
           emit(state.copyWith(isError: true, isLoading: false));
         }
@@ -62,7 +62,7 @@ class ChatDataBloc extends Bloc<ChatDataEvent, ChatDataData> with ActionRunner {
 
     on<DeleteCurrentChatBackup>((data, emit) async {
       await runOnce(() async {
-        emit(ChatDataData());
+        emit(ChatBackupData());
       });
     });
 
@@ -75,7 +75,7 @@ class ChatDataBloc extends Bloc<ChatDataEvent, ChatDataData> with ActionRunner {
             fileName: data.data.fileName,
             bytes: data.data.data,
           );
-          emit(ChatDataData());
+          emit(ChatBackupData());
         } catch (_) {
           emit(state.copyWith(isLoading: false));
         }
@@ -93,16 +93,16 @@ class ChatDataBloc extends Bloc<ChatDataEvent, ChatDataData> with ActionRunner {
           switch (result) {
             case Ok():
               showSnackBar(R.strings.generic_action_completed);
-              emit(ChatDataData());
+              emit(ChatBackupData());
             case Err(:final e):
               emit(state.copyWith(isError: true, isLoading: false));
               switch (e) {
                 case InvalidBackupFile():
-                  showSnackBar(R.strings.chat_data_screen_import_error_invalid_backup_file);
+                  showSnackBar(R.strings.chat_backup_screen_import_error_invalid_backup_file);
                 case UnsupportedBackupVersion():
-                  showSnackBar(R.strings.chat_data_screen_import_error_unsupported_version);
+                  showSnackBar(R.strings.chat_backup_screen_import_error_unsupported_version);
                 case WrongAccount():
-                  showSnackBar(R.strings.chat_data_screen_import_error_wrong_account);
+                  showSnackBar(R.strings.chat_backup_screen_import_error_wrong_account);
                 case OtherImportError():
                   showSnackBar(R.strings.generic_error);
               }

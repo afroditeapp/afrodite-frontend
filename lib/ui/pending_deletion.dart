@@ -2,7 +2,7 @@ import "package:app/api/server_connection_manager.dart";
 import "package:app/data/utils/repository_instances.dart";
 import "package:app/localizations.dart";
 import "package:app/model/freezed/logic/main/navigator_state.dart";
-import "package:app/ui/normal/settings/chat/chat_data.dart";
+import "package:app/ui/normal/settings/chat/chat_backup.dart";
 import "package:app/ui/normal/settings/data_export.dart";
 import "package:app/ui_utils/app_bar/common_actions.dart";
 import "package:app/ui_utils/app_bar/menu_actions.dart";
@@ -75,9 +75,9 @@ class _PendingDeletionScreenState extends State<PendingDeletionScreen> {
               },
             ),
             MenuItemButton(
-              child: Text(context.strings.chat_data_screen_title),
+              child: Text(context.strings.chat_backup_screen_title),
               onPressed: () {
-                openChatDataScreen(context);
+                openChatBackupScreen(context);
               },
             ),
             ...commonActionsWhenLoggedInAndAccountIsNotNormallyUsable(context),

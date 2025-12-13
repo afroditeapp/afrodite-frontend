@@ -448,71 +448,71 @@ abstract class AppLocalizations {
   /// **'Unsupported pairing code version'**
   String get chat_backup_pairing_code_unsupported;
 
-  /// Error message when transfer budget is exceeded
-  ///
-  /// In en, this message translates to:
-  /// **'Yearly chat backup transfer budget exceeded. Please create a backup and transfer it manually.'**
-  String get chat_backup_transfer_budget_exceeded;
-
   /// Button text for creating chat backup
   ///
   /// In en, this message translates to:
   /// **'Create backup'**
-  String get chat_data_screen_create_backup;
+  String get chat_backup_screen_create_backup;
 
   /// Confirmation dialog for creating chat backup
   ///
   /// In en, this message translates to:
   /// **'Create chat backup?'**
-  String get chat_data_screen_create_backup_question;
+  String get chat_backup_screen_create_backup_question;
 
   /// Details for create backup confirmation dialog
   ///
   /// In en, this message translates to:
   /// **'Backup includes current messages and encryption key.'**
-  String get chat_data_screen_create_backup_question_details;
+  String get chat_backup_screen_create_backup_question_details;
 
   /// Button text for importing chat backup
   ///
   /// In en, this message translates to:
   /// **'Import backup'**
-  String get chat_data_screen_import_backup;
+  String get chat_backup_screen_import_backup;
 
   /// Confirmation dialog for importing chat backup
   ///
   /// In en, this message translates to:
   /// **'Import chat backup?'**
-  String get chat_data_screen_import_backup_question;
+  String get chat_backup_screen_import_backup_question;
 
   /// Details for import backup confirmation dialog
   ///
   /// In en, this message translates to:
   /// **'File: {p0}\n\nCurrent and backup messages will be merged. Current encryption key will be replaced if the one included in the backup is newer.'**
-  String chat_data_screen_import_backup_question_details(String p0);
+  String chat_backup_screen_import_backup_question_details(String p0);
 
   /// Error message when backup file is invalid
   ///
   /// In en, this message translates to:
   /// **'Invalid backup file'**
-  String get chat_data_screen_import_error_invalid_backup_file;
+  String get chat_backup_screen_import_error_invalid_backup_file;
 
   /// Error message when backup file version is unsupported
   ///
   /// In en, this message translates to:
   /// **'Unsupported backup version'**
-  String get chat_data_screen_import_error_unsupported_version;
+  String get chat_backup_screen_import_error_unsupported_version;
 
   /// Error message when backup was created by different account
   ///
   /// In en, this message translates to:
   /// **'Backup created by different account'**
-  String get chat_data_screen_import_error_wrong_account;
+  String get chat_backup_screen_import_error_wrong_account;
 
-  /// Title for chat data backup/restore screen
+  /// Title for chat backup screen
   ///
   /// In en, this message translates to:
-  /// **'Chat data'**
-  String get chat_data_screen_title;
+  /// **'Chat backup'**
+  String get chat_backup_screen_title;
+
+  /// Error message when transfer budget is exceeded
+  ///
+  /// In en, this message translates to:
+  /// **'Yearly chat backup transfer budget exceeded. Please create a backup and transfer it manually.'**
+  String get chat_backup_transfer_budget_exceeded;
 
   /// Info text displayed when there is no chats
   ///

@@ -525,17 +525,17 @@
     <string name="data_export_screen_title_export_type_admin" description="Title for data export screen when export type is admin">Data export</string>
     <string name="data_export_screen_api_limit_error" description="Snackbar text for API limit error">Try again after 24 hours</string>
 
-    <!-- Chat data -->
-    <string name="chat_data_screen_title" description="Title for chat data backup/restore screen">Chat data</string>
-    <string name="chat_data_screen_create_backup" description="Button text for creating chat backup">Create backup</string>
-    <string name="chat_data_screen_create_backup_question" description="Confirmation dialog for creating chat backup">Create chat backup?</string>
-    <string name="chat_data_screen_create_backup_question_details" description="Details for create backup confirmation dialog">Backup includes current messages and encryption key.</string>
-    <string name="chat_data_screen_import_backup" description="Button text for importing chat backup">Import backup</string>
-    <string name="chat_data_screen_import_backup_question" description="Confirmation dialog for importing chat backup">Import chat backup?</string>
-    <string name="chat_data_screen_import_backup_question_details" description="Details for import backup confirmation dialog">File: %s\n\nCurrent and backup messages will be merged. Current encryption key will be replaced if the one included in the backup is newer.</string>
-    <string name="chat_data_screen_import_error_invalid_backup_file" description="Error message when backup file is invalid">Invalid backup file</string>
-    <string name="chat_data_screen_import_error_unsupported_version" description="Error message when backup file version is unsupported">Unsupported backup version</string>
-    <string name="chat_data_screen_import_error_wrong_account" description="Error message when backup was created by different account">Backup created by different account</string>
+    <!-- Chat backup -->
+    <string name="chat_backup_screen_title" description="Title for chat backup screen">Chat backup</string>
+    <string name="chat_backup_screen_create_backup" description="Button text for creating chat backup">Create backup</string>
+    <string name="chat_backup_screen_create_backup_question" description="Confirmation dialog for creating chat backup">Create chat backup?</string>
+    <string name="chat_backup_screen_create_backup_question_details" description="Details for create backup confirmation dialog">Backup includes current messages and encryption key.</string>
+    <string name="chat_backup_screen_import_backup" description="Button text for importing chat backup">Import backup</string>
+    <string name="chat_backup_screen_import_backup_question" description="Confirmation dialog for importing chat backup">Import chat backup?</string>
+    <string name="chat_backup_screen_import_backup_question_details" description="Details for import backup confirmation dialog">File: %s\n\nCurrent and backup messages will be merged. Current encryption key will be replaced if the one included in the backup is newer.</string>
+    <string name="chat_backup_screen_import_error_invalid_backup_file" description="Error message when backup file is invalid">Invalid backup file</string>
+    <string name="chat_backup_screen_import_error_unsupported_version" description="Error message when backup file version is unsupported">Unsupported backup version</string>
+    <string name="chat_backup_screen_import_error_wrong_account" description="Error message when backup was created by different account">Backup created by different account</string>
 
     <!-- Account settings selfie -->
     <string name="account_settings_screen_title" description="Title for account settings">Account</string>
