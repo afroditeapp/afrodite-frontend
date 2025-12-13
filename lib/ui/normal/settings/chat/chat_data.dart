@@ -3,7 +3,7 @@ import 'package:app/logic/chat/receive_chat_backup.dart';
 import 'package:app/logic/settings/chat_data.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/model/freezed/logic/settings/chat_data.dart';
-import 'package:app/ui/normal/settings/receive_chat_backup.dart';
+import 'package:app/ui/normal/settings/chat/receive_chat_backup.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/padding.dart';
 import 'package:flutter/material.dart';

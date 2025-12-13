@@ -2,7 +2,7 @@ import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/logic/chat/send_chat_backup.dart';
 import 'package:app/model/freezed/logic/chat/send_chat_backup.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
-import 'package:app/ui/normal/settings/scan_pairing_code.dart';
+import 'package:app/ui/normal/settings/chat/scan_pairing_code.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:app/localizations.dart';
