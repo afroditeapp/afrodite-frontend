@@ -2793,6 +2793,18 @@ abstract class AppLocalizations {
   /// **'Report'**
   String get report_screen_title;
 
+  /// Instruction for scanning QR code
+  ///
+  /// In en, this message translates to:
+  /// **'Point your camera at the QR code'**
+  String get scan_pairing_code_instruction;
+
+  /// Title for scan pairing code screen
+  ///
+  /// In en, this message translates to:
+  /// **'Scan QR Code'**
+  String get scan_pairing_code_screen_title;
+
   /// Title for automatic profile search settings category
   ///
   /// In en, this message translates to:
@@ -2901,11 +2913,11 @@ abstract class AppLocalizations {
   /// **'Enter code from receiving device'**
   String get send_chat_backup_pairing_code_hint;
 
-  /// Instruction for entering pairing code
+  /// Button text to scan QR code
   ///
   /// In en, this message translates to:
-  /// **'Enter the pairing code shown on the receiving device'**
-  String get send_chat_backup_pairing_code_instruction;
+  /// **'Scan QR code'**
+  String get send_chat_backup_scan_qr_button;
 
   /// Title for send chat backup screen
   ///

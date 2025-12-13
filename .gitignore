@@ -71,6 +71,9 @@ web/sqlite3.wasm
 web/native_push.js
 web/native_push_sw.js
 
+# Mobile scanner web dependencies
+web/zxing.js
+
 # IDs and keys for services
 lib/config_services.dart
 # iOS development team

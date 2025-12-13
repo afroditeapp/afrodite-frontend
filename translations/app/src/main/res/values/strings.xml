@@ -670,9 +670,11 @@
     <string name="send_chat_backup_transferring" description="Status text when transferring backup">Sending backup…</string>
     <string name="send_chat_backup_success" description="Status text when backup sent successfully">Backup sent successfully</string>
     <string name="send_chat_backup_pairing_code_hint" description="Hint text for pairing code input">Enter code from receiving device</string>
-    <string name="send_chat_backup_pairing_code_instruction" description="Instruction for entering pairing code">Enter the pairing code shown on the receiving device</string>
     <string name="send_chat_backup_start_button" description="Button text to start sending backup">Start transfer</string>
     <string name="send_chat_backup_send_another_button" description="Button text to send another backup">Send another backup</string>
+    <string name="send_chat_backup_scan_qr_button" description="Button text to scan QR code">Scan QR code</string>
+    <string name="scan_pairing_code_screen_title" description="Title for scan pairing code screen">Scan QR Code</string>
+    <string name="scan_pairing_code_instruction" description="Instruction for scanning QR code">Point your camera at the QR code</string>
 
     <!-- Chat backup shared -->
     <string name="chat_backup_connecting" description="Status text when connecting to transfer API">Connecting…</string>

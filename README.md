@@ -168,6 +168,7 @@ Run these once so that required files will be available.
 cd afrodite-frontend
 make remove-and-download-drift-web-dependencies
 make remove-and-download-native-push-web-dependencies
+make remove-and-download-mobile-scanner-web-dependencies
 make build-rust-utils-for-web
 ```
 

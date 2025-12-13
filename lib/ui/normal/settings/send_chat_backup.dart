@@ -2,6 +2,7 @@ import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/logic/chat/send_chat_backup.dart';
 import 'package:app/model/freezed/logic/chat/send_chat_backup.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
+import 'package:app/ui/normal/settings/scan_pairing_code.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:app/localizations.dart';
@@ -126,10 +127,16 @@ class _SendChatBackupScreenState extends State<SendChatBackupScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Text(
-          context.strings.send_chat_backup_pairing_code_instruction,
-          style: Theme.of(context).textTheme.bodyLarge,
-          textAlign: TextAlign.center,
+        ElevatedButton.icon(
+          onPressed: () async {
+            final pairingCode = await openScanPairingCodeScreen(context);
+            if (pairingCode != null) {
+              _pairingCodeController.text = pairingCode;
+              setState(() {});
+            }
+          },
+          icon: const Icon(Icons.qr_code_scanner),
+          label: Text(context.strings.send_chat_backup_scan_qr_button),
         ),
         const SizedBox(height: 24),
         TextField(

@@ -1974,6 +1974,14 @@
   "@report_screen_title": {
     "description": "Title for report screen"
   },
+  "scan_pairing_code_instruction": "Point your camera at the QR code",
+  "@scan_pairing_code_instruction": {
+    "description": "Instruction for scanning QR code"
+  },
+  "scan_pairing_code_screen_title": "Scan QR Code",
+  "@scan_pairing_code_screen_title": {
+    "description": "Title for scan pairing code screen"
+  },
   "search_settings_screen_automatic_search": "Automatic search",
   "@search_settings_screen_automatic_search": {
     "description": "Title for automatic profile search settings category"
@@ -2054,9 +2062,9 @@
   "@send_chat_backup_pairing_code_hint": {
     "description": "Hint text for pairing code input"
   },
-  "send_chat_backup_pairing_code_instruction": "Enter the pairing code shown on the receiving device",
-  "@send_chat_backup_pairing_code_instruction": {
-    "description": "Instruction for entering pairing code"
+  "send_chat_backup_scan_qr_button": "Scan QR code",
+  "@send_chat_backup_scan_qr_button": {
+    "description": "Button text to scan QR code"
   },
   "send_chat_backup_screen_title": "Send chat backup",
   "@send_chat_backup_screen_title": {

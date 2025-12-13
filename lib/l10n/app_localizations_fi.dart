@@ -1643,6 +1643,13 @@ class AppLocalizationsFi extends AppLocalizations {
   String get report_screen_title => 'Report';
 
   @override
+  String get scan_pairing_code_instruction =>
+      'Point your camera at the QR code';
+
+  @override
+  String get scan_pairing_code_screen_title => 'Scan QR Code';
+
+  @override
   String get search_settings_screen_automatic_search => 'Automatic search';
 
   @override
@@ -1706,8 +1713,7 @@ class AppLocalizationsFi extends AppLocalizations {
       'Enter code from receiving device';
 
   @override
-  String get send_chat_backup_pairing_code_instruction =>
-      'Enter the pairing code shown on the receiving device';
+  String get send_chat_backup_scan_qr_button => 'Scan QR code';
 
   @override
   String get send_chat_backup_screen_title => 'Send chat backup';

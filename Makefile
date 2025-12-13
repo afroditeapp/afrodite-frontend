@@ -88,6 +88,11 @@ remove-and-download-native-push-web-dependencies:
 	cd web && curl "https://github.com/jutuon/native_push/raw/8a2cea6f705b3ecb6b979dd98cdb2dec0628ef8c/example/web/native_push.js" -L -o native_push.js
 	cd web && curl "https://github.com/jutuon/native_push/raw/8a2cea6f705b3ecb6b979dd98cdb2dec0628ef8c/example/web/native_push_sw.js" -L -o native_push_sw.js
 
+remove-and-download-mobile-scanner-web-dependencies:
+	rm -f web/zxing.js
+	cd web && curl "https://unpkg.com/@zxing/library@0.21.3" -L -o zxing.js
+	echo "d7cc8f69dd70bdcf3ac00c9ae572bf2acb9f4132ba379c72df842e4db918652d  web/zxing.js" | shasum -a 256 -c || (rm -f web/zxing.js && exit 1)
+
 build-rust-utils-for-web:
 	rm -f web/rust_utils_bg.wasm
 	rm -f web/rust_utils.js

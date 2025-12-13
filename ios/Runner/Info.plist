@@ -50,7 +50,7 @@
 
 	<!-- Camera and photo picker -->
 	<key>NSCameraUsageDescription</key>
-	<string>Camera usage is needed for taking security selfies</string>
+	<string>Camera usage is needed for taking security selfies and scanning QR codes</string>
 	<!-- App Store policy requires NSPhotoLibraryUsageDescription -->
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Photo library permission is not asked at runtime even if image_picker library includes code related to it</string>
