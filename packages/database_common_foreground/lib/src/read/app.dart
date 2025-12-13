@@ -6,13 +6,7 @@ import '../schema.dart' as schema;
 
 part 'app.g.dart';
 
-@DriftAccessor(
-  tables: [
-    schema.ImageEncryptionKey,
-    schema.NotificationPermissionAsked,
-    schema.ChatInfoDialogShown,
-  ],
-)
+@DriftAccessor(tables: [schema.ImageEncryptionKey, schema.NotificationPermissionAsked])
 class DaoReadApp extends DatabaseAccessor<CommonForegroundDatabase> with _$DaoReadAppMixin {
   DaoReadApp(super.db);
 
@@ -21,9 +15,6 @@ class DaoReadApp extends DatabaseAccessor<CommonForegroundDatabase> with _$DaoRe
 
   Stream<bool?> watchNotificationPermissionAsked() =>
       _watchNotificationPermissionAskedColumn((r) => r.notificationPermissionAsked);
-
-  Stream<bool?> watchChatInfoDialogShown() =>
-      _watchChatInfoDialogShownColumn((r) => r.chatInfoDialogShown);
 
   Stream<T?> _watchImageEncryptionKeyColumn<T extends Object>(
     T? Function(ImageEncryptionKeyData) extractColumn,
@@ -38,14 +29,6 @@ class DaoReadApp extends DatabaseAccessor<CommonForegroundDatabase> with _$DaoRe
   ) {
     return (select(
       notificationPermissionAsked,
-    )..where((t) => t.id.equals(SingleRowTable.ID.value))).map(extractColumn).watchSingleOrNull();
-  }
-
-  Stream<T?> _watchChatInfoDialogShownColumn<T extends Object>(
-    T? Function(ChatInfoDialogShownData) extractColumn,
-  ) {
-    return (select(
-      chatInfoDialogShown,
     )..where((t) => t.id.equals(SingleRowTable.ID.value))).map(extractColumn).watchSingleOrNull();
   }
 }

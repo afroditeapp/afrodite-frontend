@@ -6,13 +6,7 @@ import '../schema.dart' as schema;
 
 part 'app.g.dart';
 
-@DriftAccessor(
-  tables: [
-    schema.ChatInfoDialogShown,
-    schema.NotificationPermissionAsked,
-    schema.ImageEncryptionKey,
-  ],
-)
+@DriftAccessor(tables: [schema.NotificationPermissionAsked, schema.ImageEncryptionKey])
 class DaoWriteApp extends DatabaseAccessor<CommonForegroundDatabase> with _$DaoWriteAppMixin {
   DaoWriteApp(super.db);
 
@@ -28,12 +22,6 @@ class DaoWriteApp extends DatabaseAccessor<CommonForegroundDatabase> with _$DaoW
         id: SingleRowTable.ID,
         notificationPermissionAsked: Value(value),
       ),
-    );
-  }
-
-  Future<void> updateChatInfoDialogShown(bool value) async {
-    await into(chatInfoDialogShown).insertOnConflictUpdate(
-      ChatInfoDialogShownCompanion.insert(id: SingleRowTable.ID, chatInfoDialogShown: Value(value)),
     );
   }
 }

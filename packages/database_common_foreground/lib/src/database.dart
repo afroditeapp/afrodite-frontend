@@ -10,12 +10,7 @@ part 'database.g.dart';
 
 /// Common app data which can be accessed when app is in foreground
 @DriftDatabase(
-  tables: [
-    schema.DemoAccount,
-    schema.ImageEncryptionKey,
-    schema.NotificationPermissionAsked,
-    schema.ChatInfoDialogShown,
-  ],
+  tables: [schema.DemoAccount, schema.ImageEncryptionKey, schema.NotificationPermissionAsked],
   daos: [
     // Read
     DaoReadApp,

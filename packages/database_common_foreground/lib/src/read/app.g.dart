@@ -8,6 +8,4 @@ mixin _$DaoReadAppMixin on DatabaseAccessor<CommonForegroundDatabase> {
       attachedDatabase.imageEncryptionKey;
   $NotificationPermissionAskedTable get notificationPermissionAsked =>
       attachedDatabase.notificationPermissionAsked;
-  $ChatInfoDialogShownTable get chatInfoDialogShown =>
-      attachedDatabase.chatInfoDialogShown;
 }

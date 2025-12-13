@@ -16,9 +16,3 @@ class NotificationPermissionAsked extends SingleRowTable {
   /// app main view (bottom navigation is visible) is opened.
   BoolColumn get notificationPermissionAsked => boolean().withDefault(const Constant(false))();
 }
-
-class ChatInfoDialogShown extends SingleRowTable {
-  /// If true info dialog about chat has been shown when
-  /// chat list screen (bottom navigation is visible) is opened.
-  BoolColumn get chatInfoDialogShown => boolean().withDefault(const Constant(false))();
-}

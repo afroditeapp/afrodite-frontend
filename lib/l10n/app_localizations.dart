@@ -514,12 +514,6 @@ abstract class AppLocalizations {
   /// **'Chat data'**
   String get chat_data_screen_title;
 
-  /// Text for info dialog which is displayed once
-  ///
-  /// In en, this message translates to:
-  /// **'Chats are stored only on this device. Removing this app removes the chats.'**
-  String get chat_list_screen_info_dialog_text;
-
   /// Info text displayed when there is no chats
   ///
   /// In en, this message translates to:

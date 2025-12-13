@@ -3,8 +3,6 @@ import 'dart:async';
 import 'package:app/data/chat_repository.dart';
 import 'package:app/data/profile_repository.dart';
 import 'package:app/data/utils/repository_instances.dart';
-import 'package:app/logic/app/info_dialog.dart';
-import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/profile_thumbnail_status_indicators.dart';
 import 'package:app/utils/result.dart';
 import 'package:app/utils/time.dart';
@@ -155,14 +153,7 @@ class _ChatViewState extends State<ChatView> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Expanded(child: conversationsSupported(context)),
-
-        // Zero sized widgets
-        const ChatInfoDialogOpener(),
-      ],
-    );
+    return conversationsSupported(context);
   }
 
   Widget conversationsSupported(BuildContext context) {
@@ -453,49 +444,5 @@ class ConversationListItem extends StatelessWidget {
       const Padding(padding: EdgeInsets.only(top: 8.0)),
       Text(text, style: textStyle, maxLines: 1, overflow: TextOverflow.ellipsis),
     ];
-  }
-}
-
-class ChatInfoDialogOpener extends StatefulWidget {
-  const ChatInfoDialogOpener({super.key});
-
-  @override
-  State<ChatInfoDialogOpener> createState() => _ChatInfoDialogOpenerState();
-}
-
-class _ChatInfoDialogOpenerState extends State<ChatInfoDialogOpener> {
-  bool askedOnce = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<InfoDialogBloc, InfoDialogData>(
-      builder: (context, state) {
-        if (state.chatInfoDialogShown) {
-          return const SizedBox.shrink();
-        }
-
-        return BlocBuilder<BottomNavigationStateBloc, BottomNavigationStateData>(
-          builder: (context, state) {
-            if (askedOnce || state.screen != BottomNavigationScreenId.chats) {
-              return const SizedBox.shrink();
-            }
-
-            askedOnce = true;
-            context.read<InfoDialogBloc>().add(MarkChatInfoDialogShown());
-            openNotificationPermissionDialog(context);
-            return const SizedBox.shrink();
-          },
-        );
-      },
-    );
-  }
-
-  void openNotificationPermissionDialog(BuildContext context) {
-    Future.delayed(Duration.zero, () {
-      if (!context.mounted) {
-        return;
-      }
-      showInfoDialog(context, context.strings.chat_list_screen_info_dialog_text);
-    });
   }
 }

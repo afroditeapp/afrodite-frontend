@@ -320,10 +320,6 @@
   "@chat_data_screen_title": {
     "description": "Title for chat data backup/restore screen"
   },
-  "chat_list_screen_info_dialog_text": "Chats are stored only on this device. Removing this app removes the chats.",
-  "@chat_list_screen_info_dialog_text": {
-    "description": "Text for info dialog which is displayed once"
-  },
   "chat_list_screen_no_chats_found": "No chats found",
   "@chat_list_screen_no_chats_found": {
     "description": "Info text displayed when there is no chats"

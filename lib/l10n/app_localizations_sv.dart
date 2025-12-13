@@ -271,10 +271,6 @@ class AppLocalizationsSv extends AppLocalizations {
   String get chat_data_screen_title => 'Chat data';
 
   @override
-  String get chat_list_screen_info_dialog_text =>
-      'Chats are stored only on this device. Removing this app removes the chats.';
-
-  @override
   String get chat_list_screen_no_chats_found => 'No chats found';
 
   @override
