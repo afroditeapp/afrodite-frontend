@@ -3,7 +3,7 @@ import "dart:convert";
 import "dart:typed_data";
 
 import "package:app/api/websocket_builder.dart";
-import "package:app/config.dart";
+import "package:app/data/login_repository.dart";
 import "package:logging/logging.dart";
 import "package:openapi/api.dart";
 import "package:rxdart/rxdart.dart";
@@ -42,7 +42,7 @@ class ReceiveChatBackupWebSocket {
   Stream<ReceiveChatBackupWebSocketEvent> get events => _eventController.stream;
 
   Future<bool> connect(AccessToken accessToken, String targetData) async {
-    final serverAddress = defaultServerUrl();
+    final serverAddress = await LoginRepository.getInstance().accountServerAddress.first;
     final websocketAddress = _addWebSocketRoutePathToAddress(serverAddress);
 
     try {
