@@ -11378,11 +11378,21 @@ class $MyKeyPairTable extends schema.MyKeyPair
         requiredDuringInsert: false,
       ).withConverter<PublicKeyId?>($MyKeyPairTable.$converterpublicKeyId);
   @override
+  late final GeneratedColumnWithTypeConverter<PublicKeyId?, int>
+  publicKeyIdOnServer = GeneratedColumn<int>(
+    'public_key_id_on_server',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  ).withConverter<PublicKeyId?>($MyKeyPairTable.$converterpublicKeyIdOnServer);
+  @override
   List<GeneratedColumn> get $columns => [
     id,
     privateKeyData,
     publicKeyData,
     publicKeyId,
+    publicKeyIdOnServer,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -11430,6 +11440,13 @@ class $MyKeyPairTable extends schema.MyKeyPair
           data['${effectivePrefix}public_key_id'],
         ),
       ),
+      publicKeyIdOnServer: $MyKeyPairTable.$converterpublicKeyIdOnServer
+          .fromSql(
+            attachedDatabase.typeMapping.read(
+              DriftSqlType.int,
+              data['${effectivePrefix}public_key_id_on_server'],
+            ),
+          ),
     );
   }
 
@@ -11444,6 +11461,8 @@ class $MyKeyPairTable extends schema.MyKeyPair
       const NullAwareTypeConverter.wrap(PublicKeyBytesConverter());
   static TypeConverter<PublicKeyId?, int?> $converterpublicKeyId =
       const NullAwareTypeConverter.wrap(PublicKeyIdConverter());
+  static TypeConverter<PublicKeyId?, int?> $converterpublicKeyIdOnServer =
+      const NullAwareTypeConverter.wrap(PublicKeyIdConverter());
 }
 
 class MyKeyPairData extends DataClass implements Insertable<MyKeyPairData> {
@@ -11451,11 +11470,13 @@ class MyKeyPairData extends DataClass implements Insertable<MyKeyPairData> {
   final PrivateKeyBytes? privateKeyData;
   final PublicKeyBytes? publicKeyData;
   final PublicKeyId? publicKeyId;
+  final PublicKeyId? publicKeyIdOnServer;
   const MyKeyPairData({
     required this.id,
     this.privateKeyData,
     this.publicKeyData,
     this.publicKeyId,
+    this.publicKeyIdOnServer,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -11476,6 +11497,13 @@ class MyKeyPairData extends DataClass implements Insertable<MyKeyPairData> {
         $MyKeyPairTable.$converterpublicKeyId.toSql(publicKeyId),
       );
     }
+    if (!nullToAbsent || publicKeyIdOnServer != null) {
+      map['public_key_id_on_server'] = Variable<int>(
+        $MyKeyPairTable.$converterpublicKeyIdOnServer.toSql(
+          publicKeyIdOnServer,
+        ),
+      );
+    }
     return map;
   }
 
@@ -11491,6 +11519,9 @@ class MyKeyPairData extends DataClass implements Insertable<MyKeyPairData> {
       publicKeyId: publicKeyId == null && nullToAbsent
           ? const Value.absent()
           : Value(publicKeyId),
+      publicKeyIdOnServer: publicKeyIdOnServer == null && nullToAbsent
+          ? const Value.absent()
+          : Value(publicKeyIdOnServer),
     );
   }
 
@@ -11508,6 +11539,9 @@ class MyKeyPairData extends DataClass implements Insertable<MyKeyPairData> {
         json['publicKeyData'],
       ),
       publicKeyId: serializer.fromJson<PublicKeyId?>(json['publicKeyId']),
+      publicKeyIdOnServer: serializer.fromJson<PublicKeyId?>(
+        json['publicKeyIdOnServer'],
+      ),
     );
   }
   @override
@@ -11518,6 +11552,9 @@ class MyKeyPairData extends DataClass implements Insertable<MyKeyPairData> {
       'privateKeyData': serializer.toJson<PrivateKeyBytes?>(privateKeyData),
       'publicKeyData': serializer.toJson<PublicKeyBytes?>(publicKeyData),
       'publicKeyId': serializer.toJson<PublicKeyId?>(publicKeyId),
+      'publicKeyIdOnServer': serializer.toJson<PublicKeyId?>(
+        publicKeyIdOnServer,
+      ),
     };
   }
 
@@ -11526,6 +11563,7 @@ class MyKeyPairData extends DataClass implements Insertable<MyKeyPairData> {
     Value<PrivateKeyBytes?> privateKeyData = const Value.absent(),
     Value<PublicKeyBytes?> publicKeyData = const Value.absent(),
     Value<PublicKeyId?> publicKeyId = const Value.absent(),
+    Value<PublicKeyId?> publicKeyIdOnServer = const Value.absent(),
   }) => MyKeyPairData(
     id: id ?? this.id,
     privateKeyData: privateKeyData.present
@@ -11535,6 +11573,9 @@ class MyKeyPairData extends DataClass implements Insertable<MyKeyPairData> {
         ? publicKeyData.value
         : this.publicKeyData,
     publicKeyId: publicKeyId.present ? publicKeyId.value : this.publicKeyId,
+    publicKeyIdOnServer: publicKeyIdOnServer.present
+        ? publicKeyIdOnServer.value
+        : this.publicKeyIdOnServer,
   );
   MyKeyPairData copyWithCompanion(MyKeyPairCompanion data) {
     return MyKeyPairData(
@@ -11548,6 +11589,9 @@ class MyKeyPairData extends DataClass implements Insertable<MyKeyPairData> {
       publicKeyId: data.publicKeyId.present
           ? data.publicKeyId.value
           : this.publicKeyId,
+      publicKeyIdOnServer: data.publicKeyIdOnServer.present
+          ? data.publicKeyIdOnServer.value
+          : this.publicKeyIdOnServer,
     );
   }
 
@@ -11557,14 +11601,20 @@ class MyKeyPairData extends DataClass implements Insertable<MyKeyPairData> {
           ..write('id: $id, ')
           ..write('privateKeyData: $privateKeyData, ')
           ..write('publicKeyData: $publicKeyData, ')
-          ..write('publicKeyId: $publicKeyId')
+          ..write('publicKeyId: $publicKeyId, ')
+          ..write('publicKeyIdOnServer: $publicKeyIdOnServer')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode =>
-      Object.hash(id, privateKeyData, publicKeyData, publicKeyId);
+  int get hashCode => Object.hash(
+    id,
+    privateKeyData,
+    publicKeyData,
+    publicKeyId,
+    publicKeyIdOnServer,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -11572,7 +11622,8 @@ class MyKeyPairData extends DataClass implements Insertable<MyKeyPairData> {
           other.id == this.id &&
           other.privateKeyData == this.privateKeyData &&
           other.publicKeyData == this.publicKeyData &&
-          other.publicKeyId == this.publicKeyId);
+          other.publicKeyId == this.publicKeyId &&
+          other.publicKeyIdOnServer == this.publicKeyIdOnServer);
 }
 
 class MyKeyPairCompanion extends UpdateCompanion<MyKeyPairData> {
@@ -11580,29 +11631,35 @@ class MyKeyPairCompanion extends UpdateCompanion<MyKeyPairData> {
   final Value<PrivateKeyBytes?> privateKeyData;
   final Value<PublicKeyBytes?> publicKeyData;
   final Value<PublicKeyId?> publicKeyId;
+  final Value<PublicKeyId?> publicKeyIdOnServer;
   const MyKeyPairCompanion({
     this.id = const Value.absent(),
     this.privateKeyData = const Value.absent(),
     this.publicKeyData = const Value.absent(),
     this.publicKeyId = const Value.absent(),
+    this.publicKeyIdOnServer = const Value.absent(),
   });
   MyKeyPairCompanion.insert({
     this.id = const Value.absent(),
     this.privateKeyData = const Value.absent(),
     this.publicKeyData = const Value.absent(),
     this.publicKeyId = const Value.absent(),
+    this.publicKeyIdOnServer = const Value.absent(),
   });
   static Insertable<MyKeyPairData> custom({
     Expression<int>? id,
     Expression<Uint8List>? privateKeyData,
     Expression<Uint8List>? publicKeyData,
     Expression<int>? publicKeyId,
+    Expression<int>? publicKeyIdOnServer,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (privateKeyData != null) 'private_key_data': privateKeyData,
       if (publicKeyData != null) 'public_key_data': publicKeyData,
       if (publicKeyId != null) 'public_key_id': publicKeyId,
+      if (publicKeyIdOnServer != null)
+        'public_key_id_on_server': publicKeyIdOnServer,
     });
   }
 
@@ -11611,12 +11668,14 @@ class MyKeyPairCompanion extends UpdateCompanion<MyKeyPairData> {
     Value<PrivateKeyBytes?>? privateKeyData,
     Value<PublicKeyBytes?>? publicKeyData,
     Value<PublicKeyId?>? publicKeyId,
+    Value<PublicKeyId?>? publicKeyIdOnServer,
   }) {
     return MyKeyPairCompanion(
       id: id ?? this.id,
       privateKeyData: privateKeyData ?? this.privateKeyData,
       publicKeyData: publicKeyData ?? this.publicKeyData,
       publicKeyId: publicKeyId ?? this.publicKeyId,
+      publicKeyIdOnServer: publicKeyIdOnServer ?? this.publicKeyIdOnServer,
     );
   }
 
@@ -11641,6 +11700,13 @@ class MyKeyPairCompanion extends UpdateCompanion<MyKeyPairData> {
         $MyKeyPairTable.$converterpublicKeyId.toSql(publicKeyId.value),
       );
     }
+    if (publicKeyIdOnServer.present) {
+      map['public_key_id_on_server'] = Variable<int>(
+        $MyKeyPairTable.$converterpublicKeyIdOnServer.toSql(
+          publicKeyIdOnServer.value,
+        ),
+      );
+    }
     return map;
   }
 
@@ -11650,7 +11716,8 @@ class MyKeyPairCompanion extends UpdateCompanion<MyKeyPairData> {
           ..write('id: $id, ')
           ..write('privateKeyData: $privateKeyData, ')
           ..write('publicKeyData: $publicKeyData, ')
-          ..write('publicKeyId: $publicKeyId')
+          ..write('publicKeyId: $publicKeyId, ')
+          ..write('publicKeyIdOnServer: $publicKeyIdOnServer')
           ..write(')'))
         .toString();
   }

@@ -193,7 +193,12 @@ class _DebugSettingsScreenState extends State<DebugSettingsScreen> {
       final public = PublicKeyBytes(data: newKeys.public);
 
       final dbResult = await widget.accountDb.accountAction(
-        (db) => db.key.setMessageKeys(private: private, public: public, publicKeyId: keyId),
+        (db) => db.key.setMessageKeys(
+          private: private,
+          public: public,
+          publicKeyId: keyId,
+          publicKeyIdOnServer: keyId,
+        ),
       );
 
       if (dbResult.isErr()) {

@@ -7,6 +7,7 @@ import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/model/freezed/logic/media/content.dart';
 import 'package:app/model/freezed/logic/profile/my_profile.dart';
 import 'package:app/ui/initial_setup.dart';
+import 'package:app/ui/normal/chat/chat_data_outdated_widget.dart';
 import 'package:app/ui_utils/consts/colors.dart';
 import 'package:app/ui_utils/consts/icons.dart';
 import 'package:app/ui_utils/moderation.dart';
@@ -176,7 +177,7 @@ class PublicProfileViewingBlocker extends StatelessWidget {
             builder: (context, myProfileState) {
               final primaryContent = myProfileState.profile?.myContent.getAtOrNull(0);
               if (primaryContent?.accepted == true) {
-                return child;
+                return ChatViewingBlocker(child: child);
               } else {
                 return _handleBlocked(primaryProfileContentIsNotAccepted(context, primaryContent));
               }

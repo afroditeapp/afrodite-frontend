@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:app/data/chat_repository.dart';
 import 'package:app/data/profile_repository.dart';
 import 'package:app/data/utils/repository_instances.dart';
+import 'package:app/ui/normal/chat/chat_data_outdated_widget.dart';
 import 'package:app/ui_utils/profile_thumbnail_status_indicators.dart';
 import 'package:app/utils/result.dart';
 import 'package:app/utils/time.dart';
@@ -153,7 +154,7 @@ class _ChatViewState extends State<ChatView> {
 
   @override
   Widget build(BuildContext context) {
-    return conversationsSupported(context);
+    return ChatViewingBlocker(child: conversationsSupported(context));
   }
 
   Widget conversationsSupported(BuildContext context) {

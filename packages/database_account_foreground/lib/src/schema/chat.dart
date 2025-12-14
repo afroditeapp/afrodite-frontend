@@ -9,6 +9,8 @@ class MyKeyPair extends SingleRowTable {
       blob().map(const NullAwareTypeConverter.wrap(PublicKeyBytesConverter())).nullable()();
   IntColumn get publicKeyId =>
       integer().map(const NullAwareTypeConverter.wrap(PublicKeyIdConverter())).nullable()();
+  IntColumn get publicKeyIdOnServer =>
+      integer().map(const NullAwareTypeConverter.wrap(PublicKeyIdConverter())).nullable()();
 }
 
 class PublicKey extends Table {

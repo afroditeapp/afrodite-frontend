@@ -298,7 +298,7 @@ class MessageManager extends LifecycleMethods {
   Future<Result<(), RetryPublicKeyDownloadError>> _retryPublicKeyDownload(
     LocalMessageId localId,
   ) async {
-    final allKeys = await messageKeyManager.generateOrLoadMessageKeys().ok();
+    final allKeys = await messageKeyManager.getKeysWhenChatIsEnabled().ok();
     if (allKeys == null) {
       return const Err(RetryPublicKeyDownloadError.unspecifiedError);
     }

@@ -688,4 +688,9 @@
     <string name="chat_backup_pairing_code_invalid" description="Error message when pairing code format is invalid">Invalid pairing code</string>
     <string name="chat_backup_data_stream_unsupported" description="Error message when data stream version is not supported">Unsupported data stream</string>
 
+    <!-- Chat data outdated -->
+    <string name="chat_data_outdated_title" description="Title for chat data outdated state">Chat data outdated</string>
+    <string name="chat_data_outdated_description" description="Description for chat data outdated state">Device changed or app reinstalled. Receive chat backup from previous device?</string>
+    <string name="chat_data_outdated_receive_backup" description="Button text to receive chat backup">Receive backup</string>
+
 </resources>

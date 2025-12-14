@@ -191,6 +191,7 @@ void main() {
         private: dbm.PrivateKeyBytes(data: Uint8List.fromList([1, 2, 3])),
         public: dbm.PublicKeyBytes(data: Uint8List.fromList([4, 5, 6])),
         publicKeyId: api.PublicKeyId(id: 10),
+        publicKeyIdOnServer: api.PublicKeyId(id: 30),
       );
 
       // Create a backup with newer keys
@@ -213,8 +214,9 @@ void main() {
       // Verify keys were updated
       final keys = await db.read.key.getMessageKeys();
       expect(keys, isNotNull);
-      expect(keys!.id.id, equals(20));
+      expect(keys!.publicKeyId.id, equals(20));
       expect(keys.private.data, equals(Uint8List.fromList([7, 8, 9])));
+      expect(keys.publicKeyIdOnServer.id, equals(30));
     });
 
     test('does not update keys when backup has older key ID', () async {
@@ -223,6 +225,7 @@ void main() {
         private: dbm.PrivateKeyBytes(data: Uint8List.fromList([1, 2, 3])),
         public: dbm.PublicKeyBytes(data: Uint8List.fromList([4, 5, 6])),
         publicKeyId: api.PublicKeyId(id: 20),
+        publicKeyIdOnServer: api.PublicKeyId(id: 30),
       );
 
       // Create a backup with older keys
@@ -245,8 +248,9 @@ void main() {
       // Verify keys were NOT updated
       final keys = await db.read.key.getMessageKeys();
       expect(keys, isNotNull);
-      expect(keys!.id.id, equals(20));
+      expect(keys!.publicKeyId.id, equals(20));
       expect(keys.private.data, equals(Uint8List.fromList([1, 2, 3])));
+      expect(keys.publicKeyIdOnServer.id, equals(30));
     });
 
     test('orders messages by localId when localUnixTime is the same', () async {

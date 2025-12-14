@@ -41,7 +41,7 @@ class ReceiveMessageUtils {
   ) : publicKeyUtils = PublicKeyUtils(db, api, currentUser);
 
   Future<void> receiveNewMessages() async {
-    final allKeys = await messageKeyManager.generateOrLoadMessageKeys().ok();
+    final allKeys = await messageKeyManager.getKeysWhenChatIsEnabled().ok();
     if (allKeys == null) {
       return;
     }

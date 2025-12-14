@@ -131,7 +131,7 @@ class SendMessageUtils {
       profile.sendProfileChange(ConversationChanged(accountId, ConversationChangeType.messageSent));
     }
 
-    final currentUserKeys = await messageKeyManager.generateOrLoadMessageKeys().ok();
+    final currentUserKeys = await messageKeyManager.getKeysWhenChatIsEnabled().ok();
     if (currentUserKeys == null) {
       yield ErrorAfterMessageSaving(localId);
       return;
@@ -166,7 +166,7 @@ class SendMessageUtils {
       final result = await api
           .chat(
             (api) => api.postSendMessage(
-              currentUserKeys.id.id,
+              currentUserKeys.publicKeyId.id,
               accountId.aid,
               receiverPublicKey.id.id,
               messageId.id,

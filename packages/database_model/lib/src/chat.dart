@@ -383,8 +383,14 @@ class PublicKeyBytes {
 class AllKeyData {
   final PrivateKeyBytes private;
   final PublicKeyBytes public;
-  final PublicKeyId id;
-  const AllKeyData({required this.private, required this.public, required this.id});
+  final PublicKeyId publicKeyId;
+  final PublicKeyId publicKeyIdOnServer;
+  const AllKeyData({
+    required this.private,
+    required this.public,
+    required this.publicKeyId,
+    required this.publicKeyIdOnServer,
+  });
 }
 
 class ForeignPublicKey {

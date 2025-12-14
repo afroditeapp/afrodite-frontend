@@ -514,6 +514,24 @@ abstract class AppLocalizations {
   /// **'Yearly chat backup transfer budget exceeded. Please create a backup and transfer it manually.'**
   String get chat_backup_transfer_budget_exceeded;
 
+  /// Description for chat data outdated state
+  ///
+  /// In en, this message translates to:
+  /// **'Device changed or app reinstalled. Receive chat backup from previous device?'**
+  String get chat_data_outdated_description;
+
+  /// Button text to receive chat backup
+  ///
+  /// In en, this message translates to:
+  /// **'Receive backup'**
+  String get chat_data_outdated_receive_backup;
+
+  /// Title for chat data outdated state
+  ///
+  /// In en, this message translates to:
+  /// **'Chat data outdated'**
+  String get chat_data_outdated_title;
+
   /// Info text displayed when there is no chats
   ///
   /// In en, this message translates to:

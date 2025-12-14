@@ -19,13 +19,30 @@ class DaoReadKey extends DatabaseAccessor<AccountForegroundDatabase> with _$DaoR
 
     final privateData = r?.privateKeyData;
     final publicData = r?.publicKeyData;
-    final id = r?.publicKeyId;
+    final publicKeyId = r?.publicKeyId;
+    final serverKeyId = r?.publicKeyIdOnServer;
 
-    if (privateData != null && publicData != null && id != null) {
-      return dbm.AllKeyData(private: privateData, public: publicData, id: id);
+    if (privateData != null && publicData != null && publicKeyId != null && serverKeyId != null) {
+      return dbm.AllKeyData(
+        private: privateData,
+        public: publicData,
+        publicKeyId: publicKeyId,
+        publicKeyIdOnServer: serverKeyId,
+      );
     } else {
       return null;
     }
+  }
+
+  Stream<bool> watchChatEnabled() {
+    return (select(
+      myKeyPair,
+    )..where((t) => t.id.equals(SingleRowTable.ID.value))).watchSingleOrNull().map((row) {
+      final localKeyId = row?.publicKeyId;
+      final serverKeyId = row?.publicKeyIdOnServer;
+      final chatDisabled = localKeyId == null || serverKeyId == null || localKeyId != serverKeyId;
+      return !chatDisabled;
+    });
   }
 
   Future<dbm.ForeignPublicKey?> getPublicKey(api.AccountId accountId) async {

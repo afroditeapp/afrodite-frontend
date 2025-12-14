@@ -7,7 +7,6 @@ import 'package:app/data/chat/message_manager/utils.dart';
 import 'package:app/data/chat/typing_indicator_manager.dart';
 import 'package:app/utils/api.dart';
 import 'package:app/utils/app_error.dart';
-import 'package:native_utils/native_utils.dart';
 import 'package:openapi/api.dart';
 import 'package:app/api/server_connection_manager.dart';
 import 'package:app/data/chat/message_manager.dart';
@@ -90,13 +89,14 @@ class ChatRepository extends DataRepositoryWithLifecycle {
   Future<void> onLogin() async {
     sentBlocksIterator.reset();
     await db.accountAction((db) => db.like.resetDailyLikesSyncVersion());
+    await db.accountAction((db) => db.key.updatePublicKeyIdOnServer(null));
     await db.accountAction((db) => db.app.updateChatSyncDone(false));
   }
 
   @override
   Future<Result<(), ()>> onLoginDataSync() async {
     return await _sentBlocksRefresh()
-        .andThen((_) => _generateMessageKeyIfNeeded())
+        .andThen((_) => _downloadPublicKeyIdFromServerAndGenerateInitialKeysIfNeeded())
         .andThen((_) => _reloadChatNotificationSettings())
         .andThen((_) => reloadChatPrivacySettings())
         .andThen((_) => reloadDailyLikesLimit())
@@ -113,7 +113,7 @@ class ChatRepository extends DataRepositoryWithLifecycle {
         return;
       }
       await _sentBlocksRefresh()
-          .andThen((_) => _generateMessageKeyIfNeeded())
+          .andThen((_) => _downloadPublicKeyIdFromServerAndGenerateInitialKeysIfNeeded())
           .andThen((_) => _reloadChatNotificationSettings())
           .andThen((_) => reloadChatPrivacySettings())
           .andThen((_) => reloadDailyLikesLimit())
@@ -121,28 +121,27 @@ class ChatRepository extends DataRepositoryWithLifecycle {
     });
   }
 
-  Future<Result<(), ()>> _generateMessageKeyIfNeeded() async {
-    final keys = await messageKeyManager.generateOrLoadMessageKeys().ok();
-    if (keys == null) {
-      return const Err(());
-    }
+  Future<Result<(), ()>> _downloadPublicKeyIdFromServerAndGenerateInitialKeysIfNeeded() async {
     final serverPublicKeyInfo = await api
         .chat((api) => api.getPrivatePublicKeyInfo(currentUser.aid))
         .ok();
     if (serverPublicKeyInfo == null) {
-      return const Err(());
+      return Err(());
     }
 
-    if (serverPublicKeyInfo.latestPublicKeyId != keys.id) {
-      final uploadAndSaveResult = await messageKeyManager.uploadPublicKeyAndSaveAllKeys(
-        GeneratedMessageKeys(public: keys.public.data, private: keys.private.data),
-      );
-      if (uploadAndSaveResult.isErr()) {
-        return const Err(());
-      }
+    final r = await db.accountAction(
+      (db) => db.key.updatePublicKeyIdOnServer(serverPublicKeyInfo.latestPublicKeyId),
+    );
+    if (r.isErr()) {
+      return Err(());
     }
 
-    return const Ok(());
+    if (serverPublicKeyInfo.latestPublicKeyId == null) {
+      // Generate initial keypair
+      return await messageKeyManager.generateNewKeypairAndUploadPublicKey();
+    } else {
+      return Ok(());
+    }
   }
 
   Future<bool> isInMatches(AccountId accountId) async {

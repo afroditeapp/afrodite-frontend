@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:app/data/chat/message_database_iterator.dart';
 import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/logic/account/client_features_config.dart';
+import 'package:app/logic/chat/chat_enabled.dart';
+import 'package:app/ui/normal/chat/chat_data_outdated_widget.dart';
 import 'package:app/ui/normal/chat/chat_list.dart';
 import 'package:app/ui/normal/chat/utils.dart';
 import 'package:app/ui/normal/report/report.dart';
@@ -182,7 +184,13 @@ class ConversationScreenState extends State<ConversationScreen> {
         actions: [
           if (context.read<ClientFeaturesConfigBloc>().state.config.featuresConfig().videoCalls)
             IconButton(
-              onPressed: () => sendVideoCallInviteDialog(context),
+              onPressed: () {
+                if (context.read<ChatEnabledBloc>().state.chatEnabled) {
+                  sendVideoCallInviteDialog(context);
+                } else {
+                  showSnackBar(context.strings.generic_error);
+                }
+              },
               icon: const Icon(Icons.videocam),
               tooltip: context.strings.conversation_screen_send_video_call_invitation_action,
             ),
@@ -194,7 +202,7 @@ class ConversationScreenState extends State<ConversationScreen> {
           ]),
         ],
       ),
-      body: page(context),
+      body: ChatViewingBlocker(child: page(context)),
     );
   }
 

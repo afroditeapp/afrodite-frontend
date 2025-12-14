@@ -271,6 +271,16 @@ class AppLocalizationsSv extends AppLocalizations {
       'Yearly chat backup transfer budget exceeded. Please create a backup and transfer it manually.';
 
   @override
+  String get chat_data_outdated_description =>
+      'Device changed or app reinstalled. Receive chat backup from previous device?';
+
+  @override
+  String get chat_data_outdated_receive_backup => 'Receive backup';
+
+  @override
+  String get chat_data_outdated_title => 'Chat data outdated';
+
+  @override
   String get chat_list_screen_no_chats_found => 'No chats found';
 
   @override

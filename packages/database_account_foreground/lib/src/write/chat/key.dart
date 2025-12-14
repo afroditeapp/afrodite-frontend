@@ -16,6 +16,7 @@ class DaoWriteKey extends DatabaseAccessor<AccountForegroundDatabase> with _$Dao
     required dbm.PrivateKeyBytes private,
     required dbm.PublicKeyBytes public,
     required api.PublicKeyId publicKeyId,
+    required api.PublicKeyId publicKeyIdOnServer,
   }) async {
     await into(myKeyPair).insertOnConflictUpdate(
       MyKeyPairCompanion.insert(
@@ -23,7 +24,14 @@ class DaoWriteKey extends DatabaseAccessor<AccountForegroundDatabase> with _$Dao
         privateKeyData: Value(private),
         publicKeyData: Value(public),
         publicKeyId: Value(publicKeyId),
+        publicKeyIdOnServer: Value(publicKeyIdOnServer),
       ),
+    );
+  }
+
+  Future<void> updatePublicKeyIdOnServer(api.PublicKeyId? publicKeyIdOnServer) async {
+    await (update(myKeyPair)..where((t) => t.id.equals(SingleRowTable.ID.value))).write(
+      MyKeyPairCompanion(publicKeyIdOnServer: Value(publicKeyIdOnServer)),
     );
   }
 

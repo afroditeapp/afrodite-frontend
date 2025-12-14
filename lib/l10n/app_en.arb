@@ -320,6 +320,18 @@
   "@chat_backup_transfer_budget_exceeded": {
     "description": "Error message when transfer budget is exceeded"
   },
+  "chat_data_outdated_description": "Device changed or app reinstalled. Receive chat backup from previous device?",
+  "@chat_data_outdated_description": {
+    "description": "Description for chat data outdated state"
+  },
+  "chat_data_outdated_receive_backup": "Receive backup",
+  "@chat_data_outdated_receive_backup": {
+    "description": "Button text to receive chat backup"
+  },
+  "chat_data_outdated_title": "Chat data outdated",
+  "@chat_data_outdated_title": {
+    "description": "Title for chat data outdated state"
+  },
   "chat_list_screen_no_chats_found": "No chats found",
   "@chat_list_screen_no_chats_found": {
     "description": "Info text displayed when there is no chats"
