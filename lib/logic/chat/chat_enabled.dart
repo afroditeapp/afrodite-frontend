@@ -1,27 +1,38 @@
 import 'dart:async';
+import 'dart:math';
 
+import 'package:app/api/server_connection_manager.dart';
 import 'package:app/data/chat/message_key_generator.dart';
 import 'package:app/data/chat_repository.dart';
 import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/database/account_database_manager.dart';
 import 'package:app/model/freezed/logic/chat/chat_enabled.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:openapi/api.dart';
 
 sealed class ChatEnabledEvent {}
 
 class EnableChatWithNewKeypair extends ChatEnabledEvent {}
 
+class QueryKeyInfo extends ChatEnabledEvent {}
+
+class ClearRemainingKeyGenerations extends ChatEnabledEvent {}
+
 class ChatEnabledBloc extends Bloc<ChatEnabledEvent, ChatEnabledData> {
   final ChatRepository chat;
+  final ApiManager api;
   final AccountDatabaseManager db;
   final MessageKeyManager messageKeyManager;
+  final AccountId currentUser;
 
   StreamSubscription<bool?>? _chatEnabledSubscription;
 
   ChatEnabledBloc(RepositoryInstances r)
     : chat = r.chat,
+      api = r.api,
       db = r.accountDb,
       messageKeyManager = r.chat.messageKeyManager,
+      currentUser = r.accountId,
       super(const ChatEnabledData()) {
     on<EnableChatWithNewKeypair>((event, emit) async {
       emit(state.copyWith(isEnabling: true));
@@ -47,6 +58,24 @@ class ChatEnabledBloc extends Bloc<ChatEnabledEvent, ChatEnabledData> {
 
     on<_ChatEnabledChanged>((event, emit) {
       emit(state.copyWith(chatEnabled: event.chatEnabled, enableError: false));
+    });
+
+    on<QueryKeyInfo>((event, emit) async {
+      final result = await api.chat((api) => api.getPrivatePublicKeyInfo(currentUser.aid));
+      final keyInfo = result.ok();
+      if (keyInfo != null) {
+        final currentKeyId = keyInfo.latestPublicKeyId?.id ?? 0;
+        final maxKeys = max(
+          keyInfo.maxPublicKeyCountFromBackendConfig,
+          keyInfo.maxPublicKeyCountFromAccountConfig,
+        );
+        final remainingGenerations = maxKeys - currentKeyId;
+        emit(state.copyWith(remainingKeyGenerations: remainingGenerations));
+      }
+    });
+
+    on<ClearRemainingKeyGenerations>((event, emit) {
+      emit(state.copyWith(remainingKeyGenerations: null));
     });
   }
 

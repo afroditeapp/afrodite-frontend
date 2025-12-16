@@ -526,6 +526,18 @@ abstract class AppLocalizations {
   /// **'Receive backup'**
   String get chat_data_outdated_receive_backup;
 
+  /// Message for skip confirmation dialog
+  ///
+  /// In en, this message translates to:
+  /// **'This will generate a new encryption key for chat.\n\nRemaining key generations: {p0}\n\nWarning: You might have to create a new account if this goes to zero.'**
+  String chat_data_outdated_skip_confirm_message(String p0);
+
+  /// Title for skip confirmation dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Generate new key?'**
+  String get chat_data_outdated_skip_confirm_title;
+
   /// Title for chat data outdated state
   ///
   /// In en, this message translates to:

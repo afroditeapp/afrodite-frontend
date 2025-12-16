@@ -2,6 +2,7 @@ import 'package:app/localizations.dart';
 import 'package:app/logic/chat/chat_enabled.dart';
 import 'package:app/model/freezed/logic/chat/chat_enabled.dart';
 import 'package:app/ui/normal/settings/chat/receive_chat_backup.dart';
+import 'package:app/ui_utils/dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -83,6 +84,45 @@ class ChatDataOutdatedWidget extends StatelessWidget {
   }
 }
 
+/// Add only single instance of this widget to widget tree because
+/// otherwise multiple dialogs will be opened.
+class ChatDataOutdatedEventHandler extends StatelessWidget {
+  const ChatDataOutdatedEventHandler({super.key});
+
+  void _showSkipConfirmDialog(BuildContext context, int remainingGenerations) async {
+    final message = context.strings.chat_data_outdated_skip_confirm_message(
+      remainingGenerations.toString(),
+    );
+
+    final result = await showConfirmDialog(
+      context,
+      context.strings.chat_data_outdated_skip_confirm_title,
+      details: message,
+      yesNoActions: true,
+    );
+
+    if (result == true && context.mounted) {
+      context.read<ChatEnabledBloc>().add(EnableChatWithNewKeypair());
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocListener<ChatEnabledBloc, ChatEnabledData>(
+      listenWhen: (previous, current) =>
+          previous.remainingKeyGenerations != current.remainingKeyGenerations,
+      listener: (context, state) {
+        final remaining = state.remainingKeyGenerations;
+        if (remaining != null) {
+          context.read<ChatEnabledBloc>().add(ClearRemainingKeyGenerations());
+          _showSkipConfirmDialog(context, remaining);
+        }
+      },
+      child: const SizedBox.shrink(),
+    );
+  }
+}
+
 /// Wraps a widget and shows ChatDataOutdatedWidget when chat is disabled.
 class ChatViewingBlocker extends StatelessWidget {
   final Widget child;
@@ -96,7 +136,7 @@ class ChatViewingBlocker extends StatelessWidget {
         if (!chatState.chatEnabled) {
           return ChatDataOutdatedWidget(
             onSkip: () {
-              context.read<ChatEnabledBloc>().add(EnableChatWithNewKeypair());
+              context.read<ChatEnabledBloc>().add(QueryKeyInfo());
             },
             isEnabling: chatState.isEnabling,
             hasError: chatState.enableError,

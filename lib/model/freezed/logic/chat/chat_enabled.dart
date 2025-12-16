@@ -8,5 +8,6 @@ class ChatEnabledData with _$ChatEnabledData {
     @Default(true) bool chatEnabled,
     @Default(false) bool isEnabling,
     @Default(false) bool enableError,
+    int? remainingKeyGenerations,
   }) = _ChatEnabledData;
 }

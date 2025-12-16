@@ -154,7 +154,14 @@ class _ChatViewState extends State<ChatView> {
 
   @override
   Widget build(BuildContext context) {
-    return ChatViewingBlocker(child: conversationsSupported(context));
+    return Column(
+      children: [
+        Expanded(child: ChatViewingBlocker(child: conversationsSupported(context))),
+
+        // Zero sized widgets
+        const ChatDataOutdatedEventHandler(),
+      ],
+    );
   }
 
   Widget conversationsSupported(BuildContext context) {
