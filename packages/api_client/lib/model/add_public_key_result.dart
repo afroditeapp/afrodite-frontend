@@ -14,11 +14,14 @@ class AddPublicKeyResult {
   /// Returns a new [AddPublicKeyResult] instance.
   AddPublicKeyResult({
     this.error = false,
+    this.errorPendingMessagesFound = false,
     this.errorTooManyPublicKeys = false,
     this.keyId,
   });
 
   bool error;
+
+  bool errorPendingMessagesFound;
 
   bool errorTooManyPublicKeys;
 
@@ -27,6 +30,7 @@ class AddPublicKeyResult {
   @override
   bool operator ==(Object other) => identical(this, other) || other is AddPublicKeyResult &&
     other.error == error &&
+    other.errorPendingMessagesFound == errorPendingMessagesFound &&
     other.errorTooManyPublicKeys == errorTooManyPublicKeys &&
     other.keyId == keyId;
 
@@ -34,15 +38,17 @@ class AddPublicKeyResult {
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (error.hashCode) +
+    (errorPendingMessagesFound.hashCode) +
     (errorTooManyPublicKeys.hashCode) +
     (keyId == null ? 0 : keyId!.hashCode);
 
   @override
-  String toString() => 'AddPublicKeyResult[error=$error, errorTooManyPublicKeys=$errorTooManyPublicKeys, keyId=$keyId]';
+  String toString() => 'AddPublicKeyResult[error=$error, errorPendingMessagesFound=$errorPendingMessagesFound, errorTooManyPublicKeys=$errorTooManyPublicKeys, keyId=$keyId]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'error'] = this.error;
+      json[r'error_pending_messages_found'] = this.errorPendingMessagesFound;
       json[r'error_too_many_public_keys'] = this.errorTooManyPublicKeys;
     if (this.keyId != null) {
       json[r'key_id'] = this.keyId;
@@ -72,6 +78,7 @@ class AddPublicKeyResult {
 
       return AddPublicKeyResult(
         error: mapValueOfType<bool>(json, r'error') ?? false,
+        errorPendingMessagesFound: mapValueOfType<bool>(json, r'error_pending_messages_found') ?? false,
         errorTooManyPublicKeys: mapValueOfType<bool>(json, r'error_too_many_public_keys') ?? false,
         keyId: PublicKeyId.fromJson(json[r'key_id']),
       );

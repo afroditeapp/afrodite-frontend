@@ -13,9 +13,13 @@ part of openapi.api;
 class RequestEmailLoginTokenResult {
   /// Returns a new [RequestEmailLoginTokenResult] instance.
   RequestEmailLoginTokenResult({
+    required this.clientToken,
     required this.resendWaitSeconds,
     required this.tokenValiditySeconds,
   });
+
+  /// Client token to be used together with the email token. Always returned to prevent email enumeration attacks.
+  EmailLoginToken clientToken;
 
   /// Minimum wait duration between token requests in seconds
   int resendWaitSeconds;
@@ -25,20 +29,23 @@ class RequestEmailLoginTokenResult {
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is RequestEmailLoginTokenResult &&
+    other.clientToken == clientToken &&
     other.resendWaitSeconds == resendWaitSeconds &&
     other.tokenValiditySeconds == tokenValiditySeconds;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
+    (clientToken.hashCode) +
     (resendWaitSeconds.hashCode) +
     (tokenValiditySeconds.hashCode);
 
   @override
-  String toString() => 'RequestEmailLoginTokenResult[resendWaitSeconds=$resendWaitSeconds, tokenValiditySeconds=$tokenValiditySeconds]';
+  String toString() => 'RequestEmailLoginTokenResult[clientToken=$clientToken, resendWaitSeconds=$resendWaitSeconds, tokenValiditySeconds=$tokenValiditySeconds]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
+      json[r'client_token'] = this.clientToken;
       json[r'resend_wait_seconds'] = this.resendWaitSeconds;
       json[r'token_validity_seconds'] = this.tokenValiditySeconds;
     return json;
@@ -63,6 +70,7 @@ class RequestEmailLoginTokenResult {
       }());
 
       return RequestEmailLoginTokenResult(
+        clientToken: EmailLoginToken.fromJson(json[r'client_token'])!,
         resendWaitSeconds: mapValueOfType<int>(json, r'resend_wait_seconds')!,
         tokenValiditySeconds: mapValueOfType<int>(json, r'token_validity_seconds')!,
       );
@@ -112,6 +120,7 @@ class RequestEmailLoginTokenResult {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
+    'client_token',
     'resend_wait_seconds',
     'token_validity_seconds',
   };

@@ -210,6 +210,8 @@ class ApiClient {
           return AccountSyncVersion.fromJson(value);
         case 'AddPublicKeyResult':
           return AddPublicKeyResult.fromJson(value);
+        case 'AdminBotNotificationTypes':
+          return AdminBotNotificationTypes.fromJson(value);
         case 'AdminInfo':
           return AdminInfo.fromJson(value);
         case 'AdminNotification':
@@ -364,6 +366,8 @@ class ApiClient {
           return EmailAddressState.fromJson(value);
         case 'EmailAddressStateAdmin':
           return EmailAddressStateAdmin.fromJson(value);
+        case 'EmailLogin':
+          return EmailLogin.fromJson(value);
         case 'EmailLoginToken':
           return EmailLoginToken.fromJson(value);
         case 'EventToClient':

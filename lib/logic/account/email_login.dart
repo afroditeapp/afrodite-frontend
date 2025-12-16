@@ -16,8 +16,9 @@ class RequestEmailToken extends EmailLoginEvent {
 }
 
 class SubmitLoginCode extends EmailLoginEvent {
-  final String code;
-  SubmitLoginCode(this.code);
+  final String clientToken;
+  final String emailToken;
+  SubmitLoginCode(this.clientToken, this.emailToken);
 }
 
 class UpdateTokenValidity extends EmailLoginEvent {}
@@ -44,6 +45,7 @@ class EmailLoginBloc extends Bloc<EmailLoginEvent, EmailLoginBlocData> with Acti
                 isLoading: false,
                 error: null,
                 email: event.email,
+                clientToken: v.clientToken,
                 tokenValiditySeconds: v.tokenValiditySeconds,
                 resendWaitSeconds: v.resendWaitSeconds,
               ),
@@ -62,7 +64,7 @@ class EmailLoginBloc extends Bloc<EmailLoginEvent, EmailLoginBlocData> with Acti
 
         emit(state.copyWith(updateState: const UpdateInProgress()));
 
-        final result = await login.emailLoginWithToken(event.code);
+        final result = await login.emailLoginWithToken(event.clientToken, event.emailToken);
 
         await waitTime.waitIfNeeded();
 

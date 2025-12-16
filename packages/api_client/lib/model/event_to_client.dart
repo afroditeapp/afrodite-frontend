@@ -13,6 +13,7 @@ part of openapi.api;
 class EventToClient {
   /// Returns a new [EventToClient] instance.
   EventToClient({
+    this.adminBotNotification,
     this.checkOnlineStatusResponse,
     this.contentProcessingStateChanged,
     required this.event,
@@ -20,6 +21,9 @@ class EventToClient {
     this.typingStart,
     this.typingStop,
   });
+
+  /// Data for event AdminBotNotification
+  AdminBotNotificationTypes? adminBotNotification;
 
   /// Data for event CheckOnlineStatusResponse
   CheckOnlineStatusResponse? checkOnlineStatusResponse;
@@ -40,6 +44,7 @@ class EventToClient {
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is EventToClient &&
+    other.adminBotNotification == adminBotNotification &&
     other.checkOnlineStatusResponse == checkOnlineStatusResponse &&
     other.contentProcessingStateChanged == contentProcessingStateChanged &&
     other.event == event &&
@@ -50,6 +55,7 @@ class EventToClient {
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
+    (adminBotNotification == null ? 0 : adminBotNotification!.hashCode) +
     (checkOnlineStatusResponse == null ? 0 : checkOnlineStatusResponse!.hashCode) +
     (contentProcessingStateChanged == null ? 0 : contentProcessingStateChanged!.hashCode) +
     (event.hashCode) +
@@ -58,10 +64,15 @@ class EventToClient {
     (typingStop == null ? 0 : typingStop!.hashCode);
 
   @override
-  String toString() => 'EventToClient[checkOnlineStatusResponse=$checkOnlineStatusResponse, contentProcessingStateChanged=$contentProcessingStateChanged, event=$event, scheduledMaintenanceStatus=$scheduledMaintenanceStatus, typingStart=$typingStart, typingStop=$typingStop]';
+  String toString() => 'EventToClient[adminBotNotification=$adminBotNotification, checkOnlineStatusResponse=$checkOnlineStatusResponse, contentProcessingStateChanged=$contentProcessingStateChanged, event=$event, scheduledMaintenanceStatus=$scheduledMaintenanceStatus, typingStart=$typingStart, typingStop=$typingStop]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
+    if (this.adminBotNotification != null) {
+      json[r'admin_bot_notification'] = this.adminBotNotification;
+    } else {
+      json[r'admin_bot_notification'] = null;
+    }
     if (this.checkOnlineStatusResponse != null) {
       json[r'check_online_status_response'] = this.checkOnlineStatusResponse;
     } else {
@@ -110,6 +121,7 @@ class EventToClient {
       }());
 
       return EventToClient(
+        adminBotNotification: AdminBotNotificationTypes.fromJson(json[r'admin_bot_notification']),
         checkOnlineStatusResponse: CheckOnlineStatusResponse.fromJson(json[r'check_online_status_response']),
         contentProcessingStateChanged: ContentProcessingStateChanged.fromJson(json[r'content_processing_state_changed']),
         event: EventType.fromJson(json[r'event'])!,

@@ -455,12 +455,16 @@ class LoginRepository extends AppSingleton {
   }
 
   /// Login using email login token
-  Future<Result<(), CommonSignInError>> emailLoginWithToken(String token) async {
+  Future<Result<(), CommonSignInError>> emailLoginWithToken(
+    String clientToken,
+    String emailToken,
+  ) async {
     final result = await _apiNoConnection
         .account(
           (api) => api.postEmailLoginWithToken(
-            EmailLoginToken(
-              token: AccessToken(token: token),
+            EmailLogin(
+              clientToken: EmailLoginToken(token: clientToken),
+              emailToken: EmailLoginToken(token: emailToken),
               clientInfo: AppVersionManager.getInstance().clientInfo(),
             ),
           ),

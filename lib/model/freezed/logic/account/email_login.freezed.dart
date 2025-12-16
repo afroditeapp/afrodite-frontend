@@ -24,6 +24,7 @@ mixin _$EmailLoginBlocData {
   bool get isLoading => throw _privateConstructorErrorEmailLoginBlocData;
   EmailLoginError? get error => throw _privateConstructorErrorEmailLoginBlocData;
   String? get email => throw _privateConstructorErrorEmailLoginBlocData;
+  EmailLoginToken? get clientToken => throw _privateConstructorErrorEmailLoginBlocData;
   int? get tokenValiditySeconds => throw _privateConstructorErrorEmailLoginBlocData;
   int? get resendWaitSeconds => throw _privateConstructorErrorEmailLoginBlocData;
   UpdateState get updateState => throw _privateConstructorErrorEmailLoginBlocData;
@@ -32,6 +33,7 @@ mixin _$EmailLoginBlocData {
     bool? isLoading,
     EmailLoginError? error,
     String? email,
+    EmailLoginToken? clientToken,
     int? tokenValiditySeconds,
     int? resendWaitSeconds,
     UpdateState? updateState,
@@ -44,6 +46,7 @@ abstract class _EmailLoginBlocData implements EmailLoginBlocData {
     bool isLoading,
     EmailLoginError? error,
     String? email,
+    EmailLoginToken? clientToken,
     int? tokenValiditySeconds,
     int? resendWaitSeconds,
     UpdateState updateState,
@@ -59,6 +62,7 @@ class _$EmailLoginBlocDataImpl with DiagnosticableTreeMixin implements _EmailLog
     this.isLoading = _isLoadingDefaultValue,
     this.error,
     this.email,
+    this.clientToken,
     this.tokenValiditySeconds,
     this.resendWaitSeconds,
     this.updateState = _updateStateDefaultValue,
@@ -71,6 +75,8 @@ class _$EmailLoginBlocDataImpl with DiagnosticableTreeMixin implements _EmailLog
   @override
   final String? email;
   @override
+  final EmailLoginToken? clientToken;
+  @override
   final int? tokenValiditySeconds;
   @override
   final int? resendWaitSeconds;
@@ -79,7 +85,7 @@ class _$EmailLoginBlocDataImpl with DiagnosticableTreeMixin implements _EmailLog
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'EmailLoginBlocData(isLoading: $isLoading, error: $error, email: $email, tokenValiditySeconds: $tokenValiditySeconds, resendWaitSeconds: $resendWaitSeconds, updateState: $updateState)';
+    return 'EmailLoginBlocData(isLoading: $isLoading, error: $error, email: $email, clientToken: $clientToken, tokenValiditySeconds: $tokenValiditySeconds, resendWaitSeconds: $resendWaitSeconds, updateState: $updateState)';
   }
 
   @override
@@ -90,6 +96,7 @@ class _$EmailLoginBlocDataImpl with DiagnosticableTreeMixin implements _EmailLog
       ..add(DiagnosticsProperty('isLoading', isLoading))
       ..add(DiagnosticsProperty('error', error))
       ..add(DiagnosticsProperty('email', email))
+      ..add(DiagnosticsProperty('clientToken', clientToken))
       ..add(DiagnosticsProperty('tokenValiditySeconds', tokenValiditySeconds))
       ..add(DiagnosticsProperty('resendWaitSeconds', resendWaitSeconds))
       ..add(DiagnosticsProperty('updateState', updateState));
@@ -106,6 +113,8 @@ class _$EmailLoginBlocDataImpl with DiagnosticableTreeMixin implements _EmailLog
           other.error == error) &&
         (identical(other.email, email) ||
           other.email == email) &&
+        (identical(other.clientToken, clientToken) ||
+          other.clientToken == clientToken) &&
         (identical(other.tokenValiditySeconds, tokenValiditySeconds) ||
           other.tokenValiditySeconds == tokenValiditySeconds) &&
         (identical(other.resendWaitSeconds, resendWaitSeconds) ||
@@ -121,6 +130,7 @@ class _$EmailLoginBlocDataImpl with DiagnosticableTreeMixin implements _EmailLog
     isLoading,
     error,
     email,
+    clientToken,
     tokenValiditySeconds,
     resendWaitSeconds,
     updateState,
@@ -131,6 +141,7 @@ class _$EmailLoginBlocDataImpl with DiagnosticableTreeMixin implements _EmailLog
     Object? isLoading,
     Object? error = _detectDefaultValueInCopyWith,
     Object? email = _detectDefaultValueInCopyWith,
+    Object? clientToken = _detectDefaultValueInCopyWith,
     Object? tokenValiditySeconds = _detectDefaultValueInCopyWith,
     Object? resendWaitSeconds = _detectDefaultValueInCopyWith,
     Object? updateState,
@@ -138,6 +149,7 @@ class _$EmailLoginBlocDataImpl with DiagnosticableTreeMixin implements _EmailLog
     isLoading: (isLoading ?? this.isLoading) as bool,
     error: (error == _detectDefaultValueInCopyWith ? this.error : error) as EmailLoginError?,
     email: (email == _detectDefaultValueInCopyWith ? this.email : email) as String?,
+    clientToken: (clientToken == _detectDefaultValueInCopyWith ? this.clientToken : clientToken) as EmailLoginToken?,
     tokenValiditySeconds: (tokenValiditySeconds == _detectDefaultValueInCopyWith ? this.tokenValiditySeconds : tokenValiditySeconds) as int?,
     resendWaitSeconds: (resendWaitSeconds == _detectDefaultValueInCopyWith ? this.resendWaitSeconds : resendWaitSeconds) as int?,
     updateState: (updateState ?? this.updateState) as UpdateState,

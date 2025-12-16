@@ -1,6 +1,7 @@
 import "package:freezed_annotation/freezed_annotation.dart";
 import 'package:flutter/foundation.dart';
 import 'package:app/ui_utils/common_update_logic.dart';
+import 'package:openapi/api.dart';
 
 part 'email_login.freezed.dart';
 
@@ -23,6 +24,7 @@ class EmailLoginBlocData with _$EmailLoginBlocData, UpdateStateProvider {
     @Default(false) bool isLoading,
     EmailLoginError? error,
     String? email,
+    EmailLoginToken? clientToken,
     int? tokenValiditySeconds,
     int? resendWaitSeconds,
     @Default(UpdateIdle()) UpdateState updateState,

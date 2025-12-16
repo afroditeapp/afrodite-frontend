@@ -13,31 +13,26 @@ part of openapi.api;
 class EmailLoginToken {
   /// Returns a new [EmailLoginToken] instance.
   EmailLoginToken({
-    required this.clientInfo,
     required this.token,
   });
 
-  ClientInfo clientInfo;
-
-  AccessToken token;
+  /// Base64 URL safe without padding
+  String token;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is EmailLoginToken &&
-    other.clientInfo == clientInfo &&
     other.token == token;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (clientInfo.hashCode) +
     (token.hashCode);
 
   @override
-  String toString() => 'EmailLoginToken[clientInfo=$clientInfo, token=$token]';
+  String toString() => 'EmailLoginToken[token=$token]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'client_info'] = this.clientInfo;
       json[r'token'] = this.token;
     return json;
   }
@@ -61,8 +56,7 @@ class EmailLoginToken {
       }());
 
       return EmailLoginToken(
-        clientInfo: ClientInfo.fromJson(json[r'client_info'])!,
-        token: AccessToken.fromJson(json[r'token'])!,
+        token: mapValueOfType<String>(json, r'token')!,
       );
     }
     return null;
@@ -110,7 +104,6 @@ class EmailLoginToken {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'client_info',
     'token',
   };
 }

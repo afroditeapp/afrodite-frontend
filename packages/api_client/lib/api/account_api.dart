@@ -980,13 +980,13 @@ class AccountApi {
   ///
   /// Parameters:
   ///
-  /// * [EmailLoginToken] emailLoginToken (required):
-  Future<Response> postEmailLoginWithTokenWithHttpInfo(EmailLoginToken emailLoginToken,) async {
+  /// * [EmailLogin] emailLogin (required):
+  Future<Response> postEmailLoginWithTokenWithHttpInfo(EmailLogin emailLogin,) async {
     // ignore: prefer_const_declarations
     final path = r'/account_api/email_login_with_token';
 
     // ignore: prefer_final_locals
-    Object? postBody = emailLoginToken;
+    Object? postBody = emailLogin;
 
     final queryParams = <QueryParam>[];
     final headerParams = <String, String>{};
@@ -1012,9 +1012,9 @@ class AccountApi {
   ///
   /// Parameters:
   ///
-  /// * [EmailLoginToken] emailLoginToken (required):
-  Future<LoginResult?> postEmailLoginWithToken(EmailLoginToken emailLoginToken,) async {
-    final response = await postEmailLoginWithTokenWithHttpInfo(emailLoginToken,);
+  /// * [EmailLogin] emailLogin (required):
+  Future<LoginResult?> postEmailLoginWithToken(EmailLogin emailLogin,) async {
+    final response = await postEmailLoginWithTokenWithHttpInfo(emailLogin,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

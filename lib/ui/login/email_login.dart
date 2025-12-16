@@ -171,8 +171,9 @@ class _EmailLoginCodeScreenState extends State<EmailLoginCodeScreen> {
           return const Center(child: CircularProgressIndicator());
         } else {
           final error = state.error;
+          final clientToken = state.clientToken;
 
-          if (error is RequestTokenFailed) {
+          if (error is RequestTokenFailed || clientToken == null) {
             return Center(
               child: Padding(
                 padding: const EdgeInsets.all(16),
@@ -227,8 +228,9 @@ class _EmailLoginCodeScreenState extends State<EmailLoginCodeScreen> {
                   onPressed: _isCodeValid
                       ? () {
                           FocusScope.of(context).unfocus();
-                          final code = _codeController.text.trim();
-                          context.read<EmailLoginBloc>().add(SubmitLoginCode(code));
+                          context.read<EmailLoginBloc>().add(
+                            SubmitLoginCode(clientToken.token, _codeController.text.trim()),
+                          );
                         }
                       : null,
                   child: Text(context.strings.generic_login),

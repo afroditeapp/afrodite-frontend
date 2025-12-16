@@ -37,6 +37,7 @@ class EventType {
   static const profileStringModerationCompleted = EventType._(r'ProfileStringModerationCompleted');
   static const automaticProfileSearchCompleted = EventType._(r'AutomaticProfileSearchCompleted');
   static const adminNotification = EventType._(r'AdminNotification');
+  static const adminBotNotification = EventType._(r'AdminBotNotification');
   static const pushNotificationInfoChanged = EventType._(r'PushNotificationInfoChanged');
   static const typingStart = EventType._(r'TypingStart');
   static const typingStop = EventType._(r'TypingStop');
@@ -59,6 +60,7 @@ class EventType {
     profileStringModerationCompleted,
     automaticProfileSearchCompleted,
     adminNotification,
+    adminBotNotification,
     pushNotificationInfoChanged,
     typingStart,
     typingStop,
@@ -116,6 +118,7 @@ class EventTypeTypeTransformer {
         case r'ProfileStringModerationCompleted': return EventType.profileStringModerationCompleted;
         case r'AutomaticProfileSearchCompleted': return EventType.automaticProfileSearchCompleted;
         case r'AdminNotification': return EventType.adminNotification;
+        case r'AdminBotNotification': return EventType.adminBotNotification;
         case r'PushNotificationInfoChanged': return EventType.pushNotificationInfoChanged;
         case r'TypingStart': return EventType.typingStart;
         case r'TypingStop': return EventType.typingStop;

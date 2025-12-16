@@ -37,6 +37,7 @@ lib/model/account_setup.dart
 lib/model/account_state_container.dart
 lib/model/account_sync_version.dart
 lib/model/add_public_key_result.dart
+lib/model/admin_bot_notification_types.dart
 lib/model/admin_info.dart
 lib/model/admin_notification.dart
 lib/model/admin_notification_settings.dart
@@ -114,6 +115,7 @@ lib/model/demo_account_register_account_result.dart
 lib/model/demo_account_token.dart
 lib/model/email_address_state.dart
 lib/model/email_address_state_admin.dart
+lib/model/email_login.dart
 lib/model/email_login_token.dart
 lib/model/event_to_client.dart
 lib/model/event_to_server.dart

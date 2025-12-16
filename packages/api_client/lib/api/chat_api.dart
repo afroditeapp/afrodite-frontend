@@ -640,7 +640,10 @@ class ChatApi {
   /// Parameters:
   ///
   /// * [MultipartFile] body (required):
-  Future<Response> postAddPublicKeyWithHttpInfo(MultipartFile body,) async {
+  ///
+  /// * [bool] ignorePendingMessages:
+  ///   Ignore pending messages error. If this is true, the public key will be added even if there are pending messages.
+  Future<Response> postAddPublicKeyWithHttpInfo(MultipartFile body, { bool? ignorePendingMessages, }) async {
     // ignore: prefer_const_declarations
     final path = r'/chat_api/add_public_key';
 
@@ -650,6 +653,10 @@ class ChatApi {
     final queryParams = <QueryParam>[];
     final headerParams = <String, String>{};
     final formParams = <String, String>{};
+
+    if (ignorePendingMessages != null) {
+      queryParams.addAll(_queryParams('', 'ignore_pending_messages', ignorePendingMessages));
+    }
 
     const contentTypes = <String>['application/octet-stream'];
 
@@ -672,8 +679,11 @@ class ChatApi {
   /// Parameters:
   ///
   /// * [MultipartFile] body (required):
-  Future<AddPublicKeyResult?> postAddPublicKey(MultipartFile body,) async {
-    final response = await postAddPublicKeyWithHttpInfo(body,);
+  ///
+  /// * [bool] ignorePendingMessages:
+  ///   Ignore pending messages error. If this is true, the public key will be added even if there are pending messages.
+  Future<AddPublicKeyResult?> postAddPublicKey(MultipartFile body, { bool? ignorePendingMessages, }) async {
+    final response = await postAddPublicKeyWithHttpInfo(body,  ignorePendingMessages: ignorePendingMessages, );
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
