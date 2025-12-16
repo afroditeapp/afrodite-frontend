@@ -34,6 +34,11 @@ check-fmt:
 	--output none \
 	--set-exit-if-changed
 
+.PHONY: test
+test:
+	cd packages/database_model && flutter test
+	cd packages/database_account_foreground && flutter test
+
 update-api-bindings:
 	openapi-generator-cli generate \
 	-i http://localhost:3001/api-doc/app_api.json \
