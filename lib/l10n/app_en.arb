@@ -1108,6 +1108,10 @@
   "@initial_setup_screen_chat_info_item2": {
     "description": "Second info item about chat backups"
   },
+  "initial_setup_screen_chat_info_item3": "Create chat backup before removing the app to have access to present and future messages",
+  "@initial_setup_screen_chat_info_item3": {
+    "description": "Third info item about chat backups"
+  },
   "initial_setup_screen_chat_info_title": "Chat info",
   "@initial_setup_screen_chat_info_title": {
     "description": "Title for initial setup chat info screen"

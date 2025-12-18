@@ -1600,6 +1600,12 @@ abstract class AppLocalizations {
   /// **'If app is removed you can\'t view received messages unless you have created a chat backup'**
   String get initial_setup_screen_chat_info_item2;
 
+  /// Third info item about chat backups
+  ///
+  /// In en, this message translates to:
+  /// **'Create chat backup before removing the app to have access to present and future messages'**
+  String get initial_setup_screen_chat_info_item3;
+
   /// Title for initial setup chat info screen
   ///
   /// In en, this message translates to:

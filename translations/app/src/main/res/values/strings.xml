@@ -282,6 +282,7 @@
     <string name="initial_setup_screen_chat_info_title" description="Title for initial setup chat info screen">Chat info</string>
     <string name="initial_setup_screen_chat_info_item1" description="First info item about chat backups">If app is removed your chats will be gone unless you have created a chat backup</string>
     <string name="initial_setup_screen_chat_info_item2" description="Second info item about chat backups">If app is removed you can\'t view received messages unless you have created a chat backup</string>
+    <string name="initial_setup_screen_chat_info_item3" description="Third info item about chat backups">Create chat backup before removing the app to have access to present and future messages</string>
     <string name="initial_setup_screen_chat_info_checkbox" description="Checkbox text for understanding chat info">I understand that chat backups are important</string>
 
     <!-- Notification permission -->

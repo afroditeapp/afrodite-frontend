@@ -84,6 +84,13 @@ class _ChatInfoContentState extends State<ChatInfoContent> {
             ),
           ),
           const SizedBox(height: 16),
+          hPad(
+            Text(
+              context.strings.initial_setup_screen_chat_info_item3,
+              style: Theme.of(context).textTheme.bodyLarge,
+            ),
+          ),
+          const SizedBox(height: 16),
           Padding(
             padding: EdgeInsetsGeometry.symmetric(horizontal: 8),
             child: CheckboxListTile(
