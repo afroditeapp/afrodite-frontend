@@ -37,12 +37,10 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get account_deletion_pending_screen_title =>
-      'Account deletion pending';
+  String get account_deletion_pending_screen_title => 'Account deletion pending';
 
   @override
-  String get account_settings_screen_cancel_email_change_button =>
-      'Cancel email change';
+  String get account_settings_screen_cancel_email_change_button => 'Cancel email change';
 
   @override
   String get account_settings_screen_cancel_email_change_confirm_dialog_title =>
@@ -52,16 +50,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get account_settings_screen_change_email_button => 'Change email';
 
   @override
-  String get account_settings_screen_change_email_dialog_hint =>
-      'Enter new email address';
+  String get account_settings_screen_change_email_dialog_hint => 'Enter new email address';
 
   @override
-  String get account_settings_screen_change_email_dialog_title =>
-      'Change email address';
+  String get account_settings_screen_change_email_dialog_title => 'Change email address';
 
   @override
-  String get account_settings_screen_delete_account_action =>
-      'Request account deletion';
+  String get account_settings_screen_delete_account_action => 'Request account deletion';
 
   @override
   String get account_settings_screen_delete_account_action_error =>
@@ -72,8 +67,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Request account deletion?';
 
   @override
-  String get account_settings_screen_email_change_cancelled =>
-      'Email change cancelled';
+  String get account_settings_screen_email_change_cancelled => 'Email change cancelled';
 
   @override
   String get account_settings_screen_email_change_initiated =>
@@ -94,28 +88,23 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get account_settings_screen_pending_email_not_verified =>
-      'Pending email not verified';
+  String get account_settings_screen_pending_email_not_verified => 'Pending email not verified';
 
   @override
-  String get account_settings_screen_pending_email_title =>
-      'Pending new email address';
+  String get account_settings_screen_pending_email_title => 'Pending new email address';
 
   @override
-  String get account_settings_screen_pending_email_verified =>
-      'Pending email verified';
+  String get account_settings_screen_pending_email_verified => 'Pending email verified';
 
   @override
   String get account_settings_screen_send_verification_email_already_verified =>
       'Email is already verified';
 
   @override
-  String get account_settings_screen_send_verification_email_button =>
-      'Send verification email';
+  String get account_settings_screen_send_verification_email_button => 'Send verification email';
 
   @override
-  String
-  get account_settings_screen_send_verification_email_sent_successfully =>
+  String get account_settings_screen_send_verification_email_sent_successfully =>
       'Verification email sent successfully';
 
   @override
@@ -140,20 +129,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get app_slogan => 'Dating app';
 
   @override
-  String get automatic_profile_search_results_screen_no_profiles_found =>
-      'No profiles found';
+  String get automatic_profile_search_results_screen_no_profiles_found => 'No profiles found';
 
   @override
-  String get automatic_profile_search_results_screen_title =>
-      'Automatic profile search results';
+  String get automatic_profile_search_results_screen_title => 'Automatic profile search results';
 
   @override
-  String get blocked_profiles_screen_no_blocked_profiles =>
-      'No blocked profiles';
+  String get blocked_profiles_screen_no_blocked_profiles => 'No blocked profiles';
 
   @override
-  String get blocked_profiles_screen_placeholder_for_private_profile =>
-      'Private profile';
+  String get blocked_profiles_screen_placeholder_for_private_profile => 'Private profile';
 
   @override
   String get blocked_profiles_screen_title => 'Blocked profiles';
@@ -164,8 +149,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get blocked_profiles_screen_unblock_profile_dialog_title =>
-      'Unblock profile?';
+  String get blocked_profiles_screen_unblock_profile_dialog_title => 'Unblock profile?';
 
   @override
   String get blocked_profiles_screen_unblock_profile_failed => 'Unblock failed';
@@ -175,16 +159,14 @@ class AppLocalizationsEn extends AppLocalizations {
       'Previous unblock is in progress';
 
   @override
-  String get blocked_profiles_screen_unblock_profile_successful =>
-      'Unblock successful';
+  String get blocked_profiles_screen_unblock_profile_successful => 'Unblock successful';
 
   @override
   String get camera_screen_camera_access_restricted_error =>
       'Camera access is restricted. Opening camera is not possible.';
 
   @override
-  String get camera_screen_camera_initialization_error =>
-      'Camera initialization failed';
+  String get camera_screen_camera_initialization_error => 'Camera initialization failed';
 
   @override
   String camera_screen_camera_initialization_error_with_error_code(String p0) {
@@ -192,16 +174,14 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get camera_screen_camera_opening_already_in_progress_error =>
-      'Camera opening in progress';
+  String get camera_screen_camera_opening_already_in_progress_error => 'Camera opening in progress';
 
   @override
   String get camera_screen_camera_permission_error_check_settings =>
       'No camera permission. Please grant the camera permission from system settings.';
 
   @override
-  String
-  get camera_screen_camera_permission_error_try_again_or_check_settings =>
+  String get camera_screen_camera_permission_error_try_again_or_check_settings =>
       'No camera permission. Please try again. If that will not work then grant the camera permission from system settings.';
 
   @override
@@ -217,8 +197,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get chat_backup_data_stream_unsupported => 'Unsupported data stream';
 
   @override
-  String get chat_backup_database_not_found =>
-      'Database for requested account does not exist';
+  String get chat_backup_database_not_found => 'Database for requested account does not exist';
 
   @override
   String get chat_backup_pairing_code_invalid => 'Invalid pairing code';
@@ -227,8 +206,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get chat_backup_pairing_code_label => 'Device pairing code';
 
   @override
-  String get chat_backup_pairing_code_unsupported =>
-      'Unsupported pairing code version';
+  String get chat_backup_pairing_code_unsupported => 'Unsupported pairing code version';
 
   @override
   String get chat_backup_screen_create_backup => 'Create backup';
@@ -252,16 +230,13 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get chat_backup_screen_import_error_invalid_backup_file =>
-      'Invalid backup file';
+  String get chat_backup_screen_import_error_invalid_backup_file => 'Invalid backup file';
 
   @override
-  String get chat_backup_screen_import_error_unsupported_version =>
-      'Unsupported backup version';
+  String get chat_backup_screen_import_error_unsupported_version => 'Unsupported backup version';
 
   @override
-  String get chat_backup_screen_import_error_wrong_account =>
-      'Backup created by different account';
+  String get chat_backup_screen_import_error_wrong_account => 'Backup created by different account';
 
   @override
   String get chat_backup_screen_title => 'Chat backup';
@@ -296,12 +271,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'Spread the word about the app in social media';
 
   @override
-  String get chat_list_screen_no_matches_found =>
-      'No accepted chat requests found';
+  String get chat_list_screen_no_matches_found => 'No accepted chat requests found';
 
   @override
-  String get chat_list_screen_open_matches_screen_action =>
-      'Accepted chat requests';
+  String get chat_list_screen_open_matches_screen_action => 'Accepted chat requests';
 
   @override
   String get chat_list_screen_profile_not_available => 'Profile not available';
@@ -318,9 +291,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get chat_list_screen_unread_message => 'New message';
 
   @override
-  String content_management_screen_content_deletion_allowed_wait_time(
-    String p0,
-  ) {
+  String content_management_screen_content_deletion_allowed_wait_time(String p0) {
     return 'Deletion possible starting at $p0';
   }
 
@@ -330,8 +301,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get content_management_screen_content_security_content =>
-      'Security selfie';
+  String get content_management_screen_content_security_content => 'Security selfie';
 
   @override
   String get content_management_screen_title => 'My images';
@@ -340,8 +310,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get conversation_screen_chat_box_placeholder_text => 'Type a message…';
 
   @override
-  String
-  get conversation_screen_install_jitsi_meet_dialog_description_android =>
+  String get conversation_screen_install_jitsi_meet_dialog_description_android =>
       'Video calling requires Jitsi Meet video calling app which is not installed currently. Install the app from Google Play Store? After that, try this again.';
 
   @override
@@ -349,15 +318,13 @@ class AppLocalizationsEn extends AppLocalizations {
       'Video calling requires Jitsi Meet video calling app which is not installed currently. Install the app from App Store? After that, try this again.';
 
   @override
-  String get conversation_screen_install_jitsi_meet_dialog_title =>
-      'Install Jitsi Meet?';
+  String get conversation_screen_install_jitsi_meet_dialog_title => 'Install Jitsi Meet?';
 
   @override
   String get conversation_screen_join_video_call_button => 'Join video call';
 
   @override
-  String get conversation_screen_join_video_call_dialog_title =>
-      'Join video call?';
+  String get conversation_screen_join_video_call_dialog_title => 'Join video call?';
 
   @override
   String get conversation_screen_make_match_instruction =>
@@ -371,13 +338,11 @@ class AppLocalizationsEn extends AppLocalizations {
       'The message is actually sent successfully';
 
   @override
-  String
-  get conversation_screen_message_error_receiver_blocked_sender_or_receiver_not_found =>
+  String get conversation_screen_message_error_receiver_blocked_sender_or_receiver_not_found =>
       'Receiver action prevented message sending';
 
   @override
-  String get conversation_screen_message_info_encryption_key_changed =>
-      'Encryption key changed';
+  String get conversation_screen_message_info_encryption_key_changed => 'Encryption key changed';
 
   @override
   String get conversation_screen_message_info_encryption_started =>
@@ -387,8 +352,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get conversation_screen_message_list_empty => 'No messages';
 
   @override
-  String get conversation_screen_message_state_decrypting_failed =>
-      'Decrypting failed';
+  String get conversation_screen_message_state_decrypting_failed => 'Decrypting failed';
 
   @override
   String get conversation_screen_message_state_delivered => 'Delivered';
@@ -398,31 +362,26 @@ class AppLocalizationsEn extends AppLocalizations {
       'Public key download failed';
 
   @override
-  String get conversation_screen_message_state_received_and_seen =>
-      'Received and seen';
+  String get conversation_screen_message_state_received_and_seen => 'Received and seen';
 
   @override
   String get conversation_screen_message_state_received_and_seen_locally =>
       'Received and seen locally';
 
   @override
-  String get conversation_screen_message_state_received_successfully =>
-      'Received successfully';
+  String get conversation_screen_message_state_received_successfully => 'Received successfully';
 
   @override
   String get conversation_screen_message_state_seen => 'Seen';
 
   @override
-  String get conversation_screen_message_state_sending_failed =>
-      'Sending failed';
+  String get conversation_screen_message_state_sending_failed => 'Sending failed';
 
   @override
-  String get conversation_screen_message_state_sending_in_progress =>
-      'Sending in progress';
+  String get conversation_screen_message_state_sending_in_progress => 'Sending in progress';
 
   @override
-  String get conversation_screen_message_state_sent_successfully =>
-      'Sent successfully';
+  String get conversation_screen_message_state_sent_successfully => 'Sent successfully';
 
   @override
   String get conversation_screen_message_too_long => 'Message is too long';
@@ -435,15 +394,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get conversation_screen_message_unsupported => 'Unsupported message';
 
   @override
-  String get conversation_screen_open_details_action_subtitle =>
-      'Contains selectable text';
+  String get conversation_screen_open_details_action_subtitle => 'Contains selectable text';
 
   @override
   String get conversation_screen_profile_blocked => 'Profile was blocked';
 
   @override
-  String get conversation_screen_send_video_call_invitation_action =>
-      'Send video call invitation';
+  String get conversation_screen_send_video_call_invitation_action => 'Send video call invitation';
 
   @override
   String get conversation_screen_send_video_call_invitation_dialog_title =>
@@ -453,8 +410,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get crop_image_screen_title => 'Crop image';
 
   @override
-  String get current_security_selfie_screen_security_selfie_changed =>
-      'Security selfie changed';
+  String get current_security_selfie_screen_security_selfie_changed => 'Security selfie changed';
 
   @override
   String get current_security_selfie_screen_title => 'Security selfie';
@@ -472,12 +428,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get demo_account_screen_confirm_logout_dialog_title => 'Logout?';
 
   @override
-  String get demo_account_screen_login_to_account_dialog_title =>
-      'Login to account?';
+  String get demo_account_screen_login_to_account_dialog_title => 'Login to account?';
 
   @override
-  String get demo_account_screen_max_account_count_error =>
-      'Error: max account count';
+  String get demo_account_screen_max_account_count_error => 'Error: max account count';
 
   @override
   String get demo_account_screen_new_account_action => 'New account';
@@ -487,31 +441,26 @@ class AppLocalizationsEn extends AppLocalizations {
       'Create new account and login to it?';
 
   @override
-  String get demo_account_screen_no_accounts_available =>
-      'No accounts available';
+  String get demo_account_screen_no_accounts_available => 'No accounts available';
 
   @override
   String get edit_attribute_filter_value_screen_require_all_wanted_values =>
       'Require all wanted values';
 
   @override
-  String get edit_attribute_filter_value_screen_search_placeholder_text =>
-      'Search…';
+  String get edit_attribute_filter_value_screen_search_placeholder_text => 'Search…';
 
   @override
-  String get edit_attribute_filter_value_screen_show_advanced_filters_action =>
-      'Advanced filters';
+  String get edit_attribute_filter_value_screen_show_advanced_filters_action => 'Advanced filters';
 
   @override
-  String get edit_attribute_filter_value_screen_show_basic_filters_action =>
-      'Basic filters';
+  String get edit_attribute_filter_value_screen_show_basic_filters_action => 'Basic filters';
 
   @override
   String get edit_attribute_filter_value_screen_title => 'Edit filter';
 
   @override
-  String get edit_attribute_value_screen_max_selected_values_error =>
-      'Too many selected values';
+  String get edit_attribute_value_screen_max_selected_values_error => 'Too many selected values';
 
   @override
   String get edit_attribute_value_screen_one_value_must_be_selected =>
@@ -521,14 +470,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get edit_attribute_value_screen_search_placeholder_text => 'Search…';
 
   @override
-  String get edit_my_gender_screen_gender_setting_title =>
-      'My profile\'s gender';
+  String get edit_my_gender_screen_gender_setting_title => 'My profile\'s gender';
 
   @override
-  String edit_profile_screen_automatic_min_age_incrementing_info_dialog_text(
-    String p0,
-    String p1,
-  ) {
+  String edit_profile_screen_automatic_min_age_incrementing_info_dialog_text(String p0, String p1) {
     return 'Min age will be increased to $p0 in $p1';
   }
 
@@ -539,8 +484,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get edit_profile_screen_invalid_profile_name => 'Invalid first name';
 
   @override
-  String get edit_profile_screen_one_profile_image_required =>
-      'One profile image is required';
+  String get edit_profile_screen_one_profile_image_required => 'One profile image is required';
 
   @override
   String get edit_profile_screen_primary_profile_content_not_accepted =>
@@ -563,8 +507,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get edit_profile_screen_unlimited_likes => 'Up for a date today';
 
   @override
-  String
-  edit_profile_screen_unlimited_likes_description_enabled_and_automatic_disabling(
+  String edit_profile_screen_unlimited_likes_description_enabled_and_automatic_disabling(
     String p0,
   ) {
     return 'Turns off at $p0';
@@ -680,8 +623,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get generic_error => 'Error';
 
   @override
-  String get generic_error_app_version_is_unsupported =>
-      'Current app version is unsupported';
+  String get generic_error_app_version_is_unsupported => 'Current app version is unsupported';
 
   @override
   String get generic_error_occurred => 'Error occurred';
@@ -750,8 +692,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get generic_preview_noun => 'Preview';
 
   @override
-  String get generic_previous_action_in_progress =>
-      'Previous action is still in progress';
+  String get generic_previous_action_in_progress => 'Previous action is still in progress';
 
   @override
   String get generic_profile_loading_failed => 'Profile loading failed';
@@ -769,8 +710,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get generic_reset_to_defaults => 'Reset to default values';
 
   @override
-  String get generic_reset_to_defaults_dialog_title =>
-      'Reset to default values?';
+  String get generic_reset_to_defaults_dialog_title => 'Reset to default values?';
 
   @override
   String get generic_retry => 'Retry';
@@ -853,8 +793,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get generic_yesterday => 'Yesterday';
 
   @override
-  String get image_processing_ui_confirm_photo_dialog_title =>
-      'Continue with this photo?';
+  String get image_processing_ui_confirm_photo_dialog_title => 'Continue with this photo?';
 
   @override
   String get image_processing_ui_nsfw_detected_dialog_title =>
@@ -864,23 +803,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get image_processing_ui_upload_failed_dialog_title => 'Upload failed';
 
   @override
-  String image_processing_ui_upload_in_processing_queue_dialog_description(
-    String p0,
-  ) {
+  String image_processing_ui_upload_in_processing_queue_dialog_description(String p0) {
     return 'Waiting for processing. Queue number: $p0';
   }
 
   @override
-  String get image_processing_ui_upload_in_progress_dialog_description =>
-      'Uploading photo';
+  String get image_processing_ui_upload_in_progress_dialog_description => 'Uploading photo';
 
   @override
-  String get image_processing_ui_upload_processing_ongoing_description =>
-      'Processing ongoing';
+  String get image_processing_ui_upload_processing_ongoing_description => 'Processing ongoing';
 
   @override
-  String get initial_setup_screen_age_confirmation_checkbox =>
-      'I\'m at least 18 years old';
+  String get initial_setup_screen_age_confirmation_checkbox => 'I\'m at least 18 years old';
 
   @override
   String get initial_setup_screen_age_confirmation_title => 'Age confirmation';
@@ -914,54 +848,43 @@ class AppLocalizationsEn extends AppLocalizations {
       'Select a location for your profile by tapping or long pressing the map.';
 
   @override
-  String get initial_setup_screen_location_title =>
-      'My profile\'s location is…';
+  String get initial_setup_screen_location_title => 'My profile\'s location is…';
 
   @override
   String get initial_setup_screen_profile_basic_info_profile_name_hint_text =>
       'Insert your first name';
 
   @override
-  String get initial_setup_screen_profile_basic_info_profile_name_title =>
-      'First name';
+  String get initial_setup_screen_profile_basic_info_profile_name_title => 'First name';
 
   @override
-  String get initial_setup_screen_profile_basic_info_title =>
-      'My profile has this info…';
+  String get initial_setup_screen_profile_basic_info_title => 'My profile has this info…';
 
   @override
-  String
-  get initial_setup_screen_profile_pictures_primary_image_face_not_detected =>
+  String get initial_setup_screen_profile_pictures_primary_image_face_not_detected =>
       'Face is not detected. Please select another picture.';
 
   @override
-  String
-  get initial_setup_screen_profile_pictures_primary_image_info_dialog_description =>
+  String get initial_setup_screen_profile_pictures_primary_image_info_dialog_description =>
       'Adding at least of one profile image is required. The first profile image must be a face picture. The square shaped crop of the first profile image is displayed in profile grid and some other places in the app.';
 
   @override
-  String
-  get initial_setup_screen_profile_pictures_select_picture_dialog_title =>
-      'Select picture…';
+  String get initial_setup_screen_profile_pictures_select_picture_dialog_title => 'Select picture…';
 
   @override
-  String
-  get initial_setup_screen_profile_pictures_select_picture_from_gallery_title =>
+  String get initial_setup_screen_profile_pictures_select_picture_from_gallery_title =>
       'From gallery';
 
   @override
-  String
-  get initial_setup_screen_profile_pictures_select_picture_security_selfie_title =>
+  String get initial_setup_screen_profile_pictures_select_picture_security_selfie_title =>
       'Security selfie';
 
   @override
-  String
-  get initial_setup_screen_profile_pictures_select_picture_take_new_picture_title =>
+  String get initial_setup_screen_profile_pictures_select_picture_take_new_picture_title =>
       'Take new photo';
 
   @override
-  String get initial_setup_screen_profile_pictures_title =>
-      'My profile pictures are…';
+  String get initial_setup_screen_profile_pictures_title => 'My profile pictures are…';
 
   @override
   String get initial_setup_screen_profile_pictures_unsupported_image_error =>
@@ -972,16 +895,13 @@ class AppLocalizationsEn extends AppLocalizations {
       'Refresh face detection statuses';
 
   @override
-  String get initial_setup_screen_search_settings_max_age_subtitle =>
-      '…with max age…';
+  String get initial_setup_screen_search_settings_max_age_subtitle => '…with max age…';
 
   @override
-  String get initial_setup_screen_search_settings_min_age_subtitle =>
-      '…with min age…';
+  String get initial_setup_screen_search_settings_min_age_subtitle => '…with min age…';
 
   @override
-  String get initial_setup_screen_search_settings_title =>
-      'I am searching for…';
+  String get initial_setup_screen_search_settings_title => 'I am searching for…';
 
   @override
   String get initial_setup_screen_security_selfie_description =>
@@ -992,23 +912,20 @@ class AppLocalizationsEn extends AppLocalizations {
       'Face is not detected. Please try again several times and if necessary ask customer support to do manual face detection.';
 
   @override
-  String get initial_setup_screen_security_selfie_title =>
-      'My security selfie is…';
+  String get initial_setup_screen_security_selfie_title => 'My security selfie is…';
 
   @override
   String get initial_setup_screen_skip_dialog_description =>
       'Use this only if you will have some admin rights to the service.';
 
   @override
-  String get initial_setup_screen_skip_dialog_title =>
-      'Skip account initial setup?';
+  String get initial_setup_screen_skip_dialog_title => 'Skip account initial setup?';
 
   @override
   String get likes_screen_like_loading_failed => 'Chat request loading failed';
 
   @override
-  String get likes_screen_no_received_likes_found =>
-      'No received chat requests';
+  String get likes_screen_no_received_likes_found => 'No received chat requests';
 
   @override
   String get likes_screen_no_received_likes_found_description =>
@@ -1035,8 +952,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get login_screen_demo_account_login_failed => 'Login failed';
 
   @override
-  String get login_screen_demo_account_login_session_expired =>
-      'Demo account session expired';
+  String get login_screen_demo_account_login_session_expired => 'Demo account session expired';
 
   @override
   String get login_screen_demo_account_password => 'Password';
@@ -1049,8 +965,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Email address is already in use by another account';
 
   @override
-  String get login_screen_invalid_email_login_token =>
-      'Invalid email login code';
+  String get login_screen_invalid_email_login_token => 'Invalid email login code';
 
   @override
   String get login_screen_ios_pwa_install_description =>
@@ -1060,27 +975,22 @@ class AppLocalizationsEn extends AppLocalizations {
   String get login_screen_ios_pwa_install_step1 => '1. Tap the Share button';
 
   @override
-  String get login_screen_ios_pwa_install_step2 =>
-      '2. Scroll down and tap \"Add to Home Screen\"';
+  String get login_screen_ios_pwa_install_step2 => '2. Scroll down and tap \"Add to Home Screen\"';
 
   @override
-  String get login_screen_ios_pwa_install_step3 =>
-      '3. Tap \"Add\" in the top right corner';
+  String get login_screen_ios_pwa_install_step3 => '3. Tap \"Add\" in the top right corner';
 
   @override
-  String get login_screen_ios_pwa_install_step4 =>
-      '4. Open the app from your home screen';
+  String get login_screen_ios_pwa_install_step4 => '4. Open the app from your home screen';
 
   @override
-  String get login_screen_login_api_request_failed =>
-      'Login API request failed. Try again later.';
+  String get login_screen_login_api_request_failed => 'Login API request failed. Try again later.';
 
   @override
   String get login_screen_login_note_text_and => 'and';
 
   @override
-  String get login_screen_login_note_text_beginning =>
-      'By signing in, you agree to our';
+  String get login_screen_login_note_text_beginning => 'By signing in, you agree to our';
 
   @override
   String get login_screen_login_note_text_privacy_policy => 'Privacy Policy';
@@ -1106,12 +1016,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get map_location_update_successful => 'Location update successful';
 
   @override
-  String get map_openstreetmap_data_attribution_link_text =>
-      'OpenStreetMap contributors';
+  String get map_openstreetmap_data_attribution_link_text => 'OpenStreetMap contributors';
 
   @override
-  String get map_select_location_help_text =>
-      'Tap or long press the map to select a location.';
+  String get map_select_location_help_text => 'Tap or long press the map to select a location.';
 
   @override
   String get map_tile_error => 'Map tile error';
@@ -1147,12 +1055,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get moderation_state_rejected_by_human => 'Rejected by human';
 
   @override
-  String get moderation_state_waiting_bot_or_human_moderation =>
-      'Waiting bot or human moderation';
+  String get moderation_state_waiting_bot_or_human_moderation => 'Waiting bot or human moderation';
 
   @override
-  String get moderation_state_waiting_human_moderation =>
-      'Waiting human moderation';
+  String get moderation_state_waiting_human_moderation => 'Waiting human moderation';
 
   @override
   String get news_list_screen_create_new => 'Create new?';
@@ -1170,9 +1076,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get news_list_screen_title => 'News';
 
   @override
-  String notification_automatic_profile_search_found_profiles_multiple(
-    String p0,
-  ) {
+  String notification_automatic_profile_search_found_profiles_multiple(String p0) {
     return '$p0 new or updated profiles found';
   }
 
@@ -1181,15 +1085,13 @@ class AppLocalizationsEn extends AppLocalizations {
       'New or updated profile found';
 
   @override
-  String get notification_category_automatic_profile_search =>
-      'Automatic profile search';
+  String get notification_category_automatic_profile_search => 'Automatic profile search';
 
   @override
   String get notification_category_group_chat => 'Chat';
 
   @override
-  String get notification_category_group_content_moderation =>
-      'Content moderation';
+  String get notification_category_group_content_moderation => 'Content moderation';
 
   @override
   String get notification_category_group_general => 'General';
@@ -1198,8 +1100,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get notification_category_likes => 'Requests';
 
   @override
-  String get notification_category_media_content_moderation_completed =>
-      'Images';
+  String get notification_category_media_content_moderation_completed => 'Images';
 
   @override
   String get notification_category_messages => 'Messages';
@@ -1208,8 +1109,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get notification_category_news_item_available => 'News';
 
   @override
-  String get notification_category_profile_string_moderation_completed =>
-      'Profile name and text';
+  String get notification_category_profile_string_moderation_completed => 'Profile name and text';
 
   @override
   String get notification_like_received_multiple => 'Chat requests received';
@@ -1236,8 +1136,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get notification_message_received_multiple_generic =>
-      'New messages received';
+  String get notification_message_received_multiple_generic => 'New messages received';
 
   @override
   String notification_message_received_single(String p0) {
@@ -1245,8 +1144,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get notification_message_received_single_generic =>
-      'New message received';
+  String get notification_message_received_single_generic => 'New message received';
 
   @override
   String get notification_news_item_available => 'News available';
@@ -1280,8 +1178,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Disabled from system notification settings';
 
   @override
-  String
-  get notification_settings_screen_notifications_disabled_from_system_settings_text =>
+  String get notification_settings_screen_notifications_disabled_from_system_settings_text =>
       'Notifications are disabled from system notification settings';
 
   @override
@@ -1300,15 +1197,13 @@ class AppLocalizationsEn extends AppLocalizations {
       'Notification permission is not enabled';
 
   @override
-  String get notification_settings_screen_web_request_permission =>
-      'Enable notifications';
+  String get notification_settings_screen_web_request_permission => 'Enable notifications';
 
   @override
   String get privacy_settings_last_seen_time => 'Last seen time';
 
   @override
-  String get privacy_settings_message_state_delivered =>
-      'Message delivery receipts';
+  String get privacy_settings_message_state_delivered => 'Message delivery receipts';
 
   @override
   String get privacy_settings_message_state_sent => 'Message read receipts';
@@ -1332,8 +1227,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profile_filters_screen_disable_filters_action => 'Disable filters';
 
   @override
-  String get profile_filters_screen_disable_filters_action_dialog_title =>
-      'Disable filters?';
+  String get profile_filters_screen_disable_filters_action_dialog_title => 'Disable filters?';
 
   @override
   String get profile_filters_screen_distance_filter => 'Distance';
@@ -1344,10 +1238,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String profile_filters_screen_distance_filter_min_and_max_value(
-    String p0,
-    String p1,
-  ) {
+  String profile_filters_screen_distance_filter_min_and_max_value(String p0, String p1) {
     return '$p0-$p1 km';
   }
 
@@ -1369,12 +1260,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profile_filters_screen_profile_edited_filter => 'Profile edited';
 
   @override
-  String get profile_filters_screen_profile_last_seen_time_filter =>
-      'Last seen';
+  String get profile_filters_screen_profile_last_seen_time_filter => 'Last seen';
 
   @override
-  String get profile_filters_screen_profile_last_seen_time_filter_all =>
-      'Anytime';
+  String get profile_filters_screen_profile_last_seen_time_filter_all => 'Anytime';
 
   @override
   String profile_filters_screen_profile_last_seen_time_filter_day(String p0) {
@@ -1387,12 +1276,10 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get profile_filters_screen_profile_last_seen_time_filter_online =>
-      'Online';
+  String get profile_filters_screen_profile_last_seen_time_filter_online => 'Online';
 
   @override
-  String get profile_filters_screen_profile_text_filter =>
-      'Profile text length';
+  String get profile_filters_screen_profile_text_filter => 'Profile text length';
 
   @override
   String profile_filters_screen_profile_text_filter_max_value(String p0) {
@@ -1400,10 +1287,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String profile_filters_screen_profile_text_filter_min_and_max_value(
-    String p0,
-    String p1,
-  ) {
+  String profile_filters_screen_profile_text_filter_min_and_max_value(String p0, String p1) {
     return '$p0-$p1 characters';
   }
 
@@ -1416,12 +1300,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profile_filters_screen_title => 'Profile filters';
 
   @override
-  String get profile_filters_screen_unlimited_likes_filter =>
-      'Up for a date today';
+  String get profile_filters_screen_unlimited_likes_filter => 'Up for a date today';
 
   @override
-  String get profile_filters_screen_updating_filters_failed =>
-      'Updating profile filters failed';
+  String get profile_filters_screen_updating_filters_failed => 'Updating profile filters failed';
 
   @override
   String profile_grid_screen_daily_likes_dialog_text(String p0, String p1) {
@@ -1437,8 +1319,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Please verify your email address. A verification link has been sent to your email. If you don\'t see it, check your spam folder.';
 
   @override
-  String get profile_grid_screen_email_not_verified_button =>
-      'Account settings';
+  String get profile_grid_screen_email_not_verified_button => 'Account settings';
 
   @override
   String get profile_grid_screen_filtering_favorite_profiles_is_not_supported =>
@@ -1453,17 +1334,14 @@ class AppLocalizationsEn extends AppLocalizations {
       'Mark a profile as a favorite to add it here.';
 
   @override
-  String get profile_grid_screen_no_favorite_profiles_found_title =>
-      'No favorite profiles found';
+  String get profile_grid_screen_no_favorite_profiles_found_title => 'No favorite profiles found';
 
   @override
-  String
-  get profile_grid_screen_no_profiles_found_description_filters_disabled =>
+  String get profile_grid_screen_no_profiles_found_description_filters_disabled =>
       'Spread the word about the app in social media';
 
   @override
-  String
-  get profile_grid_screen_no_profiles_found_description_filters_enabled =>
+  String get profile_grid_screen_no_profiles_found_description_filters_enabled =>
       'Change or disable filter settings';
 
   @override
@@ -1498,39 +1376,32 @@ class AppLocalizationsEn extends AppLocalizations {
       'Security selfie is not accepted';
 
   @override
-  String get profile_grid_screen_show_all_profiles_action =>
-      'Show all profiles';
+  String get profile_grid_screen_show_all_profiles_action => 'Show all profiles';
 
   @override
-  String get profile_grid_screen_show_favorite_profiles_action =>
-      'Show favorite profiles';
+  String get profile_grid_screen_show_favorite_profiles_action => 'Show favorite profiles';
 
   @override
-  String get profile_grid_screen_start_initial_setup_button =>
-      'Start account initial setup';
+  String get profile_grid_screen_start_initial_setup_button => 'Start account initial setup';
 
   @override
   String get profile_grid_screen_title => 'Profiles';
 
   @override
-  String get profile_grid_settings_screen_all_grids_title =>
-      'All profile grids';
+  String get profile_grid_settings_screen_all_grids_title => 'All profile grids';
 
   @override
   String get profile_grid_settings_screen_profiles_screen => 'Profiles screen';
 
   @override
-  String get profile_grid_settings_screen_random_profile_order =>
-      'Random profile order';
+  String get profile_grid_settings_screen_random_profile_order => 'Random profile order';
 
   @override
-  String
-  get profile_grid_settings_screen_random_profile_order_description_disabled =>
+  String get profile_grid_settings_screen_random_profile_order_description_disabled =>
       'Start from your location';
 
   @override
-  String
-  get profile_grid_settings_screen_random_profile_order_description_enabled =>
+  String get profile_grid_settings_screen_random_profile_order_description_enabled =>
       'Start from random location';
 
   @override
@@ -1550,19 +1421,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profile_location_screen_title => 'Location';
 
   @override
-  String get profile_statistics_history_screen_title =>
-      'Profile statistics history';
+  String get profile_statistics_history_screen_title => 'Profile statistics history';
 
   @override
-  String get receive_chat_backup_import_success =>
-      'Backup imported successfully';
+  String get receive_chat_backup_import_success => 'Backup imported successfully';
 
   @override
   String get receive_chat_backup_importing => 'Importing backup…';
 
   @override
-  String get receive_chat_backup_pairing_code_instruction =>
-      'On the source device:';
+  String get receive_chat_backup_pairing_code_instruction => 'On the source device:';
 
   @override
   String receive_chat_backup_pairing_code_step1(String p0) {
@@ -1570,20 +1438,17 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get receive_chat_backup_pairing_code_step2 =>
-      '2. Logout if login screen is not visible';
+  String get receive_chat_backup_pairing_code_step2 => '2. Logout if login screen is not visible';
 
   @override
   String get receive_chat_backup_pairing_code_step3 =>
       '3. Tap the three dots in the top right corner';
 
   @override
-  String get receive_chat_backup_pairing_code_step4 =>
-      '4. Select \"Send chat backup\"';
+  String get receive_chat_backup_pairing_code_step4 => '4. Select \"Send chat backup\"';
 
   @override
-  String get receive_chat_backup_pairing_code_step5 =>
-      '5. Scan the QR code and start transfer';
+  String get receive_chat_backup_pairing_code_step5 => '5. Scan the QR code and start transfer';
 
   @override
   String get receive_chat_backup_screen_title => 'Receive chat backup';
@@ -1598,25 +1463,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get receive_chat_backup_transferring => 'Receiving backup…';
 
   @override
-  String get receive_chat_backup_waiting_for_source =>
-      'Waiting for source device';
+  String get receive_chat_backup_waiting_for_source => 'Waiting for source device';
 
   @override
   String get report_chat_message_screen_backend_signed_message_not_found =>
       'Backend signed message not found';
 
   @override
-  String get report_chat_message_screen_confirm_dialog_title =>
-      'Report chat message?';
+  String get report_chat_message_screen_confirm_dialog_title => 'Report chat message?';
 
   @override
-  String
-  get report_chat_message_screen_symmetric_message_encryption_key_not_found =>
+  String get report_chat_message_screen_symmetric_message_encryption_key_not_found =>
       'Symmetric message encryption key not found';
 
   @override
-  String get report_profile_image_screen_confirm_dialog_title =>
-      'Report profile image?';
+  String get report_profile_image_screen_confirm_dialog_title => 'Report profile image?';
 
   @override
   String report_profile_image_screen_image_title(String p0) {
@@ -1645,8 +1506,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get report_screen_profile_name_action => 'Profile name';
 
   @override
-  String get report_screen_profile_name_changed_error =>
-      'Report failed. Profile name has changed.';
+  String get report_screen_profile_name_changed_error => 'Report failed. Profile name has changed.';
 
   @override
   String get report_screen_profile_name_dialog_title => 'Report profile name?';
@@ -1655,8 +1515,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get report_screen_profile_text_action => 'Profile text';
 
   @override
-  String get report_screen_profile_text_changed_error =>
-      'Report failed. Profile text has changed.';
+  String get report_screen_profile_text_changed_error => 'Report failed. Profile text has changed.';
 
   @override
   String get report_screen_profile_text_dialog_title => 'Report profile text?';
@@ -1665,15 +1524,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get report_screen_snackbar_report_successful => 'Reported';
 
   @override
-  String get report_screen_snackbar_too_many_reports_error =>
-      'Report failed. Too many reports.';
+  String get report_screen_snackbar_too_many_reports_error => 'Report failed. Too many reports.';
 
   @override
   String get report_screen_title => 'Report';
 
   @override
-  String get scan_pairing_code_instruction =>
-      'Point your camera at the QR code';
+  String get scan_pairing_code_instruction => 'Point your camera at the QR code';
 
   @override
   String get scan_pairing_code_screen_title => 'Scan QR Code';
@@ -1682,27 +1539,23 @@ class AppLocalizationsEn extends AppLocalizations {
   String get search_settings_screen_automatic_search => 'Automatic search';
 
   @override
-  String get search_settings_screen_change_gender_filter_action_tile =>
-      'Gender filter';
+  String get search_settings_screen_change_gender_filter_action_tile => 'Gender filter';
 
   @override
-  String get search_settings_screen_change_my_gender_action_title =>
-      'Change my profile\'s gender';
+  String get search_settings_screen_change_my_gender_action_title => 'Change my profile\'s gender';
 
   @override
   String get search_settings_screen_distance => 'Use max distance filter';
 
   @override
-  String get search_settings_screen_filters =>
-      'Use multiple-choice question filters';
+  String get search_settings_screen_filters => 'Use multiple-choice question filters';
 
   @override
   String get search_settings_screen_gender_filter_is_not_selected =>
       'Gender filter is not selected';
 
   @override
-  String get search_settings_screen_gender_is_not_selected =>
-      'Your gender information is not set';
+  String get search_settings_screen_gender_is_not_selected => 'Your gender information is not set';
 
   @override
   String get search_settings_screen_new_profiles => 'Show only new profiles';
@@ -1738,8 +1591,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get send_chat_backup_idle => 'Ready to send backup';
 
   @override
-  String get send_chat_backup_pairing_code_hint =>
-      'Enter code from receiving device';
+  String get send_chat_backup_pairing_code_hint => 'Enter code from receiving device';
 
   @override
   String get send_chat_backup_scan_qr_button => 'Scan QR code';
@@ -1760,8 +1612,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get send_chat_backup_transferring => 'Sending backup…';
 
   @override
-  String get server_connection_indicator_connection_failed =>
-      'Connection failed';
+  String get server_connection_indicator_connection_failed => 'Connection failed';
 
   @override
   String get server_connection_indicator_connection_failed_dialog_text =>
@@ -1779,8 +1630,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settings_screen_general_category => 'General';
 
   @override
-  String get settings_screen_privacy_and_security_category =>
-      'Privacy and security';
+  String get settings_screen_privacy_and_security_category => 'Privacy and security';
 
   @override
   String get settings_screen_profile_category => 'Profile';
@@ -1804,8 +1654,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settings_screen_title => 'Settings';
 
   @override
-  String get snackbar_api_usage_limit_reached =>
-      'API usage limit is reached. Try again tomorrow.';
+  String get snackbar_api_usage_limit_reached => 'API usage limit is reached. Try again tomorrow.';
 
   @override
   String get snackbar_error_api => 'API error';
@@ -1878,8 +1727,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get statistics_screen_online_users_per_hour_statistics_title =>
-      'Online users per hour';
+  String get statistics_screen_online_users_per_hour_statistics_title => 'Online users per hour';
 
   @override
   String statistics_screen_time(String p0) {
@@ -1919,12 +1767,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get view_profile_screen_add_to_favorites_action => 'Add to favorites';
 
   @override
-  String get view_profile_screen_add_to_favorites_action_successful =>
-      'Added to favorites';
+  String get view_profile_screen_add_to_favorites_action_successful => 'Added to favorites';
 
   @override
-  String get view_profile_screen_already_match =>
-      'Chatting is already possible';
+  String get view_profile_screen_already_match => 'Chatting is already possible';
 
   @override
   String get view_profile_screen_block_action => 'Block';
@@ -1942,12 +1788,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get view_profile_screen_like_action => 'Send chat request';
 
   @override
-  String get view_profile_screen_like_action_dialog_title =>
-      'Send chat request?';
+  String get view_profile_screen_like_action_dialog_title => 'Send chat request?';
 
   @override
-  String get view_profile_screen_like_action_like_already_sent =>
-      'Chat request already sent';
+  String get view_profile_screen_like_action_like_already_sent => 'Chat request already sent';
 
   @override
   String get view_profile_screen_like_action_successful => 'Chat request sent';
@@ -1967,13 +1811,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get view_profile_screen_my_profile_title => 'My profile';
 
   @override
-  String
-  get view_profile_screen_non_accepted_profile_content_info_dialog_text =>
+  String get view_profile_screen_non_accepted_profile_content_info_dialog_text =>
       'All profile pictures are not yet moderated or some picture is moderated as rejected. Only accepted pictures are visible to users.';
 
   @override
-  String
-  view_profile_screen_non_accepted_profile_content_info_dialog_text_picture_title(
+  String view_profile_screen_non_accepted_profile_content_info_dialog_text_picture_title(
     String p0,
   ) {
     return 'Picture $p0';
@@ -1991,8 +1833,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get view_profile_screen_profile_currently_online => 'Online';
 
   @override
-  String get view_profile_screen_profile_edit_failed =>
-      'Profile editing failed';
+  String get view_profile_screen_profile_edit_failed => 'Profile editing failed';
 
   @override
   String view_profile_screen_profile_last_seen_day(String p0) {
@@ -2035,8 +1876,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get view_profile_screen_remove_from_favorites_action =>
-      'Remove from favorites';
+  String get view_profile_screen_remove_from_favorites_action => 'Remove from favorites';
 
   @override
   String get view_profile_screen_remove_from_favorites_action_successful =>
