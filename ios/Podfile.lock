@@ -56,6 +56,9 @@ PODS:
     - GTMSessionFetcher/Core
   - image_picker_ios (0.0.1):
     - Flutter
+  - mobile_scanner (7.0.0):
+    - Flutter
+    - FlutterMacOS
   - native_push (0.0.1):
     - Flutter
   - native_utils_ffi (0.0.1):
@@ -97,6 +100,7 @@ DEPENDENCIES:
   - flutter_secure_storage (from `.symlinks/plugins/flutter_secure_storage/ios`)
   - google_sign_in_ios (from `.symlinks/plugins/google_sign_in_ios/darwin`)
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
+  - mobile_scanner (from `.symlinks/plugins/mobile_scanner/darwin`)
   - native_push (from `.symlinks/plugins/native_push/darwin`)
   - native_utils_ffi (from `.symlinks/plugins/native_utils_ffi/ios`)
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
@@ -141,6 +145,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/google_sign_in_ios/darwin"
   image_picker_ios:
     :path: ".symlinks/plugins/image_picker_ios/ios"
+  mobile_scanner:
+    :path: ".symlinks/plugins/mobile_scanner/darwin"
   native_push:
     :path: ".symlinks/plugins/native_push/darwin"
   native_utils_ffi:
@@ -178,6 +184,7 @@ SPEC CHECKSUMS:
   GTMAppAuth: 217a876b249c3c585a54fd6f73e6b58c4f5c4238
   GTMSessionFetcher: 5aea5ba6bd522a239e236100971f10cb71b96ab6
   image_picker_ios: 4f2f91b01abdb52842a8e277617df877e40f905b
+  mobile_scanner: 77265f3dc8d580810e91849d4a0811a90467ed5e
   native_push: 7b36e7cd1c0f2b39bdebaf66c98544f04ce74c4e
   native_utils_ffi: fa205277e103de4a4db7d0ac94d84c4bda5d9b01
   package_info_plus: c0502532a26c7662a62a356cebe2692ec5fe4ec4
