@@ -13,6 +13,22 @@ import 'package:app/utils/result.dart';
 
 final _log = Logger("MessageKeyManager");
 
+sealed class GenerateKeypairError {
+  const GenerateKeypairError();
+}
+
+class GenerateKeypairErrorPendingMessages extends GenerateKeypairError {
+  const GenerateKeypairErrorPendingMessages();
+}
+
+class GenerateKeypairErrorTooManyKeys extends GenerateKeypairError {
+  const GenerateKeypairErrorTooManyKeys();
+}
+
+class GenerateKeypairErrorOther extends GenerateKeypairError {
+  const GenerateKeypairErrorOther();
+}
+
 class MessageKeyManager {
   final AccountDatabaseManager db;
   final ApiManager api;
@@ -24,7 +40,9 @@ class MessageKeyManager {
     // Empty
   }
 
-  Future<Result<(), ()>> generateNewKeypairAndUploadPublicKey() async {
+  Future<Result<(), GenerateKeypairError>> generateNewKeypairAndUploadPublicKey({
+    bool ignorePendingMessages = false,
+  }) async {
     // For some reason passing the currentUser.accountId directly to closure
     // does not work.
     final currentUserString = currentUser.aid;
@@ -37,21 +55,37 @@ class MessageKeyManager {
     final (newKeys, result) = generateKeysResult;
     if (newKeys == null) {
       _log.error("Generating message keys failed, error: $result");
-      return const Err(());
+      return const Err(GenerateKeypairErrorOther());
     }
 
-    return await _uploadPublicKeyAndSaveAllKeys(newKeys);
+    return await _uploadPublicKeyAndSaveAllKeys(
+      newKeys,
+      ignorePendingMessages: ignorePendingMessages,
+    );
   }
 
-  Future<Result<(), ()>> _uploadPublicKeyAndSaveAllKeys(GeneratedMessageKeys newKeys) async {
+  Future<Result<(), GenerateKeypairError>> _uploadPublicKeyAndSaveAllKeys(
+    GeneratedMessageKeys newKeys, {
+    bool ignorePendingMessages = false,
+  }) async {
     final r = await api
-        .chat((api) => api.postAddPublicKey(MultipartFile.fromBytes("", newKeys.public.toList())))
+        .chat(
+          (api) => api.postAddPublicKey(
+            MultipartFile.fromBytes("", newKeys.public.toList()),
+            ignorePendingMessages: ignorePendingMessages,
+          ),
+        )
         .ok();
 
-    // TODO(prod): Handle errorTooManyPublicKeys properly
     final keyId = r?.keyId;
-    if (r == null || keyId == null || r.error || r.errorTooManyPublicKeys) {
-      return const Err(());
+    if (r == null || keyId == null || r.error) {
+      if (r?.errorPendingMessagesFound == true) {
+        return const Err(GenerateKeypairErrorPendingMessages());
+      } else if (r?.errorTooManyPublicKeys == true) {
+        return const Err(GenerateKeypairErrorTooManyKeys());
+      } else {
+        return const Err(GenerateKeypairErrorOther());
+      }
     }
 
     final private = PrivateKeyBytes(data: newKeys.private);
@@ -67,7 +101,7 @@ class MessageKeyManager {
     );
 
     if (dbResult.isErr()) {
-      return const Err(());
+      return const Err(GenerateKeypairErrorOther());
     } else {
       return Ok(());
     }

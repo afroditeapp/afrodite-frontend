@@ -138,7 +138,7 @@ class ChatRepository extends DataRepositoryWithLifecycle {
 
     if (serverPublicKeyInfo.latestPublicKeyId == null) {
       // Generate initial keypair
-      return await messageKeyManager.generateNewKeypairAndUploadPublicKey();
+      return await messageKeyManager.generateNewKeypairAndUploadPublicKey().emptyErr();
     } else {
       return Ok(());
     }

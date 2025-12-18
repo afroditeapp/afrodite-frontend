@@ -11,6 +11,7 @@
 
     <!-- Generic texts -->
     <string name="generic_error" description="Generic error message">Error</string>
+    <string name="generic_warning" description="Generic warning message">Warning</string>
     <string name="generic_empty" description="Generic empty text">Empty</string>
     <string name="generic_disabled" description="Generic disabled text">Disabled</string>
     <string name="generic_details" description="Generic details text">Details</string>
@@ -694,5 +695,7 @@
     <string name="chat_data_outdated_receive_backup" description="Button text to receive chat backup">Receive backup</string>
     <string name="chat_data_outdated_skip_confirm_title" description="Title for skip confirmation dialog">Generate new key?</string>
     <string name="chat_data_outdated_skip_confirm_message" description="Message for skip confirmation dialog">This will generate a new encryption key for chat.\n\nRemaining key generations: %s\n\nWarning: You might have to create a new account if this goes to zero.</string>
+    <string name="chat_data_outdated_error_too_many_keys" description="Error when too many public keys">Maximum number of encryption keys reached. Receive backup from previous device or contact service admins.</string>
+    <string name="chat_data_outdated_pending_messages_warning" description="Warning dialog message when public key adding fails because pending messages exists">You have unread messages encrypted using your old encryption key. If you continue, you can\'t read the messages. Continue?</string>
 
 </resources>

@@ -514,6 +514,18 @@ abstract class AppLocalizations {
   /// **'Device changed or app reinstalled. Receive chat backup from previous device?'**
   String get chat_data_outdated_description;
 
+  /// Error when too many public keys
+  ///
+  /// In en, this message translates to:
+  /// **'Maximum number of encryption keys reached. Receive backup from previous device or contact service admins.'**
+  String get chat_data_outdated_error_too_many_keys;
+
+  /// Warning dialog message when public key adding fails because pending messages exists
+  ///
+  /// In en, this message translates to:
+  /// **'You have unread messages encrypted using your old encryption key. If you continue, you can\'t read the messages. Continue?'**
+  String get chat_data_outdated_pending_messages_warning;
+
   /// Button text to receive chat backup
   ///
   /// In en, this message translates to:
@@ -1461,6 +1473,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Unlimited'**
   String get generic_unlimited;
+
+  /// Generic warning message
+  ///
+  /// In en, this message translates to:
+  /// **'Warning'**
+  String get generic_warning;
 
   /// Generic short text for Friday
   ///

@@ -324,6 +324,14 @@
   "@chat_data_outdated_description": {
     "description": "Description for chat data outdated state"
   },
+  "chat_data_outdated_error_too_many_keys": "Maximum number of encryption keys reached. Receive backup from previous device or contact service admins.",
+  "@chat_data_outdated_error_too_many_keys": {
+    "description": "Error when too many public keys"
+  },
+  "chat_data_outdated_pending_messages_warning": "You have unread messages encrypted using your old encryption key. If you continue, you can't read the messages. Continue?",
+  "@chat_data_outdated_pending_messages_warning": {
+    "description": "Warning dialog message when public key adding fails because pending messages exists"
+  },
   "chat_data_outdated_receive_backup": "Receive backup",
   "@chat_data_outdated_receive_backup": {
     "description": "Button text to receive chat backup"
@@ -1010,6 +1018,10 @@
   "generic_unlimited": "Unlimited",
   "@generic_unlimited": {
     "description": "Generic unlimited text"
+  },
+  "generic_warning": "Warning",
+  "@generic_warning": {
+    "description": "Generic warning message"
   },
   "generic_weekday_fri": "Fri",
   "@generic_weekday_fri": {

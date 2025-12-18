@@ -9,12 +9,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class ChatDataOutdatedWidget extends StatelessWidget {
   final VoidCallback onSkip;
   final bool isEnabling;
-  final bool hasError;
+  final ChatEnableError? enableError;
 
   const ChatDataOutdatedWidget({
     required this.onSkip,
     this.isEnabling = false,
-    this.hasError = false,
+    this.enableError,
     super.key,
   });
 
@@ -62,7 +62,7 @@ class ChatDataOutdatedWidget extends StatelessWidget {
                     : Text(context.strings.generic_skip),
               ),
             ),
-            if (hasError) ...[
+            if (enableError != null) ...[
               const SizedBox(height: 16),
               Container(
                 padding: const EdgeInsets.all(12),
@@ -71,7 +71,7 @@ class ChatDataOutdatedWidget extends StatelessWidget {
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
-                  context.strings.generic_error_occurred,
+                  _getErrorMessage(context, enableError!),
                   style: TextStyle(color: Theme.of(context).colorScheme.onErrorContainer),
                   textAlign: TextAlign.center,
                 ),
@@ -81,6 +81,13 @@ class ChatDataOutdatedWidget extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String _getErrorMessage(BuildContext context, ChatEnableError error) {
+    return switch (error) {
+      ChatEnableErrorTooManyKeys() => context.strings.chat_data_outdated_error_too_many_keys,
+      ChatEnableErrorOther() => context.strings.generic_error_occurred,
+    };
   }
 }
 
@@ -106,16 +113,38 @@ class ChatDataOutdatedEventHandler extends StatelessWidget {
     }
   }
 
+  void _showPendingMessagesWarning(BuildContext context) async {
+    final result = await showConfirmDialog(
+      context,
+      context.strings.generic_warning,
+      details: context.strings.chat_data_outdated_pending_messages_warning,
+      yesNoActions: true,
+    );
+
+    if (context.mounted) {
+      context.read<ChatEnabledBloc>().add(ClearPendingMessagesWarning());
+
+      if (result == true && context.mounted) {
+        context.read<ChatEnabledBloc>().add(EnableChatWithNewKeypair(ignorePendingMessages: true));
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocListener<ChatEnabledBloc, ChatEnabledData>(
       listenWhen: (previous, current) =>
-          previous.remainingKeyGenerations != current.remainingKeyGenerations,
+          previous.remainingKeyGenerations != current.remainingKeyGenerations ||
+          previous.showPendingMessagesWarning != current.showPendingMessagesWarning,
       listener: (context, state) {
         final remaining = state.remainingKeyGenerations;
         if (remaining != null) {
           context.read<ChatEnabledBloc>().add(ClearRemainingKeyGenerations());
           _showSkipConfirmDialog(context, remaining);
+        }
+
+        if (state.showPendingMessagesWarning) {
+          _showPendingMessagesWarning(context);
         }
       },
       child: const SizedBox.shrink(),
@@ -139,7 +168,7 @@ class ChatViewingBlocker extends StatelessWidget {
               context.read<ChatEnabledBloc>().add(QueryKeyInfo());
             },
             isEnabling: chatState.isEnabling,
-            hasError: chatState.enableError,
+            enableError: chatState.enableError,
           );
         }
         return child;

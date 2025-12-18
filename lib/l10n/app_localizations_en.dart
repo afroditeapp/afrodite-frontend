@@ -250,6 +250,14 @@ class AppLocalizationsEn extends AppLocalizations {
       'Device changed or app reinstalled. Receive chat backup from previous device?';
 
   @override
+  String get chat_data_outdated_error_too_many_keys =>
+      'Maximum number of encryption keys reached. Receive backup from previous device or contact service admins.';
+
+  @override
+  String get chat_data_outdated_pending_messages_warning =>
+      'You have unread messages encrypted using your old encryption key. If you continue, you can\'t read the messages. Continue?';
+
+  @override
   String get chat_data_outdated_receive_backup => 'Receive backup';
 
   @override
@@ -764,6 +772,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get generic_unlimited => 'Unlimited';
+
+  @override
+  String get generic_warning => 'Warning';
 
   @override
   String get generic_weekday_fri => 'Fri';
