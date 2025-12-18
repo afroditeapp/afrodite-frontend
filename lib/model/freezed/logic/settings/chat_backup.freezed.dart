@@ -8,14 +8,6 @@ part of 'chat_backup.dart';
 // **************************************************************************
 
 /// @nodoc
-class _DetectDefaultValueInCopyWith {
-  const _DetectDefaultValueInCopyWith();
-}
-
-/// @nodoc
-const _detectDefaultValueInCopyWith = _DetectDefaultValueInCopyWith();
-
-/// @nodoc
 final _privateConstructorErrorChatBackupData = UnsupportedError(
     'Private constructor ChatBackupData._() was called. Please call factory constructor instead.');
 
@@ -23,12 +15,10 @@ final _privateConstructorErrorChatBackupData = UnsupportedError(
 mixin _$ChatBackupData {
   bool get isLoading => throw _privateConstructorErrorChatBackupData;
   bool get isError => throw _privateConstructorErrorChatBackupData;
-  ChatBackupInfo? get backup => throw _privateConstructorErrorChatBackupData;
 
   ChatBackupData copyWith({
     bool? isLoading,
     bool? isError,
-    ChatBackupInfo? backup,
   }) => throw _privateConstructorErrorChatBackupData;
 }
 
@@ -37,7 +27,6 @@ abstract class _ChatBackupData extends ChatBackupData {
   factory _ChatBackupData({
     bool isLoading,
     bool isError,
-    ChatBackupInfo? backup,
   }) = _$ChatBackupDataImpl;
   _ChatBackupData._() : super._();
 }
@@ -50,19 +39,16 @@ class _$ChatBackupDataImpl extends _ChatBackupData with DiagnosticableTreeMixin 
   _$ChatBackupDataImpl({
     this.isLoading = _isLoadingDefaultValue,
     this.isError = _isErrorDefaultValue,
-    this.backup,
   }) : super._();
 
   @override
   final bool isLoading;
   @override
   final bool isError;
-  @override
-  final ChatBackupInfo? backup;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ChatBackupData(isLoading: $isLoading, isError: $isError, backup: $backup)';
+    return 'ChatBackupData(isLoading: $isLoading, isError: $isError)';
   }
 
   @override
@@ -71,8 +57,7 @@ class _$ChatBackupDataImpl extends _ChatBackupData with DiagnosticableTreeMixin 
     properties
       ..add(DiagnosticsProperty('type', 'ChatBackupData'))
       ..add(DiagnosticsProperty('isLoading', isLoading))
-      ..add(DiagnosticsProperty('isError', isError))
-      ..add(DiagnosticsProperty('backup', backup));
+      ..add(DiagnosticsProperty('isError', isError));
   }
 
   @override
@@ -83,9 +68,7 @@ class _$ChatBackupDataImpl extends _ChatBackupData with DiagnosticableTreeMixin 
         (identical(other.isLoading, isLoading) ||
           other.isLoading == isLoading) &&
         (identical(other.isError, isError) ||
-          other.isError == isError) &&
-        (identical(other.backup, backup) ||
-          other.backup == backup)
+          other.isError == isError)
     );
   }
 
@@ -94,17 +77,14 @@ class _$ChatBackupDataImpl extends _ChatBackupData with DiagnosticableTreeMixin 
     runtimeType,
     isLoading,
     isError,
-    backup,
   );
 
   @override
   ChatBackupData copyWith({
     Object? isLoading,
     Object? isError,
-    Object? backup = _detectDefaultValueInCopyWith,
   }) => _$ChatBackupDataImpl(
     isLoading: (isLoading ?? this.isLoading) as bool,
     isError: (isError ?? this.isError) as bool,
-    backup: (backup == _detectDefaultValueInCopyWith ? this.backup : backup) as ChatBackupInfo?,
   );
 }

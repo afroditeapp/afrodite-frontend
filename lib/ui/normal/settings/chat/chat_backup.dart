@@ -33,25 +33,7 @@ class _ChatBackupScreenState extends State<ChatBackupScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(context.strings.chat_backup_screen_title),
-        actions: [
-          BlocBuilder<ChatBackupBloc, ChatBackupData>(
-            builder: (context, state) {
-              if (state.backup == null) {
-                return const SizedBox.shrink();
-              } else {
-                return IconButton(
-                  icon: Icon(Icons.delete),
-                  onPressed: () {
-                    context.read<ChatBackupBloc>().add(DeleteCurrentChatBackup());
-                  },
-                );
-              }
-            },
-          ),
-        ],
-      ),
+      appBar: AppBar(title: Text(context.strings.chat_backup_screen_title)),
       body: screenContent(context),
     );
   }
@@ -67,18 +49,8 @@ class _ChatBackupScreenState extends State<ChatBackupScreen> {
               Row(
                 spacing: 16,
                 children: [
-                  createBackupButton(context, state),
+                  createAndSaveBackupButton(context, state),
                   if (state.isLoading) CircularProgressIndicator(),
-                ],
-              ),
-            ),
-            Padding(padding: EdgeInsetsGeometry.only(top: 8)),
-            hPad(
-              Row(
-                spacing: 16,
-                children: [
-                  saveButton(context, state),
-                  Expanded(child: statusText(context, state)),
                 ],
               ),
             ),
@@ -92,20 +64,9 @@ class _ChatBackupScreenState extends State<ChatBackupScreen> {
     );
   }
 
-  Widget statusText(BuildContext context, ChatBackupData state) {
-    final backup = state.backup;
-    if (state.isError) {
-      return Text(context.strings.generic_error);
-    } else if (backup != null) {
-      return Text(backup.fileName);
-    } else {
-      return Text("");
-    }
-  }
-
-  Widget createBackupButton(BuildContext context, ChatBackupData state) {
+  Widget createAndSaveBackupButton(BuildContext context, ChatBackupData state) {
     return ElevatedButton(
-      onPressed: state.backup == null
+      onPressed: !state.isLoading
           ? () async {
               final r = await showConfirmDialog(
                 context,
@@ -114,23 +75,11 @@ class _ChatBackupScreenState extends State<ChatBackupScreen> {
                 yesNoActions: true,
               );
               if (r == true && context.mounted) {
-                context.read<ChatBackupBloc>().add(CreateChatBackup());
+                context.read<ChatBackupBloc>().add(CreateAndSaveChatBackup());
               }
             }
           : null,
       child: Text(context.strings.chat_backup_screen_create_backup),
-    );
-  }
-
-  Widget saveButton(BuildContext context, ChatBackupData state) {
-    final backup = state.backup;
-    return ElevatedButton(
-      onPressed: backup != null && !state.isLoading
-          ? () async {
-              context.read<ChatBackupBloc>().add(SaveChatBackup(backup));
-            }
-          : null,
-      child: Text(context.strings.generic_save),
     );
   }
 
