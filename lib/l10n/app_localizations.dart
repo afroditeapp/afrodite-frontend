@@ -442,12 +442,6 @@ abstract class AppLocalizations {
   /// **'Unsupported pairing code version'**
   String get chat_backup_pairing_code_unsupported;
 
-  /// Button text for creating chat backup
-  ///
-  /// In en, this message translates to:
-  /// **'Create backup'**
-  String get chat_backup_screen_create_backup;
-
   /// Confirmation dialog for creating chat backup
   ///
   /// In en, this message translates to:
@@ -495,6 +489,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Backup created by different account'**
   String get chat_backup_screen_import_error_wrong_account;
+
+  /// Button text for saving chat backup
+  ///
+  /// In en, this message translates to:
+  /// **'Save backup'**
+  String get chat_backup_screen_save_backup;
+
+  /// Button text for sharing chat backup
+  ///
+  /// In en, this message translates to:
+  /// **'Share backup'**
+  String get chat_backup_screen_share_backup;
 
   /// Title for chat backup screen
   ///

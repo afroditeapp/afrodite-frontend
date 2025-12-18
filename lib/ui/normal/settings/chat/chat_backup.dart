@@ -50,6 +50,7 @@ class _ChatBackupScreenState extends State<ChatBackupScreen> {
                 spacing: 16,
                 children: [
                   createAndSaveBackupButton(context, state),
+                  shareBackupButton(context, state),
                   if (state.isLoading) CircularProgressIndicator(),
                 ],
               ),
@@ -79,7 +80,26 @@ class _ChatBackupScreenState extends State<ChatBackupScreen> {
               }
             }
           : null,
-      child: Text(context.strings.chat_backup_screen_create_backup),
+      child: Text(context.strings.chat_backup_screen_save_backup),
+    );
+  }
+
+  Widget shareBackupButton(BuildContext context, ChatBackupData state) {
+    return ElevatedButton(
+      onPressed: !state.isLoading
+          ? () async {
+              final r = await showConfirmDialog(
+                context,
+                context.strings.chat_backup_screen_create_backup_question,
+                details: context.strings.chat_backup_screen_create_backup_question_details,
+                yesNoActions: true,
+              );
+              if (r == true && context.mounted) {
+                context.read<ChatBackupBloc>().add(ShareChatBackup());
+              }
+            }
+          : null,
+      child: Text(context.strings.chat_backup_screen_share_backup),
     );
   }
 

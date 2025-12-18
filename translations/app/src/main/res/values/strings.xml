@@ -533,9 +533,10 @@
 
     <!-- Chat backup -->
     <string name="chat_backup_screen_title" description="Title for chat backup screen">Chat backup</string>
-    <string name="chat_backup_screen_create_backup" description="Button text for creating chat backup">Create backup</string>
+    <string name="chat_backup_screen_save_backup" description="Button text for saving chat backup">Save backup</string>
     <string name="chat_backup_screen_create_backup_question" description="Confirmation dialog for creating chat backup">Create chat backup?</string>
     <string name="chat_backup_screen_create_backup_question_details" description="Details for create backup confirmation dialog">Backup includes current messages and encryption key.</string>
+    <string name="chat_backup_screen_share_backup" description="Button text for sharing chat backup">Share backup</string>
     <string name="chat_backup_screen_import_backup" description="Button text for importing chat backup">Import backup</string>
     <string name="chat_backup_screen_import_backup_question" description="Confirmation dialog for importing chat backup">Import chat backup?</string>
     <string name="chat_backup_screen_import_backup_question_details" description="Details for import backup confirmation dialog">File: %s\n\nCurrent and backup messages will be merged. Current encryption key will be replaced if the one included in the backup is newer.</string>

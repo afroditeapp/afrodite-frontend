@@ -209,9 +209,6 @@ class AppLocalizationsFi extends AppLocalizations {
   String get chat_backup_pairing_code_unsupported => 'Unsupported pairing code version';
 
   @override
-  String get chat_backup_screen_create_backup => 'Create backup';
-
-  @override
   String get chat_backup_screen_create_backup_question => 'Create chat backup?';
 
   @override
@@ -237,6 +234,12 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get chat_backup_screen_import_error_wrong_account => 'Backup created by different account';
+
+  @override
+  String get chat_backup_screen_save_backup => 'Save backup';
+
+  @override
+  String get chat_backup_screen_share_backup => 'Share backup';
 
   @override
   String get chat_backup_screen_title => 'Chat backup';

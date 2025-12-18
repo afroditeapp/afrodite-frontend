@@ -1,7 +1,9 @@
 import "dart:io";
+import "dart:typed_data";
 import "package:app/data/chat/message_manager.dart";
 import "package:app/data/chat_repository.dart";
 import "package:app/data/utils/repository_instances.dart";
+import "package:app/logic/settings/chat_backup/chat_backup.dart";
 import "package:app/model/freezed/logic/settings/chat_backup.dart";
 import "package:app/utils/result.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
@@ -14,6 +16,8 @@ import "package:intl/intl.dart";
 sealed class ChatBackupEvent {}
 
 class CreateAndSaveChatBackup extends ChatBackupEvent {}
+
+class ShareChatBackup extends ChatBackupEvent {}
 
 class ImportChatBackup extends ChatBackupEvent {
   final String filePath;
@@ -29,25 +33,32 @@ class ChatBackupBloc extends Bloc<ChatBackupEvent, ChatBackupData> with ActionRu
         emit(ChatBackupData(isLoading: true));
 
         try {
-          // Create backup using ChatRepository
-          final backupDataResult = await chat.createChatBackup();
-          final backupData = backupDataResult.ok();
-          if (backupData == null) {
+          final backup = await _createBackup();
+          if (backup == null) {
             emit(state.copyWith(isError: true, isLoading: false));
             return;
           }
 
-          // Compress the backup
-          final backupFile = backupData.compress();
-          final bytes = backupFile.toBytes();
+          await FlutterFileSaver().writeFileAsBytes(fileName: backup.fileName, bytes: backup.bytes);
+          emit(ChatBackupData());
+        } catch (e) {
+          emit(state.copyWith(isError: true, isLoading: false));
+        }
+      });
+    });
 
-          // Generate filename with timestamp
-          final appName = R.strings.app_name.toLowerCase();
-          final timestamp = DateFormat('yyyy-MM-dd_HH-mm').format(DateTime.now());
-          final fileName = "${appName}_chat_backup_$timestamp.backup";
+    on<ShareChatBackup>((data, emit) async {
+      await runOnce(() async {
+        emit(ChatBackupData(isLoading: true));
 
-          // Save the backup
-          await FlutterFileSaver().writeFileAsBytes(fileName: fileName, bytes: bytes);
+        try {
+          final backup = await _createBackup();
+          if (backup == null) {
+            emit(state.copyWith(isError: true, isLoading: false));
+            return;
+          }
+
+          await shareBackupFile(backup.fileName, backup.bytes);
           emit(ChatBackupData());
         } catch (e) {
           emit(state.copyWith(isError: true, isLoading: false));
@@ -86,5 +97,22 @@ class ChatBackupBloc extends Bloc<ChatBackupEvent, ChatBackupData> with ActionRu
         }
       });
     });
+  }
+
+  Future<({String fileName, Uint8List bytes})?> _createBackup() async {
+    final backupDataResult = await chat.createChatBackup();
+    final backupData = backupDataResult.ok();
+    if (backupData == null) {
+      return null;
+    }
+
+    final backupFile = backupData.compress();
+    final bytes = Uint8List.fromList(backupFile.toBytes());
+
+    final appName = R.strings.app_name.toLowerCase();
+    final timestamp = DateFormat('yyyy-MM-dd_HH-mm').format(DateTime.now());
+    final fileName = "${appName}_chat_backup_$timestamp.backup";
+
+    return (fileName: fileName, bytes: bytes);
   }
 }
