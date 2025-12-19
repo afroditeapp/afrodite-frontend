@@ -137,11 +137,17 @@ class ProfileFiltersBloc extends Bloc<ProfileFiltersEvent, ProfileFiltersData> w
       await runOnce(() async {
         // If online status filter is enabled but privacy setting is disabled, disable the filter
         final lastSeenTimeFilter = state.valueLastSeenTimeFilter();
+        final privacySettings = await db
+            .accountStream((db) => db.profilePrivacy.watchProfilePrivacySettings())
+            .first;
+
         if (lastSeenTimeFilter?.value == -1) {
-          final privacySettings = await db
-              .accountStream((db) => db.profilePrivacy.watchProfilePrivacySettings())
-              .first;
           if (privacySettings?.onlineStatus == false) {
+            modifyEdited(emit, (e) => e.copyWith(lastSeenTimeFilter: editValue(null)));
+          }
+        } else if (lastSeenTimeFilter != null && lastSeenTimeFilter.value >= 0) {
+          // If last seen time filter is enabled but privacy setting is disabled, disable the filter
+          if (privacySettings?.lastSeenTime == false) {
             modifyEdited(emit, (e) => e.copyWith(lastSeenTimeFilter: editValue(null)));
           }
         }

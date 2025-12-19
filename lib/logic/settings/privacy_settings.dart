@@ -119,25 +119,22 @@ class PrivacySettingsBloc extends Bloc<PrivacySettingsEvent, PrivacySettingsData
       emit(state.copyWith(updateState: const UpdateIdle()));
 
       if (chatResult.isOk() && profileResult.isOk()) {
+        final currentFilters = await db
+            .accountStream((db) => db.search.watchProfileFilters())
+            .first;
+
         // If online status is being disabled, also disable last seen time filter
         if (profileSettings.onlineStatus == false) {
-          final currentFilters = await db
-              .accountStream((db) => db.search.watchProfileFilters())
-              .first;
           if (currentFilters?.lastSeenTimeFilter?.value == -1) {
-            await profile.updateProfileFilters(
-              currentFilters?.currentFiltersCopy() ?? {},
-              null, // Set lastSeenTimeFilter to null to disable it
-              currentFilters?.unlimitedLikesFilter,
-              currentFilters?.minDistanceKmFilter,
-              currentFilters?.maxDistanceKmFilter,
-              currentFilters?.profileCreatedFilter,
-              currentFilters?.profileEditedFilter,
-              currentFilters?.profileTextMinCharactersFilter,
-              currentFilters?.profileTextMaxCharactersFilter,
-              currentFilters?.randomProfileOrder ?? false,
-            );
-            await profile.resetMainProfileIterator();
+            await _resetLastSeenTimeFilter(currentFilters);
+          }
+        }
+
+        // If last seen time is being disabled, also disable last seen time filter
+        if (profileSettings.lastSeenTime == false) {
+          final lastSeenTimeFilterValue = currentFilters?.lastSeenTimeFilter?.value;
+          if (lastSeenTimeFilterValue != null && lastSeenTimeFilterValue >= 0) {
+            await _resetLastSeenTimeFilter(currentFilters);
           }
         }
 
@@ -201,6 +198,22 @@ class PrivacySettingsBloc extends Bloc<PrivacySettingsEvent, PrivacySettingsData
         .listen((settings) {
           add(_NewProfilePrivacySettings(settings));
         });
+  }
+
+  Future<void> _resetLastSeenTimeFilter(GetProfileFilters? currentFilters) async {
+    await profile.updateProfileFilters(
+      currentFilters?.currentFiltersCopy() ?? {},
+      null, // Set lastSeenTimeFilter to null to disable it
+      currentFilters?.unlimitedLikesFilter,
+      currentFilters?.minDistanceKmFilter,
+      currentFilters?.maxDistanceKmFilter,
+      currentFilters?.profileCreatedFilter,
+      currentFilters?.profileEditedFilter,
+      currentFilters?.profileTextMinCharactersFilter,
+      currentFilters?.profileTextMaxCharactersFilter,
+      currentFilters?.randomProfileOrder ?? false,
+    );
+    await profile.resetMainProfileIterator();
   }
 
   void _updateEditedValue(

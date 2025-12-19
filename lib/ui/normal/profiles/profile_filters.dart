@@ -267,7 +267,11 @@ class _ProfileFiltersScreenState extends State<ProfileFiltersScreen> {
           days = VALUE_MIN;
         } else if (valueInt >= 0) {
           final daysInt = valueInt ~/ 60 ~/ 60 ~/ 24;
-          if (daysInt <= 1) {
+          if (!privacySettings.lastSeenTime) {
+            stateText = context
+                .strings
+                .profile_filters_screen_profile_last_seen_time_filter_disabled_from_privacy;
+          } else if (daysInt <= 1) {
             stateText = context.strings.profile_filters_screen_profile_last_seen_time_filter_day(
               1.toString(),
             );

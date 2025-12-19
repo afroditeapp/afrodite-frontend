@@ -223,7 +223,10 @@ class _ViewProfileEntryState extends State<ViewProfileEntry> {
     final List<Widget> widgets;
     if (lastSeenTime == null ||
         lastSeenTime < -1 ||
-        (widget.profile.lastSeenTimeValue == -1 && !privacySettings.onlineStatus)) {
+        (widget.profile.lastSeenTimeValue == -1 && !privacySettings.onlineStatus) ||
+        (widget.profile.lastSeenTimeValue != null &&
+            widget.profile.lastSeenTimeValue! >= 0 &&
+            !privacySettings.lastSeenTime)) {
       return const SizedBox.shrink();
     } else if (widget.profile.lastSeenTimeValue == -1) {
       widgets = [

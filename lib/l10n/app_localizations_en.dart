@@ -1294,6 +1294,10 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get profile_filters_screen_profile_last_seen_time_filter_disabled_from_privacy =>
+      'Error: disabled from privacy settings';
+
+  @override
   String get profile_filters_screen_profile_last_seen_time_filter_online => 'Online';
 
   @override
