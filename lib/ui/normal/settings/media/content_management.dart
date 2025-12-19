@@ -151,41 +151,47 @@ Widget _buildAvailableImg(
       left: COMMON_SCREEN_EDGE_PADDING,
       right: COMMON_SCREEN_EDGE_PADDING,
     ),
-    child: Row(
+    child: Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(
-          width: SELECT_CONTENT_IMAGE_WIDTH,
-          height: SELECT_CONTENT_IMAGE_HEIGHT,
-          child: Material(
-            child: InkWell(
-              onTap: () => openViewImageScreenForAccountImage(context, accountId, content.cid),
-              child: accountImgWidgetInk(
-                context,
-                accountId,
-                content.cid,
-                cacheSize: ImageCacheSize.constantWidthAndHeight(
-                  context,
-                  SELECT_CONTENT_IMAGE_WIDTH,
-                  SELECT_CONTENT_IMAGE_HEIGHT,
+        Row(
+          children: [
+            SizedBox(
+              width: SELECT_CONTENT_IMAGE_WIDTH,
+              height: SELECT_CONTENT_IMAGE_HEIGHT,
+              child: Material(
+                child: InkWell(
+                  onTap: () => openViewImageScreenForAccountImage(context, accountId, content.cid),
+                  child: accountImgWidgetInk(
+                    context,
+                    accountId,
+                    content.cid,
+                    cacheSize: ImageCacheSize.constantWidthAndHeight(
+                      context,
+                      SELECT_CONTENT_IMAGE_WIDTH,
+                      SELECT_CONTENT_IMAGE_HEIGHT,
+                    ),
+                  ),
                 ),
               ),
             ),
-          ),
-        ),
-        const Padding(padding: EdgeInsets.symmetric(horizontal: 8)),
-        Expanded(
-          child: Center(
-            child: _statusInfo(
-              context,
-              accountId,
-              content,
-              unusedContentWaitSeconds,
-              securityContent,
-              myProfile,
+            const Padding(padding: EdgeInsets.symmetric(horizontal: 8)),
+            Expanded(
+              child: Center(
+                child: _statusInfo(
+                  context,
+                  accountId,
+                  content,
+                  unusedContentWaitSeconds,
+                  securityContent,
+                  myProfile,
+                ),
+              ),
             ),
-          ),
+          ],
         ),
-        _rejectionDetailsInfo(context, content),
+        _rejectionDetailsText(context, content),
       ],
     ),
   );
@@ -254,19 +260,14 @@ Widget _statusInfo(
   );
 }
 
-Widget _rejectionDetailsInfo(BuildContext context, ContentInfoDetailed content) {
+Widget _rejectionDetailsText(BuildContext context, ContentInfoDetailed content) {
   String infoText = "";
   infoText = addRejectedCategoryRow(context, infoText, content.rejectedReasonCategory?.value);
   infoText = addRejectedDetailsRow(context, infoText, content.rejectedReasonDetails?.value);
   infoText = infoText.trim();
 
   if (infoText.isNotEmpty) {
-    return IconButton(
-      onPressed: () {
-        showInfoDialog(context, infoText);
-      },
-      icon: const Icon(Icons.info),
-    );
+    return Padding(padding: const EdgeInsets.symmetric(vertical: 8.0), child: Text(infoText));
   } else {
     return const SizedBox.shrink();
   }
