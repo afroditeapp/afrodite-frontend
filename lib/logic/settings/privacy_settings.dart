@@ -17,8 +17,6 @@ sealed class PrivacySettingsEvent {}
 
 class ResetEdited extends PrivacySettingsEvent {}
 
-class LoadProfilePrivacySettings extends PrivacySettingsEvent {}
-
 class SavePrivacySettings extends PrivacySettingsEvent {}
 
 class ToggleMessageStateDelivered extends PrivacySettingsEvent {}
@@ -36,6 +34,11 @@ class _NewChatPrivacySettings extends PrivacySettingsEvent {
   _NewChatPrivacySettings(this.settings);
 }
 
+class _NewProfilePrivacySettings extends PrivacySettingsEvent {
+  final ProfilePrivacySettings? settings;
+  _NewProfilePrivacySettings(this.settings);
+}
+
 class PrivacySettingsBloc extends Bloc<PrivacySettingsEvent, PrivacySettingsData>
     with ActionRunner {
   final ChatRepository chat;
@@ -43,6 +46,7 @@ class PrivacySettingsBloc extends Bloc<PrivacySettingsEvent, PrivacySettingsData
   final AccountDatabaseManager db;
 
   StreamSubscription<ChatPrivacySettings?>? _privacySubscription;
+  StreamSubscription<ProfilePrivacySettings?>? _profilePrivacySubscription;
 
   PrivacySettingsBloc(RepositoryInstances r)
     : chat = r.chat,
@@ -51,23 +55,6 @@ class PrivacySettingsBloc extends Bloc<PrivacySettingsEvent, PrivacySettingsData
       super(PrivacySettingsData(edited: EditedPrivacySettingsData())) {
     on<ResetEdited>((data, emit) {
       emit(state.copyWith(edited: EditedPrivacySettingsData()));
-    });
-    on<LoadProfilePrivacySettings>((data, emit) async {
-      emit(state.copyWith(profilePrivacyLoading: true));
-      final result = await api.profile((api) => api.getProfilePrivacySettings());
-      final settings = result.ok();
-      if (settings != null) {
-        emit(
-          state.copyWith(
-            lastSeenTime: settings.lastSeenTime,
-            onlineStatus: settings.onlineStatus,
-            profilePrivacyLoadError: false,
-            profilePrivacyLoading: false,
-          ),
-        );
-      } else {
-        emit(state.copyWith(profilePrivacyLoadError: true, profilePrivacyLoading: false));
-      }
     });
     on<_NewChatPrivacySettings>((data, emit) async {
       final settings = data.settings;
@@ -78,6 +65,14 @@ class PrivacySettingsBloc extends Bloc<PrivacySettingsEvent, PrivacySettingsData
             messageStateSent: settings.messageStateSent,
             typingIndicator: settings.typingIndicator,
           ),
+        );
+      }
+    });
+    on<_NewProfilePrivacySettings>((data, emit) async {
+      final settings = data.settings;
+      if (settings != null) {
+        emit(
+          state.copyWith(lastSeenTime: settings.lastSeenTime, onlineStatus: settings.onlineStatus),
         );
       }
     });
@@ -105,6 +100,11 @@ class PrivacySettingsBloc extends Bloc<PrivacySettingsEvent, PrivacySettingsData
       );
       if (chatResult.isOk()) {
         await db.accountAction((db) => db.privacy.updateChatPrivacySettings(chatSettings));
+      }
+      if (profileResult.isOk()) {
+        await db.accountAction(
+          (db) => db.profilePrivacy.updateProfilePrivacySettings(profileSettings),
+        );
       }
       if (chatResult.isErr() || profileResult.isErr()) {
         showSnackBar(R.strings.generic_error_occurred);
@@ -170,6 +170,11 @@ class PrivacySettingsBloc extends Bloc<PrivacySettingsEvent, PrivacySettingsData
     ) {
       add(_NewChatPrivacySettings(settings));
     });
+    _profilePrivacySubscription = db
+        .accountStream((db) => db.profilePrivacy.watchProfilePrivacySettings())
+        .listen((settings) {
+          add(_NewProfilePrivacySettings(settings));
+        });
   }
 
   void _updateEditedValue(
@@ -190,6 +195,7 @@ class PrivacySettingsBloc extends Bloc<PrivacySettingsEvent, PrivacySettingsData
   @override
   Future<void> close() async {
     await _privacySubscription?.cancel();
+    await _profilePrivacySubscription?.cancel();
     await super.close();
   }
 }

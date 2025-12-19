@@ -49,7 +49,6 @@ class _PrivacySettingsScreenState extends State<PrivacySettingsScreen> {
   void initState() {
     super.initState();
     widget.privacySettingsBloc.add(ResetEdited());
-    widget.privacySettingsBloc.add(LoadProfilePrivacySettings());
   }
 
   @override

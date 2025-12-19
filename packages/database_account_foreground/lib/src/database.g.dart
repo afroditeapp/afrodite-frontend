@@ -11331,6 +11331,277 @@ class AutomaticProfileSearchSettingsCompanion
   }
 }
 
+class $ProfilePrivacySettingsTable extends schema.ProfilePrivacySettings
+    with TableInfo<$ProfilePrivacySettingsTable, ProfilePrivacySetting> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $ProfilePrivacySettingsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _lastSeenTimeMeta = const VerificationMeta(
+    'lastSeenTime',
+  );
+  @override
+  late final GeneratedColumn<bool> lastSeenTime = GeneratedColumn<bool>(
+    'last_seen_time',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("last_seen_time" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _onlineStatusMeta = const VerificationMeta(
+    'onlineStatus',
+  );
+  @override
+  late final GeneratedColumn<bool> onlineStatus = GeneratedColumn<bool>(
+    'online_status',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("online_status" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  @override
+  List<GeneratedColumn> get $columns => [id, lastSeenTime, onlineStatus];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'profile_privacy_settings';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<ProfilePrivacySetting> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('last_seen_time')) {
+      context.handle(
+        _lastSeenTimeMeta,
+        lastSeenTime.isAcceptableOrUnknown(
+          data['last_seen_time']!,
+          _lastSeenTimeMeta,
+        ),
+      );
+    }
+    if (data.containsKey('online_status')) {
+      context.handle(
+        _onlineStatusMeta,
+        onlineStatus.isAcceptableOrUnknown(
+          data['online_status']!,
+          _onlineStatusMeta,
+        ),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  ProfilePrivacySetting map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return ProfilePrivacySetting(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      lastSeenTime: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}last_seen_time'],
+      )!,
+      onlineStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}online_status'],
+      )!,
+    );
+  }
+
+  @override
+  $ProfilePrivacySettingsTable createAlias(String alias) {
+    return $ProfilePrivacySettingsTable(attachedDatabase, alias);
+  }
+}
+
+class ProfilePrivacySetting extends DataClass
+    implements Insertable<ProfilePrivacySetting> {
+  final int id;
+  final bool lastSeenTime;
+  final bool onlineStatus;
+  const ProfilePrivacySetting({
+    required this.id,
+    required this.lastSeenTime,
+    required this.onlineStatus,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['last_seen_time'] = Variable<bool>(lastSeenTime);
+    map['online_status'] = Variable<bool>(onlineStatus);
+    return map;
+  }
+
+  ProfilePrivacySettingsCompanion toCompanion(bool nullToAbsent) {
+    return ProfilePrivacySettingsCompanion(
+      id: Value(id),
+      lastSeenTime: Value(lastSeenTime),
+      onlineStatus: Value(onlineStatus),
+    );
+  }
+
+  factory ProfilePrivacySetting.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return ProfilePrivacySetting(
+      id: serializer.fromJson<int>(json['id']),
+      lastSeenTime: serializer.fromJson<bool>(json['lastSeenTime']),
+      onlineStatus: serializer.fromJson<bool>(json['onlineStatus']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'lastSeenTime': serializer.toJson<bool>(lastSeenTime),
+      'onlineStatus': serializer.toJson<bool>(onlineStatus),
+    };
+  }
+
+  ProfilePrivacySetting copyWith({
+    int? id,
+    bool? lastSeenTime,
+    bool? onlineStatus,
+  }) => ProfilePrivacySetting(
+    id: id ?? this.id,
+    lastSeenTime: lastSeenTime ?? this.lastSeenTime,
+    onlineStatus: onlineStatus ?? this.onlineStatus,
+  );
+  ProfilePrivacySetting copyWithCompanion(
+    ProfilePrivacySettingsCompanion data,
+  ) {
+    return ProfilePrivacySetting(
+      id: data.id.present ? data.id.value : this.id,
+      lastSeenTime: data.lastSeenTime.present
+          ? data.lastSeenTime.value
+          : this.lastSeenTime,
+      onlineStatus: data.onlineStatus.present
+          ? data.onlineStatus.value
+          : this.onlineStatus,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ProfilePrivacySetting(')
+          ..write('id: $id, ')
+          ..write('lastSeenTime: $lastSeenTime, ')
+          ..write('onlineStatus: $onlineStatus')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, lastSeenTime, onlineStatus);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is ProfilePrivacySetting &&
+          other.id == this.id &&
+          other.lastSeenTime == this.lastSeenTime &&
+          other.onlineStatus == this.onlineStatus);
+}
+
+class ProfilePrivacySettingsCompanion
+    extends UpdateCompanion<ProfilePrivacySetting> {
+  final Value<int> id;
+  final Value<bool> lastSeenTime;
+  final Value<bool> onlineStatus;
+  const ProfilePrivacySettingsCompanion({
+    this.id = const Value.absent(),
+    this.lastSeenTime = const Value.absent(),
+    this.onlineStatus = const Value.absent(),
+  });
+  ProfilePrivacySettingsCompanion.insert({
+    this.id = const Value.absent(),
+    this.lastSeenTime = const Value.absent(),
+    this.onlineStatus = const Value.absent(),
+  });
+  static Insertable<ProfilePrivacySetting> custom({
+    Expression<int>? id,
+    Expression<bool>? lastSeenTime,
+    Expression<bool>? onlineStatus,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (lastSeenTime != null) 'last_seen_time': lastSeenTime,
+      if (onlineStatus != null) 'online_status': onlineStatus,
+    });
+  }
+
+  ProfilePrivacySettingsCompanion copyWith({
+    Value<int>? id,
+    Value<bool>? lastSeenTime,
+    Value<bool>? onlineStatus,
+  }) {
+    return ProfilePrivacySettingsCompanion(
+      id: id ?? this.id,
+      lastSeenTime: lastSeenTime ?? this.lastSeenTime,
+      onlineStatus: onlineStatus ?? this.onlineStatus,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (lastSeenTime.present) {
+      map['last_seen_time'] = Variable<bool>(lastSeenTime.value);
+    }
+    if (onlineStatus.present) {
+      map['online_status'] = Variable<bool>(onlineStatus.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ProfilePrivacySettingsCompanion(')
+          ..write('id: $id, ')
+          ..write('lastSeenTime: $lastSeenTime, ')
+          ..write('onlineStatus: $onlineStatus')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $MyKeyPairTable extends schema.MyKeyPair
     with TableInfo<$MyKeyPairTable, MyKeyPairData> {
   @override
@@ -13771,6 +14042,8 @@ abstract class _$AccountForegroundDatabase extends GeneratedDatabase {
   );
   late final $AutomaticProfileSearchSettingsTable
   automaticProfileSearchSettings = $AutomaticProfileSearchSettingsTable(this);
+  late final $ProfilePrivacySettingsTable profilePrivacySettings =
+      $ProfilePrivacySettingsTable(this);
   late final $MyKeyPairTable myKeyPair = $MyKeyPairTable(this);
   late final $PublicKeyTable publicKey = $PublicKeyTable(this);
   late final $ConversationListTable conversationList = $ConversationListTable(
@@ -13807,6 +14080,8 @@ abstract class _$AccountForegroundDatabase extends GeneratedDatabase {
   late final DaoReadMyProfile daoReadMyProfile = DaoReadMyProfile(
     this as AccountForegroundDatabase,
   );
+  late final DaoReadProfilePrivacy daoReadProfilePrivacy =
+      DaoReadProfilePrivacy(this as AccountForegroundDatabase);
   late final DaoReadSearch daoReadSearch = DaoReadSearch(
     this as AccountForegroundDatabase,
   );
@@ -13854,6 +14129,8 @@ abstract class _$AccountForegroundDatabase extends GeneratedDatabase {
   late final DaoWriteMyProfile daoWriteMyProfile = DaoWriteMyProfile(
     this as AccountForegroundDatabase,
   );
+  late final DaoWriteProfilePrivacy daoWriteProfilePrivacy =
+      DaoWriteProfilePrivacy(this as AccountForegroundDatabase);
   late final DaoWriteSearch daoWriteSearch = DaoWriteSearch(
     this as AccountForegroundDatabase,
   );
@@ -13912,6 +14189,7 @@ abstract class _$AccountForegroundDatabase extends GeneratedDatabase {
     profileLocation,
     favoriteProfiles,
     automaticProfileSearchSettings,
+    profilePrivacySettings,
     myKeyPair,
     publicKey,
     conversationList,

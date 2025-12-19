@@ -12,6 +12,7 @@ import 'package:database_account_foreground/src/read/common/common.dart';
 import 'package:database_account_foreground/src/read/media/media.dart';
 import 'package:database_account_foreground/src/read/media/my_media.dart';
 import 'package:database_account_foreground/src/read/profile/my_profile.dart';
+import 'package:database_account_foreground/src/read/profile/privacy.dart';
 import 'package:database_account_foreground/src/read/profile/profile.dart';
 import 'package:database_account_foreground/src/read/profile/search.dart';
 import 'package:database_account_foreground/src/write/account/account.dart';
@@ -28,6 +29,7 @@ import 'package:database_account_foreground/src/write/common/common.dart';
 import 'package:database_account_foreground/src/write/media/media.dart';
 import 'package:database_account_foreground/src/write/media/my_media.dart';
 import 'package:database_account_foreground/src/write/profile/my_profile.dart';
+import 'package:database_account_foreground/src/write/profile/privacy.dart';
 import 'package:database_account_foreground/src/write/profile/profile.dart';
 import 'package:database_account_foreground/src/write/profile/search.dart';
 import 'package:database_utils/database_utils.dart';
@@ -81,6 +83,7 @@ part 'database.g.dart';
     schema.ProfileLocation,
     schema.FavoriteProfiles,
     schema.AutomaticProfileSearchSettings,
+    schema.ProfilePrivacySettings,
     // Chat
     schema.MyKeyPair,
     schema.PublicKey,
@@ -106,6 +109,7 @@ part 'database.g.dart';
     // Profile
     DaoReadProfile,
     DaoReadMyProfile,
+    DaoReadProfilePrivacy,
     DaoReadSearch,
     // Chat
     DaoReadBackup,
@@ -131,6 +135,7 @@ part 'database.g.dart';
     // Profile
     DaoWriteProfile,
     DaoWriteMyProfile,
+    DaoWriteProfilePrivacy,
     DaoWriteSearch,
     // Chat
     DaoWriteBackup,
@@ -169,6 +174,7 @@ class AccountForegroundDatabaseRead {
   // Profile
   DaoReadProfile get profile => db.daoReadProfile;
   DaoReadMyProfile get myProfile => db.daoReadMyProfile;
+  DaoReadProfilePrivacy get profilePrivacy => db.daoReadProfilePrivacy;
   DaoReadSearch get search => db.daoReadSearch;
   // Chat
   DaoReadBackup get backup => db.daoReadBackup;
@@ -196,6 +202,7 @@ class AccountForegroundDatabaseWrite {
   // Profile
   DaoWriteProfile get profile => db.daoWriteProfile;
   DaoWriteMyProfile get myProfile => db.daoWriteMyProfile;
+  DaoWriteProfilePrivacy get profilePrivacy => db.daoWriteProfilePrivacy;
   DaoWriteSearch get search => db.daoWriteSearch;
   // Chat
   DaoWriteBackup get backup => db.daoWriteBackup;

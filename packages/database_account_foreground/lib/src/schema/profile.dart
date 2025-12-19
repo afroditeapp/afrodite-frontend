@@ -137,3 +137,8 @@ class AutomaticProfileSearchSettings extends SingleRowTable {
       .map(NullAwareTypeConverter.wrap(const AutomaticProfileSearchSettingsConverter()))
       .nullable()();
 }
+
+class ProfilePrivacySettings extends SingleRowTable {
+  BoolColumn get lastSeenTime => boolean().withDefault(const Constant(false))();
+  BoolColumn get onlineStatus => boolean().withDefault(const Constant(false))();
+}

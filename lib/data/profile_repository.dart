@@ -85,6 +85,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
         })
         .andThen((_) => reloadFavoriteProfiles())
         .andThen((_) => _reloadProfileNotificationSettings())
+        .andThen((_) => reloadProfilePrivacySettings())
         .andThenEmptyErr((_) => db.accountAction((db) => db.app.updateProfileSyncDone(true)));
   }
 
@@ -425,6 +426,16 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
                 db.myProfile.updateProfileLocation(latitude: l.latitude, longitude: l.longitude),
           ),
         );
+  }
+
+  Future<Result<(), ()>> reloadProfilePrivacySettings() async {
+    final settings = await _api.profile((api) => api.getProfilePrivacySettings()).ok();
+    if (settings == null) {
+      return const Err(());
+    }
+    return await db
+        .accountAction((db) => db.profilePrivacy.updateProfilePrivacySettings(settings))
+        .emptyErr();
   }
 
   Future<Result<(), ()>> reloadProfileFilters() async {
