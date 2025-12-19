@@ -111,7 +111,7 @@ class ChatBackupBloc extends Bloc<ChatBackupEvent, ChatBackupData> with ActionRu
 
     final appName = R.strings.app_name.toLowerCase();
     final timestamp = DateFormat('yyyy-MM-dd_HH-mm').format(DateTime.now());
-    final fileName = "${appName}_chat_backup_$timestamp.backup";
+    final fileName = "${appName}_$timestamp.backup";
 
     return (fileName: fileName, bytes: bytes);
   }
