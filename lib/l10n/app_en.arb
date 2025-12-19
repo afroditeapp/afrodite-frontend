@@ -681,8 +681,8 @@
       }
     }
   },
-  "edit_profile_text_screen_text_lenght_too_long": "Profile text byte count is more than 2000 bytes",
-  "@edit_profile_text_screen_text_lenght_too_long": {
+  "edit_profile_text_screen_text_length_too_long": "Profile text byte count is more than 2000 bytes",
+  "@edit_profile_text_screen_text_length_too_long": {
     "description": "Dialog text for notifying user when profile text is too long"
   },
   "email_login_screen_code_hint": "Login code",

@@ -7,17 +7,17 @@ import 'package:native_utils_ffi/src/bindings.dart';
 const _ENCRYPTION_EXTRA_SPACE = 28;
 
 (Uint8List?, int) encryptContentData(Uint8List input, Uint8List key) {
-  int dataLenght = input.length + _ENCRYPTION_EXTRA_SPACE;
+  int dataLength = input.length + _ENCRYPTION_EXTRA_SPACE;
 
-  final Pointer<Uint8> data = malloc.allocate(dataLenght);
-  final l = data.asTypedList(dataLenght);
+  final Pointer<Uint8> data = malloc.allocate(dataLength);
+  final l = data.asTypedList(dataLength);
   l.setAll(0, input);
 
   final Pointer<Uint8> keyData = malloc.allocate(key.length);
   final keyL = keyData.asTypedList(key.length);
   keyL.setAll(0, key);
 
-  final encryptionResult = getBindings().encrypt_content(data, dataLenght, keyData, key.length);
+  final encryptionResult = getBindings().encrypt_content(data, dataLength, keyData, key.length);
 
   final output = Uint8List.fromList(l);
   malloc.free(data);
@@ -41,9 +41,9 @@ const _ENCRYPTION_EXTRA_SPACE = 28;
 
   final decryptionResult = getBindings().decrypt_content(data, input.length, keyData, key.length);
 
-  final plaintextLenght = input.length - _ENCRYPTION_EXTRA_SPACE;
-  final output = Uint8List(plaintextLenght);
-  output.setRange(0, plaintextLenght, l);
+  final plaintextLength = input.length - _ENCRYPTION_EXTRA_SPACE;
+  final output = Uint8List(plaintextLength);
+  output.setRange(0, plaintextLength, l);
   malloc.free(data);
   malloc.free(keyData);
 

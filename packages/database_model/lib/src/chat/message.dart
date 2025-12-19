@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-/// Packet type lenght is 1 byte.
+/// Packet type length is 1 byte.
 enum _MessagePacketType {
   /// Next data is little endian encoded 16 bit unsigned number for
   /// UTF-8 data byte count and after that is the UTF-8 data.
@@ -31,10 +31,10 @@ sealed class Message {
         return UnsupportedMessage(bytes);
       }
       final littleEndianBytes = [numberList[1], numberList[2]];
-      final utf8Lenght = ByteData.sublistView(
+      final utf8Length = ByteData.sublistView(
         Uint8List.fromList(littleEndianBytes),
       ).getUint16(0, Endian.little);
-      final utf8Text = numberList.skip(3).take(utf8Lenght).toList();
+      final utf8Text = numberList.skip(3).take(utf8Length).toList();
       try {
         final textMessage = TextMessage.create(utf8.decode(utf8Text));
         if (textMessage == null) {
@@ -70,9 +70,9 @@ class TextMessage extends Message {
   Uint8List toMessagePacket() {
     final textBytes = utf8.encode(text);
 
-    final textLenghtBytes = u16ToLittleEndianBytes(textBytes.length);
+    final textLengthBytes = u16ToLittleEndianBytes(textBytes.length);
 
-    final bytes = [_MessagePacketType.text.number, ...textLenghtBytes, ...textBytes];
+    final bytes = [_MessagePacketType.text.number, ...textLengthBytes, ...textBytes];
 
     return Uint8List.fromList(bytes);
   }

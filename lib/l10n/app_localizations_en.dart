@@ -525,7 +525,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get edit_profile_text_screen_text_lenght_too_long =>
+  String get edit_profile_text_screen_text_length_too_long =>
       'Profile text byte count is more than 2000 bytes';
 
   @override

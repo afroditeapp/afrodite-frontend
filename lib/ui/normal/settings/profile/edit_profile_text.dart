@@ -40,10 +40,10 @@ class EditProfileTextScreenState extends State<EditProfileTextScreen> {
     return BlocBuilder<EditMyProfileBloc, EditMyProfileData>(
       builder: (context, state) {
         return PopScope(
-          canPop: state.profileTextByteLenghtLessOrMaxValue(),
+          canPop: state.profileTextByteLengthLessOrMaxValue(),
           onPopInvokedWithResult: (didPop, _) {
             if (!didPop) {
-              showSnackBar(context.strings.edit_profile_text_screen_text_lenght_too_long);
+              showSnackBar(context.strings.edit_profile_text_screen_text_length_too_long);
             }
           },
           child: GestureDetector(

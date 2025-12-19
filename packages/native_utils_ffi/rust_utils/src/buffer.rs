@@ -96,7 +96,7 @@ mod test {
 
     #[test]
     #[should_panic]
-    fn zero_lenght_buffers_are_not_accepted() {
+    fn zero_length_buffers_are_not_accepted() {
         SliceBuffer::buffer_with_empty_space(&mut [], 0).unwrap();
     }
 

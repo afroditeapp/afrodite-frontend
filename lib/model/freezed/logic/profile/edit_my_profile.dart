@@ -17,7 +17,7 @@ class EditMyProfileData with _$EditMyProfileData {
     PageKey? pageKey,
   }) = _EditMyProfileData;
 
-  bool profileTextByteLenghtLessOrMaxValue() {
+  bool profileTextByteLengthLessOrMaxValue() {
     final length = profileText?.length ?? 0;
     return length <= 2000;
   }
