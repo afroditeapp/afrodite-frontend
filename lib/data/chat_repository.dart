@@ -39,8 +39,7 @@ class ChatRepository extends DataRepositoryWithLifecycle {
     required this.messageKeyManager,
     required ServerConnectionManager connectionManager,
     required this.currentUser,
-  }) : syncHandler = ConnectedActionScheduler(connectionManager),
-       profileEntryDownloader = ProfileEntryDownloader(
+  }) : profileEntryDownloader = ProfileEntryDownloader(
          media,
          accountBackgroundDb,
          db,
@@ -62,8 +61,6 @@ class ChatRepository extends DataRepositoryWithLifecycle {
        typingIndicatorManager = TypingIndicatorManager(connectionManager, account),
        checkOnlineStatusManager = CheckOnlineStatusManager(connectionManager, account, db);
 
-  final ConnectedActionScheduler syncHandler;
-
   final ProfileEntryDownloader profileEntryDownloader;
   final AccountIdDatabaseIterator sentBlocksIterator;
   final ApiManager api;
@@ -79,7 +76,6 @@ class ChatRepository extends DataRepositoryWithLifecycle {
 
   @override
   Future<void> dispose() async {
-    await syncHandler.dispose();
     await messageManager.dispose();
     await typingIndicatorManager.dispose();
     await checkOnlineStatusManager.dispose();
@@ -101,24 +97,6 @@ class ChatRepository extends DataRepositoryWithLifecycle {
         .andThen((_) => reloadChatPrivacySettings())
         .andThen((_) => reloadDailyLikesLimit())
         .andThenEmptyErr((_) => db.accountAction((db) => db.app.updateChatSyncDone(true)));
-  }
-
-  @override
-  Future<void> onResumeAppUsage() async {
-    syncHandler.onResumeAppUsageSync(() async {
-      final currentChatSyncValue =
-          await db.accountStreamSingle((db) => db.app.watchChatSyncDone()).ok() ?? false;
-      if (currentChatSyncValue) {
-        // Already done
-        return;
-      }
-      await _sentBlocksRefresh()
-          .andThen((_) => _downloadPublicKeyIdFromServerAndGenerateInitialKeysIfNeeded())
-          .andThen((_) => _reloadChatNotificationSettings())
-          .andThen((_) => reloadChatPrivacySettings())
-          .andThen((_) => reloadDailyLikesLimit())
-          .andThenEmptyErr((_) => db.accountAction((db) => db.app.updateChatSyncDone(true)));
-    });
   }
 
   Future<Result<(), ()>> _downloadPublicKeyIdFromServerAndGenerateInitialKeysIfNeeded() async {

@@ -19,7 +19,6 @@ import 'package:utils/utils.dart';
 final _log = Logger("MediaRepository");
 
 class MediaRepository extends DataRepositoryWithLifecycle {
-  final ConnectedActionScheduler syncHandler;
   final ApiManager api;
   final AccountDatabaseManager db;
   final AccountBackgroundDatabaseManager accountBackgroundDb;
@@ -35,8 +34,7 @@ class MediaRepository extends DataRepositoryWithLifecycle {
     this.accountBackgroundDb,
     this.connectionManager,
     this.currentUser,
-  ) : syncHandler = ConnectedActionScheduler(connectionManager),
-      api = connectionManager;
+  ) : api = connectionManager;
 
   @override
   Future<void> init() async {
@@ -45,7 +43,7 @@ class MediaRepository extends DataRepositoryWithLifecycle {
 
   @override
   Future<void> dispose() async {
-    await syncHandler.dispose();
+    // nothing to do
   }
 
   @override
@@ -58,19 +56,6 @@ class MediaRepository extends DataRepositoryWithLifecycle {
     return await reloadMyMediaContent()
         .andThen((_) => _reloadMediaNotificationSettings())
         .andThenEmptyErr((_) => db.accountAction((db) => db.app.updateMediaSyncDone(true)));
-  }
-
-  @override
-  Future<void> onResumeAppUsage() async {
-    syncHandler.onResumeAppUsageSync(() async {
-      final syncDone =
-          await db.accountStreamSingle((db) => db.app.watchMediaSyncDone()).ok() ?? false;
-      if (!syncDone) {
-        await reloadMyMediaContent()
-            .andThen((_) => _reloadMediaNotificationSettings())
-            .andThenEmptyErr((_) => db.accountAction((db) => db.app.updateMediaSyncDone(true)));
-      }
-    });
   }
 
   @override

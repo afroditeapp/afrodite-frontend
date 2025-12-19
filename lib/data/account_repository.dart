@@ -116,14 +116,6 @@ class AccountRepository extends DataRepositoryWithLifecycle {
   Future<void> onResumeAppUsage() async {
     _syncHandler.onResumeAppUsageSync(() async {
       await _updateClientLanguageIfNeeded();
-
-      final syncDone =
-          await db.accountStreamSingle((db) => db.app.watchAccountSyncDone()).ok() ?? false;
-      if (!syncDone) {
-        await _reloadAccountNotificationSettings()
-            .andThen((_) => _reloadClientLanguageOnServer())
-            .andThenEmptyErr((_) => db.accountAction((db) => db.app.updateAccountSyncDone(true)));
-      }
     });
   }
 

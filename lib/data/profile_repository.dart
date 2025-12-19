@@ -23,7 +23,6 @@ import 'package:rxdart/rxdart.dart';
 import 'package:utils/utils.dart';
 
 class ProfileRepository extends DataRepositoryWithLifecycle {
-  final ConnectedActionScheduler syncHandler;
   final AccountDatabaseManager db;
   final AccountBackgroundDatabaseManager accountBackgroundDb;
   final ApiManager _api;
@@ -41,8 +40,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
     this.accountBackgroundDb,
     this.connectionManager,
     this.currentUser,
-  ) : syncHandler = ConnectedActionScheduler(connectionManager),
-      _api = connectionManager;
+  ) : _api = connectionManager;
 
   final PublishSubject<ProfileChange> _profileChangesRelay = PublishSubject();
   void sendProfileChange(ProfileChange change) {
@@ -66,7 +64,6 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
 
   @override
   Future<void> dispose() async {
-    await syncHandler.dispose();
     await _profileChangesRelay.close();
   }
 
@@ -89,60 +86,6 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
         .andThen((_) => reloadFavoriteProfiles())
         .andThen((_) => _reloadProfileNotificationSettings())
         .andThenEmptyErr((_) => db.accountAction((db) => db.app.updateProfileSyncDone(true)));
-  }
-
-  @override
-  Future<void> onResumeAppUsage() async {
-    syncHandler.onResumeAppUsageSync(() async {
-      final result = await db.accountStreamSingle((db) => db.myProfile.watchProfileLocation()).ok();
-      if (result == null) {
-        await reloadLocation();
-      }
-
-      final attributeFilters = await db
-          .accountStreamSingle((db) => db.search.watchProfileFilters())
-          .ok();
-      if (attributeFilters == null) {
-        await reloadProfileFilters();
-      }
-
-      final searchAgeRangeMin = await db
-          .accountStreamSingle((db) => db.search.watchProfileSearchAgeRangeMin())
-          .ok();
-      final searchAgeRangeMax = await db
-          .accountStreamSingle((db) => db.search.watchProfileSearchAgeRangeMax())
-          .ok();
-      if (searchAgeRangeMin == null || searchAgeRangeMax == null) {
-        await reloadSearchAgeRange();
-      }
-
-      final searchGroups = await db.accountStreamSingle((db) => db.search.watchSearchGroups()).ok();
-      if (searchGroups == null) {
-        await reloadSearchGroups();
-      }
-
-      final automaticProfileSearchSettings = await db
-          .accountStreamSingle((db) => db.search.watchAutomaticProfileSearchSettings())
-          .ok();
-      if (automaticProfileSearchSettings == null) {
-        await reloadAutomaticProfileSearchSettings();
-      }
-
-      final initialAgeInfo = await db
-          .accountStreamSingle((db) => db.myProfile.watchInitialAgeInfo())
-          .ok();
-      if (initialAgeInfo == null) {
-        await downloadInitialSetupAgeInfoIfNull(skipIfAccountStateIsInitialSetup: false);
-      }
-
-      final syncDone =
-          await db.accountStreamSingle((db) => db.app.watchProfileSyncDone()).ok() ?? false;
-      if (!syncDone) {
-        await reloadFavoriteProfiles()
-            .andThen((_) => _reloadProfileNotificationSettings())
-            .andThenEmptyErr((_) => db.accountAction((db) => db.app.updateProfileSyncDone(true)));
-      }
-    });
   }
 
   @override
