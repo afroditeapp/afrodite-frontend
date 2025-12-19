@@ -121,7 +121,7 @@ class ProfileThumbnailStatusIndicatorsBottom extends StatelessWidget {
                   width: onlineIndicatorSize,
                   height: onlineIndicatorSize,
                   decoration: BoxDecoration(
-                    color: Colors.green,
+                    color: PROFILE_CURRENTLY_ONLINE_COLOR,
                     borderRadius: BorderRadius.circular(onlineIndicatorRadius),
                   ),
                 ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 const LINK_COLOR = Colors.blue;
+const PROFILE_CURRENTLY_ONLINE_COLOR = Colors.green;
 
 // This color is from _IconButtonDefaultsM3
 // which is in Flutter sources.

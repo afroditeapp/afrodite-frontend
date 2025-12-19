@@ -223,7 +223,7 @@ class _ViewProfileEntryState extends State<ViewProfileEntry> {
           width: PROFILE_CURRENTLY_ONLINE_SIZE,
           height: PROFILE_CURRENTLY_ONLINE_SIZE,
           decoration: BoxDecoration(
-            color: Colors.green,
+            color: PROFILE_CURRENTLY_ONLINE_COLOR,
             borderRadius: BorderRadius.circular(PROFILE_CURRENTLY_ONLINE_RADIUS),
           ),
         ),

@@ -279,7 +279,7 @@ class _ProfileFiltersScreenState extends State<ProfileFiltersScreen> {
                 width: PROFILE_CURRENTLY_ONLINE_SIZE,
                 height: PROFILE_CURRENTLY_ONLINE_SIZE,
                 decoration: BoxDecoration(
-                  color: disabledColor ?? Colors.green,
+                  color: disabledColor ?? PROFILE_CURRENTLY_ONLINE_COLOR,
                   borderRadius: BorderRadius.circular(PROFILE_CURRENTLY_ONLINE_RADIUS),
                 ),
               ),
