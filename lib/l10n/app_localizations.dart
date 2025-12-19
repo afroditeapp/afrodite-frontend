@@ -2404,6 +2404,12 @@ abstract class AppLocalizations {
   /// **'Online'**
   String get profile_filters_screen_profile_last_seen_time_filter_online;
 
+  /// Error text when trying to use online filter but online status is disabled from privacy settings
+  ///
+  /// In en, this message translates to:
+  /// **'Online (Error: disabled from privacy settings)'**
+  String get profile_filters_screen_profile_last_seen_time_filter_online_disabled_from_privacy;
+
   /// Value text for profile text filter
   ///
   /// In en, this message translates to:

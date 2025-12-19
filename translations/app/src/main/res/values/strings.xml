@@ -404,6 +404,7 @@
     <string name="profile_filters_screen_unlimited_likes_filter" description="Title for unlimited likes filter">Up for a date today</string>
     <string name="profile_filters_screen_profile_last_seen_time_filter" description="Title for profile last seen time filter">Last seen</string>
     <string name="profile_filters_screen_profile_last_seen_time_filter_online" description="Value text for profile last seen time filter when only online profiles should be shown">Online</string>
+    <string name="profile_filters_screen_profile_last_seen_time_filter_online_disabled_from_privacy" description="Error text when trying to use online filter but online status is disabled from privacy settings">Online (Error: disabled from privacy settings)</string>
     <string name="profile_filters_screen_profile_last_seen_time_filter_day" description="Value text for profile last seen time filter when day is selected">%s day</string>
     <string name="profile_filters_screen_profile_last_seen_time_filter_days" description="Value text for profile last seen time filter when multiple days is selected">%s days</string>
     <string name="profile_filters_screen_profile_last_seen_time_filter_all" description="Value text for profile last seen time filter when all is selected">Anytime</string>

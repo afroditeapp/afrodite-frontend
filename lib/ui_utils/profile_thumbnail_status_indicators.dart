@@ -1,5 +1,7 @@
 import 'package:app/data/image_cache.dart';
 import 'package:app/database/account_database_manager.dart';
+import 'package:app/logic/settings/privacy_settings.dart';
+import 'package:app/model/freezed/logic/settings/privacy_settings.dart';
 import 'package:app/ui_utils/consts/colors.dart';
 import 'package:app/ui_utils/consts/corners.dart';
 import 'package:app/ui_utils/consts/icons.dart';
@@ -7,6 +9,7 @@ import 'package:app/ui_utils/consts/size.dart';
 import 'package:app/ui_utils/profile_thumbnail_image_or_error.dart';
 import 'package:database/database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:utils/utils.dart';
 
@@ -115,16 +118,24 @@ class ProfileThumbnailStatusIndicatorsBottom extends StatelessWidget {
         child: Row(
           children: [
             if (profile.lastSeenTimeValue == -1)
-              Padding(
-                padding: EdgeInsets.only(left: padding),
-                child: Container(
-                  width: onlineIndicatorSize,
-                  height: onlineIndicatorSize,
-                  decoration: BoxDecoration(
-                    color: PROFILE_CURRENTLY_ONLINE_COLOR,
-                    borderRadius: BorderRadius.circular(onlineIndicatorRadius),
-                  ),
-                ),
+              BlocBuilder<PrivacySettingsBloc, PrivacySettingsData>(
+                builder: (context, privacyState) {
+                  if (privacyState.onlineStatus) {
+                    return Padding(
+                      padding: EdgeInsets.only(left: padding),
+                      child: Container(
+                        width: onlineIndicatorSize,
+                        height: onlineIndicatorSize,
+                        decoration: BoxDecoration(
+                          color: PROFILE_CURRENTLY_ONLINE_COLOR,
+                          borderRadius: BorderRadius.circular(onlineIndicatorRadius),
+                        ),
+                      ),
+                    );
+                  } else {
+                    return SizedBox.shrink();
+                  }
+                },
               ),
             if (!appBarMode && profile.unlimitedLikes) const Spacer(),
             if (!appBarMode && profile.unlimitedLikes)

@@ -1297,6 +1297,10 @@ class AppLocalizationsSv extends AppLocalizations {
   String get profile_filters_screen_profile_last_seen_time_filter_online => 'Online';
 
   @override
+  String get profile_filters_screen_profile_last_seen_time_filter_online_disabled_from_privacy =>
+      'Online (Error: disabled from privacy settings)';
+
+  @override
   String get profile_filters_screen_profile_text_filter => 'Profile text length';
 
   @override

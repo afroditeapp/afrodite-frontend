@@ -2,6 +2,7 @@ import "dart:async";
 
 import "package:app/api/server_connection_manager.dart";
 import "package:app/data/chat_repository.dart";
+import "package:app/data/profile_repository.dart";
 import "package:app/data/utils/repository_instances.dart";
 import "package:app/database/account_database_manager.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
@@ -11,6 +12,7 @@ import "package:app/model/freezed/logic/settings/privacy_settings.dart";
 import "package:app/ui_utils/common_update_logic.dart";
 import "package:app/ui_utils/snack_bar.dart";
 import "package:app/utils.dart";
+import "package:app/utils/api.dart";
 import "package:app/utils/time.dart";
 
 sealed class PrivacySettingsEvent {}
@@ -42,6 +44,7 @@ class _NewProfilePrivacySettings extends PrivacySettingsEvent {
 class PrivacySettingsBloc extends Bloc<PrivacySettingsEvent, PrivacySettingsData>
     with ActionRunner {
   final ChatRepository chat;
+  final ProfileRepository profile;
   final ApiManager api;
   final AccountDatabaseManager db;
 
@@ -50,6 +53,7 @@ class PrivacySettingsBloc extends Bloc<PrivacySettingsEvent, PrivacySettingsData
 
   PrivacySettingsBloc(RepositoryInstances r)
     : chat = r.chat,
+      profile = r.profile,
       api = r.api,
       db = r.accountDb,
       super(PrivacySettingsData(edited: EditedPrivacySettingsData())) {
@@ -115,6 +119,28 @@ class PrivacySettingsBloc extends Bloc<PrivacySettingsEvent, PrivacySettingsData
       emit(state.copyWith(updateState: const UpdateIdle()));
 
       if (chatResult.isOk() && profileResult.isOk()) {
+        // If online status is being disabled, also disable last seen time filter
+        if (profileSettings.onlineStatus == false) {
+          final currentFilters = await db
+              .accountStream((db) => db.search.watchProfileFilters())
+              .first;
+          if (currentFilters?.lastSeenTimeFilter?.value == -1) {
+            await profile.updateProfileFilters(
+              currentFilters?.currentFiltersCopy() ?? {},
+              null, // Set lastSeenTimeFilter to null to disable it
+              currentFilters?.unlimitedLikesFilter,
+              currentFilters?.minDistanceKmFilter,
+              currentFilters?.maxDistanceKmFilter,
+              currentFilters?.profileCreatedFilter,
+              currentFilters?.profileEditedFilter,
+              currentFilters?.profileTextMinCharactersFilter,
+              currentFilters?.profileTextMaxCharactersFilter,
+              currentFilters?.randomProfileOrder ?? false,
+            );
+            await profile.resetMainProfileIterator();
+          }
+        }
+
         emit(
           state.copyWith(
             lastSeenTime: profileSettings.lastSeenTime,

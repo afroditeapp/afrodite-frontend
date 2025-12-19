@@ -15,7 +15,9 @@ import 'package:utils/utils.dart';
 import 'package:app/data/image_cache.dart';
 import 'package:app/localizations.dart';
 import 'package:app/logic/profile/attributes.dart';
+import 'package:app/logic/settings/privacy_settings.dart';
 import 'package:app/model/freezed/logic/profile/attributes.dart';
+import 'package:app/model/freezed/logic/settings/privacy_settings.dart';
 import 'package:app/ui/normal/settings/profile/edit_profile.dart';
 import 'package:app/ui_utils/consts/corners.dart';
 import 'package:app/ui_utils/consts/padding.dart';
@@ -53,7 +55,12 @@ class _ViewProfileEntryState extends State<ViewProfileEntry> {
               const Padding(padding: EdgeInsets.only(top: 16)),
               title(context),
               if (!widget.isMyProfile) const Padding(padding: EdgeInsets.only(top: 8)),
-              if (!widget.isMyProfile) lastSeenTime(context),
+              if (!widget.isMyProfile)
+                BlocBuilder<PrivacySettingsBloc, PrivacySettingsData>(
+                  builder: (context, privacyState) {
+                    return lastSeenTime(context, privacyState);
+                  },
+                ),
               const Padding(padding: EdgeInsets.only(top: 16)),
               if (profileText != null) profileTextWidget(context, profileText),
               if (profileText != null) const Padding(padding: EdgeInsets.only(top: 16)),
@@ -211,10 +218,12 @@ class _ViewProfileEntryState extends State<ViewProfileEntry> {
     );
   }
 
-  Widget lastSeenTime(BuildContext context) {
+  Widget lastSeenTime(BuildContext context, PrivacySettingsData privacySettings) {
     final lastSeenTime = widget.profile.lastSeenTimeValue;
     final List<Widget> widgets;
-    if (lastSeenTime == null || lastSeenTime < -1) {
+    if (lastSeenTime == null ||
+        lastSeenTime < -1 ||
+        (widget.profile.lastSeenTimeValue == -1 && !privacySettings.onlineStatus)) {
       return const SizedBox.shrink();
     } else if (widget.profile.lastSeenTimeValue == -1) {
       widgets = [

@@ -18,9 +18,11 @@ import 'package:app/localizations.dart';
 import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/logic/profile/attributes.dart';
 import 'package:app/logic/profile/profile_filters.dart';
+import 'package:app/logic/settings/privacy_settings.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/model/freezed/logic/profile/attributes.dart';
 import 'package:app/model/freezed/logic/profile/profile_filters.dart';
+import 'package:app/model/freezed/logic/settings/privacy_settings.dart';
 import 'package:app/ui/normal/profiles/edit_profile_attribute_filter.dart';
 import 'package:app/ui/normal/settings/profile/edit_profile.dart';
 import 'package:app/ui_utils/common_update_logic.dart';
@@ -133,7 +135,11 @@ class _ProfileFiltersScreenState extends State<ProfileFiltersScreen> {
           const Divider(),
           maxDistanceFilter(context),
           const Divider(),
-          lastSeenTimeFilter(context),
+          BlocBuilder<PrivacySettingsBloc, PrivacySettingsData>(
+            builder: (context, state) {
+              return lastSeenTimeFilter(context, state);
+            },
+          ),
           const Divider(),
           profileCreatedOrEditedFilter(
             context,
@@ -205,7 +211,7 @@ class _ProfileFiltersScreenState extends State<ProfileFiltersScreen> {
     );
   }
 
-  Widget lastSeenTimeFilter(BuildContext context) {
+  Widget lastSeenTimeFilter(BuildContext context, PrivacySettingsData privacySettings) {
     return BlocBuilder<ProfileFiltersBloc, ProfileFiltersData>(
       builder: (context, state) {
         /// Selection for min, max and day counts for one week, 2 weeks
@@ -251,7 +257,13 @@ class _ProfileFiltersScreenState extends State<ProfileFiltersScreen> {
           stateText = context.strings.profile_filters_screen_profile_last_seen_time_filter_all;
           days = VALUE_MAX;
         } else if (valueInt == -1) {
-          stateText = context.strings.profile_filters_screen_profile_last_seen_time_filter_online;
+          if (privacySettings.onlineStatus) {
+            stateText = context.strings.profile_filters_screen_profile_last_seen_time_filter_online;
+          } else {
+            stateText = context
+                .strings
+                .profile_filters_screen_profile_last_seen_time_filter_online_disabled_from_privacy;
+          }
           days = VALUE_MIN;
         } else if (valueInt >= 0) {
           final daysInt = valueInt ~/ 60 ~/ 60 ~/ 24;
