@@ -262,7 +262,7 @@ class _ProfileFiltersScreenState extends State<ProfileFiltersScreen> {
           } else {
             stateText = context
                 .strings
-                .profile_filters_screen_profile_last_seen_time_filter_online_disabled_from_privacy;
+                .profile_filters_screen_profile_last_seen_time_filter_disabled_from_privacy;
           }
           days = VALUE_MIN;
         } else if (valueInt >= 0) {

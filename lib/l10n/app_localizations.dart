@@ -2398,10 +2398,10 @@ abstract class AppLocalizations {
   /// **'{p0} days'**
   String profile_filters_screen_profile_last_seen_time_filter_days(String p0);
 
-  /// Error text when trying to use last seen time filter but last seen time is disabled from privacy settings
+  /// Error text when privacy setting has disabled last seen time filter
   ///
   /// In en, this message translates to:
-  /// **'Error: disabled from privacy settings'**
+  /// **'Disabled from privacy settings'**
   String get profile_filters_screen_profile_last_seen_time_filter_disabled_from_privacy;
 
   /// Value text for profile last seen time filter when only online profiles should be shown
@@ -2409,12 +2409,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Online'**
   String get profile_filters_screen_profile_last_seen_time_filter_online;
-
-  /// Error text when trying to use online filter but online status is disabled from privacy settings
-  ///
-  /// In en, this message translates to:
-  /// **'Online (Error: disabled from privacy settings)'**
-  String get profile_filters_screen_profile_last_seen_time_filter_online_disabled_from_privacy;
 
   /// Value text for profile text filter
   ///

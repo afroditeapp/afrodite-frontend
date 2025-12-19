@@ -1698,17 +1698,13 @@
       }
     }
   },
-  "profile_filters_screen_profile_last_seen_time_filter_disabled_from_privacy": "Error: disabled from privacy settings",
+  "profile_filters_screen_profile_last_seen_time_filter_disabled_from_privacy": "Disabled from privacy settings",
   "@profile_filters_screen_profile_last_seen_time_filter_disabled_from_privacy": {
-    "description": "Error text when trying to use last seen time filter but last seen time is disabled from privacy settings"
+    "description": "Error text when privacy setting has disabled last seen time filter"
   },
   "profile_filters_screen_profile_last_seen_time_filter_online": "Online",
   "@profile_filters_screen_profile_last_seen_time_filter_online": {
     "description": "Value text for profile last seen time filter when only online profiles should be shown"
-  },
-  "profile_filters_screen_profile_last_seen_time_filter_online_disabled_from_privacy": "Online (Error: disabled from privacy settings)",
-  "@profile_filters_screen_profile_last_seen_time_filter_online_disabled_from_privacy": {
-    "description": "Error text when trying to use online filter but online status is disabled from privacy settings"
   },
   "profile_filters_screen_profile_text_filter": "Profile text length",
   "@profile_filters_screen_profile_text_filter": {
