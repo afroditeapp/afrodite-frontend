@@ -109,23 +109,10 @@ class _ViewProfileEntryState extends State<ViewProfileEntry> {
   Widget nameNotAcceptedInfoButton(BuildContext context) {
     return IconButton(
       onPressed: () {
-        var infoText =
-            context.strings.view_profile_screen_non_accepted_profile_name_info_dialog_text;
-        final profile = widget.profile;
-        if (profile is MyProfileEntry) {
-          final stateText = switch (profile.profileNameModerationState) {
-            ProfileStringModerationState.rejectedByBot =>
-              context.strings.moderation_state_rejected_by_bot,
-            ProfileStringModerationState.rejectedByHuman =>
-              context.strings.moderation_state_rejected_by_human,
-            ProfileStringModerationState.waitingBotOrHumanModeration =>
-              context.strings.moderation_state_waiting_bot_or_human_moderation,
-            ProfileStringModerationState.waitingHumanModeration =>
-              context.strings.moderation_state_waiting_human_moderation,
-            _ => null,
-          };
-          infoText = addModerationStateRow(context, infoText, stateText);
-        }
+        final state = widget.profile is MyProfileEntry
+            ? (widget.profile as MyProfileEntry).profileNameModerationState
+            : null;
+        final infoText = getProfileNameRejectionInfoText(context, state);
         showInfoDialog(context, infoText);
       },
       icon: const Icon(Icons.info),
@@ -182,33 +169,15 @@ class _ViewProfileEntryState extends State<ViewProfileEntry> {
           if (!widget.profile.profileTextAccepted)
             IconButton(
               onPressed: () {
-                var infoText =
-                    context.strings.view_profile_screen_non_accepted_profile_text_info_dialog_text;
-                final profile = widget.profile;
-                if (profile is MyProfileEntry) {
-                  final stateText = switch (profile.profileTextModerationState) {
-                    ProfileStringModerationState.rejectedByBot =>
-                      context.strings.moderation_state_rejected_by_bot,
-                    ProfileStringModerationState.rejectedByHuman =>
-                      context.strings.moderation_state_rejected_by_human,
-                    ProfileStringModerationState.waitingBotOrHumanModeration =>
-                      context.strings.moderation_state_waiting_bot_or_human_moderation,
-                    ProfileStringModerationState.waitingHumanModeration =>
-                      context.strings.moderation_state_waiting_human_moderation,
-                    _ => null,
-                  };
-                  infoText = addModerationStateRow(context, infoText, stateText);
-                  infoText = addRejectedCategoryRow(
-                    context,
-                    infoText,
-                    profile.profileTextModerationRejectedCategory?.value,
-                  );
-                  infoText = addRejectedDetailsRow(
-                    context,
-                    infoText,
-                    profile.profileTextModerationRejectedDetails?.value,
-                  );
-                }
+                final myProfile = widget.profile is MyProfileEntry
+                    ? widget.profile as MyProfileEntry
+                    : null;
+                final infoText = getProfileTextRejectionInfoText(
+                  context,
+                  myProfile?.profileTextModerationState,
+                  myProfile?.profileTextModerationRejectedCategory?.value,
+                  myProfile?.profileTextModerationRejectedDetails?.value,
+                );
                 showInfoDialog(context, infoText);
               },
               icon: const Icon(Icons.info),

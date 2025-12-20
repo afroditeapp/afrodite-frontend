@@ -4,6 +4,7 @@ import 'package:app/model/freezed/logic/account/client_features_config.dart';
 import 'package:app/ui/normal/settings/profile/edit_profile_text.dart';
 import 'package:app/ui_utils/attribute/attribute.dart';
 import 'package:app/ui_utils/consts/icons.dart';
+import 'package:app/ui_utils/consts/padding.dart';
 import 'package:app/ui_utils/navigation/url.dart';
 import 'package:app/ui_utils/padding.dart';
 import 'package:app/utils/list.dart';
@@ -31,7 +32,7 @@ import 'package:app/ui/normal/settings/profile/edit_profile_attribute.dart';
 import 'package:app/ui/utils/view_profile.dart';
 import 'package:app/ui_utils/common_update_logic.dart';
 import 'package:app/ui_utils/consts/colors.dart';
-import 'package:app/ui_utils/consts/padding.dart';
+import 'package:app/ui_utils/moderation.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/icon_button.dart';
 import 'package:app/ui_utils/snack_bar.dart';
@@ -296,8 +297,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           const Divider(),
           const Padding(padding: EdgeInsets.only(top: 8)),
           EditProfileBasicInfo(
-            profileNameAccepted: widget.initialProfile.nameAccepted,
-            nameInitialValue: widget.initialProfile.name,
+            initialProfile: widget.initialProfile,
             setterProfileName: (value) {
               widget.editMyProfileBloc.add(NewName(value));
             },
@@ -310,13 +310,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           const Divider(),
           unlimitedLikesSetting(context),
           const Divider(),
-          const EditProfileText(),
+          EditProfileText(initialProfile: widget.initialProfile),
           const Divider(),
           const EditAttributes(),
-          const Padding(
-            padding: EdgeInsets.only(top: FLOATING_ACTION_BUTTON_EMPTY_AREA),
-            child: null,
-          ),
+          const Padding(padding: EdgeInsets.only(top: FLOATING_ACTION_BUTTON_EMPTY_AREA)),
         ],
       ),
     );
@@ -523,14 +520,12 @@ class ViewAttributeTitle extends StatelessWidget {
 }
 
 class EditProfileBasicInfo extends StatefulWidget {
-  final bool profileNameAccepted;
-  final String nameInitialValue;
+  final MyProfileEntry initialProfile;
   final void Function(String) setterProfileName;
   final int? ageInitialValue;
   final void Function(int?) setterProfileAge;
   const EditProfileBasicInfo({
-    required this.profileNameAccepted,
-    required this.nameInitialValue,
+    required this.initialProfile,
     required this.setterProfileName,
     required this.ageInitialValue,
     required this.setterProfileAge,
@@ -547,7 +542,7 @@ class _EditProfileBasicInfoState extends State<EditProfileBasicInfo> {
   @override
   void initState() {
     super.initState();
-    nameTextController.text = widget.nameInitialValue;
+    nameTextController.text = widget.initialProfile.name;
   }
 
   @override
@@ -556,10 +551,10 @@ class _EditProfileBasicInfoState extends State<EditProfileBasicInfo> {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (!widget.profileNameAccepted) hPad(profileName(context)),
-        if (!widget.profileNameAccepted) const Padding(padding: EdgeInsets.only(top: 8)),
-        if (!widget.profileNameAccepted) Divider(),
-        if (!widget.profileNameAccepted) const Padding(padding: EdgeInsets.only(top: 8)),
+        if (!widget.initialProfile.nameAccepted) hPad(profileName(context)),
+        if (!widget.initialProfile.nameAccepted) const Padding(padding: EdgeInsets.only(top: 8)),
+        if (!widget.initialProfile.nameAccepted) Divider(),
+        if (!widget.initialProfile.nameAccepted) const Padding(padding: EdgeInsets.only(top: 8)),
         hPad(age(context)),
       ],
     );
@@ -581,6 +576,8 @@ class _EditProfileBasicInfoState extends State<EditProfileBasicInfo> {
         ),
         const Padding(padding: EdgeInsets.only(top: 4)),
         Text(context.strings.edit_profile_screen_profile_name_description),
+        const Padding(padding: EdgeInsets.only(top: 8)),
+        ProfileNameRejectionWidget(initialProfile: widget.initialProfile),
       ],
     );
   }
@@ -652,7 +649,8 @@ class _EditProfileBasicInfoState extends State<EditProfileBasicInfo> {
 }
 
 class EditProfileText extends StatefulWidget {
-  const EditProfileText({super.key});
+  final MyProfileEntry initialProfile;
+  const EditProfileText({required this.initialProfile, super.key});
 
   @override
   State<EditProfileText> createState() => _EditProfileTextState();
@@ -704,6 +702,7 @@ class _EditProfileTextState extends State<EditProfileText> {
                     padding: const EdgeInsets.only(left: 16, top: 8),
                     child: Text(displayedText),
                   ),
+                ProfileTextRejectionWidget(initialProfile: widget.initialProfile),
               ],
             ),
           ),
@@ -721,6 +720,89 @@ class _EditProfileTextState extends State<EditProfileText> {
     return InkWell(
       onTap: () => openEditProfileText(context, context.read<EditMyProfileBloc>()),
       child: r,
+    );
+  }
+}
+
+class ProfileNameRejectionWidget extends StatelessWidget {
+  final MyProfileEntry initialProfile;
+  const ProfileNameRejectionWidget({required this.initialProfile, super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<MyProfileBloc, MyProfileData>(
+      builder: (context, myProfileState) {
+        final profile = myProfileState.profile ?? initialProfile;
+        return BlocBuilder<EditMyProfileBloc, EditMyProfileData>(
+          builder: (context, state) {
+            if (isRejectedState(profile.profileNameModerationState) && state.name == profile.name) {
+              return Container(
+                padding: const EdgeInsets.all(8.0),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.primaryContainer,
+                  borderRadius: BorderRadius.circular(4.0),
+                ),
+                child: Text(
+                  getProfileNameRejectionInfoText(
+                    context,
+                    profile.profileNameModerationState,
+                    includeBaseText: false,
+                  ),
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: Theme.of(context).colorScheme.onPrimaryContainer,
+                  ),
+                ),
+              );
+            }
+            return const SizedBox.shrink();
+          },
+        );
+      },
+    );
+  }
+}
+
+class ProfileTextRejectionWidget extends StatelessWidget {
+  final MyProfileEntry initialProfile;
+  const ProfileTextRejectionWidget({required this.initialProfile, super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<MyProfileBloc, MyProfileData>(
+      builder: (context, myProfileState) {
+        final profile = myProfileState.profile ?? initialProfile;
+        return BlocBuilder<EditMyProfileBloc, EditMyProfileData>(
+          builder: (context, state) {
+            if (!profile.profileTextAccepted &&
+                isRejectedState(profile.profileTextModerationState) &&
+                state.profileText == profile.profileText) {
+              return Padding(
+                padding: const EdgeInsets.only(left: 16, top: 8),
+                child: Container(
+                  padding: const EdgeInsets.all(8.0),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.primaryContainer,
+                    borderRadius: BorderRadius.circular(4.0),
+                  ),
+                  child: Text(
+                    getProfileTextRejectionInfoText(
+                      context,
+                      profile.profileTextModerationState,
+                      profile.profileTextModerationRejectedCategory?.value,
+                      profile.profileTextModerationRejectedDetails?.value,
+                      includeBaseText: false,
+                    ),
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: Theme.of(context).colorScheme.onPrimaryContainer,
+                    ),
+                  ),
+                ),
+              );
+            }
+            return const SizedBox.shrink();
+          },
+        );
+      },
     );
   }
 }
