@@ -267,7 +267,26 @@ Widget _rejectionDetailsText(BuildContext context, ContentInfoDetailed content) 
   infoText = infoText.trim();
 
   if (infoText.isNotEmpty) {
-    return Padding(padding: const EdgeInsets.symmetric(vertical: 8.0), child: Text(infoText));
+    return Padding(
+      padding: const EdgeInsets.only(top: 8),
+      child: Container(
+        padding: const EdgeInsets.all(8.0),
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.primaryContainer,
+          borderRadius: BorderRadius.circular(4.0),
+        ),
+        child: Row(
+          children: [
+            Text(
+              infoText,
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: Theme.of(context).colorScheme.onPrimaryContainer,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   } else {
     return const SizedBox.shrink();
   }
