@@ -7,6 +7,7 @@ import 'package:app/ui/normal/settings/admin/moderator_tasks.dart';
 import 'package:app/ui/normal/settings/my_profile.dart';
 import 'package:app/ui/normal/settings/news/news_list.dart';
 import 'package:app/ui/normal/settings/notifications/automatic_profile_search_results.dart';
+import 'package:app/ui/normal/settings/profile/edit_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:app/data/general/notification/utils/notification_payload.dart';
@@ -134,6 +135,18 @@ Future<NotificationNavigationAction> _handlePayload(
         return DoNothing();
       } else {
         return NewScreen(MyProfilePage());
+      }
+    case NavigateToEditProfile():
+      if (lastPage is EditProfilePage) {
+        return DoNothing();
+      } else {
+        final myProfile = await r.accountDb
+            .accountStreamSingle((db) => db.myProfile.getProfileEntryForMyProfile())
+            .ok();
+        if (myProfile == null) {
+          return DoNothing();
+        }
+        return NewScreen(EditProfilePage(myProfile));
       }
     case NavigateToAutomaticProfileSearchResults():
       if (lastPage is AutomaticProfileSearchResultsPage) {

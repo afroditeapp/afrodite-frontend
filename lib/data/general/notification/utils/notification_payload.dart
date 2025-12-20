@@ -66,10 +66,11 @@ class NotificationPayload extends Immutable {
         notificationId == NotificationIdStatic.mediaContentModerationDeleted.id) {
       action = NavigateToContentManagement();
     } else if (notificationId == NotificationIdStatic.profileNameModerationAccepted.id ||
-        notificationId == NotificationIdStatic.profileNameModerationRejected.id ||
-        notificationId == NotificationIdStatic.profileTextModerationAccepted.id ||
-        notificationId == NotificationIdStatic.profileTextModerationRejected.id) {
+        notificationId == NotificationIdStatic.profileTextModerationAccepted.id) {
       action = NavigateToMyProfile();
+    } else if (notificationId == NotificationIdStatic.profileNameModerationRejected.id ||
+        notificationId == NotificationIdStatic.profileTextModerationRejected.id) {
+      action = NavigateToEditProfile();
     } else if (notificationId == NotificationIdStatic.automaticProfileSearchCompleted.id) {
       action = NavigateToAutomaticProfileSearchResults();
     } else if (notificationId == NotificationIdStatic.adminNotification.id) {
@@ -104,6 +105,8 @@ class NavigateToConversation extends NavigationAction {
 class NavigateToContentManagement extends NavigationAction {}
 
 class NavigateToMyProfile extends NavigationAction {}
+
+class NavigateToEditProfile extends NavigationAction {}
 
 // TODO(quality): Opening another automatic profile search result screen
 //                is possible and that breaks the first's iterator state
