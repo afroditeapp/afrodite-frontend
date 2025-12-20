@@ -22,6 +22,12 @@ class DaoWriteMyProfile extends DatabaseAccessor<AccountForegroundDatabase>
         profileName: Value(profile.name),
         profileNameAccepted: Value(profile.nameAccepted),
         profileNameModerationState: Value(result.nameModerationInfo?.state.toEnumString()),
+        profileNameModerationRejectedCategory: Value(
+          result.nameModerationInfo?.rejectedReasonCategory,
+        ),
+        profileNameModerationRejectedDetails: Value(
+          result.nameModerationInfo?.rejectedReasonDetails,
+        ),
         profileText: Value(profile.ptext),
         profileTextAccepted: Value(result.p.ptextAccepted),
         profileTextModerationState: Value(result.textModerationInfo?.state.toEnumString()),

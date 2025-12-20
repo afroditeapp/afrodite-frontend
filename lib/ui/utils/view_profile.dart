@@ -109,10 +109,15 @@ class _ViewProfileEntryState extends State<ViewProfileEntry> {
   Widget nameNotAcceptedInfoButton(BuildContext context) {
     return IconButton(
       onPressed: () {
-        final state = widget.profile is MyProfileEntry
-            ? (widget.profile as MyProfileEntry).profileNameModerationState
+        final profile = widget.profile is MyProfileEntry
+            ? (widget.profile as MyProfileEntry)
             : null;
-        final infoText = getProfileNameRejectionInfoText(context, state);
+        final infoText = getProfileNameRejectionInfoText(
+          context,
+          profile?.profileNameModerationState,
+          profile?.profileNameModerationRejectedCategory?.value,
+          profile?.profileNameModerationRejectedDetails?.value,
+        );
         showInfoDialog(context, infoText);
       },
       icon: const Icon(Icons.info),

@@ -746,6 +746,8 @@ class ProfileNameRejectionWidget extends StatelessWidget {
                   getProfileNameRejectionInfoText(
                     context,
                     profile.profileNameModerationState,
+                    profile.profileNameModerationRejectedCategory?.value,
+                    profile.profileNameModerationRejectedDetails?.value,
                     includeBaseText: false,
                   ),
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(

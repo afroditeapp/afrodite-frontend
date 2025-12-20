@@ -8,6 +8,16 @@ class MyProfile extends SingleRowTable {
   TextColumn get profileNameModerationState => text()
       .map(NullAwareTypeConverter.wrap(const ProfileStringModerationStateConverter()))
       .nullable()();
+  IntColumn get profileNameModerationRejectedCategory => integer()
+      .map(
+        const NullAwareTypeConverter.wrap(ProfileStringModerationRejectedReasonCategoryConverter()),
+      )
+      .nullable()();
+  TextColumn get profileNameModerationRejectedDetails => text()
+      .map(
+        const NullAwareTypeConverter.wrap(ProfileStringModerationRejectedReasonDetailsConverter()),
+      )
+      .nullable()();
   TextColumn get profileText => text().nullable()();
   BoolColumn get profileTextAccepted => boolean().nullable()();
   TextColumn get profileTextModerationState => text()
@@ -19,7 +29,9 @@ class MyProfile extends SingleRowTable {
       )
       .nullable()();
   TextColumn get profileTextModerationRejectedDetails => text()
-      .map(const NullAwareTypeConverter.wrap(ProfileTextModerationRejectedReasonDetailsConverter()))
+      .map(
+        const NullAwareTypeConverter.wrap(ProfileStringModerationRejectedReasonDetailsConverter()),
+      )
       .nullable()();
   IntColumn get profileAge => integer().nullable()();
   BoolColumn get profileUnlimitedLikes => boolean().nullable()();

@@ -44,9 +44,9 @@ class ProfileStringModerationRejectedReasonCategoryConverter
   }
 }
 
-class ProfileTextModerationRejectedReasonDetailsConverter
+class ProfileStringModerationRejectedReasonDetailsConverter
     extends TypeConverter<ProfileStringModerationRejectedReasonDetails, String> {
-  const ProfileTextModerationRejectedReasonDetailsConverter();
+  const ProfileStringModerationRejectedReasonDetailsConverter();
 
   @override
   ProfileStringModerationRejectedReasonDetails fromSql(fromDb) {

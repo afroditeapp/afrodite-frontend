@@ -31,6 +31,8 @@ class DaoReadMyProfile extends DatabaseAccessor<AccountForegroundDatabase>
     final profileName = r.profileName;
     final profileNameAccepted = r.profileNameAccepted;
     final profileNameModerationState = r.profileNameModerationState?.value;
+    final profileNameModerationRejectedCategory = r.profileNameModerationRejectedCategory;
+    final profileNameModerationRejectedDetails = r.profileNameModerationRejectedDetails;
     final profileText = r.profileText;
     final profileTextAccepted = r.profileTextAccepted;
     final profileTextModerationState = r.profileTextModerationState?.value;
@@ -64,6 +66,8 @@ class DaoReadMyProfile extends DatabaseAccessor<AccountForegroundDatabase>
         name: profileName,
         nameAccepted: profileNameAccepted,
         profileNameModerationState: profileNameModerationState,
+        profileNameModerationRejectedCategory: profileNameModerationRejectedCategory,
+        profileNameModerationRejectedDetails: profileNameModerationRejectedDetails,
         profileText: profileText,
         profileTextAccepted: profileTextAccepted,
         profileTextModerationState: profileTextModerationState,

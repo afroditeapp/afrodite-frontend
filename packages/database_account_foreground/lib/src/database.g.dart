@@ -6646,6 +6646,36 @@ class $MyProfileTable extends schema.MyProfile
       ).withConverter<EnumString<ProfileStringModerationState>?>(
         $MyProfileTable.$converterprofileNameModerationState,
       );
+  @override
+  late final GeneratedColumnWithTypeConverter<
+    ProfileStringModerationRejectedReasonCategory?,
+    int
+  >
+  profileNameModerationRejectedCategory =
+      GeneratedColumn<int>(
+        'profile_name_moderation_rejected_category',
+        aliasedName,
+        true,
+        type: DriftSqlType.int,
+        requiredDuringInsert: false,
+      ).withConverter<ProfileStringModerationRejectedReasonCategory?>(
+        $MyProfileTable.$converterprofileNameModerationRejectedCategory,
+      );
+  @override
+  late final GeneratedColumnWithTypeConverter<
+    ProfileStringModerationRejectedReasonDetails?,
+    String
+  >
+  profileNameModerationRejectedDetails =
+      GeneratedColumn<String>(
+        'profile_name_moderation_rejected_details',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      ).withConverter<ProfileStringModerationRejectedReasonDetails?>(
+        $MyProfileTable.$converterprofileNameModerationRejectedDetails,
+      );
   static const VerificationMeta _profileTextMeta = const VerificationMeta(
     'profileText',
   );
@@ -6815,6 +6845,8 @@ class $MyProfileTable extends schema.MyProfile
     profileName,
     profileNameAccepted,
     profileNameModerationState,
+    profileNameModerationRejectedCategory,
+    profileNameModerationRejectedDetails,
     profileText,
     profileTextAccepted,
     profileTextModerationState,
@@ -6951,6 +6983,22 @@ class $MyProfileTable extends schema.MyProfile
               data['${effectivePrefix}profile_name_moderation_state'],
             ),
           ),
+      profileNameModerationRejectedCategory: $MyProfileTable
+          .$converterprofileNameModerationRejectedCategory
+          .fromSql(
+            attachedDatabase.typeMapping.read(
+              DriftSqlType.int,
+              data['${effectivePrefix}profile_name_moderation_rejected_category'],
+            ),
+          ),
+      profileNameModerationRejectedDetails: $MyProfileTable
+          .$converterprofileNameModerationRejectedDetails
+          .fromSql(
+            attachedDatabase.typeMapping.read(
+              DriftSqlType.string,
+              data['${effectivePrefix}profile_name_moderation_rejected_details'],
+            ),
+          ),
       profileText: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}profile_text'],
@@ -7035,6 +7083,16 @@ class $MyProfileTable extends schema.MyProfile
   $converterprofileNameModerationState = NullAwareTypeConverter.wrap(
     const ProfileStringModerationStateConverter(),
   );
+  static TypeConverter<ProfileStringModerationRejectedReasonCategory?, int?>
+  $converterprofileNameModerationRejectedCategory =
+      const NullAwareTypeConverter.wrap(
+        ProfileStringModerationRejectedReasonCategoryConverter(),
+      );
+  static TypeConverter<ProfileStringModerationRejectedReasonDetails?, String?>
+  $converterprofileNameModerationRejectedDetails =
+      const NullAwareTypeConverter.wrap(
+        ProfileStringModerationRejectedReasonDetailsConverter(),
+      );
   static TypeConverter<EnumString<ProfileStringModerationState>?, String?>
   $converterprofileTextModerationState = NullAwareTypeConverter.wrap(
     const ProfileStringModerationStateConverter(),
@@ -7047,7 +7105,7 @@ class $MyProfileTable extends schema.MyProfile
   static TypeConverter<ProfileStringModerationRejectedReasonDetails?, String?>
   $converterprofileTextModerationRejectedDetails =
       const NullAwareTypeConverter.wrap(
-        ProfileTextModerationRejectedReasonDetailsConverter(),
+        ProfileStringModerationRejectedReasonDetailsConverter(),
       );
   static TypeConverter<ProfileVersion?, String?> $converterprofileVersion =
       const NullAwareTypeConverter.wrap(ProfileVersionConverter());
@@ -7066,6 +7124,10 @@ class MyProfileData extends DataClass implements Insertable<MyProfileData> {
   final String? profileName;
   final bool? profileNameAccepted;
   final EnumString<ProfileStringModerationState>? profileNameModerationState;
+  final ProfileStringModerationRejectedReasonCategory?
+  profileNameModerationRejectedCategory;
+  final ProfileStringModerationRejectedReasonDetails?
+  profileNameModerationRejectedDetails;
   final String? profileText;
   final bool? profileTextAccepted;
   final EnumString<ProfileStringModerationState>? profileTextModerationState;
@@ -7086,6 +7148,8 @@ class MyProfileData extends DataClass implements Insertable<MyProfileData> {
     this.profileName,
     this.profileNameAccepted,
     this.profileNameModerationState,
+    this.profileNameModerationRejectedCategory,
+    this.profileNameModerationRejectedDetails,
     this.profileText,
     this.profileTextAccepted,
     this.profileTextModerationState,
@@ -7114,6 +7178,20 @@ class MyProfileData extends DataClass implements Insertable<MyProfileData> {
       map['profile_name_moderation_state'] = Variable<String>(
         $MyProfileTable.$converterprofileNameModerationState.toSql(
           profileNameModerationState,
+        ),
+      );
+    }
+    if (!nullToAbsent || profileNameModerationRejectedCategory != null) {
+      map['profile_name_moderation_rejected_category'] = Variable<int>(
+        $MyProfileTable.$converterprofileNameModerationRejectedCategory.toSql(
+          profileNameModerationRejectedCategory,
+        ),
+      );
+    }
+    if (!nullToAbsent || profileNameModerationRejectedDetails != null) {
+      map['profile_name_moderation_rejected_details'] = Variable<String>(
+        $MyProfileTable.$converterprofileNameModerationRejectedDetails.toSql(
+          profileNameModerationRejectedDetails,
         ),
       );
     }
@@ -7200,6 +7278,14 @@ class MyProfileData extends DataClass implements Insertable<MyProfileData> {
           profileNameModerationState == null && nullToAbsent
           ? const Value.absent()
           : Value(profileNameModerationState),
+      profileNameModerationRejectedCategory:
+          profileNameModerationRejectedCategory == null && nullToAbsent
+          ? const Value.absent()
+          : Value(profileNameModerationRejectedCategory),
+      profileNameModerationRejectedDetails:
+          profileNameModerationRejectedDetails == null && nullToAbsent
+          ? const Value.absent()
+          : Value(profileNameModerationRejectedDetails),
       profileText: profileText == null && nullToAbsent
           ? const Value.absent()
           : Value(profileText),
@@ -7261,6 +7347,14 @@ class MyProfileData extends DataClass implements Insertable<MyProfileData> {
           .fromJson<EnumString<ProfileStringModerationState>?>(
             json['profileNameModerationState'],
           ),
+      profileNameModerationRejectedCategory: serializer
+          .fromJson<ProfileStringModerationRejectedReasonCategory?>(
+            json['profileNameModerationRejectedCategory'],
+          ),
+      profileNameModerationRejectedDetails: serializer
+          .fromJson<ProfileStringModerationRejectedReasonDetails?>(
+            json['profileNameModerationRejectedDetails'],
+          ),
       profileText: serializer.fromJson<String?>(json['profileText']),
       profileTextAccepted: serializer.fromJson<bool?>(
         json['profileTextAccepted'],
@@ -7313,6 +7407,14 @@ class MyProfileData extends DataClass implements Insertable<MyProfileData> {
           .toJson<EnumString<ProfileStringModerationState>?>(
             profileNameModerationState,
           ),
+      'profileNameModerationRejectedCategory': serializer
+          .toJson<ProfileStringModerationRejectedReasonCategory?>(
+            profileNameModerationRejectedCategory,
+          ),
+      'profileNameModerationRejectedDetails': serializer
+          .toJson<ProfileStringModerationRejectedReasonDetails?>(
+            profileNameModerationRejectedDetails,
+          ),
       'profileText': serializer.toJson<String?>(profileText),
       'profileTextAccepted': serializer.toJson<bool?>(profileTextAccepted),
       'profileTextModerationState': serializer
@@ -7354,6 +7456,12 @@ class MyProfileData extends DataClass implements Insertable<MyProfileData> {
     Value<EnumString<ProfileStringModerationState>?>
         profileNameModerationState =
         const Value.absent(),
+    Value<ProfileStringModerationRejectedReasonCategory?>
+        profileNameModerationRejectedCategory =
+        const Value.absent(),
+    Value<ProfileStringModerationRejectedReasonDetails?>
+        profileNameModerationRejectedDetails =
+        const Value.absent(),
     Value<String?> profileText = const Value.absent(),
     Value<bool?> profileTextAccepted = const Value.absent(),
     Value<EnumString<ProfileStringModerationState>?>
@@ -7383,6 +7491,14 @@ class MyProfileData extends DataClass implements Insertable<MyProfileData> {
     profileNameModerationState: profileNameModerationState.present
         ? profileNameModerationState.value
         : this.profileNameModerationState,
+    profileNameModerationRejectedCategory:
+        profileNameModerationRejectedCategory.present
+        ? profileNameModerationRejectedCategory.value
+        : this.profileNameModerationRejectedCategory,
+    profileNameModerationRejectedDetails:
+        profileNameModerationRejectedDetails.present
+        ? profileNameModerationRejectedDetails.value
+        : this.profileNameModerationRejectedDetails,
     profileText: profileText.present ? profileText.value : this.profileText,
     profileTextAccepted: profileTextAccepted.present
         ? profileTextAccepted.value
@@ -7433,6 +7549,14 @@ class MyProfileData extends DataClass implements Insertable<MyProfileData> {
       profileNameModerationState: data.profileNameModerationState.present
           ? data.profileNameModerationState.value
           : this.profileNameModerationState,
+      profileNameModerationRejectedCategory:
+          data.profileNameModerationRejectedCategory.present
+          ? data.profileNameModerationRejectedCategory.value
+          : this.profileNameModerationRejectedCategory,
+      profileNameModerationRejectedDetails:
+          data.profileNameModerationRejectedDetails.present
+          ? data.profileNameModerationRejectedDetails.value
+          : this.profileNameModerationRejectedDetails,
       profileText: data.profileText.present
           ? data.profileText.value
           : this.profileText,
@@ -7484,6 +7608,12 @@ class MyProfileData extends DataClass implements Insertable<MyProfileData> {
           ..write('profileName: $profileName, ')
           ..write('profileNameAccepted: $profileNameAccepted, ')
           ..write('profileNameModerationState: $profileNameModerationState, ')
+          ..write(
+            'profileNameModerationRejectedCategory: $profileNameModerationRejectedCategory, ',
+          )
+          ..write(
+            'profileNameModerationRejectedDetails: $profileNameModerationRejectedDetails, ',
+          )
           ..write('profileText: $profileText, ')
           ..write('profileTextAccepted: $profileTextAccepted, ')
           ..write('profileTextModerationState: $profileTextModerationState, ')
@@ -7511,6 +7641,8 @@ class MyProfileData extends DataClass implements Insertable<MyProfileData> {
     profileName,
     profileNameAccepted,
     profileNameModerationState,
+    profileNameModerationRejectedCategory,
+    profileNameModerationRejectedDetails,
     profileText,
     profileTextAccepted,
     profileTextModerationState,
@@ -7533,6 +7665,10 @@ class MyProfileData extends DataClass implements Insertable<MyProfileData> {
           other.profileName == this.profileName &&
           other.profileNameAccepted == this.profileNameAccepted &&
           other.profileNameModerationState == this.profileNameModerationState &&
+          other.profileNameModerationRejectedCategory ==
+              this.profileNameModerationRejectedCategory &&
+          other.profileNameModerationRejectedDetails ==
+              this.profileNameModerationRejectedDetails &&
           other.profileText == this.profileText &&
           other.profileTextAccepted == this.profileTextAccepted &&
           other.profileTextModerationState == this.profileTextModerationState &&
@@ -7556,6 +7692,10 @@ class MyProfileCompanion extends UpdateCompanion<MyProfileData> {
   final Value<bool?> profileNameAccepted;
   final Value<EnumString<ProfileStringModerationState>?>
   profileNameModerationState;
+  final Value<ProfileStringModerationRejectedReasonCategory?>
+  profileNameModerationRejectedCategory;
+  final Value<ProfileStringModerationRejectedReasonDetails?>
+  profileNameModerationRejectedDetails;
   final Value<String?> profileText;
   final Value<bool?> profileTextAccepted;
   final Value<EnumString<ProfileStringModerationState>?>
@@ -7577,6 +7717,8 @@ class MyProfileCompanion extends UpdateCompanion<MyProfileData> {
     this.profileName = const Value.absent(),
     this.profileNameAccepted = const Value.absent(),
     this.profileNameModerationState = const Value.absent(),
+    this.profileNameModerationRejectedCategory = const Value.absent(),
+    this.profileNameModerationRejectedDetails = const Value.absent(),
     this.profileText = const Value.absent(),
     this.profileTextAccepted = const Value.absent(),
     this.profileTextModerationState = const Value.absent(),
@@ -7596,6 +7738,8 @@ class MyProfileCompanion extends UpdateCompanion<MyProfileData> {
     this.profileName = const Value.absent(),
     this.profileNameAccepted = const Value.absent(),
     this.profileNameModerationState = const Value.absent(),
+    this.profileNameModerationRejectedCategory = const Value.absent(),
+    this.profileNameModerationRejectedDetails = const Value.absent(),
     this.profileText = const Value.absent(),
     this.profileTextAccepted = const Value.absent(),
     this.profileTextModerationState = const Value.absent(),
@@ -7615,6 +7759,8 @@ class MyProfileCompanion extends UpdateCompanion<MyProfileData> {
     Expression<String>? profileName,
     Expression<bool>? profileNameAccepted,
     Expression<String>? profileNameModerationState,
+    Expression<int>? profileNameModerationRejectedCategory,
+    Expression<String>? profileNameModerationRejectedDetails,
     Expression<String>? profileText,
     Expression<bool>? profileTextAccepted,
     Expression<String>? profileTextModerationState,
@@ -7636,6 +7782,12 @@ class MyProfileCompanion extends UpdateCompanion<MyProfileData> {
         'profile_name_accepted': profileNameAccepted,
       if (profileNameModerationState != null)
         'profile_name_moderation_state': profileNameModerationState,
+      if (profileNameModerationRejectedCategory != null)
+        'profile_name_moderation_rejected_category':
+            profileNameModerationRejectedCategory,
+      if (profileNameModerationRejectedDetails != null)
+        'profile_name_moderation_rejected_details':
+            profileNameModerationRejectedDetails,
       if (profileText != null) 'profile_text': profileText,
       if (profileTextAccepted != null)
         'profile_text_accepted': profileTextAccepted,
@@ -7670,6 +7822,10 @@ class MyProfileCompanion extends UpdateCompanion<MyProfileData> {
     Value<bool?>? profileNameAccepted,
     Value<EnumString<ProfileStringModerationState>?>?
     profileNameModerationState,
+    Value<ProfileStringModerationRejectedReasonCategory?>?
+    profileNameModerationRejectedCategory,
+    Value<ProfileStringModerationRejectedReasonDetails?>?
+    profileNameModerationRejectedDetails,
     Value<String?>? profileText,
     Value<bool?>? profileTextAccepted,
     Value<EnumString<ProfileStringModerationState>?>?
@@ -7693,6 +7849,12 @@ class MyProfileCompanion extends UpdateCompanion<MyProfileData> {
       profileNameAccepted: profileNameAccepted ?? this.profileNameAccepted,
       profileNameModerationState:
           profileNameModerationState ?? this.profileNameModerationState,
+      profileNameModerationRejectedCategory:
+          profileNameModerationRejectedCategory ??
+          this.profileNameModerationRejectedCategory,
+      profileNameModerationRejectedDetails:
+          profileNameModerationRejectedDetails ??
+          this.profileNameModerationRejectedDetails,
       profileText: profileText ?? this.profileText,
       profileTextAccepted: profileTextAccepted ?? this.profileTextAccepted,
       profileTextModerationState:
@@ -7736,6 +7898,20 @@ class MyProfileCompanion extends UpdateCompanion<MyProfileData> {
       map['profile_name_moderation_state'] = Variable<String>(
         $MyProfileTable.$converterprofileNameModerationState.toSql(
           profileNameModerationState.value,
+        ),
+      );
+    }
+    if (profileNameModerationRejectedCategory.present) {
+      map['profile_name_moderation_rejected_category'] = Variable<int>(
+        $MyProfileTable.$converterprofileNameModerationRejectedCategory.toSql(
+          profileNameModerationRejectedCategory.value,
+        ),
+      );
+    }
+    if (profileNameModerationRejectedDetails.present) {
+      map['profile_name_moderation_rejected_details'] = Variable<String>(
+        $MyProfileTable.$converterprofileNameModerationRejectedDetails.toSql(
+          profileNameModerationRejectedDetails.value,
         ),
       );
     }
@@ -7818,6 +7994,12 @@ class MyProfileCompanion extends UpdateCompanion<MyProfileData> {
           ..write('profileName: $profileName, ')
           ..write('profileNameAccepted: $profileNameAccepted, ')
           ..write('profileNameModerationState: $profileNameModerationState, ')
+          ..write(
+            'profileNameModerationRejectedCategory: $profileNameModerationRejectedCategory, ',
+          )
+          ..write(
+            'profileNameModerationRejectedDetails: $profileNameModerationRejectedDetails, ',
+          )
           ..write('profileText: $profileText, ')
           ..write('profileTextAccepted: $profileTextAccepted, ')
           ..write('profileTextModerationState: $profileTextModerationState, ')

@@ -28,7 +28,9 @@ String addRejectedDetailsRow(BuildContext context, String input, String? details
 
 String getProfileNameRejectionInfoText(
   BuildContext context,
-  ProfileStringModerationState? state, {
+  ProfileStringModerationState? state,
+  int? category,
+  String? details, {
   bool includeBaseText = true,
 }) {
   var infoText = includeBaseText
@@ -45,6 +47,8 @@ String getProfileNameRejectionInfoText(
     _ => null,
   };
   infoText = addModerationStateRow(context, infoText, stateText);
+  infoText = addRejectedCategoryRow(context, infoText, category);
+  infoText = addRejectedDetailsRow(context, infoText, details);
   return infoText.trim();
 }
 

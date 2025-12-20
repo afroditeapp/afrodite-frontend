@@ -98,6 +98,8 @@ String hideOtherCharactersThanTheFirst(String value) {
 
 class MyProfileEntry extends ProfileEntry implements MyContentProvider {
   final ProfileStringModerationState? profileNameModerationState;
+  final ProfileStringModerationRejectedReasonCategory? profileNameModerationRejectedCategory;
+  final ProfileStringModerationRejectedReasonDetails? profileNameModerationRejectedDetails;
   final ProfileStringModerationState? profileTextModerationState;
   final ProfileStringModerationRejectedReasonCategory? profileTextModerationRejectedCategory;
   final ProfileStringModerationRejectedReasonDetails? profileTextModerationRejectedDetails;
@@ -108,6 +110,8 @@ class MyProfileEntry extends ProfileEntry implements MyContentProvider {
   MyProfileEntry({
     required this.myContent,
     this.profileNameModerationState,
+    this.profileNameModerationRejectedCategory,
+    this.profileNameModerationRejectedDetails,
     this.profileTextModerationState,
     this.profileTextModerationRejectedCategory,
     this.profileTextModerationRejectedDetails,
