@@ -1356,7 +1356,7 @@
   "@menu_screen_title": {
     "description": "Title for menu screen"
   },
-  "moderation_rejected_category": "Rejected reason category: {p0}",
+  "moderation_rejected_category": "Rejection category: {p0}",
   "@moderation_rejected_category": {
     "description": "Beginning of moderation rejected reason category text",
     "placeholders": {
@@ -1365,7 +1365,7 @@
       }
     }
   },
-  "moderation_rejected_details": "Rejected reason details: {p0}",
+  "moderation_rejected_details": "Rejection details: {p0}",
   "@moderation_rejected_details": {
     "description": "Beginning of moderation rejected reason details text",
     "placeholders": {

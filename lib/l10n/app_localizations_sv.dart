@@ -1050,12 +1050,12 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String moderation_rejected_category(String p0) {
-    return 'Rejected reason category: $p0';
+    return 'Rejection category: $p0';
   }
 
   @override
   String moderation_rejected_details(String p0) {
-    return 'Rejected reason details: $p0';
+    return 'Rejection details: $p0';
   }
 
   @override

@@ -109,8 +109,8 @@
 
     <!-- Moderation states -->
     <string name="moderation_state" description="Beginning of moderation state text">Moderation state: %s</string>
-    <string name="moderation_rejected_category" description="Beginning of moderation rejected reason category text">Rejected reason category: %s</string>
-    <string name="moderation_rejected_details" description="Beginning of moderation rejected reason details text">Rejected reason details: %s</string>
+    <string name="moderation_rejected_category" description="Beginning of moderation rejected reason category text">Rejection category: %s</string>
+    <string name="moderation_rejected_details" description="Beginning of moderation rejected reason details text">Rejection details: %s</string>
     <string name="moderation_state_waiting_bot_or_human_moderation" description="Moderation state waiting bot or human moderation">Waiting bot or human moderation</string>
     <string name="moderation_state_waiting_human_moderation" description="Moderation state waiting human moderation">Waiting human moderation</string>
     <string name="moderation_state_rejected_by_bot" description="Moderation state rejected by bot">Rejected by bot</string>

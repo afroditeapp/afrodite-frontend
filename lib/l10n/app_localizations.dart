@@ -1975,13 +1975,13 @@ abstract class AppLocalizations {
   /// Beginning of moderation rejected reason category text
   ///
   /// In en, this message translates to:
-  /// **'Rejected reason category: {p0}'**
+  /// **'Rejection category: {p0}'**
   String moderation_rejected_category(String p0);
 
   /// Beginning of moderation rejected reason details text
   ///
   /// In en, this message translates to:
-  /// **'Rejected reason details: {p0}'**
+  /// **'Rejection details: {p0}'**
   String moderation_rejected_details(String p0);
 
   /// Beginning of moderation state text
