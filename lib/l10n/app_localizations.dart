@@ -466,12 +466,6 @@ abstract class AppLocalizations {
   /// **'Every {p0} days'**
   String chat_backup_screen_backup_reminder_interval(String p0);
 
-  /// Title for backup reminder section
-  ///
-  /// In en, this message translates to:
-  /// **'Backup reminder'**
-  String get chat_backup_screen_backup_reminder_title;
-
   /// Confirmation dialog for creating chat backup
   ///
   /// In en, this message translates to:
@@ -483,12 +477,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Backup includes current messages and encryption key.'**
   String get chat_backup_screen_create_backup_question_details;
-
-  /// Button text for importing chat backup
-  ///
-  /// In en, this message translates to:
-  /// **'Import backup'**
-  String get chat_backup_screen_import_backup;
 
   /// Confirmation dialog for importing chat backup
   ///
@@ -519,18 +507,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Backup created by different account'**
   String get chat_backup_screen_import_error_wrong_account;
-
-  /// Button text for saving chat backup
-  ///
-  /// In en, this message translates to:
-  /// **'Save backup'**
-  String get chat_backup_screen_save_backup;
-
-  /// Button text for sharing chat backup
-  ///
-  /// In en, this message translates to:
-  /// **'Share backup'**
-  String get chat_backup_screen_share_backup;
 
   /// Title for chat backup screen
   ///
@@ -1156,6 +1132,12 @@ abstract class AppLocalizations {
   /// **'Copy'**
   String get generic_copy;
 
+  /// Generic create text
+  ///
+  /// In en, this message translates to:
+  /// **'Create'**
+  String get generic_create;
+
   /// Generic data sync failed
   ///
   /// In en, this message translates to:
@@ -1276,6 +1258,12 @@ abstract class AppLocalizations {
   /// **'Women'**
   String get generic_gender_woman_plural;
 
+  /// Generic import text
+  ///
+  /// In en, this message translates to:
+  /// **'Import'**
+  String get generic_import;
+
   /// Generic large size text
   ///
   /// In en, this message translates to:
@@ -1378,6 +1366,12 @@ abstract class AppLocalizations {
   /// **'Profile loading failed'**
   String get generic_profile_loading_failed;
 
+  /// Generic receive text
+  ///
+  /// In en, this message translates to:
+  /// **'Receive'**
+  String get generic_receive;
+
   /// Generic refresh text
   ///
   /// In en, this message translates to:
@@ -1389,6 +1383,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Reject?'**
   String get generic_reject_question;
+
+  /// Generic remind text
+  ///
+  /// In en, this message translates to:
+  /// **'Remind'**
+  String get generic_remind;
 
   /// Generic resend text
   ///
@@ -1407,6 +1407,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Reset to default values?'**
   String get generic_reset_to_defaults_dialog_title;
+
+  /// Generic restore text
+  ///
+  /// In en, this message translates to:
+  /// **'Restore'**
+  String get generic_restore;
 
   /// Generic retry text
   ///
@@ -1431,6 +1437,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Setting saved'**
   String get generic_setting_saved;
+
+  /// Generic share text
+  ///
+  /// In en, this message translates to:
+  /// **'Share'**
+  String get generic_share;
 
   /// Generic show only selected text
   ///

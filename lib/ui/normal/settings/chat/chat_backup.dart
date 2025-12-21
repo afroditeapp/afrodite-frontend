@@ -8,6 +8,7 @@ import 'package:app/ui/normal/settings/chat/receive_chat_backup.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/padding.dart';
 import 'package:app/ui_utils/slider.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:app/localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -48,6 +49,8 @@ class _ChatBackupScreenState extends State<ChatBackupScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(padding: EdgeInsetsGeometry.only(top: 8)),
+              settingsCategoryTitle(context, context.strings.generic_create),
+              Padding(padding: EdgeInsetsGeometry.only(top: 8)),
               hPad(
                 Row(
                   spacing: 16,
@@ -58,15 +61,17 @@ class _ChatBackupScreenState extends State<ChatBackupScreen> {
                   ],
                 ),
               ),
-              Padding(padding: EdgeInsetsGeometry.only(top: 16)),
-              hPad(importButton(context, state)),
-              Padding(padding: EdgeInsetsGeometry.only(top: 16)),
-              hPad(receiveBackupButton(context, state)),
               Padding(padding: EdgeInsetsGeometry.only(top: 24)),
-              settingsCategoryTitle(
-                context,
-                context.strings.chat_backup_screen_backup_reminder_title,
+              settingsCategoryTitle(context, context.strings.generic_restore),
+              Padding(padding: EdgeInsetsGeometry.only(top: 8)),
+              hPad(
+                Row(
+                  spacing: 16,
+                  children: [importButton(context, state), receiveBackupButton(context, state)],
+                ),
               ),
+              Padding(padding: EdgeInsetsGeometry.only(top: 24)),
+              settingsCategoryTitle(context, context.strings.generic_remind),
               Padding(padding: EdgeInsetsGeometry.only(top: 8)),
               backupReminderSlider(context, state),
             ],
@@ -77,7 +82,7 @@ class _ChatBackupScreenState extends State<ChatBackupScreen> {
   }
 
   Widget createAndSaveBackupButton(BuildContext context, ChatBackupData state) {
-    return ElevatedButton(
+    return ElevatedButton.icon(
       onPressed: !state.isLoading
           ? () async {
               final r = await showConfirmDialog(
@@ -91,12 +96,13 @@ class _ChatBackupScreenState extends State<ChatBackupScreen> {
               }
             }
           : null,
-      child: Text(context.strings.chat_backup_screen_save_backup),
+      icon: const Icon(Icons.save),
+      label: Text(context.strings.generic_save),
     );
   }
 
   Widget shareBackupButton(BuildContext context, ChatBackupData state) {
-    return ElevatedButton(
+    return ElevatedButton.icon(
       onPressed: !state.isLoading
           ? () async {
               final r = await showConfirmDialog(
@@ -110,12 +116,13 @@ class _ChatBackupScreenState extends State<ChatBackupScreen> {
               }
             }
           : null,
-      child: Text(context.strings.chat_backup_screen_share_backup),
+      icon: Icon(defaultTargetPlatform == TargetPlatform.iOS ? Icons.ios_share : Icons.share),
+      label: Text(context.strings.generic_share),
     );
   }
 
   Widget importButton(BuildContext context, ChatBackupData state) {
-    return ElevatedButton(
+    return ElevatedButton.icon(
       onPressed: !state.isLoading
           ? () async {
               const XTypeGroup typeGroup = XTypeGroup(
@@ -141,7 +148,8 @@ class _ChatBackupScreenState extends State<ChatBackupScreen> {
               }
             }
           : null,
-      child: Text(context.strings.chat_backup_screen_import_backup),
+      icon: const Icon(Icons.file_open),
+      label: Text(context.strings.generic_import),
     );
   }
 
@@ -152,11 +160,12 @@ class _ChatBackupScreenState extends State<ChatBackupScreen> {
       return SizedBox.shrink();
     }
 
-    return ElevatedButton(
+    return ElevatedButton.icon(
       onPressed: () {
         openReceiveChatBackupScreen(context);
       },
-      child: Text(context.strings.receive_chat_backup_screen_title),
+      icon: const Icon(Icons.download),
+      label: Text(context.strings.generic_receive),
     );
   }
 

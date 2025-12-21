@@ -226,17 +226,11 @@ class AppLocalizationsSv extends AppLocalizations {
   }
 
   @override
-  String get chat_backup_screen_backup_reminder_title => 'Backup reminder';
-
-  @override
   String get chat_backup_screen_create_backup_question => 'Create chat backup?';
 
   @override
   String get chat_backup_screen_create_backup_question_details =>
       'Backup includes current messages and encryption key.';
-
-  @override
-  String get chat_backup_screen_import_backup => 'Import backup';
 
   @override
   String get chat_backup_screen_import_backup_question => 'Import chat backup?';
@@ -254,12 +248,6 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String get chat_backup_screen_import_error_wrong_account => 'Backup created by different account';
-
-  @override
-  String get chat_backup_screen_save_backup => 'Save backup';
-
-  @override
-  String get chat_backup_screen_share_backup => 'Share backup';
 
   @override
   String get chat_backup_screen_title => 'Chat backup';
@@ -618,6 +606,9 @@ class AppLocalizationsSv extends AppLocalizations {
   String get generic_copy => 'Copy';
 
   @override
+  String get generic_create => 'Create';
+
+  @override
   String get generic_data_sync_failed => 'Data sync failed';
 
   @override
@@ -678,6 +669,9 @@ class AppLocalizationsSv extends AppLocalizations {
   String get generic_gender_woman_plural => 'Women';
 
   @override
+  String get generic_import => 'Import';
+
+  @override
   String get generic_large => 'Large';
 
   @override
@@ -729,10 +723,16 @@ class AppLocalizationsSv extends AppLocalizations {
   String get generic_profile_loading_failed => 'Profile loading failed';
 
   @override
+  String get generic_receive => 'Receive';
+
+  @override
   String get generic_refresh => 'Refresh';
 
   @override
   String get generic_reject_question => 'Reject?';
+
+  @override
+  String get generic_remind => 'Remind';
 
   @override
   String get generic_resend => 'Resend';
@@ -742,6 +742,9 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String get generic_reset_to_defaults_dialog_title => 'Reset to default values?';
+
+  @override
+  String get generic_restore => 'Restore';
 
   @override
   String get generic_retry => 'Retry';
@@ -754,6 +757,9 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String get generic_setting_saved => 'Setting saved';
+
+  @override
+  String get generic_share => 'Share';
 
   @override
   String get generic_show_only_selected => 'Show only selected';
