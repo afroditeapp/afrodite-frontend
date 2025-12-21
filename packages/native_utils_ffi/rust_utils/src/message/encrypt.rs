@@ -59,7 +59,7 @@ pub(crate) fn encrypt_data_internal(
         .encrypt_to_key(OsRng, encryption_public_subkey)
         .map_err(|_| MessageEncryptionError::EncryptDataEncrypt)?;
 
-    let session_key = builder.session_key().to_vec();
+    let session_key = builder.session_key().as_ref().to_vec();
     let mut message = vec![];
 
     builder

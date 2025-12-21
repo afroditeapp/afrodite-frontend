@@ -22,11 +22,10 @@ panic = "abort"
 
 [dependencies]
 aes-gcm = "0.10.3"
-# pgp 0.16.0 with cross-compiling on macOS to Android fixed
-pgp = { git = "https://github.com/jutuon/rpgp", rev = "220c63c8624cd0a8dc698778daa12eef7e21d08c", default-features = false }
+pgp = { version = "0.18.0", default-features = false }
 smallvec = "1.13.2"
 rand = "0.8.5"
 wasm-bindgen = "0.2.101"
 
 [target.wasm32-unknown-unknown.dependencies]
-pgp = { git = "https://github.com/jutuon/rpgp", rev = "220c63c8624cd0a8dc698778daa12eef7e21d08c", default-features = false, features = ["wasm"] }
+pgp = { version = "0.18.0", default-features = false, features = ["wasm"] }

@@ -55,13 +55,12 @@ pub fn decrypt_data_rust(
 
     match &session_key {
         PlainSessionKey::V3_4 { .. } |
-        PlainSessionKey::V5 { .. } |
-        PlainSessionKey::Unknown { .. } =>
+        PlainSessionKey::V5 { .. } =>
             Err(MessageEncryptionError::DecryptDataUnsupportedSessionKeyVersion),
         PlainSessionKey::V6 { key } =>
             Ok(DecryptingOutput {
                 data: data.to_vec(),
-                session_key: key.clone(),
+                session_key: key.as_ref().to_vec(),
             })
     }
 }
