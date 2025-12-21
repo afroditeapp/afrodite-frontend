@@ -133,10 +133,9 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
     return entry;
   }
 
-  /// Get cached (if available), latest profile (if available and enough
-  /// time has passed since last profile data refresh) and future profile
-  /// updates.
-  Stream<GetProfileResultClient> getProfileStream(
+  /// Get cached (if available), latest profile if needed
+  /// and future profile updates.
+  Stream<ProfileEntry?> getProfileStream(
     ChatRepository chat,
     AccountId id,
     ProfileRefreshPriority priority,
@@ -146,9 +145,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
     );
 
     final profile = await dbProfileIteator.next();
-    if (profile != null) {
-      yield GetProfileSuccess(profile);
-    }
+    yield profile;
 
     bool download = true;
 
@@ -159,8 +156,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
       final currentTime = UtcDateTime.now();
       final difference = currentTime.dateTime.difference(lastRefreshTime.dateTime);
       final int timePassedAtLeastSeconds = switch (priority) {
-        ProfileRefreshPriority.high => 60,
-        ProfileRefreshPriority.low => 60 * 5,
+        ProfileRefreshPriority.low => 60 * 15,
       };
       if (difference.inSeconds < timePassedAtLeastSeconds) {
         download = false;
@@ -168,35 +164,23 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
     }
 
     if (download) {
+      download = await connectionManager.tryWaitUntilConnected(waitTimeoutSeconds: 10);
+    }
+
+    if (download) {
       final isMatch = await chat.isInMatches(id);
-      final result = await ProfileEntryDownloader(
+      await ProfileEntryDownloader(
         media,
         accountBackgroundDb,
         db,
         _api,
       ).download(id, isMatch: isMatch);
-      switch (result) {
-        case Ok():
-          ();
-        case Err(:final e):
-          switch (e) {
-            case PrivateProfile():
-              // Accessing profile failed (not public or something else)
-              await db.accountAction((db) => db.profile.removeProfileData(id));
-              await db.accountAction((db) => db.profile.setProfileGridStatus(id, false));
-              // Favorites are not changed even if profile will become private
-              yield GetProfileDoesNotExist();
-              _profileChangesRelay.add(ProfileNowPrivate(id));
-            case OtherProfileDownloadError():
-              yield GetProfileFailed();
-          }
-      }
     }
 
     while (true) {
       final profile = await dbProfileIteator.next();
       if (profile != null) {
-        yield GetProfileSuccess(profile);
+        yield profile;
       } else {
         return;
       }
@@ -548,27 +532,6 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
         .emptyErr();
   }
 
-  /// If profile does not exist in DB, try download it when connection exists.
-  /// After that emit only DB updates.
-  Stream<ProfileEntry?> getProfileEntryUpdates(AccountId accountId, {bool isMatch = false}) async* {
-    final stream = db.accountStream((db) => db.profile.watchProfileEntry(accountId));
-    bool downloaded = false;
-    await for (final p in stream) {
-      if (p == null && !downloaded) {
-        await connectionManager.tryWaitUntilConnected(waitTimeoutSeconds: 5);
-        await ProfileEntryDownloader(
-          media,
-          accountBackgroundDb,
-          db,
-          _api,
-        ).download(accountId, isMatch: isMatch);
-        downloaded = true;
-        continue;
-      }
-      yield p;
-    }
-  }
-
   /// Latest conversation is the first conversation in every emitted list
   Stream<List<AccountId>> getConversationListUpdates() {
     return db.accountStreamOrDefault(
@@ -712,25 +675,9 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
   }
 }
 
-sealed class GetProfileResultClient {}
-
-class GetProfileSuccess extends GetProfileResultClient {
-  final ProfileEntry profile;
-  GetProfileSuccess(this.profile);
-}
-
-/// Navigate out from view profile and reload profile list
-class GetProfileDoesNotExist extends GetProfileResultClient {
-  GetProfileDoesNotExist();
-}
-
-/// Show error message
-class GetProfileFailed extends GetProfileResultClient {
-  GetProfileFailed();
-}
-
 sealed class ProfileChange {}
 
+/// NOTE: Currently unused
 class ProfileNowPrivate extends ProfileChange {
   final AccountId profile;
   ProfileNowPrivate(this.profile);
@@ -771,9 +718,6 @@ class ReloadMainProfileView extends ProfileChange {
 enum ConversationChangeType { messageSent, messageReceived, messageRemoved, messageResent }
 
 enum ProfileRefreshPriority {
-  /// Refresh if 1 minute have passed since last refresh
-  high,
-
-  /// Refresh if 5 minutes have passed since last refresh
+  /// Refresh if 15 minutes have passed since last refresh
   low,
 }

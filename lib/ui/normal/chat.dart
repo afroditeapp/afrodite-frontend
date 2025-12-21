@@ -14,7 +14,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:database/database.dart';
+import 'package:app/logic/app/app_visibility_provider.dart';
 import 'package:app/logic/app/bottom_navigation_state.dart';
+import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/logic/chat/conversation_list.dart';
 import 'package:app/model/freezed/logic/main/bottom_navigation_state.dart';
 import 'package:app/ui/normal/chat/conversation_page.dart';
@@ -291,7 +293,7 @@ class _UpdatingConversationListItemState extends State<UpdatingConversationListI
   void initState() {
     super.initState();
     stream = Rx.combineLatest4(
-      widget.profile.getProfileEntryUpdates(widget.id, isMatch: true),
+      _createProfileStreamWrapper(),
       widget.profile.getUnreadMessagesCountStream(widget.id),
       widget.chat.watchLatestMessage(widget.id),
       context.read<RepositoryInstances>().accountDb.accountStream(
@@ -305,6 +307,24 @@ class _UpdatingConversationListItemState extends State<UpdatingConversationListI
         }
       },
     );
+  }
+
+  Stream<ProfileEntry?> _createProfileStreamWrapper() {
+    // Recreate profile stream when chat list becomes visible
+    final visibilityStream = Rx.combineLatest3(
+      NavigationStateBlocInstance.getInstance().navigationStateStream,
+      BottomNavigationStateBlocInstance.getInstance().bottomNavigationStateStream,
+      AppVisibilityProvider.getInstance().isForegroundStream,
+      (navState, bottomNavState, isForeground) {
+        final isOnChatTab = bottomNavState.screen == BottomNavigationScreenId.chats;
+        final isTopLevel = navState.pages.length == 1;
+        return isOnChatTab && isTopLevel && isForeground;
+      },
+    ).distinct();
+
+    return visibilityStream.switchMap((_) {
+      return widget.profile.getProfileStream(widget.chat, widget.id, ProfileRefreshPriority.low);
+    });
   }
 
   @override

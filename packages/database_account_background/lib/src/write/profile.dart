@@ -12,6 +12,7 @@ class DaoWriteProfile extends DatabaseAccessor<AccountBackgroundDatabase>
     with _$DaoWriteProfileMixin {
   DaoWriteProfile(super.db);
 
+  /// NOTE: Currently unused
   Future<void> removeProfileData(api.AccountId accountId) async {
     await (update(profile)..where((t) => t.accountId.equals(accountId.aid))).write(
       const ProfileCompanion(profileName: Value(null), profileNameAccepted: Value(null)),

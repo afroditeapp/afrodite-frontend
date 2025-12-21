@@ -110,6 +110,10 @@ class BottomNavigationStateBlocInstance extends AppSingletonNoInit {
 
   final BehaviorSubject<BottomNavigationStateBloc?> _latestBloc = BehaviorSubject.seeded(null);
 
+  Stream<BottomNavigationStateData> get bottomNavigationStateStream => _latestBloc.switchMap((b) {
+    return b != null ? b.stream.startWith(b.state) : Stream.value(BottomNavigationStateData());
+  });
+
   BottomNavigationStateData get navigationState =>
       _latestBloc.value?.state ?? BottomNavigationStateData();
 
