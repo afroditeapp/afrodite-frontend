@@ -2,7 +2,6 @@ import "dart:async";
 
 import "package:app/data/utils/repository_instances.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
-import "package:logging/logging.dart";
 import "package:openapi/api.dart";
 import "package:app/data/account_repository.dart";
 import "package:app/data/chat_repository.dart";
@@ -13,16 +12,9 @@ import "package:app/model/freezed/logic/profile/view_profiles.dart";
 import "package:app/utils.dart";
 import "package:app/utils/result.dart";
 
-final _log = Logger("ViewProfilesBloc");
-
 sealed class ViewProfileEvent {}
 
 class InitEvent extends ViewProfileEvent {}
-
-class HandleProfileResult extends ViewProfileEvent {
-  final GetProfileResultClient result;
-  HandleProfileResult(this.result);
-}
 
 class HandleProfileChange extends ViewProfileEvent {
   final ProfileChange change;
@@ -53,16 +45,12 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData> with Acti
   final MediaRepository media;
   final ChatRepository chat;
 
-  StreamSubscription<GetProfileResultClient>? _getProfileDataSubscription;
   StreamSubscription<ProfileChange>? _profileChangeSubscription;
-
-  final ProfileRefreshPriority priority;
 
   ViewProfileBloc(
     RepositoryInstances r,
     ProfileEntry currentProfile,
     ProfileActionState? initialProfileAction,
-    this.priority,
   ) : account = r.account,
       profile = r.profile,
       media = r.media,
@@ -110,18 +98,6 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData> with Acti
           emit(state.copyWith(isFavorite: FavoriteStateIdle(newValue)));
         }
       });
-    });
-    on<HandleProfileResult>((data, emit) async {
-      switch (data.result) {
-        case GetProfileSuccess(:final profile):
-          emit(state.copyWith(profile: profile));
-        case GetProfileDoesNotExist():
-          // Profile viewing is allowed using existing data
-          ();
-        case GetProfileFailed():
-          // No extra logic needed for errors as global error messages are enough.
-          _log.warning("Received GetProfileFailed");
-      }
     });
     on<HandleProfileChange>((data, emit) async {
       final change = data.change;
@@ -215,18 +191,11 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData> with Acti
       add(HandleProfileChange(event));
     });
 
-    _getProfileDataSubscription = profile
-        .getProfileStream(chat, state.profile.accountId, priority)
-        .listen((event) {
-          add(HandleProfileResult(event));
-        });
-
     add(InitEvent());
   }
 
   @override
   Future<void> close() async {
-    await _getProfileDataSubscription?.cancel();
     await _profileChangeSubscription?.cancel();
     return super.close();
   }

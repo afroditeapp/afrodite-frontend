@@ -11,7 +11,6 @@ import 'package:app/utils/result.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:database/database.dart';
-import 'package:app/data/profile_repository.dart';
 import 'package:app/localizations.dart';
 import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/logic/profile/view_profiles.dart';
@@ -29,8 +28,7 @@ import 'package:openapi/api.dart';
 Future<void> openProfileView(
   BuildContext context,
   ProfileEntry profile,
-  ProfileActionState? initialProfileAction,
-  ProfileRefreshPriority priority, {
+  ProfileActionState? initialProfileAction, {
   bool noAction = false,
 }) async {
   await PrecacheImageForViewProfileScreen.usingProfileEntry(context, profile);
@@ -56,7 +54,6 @@ Future<void> openProfileView(
       localAccountId: localAccountId,
       initialProfile: profile,
       initialProfileAction: initialProfileAction,
-      priority: priority,
       noAction: noAction,
     ),
   );
@@ -91,7 +88,6 @@ class ViewProfilePageUrlParser extends UrlParser<ViewProfilePage> {
         localAccountId: ids.localAccountId,
         initialProfile: profile,
         initialProfileAction: initialProfileAction,
-        priority: ProfileRefreshPriority.low,
         noAction: false,
       ),
       nextSegments,
@@ -107,14 +103,12 @@ class ViewProfilePage extends MyScreenPage<()> {
     required this.localAccountId,
     required ProfileEntry initialProfile,
     required ProfileActionState? initialProfileAction,
-    required ProfileRefreshPriority priority,
     required bool noAction,
   }) : accountId = initialProfile.accountId,
        super(
          builder: (closer) {
            return BlocProvider(
-             create: (context) =>
-                 ViewProfileBloc(r, initialProfile, initialProfileAction, priority),
+             create: (context) => ViewProfileBloc(r, initialProfile, initialProfileAction),
              lazy: false,
              child: ViewProfileScreen(
                r,

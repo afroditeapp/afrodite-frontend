@@ -181,12 +181,7 @@ class _GenericProfileGridState extends State<GenericProfileGrid> {
             settings: settings,
             maxItemWidth: singleItemWidth,
             onTap: (context, thumbnail) {
-              openProfileView(
-                context,
-                thumbnail.entry,
-                item.initialProfileAction,
-                ProfileRefreshPriority.low,
-              );
+              openProfileView(context, thumbnail.entry, item.initialProfileAction);
             },
           );
         },

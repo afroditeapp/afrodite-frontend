@@ -16,7 +16,6 @@ import 'package:app/utils/result.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:database/database.dart';
-import 'package:app/data/profile_repository.dart';
 import 'package:app/localizations.dart';
 import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/logic/chat/conversation_bloc.dart';
@@ -216,13 +215,7 @@ class ConversationScreenState extends State<ConversationScreen> {
           constraints: constraints.copyWith(minHeight: appBarHeight, maxHeight: appBarHeight),
           child: InkWell(
             onTap: () {
-              openProfileView(
-                context,
-                profileEntry,
-                null,
-                ProfileRefreshPriority.high,
-                noAction: true,
-              );
+              openProfileView(context, profileEntry, null, noAction: true);
             },
             child: Padding(
               padding: const EdgeInsets.only(left: 8.0, right: 8.0),
