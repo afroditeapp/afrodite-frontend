@@ -544,6 +544,11 @@
     <string name="chat_backup_screen_import_error_invalid_backup_file" description="Error message when backup file is invalid">Invalid backup file</string>
     <string name="chat_backup_screen_import_error_unsupported_version" description="Error message when backup file version is unsupported">Unsupported backup version</string>
     <string name="chat_backup_screen_import_error_wrong_account" description="Error message when backup was created by different account">Backup created by different account</string>
+    <string name="chat_backup_screen_backup_reminder_title" description="Title for backup reminder section">Backup reminder</string>
+    <string name="chat_backup_screen_backup_reminder_interval" description="Label for backup reminder interval in days">Every %s days</string>
+    <string name="chat_backup_reminder_dialog_title" description="Title for backup reminder dialog">Chat backup</string>
+    <string name="chat_backup_reminder_dialog_message_no_backup" description="Message when no backup has been created">Chat backup is not yet created. Backup now?</string>
+    <string name="chat_backup_reminder_dialog_message_old_backup" description="Message when backup is old">Chat backup has not been created since %s days. Backup now?</string>
 
     <!-- Account settings selfie -->
     <string name="account_settings_screen_title" description="Title for account settings">Account</string>

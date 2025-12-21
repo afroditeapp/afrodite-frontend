@@ -3,9 +3,11 @@ import 'package:app/logic/chat/receive_chat_backup.dart';
 import 'package:app/logic/settings/chat_backup.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/model/freezed/logic/settings/chat_backup.dart';
+import 'package:app/ui/normal/settings.dart';
 import 'package:app/ui/normal/settings/chat/receive_chat_backup.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/padding.dart';
+import 'package:app/ui_utils/slider.dart';
 import 'package:flutter/material.dart';
 import 'package:app/localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -41,25 +43,34 @@ class _ChatBackupScreenState extends State<ChatBackupScreen> {
   Widget screenContent(BuildContext context) {
     return BlocBuilder<ChatBackupBloc, ChatBackupData>(
       builder: (context, state) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(padding: EdgeInsetsGeometry.only(top: 8)),
-            hPad(
-              Row(
-                spacing: 16,
-                children: [
-                  createAndSaveBackupButton(context, state),
-                  shareBackupButton(context, state),
-                  if (state.isLoading) CircularProgressIndicator(),
-                ],
+        return SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(padding: EdgeInsetsGeometry.only(top: 8)),
+              hPad(
+                Row(
+                  spacing: 16,
+                  children: [
+                    createAndSaveBackupButton(context, state),
+                    shareBackupButton(context, state),
+                    if (state.isLoading) CircularProgressIndicator(),
+                  ],
+                ),
               ),
-            ),
-            Padding(padding: EdgeInsetsGeometry.only(top: 16)),
-            hPad(importButton(context, state)),
-            Padding(padding: EdgeInsetsGeometry.only(top: 16)),
-            hPad(receiveBackupButton(context, state)),
-          ],
+              Padding(padding: EdgeInsetsGeometry.only(top: 16)),
+              hPad(importButton(context, state)),
+              Padding(padding: EdgeInsetsGeometry.only(top: 16)),
+              hPad(receiveBackupButton(context, state)),
+              Padding(padding: EdgeInsetsGeometry.only(top: 24)),
+              settingsCategoryTitle(
+                context,
+                context.strings.chat_backup_screen_backup_reminder_title,
+              ),
+              Padding(padding: EdgeInsetsGeometry.only(top: 8)),
+              backupReminderSlider(context, state),
+            ],
+          ),
         );
       },
     );
@@ -147,5 +158,49 @@ class _ChatBackupScreenState extends State<ChatBackupScreen> {
       },
       child: Text(context.strings.receive_chat_backup_screen_title),
     );
+  }
+
+  Widget backupReminderSlider(BuildContext context, ChatBackupData state) {
+    // Slider values: 0=Disabled, 1=7d, 2=14d, 3=30d, 4=60d, 5=90d, 6=180d, 7=365d
+    const intervals = [0, 7, 14, 30, 60, 90, 180, 365];
+    final currentDays = state.valueReminderIntervalDays();
+    final currentIndex = intervals
+        .indexOf(currentDays)
+        .toDouble()
+        .clamp(0.0, (intervals.length - 1).toDouble());
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        hPad(
+          Text(
+            _getReminderLabel(context, currentDays),
+            style: Theme.of(context).textTheme.bodyLarge,
+          ),
+        ),
+        SliderWithPadding(
+          value: currentIndex,
+          min: 0,
+          max: (intervals.length - 1).toDouble(),
+          divisions: intervals.length - 1,
+          thumbColor: Theme.of(context).colorScheme.primary,
+          activeColor: Theme.of(context).colorScheme.primary,
+          onChanged: (value) {
+            final selectedDays = intervals[value.toInt()];
+            context.read<ChatBackupBloc>().add(
+              UpdateReminderInterval(selectedDays == 0 ? 0 : selectedDays),
+            );
+          },
+        ),
+      ],
+    );
+  }
+
+  String _getReminderLabel(BuildContext context, int days) {
+    if (days == 0) {
+      return context.strings.generic_disabled;
+    } else {
+      return context.strings.chat_backup_screen_backup_reminder_interval(days.toString());
+    }
   }
 }

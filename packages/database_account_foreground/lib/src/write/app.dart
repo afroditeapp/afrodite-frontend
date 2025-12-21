@@ -2,6 +2,7 @@ import 'package:database_account_foreground/src/database.dart';
 import 'package:database_utils/database_utils.dart';
 import 'package:drift/drift.dart';
 import 'package:database_model/database_model.dart';
+import 'package:utils/utils.dart';
 
 import '../schema.dart' as schema;
 
@@ -14,6 +15,7 @@ part 'app.g.dart';
     schema.InitialSync,
     schema.InitialSetupSkipped,
     schema.GridSettings,
+    schema.ChatBackupReminder,
   ],
 )
 class DaoWriteApp extends DatabaseAccessor<AccountForegroundDatabase> with _$DaoWriteAppMixin {
@@ -98,6 +100,24 @@ class DaoWriteApp extends DatabaseAccessor<AccountForegroundDatabase> with _$Dao
         gridItemSizeMode: Value(value.itemSizeMode),
         gridPaddingMode: Value(value.paddingMode),
       ),
+    );
+  }
+
+  Future<void> updateChatBackupReminderInterval(int? days) async {
+    await into(chatBackupReminder).insertOnConflictUpdate(
+      ChatBackupReminderCompanion.insert(id: SingleRowTable.ID, reminderIntervalDays: Value(days)),
+    );
+  }
+
+  Future<void> updateChatBackupLastBackupTime(UtcDateTime time) async {
+    await into(chatBackupReminder).insertOnConflictUpdate(
+      ChatBackupReminderCompanion.insert(id: SingleRowTable.ID, lastBackupTime: Value(time)),
+    );
+  }
+
+  Future<void> updateChatBackupLastDialogOpenedTime(UtcDateTime time) async {
+    await into(chatBackupReminder).insertOnConflictUpdate(
+      ChatBackupReminderCompanion.insert(id: SingleRowTable.ID, lastDialogOpenedTime: Value(time)),
     );
   }
 }

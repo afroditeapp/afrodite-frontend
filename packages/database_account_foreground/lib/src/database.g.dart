@@ -1477,6 +1477,365 @@ class GridSettingsCompanion extends UpdateCompanion<GridSetting> {
   }
 }
 
+class $ChatBackupReminderTable extends schema.ChatBackupReminder
+    with TableInfo<$ChatBackupReminderTable, ChatBackupReminderData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $ChatBackupReminderTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _reminderIntervalDaysMeta =
+      const VerificationMeta('reminderIntervalDays');
+  @override
+  late final GeneratedColumn<int> reminderIntervalDays = GeneratedColumn<int>(
+    'reminder_interval_days',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<UtcDateTime?, int>
+  lastBackupTime =
+      GeneratedColumn<int>(
+        'last_backup_time',
+        aliasedName,
+        true,
+        type: DriftSqlType.int,
+        requiredDuringInsert: false,
+      ).withConverter<UtcDateTime?>(
+        $ChatBackupReminderTable.$converterlastBackupTime,
+      );
+  @override
+  late final GeneratedColumnWithTypeConverter<UtcDateTime?, int>
+  lastDialogOpenedTime =
+      GeneratedColumn<int>(
+        'last_dialog_opened_time',
+        aliasedName,
+        true,
+        type: DriftSqlType.int,
+        requiredDuringInsert: false,
+      ).withConverter<UtcDateTime?>(
+        $ChatBackupReminderTable.$converterlastDialogOpenedTime,
+      );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    reminderIntervalDays,
+    lastBackupTime,
+    lastDialogOpenedTime,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'chat_backup_reminder';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<ChatBackupReminderData> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('reminder_interval_days')) {
+      context.handle(
+        _reminderIntervalDaysMeta,
+        reminderIntervalDays.isAcceptableOrUnknown(
+          data['reminder_interval_days']!,
+          _reminderIntervalDaysMeta,
+        ),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  ChatBackupReminderData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return ChatBackupReminderData(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      reminderIntervalDays: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}reminder_interval_days'],
+      ),
+      lastBackupTime: $ChatBackupReminderTable.$converterlastBackupTime.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.int,
+          data['${effectivePrefix}last_backup_time'],
+        ),
+      ),
+      lastDialogOpenedTime: $ChatBackupReminderTable
+          .$converterlastDialogOpenedTime
+          .fromSql(
+            attachedDatabase.typeMapping.read(
+              DriftSqlType.int,
+              data['${effectivePrefix}last_dialog_opened_time'],
+            ),
+          ),
+    );
+  }
+
+  @override
+  $ChatBackupReminderTable createAlias(String alias) {
+    return $ChatBackupReminderTable(attachedDatabase, alias);
+  }
+
+  static TypeConverter<UtcDateTime?, int?> $converterlastBackupTime =
+      NullAwareTypeConverter.wrap(const UtcDateTimeConverter());
+  static TypeConverter<UtcDateTime?, int?> $converterlastDialogOpenedTime =
+      NullAwareTypeConverter.wrap(const UtcDateTimeConverter());
+}
+
+class ChatBackupReminderData extends DataClass
+    implements Insertable<ChatBackupReminderData> {
+  final int id;
+
+  /// Backup reminder interval in days. 0 = disabled, null = use default value
+  final int? reminderIntervalDays;
+
+  /// Last time a backup was created
+  final UtcDateTime? lastBackupTime;
+
+  /// Last time the reminder dialog was opened
+  final UtcDateTime? lastDialogOpenedTime;
+  const ChatBackupReminderData({
+    required this.id,
+    this.reminderIntervalDays,
+    this.lastBackupTime,
+    this.lastDialogOpenedTime,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    if (!nullToAbsent || reminderIntervalDays != null) {
+      map['reminder_interval_days'] = Variable<int>(reminderIntervalDays);
+    }
+    if (!nullToAbsent || lastBackupTime != null) {
+      map['last_backup_time'] = Variable<int>(
+        $ChatBackupReminderTable.$converterlastBackupTime.toSql(lastBackupTime),
+      );
+    }
+    if (!nullToAbsent || lastDialogOpenedTime != null) {
+      map['last_dialog_opened_time'] = Variable<int>(
+        $ChatBackupReminderTable.$converterlastDialogOpenedTime.toSql(
+          lastDialogOpenedTime,
+        ),
+      );
+    }
+    return map;
+  }
+
+  ChatBackupReminderCompanion toCompanion(bool nullToAbsent) {
+    return ChatBackupReminderCompanion(
+      id: Value(id),
+      reminderIntervalDays: reminderIntervalDays == null && nullToAbsent
+          ? const Value.absent()
+          : Value(reminderIntervalDays),
+      lastBackupTime: lastBackupTime == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lastBackupTime),
+      lastDialogOpenedTime: lastDialogOpenedTime == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lastDialogOpenedTime),
+    );
+  }
+
+  factory ChatBackupReminderData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return ChatBackupReminderData(
+      id: serializer.fromJson<int>(json['id']),
+      reminderIntervalDays: serializer.fromJson<int?>(
+        json['reminderIntervalDays'],
+      ),
+      lastBackupTime: serializer.fromJson<UtcDateTime?>(json['lastBackupTime']),
+      lastDialogOpenedTime: serializer.fromJson<UtcDateTime?>(
+        json['lastDialogOpenedTime'],
+      ),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'reminderIntervalDays': serializer.toJson<int?>(reminderIntervalDays),
+      'lastBackupTime': serializer.toJson<UtcDateTime?>(lastBackupTime),
+      'lastDialogOpenedTime': serializer.toJson<UtcDateTime?>(
+        lastDialogOpenedTime,
+      ),
+    };
+  }
+
+  ChatBackupReminderData copyWith({
+    int? id,
+    Value<int?> reminderIntervalDays = const Value.absent(),
+    Value<UtcDateTime?> lastBackupTime = const Value.absent(),
+    Value<UtcDateTime?> lastDialogOpenedTime = const Value.absent(),
+  }) => ChatBackupReminderData(
+    id: id ?? this.id,
+    reminderIntervalDays: reminderIntervalDays.present
+        ? reminderIntervalDays.value
+        : this.reminderIntervalDays,
+    lastBackupTime: lastBackupTime.present
+        ? lastBackupTime.value
+        : this.lastBackupTime,
+    lastDialogOpenedTime: lastDialogOpenedTime.present
+        ? lastDialogOpenedTime.value
+        : this.lastDialogOpenedTime,
+  );
+  ChatBackupReminderData copyWithCompanion(ChatBackupReminderCompanion data) {
+    return ChatBackupReminderData(
+      id: data.id.present ? data.id.value : this.id,
+      reminderIntervalDays: data.reminderIntervalDays.present
+          ? data.reminderIntervalDays.value
+          : this.reminderIntervalDays,
+      lastBackupTime: data.lastBackupTime.present
+          ? data.lastBackupTime.value
+          : this.lastBackupTime,
+      lastDialogOpenedTime: data.lastDialogOpenedTime.present
+          ? data.lastDialogOpenedTime.value
+          : this.lastDialogOpenedTime,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ChatBackupReminderData(')
+          ..write('id: $id, ')
+          ..write('reminderIntervalDays: $reminderIntervalDays, ')
+          ..write('lastBackupTime: $lastBackupTime, ')
+          ..write('lastDialogOpenedTime: $lastDialogOpenedTime')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    reminderIntervalDays,
+    lastBackupTime,
+    lastDialogOpenedTime,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is ChatBackupReminderData &&
+          other.id == this.id &&
+          other.reminderIntervalDays == this.reminderIntervalDays &&
+          other.lastBackupTime == this.lastBackupTime &&
+          other.lastDialogOpenedTime == this.lastDialogOpenedTime);
+}
+
+class ChatBackupReminderCompanion
+    extends UpdateCompanion<ChatBackupReminderData> {
+  final Value<int> id;
+  final Value<int?> reminderIntervalDays;
+  final Value<UtcDateTime?> lastBackupTime;
+  final Value<UtcDateTime?> lastDialogOpenedTime;
+  const ChatBackupReminderCompanion({
+    this.id = const Value.absent(),
+    this.reminderIntervalDays = const Value.absent(),
+    this.lastBackupTime = const Value.absent(),
+    this.lastDialogOpenedTime = const Value.absent(),
+  });
+  ChatBackupReminderCompanion.insert({
+    this.id = const Value.absent(),
+    this.reminderIntervalDays = const Value.absent(),
+    this.lastBackupTime = const Value.absent(),
+    this.lastDialogOpenedTime = const Value.absent(),
+  });
+  static Insertable<ChatBackupReminderData> custom({
+    Expression<int>? id,
+    Expression<int>? reminderIntervalDays,
+    Expression<int>? lastBackupTime,
+    Expression<int>? lastDialogOpenedTime,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (reminderIntervalDays != null)
+        'reminder_interval_days': reminderIntervalDays,
+      if (lastBackupTime != null) 'last_backup_time': lastBackupTime,
+      if (lastDialogOpenedTime != null)
+        'last_dialog_opened_time': lastDialogOpenedTime,
+    });
+  }
+
+  ChatBackupReminderCompanion copyWith({
+    Value<int>? id,
+    Value<int?>? reminderIntervalDays,
+    Value<UtcDateTime?>? lastBackupTime,
+    Value<UtcDateTime?>? lastDialogOpenedTime,
+  }) {
+    return ChatBackupReminderCompanion(
+      id: id ?? this.id,
+      reminderIntervalDays: reminderIntervalDays ?? this.reminderIntervalDays,
+      lastBackupTime: lastBackupTime ?? this.lastBackupTime,
+      lastDialogOpenedTime: lastDialogOpenedTime ?? this.lastDialogOpenedTime,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (reminderIntervalDays.present) {
+      map['reminder_interval_days'] = Variable<int>(reminderIntervalDays.value);
+    }
+    if (lastBackupTime.present) {
+      map['last_backup_time'] = Variable<int>(
+        $ChatBackupReminderTable.$converterlastBackupTime.toSql(
+          lastBackupTime.value,
+        ),
+      );
+    }
+    if (lastDialogOpenedTime.present) {
+      map['last_dialog_opened_time'] = Variable<int>(
+        $ChatBackupReminderTable.$converterlastDialogOpenedTime.toSql(
+          lastDialogOpenedTime.value,
+        ),
+      );
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ChatBackupReminderCompanion(')
+          ..write('id: $id, ')
+          ..write('reminderIntervalDays: $reminderIntervalDays, ')
+          ..write('lastBackupTime: $lastBackupTime, ')
+          ..write('lastDialogOpenedTime: $lastDialogOpenedTime')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $ServerMaintenanceTable extends schema.ServerMaintenance
     with TableInfo<$ServerMaintenanceTable, ServerMaintenanceData> {
   @override
@@ -14177,6 +14536,8 @@ abstract class _$AccountForegroundDatabase extends GeneratedDatabase {
   late final $InitialSetupSkippedTable initialSetupSkipped =
       $InitialSetupSkippedTable(this);
   late final $GridSettingsTable gridSettings = $GridSettingsTable(this);
+  late final $ChatBackupReminderTable chatBackupReminder =
+      $ChatBackupReminderTable(this);
   late final $ServerMaintenanceTable serverMaintenance =
       $ServerMaintenanceTable(this);
   late final $SyncVersionTable syncVersion = $SyncVersionTable(this);
@@ -14343,6 +14704,7 @@ abstract class _$AccountForegroundDatabase extends GeneratedDatabase {
     initialSync,
     initialSetupSkipped,
     gridSettings,
+    chatBackupReminder,
     serverMaintenance,
     syncVersion,
     receivedLikesIteratorState,

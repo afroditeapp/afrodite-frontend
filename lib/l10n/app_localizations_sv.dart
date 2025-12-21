@@ -209,6 +209,26 @@ class AppLocalizationsSv extends AppLocalizations {
   String get chat_backup_pairing_code_unsupported => 'Unsupported pairing code version';
 
   @override
+  String get chat_backup_reminder_dialog_message_no_backup =>
+      'Chat backup is not yet created. Backup now?';
+
+  @override
+  String chat_backup_reminder_dialog_message_old_backup(String p0) {
+    return 'Chat backup has not been created since $p0 days. Backup now?';
+  }
+
+  @override
+  String get chat_backup_reminder_dialog_title => 'Chat backup';
+
+  @override
+  String chat_backup_screen_backup_reminder_interval(String p0) {
+    return 'Every $p0 days';
+  }
+
+  @override
+  String get chat_backup_screen_backup_reminder_title => 'Backup reminder';
+
+  @override
   String get chat_backup_screen_create_backup_question => 'Create chat backup?';
 
   @override

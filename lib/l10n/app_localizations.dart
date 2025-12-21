@@ -442,6 +442,36 @@ abstract class AppLocalizations {
   /// **'Unsupported pairing code version'**
   String get chat_backup_pairing_code_unsupported;
 
+  /// Message when no backup has been created
+  ///
+  /// In en, this message translates to:
+  /// **'Chat backup is not yet created. Backup now?'**
+  String get chat_backup_reminder_dialog_message_no_backup;
+
+  /// Message when backup is old
+  ///
+  /// In en, this message translates to:
+  /// **'Chat backup has not been created since {p0} days. Backup now?'**
+  String chat_backup_reminder_dialog_message_old_backup(String p0);
+
+  /// Title for backup reminder dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Chat backup'**
+  String get chat_backup_reminder_dialog_title;
+
+  /// Label for backup reminder interval in days
+  ///
+  /// In en, this message translates to:
+  /// **'Every {p0} days'**
+  String chat_backup_screen_backup_reminder_interval(String p0);
+
+  /// Title for backup reminder section
+  ///
+  /// In en, this message translates to:
+  /// **'Backup reminder'**
+  String get chat_backup_screen_backup_reminder_title;
+
   /// Confirmation dialog for creating chat backup
   ///
   /// In en, this message translates to:

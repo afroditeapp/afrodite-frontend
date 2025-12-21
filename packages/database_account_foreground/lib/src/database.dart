@@ -51,6 +51,7 @@ part 'database.g.dart';
     schema.InitialSync,
     schema.InitialSetupSkipped,
     schema.GridSettings,
+    schema.ChatBackupReminder,
     // Common
     schema.ServerMaintenance,
     schema.SyncVersion,

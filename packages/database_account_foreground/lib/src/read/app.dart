@@ -14,6 +14,7 @@ part 'app.g.dart';
     schema.InitialSync,
     schema.InitialSetupSkipped,
     schema.GridSettings,
+    schema.ChatBackupReminder,
   ],
 )
 class DaoReadApp extends DatabaseAccessor<AccountForegroundDatabase> with _$DaoReadAppMixin {
@@ -71,6 +72,18 @@ class DaoReadApp extends DatabaseAccessor<AccountForegroundDatabase> with _$DaoR
       gridSettings,
     )..where((t) => t.id.equals(SingleRowTable.ID.value))).watchSingleOrNull().map((r) {
       return GridSettings(itemSizeMode: r?.gridItemSizeMode, paddingMode: r?.gridPaddingMode);
+    });
+  }
+
+  Stream<ChatBackupReminder?> watchChatBackupReminder() {
+    return (select(
+      chatBackupReminder,
+    )..where((t) => t.id.equals(SingleRowTable.ID.value))).watchSingleOrNull().map((r) {
+      return ChatBackupReminder(
+        reminderIntervalDays: r?.reminderIntervalDays,
+        lastBackupTime: r?.lastBackupTime,
+        lastDialogOpenedTime: r?.lastDialogOpenedTime,
+      );
     });
   }
 }

@@ -1,3 +1,5 @@
+import 'package:utils/utils.dart';
+
 class GridSettings {
   final int? itemSizeMode;
   final int? paddingMode;
@@ -58,4 +60,16 @@ enum GridSettingMode {
     large => 2,
     disabled => 3,
   };
+}
+
+class ChatBackupReminder {
+  final int? reminderIntervalDays;
+  final UtcDateTime? lastBackupTime;
+  final UtcDateTime? lastDialogOpenedTime;
+
+  const ChatBackupReminder({
+    this.reminderIntervalDays,
+    this.lastBackupTime,
+    this.lastDialogOpenedTime,
+  });
 }
