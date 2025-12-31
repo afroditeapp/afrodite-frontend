@@ -41,17 +41,7 @@ class ViewNewsPage extends MyScreenPage<()> {
   final NewsId id;
   ViewNewsPage(this.id, {void Function() refreshNewsList = _emptyCallback})
     : super(
-        builder: (_) {
-          return BlocProvider(
-            create: (context) => ViewNewsBloc(
-              context.read<RepositoryInstances>(),
-              id,
-              Localizations.localeOf(context).languageCode,
-            ),
-            lazy: false,
-            child: ViewNewsScreen(id: id, refreshNewsList: refreshNewsList),
-          );
-        },
+        builder: (_) => ViewNewsScreenOpener(id: id, refreshNewsList: refreshNewsList),
       );
 
   @override
@@ -60,6 +50,32 @@ class ViewNewsPage extends MyScreenPage<()> {
   @override
   bool checkEquality(MyPageWithUrlNavigation<Object> other) =>
       other is ViewNewsPage && other.id == id;
+}
+
+/// Calling Localizations.localeOf(context).languageCode in ViewNewsPage
+/// throws exception, so use this widget for that.
+class ViewNewsScreenOpener extends StatefulWidget {
+  final NewsId id;
+  final void Function() refreshNewsList;
+  const ViewNewsScreenOpener({required this.id, required this.refreshNewsList, super.key});
+
+  @override
+  State<ViewNewsScreenOpener> createState() => _ViewNewsScreenOpenerState();
+}
+
+class _ViewNewsScreenOpenerState extends State<ViewNewsScreenOpener> {
+  String? initialLocale;
+
+  @override
+  Widget build(BuildContext context) {
+    initialLocale ??= Localizations.localeOf(context).languageCode;
+    return BlocProvider(
+      create: (context) =>
+          ViewNewsBloc(context.read<RepositoryInstances>(), widget.id, initialLocale!),
+      lazy: false,
+      child: ViewNewsScreen(id: widget.id, refreshNewsList: widget.refreshNewsList),
+    );
+  }
 }
 
 class ViewNewsScreen extends StatefulWidget {
