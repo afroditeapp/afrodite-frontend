@@ -317,6 +317,11 @@ class ChatRepository extends DataRepositoryWithLifecycle {
         if (result.isOk()) {
           // Only mark as processed if successfully saved to DB
           processedIds.add(deliveryInfo.id);
+
+          await _setProfileOnlineIfDeliveryInfoIsRecent(
+            deliveryInfo.receiver,
+            deliveryInfo.unixTime.toUtcDateTime(),
+          );
         }
       } else {
         // If no state change needed, still mark as processed
@@ -329,6 +334,22 @@ class ChatRepository extends DataRepositoryWithLifecycle {
         (api) => api.postDeleteMessageDeliveryInfo(MessageDeliveryInfoIdList(ids: processedIds)),
       );
     }
+  }
+
+  Future<void> _setProfileOnlineIfDeliveryInfoIsRecent(
+    AccountId accountId,
+    UtcDateTime eventTime,
+  ) async {
+    if (_isTimestampRecent(eventTime)) {
+      await db.accountAction((db) => db.profile.updateProfileLastSeenTimeIfNeeded(accountId, -1));
+    }
+  }
+
+  bool _isTimestampRecent(UtcDateTime timestamp) {
+    final now = UtcDateTime.now();
+    final differenceInSeconds =
+        (now.toUnixEpochMilliseconds() - timestamp.toUnixEpochMilliseconds()).abs() / 1000;
+    return differenceInSeconds <= 30;
   }
 
   // Local messages
