@@ -460,11 +460,17 @@ abstract class AppLocalizations {
   /// **'Chat backup'**
   String get chat_backup_reminder_dialog_title;
 
-  /// Label for backup reminder interval in days
+  /// Label for backup reminder interval in singular day
+  ///
+  /// In en, this message translates to:
+  /// **'Every day'**
+  String get chat_backup_screen_backup_reminder_interval_day;
+
+  /// Label for backup reminder interval in plural days
   ///
   /// In en, this message translates to:
   /// **'Every {p0} days'**
-  String chat_backup_screen_backup_reminder_interval(String p0);
+  String chat_backup_screen_backup_reminder_interval_days(String p0);
 
   /// Confirmation dialog for creating chat backup
   ///

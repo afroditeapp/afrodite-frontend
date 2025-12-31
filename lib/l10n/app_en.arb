@@ -288,9 +288,13 @@
   "@chat_backup_reminder_dialog_title": {
     "description": "Title for backup reminder dialog"
   },
-  "chat_backup_screen_backup_reminder_interval": "Every {p0} days",
-  "@chat_backup_screen_backup_reminder_interval": {
-    "description": "Label for backup reminder interval in days",
+  "chat_backup_screen_backup_reminder_interval_day": "Every day",
+  "@chat_backup_screen_backup_reminder_interval_day": {
+    "description": "Label for backup reminder interval in singular day"
+  },
+  "chat_backup_screen_backup_reminder_interval_days": "Every {p0} days",
+  "@chat_backup_screen_backup_reminder_interval_days": {
+    "description": "Label for backup reminder interval in plural days",
     "placeholders": {
       "p0": {
         "type": "String"

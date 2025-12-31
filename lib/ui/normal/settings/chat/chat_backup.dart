@@ -170,8 +170,7 @@ class _ChatBackupScreenState extends State<ChatBackupScreen> {
   }
 
   Widget backupReminderSlider(BuildContext context, ChatBackupData state) {
-    // Slider values: 0=Disabled, 1=7d, 2=14d, 3=30d, 4=60d, 5=90d, 6=180d, 7=365d
-    const intervals = [0, 7, 14, 30, 60, 90, 180, 365];
+    const intervals = [0, 1, 2, 3, 4, 5, 6, 7, 14, 30, 60, 90, 180, 365];
     final currentDays = state.valueReminderIntervalDays();
     final currentIndex = intervals
         .indexOf(currentDays)
@@ -208,8 +207,10 @@ class _ChatBackupScreenState extends State<ChatBackupScreen> {
   String _getReminderLabel(BuildContext context, int days) {
     if (days == 0) {
       return context.strings.generic_disabled;
+    } else if (days == 1) {
+      return context.strings.chat_backup_screen_backup_reminder_interval_day;
     } else {
-      return context.strings.chat_backup_screen_backup_reminder_interval(days.toString());
+      return context.strings.chat_backup_screen_backup_reminder_interval_days(days.toString());
     }
   }
 }

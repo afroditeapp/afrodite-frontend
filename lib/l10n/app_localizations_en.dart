@@ -221,7 +221,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get chat_backup_reminder_dialog_title => 'Chat backup';
 
   @override
-  String chat_backup_screen_backup_reminder_interval(String p0) {
+  String get chat_backup_screen_backup_reminder_interval_day => 'Every day';
+
+  @override
+  String chat_backup_screen_backup_reminder_interval_days(String p0) {
     return 'Every $p0 days';
   }
 
