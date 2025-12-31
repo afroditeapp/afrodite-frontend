@@ -16,7 +16,7 @@ class TypingIndicatorManager {
 
   TypingIndicatorManager(this._connectionManager, this._accountRepository) {
     _sendingLogic = TypingEventSendingLogic(_connectionManager);
-    _receivingLogic = TypingEventReceivingLogic();
+    _receivingLogic = TypingEventReceivingLogic(_accountRepository.db);
 
     _configSubscription = _accountRepository.clientFeaturesConfig.listen((config) {
       final typingIndicatorConfig = config.chat?.typingIndicator;

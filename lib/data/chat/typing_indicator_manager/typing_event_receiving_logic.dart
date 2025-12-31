@@ -1,9 +1,14 @@
 import 'dart:async';
 
+import 'package:app/database/account_database_manager.dart';
 import 'package:openapi/api.dart';
 import 'package:rxdart/rxdart.dart';
 
 class TypingEventReceivingLogic {
+  final AccountDatabaseManager _db;
+
+  TypingEventReceivingLogic(this._db);
+
   final Map<AccountId, bool> _typingStates = {};
   final Map<AccountId, Timer?> _ttlTimers = {};
   final BehaviorSubject<Map<AccountId, bool>> _typingStateChanges = BehaviorSubject.seeded({});
@@ -25,6 +30,9 @@ class TypingEventReceivingLogic {
     // Set typing state to true
     _typingStates[accountId] = true;
     _typingStateChanges.add(_typingStates);
+
+    // Set profile online
+    _db.accountAction((db) => db.profile.updateProfileLastSeenTimeIfNeeded(accountId, -1));
 
     // Start TTL timer to automatically stop typing indicator
     _ttlTimers[accountId] = Timer(Duration(seconds: _startEventTtlSeconds), () {
