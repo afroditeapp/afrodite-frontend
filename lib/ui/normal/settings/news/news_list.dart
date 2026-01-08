@@ -109,7 +109,7 @@ class NewsListScreenState extends State<NewsListScreen> {
     updatePagingState((s) => s.copyAndShowLoading());
 
     if (_pagingState.isInitialPage()) {
-      if (await widget.connectionManager.waitUntilCurrentSessionConnects().isErr()) {
+      if (!await widget.connectionManager.tryWaitUntilConnected(waitTimeoutSeconds: 5)) {
         showLoadingError();
         return;
       }

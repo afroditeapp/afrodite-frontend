@@ -52,7 +52,7 @@ class SelectContentBloc extends Bloc<SelectContentEvent, SelectContentData> with
       // Reset to loading state
       emit(SelectContentData().copyWith(isLoading: true));
 
-      if (await connectionManager.waitUntilCurrentSessionConnects().isErr()) {
+      if (!await connectionManager.tryWaitUntilConnected(waitTimeoutSeconds: 5)) {
         emit(state.copyWith(isLoading: false, isError: true));
         return;
       }

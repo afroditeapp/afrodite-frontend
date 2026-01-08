@@ -67,7 +67,7 @@ class _ModeratorTasksScreenState extends State<ModeratorTasksScreen> {
   bool isError = false;
 
   Future<void> _getData() async {
-    await widget.connectionManager.waitUntilCurrentSessionConnects();
+    await widget.connectionManager.tryWaitUntilConnected(waitTimeoutSeconds: 5);
     permissions = await widget.account.permissions.firstOrNull ?? Permissions();
 
     if (widget.showAll) {
