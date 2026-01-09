@@ -30,6 +30,9 @@ class ConnectionRetryManager {
   /// Returns true if more retries are available
   bool get canRetry => _retryCount < maxRetries;
 
+  /// Returns true if we're in a retry scenario (not the first attempt)
+  bool get isRetrying => _retryCount > 0;
+
   /// Calculates the wait time for the next retry with jitter.
   /// Returns null if no more retries available.
   int? getNextRetryDelaySeconds() {
@@ -111,22 +114,35 @@ class ReconnectWaitTime extends ServerConnectionManagerState {
 
 /// No connection to server.
 class NoServerConnection extends ServerConnectionManagerState {
-  final bool maxRetriesReached;
-  NoServerConnection({required this.maxRetriesReached});
+  final bool showRetryActionBanner;
+  NoServerConnection({required this.showRetryActionBanner});
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is NoServerConnection &&
           runtimeType == other.runtimeType &&
-          maxRetriesReached == other.maxRetriesReached;
+          showRetryActionBanner == other.showRetryActionBanner;
 
   @override
-  int get hashCode => maxRetriesReached.hashCode;
+  int get hashCode => showRetryActionBanner.hashCode;
 }
 
 /// Making connection to server.
-class ConnectingToServer extends ServerConnectionManagerState {}
+class ConnectingToServer extends ServerConnectionManagerState {
+  final bool showBanner;
+  ConnectingToServer({required this.showBanner});
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ConnectingToServer &&
+          runtimeType == other.runtimeType &&
+          showBanner == other.showBanner;
+
+  @override
+  int get hashCode => showBanner.hashCode;
+}
 
 /// Connection to server established.
 class ConnectedToServer extends ServerConnectionManagerState {}
@@ -186,7 +202,7 @@ class ServerConnectionManager extends ApiManager
   StreamSubscription<void>? _cmdsSubscription;
 
   final BehaviorSubject<ServerConnectionManagerState> _state = BehaviorSubject.seeded(
-    ConnectingToServer(),
+    ConnectingToServer(showBanner: false),
   );
   Stream<ServerConnectionManagerState> get state => _state.distinct();
   ServerConnectionManagerState get currentState => _state.value;
@@ -274,7 +290,7 @@ class ServerConnectionManager extends ApiManager
 
   Future<Result<(), ()>> _connect() async {
     _reconnectionTimer.cancel();
-    _state.add(ConnectingToServer());
+    _state.add(ConnectingToServer(showBanner: _retryManager.isRetrying));
 
     final accessToken = await accountDb
         .accountStreamSingle((db) => db.loginSession.watchAccessToken())
@@ -313,7 +329,7 @@ class ServerConnectionManager extends ApiManager
           _log.info(event);
           switch (event) {
             case Connecting():
-              _state.add(ConnectingToServer());
+              _state.add(ConnectingToServer(showBanner: _retryManager.isRetrying));
             case Closed e:
               await _handleConnectionError(e.error, serverConnection);
             case Ready(:final token):
@@ -345,14 +361,14 @@ class ServerConnectionManager extends ApiManager
           _retryManager.recordRetry();
           _reconnectionTimer.start(retryDelay);
         } else {
-          _state.add(NoServerConnection(maxRetriesReached: true));
+          _state.add(NoServerConnection(showRetryActionBanner: true));
         }
       case ServerConnectionError.invalidToken:
         _state.add(WaitingRefreshToken());
       case ServerConnectionError.unsupportedClientVersion:
         _state.add(UnsupportedClientVersion());
       case null:
-        _state.add(NoServerConnection(maxRetriesReached: false));
+        _state.add(NoServerConnection(showRetryActionBanner: false));
     }
   }
 

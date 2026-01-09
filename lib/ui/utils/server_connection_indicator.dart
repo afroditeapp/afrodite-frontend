@@ -38,7 +38,7 @@ class _ServerConnectionErrorDialogOpenerState extends State<ServerConnectionErro
         final currentState = snapshot.data!;
 
         final maxRetriesReached =
-            currentState is NoServerConnection && currentState.maxRetriesReached;
+            currentState is NoServerConnection && currentState.showRetryActionBanner;
         if (maxRetriesReached && !_dialogShown) {
           _dialogShown = true;
           showInfoDialog(
@@ -57,7 +57,8 @@ class _ServerConnectionErrorDialogOpenerState extends State<ServerConnectionErro
 
 class ServerConnectionBannerLogic {
   StreamSubscription<void>? _bannerStateSubscription;
-  bool _reconnectBannerShown = false;
+
+  bool bannerVisibility = false;
 
   Future<void> init(ServerConnectionManager manager) async {
     _bannerStateSubscription = manager.state
@@ -69,16 +70,17 @@ class ServerConnectionBannerLogic {
 
           switch (currentState) {
             case ReconnectWaitTime():
-              // Banner updates itself
-              if (!_reconnectBannerShown) {
-                _showBanner(currentState, manager);
-                _reconnectBannerShown = true;
+              _showBanner(manager);
+            case NoServerConnection(:final showRetryActionBanner):
+              if (showRetryActionBanner) {
+                _showBanner(manager);
+              } else {
+                _hideBanner();
               }
-            case NoServerConnection(:final maxRetriesReached) when maxRetriesReached:
-              _hideBanner();
-              _showBanner(currentState, manager);
-            case ConnectingToServer():
-              if (!_reconnectBannerShown) {
+            case ConnectingToServer(:final showBanner):
+              if (showBanner) {
+                _showBanner(manager);
+              } else {
                 _hideBanner();
               }
             default:
@@ -88,34 +90,25 @@ class ServerConnectionBannerLogic {
         .listen(null);
   }
 
-  void _showBanner(ServerConnectionManagerState state, ServerConnectionManager manager) {
-    final context = globalScaffoldMessengerKey.currentContext;
-    if (context == null) return;
+  void _showBanner(ServerConnectionManager manager) {
+    if (bannerVisibility) {
+      return;
+    }
 
     final banner = MaterialBanner(
       // backgroundColor is not set because it does not update when
       // enabling/disabling dark theme.
-      content: state is ReconnectWaitTime
-          ? ServerConnectionIndicator(manager: manager)
-          : ConnectionFailedIndicator(),
-      actions: state is NoServerConnection && state.maxRetriesReached
-          ? [
-              TextButton(
-                onPressed: () {
-                  manager.restartIfRestartNotOngoing();
-                },
-                child: Text(context.strings.generic_retry),
-              ),
-            ]
-          : const [SizedBox.shrink()],
+      content: ServerConnectionBannerContent(manager: manager),
+      actions: [ServerConnectionBannerActions(manager: manager)],
     );
 
     globalScaffoldMessengerKey.currentState?.showMaterialBanner(banner);
+    bannerVisibility = true;
   }
 
   void _hideBanner() {
     globalScaffoldMessengerKey.currentState?.hideCurrentMaterialBanner();
-    _reconnectBannerShown = false;
+    bannerVisibility = false;
   }
 
   Future<void> dispose() async {
@@ -124,37 +117,18 @@ class ServerConnectionBannerLogic {
   }
 }
 
-class ConnectionFailedIndicator extends StatelessWidget {
-  const ConnectionFailedIndicator({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Icon(Icons.error_outline, size: 16),
-        const SizedBox(width: 8),
-        Text(
-          context.strings.server_connection_indicator_connection_failed,
-          style: Theme.of(context).textTheme.bodySmall,
-        ),
-      ],
-    );
-  }
-}
-
-class ServerConnectionIndicator extends StatefulWidget {
+class ServerConnectionBannerContent extends StatefulWidget {
   final ServerConnectionManager manager;
 
-  const ServerConnectionIndicator({required this.manager, super.key});
+  const ServerConnectionBannerContent({required this.manager, super.key});
 
   @override
-  State<ServerConnectionIndicator> createState() => _ServerConnectionIndicatorState();
+  State<ServerConnectionBannerContent> createState() => _ServerConnectionBannerContentState();
 }
 
-class _ServerConnectionIndicatorState extends State<ServerConnectionIndicator> {
+class _ServerConnectionBannerContentState extends State<ServerConnectionBannerContent> {
   late final Stream<ServerConnectionManagerState> _stateStream;
-  ReconnectWaitTime? _lastReconnectWaitTime;
+  Widget? previouslyShownWidget;
 
   @override
   void initState() {
@@ -173,22 +147,37 @@ class _ServerConnectionIndicatorState extends State<ServerConnectionIndicator> {
 
         final currentState = snapshot.data!;
 
-        // Save the last ReconnectWaitTime state
-        if (currentState is ReconnectWaitTime) {
-          _lastReconnectWaitTime = currentState;
+        Widget newWidget;
+        switch (currentState) {
+          case ReconnectWaitTime(:final remainingSeconds):
+            newWidget = _buildReconnectingIndicator(context, remainingSeconds);
+          case NoServerConnection(:final showRetryActionBanner):
+            if (showRetryActionBanner) {
+              newWidget = _buildConnectionFailedIndicator(context);
+            } else {
+              newWidget = previouslyShownWidget ?? const SizedBox.shrink();
+            }
+          default:
+            newWidget = previouslyShownWidget ?? const SizedBox.shrink();
         }
 
-        return switch (currentState) {
-          ReconnectWaitTime(:final remainingSeconds) => _buildReconnectingIndicator(
-            context,
-            remainingSeconds,
-          ),
-          _ =>
-            _lastReconnectWaitTime != null
-                ? _buildReconnectingIndicator(context, _lastReconnectWaitTime!.remainingSeconds)
-                : const SizedBox.shrink(),
-        };
+        previouslyShownWidget = newWidget;
+        return newWidget;
       },
+    );
+  }
+
+  Widget _buildConnectionFailedIndicator(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(Icons.error_outline, size: 16),
+        const SizedBox(width: 8),
+        Text(
+          context.strings.server_connection_indicator_connection_failed,
+          style: Theme.of(context).textTheme.bodySmall,
+        ),
+      ],
     );
   }
 
@@ -214,6 +203,50 @@ class _ServerConnectionIndicatorState extends State<ServerConnectionIndicator> {
           ).textTheme.bodySmall?.copyWith(color: Theme.of(context).colorScheme.onSurface),
         ),
       ],
+    );
+  }
+}
+
+class ServerConnectionBannerActions extends StatefulWidget {
+  final ServerConnectionManager manager;
+
+  const ServerConnectionBannerActions({required this.manager, super.key});
+
+  @override
+  State<ServerConnectionBannerActions> createState() => _ServerConnectionBannerActionsState();
+}
+
+class _ServerConnectionBannerActionsState extends State<ServerConnectionBannerActions> {
+  late final Stream<ServerConnectionManagerState> _stateStream;
+
+  @override
+  void initState() {
+    super.initState();
+    _stateStream = widget.manager.state;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<ServerConnectionManagerState>(
+      stream: _stateStream,
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return const SizedBox.shrink();
+        }
+
+        final currentState = snapshot.data!;
+
+        if (currentState is NoServerConnection && currentState.showRetryActionBanner) {
+          return TextButton(
+            onPressed: () {
+              widget.manager.restartIfRestartNotOngoing();
+            },
+            child: Text(context.strings.generic_retry),
+          );
+        }
+
+        return const SizedBox.shrink();
+      },
     );
   }
 }
