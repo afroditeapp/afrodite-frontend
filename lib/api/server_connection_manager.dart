@@ -87,8 +87,6 @@ class ReconnectionTimer {
     _timer?.cancel();
     _timer = null;
   }
-
-  bool get isActive => _timer?.isActive ?? false;
 }
 
 sealed class ServerConnectionManagerState {}
@@ -333,9 +331,7 @@ class ServerConnectionManager extends ApiManager
             case Closed e:
               await _handleConnectionError(e.error, serverConnection);
             case Ready(:final token):
-              if (_reconnectionTimer.isActive) {
-                _reconnectionTimer.cancel();
-              }
+              _reconnectionTimer.cancel();
               // Reset retry counter on successful connection
               _retryManager.reset();
               _apiProvider.setAccessToken(token);
