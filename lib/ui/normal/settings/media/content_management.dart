@@ -270,20 +270,17 @@ Widget _rejectionDetailsText(BuildContext context, ContentInfoDetailed content) 
     return Padding(
       padding: const EdgeInsets.only(top: 8),
       child: Container(
+        width: double.infinity,
         padding: const EdgeInsets.all(8.0),
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.primaryContainer,
           borderRadius: BorderRadius.circular(4.0),
         ),
-        child: Row(
-          children: [
-            Text(
-              infoText,
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: Theme.of(context).colorScheme.onPrimaryContainer,
-              ),
-            ),
-          ],
+        child: Text(
+          infoText,
+          style: Theme.of(
+            context,
+          ).textTheme.bodySmall?.copyWith(color: Theme.of(context).colorScheme.onPrimaryContainer),
         ),
       ),
     );
