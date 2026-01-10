@@ -128,6 +128,7 @@ Widget content(BuildContext context) {
                 context: context,
                 title: context.strings.demo_account_screen_login_to_account_dialog_title,
                 details: account.aid.aid,
+                detailsSelectable: true,
                 onSuccess: () =>
                     context.read<DemoAccountBloc>().add(DoDemoAccountLoginToAccount(account.aid)),
               ),

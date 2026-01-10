@@ -100,6 +100,7 @@ Future<void> showConfirmDialogAdvanced({
   required BuildContext context,
   required String title,
   String? details,
+  bool detailsSelectable = false,
   void Function()? onSuccess,
 }) {
   return MyNavigator.showDialog<()>(
@@ -108,7 +109,9 @@ Future<void> showConfirmDialogAdvanced({
       builder: (context, closer) {
         return AlertDialog(
           title: Text(title),
-          content: details != null ? Text(details) : null,
+          content: details != null
+              ? (detailsSelectable ? SelectableText(details) : Text(details))
+              : null,
           actions: <Widget>[
             TextButton(
               onPressed: () => closer.close(context, ()),
