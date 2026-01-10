@@ -374,6 +374,7 @@ class ServerConnectionManager extends ApiManager
       return;
     }
     _restartOngoing = true;
+    _reconnectionTimer.cancel();
     _retryManager.reset();
     final event = Restart();
     _cmds.add(event);
@@ -382,6 +383,7 @@ class ServerConnectionManager extends ApiManager
   }
 
   Future<void> close() async {
+    _reconnectionTimer.cancel();
     _retryManager.reset();
     final event = CloseConnection(null);
     _cmds.add(event);
