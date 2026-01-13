@@ -76,7 +76,10 @@ class ChatMessage extends StatelessWidget {
                     const SizedBox(width: 4),
                     chat_ui.TimeAndStatus(
                       time: createdAt,
-                      status: status,
+                      // Use two checkmarks icon for delivered state
+                      status: status == chat_core.MessageStatus.delivered
+                          ? chat_core.MessageStatus.seen
+                          : status,
                       showTime: false,
                       showStatus: true,
                       textStyle: statusTextStyle,
