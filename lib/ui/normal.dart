@@ -337,7 +337,10 @@ class _NotificationPermissionDialogOpenerState extends State<NotificationPermiss
 
 class NotificationPermissionDialogPage extends MyDialogPage<bool> {
   NotificationPermissionDialogPage()
-    : super(builder: (_, closer) => NotificationPermissionDialog(closer: closer));
+    : super(
+        builder: (_, closer) => NotificationPermissionDialog(closer: closer),
+        barrierDismissable: false,
+      );
 }
 
 class NotificationPermissionDialog extends StatelessWidget {
