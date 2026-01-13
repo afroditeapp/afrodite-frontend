@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:app/localizations.dart';
 import 'package:app/ui_utils/snack_bar.dart';
+import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:app/api/server_connection_manager.dart';
 import 'package:app/data/account_repository.dart';
@@ -17,6 +18,8 @@ import 'package:app/database/background_database_manager.dart';
 import 'package:app/database/database_manager.dart';
 import 'package:utils/utils.dart';
 import 'package:app/utils/result.dart';
+
+final _log = Logger("RepositoryInstances");
 
 /// This should contain account specific logic so it is not possible
 /// the logic will touch another account's data if there is long running
@@ -101,31 +104,51 @@ class RepositoryInstances {
     }
     _logoutStarted = true;
 
+    _log.info("Logout started");
+
     if (connectionManager.currentState is ConnectedToServer) {
+      _log.info("Making logout API request...");
       final r = await api.accountAction((api) => api.postLogout());
       if (r.isErr()) {
+        _log.error("Logout API request failed");
         showSnackBar(R.strings.generic_logout_failed);
+      } else {
+        _log.info("Logout API request successful");
       }
     }
 
+    _log.info("Closing connection manager");
+
     await connectionManager.close();
+
+    _log.info("Reseting tokens");
 
     await accountDb.accountAction((db) => db.loginSession.updateRefreshToken(null));
     await accountDb.accountAction((db) => db.loginSession.updateAccessToken(null));
+
+    _log.info("Running onLogout methods");
 
     for (final r in _repositories) {
       await r.onLogout();
     }
 
+    _log.info("Running dispose methods");
+
     for (final r in _repositories) {
       await r.dispose();
     }
 
+    _log.info("Disposing managers");
+
     await connectionManager.dispose();
     await messageKeyManager.dispose();
 
+    _log.info("Closing DBs");
+
     await accountBackgroundDb.close();
     await accountDb.close();
+
+    _log.info("Logout completed");
   }
 
   static Future<RepositoryInstances> createAndInit(
