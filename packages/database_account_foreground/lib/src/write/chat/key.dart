@@ -30,8 +30,11 @@ class DaoWriteKey extends DatabaseAccessor<AccountForegroundDatabase> with _$Dao
   }
 
   Future<void> updatePublicKeyIdOnServer(api.PublicKeyId? publicKeyIdOnServer) async {
-    await (update(myKeyPair)..where((t) => t.id.equals(SingleRowTable.ID.value))).write(
-      MyKeyPairCompanion(publicKeyIdOnServer: Value(publicKeyIdOnServer)),
+    await into(myKeyPair).insertOnConflictUpdate(
+      MyKeyPairCompanion.insert(
+        id: SingleRowTable.ID,
+        publicKeyIdOnServer: Value(publicKeyIdOnServer),
+      ),
     );
   }
 
