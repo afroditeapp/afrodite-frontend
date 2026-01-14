@@ -156,7 +156,7 @@ class _MenuViewState extends State<MenuView> {
       Setting.createSettingWithCustomIcon(
         BlocBuilder<AutomaticProfileSearchBadgeBloc, AutomaticProfileSearchBadgeData>(
           builder: (context, state) {
-            const icon = Icon(Icons.search);
+            const icon = Icon(Icons.auto_awesome);
             final count = state.profileCount();
             if (count == 0) {
               return icon;

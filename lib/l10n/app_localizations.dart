@@ -298,16 +298,22 @@ abstract class AppLocalizations {
   /// **'Dating app'**
   String get app_slogan;
 
-  /// Info text displayed when no profiles are found
+  /// Description text displayed when no profiles are found
   ///
   /// In en, this message translates to:
-  /// **'No profiles found'**
-  String get automatic_profile_search_results_screen_no_profiles_found;
+  /// **'You will be notified when this changes'**
+  String get automatic_profile_search_results_screen_no_profiles_found_description;
+
+  /// Title text displayed when no profiles are found
+  ///
+  /// In en, this message translates to:
+  /// **'No new or updated profiles found'**
+  String get automatic_profile_search_results_screen_no_profiles_found_title;
 
   /// Title for automatic profile search results screen
   ///
   /// In en, this message translates to:
-  /// **'Automatic profile search results'**
+  /// **'New profiles'**
   String get automatic_profile_search_results_screen_title;
 
   /// Info text displayed when there is no blocked profiles
@@ -2113,7 +2119,7 @@ abstract class AppLocalizations {
   /// Title for notification category automatic profile search
   ///
   /// In en, this message translates to:
-  /// **'Automatic profile search'**
+  /// **'New profiles'**
   String get notification_category_automatic_profile_search;
 
   /// Title for notification category group chat
@@ -2905,7 +2911,7 @@ abstract class AppLocalizations {
   /// Title for automatic profile search settings category
   ///
   /// In en, this message translates to:
-  /// **'Automatic search'**
+  /// **'New profiles'**
   String get search_settings_screen_automatic_search;
 
   /// Title for change gender filter value action
@@ -2947,7 +2953,7 @@ abstract class AppLocalizations {
   /// Title text for new profiles setting
   ///
   /// In en, this message translates to:
-  /// **'Show only new profiles'**
+  /// **'Hide updated profiles'**
   String get search_settings_screen_new_profiles;
 
   /// Snackbar text about failed search settings update

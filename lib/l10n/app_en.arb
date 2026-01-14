@@ -165,11 +165,15 @@
   "@app_slogan": {
     "description": "Slogan for the app"
   },
-  "automatic_profile_search_results_screen_no_profiles_found": "No profiles found",
-  "@automatic_profile_search_results_screen_no_profiles_found": {
-    "description": "Info text displayed when no profiles are found"
+  "automatic_profile_search_results_screen_no_profiles_found_description": "You will be notified when this changes",
+  "@automatic_profile_search_results_screen_no_profiles_found_description": {
+    "description": "Description text displayed when no profiles are found"
   },
-  "automatic_profile_search_results_screen_title": "Automatic profile search results",
+  "automatic_profile_search_results_screen_no_profiles_found_title": "No new or updated profiles found",
+  "@automatic_profile_search_results_screen_no_profiles_found_title": {
+    "description": "Title text displayed when no profiles are found"
+  },
+  "automatic_profile_search_results_screen_title": "New profiles",
   "@automatic_profile_search_results_screen_title": {
     "description": "Title for automatic profile search results screen"
   },
@@ -1478,7 +1482,7 @@
   "@notification_automatic_profile_search_found_profiles_single": {
     "description": "Title for automatic profile search found single profile notification"
   },
-  "notification_category_automatic_profile_search": "Automatic profile search",
+  "notification_category_automatic_profile_search": "New profiles",
   "@notification_category_automatic_profile_search": {
     "description": "Title for notification category automatic profile search"
   },
@@ -2085,7 +2089,7 @@
   "@scan_pairing_code_screen_title": {
     "description": "Title for scan pairing code screen"
   },
-  "search_settings_screen_automatic_search": "Automatic search",
+  "search_settings_screen_automatic_search": "New profiles",
   "@search_settings_screen_automatic_search": {
     "description": "Title for automatic profile search settings category"
   },
@@ -2113,7 +2117,7 @@
   "@search_settings_screen_gender_is_not_selected": {
     "description": "Snackbar text about missing gender information"
   },
-  "search_settings_screen_new_profiles": "Show only new profiles",
+  "search_settings_screen_new_profiles": "Hide updated profiles",
   "@search_settings_screen_new_profiles": {
     "description": "Title text for new profiles setting"
   },

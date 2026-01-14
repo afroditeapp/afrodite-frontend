@@ -34,10 +34,12 @@ class GenericProfileGrid extends StatefulWidget {
 
   final UiProfileIterator Function() buildIteratorManager;
   final String noProfilesText;
+  final String? noProfilesTextDescription;
   GenericProfileGrid(
     RepositoryInstances r, {
     required this.buildIteratorManager,
     required this.noProfilesText,
+    this.noProfilesTextDescription,
     super.key,
   }) : chatRepository = r.chat,
        profileRepository = r.profile,
@@ -186,6 +188,12 @@ class _GenericProfileGridState extends State<GenericProfileGrid> {
           );
         },
         noItemsFoundIndicatorBuilder: (context) {
+          if (widget.noProfilesTextDescription != null) {
+            return ListReplacementMessage(
+              title: widget.noProfilesText,
+              body: widget.noProfilesTextDescription!,
+            );
+          }
           return buildListReplacementMessage(
             child: Column(
               mainAxisSize: MainAxisSize.min,

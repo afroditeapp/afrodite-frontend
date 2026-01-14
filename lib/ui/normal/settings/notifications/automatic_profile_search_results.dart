@@ -59,7 +59,10 @@ class AutomaticProfileSearchResultsScreenState extends State<AutomaticProfileSea
               r.chat.currentUser,
             );
           },
-          noProfilesText: context.strings.automatic_profile_search_results_screen_no_profiles_found,
+          noProfilesText:
+              context.strings.automatic_profile_search_results_screen_no_profiles_found_title,
+          noProfilesTextDescription:
+              context.strings.automatic_profile_search_results_screen_no_profiles_found_description,
         ),
       ),
     );

@@ -129,10 +129,15 @@ class AppLocalizationsSv extends AppLocalizations {
   String get app_slogan => 'Dating app';
 
   @override
-  String get automatic_profile_search_results_screen_no_profiles_found => 'No profiles found';
+  String get automatic_profile_search_results_screen_no_profiles_found_description =>
+      'You will be notified when this changes';
 
   @override
-  String get automatic_profile_search_results_screen_title => 'Automatic profile search results';
+  String get automatic_profile_search_results_screen_no_profiles_found_title =>
+      'No new or updated profiles found';
+
+  @override
+  String get automatic_profile_search_results_screen_title => 'New profiles';
 
   @override
   String get blocked_profiles_screen_no_blocked_profiles => 'No blocked profiles';
@@ -1132,7 +1137,7 @@ class AppLocalizationsSv extends AppLocalizations {
       'New or updated profile found';
 
   @override
-  String get notification_category_automatic_profile_search => 'Automatic profile search';
+  String get notification_category_automatic_profile_search => 'New profiles';
 
   @override
   String get notification_category_group_chat => 'Chat';
@@ -1587,7 +1592,7 @@ class AppLocalizationsSv extends AppLocalizations {
   String get scan_pairing_code_screen_title => 'Scan QR Code';
 
   @override
-  String get search_settings_screen_automatic_search => 'Automatic search';
+  String get search_settings_screen_automatic_search => 'New profiles';
 
   @override
   String get search_settings_screen_change_gender_filter_action_tile => 'Gender filter';
@@ -1609,7 +1614,7 @@ class AppLocalizationsSv extends AppLocalizations {
   String get search_settings_screen_gender_is_not_selected => 'Your gender information is not set';
 
   @override
-  String get search_settings_screen_new_profiles => 'Show only new profiles';
+  String get search_settings_screen_new_profiles => 'Hide updated profiles';
 
   @override
   String get search_settings_screen_search_settings_update_failed =>
