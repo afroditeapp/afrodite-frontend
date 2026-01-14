@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:app/data/chat_repository.dart';
 import 'package:app/data/general/notification/state/automatic_profile_search.dart';
-import 'package:app/data/general/notification/state/profile_text_moderation_completed.dart';
+import 'package:app/data/general/notification/state/profile_string_moderation_completed.dart';
 import 'package:app/logic/profile/profile_filters.dart';
 import 'package:app/utils/api.dart';
 import 'package:app/utils/stream.dart';
