@@ -177,7 +177,7 @@ class PublicProfileViewingBlocker extends StatelessWidget {
             builder: (context, myProfileState) {
               final primaryContent = myProfileState.profile?.myContent.getAtOrNull(0);
               if (primaryContent?.accepted == true) {
-                return ChatViewingBlocker(child: child);
+                return _handleBlocked(ChatViewingBlocker(child: child));
               } else {
                 return _handleBlocked(primaryProfileContentIsNotAccepted(context, primaryContent));
               }
