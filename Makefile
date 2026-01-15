@@ -53,8 +53,6 @@ update-drift-code-account-background:
 	cd packages/database_account_background && dart run build_runner build
 update-drift-code-account-foreground:
 	cd packages/database_account_foreground && dart run build_runner build
-update-drift-code-common-background:
-	cd packages/database_common_background && dart run build_runner build
 update-drift-code-common-foreground:
 	cd packages/database_common_foreground && dart run build_runner build
 
@@ -143,7 +141,6 @@ clean:
 	cd packages/database && flutter clean
 	cd packages/database_account_background && flutter clean
 	cd packages/database_account_foreground && flutter clean
-	cd packages/database_common_background && flutter clean
 	cd packages/database_common_foreground && flutter clean
 	cd packages/database_converter && flutter clean
 	cd packages/database_model && flutter clean
@@ -172,7 +169,6 @@ code-stats:
 	packages/database \
 	packages/database_account_background \
 	packages/database_account_foreground \
-	packages/database_common_background \
 	packages/database_common_foreground \
 	packages/database_converter \
 	packages/database_model \

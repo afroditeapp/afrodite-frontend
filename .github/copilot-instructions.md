@@ -16,11 +16,6 @@ packages/database_account_foreground, command
 needs to be executed.
 
 After editing Drift related code found from
-packages/database_common_background, command
-"make update-drift-code-common-background"
-needs to be executed.
-
-After editing Drift related code found from
 packages/database_common_foreground, command
 "make update-drift-code-common-foreground"
 needs to be executed.

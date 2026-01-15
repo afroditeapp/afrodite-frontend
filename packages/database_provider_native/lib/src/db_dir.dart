@@ -36,10 +36,6 @@ class DbDirUtils {
     return _dbPath("common.db");
   }
 
-  static Future<String> commonBackgroundDbPath() async {
-    return _dbPath("background_common.db", backgroundDb: true);
-  }
-
   static Future<String> accountDbPath(String account) async {
     final dbName = "$account.account.db";
     return await _dbPath(dbName);

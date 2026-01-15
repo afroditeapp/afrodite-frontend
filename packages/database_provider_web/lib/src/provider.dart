@@ -39,8 +39,6 @@ String dbFileToDbName(DbFile dbFile) {
   switch (dbFile) {
     case CommonDbFile():
       return "common.db";
-    case CommonBackgroundDbFile():
-      return "common_background.db";
     case AccountDbFile():
       return "account_${dbFile.accountId}.db";
     case AccountBackgroundDbFile():
