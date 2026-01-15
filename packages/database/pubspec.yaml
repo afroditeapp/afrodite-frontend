@@ -9,8 +9,8 @@ environment:
 resolution: workspace
 
 dependencies:
-  database_account_foreground:
-    path: "../database_account_foreground"
+  database_account:
+    path: "../database_account"
   database_common:
     path: "../database_common"
   database_model:

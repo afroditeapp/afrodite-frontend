@@ -37,7 +37,7 @@ check-fmt:
 .PHONY: test
 test:
 	cd packages/database_model && flutter test
-	cd packages/database_account_foreground && flutter test
+	cd packages/database_account && flutter test
 
 update-api-bindings:
 	openapi-generator-cli generate \
@@ -49,8 +49,8 @@ update-api-bindings:
 update-freezed-code:
 	icegen --code-dir lib/model/freezed
 
-update-drift-code-account-foreground:
-	cd packages/database_account_foreground && dart run build_runner build
+update-drift-code-account:
+	cd packages/database_account && dart run build_runner build
 update-drift-code-common:
 	cd packages/database_common && dart run build_runner build
 
@@ -137,7 +137,7 @@ endif
 clean:
 	flutter clean
 	cd packages/database && flutter clean
-	cd packages/database_account_foreground && flutter clean
+	cd packages/database_account && flutter clean
 	cd packages/database_common && flutter clean
 	cd packages/database_converter && flutter clean
 	cd packages/database_model && flutter clean
@@ -164,7 +164,7 @@ code-stats:
 	@find \
 	lib \
 	packages/database \
-	packages/database_account_foreground \
+	packages/database_account \
 	packages/database_common \
 	packages/database_converter \
 	packages/database_model \

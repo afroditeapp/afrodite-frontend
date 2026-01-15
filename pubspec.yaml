@@ -25,7 +25,7 @@ workspace:
   - packages/afrodite_frontend
   - packages/api_client
   - packages/database
-  - packages/database_account_foreground
+  - packages/database_account
   - packages/database_common
   - packages/database_converter
   - packages/database_model
