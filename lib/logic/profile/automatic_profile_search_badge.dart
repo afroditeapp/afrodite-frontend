@@ -27,12 +27,10 @@ class AutomaticProfileSearchBadgeBloc
     : db = r.accountBackgroundDb,
       super(AutomaticProfileSearchBadgeData()) {
     on<BadgeStateUpdate>((data, emit) {
-      emit(state.copyWith(dataLoaded: true, badgeState: data.value));
+      emit(state.copyWith(badgeState: data.value));
     }, transformer: sequential());
     on<HideBadge>((data, emit) async {
-      // Badge state might not be loaded yet if app process starts from
-      // automatic profile search notification.
-      if (state.badgeState.showBadge || !state.dataLoaded) {
+      if (state.badgeState.showBadge) {
         await db.accountAction((db) => db.profile.hideAutomaticProfileSearchBadge());
       }
     });

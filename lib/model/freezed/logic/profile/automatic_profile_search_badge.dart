@@ -9,7 +9,6 @@ class AutomaticProfileSearchBadgeData with _$AutomaticProfileSearchBadgeData {
   const AutomaticProfileSearchBadgeData._();
 
   factory AutomaticProfileSearchBadgeData({
-    @Default(false) bool dataLoaded,
     @Default(AutomaticProfileSearchBadgeState.defaultValue)
     AutomaticProfileSearchBadgeState badgeState,
   }) = _AutomaticProfileSearchBadgeData;
