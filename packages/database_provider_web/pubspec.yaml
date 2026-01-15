@@ -11,7 +11,7 @@ resolution: workspace
 
 dependencies:
   logging: ^1.2.0
-  drift: ^2.26.0
+  drift: ^2.30.1
   web: ^1.1.1
 
   database_utils:

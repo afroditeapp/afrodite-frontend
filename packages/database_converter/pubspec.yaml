@@ -9,7 +9,7 @@ environment:
 resolution: workspace
 
 dependencies:
-  drift: ^2.26.0
+  drift: ^2.30.1
 
   openapi:
     path: "../api_client"

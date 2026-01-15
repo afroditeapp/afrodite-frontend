@@ -3,8 +3,7 @@
 part of 'privacy.dart';
 
 // ignore_for_file: type=lint
-mixin _$DaoReadProfilePrivacyMixin
-    on DatabaseAccessor<AccountDatabase> {
+mixin _$DaoReadProfilePrivacyMixin on DatabaseAccessor<AccountDatabase> {
   $ProfilePrivacySettingsTable get profilePrivacySettings =>
       attachedDatabase.profilePrivacySettings;
 }

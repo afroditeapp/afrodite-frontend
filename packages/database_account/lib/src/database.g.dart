@@ -17997,9 +17997,7 @@ abstract class _$AccountDatabase extends GeneratedDatabase {
       $UnreadMessagesCountTable(this);
   late final $NewMessageNotificationTable newMessageNotification =
       $NewMessageNotificationTable(this);
-  late final DaoReadApp daoReadApp = DaoReadApp(
-    this as AccountDatabase,
-  );
+  late final DaoReadApp daoReadApp = DaoReadApp(this as AccountDatabase);
   late final DaoReadAppNotificationSettings daoReadAppNotificationSettings =
       DaoReadAppNotificationSettings(this as AccountDatabase);
   late final DaoReadCommon daoReadCommon = DaoReadCommon(
@@ -18014,9 +18012,7 @@ abstract class _$AccountDatabase extends GeneratedDatabase {
   late final DaoReadLoginSession daoReadLoginSession = DaoReadLoginSession(
     this as AccountDatabase,
   );
-  late final DaoReadMedia daoReadMedia = DaoReadMedia(
-    this as AccountDatabase,
-  );
+  late final DaoReadMedia daoReadMedia = DaoReadMedia(this as AccountDatabase);
   late final DaoReadMyMedia daoReadMyMedia = DaoReadMyMedia(
     this as AccountDatabase,
   );
@@ -18036,12 +18032,8 @@ abstract class _$AccountDatabase extends GeneratedDatabase {
   );
   late final DaoReadConversationList daoReadConversationList =
       DaoReadConversationList(this as AccountDatabase);
-  late final DaoReadKey daoReadKey = DaoReadKey(
-    this as AccountDatabase,
-  );
-  late final DaoReadLike daoReadLike = DaoReadLike(
-    this as AccountDatabase,
-  );
+  late final DaoReadKey daoReadKey = DaoReadKey(this as AccountDatabase);
+  late final DaoReadLike daoReadLike = DaoReadLike(this as AccountDatabase);
   late final DaoReadMessage daoReadMessage = DaoReadMessage(
     this as AccountDatabase,
   );
@@ -18050,9 +18042,7 @@ abstract class _$AccountDatabase extends GeneratedDatabase {
   );
   late final DaoReadChatUnreadMessagesCount daoReadChatUnreadMessagesCount =
       DaoReadChatUnreadMessagesCount(this as AccountDatabase);
-  late final DaoWriteApp daoWriteApp = DaoWriteApp(
-    this as AccountDatabase,
-  );
+  late final DaoWriteApp daoWriteApp = DaoWriteApp(this as AccountDatabase);
   late final DaoWriteAppNotificationSettings daoWriteAppNotificationSettings =
       DaoWriteAppNotificationSettings(this as AccountDatabase);
   late final DaoWriteCommon daoWriteCommon = DaoWriteCommon(
@@ -18089,12 +18079,8 @@ abstract class _$AccountDatabase extends GeneratedDatabase {
   );
   late final DaoWriteConversationList daoWriteConversationList =
       DaoWriteConversationList(this as AccountDatabase);
-  late final DaoWriteKey daoWriteKey = DaoWriteKey(
-    this as AccountDatabase,
-  );
-  late final DaoWriteLike daoWriteLike = DaoWriteLike(
-    this as AccountDatabase,
-  );
+  late final DaoWriteKey daoWriteKey = DaoWriteKey(this as AccountDatabase);
+  late final DaoWriteLike daoWriteLike = DaoWriteLike(this as AccountDatabase);
   late final DaoWriteMessage daoWriteMessage = DaoWriteMessage(
     this as AccountDatabase,
   );

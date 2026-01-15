@@ -10,7 +10,7 @@ environment:
 resolution: workspace
 
 dependencies:
-  drift: ^2.26.0
+  drift: ^2.30.1
 
   database_provider_native:
     path: "../database_provider_native"
