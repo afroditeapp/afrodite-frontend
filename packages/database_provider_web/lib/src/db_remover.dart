@@ -10,7 +10,7 @@ final _log = Logger("DatabaseRemoverImpl");
 
 class DatabaseRemoverImpl extends DatabaseRemover {
   @override
-  Future<void> recreateDatabasesDir({required bool backgroundDb}) async {
+  Future<void> recreateDatabasesDir() async {
     throw UnsupportedError(
       'recreateDatabasesDir is not supported on web. Use deleteAllDatabases() instead.',
     );

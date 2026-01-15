@@ -12,7 +12,6 @@ class SecureStorageManager extends AppSingleton {
   Future<void> init() async {}
 
   Future<String> getDbEncryptionKeyOrCreateNewKeyAndRecreateDatabasesDir({
-    required bool backgroundDb,
     required DatabaseRemover remover,
   }) async {
     throw UnsupportedError("Unsupported platform");

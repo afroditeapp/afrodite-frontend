@@ -1,7 +1,7 @@
 abstract class DatabaseRemover {
-  Future<void> recreateDatabasesDir({required bool backgroundDb});
+  Future<void> recreateDatabasesDir();
 
-  /// Deletes all databases (both foreground and background).
+  /// Deletes all databases.
   /// This is useful for development/preview versions when breaking changes occur.
   Future<void> deleteAllDatabases();
 }

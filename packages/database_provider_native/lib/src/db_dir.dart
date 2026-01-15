@@ -9,13 +9,8 @@ final _log = Logger("DbDirUtils");
 
 /// TODO(quality): Error handling
 class DbDirUtils {
-  static Future<String> _dbDirPath({bool backgroundDb = false}) async {
-    final String dbDirName;
-    if (backgroundDb) {
-      dbDirName = "background_databases";
-    } else {
-      dbDirName = "databases";
-    }
+  static Future<String> _dbDirPath() async {
+    const dbDirName = "databases";
 
     final supportDir = await getApplicationSupportDirectory();
     final dbDirPath = p.join(supportDir.path, dbDirName);
@@ -26,8 +21,8 @@ class DbDirUtils {
     return dbDirPath;
   }
 
-  static Future<String> _dbPath(String fileName, {bool backgroundDb = false}) async {
-    final dbDirPath = await _dbDirPath(backgroundDb: backgroundDb);
+  static Future<String> _dbPath(String fileName) async {
+    final dbDirPath = await _dbDirPath();
     final filePath = p.join(dbDirPath, fileName);
     return filePath;
   }
@@ -44,8 +39,8 @@ class DbDirUtils {
 
 class DatabaseRemoverImpl extends DatabaseRemover {
   @override
-  Future<void> recreateDatabasesDir({required bool backgroundDb}) async {
-    final dbDirPath = await DbDirUtils._dbDirPath(backgroundDb: backgroundDb);
+  Future<void> recreateDatabasesDir() async {
+    final dbDirPath = await DbDirUtils._dbDirPath();
     final dir = Directory(dbDirPath);
     if (await dir.exists()) {
       await dir.delete(recursive: true);
@@ -57,9 +52,9 @@ class DatabaseRemoverImpl extends DatabaseRemover {
   @override
   Future<void> deleteAllDatabases() async {
     try {
-      // Delete foreground databases
-      await recreateDatabasesDir(backgroundDb: false);
-      _log.info("Deleted foreground databases");
+      // Delete databases
+      await recreateDatabasesDir();
+      _log.info("Deleted all databases");
     } catch (e, stackTrace) {
       _log.severe("Error deleting all databases", e, stackTrace);
       rethrow;

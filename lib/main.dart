@@ -232,7 +232,7 @@ class GlobalInitManager extends AppSingletonNoInit {
     unawaited(_init());
   }
 
-  /// Removes all database files (both foreground and background databases)
+  /// Removes all database files.
   Future<void> _removeAllDatabases() async {
     try {
       final remover = DatabaseRemoverImpl();

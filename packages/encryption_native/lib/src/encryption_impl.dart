@@ -11,15 +11,9 @@ final _log = Logger("SecureStorageManager");
 
 // The key is from this cmd: openssl rand -base64 12
 const RAW_STORAGE_KEY_FOR_DB_ENCRYPTION_KEY = "SxxccCgbFSMkdaho";
-const RAW_STORAGE_KEY_FOR_BACKGROUND_DB_ENCRYPTION_KEY = "Aeq5gGUHgn6IVqaK";
 
-Future<String> _getStorageKeyForDbEncryptionKey({required bool backgroundDb}) async {
-  final String keyRaw;
-  if (backgroundDb) {
-    keyRaw = RAW_STORAGE_KEY_FOR_BACKGROUND_DB_ENCRYPTION_KEY;
-  } else {
-    keyRaw = RAW_STORAGE_KEY_FOR_DB_ENCRYPTION_KEY;
-  }
+Future<String> _getStorageKeyForDbEncryptionKey() async {
+  final keyRaw = RAW_STORAGE_KEY_FOR_DB_ENCRYPTION_KEY;
   // Basic obfuscation about what the key is for
   final keyBytes = utf8.encode(keyRaw);
   final base64String = base64.encode(keyBytes);
@@ -55,21 +49,15 @@ class SecureStorageManager extends AppSingleton {
   }
 
   Future<String> getDbEncryptionKeyOrCreateNewKeyAndRecreateDatabasesDir({
-    required bool backgroundDb,
     required DatabaseRemover remover,
   }) async {
     if (kIsWeb) {
       throw UnsupportedError("Encryption is not supported on web");
     }
 
-    final IOSOptions iosOptions;
-    if (backgroundDb) {
-      iosOptions = const IOSOptions(accessibility: KeychainAccessibility.first_unlock);
-    } else {
-      iosOptions = const IOSOptions(accessibility: KeychainAccessibility.unlocked);
-    }
+    const iosOptions = IOSOptions(accessibility: KeychainAccessibility.first_unlock);
 
-    final key = await _getStorageKeyForDbEncryptionKey(backgroundDb: backgroundDb);
+    final key = await _getStorageKeyForDbEncryptionKey();
     final value = await storage.read(key: key, iOptions: iosOptions);
     if (value == null) {
       final newValue = _generateDbEncryptionKey();
@@ -79,7 +67,7 @@ class SecureStorageManager extends AppSingleton {
         throw Exception("Failed to read the value that was just written");
       }
 
-      await remover.recreateDatabasesDir(backgroundDb: backgroundDb);
+      await remover.recreateDatabasesDir();
 
       return newValue;
     } else {

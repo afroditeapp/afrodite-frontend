@@ -8,7 +8,7 @@ final _log = Logger("DbProviderWeb");
 
 class DbProvider implements QueryExcecutorProvider {
   final DbFile db;
-  DbProvider(this.db, {required bool backgroundDb});
+  DbProvider(this.db);
 
   DatabaseConnection? connection;
 

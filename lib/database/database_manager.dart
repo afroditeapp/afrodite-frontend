@@ -40,7 +40,7 @@ class DatabaseManager extends AppSingleton {
     // in: https://github.com/simolus3/drift/discussions/2596
     driftRuntimeOptions.dontWarnAboutMultipleDatabases = true;
 
-    commonDatabaseProvider = DbProvider(CommonDbFile(), backgroundDb: false);
+    commonDatabaseProvider = DbProvider(CommonDbFile());
     commonDatabase = CommonForegroundDatabase(commonDatabaseProvider);
     final ensureOpenResult = await commonDatabaseProvider.getQueryExcecutor().ensureOpen(
       commonDatabase,
@@ -114,7 +114,7 @@ class DatabaseManager extends AppSingleton {
 
   Future<AccountDatabaseManager> getAccountDatabaseManager(AccountId accountId) async {
     _log.info("AccountForegroundDatabase init");
-    final dbProvider = DbProvider(AccountDbFile(accountId.aid), backgroundDb: false);
+    final dbProvider = DbProvider(AccountDbFile(accountId.aid));
     final db = AccountForegroundDatabase(dbProvider);
     final ensureOpenResult = await dbProvider.getQueryExcecutor().ensureOpen(db);
     _log.info("AccountForegroundDatabase ensureOpen result: $ensureOpenResult");

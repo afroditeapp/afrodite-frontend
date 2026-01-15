@@ -3,7 +3,7 @@ import 'package:drift/drift.dart';
 import 'package:encryption_common/encryption_common.dart';
 
 class DbProvider implements QueryExcecutorProvider {
-  DbProvider(DbFile db, {required bool backgroundDb});
+  DbProvider(DbFile db);
 
   @override
   QueryExecutor getQueryExcecutor() => throw UnsupportedError("Unsupported platform");
@@ -15,7 +15,7 @@ Future<bool> databaseExists(DbFile db) async {
 
 class DatabaseRemoverImpl extends DatabaseRemover {
   @override
-  Future<void> recreateDatabasesDir({required bool backgroundDb}) async {
+  Future<void> recreateDatabasesDir() async {
     throw UnsupportedError("Unsupported platform");
   }
 

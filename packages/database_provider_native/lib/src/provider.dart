@@ -13,14 +13,13 @@ import 'package:sqlite3/sqlite3.dart';
 
 class DbProvider implements QueryExcecutorProvider {
   final DbFile _db;
-  final bool _backgroundDb;
-  DbProvider(this._db, {required bool backgroundDb}) : _backgroundDb = backgroundDb;
+  DbProvider(this._db);
 
   LazyDatabase? _dbConnection;
 
   @override
   QueryExecutor getQueryExcecutor() {
-    _dbConnection ??= openDbConnection(_db, backgroundDb: _backgroundDb);
+    _dbConnection ??= openDbConnection(_db);
     return _dbConnection!;
   }
 }
@@ -39,11 +38,10 @@ Future<bool> databaseExists(DbFile db) async {
   return await dbFile.exists();
 }
 
-LazyDatabase openDbConnection(DbFile db, {required bool backgroundDb}) {
+LazyDatabase openDbConnection(DbFile db) {
   return LazyDatabase(() async {
     final encryptionKey = await SecureStorageManager.getInstance()
         .getDbEncryptionKeyOrCreateNewKeyAndRecreateDatabasesDir(
-          backgroundDb: backgroundDb,
           remover: DatabaseRemoverImpl(),
         );
     final dbFile = await dbFileToFile(db);
