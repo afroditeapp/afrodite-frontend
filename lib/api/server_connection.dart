@@ -9,7 +9,6 @@ import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:app/api/server_connection_manager.dart';
 import 'package:app/api/websocket_wrapper.dart';
-import 'package:app/database/account_background_database_manager.dart';
 import 'package:app/database/account_database_manager.dart';
 import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
@@ -101,7 +100,6 @@ String _addWebSocketRoutePathToAddress(String baseUrl) {
 class ServerConnection {
   final WebSocketWrapper _connection;
   final AccountDatabaseManager db;
-  final AccountBackgroundDatabaseManager accountBackgroundDb;
   final Sink<ServerWsEvent> _serverEvents;
 
   var _protocolState = ConnectionProtocolState.receiveFirstMessage;
@@ -114,14 +112,13 @@ class ServerConnection {
 
   bool _isClosed = false;
 
-  ServerConnection._(this._connection, this.db, this.accountBackgroundDb, this._serverEvents);
+  ServerConnection._(this._connection, this.db, this._serverEvents);
 
   static Future<Result<ServerConnection, ServerConnectionError>> connect(
     String serverAddress,
     AccessToken accessToken,
     RefreshToken refreshToken,
     AccountDatabaseManager db,
-    AccountBackgroundDatabaseManager accountBackgroundDb,
     Sink<ServerWsEvent> serverEvents,
   ) async {
     final websocketAddress = _addWebSocketRoutePathToAddress(serverAddress);
@@ -136,12 +133,7 @@ class ServerConnection {
       }
 
       final webSocketWrapper = WebSocketWrapper(webSocket);
-      final connection = ServerConnection._(
-        webSocketWrapper,
-        db,
-        accountBackgroundDb,
-        serverEvents,
-      );
+      final connection = ServerConnection._(webSocketWrapper, db, serverEvents);
       connection._handleConnection(accessToken, refreshToken);
       return Ok(connection);
     } catch (e) {
@@ -219,7 +211,7 @@ class ServerConnection {
   }
 
   Future<void> handleConnectionIsReadyForDataSync(AccessToken token) async {
-    final bytes = await syncDataBytes(db, accountBackgroundDb);
+    final bytes = await syncDataBytes(db);
     if (_isClosed) {
       return;
     }
@@ -305,16 +297,11 @@ const forceSync = 255;
     ServerMaintenanceIsScheduled = 255,
 */
 
-Future<Uint8List> syncDataBytes(
-  AccountDatabaseManager db,
-  AccountBackgroundDatabaseManager accountBackgroundDb,
-) async {
+Future<Uint8List> syncDataBytes(AccountDatabaseManager db) async {
   final syncVersionAccount =
       await db.accountStreamSingle((db) => db.common.watchSyncVersionAccount()).ok() ?? forceSync;
   final syncVersionReceivedLikes =
-      await accountBackgroundDb
-          .accountStreamSingle((db) => db.newReceivedLikesCount.watchSyncVersionReceivedLikes())
-          .ok() ??
+      await db.accountStreamSingle((db) => db.common.watchSyncVersionReceivedLikes()).ok() ??
       forceSync;
   final syncVersionClientConfig =
       await db.accountStreamSingle((db) => db.common.watchSyncVersionClientConfig()).ok() ??
@@ -322,8 +309,7 @@ Future<Uint8List> syncDataBytes(
   final syncVersionProfile =
       await db.accountStreamSingle((db) => db.common.watchSyncVersionProfile()).ok() ?? forceSync;
   final syncVersionNews =
-      await accountBackgroundDb.accountStreamSingle((db) => db.news.watchSyncVersionNews()).ok() ??
-      forceSync;
+      await db.accountStreamSingle((db) => db.app.watchSyncVersionNews()).ok() ?? forceSync;
   final syncVersionMediaContent =
       await db.accountStreamSingle((db) => db.common.watchSyncVersionMediaContent()).ok() ??
       forceSync;
@@ -331,9 +317,7 @@ Future<Uint8List> syncDataBytes(
       await db.accountStreamSingle((db) => db.like.watchDailyLikesLeftSyncVersion()).ok() ??
       forceSync;
   final syncVersionPushNotificationInfo =
-      await accountBackgroundDb
-          .accountStreamSingle((db) => db.loginSession.watchPushNotificationInfoSyncVersion())
-          .ok() ??
+      await db.accountStreamSingle((db) => db.app.watchPushNotificationInfoSyncVersion()).ok() ??
       forceSync;
 
   final currentMaintenanceInfo = await db

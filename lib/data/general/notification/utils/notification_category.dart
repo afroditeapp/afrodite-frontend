@@ -1,11 +1,11 @@
 import 'package:app/data/general/notification/utils/notification_category_group.dart';
 import 'package:database/database.dart';
 import 'package:app/data/notification_manager.dart';
-import 'package:app/database/account_background_database_manager.dart';
+import 'package:app/database/account_database_manager.dart';
 import 'package:app/localizations.dart';
 import 'package:app/utils/result.dart';
 
-typedef IsEnabledGetter = Stream<bool?> Function(AccountBackgroundDatabaseRead);
+typedef IsEnabledGetter = Stream<bool?> Function(AccountForegroundDatabaseRead);
 
 sealed class NotificationCategory {
   final String id;
@@ -21,8 +21,8 @@ sealed class NotificationCategory {
 
   IsEnabledGetter get _isEnabledValueLocation;
 
-  Future<bool> isEnabled(AccountBackgroundDatabaseManager accountBackgroundDb) async {
-    final value = await accountBackgroundDb.accountStreamSingle(_isEnabledValueLocation).ok();
+  Future<bool> isEnabled(AccountDatabaseManager db) async {
+    final value = await db.accountStreamSingle(_isEnabledValueLocation).ok();
     return value ?? NOTIFICATION_CATEGORY_ENABLED_DEFAULT;
   }
 

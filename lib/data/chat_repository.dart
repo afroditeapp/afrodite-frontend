@@ -18,7 +18,6 @@ import 'package:app/data/profile/profile_downloader.dart';
 import 'package:app/data/profile_repository.dart';
 import 'package:app/data/utils.dart';
 import 'package:database/database.dart';
-import 'package:app/database/account_background_database_manager.dart';
 import 'package:app/database/account_database_manager.dart';
 import 'package:app/utils/result.dart';
 import 'package:utils/utils.dart';
@@ -26,7 +25,6 @@ import 'package:utils/utils.dart';
 class ChatRepository extends DataRepositoryWithLifecycle {
   final AccountDatabaseManager db;
   final ProfileRepository profile;
-  final AccountBackgroundDatabaseManager accountBackgroundDb;
   final MessageKeyManager messageKeyManager;
   final AccountId currentUser;
 
@@ -34,17 +32,11 @@ class ChatRepository extends DataRepositoryWithLifecycle {
     required AccountRepository account,
     required MediaRepository media,
     required this.profile,
-    required this.accountBackgroundDb,
     required this.db,
     required this.messageKeyManager,
     required ServerConnectionManager connectionManager,
     required this.currentUser,
-  }) : profileEntryDownloader = ProfileEntryDownloader(
-         media,
-         accountBackgroundDb,
-         db,
-         connectionManager,
-       ),
+  }) : profileEntryDownloader = ProfileEntryDownloader(media, db, connectionManager),
        sentBlocksIterator = AccountIdDatabaseIterator(
          (startIndex, limit) =>
              db.accountData((db) => db.conversationList.getSentBlocksList(startIndex, limit)).ok(),
@@ -55,7 +47,6 @@ class ChatRepository extends DataRepositoryWithLifecycle {
          connectionManager,
          db,
          profile,
-         accountBackgroundDb,
          currentUser,
        ),
        typingIndicatorManager = TypingIndicatorManager(connectionManager, account),
@@ -256,7 +247,7 @@ class ChatRepository extends DataRepositoryWithLifecycle {
     }
     await NotificationLikeReceived.getInstance().handleNewReceivedLikesCount(
       r,
-      accountBackgroundDb,
+      db,
       onlyDbUpdate: r.h,
     );
   }
@@ -416,7 +407,7 @@ class ChatRepository extends DataRepositoryWithLifecycle {
     return await api
         .chat((api) => api.getChatAppNotificationSettings())
         .andThenEmptyErr(
-          (v) => accountBackgroundDb.accountAction(
+          (v) => db.accountAction(
             (db) => db.appNotificationSettings.updateChatNotificationSettings(v),
           ),
         );

@@ -9,7 +9,6 @@ import 'package:app/api/api_provider.dart';
 import 'package:app/api/api_wrapper.dart';
 import 'package:app/api/server_connection.dart';
 import 'package:app/data/utils.dart';
-import 'package:app/database/account_background_database_manager.dart';
 import 'package:app/database/account_database_manager.dart';
 import 'package:utils/utils.dart';
 import 'package:app/utils/app_error.dart';
@@ -201,17 +200,12 @@ class HandleServerConnectionState extends ServerConnectionManagerCmd<()> {
 class ServerConnectionManager extends ApiManager
     implements LifecycleMethods, ServerConnectionInterface {
   final AccountDatabaseManager accountDb;
-  final AccountBackgroundDatabaseManager accountBackgroundDb;
   final AccountId currentUser;
   final ApiProvider _apiProvider;
   ServerConnection? _serverConnection;
 
-  ServerConnectionManager(
-    String serverAddress,
-    this.accountDb,
-    this.accountBackgroundDb,
-    this.currentUser,
-  ) : _apiProvider = ApiProvider(serverAddress);
+  ServerConnectionManager(String serverAddress, this.accountDb, this.currentUser)
+    : _apiProvider = ApiProvider(serverAddress);
 
   final PublishSubject<ServerConnectionManagerCmd<Object>> _cmds = PublishSubject();
   StreamSubscription<void>? _cmdsSubscription;
@@ -359,7 +353,6 @@ class ServerConnectionManager extends ApiManager
       accessToken,
       refreshToken,
       accountDb,
-      accountBackgroundDb,
       _serverEvents,
     );
     final ServerConnection serverConnection;

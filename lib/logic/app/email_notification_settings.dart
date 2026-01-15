@@ -1,6 +1,6 @@
 import "package:app/api/server_connection_manager.dart";
 import "package:app/data/utils/repository_instances.dart";
-import "package:app/database/account_background_database_manager.dart";
+import "package:app/database/account_database_manager.dart";
 import "package:app/localizations.dart";
 import "package:app/ui_utils/common_update_logic.dart";
 import "package:app/ui_utils/snack_bar.dart";
@@ -24,11 +24,11 @@ class ToggleEmailLikes extends EmailNotificationSettingsEvent {}
 class EmailNotificationSettingsBloc
     extends Bloc<EmailNotificationSettingsEvent, EmailNotificationSettingsData> {
   final ApiManager api;
-  final AccountBackgroundDatabaseManager db;
+  final AccountDatabaseManager db;
 
   EmailNotificationSettingsBloc(RepositoryInstances r)
     : api = r.api,
-      db = r.accountBackgroundDb,
+      db = r.accountDb,
       super(
         EmailNotificationSettingsData(
           categories: EmailNotificationCategoryData(),

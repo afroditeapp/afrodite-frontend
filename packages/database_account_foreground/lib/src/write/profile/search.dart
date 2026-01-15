@@ -14,6 +14,7 @@ part 'search.g.dart';
     schema.ProfileSearchGroups,
     schema.ProfileSearchAgeRange,
     schema.AutomaticProfileSearchSettings,
+    schema.AutomaticProfileSearchBadgeState,
   ],
 )
 class DaoWriteSearch extends DatabaseAccessor<AccountForegroundDatabase>
@@ -55,6 +56,25 @@ class DaoWriteSearch extends DatabaseAccessor<AccountForegroundDatabase>
       AutomaticProfileSearchSettingsCompanion.insert(
         id: SingleRowTable.ID,
         jsonAutomaticProfileSearchSettings: Value(value?.toJsonObject()),
+      ),
+    );
+  }
+
+  Future<void> showAutomaticProfileSearchBadge(int profileCount) async {
+    await into(automaticProfileSearchBadgeState).insertOnConflictUpdate(
+      AutomaticProfileSearchBadgeStateCompanion.insert(
+        id: SingleRowTable.ID,
+        profileCount: Value(profileCount),
+        showBadge: Value(true),
+      ),
+    );
+  }
+
+  Future<void> hideAutomaticProfileSearchBadge() async {
+    await into(automaticProfileSearchBadgeState).insertOnConflictUpdate(
+      AutomaticProfileSearchBadgeStateCompanion.insert(
+        id: SingleRowTable.ID,
+        showBadge: Value(false),
       ),
     );
   }

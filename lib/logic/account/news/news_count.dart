@@ -1,7 +1,7 @@
 import "dart:async";
 
 import "package:app/data/utils/repository_instances.dart";
-import "package:app/database/account_background_database_manager.dart";
+import "package:app/database/account_database_manager.dart";
 import 'package:bloc_concurrency/bloc_concurrency.dart' show sequential;
 
 import "package:flutter_bloc/flutter_bloc.dart";
@@ -16,16 +16,16 @@ class CountUpdate extends NewsCountEvent {
 }
 
 class NewsCountBloc extends Bloc<NewsCountEvent, NewsCountData> {
-  final AccountBackgroundDatabaseManager db;
+  final AccountDatabaseManager db;
 
   StreamSubscription<UnreadNewsCount?>? _countSubscription;
 
-  NewsCountBloc(RepositoryInstances r) : db = r.accountBackgroundDb, super(NewsCountData()) {
+  NewsCountBloc(RepositoryInstances r) : db = r.accountDb, super(NewsCountData()) {
     on<CountUpdate>((data, emit) {
       emit(state.copyWith(newsCount: data.value));
     }, transformer: sequential());
 
-    _countSubscription = db.accountStream((db) => db.news.watchUnreadNewsCount()).listen((data) {
+    _countSubscription = db.accountStream((db) => db.app.watchUnreadNewsCount()).listen((data) {
       add(CountUpdate(data?.c ?? 0));
     });
   }

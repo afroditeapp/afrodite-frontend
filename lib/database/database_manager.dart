@@ -8,7 +8,6 @@ import 'package:database_utils/database_utils.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:app/database/account_database_manager.dart';
-import 'package:app/database/account_background_database_manager.dart';
 import 'package:app/utils/app_error.dart';
 import 'package:app/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
@@ -122,20 +121,6 @@ class DatabaseManager extends AppSingleton {
     final manager = AccountDatabaseManager(db);
     await manager.accountAction((db) => db.loginSession.setAccountIdIfNull(accountId));
     _log.info("AccountForegroundDatabase init completed");
-    return manager;
-  }
-
-  Future<AccountBackgroundDatabaseManager> getAccountBackgroundDatabaseManager(
-    AccountId accountId,
-  ) async {
-    _log.info("AccountBackgroundDatabase init started");
-    final dbProvider = DbProvider(AccountBackgroundDbFile(accountId.aid), backgroundDb: true);
-    final db = AccountBackgroundDatabase(dbProvider);
-    final ensureOpenResult = await dbProvider.getQueryExcecutor().ensureOpen(db);
-    _log.info("AccountBackgroundDatabase ensureOpen result: $ensureOpenResult");
-    final manager = AccountBackgroundDatabaseManager(accountId, db);
-    await manager.accountAction((db) => db.loginSession.setAccountIdIfNull(accountId));
-    _log.info("AccountBackgroundDatabase init completed");
     return manager;
   }
 }

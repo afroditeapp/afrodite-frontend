@@ -34,7 +34,6 @@ class SelectMatchScreen extends StatelessWidget {
           return MatchesIteratorManager(
             r.chat,
             r.media,
-            r.accountBackgroundDb,
             r.accountDb,
             r.connectionManager,
             r.chat.currentUser,

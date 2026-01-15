@@ -9,7 +9,6 @@ import "package:app/utils/result.dart";
 import 'package:bloc_concurrency/bloc_concurrency.dart' show droppable, sequential;
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:openapi/api.dart";
-import "package:app/database/account_background_database_manager.dart";
 import "package:app/model/freezed/logic/chat/new_received_likes_available_bloc.dart";
 import "package:rxdart/rxdart.dart";
 
@@ -41,7 +40,6 @@ class NewReceivedLikesAvailableBloc
     extends Bloc<NewReceivedLikesAvailableEvent, NewReceivedLikesAvailableData> {
   final ApiManager api;
   final AccountDatabaseManager db;
-  final AccountBackgroundDatabaseManager dbBackground;
 
   StreamSubscription<NewReceivedLikesCount?>? _countSubscription;
   StreamSubscription<NewReceivedLikesCount?>? _countDebounceSubscription;
@@ -50,7 +48,6 @@ class NewReceivedLikesAvailableBloc
   NewReceivedLikesAvailableBloc(RepositoryInstances r)
     : api = r.api,
       db = r.accountDb,
-      dbBackground = r.accountBackgroundDb,
       super(NewReceivedLikesAvailableData()) {
     on<_CountUpdate>((data, emit) {
       if (AppVisibilityProvider.getInstance().isForeground && data.value > 0) {
@@ -69,8 +66,8 @@ class NewReceivedLikesAvailableBloc
     }, transformer: sequential());
     on<_IsForegroundChanged>((data, emit) async {
       if (data.isForeground) {
-        final latestReceivedLikeId = await dbBackground
-            .accountStreamSingle((db) => db.newReceivedLikesCount.watchLatestReceivedLikeId())
+        final latestReceivedLikeId = await db
+            .accountStreamSingle((db) => db.common.watchLatestReceivedLikeId())
             .ok();
         final latestIteratorState = await db
             .accountStreamSingle((db) => db.common.watchReceivedLikesIteratorState())
@@ -103,27 +100,25 @@ class NewReceivedLikesAvailableBloc
       if (!state.showRefreshButton) {
         add(_ResetBadgeCount());
       }
-      await NotificationLikeReceived.getInstance().hideReceivedLikesNotification(dbBackground);
+      await NotificationLikeReceived.getInstance().hideReceivedLikesNotification(db);
     }, transformer: sequential());
     on<_ResetBadgeCount>((data, emit) async {
       if (state.newReceivedLikesCount != 0) {
         final r = await api.chat((api) => api.postResetNewReceivedLikesCount());
         if (r case Ok(:final v)) {
-          await dbBackground.accountAction(
-            (db) => db.newReceivedLikesCount.updateSyncVersionReceivedLikes(v),
-          );
+          await db.accountAction((db) => db.common.updateSyncVersionReceivedLikes(v));
         }
       }
       data.completer.complete(());
     }, transformer: sequential());
 
-    _countSubscription = dbBackground
-        .accountStream((db) => db.newReceivedLikesCount.watchReceivedLikesCount())
-        .listen((data) {
-          add(_CountUpdate(data?.c ?? 0));
-        });
-    _countDebounceSubscription = dbBackground
-        .accountStream((db) => db.newReceivedLikesCount.watchReceivedLikesCount())
+    _countSubscription = db.accountStream((db) => db.common.watchReceivedLikesCount()).listen((
+      data,
+    ) {
+      add(_CountUpdate(data?.c ?? 0));
+    });
+    _countDebounceSubscription = db
+        .accountStream((db) => db.common.watchReceivedLikesCount())
         .debounceTime(Duration(seconds: 1))
         .listen((_) {
           add(_CountUpdateDebounced());

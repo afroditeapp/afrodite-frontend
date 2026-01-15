@@ -1,8 +1,11 @@
+import 'package:async/async.dart';
 import 'package:database_account_foreground/src/database.dart';
 import 'package:database_utils/database_utils.dart';
 import 'package:drift/drift.dart';
 import 'package:database_model/database_model.dart';
+import 'package:database_converter/database_converter.dart';
 import 'package:utils/utils.dart';
+import 'package:openapi/api.dart' as api;
 
 import '../schema.dart' as schema;
 
@@ -16,10 +19,175 @@ part 'app.g.dart';
     schema.InitialSetupSkipped,
     schema.GridSettings,
     schema.ChatBackupReminder,
+    schema.AdminNotification,
+    schema.NotificationStatus,
+    schema.News,
+    schema.PushNotification,
   ],
 )
 class DaoWriteApp extends DatabaseAccessor<AccountForegroundDatabase> with _$DaoWriteAppMixin {
   DaoWriteApp(super.db);
+
+  Future<void> _updateAdminNotificationInternal(api.AdminNotification? notification) async {
+    await into(adminNotification).insertOnConflictUpdate(
+      AdminNotificationCompanion.insert(
+        id: SingleRowTable.ID,
+        jsonViewedNotification: Value(notification?.toJsonObject()),
+      ),
+    );
+  }
+
+  Future<void> updateAdminNotification(api.AdminNotification notification) =>
+      _updateAdminNotificationInternal(notification);
+
+  Future<void> removeAdminNotification() => _updateAdminNotificationInternal(null);
+
+  late final UpdateNotificationStatus profilesFound = UpdateNotificationStatus(
+    currentValueGetter: () async => await _watchNotificationStatusColumn(
+      (r) => r.jsonAutomaticProfileSearchFoundProfiles,
+    ).firstOrNull,
+    updateValue: (status) async => await into(notificationStatus).insertOnConflictUpdate(
+      NotificationStatusCompanion.insert(
+        id: SingleRowTable.ID,
+        jsonAutomaticProfileSearchFoundProfiles: Value(status.toJsonObject()),
+      ),
+    ),
+  );
+
+  late final UpdateNotificationStatus mediaContentAccepted = UpdateNotificationStatus(
+    currentValueGetter: () async =>
+        await _watchNotificationStatusColumn((r) => r.jsonMediaContentAccepted).firstOrNull,
+    updateValue: (status) async => await into(notificationStatus).insertOnConflictUpdate(
+      NotificationStatusCompanion.insert(
+        id: SingleRowTable.ID,
+        jsonMediaContentAccepted: Value(status.toJsonObject()),
+      ),
+    ),
+  );
+
+  late final UpdateNotificationStatus mediaContentRejected = UpdateNotificationStatus(
+    currentValueGetter: () async =>
+        await _watchNotificationStatusColumn((r) => r.jsonMediaContentRejected).firstOrNull,
+    updateValue: (status) async => await into(notificationStatus).insertOnConflictUpdate(
+      NotificationStatusCompanion.insert(
+        id: SingleRowTable.ID,
+        jsonMediaContentRejected: Value(status.toJsonObject()),
+      ),
+    ),
+  );
+
+  late final UpdateNotificationStatus mediaContentDeleted = UpdateNotificationStatus(
+    currentValueGetter: () async =>
+        await _watchNotificationStatusColumn((r) => r.jsonMediaContentDeleted).firstOrNull,
+    updateValue: (status) async => await into(notificationStatus).insertOnConflictUpdate(
+      NotificationStatusCompanion.insert(
+        id: SingleRowTable.ID,
+        jsonMediaContentDeleted: Value(status.toJsonObject()),
+      ),
+    ),
+  );
+
+  late final UpdateNotificationStatus profileNameAccepted = UpdateNotificationStatus(
+    currentValueGetter: () async =>
+        await _watchNotificationStatusColumn((r) => r.jsonProfileNameAccepted).firstOrNull,
+    updateValue: (status) async => await into(notificationStatus).insertOnConflictUpdate(
+      NotificationStatusCompanion.insert(
+        id: SingleRowTable.ID,
+        jsonProfileNameAccepted: Value(status.toJsonObject()),
+      ),
+    ),
+  );
+
+  late final UpdateNotificationStatus profileNameRejected = UpdateNotificationStatus(
+    currentValueGetter: () async =>
+        await _watchNotificationStatusColumn((r) => r.jsonProfileNameRejected).firstOrNull,
+    updateValue: (status) async => await into(notificationStatus).insertOnConflictUpdate(
+      NotificationStatusCompanion.insert(
+        id: SingleRowTable.ID,
+        jsonProfileNameRejected: Value(status.toJsonObject()),
+      ),
+    ),
+  );
+
+  late final UpdateNotificationStatus profileTextAccepted = UpdateNotificationStatus(
+    currentValueGetter: () async =>
+        await _watchNotificationStatusColumn((r) => r.jsonProfileTextAccepted).firstOrNull,
+    updateValue: (status) async => await into(notificationStatus).insertOnConflictUpdate(
+      NotificationStatusCompanion.insert(
+        id: SingleRowTable.ID,
+        jsonProfileTextAccepted: Value(status.toJsonObject()),
+      ),
+    ),
+  );
+
+  late final UpdateNotificationStatus profileTextRejected = UpdateNotificationStatus(
+    currentValueGetter: () async =>
+        await _watchNotificationStatusColumn((r) => r.jsonProfileTextRejected).firstOrNull,
+    updateValue: (status) async => await into(notificationStatus).insertOnConflictUpdate(
+      NotificationStatusCompanion.insert(
+        id: SingleRowTable.ID,
+        jsonProfileTextRejected: Value(status.toJsonObject()),
+      ),
+    ),
+  );
+
+  Stream<T?> _watchNotificationStatusColumn<T extends Object>(
+    T? Function(NotificationStatusData) extractColumn,
+  ) {
+    return (select(
+      notificationStatus,
+    )..where((t) => t.id.equals(SingleRowTable.ID.value))).map(extractColumn).watchSingleOrNull();
+  }
+
+  Future<void> setUnreadNewsCount({
+    required api.NewsSyncVersion version,
+    required api.UnreadNewsCount unreadNewsCount,
+  }) async {
+    await transaction(() async {
+      await into(news).insertOnConflictUpdate(
+        NewsCompanion.insert(
+          id: SingleRowTable.ID,
+          newsCount: Value(unreadNewsCount),
+          syncVersionNews: Value(version.version),
+        ),
+      );
+    });
+  }
+
+  Future<void> resetNewsSyncVersion() async {
+    await into(news).insertOnConflictUpdate(
+      NewsCompanion.insert(id: SingleRowTable.ID, syncVersionNews: Value(null)),
+    );
+  }
+
+  Future<void> updateDeviceToken(api.PushNotificationDeviceToken? token) async {
+    await into(pushNotification).insertOnConflictUpdate(
+      PushNotificationCompanion.insert(
+        id: SingleRowTable.ID,
+        pushNotificationDeviceToken: Value(token),
+      ),
+    );
+  }
+
+  Future<void> updatePushNotificationInfo(api.GetPushNotificationInfo info) async {
+    await into(pushNotification).insertOnConflictUpdate(
+      PushNotificationCompanion.insert(
+        id: SingleRowTable.ID,
+        pushNotificationDeviceToken: Value(info.deviceToken),
+        vapidPublicKey: Value(info.vapidPublicKey),
+        syncVersionPushNotificationInfo: Value(info.syncVersion.version),
+      ),
+    );
+  }
+
+  Future<void> resetPushNotificationSyncVersion() async {
+    await into(pushNotification).insertOnConflictUpdate(
+      PushNotificationCompanion.insert(
+        id: SingleRowTable.ID,
+        syncVersionPushNotificationInfo: Value(null),
+      ),
+    );
+  }
 
   Future<void> updateLoginSyncDone(bool value) async {
     await into(initialSync).insertOnConflictUpdate(
@@ -120,4 +288,30 @@ class DaoWriteApp extends DatabaseAccessor<AccountForegroundDatabase> with _$Dao
       ChatBackupReminderCompanion.insert(id: SingleRowTable.ID, lastDialogOpenedTime: Value(time)),
     );
   }
+}
+
+class UpdateNotificationStatus {
+  final Future<JsonObject<api.NotificationStatus>?> Function() currentValueGetter;
+  final Future<void> Function(api.NotificationStatus) updateValue;
+  UpdateNotificationStatus({required this.currentValueGetter, required this.updateValue});
+
+  /// Returns true when notification must be shown
+  Future<bool> shouldBeShown(api.NotificationStatus newValue) async {
+    final currentStatusJsonObject = await currentValueGetter();
+    final currentStatus = currentStatusJsonObject?.value ?? _defaultNotificationStatus();
+    await updateValue(newValue);
+    return newValue.id.id != currentStatus.id.id || newValue.viewed.id != currentStatus.viewed.id;
+  }
+
+  Future<void> updateViewedId(api.NotificationIdViewed newValue) async {
+    final currentStatusJsonObject = await currentValueGetter();
+    final currentStatus = currentStatusJsonObject?.value ?? _defaultNotificationStatus();
+    currentStatus.viewed = newValue;
+    await updateValue(currentStatus);
+  }
+
+  api.NotificationStatus _defaultNotificationStatus() => api.NotificationStatus(
+    id: api.NotificationId(id: 0),
+    viewed: api.NotificationIdViewed(id: 0),
+  );
 }

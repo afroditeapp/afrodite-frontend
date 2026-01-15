@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:app/data/general/notification/state/news_item_available.dart';
 import 'package:app/data/utils/repository_instances.dart';
-import 'package:app/database/account_background_database_manager.dart';
+import 'package:app/database/account_database_manager.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui_utils/extensions/other.dart';
 import 'package:flutter/material.dart';
@@ -54,13 +54,13 @@ class _NewsListScreenOpenerState extends State<NewsListScreenOpener> {
 }
 
 class NewsListScreen extends StatefulWidget {
-  final AccountBackgroundDatabaseManager accountBackgroundDb;
+  final AccountDatabaseManager accountDb;
   final ApiManager api;
   final ServerConnectionManager connectionManager;
   final String locale;
   final NewsCountBloc bloc;
   NewsListScreen(RepositoryInstances r, {required this.locale, required this.bloc, super.key})
-    : accountBackgroundDb = r.accountBackgroundDb,
+    : accountDb = r.accountDb,
       api = r.api,
       connectionManager = r.connectionManager;
 
@@ -81,7 +81,7 @@ class NewsListScreenState extends State<NewsListScreen> {
   @override
   void initState() {
     super.initState();
-    NotificationNewsItemAvailable.getInstance().hide(widget.accountBackgroundDb);
+    NotificationNewsItemAvailable.getInstance().hide(widget.accountDb);
   }
 
   void updatePagingState(
@@ -120,8 +120,8 @@ class NewsListScreenState extends State<NewsListScreen> {
         return;
       }
       _state = r.s;
-      final dbResult = await widget.accountBackgroundDb.accountAction(
-        (db) => db.news.setUnreadNewsCount(version: r.v, unreadNewsCount: r.c),
+      final dbResult = await widget.accountDb.accountAction(
+        (db) => db.app.setUnreadNewsCount(version: r.v, unreadNewsCount: r.c),
       );
       if (dbResult.isErr()) {
         showLoadingError();

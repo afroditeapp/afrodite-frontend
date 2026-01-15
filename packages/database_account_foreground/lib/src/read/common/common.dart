@@ -14,10 +14,33 @@ part 'common.g.dart';
     schema.SyncVersion,
     schema.ReceivedLikesIteratorState,
     schema.ClientLanguageOnServer,
+    schema.NewReceivedLikesCount,
   ],
 )
 class DaoReadCommon extends DatabaseAccessor<AccountForegroundDatabase> with _$DaoReadCommonMixin {
   DaoReadCommon(super.db);
+
+  Stream<int?> watchSyncVersionReceivedLikes() {
+    return (select(newReceivedLikesCount)..where((t) => t.id.equals(SingleRowTable.ID.value)))
+        .map((r) => r.syncVersionReceivedLikes)
+        .watchSingleOrNull();
+  }
+
+  Stream<api.NewReceivedLikesCount?> watchReceivedLikesCount() {
+    return (select(newReceivedLikesCount)..where((t) => t.id.equals(SingleRowTable.ID.value))).map((
+      value,
+    ) {
+      return value.newReceivedLikesCount;
+    }).watchSingleOrNull();
+  }
+
+  Stream<api.ReceivedLikeId?> watchLatestReceivedLikeId() {
+    return (select(newReceivedLikesCount)..where((t) => t.id.equals(SingleRowTable.ID.value))).map((
+      value,
+    ) {
+      return value.latestReceivedLikeId;
+    }).watchSingleOrNull();
+  }
 
   Stream<ServerMaintenanceInfo?> watchServerMaintenanceInfo() {
     return (select(serverMaintenance)..where((t) => t.id.equals(SingleRowTable.ID.value))).map((r) {

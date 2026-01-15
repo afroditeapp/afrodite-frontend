@@ -80,3 +80,22 @@ class Message extends Table {
   TextColumn get messageId =>
       text().map(const NullAwareTypeConverter.wrap(MessageIdConverter())).nullable()();
 }
+
+class UnreadMessagesCount extends Table {
+  TextColumn get accountId => text().map(const AccountIdConverter())();
+  IntColumn get unreadMessagesCount =>
+      integer().map(UnreadMessagesCountConverter()).withDefault(const Constant(0))();
+
+  @override
+  Set<Column<Object>> get primaryKey => {accountId};
+}
+
+class NewMessageNotification extends Table {
+  TextColumn get accountId => text().map(const AccountIdConverter())();
+  IntColumn get conversationId =>
+      integer().map(const NullAwareTypeConverter.wrap(ConversationIdConverter())).nullable()();
+  BoolColumn get notificationShown => boolean().withDefault(const Constant(false))();
+
+  @override
+  Set<Column<Object>> get primaryKey => {accountId};
+}

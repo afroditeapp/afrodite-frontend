@@ -11,7 +11,6 @@ import 'package:app/data/profile/profile_downloader.dart';
 import 'package:app/data/general/iterator/profile_iterator.dart';
 import 'package:app/data/profile/profile_list/profiles_database_iterator.dart';
 import 'package:database/database.dart';
-import 'package:app/database/account_background_database_manager.dart';
 import 'package:app/database/account_database_manager.dart';
 import 'package:utils/utils.dart';
 import 'package:app/utils/result.dart';
@@ -33,11 +32,10 @@ class OnlineIterator extends IteratorType {
     bool resetServerIterator = false,
     required MediaRepository media,
     required this.io,
-    required AccountBackgroundDatabaseManager accountBackgroundDb,
     required this.db,
     required this.connectionManager,
   }) : _resetServerIterator = resetServerIterator,
-       downloader = ProfileEntryDownloader(media, accountBackgroundDb, db, connectionManager),
+       downloader = ProfileEntryDownloader(media, db, connectionManager),
        api = connectionManager;
 
   @override
@@ -244,12 +242,11 @@ class IteratorPage {
 
 class ReceivedLikesOnlineIteratorIo extends OnlineIteratorIo {
   final AccountDatabaseManager db;
-  final AccountBackgroundDatabaseManager accountBackgroundDb;
   final ApiManager api;
   IteratorType? iteratorValue;
   ReceivedLikesIteratorState? currentState;
 
-  ReceivedLikesOnlineIteratorIo(this.db, this.accountBackgroundDb, this.api);
+  ReceivedLikesOnlineIteratorIo(this.db, this.api);
 
   @override
   IteratorType? get databaseIterator => iteratorValue;

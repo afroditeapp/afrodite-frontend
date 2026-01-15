@@ -81,9 +81,10 @@ Future<NotificationNavigationAction> _handlePayload(
   final action = payload.action;
   switch (action) {
     case NavigateToConversation():
-      final accountId = await r.accountBackgroundDb
+      final accountId = await r.accountDb
           .accountData(
-            (db) => db.notification.convertConversationIdToAccountId(action.conversationId),
+            (db) =>
+                db.chatUnreadMessagesCount.convertConversationIdToAccountId(action.conversationId),
           )
           .ok();
       if (accountId == null) {

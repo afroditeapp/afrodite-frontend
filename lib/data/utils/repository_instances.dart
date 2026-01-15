@@ -12,7 +12,6 @@ import 'package:app/data/common_repository.dart';
 import 'package:app/data/media_repository.dart';
 import 'package:app/data/profile_repository.dart';
 import 'package:app/data/utils.dart';
-import 'package:app/database/account_background_database_manager.dart';
 import 'package:app/database/account_database_manager.dart';
 import 'package:app/database/database_manager.dart';
 import 'package:utils/utils.dart';
@@ -38,7 +37,6 @@ class RepositoryInstances {
   final MediaRepository media;
   final ChatRepository chat;
 
-  final AccountBackgroundDatabaseManager accountBackgroundDb;
   final AccountDatabaseManager accountDb;
   final ServerConnectionManager connectionManager;
   final MessageKeyManager messageKeyManager;
@@ -55,7 +53,6 @@ class RepositoryInstances {
     required this.profile,
     required this.media,
     required this.chat,
-    required this.accountBackgroundDb,
     required this.accountDb,
     required this.connectionManager,
     required this.messageKeyManager,
@@ -144,7 +141,6 @@ class RepositoryInstances {
 
     _log.info("Closing DBs");
 
-    await accountBackgroundDb.close();
     await accountDb.close();
 
     _log.info("Logout completed");
@@ -155,46 +151,24 @@ class RepositoryInstances {
     bool accountLoginHappened = false,
     required String serverAddress,
   }) async {
-    final accountBackgroundDb = await DatabaseManager.getInstance()
-        .getAccountBackgroundDatabaseManager(accountId);
     final accountDb = await DatabaseManager.getInstance().getAccountDatabaseManager(accountId);
 
-    final connectionManager = ServerConnectionManager(
-      serverAddress,
-      accountDb,
-      accountBackgroundDb,
-      accountId,
-    );
+    final connectionManager = ServerConnectionManager(serverAddress, accountDb, accountId);
 
     final account = AccountRepository(
       db: accountDb,
-      accountBackgroundDb: accountBackgroundDb,
       connectionManager: connectionManager,
       rememberToInitRepositoriesLateFinal: true,
       currentUser: accountId,
     );
-    final media = MediaRepository(
-      account,
-      accountDb,
-      accountBackgroundDb,
-      connectionManager,
-      accountId,
-    );
-    final profile = ProfileRepository(
-      media,
-      account,
-      accountDb,
-      accountBackgroundDb,
-      connectionManager,
-      accountId,
-    );
-    final common = CommonRepository(accountId, accountBackgroundDb, connectionManager, profile);
+    final media = MediaRepository(account, accountDb, connectionManager, accountId);
+    final profile = ProfileRepository(media, account, accountDb, connectionManager, accountId);
+    final common = CommonRepository(accountId, accountDb, connectionManager, profile);
     final messageKeyManager = MessageKeyManager(accountDb, connectionManager, accountId);
     final chat = ChatRepository(
       account: account,
       media: media,
       profile: profile,
-      accountBackgroundDb: accountBackgroundDb,
       db: accountDb,
       connectionManager: connectionManager,
       messageKeyManager: messageKeyManager,
@@ -208,7 +182,6 @@ class RepositoryInstances {
       profile: profile,
       media: media,
       chat: chat,
-      accountBackgroundDb: accountBackgroundDb,
       accountDb: accountDb,
       connectionManager: connectionManager,
       messageKeyManager: messageKeyManager,

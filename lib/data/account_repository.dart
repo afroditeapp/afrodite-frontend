@@ -3,7 +3,6 @@ import 'dart:typed_data';
 
 import 'package:app/data/general/notification/state/news_item_available.dart';
 import 'package:app/data/utils/repository_instances.dart';
-import 'package:app/database/account_background_database_manager.dart';
 import 'package:app/database/database_manager.dart';
 import 'package:database/database.dart';
 import 'package:logging/logging.dart';
@@ -29,13 +28,11 @@ class AccountRepository extends DataRepositoryWithLifecycle {
   final ServerConnectionManager connectionManager;
   final ApiManager api;
   final AccountDatabaseManager db;
-  final AccountBackgroundDatabaseManager accountBackgroundDb;
   final AccountId currentUser;
 
   late final RepositoryInstances repositories;
   AccountRepository({
     required this.db,
-    required this.accountBackgroundDb,
     required this.connectionManager,
     required bool rememberToInitRepositoriesLateFinal,
     required this.currentUser,
@@ -100,7 +97,9 @@ class AccountRepository extends DataRepositoryWithLifecycle {
   @override
   Future<void> onLogin() async {
     await db.accountAction((db) => db.common.resetSyncVersions());
-    await accountBackgroundDb.accountAction((db) => db.resetSyncVersions());
+    await db.accountAction((db) => db.common.resetReceivedLikesSyncVersion());
+    await db.accountAction((db) => db.app.resetNewsSyncVersion());
+    await db.accountAction((db) => db.app.resetPushNotificationSyncVersion());
     await db.accountAction((db) => db.app.updateAccountSyncDone(false));
     await db.accountAction((db) => db.common.updateClientLanguageOnServer(null));
   }
@@ -258,7 +257,7 @@ class AccountRepository extends DataRepositoryWithLifecycle {
     if (r != null) {
       return await NotificationNewsItemAvailable.getInstance().handleNewsCountUpdate(
         r,
-        accountBackgroundDb,
+        db,
         onlyDbUpdate: r.h,
       );
     }
@@ -268,22 +267,18 @@ class AccountRepository extends DataRepositoryWithLifecycle {
   Future<Result<(), ()>> receiveAdminNotification() async {
     final r = await api.commonAdmin((api) => api.postGetAdminNotification()).ok();
     if (r != null) {
-      final viewedNotification = await accountBackgroundDb
-          .accountData((db) => db.notification.getAdminNotification())
-          .ok();
+      final viewedNotification = await db.accountData((db) => db.app.getAdminNotification()).ok();
       if (viewedNotification != null && r.state == viewedNotification) {
         // Prevent showing the same notification again when the notification
         // is already received as push notification.
       } else {
         await NotificationNewsItemAvailable.getInstance().showAdminNotification(
           r.state,
-          accountBackgroundDb,
+          db,
           onlyDbUpdate: r.hidden,
         );
       }
-      return await accountBackgroundDb
-          .accountAction((db) => db.notification.removeAdminNotification())
-          .emptyErr();
+      return await db.accountAction((db) => db.app.removeAdminNotification()).emptyErr();
     }
     return const Err(());
   }
@@ -303,7 +298,7 @@ class AccountRepository extends DataRepositoryWithLifecycle {
     return await api
         .account((api) => api.getAccountAppNotificationSettings())
         .andThenEmptyErr(
-          (v) => accountBackgroundDb.accountAction(
+          (v) => db.accountAction(
             (db) => db.appNotificationSettings.updateAccountNotificationSettings(v),
           ),
         );

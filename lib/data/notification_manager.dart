@@ -9,7 +9,7 @@ import 'package:app/data/general/notification/utils/notification_category.dart';
 import 'package:app/data/general/notification/utils/notification_id.dart';
 import 'package:app/data/general/notification/utils/notification_payload.dart';
 import 'package:app/data/push_notification_manager.dart';
-import 'package:app/database/account_background_database_manager.dart';
+import 'package:app/database/account_database_manager.dart';
 import 'package:utils/utils.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -147,9 +147,9 @@ class NotificationManager extends AppSingleton {
     required String title,
     String? body,
     required NotificationCategory category,
-    required AccountBackgroundDatabaseManager accountBackgroundDb,
+    required AccountDatabaseManager db,
   }) async {
-    if (!await category.isEnabled(accountBackgroundDb)) {
+    if (!await category.isEnabled(db)) {
       return;
     }
 

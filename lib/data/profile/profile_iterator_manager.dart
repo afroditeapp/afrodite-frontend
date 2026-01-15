@@ -9,7 +9,6 @@ import 'package:app/data/profile/profile_list/favorites_database_iterator.dart';
 import 'package:app/data/profile/profile_list/profiles_database_iterator.dart';
 import 'package:app/data/general/iterator/online_iterator.dart';
 import 'package:database/database.dart';
-import 'package:app/database/account_background_database_manager.dart';
 import 'package:app/database/account_database_manager.dart';
 import 'package:app/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
@@ -47,19 +46,12 @@ class ProfileIteratorManager {
   final AccountDatabaseManager db;
   final ChatRepository chat;
   final MediaRepository media;
-  final AccountBackgroundDatabaseManager accountBackgroundDb;
   final ServerConnectionManager connectionManager;
 
   final AccountId currentUser;
 
-  ProfileIteratorManager(
-    this.chat,
-    this.media,
-    this.accountBackgroundDb,
-    this.db,
-    this.connectionManager,
-    this.currentUser,
-  ) : _currentIterator = ProfileListDatabaseIterator(db: db);
+  ProfileIteratorManager(this.chat, this.media, this.db, this.connectionManager, this.currentUser)
+    : _currentIterator = ProfileListDatabaseIterator(db: db);
 
   ProfileIteratorMode _currentMode = ModePublicProfiles(clearDatabase: false);
   IteratorType _currentIterator;
@@ -114,7 +106,6 @@ class ProfileIteratorManager {
               resetServerIterator: true,
               media: media,
               io: ProfileListOnlineIteratorIo(db, connectionManager),
-              accountBackgroundDb: accountBackgroundDb,
               db: db,
               connectionManager: connectionManager,
             );
@@ -123,7 +114,6 @@ class ProfileIteratorManager {
               _currentIterator = OnlineIterator(
                 media: media,
                 io: ProfileListOnlineIteratorIo(db, connectionManager),
-                accountBackgroundDb: accountBackgroundDb,
                 db: db,
                 connectionManager: connectionManager,
               );

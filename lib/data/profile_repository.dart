@@ -15,7 +15,6 @@ import 'package:app/data/media_repository.dart';
 import 'package:app/data/profile/profile_downloader.dart';
 import 'package:app/data/utils.dart';
 import 'package:database/database.dart';
-import 'package:app/database/account_background_database_manager.dart';
 import 'package:app/database/account_database_manager.dart';
 import 'package:app/utils/app_error.dart';
 import 'package:app/utils/result.dart';
@@ -24,7 +23,6 @@ import 'package:utils/utils.dart';
 
 class ProfileRepository extends DataRepositoryWithLifecycle {
   final AccountDatabaseManager db;
-  final AccountBackgroundDatabaseManager accountBackgroundDb;
   final ApiManager _api;
   final ServerConnectionManager connectionManager;
 
@@ -33,14 +31,8 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
 
   final AccountId currentUser;
 
-  ProfileRepository(
-    this.media,
-    this.account,
-    this.db,
-    this.accountBackgroundDb,
-    this.connectionManager,
-    this.currentUser,
-  ) : _api = connectionManager;
+  ProfileRepository(this.media, this.account, this.db, this.connectionManager, this.currentUser)
+    : _api = connectionManager;
 
   final PublishSubject<ProfileChange> _profileChangesRelay = PublishSubject();
   void sendProfileChange(ProfileChange change) {
@@ -124,12 +116,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
   /// Waits connection before downloading starts.
   Future<ProfileEntry?> downloadProfile(AccountId id) async {
     await connectionManager.tryWaitUntilConnected(waitTimeoutSeconds: 5);
-    final entry = await ProfileEntryDownloader(
-      media,
-      accountBackgroundDb,
-      db,
-      _api,
-    ).download(id).ok();
+    final entry = await ProfileEntryDownloader(media, db, _api).download(id).ok();
     return entry;
   }
 
@@ -169,12 +156,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
 
     if (download) {
       final isMatch = await chat.isInMatches(id);
-      await ProfileEntryDownloader(
-        media,
-        accountBackgroundDb,
-        db,
-        _api,
-      ).download(id, isMatch: isMatch);
+      await ProfileEntryDownloader(media, db, _api).download(id, isMatch: isMatch);
     }
 
     while (true) {
@@ -189,12 +171,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
 
   Future<void> downloadProfileToDatabase(ChatRepository chat, AccountId id) async {
     final isMatch = await chat.isInMatches(id);
-    await ProfileEntryDownloader(
-      media,
-      accountBackgroundDb,
-      db,
-      _api,
-    ).download(id, isMatch: isMatch);
+    await ProfileEntryDownloader(media, db, _api).download(id, isMatch: isMatch);
   }
 
   /// Returns true if profile update was successful
@@ -520,11 +497,11 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
       accountId,
       0,
       null,
-      accountBackgroundDb,
+      db,
     );
-    return accountBackgroundDb
+    return db
         .accountAction(
-          (db) => db.unreadMessagesCount.setUnreadMessagesCount(
+          (db) => db.chatUnreadMessagesCount.setUnreadMessagesCount(
             accountId,
             const UnreadMessagesCount(0),
           ),
@@ -541,9 +518,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
   }
 
   Stream<UnreadMessagesCount?> getUnreadMessagesCountStream(AccountId accountId) {
-    return accountBackgroundDb.accountStream(
-      (db) => db.unreadMessagesCount.watchUnreadMessageCount(accountId),
-    );
+    return db.accountStream((db) => db.chatUnreadMessagesCount.watchUnreadMessageCount(accountId));
   }
 
   Future<void> downloadInitialSetupAgeInfoIfNull({
@@ -587,7 +562,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
     return await _api
         .profile((api) => api.getProfileAppNotificationSettings())
         .andThenEmptyErr(
-          (v) => accountBackgroundDb.accountAction(
+          (v) => db.accountAction(
             (db) => db.appNotificationSettings.updateProfileNotificationSettings(v),
           ),
         );
@@ -604,22 +579,22 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
 
     await NotificationProfileStringModerationCompleted.handleNameAccepted(
       notification.nameAccepted,
-      accountBackgroundDb,
+      db,
       onlyDbUpdate: notification.hidden,
     );
     await NotificationProfileStringModerationCompleted.handleNameRejected(
       notification.nameRejected,
-      accountBackgroundDb,
+      db,
       onlyDbUpdate: notification.hidden,
     );
     await NotificationProfileStringModerationCompleted.handleTextAccepted(
       notification.textAccepted,
-      accountBackgroundDb,
+      db,
       onlyDbUpdate: notification.hidden,
     );
     await NotificationProfileStringModerationCompleted.handleTextRejected(
       notification.textRejected,
-      accountBackgroundDb,
+      db,
       onlyDbUpdate: notification.hidden,
     );
 
@@ -634,13 +609,13 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
           (api) => api.postMarkProfileStringModerationCompletedNotificationViewed(viewed),
         )
         .andThen(
-          (_) => accountBackgroundDb.accountAction(
-            (db) => db.notification.profileTextAccepted.updateViewedId(viewed.textAccepted),
+          (_) => db.accountAction(
+            (db) => db.app.profileTextAccepted.updateViewedId(viewed.textAccepted),
           ),
         )
         .andThen(
-          (_) => accountBackgroundDb.accountAction(
-            (db) => db.notification.profileTextRejected.updateViewedId(viewed.textRejected),
+          (_) => db.accountAction(
+            (db) => db.app.profileTextRejected.updateViewedId(viewed.textRejected),
           ),
         );
   }
@@ -656,7 +631,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
 
     await NotificationAutomaticProfileSearch.handleAutomaticProfileSearchCompleted(
       notification,
-      accountBackgroundDb,
+      db,
       onlyDbUpdate: notification.hidden,
     );
 
@@ -668,9 +643,8 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
           (api) => api.postMarkAutomaticProfileSearchCompletedNotificationViewed(viewed),
         )
         .andThen(
-          (_) => accountBackgroundDb.accountAction(
-            (db) => db.notification.profilesFound.updateViewedId(viewed.profilesFound),
-          ),
+          (_) =>
+              db.accountAction((db) => db.app.profilesFound.updateViewedId(viewed.profilesFound)),
         );
   }
 }

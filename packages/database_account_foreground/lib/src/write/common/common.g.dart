@@ -11,4 +11,6 @@ mixin _$DaoWriteCommonMixin on DatabaseAccessor<AccountForegroundDatabase> {
       attachedDatabase.receivedLikesIteratorState;
   $ClientLanguageOnServerTable get clientLanguageOnServer =>
       attachedDatabase.clientLanguageOnServer;
+  $NewReceivedLikesCountTable get newReceivedLikesCount =>
+      attachedDatabase.newReceivedLikesCount;
 }

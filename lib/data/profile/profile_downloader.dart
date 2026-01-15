@@ -6,7 +6,6 @@ import 'package:app/api/server_connection_manager.dart';
 import 'package:app/data/image_cache.dart';
 import 'package:app/data/media_repository.dart';
 import 'package:database/database.dart';
-import 'package:app/database/account_background_database_manager.dart';
 import 'package:app/database/account_database_manager.dart';
 import 'package:utils/utils.dart';
 import 'package:app/utils/result.dart';
@@ -20,8 +19,7 @@ class ProfileEntryDownloader {
   final ApiManager api;
   final AccountDatabaseManager db;
   final MediaRepository media;
-  final AccountBackgroundDatabaseManager accountBackgroundDb;
-  ProfileEntryDownloader(this.media, this.accountBackgroundDb, this.db, this.api);
+  ProfileEntryDownloader(this.media, this.db, this.api);
 
   /// Download profile entry, save to databases and return it.
   Future<Result<ProfileEntry, ProfileDownloadError>> download(
@@ -91,9 +89,6 @@ class ProfileEntryDownloader {
         if (profile != null) {
           // Sent profile version didn't match the latest profile version, so
           // server sent the latest profile.
-          await accountBackgroundDb.accountAction(
-            (db) => db.profile.updateProfileData(accountId, profile),
-          );
           await db.accountAction(
             (db) => db.profile.updateProfileData(accountId, profile, version, v.lst),
           );

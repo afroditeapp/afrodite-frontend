@@ -187,7 +187,6 @@ class LikeViewContentState extends State<LikeViewContent> {
     _mainProfilesViewIterator = ReceivedLikesIteratorManager(
       widget.r.chat,
       widget.r.media,
-      widget.r.accountBackgroundDb,
       widget.r.accountDb,
       widget.r.connectionManager,
       widget.r.chat.currentUser,

@@ -1,10 +1,12 @@
 import 'package:database_account_foreground/src/read/account/account.dart';
+import 'package:database_account_foreground/src/read/app/app_notification_settings.dart';
 import 'package:database_account_foreground/src/read/chat/backup.dart';
 import 'package:database_account_foreground/src/read/chat/conversation_list.dart';
 import 'package:database_account_foreground/src/read/chat/key.dart';
 import 'package:database_account_foreground/src/read/chat/like.dart';
 import 'package:database_account_foreground/src/read/chat/message.dart';
 import 'package:database_account_foreground/src/read/chat/privacy.dart';
+import 'package:database_account_foreground/src/read/chat/unread_messages_count.dart';
 import 'package:database_account_foreground/src/read/common/config.dart';
 import 'package:database_account_foreground/src/read/account/login_session.dart';
 import 'package:database_account_foreground/src/read/app.dart';
@@ -16,12 +18,14 @@ import 'package:database_account_foreground/src/read/profile/privacy.dart';
 import 'package:database_account_foreground/src/read/profile/profile.dart';
 import 'package:database_account_foreground/src/read/profile/search.dart';
 import 'package:database_account_foreground/src/write/account/account.dart';
+import 'package:database_account_foreground/src/write/app/app_notification_settings.dart';
 import 'package:database_account_foreground/src/write/chat/backup.dart';
 import 'package:database_account_foreground/src/write/chat/conversation_list.dart';
 import 'package:database_account_foreground/src/write/chat/key.dart';
 import 'package:database_account_foreground/src/write/chat/like.dart';
 import 'package:database_account_foreground/src/write/chat/message.dart';
 import 'package:database_account_foreground/src/write/chat/privacy.dart';
+import 'package:database_account_foreground/src/write/chat/unread_messages_count.dart';
 import 'package:database_account_foreground/src/write/common/config.dart';
 import 'package:database_account_foreground/src/write/account/login_session.dart';
 import 'package:database_account_foreground/src/write/app.dart';
@@ -52,6 +56,11 @@ part 'database.g.dart';
     schema.InitialSetupSkipped,
     schema.GridSettings,
     schema.ChatBackupReminder,
+    schema.AdminNotification,
+    schema.AppNotificationSettings,
+    schema.NotificationStatus,
+    schema.News,
+    schema.PushNotification,
     // Common
     schema.ServerMaintenance,
     schema.SyncVersion,
@@ -61,6 +70,7 @@ part 'database.g.dart';
     schema.ProfileAttributesConfig,
     schema.ProfileAttributesConfigAttributes,
     schema.ClientLanguageOnServer,
+    schema.NewReceivedLikesCount,
     // Account
     schema.LocalAccountId,
     schema.AccountState,
@@ -84,6 +94,7 @@ part 'database.g.dart';
     schema.ProfileLocation,
     schema.FavoriteProfiles,
     schema.AutomaticProfileSearchSettings,
+    schema.AutomaticProfileSearchBadgeState,
     schema.ProfilePrivacySettings,
     // Chat
     schema.MyKeyPair,
@@ -92,12 +103,15 @@ part 'database.g.dart';
     schema.DailyLikesLeft,
     schema.ChatPrivacySettings,
     schema.Message,
+    schema.UnreadMessagesCount,
+    schema.NewMessageNotification,
   ],
   daos: [
     // Read
 
     // App
     DaoReadApp,
+    DaoReadAppNotificationSettings,
     // Common
     DaoReadCommon,
     DaoReadConfig,
@@ -119,11 +133,13 @@ part 'database.g.dart';
     DaoReadLike,
     DaoReadMessage,
     DaoReadPrivacy,
+    DaoReadChatUnreadMessagesCount,
 
     // Write
 
     // App
     DaoWriteApp,
+    DaoWriteAppNotificationSettings,
     // Common
     DaoWriteCommon,
     DaoWriteConfig,
@@ -145,6 +161,7 @@ part 'database.g.dart';
     DaoWriteLike,
     DaoWriteMessage,
     DaoWritePrivacy,
+    DaoWriteChatUnreadMessagesCount,
   ],
 )
 class AccountForegroundDatabase extends _$AccountForegroundDatabase {
@@ -163,6 +180,7 @@ class AccountForegroundDatabaseRead {
   AccountForegroundDatabaseRead(this.db);
   // App
   DaoReadApp get app => db.daoReadApp;
+  DaoReadAppNotificationSettings get appNotificationSettings => db.daoReadAppNotificationSettings;
   // Common
   DaoReadCommon get common => db.daoReadCommon;
   DaoReadConfig get config => db.daoReadConfig;
@@ -184,6 +202,7 @@ class AccountForegroundDatabaseRead {
   DaoReadLike get like => db.daoReadLike;
   DaoReadMessage get message => db.daoReadMessage;
   DaoReadPrivacy get privacy => db.daoReadPrivacy;
+  DaoReadChatUnreadMessagesCount get chatUnreadMessagesCount => db.daoReadChatUnreadMessagesCount;
 }
 
 class AccountForegroundDatabaseWrite {
@@ -191,6 +210,7 @@ class AccountForegroundDatabaseWrite {
   AccountForegroundDatabaseWrite(this.db);
   // App
   DaoWriteApp get app => db.daoWriteApp;
+  DaoWriteAppNotificationSettings get appNotificationSettings => db.daoWriteAppNotificationSettings;
   // Common
   DaoWriteCommon get common => db.daoWriteCommon;
   DaoWriteConfig get config => db.daoWriteConfig;
@@ -212,4 +232,5 @@ class AccountForegroundDatabaseWrite {
   DaoWriteLike get like => db.daoWriteLike;
   DaoWriteMessage get message => db.daoWriteMessage;
   DaoWritePrivacy get privacy => db.daoWritePrivacy;
+  DaoWriteChatUnreadMessagesCount get chatUnreadMessagesCount => db.daoWriteChatUnreadMessagesCount;
 }

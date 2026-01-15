@@ -1,7 +1,7 @@
 import 'package:app/data/general/notification/utils/notification_category.dart';
 import 'package:app/data/general/notification/utils/notification_id.dart';
 import 'package:app/data/notification_manager.dart';
-import 'package:app/database/account_background_database_manager.dart';
+import 'package:app/database/account_database_manager.dart';
 import 'package:app/database/database_manager.dart';
 import 'package:app/localizations.dart';
 import 'package:app/logic/app/app_visibility_provider.dart';
@@ -25,33 +25,27 @@ class NotificationLikeReceived extends AppSingletonNoInit {
 
   Future<void> handleNewReceivedLikesCount(
     NewReceivedLikesCountResult notification,
-    AccountBackgroundDatabaseManager accountBackgroundDb, {
+    AccountDatabaseManager db, {
     bool onlyDbUpdate = false,
   }) async {
-    await accountBackgroundDb.accountAction(
-      (db) => db.newReceivedLikesCount.updateSyncVersionReceivedLikes(notification),
-    );
+    await db.accountAction((db) => db.common.updateSyncVersionReceivedLikes(notification));
     if (!onlyDbUpdate) {
       _receivedCount = notification.c.c;
-      await _updateNotification(accountBackgroundDb);
+      await _updateNotification(db);
     }
   }
 
-  Future<void> incrementReceivedLikesCount(
-    AccountBackgroundDatabaseManager accountBackgroundDb,
-  ) async {
+  Future<void> incrementReceivedLikesCount(AccountDatabaseManager db) async {
     _receivedCount++;
-    await _updateNotification(accountBackgroundDb);
+    await _updateNotification(db);
   }
 
-  Future<void> hideReceivedLikesNotification(
-    AccountBackgroundDatabaseManager accountBackgroundDb,
-  ) async {
+  Future<void> hideReceivedLikesNotification(AccountDatabaseManager db) async {
     _receivedCount = 0;
-    await _updateNotification(accountBackgroundDb);
+    await _updateNotification(db);
   }
 
-  Future<void> _updateNotification(AccountBackgroundDatabaseManager accountBackgroundDb) async {
+  Future<void> _updateNotification(AccountDatabaseManager db) async {
     if (_receivedCount <= 0) {
       await notifications.hideNotification(NotificationIdStatic.likeReceived.id);
       return;
@@ -72,7 +66,7 @@ class NotificationLikeReceived extends AppSingletonNoInit {
       id: NotificationIdStatic.likeReceived.id,
       title: title,
       category: const NotificationCategoryLikes(),
-      accountBackgroundDb: accountBackgroundDb,
+      db: db,
     );
   }
 

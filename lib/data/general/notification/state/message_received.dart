@@ -3,7 +3,7 @@ import 'package:openapi/api.dart';
 import 'package:app/data/general/notification/utils/notification_category.dart';
 import 'package:app/data/general/notification/utils/notification_id.dart';
 import 'package:app/data/notification_manager.dart';
-import 'package:app/database/account_background_database_manager.dart';
+import 'package:app/database/account_database_manager.dart';
 import 'package:app/localizations.dart';
 import 'package:app/logic/app/app_visibility_provider.dart';
 import 'package:app/logic/app/navigator_state.dart';
@@ -23,19 +23,19 @@ class NotificationMessageReceived extends AppSingletonNoInit {
     AccountId accountId,
     int count,
     ConversationId? conversation,
-    AccountBackgroundDatabaseManager accountBackgroundDb, {
+    AccountDatabaseManager db, {
     bool onlyDbUpdate = false,
   }) async {
-    final dbConversationId = await accountBackgroundDb
-        .accountData((db) => db.notification.getConversationId(accountId))
+    final dbConversationId = await db
+        .accountData((db) => db.chatUnreadMessagesCount.getConversationId(accountId))
         .ok();
     final ConversationId conversationId;
     if (dbConversationId == null) {
       if (conversation == null) {
         return;
       }
-      await accountBackgroundDb.accountAction(
-        (db) => db.notification.setConversationId(accountId, conversation),
+      await db.accountAction(
+        (db) => db.chatUnreadMessagesCount.setConversationId(accountId, conversation),
       );
       conversationId = conversation;
     } else {
@@ -46,15 +46,17 @@ class NotificationMessageReceived extends AppSingletonNoInit {
       conversationId,
     );
     final notificationShown =
-        await accountBackgroundDb
-            .accountData((db) => db.notification.getNewMessageNotificationShown(accountId))
+        await db
+            .accountData(
+              (db) => db.chatUnreadMessagesCount.getNewMessageNotificationShown(accountId),
+            )
             .ok() ??
         false;
 
     if (count <= 0 || _isConversationUiOpen(accountId) || notificationShown) {
       await notifications.hideNotification(notificationId);
     } else if (!onlyDbUpdate) {
-      await _showNotification(accountId, notificationId, count, accountBackgroundDb);
+      await _showNotification(accountId, notificationId, count, db);
     }
   }
 
@@ -62,30 +64,28 @@ class NotificationMessageReceived extends AppSingletonNoInit {
     AccountId account,
     LocalNotificationId id,
     int count,
-    AccountBackgroundDatabaseManager accountBackgroundDb,
+    AccountDatabaseManager db,
   ) async {
-    final profileTitle = await accountBackgroundDb
-        .accountData((db) => db.profile.getProfileTitle(account))
-        .ok();
+    final profileEntry = await db.accountData((db) => db.profile.getProfileEntry(account)).ok();
 
     final String title;
-    if (profileTitle == null) {
+    if (profileEntry == null) {
       if (count > 1) {
         title = R.strings.notification_message_received_multiple_generic;
       } else {
         title = R.strings.notification_message_received_single_generic;
       }
     } else if (count > 1) {
-      title = R.strings.notification_message_received_multiple(profileTitle.profileTitle());
+      title = R.strings.notification_message_received_multiple(profileEntry.profileTitle());
     } else {
-      title = R.strings.notification_message_received_single(profileTitle.profileTitle());
+      title = R.strings.notification_message_received_single(profileEntry.profileTitle());
     }
 
     await notifications.sendNotification(
       id: id,
       title: title,
       category: const NotificationCategoryMessages(),
-      accountBackgroundDb: accountBackgroundDb,
+      db: db,
     );
   }
 
@@ -97,14 +97,12 @@ class NotificationMessageReceived extends AppSingletonNoInit {
   }
 
   /// Fallback notification if conversation ID downloading fails.
-  Future<void> showFallbackMessageReceivedNotification(
-    AccountBackgroundDatabaseManager accountBackgroundDb,
-  ) async {
+  Future<void> showFallbackMessageReceivedNotification(AccountDatabaseManager db) async {
     await notifications.sendNotification(
       id: NotificationIdStatic.genericMessageReceived.id,
       title: R.strings.notification_message_received_single_generic,
       category: const NotificationCategoryMessages(),
-      accountBackgroundDb: accountBackgroundDb,
+      db: db,
     );
   }
 }

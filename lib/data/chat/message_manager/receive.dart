@@ -12,7 +12,6 @@ import 'package:app/api/server_connection_manager.dart';
 import 'package:app/data/chat/message_key_generator.dart';
 import 'package:app/data/general/notification/state/message_received.dart';
 import 'package:app/data/profile_repository.dart';
-import 'package:app/database/account_background_database_manager.dart';
 import 'package:app/database/account_database_manager.dart';
 import 'package:app/utils/api.dart';
 import 'package:utils/utils.dart';
@@ -25,20 +24,13 @@ class ReceiveMessageUtils {
   final MessageKeyManager messageKeyManager;
   final ApiManager api;
   final AccountDatabaseManager db;
-  final AccountBackgroundDatabaseManager accountBackgroundDb;
   final AccountId currentUser;
   final ProfileRepository profile;
 
   final PublicKeyUtils publicKeyUtils;
 
-  ReceiveMessageUtils(
-    this.messageKeyManager,
-    this.api,
-    this.db,
-    this.accountBackgroundDb,
-    this.currentUser,
-    this.profile,
-  ) : publicKeyUtils = PublicKeyUtils(db, api, currentUser);
+  ReceiveMessageUtils(this.messageKeyManager, this.api, this.db, this.currentUser, this.profile)
+    : publicKeyUtils = PublicKeyUtils(db, api, currentUser);
 
   Future<void> receiveNewMessages() async {
     final allKeys = await messageKeyManager.getKeysWhenChatIsEnabled().ok();
@@ -116,17 +108,17 @@ class ReceiveMessageUtils {
         toBeDeleted.add(message.parsed.toPendingMessageId());
       }
 
-      ConversationId? conversationId = await accountBackgroundDb
-          .accountData((db) => db.notification.getConversationId(message.parsed.sender))
+      ConversationId? conversationId = await db
+          .accountData((db) => db.chatUnreadMessagesCount.getConversationId(message.parsed.sender))
           .ok();
       if (conversationId == null) {
         final r = await api.chat((api) => api.getConversationId(message.parsed.sender.aid)).ok();
         conversationId = r?.value;
       }
 
-      final unreadMessagesCount = await accountBackgroundDb
+      final unreadMessagesCount = await db
           .accountDataWrite(
-            (db) => db.unreadMessagesCount.incrementUnreadMessagesCount(message.parsed.sender),
+            (db) => db.chatUnreadMessagesCount.incrementUnreadMessagesCount(message.parsed.sender),
           )
           .ok();
       if (unreadMessagesCount != null) {
@@ -135,14 +127,14 @@ class ReceiveMessageUtils {
         );
         if (conversationId == null) {
           await NotificationMessageReceived.getInstance().showFallbackMessageReceivedNotification(
-            accountBackgroundDb,
+            db,
           );
         } else {
           await NotificationMessageReceived.getInstance().updateMessageReceivedCount(
             message.parsed.sender,
             unreadMessagesCount.count,
             conversationId,
-            accountBackgroundDb,
+            db,
             onlyDbUpdate: notificationHidden,
           );
         }
@@ -150,8 +142,8 @@ class ReceiveMessageUtils {
     }
 
     for (final sender in newMessages.map((item) => item.parsed.sender).toSet()) {
-      await accountBackgroundDb.accountAction(
-        (db) => db.notification.setNewMessageNotificationShown(sender, false),
+      await db.accountAction(
+        (db) => db.chatUnreadMessagesCount.setNewMessageNotificationShown(sender, false),
       );
     }
 

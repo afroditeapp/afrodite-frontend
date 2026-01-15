@@ -59,3 +59,12 @@ class ClientLanguageOnServer extends SingleRowTable {
   TextColumn get clientLanguageOnServer =>
       text().map(const NullAwareTypeConverter.wrap(ClientLanguageConverter())).nullable()();
 }
+
+class NewReceivedLikesCount extends SingleRowTable {
+  IntColumn get syncVersionReceivedLikes => integer().nullable()();
+  IntColumn get newReceivedLikesCount => integer()
+      .map(const NullAwareTypeConverter.wrap(NewReceivedLikesCountConverter()))
+      .nullable()();
+  IntColumn get latestReceivedLikeId =>
+      integer().map(const NullAwareTypeConverter.wrap(ReceivedLikeIdConverter())).nullable()();
+}

@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:app/data/login_repository.dart';
 import 'package:app/data/profile_repository.dart';
 import 'package:app/data/utils/ios_delay_app_suspend_task.dart';
-import 'package:app/database/account_background_database_manager.dart';
+import 'package:app/database/account_database_manager.dart';
 import 'package:logging/logging.dart';
 import 'package:app/api/server_connection_manager.dart';
 import 'package:app/data/push_notification_manager.dart';
@@ -18,14 +18,14 @@ final _log = Logger("CommonRepository");
 class CommonRepository extends DataRepositoryWithLifecycle {
   final db = DatabaseManager.getInstance();
   final AccountId currentUser;
-  final AccountBackgroundDatabaseManager accountBackgroundDb;
+  final AccountDatabaseManager accountDb;
   final ServerConnectionManager connectionManager;
   final ApiManager api;
   final ProfileRepository profile;
   final ConnectedActionScheduler syncHandler;
   bool initDone = false;
 
-  CommonRepository(this.currentUser, this.accountBackgroundDb, this.connectionManager, this.profile)
+  CommonRepository(this.currentUser, this.accountDb, this.connectionManager, this.profile)
     : syncHandler = ConnectedActionScheduler(connectionManager),
       api = connectionManager;
 
@@ -107,7 +107,7 @@ class CommonRepository extends DataRepositoryWithLifecycle {
   Future<void> onLogin() async {
     // Force sending the push notification device token to server.
     // This is needed if this login is for different account than previously.
-    await accountBackgroundDb.accountAction((db) => db.loginSession.updateDeviceToken(null));
+    await accountDb.accountAction((db) => db.app.updateDeviceToken(null));
   }
 
   @override
@@ -136,8 +136,8 @@ class CommonRepository extends DataRepositoryWithLifecycle {
   Future<Result<(), ()>> receivePushNotificationInfo() async {
     final r = await api.common((api) => api.getPushNotificationInfo()).ok();
     if (r != null) {
-      final dbResult = await accountBackgroundDb
-          .accountAction((db) => db.loginSession.updatePushNotificationInfo(r))
+      final dbResult = await accountDb
+          .accountAction((db) => db.app.updatePushNotificationInfo(r))
           .emptyErr();
       await PushNotificationManager.getInstance().triggerTokenRefresh();
       return dbResult;

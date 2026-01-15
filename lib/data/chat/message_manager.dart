@@ -12,7 +12,6 @@ import 'package:app/api/server_connection_manager.dart';
 import 'package:app/data/chat/message_key_generator.dart';
 import 'package:app/data/profile_repository.dart';
 import 'package:app/data/utils.dart';
-import 'package:app/database/account_background_database_manager.dart';
 import 'package:app/database/account_database_manager.dart';
 import 'package:app/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
@@ -101,27 +100,13 @@ class MessageManager extends LifecycleMethods {
   final ApiManager api;
   final AccountDatabaseManager db;
   final ProfileRepository profile;
-  final AccountBackgroundDatabaseManager accountBackgroundDb;
   final AccountId currentUser;
 
   final ReceiveMessageUtils receiveMessageUtils;
   final SendMessageUtils sendMessageUtils;
 
-  MessageManager(
-    this.messageKeyManager,
-    this.api,
-    this.db,
-    this.profile,
-    this.accountBackgroundDb,
-    this.currentUser,
-  ) : receiveMessageUtils = ReceiveMessageUtils(
-        messageKeyManager,
-        api,
-        db,
-        accountBackgroundDb,
-        currentUser,
-        profile,
-      ),
+  MessageManager(this.messageKeyManager, this.api, this.db, this.profile, this.currentUser)
+    : receiveMessageUtils = ReceiveMessageUtils(messageKeyManager, api, db, currentUser, profile),
       sendMessageUtils = SendMessageUtils(messageKeyManager, api, db, currentUser, profile);
 
   final PublishSubject<BaseMessageManagerCmd> _commands = PublishSubject();

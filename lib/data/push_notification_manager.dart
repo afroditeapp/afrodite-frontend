@@ -134,13 +134,12 @@ class PushNotificationManager extends AppSingleton {
   Future<void> _refreshTokenToServer(String deviceToken) async {
     // TODO(future): Improve code so that repositoriesOrNull access
     // is not needed.
-    final accountBackgroundDb =
-        LoginRepository.getInstance().repositoriesOrNull?.accountBackgroundDb;
-    if (accountBackgroundDb == null) {
+    final db = LoginRepository.getInstance().repositoriesOrNull?.accountDb;
+    if (db == null) {
       return;
     }
-    final savedToken = await accountBackgroundDb
-        .accountStreamSingle((db) => db.loginSession.watchPushNotificationDeviceToken())
+    final savedToken = await db
+        .accountStreamSingle((db) => db.app.watchPushNotificationDeviceToken())
         .ok();
     if (savedToken?.token != deviceToken) {
       _log.info("Push notification device token changed, sending token to server");
@@ -162,9 +161,7 @@ class PushNotificationManager extends AppSingleton {
           return;
         }
 
-        final dbResult = await accountBackgroundDb.accountAction(
-          (db) => db.loginSession.updateDeviceToken(newToken),
-        );
+        final dbResult = await db.accountAction((db) => db.app.updateDeviceToken(newToken));
         if (dbResult.isOk()) {
           _log.info("Push notification device token saving to local database successful");
         } else {
@@ -182,8 +179,8 @@ class PushNotificationManager extends AppSingleton {
     if (kIsWeb) {
       final repositories = LoginRepository.getInstance().repositoriesOrNull;
       if (repositories != null) {
-        final dbVapidKey = await repositories.accountBackgroundDb
-            .accountStreamSingle((db) => db.loginSession.watchVapidPublicKey())
+        final dbVapidKey = await repositories.accountDb
+            .accountStreamSingle((db) => db.app.watchVapidPublicKey())
             .ok();
         if (dbVapidKey != null) {
           return dbVapidKey.key;
@@ -191,8 +188,8 @@ class PushNotificationManager extends AppSingleton {
 
         await repositories.common.receivePushNotificationInfo();
 
-        final dbVapidKeySecond = await repositories.accountBackgroundDb
-            .accountStreamSingle((db) => db.loginSession.watchVapidPublicKey())
+        final dbVapidKeySecond = await repositories.accountDb
+            .accountStreamSingle((db) => db.app.watchVapidPublicKey())
             .ok();
         if (dbVapidKeySecond != null) {
           return dbVapidKeySecond.key;

@@ -2,6 +2,7 @@ import 'package:database_account_foreground/src/database.dart';
 import 'package:database_model/database_model.dart';
 import 'package:database_utils/database_utils.dart';
 import 'package:drift/drift.dart';
+import 'package:openapi/api.dart' as api;
 
 import '../schema.dart' as schema;
 
@@ -15,10 +16,49 @@ part 'app.g.dart';
     schema.InitialSetupSkipped,
     schema.GridSettings,
     schema.ChatBackupReminder,
+    schema.AdminNotification,
+    schema.NotificationStatus,
+    schema.News,
+    schema.PushNotification,
   ],
 )
 class DaoReadApp extends DatabaseAccessor<AccountForegroundDatabase> with _$DaoReadAppMixin {
   DaoReadApp(super.db);
+
+  Future<api.AdminNotification?> getAdminNotification() async {
+    return await (select(adminNotification)..where((t) => t.id.equals(SingleRowTable.ID.value)))
+        .map((r) => r.jsonViewedNotification?.value)
+        .getSingleOrNull();
+  }
+
+  Stream<api.UnreadNewsCount?> watchUnreadNewsCount() {
+    return (select(news)..where((t) => t.id.equals(SingleRowTable.ID.value))).map((r) {
+      return r.newsCount;
+    }).watchSingleOrNull();
+  }
+
+  Stream<int?> watchSyncVersionNews() {
+    return (select(news)..where((t) => t.id.equals(SingleRowTable.ID.value))).map((r) {
+      return r.syncVersionNews;
+    }).watchSingleOrNull();
+  }
+
+  Stream<api.PushNotificationDeviceToken?> watchPushNotificationDeviceToken() =>
+      _watchPushNotificationColumn((r) => r.pushNotificationDeviceToken);
+
+  Stream<api.VapidPublicKey?> watchVapidPublicKey() =>
+      _watchPushNotificationColumn((r) => r.vapidPublicKey);
+
+  Stream<int?> watchPushNotificationInfoSyncVersion() =>
+      _watchPushNotificationColumn((r) => r.syncVersionPushNotificationInfo);
+
+  Stream<T?> _watchPushNotificationColumn<T extends Object>(
+    T? Function(PushNotificationData) extractColumn,
+  ) {
+    return (select(
+      pushNotification,
+    )..where((t) => t.id.equals(SingleRowTable.ID.value))).map(extractColumn).watchSingleOrNull();
+  }
 
   Stream<bool?> watchLoginSyncDone() =>
       _watchColumnInitialSync((r) => r.initialSyncDoneLoginRepository);

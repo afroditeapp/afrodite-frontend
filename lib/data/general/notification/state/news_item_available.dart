@@ -3,7 +3,7 @@ import 'package:async/async.dart' show StreamExtensions;
 import 'package:app/data/general/notification/utils/notification_category.dart';
 import 'package:app/data/general/notification/utils/notification_id.dart';
 import 'package:app/data/notification_manager.dart';
-import 'package:app/database/account_background_database_manager.dart';
+import 'package:app/database/account_database_manager.dart';
 import 'package:app/localizations.dart';
 import 'package:openapi/api.dart';
 import 'package:utils/utils.dart';
@@ -19,31 +19,25 @@ class NotificationNewsItemAvailable extends AppSingletonNoInit {
 
   Future<Result<(), ()>> handleNewsCountUpdate(
     UnreadNewsCountResult r,
-    AccountBackgroundDatabaseManager accountBackgroundDb, {
+    AccountDatabaseManager db, {
     bool onlyDbUpdate = false,
   }) async {
-    final currentCount = await accountBackgroundDb
-        .accountStream((db) => db.news.watchUnreadNewsCount())
-        .firstOrNull;
+    final currentCount = await db.accountStream((db) => db.app.watchUnreadNewsCount()).firstOrNull;
     final currentCountInt = currentCount?.c ?? 0;
     if (!onlyDbUpdate && currentCountInt < r.c.c) {
-      await _updateNotification(true, accountBackgroundDb);
+      await _updateNotification(true, db);
     } else if (!onlyDbUpdate && r.c.c == 0) {
-      await _updateNotification(false, accountBackgroundDb);
+      await _updateNotification(false, db);
     }
 
-    return await accountBackgroundDb
-        .accountAction((db) => db.news.setUnreadNewsCount(unreadNewsCount: r.c, version: r.v))
+    return await db
+        .accountAction((db) => db.app.setUnreadNewsCount(unreadNewsCount: r.c, version: r.v))
         .emptyErr();
   }
 
-  Future<void> hide(AccountBackgroundDatabaseManager accountBackgroundDb) =>
-      _updateNotification(false, accountBackgroundDb);
+  Future<void> hide(AccountDatabaseManager db) => _updateNotification(false, db);
 
-  Future<void> _updateNotification(
-    bool show,
-    AccountBackgroundDatabaseManager accountBackgroundDb,
-  ) async {
+  Future<void> _updateNotification(bool show, AccountDatabaseManager db) async {
     if (!show) {
       await notifications.hideNotification(NotificationIdStatic.newsItemAvailable.id);
       return;
@@ -53,13 +47,13 @@ class NotificationNewsItemAvailable extends AppSingletonNoInit {
       id: NotificationIdStatic.newsItemAvailable.id,
       title: R.strings.notification_news_item_available,
       category: const NotificationCategoryNewsItemAvailable(),
-      accountBackgroundDb: accountBackgroundDb,
+      db: db,
     );
   }
 
   Future<Result<(), ()>> showAdminNotification(
     AdminNotification notificationContent,
-    AccountBackgroundDatabaseManager accountBackgroundDb, {
+    AccountDatabaseManager db, {
     bool onlyDbUpdate = false,
   }) async {
     Map<String, dynamic> booleanValues = notificationContent.toJson();
@@ -75,12 +69,12 @@ class NotificationNewsItemAvailable extends AppSingletonNoInit {
         title: "Admin notification",
         body: trueValues.join("\n"),
         category: const NotificationCategoryNewsItemAvailable(),
-        accountBackgroundDb: accountBackgroundDb,
+        db: db,
       );
     }
 
-    return await accountBackgroundDb
-        .accountAction((db) => db.notification.updateAdminNotification(notificationContent))
+    return await db
+        .accountAction((db) => db.app.updateAdminNotification(notificationContent))
         .emptyErr();
   }
 }

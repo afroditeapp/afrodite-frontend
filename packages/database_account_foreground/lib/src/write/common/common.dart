@@ -14,6 +14,7 @@ part 'common.g.dart';
     schema.SyncVersion,
     schema.ReceivedLikesIteratorState,
     schema.ClientLanguageOnServer,
+    schema.NewReceivedLikesCount,
   ],
 )
 class DaoWriteCommon extends DatabaseAccessor<AccountForegroundDatabase>
@@ -99,6 +100,26 @@ class DaoWriteCommon extends DatabaseAccessor<AccountForegroundDatabase>
       ClientLanguageOnServerCompanion.insert(
         id: SingleRowTable.ID,
         clientLanguageOnServer: Value(value),
+      ),
+    );
+  }
+
+  Future<void> updateSyncVersionReceivedLikes(api.NewReceivedLikesCountResult value) async {
+    await into(newReceivedLikesCount).insertOnConflictUpdate(
+      NewReceivedLikesCountCompanion.insert(
+        id: SingleRowTable.ID,
+        syncVersionReceivedLikes: Value(value.v.version),
+        newReceivedLikesCount: Value(value.c),
+        latestReceivedLikeId: Value(value.l),
+      ),
+    );
+  }
+
+  Future<void> resetReceivedLikesSyncVersion() async {
+    await into(newReceivedLikesCount).insertOnConflictUpdate(
+      NewReceivedLikesCountCompanion.insert(
+        id: SingleRowTable.ID,
+        syncVersionReceivedLikes: Value(null),
       ),
     );
   }

@@ -48,3 +48,52 @@ class ChatBackupReminder extends SingleRowTable {
   IntColumn get lastDialogOpenedTime =>
       integer().map(NullAwareTypeConverter.wrap(const UtcDateTimeConverter())).nullable()();
 }
+
+class AdminNotification extends SingleRowTable {
+  TextColumn get jsonViewedNotification =>
+      text().map(NullAwareTypeConverter.wrap(const AdminNotificationConverter())).nullable()();
+}
+
+class AppNotificationSettings extends SingleRowTable {
+  BoolColumn get messages => boolean().nullable()();
+  BoolColumn get likes => boolean().nullable()();
+  BoolColumn get mediaContentModerationCompleted => boolean().nullable()();
+  BoolColumn get profileStringModerationCompleted => boolean().nullable()();
+  BoolColumn get news => boolean().nullable()();
+  BoolColumn get automaticProfileSearch => boolean().nullable()();
+}
+
+/// Notifications with NotificationStatus (ID and viewed ID) available.
+class NotificationStatus extends SingleRowTable {
+  TextColumn get jsonAutomaticProfileSearchFoundProfiles =>
+      text().map(NullAwareTypeConverter.wrap(const NotificationStatusConverter())).nullable()();
+  TextColumn get jsonMediaContentAccepted =>
+      text().map(NullAwareTypeConverter.wrap(const NotificationStatusConverter())).nullable()();
+  TextColumn get jsonMediaContentRejected =>
+      text().map(NullAwareTypeConverter.wrap(const NotificationStatusConverter())).nullable()();
+  TextColumn get jsonMediaContentDeleted =>
+      text().map(NullAwareTypeConverter.wrap(const NotificationStatusConverter())).nullable()();
+  TextColumn get jsonProfileNameAccepted =>
+      text().map(NullAwareTypeConverter.wrap(const NotificationStatusConverter())).nullable()();
+  TextColumn get jsonProfileNameRejected =>
+      text().map(NullAwareTypeConverter.wrap(const NotificationStatusConverter())).nullable()();
+  TextColumn get jsonProfileTextAccepted =>
+      text().map(NullAwareTypeConverter.wrap(const NotificationStatusConverter())).nullable()();
+  TextColumn get jsonProfileTextRejected =>
+      text().map(NullAwareTypeConverter.wrap(const NotificationStatusConverter())).nullable()();
+}
+
+class News extends SingleRowTable {
+  IntColumn get newsCount =>
+      integer().map(const NullAwareTypeConverter.wrap(UnreadNewsCountConverter())).nullable()();
+  IntColumn get syncVersionNews => integer().nullable()();
+}
+
+class PushNotification extends SingleRowTable {
+  TextColumn get pushNotificationDeviceToken => text()
+      .map(const NullAwareTypeConverter.wrap(PushNotificationDeviceTokenConverter()))
+      .nullable()();
+  TextColumn get vapidPublicKey =>
+      text().map(const NullAwareTypeConverter.wrap(VapidPublicKeyConverter())).nullable()();
+  IntColumn get syncVersionPushNotificationInfo => integer().nullable()();
+}

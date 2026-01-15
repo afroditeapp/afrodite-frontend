@@ -1,4 +1,5 @@
 import 'package:database_account_foreground/src/database.dart';
+import 'package:database_model/database_model.dart';
 import 'package:database_utils/database_utils.dart';
 import 'package:drift/drift.dart';
 import 'package:openapi/api.dart' as api;
@@ -13,6 +14,7 @@ part 'search.g.dart';
     schema.ProfileSearchAgeRange,
     schema.ProfileSearchGroups,
     schema.AutomaticProfileSearchSettings,
+    schema.AutomaticProfileSearchBadgeState,
   ],
 )
 class DaoReadSearch extends DatabaseAccessor<AccountForegroundDatabase> with _$DaoReadSearchMixin {
@@ -59,5 +61,16 @@ class DaoReadSearch extends DatabaseAccessor<AccountForegroundDatabase> with _$D
     return (select(
       automaticProfileSearchSettings,
     )..where((t) => t.id.equals(SingleRowTable.ID.value))).map(extractColumn).watchSingleOrNull();
+  }
+
+  Stream<AutomaticProfileSearchBadgeState?> watchAutomaticProfileSearchUiState() {
+    return (select(
+      automaticProfileSearchBadgeState,
+    )..where((t) => t.id.equals(SingleRowTable.ID.value))).watchSingleOrNull().map((r) {
+      if (r == null) {
+        return null;
+      }
+      return AutomaticProfileSearchBadgeState(r.profileCount, r.showBadge);
+    });
   }
 }

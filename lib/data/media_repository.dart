@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:app/data/general/notification/state/media_content_moderation_completed.dart';
-import 'package:app/database/account_background_database_manager.dart';
 import 'package:app/utils/api.dart';
 import 'package:drift/drift.dart';
 import 'package:logging/logging.dart';
@@ -21,20 +20,14 @@ final _log = Logger("MediaRepository");
 class MediaRepository extends DataRepositoryWithLifecycle {
   final ApiManager api;
   final AccountDatabaseManager db;
-  final AccountBackgroundDatabaseManager accountBackgroundDb;
   final ServerConnectionManager connectionManager;
 
   final AccountRepository account;
 
   final AccountId currentUser;
 
-  MediaRepository(
-    this.account,
-    this.db,
-    this.accountBackgroundDb,
-    this.connectionManager,
-    this.currentUser,
-  ) : api = connectionManager;
+  MediaRepository(this.account, this.db, this.connectionManager, this.currentUser)
+    : api = connectionManager;
 
   @override
   Future<void> init() async {
@@ -134,17 +127,17 @@ class MediaRepository extends DataRepositoryWithLifecycle {
 
     await NotificationMediaContentModerationCompleted.handleAccepted(
       notification.accepted,
-      accountBackgroundDb,
+      db,
       onlyDbUpdate: notification.hidden,
     );
     await NotificationMediaContentModerationCompleted.handleRejected(
       notification.rejected,
-      accountBackgroundDb,
+      db,
       onlyDbUpdate: notification.hidden,
     );
     await NotificationMediaContentModerationCompleted.handleDeleted(
       notification.deleted,
-      accountBackgroundDb,
+      db,
       onlyDbUpdate: notification.hidden,
     );
 
@@ -156,14 +149,12 @@ class MediaRepository extends DataRepositoryWithLifecycle {
     await api
         .mediaAction((api) => api.postMarkMediaContentModerationCompletedNotificationViewed(viewed))
         .andThen(
-          (_) => accountBackgroundDb.accountAction(
-            (db) => db.notification.mediaContentAccepted.updateViewedId(viewed.accepted),
-          ),
+          (_) =>
+              db.accountAction((db) => db.app.mediaContentAccepted.updateViewedId(viewed.accepted)),
         )
         .andThen(
-          (_) => accountBackgroundDb.accountAction(
-            (db) => db.notification.mediaContentRejected.updateViewedId(viewed.rejected),
-          ),
+          (_) =>
+              db.accountAction((db) => db.app.mediaContentRejected.updateViewedId(viewed.rejected)),
         );
   }
 
@@ -179,7 +170,7 @@ class MediaRepository extends DataRepositoryWithLifecycle {
     return await api
         .media((api) => api.getMediaAppNotificationSettings())
         .andThenEmptyErr(
-          (v) => accountBackgroundDb.accountAction(
+          (v) => db.accountAction(
             (db) => db.appNotificationSettings.updateMediaNotificationSettings(v),
           ),
         );

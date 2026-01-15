@@ -11,4 +11,6 @@ mixin _$DaoReadSearchMixin on DatabaseAccessor<AccountForegroundDatabase> {
       attachedDatabase.profileSearchGroups;
   $AutomaticProfileSearchSettingsTable get automaticProfileSearchSettings =>
       attachedDatabase.automaticProfileSearchSettings;
+  $AutomaticProfileSearchBadgeStateTable get automaticProfileSearchBadgeState =>
+      attachedDatabase.automaticProfileSearchBadgeState;
 }

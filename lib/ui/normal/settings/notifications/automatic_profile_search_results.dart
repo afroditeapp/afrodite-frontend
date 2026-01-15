@@ -62,7 +62,6 @@ class AutomaticProfileSearchResultsScreenState extends State<AutomaticProfileSea
               return AutomaticProfileSearchIteratorManager(
                 r.chat,
                 r.media,
-                r.accountBackgroundDb,
                 r.accountDb,
                 r.connectionManager,
                 r.chat.currentUser,

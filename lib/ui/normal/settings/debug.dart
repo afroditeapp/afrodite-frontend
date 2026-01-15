@@ -15,7 +15,6 @@ import 'package:native_utils/native_utils.dart';
 import 'package:openapi/api.dart';
 import 'package:app/data/general/notification/state/like_received.dart';
 import 'package:app/data/general/notification/state/message_received.dart';
-import 'package:app/database/account_background_database_manager.dart';
 import 'package:app/database/account_database_manager.dart';
 import 'package:app/ui/normal/settings.dart';
 import 'package:app/ui_utils/snack_bar.dart';
@@ -32,14 +31,12 @@ class DebugSettingsPage extends MyScreenPage<()> with SimpleUrlParser<DebugSetti
 class DebugSettingsScreen extends StatefulWidget {
   final ApiManager api;
   final ProfileRepository profile;
-  final AccountBackgroundDatabaseManager accountBackgroundDb;
   final AccountDatabaseManager accountDb;
   final AccountId accountId;
 
   DebugSettingsScreen(RepositoryInstances r, {super.key})
     : api = r.api,
       profile = r.profile,
-      accountBackgroundDb = r.accountBackgroundDb,
       accountDb = r.accountDb,
       accountId = r.accountId;
 
@@ -63,9 +60,7 @@ class _DebugSettingsScreenState extends State<DebugSettingsScreen> {
       Setting.createSetting(
         Icons.notification_add,
         "Notification: Likes",
-        () => NotificationLikeReceived.getInstance().incrementReceivedLikesCount(
-          widget.accountBackgroundDb,
-        ),
+        () => NotificationLikeReceived.getInstance().incrementReceivedLikesCount(widget.accountDb),
       ),
     );
 
@@ -140,8 +135,8 @@ class _DebugSettingsScreenState extends State<DebugSettingsScreen> {
     }
 
     for (final a in matchList.skip(skip).take(take)) {
-      ConversationId? conversationId = await widget.accountBackgroundDb
-          .accountData((db) => db.notification.getConversationId(a))
+      ConversationId? conversationId = await widget.accountDb
+          .accountData((db) => db.chatUnreadMessagesCount.getConversationId(a))
           .ok();
       if (conversationId == null) {
         final r = await widget.api.chat((api) => api.getConversationId(a.aid)).ok();
@@ -151,7 +146,7 @@ class _DebugSettingsScreenState extends State<DebugSettingsScreen> {
         a,
         1,
         conversationId,
-        widget.accountBackgroundDb,
+        widget.accountDb,
       );
     }
   }

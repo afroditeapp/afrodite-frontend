@@ -2,7 +2,7 @@ import "dart:async";
 
 import "package:app/api/server_connection_manager.dart";
 import "package:app/data/utils/repository_instances.dart";
-import "package:app/database/account_background_database_manager.dart";
+import "package:app/database/account_database_manager.dart";
 import "package:app/localizations.dart";
 import "package:app/ui_utils/common_update_logic.dart";
 import "package:app/ui_utils/snack_bar.dart";
@@ -61,7 +61,7 @@ class NewValueProfileSettings extends NotificationSettingsEvent {
 
 class NotificationSettingsBloc extends Bloc<NotificationSettingsEvent, NotificationSettingsData> {
   final ApiManager api;
-  final AccountBackgroundDatabaseManager db;
+  final AccountDatabaseManager db;
   final notifications = NotificationManager.getInstance();
 
   StreamSubscription<bool?>? _messagesSubscription;
@@ -71,7 +71,7 @@ class NotificationSettingsBloc extends Bloc<NotificationSettingsEvent, Notificat
 
   NotificationSettingsBloc(RepositoryInstances r)
     : api = r.api,
-      db = r.accountBackgroundDb,
+      db = r.accountDb,
       super(
         NotificationSettingsData(
           categories: NotificationCategoryData(),
