@@ -8,7 +8,7 @@ import 'package:logging/logging.dart';
 import 'package:app/api/server_connection_manager.dart';
 import 'package:app/data/push_notification_manager.dart';
 import 'package:app/data/utils.dart';
-import 'package:app/database/database_manager.dart';
+import 'package:app/database/common_database_manager.dart';
 import 'package:app/utils/result.dart';
 import 'package:app/logic/app/app_visibility_provider.dart';
 import 'package:openapi/api.dart';
@@ -16,7 +16,7 @@ import 'package:openapi/api.dart';
 final _log = Logger("CommonRepository");
 
 class CommonRepository extends DataRepositoryWithLifecycle {
-  final db = DatabaseManager.getInstance();
+  final commonDb = CommonDatabaseManager.getInstance();
   final AccountId currentUser;
   final AccountDatabaseManager accountDb;
   final ServerConnectionManager connectionManager;
@@ -30,7 +30,7 @@ class CommonRepository extends DataRepositoryWithLifecycle {
       api = connectionManager;
 
   Stream<bool> get notificationPermissionAsked =>
-      db.commonStreamOrDefault((db) => db.app.watchNotificationPermissionAsked(), false);
+      commonDb.commonStreamOrDefault((db) => db.app.watchNotificationPermissionAsked(), false);
 
   StreamSubscription<bool>? _isForegroundSubscription;
   DateTime? _backgroundedAt;
@@ -98,9 +98,7 @@ class CommonRepository extends DataRepositoryWithLifecycle {
   }
 
   Future<void> setNotificationPermissionAsked(bool value) async {
-    await DatabaseManager.getInstance().commonAction(
-      (db) => db.app.updateNotificationPermissionAsked(value),
-    );
+    await commonDb.commonAction((db) => db.app.updateNotificationPermissionAsked(value));
   }
 
   @override

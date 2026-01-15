@@ -5,7 +5,6 @@ import "package:openapi/api.dart";
 import "package:app/data/media_repository.dart";
 import "package:app/data/profile_repository.dart";
 import 'package:database/database.dart';
-import 'package:app/database/database_manager.dart';
 import "package:app/model/freezed/logic/profile/edit_my_profile.dart";
 import "package:app/utils.dart";
 
@@ -49,7 +48,6 @@ class NewPageKeyForEditMyProfile extends EditMyProfileEvent {
 class EditMyProfileBloc extends Bloc<EditMyProfileEvent, EditMyProfileData> with ActionRunner {
   final ProfileRepository profile;
   final MediaRepository media;
-  final db = DatabaseManager.getInstance();
 
   EditMyProfileBloc(RepositoryInstances r)
     : profile = r.profile,

@@ -1,7 +1,7 @@
 import "dart:async";
 import "dart:convert";
 
-import "package:app/database/database_manager.dart";
+import "package:app/database/common_database_manager.dart";
 import "package:app/localizations.dart";
 import "package:app/logic/chat/send_chat_backup/websocket.dart";
 import "package:app/model/freezed/logic/chat/send_chat_backup.dart";
@@ -139,8 +139,8 @@ class SendChatBackupBloc extends Bloc<SendChatBackupEvent, SendBackupData> with 
       emit(state.copyWith(state: const CreatingBackup()));
 
       // Manually open database for the account ID
-      final databaseManager = DatabaseManager.getInstance();
-      final accountDbManager = await databaseManager.getAccountDatabaseManager(accountId);
+      final commonDb = CommonDatabaseManager.getInstance();
+      final accountDbManager = await commonDb.getAccountDatabaseManager(accountId);
 
       // Create backup from the database
       final backupResult = await accountDbManager.accountData(

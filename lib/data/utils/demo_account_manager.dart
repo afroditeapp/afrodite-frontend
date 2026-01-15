@@ -6,7 +6,7 @@ import 'package:app/utils/app_error.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:app/api/server_connection_manager.dart';
-import 'package:app/database/database_manager.dart';
+import 'package:app/database/common_database_manager.dart';
 import 'package:app/localizations.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/result.dart';
@@ -18,14 +18,17 @@ class DemoAccountManager {
   final BehaviorSubject<bool> _demoAccountLoginProgress = BehaviorSubject.seeded(false);
 
   // Demo account
-  Stream<String?> get demoAccountUsername =>
-      DatabaseManager.getInstance().commonStream((db) => db.demoAccount.watchDemoAccountUsername());
+  Stream<String?> get demoAccountUsername => CommonDatabaseManager.getInstance().commonStream(
+    (db) => db.demoAccount.watchDemoAccountUsername(),
+  );
 
-  Stream<String?> get demoAccountPassword =>
-      DatabaseManager.getInstance().commonStream((db) => db.demoAccount.watchDemoAccountPassword());
+  Stream<String?> get demoAccountPassword => CommonDatabaseManager.getInstance().commonStream(
+    (db) => db.demoAccount.watchDemoAccountPassword(),
+  );
 
-  Stream<String?> get demoAccountToken =>
-      DatabaseManager.getInstance().commonStream((db) => db.demoAccount.watchDemoAccountToken());
+  Stream<String?> get demoAccountToken => CommonDatabaseManager.getInstance().commonStream(
+    (db) => db.demoAccount.watchDemoAccountToken(),
+  );
   Stream<bool> get demoAccountLoginProgress => _demoAccountLoginProgress;
 
   Future<Result<(), DemoAccountLoginError>> demoAccountLogin(
@@ -58,13 +61,13 @@ class DemoAccountManager {
       return const Err(DemoAccountLoginError.otherError);
     }
 
-    await DatabaseManager.getInstance().commonAction(
+    await CommonDatabaseManager.getInstance().commonAction(
       (db) => db.demoAccount.updateDemoAccountUsername(credentials.username),
     );
-    await DatabaseManager.getInstance().commonAction(
+    await CommonDatabaseManager.getInstance().commonAction(
       (db) => db.demoAccount.updateDemoAccountPassword(credentials.password),
     );
-    await DatabaseManager.getInstance().commonAction(
+    await CommonDatabaseManager.getInstance().commonAction(
       (db) => db.demoAccount.updateDemoAccountToken(demoAccountToken),
     );
 
@@ -84,7 +87,7 @@ class DemoAccountManager {
       }
     }
 
-    await DatabaseManager.getInstance().commonAction(
+    await CommonDatabaseManager.getInstance().commonAction(
       (db) => db.demoAccount.updateDemoAccountToken(null),
     );
 

@@ -13,12 +13,12 @@ import 'package:app/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:utils/utils.dart';
 
-final _log = Logger("DatabaseManager");
+final _log = Logger("CommonDatabaseManager");
 
-class DatabaseManager extends AppSingleton {
-  DatabaseManager._private();
-  static final _instance = DatabaseManager._private();
-  factory DatabaseManager.getInstance() {
+class CommonDatabaseManager extends AppSingleton {
+  CommonDatabaseManager._private();
+  static final _instance = CommonDatabaseManager._private();
+  factory CommonDatabaseManager.getInstance() {
     return _instance;
   }
 
@@ -35,7 +35,7 @@ class DatabaseManager extends AppSingleton {
 
     _log.info("Init started");
 
-    // DatabaseManager handles one instance per database file, so disable
+    // CommonDatabaseManager handles one instance per database file, so disable
     // warning. This should be safe to do as told by
     // in: https://github.com/simolus3/drift/discussions/2596
     driftRuntimeOptions.dontWarnAboutMultipleDatabases = true;

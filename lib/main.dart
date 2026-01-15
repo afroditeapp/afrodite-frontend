@@ -15,7 +15,7 @@ import 'package:app/data/login_repository.dart';
 import 'package:app/data/image_cache.dart';
 import 'package:app/data/notification_manager.dart';
 import 'package:app/data/push_notification_manager.dart';
-import 'package:app/database/database_manager.dart';
+import 'package:app/database/common_database_manager.dart';
 import 'package:app/localizations.dart';
 
 import 'package:app/logic/app/main_state.dart';
@@ -64,7 +64,7 @@ Future<void> main() async {
 
   // Locale saving needs database so init here
   await SecureStorageManager.getInstance().init();
-  await DatabaseManager.getInstance().init();
+  await CommonDatabaseManager.getInstance().init();
 
   runApp(
     MultiBlocProvider(
@@ -208,7 +208,7 @@ class GlobalInitManager extends AppSingletonNoInit {
       await _removeAllDatabases();
     }
 
-    await DatabaseManager.getInstance().init();
+    await CommonDatabaseManager.getInstance().init();
     await ImageEncryptionManager.getInstance().init();
 
     await ErrorManager.getInstance().init();

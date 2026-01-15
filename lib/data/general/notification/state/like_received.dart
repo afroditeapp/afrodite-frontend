@@ -2,7 +2,6 @@ import 'package:app/data/general/notification/utils/notification_category.dart';
 import 'package:app/data/general/notification/utils/notification_id.dart';
 import 'package:app/data/notification_manager.dart';
 import 'package:app/database/account_database_manager.dart';
-import 'package:app/database/database_manager.dart';
 import 'package:app/localizations.dart';
 import 'package:app/logic/app/app_visibility_provider.dart';
 import 'package:app/logic/app/bottom_navigation_state.dart';
@@ -19,7 +18,6 @@ class NotificationLikeReceived extends AppSingletonNoInit {
   }
 
   final notifications = NotificationManager.getInstance();
-  final db = DatabaseManager.getInstance();
 
   int _receivedCount = 0;
 

@@ -13,7 +13,7 @@ import 'package:app/data/media_repository.dart';
 import 'package:app/data/profile_repository.dart';
 import 'package:app/data/utils.dart';
 import 'package:app/database/account_database_manager.dart';
-import 'package:app/database/database_manager.dart';
+import 'package:app/database/common_database_manager.dart';
 import 'package:utils/utils.dart';
 import 'package:app/utils/result.dart';
 
@@ -151,7 +151,9 @@ class RepositoryInstances {
     bool accountLoginHappened = false,
     required String serverAddress,
   }) async {
-    final accountDb = await DatabaseManager.getInstance().getAccountDatabaseManager(accountId);
+    final accountDb = await CommonDatabaseManager.getInstance().getAccountDatabaseManager(
+      accountId,
+    );
 
     final connectionManager = ServerConnectionManager(serverAddress, accountDb, accountId);
 

@@ -1,7 +1,7 @@
 import "dart:async";
 
 import "package:app/data/utils/repository_instances.dart";
-import 'package:app/database/database_manager.dart';
+import 'package:app/database/common_database_manager.dart';
 import "package:app/ui_utils/attribute/attribute.dart";
 import "package:database/database.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
@@ -22,7 +22,7 @@ class NewLocale extends AttributesEvent {
 }
 
 class ProfileAttributesBloc extends Bloc<AttributesEvent, AttributesData> with ActionRunner {
-  final DatabaseManager backgroundDb = DatabaseManager.getInstance();
+  final CommonDatabaseManager commonDb = CommonDatabaseManager.getInstance();
   final ProfileRepository profile;
 
   StreamSubscription<String?>? _localeSubscription;
@@ -50,7 +50,7 @@ class ProfileAttributesBloc extends Bloc<AttributesEvent, AttributesData> with A
       emit(state.copyWith(attributes: data.attributes, manager: manager));
     });
 
-    _localeSubscription = backgroundDb
+    _localeSubscription = commonDb
         .commonStream((db) => db.app.watchCurrentLocale())
         .listen((value) => add(NewLocale(value)));
     _attributesSubscription = profile.profileAttributes.listen(

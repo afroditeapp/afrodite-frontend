@@ -41,9 +41,7 @@ Future<bool> databaseExists(DbFile db) async {
 LazyDatabase openDbConnection(DbFile db) {
   return LazyDatabase(() async {
     final encryptionKey = await SecureStorageManager.getInstance()
-        .getDbEncryptionKeyOrCreateNewKeyAndRecreateDatabasesDir(
-          remover: DatabaseRemoverImpl(),
-        );
+        .getDbEncryptionKeyOrCreateNewKeyAndRecreateDatabasesDir(remover: DatabaseRemoverImpl());
     final dbFile = await dbFileToFile(db);
     final isolateToken = RootIsolateToken.instance!;
     // Log using print as Logger would need to be initialized for every

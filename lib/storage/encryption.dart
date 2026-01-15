@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:logging/logging.dart';
 import 'package:native_utils/native_utils.dart';
-import 'package:app/database/database_manager.dart';
+import 'package:app/database/common_database_manager.dart';
 import 'package:utils/utils.dart';
 
 final _log = Logger("ImageEncryptionManager");
@@ -65,16 +65,16 @@ class ImageEncryptionManager extends AppSingleton {
   Future<Uint8List> _getOrLoadOrGenerateImageEncryptionKey() async {
     final currentKey = _imageEncryptionKey;
     if (currentKey == null) {
-      final existingKey = await DatabaseManager.getInstance().commonStreamSingle(
+      final existingKey = await CommonDatabaseManager.getInstance().commonStreamSingle(
         (db) => db.app.watchImageEncryptionKey(),
       );
       if (existingKey == null) {
         _log.info("Generating a new image encryption key");
         final newKey = _generateImageEncryptionKey();
-        await DatabaseManager.getInstance().commonAction(
+        await CommonDatabaseManager.getInstance().commonAction(
           (db) => db.app.updateImageEncryptionKey(newKey),
         );
-        final dbKey = await DatabaseManager.getInstance().commonStreamSingle(
+        final dbKey = await CommonDatabaseManager.getInstance().commonStreamSingle(
           (db) => db.app.watchImageEncryptionKey(),
         );
         if (!listEquals(newKey, dbKey)) {

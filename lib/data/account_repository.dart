@@ -3,7 +3,7 @@ import 'dart:typed_data';
 
 import 'package:app/data/general/notification/state/news_item_available.dart';
 import 'package:app/data/utils/repository_instances.dart';
-import 'package:app/database/database_manager.dart';
+import 'package:app/database/common_database_manager.dart';
 import 'package:database/database.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
@@ -316,7 +316,7 @@ class AccountRepository extends DataRepositoryWithLifecycle {
     final clientLanguageOnServer = await db
         .accountStreamSingle((db) => db.common.watchClientLanguageOnServer())
         .ok();
-    final clientLocale = await DatabaseManager.getInstance().commonStreamSingle(
+    final clientLocale = await CommonDatabaseManager.getInstance().commonStreamSingle(
       (db) => db.app.watchCurrentLocale(),
     );
 
