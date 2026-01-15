@@ -26,3 +26,25 @@ class ServerUrl extends SingleRowTable {
 class CurrentLocale extends SingleRowTable {
   TextColumn get currentLocale => text().nullable()();
 }
+
+/// General cache table for storing cached data
+class GeneralCache extends Table {
+  IntColumn get id => integer().autoIncrement()();
+
+  /// Cache key (e.g., "image_cache", "map_cache")
+  TextColumn get cacheKey => text()();
+
+  /// Entry key within the cache
+  TextColumn get entryKey => text()();
+
+  /// Cached data as bytes
+  BlobColumn get data => blob()();
+
+  /// Last accessed timestamp
+  DateTimeColumn get lastAccessed => dateTime()();
+
+  @override
+  List<Set<Column>> get uniqueKeys => [
+    {cacheKey, entryKey},
+  ];
+}

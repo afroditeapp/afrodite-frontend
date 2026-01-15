@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:math';
 import 'dart:ui';
 
+import 'package:app/data/general_cache.dart';
 import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/ui/utils/view_profile.dart';
 import 'package:app/ui_utils/crop_image_screen.dart';
@@ -11,7 +12,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:openapi/api.dart';
 import 'package:app/data/media_repository.dart';
 import 'package:app/ui/normal/settings/location.dart';
@@ -22,20 +22,18 @@ import 'package:app/model/freezed/utils/account_img_key.dart';
 
 class ImageCacheData extends AppSingleton {
   ImageCacheData._private()
-    : cacheManager = CacheManager(
-        Config(
-          "image_cache",
-          stalePeriod: const Duration(days: 90),
-          // Images are about 100 KiB each, so 10 000 images is about 1 GiB
-          maxNrOfCacheObjects: 10000,
-        ),
+    : cacheManager = GeneralCacheManager(
+        key: "image_cache",
+        stalePeriod: const Duration(days: 90),
+        // Images are about 100 KiB each, so 10 000 images is about 1 GiB
+        maxNrOfCacheObjects: 10000,
       );
   static final _instance = ImageCacheData._private();
   factory ImageCacheData.getInstance() {
     return _instance;
   }
 
-  final CacheManager cacheManager;
+  final GeneralCacheManager cacheManager;
 
   /// Get image bytes for profile picture.
   Future<Uint8List?> getImage(

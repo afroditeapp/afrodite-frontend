@@ -1214,6 +1214,380 @@ class CurrentLocaleCompanion extends UpdateCompanion<CurrentLocaleData> {
   }
 }
 
+class $GeneralCacheTable extends schema.GeneralCache
+    with TableInfo<$GeneralCacheTable, GeneralCacheData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $GeneralCacheTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _cacheKeyMeta = const VerificationMeta(
+    'cacheKey',
+  );
+  @override
+  late final GeneratedColumn<String> cacheKey = GeneratedColumn<String>(
+    'cache_key',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _entryKeyMeta = const VerificationMeta(
+    'entryKey',
+  );
+  @override
+  late final GeneratedColumn<String> entryKey = GeneratedColumn<String>(
+    'entry_key',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _dataMeta = const VerificationMeta('data');
+  @override
+  late final GeneratedColumn<Uint8List> data = GeneratedColumn<Uint8List>(
+    'data',
+    aliasedName,
+    false,
+    type: DriftSqlType.blob,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _lastAccessedMeta = const VerificationMeta(
+    'lastAccessed',
+  );
+  @override
+  late final GeneratedColumn<DateTime> lastAccessed = GeneratedColumn<DateTime>(
+    'last_accessed',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    cacheKey,
+    entryKey,
+    data,
+    lastAccessed,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'general_cache';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<GeneralCacheData> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('cache_key')) {
+      context.handle(
+        _cacheKeyMeta,
+        cacheKey.isAcceptableOrUnknown(data['cache_key']!, _cacheKeyMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_cacheKeyMeta);
+    }
+    if (data.containsKey('entry_key')) {
+      context.handle(
+        _entryKeyMeta,
+        entryKey.isAcceptableOrUnknown(data['entry_key']!, _entryKeyMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_entryKeyMeta);
+    }
+    if (data.containsKey('data')) {
+      context.handle(
+        _dataMeta,
+        this.data.isAcceptableOrUnknown(data['data']!, _dataMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_dataMeta);
+    }
+    if (data.containsKey('last_accessed')) {
+      context.handle(
+        _lastAccessedMeta,
+        lastAccessed.isAcceptableOrUnknown(
+          data['last_accessed']!,
+          _lastAccessedMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_lastAccessedMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  List<Set<GeneratedColumn>> get uniqueKeys => [
+    {cacheKey, entryKey},
+  ];
+  @override
+  GeneralCacheData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return GeneralCacheData(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      cacheKey: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}cache_key'],
+      )!,
+      entryKey: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}entry_key'],
+      )!,
+      data: attachedDatabase.typeMapping.read(
+        DriftSqlType.blob,
+        data['${effectivePrefix}data'],
+      )!,
+      lastAccessed: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}last_accessed'],
+      )!,
+    );
+  }
+
+  @override
+  $GeneralCacheTable createAlias(String alias) {
+    return $GeneralCacheTable(attachedDatabase, alias);
+  }
+}
+
+class GeneralCacheData extends DataClass
+    implements Insertable<GeneralCacheData> {
+  final int id;
+
+  /// Cache key (e.g., "image_cache", "map_cache")
+  final String cacheKey;
+
+  /// Entry key within the cache
+  final String entryKey;
+
+  /// Cached data as bytes
+  final Uint8List data;
+
+  /// Last accessed timestamp
+  final DateTime lastAccessed;
+  const GeneralCacheData({
+    required this.id,
+    required this.cacheKey,
+    required this.entryKey,
+    required this.data,
+    required this.lastAccessed,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['cache_key'] = Variable<String>(cacheKey);
+    map['entry_key'] = Variable<String>(entryKey);
+    map['data'] = Variable<Uint8List>(data);
+    map['last_accessed'] = Variable<DateTime>(lastAccessed);
+    return map;
+  }
+
+  GeneralCacheCompanion toCompanion(bool nullToAbsent) {
+    return GeneralCacheCompanion(
+      id: Value(id),
+      cacheKey: Value(cacheKey),
+      entryKey: Value(entryKey),
+      data: Value(data),
+      lastAccessed: Value(lastAccessed),
+    );
+  }
+
+  factory GeneralCacheData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return GeneralCacheData(
+      id: serializer.fromJson<int>(json['id']),
+      cacheKey: serializer.fromJson<String>(json['cacheKey']),
+      entryKey: serializer.fromJson<String>(json['entryKey']),
+      data: serializer.fromJson<Uint8List>(json['data']),
+      lastAccessed: serializer.fromJson<DateTime>(json['lastAccessed']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'cacheKey': serializer.toJson<String>(cacheKey),
+      'entryKey': serializer.toJson<String>(entryKey),
+      'data': serializer.toJson<Uint8List>(data),
+      'lastAccessed': serializer.toJson<DateTime>(lastAccessed),
+    };
+  }
+
+  GeneralCacheData copyWith({
+    int? id,
+    String? cacheKey,
+    String? entryKey,
+    Uint8List? data,
+    DateTime? lastAccessed,
+  }) => GeneralCacheData(
+    id: id ?? this.id,
+    cacheKey: cacheKey ?? this.cacheKey,
+    entryKey: entryKey ?? this.entryKey,
+    data: data ?? this.data,
+    lastAccessed: lastAccessed ?? this.lastAccessed,
+  );
+  GeneralCacheData copyWithCompanion(GeneralCacheCompanion data) {
+    return GeneralCacheData(
+      id: data.id.present ? data.id.value : this.id,
+      cacheKey: data.cacheKey.present ? data.cacheKey.value : this.cacheKey,
+      entryKey: data.entryKey.present ? data.entryKey.value : this.entryKey,
+      data: data.data.present ? data.data.value : this.data,
+      lastAccessed: data.lastAccessed.present
+          ? data.lastAccessed.value
+          : this.lastAccessed,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('GeneralCacheData(')
+          ..write('id: $id, ')
+          ..write('cacheKey: $cacheKey, ')
+          ..write('entryKey: $entryKey, ')
+          ..write('data: $data, ')
+          ..write('lastAccessed: $lastAccessed')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    cacheKey,
+    entryKey,
+    $driftBlobEquality.hash(data),
+    lastAccessed,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is GeneralCacheData &&
+          other.id == this.id &&
+          other.cacheKey == this.cacheKey &&
+          other.entryKey == this.entryKey &&
+          $driftBlobEquality.equals(other.data, this.data) &&
+          other.lastAccessed == this.lastAccessed);
+}
+
+class GeneralCacheCompanion extends UpdateCompanion<GeneralCacheData> {
+  final Value<int> id;
+  final Value<String> cacheKey;
+  final Value<String> entryKey;
+  final Value<Uint8List> data;
+  final Value<DateTime> lastAccessed;
+  const GeneralCacheCompanion({
+    this.id = const Value.absent(),
+    this.cacheKey = const Value.absent(),
+    this.entryKey = const Value.absent(),
+    this.data = const Value.absent(),
+    this.lastAccessed = const Value.absent(),
+  });
+  GeneralCacheCompanion.insert({
+    this.id = const Value.absent(),
+    required String cacheKey,
+    required String entryKey,
+    required Uint8List data,
+    required DateTime lastAccessed,
+  }) : cacheKey = Value(cacheKey),
+       entryKey = Value(entryKey),
+       data = Value(data),
+       lastAccessed = Value(lastAccessed);
+  static Insertable<GeneralCacheData> custom({
+    Expression<int>? id,
+    Expression<String>? cacheKey,
+    Expression<String>? entryKey,
+    Expression<Uint8List>? data,
+    Expression<DateTime>? lastAccessed,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (cacheKey != null) 'cache_key': cacheKey,
+      if (entryKey != null) 'entry_key': entryKey,
+      if (data != null) 'data': data,
+      if (lastAccessed != null) 'last_accessed': lastAccessed,
+    });
+  }
+
+  GeneralCacheCompanion copyWith({
+    Value<int>? id,
+    Value<String>? cacheKey,
+    Value<String>? entryKey,
+    Value<Uint8List>? data,
+    Value<DateTime>? lastAccessed,
+  }) {
+    return GeneralCacheCompanion(
+      id: id ?? this.id,
+      cacheKey: cacheKey ?? this.cacheKey,
+      entryKey: entryKey ?? this.entryKey,
+      data: data ?? this.data,
+      lastAccessed: lastAccessed ?? this.lastAccessed,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (cacheKey.present) {
+      map['cache_key'] = Variable<String>(cacheKey.value);
+    }
+    if (entryKey.present) {
+      map['entry_key'] = Variable<String>(entryKey.value);
+    }
+    if (data.present) {
+      map['data'] = Variable<Uint8List>(data.value);
+    }
+    if (lastAccessed.present) {
+      map['last_accessed'] = Variable<DateTime>(lastAccessed.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('GeneralCacheCompanion(')
+          ..write('id: $id, ')
+          ..write('cacheKey: $cacheKey, ')
+          ..write('entryKey: $entryKey, ')
+          ..write('data: $data, ')
+          ..write('lastAccessed: $lastAccessed')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$CommonDatabase extends GeneratedDatabase {
   _$CommonDatabase(QueryExecutor e) : super(e);
   late final $DemoAccountTable demoAccount = $DemoAccountTable(this);
@@ -1222,6 +1596,7 @@ abstract class _$CommonDatabase extends GeneratedDatabase {
   late final $AccountIdTable accountId = $AccountIdTable(this);
   late final $ServerUrlTable serverUrl = $ServerUrlTable(this);
   late final $CurrentLocaleTable currentLocale = $CurrentLocaleTable(this);
+  late final $GeneralCacheTable generalCache = $GeneralCacheTable(this);
   late final DaoReadApp daoReadApp = DaoReadApp(this as CommonDatabase);
   late final DaoReadDemoAccount daoReadDemoAccount = DaoReadDemoAccount(
     this as CommonDatabase,
@@ -1229,11 +1604,17 @@ abstract class _$CommonDatabase extends GeneratedDatabase {
   late final DaoReadLoginSession daoReadLoginSession = DaoReadLoginSession(
     this as CommonDatabase,
   );
+  late final DaoReadGeneralCache daoReadGeneralCache = DaoReadGeneralCache(
+    this as CommonDatabase,
+  );
   late final DaoWriteApp daoWriteApp = DaoWriteApp(this as CommonDatabase);
   late final DaoWriteDemoAccount daoWriteDemoAccount = DaoWriteDemoAccount(
     this as CommonDatabase,
   );
   late final DaoWriteLoginSession daoWriteLoginSession = DaoWriteLoginSession(
+    this as CommonDatabase,
+  );
+  late final DaoWriteGeneralCache daoWriteGeneralCache = DaoWriteGeneralCache(
     this as CommonDatabase,
   );
   @override
@@ -1246,5 +1627,6 @@ abstract class _$CommonDatabase extends GeneratedDatabase {
     accountId,
     serverUrl,
     currentLocale,
+    generalCache,
   ];
 }

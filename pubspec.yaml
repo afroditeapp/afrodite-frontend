@@ -99,7 +99,6 @@ dependencies:
     sdk: flutter
   intl: any
 
-  flutter_cache_manager: ^3.4.1
   logging: ^1.2.0
 
   google_fonts: ^6.2.1
