@@ -14,7 +14,7 @@ import 'package:app/api/server_connection_manager.dart';
 import 'package:app/config.dart';
 import 'package:app/data/account_repository.dart';
 import 'package:app/database/account_database_manager.dart';
-import 'package:app/database/background_database_manager.dart';
+import 'package:app/database/database_manager.dart';
 import 'package:app/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:utils/utils.dart';
@@ -96,7 +96,7 @@ class LoginRepository extends AppSingleton {
 
   // Main app state streams
   Stream<LoginState> get loginState => _loginState.distinct();
-  Stream<String> get accountServerAddress => BackgroundDatabaseManager.getInstance()
+  Stream<String> get accountServerAddress => DatabaseManager.getInstance()
       .commonStreamOrDefault((db) => db.app.watchServerUrl(), defaultServerUrl())
       .distinct(); // Avoid loop in ServerAddressBloc
 
@@ -107,9 +107,8 @@ class LoginRepository extends AppSingleton {
   Stream<bool> get demoAccountLoginProgress => _demoAccountManager.demoAccountLoginProgress;
 
   // Account
-  Stream<AccountId?> get accountId => BackgroundDatabaseManager.getInstance().commonStream(
-    (db) => db.loginSession.watchAccountId(),
-  );
+  Stream<AccountId?> get accountId =>
+      DatabaseManager.getInstance().commonStream((db) => db.loginSession.watchAccountId());
 
   @override
   Future<void> init() async {
@@ -118,7 +117,7 @@ class LoginRepository extends AppSingleton {
     }
     _initDone = true;
 
-    final serverAddress = await BackgroundDatabaseManager.getInstance().commonStreamSingleOrDefault(
+    final serverAddress = await DatabaseManager.getInstance().commonStreamSingleOrDefault(
       (db) => db.app.watchServerUrl(),
       defaultServerUrl(),
     );
@@ -208,7 +207,7 @@ class LoginRepository extends AppSingleton {
               if (repositoriesOrNull != null) {
                 result = Err(());
               } else {
-                result = await BackgroundDatabaseManager.getInstance()
+                result = await DatabaseManager.getInstance()
                     .commonAction((db) => db.app.updateServerUrl(cmd.address))
                     .emptyErr()
                     .andThen((_) async {
@@ -329,7 +328,7 @@ class LoginRepository extends AppSingleton {
     final CommonSignInError? error;
 
     final accountDb = createdRepositories.accountDb;
-    final r = await BackgroundDatabaseManager.getInstance()
+    final r = await DatabaseManager.getInstance()
         .commonAction((db) => db.loginSession.login(aid))
         .andThen(
           (_) => accountDb.accountAction((db) => db.account.updateEmailAddress(loginResult.email)),
@@ -388,7 +387,7 @@ class LoginRepository extends AppSingleton {
       // Change to login screen
       _repositories.add(RepositoriesEmpty());
       // Avoid loading current account when app starts
-      await BackgroundDatabaseManager.getInstance().commonAction((db) => db.loginSession.logout());
+      await DatabaseManager.getInstance().commonAction((db) => db.loginSession.logout());
 
       // Low priority logout tasks
       await _repositoryStateStreams._logout();

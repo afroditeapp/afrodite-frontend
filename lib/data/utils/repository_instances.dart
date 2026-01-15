@@ -14,7 +14,6 @@ import 'package:app/data/profile_repository.dart';
 import 'package:app/data/utils.dart';
 import 'package:app/database/account_background_database_manager.dart';
 import 'package:app/database/account_database_manager.dart';
-import 'package:app/database/background_database_manager.dart';
 import 'package:app/database/database_manager.dart';
 import 'package:utils/utils.dart';
 import 'package:app/utils/result.dart';
@@ -156,7 +155,7 @@ class RepositoryInstances {
     bool accountLoginHappened = false,
     required String serverAddress,
   }) async {
-    final accountBackgroundDb = await BackgroundDatabaseManager.getInstance()
+    final accountBackgroundDb = await DatabaseManager.getInstance()
         .getAccountBackgroundDatabaseManager(accountId);
     final accountDb = await DatabaseManager.getInstance().getAccountDatabaseManager(accountId);
 

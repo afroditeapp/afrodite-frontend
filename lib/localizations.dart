@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:app/l10n/app_localizations.dart';
 import 'package:app/l10n/app_localizations_en.dart';
-import 'package:app/database/background_database_manager.dart';
+import 'package:app/database/database_manager.dart';
 
 final _log = Logger("localizations");
 
@@ -16,7 +16,7 @@ AppLocalizations getStringsImplementation(BuildContext context) {
   }
   if (localizations != currentLocalizations) {
     _log.info("Localizations changed, saving current locale value");
-    BackgroundDatabaseManager.getInstance().commonAction(
+    DatabaseManager.getInstance().commonAction(
       (db) => db.app.updateCurrentLocale(localizations?.localeName),
     );
   }

@@ -3,7 +3,4 @@
 part of 'app.dart';
 
 // ignore_for_file: type=lint
-mixin _$DaoReadAppMixin on DatabaseAccessor<CommonBackgroundDatabase> {
-  $ServerUrlTable get serverUrl => attachedDatabase.serverUrl;
-  $CurrentLocaleTable get currentLocale => attachedDatabase.currentLocale;
-}
+mixin _$DaoReadAppMixin on DatabaseAccessor<CommonBackgroundDatabase> {}

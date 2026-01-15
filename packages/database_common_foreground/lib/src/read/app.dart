@@ -6,7 +6,14 @@ import '../schema.dart' as schema;
 
 part 'app.g.dart';
 
-@DriftAccessor(tables: [schema.ImageEncryptionKey, schema.NotificationPermissionAsked])
+@DriftAccessor(
+  tables: [
+    schema.ImageEncryptionKey,
+    schema.NotificationPermissionAsked,
+    schema.ServerUrl,
+    schema.CurrentLocale,
+  ],
+)
 class DaoReadApp extends DatabaseAccessor<CommonForegroundDatabase> with _$DaoReadAppMixin {
   DaoReadApp(super.db);
 
@@ -15,6 +22,10 @@ class DaoReadApp extends DatabaseAccessor<CommonForegroundDatabase> with _$DaoRe
 
   Stream<bool?> watchNotificationPermissionAsked() =>
       _watchNotificationPermissionAskedColumn((r) => r.notificationPermissionAsked);
+
+  Stream<String?> watchCurrentLocale() => _watchCurrentLocaleColumn((r) => r.currentLocale);
+
+  Stream<String?> watchServerUrl() => watchServerUrlColumn((r) => r.serverUrl);
 
   Stream<T?> _watchImageEncryptionKeyColumn<T extends Object>(
     T? Function(ImageEncryptionKeyData) extractColumn,
@@ -29,6 +40,20 @@ class DaoReadApp extends DatabaseAccessor<CommonForegroundDatabase> with _$DaoRe
   ) {
     return (select(
       notificationPermissionAsked,
+    )..where((t) => t.id.equals(SingleRowTable.ID.value))).map(extractColumn).watchSingleOrNull();
+  }
+
+  Stream<T?> _watchCurrentLocaleColumn<T extends Object>(
+    T? Function(CurrentLocaleData) extractColumn,
+  ) {
+    return (select(
+      currentLocale,
+    )..where((t) => t.id.equals(SingleRowTable.ID.value))).map(extractColumn).watchSingleOrNull();
+  }
+
+  Stream<T?> watchServerUrlColumn<T extends Object>(T? Function(ServerUrlData) extractColumn) {
+    return (select(
+      serverUrl,
     )..where((t) => t.id.equals(SingleRowTable.ID.value))).map(extractColumn).watchSingleOrNull();
   }
 }

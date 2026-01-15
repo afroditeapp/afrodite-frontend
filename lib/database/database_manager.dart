@@ -8,7 +8,7 @@ import 'package:database_utils/database_utils.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:app/database/account_database_manager.dart';
-import 'package:app/database/background_database_manager.dart';
+import 'package:app/database/account_background_database_manager.dart';
 import 'package:app/utils/app_error.dart';
 import 'package:app/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
@@ -23,8 +23,6 @@ class DatabaseManager extends AppSingleton {
     return _instance;
   }
 
-  final backgroundDbManager = BackgroundDatabaseManager.getInstance();
-
   bool initDone = false;
   late final DbProvider commonDatabaseProvider;
   late final CommonForegroundDatabase commonDatabase;
@@ -38,9 +36,10 @@ class DatabaseManager extends AppSingleton {
 
     _log.info("Init started");
 
-    // Background DB init must be done first prevent Drift from
-    // logging warning.
-    await backgroundDbManager.init();
+    // DatabaseManager handles one instance per database file, so disable
+    // warning. This should be safe to do as told by
+    // in: https://github.com/simolus3/drift/discussions/2596
+    driftRuntimeOptions.dontWarnAboutMultipleDatabases = true;
 
     commonDatabaseProvider = DbProvider(CommonDbFile(), backgroundDb: false);
     commonDatabase = CommonForegroundDatabase(commonDatabaseProvider);
@@ -49,7 +48,7 @@ class DatabaseManager extends AppSingleton {
     );
     _log.info("CommonForegroundDatabase ensureOpen result: $ensureOpenResult");
     // Test query
-    await commonStream((db) => db.app.watchNotificationPermissionAsked()).first;
+    await commonStream((db) => db.loginSession.watchAccountId()).first;
 
     _log.info("Init completed");
   }
@@ -123,6 +122,20 @@ class DatabaseManager extends AppSingleton {
     final manager = AccountDatabaseManager(db);
     await manager.accountAction((db) => db.loginSession.setAccountIdIfNull(accountId));
     _log.info("AccountForegroundDatabase init completed");
+    return manager;
+  }
+
+  Future<AccountBackgroundDatabaseManager> getAccountBackgroundDatabaseManager(
+    AccountId accountId,
+  ) async {
+    _log.info("AccountBackgroundDatabase init started");
+    final dbProvider = DbProvider(AccountBackgroundDbFile(accountId.aid), backgroundDb: true);
+    final db = AccountBackgroundDatabase(dbProvider);
+    final ensureOpenResult = await dbProvider.getQueryExcecutor().ensureOpen(db);
+    _log.info("AccountBackgroundDatabase ensureOpen result: $ensureOpenResult");
+    final manager = AccountBackgroundDatabaseManager(accountId, db);
+    await manager.accountAction((db) => db.loginSession.setAccountIdIfNull(accountId));
+    _log.info("AccountBackgroundDatabase init completed");
     return manager;
   }
 }

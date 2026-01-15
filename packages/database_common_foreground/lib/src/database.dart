@@ -1,23 +1,36 @@
 import 'package:database_common_foreground/src/read/app.dart';
 import 'package:database_common_foreground/src/read/demo_account.dart';
+import 'package:database_common_foreground/src/read/login_session.dart';
 import 'package:database_common_foreground/src/write/app.dart';
 import 'package:database_common_foreground/src/write/demo_account.dart';
+import 'package:database_common_foreground/src/write/login_session.dart';
+import 'package:database_converter/database_converter.dart';
 import 'package:database_utils/database_utils.dart';
 import 'package:drift/drift.dart';
+import 'package:openapi/api.dart';
 import 'schema.dart' as schema;
 
 part 'database.g.dart';
 
 /// Common app data which can be accessed when app is in foreground
 @DriftDatabase(
-  tables: [schema.DemoAccount, schema.ImageEncryptionKey, schema.NotificationPermissionAsked],
+  tables: [
+    schema.DemoAccount,
+    schema.ImageEncryptionKey,
+    schema.NotificationPermissionAsked,
+    schema.AccountId,
+    schema.ServerUrl,
+    schema.CurrentLocale,
+  ],
   daos: [
     // Read
     DaoReadApp,
     DaoReadDemoAccount,
+    DaoReadLoginSession,
     // Write
     DaoWriteApp,
     DaoWriteDemoAccount,
+    DaoWriteLoginSession,
   ],
 )
 class CommonForegroundDatabase extends _$CommonForegroundDatabase {
@@ -36,6 +49,7 @@ class CommonForegroundDatabaseRead {
   CommonForegroundDatabaseRead(this.db);
   DaoReadDemoAccount get demoAccount => db.daoReadDemoAccount;
   DaoReadApp get app => db.daoReadApp;
+  DaoReadLoginSession get loginSession => db.daoReadLoginSession;
 }
 
 class CommonForegroundDatabaseWrite {
@@ -43,4 +57,5 @@ class CommonForegroundDatabaseWrite {
   CommonForegroundDatabaseWrite(this.db);
   DaoWriteDemoAccount get demoAccount => db.daoWriteDemoAccount;
   DaoWriteApp get app => db.daoWriteApp;
+  DaoWriteLoginSession get loginSession => db.daoWriteLoginSession;
 }

@@ -15,7 +15,6 @@ import 'package:app/data/login_repository.dart';
 import 'package:app/data/image_cache.dart';
 import 'package:app/data/notification_manager.dart';
 import 'package:app/data/push_notification_manager.dart';
-import 'package:app/database/background_database_manager.dart';
 import 'package:app/database/database_manager.dart';
 import 'package:app/localizations.dart';
 
@@ -65,7 +64,7 @@ Future<void> main() async {
 
   // Locale saving needs database so init here
   await SecureStorageManager.getInstance().init();
-  await BackgroundDatabaseManager.getInstance().init();
+  await DatabaseManager.getInstance().init();
 
   runApp(
     MultiBlocProvider(

@@ -8,4 +8,6 @@ mixin _$DaoWriteAppMixin on DatabaseAccessor<CommonForegroundDatabase> {
       attachedDatabase.notificationPermissionAsked;
   $ImageEncryptionKeyTable get imageEncryptionKey =>
       attachedDatabase.imageEncryptionKey;
+  $CurrentLocaleTable get currentLocale => attachedDatabase.currentLocale;
+  $ServerUrlTable get serverUrl => attachedDatabase.serverUrl;
 }

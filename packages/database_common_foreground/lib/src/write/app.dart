@@ -6,7 +6,14 @@ import '../schema.dart' as schema;
 
 part 'app.g.dart';
 
-@DriftAccessor(tables: [schema.NotificationPermissionAsked, schema.ImageEncryptionKey])
+@DriftAccessor(
+  tables: [
+    schema.NotificationPermissionAsked,
+    schema.ImageEncryptionKey,
+    schema.CurrentLocale,
+    schema.ServerUrl,
+  ],
+)
 class DaoWriteApp extends DatabaseAccessor<CommonForegroundDatabase> with _$DaoWriteAppMixin {
   DaoWriteApp(super.db);
 
@@ -22,6 +29,18 @@ class DaoWriteApp extends DatabaseAccessor<CommonForegroundDatabase> with _$DaoW
         id: SingleRowTable.ID,
         notificationPermissionAsked: Value(value),
       ),
+    );
+  }
+
+  Future<void> updateCurrentLocale(String? value) async {
+    await into(currentLocale).insertOnConflictUpdate(
+      CurrentLocaleCompanion.insert(id: SingleRowTable.ID, currentLocale: Value(value)),
+    );
+  }
+
+  Future<void> updateServerUrl(String? url) async {
+    await into(serverUrl).insertOnConflictUpdate(
+      ServerUrlCompanion.insert(id: SingleRowTable.ID, serverUrl: Value(url)),
     );
   }
 }
