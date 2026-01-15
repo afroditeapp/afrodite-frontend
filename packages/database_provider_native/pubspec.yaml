@@ -18,12 +18,9 @@ dependencies:
   path_provider: ^2.1.1
   path: ^1.9.0
 
-  drift: ^2.30.1
-  sqlcipher_flutter_libs: ^0.6.5
+  drift: ^2.26.0
+  sqlite3_flutter_libs: ^0.5.41
   sqlite3: ^2.7.5
 
   database_utils:
     path: "../database_utils"
-
-  encryption:
-    path: "../encryption"

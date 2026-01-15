@@ -1,6 +1,5 @@
 import 'package:database_utils/database_utils.dart';
 import 'package:drift/drift.dart';
-import 'package:encryption_common/encryption_common.dart';
 
 class DbProvider implements QueryExcecutorProvider {
   DbProvider(DbFile db);

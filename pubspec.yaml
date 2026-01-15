@@ -33,10 +33,6 @@ workspace:
   - packages/database_provider_native
   - packages/database_provider_web
   - packages/database_utils
-  - packages/encryption
-  - packages/encryption_common
-  - packages/encryption_native
-  - packages/encryption_web
   - packages/native_utils
   - packages/native_utils_common
   - packages/native_utils_ffi
@@ -84,9 +80,6 @@ dependencies:
 
   native_utils:
     path: "packages/native_utils"
-
-  encryption:
-    path: "packages/encryption"
 
   utils:
     path: "packages/utils"
@@ -168,11 +161,6 @@ dependencies:
   flutter_file_saver: 0.9.0
 
 dependency_overrides:
-  # Replace flutter_secure_storage_web with empty version to fix compiling
-  # to Wasm.
-  flutter_secure_storage_web:
-    path: "packages/flutter_secure_storage_web"
-
   # Code reviewed 2025-08-14
   flutter_file_manager_android: 2.1.0
   flutter_file_manager_macos: 2.1.0

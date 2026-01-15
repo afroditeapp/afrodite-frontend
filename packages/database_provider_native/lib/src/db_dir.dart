@@ -1,9 +1,9 @@
 import 'dart:io';
 
-import 'package:encryption/encryption.dart';
 import 'package:logging/logging.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
+import 'package:database_utils/database_utils.dart';
 
 final _log = Logger("DbDirUtils");
 

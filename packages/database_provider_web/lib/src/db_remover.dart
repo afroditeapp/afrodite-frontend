@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:js_interop';
 
 import 'package:drift/wasm.dart';
-import 'package:encryption_common/encryption_common.dart';
+import 'package:database_utils/database_utils.dart';
 import 'package:logging/logging.dart';
 import 'package:web/web.dart';
 
