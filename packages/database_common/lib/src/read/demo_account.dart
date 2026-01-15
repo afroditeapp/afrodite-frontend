@@ -7,8 +7,7 @@ import '../schema.dart' as schema;
 part 'demo_account.g.dart';
 
 @DriftAccessor(tables: [schema.DemoAccount])
-class DaoReadDemoAccount extends DatabaseAccessor<CommonForegroundDatabase>
-    with _$DaoReadDemoAccountMixin {
+class DaoReadDemoAccount extends DatabaseAccessor<CommonDatabase> with _$DaoReadDemoAccountMixin {
   DaoReadDemoAccount(super.db);
 
   Stream<String?> watchDemoAccountUsername() =>

@@ -1439,8 +1439,8 @@ class CurrentLocaleCompanion extends UpdateCompanion<CurrentLocaleData> {
   }
 }
 
-abstract class _$CommonForegroundDatabase extends GeneratedDatabase {
-  _$CommonForegroundDatabase(QueryExecutor e) : super(e);
+abstract class _$CommonDatabase extends GeneratedDatabase {
+  _$CommonDatabase(QueryExecutor e) : super(e);
   late final $DemoAccountTable demoAccount = $DemoAccountTable(this);
   late final $ImageEncryptionKeyTable imageEncryptionKey =
       $ImageEncryptionKeyTable(this);
@@ -1450,22 +1450,22 @@ abstract class _$CommonForegroundDatabase extends GeneratedDatabase {
   late final $ServerUrlTable serverUrl = $ServerUrlTable(this);
   late final $CurrentLocaleTable currentLocale = $CurrentLocaleTable(this);
   late final DaoReadApp daoReadApp = DaoReadApp(
-    this as CommonForegroundDatabase,
+    this as CommonDatabase,
   );
   late final DaoReadDemoAccount daoReadDemoAccount = DaoReadDemoAccount(
-    this as CommonForegroundDatabase,
+    this as CommonDatabase,
   );
   late final DaoReadLoginSession daoReadLoginSession = DaoReadLoginSession(
-    this as CommonForegroundDatabase,
+    this as CommonDatabase,
   );
   late final DaoWriteApp daoWriteApp = DaoWriteApp(
-    this as CommonForegroundDatabase,
+    this as CommonDatabase,
   );
   late final DaoWriteDemoAccount daoWriteDemoAccount = DaoWriteDemoAccount(
-    this as CommonForegroundDatabase,
+    this as CommonDatabase,
   );
   late final DaoWriteLoginSession daoWriteLoginSession = DaoWriteLoginSession(
-    this as CommonForegroundDatabase,
+    this as CommonDatabase,
   );
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>

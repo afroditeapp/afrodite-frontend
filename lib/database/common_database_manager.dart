@@ -24,7 +24,7 @@ class CommonDatabaseManager extends AppSingleton {
 
   bool initDone = false;
   late final DbProvider commonDatabaseProvider;
-  late final CommonForegroundDatabase commonDatabase;
+  late final CommonDatabase commonDatabase;
 
   @override
   Future<void> init() async {
@@ -41,11 +41,11 @@ class CommonDatabaseManager extends AppSingleton {
     driftRuntimeOptions.dontWarnAboutMultipleDatabases = true;
 
     commonDatabaseProvider = DbProvider(CommonDbFile());
-    commonDatabase = CommonForegroundDatabase(commonDatabaseProvider);
+    commonDatabase = CommonDatabase(commonDatabaseProvider);
     final ensureOpenResult = await commonDatabaseProvider.getQueryExcecutor().ensureOpen(
       commonDatabase,
     );
-    _log.info("CommonForegroundDatabase ensureOpen result: $ensureOpenResult");
+    _log.info("CommonDatabase ensureOpen result: $ensureOpenResult");
     // Test query
     await commonStream((db) => db.loginSession.watchAccountId()).first;
 
@@ -54,7 +54,7 @@ class CommonDatabaseManager extends AppSingleton {
 
   // Common database
 
-  Stream<T> commonStream<T>(Stream<T> Function(CommonForegroundDatabaseRead) mapper) async* {
+  Stream<T> commonStream<T>(Stream<T> Function(CommonDatabaseRead) mapper) async* {
     final stream = mapper(commonDatabase.read);
     yield* stream
     // try-catch does not work with *yield, so await for would be required, but
@@ -67,7 +67,7 @@ class CommonDatabaseManager extends AppSingleton {
   }
 
   Stream<T> commonStreamOrDefault<T extends Object>(
-    Stream<T?> Function(CommonForegroundDatabaseRead) mapper,
+    Stream<T?> Function(CommonDatabaseRead) mapper,
     T defaultValue,
   ) async* {
     final stream = commonStream(mapper);
@@ -80,13 +80,13 @@ class CommonDatabaseManager extends AppSingleton {
     });
   }
 
-  Future<T> commonStreamSingle<T>(Stream<T> Function(CommonForegroundDatabaseRead) mapper) async {
+  Future<T> commonStreamSingle<T>(Stream<T> Function(CommonDatabaseRead) mapper) async {
     final stream = commonStream(mapper);
     return await stream.first;
   }
 
   Future<T> commonStreamSingleOrDefault<T extends Object>(
-    Stream<T?> Function(CommonForegroundDatabaseRead) mapper,
+    Stream<T?> Function(CommonDatabaseRead) mapper,
     T defaultValue,
   ) async {
     final first = await commonStreamSingle(mapper);
@@ -94,7 +94,7 @@ class CommonDatabaseManager extends AppSingleton {
   }
 
   Future<Result<(), DatabaseError>> commonAction(
-    Future<void> Function(CommonForegroundDatabaseWrite) action,
+    Future<void> Function(CommonDatabaseWrite) action,
   ) async {
     try {
       await action(commonDatabase.write);

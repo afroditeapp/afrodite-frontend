@@ -4,6 +4,6 @@ part of 'login_session.dart';
 
 // ignore_for_file: type=lint
 mixin _$DaoWriteLoginSessionMixin
-    on DatabaseAccessor<CommonForegroundDatabase> {
+    on DatabaseAccessor<CommonDatabase> {
   $AccountIdTable get accountId => attachedDatabase.accountId;
 }

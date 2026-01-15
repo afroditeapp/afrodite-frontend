@@ -8,8 +8,7 @@ import '../schema.dart' as schema;
 part 'login_session.g.dart';
 
 @DriftAccessor(tables: [schema.AccountId])
-class DaoReadLoginSession extends DatabaseAccessor<CommonForegroundDatabase>
-    with _$DaoReadLoginSessionMixin {
+class DaoReadLoginSession extends DatabaseAccessor<CommonDatabase> with _$DaoReadLoginSessionMixin {
   DaoReadLoginSession(super.db);
 
   Stream<AccountId?> watchAccountId() => _watchAccountIdColumn((r) => r.accountId);

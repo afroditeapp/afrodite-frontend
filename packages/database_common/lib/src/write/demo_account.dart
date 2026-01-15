@@ -7,8 +7,7 @@ import '../schema.dart' as schema;
 part 'demo_account.g.dart';
 
 @DriftAccessor(tables: [schema.DemoAccount])
-class DaoWriteDemoAccount extends DatabaseAccessor<CommonForegroundDatabase>
-    with _$DaoWriteDemoAccountMixin {
+class DaoWriteDemoAccount extends DatabaseAccessor<CommonDatabase> with _$DaoWriteDemoAccountMixin {
   DaoWriteDemoAccount(super.db);
 
   Future<void> updateDemoAccountUsername(String? username) async {

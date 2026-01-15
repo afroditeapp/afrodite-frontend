@@ -3,7 +3,7 @@
 part of 'app.dart';
 
 // ignore_for_file: type=lint
-mixin _$DaoReadAppMixin on DatabaseAccessor<CommonForegroundDatabase> {
+mixin _$DaoReadAppMixin on DatabaseAccessor<CommonDatabase> {
   $ImageEncryptionKeyTable get imageEncryptionKey =>
       attachedDatabase.imageEncryptionKey;
   $NotificationPermissionAskedTable get notificationPermissionAsked =>

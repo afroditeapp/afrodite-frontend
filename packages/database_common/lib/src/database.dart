@@ -33,28 +33,27 @@ part 'database.g.dart';
     DaoWriteLoginSession,
   ],
 )
-class CommonForegroundDatabase extends _$CommonForegroundDatabase {
-  CommonForegroundDatabase(QueryExcecutorProvider dbProvider)
-    : super(dbProvider.getQueryExcecutor());
+class CommonDatabase extends _$CommonDatabase {
+  CommonDatabase(QueryExcecutorProvider dbProvider) : super(dbProvider.getQueryExcecutor());
 
-  CommonForegroundDatabaseRead get read => CommonForegroundDatabaseRead(this);
-  CommonForegroundDatabaseWrite get write => CommonForegroundDatabaseWrite(this);
+  CommonDatabaseRead get read => CommonDatabaseRead(this);
+  CommonDatabaseWrite get write => CommonDatabaseWrite(this);
 
   @override
   int get schemaVersion => 1;
 }
 
-class CommonForegroundDatabaseRead {
-  final CommonForegroundDatabase db;
-  CommonForegroundDatabaseRead(this.db);
+class CommonDatabaseRead {
+  final CommonDatabase db;
+  CommonDatabaseRead(this.db);
   DaoReadDemoAccount get demoAccount => db.daoReadDemoAccount;
   DaoReadApp get app => db.daoReadApp;
   DaoReadLoginSession get loginSession => db.daoReadLoginSession;
 }
 
-class CommonForegroundDatabaseWrite {
-  final CommonForegroundDatabase db;
-  CommonForegroundDatabaseWrite(this.db);
+class CommonDatabaseWrite {
+  final CommonDatabase db;
+  CommonDatabaseWrite(this.db);
   DaoWriteDemoAccount get demoAccount => db.daoWriteDemoAccount;
   DaoWriteApp get app => db.daoWriteApp;
   DaoWriteLoginSession get loginSession => db.daoWriteLoginSession;

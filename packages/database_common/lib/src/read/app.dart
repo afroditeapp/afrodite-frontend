@@ -14,7 +14,7 @@ part 'app.g.dart';
     schema.CurrentLocale,
   ],
 )
-class DaoReadApp extends DatabaseAccessor<CommonForegroundDatabase> with _$DaoReadAppMixin {
+class DaoReadApp extends DatabaseAccessor<CommonDatabase> with _$DaoReadAppMixin {
   DaoReadApp(super.db);
 
   Stream<Uint8List?> watchImageEncryptionKey() =>

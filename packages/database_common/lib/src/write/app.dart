@@ -14,7 +14,7 @@ part 'app.g.dart';
     schema.ServerUrl,
   ],
 )
-class DaoWriteApp extends DatabaseAccessor<CommonForegroundDatabase> with _$DaoWriteAppMixin {
+class DaoWriteApp extends DatabaseAccessor<CommonDatabase> with _$DaoWriteAppMixin {
   DaoWriteApp(super.db);
 
   Future<void> updateImageEncryptionKey(Uint8List key) async {
