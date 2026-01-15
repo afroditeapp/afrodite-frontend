@@ -166,19 +166,36 @@ sealed class ServerConnectionManagerCmd<T> {
   }
 }
 
-class ConnectIfNotConnected extends ServerConnectionManagerCmd<()> {}
-
-class Restart extends ServerConnectionManagerCmd<()> {}
-
-/// Close specific or current connection
-class CloseConnection extends ServerConnectionManagerCmd<()> {
-  final ServerConnection? serverConnection;
-  CloseConnection(this.serverConnection);
+class ConnectIfNotConnected extends ServerConnectionManagerCmd<()> {
+  @override
+  String toString() {
+    return "ConnectIfNotConnected";
+  }
 }
 
-class SaveConnection extends ServerConnectionManagerCmd<()> {
+class Restart extends ServerConnectionManagerCmd<()> {
+  @override
+  String toString() {
+    return "Restart";
+  }
+}
+
+class CloseCurrentConnection extends ServerConnectionManagerCmd<()> {
+  @override
+  String toString() {
+    return "CloseCurrentConnection";
+  }
+}
+
+class HandleServerConnectionState extends ServerConnectionManagerCmd<()> {
   final ServerConnection serverConnection;
-  SaveConnection(this.serverConnection);
+  final ServerConnectionState state;
+  HandleServerConnectionState(this.serverConnection, this.state);
+
+  @override
+  String toString() {
+    return "Connection state: $state";
+  }
 }
 
 class ServerConnectionManager extends ApiManager
@@ -257,7 +274,7 @@ class ServerConnectionManager extends ApiManager
   StreamSubscription<void> _listenServerConnectionCmds() {
     return _cmds
         .asyncMap((cmd) async {
-          _log.info("cmd: ${cmd.runtimeType}");
+          _log.info("cmd: $cmd");
           try {
             switch (cmd) {
               case ConnectIfNotConnected():
@@ -268,15 +285,31 @@ class ServerConnectionManager extends ApiManager
                 await _serverConnection?.close();
                 _serverConnection = null;
                 await _connect();
-              case CloseConnection():
+              case CloseCurrentConnection():
                 final currentConnection = _serverConnection;
-                if (currentConnection != null &&
-                    (cmd.serverConnection == null || currentConnection == cmd.serverConnection)) {
+                if (currentConnection != null) {
                   await currentConnection.close();
                   _serverConnection = null;
                 }
-              case SaveConnection():
-                _serverConnection = cmd.serverConnection;
+                _handleConnectionError(null);
+              case HandleServerConnectionState():
+                final currentConnection = _serverConnection;
+                if (currentConnection == null || currentConnection != cmd.serverConnection) {
+                  return;
+                }
+                switch (cmd.state) {
+                  case Connecting():
+                    _state.add(ConnectingToServer(showBanner: _retryManager.isRetrying));
+                  case Closed e:
+                    _serverConnection = null;
+                    _handleConnectionError(e.error);
+                  case Ready(:final token):
+                    _reconnectionTimer.cancel();
+                    // Reset retry counter on successful connection
+                    _retryManager.reset();
+                    _apiProvider.setAccessToken(token);
+                    _state.add(ConnectedToServer());
+                }
             }
           } catch (_) {
             // Ignore exceptions
@@ -284,6 +317,25 @@ class ServerConnectionManager extends ApiManager
           cmd.completed.add(());
         })
         .listen(null);
+  }
+
+  void _handleConnectionError(ServerConnectionError? error) {
+    switch (error) {
+      case ServerConnectionError.connectionFailure:
+        final retryDelay = _retryManager.getNextRetryDelaySeconds();
+        if (retryDelay != null) {
+          _retryManager.recordRetry();
+          _reconnectionTimer.start(retryDelay);
+        } else {
+          _state.add(NoServerConnection(showRetryActionBanner: true));
+        }
+      case ServerConnectionError.invalidToken:
+        _state.add(WaitingRefreshToken());
+      case ServerConnectionError.unsupportedClientVersion:
+        _state.add(UnsupportedClientVersion());
+      case null:
+        _state.add(NoServerConnection(showRetryActionBanner: false));
+    }
   }
 
   Future<Result<(), ()>> _connect() async {
@@ -315,57 +367,17 @@ class ServerConnectionManager extends ApiManager
       case Ok():
         serverConnection = connectionResult.v;
       case Err():
-        await _handleConnectionError(connectionResult.e, null);
+        _handleConnectionError(connectionResult.e);
         return Err(());
     }
 
-    _cmds.add(SaveConnection(serverConnection));
+    _serverConnection = serverConnection;
     await _serverConnectionEventsSubscription?.cancel();
-    _serverConnectionEventsSubscription = serverConnection.state
-        .distinct()
-        .asyncMap((event) async {
-          _log.info(event);
-          switch (event) {
-            case Connecting():
-              _state.add(ConnectingToServer(showBanner: _retryManager.isRetrying));
-            case Closed e:
-              await _handleConnectionError(e.error, serverConnection);
-            case Ready(:final token):
-              _reconnectionTimer.cancel();
-              // Reset retry counter on successful connection
-              _retryManager.reset();
-              _apiProvider.setAccessToken(token);
-              _state.add(ConnectedToServer());
-          }
-        })
-        .listen(null);
+    _serverConnectionEventsSubscription = serverConnection.state.distinct().listen((event) {
+      _cmds.add(HandleServerConnectionState(serverConnection, event));
+    });
 
     return const Ok(());
-  }
-
-  Future<void> _handleConnectionError(
-    ServerConnectionError? error,
-    ServerConnection? currentConnection,
-  ) async {
-    if (currentConnection != null) {
-      _cmds.add(CloseConnection(currentConnection));
-    }
-    switch (error) {
-      case ServerConnectionError.connectionFailure:
-        final retryDelay = _retryManager.getNextRetryDelaySeconds();
-        if (retryDelay != null) {
-          _retryManager.recordRetry();
-          _reconnectionTimer.start(retryDelay);
-        } else {
-          _state.add(NoServerConnection(showRetryActionBanner: true));
-        }
-      case ServerConnectionError.invalidToken:
-        _state.add(WaitingRefreshToken());
-      case ServerConnectionError.unsupportedClientVersion:
-        _state.add(UnsupportedClientVersion());
-      case null:
-        _state.add(NoServerConnection(showRetryActionBanner: false));
-    }
   }
 
   @override
@@ -385,7 +397,7 @@ class ServerConnectionManager extends ApiManager
   Future<void> close() async {
     _reconnectionTimer.cancel();
     _retryManager.reset();
-    final event = CloseConnection(null);
+    final event = CloseCurrentConnection();
     _cmds.add(event);
     await event.waitCompletionAndDispose();
   }
