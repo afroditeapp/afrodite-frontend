@@ -6,11 +6,6 @@ After editing data classes in lib/model/freezed, command
 "make update-freezed-code" needs to be executed.
 
 After editing Drift related code found from
-packages/database_account_background, command
-"make update-drift-code-account-background"
-needs to be executed.
-
-After editing Drift related code found from
 packages/database_account_foreground, command
 "make update-drift-code-account-foreground"
 needs to be executed.

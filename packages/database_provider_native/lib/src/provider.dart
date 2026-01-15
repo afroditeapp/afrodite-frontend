@@ -31,8 +31,6 @@ Future<File> dbFileToFile(DbFile dbFile) async {
       return File(await DbDirUtils.commonDbPath());
     case AccountDbFile():
       return File(await DbDirUtils.accountDbPath(dbFile.accountId));
-    case AccountBackgroundDbFile():
-      return File(await DbDirUtils.accountBackgroundDbPath(dbFile.accountId));
   }
 }
 

@@ -22,11 +22,6 @@ class AccountDbFile extends DbFile {
   AccountDbFile(this.accountId);
 }
 
-class AccountBackgroundDbFile extends DbFile {
-  final String accountId;
-  AccountBackgroundDbFile(this.accountId);
-}
-
 class SingleRowTable extends Table {
   static const Value<int> ID = Value(0);
   IntColumn get id => integer().autoIncrement()();

@@ -40,11 +40,6 @@ class DbDirUtils {
     final dbName = "$account.account.db";
     return await _dbPath(dbName);
   }
-
-  static Future<String> accountBackgroundDbPath(String account) async {
-    final dbName = "$account.background_account.db";
-    return await _dbPath(dbName, backgroundDb: true);
-  }
 }
 
 class DatabaseRemoverImpl extends DatabaseRemover {
@@ -65,10 +60,6 @@ class DatabaseRemoverImpl extends DatabaseRemover {
       // Delete foreground databases
       await recreateDatabasesDir(backgroundDb: false);
       _log.info("Deleted foreground databases");
-
-      // Delete background databases
-      await recreateDatabasesDir(backgroundDb: true);
-      _log.info("Deleted background databases");
     } catch (e, stackTrace) {
       _log.severe("Error deleting all databases", e, stackTrace);
       rethrow;
