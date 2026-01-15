@@ -9,8 +9,7 @@ import '../../schema.dart' as schema;
 part 'profile.g.dart';
 
 @DriftAccessor(tables: [schema.Profile, schema.ProfileStates, schema.FavoriteProfiles])
-class DaoWriteProfile extends DatabaseAccessor<AccountForegroundDatabase>
-    with _$DaoWriteProfileMixin {
+class DaoWriteProfile extends DatabaseAccessor<AccountDatabase> with _$DaoWriteProfileMixin {
   DaoWriteProfile(super.db);
 
   /// NOTE: Currently unused

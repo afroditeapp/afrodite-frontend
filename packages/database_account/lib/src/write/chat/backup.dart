@@ -9,8 +9,7 @@ import '../../schema.dart' as schema;
 part 'backup.g.dart';
 
 @DriftAccessor(tables: [schema.Message, schema.MyKeyPair, schema.ConversationList])
-class DaoWriteBackup extends DatabaseAccessor<AccountForegroundDatabase>
-    with _$DaoWriteBackupMixin {
+class DaoWriteBackup extends DatabaseAccessor<AccountDatabase> with _$DaoWriteBackupMixin {
   DaoWriteBackup(super.db);
 
   /// Restore messages from backup

@@ -8,7 +8,7 @@ import '../../schema.dart' as schema;
 part 'privacy.g.dart';
 
 @DriftAccessor(tables: [schema.ProfilePrivacySettings])
-class DaoWriteProfilePrivacy extends DatabaseAccessor<AccountForegroundDatabase>
+class DaoWriteProfilePrivacy extends DatabaseAccessor<AccountDatabase>
     with _$DaoWriteProfilePrivacyMixin {
   DaoWriteProfilePrivacy(super.db);
 

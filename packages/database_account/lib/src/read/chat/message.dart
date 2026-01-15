@@ -8,8 +8,7 @@ import '../../schema.dart' as schema;
 part 'message.g.dart';
 
 @DriftAccessor(tables: [schema.Message])
-class DaoReadMessage extends DatabaseAccessor<AccountForegroundDatabase>
-    with _$DaoReadMessageMixin {
+class DaoReadMessage extends DatabaseAccessor<AccountDatabase> with _$DaoReadMessageMixin {
   DaoReadMessage(super.db);
 
   /// Number of all messages in the database

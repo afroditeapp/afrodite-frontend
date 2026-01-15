@@ -8,7 +8,7 @@ import '../../schema.dart' as schema;
 part 'login_session.g.dart';
 
 @DriftAccessor(tables: [schema.AccountId, schema.LoginSessionTokens])
-class DaoReadLoginSession extends DatabaseAccessor<AccountForegroundDatabase>
+class DaoReadLoginSession extends DatabaseAccessor<AccountDatabase>
     with _$DaoReadLoginSessionMixin {
   DaoReadLoginSession(super.db);
 

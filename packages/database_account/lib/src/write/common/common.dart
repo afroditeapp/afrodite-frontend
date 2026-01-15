@@ -17,8 +17,7 @@ part 'common.g.dart';
     schema.NewReceivedLikesCount,
   ],
 )
-class DaoWriteCommon extends DatabaseAccessor<AccountForegroundDatabase>
-    with _$DaoWriteCommonMixin {
+class DaoWriteCommon extends DatabaseAccessor<AccountDatabase> with _$DaoWriteCommonMixin {
   DaoWriteCommon(super.db);
 
   Future<void> setMaintenanceTime({required UtcDateTime? start, required UtcDateTime? end}) async {

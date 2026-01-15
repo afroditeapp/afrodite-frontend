@@ -18,8 +18,7 @@ part 'account.g.dart';
     schema.EmailVerified,
   ],
 )
-class DaoReadAccount extends DatabaseAccessor<AccountForegroundDatabase>
-    with _$DaoReadAccountMixin {
+class DaoReadAccount extends DatabaseAccessor<AccountDatabase> with _$DaoReadAccountMixin {
   DaoReadAccount(super.db);
 
   Stream<dbm.AccountState?> watchAccountState() =>

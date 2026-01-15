@@ -12,8 +12,7 @@ import '../../schema.dart' as schema;
 part 'profile.g.dart';
 
 @DriftAccessor(tables: [schema.Profile, schema.ProfileStates, schema.FavoriteProfiles])
-class DaoReadProfile extends DatabaseAccessor<AccountForegroundDatabase>
-    with _$DaoReadProfileMixin {
+class DaoReadProfile extends DatabaseAccessor<AccountDatabase> with _$DaoReadProfileMixin {
   DaoReadProfile(super.db);
 
   Future<ProfileEntry?> getProfileEntry(api.AccountId accountId) async {

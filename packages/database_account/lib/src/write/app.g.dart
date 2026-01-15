@@ -3,7 +3,7 @@
 part of 'app.dart';
 
 // ignore_for_file: type=lint
-mixin _$DaoWriteAppMixin on DatabaseAccessor<AccountForegroundDatabase> {
+mixin _$DaoWriteAppMixin on DatabaseAccessor<AccountDatabase> {
   $ProfileFilterFavoritesTable get profileFilterFavorites =>
       attachedDatabase.profileFilterFavorites;
   $ShowAdvancedProfileFiltersTable get showAdvancedProfileFilters =>

@@ -17907,8 +17907,8 @@ class NewMessageNotificationCompanion
   }
 }
 
-abstract class _$AccountForegroundDatabase extends GeneratedDatabase {
-  _$AccountForegroundDatabase(QueryExecutor e) : super(e);
+abstract class _$AccountDatabase extends GeneratedDatabase {
+  _$AccountDatabase(QueryExecutor e) : super(e);
   late final $ProfileFilterFavoritesTable profileFilterFavorites =
       $ProfileFilterFavoritesTable(this);
   late final $ShowAdvancedProfileFiltersTable showAdvancedProfileFilters =
@@ -17998,111 +17998,111 @@ abstract class _$AccountForegroundDatabase extends GeneratedDatabase {
   late final $NewMessageNotificationTable newMessageNotification =
       $NewMessageNotificationTable(this);
   late final DaoReadApp daoReadApp = DaoReadApp(
-    this as AccountForegroundDatabase,
+    this as AccountDatabase,
   );
   late final DaoReadAppNotificationSettings daoReadAppNotificationSettings =
-      DaoReadAppNotificationSettings(this as AccountForegroundDatabase);
+      DaoReadAppNotificationSettings(this as AccountDatabase);
   late final DaoReadCommon daoReadCommon = DaoReadCommon(
-    this as AccountForegroundDatabase,
+    this as AccountDatabase,
   );
   late final DaoReadConfig daoReadConfig = DaoReadConfig(
-    this as AccountForegroundDatabase,
+    this as AccountDatabase,
   );
   late final DaoReadAccount daoReadAccount = DaoReadAccount(
-    this as AccountForegroundDatabase,
+    this as AccountDatabase,
   );
   late final DaoReadLoginSession daoReadLoginSession = DaoReadLoginSession(
-    this as AccountForegroundDatabase,
+    this as AccountDatabase,
   );
   late final DaoReadMedia daoReadMedia = DaoReadMedia(
-    this as AccountForegroundDatabase,
+    this as AccountDatabase,
   );
   late final DaoReadMyMedia daoReadMyMedia = DaoReadMyMedia(
-    this as AccountForegroundDatabase,
+    this as AccountDatabase,
   );
   late final DaoReadProfile daoReadProfile = DaoReadProfile(
-    this as AccountForegroundDatabase,
+    this as AccountDatabase,
   );
   late final DaoReadMyProfile daoReadMyProfile = DaoReadMyProfile(
-    this as AccountForegroundDatabase,
+    this as AccountDatabase,
   );
   late final DaoReadProfilePrivacy daoReadProfilePrivacy =
-      DaoReadProfilePrivacy(this as AccountForegroundDatabase);
+      DaoReadProfilePrivacy(this as AccountDatabase);
   late final DaoReadSearch daoReadSearch = DaoReadSearch(
-    this as AccountForegroundDatabase,
+    this as AccountDatabase,
   );
   late final DaoReadBackup daoReadBackup = DaoReadBackup(
-    this as AccountForegroundDatabase,
+    this as AccountDatabase,
   );
   late final DaoReadConversationList daoReadConversationList =
-      DaoReadConversationList(this as AccountForegroundDatabase);
+      DaoReadConversationList(this as AccountDatabase);
   late final DaoReadKey daoReadKey = DaoReadKey(
-    this as AccountForegroundDatabase,
+    this as AccountDatabase,
   );
   late final DaoReadLike daoReadLike = DaoReadLike(
-    this as AccountForegroundDatabase,
+    this as AccountDatabase,
   );
   late final DaoReadMessage daoReadMessage = DaoReadMessage(
-    this as AccountForegroundDatabase,
+    this as AccountDatabase,
   );
   late final DaoReadPrivacy daoReadPrivacy = DaoReadPrivacy(
-    this as AccountForegroundDatabase,
+    this as AccountDatabase,
   );
   late final DaoReadChatUnreadMessagesCount daoReadChatUnreadMessagesCount =
-      DaoReadChatUnreadMessagesCount(this as AccountForegroundDatabase);
+      DaoReadChatUnreadMessagesCount(this as AccountDatabase);
   late final DaoWriteApp daoWriteApp = DaoWriteApp(
-    this as AccountForegroundDatabase,
+    this as AccountDatabase,
   );
   late final DaoWriteAppNotificationSettings daoWriteAppNotificationSettings =
-      DaoWriteAppNotificationSettings(this as AccountForegroundDatabase);
+      DaoWriteAppNotificationSettings(this as AccountDatabase);
   late final DaoWriteCommon daoWriteCommon = DaoWriteCommon(
-    this as AccountForegroundDatabase,
+    this as AccountDatabase,
   );
   late final DaoWriteConfig daoWriteConfig = DaoWriteConfig(
-    this as AccountForegroundDatabase,
+    this as AccountDatabase,
   );
   late final DaoWriteAccount daoWriteAccount = DaoWriteAccount(
-    this as AccountForegroundDatabase,
+    this as AccountDatabase,
   );
   late final DaoWriteLoginSession daoWriteLoginSession = DaoWriteLoginSession(
-    this as AccountForegroundDatabase,
+    this as AccountDatabase,
   );
   late final DaoWriteMedia daoWriteMedia = DaoWriteMedia(
-    this as AccountForegroundDatabase,
+    this as AccountDatabase,
   );
   late final DaoWriteMyMedia daoWriteMyMedia = DaoWriteMyMedia(
-    this as AccountForegroundDatabase,
+    this as AccountDatabase,
   );
   late final DaoWriteProfile daoWriteProfile = DaoWriteProfile(
-    this as AccountForegroundDatabase,
+    this as AccountDatabase,
   );
   late final DaoWriteMyProfile daoWriteMyProfile = DaoWriteMyProfile(
-    this as AccountForegroundDatabase,
+    this as AccountDatabase,
   );
   late final DaoWriteProfilePrivacy daoWriteProfilePrivacy =
-      DaoWriteProfilePrivacy(this as AccountForegroundDatabase);
+      DaoWriteProfilePrivacy(this as AccountDatabase);
   late final DaoWriteSearch daoWriteSearch = DaoWriteSearch(
-    this as AccountForegroundDatabase,
+    this as AccountDatabase,
   );
   late final DaoWriteBackup daoWriteBackup = DaoWriteBackup(
-    this as AccountForegroundDatabase,
+    this as AccountDatabase,
   );
   late final DaoWriteConversationList daoWriteConversationList =
-      DaoWriteConversationList(this as AccountForegroundDatabase);
+      DaoWriteConversationList(this as AccountDatabase);
   late final DaoWriteKey daoWriteKey = DaoWriteKey(
-    this as AccountForegroundDatabase,
+    this as AccountDatabase,
   );
   late final DaoWriteLike daoWriteLike = DaoWriteLike(
-    this as AccountForegroundDatabase,
+    this as AccountDatabase,
   );
   late final DaoWriteMessage daoWriteMessage = DaoWriteMessage(
-    this as AccountForegroundDatabase,
+    this as AccountDatabase,
   );
   late final DaoWritePrivacy daoWritePrivacy = DaoWritePrivacy(
-    this as AccountForegroundDatabase,
+    this as AccountDatabase,
   );
   late final DaoWriteChatUnreadMessagesCount daoWriteChatUnreadMessagesCount =
-      DaoWriteChatUnreadMessagesCount(this as AccountForegroundDatabase);
+      DaoWriteChatUnreadMessagesCount(this as AccountDatabase);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();

@@ -4,7 +4,7 @@ part of 'privacy.dart';
 
 // ignore_for_file: type=lint
 mixin _$DaoWriteProfilePrivacyMixin
-    on DatabaseAccessor<AccountForegroundDatabase> {
+    on DatabaseAccessor<AccountDatabase> {
   $ProfilePrivacySettingsTable get profilePrivacySettings =>
       attachedDatabase.profilePrivacySettings;
 }

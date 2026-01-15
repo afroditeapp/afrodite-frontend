@@ -3,6 +3,6 @@
 part of 'media.dart';
 
 // ignore_for_file: type=lint
-mixin _$DaoReadMediaMixin on DatabaseAccessor<AccountForegroundDatabase> {
+mixin _$DaoReadMediaMixin on DatabaseAccessor<AccountDatabase> {
   $ProfileContentTable get profileContent => attachedDatabase.profileContent;
 }

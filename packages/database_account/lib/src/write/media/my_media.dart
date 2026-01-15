@@ -8,8 +8,7 @@ import '../../schema.dart' as schema;
 part 'my_media.g.dart';
 
 @DriftAccessor(tables: [schema.MyMediaContent])
-class DaoWriteMyMedia extends DatabaseAccessor<AccountForegroundDatabase>
-    with _$DaoWriteMyMediaMixin {
+class DaoWriteMyMedia extends DatabaseAccessor<AccountDatabase> with _$DaoWriteMyMediaMixin {
   DaoWriteMyMedia(super.db);
 
   Future<void> removeMySecurityContent() async {

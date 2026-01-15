@@ -17,7 +17,7 @@ part 'search.g.dart';
     schema.AutomaticProfileSearchBadgeState,
   ],
 )
-class DaoReadSearch extends DatabaseAccessor<AccountForegroundDatabase> with _$DaoReadSearchMixin {
+class DaoReadSearch extends DatabaseAccessor<AccountDatabase> with _$DaoReadSearchMixin {
   DaoReadSearch(super.db);
 
   Stream<api.GetProfileFilters?> watchProfileFilters() =>

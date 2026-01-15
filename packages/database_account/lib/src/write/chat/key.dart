@@ -9,7 +9,7 @@ import '../../schema.dart' as schema;
 part 'key.g.dart';
 
 @DriftAccessor(tables: [schema.MyKeyPair, schema.PublicKey])
-class DaoWriteKey extends DatabaseAccessor<AccountForegroundDatabase> with _$DaoWriteKeyMixin {
+class DaoWriteKey extends DatabaseAccessor<AccountDatabase> with _$DaoWriteKeyMixin {
   DaoWriteKey(super.db);
 
   Future<void> setMessageKeys({

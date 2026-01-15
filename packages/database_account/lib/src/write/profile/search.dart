@@ -17,8 +17,7 @@ part 'search.g.dart';
     schema.AutomaticProfileSearchBadgeState,
   ],
 )
-class DaoWriteSearch extends DatabaseAccessor<AccountForegroundDatabase>
-    with _$DaoWriteSearchMixin {
+class DaoWriteSearch extends DatabaseAccessor<AccountDatabase> with _$DaoWriteSearchMixin {
   DaoWriteSearch(super.db);
 
   Future<void> updateProfileFilters(api.GetProfileFilters? value) async {

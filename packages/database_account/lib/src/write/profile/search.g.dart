@@ -3,7 +3,7 @@
 part of 'search.dart';
 
 // ignore_for_file: type=lint
-mixin _$DaoWriteSearchMixin on DatabaseAccessor<AccountForegroundDatabase> {
+mixin _$DaoWriteSearchMixin on DatabaseAccessor<AccountDatabase> {
   $ProfileFiltersTable get profileFilters => attachedDatabase.profileFilters;
   $ProfileSearchGroupsTable get profileSearchGroups =>
       attachedDatabase.profileSearchGroups;

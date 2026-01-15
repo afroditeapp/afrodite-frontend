@@ -7,7 +7,7 @@ import '../../schema.dart' as schema;
 part 'like.g.dart';
 
 @DriftAccessor(tables: [schema.DailyLikesLeft])
-class DaoReadLike extends DatabaseAccessor<AccountForegroundDatabase> with _$DaoReadLikeMixin {
+class DaoReadLike extends DatabaseAccessor<AccountDatabase> with _$DaoReadLikeMixin {
   DaoReadLike(super.db);
 
   Stream<int?> watchDailyLikesLeft() {

@@ -17,7 +17,7 @@ part 'common.g.dart';
     schema.NewReceivedLikesCount,
   ],
 )
-class DaoReadCommon extends DatabaseAccessor<AccountForegroundDatabase> with _$DaoReadCommonMixin {
+class DaoReadCommon extends DatabaseAccessor<AccountDatabase> with _$DaoReadCommonMixin {
   DaoReadCommon(super.db);
 
   Stream<int?> watchSyncVersionReceivedLikes() {

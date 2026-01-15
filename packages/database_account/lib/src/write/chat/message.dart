@@ -12,8 +12,7 @@ import '../../schema.dart' as schema;
 part 'message.g.dart';
 
 @DriftAccessor(tables: [schema.Message])
-class DaoWriteMessage extends DatabaseAccessor<AccountForegroundDatabase>
-    with _$DaoWriteMessageMixin {
+class DaoWriteMessage extends DatabaseAccessor<AccountDatabase> with _$DaoWriteMessageMixin {
   DaoWriteMessage(super.db);
 
   /// Returns ID of last inserted row.

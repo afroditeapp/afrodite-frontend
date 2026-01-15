@@ -25,7 +25,7 @@ part 'app.g.dart';
     schema.PushNotification,
   ],
 )
-class DaoWriteApp extends DatabaseAccessor<AccountForegroundDatabase> with _$DaoWriteAppMixin {
+class DaoWriteApp extends DatabaseAccessor<AccountDatabase> with _$DaoWriteAppMixin {
   DaoWriteApp(super.db);
 
   Future<void> _updateAdminNotificationInternal(api.AdminNotification? notification) async {

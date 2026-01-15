@@ -11,13 +11,13 @@ import 'package:rxdart/rxdart.dart';
 final _log = Logger("AccountDatabaseManager");
 
 class AccountDatabaseManager {
-  final AccountForegroundDatabase db;
+  final AccountDatabase db;
   AccountDatabaseManager(this.db);
 
   // Access current account database
 
   Stream<T?> accountStream<T extends Object>(
-    Stream<T?> Function(AccountForegroundDatabaseRead) mapper,
+    Stream<T?> Function(AccountDatabaseRead) mapper,
   ) async* {
     final accountDatabase = db;
     yield* mapper(accountDatabase.read)
@@ -31,7 +31,7 @@ class AccountDatabaseManager {
   }
 
   Stream<T> accountStreamOrDefault<T extends Object>(
-    Stream<T?> Function(AccountForegroundDatabaseRead) mapper,
+    Stream<T?> Function(AccountDatabaseRead) mapper,
     T defaultValue,
   ) async* {
     yield* accountStream(mapper).map((event) {
@@ -44,7 +44,7 @@ class AccountDatabaseManager {
   }
 
   Future<Result<T, DatabaseError>> accountStreamSingle<T extends Object>(
-    Stream<T?> Function(AccountForegroundDatabaseRead) mapper,
+    Stream<T?> Function(AccountDatabaseRead) mapper,
   ) async {
     final stream = accountStream(mapper);
     final value = await stream.first;
@@ -56,7 +56,7 @@ class AccountDatabaseManager {
   }
 
   Future<T> accountStreamSingleOrDefault<T extends Object>(
-    Stream<T?> Function(AccountForegroundDatabaseRead) mapper,
+    Stream<T?> Function(AccountDatabaseRead) mapper,
     T defaultValue,
   ) async {
     final value = await accountStreamSingle(mapper);
@@ -64,7 +64,7 @@ class AccountDatabaseManager {
   }
 
   Future<Result<T, DatabaseError>> accountData<T extends Object?>(
-    Future<T> Function(AccountForegroundDatabaseRead) action,
+    Future<T> Function(AccountDatabaseRead) action,
   ) async {
     try {
       return Ok(await action(db.read));
@@ -80,7 +80,7 @@ class AccountDatabaseManager {
   }
 
   Future<Result<T, DatabaseError>> accountDataWrite<T extends Object?>(
-    Future<T> Function(AccountForegroundDatabaseWrite) action,
+    Future<T> Function(AccountDatabaseWrite) action,
   ) async {
     try {
       return Ok(await action(db.write));
@@ -96,7 +96,7 @@ class AccountDatabaseManager {
   }
 
   Future<Result<(), DatabaseError>> accountAction(
-    Future<void> Function(AccountForegroundDatabaseWrite) action,
+    Future<void> Function(AccountDatabaseWrite) action,
   ) async {
     try {
       await action(db.write);

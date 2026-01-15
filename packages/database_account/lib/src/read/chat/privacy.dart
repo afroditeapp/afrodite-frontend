@@ -8,8 +8,7 @@ import '../../schema.dart' as schema;
 part 'privacy.g.dart';
 
 @DriftAccessor(tables: [schema.ChatPrivacySettings])
-class DaoReadPrivacy extends DatabaseAccessor<AccountForegroundDatabase>
-    with _$DaoReadPrivacyMixin {
+class DaoReadPrivacy extends DatabaseAccessor<AccountDatabase> with _$DaoReadPrivacyMixin {
   DaoReadPrivacy(super.db);
 
   Stream<api.ChatPrivacySettings?> watchChatPrivacySettings() {

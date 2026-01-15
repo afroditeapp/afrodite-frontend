@@ -7,7 +7,7 @@ import '../../schema.dart' as schema;
 part 'media.g.dart';
 
 @DriftAccessor(tables: [schema.ProfileContent])
-class DaoWriteMedia extends DatabaseAccessor<AccountForegroundDatabase> with _$DaoWriteMediaMixin {
+class DaoWriteMedia extends DatabaseAccessor<AccountDatabase> with _$DaoWriteMediaMixin {
   DaoWriteMedia(super.db);
 
   Future<void> removeProfileContentData(api.AccountId accountId) async {

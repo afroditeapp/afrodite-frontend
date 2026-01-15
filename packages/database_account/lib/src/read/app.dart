@@ -22,7 +22,7 @@ part 'app.g.dart';
     schema.PushNotification,
   ],
 )
-class DaoReadApp extends DatabaseAccessor<AccountForegroundDatabase> with _$DaoReadAppMixin {
+class DaoReadApp extends DatabaseAccessor<AccountDatabase> with _$DaoReadAppMixin {
   DaoReadApp(super.db);
 
   Future<api.AdminNotification?> getAdminNotification() async {

@@ -3,6 +3,6 @@
 part of 'like.dart';
 
 // ignore_for_file: type=lint
-mixin _$DaoWriteLikeMixin on DatabaseAccessor<AccountForegroundDatabase> {
+mixin _$DaoWriteLikeMixin on DatabaseAccessor<AccountDatabase> {
   $DailyLikesLeftTable get dailyLikesLeft => attachedDatabase.dailyLikesLeft;
 }

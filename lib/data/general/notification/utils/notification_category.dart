@@ -5,7 +5,7 @@ import 'package:app/database/account_database_manager.dart';
 import 'package:app/localizations.dart';
 import 'package:app/utils/result.dart';
 
-typedef IsEnabledGetter = Stream<bool?> Function(AccountForegroundDatabaseRead);
+typedef IsEnabledGetter = Stream<bool?> Function(AccountDatabaseRead);
 
 sealed class NotificationCategory {
   final String id;

@@ -8,8 +8,7 @@ import '../../schema.dart' as schema;
 part 'my_media.g.dart';
 
 @DriftAccessor(tables: [schema.MyMediaContent])
-class DaoReadMyMedia extends DatabaseAccessor<AccountForegroundDatabase>
-    with _$DaoReadMyMediaMixin {
+class DaoReadMyMedia extends DatabaseAccessor<AccountDatabase> with _$DaoReadMyMediaMixin {
   DaoReadMyMedia(super.db);
 
   Future<MyContent?> getMyContentByIndex(int index) async {

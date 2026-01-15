@@ -8,7 +8,7 @@ import '../../schema.dart' as schema;
 part 'app_notification_settings.g.dart';
 
 @DriftAccessor(tables: [schema.AppNotificationSettings])
-class DaoWriteAppNotificationSettings extends DatabaseAccessor<AccountForegroundDatabase>
+class DaoWriteAppNotificationSettings extends DatabaseAccessor<AccountDatabase>
     with _$DaoWriteAppNotificationSettingsMixin {
   DaoWriteAppNotificationSettings(super.db);
 

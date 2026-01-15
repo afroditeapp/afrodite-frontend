@@ -3,7 +3,7 @@
 part of 'backup.dart';
 
 // ignore_for_file: type=lint
-mixin _$DaoReadBackupMixin on DatabaseAccessor<AccountForegroundDatabase> {
+mixin _$DaoReadBackupMixin on DatabaseAccessor<AccountDatabase> {
   $MessageTable get message => attachedDatabase.message;
   $MyKeyPairTable get myKeyPair => attachedDatabase.myKeyPair;
 }

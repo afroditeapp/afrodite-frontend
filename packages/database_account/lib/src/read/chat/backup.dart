@@ -10,7 +10,7 @@ import '../../schema.dart' as schema;
 part 'backup.g.dart';
 
 @DriftAccessor(tables: [schema.Message, schema.MyKeyPair])
-class DaoReadBackup extends DatabaseAccessor<AccountForegroundDatabase> with _$DaoReadBackupMixin {
+class DaoReadBackup extends DatabaseAccessor<AccountDatabase> with _$DaoReadBackupMixin {
   DaoReadBackup(super.db);
 
   /// Create a chat backup from the database

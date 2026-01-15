@@ -113,14 +113,14 @@ class CommonDatabaseManager extends AppSingleton {
   // Access current account database
 
   Future<AccountDatabaseManager> getAccountDatabaseManager(AccountId accountId) async {
-    _log.info("AccountForegroundDatabase init");
+    _log.info("AccountDatabase init");
     final dbProvider = DbProvider(AccountDbFile(accountId.aid));
-    final db = AccountForegroundDatabase(dbProvider);
+    final db = AccountDatabase(dbProvider);
     final ensureOpenResult = await dbProvider.getQueryExcecutor().ensureOpen(db);
-    _log.info("AccountForegroundDatabase ensureOpen result: $ensureOpenResult");
+    _log.info("AccountDatabase ensureOpen result: $ensureOpenResult");
     final manager = AccountDatabaseManager(db);
     await manager.accountAction((db) => db.loginSession.setAccountIdIfNull(accountId));
-    _log.info("AccountForegroundDatabase init completed");
+    _log.info("AccountDatabase init completed");
     return manager;
   }
 }

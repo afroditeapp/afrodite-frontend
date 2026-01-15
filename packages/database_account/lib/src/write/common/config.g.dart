@@ -3,7 +3,7 @@
 part of 'config.dart';
 
 // ignore_for_file: type=lint
-mixin _$DaoWriteConfigMixin on DatabaseAccessor<AccountForegroundDatabase> {
+mixin _$DaoWriteConfigMixin on DatabaseAccessor<AccountDatabase> {
   $ClientFeaturesConfigTable get clientFeaturesConfig =>
       attachedDatabase.clientFeaturesConfig;
   $CustomReportsConfigTable get customReportsConfig =>

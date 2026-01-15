@@ -3,7 +3,7 @@
 part of 'account.dart';
 
 // ignore_for_file: type=lint
-mixin _$DaoWriteAccountMixin on DatabaseAccessor<AccountForegroundDatabase> {
+mixin _$DaoWriteAccountMixin on DatabaseAccessor<AccountDatabase> {
   $LocalAccountIdTable get localAccountId => attachedDatabase.localAccountId;
   $AccountStateTable get accountState => attachedDatabase.accountState;
   $PermissionsTable get permissions => attachedDatabase.permissions;

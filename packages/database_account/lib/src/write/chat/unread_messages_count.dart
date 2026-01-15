@@ -8,7 +8,7 @@ import '../../schema.dart' as schema;
 part 'unread_messages_count.g.dart';
 
 @DriftAccessor(tables: [schema.UnreadMessagesCount, schema.NewMessageNotification])
-class DaoWriteChatUnreadMessagesCount extends DatabaseAccessor<AccountForegroundDatabase>
+class DaoWriteChatUnreadMessagesCount extends DatabaseAccessor<AccountDatabase>
     with _$DaoWriteChatUnreadMessagesCountMixin {
   DaoWriteChatUnreadMessagesCount(super.db);
 

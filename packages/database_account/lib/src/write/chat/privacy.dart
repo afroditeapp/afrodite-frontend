@@ -8,8 +8,7 @@ import '../../schema.dart' as schema;
 part 'privacy.g.dart';
 
 @DriftAccessor(tables: [schema.ChatPrivacySettings])
-class DaoWritePrivacy extends DatabaseAccessor<AccountForegroundDatabase>
-    with _$DaoWritePrivacyMixin {
+class DaoWritePrivacy extends DatabaseAccessor<AccountDatabase> with _$DaoWritePrivacyMixin {
   DaoWritePrivacy(super.db);
 
   Future<void> updateChatPrivacySettings(api.ChatPrivacySettings settings) async {

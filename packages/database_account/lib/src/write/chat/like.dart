@@ -8,7 +8,7 @@ import '../../schema.dart' as schema;
 part 'like.g.dart';
 
 @DriftAccessor(tables: [schema.DailyLikesLeft])
-class DaoWriteLike extends DatabaseAccessor<AccountForegroundDatabase> with _$DaoWriteLikeMixin {
+class DaoWriteLike extends DatabaseAccessor<AccountDatabase> with _$DaoWriteLikeMixin {
   DaoWriteLike(super.db);
 
   Future<void> updateDailyLikesLeft(api.DailyLikesLeft value) async {

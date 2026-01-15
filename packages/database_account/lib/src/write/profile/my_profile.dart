@@ -10,8 +10,7 @@ import '../../schema.dart' as schema;
 part 'my_profile.g.dart';
 
 @DriftAccessor(tables: [schema.MyProfile, schema.ProfileLocation, schema.InitialProfileAge])
-class DaoWriteMyProfile extends DatabaseAccessor<AccountForegroundDatabase>
-    with _$DaoWriteMyProfileMixin {
+class DaoWriteMyProfile extends DatabaseAccessor<AccountDatabase> with _$DaoWriteMyProfileMixin {
   DaoWriteMyProfile(super.db);
 
   Future<void> setApiProfile({required api.GetMyProfileResult result}) async {

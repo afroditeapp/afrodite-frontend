@@ -9,14 +9,14 @@ import 'package:utils/utils.dart';
 
 void main() {
   group('Chat Backup', () {
-    late AccountForegroundDatabase db;
+    late AccountDatabase db;
     final testAccountId = api.AccountId(aid: 'test-account-123');
     final remoteAccount1 = api.AccountId(aid: 'remote-account-1');
     final remoteAccount2 = api.AccountId(aid: 'remote-account-2');
 
     setUp(() {
       // Create in-memory database for testing
-      db = AccountForegroundDatabase(_InMemoryQueryExecutorProvider());
+      db = AccountDatabase(_InMemoryQueryExecutorProvider());
     });
 
     tearDown(() async {

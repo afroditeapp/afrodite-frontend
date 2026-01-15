@@ -8,7 +8,7 @@ import '../../schema.dart' as schema;
 part 'conversation_list.g.dart';
 
 @DriftAccessor(tables: [schema.ConversationList])
-class DaoReadConversationList extends DatabaseAccessor<AccountForegroundDatabase>
+class DaoReadConversationList extends DatabaseAccessor<AccountDatabase>
     with _$DaoReadConversationListMixin {
   DaoReadConversationList(super.db);
 

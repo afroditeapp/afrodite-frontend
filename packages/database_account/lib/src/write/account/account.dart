@@ -19,8 +19,7 @@ part 'account.g.dart';
     schema.EmailVerified,
   ],
 )
-class DaoWriteAccount extends DatabaseAccessor<AccountForegroundDatabase>
-    with _$DaoWriteAccountMixin {
+class DaoWriteAccount extends DatabaseAccessor<AccountDatabase> with _$DaoWriteAccountMixin {
   DaoWriteAccount(super.db);
 
   Future<void> updateAccountState(api.Account value) async {

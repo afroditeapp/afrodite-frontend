@@ -3,7 +3,7 @@
 part of 'common.dart';
 
 // ignore_for_file: type=lint
-mixin _$DaoWriteCommonMixin on DatabaseAccessor<AccountForegroundDatabase> {
+mixin _$DaoWriteCommonMixin on DatabaseAccessor<AccountDatabase> {
   $ServerMaintenanceTable get serverMaintenance =>
       attachedDatabase.serverMaintenance;
   $SyncVersionTable get syncVersion => attachedDatabase.syncVersion;

@@ -9,7 +9,7 @@ import '../../schema.dart' as schema;
 part 'key.g.dart';
 
 @DriftAccessor(tables: [schema.MyKeyPair, schema.PublicKey])
-class DaoReadKey extends DatabaseAccessor<AccountForegroundDatabase> with _$DaoReadKeyMixin {
+class DaoReadKey extends DatabaseAccessor<AccountDatabase> with _$DaoReadKeyMixin {
   DaoReadKey(super.db);
 
   Future<dbm.AllKeyData?> getMessageKeys() async {

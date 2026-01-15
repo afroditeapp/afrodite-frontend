@@ -19,7 +19,7 @@ part 'config.g.dart';
     schema.ProfileAttributesConfigAttributes,
   ],
 )
-class DaoReadConfig extends DatabaseAccessor<AccountForegroundDatabase> with _$DaoReadConfigMixin {
+class DaoReadConfig extends DatabaseAccessor<AccountDatabase> with _$DaoReadConfigMixin {
   DaoReadConfig(super.db);
 
   Stream<api.ClientFeaturesConfigHash?> watchClientFeaturesConfigHash() =>

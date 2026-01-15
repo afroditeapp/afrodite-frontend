@@ -4,7 +4,7 @@ part of 'app_notification_settings.dart';
 
 // ignore_for_file: type=lint
 mixin _$DaoWriteAppNotificationSettingsMixin
-    on DatabaseAccessor<AccountForegroundDatabase> {
+    on DatabaseAccessor<AccountDatabase> {
   $AppNotificationSettingsTable get appNotificationSettings =>
       attachedDatabase.appNotificationSettings;
 }

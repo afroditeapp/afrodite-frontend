@@ -18,8 +18,7 @@ part 'config.g.dart';
     schema.ProfileAttributesConfigAttributes,
   ],
 )
-class DaoWriteConfig extends DatabaseAccessor<AccountForegroundDatabase>
-    with _$DaoWriteConfigMixin {
+class DaoWriteConfig extends DatabaseAccessor<AccountDatabase> with _$DaoWriteConfigMixin {
   DaoWriteConfig(super.db);
 
   Future<void> updateClientFeaturesConfig(

@@ -164,20 +164,19 @@ part 'database.g.dart';
     DaoWriteChatUnreadMessagesCount,
   ],
 )
-class AccountForegroundDatabase extends _$AccountForegroundDatabase {
-  AccountForegroundDatabase(QueryExcecutorProvider dbProvider)
-    : super(dbProvider.getQueryExcecutor());
+class AccountDatabase extends _$AccountDatabase {
+  AccountDatabase(QueryExcecutorProvider dbProvider) : super(dbProvider.getQueryExcecutor());
 
-  AccountForegroundDatabaseRead get read => AccountForegroundDatabaseRead(this);
-  AccountForegroundDatabaseWrite get write => AccountForegroundDatabaseWrite(this);
+  AccountDatabaseRead get read => AccountDatabaseRead(this);
+  AccountDatabaseWrite get write => AccountDatabaseWrite(this);
 
   @override
   int get schemaVersion => 1;
 }
 
-class AccountForegroundDatabaseRead {
-  final AccountForegroundDatabase db;
-  AccountForegroundDatabaseRead(this.db);
+class AccountDatabaseRead {
+  final AccountDatabase db;
+  AccountDatabaseRead(this.db);
   // App
   DaoReadApp get app => db.daoReadApp;
   DaoReadAppNotificationSettings get appNotificationSettings => db.daoReadAppNotificationSettings;
@@ -205,9 +204,9 @@ class AccountForegroundDatabaseRead {
   DaoReadChatUnreadMessagesCount get chatUnreadMessagesCount => db.daoReadChatUnreadMessagesCount;
 }
 
-class AccountForegroundDatabaseWrite {
-  final AccountForegroundDatabase db;
-  AccountForegroundDatabaseWrite(this.db);
+class AccountDatabaseWrite {
+  final AccountDatabase db;
+  AccountDatabaseWrite(this.db);
   // App
   DaoWriteApp get app => db.daoWriteApp;
   DaoWriteAppNotificationSettings get appNotificationSettings => db.daoWriteAppNotificationSettings;
