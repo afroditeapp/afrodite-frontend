@@ -1,4 +1,4 @@
-name: database_common_foreground
+name: database_common
 version: 1.0.0
 
 publish_to: none

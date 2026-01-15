@@ -51,8 +51,8 @@ update-freezed-code:
 
 update-drift-code-account-foreground:
 	cd packages/database_account_foreground && dart run build_runner build
-update-drift-code-common-foreground:
-	cd packages/database_common_foreground && dart run build_runner build
+update-drift-code-common:
+	cd packages/database_common && dart run build_runner build
 
 update-translations:
 	xml2arb --input-dir translations/app/src/main/res --output-dir lib/l10n --arb-file-name-template app_en.arb
@@ -138,7 +138,7 @@ clean:
 	flutter clean
 	cd packages/database && flutter clean
 	cd packages/database_account_foreground && flutter clean
-	cd packages/database_common_foreground && flutter clean
+	cd packages/database_common && flutter clean
 	cd packages/database_converter && flutter clean
 	cd packages/database_model && flutter clean
 	cd packages/database_provider && flutter clean
@@ -165,7 +165,7 @@ code-stats:
 	lib \
 	packages/database \
 	packages/database_account_foreground \
-	packages/database_common_foreground \
+	packages/database_common \
 	packages/database_converter \
 	packages/database_model \
 	packages/database_provider \

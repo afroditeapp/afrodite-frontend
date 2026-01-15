@@ -11,7 +11,7 @@ resolution: workspace
 dependencies:
   database_account_foreground:
     path: "../database_account_foreground"
-  database_common_foreground:
-    path: "../database_common_foreground"
+  database_common:
+    path: "../database_common"
   database_model:
     path: "../database_model"

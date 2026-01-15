@@ -1,4 +1,4 @@
-import 'package:database_common_foreground/src/database.dart';
+import 'package:database_common/src/database.dart';
 import 'package:database_utils/database_utils.dart';
 import 'package:drift/drift.dart';
 

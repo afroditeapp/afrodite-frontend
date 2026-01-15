@@ -1,4 +1,4 @@
-import 'package:database_account_foreground/database_common_foreground.dart';
+import 'package:database_account_foreground/database_account_foreground.dart';
 import 'package:database_model/database_model.dart';
 import 'package:drift/drift.dart';
 import 'package:openapi/api.dart' as api;

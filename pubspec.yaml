@@ -26,7 +26,7 @@ workspace:
   - packages/api_client
   - packages/database
   - packages/database_account_foreground
-  - packages/database_common_foreground
+  - packages/database_common
   - packages/database_converter
   - packages/database_model
   - packages/database_provider
