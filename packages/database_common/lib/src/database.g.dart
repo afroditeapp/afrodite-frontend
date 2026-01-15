@@ -348,231 +348,6 @@ class DemoAccountCompanion extends UpdateCompanion<DemoAccountData> {
   }
 }
 
-class $ImageEncryptionKeyTable extends schema.ImageEncryptionKey
-    with TableInfo<$ImageEncryptionKeyTable, ImageEncryptionKeyData> {
-  @override
-  final GeneratedDatabase attachedDatabase;
-  final String? _alias;
-  $ImageEncryptionKeyTable(this.attachedDatabase, [this._alias]);
-  static const VerificationMeta _idMeta = const VerificationMeta('id');
-  @override
-  late final GeneratedColumn<int> id = GeneratedColumn<int>(
-    'id',
-    aliasedName,
-    false,
-    hasAutoIncrement: true,
-    type: DriftSqlType.int,
-    requiredDuringInsert: false,
-    defaultConstraints: GeneratedColumn.constraintIsAlways(
-      'PRIMARY KEY AUTOINCREMENT',
-    ),
-  );
-  static const VerificationMeta _imageEncryptionKeyMeta =
-      const VerificationMeta('imageEncryptionKey');
-  @override
-  late final GeneratedColumn<Uint8List> imageEncryptionKey =
-      GeneratedColumn<Uint8List>(
-        'image_encryption_key',
-        aliasedName,
-        true,
-        type: DriftSqlType.blob,
-        requiredDuringInsert: false,
-      );
-  @override
-  List<GeneratedColumn> get $columns => [id, imageEncryptionKey];
-  @override
-  String get aliasedName => _alias ?? actualTableName;
-  @override
-  String get actualTableName => $name;
-  static const String $name = 'image_encryption_key';
-  @override
-  VerificationContext validateIntegrity(
-    Insertable<ImageEncryptionKeyData> instance, {
-    bool isInserting = false,
-  }) {
-    final context = VerificationContext();
-    final data = instance.toColumns(true);
-    if (data.containsKey('id')) {
-      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
-    }
-    if (data.containsKey('image_encryption_key')) {
-      context.handle(
-        _imageEncryptionKeyMeta,
-        imageEncryptionKey.isAcceptableOrUnknown(
-          data['image_encryption_key']!,
-          _imageEncryptionKeyMeta,
-        ),
-      );
-    }
-    return context;
-  }
-
-  @override
-  Set<GeneratedColumn> get $primaryKey => {id};
-  @override
-  ImageEncryptionKeyData map(Map<String, dynamic> data, {String? tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return ImageEncryptionKeyData(
-      id: attachedDatabase.typeMapping.read(
-        DriftSqlType.int,
-        data['${effectivePrefix}id'],
-      )!,
-      imageEncryptionKey: attachedDatabase.typeMapping.read(
-        DriftSqlType.blob,
-        data['${effectivePrefix}image_encryption_key'],
-      ),
-    );
-  }
-
-  @override
-  $ImageEncryptionKeyTable createAlias(String alias) {
-    return $ImageEncryptionKeyTable(attachedDatabase, alias);
-  }
-}
-
-class ImageEncryptionKeyData extends DataClass
-    implements Insertable<ImageEncryptionKeyData> {
-  final int id;
-  final Uint8List? imageEncryptionKey;
-  const ImageEncryptionKeyData({required this.id, this.imageEncryptionKey});
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    map['id'] = Variable<int>(id);
-    if (!nullToAbsent || imageEncryptionKey != null) {
-      map['image_encryption_key'] = Variable<Uint8List>(imageEncryptionKey);
-    }
-    return map;
-  }
-
-  ImageEncryptionKeyCompanion toCompanion(bool nullToAbsent) {
-    return ImageEncryptionKeyCompanion(
-      id: Value(id),
-      imageEncryptionKey: imageEncryptionKey == null && nullToAbsent
-          ? const Value.absent()
-          : Value(imageEncryptionKey),
-    );
-  }
-
-  factory ImageEncryptionKeyData.fromJson(
-    Map<String, dynamic> json, {
-    ValueSerializer? serializer,
-  }) {
-    serializer ??= driftRuntimeOptions.defaultSerializer;
-    return ImageEncryptionKeyData(
-      id: serializer.fromJson<int>(json['id']),
-      imageEncryptionKey: serializer.fromJson<Uint8List?>(
-        json['imageEncryptionKey'],
-      ),
-    );
-  }
-  @override
-  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
-    serializer ??= driftRuntimeOptions.defaultSerializer;
-    return <String, dynamic>{
-      'id': serializer.toJson<int>(id),
-      'imageEncryptionKey': serializer.toJson<Uint8List?>(imageEncryptionKey),
-    };
-  }
-
-  ImageEncryptionKeyData copyWith({
-    int? id,
-    Value<Uint8List?> imageEncryptionKey = const Value.absent(),
-  }) => ImageEncryptionKeyData(
-    id: id ?? this.id,
-    imageEncryptionKey: imageEncryptionKey.present
-        ? imageEncryptionKey.value
-        : this.imageEncryptionKey,
-  );
-  ImageEncryptionKeyData copyWithCompanion(ImageEncryptionKeyCompanion data) {
-    return ImageEncryptionKeyData(
-      id: data.id.present ? data.id.value : this.id,
-      imageEncryptionKey: data.imageEncryptionKey.present
-          ? data.imageEncryptionKey.value
-          : this.imageEncryptionKey,
-    );
-  }
-
-  @override
-  String toString() {
-    return (StringBuffer('ImageEncryptionKeyData(')
-          ..write('id: $id, ')
-          ..write('imageEncryptionKey: $imageEncryptionKey')
-          ..write(')'))
-        .toString();
-  }
-
-  @override
-  int get hashCode =>
-      Object.hash(id, $driftBlobEquality.hash(imageEncryptionKey));
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      (other is ImageEncryptionKeyData &&
-          other.id == this.id &&
-          $driftBlobEquality.equals(
-            other.imageEncryptionKey,
-            this.imageEncryptionKey,
-          ));
-}
-
-class ImageEncryptionKeyCompanion
-    extends UpdateCompanion<ImageEncryptionKeyData> {
-  final Value<int> id;
-  final Value<Uint8List?> imageEncryptionKey;
-  const ImageEncryptionKeyCompanion({
-    this.id = const Value.absent(),
-    this.imageEncryptionKey = const Value.absent(),
-  });
-  ImageEncryptionKeyCompanion.insert({
-    this.id = const Value.absent(),
-    this.imageEncryptionKey = const Value.absent(),
-  });
-  static Insertable<ImageEncryptionKeyData> custom({
-    Expression<int>? id,
-    Expression<Uint8List>? imageEncryptionKey,
-  }) {
-    return RawValuesInsertable({
-      if (id != null) 'id': id,
-      if (imageEncryptionKey != null)
-        'image_encryption_key': imageEncryptionKey,
-    });
-  }
-
-  ImageEncryptionKeyCompanion copyWith({
-    Value<int>? id,
-    Value<Uint8List?>? imageEncryptionKey,
-  }) {
-    return ImageEncryptionKeyCompanion(
-      id: id ?? this.id,
-      imageEncryptionKey: imageEncryptionKey ?? this.imageEncryptionKey,
-    );
-  }
-
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    if (id.present) {
-      map['id'] = Variable<int>(id.value);
-    }
-    if (imageEncryptionKey.present) {
-      map['image_encryption_key'] = Variable<Uint8List>(
-        imageEncryptionKey.value,
-      );
-    }
-    return map;
-  }
-
-  @override
-  String toString() {
-    return (StringBuffer('ImageEncryptionKeyCompanion(')
-          ..write('id: $id, ')
-          ..write('imageEncryptionKey: $imageEncryptionKey')
-          ..write(')'))
-        .toString();
-  }
-}
-
 class $NotificationPermissionAskedTable
     extends schema.NotificationPermissionAsked
     with
@@ -1442,25 +1217,19 @@ class CurrentLocaleCompanion extends UpdateCompanion<CurrentLocaleData> {
 abstract class _$CommonDatabase extends GeneratedDatabase {
   _$CommonDatabase(QueryExecutor e) : super(e);
   late final $DemoAccountTable demoAccount = $DemoAccountTable(this);
-  late final $ImageEncryptionKeyTable imageEncryptionKey =
-      $ImageEncryptionKeyTable(this);
   late final $NotificationPermissionAskedTable notificationPermissionAsked =
       $NotificationPermissionAskedTable(this);
   late final $AccountIdTable accountId = $AccountIdTable(this);
   late final $ServerUrlTable serverUrl = $ServerUrlTable(this);
   late final $CurrentLocaleTable currentLocale = $CurrentLocaleTable(this);
-  late final DaoReadApp daoReadApp = DaoReadApp(
-    this as CommonDatabase,
-  );
+  late final DaoReadApp daoReadApp = DaoReadApp(this as CommonDatabase);
   late final DaoReadDemoAccount daoReadDemoAccount = DaoReadDemoAccount(
     this as CommonDatabase,
   );
   late final DaoReadLoginSession daoReadLoginSession = DaoReadLoginSession(
     this as CommonDatabase,
   );
-  late final DaoWriteApp daoWriteApp = DaoWriteApp(
-    this as CommonDatabase,
-  );
+  late final DaoWriteApp daoWriteApp = DaoWriteApp(this as CommonDatabase);
   late final DaoWriteDemoAccount daoWriteDemoAccount = DaoWriteDemoAccount(
     this as CommonDatabase,
   );
@@ -1473,7 +1242,6 @@ abstract class _$CommonDatabase extends GeneratedDatabase {
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities => [
     demoAccount,
-    imageEncryptionKey,
     notificationPermissionAsked,
     accountId,
     serverUrl,

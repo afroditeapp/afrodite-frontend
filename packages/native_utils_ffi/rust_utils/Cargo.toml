@@ -21,7 +21,6 @@ opt-level = 3
 panic = "abort"
 
 [dependencies]
-aes-gcm = "0.10.3"
 pgp = { version = "0.18.0", default-features = false }
 smallvec = "1.13.2"
 rand = "0.8.5"

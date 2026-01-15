@@ -19,7 +19,6 @@ import 'package:app/database/common_database_manager.dart';
 import 'package:app/localizations.dart';
 
 import 'package:app/logic/app/main_state.dart';
-import 'package:app/storage/encryption.dart';
 
 import 'package:app/l10n/app_localizations.dart';
 import 'package:app/l10n/app_localizations_en.dart';
@@ -209,7 +208,6 @@ class GlobalInitManager extends AppSingletonNoInit {
     }
 
     await CommonDatabaseManager.getInstance().init();
-    await ImageEncryptionManager.getInstance().init();
 
     await ErrorManager.getInstance().init();
     await ImageCacheData.getInstance().init();

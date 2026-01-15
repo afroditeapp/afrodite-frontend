@@ -6,8 +6,6 @@ part of 'app.dart';
 mixin _$DaoWriteAppMixin on DatabaseAccessor<CommonDatabase> {
   $NotificationPermissionAskedTable get notificationPermissionAsked =>
       attachedDatabase.notificationPermissionAsked;
-  $ImageEncryptionKeyTable get imageEncryptionKey =>
-      attachedDatabase.imageEncryptionKey;
   $CurrentLocaleTable get currentLocale => attachedDatabase.currentLocale;
   $ServerUrlTable get serverUrl => attachedDatabase.serverUrl;
 }

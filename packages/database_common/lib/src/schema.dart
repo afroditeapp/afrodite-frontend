@@ -8,10 +8,6 @@ class DemoAccount extends SingleRowTable {
   TextColumn get demoAccountToken => text().nullable()();
 }
 
-class ImageEncryptionKey extends SingleRowTable {
-  BlobColumn get imageEncryptionKey => blob().nullable()();
-}
-
 class NotificationPermissionAsked extends SingleRowTable {
   /// If true don't show notification permission asking dialog when
   /// app main view (bottom navigation is visible) is opened.

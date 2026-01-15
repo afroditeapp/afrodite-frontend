@@ -14,7 +14,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:openapi/api.dart';
 import 'package:app/data/media_repository.dart';
-import 'package:app/storage/encryption.dart';
 import 'package:app/ui/normal/settings/location.dart';
 import 'package:utils/utils.dart';
 
@@ -53,11 +52,7 @@ class ImageCacheData extends AppSingleton {
     final fileInfo = await cacheManager.getFileFromCache(imgKey);
     if (fileInfo != null) {
       try {
-        final encryptedImgBytes = await fileInfo.file.readAsBytes();
-        final decryptedImgBytes = await ImageEncryptionManager.getInstance().decryptImageData(
-          encryptedImgBytes,
-        );
-        return decryptedImgBytes;
+        return await fileInfo.file.readAsBytes();
       } catch (_) {
         // Fallback to image downloading
       }
@@ -69,10 +64,7 @@ class ImageCacheData extends AppSingleton {
     }
 
     try {
-      final encryptedImgBytes = await ImageEncryptionManager.getInstance().encryptImageData(
-        imageData,
-      );
-      await cacheManager.putFile("null", encryptedImgBytes, key: imgKey);
+      await cacheManager.putFile("null", imageData, key: imgKey);
     } catch (_) {
       // Ignore errors
     }
@@ -97,11 +89,7 @@ class ImageCacheData extends AppSingleton {
       final fileInfo = await cacheManager.getFileFromCache(key);
       if (fileInfo != null) {
         try {
-          final encryptedImgBytes = await fileInfo.file.readAsBytes();
-          final decryptedImgBytes = await ImageEncryptionManager.getInstance().decryptImageData(
-            encryptedImgBytes,
-          );
-          return decryptedImgBytes;
+          return await fileInfo.file.readAsBytes();
         } catch (_) {
           // Fallback to image downloading
         }
@@ -124,10 +112,7 @@ class ImageCacheData extends AppSingleton {
         if (tilePngData.isEmpty) {
           return null;
         }
-        final encryptedImgBytes = await ImageEncryptionManager.getInstance().encryptImageData(
-          tilePngData,
-        );
-        await cacheManager.putFile("null", encryptedImgBytes, key: mapTileCacheKey);
+        await cacheManager.putFile("null", tilePngData, key: mapTileCacheKey);
       } catch (_) {
         // Ignore errors
       }

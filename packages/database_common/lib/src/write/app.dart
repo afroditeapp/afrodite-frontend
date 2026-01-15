@@ -6,22 +6,9 @@ import '../schema.dart' as schema;
 
 part 'app.g.dart';
 
-@DriftAccessor(
-  tables: [
-    schema.NotificationPermissionAsked,
-    schema.ImageEncryptionKey,
-    schema.CurrentLocale,
-    schema.ServerUrl,
-  ],
-)
+@DriftAccessor(tables: [schema.NotificationPermissionAsked, schema.CurrentLocale, schema.ServerUrl])
 class DaoWriteApp extends DatabaseAccessor<CommonDatabase> with _$DaoWriteAppMixin {
   DaoWriteApp(super.db);
-
-  Future<void> updateImageEncryptionKey(Uint8List key) async {
-    await into(imageEncryptionKey).insertOnConflictUpdate(
-      ImageEncryptionKeyCompanion.insert(id: SingleRowTable.ID, imageEncryptionKey: Value(key)),
-    );
-  }
 
   Future<void> updateNotificationPermissionAsked(bool value) async {
     await into(notificationPermissionAsked).insertOnConflictUpdate(

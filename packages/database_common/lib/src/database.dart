@@ -16,7 +16,6 @@ part 'database.g.dart';
 @DriftDatabase(
   tables: [
     schema.DemoAccount,
-    schema.ImageEncryptionKey,
     schema.NotificationPermissionAsked,
     schema.AccountId,
     schema.ServerUrl,

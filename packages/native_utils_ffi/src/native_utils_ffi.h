@@ -6,36 +6,6 @@
 #define FFI_PLUGIN_EXPORT extern
 #endif
 
-// Content encryption API
-
-// Replace plaintext with ciphertext and nonce.
-//
-// Data buffer needs to have 28 bytes empty space at the end.
-//
-// The buffer can contain random data as it will be overwritten.
-//
-// The key must be 16 bytes (128 bits) long.
-//
-// Returns 0 if operation was successful.
-FFI_PLUGIN_EXPORT intptr_t encrypt_content(
-  uint8_t* data,
-  intptr_t data_len,
-  const uint8_t* key,
-  intptr_t key_len
-);
-
-// Replace ciphertext and nonce with plaintext data.
-//
-// The plaintext data is 28 bytes shorter than the data buffer size.
-//
-// Returns 0 if operation was successful.
-FFI_PLUGIN_EXPORT intptr_t decrypt_content(
-  uint8_t* data,
-  intptr_t data_len,
-  const uint8_t* key,
-  intptr_t key_len
-);
-
 // Message encryption API
 
 struct BinaryData {
