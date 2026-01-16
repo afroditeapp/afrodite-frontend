@@ -6,9 +6,11 @@ import 'package:app/database/account_database_manager.dart';
 import 'package:app/localizations.dart';
 import 'package:app/logic/chat/conversation_bloc.dart';
 import 'package:app/model/freezed/logic/chat/conversation_bloc.dart';
+import 'package:app/ui/normal/chat/chat_list/animated_composer.dart';
 import 'package:app/ui/normal/chat/chat_list/chat_message.dart';
 import 'package:app/ui/normal/chat/chat_list/lazy_quotation.dart';
 import 'package:app/ui/normal/chat/chat_list/logic.dart';
+import 'package:app/ui/normal/chat/chat_list/reply_target_controller.dart';
 import 'package:app/ui/normal/chat/conversation_page.dart';
 import 'package:app/ui/normal/chat/chat_list/message_adapter.dart';
 import 'package:app/ui/normal/chat/utils.dart';
@@ -64,17 +66,17 @@ class _ChatListState extends State<ChatList> {
   late chat_core.InMemoryChatController _chatController;
   late TextEditingController _textEditingController;
   late ChatListLogic _chatListLogic;
+  late ReplyTargetController _replyTargetController;
 
   bool _reversed = false;
   bool _endReached = false;
   bool _showMakeMatchInstruction = false;
 
-  // Reply target state
-  MessageEntry? _replyTarget;
-
   @override
   void initState() {
     super.initState();
+    _replyTargetController = ReplyTargetController();
+
     _log.finest("Opening conversation for account: ${widget.messageReceiver}");
 
     final initialMessages = MessageAdapter.toFlutterChatMessages(
@@ -124,22 +126,12 @@ class _ChatListState extends State<ChatList> {
     }
   }
 
-  void _setReplyTarget(MessageEntry? entry) {
-    setState(() {
-      _replyTarget = entry;
-    });
-  }
-
-  void _clearReplyTarget() {
-    _setReplyTarget(null);
-  }
-
   Future<void> _handleSwipeToReply(String messageId) async {
     final localMessageId = LocalMessageId(int.parse(messageId));
     final r = context.read<RepositoryInstances>();
     final entry = await r.chat.getMessageWithLocalId(localMessageId).first;
     if (entry != null) {
-      _setReplyTarget(entry);
+      _replyTargetController.setReplyTarget(entry);
     }
   }
 
@@ -171,8 +163,9 @@ class _ChatListState extends State<ChatList> {
       resolveUser: (_) => Future<chat_core.User?>.value(null),
       onMessageSend: (String text) async {
         final Message message;
-        if (_replyTarget != null) {
-          final replyToMessageId = _replyTarget!.messageId?.id;
+        final replyTarget = _replyTargetController.replyTarget;
+        if (replyTarget != null) {
+          final replyToMessageId = replyTarget.messageId?.id;
           if (replyToMessageId == null) {
             showSnackBar(context.strings.generic_error);
             return;
@@ -200,7 +193,7 @@ class _ChatListState extends State<ChatList> {
         final saved = await sendMessage(context, message);
         if (saved) {
           _textEditingController.clear();
-          _clearReplyTarget();
+          _replyTargetController.clearReplyTarget();
         }
       },
       onMessageLongPress:
@@ -501,35 +494,10 @@ class _ChatListState extends State<ChatList> {
           );
         },
         composerBuilder: (BuildContext ctx) {
-          Widget? topWidget;
-          if (_replyTarget != null) {
-            final message = _replyTarget!.message;
-            final sentState = _replyTarget!.messageState.toSentState();
-            final receivedState = _replyTarget!.messageState.toReceivedState();
-            final quotedText = messageWidgetText(ctx, message, sentState, receivedState);
-
-            topWidget = Container(
-              color: Theme.of(ctx).colorScheme.surfaceContainerHighest,
-              padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
-              child: Row(
-                children: [
-                  Expanded(child: Quotation(text: quotedText)),
-                  IconButton(
-                    icon: const Icon(Icons.close),
-                    onPressed: _clearReplyTarget,
-                    padding: EdgeInsets.zero,
-                    constraints: const BoxConstraints(),
-                  ),
-                ],
-              ),
-            );
-          }
-
-          return chat_ui.Composer(
+          return AnimatedComposer(
             textEditingController: _textEditingController,
-            inputClearMode: chat_ui.InputClearMode.never,
+            replyTargetController: _replyTargetController,
             hintText: ctx.strings.conversation_screen_chat_box_placeholder_text,
-            topWidget: topWidget,
           );
         },
       ),
@@ -547,6 +515,7 @@ class _ChatListState extends State<ChatList> {
     _textEditingController.removeListener(_onTextChanged);
     _chatController.dispose();
     _textEditingController.dispose();
+    _replyTargetController.dispose();
     super.dispose();
   }
 }
