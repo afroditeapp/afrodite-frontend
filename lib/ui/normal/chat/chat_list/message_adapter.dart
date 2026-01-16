@@ -107,6 +107,20 @@ class MessageAdapter {
         status: status,
         metadata: {'type': 'text_message'},
       );
+    } else if (message is MessageWithReference) {
+      return chat.Message.text(
+        id: entry.localId.id.toString(),
+        authorId: authorId,
+        text: message.text,
+        createdAt: createdAt,
+        sentAt: sentAt,
+        deliveredAt: deliveredAt,
+        seenAt: seenAt,
+        failedAt: failedAt,
+        status: status,
+        replyToMessageId: message.messageId,
+        metadata: {'type': 'message_with_reference'},
+      );
     } else if (message is VideoCallInvitation) {
       return chat.Message.custom(
         id: entry.localId.id.toString(),

@@ -72,6 +72,17 @@ class DaoReadMessage extends DatabaseAccessor<AccountDatabase> with _$DaoReadMes
     )..where((t) => t.localId.equals(localId.id))).map((m) => _fromMessage(m)).watchSingleOrNull();
   }
 
+  Stream<dbm.MessageEntry?> getMessageUpdatesUsingMessageId(
+    api.AccountId remoteAccountId,
+    api.MessageId messageId,
+  ) {
+    return (select(message)
+          ..where((t) => t.remoteAccountId.equals(remoteAccountId.aid))
+          ..where((t) => t.messageId.equals(messageId.id)))
+        .map((m) => _fromMessage(m))
+        .watchSingleOrNull();
+  }
+
   dbm.MessageEntry? _fromMessage(MessageData m) {
     final dbm.MessageState? messageState = dbm.MessageState.fromInt(m.messageState);
     if (messageState == null) {

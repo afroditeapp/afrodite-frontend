@@ -6,6 +6,7 @@ import 'package:app/logic/account/client_features_config.dart';
 import 'package:app/logic/chat/chat_enabled.dart';
 import 'package:app/ui/normal/chat/chat_data_outdated_widget.dart';
 import 'package:app/ui/normal/chat/chat_list.dart';
+import 'package:app/ui/normal/chat/chat_list/lazy_quotation.dart';
 import 'package:app/ui/normal/chat/utils.dart';
 import 'package:app/ui/normal/report/report.dart';
 import 'package:app/ui_utils/dialog.dart';
@@ -48,6 +49,23 @@ Future<ConversationPage?> createConversationPage(
   final initialMessages = await messageIterator.nextList();
   initialMessages.addAll(await messageIterator.nextList());
 
+  // Create and populate QuotationCache with visible quotations
+  final quotationCache = QuotationCache();
+  for (final message in initialMessages) {
+    if (message is IteratorMessageEntry) {
+      final msg = message.entry.message;
+      if (msg is MessageWithReference) {
+        final messageId = MessageId(id: msg.messageId);
+        final entry = await r.accountDb
+            .accountData((db) => db.message.getMessageUsingMessageId(accountId, messageId))
+            .ok();
+        if (entry != null) {
+          quotationCache.update(msg.messageId, entry);
+        }
+      }
+    }
+  }
+
   // Load chat privacy settings from database because PrivacySettingsBloc
   // might not be initialized yet.
   final chatPrivacySettings =
@@ -65,6 +83,7 @@ Future<ConversationPage?> createConversationPage(
     initialMessages.reversed.toList(),
     messageIterator,
     chatPrivacySettings,
+    quotationCache,
   );
 }
 
@@ -117,6 +136,7 @@ class ConversationPage extends MyScreenPage<()> {
   final List<IteratorMessage> initialMessages;
   final MessageDatabaseIterator oldMessagesIterator;
   final ChatPrivacySettings chatPrivacySettings;
+  final QuotationCache quotationCache;
   ConversationPage(
     this.accountId,
     this.localAccountId,
@@ -124,6 +144,7 @@ class ConversationPage extends MyScreenPage<()> {
     this.initialMessages,
     this.oldMessagesIterator,
     this.chatPrivacySettings,
+    this.quotationCache,
   ) : super(
         builder: (closer) {
           return BlocProvider(
@@ -139,6 +160,7 @@ class ConversationPage extends MyScreenPage<()> {
               initialMessages,
               oldMessagesIterator,
               chatPrivacySettings,
+              quotationCache,
             ),
           );
         },
@@ -159,13 +181,15 @@ class ConversationScreen extends StatefulWidget {
   final List<IteratorMessage> initialMessages;
   final MessageDatabaseIterator oldMessagesIterator;
   final ChatPrivacySettings chatPrivacySettings;
+  final QuotationCache quotationCache;
   const ConversationScreen(
     this.closer,
     this.accountId,
     this.profileEntry,
     this.initialMessages,
     this.oldMessagesIterator,
-    this.chatPrivacySettings, {
+    this.chatPrivacySettings,
+    this.quotationCache, {
     super.key,
   });
 
@@ -264,6 +288,7 @@ class ConversationScreenState extends State<ConversationScreen> {
             widget.profileEntry,
             widget.initialMessages,
             widget.oldMessagesIterator,
+            widget.quotationCache,
             currentUser: r.accountId,
             messageReceiver: widget.accountId,
             db: r.accountDb,

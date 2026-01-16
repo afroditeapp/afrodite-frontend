@@ -379,6 +379,9 @@ class AppLocalizationsFi extends AppLocalizations {
   String get conversation_screen_message_list_empty => 'No messages';
 
   @override
+  String get conversation_screen_message_not_found => 'Message not found';
+
+  @override
   String get conversation_screen_message_state_decrypting_failed => 'Decrypting failed';
 
   @override

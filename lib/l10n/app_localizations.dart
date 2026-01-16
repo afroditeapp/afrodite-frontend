@@ -724,6 +724,12 @@ abstract class AppLocalizations {
   /// **'No messages'**
   String get conversation_screen_message_list_empty;
 
+  /// Message text that referenced message was not found
+  ///
+  /// In en, this message translates to:
+  /// **'Message not found'**
+  String get conversation_screen_message_not_found;
+
   /// Message state text that message decrypting failed
   ///
   /// In en, this message translates to:

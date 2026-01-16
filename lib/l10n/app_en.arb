@@ -494,6 +494,10 @@
   "@conversation_screen_message_list_empty": {
     "description": "Info text that message list is empty"
   },
+  "conversation_screen_message_not_found": "Message not found",
+  "@conversation_screen_message_not_found": {
+    "description": "Message text that referenced message was not found"
+  },
   "conversation_screen_message_state_decrypting_failed": "Decrypting failed",
   "@conversation_screen_message_state_decrypting_failed": {
     "description": "Message state text that message decrypting failed"

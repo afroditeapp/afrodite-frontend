@@ -7,6 +7,7 @@ import 'package:app/localizations.dart';
 import 'package:app/logic/chat/conversation_bloc.dart';
 import 'package:app/model/freezed/logic/chat/conversation_bloc.dart';
 import 'package:app/ui/normal/chat/chat_list/chat_message.dart';
+import 'package:app/ui/normal/chat/chat_list/lazy_quotation.dart';
 import 'package:app/ui/normal/chat/chat_list/logic.dart';
 import 'package:app/ui/normal/chat/conversation_page.dart';
 import 'package:app/ui/normal/chat/chat_list/message_adapter.dart';
@@ -33,6 +34,7 @@ class ChatList extends StatefulWidget {
   final ProfileEntry? profileEntry;
   final List<IteratorMessage> initialMessages;
   final MessageDatabaseIterator oldMessagesIterator;
+  final QuotationCache quotationCache;
   final AccountDatabaseManager db;
   final TypingIndicatorManager typingIndicatorManager;
   final bool typingIndicatorEnabled;
@@ -42,7 +44,8 @@ class ChatList extends StatefulWidget {
   const ChatList(
     this.profileEntry,
     this.initialMessages,
-    this.oldMessagesIterator, {
+    this.oldMessagesIterator,
+    this.quotationCache, {
     required this.currentUser,
     required this.messageReceiver,
     required this.db,
@@ -65,6 +68,9 @@ class _ChatListState extends State<ChatList> {
   bool _reversed = false;
   bool _endReached = false;
   bool _showMakeMatchInstruction = false;
+
+  // Reply target state
+  MessageEntry? _replyTarget;
 
   @override
   void initState() {
@@ -118,6 +124,43 @@ class _ChatListState extends State<ChatList> {
     }
   }
 
+  void _setReplyTarget(MessageEntry? entry) {
+    setState(() {
+      _replyTarget = entry;
+    });
+  }
+
+  void _clearReplyTarget() {
+    _setReplyTarget(null);
+  }
+
+  Future<void> _handleSwipeToReply(String messageId) async {
+    final localMessageId = LocalMessageId(int.parse(messageId));
+    final r = context.read<RepositoryInstances>();
+    final entry = await r.chat.getMessageWithLocalId(localMessageId).first;
+    if (entry != null) {
+      _setReplyTarget(entry);
+    }
+  }
+
+  Widget _wrapWithSwipeToReply(Widget child, String messageId) {
+    return Dismissible(
+      key: ValueKey('swipe_$messageId'),
+      direction: DismissDirection.startToEnd,
+      dismissThresholds: const {DismissDirection.startToEnd: 0.3},
+      confirmDismiss: (direction) async {
+        await _handleSwipeToReply(messageId);
+        return false; // Don't actually dismiss
+      },
+      background: Container(
+        alignment: Alignment.centerLeft,
+        padding: const EdgeInsets.only(left: 20.0),
+        child: Icon(Icons.reply, color: Theme.of(context).colorScheme.primary),
+      ),
+      child: child,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final baseTheme = chat_core.ChatTheme.fromThemeData(Theme.of(context));
@@ -127,14 +170,37 @@ class _ChatListState extends State<ChatList> {
       chatController: _chatController,
       resolveUser: (_) => Future<chat_core.User?>.value(null),
       onMessageSend: (String text) async {
-        final textMessage = TextMessage.create(text);
-        if (text.characters.length > 4000 || textMessage == null) {
+        final Message message;
+        if (_replyTarget != null) {
+          final replyToMessageId = _replyTarget!.messageId?.id;
+          if (replyToMessageId == null) {
+            showSnackBar(context.strings.generic_error);
+            return;
+          }
+          final messageWithReference = MessageWithReference.create(text, replyToMessageId);
+          if (messageWithReference == null) {
+            showSnackBar(context.strings.conversation_screen_message_too_long);
+            return;
+          }
+          message = messageWithReference;
+        } else {
+          final textMessage = TextMessage.create(text);
+          if (textMessage == null) {
+            showSnackBar(context.strings.conversation_screen_message_too_long);
+            return;
+          }
+          message = textMessage;
+        }
+
+        if (text.characters.length > 4000) {
           showSnackBar(context.strings.conversation_screen_message_too_long);
           return;
         }
-        final saved = await sendMessage(context, textMessage);
+
+        final saved = await sendMessage(context, message);
         if (saved) {
           _textEditingController.clear();
+          _clearReplyTarget();
         }
       },
       onMessageLongPress:
@@ -340,6 +406,9 @@ class _ChatListState extends State<ChatList> {
 
               final localMessageId = LocalMessageId(int.parse(message.id));
               final r = context.read<RepositoryInstances>();
+
+              final wrappedWidget = _wrapWithSwipeToReply(messageWidget, message.id);
+
               return _MessageStateWatcher(
                 localMessageId: localMessageId,
                 messageId: message.id,
@@ -348,7 +417,7 @@ class _ChatListState extends State<ChatList> {
                 currentUserId: r.chat.currentUser.aid,
                 messageStateDeliveredEnabled: widget.messageStateDeliveredEnabled,
                 messageStateSeenEnabled: widget.messageStateSeenEnabled,
-                child: messageWidget,
+                child: wrappedWidget,
               );
             },
         textMessageBuilder:
@@ -367,13 +436,33 @@ class _ChatListState extends State<ChatList> {
                   ? Theme.of(context).colorScheme.onErrorContainer
                   : Theme.of(context).colorScheme.onPrimaryContainer;
 
+              final Widget messageContent;
+              if (message.replyToMessageId != null) {
+                messageContent = Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    LazyQuotation(
+                      replyToMessageId: message.replyToMessageId!,
+                      cache: widget.quotationCache,
+                      messageReceiver: widget.messageReceiver,
+                    ),
+                    const SizedBox(height: 4.0),
+                    Text(message.text, style: TextStyle(color: textColor)),
+                  ],
+                );
+              } else {
+                messageContent = Text(message.text, style: TextStyle(color: textColor));
+              }
+
               final messageWidget = ChatMessage(
                 createdAt: message.createdAt,
                 status: message.status,
                 isSentByMe: isSentByMe,
                 isError: isError,
-                child: Text(message.text, style: TextStyle(color: textColor)),
+                child: messageContent,
               );
+
+              final wrappedWidget = _wrapWithSwipeToReply(messageWidget, message.id);
 
               return _MessageStateWatcher(
                 localMessageId: localMessageId,
@@ -383,7 +472,7 @@ class _ChatListState extends State<ChatList> {
                 currentUserId: r.chat.currentUser.aid,
                 messageStateDeliveredEnabled: widget.messageStateDeliveredEnabled,
                 messageStateSeenEnabled: widget.messageStateSeenEnabled,
-                child: messageWidget,
+                child: wrappedWidget,
               );
             },
         emptyChatListBuilder: (BuildContext ctx) {
@@ -412,10 +501,35 @@ class _ChatListState extends State<ChatList> {
           );
         },
         composerBuilder: (BuildContext ctx) {
+          Widget? topWidget;
+          if (_replyTarget != null) {
+            final message = _replyTarget!.message;
+            final sentState = _replyTarget!.messageState.toSentState();
+            final receivedState = _replyTarget!.messageState.toReceivedState();
+            final quotedText = messageWidgetText(ctx, message, sentState, receivedState);
+
+            topWidget = Container(
+              color: Theme.of(ctx).colorScheme.surfaceContainerHighest,
+              padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+              child: Row(
+                children: [
+                  Expanded(child: Quotation(text: quotedText)),
+                  IconButton(
+                    icon: const Icon(Icons.close),
+                    onPressed: _clearReplyTarget,
+                    padding: EdgeInsets.zero,
+                    constraints: const BoxConstraints(),
+                  ),
+                ],
+              ),
+            );
+          }
+
           return chat_ui.Composer(
             textEditingController: _textEditingController,
             inputClearMode: chat_ui.InputClearMode.never,
             hintText: ctx.strings.conversation_screen_chat_box_placeholder_text,
+            topWidget: topWidget,
           );
         },
       ),

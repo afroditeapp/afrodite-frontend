@@ -45,6 +45,7 @@ String messageWidgetText(
 String messageToText(BuildContext context, Message message) {
   return switch (message) {
     TextMessage() => message.text,
+    MessageWithReference() => message.text,
     VideoCallInvitation() => context.strings.conversation_screen_join_video_call_button,
     UnsupportedMessage() => context.strings.conversation_screen_message_unsupported,
   };

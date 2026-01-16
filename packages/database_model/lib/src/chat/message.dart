@@ -6,7 +6,12 @@ enum _MessagePacketType {
   /// Next data is little endian encoded 16 bit unsigned number for
   /// UTF-8 data byte count and after that is the UTF-8 data.
   text(0),
-  videoCallInvitation(1);
+  videoCallInvitation(1),
+
+  /// Text message with reference to another message.
+  /// Next data is little endian encoded 16 bit unsigned number for
+  /// UTF-8 text byte count, then UTF-8 text data, then referenced message ID as UTF-8 string.
+  messageWithReference(2);
 
   final int number;
   const _MessagePacketType(this.number);
@@ -47,6 +52,31 @@ sealed class Message {
       }
     } else if (messageTypeNumber == _MessagePacketType.videoCallInvitation.number) {
       return VideoCallInvitation();
+    } else if (messageTypeNumber == _MessagePacketType.messageWithReference.number) {
+      if (numberList.length < 3) {
+        return UnsupportedMessage(bytes);
+      }
+      final littleEndianBytes = [numberList[1], numberList[2]];
+      final utf8Length = ByteData.sublistView(
+        Uint8List.fromList(littleEndianBytes),
+      ).getUint16(0, Endian.little);
+      if (numberList.length < 3 + utf8Length) {
+        return UnsupportedMessage(bytes);
+      }
+      final utf8Text = numberList.skip(3).take(utf8Length).toList();
+      final messageIdBytes = numberList.skip(3 + utf8Length).toList();
+      try {
+        final text = utf8.decode(utf8Text);
+        final messageId = utf8.decode(messageIdBytes);
+        final messageWithReference = MessageWithReference.create(text, messageId);
+        if (messageWithReference == null) {
+          return UnsupportedMessage(bytes);
+        } else {
+          return messageWithReference;
+        }
+      } on FormatException catch (_) {
+        return UnsupportedMessage(bytes);
+      }
     } else {
       return UnsupportedMessage(bytes);
     }
@@ -82,6 +112,38 @@ class VideoCallInvitation extends Message {
   @override
   Uint8List toMessagePacket() {
     return Uint8List.fromList([_MessagePacketType.videoCallInvitation.number]);
+  }
+}
+
+class MessageWithReference extends Message {
+  final String text;
+  final String messageId;
+  MessageWithReference._(this.text, this.messageId);
+
+  /// Returns null if text byte count is too large
+  static MessageWithReference? create(String text, String messageId) {
+    final textBytes = utf8.encode(text);
+    if (textBytes.length > _U16_MAX_VALUE) {
+      return null;
+    }
+    return MessageWithReference._(text, messageId);
+  }
+
+  @override
+  Uint8List toMessagePacket() {
+    final textBytes = utf8.encode(text);
+    final messageIdBytes = utf8.encode(messageId);
+
+    final textLengthBytes = u16ToLittleEndianBytes(textBytes.length);
+
+    final bytes = [
+      _MessagePacketType.messageWithReference.number,
+      ...textLengthBytes,
+      ...textBytes,
+      ...messageIdBytes,
+    ];
+
+    return Uint8List.fromList(bytes);
   }
 }
 
