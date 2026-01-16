@@ -120,7 +120,55 @@ class AccountBotApi {
     return null;
   }
 
-  /// Login for remote bots which are listed in server config file.
+  /// Get admin and user bot accounts by email pattern. Admin bot is admin@example.com, user bots are bot1@example.com, bot2@example.com, etc. Creates accounts if they don't exist.
+  ///
+  /// Available only from local bot API port.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  Future<Response> postGetBotsWithHttpInfo() async {
+    // ignore: prefer_const_declarations
+    final path = r'/account_api/get_bots';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Get admin and user bot accounts by email pattern. Admin bot is admin@example.com, user bots are bot1@example.com, bot2@example.com, etc. Creates accounts if they don't exist.
+  ///
+  /// Available only from local bot API port.
+  Future<GetBotsResult?> postGetBots() async {
+    final response = await postGetBotsWithHttpInfo();
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetBotsResult',) as GetBotsResult;
+    
+    }
+    return null;
+  }
+
+  /// Login for remote bots.
   ///
   /// Available only from public and local bot API ports.
   ///
@@ -154,7 +202,7 @@ class AccountBotApi {
     );
   }
 
-  /// Login for remote bots which are listed in server config file.
+  /// Login for remote bots.
   ///
   /// Available only from public and local bot API ports.
   ///
@@ -171,6 +219,62 @@ class AccountBotApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'LoginResult',) as LoginResult;
+    
+    }
+    return null;
+  }
+
+  /// Get admin and user bot accounts by email pattern. Admin bot is admin@example.com, user bots are bot1@example.com, bot2@example.com, etc. Creates accounts if they don't exist.
+  ///
+  /// Available only from public and local bot API ports.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [RemoteBotPassword] remoteBotPassword (required):
+  Future<Response> postRemoteGetBotsWithHttpInfo(RemoteBotPassword remoteBotPassword,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/account_api/remote_get_bots';
+
+    // ignore: prefer_final_locals
+    Object? postBody = remoteBotPassword;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Get admin and user bot accounts by email pattern. Admin bot is admin@example.com, user bots are bot1@example.com, bot2@example.com, etc. Creates accounts if they don't exist.
+  ///
+  /// Available only from public and local bot API ports.
+  ///
+  /// Parameters:
+  ///
+  /// * [RemoteBotPassword] remoteBotPassword (required):
+  Future<GetBotsResult?> postRemoteGetBots(RemoteBotPassword remoteBotPassword,) async {
+    final response = await postRemoteGetBotsWithHttpInfo(remoteBotPassword,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetBotsResult',) as GetBotsResult;
     
     }
     return null;

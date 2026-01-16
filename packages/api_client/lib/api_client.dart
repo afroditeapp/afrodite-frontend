@@ -260,6 +260,8 @@ class ApiClient {
           return BackupTransferTargetData.fromJson(value);
         case 'BooleanSetting':
           return BooleanSetting.fromJson(value);
+        case 'BotAccount':
+          return BotAccount.fromJson(value);
         case 'ChatAppNotificationSettings':
           return ChatAppNotificationSettings.fromJson(value);
         case 'ChatConfig':
@@ -396,6 +398,8 @@ class ApiClient {
           return GetApiUsageStatisticsResult.fromJson(value);
         case 'GetApiUsageStatisticsSettings':
           return GetApiUsageStatisticsSettings.fromJson(value);
+        case 'GetBotsResult':
+          return GetBotsResult.fromJson(value);
         case 'GetChatMessageReports':
           return GetChatMessageReports.fromJson(value);
         case 'GetClientFeaturesConfigResult':
@@ -484,8 +488,6 @@ class ApiClient {
           return LikesConfig.fromJson(value);
         case 'LimitedActionStatus':
           return LimitedActionStatusTypeTransformer().decode(value);
-        case 'LocalBotsConfig':
-          return LocalBotsConfig.fromJson(value);
         case 'Location':
           return Location.fromJson(value);
         case 'LoginResult':
@@ -700,6 +702,8 @@ class ApiClient {
           return RefreshToken.fromJson(value);
         case 'RemoteBotLogin':
           return RemoteBotLogin.fromJson(value);
+        case 'RemoteBotPassword':
+          return RemoteBotPassword.fromJson(value);
         case 'ReportAccountInfo':
           return ReportAccountInfo.fromJson(value);
         case 'ReportChatInfo':

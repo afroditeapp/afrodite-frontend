@@ -121,7 +121,9 @@ Class | Method | HTTP request | Description
 *AccountAdminApi* | [**postUpdateNewsTranslation**](doc//AccountAdminApi.md#postupdatenewstranslation) | **POST** /account_api/update_news_translation/{nid}/{locale} | 
 *AccountBotApi* | [**postBotLogin**](doc//AccountBotApi.md#postbotlogin) | **POST** /account_api/bot_login | Get new AccessToken for a bot account. If the account is not registered as a bot account, then the request will fail.
 *AccountBotApi* | [**postBotRegister**](doc//AccountBotApi.md#postbotregister) | **POST** /account_api/bot_register | Register a new bot account. Returns new account ID which is UUID.
-*AccountBotApi* | [**postRemoteBotLogin**](doc//AccountBotApi.md#postremotebotlogin) | **POST** /account_api/remote_bot_login | Login for remote bots which are listed in server config file.
+*AccountBotApi* | [**postGetBots**](doc//AccountBotApi.md#postgetbots) | **POST** /account_api/get_bots | Get admin and user bot accounts by email pattern. Admin bot is admin@example.com, user bots are bot1@example.com, bot2@example.com, etc. Creates accounts if they don't exist.
+*AccountBotApi* | [**postRemoteBotLogin**](doc//AccountBotApi.md#postremotebotlogin) | **POST** /account_api/remote_bot_login | Login for remote bots.
+*AccountBotApi* | [**postRemoteGetBots**](doc//AccountBotApi.md#postremotegetbots) | **POST** /account_api/remote_get_bots | Get admin and user bot accounts by email pattern. Admin bot is admin@example.com, user bots are bot1@example.com, bot2@example.com, etc. Creates accounts if they don't exist.
 *ChatApi* | [**getChatAppNotificationSettings**](doc//ChatApi.md#getchatappnotificationsettings) | **GET** /chat_api/get_chat_app_notification_settings | 
 *ChatApi* | [**getChatEmailNotificationSettings**](doc//ChatApi.md#getchatemailnotificationsettings) | **GET** /chat_api/get_chat_email_notification_settings | 
 *ChatApi* | [**getChatPrivacySettings**](doc//ChatApi.md#getchatprivacysettings) | **GET** /chat_api/get_chat_privacy_settings | 
@@ -161,7 +163,7 @@ Class | Method | HTTP request | Description
 *CommonApi* | [**deleteDataExport**](doc//CommonApi.md#deletedataexport) | **DELETE** /common_api/delete_data_export | Delete current data export
 *CommonApi* | [**getClientConfig**](doc//CommonApi.md#getclientconfig) | **GET** /common_api/client_config | 
 *CommonApi* | [**getClientLanguage**](doc//CommonApi.md#getclientlanguage) | **GET** /common_api/client_language | 
-*CommonApi* | [**getConnectWebsocket**](doc//CommonApi.md#getconnectwebsocket) | **GET** /common_api/connect | Connect to server using WebSocket after getting refresh and access tokens. Connection is required as API access is allowed for connected clients.
+*CommonApi* | [**getConnectWebsocket**](doc//CommonApi.md#getconnectwebsocket) | **GET** /common_api/connect | Connect to server using WebSocket after getting refresh and access tokens.
 *CommonApi* | [**getDataExportArchive**](doc//CommonApi.md#getdataexportarchive) | **GET** /common_api/data_export_archive | Download current data export archive
 *CommonApi* | [**getDataExportState**](doc//CommonApi.md#getdataexportstate) | **GET** /common_api/data_export_state | 
 *CommonApi* | [**getPushNotificationInfo**](doc//CommonApi.md#getpushnotificationinfo) | **GET** /common_api/get_push_notification_info | 
@@ -303,6 +305,7 @@ Class | Method | HTTP request | Description
  - [BackupTransferInitialMessage](doc//BackupTransferInitialMessage.md)
  - [BackupTransferTargetData](doc//BackupTransferTargetData.md)
  - [BooleanSetting](doc//BooleanSetting.md)
+ - [BotAccount](doc//BotAccount.md)
  - [ChatAppNotificationSettings](doc//ChatAppNotificationSettings.md)
  - [ChatConfig](doc//ChatConfig.md)
  - [ChatEmailNotificationSettings](doc//ChatEmailNotificationSettings.md)
@@ -371,6 +374,7 @@ Class | Method | HTTP request | Description
  - [GetAllAdminsResult](doc//GetAllAdminsResult.md)
  - [GetApiUsageStatisticsResult](doc//GetApiUsageStatisticsResult.md)
  - [GetApiUsageStatisticsSettings](doc//GetApiUsageStatisticsSettings.md)
+ - [GetBotsResult](doc//GetBotsResult.md)
  - [GetChatMessageReports](doc//GetChatMessageReports.md)
  - [GetClientFeaturesConfigResult](doc//GetClientFeaturesConfigResult.md)
  - [GetClientLanguage](doc//GetClientLanguage.md)
@@ -415,7 +419,6 @@ Class | Method | HTTP request | Description
  - [LatestBirthdate](doc//LatestBirthdate.md)
  - [LikesConfig](doc//LikesConfig.md)
  - [LimitedActionStatus](doc//LimitedActionStatus.md)
- - [LocalBotsConfig](doc//LocalBotsConfig.md)
  - [Location](doc//Location.md)
  - [LoginResult](doc//LoginResult.md)
  - [MaintenanceTask](doc//MaintenanceTask.md)
@@ -523,6 +526,7 @@ Class | Method | HTTP request | Description
  - [ReceivedLikesSyncVersion](doc//ReceivedLikesSyncVersion.md)
  - [RefreshToken](doc//RefreshToken.md)
  - [RemoteBotLogin](doc//RemoteBotLogin.md)
+ - [RemoteBotPassword](doc//RemoteBotPassword.md)
  - [ReportAccountInfo](doc//ReportAccountInfo.md)
  - [ReportChatInfo](doc//ReportChatInfo.md)
  - [ReportChatInfoInteractionState](doc//ReportChatInfoInteractionState.md)

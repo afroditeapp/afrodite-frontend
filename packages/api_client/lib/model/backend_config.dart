@@ -13,40 +13,72 @@ part of openapi.api;
 class BackendConfig {
   /// Returns a new [BackendConfig] instance.
   BackendConfig({
-    this.localBots,
+    this.adminBot,
     this.remoteBotLogin,
+    this.userBots,
   });
 
-  LocalBotsConfig? localBots;
+  /// Admin bot enabled
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  bool? adminBot;
 
-  /// Enable remote bot login API  If None, editing the value is disabled.
+  /// Enable remote bot login API
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
   bool? remoteBotLogin;
+
+  /// User bot count
+  ///
+  /// Minimum value: 0
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  int? userBots;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is BackendConfig &&
-    other.localBots == localBots &&
-    other.remoteBotLogin == remoteBotLogin;
+    other.adminBot == adminBot &&
+    other.remoteBotLogin == remoteBotLogin &&
+    other.userBots == userBots;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (localBots == null ? 0 : localBots!.hashCode) +
-    (remoteBotLogin == null ? 0 : remoteBotLogin!.hashCode);
+    (adminBot == null ? 0 : adminBot!.hashCode) +
+    (remoteBotLogin == null ? 0 : remoteBotLogin!.hashCode) +
+    (userBots == null ? 0 : userBots!.hashCode);
 
   @override
-  String toString() => 'BackendConfig[localBots=$localBots, remoteBotLogin=$remoteBotLogin]';
+  String toString() => 'BackendConfig[adminBot=$adminBot, remoteBotLogin=$remoteBotLogin, userBots=$userBots]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-    if (this.localBots != null) {
-      json[r'local_bots'] = this.localBots;
+    if (this.adminBot != null) {
+      json[r'admin_bot'] = this.adminBot;
     } else {
-      json[r'local_bots'] = null;
+      json[r'admin_bot'] = null;
     }
     if (this.remoteBotLogin != null) {
       json[r'remote_bot_login'] = this.remoteBotLogin;
     } else {
       json[r'remote_bot_login'] = null;
+    }
+    if (this.userBots != null) {
+      json[r'user_bots'] = this.userBots;
+    } else {
+      json[r'user_bots'] = null;
     }
     return json;
   }
@@ -70,8 +102,9 @@ class BackendConfig {
       }());
 
       return BackendConfig(
-        localBots: LocalBotsConfig.fromJson(json[r'local_bots']),
+        adminBot: mapValueOfType<bool>(json, r'admin_bot'),
         remoteBotLogin: mapValueOfType<bool>(json, r'remote_bot_login'),
+        userBots: mapValueOfType<int>(json, r'user_bots'),
       );
     }
     return null;

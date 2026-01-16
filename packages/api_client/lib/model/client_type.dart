@@ -26,12 +26,14 @@ class ClientType {
   static const android = ClientType._(r'Android');
   static const ios = ClientType._(r'Ios');
   static const web = ClientType._(r'Web');
+  static const bot = ClientType._(r'Bot');
 
   /// List of all possible values in this [enum][ClientType].
   static const values = <ClientType>[
     android,
     ios,
     web,
+    bot,
   ];
 
   static ClientType? fromJson(dynamic value) => ClientTypeTypeTransformer().decode(value);
@@ -73,6 +75,7 @@ class ClientTypeTypeTransformer {
         case r'Android': return ClientType.android;
         case r'Ios': return ClientType.ios;
         case r'Web': return ClientType.web;
+        case r'Bot': return ClientType.bot;
         default:
           if (!allowNull) {
             throw ArgumentError('Unknown enum value to decode: $data');

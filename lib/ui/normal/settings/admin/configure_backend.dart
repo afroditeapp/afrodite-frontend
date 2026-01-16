@@ -46,8 +46,8 @@ class _ConfigureBackendScreenState extends State<ConfigureBackendScreen> {
     setState(() {
       isLoading = false;
       _remoteBotLogin = data?.remoteBotLogin;
-      _adminBotEnabled = data?.localBots?.admin;
-      _userBots = data?.localBots?.users;
+      _adminBotEnabled = data?.adminBot;
+      _userBots = data?.userBots;
       _userBotsController.text = _userBots.toString();
       _currentConfig = data;
     });
@@ -174,17 +174,11 @@ class _ConfigureBackendScreenState extends State<ConfigureBackendScreen> {
 
         FocusScope.of(context).unfocus();
 
-        final adminBotEnabled = _adminBotEnabled;
-        final userBots = _userBots;
-
-        final LocalBotsConfig? botConfig;
-        if (adminBotEnabled != null && userBots != null) {
-          botConfig = LocalBotsConfig(admin: adminBotEnabled, users: userBots);
-        } else {
-          botConfig = null;
-        }
-
-        final config = BackendConfig(remoteBotLogin: _remoteBotLogin, localBots: botConfig);
+        final config = BackendConfig(
+          remoteBotLogin: _remoteBotLogin,
+          adminBot: _adminBotEnabled,
+          userBots: _userBots,
+        );
         showConfirmDialog(
           context,
           "Save backend config?",
