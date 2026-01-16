@@ -386,6 +386,7 @@ class LoginRepository extends AppSingleton {
       await _google.logout();
       // Change to login screen
       _repositories.add(RepositoriesEmpty());
+      _log.info("Removing current login session from DB");
       // Avoid loading current account when app starts
       await CommonDatabaseManager.getInstance().commonAction((db) => db.loginSession.logout());
 
@@ -604,12 +605,15 @@ class RepositoryStateStreams {
   }
 
   Future<void> _logout() async {
+    _log.info("Cancelling account state subscription");
     await _accountStateSubscription?.cancel();
     _accountState.add(AccountStateLoading());
 
+    _log.info("Cancelling initial setup skipped subscription");
     await _initialSetupSkippedSubscription?.cancel();
     _initialSetupSkipped.add(InitialSetupSkippedLoading());
 
+    _log.info("Cancelling server connection state events subscription");
     await _serverConnectionManagerStateEventsSubscription?.cancel();
     _serverConnectionManagerStateEvents.add(ServerConnectionManagerStateLoading());
   }
