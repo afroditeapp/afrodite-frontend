@@ -11,6 +11,7 @@ import 'package:app/ui/normal/chat/chat_list/chat_message.dart';
 import 'package:app/ui/normal/chat/chat_list/lazy_quotation.dart';
 import 'package:app/ui/normal/chat/chat_list/logic.dart';
 import 'package:app/ui/normal/chat/chat_list/reply_target_controller.dart';
+import 'package:app/ui/normal/chat/chat_list/slideable.dart';
 import 'package:app/ui/normal/chat/conversation_page.dart';
 import 'package:app/ui/normal/chat/chat_list/message_adapter.dart';
 import 'package:app/ui/normal/chat/utils.dart';
@@ -136,19 +137,13 @@ class _ChatListState extends State<ChatList> {
   }
 
   Widget _wrapWithSwipeToReply(Widget child, String messageId) {
-    return Dismissible(
-      key: ValueKey('swipe_$messageId'),
-      direction: DismissDirection.startToEnd,
-      dismissThresholds: const {DismissDirection.startToEnd: 0.3},
-      confirmDismiss: (direction) async {
-        await _handleSwipeToReply(messageId);
-        return false; // Don't actually dismiss
-      },
-      background: Container(
-        alignment: Alignment.centerLeft,
-        padding: const EdgeInsets.only(left: 20.0),
-        child: Icon(Icons.reply, color: Theme.of(context).colorScheme.primary),
-      ),
+    return Slideable(
+      onSlideComplete: () => _handleSwipeToReply(messageId),
+      icon: Icons.reply,
+      iconColor: Theme.of(context).colorScheme.primary,
+      iconPadding: EdgeInsets.only(left: 10),
+      maxSlide: 50,
+      threshold: 0.7,
       child: child,
     );
   }
