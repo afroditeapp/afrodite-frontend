@@ -138,7 +138,16 @@ class _ChatListState extends State<ChatList> {
     }
   }
 
-  Widget _wrapWithSwipeToReply(Widget child, String messageId) {
+  Widget _wrapWithSwipeToReply(Widget child, String messageId, chat_core.MessageStatus? status) {
+    final allowSliding =
+        status == chat_core.MessageStatus.sent ||
+        status == chat_core.MessageStatus.delivered ||
+        status == chat_core.MessageStatus.seen;
+
+    if (!allowSliding) {
+      return child;
+    }
+
     return Slideable(
       onSlideComplete: () => _handleSwipeToReply(messageId),
       icon: Icons.reply,
@@ -398,7 +407,11 @@ class _ChatListState extends State<ChatList> {
               final localMessageId = LocalMessageId(int.parse(message.id));
               final r = context.read<RepositoryInstances>();
 
-              final wrappedWidget = _wrapWithSwipeToReply(messageWidget, message.id);
+              final wrappedWidget = _wrapWithSwipeToReply(
+                messageWidget,
+                message.id,
+                message.status,
+              );
 
               return _MessageStateWatcher(
                 localMessageId: localMessageId,
@@ -466,7 +479,11 @@ class _ChatListState extends State<ChatList> {
                 child: messageContent,
               );
 
-              final wrappedWidget = _wrapWithSwipeToReply(messageWidget, message.id);
+              final wrappedWidget = _wrapWithSwipeToReply(
+                messageWidget,
+                message.id,
+                message.status,
+              );
 
               return _MessageStateWatcher(
                 localMessageId: localMessageId,
