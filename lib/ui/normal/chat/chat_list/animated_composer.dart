@@ -9,11 +9,13 @@ import 'package:flutter_chat_ui/flutter_chat_ui.dart' as chat_ui;
 /// when the reply target changes.
 class AnimatedComposer extends StatefulWidget {
   final TextEditingController textEditingController;
+  final FocusNode focusNode;
   final ReplyTargetController replyTargetController;
   final String hintText;
 
   const AnimatedComposer({
     required this.textEditingController,
+    required this.focusNode,
     required this.replyTargetController,
     required this.hintText,
     super.key,
@@ -59,6 +61,8 @@ class _AnimatedComposerState extends State<AnimatedComposer> with SingleTickerPr
         _uiReplyTarget = newTarget;
       });
       _animationController.forward();
+      // Focus the text field and open keyboard
+      widget.focusNode.requestFocus();
     } else {
       _animationController.reverse().then((_) {
         if (mounted && widget.replyTargetController.replyTarget == null) {
@@ -103,6 +107,7 @@ class _AnimatedComposerState extends State<AnimatedComposer> with SingleTickerPr
 
     return chat_ui.Composer(
       textEditingController: widget.textEditingController,
+      focusNode: widget.focusNode,
       inputClearMode: chat_ui.InputClearMode.never,
       hintText: widget.hintText,
       topWidget: SizeTransition(

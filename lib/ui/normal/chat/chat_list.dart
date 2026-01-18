@@ -66,6 +66,7 @@ class ChatList extends StatefulWidget {
 class _ChatListState extends State<ChatList> {
   late chat_core.InMemoryChatController _chatController;
   late TextEditingController _textEditingController;
+  late FocusNode _textFieldFocusNode;
   late ChatListLogic _chatListLogic;
   late ReplyTargetController _replyTargetController;
 
@@ -89,6 +90,7 @@ class _ChatListState extends State<ChatList> {
 
     _chatController = chat_core.InMemoryChatController(messages: initialMessages);
     _textEditingController = TextEditingController();
+    _textFieldFocusNode = FocusNode();
     _textEditingController.addListener(_onTextChanged);
 
     // Use reversed mode only when there is enough
@@ -492,6 +494,7 @@ class _ChatListState extends State<ChatList> {
         composerBuilder: (BuildContext ctx) {
           return AnimatedComposer(
             textEditingController: _textEditingController,
+            focusNode: _textFieldFocusNode,
             replyTargetController: _replyTargetController,
             hintText: ctx.strings.conversation_screen_chat_box_placeholder_text,
           );
@@ -511,6 +514,7 @@ class _ChatListState extends State<ChatList> {
     _textEditingController.removeListener(_onTextChanged);
     _chatController.dispose();
     _textEditingController.dispose();
+    _textFieldFocusNode.dispose();
     _replyTargetController.dispose();
     super.dispose();
   }
