@@ -83,8 +83,7 @@ class _AnimatedComposerState extends State<AnimatedComposer> with SingleTickerPr
     Widget topWidget = const SizedBox.shrink();
     if (_uiReplyTarget != null) {
       topWidget = Container(
-        color: Theme.of(context).colorScheme.surfaceContainerHighest,
-        padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+        padding: const EdgeInsets.only(left: 16.0, right: 8.0, top: 8.0),
         child: Row(
           children: [
             Expanded(
@@ -94,11 +93,12 @@ class _AnimatedComposerState extends State<AnimatedComposer> with SingleTickerPr
                 widget.replyTargetController.profileEntry,
               ),
             ),
+            const SizedBox(width: 8),
             IconButton(
               icon: const Icon(Icons.close),
               onPressed: _clearReplyTarget,
-              padding: EdgeInsets.zero,
-              constraints: const BoxConstraints(),
+              // Composer send button color
+              color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5),
             ),
           ],
         ),
