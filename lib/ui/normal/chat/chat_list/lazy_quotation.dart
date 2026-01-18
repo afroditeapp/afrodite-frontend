@@ -127,31 +127,33 @@ class Quotation extends StatelessWidget {
         theme.colorScheme.primaryContainer;
     final textColor = theme.colorScheme.onPrimaryContainer;
 
-    return Container(
-      padding: const EdgeInsets.all(8.0),
-      decoration: BoxDecoration(
-        color: backgroundColor,
-        border: Border(left: BorderSide(color: quotationColor, width: 4.0)),
-        borderRadius: BorderRadius.circular(8.0),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          if (senderName.isNotEmpty)
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(8.0),
+      child: Container(
+        padding: const EdgeInsets.all(8.0),
+        decoration: BoxDecoration(
+          color: backgroundColor,
+          border: Border(left: BorderSide(color: quotationColor, width: 4.0)),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (senderName.isNotEmpty)
+              Text(
+                senderName,
+                style: TextStyle(color: textColor, fontSize: 13.0, fontWeight: FontWeight.bold),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
             Text(
-              senderName,
-              style: TextStyle(color: textColor, fontSize: 13.0, fontWeight: FontWeight.bold),
+              text,
+              style: TextStyle(color: textColor, fontSize: 13.0, fontStyle: FontStyle.italic),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
-          Text(
-            text,
-            style: TextStyle(color: textColor, fontSize: 13.0, fontStyle: FontStyle.italic),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

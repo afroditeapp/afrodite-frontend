@@ -26,6 +26,12 @@ class ChatMessage extends StatelessWidget {
   /// Whether to show the message status indicator.
   final bool showStatus;
 
+  /// Custom padding for the message container.
+  final EdgeInsetsGeometry padding;
+
+  /// Padding around the status/timestamp area.
+  final EdgeInsetsGeometry statusPadding;
+
   const ChatMessage({
     super.key,
     required this.child,
@@ -34,6 +40,8 @@ class ChatMessage extends StatelessWidget {
     required this.isSentByMe,
     this.isError = false,
     this.showStatus = true,
+    this.padding = const EdgeInsets.symmetric(vertical: 7.0, horizontal: 10.0),
+    this.statusPadding = EdgeInsets.zero,
   });
 
   @override
@@ -50,45 +58,56 @@ class ChatMessage extends StatelessWidget {
         ? TextStyle(color: Colors.lightBlue, fontSize: 12.0)
         : timeTextStyle;
 
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
-      decoration: BoxDecoration(color: backgroundColor, borderRadius: BorderRadius.circular(10.0)),
-      child: IntrinsicWidth(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            child,
-            const SizedBox(height: 4),
-            Align(
-              alignment: isSentByMe ? Alignment.centerRight : Alignment.centerLeft,
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  chat_ui.TimeAndStatus(
-                    time: createdAt,
-                    status: status,
-                    showTime: true,
-                    showStatus: false,
-                    textStyle: timeTextStyle,
+    final screenWidth = MediaQuery.of(context).size.width;
+
+    return ConstrainedBox(
+      constraints: BoxConstraints(maxWidth: screenWidth * 0.9),
+      child: Container(
+        padding: padding,
+        decoration: BoxDecoration(
+          color: backgroundColor,
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        child: IntrinsicWidth(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              child,
+              const SizedBox(height: 4),
+              Padding(
+                padding: statusPadding,
+                child: Align(
+                  alignment: isSentByMe ? Alignment.centerRight : Alignment.centerLeft,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      chat_ui.TimeAndStatus(
+                        time: createdAt,
+                        status: status,
+                        showTime: true,
+                        showStatus: false,
+                        textStyle: timeTextStyle,
+                      ),
+                      if (isSentByMe && showStatus) ...[
+                        const SizedBox(width: 4),
+                        chat_ui.TimeAndStatus(
+                          time: createdAt,
+                          // Use two checkmarks icon for delivered state
+                          status: status == chat_core.MessageStatus.delivered
+                              ? chat_core.MessageStatus.seen
+                              : status,
+                          showTime: false,
+                          showStatus: true,
+                          textStyle: statusTextStyle,
+                        ),
+                      ],
+                    ],
                   ),
-                  if (isSentByMe && showStatus) ...[
-                    const SizedBox(width: 4),
-                    chat_ui.TimeAndStatus(
-                      time: createdAt,
-                      // Use two checkmarks icon for delivered state
-                      status: status == chat_core.MessageStatus.delivered
-                          ? chat_core.MessageStatus.seen
-                          : status,
-                      showTime: false,
-                      showStatus: true,
-                      textStyle: statusTextStyle,
-                    ),
-                  ],
-                ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

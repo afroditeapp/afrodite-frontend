@@ -427,23 +427,31 @@ class _ChatListState extends State<ChatList> {
                   ? Theme.of(context).colorScheme.onErrorContainer
                   : Theme.of(context).colorScheme.onPrimaryContainer;
 
+              final textWidget = Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                child: Text(message.text, style: TextStyle(color: textColor)),
+              );
+
               final Widget messageContent;
               if (message.replyToMessageId != null) {
                 messageContent = Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    LazyQuotation(
-                      replyToMessageId: message.replyToMessageId!,
-                      cache: widget.quotationCache,
-                      messageReceiver: widget.messageReceiver,
-                      profileEntry: widget.profileEntry,
+                    Padding(
+                      padding: const EdgeInsets.only(left: 5, right: 5, top: 5),
+                      child: LazyQuotation(
+                        replyToMessageId: message.replyToMessageId!,
+                        cache: widget.quotationCache,
+                        messageReceiver: widget.messageReceiver,
+                        profileEntry: widget.profileEntry,
+                      ),
                     ),
                     const SizedBox(height: 4.0),
-                    Text(message.text, style: TextStyle(color: textColor)),
+                    textWidget,
                   ],
                 );
               } else {
-                messageContent = Text(message.text, style: TextStyle(color: textColor));
+                messageContent = textWidget;
               }
 
               final messageWidget = ChatMessage(
@@ -451,6 +459,10 @@ class _ChatListState extends State<ChatList> {
                 status: message.status,
                 isSentByMe: isSentByMe,
                 isError: isError,
+                padding: message.replyToMessageId != null
+                    ? EdgeInsets.only(bottom: 7)
+                    : EdgeInsets.symmetric(vertical: 7),
+                statusPadding: EdgeInsets.symmetric(horizontal: 10.0),
                 child: messageContent,
               );
 
