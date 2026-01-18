@@ -1,6 +1,5 @@
 import 'package:app/ui/normal/chat/chat_list/lazy_quotation.dart';
 import 'package:app/ui/normal/chat/chat_list/reply_target_controller.dart';
-import 'package:app/ui/normal/chat/utils.dart';
 import 'package:database/database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_ui/flutter_chat_ui.dart' as chat_ui;
@@ -79,17 +78,18 @@ class _AnimatedComposerState extends State<AnimatedComposer> with SingleTickerPr
   Widget build(BuildContext context) {
     Widget topWidget = const SizedBox.shrink();
     if (_uiReplyTarget != null) {
-      final message = _uiReplyTarget!.message;
-      final sentState = _uiReplyTarget!.messageState.toSentState();
-      final receivedState = _uiReplyTarget!.messageState.toReceivedState();
-      final quotedText = messageWidgetText(context, message, sentState, receivedState);
-
       topWidget = Container(
         color: Theme.of(context).colorScheme.surfaceContainerHighest,
         padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
         child: Row(
           children: [
-            Expanded(child: Quotation(text: quotedText)),
+            Expanded(
+              child: buildQuotation(
+                context,
+                _uiReplyTarget!,
+                widget.replyTargetController.profileEntry,
+              ),
+            ),
             IconButton(
               icon: const Icon(Icons.close),
               onPressed: _clearReplyTarget,

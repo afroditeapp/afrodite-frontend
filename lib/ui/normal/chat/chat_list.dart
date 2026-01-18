@@ -75,7 +75,7 @@ class _ChatListState extends State<ChatList> {
   @override
   void initState() {
     super.initState();
-    _replyTargetController = ReplyTargetController();
+    _replyTargetController = ReplyTargetController(profileEntry: widget.profileEntry);
 
     _log.finest("Opening conversation for account: ${widget.messageReceiver}");
 
@@ -438,6 +438,7 @@ class _ChatListState extends State<ChatList> {
                       replyToMessageId: message.replyToMessageId!,
                       cache: widget.quotationCache,
                       messageReceiver: widget.messageReceiver,
+                      profileEntry: widget.profileEntry,
                     ),
                     const SizedBox(height: 4.0),
                     Text(message.text, style: TextStyle(color: textColor)),

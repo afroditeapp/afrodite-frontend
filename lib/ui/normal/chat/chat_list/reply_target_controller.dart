@@ -5,7 +5,10 @@ import 'package:flutter/foundation.dart';
 /// Provides observable state for the reply target that can be used by widgets
 /// to display and animate reply UI elements.
 class ReplyTargetController extends ChangeNotifier {
+  final ProfileEntry? profileEntry;
   MessageEntry? _replyTarget;
+
+  ReplyTargetController({this.profileEntry});
 
   /// The current reply target message, or null if no message is selected for reply.
   MessageEntry? get replyTarget => _replyTarget;

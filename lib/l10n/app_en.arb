@@ -1113,6 +1113,10 @@
   "@generic_yesterday": {
     "description": "Generic yesterday text"
   },
+  "generic_you": "You",
+  "@generic_you": {
+    "description": "Generic you text"
+  },
   "image_processing_ui_confirm_photo_dialog_title": "Continue with this photo?",
   "@image_processing_ui_confirm_photo_dialog_title": {
     "description": "Dialog title for confirming new image"

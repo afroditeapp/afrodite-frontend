@@ -46,6 +46,7 @@
     <string name="generic_error_occurred" description="Generic error occurred text">Error occurred</string>
     <string name="generic_previous_action_in_progress" description="Generic previous action in progress text">Previous action is still in progress</string>
     <string name="generic_continue" description="Generic continue text">Continue</string>
+    <string name="generic_you" description="Generic you text">You</string>
     <string name="generic_take_photo" description="Generic take photo text">Take photo</string>
     <string name="generic_gender_man" description="Generic man gender text">Man</string>
     <string name="generic_gender_woman" description="Generic woman gender text">Woman</string>

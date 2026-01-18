@@ -1600,6 +1600,12 @@ abstract class AppLocalizations {
   /// **'Yesterday'**
   String get generic_yesterday;
 
+  /// Generic you text
+  ///
+  /// In en, this message translates to:
+  /// **'You'**
+  String get generic_you;
+
   /// Dialog title for confirming new image
   ///
   /// In en, this message translates to:

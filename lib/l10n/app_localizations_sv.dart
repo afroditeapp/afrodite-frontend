@@ -844,6 +844,9 @@ class AppLocalizationsSv extends AppLocalizations {
   String get generic_yesterday => 'Yesterday';
 
   @override
+  String get generic_you => 'You';
+
+  @override
   String get image_processing_ui_confirm_photo_dialog_title => 'Continue with this photo?';
 
   @override
