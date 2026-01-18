@@ -218,6 +218,7 @@ class _ChatListState extends State<ChatList> {
           return chat_ui.ChatAnimatedList(
             reversed: _reversed,
             itemBuilder: itemBuilder,
+            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.manual,
             onEndReached: !_reversed || (_reversed && _endReached)
                 ? null
                 : () async {
