@@ -5,20 +5,20 @@ import 'package:app/ui/normal/settings/profile/edit_profile_text.dart';
 import 'package:app/ui_utils/attribute/attribute.dart';
 import 'package:app/ui_utils/consts/icons.dart';
 import 'package:app/ui_utils/consts/padding.dart';
+import 'package:app/ui_utils/crop_image_screen.dart';
 import 'package:app/ui_utils/navigation/url.dart';
 import 'package:app/ui_utils/padding.dart';
 import 'package:app/utils/list.dart';
 import 'package:app/utils/result.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 import 'package:database/database.dart';
 import 'package:app/localizations.dart';
 import 'package:app/logic/app/navigator_state.dart';
-import 'package:app/logic/media/profile_pictures.dart';
+import 'package:app/logic/media/profile_pictures.dart' as profile_pictures_logic;
 import 'package:app/logic/profile/attributes.dart';
-import 'package:app/logic/profile/my_profile.dart';
+import 'package:app/logic/profile/my_profile.dart' as my_profile_logic;
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/model/freezed/logic/media/profile_pictures.dart';
 import 'package:app/model/freezed/logic/profile/attributes.dart';
@@ -72,8 +72,8 @@ class EditProfileScreenOpener extends StatelessWidget {
     return EditProfileScreen(
       closer: closer,
       initialProfile: initialProfile,
-      profilePicturesBloc: context.read<ProfilePicturesBloc>(),
-      myProfileBloc: context.read<MyProfileBloc>(),
+      profilePicturesBloc: context.read<profile_pictures_logic.ProfilePicturesBloc>(),
+      myProfileBloc: context.read<my_profile_logic.MyProfileBloc>(),
       profileAttributesBloc: context.read<ProfileAttributesBloc>(),
     );
   }
@@ -82,8 +82,8 @@ class EditProfileScreenOpener extends StatelessWidget {
 class EditProfileScreen extends StatefulWidget {
   final PageCloser<()> closer;
   final MyProfileEntry initialProfile;
-  final ProfilePicturesBloc profilePicturesBloc;
-  final MyProfileBloc myProfileBloc;
+  final profile_pictures_logic.ProfilePicturesBloc profilePicturesBloc;
+  final my_profile_logic.MyProfileBloc myProfileBloc;
   final ProfileAttributesBloc profileAttributesBloc;
   const EditProfileScreen({
     required this.closer,
@@ -106,28 +106,37 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     final p = widget.initialProfile;
 
     // Profile data
-    widget.myProfileBloc.add(ResetEditedValues());
+    widget.myProfileBloc.add(my_profile_logic.ResetEditedValues());
 
     // Profile pictures
+    // First reset to set the mode and clear any previous state
+    widget.profilePicturesBloc.add(
+      profile_pictures_logic.ResetIfModeChanges(const NormalProfilePictures()),
+    );
 
-    widget.profilePicturesBloc.add(ResetIfModeChanges(const NormalProfilePictures()));
+    // Set the current state (base values, not edited)
+    final pictures = <ImgState>[
+      imgStateFromContent(p.myContent.getAtOrNull(0), 0, p.primaryImageCropArea()),
+      imgStateFromContent(p.myContent.getAtOrNull(1), 1, CropArea.full),
+      imgStateFromContent(p.myContent.getAtOrNull(2), 2, CropArea.full),
+      imgStateFromContent(p.myContent.getAtOrNull(3), 3, CropArea.full),
+    ];
 
-    setImgToBloc(p.myContent.getAtOrNull(0), 0);
-    widget.profilePicturesBloc.add(UpdateCropArea(p.primaryImageCropArea(), 0));
+    final cropAreas = <CropArea>[CropArea.full, CropArea.full, CropArea.full, CropArea.full];
 
-    setImgToBloc(p.myContent.getAtOrNull(1), 1);
-    setImgToBloc(p.myContent.getAtOrNull(2), 2);
-    setImgToBloc(p.myContent.getAtOrNull(3), 3);
-    widget.profilePicturesBloc.add(NewPageKeyForProfilePicturesBloc(widget.closer.key));
+    widget.profilePicturesBloc.add(profile_pictures_logic.SetInitialState(pictures, cropAreas));
+
+    widget.profilePicturesBloc.add(
+      profile_pictures_logic.NewPageKeyForProfilePicturesBloc(widget.closer.key),
+    );
   }
 
-  void setImgToBloc(MyContent? c, int index) {
+  ImgState imgStateFromContent(MyContent? c, int index, CropArea cropArea) {
     if (c == null) {
-      widget.profilePicturesBloc.add(RemoveImage(index));
-      return;
+      return index == 0 ? const Add() : const Hidden();
     }
     final imgId = AccountImageId(widget.initialProfile.accountId, c.id, c.faceDetected, c.accepted);
-    widget.profilePicturesBloc.add(AddProcessedImage(ProfileImage(imgId, null), index));
+    return ImageSelected(ProfileImage(imgId, null), cropArea: cropArea);
   }
 
   void validateAndSaveData(BuildContext context) {
@@ -166,8 +175,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       return;
     }
 
-    context.read<MyProfileBloc>().add(
-      SetProfile(
+    context.read<my_profile_logic.MyProfileBloc>().add(
+      my_profile_logic.SetProfile(
         ProfileUpdate(
           age: age,
           name: name,
@@ -181,22 +190,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   bool dataChanged(MyProfileData myProfileData, ProfilePicturesData editedImgData) {
-    if (myProfileData.unsavedChanges()) {
-      return true;
-    }
-
-    final currentState = widget.initialProfile;
-    final editedImgs = editedImgData.toSetProfileContent();
-    if (editedImgs == null ||
-        currentState.content.firstOrNull?.id != editedImgs.c.firstOrNull ||
-        currentState.content.getAtOrNull(1)?.id != editedImgs.c.getAtOrNull(1) ||
-        currentState.content.getAtOrNull(2)?.id != editedImgs.c.getAtOrNull(2) ||
-        currentState.content.getAtOrNull(3)?.id != editedImgs.c.getAtOrNull(3) ||
-        currentState.content.getAtOrNull(4)?.id != editedImgs.c.getAtOrNull(4) ||
-        currentState.content.getAtOrNull(5)?.id != editedImgs.c.getAtOrNull(5) ||
-        currentState.primaryContentGridCropSize != editedImgs.gridCropSize ||
-        currentState.primaryContentGridCropX != editedImgs.gridCropX ||
-        currentState.primaryContentGridCropY != editedImgs.gridCropY) {
+    if (myProfileData.unsavedChanges() || editedImgData.unsavedChanges()) {
       return true;
     }
 
@@ -205,12 +199,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return updateStateHandler<MyProfileBloc, MyProfileData>(
+    return updateStateHandler<my_profile_logic.MyProfileBloc, MyProfileData>(
       context: context,
       pageKey: widget.closer.key,
-      child: BlocBuilder<MyProfileBloc, MyProfileData>(
+      child: BlocBuilder<my_profile_logic.MyProfileBloc, MyProfileData>(
         builder: (context, data) {
-          return BlocBuilder<ProfilePicturesBloc, ProfilePicturesData>(
+          return BlocBuilder<profile_pictures_logic.ProfilePicturesBloc, ProfilePicturesData>(
             builder: (context, profilePicturesData) {
               // PageKey check prevent Flutter from hiding
               // my profile screen's floating action button after
@@ -264,18 +258,20 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     return SingleChildScrollView(
       child: Column(
         children: [
-          ProfilePictureSelection(profilePicturesBloc: context.read<ProfilePicturesBloc>()),
+          ProfilePictureSelection(
+            profilePicturesBloc: context.read<profile_pictures_logic.ProfilePicturesBloc>(),
+          ),
           const Padding(padding: EdgeInsets.only(top: 16)),
           const Divider(),
           const Padding(padding: EdgeInsets.only(top: 8)),
           EditProfileBasicInfo(
             initialProfile: widget.initialProfile,
             setterProfileName: (value) {
-              widget.myProfileBloc.add(NewName(value));
+              widget.myProfileBloc.add(my_profile_logic.NewName(value));
             },
             ageInitialValue: widget.initialProfile.age,
             setterProfileAge: (value) {
-              widget.myProfileBloc.add(NewAge(value));
+              widget.myProfileBloc.add(my_profile_logic.NewAge(value));
             },
           ),
           const Padding(padding: EdgeInsets.only(top: 8)),
@@ -294,7 +290,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   Widget unlimitedLikesSetting(BuildContext context) {
     return BlocBuilder<ClientFeaturesConfigBloc, ClientFeaturesConfigData>(
       builder: (context, clientFeatures) {
-        return BlocBuilder<MyProfileBloc, MyProfileData>(
+        return BlocBuilder<my_profile_logic.MyProfileBloc, MyProfileData>(
           builder: (context, myProfileData) {
             final String? subtitle;
             if (myProfileData.valueUnlimitedLikes()) {
@@ -315,8 +311,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               subtitle: subtitle != null ? Text(subtitle) : null,
               secondary: Icon(UNLIMITED_LIKES_ICON, color: getUnlimitedLikesColor(context)),
               value: myProfileData.valueUnlimitedLikes(),
-              onChanged: (bool value) =>
-                  context.read<MyProfileBloc>().add(NewUnlimitedLikesValue(value)),
+              onChanged: (bool value) => context.read<my_profile_logic.MyProfileBloc>().add(
+                my_profile_logic.NewUnlimitedLikesValue(value),
+              ),
             );
           },
         );
@@ -337,7 +334,7 @@ class EditAttributes extends StatelessWidget {
           return const SizedBox.shrink();
         }
 
-        return BlocBuilder<MyProfileBloc, MyProfileData>(
+        return BlocBuilder<my_profile_logic.MyProfileBloc, MyProfileData>(
           builder: (context, myProfileData) {
             return Column(
               children: attributeTiles(
@@ -571,7 +568,7 @@ class _EditProfileBasicInfoState extends State<EditProfileBasicInfo> {
   }
 
   Widget ageSelectionOrError() {
-    return BlocBuilder<MyProfileBloc, MyProfileData>(
+    return BlocBuilder<my_profile_logic.MyProfileBloc, MyProfileData>(
       builder: (context, state) {
         final info = state.initialAgeInfo;
         if (info == null) {
@@ -635,7 +632,7 @@ class EditProfileText extends StatefulWidget {
 class _EditProfileTextState extends State<EditProfileText> {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MyProfileBloc, MyProfileData>(
+    return BlocBuilder<my_profile_logic.MyProfileBloc, MyProfileData>(
       builder: (context, state) {
         return content(context, state.valueProfileText());
       },
@@ -643,7 +640,7 @@ class _EditProfileTextState extends State<EditProfileText> {
   }
 
   Widget content(BuildContext context, String? currentText) {
-    final currentText = context.read<MyProfileBloc>().state.valueProfileText();
+    final currentText = context.read<my_profile_logic.MyProfileBloc>().state.valueProfileText();
     final String? displayedText;
     if (currentText == null || currentText.isEmpty) {
       displayedText = null;
@@ -694,7 +691,7 @@ class _EditProfileTextState extends State<EditProfileText> {
     );
 
     return InkWell(
-      onTap: () => openEditProfileText(context, context.read<MyProfileBloc>()),
+      onTap: () => openEditProfileText(context, context.read<my_profile_logic.MyProfileBloc>()),
       child: r,
     );
   }
@@ -706,10 +703,10 @@ class ProfileNameRejectionWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MyProfileBloc, MyProfileData>(
+    return BlocBuilder<my_profile_logic.MyProfileBloc, MyProfileData>(
       builder: (context, myProfileState) {
         final profile = myProfileState.profile ?? initialProfile;
-        return BlocBuilder<MyProfileBloc, MyProfileData>(
+        return BlocBuilder<my_profile_logic.MyProfileBloc, MyProfileData>(
           builder: (context, state) {
             if (isRejectedState(profile.profileNameModerationState) &&
                 state.valueName() == profile.name) {
@@ -747,10 +744,10 @@ class ProfileTextRejectionWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MyProfileBloc, MyProfileData>(
+    return BlocBuilder<my_profile_logic.MyProfileBloc, MyProfileData>(
       builder: (context, myProfileState) {
         final profile = myProfileState.profile ?? initialProfile;
-        return BlocBuilder<MyProfileBloc, MyProfileData>(
+        return BlocBuilder<my_profile_logic.MyProfileBloc, MyProfileData>(
           builder: (context, state) {
             if (!profile.profileTextAccepted &&
                 isRejectedState(profile.profileTextModerationState) &&

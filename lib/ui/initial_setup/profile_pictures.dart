@@ -48,7 +48,7 @@ class AskProfilePicturesScreen extends StatelessWidget {
           return BlocBuilder<ProfilePicturesBloc, ProfilePicturesData>(
             builder: (context, state) {
               void Function()? onPressed;
-              final pictures = state.pictures();
+              final pictures = state.valuePictures();
               final primaryPicture = pictures[0];
               if (primaryPicture is ImageSelected && primaryPicture.img.isFaceDetected()) {
                 onPressed = () {
@@ -130,7 +130,7 @@ class _ProfilePictureSelection extends State<ProfilePictureSelection> {
             false,
           );
           final nextAddImgState = widget.profilePicturesBloc.state
-              .pictures()
+              .valuePictures()
               .indexed
               .where((element) => element.$2 is Add)
               .firstOrNull;
@@ -226,9 +226,9 @@ class _ProfilePictureSelection extends State<ProfilePictureSelection> {
   Widget thumbnailEditButton(int imgStateIndex) {
     return BlocBuilder<ProfilePicturesBloc, ProfilePicturesData>(
       buildWhen: (previous, current) =>
-          previous.pictures()[imgStateIndex] != current.pictures()[imgStateIndex],
+          previous.valuePictures()[imgStateIndex] != current.valuePictures()[imgStateIndex],
       builder: (context, state) {
-        final imgState = state.pictures()[imgStateIndex];
+        final imgState = state.valuePictures()[imgStateIndex];
         final img = getProcessedAccountImage(context, imgState);
         if (img != null && imgState is ImageSelected) {
           return IconButton(
@@ -270,9 +270,9 @@ class _ProfilePictureSelection extends State<ProfilePictureSelection> {
   Widget imgStateToWidget(BuildContext context, int imgStateIndex) {
     return BlocBuilder<ProfilePicturesBloc, ProfilePicturesData>(
       buildWhen: (previous, current) =>
-          previous.pictures()[imgStateIndex] != current.pictures()[imgStateIndex],
+          previous.valuePictures()[imgStateIndex] != current.valuePictures()[imgStateIndex],
       builder: (context, state) {
-        final imgState = state.pictures()[imgStateIndex];
+        final imgState = state.valuePictures()[imgStateIndex];
         switch (imgState) {
           case Add():
             return AddPicture(imgIndex: imgStateIndex);
@@ -293,9 +293,9 @@ class _ProfilePictureSelection extends State<ProfilePictureSelection> {
   Widget imgStateToPrimaryImageThumbnail(int imgStateIndex) {
     return BlocBuilder<ProfilePicturesBloc, ProfilePicturesData>(
       buildWhen: (previous, current) =>
-          previous.pictures()[imgStateIndex] != current.pictures()[imgStateIndex],
+          previous.valuePictures()[imgStateIndex] != current.valuePictures()[imgStateIndex],
       builder: (context, state) {
-        final imgState = state.pictures()[imgStateIndex];
+        final imgState = state.valuePictures()[imgStateIndex];
         switch (imgState) {
           case Add():
             return const HiddenThumbnailPicture();
@@ -321,9 +321,9 @@ class _ProfilePictureSelection extends State<ProfilePictureSelection> {
 
   Widget primaryImageIsNotFaceImageError() {
     return BlocBuilder<ProfilePicturesBloc, ProfilePicturesData>(
-      buildWhen: (previous, current) => previous.pictures()[0] != current.pictures()[0],
+      buildWhen: (previous, current) => previous.valuePictures()[0] != current.valuePictures()[0],
       builder: (context, state) {
-        final imgState = state.pictures()[0];
+        final imgState = state.valuePictures()[0];
         if (imgState is ImageSelected && !imgState.img.isFaceDetected()) {
           return Padding(
             padding: const EdgeInsets.only(top: 8.0),
@@ -347,9 +347,9 @@ class _ProfilePictureSelection extends State<ProfilePictureSelection> {
 
   Widget primaryImageIsNotAcceptedError() {
     return BlocBuilder<ProfilePicturesBloc, ProfilePicturesData>(
-      buildWhen: (previous, current) => previous.pictures()[0] != current.pictures()[0],
+      buildWhen: (previous, current) => previous.valuePictures()[0] != current.valuePictures()[0],
       builder: (context, state) {
-        final imgState = state.pictures()[0];
+        final imgState = state.valuePictures()[0];
         if (imgState is ImageSelected && !imgState.img.isAccepted()) {
           return Padding(
             padding: const EdgeInsets.only(

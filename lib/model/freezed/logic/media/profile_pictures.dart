@@ -1,4 +1,5 @@
 import "package:app/model/freezed/logic/main/navigator_state.dart";
+import "package:app/utils/model.dart";
 import "package:freezed_annotation/freezed_annotation.dart";
 import "package:openapi/api.dart";
 import "package:app/ui_utils/crop_image_screen.dart";
@@ -16,16 +17,32 @@ class ProfilePicturesData with _$ProfilePicturesData {
     @Default(Hidden()) ImgState picture2,
     @Default(Hidden()) ImgState picture3,
     PageKey? pageKey,
+    required EditedProfilePicturesData edited,
   }) = _ProfilePicturesData;
 
   List<ImgState> pictures() {
     return [picture0, picture1, picture2, picture3];
   }
 
+  bool unsavedChanges() =>
+      edited.picture0.unsavedChanges() ||
+      edited.picture1.unsavedChanges() ||
+      edited.picture2.unsavedChanges() ||
+      edited.picture3.unsavedChanges();
+
+  ImgState valuePicture0() => edited.picture0.editedValue(picture0) ?? picture0;
+  ImgState valuePicture1() => edited.picture1.editedValue(picture1) ?? picture1;
+  ImgState valuePicture2() => edited.picture2.editedValue(picture2) ?? picture2;
+  ImgState valuePicture3() => edited.picture3.editedValue(picture3) ?? picture3;
+
+  List<ImgState> valuePictures() {
+    return [valuePicture0(), valuePicture1(), valuePicture2(), valuePicture3()];
+  }
+
   int? nextAvailableSlotInInitialSetup() {
     // 0 is for security selfie
     final availableSlots = [1, 2, 3, 4];
-    for (final img in pictures()) {
+    for (final img in valuePictures()) {
       if (img is ImageSelected) {
         final info = img.img;
         if (info is ProfileImage) {
@@ -41,7 +58,9 @@ class ProfilePicturesData with _$ProfilePicturesData {
   }
 
   SetProfileContent? toSetProfileContent() {
-    final img0 = picture0;
+    final pics = valuePictures();
+
+    final img0 = pics[0];
     if (img0 is! ImageSelected) {
       return null;
     }
@@ -52,9 +71,9 @@ class ProfilePicturesData with _$ProfilePicturesData {
 
     final c = [
       img0Info.id.contentId,
-      imgStateToContentId(picture1),
-      imgStateToContentId(picture2),
-      imgStateToContentId(picture3),
+      imgStateToContentId(pics[1]),
+      imgStateToContentId(pics[2]),
+      imgStateToContentId(pics[3]),
     ];
 
     return SetProfileContent(
@@ -66,9 +85,20 @@ class ProfilePicturesData with _$ProfilePicturesData {
   }
 
   bool faceDetectedFromPrimaryImage() {
-    final img0 = picture0;
+    final img0 = valuePictures()[0];
     return img0 is ImageSelected && img0.img.isFaceDetected();
   }
+}
+
+@freezed
+class EditedProfilePicturesData with _$EditedProfilePicturesData {
+  EditedProfilePicturesData._();
+  factory EditedProfilePicturesData({
+    @Default(NoEdit()) EditValue<ImgState> picture0,
+    @Default(NoEdit()) EditValue<ImgState> picture1,
+    @Default(NoEdit()) EditValue<ImgState> picture2,
+    @Default(NoEdit()) EditValue<ImgState> picture3,
+  }) = _EditedProfilePicturesData;
 }
 
 ContentId? imgStateToContentId(ImgState state) {
@@ -100,10 +130,22 @@ sealed class ImgState extends Immutable {
 
 class Hidden extends ImgState {
   const Hidden();
+
+  @override
+  bool operator ==(Object other) => identical(this, other) || other.runtimeType == runtimeType;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
 }
 
 class Add extends ImgState {
   const Add();
+
+  @override
+  bool operator ==(Object other) => identical(this, other) || other.runtimeType == runtimeType;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
 }
 
 class ImageSelected extends ImgState {
@@ -114,6 +156,14 @@ class ImageSelected extends ImgState {
   ImageSelected copyWithImg(SelectedImageInfo img) {
     return ImageSelected(img, cropArea: cropArea);
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ImageSelected && other.img == img && other.cropArea == cropArea;
+
+  @override
+  int get hashCode => Object.hash(img, cropArea);
 }
 
 sealed class SelectedImageInfo {
@@ -128,7 +178,13 @@ sealed class SelectedImageInfo {
   }
 }
 
-class InitialSetupSecuritySelfie extends SelectedImageInfo {}
+class InitialSetupSecuritySelfie extends SelectedImageInfo {
+  @override
+  bool operator ==(Object other) => identical(this, other) || other.runtimeType == runtimeType;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
 
 class ProfileImage extends SelectedImageInfo {
   final AccountImageId id;
@@ -143,6 +199,13 @@ class ProfileImage extends SelectedImageInfo {
       slot,
     );
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) || other is ProfileImage && other.id == id && other.slot == slot;
+
+  @override
+  int get hashCode => Object.hash(id, slot);
 }
 
 class AccountImageId {
@@ -151,4 +214,16 @@ class AccountImageId {
   final bool faceDetected;
   final bool accepted;
   AccountImageId(this.accountId, this.contentId, this.faceDetected, this.accepted);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is AccountImageId &&
+          other.accountId == accountId &&
+          other.contentId == contentId &&
+          other.faceDetected == faceDetected &&
+          other.accepted == accepted;
+
+  @override
+  int get hashCode => Object.hash(accountId, contentId, faceDetected, accepted);
 }
