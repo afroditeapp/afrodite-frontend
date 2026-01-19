@@ -11,7 +11,7 @@ part 'profile_pictures.freezed.dart';
 class ProfilePicturesData with _$ProfilePicturesData {
   const ProfilePicturesData._();
   const factory ProfilePicturesData({
-    @Default(Add()) ImgState picture0,
+    @Default(Hidden()) ImgState picture0,
     @Default(Hidden()) ImgState picture1,
     @Default(Hidden()) ImgState picture2,
     @Default(Hidden()) ImgState picture3,
@@ -129,16 +129,6 @@ sealed class ImgState extends Immutable {
 
 class Hidden extends ImgState {
   const Hidden();
-
-  @override
-  bool operator ==(Object other) => identical(this, other) || other.runtimeType == runtimeType;
-
-  @override
-  int get hashCode => runtimeType.hashCode;
-}
-
-class Add extends ImgState {
-  const Add();
 
   @override
   bool operator ==(Object other) => identical(this, other) || other.runtimeType == runtimeType;

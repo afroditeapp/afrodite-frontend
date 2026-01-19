@@ -94,7 +94,7 @@ class ProfilePicturesBloc extends Bloc<ProfilePicturesEvent, ProfilePicturesData
       final pictures = _pictureList();
       final img = pictures[data.imgIndex];
       if (img is ImageSelected) {
-        pictures[data.imgIndex] = const Add();
+        pictures[data.imgIndex] = const Hidden();
       }
       _modifyPicturesListToHaveCorrectStates(pictures);
       _emitPictureChangesToEdited(emit, pictures);
@@ -150,21 +150,10 @@ class ProfilePicturesBloc extends Bloc<ProfilePicturesEvent, ProfilePicturesData
 
   void _modifyPicturesListToHaveCorrectStates(List<ImgState> pictures) {
     for (var i = 1; i < pictures.length; i++) {
-      if (pictures[i - 1] is ImageSelected && pictures[i] is Hidden) {
-        // If previous slot has image, show add button
-        pictures[i] = const Add();
-      } else if (pictures[i - 1] is Add && pictures[i] is ImageSelected) {
-        // If previous slot image was removed, move image to previous slot
+      if (pictures[i - 1] is Hidden && pictures[i] is ImageSelected) {
+        // Keep images packed from the start by shifting left into empty slots.
         pictures[i - 1] = pictures[i];
-        pictures[i] = const Add();
-      } else if (pictures[i - 1] is Add && pictures[i] is Add) {
-        // Subsequent add image buttons
         pictures[i] = const Hidden();
-      } else if (pictures[i - 1] is Add && pictures[i] is ImageSelected) {
-        // Image was drag and dropped to empty slot.
-        // This is currently prevented from UI code.
-        pictures[i - 1] = pictures[i];
-        pictures[i] = const Add();
       }
     }
   }

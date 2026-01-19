@@ -118,15 +118,8 @@ class _ProfilePictureSelection extends State<ProfilePictureSelection> {
             processedImg.faceDetected,
             false,
           );
-          final nextAddImgState = widget.profilePicturesBloc.state
-              .valuePictures()
-              .indexed
-              .where((element) => element.$2 is Add)
-              .firstOrNull;
-          final int index;
-          if (nextAddImgState != null) {
-            index = nextAddImgState.$1;
-          } else {
+          final index = _firstEmptyIndex(widget.profilePicturesBloc.state.valuePictures());
+          if (index == null) {
             return;
           }
           widget.profilePicturesBloc.add(
@@ -257,22 +250,20 @@ class _ProfilePictureSelection extends State<ProfilePictureSelection> {
 
   Widget imgStateToWidget(BuildContext context, int imgStateIndex) {
     return BlocBuilder<ProfilePicturesBloc, ProfilePicturesData>(
-      buildWhen: (previous, current) =>
-          previous.valuePictures()[imgStateIndex] != current.valuePictures()[imgStateIndex],
       builder: (context, state) {
-        final imgState = state.valuePictures()[imgStateIndex];
-        switch (imgState) {
-          case Add():
+        final pictures = state.valuePictures();
+        final imgState = pictures[imgStateIndex];
+        if (imgState is ImageSelected) {
+          final processedImg = getProcessedAccountImage(context, imgState);
+          if (processedImg != null) {
+            return FilePicture(img: processedImg, imgIndex: imgStateIndex);
+          } else {
             return AddPicture(imgIndex: imgStateIndex, mode: widget.mode);
-          case Hidden():
-            return const HiddenPicture();
-          case ImageSelected():
-            final processedImg = getProcessedAccountImage(context, imgState);
-            if (processedImg != null) {
-              return FilePicture(img: processedImg, imgIndex: imgStateIndex);
-            } else {
-              return AddPicture(imgIndex: imgStateIndex, mode: widget.mode);
-            }
+          }
+        } else if (_shouldShowAddButton(pictures, imgStateIndex)) {
+          return AddPicture(imgIndex: imgStateIndex, mode: widget.mode);
+        } else {
+          return const HiddenPicture();
         }
       },
     );
@@ -284,27 +275,32 @@ class _ProfilePictureSelection extends State<ProfilePictureSelection> {
           previous.valuePictures()[imgStateIndex] != current.valuePictures()[imgStateIndex],
       builder: (context, state) {
         final imgState = state.valuePictures()[imgStateIndex];
-        switch (imgState) {
-          case Add():
-            return const HiddenThumbnailPicture();
-          case Hidden():
-            return const HiddenThumbnailPicture();
-          case ImageSelected(:final cropArea):
-            {
-              final processedImg = getProcessedAccountImage(context, imgState);
-              if (processedImg != null) {
-                return VisibleThumbnailPicture(
-                  img: processedImg,
-                  imgIndex: imgStateIndex,
-                  cropArea: cropArea,
-                );
-              } else {
-                return const HiddenThumbnailPicture();
-              }
-            }
+        if (imgState is ImageSelected) {
+          final processedImg = getProcessedAccountImage(context, imgState);
+          if (processedImg != null) {
+            return VisibleThumbnailPicture(
+              img: processedImg,
+              imgIndex: imgStateIndex,
+              cropArea: imgState.cropArea,
+            );
+          }
         }
+        return const HiddenThumbnailPicture();
       },
     );
+  }
+
+  int? _firstEmptyIndex(List<ImgState> pictures) {
+    for (final (i, img) in pictures.indexed) {
+      if (img is! ImageSelected) {
+        return i;
+      }
+    }
+    return null;
+  }
+
+  bool _shouldShowAddButton(List<ImgState> pictures, int index) {
+    return _firstEmptyIndex(pictures) == index;
   }
 
   Widget primaryImageIsNotFaceImageError() {

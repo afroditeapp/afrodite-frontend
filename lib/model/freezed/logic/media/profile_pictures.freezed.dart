@@ -53,7 +53,7 @@ abstract class _ProfilePicturesData extends ProfilePicturesData {
 
 /// @nodoc
 class _$ProfilePicturesDataImpl extends _ProfilePicturesData {
-  static const ImgState _picture0DefaultValue = Add();
+  static const ImgState _picture0DefaultValue = Hidden();
   static const ImgState _picture1DefaultValue = Hidden();
   static const ImgState _picture2DefaultValue = Hidden();
   static const ImgState _picture3DefaultValue = Hidden();
