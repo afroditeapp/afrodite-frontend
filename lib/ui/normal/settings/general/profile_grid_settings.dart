@@ -1,6 +1,6 @@
 import 'package:app/data/image_cache.dart';
 import 'package:app/logic/profile/my_profile.dart';
-import 'package:app/logic/profile/profile_filters.dart';
+import 'package:app/logic/profile/profile_filters.dart' as filters;
 import 'package:app/model/freezed/logic/profile/my_profile.dart';
 import 'package:app/model/freezed/logic/profile/profile_filters.dart';
 import 'package:app/ui/normal/settings.dart';
@@ -37,12 +37,12 @@ class ProfileGridSettingsScreenOpener extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ProfileGridSettingsScreen(bloc: context.read<ProfileFiltersBloc>());
+    return ProfileGridSettingsScreen(bloc: context.read<filters.ProfileFiltersBloc>());
   }
 }
 
 class ProfileGridSettingsScreen extends StatefulWidget {
-  final ProfileFiltersBloc bloc;
+  final filters.ProfileFiltersBloc bloc;
   const ProfileGridSettingsScreen({required this.bloc, super.key});
 
   @override
@@ -55,7 +55,7 @@ class _ProfileGridSettingsScreenState extends State<ProfileGridSettingsScreen> {
   @override
   void initState() {
     super.initState();
-    widget.bloc.add(ResetEditedValues());
+    widget.bloc.add(filters.ResetEditedValues());
     previousProfileFiltersUpdateState = widget.bloc.state.updateState;
   }
 
@@ -205,7 +205,7 @@ class _ProfileGridSettingsScreenState extends State<ProfileGridSettingsScreen> {
   }
 
   Widget randomProfileOrderSetting(BuildContext context) {
-    return BlocBuilder<ProfileFiltersBloc, ProfileFiltersData>(
+    return BlocBuilder<filters.ProfileFiltersBloc, ProfileFiltersData>(
       builder: (context, state) {
         if (previousProfileFiltersUpdateState is! UpdateIdle && state.updateState is UpdateIdle) {
           showSnackBar(context.strings.generic_setting_saved);
@@ -231,7 +231,9 @@ class _ProfileGridSettingsScreenState extends State<ProfileGridSettingsScreen> {
             if (state.updateState is! UpdateIdle) {
               showSnackBar(context.strings.generic_previous_action_in_progress);
             } else {
-              context.read<ProfileFiltersBloc>().add(SetRandomProfileOrderAndSaveSettings(value));
+              context.read<filters.ProfileFiltersBloc>().add(
+                filters.SetRandomProfileOrderAndSaveSettings(value),
+              );
             }
           },
         );

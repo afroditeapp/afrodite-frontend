@@ -46,7 +46,6 @@ import 'package:app/logic/media/image_processing.dart';
 import 'package:app/logic/media/profile_pictures.dart';
 import 'package:app/logic/media/select_content.dart';
 import 'package:app/logic/profile/attributes.dart';
-import 'package:app/logic/profile/edit_my_profile.dart';
 import 'package:app/logic/profile/location.dart';
 import 'package:app/logic/profile/my_profile.dart';
 import 'package:app/logic/profile/profile_filters.dart';
@@ -303,7 +302,6 @@ class NavigatorNormal extends LoggedInRootScreen {
         BlocProvider(create: (_) => ProfileFiltersBloc(r)),
 
         // Settings
-        BlocProvider(create: (_) => EditMyProfileBloc(r)),
         BlocProvider(create: (_) => SelectContentBloc(r)),
         BlocProvider(create: (_) => ProfilePicturesBloc(r)),
         BlocProvider(create: (_) => PrivacySettingsBloc(r)),

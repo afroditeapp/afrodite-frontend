@@ -15,6 +15,7 @@ import "package:app/model/freezed/logic/profile/profile_filters.dart";
 import "package:app/ui_utils/common_update_logic.dart";
 import "package:app/ui_utils/snack_bar.dart";
 import "package:app/utils.dart";
+import "package:app/utils/model.dart";
 import "package:app/utils/result.dart";
 import "package:app/utils/time.dart";
 import "package:rxdart/rxdart.dart";

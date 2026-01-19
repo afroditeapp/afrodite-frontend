@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:app/logic/profile/edit_my_profile.dart';
-import 'package:app/model/freezed/logic/profile/edit_my_profile.dart';
+import 'package:app/logic/profile/my_profile.dart';
+import 'package:app/model/freezed/logic/profile/my_profile.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:app/logic/app/navigator_state.dart';
@@ -9,17 +9,17 @@ import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-Future<void> openEditProfileText(BuildContext context, EditMyProfileBloc bloc) {
+Future<void> openEditProfileText(BuildContext context, MyProfileBloc bloc) {
   return MyNavigator.pushLimited(context, EditProfileTextPage(bloc));
 }
 
 class EditProfileTextPage extends MyScreenPageLimited<()> {
-  EditProfileTextPage(EditMyProfileBloc bloc)
+  EditProfileTextPage(MyProfileBloc bloc)
     : super(builder: (_) => EditProfileTextScreen(bloc: bloc));
 }
 
 class EditProfileTextScreen extends StatefulWidget {
-  final EditMyProfileBloc bloc;
+  final MyProfileBloc bloc;
   const EditProfileTextScreen({required this.bloc, super.key});
 
   @override
@@ -32,15 +32,17 @@ class EditProfileTextScreenState extends State<EditProfileTextScreen> {
   @override
   void initState() {
     super.initState();
-    _profileTextController.text = widget.bloc.state.profileText ?? "";
+    _profileTextController.text = widget.bloc.state.valueProfileText() ?? "";
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<EditMyProfileBloc, EditMyProfileData>(
+    return BlocBuilder<MyProfileBloc, MyProfileData>(
       builder: (context, state) {
+        final profileText = state.valueProfileText() ?? "";
+        final byteLengthOk = profileText.length <= 2000;
         return PopScope(
-          canPop: state.profileTextByteLengthLessOrMaxValue(),
+          canPop: byteLengthOk,
           onPopInvokedWithResult: (didPop, _) {
             if (!didPop) {
               showSnackBar(context.strings.edit_profile_text_screen_text_length_too_long);
@@ -77,7 +79,7 @@ class EditProfileTextScreenState extends State<EditProfileTextScreen> {
           labelText: context.strings.edit_profile_screen_profile_text,
         ),
         onChanged: (value) {
-          context.read<EditMyProfileBloc>().add(NewProfileText(value.trim()));
+          context.read<MyProfileBloc>().add(NewProfileText(value.trim()));
         },
       ),
     );

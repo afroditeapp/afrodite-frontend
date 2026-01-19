@@ -1,6 +1,7 @@
 import "dart:async";
 
 import "package:app/data/utils/repository_instances.dart";
+import "package:flutter/foundation.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:openapi/api.dart";
 import "package:app/data/account_repository.dart";
@@ -13,6 +14,7 @@ import "package:app/model/freezed/logic/profile/my_profile.dart";
 import "package:app/ui_utils/common_update_logic.dart";
 import "package:app/ui_utils/snack_bar.dart";
 import "package:app/utils.dart";
+import "package:app/utils/model.dart";
 import "package:app/utils/result.dart";
 import "package:app/utils/time.dart";
 
@@ -38,6 +40,33 @@ class NewInitialAgeInfo extends MyProfileEvent {
 
 class ReloadMyProfile extends MyProfileEvent {}
 
+class ResetEditedValues extends MyProfileEvent {}
+
+class NewAge extends MyProfileEvent {
+  final int? value;
+  NewAge(this.value);
+}
+
+class NewName extends MyProfileEvent {
+  final String? value;
+  NewName(this.value);
+}
+
+class NewProfileText extends MyProfileEvent {
+  final String? value;
+  NewProfileText(this.value);
+}
+
+class NewUnlimitedLikesValue extends MyProfileEvent {
+  final bool value;
+  NewUnlimitedLikesValue(this.value);
+}
+
+class NewAttributeValue extends MyProfileEvent {
+  final ProfileAttributeValueUpdate value;
+  NewAttributeValue(this.value);
+}
+
 class MyProfileBloc extends Bloc<MyProfileEvent, MyProfileData> with ActionRunner {
   final AccountRepository account;
   final ProfileRepository profile;
@@ -52,7 +81,7 @@ class MyProfileBloc extends Bloc<MyProfileEvent, MyProfileData> with ActionRunne
       profile = r.profile,
       media = r.media,
       db = r.accountDb,
-      super(MyProfileData()) {
+      super(MyProfileData(edited: EditedMyProfileData())) {
     on<SetProfile>((data, emit) async {
       await runOnce(() async {
         final current = state.profile;
@@ -88,6 +117,8 @@ class MyProfileBloc extends Bloc<MyProfileEvent, MyProfileData> with ActionRunne
         await waitTime.waitIfNeeded();
 
         emit(state.copyWith(updateState: const UpdateIdle()));
+
+        resetEditedValues(emit);
       });
     });
     on<NewMyProfile>((data, emit) async {
@@ -120,6 +151,88 @@ class MyProfileBloc extends Bloc<MyProfileEvent, MyProfileData> with ActionRunne
         emit(state.copyWith(loadingMyProfile: false));
       });
     });
+    on<ResetEditedValues>((data, emit) async {
+      resetEditedValues(emit);
+    });
+    on<NewAge>((data, emit) async {
+      modifyEdited(
+        emit,
+        (e) =>
+            state.profile?.age == data.value ? e.copyWith(age: null) : e.copyWith(age: data.value),
+      );
+    });
+    on<NewName>((data, emit) async {
+      modifyEdited(
+        emit,
+        (e) => state.profile?.name == data.value
+            ? e.copyWith(name: null)
+            : e.copyWith(name: data.value),
+      );
+    });
+    on<NewProfileText>((data, emit) async {
+      modifyEdited(
+        emit,
+        (e) => state.profile?.profileText == data.value
+            ? e.copyWith(profileText: const NoEdit())
+            : e.copyWith(profileText: editValue(data.value)),
+      );
+    });
+    on<NewUnlimitedLikesValue>((data, emit) async {
+      modifyEdited(
+        emit,
+        (e) => state.profile?.unlimitedLikes == data.value
+            ? e.copyWith(unlimitedLikes: null)
+            : e.copyWith(unlimitedLikes: data.value),
+      );
+    });
+    on<NewAttributeValue>((data, emit) async {
+      final newAttributes = <int, ProfileAttributeValueUpdate>{};
+      var found = false;
+      for (final a in state.valueAttributeIdAndStateMap().values) {
+        if (a.id == data.value.id) {
+          newAttributes[data.value.id] = data.value;
+          found = true;
+        } else {
+          newAttributes[a.id] = a;
+        }
+      }
+      if (!found) {
+        newAttributes[data.value.id] = data.value;
+      }
+
+      final originalAttributes = state.profile?.attributeIdAndStateMap ?? {};
+      final modifiedAttributes = {...newAttributes};
+
+      bool attributesChanged = false;
+      for (final a in originalAttributes.values) {
+        final removed = modifiedAttributes.remove(a.id);
+        if (removed == null) {
+          // The modified attributes should contain all attributes
+          // from original as those are needed when removing an attribute.
+          // ProfileAttributeValueUpdate with empty list removes the attribute.
+          continue;
+        }
+        if (!listEquals(a.v, removed.v)) {
+          attributesChanged = true;
+          break;
+        }
+      }
+      if (!attributesChanged) {
+        for (final a in modifiedAttributes.values) {
+          if (a.v.isNotEmpty) {
+            attributesChanged = true;
+            break;
+          }
+        }
+      }
+
+      modifyEdited(
+        emit,
+        (e) => attributesChanged
+            ? e.copyWith(attributeIdAndStateMap: newAttributes)
+            : e.copyWith(attributeIdAndStateMap: null),
+      );
+    });
 
     _profileSubscription = db
         .accountStream((db) => db.myProfile.getProfileEntryForMyProfile())
@@ -131,6 +244,17 @@ class MyProfileBloc extends Bloc<MyProfileEvent, MyProfileData> with ActionRunne
         .listen((event) {
           add(NewInitialAgeInfo(event));
         });
+  }
+
+  void resetEditedValues(Emitter<MyProfileData> emit) {
+    emit(state.copyWith(edited: EditedMyProfileData()));
+  }
+
+  void modifyEdited(
+    Emitter<MyProfileData> emit,
+    EditedMyProfileData Function(EditedMyProfileData) modify,
+  ) {
+    emit(state.copyWith(edited: modify(state.edited)));
   }
 
   @override

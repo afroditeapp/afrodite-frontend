@@ -10,7 +10,6 @@ import 'package:app/ui_utils/padding.dart';
 import 'package:app/utils/list.dart';
 import 'package:app/utils/result.dart';
 import 'package:collection/collection.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
@@ -19,12 +18,10 @@ import 'package:app/localizations.dart';
 import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/logic/media/profile_pictures.dart';
 import 'package:app/logic/profile/attributes.dart';
-import 'package:app/logic/profile/edit_my_profile.dart';
 import 'package:app/logic/profile/my_profile.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/model/freezed/logic/media/profile_pictures.dart';
 import 'package:app/model/freezed/logic/profile/attributes.dart';
-import 'package:app/model/freezed/logic/profile/edit_my_profile.dart';
 import 'package:app/model/freezed/logic/profile/my_profile.dart';
 import 'package:app/ui/initial_setup/profile_basic_info.dart';
 import 'package:app/ui/initial_setup/profile_pictures.dart';
@@ -76,7 +73,7 @@ class EditProfileScreenOpener extends StatelessWidget {
       closer: closer,
       initialProfile: initialProfile,
       profilePicturesBloc: context.read<ProfilePicturesBloc>(),
-      editMyProfileBloc: context.read<EditMyProfileBloc>(),
+      myProfileBloc: context.read<MyProfileBloc>(),
       profileAttributesBloc: context.read<ProfileAttributesBloc>(),
     );
   }
@@ -86,13 +83,13 @@ class EditProfileScreen extends StatefulWidget {
   final PageCloser<()> closer;
   final MyProfileEntry initialProfile;
   final ProfilePicturesBloc profilePicturesBloc;
-  final EditMyProfileBloc editMyProfileBloc;
+  final MyProfileBloc myProfileBloc;
   final ProfileAttributesBloc profileAttributesBloc;
   const EditProfileScreen({
     required this.closer,
     required this.initialProfile,
     required this.profilePicturesBloc,
-    required this.editMyProfileBloc,
+    required this.myProfileBloc,
     required this.profileAttributesBloc,
     super.key,
   });
@@ -109,8 +106,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     final p = widget.initialProfile;
 
     // Profile data
-    widget.editMyProfileBloc.add(SetInitialValues(p));
-    widget.editMyProfileBloc.add(NewPageKeyForEditMyProfile(widget.closer.key));
+    widget.myProfileBloc.add(ResetEditedValues());
 
     // Profile pictures
 
@@ -135,20 +131,20 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   void validateAndSaveData(BuildContext context) {
-    final s = widget.editMyProfileBloc.state;
-    final age = s.age;
+    final s = widget.myProfileBloc.state;
+    final age = s.valueAge();
     if (age == null || !ageIsValid(age)) {
       showSnackBar(context.strings.edit_profile_screen_invalid_age);
       return;
     }
 
-    final name = s.name;
+    final name = s.valueName();
     if (name == null || !nameIsValid(context, name)) {
       showSnackBar(context.strings.edit_profile_screen_invalid_profile_name);
       return;
     }
 
-    final editedProfileText = s.profileText?.trim() ?? "";
+    final editedProfileText = s.valueProfileText()?.trim() ?? "";
     final String? newProfileText;
     if (editedProfileText.isEmpty) {
       newProfileText = null;
@@ -176,23 +172,20 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           age: age,
           name: name,
           ptext: newProfileText,
-          attributes: s.attributeIdAndStateMap.values.toList(),
+          attributes: s.valueAttributeIdAndStateMap().values.toList(),
         ),
         imgUpdate,
-        unlimitedLikes: s.unlimitedLikes,
+        unlimitedLikes: s.valueUnlimitedLikes(),
       ),
     );
   }
 
-  bool dataChanged(EditMyProfileData editedData, ProfilePicturesData editedImgData) {
-    final currentState = widget.initialProfile;
-    if (currentState.age != editedData.age ||
-        currentState.name != editedData.name ||
-        currentState.profileText != editedData.profileText ||
-        currentState.unlimitedLikes != editedData.unlimitedLikes) {
+  bool dataChanged(MyProfileData myProfileData, ProfilePicturesData editedImgData) {
+    if (myProfileData.unsavedChanges()) {
       return true;
     }
 
+    final currentState = widget.initialProfile;
     final editedImgs = editedImgData.toSetProfileContent();
     if (editedImgs == null ||
         currentState.content.firstOrNull?.id != editedImgs.c.firstOrNull ||
@@ -207,26 +200,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       return true;
     }
 
-    final originalAttributes = currentState.attributeIdAndStateMap.values.toList();
-    final modifiedAttributes = {...editedData.attributeIdAndStateMap};
-    for (final a in originalAttributes) {
-      final removed = modifiedAttributes.remove(a.id);
-      if (removed == null) {
-        // The modified attributes should contain all attributes
-        // from original as those are needed when removing an attribute.
-        // ProfileAttributeValueUpdate with empty list removes the attribute.
-        continue;
-      }
-      if (!listEquals(a.v, removed.v)) {
-        return true;
-      }
-    }
-    for (final a in modifiedAttributes.values) {
-      if (a.v.isNotEmpty) {
-        return true;
-      }
-    }
-
     return false;
   }
 
@@ -235,16 +208,15 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     return updateStateHandler<MyProfileBloc, MyProfileData>(
       context: context,
       pageKey: widget.closer.key,
-      child: BlocBuilder<EditMyProfileBloc, EditMyProfileData>(
+      child: BlocBuilder<MyProfileBloc, MyProfileData>(
         builder: (context, data) {
           return BlocBuilder<ProfilePicturesBloc, ProfilePicturesData>(
             builder: (context, profilePicturesData) {
-              // PageKey checks prevent Flutter from hiding
+              // PageKey check prevent Flutter from hiding
               // my profile screen's floating action button after
               // pressing this screen's save changes floating action button
               // the first time after app launch.
               final dataEditingDetected =
-                  data.pageKey == widget.closer.key &&
                   profilePicturesData.pageKey == widget.closer.key &&
                   dataChanged(data, profilePicturesData);
 
@@ -299,11 +271,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           EditProfileBasicInfo(
             initialProfile: widget.initialProfile,
             setterProfileName: (value) {
-              widget.editMyProfileBloc.add(NewName(value));
+              widget.myProfileBloc.add(NewName(value));
             },
             ageInitialValue: widget.initialProfile.age,
             setterProfileAge: (value) {
-              widget.editMyProfileBloc.add(NewAge(value));
+              widget.myProfileBloc.add(NewAge(value));
             },
           ),
           const Padding(padding: EdgeInsets.only(top: 8)),
@@ -322,10 +294,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   Widget unlimitedLikesSetting(BuildContext context) {
     return BlocBuilder<ClientFeaturesConfigBloc, ClientFeaturesConfigData>(
       builder: (context, clientFeatures) {
-        return BlocBuilder<EditMyProfileBloc, EditMyProfileData>(
+        return BlocBuilder<MyProfileBloc, MyProfileData>(
           builder: (context, myProfileData) {
             final String? subtitle;
-            if (myProfileData.unlimitedLikes) {
+            if (myProfileData.valueUnlimitedLikes()) {
               final resetTime = clientFeatures.unlimitedLikesResetTime();
               if (resetTime != null) {
                 subtitle = context.strings
@@ -342,9 +314,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               title: Text(context.strings.edit_profile_screen_unlimited_likes),
               subtitle: subtitle != null ? Text(subtitle) : null,
               secondary: Icon(UNLIMITED_LIKES_ICON, color: getUnlimitedLikesColor(context)),
-              value: myProfileData.unlimitedLikes,
+              value: myProfileData.valueUnlimitedLikes(),
               onChanged: (bool value) =>
-                  context.read<EditMyProfileBloc>().add(NewUnlimitedLikesValue(value)),
+                  context.read<MyProfileBloc>().add(NewUnlimitedLikesValue(value)),
             );
           },
         );
@@ -365,10 +337,14 @@ class EditAttributes extends StatelessWidget {
           return const SizedBox.shrink();
         }
 
-        return BlocBuilder<EditMyProfileBloc, EditMyProfileData>(
+        return BlocBuilder<MyProfileBloc, MyProfileData>(
           builder: (context, myProfileData) {
             return Column(
-              children: attributeTiles(context, manager, myProfileData.attributeIdAndStateMap),
+              children: attributeTiles(
+                context,
+                manager,
+                myProfileData.valueAttributeIdAndStateMap(),
+              ),
             );
           },
         );
@@ -659,15 +635,15 @@ class EditProfileText extends StatefulWidget {
 class _EditProfileTextState extends State<EditProfileText> {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<EditMyProfileBloc, EditMyProfileData>(
+    return BlocBuilder<MyProfileBloc, MyProfileData>(
       builder: (context, state) {
-        return content(context, state.profileText);
+        return content(context, state.valueProfileText());
       },
     );
   }
 
   Widget content(BuildContext context, String? currentText) {
-    final currentText = context.read<EditMyProfileBloc>().state.profileText;
+    final currentText = context.read<MyProfileBloc>().state.valueProfileText();
     final String? displayedText;
     if (currentText == null || currentText.isEmpty) {
       displayedText = null;
@@ -718,7 +694,7 @@ class _EditProfileTextState extends State<EditProfileText> {
     );
 
     return InkWell(
-      onTap: () => openEditProfileText(context, context.read<EditMyProfileBloc>()),
+      onTap: () => openEditProfileText(context, context.read<MyProfileBloc>()),
       child: r,
     );
   }
@@ -733,9 +709,10 @@ class ProfileNameRejectionWidget extends StatelessWidget {
     return BlocBuilder<MyProfileBloc, MyProfileData>(
       builder: (context, myProfileState) {
         final profile = myProfileState.profile ?? initialProfile;
-        return BlocBuilder<EditMyProfileBloc, EditMyProfileData>(
+        return BlocBuilder<MyProfileBloc, MyProfileData>(
           builder: (context, state) {
-            if (isRejectedState(profile.profileNameModerationState) && state.name == profile.name) {
+            if (isRejectedState(profile.profileNameModerationState) &&
+                state.valueName() == profile.name) {
               return Container(
                 padding: const EdgeInsets.all(8.0),
                 decoration: BoxDecoration(
@@ -773,11 +750,11 @@ class ProfileTextRejectionWidget extends StatelessWidget {
     return BlocBuilder<MyProfileBloc, MyProfileData>(
       builder: (context, myProfileState) {
         final profile = myProfileState.profile ?? initialProfile;
-        return BlocBuilder<EditMyProfileBloc, EditMyProfileData>(
+        return BlocBuilder<MyProfileBloc, MyProfileData>(
           builder: (context, state) {
             if (!profile.profileTextAccepted &&
                 isRejectedState(profile.profileTextModerationState) &&
-                state.profileText == profile.profileText) {
+                state.valueProfileText() == profile.profileText) {
               return Padding(
                 padding: const EdgeInsets.only(left: 16, top: 8),
                 child: Container(

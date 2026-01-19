@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 import 'package:app/localizations.dart';
-import 'package:app/logic/profile/edit_my_profile.dart';
-import 'package:app/model/freezed/logic/profile/edit_my_profile.dart';
+import 'package:app/logic/profile/my_profile.dart';
+import 'package:app/model/freezed/logic/profile/my_profile.dart';
 import 'package:app/ui_utils/app_bar/search.dart';
 import 'package:app/ui_utils/consts/padding.dart';
 import 'package:app/ui_utils/snack_bar.dart';
@@ -38,8 +38,8 @@ class _EditProfileAttributeScreenState extends State<EditProfileAttributeScreen>
     searchController = AppBarSearchController(onChanged: () => setState(() {}));
   }
 
-  bool invalidSelection(EditMyProfileData data) {
-    for (final updateValue in data.attributeIdAndStateMap.values) {
+  bool invalidSelection(MyProfileData data) {
+    for (final updateValue in data.valueAttributeIdAndStateMap().values) {
       if (updateValue.id == widget.a.attribute().apiAttribute().id) {
         final answer = updateValue.v.firstOrNull;
         return widget.a.attribute().apiAttribute().required_ && (answer == null || answer == 0);
@@ -50,7 +50,7 @@ class _EditProfileAttributeScreenState extends State<EditProfileAttributeScreen>
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<EditMyProfileBloc, EditMyProfileData>(
+    return BlocBuilder<MyProfileBloc, MyProfileData>(
       builder: (context, state) {
         final currentSelectionIsInvalid = invalidSelection(state);
 
@@ -92,7 +92,7 @@ class _EditProfileAttributeScreenState extends State<EditProfileAttributeScreen>
     return SelectAttributeValue(
       attribute: widget.a.attribute(),
       initialStateBuilder: () => SelectAttributeValueStorage.selected(widget.a.state.copy()),
-      onChanged: (state) => context.read<EditMyProfileBloc>().add(
+      onChanged: (state) => context.read<MyProfileBloc>().add(
         NewAttributeValue(state.selected.toAttributeValueUpdate(widget.a.attribute())),
       ),
       firstListItem: EditAttributeTitle(a: widget.a.attribute()),
