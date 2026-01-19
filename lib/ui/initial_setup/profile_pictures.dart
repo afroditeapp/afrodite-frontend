@@ -409,28 +409,6 @@ class AddPicture extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Drag and drop to empty slot is disabled currently.
-
-    // return DragTarget<int>(
-    //   onAcceptWithDetails: (details) {
-    //     context.read<ProfilePicturesBloc>().add(MoveImageTo(details.data, imgIndex));
-    //   },
-    //   onWillAcceptWithDetails: (details) => true,
-    //   builder: (context, candidateData, rejectedData) {
-    //     final backgroundColor = candidateData.isEmpty ? Colors.transparent : Colors.grey.shade400;
-    //      return Container(
-    //        color: backgroundColor,
-    //        child: Center(
-    //          child: buildAddPictureButton(context),
-    //        ),
-    //      );
-    //   },
-    // );
-
-    return buildAddPictureButton(context);
-  }
-
-  Widget buildAddPictureButton(BuildContext context) {
     return SizedBox(
       width: 100,
       height: ROW_HEIGHT,
