@@ -21,7 +21,6 @@ final _privateConstructorErrorProfilePicturesData = UnsupportedError(
 
 /// @nodoc
 mixin _$ProfilePicturesData {
-  PictureSelectionMode get mode => throw _privateConstructorErrorProfilePicturesData;
   ImgState get picture0 => throw _privateConstructorErrorProfilePicturesData;
   ImgState get picture1 => throw _privateConstructorErrorProfilePicturesData;
   ImgState get picture2 => throw _privateConstructorErrorProfilePicturesData;
@@ -30,7 +29,6 @@ mixin _$ProfilePicturesData {
   EditedProfilePicturesData get edited => throw _privateConstructorErrorProfilePicturesData;
 
   ProfilePicturesData copyWith({
-    PictureSelectionMode? mode,
     ImgState? picture0,
     ImgState? picture1,
     ImgState? picture2,
@@ -43,7 +41,6 @@ mixin _$ProfilePicturesData {
 /// @nodoc
 abstract class _ProfilePicturesData extends ProfilePicturesData {
   const factory _ProfilePicturesData({
-    PictureSelectionMode mode,
     ImgState picture0,
     ImgState picture1,
     ImgState picture2,
@@ -56,14 +53,12 @@ abstract class _ProfilePicturesData extends ProfilePicturesData {
 
 /// @nodoc
 class _$ProfilePicturesDataImpl extends _ProfilePicturesData {
-  static const PictureSelectionMode _modeDefaultValue = InitialSetupProfilePictures();
   static const ImgState _picture0DefaultValue = Add();
   static const ImgState _picture1DefaultValue = Hidden();
   static const ImgState _picture2DefaultValue = Hidden();
   static const ImgState _picture3DefaultValue = Hidden();
   
   const _$ProfilePicturesDataImpl({
-    this.mode = _modeDefaultValue,
     this.picture0 = _picture0DefaultValue,
     this.picture1 = _picture1DefaultValue,
     this.picture2 = _picture2DefaultValue,
@@ -72,8 +67,6 @@ class _$ProfilePicturesDataImpl extends _ProfilePicturesData {
     required this.edited,
   }) : super._();
 
-  @override
-  final PictureSelectionMode mode;
   @override
   final ImgState picture0;
   @override
@@ -89,7 +82,7 @@ class _$ProfilePicturesDataImpl extends _ProfilePicturesData {
 
   @override
   String toString() {
-    return 'ProfilePicturesData(mode: $mode, picture0: $picture0, picture1: $picture1, picture2: $picture2, picture3: $picture3, pageKey: $pageKey, edited: $edited)';
+    return 'ProfilePicturesData(picture0: $picture0, picture1: $picture1, picture2: $picture2, picture3: $picture3, pageKey: $pageKey, edited: $edited)';
   }
 
   @override
@@ -97,8 +90,6 @@ class _$ProfilePicturesDataImpl extends _ProfilePicturesData {
     return identical(this, other) ||
       (other.runtimeType == runtimeType &&
         other is _$ProfilePicturesDataImpl &&
-        (identical(other.mode, mode) ||
-          other.mode == mode) &&
         (identical(other.picture0, picture0) ||
           other.picture0 == picture0) &&
         (identical(other.picture1, picture1) ||
@@ -117,7 +108,6 @@ class _$ProfilePicturesDataImpl extends _ProfilePicturesData {
   @override
   int get hashCode => Object.hash(
     runtimeType,
-    mode,
     picture0,
     picture1,
     picture2,
@@ -128,7 +118,6 @@ class _$ProfilePicturesDataImpl extends _ProfilePicturesData {
 
   @override
   ProfilePicturesData copyWith({
-    Object? mode,
     Object? picture0,
     Object? picture1,
     Object? picture2,
@@ -136,7 +125,6 @@ class _$ProfilePicturesDataImpl extends _ProfilePicturesData {
     Object? pageKey = _detectDefaultValueInCopyWith,
     Object? edited,
   }) => _$ProfilePicturesDataImpl(
-    mode: (mode ?? this.mode) as PictureSelectionMode,
     picture0: (picture0 ?? this.picture0) as ImgState,
     picture1: (picture1 ?? this.picture1) as ImgState,
     picture2: (picture2 ?? this.picture2) as ImgState,

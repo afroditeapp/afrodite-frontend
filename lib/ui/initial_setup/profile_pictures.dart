@@ -97,26 +97,15 @@ class _AskProfilePicturesState extends State<AskProfilePictures> {
 }
 
 class ProfilePictureSelection extends StatefulWidget {
-  /// If [mode] is null, the [ProfilePicturesBloc] should be used manually to
-  /// init state.
-  final PictureSelectionMode? mode;
+  final PictureSelectionMode mode;
   final ProfilePicturesBloc profilePicturesBloc;
-  const ProfilePictureSelection({this.mode, required this.profilePicturesBloc, super.key});
+  const ProfilePictureSelection({required this.mode, required this.profilePicturesBloc, super.key});
 
   @override
   State<ProfilePictureSelection> createState() => _ProfilePictureSelection();
 }
 
 class _ProfilePictureSelection extends State<ProfilePictureSelection> {
-  @override
-  void initState() {
-    super.initState();
-    final mode = widget.mode;
-    if (mode != null) {
-      widget.profilePicturesBloc.add(ResetIfModeChanges(mode));
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final List<Widget> zeroSizedWidgets;
@@ -153,8 +142,7 @@ class _ProfilePictureSelection extends State<ProfilePictureSelection> {
       children: [
         topRow(context),
         primaryImageIsNotFaceImageError(),
-        if (widget.profilePicturesBloc.state.mode is NormalProfilePictures)
-          primaryImageIsNotAcceptedError(),
+        if (widget.mode is NormalProfilePictures) primaryImageIsNotAcceptedError(),
         const Divider(height: 50),
         bottomRow(context),
 
@@ -275,7 +263,7 @@ class _ProfilePictureSelection extends State<ProfilePictureSelection> {
         final imgState = state.valuePictures()[imgStateIndex];
         switch (imgState) {
           case Add():
-            return AddPicture(imgIndex: imgStateIndex);
+            return AddPicture(imgIndex: imgStateIndex, mode: widget.mode);
           case Hidden():
             return const HiddenPicture();
           case ImageSelected():
@@ -283,7 +271,7 @@ class _ProfilePictureSelection extends State<ProfilePictureSelection> {
             if (processedImg != null) {
               return FilePicture(img: processedImg, imgIndex: imgStateIndex);
             } else {
-              return AddPicture(imgIndex: imgStateIndex);
+              return AddPicture(imgIndex: imgStateIndex, mode: widget.mode);
             }
         }
       },
@@ -422,7 +410,8 @@ Future<void> openEditThumbnail(
 
 class AddPicture extends StatelessWidget {
   final int imgIndex;
-  const AddPicture({required this.imgIndex, super.key});
+  final PictureSelectionMode mode;
+  const AddPicture({required this.imgIndex, required this.mode, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -454,10 +443,12 @@ class AddPicture extends StatelessWidget {
       child: Material(
         child: InkWell(
           onTap: () {
-            final state = context.read<ProfilePicturesBloc>().state;
-            switch (state.mode) {
+            switch (mode) {
               case InitialSetupProfilePictures():
-                final nextSlotIndex = state.nextAvailableSlotInInitialSetup();
+                final nextSlotIndex = context
+                    .read<ProfilePicturesBloc>()
+                    .state
+                    .nextAvailableSlotInInitialSetup();
                 if (nextSlotIndex != null) {
                   openInitialSetupActionDialog(context, nextSlotIndex);
                 }

@@ -21,11 +21,6 @@ class SetInitialState extends ProfilePicturesEvent {
   SetInitialState(this.pictures, this.cropAreas);
 }
 
-class ResetIfModeChanges extends ProfilePicturesEvent {
-  final PictureSelectionMode mode;
-  ResetIfModeChanges(this.mode);
-}
-
 class AddProcessedImage extends ProfilePicturesEvent {
   final SelectedImageInfo img;
   final int profileImagesIndex;
@@ -79,11 +74,6 @@ class ProfilePicturesBloc extends Bloc<ProfilePicturesEvent, ProfilePicturesData
           edited: EditedProfilePicturesData(),
         ),
       );
-    });
-    on<ResetIfModeChanges>((data, emit) {
-      if (state.mode.runtimeType != data.mode.runtimeType) {
-        emit(ProfilePicturesData(mode: data.mode, edited: EditedProfilePicturesData()));
-      }
     });
     on<AddProcessedImage>((data, emit) {
       final pictures = _pictureList();

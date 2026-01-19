@@ -109,11 +109,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     widget.myProfileBloc.add(my_profile_logic.ResetEditedValues());
 
     // Profile pictures
-    // First reset to set the mode and clear any previous state
-    widget.profilePicturesBloc.add(
-      profile_pictures_logic.ResetIfModeChanges(const NormalProfilePictures()),
-    );
-
     // Set the current state (base values, not edited)
     final pictures = <ImgState>[
       imgStateFromContent(p.myContent.getAtOrNull(0), 0, p.primaryImageCropArea()),
@@ -259,6 +254,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       child: Column(
         children: [
           ProfilePictureSelection(
+            mode: const NormalProfilePictures(),
             profilePicturesBloc: context.read<profile_pictures_logic.ProfilePicturesBloc>(),
           ),
           const Padding(padding: EdgeInsets.only(top: 16)),

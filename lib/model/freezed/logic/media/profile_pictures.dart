@@ -11,7 +11,6 @@ part 'profile_pictures.freezed.dart';
 class ProfilePicturesData with _$ProfilePicturesData {
   const ProfilePicturesData._();
   const factory ProfilePicturesData({
-    @Default(InitialSetupProfilePictures()) PictureSelectionMode mode,
     @Default(Add()) ImgState picture0,
     @Default(Hidden()) ImgState picture1,
     @Default(Hidden()) ImgState picture2,
