@@ -180,9 +180,9 @@ class _ProfilePictureSelection extends State<ProfilePictureSelection> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Flexible(child: Container()),
-            imgStateToPrimaryImageThumbnail(0),
+            imgStateToPrimaryImageThumbnail(),
             Flexible(
-              child: Align(alignment: Alignment.centerLeft, child: thumbnailEditButton(0)),
+              child: Align(alignment: Alignment.centerLeft, child: thumbnailEditButton()),
             ),
           ],
         ),
@@ -204,17 +204,16 @@ class _ProfilePictureSelection extends State<ProfilePictureSelection> {
     );
   }
 
-  Widget thumbnailEditButton(int imgStateIndex) {
+  Widget thumbnailEditButton() {
     return BlocBuilder<ProfilePicturesBloc, ProfilePicturesData>(
-      buildWhen: (previous, current) =>
-          previous.valuePictures()[imgStateIndex] != current.valuePictures()[imgStateIndex],
+      buildWhen: (previous, current) => previous.valuePictures()[0] != current.valuePictures()[0],
       builder: (context, state) {
-        final imgState = state.valuePictures()[imgStateIndex];
+        final imgState = state.valuePictures()[0];
         final img = getProcessedAccountImage(context, imgState);
         if (img != null && imgState is ImageSelected) {
           return IconButton(
             onPressed: () {
-              openEditThumbnail(context, img, imgState.cropArea, imgStateIndex);
+              openEditThumbnail(context, img, imgState.cropArea, 0);
             },
             icon: const Icon(Icons.edit),
           );
@@ -269,18 +268,17 @@ class _ProfilePictureSelection extends State<ProfilePictureSelection> {
     );
   }
 
-  Widget imgStateToPrimaryImageThumbnail(int imgStateIndex) {
+  Widget imgStateToPrimaryImageThumbnail() {
     return BlocBuilder<ProfilePicturesBloc, ProfilePicturesData>(
-      buildWhen: (previous, current) =>
-          previous.valuePictures()[imgStateIndex] != current.valuePictures()[imgStateIndex],
+      buildWhen: (previous, current) => previous.valuePictures()[0] != current.valuePictures()[0],
       builder: (context, state) {
-        final imgState = state.valuePictures()[imgStateIndex];
+        final imgState = state.valuePictures()[0];
         if (imgState is ImageSelected) {
           final processedImg = getProcessedAccountImage(context, imgState);
           if (processedImg != null) {
             return VisibleThumbnailPicture(
               img: processedImg,
-              imgIndex: imgStateIndex,
+              imgIndex: 0,
               cropArea: imgState.cropArea,
             );
           }

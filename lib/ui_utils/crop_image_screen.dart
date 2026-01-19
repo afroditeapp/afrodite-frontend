@@ -135,7 +135,7 @@ class _CropImageScreenState extends State<CropImageScreen> {
               areaWidth: imgWidgetWidth,
               areaHeight: imgWidgetHeight,
               imageWidget: Align(alignment: Alignment.topLeft, child: imgWidget),
-              onBuildCalled: (cropState) {
+              onInteractionEnd: (cropState) {
                 final cropArea = _calculateCropArea(cropState, areaWidth, areaHeight);
                 if (cropArea != cropAreaCache) {
                   cropAreaCache = cropArea;
@@ -213,7 +213,7 @@ class CropImageOverlay extends StatefulWidget {
     required this.areaWidth,
     required this.areaHeight,
     required this.cropState,
-    required this.onBuildCalled,
+    required this.onInteractionEnd,
     super.key,
   });
   final Widget imageWidget;
@@ -221,7 +221,7 @@ class CropImageOverlay extends StatefulWidget {
   final double areaWidth;
   final double areaHeight;
   final CropState cropState;
-  final void Function(CropState) onBuildCalled;
+  final void Function(CropState) onInteractionEnd;
 
   @override
   State<CropImageOverlay> createState() => _CropImageOverlayState();
@@ -250,8 +250,6 @@ class _CropImageOverlayState extends State<CropImageOverlay> {
     checkSizeBounds();
     checkLocationBounds();
 
-    widget.onBuildCalled(widget.cropState);
-
     return Stack(
       children: [
         widget.imageWidget,
@@ -264,6 +262,8 @@ class _CropImageOverlayState extends State<CropImageOverlay> {
                 moveSelectionBox(details.delta.dx, details.delta.dy);
               });
             },
+            onPanEnd: (_) => widget.onInteractionEnd(widget.cropState),
+            onPanCancel: () => widget.onInteractionEnd(widget.cropState),
             child: Container(
               width: _size,
               height: _size,
@@ -328,6 +328,8 @@ class _CropImageOverlayState extends State<CropImageOverlay> {
             scaleAction(details.delta.dx, details.delta.dy);
           });
         },
+        onPanEnd: (_) => widget.onInteractionEnd(widget.cropState),
+        onPanCancel: () => widget.onInteractionEnd(widget.cropState),
         child: Container(
           width: 48,
           height: 48,
