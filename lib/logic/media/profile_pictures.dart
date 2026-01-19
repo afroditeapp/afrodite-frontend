@@ -94,7 +94,7 @@ class ProfilePicturesBloc extends Bloc<ProfilePicturesEvent, ProfilePicturesData
       final pictures = _pictureList();
       final img = pictures[data.imgIndex];
       if (img is ImageSelected) {
-        pictures[data.imgIndex] = const Hidden();
+        pictures[data.imgIndex] = const Empty();
       }
       _modifyPicturesListToHaveCorrectStates(pictures);
       _emitPictureChangesToEdited(emit, pictures);
@@ -150,10 +150,10 @@ class ProfilePicturesBloc extends Bloc<ProfilePicturesEvent, ProfilePicturesData
 
   void _modifyPicturesListToHaveCorrectStates(List<ImgState> pictures) {
     for (var i = 1; i < pictures.length; i++) {
-      if (pictures[i - 1] is Hidden && pictures[i] is ImageSelected) {
+      if (pictures[i - 1] is Empty && pictures[i] is ImageSelected) {
         // Keep images packed from the start by shifting left into empty slots.
         pictures[i - 1] = pictures[i];
-        pictures[i] = const Hidden();
+        pictures[i] = const Empty();
       }
     }
   }

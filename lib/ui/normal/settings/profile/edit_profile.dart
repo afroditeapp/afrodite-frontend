@@ -128,7 +128,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   ImgState imgStateFromContent(MyContent? c, int index, CropArea cropArea) {
     if (c == null) {
-      return const Hidden();
+      return const Empty();
     }
     final imgId = AccountImageId(widget.initialProfile.accountId, c.id, c.faceDetected, c.accepted);
     return ImageSelected(ProfileImage(imgId, null), cropArea: cropArea);
