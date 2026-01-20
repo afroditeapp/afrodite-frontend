@@ -13,6 +13,7 @@ import "package:app/logic/account/initial_setup.dart";
 import "package:app/logic/app/navigator_state.dart";
 import "package:app/logic/media/image_processing.dart";
 import "package:app/logic/media/profile_pictures.dart";
+import "package:app/logic/media/profile_pictures_interface.dart";
 import "package:app/model/freezed/logic/main/navigator_state.dart";
 import "package:app/model/freezed/logic/media/profile_pictures.dart";
 import "package:app/ui/initial_setup/profile_basic_info.dart";
@@ -87,25 +88,33 @@ class _AskProfilePicturesState extends State<AskProfilePictures> {
     return Column(
       children: [
         questionTitleText(context, context.strings.initial_setup_screen_profile_pictures_title),
-        ProfilePictureSelection(
+        ProfilePictureSelection<ProfilePicturesBloc, ProfilePicturesData>(
           mode: const InitialSetupProfilePictures(),
-          profilePicturesBloc: context.read<ProfilePicturesBloc>(),
+          bloc: context.read<ProfilePicturesBloc>(),
         ),
       ],
     );
   }
 }
 
-class ProfilePictureSelection extends StatefulWidget {
+class ProfilePictureSelection<
+  B extends ProfilePicturesBlocInterface<S>,
+  S extends ProfilePicturesStateInterface
+>
+    extends StatefulWidget {
   final PictureSelectionMode mode;
-  final ProfilePicturesBloc profilePicturesBloc;
-  const ProfilePictureSelection({required this.mode, required this.profilePicturesBloc, super.key});
+  final B bloc;
+  const ProfilePictureSelection({required this.mode, required this.bloc, super.key});
 
   @override
-  State<ProfilePictureSelection> createState() => _ProfilePictureSelection();
+  State<ProfilePictureSelection<B, S>> createState() => _ProfilePictureSelection<B, S>();
 }
 
-class _ProfilePictureSelection extends State<ProfilePictureSelection> {
+class _ProfilePictureSelection<
+  B extends ProfilePicturesBlocInterface<S>,
+  S extends ProfilePicturesStateInterface
+>
+    extends State<ProfilePictureSelection<B, S>> {
   @override
   Widget build(BuildContext context) {
     final List<Widget> zeroSizedWidgets;
@@ -118,13 +127,11 @@ class _ProfilePictureSelection extends State<ProfilePictureSelection> {
             processedImg.faceDetected,
             false,
           );
-          final index = _firstEmptyIndex(widget.profilePicturesBloc.state.valuePictures());
+          final index = _firstEmptyIndex(widget.bloc.state.valuePictures());
           if (index == null) {
             return;
           }
-          widget.profilePicturesBloc.add(
-            AddProcessedImage(ProfileImage(id, processedImg.slot), index),
-          );
+          widget.bloc.addProcessedImage(ProfileImage(id, processedImg.slot), index);
         },
       );
     } else {
@@ -205,15 +212,15 @@ class _ProfilePictureSelection extends State<ProfilePictureSelection> {
   }
 
   Widget thumbnailEditButton() {
-    return BlocBuilder<ProfilePicturesBloc, ProfilePicturesData>(
-      buildWhen: (previous, current) => previous.valuePictures()[0] != current.valuePictures()[0],
+    return BlocBuilder<B, S>(
+      bloc: widget.bloc,
       builder: (context, state) {
         final imgState = state.valuePictures()[0];
         final img = getProcessedAccountImage(context, imgState);
         if (img != null && imgState is ImageSelected) {
           return IconButton(
             onPressed: () {
-              openEditThumbnail(context, img, imgState.cropArea, 0);
+              openEditThumbnail(context, img, imgState.cropArea, 0, widget.bloc);
             },
             icon: const Icon(Icons.edit),
           );
@@ -248,19 +255,30 @@ class _ProfilePictureSelection extends State<ProfilePictureSelection> {
   }
 
   Widget imgStateToWidget(BuildContext context, int imgStateIndex) {
-    return BlocBuilder<ProfilePicturesBloc, ProfilePicturesData>(
+    return BlocBuilder<B, S>(
+      bloc: widget.bloc,
       builder: (context, state) {
         final pictures = state.valuePictures();
         final imgState = pictures[imgStateIndex];
         if (imgState is ImageSelected) {
           final processedImg = getProcessedAccountImage(context, imgState);
           if (processedImg != null) {
-            return FilePicture(img: processedImg, imgIndex: imgStateIndex);
+            return FilePicture(img: processedImg, imgIndex: imgStateIndex, bloc: widget.bloc);
           } else {
-            return AddPicture(imgIndex: imgStateIndex, mode: widget.mode);
+            return AddPicture(
+              imgIndex: imgStateIndex,
+              mode: widget.mode,
+              bloc: widget.bloc,
+              state: state,
+            );
           }
         } else if (_shouldShowAddButton(pictures, imgStateIndex)) {
-          return AddPicture(imgIndex: imgStateIndex, mode: widget.mode);
+          return AddPicture(
+            imgIndex: imgStateIndex,
+            mode: widget.mode,
+            bloc: widget.bloc,
+            state: state,
+          );
         } else {
           return const HiddenPicture();
         }
@@ -269,8 +287,8 @@ class _ProfilePictureSelection extends State<ProfilePictureSelection> {
   }
 
   Widget imgStateToPrimaryImageThumbnail() {
-    return BlocBuilder<ProfilePicturesBloc, ProfilePicturesData>(
-      buildWhen: (previous, current) => previous.valuePictures()[0] != current.valuePictures()[0],
+    return BlocBuilder<B, S>(
+      bloc: widget.bloc,
       builder: (context, state) {
         final imgState = state.valuePictures()[0];
         if (imgState is ImageSelected) {
@@ -280,6 +298,7 @@ class _ProfilePictureSelection extends State<ProfilePictureSelection> {
               img: processedImg,
               imgIndex: 0,
               cropArea: imgState.cropArea,
+              bloc: widget.bloc,
             );
           }
         }
@@ -302,8 +321,8 @@ class _ProfilePictureSelection extends State<ProfilePictureSelection> {
   }
 
   Widget primaryImageIsNotFaceImageError() {
-    return BlocBuilder<ProfilePicturesBloc, ProfilePicturesData>(
-      buildWhen: (previous, current) => previous.valuePictures()[0] != current.valuePictures()[0],
+    return BlocBuilder<B, S>(
+      bloc: widget.bloc,
       builder: (context, state) {
         final imgState = state.valuePictures()[0];
         if (imgState is ImageSelected && !imgState.img.isFaceDetected()) {
@@ -328,8 +347,8 @@ class _ProfilePictureSelection extends State<ProfilePictureSelection> {
   }
 
   Widget primaryImageIsNotAcceptedError() {
-    return BlocBuilder<ProfilePicturesBloc, ProfilePicturesData>(
-      buildWhen: (previous, current) => previous.valuePictures()[0] != current.valuePictures()[0],
+    return BlocBuilder<B, S>(
+      bloc: widget.bloc,
       builder: (context, state) {
         final imgState = state.valuePictures()[0];
         if (imgState is ImageSelected && !imgState.img.isAccepted()) {
@@ -366,6 +385,7 @@ Future<void> openEditThumbnail(
   AccountImageId img,
   CropArea currentCrop,
   int imgStateIndex,
+  ProfilePicturesBlocInterface bloc,
 ) async {
   final bytes = await ImageCacheData.getInstance().getImage(
     img.accountId,
@@ -395,7 +415,7 @@ Future<void> openEditThumbnail(
       ),
       onCropAreaChanged: (cropArea) {
         if (cropArea != null && context.mounted) {
-          context.read<ProfilePicturesBloc>().add(UpdateCropArea(cropArea, imgStateIndex));
+          bloc.updateCropArea(cropArea, imgStateIndex);
         }
       },
     ),
@@ -405,7 +425,15 @@ Future<void> openEditThumbnail(
 class AddPicture extends StatelessWidget {
   final int imgIndex;
   final PictureSelectionMode mode;
-  const AddPicture({required this.imgIndex, required this.mode, super.key});
+  final ProfilePicturesBlocInterface bloc;
+  final ProfilePicturesStateInterface state;
+  const AddPicture({
+    required this.imgIndex,
+    required this.mode,
+    required this.bloc,
+    required this.state,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -417,10 +445,7 @@ class AddPicture extends StatelessWidget {
           onTap: () {
             switch (mode) {
               case InitialSetupProfilePictures():
-                final nextSlotIndex = context
-                    .read<ProfilePicturesBloc>()
-                    .state
-                    .nextAvailableSlotInInitialSetup();
+                final nextSlotIndex = state.nextAvailableSlotInInitialSetup();
                 if (nextSlotIndex != null) {
                   openInitialSetupActionDialog(context, nextSlotIndex);
                 }
@@ -469,9 +494,7 @@ class AddPicture extends StatelessWidget {
                 .initial_setup_screen_profile_pictures_select_picture_security_selfie_title,
           ),
           onTap: () {
-            context.read<ProfilePicturesBloc>().add(
-              AddProcessedImage(InitialSetupSecuritySelfie(), imgIndex),
-            );
+            bloc.addProcessedImage(InitialSetupSecuritySelfie(), imgIndex);
             closer.close(context, ());
           },
         );
@@ -488,13 +511,12 @@ class AddPicture extends StatelessWidget {
   }
 
   void openActionDialog(BuildContext context) async {
-    final bloc = context.read<ProfilePicturesBloc>();
     final selectedImg = await MyNavigator.showFullScreenDialog(
       context: context,
       page: SelectContentPage(identifyFaceImages: imgIndex == 0),
     );
     if (selectedImg != null) {
-      bloc.add(AddProcessedImage(ProfileImage(selectedImg, null), imgIndex));
+      bloc.addProcessedImage(ProfileImage(selectedImg, null), imgIndex);
     }
   }
 }
@@ -629,8 +651,9 @@ class HiddenThumbnailPicture extends StatelessWidget {
 class FilePicture extends StatelessWidget {
   final AccountImageId img;
   final int imgIndex;
+  final ProfilePicturesBlocInterface bloc;
 
-  const FilePicture({required this.img, required this.imgIndex, super.key});
+  const FilePicture({required this.img, required this.imgIndex, required this.bloc, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -643,7 +666,7 @@ class FilePicture extends StatelessWidget {
   Widget imgAndDeleteButton(BuildContext context, double maxWidth, double maxHeight) {
     return DragTarget<int>(
       onAcceptWithDetails: (details) {
-        context.read<ProfilePicturesBloc>().add(MoveImageTo(details.data, imgIndex));
+        bloc.moveImageTo(details.data, imgIndex);
       },
       onWillAcceptWithDetails: (details) => details.data != imgIndex,
       builder: (context, candidateData, rejectedData) {
@@ -652,8 +675,7 @@ class FilePicture extends StatelessWidget {
             ? Colors.transparent
             : Theme.of(context).colorScheme.surfaceContainerHighest;
         return ImgWithCloseButton(
-          onCloseButtonPressed: () =>
-              context.read<ProfilePicturesBloc>().add(RemoveImage(imgIndex)),
+          onCloseButtonPressed: () => bloc.removeImage(imgIndex),
           imgWidgetBuilder: (c, width, height) => draggableImgWidget(context, width, height),
           maxHeight: maxHeight,
           maxWidth: maxWidth,
@@ -790,11 +812,13 @@ class VisibleThumbnailPicture extends StatelessWidget {
   final AccountImageId img;
   final CropArea cropArea;
   final int imgIndex;
+  final ProfilePicturesBlocInterface bloc;
 
   const VisibleThumbnailPicture({
     required this.img,
     required this.imgIndex,
     required this.cropArea,
+    required this.bloc,
     super.key,
   });
 
@@ -812,7 +836,7 @@ class VisibleThumbnailPicture extends StatelessWidget {
         color: Colors.transparent,
         child: InkWell(
           onTap: () {
-            openEditThumbnail(context, img, cropArea, imgIndex);
+            openEditThumbnail(context, img, cropArea, imgIndex, bloc);
           },
         ),
       ),

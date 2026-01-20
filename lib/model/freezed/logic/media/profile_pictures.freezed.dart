@@ -57,7 +57,7 @@ class _$ProfilePicturesDataImpl extends _ProfilePicturesData {
   static const ImgState _picture1DefaultValue = Empty();
   static const ImgState _picture2DefaultValue = Empty();
   static const ImgState _picture3DefaultValue = Empty();
-
+  
   const _$ProfilePicturesDataImpl({
     this.picture0 = _picture0DefaultValue,
     this.picture1 = _picture1DefaultValue,
@@ -170,7 +170,7 @@ class _$EditedProfilePicturesDataImpl extends _EditedProfilePicturesData {
   static const EditValue<ImgState> _picture1DefaultValue = NoEdit();
   static const EditValue<ImgState> _picture2DefaultValue = NoEdit();
   static const EditValue<ImgState> _picture3DefaultValue = NoEdit();
-
+  
   _$EditedProfilePicturesDataImpl({
     this.picture0 = _picture0DefaultValue,
     this.picture1 = _picture1DefaultValue,

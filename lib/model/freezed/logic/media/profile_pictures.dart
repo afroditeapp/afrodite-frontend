@@ -1,3 +1,4 @@
+import "package:app/logic/media/profile_pictures_interface.dart";
 import "package:app/model/freezed/logic/main/navigator_state.dart";
 import "package:app/utils/model.dart";
 import "package:freezed_annotation/freezed_annotation.dart";
@@ -8,7 +9,7 @@ import 'package:collection/collection.dart';
 part 'profile_pictures.freezed.dart';
 
 @freezed
-class ProfilePicturesData with _$ProfilePicturesData {
+class ProfilePicturesData with _$ProfilePicturesData implements ProfilePicturesStateInterface {
   const ProfilePicturesData._();
   const factory ProfilePicturesData({
     @Default(Empty()) ImgState picture0,
@@ -34,10 +35,12 @@ class ProfilePicturesData with _$ProfilePicturesData {
   ImgState valuePicture2() => edited.picture2.editedValue(picture2) ?? picture2;
   ImgState valuePicture3() => edited.picture3.editedValue(picture3) ?? picture3;
 
+  @override
   List<ImgState> valuePictures() {
     return [valuePicture0(), valuePicture1(), valuePicture2(), valuePicture3()];
   }
 
+  @override
   int? nextAvailableSlotInInitialSetup() {
     // 0 is for security selfie
     final availableSlots = [1, 2, 3, 4];

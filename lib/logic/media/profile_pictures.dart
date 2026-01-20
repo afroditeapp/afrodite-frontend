@@ -1,6 +1,7 @@
 import "package:app/api/server_connection_manager.dart";
 import "package:app/data/utils/repository_instances.dart";
 import "package:app/localizations.dart";
+import "package:app/logic/media/profile_pictures_interface.dart";
 import "package:app/model/freezed/logic/main/navigator_state.dart";
 import "package:app/ui_utils/snack_bar.dart";
 import "package:app/utils/model.dart";
@@ -51,7 +52,8 @@ class NewPageKeyForProfilePicturesBloc extends ProfilePicturesEvent {
   NewPageKeyForProfilePicturesBloc(this.value);
 }
 
-class ProfilePicturesBloc extends Bloc<ProfilePicturesEvent, ProfilePicturesData> {
+class ProfilePicturesBloc extends Bloc<ProfilePicturesEvent, ProfilePicturesData>
+    implements ProfilePicturesBlocInterface<ProfilePicturesData> {
   final ApiManager api;
   final AccountId currentAccount;
 
@@ -142,6 +144,27 @@ class ProfilePicturesBloc extends Bloc<ProfilePicturesEvent, ProfilePicturesData
     on<NewPageKeyForProfilePicturesBloc>((data, emit) async {
       emit(state.copyWith(pageKey: data.value));
     });
+  }
+
+  // ProfilePicturesBlocInterface implementation
+  @override
+  void addProcessedImage(SelectedImageInfo img, int profileImagesIndex) {
+    add(AddProcessedImage(img, profileImagesIndex));
+  }
+
+  @override
+  void updateCropArea(CropArea cropArea, int imgIndex) {
+    add(UpdateCropArea(cropArea, imgIndex));
+  }
+
+  @override
+  void removeImage(int imgIndex) {
+    add(RemoveImage(imgIndex));
+  }
+
+  @override
+  void moveImageTo(int src, int dst) {
+    add(MoveImageTo(src, dst));
   }
 
   List<ImgState> _pictureList() {

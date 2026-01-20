@@ -253,9 +253,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     return SingleChildScrollView(
       child: Column(
         children: [
-          ProfilePictureSelection(
+          ProfilePictureSelection<profile_pictures_logic.ProfilePicturesBloc, ProfilePicturesData>(
             mode: const NormalProfilePictures(),
-            profilePicturesBloc: context.read<profile_pictures_logic.ProfilePicturesBloc>(),
+            bloc: context.read<profile_pictures_logic.ProfilePicturesBloc>(),
           ),
           const Padding(padding: EdgeInsets.only(top: 16)),
           const Divider(),
