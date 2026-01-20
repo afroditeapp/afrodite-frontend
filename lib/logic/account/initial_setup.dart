@@ -1,3 +1,4 @@
+import "dart:async";
 import "dart:io";
 import "dart:typed_data";
 
@@ -9,6 +10,7 @@ import "package:app/ui_utils/crop_image_screen.dart";
 import "package:app/utils/age.dart";
 import "package:app/utils/result.dart";
 import "package:collection/collection.dart";
+import "package:database/database.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:latlong2/latlong.dart";
 import "package:logging/logging.dart";
@@ -29,6 +31,13 @@ final _log = Logger("InitialSetupBloc");
 
 sealed class InitialSetupEvent {}
 
+// Internal event for DB value updates
+class _NewProgressData extends InitialSetupEvent {
+  final InitialSetupProgressEntry? data;
+  _NewProgressData(this.data);
+}
+
+// Public events for UI updates (these will write to DB)
 class SetAgeConfirmation extends InitialSetupEvent {
   final bool isAdult;
   SetAgeConfirmation(this.isAdult);
@@ -147,6 +156,8 @@ class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData>
   final ApiManager api;
   final AccountId currentAccount;
 
+  StreamSubscription<InitialSetupProgressEntry?>? _progressSubscription;
+
   InitialSetupBloc(RepositoryInstances r)
     : account = r.account,
       currentUser = r.accountId,
@@ -154,70 +165,188 @@ class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData>
       api = r.api,
       currentAccount = r.accountId,
       super(InitialSetupData()) {
-    on<ResetState>((data, emit) {
-      emit(InitialSetupData());
+    // Internal DB update handler - single event for all progress data
+    on<_NewProgressData>((data, emit) {
+      if (data.data == null) {
+        emit(InitialSetupData());
+        return;
+      }
+
+      final progress = data.data!;
+
+      // Build security selfie if all parts are present (slot is always 0)
+      ProcessedAccountImage? securitySelfie;
+      if (progress.securitySelfieContentId != null && progress.securitySelfieFaceDetected != null) {
+        securitySelfie = ProcessedAccountImage(
+          currentAccount,
+          ContentId(cid: progress.securitySelfieContentId!),
+          0, // Security selfie slot is always 0
+          progress.securitySelfieFaceDetected!,
+        );
+      }
+
+      // Parse gender
+      final gender = progress.gender != null ? _parseGender(progress.gender!) : null;
+
+      // Build gender search settings
+      final genderSearchSetting = GenderSearchSettingsAll(
+        men: progress.searchSettingMen ?? false,
+        women: progress.searchSettingWomen ?? false,
+        nonBinary: progress.searchSettingNonBinary ?? false,
+      );
+
+      // Build location
+      LatLng? location;
+      if (progress.latitude != null && progress.longitude != null) {
+        location = LatLng(progress.latitude!, progress.longitude!);
+      }
+
+      // Build profile attributes
+      final profileAttributes = ProfileAttributesState(progress.profileAttributes ?? []);
+
+      // Build profile images from DB data
+      final profileImages = <ImgState>[];
+      if (progress.profileImages != null) {
+        for (final entry in progress.profileImages!) {
+          profileImages.add(
+            ImageSelected(
+              AccountImageId(
+                currentAccount,
+                ContentId(cid: entry.contentId),
+                entry.faceDetected,
+                true, // Accepted is always true for initial setup
+              ),
+              entry.slot,
+              cropArea: CropArea.fromValues(entry.cropSize, entry.cropX, entry.cropY),
+            ),
+          );
+        }
+      }
+      // Fill remaining slots with Empty
+      while (profileImages.length < 4) {
+        profileImages.add(const Empty());
+      }
+
+      emit(
+        state.copyWith(
+          email: progress.email,
+          isAdult: progress.isAdult,
+          profileName: progress.profileName,
+          profileAge: progress.profileAge,
+          securitySelfie: securitySelfie,
+          profileImages: ImmutableList(profileImages),
+          gender: gender,
+          genderSearchSetting: genderSearchSetting,
+          searchAgeRangeInitDone: progress.searchAgeRangeInitDone ?? false,
+          searchAgeRangeMin: progress.searchAgeRangeMin,
+          searchAgeRangeMax: progress.searchAgeRangeMax,
+          profileLocation: location,
+          profileAttributes: profileAttributes,
+          chatInfoUnderstood: progress.chatInfoUnderstood ?? false,
+        ),
+      );
     });
-    on<SetAgeConfirmation>((data, emit) {
-      emit(state.copyWith(isAdult: data.isAdult));
+
+    // Public event handlers that write to DB
+    on<ResetState>((data, emit) async {
+      await db.accountAction((db) => db.app.clearInitialSetupProgress());
     });
-    on<SetEmail>((data, emit) {
-      emit(state.copyWith(email: data.email));
+    on<SetAgeConfirmation>((data, emit) async {
+      await db.accountAction((db) => db.app.updateInitialSetupIsAdult(data.isAdult));
     });
-    on<SetProfileName>((data, emit) {
-      emit(state.copyWith(profileName: data.value));
+    on<SetEmail>((data, emit) async {
+      await db.accountAction((db) => db.app.updateInitialSetupEmail(data.email));
     });
-    on<SetProfileAge>((data, emit) {
-      emit(state.copyWith(profileAge: data.age));
+    on<SetProfileName>((data, emit) async {
+      await db.accountAction((db) => db.app.updateInitialSetupProfileName(data.value));
     });
-    on<SetSecuritySelfie>((data, emit) {
-      emit(state.copyWith(securitySelfie: data.securitySelfie));
+    on<SetProfileAge>((data, emit) async {
+      await db.accountAction((db) => db.app.updateInitialSetupProfileAge(data.age));
+    });
+    on<SetSecuritySelfie>((data, emit) async {
+      await db.accountAction(
+        (db) => db.app.updateInitialSetupSecuritySelfie(
+          contentId: data.securitySelfie.contentId.cid,
+          faceDetected: data.securitySelfie.faceDetected,
+        ),
+      );
     });
     on<SetProfileImages>((data, emit) async {
-      emit(state.copyWith(profileImages: ImmutableList(data.profileImages)));
+      // Convert ImgState list to ProfilePictureEntry list
+      final entries = <ProfilePictureEntry>[];
+
+      for (final img in data.profileImages) {
+        if (img is ImageSelected) {
+          entries.add(
+            ProfilePictureEntry(
+              contentId: img.id.contentId.cid,
+              slot: img.slot,
+              faceDetected: img.id.faceDetected,
+              cropSize: img.cropArea.gridCropSize,
+              cropX: img.cropArea.gridCropX,
+              cropY: img.cropArea.gridCropY,
+            ),
+          );
+        }
+      }
+
+      await db.accountAction((db) => db.app.updateInitialSetupProfileImages(entries));
     });
     on<SetGender>((data, emit) async {
-      emit(
-        state.copyWith(gender: data.gender, genderSearchSetting: const GenderSearchSettingsAll()),
+      await db.accountAction((db) => db.app.updateInitialSetupGender(_genderToString(data.gender)));
+      // Reset search settings when gender changes
+      await db.accountAction(
+        (db) => db.app.updateInitialSetupGenderSearchSettings(
+          men: false,
+          women: false,
+          nonBinary: false,
+        ),
       );
     });
     on<SetGenderSearchSetting>((data, emit) async {
-      emit(state.copyWith(genderSearchSetting: data.settings));
+      await db.accountAction(
+        (db) => db.app.updateInitialSetupGenderSearchSettings(
+          men: data.settings.men,
+          women: data.settings.women,
+          nonBinary: data.settings.nonBinary,
+        ),
+      );
     });
     on<InitAgeRange>((data, emit) async {
-      emit(
-        state.copyWith(
-          searchAgeRangeMin: data.min,
-          searchAgeRangeMax: data.max,
-          searchAgeRangeInitDone: true,
-        ),
+      await db.accountAction(
+        (db) =>
+            db.app.updateInitialSetupSearchAgeRange(initDone: true, min: data.min, max: data.max),
       );
     });
     on<SetAgeRangeMin>((data, emit) async {
       var max = state.searchAgeRangeMax ?? MAX_AGE;
-
       if (data.min > max) {
         max = data.min;
       }
-
-      emit(state.copyWith(searchAgeRangeMin: data.min, searchAgeRangeMax: max));
+      await db.accountAction(
+        (db) => db.app.updateInitialSetupSearchAgeRange(min: data.min, max: max),
+      );
     });
     on<SetAgeRangeMax>((data, emit) async {
       var min = state.searchAgeRangeMin ?? MIN_AGE;
-
       if (data.max < min) {
         min = data.max;
       }
-
-      emit(state.copyWith(searchAgeRangeMin: min, searchAgeRangeMax: data.max));
+      await db.accountAction(
+        (db) => db.app.updateInitialSetupSearchAgeRange(min: min, max: data.max),
+      );
     });
     on<SetLocation>((data, emit) async {
-      emit(state.copyWith(profileLocation: data.location));
+      await db.accountAction(
+        (db) => db.app.updateInitialSetupLocation(data.location.latitude, data.location.longitude),
+      );
     });
     on<SetChatInfoUnderstood>((data, emit) async {
-      emit(state.copyWith(chatInfoUnderstood: data.understood));
+      await db.accountAction((db) => db.app.updateInitialSetupChatInfoUnderstood(data.understood));
     });
     on<UpdateAttributeValue>((data, emit) async {
-      emit(state.copyWith(profileAttributes: state.profileAttributes.addOrReplace(data.update)));
+      final updated = state.profileAttributes.addOrReplace(data.update);
+      await db.accountAction((db) => db.app.updateInitialSetupProfileAttributes(updated.answers));
     });
     on<CompleteInitialSetup>((data, emit) async {
       await runOnce(() async {
@@ -283,9 +412,11 @@ class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData>
           (v) => v.cid == securitySelfie.contentId,
         );
         if (newSecuritySelfieState != null) {
-          emit(
-            state.copyWith(
-              securitySelfie: securitySelfie.copyWithFaceDetectedValue(newSecuritySelfieState.fd),
+          // Update DB with new face detected value
+          await db.accountAction(
+            (db) => db.app.updateInitialSetupSecuritySelfie(
+              contentId: securitySelfie.contentId.cid,
+              faceDetected: newSecuritySelfieState.fd,
             ),
           );
         }
@@ -296,28 +427,41 @@ class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData>
     on<AddProcessedImageToSetup>((data, emit) {
       final newImages = state.valuePictures();
       newImages[data.index] = data.img;
-      emit(state.copyWith(profileImages: ImmutableList(newImages)));
+      add(SetProfileImages(newImages));
     });
     on<UpdateCropAreaInSetup>((data, emit) {
       final newImages = state.valuePictures();
       final imgState = newImages[data.index];
       if (imgState is ImageSelected) {
         newImages[data.index] = ImageSelected(imgState.id, imgState.slot, cropArea: data.cropArea);
-        emit(state.copyWith(profileImages: ImmutableList(newImages)));
+        add(SetProfileImages(newImages));
       }
     });
     on<RemoveImageFromSetup>((data, emit) {
       final newImages = state.valuePictures();
       newImages[data.index] = const Empty();
-      emit(state.copyWith(profileImages: ImmutableList(newImages)));
+      add(SetProfileImages(newImages));
     });
     on<MoveImageInSetup>((data, emit) {
       final newImages = state.valuePictures();
       final temp = newImages[data.src];
       newImages[data.src] = newImages[data.dst];
       newImages[data.dst] = temp;
-      emit(state.copyWith(profileImages: ImmutableList(newImages)));
+      add(SetProfileImages(newImages));
     });
+
+    // Single subscription for all initial setup progress data
+    _progressSubscription = db.accountStream((db) => db.app.watchInitialSetupProgress()).listen((
+      data,
+    ) {
+      add(_NewProgressData(data));
+    });
+  }
+
+  @override
+  Future<void> close() async {
+    await _progressSubscription?.cancel();
+    await super.close();
   }
 
   // ProfilePicturesBlocInterface implementation
@@ -350,4 +494,21 @@ Future<Uint8List> createImage(String fileName, void Function(img.Pixel) pixelMod
   }
 
   return img.encodeJpg(imageBuffer);
+}
+
+Gender? _parseGender(String value) {
+  return switch (value) {
+    'man' => Gender.man,
+    'woman' => Gender.woman,
+    'nonBinary' => Gender.nonBinary,
+    _ => null,
+  };
+}
+
+String _genderToString(Gender gender) {
+  return switch (gender) {
+    Gender.man => 'man',
+    Gender.woman => 'woman',
+    Gender.nonBinary => 'nonBinary',
+  };
 }

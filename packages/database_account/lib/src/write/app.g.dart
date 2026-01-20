@@ -11,6 +11,8 @@ mixin _$DaoWriteAppMixin on DatabaseAccessor<AccountDatabase> {
   $InitialSyncTable get initialSync => attachedDatabase.initialSync;
   $InitialSetupSkippedTable get initialSetupSkipped =>
       attachedDatabase.initialSetupSkipped;
+  $InitialSetupProgressTable get initialSetupProgress =>
+      attachedDatabase.initialSetupProgress;
   $GridSettingsTable get gridSettings => attachedDatabase.gridSettings;
   $ChatBackupReminderTable get chatBackupReminder =>
       attachedDatabase.chatBackupReminder;

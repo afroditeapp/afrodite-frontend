@@ -1,5 +1,6 @@
 import 'package:database_account/src/database.dart';
-import 'package:database_model/database_model.dart';
+import 'package:database_model/database_model.dart'
+    show InitialSetupProgressEntry, GridSettings, ChatBackupReminder;
 import 'package:database_utils/database_utils.dart';
 import 'package:drift/drift.dart';
 import 'package:openapi/api.dart' as api;
@@ -14,6 +15,7 @@ part 'app.g.dart';
     schema.ShowAdvancedProfileFilters,
     schema.InitialSync,
     schema.InitialSetupSkipped,
+    schema.InitialSetupProgress,
     schema.GridSettings,
     schema.ChatBackupReminder,
     schema.AdminNotification,
@@ -123,6 +125,35 @@ class DaoReadApp extends DatabaseAccessor<AccountDatabase> with _$DaoReadAppMixi
         reminderIntervalDays: r?.reminderIntervalDays,
         lastBackupTime: r?.lastBackupTime,
         lastDialogOpenedTime: r?.lastDialogOpenedTime,
+      );
+    });
+  }
+
+  // Initial setup progress - watch entire row as a model
+  Stream<InitialSetupProgressEntry?> watchInitialSetupProgress() {
+    return (select(
+      initialSetupProgress,
+    )..where((t) => t.id.equals(SingleRowTable.ID.value))).watchSingleOrNull().map((r) {
+      if (r == null) return null;
+      return InitialSetupProgressEntry(
+        email: r.email,
+        isAdult: r.isAdult,
+        profileName: r.profileName,
+        profileAge: r.profileAge,
+        securitySelfieContentId: r.securitySelfieContentId,
+        securitySelfieFaceDetected: r.securitySelfieFaceDetected,
+        profileImages: r.jsonProfileImages?.value,
+        gender: r.gender,
+        searchSettingMen: r.searchSettingMen,
+        searchSettingWomen: r.searchSettingWomen,
+        searchSettingNonBinary: r.searchSettingNonBinary,
+        searchAgeRangeInitDone: r.searchAgeRangeInitDone,
+        searchAgeRangeMin: r.searchAgeRangeMin,
+        searchAgeRangeMax: r.searchAgeRangeMax,
+        latitude: r.latitude,
+        longitude: r.longitude,
+        profileAttributes: r.jsonProfileAttributes?.value,
+        chatInfoUnderstood: r.chatInfoUnderstood,
       );
     });
   }

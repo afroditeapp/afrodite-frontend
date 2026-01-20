@@ -54,6 +54,7 @@ part 'database.g.dart';
     schema.ShowAdvancedProfileFilters,
     schema.InitialSync,
     schema.InitialSetupSkipped,
+    schema.InitialSetupProgress,
     schema.GridSettings,
     schema.ChatBackupReminder,
     schema.AdminNotification,

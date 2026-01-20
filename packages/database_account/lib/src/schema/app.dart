@@ -97,3 +97,46 @@ class PushNotification extends SingleRowTable {
       text().map(const NullAwareTypeConverter.wrap(VapidPublicKeyConverter())).nullable()();
   IntColumn get syncVersionPushNotificationInfo => integer().nullable()();
 }
+
+/// Stores initial setup progress so it persists across app restarts.
+/// This prevents users from losing all their progress if they quit the app.
+class InitialSetupProgress extends SingleRowTable {
+  // Basic profile info
+  TextColumn get email => text().nullable()();
+  BoolColumn get isAdult => boolean().nullable()();
+  TextColumn get profileName => text().nullable()();
+  IntColumn get profileAge => integer().nullable()();
+
+  // Security selfie - stored as ContentId from server (slot is always 0)
+  TextColumn get securitySelfieContentId => text().nullable()();
+  BoolColumn get securitySelfieFaceDetected => boolean().nullable()();
+
+  // Profile images - stored as JSON list of ProfilePictureEntry (up to 4 images with crop info)
+  TextColumn get jsonProfileImages => text()
+      .map(NullAwareTypeConverter.wrap(const ProfilePictureEntryListConverter()))
+      .nullable()();
+
+  // Gender and search settings
+  /// Gender: 'man', 'woman', 'nonBinary'
+  TextColumn get gender => text().nullable()();
+  BoolColumn get searchSettingMen => boolean().nullable()();
+  BoolColumn get searchSettingWomen => boolean().nullable()();
+  BoolColumn get searchSettingNonBinary => boolean().nullable()();
+
+  // Search age range
+  BoolColumn get searchAgeRangeInitDone => boolean().nullable()();
+  IntColumn get searchAgeRangeMin => integer().nullable()();
+  IntColumn get searchAgeRangeMax => integer().nullable()();
+
+  // Location
+  RealColumn get latitude => real().nullable()();
+  RealColumn get longitude => real().nullable()();
+
+  // Profile attributes stored as JSON list of ProfileAttributeValueUpdate objects
+  TextColumn get jsonProfileAttributes => text()
+      .map(NullAwareTypeConverter.wrap(const ProfileAttributeValueUpdateListConverter()))
+      .nullable()();
+
+  // Chat info
+  BoolColumn get chatInfoUnderstood => boolean().nullable()();
+}

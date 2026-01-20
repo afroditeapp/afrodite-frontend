@@ -1197,6 +1197,1244 @@ class InitialSetupSkippedCompanion
   }
 }
 
+class $InitialSetupProgressTable extends schema.InitialSetupProgress
+    with TableInfo<$InitialSetupProgressTable, InitialSetupProgressData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $InitialSetupProgressTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _emailMeta = const VerificationMeta('email');
+  @override
+  late final GeneratedColumn<String> email = GeneratedColumn<String>(
+    'email',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _isAdultMeta = const VerificationMeta(
+    'isAdult',
+  );
+  @override
+  late final GeneratedColumn<bool> isAdult = GeneratedColumn<bool>(
+    'is_adult',
+    aliasedName,
+    true,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("is_adult" IN (0, 1))',
+    ),
+  );
+  static const VerificationMeta _profileNameMeta = const VerificationMeta(
+    'profileName',
+  );
+  @override
+  late final GeneratedColumn<String> profileName = GeneratedColumn<String>(
+    'profile_name',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _profileAgeMeta = const VerificationMeta(
+    'profileAge',
+  );
+  @override
+  late final GeneratedColumn<int> profileAge = GeneratedColumn<int>(
+    'profile_age',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _securitySelfieContentIdMeta =
+      const VerificationMeta('securitySelfieContentId');
+  @override
+  late final GeneratedColumn<String> securitySelfieContentId =
+      GeneratedColumn<String>(
+        'security_selfie_content_id',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _securitySelfieFaceDetectedMeta =
+      const VerificationMeta('securitySelfieFaceDetected');
+  @override
+  late final GeneratedColumn<bool> securitySelfieFaceDetected =
+      GeneratedColumn<bool>(
+        'security_selfie_face_detected',
+        aliasedName,
+        true,
+        type: DriftSqlType.bool,
+        requiredDuringInsert: false,
+        defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'CHECK ("security_selfie_face_detected" IN (0, 1))',
+        ),
+      );
+  @override
+  late final GeneratedColumnWithTypeConverter<
+    JsonList<ProfilePictureEntry>?,
+    String
+  >
+  jsonProfileImages =
+      GeneratedColumn<String>(
+        'json_profile_images',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      ).withConverter<JsonList<ProfilePictureEntry>?>(
+        $InitialSetupProgressTable.$converterjsonProfileImages,
+      );
+  static const VerificationMeta _genderMeta = const VerificationMeta('gender');
+  @override
+  late final GeneratedColumn<String> gender = GeneratedColumn<String>(
+    'gender',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _searchSettingMenMeta = const VerificationMeta(
+    'searchSettingMen',
+  );
+  @override
+  late final GeneratedColumn<bool> searchSettingMen = GeneratedColumn<bool>(
+    'search_setting_men',
+    aliasedName,
+    true,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("search_setting_men" IN (0, 1))',
+    ),
+  );
+  static const VerificationMeta _searchSettingWomenMeta =
+      const VerificationMeta('searchSettingWomen');
+  @override
+  late final GeneratedColumn<bool> searchSettingWomen = GeneratedColumn<bool>(
+    'search_setting_women',
+    aliasedName,
+    true,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("search_setting_women" IN (0, 1))',
+    ),
+  );
+  static const VerificationMeta _searchSettingNonBinaryMeta =
+      const VerificationMeta('searchSettingNonBinary');
+  @override
+  late final GeneratedColumn<bool> searchSettingNonBinary =
+      GeneratedColumn<bool>(
+        'search_setting_non_binary',
+        aliasedName,
+        true,
+        type: DriftSqlType.bool,
+        requiredDuringInsert: false,
+        defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'CHECK ("search_setting_non_binary" IN (0, 1))',
+        ),
+      );
+  static const VerificationMeta _searchAgeRangeInitDoneMeta =
+      const VerificationMeta('searchAgeRangeInitDone');
+  @override
+  late final GeneratedColumn<bool> searchAgeRangeInitDone =
+      GeneratedColumn<bool>(
+        'search_age_range_init_done',
+        aliasedName,
+        true,
+        type: DriftSqlType.bool,
+        requiredDuringInsert: false,
+        defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'CHECK ("search_age_range_init_done" IN (0, 1))',
+        ),
+      );
+  static const VerificationMeta _searchAgeRangeMinMeta = const VerificationMeta(
+    'searchAgeRangeMin',
+  );
+  @override
+  late final GeneratedColumn<int> searchAgeRangeMin = GeneratedColumn<int>(
+    'search_age_range_min',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _searchAgeRangeMaxMeta = const VerificationMeta(
+    'searchAgeRangeMax',
+  );
+  @override
+  late final GeneratedColumn<int> searchAgeRangeMax = GeneratedColumn<int>(
+    'search_age_range_max',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _latitudeMeta = const VerificationMeta(
+    'latitude',
+  );
+  @override
+  late final GeneratedColumn<double> latitude = GeneratedColumn<double>(
+    'latitude',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _longitudeMeta = const VerificationMeta(
+    'longitude',
+  );
+  @override
+  late final GeneratedColumn<double> longitude = GeneratedColumn<double>(
+    'longitude',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<
+    JsonList<ProfileAttributeValueUpdate>?,
+    String
+  >
+  jsonProfileAttributes =
+      GeneratedColumn<String>(
+        'json_profile_attributes',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      ).withConverter<JsonList<ProfileAttributeValueUpdate>?>(
+        $InitialSetupProgressTable.$converterjsonProfileAttributes,
+      );
+  static const VerificationMeta _chatInfoUnderstoodMeta =
+      const VerificationMeta('chatInfoUnderstood');
+  @override
+  late final GeneratedColumn<bool> chatInfoUnderstood = GeneratedColumn<bool>(
+    'chat_info_understood',
+    aliasedName,
+    true,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("chat_info_understood" IN (0, 1))',
+    ),
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    email,
+    isAdult,
+    profileName,
+    profileAge,
+    securitySelfieContentId,
+    securitySelfieFaceDetected,
+    jsonProfileImages,
+    gender,
+    searchSettingMen,
+    searchSettingWomen,
+    searchSettingNonBinary,
+    searchAgeRangeInitDone,
+    searchAgeRangeMin,
+    searchAgeRangeMax,
+    latitude,
+    longitude,
+    jsonProfileAttributes,
+    chatInfoUnderstood,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'initial_setup_progress';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<InitialSetupProgressData> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('email')) {
+      context.handle(
+        _emailMeta,
+        email.isAcceptableOrUnknown(data['email']!, _emailMeta),
+      );
+    }
+    if (data.containsKey('is_adult')) {
+      context.handle(
+        _isAdultMeta,
+        isAdult.isAcceptableOrUnknown(data['is_adult']!, _isAdultMeta),
+      );
+    }
+    if (data.containsKey('profile_name')) {
+      context.handle(
+        _profileNameMeta,
+        profileName.isAcceptableOrUnknown(
+          data['profile_name']!,
+          _profileNameMeta,
+        ),
+      );
+    }
+    if (data.containsKey('profile_age')) {
+      context.handle(
+        _profileAgeMeta,
+        profileAge.isAcceptableOrUnknown(data['profile_age']!, _profileAgeMeta),
+      );
+    }
+    if (data.containsKey('security_selfie_content_id')) {
+      context.handle(
+        _securitySelfieContentIdMeta,
+        securitySelfieContentId.isAcceptableOrUnknown(
+          data['security_selfie_content_id']!,
+          _securitySelfieContentIdMeta,
+        ),
+      );
+    }
+    if (data.containsKey('security_selfie_face_detected')) {
+      context.handle(
+        _securitySelfieFaceDetectedMeta,
+        securitySelfieFaceDetected.isAcceptableOrUnknown(
+          data['security_selfie_face_detected']!,
+          _securitySelfieFaceDetectedMeta,
+        ),
+      );
+    }
+    if (data.containsKey('gender')) {
+      context.handle(
+        _genderMeta,
+        gender.isAcceptableOrUnknown(data['gender']!, _genderMeta),
+      );
+    }
+    if (data.containsKey('search_setting_men')) {
+      context.handle(
+        _searchSettingMenMeta,
+        searchSettingMen.isAcceptableOrUnknown(
+          data['search_setting_men']!,
+          _searchSettingMenMeta,
+        ),
+      );
+    }
+    if (data.containsKey('search_setting_women')) {
+      context.handle(
+        _searchSettingWomenMeta,
+        searchSettingWomen.isAcceptableOrUnknown(
+          data['search_setting_women']!,
+          _searchSettingWomenMeta,
+        ),
+      );
+    }
+    if (data.containsKey('search_setting_non_binary')) {
+      context.handle(
+        _searchSettingNonBinaryMeta,
+        searchSettingNonBinary.isAcceptableOrUnknown(
+          data['search_setting_non_binary']!,
+          _searchSettingNonBinaryMeta,
+        ),
+      );
+    }
+    if (data.containsKey('search_age_range_init_done')) {
+      context.handle(
+        _searchAgeRangeInitDoneMeta,
+        searchAgeRangeInitDone.isAcceptableOrUnknown(
+          data['search_age_range_init_done']!,
+          _searchAgeRangeInitDoneMeta,
+        ),
+      );
+    }
+    if (data.containsKey('search_age_range_min')) {
+      context.handle(
+        _searchAgeRangeMinMeta,
+        searchAgeRangeMin.isAcceptableOrUnknown(
+          data['search_age_range_min']!,
+          _searchAgeRangeMinMeta,
+        ),
+      );
+    }
+    if (data.containsKey('search_age_range_max')) {
+      context.handle(
+        _searchAgeRangeMaxMeta,
+        searchAgeRangeMax.isAcceptableOrUnknown(
+          data['search_age_range_max']!,
+          _searchAgeRangeMaxMeta,
+        ),
+      );
+    }
+    if (data.containsKey('latitude')) {
+      context.handle(
+        _latitudeMeta,
+        latitude.isAcceptableOrUnknown(data['latitude']!, _latitudeMeta),
+      );
+    }
+    if (data.containsKey('longitude')) {
+      context.handle(
+        _longitudeMeta,
+        longitude.isAcceptableOrUnknown(data['longitude']!, _longitudeMeta),
+      );
+    }
+    if (data.containsKey('chat_info_understood')) {
+      context.handle(
+        _chatInfoUnderstoodMeta,
+        chatInfoUnderstood.isAcceptableOrUnknown(
+          data['chat_info_understood']!,
+          _chatInfoUnderstoodMeta,
+        ),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  InitialSetupProgressData map(
+    Map<String, dynamic> data, {
+    String? tablePrefix,
+  }) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return InitialSetupProgressData(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      email: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}email'],
+      ),
+      isAdult: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}is_adult'],
+      ),
+      profileName: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}profile_name'],
+      ),
+      profileAge: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}profile_age'],
+      ),
+      securitySelfieContentId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}security_selfie_content_id'],
+      ),
+      securitySelfieFaceDetected: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}security_selfie_face_detected'],
+      ),
+      jsonProfileImages: $InitialSetupProgressTable.$converterjsonProfileImages
+          .fromSql(
+            attachedDatabase.typeMapping.read(
+              DriftSqlType.string,
+              data['${effectivePrefix}json_profile_images'],
+            ),
+          ),
+      gender: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}gender'],
+      ),
+      searchSettingMen: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}search_setting_men'],
+      ),
+      searchSettingWomen: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}search_setting_women'],
+      ),
+      searchSettingNonBinary: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}search_setting_non_binary'],
+      ),
+      searchAgeRangeInitDone: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}search_age_range_init_done'],
+      ),
+      searchAgeRangeMin: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}search_age_range_min'],
+      ),
+      searchAgeRangeMax: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}search_age_range_max'],
+      ),
+      latitude: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}latitude'],
+      ),
+      longitude: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}longitude'],
+      ),
+      jsonProfileAttributes: $InitialSetupProgressTable
+          .$converterjsonProfileAttributes
+          .fromSql(
+            attachedDatabase.typeMapping.read(
+              DriftSqlType.string,
+              data['${effectivePrefix}json_profile_attributes'],
+            ),
+          ),
+      chatInfoUnderstood: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}chat_info_understood'],
+      ),
+    );
+  }
+
+  @override
+  $InitialSetupProgressTable createAlias(String alias) {
+    return $InitialSetupProgressTable(attachedDatabase, alias);
+  }
+
+  static TypeConverter<JsonList<ProfilePictureEntry>?, String?>
+  $converterjsonProfileImages = NullAwareTypeConverter.wrap(
+    const ProfilePictureEntryListConverter(),
+  );
+  static TypeConverter<JsonList<ProfileAttributeValueUpdate>?, String?>
+  $converterjsonProfileAttributes = NullAwareTypeConverter.wrap(
+    const ProfileAttributeValueUpdateListConverter(),
+  );
+}
+
+class InitialSetupProgressData extends DataClass
+    implements Insertable<InitialSetupProgressData> {
+  final int id;
+  final String? email;
+  final bool? isAdult;
+  final String? profileName;
+  final int? profileAge;
+  final String? securitySelfieContentId;
+  final bool? securitySelfieFaceDetected;
+  final JsonList<ProfilePictureEntry>? jsonProfileImages;
+
+  /// Gender: 'man', 'woman', 'nonBinary'
+  final String? gender;
+  final bool? searchSettingMen;
+  final bool? searchSettingWomen;
+  final bool? searchSettingNonBinary;
+  final bool? searchAgeRangeInitDone;
+  final int? searchAgeRangeMin;
+  final int? searchAgeRangeMax;
+  final double? latitude;
+  final double? longitude;
+  final JsonList<ProfileAttributeValueUpdate>? jsonProfileAttributes;
+  final bool? chatInfoUnderstood;
+  const InitialSetupProgressData({
+    required this.id,
+    this.email,
+    this.isAdult,
+    this.profileName,
+    this.profileAge,
+    this.securitySelfieContentId,
+    this.securitySelfieFaceDetected,
+    this.jsonProfileImages,
+    this.gender,
+    this.searchSettingMen,
+    this.searchSettingWomen,
+    this.searchSettingNonBinary,
+    this.searchAgeRangeInitDone,
+    this.searchAgeRangeMin,
+    this.searchAgeRangeMax,
+    this.latitude,
+    this.longitude,
+    this.jsonProfileAttributes,
+    this.chatInfoUnderstood,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    if (!nullToAbsent || email != null) {
+      map['email'] = Variable<String>(email);
+    }
+    if (!nullToAbsent || isAdult != null) {
+      map['is_adult'] = Variable<bool>(isAdult);
+    }
+    if (!nullToAbsent || profileName != null) {
+      map['profile_name'] = Variable<String>(profileName);
+    }
+    if (!nullToAbsent || profileAge != null) {
+      map['profile_age'] = Variable<int>(profileAge);
+    }
+    if (!nullToAbsent || securitySelfieContentId != null) {
+      map['security_selfie_content_id'] = Variable<String>(
+        securitySelfieContentId,
+      );
+    }
+    if (!nullToAbsent || securitySelfieFaceDetected != null) {
+      map['security_selfie_face_detected'] = Variable<bool>(
+        securitySelfieFaceDetected,
+      );
+    }
+    if (!nullToAbsent || jsonProfileImages != null) {
+      map['json_profile_images'] = Variable<String>(
+        $InitialSetupProgressTable.$converterjsonProfileImages.toSql(
+          jsonProfileImages,
+        ),
+      );
+    }
+    if (!nullToAbsent || gender != null) {
+      map['gender'] = Variable<String>(gender);
+    }
+    if (!nullToAbsent || searchSettingMen != null) {
+      map['search_setting_men'] = Variable<bool>(searchSettingMen);
+    }
+    if (!nullToAbsent || searchSettingWomen != null) {
+      map['search_setting_women'] = Variable<bool>(searchSettingWomen);
+    }
+    if (!nullToAbsent || searchSettingNonBinary != null) {
+      map['search_setting_non_binary'] = Variable<bool>(searchSettingNonBinary);
+    }
+    if (!nullToAbsent || searchAgeRangeInitDone != null) {
+      map['search_age_range_init_done'] = Variable<bool>(
+        searchAgeRangeInitDone,
+      );
+    }
+    if (!nullToAbsent || searchAgeRangeMin != null) {
+      map['search_age_range_min'] = Variable<int>(searchAgeRangeMin);
+    }
+    if (!nullToAbsent || searchAgeRangeMax != null) {
+      map['search_age_range_max'] = Variable<int>(searchAgeRangeMax);
+    }
+    if (!nullToAbsent || latitude != null) {
+      map['latitude'] = Variable<double>(latitude);
+    }
+    if (!nullToAbsent || longitude != null) {
+      map['longitude'] = Variable<double>(longitude);
+    }
+    if (!nullToAbsent || jsonProfileAttributes != null) {
+      map['json_profile_attributes'] = Variable<String>(
+        $InitialSetupProgressTable.$converterjsonProfileAttributes.toSql(
+          jsonProfileAttributes,
+        ),
+      );
+    }
+    if (!nullToAbsent || chatInfoUnderstood != null) {
+      map['chat_info_understood'] = Variable<bool>(chatInfoUnderstood);
+    }
+    return map;
+  }
+
+  InitialSetupProgressCompanion toCompanion(bool nullToAbsent) {
+    return InitialSetupProgressCompanion(
+      id: Value(id),
+      email: email == null && nullToAbsent
+          ? const Value.absent()
+          : Value(email),
+      isAdult: isAdult == null && nullToAbsent
+          ? const Value.absent()
+          : Value(isAdult),
+      profileName: profileName == null && nullToAbsent
+          ? const Value.absent()
+          : Value(profileName),
+      profileAge: profileAge == null && nullToAbsent
+          ? const Value.absent()
+          : Value(profileAge),
+      securitySelfieContentId: securitySelfieContentId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(securitySelfieContentId),
+      securitySelfieFaceDetected:
+          securitySelfieFaceDetected == null && nullToAbsent
+          ? const Value.absent()
+          : Value(securitySelfieFaceDetected),
+      jsonProfileImages: jsonProfileImages == null && nullToAbsent
+          ? const Value.absent()
+          : Value(jsonProfileImages),
+      gender: gender == null && nullToAbsent
+          ? const Value.absent()
+          : Value(gender),
+      searchSettingMen: searchSettingMen == null && nullToAbsent
+          ? const Value.absent()
+          : Value(searchSettingMen),
+      searchSettingWomen: searchSettingWomen == null && nullToAbsent
+          ? const Value.absent()
+          : Value(searchSettingWomen),
+      searchSettingNonBinary: searchSettingNonBinary == null && nullToAbsent
+          ? const Value.absent()
+          : Value(searchSettingNonBinary),
+      searchAgeRangeInitDone: searchAgeRangeInitDone == null && nullToAbsent
+          ? const Value.absent()
+          : Value(searchAgeRangeInitDone),
+      searchAgeRangeMin: searchAgeRangeMin == null && nullToAbsent
+          ? const Value.absent()
+          : Value(searchAgeRangeMin),
+      searchAgeRangeMax: searchAgeRangeMax == null && nullToAbsent
+          ? const Value.absent()
+          : Value(searchAgeRangeMax),
+      latitude: latitude == null && nullToAbsent
+          ? const Value.absent()
+          : Value(latitude),
+      longitude: longitude == null && nullToAbsent
+          ? const Value.absent()
+          : Value(longitude),
+      jsonProfileAttributes: jsonProfileAttributes == null && nullToAbsent
+          ? const Value.absent()
+          : Value(jsonProfileAttributes),
+      chatInfoUnderstood: chatInfoUnderstood == null && nullToAbsent
+          ? const Value.absent()
+          : Value(chatInfoUnderstood),
+    );
+  }
+
+  factory InitialSetupProgressData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return InitialSetupProgressData(
+      id: serializer.fromJson<int>(json['id']),
+      email: serializer.fromJson<String?>(json['email']),
+      isAdult: serializer.fromJson<bool?>(json['isAdult']),
+      profileName: serializer.fromJson<String?>(json['profileName']),
+      profileAge: serializer.fromJson<int?>(json['profileAge']),
+      securitySelfieContentId: serializer.fromJson<String?>(
+        json['securitySelfieContentId'],
+      ),
+      securitySelfieFaceDetected: serializer.fromJson<bool?>(
+        json['securitySelfieFaceDetected'],
+      ),
+      jsonProfileImages: serializer.fromJson<JsonList<ProfilePictureEntry>?>(
+        json['jsonProfileImages'],
+      ),
+      gender: serializer.fromJson<String?>(json['gender']),
+      searchSettingMen: serializer.fromJson<bool?>(json['searchSettingMen']),
+      searchSettingWomen: serializer.fromJson<bool?>(
+        json['searchSettingWomen'],
+      ),
+      searchSettingNonBinary: serializer.fromJson<bool?>(
+        json['searchSettingNonBinary'],
+      ),
+      searchAgeRangeInitDone: serializer.fromJson<bool?>(
+        json['searchAgeRangeInitDone'],
+      ),
+      searchAgeRangeMin: serializer.fromJson<int?>(json['searchAgeRangeMin']),
+      searchAgeRangeMax: serializer.fromJson<int?>(json['searchAgeRangeMax']),
+      latitude: serializer.fromJson<double?>(json['latitude']),
+      longitude: serializer.fromJson<double?>(json['longitude']),
+      jsonProfileAttributes: serializer
+          .fromJson<JsonList<ProfileAttributeValueUpdate>?>(
+            json['jsonProfileAttributes'],
+          ),
+      chatInfoUnderstood: serializer.fromJson<bool?>(
+        json['chatInfoUnderstood'],
+      ),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'email': serializer.toJson<String?>(email),
+      'isAdult': serializer.toJson<bool?>(isAdult),
+      'profileName': serializer.toJson<String?>(profileName),
+      'profileAge': serializer.toJson<int?>(profileAge),
+      'securitySelfieContentId': serializer.toJson<String?>(
+        securitySelfieContentId,
+      ),
+      'securitySelfieFaceDetected': serializer.toJson<bool?>(
+        securitySelfieFaceDetected,
+      ),
+      'jsonProfileImages': serializer.toJson<JsonList<ProfilePictureEntry>?>(
+        jsonProfileImages,
+      ),
+      'gender': serializer.toJson<String?>(gender),
+      'searchSettingMen': serializer.toJson<bool?>(searchSettingMen),
+      'searchSettingWomen': serializer.toJson<bool?>(searchSettingWomen),
+      'searchSettingNonBinary': serializer.toJson<bool?>(
+        searchSettingNonBinary,
+      ),
+      'searchAgeRangeInitDone': serializer.toJson<bool?>(
+        searchAgeRangeInitDone,
+      ),
+      'searchAgeRangeMin': serializer.toJson<int?>(searchAgeRangeMin),
+      'searchAgeRangeMax': serializer.toJson<int?>(searchAgeRangeMax),
+      'latitude': serializer.toJson<double?>(latitude),
+      'longitude': serializer.toJson<double?>(longitude),
+      'jsonProfileAttributes': serializer
+          .toJson<JsonList<ProfileAttributeValueUpdate>?>(
+            jsonProfileAttributes,
+          ),
+      'chatInfoUnderstood': serializer.toJson<bool?>(chatInfoUnderstood),
+    };
+  }
+
+  InitialSetupProgressData copyWith({
+    int? id,
+    Value<String?> email = const Value.absent(),
+    Value<bool?> isAdult = const Value.absent(),
+    Value<String?> profileName = const Value.absent(),
+    Value<int?> profileAge = const Value.absent(),
+    Value<String?> securitySelfieContentId = const Value.absent(),
+    Value<bool?> securitySelfieFaceDetected = const Value.absent(),
+    Value<JsonList<ProfilePictureEntry>?> jsonProfileImages =
+        const Value.absent(),
+    Value<String?> gender = const Value.absent(),
+    Value<bool?> searchSettingMen = const Value.absent(),
+    Value<bool?> searchSettingWomen = const Value.absent(),
+    Value<bool?> searchSettingNonBinary = const Value.absent(),
+    Value<bool?> searchAgeRangeInitDone = const Value.absent(),
+    Value<int?> searchAgeRangeMin = const Value.absent(),
+    Value<int?> searchAgeRangeMax = const Value.absent(),
+    Value<double?> latitude = const Value.absent(),
+    Value<double?> longitude = const Value.absent(),
+    Value<JsonList<ProfileAttributeValueUpdate>?> jsonProfileAttributes =
+        const Value.absent(),
+    Value<bool?> chatInfoUnderstood = const Value.absent(),
+  }) => InitialSetupProgressData(
+    id: id ?? this.id,
+    email: email.present ? email.value : this.email,
+    isAdult: isAdult.present ? isAdult.value : this.isAdult,
+    profileName: profileName.present ? profileName.value : this.profileName,
+    profileAge: profileAge.present ? profileAge.value : this.profileAge,
+    securitySelfieContentId: securitySelfieContentId.present
+        ? securitySelfieContentId.value
+        : this.securitySelfieContentId,
+    securitySelfieFaceDetected: securitySelfieFaceDetected.present
+        ? securitySelfieFaceDetected.value
+        : this.securitySelfieFaceDetected,
+    jsonProfileImages: jsonProfileImages.present
+        ? jsonProfileImages.value
+        : this.jsonProfileImages,
+    gender: gender.present ? gender.value : this.gender,
+    searchSettingMen: searchSettingMen.present
+        ? searchSettingMen.value
+        : this.searchSettingMen,
+    searchSettingWomen: searchSettingWomen.present
+        ? searchSettingWomen.value
+        : this.searchSettingWomen,
+    searchSettingNonBinary: searchSettingNonBinary.present
+        ? searchSettingNonBinary.value
+        : this.searchSettingNonBinary,
+    searchAgeRangeInitDone: searchAgeRangeInitDone.present
+        ? searchAgeRangeInitDone.value
+        : this.searchAgeRangeInitDone,
+    searchAgeRangeMin: searchAgeRangeMin.present
+        ? searchAgeRangeMin.value
+        : this.searchAgeRangeMin,
+    searchAgeRangeMax: searchAgeRangeMax.present
+        ? searchAgeRangeMax.value
+        : this.searchAgeRangeMax,
+    latitude: latitude.present ? latitude.value : this.latitude,
+    longitude: longitude.present ? longitude.value : this.longitude,
+    jsonProfileAttributes: jsonProfileAttributes.present
+        ? jsonProfileAttributes.value
+        : this.jsonProfileAttributes,
+    chatInfoUnderstood: chatInfoUnderstood.present
+        ? chatInfoUnderstood.value
+        : this.chatInfoUnderstood,
+  );
+  InitialSetupProgressData copyWithCompanion(
+    InitialSetupProgressCompanion data,
+  ) {
+    return InitialSetupProgressData(
+      id: data.id.present ? data.id.value : this.id,
+      email: data.email.present ? data.email.value : this.email,
+      isAdult: data.isAdult.present ? data.isAdult.value : this.isAdult,
+      profileName: data.profileName.present
+          ? data.profileName.value
+          : this.profileName,
+      profileAge: data.profileAge.present
+          ? data.profileAge.value
+          : this.profileAge,
+      securitySelfieContentId: data.securitySelfieContentId.present
+          ? data.securitySelfieContentId.value
+          : this.securitySelfieContentId,
+      securitySelfieFaceDetected: data.securitySelfieFaceDetected.present
+          ? data.securitySelfieFaceDetected.value
+          : this.securitySelfieFaceDetected,
+      jsonProfileImages: data.jsonProfileImages.present
+          ? data.jsonProfileImages.value
+          : this.jsonProfileImages,
+      gender: data.gender.present ? data.gender.value : this.gender,
+      searchSettingMen: data.searchSettingMen.present
+          ? data.searchSettingMen.value
+          : this.searchSettingMen,
+      searchSettingWomen: data.searchSettingWomen.present
+          ? data.searchSettingWomen.value
+          : this.searchSettingWomen,
+      searchSettingNonBinary: data.searchSettingNonBinary.present
+          ? data.searchSettingNonBinary.value
+          : this.searchSettingNonBinary,
+      searchAgeRangeInitDone: data.searchAgeRangeInitDone.present
+          ? data.searchAgeRangeInitDone.value
+          : this.searchAgeRangeInitDone,
+      searchAgeRangeMin: data.searchAgeRangeMin.present
+          ? data.searchAgeRangeMin.value
+          : this.searchAgeRangeMin,
+      searchAgeRangeMax: data.searchAgeRangeMax.present
+          ? data.searchAgeRangeMax.value
+          : this.searchAgeRangeMax,
+      latitude: data.latitude.present ? data.latitude.value : this.latitude,
+      longitude: data.longitude.present ? data.longitude.value : this.longitude,
+      jsonProfileAttributes: data.jsonProfileAttributes.present
+          ? data.jsonProfileAttributes.value
+          : this.jsonProfileAttributes,
+      chatInfoUnderstood: data.chatInfoUnderstood.present
+          ? data.chatInfoUnderstood.value
+          : this.chatInfoUnderstood,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('InitialSetupProgressData(')
+          ..write('id: $id, ')
+          ..write('email: $email, ')
+          ..write('isAdult: $isAdult, ')
+          ..write('profileName: $profileName, ')
+          ..write('profileAge: $profileAge, ')
+          ..write('securitySelfieContentId: $securitySelfieContentId, ')
+          ..write('securitySelfieFaceDetected: $securitySelfieFaceDetected, ')
+          ..write('jsonProfileImages: $jsonProfileImages, ')
+          ..write('gender: $gender, ')
+          ..write('searchSettingMen: $searchSettingMen, ')
+          ..write('searchSettingWomen: $searchSettingWomen, ')
+          ..write('searchSettingNonBinary: $searchSettingNonBinary, ')
+          ..write('searchAgeRangeInitDone: $searchAgeRangeInitDone, ')
+          ..write('searchAgeRangeMin: $searchAgeRangeMin, ')
+          ..write('searchAgeRangeMax: $searchAgeRangeMax, ')
+          ..write('latitude: $latitude, ')
+          ..write('longitude: $longitude, ')
+          ..write('jsonProfileAttributes: $jsonProfileAttributes, ')
+          ..write('chatInfoUnderstood: $chatInfoUnderstood')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    email,
+    isAdult,
+    profileName,
+    profileAge,
+    securitySelfieContentId,
+    securitySelfieFaceDetected,
+    jsonProfileImages,
+    gender,
+    searchSettingMen,
+    searchSettingWomen,
+    searchSettingNonBinary,
+    searchAgeRangeInitDone,
+    searchAgeRangeMin,
+    searchAgeRangeMax,
+    latitude,
+    longitude,
+    jsonProfileAttributes,
+    chatInfoUnderstood,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is InitialSetupProgressData &&
+          other.id == this.id &&
+          other.email == this.email &&
+          other.isAdult == this.isAdult &&
+          other.profileName == this.profileName &&
+          other.profileAge == this.profileAge &&
+          other.securitySelfieContentId == this.securitySelfieContentId &&
+          other.securitySelfieFaceDetected == this.securitySelfieFaceDetected &&
+          other.jsonProfileImages == this.jsonProfileImages &&
+          other.gender == this.gender &&
+          other.searchSettingMen == this.searchSettingMen &&
+          other.searchSettingWomen == this.searchSettingWomen &&
+          other.searchSettingNonBinary == this.searchSettingNonBinary &&
+          other.searchAgeRangeInitDone == this.searchAgeRangeInitDone &&
+          other.searchAgeRangeMin == this.searchAgeRangeMin &&
+          other.searchAgeRangeMax == this.searchAgeRangeMax &&
+          other.latitude == this.latitude &&
+          other.longitude == this.longitude &&
+          other.jsonProfileAttributes == this.jsonProfileAttributes &&
+          other.chatInfoUnderstood == this.chatInfoUnderstood);
+}
+
+class InitialSetupProgressCompanion
+    extends UpdateCompanion<InitialSetupProgressData> {
+  final Value<int> id;
+  final Value<String?> email;
+  final Value<bool?> isAdult;
+  final Value<String?> profileName;
+  final Value<int?> profileAge;
+  final Value<String?> securitySelfieContentId;
+  final Value<bool?> securitySelfieFaceDetected;
+  final Value<JsonList<ProfilePictureEntry>?> jsonProfileImages;
+  final Value<String?> gender;
+  final Value<bool?> searchSettingMen;
+  final Value<bool?> searchSettingWomen;
+  final Value<bool?> searchSettingNonBinary;
+  final Value<bool?> searchAgeRangeInitDone;
+  final Value<int?> searchAgeRangeMin;
+  final Value<int?> searchAgeRangeMax;
+  final Value<double?> latitude;
+  final Value<double?> longitude;
+  final Value<JsonList<ProfileAttributeValueUpdate>?> jsonProfileAttributes;
+  final Value<bool?> chatInfoUnderstood;
+  const InitialSetupProgressCompanion({
+    this.id = const Value.absent(),
+    this.email = const Value.absent(),
+    this.isAdult = const Value.absent(),
+    this.profileName = const Value.absent(),
+    this.profileAge = const Value.absent(),
+    this.securitySelfieContentId = const Value.absent(),
+    this.securitySelfieFaceDetected = const Value.absent(),
+    this.jsonProfileImages = const Value.absent(),
+    this.gender = const Value.absent(),
+    this.searchSettingMen = const Value.absent(),
+    this.searchSettingWomen = const Value.absent(),
+    this.searchSettingNonBinary = const Value.absent(),
+    this.searchAgeRangeInitDone = const Value.absent(),
+    this.searchAgeRangeMin = const Value.absent(),
+    this.searchAgeRangeMax = const Value.absent(),
+    this.latitude = const Value.absent(),
+    this.longitude = const Value.absent(),
+    this.jsonProfileAttributes = const Value.absent(),
+    this.chatInfoUnderstood = const Value.absent(),
+  });
+  InitialSetupProgressCompanion.insert({
+    this.id = const Value.absent(),
+    this.email = const Value.absent(),
+    this.isAdult = const Value.absent(),
+    this.profileName = const Value.absent(),
+    this.profileAge = const Value.absent(),
+    this.securitySelfieContentId = const Value.absent(),
+    this.securitySelfieFaceDetected = const Value.absent(),
+    this.jsonProfileImages = const Value.absent(),
+    this.gender = const Value.absent(),
+    this.searchSettingMen = const Value.absent(),
+    this.searchSettingWomen = const Value.absent(),
+    this.searchSettingNonBinary = const Value.absent(),
+    this.searchAgeRangeInitDone = const Value.absent(),
+    this.searchAgeRangeMin = const Value.absent(),
+    this.searchAgeRangeMax = const Value.absent(),
+    this.latitude = const Value.absent(),
+    this.longitude = const Value.absent(),
+    this.jsonProfileAttributes = const Value.absent(),
+    this.chatInfoUnderstood = const Value.absent(),
+  });
+  static Insertable<InitialSetupProgressData> custom({
+    Expression<int>? id,
+    Expression<String>? email,
+    Expression<bool>? isAdult,
+    Expression<String>? profileName,
+    Expression<int>? profileAge,
+    Expression<String>? securitySelfieContentId,
+    Expression<bool>? securitySelfieFaceDetected,
+    Expression<String>? jsonProfileImages,
+    Expression<String>? gender,
+    Expression<bool>? searchSettingMen,
+    Expression<bool>? searchSettingWomen,
+    Expression<bool>? searchSettingNonBinary,
+    Expression<bool>? searchAgeRangeInitDone,
+    Expression<int>? searchAgeRangeMin,
+    Expression<int>? searchAgeRangeMax,
+    Expression<double>? latitude,
+    Expression<double>? longitude,
+    Expression<String>? jsonProfileAttributes,
+    Expression<bool>? chatInfoUnderstood,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (email != null) 'email': email,
+      if (isAdult != null) 'is_adult': isAdult,
+      if (profileName != null) 'profile_name': profileName,
+      if (profileAge != null) 'profile_age': profileAge,
+      if (securitySelfieContentId != null)
+        'security_selfie_content_id': securitySelfieContentId,
+      if (securitySelfieFaceDetected != null)
+        'security_selfie_face_detected': securitySelfieFaceDetected,
+      if (jsonProfileImages != null) 'json_profile_images': jsonProfileImages,
+      if (gender != null) 'gender': gender,
+      if (searchSettingMen != null) 'search_setting_men': searchSettingMen,
+      if (searchSettingWomen != null)
+        'search_setting_women': searchSettingWomen,
+      if (searchSettingNonBinary != null)
+        'search_setting_non_binary': searchSettingNonBinary,
+      if (searchAgeRangeInitDone != null)
+        'search_age_range_init_done': searchAgeRangeInitDone,
+      if (searchAgeRangeMin != null) 'search_age_range_min': searchAgeRangeMin,
+      if (searchAgeRangeMax != null) 'search_age_range_max': searchAgeRangeMax,
+      if (latitude != null) 'latitude': latitude,
+      if (longitude != null) 'longitude': longitude,
+      if (jsonProfileAttributes != null)
+        'json_profile_attributes': jsonProfileAttributes,
+      if (chatInfoUnderstood != null)
+        'chat_info_understood': chatInfoUnderstood,
+    });
+  }
+
+  InitialSetupProgressCompanion copyWith({
+    Value<int>? id,
+    Value<String?>? email,
+    Value<bool?>? isAdult,
+    Value<String?>? profileName,
+    Value<int?>? profileAge,
+    Value<String?>? securitySelfieContentId,
+    Value<bool?>? securitySelfieFaceDetected,
+    Value<JsonList<ProfilePictureEntry>?>? jsonProfileImages,
+    Value<String?>? gender,
+    Value<bool?>? searchSettingMen,
+    Value<bool?>? searchSettingWomen,
+    Value<bool?>? searchSettingNonBinary,
+    Value<bool?>? searchAgeRangeInitDone,
+    Value<int?>? searchAgeRangeMin,
+    Value<int?>? searchAgeRangeMax,
+    Value<double?>? latitude,
+    Value<double?>? longitude,
+    Value<JsonList<ProfileAttributeValueUpdate>?>? jsonProfileAttributes,
+    Value<bool?>? chatInfoUnderstood,
+  }) {
+    return InitialSetupProgressCompanion(
+      id: id ?? this.id,
+      email: email ?? this.email,
+      isAdult: isAdult ?? this.isAdult,
+      profileName: profileName ?? this.profileName,
+      profileAge: profileAge ?? this.profileAge,
+      securitySelfieContentId:
+          securitySelfieContentId ?? this.securitySelfieContentId,
+      securitySelfieFaceDetected:
+          securitySelfieFaceDetected ?? this.securitySelfieFaceDetected,
+      jsonProfileImages: jsonProfileImages ?? this.jsonProfileImages,
+      gender: gender ?? this.gender,
+      searchSettingMen: searchSettingMen ?? this.searchSettingMen,
+      searchSettingWomen: searchSettingWomen ?? this.searchSettingWomen,
+      searchSettingNonBinary:
+          searchSettingNonBinary ?? this.searchSettingNonBinary,
+      searchAgeRangeInitDone:
+          searchAgeRangeInitDone ?? this.searchAgeRangeInitDone,
+      searchAgeRangeMin: searchAgeRangeMin ?? this.searchAgeRangeMin,
+      searchAgeRangeMax: searchAgeRangeMax ?? this.searchAgeRangeMax,
+      latitude: latitude ?? this.latitude,
+      longitude: longitude ?? this.longitude,
+      jsonProfileAttributes:
+          jsonProfileAttributes ?? this.jsonProfileAttributes,
+      chatInfoUnderstood: chatInfoUnderstood ?? this.chatInfoUnderstood,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (email.present) {
+      map['email'] = Variable<String>(email.value);
+    }
+    if (isAdult.present) {
+      map['is_adult'] = Variable<bool>(isAdult.value);
+    }
+    if (profileName.present) {
+      map['profile_name'] = Variable<String>(profileName.value);
+    }
+    if (profileAge.present) {
+      map['profile_age'] = Variable<int>(profileAge.value);
+    }
+    if (securitySelfieContentId.present) {
+      map['security_selfie_content_id'] = Variable<String>(
+        securitySelfieContentId.value,
+      );
+    }
+    if (securitySelfieFaceDetected.present) {
+      map['security_selfie_face_detected'] = Variable<bool>(
+        securitySelfieFaceDetected.value,
+      );
+    }
+    if (jsonProfileImages.present) {
+      map['json_profile_images'] = Variable<String>(
+        $InitialSetupProgressTable.$converterjsonProfileImages.toSql(
+          jsonProfileImages.value,
+        ),
+      );
+    }
+    if (gender.present) {
+      map['gender'] = Variable<String>(gender.value);
+    }
+    if (searchSettingMen.present) {
+      map['search_setting_men'] = Variable<bool>(searchSettingMen.value);
+    }
+    if (searchSettingWomen.present) {
+      map['search_setting_women'] = Variable<bool>(searchSettingWomen.value);
+    }
+    if (searchSettingNonBinary.present) {
+      map['search_setting_non_binary'] = Variable<bool>(
+        searchSettingNonBinary.value,
+      );
+    }
+    if (searchAgeRangeInitDone.present) {
+      map['search_age_range_init_done'] = Variable<bool>(
+        searchAgeRangeInitDone.value,
+      );
+    }
+    if (searchAgeRangeMin.present) {
+      map['search_age_range_min'] = Variable<int>(searchAgeRangeMin.value);
+    }
+    if (searchAgeRangeMax.present) {
+      map['search_age_range_max'] = Variable<int>(searchAgeRangeMax.value);
+    }
+    if (latitude.present) {
+      map['latitude'] = Variable<double>(latitude.value);
+    }
+    if (longitude.present) {
+      map['longitude'] = Variable<double>(longitude.value);
+    }
+    if (jsonProfileAttributes.present) {
+      map['json_profile_attributes'] = Variable<String>(
+        $InitialSetupProgressTable.$converterjsonProfileAttributes.toSql(
+          jsonProfileAttributes.value,
+        ),
+      );
+    }
+    if (chatInfoUnderstood.present) {
+      map['chat_info_understood'] = Variable<bool>(chatInfoUnderstood.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('InitialSetupProgressCompanion(')
+          ..write('id: $id, ')
+          ..write('email: $email, ')
+          ..write('isAdult: $isAdult, ')
+          ..write('profileName: $profileName, ')
+          ..write('profileAge: $profileAge, ')
+          ..write('securitySelfieContentId: $securitySelfieContentId, ')
+          ..write('securitySelfieFaceDetected: $securitySelfieFaceDetected, ')
+          ..write('jsonProfileImages: $jsonProfileImages, ')
+          ..write('gender: $gender, ')
+          ..write('searchSettingMen: $searchSettingMen, ')
+          ..write('searchSettingWomen: $searchSettingWomen, ')
+          ..write('searchSettingNonBinary: $searchSettingNonBinary, ')
+          ..write('searchAgeRangeInitDone: $searchAgeRangeInitDone, ')
+          ..write('searchAgeRangeMin: $searchAgeRangeMin, ')
+          ..write('searchAgeRangeMax: $searchAgeRangeMax, ')
+          ..write('latitude: $latitude, ')
+          ..write('longitude: $longitude, ')
+          ..write('jsonProfileAttributes: $jsonProfileAttributes, ')
+          ..write('chatInfoUnderstood: $chatInfoUnderstood')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $GridSettingsTable extends schema.GridSettings
     with TableInfo<$GridSettingsTable, GridSetting> {
   @override
@@ -17916,6 +19154,8 @@ abstract class _$AccountDatabase extends GeneratedDatabase {
   late final $InitialSyncTable initialSync = $InitialSyncTable(this);
   late final $InitialSetupSkippedTable initialSetupSkipped =
       $InitialSetupSkippedTable(this);
+  late final $InitialSetupProgressTable initialSetupProgress =
+      $InitialSetupProgressTable(this);
   late final $GridSettingsTable gridSettings = $GridSettingsTable(this);
   late final $ChatBackupReminderTable chatBackupReminder =
       $ChatBackupReminderTable(this);
@@ -18098,6 +19338,7 @@ abstract class _$AccountDatabase extends GeneratedDatabase {
     showAdvancedProfileFilters,
     initialSync,
     initialSetupSkipped,
+    initialSetupProgress,
     gridSettings,
     chatBackupReminder,
     adminNotification,

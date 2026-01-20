@@ -1,3 +1,4 @@
+import 'package:openapi/api.dart';
 import 'package:utils/utils.dart';
 
 class GridSettings {
@@ -72,4 +73,101 @@ class ChatBackupReminder {
     this.lastBackupTime,
     this.lastDialogOpenedTime,
   });
+}
+
+class InitialSetupProgressEntry {
+  final String? email;
+  final bool? isAdult;
+  final String? profileName;
+  final int? profileAge;
+
+  // Security selfie (slot is always 0)
+  final String? securitySelfieContentId;
+  final bool? securitySelfieFaceDetected;
+
+  // Profile images with all data (content IDs, slots, face detected, crop areas)
+  final List<ProfilePictureEntry>? profileImages;
+
+  // Gender and search settings
+  final String? gender;
+  final bool? searchSettingMen;
+  final bool? searchSettingWomen;
+  final bool? searchSettingNonBinary;
+
+  // Search age range
+  final bool? searchAgeRangeInitDone;
+  final int? searchAgeRangeMin;
+  final int? searchAgeRangeMax;
+
+  // Location
+  final double? latitude;
+  final double? longitude;
+
+  // Profile attributes
+  final List<ProfileAttributeValueUpdate>? profileAttributes;
+
+  // Chat info
+  final bool? chatInfoUnderstood;
+
+  const InitialSetupProgressEntry({
+    this.email,
+    this.isAdult,
+    this.profileName,
+    this.profileAge,
+    this.securitySelfieContentId,
+    this.securitySelfieFaceDetected,
+    this.profileImages,
+    this.gender,
+    this.searchSettingMen,
+    this.searchSettingWomen,
+    this.searchSettingNonBinary,
+    this.searchAgeRangeInitDone,
+    this.searchAgeRangeMin,
+    this.searchAgeRangeMax,
+    this.latitude,
+    this.longitude,
+    this.profileAttributes,
+    this.chatInfoUnderstood,
+  });
+}
+
+/// Data model for a single profile picture stored in initial setup progress
+class ProfilePictureEntry {
+  final String contentId;
+  final int? slot;
+  final bool faceDetected;
+  final double cropSize;
+  final double cropX;
+  final double cropY;
+
+  const ProfilePictureEntry({
+    required this.contentId,
+    required this.slot,
+    required this.faceDetected,
+    required this.cropSize,
+    required this.cropX,
+    required this.cropY,
+  });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'contentId': contentId,
+      'slot': slot,
+      'faceDetected': faceDetected,
+      'cropSize': cropSize,
+      'cropX': cropX,
+      'cropY': cropY,
+    };
+  }
+
+  factory ProfilePictureEntry.fromJson(Map<String, dynamic> json) {
+    return ProfilePictureEntry(
+      contentId: json['contentId'] as String,
+      slot: json['slot'] as int?,
+      faceDetected: json['faceDetected'] as bool,
+      cropSize: (json['cropSize'] as num).toDouble(),
+      cropX: (json['cropX'] as num).toDouble(),
+      cropY: (json['cropY'] as num).toDouble(),
+    );
+  }
 }
