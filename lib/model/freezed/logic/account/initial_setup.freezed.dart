@@ -57,7 +57,7 @@ mixin _$InitialSetupData {
 }
 
 /// @nodoc
-abstract class _InitialSetupData implements InitialSetupData {
+abstract class _InitialSetupData extends InitialSetupData {
   factory _InitialSetupData({
     String? email,
     bool? isAdult,
@@ -75,10 +75,11 @@ abstract class _InitialSetupData implements InitialSetupData {
     bool chatInfoUnderstood,
     bool sendingInProgress,
   }) = _$InitialSetupDataImpl;
+  const _InitialSetupData._() : super._();
 }
 
 /// @nodoc
-class _$InitialSetupDataImpl implements _InitialSetupData {
+class _$InitialSetupDataImpl extends _InitialSetupData {
   static const GenderSearchSettingsAll _genderSearchSettingDefaultValue = GenderSearchSettingsAll();
   static const bool _searchAgeRangeInitDoneDefaultValue = false;
   static const ProfileAttributesState _profileAttributesDefaultValue = ProfileAttributesState([]);
@@ -101,7 +102,7 @@ class _$InitialSetupDataImpl implements _InitialSetupData {
     this.profileAttributes = _profileAttributesDefaultValue,
     this.chatInfoUnderstood = _chatInfoUnderstoodDefaultValue,
     this.sendingInProgress = _sendingInProgressDefaultValue,
-  });
+  }) : super._();
 
   @override
   final String? email;

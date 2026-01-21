@@ -4,7 +4,6 @@ import "package:app/utils/model.dart";
 import "package:freezed_annotation/freezed_annotation.dart";
 import "package:openapi/api.dart";
 import "package:app/ui_utils/crop_image_screen.dart";
-import 'package:collection/collection.dart';
 
 part 'profile_pictures.freezed.dart';
 
@@ -42,21 +41,7 @@ class ProfilePicturesData with _$ProfilePicturesData implements ProfilePicturesS
 
   @override
   int? nextAvailableSlotInInitialSetup() {
-    // 0 is for security selfie
-    final availableSlots = [1, 2, 3, 4];
-    for (final img in valuePictures()) {
-      if (img is ImageSelected) {
-        final info = img.img;
-        if (info is ProfileImage) {
-          final slot = info.slot;
-          if (slot != null) {
-            availableSlots.remove(slot);
-          }
-        }
-      }
-    }
-
-    return availableSlots.firstOrNull;
+    throw Exception("ProfilePicturesData is not used in initial setup");
   }
 
   SetProfileContent? toSetProfileContent() {

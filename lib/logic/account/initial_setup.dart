@@ -4,6 +4,8 @@ import "dart:typed_data";
 import "package:app/api/server_connection_manager.dart";
 import "package:app/data/utils/repository_instances.dart";
 import "package:app/database/account_database_manager.dart";
+import "package:app/logic/media/profile_pictures_interface.dart";
+import "package:app/ui_utils/crop_image_screen.dart";
 import "package:app/utils/age.dart";
 import "package:app/utils/result.dart";
 import "package:collection/collection.dart";
@@ -113,7 +115,32 @@ class SkipInitialSetup extends InitialSetupEvent {}
 
 class RefreshSecuritySelfieFaceDetectedValue extends InitialSetupEvent {}
 
-class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData> with ActionRunner {
+class AddProcessedImageToSetup extends InitialSetupEvent {
+  final SelectedImageInfo img;
+  final int index;
+  AddProcessedImageToSetup(this.img, this.index);
+}
+
+class UpdateCropAreaInSetup extends InitialSetupEvent {
+  final CropArea cropArea;
+  final int index;
+  UpdateCropAreaInSetup(this.cropArea, this.index);
+}
+
+class RemoveImageFromSetup extends InitialSetupEvent {
+  final int index;
+  RemoveImageFromSetup(this.index);
+}
+
+class MoveImageInSetup extends InitialSetupEvent {
+  final int src;
+  final int dst;
+  MoveImageInSetup(this.src, this.dst);
+}
+
+class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData>
+    with ActionRunner
+    implements ProfilePicturesBlocInterface<InitialSetupData> {
   final AccountRepository account;
   final AccountId currentUser;
   final AccountDatabaseManager db;
@@ -266,6 +293,52 @@ class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData> with Ac
 
       showSnackBar(R.strings.generic_action_completed);
     });
+    on<AddProcessedImageToSetup>((data, emit) {
+      final newImages = state.valuePictures();
+      newImages[data.index] = ImageSelected(data.img, cropArea: CropArea.full);
+      emit(state.copyWith(profileImages: ImmutableList(newImages)));
+    });
+    on<UpdateCropAreaInSetup>((data, emit) {
+      final newImages = state.valuePictures();
+      final imgState = newImages[data.index];
+      if (imgState is ImageSelected) {
+        newImages[data.index] = ImageSelected(imgState.img, cropArea: data.cropArea);
+        emit(state.copyWith(profileImages: ImmutableList(newImages)));
+      }
+    });
+    on<RemoveImageFromSetup>((data, emit) {
+      final newImages = state.valuePictures();
+      newImages[data.index] = const Empty();
+      emit(state.copyWith(profileImages: ImmutableList(newImages)));
+    });
+    on<MoveImageInSetup>((data, emit) {
+      final newImages = state.valuePictures();
+      final temp = newImages[data.src];
+      newImages[data.src] = newImages[data.dst];
+      newImages[data.dst] = temp;
+      emit(state.copyWith(profileImages: ImmutableList(newImages)));
+    });
+  }
+
+  // ProfilePicturesBlocInterface implementation
+  @override
+  void addProcessedImage(SelectedImageInfo img, int profileImagesIndex) {
+    add(AddProcessedImageToSetup(img, profileImagesIndex));
+  }
+
+  @override
+  void updateCropArea(CropArea cropArea, int imgIndex) {
+    add(UpdateCropAreaInSetup(cropArea, imgIndex));
+  }
+
+  @override
+  void removeImage(int imgIndex) {
+    add(RemoveImageFromSetup(imgIndex));
+  }
+
+  @override
+  void moveImageTo(int src, int dst) {
+    add(MoveImageInSetup(src, dst));
   }
 }
 

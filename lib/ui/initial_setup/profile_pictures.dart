@@ -12,8 +12,8 @@ import "package:app/localizations.dart";
 import "package:app/logic/account/initial_setup.dart";
 import "package:app/logic/app/navigator_state.dart";
 import "package:app/logic/media/image_processing.dart";
-import "package:app/logic/media/profile_pictures.dart";
 import "package:app/logic/media/profile_pictures_interface.dart";
+import "package:app/model/freezed/logic/account/initial_setup.dart";
 import "package:app/model/freezed/logic/main/navigator_state.dart";
 import "package:app/model/freezed/logic/media/profile_pictures.dart";
 import "package:app/ui/initial_setup/profile_basic_info.dart";
@@ -46,14 +46,13 @@ class AskProfilePicturesScreen extends StatelessWidget {
       context: context,
       child: QuestionAsker(
         continueButtonBuilder: (context) {
-          return BlocBuilder<ProfilePicturesBloc, ProfilePicturesData>(
+          return BlocBuilder<InitialSetupBloc, InitialSetupData>(
             builder: (context, state) {
               void Function()? onPressed;
               final pictures = state.valuePictures();
               final primaryPicture = pictures[0];
               if (primaryPicture is ImageSelected && primaryPicture.img.isFaceDetected()) {
                 onPressed = () {
-                  context.read<InitialSetupBloc>().add(SetProfileImages(pictures));
                   MyNavigator.push(context, AskProfileBasicInfoPage());
                 };
               }
@@ -88,9 +87,9 @@ class _AskProfilePicturesState extends State<AskProfilePictures> {
     return Column(
       children: [
         questionTitleText(context, context.strings.initial_setup_screen_profile_pictures_title),
-        ProfilePictureSelection<ProfilePicturesBloc, ProfilePicturesData>(
+        ProfilePictureSelection<InitialSetupBloc, InitialSetupData>(
           mode: const InitialSetupProfilePictures(),
-          bloc: context.read<ProfilePicturesBloc>(),
+          bloc: context.read<InitialSetupBloc>(),
         ),
       ],
     );

@@ -1,3 +1,4 @@
+import "package:app/logic/media/profile_pictures_interface.dart";
 import "package:app/ui/initial_setup/search_settings.dart";
 import "package:flutter/material.dart";
 import "package:latlong2/latlong.dart";
@@ -12,7 +13,8 @@ import "package:app/utils/immutable_list.dart";
 part 'initial_setup.freezed.dart';
 
 @freezed
-class InitialSetupData with _$InitialSetupData {
+class InitialSetupData with _$InitialSetupData implements ProfilePicturesStateInterface {
+  const InitialSetupData._();
   factory InitialSetupData({
     String? email,
     bool? isAdult,
@@ -30,6 +32,37 @@ class InitialSetupData with _$InitialSetupData {
     @Default(false) bool chatInfoUnderstood,
     @Default(false) bool sendingInProgress,
   }) = _InitialSetupData;
+
+  @override
+  List<ImgState> valuePictures() {
+    final images = profileImages?.toList() ?? [];
+    // Ensure we always return a list of 4 elements
+    return [
+      if (images.isNotEmpty) images[0] else const Empty(),
+      if (images.length > 1) images[1] else const Empty(),
+      if (images.length > 2) images[2] else const Empty(),
+      if (images.length > 3) images[3] else const Empty(),
+    ];
+  }
+
+  @override
+  int? nextAvailableSlotInInitialSetup() {
+    // 0 is for security selfie
+    final availableSlots = [1, 2, 3, 4];
+    for (final img in valuePictures()) {
+      if (img is ImageSelected) {
+        final info = img.img;
+        if (info is ProfileImage) {
+          final slot = info.slot;
+          if (slot != null) {
+            availableSlots.remove(slot);
+          }
+        }
+      }
+    }
+
+    return availableSlots.firstOrNull;
+  }
 }
 
 enum Gender {

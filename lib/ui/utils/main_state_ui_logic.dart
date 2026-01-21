@@ -199,7 +199,6 @@ class NavigatorInitialSetup extends LoggedInRootScreen {
         BlocProvider(create: (_) => ProfileAttributesBloc(r)),
         BlocProvider(create: (_) => ContentBloc(r)),
         BlocProvider(create: (_) => SelectContentBloc(r)),
-        BlocProvider(create: (_) => ProfilePicturesBloc(r)),
         // Disable lazy init for ClientFeaturesConfigBloc so that
         // location selection does not use the default map settings.
         // Also profile name text field requires the bloc.
