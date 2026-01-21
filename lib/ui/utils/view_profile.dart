@@ -314,6 +314,9 @@ class _ViewProfileImgViewerState extends State<ViewProfileImgViewer> {
     if (oldWidget.profile != widget.profile) {
       contentList = widget.profile.content;
       selectedImg = 0;
+      if (pageController.hasClients) {
+        pageController.jumpToPage(0);
+      }
     }
   }
 
