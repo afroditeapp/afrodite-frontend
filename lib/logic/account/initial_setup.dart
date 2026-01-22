@@ -116,7 +116,7 @@ class SkipInitialSetup extends InitialSetupEvent {}
 class RefreshSecuritySelfieFaceDetectedValue extends InitialSetupEvent {}
 
 class AddProcessedImageToSetup extends InitialSetupEvent {
-  final SelectedImageInfo img;
+  final ImageSelected img;
   final int index;
   AddProcessedImageToSetup(this.img, this.index);
 }
@@ -295,14 +295,14 @@ class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData>
     });
     on<AddProcessedImageToSetup>((data, emit) {
       final newImages = state.valuePictures();
-      newImages[data.index] = ImageSelected(data.img, cropArea: CropArea.full);
+      newImages[data.index] = data.img;
       emit(state.copyWith(profileImages: ImmutableList(newImages)));
     });
     on<UpdateCropAreaInSetup>((data, emit) {
       final newImages = state.valuePictures();
       final imgState = newImages[data.index];
       if (imgState is ImageSelected) {
-        newImages[data.index] = ImageSelected(imgState.img, cropArea: data.cropArea);
+        newImages[data.index] = ImageSelected(imgState.id, imgState.slot, cropArea: data.cropArea);
         emit(state.copyWith(profileImages: ImmutableList(newImages)));
       }
     });
@@ -322,7 +322,7 @@ class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData>
 
   // ProfilePicturesBlocInterface implementation
   @override
-  void addProcessedImage(SelectedImageInfo img, int profileImagesIndex) {
+  void addProcessedImage(ImageSelected img, int profileImagesIndex) {
     add(AddProcessedImageToSetup(img, profileImagesIndex));
   }
 

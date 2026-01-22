@@ -131,7 +131,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       return const Empty();
     }
     final imgId = AccountImageId(widget.initialProfile.accountId, c.id, c.faceDetected, c.accepted);
-    return ImageSelected(ProfileImage(imgId, null), cropArea: cropArea);
+    return ImageSelected(imgId, null, cropArea: cropArea);
   }
 
   void validateAndSaveData(BuildContext context) {

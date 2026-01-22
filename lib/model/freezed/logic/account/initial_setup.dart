@@ -51,12 +51,9 @@ class InitialSetupData with _$InitialSetupData implements ProfilePicturesStateIn
     final availableSlots = [1, 2, 3, 4];
     for (final img in valuePictures()) {
       if (img is ImageSelected) {
-        final info = img.img;
-        if (info is ProfileImage) {
-          final slot = info.slot;
-          if (slot != null) {
-            availableSlots.remove(slot);
-          }
+        final slot = img.slot;
+        if (slot != null) {
+          availableSlots.remove(slot);
         }
       }
     }

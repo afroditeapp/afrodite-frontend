@@ -23,7 +23,7 @@ class SetInitialState extends ProfilePicturesEvent {
 }
 
 class AddProcessedImage extends ProfilePicturesEvent {
-  final SelectedImageInfo img;
+  final ImageSelected img;
   final int profileImagesIndex;
   AddProcessedImage(this.img, this.profileImagesIndex);
 }
@@ -79,16 +79,7 @@ class ProfilePicturesBloc extends Bloc<ProfilePicturesEvent, ProfilePicturesData
     });
     on<AddProcessedImage>((data, emit) {
       final pictures = _pictureList();
-      switch (data.img) {
-        case InitialSetupSecuritySelfie():
-          {
-            pictures[data.profileImagesIndex] = ImageSelected(data.img);
-          }
-        case ProfileImage():
-          {
-            pictures[data.profileImagesIndex] = ImageSelected(data.img);
-          }
-      }
+      pictures[data.profileImagesIndex] = data.img;
       _modifyPicturesListToHaveCorrectStates(pictures);
       _emitPictureChangesToEdited(emit, pictures);
     });
@@ -105,7 +96,7 @@ class ProfilePicturesBloc extends Bloc<ProfilePicturesEvent, ProfilePicturesData
       final pictures = _pictureList();
       final img = pictures[data.imgIndex];
       if (img is ImageSelected) {
-        pictures[data.imgIndex] = ImageSelected(img.img, cropArea: data.cropArea);
+        pictures[data.imgIndex] = ImageSelected(img.id, img.slot, cropArea: data.cropArea);
         _emitPictureChangesToEdited(emit, pictures);
       }
     });
@@ -128,12 +119,9 @@ class ProfilePicturesBloc extends Bloc<ProfilePicturesEvent, ProfilePicturesData
       final imgs = state.valuePictures();
       for (final (i, img) in imgs.indexed) {
         if (img is ImageSelected) {
-          final imgInfo = img.img;
-          if (imgInfo is ProfileImage) {
-            final newImgState = r.data.firstWhereOrNull((v) => v.cid == imgInfo.id.contentId);
-            if (newImgState != null) {
-              imgs[i] = ImageSelected(imgInfo.copyWithFaceDetected(newImgState.fd));
-            }
+          final newImgState = r.data.firstWhereOrNull((v) => v.cid == img.id.contentId);
+          if (newImgState != null) {
+            imgs[i] = img.copyWithFaceDetected(newImgState.fd);
           }
         }
       }
@@ -148,7 +136,7 @@ class ProfilePicturesBloc extends Bloc<ProfilePicturesEvent, ProfilePicturesData
 
   // ProfilePicturesBlocInterface implementation
   @override
-  void addProcessedImage(SelectedImageInfo img, int profileImagesIndex) {
+  void addProcessedImage(ImageSelected img, int profileImagesIndex) {
     add(AddProcessedImage(img, profileImagesIndex));
   }
 

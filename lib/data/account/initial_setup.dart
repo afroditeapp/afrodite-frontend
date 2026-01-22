@@ -217,7 +217,7 @@ class InitialSetupUtils {
     if (r1.isErr()) return errAndLog("Setting security selfie failed");
 
     if (profileImages == null) return errAndLog("Profile images is null");
-    final newProfileContent = createProfileContent(securitySelfie, profileImages).ok();
+    final newProfileContent = createProfileContent(profileImages).ok();
     if (newProfileContent == null) return errAndLog("Creating profile content failed");
     final r2 = await _api.mediaAction((api) => api.putProfileContent(newProfileContent));
     if (r2.isErr()) return errAndLog("Setting profile images failed");
@@ -226,10 +226,7 @@ class InitialSetupUtils {
   }
 }
 
-Result<SetProfileContent, ()> createProfileContent(
-  ContentId securitySelfie,
-  Iterable<ImgState> imgs,
-) {
+Result<SetProfileContent, ()> createProfileContent(Iterable<ImgState> imgs) {
   double? gridCropSize;
   double? gridCropX;
   double? gridCropY;
@@ -251,13 +248,13 @@ Result<SetProfileContent, ()> createProfileContent(
         gridCropSize = img.cropArea.gridCropSize;
         gridCropX = img.cropArea.gridCropX;
         gridCropY = img.cropArea.gridCropY;
-        contentId0 = getId(img.img, securitySelfie);
+        contentId0 = img.contentId();
       case 1:
-        contentId1 = getId(img.img, securitySelfie);
+        contentId1 = img.contentId();
       case 2:
-        contentId2 = getId(img.img, securitySelfie);
+        contentId2 = img.contentId();
       case 3:
-        contentId3 = getId(img.img, securitySelfie);
+        contentId3 = img.contentId();
       default:
         ();
     }
@@ -270,13 +267,6 @@ Result<SetProfileContent, ()> createProfileContent(
   return Ok(
     SetProfileContent(c: c, gridCropSize: gridCropSize, gridCropX: gridCropX, gridCropY: gridCropY),
   );
-}
-
-ContentId getId(SelectedImageInfo info, ContentId securitySelfie) {
-  return switch (info) {
-    InitialSetupSecuritySelfie() => securitySelfie,
-    ProfileImage(:final id) => id.contentId,
-  };
 }
 
 Result<T, ()> errAndLog<T>(String message) {

@@ -18,7 +18,7 @@ abstract interface class ProfilePicturesStateInterface {
 abstract interface class ProfilePicturesBlocInterface<State extends ProfilePicturesStateInterface>
     implements BlocBase<State> {
   /// Add a processed image at the specified index.
-  void addProcessedImage(SelectedImageInfo img, int profileImagesIndex);
+  void addProcessedImage(ImageSelected img, int profileImagesIndex);
 
   /// Update crop area for an image at the specified index.
   void updateCropArea(CropArea cropArea, int imgIndex);

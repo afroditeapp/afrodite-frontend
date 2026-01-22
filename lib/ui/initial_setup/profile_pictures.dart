@@ -15,6 +15,7 @@ import "package:app/logic/media/image_processing.dart";
 import "package:app/logic/media/profile_pictures_interface.dart";
 import "package:app/model/freezed/logic/account/initial_setup.dart";
 import "package:app/model/freezed/logic/main/navigator_state.dart";
+import "package:app/model/freezed/logic/media/image_processing.dart";
 import "package:app/model/freezed/logic/media/profile_pictures.dart";
 import "package:app/ui/initial_setup/profile_basic_info.dart";
 import "package:app/ui/normal/settings/media/select_content.dart";
@@ -51,7 +52,7 @@ class AskProfilePicturesScreen extends StatelessWidget {
               void Function()? onPressed;
               final pictures = state.valuePictures();
               final primaryPicture = pictures[0];
-              if (primaryPicture is ImageSelected && primaryPicture.img.isFaceDetected()) {
+              if (primaryPicture is ImageSelected && primaryPicture.isFaceDetected()) {
                 onPressed = () {
                   MyNavigator.push(context, AskProfileBasicInfoPage());
                 };
@@ -130,7 +131,7 @@ class _ProfilePictureSelection<
           if (index == null) {
             return;
           }
-          widget.bloc.addProcessedImage(ProfileImage(id, processedImg.slot), index);
+          widget.bloc.addProcessedImage(ImageSelected(id, processedImg.slot), index);
         },
       );
     } else {
@@ -232,22 +233,7 @@ class _ProfilePictureSelection<
 
   AccountImageId? getProcessedAccountImage(BuildContext context, ImgState imgState) {
     if (imgState is ImageSelected) {
-      switch (imgState.img) {
-        case InitialSetupSecuritySelfie():
-          final securitySelfie = context.read<InitialSetupBloc>().state.securitySelfie;
-          if (securitySelfie != null) {
-            return AccountImageId(
-              securitySelfie.accountId,
-              securitySelfie.contentId,
-              securitySelfie.faceDetected,
-              false,
-            );
-          } else {
-            return null;
-          }
-        case ProfileImage(:final id):
-          return id;
-      }
+      return imgState.id;
     } else {
       return null;
     }
@@ -324,7 +310,7 @@ class _ProfilePictureSelection<
       bloc: widget.bloc,
       builder: (context, state) {
         final imgState = state.valuePictures()[0];
-        if (imgState is ImageSelected && !imgState.img.isFaceDetected()) {
+        if (imgState is ImageSelected && !imgState.isFaceDetected()) {
           return Padding(
             padding: const EdgeInsets.only(top: 8.0),
             child: Row(
@@ -350,7 +336,7 @@ class _ProfilePictureSelection<
       bloc: widget.bloc,
       builder: (context, state) {
         final imgState = state.valuePictures()[0];
-        if (imgState is ImageSelected && !imgState.img.isAccepted()) {
+        if (imgState is ImageSelected && !imgState.isAccepted()) {
           return Padding(
             padding: const EdgeInsets.only(
               top: 8.0,
@@ -493,7 +479,13 @@ class AddPicture extends StatelessWidget {
                 .initial_setup_screen_profile_pictures_select_picture_security_selfie_title,
           ),
           onTap: () {
-            bloc.addProcessedImage(InitialSetupSecuritySelfie(), imgIndex);
+            final accountImageId = AccountImageId(
+              securitySelfie.accountId,
+              securitySelfie.contentId,
+              securitySelfie.faceDetected,
+              true,
+            );
+            bloc.addProcessedImage(ImageSelected(accountImageId, SECURITY_SELFIE_SLOT), imgIndex);
             closer.close(context, ());
           },
         );
@@ -515,7 +507,7 @@ class AddPicture extends StatelessWidget {
       page: SelectContentPage(identifyFaceImages: imgIndex == 0),
     );
     if (selectedImg != null) {
-      bloc.addProcessedImage(ProfileImage(selectedImg, null), imgIndex);
+      bloc.addProcessedImage(ImageSelected(selectedImg, null), imgIndex);
     }
   }
 }

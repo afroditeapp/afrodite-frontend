@@ -51,17 +51,8 @@ class ProfilePicturesData with _$ProfilePicturesData implements ProfilePicturesS
     if (img0 is! ImageSelected) {
       return null;
     }
-    final img0Info = img0.img;
-    if (img0Info is! ProfileImage) {
-      return null;
-    }
 
-    final c = [
-      img0Info.id.contentId,
-      imgStateToContentId(pics[1]),
-      imgStateToContentId(pics[2]),
-      imgStateToContentId(pics[3]),
-    ];
+    final c = [img0.contentId(), pics[1].contentId(), pics[2].contentId(), pics[3].contentId()];
 
     return SetProfileContent(
       c: c.nonNulls.toList(),
@@ -73,7 +64,7 @@ class ProfilePicturesData with _$ProfilePicturesData implements ProfilePicturesS
 
   bool faceDetectedFromPrimaryImage() {
     final img0 = valuePictures()[0];
-    return img0 is ImageSelected && img0.img.isFaceDetected();
+    return img0 is ImageSelected && img0.isFaceDetected();
   }
 }
 
@@ -86,16 +77,6 @@ class EditedProfilePicturesData with _$EditedProfilePicturesData {
     @Default(NoEdit()) EditValue<ImgState> picture2,
     @Default(NoEdit()) EditValue<ImgState> picture3,
   }) = _EditedProfilePicturesData;
-}
-
-ContentId? imgStateToContentId(ImgState state) {
-  if (state is ImageSelected) {
-    final info = state.img;
-    if (info is ProfileImage) {
-      return info.id.contentId;
-    }
-  }
-  return null;
 }
 
 sealed class PictureSelectionMode {
@@ -113,10 +94,15 @@ class NormalProfilePictures extends PictureSelectionMode {
 @immutable
 sealed class ImgState extends Immutable {
   const ImgState();
+
+  ContentId? contentId();
 }
 
 class Empty extends ImgState {
   const Empty();
+
+  @override
+  ContentId? contentId() => null;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other.runtimeType == runtimeType;
@@ -126,63 +112,37 @@ class Empty extends ImgState {
 }
 
 class ImageSelected extends ImgState {
-  final SelectedImageInfo img;
+  final AccountImageId id;
+  final int? slot;
   final CropArea cropArea;
-  const ImageSelected(this.img, {this.cropArea = CropArea.full});
+  const ImageSelected(this.id, this.slot, {this.cropArea = CropArea.full});
 
-  ImageSelected copyWithImg(SelectedImageInfo img) {
-    return ImageSelected(img, cropArea: cropArea);
+  ImageSelected copyWithId(AccountImageId id) {
+    return ImageSelected(id, slot, cropArea: cropArea);
   }
+
+  ImageSelected copyWithFaceDetected(bool faceDetected) {
+    return ImageSelected(
+      AccountImageId(id.accountId, id.contentId, faceDetected, id.accepted),
+      slot,
+      cropArea: cropArea,
+    );
+  }
+
+  bool isFaceDetected() => id.faceDetected;
+
+  bool isAccepted() => id.accepted;
+
+  @override
+  ContentId? contentId() => id.contentId;
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is ImageSelected && other.img == img && other.cropArea == cropArea;
+      other is ImageSelected && other.id == id && other.slot == slot && other.cropArea == cropArea;
 
   @override
-  int get hashCode => Object.hash(img, cropArea);
-}
-
-sealed class SelectedImageInfo {
-  bool isFaceDetected() {
-    final img = this;
-    return img is InitialSetupSecuritySelfie || (img is ProfileImage && img.id.faceDetected);
-  }
-
-  bool isAccepted() {
-    final img = this;
-    return img is InitialSetupSecuritySelfie || (img is ProfileImage && img.id.accepted);
-  }
-}
-
-class InitialSetupSecuritySelfie extends SelectedImageInfo {
-  @override
-  bool operator ==(Object other) => identical(this, other) || other.runtimeType == runtimeType;
-
-  @override
-  int get hashCode => runtimeType.hashCode;
-}
-
-class ProfileImage extends SelectedImageInfo {
-  final AccountImageId id;
-
-  /// Slot where image is uploaded to.
-  final int? slot;
-  ProfileImage(this.id, this.slot);
-
-  ProfileImage copyWithFaceDetected(bool faceDetected) {
-    return ProfileImage(
-      AccountImageId(id.accountId, id.contentId, faceDetected, id.accepted),
-      slot,
-    );
-  }
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) || other is ProfileImage && other.id == id && other.slot == slot;
-
-  @override
-  int get hashCode => Object.hash(id, slot);
+  int get hashCode => Object.hash(id, slot, cropArea);
 }
 
 class AccountImageId {
