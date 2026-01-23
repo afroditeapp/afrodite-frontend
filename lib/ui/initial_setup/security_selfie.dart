@@ -13,7 +13,7 @@ import "package:app/logic/app/navigator_state.dart";
 import "package:app/logic/media/image_processing.dart";
 import "package:app/model/freezed/logic/account/initial_setup.dart";
 import "package:app/model/freezed/logic/media/image_processing.dart";
-import "package:app/ui/initial_setup/profile_pictures.dart";
+import "package:app/ui/initial_setup/navigation.dart";
 import "package:app/ui_utils/consts/padding.dart";
 import "package:app/ui_utils/image.dart";
 import "package:app/ui_utils/image_processing.dart";
@@ -26,8 +26,12 @@ import "package:app/utils/camera.dart";
 
 final _log = Logger("AskSecuritySelfieScreen");
 
-class AskSecuritySelfiePage extends MyScreenPage<()> with SimpleUrlParser<AskSecuritySelfiePage> {
+class AskSecuritySelfiePage extends InitialSetupPageBase
+    with SimpleUrlParser<AskSecuritySelfiePage> {
   AskSecuritySelfiePage() : super(builder: (_) => AskSecuritySelfieScreen());
+
+  @override
+  String get nameForDb => 'security_selfie';
 
   @override
   AskSecuritySelfiePage create() => AskSecuritySelfiePage();
@@ -51,7 +55,7 @@ class AskSecuritySelfieScreen extends StatelessWidget {
           if (selfie != null && selfie.faceDetected) {
             return () {
               CameraManager.getInstance().sendCmd(CloseCmd());
-              MyNavigator.push(context, AskProfilePicturesPage());
+              navigateToNextInitialSetupPage(context);
             };
           } else {
             return null;

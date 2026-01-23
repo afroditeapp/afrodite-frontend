@@ -3,7 +3,11 @@ import "package:app/data/push_notification_manager.dart";
 import "package:app/data/utils/repository_instances.dart";
 import "package:app/logic/app/main_state_types.dart";
 import "package:app/main.dart";
+import "package:app/model/freezed/logic/main/bottom_navigation_state.dart";
+import "package:app/model/freezed/logic/main/navigator_state.dart";
+import "package:app/ui/initial_setup/navigation.dart";
 import "package:app/ui/utils/notification_payload_handler.dart";
+import "package:app/utils/immutable_list.dart";
 import "package:bloc_concurrency/bloc_concurrency.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:app/data/login_repository.dart";
@@ -27,6 +31,7 @@ class MainStateBloc extends Bloc<MainStateEvent, MainState> {
   final login = LoginRepository.getInstance();
 
   MsLoggedInMainScreen? cachedMainScreenState;
+  MsLoggedInInitialSetupScreen? cachedInitialSetupScreenState;
 
   MainStateBloc() : super(MsSplashScreen()) {
     on<UpdateMainState>((data, emit) => emit(data.value), transformer: sequential());
@@ -65,8 +70,8 @@ class MainStateBloc extends Bloc<MainStateEvent, MainState> {
                   InitialSetupSkippedExists(value: true) => await createMainScreenState(
                     ls.repositories,
                   ),
-                  InitialSetupSkippedExists(value: false) => ls.toMainState(
-                    LoggedInBasicScreen.initialSetup,
+                  InitialSetupSkippedExists(value: false) => await restoreInitialSetupScreenState(
+                    ls.repositories,
                   ),
                 },
                 AccountState.banned => ls.toMainState(LoggedInBasicScreen.accountBanned),
@@ -96,19 +101,64 @@ class MainStateBloc extends Bloc<MainStateEvent, MainState> {
     final appLaunchPayloadOther = PushNotificationManager.getInstance()
         .getAndRemoveAppLaunchNotificationPayload();
 
-    final AppLaunchNotification? notification;
+    final AppLaunchNavigationState? navigationState;
     if (appLaunchPayload != null) {
       _log.info("Handling app launch notification payload");
-      notification = await handleAppLaunchNotificationPayload(appLaunchPayload, r);
+      navigationState = await handleAppLaunchNotificationPayload(appLaunchPayload, r);
     } else if (appLaunchPayloadOther != null) {
       _log.info("Handling app launch push notification payload");
-      notification = await handleAppLaunchNotificationPayload(appLaunchPayloadOther, r);
+      navigationState = await handleAppLaunchNotificationPayload(appLaunchPayloadOther, r);
     } else {
-      notification = null;
+      navigationState = null;
     }
 
-    final state = MsLoggedInMainScreen(r, notification);
+    final state = MsLoggedInMainScreen(r, navigationState);
     cachedMainScreenState = state;
     return state;
+  }
+
+  Future<MsLoggedInInitialSetupScreen> restoreInitialSetupScreenState(RepositoryInstances r) async {
+    // Avoid creating new MsLoggedInInitialSetupScreen if
+    // this method runs again.
+    final cached = cachedInitialSetupScreenState;
+    if (cached != null && cached.repositories == r) {
+      return cached;
+    }
+
+    final currentPage = await r.accountDb
+        .accountStream((db) => db.app.watchInitialSetupCurrentPage())
+        .first;
+
+    final AppLaunchNavigationState? navigationState;
+    if (currentPage != null && currentPage.isNotEmpty) {
+      _log.info("Restoring initial setup to page: $currentPage");
+      final pages = _buildInitialSetupPageStack(currentPage);
+      navigationState = AppLaunchNavigationState(
+        NavigatorStateData(pages: UnmodifiableList(pages)),
+        BottomNavigationStateData(),
+      );
+    } else {
+      navigationState = null;
+    }
+
+    return MsLoggedInInitialSetupScreen(r, navigationState);
+  }
+
+  List<MyScreenPage<Object>> _buildInitialSetupPageStack(String currentPageName) {
+    final pageOrder = getInitialSetupPageOrder();
+
+    final currentIndex = pageOrder.indexWhere((page) => page.nameForDb == currentPageName);
+    if (currentIndex == -1) {
+      // Unknown page, start from beginning
+      return [pageOrder.first];
+    }
+
+    final pages = <MyScreenPage<Object>>[];
+
+    for (int i = 0; i <= currentIndex; i++) {
+      pages.add(pageOrder[i]);
+    }
+
+    return pages;
   }
 }

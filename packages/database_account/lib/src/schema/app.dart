@@ -101,6 +101,9 @@ class PushNotification extends SingleRowTable {
 /// Stores initial setup progress so it persists across app restarts.
 /// This prevents users from losing all their progress if they quit the app.
 class InitialSetupProgress extends SingleRowTable {
+  /// Current UI page/step in the initial setup flow.
+  TextColumn get currentPage => text().nullable()();
+
   // Basic profile info
   TextColumn get email => text().nullable()();
   BoolColumn get isAdult => boolean().nullable()();

@@ -5,16 +5,19 @@ import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:app/localizations.dart";
 import "package:app/logic/account/initial_setup.dart";
-import "package:app/logic/app/navigator_state.dart";
 import "package:app/model/freezed/logic/account/initial_setup.dart";
-import "package:app/ui/initial_setup/location.dart";
+import "package:app/ui/initial_setup/navigation.dart";
 import "package:app/ui_utils/consts/padding.dart";
 import "package:app/ui_utils/dropdown_menu.dart";
 import "package:app/ui_utils/initial_setup_common.dart";
 import "package:app/utils/age.dart";
 
-class AskSearchSettingsPage extends MyScreenPage<()> with SimpleUrlParser<AskSearchSettingsPage> {
+class AskSearchSettingsPage extends InitialSetupPageBase
+    with SimpleUrlParser<AskSearchSettingsPage> {
   AskSearchSettingsPage() : super(builder: (_) => AskSearchSettingsScreen());
+
+  @override
+  String get nameForDb => 'search_settings';
 
   @override
   AskSearchSettingsPage create() => AskSearchSettingsPage();
@@ -51,7 +54,7 @@ class AskSearchSettingsScreen extends StatelessWidget {
           if (state.genderSearchSetting.notEmpty() &&
               ageRangeIsValid(state.searchAgeRangeMin, state.searchAgeRangeMax)) {
             return () {
-              MyNavigator.push(context, AskLocationPage());
+              navigateToNextInitialSetupPage(context);
             };
           } else {
             return null;

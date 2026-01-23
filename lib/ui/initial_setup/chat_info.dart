@@ -9,8 +9,11 @@ import "package:app/logic/profile/attributes.dart";
 import "package:app/ui/initial_setup/profile_attributes.dart";
 import "package:app/ui_utils/initial_setup_common.dart";
 
-class ChatInfoPage extends MyScreenPage<()> with SimpleUrlParser<ChatInfoPage> {
+class ChatInfoPage extends InitialSetupPageBase with SimpleUrlParser<ChatInfoPage> {
   ChatInfoPage() : super(builder: (_) => ChatInfoScreen());
+
+  @override
+  String get nameForDb => 'chat_info';
 
   @override
   ChatInfoPage create() => ChatInfoPage();
@@ -36,7 +39,9 @@ class ChatInfoScreen extends StatelessWidget {
               if (nextAttribute == null) {
                 context.read<InitialSetupBloc>().add(CompleteInitialSetup());
               } else {
-                MyNavigator.push(context, AskProfileAttributesPage(attributeIndex: 0));
+                final nextPage = AskProfileAttributesPage(attributeIndex: 0);
+                MyNavigator.push(context, nextPage);
+                context.read<InitialSetupBloc>().add(SetCurrentPage(nextPage.nameForDb));
               }
             };
           } else {

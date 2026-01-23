@@ -6,17 +6,19 @@ import "package:flutter/services.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:app/localizations.dart";
 import "package:app/logic/account/initial_setup.dart";
-import "package:app/logic/app/navigator_state.dart";
-import "package:app/ui/initial_setup/gender.dart";
+import "package:app/ui/initial_setup/navigation.dart";
 import "package:app/ui_utils/consts/padding.dart";
 import "package:app/ui_utils/initial_setup_common.dart";
 import "package:app/ui_utils/text_field.dart";
 import "package:app/utils/age.dart";
 import "package:intl/intl.dart";
 
-class AskProfileBasicInfoPage extends MyScreenPage<()>
+class AskProfileBasicInfoPage extends InitialSetupPageBase
     with SimpleUrlParser<AskProfileBasicInfoPage> {
   AskProfileBasicInfoPage() : super(builder: (_) => AskProfileBasicInfoScreen());
+
+  @override
+  String get nameForDb => 'profile_basic_info';
 
   @override
   AskProfileBasicInfoPage create() => AskProfileBasicInfoPage();
@@ -44,7 +46,7 @@ class AskProfileBasicInfoScreen extends StatelessWidget {
           final name = state.profileName;
           if (ageIsValid(age) && nameIsValid(context, name)) {
             return () {
-              MyNavigator.push(context, AskGenderPage());
+              navigateToNextInitialSetupPage(context);
             };
           } else {
             return null;

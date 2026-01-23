@@ -50,27 +50,42 @@ class MsLoggedInBasicScreen extends MainState {
   int get hashCode => Object.hash(runtimeType, repositories, screen);
 }
 
-enum LoggedInBasicScreen { initialSetup, accountBanned, pendingRemoval, unsupportedClientVersion }
+enum LoggedInBasicScreen { accountBanned, pendingRemoval, unsupportedClientVersion }
+
+class MsLoggedInInitialSetupScreen extends MainState {
+  final RepositoryInstances repositories;
+  final AppLaunchNavigationState? navigationState;
+  MsLoggedInInitialSetupScreen(this.repositories, this.navigationState);
+
+  @override
+  bool operator ==(Object other) {
+    return (other is MsLoggedInInitialSetupScreen &&
+        repositories == other.repositories &&
+        navigationState == other.navigationState);
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, repositories, navigationState);
+}
 
 class MsLoggedInMainScreen extends MainState {
   final RepositoryInstances repositories;
-  final AppLaunchNotification? notification;
-  MsLoggedInMainScreen(this.repositories, this.notification);
+  final AppLaunchNavigationState? navigationState;
+  MsLoggedInMainScreen(this.repositories, this.navigationState);
 
   @override
   bool operator ==(Object other) {
     return (other is MsLoggedInMainScreen &&
         repositories == other.repositories &&
-        notification == other.notification);
+        navigationState == other.navigationState);
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, repositories, notification);
+  int get hashCode => Object.hash(runtimeType, repositories, navigationState);
 }
 
-/// Use this state when creating main screen
-class AppLaunchNotification {
+class AppLaunchNavigationState {
   final NavigatorStateData navigatorState;
   final BottomNavigationStateData bottomNavigationState;
-  AppLaunchNotification(this.navigatorState, this.bottomNavigationState);
+  AppLaunchNavigationState(this.navigatorState, this.bottomNavigationState);
 }

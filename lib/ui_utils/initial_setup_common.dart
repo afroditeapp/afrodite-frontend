@@ -1,4 +1,5 @@
 import 'package:app/logic/media/profile_pictures.dart';
+import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +10,12 @@ import 'package:app/model/freezed/logic/account/initial_setup.dart';
 import 'package:app/ui_utils/app_bar/common_actions.dart';
 import 'package:app/ui_utils/app_bar/menu_actions.dart';
 import 'package:app/ui_utils/consts/padding.dart';
+
+abstract class InitialSetupPageBase extends MyScreenPage<()> {
+  InitialSetupPageBase({required super.builder});
+
+  String get nameForDb;
+}
 
 Widget commonInitialSetupScreenContent({
   required BuildContext context,

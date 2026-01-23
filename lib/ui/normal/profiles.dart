@@ -6,7 +6,7 @@ import 'package:app/model/freezed/logic/account/client_features_config.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/model/freezed/logic/media/content.dart';
 import 'package:app/model/freezed/logic/profile/my_profile.dart';
-import 'package:app/ui/initial_setup.dart';
+import 'package:app/ui/initial_setup/navigation.dart';
 import 'package:app/ui/normal/chat/chat_data_outdated_widget.dart';
 import 'package:app/ui_utils/consts/colors.dart';
 import 'package:app/ui_utils/consts/icons.dart';
@@ -276,7 +276,7 @@ class PublicProfileViewingBlocker extends StatelessWidget {
   Widget startInitialSetupButton(BuildContext context) {
     return Center(
       child: ElevatedButton(
-        onPressed: () => MyNavigator.push(context, InitialSetupPage()),
+        onPressed: () => MyNavigator.push(context, getInitialSetupPageOrder().first),
         child: Text(context.strings.profile_grid_screen_start_initial_setup_button),
       ),
     );

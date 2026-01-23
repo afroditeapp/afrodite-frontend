@@ -25,10 +25,13 @@ class AskProfileAttributesPageUrlParser extends UrlParser<AskProfileAttributesPa
   }
 }
 
-class AskProfileAttributesPage extends MyScreenPage<()> {
+class AskProfileAttributesPage extends InitialSetupPageBase {
   final int attributeIndex;
   AskProfileAttributesPage({required this.attributeIndex})
     : super(builder: (_) => AskProfileAttributesScreen(attributeIndex: attributeIndex));
+
+  @override
+  String get nameForDb => 'profile_attributes';
 
   @override
   String get urlPath => "/$urlName/$attributeIndex";
@@ -64,10 +67,9 @@ class AskProfileAttributesScreen extends StatelessWidget {
               if (nextAttribute == null) {
                 context.read<InitialSetupBloc>().add(CompleteInitialSetup());
               } else {
-                MyNavigator.push(
-                  context,
-                  AskProfileAttributesPage(attributeIndex: nextAttributeIndex),
-                );
+                final nextPage = AskProfileAttributesPage(attributeIndex: nextAttributeIndex);
+                MyNavigator.push(context, nextPage);
+                context.read<InitialSetupBloc>().add(SetCurrentPage(nextPage.nameForDb));
               }
             };
           } else {

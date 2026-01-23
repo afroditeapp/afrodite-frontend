@@ -157,4 +157,10 @@ class DaoReadApp extends DatabaseAccessor<AccountDatabase> with _$DaoReadAppMixi
       );
     });
   }
+
+  Stream<String?> watchInitialSetupCurrentPage() {
+    return (select(initialSetupProgress)..where((t) => t.id.equals(SingleRowTable.ID.value)))
+        .map((r) => r.currentPage)
+        .watchSingleOrNull();
+  }
 }

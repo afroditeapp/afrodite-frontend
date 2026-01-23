@@ -3,13 +3,15 @@ import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:app/localizations.dart";
 import "package:app/logic/account/initial_setup.dart";
-import "package:app/logic/app/navigator_state.dart";
 import "package:app/model/freezed/logic/account/initial_setup.dart";
-import "package:app/ui/initial_setup/search_settings.dart";
+import "package:app/ui/initial_setup/navigation.dart";
 import "package:app/ui_utils/initial_setup_common.dart";
 
-class AskGenderPage extends MyScreenPage<()> with SimpleUrlParser<AskGenderPage> {
+class AskGenderPage extends InitialSetupPageBase with SimpleUrlParser<AskGenderPage> {
   AskGenderPage() : super(builder: (_) => AskGenderScreen());
+
+  @override
+  String get nameForDb => 'gender';
 
   @override
   AskGenderPage create() => AskGenderPage();
@@ -26,7 +28,7 @@ class AskGenderScreen extends StatelessWidget {
         getContinueButtonCallback: (context, state) {
           if (state.gender != null) {
             return () {
-              MyNavigator.push(context, AskSearchSettingsPage());
+              navigateToNextInitialSetupPage(context);
             };
           } else {
             return null;

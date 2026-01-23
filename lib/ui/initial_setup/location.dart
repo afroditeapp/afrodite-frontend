@@ -4,15 +4,17 @@ import "package:flutter_bloc/flutter_bloc.dart";
 import "package:latlong2/latlong.dart";
 import "package:app/localizations.dart";
 import "package:app/logic/account/initial_setup.dart";
-import "package:app/logic/app/navigator_state.dart";
 import "package:app/logic/profile/attributes.dart";
-import "package:app/ui/initial_setup/chat_info.dart";
+import "package:app/ui/initial_setup/navigation.dart";
 import "package:app/ui/normal/settings/location.dart";
 import "package:app/ui_utils/dialog.dart";
 import "package:app/ui_utils/initial_setup_common.dart";
 
-class AskLocationPage extends MyScreenPage<()> with SimpleUrlParser<AskLocationPage> {
+class AskLocationPage extends InitialSetupPageBase with SimpleUrlParser<AskLocationPage> {
   AskLocationPage() : super(builder: (_) => AskLocationScreen());
+
+  @override
+  String get nameForDb => 'location';
 
   @override
   AskLocationPage create() => AskLocationPage();
@@ -32,7 +34,7 @@ class AskLocationScreen extends StatelessWidget {
         getContinueButtonCallback: (context, state) {
           if (state.profileLocation != null) {
             return () {
-              MyNavigator.push(context, ChatInfoPage());
+              navigateToNextInitialSetupPage(context);
             };
           } else {
             return null;

@@ -114,6 +114,11 @@ class UpdateAttributeValue extends InitialSetupEvent {
   UpdateAttributeValue(this.update);
 }
 
+class SetCurrentPage extends InitialSetupEvent {
+  final String pageName;
+  SetCurrentPage(this.pageName);
+}
+
 class CompleteInitialSetup extends InitialSetupEvent {}
 
 class ResetState extends InitialSetupEvent {}
@@ -347,6 +352,9 @@ class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData>
     on<UpdateAttributeValue>((data, emit) async {
       final updated = state.profileAttributes.addOrReplace(data.update);
       await db.accountAction((db) => db.app.updateInitialSetupProfileAttributes(updated.answers));
+    });
+    on<SetCurrentPage>((data, emit) async {
+      await db.accountAction((db) => db.app.updateInitialSetupCurrentPage(data.pageName));
     });
     on<CompleteInitialSetup>((data, emit) async {
       await runOnce(() async {

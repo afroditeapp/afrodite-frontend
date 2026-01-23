@@ -387,6 +387,12 @@ class DaoWriteApp extends DatabaseAccessor<AccountDatabase> with _$DaoWriteAppMi
     );
   }
 
+  Future<void> updateInitialSetupCurrentPage(String pageName) async {
+    await into(initialSetupProgress).insertOnConflictUpdate(
+      InitialSetupProgressCompanion.insert(id: SingleRowTable.ID, currentPage: Value(pageName)),
+    );
+  }
+
   Future<void> updateInitialSetupChatInfoUnderstood(bool? value) async {
     await into(initialSetupProgress).insertOnConflictUpdate(
       InitialSetupProgressCompanion.insert(id: SingleRowTable.ID, chatInfoUnderstood: Value(value)),

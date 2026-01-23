@@ -2,7 +2,6 @@ import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui/account_banned.dart';
 import 'package:app/ui/demo_account.dart';
-import 'package:app/ui/initial_setup.dart';
 import 'package:app/ui/initial_setup/age_confirmation.dart';
 import 'package:app/ui/initial_setup/chat_info.dart';
 import 'package:app/ui/initial_setup/email.dart';
@@ -130,13 +129,12 @@ List<UrlParser<MyScreenPage<Object>>> loggedOutPages() => [
 
 List<UrlParser<MyScreenPage<Object>>> loggedInPages(RepositoryInstances r) => [
   // Root
-  InitialSetupPage(),
   AccountBannedPage(r),
   PendingDeletionPage(r),
   UnsupportedClientPage(),
   NormalStatePage(),
 
-  // Initial setup
+  // Initial setup (one page is used as a root page)
   AskEmailPage(),
   AgeConfirmationPage(),
   AskSecuritySelfiePage(),

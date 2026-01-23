@@ -21,6 +21,7 @@ import 'package:app/logic/settings/data_export.dart';
 import 'package:app/logic/sign_in_with.dart';
 import 'package:app/model/freezed/logic/main/bottom_navigation_state.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
+import 'package:app/ui/initial_setup/navigation.dart';
 import 'package:app/ui/splash_screen.dart';
 import 'package:app/ui/utils/url_navigation.dart';
 import 'package:app/ui/utils/web_navigation/web_navigation.dart';
@@ -56,7 +57,6 @@ import 'package:app/logic/settings/search_settings.dart';
 import 'package:app/logic/settings/ui_settings.dart';
 import 'package:app/ui/account_banned.dart';
 import 'package:app/ui/demo_account.dart';
-import 'package:app/ui/initial_setup.dart';
 import 'package:app/ui/login_new.dart';
 import 'package:app/ui/normal.dart';
 import 'package:app/ui/pending_deletion.dart';
@@ -76,16 +76,19 @@ class MainStateUiLogic extends StatelessWidget {
           MsLoginRequired() => NavigatorLoginScreen(),
           MsDemoAccount() => NavigatorDemoAccount(),
           MsLoggedInBasicScreen() => switch (state.screen) {
-            LoggedInBasicScreen.initialSetup => NavigatorInitialSetup(r: state.repositories),
             LoggedInBasicScreen.accountBanned => NavigatorAccountBanned(r: state.repositories),
             LoggedInBasicScreen.pendingRemoval => NavigatorPendingRemoval(r: state.repositories),
             LoggedInBasicScreen.unsupportedClientVersion => NavigatorUnsupportedClient(
               r: state.repositories,
             ),
           },
+          MsLoggedInInitialSetupScreen() => NavigatorInitialSetup(
+            r: state.repositories,
+            navigationState: state.navigationState,
+          ),
           MsLoggedInMainScreen() => NavigatorNormal(
             r: state.repositories,
-            notification: state.notification,
+            navigationState: state.navigationState,
           ),
         };
       },
@@ -151,8 +154,8 @@ class NavigatorDemoAccount extends BasicRootScreen {
 
 abstract class LoggedInRootScreen extends StatelessWidget {
   final RepositoryInstances r;
-  final AppLaunchNotification? notification;
-  const LoggedInRootScreen({required this.r, this.notification, super.key});
+  final AppLaunchNavigationState? navigationState;
+  const LoggedInRootScreen({required this.r, this.navigationState, super.key});
 
   MyScreenPage<Object> rootScreen();
   Widget blocProvider(Widget child);
@@ -160,9 +163,9 @@ abstract class LoggedInRootScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final NavigatorStateData navigatorInitialState =
-        notification?.navigatorState ?? NavigatorStateData.rootPage(rootScreen());
+        navigationState?.navigatorState ?? NavigatorStateData.rootPage(rootScreen());
     final bottomNavigationInitialState =
-        notification?.bottomNavigationState ?? BottomNavigationStateData();
+        navigationState?.bottomNavigationState ?? BottomNavigationStateData();
     return Provider<RepositoryInstances>(
       create: (_) => r,
       child: MultiBlocProvider(
@@ -178,10 +181,10 @@ abstract class LoggedInRootScreen extends StatelessWidget {
 }
 
 class NavigatorInitialSetup extends LoggedInRootScreen {
-  const NavigatorInitialSetup({required super.r, super.key});
+  const NavigatorInitialSetup({required super.r, required super.navigationState, super.key});
 
   @override
-  MyScreenPage<Object> rootScreen() => InitialSetupPage();
+  MyScreenPage<Object> rootScreen() => getInitialSetupPageOrder().first;
 
   @override
   Widget blocProvider(Widget child) {
@@ -265,7 +268,7 @@ class NavigatorUnsupportedClient extends LoggedInRootScreen {
 }
 
 class NavigatorNormal extends LoggedInRootScreen {
-  const NavigatorNormal({required super.r, required super.notification, super.key});
+  const NavigatorNormal({required super.r, required super.navigationState, super.key});
 
   @override
   MyScreenPage<Object> rootScreen() => NormalStatePage();

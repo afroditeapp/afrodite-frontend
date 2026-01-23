@@ -1216,6 +1216,17 @@ class $InitialSetupProgressTable extends schema.InitialSetupProgress
       'PRIMARY KEY AUTOINCREMENT',
     ),
   );
+  static const VerificationMeta _currentPageMeta = const VerificationMeta(
+    'currentPage',
+  );
+  @override
+  late final GeneratedColumn<String> currentPage = GeneratedColumn<String>(
+    'current_page',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   static const VerificationMeta _emailMeta = const VerificationMeta('email');
   @override
   late final GeneratedColumn<String> email = GeneratedColumn<String>(
@@ -1440,6 +1451,7 @@ class $InitialSetupProgressTable extends schema.InitialSetupProgress
   @override
   List<GeneratedColumn> get $columns => [
     id,
+    currentPage,
     email,
     isAdult,
     profileName,
@@ -1473,6 +1485,15 @@ class $InitialSetupProgressTable extends schema.InitialSetupProgress
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('current_page')) {
+      context.handle(
+        _currentPageMeta,
+        currentPage.isAcceptableOrUnknown(
+          data['current_page']!,
+          _currentPageMeta,
+        ),
+      );
     }
     if (data.containsKey('email')) {
       context.handle(
@@ -1616,6 +1637,10 @@ class $InitialSetupProgressTable extends schema.InitialSetupProgress
         DriftSqlType.int,
         data['${effectivePrefix}id'],
       )!,
+      currentPage: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}current_page'],
+      ),
       email: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}email'],
@@ -1716,6 +1741,9 @@ class $InitialSetupProgressTable extends schema.InitialSetupProgress
 class InitialSetupProgressData extends DataClass
     implements Insertable<InitialSetupProgressData> {
   final int id;
+
+  /// Current UI page/step in the initial setup flow.
+  final String? currentPage;
   final String? email;
   final bool? isAdult;
   final String? profileName;
@@ -1738,6 +1766,7 @@ class InitialSetupProgressData extends DataClass
   final bool? chatInfoUnderstood;
   const InitialSetupProgressData({
     required this.id,
+    this.currentPage,
     this.email,
     this.isAdult,
     this.profileName,
@@ -1761,6 +1790,9 @@ class InitialSetupProgressData extends DataClass
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
+    if (!nullToAbsent || currentPage != null) {
+      map['current_page'] = Variable<String>(currentPage);
+    }
     if (!nullToAbsent || email != null) {
       map['email'] = Variable<String>(email);
     }
@@ -1835,6 +1867,9 @@ class InitialSetupProgressData extends DataClass
   InitialSetupProgressCompanion toCompanion(bool nullToAbsent) {
     return InitialSetupProgressCompanion(
       id: Value(id),
+      currentPage: currentPage == null && nullToAbsent
+          ? const Value.absent()
+          : Value(currentPage),
       email: email == null && nullToAbsent
           ? const Value.absent()
           : Value(email),
@@ -1900,6 +1935,7 @@ class InitialSetupProgressData extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return InitialSetupProgressData(
       id: serializer.fromJson<int>(json['id']),
+      currentPage: serializer.fromJson<String?>(json['currentPage']),
       email: serializer.fromJson<String?>(json['email']),
       isAdult: serializer.fromJson<bool?>(json['isAdult']),
       profileName: serializer.fromJson<String?>(json['profileName']),
@@ -1942,6 +1978,7 @@ class InitialSetupProgressData extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
+      'currentPage': serializer.toJson<String?>(currentPage),
       'email': serializer.toJson<String?>(email),
       'isAdult': serializer.toJson<bool?>(isAdult),
       'profileName': serializer.toJson<String?>(profileName),
@@ -1978,6 +2015,7 @@ class InitialSetupProgressData extends DataClass
 
   InitialSetupProgressData copyWith({
     int? id,
+    Value<String?> currentPage = const Value.absent(),
     Value<String?> email = const Value.absent(),
     Value<bool?> isAdult = const Value.absent(),
     Value<String?> profileName = const Value.absent(),
@@ -2000,6 +2038,7 @@ class InitialSetupProgressData extends DataClass
     Value<bool?> chatInfoUnderstood = const Value.absent(),
   }) => InitialSetupProgressData(
     id: id ?? this.id,
+    currentPage: currentPage.present ? currentPage.value : this.currentPage,
     email: email.present ? email.value : this.email,
     isAdult: isAdult.present ? isAdult.value : this.isAdult,
     profileName: profileName.present ? profileName.value : this.profileName,
@@ -2046,6 +2085,9 @@ class InitialSetupProgressData extends DataClass
   ) {
     return InitialSetupProgressData(
       id: data.id.present ? data.id.value : this.id,
+      currentPage: data.currentPage.present
+          ? data.currentPage.value
+          : this.currentPage,
       email: data.email.present ? data.email.value : this.email,
       isAdult: data.isAdult.present ? data.isAdult.value : this.isAdult,
       profileName: data.profileName.present
@@ -2097,6 +2139,7 @@ class InitialSetupProgressData extends DataClass
   String toString() {
     return (StringBuffer('InitialSetupProgressData(')
           ..write('id: $id, ')
+          ..write('currentPage: $currentPage, ')
           ..write('email: $email, ')
           ..write('isAdult: $isAdult, ')
           ..write('profileName: $profileName, ')
@@ -2122,6 +2165,7 @@ class InitialSetupProgressData extends DataClass
   @override
   int get hashCode => Object.hash(
     id,
+    currentPage,
     email,
     isAdult,
     profileName,
@@ -2146,6 +2190,7 @@ class InitialSetupProgressData extends DataClass
       identical(this, other) ||
       (other is InitialSetupProgressData &&
           other.id == this.id &&
+          other.currentPage == this.currentPage &&
           other.email == this.email &&
           other.isAdult == this.isAdult &&
           other.profileName == this.profileName &&
@@ -2169,6 +2214,7 @@ class InitialSetupProgressData extends DataClass
 class InitialSetupProgressCompanion
     extends UpdateCompanion<InitialSetupProgressData> {
   final Value<int> id;
+  final Value<String?> currentPage;
   final Value<String?> email;
   final Value<bool?> isAdult;
   final Value<String?> profileName;
@@ -2189,6 +2235,7 @@ class InitialSetupProgressCompanion
   final Value<bool?> chatInfoUnderstood;
   const InitialSetupProgressCompanion({
     this.id = const Value.absent(),
+    this.currentPage = const Value.absent(),
     this.email = const Value.absent(),
     this.isAdult = const Value.absent(),
     this.profileName = const Value.absent(),
@@ -2210,6 +2257,7 @@ class InitialSetupProgressCompanion
   });
   InitialSetupProgressCompanion.insert({
     this.id = const Value.absent(),
+    this.currentPage = const Value.absent(),
     this.email = const Value.absent(),
     this.isAdult = const Value.absent(),
     this.profileName = const Value.absent(),
@@ -2231,6 +2279,7 @@ class InitialSetupProgressCompanion
   });
   static Insertable<InitialSetupProgressData> custom({
     Expression<int>? id,
+    Expression<String>? currentPage,
     Expression<String>? email,
     Expression<bool>? isAdult,
     Expression<String>? profileName,
@@ -2252,6 +2301,7 @@ class InitialSetupProgressCompanion
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
+      if (currentPage != null) 'current_page': currentPage,
       if (email != null) 'email': email,
       if (isAdult != null) 'is_adult': isAdult,
       if (profileName != null) 'profile_name': profileName,
@@ -2282,6 +2332,7 @@ class InitialSetupProgressCompanion
 
   InitialSetupProgressCompanion copyWith({
     Value<int>? id,
+    Value<String?>? currentPage,
     Value<String?>? email,
     Value<bool?>? isAdult,
     Value<String?>? profileName,
@@ -2303,6 +2354,7 @@ class InitialSetupProgressCompanion
   }) {
     return InitialSetupProgressCompanion(
       id: id ?? this.id,
+      currentPage: currentPage ?? this.currentPage,
       email: email ?? this.email,
       isAdult: isAdult ?? this.isAdult,
       profileName: profileName ?? this.profileName,
@@ -2334,6 +2386,9 @@ class InitialSetupProgressCompanion
     final map = <String, Expression>{};
     if (id.present) {
       map['id'] = Variable<int>(id.value);
+    }
+    if (currentPage.present) {
+      map['current_page'] = Variable<String>(currentPage.value);
     }
     if (email.present) {
       map['email'] = Variable<String>(email.value);
@@ -2412,6 +2467,7 @@ class InitialSetupProgressCompanion
   String toString() {
     return (StringBuffer('InitialSetupProgressCompanion(')
           ..write('id: $id, ')
+          ..write('currentPage: $currentPage, ')
           ..write('email: $email, ')
           ..write('isAdult: $isAdult, ')
           ..write('profileName: $profileName, ')

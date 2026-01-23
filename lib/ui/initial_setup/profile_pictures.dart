@@ -17,7 +17,7 @@ import "package:app/model/freezed/logic/account/initial_setup.dart";
 import "package:app/model/freezed/logic/main/navigator_state.dart";
 import "package:app/model/freezed/logic/media/image_processing.dart";
 import "package:app/model/freezed/logic/media/profile_pictures.dart";
-import "package:app/ui/initial_setup/profile_basic_info.dart";
+import "package:app/ui/initial_setup/navigation.dart";
 import "package:app/ui/normal/settings/media/select_content.dart";
 import "package:app/ui_utils/consts/corners.dart";
 import "package:app/ui_utils/crop_image_screen.dart";
@@ -31,8 +31,12 @@ import "package:app/ui_utils/view_image_screen.dart";
 
 final _log = Logger("ProfilePictures");
 
-class AskProfilePicturesPage extends MyScreenPage<()> with SimpleUrlParser<AskProfilePicturesPage> {
+class AskProfilePicturesPage extends InitialSetupPageBase
+    with SimpleUrlParser<AskProfilePicturesPage> {
   AskProfilePicturesPage() : super(builder: (_) => AskProfilePicturesScreen());
+
+  @override
+  String get nameForDb => 'profile_pictures';
 
   @override
   AskProfilePicturesPage create() => AskProfilePicturesPage();
@@ -54,7 +58,7 @@ class AskProfilePicturesScreen extends StatelessWidget {
               final primaryPicture = pictures[0];
               if (primaryPicture is ImageSelected && primaryPicture.isFaceDetected()) {
                 onPressed = () {
-                  MyNavigator.push(context, AskProfileBasicInfoPage());
+                  navigateToNextInitialSetupPage(context);
                 };
               }
 

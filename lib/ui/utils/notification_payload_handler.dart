@@ -164,7 +164,7 @@ Future<NotificationNavigationAction> _handlePayload(
   }
 }
 
-Future<AppLaunchNotification?> handleAppLaunchNotificationPayload(
+Future<AppLaunchNavigationState?> handleAppLaunchNotificationPayload(
   ParsedPayload payload,
   RepositoryInstances r,
 ) async {
@@ -177,12 +177,12 @@ Future<AppLaunchNotification?> handleAppLaunchNotificationPayload(
     case DoNothing():
       return null;
     case NewScreen():
-      return AppLaunchNotification(
+      return AppLaunchNavigationState(
         NavigatorStateData.rootPageAndOtherPage(rootScreen, action.screen),
         BottomNavigationStateData(),
       );
     case BottomNavigationChange():
-      return AppLaunchNotification(
+      return AppLaunchNavigationState(
         navigationState,
         BottomNavigationStateData(screen: action.screen),
       );
