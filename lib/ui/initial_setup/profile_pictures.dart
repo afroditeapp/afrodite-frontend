@@ -96,6 +96,20 @@ class _AskProfilePicturesState extends State<AskProfilePictures> {
           mode: const InitialSetupProfilePictures(),
           bloc: context.read<InitialSetupBloc>(),
         ),
+        // Zero sized widgets
+        ImagePickerLostDataHandler(
+          onImage: (context, imageBytes) {
+            final nextSlotIndex = context
+                .read<InitialSetupBloc>()
+                .state
+                .nextAvailableSlotInInitialSetup();
+            if (nextSlotIndex != null) {
+              context.read<ProfilePicturesImageProcessingBloc>().add(
+                SendImageToSlot(imageBytes, nextSlotIndex),
+              );
+            }
+          },
+        ),
       ],
     );
   }
@@ -551,14 +565,7 @@ void openSelectPictureDialog(
               if (image != null) {
                 final imageBytes = await image.readAsBytes();
 
-                // Check that image is an JPEG image
-                if (imageBytes.length < 3 ||
-                    imageBytes[0] != 0xFF ||
-                    imageBytes[1] != 0xD8 ||
-                    imageBytes[2] != 0xFF) {
-                  showSnackBar(
-                    R.strings.initial_setup_screen_profile_pictures_unsupported_image_error,
-                  );
+                if (!validateJpeg(imageBytes)) {
                   return;
                 }
 
