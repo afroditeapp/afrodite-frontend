@@ -22,6 +22,7 @@ part 'app.g.dart';
     schema.NotificationStatus,
     schema.News,
     schema.PushNotification,
+    schema.EditProfileImagePickerIndex,
   ],
 )
 class DaoReadApp extends DatabaseAccessor<AccountDatabase> with _$DaoReadAppMixin {
@@ -92,6 +93,12 @@ class DaoReadApp extends DatabaseAccessor<AccountDatabase> with _$DaoReadAppMixi
 
   Stream<bool?> watchProfileFilterFavorites() =>
       _watchColumnProfileFilterFavorite((r) => r.profileFilterFavorites);
+
+  Future<int?> getEditProfileImagePickerIndex() {
+    return (select(editProfileImagePickerIndex)..where((t) => t.id.equals(SingleRowTable.ID.value)))
+        .map((r) => r.editProfilePickImageToIndex)
+        .getSingleOrNull();
+  }
 
   Stream<T?> _watchColumnProfileFilterFavorite<T extends Object>(
     T? Function(ProfileFilterFavorite) extractColumn,

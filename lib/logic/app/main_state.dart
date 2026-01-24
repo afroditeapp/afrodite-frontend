@@ -2,19 +2,26 @@ import "package:app/data/notification_manager.dart";
 import "package:app/data/push_notification_manager.dart";
 import "package:app/data/utils/repository_instances.dart";
 import "package:app/logic/app/main_state_types.dart";
+import "package:app/logic/app/bottom_navigation_state.dart";
 import "package:app/main.dart";
 import "package:app/model/freezed/logic/main/bottom_navigation_state.dart";
 import "package:app/model/freezed/logic/main/navigator_state.dart";
 import "package:app/ui/initial_setup/navigation.dart";
+import "package:app/ui/normal.dart";
+import "package:app/ui/normal/settings/my_profile.dart";
+import "package:app/ui/normal/settings/profile/edit_profile.dart";
+import "package:app/ui/normal/settings/media/select_content.dart";
 import "package:app/ui/utils/notification_payload_handler.dart";
 import "package:app/utils/immutable_list.dart";
 import "package:bloc_concurrency/bloc_concurrency.dart";
+import "package:flutter/foundation.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:app/data/login_repository.dart";
 import 'package:app/data/utils/login_repository_types.dart';
 import "package:database/database.dart";
 import "package:logging/logging.dart";
 import "package:rxdart/rxdart.dart";
+import "package:utils/utils.dart";
 
 final _log = Logger("MainStateBloc");
 
@@ -108,6 +115,31 @@ class MainStateBloc extends Bloc<MainStateEvent, MainState> {
     } else if (appLaunchPayloadOther != null) {
       _log.info("Handling app launch push notification payload");
       navigationState = await handleAppLaunchNotificationPayload(appLaunchPayloadOther, r);
+    } else if (!kIsWeb && defaultTargetPlatform == TargetPlatform.android) {
+      final lostIndex = await r.accountDb.db.daoReadApp.getEditProfileImagePickerIndex();
+      if (lostIndex != null) {
+        final profileEntry = await r.accountDb.db.daoReadMyProfile
+            .getProfileEntryForMyProfile()
+            .first;
+        if (profileEntry != null) {
+          _log.info("Incomplete image picking detected");
+          final pages = <MyPage<Object>>[
+            NormalStatePage(),
+            MyProfilePage(),
+            EditProfilePage(profileEntry),
+            SelectContentPage(),
+          ];
+          navigationState = AppLaunchNavigationState(
+            NavigatorStateData(pages: UnmodifiableList(pages)),
+            BottomNavigationStateData(screen: BottomNavigationScreenId.profiles),
+          );
+        } else {
+          _log.error("My profile data is missing");
+          navigationState = null;
+        }
+      } else {
+        navigationState = null;
+      }
     } else {
       navigationState = null;
     }

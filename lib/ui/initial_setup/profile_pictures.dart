@@ -540,6 +540,7 @@ void openSelectPictureDialog(
   BuildContext context, {
   Widget Function(BuildContext, PageCloser<()>) lastOptionBuilder = _emptyLastOption,
   required int serverSlotIndex,
+  void Function()? onCompleted,
 }) {
   Widget builder(BuildContext context, PageCloser<()> closer) {
     return SimpleDialog(
@@ -565,15 +566,15 @@ void openSelectPictureDialog(
               if (image != null) {
                 final imageBytes = await image.readAsBytes();
 
-                if (!validateJpeg(imageBytes)) {
-                  return;
+                if (validateJpeg(imageBytes)) {
+                  imageProcessingBloc.add(SendImageToSlot(imageBytes, serverSlotIndex));
                 }
-
-                imageProcessingBloc.add(SendImageToSlot(imageBytes, serverSlotIndex));
               }
             } catch (e) {
               _log.error("Picking image failed");
               _log.finest("$e");
+            } finally {
+              onCompleted?.call();
             }
           },
         ),
@@ -602,6 +603,8 @@ void openSelectPictureDialog(
               } catch (e) {
                 _log.error("Taking image failed");
                 _log.finest("$e");
+              } finally {
+                onCompleted?.call();
               }
             },
           ),

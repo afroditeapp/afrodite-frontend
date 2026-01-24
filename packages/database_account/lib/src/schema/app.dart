@@ -98,6 +98,10 @@ class PushNotification extends SingleRowTable {
   IntColumn get syncVersionPushNotificationInfo => integer().nullable()();
 }
 
+class EditProfileImagePickerIndex extends SingleRowTable {
+  IntColumn get editProfilePickImageToIndex => integer().nullable()();
+}
+
 /// Stores initial setup progress so it persists across app restarts.
 /// This prevents users from losing all their progress if they quit the app.
 class InitialSetupProgress extends SingleRowTable {
