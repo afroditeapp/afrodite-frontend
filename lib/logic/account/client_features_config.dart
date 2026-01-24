@@ -41,7 +41,13 @@ class ClientFeaturesConfigBloc extends Bloc<ClientFeaturesConfigEvent, ClientFea
           _log.error("Invalid profile name regex");
         }
       }
-      emit(state.copyWith(config: data.value, profileNameRegex: profileNameRegex));
+      emit(
+        state.copyWith(
+          config: data.value,
+          profileNameRegex: profileNameRegex,
+          loadingComplete: true,
+        ),
+      );
     });
     on<DailyLikesLeftChanged>((data, emit) {
       emit(state.copyWith(dailyLikesLeft: data.value));

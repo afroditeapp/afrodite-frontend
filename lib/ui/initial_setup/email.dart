@@ -23,6 +23,15 @@ class AskEmailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return const InitialSetupLoadingGuard(child: _AskEmailScreenInternal());
+  }
+}
+
+class _AskEmailScreenInternal extends StatelessWidget {
+  const _AskEmailScreenInternal();
+
+  @override
+  Widget build(BuildContext context) {
     return BlocBuilder<AccountBloc, AccountBlocData>(
       builder: (context, state) {
         final currentAccountEmail = state.email;

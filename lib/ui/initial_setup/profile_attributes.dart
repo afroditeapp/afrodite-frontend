@@ -47,6 +47,18 @@ class AskProfileAttributesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return InitialSetupLoadingGuard(
+      child: _AskProfileAttributesScreenInternal(attributeIndex: attributeIndex),
+    );
+  }
+}
+
+class _AskProfileAttributesScreenInternal extends StatelessWidget {
+  final int attributeIndex;
+  const _AskProfileAttributesScreenInternal({required this.attributeIndex});
+
+  @override
+  Widget build(BuildContext context) {
     final attributes =
         context.read<ProfileAttributesBloc>().state.manager?.requiredAttributes() ?? [];
     final currentAttribute = attributes.getAtOrNull(attributeIndex);

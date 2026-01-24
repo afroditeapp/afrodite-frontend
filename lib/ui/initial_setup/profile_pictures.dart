@@ -47,6 +47,15 @@ class AskProfilePicturesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return const InitialSetupLoadingGuard(child: _AskProfilePicturesScreenInternal());
+  }
+}
+
+class _AskProfilePicturesScreenInternal extends StatelessWidget {
+  const _AskProfilePicturesScreenInternal();
+
+  @override
+  Widget build(BuildContext context) {
     return commonInitialSetupScreenContent(
       context: context,
       child: QuestionAsker(

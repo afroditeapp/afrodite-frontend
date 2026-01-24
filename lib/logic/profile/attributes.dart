@@ -47,7 +47,7 @@ class ProfileAttributesBloc extends Bloc<AttributesEvent, AttributesData> with A
       } else {
         manager = null;
       }
-      emit(state.copyWith(attributes: data.attributes, manager: manager));
+      emit(state.copyWith(attributes: data.attributes, manager: manager, loadingComplete: true));
     });
 
     _localeSubscription = commonDb

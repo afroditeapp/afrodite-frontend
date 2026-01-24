@@ -24,11 +24,13 @@ mixin _$AttributesData {
   String? get locale => throw _privateConstructorErrorAttributesData;
   ProfileAttributes? get attributes => throw _privateConstructorErrorAttributesData;
   AttributeManager? get manager => throw _privateConstructorErrorAttributesData;
+  bool get loadingComplete => throw _privateConstructorErrorAttributesData;
 
   AttributesData copyWith({
     String? locale,
     ProfileAttributes? attributes,
     AttributeManager? manager,
+    bool? loadingComplete,
   }) => throw _privateConstructorErrorAttributesData;
 }
 
@@ -38,16 +40,20 @@ abstract class _AttributesData extends AttributesData {
     String? locale,
     ProfileAttributes? attributes,
     AttributeManager? manager,
+    bool loadingComplete,
   }) = _$AttributesDataImpl;
   _AttributesData._() : super._();
 }
 
 /// @nodoc
 class _$AttributesDataImpl extends _AttributesData {
+  static const bool _loadingCompleteDefaultValue = false;
+  
   _$AttributesDataImpl({
     this.locale,
     this.attributes,
     this.manager,
+    this.loadingComplete = _loadingCompleteDefaultValue,
   }) : super._();
 
   @override
@@ -56,10 +62,12 @@ class _$AttributesDataImpl extends _AttributesData {
   final ProfileAttributes? attributes;
   @override
   final AttributeManager? manager;
+  @override
+  final bool loadingComplete;
 
   @override
   String toString() {
-    return 'AttributesData(locale: $locale, attributes: $attributes, manager: $manager)';
+    return 'AttributesData(locale: $locale, attributes: $attributes, manager: $manager, loadingComplete: $loadingComplete)';
   }
 
   @override
@@ -72,7 +80,9 @@ class _$AttributesDataImpl extends _AttributesData {
         (identical(other.attributes, attributes) ||
           other.attributes == attributes) &&
         (identical(other.manager, manager) ||
-          other.manager == manager)
+          other.manager == manager) &&
+        (identical(other.loadingComplete, loadingComplete) ||
+          other.loadingComplete == loadingComplete)
     );
   }
 
@@ -82,6 +92,7 @@ class _$AttributesDataImpl extends _AttributesData {
     locale,
     attributes,
     manager,
+    loadingComplete,
   );
 
   @override
@@ -89,9 +100,11 @@ class _$AttributesDataImpl extends _AttributesData {
     Object? locale = _detectDefaultValueInCopyWith,
     Object? attributes = _detectDefaultValueInCopyWith,
     Object? manager = _detectDefaultValueInCopyWith,
+    Object? loadingComplete,
   }) => _$AttributesDataImpl(
     locale: (locale == _detectDefaultValueInCopyWith ? this.locale : locale) as String?,
     attributes: (attributes == _detectDefaultValueInCopyWith ? this.attributes : attributes) as ProfileAttributes?,
     manager: (manager == _detectDefaultValueInCopyWith ? this.manager : manager) as AttributeManager?,
+    loadingComplete: (loadingComplete ?? this.loadingComplete) as bool,
   );
 }

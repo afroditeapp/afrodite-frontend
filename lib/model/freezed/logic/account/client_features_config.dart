@@ -16,6 +16,7 @@ class ClientFeaturesConfigData with _$ClientFeaturesConfigData {
     required ClientFeaturesConfig config,
     RegExp? profileNameRegex,
     int? dailyLikesLeft,
+    @Default(false) bool loadingComplete,
   }) = _ClientFeaturesConfigData;
 
   Time? unlimitedLikesResetTime() {

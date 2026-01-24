@@ -25,6 +25,15 @@ class AskLocationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return const InitialSetupLoadingGuard(child: _AskLocationScreenInternal());
+  }
+}
+
+class _AskLocationScreenInternal extends StatelessWidget {
+  const _AskLocationScreenInternal();
+
+  @override
+  Widget build(BuildContext context) {
     // Init profile attributes as it is next screen
     context.read<ProfileAttributesBloc>();
 

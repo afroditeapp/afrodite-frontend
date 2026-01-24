@@ -28,6 +28,15 @@ class AskSearchSettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return const InitialSetupLoadingGuard(child: _AskSearchSettingsScreenInternal());
+  }
+}
+
+class _AskSearchSettingsScreenInternal extends StatelessWidget {
+  const _AskSearchSettingsScreenInternal();
+
+  @override
+  Widget build(BuildContext context) {
     final state = context.read<InitialSetupBloc>().state;
     final int? currentMin;
     final int? currentMax;

@@ -47,6 +47,15 @@ class AskSecuritySelfieScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return const InitialSetupLoadingGuard(child: _AskSecuritySelfieScreenInternal());
+  }
+}
+
+class _AskSecuritySelfieScreenInternal extends StatelessWidget {
+  const _AskSecuritySelfieScreenInternal();
+
+  @override
+  Widget build(BuildContext context) {
     return commonInitialSetupScreenContent(
       context: context,
       child: QuestionAsker(

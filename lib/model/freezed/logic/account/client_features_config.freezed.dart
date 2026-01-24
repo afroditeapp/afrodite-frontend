@@ -24,11 +24,13 @@ mixin _$ClientFeaturesConfigData {
   ClientFeaturesConfig get config => throw _privateConstructorErrorClientFeaturesConfigData;
   RegExp? get profileNameRegex => throw _privateConstructorErrorClientFeaturesConfigData;
   int? get dailyLikesLeft => throw _privateConstructorErrorClientFeaturesConfigData;
+  bool get loadingComplete => throw _privateConstructorErrorClientFeaturesConfigData;
 
   ClientFeaturesConfigData copyWith({
     ClientFeaturesConfig? config,
     RegExp? profileNameRegex,
     int? dailyLikesLeft,
+    bool? loadingComplete,
   }) => throw _privateConstructorErrorClientFeaturesConfigData;
 }
 
@@ -38,16 +40,20 @@ abstract class _ClientFeaturesConfigData extends ClientFeaturesConfigData {
     required ClientFeaturesConfig config,
     RegExp? profileNameRegex,
     int? dailyLikesLeft,
+    bool loadingComplete,
   }) = _$ClientFeaturesConfigDataImpl;
   _ClientFeaturesConfigData._() : super._();
 }
 
 /// @nodoc
 class _$ClientFeaturesConfigDataImpl extends _ClientFeaturesConfigData with DiagnosticableTreeMixin {
+  static const bool _loadingCompleteDefaultValue = false;
+  
   _$ClientFeaturesConfigDataImpl({
     required this.config,
     this.profileNameRegex,
     this.dailyLikesLeft,
+    this.loadingComplete = _loadingCompleteDefaultValue,
   }) : super._();
 
   @override
@@ -56,10 +62,12 @@ class _$ClientFeaturesConfigDataImpl extends _ClientFeaturesConfigData with Diag
   final RegExp? profileNameRegex;
   @override
   final int? dailyLikesLeft;
+  @override
+  final bool loadingComplete;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ClientFeaturesConfigData(config: $config, profileNameRegex: $profileNameRegex, dailyLikesLeft: $dailyLikesLeft)';
+    return 'ClientFeaturesConfigData(config: $config, profileNameRegex: $profileNameRegex, dailyLikesLeft: $dailyLikesLeft, loadingComplete: $loadingComplete)';
   }
 
   @override
@@ -69,7 +77,8 @@ class _$ClientFeaturesConfigDataImpl extends _ClientFeaturesConfigData with Diag
       ..add(DiagnosticsProperty('type', 'ClientFeaturesConfigData'))
       ..add(DiagnosticsProperty('config', config))
       ..add(DiagnosticsProperty('profileNameRegex', profileNameRegex))
-      ..add(DiagnosticsProperty('dailyLikesLeft', dailyLikesLeft));
+      ..add(DiagnosticsProperty('dailyLikesLeft', dailyLikesLeft))
+      ..add(DiagnosticsProperty('loadingComplete', loadingComplete));
   }
 
   @override
@@ -82,7 +91,9 @@ class _$ClientFeaturesConfigDataImpl extends _ClientFeaturesConfigData with Diag
         (identical(other.profileNameRegex, profileNameRegex) ||
           other.profileNameRegex == profileNameRegex) &&
         (identical(other.dailyLikesLeft, dailyLikesLeft) ||
-          other.dailyLikesLeft == dailyLikesLeft)
+          other.dailyLikesLeft == dailyLikesLeft) &&
+        (identical(other.loadingComplete, loadingComplete) ||
+          other.loadingComplete == loadingComplete)
     );
   }
 
@@ -92,6 +103,7 @@ class _$ClientFeaturesConfigDataImpl extends _ClientFeaturesConfigData with Diag
     config,
     profileNameRegex,
     dailyLikesLeft,
+    loadingComplete,
   );
 
   @override
@@ -99,9 +111,11 @@ class _$ClientFeaturesConfigDataImpl extends _ClientFeaturesConfigData with Diag
     Object? config,
     Object? profileNameRegex = _detectDefaultValueInCopyWith,
     Object? dailyLikesLeft = _detectDefaultValueInCopyWith,
+    Object? loadingComplete,
   }) => _$ClientFeaturesConfigDataImpl(
     config: (config ?? this.config) as ClientFeaturesConfig,
     profileNameRegex: (profileNameRegex == _detectDefaultValueInCopyWith ? this.profileNameRegex : profileNameRegex) as RegExp?,
     dailyLikesLeft: (dailyLikesLeft == _detectDefaultValueInCopyWith ? this.dailyLikesLeft : dailyLikesLeft) as int?,
+    loadingComplete: (loadingComplete ?? this.loadingComplete) as bool,
   );
 }

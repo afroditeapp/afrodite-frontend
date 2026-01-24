@@ -24,6 +24,15 @@ class ChatInfoScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return const InitialSetupLoadingGuard(child: _ChatInfoScreenInternal());
+  }
+}
+
+class _ChatInfoScreenInternal extends StatelessWidget {
+  const _ChatInfoScreenInternal();
+
+  @override
+  Widget build(BuildContext context) {
     // Init profile attributes as it is next screen
     context.read<ProfileAttributesBloc>();
 

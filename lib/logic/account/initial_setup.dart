@@ -248,6 +248,7 @@ class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData>
           profileLocation: location,
           profileAttributes: profileAttributes,
           chatInfoUnderstood: progress.chatInfoUnderstood ?? false,
+          loadingComplete: true,
         ),
       );
     });

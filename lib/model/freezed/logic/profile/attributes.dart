@@ -11,6 +11,7 @@ class AttributesData with _$AttributesData {
     String? locale,
     ProfileAttributes? attributes,
     AttributeManager? manager,
+    @Default(false) bool loadingComplete,
   }) = _AttributesData;
 
   int requiredAttributesCount() => manager?.requiredAttributes().length ?? 0;

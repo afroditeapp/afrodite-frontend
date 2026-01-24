@@ -22,6 +22,15 @@ class AgeConfirmationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return const InitialSetupLoadingGuard(child: _AgeConfirmationScreenInternal());
+  }
+}
+
+class _AgeConfirmationScreenInternal extends StatelessWidget {
+  const _AgeConfirmationScreenInternal();
+
+  @override
+  Widget build(BuildContext context) {
     return commonInitialSetupScreenContent(
       context: context,
       child: QuestionAsker(

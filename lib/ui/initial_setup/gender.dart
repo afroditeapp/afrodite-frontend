@@ -22,6 +22,15 @@ class AskGenderScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return const InitialSetupLoadingGuard(child: _AskGenderScreenInternal());
+  }
+}
+
+class _AskGenderScreenInternal extends StatelessWidget {
+  const _AskGenderScreenInternal();
+
+  @override
+  Widget build(BuildContext context) {
     return commonInitialSetupScreenContent(
       context: context,
       child: QuestionAsker(

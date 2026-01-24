@@ -29,6 +29,15 @@ class AskProfileBasicInfoScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return const InitialSetupLoadingGuard(child: _AskProfileBasicInfoScreenInternal());
+  }
+}
+
+class _AskProfileBasicInfoScreenInternal extends StatelessWidget {
+  const _AskProfileBasicInfoScreenInternal();
+
+  @override
+  Widget build(BuildContext context) {
     final profileName = context.read<InitialSetupBloc>().state.profileName ?? "";
     final age = context.read<InitialSetupBloc>().state.profileAge;
     final String ageString;

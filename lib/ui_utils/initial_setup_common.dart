@@ -7,6 +7,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:app/localizations.dart';
 import 'package:app/logic/account/initial_setup.dart';
 import 'package:app/model/freezed/logic/account/initial_setup.dart';
+import 'package:app/logic/account/client_features_config.dart';
+import 'package:app/model/freezed/logic/account/client_features_config.dart';
+import 'package:app/logic/profile/attributes.dart';
+import 'package:app/model/freezed/logic/profile/attributes.dart';
 import 'package:app/ui_utils/app_bar/common_actions.dart';
 import 'package:app/ui_utils/app_bar/menu_actions.dart';
 import 'package:app/ui_utils/consts/padding.dart';
@@ -15,6 +19,37 @@ abstract class InitialSetupPageBase extends MyScreenPage<()> {
   InitialSetupPageBase({required super.builder});
 
   String get nameForDb;
+}
+
+class InitialSetupLoadingGuard extends StatelessWidget {
+  final Widget child;
+  const InitialSetupLoadingGuard({required this.child, super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<InitialSetupBloc, InitialSetupData>(
+      buildWhen: (previous, current) => previous.loadingComplete != current.loadingComplete,
+      builder: (context, setupState) {
+        return BlocBuilder<ClientFeaturesConfigBloc, ClientFeaturesConfigData>(
+          buildWhen: (previous, current) => previous.loadingComplete != current.loadingComplete,
+          builder: (context, configState) {
+            return BlocBuilder<ProfileAttributesBloc, AttributesData>(
+              buildWhen: (previous, current) => previous.loadingComplete != current.loadingComplete,
+              builder: (context, attributesState) {
+                if (setupState.loadingComplete &&
+                    configState.loadingComplete &&
+                    attributesState.loadingComplete) {
+                  return child;
+                }
+
+                return const SizedBox.shrink();
+              },
+            );
+          },
+        );
+      },
+    );
+  }
 }
 
 Widget commonInitialSetupScreenContent({
