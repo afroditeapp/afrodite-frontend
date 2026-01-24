@@ -49,7 +49,10 @@ class _AskEmailScreenInternal extends StatelessWidget {
                 return null;
               }
             },
-            question: AskEmail(initialEmail: currentAccountEmail),
+            question: AskEmail(
+              initialEmail: currentAccountEmail,
+              initialEditingValue: context.read<InitialSetupBloc>().state.email,
+            ),
           ),
         );
       },
@@ -59,13 +62,28 @@ class _AskEmailScreenInternal extends StatelessWidget {
 
 class AskEmail extends StatefulWidget {
   final String? initialEmail;
-  const AskEmail({required this.initialEmail, super.key});
+  final String? initialEditingValue;
+  const AskEmail({required this.initialEmail, required this.initialEditingValue, super.key});
 
   @override
   State<AskEmail> createState() => _AskEmailState();
 }
 
 class _AskEmailState extends State<AskEmail> {
+  final controller = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    controller.text = widget.initialEditingValue ?? "";
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -88,6 +106,7 @@ class _AskEmailState extends State<AskEmail> {
       return Padding(
         padding: const EdgeInsets.all(8.0),
         child: TextField(
+          controller: controller,
           decoration: InputDecoration(
             icon: const Icon(Icons.email),
             hintText: context.strings.initial_setup_screen_email_hint_text,
