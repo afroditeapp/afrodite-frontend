@@ -1,5 +1,5 @@
-import "package:app/model/freezed/logic/media/profile_pictures.dart";
 import "package:app/ui_utils/crop_image_screen.dart";
+import "package:app/ui_utils/profile_pictures.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 
 /// Interface for profile pictures state operations.

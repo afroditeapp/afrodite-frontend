@@ -1,4 +1,3 @@
-import 'package:app/logic/media/profile_pictures.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:flutter/foundation.dart';
@@ -101,9 +100,7 @@ Widget commonInitialSetupScreenContent({
               child: Text(context.strings.initial_setup_screen_refresh_face_detected_values_action),
               onPressed: () async {
                 if (context.mounted) {
-                  context.read<ProfilePicturesBloc>().add(
-                    RefreshProfilePicturesFaceDetectedValues(),
-                  );
+                  context.read<InitialSetupBloc>().add(RefreshProfilePicturesFaceDetectedValues());
                 }
               },
             ),

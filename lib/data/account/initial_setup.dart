@@ -1,12 +1,12 @@
 import 'dart:typed_data';
 
+import 'package:app/ui_utils/profile_pictures.dart';
 import 'package:database/database.dart';
 import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:app/api/server_connection_manager.dart';
 import 'package:app/model/freezed/logic/account/initial_setup.dart';
-import 'package:app/model/freezed/logic/media/profile_pictures.dart';
 import 'package:app/utils/api.dart';
 import 'package:app/utils/result.dart';
 import 'package:utils/utils.dart';

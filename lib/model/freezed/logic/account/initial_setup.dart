@@ -1,5 +1,6 @@
 import "package:app/logic/media/profile_pictures_interface.dart";
 import "package:app/ui/initial_setup/search_settings.dart";
+import "package:app/ui_utils/profile_pictures.dart";
 import "package:flutter/material.dart";
 import "package:latlong2/latlong.dart";
 import "package:openapi/api.dart";
@@ -7,7 +8,6 @@ import "package:openapi/api.dart";
 import "package:freezed_annotation/freezed_annotation.dart";
 import "package:app/localizations.dart";
 import "package:app/model/freezed/logic/media/image_processing.dart";
-import "package:app/model/freezed/logic/media/profile_pictures.dart";
 import "package:app/utils/immutable_list.dart";
 
 part 'initial_setup.freezed.dart';

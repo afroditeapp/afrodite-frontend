@@ -1,6 +1,9 @@
 import "dart:async";
 
 import "package:app/data/utils/repository_instances.dart";
+import "package:app/logic/media/profile_pictures_interface.dart";
+import "package:app/ui_utils/crop_image_screen.dart";
+import "package:app/ui_utils/profile_pictures.dart";
 import "package:flutter/foundation.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:openapi/api.dart";
@@ -67,7 +70,32 @@ class NewAttributeValue extends MyProfileEvent {
   NewAttributeValue(this.value);
 }
 
-class MyProfileBloc extends Bloc<MyProfileEvent, MyProfileData> with ActionRunner {
+class AddProcessedImage extends MyProfileEvent {
+  final ImageSelected img;
+  final int profileImagesIndex;
+  AddProcessedImage(this.img, this.profileImagesIndex);
+}
+
+class UpdateCropArea extends MyProfileEvent {
+  final CropArea cropArea;
+  final int imgIndex;
+  UpdateCropArea(this.cropArea, this.imgIndex);
+}
+
+class RemoveImage extends MyProfileEvent {
+  final int imgIndex;
+  RemoveImage(this.imgIndex);
+}
+
+class MoveImageTo extends MyProfileEvent {
+  final int src;
+  final int dst;
+  MoveImageTo(this.src, this.dst);
+}
+
+class MyProfileBloc extends Bloc<MyProfileEvent, MyProfileData>
+    with ActionRunner
+    implements ProfilePicturesBlocInterface<MyProfileData> {
   final AccountRepository account;
   final ProfileRepository profile;
   final MediaRepository media;
@@ -123,6 +151,35 @@ class MyProfileBloc extends Bloc<MyProfileEvent, MyProfileData> with ActionRunne
     });
     on<NewMyProfile>((data, emit) async {
       emit(state.copyWith(profile: data.profile));
+    });
+    on<AddProcessedImage>((data, emit) {
+      final pictures = state.valuePictures();
+      pictures[data.profileImagesIndex] = data.img;
+      _emitPictureChangesToEdited(emit, pictures);
+    });
+    on<RemoveImage>((data, emit) async {
+      final pictures = state.valuePictures();
+      final img = pictures[data.imgIndex];
+      if (img is ImageSelected) {
+        pictures[data.imgIndex] = const Empty();
+      }
+      _emitPictureChangesToEdited(emit, pictures);
+    });
+    on<UpdateCropArea>((data, emit) async {
+      final pictures = state.valuePictures();
+      final img = pictures[data.imgIndex];
+      if (img is ImageSelected) {
+        pictures[data.imgIndex] = ImageSelected(img.id, img.slot, cropArea: data.cropArea);
+        _emitPictureChangesToEdited(emit, pictures);
+      }
+    });
+    on<MoveImageTo>((data, emit) async {
+      final pictures = state.valuePictures();
+      final srcImg = pictures[data.src];
+      final dstImg = pictures[data.dst];
+      pictures[data.src] = dstImg;
+      pictures[data.dst] = srcImg;
+      _emitPictureChangesToEdited(emit, pictures);
     });
     on<NewInitialAgeInfo>((data, emit) async {
       emit(state.copyWith(initialAgeInfo: data.value));
@@ -244,6 +301,39 @@ class MyProfileBloc extends Bloc<MyProfileEvent, MyProfileData> with ActionRunne
         .listen((event) {
           add(NewInitialAgeInfo(event));
         });
+  }
+
+  // ProfilePicturesBlocInterface implementation
+  @override
+  void addProcessedImage(ImageSelected img, int profileImagesIndex) {
+    add(AddProcessedImage(img, profileImagesIndex));
+  }
+
+  @override
+  void updateCropArea(CropArea cropArea, int imgIndex) {
+    add(UpdateCropArea(cropArea, imgIndex));
+  }
+
+  @override
+  void removeImage(int imgIndex) {
+    add(RemoveImage(imgIndex));
+  }
+
+  @override
+  void moveImageTo(int src, int dst) {
+    add(MoveImageTo(src, dst));
+  }
+
+  void _emitPictureChangesToEdited(Emitter<MyProfileData> emit, List<ImgState> pictures) {
+    modifyEdited(
+      emit,
+      (e) => e.copyWith(
+        picture0: state.picture0 == pictures[0] ? const NoEdit() : editValue(pictures[0]),
+        picture1: state.picture1 == pictures[1] ? const NoEdit() : editValue(pictures[1]),
+        picture2: state.picture2 == pictures[2] ? const NoEdit() : editValue(pictures[2]),
+        picture3: state.picture3 == pictures[3] ? const NoEdit() : editValue(pictures[3]),
+      ),
+    );
   }
 
   void resetEditedValues(Emitter<MyProfileData> emit) {

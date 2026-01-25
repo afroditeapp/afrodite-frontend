@@ -1,5 +1,6 @@
 import "package:app/data/utils/repository_instances.dart";
 import "package:app/ui_utils/consts/padding.dart";
+import "package:app/ui_utils/profile_pictures.dart";
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
@@ -16,7 +17,6 @@ import "package:app/logic/media/profile_pictures_interface.dart";
 import "package:app/model/freezed/logic/account/initial_setup.dart";
 import "package:app/model/freezed/logic/main/navigator_state.dart";
 import "package:app/model/freezed/logic/media/image_processing.dart";
-import "package:app/model/freezed/logic/media/profile_pictures.dart";
 import "package:app/ui/initial_setup/navigation.dart";
 import "package:app/ui/normal/settings/media/select_content.dart";
 import "package:app/ui_utils/consts/corners.dart";

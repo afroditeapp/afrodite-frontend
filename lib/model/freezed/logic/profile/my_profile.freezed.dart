@@ -144,6 +144,10 @@ mixin _$EditedMyProfileData {
   EditValue<String> get profileText => throw _privateConstructorErrorEditedMyProfileData;
   Map<int, ProfileAttributeValueUpdate>? get attributeIdAndStateMap => throw _privateConstructorErrorEditedMyProfileData;
   bool? get unlimitedLikes => throw _privateConstructorErrorEditedMyProfileData;
+  EditValue<ImgState> get picture0 => throw _privateConstructorErrorEditedMyProfileData;
+  EditValue<ImgState> get picture1 => throw _privateConstructorErrorEditedMyProfileData;
+  EditValue<ImgState> get picture2 => throw _privateConstructorErrorEditedMyProfileData;
+  EditValue<ImgState> get picture3 => throw _privateConstructorErrorEditedMyProfileData;
 
   EditedMyProfileData copyWith({
     int? age,
@@ -151,6 +155,10 @@ mixin _$EditedMyProfileData {
     EditValue<String>? profileText,
     Map<int, ProfileAttributeValueUpdate>? attributeIdAndStateMap,
     bool? unlimitedLikes,
+    EditValue<ImgState>? picture0,
+    EditValue<ImgState>? picture1,
+    EditValue<ImgState>? picture2,
+    EditValue<ImgState>? picture3,
   }) => throw _privateConstructorErrorEditedMyProfileData;
 }
 
@@ -162,6 +170,10 @@ abstract class _EditedMyProfileData extends EditedMyProfileData {
     EditValue<String> profileText,
     Map<int, ProfileAttributeValueUpdate>? attributeIdAndStateMap,
     bool? unlimitedLikes,
+    EditValue<ImgState> picture0,
+    EditValue<ImgState> picture1,
+    EditValue<ImgState> picture2,
+    EditValue<ImgState> picture3,
   }) = _$EditedMyProfileDataImpl;
   _EditedMyProfileData._() : super._();
 }
@@ -169,6 +181,10 @@ abstract class _EditedMyProfileData extends EditedMyProfileData {
 /// @nodoc
 class _$EditedMyProfileDataImpl extends _EditedMyProfileData with DiagnosticableTreeMixin {
   static const EditValue<String> _profileTextDefaultValue = NoEdit();
+  static const EditValue<ImgState> _picture0DefaultValue = NoEdit();
+  static const EditValue<ImgState> _picture1DefaultValue = NoEdit();
+  static const EditValue<ImgState> _picture2DefaultValue = NoEdit();
+  static const EditValue<ImgState> _picture3DefaultValue = NoEdit();
   
   _$EditedMyProfileDataImpl({
     this.age,
@@ -176,6 +192,10 @@ class _$EditedMyProfileDataImpl extends _EditedMyProfileData with Diagnosticable
     this.profileText = _profileTextDefaultValue,
     this.attributeIdAndStateMap,
     this.unlimitedLikes,
+    this.picture0 = _picture0DefaultValue,
+    this.picture1 = _picture1DefaultValue,
+    this.picture2 = _picture2DefaultValue,
+    this.picture3 = _picture3DefaultValue,
   }) : super._();
 
   @override
@@ -188,10 +208,18 @@ class _$EditedMyProfileDataImpl extends _EditedMyProfileData with Diagnosticable
   final Map<int, ProfileAttributeValueUpdate>? attributeIdAndStateMap;
   @override
   final bool? unlimitedLikes;
+  @override
+  final EditValue<ImgState> picture0;
+  @override
+  final EditValue<ImgState> picture1;
+  @override
+  final EditValue<ImgState> picture2;
+  @override
+  final EditValue<ImgState> picture3;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'EditedMyProfileData(age: $age, name: $name, profileText: $profileText, attributeIdAndStateMap: $attributeIdAndStateMap, unlimitedLikes: $unlimitedLikes)';
+    return 'EditedMyProfileData(age: $age, name: $name, profileText: $profileText, attributeIdAndStateMap: $attributeIdAndStateMap, unlimitedLikes: $unlimitedLikes, picture0: $picture0, picture1: $picture1, picture2: $picture2, picture3: $picture3)';
   }
 
   @override
@@ -203,7 +231,11 @@ class _$EditedMyProfileDataImpl extends _EditedMyProfileData with Diagnosticable
       ..add(DiagnosticsProperty('name', name))
       ..add(DiagnosticsProperty('profileText', profileText))
       ..add(DiagnosticsProperty('attributeIdAndStateMap', attributeIdAndStateMap))
-      ..add(DiagnosticsProperty('unlimitedLikes', unlimitedLikes));
+      ..add(DiagnosticsProperty('unlimitedLikes', unlimitedLikes))
+      ..add(DiagnosticsProperty('picture0', picture0))
+      ..add(DiagnosticsProperty('picture1', picture1))
+      ..add(DiagnosticsProperty('picture2', picture2))
+      ..add(DiagnosticsProperty('picture3', picture3));
   }
 
   @override
@@ -220,7 +252,15 @@ class _$EditedMyProfileDataImpl extends _EditedMyProfileData with Diagnosticable
         (identical(other.attributeIdAndStateMap, attributeIdAndStateMap) ||
           other.attributeIdAndStateMap == attributeIdAndStateMap) &&
         (identical(other.unlimitedLikes, unlimitedLikes) ||
-          other.unlimitedLikes == unlimitedLikes)
+          other.unlimitedLikes == unlimitedLikes) &&
+        (identical(other.picture0, picture0) ||
+          other.picture0 == picture0) &&
+        (identical(other.picture1, picture1) ||
+          other.picture1 == picture1) &&
+        (identical(other.picture2, picture2) ||
+          other.picture2 == picture2) &&
+        (identical(other.picture3, picture3) ||
+          other.picture3 == picture3)
     );
   }
 
@@ -232,6 +272,10 @@ class _$EditedMyProfileDataImpl extends _EditedMyProfileData with Diagnosticable
     profileText,
     attributeIdAndStateMap,
     unlimitedLikes,
+    picture0,
+    picture1,
+    picture2,
+    picture3,
   );
 
   @override
@@ -241,11 +285,19 @@ class _$EditedMyProfileDataImpl extends _EditedMyProfileData with Diagnosticable
     Object? profileText,
     Object? attributeIdAndStateMap = _detectDefaultValueInCopyWith,
     Object? unlimitedLikes = _detectDefaultValueInCopyWith,
+    Object? picture0,
+    Object? picture1,
+    Object? picture2,
+    Object? picture3,
   }) => _$EditedMyProfileDataImpl(
     age: (age == _detectDefaultValueInCopyWith ? this.age : age) as int?,
     name: (name == _detectDefaultValueInCopyWith ? this.name : name) as String?,
     profileText: (profileText ?? this.profileText) as EditValue<String>,
     attributeIdAndStateMap: (attributeIdAndStateMap == _detectDefaultValueInCopyWith ? this.attributeIdAndStateMap : attributeIdAndStateMap) as Map<int, ProfileAttributeValueUpdate>?,
     unlimitedLikes: (unlimitedLikes == _detectDefaultValueInCopyWith ? this.unlimitedLikes : unlimitedLikes) as bool?,
+    picture0: (picture0 ?? this.picture0) as EditValue<ImgState>,
+    picture1: (picture1 ?? this.picture1) as EditValue<ImgState>,
+    picture2: (picture2 ?? this.picture2) as EditValue<ImgState>,
+    picture3: (picture3 ?? this.picture3) as EditValue<ImgState>,
   );
 }

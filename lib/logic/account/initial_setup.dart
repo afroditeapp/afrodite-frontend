@@ -7,6 +7,7 @@ import "package:app/data/utils/repository_instances.dart";
 import "package:app/database/account_database_manager.dart";
 import "package:app/logic/media/profile_pictures_interface.dart";
 import "package:app/ui_utils/crop_image_screen.dart";
+import "package:app/ui_utils/profile_pictures.dart";
 import "package:app/utils/age.dart";
 import "package:app/utils/result.dart";
 import "package:collection/collection.dart";
@@ -22,7 +23,6 @@ import "package:app/data/account_repository.dart";
 import "package:app/localizations.dart";
 import "package:app/model/freezed/logic/account/initial_setup.dart";
 import "package:app/model/freezed/logic/media/image_processing.dart";
-import "package:app/model/freezed/logic/media/profile_pictures.dart";
 import "package:app/ui_utils/snack_bar.dart";
 import "package:app/utils.dart";
 import "package:app/utils/immutable_list.dart";
@@ -128,6 +128,8 @@ class CreateDebugAdminAccount extends InitialSetupEvent {}
 class SkipInitialSetup extends InitialSetupEvent {}
 
 class RefreshSecuritySelfieFaceDetectedValue extends InitialSetupEvent {}
+
+class RefreshProfilePicturesFaceDetectedValues extends InitialSetupEvent {}
 
 class AddProcessedImageToSetup extends InitialSetupEvent {
   final ImageSelected img;
@@ -429,6 +431,31 @@ class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData>
             ),
           );
         }
+      }
+
+      showSnackBar(R.strings.generic_action_completed);
+    });
+    on<RefreshProfilePicturesFaceDetectedValues>((data, emit) async {
+      final r = await api.media((api) => api.getAllAccountMediaContent(currentAccount.aid)).ok();
+      if (r == null) {
+        showSnackBar(R.strings.generic_error_occurred);
+        return;
+      }
+
+      final profileImages = state.valuePictures();
+      bool changed = false;
+      for (final (i, img) in profileImages.indexed) {
+        if (img is ImageSelected) {
+          final newImgState = r.data.firstWhereOrNull((v) => v.cid == img.id.contentId);
+          if (newImgState != null && newImgState.fd != img.id.faceDetected) {
+            profileImages[i] = img.copyWithFaceDetected(newImgState.fd);
+            changed = true;
+          }
+        }
+      }
+
+      if (changed) {
+        add(SetProfileImages(profileImages));
       }
 
       showSnackBar(R.strings.generic_action_completed);

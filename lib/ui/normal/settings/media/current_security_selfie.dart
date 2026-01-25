@@ -1,12 +1,12 @@
 import 'package:app/data/image_cache.dart';
 import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
-import 'package:app/model/freezed/logic/media/profile_pictures.dart';
 import 'package:app/ui/normal/settings/media/select_content.dart';
 import 'package:app/ui_utils/extensions/api.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/moderation.dart';
 import 'package:app/ui_utils/padding.dart';
+import 'package:app/ui_utils/profile_pictures.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:database/database.dart';
 import 'package:flutter/material.dart';

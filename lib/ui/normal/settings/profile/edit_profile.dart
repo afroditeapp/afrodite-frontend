@@ -5,10 +5,10 @@ import 'package:app/ui/normal/settings/profile/edit_profile_text.dart';
 import 'package:app/ui_utils/attribute/attribute.dart';
 import 'package:app/ui_utils/consts/icons.dart';
 import 'package:app/ui_utils/consts/padding.dart';
-import 'package:app/ui_utils/crop_image_screen.dart';
 import 'package:app/ui_utils/navigation/url.dart';
 import 'package:app/ui_utils/padding.dart';
-import 'package:app/utils/list.dart';
+import 'package:app/ui_utils/profile_pictures.dart';
+import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/result.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,11 +16,9 @@ import 'package:openapi/api.dart';
 import 'package:database/database.dart';
 import 'package:app/localizations.dart';
 import 'package:app/logic/app/navigator_state.dart';
-import 'package:app/logic/media/profile_pictures.dart' as profile_pictures_logic;
 import 'package:app/logic/profile/attributes.dart';
 import 'package:app/logic/profile/my_profile.dart' as my_profile_logic;
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
-import 'package:app/model/freezed/logic/media/profile_pictures.dart';
 import 'package:app/model/freezed/logic/profile/attributes.dart';
 import 'package:app/model/freezed/logic/profile/my_profile.dart';
 import 'package:app/ui/initial_setup/profile_basic_info.dart';
@@ -32,9 +30,7 @@ import 'package:app/ui_utils/consts/colors.dart';
 import 'package:app/ui_utils/moderation.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/icon_button.dart';
-import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/age.dart';
-import 'package:app/utils/profile_entry.dart';
 
 class EditProfilePageUrlParser extends UrlParser<EditProfilePage> {
   final RepositoryInstances r;
@@ -72,7 +68,6 @@ class EditProfileScreenOpener extends StatelessWidget {
     return EditProfileScreen(
       closer: closer,
       initialProfile: initialProfile,
-      profilePicturesBloc: context.read<profile_pictures_logic.ProfilePicturesBloc>(),
       myProfileBloc: context.read<my_profile_logic.MyProfileBloc>(),
       profileAttributesBloc: context.read<ProfileAttributesBloc>(),
     );
@@ -82,13 +77,11 @@ class EditProfileScreenOpener extends StatelessWidget {
 class EditProfileScreen extends StatefulWidget {
   final PageCloser<()> closer;
   final MyProfileEntry initialProfile;
-  final profile_pictures_logic.ProfilePicturesBloc profilePicturesBloc;
   final my_profile_logic.MyProfileBloc myProfileBloc;
   final ProfileAttributesBloc profileAttributesBloc;
   const EditProfileScreen({
     required this.closer,
     required this.initialProfile,
-    required this.profilePicturesBloc,
     required this.myProfileBloc,
     required this.profileAttributesBloc,
     super.key,
@@ -103,35 +96,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   void initState() {
     super.initState();
 
-    final p = widget.initialProfile;
-
     // Profile data
     widget.myProfileBloc.add(my_profile_logic.ResetEditedValues());
-
-    // Profile pictures
-    // Set the current state (base values, not edited)
-    final pictures = <ImgState>[
-      imgStateFromContent(p.myContent.getAtOrNull(0), 0, p.primaryImageCropArea()),
-      imgStateFromContent(p.myContent.getAtOrNull(1), 1, CropArea.full),
-      imgStateFromContent(p.myContent.getAtOrNull(2), 2, CropArea.full),
-      imgStateFromContent(p.myContent.getAtOrNull(3), 3, CropArea.full),
-    ];
-
-    final cropAreas = <CropArea>[CropArea.full, CropArea.full, CropArea.full, CropArea.full];
-
-    widget.profilePicturesBloc.add(profile_pictures_logic.SetInitialState(pictures, cropAreas));
-
-    widget.profilePicturesBloc.add(
-      profile_pictures_logic.NewPageKeyForProfilePicturesBloc(widget.closer.key),
-    );
-  }
-
-  ImgState imgStateFromContent(MyContent? c, int index, CropArea cropArea) {
-    if (c == null) {
-      return const Empty();
-    }
-    final imgId = AccountImageId(widget.initialProfile.accountId, c.id, c.faceDetected, c.accepted);
-    return ImageSelected(imgId, null, cropArea: cropArea);
   }
 
   void validateAndSaveData(BuildContext context) {
@@ -156,14 +122,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       newProfileText = editedProfileText;
     }
 
-    final imgUpdateState = widget.profilePicturesBloc.state;
-    final imgUpdate = imgUpdateState.toSetProfileContent();
+    final imgUpdate = s.toSetProfileContent();
     if (imgUpdate == null) {
       showSnackBar(context.strings.edit_profile_screen_one_profile_image_required);
       return;
     }
 
-    if (!imgUpdateState.faceDetectedFromPrimaryImage()) {
+    if (!s.faceDetectedFromPrimaryImage()) {
       showSnackBar(
         context.strings.initial_setup_screen_profile_pictures_primary_image_face_not_detected,
       );
@@ -184,14 +149,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     );
   }
 
-  bool dataChanged(MyProfileData myProfileData, ProfilePicturesData editedImgData) {
-    if (myProfileData.unsavedChanges() || editedImgData.unsavedChanges()) {
-      return true;
-    }
-
-    return false;
-  }
-
   @override
   Widget build(BuildContext context) {
     return updateStateHandler<my_profile_logic.MyProfileBloc, MyProfileData>(
@@ -199,50 +156,39 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       pageKey: widget.closer.key,
       child: BlocBuilder<my_profile_logic.MyProfileBloc, MyProfileData>(
         builder: (context, data) {
-          return BlocBuilder<profile_pictures_logic.ProfilePicturesBloc, ProfilePicturesData>(
-            builder: (context, profilePicturesData) {
-              // PageKey check prevent Flutter from hiding
-              // my profile screen's floating action button after
-              // pressing this screen's save changes floating action button
-              // the first time after app launch.
-              final dataEditingDetected =
-                  profilePicturesData.pageKey == widget.closer.key &&
-                  dataChanged(data, profilePicturesData);
-
-              return PopScope(
-                canPop: !dataEditingDetected,
-                onPopInvokedWithResult: (didPop, _) {
-                  if (didPop) {
-                    return;
-                  }
-                  showConfirmDialog(
-                    context,
-                    context.strings.generic_save_confirmation_title,
-                    yesNoActions: true,
-                  ).then((value) {
-                    if (!context.mounted) {
-                      return;
-                    }
-                    if (value == true) {
-                      validateAndSaveData(context);
-                      // updateStateHandler closes EditProfileScreen
-                    } else if (value == false) {
-                      widget.closer.close(context, ());
-                    }
-                  });
-                },
-                child: Scaffold(
-                  appBar: AppBar(title: Text(context.strings.edit_profile_screen_title)),
-                  body: edit(context, dataEditingDetected),
-                  floatingActionButton: dataEditingDetected
-                      ? FloatingActionButton(
-                          onPressed: () => validateAndSaveData(context),
-                          child: const Icon(Icons.check),
-                        )
-                      : null,
-                ),
-              );
+          final dataEditingDetected = data.unsavedChanges();
+          return PopScope(
+            canPop: !data.unsavedChanges(),
+            onPopInvokedWithResult: (didPop, _) {
+              if (didPop) {
+                return;
+              }
+              showConfirmDialog(
+                context,
+                context.strings.generic_save_confirmation_title,
+                yesNoActions: true,
+              ).then((value) {
+                if (!context.mounted) {
+                  return;
+                }
+                if (value == true) {
+                  validateAndSaveData(context);
+                  // updateStateHandler closes EditProfileScreen
+                } else if (value == false) {
+                  widget.closer.close(context, ());
+                }
+              });
             },
+            child: Scaffold(
+              appBar: AppBar(title: Text(context.strings.edit_profile_screen_title)),
+              body: edit(context, dataEditingDetected),
+              floatingActionButton: dataEditingDetected
+                  ? FloatingActionButton(
+                      onPressed: () => validateAndSaveData(context),
+                      child: const Icon(Icons.check),
+                    )
+                  : null,
+            ),
           );
         },
       ),
@@ -253,9 +199,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     return SingleChildScrollView(
       child: Column(
         children: [
-          ProfilePictureSelection<profile_pictures_logic.ProfilePicturesBloc, ProfilePicturesData>(
+          ProfilePictureSelection<my_profile_logic.MyProfileBloc, MyProfileData>(
             mode: const NormalProfilePictures(),
-            bloc: context.read<profile_pictures_logic.ProfilePicturesBloc>(),
+            bloc: context.read<my_profile_logic.MyProfileBloc>(),
           ),
           const Padding(padding: EdgeInsets.only(top: 16)),
           const Divider(),
