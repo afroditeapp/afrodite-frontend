@@ -25,4 +25,6 @@ mixin _$DaoReadAppMixin on DatabaseAccessor<AccountDatabase> {
       attachedDatabase.pushNotification;
   $EditProfileImagePickerIndexTable get editProfileImagePickerIndex =>
       attachedDatabase.editProfileImagePickerIndex;
+  $EditProfileProgressTable get editProfileProgress =>
+      attachedDatabase.editProfileProgress;
 }

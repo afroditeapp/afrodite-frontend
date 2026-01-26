@@ -147,3 +147,18 @@ class InitialSetupProgress extends SingleRowTable {
   // Chat info
   BoolColumn get chatInfoUnderstood => boolean().nullable()();
 }
+
+class EditProfileProgress extends SingleRowTable {
+  IntColumn get age => integer().nullable()();
+  TextColumn get name => text().nullable()();
+  TextColumn get profileText => text().nullable()();
+  TextColumn get jsonProfileAttributes => text()
+      .map(NullAwareTypeConverter.wrap(const ProfileAttributeValueUpdateListConverter()))
+      .nullable()();
+  BoolColumn get unlimitedLikes => boolean().nullable()();
+  TextColumn get jsonProfileImages => text()
+      .map(NullAwareTypeConverter.wrap(const ProfilePictureEntryListConverter()))
+      .nullable()();
+  BoolColumn get editingInProgress => boolean().withDefault(const Constant(false))();
+  BoolColumn get selectingImage => boolean().withDefault(const Constant(false))();
+}

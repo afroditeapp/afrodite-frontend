@@ -131,11 +131,30 @@ class InitialSetupProgressEntry {
   });
 }
 
+class EditProfileProgressEntry {
+  final int? age;
+  final String? name;
+  final String? profileText;
+  final List<ProfileAttributeValueUpdate>? profileAttributes;
+  final bool? unlimitedLikes;
+  final List<ProfilePictureEntry>? profileImages;
+
+  const EditProfileProgressEntry({
+    this.age,
+    this.name,
+    this.profileText,
+    this.profileAttributes,
+    this.unlimitedLikes,
+    this.profileImages,
+  });
+}
+
 /// Data model for a single profile picture stored in initial setup progress
 class ProfilePictureEntry {
   final String contentId;
   final int? slot;
   final bool faceDetected;
+  final bool accepted;
   final double cropSize;
   final double cropX;
   final double cropY;
@@ -144,6 +163,7 @@ class ProfilePictureEntry {
     required this.contentId,
     required this.slot,
     required this.faceDetected,
+    required this.accepted,
     required this.cropSize,
     required this.cropX,
     required this.cropY,
@@ -154,6 +174,7 @@ class ProfilePictureEntry {
       'contentId': contentId,
       'slot': slot,
       'faceDetected': faceDetected,
+      'accepted': accepted,
       'cropSize': cropSize,
       'cropX': cropX,
       'cropY': cropY,
@@ -165,6 +186,7 @@ class ProfilePictureEntry {
       contentId: json['contentId'] as String,
       slot: json['slot'] as int?,
       faceDetected: json['faceDetected'] as bool,
+      accepted: json['accepted'] as bool,
       cropSize: (json['cropSize'] as num).toDouble(),
       cropX: (json['cropX'] as num).toDouble(),
       cropY: (json['cropY'] as num).toDouble(),

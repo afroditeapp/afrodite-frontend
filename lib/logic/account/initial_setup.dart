@@ -221,7 +221,7 @@ class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData>
                 currentAccount,
                 ContentId(cid: entry.contentId),
                 entry.faceDetected,
-                true, // Accepted is always true for initial setup
+                entry.accepted,
               ),
               entry.slot,
               cropArea: CropArea.fromValues(entry.cropSize, entry.cropX, entry.cropY),
@@ -290,6 +290,7 @@ class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData>
               contentId: img.id.contentId.cid,
               slot: img.slot,
               faceDetected: img.id.faceDetected,
+              accepted: img.id.accepted,
               cropSize: img.cropArea.gridCropSize,
               cropX: img.cropArea.gridCropX,
               cropY: img.cropArea.gridCropY,

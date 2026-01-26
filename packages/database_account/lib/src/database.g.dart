@@ -5564,6 +5564,637 @@ class EditProfileImagePickerIndexCompanion
   }
 }
 
+class $EditProfileProgressTable extends schema.EditProfileProgress
+    with TableInfo<$EditProfileProgressTable, EditProfileProgressData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $EditProfileProgressTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _ageMeta = const VerificationMeta('age');
+  @override
+  late final GeneratedColumn<int> age = GeneratedColumn<int>(
+    'age',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+    'name',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _profileTextMeta = const VerificationMeta(
+    'profileText',
+  );
+  @override
+  late final GeneratedColumn<String> profileText = GeneratedColumn<String>(
+    'profile_text',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<
+    JsonList<ProfileAttributeValueUpdate>?,
+    String
+  >
+  jsonProfileAttributes =
+      GeneratedColumn<String>(
+        'json_profile_attributes',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      ).withConverter<JsonList<ProfileAttributeValueUpdate>?>(
+        $EditProfileProgressTable.$converterjsonProfileAttributes,
+      );
+  static const VerificationMeta _unlimitedLikesMeta = const VerificationMeta(
+    'unlimitedLikes',
+  );
+  @override
+  late final GeneratedColumn<bool> unlimitedLikes = GeneratedColumn<bool>(
+    'unlimited_likes',
+    aliasedName,
+    true,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("unlimited_likes" IN (0, 1))',
+    ),
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<
+    JsonList<ProfilePictureEntry>?,
+    String
+  >
+  jsonProfileImages =
+      GeneratedColumn<String>(
+        'json_profile_images',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      ).withConverter<JsonList<ProfilePictureEntry>?>(
+        $EditProfileProgressTable.$converterjsonProfileImages,
+      );
+  static const VerificationMeta _editingInProgressMeta = const VerificationMeta(
+    'editingInProgress',
+  );
+  @override
+  late final GeneratedColumn<bool> editingInProgress = GeneratedColumn<bool>(
+    'editing_in_progress',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("editing_in_progress" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _selectingImageMeta = const VerificationMeta(
+    'selectingImage',
+  );
+  @override
+  late final GeneratedColumn<bool> selectingImage = GeneratedColumn<bool>(
+    'selecting_image',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("selecting_image" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    age,
+    name,
+    profileText,
+    jsonProfileAttributes,
+    unlimitedLikes,
+    jsonProfileImages,
+    editingInProgress,
+    selectingImage,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'edit_profile_progress';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<EditProfileProgressData> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('age')) {
+      context.handle(
+        _ageMeta,
+        age.isAcceptableOrUnknown(data['age']!, _ageMeta),
+      );
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+        _nameMeta,
+        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
+      );
+    }
+    if (data.containsKey('profile_text')) {
+      context.handle(
+        _profileTextMeta,
+        profileText.isAcceptableOrUnknown(
+          data['profile_text']!,
+          _profileTextMeta,
+        ),
+      );
+    }
+    if (data.containsKey('unlimited_likes')) {
+      context.handle(
+        _unlimitedLikesMeta,
+        unlimitedLikes.isAcceptableOrUnknown(
+          data['unlimited_likes']!,
+          _unlimitedLikesMeta,
+        ),
+      );
+    }
+    if (data.containsKey('editing_in_progress')) {
+      context.handle(
+        _editingInProgressMeta,
+        editingInProgress.isAcceptableOrUnknown(
+          data['editing_in_progress']!,
+          _editingInProgressMeta,
+        ),
+      );
+    }
+    if (data.containsKey('selecting_image')) {
+      context.handle(
+        _selectingImageMeta,
+        selectingImage.isAcceptableOrUnknown(
+          data['selecting_image']!,
+          _selectingImageMeta,
+        ),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  EditProfileProgressData map(
+    Map<String, dynamic> data, {
+    String? tablePrefix,
+  }) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return EditProfileProgressData(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      age: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}age'],
+      ),
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      ),
+      profileText: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}profile_text'],
+      ),
+      jsonProfileAttributes: $EditProfileProgressTable
+          .$converterjsonProfileAttributes
+          .fromSql(
+            attachedDatabase.typeMapping.read(
+              DriftSqlType.string,
+              data['${effectivePrefix}json_profile_attributes'],
+            ),
+          ),
+      unlimitedLikes: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}unlimited_likes'],
+      ),
+      jsonProfileImages: $EditProfileProgressTable.$converterjsonProfileImages
+          .fromSql(
+            attachedDatabase.typeMapping.read(
+              DriftSqlType.string,
+              data['${effectivePrefix}json_profile_images'],
+            ),
+          ),
+      editingInProgress: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}editing_in_progress'],
+      )!,
+      selectingImage: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}selecting_image'],
+      )!,
+    );
+  }
+
+  @override
+  $EditProfileProgressTable createAlias(String alias) {
+    return $EditProfileProgressTable(attachedDatabase, alias);
+  }
+
+  static TypeConverter<JsonList<ProfileAttributeValueUpdate>?, String?>
+  $converterjsonProfileAttributes = NullAwareTypeConverter.wrap(
+    const ProfileAttributeValueUpdateListConverter(),
+  );
+  static TypeConverter<JsonList<ProfilePictureEntry>?, String?>
+  $converterjsonProfileImages = NullAwareTypeConverter.wrap(
+    const ProfilePictureEntryListConverter(),
+  );
+}
+
+class EditProfileProgressData extends DataClass
+    implements Insertable<EditProfileProgressData> {
+  final int id;
+  final int? age;
+  final String? name;
+  final String? profileText;
+  final JsonList<ProfileAttributeValueUpdate>? jsonProfileAttributes;
+  final bool? unlimitedLikes;
+  final JsonList<ProfilePictureEntry>? jsonProfileImages;
+  final bool editingInProgress;
+  final bool selectingImage;
+  const EditProfileProgressData({
+    required this.id,
+    this.age,
+    this.name,
+    this.profileText,
+    this.jsonProfileAttributes,
+    this.unlimitedLikes,
+    this.jsonProfileImages,
+    required this.editingInProgress,
+    required this.selectingImage,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    if (!nullToAbsent || age != null) {
+      map['age'] = Variable<int>(age);
+    }
+    if (!nullToAbsent || name != null) {
+      map['name'] = Variable<String>(name);
+    }
+    if (!nullToAbsent || profileText != null) {
+      map['profile_text'] = Variable<String>(profileText);
+    }
+    if (!nullToAbsent || jsonProfileAttributes != null) {
+      map['json_profile_attributes'] = Variable<String>(
+        $EditProfileProgressTable.$converterjsonProfileAttributes.toSql(
+          jsonProfileAttributes,
+        ),
+      );
+    }
+    if (!nullToAbsent || unlimitedLikes != null) {
+      map['unlimited_likes'] = Variable<bool>(unlimitedLikes);
+    }
+    if (!nullToAbsent || jsonProfileImages != null) {
+      map['json_profile_images'] = Variable<String>(
+        $EditProfileProgressTable.$converterjsonProfileImages.toSql(
+          jsonProfileImages,
+        ),
+      );
+    }
+    map['editing_in_progress'] = Variable<bool>(editingInProgress);
+    map['selecting_image'] = Variable<bool>(selectingImage);
+    return map;
+  }
+
+  EditProfileProgressCompanion toCompanion(bool nullToAbsent) {
+    return EditProfileProgressCompanion(
+      id: Value(id),
+      age: age == null && nullToAbsent ? const Value.absent() : Value(age),
+      name: name == null && nullToAbsent ? const Value.absent() : Value(name),
+      profileText: profileText == null && nullToAbsent
+          ? const Value.absent()
+          : Value(profileText),
+      jsonProfileAttributes: jsonProfileAttributes == null && nullToAbsent
+          ? const Value.absent()
+          : Value(jsonProfileAttributes),
+      unlimitedLikes: unlimitedLikes == null && nullToAbsent
+          ? const Value.absent()
+          : Value(unlimitedLikes),
+      jsonProfileImages: jsonProfileImages == null && nullToAbsent
+          ? const Value.absent()
+          : Value(jsonProfileImages),
+      editingInProgress: Value(editingInProgress),
+      selectingImage: Value(selectingImage),
+    );
+  }
+
+  factory EditProfileProgressData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return EditProfileProgressData(
+      id: serializer.fromJson<int>(json['id']),
+      age: serializer.fromJson<int?>(json['age']),
+      name: serializer.fromJson<String?>(json['name']),
+      profileText: serializer.fromJson<String?>(json['profileText']),
+      jsonProfileAttributes: serializer
+          .fromJson<JsonList<ProfileAttributeValueUpdate>?>(
+            json['jsonProfileAttributes'],
+          ),
+      unlimitedLikes: serializer.fromJson<bool?>(json['unlimitedLikes']),
+      jsonProfileImages: serializer.fromJson<JsonList<ProfilePictureEntry>?>(
+        json['jsonProfileImages'],
+      ),
+      editingInProgress: serializer.fromJson<bool>(json['editingInProgress']),
+      selectingImage: serializer.fromJson<bool>(json['selectingImage']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'age': serializer.toJson<int?>(age),
+      'name': serializer.toJson<String?>(name),
+      'profileText': serializer.toJson<String?>(profileText),
+      'jsonProfileAttributes': serializer
+          .toJson<JsonList<ProfileAttributeValueUpdate>?>(
+            jsonProfileAttributes,
+          ),
+      'unlimitedLikes': serializer.toJson<bool?>(unlimitedLikes),
+      'jsonProfileImages': serializer.toJson<JsonList<ProfilePictureEntry>?>(
+        jsonProfileImages,
+      ),
+      'editingInProgress': serializer.toJson<bool>(editingInProgress),
+      'selectingImage': serializer.toJson<bool>(selectingImage),
+    };
+  }
+
+  EditProfileProgressData copyWith({
+    int? id,
+    Value<int?> age = const Value.absent(),
+    Value<String?> name = const Value.absent(),
+    Value<String?> profileText = const Value.absent(),
+    Value<JsonList<ProfileAttributeValueUpdate>?> jsonProfileAttributes =
+        const Value.absent(),
+    Value<bool?> unlimitedLikes = const Value.absent(),
+    Value<JsonList<ProfilePictureEntry>?> jsonProfileImages =
+        const Value.absent(),
+    bool? editingInProgress,
+    bool? selectingImage,
+  }) => EditProfileProgressData(
+    id: id ?? this.id,
+    age: age.present ? age.value : this.age,
+    name: name.present ? name.value : this.name,
+    profileText: profileText.present ? profileText.value : this.profileText,
+    jsonProfileAttributes: jsonProfileAttributes.present
+        ? jsonProfileAttributes.value
+        : this.jsonProfileAttributes,
+    unlimitedLikes: unlimitedLikes.present
+        ? unlimitedLikes.value
+        : this.unlimitedLikes,
+    jsonProfileImages: jsonProfileImages.present
+        ? jsonProfileImages.value
+        : this.jsonProfileImages,
+    editingInProgress: editingInProgress ?? this.editingInProgress,
+    selectingImage: selectingImage ?? this.selectingImage,
+  );
+  EditProfileProgressData copyWithCompanion(EditProfileProgressCompanion data) {
+    return EditProfileProgressData(
+      id: data.id.present ? data.id.value : this.id,
+      age: data.age.present ? data.age.value : this.age,
+      name: data.name.present ? data.name.value : this.name,
+      profileText: data.profileText.present
+          ? data.profileText.value
+          : this.profileText,
+      jsonProfileAttributes: data.jsonProfileAttributes.present
+          ? data.jsonProfileAttributes.value
+          : this.jsonProfileAttributes,
+      unlimitedLikes: data.unlimitedLikes.present
+          ? data.unlimitedLikes.value
+          : this.unlimitedLikes,
+      jsonProfileImages: data.jsonProfileImages.present
+          ? data.jsonProfileImages.value
+          : this.jsonProfileImages,
+      editingInProgress: data.editingInProgress.present
+          ? data.editingInProgress.value
+          : this.editingInProgress,
+      selectingImage: data.selectingImage.present
+          ? data.selectingImage.value
+          : this.selectingImage,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('EditProfileProgressData(')
+          ..write('id: $id, ')
+          ..write('age: $age, ')
+          ..write('name: $name, ')
+          ..write('profileText: $profileText, ')
+          ..write('jsonProfileAttributes: $jsonProfileAttributes, ')
+          ..write('unlimitedLikes: $unlimitedLikes, ')
+          ..write('jsonProfileImages: $jsonProfileImages, ')
+          ..write('editingInProgress: $editingInProgress, ')
+          ..write('selectingImage: $selectingImage')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    age,
+    name,
+    profileText,
+    jsonProfileAttributes,
+    unlimitedLikes,
+    jsonProfileImages,
+    editingInProgress,
+    selectingImage,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is EditProfileProgressData &&
+          other.id == this.id &&
+          other.age == this.age &&
+          other.name == this.name &&
+          other.profileText == this.profileText &&
+          other.jsonProfileAttributes == this.jsonProfileAttributes &&
+          other.unlimitedLikes == this.unlimitedLikes &&
+          other.jsonProfileImages == this.jsonProfileImages &&
+          other.editingInProgress == this.editingInProgress &&
+          other.selectingImage == this.selectingImage);
+}
+
+class EditProfileProgressCompanion
+    extends UpdateCompanion<EditProfileProgressData> {
+  final Value<int> id;
+  final Value<int?> age;
+  final Value<String?> name;
+  final Value<String?> profileText;
+  final Value<JsonList<ProfileAttributeValueUpdate>?> jsonProfileAttributes;
+  final Value<bool?> unlimitedLikes;
+  final Value<JsonList<ProfilePictureEntry>?> jsonProfileImages;
+  final Value<bool> editingInProgress;
+  final Value<bool> selectingImage;
+  const EditProfileProgressCompanion({
+    this.id = const Value.absent(),
+    this.age = const Value.absent(),
+    this.name = const Value.absent(),
+    this.profileText = const Value.absent(),
+    this.jsonProfileAttributes = const Value.absent(),
+    this.unlimitedLikes = const Value.absent(),
+    this.jsonProfileImages = const Value.absent(),
+    this.editingInProgress = const Value.absent(),
+    this.selectingImage = const Value.absent(),
+  });
+  EditProfileProgressCompanion.insert({
+    this.id = const Value.absent(),
+    this.age = const Value.absent(),
+    this.name = const Value.absent(),
+    this.profileText = const Value.absent(),
+    this.jsonProfileAttributes = const Value.absent(),
+    this.unlimitedLikes = const Value.absent(),
+    this.jsonProfileImages = const Value.absent(),
+    this.editingInProgress = const Value.absent(),
+    this.selectingImage = const Value.absent(),
+  });
+  static Insertable<EditProfileProgressData> custom({
+    Expression<int>? id,
+    Expression<int>? age,
+    Expression<String>? name,
+    Expression<String>? profileText,
+    Expression<String>? jsonProfileAttributes,
+    Expression<bool>? unlimitedLikes,
+    Expression<String>? jsonProfileImages,
+    Expression<bool>? editingInProgress,
+    Expression<bool>? selectingImage,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (age != null) 'age': age,
+      if (name != null) 'name': name,
+      if (profileText != null) 'profile_text': profileText,
+      if (jsonProfileAttributes != null)
+        'json_profile_attributes': jsonProfileAttributes,
+      if (unlimitedLikes != null) 'unlimited_likes': unlimitedLikes,
+      if (jsonProfileImages != null) 'json_profile_images': jsonProfileImages,
+      if (editingInProgress != null) 'editing_in_progress': editingInProgress,
+      if (selectingImage != null) 'selecting_image': selectingImage,
+    });
+  }
+
+  EditProfileProgressCompanion copyWith({
+    Value<int>? id,
+    Value<int?>? age,
+    Value<String?>? name,
+    Value<String?>? profileText,
+    Value<JsonList<ProfileAttributeValueUpdate>?>? jsonProfileAttributes,
+    Value<bool?>? unlimitedLikes,
+    Value<JsonList<ProfilePictureEntry>?>? jsonProfileImages,
+    Value<bool>? editingInProgress,
+    Value<bool>? selectingImage,
+  }) {
+    return EditProfileProgressCompanion(
+      id: id ?? this.id,
+      age: age ?? this.age,
+      name: name ?? this.name,
+      profileText: profileText ?? this.profileText,
+      jsonProfileAttributes:
+          jsonProfileAttributes ?? this.jsonProfileAttributes,
+      unlimitedLikes: unlimitedLikes ?? this.unlimitedLikes,
+      jsonProfileImages: jsonProfileImages ?? this.jsonProfileImages,
+      editingInProgress: editingInProgress ?? this.editingInProgress,
+      selectingImage: selectingImage ?? this.selectingImage,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (age.present) {
+      map['age'] = Variable<int>(age.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (profileText.present) {
+      map['profile_text'] = Variable<String>(profileText.value);
+    }
+    if (jsonProfileAttributes.present) {
+      map['json_profile_attributes'] = Variable<String>(
+        $EditProfileProgressTable.$converterjsonProfileAttributes.toSql(
+          jsonProfileAttributes.value,
+        ),
+      );
+    }
+    if (unlimitedLikes.present) {
+      map['unlimited_likes'] = Variable<bool>(unlimitedLikes.value);
+    }
+    if (jsonProfileImages.present) {
+      map['json_profile_images'] = Variable<String>(
+        $EditProfileProgressTable.$converterjsonProfileImages.toSql(
+          jsonProfileImages.value,
+        ),
+      );
+    }
+    if (editingInProgress.present) {
+      map['editing_in_progress'] = Variable<bool>(editingInProgress.value);
+    }
+    if (selectingImage.present) {
+      map['selecting_image'] = Variable<bool>(selectingImage.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('EditProfileProgressCompanion(')
+          ..write('id: $id, ')
+          ..write('age: $age, ')
+          ..write('name: $name, ')
+          ..write('profileText: $profileText, ')
+          ..write('jsonProfileAttributes: $jsonProfileAttributes, ')
+          ..write('unlimitedLikes: $unlimitedLikes, ')
+          ..write('jsonProfileImages: $jsonProfileImages, ')
+          ..write('editingInProgress: $editingInProgress, ')
+          ..write('selectingImage: $selectingImage')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $ServerMaintenanceTable extends schema.ServerMaintenance
     with TableInfo<$ServerMaintenanceTable, ServerMaintenanceData> {
   @override
@@ -19468,6 +20099,8 @@ abstract class _$AccountDatabase extends GeneratedDatabase {
   );
   late final $EditProfileImagePickerIndexTable editProfileImagePickerIndex =
       $EditProfileImagePickerIndexTable(this);
+  late final $EditProfileProgressTable editProfileProgress =
+      $EditProfileProgressTable(this);
   late final $ServerMaintenanceTable serverMaintenance =
       $ServerMaintenanceTable(this);
   late final $SyncVersionTable syncVersion = $SyncVersionTable(this);
@@ -19646,6 +20279,7 @@ abstract class _$AccountDatabase extends GeneratedDatabase {
     news,
     pushNotification,
     editProfileImagePickerIndex,
+    editProfileProgress,
     serverMaintenance,
     syncVersion,
     receivedLikesIteratorState,

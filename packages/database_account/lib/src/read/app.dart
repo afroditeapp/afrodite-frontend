@@ -1,6 +1,6 @@
 import 'package:database_account/src/database.dart';
 import 'package:database_model/database_model.dart'
-    show InitialSetupProgressEntry, GridSettings, ChatBackupReminder;
+    show InitialSetupProgressEntry, GridSettings, ChatBackupReminder, EditProfileProgressEntry;
 import 'package:database_utils/database_utils.dart';
 import 'package:drift/drift.dart';
 import 'package:openapi/api.dart' as api;
@@ -23,6 +23,7 @@ part 'app.g.dart';
     schema.News,
     schema.PushNotification,
     schema.EditProfileImagePickerIndex,
+    schema.EditProfileProgress,
   ],
 )
 class DaoReadApp extends DatabaseAccessor<AccountDatabase> with _$DaoReadAppMixin {
@@ -169,5 +170,21 @@ class DaoReadApp extends DatabaseAccessor<AccountDatabase> with _$DaoReadAppMixi
     return (select(initialSetupProgress)..where((t) => t.id.equals(SingleRowTable.ID.value)))
         .map((r) => r.currentPage)
         .watchSingleOrNull();
+  }
+
+  Stream<EditProfileProgressEntry?> watchEditProfileProgress() {
+    return (select(
+      editProfileProgress,
+    )..where((t) => t.id.equals(SingleRowTable.ID.value))).watchSingleOrNull().map((r) {
+      if (r == null) return null;
+      return EditProfileProgressEntry(
+        age: r.age,
+        name: r.name,
+        profileText: r.profileText,
+        profileAttributes: r.jsonProfileAttributes?.value,
+        unlimitedLikes: r.unlimitedLikes,
+        profileImages: r.jsonProfileImages?.value,
+      );
+    });
   }
 }

@@ -5,6 +5,7 @@ import 'package:app/ui/normal/settings/profile/edit_profile_text.dart';
 import 'package:app/ui_utils/attribute/attribute.dart';
 import 'package:app/ui_utils/consts/icons.dart';
 import 'package:app/ui_utils/consts/padding.dart';
+import 'package:app/ui_utils/edit_profile.dart';
 import 'package:app/ui_utils/navigation/url.dart';
 import 'package:app/ui_utils/padding.dart';
 import 'package:app/ui_utils/profile_pictures.dart';
@@ -224,6 +225,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           const Divider(),
           const EditAttributes(),
           const Padding(padding: EdgeInsets.only(top: FLOATING_ACTION_BUTTON_EMPTY_AREA)),
+          // Zero sized widgets
+          EditProfileProgressSaver(
+            bloc: context.read<my_profile_logic.MyProfileBloc>(),
+            db: context.read<RepositoryInstances>().accountDb,
+          ),
         ],
       ),
     );
