@@ -32,6 +32,7 @@ import 'package:app/ui_utils/consts/colors.dart';
 import 'package:app/ui_utils/moderation.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/icon_button.dart';
+import 'package:app/ui_utils/bloc_listener.dart';
 import 'package:app/utils/age.dart';
 
 class EditProfilePageUrlParser extends UrlParser<EditProfilePage> {
@@ -250,15 +251,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             bloc: context.read<my_profile_logic.MyProfileBloc>(),
             db: context.read<RepositoryInstances>().accountDb,
           ),
-          BlocBuilder<my_profile_logic.MyProfileBloc, MyProfileData>(
-            buildWhen: (previous, current) =>
+          BlocListenerWithInitialValue<my_profile_logic.MyProfileBloc, MyProfileData>(
+            listenWhen: (previous, current) =>
                 current.openSelectImageScreen && !previous.openSelectImageScreen,
-            builder: (_, state) {
+            listener: (context, state) {
               if (state.openSelectImageScreen) {
                 widget.myProfileBloc.add(my_profile_logic.ClearOpenSelectImageScreen());
                 _openSelectContentScreen(context);
               }
-              return const SizedBox.shrink();
             },
           ),
         ],
