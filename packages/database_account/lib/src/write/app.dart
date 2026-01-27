@@ -24,7 +24,6 @@ part 'app.g.dart';
     schema.NotificationStatus,
     schema.News,
     schema.PushNotification,
-    schema.EditProfileImagePickerIndex,
     schema.EditProfileProgress,
   ],
 )
@@ -403,15 +402,6 @@ class DaoWriteApp extends DatabaseAccessor<AccountDatabase> with _$DaoWriteAppMi
 
   Future<void> clearInitialSetupProgress() async {
     await (delete(initialSetupProgress)..where((t) => t.id.equals(SingleRowTable.ID.value))).go();
-  }
-
-  Future<void> updateEditProfileImagePickerIndex(int? index) async {
-    await into(editProfileImagePickerIndex).insertOnConflictUpdate(
-      EditProfileImagePickerIndexCompanion.insert(
-        id: SingleRowTable.ID,
-        editProfilePickImageToIndex: Value(index),
-      ),
-    );
   }
 
   Future<void> updateEditProfileProgress(EditProfileProgressEntry entry) async {

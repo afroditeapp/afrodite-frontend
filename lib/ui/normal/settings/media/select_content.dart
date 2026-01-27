@@ -9,7 +9,6 @@ import 'package:app/ui_utils/padding.dart';
 import 'package:app/ui_utils/profile_pictures.dart';
 import 'package:app/utils/api.dart';
 import 'package:app/utils/immutable_list.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
@@ -21,27 +20,34 @@ import 'package:app/ui_utils/image.dart';
 
 const SELECT_CONTENT_IMAGE_HEIGHT = 200.0;
 const SELECT_CONTENT_IMAGE_WIDTH = 150.0;
+const SELECT_CONTENT_SLOT = 0;
 
 class SelectContentPage extends MyFullScreenDialogPage<AccountImageId> {
-  SelectContentPage({bool identifyFaceImages = false, bool securitySelfieMode = false})
-    : super(
-        builder: (closer) => SelectContentScreenOpener(
-          closer: closer,
-          identifyFaceImages: identifyFaceImages,
-          securitySelfieMode: securitySelfieMode,
-        ),
-      );
+  SelectContentPage({
+    bool identifyFaceImages = false,
+    bool securitySelfieMode = false,
+    bool restoreLostData = false,
+  }) : super(
+         builder: (closer) => SelectContentScreenOpener(
+           closer: closer,
+           identifyFaceImages: identifyFaceImages,
+           securitySelfieMode: securitySelfieMode,
+           restoreLostData: restoreLostData,
+         ),
+       );
 }
 
 class SelectContentScreenOpener extends StatelessWidget {
   final PageCloser<AccountImageId> closer;
   final bool identifyFaceImages;
   final bool securitySelfieMode;
+  final bool restoreLostData;
 
   const SelectContentScreenOpener({
     required this.closer,
     required this.identifyFaceImages,
     required this.securitySelfieMode,
+    required this.restoreLostData,
     super.key,
   });
 
@@ -52,6 +58,7 @@ class SelectContentScreenOpener extends StatelessWidget {
       selectContentBloc: context.read<SelectContentBloc>(),
       identifyFaceImages: identifyFaceImages,
       securitySelfieMode: securitySelfieMode,
+      restoreLostData: restoreLostData,
     );
   }
 }
@@ -61,11 +68,13 @@ class SelectContentScreen extends StatefulWidget {
   final SelectContentBloc selectContentBloc;
   final bool identifyFaceImages;
   final bool securitySelfieMode;
+  final bool restoreLostData;
   const SelectContentScreen({
     required this.closer,
     required this.selectContentBloc,
     required this.identifyFaceImages,
     required this.securitySelfieMode,
+    required this.restoreLostData,
     super.key,
   });
 
@@ -120,7 +129,14 @@ class _SelectContentScreenState extends State<SelectContentScreen> {
               context.read<SelectContentBloc>().add(ReloadAvailableContent());
             },
           ),
-          const SelectContentLostDataHandler(),
+          if (widget.restoreLostData)
+            ImagePickerLostDataHandler(
+              onImage: (context, imageBytes) {
+                context.read<ProfilePicturesImageProcessingBloc>().add(
+                  SendImageToSlot(imageBytes, SELECT_CONTENT_SLOT),
+                );
+              },
+            ),
         ],
       ),
     );
@@ -144,29 +160,7 @@ class _SelectContentScreenState extends State<SelectContentScreen> {
               if (widget.securitySelfieMode) {
                 cameraScreenOpener.openCameraScreenAction(context);
               } else {
-                final isAndroid = !kIsWeb && defaultTargetPlatform == TargetPlatform.android;
-                if (isAndroid) {
-                  context
-                      .read<RepositoryInstances>()
-                      .accountDb
-                      .db
-                      .daoWriteApp
-                      .updateEditProfileImagePickerIndex(0);
-                }
-                openSelectPictureDialog(
-                  context,
-                  serverSlotIndex: 0,
-                  onCompleted: () {
-                    if (isAndroid) {
-                      context
-                          .read<RepositoryInstances>()
-                          .accountDb
-                          .db
-                          .daoWriteApp
-                          .updateEditProfileImagePickerIndex(null);
-                    }
-                  },
-                );
+                openSelectPictureDialog(context, serverSlotIndex: SELECT_CONTENT_SLOT);
               }
             },
           ),
@@ -310,72 +304,6 @@ Widget buildAvailableImg(
         height: SELECT_CONTENT_IMAGE_HEIGHT,
         child: img,
       ),
-    );
-  }
-}
-
-class SelectContentLostDataHandler extends StatefulWidget {
-  const SelectContentLostDataHandler({super.key});
-
-  @override
-  State<SelectContentLostDataHandler> createState() => _SelectContentLostDataHandlerState();
-}
-
-class _SelectContentLostDataHandlerState extends State<SelectContentLostDataHandler> {
-  Widget? _dataHandlerWidget;
-  Future<int?>? _lostIndexFuture;
-
-  @override
-  void initState() {
-    super.initState();
-    if (!kIsWeb && defaultTargetPlatform == TargetPlatform.android) {
-      _lostIndexFuture = context
-          .read<RepositoryInstances>()
-          .accountDb
-          .db
-          .daoReadApp
-          .getEditProfileImagePickerIndex();
-    } else {
-      _lostIndexFuture = null;
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final widget = _dataHandlerWidget;
-    if (widget != null) {
-      return widget;
-    }
-
-    return FutureBuilder<int?>(
-      future: _lostIndexFuture,
-      builder: (context, snapshot) {
-        final widget = _dataHandlerWidget;
-        if (widget != null) {
-          return widget;
-        }
-
-        final index = snapshot.data;
-        if (index != null) {
-          context
-              .read<RepositoryInstances>()
-              .accountDb
-              .db
-              .daoWriteApp
-              .updateEditProfileImagePickerIndex(null);
-          final widget = ImagePickerLostDataHandler(
-            onImage: (context, imageBytes) {
-              context.read<ProfilePicturesImageProcessingBloc>().add(
-                SendImageToSlot(imageBytes, index),
-              );
-            },
-          );
-          _dataHandlerWidget = widget;
-          return widget;
-        }
-
-        return const SizedBox.shrink();
-      },
     );
   }
 }

@@ -24,6 +24,7 @@ import 'package:app/model/freezed/logic/profile/attributes.dart';
 import 'package:app/model/freezed/logic/profile/my_profile.dart';
 import 'package:app/ui/initial_setup/profile_basic_info.dart';
 import 'package:app/ui/initial_setup/profile_pictures.dart';
+import 'package:app/ui/normal/settings/media/select_content.dart';
 import 'package:app/ui/normal/settings/profile/edit_profile_attribute.dart';
 import 'package:app/ui/utils/view_profile.dart';
 import 'package:app/ui_utils/common_update_logic.dart';
@@ -52,17 +53,26 @@ class EditProfilePageUrlParser extends UrlParser<EditProfilePage> {
 }
 
 class EditProfilePage extends MyScreenPage<()> {
-  EditProfilePage(MyProfileEntry initialProfile)
+  EditProfilePage(MyProfileEntry initialProfile, {EditProfileProgressEntry? restoreState})
     : super(
-        builder: (closer) =>
-            EditProfileScreenOpener(closer: closer, initialProfile: initialProfile),
+        builder: (closer) => EditProfileScreenOpener(
+          closer: closer,
+          initialProfile: initialProfile,
+          restoreState: restoreState,
+        ),
       );
 }
 
 class EditProfileScreenOpener extends StatelessWidget {
   final PageCloser<()> closer;
   final MyProfileEntry initialProfile;
-  const EditProfileScreenOpener({required this.closer, required this.initialProfile, super.key});
+  final EditProfileProgressEntry? restoreState;
+  const EditProfileScreenOpener({
+    required this.closer,
+    required this.initialProfile,
+    this.restoreState,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -71,6 +81,7 @@ class EditProfileScreenOpener extends StatelessWidget {
       initialProfile: initialProfile,
       myProfileBloc: context.read<my_profile_logic.MyProfileBloc>(),
       profileAttributesBloc: context.read<ProfileAttributesBloc>(),
+      restoreState: restoreState,
     );
   }
 }
@@ -80,11 +91,13 @@ class EditProfileScreen extends StatefulWidget {
   final MyProfileEntry initialProfile;
   final my_profile_logic.MyProfileBloc myProfileBloc;
   final ProfileAttributesBloc profileAttributesBloc;
+  final EditProfileProgressEntry? restoreState;
   const EditProfileScreen({
     required this.closer,
     required this.initialProfile,
     required this.myProfileBloc,
     required this.profileAttributesBloc,
+    this.restoreState,
     super.key,
   });
 
@@ -98,7 +111,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     super.initState();
 
     // Profile data
-    widget.myProfileBloc.add(my_profile_logic.ResetEditedValues());
+    final restoreState = widget.restoreState;
+    if (restoreState != null) {
+      widget.myProfileBloc.add(
+        my_profile_logic.RestoreEditingState(widget.initialProfile, restoreState),
+      );
+    } else {
+      widget.myProfileBloc.add(my_profile_logic.ResetEditedValues());
+    }
   }
 
   void validateAndSaveData(BuildContext context) {
@@ -230,9 +250,38 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             bloc: context.read<my_profile_logic.MyProfileBloc>(),
             db: context.read<RepositoryInstances>().accountDb,
           ),
+          BlocBuilder<my_profile_logic.MyProfileBloc, MyProfileData>(
+            buildWhen: (previous, current) =>
+                current.openSelectImageScreen && !previous.openSelectImageScreen,
+            builder: (_, state) {
+              if (state.openSelectImageScreen) {
+                widget.myProfileBloc.add(my_profile_logic.ClearOpenSelectImageScreen());
+                _openSelectContentScreen(context);
+              }
+              return const SizedBox.shrink();
+            },
+          ),
         ],
       ),
     );
+  }
+
+  Future<void> _openSelectContentScreen(BuildContext context) async {
+    if (!context.mounted) {
+      return;
+    }
+    final selectedImg = await MyNavigator.showFullScreenDialog(
+      context: context,
+      page: SelectContentPage(restoreLostData: true),
+    );
+    if (selectedImg != null && context.mounted) {
+      final nextIndex = widget.myProfileBloc.state.valuePictures().indexWhere((p) => p is Empty);
+      if (nextIndex != -1 && nextIndex < 4) {
+        widget.myProfileBloc.add(
+          my_profile_logic.AddProcessedImage(ImageSelected(selectedImg, null), nextIndex),
+        );
+      }
+    }
   }
 
   Widget unlimitedLikesSetting(BuildContext context) {

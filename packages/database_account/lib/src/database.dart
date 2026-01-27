@@ -62,7 +62,6 @@ part 'database.g.dart';
     schema.NotificationStatus,
     schema.News,
     schema.PushNotification,
-    schema.EditProfileImagePickerIndex,
     schema.EditProfileProgress,
     // Common
     schema.ServerMaintenance,

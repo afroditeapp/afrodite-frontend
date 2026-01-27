@@ -4,6 +4,7 @@ import "package:app/data/utils/repository_instances.dart";
 import "package:app/logic/media/profile_pictures_interface.dart";
 import "package:app/ui_utils/crop_image_screen.dart";
 import "package:app/ui_utils/profile_pictures.dart";
+import "package:app/utils/list.dart";
 import "package:flutter/foundation.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:openapi/api.dart";
@@ -44,6 +45,14 @@ class NewInitialAgeInfo extends MyProfileEvent {
 class ReloadMyProfile extends MyProfileEvent {}
 
 class ResetEditedValues extends MyProfileEvent {}
+
+class RestoreEditingState extends MyProfileEvent {
+  final MyProfileEntry initialProfile;
+  final EditProfileProgressEntry progress;
+  RestoreEditingState(this.initialProfile, this.progress);
+}
+
+class ClearOpenSelectImageScreen extends MyProfileEvent {}
 
 class NewAge extends MyProfileEvent {
   final int? value;
@@ -210,6 +219,57 @@ class MyProfileBloc extends Bloc<MyProfileEvent, MyProfileData>
     });
     on<ResetEditedValues>((data, emit) async {
       resetEditedValues(emit);
+    });
+    on<RestoreEditingState>((data, emit) async {
+      if (state.profile == null) {
+        emit(state.copyWith(profile: data.initialProfile));
+      }
+
+      final progress = data.progress;
+
+      final age = progress.age;
+      if (age != null) add(NewAge(age));
+
+      final name = progress.name;
+      if (name != null) add(NewName(name));
+
+      final profileText = progress.profileText;
+      if (profileText != null) add(NewProfileText(profileText));
+
+      final unlimitedLikes = progress.unlimitedLikes;
+      if (unlimitedLikes != null) add(NewUnlimitedLikesValue(unlimitedLikes));
+
+      final attributes = progress.profileAttributes;
+      if (attributes != null) {
+        for (final a in attributes) {
+          add(NewAttributeValue(a));
+        }
+      }
+
+      final images = progress.profileImages;
+      if (images != null) {
+        for (int i = 0; i < 4; i++) {
+          final imgEntry = images.getAtOrNull(i);
+          if (imgEntry != null) {
+            final imgId = AccountImageId(
+              data.initialProfile.accountId,
+              ContentId(cid: imgEntry.contentId),
+              imgEntry.faceDetected,
+              imgEntry.accepted,
+            );
+            final cropArea = CropArea.fromValues(imgEntry.cropSize, imgEntry.cropX, imgEntry.cropY);
+            add(AddProcessedImage(ImageSelected(imgId, null, cropArea: cropArea), i));
+          } else {
+            add(RemoveImage(i));
+          }
+        }
+      }
+
+      final selectingImage = await db.db.daoReadApp.isEditProfileSelectingImage();
+      emit(state.copyWith(openSelectImageScreen: selectingImage));
+    });
+    on<ClearOpenSelectImageScreen>((data, emit) {
+      emit(state.copyWith(openSelectImageScreen: false));
     });
     on<NewAge>((data, emit) async {
       modifyEdited(

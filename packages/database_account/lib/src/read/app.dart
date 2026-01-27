@@ -22,7 +22,6 @@ part 'app.g.dart';
     schema.NotificationStatus,
     schema.News,
     schema.PushNotification,
-    schema.EditProfileImagePickerIndex,
     schema.EditProfileProgress,
   ],
 )
@@ -95,10 +94,19 @@ class DaoReadApp extends DatabaseAccessor<AccountDatabase> with _$DaoReadAppMixi
   Stream<bool?> watchProfileFilterFavorites() =>
       _watchColumnProfileFilterFavorite((r) => r.profileFilterFavorites);
 
-  Future<int?> getEditProfileImagePickerIndex() {
-    return (select(editProfileImagePickerIndex)..where((t) => t.id.equals(SingleRowTable.ID.value)))
-        .map((r) => r.editProfilePickImageToIndex)
-        .getSingleOrNull();
+  Future<bool> isEditProfileEditingInProgress() async {
+    return (await (select(
+              editProfileProgress,
+            )..where((t) => t.id.equals(SingleRowTable.ID.value))).getSingleOrNull())
+            ?.editingInProgress ??
+        false;
+  }
+
+  Future<bool> isEditProfileSelectingImage() async {
+    return (await (select(
+          editProfileProgress,
+        )..where((t) => t.id.equals(SingleRowTable.ID.value))).getSingleOrNull())?.selectingImage ??
+        false;
   }
 
   Stream<T?> _watchColumnProfileFilterFavorite<T extends Object>(

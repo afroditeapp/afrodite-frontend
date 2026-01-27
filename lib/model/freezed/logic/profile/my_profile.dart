@@ -23,6 +23,7 @@ class MyProfileData
     MyProfileEntry? profile,
     @Default(false) bool loadingMyProfile,
     InitialAgeInfo? initialAgeInfo,
+    @Default(false) bool openSelectImageScreen,
     required EditedMyProfileData edited,
   }) = _MyProfileData;
 

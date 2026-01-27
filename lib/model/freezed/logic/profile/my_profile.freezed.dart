@@ -25,6 +25,7 @@ mixin _$MyProfileData {
   MyProfileEntry? get profile => throw _privateConstructorErrorMyProfileData;
   bool get loadingMyProfile => throw _privateConstructorErrorMyProfileData;
   InitialAgeInfo? get initialAgeInfo => throw _privateConstructorErrorMyProfileData;
+  bool get openSelectImageScreen => throw _privateConstructorErrorMyProfileData;
   EditedMyProfileData get edited => throw _privateConstructorErrorMyProfileData;
 
   MyProfileData copyWith({
@@ -32,6 +33,7 @@ mixin _$MyProfileData {
     MyProfileEntry? profile,
     bool? loadingMyProfile,
     InitialAgeInfo? initialAgeInfo,
+    bool? openSelectImageScreen,
     EditedMyProfileData? edited,
   }) => throw _privateConstructorErrorMyProfileData;
 }
@@ -43,6 +45,7 @@ abstract class _MyProfileData extends MyProfileData {
     MyProfileEntry? profile,
     bool loadingMyProfile,
     InitialAgeInfo? initialAgeInfo,
+    bool openSelectImageScreen,
     required EditedMyProfileData edited,
   }) = _$MyProfileDataImpl;
   _MyProfileData._() : super._();
@@ -52,12 +55,14 @@ abstract class _MyProfileData extends MyProfileData {
 class _$MyProfileDataImpl extends _MyProfileData with DiagnosticableTreeMixin {
   static const UpdateState _updateStateDefaultValue = UpdateIdle();
   static const bool _loadingMyProfileDefaultValue = false;
-  
+  static const bool _openSelectImageScreenDefaultValue = false;
+
   _$MyProfileDataImpl({
     this.updateState = _updateStateDefaultValue,
     this.profile,
     this.loadingMyProfile = _loadingMyProfileDefaultValue,
     this.initialAgeInfo,
+    this.openSelectImageScreen = _openSelectImageScreenDefaultValue,
     required this.edited,
   }) : super._();
 
@@ -70,11 +75,13 @@ class _$MyProfileDataImpl extends _MyProfileData with DiagnosticableTreeMixin {
   @override
   final InitialAgeInfo? initialAgeInfo;
   @override
+  final bool openSelectImageScreen;
+  @override
   final EditedMyProfileData edited;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'MyProfileData(updateState: $updateState, profile: $profile, loadingMyProfile: $loadingMyProfile, initialAgeInfo: $initialAgeInfo, edited: $edited)';
+    return 'MyProfileData(updateState: $updateState, profile: $profile, loadingMyProfile: $loadingMyProfile, initialAgeInfo: $initialAgeInfo, openSelectImageScreen: $openSelectImageScreen, edited: $edited)';
   }
 
   @override
@@ -86,6 +93,7 @@ class _$MyProfileDataImpl extends _MyProfileData with DiagnosticableTreeMixin {
       ..add(DiagnosticsProperty('profile', profile))
       ..add(DiagnosticsProperty('loadingMyProfile', loadingMyProfile))
       ..add(DiagnosticsProperty('initialAgeInfo', initialAgeInfo))
+      ..add(DiagnosticsProperty('openSelectImageScreen', openSelectImageScreen))
       ..add(DiagnosticsProperty('edited', edited));
   }
 
@@ -102,6 +110,8 @@ class _$MyProfileDataImpl extends _MyProfileData with DiagnosticableTreeMixin {
           other.loadingMyProfile == loadingMyProfile) &&
         (identical(other.initialAgeInfo, initialAgeInfo) ||
           other.initialAgeInfo == initialAgeInfo) &&
+        (identical(other.openSelectImageScreen, openSelectImageScreen) ||
+          other.openSelectImageScreen == openSelectImageScreen) &&
         (identical(other.edited, edited) ||
           other.edited == edited)
     );
@@ -114,6 +124,7 @@ class _$MyProfileDataImpl extends _MyProfileData with DiagnosticableTreeMixin {
     profile,
     loadingMyProfile,
     initialAgeInfo,
+    openSelectImageScreen,
     edited,
   );
 
@@ -123,12 +134,14 @@ class _$MyProfileDataImpl extends _MyProfileData with DiagnosticableTreeMixin {
     Object? profile = _detectDefaultValueInCopyWith,
     Object? loadingMyProfile,
     Object? initialAgeInfo = _detectDefaultValueInCopyWith,
+    Object? openSelectImageScreen,
     Object? edited,
   }) => _$MyProfileDataImpl(
     updateState: (updateState ?? this.updateState) as UpdateState,
     profile: (profile == _detectDefaultValueInCopyWith ? this.profile : profile) as MyProfileEntry?,
     loadingMyProfile: (loadingMyProfile ?? this.loadingMyProfile) as bool,
     initialAgeInfo: (initialAgeInfo == _detectDefaultValueInCopyWith ? this.initialAgeInfo : initialAgeInfo) as InitialAgeInfo?,
+    openSelectImageScreen: (openSelectImageScreen ?? this.openSelectImageScreen) as bool,
     edited: (edited ?? this.edited) as EditedMyProfileData,
   );
 }
@@ -185,7 +198,7 @@ class _$EditedMyProfileDataImpl extends _EditedMyProfileData with Diagnosticable
   static const EditValue<ImgState> _picture1DefaultValue = NoEdit();
   static const EditValue<ImgState> _picture2DefaultValue = NoEdit();
   static const EditValue<ImgState> _picture3DefaultValue = NoEdit();
-  
+
   _$EditedMyProfileDataImpl({
     this.age,
     this.name,

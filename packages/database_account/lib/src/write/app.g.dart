@@ -23,8 +23,6 @@ mixin _$DaoWriteAppMixin on DatabaseAccessor<AccountDatabase> {
   $NewsTable get news => attachedDatabase.news;
   $PushNotificationTable get pushNotification =>
       attachedDatabase.pushNotification;
-  $EditProfileImagePickerIndexTable get editProfileImagePickerIndex =>
-      attachedDatabase.editProfileImagePickerIndex;
   $EditProfileProgressTable get editProfileProgress =>
       attachedDatabase.editProfileProgress;
 }

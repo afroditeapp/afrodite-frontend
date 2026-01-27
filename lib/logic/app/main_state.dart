@@ -10,7 +10,6 @@ import "package:app/ui/initial_setup/navigation.dart";
 import "package:app/ui/normal.dart";
 import "package:app/ui/normal/settings/my_profile.dart";
 import "package:app/ui/normal/settings/profile/edit_profile.dart";
-import "package:app/ui/normal/settings/media/select_content.dart";
 import "package:app/ui/utils/notification_payload_handler.dart";
 import "package:app/utils/immutable_list.dart";
 import "package:bloc_concurrency/bloc_concurrency.dart";
@@ -116,18 +115,18 @@ class MainStateBloc extends Bloc<MainStateEvent, MainState> {
       _log.info("Handling app launch push notification payload");
       navigationState = await handleAppLaunchNotificationPayload(appLaunchPayloadOther, r);
     } else if (!kIsWeb && defaultTargetPlatform == TargetPlatform.android) {
-      final lostIndex = await r.accountDb.db.daoReadApp.getEditProfileImagePickerIndex();
-      if (lostIndex != null) {
+      final editingInProgress = await r.accountDb.db.daoReadApp.isEditProfileEditingInProgress();
+      if (editingInProgress) {
         final profileEntry = await r.accountDb.db.daoReadMyProfile
             .getProfileEntryForMyProfile()
             .first;
+        final progress = await r.accountDb.db.daoReadApp.watchEditProfileProgress().first;
         if (profileEntry != null) {
-          _log.info("Incomplete image picking detected");
+          _log.info("Incomplete profile editing detected");
           final pages = <MyPage<Object>>[
             NormalStatePage(),
             MyProfilePage(),
-            EditProfilePage(profileEntry),
-            SelectContentPage(),
+            EditProfilePage(profileEntry, restoreState: progress),
           ];
           navigationState = AppLaunchNavigationState(
             NavigatorStateData(pages: UnmodifiableList(pages)),
