@@ -1261,9 +1261,6 @@ class AppLocalizationsSv extends AppLocalizations {
   String get privacy_settings_last_seen_time => 'Last seen time';
 
   @override
-  String get privacy_settings_message_state_delivered => 'Message delivery receipts';
-
-  @override
   String get privacy_settings_message_state_sent => 'Message read receipts';
 
   @override

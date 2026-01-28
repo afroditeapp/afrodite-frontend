@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math';
 
 import 'package:app/api/server_connection_manager.dart';
 import 'package:app/data/chat/message_key_generator.dart';
@@ -93,10 +92,7 @@ class ChatEnabledBloc extends Bloc<ChatEnabledEvent, ChatEnabledData> {
       final keyInfo = result.ok();
       if (keyInfo != null) {
         final currentKeyId = keyInfo.latestPublicKeyId?.id ?? 0;
-        final maxKeys = max(
-          keyInfo.maxPublicKeyCountFromBackendConfig,
-          keyInfo.maxPublicKeyCountFromAccountConfig,
-        );
+        final maxKeys = keyInfo.maxPublicKeyCountFromBackendConfig;
         final remainingGenerations = maxKeys - currentKeyId;
         emit(state.copyWith(remainingKeyGenerations: remainingGenerations));
       }

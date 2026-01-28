@@ -70,11 +70,7 @@ Future<ConversationPage?> createConversationPage(
   // might not be initialized yet.
   final chatPrivacySettings =
       await r.accountDb.accountData((db) => db.privacy.getChatPrivacySettings()).ok() ??
-      ChatPrivacySettings(
-        messageStateDelivered: false,
-        messageStateSent: false,
-        typingIndicator: false,
-      );
+      ChatPrivacySettings(messageStateSeen: false, typingIndicator: false);
 
   return ConversationPage(
     accountId,
@@ -296,11 +292,8 @@ class ConversationScreenState extends State<ConversationScreen> {
             typingIndicatorEnabled:
                 widget.chatPrivacySettings.typingIndicator &&
                 clientFeaturesChat?.typingIndicator != null,
-            messageStateDeliveredEnabled:
-                widget.chatPrivacySettings.messageStateDelivered &&
-                clientFeaturesChat?.messageStateDelivered == true,
             messageStateSeenEnabled:
-                widget.chatPrivacySettings.messageStateSent &&
+                widget.chatPrivacySettings.messageStateSeen &&
                 clientFeaturesChat?.messageStateSeen == true,
           );
         }

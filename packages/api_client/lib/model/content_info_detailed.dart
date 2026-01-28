@@ -16,6 +16,7 @@ class ContentInfoDetailed {
     required this.cid,
     required this.ctype,
     required this.fd,
+    this.fdManual,
     this.rejectedReasonCategory,
     this.rejectedReasonDetails,
     required this.secureCapture,
@@ -29,8 +30,11 @@ class ContentInfoDetailed {
 
   MediaContentType ctype;
 
-  /// Face detected
+  /// Face detected (automatic)
   bool fd;
+
+  /// Manual face detected value set by admin
+  bool? fdManual;
 
   MediaContentModerationRejectedReasonCategory? rejectedReasonCategory;
 
@@ -51,6 +55,7 @@ class ContentInfoDetailed {
     other.cid == cid &&
     other.ctype == ctype &&
     other.fd == fd &&
+    other.fdManual == fdManual &&
     other.rejectedReasonCategory == rejectedReasonCategory &&
     other.rejectedReasonDetails == rejectedReasonDetails &&
     other.secureCapture == secureCapture &&
@@ -65,6 +70,7 @@ class ContentInfoDetailed {
     (cid.hashCode) +
     (ctype.hashCode) +
     (fd.hashCode) +
+    (fdManual == null ? 0 : fdManual!.hashCode) +
     (rejectedReasonCategory == null ? 0 : rejectedReasonCategory!.hashCode) +
     (rejectedReasonDetails == null ? 0 : rejectedReasonDetails!.hashCode) +
     (secureCapture.hashCode) +
@@ -74,13 +80,18 @@ class ContentInfoDetailed {
     (usageStartTime == null ? 0 : usageStartTime!.hashCode);
 
   @override
-  String toString() => 'ContentInfoDetailed[cid=$cid, ctype=$ctype, fd=$fd, rejectedReasonCategory=$rejectedReasonCategory, rejectedReasonDetails=$rejectedReasonDetails, secureCapture=$secureCapture, slot=$slot, state=$state, usageEndTime=$usageEndTime, usageStartTime=$usageStartTime]';
+  String toString() => 'ContentInfoDetailed[cid=$cid, ctype=$ctype, fd=$fd, fdManual=$fdManual, rejectedReasonCategory=$rejectedReasonCategory, rejectedReasonDetails=$rejectedReasonDetails, secureCapture=$secureCapture, slot=$slot, state=$state, usageEndTime=$usageEndTime, usageStartTime=$usageStartTime]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'cid'] = this.cid;
       json[r'ctype'] = this.ctype;
       json[r'fd'] = this.fd;
+    if (this.fdManual != null) {
+      json[r'fd_manual'] = this.fdManual;
+    } else {
+      json[r'fd_manual'] = null;
+    }
     if (this.rejectedReasonCategory != null) {
       json[r'rejected_reason_category'] = this.rejectedReasonCategory;
     } else {
@@ -133,6 +144,7 @@ class ContentInfoDetailed {
         cid: ContentId.fromJson(json[r'cid'])!,
         ctype: MediaContentType.fromJson(json[r'ctype'])!,
         fd: mapValueOfType<bool>(json, r'fd')!,
+        fdManual: mapValueOfType<bool>(json, r'fd_manual'),
         rejectedReasonCategory: MediaContentModerationRejectedReasonCategory.fromJson(json[r'rejected_reason_category']),
         rejectedReasonDetails: MediaContentModerationRejectedReasonDetails.fromJson(json[r'rejected_reason_details']),
         secureCapture: mapValueOfType<bool>(json, r'secure_capture')!,

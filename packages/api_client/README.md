@@ -158,7 +158,6 @@ Class | Method | HTTP request | Description
 *ChatApi* | [**postSendLike**](doc//ChatApi.md#postsendlike) | **POST** /chat_api/send_like | Send a like to some account. If both will like each other, then the accounts will be a match.
 *ChatApi* | [**postSendMessage**](doc//ChatApi.md#postsendmessage) | **POST** /chat_api/send_message | Send message to a match.
 *ChatApi* | [**postUnblockProfile**](doc//ChatApi.md#postunblockprofile) | **POST** /chat_api/unblock_profile | Unblock profile
-*ChatAdminApi* | [**postSetMaxPublicKeyCount**](doc//ChatAdminApi.md#postsetmaxpublickeycount) | **POST** /chat_api/set_max_public_key_count | Set max public key count
 *ChatTransferApi* | [**getBackupTransfer**](doc//ChatTransferApi.md#getbackuptransfer) | **GET** /chat_api/backup_transfer | Transfer chat backup between clients using WebSocket.
 *CommonApi* | [**deleteDataExport**](doc//CommonApi.md#deletedataexport) | **DELETE** /common_api/delete_data_export | Delete current data export
 *CommonApi* | [**getClientConfig**](doc//CommonApi.md#getclientconfig) | **GET** /common_api/client_config | 
@@ -216,7 +215,9 @@ Class | Method | HTTP request | Description
 *MediaApi* | [**putContentToContentSlot**](doc//MediaApi.md#putcontenttocontentslot) | **PUT** /media_api/content_slot/{slot_id} | Upload content to server. The content is saved to content processing slot when account state is [model::AccountState::InitialSetup]. In other states the slot number is ignored and content goes directly to moderation.
 *MediaApi* | [**putProfileContent**](doc//MediaApi.md#putprofilecontent) | **PUT** /media_api/profile_content | Set new profile content for current account.
 *MediaApi* | [**putSecurityContentInfo**](doc//MediaApi.md#putsecuritycontentinfo) | **PUT** /media_api/security_content_info | Set current security content for current account.
+*MediaAdminApi* | [**getImageProcessingConfig**](doc//MediaAdminApi.md#getimageprocessingconfig) | **GET** /media_api/image_processing_config | Get image processing configuration
 *MediaAdminApi* | [**getMediaContentPendingModerationList**](doc//MediaAdminApi.md#getmediacontentpendingmoderationlist) | **GET** /media_api/media_content_pending_moderation | Get first page of pending media content moderations. Oldest item is first and count 25.
+*MediaAdminApi* | [**postImageProcessingConfig**](doc//MediaAdminApi.md#postimageprocessingconfig) | **POST** /media_api/image_processing_config | Update image processing configuration
 *MediaAdminApi* | [**postMediaContentFaceDetectedValue**](doc//MediaAdminApi.md#postmediacontentfacedetectedvalue) | **POST** /media_api/media_content_face_detected_value | Change media content face detected value
 *MediaAdminApi* | [**postModerateMediaContent**](doc//MediaAdminApi.md#postmoderatemediacontent) | **POST** /media_api/moderate_media_content | Rejected category and details can be set only when the content is rejected.
 *ProfileApi* | [**deleteFavoriteProfile**](doc//ProfileApi.md#deletefavoriteprofile) | **DELETE** /profile_api/favorite_profile | Delete favorite profile
@@ -367,6 +368,7 @@ Class | Method | HTTP request | Description
  - [EventType](doc//EventType.md)
  - [FavoriteProfilesPage](doc//FavoriteProfilesPage.md)
  - [FeaturesConfig](doc//FeaturesConfig.md)
+ - [FirstImageConfig](doc//FirstImageConfig.md)
  - [GetAccountBanTimeResult](doc//GetAccountBanTimeResult.md)
  - [GetAccountDeletionRequestResult](doc//GetAccountDeletionRequestResult.md)
  - [GetAccountIdFromEmailResult](doc//GetAccountIdFromEmailResult.md)
@@ -405,6 +407,7 @@ Class | Method | HTTP request | Description
  - [GetReportList](doc//GetReportList.md)
  - [GetSentMessage](doc//GetSentMessage.md)
  - [GroupValues](doc//GroupValues.md)
+ - [ImageProcessingDynamicConfig](doc//ImageProcessingDynamicConfig.md)
  - [InitEmailChange](doc//InitEmailChange.md)
  - [InitEmailChangeAdmin](doc//InitEmailChangeAdmin.md)
  - [InitEmailChangeResult](doc//InitEmailChangeResult.md)
@@ -461,6 +464,7 @@ Class | Method | HTTP request | Description
  - [NotificationId](doc//NotificationId.md)
  - [NotificationIdViewed](doc//NotificationIdViewed.md)
  - [NotificationStatus](doc//NotificationStatus.md)
+ - [NsfwDetectionThresholds](doc//NsfwDetectionThresholds.md)
  - [PartialProfileAttributesConfig](doc//PartialProfileAttributesConfig.md)
  - [PendingMessageAcknowledgementList](doc//PendingMessageAcknowledgementList.md)
  - [PendingMessageId](doc//PendingMessageId.md)
@@ -562,7 +566,6 @@ Class | Method | HTTP request | Description
  - [SetAccountSetup](doc//SetAccountSetup.md)
  - [SetEmailLoginEnabled](doc//SetEmailLoginEnabled.md)
  - [SetInitialEmail](doc//SetInitialEmail.md)
- - [SetMaxPublicKeyCount](doc//SetMaxPublicKeyCount.md)
  - [SetProfileContent](doc//SetProfileContent.md)
  - [SetProfileName](doc//SetProfileName.md)
  - [SignInWithAppleInfo](doc//SignInWithAppleInfo.md)

@@ -15,8 +15,7 @@ class DaoWritePrivacy extends DatabaseAccessor<AccountDatabase> with _$DaoWriteP
     await into(chatPrivacySettings).insertOnConflictUpdate(
       ChatPrivacySettingsCompanion.insert(
         id: SingleRowTable.ID,
-        messageStateDelivered: Value(settings.messageStateDelivered),
-        messageStateSent: Value(settings.messageStateSent),
+        messageStateSent: Value(settings.messageStateSeen),
         typingIndicator: Value(settings.typingIndicator),
       ),
     );

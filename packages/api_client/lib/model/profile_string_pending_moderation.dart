@@ -14,10 +14,16 @@ class ProfileStringPendingModeration {
   /// Returns a new [ProfileStringPendingModeration] instance.
   ProfileStringPendingModeration({
     required this.id,
+    this.rejectedCategory,
+    this.rejectedDetails,
     required this.value,
   });
 
   AccountId id;
+
+  ProfileStringModerationRejectedReasonCategory? rejectedCategory;
+
+  ProfileStringModerationRejectedReasonDetails? rejectedDetails;
 
   /// A string wrapper that ensures the string is not empty. This type is used for TEXT columns that should not allow empty strings. In the database, these columns are NULL when there is no value, and this type represents non-NULL values that must be non-empty.
   String value;
@@ -25,20 +31,34 @@ class ProfileStringPendingModeration {
   @override
   bool operator ==(Object other) => identical(this, other) || other is ProfileStringPendingModeration &&
     other.id == id &&
+    other.rejectedCategory == rejectedCategory &&
+    other.rejectedDetails == rejectedDetails &&
     other.value == value;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (id.hashCode) +
+    (rejectedCategory == null ? 0 : rejectedCategory!.hashCode) +
+    (rejectedDetails == null ? 0 : rejectedDetails!.hashCode) +
     (value.hashCode);
 
   @override
-  String toString() => 'ProfileStringPendingModeration[id=$id, value=$value]';
+  String toString() => 'ProfileStringPendingModeration[id=$id, rejectedCategory=$rejectedCategory, rejectedDetails=$rejectedDetails, value=$value]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'id'] = this.id;
+    if (this.rejectedCategory != null) {
+      json[r'rejected_category'] = this.rejectedCategory;
+    } else {
+      json[r'rejected_category'] = null;
+    }
+    if (this.rejectedDetails != null) {
+      json[r'rejected_details'] = this.rejectedDetails;
+    } else {
+      json[r'rejected_details'] = null;
+    }
       json[r'value'] = this.value;
     return json;
   }
@@ -63,6 +83,8 @@ class ProfileStringPendingModeration {
 
       return ProfileStringPendingModeration(
         id: AccountId.fromJson(json[r'id'])!,
+        rejectedCategory: ProfileStringModerationRejectedReasonCategory.fromJson(json[r'rejected_category']),
+        rejectedDetails: ProfileStringModerationRejectedReasonDetails.fromJson(json[r'rejected_details']),
         value: mapValueOfType<String>(json, r'value')!,
       );
     }

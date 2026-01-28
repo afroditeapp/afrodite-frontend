@@ -432,7 +432,7 @@ class ChatApi {
 
   /// Get private public key info
   ///
-  /// # Access * Owner of the requested account * Permission [model::Permissions::admin_edit_max_public_key_count]
+  /// # Access * Owner of the requested account
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -467,7 +467,7 @@ class ChatApi {
 
   /// Get private public key info
   ///
-  /// # Access * Owner of the requested account * Permission [model::Permissions::admin_edit_max_public_key_count]
+  /// # Access * Owner of the requested account
   ///
   /// Parameters:
   ///

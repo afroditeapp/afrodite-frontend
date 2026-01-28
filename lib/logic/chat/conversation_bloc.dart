@@ -299,7 +299,7 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
     final privacySettings = await db.accountData((db) => db.privacy.getChatPrivacySettings()).ok();
     final messageSeenEnabled =
         (account.clientFeaturesConfigValue.chat?.messageStateSeen ?? false) &&
-        (privacySettings?.messageStateSent ?? false);
+        (privacySettings?.messageStateSeen ?? false);
     if (!messageSeenEnabled) {
       final allMessages = await db
           .accountData((db) => db.message.getSuccessfullyReceivedAndNotSeen(state.accountId))

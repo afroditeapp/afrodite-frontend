@@ -13,37 +13,31 @@ part of openapi.api;
 class ChatPrivacySettings {
   /// Returns a new [ChatPrivacySettings] instance.
   ChatPrivacySettings({
-    required this.messageStateDelivered,
-    required this.messageStateSent,
+    required this.messageStateSeen,
     required this.typingIndicator,
   });
 
-  bool messageStateDelivered;
-
-  bool messageStateSent;
+  bool messageStateSeen;
 
   bool typingIndicator;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is ChatPrivacySettings &&
-    other.messageStateDelivered == messageStateDelivered &&
-    other.messageStateSent == messageStateSent &&
+    other.messageStateSeen == messageStateSeen &&
     other.typingIndicator == typingIndicator;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (messageStateDelivered.hashCode) +
-    (messageStateSent.hashCode) +
+    (messageStateSeen.hashCode) +
     (typingIndicator.hashCode);
 
   @override
-  String toString() => 'ChatPrivacySettings[messageStateDelivered=$messageStateDelivered, messageStateSent=$messageStateSent, typingIndicator=$typingIndicator]';
+  String toString() => 'ChatPrivacySettings[messageStateSeen=$messageStateSeen, typingIndicator=$typingIndicator]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'message_state_delivered'] = this.messageStateDelivered;
-      json[r'message_state_sent'] = this.messageStateSent;
+      json[r'message_state_seen'] = this.messageStateSeen;
       json[r'typing_indicator'] = this.typingIndicator;
     return json;
   }
@@ -67,8 +61,7 @@ class ChatPrivacySettings {
       }());
 
       return ChatPrivacySettings(
-        messageStateDelivered: mapValueOfType<bool>(json, r'message_state_delivered')!,
-        messageStateSent: mapValueOfType<bool>(json, r'message_state_sent')!,
+        messageStateSeen: mapValueOfType<bool>(json, r'message_state_seen')!,
         typingIndicator: mapValueOfType<bool>(json, r'typing_indicator')!,
       );
     }
@@ -117,8 +110,7 @@ class ChatPrivacySettings {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'message_state_delivered',
-    'message_state_sent',
+    'message_state_seen',
     'typing_indicator',
   };
 }

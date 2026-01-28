@@ -113,11 +113,9 @@ class _PrivacySettingsScreenState extends State<PrivacySettingsScreen> {
     return BlocBuilder<ClientFeaturesConfigBloc, ClientFeaturesConfigData>(
       builder: (context, configData) {
         final chatConfig = configData.config.chat;
-        final showMessageStateDelivered = chatConfig?.messageStateDelivered ?? false;
         final showMessageStateSent = chatConfig?.messageStateSeen ?? false;
         final showTypingIndicator = chatConfig?.typingIndicator != null;
-        final chatSettingsHidden =
-            !showMessageStateDelivered && !showMessageStateSent && !showTypingIndicator;
+        final chatSettingsHidden = !showMessageStateSent && !showTypingIndicator;
         return SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -127,7 +125,6 @@ class _PrivacySettingsScreenState extends State<PrivacySettingsScreen> {
                   context,
                   context.strings.privacy_settings_screen_chat_category,
                 ),
-              if (showMessageStateDelivered) messageStateDelivered(context, state),
               if (showMessageStateSent) messageStateSent(context, state),
               if (showTypingIndicator) typingIndicator(context, state),
               settingsCategoryTitle(
@@ -139,16 +136,6 @@ class _PrivacySettingsScreenState extends State<PrivacySettingsScreen> {
             ],
           ),
         );
-      },
-    );
-  }
-
-  Widget messageStateDelivered(BuildContext context, PrivacySettingsData state) {
-    return SwitchListTile(
-      title: Text(context.strings.privacy_settings_message_state_delivered),
-      value: state.valueMessageStateDelivered(),
-      onChanged: (value) {
-        context.read<PrivacySettingsBloc>().add(ToggleMessageStateDelivered());
       },
     );
   }

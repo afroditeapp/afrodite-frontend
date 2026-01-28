@@ -14,31 +14,26 @@ class GetPrivatePublicKeyInfo {
   /// Returns a new [GetPrivatePublicKeyInfo] instance.
   GetPrivatePublicKeyInfo({
     this.latestPublicKeyId,
-    required this.maxPublicKeyCountFromAccountConfig,
     required this.maxPublicKeyCountFromBackendConfig,
   });
 
   PublicKeyId? latestPublicKeyId;
-
-  int maxPublicKeyCountFromAccountConfig;
 
   int maxPublicKeyCountFromBackendConfig;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is GetPrivatePublicKeyInfo &&
     other.latestPublicKeyId == latestPublicKeyId &&
-    other.maxPublicKeyCountFromAccountConfig == maxPublicKeyCountFromAccountConfig &&
     other.maxPublicKeyCountFromBackendConfig == maxPublicKeyCountFromBackendConfig;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (latestPublicKeyId == null ? 0 : latestPublicKeyId!.hashCode) +
-    (maxPublicKeyCountFromAccountConfig.hashCode) +
     (maxPublicKeyCountFromBackendConfig.hashCode);
 
   @override
-  String toString() => 'GetPrivatePublicKeyInfo[latestPublicKeyId=$latestPublicKeyId, maxPublicKeyCountFromAccountConfig=$maxPublicKeyCountFromAccountConfig, maxPublicKeyCountFromBackendConfig=$maxPublicKeyCountFromBackendConfig]';
+  String toString() => 'GetPrivatePublicKeyInfo[latestPublicKeyId=$latestPublicKeyId, maxPublicKeyCountFromBackendConfig=$maxPublicKeyCountFromBackendConfig]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -47,7 +42,6 @@ class GetPrivatePublicKeyInfo {
     } else {
       json[r'latest_public_key_id'] = null;
     }
-      json[r'max_public_key_count_from_account_config'] = this.maxPublicKeyCountFromAccountConfig;
       json[r'max_public_key_count_from_backend_config'] = this.maxPublicKeyCountFromBackendConfig;
     return json;
   }
@@ -72,7 +66,6 @@ class GetPrivatePublicKeyInfo {
 
       return GetPrivatePublicKeyInfo(
         latestPublicKeyId: PublicKeyId.fromJson(json[r'latest_public_key_id']),
-        maxPublicKeyCountFromAccountConfig: mapValueOfType<int>(json, r'max_public_key_count_from_account_config')!,
         maxPublicKeyCountFromBackendConfig: mapValueOfType<int>(json, r'max_public_key_count_from_backend_config')!,
       );
     }
@@ -121,7 +114,6 @@ class GetPrivatePublicKeyInfo {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'max_public_key_count_from_account_config',
     'max_public_key_count_from_backend_config',
   };
 }

@@ -7,14 +7,12 @@ class MessageAdapter {
   static chat.Message toFlutterChatMessage(
     IteratorMessage message,
     String currentUserId, {
-    required bool messageStateDeliveredEnabled,
     required bool messageStateSeenEnabled,
   }) {
     return switch (message) {
       IteratorMessageEntry(:final entry) => messageEntryToFlutterChatMessage(
         entry,
         currentUserId,
-        messageStateDeliveredEnabled: messageStateDeliveredEnabled,
         messageStateSeenEnabled: messageStateSeenEnabled,
       ),
       MessageDateChange(:final date) => chat.Message.system(
@@ -30,7 +28,6 @@ class MessageAdapter {
   static chat.Message messageEntryToFlutterChatMessage(
     MessageEntry entry,
     String currentUserId, {
-    required bool messageStateDeliveredEnabled,
     required bool messageStateSeenEnabled,
   }) {
     final isCurrentUser = entry.messageState.toSentState() != null;
@@ -67,23 +64,15 @@ class MessageAdapter {
           sentAt = createdAt;
           status = chat.MessageStatus.sent;
         case SentMessageState.delivered:
-          if (messageStateDeliveredEnabled) {
-            deliveredAt = entry.deliveredUnixTime?.dateTime ?? createdAt;
-            status = chat.MessageStatus.delivered;
-          } else {
-            sentAt = createdAt;
-            status = chat.MessageStatus.sent;
-          }
+          deliveredAt = entry.deliveredUnixTime?.dateTime ?? createdAt;
+          status = chat.MessageStatus.delivered;
         case SentMessageState.seen:
           if (messageStateSeenEnabled) {
             seenAt = entry.seenUnixTime?.dateTime ?? createdAt;
             status = chat.MessageStatus.seen;
-          } else if (messageStateDeliveredEnabled) {
+          } else {
             deliveredAt = entry.deliveredUnixTime?.dateTime ?? createdAt;
             status = chat.MessageStatus.delivered;
-          } else {
-            sentAt = createdAt;
-            status = chat.MessageStatus.sent;
           }
         case SentMessageState.sendingError:
           failedAt = createdAt;
@@ -172,7 +161,6 @@ class MessageAdapter {
   static List<chat.Message> toFlutterChatMessages(
     List<IteratorMessage> messages,
     String currentUserId, {
-    required bool messageStateDeliveredEnabled,
     required bool messageStateSeenEnabled,
   }) {
     return messages
@@ -180,7 +168,6 @@ class MessageAdapter {
           (entry) => toFlutterChatMessage(
             entry,
             currentUserId,
-            messageStateDeliveredEnabled: messageStateDeliveredEnabled,
             messageStateSeenEnabled: messageStateSeenEnabled,
           ),
         )

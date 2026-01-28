@@ -16,7 +16,7 @@ class ContentInfo {
     this.a = true,
     required this.cid,
     this.ctype,
-    this.p = false,
+    this.fd = true,
   });
 
   /// Accepted
@@ -27,15 +27,15 @@ class ContentInfo {
   /// Default value is not set to API doc as the API doc will then have \"oneOf\" property and Dart code generator does not support it.  Default value is [MediaContentType::JpegImage].
   MediaContentType? ctype;
 
-  /// Primary content  The first profile content is not primary content when admin deletes the first profile content and the second content does not have face detected.
-  bool p;
+  /// Face detected (automatic or manual)
+  bool fd;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is ContentInfo &&
     other.a == a &&
     other.cid == cid &&
     other.ctype == ctype &&
-    other.p == p;
+    other.fd == fd;
 
   @override
   int get hashCode =>
@@ -43,10 +43,10 @@ class ContentInfo {
     (a.hashCode) +
     (cid.hashCode) +
     (ctype == null ? 0 : ctype!.hashCode) +
-    (p.hashCode);
+    (fd.hashCode);
 
   @override
-  String toString() => 'ContentInfo[a=$a, cid=$cid, ctype=$ctype, p=$p]';
+  String toString() => 'ContentInfo[a=$a, cid=$cid, ctype=$ctype, fd=$fd]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -57,7 +57,7 @@ class ContentInfo {
     } else {
       json[r'ctype'] = null;
     }
-      json[r'p'] = this.p;
+      json[r'fd'] = this.fd;
     return json;
   }
 
@@ -83,7 +83,7 @@ class ContentInfo {
         a: mapValueOfType<bool>(json, r'a') ?? true,
         cid: ContentId.fromJson(json[r'cid'])!,
         ctype: MediaContentType.fromJson(json[r'ctype']),
-        p: mapValueOfType<bool>(json, r'p') ?? false,
+        fd: mapValueOfType<bool>(json, r'fd') ?? true,
       );
     }
     return null;

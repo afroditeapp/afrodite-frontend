@@ -16,6 +16,54 @@ class MediaAdminApi {
 
   final ApiClient apiClient;
 
+  /// Get image processing configuration
+  ///
+  /// # Permissions Requires admin_server_maintenance_view_backend_config.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  Future<Response> getImageProcessingConfigWithHttpInfo() async {
+    // ignore: prefer_const_declarations
+    final path = r'/media_api/image_processing_config';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Get image processing configuration
+  ///
+  /// # Permissions Requires admin_server_maintenance_view_backend_config.
+  Future<ImageProcessingDynamicConfig?> getImageProcessingConfig() async {
+    final response = await getImageProcessingConfigWithHttpInfo();
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'ImageProcessingDynamicConfig',) as ImageProcessingDynamicConfig;
+    
+    }
+    return null;
+  }
+
   /// Get first page of pending media content moderations. Oldest item is first and count 25.
   ///
   /// Note: This method returns the HTTP [Response].
@@ -78,6 +126,54 @@ class MediaAdminApi {
     
     }
     return null;
+  }
+
+  /// Update image processing configuration
+  ///
+  /// # Permissions Requires admin_server_maintenance_save_backend_config.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [ImageProcessingDynamicConfig] imageProcessingDynamicConfig (required):
+  Future<Response> postImageProcessingConfigWithHttpInfo(ImageProcessingDynamicConfig imageProcessingDynamicConfig,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/media_api/image_processing_config';
+
+    // ignore: prefer_final_locals
+    Object? postBody = imageProcessingDynamicConfig;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Update image processing configuration
+  ///
+  /// # Permissions Requires admin_server_maintenance_save_backend_config.
+  ///
+  /// Parameters:
+  ///
+  /// * [ImageProcessingDynamicConfig] imageProcessingDynamicConfig (required):
+  Future<void> postImageProcessingConfig(ImageProcessingDynamicConfig imageProcessingDynamicConfig,) async {
+    final response = await postImageProcessingConfigWithHttpInfo(imageProcessingDynamicConfig,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
   }
 
   /// Change media content face detected value

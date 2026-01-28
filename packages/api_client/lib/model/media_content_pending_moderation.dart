@@ -15,30 +15,50 @@ class MediaContentPendingModeration {
   MediaContentPendingModeration({
     required this.accountId,
     required this.contentId,
+    this.rejectedCategory,
+    this.rejectedDetails,
   });
 
   AccountId accountId;
 
   ContentId contentId;
 
+  MediaContentModerationRejectedReasonCategory? rejectedCategory;
+
+  MediaContentModerationRejectedReasonDetails? rejectedDetails;
+
   @override
   bool operator ==(Object other) => identical(this, other) || other is MediaContentPendingModeration &&
     other.accountId == accountId &&
-    other.contentId == contentId;
+    other.contentId == contentId &&
+    other.rejectedCategory == rejectedCategory &&
+    other.rejectedDetails == rejectedDetails;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (accountId.hashCode) +
-    (contentId.hashCode);
+    (contentId.hashCode) +
+    (rejectedCategory == null ? 0 : rejectedCategory!.hashCode) +
+    (rejectedDetails == null ? 0 : rejectedDetails!.hashCode);
 
   @override
-  String toString() => 'MediaContentPendingModeration[accountId=$accountId, contentId=$contentId]';
+  String toString() => 'MediaContentPendingModeration[accountId=$accountId, contentId=$contentId, rejectedCategory=$rejectedCategory, rejectedDetails=$rejectedDetails]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'account_id'] = this.accountId;
       json[r'content_id'] = this.contentId;
+    if (this.rejectedCategory != null) {
+      json[r'rejected_category'] = this.rejectedCategory;
+    } else {
+      json[r'rejected_category'] = null;
+    }
+    if (this.rejectedDetails != null) {
+      json[r'rejected_details'] = this.rejectedDetails;
+    } else {
+      json[r'rejected_details'] = null;
+    }
     return json;
   }
 
@@ -63,6 +83,8 @@ class MediaContentPendingModeration {
       return MediaContentPendingModeration(
         accountId: AccountId.fromJson(json[r'account_id'])!,
         contentId: ContentId.fromJson(json[r'content_id'])!,
+        rejectedCategory: MediaContentModerationRejectedReasonCategory.fromJson(json[r'rejected_category']),
+        rejectedDetails: MediaContentModerationRejectedReasonDetails.fromJson(json[r'rejected_details']),
       );
     }
     return null;

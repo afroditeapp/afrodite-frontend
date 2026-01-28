@@ -15,14 +15,15 @@ class PostMediaContentFaceDetectedValue {
   PostMediaContentFaceDetectedValue({
     required this.accountId,
     required this.contentId,
-    required this.value,
+    this.value,
   });
 
   AccountId accountId;
 
   ContentId contentId;
 
-  bool value;
+  /// Set to None to clear the manual override and use the automatic detection value
+  bool? value;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is PostMediaContentFaceDetectedValue &&
@@ -35,7 +36,7 @@ class PostMediaContentFaceDetectedValue {
     // ignore: unnecessary_parenthesis
     (accountId.hashCode) +
     (contentId.hashCode) +
-    (value.hashCode);
+    (value == null ? 0 : value!.hashCode);
 
   @override
   String toString() => 'PostMediaContentFaceDetectedValue[accountId=$accountId, contentId=$contentId, value=$value]';
@@ -44,7 +45,11 @@ class PostMediaContentFaceDetectedValue {
     final json = <String, dynamic>{};
       json[r'account_id'] = this.accountId;
       json[r'content_id'] = this.contentId;
+    if (this.value != null) {
       json[r'value'] = this.value;
+    } else {
+      json[r'value'] = null;
+    }
     return json;
   }
 
@@ -69,7 +74,7 @@ class PostMediaContentFaceDetectedValue {
       return PostMediaContentFaceDetectedValue(
         accountId: AccountId.fromJson(json[r'account_id'])!,
         contentId: ContentId.fromJson(json[r'content_id'])!,
-        value: mapValueOfType<bool>(json, r'value')!,
+        value: mapValueOfType<bool>(json, r'value'),
       );
     }
     return null;
@@ -119,7 +124,6 @@ class PostMediaContentFaceDetectedValue {
   static const requiredKeys = <String>{
     'account_id',
     'content_id',
-    'value',
   };
 }
 

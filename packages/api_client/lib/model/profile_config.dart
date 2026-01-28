@@ -13,25 +13,35 @@ part of openapi.api;
 class ProfileConfig {
   /// Returns a new [ProfileConfig] instance.
   ProfileConfig({
+    this.firstImage,
     this.profileNameRegex,
   });
+
+  FirstImageConfig? firstImage;
 
   String? profileNameRegex;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is ProfileConfig &&
+    other.firstImage == firstImage &&
     other.profileNameRegex == profileNameRegex;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
+    (firstImage == null ? 0 : firstImage!.hashCode) +
     (profileNameRegex == null ? 0 : profileNameRegex!.hashCode);
 
   @override
-  String toString() => 'ProfileConfig[profileNameRegex=$profileNameRegex]';
+  String toString() => 'ProfileConfig[firstImage=$firstImage, profileNameRegex=$profileNameRegex]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
+    if (this.firstImage != null) {
+      json[r'first_image'] = this.firstImage;
+    } else {
+      json[r'first_image'] = null;
+    }
     if (this.profileNameRegex != null) {
       json[r'profile_name_regex'] = this.profileNameRegex;
     } else {
@@ -59,6 +69,7 @@ class ProfileConfig {
       }());
 
       return ProfileConfig(
+        firstImage: FirstImageConfig.fromJson(json[r'first_image']),
         profileNameRegex: mapValueOfType<String>(json, r'profile_name_regex'),
       );
     }

@@ -384,6 +384,8 @@ class ApiClient {
           return FavoriteProfilesPage.fromJson(value);
         case 'FeaturesConfig':
           return FeaturesConfig.fromJson(value);
+        case 'FirstImageConfig':
+          return FirstImageConfig.fromJson(value);
         case 'GetAccountBanTimeResult':
           return GetAccountBanTimeResult.fromJson(value);
         case 'GetAccountDeletionRequestResult':
@@ -460,6 +462,8 @@ class ApiClient {
           return GetSentMessage.fromJson(value);
         case 'GroupValues':
           return GroupValues.fromJson(value);
+        case 'ImageProcessingDynamicConfig':
+          return ImageProcessingDynamicConfig.fromJson(value);
         case 'InitEmailChange':
           return InitEmailChange.fromJson(value);
         case 'InitEmailChangeAdmin':
@@ -572,6 +576,8 @@ class ApiClient {
           return NotificationIdViewed.fromJson(value);
         case 'NotificationStatus':
           return NotificationStatus.fromJson(value);
+        case 'NsfwDetectionThresholds':
+          return NsfwDetectionThresholds.fromJson(value);
         case 'PartialProfileAttributesConfig':
           return PartialProfileAttributesConfig.fromJson(value);
         case 'PendingMessageAcknowledgementList':
@@ -774,8 +780,6 @@ class ApiClient {
           return SetEmailLoginEnabled.fromJson(value);
         case 'SetInitialEmail':
           return SetInitialEmail.fromJson(value);
-        case 'SetMaxPublicKeyCount':
-          return SetMaxPublicKeyCount.fromJson(value);
         case 'SetProfileContent':
           return SetProfileContent.fromJson(value);
         case 'SetProfileName':

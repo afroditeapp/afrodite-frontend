@@ -19,8 +19,7 @@ class DaoReadPrivacy extends DatabaseAccessor<AccountDatabase> with _$DaoReadPri
         return null;
       }
       return api.ChatPrivacySettings(
-        messageStateDelivered: r.messageStateDelivered,
-        messageStateSent: r.messageStateSent,
+        messageStateSeen: r.messageStateSent,
         typingIndicator: r.typingIndicator,
       );
     });
@@ -34,8 +33,7 @@ class DaoReadPrivacy extends DatabaseAccessor<AccountDatabase> with _$DaoReadPri
       return null;
     }
     return api.ChatPrivacySettings(
-      messageStateDelivered: r.messageStateDelivered,
-      messageStateSent: r.messageStateSent,
+      messageStateSeen: r.messageStateSent,
       typingIndicator: r.typingIndicator,
     );
   }

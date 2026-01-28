@@ -25,7 +25,7 @@ class ContentInfoWithFd {
 
   MediaContentType ctype;
 
-  /// Face detected
+  /// Face detected (automatic or manual)
   bool fd;
 
   MediaContentModerationRejectedReasonCategory? rejectedReasonCategory;

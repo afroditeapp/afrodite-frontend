@@ -18201,21 +18201,6 @@ class $ChatPrivacySettingsTable extends schema.ChatPrivacySettings
       'PRIMARY KEY AUTOINCREMENT',
     ),
   );
-  static const VerificationMeta _messageStateDeliveredMeta =
-      const VerificationMeta('messageStateDelivered');
-  @override
-  late final GeneratedColumn<bool> messageStateDelivered =
-      GeneratedColumn<bool>(
-        'message_state_delivered',
-        aliasedName,
-        false,
-        type: DriftSqlType.bool,
-        requiredDuringInsert: false,
-        defaultConstraints: GeneratedColumn.constraintIsAlways(
-          'CHECK ("message_state_delivered" IN (0, 1))',
-        ),
-        defaultValue: const Constant(false),
-      );
   static const VerificationMeta _messageStateSentMeta = const VerificationMeta(
     'messageStateSent',
   );
@@ -18247,12 +18232,7 @@ class $ChatPrivacySettingsTable extends schema.ChatPrivacySettings
     defaultValue: const Constant(false),
   );
   @override
-  List<GeneratedColumn> get $columns => [
-    id,
-    messageStateDelivered,
-    messageStateSent,
-    typingIndicator,
-  ];
+  List<GeneratedColumn> get $columns => [id, messageStateSent, typingIndicator];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -18267,15 +18247,6 @@ class $ChatPrivacySettingsTable extends schema.ChatPrivacySettings
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
-    }
-    if (data.containsKey('message_state_delivered')) {
-      context.handle(
-        _messageStateDeliveredMeta,
-        messageStateDelivered.isAcceptableOrUnknown(
-          data['message_state_delivered']!,
-          _messageStateDeliveredMeta,
-        ),
-      );
     }
     if (data.containsKey('message_state_sent')) {
       context.handle(
@@ -18308,10 +18279,6 @@ class $ChatPrivacySettingsTable extends schema.ChatPrivacySettings
         DriftSqlType.int,
         data['${effectivePrefix}id'],
       )!,
-      messageStateDelivered: attachedDatabase.typeMapping.read(
-        DriftSqlType.bool,
-        data['${effectivePrefix}message_state_delivered'],
-      )!,
       messageStateSent: attachedDatabase.typeMapping.read(
         DriftSqlType.bool,
         data['${effectivePrefix}message_state_sent'],
@@ -18332,12 +18299,10 @@ class $ChatPrivacySettingsTable extends schema.ChatPrivacySettings
 class ChatPrivacySetting extends DataClass
     implements Insertable<ChatPrivacySetting> {
   final int id;
-  final bool messageStateDelivered;
   final bool messageStateSent;
   final bool typingIndicator;
   const ChatPrivacySetting({
     required this.id,
-    required this.messageStateDelivered,
     required this.messageStateSent,
     required this.typingIndicator,
   });
@@ -18345,7 +18310,6 @@ class ChatPrivacySetting extends DataClass
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
-    map['message_state_delivered'] = Variable<bool>(messageStateDelivered);
     map['message_state_sent'] = Variable<bool>(messageStateSent);
     map['typing_indicator'] = Variable<bool>(typingIndicator);
     return map;
@@ -18354,7 +18318,6 @@ class ChatPrivacySetting extends DataClass
   ChatPrivacySettingsCompanion toCompanion(bool nullToAbsent) {
     return ChatPrivacySettingsCompanion(
       id: Value(id),
-      messageStateDelivered: Value(messageStateDelivered),
       messageStateSent: Value(messageStateSent),
       typingIndicator: Value(typingIndicator),
     );
@@ -18367,9 +18330,6 @@ class ChatPrivacySetting extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return ChatPrivacySetting(
       id: serializer.fromJson<int>(json['id']),
-      messageStateDelivered: serializer.fromJson<bool>(
-        json['messageStateDelivered'],
-      ),
       messageStateSent: serializer.fromJson<bool>(json['messageStateSent']),
       typingIndicator: serializer.fromJson<bool>(json['typingIndicator']),
     );
@@ -18379,7 +18339,6 @@ class ChatPrivacySetting extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
-      'messageStateDelivered': serializer.toJson<bool>(messageStateDelivered),
       'messageStateSent': serializer.toJson<bool>(messageStateSent),
       'typingIndicator': serializer.toJson<bool>(typingIndicator),
     };
@@ -18387,21 +18346,16 @@ class ChatPrivacySetting extends DataClass
 
   ChatPrivacySetting copyWith({
     int? id,
-    bool? messageStateDelivered,
     bool? messageStateSent,
     bool? typingIndicator,
   }) => ChatPrivacySetting(
     id: id ?? this.id,
-    messageStateDelivered: messageStateDelivered ?? this.messageStateDelivered,
     messageStateSent: messageStateSent ?? this.messageStateSent,
     typingIndicator: typingIndicator ?? this.typingIndicator,
   );
   ChatPrivacySetting copyWithCompanion(ChatPrivacySettingsCompanion data) {
     return ChatPrivacySetting(
       id: data.id.present ? data.id.value : this.id,
-      messageStateDelivered: data.messageStateDelivered.present
-          ? data.messageStateDelivered.value
-          : this.messageStateDelivered,
       messageStateSent: data.messageStateSent.present
           ? data.messageStateSent.value
           : this.messageStateSent,
@@ -18415,7 +18369,6 @@ class ChatPrivacySetting extends DataClass
   String toString() {
     return (StringBuffer('ChatPrivacySetting(')
           ..write('id: $id, ')
-          ..write('messageStateDelivered: $messageStateDelivered, ')
           ..write('messageStateSent: $messageStateSent, ')
           ..write('typingIndicator: $typingIndicator')
           ..write(')'))
@@ -18423,45 +18376,37 @@ class ChatPrivacySetting extends DataClass
   }
 
   @override
-  int get hashCode =>
-      Object.hash(id, messageStateDelivered, messageStateSent, typingIndicator);
+  int get hashCode => Object.hash(id, messageStateSent, typingIndicator);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is ChatPrivacySetting &&
           other.id == this.id &&
-          other.messageStateDelivered == this.messageStateDelivered &&
           other.messageStateSent == this.messageStateSent &&
           other.typingIndicator == this.typingIndicator);
 }
 
 class ChatPrivacySettingsCompanion extends UpdateCompanion<ChatPrivacySetting> {
   final Value<int> id;
-  final Value<bool> messageStateDelivered;
   final Value<bool> messageStateSent;
   final Value<bool> typingIndicator;
   const ChatPrivacySettingsCompanion({
     this.id = const Value.absent(),
-    this.messageStateDelivered = const Value.absent(),
     this.messageStateSent = const Value.absent(),
     this.typingIndicator = const Value.absent(),
   });
   ChatPrivacySettingsCompanion.insert({
     this.id = const Value.absent(),
-    this.messageStateDelivered = const Value.absent(),
     this.messageStateSent = const Value.absent(),
     this.typingIndicator = const Value.absent(),
   });
   static Insertable<ChatPrivacySetting> custom({
     Expression<int>? id,
-    Expression<bool>? messageStateDelivered,
     Expression<bool>? messageStateSent,
     Expression<bool>? typingIndicator,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
-      if (messageStateDelivered != null)
-        'message_state_delivered': messageStateDelivered,
       if (messageStateSent != null) 'message_state_sent': messageStateSent,
       if (typingIndicator != null) 'typing_indicator': typingIndicator,
     });
@@ -18469,14 +18414,11 @@ class ChatPrivacySettingsCompanion extends UpdateCompanion<ChatPrivacySetting> {
 
   ChatPrivacySettingsCompanion copyWith({
     Value<int>? id,
-    Value<bool>? messageStateDelivered,
     Value<bool>? messageStateSent,
     Value<bool>? typingIndicator,
   }) {
     return ChatPrivacySettingsCompanion(
       id: id ?? this.id,
-      messageStateDelivered:
-          messageStateDelivered ?? this.messageStateDelivered,
       messageStateSent: messageStateSent ?? this.messageStateSent,
       typingIndicator: typingIndicator ?? this.typingIndicator,
     );
@@ -18487,11 +18429,6 @@ class ChatPrivacySettingsCompanion extends UpdateCompanion<ChatPrivacySetting> {
     final map = <String, Expression>{};
     if (id.present) {
       map['id'] = Variable<int>(id.value);
-    }
-    if (messageStateDelivered.present) {
-      map['message_state_delivered'] = Variable<bool>(
-        messageStateDelivered.value,
-      );
     }
     if (messageStateSent.present) {
       map['message_state_sent'] = Variable<bool>(messageStateSent.value);
@@ -18506,7 +18443,6 @@ class ChatPrivacySettingsCompanion extends UpdateCompanion<ChatPrivacySetting> {
   String toString() {
     return (StringBuffer('ChatPrivacySettingsCompanion(')
           ..write('id: $id, ')
-          ..write('messageStateDelivered: $messageStateDelivered, ')
           ..write('messageStateSent: $messageStateSent, ')
           ..write('typingIndicator: $typingIndicator')
           ..write(')'))

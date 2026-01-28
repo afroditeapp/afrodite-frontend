@@ -6,7 +6,6 @@ lib/api.dart
 lib/api/account_admin_api.dart
 lib/api/account_api.dart
 lib/api/account_bot_api.dart
-lib/api/chat_admin_api.dart
 lib/api/chat_api.dart
 lib/api/chat_transfer_api.dart
 lib/api/common_admin_api.dart
@@ -124,6 +123,7 @@ lib/model/event_to_server_type.dart
 lib/model/event_type.dart
 lib/model/favorite_profiles_page.dart
 lib/model/features_config.dart
+lib/model/first_image_config.dart
 lib/model/get_account_ban_time_result.dart
 lib/model/get_account_deletion_request_result.dart
 lib/model/get_account_id_from_email_result.dart
@@ -162,6 +162,7 @@ lib/model/get_push_notification_info.dart
 lib/model/get_report_list.dart
 lib/model/get_sent_message.dart
 lib/model/group_values.dart
+lib/model/image_processing_dynamic_config.dart
 lib/model/init_email_change.dart
 lib/model/init_email_change_admin.dart
 lib/model/init_email_change_result.dart
@@ -218,6 +219,7 @@ lib/model/news_translation_version.dart
 lib/model/notification_id.dart
 lib/model/notification_id_viewed.dart
 lib/model/notification_status.dart
+lib/model/nsfw_detection_thresholds.dart
 lib/model/partial_profile_attributes_config.dart
 lib/model/pending_message_acknowledgement_list.dart
 lib/model/pending_message_id.dart
@@ -319,7 +321,6 @@ lib/model/set_account_ban_state.dart
 lib/model/set_account_setup.dart
 lib/model/set_email_login_enabled.dart
 lib/model/set_initial_email.dart
-lib/model/set_max_public_key_count.dart
 lib/model/set_profile_content.dart
 lib/model/set_profile_name.dart
 lib/model/sign_in_with_apple_info.dart

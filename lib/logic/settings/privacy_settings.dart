@@ -21,8 +21,6 @@ class ResetEdited extends PrivacySettingsEvent {}
 
 class SavePrivacySettings extends PrivacySettingsEvent {}
 
-class ToggleMessageStateDelivered extends PrivacySettingsEvent {}
-
 class ToggleMessageStateSent extends PrivacySettingsEvent {}
 
 class ToggleTypingIndicator extends PrivacySettingsEvent {}
@@ -65,8 +63,7 @@ class PrivacySettingsBloc extends Bloc<PrivacySettingsEvent, PrivacySettingsData
       if (settings != null) {
         emit(
           state.copyWith(
-            messageStateDelivered: settings.messageStateDelivered,
-            messageStateSent: settings.messageStateSent,
+            messageStateSent: settings.messageStateSeen,
             typingIndicator: settings.typingIndicator,
           ),
         );
@@ -90,8 +87,7 @@ class PrivacySettingsBloc extends Bloc<PrivacySettingsEvent, PrivacySettingsData
       emit(state.copyWith(updateState: const UpdateInProgress()));
 
       final chatSettings = ChatPrivacySettings(
-        messageStateDelivered: currentState.valueMessageStateDelivered(),
-        messageStateSent: currentState.valueMessageStateSent(),
+        messageStateSeen: currentState.valueMessageStateSent(),
         typingIndicator: currentState.valueTypingIndicator(),
       );
       final profileSettings = ProfilePrivacySettings(
@@ -146,14 +142,6 @@ class PrivacySettingsBloc extends Bloc<PrivacySettingsEvent, PrivacySettingsData
           ),
         );
       }
-    });
-    on<ToggleMessageStateDelivered>((data, emit) async {
-      _updateEditedValue(
-        emit,
-        () => state.edited.messageStateDelivered == null,
-        () => state.edited.copyWith(messageStateDelivered: !state.messageStateDelivered),
-        () => state.edited.copyWith(messageStateDelivered: null),
-      );
     });
     on<ToggleMessageStateSent>((data, emit) async {
       _updateEditedValue(

@@ -14,14 +14,11 @@ class ChatConfig {
   /// Returns a new [ChatConfig] instance.
   ChatConfig({
     this.checkOnlineStatus,
-    this.messageStateDelivered = false,
     this.messageStateSeen = false,
     this.typingIndicator,
   });
 
   CheckOnlineStatusConfig? checkOnlineStatus;
-
-  bool messageStateDelivered;
 
   bool messageStateSeen;
 
@@ -30,7 +27,6 @@ class ChatConfig {
   @override
   bool operator ==(Object other) => identical(this, other) || other is ChatConfig &&
     other.checkOnlineStatus == checkOnlineStatus &&
-    other.messageStateDelivered == messageStateDelivered &&
     other.messageStateSeen == messageStateSeen &&
     other.typingIndicator == typingIndicator;
 
@@ -38,12 +34,11 @@ class ChatConfig {
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (checkOnlineStatus == null ? 0 : checkOnlineStatus!.hashCode) +
-    (messageStateDelivered.hashCode) +
     (messageStateSeen.hashCode) +
     (typingIndicator == null ? 0 : typingIndicator!.hashCode);
 
   @override
-  String toString() => 'ChatConfig[checkOnlineStatus=$checkOnlineStatus, messageStateDelivered=$messageStateDelivered, messageStateSeen=$messageStateSeen, typingIndicator=$typingIndicator]';
+  String toString() => 'ChatConfig[checkOnlineStatus=$checkOnlineStatus, messageStateSeen=$messageStateSeen, typingIndicator=$typingIndicator]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -52,7 +47,6 @@ class ChatConfig {
     } else {
       json[r'check_online_status'] = null;
     }
-      json[r'message_state_delivered'] = this.messageStateDelivered;
       json[r'message_state_seen'] = this.messageStateSeen;
     if (this.typingIndicator != null) {
       json[r'typing_indicator'] = this.typingIndicator;
@@ -82,7 +76,6 @@ class ChatConfig {
 
       return ChatConfig(
         checkOnlineStatus: CheckOnlineStatusConfig.fromJson(json[r'check_online_status']),
-        messageStateDelivered: mapValueOfType<bool>(json, r'message_state_delivered') ?? false,
         messageStateSeen: mapValueOfType<bool>(json, r'message_state_seen') ?? false,
         typingIndicator: TypingIndicatorConfig.fromJson(json[r'typing_indicator']),
       );

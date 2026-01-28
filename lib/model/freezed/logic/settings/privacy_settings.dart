@@ -9,7 +9,6 @@ class PrivacySettingsData with _$PrivacySettingsData, UpdateStateProvider {
   PrivacySettingsData._();
   factory PrivacySettingsData({
     @Default(UpdateIdle()) UpdateState updateState,
-    @Default(false) bool messageStateDelivered,
     @Default(false) bool messageStateSent,
     @Default(false) bool typingIndicator,
     @Default(false) bool lastSeenTime,
@@ -19,14 +18,12 @@ class PrivacySettingsData with _$PrivacySettingsData, UpdateStateProvider {
     required EditedPrivacySettingsData edited,
   }) = _PrivacySettingsData;
 
-  bool valueMessageStateDelivered() => edited.messageStateDelivered ?? messageStateDelivered;
   bool valueMessageStateSent() => edited.messageStateSent ?? messageStateSent;
   bool valueTypingIndicator() => edited.typingIndicator ?? typingIndicator;
   bool valueLastSeenTime() => edited.lastSeenTime ?? lastSeenTime;
   bool valueOnlineStatus() => edited.onlineStatus ?? onlineStatus;
 
   bool unsavedChanges() =>
-      edited.messageStateDelivered != null ||
       edited.messageStateSent != null ||
       edited.typingIndicator != null ||
       edited.lastSeenTime != null ||
@@ -37,7 +34,6 @@ class PrivacySettingsData with _$PrivacySettingsData, UpdateStateProvider {
 class EditedPrivacySettingsData with _$EditedPrivacySettingsData {
   EditedPrivacySettingsData._();
   factory EditedPrivacySettingsData({
-    bool? messageStateDelivered,
     bool? messageStateSent,
     bool? typingIndicator,
     bool? lastSeenTime,
