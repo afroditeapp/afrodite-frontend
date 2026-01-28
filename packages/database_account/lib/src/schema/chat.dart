@@ -49,7 +49,7 @@ class DailyLikesLeft extends SingleRowTable {
 }
 
 class ChatPrivacySettings extends SingleRowTable {
-  BoolColumn get messageStateSent => boolean().withDefault(const Constant(false))();
+  BoolColumn get messageStateSeen => boolean().withDefault(const Constant(false))();
   BoolColumn get typingIndicator => boolean().withDefault(const Constant(false))();
 }
 

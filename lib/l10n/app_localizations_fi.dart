@@ -1261,7 +1261,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get privacy_settings_last_seen_time => 'Last seen time';
 
   @override
-  String get privacy_settings_message_state_sent => 'Message read receipts';
+  String get privacy_settings_message_state_seen => 'Message read receipts';
 
   @override
   String get privacy_settings_online_status => 'Online status';

@@ -2338,11 +2338,11 @@ abstract class AppLocalizations {
   /// **'Last seen time'**
   String get privacy_settings_last_seen_time;
 
-  /// Setting for message sent state
+  /// Setting for message seen state
   ///
   /// In en, this message translates to:
   /// **'Message read receipts'**
-  String get privacy_settings_message_state_sent;
+  String get privacy_settings_message_state_seen;
 
   /// Setting for online status visibility
   ///

@@ -1640,9 +1640,9 @@
   "@privacy_settings_last_seen_time": {
     "description": "Setting for last seen time visibility"
   },
-  "privacy_settings_message_state_sent": "Message read receipts",
-  "@privacy_settings_message_state_sent": {
-    "description": "Setting for message sent state"
+  "privacy_settings_message_state_seen": "Message read receipts",
+  "@privacy_settings_message_state_seen": {
+    "description": "Setting for message seen state"
   },
   "privacy_settings_online_status": "Online status",
   "@privacy_settings_online_status": {

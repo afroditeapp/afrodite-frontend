@@ -182,7 +182,7 @@
     <!-- Privacy settings screen -->
     <string name="privacy_settings_screen_title" description="Title for privacy settings screen">Privacy</string>
     <string name="privacy_settings_screen_chat_category" description="Title for chat privacy settings category">Chat</string>
-    <string name="privacy_settings_message_state_sent" description="Setting for message sent state">Message read receipts</string>
+    <string name="privacy_settings_message_state_seen" description="Setting for message seen state">Message read receipts</string>
     <string name="privacy_settings_typing_indicator" description="Setting for typing indicator">Typing indicator</string>
     <string name="privacy_settings_screen_profile_category" description="Title for profile privacy settings category">Profile</string>
     <string name="privacy_settings_last_seen_time" description="Setting for last seen time visibility">Last seen time</string>
