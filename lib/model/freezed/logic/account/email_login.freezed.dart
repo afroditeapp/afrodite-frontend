@@ -57,7 +57,7 @@ abstract class _EmailLoginBlocData implements EmailLoginBlocData {
 class _$EmailLoginBlocDataImpl with DiagnosticableTreeMixin implements _EmailLoginBlocData {
   static const bool _isLoadingDefaultValue = false;
   static const UpdateState _updateStateDefaultValue = UpdateIdle();
-  
+
   _$EmailLoginBlocDataImpl({
     this.isLoading = _isLoadingDefaultValue,
     this.error,

@@ -48,7 +48,7 @@ abstract class _ClientFeaturesConfigData extends ClientFeaturesConfigData {
 /// @nodoc
 class _$ClientFeaturesConfigDataImpl extends _ClientFeaturesConfigData with DiagnosticableTreeMixin {
   static const bool _loadingCompleteDefaultValue = false;
-  
+
   _$ClientFeaturesConfigDataImpl({
     required this.config,
     this.profileNameRegex,

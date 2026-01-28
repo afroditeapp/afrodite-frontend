@@ -67,7 +67,7 @@ abstract class _SearchSettingsData extends SearchSettingsData {
 class _$SearchSettingsDataImpl extends _SearchSettingsData with DiagnosticableTreeMixin {
   static const UpdateState _updateStateDefaultValue = UpdateIdle();
   static const GenderSearchSettingsAll _genderSearchSettingsAllDefaultValue = GenderSearchSettingsAll();
-  
+
   _$SearchSettingsDataImpl({
     this.updateState = _updateStateDefaultValue,
     this.genderSearchSettingsAll = _genderSearchSettingsAllDefaultValue,

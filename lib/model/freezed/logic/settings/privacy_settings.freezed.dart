@@ -66,7 +66,7 @@ class _$PrivacySettingsDataImpl extends _PrivacySettingsData with Diagnosticable
   static const bool _onlineStatusDefaultValue = false;
   static const bool _profilePrivacyLoadingDefaultValue = false;
   static const bool _profilePrivacyLoadErrorDefaultValue = false;
-  
+
   _$PrivacySettingsDataImpl({
     this.updateState = _updateStateDefaultValue,
     this.messageStateSeen = _messageStateSeenDefaultValue,

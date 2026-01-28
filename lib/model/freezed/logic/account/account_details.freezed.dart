@@ -58,7 +58,7 @@ class _$AccountDetailsBlocDataImpl with DiagnosticableTreeMixin implements _Acco
   static const bool _isLoadingDefaultValue = false;
   static const bool _isErrorDefaultValue = false;
   static const UpdateState _updateStateDefaultValue = UpdateIdle();
-  
+
   _$AccountDetailsBlocDataImpl({
     this.isLoading = _isLoadingDefaultValue,
     this.isError = _isErrorDefaultValue,

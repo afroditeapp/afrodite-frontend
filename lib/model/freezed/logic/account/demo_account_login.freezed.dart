@@ -44,7 +44,7 @@ abstract class _DemoAccountLoginData implements DemoAccountLoginData {
 /// @nodoc
 class _$DemoAccountLoginDataImpl with DiagnosticableTreeMixin implements _DemoAccountLoginData {
   static const bool _loginProgressVisibleDefaultValue = false;
-  
+
   _$DemoAccountLoginDataImpl({
     this.username,
     this.password,

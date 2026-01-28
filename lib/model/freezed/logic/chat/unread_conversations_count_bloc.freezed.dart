@@ -31,7 +31,7 @@ abstract class _UnreadConversationsCountData extends UnreadConversationsCountDat
 /// @nodoc
 class _$UnreadConversationsCountDataImpl extends _UnreadConversationsCountData with DiagnosticableTreeMixin {
   static const int _unreadConversationsDefaultValue = 0;
-  
+
   _$UnreadConversationsCountDataImpl({
     this.unreadConversations = _unreadConversationsDefaultValue,
   }) : super._();

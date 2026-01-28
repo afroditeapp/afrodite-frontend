@@ -45,7 +45,7 @@ abstract class _ProfileStatisticsHistoryData implements ProfileStatisticsHistory
 class _$ProfileStatisticsHistoryDataImpl with DiagnosticableTreeMixin implements _ProfileStatisticsHistoryData {
   static const bool _isLoadingDefaultValue = true;
   static const bool _isErrorDefaultValue = false;
-  
+
   _$ProfileStatisticsHistoryDataImpl({
     this.isLoading = _isLoadingDefaultValue,
     this.isError = _isErrorDefaultValue,

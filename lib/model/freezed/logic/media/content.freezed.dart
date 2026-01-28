@@ -49,7 +49,7 @@ abstract class _ContentData extends ContentData {
 class _$ContentDataImpl extends _ContentData {
   static const bool _isLoadingPrimaryContentDefaultValue = true;
   static const bool _isLoadingSecurityContentDefaultValue = true;
-  
+
   _$ContentDataImpl({
     this.primaryContent,
     this.isLoadingPrimaryContent = _isLoadingPrimaryContentDefaultValue,

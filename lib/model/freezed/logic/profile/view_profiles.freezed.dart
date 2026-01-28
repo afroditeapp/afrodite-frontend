@@ -76,7 +76,7 @@ class _$ViewProfilesDataImpl with DiagnosticableTreeMixin implements _ViewProfil
   static const bool _showLikeFailedBecauseAlreadyMatchDefaultValue = false;
   static const bool _showLikeFailedBecauseOfLimitDefaultValue = false;
   static const bool _showGenericErrorDefaultValue = false;
-  
+
   _$ViewProfilesDataImpl({
     required this.profile,
     this.isFavorite = _isFavoriteDefaultValue,

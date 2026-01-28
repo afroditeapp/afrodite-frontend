@@ -57,7 +57,7 @@ class _$SelectContentDataImpl implements _SelectContentData {
   static const bool _showAddNewContentDefaultValue = false;
   static const bool _isLoadingDefaultValue = false;
   static const bool _isErrorDefaultValue = false;
-  
+
   _$SelectContentDataImpl({
     this.availableContent = _availableContentDefaultValue,
     this.accountContent,

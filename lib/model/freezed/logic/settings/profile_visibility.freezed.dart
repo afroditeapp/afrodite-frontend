@@ -46,7 +46,7 @@ abstract class _ProfileVisibilityData extends ProfileVisibilityData {
 class _$ProfileVisibilityDataImpl extends _ProfileVisibilityData with DiagnosticableTreeMixin {
   static const UpdateState _updateStateDefaultValue = UpdateIdle();
   static const ProfileVisibility _visiblityDefaultValue = ProfileVisibility.pendingPrivate;
-  
+
   _$ProfileVisibilityDataImpl({
     this.updateState = _updateStateDefaultValue,
     this.visiblity = _visiblityDefaultValue,

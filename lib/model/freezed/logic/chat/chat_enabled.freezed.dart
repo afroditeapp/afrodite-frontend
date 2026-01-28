@@ -52,7 +52,7 @@ class _$ChatEnabledDataImpl implements _ChatEnabledData {
   static const bool _chatEnabledDefaultValue = true;
   static const bool _isEnablingDefaultValue = false;
   static const bool _showPendingMessagesWarningDefaultValue = false;
-  
+
   const _$ChatEnabledDataImpl({
     this.chatEnabled = _chatEnabledDefaultValue,
     this.isEnabling = _isEnablingDefaultValue,

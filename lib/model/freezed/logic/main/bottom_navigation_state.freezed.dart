@@ -62,7 +62,7 @@ class _$BottomNavigationStateDataImpl with DiagnosticableTreeMixin implements _B
   static const bool _isTappedAgainLikesDefaultValue = false;
   static const bool _isTappedAgainChatsDefaultValue = false;
   static const bool _isTappedAgainSettingsDefaultValue = false;
-  
+
   _$BottomNavigationStateDataImpl({
     this.screen = _screenDefaultValue,
     this.isScrolledProfile = _isScrolledProfileDefaultValue,

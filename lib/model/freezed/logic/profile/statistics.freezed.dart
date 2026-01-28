@@ -45,7 +45,7 @@ abstract class _StatisticsData implements StatisticsData {
 class _$StatisticsDataImpl with DiagnosticableTreeMixin implements _StatisticsData {
   static const bool _isLoadingDefaultValue = true;
   static const bool _isErrorDefaultValue = false;
-  
+
   _$StatisticsDataImpl({
     this.isLoading = _isLoadingDefaultValue,
     this.isError = _isErrorDefaultValue,

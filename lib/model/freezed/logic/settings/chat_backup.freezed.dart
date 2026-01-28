@@ -55,7 +55,7 @@ abstract class _ChatBackupData extends ChatBackupData {
 class _$ChatBackupDataImpl extends _ChatBackupData with DiagnosticableTreeMixin {
   static const bool _isLoadingDefaultValue = false;
   static const bool _isErrorDefaultValue = false;
-  
+
   _$ChatBackupDataImpl({
     this.isLoading = _isLoadingDefaultValue,
     this.isError = _isErrorDefaultValue,

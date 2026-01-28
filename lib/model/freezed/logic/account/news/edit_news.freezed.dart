@@ -50,7 +50,7 @@ class _$EditNewsDataImpl extends _EditNewsData with DiagnosticableTreeMixin {
   static const bool _isLoadingDefaultValue = true;
   static const bool _isErrorDefaultValue = false;
   static const bool _isVisibleToUsersDefaultValue = false;
-  
+
   _$EditNewsDataImpl({
     required this.supportedLocales,
     this.editableTranslations = _editableTranslationsDefaultValue,

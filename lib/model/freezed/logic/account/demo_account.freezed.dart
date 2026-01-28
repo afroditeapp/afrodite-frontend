@@ -38,7 +38,7 @@ class _$DemoAccountBlocDataImpl with DiagnosticableTreeMixin implements _DemoAcc
   static const bool _isLoadingDefaultValue = true;
   static const bool _logoutInProgressDefaultValue = false;
   static const UnmodifiableList<AccessibleAccount> _accountsDefaultValue = UnmodifiableList<AccessibleAccount>.empty();
-  
+
   _$DemoAccountBlocDataImpl({
     this.isLoading = _isLoadingDefaultValue,
     this.logoutInProgress = _logoutInProgressDefaultValue,

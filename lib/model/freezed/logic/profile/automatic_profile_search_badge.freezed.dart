@@ -31,7 +31,7 @@ abstract class _AutomaticProfileSearchBadgeData extends AutomaticProfileSearchBa
 /// @nodoc
 class _$AutomaticProfileSearchBadgeDataImpl extends _AutomaticProfileSearchBadgeData with DiagnosticableTreeMixin {
   static const AutomaticProfileSearchBadgeState _badgeStateDefaultValue = AutomaticProfileSearchBadgeState.defaultValue;
-  
+
   _$AutomaticProfileSearchBadgeDataImpl({
     this.badgeState = _badgeStateDefaultValue,
   }) : super._();

@@ -48,7 +48,7 @@ abstract class _AttributesData extends AttributesData {
 /// @nodoc
 class _$AttributesDataImpl extends _AttributesData {
   static const bool _loadingCompleteDefaultValue = false;
-  
+
   _$AttributesDataImpl({
     this.locale,
     this.attributes,

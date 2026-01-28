@@ -45,7 +45,7 @@ abstract class _ViewNewsData implements ViewNewsData {
 class _$ViewNewsDataImpl with DiagnosticableTreeMixin implements _ViewNewsData {
   static const bool _isLoadingDefaultValue = true;
   static const bool _isErrorDefaultValue = false;
-  
+
   _$ViewNewsDataImpl({
     this.isLoading = _isLoadingDefaultValue,
     this.isError = _isErrorDefaultValue,

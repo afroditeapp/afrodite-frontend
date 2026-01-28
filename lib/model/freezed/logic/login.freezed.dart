@@ -31,7 +31,7 @@ abstract class _LoginBlocData extends LoginBlocData {
 /// @nodoc
 class _$LoginBlocDataImpl extends _LoginBlocData with DiagnosticableTreeMixin {
   static const bool _logoutInProgressDefaultValue = false;
-  
+
   _$LoginBlocDataImpl({
     this.logoutInProgress = _logoutInProgressDefaultValue,
   }) : super._();

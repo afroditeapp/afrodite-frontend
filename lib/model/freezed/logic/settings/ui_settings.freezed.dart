@@ -31,7 +31,7 @@ abstract class _UiSettingsData extends UiSettingsData {
 /// @nodoc
 class _$UiSettingsDataImpl extends _UiSettingsData with DiagnosticableTreeMixin {
   static const GridSettings _gridSettingsDefaultValue = GridSettings();
-  
+
   _$UiSettingsDataImpl({
     this.gridSettings = _gridSettingsDefaultValue,
   }) : super._();

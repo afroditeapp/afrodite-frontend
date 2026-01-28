@@ -65,7 +65,7 @@ class _$ProfileFiltersDataImpl extends _ProfileFiltersData with DiagnosticableTr
   static const Map<int, ProfileAttributeFilterValueUpdate> _attributeIdAndAttributeFilterMapDefaultValue = {};
   static const int _minAgeDefaultValue = MIN_AGE;
   static const int _maxAgeDefaultValue = MAX_AGE;
-  
+
   _$ProfileFiltersDataImpl({
     this.updateState = _updateStateDefaultValue,
     this.showAdvancedFilters = _showAdvancedFiltersDefaultValue,
@@ -237,7 +237,7 @@ class _$EditedFiltersDataImpl extends _EditedFiltersData with DiagnosticableTree
   static const EditValue<ProfileEditedTimeFilter> _profileEditedFilterDefaultValue = NoEdit();
   static const EditValue<ProfileTextMinCharactersFilter> _profileTextMinCharactersFilterDefaultValue = NoEdit();
   static const EditValue<ProfileTextMaxCharactersFilter> _profileTextMaxCharactersFilterDefaultValue = NoEdit();
-  
+
   _$EditedFiltersDataImpl({
     this.attributeIdAndAttributeFilterMap,
     this.lastSeenTimeFilter = _lastSeenTimeFilterDefaultValue,

@@ -30,7 +30,7 @@ abstract class _NotificationPayloadHandlerData implements NotificationPayloadHan
 /// @nodoc
 class _$NotificationPayloadHandlerDataImpl with DiagnosticableTreeMixin implements _NotificationPayloadHandlerData {
   static const UnmodifiableList<ParsedPayload> _toBeHandledDefaultValue = UnmodifiableList<ParsedPayload>.empty();
-  
+
   _$NotificationPayloadHandlerDataImpl({
     this.toBeHandled = _toBeHandledDefaultValue,
   });

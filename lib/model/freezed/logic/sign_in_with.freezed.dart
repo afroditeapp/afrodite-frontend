@@ -30,7 +30,7 @@ abstract class _SignInWithData implements SignInWithData {
 /// @nodoc
 class _$SignInWithDataImpl with DiagnosticableTreeMixin implements _SignInWithData {
   static const bool _showProgressDefaultValue = false;
-  
+
   _$SignInWithDataImpl({
     this.showProgress = _showProgressDefaultValue,
   });

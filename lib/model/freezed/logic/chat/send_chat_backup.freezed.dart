@@ -30,7 +30,7 @@ abstract class _SendBackupData implements SendBackupData {
 /// @nodoc
 class _$SendBackupDataImpl with DiagnosticableTreeMixin implements _SendBackupData {
   static const SendBackupState _stateDefaultValue = Idle();
-  
+
   _$SendBackupDataImpl({
     this.state = _stateDefaultValue,
   });

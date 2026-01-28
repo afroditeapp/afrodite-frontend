@@ -39,7 +39,7 @@ class _$NewReceivedLikesAvailableDataImpl extends _NewReceivedLikesAvailableData
   static const int _newReceivedLikesCountDefaultValue = 0;
   static const bool _triggerReceivedLikesRefreshDefaultValue = false;
   static const bool _showRefreshButtonDefaultValue = false;
-  
+
   _$NewReceivedLikesAvailableDataImpl({
     this.newReceivedLikesCount = _newReceivedLikesCountDefaultValue,
     this.triggerReceivedLikesRefresh = _triggerReceivedLikesRefreshDefaultValue,

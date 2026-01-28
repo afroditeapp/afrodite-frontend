@@ -89,7 +89,7 @@ class _$InitialSetupDataImpl extends _InitialSetupData {
   static const bool _chatInfoUnderstoodDefaultValue = false;
   static const bool _sendingInProgressDefaultValue = false;
   static const bool _loadingCompleteDefaultValue = false;
-  
+
   _$InitialSetupDataImpl({
     this.email,
     this.isAdult,

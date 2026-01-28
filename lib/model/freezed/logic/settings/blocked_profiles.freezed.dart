@@ -31,7 +31,7 @@ abstract class _BlockedProfilesData extends BlockedProfilesData {
 /// @nodoc
 class _$BlockedProfilesDataImpl extends _BlockedProfilesData with DiagnosticableTreeMixin {
   static const bool _unblockOngoingDefaultValue = false;
-  
+
   _$BlockedProfilesDataImpl({
     this.unblockOngoing = _unblockOngoingDefaultValue,
   }) : super._();

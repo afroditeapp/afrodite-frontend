@@ -48,7 +48,7 @@ abstract class _ReceiveBackupData implements ReceiveBackupData {
 class _$ReceiveBackupDataImpl with DiagnosticableTreeMixin implements _ReceiveBackupData {
   static const ReceiveBackupConnectionState _stateDefaultValue = Connecting();
   static const int _transferredBytesDefaultValue = 0;
-  
+
   _$ReceiveBackupDataImpl({
     this.state = _stateDefaultValue,
     this.pairingCode,

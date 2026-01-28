@@ -54,7 +54,7 @@ class _$ConversationDataImpl extends _ConversationData with DiagnosticableTreeMi
   static const bool _isMessageRemovingInProgressDefaultValue = false;
   static const bool _isMessageResendingInProgressDefaultValue = false;
   static const bool _isRetryPublicKeyDownloadInProgressDefaultValue = false;
-  
+
   _$ConversationDataImpl({
     required this.accountId,
     this.isMatch = _isMatchDefaultValue,

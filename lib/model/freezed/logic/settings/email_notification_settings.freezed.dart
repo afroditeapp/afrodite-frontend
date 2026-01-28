@@ -45,7 +45,7 @@ abstract class _EmailNotificationSettingsData extends EmailNotificationSettingsD
 /// @nodoc
 class _$EmailNotificationSettingsDataImpl extends _EmailNotificationSettingsData with DiagnosticableTreeMixin {
   static const UpdateState _updateStateDefaultValue = UpdateIdle();
-  
+
   _$EmailNotificationSettingsDataImpl({
     this.updateState = _updateStateDefaultValue,
     required this.categories,
@@ -136,7 +136,7 @@ abstract class _EmailNotificationCategoryData extends EmailNotificationCategoryD
 class _$EmailNotificationCategoryDataImpl extends _EmailNotificationCategoryData with DiagnosticableTreeMixin {
   static const bool _messagesDefaultValue = true;
   static const bool _likesDefaultValue = true;
-  
+
   _$EmailNotificationCategoryDataImpl({
     this.messages = _messagesDefaultValue,
     this.likes = _likesDefaultValue,

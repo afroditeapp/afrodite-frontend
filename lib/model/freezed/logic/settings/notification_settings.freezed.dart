@@ -52,7 +52,7 @@ abstract class _NotificationSettingsData extends NotificationSettingsData {
 class _$NotificationSettingsDataImpl extends _NotificationSettingsData with DiagnosticableTreeMixin {
   static const UpdateState _updateStateDefaultValue = UpdateIdle();
   static const bool _areNotificationsEnabledDefaultValue = false;
-  
+
   _$NotificationSettingsDataImpl({
     this.updateState = _updateStateDefaultValue,
     this.areNotificationsEnabled = _areNotificationsEnabledDefaultValue,
@@ -177,7 +177,7 @@ class _$NotificationCategoryDataImpl extends _NotificationCategoryData with Diag
   static const bool _profileStringModerationCompletedDefaultValue = true;
   static const bool _newsDefaultValue = true;
   static const bool _automaticProfileSearchDefaultValue = true;
-  
+
   _$NotificationCategoryDataImpl({
     this.messages = _messagesDefaultValue,
     this.likes = _likesDefaultValue,

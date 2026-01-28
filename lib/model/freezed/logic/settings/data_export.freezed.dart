@@ -46,7 +46,7 @@ abstract class _DataExportData extends DataExportData {
 class _$DataExportDataImpl extends _DataExportData with DiagnosticableTreeMixin {
   static const bool _isLoadingDefaultValue = false;
   static const bool _isErrorDefaultValue = false;
-  
+
   _$DataExportDataImpl({
     this.isLoading = _isLoadingDefaultValue,
     this.isError = _isErrorDefaultValue,

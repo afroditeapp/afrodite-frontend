@@ -51,7 +51,7 @@ abstract class _AccountBlocData extends AccountBlocData {
 /// @nodoc
 class _$AccountBlocDataImpl extends _AccountBlocData with DiagnosticableTreeMixin {
   static const bool _emailVerifiedDefaultValue = true;
-  
+
   _$AccountBlocDataImpl({
     this.email,
     this.emailVerified = _emailVerifiedDefaultValue,

@@ -31,7 +31,7 @@ abstract class _NewsCountData extends NewsCountData {
 /// @nodoc
 class _$NewsCountDataImpl extends _NewsCountData with DiagnosticableTreeMixin {
   static const int _newsCountDefaultValue = 0;
-  
+
   _$NewsCountDataImpl({
     this.newsCount = _newsCountDefaultValue,
   }) : super._();
