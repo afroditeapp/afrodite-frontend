@@ -12,6 +12,7 @@ import "package:app/ui/normal/settings/my_profile.dart";
 import "package:app/ui/normal/settings/profile/edit_profile.dart";
 import "package:app/ui/utils/notification_payload_handler.dart";
 import "package:app/utils/immutable_list.dart";
+import "package:app/utils/result.dart";
 import "package:bloc_concurrency/bloc_concurrency.dart";
 import "package:flutter/foundation.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
@@ -115,13 +116,18 @@ class MainStateBloc extends Bloc<MainStateEvent, MainState> {
       _log.info("Handling app launch push notification payload");
       navigationState = await handleAppLaunchNotificationPayload(appLaunchPayloadOther, r);
     } else if (!kIsWeb && defaultTargetPlatform == TargetPlatform.android) {
-      final editingInProgress = await r.accountDb.db.daoReadProgress
-          .isEditProfileEditingInProgress();
+      final editingInProgress =
+          await r.accountDb
+              .accountData((db) => db.progress.isEditProfileEditingInProgress())
+              .ok() ??
+          false;
       if (editingInProgress) {
-        final profileEntry = await r.accountDb.db.daoReadMyProfile
-            .getProfileEntryForMyProfile()
-            .first;
-        final progress = await r.accountDb.db.daoReadProgress.watchEditProfileProgress().first;
+        final profileEntry = await r.accountDb
+            .accountStreamSingle((db) => db.myProfile.getProfileEntryForMyProfile())
+            .ok();
+        final progress = await r.accountDb
+            .accountStreamSingle((db) => db.progress.watchEditProfileProgress())
+            .ok();
         if (profileEntry != null) {
           _log.info("Incomplete profile editing detected");
           final pages = <MyPage<Object>>[

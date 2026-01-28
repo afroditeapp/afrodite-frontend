@@ -11,15 +11,15 @@ import 'package:rxdart/rxdart.dart';
 final _log = Logger("AccountDatabaseManager");
 
 class AccountDatabaseManager {
-  final AccountDatabase db;
-  AccountDatabaseManager(this.db);
+  final AccountDatabase _db;
+  AccountDatabaseManager(AccountDatabase db) : _db = db;
 
   // Access current account database
 
   Stream<T?> accountStream<T extends Object>(
     Stream<T?> Function(AccountDatabaseRead) mapper,
   ) async* {
-    final accountDatabase = db;
+    final accountDatabase = _db;
     yield* mapper(accountDatabase.read)
     // try-catch does not work with *yield, so await for would be required, but
     // events seem not to flow properly with that.
@@ -67,7 +67,7 @@ class AccountDatabaseManager {
     Future<T> Function(AccountDatabaseRead) action,
   ) async {
     try {
-      return Ok(await action(db.read));
+      return Ok(await action(_db.read));
     } on CouldNotRollBackException catch (e) {
       return Err(DatabaseException(e));
     } on DriftWrappedException catch (e) {
@@ -83,7 +83,7 @@ class AccountDatabaseManager {
     Future<T> Function(AccountDatabaseWrite) action,
   ) async {
     try {
-      return Ok(await action(db.write));
+      return Ok(await action(_db.write));
     } on CouldNotRollBackException catch (e) {
       return Err(DatabaseException(e));
     } on DriftWrappedException catch (e) {
@@ -99,7 +99,7 @@ class AccountDatabaseManager {
     Future<void> Function(AccountDatabaseWrite) action,
   ) async {
     try {
-      await action(db.write);
+      await action(_db.write);
       return const Ok(());
     } on CouldNotRollBackException catch (e) {
       return _handleDbException(e);
@@ -113,7 +113,7 @@ class AccountDatabaseManager {
   }
 
   Future<void> close() async {
-    await db.close();
+    await _db.close();
   }
 }
 

@@ -265,7 +265,8 @@ class MyProfileBloc extends Bloc<MyProfileEvent, MyProfileData>
         }
       }
 
-      final selectingImage = await db.db.daoReadProgress.isEditProfileSelectingImage();
+      final selectingImage =
+          await db.accountData((db) => db.progress.isEditProfileSelectingImage()).ok() ?? false;
       emit(state.copyWith(openSelectImageScreen: selectingImage));
     });
     on<ClearOpenSelectImageScreen>((data, emit) {
