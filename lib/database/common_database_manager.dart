@@ -22,16 +22,16 @@ class CommonDatabaseManager extends AppSingleton {
     return _instance;
   }
 
-  bool initDone = false;
-  late final DbProvider commonDatabaseProvider;
-  late final CommonDatabase commonDatabase;
+  bool _initDone = false;
+  late final DbProvider _commonDatabaseProvider;
+  late final CommonDatabase _commonDatabase;
 
   @override
   Future<void> init() async {
-    if (initDone) {
+    if (_initDone) {
       return;
     }
-    initDone = true;
+    _initDone = true;
 
     _log.info("Init started");
 
@@ -40,10 +40,10 @@ class CommonDatabaseManager extends AppSingleton {
     // in: https://github.com/simolus3/drift/discussions/2596
     driftRuntimeOptions.dontWarnAboutMultipleDatabases = true;
 
-    commonDatabaseProvider = DbProvider(CommonDbFile());
-    commonDatabase = CommonDatabase(commonDatabaseProvider);
-    final ensureOpenResult = await commonDatabaseProvider.getQueryExcecutor().ensureOpen(
-      commonDatabase,
+    _commonDatabaseProvider = DbProvider(CommonDbFile());
+    _commonDatabase = CommonDatabase(_commonDatabaseProvider);
+    final ensureOpenResult = await _commonDatabaseProvider.getQueryExcecutor().ensureOpen(
+      _commonDatabase,
     );
     _log.info("CommonDatabase ensureOpen result: $ensureOpenResult");
     // Test query
@@ -55,7 +55,7 @@ class CommonDatabaseManager extends AppSingleton {
   // Common database
 
   Stream<T> commonStream<T>(Stream<T> Function(CommonDatabaseRead) mapper) async* {
-    final stream = mapper(commonDatabase.read);
+    final stream = mapper(_commonDatabase.read);
     yield* stream
     // try-catch does not work with *yield, so await for would be required, but
     // events seem not to flow properly with that.
@@ -93,11 +93,27 @@ class CommonDatabaseManager extends AppSingleton {
     return first ?? defaultValue;
   }
 
+  Future<Result<T, DatabaseError>> commonData<T extends Object?>(
+    Future<T> Function(CommonDatabaseRead) action,
+  ) async {
+    try {
+      return Ok(await action(_commonDatabase.read));
+    } on CouldNotRollBackException catch (e) {
+      return Err(DatabaseException(e));
+    } on DriftWrappedException catch (e) {
+      return handleDbException(e);
+    } on InvalidDataException catch (e) {
+      return handleDbException(e);
+    } on DriftRemoteException catch (e) {
+      return handleDbException(e);
+    }
+  }
+
   Future<Result<(), DatabaseError>> commonAction(
     Future<void> Function(CommonDatabaseWrite) action,
   ) async {
     try {
-      await action(commonDatabase.write);
+      await action(_commonDatabase.write);
       return const Ok(());
     } on CouldNotRollBackException catch (e) {
       return handleDbException(e);
