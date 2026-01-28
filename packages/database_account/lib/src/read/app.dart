@@ -1,6 +1,5 @@
 import 'package:database_account/src/database.dart';
-import 'package:database_model/database_model.dart'
-    show InitialSetupProgressEntry, GridSettings, ChatBackupReminder, EditProfileProgressEntry;
+import 'package:database_model/database_model.dart' show GridSettings, ChatBackupReminder;
 import 'package:database_utils/database_utils.dart';
 import 'package:drift/drift.dart';
 import 'package:openapi/api.dart' as api;
@@ -15,14 +14,12 @@ part 'app.g.dart';
     schema.ShowAdvancedProfileFilters,
     schema.InitialSync,
     schema.InitialSetupSkipped,
-    schema.InitialSetupProgress,
     schema.GridSettings,
     schema.ChatBackupReminder,
     schema.AdminNotification,
     schema.NotificationStatus,
     schema.News,
     schema.PushNotification,
-    schema.EditProfileProgress,
   ],
 )
 class DaoReadApp extends DatabaseAccessor<AccountDatabase> with _$DaoReadAppMixin {
@@ -94,21 +91,6 @@ class DaoReadApp extends DatabaseAccessor<AccountDatabase> with _$DaoReadAppMixi
   Stream<bool?> watchProfileFilterFavorites() =>
       _watchColumnProfileFilterFavorite((r) => r.profileFilterFavorites);
 
-  Future<bool> isEditProfileEditingInProgress() async {
-    return (await (select(
-              editProfileProgress,
-            )..where((t) => t.id.equals(SingleRowTable.ID.value))).getSingleOrNull())
-            ?.editingInProgress ??
-        false;
-  }
-
-  Future<bool> isEditProfileSelectingImage() async {
-    return (await (select(
-          editProfileProgress,
-        )..where((t) => t.id.equals(SingleRowTable.ID.value))).getSingleOrNull())?.selectingImage ??
-        false;
-  }
-
   Stream<T?> _watchColumnProfileFilterFavorite<T extends Object>(
     T? Function(ProfileFilterFavorite) extractColumn,
   ) {
@@ -141,57 +123,6 @@ class DaoReadApp extends DatabaseAccessor<AccountDatabase> with _$DaoReadAppMixi
         reminderIntervalDays: r?.reminderIntervalDays,
         lastBackupTime: r?.lastBackupTime,
         lastDialogOpenedTime: r?.lastDialogOpenedTime,
-      );
-    });
-  }
-
-  // Initial setup progress - watch entire row as a model
-  Stream<InitialSetupProgressEntry?> watchInitialSetupProgress() {
-    return (select(
-      initialSetupProgress,
-    )..where((t) => t.id.equals(SingleRowTable.ID.value))).watchSingleOrNull().map((r) {
-      if (r == null) return null;
-      return InitialSetupProgressEntry(
-        email: r.email,
-        isAdult: r.isAdult,
-        profileName: r.profileName,
-        profileAge: r.profileAge,
-        securitySelfieContentId: r.securitySelfieContentId,
-        securitySelfieFaceDetected: r.securitySelfieFaceDetected,
-        profileImages: r.jsonProfileImages?.value,
-        gender: r.gender,
-        searchSettingMen: r.searchSettingMen,
-        searchSettingWomen: r.searchSettingWomen,
-        searchSettingNonBinary: r.searchSettingNonBinary,
-        searchAgeRangeInitDone: r.searchAgeRangeInitDone,
-        searchAgeRangeMin: r.searchAgeRangeMin,
-        searchAgeRangeMax: r.searchAgeRangeMax,
-        latitude: r.latitude,
-        longitude: r.longitude,
-        profileAttributes: r.jsonProfileAttributes?.value,
-        chatInfoUnderstood: r.chatInfoUnderstood,
-      );
-    });
-  }
-
-  Stream<String?> watchInitialSetupCurrentPage() {
-    return (select(initialSetupProgress)..where((t) => t.id.equals(SingleRowTable.ID.value)))
-        .map((r) => r.currentPage)
-        .watchSingleOrNull();
-  }
-
-  Stream<EditProfileProgressEntry?> watchEditProfileProgress() {
-    return (select(
-      editProfileProgress,
-    )..where((t) => t.id.equals(SingleRowTable.ID.value))).watchSingleOrNull().map((r) {
-      if (r == null) return null;
-      return EditProfileProgressEntry(
-        age: r.age,
-        name: r.name,
-        profileText: r.profileText,
-        profileAttributes: r.jsonProfileAttributes?.value,
-        unlimitedLikes: r.unlimitedLikes,
-        profileImages: r.jsonProfileImages?.value,
       );
     });
   }

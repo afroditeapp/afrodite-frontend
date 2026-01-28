@@ -115,12 +115,13 @@ class MainStateBloc extends Bloc<MainStateEvent, MainState> {
       _log.info("Handling app launch push notification payload");
       navigationState = await handleAppLaunchNotificationPayload(appLaunchPayloadOther, r);
     } else if (!kIsWeb && defaultTargetPlatform == TargetPlatform.android) {
-      final editingInProgress = await r.accountDb.db.daoReadApp.isEditProfileEditingInProgress();
+      final editingInProgress = await r.accountDb.db.daoReadProgress
+          .isEditProfileEditingInProgress();
       if (editingInProgress) {
         final profileEntry = await r.accountDb.db.daoReadMyProfile
             .getProfileEntryForMyProfile()
             .first;
-        final progress = await r.accountDb.db.daoReadApp.watchEditProfileProgress().first;
+        final progress = await r.accountDb.db.daoReadProgress.watchEditProfileProgress().first;
         if (profileEntry != null) {
           _log.info("Incomplete profile editing detected");
           final pages = <MyPage<Object>>[
@@ -157,7 +158,7 @@ class MainStateBloc extends Bloc<MainStateEvent, MainState> {
     }
 
     final currentPage = await r.accountDb
-        .accountStream((db) => db.app.watchInitialSetupCurrentPage())
+        .accountStream((db) => db.progress.watchInitialSetupCurrentPage())
         .first;
 
     final AppLaunchNavigationState? navigationState;

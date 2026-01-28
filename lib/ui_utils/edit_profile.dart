@@ -24,7 +24,7 @@ class _EditProfileProgressSaverState extends State<EditProfileProgressSaver> {
   void initState() {
     super.initState();
 
-    widget.db.accountAction((db) => db.app.setProfileEditingInProgressStatus(true));
+    widget.db.accountAction((db) => db.progress.setProfileEditingInProgressStatus(true));
 
     _subscription = widget.bloc.stream
         .debounceTime(const Duration(seconds: 1))
@@ -55,7 +55,7 @@ class _EditProfileProgressSaverState extends State<EditProfileProgressSaver> {
                 .nonNulls
                 .toList(),
           );
-          await widget.db.accountAction((db) => db.app.updateEditProfileProgress(entry));
+          await widget.db.accountAction((db) => db.progress.updateEditProfileProgress(entry));
           return state;
         })
         .listen((_) {});
@@ -64,7 +64,7 @@ class _EditProfileProgressSaverState extends State<EditProfileProgressSaver> {
   @override
   void dispose() {
     _subscription?.cancel();
-    widget.db.accountAction((db) => db.app.setProfileEditingInProgressStatus(false));
+    widget.db.accountAction((db) => db.progress.setProfileEditingInProgressStatus(false));
     super.dispose();
   }
 

@@ -257,23 +257,23 @@ class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData>
 
     // Public event handlers that write to DB
     on<ResetState>((data, emit) async {
-      await db.accountAction((db) => db.app.clearInitialSetupProgress());
+      await db.accountAction((db) => db.progress.clearInitialSetupProgress());
     });
     on<SetAgeConfirmation>((data, emit) async {
-      await db.accountAction((db) => db.app.updateInitialSetupIsAdult(data.isAdult));
+      await db.accountAction((db) => db.progress.updateInitialSetupIsAdult(data.isAdult));
     });
     on<SetEmail>((data, emit) async {
-      await db.accountAction((db) => db.app.updateInitialSetupEmail(data.email));
+      await db.accountAction((db) => db.progress.updateInitialSetupEmail(data.email));
     });
     on<SetProfileName>((data, emit) async {
-      await db.accountAction((db) => db.app.updateInitialSetupProfileName(data.value));
+      await db.accountAction((db) => db.progress.updateInitialSetupProfileName(data.value));
     });
     on<SetProfileAge>((data, emit) async {
-      await db.accountAction((db) => db.app.updateInitialSetupProfileAge(data.age));
+      await db.accountAction((db) => db.progress.updateInitialSetupProfileAge(data.age));
     });
     on<SetSecuritySelfie>((data, emit) async {
       await db.accountAction(
-        (db) => db.app.updateInitialSetupSecuritySelfie(
+        (db) => db.progress.updateInitialSetupSecuritySelfie(
           contentId: data.securitySelfie.contentId.cid,
           faceDetected: data.securitySelfie.faceDetected,
         ),
@@ -299,13 +299,15 @@ class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData>
         }
       }
 
-      await db.accountAction((db) => db.app.updateInitialSetupProfileImages(entries));
+      await db.accountAction((db) => db.progress.updateInitialSetupProfileImages(entries));
     });
     on<SetGender>((data, emit) async {
-      await db.accountAction((db) => db.app.updateInitialSetupGender(_genderToString(data.gender)));
+      await db.accountAction(
+        (db) => db.progress.updateInitialSetupGender(_genderToString(data.gender)),
+      );
       // Reset search settings when gender changes
       await db.accountAction(
-        (db) => db.app.updateInitialSetupGenderSearchSettings(
+        (db) => db.progress.updateInitialSetupGenderSearchSettings(
           men: false,
           women: false,
           nonBinary: false,
@@ -314,7 +316,7 @@ class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData>
     });
     on<SetGenderSearchSetting>((data, emit) async {
       await db.accountAction(
-        (db) => db.app.updateInitialSetupGenderSearchSettings(
+        (db) => db.progress.updateInitialSetupGenderSearchSettings(
           men: data.settings.men,
           women: data.settings.women,
           nonBinary: data.settings.nonBinary,
@@ -323,8 +325,11 @@ class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData>
     });
     on<InitAgeRange>((data, emit) async {
       await db.accountAction(
-        (db) =>
-            db.app.updateInitialSetupSearchAgeRange(initDone: true, min: data.min, max: data.max),
+        (db) => db.progress.updateInitialSetupSearchAgeRange(
+          initDone: true,
+          min: data.min,
+          max: data.max,
+        ),
       );
     });
     on<SetAgeRangeMin>((data, emit) async {
@@ -333,7 +338,7 @@ class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData>
         max = data.min;
       }
       await db.accountAction(
-        (db) => db.app.updateInitialSetupSearchAgeRange(min: data.min, max: max),
+        (db) => db.progress.updateInitialSetupSearchAgeRange(min: data.min, max: max),
       );
     });
     on<SetAgeRangeMax>((data, emit) async {
@@ -342,23 +347,28 @@ class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData>
         min = data.max;
       }
       await db.accountAction(
-        (db) => db.app.updateInitialSetupSearchAgeRange(min: min, max: data.max),
+        (db) => db.progress.updateInitialSetupSearchAgeRange(min: min, max: data.max),
       );
     });
     on<SetLocation>((data, emit) async {
       await db.accountAction(
-        (db) => db.app.updateInitialSetupLocation(data.location.latitude, data.location.longitude),
+        (db) =>
+            db.progress.updateInitialSetupLocation(data.location.latitude, data.location.longitude),
       );
     });
     on<SetChatInfoUnderstood>((data, emit) async {
-      await db.accountAction((db) => db.app.updateInitialSetupChatInfoUnderstood(data.understood));
+      await db.accountAction(
+        (db) => db.progress.updateInitialSetupChatInfoUnderstood(data.understood),
+      );
     });
     on<UpdateAttributeValue>((data, emit) async {
       final updated = state.profileAttributes.addOrReplace(data.update);
-      await db.accountAction((db) => db.app.updateInitialSetupProfileAttributes(updated.answers));
+      await db.accountAction(
+        (db) => db.progress.updateInitialSetupProfileAttributes(updated.answers),
+      );
     });
     on<SetCurrentPage>((data, emit) async {
-      await db.accountAction((db) => db.app.updateInitialSetupCurrentPage(data.pageName));
+      await db.accountAction((db) => db.progress.updateInitialSetupCurrentPage(data.pageName));
     });
     on<CompleteInitialSetup>((data, emit) async {
       await runOnce(() async {
@@ -426,7 +436,7 @@ class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData>
         if (newSecuritySelfieState != null) {
           // Update DB with new face detected value
           await db.accountAction(
-            (db) => db.app.updateInitialSetupSecuritySelfie(
+            (db) => db.progress.updateInitialSetupSecuritySelfie(
               contentId: securitySelfie.contentId.cid,
               faceDetected: newSecuritySelfieState.fd,
             ),
@@ -488,11 +498,11 @@ class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData>
     });
 
     // Single subscription for all initial setup progress data
-    _progressSubscription = db.accountStream((db) => db.app.watchInitialSetupProgress()).listen((
-      data,
-    ) {
-      add(_NewProgressData(data));
-    });
+    _progressSubscription = db
+        .accountStream((db) => db.progress.watchInitialSetupProgress())
+        .listen((data) {
+          add(_NewProgressData(data));
+        });
   }
 
   @override

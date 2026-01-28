@@ -19927,6 +19927,9 @@ abstract class _$AccountDatabase extends GeneratedDatabase {
   late final $NewMessageNotificationTable newMessageNotification =
       $NewMessageNotificationTable(this);
   late final DaoReadApp daoReadApp = DaoReadApp(this as AccountDatabase);
+  late final DaoReadProgress daoReadProgress = DaoReadProgress(
+    this as AccountDatabase,
+  );
   late final DaoReadAppNotificationSettings daoReadAppNotificationSettings =
       DaoReadAppNotificationSettings(this as AccountDatabase);
   late final DaoReadCommon daoReadCommon = DaoReadCommon(
@@ -19972,6 +19975,9 @@ abstract class _$AccountDatabase extends GeneratedDatabase {
   late final DaoReadChatUnreadMessagesCount daoReadChatUnreadMessagesCount =
       DaoReadChatUnreadMessagesCount(this as AccountDatabase);
   late final DaoWriteApp daoWriteApp = DaoWriteApp(this as AccountDatabase);
+  late final DaoWriteProgress daoWriteProgress = DaoWriteProgress(
+    this as AccountDatabase,
+  );
   late final DaoWriteAppNotificationSettings daoWriteAppNotificationSettings =
       DaoWriteAppNotificationSettings(this as AccountDatabase);
   late final DaoWriteCommon daoWriteCommon = DaoWriteCommon(

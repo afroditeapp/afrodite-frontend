@@ -10,6 +10,7 @@ import 'package:database_account/src/read/chat/unread_messages_count.dart';
 import 'package:database_account/src/read/common/config.dart';
 import 'package:database_account/src/read/account/login_session.dart';
 import 'package:database_account/src/read/app.dart';
+import 'package:database_account/src/read/progress.dart';
 import 'package:database_account/src/read/common/common.dart';
 import 'package:database_account/src/read/media/media.dart';
 import 'package:database_account/src/read/media/my_media.dart';
@@ -29,6 +30,7 @@ import 'package:database_account/src/write/chat/unread_messages_count.dart';
 import 'package:database_account/src/write/common/config.dart';
 import 'package:database_account/src/write/account/login_session.dart';
 import 'package:database_account/src/write/app.dart';
+import 'package:database_account/src/write/progress.dart';
 import 'package:database_account/src/write/common/common.dart';
 import 'package:database_account/src/write/media/media.dart';
 import 'package:database_account/src/write/media/my_media.dart';
@@ -113,6 +115,7 @@ part 'database.g.dart';
 
     // App
     DaoReadApp,
+    DaoReadProgress,
     DaoReadAppNotificationSettings,
     // Common
     DaoReadCommon,
@@ -141,6 +144,7 @@ part 'database.g.dart';
 
     // App
     DaoWriteApp,
+    DaoWriteProgress,
     DaoWriteAppNotificationSettings,
     // Common
     DaoWriteCommon,
@@ -181,6 +185,7 @@ class AccountDatabaseRead {
   AccountDatabaseRead(this.db);
   // App
   DaoReadApp get app => db.daoReadApp;
+  DaoReadProgress get progress => db.daoReadProgress;
   DaoReadAppNotificationSettings get appNotificationSettings => db.daoReadAppNotificationSettings;
   // Common
   DaoReadCommon get common => db.daoReadCommon;
@@ -211,6 +216,7 @@ class AccountDatabaseWrite {
   AccountDatabaseWrite(this.db);
   // App
   DaoWriteApp get app => db.daoWriteApp;
+  DaoWriteProgress get progress => db.daoWriteProgress;
   DaoWriteAppNotificationSettings get appNotificationSettings => db.daoWriteAppNotificationSettings;
   // Common
   DaoWriteCommon get common => db.daoWriteCommon;

@@ -11,8 +11,6 @@ mixin _$DaoReadAppMixin on DatabaseAccessor<AccountDatabase> {
   $InitialSyncTable get initialSync => attachedDatabase.initialSync;
   $InitialSetupSkippedTable get initialSetupSkipped =>
       attachedDatabase.initialSetupSkipped;
-  $InitialSetupProgressTable get initialSetupProgress =>
-      attachedDatabase.initialSetupProgress;
   $GridSettingsTable get gridSettings => attachedDatabase.gridSettings;
   $ChatBackupReminderTable get chatBackupReminder =>
       attachedDatabase.chatBackupReminder;
@@ -23,6 +21,4 @@ mixin _$DaoReadAppMixin on DatabaseAccessor<AccountDatabase> {
   $NewsTable get news => attachedDatabase.news;
   $PushNotificationTable get pushNotification =>
       attachedDatabase.pushNotification;
-  $EditProfileProgressTable get editProfileProgress =>
-      attachedDatabase.editProfileProgress;
 }

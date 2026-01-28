@@ -530,16 +530,16 @@ class AddPicture extends StatelessWidget {
 
   void openSelectContentPage(BuildContext context) async {
     final db = context.read<RepositoryInstances>().accountDb;
-    await db.accountAction((db) => db.app.setProfileSelectingImageStatus(true));
+    await db.accountAction((db) => db.progress.setProfileSelectingImageStatus(true));
     if (!context.mounted) {
-      await db.accountAction((db) => db.app.setProfileSelectingImageStatus(false));
+      await db.accountAction((db) => db.progress.setProfileSelectingImageStatus(false));
       return;
     }
     final selectedImg = await MyNavigator.showFullScreenDialog(
       context: context,
       page: SelectContentPage(identifyFaceImages: imgIndex == 0),
     );
-    await db.accountAction((db) => db.app.setProfileSelectingImageStatus(false));
+    await db.accountAction((db) => db.progress.setProfileSelectingImageStatus(false));
     if (selectedImg != null && context.mounted) {
       bloc.addProcessedImage(ImageSelected(selectedImg, null), imgIndex);
     }
