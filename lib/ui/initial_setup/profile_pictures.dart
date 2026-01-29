@@ -10,10 +10,12 @@ import "package:openapi/api.dart";
 import "package:utils/utils.dart";
 import "package:app/data/image_cache.dart";
 import "package:app/localizations.dart";
+import "package:app/logic/account/client_features_config.dart";
 import "package:app/logic/account/initial_setup.dart";
 import "package:app/logic/app/navigator_state.dart";
 import "package:app/logic/media/image_processing.dart";
 import "package:app/logic/media/profile_pictures_interface.dart";
+import "package:app/model/freezed/logic/account/client_features_config.dart";
 import "package:app/model/freezed/logic/account/initial_setup.dart";
 import "package:app/model/freezed/logic/main/navigator_state.dart";
 import "package:app/model/freezed/logic/media/image_processing.dart";
@@ -60,20 +62,30 @@ class _AskProfilePicturesScreenInternal extends StatelessWidget {
       context: context,
       child: QuestionAsker(
         continueButtonBuilder: (context) {
-          return BlocBuilder<InitialSetupBloc, InitialSetupData>(
-            builder: (context, state) {
-              void Function()? onPressed;
-              final pictures = state.valuePictures();
-              final primaryPicture = pictures[0];
-              if (primaryPicture is ImageSelected && primaryPicture.isFaceDetected()) {
-                onPressed = () {
-                  navigateToNextInitialSetupPage(context);
-                };
-              }
+          return BlocBuilder<ClientFeaturesConfigBloc, ClientFeaturesConfigData>(
+            builder: (context, configData) {
+              return BlocBuilder<InitialSetupBloc, InitialSetupData>(
+                builder: (context, state) {
+                  void Function()? onPressed;
+                  final pictures = state.valuePictures();
+                  final primaryPicture = pictures[0];
 
-              return ElevatedButton(
-                onPressed: onPressed,
-                child: Text(context.strings.generic_continue),
+                  final requireFace =
+                      configData.config.profile?.firstImage?.requireFaceDetectedWhenEditing ??
+                      false;
+
+                  if (primaryPicture is ImageSelected &&
+                      (!requireFace || primaryPicture.isFaceDetected())) {
+                    onPressed = () {
+                      navigateToNextInitialSetupPage(context);
+                    };
+                  }
+
+                  return ElevatedButton(
+                    onPressed: onPressed,
+                    child: Text(context.strings.generic_continue),
+                  );
+                },
               );
             },
           );
@@ -333,27 +345,38 @@ class _ProfilePictureSelection<
   }
 
   Widget primaryImageIsNotFaceImageError() {
-    return BlocBuilder<B, S>(
-      bloc: widget.bloc,
-      builder: (context, state) {
-        final imgState = state.valuePictures()[0];
-        if (imgState is ImageSelected && !imgState.isFaceDetected()) {
-          return Padding(
-            padding: const EdgeInsets.only(top: 8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Icon(Icons.close, color: Colors.red, size: 32),
-                Text(
-                  context
-                      .strings
-                      .initial_setup_screen_profile_pictures_primary_image_face_not_detected,
-                ),
-              ],
-            ),
-          );
+    return BlocBuilder<ClientFeaturesConfigBloc, ClientFeaturesConfigData>(
+      builder: (context, configData) {
+        final requireFace =
+            configData.config.profile?.firstImage?.requireFaceDetectedWhenEditing ?? false;
+
+        if (!requireFace) {
+          return const SizedBox.shrink();
         }
-        return const SizedBox.shrink();
+
+        return BlocBuilder<B, S>(
+          bloc: widget.bloc,
+          builder: (context, state) {
+            final imgState = state.valuePictures()[0];
+            if (imgState is ImageSelected && !imgState.isFaceDetected()) {
+              return Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(Icons.close, color: Colors.red, size: 32),
+                    Text(
+                      context
+                          .strings
+                          .initial_setup_screen_profile_pictures_primary_image_face_not_detected,
+                    ),
+                  ],
+                ),
+              );
+            }
+            return const SizedBox.shrink();
+          },
+        );
       },
     );
   }

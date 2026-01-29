@@ -7,19 +7,19 @@ abstract class PublicContentProvider {
 class ContentIdAndAccepted {
   final ContentId id;
   final bool accepted;
-  final bool primary;
-  ContentIdAndAccepted(this.id, this.accepted, this.primary);
+  final bool faceDetected;
+  ContentIdAndAccepted(this.id, this.accepted, this.faceDetected);
 
   @override
   bool operator ==(Object other) {
     return other is ContentIdAndAccepted &&
         id == other.id &&
         accepted == other.accepted &&
-        primary == other.primary;
+        faceDetected == other.faceDetected;
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, id, accepted, primary);
+  int get hashCode => Object.hash(runtimeType, id, accepted, faceDetected);
 }
 
 abstract class MyContentProvider {
@@ -27,38 +27,33 @@ abstract class MyContentProvider {
 }
 
 class MyContent extends ContentIdAndAccepted {
-  final bool faceDetected;
   final ContentModerationState state;
   final MediaContentModerationRejectedReasonCategory? rejectedCategory;
   final MediaContentModerationRejectedReasonDetails? rejectedDetails;
   MyContent(
     ContentId id,
-    this.faceDetected,
+    bool faceDetected,
     this.state,
     this.rejectedCategory,
-    this.rejectedDetails, {
-    required bool primaryContent,
-  }) : super(
-         id,
-         state == ContentModerationState.acceptedByBot ||
-             state == ContentModerationState.acceptedByHuman,
-         primaryContent,
-       );
+    this.rejectedDetails,
+  ) : super(
+        id,
+        state == ContentModerationState.acceptedByBot ||
+            state == ContentModerationState.acceptedByHuman,
+        faceDetected,
+      );
 
   @override
   bool operator ==(Object other) {
     return other is MyContent &&
-        id == other.id &&
-        accepted == other.accepted &&
-        faceDetected == other.faceDetected &&
+        super == other &&
         state == other.state &&
         rejectedCategory == other.rejectedCategory &&
         rejectedDetails == other.rejectedDetails;
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, id, accepted, state, rejectedCategory, rejectedDetails);
+  int get hashCode => Object.hash(super.hashCode, state, rejectedCategory, rejectedDetails);
 }
 
 class PrimaryProfileContent {

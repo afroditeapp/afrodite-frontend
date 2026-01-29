@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:openapi/api.dart';
 import 'package:app/api/server_connection_manager.dart';
+import 'package:app/data/account_repository.dart';
 import 'package:app/data/chat_repository.dart';
 import 'package:app/data/media_repository.dart';
 import 'package:app/data/general/iterator/profile_iterator.dart';
@@ -46,12 +47,19 @@ class ProfileIteratorManager {
   final AccountDatabaseManager db;
   final ChatRepository chat;
   final MediaRepository media;
+  final AccountRepository account;
   final ServerConnectionManager connectionManager;
 
   final AccountId currentUser;
 
-  ProfileIteratorManager(this.chat, this.media, this.db, this.connectionManager, this.currentUser)
-    : _currentIterator = ProfileListDatabaseIterator(db: db);
+  ProfileIteratorManager({
+    required this.chat,
+    required this.media,
+    required this.account,
+    required this.db,
+    required this.connectionManager,
+    required this.currentUser,
+  }) : _currentIterator = ProfileListDatabaseIterator(db: db);
 
   ProfileIteratorMode _currentMode = ModePublicProfiles(clearDatabase: false);
   IteratorType _currentIterator;
@@ -185,8 +193,18 @@ class ProfileIteratorManager {
       for (final p in list) {
         final isBlocked = await chat.isInSentBlocks(p.accountId);
         final alreadyReturned = _duplicateAccountsPreventer.contains(p.accountId);
-        final invalidPrimaryContent =
-            p.content.firstOrNull?.primary != true || p.content.firstOrNull?.accepted != true;
+
+        final firstContent = p.content.firstOrNull;
+
+        final requireFaceDetectedWhenViewing =
+            account.clientFeaturesConfigValue.profile?.firstImage?.requireFaceDetectedWhenViewing ??
+            false;
+
+        final faceDetectedError =
+            requireFaceDetectedWhenViewing && firstContent?.faceDetected != true;
+        final acceptedError = firstContent?.accepted != true;
+
+        final invalidPrimaryContent = faceDetectedError || acceptedError;
 
         if (isBlocked || alreadyReturned || p.accountId == currentUser || invalidPrimaryContent) {
           toBeRemoved.add(p);

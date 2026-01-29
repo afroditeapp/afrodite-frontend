@@ -173,14 +173,26 @@ class PublicProfileViewingBlocker extends StatelessWidget {
 
         final securityContent = contentState.securityContent;
         if (securityContent?.accepted == true && securityContent?.faceDetected == true) {
-          return BlocBuilder<MyProfileBloc, MyProfileData>(
-            builder: (context, myProfileState) {
-              final primaryContent = myProfileState.profile?.myContent.getAtOrNull(0);
-              if (primaryContent?.accepted == true) {
-                return _handleBlocked(ChatViewingBlocker(child: child));
-              } else {
-                return _handleBlocked(primaryProfileContentIsNotAccepted(context, primaryContent));
-              }
+          return BlocBuilder<ClientFeaturesConfigBloc, ClientFeaturesConfigData>(
+            builder: (context, configData) {
+              return BlocBuilder<MyProfileBloc, MyProfileData>(
+                builder: (context, myProfileState) {
+                  final primaryContent = myProfileState.profile?.myContent.getAtOrNull(0);
+
+                  final requireFace =
+                      configData.config.profile?.firstImage?.requireFaceDetectedWhenViewing ??
+                      false;
+                  final faceDetected = primaryContent?.faceDetected == true;
+
+                  if (primaryContent?.accepted == true && (!requireFace || faceDetected)) {
+                    return _handleBlocked(ChatViewingBlocker(child: child));
+                  } else {
+                    return _handleBlocked(
+                      primaryProfileContentIsNotAccepted(context, primaryContent, requireFace),
+                    );
+                  }
+                },
+              );
             },
           );
         } else {
@@ -237,11 +249,15 @@ class PublicProfileViewingBlocker extends StatelessWidget {
     );
   }
 
-  Widget primaryProfileContentIsNotAccepted(BuildContext context, MyContent? content) {
+  Widget primaryProfileContentIsNotAccepted(
+    BuildContext context,
+    MyContent? content,
+    bool requireFaceDetected,
+  ) {
     String message;
     if (content == null) {
       message = context.strings.profile_grid_screen_primary_profile_content_does_not_exist;
-    } else if (!content.faceDetected) {
+    } else if (requireFaceDetected && !content.faceDetected) {
       message = context.strings.profile_grid_screen_primary_profile_content_face_not_detected;
     } else if (!content.accepted) {
       String infoText = context.strings.profile_grid_screen_primary_profile_content_is_not_accepted;

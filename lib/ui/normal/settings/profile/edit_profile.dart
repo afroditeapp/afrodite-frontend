@@ -150,7 +150,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       return;
     }
 
-    if (!s.faceDetectedFromPrimaryImage()) {
+    final config = context.read<ClientFeaturesConfigBloc>().state.config;
+    final requireFace = config.profile?.firstImage?.requireFaceDetectedWhenEditing ?? false;
+
+    if (requireFace && !s.faceDetectedFromPrimaryImage()) {
       showSnackBar(
         context.strings.initial_setup_screen_profile_pictures_primary_image_face_not_detected,
       );

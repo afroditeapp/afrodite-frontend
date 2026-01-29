@@ -54,11 +54,12 @@ class ProfileGridState extends State<ProfileGrid> {
     super.initState();
 
     _mainProfilesViewIterator = ProfileIteratorManager(
-      widget.r.chat,
-      widget.r.media,
-      widget.r.accountDb,
-      widget.r.connectionManager,
-      widget.r.chat.currentUser,
+      db: widget.r.accountDb,
+      chat: widget.r.chat,
+      media: widget.r.media,
+      account: widget.r.account,
+      connectionManager: widget.r.connectionManager,
+      currentUser: widget.r.chat.currentUser,
     );
     _mainProfilesViewIterator.init();
 

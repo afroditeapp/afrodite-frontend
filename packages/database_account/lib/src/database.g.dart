@@ -11096,18 +11096,18 @@ class $ProfileContentTable extends schema.ProfileContent
       'CHECK ("content_accepted" IN (0, 1))',
     ),
   );
-  static const VerificationMeta _primaryContentMeta = const VerificationMeta(
-    'primaryContent',
+  static const VerificationMeta _faceDetectedMeta = const VerificationMeta(
+    'faceDetected',
   );
   @override
-  late final GeneratedColumn<bool> primaryContent = GeneratedColumn<bool>(
-    'primary_content',
+  late final GeneratedColumn<bool> faceDetected = GeneratedColumn<bool>(
+    'face_detected',
     aliasedName,
     false,
     type: DriftSqlType.bool,
     requiredDuringInsert: true,
     defaultConstraints: GeneratedColumn.constraintIsAlways(
-      'CHECK ("primary_content" IN (0, 1))',
+      'CHECK ("face_detected" IN (0, 1))',
     ),
   );
   @override
@@ -11116,7 +11116,7 @@ class $ProfileContentTable extends schema.ProfileContent
     contentIndex,
     contentId,
     contentAccepted,
-    primaryContent,
+    faceDetected,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -11152,16 +11152,16 @@ class $ProfileContentTable extends schema.ProfileContent
     } else if (isInserting) {
       context.missing(_contentAcceptedMeta);
     }
-    if (data.containsKey('primary_content')) {
+    if (data.containsKey('face_detected')) {
       context.handle(
-        _primaryContentMeta,
-        primaryContent.isAcceptableOrUnknown(
-          data['primary_content']!,
-          _primaryContentMeta,
+        _faceDetectedMeta,
+        faceDetected.isAcceptableOrUnknown(
+          data['face_detected']!,
+          _faceDetectedMeta,
         ),
       );
     } else if (isInserting) {
-      context.missing(_primaryContentMeta);
+      context.missing(_faceDetectedMeta);
     }
     return context;
   }
@@ -11192,9 +11192,9 @@ class $ProfileContentTable extends schema.ProfileContent
         DriftSqlType.bool,
         data['${effectivePrefix}content_accepted'],
       )!,
-      primaryContent: attachedDatabase.typeMapping.read(
+      faceDetected: attachedDatabase.typeMapping.read(
         DriftSqlType.bool,
-        data['${effectivePrefix}primary_content'],
+        data['${effectivePrefix}face_detected'],
       )!,
     );
   }
@@ -11216,13 +11216,13 @@ class ProfileContentData extends DataClass
   final int contentIndex;
   final ContentId contentId;
   final bool contentAccepted;
-  final bool primaryContent;
+  final bool faceDetected;
   const ProfileContentData({
     required this.accountId,
     required this.contentIndex,
     required this.contentId,
     required this.contentAccepted,
-    required this.primaryContent,
+    required this.faceDetected,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -11239,7 +11239,7 @@ class ProfileContentData extends DataClass
       );
     }
     map['content_accepted'] = Variable<bool>(contentAccepted);
-    map['primary_content'] = Variable<bool>(primaryContent);
+    map['face_detected'] = Variable<bool>(faceDetected);
     return map;
   }
 
@@ -11249,7 +11249,7 @@ class ProfileContentData extends DataClass
       contentIndex: Value(contentIndex),
       contentId: Value(contentId),
       contentAccepted: Value(contentAccepted),
-      primaryContent: Value(primaryContent),
+      faceDetected: Value(faceDetected),
     );
   }
 
@@ -11263,7 +11263,7 @@ class ProfileContentData extends DataClass
       contentIndex: serializer.fromJson<int>(json['contentIndex']),
       contentId: serializer.fromJson<ContentId>(json['contentId']),
       contentAccepted: serializer.fromJson<bool>(json['contentAccepted']),
-      primaryContent: serializer.fromJson<bool>(json['primaryContent']),
+      faceDetected: serializer.fromJson<bool>(json['faceDetected']),
     );
   }
   @override
@@ -11274,7 +11274,7 @@ class ProfileContentData extends DataClass
       'contentIndex': serializer.toJson<int>(contentIndex),
       'contentId': serializer.toJson<ContentId>(contentId),
       'contentAccepted': serializer.toJson<bool>(contentAccepted),
-      'primaryContent': serializer.toJson<bool>(primaryContent),
+      'faceDetected': serializer.toJson<bool>(faceDetected),
     };
   }
 
@@ -11283,13 +11283,13 @@ class ProfileContentData extends DataClass
     int? contentIndex,
     ContentId? contentId,
     bool? contentAccepted,
-    bool? primaryContent,
+    bool? faceDetected,
   }) => ProfileContentData(
     accountId: accountId ?? this.accountId,
     contentIndex: contentIndex ?? this.contentIndex,
     contentId: contentId ?? this.contentId,
     contentAccepted: contentAccepted ?? this.contentAccepted,
-    primaryContent: primaryContent ?? this.primaryContent,
+    faceDetected: faceDetected ?? this.faceDetected,
   );
   ProfileContentData copyWithCompanion(ProfileContentCompanion data) {
     return ProfileContentData(
@@ -11301,9 +11301,9 @@ class ProfileContentData extends DataClass
       contentAccepted: data.contentAccepted.present
           ? data.contentAccepted.value
           : this.contentAccepted,
-      primaryContent: data.primaryContent.present
-          ? data.primaryContent.value
-          : this.primaryContent,
+      faceDetected: data.faceDetected.present
+          ? data.faceDetected.value
+          : this.faceDetected,
     );
   }
 
@@ -11314,7 +11314,7 @@ class ProfileContentData extends DataClass
           ..write('contentIndex: $contentIndex, ')
           ..write('contentId: $contentId, ')
           ..write('contentAccepted: $contentAccepted, ')
-          ..write('primaryContent: $primaryContent')
+          ..write('faceDetected: $faceDetected')
           ..write(')'))
         .toString();
   }
@@ -11325,7 +11325,7 @@ class ProfileContentData extends DataClass
     contentIndex,
     contentId,
     contentAccepted,
-    primaryContent,
+    faceDetected,
   );
   @override
   bool operator ==(Object other) =>
@@ -11335,7 +11335,7 @@ class ProfileContentData extends DataClass
           other.contentIndex == this.contentIndex &&
           other.contentId == this.contentId &&
           other.contentAccepted == this.contentAccepted &&
-          other.primaryContent == this.primaryContent);
+          other.faceDetected == this.faceDetected);
 }
 
 class ProfileContentCompanion extends UpdateCompanion<ProfileContentData> {
@@ -11343,14 +11343,14 @@ class ProfileContentCompanion extends UpdateCompanion<ProfileContentData> {
   final Value<int> contentIndex;
   final Value<ContentId> contentId;
   final Value<bool> contentAccepted;
-  final Value<bool> primaryContent;
+  final Value<bool> faceDetected;
   final Value<int> rowid;
   const ProfileContentCompanion({
     this.accountId = const Value.absent(),
     this.contentIndex = const Value.absent(),
     this.contentId = const Value.absent(),
     this.contentAccepted = const Value.absent(),
-    this.primaryContent = const Value.absent(),
+    this.faceDetected = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   ProfileContentCompanion.insert({
@@ -11358,19 +11358,19 @@ class ProfileContentCompanion extends UpdateCompanion<ProfileContentData> {
     required int contentIndex,
     required ContentId contentId,
     required bool contentAccepted,
-    required bool primaryContent,
+    required bool faceDetected,
     this.rowid = const Value.absent(),
   }) : accountId = Value(accountId),
        contentIndex = Value(contentIndex),
        contentId = Value(contentId),
        contentAccepted = Value(contentAccepted),
-       primaryContent = Value(primaryContent);
+       faceDetected = Value(faceDetected);
   static Insertable<ProfileContentData> custom({
     Expression<String>? accountId,
     Expression<int>? contentIndex,
     Expression<String>? contentId,
     Expression<bool>? contentAccepted,
-    Expression<bool>? primaryContent,
+    Expression<bool>? faceDetected,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -11378,7 +11378,7 @@ class ProfileContentCompanion extends UpdateCompanion<ProfileContentData> {
       if (contentIndex != null) 'content_index': contentIndex,
       if (contentId != null) 'content_id': contentId,
       if (contentAccepted != null) 'content_accepted': contentAccepted,
-      if (primaryContent != null) 'primary_content': primaryContent,
+      if (faceDetected != null) 'face_detected': faceDetected,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -11388,7 +11388,7 @@ class ProfileContentCompanion extends UpdateCompanion<ProfileContentData> {
     Value<int>? contentIndex,
     Value<ContentId>? contentId,
     Value<bool>? contentAccepted,
-    Value<bool>? primaryContent,
+    Value<bool>? faceDetected,
     Value<int>? rowid,
   }) {
     return ProfileContentCompanion(
@@ -11396,7 +11396,7 @@ class ProfileContentCompanion extends UpdateCompanion<ProfileContentData> {
       contentIndex: contentIndex ?? this.contentIndex,
       contentId: contentId ?? this.contentId,
       contentAccepted: contentAccepted ?? this.contentAccepted,
-      primaryContent: primaryContent ?? this.primaryContent,
+      faceDetected: faceDetected ?? this.faceDetected,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -11420,8 +11420,8 @@ class ProfileContentCompanion extends UpdateCompanion<ProfileContentData> {
     if (contentAccepted.present) {
       map['content_accepted'] = Variable<bool>(contentAccepted.value);
     }
-    if (primaryContent.present) {
-      map['primary_content'] = Variable<bool>(primaryContent.value);
+    if (faceDetected.present) {
+      map['face_detected'] = Variable<bool>(faceDetected.value);
     }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
@@ -11436,7 +11436,7 @@ class ProfileContentCompanion extends UpdateCompanion<ProfileContentData> {
           ..write('contentIndex: $contentIndex, ')
           ..write('contentId: $contentId, ')
           ..write('contentAccepted: $contentAccepted, ')
-          ..write('primaryContent: $primaryContent, ')
+          ..write('faceDetected: $faceDetected, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();

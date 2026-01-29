@@ -46,7 +46,6 @@ class DaoReadMyMedia extends DatabaseAccessor<AccountDatabase> with _$DaoReadMyM
       state,
       r.contentModerationRejectedCategory,
       r.contentModerationRejectedDetails,
-      primaryContent: r.contentIndex == 0 && r.faceDetected,
     );
   }
 

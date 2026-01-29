@@ -97,8 +97,7 @@ class DaoWriteProfile extends DatabaseAccessor<AccountDatabase> with _$DaoWriteP
   ) async {
     await transaction(() async {
       for (final (i, c) in content.c.indexed) {
-        // TODO: Replace primary with face detected value saving
-        await db.write.media.updateProfileContent(accountId, i, c.cid, c.a, true);
+        await db.write.media.updateProfileContent(accountId, i, c.cid, c.a, c.fd);
       }
 
       await db.write.media.removeContentStartingFrom(accountId, content.c.length);

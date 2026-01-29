@@ -30,7 +30,7 @@ class ProfileContent extends Table {
 
   TextColumn get contentId => text().map(const ContentIdConverter())();
   BoolColumn get contentAccepted => boolean()();
-  BoolColumn get primaryContent => boolean()();
+  BoolColumn get faceDetected => boolean()();
 
   @override
   Set<Column<Object>> get primaryKey => {accountId, contentIndex};
