@@ -41,7 +41,8 @@ class InitialSetupLoadingGuard extends StatelessWidget {
                   return child;
                 }
 
-                return const SizedBox.shrink();
+                // Avoid black screen
+                return const Scaffold();
               },
             );
           },
