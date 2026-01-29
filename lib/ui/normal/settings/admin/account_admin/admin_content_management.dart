@@ -195,7 +195,7 @@ class _AdminContentManagementScreenState extends State<AdminContentManagementScr
     await widget.profile.downloadProfileToDatabase(widget.chat, account);
   }
 
-  void changeFaceDetectedValue(AccountId account, ContentId content, bool value) async {
+  void changeFaceDetectedValue(AccountId account, ContentId content, bool? value) async {
     final result = await widget.api.mediaAdminAction(
       (api) => api.postMediaContentFaceDetectedValue(
         PostMediaContentFaceDetectedValue(accountId: account, contentId: content, value: value),
@@ -220,7 +220,7 @@ Widget _buildAvailableImg(
   ContentInfoDetailed content,
   void Function(AccountId, ContentId)? deleteImgAction,
   void Function(AccountId, ContentId, bool accepted) changeModerationStateAction,
-  void Function(AccountId, ContentId, bool accepted)? changeFaceDetectedValueAction,
+  void Function(AccountId, ContentId, bool? accepted)? changeFaceDetectedValueAction,
 ) {
   return Padding(
     padding: const EdgeInsets.only(
@@ -275,7 +275,7 @@ Widget _statusInfo(
   ContentInfoDetailed content,
   void Function(AccountId, ContentId)? deleteImgAction,
   void Function(AccountId, ContentId, bool accepted) changeModerationStateAction,
-  void Function(AccountId, ContentId, bool accepted)? changeFaceDetectedValueAction,
+  void Function(AccountId, ContentId, bool? accepted)? changeFaceDetectedValueAction,
 ) {
   final String moderationState = switch (content.state) {
     ContentModerationState.inSlot => "In slot",
@@ -327,29 +327,54 @@ Widget _statusInfo(
     deleteButton = null;
   }
 
-  final Widget? faceDetectedButton;
-  if (changeFaceDetectedValueAction != null && content.fd) {
-    faceDetectedButton = _createModerationStateChangeButton(
-      context,
-      accountId,
-      content.cid,
-      "Undetect face",
-      "Undetect face?",
-      false,
-      changeFaceDetectedValueAction,
-    );
-  } else if (changeFaceDetectedValueAction != null && !content.fd) {
-    faceDetectedButton = _createModerationStateChangeButton(
-      context,
-      accountId,
-      content.cid,
-      "Detect face",
-      "Detect face?",
-      true,
-      changeFaceDetectedValueAction,
-    );
+  final List<Widget> faceDetectedButtons = [];
+  if (changeFaceDetectedValueAction != null) {
+    if (content.fdManual != true) {
+      faceDetectedButtons.add(
+        _createFaceDetectedValueChangeButton(
+          context,
+          accountId,
+          content.cid,
+          "Detect face",
+          "Detect face?",
+          true,
+          changeFaceDetectedValueAction,
+        ),
+      );
+    }
+    if (content.fdManual != false) {
+      faceDetectedButtons.add(
+        _createFaceDetectedValueChangeButton(
+          context,
+          accountId,
+          content.cid,
+          "Undetect face",
+          "Undetect face?",
+          false,
+          changeFaceDetectedValueAction,
+        ),
+      );
+    }
+    if (content.fdManual != null) {
+      faceDetectedButtons.add(
+        _createFaceDetectedValueChangeButton(
+          context,
+          accountId,
+          content.cid,
+          "Clear face override",
+          "Clear face override?",
+          null,
+          changeFaceDetectedValueAction,
+        ),
+      );
+    }
+  }
+
+  final String faceDetectedText;
+  if (content.fdManual != null) {
+    faceDetectedText = content.fdManual! ? "Face detected (manual)" : "Face not detected (manual)";
   } else {
-    faceDetectedButton = null;
+    faceDetectedText = content.fd ? "Face detected (auto)" : "Face not detected (auto)";
   }
 
   return Column(
@@ -358,13 +383,17 @@ Widget _statusInfo(
     mainAxisSize: MainAxisSize.min,
     children: [
       Text(moderationState, textAlign: TextAlign.center),
+      const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
+      Text(faceDetectedText, textAlign: TextAlign.center),
       if (moderationStateChangeButton != null)
-        const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
+        const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
       if (moderationStateChangeButton != null) moderationStateChangeButton,
-      if (deleteButton != null) const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
+      if (deleteButton != null) const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
       if (deleteButton != null) deleteButton,
-      if (faceDetectedButton != null) const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
-      if (faceDetectedButton != null) faceDetectedButton,
+      for (final button in faceDetectedButtons) ...[
+        const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
+        button,
+      ],
     ],
   );
 }
@@ -404,6 +433,26 @@ Widget _createDeleteButton(
       );
       if (result == true) {
         deleteImgAction(accountId, content);
+      }
+    },
+  );
+}
+
+Widget _createFaceDetectedValueChangeButton(
+  BuildContext context,
+  AccountId accountId,
+  ContentId content,
+  String buttonText,
+  String dialogTitle,
+  bool? value,
+  void Function(AccountId, ContentId, bool?) action,
+) {
+  return ElevatedButton(
+    child: Text(buttonText),
+    onPressed: () async {
+      final result = await confirmDialogForImage(context, accountId, content, dialogTitle);
+      if (result == true) {
+        action(accountId, content, value);
       }
     },
   );
