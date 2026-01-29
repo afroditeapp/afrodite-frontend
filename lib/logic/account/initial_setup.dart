@@ -175,7 +175,7 @@ class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData>
     // Internal DB update handler - single event for all progress data
     on<_NewProgressData>((data, emit) {
       if (data.data == null) {
-        emit(InitialSetupData());
+        emit(InitialSetupData(loadingComplete: true));
         return;
       }
 
