@@ -179,7 +179,9 @@ class MainStateBloc extends Bloc<MainStateEvent, MainState> {
       navigationState = null;
     }
 
-    return MsLoggedInInitialSetupScreen(r, navigationState);
+    final state = MsLoggedInInitialSetupScreen(r, navigationState);
+    cachedInitialSetupScreenState = state;
+    return state;
   }
 
   List<MyScreenPage<Object>> _buildInitialSetupPageStack(String currentPageName) {
