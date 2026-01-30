@@ -268,28 +268,3 @@ class _MenuViewState extends State<MenuView> {
     super.dispose();
   }
 }
-
-class Setting {
-  final Widget _iconWidget;
-  final Widget _widget;
-  final void Function() action;
-  Setting(this._iconWidget, this._widget, this.action);
-
-  factory Setting.createSetting(IconData icon, String text, void Function() action) {
-    return Setting(Icon(icon), Text(text), action);
-  }
-
-  factory Setting.createSettingWithCustomIcon(Widget icon, String text, void Function() action) {
-    return Setting(icon, Text(text), action);
-  }
-
-  Widget toListTile() {
-    return ListTile(
-      onTap: () {
-        action();
-      },
-      title: _widget,
-      leading: _iconWidget,
-    );
-  }
-}
