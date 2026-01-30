@@ -5954,6 +5954,226 @@ class EditProfileProgressCompanion
   }
 }
 
+class $DraftMessageTable extends schema.DraftMessage
+    with TableInfo<$DraftMessageTable, DraftMessageData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $DraftMessageTable(this.attachedDatabase, [this._alias]);
+  @override
+  late final GeneratedColumnWithTypeConverter<AccountId, String> accountId =
+      GeneratedColumn<String>(
+        'account_id',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      ).withConverter<AccountId>($DraftMessageTable.$converteraccountId);
+  static const VerificationMeta _messageMeta = const VerificationMeta(
+    'message',
+  );
+  @override
+  late final GeneratedColumn<String> message = GeneratedColumn<String>(
+    'message',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [accountId, message];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'draft_message';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<DraftMessageData> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('message')) {
+      context.handle(
+        _messageMeta,
+        message.isAcceptableOrUnknown(data['message']!, _messageMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_messageMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {accountId};
+  @override
+  DraftMessageData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return DraftMessageData(
+      accountId: $DraftMessageTable.$converteraccountId.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}account_id'],
+        )!,
+      ),
+      message: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}message'],
+      )!,
+    );
+  }
+
+  @override
+  $DraftMessageTable createAlias(String alias) {
+    return $DraftMessageTable(attachedDatabase, alias);
+  }
+
+  static TypeConverter<AccountId, String> $converteraccountId =
+      const AccountIdConverter();
+}
+
+class DraftMessageData extends DataClass
+    implements Insertable<DraftMessageData> {
+  final AccountId accountId;
+  final String message;
+  const DraftMessageData({required this.accountId, required this.message});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    {
+      map['account_id'] = Variable<String>(
+        $DraftMessageTable.$converteraccountId.toSql(accountId),
+      );
+    }
+    map['message'] = Variable<String>(message);
+    return map;
+  }
+
+  DraftMessageCompanion toCompanion(bool nullToAbsent) {
+    return DraftMessageCompanion(
+      accountId: Value(accountId),
+      message: Value(message),
+    );
+  }
+
+  factory DraftMessageData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return DraftMessageData(
+      accountId: serializer.fromJson<AccountId>(json['accountId']),
+      message: serializer.fromJson<String>(json['message']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'accountId': serializer.toJson<AccountId>(accountId),
+      'message': serializer.toJson<String>(message),
+    };
+  }
+
+  DraftMessageData copyWith({AccountId? accountId, String? message}) =>
+      DraftMessageData(
+        accountId: accountId ?? this.accountId,
+        message: message ?? this.message,
+      );
+  DraftMessageData copyWithCompanion(DraftMessageCompanion data) {
+    return DraftMessageData(
+      accountId: data.accountId.present ? data.accountId.value : this.accountId,
+      message: data.message.present ? data.message.value : this.message,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DraftMessageData(')
+          ..write('accountId: $accountId, ')
+          ..write('message: $message')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(accountId, message);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is DraftMessageData &&
+          other.accountId == this.accountId &&
+          other.message == this.message);
+}
+
+class DraftMessageCompanion extends UpdateCompanion<DraftMessageData> {
+  final Value<AccountId> accountId;
+  final Value<String> message;
+  final Value<int> rowid;
+  const DraftMessageCompanion({
+    this.accountId = const Value.absent(),
+    this.message = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  DraftMessageCompanion.insert({
+    required AccountId accountId,
+    required String message,
+    this.rowid = const Value.absent(),
+  }) : accountId = Value(accountId),
+       message = Value(message);
+  static Insertable<DraftMessageData> custom({
+    Expression<String>? accountId,
+    Expression<String>? message,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (accountId != null) 'account_id': accountId,
+      if (message != null) 'message': message,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  DraftMessageCompanion copyWith({
+    Value<AccountId>? accountId,
+    Value<String>? message,
+    Value<int>? rowid,
+  }) {
+    return DraftMessageCompanion(
+      accountId: accountId ?? this.accountId,
+      message: message ?? this.message,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (accountId.present) {
+      map['account_id'] = Variable<String>(
+        $DraftMessageTable.$converteraccountId.toSql(accountId.value),
+      );
+    }
+    if (message.present) {
+      map['message'] = Variable<String>(message.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DraftMessageCompanion(')
+          ..write('accountId: $accountId, ')
+          ..write('message: $message, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $ServerMaintenanceTable extends schema.ServerMaintenance
     with TableInfo<$ServerMaintenanceTable, ServerMaintenanceData> {
   @override
@@ -19794,6 +20014,7 @@ abstract class _$AccountDatabase extends GeneratedDatabase {
   );
   late final $EditProfileProgressTable editProfileProgress =
       $EditProfileProgressTable(this);
+  late final $DraftMessageTable draftMessage = $DraftMessageTable(this);
   late final $ServerMaintenanceTable serverMaintenance =
       $ServerMaintenanceTable(this);
   late final $SyncVersionTable syncVersion = $SyncVersionTable(this);
@@ -19978,6 +20199,7 @@ abstract class _$AccountDatabase extends GeneratedDatabase {
     news,
     pushNotification,
     editProfileProgress,
+    draftMessage,
     serverMaintenance,
     syncVersion,
     receivedLikesIteratorState,

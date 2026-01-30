@@ -62,3 +62,11 @@ class EditProfileProgress extends SingleRowTable {
   BoolColumn get editingInProgress => boolean().withDefault(const Constant(false))();
   BoolColumn get selectingImage => boolean().withDefault(const Constant(false))();
 }
+
+class DraftMessage extends Table {
+  TextColumn get accountId => text().map(const AccountIdConverter())();
+  TextColumn get message => text()();
+
+  @override
+  Set<Column<Object>> get primaryKey => {accountId};
+}

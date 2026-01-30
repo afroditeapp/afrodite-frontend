@@ -3,12 +3,15 @@ import 'package:database_model/database_model.dart'
     show InitialSetupProgressEntry, EditProfileProgressEntry;
 import 'package:database_utils/database_utils.dart';
 import 'package:drift/drift.dart';
+import 'package:openapi/api.dart';
 
 import '../schema.dart' as schema;
 
 part 'progress.g.dart';
 
-@DriftAccessor(tables: [schema.InitialSetupProgress, schema.EditProfileProgress])
+@DriftAccessor(
+  tables: [schema.InitialSetupProgress, schema.EditProfileProgress, schema.DraftMessage],
+)
 class DaoReadProgress extends DatabaseAccessor<AccountDatabase> with _$DaoReadProgressMixin {
   DaoReadProgress(super.db);
 
@@ -76,5 +79,11 @@ class DaoReadProgress extends DatabaseAccessor<AccountDatabase> with _$DaoReadPr
         profileImages: r.jsonProfileImages?.value,
       );
     });
+  }
+
+  Future<String?> getDraftMessage(AccountId accountId) {
+    return (select(
+      draftMessage,
+    )..where((t) => t.accountId.equals(accountId.aid))).map((r) => r.message).getSingleOrNull();
   }
 }

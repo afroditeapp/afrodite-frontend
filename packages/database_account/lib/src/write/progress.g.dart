@@ -8,4 +8,5 @@ mixin _$DaoWriteProgressMixin on DatabaseAccessor<AccountDatabase> {
       attachedDatabase.initialSetupProgress;
   $EditProfileProgressTable get editProfileProgress =>
       attachedDatabase.editProfileProgress;
+  $DraftMessageTable get draftMessage => attachedDatabase.draftMessage;
 }

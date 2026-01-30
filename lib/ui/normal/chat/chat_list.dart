@@ -68,6 +68,8 @@ class _ChatListState extends State<ChatList> {
   late ChatListLogic _chatListLogic;
   late ReplyTargetController _replyTargetController;
 
+  Timer? _saveDraftTimer;
+
   bool _reversed = false;
   bool _endReached = false;
   bool _showMakeMatchInstruction = false;
@@ -111,18 +113,38 @@ class _ChatListState extends State<ChatList> {
       typingIndicatorEnabled: widget.typingIndicatorEnabled,
       messageStateSeenEnabled: widget.messageStateSeenEnabled,
     );
+
+    _loadDraft();
+  }
+
+  void _loadDraft() async {
+    final result = await widget.db.accountData(
+      (db) => db.progress.getDraftMessage(widget.messageReceiver),
+    );
+    final draft = result.ok();
+    if (draft != null && mounted) {
+      _textEditingController.removeListener(_onTextChanged);
+      _textEditingController.text = draft;
+      _textEditingController.addListener(_onTextChanged);
+    }
   }
 
   void _onTextChanged() {
-    if (!widget.typingIndicatorEnabled) {
-      return;
+    if (widget.typingIndicatorEnabled) {
+      final text = _textEditingController.text;
+      if (text.isNotEmpty) {
+        widget.typingIndicatorManager.handleTypingEvent(widget.messageReceiver, true);
+      } else {
+        widget.typingIndicatorManager.handleTypingEvent(widget.messageReceiver, false);
+      }
     }
-    final text = _textEditingController.text;
-    if (text.isNotEmpty) {
-      widget.typingIndicatorManager.handleTypingEvent(widget.messageReceiver, true);
-    } else {
-      widget.typingIndicatorManager.handleTypingEvent(widget.messageReceiver, false);
-    }
+
+    _saveDraftTimer?.cancel();
+    _saveDraftTimer = Timer(const Duration(seconds: 1), () {
+      widget.db.accountDataWrite(
+        (db) => db.progress.updateDraftMessage(widget.messageReceiver, _textEditingController.text),
+      );
+    });
   }
 
   Future<void> _handleSwipeToReply(String messageId) async {
@@ -532,6 +554,13 @@ class _ChatListState extends State<ChatList> {
     // Send typing stop event when leaving the chat
     if (widget.typingIndicatorEnabled) {
       widget.typingIndicatorManager.handleTypingEvent(widget.messageReceiver, false);
+    }
+
+    if (_saveDraftTimer?.isActive ?? false) {
+      _saveDraftTimer?.cancel();
+      widget.db.accountDataWrite(
+        (db) => db.progress.updateDraftMessage(widget.messageReceiver, _textEditingController.text),
+      );
     }
 
     _chatListLogic.dispose();

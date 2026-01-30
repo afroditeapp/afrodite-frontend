@@ -9,7 +9,9 @@ import '../schema.dart' as schema;
 
 part 'progress.g.dart';
 
-@DriftAccessor(tables: [schema.InitialSetupProgress, schema.EditProfileProgress])
+@DriftAccessor(
+  tables: [schema.InitialSetupProgress, schema.EditProfileProgress, schema.DraftMessage],
+)
 class DaoWriteProgress extends DatabaseAccessor<AccountDatabase> with _$DaoWriteProgressMixin {
   DaoWriteProgress(super.db);
 
@@ -150,5 +152,11 @@ class DaoWriteProgress extends DatabaseAccessor<AccountDatabase> with _$DaoWrite
     await into(editProfileProgress).insertOnConflictUpdate(
       EditProfileProgressCompanion.insert(id: SingleRowTable.ID, selectingImage: Value(value)),
     );
+  }
+
+  Future<void> updateDraftMessage(api.AccountId accountId, String message) async {
+    await into(
+      draftMessage,
+    ).insertOnConflictUpdate(DraftMessageCompanion.insert(accountId: accountId, message: message));
   }
 }
