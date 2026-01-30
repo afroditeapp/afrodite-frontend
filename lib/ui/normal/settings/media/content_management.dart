@@ -191,7 +191,14 @@ Widget _buildAvailableImg(
             ),
           ],
         ),
-        _rejectionDetailsText(context, content),
+        rejectionDetailsText(
+          context,
+          category: content.rejectedReasonCategory?.value,
+          details: content.rejectedReasonDetails?.value,
+          padding: const EdgeInsets.only(top: 8),
+          containerColor: Theme.of(context).colorScheme.primaryContainer,
+          textColor: Theme.of(context).colorScheme.onPrimaryContainer,
+        ),
       ],
     ),
   );
@@ -258,35 +265,6 @@ Widget _statusInfo(
       if (deleteButton != null) deleteButton,
     ],
   );
-}
-
-Widget _rejectionDetailsText(BuildContext context, ContentInfoDetailed content) {
-  String infoText = "";
-  infoText = addRejectedCategoryRow(context, infoText, content.rejectedReasonCategory?.value);
-  infoText = addRejectedDetailsRow(context, infoText, content.rejectedReasonDetails?.value);
-  infoText = infoText.trim();
-
-  if (infoText.isNotEmpty) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 8),
-      child: Container(
-        width: double.infinity,
-        padding: const EdgeInsets.all(8.0),
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.primaryContainer,
-          borderRadius: BorderRadius.circular(4.0),
-        ),
-        child: Text(
-          infoText,
-          style: Theme.of(
-            context,
-          ).textTheme.bodySmall?.copyWith(color: Theme.of(context).colorScheme.onPrimaryContainer),
-        ),
-      ),
-    );
-  } else {
-    return const SizedBox.shrink();
-  }
 }
 
 Widget _createDeleteButton(BuildContext context, AccountId accountId, ContentId content) {

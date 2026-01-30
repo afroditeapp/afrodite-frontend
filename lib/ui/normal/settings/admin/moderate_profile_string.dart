@@ -4,6 +4,7 @@ import 'package:app/logic/admin/content_decicion_stream.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui/normal/settings/admin/content_decicion_stream.dart';
 import 'package:app/ui_utils/extensions/api.dart';
+import 'package:app/ui_utils/moderation.dart';
 import 'package:app/utils/result.dart';
 import 'package:flutter/material.dart';
 import 'package:openapi/api.dart';
@@ -41,7 +42,12 @@ class ModerateProfileStringsScreen extends ContentDecicionScreen<WrappedProfileS
 
 class WrappedProfileStringModeration extends ProfileStringPendingModeration
     implements ContentInfoGetter {
-  WrappedProfileStringModeration({required super.id, required super.value});
+  WrappedProfileStringModeration({
+    required super.id,
+    required super.value,
+    super.rejectedCategory,
+    super.rejectedDetails,
+  });
 
   @override
   AccountId get owner => id;
@@ -66,7 +72,14 @@ class ProfileStringIo extends ContentIo<WrappedProfileStringModeration> {
         )
         .mapOk(
           (v) => v.values
-              .map((v) => WrappedProfileStringModeration(id: v.id, value: v.value))
+              .map(
+                (v) => WrappedProfileStringModeration(
+                  id: v.id,
+                  value: v.value,
+                  rejectedCategory: v.rejectedCategory,
+                  rejectedDetails: v.rejectedDetails,
+                ),
+              )
               .toList(),
         )
         .emptyErr();
@@ -88,6 +101,18 @@ class ProfileStringIo extends ContentIo<WrappedProfileStringModeration> {
 class ProfileTextUiBuilder extends ContentUiBuilder<WrappedProfileStringModeration> {
   @override
   Widget buildRowContent(BuildContext context, WrappedProfileStringModeration content) {
-    return Padding(padding: const EdgeInsets.all(16.0), child: Text(content.value));
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Padding(padding: const EdgeInsets.all(16.0), child: Text(content.value)),
+        rejectionDetailsText(
+          context,
+          category: content.rejectedCategory?.value,
+          details: content.rejectedDetails?.value,
+          containerColor: Colors.transparent,
+          textColor: Theme.of(context).colorScheme.onSurface,
+        ),
+      ],
+    );
   }
 }

@@ -1,4 +1,4 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:app/localizations.dart';
 import 'package:openapi/api.dart';
 
@@ -23,6 +23,38 @@ String addRejectedDetailsRow(BuildContext context, String input, String? details
     return "$input\n\n${context.strings.moderation_rejected_details(details)}";
   } else {
     return input;
+  }
+}
+
+Widget rejectionDetailsText(
+  BuildContext context, {
+  int? category,
+  String? details,
+  String? preliminaryText,
+  EdgeInsetsGeometry padding = const EdgeInsetsGeometry.all(0),
+  required Color containerColor,
+  required Color textColor,
+}) {
+  String infoText = preliminaryText ?? "";
+  infoText = addRejectedCategoryRow(context, infoText, category);
+  infoText = addRejectedDetailsRow(context, infoText, details);
+  infoText = infoText.trim();
+
+  if (infoText.isNotEmpty) {
+    return Padding(
+      padding: padding,
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.all(8.0),
+        decoration: BoxDecoration(color: containerColor, borderRadius: BorderRadius.circular(4.0)),
+        child: Text(
+          infoText,
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(color: textColor),
+        ),
+      ),
+    );
+  } else {
+    return const SizedBox.shrink();
   }
 }
 

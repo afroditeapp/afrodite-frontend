@@ -5,6 +5,7 @@ import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/logic/admin/content_decicion_stream.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui/normal/settings/admin/content_decicion_stream.dart';
+import 'package:app/ui_utils/moderation.dart';
 import 'package:app/utils/result.dart';
 import 'package:flutter/material.dart';
 import 'package:openapi/api.dart';
@@ -52,6 +53,8 @@ class WrappedMediaContentPendingModeration extends MediaContentPendingModeration
     required this.securitySelfie,
     required super.accountId,
     required super.contentId,
+    super.rejectedCategory,
+    super.rejectedDetails,
   });
 
   @override
@@ -96,6 +99,8 @@ class MediaContentIo extends ContentIo<WrappedMediaContentPendingModeration> {
           securitySelfie: securitySelfie,
           accountId: v.accountId,
           contentId: v.contentId,
+          rejectedCategory: v.rejectedCategory,
+          rejectedDetails: v.rejectedDetails,
         ),
       );
     }
@@ -120,7 +125,19 @@ class MediaContentUiBuilder extends ContentUiBuilder<WrappedMediaContentPendingM
   Widget buildRowContent(BuildContext context, WrappedMediaContentPendingModeration content) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        return buildRow(context, content, constraints.maxWidth.toInt());
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            buildRow(context, content, constraints.maxWidth.toInt()),
+            rejectionDetailsText(
+              context,
+              category: content.rejectedCategory?.value,
+              details: content.rejectedDetails?.value,
+              containerColor: Colors.transparent,
+              textColor: Theme.of(context).colorScheme.onSurface,
+            ),
+          ],
+        );
       },
     );
   }
