@@ -140,6 +140,7 @@ class _ServerConnectionBannerContentState extends State<ServerConnectionBannerCo
   Widget build(BuildContext context) {
     return StreamBuilder<ServerConnectionManagerState>(
       stream: _stateStream,
+      initialData: widget.manager.currentState,
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return const SizedBox.shrink();
@@ -229,6 +230,7 @@ class _ServerConnectionBannerActionsState extends State<ServerConnectionBannerAc
   Widget build(BuildContext context) {
     return StreamBuilder<ServerConnectionManagerState>(
       stream: _stateStream,
+      initialData: widget.manager.currentState,
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return const SizedBox.shrink();
