@@ -137,7 +137,7 @@ class AppLocalizationsSv extends AppLocalizations {
       'No new or updated profiles found';
 
   @override
-  String get automatic_profile_search_results_screen_title => 'New profiles';
+  String get automatic_profile_search_results_screen_title => 'New and updated profiles';
 
   @override
   String get blocked_profiles_screen_no_blocked_profiles => 'No blocked profiles';
@@ -1143,7 +1143,7 @@ class AppLocalizationsSv extends AppLocalizations {
       'New or updated profile found';
 
   @override
-  String get notification_category_automatic_profile_search => 'New profiles';
+  String get notification_category_automatic_profile_search => 'New and updated profiles';
 
   @override
   String get notification_category_group_chat => 'Chat';
@@ -1595,7 +1595,7 @@ class AppLocalizationsSv extends AppLocalizations {
   String get scan_pairing_code_screen_title => 'Scan QR Code';
 
   @override
-  String get search_settings_screen_automatic_search => 'New profiles';
+  String get search_settings_screen_automatic_search => 'New and updated profiles';
 
   @override
   String get search_settings_screen_change_gender_filter_action_tile => 'Gender filter';

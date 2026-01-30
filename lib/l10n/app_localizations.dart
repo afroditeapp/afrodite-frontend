@@ -313,7 +313,7 @@ abstract class AppLocalizations {
   /// Title for automatic profile search results screen
   ///
   /// In en, this message translates to:
-  /// **'New profiles'**
+  /// **'New and updated profiles'**
   String get automatic_profile_search_results_screen_title;
 
   /// Info text displayed when there is no blocked profiles
@@ -2131,7 +2131,7 @@ abstract class AppLocalizations {
   /// Title for notification category automatic profile search
   ///
   /// In en, this message translates to:
-  /// **'New profiles'**
+  /// **'New and updated profiles'**
   String get notification_category_automatic_profile_search;
 
   /// Title for notification category group chat
@@ -2917,7 +2917,7 @@ abstract class AppLocalizations {
   /// Title for automatic profile search settings category
   ///
   /// In en, this message translates to:
-  /// **'New profiles'**
+  /// **'New and updated profiles'**
   String get search_settings_screen_automatic_search;
 
   /// Title for change gender filter value action

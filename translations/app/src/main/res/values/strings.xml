@@ -135,7 +135,7 @@
     <string name="notification_category_media_content_moderation_completed" description="Title for notification category media content moderation completed">Images</string>
     <string name="notification_category_profile_string_moderation_completed" description="Title for notification category profile string moderation completed">Profile name and text</string>
     <string name="notification_category_news_item_available" description="Title for notification category news item available">News</string>
-    <string name="notification_category_automatic_profile_search" description="Title for notification category automatic profile search">New profiles</string>
+    <string name="notification_category_automatic_profile_search" description="Title for notification category automatic profile search">New and updated profiles</string>
 
     <!-- Notification like received -->
     <string name="notification_like_received_single" description="Title for like received notification when single like is received">Chat request received</string>
@@ -189,7 +189,7 @@
     <string name="privacy_settings_online_status" description="Setting for online status visibility">Online status</string>
 
     <!-- Automatic profile search results screen -->
-    <string name="automatic_profile_search_results_screen_title" description="Title for automatic profile search results screen">New profiles</string>
+    <string name="automatic_profile_search_results_screen_title" description="Title for automatic profile search results screen">New and updated profiles</string>
     <string name="automatic_profile_search_results_screen_no_profiles_found_title" description="Title text displayed when no profiles are found">No new or updated profiles found</string>
     <string name="automatic_profile_search_results_screen_no_profiles_found_description" description="Description text displayed when no profiles are found">You will be notified when this changes</string>
 
@@ -441,7 +441,7 @@
     <string name="search_settings_screen_gender_is_not_selected" description="Snackbar text about missing gender information">Your gender information is not set</string>
     <string name="search_settings_screen_gender_filter_is_not_selected" description="Snackbar text about missing gender filter value">Gender filter is not selected</string>
     <string name="search_settings_screen_search_settings_update_failed" description="Snackbar text about failed search settings update">Updating search settings failed</string>
-    <string name="search_settings_screen_automatic_search" description="Title for automatic profile search settings category">New profiles</string>
+    <string name="search_settings_screen_automatic_search" description="Title for automatic profile search settings category">New and updated profiles</string>
     <string name="search_settings_screen_distance" description="Title text for distance setting">Use max distance filter</string>
     <string name="search_settings_screen_filters" description="Title text for filters setting">Use multiple-choice question filters</string>
     <string name="search_settings_screen_new_profiles" description="Title text for new profiles setting">Hide updated profiles</string>

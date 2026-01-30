@@ -173,7 +173,7 @@
   "@automatic_profile_search_results_screen_no_profiles_found_title": {
     "description": "Title text displayed when no profiles are found"
   },
-  "automatic_profile_search_results_screen_title": "New profiles",
+  "automatic_profile_search_results_screen_title": "New and updated profiles",
   "@automatic_profile_search_results_screen_title": {
     "description": "Title for automatic profile search results screen"
   },
@@ -1490,7 +1490,7 @@
   "@notification_automatic_profile_search_found_profiles_single": {
     "description": "Title for automatic profile search found single profile notification"
   },
-  "notification_category_automatic_profile_search": "New profiles",
+  "notification_category_automatic_profile_search": "New and updated profiles",
   "@notification_category_automatic_profile_search": {
     "description": "Title for notification category automatic profile search"
   },
@@ -2093,7 +2093,7 @@
   "@scan_pairing_code_screen_title": {
     "description": "Title for scan pairing code screen"
   },
-  "search_settings_screen_automatic_search": "New profiles",
+  "search_settings_screen_automatic_search": "New and updated profiles",
   "@search_settings_screen_automatic_search": {
     "description": "Title for automatic profile search settings category"
   },
