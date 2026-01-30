@@ -1012,10 +1012,6 @@
   "@generic_setting_saved": {
     "description": "Generic setting saved text"
   },
-  "generic_share": "Share",
-  "@generic_share": {
-    "description": "Generic share text"
-  },
   "generic_show_only_selected": "Show only selected",
   "@generic_show_only_selected": {
     "description": "Generic show only selected text"

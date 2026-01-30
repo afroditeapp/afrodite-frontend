@@ -17,7 +17,6 @@
     <string name="generic_details" description="Generic details text">Details</string>
     <string name="generic_download" description="Generic download text">Download</string>
     <string name="generic_save" description="Generic save text">Save</string>
-    <string name="generic_share" description="Generic share text">Share</string>
     <string name="generic_import" description="Generic import text">Import</string>
     <string name="generic_receive" description="Generic receive text">Receive</string>
     <string name="generic_create" description="Generic create text">Create</string>

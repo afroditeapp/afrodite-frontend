@@ -8,7 +8,6 @@ import 'package:app/ui/normal/settings/chat/receive_chat_backup.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/padding.dart';
 import 'package:app/ui_utils/slider.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:app/localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -56,7 +55,6 @@ class _ChatBackupScreenState extends State<ChatBackupScreen> {
                   spacing: 16,
                   children: [
                     createAndSaveBackupButton(context, state),
-                    shareBackupButton(context, state),
                     if (state.isLoading) CircularProgressIndicator(),
                   ],
                 ),
@@ -98,26 +96,6 @@ class _ChatBackupScreenState extends State<ChatBackupScreen> {
           : null,
       icon: const Icon(Icons.save),
       label: Text(context.strings.generic_save),
-    );
-  }
-
-  Widget shareBackupButton(BuildContext context, ChatBackupData state) {
-    return ElevatedButton.icon(
-      onPressed: !state.isLoading
-          ? () async {
-              final r = await showConfirmDialog(
-                context,
-                context.strings.chat_backup_screen_create_backup_question,
-                details: context.strings.chat_backup_screen_create_backup_question_details,
-                yesNoActions: true,
-              );
-              if (r == true && context.mounted) {
-                context.read<ChatBackupBloc>().add(ShareChatBackup());
-              }
-            }
-          : null,
-      icon: Icon(defaultTargetPlatform == TargetPlatform.iOS ? Icons.ios_share : Icons.share),
-      label: Text(context.strings.generic_share),
     );
   }
 

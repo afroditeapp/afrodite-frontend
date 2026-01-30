@@ -5,7 +5,6 @@ import "package:app/data/chat/message_manager.dart";
 import "package:app/data/chat_repository.dart";
 import "package:app/data/utils/repository_instances.dart";
 import "package:app/database/account_database_manager.dart";
-import "package:app/logic/settings/chat_backup/chat_backup.dart";
 import "package:app/model/freezed/logic/settings/chat_backup.dart";
 import "package:app/utils/result.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
@@ -35,8 +34,6 @@ class HandleReminderDialogOpening extends ChatBackupEvent {}
 class CheckDialogShouldOpen extends ChatBackupEvent {}
 
 class CreateAndSaveChatBackup extends ChatBackupEvent {}
-
-class ShareChatBackup extends ChatBackupEvent {}
 
 class ImportChatBackup extends ChatBackupEvent {
   final String filePath;
@@ -127,29 +124,6 @@ class ChatBackupBloc extends Bloc<ChatBackupEvent, ChatBackupData> with ActionRu
           }
 
           await FlutterFileSaver().writeFileAsBytes(fileName: backup.fileName, bytes: backup.bytes);
-
-          final now = UtcDateTime.now();
-          await r.accountDb.accountAction((db) => db.app.updateChatBackupLastBackupTime(now));
-
-          emit(state.copyWith(isLoading: false, lastBackupTime: now));
-        } catch (e) {
-          emit(state.copyWith(isError: true, isLoading: false));
-        }
-      });
-    });
-
-    on<ShareChatBackup>((data, emit) async {
-      await runOnce(() async {
-        emit(state.copyWith(isLoading: true));
-
-        try {
-          final backup = await _createBackup();
-          if (backup == null) {
-            emit(state.copyWith(isError: true, isLoading: false));
-            return;
-          }
-
-          await shareBackupFile(backup.fileName, backup.bytes);
 
           final now = UtcDateTime.now();
           await r.accountDb.accountAction((db) => db.app.updateChatBackupLastBackupTime(now));

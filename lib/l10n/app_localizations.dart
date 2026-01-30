@@ -1456,12 +1456,6 @@ abstract class AppLocalizations {
   /// **'Setting saved'**
   String get generic_setting_saved;
 
-  /// Generic share text
-  ///
-  /// In en, this message translates to:
-  /// **'Share'**
-  String get generic_share;
-
   /// Generic show only selected text
   ///
   /// In en, this message translates to:

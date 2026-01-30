@@ -770,9 +770,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get generic_setting_saved => 'Setting saved';
 
   @override
-  String get generic_share => 'Share';
-
-  @override
   String get generic_show_only_selected => 'Show only selected';
 
   @override
