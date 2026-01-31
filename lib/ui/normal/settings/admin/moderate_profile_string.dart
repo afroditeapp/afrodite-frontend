@@ -103,6 +103,7 @@ class ProfileTextUiBuilder extends ContentUiBuilder<WrappedProfileStringModerati
   Widget buildRowContent(BuildContext context, WrappedProfileStringModeration content) {
     return Column(
       mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(padding: const EdgeInsets.all(16.0), child: Text(content.value)),
         rejectionDetailsText(
