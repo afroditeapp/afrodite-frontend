@@ -194,9 +194,19 @@ class _ServerSoftwareUpdateScreenState extends State<ServerSoftwareUpdateScreen>
     ManagerInstanceRelatedState state,
     SoftwareInfo downloaded,
   ) {
+    String normalizeSha256(String raw) {
+      final trimmed = raw.trim();
+      const prefix = "sha256:";
+      if (trimmed.toLowerCase().startsWith(prefix)) {
+        return trimmed.substring(prefix.length).trim();
+      }
+      return trimmed;
+    }
+
     final requestUpdateButton = ElevatedButton(
       onPressed: () {
-        if (downloaded.sha256 != state.sha256Controller.text) {
+        final enteredSha = normalizeSha256(state.sha256Controller.text);
+        if (downloaded.sha256 != enteredSha) {
           showSnackBar("Text field sha256 value does not match with the downloaded file");
           return;
         }
