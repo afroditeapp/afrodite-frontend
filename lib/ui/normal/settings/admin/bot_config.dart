@@ -12,27 +12,27 @@ import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/result.dart';
 
-class ConfigureBotsPage extends MyScreenPageLimited<()> {
-  ConfigureBotsPage(RepositoryInstances r) : super(builder: (_) => ConfigureBotsScreen(r));
+class BotConfigPage extends MyScreenPageLimited<()> {
+  BotConfigPage(RepositoryInstances r) : super(builder: (_) => BotConfigScreen(r));
 }
 
-class ConfigureBotsScreen extends StatefulWidget {
+class BotConfigScreen extends StatefulWidget {
   final ApiManager api;
-  ConfigureBotsScreen(RepositoryInstances r, {super.key}) : api = r.api;
+  BotConfigScreen(RepositoryInstances r, {super.key}) : api = r.api;
 
   @override
-  State<ConfigureBotsScreen> createState() => _ConfigureBotsScreenState();
+  State<BotConfigScreen> createState() => _BotConfigScreenState();
 }
 
-class _ConfigureBotsScreenState extends State<ConfigureBotsScreen> {
-  bool? _remoteBotLogin;
-  int? _userBots;
-  bool? _adminBotEnabled;
+class _BotConfigScreenState extends State<BotConfigScreen> {
+  bool _remoteBotLogin = false;
+  int _userBots = 0;
+  bool _adminBotEnabled = false;
   final TextEditingController _userBotsController = TextEditingController();
   final _configFormKey = GlobalKey<FormState>();
-  BotConfig? _currentConfig;
 
   bool isLoading = true;
+  bool isError = false;
 
   @override
   void initState() {
@@ -45,11 +45,11 @@ class _ConfigureBotsScreenState extends State<ConfigureBotsScreen> {
 
     setState(() {
       isLoading = false;
-      _remoteBotLogin = data?.remoteBotLogin;
-      _adminBotEnabled = data?.adminBot;
-      _userBots = data?.userBots;
+      isError = data == null;
+      _remoteBotLogin = data?.remoteBotLogin ?? _remoteBotLogin;
+      _adminBotEnabled = data?.adminBot ?? _adminBotEnabled;
+      _userBots = data?.userBots ?? _userBots;
       _userBotsController.text = _userBots.toString();
-      _currentConfig = data;
     });
   }
 
@@ -67,7 +67,7 @@ class _ConfigureBotsScreenState extends State<ConfigureBotsScreen> {
   Widget displayState(BuildContext context) {
     if (isLoading) {
       return const Center(child: CircularProgressIndicator());
-    } else if (_currentConfig == null) {
+    } else if (isError) {
       return Center(child: Text(context.strings.generic_error));
     } else {
       return showContent(context);
@@ -81,42 +81,27 @@ class _ConfigureBotsScreenState extends State<ConfigureBotsScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              state.permissions.adminServerMaintenanceViewBotConfig
-                  ? hPad(Text(_currentConfig.toString()))
-                  : hPad(const Text("No permission for viewing bot config")),
-              const Padding(padding: EdgeInsets.only(top: 8.0)),
-              state.permissions.adminServerMaintenanceEditBotConfig
-                  ? displaySaveConfig(context)
-                  : hPad(const Text("No permission for editing bot config")),
-            ],
+            children: [displayConfig(context, state.permissions)],
           ),
         );
       },
     );
   }
 
-  Widget displaySaveConfig(BuildContext context) {
-    final remoteBotLogin = _remoteBotLogin;
-    final adminBotEnabled = _adminBotEnabled;
-    final userBots = _userBots;
-
+  Widget displayConfig(BuildContext context, Permissions permissions) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         hPad(Text("Bots", style: Theme.of(context).textTheme.titleSmall)),
         const Padding(padding: EdgeInsets.only(top: 8.0)),
-        remoteBotLogin != null
-            ? remoteBotLoginSwitchTile(remoteBotLogin)
-            : hPad(const Text("Remote bot login config disabled")),
-        if (remoteBotLogin == null) const Padding(padding: EdgeInsets.only(top: 8.0)),
-        adminBotEnabled != null
-            ? adminBotSwitchTile(adminBotEnabled)
-            : hPad(const Text("Admin bot config disabled")),
+        remoteBotLoginSwitchTile(_remoteBotLogin),
+        adminBotSwitchTile(_adminBotEnabled),
         const Padding(padding: EdgeInsets.only(top: 8.0)),
-        userBots != null ? hPad(userBotsTextField()) : hPad(const Text("User bot config disabled")),
+        hPad(userBotsTextField()),
         const Padding(padding: EdgeInsets.only(top: 8.0)),
-        hPad(saveBotConfigButton()),
+        permissions.adminServerMaintenanceEditBotConfig
+            ? hPad(saveBotConfigButton())
+            : hPad(const Text("No permission for editing bot config")),
       ],
     );
   }
@@ -175,15 +160,11 @@ class _ConfigureBotsScreenState extends State<ConfigureBotsScreen> {
         FocusScope.of(context).unfocus();
 
         final config = BotConfig(
-          remoteBotLogin: _remoteBotLogin ?? false,
-          adminBot: _adminBotEnabled ?? false,
-          userBots: _userBots ?? 0,
+          remoteBotLogin: _remoteBotLogin,
+          adminBot: _adminBotEnabled,
+          userBots: _userBots,
         );
-        showConfirmDialog(
-          context,
-          "Save bot config?",
-          details: "New config: ${config.toString()}",
-        ).then((value) async {
+        showConfirmDialog(context, "Save bot config?").then((value) async {
           if (value == true) {
             final result = await widget.api.commonAdminAction((api) => api.postBotConfig(config));
             switch (result) {
