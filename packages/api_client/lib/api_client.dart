@@ -210,14 +210,22 @@ class ApiClient {
           return AccountSyncVersion.fromJson(value);
         case 'AddPublicKeyResult':
           return AddPublicKeyResult.fromJson(value);
+        case 'AdminBotConfig':
+          return AdminBotConfig.fromJson(value);
         case 'AdminBotNotificationTypes':
           return AdminBotNotificationTypes.fromJson(value);
+        case 'AdminContentModerationConfig':
+          return AdminContentModerationConfig.fromJson(value);
         case 'AdminInfo':
           return AdminInfo.fromJson(value);
         case 'AdminNotification':
           return AdminNotification.fromJson(value);
         case 'AdminNotificationSettings':
           return AdminNotificationSettings.fromJson(value);
+        case 'AdminNsfwDetectionConfig':
+          return AdminNsfwDetectionConfig.fromJson(value);
+        case 'AdminProfileStringModerationConfig':
+          return AdminProfileStringModerationConfig.fromJson(value);
         case 'ApiUsageCount':
           return ApiUsageCount.fromJson(value);
         case 'ApiUsageStatistics':
@@ -246,8 +254,6 @@ class ApiClient {
           return AutomaticProfileSearchIteratorSessionId.fromJson(value);
         case 'AutomaticProfileSearchSettings':
           return AutomaticProfileSearchSettings.fromJson(value);
-        case 'BackendConfig':
-          return BackendConfig.fromJson(value);
         case 'BackendVersion':
           return BackendVersion.fromJson(value);
         case 'BackupTransferByteCount':
@@ -262,6 +268,8 @@ class ApiClient {
           return BooleanSetting.fromJson(value);
         case 'BotAccount':
           return BotAccount.fromJson(value);
+        case 'BotConfig':
+          return BotConfig.fromJson(value);
         case 'ChatAppNotificationSettings':
           return ChatAppNotificationSettings.fromJson(value);
         case 'ChatConfig':
@@ -492,6 +500,10 @@ class ApiClient {
           return LikesConfig.fromJson(value);
         case 'LimitedActionStatus':
           return LimitedActionStatusTypeTransformer().decode(value);
+        case 'LlmContentModerationConfig':
+          return LlmContentModerationConfig.fromJson(value);
+        case 'LlmStringModerationConfig':
+          return LlmStringModerationConfig.fromJson(value);
         case 'Location':
           return Location.fromJson(value);
         case 'LoginResult':
@@ -546,6 +558,8 @@ class ApiClient {
           return MessageNumber.fromJson(value);
         case 'MinDistanceKm':
           return MinDistanceKm.fromJson(value);
+        case 'ModerationAction':
+          return ModerationActionTypeTransformer().decode(value);
         case 'ModerationQueueType':
           return ModerationQueueTypeTypeTransformer().decode(value);
         case 'MyProfileContent':

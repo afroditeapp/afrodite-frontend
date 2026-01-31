@@ -112,14 +112,14 @@ class CommonAdminApi {
     return null;
   }
 
-  /// Get dynamic backend config.
+  /// Get bot config.
   ///
-  /// # Permissions Requires admin_server_maintenance_view_backend_settings.
+  /// # Access * [Permissions::admin_server_maintenance_view_bot_config] * Bot account
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> getBackendConfigWithHttpInfo() async {
+  Future<Response> getBotConfigWithHttpInfo() async {
     // ignore: prefer_const_declarations
-    final path = r'/common_api/backend_config';
+    final path = r'/common_api/bot_config';
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -142,11 +142,11 @@ class CommonAdminApi {
     );
   }
 
-  /// Get dynamic backend config.
+  /// Get bot config.
   ///
-  /// # Permissions Requires admin_server_maintenance_view_backend_settings.
-  Future<BackendConfig?> getBackendConfig() async {
-    final response = await getBackendConfigWithHttpInfo();
+  /// # Access * [Permissions::admin_server_maintenance_view_bot_config] * Bot account
+  Future<BotConfig?> getBotConfig() async {
+    final response = await getBotConfigWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -154,7 +154,7 @@ class CommonAdminApi {
     // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'BackendConfig',) as BackendConfig;
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'BotConfig',) as BotConfig;
     
     }
     return null;
@@ -608,21 +608,21 @@ class CommonAdminApi {
     }
   }
 
-  /// Save dynamic backend config.
+  /// Save bot config.
   ///
-  /// # Permissions Requires admin_server_maintenance_save_backend_settings.
+  /// # Validation * `profile_name_moderation.llm.user_text_template` must contain exactly one `{text}` placeholder. * `profile_text_moderation.llm.user_text_template` must contain exactly one `{text}` placeholder.  # Access * [Permissions::admin_server_maintenance_edit_bot_config]
   ///
   /// Note: This method returns the HTTP [Response].
   ///
   /// Parameters:
   ///
-  /// * [BackendConfig] backendConfig (required):
-  Future<Response> postBackendConfigWithHttpInfo(BackendConfig backendConfig,) async {
+  /// * [BotConfig] botConfig (required):
+  Future<Response> postBotConfigWithHttpInfo(BotConfig botConfig,) async {
     // ignore: prefer_const_declarations
-    final path = r'/common_api/backend_config';
+    final path = r'/common_api/bot_config';
 
     // ignore: prefer_final_locals
-    Object? postBody = backendConfig;
+    Object? postBody = botConfig;
 
     final queryParams = <QueryParam>[];
     final headerParams = <String, String>{};
@@ -642,15 +642,15 @@ class CommonAdminApi {
     );
   }
 
-  /// Save dynamic backend config.
+  /// Save bot config.
   ///
-  /// # Permissions Requires admin_server_maintenance_save_backend_settings.
+  /// # Validation * `profile_name_moderation.llm.user_text_template` must contain exactly one `{text}` placeholder. * `profile_text_moderation.llm.user_text_template` must contain exactly one `{text}` placeholder.  # Access * [Permissions::admin_server_maintenance_edit_bot_config]
   ///
   /// Parameters:
   ///
-  /// * [BackendConfig] backendConfig (required):
-  Future<void> postBackendConfig(BackendConfig backendConfig,) async {
-    final response = await postBackendConfigWithHttpInfo(backendConfig,);
+  /// * [BotConfig] botConfig (required):
+  Future<void> postBotConfig(BotConfig botConfig,) async {
+    final response = await postBotConfigWithHttpInfo(botConfig,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

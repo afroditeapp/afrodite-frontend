@@ -14,26 +14,26 @@ class GetPrivatePublicKeyInfo {
   /// Returns a new [GetPrivatePublicKeyInfo] instance.
   GetPrivatePublicKeyInfo({
     this.latestPublicKeyId,
-    required this.maxPublicKeyCountFromBackendConfig,
+    required this.maxPublicKeyCount,
   });
 
   PublicKeyId? latestPublicKeyId;
 
-  int maxPublicKeyCountFromBackendConfig;
+  int maxPublicKeyCount;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is GetPrivatePublicKeyInfo &&
     other.latestPublicKeyId == latestPublicKeyId &&
-    other.maxPublicKeyCountFromBackendConfig == maxPublicKeyCountFromBackendConfig;
+    other.maxPublicKeyCount == maxPublicKeyCount;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (latestPublicKeyId == null ? 0 : latestPublicKeyId!.hashCode) +
-    (maxPublicKeyCountFromBackendConfig.hashCode);
+    (maxPublicKeyCount.hashCode);
 
   @override
-  String toString() => 'GetPrivatePublicKeyInfo[latestPublicKeyId=$latestPublicKeyId, maxPublicKeyCountFromBackendConfig=$maxPublicKeyCountFromBackendConfig]';
+  String toString() => 'GetPrivatePublicKeyInfo[latestPublicKeyId=$latestPublicKeyId, maxPublicKeyCount=$maxPublicKeyCount]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -42,7 +42,7 @@ class GetPrivatePublicKeyInfo {
     } else {
       json[r'latest_public_key_id'] = null;
     }
-      json[r'max_public_key_count_from_backend_config'] = this.maxPublicKeyCountFromBackendConfig;
+      json[r'max_public_key_count'] = this.maxPublicKeyCount;
     return json;
   }
 
@@ -66,7 +66,7 @@ class GetPrivatePublicKeyInfo {
 
       return GetPrivatePublicKeyInfo(
         latestPublicKeyId: PublicKeyId.fromJson(json[r'latest_public_key_id']),
-        maxPublicKeyCountFromBackendConfig: mapValueOfType<int>(json, r'max_public_key_count_from_backend_config')!,
+        maxPublicKeyCount: mapValueOfType<int>(json, r'max_public_key_count')!,
       );
     }
     return null;
@@ -114,7 +114,7 @@ class GetPrivatePublicKeyInfo {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'max_public_key_count_from_backend_config',
+    'max_public_key_count',
   };
 }
 

@@ -172,7 +172,7 @@ Class | Method | HTTP request | Description
 *CommonApi* | [**postStartDataExport**](doc//CommonApi.md#poststartdataexport) | **POST** /common_api/start_data_export | Start data export
 *CommonAdminApi* | [**getAdminNotificationSettings**](doc//CommonAdminApi.md#getadminnotificationsettings) | **GET** /common_api/admin_notification_settings | Get admin notification settings.
 *CommonAdminApi* | [**getAdminNotificationSubscriptions**](doc//CommonAdminApi.md#getadminnotificationsubscriptions) | **GET** /common_api/admin_notification_subscriptions | Get admin notification subscriptions.
-*CommonAdminApi* | [**getBackendConfig**](doc//CommonAdminApi.md#getbackendconfig) | **GET** /common_api/backend_config | Get dynamic backend config.
+*CommonAdminApi* | [**getBotConfig**](doc//CommonAdminApi.md#getbotconfig) | **GET** /common_api/bot_config | Get bot config.
 *CommonAdminApi* | [**getLatestReportIteratorStartPosition**](doc//CommonAdminApi.md#getlatestreportiteratorstartposition) | **GET** /common_api/latest_report_iterator_start_position | 
 *CommonAdminApi* | [**getMaintenanceNotification**](doc//CommonAdminApi.md#getmaintenancenotification) | **GET** /common_api/maintenance_notification | Get maintenance notification.
 *CommonAdminApi* | [**getManagerInstanceNames**](doc//CommonAdminApi.md#getmanagerinstancenames) | **GET** /common_api/manager_instance_names | Get available manager instances.
@@ -182,7 +182,7 @@ Class | Method | HTTP request | Description
 *CommonAdminApi* | [**getWaitingReportPage**](doc//CommonAdminApi.md#getwaitingreportpage) | **GET** /common_api/waiting_report_page | 
 *CommonAdminApi* | [**postAdminNotificationSettings**](doc//CommonAdminApi.md#postadminnotificationsettings) | **POST** /common_api/admin_notification_settings | Save admin notification settings.
 *CommonAdminApi* | [**postAdminNotificationSubscriptions**](doc//CommonAdminApi.md#postadminnotificationsubscriptions) | **POST** /common_api/admin_notification_subscriptions | Save admin notification subscriptions.
-*CommonAdminApi* | [**postBackendConfig**](doc//CommonAdminApi.md#postbackendconfig) | **POST** /common_api/backend_config | Save dynamic backend config.
+*CommonAdminApi* | [**postBotConfig**](doc//CommonAdminApi.md#postbotconfig) | **POST** /common_api/bot_config | Save bot config.
 *CommonAdminApi* | [**postEditMaintenanceNotification**](doc//CommonAdminApi.md#posteditmaintenancenotification) | **POST** /common_api/edit_maintenance_notification | Edit maintenance notification
 *CommonAdminApi* | [**postGetAdminNotification**](doc//CommonAdminApi.md#postgetadminnotification) | **POST** /common_api/admin_notification | Get admin notification data.
 *CommonAdminApi* | [**postGetApiUsageData**](doc//CommonAdminApi.md#postgetapiusagedata) | **POST** /common_api/api_usage_data | Get API usage data for account
@@ -281,10 +281,14 @@ Class | Method | HTTP request | Description
  - [AccountStateContainer](doc//AccountStateContainer.md)
  - [AccountSyncVersion](doc//AccountSyncVersion.md)
  - [AddPublicKeyResult](doc//AddPublicKeyResult.md)
+ - [AdminBotConfig](doc//AdminBotConfig.md)
  - [AdminBotNotificationTypes](doc//AdminBotNotificationTypes.md)
+ - [AdminContentModerationConfig](doc//AdminContentModerationConfig.md)
  - [AdminInfo](doc//AdminInfo.md)
  - [AdminNotification](doc//AdminNotification.md)
  - [AdminNotificationSettings](doc//AdminNotificationSettings.md)
+ - [AdminNsfwDetectionConfig](doc//AdminNsfwDetectionConfig.md)
+ - [AdminProfileStringModerationConfig](doc//AdminProfileStringModerationConfig.md)
  - [ApiUsageCount](doc//ApiUsageCount.md)
  - [ApiUsageStatistics](doc//ApiUsageStatistics.md)
  - [Attribute](doc//Attribute.md)
@@ -299,7 +303,6 @@ Class | Method | HTTP request | Description
  - [AutomaticProfileSearchCompletedNotificationViewed](doc//AutomaticProfileSearchCompletedNotificationViewed.md)
  - [AutomaticProfileSearchIteratorSessionId](doc//AutomaticProfileSearchIteratorSessionId.md)
  - [AutomaticProfileSearchSettings](doc//AutomaticProfileSearchSettings.md)
- - [BackendConfig](doc//BackendConfig.md)
  - [BackendVersion](doc//BackendVersion.md)
  - [BackupTransferByteCount](doc//BackupTransferByteCount.md)
  - [BackupTransferClientRole](doc//BackupTransferClientRole.md)
@@ -307,6 +310,7 @@ Class | Method | HTTP request | Description
  - [BackupTransferTargetData](doc//BackupTransferTargetData.md)
  - [BooleanSetting](doc//BooleanSetting.md)
  - [BotAccount](doc//BotAccount.md)
+ - [BotConfig](doc//BotConfig.md)
  - [ChatAppNotificationSettings](doc//ChatAppNotificationSettings.md)
  - [ChatConfig](doc//ChatConfig.md)
  - [ChatEmailNotificationSettings](doc//ChatEmailNotificationSettings.md)
@@ -422,6 +426,8 @@ Class | Method | HTTP request | Description
  - [LatestBirthdate](doc//LatestBirthdate.md)
  - [LikesConfig](doc//LikesConfig.md)
  - [LimitedActionStatus](doc//LimitedActionStatus.md)
+ - [LlmContentModerationConfig](doc//LlmContentModerationConfig.md)
+ - [LlmStringModerationConfig](doc//LlmStringModerationConfig.md)
  - [Location](doc//Location.md)
  - [LoginResult](doc//LoginResult.md)
  - [MaintenanceTask](doc//MaintenanceTask.md)
@@ -449,6 +455,7 @@ Class | Method | HTTP request | Description
  - [MessageId](doc//MessageId.md)
  - [MessageNumber](doc//MessageNumber.md)
  - [MinDistanceKm](doc//MinDistanceKm.md)
+ - [ModerationAction](doc//ModerationAction.md)
  - [ModerationQueueType](doc//ModerationQueueType.md)
  - [MyProfileContent](doc//MyProfileContent.md)
  - [NewReceivedLikesCount](doc//NewReceivedLikesCount.md)

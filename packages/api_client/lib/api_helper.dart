@@ -112,6 +112,9 @@ String parameterToString(dynamic value) {
   if (value is MediaContentType) {
     return MediaContentTypeTypeTransformer().encode(value).toString();
   }
+  if (value is ModerationAction) {
+    return ModerationActionTypeTransformer().encode(value).toString();
+  }
   if (value is ModerationQueueType) {
     return ModerationQueueTypeTypeTransformer().encode(value).toString();
   }

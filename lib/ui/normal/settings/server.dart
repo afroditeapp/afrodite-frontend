@@ -9,7 +9,7 @@ import 'package:app/logic/account/account.dart';
 import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/model/freezed/logic/account/account.dart';
 import 'package:app/ui/normal/settings.dart';
-import 'package:app/ui/normal/settings/admin/configure_backend.dart';
+import 'package:app/ui/normal/settings/admin/configure_bots.dart';
 import 'package:app/ui/normal/settings/admin/server_software_update.dart';
 import 'package:app/ui/normal/settings/admin/server_system_info.dart';
 
@@ -45,13 +45,13 @@ class ServerScreen extends StatelessWidget {
 
     final r = context.read<RepositoryInstances>();
 
-    if (permissions.adminServerMaintenanceSaveBackendConfig ||
-        permissions.adminServerMaintenanceViewBackendConfig) {
+    if (permissions.adminServerMaintenanceEditBotConfig ||
+        permissions.adminServerMaintenanceViewBotConfig) {
       settings.add(
         Setting.createSetting(
           Icons.settings,
-          "Configure backend",
-          () => MyNavigator.pushLimited(context, ConfigureBackendPage(r)),
+          "Bots",
+          () => MyNavigator.pushLimited(context, ConfigureBotsPage(r)),
         ),
       );
     }

@@ -36,10 +36,14 @@ lib/model/account_setup.dart
 lib/model/account_state_container.dart
 lib/model/account_sync_version.dart
 lib/model/add_public_key_result.dart
+lib/model/admin_bot_config.dart
 lib/model/admin_bot_notification_types.dart
+lib/model/admin_content_moderation_config.dart
 lib/model/admin_info.dart
 lib/model/admin_notification.dart
 lib/model/admin_notification_settings.dart
+lib/model/admin_nsfw_detection_config.dart
+lib/model/admin_profile_string_moderation_config.dart
 lib/model/api_usage_count.dart
 lib/model/api_usage_statistics.dart
 lib/model/attribute.dart
@@ -54,7 +58,6 @@ lib/model/automatic_profile_search_completed_notification.dart
 lib/model/automatic_profile_search_completed_notification_viewed.dart
 lib/model/automatic_profile_search_iterator_session_id.dart
 lib/model/automatic_profile_search_settings.dart
-lib/model/backend_config.dart
 lib/model/backend_version.dart
 lib/model/backup_transfer_byte_count.dart
 lib/model/backup_transfer_client_role.dart
@@ -62,6 +65,7 @@ lib/model/backup_transfer_initial_message.dart
 lib/model/backup_transfer_target_data.dart
 lib/model/boolean_setting.dart
 lib/model/bot_account.dart
+lib/model/bot_config.dart
 lib/model/chat_app_notification_settings.dart
 lib/model/chat_config.dart
 lib/model/chat_email_notification_settings.dart
@@ -177,6 +181,8 @@ lib/model/last_seen_time_filter.dart
 lib/model/latest_birthdate.dart
 lib/model/likes_config.dart
 lib/model/limited_action_status.dart
+lib/model/llm_content_moderation_config.dart
+lib/model/llm_string_moderation_config.dart
 lib/model/location.dart
 lib/model/login_result.dart
 lib/model/maintenance_task.dart
@@ -204,6 +210,7 @@ lib/model/message_delivery_info_list.dart
 lib/model/message_id.dart
 lib/model/message_number.dart
 lib/model/min_distance_km.dart
+lib/model/moderation_action.dart
 lib/model/moderation_queue_type.dart
 lib/model/my_profile_content.dart
 lib/model/new_received_likes_count.dart

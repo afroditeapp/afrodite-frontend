@@ -92,7 +92,7 @@ class ChatEnabledBloc extends Bloc<ChatEnabledEvent, ChatEnabledData> {
       final keyInfo = result.ok();
       if (keyInfo != null) {
         final currentKeyId = keyInfo.latestPublicKeyId?.id ?? 0;
-        final maxKeys = keyInfo.maxPublicKeyCountFromBackendConfig;
+        final maxKeys = keyInfo.maxPublicKeyCount;
         final remainingGenerations = maxKeys - currentKeyId;
         emit(state.copyWith(remainingKeyGenerations: remainingGenerations));
       }

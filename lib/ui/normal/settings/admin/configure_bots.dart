@@ -12,25 +12,25 @@ import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/result.dart';
 
-class ConfigureBackendPage extends MyScreenPageLimited<()> {
-  ConfigureBackendPage(RepositoryInstances r) : super(builder: (_) => ConfigureBackendScreen(r));
+class ConfigureBotsPage extends MyScreenPageLimited<()> {
+  ConfigureBotsPage(RepositoryInstances r) : super(builder: (_) => ConfigureBotsScreen(r));
 }
 
-class ConfigureBackendScreen extends StatefulWidget {
+class ConfigureBotsScreen extends StatefulWidget {
   final ApiManager api;
-  ConfigureBackendScreen(RepositoryInstances r, {super.key}) : api = r.api;
+  ConfigureBotsScreen(RepositoryInstances r, {super.key}) : api = r.api;
 
   @override
-  State<ConfigureBackendScreen> createState() => _ConfigureBackendScreenState();
+  State<ConfigureBotsScreen> createState() => _ConfigureBotsScreenState();
 }
 
-class _ConfigureBackendScreenState extends State<ConfigureBackendScreen> {
+class _ConfigureBotsScreenState extends State<ConfigureBotsScreen> {
   bool? _remoteBotLogin;
   int? _userBots;
   bool? _adminBotEnabled;
   final TextEditingController _userBotsController = TextEditingController();
   final _configFormKey = GlobalKey<FormState>();
-  BackendConfig? _currentConfig;
+  BotConfig? _currentConfig;
 
   bool isLoading = true;
 
@@ -41,7 +41,7 @@ class _ConfigureBackendScreenState extends State<ConfigureBackendScreen> {
   }
 
   Future<void> _refreshData() async {
-    final data = await widget.api.commonAdmin((api) => api.getBackendConfig()).ok();
+    final data = await widget.api.commonAdmin((api) => api.getBotConfig()).ok();
 
     setState(() {
       isLoading = false;
@@ -57,7 +57,7 @@ class _ConfigureBackendScreenState extends State<ConfigureBackendScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Configure backend"),
+        title: const Text("Bots"),
         actions: [IconButton(onPressed: _refreshData, icon: const Icon(Icons.refresh))],
       ),
       body: displayState(context),
@@ -82,13 +82,13 @@ class _ConfigureBackendScreenState extends State<ConfigureBackendScreen> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              state.permissions.adminServerMaintenanceViewBackendConfig
+              state.permissions.adminServerMaintenanceViewBotConfig
                   ? hPad(Text(_currentConfig.toString()))
-                  : hPad(const Text("No permission for viewing backend configuration")),
+                  : hPad(const Text("No permission for viewing bot config")),
               const Padding(padding: EdgeInsets.only(top: 8.0)),
-              state.permissions.adminServerMaintenanceSaveBackendConfig
+              state.permissions.adminServerMaintenanceEditBotConfig
                   ? displaySaveConfig(context)
-                  : hPad(const Text("No permission for saving backend config")),
+                  : hPad(const Text("No permission for editing bot config")),
             ],
           ),
         );
@@ -116,7 +116,7 @@ class _ConfigureBackendScreenState extends State<ConfigureBackendScreen> {
         const Padding(padding: EdgeInsets.only(top: 8.0)),
         userBots != null ? hPad(userBotsTextField()) : hPad(const Text("User bot config disabled")),
         const Padding(padding: EdgeInsets.only(top: 8.0)),
-        hPad(saveBackendConfigButton()),
+        hPad(saveBotConfigButton()),
       ],
     );
   }
@@ -165,7 +165,7 @@ class _ConfigureBackendScreenState extends State<ConfigureBackendScreen> {
     return Form(key: _configFormKey, child: userBots);
   }
 
-  Widget saveBackendConfigButton() {
+  Widget saveBotConfigButton() {
     return ElevatedButton(
       onPressed: () {
         if (_configFormKey.currentState?.validate() == false) {
@@ -174,20 +174,18 @@ class _ConfigureBackendScreenState extends State<ConfigureBackendScreen> {
 
         FocusScope.of(context).unfocus();
 
-        final config = BackendConfig(
-          remoteBotLogin: _remoteBotLogin,
-          adminBot: _adminBotEnabled,
-          userBots: _userBots,
+        final config = BotConfig(
+          remoteBotLogin: _remoteBotLogin ?? false,
+          adminBot: _adminBotEnabled ?? false,
+          userBots: _userBots ?? 0,
         );
         showConfirmDialog(
           context,
-          "Save backend config?",
+          "Save bot config?",
           details: "New config: ${config.toString()}",
         ).then((value) async {
           if (value == true) {
-            final result = await widget.api.commonAdminAction(
-              (api) => api.postBackendConfig(config),
-            );
+            final result = await widget.api.commonAdminAction((api) => api.postBotConfig(config));
             switch (result) {
               case Ok():
                 showSnackBar("Config saved!");
@@ -200,7 +198,7 @@ class _ConfigureBackendScreenState extends State<ConfigureBackendScreen> {
           }
         });
       },
-      child: const Text("Save backend config"),
+      child: const Text("Save bot config"),
     );
   }
 

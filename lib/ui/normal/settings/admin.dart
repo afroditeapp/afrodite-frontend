@@ -69,8 +69,8 @@ class AdminSettingsScreen extends StatelessWidget {
         ),
       );
     }
-    if (permissions.adminServerMaintenanceSaveBackendConfig ||
-        permissions.adminServerMaintenanceViewBackendConfig ||
+    if (permissions.adminServerMaintenanceEditBotConfig ||
+        permissions.adminServerMaintenanceViewBotConfig ||
         permissions.adminServerMaintenanceViewInfo ||
         permissions.adminServerMaintenanceRebootBackend ||
         permissions.adminServerMaintenanceResetData ||
@@ -144,10 +144,8 @@ class AdminSettingsPermissions {
   bool get adminViewPermissions => _permissions.adminViewPermissions;
   bool get adminViewAllProfiles => _permissions.adminViewAllProfiles;
   bool get adminServerMaintenanceRebootBackend => _permissions.adminServerMaintenanceRestartBackend;
-  bool get adminServerMaintenanceSaveBackendConfig =>
-      _permissions.adminServerMaintenanceSaveBackendConfig;
-  bool get adminServerMaintenanceViewBackendConfig =>
-      _permissions.adminServerMaintenanceViewBackendConfig;
+  bool get adminServerMaintenanceEditBotConfig => _permissions.adminServerMaintenanceEditBotConfig;
+  bool get adminServerMaintenanceViewBotConfig => _permissions.adminServerMaintenanceViewBotConfig;
   bool get adminServerMaintenanceViewInfo => _permissions.adminServerMaintenanceViewInfo;
   bool get adminServerMaintenanceUpdateSoftware =>
       _permissions.adminServerMaintenanceUpdateSoftware;
@@ -169,8 +167,8 @@ class AdminSettingsPermissions {
         adminViewPermissions ||
         adminViewAllProfiles ||
         adminServerMaintenanceRebootBackend ||
-        adminServerMaintenanceSaveBackendConfig ||
-        adminServerMaintenanceViewBackendConfig ||
+        adminServerMaintenanceEditBotConfig ||
+        adminServerMaintenanceViewBotConfig ||
         adminServerMaintenanceViewInfo ||
         adminServerMaintenanceUpdateSoftware ||
         adminServerMaintenanceResetData ||
