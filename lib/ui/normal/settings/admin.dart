@@ -71,6 +71,8 @@ class AdminSettingsScreen extends StatelessWidget {
     }
     if (permissions.adminServerEditBotConfig ||
         permissions.adminServerViewBotConfig ||
+        permissions.adminServerEditImageProcessingConfig ||
+        permissions.adminServerViewImageProcessingConfig ||
         permissions.adminServerViewInfo ||
         permissions.adminServerRestart ||
         permissions.adminServerDataReset ||
@@ -146,6 +148,10 @@ class AdminSettingsPermissions {
   bool get adminServerRestart => _permissions.adminServerRestart;
   bool get adminServerEditBotConfig => _permissions.adminServerEditBotConfig;
   bool get adminServerViewBotConfig => _permissions.adminServerViewBotConfig;
+  bool get adminServerEditImageProcessingConfig =>
+      _permissions.adminServerEditImageProcessingConfig;
+  bool get adminServerViewImageProcessingConfig =>
+      _permissions.adminServerViewImageProcessingConfig;
   bool get adminServerViewInfo => _permissions.adminServerViewInfo;
   bool get adminServerSoftwareUpdate => _permissions.adminServerSoftwareUpdate;
   bool get adminServerDataReset => _permissions.adminServerDataReset;
@@ -168,6 +174,8 @@ class AdminSettingsPermissions {
         adminServerRestart ||
         adminServerEditBotConfig ||
         adminServerViewBotConfig ||
+        adminServerEditImageProcessingConfig ||
+        adminServerViewImageProcessingConfig ||
         adminServerViewInfo ||
         adminServerSoftwareUpdate ||
         adminServerDataReset ||
