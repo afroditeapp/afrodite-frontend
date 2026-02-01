@@ -43,7 +43,7 @@ class _ServerTasksScreenState extends State<ServerTasksScreen> {
     final managers = _managers?.names ?? [];
     final List<ManagerInstanceRelatedState> data = [];
     for (final m in managers) {
-      if (!widget.permissions.adminServerMaintenanceRestartBackend) {
+      if (!widget.permissions.adminServerRestart) {
         data.add(ManagerInstanceRelatedState(m, null));
         continue;
       }
@@ -114,7 +114,7 @@ class _ServerTasksScreenState extends State<ServerTasksScreen> {
         const Padding(padding: EdgeInsets.only(top: 8.0)),
         hPad(Text("Tasks", style: Theme.of(context).textTheme.titleLarge)),
         const Padding(padding: EdgeInsets.only(top: 8.0)),
-        if (widget.permissions.adminServerMaintenanceRestartBackend)
+        if (widget.permissions.adminServerRestart)
           hPad(
             actionButton(
               context,
@@ -124,7 +124,7 @@ class _ServerTasksScreenState extends State<ServerTasksScreen> {
               (api) => api.postTriggerBackendRestart(data.manager),
             ),
           ),
-        if (widget.permissions.adminServerMaintenanceRestartBackend)
+        if (widget.permissions.adminServerRestart)
           hPad(
             actionButton(
               context,
@@ -134,7 +134,7 @@ class _ServerTasksScreenState extends State<ServerTasksScreen> {
               (api) => api.postTriggerSystemReboot(data.manager),
             ),
           ),
-        if (widget.permissions.adminServerMaintenanceResetData)
+        if (widget.permissions.adminServerDataReset)
           hPad(
             actionButton(
               context,
@@ -145,9 +145,9 @@ class _ServerTasksScreenState extends State<ServerTasksScreen> {
             ),
           ),
         const Padding(padding: EdgeInsets.only(top: 8.0)),
-        if (widget.permissions.adminServerMaintenanceRestartBackend && status == null)
+        if (widget.permissions.adminServerRestart && status == null)
           hPad(Text(context.strings.generic_error)),
-        if (widget.permissions.adminServerMaintenanceRestartBackend && status != null)
+        if (widget.permissions.adminServerRestart && status != null)
           displayScheduledtasks(context, data, status),
       ],
     );

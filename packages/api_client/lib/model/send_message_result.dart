@@ -20,6 +20,7 @@ class SendMessageResult {
     this.errorSenderPublicKeyOutdated = false,
     this.errorTooManyReceiverAcknowledgementsMissing = false,
     this.errorTooManySenderAcknowledgementsMissing = false,
+    this.remainingMessages,
   });
 
   /// Base64 encoded PGP signed message containing [SignedMessageData].
@@ -37,6 +38,11 @@ class SendMessageResult {
 
   bool errorTooManySenderAcknowledgementsMissing;
 
+  /// Remaining daily messages count. The value will be returned only if there is 50 or less messages left.
+  ///
+  /// Minimum value: 0
+  int? remainingMessages;
+
   @override
   bool operator ==(Object other) => identical(this, other) || other is SendMessageResult &&
     other.d == d &&
@@ -45,7 +51,8 @@ class SendMessageResult {
     other.errorReceiverPublicKeyOutdated == errorReceiverPublicKeyOutdated &&
     other.errorSenderPublicKeyOutdated == errorSenderPublicKeyOutdated &&
     other.errorTooManyReceiverAcknowledgementsMissing == errorTooManyReceiverAcknowledgementsMissing &&
-    other.errorTooManySenderAcknowledgementsMissing == errorTooManySenderAcknowledgementsMissing;
+    other.errorTooManySenderAcknowledgementsMissing == errorTooManySenderAcknowledgementsMissing &&
+    other.remainingMessages == remainingMessages;
 
   @override
   int get hashCode =>
@@ -56,10 +63,11 @@ class SendMessageResult {
     (errorReceiverPublicKeyOutdated.hashCode) +
     (errorSenderPublicKeyOutdated.hashCode) +
     (errorTooManyReceiverAcknowledgementsMissing.hashCode) +
-    (errorTooManySenderAcknowledgementsMissing.hashCode);
+    (errorTooManySenderAcknowledgementsMissing.hashCode) +
+    (remainingMessages == null ? 0 : remainingMessages!.hashCode);
 
   @override
-  String toString() => 'SendMessageResult[d=$d, error=$error, errorReceiverBlockedSenderOrReceiverNotFound=$errorReceiverBlockedSenderOrReceiverNotFound, errorReceiverPublicKeyOutdated=$errorReceiverPublicKeyOutdated, errorSenderPublicKeyOutdated=$errorSenderPublicKeyOutdated, errorTooManyReceiverAcknowledgementsMissing=$errorTooManyReceiverAcknowledgementsMissing, errorTooManySenderAcknowledgementsMissing=$errorTooManySenderAcknowledgementsMissing]';
+  String toString() => 'SendMessageResult[d=$d, error=$error, errorReceiverBlockedSenderOrReceiverNotFound=$errorReceiverBlockedSenderOrReceiverNotFound, errorReceiverPublicKeyOutdated=$errorReceiverPublicKeyOutdated, errorSenderPublicKeyOutdated=$errorSenderPublicKeyOutdated, errorTooManyReceiverAcknowledgementsMissing=$errorTooManyReceiverAcknowledgementsMissing, errorTooManySenderAcknowledgementsMissing=$errorTooManySenderAcknowledgementsMissing, remainingMessages=$remainingMessages]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -74,6 +82,11 @@ class SendMessageResult {
       json[r'error_sender_public_key_outdated'] = this.errorSenderPublicKeyOutdated;
       json[r'error_too_many_receiver_acknowledgements_missing'] = this.errorTooManyReceiverAcknowledgementsMissing;
       json[r'error_too_many_sender_acknowledgements_missing'] = this.errorTooManySenderAcknowledgementsMissing;
+    if (this.remainingMessages != null) {
+      json[r'remaining_messages'] = this.remainingMessages;
+    } else {
+      json[r'remaining_messages'] = null;
+    }
     return json;
   }
 
@@ -103,6 +116,7 @@ class SendMessageResult {
         errorSenderPublicKeyOutdated: mapValueOfType<bool>(json, r'error_sender_public_key_outdated') ?? false,
         errorTooManyReceiverAcknowledgementsMissing: mapValueOfType<bool>(json, r'error_too_many_receiver_acknowledgements_missing') ?? false,
         errorTooManySenderAcknowledgementsMissing: mapValueOfType<bool>(json, r'error_too_many_sender_acknowledgements_missing') ?? false,
+        remainingMessages: mapValueOfType<int>(json, r'remaining_messages'),
       );
     }
     return null;

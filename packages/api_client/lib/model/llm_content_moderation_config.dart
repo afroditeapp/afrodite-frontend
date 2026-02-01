@@ -17,7 +17,7 @@ class LlmContentModerationConfig {
     this.deleteAccepted = false,
     required this.expectedResponse,
     this.ignoreRejected = false,
-    this.maxTokens,
+    required this.maxTokens,
     this.moveAcceptedToHumanModeration = false,
     this.moveRejectedToHumanModeration = false,
     required this.systemText,
@@ -35,7 +35,7 @@ class LlmContentModerationConfig {
   bool ignoreRejected;
 
   /// Minimum value: 0
-  int? maxTokens;
+  int maxTokens;
 
   bool moveAcceptedToHumanModeration;
 
@@ -61,7 +61,7 @@ class LlmContentModerationConfig {
     (deleteAccepted.hashCode) +
     (expectedResponse.hashCode) +
     (ignoreRejected.hashCode) +
-    (maxTokens == null ? 0 : maxTokens!.hashCode) +
+    (maxTokens.hashCode) +
     (moveAcceptedToHumanModeration.hashCode) +
     (moveRejectedToHumanModeration.hashCode) +
     (systemText.hashCode);
@@ -75,11 +75,7 @@ class LlmContentModerationConfig {
       json[r'delete_accepted'] = this.deleteAccepted;
       json[r'expected_response'] = this.expectedResponse;
       json[r'ignore_rejected'] = this.ignoreRejected;
-    if (this.maxTokens != null) {
       json[r'max_tokens'] = this.maxTokens;
-    } else {
-      json[r'max_tokens'] = null;
-    }
       json[r'move_accepted_to_human_moderation'] = this.moveAcceptedToHumanModeration;
       json[r'move_rejected_to_human_moderation'] = this.moveRejectedToHumanModeration;
       json[r'system_text'] = this.systemText;
@@ -109,7 +105,7 @@ class LlmContentModerationConfig {
         deleteAccepted: mapValueOfType<bool>(json, r'delete_accepted') ?? false,
         expectedResponse: mapValueOfType<String>(json, r'expected_response')!,
         ignoreRejected: mapValueOfType<bool>(json, r'ignore_rejected') ?? false,
-        maxTokens: mapValueOfType<int>(json, r'max_tokens'),
+        maxTokens: mapValueOfType<int>(json, r'max_tokens')!,
         moveAcceptedToHumanModeration: mapValueOfType<bool>(json, r'move_accepted_to_human_moderation') ?? false,
         moveRejectedToHumanModeration: mapValueOfType<bool>(json, r'move_rejected_to_human_moderation') ?? false,
         systemText: mapValueOfType<String>(json, r'system_text')!,
@@ -161,6 +157,7 @@ class LlmContentModerationConfig {
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
     'expected_response',
+    'max_tokens',
     'system_text',
   };
 }

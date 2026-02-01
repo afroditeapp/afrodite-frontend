@@ -48,7 +48,7 @@ class MetricsScreen extends StatelessWidget {
         .ipCountryDataAttribution(context);
     List<Setting> settings = [];
 
-    if (permissions.adminServerMaintenanceViewInfo) {
+    if (permissions.adminServerViewInfo) {
       const title = "View server perf data";
       settings.add(
         Setting.createSetting(

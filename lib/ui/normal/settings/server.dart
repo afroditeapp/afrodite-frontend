@@ -45,8 +45,7 @@ class ServerScreen extends StatelessWidget {
 
     final r = context.read<RepositoryInstances>();
 
-    if (permissions.adminServerMaintenanceEditBotConfig ||
-        permissions.adminServerMaintenanceViewBotConfig) {
+    if (permissions.adminServerEditBotConfig || permissions.adminServerViewBotConfig) {
       settings.add(
         Setting.createSetting(
           Icons.settings,
@@ -55,7 +54,7 @@ class ServerScreen extends StatelessWidget {
         ),
       );
     }
-    if (permissions.adminServerMaintenanceViewInfo) {
+    if (permissions.adminServerViewInfo) {
       settings.add(
         Setting.createSetting(
           Icons.info_outline,
@@ -64,8 +63,7 @@ class ServerScreen extends StatelessWidget {
         ),
       );
     }
-    if (permissions.adminServerMaintenanceRebootBackend ||
-        permissions.adminServerMaintenanceResetData) {
+    if (permissions.adminServerRestart || permissions.adminServerDataReset) {
       settings.add(
         Setting.createSetting(
           Icons.schedule,
@@ -77,7 +75,7 @@ class ServerScreen extends StatelessWidget {
         ),
       );
     }
-    if (permissions.adminServerMaintenanceUpdateSoftware) {
+    if (permissions.adminServerSoftwareUpdate) {
       settings.add(
         Setting.createSetting(
           Icons.system_update_alt,
@@ -86,7 +84,7 @@ class ServerScreen extends StatelessWidget {
         ),
       );
     }
-    if (permissions.adminServerMaintenanceEditNotification) {
+    if (permissions.adminServerEditMaintenanceNotification) {
       settings.add(
         Setting.createSetting(
           Icons.settings,

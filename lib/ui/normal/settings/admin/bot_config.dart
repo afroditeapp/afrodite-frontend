@@ -28,6 +28,7 @@ class _BotConfigScreenState extends State<BotConfigScreen> {
   bool _remoteBotLogin = false;
   int _userBots = 0;
   bool _adminBotEnabled = false;
+  AdminBotConfig? _adminBotConfig;
   final TextEditingController _userBotsController = TextEditingController();
   final _configFormKey = GlobalKey<FormState>();
 
@@ -49,6 +50,7 @@ class _BotConfigScreenState extends State<BotConfigScreen> {
       _remoteBotLogin = data?.remoteBotLogin ?? _remoteBotLogin;
       _adminBotEnabled = data?.adminBot ?? _adminBotEnabled;
       _userBots = data?.userBots ?? _userBots;
+      _adminBotConfig = data?.adminBotConfig ?? _adminBotConfig;
       _userBotsController.text = _userBots.toString();
     });
   }
@@ -99,7 +101,7 @@ class _BotConfigScreenState extends State<BotConfigScreen> {
         const Padding(padding: EdgeInsets.only(top: 8.0)),
         hPad(userBotsTextField()),
         const Padding(padding: EdgeInsets.only(top: 8.0)),
-        permissions.adminServerMaintenanceEditBotConfig
+        permissions.adminServerEditBotConfig
             ? hPad(saveBotConfigButton())
             : hPad(const Text("No permission for editing bot config")),
       ],
@@ -159,10 +161,17 @@ class _BotConfigScreenState extends State<BotConfigScreen> {
 
         FocusScope.of(context).unfocus();
 
+        final adminBotConfig = _adminBotConfig;
+        if (adminBotConfig == null) {
+          showSnackBar("Config not loaded");
+          return;
+        }
+
         final config = BotConfig(
           remoteBotLogin: _remoteBotLogin,
           adminBot: _adminBotEnabled,
           userBots: _userBots,
+          adminBotConfig: adminBotConfig,
         );
         showConfirmDialog(context, "Save bot config?").then((value) async {
           if (value == true) {

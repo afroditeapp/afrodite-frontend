@@ -18,7 +18,7 @@ class MediaAdminApi {
 
   /// Get image processing configuration
   ///
-  /// # Permissions Requires admin_server_maintenance_view_image_processing_config.
+  /// # Permissions Requires admin_server_view_image_processing_config.
   ///
   /// Note: This method returns the HTTP [Response].
   Future<Response> getImageProcessingConfigWithHttpInfo() async {
@@ -48,7 +48,7 @@ class MediaAdminApi {
 
   /// Get image processing configuration
   ///
-  /// # Permissions Requires admin_server_maintenance_view_image_processing_config.
+  /// # Permissions Requires admin_server_view_image_processing_config.
   Future<ImageProcessingDynamicConfig?> getImageProcessingConfig() async {
     final response = await getImageProcessingConfigWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
@@ -130,7 +130,7 @@ class MediaAdminApi {
 
   /// Update image processing configuration
   ///
-  /// # Permissions Requires admin_server_maintenance_edit_image_processing_config.
+  /// # Permissions Requires admin_server_edit_image_processing_config.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -164,7 +164,7 @@ class MediaAdminApi {
 
   /// Update image processing configuration
   ///
-  /// # Permissions Requires admin_server_maintenance_edit_image_processing_config.
+  /// # Permissions Requires admin_server_edit_image_processing_config.
   ///
   /// Parameters:
   ///

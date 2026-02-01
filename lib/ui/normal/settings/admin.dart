@@ -69,13 +69,13 @@ class AdminSettingsScreen extends StatelessWidget {
         ),
       );
     }
-    if (permissions.adminServerMaintenanceEditBotConfig ||
-        permissions.adminServerMaintenanceViewBotConfig ||
-        permissions.adminServerMaintenanceViewInfo ||
-        permissions.adminServerMaintenanceRebootBackend ||
-        permissions.adminServerMaintenanceResetData ||
-        permissions.adminServerMaintenanceUpdateSoftware ||
-        permissions.adminServerMaintenanceEditNotification) {
+    if (permissions.adminServerEditBotConfig ||
+        permissions.adminServerViewBotConfig ||
+        permissions.adminServerViewInfo ||
+        permissions.adminServerRestart ||
+        permissions.adminServerDataReset ||
+        permissions.adminServerSoftwareUpdate ||
+        permissions.adminServerEditMaintenanceNotification) {
       const title = "Server";
       settings.add(
         Setting.createSetting(
@@ -85,7 +85,7 @@ class AdminSettingsScreen extends StatelessWidget {
         ),
       );
     }
-    if (permissions.adminServerMaintenanceViewInfo || permissions.adminProfileStatistics) {
+    if (permissions.adminServerViewInfo || permissions.adminProfileStatistics) {
       const title = "Metrics";
       settings.add(
         Setting.createSetting(
@@ -143,15 +143,14 @@ class AdminSettingsPermissions {
   bool get adminProcessReports => _permissions.adminProcessReports;
   bool get adminViewPermissions => _permissions.adminViewPermissions;
   bool get adminViewAllProfiles => _permissions.adminViewAllProfiles;
-  bool get adminServerMaintenanceRebootBackend => _permissions.adminServerMaintenanceRestartBackend;
-  bool get adminServerMaintenanceEditBotConfig => _permissions.adminServerMaintenanceEditBotConfig;
-  bool get adminServerMaintenanceViewBotConfig => _permissions.adminServerMaintenanceViewBotConfig;
-  bool get adminServerMaintenanceViewInfo => _permissions.adminServerMaintenanceViewInfo;
-  bool get adminServerMaintenanceUpdateSoftware =>
-      _permissions.adminServerMaintenanceUpdateSoftware;
-  bool get adminServerMaintenanceResetData => _permissions.adminServerMaintenanceResetData;
-  bool get adminServerMaintenanceEditNotification =>
-      _permissions.adminServerMaintenanceEditNotification;
+  bool get adminServerRestart => _permissions.adminServerRestart;
+  bool get adminServerEditBotConfig => _permissions.adminServerEditBotConfig;
+  bool get adminServerViewBotConfig => _permissions.adminServerViewBotConfig;
+  bool get adminServerViewInfo => _permissions.adminServerViewInfo;
+  bool get adminServerSoftwareUpdate => _permissions.adminServerSoftwareUpdate;
+  bool get adminServerDataReset => _permissions.adminServerDataReset;
+  bool get adminServerEditMaintenanceNotification =>
+      _permissions.adminServerEditMaintenanceNotification;
   bool get adminProfileStatistics => _permissions.adminProfileStatistics;
   bool get adminFindAccountByEmailAddress => _permissions.adminFindAccountByEmailAddress;
   bool get adminSubscribeAdminNotifications => _permissions.adminSubscribeAdminNotifications;
@@ -166,13 +165,13 @@ class AdminSettingsPermissions {
         adminProcessReports ||
         adminViewPermissions ||
         adminViewAllProfiles ||
-        adminServerMaintenanceRebootBackend ||
-        adminServerMaintenanceEditBotConfig ||
-        adminServerMaintenanceViewBotConfig ||
-        adminServerMaintenanceViewInfo ||
-        adminServerMaintenanceUpdateSoftware ||
-        adminServerMaintenanceResetData ||
-        adminServerMaintenanceEditNotification ||
+        adminServerRestart ||
+        adminServerEditBotConfig ||
+        adminServerViewBotConfig ||
+        adminServerViewInfo ||
+        adminServerSoftwareUpdate ||
+        adminServerDataReset ||
+        adminServerEditMaintenanceNotification ||
         adminProfileStatistics ||
         adminFindAccountByEmailAddress ||
         adminSubscribeAdminNotifications;

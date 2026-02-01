@@ -31,15 +31,15 @@ class Permissions {
     this.adminProcessReports = false,
     this.adminProfileStatistics = false,
     this.adminRequestAccountDeletion = false,
-    this.adminServerMaintenanceEditBotConfig = false,
-    this.adminServerMaintenanceEditImageProcessingConfig = false,
-    this.adminServerMaintenanceEditNotification = false,
-    this.adminServerMaintenanceResetData = false,
-    this.adminServerMaintenanceRestartBackend = false,
-    this.adminServerMaintenanceUpdateSoftware = false,
-    this.adminServerMaintenanceViewBotConfig = false,
-    this.adminServerMaintenanceViewImageProcessingConfig = false,
-    this.adminServerMaintenanceViewInfo = false,
+    this.adminServerDataReset = false,
+    this.adminServerEditBotConfig = false,
+    this.adminServerEditImageProcessingConfig = false,
+    this.adminServerEditMaintenanceNotification = false,
+    this.adminServerRestart = false,
+    this.adminServerSoftwareUpdate = false,
+    this.adminServerViewBotConfig = false,
+    this.adminServerViewImageProcessingConfig = false,
+    this.adminServerViewInfo = false,
     this.adminSubscribeAdminNotifications = false,
     this.adminViewAccountApiUsage = false,
     this.adminViewAccountIpAddressUsage = false,
@@ -86,24 +86,24 @@ class Permissions {
 
   bool adminRequestAccountDeletion;
 
-  bool adminServerMaintenanceEditBotConfig;
+  bool adminServerDataReset;
 
-  bool adminServerMaintenanceEditImageProcessingConfig;
+  bool adminServerEditBotConfig;
 
-  bool adminServerMaintenanceEditNotification;
+  bool adminServerEditImageProcessingConfig;
 
-  bool adminServerMaintenanceResetData;
+  bool adminServerEditMaintenanceNotification;
 
-  bool adminServerMaintenanceRestartBackend;
+  bool adminServerRestart;
 
-  bool adminServerMaintenanceUpdateSoftware;
+  bool adminServerSoftwareUpdate;
 
-  bool adminServerMaintenanceViewBotConfig;
+  bool adminServerViewBotConfig;
 
-  bool adminServerMaintenanceViewImageProcessingConfig;
+  bool adminServerViewImageProcessingConfig;
 
   /// View server infrastructure related info like logs and software versions.
-  bool adminServerMaintenanceViewInfo;
+  bool adminServerViewInfo;
 
   bool adminSubscribeAdminNotifications;
 
@@ -142,15 +142,15 @@ class Permissions {
     other.adminProcessReports == adminProcessReports &&
     other.adminProfileStatistics == adminProfileStatistics &&
     other.adminRequestAccountDeletion == adminRequestAccountDeletion &&
-    other.adminServerMaintenanceEditBotConfig == adminServerMaintenanceEditBotConfig &&
-    other.adminServerMaintenanceEditImageProcessingConfig == adminServerMaintenanceEditImageProcessingConfig &&
-    other.adminServerMaintenanceEditNotification == adminServerMaintenanceEditNotification &&
-    other.adminServerMaintenanceResetData == adminServerMaintenanceResetData &&
-    other.adminServerMaintenanceRestartBackend == adminServerMaintenanceRestartBackend &&
-    other.adminServerMaintenanceUpdateSoftware == adminServerMaintenanceUpdateSoftware &&
-    other.adminServerMaintenanceViewBotConfig == adminServerMaintenanceViewBotConfig &&
-    other.adminServerMaintenanceViewImageProcessingConfig == adminServerMaintenanceViewImageProcessingConfig &&
-    other.adminServerMaintenanceViewInfo == adminServerMaintenanceViewInfo &&
+    other.adminServerDataReset == adminServerDataReset &&
+    other.adminServerEditBotConfig == adminServerEditBotConfig &&
+    other.adminServerEditImageProcessingConfig == adminServerEditImageProcessingConfig &&
+    other.adminServerEditMaintenanceNotification == adminServerEditMaintenanceNotification &&
+    other.adminServerRestart == adminServerRestart &&
+    other.adminServerSoftwareUpdate == adminServerSoftwareUpdate &&
+    other.adminServerViewBotConfig == adminServerViewBotConfig &&
+    other.adminServerViewImageProcessingConfig == adminServerViewImageProcessingConfig &&
+    other.adminServerViewInfo == adminServerViewInfo &&
     other.adminSubscribeAdminNotifications == adminSubscribeAdminNotifications &&
     other.adminViewAccountApiUsage == adminViewAccountApiUsage &&
     other.adminViewAccountIpAddressUsage == adminViewAccountIpAddressUsage &&
@@ -181,15 +181,15 @@ class Permissions {
     (adminProcessReports.hashCode) +
     (adminProfileStatistics.hashCode) +
     (adminRequestAccountDeletion.hashCode) +
-    (adminServerMaintenanceEditBotConfig.hashCode) +
-    (adminServerMaintenanceEditImageProcessingConfig.hashCode) +
-    (adminServerMaintenanceEditNotification.hashCode) +
-    (adminServerMaintenanceResetData.hashCode) +
-    (adminServerMaintenanceRestartBackend.hashCode) +
-    (adminServerMaintenanceUpdateSoftware.hashCode) +
-    (adminServerMaintenanceViewBotConfig.hashCode) +
-    (adminServerMaintenanceViewImageProcessingConfig.hashCode) +
-    (adminServerMaintenanceViewInfo.hashCode) +
+    (adminServerDataReset.hashCode) +
+    (adminServerEditBotConfig.hashCode) +
+    (adminServerEditImageProcessingConfig.hashCode) +
+    (adminServerEditMaintenanceNotification.hashCode) +
+    (adminServerRestart.hashCode) +
+    (adminServerSoftwareUpdate.hashCode) +
+    (adminServerViewBotConfig.hashCode) +
+    (adminServerViewImageProcessingConfig.hashCode) +
+    (adminServerViewInfo.hashCode) +
     (adminSubscribeAdminNotifications.hashCode) +
     (adminViewAccountApiUsage.hashCode) +
     (adminViewAccountIpAddressUsage.hashCode) +
@@ -200,7 +200,7 @@ class Permissions {
     (adminViewProfileHistory.hashCode);
 
   @override
-  String toString() => 'Permissions[adminBanAccount=$adminBanAccount, adminChangeEmailAddress=$adminChangeEmailAddress, adminDeleteAccount=$adminDeleteAccount, adminDeleteMediaContent=$adminDeleteMediaContent, adminEditLogin=$adminEditLogin, adminEditMediaContentFaceDetectedValue=$adminEditMediaContentFaceDetectedValue, adminEditPermissions=$adminEditPermissions, adminEditProfileName=$adminEditProfileName, adminExportData=$adminExportData, adminFindAccountByEmailAddress=$adminFindAccountByEmailAddress, adminModerateMediaContent=$adminModerateMediaContent, adminModerateProfileNames=$adminModerateProfileNames, adminModerateProfileTexts=$adminModerateProfileTexts, adminNewsCreate=$adminNewsCreate, adminNewsEditAll=$adminNewsEditAll, adminProcessReports=$adminProcessReports, adminProfileStatistics=$adminProfileStatistics, adminRequestAccountDeletion=$adminRequestAccountDeletion, adminServerMaintenanceEditBotConfig=$adminServerMaintenanceEditBotConfig, adminServerMaintenanceEditImageProcessingConfig=$adminServerMaintenanceEditImageProcessingConfig, adminServerMaintenanceEditNotification=$adminServerMaintenanceEditNotification, adminServerMaintenanceResetData=$adminServerMaintenanceResetData, adminServerMaintenanceRestartBackend=$adminServerMaintenanceRestartBackend, adminServerMaintenanceUpdateSoftware=$adminServerMaintenanceUpdateSoftware, adminServerMaintenanceViewBotConfig=$adminServerMaintenanceViewBotConfig, adminServerMaintenanceViewImageProcessingConfig=$adminServerMaintenanceViewImageProcessingConfig, adminServerMaintenanceViewInfo=$adminServerMaintenanceViewInfo, adminSubscribeAdminNotifications=$adminSubscribeAdminNotifications, adminViewAccountApiUsage=$adminViewAccountApiUsage, adminViewAccountIpAddressUsage=$adminViewAccountIpAddressUsage, adminViewAccountState=$adminViewAccountState, adminViewAllProfiles=$adminViewAllProfiles, adminViewEmailAddress=$adminViewEmailAddress, adminViewPermissions=$adminViewPermissions, adminViewProfileHistory=$adminViewProfileHistory]';
+  String toString() => 'Permissions[adminBanAccount=$adminBanAccount, adminChangeEmailAddress=$adminChangeEmailAddress, adminDeleteAccount=$adminDeleteAccount, adminDeleteMediaContent=$adminDeleteMediaContent, adminEditLogin=$adminEditLogin, adminEditMediaContentFaceDetectedValue=$adminEditMediaContentFaceDetectedValue, adminEditPermissions=$adminEditPermissions, adminEditProfileName=$adminEditProfileName, adminExportData=$adminExportData, adminFindAccountByEmailAddress=$adminFindAccountByEmailAddress, adminModerateMediaContent=$adminModerateMediaContent, adminModerateProfileNames=$adminModerateProfileNames, adminModerateProfileTexts=$adminModerateProfileTexts, adminNewsCreate=$adminNewsCreate, adminNewsEditAll=$adminNewsEditAll, adminProcessReports=$adminProcessReports, adminProfileStatistics=$adminProfileStatistics, adminRequestAccountDeletion=$adminRequestAccountDeletion, adminServerDataReset=$adminServerDataReset, adminServerEditBotConfig=$adminServerEditBotConfig, adminServerEditImageProcessingConfig=$adminServerEditImageProcessingConfig, adminServerEditMaintenanceNotification=$adminServerEditMaintenanceNotification, adminServerRestart=$adminServerRestart, adminServerSoftwareUpdate=$adminServerSoftwareUpdate, adminServerViewBotConfig=$adminServerViewBotConfig, adminServerViewImageProcessingConfig=$adminServerViewImageProcessingConfig, adminServerViewInfo=$adminServerViewInfo, adminSubscribeAdminNotifications=$adminSubscribeAdminNotifications, adminViewAccountApiUsage=$adminViewAccountApiUsage, adminViewAccountIpAddressUsage=$adminViewAccountIpAddressUsage, adminViewAccountState=$adminViewAccountState, adminViewAllProfiles=$adminViewAllProfiles, adminViewEmailAddress=$adminViewEmailAddress, adminViewPermissions=$adminViewPermissions, adminViewProfileHistory=$adminViewProfileHistory]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -222,15 +222,15 @@ class Permissions {
       json[r'admin_process_reports'] = this.adminProcessReports;
       json[r'admin_profile_statistics'] = this.adminProfileStatistics;
       json[r'admin_request_account_deletion'] = this.adminRequestAccountDeletion;
-      json[r'admin_server_maintenance_edit_bot_config'] = this.adminServerMaintenanceEditBotConfig;
-      json[r'admin_server_maintenance_edit_image_processing_config'] = this.adminServerMaintenanceEditImageProcessingConfig;
-      json[r'admin_server_maintenance_edit_notification'] = this.adminServerMaintenanceEditNotification;
-      json[r'admin_server_maintenance_reset_data'] = this.adminServerMaintenanceResetData;
-      json[r'admin_server_maintenance_restart_backend'] = this.adminServerMaintenanceRestartBackend;
-      json[r'admin_server_maintenance_update_software'] = this.adminServerMaintenanceUpdateSoftware;
-      json[r'admin_server_maintenance_view_bot_config'] = this.adminServerMaintenanceViewBotConfig;
-      json[r'admin_server_maintenance_view_image_processing_config'] = this.adminServerMaintenanceViewImageProcessingConfig;
-      json[r'admin_server_maintenance_view_info'] = this.adminServerMaintenanceViewInfo;
+      json[r'admin_server_data_reset'] = this.adminServerDataReset;
+      json[r'admin_server_edit_bot_config'] = this.adminServerEditBotConfig;
+      json[r'admin_server_edit_image_processing_config'] = this.adminServerEditImageProcessingConfig;
+      json[r'admin_server_edit_maintenance_notification'] = this.adminServerEditMaintenanceNotification;
+      json[r'admin_server_restart'] = this.adminServerRestart;
+      json[r'admin_server_software_update'] = this.adminServerSoftwareUpdate;
+      json[r'admin_server_view_bot_config'] = this.adminServerViewBotConfig;
+      json[r'admin_server_view_image_processing_config'] = this.adminServerViewImageProcessingConfig;
+      json[r'admin_server_view_info'] = this.adminServerViewInfo;
       json[r'admin_subscribe_admin_notifications'] = this.adminSubscribeAdminNotifications;
       json[r'admin_view_account_api_usage'] = this.adminViewAccountApiUsage;
       json[r'admin_view_account_ip_address_usage'] = this.adminViewAccountIpAddressUsage;
@@ -279,15 +279,15 @@ class Permissions {
         adminProcessReports: mapValueOfType<bool>(json, r'admin_process_reports') ?? false,
         adminProfileStatistics: mapValueOfType<bool>(json, r'admin_profile_statistics') ?? false,
         adminRequestAccountDeletion: mapValueOfType<bool>(json, r'admin_request_account_deletion') ?? false,
-        adminServerMaintenanceEditBotConfig: mapValueOfType<bool>(json, r'admin_server_maintenance_edit_bot_config') ?? false,
-        adminServerMaintenanceEditImageProcessingConfig: mapValueOfType<bool>(json, r'admin_server_maintenance_edit_image_processing_config') ?? false,
-        adminServerMaintenanceEditNotification: mapValueOfType<bool>(json, r'admin_server_maintenance_edit_notification') ?? false,
-        adminServerMaintenanceResetData: mapValueOfType<bool>(json, r'admin_server_maintenance_reset_data') ?? false,
-        adminServerMaintenanceRestartBackend: mapValueOfType<bool>(json, r'admin_server_maintenance_restart_backend') ?? false,
-        adminServerMaintenanceUpdateSoftware: mapValueOfType<bool>(json, r'admin_server_maintenance_update_software') ?? false,
-        adminServerMaintenanceViewBotConfig: mapValueOfType<bool>(json, r'admin_server_maintenance_view_bot_config') ?? false,
-        adminServerMaintenanceViewImageProcessingConfig: mapValueOfType<bool>(json, r'admin_server_maintenance_view_image_processing_config') ?? false,
-        adminServerMaintenanceViewInfo: mapValueOfType<bool>(json, r'admin_server_maintenance_view_info') ?? false,
+        adminServerDataReset: mapValueOfType<bool>(json, r'admin_server_data_reset') ?? false,
+        adminServerEditBotConfig: mapValueOfType<bool>(json, r'admin_server_edit_bot_config') ?? false,
+        adminServerEditImageProcessingConfig: mapValueOfType<bool>(json, r'admin_server_edit_image_processing_config') ?? false,
+        adminServerEditMaintenanceNotification: mapValueOfType<bool>(json, r'admin_server_edit_maintenance_notification') ?? false,
+        adminServerRestart: mapValueOfType<bool>(json, r'admin_server_restart') ?? false,
+        adminServerSoftwareUpdate: mapValueOfType<bool>(json, r'admin_server_software_update') ?? false,
+        adminServerViewBotConfig: mapValueOfType<bool>(json, r'admin_server_view_bot_config') ?? false,
+        adminServerViewImageProcessingConfig: mapValueOfType<bool>(json, r'admin_server_view_image_processing_config') ?? false,
+        adminServerViewInfo: mapValueOfType<bool>(json, r'admin_server_view_info') ?? false,
         adminSubscribeAdminNotifications: mapValueOfType<bool>(json, r'admin_subscribe_admin_notifications') ?? false,
         adminViewAccountApiUsage: mapValueOfType<bool>(json, r'admin_view_account_api_usage') ?? false,
         adminViewAccountIpAddressUsage: mapValueOfType<bool>(json, r'admin_view_account_ip_address_usage') ?? false,

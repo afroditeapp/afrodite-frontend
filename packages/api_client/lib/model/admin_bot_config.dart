@@ -13,50 +13,56 @@ part of openapi.api;
 class AdminBotConfig {
   /// Returns a new [AdminBotConfig] instance.
   AdminBotConfig({
-    this.contentModeration,
-    this.profileNameModeration,
-    this.profileTextModeration,
+    required this.contentModeration,
+    this.contentModerationEnabled = false,
+    required this.profileNameModeration,
+    this.profileNameModerationEnabled = false,
+    required this.profileTextModeration,
+    this.profileTextModerationEnabled = false,
   });
 
-  AdminContentModerationConfig? contentModeration;
+  AdminContentModerationConfig contentModeration;
 
-  AdminProfileStringModerationConfig? profileNameModeration;
+  bool contentModerationEnabled;
 
-  AdminProfileStringModerationConfig? profileTextModeration;
+  AdminProfileStringModerationConfig profileNameModeration;
+
+  bool profileNameModerationEnabled;
+
+  AdminProfileStringModerationConfig profileTextModeration;
+
+  bool profileTextModerationEnabled;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is AdminBotConfig &&
     other.contentModeration == contentModeration &&
+    other.contentModerationEnabled == contentModerationEnabled &&
     other.profileNameModeration == profileNameModeration &&
-    other.profileTextModeration == profileTextModeration;
+    other.profileNameModerationEnabled == profileNameModerationEnabled &&
+    other.profileTextModeration == profileTextModeration &&
+    other.profileTextModerationEnabled == profileTextModerationEnabled;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (contentModeration == null ? 0 : contentModeration!.hashCode) +
-    (profileNameModeration == null ? 0 : profileNameModeration!.hashCode) +
-    (profileTextModeration == null ? 0 : profileTextModeration!.hashCode);
+    (contentModeration.hashCode) +
+    (contentModerationEnabled.hashCode) +
+    (profileNameModeration.hashCode) +
+    (profileNameModerationEnabled.hashCode) +
+    (profileTextModeration.hashCode) +
+    (profileTextModerationEnabled.hashCode);
 
   @override
-  String toString() => 'AdminBotConfig[contentModeration=$contentModeration, profileNameModeration=$profileNameModeration, profileTextModeration=$profileTextModeration]';
+  String toString() => 'AdminBotConfig[contentModeration=$contentModeration, contentModerationEnabled=$contentModerationEnabled, profileNameModeration=$profileNameModeration, profileNameModerationEnabled=$profileNameModerationEnabled, profileTextModeration=$profileTextModeration, profileTextModerationEnabled=$profileTextModerationEnabled]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-    if (this.contentModeration != null) {
       json[r'content_moderation'] = this.contentModeration;
-    } else {
-      json[r'content_moderation'] = null;
-    }
-    if (this.profileNameModeration != null) {
+      json[r'content_moderation_enabled'] = this.contentModerationEnabled;
       json[r'profile_name_moderation'] = this.profileNameModeration;
-    } else {
-      json[r'profile_name_moderation'] = null;
-    }
-    if (this.profileTextModeration != null) {
+      json[r'profile_name_moderation_enabled'] = this.profileNameModerationEnabled;
       json[r'profile_text_moderation'] = this.profileTextModeration;
-    } else {
-      json[r'profile_text_moderation'] = null;
-    }
+      json[r'profile_text_moderation_enabled'] = this.profileTextModerationEnabled;
     return json;
   }
 
@@ -79,9 +85,12 @@ class AdminBotConfig {
       }());
 
       return AdminBotConfig(
-        contentModeration: AdminContentModerationConfig.fromJson(json[r'content_moderation']),
-        profileNameModeration: AdminProfileStringModerationConfig.fromJson(json[r'profile_name_moderation']),
-        profileTextModeration: AdminProfileStringModerationConfig.fromJson(json[r'profile_text_moderation']),
+        contentModeration: AdminContentModerationConfig.fromJson(json[r'content_moderation'])!,
+        contentModerationEnabled: mapValueOfType<bool>(json, r'content_moderation_enabled') ?? false,
+        profileNameModeration: AdminProfileStringModerationConfig.fromJson(json[r'profile_name_moderation'])!,
+        profileNameModerationEnabled: mapValueOfType<bool>(json, r'profile_name_moderation_enabled') ?? false,
+        profileTextModeration: AdminProfileStringModerationConfig.fromJson(json[r'profile_text_moderation'])!,
+        profileTextModerationEnabled: mapValueOfType<bool>(json, r'profile_text_moderation_enabled') ?? false,
       );
     }
     return null;
@@ -129,6 +138,9 @@ class AdminBotConfig {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
+    'content_moderation',
+    'profile_name_moderation',
+    'profile_text_moderation',
   };
 }
 

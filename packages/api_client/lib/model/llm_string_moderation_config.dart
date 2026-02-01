@@ -15,8 +15,8 @@ class LlmStringModerationConfig {
   LlmStringModerationConfig({
     this.addLlmOutputToUserVisibleRejectionDetails = false,
     required this.expectedResponse,
-    this.maxTokens,
-    required this.moveRejectedToHumanModeration,
+    required this.maxTokens,
+    this.moveRejectedToHumanModeration = false,
     required this.systemText,
     required this.userTextTemplate,
   });
@@ -27,7 +27,7 @@ class LlmStringModerationConfig {
   String expectedResponse;
 
   /// Minimum value: 0
-  int? maxTokens;
+  int maxTokens;
 
   bool moveRejectedToHumanModeration;
 
@@ -50,7 +50,7 @@ class LlmStringModerationConfig {
     // ignore: unnecessary_parenthesis
     (addLlmOutputToUserVisibleRejectionDetails.hashCode) +
     (expectedResponse.hashCode) +
-    (maxTokens == null ? 0 : maxTokens!.hashCode) +
+    (maxTokens.hashCode) +
     (moveRejectedToHumanModeration.hashCode) +
     (systemText.hashCode) +
     (userTextTemplate.hashCode);
@@ -62,11 +62,7 @@ class LlmStringModerationConfig {
     final json = <String, dynamic>{};
       json[r'add_llm_output_to_user_visible_rejection_details'] = this.addLlmOutputToUserVisibleRejectionDetails;
       json[r'expected_response'] = this.expectedResponse;
-    if (this.maxTokens != null) {
       json[r'max_tokens'] = this.maxTokens;
-    } else {
-      json[r'max_tokens'] = null;
-    }
       json[r'move_rejected_to_human_moderation'] = this.moveRejectedToHumanModeration;
       json[r'system_text'] = this.systemText;
       json[r'user_text_template'] = this.userTextTemplate;
@@ -94,8 +90,8 @@ class LlmStringModerationConfig {
       return LlmStringModerationConfig(
         addLlmOutputToUserVisibleRejectionDetails: mapValueOfType<bool>(json, r'add_llm_output_to_user_visible_rejection_details') ?? false,
         expectedResponse: mapValueOfType<String>(json, r'expected_response')!,
-        maxTokens: mapValueOfType<int>(json, r'max_tokens'),
-        moveRejectedToHumanModeration: mapValueOfType<bool>(json, r'move_rejected_to_human_moderation')!,
+        maxTokens: mapValueOfType<int>(json, r'max_tokens')!,
+        moveRejectedToHumanModeration: mapValueOfType<bool>(json, r'move_rejected_to_human_moderation') ?? false,
         systemText: mapValueOfType<String>(json, r'system_text')!,
         userTextTemplate: mapValueOfType<String>(json, r'user_text_template')!,
       );
@@ -146,7 +142,7 @@ class LlmStringModerationConfig {
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
     'expected_response',
-    'move_rejected_to_human_moderation',
+    'max_tokens',
     'system_text',
     'user_text_template',
   };

@@ -13,23 +13,23 @@ part of openapi.api;
 class AdminNsfwDetectionConfig {
   /// Returns a new [AdminNsfwDetectionConfig] instance.
   AdminNsfwDetectionConfig({
-    this.accept,
-    this.delete,
-    this.moveToHuman,
-    this.reject,
+    required this.accept,
+    required this.delete,
+    required this.moveToHuman,
+    required this.reject,
   });
 
   /// Thresholds for accepting the image.
-  NsfwDetectionThresholds? accept;
+  NsfwDetectionThresholds accept;
 
   /// Thresholds for image deletion.
-  NsfwDetectionThresholds? delete;
+  NsfwDetectionThresholds delete;
 
   /// Thresholds for moving image to human moderation.
-  NsfwDetectionThresholds? moveToHuman;
+  NsfwDetectionThresholds moveToHuman;
 
   /// Thresholds for image rejection.
-  NsfwDetectionThresholds? reject;
+  NsfwDetectionThresholds reject;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is AdminNsfwDetectionConfig &&
@@ -41,36 +41,20 @@ class AdminNsfwDetectionConfig {
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (accept == null ? 0 : accept!.hashCode) +
-    (delete == null ? 0 : delete!.hashCode) +
-    (moveToHuman == null ? 0 : moveToHuman!.hashCode) +
-    (reject == null ? 0 : reject!.hashCode);
+    (accept.hashCode) +
+    (delete.hashCode) +
+    (moveToHuman.hashCode) +
+    (reject.hashCode);
 
   @override
   String toString() => 'AdminNsfwDetectionConfig[accept=$accept, delete=$delete, moveToHuman=$moveToHuman, reject=$reject]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-    if (this.accept != null) {
       json[r'accept'] = this.accept;
-    } else {
-      json[r'accept'] = null;
-    }
-    if (this.delete != null) {
       json[r'delete'] = this.delete;
-    } else {
-      json[r'delete'] = null;
-    }
-    if (this.moveToHuman != null) {
       json[r'move_to_human'] = this.moveToHuman;
-    } else {
-      json[r'move_to_human'] = null;
-    }
-    if (this.reject != null) {
       json[r'reject'] = this.reject;
-    } else {
-      json[r'reject'] = null;
-    }
     return json;
   }
 
@@ -93,10 +77,10 @@ class AdminNsfwDetectionConfig {
       }());
 
       return AdminNsfwDetectionConfig(
-        accept: NsfwDetectionThresholds.fromJson(json[r'accept']),
-        delete: NsfwDetectionThresholds.fromJson(json[r'delete']),
-        moveToHuman: NsfwDetectionThresholds.fromJson(json[r'move_to_human']),
-        reject: NsfwDetectionThresholds.fromJson(json[r'reject']),
+        accept: NsfwDetectionThresholds.fromJson(json[r'accept'])!,
+        delete: NsfwDetectionThresholds.fromJson(json[r'delete'])!,
+        moveToHuman: NsfwDetectionThresholds.fromJson(json[r'move_to_human'])!,
+        reject: NsfwDetectionThresholds.fromJson(json[r'reject'])!,
       );
     }
     return null;
@@ -144,6 +128,10 @@ class AdminNsfwDetectionConfig {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
+    'accept',
+    'delete',
+    'move_to_human',
+    'reject',
   };
 }
 

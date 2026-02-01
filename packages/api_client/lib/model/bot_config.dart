@@ -14,7 +14,7 @@ class BotConfig {
   /// Returns a new [BotConfig] instance.
   BotConfig({
     this.adminBot = false,
-    this.adminBotConfig,
+    required this.adminBotConfig,
     this.remoteBotLogin = false,
     this.userBots = 0,
   });
@@ -23,7 +23,7 @@ class BotConfig {
   bool adminBot;
 
   /// Admin bot config
-  AdminBotConfig? adminBotConfig;
+  AdminBotConfig adminBotConfig;
 
   /// Enable remote bot login API
   bool remoteBotLogin;
@@ -44,7 +44,7 @@ class BotConfig {
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (adminBot.hashCode) +
-    (adminBotConfig == null ? 0 : adminBotConfig!.hashCode) +
+    (adminBotConfig.hashCode) +
     (remoteBotLogin.hashCode) +
     (userBots.hashCode);
 
@@ -54,11 +54,7 @@ class BotConfig {
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'admin_bot'] = this.adminBot;
-    if (this.adminBotConfig != null) {
       json[r'admin_bot_config'] = this.adminBotConfig;
-    } else {
-      json[r'admin_bot_config'] = null;
-    }
       json[r'remote_bot_login'] = this.remoteBotLogin;
       json[r'user_bots'] = this.userBots;
     return json;
@@ -84,7 +80,7 @@ class BotConfig {
 
       return BotConfig(
         adminBot: mapValueOfType<bool>(json, r'admin_bot') ?? false,
-        adminBotConfig: AdminBotConfig.fromJson(json[r'admin_bot_config']),
+        adminBotConfig: AdminBotConfig.fromJson(json[r'admin_bot_config'])!,
         remoteBotLogin: mapValueOfType<bool>(json, r'remote_bot_login') ?? false,
         userBots: mapValueOfType<int>(json, r'user_bots') ?? 0,
       );
@@ -134,6 +130,7 @@ class BotConfig {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
+    'admin_bot_config',
   };
 }
 

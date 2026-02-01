@@ -680,7 +680,7 @@ class AccountAdminApi {
 
   /// Get client version statistics.
   ///
-  /// HTTP method is POST to allow JSON request body.  # Permissions Requires admin_server_maintenance_view_info.
+  /// HTTP method is POST to allow JSON request body.  # Permissions Requires admin_server_view_info.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -714,7 +714,7 @@ class AccountAdminApi {
 
   /// Get client version statistics.
   ///
-  /// HTTP method is POST to allow JSON request body.  # Permissions Requires admin_server_maintenance_view_info.
+  /// HTTP method is POST to allow JSON request body.  # Permissions Requires admin_server_view_info.
   ///
   /// Parameters:
   ///

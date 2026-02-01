@@ -114,7 +114,7 @@ class CommonAdminApi {
 
   /// Get bot config.
   ///
-  /// # Access * [Permissions::admin_server_maintenance_view_bot_config] * Bot account
+  /// # Access * [Permissions::admin_server_view_bot_config] * Bot account
   ///
   /// Note: This method returns the HTTP [Response].
   Future<Response> getBotConfigWithHttpInfo() async {
@@ -144,7 +144,7 @@ class CommonAdminApi {
 
   /// Get bot config.
   ///
-  /// # Access * [Permissions::admin_server_maintenance_view_bot_config] * Bot account
+  /// # Access * [Permissions::admin_server_view_bot_config] * Bot account
   Future<BotConfig?> getBotConfig() async {
     final response = await getBotConfigWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
@@ -203,7 +203,7 @@ class CommonAdminApi {
 
   /// Get maintenance notification.
   ///
-  /// # Permissions Requires admin_server_maintenance_edit_notification.
+  /// # Permissions Requires admin_server_edit_maintenance_notification.
   ///
   /// Note: This method returns the HTTP [Response].
   Future<Response> getMaintenanceNotificationWithHttpInfo() async {
@@ -233,7 +233,7 @@ class CommonAdminApi {
 
   /// Get maintenance notification.
   ///
-  /// # Permissions Requires admin_server_maintenance_edit_notification.
+  /// # Permissions Requires admin_server_edit_maintenance_notification.
   Future<ScheduledMaintenanceStatus?> getMaintenanceNotification() async {
     final response = await getMaintenanceNotificationWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
@@ -251,7 +251,7 @@ class CommonAdminApi {
 
   /// Get available manager instances.
   ///
-  /// # Access * Permission [model::Permissions::admin_server_maintenance_view_info] * Permission [model::Permissions::admin_server_maintenance_update_software] * Permission [model::Permissions::admin_server_maintenance_reset_data] * Permission [model::Permissions::admin_server_maintenance_restart_backend]
+  /// # Access * Permission [model::Permissions::admin_server_view_info] * Permission [model::Permissions::admin_server_software_update] * Permission [model::Permissions::admin_server_data_reset] * Permission [model::Permissions::admin_server_restart]
   ///
   /// Note: This method returns the HTTP [Response].
   Future<Response> getManagerInstanceNamesWithHttpInfo() async {
@@ -281,7 +281,7 @@ class CommonAdminApi {
 
   /// Get available manager instances.
   ///
-  /// # Access * Permission [model::Permissions::admin_server_maintenance_view_info] * Permission [model::Permissions::admin_server_maintenance_update_software] * Permission [model::Permissions::admin_server_maintenance_reset_data] * Permission [model::Permissions::admin_server_maintenance_restart_backend]
+  /// # Access * Permission [model::Permissions::admin_server_view_info] * Permission [model::Permissions::admin_server_software_update] * Permission [model::Permissions::admin_server_data_reset] * Permission [model::Permissions::admin_server_restart]
   Future<ManagerInstanceNameList?> getManagerInstanceNames() async {
     final response = await getManagerInstanceNamesWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
@@ -299,7 +299,7 @@ class CommonAdminApi {
 
   /// Get scheduled tasks status from manager instance.
   ///
-  /// # Access * Permission [model::Permissions::admin_server_maintenance_restart_backend]
+  /// # Access * Permission [model::Permissions::admin_server_restart]
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -335,7 +335,7 @@ class CommonAdminApi {
 
   /// Get scheduled tasks status from manager instance.
   ///
-  /// # Access * Permission [model::Permissions::admin_server_maintenance_restart_backend]
+  /// # Access * Permission [model::Permissions::admin_server_restart]
   ///
   /// Parameters:
   ///
@@ -357,7 +357,7 @@ class CommonAdminApi {
 
   /// Get software version information from manager instance.
   ///
-  /// # Access * Permission [model::Permissions::admin_server_maintenance_view_info]
+  /// # Access * Permission [model::Permissions::admin_server_view_info]
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -393,7 +393,7 @@ class CommonAdminApi {
 
   /// Get software version information from manager instance.
   ///
-  /// # Access * Permission [model::Permissions::admin_server_maintenance_view_info]
+  /// # Access * Permission [model::Permissions::admin_server_view_info]
   ///
   /// Parameters:
   ///
@@ -415,7 +415,7 @@ class CommonAdminApi {
 
   /// Get system information from manager instance.
   ///
-  /// # Access * Permission [model::Permissions::admin_server_maintenance_view_info]
+  /// # Access * Permission [model::Permissions::admin_server_view_info]
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -451,7 +451,7 @@ class CommonAdminApi {
 
   /// Get system information from manager instance.
   ///
-  /// # Access * Permission [model::Permissions::admin_server_maintenance_view_info]
+  /// # Access * Permission [model::Permissions::admin_server_view_info]
   ///
   /// Parameters:
   ///
@@ -610,7 +610,7 @@ class CommonAdminApi {
 
   /// Save bot config.
   ///
-  /// # Validation * `profile_name_moderation.llm.user_text_template` must contain exactly one `{text}` placeholder. * `profile_text_moderation.llm.user_text_template` must contain exactly one `{text}` placeholder.  # Access * [Permissions::admin_server_maintenance_edit_bot_config]
+  /// # Validation * `profile_name_moderation.llm.user_text_template` must contain exactly one `{text}` placeholder. * `profile_text_moderation.llm.user_text_template` must contain exactly one `{text}` placeholder.  # Access * [Permissions::admin_server_edit_bot_config]
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -644,7 +644,7 @@ class CommonAdminApi {
 
   /// Save bot config.
   ///
-  /// # Validation * `profile_name_moderation.llm.user_text_template` must contain exactly one `{text}` placeholder. * `profile_text_moderation.llm.user_text_template` must contain exactly one `{text}` placeholder.  # Access * [Permissions::admin_server_maintenance_edit_bot_config]
+  /// # Validation * `profile_name_moderation.llm.user_text_template` must contain exactly one `{text}` placeholder. * `profile_text_moderation.llm.user_text_template` must contain exactly one `{text}` placeholder.  # Access * [Permissions::admin_server_edit_bot_config]
   ///
   /// Parameters:
   ///
@@ -658,7 +658,7 @@ class CommonAdminApi {
 
   /// Edit maintenance notification
   ///
-  /// # Permissions Requires admin_server_maintenance_edit_notification.
+  /// # Permissions Requires admin_server_edit_maintenance_notification.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -692,7 +692,7 @@ class CommonAdminApi {
 
   /// Edit maintenance notification
   ///
-  /// # Permissions Requires admin_server_maintenance_edit_notification.
+  /// # Permissions Requires admin_server_edit_maintenance_notification.
   ///
   /// Parameters:
   ///
@@ -918,7 +918,7 @@ class CommonAdminApi {
 
   /// Get IP country statistics.
   ///
-  /// HTTP method is POST to allow JSON request body.  # Permissions Requires admin_server_maintenance_view_info.
+  /// HTTP method is POST to allow JSON request body.  # Permissions Requires admin_server_view_info.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -952,7 +952,7 @@ class CommonAdminApi {
 
   /// Get IP country statistics.
   ///
-  /// HTTP method is POST to allow JSON request body.  # Permissions Requires admin_server_maintenance_view_info.
+  /// HTTP method is POST to allow JSON request body.  # Permissions Requires admin_server_view_info.
   ///
   /// Parameters:
   ///
@@ -974,7 +974,7 @@ class CommonAdminApi {
 
   /// Get performance data
   ///
-  /// HTTP method is POST because JSON request body requires it.  # Permissions Requires admin_server_maintenance_view_info.
+  /// HTTP method is POST because JSON request body requires it.  # Permissions Requires admin_server_view_info.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -1008,7 +1008,7 @@ class CommonAdminApi {
 
   /// Get performance data
   ///
-  /// HTTP method is POST because JSON request body requires it.  # Permissions Requires admin_server_maintenance_view_info.
+  /// HTTP method is POST because JSON request body requires it.  # Permissions Requires admin_server_view_info.
   ///
   /// Parameters:
   ///
@@ -1125,7 +1125,7 @@ class CommonAdminApi {
 
   /// Schedule task.
   ///
-  /// # Access * Permission [model::Permissions::admin_server_maintenance_restart_backend]
+  /// # Access * Permission [model::Permissions::admin_server_restart]
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -1167,7 +1167,7 @@ class CommonAdminApi {
 
   /// Schedule task.
   ///
-  /// # Access * Permission [model::Permissions::admin_server_maintenance_restart_backend]
+  /// # Access * Permission [model::Permissions::admin_server_restart]
   ///
   /// Parameters:
   ///
@@ -1185,7 +1185,7 @@ class CommonAdminApi {
 
   /// Trigger backend data reset
   ///
-  /// This API route will fail if backend config file field debug_allow_backend_data_reset is not true.  Registering new accounts will be prevented and all accounts will be deleted. After that manager will stop the backend, delete backend's data directory and start the backend.  This can be requested only once per backend process.  Account registering prevention is process specific, so restarting backend will disable that.  # Access * Permission [model::Permissions::admin_server_maintenance_reset_data]
+  /// This API route will fail if backend config file field debug_allow_backend_data_reset is not true.  Registering new accounts will be prevented and all accounts will be deleted. After that manager will stop the backend, delete backend's data directory and start the backend.  This can be requested only once per backend process.  Account registering prevention is process specific, so restarting backend will disable that.  # Access * Permission [model::Permissions::admin_server_data_reset]
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -1221,7 +1221,7 @@ class CommonAdminApi {
 
   /// Trigger backend data reset
   ///
-  /// This API route will fail if backend config file field debug_allow_backend_data_reset is not true.  Registering new accounts will be prevented and all accounts will be deleted. After that manager will stop the backend, delete backend's data directory and start the backend.  This can be requested only once per backend process.  Account registering prevention is process specific, so restarting backend will disable that.  # Access * Permission [model::Permissions::admin_server_maintenance_reset_data]
+  /// This API route will fail if backend config file field debug_allow_backend_data_reset is not true.  Registering new accounts will be prevented and all accounts will be deleted. After that manager will stop the backend, delete backend's data directory and start the backend.  This can be requested only once per backend process.  Account registering prevention is process specific, so restarting backend will disable that.  # Access * Permission [model::Permissions::admin_server_data_reset]
   ///
   /// Parameters:
   ///
@@ -1235,7 +1235,7 @@ class CommonAdminApi {
 
   /// Trigger backend restart.
   ///
-  /// # Access * Permission [model::Permissions::admin_server_maintenance_restart_backend]
+  /// # Access * Permission [model::Permissions::admin_server_restart]
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -1271,7 +1271,7 @@ class CommonAdminApi {
 
   /// Trigger backend restart.
   ///
-  /// # Access * Permission [model::Permissions::admin_server_maintenance_restart_backend]
+  /// # Access * Permission [model::Permissions::admin_server_restart]
   ///
   /// Parameters:
   ///
@@ -1285,7 +1285,7 @@ class CommonAdminApi {
 
   /// Trigger software update download.
   ///
-  /// # Access * Permission [model::Permissions::admin_server_maintenance_update_software]
+  /// # Access * Permission [model::Permissions::admin_server_software_update]
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -1321,7 +1321,7 @@ class CommonAdminApi {
 
   /// Trigger software update download.
   ///
-  /// # Access * Permission [model::Permissions::admin_server_maintenance_update_software]
+  /// # Access * Permission [model::Permissions::admin_server_software_update]
   ///
   /// Parameters:
   ///
@@ -1335,7 +1335,7 @@ class CommonAdminApi {
 
   /// Trigger software update install.
   ///
-  /// # Access * Permission [model::Permissions::admin_server_maintenance_update_software]
+  /// # Access * Permission [model::Permissions::admin_server_software_update]
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -1377,7 +1377,7 @@ class CommonAdminApi {
 
   /// Trigger software update install.
   ///
-  /// # Access * Permission [model::Permissions::admin_server_maintenance_update_software]
+  /// # Access * Permission [model::Permissions::admin_server_software_update]
   ///
   /// Parameters:
   ///
@@ -1395,7 +1395,7 @@ class CommonAdminApi {
 
   /// Trigger system reboot.
   ///
-  /// # Access * Permission [model::Permissions::admin_server_maintenance_restart_backend]
+  /// # Access * Permission [model::Permissions::admin_server_restart]
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -1431,7 +1431,7 @@ class CommonAdminApi {
 
   /// Trigger system reboot.
   ///
-  /// # Access * Permission [model::Permissions::admin_server_maintenance_restart_backend]
+  /// # Access * Permission [model::Permissions::admin_server_restart]
   ///
   /// Parameters:
   ///
@@ -1445,7 +1445,7 @@ class CommonAdminApi {
 
   /// Unschedule task.
   ///
-  /// # Access * Permission [model::Permissions::admin_server_maintenance_restart_backend]
+  /// # Access * Permission [model::Permissions::admin_server_restart]
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -1484,7 +1484,7 @@ class CommonAdminApi {
 
   /// Unschedule task.
   ///
-  /// # Access * Permission [model::Permissions::admin_server_maintenance_restart_backend]
+  /// # Access * Permission [model::Permissions::admin_server_restart]
   ///
   /// Parameters:
   ///

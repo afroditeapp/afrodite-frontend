@@ -15,7 +15,8 @@ class AdminProfileStringModerationConfig {
   AdminProfileStringModerationConfig({
     this.acceptSingleVisibleCharacter = false,
     required this.defaultAction,
-    this.llm,
+    required this.llm,
+    this.llmEnabled = false,
   });
 
   /// Accept all texts which only have single visible character.
@@ -23,34 +24,35 @@ class AdminProfileStringModerationConfig {
 
   ModerationAction defaultAction;
 
+  LlmStringModerationConfig llm;
+
   /// Large language model based moderation. Actions: reject (or move_to_human) and accept
-  LlmStringModerationConfig? llm;
+  bool llmEnabled;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is AdminProfileStringModerationConfig &&
     other.acceptSingleVisibleCharacter == acceptSingleVisibleCharacter &&
     other.defaultAction == defaultAction &&
-    other.llm == llm;
+    other.llm == llm &&
+    other.llmEnabled == llmEnabled;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (acceptSingleVisibleCharacter.hashCode) +
     (defaultAction.hashCode) +
-    (llm == null ? 0 : llm!.hashCode);
+    (llm.hashCode) +
+    (llmEnabled.hashCode);
 
   @override
-  String toString() => 'AdminProfileStringModerationConfig[acceptSingleVisibleCharacter=$acceptSingleVisibleCharacter, defaultAction=$defaultAction, llm=$llm]';
+  String toString() => 'AdminProfileStringModerationConfig[acceptSingleVisibleCharacter=$acceptSingleVisibleCharacter, defaultAction=$defaultAction, llm=$llm, llmEnabled=$llmEnabled]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'accept_single_visible_character'] = this.acceptSingleVisibleCharacter;
       json[r'default_action'] = this.defaultAction;
-    if (this.llm != null) {
       json[r'llm'] = this.llm;
-    } else {
-      json[r'llm'] = null;
-    }
+      json[r'llm_enabled'] = this.llmEnabled;
     return json;
   }
 
@@ -75,7 +77,8 @@ class AdminProfileStringModerationConfig {
       return AdminProfileStringModerationConfig(
         acceptSingleVisibleCharacter: mapValueOfType<bool>(json, r'accept_single_visible_character') ?? false,
         defaultAction: ModerationAction.fromJson(json[r'default_action'])!,
-        llm: LlmStringModerationConfig.fromJson(json[r'llm']),
+        llm: LlmStringModerationConfig.fromJson(json[r'llm'])!,
+        llmEnabled: mapValueOfType<bool>(json, r'llm_enabled') ?? false,
       );
     }
     return null;
@@ -124,6 +127,7 @@ class AdminProfileStringModerationConfig {
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
     'default_action',
+    'llm',
   };
 }
 

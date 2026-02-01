@@ -13,12 +13,12 @@ part of openapi.api;
 class ImageProcessingDynamicConfig {
   /// Returns a new [ImageProcessingDynamicConfig] instance.
   ImageProcessingDynamicConfig({
-    this.nsfwThresholds,
+    required this.nsfwThresholds,
     this.seetafaceThreshold,
   });
 
   /// Thresholds when an image is classified as NSFW.  If a probability value is equal or greater than the related threshold then the image is classified as NSFW.  Threshold values must be in the range 0.0–1.0.
-  NsfwDetectionThresholds? nsfwThresholds;
+  NsfwDetectionThresholds nsfwThresholds;
 
   /// See [rustface::Detector::set_score_thresh] documentation. Value 1.0 seems to work well.
   double? seetafaceThreshold;
@@ -31,7 +31,7 @@ class ImageProcessingDynamicConfig {
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (nsfwThresholds == null ? 0 : nsfwThresholds!.hashCode) +
+    (nsfwThresholds.hashCode) +
     (seetafaceThreshold == null ? 0 : seetafaceThreshold!.hashCode);
 
   @override
@@ -39,11 +39,7 @@ class ImageProcessingDynamicConfig {
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-    if (this.nsfwThresholds != null) {
       json[r'nsfw_thresholds'] = this.nsfwThresholds;
-    } else {
-      json[r'nsfw_thresholds'] = null;
-    }
     if (this.seetafaceThreshold != null) {
       json[r'seetaface_threshold'] = this.seetafaceThreshold;
     } else {
@@ -71,7 +67,7 @@ class ImageProcessingDynamicConfig {
       }());
 
       return ImageProcessingDynamicConfig(
-        nsfwThresholds: NsfwDetectionThresholds.fromJson(json[r'nsfw_thresholds']),
+        nsfwThresholds: NsfwDetectionThresholds.fromJson(json[r'nsfw_thresholds'])!,
         seetafaceThreshold: mapValueOfType<double>(json, r'seetaface_threshold'),
       );
     }
@@ -120,6 +116,7 @@ class ImageProcessingDynamicConfig {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
+    'nsfw_thresholds',
   };
 }
 
