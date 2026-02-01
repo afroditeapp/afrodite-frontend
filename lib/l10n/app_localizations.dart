@@ -820,6 +820,12 @@ abstract class AppLocalizations {
   /// **'Profile was blocked'**
   String get conversation_screen_profile_blocked;
 
+  /// Snackbar text showing remaining daily messages count
+  ///
+  /// In en, this message translates to:
+  /// **'Remaining daily messages: {p0}'**
+  String conversation_screen_remaining_daily_messages(String p0);
+
   /// Action text for send video call invitation action
   ///
   /// In en, this message translates to:

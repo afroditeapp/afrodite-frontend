@@ -430,6 +430,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get conversation_screen_profile_blocked => 'Profile was blocked';
 
   @override
+  String conversation_screen_remaining_daily_messages(String p0) {
+    return 'Remaining daily messages: $p0';
+  }
+
+  @override
   String get conversation_screen_send_video_call_invitation_action => 'Send video call invitation';
 
   @override

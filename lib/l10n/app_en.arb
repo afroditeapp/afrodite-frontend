@@ -558,6 +558,15 @@
   "@conversation_screen_profile_blocked": {
     "description": "Snackbar text displayed when profile blocking is successful"
   },
+  "conversation_screen_remaining_daily_messages": "Remaining daily messages: {p0}",
+  "@conversation_screen_remaining_daily_messages": {
+    "description": "Snackbar text showing remaining daily messages count",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
   "conversation_screen_send_video_call_invitation_action": "Send video call invitation",
   "@conversation_screen_send_video_call_invitation_action": {
     "description": "Action text for send video call invitation action"

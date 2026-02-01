@@ -14,6 +14,8 @@ import 'package:app/data/chat/message_key_generator.dart';
 import 'package:app/data/profile_repository.dart';
 import 'package:app/database/account_database_manager.dart';
 import 'package:app/data/chat/message_manager/utils.dart';
+import 'package:app/localizations.dart';
+import 'package:app/ui_utils/snack_bar.dart';
 import 'package:utils/utils.dart';
 import 'package:app/utils/result.dart';
 import 'package:uuid/uuid.dart';
@@ -237,6 +239,17 @@ class SendMessageUtils {
       if (result.error) {
         yield ErrorAfterMessageSaving(localId);
         return;
+      }
+
+      final remainingMessages = result.remainingMessages;
+      if (remainingMessages != null &&
+          (remainingMessages == 50 ||
+              remainingMessages == 25 ||
+              remainingMessages == 10 ||
+              (remainingMessages >= 0 && remainingMessages <= 5))) {
+        showSnackBar(
+          R.strings.conversation_screen_remaining_daily_messages(remainingMessages.toString()),
+        );
       }
 
       final signedPgpMessageBase64 = result.d;
