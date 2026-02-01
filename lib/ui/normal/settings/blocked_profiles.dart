@@ -123,7 +123,7 @@ class _BlockedProfilesScreen extends State<BlockedProfilesScreen> {
           final String name;
           final Widget imageWidget;
           if (profileEntry != null) {
-            name = profileEntry.profileTitle();
+            name = profileEntry.profileNameOrFirstCharacterProfileName();
             imageWidget = ProfileThumbnailImageOrError.fromProfileEntry(
               entry: profileEntry,
               width: _IMG_SIZE,

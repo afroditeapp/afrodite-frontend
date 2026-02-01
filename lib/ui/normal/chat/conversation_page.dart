@@ -254,7 +254,10 @@ class ConversationScreenState extends State<ConversationScreen> {
                   ),
                   const Padding(padding: EdgeInsets.all(8.0)),
                   Flexible(
-                    child: Text(profileEntry.profileTitle(), overflow: TextOverflow.ellipsis),
+                    child: Text(
+                      profileEntry.profileNameOrFirstCharacterProfileName(),
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
                 ],
               ),

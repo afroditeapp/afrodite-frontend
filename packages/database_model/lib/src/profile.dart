@@ -59,27 +59,23 @@ class ProfileEntry implements PublicContentProvider {
     return content.any((v) => !v.accepted);
   }
 
-  String profileTitle({bool showNonAcceptedProfileNames = false}) {
-    return ProfileTitle(name, nameAccepted).profileTitle();
-  }
-
-  String profileTitleWithAge({required bool showNonAcceptedProfileNames}) {
-    return "${profileTitle(showNonAcceptedProfileNames: showNonAcceptedProfileNames)}, $age";
-  }
-
-  String profileTextOrFirstCharacterProfileText() {
-    if (profileTextAccepted) {
-      return profileText ?? "";
-    } else {
-      return hideOtherCharactersThanTheFirst(profileText ?? "");
-    }
-  }
-
-  String profileNameOrFirstCharacterProfileName() {
-    if (nameAccepted) {
+  String profileNameOrFirstCharacterProfileName({bool showNonAcceptedProfileNames = false}) {
+    if (nameAccepted || showNonAcceptedProfileNames) {
       return name;
     } else {
       return hideOtherCharactersThanTheFirst(name);
+    }
+  }
+
+  String profileNameWithAge({bool showNonAcceptedProfileNames = false}) {
+    return "${profileNameOrFirstCharacterProfileName(showNonAcceptedProfileNames: showNonAcceptedProfileNames)}, $age";
+  }
+
+  String profileTextOrFirstCharacterProfileText({bool showNonAcceptedProfileTexts = false}) {
+    if (profileTextAccepted || showNonAcceptedProfileTexts) {
+      return profileText ?? "";
+    } else {
+      return hideOtherCharactersThanTheFirst(profileText ?? "");
     }
   }
 }
@@ -131,20 +127,6 @@ class MyProfileEntry extends ProfileEntry implements MyContentProvider {
     super.lastSeenTimeValue,
     super.newLikeInfoReceivedTime,
   }) : super(content: myContent);
-}
-
-class ProfileTitle {
-  final String name;
-  final bool nameAccepted;
-  const ProfileTitle(this.name, this.nameAccepted);
-
-  String profileTitle() {
-    if (nameAccepted) {
-      return name;
-    } else {
-      return hideOtherCharactersThanTheFirst(name);
-    }
-  }
 }
 
 class InitialAgeInfo {

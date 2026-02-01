@@ -76,9 +76,13 @@ class NotificationMessageReceived extends AppSingletonNoInit {
         title = R.strings.notification_message_received_single_generic;
       }
     } else if (count > 1) {
-      title = R.strings.notification_message_received_multiple(profileEntry.profileTitle());
+      title = R.strings.notification_message_received_multiple(
+        profileEntry.profileNameOrFirstCharacterProfileName(),
+      );
     } else {
-      title = R.strings.notification_message_received_single(profileEntry.profileTitle());
+      title = R.strings.notification_message_received_single(
+        profileEntry.profileNameOrFirstCharacterProfileName(),
+      );
     }
 
     await notifications.sendNotification(

@@ -105,7 +105,7 @@ Widget buildQuotation(BuildContext context, MessageEntry entry, ProfileEntry? pr
   // Determine sender: if sent state exists, it's from current user
   final senderName = sentState != null
       ? context.strings.generic_you
-      : profileEntry?.profileTitle() ?? '';
+      : profileEntry?.profileNameOrFirstCharacterProfileName() ?? '';
 
   return Quotation(text: quotedText, senderName: senderName);
 }

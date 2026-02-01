@@ -84,7 +84,7 @@ class _ViewProfileEntryState extends State<ViewProfileEntry> {
               children: [
                 Flexible(
                   child: Text(
-                    widget.profile.profileTitleWithAge(
+                    widget.profile.profileNameWithAge(
                       showNonAcceptedProfileNames: widget.isMyProfile,
                     ),
                     style: Theme.of(context).textTheme.titleLarge,
@@ -167,7 +167,9 @@ class _ViewProfileEntryState extends State<ViewProfileEntry> {
         children: [
           Expanded(
             child: Text(
-              widget.profile.profileTextOrFirstCharacterProfileText(),
+              widget.profile.profileTextOrFirstCharacterProfileText(
+                showNonAcceptedProfileTexts: widget.isMyProfile,
+              ),
               style: Theme.of(context).textTheme.bodyLarge,
             ),
           ),

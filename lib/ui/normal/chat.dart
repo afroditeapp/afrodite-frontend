@@ -433,7 +433,7 @@ class ConversationListItem extends StatelessWidget {
     return Row(
       children: [
         Text(
-          data.entry.profileTitle(),
+          data.entry.profileNameOrFirstCharacterProfileName(),
           style: Theme.of(context).textTheme.titleMedium,
           overflow: TextOverflow.ellipsis,
           maxLines: 1,
