@@ -6,12 +6,22 @@ import '../schema.dart' as schema;
 
 part 'app.g.dart';
 
-@DriftAccessor(tables: [schema.NotificationPermissionAsked, schema.ServerUrl, schema.CurrentLocale])
+@DriftAccessor(
+  tables: [
+    schema.NotificationPermissionAsked,
+    schema.VideoCallTipShown,
+    schema.ServerUrl,
+    schema.CurrentLocale,
+  ],
+)
 class DaoReadApp extends DatabaseAccessor<CommonDatabase> with _$DaoReadAppMixin {
   DaoReadApp(super.db);
 
   Stream<bool?> watchNotificationPermissionAsked() =>
       _watchNotificationPermissionAskedColumn((r) => r.notificationPermissionAsked);
+
+  Stream<bool?> watchVideoCallTipShown() =>
+      _watchVideoCallTipShownColumn((r) => r.videoCallTipShown);
 
   Stream<String?> watchCurrentLocale() => _watchCurrentLocaleColumn((r) => r.currentLocale);
 
@@ -22,6 +32,14 @@ class DaoReadApp extends DatabaseAccessor<CommonDatabase> with _$DaoReadAppMixin
   ) {
     return (select(
       notificationPermissionAsked,
+    )..where((t) => t.id.equals(SingleRowTable.ID.value))).map(extractColumn).watchSingleOrNull();
+  }
+
+  Stream<T?> _watchVideoCallTipShownColumn<T extends Object>(
+    T? Function(VideoCallTipShownData) extractColumn,
+  ) {
+    return (select(
+      videoCallTipShown,
     )..where((t) => t.id.equals(SingleRowTable.ID.value))).map(extractColumn).watchSingleOrNull();
   }
 

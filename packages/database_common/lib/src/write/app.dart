@@ -6,7 +6,14 @@ import '../schema.dart' as schema;
 
 part 'app.g.dart';
 
-@DriftAccessor(tables: [schema.NotificationPermissionAsked, schema.CurrentLocale, schema.ServerUrl])
+@DriftAccessor(
+  tables: [
+    schema.NotificationPermissionAsked,
+    schema.VideoCallTipShown,
+    schema.CurrentLocale,
+    schema.ServerUrl,
+  ],
+)
 class DaoWriteApp extends DatabaseAccessor<CommonDatabase> with _$DaoWriteAppMixin {
   DaoWriteApp(super.db);
 
@@ -16,6 +23,12 @@ class DaoWriteApp extends DatabaseAccessor<CommonDatabase> with _$DaoWriteAppMix
         id: SingleRowTable.ID,
         notificationPermissionAsked: Value(value),
       ),
+    );
+  }
+
+  Future<void> updateVideoCallTipShown(bool value) async {
+    await into(videoCallTipShown).insertOnConflictUpdate(
+      VideoCallTipShownCompanion.insert(id: SingleRowTable.ID, videoCallTipShown: Value(value)),
     );
   }
 

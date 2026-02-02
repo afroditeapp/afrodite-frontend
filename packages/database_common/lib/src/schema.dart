@@ -14,6 +14,11 @@ class NotificationPermissionAsked extends SingleRowTable {
   BoolColumn get notificationPermissionAsked => boolean().withDefault(const Constant(false))();
 }
 
+class VideoCallTipShown extends SingleRowTable {
+  /// If true don't show video call tip dialog when conversation opens.
+  BoolColumn get videoCallTipShown => boolean().withDefault(const Constant(false))();
+}
+
 class AccountId extends SingleRowTable {
   TextColumn get accountId =>
       text().map(const NullAwareTypeConverter.wrap(AccountIdConverter())).nullable()();

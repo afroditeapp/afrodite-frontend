@@ -202,4 +202,42 @@ class DaoReadMessage extends DatabaseAccessor<AccountDatabase> with _$DaoReadMes
             .get();
     return messages.nonNulls.toList();
   }
+
+  /// Check if both users have sent at least one message in the conversation.
+  /// Returns true if there's at least one sent message and at least one received message.
+  Future<bool> haveBothUsersSentMessages(api.AccountId remoteAccountId) async {
+    // Check for at least one sent message
+    final hasSentMessage =
+        await (select(message)
+              ..where((t) => t.remoteAccountId.equals(remoteAccountId.aid))
+              ..where(
+                (t) => t.messageState.isBetweenValues(
+                  dbm.MessageState.MIN_VALUE_SENT_MESSAGE,
+                  dbm.MessageState.MAX_VALUE_SENT_MESSAGE,
+                ),
+              )
+              ..limit(1))
+            .get()
+            .then((result) => result.isNotEmpty);
+
+    if (!hasSentMessage) {
+      return false;
+    }
+
+    // Check for at least one received message
+    final hasReceivedMessage =
+        await (select(message)
+              ..where((t) => t.remoteAccountId.equals(remoteAccountId.aid))
+              ..where(
+                (t) => t.messageState.isBetweenValues(
+                  dbm.MessageState.MIN_VALUE_RECEIVED_MESSAGE,
+                  dbm.MessageState.MAX_VALUE_RECEIVED_MESSAGE,
+                ),
+              )
+              ..limit(1))
+            .get()
+            .then((result) => result.isNotEmpty);
+
+    return hasReceivedMessage;
+  }
 }

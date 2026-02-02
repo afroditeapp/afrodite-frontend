@@ -2405,6 +2405,14 @@
   },
   "url_app_privacy_policy_link": "https://example.com",
   "url_app_tos_link": "https://example.com",
+  "video_call_tip_dialog_description": "You can send video call invitation using video call button at top right corner of the screen.",
+  "@video_call_tip_dialog_description": {
+    "description": "Description text for video call tip dialog"
+  },
+  "video_call_tip_dialog_title": "Like video calls?",
+  "@video_call_tip_dialog_title": {
+    "description": "Title for video call tip dialog"
+  },
   "view_image_screen_title": "View image",
   "@view_image_screen_title": {
     "description": "Title for view image screen"

@@ -3274,6 +3274,18 @@ abstract class AppLocalizations {
   /// **'https://example.com'**
   String get url_app_tos_link;
 
+  /// Description text for video call tip dialog
+  ///
+  /// In en, this message translates to:
+  /// **'You can send video call invitation using video call button at top right corner of the screen.'**
+  String get video_call_tip_dialog_description;
+
+  /// Title for video call tip dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Like video calls?'**
+  String get video_call_tip_dialog_title;
+
   /// Title for view image screen
   ///
   /// In en, this message translates to:

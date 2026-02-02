@@ -113,6 +113,9 @@ enum MessageState {
   static const int MIN_VALUE_SENT_MESSAGE = _VALUE_PENDING_SENDING;
   static const int MAX_VALUE_SENT_MESSAGE = _VALUE_SEEN;
 
+  static const int MIN_VALUE_RECEIVED_MESSAGE = _VALUE_RECEIVED;
+  static const int MAX_VALUE_RECEIVED_MESSAGE = _VALUE_RECEIVED_AND_SEEN;
+
   const MessageState(this.number);
   final int number;
 

@@ -590,6 +590,223 @@ class NotificationPermissionAskedCompanion
   }
 }
 
+class $VideoCallTipShownTable extends schema.VideoCallTipShown
+    with TableInfo<$VideoCallTipShownTable, VideoCallTipShownData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $VideoCallTipShownTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _videoCallTipShownMeta = const VerificationMeta(
+    'videoCallTipShown',
+  );
+  @override
+  late final GeneratedColumn<bool> videoCallTipShown = GeneratedColumn<bool>(
+    'video_call_tip_shown',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("video_call_tip_shown" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  @override
+  List<GeneratedColumn> get $columns => [id, videoCallTipShown];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'video_call_tip_shown';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<VideoCallTipShownData> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('video_call_tip_shown')) {
+      context.handle(
+        _videoCallTipShownMeta,
+        videoCallTipShown.isAcceptableOrUnknown(
+          data['video_call_tip_shown']!,
+          _videoCallTipShownMeta,
+        ),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  VideoCallTipShownData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return VideoCallTipShownData(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      videoCallTipShown: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}video_call_tip_shown'],
+      )!,
+    );
+  }
+
+  @override
+  $VideoCallTipShownTable createAlias(String alias) {
+    return $VideoCallTipShownTable(attachedDatabase, alias);
+  }
+}
+
+class VideoCallTipShownData extends DataClass
+    implements Insertable<VideoCallTipShownData> {
+  final int id;
+
+  /// If true don't show video call tip dialog when conversation opens.
+  final bool videoCallTipShown;
+  const VideoCallTipShownData({
+    required this.id,
+    required this.videoCallTipShown,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['video_call_tip_shown'] = Variable<bool>(videoCallTipShown);
+    return map;
+  }
+
+  VideoCallTipShownCompanion toCompanion(bool nullToAbsent) {
+    return VideoCallTipShownCompanion(
+      id: Value(id),
+      videoCallTipShown: Value(videoCallTipShown),
+    );
+  }
+
+  factory VideoCallTipShownData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return VideoCallTipShownData(
+      id: serializer.fromJson<int>(json['id']),
+      videoCallTipShown: serializer.fromJson<bool>(json['videoCallTipShown']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'videoCallTipShown': serializer.toJson<bool>(videoCallTipShown),
+    };
+  }
+
+  VideoCallTipShownData copyWith({int? id, bool? videoCallTipShown}) =>
+      VideoCallTipShownData(
+        id: id ?? this.id,
+        videoCallTipShown: videoCallTipShown ?? this.videoCallTipShown,
+      );
+  VideoCallTipShownData copyWithCompanion(VideoCallTipShownCompanion data) {
+    return VideoCallTipShownData(
+      id: data.id.present ? data.id.value : this.id,
+      videoCallTipShown: data.videoCallTipShown.present
+          ? data.videoCallTipShown.value
+          : this.videoCallTipShown,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('VideoCallTipShownData(')
+          ..write('id: $id, ')
+          ..write('videoCallTipShown: $videoCallTipShown')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, videoCallTipShown);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is VideoCallTipShownData &&
+          other.id == this.id &&
+          other.videoCallTipShown == this.videoCallTipShown);
+}
+
+class VideoCallTipShownCompanion
+    extends UpdateCompanion<VideoCallTipShownData> {
+  final Value<int> id;
+  final Value<bool> videoCallTipShown;
+  const VideoCallTipShownCompanion({
+    this.id = const Value.absent(),
+    this.videoCallTipShown = const Value.absent(),
+  });
+  VideoCallTipShownCompanion.insert({
+    this.id = const Value.absent(),
+    this.videoCallTipShown = const Value.absent(),
+  });
+  static Insertable<VideoCallTipShownData> custom({
+    Expression<int>? id,
+    Expression<bool>? videoCallTipShown,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (videoCallTipShown != null) 'video_call_tip_shown': videoCallTipShown,
+    });
+  }
+
+  VideoCallTipShownCompanion copyWith({
+    Value<int>? id,
+    Value<bool>? videoCallTipShown,
+  }) {
+    return VideoCallTipShownCompanion(
+      id: id ?? this.id,
+      videoCallTipShown: videoCallTipShown ?? this.videoCallTipShown,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (videoCallTipShown.present) {
+      map['video_call_tip_shown'] = Variable<bool>(videoCallTipShown.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('VideoCallTipShownCompanion(')
+          ..write('id: $id, ')
+          ..write('videoCallTipShown: $videoCallTipShown')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $AccountIdTable extends schema.AccountId
     with TableInfo<$AccountIdTable, AccountIdData> {
   @override
@@ -1593,6 +1810,8 @@ abstract class _$CommonDatabase extends GeneratedDatabase {
   late final $DemoAccountTable demoAccount = $DemoAccountTable(this);
   late final $NotificationPermissionAskedTable notificationPermissionAsked =
       $NotificationPermissionAskedTable(this);
+  late final $VideoCallTipShownTable videoCallTipShown =
+      $VideoCallTipShownTable(this);
   late final $AccountIdTable accountId = $AccountIdTable(this);
   late final $ServerUrlTable serverUrl = $ServerUrlTable(this);
   late final $CurrentLocaleTable currentLocale = $CurrentLocaleTable(this);
@@ -1624,6 +1843,7 @@ abstract class _$CommonDatabase extends GeneratedDatabase {
   List<DatabaseSchemaEntity> get allSchemaEntities => [
     demoAccount,
     notificationPermissionAsked,
+    videoCallTipShown,
     accountId,
     serverUrl,
     currentLocale,

@@ -6,6 +6,8 @@ part of 'app.dart';
 mixin _$DaoReadAppMixin on DatabaseAccessor<CommonDatabase> {
   $NotificationPermissionAskedTable get notificationPermissionAsked =>
       attachedDatabase.notificationPermissionAsked;
+  $VideoCallTipShownTable get videoCallTipShown =>
+      attachedDatabase.videoCallTipShown;
   $ServerUrlTable get serverUrl => attachedDatabase.serverUrl;
   $CurrentLocaleTable get currentLocale => attachedDatabase.currentLocale;
 }

@@ -1812,6 +1812,13 @@ class AppLocalizationsFi extends AppLocalizations {
   String get url_app_tos_link => 'https://example.com';
 
   @override
+  String get video_call_tip_dialog_description =>
+      'You can send video call invitation using video call button at top right corner of the screen.';
+
+  @override
+  String get video_call_tip_dialog_title => 'Like video calls?';
+
+  @override
   String get view_image_screen_title => 'Kuva';
 
   @override

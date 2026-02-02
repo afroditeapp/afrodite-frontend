@@ -19,6 +19,7 @@ part 'database.g.dart';
   tables: [
     schema.DemoAccount,
     schema.NotificationPermissionAsked,
+    schema.VideoCallTipShown,
     schema.AccountId,
     schema.ServerUrl,
     schema.CurrentLocale,

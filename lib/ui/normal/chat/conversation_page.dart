@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:app/data/chat/message_database_iterator.dart';
 import 'package:app/data/utils/repository_instances.dart';
+import 'package:app/database/common_database_manager.dart';
 import 'package:app/logic/account/client_features_config.dart';
 import 'package:app/logic/chat/chat_enabled.dart';
 import 'package:app/ui/normal/chat/chat_data_outdated_widget.dart';
@@ -221,7 +222,9 @@ class ConversationScreenState extends State<ConversationScreen> {
           ]),
         ],
       ),
-      body: ChatViewingBlocker(child: page(context)),
+      body: ChatViewingBlocker(
+        child: VideoCallTipDialogOpener(accountId: widget.accountId, child: page(context)),
+      ),
     );
   }
 
@@ -336,4 +339,97 @@ Future<bool> sendMessage(BuildContext context, Message message) {
   final completer = Completer<bool>();
   bloc.add(SendMessageTo(bloc.state.accountId, message, completer));
   return completer.future;
+}
+
+class VideoCallTipDialogPage extends MyDialogPage<bool> {
+  VideoCallTipDialogPage()
+    : super(builder: (_, closer) => VideoCallTipDialog(closer: closer), barrierDismissable: false);
+}
+
+class VideoCallTipDialog extends StatelessWidget {
+  final PageCloser<bool> closer;
+  const VideoCallTipDialog({required this.closer, super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final dialogContent = Column(
+      children: [
+        const Icon(Icons.videocam_outlined, size: 48),
+        const Padding(padding: EdgeInsets.all(8.0)),
+        Text(
+          context.strings.video_call_tip_dialog_title,
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
+        const Padding(padding: EdgeInsets.all(8.0)),
+        Text(context.strings.video_call_tip_dialog_description),
+      ],
+    );
+
+    return AlertDialog(
+      scrollable: true,
+      content: dialogContent,
+      actions: [
+        TextButton(
+          onPressed: () => closer.close(context, true),
+          child: Text(context.strings.generic_close),
+        ),
+      ],
+    );
+  }
+}
+
+class VideoCallTipDialogOpener extends StatefulWidget {
+  final AccountId accountId;
+  final Widget child;
+  const VideoCallTipDialogOpener({required this.accountId, required this.child, super.key});
+
+  @override
+  State<VideoCallTipDialogOpener> createState() => _VideoCallTipDialogOpenerState();
+}
+
+class _VideoCallTipDialogOpenerState extends State<VideoCallTipDialogOpener> {
+  bool _checkedDialog = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final r = context.read<RepositoryInstances>();
+
+    // Only show dialog if video calls feature is enabled
+    if (!context.read<ClientFeaturesConfigBloc>().state.config.featuresConfig().videoCalls) {
+      return widget.child;
+    }
+
+    if (!_checkedDialog) {
+      _checkedDialog = true;
+      openDialogIfNeeded(r);
+    }
+
+    return widget.child;
+  }
+
+  Future<void> openDialogIfNeeded(RepositoryInstances r) async {
+    final tipShown = await CommonDatabaseManager.getInstance()
+        .commonStreamOrDefault((db) => db.app.watchVideoCallTipShown(), false)
+        .first;
+
+    if (tipShown) {
+      return;
+    }
+
+    final bothSent = await r.accountDb.accountData((db) async {
+      return await db.message.haveBothUsersSentMessages(widget.accountId);
+    }).ok();
+
+    if (bothSent == true && mounted) {
+      openVideoCallTipDialog(context);
+    }
+  }
+
+  void openVideoCallTipDialog(BuildContext context) {
+    MyNavigator.showDialog<bool>(context: context, page: VideoCallTipDialogPage()).then((_) {
+      CommonDatabaseManager.getInstance().commonAction(
+        (db) => db.app.updateVideoCallTipShown(true),
+      );
+    });
+  }
 }
