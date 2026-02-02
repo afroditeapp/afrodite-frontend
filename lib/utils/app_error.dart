@@ -89,6 +89,11 @@ sealed class ValueApiError extends ApiError {
   bool isInternalServerError() {
     return false;
   }
+
+  /// Is status code HTTP 429
+  bool isTooManyRequests() {
+    return false;
+  }
 }
 
 class NullError extends ValueApiError {
@@ -135,6 +140,11 @@ class ValueApiException extends ValueApiError {
   @override
   bool isInternalServerError() {
     return e.code == 500;
+  }
+
+  @override
+  bool isTooManyRequests() {
+    return e.code == 429;
   }
 
   @override

@@ -205,6 +205,9 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
                       .strings
                       .conversation_screen_message_error_receiver_blocked_sender_or_receiver_not_found,
                 );
+              case MessageSendingErrorDetails.rateLimit:
+                // Already handled by logError in ApiWrapper
+                ();
             }
         }
       }
@@ -253,6 +256,9 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
                     .strings
                     .conversation_screen_message_error_receiver_blocked_sender_or_receiver_not_found,
               );
+            case ResendFailedError.rateLimit:
+              // Already handled by logError in ApiWrapper
+              ();
           }
       }
 

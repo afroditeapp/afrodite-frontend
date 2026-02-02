@@ -165,20 +165,27 @@ class SendMessageUtils {
     Uint8List backendSignedPgpMessage;
     var messageSenderAcknowledgementTried = false;
     while (true) {
-      final result = await api
-          .chat(
-            (api) => api.postSendMessage(
-              currentUserKeys.publicKeyId.id,
-              accountId.aid,
-              receiverPublicKey.id.id,
-              messageId.id,
-              MultipartFile.fromBytes("", encryptedMessage.pgpMessage),
-            ),
-          )
-          .ok();
-      if (result == null) {
-        yield ErrorAfterMessageSaving(localId);
-        return;
+      final requestResult = await api.chat(
+        (api) => api.postSendMessage(
+          currentUserKeys.publicKeyId.id,
+          accountId.aid,
+          receiverPublicKey.id.id,
+          messageId.id,
+          MultipartFile.fromBytes("", encryptedMessage.pgpMessage),
+        ),
+      );
+
+      final SendMessageResult result;
+      switch (requestResult) {
+        case Ok(v: final v):
+          result = v;
+        case Err(e: final e):
+          if (e.isTooManyRequests()) {
+            yield ErrorAfterMessageSaving(localId, MessageSendingErrorDetails.rateLimit);
+          } else {
+            yield ErrorAfterMessageSaving(localId);
+          }
+          return;
       }
 
       if (result.errorReceiverBlockedSenderOrReceiverNotFound) {

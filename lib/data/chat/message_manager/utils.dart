@@ -10,7 +10,10 @@ class SavedToLocalDb extends MessageSendingEvent {
 
 enum MessageSendingErrorDetails {
   tooManyPendingMessages,
-  receiverBlockedSenderOrReceiverNotFound;
+  receiverBlockedSenderOrReceiverNotFound,
+
+  /// HTTP 429 Too Many Requests (error is already shown to user)
+  rateLimit;
 
   ResendFailedError toResendFailedError() {
     switch (this) {
@@ -18,6 +21,8 @@ enum MessageSendingErrorDetails {
         return ResendFailedError.tooManyPendingMessages;
       case receiverBlockedSenderOrReceiverNotFound:
         return ResendFailedError.receiverBlockedSenderOrReceiverNotFound;
+      case rateLimit:
+        return ResendFailedError.rateLimit;
     }
   }
 }
@@ -38,4 +43,7 @@ enum ResendFailedError {
   isActuallySentSuccessfully,
   tooManyPendingMessages,
   receiverBlockedSenderOrReceiverNotFound,
+
+  /// HTTP 429 Too Many Requests (error is already shown to user)
+  rateLimit,
 }
