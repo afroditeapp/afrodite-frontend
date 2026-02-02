@@ -19,10 +19,6 @@ class EnableChatWithNewKeypair extends ChatEnabledEvent {
 
 class ClearPendingMessagesWarning extends ChatEnabledEvent {}
 
-class QueryKeyInfo extends ChatEnabledEvent {}
-
-class ClearRemainingKeyGenerations extends ChatEnabledEvent {}
-
 class ChatEnabledBloc extends Bloc<ChatEnabledEvent, ChatEnabledData> {
   final ChatRepository chat;
   final ApiManager api;
@@ -85,21 +81,6 @@ class ChatEnabledBloc extends Bloc<ChatEnabledEvent, ChatEnabledData> {
           showPendingMessagesWarning: false,
         ),
       );
-    });
-
-    on<QueryKeyInfo>((event, emit) async {
-      final result = await api.chat((api) => api.getPrivatePublicKeyInfo(currentUser.aid));
-      final keyInfo = result.ok();
-      if (keyInfo != null) {
-        final currentKeyId = keyInfo.latestPublicKeyId?.id ?? 0;
-        final maxKeys = keyInfo.maxPublicKeyCount;
-        final remainingGenerations = maxKeys - currentKeyId;
-        emit(state.copyWith(remainingKeyGenerations: remainingGenerations));
-      }
-    });
-
-    on<ClearRemainingKeyGenerations>((event, emit) {
-      emit(state.copyWith(remainingKeyGenerations: null));
     });
   }
 

@@ -280,14 +280,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get chat_data_outdated_receive_backup => 'Receive backup';
 
   @override
-  String chat_data_outdated_skip_confirm_message(String p0) {
-    return 'This will generate a new encryption key for chat.\n\nRemaining key generations: $p0\n\nWarning: You might have to create a new account if this goes to zero.';
-  }
-
-  @override
-  String get chat_data_outdated_skip_confirm_title => 'Generate new key?';
-
-  @override
   String get chat_data_outdated_title => 'Chat data outdated';
 
   @override

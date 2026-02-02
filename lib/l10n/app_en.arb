@@ -362,19 +362,6 @@
   "@chat_data_outdated_receive_backup": {
     "description": "Button text to receive chat backup"
   },
-  "chat_data_outdated_skip_confirm_message": "This will generate a new encryption key for chat.\n\nRemaining key generations: {p0}\n\nWarning: You might have to create a new account if this goes to zero.",
-  "@chat_data_outdated_skip_confirm_message": {
-    "description": "Message for skip confirmation dialog",
-    "placeholders": {
-      "p0": {
-        "type": "String"
-      }
-    }
-  },
-  "chat_data_outdated_skip_confirm_title": "Generate new key?",
-  "@chat_data_outdated_skip_confirm_title": {
-    "description": "Title for skip confirmation dialog"
-  },
   "chat_data_outdated_title": "Chat data outdated",
   "@chat_data_outdated_title": {
     "description": "Title for chat data outdated state"

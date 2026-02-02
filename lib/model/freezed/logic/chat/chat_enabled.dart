@@ -21,6 +21,5 @@ class ChatEnabledData with _$ChatEnabledData {
     @Default(false) bool isEnabling,
     ChatEnableError? enableError,
     @Default(false) bool showPendingMessagesWarning,
-    int? remainingKeyGenerations,
   }) = _ChatEnabledData;
 }

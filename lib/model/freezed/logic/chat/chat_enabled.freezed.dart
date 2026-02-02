@@ -25,14 +25,12 @@ mixin _$ChatEnabledData {
   bool get isEnabling => throw _privateConstructorErrorChatEnabledData;
   ChatEnableError? get enableError => throw _privateConstructorErrorChatEnabledData;
   bool get showPendingMessagesWarning => throw _privateConstructorErrorChatEnabledData;
-  int? get remainingKeyGenerations => throw _privateConstructorErrorChatEnabledData;
 
   ChatEnabledData copyWith({
     bool? chatEnabled,
     bool? isEnabling,
     ChatEnableError? enableError,
     bool? showPendingMessagesWarning,
-    int? remainingKeyGenerations,
   }) => throw _privateConstructorErrorChatEnabledData;
 }
 
@@ -43,7 +41,6 @@ abstract class _ChatEnabledData implements ChatEnabledData {
     bool isEnabling,
     ChatEnableError? enableError,
     bool showPendingMessagesWarning,
-    int? remainingKeyGenerations,
   }) = _$ChatEnabledDataImpl;
 }
 
@@ -58,7 +55,6 @@ class _$ChatEnabledDataImpl implements _ChatEnabledData {
     this.isEnabling = _isEnablingDefaultValue,
     this.enableError,
     this.showPendingMessagesWarning = _showPendingMessagesWarningDefaultValue,
-    this.remainingKeyGenerations,
   });
 
   @override
@@ -69,12 +65,10 @@ class _$ChatEnabledDataImpl implements _ChatEnabledData {
   final ChatEnableError? enableError;
   @override
   final bool showPendingMessagesWarning;
-  @override
-  final int? remainingKeyGenerations;
 
   @override
   String toString() {
-    return 'ChatEnabledData(chatEnabled: $chatEnabled, isEnabling: $isEnabling, enableError: $enableError, showPendingMessagesWarning: $showPendingMessagesWarning, remainingKeyGenerations: $remainingKeyGenerations)';
+    return 'ChatEnabledData(chatEnabled: $chatEnabled, isEnabling: $isEnabling, enableError: $enableError, showPendingMessagesWarning: $showPendingMessagesWarning)';
   }
 
   @override
@@ -89,9 +83,7 @@ class _$ChatEnabledDataImpl implements _ChatEnabledData {
         (identical(other.enableError, enableError) ||
           other.enableError == enableError) &&
         (identical(other.showPendingMessagesWarning, showPendingMessagesWarning) ||
-          other.showPendingMessagesWarning == showPendingMessagesWarning) &&
-        (identical(other.remainingKeyGenerations, remainingKeyGenerations) ||
-          other.remainingKeyGenerations == remainingKeyGenerations)
+          other.showPendingMessagesWarning == showPendingMessagesWarning)
     );
   }
 
@@ -102,7 +94,6 @@ class _$ChatEnabledDataImpl implements _ChatEnabledData {
     isEnabling,
     enableError,
     showPendingMessagesWarning,
-    remainingKeyGenerations,
   );
 
   @override
@@ -111,12 +102,10 @@ class _$ChatEnabledDataImpl implements _ChatEnabledData {
     Object? isEnabling,
     Object? enableError = _detectDefaultValueInCopyWith,
     Object? showPendingMessagesWarning,
-    Object? remainingKeyGenerations = _detectDefaultValueInCopyWith,
   }) => _$ChatEnabledDataImpl(
     chatEnabled: (chatEnabled ?? this.chatEnabled) as bool,
     isEnabling: (isEnabling ?? this.isEnabling) as bool,
     enableError: (enableError == _detectDefaultValueInCopyWith ? this.enableError : enableError) as ChatEnableError?,
     showPendingMessagesWarning: (showPendingMessagesWarning ?? this.showPendingMessagesWarning) as bool,
-    remainingKeyGenerations: (remainingKeyGenerations == _detectDefaultValueInCopyWith ? this.remainingKeyGenerations : remainingKeyGenerations) as int?,
   );
 }

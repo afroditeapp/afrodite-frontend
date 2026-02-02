@@ -96,23 +96,6 @@ class ChatDataOutdatedWidget extends StatelessWidget {
 class ChatDataOutdatedEventHandler extends StatelessWidget {
   const ChatDataOutdatedEventHandler({super.key});
 
-  void _showSkipConfirmDialog(BuildContext context, int remainingGenerations) async {
-    final message = context.strings.chat_data_outdated_skip_confirm_message(
-      remainingGenerations.toString(),
-    );
-
-    final result = await showConfirmDialog(
-      context,
-      context.strings.chat_data_outdated_skip_confirm_title,
-      details: message,
-      yesNoActions: true,
-    );
-
-    if (result == true && context.mounted) {
-      context.read<ChatEnabledBloc>().add(EnableChatWithNewKeypair());
-    }
-  }
-
   void _showPendingMessagesWarning(BuildContext context) async {
     final result = await showConfirmDialog(
       context,
@@ -134,15 +117,8 @@ class ChatDataOutdatedEventHandler extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocListener<ChatEnabledBloc, ChatEnabledData>(
       listenWhen: (previous, current) =>
-          previous.remainingKeyGenerations != current.remainingKeyGenerations ||
           previous.showPendingMessagesWarning != current.showPendingMessagesWarning,
       listener: (context, state) {
-        final remaining = state.remainingKeyGenerations;
-        if (remaining != null) {
-          context.read<ChatEnabledBloc>().add(ClearRemainingKeyGenerations());
-          _showSkipConfirmDialog(context, remaining);
-        }
-
         if (state.showPendingMessagesWarning) {
           _showPendingMessagesWarning(context);
         }
@@ -165,7 +141,7 @@ class ChatViewingBlocker extends StatelessWidget {
         if (!chatState.chatEnabled) {
           return ChatDataOutdatedWidget(
             onSkip: () {
-              context.read<ChatEnabledBloc>().add(QueryKeyInfo());
+              context.read<ChatEnabledBloc>().add(EnableChatWithNewKeypair());
             },
             isEnabling: chatState.isEnabling,
             enableError: chatState.enableError,
