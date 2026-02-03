@@ -16,6 +16,7 @@ import 'package:app/database/account_database_manager.dart';
 import 'package:app/database/common_database_manager.dart';
 import 'package:utils/utils.dart';
 import 'package:app/utils/result.dart';
+import 'package:app/utils/app_error.dart';
 
 final _log = Logger("RepositoryInstances");
 
@@ -104,12 +105,21 @@ class RepositoryInstances {
 
     if (connectionManager.currentState is ConnectedToServer) {
       _log.info("Making logout API request...");
-      final r = await api.accountAction((api) => api.postLogout());
-      if (r.isErr()) {
-        _log.error("Logout API request failed");
-        showSnackBar(R.strings.generic_logout_failed);
-      } else {
-        _log.info("Logout API request successful");
+      final r = await api
+          .accountAction((api) => api.postLogout())
+          .then<PostLogoutResult>((result) => PostLogoutApiResult(result))
+          .timeout(const Duration(seconds: 5), onTimeout: () => const PostLogoutTimeout());
+      switch (r) {
+        case PostLogoutApiResult(:final result):
+          if (result.isErr()) {
+            _log.error("Logout API request failed");
+            showSnackBar(R.strings.generic_logout_failed);
+          } else {
+            _log.info("Logout API request successful");
+          }
+        case PostLogoutTimeout():
+          _log.error("Logout API request timed out");
+          showSnackBar(R.strings.generic_logout_failed);
       }
     }
 
@@ -193,4 +203,17 @@ class RepositoryInstances {
 
     return newRepositories;
   }
+}
+
+sealed class PostLogoutResult {
+  const PostLogoutResult();
+}
+
+class PostLogoutApiResult extends PostLogoutResult {
+  final Result<(), ActionApiError> result;
+  const PostLogoutApiResult(this.result);
+}
+
+class PostLogoutTimeout extends PostLogoutResult {
+  const PostLogoutTimeout();
 }
