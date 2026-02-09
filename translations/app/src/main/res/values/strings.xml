@@ -103,6 +103,7 @@
 
     <!-- Global stackbar texts -->
     <string name="snackbar_error_api" description="Snackbar error text for API errors">API error</string>
+    <string name="snackbar_error_api_timeout" description="Snackbar error text for API timeouts">API timeout</string>
     <string name="snackbar_error_database" description="Snackbar error text for database errors">Database error</string>
     <string name="snackbar_error_file" description="Snackbar error text for file errors">File error</string>
     <string name="snackbar_error_logic" description="Snackbar error text for logic errors">Logic error</string>

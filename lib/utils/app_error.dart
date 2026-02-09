@@ -67,6 +67,20 @@ class ActionApiErrorUnknownException extends ActionApiError {
   }
 }
 
+class ActionApiTimeoutError extends ActionApiError {
+  const ActionApiTimeoutError();
+
+  @override
+  String title() => R.strings.snackbar_error_api_timeout;
+
+  @override
+  void logError(Logger log) {
+    log.error("Action API request timed out");
+    log.fine(StackTrace.current);
+    ErrorManager.getInstance().show(this);
+  }
+}
+
 sealed class ValueApiError extends ApiError {
   const ValueApiError();
 
@@ -113,6 +127,20 @@ class ValueApiUnknownException extends ValueApiError {
   @override
   void logError(Logger log) {
     log.error("API function returned unknown exception");
+    log.fine(StackTrace.current);
+    ErrorManager.getInstance().show(this);
+  }
+}
+
+class ValueApiTimeoutError extends ValueApiError {
+  const ValueApiTimeoutError();
+
+  @override
+  String title() => R.strings.snackbar_error_api_timeout;
+
+  @override
+  void logError(Logger log) {
+    log.error("Value API request timed out");
     log.fine(StackTrace.current);
     ErrorManager.getInstance().show(this);
   }

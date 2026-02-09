@@ -2250,6 +2250,10 @@
   "@snackbar_error_api": {
     "description": "Snackbar error text for API errors"
   },
+  "snackbar_error_api_timeout": "API timeout",
+  "@snackbar_error_api_timeout": {
+    "description": "Snackbar error text for API timeouts"
+  },
   "snackbar_error_database": "Database error",
   "@snackbar_error_database": {
     "description": "Snackbar error text for database errors"

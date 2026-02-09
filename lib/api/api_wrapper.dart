@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:app/utils/app_error.dart';
@@ -14,10 +16,11 @@ class ApiWrapper<T> {
   /// Handle ApiException.
   Future<Result<R, ValueApiError>> requestValue<R extends Object>(
     Future<R?> Function(T) action, {
+    Duration timeout = const Duration(seconds: 10),
     bool logError = true,
   }) async {
     try {
-      final value = await action(api);
+      final value = await action(api).timeout(timeout);
 
       if (value == null) {
         const err = NullError();
@@ -35,6 +38,12 @@ class ApiWrapper<T> {
         err.logError(_log);
       }
       return Err(err);
+    } on TimeoutException {
+      const err = ValueApiTimeoutError();
+      if (logError) {
+        err.logError(_log);
+      }
+      return const Err(err);
     } catch (e) {
       const err = ValueApiUnknownException();
       err.logError(_log);
@@ -45,10 +54,11 @@ class ApiWrapper<T> {
   /// Handle ApiException.
   Future<Result<(), ActionApiError>> requestAction(
     Future<void> Function(T) action, {
+    Duration timeout = const Duration(seconds: 10),
     bool logError = true,
   }) async {
     try {
-      await action(api);
+      await action(api).timeout(timeout);
       return Ok(());
     } on ApiException catch (e) {
       await restartConnectionIfNeeded(e);
@@ -57,6 +67,12 @@ class ApiWrapper<T> {
         err.logError(_log);
       }
       return Err(err);
+    } on TimeoutException {
+      const err = ActionApiTimeoutError();
+      if (logError) {
+        err.logError(_log);
+      }
+      return const Err(err);
     } catch (e) {
       const err = ActionApiErrorUnknownException();
       err.logError(_log);

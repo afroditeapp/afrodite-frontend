@@ -3130,6 +3130,12 @@ abstract class AppLocalizations {
   /// **'API error'**
   String get snackbar_error_api;
 
+  /// Snackbar error text for API timeouts
+  ///
+  /// In en, this message translates to:
+  /// **'API timeout'**
+  String get snackbar_error_api_timeout;
+
   /// Snackbar error text for database errors
   ///
   /// In en, this message translates to:

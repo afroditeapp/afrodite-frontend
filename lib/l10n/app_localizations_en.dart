@@ -1713,6 +1713,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get snackbar_error_api => 'API error';
 
   @override
+  String get snackbar_error_api_timeout => 'API timeout';
+
+  @override
   String get snackbar_error_database => 'Database error';
 
   @override
