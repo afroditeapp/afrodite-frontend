@@ -2,10 +2,10 @@ import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:app/data/general/notification/state/news_item_available.dart';
+import 'package:app/data/event/event_router.dart';
 import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/database/common_database_manager.dart';
 import 'package:database/database.dart';
-import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:app/api/server_connection_manager.dart';
 import 'package:app/data/account/initial_setup.dart';
@@ -15,9 +15,6 @@ import 'package:app/model/freezed/logic/account/initial_setup.dart';
 import 'package:app/utils/api.dart';
 import 'package:app/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:utils/utils.dart';
-
-final _log = Logger("AccountRepository");
 
 enum AccountRepositoryState { initRequired, initComplete }
 
@@ -65,6 +62,7 @@ class AccountRepository extends DataRepositoryWithLifecycle {
   Stream<ContentProcessingStateChanged> get contentProcessingStateChanges =>
       _contentProcessingStateChanges.stream;
   StreamSubscription<ServerWsEvent>? _serverEvents;
+  EventRouter? _eventRouter;
 
   @override
   Future<void> init() async {
@@ -74,15 +72,13 @@ class AccountRepository extends DataRepositoryWithLifecycle {
     _internalState.add(AccountRepositoryState.initComplete);
 
     _cachedValues._subscribe(db);
-    _serverEvents = connectionManager.serverEvents
-        .asyncMap((event) async {
-          switch (event) {
-            case EventToClientContainer e:
-              await handleEventToClient(e.event);
-          }
-          return event;
-        })
-        .listen((_) {});
+    _eventRouter ??= EventRouter(repositories: repositories);
+    _serverEvents = connectionManager.serverEvents.listen((event) {
+      switch (event) {
+        case EventToClientContainer e:
+          _eventRouter?.route(e.event);
+      }
+    });
   }
 
   @override
@@ -90,6 +86,7 @@ class AccountRepository extends DataRepositoryWithLifecycle {
     await _cachedValues._dispose();
     await _syncHandler.dispose();
     await _serverEvents?.cancel();
+    await _eventRouter?.close();
     await _contentProcessingStateChanges.close();
     await _internalState.close();
   }
@@ -118,71 +115,15 @@ class AccountRepository extends DataRepositoryWithLifecycle {
     });
   }
 
-  Future<void> _receiveAccountState() async {
+  Future<void> receiveAccountState() async {
     final result = await api.account((api) => api.getAccountState()).ok();
     if (result != null) {
       await db.accountAction((db) => db.account.updateAccountState(result));
     }
   }
 
-  Future<void> handleEventToClient(EventToClient event) async {
-    _log.finer("Event from server: $event");
-
-    final chat = repositories.chat;
-    final profile = repositories.profile;
-    final media = repositories.media;
-
-    final contentProcessingEvent = event.contentProcessingStateChanged;
-    final maintenanceEvent = event.scheduledMaintenanceStatus;
-    final typingStart = event.typingStart;
-    final typingStop = event.typingStop;
-    final checkOnlineStatusResponse = event.checkOnlineStatusResponse;
-    if (event.event == EventType.accountStateChanged) {
-      await _receiveAccountState();
-    } else if (event.event == EventType.contentProcessingStateChanged &&
-        contentProcessingEvent != null) {
-      _contentProcessingStateChanges.add(contentProcessingEvent);
-    } else if (event.event == EventType.scheduledMaintenanceStatus && maintenanceEvent != null) {
-      await handleServerMaintenanceStatusEvent(maintenanceEvent);
-    } else if (event.event == EventType.receivedLikesChanged) {
-      await chat.receivedLikesCountRefresh();
-    } else if (event.event == EventType.newMessageReceived) {
-      await chat.receiveNewMessages();
-    } else if (event.event == EventType.clientConfigChanged) {
-      await profile.receiveClientConfig();
-    } else if (event.event == EventType.profileChanged) {
-      await profile.reloadMyProfile();
-    } else if (event.event == EventType.newsCountChanged) {
-      await receiveNewsCount();
-    } else if (event.event == EventType.mediaContentModerationCompleted) {
-      await media.handleMediaContentModerationCompletedEvent();
-    } else if (event.event == EventType.profileStringModerationCompleted) {
-      await profile.handleProfileStringModerationCompletedEvent();
-    } else if (event.event == EventType.automaticProfileSearchCompleted) {
-      await profile.handleAutomaticProfileSearchCompletedEvent();
-    } else if (event.event == EventType.mediaContentChanged) {
-      await media.reloadMyMediaContent();
-    } else if (event.event == EventType.dailyLikesLeftChanged) {
-      await chat.reloadDailyLikesLimit();
-    } else if (event.event == EventType.pushNotificationInfoChanged) {
-      await repositories.common.receivePushNotificationInfo();
-    } else if (event.event == EventType.adminNotification) {
-      await receiveAdminNotification();
-    } else if (event.event == EventType.typingStart && typingStart != null) {
-      repositories.chat.typingIndicatorManager.handleReceivedTypingStart(typingStart);
-    } else if (event.event == EventType.typingStop && typingStop != null) {
-      repositories.chat.typingIndicatorManager.handleReceivedTypingStop(typingStop);
-    } else if (event.event == EventType.checkOnlineStatusResponse &&
-        checkOnlineStatusResponse != null) {
-      await repositories.chat.checkOnlineStatusManager.handleCheckOnlineStatusResponse(
-        checkOnlineStatusResponse.a,
-        checkOnlineStatusResponse.l,
-      );
-    } else if (event.event == EventType.messageDeliveryInfoChanged) {
-      await repositories.chat.receiveMessageDeliveryInfo();
-    } else {
-      _log.error("Unknown EventToClient");
-    }
+  void emitContentProcessingStateChanged(ContentProcessingStateChanged event) {
+    _contentProcessingStateChanges.add(event);
   }
 
   /// Do quick initial setup with some predefined values.
