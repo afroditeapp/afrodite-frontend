@@ -195,6 +195,29 @@ class ConversationScreen extends StatefulWidget {
 }
 
 class ConversationScreenState extends State<ConversationScreen> {
+  StreamSubscription<ProfileEntry?>? _profileSubscription;
+  ProfileEntry? _profileEntryForViewProfileScreen;
+
+  @override
+  void initState() {
+    super.initState();
+    _profileEntryForViewProfileScreen = widget.profileEntry;
+    final r = context.read<RepositoryInstances>();
+    _profileSubscription = r.accountDb
+        .accountStream((db) => db.profile.watchProfileEntry(widget.accountId))
+        .listen((entry) {
+          // Profile's online status might change when conversation opens, so
+          // let's open view profile screen using updated profile.
+          _profileEntryForViewProfileScreen = entry;
+        });
+  }
+
+  @override
+  void dispose() {
+    _profileSubscription?.cancel();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final profileEntry = widget.profileEntry;
@@ -238,7 +261,12 @@ class ConversationScreenState extends State<ConversationScreen> {
           constraints: constraints.copyWith(minHeight: appBarHeight, maxHeight: appBarHeight),
           child: InkWell(
             onTap: () {
-              openProfileView(context, profileEntry, null, noAction: true);
+              openProfileView(
+                context,
+                _profileEntryForViewProfileScreen ?? profileEntry,
+                null,
+                noAction: true,
+              );
             },
             child: Padding(
               padding: const EdgeInsets.only(left: 8.0, right: 8.0),
