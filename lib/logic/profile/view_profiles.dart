@@ -46,6 +46,7 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData> with Acti
   final ChatRepository chat;
 
   StreamSubscription<ProfileChange>? _profileChangeSubscription;
+  StreamSubscription<ProfileEntry?>? _profileRefreshSubscription;
 
   ViewProfileBloc(
     RepositoryInstances r,
@@ -191,11 +192,18 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData> with Acti
       add(HandleProfileChange(event));
     });
 
+    // Refresh profile from server when needed. Previous screens will
+    // show the updated profile.
+    _profileRefreshSubscription = profile
+        .getProfileStream(chat, currentProfile.accountId, ProfileRefreshPriority.low)
+        .listen((_) {});
+
     add(InitEvent());
   }
 
   @override
   Future<void> close() async {
+    await _profileRefreshSubscription?.cancel();
     await _profileChangeSubscription?.cancel();
     return super.close();
   }
