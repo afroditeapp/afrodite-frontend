@@ -69,7 +69,7 @@ class SendImageToSlotTask {
     yield Uploading();
     final MultipartFile data = MultipartFile.fromBytes("", imgBytes);
     final processingId = await api.media(
-      (api) => api.putContentToContentSlot(slot, secureCapture, MediaContentType.jpegImage, data),
+      (api) => api.putContentToContentSlot(slot, secureCapture, MediaContentUploadType.image, data),
     );
     switch (processingId) {
       case Ok(:final v):

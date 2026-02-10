@@ -25,11 +25,13 @@ class DeliveryInfoType {
 
   static const delivered = DeliveryInfoType._(r'Delivered');
   static const seen = DeliveryInfoType._(r'Seen');
+  static const deliveryFailed = DeliveryInfoType._(r'DeliveryFailed');
 
   /// List of all possible values in this [enum][DeliveryInfoType].
   static const values = <DeliveryInfoType>[
     delivered,
     seen,
+    deliveryFailed,
   ];
 
   static DeliveryInfoType? fromJson(dynamic value) => DeliveryInfoTypeTypeTransformer().decode(value);
@@ -70,6 +72,7 @@ class DeliveryInfoTypeTypeTransformer {
       switch (data) {
         case r'Delivered': return DeliveryInfoType.delivered;
         case r'Seen': return DeliveryInfoType.seen;
+        case r'DeliveryFailed': return DeliveryInfoType.deliveryFailed;
         default:
           if (!allowNull) {
             throw ArgumentError('Unknown enum value to decode: $data');

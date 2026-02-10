@@ -741,10 +741,10 @@ class MediaApi {
   /// * [bool] secureCapture (required):
   ///   Client captured this content.
   ///
-  /// * [MediaContentType] contentType (required):
+  /// * [MediaContentUploadType] contentType (required):
   ///
   /// * [MultipartFile] body (required):
-  Future<Response> putContentToContentSlotWithHttpInfo(int slotId, bool secureCapture, MediaContentType contentType, MultipartFile body,) async {
+  Future<Response> putContentToContentSlotWithHttpInfo(int slotId, bool secureCapture, MediaContentUploadType contentType, MultipartFile body,) async {
     // ignore: prefer_const_declarations
     final path = r'/media_api/content_slot/{slot_id}'
       .replaceAll('{slot_id}', slotId.toString());
@@ -784,10 +784,10 @@ class MediaApi {
   /// * [bool] secureCapture (required):
   ///   Client captured this content.
   ///
-  /// * [MediaContentType] contentType (required):
+  /// * [MediaContentUploadType] contentType (required):
   ///
   /// * [MultipartFile] body (required):
-  Future<ContentProcessingId?> putContentToContentSlot(int slotId, bool secureCapture, MediaContentType contentType, MultipartFile body,) async {
+  Future<ContentProcessingId?> putContentToContentSlot(int slotId, bool secureCapture, MediaContentUploadType contentType, MultipartFile body,) async {
     final response = await putContentToContentSlotWithHttpInfo(slotId, secureCapture, contentType, body,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));

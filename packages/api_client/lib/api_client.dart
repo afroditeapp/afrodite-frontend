@@ -546,6 +546,8 @@ class ApiClient {
           return MediaContentSyncVersion.fromJson(value);
         case 'MediaContentType':
           return MediaContentTypeTypeTransformer().decode(value);
+        case 'MediaContentUploadType':
+          return MediaContentUploadTypeTypeTransformer().decode(value);
         case 'MessageDeliveryInfo':
           return MessageDeliveryInfo.fromJson(value);
         case 'MessageDeliveryInfoIdList':
@@ -750,6 +752,8 @@ class ApiClient {
           return RequestEmailLoginToken.fromJson(value);
         case 'RequestEmailLoginTokenResult':
           return RequestEmailLoginTokenResult.fromJson(value);
+        case 'ResendMessage':
+          return ResendMessage.fromJson(value);
         case 'ResetNewsIteratorResult':
           return ResetNewsIteratorResult.fromJson(value);
         case 'ResetReceivedLikesIteratorResult':

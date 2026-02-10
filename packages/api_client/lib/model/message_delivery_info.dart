@@ -20,7 +20,6 @@ class MessageDeliveryInfo {
     required this.unixTime,
   });
 
-  /// Delivery info type (Delivered or Seen)
   DeliveryInfoType deliveryType;
 
   /// Database ID for the delivery info entry

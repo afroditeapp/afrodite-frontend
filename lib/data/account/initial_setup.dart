@@ -64,7 +64,7 @@ class InitialSetupUtils {
 
     final securitySelfie = MultipartFile.fromBytes("", securitySelfieBytes);
     final processingId = await _api.media(
-      (api) => api.putContentToContentSlot(0, true, MediaContentType.jpegImage, securitySelfie),
+      (api) => api.putContentToContentSlot(0, true, MediaContentUploadType.image, securitySelfie),
     );
     if (processingId case Err()) {
       return "Server did not return content processing ID";
@@ -81,7 +81,7 @@ class InitialSetupUtils {
 
     final profileImage = MultipartFile.fromBytes("", profileImageBytes);
     final processingId2 = await _api.media(
-      (api) => api.putContentToContentSlot(1, false, MediaContentType.jpegImage, profileImage),
+      (api) => api.putContentToContentSlot(1, false, MediaContentUploadType.image, profileImage),
     );
     if (processingId2 case Err()) {
       return "Server did not return content processing ID";

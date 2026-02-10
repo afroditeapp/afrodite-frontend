@@ -204,6 +204,7 @@ lib/model/media_content_moderation_rejected_reason_details.dart
 lib/model/media_content_pending_moderation.dart
 lib/model/media_content_sync_version.dart
 lib/model/media_content_type.dart
+lib/model/media_content_upload_type.dart
 lib/model/message_delivery_info.dart
 lib/model/message_delivery_info_id_list.dart
 lib/model/message_delivery_info_list.dart
@@ -306,6 +307,7 @@ lib/model/report_processing_state.dart
 lib/model/report_type_number.dart
 lib/model/request_email_login_token.dart
 lib/model/request_email_login_token_result.dart
+lib/model/resend_message.dart
 lib/model/reset_news_iterator_result.dart
 lib/model/reset_received_likes_iterator_result.dart
 lib/model/scheduled_maintenance_status.dart
