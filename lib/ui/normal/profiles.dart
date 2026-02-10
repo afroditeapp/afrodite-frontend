@@ -149,10 +149,10 @@ class PublicProfileViewingBlocker extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<AccountBloc, AccountBlocData>(
       builder: (context, data) {
-        if (!data.emailVerified) {
-          return _handleBlocked(emailNotVerified(context));
-        } else if (data.accountState == AccountState.initialSetup) {
+        if (data.accountState == AccountState.initialSetup) {
           return _handleBlocked(startInitialSetupButton(context));
+        } else if (!data.emailVerified) {
+          return _handleBlocked(emailNotVerified(context));
         } else if (data.visibility == ProfileVisibility.public) {
           return checkMyContent();
         } else if (data.visibility == ProfileVisibility.pendingPublic) {
