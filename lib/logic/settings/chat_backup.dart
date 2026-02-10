@@ -146,7 +146,7 @@ class ChatBackupBloc extends Bloc<ChatBackupEvent, ChatBackupData> with ActionRu
           switch (result) {
             case Ok():
               showSnackBar(R.strings.generic_action_completed);
-              emit(state.copyWith(isLoading: false));
+              emit(state.copyWith(isError: false, isLoading: false));
             case Err(:final e):
               emit(state.copyWith(isError: true, isLoading: false));
               switch (e) {
