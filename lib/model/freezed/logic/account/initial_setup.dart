@@ -29,7 +29,7 @@ class InitialSetupData with _$InitialSetupData implements ProfilePicturesStateIn
     int? searchAgeRangeMax,
     LatLng? profileLocation,
     @Default(ProfileAttributesState([])) ProfileAttributesState profileAttributes,
-    @Default(false) bool chatInfoUnderstood,
+    @Default(false) bool firstChatBackupCreated,
     @Default(false) bool sendingInProgress,
     @Default(false) bool loadingComplete,
   }) = _InitialSetupData;

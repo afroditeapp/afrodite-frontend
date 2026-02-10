@@ -34,7 +34,7 @@ mixin _$InitialSetupData {
   int? get searchAgeRangeMax => throw _privateConstructorErrorInitialSetupData;
   LatLng? get profileLocation => throw _privateConstructorErrorInitialSetupData;
   ProfileAttributesState get profileAttributes => throw _privateConstructorErrorInitialSetupData;
-  bool get chatInfoUnderstood => throw _privateConstructorErrorInitialSetupData;
+  bool get firstChatBackupCreated => throw _privateConstructorErrorInitialSetupData;
   bool get sendingInProgress => throw _privateConstructorErrorInitialSetupData;
   bool get loadingComplete => throw _privateConstructorErrorInitialSetupData;
 
@@ -52,7 +52,7 @@ mixin _$InitialSetupData {
     int? searchAgeRangeMax,
     LatLng? profileLocation,
     ProfileAttributesState? profileAttributes,
-    bool? chatInfoUnderstood,
+    bool? firstChatBackupCreated,
     bool? sendingInProgress,
     bool? loadingComplete,
   }) => throw _privateConstructorErrorInitialSetupData;
@@ -74,7 +74,7 @@ abstract class _InitialSetupData extends InitialSetupData {
     int? searchAgeRangeMax,
     LatLng? profileLocation,
     ProfileAttributesState profileAttributes,
-    bool chatInfoUnderstood,
+    bool firstChatBackupCreated,
     bool sendingInProgress,
     bool loadingComplete,
   }) = _$InitialSetupDataImpl;
@@ -86,7 +86,7 @@ class _$InitialSetupDataImpl extends _InitialSetupData {
   static const GenderSearchSettingsAll _genderSearchSettingDefaultValue = GenderSearchSettingsAll();
   static const bool _searchAgeRangeInitDoneDefaultValue = false;
   static const ProfileAttributesState _profileAttributesDefaultValue = ProfileAttributesState([]);
-  static const bool _chatInfoUnderstoodDefaultValue = false;
+  static const bool _firstChatBackupCreatedDefaultValue = false;
   static const bool _sendingInProgressDefaultValue = false;
   static const bool _loadingCompleteDefaultValue = false;
 
@@ -104,7 +104,7 @@ class _$InitialSetupDataImpl extends _InitialSetupData {
     this.searchAgeRangeMax,
     this.profileLocation,
     this.profileAttributes = _profileAttributesDefaultValue,
-    this.chatInfoUnderstood = _chatInfoUnderstoodDefaultValue,
+    this.firstChatBackupCreated = _firstChatBackupCreatedDefaultValue,
     this.sendingInProgress = _sendingInProgressDefaultValue,
     this.loadingComplete = _loadingCompleteDefaultValue,
   }) : super._();
@@ -136,7 +136,7 @@ class _$InitialSetupDataImpl extends _InitialSetupData {
   @override
   final ProfileAttributesState profileAttributes;
   @override
-  final bool chatInfoUnderstood;
+  final bool firstChatBackupCreated;
   @override
   final bool sendingInProgress;
   @override
@@ -144,7 +144,7 @@ class _$InitialSetupDataImpl extends _InitialSetupData {
 
   @override
   String toString() {
-    return 'InitialSetupData(email: $email, isAdult: $isAdult, profileName: $profileName, profileAge: $profileAge, securitySelfie: $securitySelfie, profileImages: $profileImages, gender: $gender, genderSearchSetting: $genderSearchSetting, searchAgeRangeInitDone: $searchAgeRangeInitDone, searchAgeRangeMin: $searchAgeRangeMin, searchAgeRangeMax: $searchAgeRangeMax, profileLocation: $profileLocation, profileAttributes: $profileAttributes, chatInfoUnderstood: $chatInfoUnderstood, sendingInProgress: $sendingInProgress, loadingComplete: $loadingComplete)';
+    return 'InitialSetupData(email: $email, isAdult: $isAdult, profileName: $profileName, profileAge: $profileAge, securitySelfie: $securitySelfie, profileImages: $profileImages, gender: $gender, genderSearchSetting: $genderSearchSetting, searchAgeRangeInitDone: $searchAgeRangeInitDone, searchAgeRangeMin: $searchAgeRangeMin, searchAgeRangeMax: $searchAgeRangeMax, profileLocation: $profileLocation, profileAttributes: $profileAttributes, firstChatBackupCreated: $firstChatBackupCreated, sendingInProgress: $sendingInProgress, loadingComplete: $loadingComplete)';
   }
 
   @override
@@ -178,8 +178,8 @@ class _$InitialSetupDataImpl extends _InitialSetupData {
           other.profileLocation == profileLocation) &&
         (identical(other.profileAttributes, profileAttributes) ||
           other.profileAttributes == profileAttributes) &&
-        (identical(other.chatInfoUnderstood, chatInfoUnderstood) ||
-          other.chatInfoUnderstood == chatInfoUnderstood) &&
+        (identical(other.firstChatBackupCreated, firstChatBackupCreated) ||
+          other.firstChatBackupCreated == firstChatBackupCreated) &&
         (identical(other.sendingInProgress, sendingInProgress) ||
           other.sendingInProgress == sendingInProgress) &&
         (identical(other.loadingComplete, loadingComplete) ||
@@ -203,7 +203,7 @@ class _$InitialSetupDataImpl extends _InitialSetupData {
     searchAgeRangeMax,
     profileLocation,
     profileAttributes,
-    chatInfoUnderstood,
+    firstChatBackupCreated,
     sendingInProgress,
     loadingComplete,
   );
@@ -223,7 +223,7 @@ class _$InitialSetupDataImpl extends _InitialSetupData {
     Object? searchAgeRangeMax = _detectDefaultValueInCopyWith,
     Object? profileLocation = _detectDefaultValueInCopyWith,
     Object? profileAttributes,
-    Object? chatInfoUnderstood,
+    Object? firstChatBackupCreated,
     Object? sendingInProgress,
     Object? loadingComplete,
   }) => _$InitialSetupDataImpl(
@@ -240,7 +240,7 @@ class _$InitialSetupDataImpl extends _InitialSetupData {
     searchAgeRangeMax: (searchAgeRangeMax == _detectDefaultValueInCopyWith ? this.searchAgeRangeMax : searchAgeRangeMax) as int?,
     profileLocation: (profileLocation == _detectDefaultValueInCopyWith ? this.profileLocation : profileLocation) as LatLng?,
     profileAttributes: (profileAttributes ?? this.profileAttributes) as ProfileAttributesState,
-    chatInfoUnderstood: (chatInfoUnderstood ?? this.chatInfoUnderstood) as bool,
+    firstChatBackupCreated: (firstChatBackupCreated ?? this.firstChatBackupCreated) as bool,
     sendingInProgress: (sendingInProgress ?? this.sendingInProgress) as bool,
     loadingComplete: (loadingComplete ?? this.loadingComplete) as bool,
   );

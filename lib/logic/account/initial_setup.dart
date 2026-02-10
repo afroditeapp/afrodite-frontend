@@ -104,9 +104,9 @@ class SetLocation extends InitialSetupEvent {
   SetLocation(this.location);
 }
 
-class SetChatInfoUnderstood extends InitialSetupEvent {
-  final bool understood;
-  SetChatInfoUnderstood(this.understood);
+class SetFirstChatBackupCreated extends InitialSetupEvent {
+  final bool created;
+  SetFirstChatBackupCreated(this.created);
 }
 
 class UpdateAttributeValue extends InitialSetupEvent {
@@ -249,7 +249,7 @@ class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData>
           searchAgeRangeMax: progress.searchAgeRangeMax,
           profileLocation: location,
           profileAttributes: profileAttributes,
-          chatInfoUnderstood: progress.chatInfoUnderstood ?? false,
+          firstChatBackupCreated: progress.firstChatBackupCreated ?? false,
           loadingComplete: true,
         ),
       );
@@ -356,9 +356,9 @@ class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData>
             db.progress.updateInitialSetupLocation(data.location.latitude, data.location.longitude),
       );
     });
-    on<SetChatInfoUnderstood>((data, emit) async {
+    on<SetFirstChatBackupCreated>((data, emit) async {
       await db.accountAction(
-        (db) => db.progress.updateInitialSetupChatInfoUnderstood(data.understood),
+        (db) => db.progress.updateInitialSetupFirstChatBackupCreated(data.created),
       );
     });
     on<UpdateAttributeValue>((data, emit) async {

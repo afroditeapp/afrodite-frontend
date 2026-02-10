@@ -1642,30 +1642,6 @@ abstract class AppLocalizations {
   /// **'Age confirmation'**
   String get initial_setup_screen_age_confirmation_title;
 
-  /// Text for initial setup chat backup saved successfully
-  ///
-  /// In en, this message translates to:
-  /// **'Backup saved successfully'**
-  String get initial_setup_screen_chat_info_backup_saved_successfully;
-
-  /// Description for initial setup chat info
-  ///
-  /// In en, this message translates to:
-  /// **'Chat\'s are stored on this device only, so regular backups are recommended. Let\'s save the first backup.\n\nIf you have cloud storage, it is recommended to save the backup there.'**
-  String get initial_setup_screen_chat_info_description;
-
-  /// Title for initial setup save chat backup button
-  ///
-  /// In en, this message translates to:
-  /// **'Save chat backup'**
-  String get initial_setup_screen_chat_info_save_backup_button;
-
-  /// Title for initial setup chat info screen
-  ///
-  /// In en, this message translates to:
-  /// **'First chat backup'**
-  String get initial_setup_screen_chat_info_title;
-
   /// Hint text for inserting email address to text field
   ///
   /// In en, this message translates to:
@@ -1677,6 +1653,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'My email address is…'**
   String get initial_setup_screen_email_title;
+
+  /// Text for initial setup chat backup saved successfully
+  ///
+  /// In en, this message translates to:
+  /// **'Backup saved successfully'**
+  String get initial_setup_screen_first_chat_backup_backup_saved_successfully;
+
+  /// Description for initial setup first chat backup
+  ///
+  /// In en, this message translates to:
+  /// **'Chat\'s are stored on this device only, so regular backups are recommended. Let\'s save the first backup.\n\nIf you have cloud storage, it is recommended to save the backup there.'**
+  String get initial_setup_screen_first_chat_backup_description;
+
+  /// Title for initial setup save chat backup button
+  ///
+  /// In en, this message translates to:
+  /// **'Save chat backup'**
+  String get initial_setup_screen_first_chat_backup_save_backup_button;
+
+  /// Title for initial setup first chat backup screen
+  ///
+  /// In en, this message translates to:
+  /// **'First chat backup'**
+  String get initial_setup_screen_first_chat_backup_title;
 
   /// Title for ask gender screen
   ///

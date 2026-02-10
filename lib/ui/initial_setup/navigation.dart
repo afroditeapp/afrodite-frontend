@@ -1,7 +1,7 @@
 import "package:app/logic/account/initial_setup.dart";
 import "package:app/logic/app/navigator_state.dart";
 import "package:app/ui/initial_setup/age_confirmation.dart";
-import "package:app/ui/initial_setup/chat_info.dart";
+import "package:app/ui/initial_setup/first_chat_backup.dart";
 import "package:app/ui/initial_setup/email.dart";
 import "package:app/ui/initial_setup/gender.dart";
 import "package:app/ui/initial_setup/location.dart";
@@ -29,20 +29,20 @@ List<InitialSetupPageBase> getInitialSetupPageOrder() {
     AskSearchSettingsPage(),
     AskLocationPage(),
     // Required to be the second last page
-    ChatInfoPage(),
+    FirstChatBackupPage(),
     // Required to be the last page
     AskProfileAttributesPage(attributeIndex: 0),
   ];
 }
 
-/// Do not call this from two last pages (ChatInfoPage and AskProfileAttributesPage).
+/// Do not call this from two last pages (FirstChatBackupPage and AskProfileAttributesPage).
 void navigateToNextInitialSetupPage(BuildContext context) {
   final pageOrder = getInitialSetupPageOrder();
   final navigationState = context.read<NavigatorStateBloc>().state;
   final currentPage = navigationState.pages.lastOrNull;
 
   if (currentPage == null ||
-      currentPage is ChatInfoPage ||
+      currentPage is FirstChatBackupPage ||
       currentPage is AskProfileAttributesPage ||
       pageOrder.last is! AskProfileAttributesPage) {
     // This is not translated because users should not see this

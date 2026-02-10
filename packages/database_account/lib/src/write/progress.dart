@@ -118,9 +118,12 @@ class DaoWriteProgress extends DatabaseAccessor<AccountDatabase> with _$DaoWrite
     );
   }
 
-  Future<void> updateInitialSetupChatInfoUnderstood(bool? value) async {
+  Future<void> updateInitialSetupFirstChatBackupCreated(bool? value) async {
     await into(initialSetupProgress).insertOnConflictUpdate(
-      InitialSetupProgressCompanion.insert(id: SingleRowTable.ID, chatInfoUnderstood: Value(value)),
+      InitialSetupProgressCompanion.insert(
+        id: SingleRowTable.ID,
+        firstChatBackupCreated: Value(value),
+      ),
     );
   }
 

@@ -44,8 +44,8 @@ class InitialSetupProgress extends SingleRowTable {
       .map(NullAwareTypeConverter.wrap(const ProfileAttributeValueUpdateListConverter()))
       .nullable()();
 
-  // Chat info
-  BoolColumn get chatInfoUnderstood => boolean().nullable()();
+  // First chat backup
+  BoolColumn get firstChatBackupCreated => boolean().nullable()();
 }
 
 class EditProfileProgress extends SingleRowTable {

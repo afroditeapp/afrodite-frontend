@@ -12,27 +12,27 @@ import "package:app/model/freezed/logic/settings/chat_backup.dart";
 import "package:app/ui/initial_setup/profile_attributes.dart";
 import "package:app/ui_utils/initial_setup_common.dart";
 
-class ChatInfoPage extends InitialSetupPageBase with SimpleUrlParser<ChatInfoPage> {
-  ChatInfoPage() : super(builder: (_) => ChatInfoScreen());
+class FirstChatBackupPage extends InitialSetupPageBase with SimpleUrlParser<FirstChatBackupPage> {
+  FirstChatBackupPage() : super(builder: (_) => FirstChatBackupScreen());
 
   @override
-  String get nameForDb => 'chat_info';
+  String get nameForDb => 'first_chat_backup';
 
   @override
-  ChatInfoPage create() => ChatInfoPage();
+  FirstChatBackupPage create() => FirstChatBackupPage();
 }
 
-class ChatInfoScreen extends StatelessWidget {
-  const ChatInfoScreen({super.key});
+class FirstChatBackupScreen extends StatelessWidget {
+  const FirstChatBackupScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const InitialSetupLoadingGuard(child: _ChatInfoScreenInternal());
+    return const InitialSetupLoadingGuard(child: _FirstChatBackupScreenInternal());
   }
 }
 
-class _ChatInfoScreenInternal extends StatelessWidget {
-  const _ChatInfoScreenInternal();
+class _FirstChatBackupScreenInternal extends StatelessWidget {
+  const _FirstChatBackupScreenInternal();
 
   @override
   Widget build(BuildContext context) {
@@ -45,13 +45,13 @@ class _ChatInfoScreenInternal extends StatelessWidget {
       child: BlocListenerWithInitialValue<ChatBackupBloc, ChatBackupData>(
         listener: (context, state) {
           if (state.lastBackupTime != null &&
-              !context.read<InitialSetupBloc>().state.chatInfoUnderstood) {
-            context.read<InitialSetupBloc>().add(SetChatInfoUnderstood(true));
+              !context.read<InitialSetupBloc>().state.firstChatBackupCreated) {
+            context.read<InitialSetupBloc>().add(SetFirstChatBackupCreated(true));
           }
         },
         child: QuestionAsker(
           getContinueButtonCallback: (context, state) {
-            if (state.chatInfoUnderstood) {
+            if (state.firstChatBackupCreated) {
               return () {
                 final attributes =
                     context.read<ProfileAttributesBloc>().state.manager?.requiredAttributes() ?? [];
@@ -68,7 +68,7 @@ class _ChatInfoScreenInternal extends StatelessWidget {
               return null;
             }
           },
-          question: const ChatInfoContent(),
+          question: const FirstChatBackupContent(),
           expandQuestion: true,
         ),
       ),
@@ -76,14 +76,14 @@ class _ChatInfoScreenInternal extends StatelessWidget {
   }
 }
 
-class ChatInfoContent extends StatefulWidget {
-  const ChatInfoContent({super.key});
+class FirstChatBackupContent extends StatefulWidget {
+  const FirstChatBackupContent({super.key});
 
   @override
-  State<ChatInfoContent> createState() => _ChatInfoContentState();
+  State<FirstChatBackupContent> createState() => _FirstChatBackupContentState();
 }
 
-class _ChatInfoContentState extends State<ChatInfoContent> {
+class _FirstChatBackupContentState extends State<FirstChatBackupContent> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ChatBackupBloc, ChatBackupData>(
@@ -98,11 +98,11 @@ class _ChatInfoContentState extends State<ChatInfoContent> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          questionTitleText(context, context.strings.initial_setup_screen_chat_info_title),
+          questionTitleText(context, context.strings.initial_setup_screen_first_chat_backup_title),
           const SizedBox(height: 16),
           hPad(
             Text(
-              context.strings.initial_setup_screen_chat_info_description,
+              context.strings.initial_setup_screen_first_chat_backup_description,
               style: Theme.of(context).textTheme.bodyLarge,
             ),
           ),
@@ -119,7 +119,7 @@ class _ChatInfoContentState extends State<ChatInfoContent> {
                           : null,
                       icon: const Icon(Icons.save),
                       label: Text(
-                        context.strings.initial_setup_screen_chat_info_save_backup_button,
+                        context.strings.initial_setup_screen_first_chat_backup_save_backup_button,
                       ),
                     ),
             ),
@@ -138,7 +138,9 @@ class _ChatInfoContentState extends State<ChatInfoContent> {
                         const Icon(Icons.check, color: Colors.green, size: 48),
                         const SizedBox(height: 8),
                         Text(
-                          context.strings.initial_setup_screen_chat_info_backup_saved_successfully,
+                          context
+                              .strings
+                              .initial_setup_screen_first_chat_backup_backup_saved_successfully,
                           style: Theme.of(context).textTheme.bodyMedium,
                         ),
                       ],

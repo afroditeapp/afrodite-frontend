@@ -1146,22 +1146,6 @@
   "@initial_setup_screen_age_confirmation_title": {
     "description": "Title for age confirmation screen"
   },
-  "initial_setup_screen_chat_info_backup_saved_successfully": "Backup saved successfully",
-  "@initial_setup_screen_chat_info_backup_saved_successfully": {
-    "description": "Text for initial setup chat backup saved successfully"
-  },
-  "initial_setup_screen_chat_info_description": "Chat's are stored on this device only, so regular backups are recommended. Let's save the first backup.\n\nIf you have cloud storage, it is recommended to save the backup there.",
-  "@initial_setup_screen_chat_info_description": {
-    "description": "Description for initial setup chat info"
-  },
-  "initial_setup_screen_chat_info_save_backup_button": "Save chat backup",
-  "@initial_setup_screen_chat_info_save_backup_button": {
-    "description": "Title for initial setup save chat backup button"
-  },
-  "initial_setup_screen_chat_info_title": "First chat backup",
-  "@initial_setup_screen_chat_info_title": {
-    "description": "Title for initial setup chat info screen"
-  },
   "initial_setup_screen_email_hint_text": "Insert email address",
   "@initial_setup_screen_email_hint_text": {
     "description": "Hint text for inserting email address to text field"
@@ -1169,6 +1153,22 @@
   "initial_setup_screen_email_title": "My email address is…",
   "@initial_setup_screen_email_title": {
     "description": "Title for initial setup email address info"
+  },
+  "initial_setup_screen_first_chat_backup_backup_saved_successfully": "Backup saved successfully",
+  "@initial_setup_screen_first_chat_backup_backup_saved_successfully": {
+    "description": "Text for initial setup chat backup saved successfully"
+  },
+  "initial_setup_screen_first_chat_backup_description": "Chat's are stored on this device only, so regular backups are recommended. Let's save the first backup.\n\nIf you have cloud storage, it is recommended to save the backup there.",
+  "@initial_setup_screen_first_chat_backup_description": {
+    "description": "Description for initial setup first chat backup"
+  },
+  "initial_setup_screen_first_chat_backup_save_backup_button": "Save chat backup",
+  "@initial_setup_screen_first_chat_backup_save_backup_button": {
+    "description": "Title for initial setup save chat backup button"
+  },
+  "initial_setup_screen_first_chat_backup_title": "First chat backup",
+  "@initial_setup_screen_first_chat_backup_title": {
+    "description": "Title for initial setup first chat backup screen"
   },
   "initial_setup_screen_gender_title": "I am…",
   "@initial_setup_screen_gender_title": {

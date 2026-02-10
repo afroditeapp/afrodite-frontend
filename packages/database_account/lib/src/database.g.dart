@@ -1435,19 +1435,20 @@ class $InitialSetupProgressTable extends schema.InitialSetupProgress
       ).withConverter<JsonList<ProfileAttributeValueUpdate>?>(
         $InitialSetupProgressTable.$converterjsonProfileAttributes,
       );
-  static const VerificationMeta _chatInfoUnderstoodMeta =
-      const VerificationMeta('chatInfoUnderstood');
+  static const VerificationMeta _firstChatBackupCreatedMeta =
+      const VerificationMeta('firstChatBackupCreated');
   @override
-  late final GeneratedColumn<bool> chatInfoUnderstood = GeneratedColumn<bool>(
-    'chat_info_understood',
-    aliasedName,
-    true,
-    type: DriftSqlType.bool,
-    requiredDuringInsert: false,
-    defaultConstraints: GeneratedColumn.constraintIsAlways(
-      'CHECK ("chat_info_understood" IN (0, 1))',
-    ),
-  );
+  late final GeneratedColumn<bool> firstChatBackupCreated =
+      GeneratedColumn<bool>(
+        'first_chat_backup_created',
+        aliasedName,
+        true,
+        type: DriftSqlType.bool,
+        requiredDuringInsert: false,
+        defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'CHECK ("first_chat_backup_created" IN (0, 1))',
+        ),
+      );
   @override
   List<GeneratedColumn> get $columns => [
     id,
@@ -1469,7 +1470,7 @@ class $InitialSetupProgressTable extends schema.InitialSetupProgress
     latitude,
     longitude,
     jsonProfileAttributes,
-    chatInfoUnderstood,
+    firstChatBackupCreated,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -1612,12 +1613,12 @@ class $InitialSetupProgressTable extends schema.InitialSetupProgress
         longitude.isAcceptableOrUnknown(data['longitude']!, _longitudeMeta),
       );
     }
-    if (data.containsKey('chat_info_understood')) {
+    if (data.containsKey('first_chat_backup_created')) {
       context.handle(
-        _chatInfoUnderstoodMeta,
-        chatInfoUnderstood.isAcceptableOrUnknown(
-          data['chat_info_understood']!,
-          _chatInfoUnderstoodMeta,
+        _firstChatBackupCreatedMeta,
+        firstChatBackupCreated.isAcceptableOrUnknown(
+          data['first_chat_backup_created']!,
+          _firstChatBackupCreatedMeta,
         ),
       );
     }
@@ -1716,9 +1717,9 @@ class $InitialSetupProgressTable extends schema.InitialSetupProgress
               data['${effectivePrefix}json_profile_attributes'],
             ),
           ),
-      chatInfoUnderstood: attachedDatabase.typeMapping.read(
+      firstChatBackupCreated: attachedDatabase.typeMapping.read(
         DriftSqlType.bool,
-        data['${effectivePrefix}chat_info_understood'],
+        data['${effectivePrefix}first_chat_backup_created'],
       ),
     );
   }
@@ -1763,7 +1764,7 @@ class InitialSetupProgressData extends DataClass
   final double? latitude;
   final double? longitude;
   final JsonList<ProfileAttributeValueUpdate>? jsonProfileAttributes;
-  final bool? chatInfoUnderstood;
+  final bool? firstChatBackupCreated;
   const InitialSetupProgressData({
     required this.id,
     this.currentPage,
@@ -1784,7 +1785,7 @@ class InitialSetupProgressData extends DataClass
     this.latitude,
     this.longitude,
     this.jsonProfileAttributes,
-    this.chatInfoUnderstood,
+    this.firstChatBackupCreated,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -1858,8 +1859,8 @@ class InitialSetupProgressData extends DataClass
         ),
       );
     }
-    if (!nullToAbsent || chatInfoUnderstood != null) {
-      map['chat_info_understood'] = Variable<bool>(chatInfoUnderstood);
+    if (!nullToAbsent || firstChatBackupCreated != null) {
+      map['first_chat_backup_created'] = Variable<bool>(firstChatBackupCreated);
     }
     return map;
   }
@@ -1922,9 +1923,9 @@ class InitialSetupProgressData extends DataClass
       jsonProfileAttributes: jsonProfileAttributes == null && nullToAbsent
           ? const Value.absent()
           : Value(jsonProfileAttributes),
-      chatInfoUnderstood: chatInfoUnderstood == null && nullToAbsent
+      firstChatBackupCreated: firstChatBackupCreated == null && nullToAbsent
           ? const Value.absent()
-          : Value(chatInfoUnderstood),
+          : Value(firstChatBackupCreated),
     );
   }
 
@@ -1968,8 +1969,8 @@ class InitialSetupProgressData extends DataClass
           .fromJson<JsonList<ProfileAttributeValueUpdate>?>(
             json['jsonProfileAttributes'],
           ),
-      chatInfoUnderstood: serializer.fromJson<bool?>(
-        json['chatInfoUnderstood'],
+      firstChatBackupCreated: serializer.fromJson<bool?>(
+        json['firstChatBackupCreated'],
       ),
     );
   }
@@ -2009,7 +2010,9 @@ class InitialSetupProgressData extends DataClass
           .toJson<JsonList<ProfileAttributeValueUpdate>?>(
             jsonProfileAttributes,
           ),
-      'chatInfoUnderstood': serializer.toJson<bool?>(chatInfoUnderstood),
+      'firstChatBackupCreated': serializer.toJson<bool?>(
+        firstChatBackupCreated,
+      ),
     };
   }
 
@@ -2035,7 +2038,7 @@ class InitialSetupProgressData extends DataClass
     Value<double?> longitude = const Value.absent(),
     Value<JsonList<ProfileAttributeValueUpdate>?> jsonProfileAttributes =
         const Value.absent(),
-    Value<bool?> chatInfoUnderstood = const Value.absent(),
+    Value<bool?> firstChatBackupCreated = const Value.absent(),
   }) => InitialSetupProgressData(
     id: id ?? this.id,
     currentPage: currentPage.present ? currentPage.value : this.currentPage,
@@ -2076,9 +2079,9 @@ class InitialSetupProgressData extends DataClass
     jsonProfileAttributes: jsonProfileAttributes.present
         ? jsonProfileAttributes.value
         : this.jsonProfileAttributes,
-    chatInfoUnderstood: chatInfoUnderstood.present
-        ? chatInfoUnderstood.value
-        : this.chatInfoUnderstood,
+    firstChatBackupCreated: firstChatBackupCreated.present
+        ? firstChatBackupCreated.value
+        : this.firstChatBackupCreated,
   );
   InitialSetupProgressData copyWithCompanion(
     InitialSetupProgressCompanion data,
@@ -2129,9 +2132,9 @@ class InitialSetupProgressData extends DataClass
       jsonProfileAttributes: data.jsonProfileAttributes.present
           ? data.jsonProfileAttributes.value
           : this.jsonProfileAttributes,
-      chatInfoUnderstood: data.chatInfoUnderstood.present
-          ? data.chatInfoUnderstood.value
-          : this.chatInfoUnderstood,
+      firstChatBackupCreated: data.firstChatBackupCreated.present
+          ? data.firstChatBackupCreated.value
+          : this.firstChatBackupCreated,
     );
   }
 
@@ -2157,7 +2160,7 @@ class InitialSetupProgressData extends DataClass
           ..write('latitude: $latitude, ')
           ..write('longitude: $longitude, ')
           ..write('jsonProfileAttributes: $jsonProfileAttributes, ')
-          ..write('chatInfoUnderstood: $chatInfoUnderstood')
+          ..write('firstChatBackupCreated: $firstChatBackupCreated')
           ..write(')'))
         .toString();
   }
@@ -2183,7 +2186,7 @@ class InitialSetupProgressData extends DataClass
     latitude,
     longitude,
     jsonProfileAttributes,
-    chatInfoUnderstood,
+    firstChatBackupCreated,
   );
   @override
   bool operator ==(Object other) =>
@@ -2208,7 +2211,7 @@ class InitialSetupProgressData extends DataClass
           other.latitude == this.latitude &&
           other.longitude == this.longitude &&
           other.jsonProfileAttributes == this.jsonProfileAttributes &&
-          other.chatInfoUnderstood == this.chatInfoUnderstood);
+          other.firstChatBackupCreated == this.firstChatBackupCreated);
 }
 
 class InitialSetupProgressCompanion
@@ -2232,7 +2235,7 @@ class InitialSetupProgressCompanion
   final Value<double?> latitude;
   final Value<double?> longitude;
   final Value<JsonList<ProfileAttributeValueUpdate>?> jsonProfileAttributes;
-  final Value<bool?> chatInfoUnderstood;
+  final Value<bool?> firstChatBackupCreated;
   const InitialSetupProgressCompanion({
     this.id = const Value.absent(),
     this.currentPage = const Value.absent(),
@@ -2253,7 +2256,7 @@ class InitialSetupProgressCompanion
     this.latitude = const Value.absent(),
     this.longitude = const Value.absent(),
     this.jsonProfileAttributes = const Value.absent(),
-    this.chatInfoUnderstood = const Value.absent(),
+    this.firstChatBackupCreated = const Value.absent(),
   });
   InitialSetupProgressCompanion.insert({
     this.id = const Value.absent(),
@@ -2275,7 +2278,7 @@ class InitialSetupProgressCompanion
     this.latitude = const Value.absent(),
     this.longitude = const Value.absent(),
     this.jsonProfileAttributes = const Value.absent(),
-    this.chatInfoUnderstood = const Value.absent(),
+    this.firstChatBackupCreated = const Value.absent(),
   });
   static Insertable<InitialSetupProgressData> custom({
     Expression<int>? id,
@@ -2297,7 +2300,7 @@ class InitialSetupProgressCompanion
     Expression<double>? latitude,
     Expression<double>? longitude,
     Expression<String>? jsonProfileAttributes,
-    Expression<bool>? chatInfoUnderstood,
+    Expression<bool>? firstChatBackupCreated,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -2325,8 +2328,8 @@ class InitialSetupProgressCompanion
       if (longitude != null) 'longitude': longitude,
       if (jsonProfileAttributes != null)
         'json_profile_attributes': jsonProfileAttributes,
-      if (chatInfoUnderstood != null)
-        'chat_info_understood': chatInfoUnderstood,
+      if (firstChatBackupCreated != null)
+        'first_chat_backup_created': firstChatBackupCreated,
     });
   }
 
@@ -2350,7 +2353,7 @@ class InitialSetupProgressCompanion
     Value<double?>? latitude,
     Value<double?>? longitude,
     Value<JsonList<ProfileAttributeValueUpdate>?>? jsonProfileAttributes,
-    Value<bool?>? chatInfoUnderstood,
+    Value<bool?>? firstChatBackupCreated,
   }) {
     return InitialSetupProgressCompanion(
       id: id ?? this.id,
@@ -2377,7 +2380,8 @@ class InitialSetupProgressCompanion
       longitude: longitude ?? this.longitude,
       jsonProfileAttributes:
           jsonProfileAttributes ?? this.jsonProfileAttributes,
-      chatInfoUnderstood: chatInfoUnderstood ?? this.chatInfoUnderstood,
+      firstChatBackupCreated:
+          firstChatBackupCreated ?? this.firstChatBackupCreated,
     );
   }
 
@@ -2457,8 +2461,10 @@ class InitialSetupProgressCompanion
         ),
       );
     }
-    if (chatInfoUnderstood.present) {
-      map['chat_info_understood'] = Variable<bool>(chatInfoUnderstood.value);
+    if (firstChatBackupCreated.present) {
+      map['first_chat_backup_created'] = Variable<bool>(
+        firstChatBackupCreated.value,
+      );
     }
     return map;
   }
@@ -2485,7 +2491,7 @@ class InitialSetupProgressCompanion
           ..write('latitude: $latitude, ')
           ..write('longitude: $longitude, ')
           ..write('jsonProfileAttributes: $jsonProfileAttributes, ')
-          ..write('chatInfoUnderstood: $chatInfoUnderstood')
+          ..write('firstChatBackupCreated: $firstChatBackupCreated')
           ..write(')'))
         .toString();
   }

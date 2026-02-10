@@ -3,7 +3,7 @@ import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui/account_banned.dart';
 import 'package:app/ui/demo_account.dart';
 import 'package:app/ui/initial_setup/age_confirmation.dart';
-import 'package:app/ui/initial_setup/chat_info.dart';
+import 'package:app/ui/initial_setup/first_chat_backup.dart';
 import 'package:app/ui/initial_setup/email.dart';
 import 'package:app/ui/initial_setup/gender.dart';
 import 'package:app/ui/initial_setup/location.dart';
@@ -143,7 +143,7 @@ List<UrlParser<MyScreenPage<Object>>> loggedInPages(RepositoryInstances r) => [
   AskGenderPage(),
   AskSearchSettingsPage(),
   AskLocationPage(),
-  ChatInfoPage(),
+  FirstChatBackupPage(),
   AskProfileAttributesPageUrlParser(),
 
   // Profile

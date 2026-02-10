@@ -106,8 +106,8 @@ class InitialSetupProgressEntry {
   // Profile attributes
   final List<ProfileAttributeValueUpdate>? profileAttributes;
 
-  // Chat info
-  final bool? chatInfoUnderstood;
+  // First chat backup
+  final bool? firstChatBackupCreated;
 
   const InitialSetupProgressEntry({
     this.email,
@@ -127,7 +127,7 @@ class InitialSetupProgressEntry {
     this.latitude,
     this.longitude,
     this.profileAttributes,
-    this.chatInfoUnderstood,
+    this.firstChatBackupCreated,
   });
 }
 
