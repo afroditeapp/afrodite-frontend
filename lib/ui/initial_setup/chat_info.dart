@@ -1,4 +1,5 @@
 import "package:app/model/freezed/logic/main/navigator_state.dart";
+import "package:app/ui_utils/bloc_listener.dart";
 import "package:app/ui_utils/padding.dart";
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
@@ -6,6 +7,8 @@ import "package:app/localizations.dart";
 import "package:app/logic/account/initial_setup.dart";
 import "package:app/logic/app/navigator_state.dart";
 import "package:app/logic/profile/attributes.dart";
+import "package:app/logic/settings/chat_backup.dart";
+import "package:app/model/freezed/logic/settings/chat_backup.dart";
 import "package:app/ui/initial_setup/profile_attributes.dart";
 import "package:app/ui_utils/initial_setup_common.dart";
 
@@ -38,27 +41,36 @@ class _ChatInfoScreenInternal extends StatelessWidget {
 
     return commonInitialSetupScreenContent(
       context: context,
-      child: QuestionAsker(
-        getContinueButtonCallback: (context, state) {
-          if (state.chatInfoUnderstood) {
-            return () {
-              final attributes =
-                  context.read<ProfileAttributesBloc>().state.manager?.requiredAttributes() ?? [];
-              final nextAttribute = attributes.firstOrNull;
-              if (nextAttribute == null) {
-                context.read<InitialSetupBloc>().add(CompleteInitialSetup());
-              } else {
-                final nextPage = AskProfileAttributesPage(attributeIndex: 0);
-                MyNavigator.push(context, nextPage);
-                context.read<InitialSetupBloc>().add(SetCurrentPage(nextPage.nameForDb));
-              }
-            };
-          } else {
-            return null;
+      // When resuming initial setup backup might be already created
+      child: BlocListenerWithInitialValue<ChatBackupBloc, ChatBackupData>(
+        listener: (context, state) {
+          if (state.lastBackupTime != null &&
+              !context.read<InitialSetupBloc>().state.chatInfoUnderstood) {
+            context.read<InitialSetupBloc>().add(SetChatInfoUnderstood(true));
           }
         },
-        question: const ChatInfoContent(),
-        expandQuestion: true,
+        child: QuestionAsker(
+          getContinueButtonCallback: (context, state) {
+            if (state.chatInfoUnderstood) {
+              return () {
+                final attributes =
+                    context.read<ProfileAttributesBloc>().state.manager?.requiredAttributes() ?? [];
+                final nextAttribute = attributes.firstOrNull;
+                if (nextAttribute == null) {
+                  context.read<InitialSetupBloc>().add(CompleteInitialSetup());
+                } else {
+                  final nextPage = AskProfileAttributesPage(attributeIndex: 0);
+                  MyNavigator.push(context, nextPage);
+                  context.read<InitialSetupBloc>().add(SetCurrentPage(nextPage.nameForDb));
+                }
+              };
+            } else {
+              return null;
+            }
+          },
+          question: const ChatInfoContent(),
+          expandQuestion: true,
+        ),
       ),
     );
   }
@@ -74,8 +86,14 @@ class ChatInfoContent extends StatefulWidget {
 class _ChatInfoContentState extends State<ChatInfoContent> {
   @override
   Widget build(BuildContext context) {
-    final understood = context.watch<InitialSetupBloc>().state.chatInfoUnderstood;
+    return BlocBuilder<ChatBackupBloc, ChatBackupData>(
+      builder: (context, state) {
+        return content(context, state);
+      },
+    );
+  }
 
+  Widget content(BuildContext context, ChatBackupData backupState) {
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -83,58 +101,52 @@ class _ChatInfoContentState extends State<ChatInfoContent> {
           questionTitleText(context, context.strings.initial_setup_screen_chat_info_title),
           const SizedBox(height: 16),
           hPad(
-            _buildWarningItem(
-              context,
-              Icons.warning_amber,
-              context.strings.initial_setup_screen_chat_info_item1,
-            ),
-          ),
-          const SizedBox(height: 16),
-          hPad(
-            _buildWarningItem(
-              context,
-              Icons.warning_amber,
-              context.strings.initial_setup_screen_chat_info_item2,
-            ),
-          ),
-          const SizedBox(height: 16),
-          hPad(
             Text(
-              context.strings.initial_setup_screen_chat_info_item3,
+              context.strings.initial_setup_screen_chat_info_description,
               style: Theme.of(context).textTheme.bodyLarge,
             ),
           ),
-          const SizedBox(height: 16),
-          Padding(
-            padding: EdgeInsetsGeometry.symmetric(horizontal: 8),
-            child: CheckboxListTile(
-              value: understood,
-              onChanged: (value) {
-                if (value != null) {
-                  context.read<InitialSetupBloc>().add(SetChatInfoUnderstood(value));
-                }
-              },
-              title: Text(
-                context.strings.initial_setup_screen_chat_info_checkbox,
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-              controlAffinity: ListTileControlAffinity.leading,
-              contentPadding: EdgeInsets.zero,
+          const SizedBox(height: 32),
+          if (backupState.lastBackupTime == null) ...[
+            Center(
+              child: backupState.isLoading
+                  ? const CircularProgressIndicator()
+                  : ElevatedButton.icon(
+                      onPressed: backupState.lastBackupTime == null
+                          ? () {
+                              context.read<ChatBackupBloc>().add(CreateAndSaveChatBackup());
+                            }
+                          : null,
+                      icon: const Icon(Icons.save),
+                      label: Text(
+                        context.strings.initial_setup_screen_chat_info_save_backup_button,
+                      ),
+                    ),
             ),
-          ),
+          ],
+          if (backupState.lastBackupTime != null || backupState.isError) ...[
+            if (backupState.isError) const SizedBox(height: 16),
+            Center(
+              child: backupState.isError
+                  ? Text(
+                      context.strings.generic_error_occurred,
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    )
+                  : Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(Icons.check, color: Colors.green, size: 48),
+                        const SizedBox(height: 8),
+                        Text(
+                          context.strings.initial_setup_screen_chat_info_backup_saved_successfully,
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
+                      ],
+                    ),
+            ),
+          ],
         ],
       ),
-    );
-  }
-
-  Widget _buildWarningItem(BuildContext context, IconData icon, String text) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Icon(icon, color: Theme.of(context).colorScheme.error, size: 24),
-        const SizedBox(width: 12),
-        Expanded(child: Text(text, style: Theme.of(context).textTheme.bodyLarge)),
-      ],
     );
   }
 }

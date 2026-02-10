@@ -868,23 +868,18 @@ class AppLocalizationsFi extends AppLocalizations {
   String get initial_setup_screen_age_confirmation_title => 'Age confirmation';
 
   @override
-  String get initial_setup_screen_chat_info_checkbox =>
-      'I understand that chat backups are important';
+  String get initial_setup_screen_chat_info_backup_saved_successfully =>
+      'Backup saved successfully';
 
   @override
-  String get initial_setup_screen_chat_info_item1 =>
-      'If app is removed your chats will be gone unless you have created a chat backup';
+  String get initial_setup_screen_chat_info_description =>
+      'Chat\'s are stored on this device only, so regular backups are recommended. Let\'s save the first backup.\n\nIf you have cloud storage, it is recommended to save the backup there.';
 
   @override
-  String get initial_setup_screen_chat_info_item2 =>
-      'If app is removed you can\'t view received messages unless you have created a chat backup';
+  String get initial_setup_screen_chat_info_save_backup_button => 'Save chat backup';
 
   @override
-  String get initial_setup_screen_chat_info_item3 =>
-      'Create chat backup before removing the app to have access to present and future messages';
-
-  @override
-  String get initial_setup_screen_chat_info_title => 'Chat info';
+  String get initial_setup_screen_chat_info_title => 'First chat backup';
 
   @override
   String get initial_setup_screen_email_hint_text => 'Insert email address';

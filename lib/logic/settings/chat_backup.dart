@@ -128,7 +128,7 @@ class ChatBackupBloc extends Bloc<ChatBackupEvent, ChatBackupData> with ActionRu
           final now = UtcDateTime.now();
           await r.accountDb.accountAction((db) => db.app.updateChatBackupLastBackupTime(now));
 
-          emit(state.copyWith(isLoading: false, lastBackupTime: now));
+          emit(state.copyWith(isError: false, isLoading: false, lastBackupTime: now));
         } catch (e) {
           emit(state.copyWith(isError: true, isLoading: false));
         }

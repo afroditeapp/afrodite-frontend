@@ -1642,34 +1642,28 @@ abstract class AppLocalizations {
   /// **'Age confirmation'**
   String get initial_setup_screen_age_confirmation_title;
 
-  /// Checkbox text for understanding chat info
+  /// Text for initial setup chat backup saved successfully
   ///
   /// In en, this message translates to:
-  /// **'I understand that chat backups are important'**
-  String get initial_setup_screen_chat_info_checkbox;
+  /// **'Backup saved successfully'**
+  String get initial_setup_screen_chat_info_backup_saved_successfully;
 
-  /// First info item about chat backups
+  /// Description for initial setup chat info
   ///
   /// In en, this message translates to:
-  /// **'If app is removed your chats will be gone unless you have created a chat backup'**
-  String get initial_setup_screen_chat_info_item1;
+  /// **'Chat\'s are stored on this device only, so regular backups are recommended. Let\'s save the first backup.\n\nIf you have cloud storage, it is recommended to save the backup there.'**
+  String get initial_setup_screen_chat_info_description;
 
-  /// Second info item about chat backups
+  /// Title for initial setup save chat backup button
   ///
   /// In en, this message translates to:
-  /// **'If app is removed you can\'t view received messages unless you have created a chat backup'**
-  String get initial_setup_screen_chat_info_item2;
-
-  /// Third info item about chat backups
-  ///
-  /// In en, this message translates to:
-  /// **'Create chat backup before removing the app to have access to present and future messages'**
-  String get initial_setup_screen_chat_info_item3;
+  /// **'Save chat backup'**
+  String get initial_setup_screen_chat_info_save_backup_button;
 
   /// Title for initial setup chat info screen
   ///
   /// In en, this message translates to:
-  /// **'Chat info'**
+  /// **'First chat backup'**
   String get initial_setup_screen_chat_info_title;
 
   /// Hint text for inserting email address to text field

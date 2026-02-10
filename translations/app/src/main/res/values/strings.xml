@@ -286,11 +286,10 @@
     <string name="initial_setup_screen_search_settings_max_age_subtitle" description="Subtitle for max age search setting">…with max age…</string>
     <string name="initial_setup_screen_location_title" description="Title for initial setup location screen">My profile\'s location is…</string>
     <string name="initial_setup_screen_location_help_dialog_text" description="Text for initial setup location help dialog">Select a location for your profile by tapping or long pressing the map.</string>
-    <string name="initial_setup_screen_chat_info_title" description="Title for initial setup chat info screen">Chat info</string>
-    <string name="initial_setup_screen_chat_info_item1" description="First info item about chat backups">If app is removed your chats will be gone unless you have created a chat backup</string>
-    <string name="initial_setup_screen_chat_info_item2" description="Second info item about chat backups">If app is removed you can\'t view received messages unless you have created a chat backup</string>
-    <string name="initial_setup_screen_chat_info_item3" description="Third info item about chat backups">Create chat backup before removing the app to have access to present and future messages</string>
-    <string name="initial_setup_screen_chat_info_checkbox" description="Checkbox text for understanding chat info">I understand that chat backups are important</string>
+    <string name="initial_setup_screen_chat_info_title" description="Title for initial setup chat info screen">First chat backup</string>
+    <string name="initial_setup_screen_chat_info_description" description="Description for initial setup chat info">Chat\'s are stored on this device only, so regular backups are recommended. Let's save the first backup.\n\nIf you have cloud storage, it is recommended to save the backup there.</string>
+    <string name="initial_setup_screen_chat_info_save_backup_button" description="Title for initial setup save chat backup button">Save chat backup</string>
+    <string name="initial_setup_screen_chat_info_backup_saved_successfully" description="Text for initial setup chat backup saved successfully">Backup saved successfully</string>
 
     <!-- Notification permission -->
     <string name="notification_permission_dialog_title" description="Title for notification permission dialog">Allow notifications?</string>

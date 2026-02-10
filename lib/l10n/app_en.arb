@@ -1146,23 +1146,19 @@
   "@initial_setup_screen_age_confirmation_title": {
     "description": "Title for age confirmation screen"
   },
-  "initial_setup_screen_chat_info_checkbox": "I understand that chat backups are important",
-  "@initial_setup_screen_chat_info_checkbox": {
-    "description": "Checkbox text for understanding chat info"
+  "initial_setup_screen_chat_info_backup_saved_successfully": "Backup saved successfully",
+  "@initial_setup_screen_chat_info_backup_saved_successfully": {
+    "description": "Text for initial setup chat backup saved successfully"
   },
-  "initial_setup_screen_chat_info_item1": "If app is removed your chats will be gone unless you have created a chat backup",
-  "@initial_setup_screen_chat_info_item1": {
-    "description": "First info item about chat backups"
+  "initial_setup_screen_chat_info_description": "Chat's are stored on this device only, so regular backups are recommended. Let's save the first backup.\n\nIf you have cloud storage, it is recommended to save the backup there.",
+  "@initial_setup_screen_chat_info_description": {
+    "description": "Description for initial setup chat info"
   },
-  "initial_setup_screen_chat_info_item2": "If app is removed you can't view received messages unless you have created a chat backup",
-  "@initial_setup_screen_chat_info_item2": {
-    "description": "Second info item about chat backups"
+  "initial_setup_screen_chat_info_save_backup_button": "Save chat backup",
+  "@initial_setup_screen_chat_info_save_backup_button": {
+    "description": "Title for initial setup save chat backup button"
   },
-  "initial_setup_screen_chat_info_item3": "Create chat backup before removing the app to have access to present and future messages",
-  "@initial_setup_screen_chat_info_item3": {
-    "description": "Third info item about chat backups"
-  },
-  "initial_setup_screen_chat_info_title": "Chat info",
+  "initial_setup_screen_chat_info_title": "First chat backup",
   "@initial_setup_screen_chat_info_title": {
     "description": "Title for initial setup chat info screen"
   },
