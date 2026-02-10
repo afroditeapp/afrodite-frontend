@@ -58,19 +58,19 @@ enum MessageState {
   // Sent message
 
   /// Message is waiting to be sent to server.
-  pendingSending(_VALUE_PENDING_SENDING),
+  pendingSending(_VALUE_SENT_PENDING_SENDING),
 
   /// Message sent to server.
   sent(_VALUE_SENT),
 
+  /// Message sending failed.
+  sendingError(_VALUE_SENT_SENDING_ERROR),
+
   /// Message delivered to receiver.
-  delivered(_VALUE_DELIVERED),
+  delivered(_VALUE_SENT_DELIVERED),
 
   /// Message seen by receiver.
-  seen(_VALUE_SEEN),
-
-  /// Message sending failed.
-  sendingError(_VALUE_SENDING_ERROR),
+  seen(_VALUE_SENT_SEEN),
 
   // Received message
 
@@ -95,11 +95,11 @@ enum MessageState {
   infoMatchFirstPublicKeyReceived(_VALUE_INFO_MATCH_FIRST_PUBLIC_KEY_RECEIVED),
   infoMatchPublicKeyChanged(_VALUE_INFO_MATCH_PUBLIC_KEY_CHANGED);
 
-  static const int _VALUE_PENDING_SENDING = 0;
+  static const int _VALUE_SENT_PENDING_SENDING = 0;
   static const int _VALUE_SENT = 1;
-  static const int _VALUE_DELIVERED = 3;
-  static const int _VALUE_SEEN = 4;
-  static const int _VALUE_SENDING_ERROR = 2;
+  static const int _VALUE_SENT_SENDING_ERROR = 2;
+  static const int _VALUE_SENT_DELIVERED = 3;
+  static const int _VALUE_SENT_SEEN = 4;
 
   static const int _VALUE_RECEIVED = 20;
   static const int _VALUE_RECEIVED_AND_DECRYPTING_FAILED = 21;
@@ -110,8 +110,8 @@ enum MessageState {
   static const int _VALUE_INFO_MATCH_FIRST_PUBLIC_KEY_RECEIVED = 40;
   static const int _VALUE_INFO_MATCH_PUBLIC_KEY_CHANGED = 41;
 
-  static const int MIN_VALUE_SENT_MESSAGE = _VALUE_PENDING_SENDING;
-  static const int MAX_VALUE_SENT_MESSAGE = _VALUE_SEEN;
+  static const int MIN_VALUE_SENT_MESSAGE = _VALUE_SENT_PENDING_SENDING;
+  static const int MAX_VALUE_SENT_MESSAGE = _VALUE_SENT_SEEN;
 
   static const int MIN_VALUE_RECEIVED_MESSAGE = _VALUE_RECEIVED;
   static const int MAX_VALUE_RECEIVED_MESSAGE = _VALUE_RECEIVED_AND_SEEN;
@@ -121,11 +121,11 @@ enum MessageState {
 
   static MessageState? fromInt(int value) {
     return switch (value) {
-      _VALUE_PENDING_SENDING => pendingSending,
+      _VALUE_SENT_PENDING_SENDING => pendingSending,
       _VALUE_SENT => sent,
-      _VALUE_DELIVERED => delivered,
-      _VALUE_SEEN => seen,
-      _VALUE_SENDING_ERROR => sendingError,
+      _VALUE_SENT_DELIVERED => delivered,
+      _VALUE_SENT_SEEN => seen,
+      _VALUE_SENT_SENDING_ERROR => sendingError,
       _VALUE_RECEIVED => received,
       _VALUE_RECEIVED_AND_DECRYPTING_FAILED => receivedAndDecryptingFailed,
       _VALUE_RECEIVED_AND_PUBLIC_KEY_DOWNLOAD_FAILED => receivedAndPublicKeyDownloadFailed,
