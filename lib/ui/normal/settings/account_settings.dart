@@ -82,12 +82,12 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
             final emailChangeCompletionTime = state.emailChangeCompletionTime;
             if (state.isLoading) {
               return const Center(child: CircularProgressIndicator());
-            } else if (state.isError || email == null) {
+            } else if (state.isError) {
               return Center(child: Text(context.strings.generic_error));
             } else {
               return successfulLoading(
                 context,
-                email,
+                email ?? context.strings.generic_empty,
                 emailVerified,
                 emailChange,
                 emailChangeVerified,
