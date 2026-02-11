@@ -605,7 +605,7 @@ void openSelectPictureDialog(
               if (image != null) {
                 final imageBytes = await image.readAsBytes();
 
-                if (validateJpeg(imageBytes)) {
+                if (validateImage(imageBytes)) {
                   imageProcessingBloc.add(SendImageToSlot(imageBytes, serverSlotIndex));
                 }
               }

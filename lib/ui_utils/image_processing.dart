@@ -160,8 +160,16 @@ bool _isJpeg(Uint8List bytes) {
   return bytes.length >= 3 && bytes[0] == 0xFF && bytes[1] == 0xD8 && bytes[2] == 0xFF;
 }
 
-bool validateJpeg(Uint8List bytes) {
-  if (!_isJpeg(bytes)) {
+bool _isPng(Uint8List bytes) {
+  return bytes.length >= 4 &&
+      bytes[0] == 0x89 &&
+      bytes[1] == 0x50 &&
+      bytes[2] == 0x4E &&
+      bytes[3] == 0x47;
+}
+
+bool validateImage(Uint8List bytes) {
+  if (!_isJpeg(bytes) && !_isPng(bytes)) {
     showSnackBar(R.strings.initial_setup_screen_profile_pictures_unsupported_image_error);
     return false;
   }
@@ -232,7 +240,7 @@ class _ImagePickerLostDataHandlerState extends State<ImagePickerLostDataHandler>
           _lostDataFuture = null;
           if (data is LostImageFound) {
             final imageBytes = data.bytes;
-            if (validateJpeg(imageBytes)) {
+            if (validateImage(imageBytes)) {
               widget.onImage(context, imageBytes);
             }
           }

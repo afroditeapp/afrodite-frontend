@@ -1222,7 +1222,7 @@
   "@initial_setup_screen_profile_pictures_title": {
     "description": "Title for profile pictures selection screen"
   },
-  "initial_setup_screen_profile_pictures_unsupported_image_error": "Selected image is not an JPEG image",
+  "initial_setup_screen_profile_pictures_unsupported_image_error": "Selected image is not a JPEG or PNG image",
   "@initial_setup_screen_profile_pictures_unsupported_image_error": {
     "description": "Snackbar error text that selected picture is unsupported"
   },

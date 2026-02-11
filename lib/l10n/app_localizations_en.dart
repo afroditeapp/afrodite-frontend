@@ -935,7 +935,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get initial_setup_screen_profile_pictures_unsupported_image_error =>
-      'Selected image is not an JPEG image';
+      'Selected image is not a JPEG or PNG image';
 
   @override
   String get initial_setup_screen_refresh_face_detected_values_action =>
