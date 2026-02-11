@@ -200,7 +200,7 @@ class MessageManager extends LifecycleMethods {
     if (toBeRemoved == null) {
       return const Err(DeleteSendFailedError.unspecifiedError);
     }
-    if (toBeRemoved.messageState.toSentState() != SentMessageState.sendingError) {
+    if (!(toBeRemoved.messageState.toSentState()?.sendingFailed() ?? false)) {
       return const Err(DeleteSendFailedError.isActuallySentSuccessfully);
     }
 
@@ -232,7 +232,7 @@ class MessageManager extends LifecycleMethods {
     if (toBeResent == null || toBeResentMessage == null) {
       return const Err(ResendFailedError.unspecifiedError);
     }
-    if (toBeResent.messageState.toSentState() != SentMessageState.sendingError) {
+    if (!(toBeResent.messageState.toSentState()?.sendingFailed() ?? false)) {
       return const Err(ResendFailedError.isActuallySentSuccessfully);
     }
     final receiverAccount = toBeResent.remoteAccountId;

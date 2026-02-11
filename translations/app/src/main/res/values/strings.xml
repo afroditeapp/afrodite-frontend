@@ -486,6 +486,7 @@
     <string name="conversation_screen_message_state_delivered" description="Message state text that message was delivered to receiver">Delivered</string>
     <string name="conversation_screen_message_state_seen" description="Message state text that message was seen by receiver">Seen</string>
     <string name="conversation_screen_message_state_sending_failed" description="Message state text that message sending failed">Sending failed</string>
+    <string name="conversation_screen_message_state_delivery_failed" description="Message state text that message delivery failed">Delivery failed</string>
     <string name="conversation_screen_message_state_decrypting_failed" description="Message state text that message decrypting failed">Decrypting failed</string>
     <string name="conversation_screen_message_state_public_key_download_failed" description="Message state text that public key download failed">Public key download failed</string>
     <string name="conversation_screen_message_state_received_successfully" description="Message state text that message was received successfully">Received successfully</string>

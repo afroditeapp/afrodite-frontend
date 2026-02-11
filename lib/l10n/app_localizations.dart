@@ -730,6 +730,12 @@ abstract class AppLocalizations {
   /// **'Delivered'**
   String get conversation_screen_message_state_delivered;
 
+  /// Message state text that message delivery failed
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery failed'**
+  String get conversation_screen_message_state_delivery_failed;
+
   /// Message state text that public key download failed
   ///
   /// In en, this message translates to:

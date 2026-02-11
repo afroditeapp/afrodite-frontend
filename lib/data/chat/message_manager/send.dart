@@ -331,7 +331,7 @@ class SendMessageUtils {
           .accountData((db) => db.message.getBackendSignedPgpMessage(currentMessage.localId))
           .ok();
 
-      if (currentMessage.messageState.toSentState() == SentMessageState.sendingError ||
+      if ((currentMessage.messageState.toSentState()?.sendingFailed() ?? false) ||
           currentBackendSignedPgpMessage == null) {
         final r = await api.chat((api) => api.postGetSentMessage(sentMessageId)).ok();
         final base64EncodedMessage = r?.data;

@@ -77,6 +77,9 @@ class MessageAdapter {
         case SentMessageState.sendingError:
           failedAt = createdAt;
           status = chat.MessageStatus.error;
+        case SentMessageState.deliveryFailed:
+          failedAt = entry.deliveredUnixTime?.dateTime ?? createdAt;
+          status = chat.MessageStatus.error;
       }
     } else if (receivedMessageState != null) {
       seenAt = createdAt;

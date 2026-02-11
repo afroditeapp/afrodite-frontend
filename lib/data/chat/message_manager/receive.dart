@@ -51,7 +51,8 @@ class ReceiveMessageUtils {
       return;
     }
 
-    final toBeDeleted = <PendingMessageId>[];
+    final toBeAcknowledged = <PendingMessageId>[];
+    final toBeAcknowledgedAsFailed = <PendingMessageId>[];
 
     for (final message in newMessages) {
       final isMatch = await _isInMatches(message.parsed.sender);
@@ -68,7 +69,7 @@ class ReceiveMessageUtils {
           return;
         case Ok(v: final alreadyExistingMessage):
           if (alreadyExistingMessage != null) {
-            toBeDeleted.add(message.parsed.toPendingMessageId());
+            toBeAcknowledged.add(message.parsed.toPendingMessageId());
             continue;
           }
       }
@@ -105,7 +106,12 @@ class ReceiveMessageUtils {
         ),
       );
       if (r.isOk()) {
-        toBeDeleted.add(message.parsed.toPendingMessageId());
+        final pendingMessageId = message.parsed.toPendingMessageId();
+        if (messageState == ReceivedMessageState.decryptingFailed) {
+          toBeAcknowledgedAsFailed.add(pendingMessageId);
+        } else {
+          toBeAcknowledged.add(pendingMessageId);
+        }
       }
 
       ConversationId? conversationId = await db
@@ -147,12 +153,26 @@ class ReceiveMessageUtils {
       );
     }
 
-    final toBeAcknowledgedList = PendingMessageAcknowledgementList(ids: toBeDeleted);
-    final result = await api.chatAction(
-      (api) => api.postAddReceiverAcknowledgement(toBeAcknowledgedList),
-    );
-    if (result.isErr()) {
-      _log.error("Receive messages: acknowleding the server failed");
+    if (toBeAcknowledged.isNotEmpty) {
+      final result = await api.chatAction(
+        (api) => api.postAddReceiverAcknowledgement(
+          PendingMessageAcknowledgementList(ids: toBeAcknowledged),
+        ),
+      );
+      if (result.isErr()) {
+        _log.error("Receive messages: acknowledging the server failed");
+      }
+    }
+
+    if (toBeAcknowledgedAsFailed.isNotEmpty) {
+      final result = await api.chatAction(
+        (api) => api.postAddReceiverAcknowledgement(
+          PendingMessageAcknowledgementList(ids: toBeAcknowledgedAsFailed, deliveryFailed: true),
+        ),
+      );
+      if (result.isErr()) {
+        _log.error("Receive messages: acknowledging failed delivery to the server failed");
+      }
     }
   }
 

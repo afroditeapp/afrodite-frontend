@@ -380,6 +380,9 @@ class AppLocalizationsFi extends AppLocalizations {
   String get conversation_screen_message_state_delivered => 'Delivered';
 
   @override
+  String get conversation_screen_message_state_delivery_failed => 'Delivery failed';
+
+  @override
   String get conversation_screen_message_state_public_key_download_failed =>
       'Public key download failed';
 

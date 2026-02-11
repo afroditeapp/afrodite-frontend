@@ -493,6 +493,10 @@
   "@conversation_screen_message_state_delivered": {
     "description": "Message state text that message was delivered to receiver"
   },
+  "conversation_screen_message_state_delivery_failed": "Delivery failed",
+  "@conversation_screen_message_state_delivery_failed": {
+    "description": "Message state text that message delivery failed"
+  },
   "conversation_screen_message_state_public_key_download_failed": "Public key download failed",
   "@conversation_screen_message_state_public_key_download_failed": {
     "description": "Message state text that public key download failed"

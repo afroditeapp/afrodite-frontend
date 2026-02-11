@@ -293,6 +293,10 @@ class ChatRepository extends DataRepositoryWithLifecycle {
       } else if (deliveryInfo.deliveryType == DeliveryInfoType.seen) {
         newState = SentMessageState.seen;
         seenTime = deliveryInfo.unixTime.toUtcDateTime();
+      } else if (deliveryInfo.deliveryType == DeliveryInfoType.deliveryFailed) {
+        if (currentState != SentMessageState.seen && currentState != SentMessageState.delivered) {
+          newState = SentMessageState.deliveryFailed;
+        }
       }
 
       if (newState != null) {

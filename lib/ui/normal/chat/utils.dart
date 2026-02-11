@@ -81,7 +81,7 @@ void openMessageMenu(BuildContext screenContext, MessageEntry entry) {
               closer.close(context, ());
             },
           ),
-        if (entry.messageState.toSentState() == SentMessageState.sendingError)
+        if (entry.messageState.toSentState()?.sendingFailed() ?? false)
           ListTile(
             title: Text(context.strings.generic_delete),
             onTap: () async {
@@ -94,7 +94,7 @@ void openMessageMenu(BuildContext screenContext, MessageEntry entry) {
               closer.close(context, ());
             },
           ),
-        if (entry.messageState.toSentState() == SentMessageState.sendingError)
+        if (entry.messageState.toSentState()?.sendingFailed() ?? false)
           ListTile(
             title: Text(context.strings.generic_resend),
             onTap: () async {
@@ -146,6 +146,8 @@ void closeActionsAndOpenDetails(
     stateText = screenContext.strings.conversation_screen_message_state_sending_in_progress;
   } else if (sentMessageState == SentMessageState.sendingError) {
     stateText = screenContext.strings.conversation_screen_message_state_sending_failed;
+  } else if (sentMessageState == SentMessageState.deliveryFailed) {
+    stateText = screenContext.strings.conversation_screen_message_state_delivery_failed;
   } else if (sentMessageState == SentMessageState.sent) {
     stateText = screenContext.strings.conversation_screen_message_state_sent_successfully;
   } else if (sentMessageState == SentMessageState.delivered) {
