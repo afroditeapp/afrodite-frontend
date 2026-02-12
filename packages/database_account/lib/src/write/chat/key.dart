@@ -38,6 +38,10 @@ class DaoWriteKey extends DatabaseAccessor<AccountDatabase> with _$DaoWriteKeyMi
     );
   }
 
+  Future<void> clearMessageKeys() async {
+    await (delete(myKeyPair)..where((t) => t.id.equals(SingleRowTable.ID.value))).go();
+  }
+
   Future<void> updatePublicKeyAndAddInfoMessage(
     api.AccountId localAccountId,
     api.AccountId remoteAccountId,

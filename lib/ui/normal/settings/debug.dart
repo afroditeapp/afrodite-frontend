@@ -96,6 +96,14 @@ class _DebugSettingsScreenState extends State<DebugSettingsScreen> {
       ),
     );
 
+    settings.add(
+      Setting.createSetting(
+        Icons.key_off,
+        "Clear chat encryption keys",
+        () => widget.accountDb.accountAction((db) => db.key.clearMessageKeys()),
+      ),
+    );
+
     final checkboxes = [
       CheckboxListTile(
         value: _debugLogic.conversationLastUpdateTimeChanger,
