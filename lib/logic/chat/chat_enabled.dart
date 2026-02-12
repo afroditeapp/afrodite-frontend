@@ -74,6 +74,9 @@ class ChatEnabledBloc extends Bloc<ChatEnabledEvent, ChatEnabledData> {
     });
 
     on<_ChatEnabledChanged>((event, emit) {
+      if (!state.chatEnabled && event.chatEnabled) {
+        chat.receiveNewMessages();
+      }
       emit(
         state.copyWith(
           chatEnabled: event.chatEnabled,
