@@ -186,6 +186,7 @@ void closeActionsAndOpenDetails(
 ${screenContext.strings.generic_message}: $messageText
 ${screenContext.strings.generic_account_id_text_with_value(sender.shortAccountIdString())}
 ${screenContext.strings.conversation_screen_message_details_message_id}: ${entry.messageId?.id}
+${screenContext.strings.conversation_screen_message_details_message_number}: ${entry.messageNumber?.mn}
 ${screenContext.strings.generic_time}: ${time.dateTime.toIso8601String()}
 ${screenContext.strings.generic_state}: $stateText""";
 

@@ -353,6 +353,9 @@ class AppLocalizationsSv extends AppLocalizations {
   String get conversation_screen_message_details_message_id => 'Message ID';
 
   @override
+  String get conversation_screen_message_details_message_number => 'Message number';
+
+  @override
   String get conversation_screen_message_error_is_actually_sent_successfully =>
       'The message is actually sent successfully';
 

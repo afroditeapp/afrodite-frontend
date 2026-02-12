@@ -496,6 +496,7 @@
     <string name="conversation_screen_message_unsupported" description="Message text that message is unsupported">Unsupported message</string>
     <string name="conversation_screen_message_not_found" description="Message text that referenced message was not found">Message not found</string>
     <string name="conversation_screen_message_details_message_id" description="Title text for message ID value">Message ID</string>
+    <string name="conversation_screen_message_details_message_number" description="Title text for message number value">Message number</string>
     <string name="conversation_screen_message_error_is_actually_sent_successfully" description="Message remove or resend error that message is actually sent successfully">The message is actually sent successfully</string>
     <string name="conversation_screen_message_error_receiver_blocked_sender_or_receiver_not_found" description="Message send or resend error that receiver blocked sender or receiver not found">Receiver action prevented message sending</string>
     <string name="conversation_screen_message_resend_complete" description="Message resend complete text">Resend complete</string>

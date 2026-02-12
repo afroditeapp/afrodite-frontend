@@ -682,6 +682,12 @@ abstract class AppLocalizations {
   /// **'Message ID'**
   String get conversation_screen_message_details_message_id;
 
+  /// Title text for message number value
+  ///
+  /// In en, this message translates to:
+  /// **'Message number'**
+  String get conversation_screen_message_details_message_number;
+
   /// Message remove or resend error that message is actually sent successfully
   ///
   /// In en, this message translates to:
