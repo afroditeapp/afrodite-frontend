@@ -16,6 +16,7 @@ class ConversationData with _$ConversationData {
     @Default(false) bool isMessageSendingInProgress,
     @Default(false) bool isMessageRemovingInProgress,
     @Default(false) bool isMessageResendingInProgress,
+    @Default(false) bool isDeliveryFailedMessageResendingInProgress,
     @Default(false) bool isRetryPublicKeyDownloadInProgress,
   }) = _ConversationData;
 
@@ -23,6 +24,7 @@ class ConversationData with _$ConversationData {
     return isMessageSendingInProgress ||
         isMessageRemovingInProgress ||
         isMessageResendingInProgress ||
+        isDeliveryFailedMessageResendingInProgress ||
         isRetryPublicKeyDownloadInProgress;
   }
 }

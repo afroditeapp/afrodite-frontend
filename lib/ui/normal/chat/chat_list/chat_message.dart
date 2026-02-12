@@ -32,6 +32,9 @@ class ChatMessage extends StatelessWidget {
   /// Padding around the status/timestamp area.
   final EdgeInsetsGeometry statusPadding;
 
+  /// Optional footer widgets to display below the message content but above the timestamp.
+  final List<Widget>? footerWidgets;
+
   const ChatMessage({
     super.key,
     required this.child,
@@ -42,6 +45,7 @@ class ChatMessage extends StatelessWidget {
     this.showStatus = true,
     this.padding = const EdgeInsets.symmetric(vertical: 7.0, horizontal: 10.0),
     this.statusPadding = EdgeInsets.zero,
+    this.footerWidgets,
   });
 
   @override
@@ -49,9 +53,7 @@ class ChatMessage extends StatelessWidget {
     final backgroundColor = isError
         ? Theme.of(context).colorScheme.errorContainer
         : Theme.of(context).colorScheme.primaryContainer;
-    final foregroundColor = isError
-        ? Theme.of(context).colorScheme.onErrorContainer
-        : Theme.of(context).colorScheme.onPrimaryContainer;
+    final foregroundColor = ChatMessage.foregroundColor(context, isError);
 
     final timeTextStyle = TextStyle(color: foregroundColor, fontSize: 12.0);
     final statusTextStyle = status == chat_core.MessageStatus.seen
@@ -70,10 +72,11 @@ class ChatMessage extends StatelessWidget {
         ),
         child: IntrinsicWidth(
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisSize: MainAxisSize.min,
             children: [
               child,
+              if (footerWidgets != null) ...[const SizedBox(height: 4), ...footerWidgets!],
               const SizedBox(height: 4),
               Padding(
                 padding: statusPadding,
@@ -112,4 +115,8 @@ class ChatMessage extends StatelessWidget {
       ),
     );
   }
+
+  static Color foregroundColor(BuildContext context, bool isError) => isError
+      ? Theme.of(context).colorScheme.onErrorContainer
+      : Theme.of(context).colorScheme.onPrimaryContainer;
 }

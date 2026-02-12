@@ -25,6 +25,17 @@ enum MessageSendingErrorDetails {
         return ResendFailedError.rateLimit;
     }
   }
+
+  ResendDeliveryFailedError toResendDeliveryFailedError() {
+    switch (this) {
+      case tooManyPendingMessages:
+        return ResendDeliveryFailedError.tooManyPendingMessages;
+      case receiverBlockedSenderOrReceiverNotFound:
+        return ResendDeliveryFailedError.receiverBlockedSenderOrReceiverNotFound;
+      case rateLimit:
+        return ResendDeliveryFailedError.rateLimit;
+    }
+  }
 }
 
 /// Error happened before the message was saved successfully
@@ -41,6 +52,15 @@ class ErrorAfterMessageSaving extends MessageSendingEvent {
 enum ResendFailedError {
   unspecifiedError,
   isActuallySentSuccessfully,
+  tooManyPendingMessages,
+  receiverBlockedSenderOrReceiverNotFound,
+
+  /// HTTP 429 Too Many Requests (error is already shown to user)
+  rateLimit,
+}
+
+enum ResendDeliveryFailedError {
+  unspecifiedError,
   tooManyPendingMessages,
   receiverBlockedSenderOrReceiverNotFound,
 

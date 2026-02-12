@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:openapi/api.dart';
+
 /// Packet type length is 1 byte.
 enum _MessagePacketType {
   /// Next data is little endian encoded 16 bit unsigned number for
@@ -11,7 +13,12 @@ enum _MessagePacketType {
   /// Text message with reference to another message.
   /// Next data is little endian encoded 16 bit unsigned number for
   /// UTF-8 text byte count, then UTF-8 text data, then referenced message ID as UTF-8 string.
-  messageWithReference(2);
+  messageWithReference(2),
+
+  /// Message that was resent.
+  /// Next data is 8 bytes for message number (i64), then 8 bytes for sent unix time (i64),
+  /// then 1 byte for message ID length, then message ID bytes, and finally the original message bytes.
+  resentMessage(3);
 
   final int number;
   const _MessagePacketType(this.number);
@@ -77,8 +84,41 @@ sealed class Message {
       } on FormatException catch (_) {
         return UnsupportedMessage(bytes);
       }
+    } else if (messageTypeNumber == _MessagePacketType.resentMessage.number) {
+      if (numberList.length < 18) {
+        return UnsupportedMessage(bytes);
+      }
+      final data = ByteData.sublistView(bytes, 1, 17);
+      final messageNumber = MessageNumber(mn: data.getInt64(0, Endian.little));
+      final sentUnixTime = UnixTime(ut: data.getInt64(8, Endian.little));
+      final messageIdLength = numberList[17];
+      if (numberList.length < 18 + messageIdLength) {
+        return UnsupportedMessage(bytes);
+      }
+      final MessageId messageId;
+      try {
+        final messageIdBytes = numberList.skip(18).take(messageIdLength).toList();
+        messageId = MessageId(id: utf8.decode(messageIdBytes));
+      } on FormatException catch (_) {
+        return UnsupportedMessage(bytes);
+      }
+      final originalMessageBytes = numberList.skip(18 + messageIdLength).toList();
+      final originalMessage = Message.parseFromBytes(Uint8List.fromList(originalMessageBytes));
+      return ResentMessage(originalMessage, messageNumber, messageId, sentUnixTime);
     } else {
       return UnsupportedMessage(bytes);
+    }
+  }
+
+  Message removeResentMessages() {
+    var currentMessage = this;
+    while (true) {
+      final current = currentMessage;
+      if (current is ResentMessage) {
+        currentMessage = current.message;
+      } else {
+        return currentMessage;
+      }
     }
   }
 }
@@ -144,6 +184,35 @@ class MessageWithReference extends Message {
     ];
 
     return Uint8List.fromList(bytes);
+  }
+}
+
+class ResentMessage extends Message {
+  final Message message;
+  final MessageNumber messageNumber;
+  final MessageId messageId;
+  final UnixTime sentUnixTime;
+  ResentMessage(this.message, this.messageNumber, this.messageId, this.sentUnixTime);
+
+  @override
+  Uint8List toMessagePacket() {
+    final originalBytes = message.toMessagePacket();
+    final messageIdBytes = utf8.encode(messageId.id);
+
+    final builder = BytesBuilder();
+    builder.addByte(_MessagePacketType.resentMessage.number);
+
+    final data = ByteData(16);
+    data.setInt64(0, messageNumber.mn, Endian.little);
+    data.setInt64(8, sentUnixTime.ut, Endian.little);
+    builder.add(data.buffer.asUint8List());
+
+    builder.addByte(messageIdBytes.length);
+    builder.add(messageIdBytes);
+
+    builder.add(originalBytes);
+
+    return builder.toBytes();
   }
 }
 

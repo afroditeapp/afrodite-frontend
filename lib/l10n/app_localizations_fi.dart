@@ -374,6 +374,17 @@ class AppLocalizationsFi extends AppLocalizations {
   String get conversation_screen_message_not_found => 'Message not found';
 
   @override
+  String get conversation_screen_message_resend_complete => 'Resend complete';
+
+  @override
+  String get conversation_screen_message_resend_confirm_title => 'Resend?';
+
+  @override
+  String conversation_screen_message_resent_info(String p0, String p1) {
+    return 'Resent (originally sent $p0, message $p1)';
+  }
+
+  @override
   String get conversation_screen_message_state_decrypting_failed => 'Decrypting failed';
 
   @override
@@ -381,6 +392,10 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get conversation_screen_message_state_delivery_failed => 'Delivery failed';
+
+  @override
+  String get conversation_screen_message_state_delivery_failed_and_resent =>
+      'Delivery failed and resent';
 
   @override
   String get conversation_screen_message_state_public_key_download_failed =>

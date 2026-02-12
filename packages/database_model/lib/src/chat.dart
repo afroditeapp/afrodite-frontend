@@ -75,6 +75,9 @@ enum MessageState {
   /// Message delivery failed.
   deliveryFailed(_VALUE_SENT_DELIVERY_FAILED),
 
+  /// Message delivery failed and it was resent.
+  deliveryFailedAndResent(_VALUE_SENT_DELIVERY_FAILED_AND_RESENT),
+
   // Received message
 
   /// Message received successfully.
@@ -104,6 +107,7 @@ enum MessageState {
   static const int _VALUE_SENT_DELIVERED = 3;
   static const int _VALUE_SENT_SEEN = 4;
   static const int _VALUE_SENT_DELIVERY_FAILED = 5;
+  static const int _VALUE_SENT_DELIVERY_FAILED_AND_RESENT = 6;
 
   static const int _VALUE_RECEIVED = 20;
   static const int _VALUE_RECEIVED_AND_DECRYPTING_FAILED = 21;
@@ -115,7 +119,7 @@ enum MessageState {
   static const int _VALUE_INFO_MATCH_PUBLIC_KEY_CHANGED = 41;
 
   static const int MIN_VALUE_SENT_MESSAGE = _VALUE_SENT_PENDING_SENDING;
-  static const int MAX_VALUE_SENT_MESSAGE = _VALUE_SENT_DELIVERY_FAILED;
+  static const int MAX_VALUE_SENT_MESSAGE = _VALUE_SENT_DELIVERY_FAILED_AND_RESENT;
 
   static const int MIN_VALUE_RECEIVED_MESSAGE = _VALUE_RECEIVED;
   static const int MAX_VALUE_RECEIVED_MESSAGE = _VALUE_RECEIVED_AND_SEEN;
@@ -131,6 +135,7 @@ enum MessageState {
       _VALUE_SENT_SEEN => seen,
       _VALUE_SENT_SENDING_ERROR => sendingError,
       _VALUE_SENT_DELIVERY_FAILED => deliveryFailed,
+      _VALUE_SENT_DELIVERY_FAILED_AND_RESENT => deliveryFailedAndResent,
       _VALUE_RECEIVED => received,
       _VALUE_RECEIVED_AND_DECRYPTING_FAILED => receivedAndDecryptingFailed,
       _VALUE_RECEIVED_AND_PUBLIC_KEY_DOWNLOAD_FAILED => receivedAndPublicKeyDownloadFailed,
@@ -158,6 +163,8 @@ enum MessageState {
         return SentMessageState.seen;
       case deliveryFailed:
         return SentMessageState.deliveryFailed;
+      case deliveryFailedAndResent:
+        return SentMessageState.deliveryFailedAndResent;
       case sendingError:
         return SentMessageState.sendingError;
       case received ||
@@ -192,6 +199,7 @@ enum MessageState {
           delivered ||
           seen ||
           deliveryFailed ||
+          deliveryFailedAndResent ||
           sendingError ||
           infoMatchFirstPublicKeyReceived ||
           infoMatchPublicKeyChanged:
@@ -215,6 +223,7 @@ enum MessageState {
           delivered ||
           seen ||
           deliveryFailed ||
+          deliveryFailedAndResent ||
           sendingError:
         return null;
     }
@@ -237,6 +246,9 @@ enum SentMessageState {
   /// Message delivery failed.
   deliveryFailed,
 
+  /// Message delivery failed and it was resent.
+  deliveryFailedAndResent,
+
   /// Sending failed.
   sendingError;
 
@@ -256,6 +268,8 @@ enum SentMessageState {
         return MessageState.seen;
       case deliveryFailed:
         return MessageState.deliveryFailed;
+      case deliveryFailedAndResent:
+        return MessageState.deliveryFailedAndResent;
       case sendingError:
         return MessageState.sendingError;
     }

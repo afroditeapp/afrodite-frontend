@@ -485,6 +485,26 @@
   "@conversation_screen_message_not_found": {
     "description": "Message text that referenced message was not found"
   },
+  "conversation_screen_message_resend_complete": "Resend complete",
+  "@conversation_screen_message_resend_complete": {
+    "description": "Message resend complete text"
+  },
+  "conversation_screen_message_resend_confirm_title": "Resend?",
+  "@conversation_screen_message_resend_confirm_title": {
+    "description": "Title for resend confirm dialog"
+  },
+  "conversation_screen_message_resent_info": "Resent (originally sent {p0}, message {p1})",
+  "@conversation_screen_message_resent_info": {
+    "description": "Message resent info footer text",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      },
+      "p1": {
+        "type": "String"
+      }
+    }
+  },
   "conversation_screen_message_state_decrypting_failed": "Decrypting failed",
   "@conversation_screen_message_state_decrypting_failed": {
     "description": "Message state text that message decrypting failed"
@@ -496,6 +516,10 @@
   "conversation_screen_message_state_delivery_failed": "Delivery failed",
   "@conversation_screen_message_state_delivery_failed": {
     "description": "Message state text that message delivery failed"
+  },
+  "conversation_screen_message_state_delivery_failed_and_resent": "Delivery failed and resent",
+  "@conversation_screen_message_state_delivery_failed_and_resent": {
+    "description": "Message state text that message delivery failed and it was resent"
   },
   "conversation_screen_message_state_public_key_download_failed": "Public key download failed",
   "@conversation_screen_message_state_public_key_download_failed": {

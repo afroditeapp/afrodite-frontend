@@ -19,6 +19,7 @@ mixin _$ConversationData {
   bool get isMessageSendingInProgress => throw _privateConstructorErrorConversationData;
   bool get isMessageRemovingInProgress => throw _privateConstructorErrorConversationData;
   bool get isMessageResendingInProgress => throw _privateConstructorErrorConversationData;
+  bool get isDeliveryFailedMessageResendingInProgress => throw _privateConstructorErrorConversationData;
   bool get isRetryPublicKeyDownloadInProgress => throw _privateConstructorErrorConversationData;
 
   ConversationData copyWith({
@@ -28,6 +29,7 @@ mixin _$ConversationData {
     bool? isMessageSendingInProgress,
     bool? isMessageRemovingInProgress,
     bool? isMessageResendingInProgress,
+    bool? isDeliveryFailedMessageResendingInProgress,
     bool? isRetryPublicKeyDownloadInProgress,
   }) => throw _privateConstructorErrorConversationData;
 }
@@ -41,6 +43,7 @@ abstract class _ConversationData extends ConversationData {
     bool isMessageSendingInProgress,
     bool isMessageRemovingInProgress,
     bool isMessageResendingInProgress,
+    bool isDeliveryFailedMessageResendingInProgress,
     bool isRetryPublicKeyDownloadInProgress,
   }) = _$ConversationDataImpl;
   const _ConversationData._() : super._();
@@ -53,6 +56,7 @@ class _$ConversationDataImpl extends _ConversationData with DiagnosticableTreeMi
   static const bool _isMessageSendingInProgressDefaultValue = false;
   static const bool _isMessageRemovingInProgressDefaultValue = false;
   static const bool _isMessageResendingInProgressDefaultValue = false;
+  static const bool _isDeliveryFailedMessageResendingInProgressDefaultValue = false;
   static const bool _isRetryPublicKeyDownloadInProgressDefaultValue = false;
 
   _$ConversationDataImpl({
@@ -62,6 +66,7 @@ class _$ConversationDataImpl extends _ConversationData with DiagnosticableTreeMi
     this.isMessageSendingInProgress = _isMessageSendingInProgressDefaultValue,
     this.isMessageRemovingInProgress = _isMessageRemovingInProgressDefaultValue,
     this.isMessageResendingInProgress = _isMessageResendingInProgressDefaultValue,
+    this.isDeliveryFailedMessageResendingInProgress = _isDeliveryFailedMessageResendingInProgressDefaultValue,
     this.isRetryPublicKeyDownloadInProgress = _isRetryPublicKeyDownloadInProgressDefaultValue,
   }) : super._();
 
@@ -78,11 +83,13 @@ class _$ConversationDataImpl extends _ConversationData with DiagnosticableTreeMi
   @override
   final bool isMessageResendingInProgress;
   @override
+  final bool isDeliveryFailedMessageResendingInProgress;
+  @override
   final bool isRetryPublicKeyDownloadInProgress;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ConversationData(accountId: $accountId, isMatch: $isMatch, isBlocked: $isBlocked, isMessageSendingInProgress: $isMessageSendingInProgress, isMessageRemovingInProgress: $isMessageRemovingInProgress, isMessageResendingInProgress: $isMessageResendingInProgress, isRetryPublicKeyDownloadInProgress: $isRetryPublicKeyDownloadInProgress)';
+    return 'ConversationData(accountId: $accountId, isMatch: $isMatch, isBlocked: $isBlocked, isMessageSendingInProgress: $isMessageSendingInProgress, isMessageRemovingInProgress: $isMessageRemovingInProgress, isMessageResendingInProgress: $isMessageResendingInProgress, isDeliveryFailedMessageResendingInProgress: $isDeliveryFailedMessageResendingInProgress, isRetryPublicKeyDownloadInProgress: $isRetryPublicKeyDownloadInProgress)';
   }
 
   @override
@@ -96,6 +103,7 @@ class _$ConversationDataImpl extends _ConversationData with DiagnosticableTreeMi
       ..add(DiagnosticsProperty('isMessageSendingInProgress', isMessageSendingInProgress))
       ..add(DiagnosticsProperty('isMessageRemovingInProgress', isMessageRemovingInProgress))
       ..add(DiagnosticsProperty('isMessageResendingInProgress', isMessageResendingInProgress))
+      ..add(DiagnosticsProperty('isDeliveryFailedMessageResendingInProgress', isDeliveryFailedMessageResendingInProgress))
       ..add(DiagnosticsProperty('isRetryPublicKeyDownloadInProgress', isRetryPublicKeyDownloadInProgress));
   }
 
@@ -116,6 +124,8 @@ class _$ConversationDataImpl extends _ConversationData with DiagnosticableTreeMi
           other.isMessageRemovingInProgress == isMessageRemovingInProgress) &&
         (identical(other.isMessageResendingInProgress, isMessageResendingInProgress) ||
           other.isMessageResendingInProgress == isMessageResendingInProgress) &&
+        (identical(other.isDeliveryFailedMessageResendingInProgress, isDeliveryFailedMessageResendingInProgress) ||
+          other.isDeliveryFailedMessageResendingInProgress == isDeliveryFailedMessageResendingInProgress) &&
         (identical(other.isRetryPublicKeyDownloadInProgress, isRetryPublicKeyDownloadInProgress) ||
           other.isRetryPublicKeyDownloadInProgress == isRetryPublicKeyDownloadInProgress)
     );
@@ -130,6 +140,7 @@ class _$ConversationDataImpl extends _ConversationData with DiagnosticableTreeMi
     isMessageSendingInProgress,
     isMessageRemovingInProgress,
     isMessageResendingInProgress,
+    isDeliveryFailedMessageResendingInProgress,
     isRetryPublicKeyDownloadInProgress,
   );
 
@@ -141,6 +152,7 @@ class _$ConversationDataImpl extends _ConversationData with DiagnosticableTreeMi
     Object? isMessageSendingInProgress,
     Object? isMessageRemovingInProgress,
     Object? isMessageResendingInProgress,
+    Object? isDeliveryFailedMessageResendingInProgress,
     Object? isRetryPublicKeyDownloadInProgress,
   }) => _$ConversationDataImpl(
     accountId: (accountId ?? this.accountId) as AccountId,
@@ -149,6 +161,7 @@ class _$ConversationDataImpl extends _ConversationData with DiagnosticableTreeMi
     isMessageSendingInProgress: (isMessageSendingInProgress ?? this.isMessageSendingInProgress) as bool,
     isMessageRemovingInProgress: (isMessageRemovingInProgress ?? this.isMessageRemovingInProgress) as bool,
     isMessageResendingInProgress: (isMessageResendingInProgress ?? this.isMessageResendingInProgress) as bool,
+    isDeliveryFailedMessageResendingInProgress: (isDeliveryFailedMessageResendingInProgress ?? this.isDeliveryFailedMessageResendingInProgress) as bool,
     isRetryPublicKeyDownloadInProgress: (isRetryPublicKeyDownloadInProgress ?? this.isRetryPublicKeyDownloadInProgress) as bool,
   );
 }

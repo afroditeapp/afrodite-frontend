@@ -718,6 +718,24 @@ abstract class AppLocalizations {
   /// **'Message not found'**
   String get conversation_screen_message_not_found;
 
+  /// Message resend complete text
+  ///
+  /// In en, this message translates to:
+  /// **'Resend complete'**
+  String get conversation_screen_message_resend_complete;
+
+  /// Title for resend confirm dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Resend?'**
+  String get conversation_screen_message_resend_confirm_title;
+
+  /// Message resent info footer text
+  ///
+  /// In en, this message translates to:
+  /// **'Resent (originally sent {p0}, message {p1})'**
+  String conversation_screen_message_resent_info(String p0, String p1);
+
   /// Message state text that message decrypting failed
   ///
   /// In en, this message translates to:
@@ -735,6 +753,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Delivery failed'**
   String get conversation_screen_message_state_delivery_failed;
+
+  /// Message state text that message delivery failed and it was resent
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery failed and resent'**
+  String get conversation_screen_message_state_delivery_failed_and_resent;
 
   /// Message state text that public key download failed
   ///

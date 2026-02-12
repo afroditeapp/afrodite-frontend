@@ -487,6 +487,7 @@
     <string name="conversation_screen_message_state_seen" description="Message state text that message was seen by receiver">Seen</string>
     <string name="conversation_screen_message_state_sending_failed" description="Message state text that message sending failed">Sending failed</string>
     <string name="conversation_screen_message_state_delivery_failed" description="Message state text that message delivery failed">Delivery failed</string>
+    <string name="conversation_screen_message_state_delivery_failed_and_resent" description="Message state text that message delivery failed and it was resent">Delivery failed and resent</string>
     <string name="conversation_screen_message_state_decrypting_failed" description="Message state text that message decrypting failed">Decrypting failed</string>
     <string name="conversation_screen_message_state_public_key_download_failed" description="Message state text that public key download failed">Public key download failed</string>
     <string name="conversation_screen_message_state_received_successfully" description="Message state text that message was received successfully">Received successfully</string>
@@ -497,6 +498,9 @@
     <string name="conversation_screen_message_details_message_id" description="Title text for message ID value">Message ID</string>
     <string name="conversation_screen_message_error_is_actually_sent_successfully" description="Message remove or resend error that message is actually sent successfully">The message is actually sent successfully</string>
     <string name="conversation_screen_message_error_receiver_blocked_sender_or_receiver_not_found" description="Message send or resend error that receiver blocked sender or receiver not found">Receiver action prevented message sending</string>
+    <string name="conversation_screen_message_resend_complete" description="Message resend complete text">Resend complete</string>
+    <string name="conversation_screen_message_resent_info" description="Message resent info footer text">Resent (originally sent %s, message %s)</string>
+    <string name="conversation_screen_message_resend_confirm_title" description="Title for resend confirm dialog">Resend?</string>
     <string name="conversation_screen_message_info_encryption_started" description="Info text that messages in this conversation are end-to-end encrypted">Messages are end-to-end encrypted</string>
     <string name="conversation_screen_message_info_encryption_key_changed" description="Info text that encryption key changed">Encryption key changed</string>
     <string name="conversation_screen_send_video_call_invitation_action" description="Action text for send video call invitation action">Send video call invitation</string>

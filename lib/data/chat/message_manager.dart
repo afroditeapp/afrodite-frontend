@@ -4,6 +4,7 @@ import 'package:app/data/chat/backend_signed_message.dart';
 import 'package:app/data/chat/message_manager/receive.dart';
 import 'package:app/data/chat/message_manager/send.dart';
 import 'package:app/data/chat/message_manager/utils.dart';
+import 'package:app/utils/api.dart';
 import 'package:app/utils/app_error.dart';
 import 'package:database/database.dart';
 import 'package:flutter/foundation.dart';
@@ -60,6 +61,11 @@ class DeleteSendFailedMessage extends MessageManagerCmd<Result<(), DeleteSendFai
 class ResendSendFailedMessage extends MessageManagerCmd<Result<(), ResendFailedError>> {
   final LocalMessageId localId;
   ResendSendFailedMessage(this.localId);
+}
+
+class ResendDeliveryFailedMessage extends MessageManagerCmd<Result<(), ResendDeliveryFailedError>> {
+  final LocalMessageId localId;
+  ResendDeliveryFailedMessage(this.localId);
 }
 
 class RetryPublicKeyDownload extends MessageManagerCmd<Result<(), RetryPublicKeyDownloadError>> {
@@ -129,6 +135,8 @@ class MessageManager extends LifecycleMethods {
               cmd.completed.add(await _deleteSendFailedMessage(cmd.localId));
             case ResendSendFailedMessage():
               cmd.completed.add(await _resendSendFailedMessage(cmd.localId));
+            case ResendDeliveryFailedMessage():
+              cmd.completed.add(await _resendDeliveryFailedMessage(cmd.localId));
             case RetryPublicKeyDownload():
               cmd.completed.add(await _retryPublicKeyDownload(cmd.localId));
             case CreateChatBackupCmd():
@@ -277,6 +285,69 @@ class MessageManager extends LifecycleMethods {
     if (currentDeleteError != null) {
       return Err(currentDeleteError);
     }
+    return const Ok(());
+  }
+
+  Future<Result<(), ResendDeliveryFailedError>> _resendDeliveryFailedMessage(
+    LocalMessageId localId,
+  ) async {
+    final toBeResent = await db
+        .accountData((db) => db.message.getMessageUsingLocalMessageId(localId))
+        .ok();
+    final toBeResentMessage = toBeResent?.message?.removeResentMessages();
+    if (toBeResent == null || toBeResentMessage == null) {
+      return const Err(ResendDeliveryFailedError.unspecifiedError);
+    }
+    if (toBeResent.messageState.toSentState() != SentMessageState.deliveryFailed) {
+      return const Err(ResendDeliveryFailedError.unspecifiedError);
+    }
+
+    final originalMessage = toBeResentMessage;
+    final messageNumber = toBeResent.messageNumber;
+    final messageId = toBeResent.messageId;
+    final sentUnixTime = toBeResent.sentUnixTime;
+
+    if (messageNumber == null || messageId == null || sentUnixTime == null) {
+      return const Err(ResendDeliveryFailedError.unspecifiedError);
+    }
+
+    final resentMessage = ResentMessage(
+      originalMessage,
+      messageNumber,
+      messageId,
+      sentUnixTime.toUnixTime(),
+    );
+
+    ResendDeliveryFailedError? sendingError;
+    await for (var e in sendMessageUtils.sendMessageTo(
+      toBeResent.remoteAccountId,
+      resentMessage,
+      sendUiEvent: true,
+    )) {
+      switch (e) {
+        case SavedToLocalDb():
+          ();
+        case ErrorBeforeMessageSaving():
+          sendingError = ResendDeliveryFailedError.unspecifiedError;
+        case ErrorAfterMessageSaving():
+          sendingError =
+              e.details?.toResendDeliveryFailedError() ??
+              ResendDeliveryFailedError.unspecifiedError;
+      }
+    }
+
+    if (sendingError != null) {
+      return Err(sendingError);
+    }
+
+    // Change state of original message
+    await db.accountDataWrite(
+      (db) => db.message.updateSentMessageState(
+        localId,
+        sentState: SentMessageState.deliveryFailedAndResent,
+      ),
+    );
+
     return const Ok(());
   }
 

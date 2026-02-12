@@ -459,6 +459,14 @@ class ChatRepository extends DataRepositoryWithLifecycle {
     return await cmd.waitCompletionAndDispose();
   }
 
+  Future<Result<(), ResendDeliveryFailedError>> resendDeliveryFailedMessage(
+    LocalMessageId localId,
+  ) async {
+    final cmd = ResendDeliveryFailedMessage(localId);
+    messageManager.queueCmd(cmd);
+    return await cmd.waitCompletionAndDispose();
+  }
+
   Future<Result<(), RetryPublicKeyDownloadError>> retryPublicKeyDownload(
     LocalMessageId localId,
   ) async {

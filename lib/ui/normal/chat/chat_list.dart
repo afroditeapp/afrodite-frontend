@@ -15,6 +15,7 @@ import 'package:app/ui/normal/chat/chat_list/slideable.dart';
 import 'package:app/ui/normal/chat/conversation_page.dart';
 import 'package:app/ui/normal/chat/chat_list/message_adapter.dart';
 import 'package:app/ui/normal/chat/utils.dart';
+import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/list.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:database/database.dart';
@@ -368,14 +369,18 @@ class _ChatListState extends State<ChatList> {
                 );
               }
 
+              final localMessageId = LocalMessageId(int.parse(message.id));
               Widget messageWidget;
 
               if (messageType == 'video_call_invitation') {
+                final isError = message.status == chat_core.MessageStatus.error;
+                final textColor = ChatMessage.foregroundColor(context, isError);
                 messageWidget = ChatMessage(
                   createdAt: message.createdAt,
                   status: message.status,
                   isSentByMe: isSentByMe,
-                  isError: message.status == chat_core.MessageStatus.error,
+                  isError: isError,
+                  footerWidgets: _buildFooterWidgets(context, message, localMessageId, textColor),
                   child: ElevatedButton.icon(
                     onPressed: () => joinVideoCall(ctx, widget.messageReceiver),
                     icon: const Icon(Icons.videocam),
@@ -399,7 +404,7 @@ class _ChatListState extends State<ChatList> {
                     errorText = context.strings.generic_error;
                 }
 
-                final textStyle = TextStyle(color: Theme.of(context).colorScheme.onErrorContainer);
+                final textColor = Theme.of(context).colorScheme.onErrorContainer;
 
                 messageWidget = ChatMessage(
                   createdAt: message.createdAt,
@@ -407,6 +412,7 @@ class _ChatListState extends State<ChatList> {
                   isSentByMe: isSentByMe,
                   isError: true,
                   showStatus: false,
+                  footerWidgets: _buildFooterWidgets(context, message, localMessageId, textColor),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -416,21 +422,15 @@ class _ChatListState extends State<ChatList> {
                         size: 20.0,
                       ),
                       const SizedBox(width: 8.0),
-                      Flexible(child: Text(errorText, style: textStyle)),
+                      Flexible(
+                        child: Text(errorText, style: TextStyle(color: textColor)),
+                      ),
                     ],
                   ),
                 );
               }
 
-              final localMessageId = LocalMessageId(int.parse(message.id));
               final r = context.read<RepositoryInstances>();
-
-              final wrappedWidget = _wrapWithSwipeToReply(
-                messageWidget,
-                message.id,
-                message.status,
-              );
-
               return _MessageStateWatcher(
                 localMessageId: localMessageId,
                 messageId: message.id,
@@ -438,7 +438,7 @@ class _ChatListState extends State<ChatList> {
                 chatRepository: r.chat,
                 currentUserId: r.chat.currentUser.aid,
                 messageStateSeenEnabled: widget.messageStateSeenEnabled,
-                child: wrappedWidget,
+                child: _wrapWithSwipeToReply(messageWidget, message.id, message.status),
               );
             },
         textMessageBuilder:
@@ -453,9 +453,7 @@ class _ChatListState extends State<ChatList> {
               final r = context.read<RepositoryInstances>();
 
               final isError = message.status == chat_core.MessageStatus.error;
-              final textColor = isError
-                  ? Theme.of(context).colorScheme.onErrorContainer
-                  : Theme.of(context).colorScheme.onPrimaryContainer;
+              final textColor = ChatMessage.foregroundColor(context, isError);
 
               final textWidget = Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10.0),
@@ -493,13 +491,8 @@ class _ChatListState extends State<ChatList> {
                     ? EdgeInsets.only(bottom: 7)
                     : EdgeInsets.symmetric(vertical: 7),
                 statusPadding: EdgeInsets.symmetric(horizontal: 10.0),
+                footerWidgets: _buildFooterWidgets(context, message, localMessageId, textColor),
                 child: messageContent,
-              );
-
-              final wrappedWidget = _wrapWithSwipeToReply(
-                messageWidget,
-                message.id,
-                message.status,
               );
 
               return _MessageStateWatcher(
@@ -509,7 +502,7 @@ class _ChatListState extends State<ChatList> {
                 chatRepository: r.chat,
                 currentUserId: r.chat.currentUser.aid,
                 messageStateSeenEnabled: widget.messageStateSeenEnabled,
-                child: wrappedWidget,
+                child: _wrapWithSwipeToReply(messageWidget, message.id, message.status),
               );
             },
         emptyChatListBuilder: (BuildContext ctx) {
@@ -547,6 +540,59 @@ class _ChatListState extends State<ChatList> {
         },
       ),
     );
+  }
+
+  List<Widget>? _buildFooterWidgets(
+    BuildContext context,
+    chat_core.Message message,
+    LocalMessageId localId,
+    Color textColor,
+  ) {
+    final sentMessageState = message.metadata?['sentMessageState'];
+    final footerString = message.metadata?["footer"];
+    final widgets = [
+      if (footerString is String)
+        Text(
+          footerString,
+          style: TextStyle(fontSize: 12, fontStyle: FontStyle.italic, color: textColor),
+        ),
+      if (footerString is String &&
+          (sentMessageState == SentMessageState.deliveryFailed ||
+              sentMessageState == SentMessageState.deliveryFailedAndResent))
+        Padding(padding: EdgeInsetsGeometry.only(top: 8)),
+      if (sentMessageState == SentMessageState.deliveryFailed)
+        ElevatedButton(
+          onPressed: () => _confirmAndResendDeliveryFailedMessage(context, localId),
+          child: Text(context.strings.generic_resend),
+        ),
+      if (sentMessageState == SentMessageState.deliveryFailedAndResent)
+        Text(
+          context.strings.conversation_screen_message_resend_complete,
+          style: TextStyle(fontSize: 12, fontStyle: FontStyle.italic, color: textColor),
+        ),
+    ];
+    if (widgets.isEmpty) {
+      return null;
+    } else {
+      return widgets
+          .map((w) => Padding(padding: EdgeInsets.symmetric(horizontal: 10.0), child: w))
+          .toList();
+    }
+  }
+
+  void _confirmAndResendDeliveryFailedMessage(BuildContext context, LocalMessageId localId) async {
+    final confirmed = await showConfirmDialog(
+      context,
+      context.strings.conversation_screen_message_resend_confirm_title,
+    );
+    if (confirmed == true && context.mounted) {
+      final bloc = context.read<ConversationBloc>();
+      if (bloc.state.isActionsInProgress()) {
+        showSnackBar(context.strings.generic_previous_action_in_progress);
+      } else {
+        bloc.add(ResendDeliveryFailedMessage(localId));
+      }
+    }
   }
 
   @override

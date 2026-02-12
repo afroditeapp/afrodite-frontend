@@ -48,6 +48,7 @@ String messageToText(BuildContext context, Message message) {
     MessageWithReference() => message.text,
     VideoCallInvitation() => context.strings.conversation_screen_join_video_call_button,
     UnsupportedMessage() => context.strings.conversation_screen_message_unsupported,
+    ResentMessage() => messageToText(context, message.removeResentMessages()),
   };
 }
 
@@ -148,6 +149,8 @@ void closeActionsAndOpenDetails(
     stateText = screenContext.strings.conversation_screen_message_state_sending_failed;
   } else if (sentMessageState == SentMessageState.deliveryFailed) {
     stateText = screenContext.strings.conversation_screen_message_state_delivery_failed;
+  } else if (sentMessageState == SentMessageState.deliveryFailedAndResent) {
+    stateText = screenContext.strings.conversation_screen_message_state_delivery_failed_and_resent;
   } else if (sentMessageState == SentMessageState.sent) {
     stateText = screenContext.strings.conversation_screen_message_state_sent_successfully;
   } else if (sentMessageState == SentMessageState.delivered) {

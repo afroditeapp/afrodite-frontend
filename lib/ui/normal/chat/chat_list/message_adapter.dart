@@ -1,4 +1,7 @@
 import 'package:app/data/chat/message_database_iterator.dart';
+import 'package:app/localizations.dart';
+import 'package:app/utils/api.dart';
+import 'package:app/utils/time.dart';
 import 'package:database/database.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart' as chat;
 
@@ -45,7 +48,6 @@ class MessageAdapter {
       );
     }
 
-    final message = entry.message;
     final sentMessageState = entry.messageState.toSentState();
     final receivedMessageState = entry.messageState.toReceivedState();
 
@@ -55,6 +57,8 @@ class MessageAdapter {
     DateTime? deliveredAt;
     DateTime? seenAt;
     DateTime? failedAt;
+
+    final Map<String, dynamic> metadata = {};
 
     if (sentMessageState != null) {
       switch (sentMessageState) {
@@ -80,10 +84,30 @@ class MessageAdapter {
         case SentMessageState.deliveryFailed:
           failedAt = entry.deliveredUnixTime?.dateTime ?? createdAt;
           status = chat.MessageStatus.error;
+        case SentMessageState.deliveryFailedAndResent:
+          failedAt = entry.deliveredUnixTime?.dateTime ?? createdAt;
+          status = chat.MessageStatus.error;
       }
     } else if (receivedMessageState != null) {
       seenAt = createdAt;
       status = chat.MessageStatus.seen;
+    }
+
+    if (sentMessageState != null) {
+      metadata['sentMessageState'] = sentMessageState;
+    }
+
+    final resentMessage = entry.message;
+    final Message? message;
+
+    if (resentMessage is ResentMessage) {
+      metadata['footer'] = R.strings.conversation_screen_message_resent_info(
+        timeString(resentMessage.sentUnixTime.toUtcDateTime()),
+        resentMessage.messageNumber.mn.toString(),
+      );
+      message = resentMessage.message.removeResentMessages();
+    } else {
+      message = resentMessage;
     }
 
     if (message is TextMessage) {
@@ -97,7 +121,7 @@ class MessageAdapter {
         seenAt: seenAt,
         failedAt: failedAt,
         status: status,
-        metadata: {'type': 'text_message'},
+        metadata: {'type': 'text_message', ...metadata},
       );
     } else if (message is MessageWithReference) {
       return chat.Message.text(
@@ -111,7 +135,7 @@ class MessageAdapter {
         failedAt: failedAt,
         status: status,
         replyToMessageId: message.messageId,
-        metadata: {'type': 'message_with_reference'},
+        metadata: {'type': 'message_with_reference', ...metadata},
       );
     } else if (message is VideoCallInvitation) {
       return chat.Message.custom(
@@ -123,7 +147,7 @@ class MessageAdapter {
         seenAt: seenAt,
         failedAt: failedAt,
         status: status,
-        metadata: const {'type': 'video_call_invitation'},
+        metadata: {'type': 'video_call_invitation', ...metadata},
       );
     } else if (message is UnsupportedMessage) {
       return chat.Message.custom(
@@ -135,7 +159,7 @@ class MessageAdapter {
         seenAt: seenAt,
         failedAt: failedAt ?? createdAt,
         status: chat.MessageStatus.error,
-        metadata: const {'type': 'error_message', 'errorType': 'unsupported'},
+        metadata: {'type': 'error_message', 'errorType': 'unsupported', ...metadata},
       );
     } else {
       final String errorType;
@@ -156,7 +180,7 @@ class MessageAdapter {
         seenAt: seenAt,
         failedAt: failedAt ?? createdAt,
         status: chat.MessageStatus.error,
-        metadata: {'type': 'error_message', 'errorType': errorType},
+        metadata: {'type': 'error_message', 'errorType': errorType, ...metadata},
       );
     }
   }

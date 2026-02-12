@@ -64,6 +64,11 @@ class ResendSendFailedMessage extends ConversationEvent {
   ResendSendFailedMessage(this.id);
 }
 
+class ResendDeliveryFailedMessage extends ConversationEvent {
+  final LocalMessageId id;
+  ResendDeliveryFailedMessage(this.id);
+}
+
 class RetryPublicKeyDownload extends ConversationEvent {
   final LocalMessageId id;
   RetryPublicKeyDownload(this.id);
@@ -78,6 +83,7 @@ abstract class ConversationDataProvider {
 
   Future<Result<(), DeleteSendFailedError>> deleteSendFailedMessage(LocalMessageId localId);
   Future<Result<(), ResendFailedError>> resendSendFailedMessage(LocalMessageId localId);
+  Future<Result<(), ResendDeliveryFailedError>> resendDeliveryFailedMessage(LocalMessageId localId);
   Future<Result<(), RetryPublicKeyDownloadError>> retryPublicKeyDownload(LocalMessageId localId);
 }
 
@@ -112,6 +118,13 @@ class DefaultConversationDataProvider extends ConversationDataProvider {
   @override
   Future<Result<(), ResendFailedError>> resendSendFailedMessage(LocalMessageId localId) {
     return chat.resendSendFailedMessage(localId);
+  }
+
+  @override
+  Future<Result<(), ResendDeliveryFailedError>> resendDeliveryFailedMessage(
+    LocalMessageId localId,
+  ) {
+    return chat.resendDeliveryFailedMessage(localId);
   }
 
   @override
@@ -263,6 +276,32 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
       }
 
       emit(state.copyWith(isMessageResendingInProgress: false));
+    }, transformer: sequential());
+    on<ResendDeliveryFailedMessage>((data, emit) async {
+      emit(state.copyWith(isDeliveryFailedMessageResendingInProgress: true));
+
+      switch (await dataProvider.resendDeliveryFailedMessage(data.id)) {
+        case Ok():
+          ();
+        case Err(:final e):
+          switch (e) {
+            case ResendDeliveryFailedError.unspecifiedError:
+              showSnackBar(R.strings.generic_error_occurred);
+            case ResendDeliveryFailedError.tooManyPendingMessages:
+              showSnackBar(R.strings.conversation_screen_message_too_many_pending_messages);
+            case ResendDeliveryFailedError.receiverBlockedSenderOrReceiverNotFound:
+              showSnackBar(
+                R
+                    .strings
+                    .conversation_screen_message_error_receiver_blocked_sender_or_receiver_not_found,
+              );
+            case ResendDeliveryFailedError.rateLimit:
+              // Already handled by logError in ApiWrapper
+              ();
+          }
+      }
+
+      emit(state.copyWith(isDeliveryFailedMessageResendingInProgress: false));
     }, transformer: sequential());
     on<RetryPublicKeyDownload>((data, emit) async {
       emit(state.copyWith(isRetryPublicKeyDownloadInProgress: true));
