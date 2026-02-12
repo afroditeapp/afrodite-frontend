@@ -162,6 +162,7 @@ class SendMessageUtils {
 
     UnixTime unixTimeFromServer;
     MessageId messageIdFromServer;
+    MessageNumber messageNumberFromServer;
     Uint8List backendSignedPgpMessage;
     var messageSenderAcknowledgementTried = false;
     while (true) {
@@ -285,6 +286,7 @@ class SendMessageUtils {
       }
       unixTimeFromServer = data.serverTime;
       messageIdFromServer = data.messageId;
+      messageNumberFromServer = data.messageNumber;
       break;
     }
 
@@ -294,6 +296,7 @@ class SendMessageUtils {
         sentState: SentMessageState.sent,
         unixTimeFromServer: unixTimeFromServer,
         messageIdFromServer: messageIdFromServer,
+        messageNumberFromServer: messageNumberFromServer,
         backendSignePgpMessage: backendSignedPgpMessage,
       ),
     );
