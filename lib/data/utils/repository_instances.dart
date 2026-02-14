@@ -151,7 +151,11 @@ class RepositoryInstances {
 
     _log.info("Closing DBs");
 
-    await accountDb.close();
+    try {
+      await accountDb.close().timeout(const Duration(seconds: 2));
+    } on TimeoutException {
+      _log.error("Closing account DB timed out");
+    }
 
     _log.info("Logout completed");
   }
