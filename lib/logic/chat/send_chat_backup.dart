@@ -147,6 +147,12 @@ class SendChatBackupBloc extends Bloc<SendChatBackupEvent, SendBackupData> with 
         (db) => db.backup.createBackup(accountId),
       );
 
+      try {
+        await accountDbManager.close().timeout(const Duration(seconds: 2));
+      } on TimeoutException {
+        _log.error("Closing backup account DB timed out");
+      }
+
       final ChatBackupData backupData;
       switch (backupResult) {
         case Ok(:final v):
