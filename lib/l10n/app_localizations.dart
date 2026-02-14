@@ -478,18 +478,6 @@ abstract class AppLocalizations {
   /// **'Every {p0} days'**
   String chat_backup_screen_backup_reminder_interval_days(String p0);
 
-  /// Confirmation dialog for creating chat backup
-  ///
-  /// In en, this message translates to:
-  /// **'Create chat backup?'**
-  String get chat_backup_screen_create_backup_question;
-
-  /// Details for create backup confirmation dialog
-  ///
-  /// In en, this message translates to:
-  /// **'Backup includes current messages and encryption key.'**
-  String get chat_backup_screen_create_backup_question_details;
-
   /// Confirmation dialog for importing chat backup
   ///
   /// In en, this message translates to:

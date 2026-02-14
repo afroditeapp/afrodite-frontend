@@ -234,13 +234,6 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get chat_backup_screen_create_backup_question => 'Create chat backup?';
-
-  @override
-  String get chat_backup_screen_create_backup_question_details =>
-      'Backup includes current messages and encryption key.';
-
-  @override
   String get chat_backup_screen_import_backup_question => 'Import chat backup?';
 
   @override

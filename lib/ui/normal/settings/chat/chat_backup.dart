@@ -82,16 +82,8 @@ class _ChatBackupScreenState extends State<ChatBackupScreen> {
   Widget createAndSaveBackupButton(BuildContext context, ChatBackupData state) {
     return ElevatedButton.icon(
       onPressed: !state.isLoading
-          ? () async {
-              final r = await showConfirmDialog(
-                context,
-                context.strings.chat_backup_screen_create_backup_question,
-                details: context.strings.chat_backup_screen_create_backup_question_details,
-                yesNoActions: true,
-              );
-              if (r == true && context.mounted) {
-                context.read<ChatBackupBloc>().add(CreateAndSaveChatBackup());
-              }
+          ? () {
+              context.read<ChatBackupBloc>().add(CreateAndSaveChatBackup());
             }
           : null,
       icon: const Icon(Icons.save),
