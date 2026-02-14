@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:app/data/account_repository.dart';
 import 'package:app/data/chat/check_online_status_manager.dart';
+import 'package:app/data/chat/message_manager/public_key.dart';
 import 'package:app/data/chat/message_manager/utils.dart';
 import 'package:app/data/chat/typing_indicator_manager.dart';
 import 'package:app/utils/api.dart';
@@ -259,6 +260,7 @@ class ChatRepository extends DataRepositoryWithLifecycle {
     }
 
     final List<int> processedIds = [];
+    final Set<AccountId> checkEncryptionKeyChanges = {};
 
     for (final deliveryInfo in deliveryInfoList.info) {
       final message = await db
@@ -294,6 +296,7 @@ class ChatRepository extends DataRepositoryWithLifecycle {
         newState = SentMessageState.seen;
         seenTime = deliveryInfo.unixTime.toUtcDateTime();
       } else if (deliveryInfo.deliveryType == DeliveryInfoType.deliveryFailed) {
+        checkEncryptionKeyChanges.add(deliveryInfo.receiver);
         if (currentState != SentMessageState.seen && currentState != SentMessageState.delivered) {
           newState = SentMessageState.deliveryFailed;
         }
@@ -328,6 +331,13 @@ class ChatRepository extends DataRepositoryWithLifecycle {
       await api.chatAction(
         (api) => api.postDeleteMessageDeliveryInfo(MessageDeliveryInfoIdList(ids: processedIds)),
       );
+    }
+
+    if (checkEncryptionKeyChanges.isNotEmpty) {
+      final publicKeyUtils = PublicKeyUtils(db, api, currentUser);
+      for (final accountId in checkEncryptionKeyChanges) {
+        await publicKeyUtils.getLatestPublicKeyForForeignAccount(accountId);
+      }
     }
   }
 
