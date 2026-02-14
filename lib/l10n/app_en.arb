@@ -346,7 +346,7 @@
   "@chat_data_outdated_error_too_many_keys": {
     "description": "Error when too many public keys"
   },
-  "chat_data_outdated_pending_messages_warning": "You have unread messages encrypted using your old encryption key. If you continue, you can't read the messages. Continue?",
+  "chat_data_outdated_pending_messages_warning": "You have unread messages encrypted using your old encryption key. To read them, you should transfer chat data from your old device or import a backup containing the encryption key from Settings.\n\nIf you continue, you will not be able to read these messages. Do you want to continue?",
   "@chat_data_outdated_pending_messages_warning": {
     "description": "Warning dialog message when public key adding fails because pending messages exists"
   },
@@ -1190,7 +1190,7 @@
   "@initial_setup_screen_first_chat_backup_save_backup_button": {
     "description": "Title for initial setup save chat backup button"
   },
-  "initial_setup_screen_first_chat_backup_security_info": "The backup contains your message encryption key. Keep it accessible in case you lose your device, unless you are willing to ask others to resend their messages to you.",
+  "initial_setup_screen_first_chat_backup_security_info": "The backup contains your message encryption key. Keep it accessible in case you lose your device, unless you are willing to ask others to resend their undelivered messages to you.",
   "@initial_setup_screen_first_chat_backup_security_info": {
     "description": "Security info for initial setup first chat backup"
   },

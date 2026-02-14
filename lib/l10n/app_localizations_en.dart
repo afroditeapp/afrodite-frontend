@@ -267,7 +267,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get chat_data_outdated_pending_messages_warning =>
-      'You have unread messages encrypted using your old encryption key. If you continue, you can\'t read the messages. Continue?';
+      'You have unread messages encrypted using your old encryption key. To read them, you should transfer chat data from your old device or import a backup containing the encryption key from Settings.\n\nIf you continue, you will not be able to read these messages. Do you want to continue?';
 
   @override
   String get chat_data_outdated_receive_backup => 'Receive backup';
@@ -900,7 +900,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get initial_setup_screen_first_chat_backup_security_info =>
-      'The backup contains your message encryption key. Keep it accessible in case you lose your device, unless you are willing to ask others to resend their messages to you.';
+      'The backup contains your message encryption key. Keep it accessible in case you lose your device, unless you are willing to ask others to resend their undelivered messages to you.';
 
   @override
   String get initial_setup_screen_first_chat_backup_title => 'First chat backup';
