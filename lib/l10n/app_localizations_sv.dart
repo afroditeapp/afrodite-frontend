@@ -384,6 +384,10 @@ class AppLocalizationsSv extends AppLocalizations {
   String get conversation_screen_message_state_decrypting_failed => 'Decrypting failed';
 
   @override
+  String get conversation_screen_message_state_decrypting_failed_detailed =>
+      'Decrypting failed. Ask resending.';
+
+  @override
   String get conversation_screen_message_state_delivered => 'Delivered';
 
   @override

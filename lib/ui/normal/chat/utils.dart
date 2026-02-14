@@ -30,7 +30,7 @@ String messageWidgetText(
   ReceivedMessageState? receivedMessageState,
 ) {
   if (receivedMessageState == ReceivedMessageState.decryptingFailed) {
-    return context.strings.conversation_screen_message_state_decrypting_failed;
+    return context.strings.conversation_screen_message_state_decrypting_failed_detailed;
   } else if (receivedMessageState == ReceivedMessageState.publicKeyDownloadFailed) {
     return context.strings.conversation_screen_message_state_public_key_download_failed;
   } else {

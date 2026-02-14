@@ -490,6 +490,7 @@
     <string name="conversation_screen_message_state_delivery_failed" description="Message state text that message delivery failed">Delivery failed</string>
     <string name="conversation_screen_message_state_delivery_failed_and_resent" description="Message state text that message delivery failed and it was resent">Delivery failed and resent</string>
     <string name="conversation_screen_message_state_decrypting_failed" description="Message state text that message decrypting failed">Decrypting failed</string>
+    <string name="conversation_screen_message_state_decrypting_failed_detailed" description="Detailed message state text that message decrypting failed and requires resend">Decrypting failed. Ask resending.</string>
     <string name="conversation_screen_message_state_public_key_download_failed" description="Message state text that public key download failed">Public key download failed</string>
     <string name="conversation_screen_message_state_received_successfully" description="Message state text that message was received successfully">Received successfully</string>
     <string name="conversation_screen_message_state_received_and_seen_locally" description="Message state text that message was received and marked as seen locally">Received and seen locally</string>

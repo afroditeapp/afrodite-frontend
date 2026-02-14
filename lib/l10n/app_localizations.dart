@@ -736,6 +736,12 @@ abstract class AppLocalizations {
   /// **'Decrypting failed'**
   String get conversation_screen_message_state_decrypting_failed;
 
+  /// Detailed message state text that message decrypting failed and requires resend
+  ///
+  /// In en, this message translates to:
+  /// **'Decrypting failed. Ask resending.'**
+  String get conversation_screen_message_state_decrypting_failed_detailed;
+
   /// Message state text that message was delivered to receiver
   ///
   /// In en, this message translates to:

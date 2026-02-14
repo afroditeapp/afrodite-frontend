@@ -393,7 +393,9 @@ class _ChatListState extends State<ChatList> {
 
                 switch (errorType) {
                   case 'decrypting_failed':
-                    errorText = context.strings.conversation_screen_message_state_decrypting_failed;
+                    errorText = context
+                        .strings
+                        .conversation_screen_message_state_decrypting_failed_detailed;
                   case 'key_download_failed':
                     errorText = context
                         .strings

@@ -505,6 +505,10 @@
   "@conversation_screen_message_state_decrypting_failed": {
     "description": "Message state text that message decrypting failed"
   },
+  "conversation_screen_message_state_decrypting_failed_detailed": "Decrypting failed. Ask resending.",
+  "@conversation_screen_message_state_decrypting_failed_detailed": {
+    "description": "Detailed message state text that message decrypting failed and requires resend"
+  },
   "conversation_screen_message_state_delivered": "Delivered",
   "@conversation_screen_message_state_delivered": {
     "description": "Message state text that message was delivered to receiver"
