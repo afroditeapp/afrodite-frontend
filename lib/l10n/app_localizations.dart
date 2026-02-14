@@ -1687,7 +1687,7 @@ abstract class AppLocalizations {
   /// Description for initial setup first chat backup
   ///
   /// In en, this message translates to:
-  /// **'Chat\'s are stored on this device only, so regular backups are recommended. Let\'s save the first backup.\n\nIf you have cloud storage, it is recommended to save the backup there.'**
+  /// **'Chats are stored on this device only, so regular backups are recommended. Let\'s save the first backup.\n\nIf you have cloud storage, it is recommended to save the backup there.'**
   String get initial_setup_screen_first_chat_backup_description;
 
   /// Title for initial setup save chat backup button
@@ -1695,6 +1695,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Save chat backup'**
   String get initial_setup_screen_first_chat_backup_save_backup_button;
+
+  /// Security info for initial setup first chat backup
+  ///
+  /// In en, this message translates to:
+  /// **'The backup contains your message encryption key. Keep it accessible in case you lose your device, unless you are willing to ask others to resend their messages to you.'**
+  String get initial_setup_screen_first_chat_backup_security_info;
 
   /// Title for initial setup first chat backup screen
   ///

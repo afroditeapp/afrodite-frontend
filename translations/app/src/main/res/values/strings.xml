@@ -287,9 +287,10 @@
     <string name="initial_setup_screen_location_title" description="Title for initial setup location screen">My profile\'s location is…</string>
     <string name="initial_setup_screen_location_help_dialog_text" description="Text for initial setup location help dialog">Select a location for your profile by tapping or long pressing the map.</string>
     <string name="initial_setup_screen_first_chat_backup_title" description="Title for initial setup first chat backup screen">First chat backup</string>
-    <string name="initial_setup_screen_first_chat_backup_description" description="Description for initial setup first chat backup">Chat\'s are stored on this device only, so regular backups are recommended. Let's save the first backup.\n\nIf you have cloud storage, it is recommended to save the backup there.</string>
+    <string name="initial_setup_screen_first_chat_backup_description" description="Description for initial setup first chat backup">Chats are stored on this device only, so regular backups are recommended. Let's save the first backup.\n\nIf you have cloud storage, it is recommended to save the backup there.</string>
     <string name="initial_setup_screen_first_chat_backup_save_backup_button" description="Title for initial setup save chat backup button">Save chat backup</string>
     <string name="initial_setup_screen_first_chat_backup_backup_saved_successfully" description="Text for initial setup chat backup saved successfully">Backup saved successfully</string>
+    <string name="initial_setup_screen_first_chat_backup_security_info" description="Security info for initial setup first chat backup">The backup contains your message encryption key. Keep it accessible in case you lose your device, unless you are willing to ask others to resend their undelivered messages to you.</string>
 
     <!-- Notification permission -->
     <string name="notification_permission_dialog_title" description="Title for notification permission dialog">Allow notifications?</string>

@@ -1182,13 +1182,17 @@
   "@initial_setup_screen_first_chat_backup_backup_saved_successfully": {
     "description": "Text for initial setup chat backup saved successfully"
   },
-  "initial_setup_screen_first_chat_backup_description": "Chat's are stored on this device only, so regular backups are recommended. Let's save the first backup.\n\nIf you have cloud storage, it is recommended to save the backup there.",
+  "initial_setup_screen_first_chat_backup_description": "Chats are stored on this device only, so regular backups are recommended. Let's save the first backup.\n\nIf you have cloud storage, it is recommended to save the backup there.",
   "@initial_setup_screen_first_chat_backup_description": {
     "description": "Description for initial setup first chat backup"
   },
   "initial_setup_screen_first_chat_backup_save_backup_button": "Save chat backup",
   "@initial_setup_screen_first_chat_backup_save_backup_button": {
     "description": "Title for initial setup save chat backup button"
+  },
+  "initial_setup_screen_first_chat_backup_security_info": "The backup contains your message encryption key. Keep it accessible in case you lose your device, unless you are willing to ask others to resend their messages to you.",
+  "@initial_setup_screen_first_chat_backup_security_info": {
+    "description": "Security info for initial setup first chat backup"
   },
   "initial_setup_screen_first_chat_backup_title": "First chat backup",
   "@initial_setup_screen_first_chat_backup_title": {

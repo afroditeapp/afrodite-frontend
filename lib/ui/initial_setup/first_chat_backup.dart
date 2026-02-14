@@ -146,6 +146,15 @@ class _FirstChatBackupContentState extends State<FirstChatBackupContent> {
                       ],
                     ),
             ),
+            if (backupState.lastBackupTime != null) ...[
+              const SizedBox(height: 24),
+              hPad(
+                Text(
+                  context.strings.initial_setup_screen_first_chat_backup_security_info,
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+              ),
+            ],
           ],
         ],
       ),

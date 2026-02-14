@@ -893,10 +893,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get initial_setup_screen_first_chat_backup_description =>
-      'Chat\'s are stored on this device only, so regular backups are recommended. Let\'s save the first backup.\n\nIf you have cloud storage, it is recommended to save the backup there.';
+      'Chats are stored on this device only, so regular backups are recommended. Let\'s save the first backup.\n\nIf you have cloud storage, it is recommended to save the backup there.';
 
   @override
   String get initial_setup_screen_first_chat_backup_save_backup_button => 'Save chat backup';
+
+  @override
+  String get initial_setup_screen_first_chat_backup_security_info =>
+      'The backup contains your message encryption key. Keep it accessible in case you lose your device, unless you are willing to ask others to resend their messages to you.';
 
   @override
   String get initial_setup_screen_first_chat_backup_title => 'First chat backup';
