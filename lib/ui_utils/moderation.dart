@@ -109,8 +109,3 @@ String getProfileTextRejectionInfoText(
   infoText = addRejectedDetailsRow(context, infoText, details);
   return infoText.trim();
 }
-
-bool isRejectedState(ProfileStringModerationState? state) {
-  return state == ProfileStringModerationState.rejectedByBot ||
-      state == ProfileStringModerationState.rejectedByHuman;
-}

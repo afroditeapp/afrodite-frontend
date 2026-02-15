@@ -143,7 +143,19 @@ class ProfilePictureSelection<
     extends StatefulWidget {
   final PictureSelectionMode mode;
   final B bloc;
-  const ProfilePictureSelection({required this.mode, required this.bloc, super.key});
+  final Widget? image0RejectionDetails;
+  final Widget? image1RejectionDetails;
+  final Widget? image2RejectionDetails;
+  final Widget? image3RejectionDetails;
+  const ProfilePictureSelection({
+    required this.mode,
+    required this.bloc,
+    this.image0RejectionDetails,
+    this.image1RejectionDetails,
+    this.image2RejectionDetails,
+    this.image3RejectionDetails,
+    super.key,
+  });
 
   @override
   State<ProfilePictureSelection<B, S>> createState() => _ProfilePictureSelection<B, S>();
@@ -182,8 +194,10 @@ class _ProfilePictureSelection<
         topRow(context),
         primaryImageIsNotFaceImageError(),
         if (widget.mode is NormalProfilePictures) primaryImageIsNotAcceptedError(),
+        if (widget.image0RejectionDetails != null) widget.image0RejectionDetails!,
         const Divider(height: 50),
         bottomRow(context),
+        if (_hasBottomRowRejectionDetails()) bottomRowRejectionDetailsRow(),
 
         // Zero sized widgets
         ...zeroSizedWidgets,
@@ -211,6 +225,22 @@ class _ProfilePictureSelection<
         Expanded(child: Center(child: imgStateToWidget(context, 1))),
         Expanded(child: Center(child: imgStateToWidget(context, 2))),
         Expanded(child: Center(child: imgStateToWidget(context, 3))),
+      ],
+    );
+  }
+
+  bool _hasBottomRowRejectionDetails() {
+    return widget.image1RejectionDetails != null ||
+        widget.image2RejectionDetails != null ||
+        widget.image3RejectionDetails != null;
+  }
+
+  Widget bottomRowRejectionDetailsRow() {
+    return Row(
+      children: [
+        Expanded(child: Center(child: widget.image1RejectionDetails ?? const SizedBox.shrink())),
+        Expanded(child: Center(child: widget.image2RejectionDetails ?? const SizedBox.shrink())),
+        Expanded(child: Center(child: widget.image3RejectionDetails ?? const SizedBox.shrink())),
       ],
     );
   }

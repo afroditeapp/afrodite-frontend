@@ -192,3 +192,17 @@ extension ClientFeaturesConfigExtensions on ClientFeaturesConfig {
     return features ?? FeaturesConfig();
   }
 }
+
+extension ProfileStringModerationStateExtensions on ProfileStringModerationState {
+  bool isRejected() {
+    return this == ProfileStringModerationState.rejectedByBot ||
+        this == ProfileStringModerationState.rejectedByHuman;
+  }
+}
+
+extension ContentModerationStateExtensions on ContentModerationState {
+  bool isRejected() {
+    return this == ContentModerationState.rejectedByBot ||
+        this == ContentModerationState.rejectedByHuman;
+  }
+}

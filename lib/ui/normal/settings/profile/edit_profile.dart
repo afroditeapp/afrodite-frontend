@@ -10,6 +10,7 @@ import 'package:app/ui_utils/navigation/url.dart';
 import 'package:app/ui_utils/padding.dart';
 import 'package:app/ui_utils/profile_pictures.dart';
 import 'package:app/ui_utils/snack_bar.dart';
+import 'package:app/utils/api.dart';
 import 'package:app/utils/result.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -33,7 +34,9 @@ import 'package:app/ui_utils/moderation.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/icon_button.dart';
 import 'package:app/ui_utils/bloc_listener.dart';
+import 'package:app/ui_utils/extensions/api.dart';
 import 'package:app/utils/age.dart';
+import 'package:app/utils/list.dart';
 
 class EditProfilePageUrlParser extends UrlParser<EditProfilePage> {
   final RepositoryInstances r;
@@ -227,6 +230,21 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           ProfilePictureSelection<my_profile_logic.MyProfileBloc, MyProfileData>(
             mode: const NormalProfilePictures(),
             bloc: context.read<my_profile_logic.MyProfileBloc>(),
+            image0RejectionDetails: ProfileImageRejectionWidget(
+              initialProfile: widget.initialProfile,
+            ),
+            image1RejectionDetails: ProfileImageBottomRowRejectionWidget(
+              initialProfile: widget.initialProfile,
+              index: 1,
+            ),
+            image2RejectionDetails: ProfileImageBottomRowRejectionWidget(
+              initialProfile: widget.initialProfile,
+              index: 2,
+            ),
+            image3RejectionDetails: ProfileImageBottomRowRejectionWidget(
+              initialProfile: widget.initialProfile,
+              index: 3,
+            ),
           ),
           const Padding(padding: EdgeInsets.only(top: 16)),
           const Divider(),
@@ -704,35 +722,27 @@ class ProfileNameRejectionWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<my_profile_logic.MyProfileBloc, MyProfileData>(
-      builder: (context, myProfileState) {
-        final profile = myProfileState.profile ?? initialProfile;
-        return BlocBuilder<my_profile_logic.MyProfileBloc, MyProfileData>(
-          builder: (context, state) {
-            if (isRejectedState(profile.profileNameModerationState) &&
-                state.valueName() == profile.name) {
-              return Container(
-                padding: const EdgeInsets.all(8.0),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.primaryContainer,
-                  borderRadius: BorderRadius.circular(4.0),
-                ),
-                child: Text(
-                  getProfileNameRejectionInfoText(
-                    context,
-                    profile.profileNameModerationState,
-                    profile.profileNameModerationRejectedCategory?.value,
-                    profile.profileNameModerationRejectedDetails?.value,
-                    includeBaseText: false,
-                  ),
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Theme.of(context).colorScheme.onPrimaryContainer,
-                  ),
-                ),
-              );
-            }
-            return const SizedBox.shrink();
-          },
-        );
+      builder: (context, state) {
+        final profile = state.profile ?? initialProfile;
+        if ((profile.profileNameModerationState?.isRejected() ?? false) &&
+            state.valueName() == profile.name) {
+          final stateText = getProfileNameRejectionInfoText(
+            context,
+            profile.profileNameModerationState,
+            null,
+            null,
+            includeBaseText: false,
+          );
+          return rejectionDetailsText(
+            context,
+            preliminaryText: stateText,
+            category: profile.profileNameModerationRejectedCategory?.value,
+            details: profile.profileNameModerationRejectedDetails?.value,
+            containerColor: Theme.of(context).colorScheme.primaryContainer,
+            textColor: Theme.of(context).colorScheme.onPrimaryContainer,
+          );
+        }
+        return const SizedBox.shrink();
       },
     );
   }
@@ -745,38 +755,153 @@ class ProfileTextRejectionWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<my_profile_logic.MyProfileBloc, MyProfileData>(
-      builder: (context, myProfileState) {
-        final profile = myProfileState.profile ?? initialProfile;
-        return BlocBuilder<my_profile_logic.MyProfileBloc, MyProfileData>(
-          builder: (context, state) {
-            if (!profile.profileTextAccepted &&
-                isRejectedState(profile.profileTextModerationState) &&
-                state.valueProfileText() == profile.profileText) {
-              return Padding(
-                padding: const EdgeInsets.only(left: 16, top: 8),
-                child: Container(
-                  padding: const EdgeInsets.all(8.0),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.primaryContainer,
-                    borderRadius: BorderRadius.circular(4.0),
-                  ),
-                  child: Text(
-                    getProfileTextRejectionInfoText(
-                      context,
-                      profile.profileTextModerationState,
-                      profile.profileTextModerationRejectedCategory?.value,
-                      profile.profileTextModerationRejectedDetails?.value,
-                      includeBaseText: false,
+      builder: (context, state) {
+        final profile = state.profile ?? initialProfile;
+        if ((profile.profileTextModerationState?.isRejected() ?? false) &&
+            state.valueProfileText() == profile.profileText) {
+          final stateText = getProfileTextRejectionInfoText(
+            context,
+            profile.profileTextModerationState,
+            null,
+            null,
+            includeBaseText: false,
+          );
+          return Padding(
+            padding: const EdgeInsets.only(left: 16, top: 8),
+            child: rejectionDetailsText(
+              context,
+              preliminaryText: stateText,
+              category: profile.profileTextModerationRejectedCategory?.value,
+              details: profile.profileTextModerationRejectedDetails?.value,
+              containerColor: Theme.of(context).colorScheme.primaryContainer,
+              textColor: Theme.of(context).colorScheme.onPrimaryContainer,
+            ),
+          );
+        }
+        return const SizedBox.shrink();
+      },
+    );
+  }
+}
+
+class ProfileImageRejectionWidget extends StatelessWidget {
+  final MyProfileEntry initialProfile;
+  const ProfileImageRejectionWidget({required this.initialProfile, super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<my_profile_logic.MyProfileBloc, MyProfileData>(
+      builder: (context, state) {
+        final profile = state.profile ?? initialProfile;
+        final currentPicture0 = state.valuePicture0();
+        if (currentPicture0 is! ImageSelected) {
+          return const SizedBox.shrink();
+        }
+
+        final firstImage = profile.myContent
+            .where((image) => image.id == currentPicture0.id.contentId)
+            .firstOrNull;
+        if (firstImage == null || !firstImage.state.isRejected()) {
+          return const SizedBox.shrink();
+        }
+
+        final stateText = firstImage.state.toUiString(context);
+        return Padding(
+          padding: const EdgeInsets.only(top: 8.0),
+          child: hPad(
+            rejectionDetailsText(
+              context,
+              preliminaryText: stateText,
+              category: firstImage.rejectedCategory?.value,
+              details: firstImage.rejectedDetails?.value,
+              containerColor: Theme.of(context).colorScheme.primaryContainer,
+              textColor: Theme.of(context).colorScheme.onPrimaryContainer,
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class ProfileImageBottomRowRejectionWidget extends StatelessWidget {
+  final MyProfileEntry initialProfile;
+  final int index;
+  const ProfileImageBottomRowRejectionWidget({
+    required this.initialProfile,
+    required this.index,
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<my_profile_logic.MyProfileBloc, MyProfileData>(
+      builder: (context, state) {
+        final profile = state.profile ?? initialProfile;
+        final currentPicture = state.valuePictures().getAtOrNull(index);
+        if (currentPicture is! ImageSelected) {
+          return const SizedBox.shrink();
+        }
+
+        final image = profile.myContent
+            .where((content) => content.id == currentPicture.id.contentId)
+            .firstOrNull;
+        if (image == null || !image.state.isRejected()) {
+          return const SizedBox.shrink();
+        }
+
+        final stateText = image.state.toUiString(context) ?? "";
+        final hasInfo =
+            (image.rejectedCategory != null) ||
+            (image.rejectedDetails != null && image.rejectedDetails!.value.isNotEmpty);
+
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Padding(padding: EdgeInsets.only(top: 4)),
+            Container(
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.primaryContainer,
+                borderRadius: BorderRadius.circular(4.0),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(8.0, 8.0, 8.0, hasInfo ? 0.0 : 8.0),
+                    child: Text(
+                      stateText,
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: Theme.of(context).colorScheme.onPrimaryContainer,
+                      ),
+                      textAlign: TextAlign.center,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Theme.of(context).colorScheme.onPrimaryContainer,
-                    ),
                   ),
-                ),
-              );
-            }
-            return const SizedBox.shrink();
-          },
+                  if (hasInfo)
+                    TextButton.icon(
+                      onPressed: () {
+                        var infoText = "";
+                        infoText = addRejectedCategoryRow(
+                          context,
+                          infoText,
+                          image.rejectedCategory?.value,
+                        );
+                        infoText = addRejectedDetailsRow(
+                          context,
+                          infoText,
+                          image.rejectedDetails?.value,
+                        );
+                        showInfoDialog(context, infoText.trim());
+                      },
+                      icon: const Icon(Icons.info),
+                      label: Text(context.strings.generic_details),
+                    ),
+                ],
+              ),
+            ),
+          ],
         );
       },
     );
