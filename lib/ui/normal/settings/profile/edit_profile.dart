@@ -726,13 +726,7 @@ class ProfileNameRejectionWidget extends StatelessWidget {
         final profile = state.profile ?? initialProfile;
         if ((profile.profileNameModerationState?.isRejected() ?? false) &&
             state.valueName() == profile.name) {
-          final stateText = getProfileNameRejectionInfoText(
-            context,
-            profile.profileNameModerationState,
-            null,
-            null,
-            includeBaseText: false,
-          );
+          final stateText = profile.profileNameModerationState?.toUiString(context);
           return rejectionDetailsText(
             context,
             preliminaryText: stateText,
@@ -759,13 +753,7 @@ class ProfileTextRejectionWidget extends StatelessWidget {
         final profile = state.profile ?? initialProfile;
         if ((profile.profileTextModerationState?.isRejected() ?? false) &&
             state.valueProfileText() == profile.profileText) {
-          final stateText = getProfileTextRejectionInfoText(
-            context,
-            profile.profileTextModerationState,
-            null,
-            null,
-            includeBaseText: false,
-          );
+          final stateText = profile.profileTextModerationState?.toUiString(context);
           return Padding(
             padding: const EdgeInsets.only(left: 16, top: 8),
             child: rejectionDetailsText(

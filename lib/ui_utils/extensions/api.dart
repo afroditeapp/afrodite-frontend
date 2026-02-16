@@ -4,6 +4,24 @@ import 'package:intl/intl.dart';
 import 'package:openapi/api.dart';
 import 'package:app/localizations.dart';
 
+extension ProfileStringModerationStateUiExtensions on ProfileStringModerationState {
+  String? toUiString(BuildContext context) {
+    return switch (this) {
+      ProfileStringModerationState.waitingBotOrHumanModeration =>
+        context.strings.moderation_state_waiting_bot_or_human_moderation,
+      ProfileStringModerationState.waitingHumanModeration =>
+        context.strings.moderation_state_waiting_human_moderation,
+      ProfileStringModerationState.acceptedByBot ||
+      ProfileStringModerationState.acceptedByHuman => context.strings.moderation_state_accepted,
+      ProfileStringModerationState.rejectedByBot =>
+        context.strings.moderation_state_rejected_by_bot,
+      ProfileStringModerationState.rejectedByHuman =>
+        context.strings.moderation_state_rejected_by_human,
+      _ => null,
+    };
+  }
+}
+
 extension ContentModerationStateUiExtensions on ContentModerationState {
   String? toUiString(BuildContext context) {
     return switch (this) {

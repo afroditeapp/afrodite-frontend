@@ -1,3 +1,4 @@
+import 'package:app/ui_utils/extensions/api.dart';
 import 'package:flutter/material.dart';
 import 'package:app/localizations.dart';
 import 'package:openapi/api.dart';
@@ -68,16 +69,7 @@ String getProfileNameRejectionInfoText(
   var infoText = includeBaseText
       ? context.strings.view_profile_screen_non_accepted_profile_name_info_dialog_text
       : '';
-  final stateText = switch (state) {
-    ProfileStringModerationState.rejectedByBot => context.strings.moderation_state_rejected_by_bot,
-    ProfileStringModerationState.rejectedByHuman =>
-      context.strings.moderation_state_rejected_by_human,
-    ProfileStringModerationState.waitingBotOrHumanModeration =>
-      context.strings.moderation_state_waiting_bot_or_human_moderation,
-    ProfileStringModerationState.waitingHumanModeration =>
-      context.strings.moderation_state_waiting_human_moderation,
-    _ => null,
-  };
+  final stateText = state?.toUiString(context);
   infoText = addModerationStateRow(context, infoText, stateText);
   infoText = addRejectedCategoryRow(context, infoText, category);
   infoText = addRejectedDetailsRow(context, infoText, details);
@@ -94,16 +86,7 @@ String getProfileTextRejectionInfoText(
   var infoText = includeBaseText
       ? context.strings.view_profile_screen_non_accepted_profile_text_info_dialog_text
       : '';
-  final stateText = switch (state) {
-    ProfileStringModerationState.rejectedByBot => context.strings.moderation_state_rejected_by_bot,
-    ProfileStringModerationState.rejectedByHuman =>
-      context.strings.moderation_state_rejected_by_human,
-    ProfileStringModerationState.waitingBotOrHumanModeration =>
-      context.strings.moderation_state_waiting_bot_or_human_moderation,
-    ProfileStringModerationState.waitingHumanModeration =>
-      context.strings.moderation_state_waiting_human_moderation,
-    _ => null,
-  };
+  final stateText = state?.toUiString(context);
   infoText = addModerationStateRow(context, infoText, stateText);
   infoText = addRejectedCategoryRow(context, infoText, category);
   infoText = addRejectedDetailsRow(context, infoText, details);
