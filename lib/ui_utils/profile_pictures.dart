@@ -87,3 +87,12 @@ class AccountImageId {
   @override
   int get hashCode => Object.hash(accountId, contentId, faceDetected, accepted);
 }
+
+List<ImgState> compactProfilePictureSlots(List<ImgState> pictures, {int slotCount = 4}) {
+  final selected = pictures.whereType<ImageSelected>();
+  final compacted = <ImgState>[...selected.take(slotCount)];
+  while (compacted.length < slotCount) {
+    compacted.add(const Empty());
+  }
+  return compacted;
+}

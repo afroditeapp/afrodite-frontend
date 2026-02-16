@@ -172,7 +172,7 @@ class MyProfileBloc extends Bloc<MyProfileEvent, MyProfileData>
       if (img is ImageSelected) {
         pictures[data.imgIndex] = const Empty();
       }
-      _emitPictureChangesToEdited(emit, pictures);
+      _emitPictureChangesToEdited(emit, compactProfilePictureSlots(pictures));
     });
     on<UpdateCropArea>((data, emit) async {
       final pictures = state.valuePictures();

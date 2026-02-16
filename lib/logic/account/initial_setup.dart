@@ -487,7 +487,7 @@ class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData>
     on<RemoveImageFromSetup>((data, emit) {
       final newImages = state.valuePictures();
       newImages[data.index] = const Empty();
-      add(SetProfileImages(newImages));
+      add(SetProfileImages(compactProfilePictureSlots(newImages)));
     });
     on<MoveImageInSetup>((data, emit) {
       final newImages = state.valuePictures();
