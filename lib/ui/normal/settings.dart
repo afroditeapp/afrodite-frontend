@@ -18,6 +18,7 @@ import 'package:app/ui/normal/settings/account_settings.dart';
 import 'package:app/ui/normal/settings/chat/chat_backup.dart';
 import 'package:app/ui/normal/settings/data_export.dart';
 import 'package:app/ui/normal/settings/media/content_management.dart';
+import 'package:app/ui_utils/consts/padding.dart';
 import 'package:app/ui/normal/settings/email_notification_settings.dart';
 import 'package:app/ui/normal/settings/privacy_settings.dart';
 import 'package:app/ui/normal/settings/notification_settings.dart';
@@ -95,6 +96,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ...dataSettings(context),
           settingsCategoryTitle(context, context.strings.settings_screen_general_category),
           ...generalSettings(context),
+          const Padding(padding: EdgeInsets.only(top: LIST_END_EMPTY_AREA)),
         ],
       ),
     );
