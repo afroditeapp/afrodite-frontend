@@ -58,25 +58,25 @@ enum MessageState {
   // Sent message
 
   /// Message is waiting to be sent to server.
-  pendingSending(_VALUE_SENT_PENDING_SENDING),
+  sentPendingSending(_VALUE_SENT_PENDING_SENDING),
 
   /// Message sent to server.
   sent(_VALUE_SENT),
 
   /// Message sending failed.
-  sendingError(_VALUE_SENT_SENDING_ERROR),
+  sentSendingError(_VALUE_SENT_SENDING_ERROR),
 
   /// Message delivered to receiver.
-  delivered(_VALUE_SENT_DELIVERED),
+  sentDelivered(_VALUE_SENT_DELIVERED),
 
   /// Message seen by receiver.
-  seen(_VALUE_SENT_SEEN),
+  sentSeen(_VALUE_SENT_SEEN),
 
   /// Message delivery failed.
-  deliveryFailed(_VALUE_SENT_DELIVERY_FAILED),
+  sentDeliveryFailed(_VALUE_SENT_DELIVERY_FAILED),
 
   /// Message delivery failed and it was resent.
-  deliveryFailedAndResent(_VALUE_SENT_DELIVERY_FAILED_AND_RESENT),
+  sentDeliveryFailedAndResent(_VALUE_SENT_DELIVERY_FAILED_AND_RESENT),
 
   // Received message
 
@@ -129,13 +129,13 @@ enum MessageState {
 
   static MessageState? fromInt(int value) {
     return switch (value) {
-      _VALUE_SENT_PENDING_SENDING => pendingSending,
+      _VALUE_SENT_PENDING_SENDING => sentPendingSending,
       _VALUE_SENT => sent,
-      _VALUE_SENT_DELIVERED => delivered,
-      _VALUE_SENT_SEEN => seen,
-      _VALUE_SENT_SENDING_ERROR => sendingError,
-      _VALUE_SENT_DELIVERY_FAILED => deliveryFailed,
-      _VALUE_SENT_DELIVERY_FAILED_AND_RESENT => deliveryFailedAndResent,
+      _VALUE_SENT_DELIVERED => sentDelivered,
+      _VALUE_SENT_SEEN => sentSeen,
+      _VALUE_SENT_SENDING_ERROR => sentSendingError,
+      _VALUE_SENT_DELIVERY_FAILED => sentDeliveryFailed,
+      _VALUE_SENT_DELIVERY_FAILED_AND_RESENT => sentDeliveryFailedAndResent,
       _VALUE_RECEIVED => received,
       _VALUE_RECEIVED_AND_DECRYPTING_FAILED => receivedAndDecryptingFailed,
       _VALUE_RECEIVED_AND_PUBLIC_KEY_DOWNLOAD_FAILED => receivedAndPublicKeyDownloadFailed,
@@ -153,19 +153,19 @@ enum MessageState {
 
   SentMessageState? toSentState() {
     switch (this) {
-      case pendingSending:
+      case sentPendingSending:
         return SentMessageState.pending;
       case sent:
         return SentMessageState.sent;
-      case delivered:
+      case sentDelivered:
         return SentMessageState.delivered;
-      case seen:
+      case sentSeen:
         return SentMessageState.seen;
-      case deliveryFailed:
+      case sentDeliveryFailed:
         return SentMessageState.deliveryFailed;
-      case deliveryFailedAndResent:
+      case sentDeliveryFailedAndResent:
         return SentMessageState.deliveryFailedAndResent;
-      case sendingError:
+      case sentSendingError:
         return SentMessageState.sendingError;
       case received ||
           receivedAndDecryptingFailed ||
@@ -194,13 +194,13 @@ enum MessageState {
         return ReceivedMessageState.receivedAndSeenLocally;
       case receivedAndSeen:
         return ReceivedMessageState.receivedAndSeen;
-      case pendingSending ||
+      case sentPendingSending ||
           sent ||
-          delivered ||
-          seen ||
-          deliveryFailed ||
-          deliveryFailedAndResent ||
-          sendingError ||
+          sentDelivered ||
+          sentSeen ||
+          sentDeliveryFailed ||
+          sentDeliveryFailedAndResent ||
+          sentSendingError ||
           infoMatchFirstPublicKeyReceived ||
           infoMatchPublicKeyChanged:
         return null;
@@ -218,13 +218,13 @@ enum MessageState {
           receivedAndPublicKeyDownloadFailed ||
           receivedAndSeenLocally ||
           receivedAndSeen ||
-          pendingSending ||
+          sentPendingSending ||
           sent ||
-          delivered ||
-          seen ||
-          deliveryFailed ||
-          deliveryFailedAndResent ||
-          sendingError:
+          sentDelivered ||
+          sentSeen ||
+          sentDeliveryFailed ||
+          sentDeliveryFailedAndResent ||
+          sentSendingError:
         return null;
     }
   }
@@ -259,19 +259,19 @@ enum SentMessageState {
   MessageState toDbState() {
     switch (this) {
       case pending:
-        return MessageState.pendingSending;
+        return MessageState.sentPendingSending;
       case sent:
         return MessageState.sent;
       case delivered:
-        return MessageState.delivered;
+        return MessageState.sentDelivered;
       case seen:
-        return MessageState.seen;
+        return MessageState.sentSeen;
       case deliveryFailed:
-        return MessageState.deliveryFailed;
+        return MessageState.sentDeliveryFailed;
       case deliveryFailedAndResent:
-        return MessageState.deliveryFailedAndResent;
+        return MessageState.sentDeliveryFailedAndResent;
       case sendingError:
-        return MessageState.sendingError;
+        return MessageState.sentSendingError;
     }
   }
 }
