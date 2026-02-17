@@ -115,10 +115,7 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData> with Acti
             final action = await resolveProfileAction(chat, state.profile.accountId);
             emit(state.copyWith(profileActionState: action));
           }
-        case ProfileNowPrivate() ||
-            ProfileUnblocked() ||
-            ReloadMainProfileView() ||
-            ProfileFavoriteStatusChange():
+        case ProfileUnblocked() || ReloadMainProfileView() || ProfileFavoriteStatusChange():
           {}
       }
     });

@@ -222,8 +222,6 @@ class LikeViewContentState extends State<LikeViewContent> {
 
   void _handleProfileChange(ProfileChange event) {
     switch (event) {
-      case ProfileNowPrivate():
-        _removeAccountIdFromList(event.profile);
       case ProfileBlocked():
         _removeAccountIdFromList(event.profile);
       case ProfileUnblocked() ||

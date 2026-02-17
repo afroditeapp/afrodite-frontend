@@ -651,12 +651,6 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
 
 sealed class ProfileChange {}
 
-/// NOTE: Currently unused
-class ProfileNowPrivate extends ProfileChange {
-  final AccountId profile;
-  ProfileNowPrivate(this.profile);
-}
-
 class ProfileBlocked extends ProfileChange {
   final AccountId profile;
   ProfileBlocked(this.profile);

@@ -58,8 +58,7 @@ class _BlockedProfilesScreen extends State<BlockedProfilesScreen> {
     switch (event) {
       case ProfileUnblocked():
         removeAccountIdFromList(event.profile);
-      case ProfileNowPrivate() ||
-          ProfileBlocked() ||
+      case ProfileBlocked() ||
           ProfileFavoriteStatusChange() ||
           ConversationChanged() ||
           ReloadMainProfileView():

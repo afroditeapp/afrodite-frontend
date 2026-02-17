@@ -110,11 +110,6 @@ class ProfileGridState extends State<ProfileGrid> {
 
   void handleProfileChange(ProfileChange event) {
     switch (event) {
-      case ProfileNowPrivate():
-        {
-          // Remove profile if it was made private
-          removeAccountIdFromList(event.profile);
-        }
       case ProfileBlocked():
         removeAccountIdFromList(event.profile);
       case ProfileFavoriteStatusChange():
