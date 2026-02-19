@@ -15,11 +15,13 @@ class SendMessageResult {
   SendMessageResult({
     this.d,
     this.error = false,
+    this.errorPendingDeliveryInfoExists = false,
     this.errorReceiverBlockedSenderOrReceiverNotFound = false,
     this.errorReceiverPublicKeyOutdated = false,
     this.errorSenderPublicKeyOutdated = false,
     this.errorTooManyReceiverAcknowledgementsMissing = false,
     this.errorTooManySenderAcknowledgementsMissing = false,
+    this.remainingConversationMessages,
     this.remainingMessages,
   });
 
@@ -27,6 +29,8 @@ class SendMessageResult {
   String? d;
 
   bool error;
+
+  bool errorPendingDeliveryInfoExists;
 
   bool errorReceiverBlockedSenderOrReceiverNotFound;
 
@@ -38,6 +42,11 @@ class SendMessageResult {
 
   bool errorTooManySenderAcknowledgementsMissing;
 
+  /// Remaining messages which can be sent to conversation before delivery to reciever or message sending acknowledgement must happen. The value will be returned only if there is 5 or less messages left.
+  ///
+  /// Minimum value: 0
+  int? remainingConversationMessages;
+
   /// Remaining daily messages count. The value will be returned only if there is 50 or less messages left.
   ///
   /// Minimum value: 0
@@ -47,11 +56,13 @@ class SendMessageResult {
   bool operator ==(Object other) => identical(this, other) || other is SendMessageResult &&
     other.d == d &&
     other.error == error &&
+    other.errorPendingDeliveryInfoExists == errorPendingDeliveryInfoExists &&
     other.errorReceiverBlockedSenderOrReceiverNotFound == errorReceiverBlockedSenderOrReceiverNotFound &&
     other.errorReceiverPublicKeyOutdated == errorReceiverPublicKeyOutdated &&
     other.errorSenderPublicKeyOutdated == errorSenderPublicKeyOutdated &&
     other.errorTooManyReceiverAcknowledgementsMissing == errorTooManyReceiverAcknowledgementsMissing &&
     other.errorTooManySenderAcknowledgementsMissing == errorTooManySenderAcknowledgementsMissing &&
+    other.remainingConversationMessages == remainingConversationMessages &&
     other.remainingMessages == remainingMessages;
 
   @override
@@ -59,15 +70,17 @@ class SendMessageResult {
     // ignore: unnecessary_parenthesis
     (d == null ? 0 : d!.hashCode) +
     (error.hashCode) +
+    (errorPendingDeliveryInfoExists.hashCode) +
     (errorReceiverBlockedSenderOrReceiverNotFound.hashCode) +
     (errorReceiverPublicKeyOutdated.hashCode) +
     (errorSenderPublicKeyOutdated.hashCode) +
     (errorTooManyReceiverAcknowledgementsMissing.hashCode) +
     (errorTooManySenderAcknowledgementsMissing.hashCode) +
+    (remainingConversationMessages == null ? 0 : remainingConversationMessages!.hashCode) +
     (remainingMessages == null ? 0 : remainingMessages!.hashCode);
 
   @override
-  String toString() => 'SendMessageResult[d=$d, error=$error, errorReceiverBlockedSenderOrReceiverNotFound=$errorReceiverBlockedSenderOrReceiverNotFound, errorReceiverPublicKeyOutdated=$errorReceiverPublicKeyOutdated, errorSenderPublicKeyOutdated=$errorSenderPublicKeyOutdated, errorTooManyReceiverAcknowledgementsMissing=$errorTooManyReceiverAcknowledgementsMissing, errorTooManySenderAcknowledgementsMissing=$errorTooManySenderAcknowledgementsMissing, remainingMessages=$remainingMessages]';
+  String toString() => 'SendMessageResult[d=$d, error=$error, errorPendingDeliveryInfoExists=$errorPendingDeliveryInfoExists, errorReceiverBlockedSenderOrReceiverNotFound=$errorReceiverBlockedSenderOrReceiverNotFound, errorReceiverPublicKeyOutdated=$errorReceiverPublicKeyOutdated, errorSenderPublicKeyOutdated=$errorSenderPublicKeyOutdated, errorTooManyReceiverAcknowledgementsMissing=$errorTooManyReceiverAcknowledgementsMissing, errorTooManySenderAcknowledgementsMissing=$errorTooManySenderAcknowledgementsMissing, remainingConversationMessages=$remainingConversationMessages, remainingMessages=$remainingMessages]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -77,11 +90,17 @@ class SendMessageResult {
       json[r'd'] = null;
     }
       json[r'error'] = this.error;
+      json[r'error_pending_delivery_info_exists'] = this.errorPendingDeliveryInfoExists;
       json[r'error_receiver_blocked_sender_or_receiver_not_found'] = this.errorReceiverBlockedSenderOrReceiverNotFound;
       json[r'error_receiver_public_key_outdated'] = this.errorReceiverPublicKeyOutdated;
       json[r'error_sender_public_key_outdated'] = this.errorSenderPublicKeyOutdated;
       json[r'error_too_many_receiver_acknowledgements_missing'] = this.errorTooManyReceiverAcknowledgementsMissing;
       json[r'error_too_many_sender_acknowledgements_missing'] = this.errorTooManySenderAcknowledgementsMissing;
+    if (this.remainingConversationMessages != null) {
+      json[r'remaining_conversation_messages'] = this.remainingConversationMessages;
+    } else {
+      json[r'remaining_conversation_messages'] = null;
+    }
     if (this.remainingMessages != null) {
       json[r'remaining_messages'] = this.remainingMessages;
     } else {
@@ -111,11 +130,13 @@ class SendMessageResult {
       return SendMessageResult(
         d: mapValueOfType<String>(json, r'd'),
         error: mapValueOfType<bool>(json, r'error') ?? false,
+        errorPendingDeliveryInfoExists: mapValueOfType<bool>(json, r'error_pending_delivery_info_exists') ?? false,
         errorReceiverBlockedSenderOrReceiverNotFound: mapValueOfType<bool>(json, r'error_receiver_blocked_sender_or_receiver_not_found') ?? false,
         errorReceiverPublicKeyOutdated: mapValueOfType<bool>(json, r'error_receiver_public_key_outdated') ?? false,
         errorSenderPublicKeyOutdated: mapValueOfType<bool>(json, r'error_sender_public_key_outdated') ?? false,
         errorTooManyReceiverAcknowledgementsMissing: mapValueOfType<bool>(json, r'error_too_many_receiver_acknowledgements_missing') ?? false,
         errorTooManySenderAcknowledgementsMissing: mapValueOfType<bool>(json, r'error_too_many_sender_acknowledgements_missing') ?? false,
+        remainingConversationMessages: mapValueOfType<int>(json, r'remaining_conversation_messages'),
         remainingMessages: mapValueOfType<int>(json, r'remaining_messages'),
       );
     }

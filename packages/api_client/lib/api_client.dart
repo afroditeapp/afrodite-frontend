@@ -208,6 +208,8 @@ class ApiClient {
           return AccountStateContainer.fromJson(value);
         case 'AccountSyncVersion':
           return AccountSyncVersion.fromJson(value);
+        case 'AddFavoriteProfileResult':
+          return AddFavoriteProfileResult.fromJson(value);
         case 'AddPublicKeyResult':
           return AddPublicKeyResult.fromJson(value);
         case 'AdminBotConfig':
@@ -468,8 +470,6 @@ class ApiClient {
           return GetReportList.fromJson(value);
         case 'GetSentMessage':
           return GetSentMessage.fromJson(value);
-        case 'GroupValues':
-          return GroupValues.fromJson(value);
         case 'ImageProcessingDynamicConfig':
           return ImageProcessingDynamicConfig.fromJson(value);
         case 'InitEmailChange':
@@ -496,6 +496,10 @@ class ApiClient {
           return LastSeenTimeFilter.fromJson(value);
         case 'LatestBirthdate':
           return LatestBirthdate.fromJson(value);
+        case 'LatestSeenMessageInfo':
+          return LatestSeenMessageInfo.fromJson(value);
+        case 'LatestSeenMessageInfoList':
+          return LatestSeenMessageInfoList.fromJson(value);
         case 'LikesConfig':
           return LikesConfig.fromJson(value);
         case 'LimitedActionStatus':
@@ -752,8 +756,6 @@ class ApiClient {
           return RequestEmailLoginToken.fromJson(value);
         case 'RequestEmailLoginTokenResult':
           return RequestEmailLoginTokenResult.fromJson(value);
-        case 'ResendMessage':
-          return ResendMessage.fromJson(value);
         case 'ResetNewsIteratorResult':
           return ResetNewsIteratorResult.fromJson(value);
         case 'ResetReceivedLikesIteratorResult':
@@ -776,8 +778,6 @@ class ApiClient {
           return SecurityContent.fromJson(value);
         case 'SeenMessage':
           return SeenMessage.fromJson(value);
-        case 'SeenMessageList':
-          return SeenMessageList.fromJson(value);
         case 'SendLikeResult':
           return SendLikeResult.fromJson(value);
         case 'SendMessageResult':

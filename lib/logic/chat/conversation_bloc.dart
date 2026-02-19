@@ -401,26 +401,24 @@ Future<void> markMessageEntryListSeen(
   AccountDatabaseManager db,
   List<MessageEntry> allMessages,
 ) async {
-  final messageIds = allMessages
-      .map((m) {
-        final id = m.messageId;
-        final mn = m.messageNumber;
-        final sender = m.remoteAccountId;
-        if (id == null || mn == null) {
-          return null;
-        }
-        return SeenMessage(id: id, sender: sender, mn: mn);
-      })
-      .whereType<SeenMessage>()
-      .toList();
+  SeenMessage? latestMessage;
+  for (final m in allMessages) {
+    final mn = m.messageNumber;
+    if (mn == null) {
+      continue;
+    }
+    final current = latestMessage;
+    if (current == null || mn.mn > current.mn.mn) {
+      latestMessage = SeenMessage(mn: mn, sender: m.remoteAccountId);
+    }
+  }
 
-  if (messageIds.isEmpty) {
+  final seenMessage = latestMessage;
+  if (seenMessage == null) {
     return;
   }
 
-  final result = await api.chatAction(
-    (api) => api.postMarkMessagesAsSeen(SeenMessageList(messages: messageIds)),
-  );
+  final result = await api.chatAction((api) => api.postMarkMessageAsSeen(seenMessage));
 
   if (result.isOk()) {
     for (final message in allMessages) {

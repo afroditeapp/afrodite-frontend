@@ -382,9 +382,57 @@ class ChatApi {
     return null;
   }
 
+  /// Get pending latest seen message numbers where the API caller is the message sender. Returns entries that the viewer has reported as seen but have not yet been delivered back to the sender.
+  ///
+  /// The received entries must be deleted using delete API.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  Future<Response> getPendingLatestSeenMessagesWithHttpInfo() async {
+    // ignore: prefer_const_declarations
+    final path = r'/chat_api/pending_latest_seen_messages';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Get pending latest seen message numbers where the API caller is the message sender. Returns entries that the viewer has reported as seen but have not yet been delivered back to the sender.
+  ///
+  /// The received entries must be deleted using delete API.
+  Future<LatestSeenMessageInfoList?> getPendingLatestSeenMessages() async {
+    final response = await getPendingLatestSeenMessagesWithHttpInfo();
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'LatestSeenMessageInfoList',) as LatestSeenMessageInfoList;
+    
+    }
+    return null;
+  }
+
   /// Get list of pending messages.
   ///
-  /// Sender can resend the same message, so client must prevent replacing successfully received messages.  The returned bytes is - Hide notifications (u8, values: 0 or 1) - List of objects  Data for single object: - Binary data length as minimal i64 - Binary data  Minimal i64 has this format: - i64 byte count (u8, values: 1, 2, 4, 8) - i64 bytes (little-endian)  Binary data is binary PGP message which contains backend signed binary data. The binary data contains: - Version (u8, values: 1) - Sender AccountId UUID big-endian bytes (16 bytes) - Receiver AccountId UUID big-endian bytes (16 bytes) - Message MessageId UUID big-endian bytes (16 bytes) - Sender public key ID (minimal i64) - Receiver public key ID (minimal i64) - Message number (minimal i64) - Unix time (minimal i64) - Message data
+  /// The returned bytes is - Hide notifications (u8, values: 0 or 1) - List of objects  Data for single object: - Binary data length as minimal i64 - Binary data  Minimal i64 has this format: - i64 byte count (u8, values: 1, 2, 4, 8) - i64 bytes (little-endian)  Binary data is binary PGP message which contains backend signed binary data. The binary data contains: - Version (u8, values: 1) - Sender AccountId UUID big-endian bytes (16 bytes) - Receiver AccountId UUID big-endian bytes (16 bytes) - Message MessageId UUID big-endian bytes (16 bytes) - Sender public key ID (minimal i64) - Receiver public key ID (minimal i64) - Message number (minimal i64) - Unix time (minimal i64) - Message data
   ///
   /// Note: This method returns the HTTP [Response].
   Future<Response> getPendingMessagesWithHttpInfo() async {
@@ -414,7 +462,7 @@ class ChatApi {
 
   /// Get list of pending messages.
   ///
-  /// Sender can resend the same message, so client must prevent replacing successfully received messages.  The returned bytes is - Hide notifications (u8, values: 0 or 1) - List of objects  Data for single object: - Binary data length as minimal i64 - Binary data  Minimal i64 has this format: - i64 byte count (u8, values: 1, 2, 4, 8) - i64 bytes (little-endian)  Binary data is binary PGP message which contains backend signed binary data. The binary data contains: - Version (u8, values: 1) - Sender AccountId UUID big-endian bytes (16 bytes) - Receiver AccountId UUID big-endian bytes (16 bytes) - Message MessageId UUID big-endian bytes (16 bytes) - Sender public key ID (minimal i64) - Receiver public key ID (minimal i64) - Message number (minimal i64) - Unix time (minimal i64) - Message data
+  /// The returned bytes is - Hide notifications (u8, values: 0 or 1) - List of objects  Data for single object: - Binary data length as minimal i64 - Binary data  Minimal i64 has this format: - i64 byte count (u8, values: 1, 2, 4, 8) - i64 bytes (little-endian)  Binary data is binary PGP message which contains backend signed binary data. The binary data contains: - Version (u8, values: 1) - Sender AccountId UUID big-endian bytes (16 bytes) - Receiver AccountId UUID big-endian bytes (16 bytes) - Message MessageId UUID big-endian bytes (16 bytes) - Sender public key ID (minimal i64) - Receiver public key ID (minimal i64) - Message number (minimal i64) - Unix time (minimal i64) - Message data
   Future<MultipartFile?> getPendingMessages() async {
     final response = await getPendingMessagesWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
@@ -1098,6 +1146,50 @@ class ChatApi {
     }
   }
 
+  /// Delete pending latest seen message entries.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [LatestSeenMessageInfoList] latestSeenMessageInfoList (required):
+  Future<Response> postDeletePendingLatestSeenMessagesWithHttpInfo(LatestSeenMessageInfoList latestSeenMessageInfoList,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/chat_api/pending_latest_seen_messages/delete';
+
+    // ignore: prefer_final_locals
+    Object? postBody = latestSeenMessageInfoList;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Delete pending latest seen message entries.
+  ///
+  /// Parameters:
+  ///
+  /// * [LatestSeenMessageInfoList] latestSeenMessageInfoList (required):
+  Future<void> postDeletePendingLatestSeenMessages(LatestSeenMessageInfoList latestSeenMessageInfoList,) async {
+    final response = await postDeletePendingLatestSeenMessagesWithHttpInfo(latestSeenMessageInfoList,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+  }
+
   /// Get requested page of matches iterator page. If the page is empty there is no more matches available.
   ///
   /// Note: This method returns the HTTP [Response].
@@ -1303,21 +1395,19 @@ class ChatApi {
     return null;
   }
 
-  /// Mark received messages as seen.
-  ///
-  /// This endpoint allows message receivers to mark messages as seen. The seen status is saved to the message_delivery_info table and an event is sent to each message sender to notify them of the state change.
+  /// Mark received message as seen. Only latest message number is stored so client should mark the latest messages as seen.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
   /// Parameters:
   ///
-  /// * [SeenMessageList] seenMessageList (required):
-  Future<Response> postMarkMessagesAsSeenWithHttpInfo(SeenMessageList seenMessageList,) async {
+  /// * [SeenMessage] seenMessage (required):
+  Future<Response> postMarkMessageAsSeenWithHttpInfo(SeenMessage seenMessage,) async {
     // ignore: prefer_const_declarations
-    final path = r'/chat_api/mark_messages_as_seen';
+    final path = r'/chat_api/mark_message_as_seen';
 
     // ignore: prefer_final_locals
-    Object? postBody = seenMessageList;
+    Object? postBody = seenMessage;
 
     final queryParams = <QueryParam>[];
     final headerParams = <String, String>{};
@@ -1337,15 +1427,13 @@ class ChatApi {
     );
   }
 
-  /// Mark received messages as seen.
-  ///
-  /// This endpoint allows message receivers to mark messages as seen. The seen status is saved to the message_delivery_info table and an event is sent to each message sender to notify them of the state change.
+  /// Mark received message as seen. Only latest message number is stored so client should mark the latest messages as seen.
   ///
   /// Parameters:
   ///
-  /// * [SeenMessageList] seenMessageList (required):
-  Future<void> postMarkMessagesAsSeen(SeenMessageList seenMessageList,) async {
-    final response = await postMarkMessagesAsSeenWithHttpInfo(seenMessageList,);
+  /// * [SeenMessage] seenMessage (required):
+  Future<void> postMarkMessageAsSeen(SeenMessage seenMessage,) async {
+    final response = await postMarkMessageAsSeenWithHttpInfo(seenMessage,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -1388,62 +1476,6 @@ class ChatApi {
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
-  }
-
-  /// Resend a message.
-  ///
-  /// Uses the normal send pipeline while preserving original message metadata.
-  ///
-  /// Note: This method returns the HTTP [Response].
-  ///
-  /// Parameters:
-  ///
-  /// * [ResendMessage] resendMessage (required):
-  Future<Response> postResendMessageWithHttpInfo(ResendMessage resendMessage,) async {
-    // ignore: prefer_const_declarations
-    final path = r'/chat_api/resend_message';
-
-    // ignore: prefer_final_locals
-    Object? postBody = resendMessage;
-
-    final queryParams = <QueryParam>[];
-    final headerParams = <String, String>{};
-    final formParams = <String, String>{};
-
-    const contentTypes = <String>['application/json'];
-
-
-    return apiClient.invokeAPI(
-      path,
-      'POST',
-      queryParams,
-      postBody,
-      headerParams,
-      formParams,
-      contentTypes.isEmpty ? null : contentTypes.first,
-    );
-  }
-
-  /// Resend a message.
-  ///
-  /// Uses the normal send pipeline while preserving original message metadata.
-  ///
-  /// Parameters:
-  ///
-  /// * [ResendMessage] resendMessage (required):
-  Future<SendMessageResult?> postResendMessage(ResendMessage resendMessage,) async {
-    final response = await postResendMessageWithHttpInfo(resendMessage,);
-    if (response.statusCode >= HttpStatus.badRequest) {
-      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
-    }
-    // When a remote server returns no body with a status of 204, we shall not decode it.
-    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
-    // FormatException when trying to decode an empty string.
-    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'SendMessageResult',) as SendMessageResult;
-    
-    }
-    return null;
   }
 
   /// Performs an HTTP 'POST /chat_api/reset_new_received_likes_count' operation and returns the [Response].
@@ -1586,7 +1618,7 @@ class ChatApi {
 
   /// Send message to a match.
   ///
-  /// Max pending message count is 50. Max message size is u16::MAX.  Sending will fail if one or two way block exists.  Only the latest public key for sender and receiver can be used when sending a message.
+  /// Server config file defines max count for conversation pending messages. Max message size is u16::MAX.  Sending will fail if one or two way block exists.  Only the latest public key for sender and receiver can be used when sending a message.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -1635,7 +1667,7 @@ class ChatApi {
 
   /// Send message to a match.
   ///
-  /// Max pending message count is 50. Max message size is u16::MAX.  Sending will fail if one or two way block exists.  Only the latest public key for sender and receiver can be used when sending a message.
+  /// Server config file defines max count for conversation pending messages. Max message size is u16::MAX.  Sending will fail if one or two way block exists.  Only the latest public key for sender and receiver can be used when sending a message.
   ///
   /// Parameters:
   ///

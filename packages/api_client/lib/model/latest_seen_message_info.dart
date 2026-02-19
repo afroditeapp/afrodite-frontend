@@ -10,43 +10,44 @@
 
 part of openapi.api;
 
-class SeenMessage {
-  /// Returns a new [SeenMessage] instance.
-  SeenMessage({
+class LatestSeenMessageInfo {
+  /// Returns a new [LatestSeenMessageInfo] instance.
+  LatestSeenMessageInfo({
     required this.mn,
-    required this.sender,
+    required this.viewer,
   });
 
+  /// Latest message number seen by the viewer
   MessageNumber mn;
 
-  /// Sender of the message.
-  AccountId sender;
+  /// Account which viewed/received the message
+  AccountId viewer;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is SeenMessage &&
+  bool operator ==(Object other) => identical(this, other) || other is LatestSeenMessageInfo &&
     other.mn == mn &&
-    other.sender == sender;
+    other.viewer == viewer;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (mn.hashCode) +
-    (sender.hashCode);
+    (viewer.hashCode);
 
   @override
-  String toString() => 'SeenMessage[mn=$mn, sender=$sender]';
+  String toString() => 'LatestSeenMessageInfo[mn=$mn, viewer=$viewer]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'mn'] = this.mn;
-      json[r'sender'] = this.sender;
+      json[r'viewer'] = this.viewer;
     return json;
   }
 
-  /// Returns a new [SeenMessage] instance and imports its values from
+  /// Returns a new [LatestSeenMessageInfo] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static SeenMessage? fromJson(dynamic value) {
+  static LatestSeenMessageInfo? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -55,25 +56,25 @@ class SeenMessage {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "SeenMessage[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "SeenMessage[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "LatestSeenMessageInfo[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "LatestSeenMessageInfo[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return SeenMessage(
+      return LatestSeenMessageInfo(
         mn: MessageNumber.fromJson(json[r'mn'])!,
-        sender: AccountId.fromJson(json[r'sender'])!,
+        viewer: AccountId.fromJson(json[r'viewer'])!,
       );
     }
     return null;
   }
 
-  static List<SeenMessage> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <SeenMessage>[];
+  static List<LatestSeenMessageInfo> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <LatestSeenMessageInfo>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = SeenMessage.fromJson(row);
+        final value = LatestSeenMessageInfo.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -82,12 +83,12 @@ class SeenMessage {
     return result.toList(growable: growable);
   }
 
-  static Map<String, SeenMessage> mapFromJson(dynamic json) {
-    final map = <String, SeenMessage>{};
+  static Map<String, LatestSeenMessageInfo> mapFromJson(dynamic json) {
+    final map = <String, LatestSeenMessageInfo>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = SeenMessage.fromJson(entry.value);
+        final value = LatestSeenMessageInfo.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -96,14 +97,14 @@ class SeenMessage {
     return map;
   }
 
-  // maps a json object with a list of SeenMessage-objects as value to a dart map
-  static Map<String, List<SeenMessage>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<SeenMessage>>{};
+  // maps a json object with a list of LatestSeenMessageInfo-objects as value to a dart map
+  static Map<String, List<LatestSeenMessageInfo>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<LatestSeenMessageInfo>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = SeenMessage.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = LatestSeenMessageInfo.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;
@@ -112,7 +113,7 @@ class SeenMessage {
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
     'mn',
-    'sender',
+    'viewer',
   };
 }
 

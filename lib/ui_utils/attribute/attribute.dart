@@ -89,14 +89,11 @@ class UiAttribute {
     final valuesAndGroupValues = <UiAttributeValue>[];
     for (final levelOneValue in attributeValues) {
       valuesAndGroupValues.add(levelOneValue);
-      final groupValues =
-          levelOneValue
-              .apiValue()
-              .groupValues
-              ?.values
-              .map((v) => UiAttributeValue.createFrom(attribute, v, levelOneValue, locale))
-              .toList() ??
-          [];
+      final groupValues = levelOneValue
+          .apiValue()
+          .groupValues
+          .map((v) => UiAttributeValue.createFrom(attribute, v, levelOneValue, locale))
+          .toList();
       reorderAttributeValues(groupValues, attribute.valueOrder);
       valuesAndGroupValues.addAll(groupValues);
     }
@@ -174,7 +171,7 @@ class UiAttributeValue {
 
   bool isGroupValue() => _groupValueParent != null;
 
-  bool isParentOfGroupValue() => apiValue().groupValues?.values.isNotEmpty ?? false;
+  bool isParentOfGroupValue() => apiValue().groupValues.isNotEmpty;
 
   int selectedValueForApi() {
     final groupValueParent = _groupValueParent;

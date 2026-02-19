@@ -14,7 +14,7 @@ class AttributeValue {
   /// Returns a new [AttributeValue] instance.
   AttributeValue({
     this.editable = true,
-    this.groupValues,
+    this.groupValues = const [],
     this.icon,
     required this.id,
     required this.key,
@@ -25,8 +25,8 @@ class AttributeValue {
 
   bool editable;
 
-  /// Sub level values for this attribute value.
-  GroupValues? groupValues;
+  /// Change attribute value to be a group identifier. Max depth 2.  Vec values are sorted by [AttributeValue::id]. Indexing with the ID is not possible as ID values start from 1.
+  List<AttributeValue> groupValues;
 
   String? icon;
 
@@ -51,7 +51,7 @@ class AttributeValue {
   @override
   bool operator ==(Object other) => identical(this, other) || other is AttributeValue &&
     other.editable == editable &&
-    other.groupValues == groupValues &&
+    _deepEquality.equals(other.groupValues, groupValues) &&
     other.icon == icon &&
     other.id == id &&
     other.key == key &&
@@ -63,7 +63,7 @@ class AttributeValue {
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (editable.hashCode) +
-    (groupValues == null ? 0 : groupValues!.hashCode) +
+    (groupValues.hashCode) +
     (icon == null ? 0 : icon!.hashCode) +
     (id.hashCode) +
     (key.hashCode) +
@@ -77,11 +77,7 @@ class AttributeValue {
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'editable'] = this.editable;
-    if (this.groupValues != null) {
       json[r'group_values'] = this.groupValues;
-    } else {
-      json[r'group_values'] = null;
-    }
     if (this.icon != null) {
       json[r'icon'] = this.icon;
     } else {
@@ -115,7 +111,7 @@ class AttributeValue {
 
       return AttributeValue(
         editable: mapValueOfType<bool>(json, r'editable') ?? true,
-        groupValues: GroupValues.fromJson(json[r'group_values']),
+        groupValues: AttributeValue.listFromJson(json[r'group_values']),
         icon: mapValueOfType<String>(json, r'icon'),
         id: mapValueOfType<int>(json, r'id')!,
         key: mapValueOfType<String>(json, r'key')!,

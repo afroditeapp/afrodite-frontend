@@ -35,6 +35,7 @@ lib/model/account_locked_state.dart
 lib/model/account_setup.dart
 lib/model/account_state_container.dart
 lib/model/account_sync_version.dart
+lib/model/add_favorite_profile_result.dart
 lib/model/add_public_key_result.dart
 lib/model/admin_bot_config.dart
 lib/model/admin_bot_notification_types.dart
@@ -165,7 +166,6 @@ lib/model/get_profile_string_state.dart
 lib/model/get_push_notification_info.dart
 lib/model/get_report_list.dart
 lib/model/get_sent_message.dart
-lib/model/group_values.dart
 lib/model/image_processing_dynamic_config.dart
 lib/model/init_email_change.dart
 lib/model/init_email_change_admin.dart
@@ -179,6 +179,8 @@ lib/model/jitsi_meet_url.dart
 lib/model/language.dart
 lib/model/last_seen_time_filter.dart
 lib/model/latest_birthdate.dart
+lib/model/latest_seen_message_info.dart
+lib/model/latest_seen_message_info_list.dart
 lib/model/likes_config.dart
 lib/model/limited_action_status.dart
 lib/model/llm_content_moderation_config.dart
@@ -307,7 +309,6 @@ lib/model/report_processing_state.dart
 lib/model/report_type_number.dart
 lib/model/request_email_login_token.dart
 lib/model/request_email_login_token_result.dart
-lib/model/resend_message.dart
 lib/model/reset_news_iterator_result.dart
 lib/model/reset_received_likes_iterator_result.dart
 lib/model/scheduled_maintenance_status.dart
@@ -319,7 +320,6 @@ lib/model/search_age_range.dart
 lib/model/search_groups.dart
 lib/model/security_content.dart
 lib/model/seen_message.dart
-lib/model/seen_message_list.dart
 lib/model/send_like_result.dart
 lib/model/send_message_result.dart
 lib/model/send_verify_email_message_result.dart

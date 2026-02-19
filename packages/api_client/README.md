@@ -132,6 +132,7 @@ Class | Method | HTTP request | Description
 *ChatApi* | [**getInitialMatchesIteratorState**](doc//ChatApi.md#getinitialmatchesiteratorstate) | **GET** /chat_api/matches/initial_state | 
 *ChatApi* | [**getLatestPublicKeyId**](doc//ChatApi.md#getlatestpublickeyid) | **GET** /chat_api/latest_public_key_id/{aid} | Get latest public key ID for some account
 *ChatApi* | [**getMessageDeliveryInfo**](doc//ChatApi.md#getmessagedeliveryinfo) | **GET** /chat_api/message_delivery_info | Get all message delivery info where the API caller is the message sender.
+*ChatApi* | [**getPendingLatestSeenMessages**](doc//ChatApi.md#getpendinglatestseenmessages) | **GET** /chat_api/pending_latest_seen_messages | Get pending latest seen message numbers where the API caller is the message sender. Returns entries that the viewer has reported as seen but have not yet been delivered back to the sender.
 *ChatApi* | [**getPendingMessages**](doc//ChatApi.md#getpendingmessages) | **GET** /chat_api/pending_messages | Get list of pending messages.
 *ChatApi* | [**getPrivatePublicKeyInfo**](doc//ChatApi.md#getprivatepublickeyinfo) | **GET** /chat_api/private_public_key_info/{aid} | Get private public key info
 *ChatApi* | [**getPublicKey**](doc//ChatApi.md#getpublickey) | **GET** /chat_api/public_key/{aid} | Get current public key of some account
@@ -147,13 +148,13 @@ Class | Method | HTTP request | Description
 *ChatApi* | [**postChatPrivacySettings**](doc//ChatApi.md#postchatprivacysettings) | **POST** /chat_api/post_chat_privacy_settings | 
 *ChatApi* | [**postCreateVideoCallUrl**](doc//ChatApi.md#postcreatevideocallurl) | **POST** /chat_api/post_create_video_call_url | Create video call URL to a meeting with an user.
 *ChatApi* | [**postDeleteMessageDeliveryInfo**](doc//ChatApi.md#postdeletemessagedeliveryinfo) | **POST** /chat_api/delete_message_delivery_info | Delete message delivery info entries by their database IDs.
+*ChatApi* | [**postDeletePendingLatestSeenMessages**](doc//ChatApi.md#postdeletependinglatestseenmessages) | **POST** /chat_api/pending_latest_seen_messages/delete | Delete pending latest seen message entries.
 *ChatApi* | [**postGetMatchesIteratorPage**](doc//ChatApi.md#postgetmatchesiteratorpage) | **POST** /chat_api/matches | Get requested page of matches iterator page. If the page is empty there is no more matches available.
 *ChatApi* | [**postGetNewReceivedLikesCount**](doc//ChatApi.md#postgetnewreceivedlikescount) | **POST** /chat_api/new_received_likes_count | 
 *ChatApi* | [**postGetReceivedLikesPage**](doc//ChatApi.md#postgetreceivedlikespage) | **POST** /chat_api/received_likes | Get next page of received likes. If the page is empty there is no more received likes available.
 *ChatApi* | [**postGetSentMessage**](doc//ChatApi.md#postgetsentmessage) | **POST** /chat_api/sent_message | Receive unreceived [model_chat::SignedMessageData] for sent message.
-*ChatApi* | [**postMarkMessagesAsSeen**](doc//ChatApi.md#postmarkmessagesasseen) | **POST** /chat_api/mark_messages_as_seen | Mark received messages as seen.
+*ChatApi* | [**postMarkMessageAsSeen**](doc//ChatApi.md#postmarkmessageasseen) | **POST** /chat_api/mark_message_as_seen | Mark received message as seen. Only latest message number is stored so client should mark the latest messages as seen.
 *ChatApi* | [**postMarkReceivedLikesViewed**](doc//ChatApi.md#postmarkreceivedlikesviewed) | **POST** /chat_api/mark_received_likes_viewed | 
-*ChatApi* | [**postResendMessage**](doc//ChatApi.md#postresendmessage) | **POST** /chat_api/resend_message | Resend a message.
 *ChatApi* | [**postResetNewReceivedLikesCount**](doc//ChatApi.md#postresetnewreceivedlikescount) | **POST** /chat_api/reset_new_received_likes_count | 
 *ChatApi* | [**postResetReceivedLikesPaging**](doc//ChatApi.md#postresetreceivedlikespaging) | **POST** /chat_api/received_likes/reset | 
 *ChatApi* | [**postSendLike**](doc//ChatApi.md#postsendlike) | **POST** /chat_api/send_like | Send a like to some account. If both will like each other, then the accounts will be a match.
@@ -281,6 +282,7 @@ Class | Method | HTTP request | Description
  - [AccountSetup](doc//AccountSetup.md)
  - [AccountStateContainer](doc//AccountStateContainer.md)
  - [AccountSyncVersion](doc//AccountSyncVersion.md)
+ - [AddFavoriteProfileResult](doc//AddFavoriteProfileResult.md)
  - [AddPublicKeyResult](doc//AddPublicKeyResult.md)
  - [AdminBotConfig](doc//AdminBotConfig.md)
  - [AdminBotNotificationTypes](doc//AdminBotNotificationTypes.md)
@@ -411,7 +413,6 @@ Class | Method | HTTP request | Description
  - [GetPushNotificationInfo](doc//GetPushNotificationInfo.md)
  - [GetReportList](doc//GetReportList.md)
  - [GetSentMessage](doc//GetSentMessage.md)
- - [GroupValues](doc//GroupValues.md)
  - [ImageProcessingDynamicConfig](doc//ImageProcessingDynamicConfig.md)
  - [InitEmailChange](doc//InitEmailChange.md)
  - [InitEmailChangeAdmin](doc//InitEmailChangeAdmin.md)
@@ -425,6 +426,8 @@ Class | Method | HTTP request | Description
  - [Language](doc//Language.md)
  - [LastSeenTimeFilter](doc//LastSeenTimeFilter.md)
  - [LatestBirthdate](doc//LatestBirthdate.md)
+ - [LatestSeenMessageInfo](doc//LatestSeenMessageInfo.md)
+ - [LatestSeenMessageInfoList](doc//LatestSeenMessageInfoList.md)
  - [LikesConfig](doc//LikesConfig.md)
  - [LimitedActionStatus](doc//LimitedActionStatus.md)
  - [LlmContentModerationConfig](doc//LlmContentModerationConfig.md)
@@ -553,7 +556,6 @@ Class | Method | HTTP request | Description
  - [ReportTypeNumber](doc//ReportTypeNumber.md)
  - [RequestEmailLoginToken](doc//RequestEmailLoginToken.md)
  - [RequestEmailLoginTokenResult](doc//RequestEmailLoginTokenResult.md)
- - [ResendMessage](doc//ResendMessage.md)
  - [ResetNewsIteratorResult](doc//ResetNewsIteratorResult.md)
  - [ResetReceivedLikesIteratorResult](doc//ResetReceivedLikesIteratorResult.md)
  - [ScheduledMaintenanceStatus](doc//ScheduledMaintenanceStatus.md)
@@ -565,7 +567,6 @@ Class | Method | HTTP request | Description
  - [SearchGroups](doc//SearchGroups.md)
  - [SecurityContent](doc//SecurityContent.md)
  - [SeenMessage](doc//SeenMessage.md)
- - [SeenMessageList](doc//SeenMessageList.md)
  - [SendLikeResult](doc//SendLikeResult.md)
  - [SendMessageResult](doc//SendMessageResult.md)
  - [SendVerifyEmailMessageResult](doc//SendVerifyEmailMessageResult.md)
