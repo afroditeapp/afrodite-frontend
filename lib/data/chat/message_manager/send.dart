@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:app/data/chat/backend_signed_message.dart';
+import 'package:app/data/chat/message_manager/delivery_info.dart';
 import 'package:app/data/chat/message_manager/public_key.dart';
 import 'package:database/database.dart';
 import 'package:flutter/foundation.dart';
@@ -28,11 +29,13 @@ class SendMessageUtils {
   final AccountDatabaseManager db;
   final AccountId currentUser;
   final ProfileRepository profile;
+  final DeliveryInfoUtils deliveryInfoUtils;
 
   final PublicKeyUtils publicKeyUtils;
 
   SendMessageUtils(this.messageKeyManager, this.api, this.db, this.currentUser, this.profile)
-    : publicKeyUtils = PublicKeyUtils(db, api, currentUser);
+    : publicKeyUtils = PublicKeyUtils(db, api, currentUser),
+      deliveryInfoUtils = DeliveryInfoUtils(db, api, currentUser);
 
   bool allSentMessagesAcknowledgedOnce = false;
 
@@ -165,6 +168,7 @@ class SendMessageUtils {
     MessageNumber messageNumberFromServer;
     Uint8List backendSignedPgpMessage;
     var messageSenderAcknowledgementTried = false;
+    var pendingDeliveryInfoReceivingTried = false;
     while (true) {
       final requestResult = await api.chat(
         (api) => api.postSendMessage(
@@ -216,6 +220,20 @@ class SendMessageUtils {
             yield ErrorAfterMessageSaving(localId);
             return;
           }
+          continue;
+        }
+      }
+
+      if (result.errorPendingDeliveryInfoExists) {
+        if (pendingDeliveryInfoReceivingTried) {
+          yield ErrorAfterMessageSaving(localId);
+          return;
+        } else {
+          pendingDeliveryInfoReceivingTried = true;
+
+          _log.error("Send message error: pending delivery info exists");
+
+          await deliveryInfoUtils.receiveMessageDeliveryInfo();
           continue;
         }
       }
