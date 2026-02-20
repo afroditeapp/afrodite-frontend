@@ -173,4 +173,25 @@ class DaoWriteMessage extends DatabaseAccessor<AccountDatabase> with _$DaoWriteM
       ),
     );
   }
+
+  Future<void> updateSentMessagesToSeen(
+    api.AccountId remoteAccountId,
+    api.MessageNumber messageNumber,
+  ) async {
+    await (update(message)
+          ..where((t) => t.remoteAccountId.equals(remoteAccountId.aid))
+          ..where((t) => t.messageNumber.isNotNull())
+          ..where((t) => t.messageNumber.isSmallerOrEqualValue(messageNumber.mn))
+          ..where(
+            (t) =>
+                t.messageState.equals(dbm.SentMessageState.sent.toDbState().number) |
+                t.messageState.equals(dbm.SentMessageState.delivered.toDbState().number),
+          ))
+        .write(
+          MessageCompanion(
+            messageState: Value(dbm.SentMessageState.seen.toDbState().number),
+            seenUnixTime: Value(UtcDateTime.now()),
+          ),
+        );
+  }
 }

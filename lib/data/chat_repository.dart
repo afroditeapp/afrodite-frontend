@@ -256,6 +256,12 @@ class ChatRepository extends DataRepositoryWithLifecycle {
     await cmd.waitCompletionAndDispose();
   }
 
+  Future<void> receiveLatestSeenMessageInfo() async {
+    final cmd = ReceiveLatestSeenMessageInfo();
+    messageManager.queueCmd(cmd);
+    await cmd.waitCompletionAndDispose();
+  }
+
   // Local messages
   Stream<MessageEntry?> watchLatestMessage(AccountId match) {
     return db.accountStream((db) => db.message.watchLatestMessage(match));

@@ -100,6 +100,32 @@ class DeliveryInfoUtils {
     }
   }
 
+  Future<void> receiveLatestSeenMessageInfo() async {
+    final seenInfoList = await api.chat((api) => api.getPendingLatestSeenMessages()).ok();
+    if (seenInfoList == null) {
+      return;
+    }
+
+    final List<LatestSeenMessageInfo> processedInfo = [];
+
+    for (final info in seenInfoList.info) {
+      final result = await db.accountAction(
+        (db) => db.message.updateSentMessagesToSeen(info.viewer, info.mn),
+      );
+
+      if (result.isOk()) {
+        processedInfo.add(info);
+      }
+    }
+
+    if (processedInfo.isNotEmpty) {
+      await api.chatAction(
+        (api) =>
+            api.postDeletePendingLatestSeenMessages(LatestSeenMessageInfoList(info: processedInfo)),
+      );
+    }
+  }
+
   Future<void> _setProfileOnlineIfDeliveryInfoIsRecent(
     AccountId accountId,
     UtcDateTime eventTime,

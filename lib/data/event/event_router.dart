@@ -125,6 +125,8 @@ class EventRouter {
         }
       case EventType.messageDeliveryInfoChanged:
         await chat.receiveMessageDeliveryInfo();
+      case EventType.latestSeenMessageChanged:
+        await chat.receiveLatestSeenMessageInfo();
       default:
         _log.error("Unknown EventToClient type: $type");
     }

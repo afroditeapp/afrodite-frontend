@@ -35,6 +35,8 @@ class ReceiveNewMessages extends MessageManagerCmd<()> {}
 
 class ReceiveMessageDeliveryInfo extends MessageManagerCmd<()> {}
 
+class ReceiveLatestSeenMessageInfo extends MessageManagerCmd<()> {}
+
 class SendMessage extends BaseMessageManagerCmd {
   final ReplaySubject<MessageSendingEvent?> _events = ReplaySubject();
   final AccountId receiverAccount;
@@ -133,6 +135,9 @@ class MessageManager extends LifecycleMethods {
               cmd.completed.add(());
             case ReceiveMessageDeliveryInfo():
               await deliveryInfoUtils.receiveMessageDeliveryInfo();
+              cmd.completed.add(());
+            case ReceiveLatestSeenMessageInfo():
+              await deliveryInfoUtils.receiveLatestSeenMessageInfo();
               cmd.completed.add(());
             case SendMessage(:final _events, :final receiverAccount, :final message):
               await for (final event in sendMessageUtils.sendMessageTo(receiverAccount, message)) {
