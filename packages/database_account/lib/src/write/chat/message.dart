@@ -177,6 +177,7 @@ class DaoWriteMessage extends DatabaseAccessor<AccountDatabase> with _$DaoWriteM
   Future<void> updateSentMessagesToSeen(
     api.AccountId remoteAccountId,
     api.MessageNumber messageNumber,
+    UtcDateTime seenTime,
   ) async {
     await (update(message)
           ..where((t) => t.remoteAccountId.equals(remoteAccountId.aid))
@@ -190,7 +191,7 @@ class DaoWriteMessage extends DatabaseAccessor<AccountDatabase> with _$DaoWriteM
         .write(
           MessageCompanion(
             messageState: Value(dbm.SentMessageState.seen.toDbState().number),
-            seenUnixTime: Value(UtcDateTime.now()),
+            seenUnixTime: Value(seenTime),
           ),
         );
   }

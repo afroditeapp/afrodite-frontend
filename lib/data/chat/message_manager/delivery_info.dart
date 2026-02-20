@@ -110,7 +110,7 @@ class DeliveryInfoUtils {
 
     for (final info in seenInfoList.info) {
       final result = await db.accountAction(
-        (db) => db.message.updateSentMessagesToSeen(info.viewer, info.mn),
+        (db) => db.message.updateSentMessagesToSeen(info.viewer, info.mn, info.ut.toUtcDateTime()),
       );
 
       if (result.isOk()) {
