@@ -14,10 +14,16 @@ class ScheduledMaintenanceStatus {
   /// Returns a new [ScheduledMaintenanceStatus] instance.
   ScheduledMaintenanceStatus({
     this.end,
+    this.maintenanceTarget = 0,
     this.start,
   });
 
   UnixTime? end;
+
+  /// Maintenance target  * 0 - Server * 1 - Admin bot
+  ///
+  /// Minimum value: 0
+  int maintenanceTarget;
 
   /// If None, ignore [Self::end].
   UnixTime? start;
@@ -25,16 +31,18 @@ class ScheduledMaintenanceStatus {
   @override
   bool operator ==(Object other) => identical(this, other) || other is ScheduledMaintenanceStatus &&
     other.end == end &&
+    other.maintenanceTarget == maintenanceTarget &&
     other.start == start;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (end == null ? 0 : end!.hashCode) +
+    (maintenanceTarget.hashCode) +
     (start == null ? 0 : start!.hashCode);
 
   @override
-  String toString() => 'ScheduledMaintenanceStatus[end=$end, start=$start]';
+  String toString() => 'ScheduledMaintenanceStatus[end=$end, maintenanceTarget=$maintenanceTarget, start=$start]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -43,6 +51,7 @@ class ScheduledMaintenanceStatus {
     } else {
       json[r'end'] = null;
     }
+      json[r'maintenance_target'] = this.maintenanceTarget;
     if (this.start != null) {
       json[r'start'] = this.start;
     } else {
@@ -71,6 +80,7 @@ class ScheduledMaintenanceStatus {
 
       return ScheduledMaintenanceStatus(
         end: UnixTime.fromJson(json[r'end']),
+        maintenanceTarget: mapValueOfType<int>(json, r'maintenance_target') ?? 0,
         start: UnixTime.fromJson(json[r'start']),
       );
     }

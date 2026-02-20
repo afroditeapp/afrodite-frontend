@@ -224,14 +224,14 @@ class SendMessageUtils {
         }
       }
 
-      if (result.errorPendingDeliveryInfoExists) {
+      if (result.errorTooManyPendingDeliveryInfosExists) {
         if (pendingDeliveryInfoReceivingTried) {
           yield ErrorAfterMessageSaving(localId);
           return;
         } else {
           pendingDeliveryInfoReceivingTried = true;
 
-          _log.error("Send message error: pending delivery info exists");
+          _log.error("Send message error: too many pending delivery infos exists");
 
           await deliveryInfoUtils.receiveMessageDeliveryInfo();
           continue;

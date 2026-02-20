@@ -14,11 +14,14 @@ class LatestSeenMessageInfo {
   /// Returns a new [LatestSeenMessageInfo] instance.
   LatestSeenMessageInfo({
     required this.mn,
+    required this.ut,
     required this.viewer,
   });
 
   /// Latest message number seen by the viewer
   MessageNumber mn;
+
+  UnixTime ut;
 
   /// Account which viewed/received the message
   AccountId viewer;
@@ -26,20 +29,23 @@ class LatestSeenMessageInfo {
   @override
   bool operator ==(Object other) => identical(this, other) || other is LatestSeenMessageInfo &&
     other.mn == mn &&
+    other.ut == ut &&
     other.viewer == viewer;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (mn.hashCode) +
+    (ut.hashCode) +
     (viewer.hashCode);
 
   @override
-  String toString() => 'LatestSeenMessageInfo[mn=$mn, viewer=$viewer]';
+  String toString() => 'LatestSeenMessageInfo[mn=$mn, ut=$ut, viewer=$viewer]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'mn'] = this.mn;
+      json[r'ut'] = this.ut;
       json[r'viewer'] = this.viewer;
     return json;
   }
@@ -64,6 +70,7 @@ class LatestSeenMessageInfo {
 
       return LatestSeenMessageInfo(
         mn: MessageNumber.fromJson(json[r'mn'])!,
+        ut: UnixTime.fromJson(json[r'ut'])!,
         viewer: AccountId.fromJson(json[r'viewer'])!,
       );
     }
@@ -113,6 +120,7 @@ class LatestSeenMessageInfo {
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
     'mn',
+    'ut',
     'viewer',
   };
 }
