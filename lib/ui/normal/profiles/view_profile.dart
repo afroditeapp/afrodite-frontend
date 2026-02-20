@@ -273,6 +273,7 @@ class ViewProfileScreen extends StatelessWidget {
       }
 
       if (state.showAddToFavoritesCompleted ||
+          state.showAddToFavoritesFailedTooMany ||
           state.showRemoveFromFavoritesCompleted ||
           state.showLikeCompleted ||
           state.showLikeFailedBecauseOfLimit ||
@@ -280,7 +281,21 @@ class ViewProfileScreen extends StatelessWidget {
           state.showLikeFailedBecauseAlreadyMatch ||
           state.showGenericError) {
         if (state.showAddToFavoritesCompleted) {
-          showSnackBar(context.strings.view_profile_screen_add_to_favorites_action_successful);
+          final space = state.addToFavoritesRemainingSpace;
+          if (space != null && space <= 5) {
+            showSnackBar(
+              context.strings.view_profile_screen_add_to_favorites_remaining_space(
+                space.toString(),
+              ),
+            );
+          } else {
+            showSnackBar(context.strings.view_profile_screen_add_to_favorites_action_successful);
+          }
+        }
+        if (state.showAddToFavoritesFailedTooMany) {
+          showSnackBar(
+            context.strings.view_profile_screen_add_to_favorites_error_too_many_favorites,
+          );
         }
         if (state.showRemoveFromFavoritesCompleted) {
           showSnackBar(context.strings.view_profile_screen_remove_from_favorites_action_successful);

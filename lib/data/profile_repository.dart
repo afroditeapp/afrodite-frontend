@@ -16,7 +16,6 @@ import 'package:app/data/profile/profile_downloader.dart';
 import 'package:app/data/utils.dart';
 import 'package:database/database.dart';
 import 'package:app/database/account_database_manager.dart';
-import 'package:app/utils/app_error.dart';
 import 'package:app/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:utils/utils.dart';
@@ -189,27 +188,33 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
     return await db.accountData((db) => db.profile.isInFavorites(accountId)).ok() ?? false;
   }
 
-  // Returns new isFavorite status for account. The status might not change
-  // if the operation fails.
-  Future<bool> toggleFavoriteStatus(AccountId accountId) async {
+  // Returns new isFavorite status for account and the possible error/info result.
+  // The status might not change if the operation fails.
+  Future<(bool, AddFavoriteProfileResult?)> toggleFavoriteStatus(AccountId accountId) async {
     final currentValue = await isInFavorites(accountId);
 
-    final Result<(), ActionApiError> status;
-    final bool newValue;
     if (currentValue) {
-      status = await _api.profileAction((api) => api.deleteFavoriteProfile(accountId));
-      newValue = false;
+      final status = await _api.profileAction((api) => api.deleteFavoriteProfile(accountId));
+      if (status.isErr()) {
+        return (currentValue, null);
+      } else {
+        await db.accountAction((db) => db.profile.setFavoriteStatus(accountId, false));
+        _profileChangesRelay.add(ProfileFavoriteStatusChange(accountId, false));
+        return (false, null);
+      }
     } else {
-      status = await _api.profileAction((api) => api.postFavoriteProfile(accountId));
-      newValue = true;
-    }
+      final result = await _api.profile((api) => api.postFavoriteProfile(accountId)).ok();
+      if (result == null) {
+        return (currentValue, null);
+      }
 
-    if (status.isErr()) {
-      return currentValue;
-    } else {
-      await db.accountAction((db) => db.profile.setFavoriteStatus(accountId, newValue));
-      _profileChangesRelay.add(ProfileFavoriteStatusChange(accountId, newValue));
-      return newValue;
+      if (result.error) {
+        return (currentValue, result);
+      }
+
+      await db.accountAction((db) => db.profile.setFavoriteStatus(accountId, true));
+      _profileChangesRelay.add(ProfileFavoriteStatusChange(accountId, true));
+      return (true, result);
     }
   }
 

@@ -1850,6 +1850,15 @@ class AppLocalizationsSv extends AppLocalizations {
   String get view_profile_screen_add_to_favorites_action_successful => 'Added to favorites';
 
   @override
+  String get view_profile_screen_add_to_favorites_error_too_many_favorites =>
+      'Too many favorite profiles';
+
+  @override
+  String view_profile_screen_add_to_favorites_remaining_space(String p0) {
+    return 'Remaining space in favorite profiles: $p0';
+  }
+
+  @override
   String get view_profile_screen_already_match => 'Chatting is already possible';
 
   @override

@@ -77,7 +77,7 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData> with Acti
 
         emit(state.copyWith(isFavorite: FavoriteStateChangeInProgress(!currentIsFavorite)));
 
-        final newValue = await profile.toggleFavoriteStatus(accountId);
+        final (newValue, result) = await profile.toggleFavoriteStatus(accountId);
         if (newValue != currentIsFavorite) {
           // Successful favorite status change
           if (newValue) {
@@ -85,6 +85,7 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData> with Acti
               state.copyWith(
                 isFavorite: FavoriteStateIdle(newValue),
                 showAddToFavoritesCompleted: true,
+                addToFavoritesRemainingSpace: result?.remainingFavoritesCount,
               ),
             );
           } else {
@@ -96,7 +97,14 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData> with Acti
             );
           }
         } else {
-          emit(state.copyWith(isFavorite: FavoriteStateIdle(newValue)));
+          final tooManyFavorites = result?.errorTooManyFavorites ?? false;
+          emit(
+            state.copyWith(
+              isFavorite: FavoriteStateIdle(newValue),
+              showAddToFavoritesFailedTooMany: tooManyFavorites,
+              showGenericError: !tooManyFavorites,
+            ),
+          );
         }
       });
     });
@@ -122,7 +130,9 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData> with Acti
     on<ResetShowMessages>((data, emit) async {
       emit(
         state.copyWith(
+          addToFavoritesRemainingSpace: null,
           showAddToFavoritesCompleted: false,
+          showAddToFavoritesFailedTooMany: false,
           showRemoveFromFavoritesCompleted: false,
           showLikeCompleted: false,
           showLikeFailedBecauseOfLimit: false,

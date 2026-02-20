@@ -3340,6 +3340,18 @@ abstract class AppLocalizations {
   /// **'Added to favorites'**
   String get view_profile_screen_add_to_favorites_action_successful;
 
+  /// Snackbar text when adding to favorites fails because of too many favorites
+  ///
+  /// In en, this message translates to:
+  /// **'Too many favorite profiles'**
+  String get view_profile_screen_add_to_favorites_error_too_many_favorites;
+
+  /// Snackbar text showing remaining favorite profile space
+  ///
+  /// In en, this message translates to:
+  /// **'Remaining space in favorite profiles: {p0}'**
+  String view_profile_screen_add_to_favorites_remaining_space(String p0);
+
   /// Snackbar text for view profile screen displayed when action failed because of the profile is already a match
   ///
   /// In en, this message translates to:

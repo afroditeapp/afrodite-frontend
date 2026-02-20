@@ -15,6 +15,8 @@ class ViewProfilesData with _$ViewProfilesData {
     ProfileActionState? profileActionState,
     @Default(false) bool isBlocked,
     @Default(false) bool showAddToFavoritesCompleted,
+    @Default(null) int? addToFavoritesRemainingSpace,
+    @Default(false) bool showAddToFavoritesFailedTooMany,
     @Default(false) bool showRemoveFromFavoritesCompleted,
     @Default(false) bool showLikeCompleted,
     @Default(false) bool showLikeFailedBecauseAlreadyLiked,

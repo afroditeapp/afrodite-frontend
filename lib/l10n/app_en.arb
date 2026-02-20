@@ -2462,6 +2462,19 @@
   "@view_profile_screen_add_to_favorites_action_successful": {
     "description": "Snackbar text for view profile screen add to favorites action result successful"
   },
+  "view_profile_screen_add_to_favorites_error_too_many_favorites": "Too many favorite profiles",
+  "@view_profile_screen_add_to_favorites_error_too_many_favorites": {
+    "description": "Snackbar text when adding to favorites fails because of too many favorites"
+  },
+  "view_profile_screen_add_to_favorites_remaining_space": "Remaining space in favorite profiles: {p0}",
+  "@view_profile_screen_add_to_favorites_remaining_space": {
+    "description": "Snackbar text showing remaining favorite profile space",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
   "view_profile_screen_already_match": "Chatting is already possible",
   "@view_profile_screen_already_match": {
     "description": "Snackbar text for view profile screen displayed when action failed because of the profile is already a match"

@@ -352,6 +352,8 @@
     <string name="view_profile_screen_chat_action" description="Text for view profile screen chat action">Chat</string>
     <string name="view_profile_screen_add_to_favorites_action" description="Text for view profile screen add to favorites action">Add to favorites</string>
     <string name="view_profile_screen_add_to_favorites_action_successful" description="Snackbar text for view profile screen add to favorites action result successful">Added to favorites</string>
+    <string name="view_profile_screen_add_to_favorites_error_too_many_favorites" description="Snackbar text when adding to favorites fails because of too many favorites">Too many favorite profiles</string>
+    <string name="view_profile_screen_add_to_favorites_remaining_space" description="Snackbar text showing remaining favorite profile space">Remaining space in favorite profiles: %s</string>
     <string name="view_profile_screen_remove_from_favorites_action" description="Text for view profile screen remove from favorites action">Remove from favorites</string>
     <string name="view_profile_screen_remove_from_favorites_action_successful" description="Snackbar text for view profile screen remove from favorites action result successful">Removed from favorites</string>
     <string name="view_profile_screen_like_action_successful" description="Snackbar text for view profile screen like action successful">Chat request sent</string>
