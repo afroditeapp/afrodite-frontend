@@ -3,10 +3,8 @@ import 'dart:typed_data';
 
 import 'package:app/data/account_repository.dart';
 import 'package:app/data/chat/check_online_status_manager.dart';
-import 'package:app/data/chat/message_manager/public_key.dart';
 import 'package:app/data/chat/message_manager/utils.dart';
 import 'package:app/data/chat/typing_indicator_manager.dart';
-import 'package:app/utils/api.dart';
 import 'package:app/utils/app_error.dart';
 import 'package:openapi/api.dart';
 import 'package:app/api/server_connection_manager.dart';
@@ -21,7 +19,6 @@ import 'package:app/data/utils.dart';
 import 'package:database/database.dart';
 import 'package:app/database/account_database_manager.dart';
 import 'package:app/utils/result.dart';
-import 'package:utils/utils.dart';
 
 class ChatRepository extends DataRepositoryWithLifecycle {
   final AccountDatabaseManager db;
@@ -254,104 +251,9 @@ class ChatRepository extends DataRepositoryWithLifecycle {
   }
 
   Future<void> receiveMessageDeliveryInfo() async {
-    final deliveryInfoList = await api.chat((api) => api.getMessageDeliveryInfo()).ok();
-    if (deliveryInfoList == null) {
-      return;
-    }
-
-    final List<int> processedIds = [];
-    final Set<AccountId> checkEncryptionKeyChanges = {};
-
-    for (final deliveryInfo in deliveryInfoList.info) {
-      final message = await db
-          .accountData(
-            (db) =>
-                db.message.getMessageUsingMessageId(deliveryInfo.receiver, deliveryInfo.messageId),
-          )
-          .ok();
-
-      if (message == null) {
-        // Message not found in DB
-        processedIds.add(deliveryInfo.id);
-        continue;
-      }
-
-      final currentState = message.messageState.toSentState();
-      if (currentState == null) {
-        // Not a sent message
-        processedIds.add(deliveryInfo.id);
-        continue;
-      }
-
-      SentMessageState? newState;
-      UtcDateTime? deliveredTime;
-      UtcDateTime? seenTime;
-
-      if (deliveryInfo.deliveryType == DeliveryInfoType.delivered) {
-        if (currentState != SentMessageState.seen) {
-          newState = SentMessageState.delivered;
-          deliveredTime = deliveryInfo.unixTime.toUtcDateTime();
-        }
-      } else if (deliveryInfo.deliveryType == DeliveryInfoType.deliveryFailed) {
-        checkEncryptionKeyChanges.add(deliveryInfo.receiver);
-        if (currentState != SentMessageState.seen && currentState != SentMessageState.delivered) {
-          newState = SentMessageState.deliveryFailed;
-        }
-      }
-
-      if (newState != null) {
-        final result = await db.accountAction(
-          (db) => db.message.updateSentMessageState(
-            message.localId,
-            sentState: newState,
-            deliveredUnixTime: deliveredTime,
-            seenUnixTime: seenTime,
-          ),
-        );
-
-        if (result.isOk()) {
-          // Only mark as processed if successfully saved to DB
-          processedIds.add(deliveryInfo.id);
-
-          await _setProfileOnlineIfDeliveryInfoIsRecent(
-            deliveryInfo.receiver,
-            deliveryInfo.unixTime.toUtcDateTime(),
-          );
-        }
-      } else {
-        // If no state change needed, still mark as processed
-        processedIds.add(deliveryInfo.id);
-      }
-    }
-
-    if (processedIds.isNotEmpty) {
-      await api.chatAction(
-        (api) => api.postDeleteMessageDeliveryInfo(MessageDeliveryInfoIdList(ids: processedIds)),
-      );
-    }
-
-    if (checkEncryptionKeyChanges.isNotEmpty) {
-      final publicKeyUtils = PublicKeyUtils(db, api, currentUser);
-      for (final accountId in checkEncryptionKeyChanges) {
-        await publicKeyUtils.getLatestPublicKeyForForeignAccount(accountId);
-      }
-    }
-  }
-
-  Future<void> _setProfileOnlineIfDeliveryInfoIsRecent(
-    AccountId accountId,
-    UtcDateTime eventTime,
-  ) async {
-    if (_isTimestampRecent(eventTime)) {
-      await db.accountAction((db) => db.profile.updateProfileLastSeenTimeIfNeeded(accountId, -1));
-    }
-  }
-
-  bool _isTimestampRecent(UtcDateTime timestamp) {
-    final now = UtcDateTime.now();
-    final differenceInSeconds =
-        (now.toUnixEpochMilliseconds() - timestamp.toUnixEpochMilliseconds()).abs() / 1000;
-    return differenceInSeconds <= 30;
+    final cmd = ReceiveMessageDeliveryInfo();
+    messageManager.queueCmd(cmd);
+    await cmd.waitCompletionAndDispose();
   }
 
   // Local messages

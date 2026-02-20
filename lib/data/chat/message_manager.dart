@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:app/data/chat/backend_signed_message.dart';
+import 'package:app/data/chat/message_manager/delivery_info.dart';
 import 'package:app/data/chat/message_manager/receive.dart';
 import 'package:app/data/chat/message_manager/send.dart';
 import 'package:app/data/chat/message_manager/utils.dart';
@@ -31,6 +32,8 @@ sealed class MessageManagerCmd<T> extends BaseMessageManagerCmd {
 }
 
 class ReceiveNewMessages extends MessageManagerCmd<()> {}
+
+class ReceiveMessageDeliveryInfo extends MessageManagerCmd<()> {}
 
 class SendMessage extends BaseMessageManagerCmd {
   final ReplaySubject<MessageSendingEvent?> _events = ReplaySubject();
@@ -110,10 +113,12 @@ class MessageManager extends LifecycleMethods {
 
   final ReceiveMessageUtils receiveMessageUtils;
   final SendMessageUtils sendMessageUtils;
+  final DeliveryInfoUtils deliveryInfoUtils;
 
   MessageManager(this.messageKeyManager, this.api, this.db, this.profile, this.currentUser)
     : receiveMessageUtils = ReceiveMessageUtils(messageKeyManager, api, db, currentUser, profile),
-      sendMessageUtils = SendMessageUtils(messageKeyManager, api, db, currentUser, profile);
+      sendMessageUtils = SendMessageUtils(messageKeyManager, api, db, currentUser, profile),
+      deliveryInfoUtils = DeliveryInfoUtils(db, api, currentUser);
 
   final PublishSubject<BaseMessageManagerCmd> _commands = PublishSubject();
   StreamSubscription<void>? _commandsSubscription;
@@ -125,6 +130,9 @@ class MessageManager extends LifecycleMethods {
           switch (cmd) {
             case ReceiveNewMessages():
               await receiveMessageUtils.receiveNewMessages();
+              cmd.completed.add(());
+            case ReceiveMessageDeliveryInfo():
+              await deliveryInfoUtils.receiveMessageDeliveryInfo();
               cmd.completed.add(());
             case SendMessage(:final _events, :final receiverAccount, :final message):
               await for (final event in sendMessageUtils.sendMessageTo(receiverAccount, message)) {
