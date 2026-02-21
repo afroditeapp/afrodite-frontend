@@ -20,12 +20,17 @@ part 'common.g.dart';
 class DaoWriteCommon extends DatabaseAccessor<AccountDatabase> with _$DaoWriteCommonMixin {
   DaoWriteCommon(super.db);
 
-  Future<void> setMaintenanceTime({required UtcDateTime? start, required UtcDateTime? end}) async {
+  Future<void> setMaintenanceTime({
+    required UtcDateTime? start,
+    required UtcDateTime? end,
+    required int maintenanceTarget,
+  }) async {
     await into(serverMaintenance).insertOnConflictUpdate(
       ServerMaintenanceCompanion.insert(
         id: SingleRowTable.ID,
         startTime: Value(start),
         endTime: Value(end),
+        maintenanceTarget: Value(maintenanceTarget),
       ),
     );
   }

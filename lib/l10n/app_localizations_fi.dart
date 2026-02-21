@@ -1094,6 +1094,9 @@ class AppLocalizationsFi extends AppLocalizations {
   String get map_tile_error => 'Map tile error';
 
   @override
+  String get menu_screen_admin_bot_maintenance_title => 'Admin bot maintenance break';
+
+  @override
   String get menu_screen_server_maintenance_title => 'Maintenance break';
 
   @override

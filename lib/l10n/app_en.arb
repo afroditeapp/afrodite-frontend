@@ -1422,6 +1422,10 @@
   "@map_tile_error": {
     "description": "Snackbar text about map tile error"
   },
+  "menu_screen_admin_bot_maintenance_title": "Admin bot maintenance break",
+  "@menu_screen_admin_bot_maintenance_title": {
+    "description": "Title text for admin bot maintenance info"
+  },
   "menu_screen_server_maintenance_title": "Maintenance break",
   "@menu_screen_server_maintenance_title": {
     "description": "Title text for server maintenance info"

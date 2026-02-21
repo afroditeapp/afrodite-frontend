@@ -4,14 +4,20 @@ class ServerMaintenanceInfo {
   final UtcDateTime? startTime;
   final UtcDateTime? endTime;
   final UtcDateTime? infoViewed;
+  final int maintenanceTarget;
 
   const ServerMaintenanceInfo({
     required this.startTime,
     required this.endTime,
     required this.infoViewed,
+    required this.maintenanceTarget,
   });
 
-  ServerMaintenanceInfo.empty() : startTime = null, endTime = null, infoViewed = null;
+  ServerMaintenanceInfo.empty()
+    : startTime = null,
+      endTime = null,
+      infoViewed = null,
+      maintenanceTarget = 0;
 
   int uiBadgeCount() {
     final latest = startTime?.toUnixEpochMilliseconds();
@@ -28,9 +34,10 @@ class ServerMaintenanceInfo {
     return other is ServerMaintenanceInfo &&
         startTime == other.startTime &&
         endTime == other.endTime &&
-        infoViewed == other.infoViewed;
+        infoViewed == other.infoViewed &&
+        maintenanceTarget == other.maintenanceTarget;
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, startTime, endTime, infoViewed);
+  int get hashCode => Object.hash(runtimeType, startTime, endTime, infoViewed, maintenanceTarget);
 }

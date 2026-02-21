@@ -6230,8 +6230,26 @@ class $ServerMaintenanceTable extends schema.ServerMaintenance
       ).withConverter<UtcDateTime?>(
         $ServerMaintenanceTable.$converterinfoViewed,
       );
+  static const VerificationMeta _maintenanceTargetMeta = const VerificationMeta(
+    'maintenanceTarget',
+  );
   @override
-  List<GeneratedColumn> get $columns => [id, startTime, endTime, infoViewed];
+  late final GeneratedColumn<int> maintenanceTarget = GeneratedColumn<int>(
+    'maintenance_target',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    startTime,
+    endTime,
+    infoViewed,
+    maintenanceTarget,
+  ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -6246,6 +6264,15 @@ class $ServerMaintenanceTable extends schema.ServerMaintenance
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('maintenance_target')) {
+      context.handle(
+        _maintenanceTargetMeta,
+        maintenanceTarget.isAcceptableOrUnknown(
+          data['maintenance_target']!,
+          _maintenanceTargetMeta,
+        ),
+      );
     }
     return context;
   }
@@ -6278,6 +6305,10 @@ class $ServerMaintenanceTable extends schema.ServerMaintenance
           data['${effectivePrefix}info_viewed'],
         ),
       ),
+      maintenanceTarget: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}maintenance_target'],
+      )!,
     );
   }
 
@@ -6300,11 +6331,13 @@ class ServerMaintenanceData extends DataClass
   final UtcDateTime? startTime;
   final UtcDateTime? endTime;
   final UtcDateTime? infoViewed;
+  final int maintenanceTarget;
   const ServerMaintenanceData({
     required this.id,
     this.startTime,
     this.endTime,
     this.infoViewed,
+    required this.maintenanceTarget,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -6325,6 +6358,7 @@ class ServerMaintenanceData extends DataClass
         $ServerMaintenanceTable.$converterinfoViewed.toSql(infoViewed),
       );
     }
+    map['maintenance_target'] = Variable<int>(maintenanceTarget);
     return map;
   }
 
@@ -6340,6 +6374,7 @@ class ServerMaintenanceData extends DataClass
       infoViewed: infoViewed == null && nullToAbsent
           ? const Value.absent()
           : Value(infoViewed),
+      maintenanceTarget: Value(maintenanceTarget),
     );
   }
 
@@ -6353,6 +6388,7 @@ class ServerMaintenanceData extends DataClass
       startTime: serializer.fromJson<UtcDateTime?>(json['startTime']),
       endTime: serializer.fromJson<UtcDateTime?>(json['endTime']),
       infoViewed: serializer.fromJson<UtcDateTime?>(json['infoViewed']),
+      maintenanceTarget: serializer.fromJson<int>(json['maintenanceTarget']),
     );
   }
   @override
@@ -6363,6 +6399,7 @@ class ServerMaintenanceData extends DataClass
       'startTime': serializer.toJson<UtcDateTime?>(startTime),
       'endTime': serializer.toJson<UtcDateTime?>(endTime),
       'infoViewed': serializer.toJson<UtcDateTime?>(infoViewed),
+      'maintenanceTarget': serializer.toJson<int>(maintenanceTarget),
     };
   }
 
@@ -6371,11 +6408,13 @@ class ServerMaintenanceData extends DataClass
     Value<UtcDateTime?> startTime = const Value.absent(),
     Value<UtcDateTime?> endTime = const Value.absent(),
     Value<UtcDateTime?> infoViewed = const Value.absent(),
+    int? maintenanceTarget,
   }) => ServerMaintenanceData(
     id: id ?? this.id,
     startTime: startTime.present ? startTime.value : this.startTime,
     endTime: endTime.present ? endTime.value : this.endTime,
     infoViewed: infoViewed.present ? infoViewed.value : this.infoViewed,
+    maintenanceTarget: maintenanceTarget ?? this.maintenanceTarget,
   );
   ServerMaintenanceData copyWithCompanion(ServerMaintenanceCompanion data) {
     return ServerMaintenanceData(
@@ -6385,6 +6424,9 @@ class ServerMaintenanceData extends DataClass
       infoViewed: data.infoViewed.present
           ? data.infoViewed.value
           : this.infoViewed,
+      maintenanceTarget: data.maintenanceTarget.present
+          ? data.maintenanceTarget.value
+          : this.maintenanceTarget,
     );
   }
 
@@ -6394,13 +6436,15 @@ class ServerMaintenanceData extends DataClass
           ..write('id: $id, ')
           ..write('startTime: $startTime, ')
           ..write('endTime: $endTime, ')
-          ..write('infoViewed: $infoViewed')
+          ..write('infoViewed: $infoViewed, ')
+          ..write('maintenanceTarget: $maintenanceTarget')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, startTime, endTime, infoViewed);
+  int get hashCode =>
+      Object.hash(id, startTime, endTime, infoViewed, maintenanceTarget);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -6408,7 +6452,8 @@ class ServerMaintenanceData extends DataClass
           other.id == this.id &&
           other.startTime == this.startTime &&
           other.endTime == this.endTime &&
-          other.infoViewed == this.infoViewed);
+          other.infoViewed == this.infoViewed &&
+          other.maintenanceTarget == this.maintenanceTarget);
 }
 
 class ServerMaintenanceCompanion
@@ -6417,29 +6462,34 @@ class ServerMaintenanceCompanion
   final Value<UtcDateTime?> startTime;
   final Value<UtcDateTime?> endTime;
   final Value<UtcDateTime?> infoViewed;
+  final Value<int> maintenanceTarget;
   const ServerMaintenanceCompanion({
     this.id = const Value.absent(),
     this.startTime = const Value.absent(),
     this.endTime = const Value.absent(),
     this.infoViewed = const Value.absent(),
+    this.maintenanceTarget = const Value.absent(),
   });
   ServerMaintenanceCompanion.insert({
     this.id = const Value.absent(),
     this.startTime = const Value.absent(),
     this.endTime = const Value.absent(),
     this.infoViewed = const Value.absent(),
+    this.maintenanceTarget = const Value.absent(),
   });
   static Insertable<ServerMaintenanceData> custom({
     Expression<int>? id,
     Expression<int>? startTime,
     Expression<int>? endTime,
     Expression<int>? infoViewed,
+    Expression<int>? maintenanceTarget,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (startTime != null) 'start_time': startTime,
       if (endTime != null) 'end_time': endTime,
       if (infoViewed != null) 'info_viewed': infoViewed,
+      if (maintenanceTarget != null) 'maintenance_target': maintenanceTarget,
     });
   }
 
@@ -6448,12 +6498,14 @@ class ServerMaintenanceCompanion
     Value<UtcDateTime?>? startTime,
     Value<UtcDateTime?>? endTime,
     Value<UtcDateTime?>? infoViewed,
+    Value<int>? maintenanceTarget,
   }) {
     return ServerMaintenanceCompanion(
       id: id ?? this.id,
       startTime: startTime ?? this.startTime,
       endTime: endTime ?? this.endTime,
       infoViewed: infoViewed ?? this.infoViewed,
+      maintenanceTarget: maintenanceTarget ?? this.maintenanceTarget,
     );
   }
 
@@ -6478,6 +6530,9 @@ class ServerMaintenanceCompanion
         $ServerMaintenanceTable.$converterinfoViewed.toSql(infoViewed.value),
       );
     }
+    if (maintenanceTarget.present) {
+      map['maintenance_target'] = Variable<int>(maintenanceTarget.value);
+    }
     return map;
   }
 
@@ -6487,7 +6542,8 @@ class ServerMaintenanceCompanion
           ..write('id: $id, ')
           ..write('startTime: $startTime, ')
           ..write('endTime: $endTime, ')
-          ..write('infoViewed: $infoViewed')
+          ..write('infoViewed: $infoViewed, ')
+          ..write('maintenanceTarget: $maintenanceTarget')
           ..write(')'))
         .toString();
   }

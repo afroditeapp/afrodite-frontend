@@ -2044,6 +2044,12 @@ abstract class AppLocalizations {
   /// **'Map tile error'**
   String get map_tile_error;
 
+  /// Title text for admin bot maintenance info
+  ///
+  /// In en, this message translates to:
+  /// **'Admin bot maintenance break'**
+  String get menu_screen_admin_bot_maintenance_title;
+
   /// Title text for server maintenance info
   ///
   /// In en, this message translates to:

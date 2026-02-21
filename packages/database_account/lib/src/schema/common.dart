@@ -22,6 +22,7 @@ class ServerMaintenance extends SingleRowTable {
       integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
   IntColumn get infoViewed =>
       integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
+  IntColumn get maintenanceTarget => integer().withDefault(const Constant(0))();
 }
 
 class CustomReportsConfig extends SingleRowTable {

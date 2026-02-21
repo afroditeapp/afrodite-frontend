@@ -247,7 +247,11 @@ class _MenuViewState extends State<MenuView> {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(context.strings.menu_screen_server_maintenance_title),
+                    Text(
+                      state.maintenanceTarget == 1
+                          ? context.strings.menu_screen_admin_bot_maintenance_title
+                          : context.strings.menu_screen_server_maintenance_title,
+                    ),
                     const Padding(padding: EdgeInsets.only(right: 8)),
                     Text("$startTimeString$endTimeString"),
                   ],

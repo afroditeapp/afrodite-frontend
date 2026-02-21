@@ -230,6 +230,7 @@ class AccountRepository extends DataRepositoryWithLifecycle {
           (db) => db.common.setMaintenanceTime(
             start: event.start?.toUtcDateTime(),
             end: event.end?.toUtcDateTime(),
+            maintenanceTarget: event.maintenanceTarget,
           ),
         )
         .emptyErr();
