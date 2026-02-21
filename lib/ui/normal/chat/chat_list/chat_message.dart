@@ -1,3 +1,4 @@
+import 'package:database/database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart' as chat_core;
 import 'package:flutter_chat_ui/flutter_chat_ui.dart' as chat_ui;
@@ -11,17 +12,11 @@ class ChatMessage extends StatelessWidget {
   /// The child widget to display (e.g., a video call button).
   final Widget child;
 
-  /// The message creation timestamp.
-  final DateTime? createdAt;
-
-  /// The message status.
-  final chat_core.MessageStatus? status;
+  /// Source message.
+  final chat_core.Message message;
 
   /// Whether the message was sent by the current user.
   final bool isSentByMe;
-
-  /// Whether the message is in an error state.
-  final bool isError;
 
   /// Whether to show the message status indicator.
   final bool showStatus;
@@ -38,10 +33,8 @@ class ChatMessage extends StatelessWidget {
   const ChatMessage({
     super.key,
     required this.child,
-    required this.createdAt,
-    required this.status,
+    required this.message,
     required this.isSentByMe,
-    this.isError = false,
     this.showStatus = true,
     this.padding = const EdgeInsets.symmetric(vertical: 7.0, horizontal: 10.0),
     this.statusPadding = EdgeInsets.zero,
@@ -50,13 +43,11 @@ class ChatMessage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final backgroundColor = isError
-        ? Theme.of(context).colorScheme.errorContainer
-        : Theme.of(context).colorScheme.primaryContainer;
-    final foregroundColor = ChatMessage.foregroundColor(context, isError);
+    final backgroundColor = ChatMessage.backgroundColor(context, message);
+    final foregroundColor = ChatMessage.foregroundColor(context, message);
 
     final timeTextStyle = TextStyle(color: foregroundColor, fontSize: 12.0);
-    final statusTextStyle = status == chat_core.MessageStatus.seen
+    final statusTextStyle = message.status == chat_core.MessageStatus.seen
         ? TextStyle(color: Colors.lightBlue, fontSize: 12.0)
         : timeTextStyle;
 
@@ -86,8 +77,8 @@ class ChatMessage extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       chat_ui.TimeAndStatus(
-                        time: createdAt,
-                        status: status,
+                        time: message.createdAt,
+                        status: message.status,
                         showTime: true,
                         showStatus: false,
                         textStyle: timeTextStyle,
@@ -95,11 +86,11 @@ class ChatMessage extends StatelessWidget {
                       if (isSentByMe && showStatus) ...[
                         const SizedBox(width: 4),
                         chat_ui.TimeAndStatus(
-                          time: createdAt,
+                          time: message.createdAt,
                           // Use two checkmarks icon for delivered state
-                          status: status == chat_core.MessageStatus.delivered
+                          status: message.status == chat_core.MessageStatus.delivered
                               ? chat_core.MessageStatus.seen
-                              : status,
+                              : message.status,
                           showTime: false,
                           showStatus: true,
                           textStyle: statusTextStyle,
@@ -116,7 +107,21 @@ class ChatMessage extends StatelessWidget {
     );
   }
 
-  static Color foregroundColor(BuildContext context, bool isError) => isError
-      ? Theme.of(context).colorScheme.onErrorContainer
-      : Theme.of(context).colorScheme.onPrimaryContainer;
+  static Color backgroundColor(BuildContext context, chat_core.Message message) {
+    return useErrorColors(message)
+        ? Theme.of(context).colorScheme.errorContainer
+        : Theme.of(context).colorScheme.primaryContainer;
+  }
+
+  static Color foregroundColor(BuildContext context, chat_core.Message message) {
+    return useErrorColors(message)
+        ? Theme.of(context).colorScheme.onErrorContainer
+        : Theme.of(context).colorScheme.onPrimaryContainer;
+  }
+
+  static bool useErrorColors(chat_core.Message message) {
+    final sentMessageState = message.metadata?['sentMessageState'];
+    return message.status == chat_core.MessageStatus.error &&
+        sentMessageState != SentMessageState.deliveryFailedAndResent;
+  }
 }

@@ -376,13 +376,10 @@ class _ChatListState extends State<ChatList> {
               Widget messageWidget;
 
               if (messageType == 'video_call_invitation') {
-                final isError = message.status == chat_core.MessageStatus.error;
-                final textColor = ChatMessage.foregroundColor(context, isError);
+                final textColor = ChatMessage.foregroundColor(context, message);
                 messageWidget = ChatMessage(
-                  createdAt: message.createdAt,
-                  status: message.status,
+                  message: message,
                   isSentByMe: isSentByMe,
-                  isError: isError,
                   footerWidgets: _buildFooterWidgets(context, message, localMessageId, textColor),
                   child: ElevatedButton.icon(
                     onPressed: () => joinVideoCall(ctx, widget.messageReceiver),
@@ -409,13 +406,11 @@ class _ChatListState extends State<ChatList> {
                     errorText = context.strings.generic_error;
                 }
 
-                final textColor = Theme.of(context).colorScheme.onErrorContainer;
+                final textColor = ChatMessage.foregroundColor(context, message);
 
                 messageWidget = ChatMessage(
-                  createdAt: message.createdAt,
-                  status: message.status,
+                  message: message,
                   isSentByMe: isSentByMe,
-                  isError: true,
                   showStatus: false,
                   footerWidgets: _buildFooterWidgets(context, message, localMessageId, textColor),
                   child: Row(
@@ -457,8 +452,7 @@ class _ChatListState extends State<ChatList> {
               final localMessageId = LocalMessageId(int.parse(message.id));
               final r = context.read<RepositoryInstances>();
 
-              final isError = message.status == chat_core.MessageStatus.error;
-              final textColor = ChatMessage.foregroundColor(context, isError);
+              final textColor = ChatMessage.foregroundColor(context, message);
 
               final textWidget = Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10.0),
@@ -488,10 +482,8 @@ class _ChatListState extends State<ChatList> {
               }
 
               final messageWidget = ChatMessage(
-                createdAt: message.createdAt,
-                status: message.status,
+                message: message,
                 isSentByMe: isSentByMe,
-                isError: isError,
                 padding: message.replyToMessageId != null
                     ? EdgeInsets.only(bottom: 7)
                     : EdgeInsets.symmetric(vertical: 7),
