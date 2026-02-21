@@ -691,8 +691,8 @@ abstract class AppLocalizations {
   /// Info text that encryption key changed
   ///
   /// In en, this message translates to:
-  /// **'Encryption key changed'**
-  String get conversation_screen_message_info_encryption_key_changed;
+  /// **'{p0}\'s encryption key changed'**
+  String conversation_screen_message_info_encryption_key_changed(String p0);
 
   /// Info text that messages in this conversation are end-to-end encrypted
   ///

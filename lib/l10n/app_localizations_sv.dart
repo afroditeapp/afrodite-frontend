@@ -357,7 +357,9 @@ class AppLocalizationsSv extends AppLocalizations {
       'Receiver action prevented message sending';
 
   @override
-  String get conversation_screen_message_info_encryption_key_changed => 'Encryption key changed';
+  String conversation_screen_message_info_encryption_key_changed(String p0) {
+    return '$p0\'s encryption key changed';
+  }
 
   @override
   String get conversation_screen_message_info_encryption_started =>

@@ -465,9 +465,14 @@
   "@conversation_screen_message_error_receiver_blocked_sender_or_receiver_not_found": {
     "description": "Message send or resend error that receiver blocked sender or receiver not found"
   },
-  "conversation_screen_message_info_encryption_key_changed": "Encryption key changed",
+  "conversation_screen_message_info_encryption_key_changed": "{p0}'s encryption key changed",
   "@conversation_screen_message_info_encryption_key_changed": {
-    "description": "Info text that encryption key changed"
+    "description": "Info text that encryption key changed",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
   },
   "conversation_screen_message_info_encryption_started": "Messages are end-to-end encrypted",
   "@conversation_screen_message_info_encryption_started": {

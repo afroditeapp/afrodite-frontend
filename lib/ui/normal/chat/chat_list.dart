@@ -320,7 +320,9 @@ class _ChatListState extends State<ChatList> {
                   text = context.strings.conversation_screen_message_info_encryption_started;
                 case 'infoMatchPublicKeyChanged':
                   iconData = Icons.key;
-                  text = context.strings.conversation_screen_message_info_encryption_key_changed;
+                  text = context.strings.conversation_screen_message_info_encryption_key_changed(
+                    widget.profileEntry?.profileNameOrFirstCharacterProfileName() ?? "",
+                  );
                 default:
                   iconData = Icons.error;
                   text = context.strings.conversation_screen_message_unsupported;
