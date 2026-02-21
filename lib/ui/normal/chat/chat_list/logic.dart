@@ -43,6 +43,12 @@ class ChatListLogic {
 
   static const String _typingIndicatorMessageId = 'typing_indicator_message';
 
+  static bool canReply(chat_core.MessageStatus? status) {
+    return status == chat_core.MessageStatus.sent ||
+        status == chat_core.MessageStatus.delivered ||
+        status == chat_core.MessageStatus.seen;
+  }
+
   StreamSubscription<void>? _eventSubscription;
   final PublishSubject<_LoadOldMessagesRequested> _loadOldMessagesRelay = PublishSubject();
 

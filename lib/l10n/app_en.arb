@@ -1009,6 +1009,10 @@
   "@generic_remind": {
     "description": "Generic remind text"
   },
+  "generic_reply": "Reply",
+  "@generic_reply": {
+    "description": "Generic reply action text"
+  },
   "generic_resend": "Resend",
   "@generic_resend": {
     "description": "Generic resend text"

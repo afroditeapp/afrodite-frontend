@@ -56,7 +56,11 @@ class MessageActionsDialog extends MyDialogPage<()> {
   MessageActionsDialog({required super.builder});
 }
 
-void openMessageMenu(BuildContext screenContext, MessageEntry entry) {
+void openMessageMenu(
+  BuildContext screenContext,
+  MessageEntry entry, {
+  void Function(MessageEntry)? onReply,
+}) {
   if (!screenContext.mounted) {
     return;
   }
@@ -118,6 +122,14 @@ void openMessageMenu(BuildContext screenContext, MessageEntry entry) {
               } else {
                 bloc.add(RetryPublicKeyDownload(entry.localId));
               }
+              closer.close(context, ());
+            },
+          ),
+        if (onReply != null)
+          ListTile(
+            title: Text(context.strings.generic_reply),
+            onTap: () {
+              onReply(entry);
               closer.close(context, ());
             },
           ),

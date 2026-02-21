@@ -158,12 +158,7 @@ class _ChatListState extends State<ChatList> {
   }
 
   Widget _wrapWithSwipeToReply(Widget child, String messageId, chat_core.MessageStatus? status) {
-    final allowSliding =
-        status == chat_core.MessageStatus.sent ||
-        status == chat_core.MessageStatus.delivered ||
-        status == chat_core.MessageStatus.seen;
-
-    if (!allowSliding) {
+    if (!ChatListLogic.canReply(status)) {
       return child;
     }
 
@@ -238,7 +233,13 @@ class _ChatListState extends State<ChatList> {
             final entry = await r.chat.getMessageWithLocalId(localMessageId).first;
 
             if (entry != null && ctx.mounted) {
-              openMessageMenu(ctx, entry);
+              openMessageMenu(
+                ctx,
+                entry,
+                onReply: ChatListLogic.canReply(message.status)
+                    ? (entry) => _replyTargetController.setReplyTarget(entry)
+                    : null,
+              );
             }
           },
       builders: chat_core.Builders(

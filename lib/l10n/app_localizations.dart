@@ -1432,6 +1432,12 @@ abstract class AppLocalizations {
   /// **'Remind'**
   String get generic_remind;
 
+  /// Generic reply action text
+  ///
+  /// In en, this message translates to:
+  /// **'Reply'**
+  String get generic_reply;
+
   /// Generic resend text
   ///
   /// In en, this message translates to:

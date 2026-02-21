@@ -64,6 +64,7 @@
     <string name="generic_download_question" description="Generic download question">Download?</string>
     <string name="generic_logout_failed" description="Generic logout failed text">Logout failed</string>
     <string name="generic_copy" description="Generic copy text">Copy</string>
+    <string name="generic_reply" description="Generic reply action text">Reply</string>
     <string name="generic_edit" description="Generic edit text">Edit</string>
     <string name="generic_skip" description="Generic skip text">Skip</string>
     <string name="generic_profile_loading_failed" description="Error text displayed when profile loading fails">Profile loading failed</string>

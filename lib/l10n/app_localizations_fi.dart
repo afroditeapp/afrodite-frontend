@@ -763,6 +763,9 @@ class AppLocalizationsFi extends AppLocalizations {
   String get generic_remind => 'Remind';
 
   @override
+  String get generic_reply => 'Reply';
+
+  @override
   String get generic_resend => 'Resend';
 
   @override
