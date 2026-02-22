@@ -28,12 +28,18 @@ List<InitialSetupPageBase> getInitialSetupPageOrder() {
     AskProfileBasicInfoPage(),
     AskGenderPage(),
     AskSearchSettingsPage(),
+    // Required to be the third last page
     AskLocationPage(),
     // Required to be the second last page
-    FirstChatBackupPage(),
-    // Required to be the last page
     AskProfileAttributesPage(attributeIndex: 0),
+    // Required to be the last page
+    FirstChatBackupPage(),
   ];
+}
+
+void _pushInitialSetupPage(BuildContext context, InitialSetupPageBase nextPage) {
+  MyNavigator.push(context, nextPage);
+  context.read<InitialSetupBloc>().add(SetCurrentPage(nextPage.nameForDb));
 }
 
 /// Navigate to the next initial setup page based on current page.
@@ -42,19 +48,24 @@ void navigateToNextInitialSetupPage(BuildContext context) {
   final navigationState = context.read<NavigatorStateBloc>().state;
   final currentPage = navigationState.pages.lastOrNull;
 
-  if (currentPage == null || pageOrder.last is! AskProfileAttributesPage) {
+  if (currentPage == null || pageOrder.last is! FirstChatBackupPage) {
     // This is not translated because users should not see this
     showSnackBar("Navigation error");
     return;
   }
 
-  if (currentPage is FirstChatBackupPage) {
-    navigateToNextInitialSetupPageFromFirstChatBackupPage(context);
+  if (currentPage is AskLocationPage) {
+    _navigateToNextInitialSetupPageFromAskLocationPage(context);
     return;
   }
 
   if (currentPage is AskProfileAttributesPage) {
-    navigateToNextInitialSetupPageFromAskProfileAttributesPage(context);
+    _navigateToNextInitialSetupPageFromAskProfileAttributesPage(context);
+    return;
+  }
+
+  if (currentPage is FirstChatBackupPage) {
+    context.read<InitialSetupBloc>().add(CompleteInitialSetup());
     return;
   }
 
@@ -68,9 +79,7 @@ void navigateToNextInitialSetupPage(BuildContext context) {
       final nextIndex = orderIndex + 1;
 
       if (nextIndex < pageOrder.length) {
-        final nextPage = pageOrder[nextIndex];
-        MyNavigator.push(context, nextPage);
-        context.read<InitialSetupBloc>().add(SetCurrentPage(nextPage.nameForDb));
+        _pushInitialSetupPage(context, pageOrder[nextIndex]);
         return;
       }
     }
@@ -80,21 +89,18 @@ void navigateToNextInitialSetupPage(BuildContext context) {
   showSnackBar("Navigation error");
 }
 
-void navigateToNextInitialSetupPageFromFirstChatBackupPage(BuildContext context) {
+void _navigateToNextInitialSetupPageFromAskLocationPage(BuildContext context) {
   final attributes =
       context.read<ProfileAttributesBloc>().state.manager?.requiredAttributes() ?? [];
   final nextAttribute = attributes.firstOrNull;
   if (nextAttribute == null) {
-    context.read<InitialSetupBloc>().add(CompleteInitialSetup());
-    return;
+    _pushInitialSetupPage(context, FirstChatBackupPage());
+  } else {
+    _pushInitialSetupPage(context, AskProfileAttributesPage(attributeIndex: 0));
   }
-
-  final nextPage = AskProfileAttributesPage(attributeIndex: 0);
-  MyNavigator.push(context, nextPage);
-  context.read<InitialSetupBloc>().add(SetCurrentPage(nextPage.nameForDb));
 }
 
-void navigateToNextInitialSetupPageFromAskProfileAttributesPage(BuildContext context) {
+void _navigateToNextInitialSetupPageFromAskProfileAttributesPage(BuildContext context) {
   final navigationState = context.read<NavigatorStateBloc>().state;
   final currentPage = navigationState.pages.lastOrNull;
   if (currentPage is! AskProfileAttributesPage) {
@@ -107,11 +113,8 @@ void navigateToNextInitialSetupPageFromAskProfileAttributesPage(BuildContext con
       context.read<ProfileAttributesBloc>().state.manager?.requiredAttributes() ?? [];
   final nextAttributeIndex = currentPage.attributeIndex + 1;
   if (nextAttributeIndex >= attributes.length) {
-    context.read<InitialSetupBloc>().add(CompleteInitialSetup());
-    return;
+    _pushInitialSetupPage(context, FirstChatBackupPage());
+  } else {
+    _pushInitialSetupPage(context, AskProfileAttributesPage(attributeIndex: nextAttributeIndex));
   }
-
-  final nextPage = AskProfileAttributesPage(attributeIndex: nextAttributeIndex);
-  MyNavigator.push(context, nextPage);
-  context.read<InitialSetupBloc>().add(SetCurrentPage(nextPage.nameForDb));
 }
