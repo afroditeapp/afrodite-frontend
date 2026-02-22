@@ -1,4 +1,3 @@
-import "package:app/logic/app/navigator_state.dart";
 import "package:app/logic/profile/attributes.dart";
 import "package:app/model/freezed/logic/main/navigator_state.dart";
 import "package:app/ui_utils/attribute/attribute.dart";
@@ -12,6 +11,7 @@ import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:app/localizations.dart";
 import "package:app/logic/account/initial_setup.dart";
+import "package:app/ui/initial_setup/navigation.dart";
 import "package:app/ui_utils/initial_setup_common.dart";
 
 class AskProfileAttributesPageUrlParser extends UrlParser<AskProfileAttributesPage> {
@@ -73,17 +73,7 @@ class _AskProfileAttributesScreenInternal extends StatelessWidget {
           if (state.profileAttributes.answerForRequiredAttributeExists(
             currentAttribute.apiAttribute().id,
           )) {
-            return () {
-              final nextAttributeIndex = attributeIndex + 1;
-              final nextAttribute = attributes.getAtOrNull(nextAttributeIndex);
-              if (nextAttribute == null) {
-                context.read<InitialSetupBloc>().add(CompleteInitialSetup());
-              } else {
-                final nextPage = AskProfileAttributesPage(attributeIndex: nextAttributeIndex);
-                MyNavigator.push(context, nextPage);
-                context.read<InitialSetupBloc>().add(SetCurrentPage(nextPage.nameForDb));
-              }
-            };
+            return () => navigateToNextInitialSetupPage(context);
           } else {
             return null;
           }

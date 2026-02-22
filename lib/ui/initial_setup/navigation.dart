@@ -1,5 +1,6 @@
 import "package:app/logic/account/initial_setup.dart";
 import "package:app/logic/app/navigator_state.dart";
+import "package:app/logic/profile/attributes.dart";
 import "package:app/ui/initial_setup/age_confirmation.dart";
 import "package:app/ui/initial_setup/first_chat_backup.dart";
 import "package:app/ui/initial_setup/email.dart";
@@ -35,18 +36,26 @@ List<InitialSetupPageBase> getInitialSetupPageOrder() {
   ];
 }
 
-/// Do not call this from two last pages (FirstChatBackupPage and AskProfileAttributesPage).
+/// Navigate to the next initial setup page based on current page.
 void navigateToNextInitialSetupPage(BuildContext context) {
   final pageOrder = getInitialSetupPageOrder();
   final navigationState = context.read<NavigatorStateBloc>().state;
   final currentPage = navigationState.pages.lastOrNull;
 
-  if (currentPage == null ||
-      currentPage is FirstChatBackupPage ||
-      currentPage is AskProfileAttributesPage ||
-      pageOrder.last is! AskProfileAttributesPage) {
+  if (currentPage == null || pageOrder.last is! AskProfileAttributesPage) {
     // This is not translated because users should not see this
     showSnackBar("Navigation error");
+    return;
+  }
+
+  if (currentPage is FirstChatBackupPage) {
+    navigateToNextInitialSetupPageFromFirstChatBackupPage(context);
+    return;
+  }
+
+  if (currentPage is AskProfileAttributesPage) {
+    navigateToNextInitialSetupPageFromAskProfileAttributesPage(context);
+    return;
   }
 
   // Check if this page matches any page in our initial setup page order
@@ -69,4 +78,40 @@ void navigateToNextInitialSetupPage(BuildContext context) {
 
   // This is not translated because users should not see this
   showSnackBar("Navigation error");
+}
+
+void navigateToNextInitialSetupPageFromFirstChatBackupPage(BuildContext context) {
+  final attributes =
+      context.read<ProfileAttributesBloc>().state.manager?.requiredAttributes() ?? [];
+  final nextAttribute = attributes.firstOrNull;
+  if (nextAttribute == null) {
+    context.read<InitialSetupBloc>().add(CompleteInitialSetup());
+    return;
+  }
+
+  final nextPage = AskProfileAttributesPage(attributeIndex: 0);
+  MyNavigator.push(context, nextPage);
+  context.read<InitialSetupBloc>().add(SetCurrentPage(nextPage.nameForDb));
+}
+
+void navigateToNextInitialSetupPageFromAskProfileAttributesPage(BuildContext context) {
+  final navigationState = context.read<NavigatorStateBloc>().state;
+  final currentPage = navigationState.pages.lastOrNull;
+  if (currentPage is! AskProfileAttributesPage) {
+    // This is not translated because users should not see this
+    showSnackBar("Navigation error");
+    return;
+  }
+
+  final attributes =
+      context.read<ProfileAttributesBloc>().state.manager?.requiredAttributes() ?? [];
+  final nextAttributeIndex = currentPage.attributeIndex + 1;
+  if (nextAttributeIndex >= attributes.length) {
+    context.read<InitialSetupBloc>().add(CompleteInitialSetup());
+    return;
+  }
+
+  final nextPage = AskProfileAttributesPage(attributeIndex: nextAttributeIndex);
+  MyNavigator.push(context, nextPage);
+  context.read<InitialSetupBloc>().add(SetCurrentPage(nextPage.nameForDb));
 }

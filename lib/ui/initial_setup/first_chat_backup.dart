@@ -5,11 +5,10 @@ import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:app/localizations.dart";
 import "package:app/logic/account/initial_setup.dart";
-import "package:app/logic/app/navigator_state.dart";
 import "package:app/logic/profile/attributes.dart";
 import "package:app/logic/settings/chat_backup.dart";
 import "package:app/model/freezed/logic/settings/chat_backup.dart";
-import "package:app/ui/initial_setup/profile_attributes.dart";
+import "package:app/ui/initial_setup/navigation.dart";
 import "package:app/ui_utils/initial_setup_common.dart";
 
 class FirstChatBackupPage extends InitialSetupPageBase with SimpleUrlParser<FirstChatBackupPage> {
@@ -52,18 +51,7 @@ class _FirstChatBackupScreenInternal extends StatelessWidget {
         child: QuestionAsker(
           getContinueButtonCallback: (context, state) {
             if (state.firstChatBackupCreated) {
-              return () {
-                final attributes =
-                    context.read<ProfileAttributesBloc>().state.manager?.requiredAttributes() ?? [];
-                final nextAttribute = attributes.firstOrNull;
-                if (nextAttribute == null) {
-                  context.read<InitialSetupBloc>().add(CompleteInitialSetup());
-                } else {
-                  final nextPage = AskProfileAttributesPage(attributeIndex: 0);
-                  MyNavigator.push(context, nextPage);
-                  context.read<InitialSetupBloc>().add(SetCurrentPage(nextPage.nameForDb));
-                }
-              };
+              return () => navigateToNextInitialSetupPage(context);
             } else {
               return null;
             }
