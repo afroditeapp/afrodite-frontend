@@ -27,6 +27,7 @@ class SendChatBackupScreen extends StatefulWidget {
 
 class _SendChatBackupScreenState extends State<SendChatBackupScreen> {
   final TextEditingController _pairingCodeController = TextEditingController();
+  bool _showTextCodeInput = false;
 
   @override
   void dispose() {
@@ -130,42 +131,54 @@ class _SendChatBackupScreenState extends State<SendChatBackupScreen> {
         ElevatedButton.icon(
           onPressed: () async {
             final pairingCode = await openScanPairingCodeScreen(context);
-            if (pairingCode != null) {
-              _pairingCodeController.text = pairingCode;
-              setState(() {});
+            if (pairingCode != null && context.mounted) {
+              context.read<SendChatBackupBloc>().add(StartSendBackup(pairingCode));
             }
           },
           icon: const Icon(Icons.qr_code_scanner),
           label: Text(context.strings.send_chat_backup_scan_qr_button),
         ),
-        const SizedBox(height: 24),
-        TextField(
-          controller: _pairingCodeController,
-          decoration: InputDecoration(
-            labelText: context.strings.chat_backup_pairing_code_label,
-            hintText: context.strings.send_chat_backup_pairing_code_hint,
-            border: const OutlineInputBorder(),
+        const SizedBox(height: 16),
+        if (!_showTextCodeInput)
+          TextButton.icon(
+            onPressed: () {
+              setState(() {
+                _showTextCodeInput = true;
+              });
+            },
+            icon: const Icon(Icons.keyboard),
+            label: Text(context.strings.send_chat_backup_use_text_code_button),
+          )
+        else ...[
+          const SizedBox(height: 8),
+          TextField(
+            controller: _pairingCodeController,
+            decoration: InputDecoration(
+              labelText: context.strings.chat_backup_pairing_code_label,
+              hintText: context.strings.send_chat_backup_pairing_code_hint,
+              border: const OutlineInputBorder(),
+            ),
+            onChanged: (value) {
+              // Update button state
+              setState(() {});
+            },
+            onTapOutside: (_) {
+              FocusScope.of(context).unfocus();
+            },
           ),
-          onChanged: (value) {
-            // Update button state
-            setState(() {});
-          },
-          onTapOutside: (_) {
-            FocusScope.of(context).unfocus();
-          },
-        ),
-        const SizedBox(height: 24),
-        ElevatedButton(
-          onPressed: _pairingCodeController.text.isNotEmpty
-              ? () {
-                  FocusScope.of(context).unfocus();
-                  context.read<SendChatBackupBloc>().add(
-                    StartSendBackup(_pairingCodeController.text),
-                  );
-                }
-              : null,
-          child: Text(context.strings.send_chat_backup_start_button),
-        ),
+          const SizedBox(height: 24),
+          ElevatedButton(
+            onPressed: _pairingCodeController.text.isNotEmpty
+                ? () {
+                    FocusScope.of(context).unfocus();
+                    context.read<SendChatBackupBloc>().add(
+                      StartSendBackup(_pairingCodeController.text),
+                    );
+                  }
+                : null,
+            child: Text(context.strings.send_chat_backup_start_button),
+          ),
+        ],
       ],
     );
   }

@@ -1694,6 +1694,9 @@ class AppLocalizationsSv extends AppLocalizations {
   String get send_chat_backup_transferring => 'Sending backup…';
 
   @override
+  String get send_chat_backup_use_text_code_button => 'Use text code';
+
+  @override
   String get server_connection_indicator_connection_failed => 'Connection failed';
 
   @override

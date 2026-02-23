@@ -3094,6 +3094,12 @@ abstract class AppLocalizations {
   /// **'Sending backup…'**
   String get send_chat_backup_transferring;
 
+  /// Button text to show text code input
+  ///
+  /// In en, this message translates to:
+  /// **'Use text code'**
+  String get send_chat_backup_use_text_code_button;
+
   /// Server connection indicator text when connection failed after max retries
   ///
   /// In en, this message translates to:
