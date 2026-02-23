@@ -912,6 +912,10 @@ class AppLocalizationsSv extends AppLocalizations {
       'The backup contains your message encryption key. Keep it accessible in case you lose your device, unless you are willing to ask others to resend their undelivered messages to you.';
 
   @override
+  String get initial_setup_screen_first_chat_backup_skip_warning =>
+      'Uninstalling the app will delete your chats and encryption key. Without the key, you won\'t be able to read messages encrypted using the key.\n\nYour chat backup contains the encryption key — do you want to skip creating a backup?';
+
+  @override
   String get initial_setup_screen_first_chat_backup_title => 'First chat backup';
 
   @override

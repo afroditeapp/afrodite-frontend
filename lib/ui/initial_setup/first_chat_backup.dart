@@ -5,10 +5,12 @@ import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:app/localizations.dart";
 import "package:app/logic/account/initial_setup.dart";
+import "package:app/model/freezed/logic/account/initial_setup.dart";
 import "package:app/logic/profile/attributes.dart";
 import "package:app/logic/settings/chat_backup.dart";
 import "package:app/model/freezed/logic/settings/chat_backup.dart";
 import "package:app/ui/initial_setup/navigation.dart";
+import "package:app/ui_utils/dialog.dart";
 import "package:app/ui_utils/initial_setup_common.dart";
 
 class FirstChatBackupPage extends InitialSetupPageBase with SimpleUrlParser<FirstChatBackupPage> {
@@ -49,12 +51,36 @@ class _FirstChatBackupScreenInternal extends StatelessWidget {
           }
         },
         child: QuestionAsker(
-          getContinueButtonCallback: (context, state) {
-            if (state.firstChatBackupCreated) {
-              return () => navigateToNextInitialSetupPage(context);
-            } else {
-              return null;
-            }
+          continueButtonBuilder: (context) {
+            return BlocBuilder<InitialSetupBloc, InitialSetupData>(
+              builder: (context, state) {
+                if (state.firstChatBackupCreated) {
+                  return ElevatedButton(
+                    onPressed: () {
+                      navigateToNextInitialSetupPage(context);
+                    },
+                    child: Text(context.strings.generic_continue),
+                  );
+                } else {
+                  return ElevatedButton(
+                    onPressed: () async {
+                      final result = await showConfirmDialog(
+                        context,
+                        context.strings.generic_warning,
+                        details:
+                            context.strings.initial_setup_screen_first_chat_backup_skip_warning,
+                        yesNoActions: true,
+                      );
+
+                      if (result == true && context.mounted) {
+                        navigateToNextInitialSetupPage(context);
+                      }
+                    },
+                    child: Text(context.strings.generic_skip),
+                  );
+                }
+              },
+            );
           },
           question: const FirstChatBackupContent(),
           expandQuestion: true,

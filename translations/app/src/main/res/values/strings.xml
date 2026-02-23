@@ -292,6 +292,7 @@
     <string name="initial_setup_screen_first_chat_backup_save_backup_button" description="Title for initial setup save chat backup button">Save chat backup</string>
     <string name="initial_setup_screen_first_chat_backup_backup_saved_successfully" description="Text for initial setup chat backup saved successfully">Backup saved successfully</string>
     <string name="initial_setup_screen_first_chat_backup_security_info" description="Security info for initial setup first chat backup">The backup contains your message encryption key. Keep it accessible in case you lose your device, unless you are willing to ask others to resend their undelivered messages to you.</string>
+    <string name="initial_setup_screen_first_chat_backup_skip_warning" description="Warning dialog message when skipping first chat backup">Uninstalling the app will delete your chats and encryption key. Without the key, you won't be able to read messages encrypted using the key.\n\nYour chat backup contains the encryption key — do you want to skip creating a backup?</string>
 
     <!-- Notification permission -->
     <string name="notification_permission_dialog_title" description="Title for notification permission dialog">Allow notifications?</string>

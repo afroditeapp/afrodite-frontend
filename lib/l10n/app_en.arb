@@ -1207,6 +1207,10 @@
   "@initial_setup_screen_first_chat_backup_security_info": {
     "description": "Security info for initial setup first chat backup"
   },
+  "initial_setup_screen_first_chat_backup_skip_warning": "Uninstalling the app will delete your chats and encryption key. Without the key, you won't be able to read messages encrypted using the key.\n\nYour chat backup contains the encryption key — do you want to skip creating a backup?",
+  "@initial_setup_screen_first_chat_backup_skip_warning": {
+    "description": "Warning dialog message when skipping first chat backup"
+  },
   "initial_setup_screen_first_chat_backup_title": "First chat backup",
   "@initial_setup_screen_first_chat_backup_title": {
     "description": "Title for initial setup first chat backup screen"
