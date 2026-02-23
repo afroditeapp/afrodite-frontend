@@ -242,22 +242,28 @@ class _ChatListState extends State<ChatList> {
               );
             }
           },
+      onMessageTap: (context, _, {TapUpDetails? details, int? index}) {
+        FocusScope.of(context).unfocus();
+      },
       builders: chat_core.Builders(
         chatAnimatedListBuilder: (context, itemBuilder) {
-          return chat_ui.ChatAnimatedList(
-            reversed: _reversed,
-            itemBuilder: itemBuilder,
-            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.manual,
-            onEndReached: !_reversed || (_reversed && _endReached)
-                ? null
-                : () async {
-                    final endReached = await _chatListLogic.requestLoadOldMessages();
-                    if (endReached && mounted) {
-                      setState(() {
-                        _endReached = true;
-                      });
-                    }
-                  },
+          return GestureDetector(
+            onTap: () => FocusScope.of(context).unfocus(),
+            child: chat_ui.ChatAnimatedList(
+              reversed: _reversed,
+              itemBuilder: itemBuilder,
+              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.manual,
+              onEndReached: !_reversed || (_reversed && _endReached)
+                  ? null
+                  : () async {
+                      final endReached = await _chatListLogic.requestLoadOldMessages();
+                      if (endReached && mounted) {
+                        setState(() {
+                          _endReached = true;
+                        });
+                      }
+                    },
+            ),
           );
         },
         systemMessageBuilder:
