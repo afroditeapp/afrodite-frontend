@@ -328,11 +328,8 @@ class LoginRepository extends AppSingleton {
     final CommonSignInError? error;
 
     final accountDb = createdRepositories.accountDb;
-    final r = await CommonDatabaseManager.getInstance()
-        .commonAction((db) => db.loginSession.login(aid))
-        .andThen(
-          (_) => accountDb.accountAction((db) => db.account.updateEmailAddress(loginResult.email)),
-        )
+    final r = await accountDb
+        .accountAction((db) => db.account.updateEmailAddress(loginResult.email))
         .andThen(
           (_) =>
               accountDb.accountAction((db) => db.loginSession.updateAccessToken(authPair.access)),
@@ -351,11 +348,21 @@ class LoginRepository extends AppSingleton {
       if (await createdRepositories.connectionManager.tryWaitUntilConnected(
         waitTimeoutSeconds: 7,
       )) {
-        final r = await createdRepositories.onLoginDataSync();
-        if (r.isErr()) {
+        final syncResult = await createdRepositories.onLoginDataSync();
+        if (syncResult.isErr()) {
           error = CommonSignInError.dataSyncFailed;
         } else {
-          error = null;
+          // Save AccountId after data sync to prevent using the app with
+          // invalid DB state if app crashes during data sync.
+          final sessionResult = await CommonDatabaseManager.getInstance().commonAction(
+            (db) => db.loginSession.login(aid),
+          );
+          if (sessionResult.isErr()) {
+            _log.error("Login failed: could not save account ID to common DB");
+            error = CommonSignInError.otherError;
+          } else {
+            error = null;
+          }
         }
       } else {
         error = CommonSignInError.creatingConnectingWebSocketFailed;
