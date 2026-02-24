@@ -282,6 +282,8 @@ class PublicProfileViewingBlocker extends StatelessWidget {
       infoText = addRejectedCategoryRow(context, infoText, content.rejectedCategory?.value);
       infoText = addRejectedDetailsRow(context, infoText, content.rejectedDetails?.value);
       message = infoText;
+    } else if (!content.faceDetected) {
+      message = context.strings.profile_grid_screen_security_content_face_not_detected;
     } else {
       message = context.strings.generic_error;
     }

@@ -332,6 +332,7 @@
     <string name="profile_grid_screen_profile_filter_settings_update_ongoing" description="Snackbar text that profile filter settings update is ongoing">Profile filter settings update is ongoing</string>
     <string name="profile_grid_screen_security_content_is_not_accepted" description="Text displayed when security selfie is not accepted">Security selfie is not accepted</string>
     <string name="profile_grid_screen_security_content_does_not_exist" description="Text displayed when security selfie does not exist">Security selfie does not exist</string>
+    <string name="profile_grid_screen_security_content_face_not_detected" description="Text displayed when face is not detected from security selfie">Face is not detected from security selfie</string>
     <string name="profile_grid_screen_primary_profile_content_is_not_accepted" description="Text displayed when primary profile content is not accepted">First profile picture is not accepted</string>
     <string name="profile_grid_screen_primary_profile_content_face_not_detected" description="Text displayed when face is not detected from primary profile content">Face is not detected from first profile picture</string>
     <string name="profile_grid_screen_primary_profile_content_does_not_exist" description="Text displayed when primary profile content does not exist">First profile picture does not exist</string>

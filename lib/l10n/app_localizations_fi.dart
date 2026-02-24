@@ -1454,6 +1454,10 @@ class AppLocalizationsFi extends AppLocalizations {
       'Security selfie does not exist';
 
   @override
+  String get profile_grid_screen_security_content_face_not_detected =>
+      'Face is not detected from security selfie';
+
+  @override
   String get profile_grid_screen_security_content_is_not_accepted =>
       'Security selfie is not accepted';
 

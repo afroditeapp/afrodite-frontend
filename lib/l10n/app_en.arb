@@ -1915,6 +1915,10 @@
   "@profile_grid_screen_security_content_does_not_exist": {
     "description": "Text displayed when security selfie does not exist"
   },
+  "profile_grid_screen_security_content_face_not_detected": "Face is not detected from security selfie",
+  "@profile_grid_screen_security_content_face_not_detected": {
+    "description": "Text displayed when face is not detected from security selfie"
+  },
   "profile_grid_screen_security_content_is_not_accepted": "Security selfie is not accepted",
   "@profile_grid_screen_security_content_is_not_accepted": {
     "description": "Text displayed when security selfie is not accepted"

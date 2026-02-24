@@ -2650,6 +2650,12 @@ abstract class AppLocalizations {
   /// **'Security selfie does not exist'**
   String get profile_grid_screen_security_content_does_not_exist;
 
+  /// Text displayed when face is not detected from security selfie
+  ///
+  /// In en, this message translates to:
+  /// **'Face is not detected from security selfie'**
+  String get profile_grid_screen_security_content_face_not_detected;
+
   /// Text displayed when security selfie is not accepted
   ///
   /// In en, this message translates to:
