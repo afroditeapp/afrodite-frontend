@@ -703,9 +703,13 @@
   "@edit_profile_screen_one_profile_image_required": {
     "description": "Snackbar text for notifying about that one profile image is required"
   },
-  "edit_profile_screen_primary_profile_content_not_accepted": "Picture is not currently accepted by moderators. Your profile will not be shown in profile grid until the picture is accepted.",
-  "@edit_profile_screen_primary_profile_content_not_accepted": {
-    "description": "Info text that primary profile image is not accepted"
+  "edit_profile_screen_primary_profile_content_pending_moderation": "Picture is not currently accepted by moderators. Your profile will not be shown in profile grid until the picture is accepted.",
+  "@edit_profile_screen_primary_profile_content_pending_moderation": {
+    "description": "Info text that primary profile image is pending moderation"
+  },
+  "edit_profile_screen_primary_profile_content_rejected": "Picture was rejected by moderators. Replace the picture to make your profile visible in the profile grid.",
+  "@edit_profile_screen_primary_profile_content_rejected": {
+    "description": "Info text that primary profile image was rejected by moderators"
   },
   "edit_profile_screen_profile_name": "First name",
   "@edit_profile_screen_profile_name": {

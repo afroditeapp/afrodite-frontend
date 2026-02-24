@@ -390,7 +390,8 @@
     <string name="edit_profile_screen_invalid_age" description="Snackbar text for notifying about invalid age">Invalid age</string>
     <string name="edit_profile_screen_one_profile_image_required" description="Snackbar text for notifying about that one profile image is required">One profile image is required</string>
     <string name="edit_profile_screen_automatic_min_age_incrementing_info_dialog_text" description="Dialog text for notifying user when profile age min value is incremented">Min age will be increased to %s in %s</string>
-    <string name="edit_profile_screen_primary_profile_content_not_accepted" description="Info text that primary profile image is not accepted">Picture is not currently accepted by moderators. Your profile will not be shown in profile grid until the picture is accepted.</string>
+    <string name="edit_profile_screen_primary_profile_content_pending_moderation" description="Info text that primary profile image is pending moderation">Picture is not currently accepted by moderators. Your profile will not be shown in profile grid until the picture is accepted.</string>
+    <string name="edit_profile_screen_primary_profile_content_rejected" description="Info text that primary profile image was rejected by moderators">Picture was rejected by moderators. Replace the picture to make your profile visible in the profile grid.</string>
 
     <!-- Edit profile text screen -->
     <string name="edit_profile_text_screen_text_length_too_long" description="Dialog text for notifying user when profile text is too long">Profile text byte count is more than 2000 bytes</string>

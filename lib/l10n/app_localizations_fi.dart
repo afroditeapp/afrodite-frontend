@@ -534,8 +534,12 @@ class AppLocalizationsFi extends AppLocalizations {
   String get edit_profile_screen_one_profile_image_required => 'One profile image is required';
 
   @override
-  String get edit_profile_screen_primary_profile_content_not_accepted =>
+  String get edit_profile_screen_primary_profile_content_pending_moderation =>
       'Picture is not currently accepted by moderators. Your profile will not be shown in profile grid until the picture is accepted.';
+
+  @override
+  String get edit_profile_screen_primary_profile_content_rejected =>
+      'Picture was rejected by moderators. Replace the picture to make your profile visible in the profile grid.';
 
   @override
   String get edit_profile_screen_profile_name => 'First name';

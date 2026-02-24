@@ -7,7 +7,6 @@ import 'package:app/ui/initial_setup/security_selfie.dart';
 import 'package:app/ui_utils/image_processing.dart';
 import 'package:app/ui_utils/padding.dart';
 import 'package:app/ui_utils/profile_pictures.dart';
-import 'package:app/utils/api.dart';
 import 'package:app/utils/immutable_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -183,7 +182,7 @@ class _SelectContentScreenState extends State<SelectContentScreen> {
           e.cid,
           e.fd,
           onTap: () =>
-              widget.closer.close(context, AccountImageId(accountId, e.cid, e.fd, e.accepted())),
+              widget.closer.close(context, AccountImageId(accountId, e.cid, e.fd, e.state)),
           identifyFaceImages: widget.identifyFaceImages,
         ),
       ),

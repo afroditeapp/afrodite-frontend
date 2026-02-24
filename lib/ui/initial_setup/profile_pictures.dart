@@ -176,7 +176,7 @@ class _ProfilePictureSelection<
             processedImg.accountId,
             processedImg.contentId,
             processedImg.faceDetected,
-            false,
+            null,
           );
           final index = _firstEmptyIndex(widget.bloc.state.valuePictures());
           if (index == null) {
@@ -436,11 +436,14 @@ class _ProfilePictureSelection<
       builder: (context, state) {
         final imgState = state.valuePictures()[0];
         if (imgState is ImageSelected && !imgState.isAccepted()) {
+          final isRejected = imgState.isRejected();
           return _primaryImageErrorWidget(
             context: context,
-            message: context.strings.edit_profile_screen_primary_profile_content_not_accepted,
-            icon: Icons.warning,
-            iconColor: Theme.of(context).primaryColor,
+            message: isRejected
+                ? context.strings.edit_profile_screen_primary_profile_content_rejected
+                : context.strings.edit_profile_screen_primary_profile_content_pending_moderation,
+            icon: isRejected ? Icons.close : Icons.warning,
+            iconColor: isRejected ? Colors.red : Theme.of(context).primaryColor,
           );
         }
         return const SizedBox.shrink();
@@ -567,7 +570,7 @@ class AddPicture extends StatelessWidget {
               securitySelfie.accountId,
               securitySelfie.contentId,
               securitySelfie.faceDetected,
-              true,
+              null,
             );
             bloc.addProcessedImage(ImageSelected(accountImageId, SECURITY_SELFIE_SLOT), imgIndex);
             closer.close(context, ());

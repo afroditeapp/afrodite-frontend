@@ -205,4 +205,9 @@ extension ContentModerationStateExtensions on ContentModerationState {
     return this == ContentModerationState.rejectedByBot ||
         this == ContentModerationState.rejectedByHuman;
   }
+
+  bool isAccepted() {
+    return this == ContentModerationState.acceptedByBot ||
+        this == ContentModerationState.acceptedByHuman;
+  }
 }

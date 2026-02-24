@@ -1006,11 +1006,17 @@ abstract class AppLocalizations {
   /// **'One profile image is required'**
   String get edit_profile_screen_one_profile_image_required;
 
-  /// Info text that primary profile image is not accepted
+  /// Info text that primary profile image is pending moderation
   ///
   /// In en, this message translates to:
   /// **'Picture is not currently accepted by moderators. Your profile will not be shown in profile grid until the picture is accepted.'**
-  String get edit_profile_screen_primary_profile_content_not_accepted;
+  String get edit_profile_screen_primary_profile_content_pending_moderation;
+
+  /// Info text that primary profile image was rejected by moderators
+  ///
+  /// In en, this message translates to:
+  /// **'Picture was rejected by moderators. Replace the picture to make your profile visible in the profile grid.'**
+  String get edit_profile_screen_primary_profile_content_rejected;
 
   /// Title for profile name text field
   ///

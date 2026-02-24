@@ -37,7 +37,7 @@ class MyProfileData
     if (p == null) return const Empty();
     final c = p.myContent.getAtOrNull(index);
     if (c == null) return const Empty();
-    final imgId = AccountImageId(p.accountId, c.id, c.faceDetected, c.accepted);
+    final imgId = AccountImageId(p.accountId, c.id, c.faceDetected, c.state);
     final cropArea = index == 0 ? p.primaryImageCropArea() : CropArea.full;
     return ImageSelected(imgId, null, cropArea: cropArea);
   }

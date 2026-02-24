@@ -1,4 +1,5 @@
 import 'package:app/ui_utils/crop_image_screen.dart';
+import 'package:app/utils/api.dart';
 import 'package:meta/meta.dart';
 import 'package:openapi/api.dart';
 
@@ -46,7 +47,7 @@ class ImageSelected extends ImgState {
 
   ImageSelected copyWithFaceDetected(bool faceDetected) {
     return ImageSelected(
-      AccountImageId(id.accountId, id.contentId, faceDetected, id.accepted),
+      AccountImageId(id.accountId, id.contentId, faceDetected, id.moderationState),
       slot,
       cropArea: cropArea,
     );
@@ -54,7 +55,9 @@ class ImageSelected extends ImgState {
 
   bool isFaceDetected() => id.faceDetected;
 
-  bool isAccepted() => id.accepted;
+  bool isAccepted() => id.moderationState?.isAccepted() ?? false;
+
+  bool isRejected() => id.moderationState?.isRejected() ?? false;
 
   @override
   ContentId? contentId() => id.contentId;
@@ -72,8 +75,10 @@ class AccountImageId {
   final AccountId accountId;
   final ContentId contentId;
   final bool faceDetected;
-  final bool accepted;
-  AccountImageId(this.accountId, this.contentId, this.faceDetected, this.accepted);
+
+  /// Null when picture selection happens in initial setup.
+  final ContentModerationState? moderationState;
+  AccountImageId(this.accountId, this.contentId, this.faceDetected, this.moderationState);
 
   @override
   bool operator ==(Object other) =>
@@ -82,10 +87,10 @@ class AccountImageId {
           other.accountId == accountId &&
           other.contentId == contentId &&
           other.faceDetected == faceDetected &&
-          other.accepted == accepted;
+          other.moderationState == moderationState;
 
   @override
-  int get hashCode => Object.hash(accountId, contentId, faceDetected, accepted);
+  int get hashCode => Object.hash(accountId, contentId, faceDetected, moderationState);
 }
 
 List<ImgState> compactProfilePictureSlots(List<ImgState> pictures, {int slotCount = 4}) {
