@@ -374,6 +374,31 @@ class _ProfilePictureSelection<
     return _firstEmptyIndex(pictures) == index;
   }
 
+  Widget _primaryImageErrorWidget({
+    required BuildContext context,
+    required String message,
+    required IconData icon,
+    required Color iconColor,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.only(
+        top: 8.0,
+        left: COMMON_SCREEN_EDGE_PADDING,
+        right: COMMON_SCREEN_EDGE_PADDING,
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 32, color: iconColor),
+          const Padding(padding: EdgeInsets.only(left: 8.0)),
+          Flexible(child: Text(message)),
+        ],
+      ),
+    );
+  }
+
   Widget primaryImageIsNotFaceImageError() {
     return BlocBuilder<ClientFeaturesConfigBloc, ClientFeaturesConfigData>(
       builder: (context, configData) {
@@ -389,19 +414,13 @@ class _ProfilePictureSelection<
           builder: (context, state) {
             final imgState = state.valuePictures()[0];
             if (imgState is ImageSelected && !imgState.isFaceDetected()) {
-              return Padding(
-                padding: const EdgeInsets.only(top: 8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(Icons.close, color: Colors.red, size: 32),
-                    Text(
-                      context
-                          .strings
-                          .initial_setup_screen_profile_pictures_primary_image_face_not_detected,
-                    ),
-                  ],
-                ),
+              return _primaryImageErrorWidget(
+                context: context,
+                message: context
+                    .strings
+                    .initial_setup_screen_profile_pictures_primary_image_face_not_detected,
+                icon: Icons.close,
+                iconColor: Colors.red,
               );
             }
             return const SizedBox.shrink();
@@ -417,26 +436,11 @@ class _ProfilePictureSelection<
       builder: (context, state) {
         final imgState = state.valuePictures()[0];
         if (imgState is ImageSelected && !imgState.isAccepted()) {
-          return Padding(
-            padding: const EdgeInsets.only(
-              top: 8.0,
-              left: COMMON_SCREEN_EDGE_PADDING,
-              right: COMMON_SCREEN_EDGE_PADDING,
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(Icons.warning, size: 32, color: Theme.of(context).primaryColor),
-                const Padding(padding: EdgeInsets.only(left: 8.0)),
-                Flexible(
-                  child: Text(
-                    context.strings.edit_profile_screen_primary_profile_content_not_accepted,
-                  ),
-                ),
-              ],
-            ),
+          return _primaryImageErrorWidget(
+            context: context,
+            message: context.strings.edit_profile_screen_primary_profile_content_not_accepted,
+            icon: Icons.warning,
+            iconColor: Theme.of(context).primaryColor,
           );
         }
         return const SizedBox.shrink();
